@@ -63,17 +63,17 @@ DEF_TEST(SkScalerCacheMultiThread, Reporter) {
 
             auto local = data.subspan(threadIndex * 2, data.size() - kThreadCount * 2);
             for (int i = 0; i < 100; i++) {
-                SkDrawableGlyphBuffer drawable;
-                SkSourceGlyphBuffer rejects;
+                SkDrawableGlyphBuffer accepter;
+                SkSourceGlyphBuffer rejecter;
 
-                drawable.ensureSize(glyphCount);
-                rejects.setSource(local);
+                accepter.ensureSize(glyphCount);
+                rejecter.setSource(local);
 
-                drawable.startBitmapDevice(rejects.source(), {0, 0}, SkMatrix::I(),
+                accepter.startBitmapDevice(rejecter.source(), {0, 0}, SkMatrix::I(),
                                            scalerCache.roundingSpec());
-                scalerCache.prepareForMaskDrawing(&drawable, &rejects);
-                rejects.flipRejectsToSource();
-                drawable.reset();
+                scalerCache.prepareForMaskDrawing(&accepter, &rejecter);
+                rejecter.flipRejectsToSource();
+                accepter.reset();
             }
         };
 
