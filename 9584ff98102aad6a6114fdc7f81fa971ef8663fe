@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "baa4c19f_1320ea97",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-03T02:30:47Z",
+      "side": 1,
+      "message": "MSAN bot being red seems to be an infra/bot config issue and not this CL. No pixel diffs as expected.\n\nThe binary size increase of 2.8k is a little surprising and it seems to be from adding SK_ALWAYS_INLINE to writePatch(). This increases the size of PatchWriter.cpp by a fair amount in its chopping functions, and the fixed count tessellator accounts for the rest of it. \n\nSince this is in the midst of a large refactor that should at least conceptually simplify the code, I\u0027m hoping that the binary size is just an issue around inefficient code org because we\u0027re in the midst of things. I\u0027ll keep an eye on where it lands at the end of the CLs and then we can evaluate what further steps need to be done to restore binary size if it didn\u0027t happen on its own.",
+      "revId": "9584ff98102aad6a6114fdc7f81fa971ef8663fe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
