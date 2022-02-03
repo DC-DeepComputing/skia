@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "75edc8ff_9311fbba",
+        "filename": "src/sksl/ir/SkSLVarDeclarations.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-02-03T19:22:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1f3cac59_325bd532",
+      "range": {
+        "startLine": 31,
+        "startChar": 14,
+        "endLine": 31,
+        "endChar": 17
+      },
+      "revId": "0fd8640ee99651572488d63ac6c8c190794f4cd5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5c17f631_9b02301d",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9e2aea80_576863b3",
+        "filename": "src/sksl/ir/SkSLVarDeclarations.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-02-03T19:22:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5c17f631_9b02301d",
+      "range": {
+        "startLine": 43,
+        "startChar": 8,
+        "endLine": 43,
+        "endChar": 24
+      },
+      "revId": "0fd8640ee99651572488d63ac6c8c190794f4cd5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8b68391a_bf3bebea",
@@ -60,6 +108,30 @@
       "writtenOn": "2022-02-02T20:58:12Z",
       "side": 1,
       "message": "Whoa! I didn\u0027t think we could set settings this way. Scary 😮\nCan we set it in our `settings` variable instead?",
+      "range": {
+        "startLine": 203,
+        "startChar": 0,
+        "endLine": 203,
+        "endChar": 79
+      },
+      "revId": "0fd8640ee99651572488d63ac6c8c190794f4cd5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "14a9bf8a_84083fa6",
+        "filename": "tests/SkSLTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 203,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-02-03T19:22:16Z",
+      "side": 1,
+      "message": "Just adding it to settings by itself won\u0027t do it, because convertProgram tears down the context when it\u0027s finished, so it won\u0027t be seen down below in the clone.\n\nBut your comment made me look more closely at this, and I had forgotten that dsl::Start has an optional settings parameter, which is obviously a better way to handle things. Fixed.",
+      "parentUuid": "8b68391a_bf3bebea",
       "range": {
         "startLine": 203,
         "startChar": 0,
