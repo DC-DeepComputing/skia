@@ -31,21 +31,24 @@ namespace {
 //   2 points
 //   2 radii
 static constexpr int kNumGradientUniforms = 6;
-static constexpr SkUniform kGradientUniforms[kNumGradientUniforms] {
-        {"colors",   SkSLType::kHalf4 , GradientData::kMaxStops },
-        {"offsets",  SkSLType::kFloat, GradientData::kMaxStops },
-        {"point0",   SkSLType::kFloat2 },
-        {"point1",   SkSLType::kFloat2 },
-        {"radius0",  SkSLType::kFloat },
-        {"radius1",  SkSLType::kFloat },
+static constexpr SkUniform kGradientUniforms[kNumGradientUniforms]{
+        {"colors",  SkSLType::kHalf4, GradientData::kMaxStops},
+        {"offsets", SkSLType::kFloat, GradientData::kMaxStops},
+        {"point0",  SkSLType::kFloat2},
+        {"point1",  SkSLType::kFloat2},
+        {"radius0", SkSLType::kFloat},
+        {"radius1", SkSLType::kFloat},
 };
 
 static constexpr int kNumSolidUniforms = 1;
-static constexpr SkUniform kSolidUniforms[kNumSolidUniforms] {
-        {"color",  SkSLType::kFloat4 }
+static constexpr SkUniform kSolidUniforms[kNumSolidUniforms]{
+        {"color", SkSLType::kFloat4}
 };
 
-static const char* kGradientSkSL =
+static constexpr int kNumImageUniforms = 0;
+static constexpr SkUniform kImageUniforms[kNumImageUniforms]{};
+
+static const char *kGradientSkSL =
         // TODO: This should use local coords
         "float2 pos = sk_FragCoord.xy;\n"
         "float2 delta = point1 - point0;\n"
@@ -63,7 +66,11 @@ static const char* kGradientSkSL =
         "             0, 1));\n"
         "outColor = half4(result);\n";
 
-static const char* kSolidColorSkSL = "    outColor = half4(color);\n";
+static const char *kSolidColorSkSL = "    outColor = half4(color);\n";
+
+static const char *kImageSkSL =
+        "    float r = fract(abs(sk_FragCoord.x/10.0));\n"
+        "    outColor = half4(r, 0.0, 0.0, 1.0);\n";
 
 // TODO: kNone is for depth-only draws, so should actually have a fragment output type
 // that only defines a [[depth]] attribute but no color calculation.
@@ -94,6 +101,8 @@ SkSpan<const SkUniform> GetUniforms(CodeSnippetID snippetID) {
         case CodeSnippetID::kSweepGradientShader:  [[fallthrough]];
         case CodeSnippetID::kConicalGradientShader:
             return SkMakeSpan(kGradientUniforms, kNumGradientUniforms);
+        case CodeSnippetID::kImageShader:
+            return SkMakeSpan(kImageUniforms, kNumImageUniforms);
         case CodeSnippetID::kSolidColorShader:     [[fallthrough]];
         default:
             return SkMakeSpan(kSolidUniforms, kNumSolidUniforms);
@@ -109,6 +118,8 @@ const char* GetShaderSkSL(CodeSnippetID snippetID) {
         case CodeSnippetID::kSweepGradientShader:  [[fallthrough]];
         case CodeSnippetID::kConicalGradientShader:
             return kGradientSkSL;
+        case CodeSnippetID::kImageShader:
+            return kImageSkSL;
         case CodeSnippetID::kSolidColorShader:     [[fallthrough]];
         default:
             return kSolidColorSkSL;
