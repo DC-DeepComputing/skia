@@ -41,6 +41,53 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "135a0318_40aa1cd8",
+        "filename": "src/gpu/tessellate/PatchWriter.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 280,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-03T20:56:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f6e79c66_5d6026e1",
+      "range": {
+        "startLine": 280,
+        "startChar": 43,
+        "endLine": 280,
+        "endChar": 61
+      },
+      "revId": "f88756a2d2ec01b3d85305e4144704f7d9e21696",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0c25b75f_3b2984a1",
+        "filename": "src/gpu/tessellate/PatchWriter.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 290,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-03T20:56:26Z",
+      "side": 1,
+      "message": "should have been removed in earlier CL\u0027s cleanup, but noticed it when addressing feedback for this CL.",
+      "range": {
+        "startLine": 290,
+        "startChar": 4,
+        "endLine": 290,
+        "endChar": 96
+      },
+      "revId": "f88756a2d2ec01b3d85305e4144704f7d9e21696",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "40b00b9c_6006bfa2",
@@ -54,6 +101,30 @@
       "writtenOn": "2022-02-02T18:44:58Z",
       "side": 1,
       "message": "fJoinControlPointAttrib?\n\nShould we move this comment down to \"vw \u003c\u003c fJoinControlPointAttrib\"?\n\nIs there a reason we need to create \"nextControlPoint\" instead of just assigning directly to fJoinControlPointAttrib after emitting it?",
+      "range": {
+        "startLine": 305,
+        "startChar": 25,
+        "endLine": 305,
+        "endChar": 50
+      },
+      "revId": "f88756a2d2ec01b3d85305e4144704f7d9e21696",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c2d3ada3_d9a9aef3",
+        "filename": "src/gpu/tessellate/PatchWriter.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 305,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-03T20:56:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "40b00b9c_6006bfa2",
       "range": {
         "startLine": 305,
         "startChar": 25,
