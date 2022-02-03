@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0bc2e94d_852a9820",
+        "filename": "include/private/SkSLString.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-02-03T21:28:40Z",
+      "side": 1,
+      "message": "The main reason these exist is that they override the locale (otherwise 1.5 turns into 1,5 for some users, and then fails to compile). Probably worth mentioning here.",
+      "revId": "29416d9f2c2c72a71ceed58dd6c13e9cf7d0893f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
