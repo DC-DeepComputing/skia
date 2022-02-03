@@ -22,6 +22,30 @@
       },
       "revId": "a5ac2bbbd5621f623be21fd1363011d5494e6b1d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4f108c75_6528da0a",
+        "filename": "infra/bots/gen_tasks_logic/gen_tasks_logic.go",
+        "patchSetId": 2
+      },
+      "lineNbr": 1462,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2022-02-03T23:37:00Z",
+      "side": 1,
+      "message": "Thanks!\n\nI created skia-external-codesize@skia-swarming-bots.iam.gserviceaccount.com and added it to https://chrome-infra-auth.appspot.com/auth/groups/project-skia-external-task-accounts.\n\nPlease note that I\u0027m still iterating on this CL; it\u0027s not ready for review yet. I\u0027ll ping you when it is!",
+      "parentUuid": "129a83a8_4fadc917",
+      "range": {
+        "startLine": 1462,
+        "startChar": 23,
+        "endLine": 1462,
+        "endChar": 73
+      },
+      "revId": "a5ac2bbbd5621f623be21fd1363011d5494e6b1d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
