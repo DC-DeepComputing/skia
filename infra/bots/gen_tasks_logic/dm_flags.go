@@ -621,6 +621,9 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 	if b.extraConfig("TSAN") {
 		// skbug.com/10848
 		removeFromArgs("svg")
+		// Experimentation to avoid OOM on
+		// Test-Ubuntu18-Clang-Golo-GPU-QuadroP400-x86_64-Release-All-TSAN_Vulkan
+		skip("unit", "test", "_", "_")
 	}
 
 	// TODO: ???
