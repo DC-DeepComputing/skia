@@ -621,6 +621,11 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 	if b.extraConfig("TSAN") {
 		// skbug.com/10848
 		removeFromArgs("svg")
+		// Experimentation to avoid OOM on
+		// Test-Ubuntu18-Clang-Golo-GPU-QuadroP400-x86_64-Release-All-TSAN_Vulkan
+		if b.Name == "Test-Ubuntu18-Clang-Golo-GPU-QuadroP400-x86_64-Release-All-TSAN_Vulkan" {
+			skip("_", "test", "_", "_")
+		}
 	}
 
 	// TODO: ???
@@ -921,8 +926,8 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 	}
 
 	if b.matchGpu("Adreno[3456]") { // disable broken tests on Adreno 3/4/5/6xx
-		skip("_", "tests", "_", "SkSLArrayCast_GPU")        // skia:12332
-		skip("_", "tests", "_", "SkSLArrayComparison_GPU")  // skia:12332
+		skip("_", "tests", "_", "SkSLArrayCast_GPU")       // skia:12332
+		skip("_", "tests", "_", "SkSLArrayComparison_GPU") // skia:12332
 		skip("_", "tests", "_", "SkSLCommaSideEffects_GPU")
 	}
 
@@ -964,8 +969,8 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 
 	if b.gpu("IntelIris6100", "IntelHD4400") && b.matchOs("Win") && !b.extraConfig("Vulkan") {
 		skip("_", "tests", "_", "SkSLVectorToMatrixCast_GPU") // skia:12179, vec4(mat2) crash
-		skip("_", "tests", "_", "SkSLVectorScalarMath_GPU") // skia:11919
-		skip("_", "tests", "_", "SkSLMatrixFoldingES2_GPU") // skia:11919
+		skip("_", "tests", "_", "SkSLVectorScalarMath_GPU")   // skia:11919
+		skip("_", "tests", "_", "SkSLMatrixFoldingES2_GPU")   // skia:11919
 	}
 
 	if b.matchGpu("Intel") && b.matchOs("Win") && !b.extraConfig("Vulkan") {
@@ -978,7 +983,7 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 
 	if b.extraConfig("ANGLE") && b.matchOs("Win") && b.matchGpu("IntelIris(540|655)") {
 		skip("_", "tests", "_", "SkSLSwitchDefaultOnly_GPU") // skia:12465
-		skip("_", "tests", "_", "SkSLVectorScalarMath_GPU") // skia:11919
+		skip("_", "tests", "_", "SkSLVectorScalarMath_GPU")  // skia:11919
 	}
 
 	if b.gpu("Tegra3") {
@@ -993,21 +998,21 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 	}
 
 	if b.gpu("QuadroP400") || b.gpu("GTX660") || b.gpu("GTX960") || b.gpu("Tegra3") {
-        if !b.extraConfig("Vulkan") {
-            // Various Nvidia GPUs crash or generate errors when assembling weird matrices
-            skip("_", "tests", "_", "SkSLMatrixConstructorsES2_GPU") // skia:12443
-            skip("_", "tests", "_", "SkSLMatrixConstructorsES3_GPU") // skia:12443
-        }
+		if !b.extraConfig("Vulkan") {
+			// Various Nvidia GPUs crash or generate errors when assembling weird matrices
+			skip("_", "tests", "_", "SkSLMatrixConstructorsES2_GPU") // skia:12443
+			skip("_", "tests", "_", "SkSLMatrixConstructorsES3_GPU") // skia:12443
+		}
 		skip("_", "tests", "_", "SkSLMatrixFoldingES2_GPU") // skia:11919
 	}
 
 	if b.gpu("PowerVRGE8320") || b.gpu("Tegra3") || b.gpu("Adreno308") {
 		skip("_", "tests", "_", "SkSLVectorScalarMath_GPU") // skia:11919
-    }
+	}
 
-    if b.gpu("PowerVRGE8320") {
+	if b.gpu("PowerVRGE8320") {
 		skip("_", "tests", "_", "SkSLOutParamsAreDistinct_GPU")
-    }
+	}
 
 	if !b.extraConfig("Vulkan") && (b.gpu("RadeonR9M470X") || b.gpu("RadeonHD7770")) {
 		// Some AMD GPUs can get the wrong result when assembling non-square matrices (skia:12443)
@@ -1157,9 +1162,9 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 		match = append(match, "~VkPrepareForExternalIOQueueTransitionTest")
 	}
 	if b.matchExtraConfig("Graphite") {
-                // skia:12813
+		// skia:12813
 		match = append(match, "~async_rescale_and_read")
-        }
+	}
 
 	if len(skipped) > 0 {
 		args = append(args, "--skip")
