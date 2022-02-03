@@ -351,17 +351,19 @@ PYTHON_VERSION_COMPATIBILITY: PY3
 
 &mdash; **def [add\_binary\_size\_output\_property](/infra/bots/recipes/compute_buildstats.py#31)(result, source, binary_size):**
 
-&mdash; **def [analyze\_cpp\_lib](/infra/bots/recipes/compute_buildstats.py#167)(api, checkout_root, out_dir, files):**
+&mdash; **def [analyze\_cpp\_lib](/infra/bots/recipes/compute_buildstats.py#168)(api, checkout_root, out_dir, files):**
 
-&mdash; **def [analyze\_flutter\_lib](/infra/bots/recipes/compute_buildstats.py#195)(api, checkout_root, out_dir, files):**
+&mdash; **def [analyze\_flutter\_lib](/infra/bots/recipes/compute_buildstats.py#196)(api, checkout_root, out_dir, files):**
 
-&mdash; **def [analyze\_wasm\_file](/infra/bots/recipes/compute_buildstats.py#234)(api, checkout_root, out_dir, files):**
+&mdash; **def [analyze\_wasm\_file](/infra/bots/recipes/compute_buildstats.py#235)(api, checkout_root, out_dir, files):**
 
-&mdash; **def [analyze\_web\_file](/infra/bots/recipes/compute_buildstats.py#140)(api, checkout_root, out_dir, files):**
+&mdash; **def [analyze\_web\_file](/infra/bots/recipes/compute_buildstats.py#141)(api, checkout_root, out_dir, files):**
 
-&mdash; **def [keys\_and\_props](/infra/bots/recipes/compute_buildstats.py#116)(api):**
+&mdash; **def [keys\_and\_props](/infra/bots/recipes/compute_buildstats.py#117)(api):**
 
-&mdash; **def [make\_treemap](/infra/bots/recipes/compute_buildstats.py#266)(api, checkout_root, out_dir, files):**
+&mdash; **def [make\_codesize\_files](/infra/bots/recipes/compute_buildstats.py#282)(api, checkout_root, out_dir, files):**
+
+&mdash; **def [make\_treemap](/infra/bots/recipes/compute_buildstats.py#267)(api, checkout_root, out_dir, files):**
 ### *recipes* / [docker:examples/full](/infra/bots/recipe_modules/docker/examples/full.py)
 
 [DEPS](/infra/bots/recipe_modules/docker/examples/full.py#7): [recipe\_engine/context][recipe_engine/recipe_modules/context], [recipe\_engine/properties][recipe_engine/recipe_modules/properties], [recipe\_engine/step][recipe_engine/recipe_modules/step], [docker](#recipe_modules-docker), [vars](#recipe_modules-vars)
