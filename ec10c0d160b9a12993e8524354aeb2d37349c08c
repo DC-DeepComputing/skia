@@ -22,6 +22,30 @@
       },
       "revId": "ec10c0d160b9a12993e8524354aeb2d37349c08c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "30580b7d_37b5f735",
+        "filename": "demos.skia.org/demos/spreadsheet/index.html",
+        "patchSetId": 7
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-02-03T20:15:25Z",
+      "side": 1,
+      "message": "The value here is just arbitrary to make the data points change, but not too fast. Performance.now returns a result in milliseconds, so this converts the sine wave to have a frequency of about 10 Hz, which seems visually ok.\n\nThe point is really to have the data change every frame, which this does.",
+      "parentUuid": "47f15794_83b6a199",
+      "range": {
+        "startLine": 101,
+        "startChar": 40,
+        "endLine": 101,
+        "endChar": 45
+      },
+      "revId": "ec10c0d160b9a12993e8524354aeb2d37349c08c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
