@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ac6cb694_2093c6d7",
+        "filename": "src/core/SkKeyHelpers.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 506,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-03T15:23:24Z",
+      "side": 0,
+      "message": "Was this a bug before? Or did something change in the rest of the block tracking that I missed?",
+      "range": {
+        "startLine": 506,
+        "startChar": 73,
+        "endLine": 506,
+        "endChar": 74
+      },
+      "revId": "e6f56595d8cc51285ff073a7eada080c5904fb3e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
