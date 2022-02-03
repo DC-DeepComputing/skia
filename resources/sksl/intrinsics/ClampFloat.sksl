@@ -9,18 +9,18 @@ half4 main(float2 coords) {
     half4 expectedB       = half4(-1,     0,  0.5,  2.25);
     const half4 clampHigh = half4( 1,     2,  0.5,  3);
 
-    return (clamp(testInputs.x,    -1, 1)                         == expectedA.x     &&
-            clamp(testInputs.xy,   -1, 1)                         == expectedA.xy    &&
-            clamp(testInputs.xyz,  -1, 1)                         == expectedA.xyz   &&
-            clamp(testInputs.xyzw, -1, 1)                         == expectedA.xyzw  &&
+    return (distance(clamp(testInputs.x,    -1, 1),                         expectedA.x   ) <= 0.001 &&
+            distance(clamp(testInputs.xy,   -1, 1),                         expectedA.xy  ) <= 0.001 &&
+            distance(clamp(testInputs.xyz,  -1, 1),                         expectedA.xyz ) <= 0.001 &&
+            distance(clamp(testInputs.xyzw, -1, 1),                         expectedA.xyzw) <= 0.001 &&
+            distance(clamp(testInputs.x,    clampLow.x,    clampHigh.x   ), expectedB.x   ) <= 0.001 &&
+            distance(clamp(testInputs.xy,   clampLow.xy,   clampHigh.xy  ), expectedB.xy  ) <= 0.001 &&
+            distance(clamp(testInputs.xyz,  clampLow.xyz,  clampHigh.xyz ), expectedB.xyz ) <= 0.001 &&
+            distance(clamp(testInputs.xyzw, clampLow.xyzw, clampHigh.xyzw), expectedB.xyzw) <= 0.001 &&
             clamp(constVal.x,      -1, 1)                         == expectedA.x     &&
             clamp(constVal.xy,     -1, 1)                         == expectedA.xy    &&
             clamp(constVal.xyz,    -1, 1)                         == expectedA.xyz   &&
             clamp(constVal.xyzw,   -1, 1)                         == expectedA.xyzw  &&
-            clamp(testInputs.x,    clampLow.x,    clampHigh.x   ) == expectedB.x     &&
-            clamp(testInputs.xy,   clampLow.xy,   clampHigh.xy  ) == expectedB.xy    &&
-            clamp(testInputs.xyz,  clampLow.xyz,  clampHigh.xyz ) == expectedB.xyz   &&
-            clamp(testInputs.xyzw, clampLow.xyzw, clampHigh.xyzw) == expectedB.xyzw  &&
             clamp(constVal.x,      clampLow.x,    clampHigh.x   ) == expectedB.x     &&
             clamp(constVal.xy,     clampLow.xy,   clampHigh.xy  ) == expectedB.xy    &&
             clamp(constVal.xyz,    clampLow.xyz,  clampHigh.xyz ) == expectedB.xyz   &&
