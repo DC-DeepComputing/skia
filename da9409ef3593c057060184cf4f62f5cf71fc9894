@@ -1,0 +1,129 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "44786d53_ed7ad1fa",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-02-03T22:26:02Z",
+      "side": 1,
+      "message": "Add SkTypeface::openExistingStream.\n\nAllow users to retrieve the stream from an SkTypeface, but only if that stream is inexpensive to create.",
+      "revId": "da9409ef3593c057060184cf4f62f5cf71fc9894",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c4869489_1dbf407f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-02-03T22:26:02Z",
+      "side": 1,
+      "message": "Should probably put a\n\n    Bug: https://github.com/flutter/flutter/issues/69566\n    Bug: https://github.com/flutter/flutter/issues/97384\n\nhere or something like that.",
+      "revId": "da9409ef3593c057060184cf4f62f5cf71fc9894",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "915e9e68_8aeec88a",
+        "filename": "include/core/SkTypeface.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 323,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-02-03T22:26:02Z",
+      "side": 1,
+      "message": "Return a stream for the contents of the font data. Returns nullptr on failure or if the font data isn\u0027t already available in stream form. Use when the stream can be used opportunistically but the calling code would prefer to fall back to table access if creating the stream would be expensive. Otherwise acts the same as openStream.",
+      "revId": "da9409ef3593c057060184cf4f62f5cf71fc9894",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2098c695_f3b29103",
+        "filename": "include/core/SkTypeface.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 325,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-02-03T22:26:02Z",
+      "side": 1,
+      "message": "Avoid (see comment below).",
+      "range": {
+        "startLine": 325,
+        "startChar": 4,
+        "endLine": 325,
+        "endChar": 11
+      },
+      "revId": "da9409ef3593c057060184cf4f62f5cf71fc9894",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "de8740bc_087175a9",
+        "filename": "include/core/SkTypeface.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 383,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-02-03T22:26:02Z",
+      "side": 1,
+      "message": "I know it seems a bit overkill, but should mimics this existing pattern of public non-virtual, protected virtual with an onOpenExistingStream here.",
+      "revId": "da9409ef3593c057060184cf4f62f5cf71fc9894",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b8a3000f_972cda61",
+        "filename": "src/ports/SkFontMgr_fontconfig.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 478,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-02-03T22:26:02Z",
+      "side": 1,
+      "message": "Don\u0027t need this?",
+      "revId": "da9409ef3593c057060184cf4f62f5cf71fc9894",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ebdae67a_50ed15f1",
+        "filename": "src/ports/SkTypeface_mac_ct.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 775,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-02-03T22:26:02Z",
+      "side": 1,
+      "message": "Not needed?",
+      "revId": "da9409ef3593c057060184cf4f62f5cf71fc9894",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
