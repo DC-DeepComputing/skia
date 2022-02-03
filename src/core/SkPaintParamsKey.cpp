@@ -10,6 +10,8 @@
 #include <cstring>
 #include "src/core/SkKeyHelpers.h"
 
+const char* GetShaderSkSL(CodeSnippetID);
+
 bool SkPaintParamsKey::operator==(const SkPaintParamsKey& that) const {
     return fNumBytes == that.fNumBytes &&
            !memcmp(fData.data(), that.fData.data(), fNumBytes);
@@ -71,3 +73,32 @@ void SkPaintParamsKey::dump() const {
     }
 }
 #endif
+
+int SkPaintParamsKey::BlockToSkSL(const SkPaintParamsKey& key,
+                                  uint32_t headerOffset,
+                                  std::string* result) {
+    auto [codeSnippetID, blockSize] = key.readCodeSnippetID(headerOffset);
+
+    const char* snippet= GetShaderSkSL(codeSnippetID);
+    result->appendf("%s", snippet);
+
+    return blockSize;
+}
+
+std::string SkPaintParamsKey::toSkSL() const {
+    std::string result;
+
+    int curHeaderOffset = 0;
+    while (curHeaderOffset < this->sizeInBytes()) {
+        auto [codeSnippetID, blockSize] = this->readCodeSnippetID(curHeaderOffset);
+
+        BlockToSkSL(*this, curHeaderOffset, &result);
+
+//        uint32_t numIntsConsumed = ToSkSLFrom(&data[curIndex], &result);
+//        SkASSERT(curIndex + numIntsConsumed <= this->numInts());
+
+        curHeaderOffset += blockSize;
+    }
+
+    return result;
+}

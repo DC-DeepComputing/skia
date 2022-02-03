@@ -127,4 +127,17 @@ const char* GetShaderSkSL(CodeSnippetID snippetID) {
     }
 }
 
+std::tuple<std::string, std::vector<SkSpan<const SkUniform>>> GetSkSLAndUniformDescription(
+        SkShaderCodeDictionary* dict,
+        SkUniquePaintParamsID uniqueID) {
+
+    auto entry = dict->lookup(uniqueID);
+
+    // TODO: cache the SkSL code in the paint params key?
+    std::vector<SkSpan<const SkUniform>> uniforms;
+    std::string skslCode = entry->paintParamsKey().toSkSL(&uniforms);
+
+    return { skslCode, uniforms };
+}
+
 } // namespace skgpu
