@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9b9c2bff_5b9593a1",
+        "filename": "src/sksl/codegen/SkSLPipelineStageCodeGenerator.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 9300
+      },
+      "writtenOn": "2022-02-04T15:30:44Z",
+      "side": 1,
+      "message": "This API, which a number of classes seem to override, will cause us to create a copy of the \u0027coords\u0027 argument when it\u0027s called, even though it looks like most of the methods that override this end up using \u0027coords\u0027 as read-only.\n\nIt would be more efficient to instead have this API as:\n\n  virtual std::string sampleShader(int index, const std::string\u0026 coords) \u003d 0;\n\nto avoid creating a copy of the string on every call.  If a specific override does need to make a copy for whatever reason, it can do so within the function body, but it would allow all the other overriders to have more efficient code.\n\nThis same comment applies to the next 4 methods below this in this API as well.",
+      "revId": "ffeb6f23394c9391041e68200598debc2f8bd93b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8a3d0eb4_8485c497",
+        "filename": "src/sksl/codegen/SkSLVMCodeGenerator.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 189,
+      "author": {
+        "id": 9300
+      },
+      "writtenOn": "2022-02-04T15:30:44Z",
+      "side": 1,
+      "message": "Should we consider taking \u0027varName\u0027 by const reference here?  I guess we didn\u0027t before, but as long as we\u0027re changing this.",
+      "revId": "ffeb6f23394c9391041e68200598debc2f8bd93b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
