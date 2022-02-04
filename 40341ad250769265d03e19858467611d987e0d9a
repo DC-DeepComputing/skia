@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "164ccfe8_4a47e400",
+        "filename": "src/gpu/GrDrawingManager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 777,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-02-04T22:49:00Z",
+      "side": 1,
+      "message": "This essentially checks:\n(sampleCount \u003e 1 \u0026\u0026 proxy-\u003easTextureProxy() \u0026\u0026 !caps.msaaResolveAutomatically).\n\nI missed the basic is sampled with a resolve on the original check.",
+      "range": {
+        "startLine": 777,
+        "startChar": 16,
+        "endLine": 777,
+        "endChar": 41
+      },
+      "revId": "40341ad250769265d03e19858467611d987e0d9a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
