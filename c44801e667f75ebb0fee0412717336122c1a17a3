@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "33beb1dc_173b0426",
+        "filename": "modules/skottie/BUILD.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2022-02-04T19:08:54Z",
+      "side": 1,
+      "message": "In the future, there might be a benefit to separating this out, just because someone wants to build Skottie doesn\u0027t mean they want Text support (and other optional layers/effects). This becomes an easy way to support skottie on embedded devices. We can set up those config settings as they come up though.",
+      "range": {
+        "startLine": 70,
+        "startChar": 6,
+        "endLine": 74,
+        "endChar": 51
+      },
+      "revId": "c44801e667f75ebb0fee0412717336122c1a17a3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

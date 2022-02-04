@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4b5de62d_11dbad4b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2022-02-04T19:08:54Z",
+      "side": 1,
+      "message": "LGTM, just the one note to keep in mind moving forward. Our current approach in the the skottie gni is kinda \u0027all-or-nothing\u0027 which doesn\u0027t jive well with some clients we\u0027ve talked to. The lottie community is talking about defining players with profiles that reflect what they support (a lite player, a core player, a core player with text support, etc),so we need to prep for that.",
+      "revId": "6a0e0a76e0603e4c0ca8e3ceb501767beac26058",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
