@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "90e04675_e2c4f1ac",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-02-04T17:22:23Z",
+      "side": 1,
+      "message": "The bazel part of this looks fine to me. Not as familiar with skottie itself and if it wants anything more complex to build, but I don\u0027t think it does.",
+      "revId": "568f6dc9592fade8abe83b1857505b00834edff4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
