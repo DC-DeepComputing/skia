@@ -73,7 +73,7 @@ std::string emit_SKSL_uniforms(int bufferID, const char* name, SkSpan<const SkUn
 }
 
 std::string emit_SkSL_attributes(SkSpan<const Attribute> vertexAttrs,
-                                  SkSpan<const Attribute> instanceAttrs) {
+                                 SkSpan<const Attribute> instanceAttrs) {
     std::string result;
 
     int attr = 0;
@@ -154,47 +154,26 @@ std::string get_sksl_vs(const GraphicsPipelineDesc& desc) {
     return sksl;
 }
 
-std::string get_sksl_fs(const SkShaderCodeDictionary* dictionary,
+#include "experimental/graphite/src/ContextUtils.h"
+
+std::string get_sksl_fs(SkShaderCodeDictionary* dictionary,
                         const GraphicsPipelineDesc& desc,
                         bool* writesColor) {
-    std::string sksl;
 
-    SkPaintParamsKey key;
-    auto entry = dictionary->lookup(desc.paintParamsID());
-    if (entry) {
-        key = entry->paintParamsKey();
-    }
+    ShaderInfo shaderInfo;
 
-    *writesColor = false;
-    // TODO: make this more flexible so the individual blocks can be linked together. Right now
-    // this loop relies on only one shader snippet and a blend mode being added to a key.
-    int curHeaderOffset = 0;
-    while (curHeaderOffset < key.sizeInBytes()) {
-        auto [codeSnippetID, blockSize] = key.readCodeSnippetID(curHeaderOffset);
-        if (codeSnippetID == CodeSnippetID::kSimpleBlendMode) {
-            curHeaderOffset += blockSize;
-            continue;
-        }
+    GetShaderInfo(dictionary, desc.paintParamsID(), &shaderInfo);
 
+    *writesColor = shaderInfo.writesColor();
+    return shaderInfo.flatten();
+
+#if 0
         // Typedefs needed for painting
         auto paintUniforms = GetUniforms(codeSnippetID);
         if (!paintUniforms.empty()) {
             sksl += emit_SKSL_uniforms(2, "FS", paintUniforms);
         }
-
-        sksl += "layout(location = 0, index = 0) out half4 sk_FragColor;\n";
-        sksl += "void main() {\n"
-                "    half4 outColor;\n";
-        sksl += GetShaderSkSL(codeSnippetID);
-        sksl += "    sk_FragColor = outColor;\n"
-                "}\n";
-
-        *writesColor = codeSnippetID != CodeSnippetID::kDepthStencilOnlyDraw;
-
-        curHeaderOffset += blockSize;
-    }
-
-    return sksl;
+#endif
 }
 
 inline MTLVertexFormat attribute_type_to_mtlformat(VertexAttribType type) {
