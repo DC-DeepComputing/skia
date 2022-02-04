@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0b792c4d_6ca19e26",
+        "filename": "experimental/graphite/include/Recorder.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-02-04T20:31:27Z",
+      "side": 1,
+      "message": "Stray tab ?",
+      "revId": "ebc3c9227df7b36c1998c5882a34f6e922656132",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
