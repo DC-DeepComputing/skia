@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "635d2742_b6a2e40c",
+        "filename": "src/gpu/tessellate/shaders/GrStrokeTessellationShader_InstancedImpl.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-04T14:38:14Z",
+      "side": 0,
+      "message": "analytically, wang\u0027s cubic formula for (p0, 2/3p0+1/3p1, 1/3p0+2/3p1, p1) \u003d\u003d 0.  Intuitively this seems reasonable, but do we need to clamp \u0027numParametricSegments\u0027 to be at least 1? There are later calculations on numParametricSegments that subtract 1.\n\nI\u0027m running gold without the clamping to see what happens in that case first.",
+      "range": {
+        "startLine": 127,
+        "startChar": 4,
+        "endLine": 130,
+        "endChar": 5
+      },
+      "revId": "615277e5789bf1b0d4421fbae1500deb05440c91",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
