@@ -7,10 +7,12 @@
 
 #include "experimental/graphite/src/DrawContext.h"
 
+#include "include/core/SkPixmap.h"
 #include "include/private/SkColorData.h"
 
 #include "experimental/graphite/include/Context.h"
 #include "experimental/graphite/include/Recorder.h"
+#include "experimental/graphite/src/Buffer.h"
 #include "experimental/graphite/src/Caps.h"
 #include "experimental/graphite/src/CommandBuffer.h"
 #include "experimental/graphite/src/ContextPriv.h"
@@ -20,6 +22,7 @@
 #include "experimental/graphite/src/RenderPassTask.h"
 #include "experimental/graphite/src/ResourceTypes.h"
 #include "experimental/graphite/src/TextureProxy.h"
+#include "experimental/graphite/src/UploadTask.h"
 #include "experimental/graphite/src/geom/BoundsManager.h"
 #include "experimental/graphite/src/geom/Shape.h"
 
@@ -141,6 +144,14 @@ sk_sp<Task> DrawContext::snapRenderPassTask(Recorder* recorder,
 
     sk_sp<TextureProxy> targetProxy = sk_ref_sp(fDrawPasses[0]->target());
     return RenderPassTask::Make(std::move(fDrawPasses), desc, std::move(targetProxy));
+}
+
+sk_sp<Task> DrawContext::snapUploadTask(Recorder* recorder) {
+    std::vector<UploadCommand> commands = UploadCommand::MakeCommands(recorder, fPendingUploads);
+
+    fPendingUploads = std::make_unique<UploadList>();
+
+    return UploadTask::Make(std::move(commands));
 }
 
 } // namespace skgpu
