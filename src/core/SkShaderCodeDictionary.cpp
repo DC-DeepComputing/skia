@@ -6,8 +6,37 @@
  */
 
 #include "include/private/SkShaderCodeDictionary.h"
-#include "src/core/SkOpts.h"
 
+#include "include/private/SkSLString.h"
+#include "src/core/SkOpts.h"
+#include <string>
+
+namespace skgpu::mtl {
+std::string GetMtlUniforms(int bufferID,
+                           const char* name,
+                           const std::vector<SkSpan<const SkUniform>>& uniforms);
+}
+
+std::string SkShaderInfo::flatten() const {
+    std::string result = skgpu::mtl::GetMtlUniforms(2, "FS", fUniforms);
+
+    for (auto c : fPreamble) {
+        result += c;
+    }
+
+    result += "layout(location = 0, index = 0) out half4 sk_FragColor;\n";
+    result += "void main() {\n";
+
+    for (size_t i = 0; i < fNames.size(); ++i) {
+        SkSL::String::appendf(&result, "half4 outColor%d = %s();\n", (int) i, fNames[i]);
+    }
+    SkSL::String::appendf(&result, "sk_FragColor = outColor%d;\n", (int) fNames.size()-1);
+    result += "}\n";
+
+    return result;
+}
+
+//--------------------------------------------------------------------------------------------------
 SkShaderCodeDictionary::SkShaderCodeDictionary() {
     // The 0th index is reserved as invalid
     fEntryVector.push_back(nullptr);
@@ -50,4 +79,10 @@ const SkShaderCodeDictionary::Entry* SkShaderCodeDictionary::lookup(
     SkASSERT(codeID.asUInt() < fEntryVector.size());
 
     return fEntryVector[codeID.asUInt()];
+}
+
+void SkShaderCodeDictionary::getShaderInfo(SkUniquePaintParamsID uniqueID, SkShaderInfo* info) {
+    auto entry = this->lookup(uniqueID);
+
+    entry->paintParamsKey().toSkSL(info);
 }
