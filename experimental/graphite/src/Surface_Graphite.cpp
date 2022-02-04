@@ -34,7 +34,8 @@ sk_sp<SkImage> Surface_Graphite::onNewImageSnapshot(const SkIRect* subset) {
     return sk_sp<Image_Graphite>(new Image_Graphite(ii));
 }
 
-void Surface_Graphite::onWritePixels(const SkPixmap&, int x, int y) {}
+void Surface_Graphite::onWritePixels(const SkPixmap& pm, int x, int y) {}
+
 bool Surface_Graphite::onCopyOnWrite(ContentChangeMode) { return true; }
 
 bool Surface_Graphite::onReadPixels(Context* context,
