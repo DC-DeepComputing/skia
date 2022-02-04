@@ -16,6 +16,24 @@
       "message": "LGTM, just the one note to keep in mind moving forward. Our current approach in the the skottie gni is kinda \u0027all-or-nothing\u0027 which doesn\u0027t jive well with some clients we\u0027ve talked to. The lottie community is talking about defining players with profiles that reflect what they support (a lite player, a core player, a core player with text support, etc),so we need to prep for that.",
       "revId": "6a0e0a76e0603e4c0ca8e3ceb501767beac26058",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a77518dc_6ac78fbb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-02-04T19:17:36Z",
+      "side": 1,
+      "message": "The groundwork for that should be laid already:\nhttps://github.com/google/skia/blob/b58173c96b902abf9c95e770c386d29a8dc29e00/bazel/common_config_settings/BUILD.bazel#L63\n\nWe would add more flags like that and then modify the //modules/skottie/BUILD.bazel to select the sources to include in deps.",
+      "parentUuid": "4b5de62d_11dbad4b",
+      "revId": "6a0e0a76e0603e4c0ca8e3ceb501767beac26058",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
