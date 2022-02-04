@@ -23,37 +23,42 @@ namespace skgpu::mtl {
 
 namespace {
 
-std::string emit_SKSL_uniforms(int bufferID, const char* name, SkSpan<const SkUniform> uniforms) {
+std::string get_uniform_header(int bufferID, const char* name) {
     std::string result;
 
     SkSL::String::appendf(&result, "layout (binding=%d) uniform %sUniforms {\n", bufferID, name);
 
-    int offset = 0;
+    return result;
+}
+
+std::string get_uniforms(SkSpan<const SkUniform> uniforms, int* offset) {
+    std::string result;
+
     for (auto u : uniforms) {
         int count = u.count() ? u.count() : 1;
         // TODO: this is sufficient for the sprint but should be changed to use SkSL's
         // machinery
-        SkSL::String::appendf(&result, "    layout(offset=%d) ", offset);
+        SkSL::String::appendf(&result, "    layout(offset=%d) ", *offset);
         switch (u.type()) {
             case SkSLType::kFloat4:
                 result.append("float4");
-                offset += 16 * count;
+                *offset += 16 * count;
                 break;
             case SkSLType::kFloat2:
                 result.append("float2");
-                offset += 8 * count;
+                *offset += 8 * count;
                 break;
             case SkSLType::kFloat:
                 result.append("float");
-                offset += 4 * count;
+                *offset += 4 * count;
                 break;
             case SkSLType::kFloat4x4:
                 result.append("float4x4");
-                offset += 64 * count;
+                *offset += 64 * count;
                 break;
             case SkSLType::kHalf4:
                 result.append("half4");
-                offset += 8 * count;
+                *offset += 8 * count;
                 break;
             default:
                 SkASSERT(0);
@@ -68,12 +73,22 @@ std::string emit_SKSL_uniforms(int bufferID, const char* name, SkSpan<const SkUn
         }
         result.append(";\n");
     }
+
+    return result;
+}
+
+std::string emit_SKSL_uniforms(int bufferID, const char* name, SkSpan<const SkUniform> uniforms) {
+    int offset = 0;
+
+    std::string result = get_uniform_header(bufferID, name);
+    result += get_uniforms(uniforms, &offset);
     result.append("};\n\n");
+
     return result;
 }
 
 std::string emit_SkSL_attributes(SkSpan<const Attribute> vertexAttrs,
-                                  SkSpan<const Attribute> instanceAttrs) {
+                                 SkSpan<const Attribute> instanceAttrs) {
     std::string result;
 
     int attr = 0;
@@ -154,47 +169,15 @@ std::string get_sksl_vs(const GraphicsPipelineDesc& desc) {
     return sksl;
 }
 
-std::string get_sksl_fs(const SkShaderCodeDictionary* dictionary,
+std::string get_sksl_fs(SkShaderCodeDictionary* dictionary,
                         const GraphicsPipelineDesc& desc,
                         bool* writesColor) {
-    std::string sksl;
+    SkShaderInfo shaderInfo;
 
-    SkPaintParamsKey key;
-    auto entry = dictionary->lookup(desc.paintParamsID());
-    if (entry) {
-        key = entry->paintParamsKey();
-    }
+    dictionary->getShaderInfo(desc.paintParamsID(), &shaderInfo);
 
-    *writesColor = false;
-    // TODO: make this more flexible so the individual blocks can be linked together. Right now
-    // this loop relies on only one shader snippet and a blend mode being added to a key.
-    int curHeaderOffset = 0;
-    while (curHeaderOffset < key.sizeInBytes()) {
-        auto [codeSnippetID, blockSize] = key.readCodeSnippetID(curHeaderOffset);
-        if (codeSnippetID == CodeSnippetID::kSimpleBlendMode) {
-            curHeaderOffset += blockSize;
-            continue;
-        }
-
-        // Typedefs needed for painting
-        auto paintUniforms = GetUniforms(codeSnippetID);
-        if (!paintUniforms.empty()) {
-            sksl += emit_SKSL_uniforms(2, "FS", paintUniforms);
-        }
-
-        sksl += "layout(location = 0, index = 0) out half4 sk_FragColor;\n";
-        sksl += "void main() {\n"
-                "    half4 outColor;\n";
-        sksl += GetShaderSkSL(codeSnippetID);
-        sksl += "    sk_FragColor = outColor;\n"
-                "}\n";
-
-        *writesColor = codeSnippetID != CodeSnippetID::kDepthStencilOnlyDraw;
-
-        curHeaderOffset += blockSize;
-    }
-
-    return sksl;
+    *writesColor = shaderInfo.writesColor();
+    return shaderInfo.flatten();
 }
 
 inline MTLVertexFormat attribute_type_to_mtlformat(VertexAttribType type) {
@@ -328,6 +311,21 @@ MTLVertexDescriptor* create_vertex_descriptor(const RenderStep* step) {
 }
 
 } // anonymous namespace
+
+std::string GetMtlUniforms(int bufferID,
+                           const char* name,
+                           const std::vector<SkSpan<const SkUniform>>& uniforms) {
+    int offset = 0;
+
+    std::string result = get_uniform_header(bufferID, name);
+    for (auto u : uniforms) {
+        result += get_uniforms(u, &offset);
+    }
+    result.append("};\n\n");
+
+    return result;
+}
+
 
 enum ShaderType {
     kVertex_ShaderType = 0,
