@@ -16,6 +16,24 @@
       "message": "This does slightly change the semantics of the class, in that it will now always use the config that was set at creation, not necessarily the library global static config that is current when each method is called. Running the Chromium bots to make sure this doesn\u0027t immediately break any expecations.",
       "revId": "cb924123c6d03415d7ba496ad6a4ad68bd931aeb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b34a6dfc_53e1b312",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-02-04T18:36:25Z",
+      "side": 1,
+      "message": "It looks like Chromium is fine with this change. The one failure is due to a bot that took too long to get started and a Skia roll happened before it could start so the roll patch didn\u0027t apply.",
+      "parentUuid": "220ebfd2_a270733a",
+      "revId": "cb924123c6d03415d7ba496ad6a4ad68bd931aeb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
