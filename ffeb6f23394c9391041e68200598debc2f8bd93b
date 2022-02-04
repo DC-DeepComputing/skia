@@ -33,6 +33,24 @@
       "message": "Should we consider taking \u0027varName\u0027 by const reference here?  I guess we didn\u0027t before, but as long as we\u0027re changing this.",
       "revId": "ffeb6f23394c9391041e68200598debc2f8bd93b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fee5f7a6_2106b076",
+        "filename": "src/sksl/codegen/SkSLVMCodeGenerator.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 189,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-02-04T15:37:32Z",
+      "side": 1,
+      "message": "SGTM, will do. Although this path only gets hit when debugging a shader, so performance is kind of a non-issue.",
+      "parentUuid": "8a3d0eb4_8485c497",
+      "revId": "ffeb6f23394c9391041e68200598debc2f8bd93b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
