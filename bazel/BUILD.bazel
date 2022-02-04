@@ -10,6 +10,12 @@ GENERAL_DEFINES = ["SK_HAS_ANDROID_CODEC"] + select({
     "//conditions:default": [
         "SK_RELEASE",
     ],
+}) + select({
+    "//bazel/common_config_settings:disable_tracing_true": ["SK_DISABLE_TRACING"],
+    "//conditions:default": [],
+}) + select({
+    "//bazel/common_config_settings:disable_effect_serialization_true": ["SK_DISABLE_EFFECT_DESERIALIZATION"],
+    "//conditions:default": [],
 })
 
 GPU_DEFINES = select({
