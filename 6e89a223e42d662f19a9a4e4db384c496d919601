@@ -22,6 +22,53 @@
       },
       "revId": "6e89a223e42d662f19a9a4e4db384c496d919601",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c8fe58c0_e36e3284",
+        "filename": "modules/skottie/src/effects/FractalNoiseEffect.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 205,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-02-04T20:32:47Z",
+      "side": 1,
+      "message": "Yeah, this can just go away.",
+      "parentUuid": "f3d757ec_d77ac2a4",
+      "range": {
+        "startLine": 200,
+        "startChar": 0,
+        "endLine": 205,
+        "endChar": 0
+      },
+      "revId": "6e89a223e42d662f19a9a4e4db384c496d919601",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7a257a6c_d379b892",
+        "filename": "src/gpu/GrDrawOpAtlas.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-02-04T20:32:47Z",
+      "side": 1,
+      "message": "This should really be \u0027kBGRAIsNative\u0027",
+      "range": {
+        "startLine": 139,
+        "startChar": 20,
+        "endLine": 139,
+        "endChar": 24
+      },
+      "revId": "6e89a223e42d662f19a9a4e4db384c496d919601",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
