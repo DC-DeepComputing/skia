@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "55b9eefa_1ada6337",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-02-04T20:09:32Z",
+      "side": 1,
+      "message": "Brian, if you could take a peak at modules/particles/BUILD.bazel - it appears the particles GN build just uses all the files, so this does as well.",
+      "revId": "4ec2e0adf835b1311e4cf268bea98ba3b9d8f047",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
