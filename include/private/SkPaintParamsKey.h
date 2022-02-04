@@ -17,6 +17,7 @@ enum class SkBackend : uint8_t {
     kGraphite,
     kSkVM
 };
+class SkShaderInfo;
 
 // TODO: this needs to be expanded into a more flexible dictionary (esp. for user-supplied SkSL)
 // TODO: should this enum actually be in ShaderCodeDictionary.h?
@@ -91,6 +92,7 @@ public:
     static int DumpBlock(const SkPaintParamsKey&, int headerOffset);
     void dump() const;
 #endif
+    void toShaderInfo(SkShaderInfo*) const;
 
     uint8_t byte(int offset) const { SkASSERT(offset < fNumBytes); return fData[offset]; }
     const void* data() const { return fData.data(); }
@@ -100,6 +102,8 @@ public:
     bool operator!=(const SkPaintParamsKey& that) const { return !(*this == that); }
 
 private:
+    static int BlockToShaderInfo(const SkPaintParamsKey&, int headerOffset, SkShaderInfo*);
+
     // TODO: need to make it so the key can can dynamically grow
     static const int kMaxKeySize = 32;
     static const int kMaxBlockSize = std::numeric_limits<uint8_t>::max();
