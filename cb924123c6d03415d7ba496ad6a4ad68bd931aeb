@@ -34,6 +34,29 @@
       "parentUuid": "220ebfd2_a270733a",
       "revId": "cb924123c6d03415d7ba496ad6a4ad68bd931aeb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "72eedc75_129ff31a",
+        "filename": "src/ports/SkFontConfigInterface_direct.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-02-04T20:34:12Z",
+      "side": 1,
+      "message": "remove space",
+      "range": {
+        "startLine": 37,
+        "startChar": 12,
+        "endLine": 37,
+        "endChar": 14
+      },
+      "revId": "cb924123c6d03415d7ba496ad6a4ad68bd931aeb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
