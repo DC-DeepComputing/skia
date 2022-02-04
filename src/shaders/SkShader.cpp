@@ -150,7 +150,7 @@ SkUpdatableShader* SkShaderBase::onUpdatableShader(SkArenaAlloc* alloc) const {
 }
 
 // TODO: add implementations for derived classes
-void SkShaderBase::addToKey(SkShaderCodeDictionary* dictionary,
+void SkShaderBase::addToKeyS(SkShaderCodeDictionary* dictionary,
                             SkBackend backend,
                             SkPaintParamsKey* key,
                             SkUniformBlock* uniformBlock) const {
