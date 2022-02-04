@@ -71,3 +71,29 @@ void SkPaintParamsKey::dump() const {
     }
 }
 #endif
+
+void SkPaintParamsKey::BlockToSkSL(const SkPaintParamsKey& key,
+                                   uint32_t headerOffset,
+                                   std::string* result) {
+//    auto[id, numIntsOfData] = ReadCodeSnippetID(data[0]);
+
+//    result->appendf("%s %d\n", gNames[(int) id], numIntsOfData);
+}
+
+std::string SkPaintParamsKey::toSkSL() const {
+    std::string result;
+
+    int curHeaderOffset = 0;
+    while (curHeaderOffset < this->sizeInBytes()) {
+        auto [codeSnippetID, blockSize] = this->readCodeSnippetID(curHeaderOffset);
+
+        BlockToSkSL(*this, curHeaderOffset, &result);
+
+//        uint32_t numIntsConsumed = ToSkSLFrom(&data[curIndex], &result);
+//        SkASSERT(curIndex + numIntsConsumed <= this->numInts());
+
+        curHeaderOffset += blockSize;
+    }
+
+    return result;
+}

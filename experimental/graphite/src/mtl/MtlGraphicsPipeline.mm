@@ -83,7 +83,6 @@ std::string emit_SKSL_uniforms(int bufferID, const char* name, SkSpan<const SkUn
     std::string result = get_uniform_header(bufferID, name);
     result += get_uniforms(uniforms, &offset);
     result.append("};\n\n");
-
     return result;
 }
 
@@ -172,15 +171,20 @@ std::string get_sksl_vs(const GraphicsPipelineDesc& desc) {
 std::string get_sksl_fs(const SkShaderCodeDictionary* dictionary,
                         const GraphicsPipelineDesc& desc,
                         bool* writesColor) {
-    std::string sksl;
+//    std::string shaderCode;
+//    std::vector<sk_sp<UniformData>> uniforms;
+    std::string shaderCode, sksl;
+    std::vector<SkSpan<const SkUniform>> uniforms;
 
     SkPaintParamsKey key;
     auto entry = dictionary->lookup(desc.paintParamsID());
     if (entry) {
         key = entry->paintParamsKey();
     }
+//    std::tie(shaderCode, uniforms) = GetSkSLAndUniformDescription(context, desc.paintParamsID());
 
     *writesColor = false;
+#if 0
     // TODO: make this more flexible so the individual blocks can be linked together. Right now
     // this loop relies on only one shader snippet and a blend mode being added to a key.
     int curHeaderOffset = 0;
@@ -200,7 +204,7 @@ std::string get_sksl_fs(const SkShaderCodeDictionary* dictionary,
         sksl += "layout(location = 0, index = 0) out half4 sk_FragColor;\n";
         sksl += "void main() {\n"
                 "    half4 outColor;\n";
-        sksl += GetShaderSkSL(codeSnippetID);
+        sksl += sksl;
         sksl += "    sk_FragColor = outColor;\n"
                 "}\n";
 
@@ -208,6 +212,19 @@ std::string get_sksl_fs(const SkShaderCodeDictionary* dictionary,
 
         curHeaderOffset += blockSize;
     }
+#endif
+
+#if 0
+    // Typedefs needed for painting
+    sksl += emit_SKSL_uniforms_new(2, "FS", uniforms);
+
+    sksl += "layout(location = 0, index = 0) out half4 sk_FragColor;\n";
+    sksl += "void main() {\n"
+            "    half4 outColor;\n";
+    sksl += shaderCode;
+    sksl += "    sk_FragColor = outColor;\n"
+            "}\n";
+#endif
 
     return sksl;
 }
@@ -357,7 +374,6 @@ std::string GetMtlUniforms(int bufferID,
 
     return result;
 }
-
 
 enum ShaderType {
     kVertex_ShaderType = 0,

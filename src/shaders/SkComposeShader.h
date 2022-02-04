@@ -15,6 +15,18 @@
 
 class SkShader_Blend final : public SkShaderBase {
 public:
+    struct BlendData {
+        SkShader* fDst;
+        SkShader* fSrc;
+        SkBlendMode fBM;
+    };
+
+    static void Encode1(SkShaderCodeDictionary*, SkBackend, SkPaintParamsKey*, const BlendData&);
+    static BlendData Decode();
+#if defined(SK_DEBUG) || GR_TEST_UTILS || defined(SK_ENABLE_DUMP_GPU)
+    static void Dump(const SkPaintParamsKey&, int headerOffset);
+#endif
+
     SkShader_Blend(SkBlendMode mode, sk_sp<SkShader> dst, sk_sp<SkShader> src)
         : fDst(std::move(dst))
         , fSrc(std::move(src))
@@ -28,7 +40,7 @@ public:
     std::unique_ptr<GrFragmentProcessor> asFragmentProcessor(const GrFPArgs&) const override;
 #endif
 
-    void addToKey(SkShaderCodeDictionary*,
+    void addToKeyS(SkShaderCodeDictionary*,
                   SkBackend,
                   SkPaintParamsKey*,
                   SkUniformBlock*) const override;
