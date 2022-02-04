@@ -15,6 +15,12 @@ class SkArenaAlloc;
 
 class SkColorFilterShader : public SkShaderBase {
 public:
+    void addToKeyS(SkShaderCodeDictionary*,
+                   SkBackend,
+                   SkPaintParamsKey*,
+                   SkUniformBlock*) const override {
+    }
+
     SkColorFilterShader(sk_sp<SkShader> shader, float alpha, sk_sp<SkColorFilter> filter);
 
 #if SK_SUPPORT_GPU

@@ -12,6 +12,13 @@
 
 class SkModeColorFilter : public SkColorFilterBase {
 public:
+    void addToKeyCF(SkShaderCodeDictionary*,
+                    SkBackend,
+                    SkPaintParamsKey*,
+                    SkUniformBlock*) const override {
+
+    }
+
     static sk_sp<SkColorFilter> Make(SkColor color, SkBlendMode mode) {
         return sk_sp<SkColorFilter>(new SkModeColorFilter(color, mode));
     }

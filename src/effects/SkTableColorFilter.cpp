@@ -20,6 +20,13 @@
 
 class SkTable_ColorFilter : public SkColorFilterBase {
 public:
+    void addToKeyCF(SkShaderCodeDictionary*,
+                    SkBackend,
+                    SkPaintParamsKey*,
+                    SkUniformBlock*) const override {
+
+    }
+
     SkTable_ColorFilter(const uint8_t tableA[], const uint8_t tableR[],
                         const uint8_t tableG[], const uint8_t tableB[]) {
         fBitmap.allocPixels(SkImageInfo::MakeA8(256, 4));

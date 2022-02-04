@@ -18,6 +18,12 @@
  */
 class SkEmptyShader : public SkShaderBase {
 public:
+    void addToKeyS(SkShaderCodeDictionary*,
+                   SkBackend,
+                   SkPaintParamsKey*,
+                   SkUniformBlock*) const override {
+    }
+
     SkEmptyShader() {}
 
 protected:
