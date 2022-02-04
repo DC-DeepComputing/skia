@@ -56,7 +56,7 @@ bool check_pixels(skiatest::Reporter* reporter,
     return ComparePixels(expected.pixmap(), actual.pixmap(), tols, error);
 }
 
-DEF_GPUTEST_FOR_RENDERING_CONTEXTS(SurfaceResolveTest, reporter, ctxInfo) {
+DEF_GPUTEST_FOR_VULKAN_CONTEXT(SurfaceResolveTest, reporter, ctxInfo) {
     auto dContext = ctxInfo.directContext();
 
     SkImageInfo info = SkImageInfo::Make(8, 8, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
@@ -150,6 +150,14 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(SurfaceResolveTest, reporter, ctxInfo) {
     otherSurface->getCanvas()->clear(SK_ColorRED);
     surface->resolveMSAA();
     otherSurface->getCanvas()->clear(SK_ColorBLUE);
+    dContext->flush();
+    dContext->submit();
+
+    // Make sure resolving a non-msaa surface doesn't trigger a resolve call. We'll hit an assert
+    // that the msaa is not dirty if it does.
+    REPORTER_ASSERT(reporter, otherSurface);
+    otherSurface->getCanvas()->clear(SK_ColorRED);
+    otherSurface->resolveMSAA();
     dContext->flush();
     dContext->submit();
 }
