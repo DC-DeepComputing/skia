@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5209ce7a_29f4cb8a",
+        "filename": "experimental/graphite/include/Recorder.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-04T18:25:42Z",
+      "side": 1,
+      "message": "Checking this guard at the earliest point of interaction seems good, which should be Device, but I could see putting it in DrawContext instead to make sure our internal usage doesn\u0027t go off thread either.\n\nSince the Device has a Recorder, though, wdyt about having a helper validateThreadOwnership() or something on recorder that Device can use w/o needing to hold on to SingleOwner? On the other hand, ResourceProvider doesn\u0027t hold on to the Recorder, so such a validate function wouldn\u0027t always be available it might be best to just pass the SingleOwner to everywhere that needs it.",
+      "range": {
+        "startLine": 87,
+        "startChar": 7,
+        "endLine": 87,
+        "endChar": 82
+      },
+      "revId": "207b5ad811c435ed3b16930a6a8dd7662ddf191e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "28cc71d0_dc290d44",
+        "filename": "experimental/graphite/src/ResourceCache.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-04T18:25:42Z",
+      "side": 1,
+      "message": "using PurgeableQueue \u003d SkTDPQueue\u003c...\u003e",
+      "range": {
+        "startLine": 40,
+        "startChar": 4,
+        "endLine": 40,
+        "endChar": 11
+      },
+      "revId": "207b5ad811c435ed3b16930a6a8dd7662ddf191e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e4c83525_1455fc62",
+        "filename": "experimental/graphite/src/ResourceCache.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-04T18:25:42Z",
+      "side": 1,
+      "message": "nit alignment",
+      "range": {
+        "startLine": 43,
+        "startChar": 18,
+        "endLine": 43,
+        "endChar": 40
+      },
+      "revId": "207b5ad811c435ed3b16930a6a8dd7662ddf191e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
