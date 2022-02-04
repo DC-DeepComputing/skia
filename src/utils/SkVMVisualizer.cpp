@@ -397,7 +397,7 @@ void Visualizer::dumpInstruction(int id0) const {
 }
 
 void Visualizer::dumpHead() const {
-    this->writeText(
+    this->writeText("%s",
     "<html>\n"
     "<head>\n"
     "   <title>SkVM Disassembler Output</title>\n"
