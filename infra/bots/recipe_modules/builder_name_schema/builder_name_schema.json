@@ -27,6 +27,17 @@
         "project"
       ]
     },
+    "CodeSize": {
+      "keys": [
+        "os",
+        "compiler",
+        "target_arch",
+        "configuration"
+      ],
+      "optional_keys": [
+        "extra_config"
+      ]
+    },
     "Housekeeper": {
       "keys": [
         "frequency"

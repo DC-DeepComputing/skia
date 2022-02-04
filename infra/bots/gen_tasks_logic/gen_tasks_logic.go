@@ -721,8 +721,10 @@ func (b *jobBuilder) deriveCompileTaskName() string {
 			log.Fatal(err)
 		}
 		return name
-	} else if b.parts["role"] == "BuildStats" {
+	} else if b.role("BuildStats") {
 		return strings.Replace(b.Name, "BuildStats", "Build", 1)
+	} else if b.role("CodeSize") {
+		return strings.Replace(b.Name, "CodeSize", "Build", 1)
 	} else {
 		return b.Name
 	}
@@ -955,7 +957,7 @@ func (b *taskBuilder) defaultSwarmDimensions() {
 	} else {
 		d["gpu"] = "none"
 		if d["os"] == DEFAULT_OS_LINUX_GCE {
-			if b.extraConfig("CanvasKit", "CMake", "Docker", "PathKit") || b.role("BuildStats") {
+			if b.extraConfig("CanvasKit", "CMake", "Docker", "PathKit") || b.role("BuildStats", "CodeSize") {
 				b.linuxGceDimensions(MACHINE_TYPE_MEDIUM)
 				return
 			}
@@ -1431,6 +1433,70 @@ func (b *jobBuilder) buildstats() {
 			b.dep(depName)
 		})
 	}
+}
+
+// codesize generates a codesize task, which compiles code, runs Bloaty against
+// the compiled artifacts, and uploads the resulting code size statistics to
+// codesize.skia.org.
+func (b *jobBuilder) codesize() {
+	compileTaskName := b.compile()
+
+	b.addTask(b.Name, func(b *taskBuilder) {
+		b.cas(CAS_EMPTY)
+		b.dep(b.buildTaskDrivers("linux", "amd64"), compileTaskName)
+		b.cmd("./codesize",
+			"--local=false",
+			"--project_id", "skia-swarming-bots",
+			"--task_id", specs.PLACEHOLDER_TASK_ID,
+			"--task_name", b.Name,
+			"--repo", specs.PLACEHOLDER_REPO,
+			"--revision", specs.PLACEHOLDER_REVISION,
+			"--patch_issue", specs.PLACEHOLDER_ISSUE,
+			"--patch_set", specs.PLACEHOLDER_PATCHSET,
+			"--patch_server", specs.PLACEHOLDER_CODEREVIEW_SERVER,
+		)
+		b.linuxGceDimensions(MACHINE_TYPE_SMALL)
+		b.usesGit()
+		b.cache(CACHES_WORKDIR...)
+		b.cipd(CIPD_PKG_LUCI_AUTH)
+		b.asset("bloaty")
+		b.serviceAccount("skia-external-codesize@skia-swarming-bots.iam.gserviceaccount.com")
+		// b.serviceAccount("skia-external-nano-uploader@skia-swarming-bots.iam.gserviceaccount.com") // REMOVE BEFORE LANDING
+		b.timeout(20 * time.Minute)
+		b.attempts(1)
+	})
+
+	// b.addTask(b.Name, func(b *taskBuilder) {
+	// 	b.recipeProps(EXTRA_PROPS)
+	// 	b.kitchenTask("compute_buildstats", OUTPUT_PERF)
+	// 	b.dep(compileTaskName)
+	// 	b.asset("bloaty")
+	// 	b.linuxGceDimensions(MACHINE_TYPE_MEDIUM)
+	// 	b.usesDocker()
+	// 	b.usesGit()
+	// 	b.cache(CACHES_WORKDIR...)
+	// })
+	// // Upload release results (for tracking in perf)
+	// // We have some jobs that are FYI (e.g. Debug-CanvasKit, tree-map generator)
+	// if b.release() && !b.arch("x86_64") {
+	// 	uploadName := fmt.Sprintf("%s%s%s", PREFIX_UPLOAD, b.jobNameSchema.Sep, b.Name)
+	// 	depName := b.Name
+	// 	b.addTask(uploadName, func(b *taskBuilder) {
+	// 		b.recipeProp("gs_bucket", b.cfg.GsBucketNano)
+	// 		b.recipeProps(EXTRA_PROPS)
+	// 		// TODO(borenet): I'm not sure why the upload task is
+	// 		// using the BuildStats task name, but I've done this
+	// 		// to maintain existing behavior.
+	// 		b.Name = depName
+	// 		b.kitchenTask("upload_buildstats_results", OUTPUT_NONE)
+	// 		b.Name = uploadName
+	// 		b.serviceAccount(b.cfg.ServiceAccountUploadNano)
+	// 		b.linuxGceDimensions(MACHINE_TYPE_SMALL)
+	// 		b.cipd(specs.CIPD_PKGS_GSUTIL...)
+	// 		b.dep(depName)
+	// 	})
+	// }
+
 }
 
 // doUpload indicates whether the given Job should upload its results.
