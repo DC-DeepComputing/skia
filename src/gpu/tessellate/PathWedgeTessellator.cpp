@@ -137,9 +137,9 @@ void PathWedgeTessellator::writePatches(PatchWriter& patchWriter,
     // represent triangles.
     patchWriter.resetFixedSegments(1);
 
+    wangs_formula::VectorXform shaderXform(shaderMatrix);
     for (auto [pathMatrix, path, color] : pathDrawList) {
         AffineMatrix m(pathMatrix);
-        wangs_formula::VectorXform totalXform(SkMatrix::Concat(shaderMatrix, pathMatrix));
         if (fAttribs & PatchAttribs::kColor) {
             patchWriter.updateColorAttrib(color);
         }
@@ -166,11 +166,8 @@ void PathWedgeTessellator::writePatches(PatchWriter& patchWriter,
                     case SkPathVerb::kQuad: {
                         auto [p0, p1] = m.map2Points(pts);
                         auto p2 = m.map1Point(pts+2);
-                        float n4 = wangs_formula::quadratic_pow4(kTessellationPrecision,
-                                                                 pts,
-                                                                 totalXform);
 
-                        patchWriter.writeQuadratic(p0, p1, p2, n4);
+                        patchWriter.writeQuadratic(p0, p1, p2, shaderXform);
                         lastPoint = pts[2];
                         break;
                     }
@@ -178,12 +175,8 @@ void PathWedgeTessellator::writePatches(PatchWriter& patchWriter,
                     case SkPathVerb::kConic: {
                         auto [p0, p1] = m.map2Points(pts);
                         auto p2 = m.map1Point(pts+2);
-                        float n2 = wangs_formula::conic_pow2(kTessellationPrecision,
-                                                             pts,
-                                                             *w,
-                                                             totalXform);
 
-                        patchWriter.writeConic(p0, p1, p2, *w, n2);
+                        patchWriter.writeConic(p0, p1, p2, *w, shaderXform);
                         lastPoint = pts[2];
                         break;
                     }
@@ -191,11 +184,8 @@ void PathWedgeTessellator::writePatches(PatchWriter& patchWriter,
                     case SkPathVerb::kCubic: {
                         auto [p0, p1] = m.map2Points(pts);
                         auto [p2, p3] = m.map2Points(pts+2);
-                        float n4 = wangs_formula::cubic_pow4(kTessellationPrecision,
-                                                             pts,
-                                                             totalXform);
 
-                        patchWriter.writeCubic(p0, p1, p2, p3, n4);
+                        patchWriter.writeCubic(p0, p1, p2, p3, shaderXform);
                         lastPoint = pts[3];
                         break;
                     }
