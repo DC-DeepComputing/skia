@@ -16,6 +16,23 @@
       "message": "What a bikeshed moment. I went with the somewhat redundant \u0027accepted\u0027/\u0027rejected\u0027 over \u0027accepter\u0027/\u0027acceptor\u0027/\u0027rejecter\u0027/\u0027rejector\u0027 because I couldn\u0027t decide on \u0027o\u0027 or \u0027e\u0027 and more importantly because these classes don\u0027t actually contain the logic to do any accepting or rejecting, they just hold the collection of accepted or rejected things. (This became most apparent with \u0027template \u003ctypename Rejector\u003e void commonMaskLoop\u0027 which takes an actual rejector with logic in it.)\n\nI left the name of \u0027SkDrawableGlyphBuffer\u0027 alone here, since it isn\u0027t immediately confusing and I didn\u0027t have a name I thought was unambiguously better. Though maybe something like \u0027SkDestinationGlyphBuffer\u0027 to pair with the \u0027SkSourceGlyphBuffer\u0027? I changed the method names on \u0027SkDrawableGlyphBuffer\u0027 for clarity and to better parallel \u0027SkSourceGlyphBuffer\u0027. In some places the names seem a bit redundant, but this also happened before, so maybe that\u0027s ok.",
       "revId": "c24ca329dc7e7dbba0ddb03fa47a997e8f8cfa94",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ce578db7_7272971d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-02-04T14:12:45Z",
+      "side": 1,
+      "message": "Thanks for cleaning this up!",
+      "revId": "c24ca329dc7e7dbba0ddb03fa47a997e8f8cfa94",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
