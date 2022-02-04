@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c4b35480_0f945911",
+        "filename": "tests/FontMgrFontConfigTest.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-02-04T16:32:55Z",
+      "side": 1,
+      "message": "Alas, I should have looked harder right here. We really can\u0027t be calling FcConfigSetCurrent here because that sets a static global in a library. Now, this is currently necessary for this to work since SkFontConfigInterfaceDirect doesn\u0027t take an FcConfig and incorrectly only uses the global static, but that really needs to be fixed. In any event, this is currently causing intermittent failures in the Skia waterfall. I will see about fixing this up.",
+      "revId": "7646dffe5844e53998e69be236ba5099fe02b435",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
