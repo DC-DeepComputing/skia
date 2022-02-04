@@ -10,7 +10,12 @@
 
 #include <array>
 #include <limits>
+#include "include/core/SkSpan.h"
 #include "include/core/SkTypes.h"
+
+namespace skgpu {
+class ShaderInfo;
+}
 
 enum class SkBackend : uint8_t {
     kGanesh,
@@ -91,6 +96,7 @@ public:
     static int DumpBlock(const SkPaintParamsKey&, int headerOffset);
     void dump() const;
 #endif
+    void toSkSL(skgpu::ShaderInfo*) const;
 
     uint8_t byte(int offset) const { SkASSERT(offset < fNumBytes); return fData[offset]; }
     const void* data() const { return fData.data(); }
@@ -100,6 +106,8 @@ public:
     bool operator!=(const SkPaintParamsKey& that) const { return !(*this == that); }
 
 private:
+    static int BlockToSkSL(const SkPaintParamsKey&, int headerOffset, skgpu::ShaderInfo*);
+
     // TODO: need to make it so the key can can dynamically grow
     static const int kMaxKeySize = 32;
     static const int kMaxBlockSize = std::numeric_limits<uint8_t>::max();
