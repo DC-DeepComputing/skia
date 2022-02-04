@@ -50,6 +50,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "6b3d9088_1a27555e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-02-04T22:21:11Z",
+      "side": 1,
+      "message": "Fixed the conflicting use of \"drawable\" with https://skia-review.googlesource.com/c/skia/+/504236 and have now removed this bit.",
+      "parentUuid": "d797c24f_46932982",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 62
+      },
+      "revId": "ab87d6cb2a4247c12ab443225d1b0596c831abed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "bc0bd282_eb2bb14f",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 6

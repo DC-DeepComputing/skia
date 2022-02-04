@@ -118,6 +118,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e8cef75a_d7d0098b",
+        "filename": "src/core/SkScalerCache.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-02-04T22:21:11Z",
+      "side": 1,
+      "message": "I think we may end up needing a GlyphDrawable or something so that the approximate size can be tracked. This becomes interesting because the sizes can be very bimodal, if the drawable is just a wrapper around the scalercontext and glyphid and will be drawn straight out of the font data then it isn\u0027t very big. If the drawable is backed by a picture recording or other intermediate it may be large.\n\nUnlike glyph images and glyph paths the serialized glyph drawable may end up being much larger than the glyph drawable itself, since the drawable may be backed directly by the font data, put when serialized must be recorded out to a picture.",
+      "parentUuid": "7258cd89_02e94c1c",
+      "range": {
+        "startLine": 75,
+        "startChar": 8,
+        "endLine": 75,
+        "endChar": 60
+      },
+      "revId": "2633dc0e1da33f971db3040b99d78f132c7cf1fe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f409aef3_bb87c266",
         "filename": "src/core/SkScalerCache.cpp",
         "patchSetId": 1
