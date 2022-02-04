@@ -11,6 +11,7 @@
 #include "include/private/SkColorData.h"
 #include "src/gpu/GrVertexChunkArray.h"
 #include "src/gpu/tessellate/Tessellation.h"
+#include "src/gpu/tessellate/WangsFormula.h"
 
 #define AI SK_ALWAYS_INLINE
 
@@ -27,16 +28,21 @@ public:
     PatchWriter(GrMeshDrawTarget* target,
                 GrVertexChunkArray* vertexChunkArray,
                 PatchAttribs attribs,
+                int maxTessellationSegments,
                 size_t patchStride,
                 int initialAllocCount)
             : fAttribs(attribs)
+            , fMaxSegments_pow2(pow2(maxTessellationSegments))
+            , fMaxSegments_pow4(pow2(fMaxSegments_pow2))
             , fChunker(target, vertexChunkArray, patchStride, initialAllocCount) {}
 
 #if SK_GPU_V1
     // Create PatchWriters that write directly to the GrVertexChunkArrays stored on the provided
     // tessellators.
-    PatchWriter(GrMeshDrawTarget*, PathTessellator*, int initialPatchAllocCount);
-    PatchWriter(GrMeshDrawTarget*, StrokeTessellator*, int initialPatchAllocCount);
+    PatchWriter(GrMeshDrawTarget*, PathTessellator*,
+                int maxTessellationSegments, int initialPatchAllocCount);
+    PatchWriter(GrMeshDrawTarget*, StrokeTessellator*,
+                int maxTessellationSegments, int initialPatchAllocCount);
 #endif
 
     ~PatchWriter() {
@@ -45,6 +51,20 @@ public:
     }
 
     PatchAttribs attribs() const { return fAttribs; }
+
+    void resetFixedSegments(int minFixedSegments) {
+        float segments_pow4 = pow2(pow2(minFixedSegments));
+        SkASSERT(segments_pow4 <= fMaxSegments_pow4);
+        fCurrMinSegments_pow4 = segments_pow4;
+    }
+    // Fast log2 of minimum required # of segments per tracked Wang's formula calculations.
+    int requiredResolveLevel() const {
+        return wangs_formula::nextlog16(fCurrMinSegments_pow4); // log16(n^4) == log2(n)
+    }
+    // Fast minimum required # of segments from tracked Wang's formula calculations.
+    int requiredFixedSegments() const {
+        return SkScalarCeilToInt(wangs_formula::root4(fCurrMinSegments_pow4));
+    }
 
     // Updates the stroke's join control point that will be written out with each patch. This is
     // automatically adjusted when appending various geometries (e.g. Conic/Cubic), but sometimes
@@ -117,52 +137,67 @@ public:
      */
 
     // Write a cubic curve with its four control points.
-    AI void writeCubic(float2 p0, float2 p1, float2 p2, float2 p3) {
-        // TODO: Have cubic store or automatically compute wang's formula so this can automatically
-        // call into chopAndWriteCubics.
-        this->writePatch(p0, p1, p2, p3, kCubicCurveType);
+    AI void writeCubic(float2 p0, float2 p1, float2 p2, float2 p3, float n4) {
+        if (n4 <= fMaxSegments_pow4) {
+            this->writePatch(p0, p1, p2, p3, n4, kCubicCurveType);
+        } else {
+            int numPatches = SkScalarCeilToInt(wangs_formula::root4(
+                    std::min(n4, pow4(kMaxTessellationSegmentsPerCurve)) / fMaxSegments_pow4));
+            this->chopAndWriteCubics(p0, p1, p2, p3, numPatches);
+        }
     }
-    AI void writeCubic(float4 p0p1, float4 p2p3) {
-        this->writeCubic(p0p1.lo, p0p1.hi, p2p3.lo, p2p3.hi);
+    AI void writeCubic(float4 p0p1, float4 p2p3, float n4) {
+        this->writeCubic(p0p1.lo, p0p1.hi, p2p3.lo, p2p3.hi, n4);
     }
-    AI void writeCubic(float2 p0, float4 p1p2, float2 p3) {
-        this->writeCubic(p0, p1p2.lo, p1p2.hi, p3);
+    AI void writeCubic(float2 p0, float4 p1p2, float2 p3, float n4) {
+        this->writeCubic(p0, p1p2.lo, p1p2.hi, p3, n4);
     }
-    AI void writeCubic(const SkPoint pts[4]) {
-        this->writeCubic(float4::Load(pts), float4::Load(pts + 2));
+    AI void writeCubic(const SkPoint pts[4], float n4) {
+        float4 p0p1 = float4::Load(pts);
+        float4 p2p3 = float4::Load(pts + 2);
+        this->writeCubic(p0p1.lo, p0p1.hi, p2p3.lo, p2p3.hi, n4);
     }
 
     // Write a conic curve with three control points and 'w', with the last coord of the last
     // control point signaling a conic by being set to infinity.
-    AI void writeConic(float2 p0, float2 p1, float2 p2, float w) {
-        // TODO: Have Conic store or automatically compute Wang's formula so this can automatically
-        // call into chopAndWriteConics.
-        this->writePatch(p0, p1, p2, {w, SK_FloatInfinity}, kConicCurveType);
+    AI void writeConic(float2 p0, float2 p1, float2 p2, float w, float n2) {
+        if (n2 <= fMaxSegments_pow2) {
+            this->writePatch(p0, p1, p2, {w, SK_FloatInfinity}, n2*n2, kConicCurveType);
+        } else {
+            int numPatches = SkScalarCeilToInt(sqrtf(
+                    std::min(n2, pow2(kMaxTessellationSegmentsPerCurve)) / fMaxSegments_pow2));
+            this->chopAndWriteConics(p0, p1, p2, w, numPatches);
+        }
     }
-    AI void writeConic(const SkPoint pts[3], float w) {
+    AI void writeConic(const SkPoint pts[3], float w, float n2) {
         this->writeConic(skvx::bit_pun<float2>(pts[0]),
                          skvx::bit_pun<float2>(pts[1]),
                          skvx::bit_pun<float2>(pts[2]),
-                         w);
+                         w, n2);
     }
 
     // Write a quadratic curve that automatically converts its three control points into an
     // equivalent cubic.
-    AI void writeQuadratic(float2 p0, float2 p1, float2 p2) {
-        // TODO: Have Quadratic store or automatically compute Wang's formula so this can
-        // automatically  call into chopAndWriteQuadratics *before* it is converted to an equivalent
-        // cubic if needed.
-        this->writeCubic(p0, mix(float4(p0, p2), p1.xyxy(), 2/3.f), p2);
+    AI void writeQuadratic(float2 p0, float2 p1, float2 p2, float n4) {
+        if (n4 <= fMaxSegments_pow4) {
+            // This won't chop, since we know n^4 <= maxSegments^4
+            this->writeCubic(p0, mix(float4(p0, p2), p1.xyxy(), 2/3.f), p2, n4);
+        } else {
+            int numPatches = SkScalarCeilToInt(wangs_formula::root4(
+                    std::min(n4, pow4(kMaxTessellationSegmentsPerCurve)) / fMaxSegments_pow4));
+            this->chopAndWriteQuads(p0, p1, p2, numPatches);
+        }
     }
-    AI void writeQuadratic(const SkPoint pts[3]) {
+    AI void writeQuadratic(const SkPoint pts[3], float n4) {
         this->writeQuadratic(skvx::bit_pun<float2>(pts[0]),
                              skvx::bit_pun<float2>(pts[1]),
-                             skvx::bit_pun<float2>(pts[2]));
+                             skvx::bit_pun<float2>(pts[2]),
+                             n4);
     }
 
     // Write a line that is automatically converted into an equivalent cubic.
     AI void writeLine(float4 p0p1) {
-        this->writeCubic(p0p1.lo, (p0p1.zwxy() - p0p1) * (1/3.f) + p0p1, p0p1.hi);
+        this->writeCubic(p0p1.lo, (p0p1.zwxy() - p0p1) * (1/3.f) + p0p1, p0p1.hi, /*n4=*/1.f);
     }
     AI void writeLine(float2 p0, float2 p1) { this->writeLine({p0, p1}); }
     AI void writeLine(SkPoint p0, SkPoint p1) {
@@ -172,8 +207,9 @@ public:
     // Write a triangle by setting it to a conic with w=Inf, and using a distinct
     // explicit curve type for when inf isn't supported in shaders.
     AI void writeTriangle(float2 p0, float2 p1, float2 p2) {
+        static constexpr float kTriFixedSegments_pow4 = 2.f * 2.f * 2.f * 2.f;
         this->writePatch(p0, p1, p2, {SK_FloatInfinity, SK_FloatInfinity},
-                         kTriangularConicCurveType);
+                         kTriFixedSegments_pow4, kTriangularConicCurveType);
     }
     AI void writeTriangle(SkPoint p0, SkPoint p1, SkPoint p2) {
         this->writeTriangle(skvx::bit_pun<float2>(p0),
@@ -193,24 +229,6 @@ public:
         }
     }
 
-    // Chops the given quadratic into 'numPatches' equal segments (in the parametric sense) and
-    // writes them to the GPU buffer.
-    //
-    // Fills space between chops with triangles if PathPatchAttrib::kFanPoint is not enabled.
-    void chopAndWriteQuads(float2 p0, float2 p1, float2 p2, int numPatches);
-
-    // Chops the given conic into 'numPatches' equal segments (in the parametric sense) and
-    // writes them to the GPU buffer.
-    //
-    // Fills space between chops with triangles if PathPatchAttrib::kFanPoint is not enabled.
-    void chopAndWriteConics(float2 p0, float2 p1, float2 p2, float w, int numPatches);
-
-    // Chops the given cubic into 'numPatches' equal segments (in the parametric sense) and
-    // writes them to the GPU buffer.
-    //
-    // Fills space between chops with triangles if PathPatchAttrib::kFanPoint is not enabled.
-    void chopAndWriteCubics(float2 p0, float2 p1, float2 p2, float2 p3, int numPatches);
-
 private:
     template <typename T>
     static VertexWriter::Conditional<T> If(bool c, const T& v) { return VertexWriter::If(c,v); }
@@ -226,15 +244,17 @@ private:
     }
 
     SK_ALWAYS_INLINE
-    void writePatch(float2 p0, float2 p1, float2 p2, float2 p3, float explicitCurveType) {
+    void writePatch(float2 p0, float2 p1, float2 p2, float2 p3, float n4, float explicitCurveType) {
         const bool defer = (fAttribs & PatchAttribs::kJoinControlPoint) &&
                            !fHasJoinControlPoint;
 
         SkASSERT(!defer || !fHasDeferredPatch);
         SkASSERT(fChunker.stride() <= kMaxStride);
+        SkASSERT(n4 <= fMaxSegments_pow4);
         VertexWriter vw = defer ? VertexWriter{fDeferredPatchStorage, fChunker.stride()}
                                 : fChunker.appendVertex();
         fHasDeferredPatch |= defer;
+        fCurrMinSegments_pow4 = std::max(n4, fCurrMinSegments_pow4);
 
         if (vw) {
             vw << p0 << p1 << p2 << p3;
@@ -260,15 +280,25 @@ private:
         }
     }
 
+    // Helpers that chop the curve type into 'numPatches' parametrically uniform curves. It is
+    // assumed that 'numPatches' is calculated such that the resulting curves require the maximum
+    // number of segments to draw appropriately (since the original presumably needed even more).
+    void chopAndWriteQuads(float2 p0, float2 p1, float2 p2, int numPatches);
+    void chopAndWriteConics(float2 p0, float2 p1, float2 p2, float w, int numPatches);
+    void chopAndWriteCubics(float2 p0, float2 p1, float2 p2, float2 p3, int numPatches);
+
     const PatchAttribs fAttribs;
+
+    const float fMaxSegments_pow2;
+    const float fMaxSegments_pow4;
+    float fCurrMinSegments_pow4 = 0.f;
+
     GrVertexChunkBuilder fChunker;
 
     SkPoint fJoinControlPointAttrib;
     SkPoint fFanPointAttrib;
     StrokeParams fStrokeParamsAttrib;
     VertexColor fColorAttrib;
-
-    bool fHasJoinControlPoint = false;
 
     static constexpr size_t kMaxStride =
             4 * sizeof(SkPoint) + // control points
@@ -281,6 +311,8 @@ private:
     // Contents are valid (sans join control point) if fHasDeferredPatch is true.
     char fDeferredPatchStorage[kMaxStride];
     bool fHasDeferredPatch = false;
+
+    bool fHasJoinControlPoint = false;
 };
 
 }  // namespace skgpu
