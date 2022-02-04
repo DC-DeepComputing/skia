@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9d1b00d7_89e116d8",
+        "filename": "experimental/graphite/include/Recorder.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-02-04T18:49:29Z",
+      "side": 1,
+      "message": "Yeah as you said ResourceCache doesn\u0027t have access to the recorder so we have to pass it around at least to there. So I\u0027m fine if we pass the object to Device as well, but I\u0027m also happy using a helper in that case. Long story short, I\u0027m pretty neutral on how we handle Device.",
+      "parentUuid": "5209ce7a_29f4cb8a",
+      "range": {
+        "startLine": 87,
+        "startChar": 7,
+        "endLine": 87,
+        "endChar": 82
+      },
+      "revId": "207b5ad811c435ed3b16930a6a8dd7662ddf191e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "28cc71d0_dc290d44",
         "filename": "experimental/graphite/src/ResourceCache.h",
         "patchSetId": 1
@@ -37,6 +61,30 @@
       "writtenOn": "2022-02-04T18:25:42Z",
       "side": 1,
       "message": "using PurgeableQueue \u003d SkTDPQueue\u003c...\u003e",
+      "range": {
+        "startLine": 40,
+        "startChar": 4,
+        "endLine": 40,
+        "endChar": 11
+      },
+      "revId": "207b5ad811c435ed3b16930a6a8dd7662ddf191e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7db852f4_7d512266",
+        "filename": "experimental/graphite/src/ResourceCache.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-02-04T18:49:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "28cc71d0_dc290d44",
       "range": {
         "startLine": 40,
         "startChar": 4,
@@ -60,6 +108,30 @@
       "writtenOn": "2022-02-04T18:25:42Z",
       "side": 1,
       "message": "nit alignment",
+      "range": {
+        "startLine": 43,
+        "startChar": 18,
+        "endLine": 43,
+        "endChar": 40
+      },
+      "revId": "207b5ad811c435ed3b16930a6a8dd7662ddf191e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ba560ef0_509e43e1",
+        "filename": "experimental/graphite/src/ResourceCache.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-02-04T18:49:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e4c83525_1455fc62",
       "range": {
         "startLine": 43,
         "startChar": 18,
