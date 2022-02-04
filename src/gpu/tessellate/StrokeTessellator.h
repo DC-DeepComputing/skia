@@ -83,10 +83,12 @@ protected:
 // These tolerances decide the number of parametric and radial segments the tessellator will
 // linearize strokes into. These decisions are made in (pre-viewMatrix) local path space.
 struct StrokeTolerances {
-    // Decides the number of parametric segments the tessellator adds for each curve. (Uniform
+    // Approximates the number of parametric segments the tessellator adds for each curve. (Uniform
     // steps in parametric space.) The tessellator will add enough parametric segments so that,
     // once transformed into device space, they never deviate by more than
-    // 1/kTessellationPrecision pixels from the true curve.
+    // 1/kTessellationPrecision pixels from the true curve, although it may more accurately compute
+    // how many segments are needed using a VectorXform. This precision is only used to guide how
+    // many radial segments are needed.
     constexpr static float CalcParametricPrecision(float matrixMaxScale) {
         return matrixMaxScale * kTessellationPrecision;
     }
