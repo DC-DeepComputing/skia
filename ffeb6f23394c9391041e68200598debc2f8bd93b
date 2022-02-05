@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "358a678e_4f47f039",
+        "filename": "src/sksl/codegen/SkSLPipelineStageCodeGenerator.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-02-05T01:15:00Z",
+      "side": 1,
+      "message": "I wrote this change and realized it was likely a pessimization, so I don\u0027t think we should do it. Existing callers use pass-by-move or pass in temporaries, and sometimes the API returns the string unchanged (which would require a copy if a const\u0026 is passed in).",
+      "parentUuid": "9b9c2bff_5b9593a1",
+      "revId": "ffeb6f23394c9391041e68200598debc2f8bd93b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8a3d0eb4_8485c497",
