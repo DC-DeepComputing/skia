@@ -36,15 +36,17 @@ bool FuzzSKSL2Pipeline(sk_sp<SkData> bytes) {
         void defineStruct(const char* /*definition*/) override {}
         void declareGlobal(const char* /*declaration*/) override {}
 
-        std::string sampleShader(int index, std::string coords) override {
+        std::string sampleShader(int index, const std::string& coords) override {
             return "child_" + std::to_string(index) + ".eval(" + coords + ")";
         }
 
-        std::string sampleColorFilter(int index, std::string color) override {
+        std::string sampleColorFilter(int index, const std::string& color) override {
             return "child_" + std::to_string(index) + ".eval(" + color + ")";
         }
 
-        std::string sampleBlender(int index, std::string src, std::string dst) override {
+        std::string sampleBlender(int index,
+                                  const std::string& src,
+                                  const std::string& dst) override {
             return "child_" + std::to_string(index) + ".eval(" + src + ", " + dst + ")";
         }
 

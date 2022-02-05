@@ -119,7 +119,7 @@ public:
                 fArgs.fFragBuilder->definitionAppend(declaration);
             }
 
-            std::string sampleShader(int index, std::string coords) override {
+            std::string sampleShader(int index, const std::string& coords) override {
                 // If the child was sampled using the coords passed to main (and they are never
                 // modified), then we will have marked the child as PassThrough. The code generator
                 // doesn't know that, and still supplies coords. Inside invokeChild, we assert that
@@ -133,20 +133,24 @@ public:
                 // children sampled like this, invokeChild doesn't even use the coords parameter,
                 // except for that assert.
                 const GrFragmentProcessor* child = fArgs.fFp.childProcessor(index);
-                if (child && child->sampleUsage().isPassThrough()) {
-                    coords.clear();
-                }
-                return std::string(fSelf->invokeChild(index, fInputColor, fArgs, coords).c_str());
-            }
-
-            std::string sampleColorFilter(int index, std::string color) override {
+                bool hasPassthroughChild = child && child->sampleUsage().isPassThrough();
                 return std::string(fSelf->invokeChild(index,
-                                                 color.empty() ? fInputColor : color.c_str(),
-                                                 fArgs)
-                                      .c_str());
+                                                      fInputColor,
+                                                      fArgs,
+                                                      hasPassthroughChild ? std::string{} : coords)
+                                           .c_str());
             }
 
-            std::string sampleBlender(int index, std::string src, std::string dst) override {
+            std::string sampleColorFilter(int index, const std::string& color) override {
+                return std::string(fSelf->invokeChild(index,
+                                                      color.empty() ? fInputColor : color.c_str(),
+                                                      fArgs)
+                                           .c_str());
+            }
+
+            std::string sampleBlender(int index,
+                                      const std::string& src,
+                                      const std::string& dst) override {
                 if (!fSelf->childProcessor(index)) {
                     return SkSL::String::printf("blend_src_over(%s, %s)", src.c_str(), dst.c_str());
                 }

@@ -30,9 +30,11 @@ namespace PipelineStage {
         virtual void   declareGlobal(const char* declaration) = 0;
 
         virtual std::string declareUniform(const VarDeclaration*) = 0;
-        virtual std::string sampleShader(int index, std::string coords) = 0;
-        virtual std::string sampleColorFilter(int index, std::string color) = 0;
-        virtual std::string sampleBlender(int index, std::string src, std::string dst) = 0;
+        virtual std::string sampleShader(int index, const std::string& coords) = 0;
+        virtual std::string sampleColorFilter(int index, const std::string& color) = 0;
+        virtual std::string sampleBlender(int index,
+                                          const std::string& src,
+                                          const std::string& dst) = 0;
 
         virtual std::string toLinearSrgb(std::string color) = 0;
         virtual std::string fromLinearSrgb(std::string color) = 0;

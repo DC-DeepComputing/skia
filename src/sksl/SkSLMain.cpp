@@ -482,17 +482,18 @@ ResultCode processCommand(const std::vector<std::string>& args) {
                             fOutput += declaration;
                         }
 
-                        std::string sampleShader(int index, std::string coords) override {
+                        std::string sampleShader(int index, const std::string& coords) override {
                             return "child_" + std::to_string(index) + ".eval(" + coords + ")";
                         }
 
-                        std::string sampleColorFilter(int index, std::string color) override {
+                        std::string sampleColorFilter(int index,
+                                                      const std::string& color) override {
                             return "child_" + std::to_string(index) + ".eval(" + color + ")";
                         }
 
                         std::string sampleBlender(int index,
-                                                  std::string src,
-                                                  std::string dst) override {
+                                                  const std::string& src,
+                                                  const std::string& dst) override {
                             return "child_" + std::to_string(index) + ".eval(" + src + ", " +
                                    dst + ")";
                         }

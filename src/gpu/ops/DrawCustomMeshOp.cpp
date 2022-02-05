@@ -115,15 +115,17 @@ private:
                 fBuilder->definitionAppend(declaration);
             }
 
-            std::string sampleShader(int index, std::string coords) override {
+            std::string sampleShader(int index, const std::string& coords) override {
                 SK_ABORT("No children allowed.");
             }
 
-            std::string sampleColorFilter(int index, std::string color) override {
+            std::string sampleColorFilter(int index, const std::string& color) override {
                 SK_ABORT("No children allowed.");
             }
 
-            std::string sampleBlender(int index, std::string src, std::string dst) override {
+            std::string sampleBlender(int index,
+                                      const std::string& src,
+                                      const std::string& dst) override {
                 SK_ABORT("No children allowed.");
             }
 
