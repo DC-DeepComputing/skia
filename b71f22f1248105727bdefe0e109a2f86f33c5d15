@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ef1e98bb_41862a5d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 12064
+      },
+      "writtenOn": "2022-02-07T06:56:35Z",
+      "side": 1,
+      "message": "Hi Greg, this patch is to update the check for new Intel GPU generations. As explained in the bug entry, currently we have to use some keywords from the extracted string instead. As for Vulkan, things is easier that we can directly use deviceID to identify. I also make a draft in another patch attached in the bug entry. PTAL.\nThanks!",
+      "revId": "b71f22f1248105727bdefe0e109a2f86f33c5d15",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
