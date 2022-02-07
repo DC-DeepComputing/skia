@@ -10,10 +10,13 @@
 
 #include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"
+#include "include/private/chromium/SkChromeRemoteGlyphCache.h"
 
 class SkCanvas;
 class SkMatrix;
 class SkPaint;
+class SkReadBuffer;
+class SkStrikeClient;
 class SkTextBlob;
 class SkWriteBuffer;
 
@@ -50,4 +53,6 @@ public:
     virtual SkRect sourceBounds() const = 0;
     virtual const SkPaint& paint() const = 0;
 };
+
+sk_sp<GrSlug> SkMakeSlugFromBuffer(SkReadBuffer& buffer, const SkStrikeClient* client);
 #endif  // GrSlug_DEFINED
