@@ -169,50 +169,15 @@ std::string get_sksl_vs(const GraphicsPipelineDesc& desc) {
     return sksl;
 }
 
-std::string get_sksl_fs(const SkShaderCodeDictionary* dict,
+std::string get_sksl_fs(SkShaderCodeDictionary* dict,
                         const GraphicsPipelineDesc& desc,
                         bool* writesColor) {
-    std::string sksl;
+    SkShaderInfo shaderInfo;
 
-    SkPaintParamsKey key;
-    auto entry = dict->lookup(desc.paintParamsID());
-    if (entry) {
-        key = entry->paintParamsKey();
-    }
+    dict->getShaderInfo(desc.paintParamsID(), &shaderInfo);
 
-    *writesColor = false;
-    // TODO: make this more flexible so the individual blocks can be linked together. Right now
-    // this loop relies on only one shader snippet and a blend mode being added to a key.
-    int curHeaderOffset = 0;
-    while (curHeaderOffset < key.sizeInBytes()) {
-        auto [codeSnippetID, blockSize] = key.readCodeSnippetID(curHeaderOffset);
-        if (codeSnippetID == CodeSnippetID::kSimpleBlendMode) {
-            curHeaderOffset += blockSize;
-            continue;
-        }
-
-        // Typedefs needed for painting
-        auto paintUniforms = dict->getUniforms(codeSnippetID);
-        if (!paintUniforms.empty()) {
-            sksl += emit_SKSL_uniforms(2, "FS", paintUniforms);
-        }
-
-        auto [name, code] = dict->getShaderSkSL(codeSnippetID);
-
-        sksl += code;
-        sksl += "layout(location = 0, index = 0) out half4 sk_FragColor;\n";
-        sksl += "void main() {\n"
-                "    half4 outColor;\n";
-        SkSL::String::appendf(&sksl, "outColor = %s();\n", name);
-        sksl += "    sk_FragColor = outColor;\n"
-                "}\n";
-
-        *writesColor = codeSnippetID != CodeSnippetID::kDepthStencilOnlyDraw;
-
-        curHeaderOffset += blockSize;
-    }
-
-    return sksl;
+    *writesColor = shaderInfo.writesColor();
+    return shaderInfo.flatten();
 }
 
 inline MTLVertexFormat attribute_type_to_mtlformat(VertexAttribType type) {
@@ -349,12 +314,12 @@ MTLVertexDescriptor* create_vertex_descriptor(const RenderStep* step) {
 
 std::string GetMtlUniforms(int bufferID,
                            const char* name,
-                           const std::vector<SkSpan<const SkUniform>>& uniforms) {
+                           const std::vector<SkShaderInfo::SnippetEntry>& codeSnippets) {
     int offset = 0;
 
     std::string result = get_uniform_header(bufferID, name);
-    for (auto u : uniforms) {
-        result += get_uniforms(u, &offset);
+    for (auto e : codeSnippets) {
+        result += get_uniforms(e.fUniforms, &offset);
     }
     result.append("};\n\n");
 
