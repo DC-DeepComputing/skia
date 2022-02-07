@@ -20,10 +20,14 @@
 
 class SkShaderInfo {
 public:
+    struct SnippetEntry;
+    typedef std::string (*ProcedurallyGenerateSkSL)(int index, const SnippetEntry&);
+
     struct SnippetEntry {
         SkSpan<const SkUniform> fUniforms;
         const char* fName;
-        const char* fCode;
+        const char* fStaticSkSL;
+        ProcedurallyGenerateSkSL fDynamicSkSL;
     };
 
     void add(const SnippetEntry& entry) {
