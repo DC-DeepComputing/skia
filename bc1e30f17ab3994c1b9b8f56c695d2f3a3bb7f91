@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d80a4cb2_ad1f0a20",
+        "filename": "src/ports/SkFontConfigInterface_direct.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-02-07T17:23:29Z",
+      "side": 1,
+      "message": "nit: line too long",
+      "range": {
+        "startLine": 60,
+        "startChar": 94,
+        "endLine": 60,
+        "endChar": 109
+      },
+      "revId": "bc1e30f17ab3994c1b9b8f56c695d2f3a3bb7f91",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
