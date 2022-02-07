@@ -106,7 +106,7 @@ static bool can_embed(const SkAdvancedTypefaceMetrics& metrics) {
 const SkAdvancedTypefaceMetrics* SkPDFFont::GetMetrics(const SkTypeface* typeface,
                                                        SkPDFDocument* canon) {
     SkASSERT(typeface);
-    SkFontID id = typeface->uniqueID();
+    SkTypefaceID id = typeface->uniqueID();
     if (std::unique_ptr<SkAdvancedTypefaceMetrics>* ptr = canon->fTypefaceMetrics.find(id)) {
         return ptr->get();  // canon retains ownership.
     }
@@ -159,7 +159,7 @@ const std::vector<SkUnichar>& SkPDFFont::GetUnicodeMap(const SkTypeface* typefac
                                                        SkPDFDocument* canon) {
     SkASSERT(typeface);
     SkASSERT(canon);
-    SkFontID id = typeface->uniqueID();
+    SkTypefaceID id = typeface->uniqueID();
     if (std::vector<SkUnichar>* ptr = canon->fToUnicodeMap.find(id)) {
         return *ptr;
     }

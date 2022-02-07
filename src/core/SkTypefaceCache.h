@@ -50,7 +50,7 @@ public:
      *  Helper: returns a unique fontID to pass to the constructor of
      *  your subclass of SkTypeface
      */
-    static SkFontID NewFontID();
+    static SkTypefaceID NewFontID();
 
     // These are static wrappers around a global instance of a cache.
 
