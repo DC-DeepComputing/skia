@@ -16,6 +16,98 @@
       "message": "PTAL. The actual processing of an Upload into an UploadCommand is obviously missing but hopefully it\u0027s still clear.",
       "revId": "d1d5158a010bedc1e13e7f9c65fd2a2de21c5438",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "95fc3dde_1f7f8684",
+        "filename": "experimental/graphite/src/UploadList.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-02-07T15:28:10Z",
+      "side": 1,
+      "message": "How does this work when I client passes in a pointer to their own data? Are we copying that data before we return to the client? Are we making a cpu copy that we then ref here?",
+      "range": {
+        "startLine": 27,
+        "startChar": 18,
+        "endLine": 27,
+        "endChar": 34
+      },
+      "revId": "d1d5158a010bedc1e13e7f9c65fd2a2de21c5438",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ccee7469_772df813",
+        "filename": "experimental/graphite/src/UploadList.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-02-07T15:28:10Z",
+      "side": 1,
+      "message": "100 chars",
+      "range": {
+        "startLine": 39,
+        "startChar": 100,
+        "endLine": 39,
+        "endChar": 104
+      },
+      "revId": "d1d5158a010bedc1e13e7f9c65fd2a2de21c5438",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "16955038_7fa61f7c",
+        "filename": "experimental/graphite/src/UploadTask.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-02-07T15:28:10Z",
+      "side": 1,
+      "message": "Is this meant to have a newline between it and the previous line? Seems like that is meant to be one sentence?",
+      "range": {
+        "startLine": 23,
+        "startChar": 8,
+        "endLine": 23,
+        "endChar": 9
+      },
+      "revId": "d1d5158a010bedc1e13e7f9c65fd2a2de21c5438",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b1ca32a4_f142a0df",
+        "filename": "experimental/graphite/src/UploadTask.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-02-07T15:28:10Z",
+      "side": 1,
+      "message": "with the factory should this be private?",
+      "range": {
+        "startLine": 36,
+        "startChar": 4,
+        "endLine": 36,
+        "endChar": 17
+      },
+      "revId": "d1d5158a010bedc1e13e7f9c65fd2a2de21c5438",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
