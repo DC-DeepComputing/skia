@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0a0dff99_74a2a784",
+        "filename": "src/gpu/text/GrTextBlob.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 608,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-02-07T19:43:51Z",
+      "side": 1,
+      "message": "So right here, `drawable-\u003edraw` is always safe, but `canvas-\u003edrawDrawable` may be more efficient if we draw the same drawable glyph multiple times. However, we need to be careful about lifetimes, since we should not allow this drawable\u0027s lifetime to extend past the lifetime of its scaler context. For the moment I\u0027m going to take the safe route here.",
+      "revId": "0c739234fd4a26e0782d38c656bfb0fca94d3434",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
