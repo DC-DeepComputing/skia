@@ -16,6 +16,24 @@
       "message": "Does anyone have ideas for fixing up template member functions like this:\n\nhttps://osscs.corp.google.com/skia/skia/+/main:src/core/Sk4px.h;l\u003d109\n\n? I wasn\u0027t able to successfully dodge the warning here without restructuring the code (e.g. change into a free function)",
       "revId": "d547db2b1f8eaca4ac7ee922a23fbf70a1496b83",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "40553d48_9e80817c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-02-07T22:20:07Z",
+      "side": 1,
+      "message": "Does declaring it \"static inline\" make the warning go away? (Note to those in the future if the code moved about, this is a templated static function, so it\u0027s a different \"static\".)",
+      "parentUuid": "bce5fc8a_0d76c40d",
+      "revId": "d547db2b1f8eaca4ac7ee922a23fbf70a1496b83",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

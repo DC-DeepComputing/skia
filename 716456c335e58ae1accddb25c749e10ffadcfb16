@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c7538902_7124edf6",
+        "filename": "include/private/SkTemplates.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-02-07T22:20:07Z",
+      "side": 0,
+      "message": "I know we used \"static\" here where we kinda really meant \"inline\", and I know that these are implicitly \"inline\", but ugh, that\u0027s so much mental headache to every time I see this need to re-work out that these are \"inline\". Can we just change these to \"inline\" to make that explicit instead so I don\u0027t need to get a jump scare every time I look here?",
+      "range": {
+        "startLine": 38,
+        "startChar": 34,
+        "endLine": 38,
+        "endChar": 40
+      },
+      "revId": "716456c335e58ae1accddb25c749e10ffadcfb16",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
