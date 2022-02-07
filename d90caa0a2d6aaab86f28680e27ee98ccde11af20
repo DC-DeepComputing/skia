@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b1e16fd4_f77aa382",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-07T20:57:39Z",
+      "side": 1,
+      "message": "This is the last of the patch writer CL changes that I have ready to go. There\u0027s still some work left to look at minor regressions and code size reduction, if needed, but that is still not in a reviewable state yet.",
+      "revId": "d90caa0a2d6aaab86f28680e27ee98ccde11af20",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
