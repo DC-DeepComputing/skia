@@ -34,6 +34,24 @@
       "parentUuid": "bce5fc8a_0d76c40d",
       "revId": "d547db2b1f8eaca4ac7ee922a23fbf70a1496b83",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "47191bf0_1d92e5df",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-02-07T22:22:02Z",
+      "side": 1,
+      "message": "No. Making them into free functions (not part of the class at all) worked, but that\u0027s a larger change.",
+      "parentUuid": "40553d48_9e80817c",
+      "revId": "d547db2b1f8eaca4ac7ee922a23fbf70a1496b83",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
