@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "32286c81_227da1f2",
+        "filename": "experimental/graphite/src/GraphiteResourceKey.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-02-07T16:21:50Z",
+      "side": 1,
+      "message": "Do you think fShareable should be part of the \u003d\u003d operator? I keep going back and forth. Like it does have to match, but at the same time I can\u0027t think of a case where code where create the same ResourceType but different values for shareable. Thus shareable is kind of implied by the ResourceType (which is part of the key).",
+      "range": {
+        "startLine": 48,
+        "startChar": 17,
+        "endLine": 48,
+        "endChar": 19
+      },
+      "revId": "8b10b4eca083178eb635b9cc3b9b6f0d90d43384",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
