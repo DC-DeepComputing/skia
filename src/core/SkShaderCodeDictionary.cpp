@@ -6,7 +6,40 @@
  */
 
 #include "include/private/SkShaderCodeDictionary.h"
+
+#include "include/private/SkSLString.h"
 #include "src/core/SkOpts.h"
+
+// TODO: SkShaderInfo::flatten needs to work outside of both just graphite and metal. To do
+// so we'll need to switch over to using SkSL's uniform capabilities.
+#if defined(SK_GRAPHITE_ENABLED) && defined(SK_METAL)
+
+// TODO: switch this over to using SkSL's uniform system
+namespace skgpu::mtl {
+std::string GetMtlUniforms(int bufferID,
+                           const char* name,
+                           const std::vector<SkSpan<const SkUniform>>& uniforms);
+}
+
+std::string SkShaderInfo::flatten() const {
+    std::string result = skgpu::mtl::GetMtlUniforms(2, "FS", fUniforms);
+
+    for (auto c : fPreamble) {
+        result += c;
+    }
+
+    result += "layout(location = 0, index = 0) out half4 sk_FragColor;\n";
+    result += "void main() {\n";
+
+    for (size_t i = 0; i < fNames.size(); ++i) {
+        SkSL::String::appendf(&result, "half4 outColor%d = %s();\n", (int) i, fNames[i]);
+    }
+    SkSL::String::appendf(&result, "sk_FragColor = outColor%d;\n", (int) fNames.size()-1);
+    result += "}\n";
+
+    return result;
+}
+#endif
 
 SkShaderCodeDictionary::Entry* SkShaderCodeDictionary::makeEntry(const SkPaintParamsKey& key) {
     return fArena.make([&](void *ptr) { return new(ptr) Entry(key); });
@@ -164,7 +197,7 @@ SkShaderCodeDictionary::SkShaderCodeDictionary() {
             kLinearGradient4Name, kLinearGradient4SkSL
     };
     fCodeSnippets[(int) CodeSnippetID::kImageShader] = {
-            { nullptr, kNumImageUniforms },
+            {nullptr, kNumImageUniforms},
             kImageName, kImageSkSL
     };
     fCodeSnippets[(int) CodeSnippetID::kBlendShader] = {
@@ -173,4 +206,10 @@ SkShaderCodeDictionary::SkShaderCodeDictionary() {
     fCodeSnippets[(int) CodeSnippetID::kSimpleBlendMode] = {
             {}, nullptr, nullptr
     };
+}
+
+void SkShaderCodeDictionary::getShaderInfo(SkUniquePaintParamsID uniqueID, SkShaderInfo* info) {
+    auto entry = this->lookup(uniqueID);
+
+    entry->paintParamsKey().toShaderInfo(info);
 }

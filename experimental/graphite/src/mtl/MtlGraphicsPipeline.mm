@@ -169,11 +169,12 @@ std::string get_sksl_vs(const GraphicsPipelineDesc& desc) {
     return sksl;
 }
 
-std::string get_sksl_fs(const SkShaderCodeDictionary* dict,
+std::string get_sksl_fs(SkShaderCodeDictionary* dict,
                         const GraphicsPipelineDesc& desc,
                         bool* writesColor) {
-    std::string sksl;
+    SkShaderInfo shaderInfo;
 
+#if 0
     SkPaintParamsKey key;
     auto entry = dict->lookup(desc.paintParamsID());
     if (entry) {
@@ -213,6 +214,12 @@ std::string get_sksl_fs(const SkShaderCodeDictionary* dict,
     }
 
     return sksl;
+#endif
+
+    dict->getShaderInfo(desc.paintParamsID(), &shaderInfo);
+
+    *writesColor = shaderInfo.writesColor();
+    return shaderInfo.flatten();
 }
 
 inline MTLVertexFormat attribute_type_to_mtlformat(VertexAttribType type) {

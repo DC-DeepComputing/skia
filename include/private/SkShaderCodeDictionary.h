@@ -10,12 +10,36 @@
 
 #include <array>
 #include <unordered_map>
+#include <vector>
 #include "include/core/SkSpan.h"
 #include "include/private/SkPaintParamsKey.h"
 #include "include/private/SkSpinlock.h"
 #include "include/private/SkUniquePaintParamsID.h"
 #include "src/core/SkArenaAlloc.h"
 #include "src/core/SkUniform.h"
+
+class SkShaderInfo {
+public:
+    void add(SkSpan<const SkUniform> uniforms, const char* name, const char* snippet) {
+        fUniforms.push_back(uniforms);
+        fNames.push_back(name);
+        fPreamble.push_back(snippet);
+    }
+
+    void setWritesColor() { fWritesColor = true; }
+    bool writesColor() const { return fWritesColor; }
+
+#if defined(SK_GRAPHITE_ENABLED) && defined(SK_METAL)
+    std::string flatten() const;
+#endif
+
+private:
+    // TODO: use SnippetEntry object here
+    std::vector<SkSpan<const SkUniform>> fUniforms;
+    std::vector<const char*> fNames;
+    std::vector<const char*> fPreamble;
+    bool fWritesColor = false;
+};
 
 class SkShaderCodeDictionary {
 public:
@@ -49,6 +73,8 @@ public:
 
     SkSpan<const SkUniform> getUniforms(CodeSnippetID) const;
     std::tuple<const char*, const char*> getShaderSkSL(CodeSnippetID) const;
+
+    void getShaderInfo(SkUniquePaintParamsID, SkShaderInfo*);
 
 private:
     Entry* makeEntry(const SkPaintParamsKey&);
