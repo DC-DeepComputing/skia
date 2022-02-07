@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4a926bf3_07145e81",
+        "filename": "include/core/SkTypeface.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-02-07T18:20:13Z",
+      "side": 1,
+      "message": "Hmmm... need to check all the canaries... Looks like Chromium at least uses SkFontID in several places, and others as well. Could probably keep the SkFontID as a typedef of SkTypefaceID with a comment about how we\u0027d like to remove it? Then at least we can migrate and remove.",
+      "revId": "c589cd370b8ab33d11b16c1230e7d40320b2dc7d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
