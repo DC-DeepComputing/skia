@@ -16,6 +16,24 @@
       "message": "This popped up again since the flag is now removed from trunk Clang (crbug.com/1294786 -- can someone please add it to the commit message, I don\u0027t seem to have permission to do so.)\n\nI\u0027ve updated the patch to also add -Wno-weak-template-vtables to the build flags. That should mean that Skia users with older Clang versions will not see the warning in Skia code. If such projects include the headers in their own code, which doesn\u0027t use Skia\u0027s build flags and enable -Weverything, I think such projects can deal with this down stream.\n\nWhat do you think?",
       "revId": "992b0821fc5b6ff0ae52dc0e197a616d5ac37b03",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a71233c5_d32fcec7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-02-07T16:24:41Z",
+      "side": 1,
+      "message": "This seems like a pretty reasonable approach. Making brianosman@ to reviewer in case he can think of ripple effects this might have on our clients.",
+      "parentUuid": "3365b873_e41a3bab",
+      "revId": "992b0821fc5b6ff0ae52dc0e197a616d5ac37b03",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
