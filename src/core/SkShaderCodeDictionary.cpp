@@ -5,7 +5,7 @@
  * found in the LICENSE file.
  */
 
-#include "include/private/SkShaderCodeDictionary.h"
+#include "src/core/SkShaderCodeDictionary.h"
 
 #include "include/private/SkSLString.h"
 #include "src/core/SkOpts.h"
