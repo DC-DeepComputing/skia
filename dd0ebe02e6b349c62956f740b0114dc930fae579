@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c350c336_627f72cb",
+        "filename": "experimental/graphite/src/DrawContext.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-07T18:12:04Z",
+      "side": 1,
+      "message": "executed?",
+      "range": {
+        "startLine": 97,
+        "startChar": 19,
+        "endLine": 97,
+        "endChar": 24
+      },
+      "revId": "dd0ebe02e6b349c62956f740b0114dc930fae579",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ac73303d_c5027e4c",
+        "filename": "experimental/graphite/src/DrawContext.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-07T18:12:04Z",
+      "side": 1,
+      "message": "Does it make sense to keep snapUploadTask and snapRenderPassTask separate in the long run? Presumably the only correct behavior will be to snap the uploads and have that task be depended on snapRenderPassTask.\n\nThat\u0027s maybe not super feasible given the current \"graph\" data structure we have, so maybe we assert in snapRenderPassTask that there are no more pending uploads?",
+      "range": {
+        "startLine": 103,
+        "startChar": 16,
+        "endLine": 103,
+        "endChar": 30
+      },
+      "revId": "dd0ebe02e6b349c62956f740b0114dc930fae579",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6c4d1237_71d50000",
+        "filename": "experimental/graphite/src/DrawContext.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-07T18:12:04Z",
+      "side": 1,
+      "message": "Do we want to define this nearer fPendingDraws vs. fDrawPasses? That seems more conceptually similar IMO",
+      "range": {
+        "startLine": 131,
+        "startChar": 32,
+        "endLine": 131,
+        "endChar": 47
+      },
+      "revId": "dd0ebe02e6b349c62956f740b0114dc930fae579",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
