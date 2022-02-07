@@ -1864,7 +1864,6 @@ bool SkTypeface_FreeType::Scanner::scanFont(
     SkString* name, SkFontStyle* style, bool* isFixedPitch, AxisDefinitions* axes) const
 {
     SkAutoMutexExclusive libraryLock(fLibraryMutex);
-
     FT_StreamRec streamRec;
     SkUniqueFTFace face(this->openFace(stream, ttcIndex, &streamRec));
     if (!face) {
@@ -1940,7 +1939,8 @@ bool SkTypeface_FreeType::Scanner::scanFont(
             }
             if (wdthIndex) {
                 SkASSERT(*wdthIndex < numAxes);
-                width = SkScalarRoundToInt(SkFixedToScalar(coords[*wdthIndex]));
+                SkScalar wdthValue = SkFixedToScalar(coords[*wdthIndex]);
+                width = SkFontDescriptor::ConvertWidthAxisToSkFontStyleWidth(wdthValue);
             }
             if (slntIndex) {
                 SkASSERT(*slntIndex < numAxes);
