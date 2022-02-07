@@ -91,6 +91,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2894b1be_1069a2de",
+        "filename": "experimental/graphite/src/UploadList.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-02-07T19:12:16Z",
+      "side": 1,
+      "message": "Its not just the image factories but also the writePixels calls that will go through here (and the BackendTexture apis). For writePixels the skia API takes either an SkPixmap or SkBitmap. I like the idea of getting the stagging buffer early and immediately copying CPU data into that. I lot of the deferred uploading of CPU data in Ganesh is for DDLs/lazy proxies when we don\u0027t have access to the GPU so we may need to hold onto (possibly needing a cpu copy) for a long time. We shouldn\u0027t have that issue in graphite.",
+      "parentUuid": "eaa4c7a6_de9edcc7",
+      "range": {
+        "startLine": 27,
+        "startChar": 18,
+        "endLine": 27,
+        "endChar": 34
+      },
+      "revId": "d1d5158a010bedc1e13e7f9c65fd2a2de21c5438",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ccee7469_772df813",
         "filename": "experimental/graphite/src/UploadList.h",
         "patchSetId": 5
