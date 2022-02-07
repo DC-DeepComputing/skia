@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c23516f7_3b37e481",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 7708
+      },
+      "writtenOn": "2022-02-07T23:00:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ac5d6672_ca7b2c5f",
+      "revId": "3d4bdc55c49fb3634fc331fcd9eb414ee2e634c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "03d9e67d_44a25e06",
@@ -31,6 +49,24 @@
       "writtenOn": "2022-02-07T22:39:41Z",
       "side": 1,
       "message": "I think the git interpret trailers step jumped in and treated \"SkFontStyle:\" as a trailer here and broke it from the main paragraph. Now that there is a \"Change-Id:\" trailer, you should be able to move this back with it\u0027s paragraph and it won\u0027t move it again.",
+      "revId": "3d4bdc55c49fb3634fc331fcd9eb414ee2e634c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6fe3ea86_42ada162",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 7708
+      },
+      "writtenOn": "2022-02-07T23:00:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "03d9e67d_44a25e06",
       "revId": "3d4bdc55c49fb3634fc331fcd9eb414ee2e634c8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -65,6 +101,30 @@
       "writtenOn": "2022-02-07T22:39:41Z",
       "side": 1,
       "message": "`SkFontStyleWidthForWidthAxisValue` (I tend to like \"For\" instead of \"To\" since usually at the call site the input is to the right (in the arguments) and the output is to the left (where the assignment will happen. Also the \"Convert\" is implicit, all functions are converting their inputs into outputs.)",
+      "range": {
+        "startLine": 97,
+        "startChar": 30,
+        "endLine": 97,
+        "endChar": 64
+      },
+      "revId": "3d4bdc55c49fb3634fc331fcd9eb414ee2e634c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0dc06498_a4aa69ac",
+        "filename": "src/core/SkFontDescriptor.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 7708
+      },
+      "writtenOn": "2022-02-07T23:00:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bdc2dec9_ab7416c8",
       "range": {
         "startLine": 97,
         "startChar": 30,
