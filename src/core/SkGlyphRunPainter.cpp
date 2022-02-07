@@ -88,7 +88,7 @@ void SkGlyphRunListPainter::drawForBitmapDevice(
     (void)fStrikeCache;
 
     // The bitmap blitters can only draw lcd text to a N32 bitmap in srcOver. Otherwise,
-    // convert the lcd text into A8 text. The props communicates this to the scaler.
+    // convert the lcd text into A8 text. The props communicate this to the scaler.
     auto& props = (kN32_SkColorType == fColorType && paint.isSrcOver())
                   ? fDeviceProps
                   : fBitmapFallbackProps;
