@@ -8,8 +8,8 @@
 #include "include/private/SkPaintParamsKey.h"
 
 #include <cstring>
-#include "include/private/SkShaderCodeDictionary.h"
 #include "src/core/SkKeyHelpers.h"
+#include "src/core/SkShaderCodeDictionary.h"
 
 bool SkPaintParamsKey::operator==(const SkPaintParamsKey& that) const {
     return fNumBytes == that.fNumBytes &&

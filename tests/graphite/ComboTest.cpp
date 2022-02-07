@@ -9,8 +9,8 @@
 #include "include/core/SkSurface.h"
 #include "include/effects/SkGradientShader.h"
 #include "include/private/SkPaintParamsKey.h"
-#include "include/private/SkShaderCodeDictionary.h"
 #include "src/core/SkPaintPriv.h"
+#include "src/core/SkShaderCodeDictionary.h"
 #include "tests/Test.h"
 
 namespace {
