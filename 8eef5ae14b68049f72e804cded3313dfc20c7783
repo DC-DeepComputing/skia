@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "00f85ce8_0d90b59b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-02-07T21:59:05Z",
+      "side": 1,
+      "message": "This seems fine. I suppose at some point there will either be one target with many tests in it (like this) or there will be many, many cc_tests. Since this models something like what we currently do (our gn build is basically all source_sets) I think this is probably the most straight forward thing at the moment.",
+      "revId": "8eef5ae14b68049f72e804cded3313dfc20c7783",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
