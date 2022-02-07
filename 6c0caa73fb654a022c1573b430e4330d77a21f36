@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a8a9f353_972368fd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-07T14:12:59Z",
+      "side": 1,
+      "message": "this shouldn\u0027t have gold diffs, but the ones being reported are from the parent line-to-cubic change.",
+      "revId": "6c0caa73fb654a022c1573b430e4330d77a21f36",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
