@@ -3,6 +3,75 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "84c55878_7c9c8c1e",
+        "filename": "experimental/graphite/src/GraphiteResourceKey.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-07T21:44:03Z",
+      "side": 1,
+      "message": "If ResourceType is uint32_t we could go all the way up to std::numeric_limits\u003cint32_t\u003e::max() and still represent it, although then we\u0027d change to if type \u003c 0 for the abort condition.\n\nI was concerned about the potential risk of excessive calls to GenerateResourceType() repeatedly adding 1 to nextType, overflowing into negatives and then passing this condition, but then realized SK_ABORT ends the process before that can actually become the case. \n\nPart of me then wanted to have a fatal graphite logging level for this, just to match the continuity of other messages but that doesn\u0027t seem to add much value.",
+      "range": {
+        "startLine": 16,
+        "startChar": 29,
+        "endLine": 16,
+        "endChar": 39
+      },
+      "revId": "8b10b4eca083178eb635b9cc3b9b6f0d90d43384",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3c73d873_10de5ae7",
+        "filename": "experimental/graphite/src/GraphiteResourceKey.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-07T21:44:03Z",
+      "side": 1,
+      "message": "This is kind of long, what do you think about GrResourceKey? 😜",
+      "range": {
+        "startLine": 15,
+        "startChar": 6,
+        "endLine": 15,
+        "endChar": 25
+      },
+      "revId": "8b10b4eca083178eb635b9cc3b9b6f0d90d43384",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "73077c34_e8ea94a1",
+        "filename": "experimental/graphite/src/GraphiteResourceKey.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-07T21:44:03Z",
+      "side": 1,
+      "message": "nit: using\n\nbut also, should this go in ResourceTypes.h?",
+      "range": {
+        "startLine": 18,
+        "startChar": 4,
+        "endLine": 18,
+        "endChar": 11
+      },
+      "revId": "8b10b4eca083178eb635b9cc3b9b6f0d90d43384",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "32286c81_227da1f2",
         "filename": "experimental/graphite/src/GraphiteResourceKey.h",
         "patchSetId": 1
@@ -14,6 +83,30 @@
       "writtenOn": "2022-02-07T16:21:50Z",
       "side": 1,
       "message": "Do you think fShareable should be part of the \u003d\u003d operator? I keep going back and forth. Like it does have to match, but at the same time I can\u0027t think of a case where code where create the same ResourceType but different values for shareable. Thus shareable is kind of implied by the ResourceType (which is part of the key).",
+      "range": {
+        "startLine": 48,
+        "startChar": 17,
+        "endLine": 48,
+        "endChar": 19
+      },
+      "revId": "8b10b4eca083178eb635b9cc3b9b6f0d90d43384",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c58e1d61_82f2f99a",
+        "filename": "experimental/graphite/src/GraphiteResourceKey.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-07T21:44:03Z",
+      "side": 1,
+      "message": "Lets add an assert that that implication holds, since it does seem like a reasonable thing to be implied by the ResourceType.",
+      "parentUuid": "32286c81_227da1f2",
       "range": {
         "startLine": 48,
         "startChar": 17,
