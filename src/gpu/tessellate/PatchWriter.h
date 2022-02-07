@@ -13,7 +13,8 @@
 #include "src/gpu/tessellate/Tessellation.h"
 #include "src/gpu/tessellate/WangsFormula.h"
 
-#define AI SK_ALWAYS_INLINE
+#define AI
+//SK_ALWAYS_INLINE
 
 namespace skgpu {
 
