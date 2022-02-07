@@ -68,6 +68,30 @@
       },
       "revId": "dd0ebe02e6b349c62956f740b0114dc930fae579",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "95d7d2ed_11ae9797",
+        "filename": "experimental/graphite/src/DrawContext.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-02-07T19:17:40Z",
+      "side": 1,
+      "message": "I was thinking it was a separation based on \"these are the draw related things\" and \"these are the upload related things\" as opposed to similar functionality.",
+      "parentUuid": "6c4d1237_71d50000",
+      "range": {
+        "startLine": 131,
+        "startChar": 32,
+        "endLine": 131,
+        "endChar": 47
+      },
+      "revId": "dd0ebe02e6b349c62956f740b0114dc930fae579",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

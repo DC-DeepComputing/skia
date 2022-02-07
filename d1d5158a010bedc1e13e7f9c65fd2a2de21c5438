@@ -115,6 +115,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5d140b66_e1832422",
+        "filename": "experimental/graphite/src/UploadList.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-02-07T19:17:40Z",
+      "side": 1,
+      "message": "So you are both proposing that makeTextureImage and writePixels take a Recorder.",
+      "parentUuid": "2894b1be_1069a2de",
+      "range": {
+        "startLine": 27,
+        "startChar": 18,
+        "endLine": 27,
+        "endChar": 34
+      },
+      "revId": "d1d5158a010bedc1e13e7f9c65fd2a2de21c5438",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ccee7469_772df813",
         "filename": "experimental/graphite/src/UploadList.h",
         "patchSetId": 5
