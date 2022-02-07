@@ -22,6 +22,30 @@
       },
       "revId": "615277e5789bf1b0d4421fbae1500deb05440c91",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2c4ba9a4_51d16150",
+        "filename": "src/gpu/tessellate/shaders/GrStrokeTessellationShader_InstancedImpl.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2022-02-07T20:51:38Z",
+      "side": 0,
+      "message": "Yes, numParametricSegments needs to be at least 1. The calculations will break if it goes to 0. wangs_formula_cubic() should already be doing this for you.\n\nThe reason for overriding to 1 here was just so that we didn\u0027t use more triangles than we needed to on flat lines, which isn\u0027t a problem now that we\u0027re using [0, 1/3, 2/3, 1].",
+      "parentUuid": "635d2742_b6a2e40c",
+      "range": {
+        "startLine": 127,
+        "startChar": 4,
+        "endLine": 130,
+        "endChar": 5
+      },
+      "revId": "615277e5789bf1b0d4421fbae1500deb05440c91",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
