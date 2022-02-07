@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "deae786c_a0455c98",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-02-07T15:44:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "44786d53_ed7ad1fa",
+      "revId": "da9409ef3593c057060184cf4f62f5cf71fc9894",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c4869489_1dbf407f",
@@ -35,6 +53,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "564d5024_ce8e40e4",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-02-07T15:44:51Z",
+      "side": 1,
+      "message": "Bug 69566 requires extra work I think.",
+      "parentUuid": "c4869489_1dbf407f",
+      "revId": "da9409ef3593c057060184cf4f62f5cf71fc9894",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "915e9e68_8aeec88a",
@@ -48,6 +84,24 @@
       "writtenOn": "2022-02-03T22:26:02Z",
       "side": 1,
       "message": "Return a stream for the contents of the font data. Returns nullptr on failure or if the font data isn\u0027t already available in stream form. Use when the stream can be used opportunistically but the calling code would prefer to fall back to table access if creating the stream would be expensive. Otherwise acts the same as openStream.",
+      "revId": "da9409ef3593c057060184cf4f62f5cf71fc9894",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9b216251_1646ccf5",
+        "filename": "include/core/SkTypeface.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 323,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-02-07T15:44:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "915e9e68_8aeec88a",
       "revId": "da9409ef3593c057060184cf4f62f5cf71fc9894",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -75,6 +129,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d6fe9438_36a697a3",
+        "filename": "include/core/SkTypeface.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 325,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-02-07T15:44:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2098c695_f3b29103",
+      "range": {
+        "startLine": 325,
+        "startChar": 4,
+        "endLine": 325,
+        "endChar": 11
+      },
+      "revId": "da9409ef3593c057060184cf4f62f5cf71fc9894",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "de8740bc_087175a9",
@@ -88,6 +166,24 @@
       "writtenOn": "2022-02-03T22:26:02Z",
       "side": 1,
       "message": "I know it seems a bit overkill, but should mimics this existing pattern of public non-virtual, protected virtual with an onOpenExistingStream here.",
+      "revId": "da9409ef3593c057060184cf4f62f5cf71fc9894",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7aa6da7e_e03ac6dd",
+        "filename": "include/core/SkTypeface.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 383,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-02-07T15:44:51Z",
+      "side": 1,
+      "message": "I made one more attempt to avoid changing over 20 different SkTypeface-based classes.\nIf you don\u0027t like what I did I will update them but it does seem an overkill.",
+      "parentUuid": "de8740bc_087175a9",
       "revId": "da9409ef3593c057060184cf4f62f5cf71fc9894",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -109,6 +205,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c31c195b_08d4bff0",
+        "filename": "src/ports/SkFontMgr_fontconfig.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 478,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-02-07T15:44:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b8a3000f_972cda61",
+      "revId": "da9409ef3593c057060184cf4f62f5cf71fc9894",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ebdae67a_50ed15f1",
@@ -122,6 +236,24 @@
       "writtenOn": "2022-02-03T22:26:02Z",
       "side": 1,
       "message": "Not needed?",
+      "revId": "da9409ef3593c057060184cf4f62f5cf71fc9894",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9f7e1bb7_c61c0f6e",
+        "filename": "src/ports/SkTypeface_mac_ct.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 775,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-02-07T15:44:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ebdae67a_50ed15f1",
       "revId": "da9409ef3593c057060184cf4f62f5cf71fc9894",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
