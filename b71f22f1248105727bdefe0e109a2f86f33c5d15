@@ -16,6 +16,29 @@
       "message": "Hi Greg, this patch is to update the check for new Intel GPU generations. As explained in the bug entry, currently we have to use some keywords from the extracted string instead. As for Vulkan, things is easier that we can directly use deviceID to identify. I also make a draft in another patch attached in the bug entry. PTAL.\nThanks!",
       "revId": "b71f22f1248105727bdefe0e109a2f86f33c5d15",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2f97990c_b025936c",
+        "filename": "src/gpu/gl/GrGLUtil.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 318,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-02-07T14:31:23Z",
+      "side": 1,
+      "message": "Are these numbers even valid for anything related to IceLake? As mentioned in the bug many IceLakes don\u0027t even have a number.",
+      "range": {
+        "startLine": 318,
+        "startChar": 20,
+        "endLine": 318,
+        "endChar": 60
+      },
+      "revId": "b71f22f1248105727bdefe0e109a2f86f33c5d15",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
