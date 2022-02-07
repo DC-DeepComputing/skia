@@ -935,10 +935,10 @@ optional("gpu") {
   if (skia_use_dawn) {
     public_defines += [ "SK_DAWN" ]
     sources += skia_dawn_sources
-    public_deps += [ "//third_party/externals/dawn/src/dawn:dawn_headers" ]
+    public_deps += [ "//third_party/externals/dawn/include/dawn:headers" ]
     deps += [
-      "//third_party/externals/dawn/src/dawn:dawn_proc",
-      "//third_party/externals/dawn/src/dawn:dawncpp",
+      "//third_party/externals/dawn/src/dawn:proc",
+      "//third_party/externals/dawn/src/dawn:cpp",
     ]
     if (dawn_enable_d3d12 || dawn_enable_desktop_gl || dawn_enable_metal ||
         dawn_enable_opengles || dawn_enable_vulkan) {
@@ -1652,7 +1652,7 @@ if (skia_enable_tools) {
     ]
 
     if (skia_use_dawn) {
-      deps += [ "//third_party/externals/dawn/src/dawn:dawn_headers" ]
+      deps += [ "//third_party/externals/dawn/include/dawn:headers" ]
     }
   }
 
@@ -1841,7 +1841,7 @@ if (skia_enable_tools) {
       sources += [ "tools/gpu/d3d/D3DTestUtils.cpp" ]
     }
     if (skia_use_dawn) {
-      public_deps += [ "//third_party/externals/dawn/src/dawn:dawn_headers" ]
+      public_deps += [ "//third_party/externals/dawn/include/dawn:headers" ]
       sources += [ "tools/gpu/dawn/DawnTestContext.cpp" ]
       if (is_clang) {
         cflags_cc = [ "-Wno-microsoft-cast" ]
