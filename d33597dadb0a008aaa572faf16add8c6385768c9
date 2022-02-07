@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5d506a76_91786b70",
+        "filename": "include/private/SkShaderCodeDictionary.h",
+        "patchSetId": 23
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-02-07T19:32:13Z",
+      "side": 1,
+      "message": "Right - this is SkSL. We can multiple implementations of the same effect hanging around (i.e., graphite gradients and SkVM gradients) and then each backend can choose the actual code snippets used to implement the PaintParams.",
+      "parentUuid": "c023dde5_59adbcf8",
+      "range": {
+        "startLine": 26,
+        "startChar": 20,
+        "endLine": 26,
+        "endChar": 25
+      },
+      "revId": "d33597dadb0a008aaa572faf16add8c6385768c9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d760f6a4_af3dd227",
         "filename": "include/private/SkShaderCodeDictionary.h",
         "patchSetId": 23
@@ -37,6 +61,30 @@
       "writtenOn": "2022-02-07T18:01:32Z",
       "side": 1,
       "message": "Do you think we\u0027ll get to the point where this produces full SkSL programs for the other backends too? Seems like raster will continue to append skvm instructions directly, and I\u0027m not sure if the refactoring in ganesh will be worth it.\n\nSo given that, should the toSkSL() function for graphite, that defines how the myriad pipeline pieces come together maybe be in ContextUtils? It looks like everything it needs is visible?",
+      "range": {
+        "startLine": 39,
+        "startChar": 4,
+        "endLine": 39,
+        "endChar": 31
+      },
+      "revId": "d33597dadb0a008aaa572faf16add8c6385768c9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d954ca7a_6b95b290",
+        "filename": "include/private/SkShaderCodeDictionary.h",
+        "patchSetId": 23
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-02-07T19:32:13Z",
+      "side": 1,
+      "message": "I\u0027m proceeding as if SkVM will someday swap over.",
+      "parentUuid": "d760f6a4_af3dd227",
       "range": {
         "startLine": 39,
         "startChar": 4,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cc137382_e27bbe53",
+        "filename": "src/core/SkPaintParamsKey.cpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-02-07T19:32:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "746e702f_96eabd02",
+      "range": {
+        "startLine": 76,
+        "startChar": 22,
+        "endLine": 76,
+        "endChar": 39
+      },
+      "revId": "d33597dadb0a008aaa572faf16add8c6385768c9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "588f9a9c_b2ace447",
@@ -83,6 +155,30 @@
       "writtenOn": "2022-02-07T18:01:32Z",
       "side": 1,
       "message": "I know this is just preliminary so it\u0027s not necessarily handling every corner case that the old shader builder did in Ganesh, but can we document what the assumptions and model is for each entry and their fCode?\n\nIt looks like fCode needs to define a function that takes zero arguments and returns a half4, and it needs to be named the same as what is stored in fName. Eventually we\u0027ll need to worry about mangling names for repeated code snippet IDs (same for their uniforms).",
+      "range": {
+        "startLine": 29,
+        "startChar": 8,
+        "endLine": 29,
+        "endChar": 26
+      },
+      "revId": "d33597dadb0a008aaa572faf16add8c6385768c9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dd45076c_29eb106b",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-02-07T19:32:13Z",
+      "side": 1,
+      "message": "I\u0027ve add a block comment ahead of toSkSL. The model I\u0027m aiming for is that the snippet\u0027s code will be fixed but the calling site will be procedurally generated.",
+      "parentUuid": "588f9a9c_b2ace447",
       "range": {
         "startLine": 29,
         "startChar": 8,
