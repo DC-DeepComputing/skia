@@ -8,7 +8,13 @@
 #include "include/private/SkPaintParamsKey.h"
 
 #include <cstring>
+#include "experimental/graphite/src/ContextUtils.h"
+#include "include/private/SkShaderCodeDictionary.h"
 #include "src/core/SkKeyHelpers.h"
+
+namespace skgpu {
+std::tuple<const char *, const char*> GetShaderSkSL(CodeSnippetID);
+}
 
 bool SkPaintParamsKey::operator==(const SkPaintParamsKey& that) const {
     return fNumBytes == that.fNumBytes &&
@@ -71,3 +77,31 @@ void SkPaintParamsKey::dump() const {
     }
 }
 #endif
+
+int SkPaintParamsKey::BlockToShaderInfo(SkShaderCodeDictionary* dict,
+                                        const SkPaintParamsKey& key,
+                                        int headerOffset,
+                                        SkShaderInfo* result) {
+    auto [codeSnippetID, blockSize] = key.readCodeSnippetID(headerOffset);
+
+    if (codeSnippetID != CodeSnippetID::kSimpleBlendMode) {
+        auto entry = dict->getEntry(codeSnippetID);
+
+        result->add(entry);
+
+        if (codeSnippetID != CodeSnippetID::kDepthStencilOnlyDraw) {
+            result->setWritesColor();
+        }
+    }
+
+    return blockSize;
+}
+
+void SkPaintParamsKey::toShaderInfo(SkShaderCodeDictionary* dict, SkShaderInfo* result) const {
+
+    int curHeaderOffset = 0;
+    while (curHeaderOffset < this->sizeInBytes()) {
+        int blockSize = BlockToShaderInfo(dict, *this, curHeaderOffset, result);
+        curHeaderOffset += blockSize;
+    }
+}
