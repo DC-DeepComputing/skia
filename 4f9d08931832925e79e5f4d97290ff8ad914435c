@@ -34,6 +34,24 @@
       "parentUuid": "ccacd29c_5f5d6ca9",
       "revId": "4f9d08931832925e79e5f4d97290ff8ad914435c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "db3eae0f_904616cb",
+        "filename": "public.bzl",
+        "patchSetId": 3
+      },
+      "lineNbr": 772,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2022-02-07T16:02:20Z",
+      "side": 1,
+      "message": "Ah, so this is a different os_conditions :)\n\nIt\u0027s getting quite confusing as we\u0027re adding more non-os stuff to \"os_conditions\".  Hopefully there\u0027s a more scalable way to manage these flags long term.",
+      "parentUuid": "f5a5b930_5de2bfc2",
+      "revId": "4f9d08931832925e79e5f4d97290ff8ad914435c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
