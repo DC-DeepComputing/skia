@@ -17,7 +17,7 @@
 #include "include/core/SkSpan.h"
 #include "include/gpu/ShaderErrorHandler.h"
 #include "include/private/SkSLString.h"
-#include "include/private/SkShaderCodeDictionary.h"
+#include "src/core/SkShaderCodeDictionary.h"
 
 namespace skgpu::mtl {
 
@@ -182,7 +182,11 @@ std::string get_sksl_fs(SkShaderCodeDictionary* dict,
     dict->getShaderInfo(desc.paintParamsID(), &shaderInfo);
 
     *writesColor = shaderInfo.writesColor();
+#if SK_SUPPORT_GPU
     return shaderInfo.toSkSL();
+#else
+    return {};
+#endif
 }
 
 inline MTLVertexFormat attribute_type_to_mtlformat(VertexAttribType type) {
