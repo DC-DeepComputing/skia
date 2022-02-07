@@ -22,6 +22,30 @@
       },
       "revId": "716456c335e58ae1accddb25c749e10ffadcfb16",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1d25e238_6e5cad3f",
+        "filename": "include/private/SkTemplates.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-02-07T22:20:59Z",
+      "side": 0,
+      "message": "Just these two, or all of them?",
+      "parentUuid": "c7538902_7124edf6",
+      "range": {
+        "startLine": 38,
+        "startChar": 34,
+        "endLine": 38,
+        "endChar": 40
+      },
+      "revId": "716456c335e58ae1accddb25c749e10ffadcfb16",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
