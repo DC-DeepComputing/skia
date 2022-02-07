@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e0c8b148_ae950e90",
+        "filename": "experimental/graphite/src/UploadTask.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-02-07T21:09:03Z",
+      "side": 1,
+      "message": "This should return std::unique_ptr\u003cUploadCommand\u003e, or take an UploadCommand* and return a bool. I can add that after the current changes are reviewed.",
+      "range": {
+        "startLine": 39,
+        "startChar": 11,
+        "endLine": 39,
+        "endChar": 24
+      },
+      "revId": "a3e19b8c5359afeedb2550bf0dead88a4ead3491",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
