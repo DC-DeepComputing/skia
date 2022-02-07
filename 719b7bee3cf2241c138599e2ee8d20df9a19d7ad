@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b806bc26_cceffa14",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-02-07T16:10:19Z",
+      "side": 1,
+      "message": "This looks good to me, but you\u0027ll need one of the include/ OWNERS to approve as well for the SkTypeface.h change. If you hit the \"SUGGEST OWNERS\" thing at the top of the \"REPLY\" dialog it\u0027ll give the list. Probably want Derek?",
+      "revId": "719b7bee3cf2241c138599e2ee8d20df9a19d7ad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
