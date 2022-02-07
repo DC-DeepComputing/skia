@@ -1615,7 +1615,7 @@ void GrGLCaps::initFormatTable(const GrGLContextInfo& ctxInfo, const GrGLInterfa
             {
                 auto& ctInfo = info.fColorTypeInfos[ctIdx++];
                 ctInfo.fColorType = GrColorType::kGray_8;
-                ctInfo.fFlags = ColorTypeInfo::kUploadData_Flag;
+                ctInfo.fFlags = ColorTypeInfo::kUploadData_Flag | ColorTypeInfo::kRenderable_Flag;
                 ctInfo.fReadSwizzle = GrSwizzle("rrr1");
                 this->setColorTypeFormat(GrColorType::kGray_8, GrGLFormat::kR8);
 
