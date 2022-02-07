@@ -12,10 +12,10 @@
 #include <unordered_map>
 #include <vector>
 #include "include/core/SkSpan.h"
-#include "include/private/SkPaintParamsKey.h"
 #include "include/private/SkSpinlock.h"
 #include "include/private/SkUniquePaintParamsID.h"
 #include "src/core/SkArenaAlloc.h"
+#include "src/core/SkPaintParamsKey.h"
 #include "src/core/SkUniform.h"
 
 class SkShaderInfo {
