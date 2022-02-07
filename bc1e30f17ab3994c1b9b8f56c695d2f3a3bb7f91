@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d52db597_62f1cec4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-02-07T18:11:54Z",
+      "side": 1,
+      "message": "It\u0027s from FontConfig.",
+      "parentUuid": "d29a82b3_f5ff9133",
+      "revId": "bc1e30f17ab3994c1b9b8f56c695d2f3a3bb7f91",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d80a4cb2_ad1f0a20",
@@ -31,6 +49,30 @@
       "writtenOn": "2022-02-07T17:23:29Z",
       "side": 1,
       "message": "nit: line too long",
+      "range": {
+        "startLine": 60,
+        "startChar": 94,
+        "endLine": 60,
+        "endChar": 109
+      },
+      "revId": "bc1e30f17ab3994c1b9b8f56c695d2f3a3bb7f91",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bc1fe92d_d389deb8",
+        "filename": "src/ports/SkFontConfigInterface_direct.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-02-07T18:11:54Z",
+      "side": 1,
+      "message": "Sure, but didn\u0027t add it here. (I tried to delete it before, but now it isn\u0027t being touched.)",
+      "parentUuid": "d80a4cb2_ad1f0a20",
       "range": {
         "startLine": 60,
         "startChar": 94,
