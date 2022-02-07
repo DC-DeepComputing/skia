@@ -7,6 +7,45 @@ py_binary(
     visibility = ["//:__subpackages__"],
 )
 
+cc_library(
+    name = "hash_and_encode",
+    testonly = True,
+    hdrs = [
+        ":HashAndEncode_hdr",
+    ],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":HashAndEncode_src",
+        "//tools/flags:CommandLineFlags_src",
+    ],
+)
+
+cc_library(
+    name = "test_font_manager",
+    testonly = True,
+    hdrs = [
+        "//tools/fonts:TestFontMgr_hdr",
+    ],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//tools/fonts:TestFontMgr_src",
+        "//tools/fonts:TestTypeface_src",
+        "//tools/fonts:ToolUtilsFont_src",
+    ],
+)
+
+cc_library(
+    name = "resource_factory",
+    testonly = True,
+    hdrs = [
+        ":ResourceFactory_hdr",
+    ],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":Resources_src",
+    ],
+)
+
 generated_cc_atom(
     name = "AndroidSkDebugToStdOut_src",
     srcs = ["AndroidSkDebugToStdOut.cpp"],

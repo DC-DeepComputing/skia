@@ -35,5 +35,7 @@
     const bmp = await createImageBitmap(b);
     const canvasCtx = document.getElementById("png_canvas").getContext("2d");
     canvasCtx.drawImage(bmp, 0, 0);
+
+    GM.ListTests();
   }
 </script>

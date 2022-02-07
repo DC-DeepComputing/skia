@@ -59,7 +59,8 @@ cc_binary_with_flags(
     srcs = [
         "gm_bindings.cpp",
         ":hdrs",
-        "//gm:gms",  # Required for the registry to work
+        "//gm:gm_list",
+        "//tests:test_list",
     ],
     additional_linker_inputs = ["gm.js"],
     linkopts = select({
@@ -67,10 +68,6 @@ cc_binary_with_flags(
         "//bazel/common_config_settings:release_build": BASE_LINKOPTS + GM_OPTS + RELEASE_OPTS,
         "//conditions:default": BASE_LINKOPTS + GM_OPTS + RELEASE_OPTS,
     }),
-    local_defines = [
-        "SK_GL",  # FIXME(kjlubick)
-        "SK_USE_WEBGL",
-    ],
     set_flags = {
         "include_decoder": [
             "jpeg_decode_codec",
@@ -84,14 +81,21 @@ cc_binary_with_flags(
         "with_gl_standard": [
             "webgl_standard",
         ],
+        "is_skia_dev_build": [
+            "True",
+        ],
     },
     # This target won't build successfully on its own because of missing emscripten
     # headers etc. Therefore, we hide it from wildcards.
     tags = ["manual"],
     deps = [
-        "//:gms",
-        "//:hash_and_encode",
-        "//:tests",
+        "//:skia_core",
+        "//gm",
+        "//src/core:SkFontMgrPriv_hdr",
+        "//tests",
+        "//tools:hash_and_encode",
+        "//tools:resource_factory",
+        "//tools:test_font_manager",
     ],
 )
 
