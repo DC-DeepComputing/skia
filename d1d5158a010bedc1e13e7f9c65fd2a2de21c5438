@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6c80b80b_597a8744",
+        "filename": "experimental/graphite/src/UploadList.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-02-07T17:58:59Z",
+      "side": 1,
+      "message": "I copied GrMipLevel for this. My intent is that we would take the client data and copy it into one of these, and so in that case we\u0027d use fOptionalStorage. However, I thought there might be some internal cases where we could depend on the fPixels pointer staying alive until we snap the UploadCommand list, so that\u0027s why I left it optional.",
+      "parentUuid": "95fc3dde_1f7f8684",
+      "range": {
+        "startLine": 27,
+        "startChar": 18,
+        "endLine": 27,
+        "endChar": 34
+      },
+      "revId": "d1d5158a010bedc1e13e7f9c65fd2a2de21c5438",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ccee7469_772df813",
         "filename": "experimental/graphite/src/UploadList.h",
         "patchSetId": 5
@@ -54,6 +78,30 @@
       "writtenOn": "2022-02-07T15:28:10Z",
       "side": 1,
       "message": "100 chars",
+      "range": {
+        "startLine": 39,
+        "startChar": 100,
+        "endLine": 39,
+        "endChar": 104
+      },
+      "revId": "d1d5158a010bedc1e13e7f9c65fd2a2de21c5438",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "69997b3a_b089d772",
+        "filename": "experimental/graphite/src/UploadList.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-02-07T17:58:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ccee7469_772df813",
       "range": {
         "startLine": 39,
         "startChar": 100,
@@ -87,6 +135,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "94add1a8_e3a70627",
+        "filename": "experimental/graphite/src/UploadTask.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-02-07T17:58:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "16955038_7fa61f7c",
+      "range": {
+        "startLine": 23,
+        "startChar": 8,
+        "endLine": 23,
+        "endChar": 9
+      },
+      "revId": "d1d5158a010bedc1e13e7f9c65fd2a2de21c5438",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b1ca32a4_f142a0df",
@@ -100,6 +172,30 @@
       "writtenOn": "2022-02-07T15:28:10Z",
       "side": 1,
       "message": "with the factory should this be private?",
+      "range": {
+        "startLine": 36,
+        "startChar": 4,
+        "endLine": 36,
+        "endChar": 17
+      },
+      "revId": "d1d5158a010bedc1e13e7f9c65fd2a2de21c5438",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "84b85a3e_cc6eb95b",
+        "filename": "experimental/graphite/src/UploadTask.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-02-07T17:58:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b1ca32a4_f142a0df",
       "range": {
         "startLine": 36,
         "startChar": 4,
