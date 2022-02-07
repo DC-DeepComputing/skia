@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1fb4749e_f62dccc4",
+        "filename": "src/ports/SkTypeface_mac_ct.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-02-07T15:57:41Z",
+      "side": 1,
+      "message": "Remove\n\n(Why doesn\u0027t this produce a warning as error? The base class method isn\u0027t virtual (this is hiding). Also, there isn\u0027t a definition of this method.)",
+      "revId": "18d3c93550040adf03da947476a281e2d8033f9f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
