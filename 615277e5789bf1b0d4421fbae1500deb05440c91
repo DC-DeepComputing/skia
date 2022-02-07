@@ -46,6 +46,30 @@
       },
       "revId": "615277e5789bf1b0d4421fbae1500deb05440c91",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "27401410_21207741",
+        "filename": "src/gpu/tessellate/shaders/GrStrokeTessellationShader_InstancedImpl.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-07T21:04:45Z",
+      "side": 0,
+      "message": "Ah, yep, the wangs_formula::as_sksl() has a max(1.0, n) in it, so we don\u0027t need to do anything more. Explains why nothing really broke 😊",
+      "parentUuid": "2c4ba9a4_51d16150",
+      "range": {
+        "startLine": 127,
+        "startChar": 4,
+        "endLine": 130,
+        "endChar": 5
+      },
+      "revId": "615277e5789bf1b0d4421fbae1500deb05440c91",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
