@@ -10,12 +10,39 @@
 
 #include <array>
 #include <unordered_map>
+#include <vector>
 #include "include/core/SkSpan.h"
 #include "include/private/SkPaintParamsKey.h"
 #include "include/private/SkSpinlock.h"
 #include "include/private/SkUniquePaintParamsID.h"
 #include "src/core/SkArenaAlloc.h"
 #include "src/core/SkUniform.h"
+
+class SkShaderInfo {
+public:
+    struct SnippetEntry {
+        SkSpan<const SkUniform> fUniforms;
+        const char* fName;
+        const char* fCode;
+    };
+
+    void add(const SnippetEntry* entry) {
+        fEntries.push_back(*entry);
+    }
+
+    // TODO: writing to color should be a property of the SnippetEntries and accumulated as the
+    //  entries are added. _Not_ set manually via 'setWritesColor'.
+    void setWritesColor() { fWritesColor = true; }
+    bool writesColor() const { return fWritesColor; }
+
+#if defined(SK_GRAPHITE_ENABLED) && defined(SK_METAL)
+    std::string flatten() const;
+#endif
+
+private:
+    std::vector<SnippetEntry> fEntries;
+    bool fWritesColor = false;
+};
 
 class SkShaderCodeDictionary {
 public:
@@ -50,6 +77,10 @@ public:
     SkSpan<const SkUniform> getUniforms(CodeSnippetID) const;
     std::tuple<const char*, const char*> getShaderSkSL(CodeSnippetID) const;
 
+    const SkShaderInfo::SnippetEntry* getEntry(CodeSnippetID) const;
+
+    void getShaderInfo(SkUniquePaintParamsID, SkShaderInfo*);
+
 private:
     Entry* makeEntry(const SkPaintParamsKey&);
 
@@ -57,13 +88,7 @@ private:
         size_t operator()(const SkPaintParamsKey&) const;
     };
 
-    struct SnippetEntry {
-        SkSpan<const SkUniform> fUniforms;
-        const char* fName;
-        const char* fCode;
-    };
-
-    std::array<SnippetEntry, kCodeSnippetIDCount> fCodeSnippets;
+    std::array<SkShaderInfo::SnippetEntry, kCodeSnippetIDCount> fCodeSnippets;
 
     // TODO: can we do something better given this should have write-seldom/read-often behavior?
     mutable SkSpinlock fSpinLock;
