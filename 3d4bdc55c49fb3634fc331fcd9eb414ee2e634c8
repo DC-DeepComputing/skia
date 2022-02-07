@@ -73,6 +73,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "0f92d61a_39b65523",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-02-07T23:13:58Z",
+      "side": 1,
+      "message": "You probably did update your local commit message, but `git cl` by default does not update the commit message of an already existing review. (It in fact goes way out of its way to avoid doing so.) This is one of the many reasons I avoid using it at all costs (and do the standard gerrit `git push HEAD:refs/for/main` instead). In any event, I\u0027m not sure how to get `git cl` to update the commit message, but you\u0027ll probably want your edited one here.",
+      "parentUuid": "6fe3ea86_42ada162",
+      "revId": "3d4bdc55c49fb3634fc331fcd9eb414ee2e634c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "d6ad04a2_6ecb7f6f",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 1
