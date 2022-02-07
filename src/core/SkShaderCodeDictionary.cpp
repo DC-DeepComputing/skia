@@ -6,7 +6,40 @@
  */
 
 #include "include/private/SkShaderCodeDictionary.h"
+
+#include "include/private/SkSLString.h"
 #include "src/core/SkOpts.h"
+
+// TODO: SkShaderInfo::flatten needs to work outside of both just graphite and metal. To do
+// so we'll need to switch over to using SkSL's uniform capabilities.
+#if defined(SK_GRAPHITE_ENABLED) && defined(SK_METAL)
+
+// TODO: switch this over to using SkSL's uniform system
+namespace skgpu::mtl {
+std::string GetMtlUniforms(int bufferID,
+                           const char* name,
+                           const std::vector<SkShaderInfo::SnippetEntry>&);
+}
+
+std::string SkShaderInfo::flatten() const {
+    std::string result = skgpu::mtl::GetMtlUniforms(2, "FS", fEntries);
+
+    for (auto c : fEntries) {
+        result += c.fCode;
+    }
+
+    result += "layout(location = 0, index = 0) out half4 sk_FragColor;\n";
+    result += "void main() {\n";
+
+    for (size_t i = 0; i < fEntries.size(); ++i) {
+        SkSL::String::appendf(&result, "half4 outColor%d = %s();\n", (int) i, fEntries[i].fName);
+    }
+    SkSL::String::appendf(&result, "sk_FragColor = outColor%d;\n", (int) fEntries.size()-1);
+    result += "}\n";
+
+    return result;
+}
+#endif
 
 SkShaderCodeDictionary::Entry* SkShaderCodeDictionary::makeEntry(const SkPaintParamsKey& key) {
     return fArena.make([&](void *ptr) { return new(ptr) Entry(key); });
@@ -52,16 +85,20 @@ SkSpan<const SkUniform> SkShaderCodeDictionary::getUniforms(CodeSnippetID id) co
     return fCodeSnippets[(int) id].fUniforms;
 }
 
-std::tuple<const char*, const char*> SkShaderCodeDictionary::getShaderSkSL(
-        CodeSnippetID id) const {
+const SkShaderInfo::SnippetEntry* SkShaderCodeDictionary::getEntry(CodeSnippetID id) const {
     if (fCodeSnippets[(int) id].fCode) {
-        return { fCodeSnippets[(int) id].fName, fCodeSnippets[(int) id].fCode };
+        return &fCodeSnippets[(int) id];
     }
 
     // If we're missing a code snippet just draw solid blue
-    return this->getShaderSkSL(CodeSnippetID::kDepthStencilOnlyDraw);
+    return this->getEntry(CodeSnippetID::kDepthStencilOnlyDraw);
 }
 
+void SkShaderCodeDictionary::getShaderInfo(SkUniquePaintParamsID uniqueID, SkShaderInfo* info) {
+    auto entry = this->lookup(uniqueID);
+
+    entry->paintParamsKey().toShaderInfo(this, info);
+}
 //--------------------------------------------------------------------------------------------------
 namespace {
 
