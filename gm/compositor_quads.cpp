@@ -587,17 +587,16 @@ public:
         canvas->translate(0.f, 15.f);
 
         SkString config;
-        static const char* kFormat = "Ext(%s) - Int(%s)";
         if (fEnableAAOverride) {
             SkASSERT(fAAOverride == SkCanvas::kAll_QuadAAFlags ||
                      fAAOverride == SkCanvas::kNone_QuadAAFlags);
             if (fAAOverride == SkCanvas::kAll_QuadAAFlags) {
-                config.appendf(kFormat, "yes", "yes");
+                config.appendf("Ext(%s) - Int(%s)", "yes", "yes");
             } else {
-                config.appendf(kFormat, "no", "no");
+                config.appendf("Ext(%s) - Int(%s)", "no", "no");
             }
         } else {
-            config.appendf(kFormat, "yes", "no");
+            config.appendf("Ext(%s) - Int(%s)", "yes", "no");
         }
         draw_text(canvas, config.c_str());
     }

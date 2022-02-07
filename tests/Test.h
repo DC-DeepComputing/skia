@@ -166,11 +166,16 @@ private:
 }  // namespace skiatest
 
 static inline SkString reporter_string() { return {}; }
-/// Prevent security warnings when using a non-literal string i.e. not a format string.
-static inline SkString reporter_string(const char* s) { return SkString(s); }
-template<typename... Args>
-static inline SkString reporter_string(const char* fmt, Args... args)  {
-    return SkStringPrintf(fmt, std::forward<Args>(args)...);
+
+static inline SkString reporter_string(const char* fmt, ...) SK_PRINTF_LIKE(1, 0);
+
+static inline SkString reporter_string(const char* fmt, ...) {
+    SkString str;
+    va_list args;
+    va_start(args, fmt);
+    str.printVAList(fmt, args);
+    va_end(args);
+    return str;
 }
 
 #define REPORTER_ASSERT(r, cond, ...)                               \

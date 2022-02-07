@@ -127,14 +127,17 @@ struct Result {
 static const Result ok = {Result::Ok,   {}},
                   skip = {Result::Skip, {}};
 
-static Result fail(const char* why) {
-    return { Result::Fail, SkString(why) };
-}
-template <typename... Args>
-static Result fail(const char* whyFmt, Args... args) {
-    return { Result::Fail, SkStringPrintf(whyFmt, args...) };
-}
+static Result fail(const char* whyFmt, ...) SK_PRINTF_LIKE(1, 2);
 
+static Result fail(const char* whyFmt, ...) {
+    SkString str;
+    va_list args;
+    va_start(args, whyFmt);
+    str.printVAList(whyFmt, args);
+    va_end(args);
+
+    return { Result::Fail, str };
+}
 
 struct Source {
     SkString                               name;
@@ -153,13 +156,13 @@ static void init(Source* source, std::shared_ptr<skiagm::GM> gm) {
         switch (gm->gpuSetup(direct, canvas, &err)) {
             case skiagm::DrawResult::kOk  : break;
             case skiagm::DrawResult::kSkip: return skip;
-            case skiagm::DrawResult::kFail: return fail(err.c_str());
+            case skiagm::DrawResult::kFail: return fail("%s", err.c_str());
         }
 
         switch (gm->draw(canvas, &err)) {
             case skiagm::DrawResult::kOk:   break;
             case skiagm::DrawResult::kSkip: return skip;
-            case skiagm::DrawResult::kFail: return fail(err.c_str());
+            case skiagm::DrawResult::kFail: return fail("%s", err.c_str());
         }
         return ok;
     };
@@ -254,7 +257,7 @@ static void init(Source* source, const skiatest::Test& test) {
         }
 
         canvas->clear(SK_ColorRED);
-        return fail(reporter.msg.c_str());
+        return fail("%s", reporter.msg.c_str());
     };
 }
 

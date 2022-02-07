@@ -184,24 +184,30 @@ using sk_gpu_test::GLTestContext;
 
 static FILE* gVLog;
 
-template <typename... Args>
-static void vlog(const char* fmt, Args&&... args) {
+static void vlog(const char* fmt, ...) SK_PRINTF_LIKE(1, 2);
+
+static void vlog(const char* fmt, ...) {
     if (gVLog) {
-        fprintf(gVLog, fmt, args...);
+        va_list args;
+        va_start(args, fmt);
+        vfprintf(gVLog, fmt, args);
         fflush(gVLog);
+        va_end(args);
     }
 }
 
-template <typename... Args>
-static void info(const char* fmt, Args&&... args) {
-    vlog(fmt, args...);
+static void info(const char* fmt, ...) SK_PRINTF_LIKE(1, 2);
+
+static void info(const char* fmt, ...) {
+    SkString str;
+    va_list args;
+    va_start(args, fmt);
+    str.printVAList(fmt, args);
+    va_end(args);
+
+    vlog("%s", str.c_str());
     if (!FLAGS_quiet) {
-        printf(fmt, args...);
-    }
-}
-static void info(const char* fmt) {
-    if (!FLAGS_quiet) {
-        printf("%s", fmt);  // Clang warns printf(fmt) is insecure.
+        printf("%s", str.c_str());
     }
 }
 

@@ -998,7 +998,8 @@ Result ImageGenSrc::draw(GrDirectContext*, SkCanvas* canvas) const {
             status = Result::Status::Skip;
         }
 #endif
-        return Result(status, "Image generator could not getPixels() for %s\n", fPath.c_str());
+        return Result::Format(status, "Image generator could not getPixels() for %s\n",
+                              fPath.c_str());
     }
 
     set_bitmap_color_space(&decodeInfo);
@@ -1464,7 +1465,7 @@ static Result compare_bitmaps(const SkBitmap& reference, const SkBitmap& bitmap)
             errString.append("\nActual image failed to encode: ");
             errString.append(encoded);
         }
-        return Result::Fatal(errString);
+        return Result::Make(Result::Status::Fatal, errString);
     }
     return Result::Ok();
 }
