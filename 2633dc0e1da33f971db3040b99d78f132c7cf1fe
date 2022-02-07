@@ -26,6 +26,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "ab8c1d72_91d6a72e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-02-07T23:20:52Z",
+      "side": 1,
+      "message": "We may work on this in the future, but for now the drawables  don\u0027t have to be so big (they can just be backed by the font data and don\u0027t need to be recorded pictures) so having one per color at the moment is fine and works with the current caching scheme. This can be modified later when we re-visit all of the caching again with color issues in mind.",
+      "parentUuid": "4fc7ee38_5630ff26",
+      "range": {
+        "startLine": 14,
+        "startChar": 26,
+        "endLine": 16,
+        "endChar": 28
+      },
+      "revId": "2633dc0e1da33f971db3040b99d78f132c7cf1fe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "7695606e_7f3ae6fa",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 1
@@ -130,6 +154,30 @@
       "side": 1,
       "message": "I think we may end up needing a GlyphDrawable or something so that the approximate size can be tracked. This becomes interesting because the sizes can be very bimodal, if the drawable is just a wrapper around the scalercontext and glyphid and will be drawn straight out of the font data then it isn\u0027t very big. If the drawable is backed by a picture recording or other intermediate it may be large.\n\nUnlike glyph images and glyph paths the serialized glyph drawable may end up being much larger than the glyph drawable itself, since the drawable may be backed directly by the font data, put when serialized must be recorded out to a picture.",
       "parentUuid": "7258cd89_02e94c1c",
+      "range": {
+        "startLine": 75,
+        "startChar": 8,
+        "endLine": 75,
+        "endChar": 60
+      },
+      "revId": "2633dc0e1da33f971db3040b99d78f132c7cf1fe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2a3413ec_e442335a",
+        "filename": "src/core/SkScalerCache.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-02-07T23:20:52Z",
+      "side": 1,
+      "message": "Added some approximate size stuff to drawable,",
+      "parentUuid": "e8cef75a_d7d0098b",
       "range": {
         "startLine": 75,
         "startChar": 8,
