@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c023dde5_59adbcf8",
+        "filename": "include/private/SkShaderCodeDictionary.h",
+        "patchSetId": 23
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-07T18:01:32Z",
+      "side": 1,
+      "message": "Is this code meant to be SkSL? Is it okay for the code to be specific to a backend? e.g. we\u0027d have a graphite linear gradient 2-stop snippet entry and have a separate entry for ganesh\u0027s linear gradients, and the code snippet ID and key building system that is backend aware will be able to adjust the chosen snippet accordingly?",
+      "range": {
+        "startLine": 26,
+        "startChar": 20,
+        "endLine": 26,
+        "endChar": 25
+      },
+      "revId": "d33597dadb0a008aaa572faf16add8c6385768c9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d760f6a4_af3dd227",
+        "filename": "include/private/SkShaderCodeDictionary.h",
+        "patchSetId": 23
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-07T18:01:32Z",
+      "side": 1,
+      "message": "Do you think we\u0027ll get to the point where this produces full SkSL programs for the other backends too? Seems like raster will continue to append skvm instructions directly, and I\u0027m not sure if the refactoring in ganesh will be worth it.\n\nSo given that, should the toSkSL() function for graphite, that defines how the myriad pipeline pieces come together maybe be in ContextUtils? It looks like everything it needs is visible?",
+      "range": {
+        "startLine": 39,
+        "startChar": 4,
+        "endLine": 39,
+        "endChar": 31
+      },
+      "revId": "d33597dadb0a008aaa572faf16add8c6385768c9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "746e702f_96eabd02",
+        "filename": "src/core/SkPaintParamsKey.cpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-07T18:01:32Z",
+      "side": 1,
+      "message": "This isn\u0027t converting one block into one SkShaderInfo, so maybe name it AddBlockToShaderInfo?",
+      "range": {
+        "startLine": 76,
+        "startChar": 22,
+        "endLine": 76,
+        "endChar": 39
+      },
+      "revId": "d33597dadb0a008aaa572faf16add8c6385768c9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "588f9a9c_b2ace447",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-07T18:01:32Z",
+      "side": 1,
+      "message": "I know this is just preliminary so it\u0027s not necessarily handling every corner case that the old shader builder did in Ganesh, but can we document what the assumptions and model is for each entry and their fCode?\n\nIt looks like fCode needs to define a function that takes zero arguments and returns a half4, and it needs to be named the same as what is stored in fName. Eventually we\u0027ll need to worry about mangling names for repeated code snippet IDs (same for their uniforms).",
+      "range": {
+        "startLine": 29,
+        "startChar": 8,
+        "endLine": 29,
+        "endChar": 26
+      },
+      "revId": "d33597dadb0a008aaa572faf16add8c6385768c9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
