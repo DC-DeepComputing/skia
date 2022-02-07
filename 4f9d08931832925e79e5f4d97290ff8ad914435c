@@ -16,6 +16,24 @@
       "message": "Is this the same os_conditions we are using for ports_srcs \u0026 gl_srcs?\n\nAFAIU skia_select options are positional, and slot #7 is already mapped to android_no_font for those two - is this going to conflict?",
       "revId": "4f9d08931832925e79e5f4d97290ff8ad914435c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f5a5b930_5de2bfc2",
+        "filename": "public.bzl",
+        "patchSetId": 3
+      },
+      "lineNbr": 772,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2022-02-07T15:46:49Z",
+      "side": 1,
+      "message": "This \"os_conditions\" refers to the list passed into this function \"base_defines()\".\nWhen this is landed, I\u0027ll send out a g3 side CL (cl/426913869) that adds the flag to the list passed in the Google3 BUILD file.",
+      "parentUuid": "ccacd29c_5f5d6ca9",
+      "revId": "4f9d08931832925e79e5f4d97290ff8ad914435c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
