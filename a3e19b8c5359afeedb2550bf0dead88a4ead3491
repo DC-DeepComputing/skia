@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "383eca6c_405ae870",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-02-07T21:51:51Z",
+      "side": 1,
+      "message": "I think this lgtm, but would like Michael to confirm it ties in with his view of the DrawContext correctly. I\u0027m sure we\u0027ll have other suggestions and start changing things once we start actually using these classes. ",
+      "revId": "a3e19b8c5359afeedb2550bf0dead88a4ead3491",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e0c8b148_ae950e90",
@@ -14,6 +31,30 @@
       "writtenOn": "2022-02-07T21:09:03Z",
       "side": 1,
       "message": "This should return std::unique_ptr\u003cUploadCommand\u003e, or take an UploadCommand* and return a bool. I can add that after the current changes are reviewed.",
+      "range": {
+        "startLine": 39,
+        "startChar": 11,
+        "endLine": 39,
+        "endChar": 24
+      },
+      "revId": "a3e19b8c5359afeedb2550bf0dead88a4ead3491",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6f582cd5_1c9b69f2",
+        "filename": "experimental/graphite/src/UploadTask.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-02-07T21:51:51Z",
+      "side": 1,
+      "message": "Yeah I like the return std::u_p best imo",
+      "parentUuid": "e0c8b148_ae950e90",
       "range": {
         "startLine": 39,
         "startChar": 11,
