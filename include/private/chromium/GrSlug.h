@@ -14,6 +14,8 @@
 class SkCanvas;
 class SkMatrix;
 class SkPaint;
+class SkReadBuffer;
+class SkStrikeClient;
 class SkTextBlob;
 class SkWriteBuffer;
 
