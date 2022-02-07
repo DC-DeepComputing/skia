@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ccacd29c_5f5d6ca9",
+        "filename": "public.bzl",
+        "patchSetId": 3
+      },
+      "lineNbr": 772,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2022-02-07T15:12:45Z",
+      "side": 1,
+      "message": "Is this the same os_conditions we are using for ports_srcs \u0026 gl_srcs?\n\nAFAIU skia_select options are positional, and slot #7 is already mapped to android_no_font for those two - is this going to conflict?",
+      "revId": "4f9d08931832925e79e5f4d97290ff8ad914435c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
