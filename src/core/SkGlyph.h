@@ -196,11 +196,17 @@ SkGlyphRect rect_intersection(SkGlyphRect, SkGlyphRect);
 // rectangle union and intersection operations.
 class SkGlyphRect {
 public:
+    SkGlyphRect() = default;
     SkGlyphRect(int16_t left, int16_t top, int16_t right, int16_t bottom)
             : fRect{left, top, (int16_t)-right, (int16_t)-bottom} {
         SkDEBUGCODE(const int32_t min = std::numeric_limits<int16_t>::min());
         SkASSERT(left != min && top != min && right != min && bottom != min);
     }
+    SkGlyphRect(SkIRect r)
+        : fRect{SkTo<int16_t>(r.left()),
+                SkTo<int16_t>(r.top()),
+                SkTo<int16_t>(r.right()),
+                SkTo<int16_t>(r.bottom())} {}
     bool empty() const {
         return fRect[0] >= -fRect[2] || fRect[1] >= -fRect[3];
     }
