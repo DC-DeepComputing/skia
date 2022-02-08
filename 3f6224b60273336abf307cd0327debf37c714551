@@ -70,6 +70,30 @@
       },
       "revId": "3f6224b60273336abf307cd0327debf37c714551",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "28f33ec5_b4c33e61",
+        "filename": "src/core/SkDraw.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 825,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-02-08T22:14:46Z",
+      "side": 1,
+      "message": "I tried removing the default-case entirely and it builds, so I\u0027ve done that.",
+      "parentUuid": "3ab4fb34_3d550e98",
+      "range": {
+        "startLine": 824,
+        "startChar": 20,
+        "endLine": 825,
+        "endChar": 27
+      },
+      "revId": "3f6224b60273336abf307cd0327debf37c714551",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
