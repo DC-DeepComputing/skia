@@ -16,6 +16,24 @@
       "message": "As I recall, the Bazel build only includes Wuffs already. Chrome is already on Wuffs, and I think G3 is Wuffs-only? I could remove the Wuffs targets (builds that are the same as other builds except they set skia_use_wuffs to true), since they\u0027re now redundant, but maybe this will happen naturally with the switch to Bazel?",
       "revId": "f1bc0e65f3d7baafaf8dd7dfc0cef44617d9e6c1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0e2b38f7_c35998f8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-02-08T17:32:01Z",
+      "side": 1,
+      "message": "Correct, the Bazel build only uses Wuffs for gif. The switch to Bazel is not soon, so removing the Wuffs targets is probably worth it.",
+      "parentUuid": "8a86b8bd_cdd79e67",
+      "revId": "f1bc0e65f3d7baafaf8dd7dfc0cef44617d9e6c1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
