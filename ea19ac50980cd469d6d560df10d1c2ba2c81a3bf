@@ -16,6 +16,109 @@
       "message": "oops, I thought I\u0027d sent this out to you already",
       "revId": "ea19ac50980cd469d6d560df10d1c2ba2c81a3bf",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b1b32859_23d3610e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2022-02-08T18:47:33Z",
+      "side": 1,
+      "message": "Did you double check that there are no surprises in the wangs_formula micro benchmarks?",
+      "revId": "ea19ac50980cd469d6d560df10d1c2ba2c81a3bf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d7a2cf37_763d240a",
+        "filename": "src/gpu/tessellate/PatchWriter.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2022-02-08T18:47:33Z",
+      "side": 1,
+      "message": "I don\u0027t know if this is worth it, vs just doing 4 float2::loads?",
+      "revId": "ea19ac50980cd469d6d560df10d1c2ba2c81a3bf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c18335ee_5339b35b",
+        "filename": "src/gpu/tessellate/PatchWriter.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 155,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2022-02-08T18:47:33Z",
+      "side": 1,
+      "message": "Can we say \"fAttribs \u0026 (PatchAttribs::kFanPoint | PatchAttribs::kJoinControlPoint)\"?",
+      "range": {
+        "startLine": 154,
+        "startChar": 14,
+        "endLine": 155,
+        "endChar": 56
+      },
+      "revId": "ea19ac50980cd469d6d560df10d1c2ba2c81a3bf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e3ccff42_366f53cd",
+        "filename": "src/gpu/tessellate/PatchWriter.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 185,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2022-02-08T18:47:33Z",
+      "side": 1,
+      "message": "ditto",
+      "range": {
+        "startLine": 184,
+        "startChar": 15,
+        "endLine": 185,
+        "endChar": 56
+      },
+      "revId": "ea19ac50980cd469d6d560df10d1c2ba2c81a3bf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bcbf59f4_de7f0d9d",
+        "filename": "src/gpu/tessellate/PatchWriter.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 216,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2022-02-08T18:47:33Z",
+      "side": 1,
+      "message": "ditto",
+      "range": {
+        "startLine": 215,
+        "startChar": 14,
+        "endLine": 216,
+        "endChar": 56
+      },
+      "revId": "ea19ac50980cd469d6d560df10d1c2ba2c81a3bf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
