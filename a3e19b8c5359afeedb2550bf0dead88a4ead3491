@@ -58,6 +58,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "759a84c4_bbdec505",
+        "filename": "experimental/graphite/src/UploadTask.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-02-08T17:41:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "03165202_2344a0aa",
+      "range": {
+        "startLine": 46,
+        "startChar": 21,
+        "endLine": 46,
+        "endChar": 64
+      },
+      "revId": "a3e19b8c5359afeedb2550bf0dead88a4ead3491",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e0c8b148_ae950e90",
@@ -119,6 +143,30 @@
       "side": 1,
       "message": "Given that buffer, texture proxy, and copy data already have some indirection and UploadCommand itself isn\u0027t that large of an object, is the main goal of switching std::unique_ptr or bool+ptr to handle errors?\n\nIf that\u0027s the case, what if we made it so that UploadCommand can\u0027t fail, and UploadList::appendUpload() handles the steps/work to get buffer and copy data prepared? If that fails, then it can return a bool and not modify its fCommands list. \n\nThis is coming mostly from wanting to avoid vectors of unique ptrs, and avoiding ref/unref indirection when possible. But if the plan is to make UploadCommand bigger and more complex, then my ideas don\u0027t apply as well.",
       "parentUuid": "6f582cd5_1c9b69f2",
+      "range": {
+        "startLine": 39,
+        "startChar": 11,
+        "endLine": 39,
+        "endChar": 24
+      },
+      "revId": "a3e19b8c5359afeedb2550bf0dead88a4ead3491",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "80af370a_ffeaa0ec",
+        "filename": "experimental/graphite/src/UploadTask.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-02-08T17:41:31Z",
+      "side": 1,
+      "message": "That makes sense to me -- UploadCommand essentially becomes a struct at that point. I\u0027m not happy about a vector of unique ptrs either, which is why I proposed the alternative. But I think this works better.\n\nI\u0027m going to make this change in the next CL. I\u0027ve already got it mostly done with unique_ptr, but it should be a simple case of moving things around.",
+      "parentUuid": "bd604c5d_88cbcf3e",
       "range": {
         "startLine": 39,
         "startChar": 11,
