@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bd3f5a04_8396ca1c",
+        "filename": "src/sksl/SkSLRehydrator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 288,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-02-08T19:33:44Z",
+      "side": 1,
+      "message": "I wrote it this way because {} didn\u0027t work.",
+      "parentUuid": "1d61484e_c1891237",
+      "range": {
+        "startLine": 288,
+        "startChar": 31,
+        "endLine": 288,
+        "endChar": 67
+      },
+      "revId": "8af7698fa79bfd1969052b50d29f9d5d56cb3061",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ca8235d3_98eacf2b",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-02-08T18:56:54Z",
       "side": 1,
       "message": "up to you: You could consider an accessor function to fetch this out of the Compiler now that we are carrying a Compiler around.",
+      "range": {
+        "startLine": 267,
+        "startChar": 0,
+        "endLine": 267,
+        "endChar": 38
+      },
+      "revId": "8af7698fa79bfd1969052b50d29f9d5d56cb3061",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "efe09d00_3ba3850e",
+        "filename": "src/sksl/SkSLRehydrator.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 267,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-02-08T19:33:44Z",
+      "side": 1,
+      "message": "Coming in a followup, didn\u0027t want to introduce that much churn here.",
+      "parentUuid": "ca8235d3_98eacf2b",
       "range": {
         "startLine": 267,
         "startChar": 0,
