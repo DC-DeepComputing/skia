@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3f10b9e8_74335ce2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-02-08T19:41:19Z",
+      "side": 1,
+      "message": "Revised setup for UploadCommand (in UploadList::addUpload) and filling out the creation of the transfer buffer and copying into it.",
+      "revId": "ab90f5d8e82aab845018b40fb14e2d7229283f2c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
