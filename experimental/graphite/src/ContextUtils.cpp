@@ -21,6 +21,37 @@
 
 namespace skgpu {
 
+#if 0
+
+std::tuple<SkUniquePaintParamsID, std::unique_ptr<SkUniformBlock>> GetUniqueIDAndUniformData(
+        SkShaderCodeDictionary* dict,
+        const PaintParams& p,
+        SkBackend backend) {
+    std::unique_ptr<SkUniformBlock> block = std::make_unique<SkUniformBlock>();
+
+    SkPaintParamsKey key;
+    p.toKey(dict, backend, &key, block.get());
+
+//    key.dump();
+
+    auto entry = dict->findOrCreate(key);
+
+    return { entry->uniqueID(), std::move(block) };
+}
+
+std::tuple<std::string, std::vector<SkSpan<const SkUniform>>> GetSkSLAndUniformDescription(
+        SkShaderCodeDictionary* dict,
+        SkUniquePaintParamsID uniqueID) {
+    std::vector<SkSpan<const SkUniform>> uniforms;
+
+    auto entry = dict->lookup(uniqueID);
+
+    // TODO: cache this
+    std::string skslCode = entry->paintParamsKey().toSkSL();
+
+    return { skslCode, uniforms };
+}
+
 std::tuple<SkUniquePaintParamsID, std::unique_ptr<SkUniformBlock>> ExtractPaintData(
         SkShaderCodeDictionary* dictionary,
         const PaintParams& p) {
@@ -34,5 +65,6 @@ std::tuple<SkUniquePaintParamsID, std::unique_ptr<SkUniformBlock>> ExtractPaintD
 
     return { entry->uniqueID(), std::move(block) };
 }
+#endif
 
 } // namespace skgpu

@@ -12,6 +12,7 @@
 #include "include/core/SkBlendMode.h"
 #include "include/core/SkSpan.h"
 #include "include/core/SkTileMode.h"
+#include "include/private/SkSLString.h"
 
 enum class CodeSnippetID : uint8_t;
 class SkShaderCodeDictionary;
@@ -21,10 +22,21 @@ class SkUniquePaintParamsID;
 
 namespace skgpu {
 
+#if 0
 class PaintParams;
+
+std::tuple<SkUniquePaintParamsID, std::unique_ptr<SkUniformBlock>> GetUniqueIDAndUniformData(
+        SkShaderCodeDictionary*,
+        const PaintParams&,
+        SkBackend);
+
+std::tuple<std::string, std::vector<SkSpan<const SkUniform>>> GetSkSLAndUniformDescription(
+        SkShaderCodeDictionary*,
+        SkUniquePaintParamsID);
 
 std::tuple<SkUniquePaintParamsID, std::unique_ptr<SkUniformBlock>> ExtractPaintData(
         SkShaderCodeDictionary*, const PaintParams&);
+#endif
 
 } // namespace skgpu
 

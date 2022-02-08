@@ -9,7 +9,9 @@ _include = get_path_info("../experimental/graphite/include", "abspath")
 
 skia_graphite_public = [
   "$_include/BackendTexture.h",
+  "$_include/Combinations.h",
   "$_include/Context.h",
+  "$_include/Encoding.h",
   "$_include/GraphiteTypes.h",
   "$_include/Recorder.h",
   "$_include/Recording.h",
@@ -24,6 +26,7 @@ skia_graphite_sources = [
   "$_src/Buffer.h",
   "$_src/Caps.cpp",
   "$_src/Caps.h",
+  "$_src/Combinations.cpp",
   "$_src/CommandBuffer.cpp",
   "$_src/CommandBuffer.h",
   "$_src/Context.cpp",
@@ -47,6 +50,7 @@ skia_graphite_sources = [
   "$_src/DrawTypes.h",
   "$_src/DrawWriter.cpp",
   "$_src/DrawWriter.h",
+  "$_src/Encoding.cpp",
   "$_src/EnumBitMask.h",
   "$_src/GlobalCache.cpp",
   "$_src/GlobalCache.h",

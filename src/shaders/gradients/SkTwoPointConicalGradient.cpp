@@ -277,7 +277,7 @@ std::unique_ptr<GrFragmentProcessor> SkTwoPointConicalGradient::asFragmentProces
 
 #endif
 
-void SkTwoPointConicalGradient::addToKey(SkShaderCodeDictionary* dict,
+void SkTwoPointConicalGradient::addToKeyS(SkShaderCodeDictionary* dict,
                                          SkBackend backend,
                                          SkPaintParamsKey* key,
                                          SkUniformBlock* uniformBlock) const {

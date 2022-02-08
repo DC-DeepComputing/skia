@@ -83,7 +83,6 @@ std::string emit_SKSL_uniforms(int bufferID, const char* name, SkSpan<const SkUn
     std::string result = get_uniform_header(bufferID, name);
     result += get_uniforms(uniforms, &offset);
     result.append("};\n\n");
-
     return result;
 }
 
@@ -178,7 +177,6 @@ std::string get_sksl_fs(SkShaderCodeDictionary* dict,
     }
 
     SkShaderInfo shaderInfo;
-
     dict->getShaderInfo(desc.paintParamsID(), &shaderInfo);
 
     *writesColor = shaderInfo.writesColor();
@@ -343,7 +341,6 @@ std::string GetMtlUniforms(int bufferID,
 
     return result;
 }
-
 
 enum ShaderType {
     kVertex_ShaderType = 0,
