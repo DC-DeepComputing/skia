@@ -1,0 +1,30 @@
+{
+  "comments": [
+    {
+      "robotId": "ayeaye",
+      "robotRunId": "AR00000000000020234469",
+      "url": "https://android-build.googleplex.com/builds/treetop/skia-review/505681?revision\u003d5",
+      "fixSuggestions": [],
+      "key": {
+        "uuid": "1ab68c42_72cd791f",
+        "filename": "src/core/SkDescriptor.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 180,
+      "author": {
+        "id": 13964
+      },
+      "writtenOn": "2022-02-08T22:40:54Z",
+      "side": 1,
+      "message": "Prefer to use inclusive terms like \u0027valid\u0027, \u0027validity check\u0027 or \u0027initial check\u0027; see https://source.android.com/setup/contribute/respectful-code for more details. In the case of a false positive add BYPASS_INCLUSIVE_LANGUAGE_REASON\u003dmy_reason_here to your commit message to disable this check.",
+      "range": {
+        "startLine": 180,
+        "startChar": 13,
+        "endLine": 180,
+        "endChar": 19
+      },
+      "revId": "0ec7de8b869d8016d149f6b20a21036a3fda13d7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
