@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2fa408cd_5b76d7c2",
+        "filename": "src/ports/SkFontHost_FreeType.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1358,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-02-08T16:48:15Z",
+      "side": 1,
+      "message": "Yeah, in order to use a SkDrawable which wraps the FT_Face and not create a picture, all of the code here would need to be in the SkDrawable (the mutex, setting up the state on the FT_Face including loading the glyph slot, etc).\n\nNow that Skia requires FreeType 2.8.1 or newer, I think we can re-write a lot of this locking so we only lock the FT_Face and don\u0027t need a global lock anymore for this. Not sure if that would actually help much in contention since we\u0027re often drawing out of one face, but it\u0027s a step in the right direction.",
+      "revId": "1b2d2d7efd063246f126f6fee2187a001ac8076b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
