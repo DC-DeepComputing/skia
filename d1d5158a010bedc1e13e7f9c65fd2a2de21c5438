@@ -185,6 +185,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fee9f309_365373a5",
+        "filename": "experimental/graphite/src/UploadList.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-08T14:15:19Z",
+      "side": 1,
+      "message": "I think we could; I\u0027ve certainly assumed we\u0027d need some simple fill/draw API that we use on top of DrawContext that doesn\u0027t have the same requirements as Device. Since those often are used to prepare images, I think it makes sense for uploads to be stored here, and if we\u0027re wrong, I think having it encapsulated in an UploadList will make moving it around pretty easy.",
+      "parentUuid": "a614a954_f6ce7886",
+      "range": {
+        "startLine": 27,
+        "startChar": 18,
+        "endLine": 27,
+        "endChar": 34
+      },
+      "revId": "d1d5158a010bedc1e13e7f9c65fd2a2de21c5438",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ccee7469_772df813",

@@ -18,6 +18,46 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "27374b17_2b68b948",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-08T14:15:19Z",
+      "side": 1,
+      "message": "lgtm, with one small request for a logging message, and then thoughts on the UploadCommand::Make() signature. ",
+      "revId": "a3e19b8c5359afeedb2550bf0dead88a4ead3491",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "03165202_2344a0aa",
+        "filename": "experimental/graphite/src/UploadTask.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-08T14:15:19Z",
+      "side": 1,
+      "message": "\"Could not instantiate texture proxy for UploadTask\"?",
+      "range": {
+        "startLine": 46,
+        "startChar": 21,
+        "endLine": 46,
+        "endChar": 64
+      },
+      "revId": "a3e19b8c5359afeedb2550bf0dead88a4ead3491",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e0c8b148_ae950e90",
@@ -55,6 +95,30 @@
       "side": 1,
       "message": "Yeah I like the return std::u_p best imo",
       "parentUuid": "e0c8b148_ae950e90",
+      "range": {
+        "startLine": 39,
+        "startChar": 11,
+        "endLine": 39,
+        "endChar": 24
+      },
+      "revId": "a3e19b8c5359afeedb2550bf0dead88a4ead3491",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bd604c5d_88cbcf3e",
+        "filename": "experimental/graphite/src/UploadTask.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-08T14:15:19Z",
+      "side": 1,
+      "message": "Given that buffer, texture proxy, and copy data already have some indirection and UploadCommand itself isn\u0027t that large of an object, is the main goal of switching std::unique_ptr or bool+ptr to handle errors?\n\nIf that\u0027s the case, what if we made it so that UploadCommand can\u0027t fail, and UploadList::appendUpload() handles the steps/work to get buffer and copy data prepared? If that fails, then it can return a bool and not modify its fCommands list. \n\nThis is coming mostly from wanting to avoid vectors of unique ptrs, and avoiding ref/unref indirection when possible. But if the plan is to make UploadCommand bigger and more complex, then my ideas don\u0027t apply as well.",
+      "parentUuid": "6f582cd5_1c9b69f2",
       "range": {
         "startLine": 39,
         "startChar": 11,
