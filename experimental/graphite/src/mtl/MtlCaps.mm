@@ -230,6 +230,12 @@ void Caps::initCaps(const id<MTLDevice> device) {
         fRequiredUniformBufferAlignment = 16;
     }
 
+    if (this->isMac()) {
+        fRequiredTransferBufferAlignment = 4;
+    } else {
+        fRequiredTransferBufferAlignment = 1;
+    }
+
     if (@available(macOS 10.12, ios 14.0, *)) {
         fClampToBorderSupport = (this->isMac() || fFamilyGroup >= 7);
     } else {
