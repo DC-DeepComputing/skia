@@ -39,6 +39,30 @@
       },
       "revId": "b71f22f1248105727bdefe0e109a2f86f33c5d15",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1879199f_fe15c584",
+        "filename": "src/gpu/gl/GrGLUtil.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 318,
+      "author": {
+        "id": 12064
+      },
+      "writtenOn": "2022-02-08T01:49:49Z",
+      "side": 1,
+      "message": "According to the info listed by this website(https://ark.intel.com/content/www/us/en/ark/products/codename/74979/products-formerly-ice-lake.html), I haven\u0027t seen any 910~950 included in the graphics string of those released IceLake devices. Do we need to sync with @bsalomon in case missing some details?\nThanks",
+      "parentUuid": "2f97990c_b025936c",
+      "range": {
+        "startLine": 318,
+        "startChar": 20,
+        "endLine": 318,
+        "endChar": 60
+      },
+      "revId": "b71f22f1248105727bdefe0e109a2f86f33c5d15",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
