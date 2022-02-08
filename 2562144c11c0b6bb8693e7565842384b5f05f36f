@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "17fd5294_3e4cbc39",
+        "filename": "src/core/SkChromeRemoteGlyphCache.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1076,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-02-08T22:34:52Z",
+      "side": 0,
+      "message": "Update include/private/chromium/SkChromeRemoteGlyphCache.h too?",
+      "range": {
+        "startLine": 1076,
+        "startChar": 5,
+        "endLine": 1076,
+        "endChar": 34
+      },
+      "revId": "2562144c11c0b6bb8693e7565842384b5f05f36f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
