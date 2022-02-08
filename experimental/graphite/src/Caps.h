@@ -56,6 +56,10 @@ public:
     // to a draw.
     size_t requiredUniformBufferAlignment() const { return fRequiredUniformBufferAlignment; }
 
+    // Returns the required alignment in bytes for the offset into a Buffer when using it
+    // to transfer to or from a Texture.
+    size_t requiredTransferBufferAlignment() const { return fRequiredTransferBufferAlignment; }
+
     bool clampToBorderSupport() const { return fClampToBorderSupport; }
 
 protected:
@@ -63,6 +67,7 @@ protected:
 
     int fMaxTextureSize = 0;
     size_t fRequiredUniformBufferAlignment = 0;
+    size_t fRequiredTransferBufferAlignment = 0;
 
     std::unique_ptr<SkSL::ShaderCaps> fShaderCaps;
 
