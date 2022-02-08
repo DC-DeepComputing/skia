@@ -78,6 +78,9 @@ public:
         fCoverageFragmentProcessor = std::move(fp);
         fTrivial = false;
     }
+    std::unique_ptr<GrFragmentProcessor> detachCoverageFragmentProcessor() {
+        return std::move(fCoverageFragmentProcessor);
+    }
 
     bool hasColorFragmentProcessor() const { return fColorFragmentProcessor ? true : false; }
     int hasCoverageFragmentProcessor() const { return fCoverageFragmentProcessor ? true : false; }
