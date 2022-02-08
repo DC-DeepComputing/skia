@@ -26,6 +26,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "f7efc7d8_88b86b97",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-02-08T22:44:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b6e28a02_9c3e751c",
+      "range": {
+        "startLine": 15,
+        "startChar": 0,
+        "endLine": 15,
+        "endChar": 4
+      },
+      "revId": "210df2f966753bc8cee4558977a7776354e8598f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "2c10c171_3b23340f",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 4
@@ -58,6 +82,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f0ed2ac6_868e9530",
+        "filename": "src/core/SkDescriptor.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 180,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-02-08T22:44:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "80033f73_c422e40c",
+      "revId": "210df2f966753bc8cee4558977a7776354e8598f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9d166348_cae08b94",
@@ -75,6 +117,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4ff17785_1a648bd4",
+        "filename": "src/core/SkDescriptor.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 183,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-02-08T22:44:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9d166348_cae08b94",
+      "revId": "210df2f966753bc8cee4558977a7776354e8598f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2507589f_77ee41a6",
@@ -88,6 +148,24 @@
       "writtenOn": "2022-02-08T21:18:09Z",
       "side": 1,
       "message": "Same here.",
+      "revId": "210df2f966753bc8cee4558977a7776354e8598f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e8062f0b_a2a29021",
+        "filename": "src/core/SkDescriptor.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 195,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-02-08T22:44:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2507589f_77ee41a6",
       "revId": "210df2f966753bc8cee4558977a7776354e8598f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
