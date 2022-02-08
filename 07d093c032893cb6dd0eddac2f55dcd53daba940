@@ -39,6 +39,30 @@
       },
       "revId": "07d093c032893cb6dd0eddac2f55dcd53daba940",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "57904aee_e41ba8b6",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 175,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-02-08T15:07:04Z",
+      "side": 1,
+      "message": "In my mind the ShaderCodeDictionary always knows about all the built in snippets regardless of if they\u0027re being actively used. They are already in the binary somewhere so we would just be incurring an additional SnippetEntry of memory. The rationale for having them in the ShaderCodeDictionary rather than just free floating static data is the user-provided SkSL. We will need some way of holding that and looking it up - which is what the ShaderCodeDictionary is for. Since we\u0027ll already have to plumb it everywhere for user-provided SkSL I figured it could also just be the gate keeper for the built in code too.",
+      "parentUuid": "d66b0075_c1e18a02",
+      "range": {
+        "startLine": 143,
+        "startChar": 4,
+        "endLine": 175,
+        "endChar": 6
+      },
+      "revId": "07d093c032893cb6dd0eddac2f55dcd53daba940",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
