@@ -337,7 +337,7 @@ parse_targets() {
     basename $LIBPATH
   done
 }
-${NINJA} -C ${BUILD_DIR} libskia.a libskshaper.a \
+${NINJA} -v -C ${BUILD_DIR} libskia.a libskshaper.a \
   $(parse_targets $SKOTTIE_LIB $VIEWER_LIB $PARTICLES_LIB $SHAPER_LIB $PARAGRAPH_LIB)
 
 export EMCC_CLOSURE_ARGS="--externs $BASE_DIR/externs.js "
