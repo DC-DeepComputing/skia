@@ -52,6 +52,24 @@
       "parentUuid": "40553d48_9e80817c",
       "revId": "d547db2b1f8eaca4ac7ee922a23fbf70a1496b83",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ca1cb17f_2e2b6a1f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-02-08T20:16:13Z",
+      "side": 1,
+      "message": "That sounds like a borken warning then.",
+      "parentUuid": "47191bf0_1d92e5df",
+      "revId": "d547db2b1f8eaca4ac7ee922a23fbf70a1496b83",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
