@@ -16,6 +16,24 @@
       "message": "Want to put those scripts in tools/, in case we ever need to do this in bulk again?",
       "revId": "35d411cbe040e8853b536a7f02a79dbe677a06f2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0a9748f9_5899b964",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-02-08T16:35:49Z",
+      "side": 1,
+      "message": "We should totally have a script in tools/, but I don\u0027t think the stuff I bodged together is sufficient. It\u0027s not idempotent (it won\u0027t clear out any existing /*%%*/ markers) and it leaves behind a trail of devastation and temp files that need to be manually reverted away before you have a usable CL.",
+      "parentUuid": "0680bd2c_241a05f3",
+      "revId": "35d411cbe040e8853b536a7f02a79dbe677a06f2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
