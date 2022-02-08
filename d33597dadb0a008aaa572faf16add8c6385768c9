@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0cc918f0_e2610000",
+        "filename": "include/private/SkShaderCodeDictionary.h",
+        "patchSetId": 23
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-08T14:17:21Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "5d506a76_91786b70",
+      "range": {
+        "startLine": 26,
+        "startChar": 20,
+        "endLine": 26,
+        "endChar": 25
+      },
+      "revId": "d33597dadb0a008aaa572faf16add8c6385768c9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d760f6a4_af3dd227",
@@ -85,6 +109,30 @@
       "side": 1,
       "message": "I\u0027m proceeding as if SkVM will someday swap over.",
       "parentUuid": "d760f6a4_af3dd227",
+      "range": {
+        "startLine": 39,
+        "startChar": 4,
+        "endLine": 39,
+        "endChar": 31
+      },
+      "revId": "d33597dadb0a008aaa572faf16add8c6385768c9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2a8fe16c_c5644d52",
+        "filename": "include/private/SkShaderCodeDictionary.h",
+        "patchSetId": 23
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-08T14:17:21Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "d954ca7a_6b95b290",
       "range": {
         "startLine": 39,
         "startChar": 4,
@@ -179,6 +227,30 @@
       "side": 1,
       "message": "I\u0027ve add a block comment ahead of toSkSL. The model I\u0027m aiming for is that the snippet\u0027s code will be fixed but the calling site will be procedurally generated.",
       "parentUuid": "588f9a9c_b2ace447",
+      "range": {
+        "startLine": 29,
+        "startChar": 8,
+        "endLine": 29,
+        "endChar": 26
+      },
+      "revId": "d33597dadb0a008aaa572faf16add8c6385768c9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4970ec7e_f1c1cebd",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-08T14:17:21Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "dd45076c_29eb106b",
       "range": {
         "startLine": 29,
         "startChar": 8,
