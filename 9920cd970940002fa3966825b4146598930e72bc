@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e4c8ee7c_3e0b6bcd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-02-08T17:33:18Z",
+      "side": 1,
+      "message": "@Kevin, I would like to exercise this new deserializer to SkFuzzDeserializeSkDescriptor. Can I get help for doing this?",
+      "revId": "9920cd970940002fa3966825b4146598930e72bc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
