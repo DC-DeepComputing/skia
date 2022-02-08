@@ -1,4 +1,4 @@
 ### Compilation failed:
 
-error: 6: expected 'float', but found 'bool'
+error: 10: expected 'float', but found 'bool'
 1 error

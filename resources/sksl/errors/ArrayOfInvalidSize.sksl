@@ -1,3 +1,29 @@
+/*%%*
+array size must be positive
+array size must be positive
+array size must be positive
+expected 'int', but found 'float'
+integer is out of range for type 'int': 4000000000
+array size must be positive
+expected 'int', but found 'bool'
+expected 'int', but found 'bool'
+expected 'int', but found 'int2'
+missing index in '[]'
+integer is out of range for type 'int': 4000000000
+integer is out of range for type 'int': -9223372036854775808
+array size must be positive
+array size must be positive
+array size must be positive
+array size must be an integer
+array size out of bounds
+array size must be an integer
+array size must be an integer
+array size must be an integer
+expected array dimension
+integer is out of range for type 'int': 4000000000
+integer is out of range for type 'int': -9223372036854775808
+*%%*/
+
 void a1() { float[-2]; }
 void b1() { float[-1]; }
 void c1() { float[0]; }

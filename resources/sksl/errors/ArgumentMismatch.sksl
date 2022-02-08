@@ -1,3 +1,7 @@
+/*%%*
+expected 'float', but found 'bool'
+*%%*/
+
 float foo(float x) {
     return x * x;
 }

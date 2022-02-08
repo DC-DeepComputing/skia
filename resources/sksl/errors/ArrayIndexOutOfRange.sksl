@@ -1,3 +1,11 @@
+/*%%*
+index -1 out of range for 'int[123]'
+index 123 out of range for 'half4x4[123]'
+index 1000000000 out of range for 'int4[123]'
+index 3000000000 out of range for 'half3[123]'
+missing index in '[]'
+*%%*/
+
 void array_neg1             () { int     a[123]; int     v = a[-1]; }
 void array_0                () { float   a[123]; float   v = a[0]; }
 void array_122              () { bool2   a[123]; bool2   v = a[122]; }

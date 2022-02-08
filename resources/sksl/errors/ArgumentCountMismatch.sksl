@@ -1,3 +1,7 @@
+/*%%*
+call to 'foo' expected 1 argument, but found 2
+*%%*/
+
 float foo(float x) {
     return x * x;
 }
