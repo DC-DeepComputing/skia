@@ -22,6 +22,30 @@
       },
       "revId": "7b54d1626c83dd6d6ebfd9ec6d886ef5440db3e2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6030bbd4_92dd97fb",
+        "filename": "tools/skqp/src/jni_skqp.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 9065
+      },
+      "writtenOn": "2022-02-08T19:30:43Z",
+      "side": 0,
+      "message": "I don\u0027t know the answer, but it does work. why should we assert that there are nonzero number of gms if we literally want to run it with zero gms?",
+      "parentUuid": "aa8e4c92_3e36122e",
+      "range": {
+        "startLine": 131,
+        "startChar": 24,
+        "endLine": 131,
+        "endChar": 44
+      },
+      "revId": "7b54d1626c83dd6d6ebfd9ec6d886ef5440db3e2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
