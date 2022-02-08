@@ -22,6 +22,30 @@
       },
       "revId": "3f6224b60273336abf307cd0327debf37c714551",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "735d698c_5864bb9a",
+        "filename": "src/core/SkDraw.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 825,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-02-08T22:05:12Z",
+      "side": 1,
+      "message": "It felt a little unnecessary to me to abort execution just because the stroke-cap field was invalid. Isn\u0027t dropping the draw more pleasant than a SIGABRT?\n\nDropping the default case is fine with me if there\u0027s no warning (not sure, this path implies there might be one, but it\u0027s also probably very old)",
+      "parentUuid": "b819b798_bb78e06d",
+      "range": {
+        "startLine": 824,
+        "startChar": 20,
+        "endLine": 825,
+        "endChar": 27
+      },
+      "revId": "3f6224b60273336abf307cd0327debf37c714551",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
