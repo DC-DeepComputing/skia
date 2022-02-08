@@ -52,6 +52,12 @@ extern bool gUseSkVMBlitter;
 
 class UpdatableColorShader : public SkShaderBase {
 public:
+    void addToKeyS(SkShaderCodeDictionary*,
+                   SkBackend,
+                   SkPaintParamsKey*,
+                   SkUniformBlock*) const override {
+    }
+
     explicit UpdatableColorShader(SkColorSpace* cs)
         : fSteps{sk_srgb_singleton(), kUnpremul_SkAlphaType, cs, kUnpremul_SkAlphaType} {}
     skvm::Color onProgram(

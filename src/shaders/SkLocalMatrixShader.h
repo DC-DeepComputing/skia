@@ -17,6 +17,12 @@ class SkArenaAlloc;
 
 class SkLocalMatrixShader final : public SkShaderBase {
 public:
+    void addToKeyS(SkShaderCodeDictionary*,
+                   SkBackend,
+                   SkPaintParamsKey*,
+                   SkUniformBlock*) const override {
+    }
+
     SkLocalMatrixShader(sk_sp<SkShader> proxy, const SkMatrix& localMatrix)
     : INHERITED(&localMatrix)
     , fProxyShader(std::move(proxy))

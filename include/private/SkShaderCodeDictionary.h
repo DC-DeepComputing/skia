@@ -68,6 +68,7 @@ public:
 
         SkUniquePaintParamsID fUniqueID;  // fixed-size (uint32_t) unique ID assigned to a key
         SkPaintParamsKey fPaintParamsKey; // variable-length paint key descriptor
+        // TODO: we could also lazily cache the generated SkSL here
     };
 
     const Entry* findOrCreate(const SkPaintParamsKey&) SK_EXCLUDES(fSpinLock);

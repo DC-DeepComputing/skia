@@ -12,6 +12,13 @@
 
 class SkColorFilter_Matrix : public SkColorFilterBase {
 public:
+    void addToKeyCF(SkShaderCodeDictionary*,
+                    SkBackend,
+                    SkPaintParamsKey*,
+                    SkUniformBlock*) const override {
+
+    }
+
     enum class Domain : uint8_t { kRGBA, kHSLA };
 
     explicit SkColorFilter_Matrix(const float array[20], Domain);

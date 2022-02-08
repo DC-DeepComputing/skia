@@ -7,30 +7,25 @@
 
 #include "experimental/graphite/src/ContextUtils.h"
 
-#include <string>
-#include "experimental/graphite/src/ContextPriv.h"
-#include "experimental/graphite/src/DrawTypes.h"
 #include "experimental/graphite/src/PaintParams.h"
-#include "include/core/SkPaint.h"
 #include "include/private/SkShaderCodeDictionary.h"
 #include "include/private/SkUniquePaintParamsID.h"
-#include "src/core/SkBlenderBase.h"
-#include "src/core/SkKeyHelpers.h"
-#include "src/core/SkUniform.h"
 #include "src/core/SkUniformData.h"
 
 namespace skgpu {
 
 std::tuple<SkUniquePaintParamsID, std::unique_ptr<SkUniformBlock>> ExtractPaintData(
-        SkShaderCodeDictionary* dictionary,
-        const PaintParams& p) {
-
-    SkPaintParamsKey key;
+        SkShaderCodeDictionary* dict,
+        const PaintParams& p,
+        SkBackend backend) {
     std::unique_ptr<SkUniformBlock> block = std::make_unique<SkUniformBlock>();
 
-    p.toKey(dictionary, SkBackend::kGraphite, &key, block.get());
+    SkPaintParamsKey key;
+    p.toKey(dict, backend, &key, block.get());
 
-    auto entry = dictionary->findOrCreate(key);
+//    key.dump();
+
+    auto entry = dict->findOrCreate(key);
 
     return { entry->uniqueID(), std::move(block) };
 }

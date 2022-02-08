@@ -11,6 +11,7 @@
 #include <array>
 #include <limits>
 #include "include/core/SkTypes.h"
+#include "include/private/SkSLString.h"
 
 enum class SkBackend : uint8_t {
     kGanesh,
@@ -35,7 +36,7 @@ enum class CodeSnippetID : uint8_t {
     kConicalGradientShader,
 
     kImageShader,
-    kBlendShader,     // aka ComposeShader
+    kBlendShader,     // aka ComposeShader for now just driven by an SkBlendMode
 
     // BlendMode code snippets
     kSimpleBlendMode,
@@ -43,6 +44,8 @@ enum class CodeSnippetID : uint8_t {
     kLast = kSimpleBlendMode
 };
 static constexpr int kCodeSnippetIDCount = static_cast<int>(CodeSnippetID::kLast) + 1;
+static const int kCodeSnippetIDBits = 16;
+static const uint32_t kCodeSnippetIDMask = 0xFFFF;
 
 // This class is a compact representation of the shader needed to implement a given
 // PaintParams. Its structure is a series of blocks where each block has a
@@ -57,6 +60,7 @@ public:
     //  1st byte: codeSnippetID
     //  2nd byte: total blockSize in bytes
     // Returns the header's offset in the key - to be passed back into endBlock
+    //  TODO: maybe jam encoding in here? That should go at the start of the entire key though.
     int beginBlock(CodeSnippetID codeSnippetID) {
         SkASSERT(fNumBytes < kMaxKeySize);
 
@@ -81,6 +85,12 @@ public:
         SkASSERT(headerOffset + blockSize <= this->sizeInBytes());
 
         return { id, blockSize };
+    }
+
+    void addInt1(int iFoo) {
+//        SkASSERT(fNumInts < kMaxInts);
+        fData[fNumBytes] = iFoo;
+        fNumBytes += 4;
     }
 
     void addByte(uint8_t byte) {
