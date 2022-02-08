@@ -143,6 +143,7 @@ private:
         kColorManaged8888,      // 8888 with color management
         kColorManagedF16,       // F16 with color management
         kColorManagedF16Norm,   // Normalized F16 with color management
+        kRed,                   // R8, no color management
     };
 
     void initSlides();
