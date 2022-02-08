@@ -414,6 +414,19 @@ static std::unique_ptr<GrFragmentProcessor> make_dither_effect(
 }
 #endif
 
+static std::unique_ptr<GrFragmentProcessor> make_luma_effect(
+        std::unique_ptr<GrFragmentProcessor> fp) {
+    static auto effect = SkMakeRuntimeEffect(SkRuntimeEffect::MakeForColorFilter, R"(
+        half4 main(half4 inColor) {
+            inColor.rgb = dot(half3(0.2126, 0.7152, 0.0722), inColor.rgb).xxx;
+            return inColor;
+        }
+    )");
+    SkASSERT(SkRuntimeEffectPriv::SupportsConstantOutputForConstantInput(effect));
+    return GrSkSLFP::Make(
+            effect, "RGBToLuma", std::move(fp), GrSkSLFP::OptFlags::kPreservesOpaqueInput);
+}
+
 static inline bool skpaint_to_grpaint_impl(
         GrRecordingContext* context,
         const GrColorInfo& dstColorInfo,
@@ -572,6 +585,11 @@ static inline bool skpaint_to_grpaint_impl(
                 GrFragmentProcessor::SurfaceColor(),
                 fpArgs);
         grPaint->setXPFactory(SkBlendMode_AsXPFactory(SkBlendMode::kSrc));
+    }
+
+
+    if (GrColorTypeChannelFlags(dstColorInfo.colorType()) & kGray_SkColorChannelFlag) {
+        paintFP = make_luma_effect(std::move(paintFP));
     }
 
     if (GrColorTypeClampType(dstColorInfo.colorType()) == GrClampType::kManual) {

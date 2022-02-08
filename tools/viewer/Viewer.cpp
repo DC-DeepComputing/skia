@@ -493,6 +493,9 @@ Viewer::Viewer(int argc, char** argv, void* platformData)
                 this->setColorMode(ColorMode::kColorManagedF16Norm);
                 break;
             case ColorMode::kColorManagedF16Norm:
+                this->setColorMode(ColorMode::kGray);
+                break;
+            case ColorMode::kGray:
                 this->setColorMode(ColorMode::kLegacy);
                 break;
         }
@@ -1065,9 +1068,12 @@ void Viewer::updateTitle() {
         case ColorMode::kColorManagedF16Norm:
             title.append(" ColorManaged F16 Norm");
             break;
+        case ColorMode::kGray:
+            title.append(" Gray8");
+            break;
     }
 
-    if (ColorMode::kLegacy != fColorMode) {
+    if (fColorMode != ColorMode::kLegacy && fColorMode != ColorMode::kGray) {
         int curPrimaries = -1;
         for (size_t i = 0; i < SK_ARRAY_COUNT(gNamedPrimaries); ++i) {
             if (primaries_equal(*gNamedPrimaries[i].fPrimaries, fColorSpacePrimaries)) {
@@ -1494,7 +1500,7 @@ void Viewer::drawSlide(SkSurface* surface) {
 
     // If we're in any of the color managed modes, construct the color space we're going to use
     sk_sp<SkColorSpace> colorSpace = nullptr;
-    if (ColorMode::kLegacy != fColorMode) {
+    if (fColorMode != ColorMode::kLegacy && fColorMode != ColorMode::kGray) {
         skcms_Matrix3x3 toXYZ;
         SkAssertResult(fColorSpacePrimaries.toXYZD50(&toXYZ));
         colorSpace = SkColorSpace::MakeRGB(fColorSpaceTransferFn, toXYZ);
@@ -1524,6 +1530,9 @@ void Viewer::drawSlide(SkSurface* surface) {
         case ColorMode::kColorManagedF16Norm:
             colorType = kRGBA_F16Norm_SkColorType;
             break;
+        case ColorMode::kGray:
+            colorType = kGray_8_SkColorType;
+            break;
     }
 
     auto make_surface = [=](int w, int h) {
@@ -1547,6 +1556,7 @@ void Viewer::drawSlide(SkSurface* surface) {
         fShowHistogramWindow ||
         Window::kRaster_BackendType == fBackendType ||
         colorSpace != nullptr ||
+        fColorMode == ColorMode::kGray ||
         FLAGS_offscreen) {
 
         offscreenSurface = make_surface(fWindow->width(), fWindow->height());
@@ -2438,6 +2448,7 @@ void Viewer::drawImGui() {
                 cmButton(ColorMode::kColorManaged8888, "Color Managed 8888");
                 cmButton(ColorMode::kColorManagedF16, "Color Managed F16");
                 cmButton(ColorMode::kColorManagedF16Norm, "Color Managed F16 Norm");
+                cmButton(ColorMode::kGray, "Gray8");
 
                 if (newMode != fColorMode) {
                     this->setColorMode(newMode);
