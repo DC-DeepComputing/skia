@@ -22,6 +22,30 @@
       },
       "revId": "bd28ac21880a90642f061d12e7d01f6173ecbdb3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8c028091_d04cd56e",
+        "filename": "src/core/SkGlyphRunPainter.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 155,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-02-08T19:50:39Z",
+      "side": 1,
+      "message": "Didn\u0027t really think that hard about it since this was all copy pasted from surrounding code and if this should change then a lot of places should change as well. This auto should resolve to a value of `SkZip\u003cSkGlyphVariant, SkPoint\u003e`. `accepted` returns one as a prvalue from an inline definition. In C++17 there will be no copy (the copy is elided, not optimized out). So there isn\u0027t really a need. I think if one wanted to be more generic `auto\u0026\u0026` is probably more correct (at least https://quuxplusone.github.io/blog/2018/12/15/autorefref-always-works/ makes such an argument).",
+      "parentUuid": "be2f3c81_6cd929a2",
+      "range": {
+        "startLine": 155,
+        "startChar": 21,
+        "endLine": 155,
+        "endChar": 25
+      },
+      "revId": "bd28ac21880a90642f061d12e7d01f6173ecbdb3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
