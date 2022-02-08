@@ -75,6 +75,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8f55ec8f_74cf7233",
+        "filename": "BUILD.gn",
+        "patchSetId": 1
+      },
+      "lineNbr": 2978,
+      "author": {
+        "id": 10154
+      },
+      "writtenOn": "2022-02-08T22:47:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e4920ad7_40f47f02",
+      "range": {
+        "startLine": 2978,
+        "startChar": 8,
+        "endLine": 2978,
+        "endChar": 50
+      },
+      "revId": "f1ad60802528e96658c4f32104c9e1afec29b300",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4b929629_45845404",
@@ -88,6 +112,30 @@
       "writtenOn": "2022-01-31T13:09:59Z",
       "side": 1,
       "message": "Use https://skia.googlesource.com/external/github.com/emscripten-core/emsdk.git instead",
+      "range": {
+        "startLine": 26,
+        "startChar": 53,
+        "endLine": 26,
+        "endChar": 59
+      },
+      "revId": "f1ad60802528e96658c4f32104c9e1afec29b300",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d58eaea9_3cb43f56",
+        "filename": "DEPS",
+        "patchSetId": 1
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 10154
+      },
+      "writtenOn": "2022-02-08T22:47:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4b929629_45845404",
       "range": {
         "startLine": 26,
         "startChar": 53,
@@ -121,6 +169,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "969339f7_084c7d7c",
+        "filename": "gn/skia.gni",
+        "patchSetId": 1
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 10154
+      },
+      "writtenOn": "2022-02-08T22:47:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "55c19663_083b760e",
+      "range": {
+        "startLine": 30,
+        "startChar": 2,
+        "endLine": 30,
+        "endChar": 20
+      },
+      "revId": "f1ad60802528e96658c4f32104c9e1afec29b300",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "229b1881_0ae4828d",
@@ -134,6 +206,30 @@
       "writtenOn": "2022-01-31T13:09:59Z",
       "side": 1,
       "message": "2022?",
+      "range": {
+        "startLine": 1,
+        "startChar": 16,
+        "endLine": 1,
+        "endChar": 20
+      },
+      "revId": "f1ad60802528e96658c4f32104c9e1afec29b300",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "424df043_ec085c62",
+        "filename": "gn/toolchain/wasm.gni",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 10154
+      },
+      "writtenOn": "2022-02-08T22:47:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "229b1881_0ae4828d",
       "range": {
         "startLine": 1,
         "startChar": 16,
