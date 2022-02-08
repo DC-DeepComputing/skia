@@ -183,7 +183,7 @@ void WinGLTestContext::destroyGLContext() {
 }
 
 void WinGLTestContext::onPlatformMakeNotCurrent() const {
-    if (!wglMakeCurrent(NULL, NULL)) {
+    if (!wglMakeCurrent(nullptr, nullptr)) {
         SkDebugf("Could not null out the rendering context.\n");
     }
 }
