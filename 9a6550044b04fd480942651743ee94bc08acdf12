@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3c87fe63_7a6c9282",
+        "filename": "src/sksl/SkSLRehydrator.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 275,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-02-08T23:20:25Z",
+      "side": 1,
+      "message": "Seems better to have our accessor return a non-const `Context\u0026` and use the accessor everywhere, if we are going to mutate the context in some places.",
+      "range": {
+        "startLine": 275,
+        "startChar": 24,
+        "endLine": 275,
+        "endChar": 42
+      },
+      "revId": "9a6550044b04fd480942651743ee94bc08acdf12",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
