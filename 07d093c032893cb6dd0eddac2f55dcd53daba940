@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "125aaf4c_77f76566",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-08T14:27:49Z",
+      "side": 1,
+      "message": "I like ShaderCodeDictionary being able to provide the uniforms for its recorded shaders, but I\u0027m a little wary of having to have the code dictionary around when building the shader keys. My other comment goes into a bit more detail, but it mostly wondering how that affects key generation for paint params that were missed by pre-compilation.",
+      "revId": "07d093c032893cb6dd0eddac2f55dcd53daba940",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d66b0075_c1e18a02",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 175,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-08T14:27:49Z",
+      "side": 1,
+      "message": "what\u0027s the long term plan here for pre-compiling? Then we\u0027d only want to register the requested built-in snippets in the code dictionary, right? Given that, it seems likely that the built in snippets will have some statically defined SnippetEntry for their code and uniforms, at which point the AddToKey() logic could use those directly instead of querying a code dictionary, which might be necessary if we\u0027re dealing with a shader key combination that was missed by the precompile set.\n\nWe\u0027ll also eventually want the code dictionary to have backend-specific builtins, but that seems easy enough to tweak.",
+      "range": {
+        "startLine": 143,
+        "startChar": 4,
+        "endLine": 175,
+        "endChar": 6
+      },
+      "revId": "07d093c032893cb6dd0eddac2f55dcd53daba940",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
