@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b3431934_7048ecf7",
+        "filename": "experimental/graphite/src/GraphiteResourceKey.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-02-08T16:19:49Z",
+      "side": 1,
+      "message": "To be honest I\u0027m not too worried about needing to support more types. The only types we are making are all internal. I would be surprised if we even hit 20 types.",
+      "parentUuid": "84c55878_7c9c8c1e",
+      "range": {
+        "startLine": 16,
+        "startChar": 29,
+        "endLine": 16,
+        "endChar": 39
+      },
+      "revId": "8b10b4eca083178eb635b9cc3b9b6f0d90d43384",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3c73d873_10de5ae7",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c9136554_a6760fd8",
+        "filename": "experimental/graphite/src/GraphiteResourceKey.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-02-08T16:19:49Z",
+      "side": 1,
+      "message": "Yeah I happy to name this something else, but I can\u0027t think of a better, shorter, generic name. For now leaving as is, but easy enough to change if we get some creative insight.",
+      "parentUuid": "3c73d873_10de5ae7",
+      "range": {
+        "startLine": 15,
+        "startChar": 6,
+        "endLine": 15,
+        "endChar": 25
+      },
+      "revId": "8b10b4eca083178eb635b9cc3b9b6f0d90d43384",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "73077c34_e8ea94a1",
@@ -60,6 +108,30 @@
       "writtenOn": "2022-02-07T21:44:03Z",
       "side": 1,
       "message": "nit: using\n\nbut also, should this go in ResourceTypes.h?",
+      "range": {
+        "startLine": 18,
+        "startChar": 4,
+        "endLine": 18,
+        "endChar": 11
+      },
+      "revId": "8b10b4eca083178eb635b9cc3b9b6f0d90d43384",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "da5d2f59_8d961ea6",
+        "filename": "experimental/graphite/src/GraphiteResourceKey.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-02-08T16:19:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "73077c34_e8ea94a1",
       "range": {
         "startLine": 18,
         "startChar": 4,
@@ -107,6 +179,30 @@
       "side": 1,
       "message": "Lets add an assert that that implication holds, since it does seem like a reasonable thing to be implied by the ResourceType.",
       "parentUuid": "32286c81_227da1f2",
+      "range": {
+        "startLine": 48,
+        "startChar": 17,
+        "endLine": 48,
+        "endChar": 19
+      },
+      "revId": "8b10b4eca083178eb635b9cc3b9b6f0d90d43384",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7b4678f8_022fb410",
+        "filename": "experimental/graphite/src/GraphiteResourceKey.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-02-08T16:19:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c58e1d61_82f2f99a",
       "range": {
         "startLine": 48,
         "startChar": 17,
