@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b819b798_bb78e06d",
+        "filename": "src/core/SkDraw.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 825,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-02-08T22:02:53Z",
+      "side": 1,
+      "message": "Probably nicer to use SkUNREACHABLE here? (Or just remove the default entirely? This is already handling every cap value).",
+      "range": {
+        "startLine": 824,
+        "startChar": 20,
+        "endLine": 825,
+        "endChar": 27
+      },
+      "revId": "3f6224b60273336abf307cd0327debf37c714551",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
