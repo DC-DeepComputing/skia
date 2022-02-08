@@ -375,6 +375,9 @@ if actual_freq != str(freq):
 
 
   def install(self):
+    # TODO(kjlubick,johnstiles) Remove after stale resources have been cleaned up.
+    self._adb('Remove old resources',
+              'rm', '-rf', self.device_dirs.resource_dir)
     self._adb('mkdir ' + self.device_dirs.resource_dir,
               'shell', 'mkdir', '-p', self.device_dirs.resource_dir)
     if self.m.vars.builder_cfg.get('model') in ['GalaxyS20', 'GalaxyS9']:
