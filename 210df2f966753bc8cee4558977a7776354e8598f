@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "80033f73_c422e40c",
+        "filename": "src/core/SkDescriptor.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 180,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-02-08T21:18:09Z",
+      "side": 1,
+      "message": "Shouldn\u0027t you just read whatever is there so it gets consumed?",
+      "revId": "210df2f966753bc8cee4558977a7776354e8598f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9d166348_cae08b94",
+        "filename": "src/core/SkDescriptor.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 183,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-02-08T21:18:09Z",
+      "side": 1,
+      "message": "Like, just do\n\n    if (!buffer.readPad32(\u0026descriptor, sizeof(SkDescriptor)) {\n        return {}\n    }",
+      "revId": "210df2f966753bc8cee4558977a7776354e8598f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2507589f_77ee41a6",
+        "filename": "src/core/SkDescriptor.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 195,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-02-08T21:18:09Z",
+      "side": 1,
+      "message": "Same here.",
+      "revId": "210df2f966753bc8cee4558977a7776354e8598f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
