@@ -70,6 +70,30 @@
       },
       "revId": "bd28ac21880a90642f061d12e7d01f6173ecbdb3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e76da92d_f55d1907",
+        "filename": "src/core/SkGlyphRunPainter.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 155,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-02-08T20:09:44Z",
+      "side": 1,
+      "message": "SGTM, elided copies are great.",
+      "parentUuid": "b228055d_1a8540eb",
+      "range": {
+        "startLine": 155,
+        "startChar": 21,
+        "endLine": 155,
+        "endChar": 25
+      },
+      "revId": "bd28ac21880a90642f061d12e7d01f6173ecbdb3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
