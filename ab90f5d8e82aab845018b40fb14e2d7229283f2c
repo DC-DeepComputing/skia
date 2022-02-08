@@ -16,6 +16,29 @@
       "message": "Revised setup for UploadCommand (in UploadList::addUpload) and filling out the creation of the transfer buffer and copying into it.",
       "revId": "ab90f5d8e82aab845018b40fb14e2d7229283f2c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9d08c106_25f84744",
+        "filename": "experimental/graphite/src/UploadTask.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-02-08T21:00:50Z",
+      "side": 1,
+      "message": "After looking at SurfaceContext::internalWritePixels, I don\u0027t think this is the right place for this.",
+      "range": {
+        "startLine": 141,
+        "startChar": 8,
+        "endLine": 142,
+        "endChar": 29
+      },
+      "revId": "ab90f5d8e82aab845018b40fb14e2d7229283f2c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
