@@ -16,6 +16,29 @@
       "message": "Like the \"GrGLRenderer\" used in gl, this is just a draft for looking up the correct gpu generation in Vulkan. Currently it only covers ICL/RKL/TGL/ADL, which could be enlarged if needed.\nThanks!",
       "revId": "cb23c2d65e590acb0d1e1b2216ae54f9a68a1f8c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "073bd2ff_4dd14cff",
+        "filename": "src/gpu/vk/GrVkCaps.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 462,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-02-08T23:36:06Z",
+      "side": 1,
+      "message": "can we move this up to line 287 under the VkVendor enum?",
+      "range": {
+        "startLine": 430,
+        "startChar": 0,
+        "endLine": 462,
+        "endChar": 6
+      },
+      "revId": "cb23c2d65e590acb0d1e1b2216ae54f9a68a1f8c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
