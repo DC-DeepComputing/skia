@@ -16,6 +16,24 @@
       "message": "@Kevin, I would like to exercise this new deserializer to SkFuzzDeserializeSkDescriptor. Can I get help for doing this?",
       "revId": "9920cd970940002fa3966825b4146598930e72bc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a8fbdb0e_a6e3f7d7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-02-08T17:41:08Z",
+      "side": 1,
+      "message": "It is probably easiest to replace SkFuzzDeserializeSkDescriptor on https://github.com/google/skia/blob/main/fuzz/oss_fuzz/FuzzSkDescriptorDeserialize.cpp#L13 with the new API. Then, we can remove SkFuzzDeserializeSkDescriptor, yeah?",
+      "parentUuid": "e4c8ee7c_3e0b6bcd",
+      "revId": "9920cd970940002fa3966825b4146598930e72bc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
