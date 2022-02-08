@@ -115,7 +115,8 @@ namespace {
                 case  kRGB_888x_SkColorType:
                 case kRGBA_8888_SkColorType:
                 case kBGRA_8888_SkColorType:
-                case kSRGBA_8888_SkColorType:   rate =  1/255.0f; break;
+                case kSRGBA_8888_SkColorType:
+                case       kR_8_SkColorType:    rate =  1/255.0f; break;
                 case kRGB_101010x_SkColorType:
                 case kRGBA_1010102_SkColorType:
                 case kBGR_101010x_SkColorType:

@@ -393,6 +393,9 @@ static GrSwizzle get_load_and_src_swizzle(GrColorType ct, SkRasterPipeline::Stoc
         case GrColorType::kGray_8:           *load = SkRasterPipeline::load_a8;
                                              swizzle = GrSwizzle("aaa1");
                                              break;
+        case GrColorType::kR_8:              *load = SkRasterPipeline::load_a8;
+                                             swizzle = GrSwizzle("a001");
+                                             break;
         case GrColorType::kGrayAlpha_88:    *load = SkRasterPipeline::load_rg88;
                                              swizzle = GrSwizzle("rrrg");
                                              break;
@@ -405,7 +408,6 @@ static GrSwizzle get_load_and_src_swizzle(GrColorType ct, SkRasterPipeline::Stoc
 
         // These are color types we don't expect to ever have to load.
         case GrColorType::kRGB_888:
-        case GrColorType::kR_8:
         case GrColorType::kR_16:
         case GrColorType::kR_F16:
         case GrColorType::kGray_F16:
