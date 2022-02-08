@@ -463,7 +463,6 @@ config("warnings") {
       "-Wno-unreachable-code-return",
       "-Wno-unused-macros",
       "-Wno-unused-member-function",
-      "-Wno-zero-as-null-pointer-constant",
       "-Wno-non-c-typedef-for-linkage",  # Dawn, not Skia per se.
     ]
     cflags_cc += [
