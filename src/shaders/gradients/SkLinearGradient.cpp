@@ -12,6 +12,9 @@
 #include "src/core/SkWriteBuffer.h"
 #include "src/shaders/gradients/Sk4fLinearGradient.h"
 
+#include "experimental/graphite/include/Encoding.h"
+#include "src/core/SkPaintParamsKey.h"
+
 static SkMatrix pts_to_unit_matrix(const SkPoint pts[2]) {
     SkVector    vec = pts[1] - pts[0];
     SkScalar    mag = vec.length();
@@ -26,7 +29,6 @@ static SkMatrix pts_to_unit_matrix(const SkPoint pts[2]) {
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-
 SkLinearGradient::SkLinearGradient(const SkPoint pts[2], const Descriptor& desc)
     : SkGradientShaderBase(desc, pts_to_unit_matrix(pts))
     , fStart(pts[0])
@@ -104,7 +106,7 @@ std::unique_ptr<GrFragmentProcessor> SkLinearGradient::asFragmentProcessor(
 
 #endif
 
-void SkLinearGradient::addToKey(SkShaderCodeDictionary* dict,
+void SkLinearGradient::addToKeyS(SkShaderCodeDictionary* dict,
                                 SkBackend backend,
                                 SkPaintParamsKey* key,
                                 SkUniformBlock* uniformBlock) const {

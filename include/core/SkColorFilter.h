@@ -14,6 +14,12 @@
 
 class SkColorMatrix;
 
+enum class SkBackend : uint8_t;
+
+class SkPaintParamsKey;
+class SkShaderCodeDictionary;
+class SkUniformBlock;
+
 /**
 *  ColorFilters are optional objects in the drawing pipeline. When present in
 *  a paint, they are called with the "src" colors, and return new colors, which
@@ -24,6 +30,11 @@ class SkColorMatrix;
 */
 class SK_API SkColorFilter : public SkFlattenable {
 public:
+    virtual void addToKeyCF(SkShaderCodeDictionary*,
+                            SkBackend,
+                            SkPaintParamsKey*,
+                            SkUniformBlock*) const = 0;
+
     /** If the filter can be represented by a source color plus Mode, this
      *  returns true, and sets (if not NULL) the color and mode appropriately.
      *  If not, this returns false and ignores the parameters.

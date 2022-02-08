@@ -10,6 +10,7 @@
 #include "include/gpu/GrBackendSurface.h"
 #include "include/private/GrTypesPriv.h"
 #include "include/private/SkMutex.h"
+#include "src/core/SkPaintParamsKey.h"
 #include "src/core/SkTraceEvent.h"
 #include "src/gpu/GrSurface.h"
 #include "src/gpu/mtl/GrMtlGpu.h"
@@ -17,6 +18,8 @@
 #include "src/gpu/mtl/GrMtlTexture.h"
 #include "src/sksl/SkSLCompiler.h"
 #include "src/utils/SkShaderUtils.h"
+
+#include "experimental/graphite/src/ContextUtils.h"
 
 #import <Metal/Metal.h>
 #ifdef SK_BUILD_FOR_IOS

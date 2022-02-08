@@ -12,6 +12,7 @@
 #include "src/core/SkBlendModePriv.h"
 #include "src/core/SkBlenderBase.h"
 #include "src/core/SkKeyHelpers.h"
+#include "src/core/SkPaintParamsKey.h"
 #include "src/core/SkRasterPipeline.h"
 #include "src/core/SkReadBuffer.h"
 #include "src/core/SkRuntimeEffectPriv.h"
@@ -19,6 +20,8 @@
 #include "src/core/SkWriteBuffer.h"
 #include "src/shaders/SkColorShader.h"
 #include "src/shaders/SkComposeShader.h"
+
+#include "experimental/graphite/include/Encoding.h"
 
 namespace {
 
@@ -67,7 +70,6 @@ sk_sp<SkShader> SkShaders::Blend(sk_sp<SkBlender> blender, sk_sp<SkShader> dst, 
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-
 SkShader_Blend::SkShader_Blend(sk_sp<SkBlender> blender, sk_sp<SkShader> dst, sk_sp<SkShader> src)
         : fDst(std::move(dst))
         , fSrc(std::move(src))
@@ -189,7 +191,7 @@ std::unique_ptr<GrFragmentProcessor> SkShader_Blend::asFragmentProcessor(
 }
 #endif
 
-void SkShader_Blend::addToKey(SkShaderCodeDictionary* dict,
+void SkShader_Blend::addToKeyS(SkShaderCodeDictionary* dict,
                               SkBackend backend,
                               SkPaintParamsKey* key,
                               SkUniformBlock* uniformBlock) const {

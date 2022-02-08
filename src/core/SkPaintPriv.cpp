@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include "experimental/graphite/include/Encoding.h"
 #include "include/core/SkPaint.h"
 #include "src/core/SkBlenderBase.h"
 #include "src/core/SkColorFilterBase.h"
@@ -12,6 +13,7 @@
 #include "src/core/SkKeyHelpers.h"
 #include "src/core/SkPaintParamsKey.h"
 #include "src/core/SkPaintPriv.h"
+#include "src/core/SkUniformData.h"
 #include "src/core/SkXfermodePriv.h"
 #include "src/shaders/SkColorFilterShader.h"
 #include "src/shaders/SkShaderBase.h"
@@ -123,10 +125,33 @@ SkScalar SkPaintPriv::ComputeResScaleForStroking(const SkMatrix& matrix) {
     return 1;
 }
 
+/*
+ * So, if we ignore pre-compilation, we want to be able to slurp in an SkPaint and end up
+ * with either graphite-specific SkSL or ganesh-specific SkSL. The graphite-version is what
+ * we really want but, we're stuck, short term, reusing the Ganesh SkSL from the FPs since it
+ * is expensive to write all the uber shader SkSL. Note that there may also be a third case where
+ * we can get SkVM-specific SkSL - since the raster backend may make different decisions for
+ * efficiency.
+ *
+ * The idea is that the SkPaint and all the things that make it up can generate a set of codes that
+ * have a 1 to 1 mapping to the SkSL fragments needed. That compressed form can then be used
+ * as a unique key to represent the corresponding SkSL and can be expanded into it. (Ideally
+ * the expansion would be just stitching together the SkSL fragments.)
+ *
+ * The invariant here is that, for every SkPaint the SkCanvas sees we should be able to pre-generate
+ * and cache the SkSL for its VS and FS (ignoring ImageFilters). Then, when we see the actual
+ * code in the compilation stage, we can assert that we already saw it.
+ *
+ * Next steps:
+ */
+
 std::vector<SkPaintParamsKey> SkPaintPriv::ToKeys(const SkPaint& paint,
                                                   SkShaderCodeDictionary* dict,
-                                                  SkBackend backend) {
+                                                  SkBackend backend,
+                                                  std::vector<std::unique_ptr<SkUniformBlock>>* uniformBlocks) {
+
     std::vector<SkPaintParamsKey> keys;
+    std::unique_ptr<SkUniformBlock> tmp = std::make_unique<SkUniformBlock>();
 
     // TODO: actually split the SkPaint into multiple PaintParams and generate the keys
     // for them separately.
@@ -136,20 +161,25 @@ std::vector<SkPaintParamsKey> SkPaintPriv::ToKeys(const SkPaint& paint,
         SkPaintParamsKey key;
 
         if (paint.getShader()) {
-            as_SB(paint.getShader())->addToKey(dict, backend, &key, nullptr);
+            as_SB(paint.getShader())->addToKeyS(dict, backend, &key, tmp.get());
         } else {
-            SolidColorShaderBlock::AddToKey(dict, backend, &key, nullptr, paint.getColor4f());
+            SolidColorShaderBlock::AddToKey(dict, backend, &key, tmp.get(), paint.getColor4f());
+        }
+
+        if (paint.getColorFilter()) {
+            paint.getColorFilter()->addToKeyCF(dict, backend, &key, tmp.get());
         }
 
         if (paint.getBlender()) {
-            as_BB(paint.getBlender())->addToKey(dict, backend, &key, nullptr);
+            as_BB(paint.getBlender())->addToKeyB(dict, backend, &key, tmp.get());
         } else {
-            BlendModeBlock::AddToKey(dict, backend, &key, nullptr, SkBlendMode::kSrcOver);
+            BlendModeBlock::AddToKey(dict, backend, &key, tmp.get(), SkBlendMode::kSrcOver);
         }
 
         SkASSERT(key.sizeInBytes() > 0);
 
         keys.push_back(key);
+        uniformBlocks->push_back(std::move(tmp));
     }
 
     return keys;

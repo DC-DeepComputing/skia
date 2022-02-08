@@ -58,7 +58,7 @@ public:
     virtual SkRuntimeEffect* asRuntimeEffect() const { return nullptr; }
 
     // TODO: make pure virtual
-    virtual void addToKey(SkShaderCodeDictionary*,
+    virtual void addToKeyB(SkShaderCodeDictionary*,
                           SkBackend,
                           SkPaintParamsKey*,
                           SkUniformBlock*) const;

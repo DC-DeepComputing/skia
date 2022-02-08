@@ -32,6 +32,7 @@
 #include "src/core/SkShaderCodeDictionary.h"
 #include "src/core/SkUniformData.h"
 
+#if 0
 #if GRAPHITE_TEST_UTILS
 // set to 1 if you want to do GPU capture of the commandBuffer
 #define CAPTURE_COMMANDBUFFER 0
@@ -391,3 +392,4 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(CommandBufferTest, reporter, context) {
     gpu->testingOnly_endCapture();
 #endif
 }
+#endif

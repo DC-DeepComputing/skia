@@ -541,11 +541,11 @@ void AddToKey(SkShaderCodeDictionary* dict,
 
         add_blendmode_to_key(key, blendData.fBM);
         int start = key->sizeInBytes();
-        as_SB(blendData.fDst)->addToKey(dict, backend, key, uniformBlock);
+        as_SB(blendData.fDst)->addToKeyS(dict, backend, key, uniformBlock);
         int firstShaderSize = key->sizeInBytes() - start;
 
         start = key->sizeInBytes();
-        as_SB(blendData.fSrc)->addToKey(dict, backend, key, uniformBlock);
+        as_SB(blendData.fSrc)->addToKeyS(dict, backend, key, uniformBlock);
         int secondShaderSize = key->sizeInBytes() - start;
 
         key->endBlock(headerOffset, SkBuiltInCodeSnippetID::kBlendShader);
@@ -656,7 +656,7 @@ void Dump(const SkPaintParamsKey& key, int headerOffset) {
 } // namespace BlendModeBlock
 
 //--------------------------------------------------------------------------------------------------
-#ifdef SK_GRAPHITE_ENABLED
+#if 0 //def SK_GRAPHITE_ENABLED
 SkPaintParamsKey CreateKey(SkShaderCodeDictionary* dict,
                            SkBackend backend,
                            skgpu::ShaderCombo::ShaderType s,
