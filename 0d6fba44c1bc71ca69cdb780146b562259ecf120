@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d470a88b_b93c2e8d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 16
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-02-08T17:14:23Z",
+      "side": 1,
+      "message": "At Patchset 16 I think this is good to go. I have built a Chromium with this change and also https://skia-review.googlesource.com/c/skia/+/502216 and large COLRv1 draws nicely with normal oopr and rawdraw.\n\nDerek, I will need your approval for adding an \"approximateBytesUsed\" to SkDrawable.",
+      "revId": "0d6fba44c1bc71ca69cdb780146b562259ecf120",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
