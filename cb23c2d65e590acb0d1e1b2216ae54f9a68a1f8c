@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1d31cebf_f21fb625",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 12064
+      },
+      "writtenOn": "2022-02-08T01:56:30Z",
+      "side": 1,
+      "message": "Like the \"GrGLRenderer\" used in gl, this is just a draft for looking up the correct gpu generation in Vulkan. Currently it only covers ICL/RKL/TGL/ADL, which could be enlarged if needed.\nThanks!",
+      "revId": "cb23c2d65e590acb0d1e1b2216ae54f9a68a1f8c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
