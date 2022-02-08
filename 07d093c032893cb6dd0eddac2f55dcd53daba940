@@ -63,6 +63,30 @@
       },
       "revId": "07d093c032893cb6dd0eddac2f55dcd53daba940",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "05799d63_107ce741",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 175,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-08T15:53:00Z",
+      "side": 1,
+      "message": "Okay, that makes sense to me as well, if the ShaderCodeDictionary is allowed to be a superset of what was requested, then missing a pre-compiled thing isn\u0027t a big deal",
+      "parentUuid": "57904aee_e41ba8b6",
+      "range": {
+        "startLine": 143,
+        "startChar": 4,
+        "endLine": 175,
+        "endChar": 6
+      },
+      "revId": "07d093c032893cb6dd0eddac2f55dcd53daba940",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
