@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9c6eec5c_4886fedf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-02-08T21:23:50Z",
+      "side": 1,
+      "message": "Latest PS adds support in Vk, Mtl, D3D, fixes an issue on ES/WebGL where we might not be able to read-back to anything but 8888, and renames the new value to match the more recent color types.",
+      "revId": "0162907f912c8dd07fe86f89f47b91c14eb1f777",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
