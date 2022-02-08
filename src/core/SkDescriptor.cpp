@@ -6,22 +6,31 @@
  */
 
 #include "src/core/SkDescriptor.h"
+#include <string.h>
 
 #include <new>
 
 #include "include/core/SkTypes.h"
 #include "include/private/SkTo.h"
+#include "include/private/chromium/SkChromeRemoteGlyphCache.h"
 #include "src/core/SkOpts.h"
+#include "src/core/SkReadBuffer.h"
+#include "src/core/SkWriteBuffer.h"
+#include "src/gpu/GrResourceProvider.h"
 
 std::unique_ptr<SkDescriptor> SkDescriptor::Alloc(size_t length) {
-    SkASSERT(SkAlign4(length) == length);
-    void* allocation = ::operator new (length);
+    SkASSERT(length >= sizeof(SkDescriptor) && SkAlign4(length) == length);
+    void* allocation = ::operator new(length);
     return std::unique_ptr<SkDescriptor>(new (allocation) SkDescriptor{});
 }
 
 void SkDescriptor::operator delete(void* p) { ::operator delete(p); }
 void* SkDescriptor::operator new(size_t) {
     SK_ABORT("Descriptors are created with placement new.");
+}
+
+void SkDescriptor::flatten(SkWriteBuffer& buffer) {
+    buffer.writePad32(static_cast<void*>(this), this->fLength);
 }
 
 void* SkDescriptor::addEntry(uint32_t tag, size_t length, const void* data) {
@@ -38,7 +47,7 @@ void* SkDescriptor::addEntry(uint32_t tag, size_t length, const void* data) {
 
     fCount += 1;
     fLength = SkToU32(fLength + sizeof(Entry) + length);
-    return (entry + 1); // return its data
+    return (entry + 1);  // return its data
 }
 
 void SkDescriptor::computeChecksum() {
@@ -47,7 +56,7 @@ void SkDescriptor::computeChecksum() {
 
 const void* SkDescriptor::findEntry(uint32_t tag, uint32_t* length) const {
     const Entry* entry = (const Entry*)(this + 1);
-    int          count = fCount;
+    int count = fCount;
 
     while (--count >= 0) {
         if (entry->fTag == tag) {
@@ -68,7 +77,6 @@ std::unique_ptr<SkDescriptor> SkDescriptor::copy() const {
 }
 
 bool SkDescriptor::operator==(const SkDescriptor& other) const {
-
     // the first value we should look at is the checksum, so this loop
     // should terminate early if they descriptors are different.
     // NOTE: if we wrote a sentinel value at the end of each, we could
@@ -96,7 +104,7 @@ SkString SkDescriptor::dumpRec() const {
 }
 
 uint32_t SkDescriptor::ComputeChecksum(const SkDescriptor* desc) {
-    const uint32_t* ptr = (const uint32_t*)desc + 1; // skip the checksum field
+    const uint32_t* ptr = (const uint32_t*)desc + 1;  // skip the checksum field
     size_t len = desc->fLength - sizeof(uint32_t);
     return SkOpts::hash(ptr, len);
 }
@@ -164,6 +172,38 @@ SkAutoDescriptor& SkAutoDescriptor::operator=(SkAutoDescriptor&& that) {
 }
 
 SkAutoDescriptor::~SkAutoDescriptor() { this->free(); }
+
+std::optional<SkAutoDescriptor> SkAutoDescriptor::MakeFromBuffer(SkReadBuffer& buffer) {
+    // Check for enough space to read the descriptor header.
+    if (buffer.available() < sizeof(SkDescriptor)) {
+        return {};
+    }
+
+    SkDescriptor descriptor;
+    buffer.readPad32(&descriptor, sizeof(SkDescriptor));
+
+    // The SkDescriptor class is part of the length. So, descriptor.fLength - sizeof
+    // (SkDescriptor) is the amount to read. Be careful to avoid underflow.
+    uint32_t bodyLength = descriptor.fLength - sizeof(SkDescriptor);
+    if (descriptor.fLength < sizeof(SkDescriptor) || buffer.available() < bodyLength) {
+        return {};
+    }
+
+    SkAutoDescriptor ad{descriptor.fLength};
+    memcpy(ad.fDesc, &descriptor, sizeof(SkDescriptor));
+    // This is ok because SkDescriptor are always padded to 4 bytes.
+    buffer.readPad32(SkTAddOffset<void>(ad.fDesc, sizeof(SkDescriptor)), bodyLength);
+
+    if (SkDescriptor::ComputeChecksum(ad.getDesc()) != ad.getDesc()->fChecksum) {
+        return {};
+    }
+
+    if (!ad.getDesc()->isValid()) {
+        return {};
+    }
+
+    return {ad};
+}
 
 void SkAutoDescriptor::reset(size_t size) {
     this->free();
