@@ -46,6 +46,30 @@
       },
       "revId": "bd28ac21880a90642f061d12e7d01f6173ecbdb3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b228055d_1a8540eb",
+        "filename": "src/core/SkGlyphRunPainter.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 155,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-02-08T19:55:15Z",
+      "side": 1,
+      "message": "I think Ben has the right thought. SkGlyphVariant is really just a union of three pointers. So, it is just a single pointer long. Very registerable.",
+      "parentUuid": "8c028091_d04cd56e",
+      "range": {
+        "startLine": 155,
+        "startChar": 21,
+        "endLine": 155,
+        "endChar": 25
+      },
+      "revId": "bd28ac21880a90642f061d12e7d01f6173ecbdb3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
