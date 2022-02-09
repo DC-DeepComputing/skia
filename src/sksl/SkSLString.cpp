@@ -8,8 +8,8 @@
 #include "include/private/SkSLString.h"
 #include "src/sksl/SkSLUtil.h"
 #include <algorithm>
-#include <cfloat>
 #include <cinttypes>
+#include <cmath>
 #include <errno.h>
 #include <limits.h>
 #include <locale>
@@ -44,10 +44,8 @@ bool SkSL::stod(std::string_view s, SKSL_FLOAT* value) {
     std::string str(s.data(), s.size());
     std::stringstream buffer(str);
     buffer.imbue(std::locale::classic());
-    double d = 0.0;
-    buffer >> d;
-    *value = (float)d;
-    return !buffer.fail() && d >= -FLT_MAX && d <= FLT_MAX;
+    buffer >> *value;
+    return !buffer.fail() && std::isfinite(*value);
 }
 
 bool SkSL::stoi(std::string_view s, SKSL_INT* value) {
