@@ -7,6 +7,7 @@
 
 #include "experimental/graphite/src/DrawContext.h"
 
+#include "include/core/SkPixmap.h"
 #include "include/private/SkColorData.h"
 
 #include "experimental/graphite/include/Context.h"
@@ -95,6 +96,49 @@ void DrawContext::clear(const SkColor4f& clearColor) {
     // and clear any drawpasses that haven't been snapped yet
     fPendingDraws = std::make_unique<DrawList>();
     fDrawPasses.clear();
+}
+
+bool DrawContext::writePixels(Recorder* recorder, const SkPixmap& src, SkIPoint dstPoint) {
+    // TODO: add mipmap support for createBackendTexture
+
+    // Our caller should have clipped to the bounds of the surface already.
+    SkASSERT(SkIRect::MakeSize(fTarget->dimensions()).contains(
+            SkIRect::MakePtSize(dstPoint, src.dimensions())));
+
+    if (!recorder) {
+        return false;
+    }
+
+    if (src.colorType() == kUnknown_SkColorType) {
+        return false;
+    }
+
+    // TODO: check for readOnly or framebufferOnly target and return false if so
+
+    const Caps* caps = recorder->priv().caps();
+
+    // TODO: canvas2DFastPath?
+    // TODO: check that surface supports writePixels
+    // TODO: handle writePixels as draw if needed (e.g., canvas2DFastPath || !supportsWritePixels)
+
+    // TODO: check for flips and conversions and either handle here or pass info to appendUpload
+
+    // for now, until conversions are supported
+    if (!caps->areColorTypeAndTextureInfoCompatible(src.colorType(),
+                                                    fTarget->textureInfo())) {
+        return false;
+    }
+
+    std::vector<MipLevel> levels;
+    levels.push_back({src.addr(), src.rowBytes()});
+
+    // when UploadTask CL landed, uncomment
+//    return fPendingUploads.appendUpload(recorder,
+//                                        fTarget,
+//                                        src.colorType(),
+//                                        levels,
+//                                        SkIRect::MakePtSize(dstPoint, src.dimensions()));
+    return false;
 }
 
 void DrawContext::snapDrawPass(Recorder* recorder, const BoundsManager* occlusionCuller) {
