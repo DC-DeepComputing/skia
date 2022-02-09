@@ -27,3 +27,8 @@ void param_index(int p) { int a[2]; a[p] = 0; }
 
 // Legal in SkSL when optimization is enabled:
 void func_index()      { int a[2]; a[int(abs(-1))] = 0; }
+
+/*%%*
+index expression must be constant
+index expression must be constant
+*%%*/
