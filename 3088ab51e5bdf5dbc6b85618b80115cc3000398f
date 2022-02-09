@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6eecd080_a634dcb3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-02-09T18:05:04Z",
+      "side": 1,
+      "message": "Am I right that this will show ALL members of a struct as written-to, when any individual field is updated? I like keeping them in order, but I wonder if the highlighting is going to be confusing?",
+      "revId": "3088ab51e5bdf5dbc6b85618b80115cc3000398f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
