@@ -87,7 +87,30 @@
       },
       "revId": "b71f22f1248105727bdefe0e109a2f86f33c5d15",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f1bf7f92_59ba818b",
+        "filename": "src/gpu/gl/GrGLUtil.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 318,
+      "author": {
+        "id": 12064
+      },
+      "writtenOn": "2022-02-09T02:07:12Z",
+      "side": 1,
+      "message": "Yeah we are still trying to get the real pci id. When used in Chrome, we might get the real pci id through Chrome\u0027s interface, which get the gpu info directly from system level. While as an independent library, this way is inappropriate. Is there any other component we could use to get the pci id and then pass it to where it is needed? Maybe like what Vulkan does.\nThanks!",
+      "parentUuid": "4f7a02e9_4b79acc6",
+      "range": {
+        "startLine": 318,
+        "startChar": 20,
+        "endLine": 318,
+        "endChar": 60
+      },
+      "revId": "b71f22f1248105727bdefe0e109a2f86f33c5d15",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
-  ],
-  "submitRequirementResults": []
+  ]
 }
