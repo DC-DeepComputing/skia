@@ -105,6 +105,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f48ace75_81b8b067",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-02-09T16:20:58Z",
+      "side": 1,
+      "message": "Yup, I modified HashAndEncode to trick skcms. (We still use skcms\u0027 G8 color type, but then we remove two rows of the RGB-\u003eXYZ matrix so that we throw out all the green and blue contribution during the color space conversion).",
+      "parentUuid": "5d575883_0f09d761",
+      "revId": "0162907f912c8dd07fe86f89f47b91c14eb1f777",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6b578284_06177692",
@@ -152,6 +170,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8b104db1_aad0fb38",
+        "filename": "infra/bots/gen_tasks_logic/dm_flags.go",
+        "patchSetId": 3
+      },
+      "lineNbr": 509,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-02-09T16:20:58Z",
+      "side": 1,
+      "message": "Yeah, there are other lines pushing 100 columns, and gofmt didn\u0027t seem to want to do anything here unless I manually inserted line breaks.",
+      "parentUuid": "fa49b9fb_3c848a16",
+      "range": {
+        "startLine": 509,
+        "startChar": 3,
+        "endLine": 509,
+        "endChar": 86
+      },
+      "revId": "0162907f912c8dd07fe86f89f47b91c14eb1f777",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0887f728_41b1ce0c",
@@ -165,6 +207,30 @@
       "writtenOn": "2022-02-09T15:50:47Z",
       "side": 1,
       "message": "I know little of RasterPipeline but do we link this model of doing load_a8 then alpha_to_red over having a load_r8 function?",
+      "range": {
+        "startLine": 65,
+        "startChar": 6,
+        "endLine": 65,
+        "endChar": 18
+      },
+      "revId": "0162907f912c8dd07fe86f89f47b91c14eb1f777",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ffd70435_fb143885",
+        "filename": "src/core/SkRasterPipeline.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-02-09T16:20:58Z",
+      "side": 1,
+      "message": "I think it ends up being fewer total stages that need to exist (at the cost of running an extra stage in some cases). We\u0027d need both load_r8 and gather_r8, plus we use alpha_to_red for some GrConvertPixels/swizzle logic. I was on the fence, but decided to just copy the existing pattern for now.",
+      "parentUuid": "0887f728_41b1ce0c",
       "range": {
         "startLine": 65,
         "startChar": 6,
@@ -236,6 +302,30 @@
       "side": 1,
       "message": "More or less. It would look better if I had indented everything one more space to line up with the end of kSRGBA_... I didn\u0027t do that when I added kSRGBA, so that threw the whole thing off. (They\u0027re supposed to be right-justified up to the \u0027:\u0027).",
       "parentUuid": "0047e71b_b83593a3",
+      "range": {
+        "startLine": 213,
+        "startChar": 0,
+        "endLine": 213,
+        "endChar": 84
+      },
+      "revId": "0162907f912c8dd07fe86f89f47b91c14eb1f777",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "de514281_99ac2cfc",
+        "filename": "src/core/SkRasterPipelineBlitter.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 213,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-02-09T16:20:58Z",
+      "side": 1,
+      "message": "Yeah, I just went ahead and clang-formatted this.",
+      "parentUuid": "100c5160_5baeb329",
       "range": {
         "startLine": 213,
         "startChar": 0,
