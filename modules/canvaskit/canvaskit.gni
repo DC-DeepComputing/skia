@@ -1,0 +1,20 @@
+# Copyright 2022 Google LLC. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+declare_args() {
+  skia_canvaskit_enable_canvas_bindings = true
+  skia_canvaskit_enable_skottie = true
+  skia_canvaskit_enable_particles = true
+  skia_canvaskit_enable_rt_shader = true
+  skia_canvaskit_enable_sksl_trace = true
+  skia_canvaskit_enable_alias_font = true
+  skia_canvaskit_enable_effects_deserialization = true
+  skia_canvaskit_enable_matrix_helper = true
+  skia_canvaskit_profile_build = false
+}
+
+# Assert that skia_canvaskit_profile_build implies release mode.
+assert(
+    !skia_canvaskit_profile_build || !is_debug,
+    "If you set `skia_canvaskit_profile_build=true` you must set `is_debug=false`.")
