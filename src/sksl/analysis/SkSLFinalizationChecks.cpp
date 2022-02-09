@@ -114,6 +114,7 @@ public:
             case Expression::Kind::kExternalFunctionReference:
             case Expression::Kind::kFunctionReference:
             case Expression::Kind::kMethodReference:
+            case Expression::Kind::kPoison:
             case Expression::Kind::kTypeReference:
                 SkDEBUGFAIL("invalid reference-expr, should have been reported by coerce()");
                 fContext.fErrors->error(expr.fLine, "invalid expression");
