@@ -35,6 +35,41 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0e19ba8a_4e512c13",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-02-09T15:38:10Z",
+      "side": 1,
+      "message": "I think I would personally like to see (r,0,0,1) as well. When it becomes \"gray\" with (r,r,r,1) it does get confusing comparing the kG8 since many people may not realized the kG8 does luminance stuff. So lets just make this look different.",
+      "parentUuid": "51948d3e_6cab2a81",
+      "revId": "0162907f912c8dd07fe86f89f47b91c14eb1f777",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "415253c3_e9bf602c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-02-09T15:38:10Z",
+      "side": 1,
+      "message": "still looking, but adding to michaels comments.",
+      "revId": "0162907f912c8dd07fe86f89f47b91c14eb1f777",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6b578284_06177692",
@@ -60,6 +95,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "fa49b9fb_3c848a16",
+        "filename": "infra/bots/gen_tasks_logic/dm_flags.go",
+        "patchSetId": 3
+      },
+      "lineNbr": 509,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-02-09T15:38:10Z",
+      "side": 1,
+      "message": "This seems to be the pattern that we use in go. I think we have a go file format check on upload and I usually depend on that to format the go files. So if it uploaded I think that means this is correct/expected?",
+      "parentUuid": "6b578284_06177692",
+      "range": {
+        "startLine": 509,
+        "startChar": 3,
+        "endLine": 509,
+        "endChar": 86
+      },
+      "revId": "0162907f912c8dd07fe86f89f47b91c14eb1f777",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0047e71b_b83593a3",
         "filename": "src/core/SkRasterPipelineBlitter.cpp",
         "patchSetId": 3
@@ -71,6 +130,30 @@
       "writtenOn": "2022-02-09T15:22:28Z",
       "side": 1,
       "message": "Is the extra space between case and kR8 following the same alignment pattern as the switch? I haven\u0027t figured out the structure to it, though",
+      "range": {
+        "startLine": 213,
+        "startChar": 0,
+        "endLine": 213,
+        "endChar": 84
+      },
+      "revId": "0162907f912c8dd07fe86f89f47b91c14eb1f777",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f6a37886_0d2b73e7",
+        "filename": "src/core/SkRasterPipelineBlitter.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 213,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-02-09T15:38:10Z",
+      "side": 1,
+      "message": "yeah I feel like there is no alignment pattern here. Something in this list is always violating the rules",
+      "parentUuid": "0047e71b_b83593a3",
       "range": {
         "startLine": 213,
         "startChar": 0,
