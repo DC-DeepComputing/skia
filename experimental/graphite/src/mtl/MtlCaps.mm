@@ -230,6 +230,8 @@ void Caps::initCaps(const id<MTLDevice> device) {
         fRequiredUniformBufferAlignment = 16;
     }
 
+    fRequiredTransferBufferAlignment = this->getMinBufferAlignment();
+
     if (@available(macOS 10.12, ios 14.0, *)) {
         fClampToBorderSupport = (this->isMac() || fFamilyGroup >= 7);
     } else {
@@ -384,6 +386,10 @@ bool Caps::onAreColorTypeAndTextureInfoCompatible(SkColorType type,
             info.mtlTextureSpec().fFormat == MTLPixelFormatRGBA8Unorm) ||
            (type == kBGRA_8888_SkColorType &&
             info.mtlTextureSpec().fFormat == MTLPixelFormatBGRA8Unorm);
+}
+
+size_t Caps::getTransferBufferAlignment(size_t bytesPerPixel) const {
+    return std::max(bytesPerPixel, fRequiredTransferBufferAlignment);
 }
 
 } // namespace skgpu::mtl
