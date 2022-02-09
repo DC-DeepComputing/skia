@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8505e510_5d6c716d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-02-09T16:15:26Z",
+      "side": 1,
+      "message": "modulo comment in caps",
+      "revId": "6f5ca52c0ba7daddcbc752bb9552c9d42d50086c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a71e12a3_99df89bc",
+        "filename": "experimental/graphite/src/mtl/MtlCaps.mm",
+        "patchSetId": 4
+      },
+      "lineNbr": 233,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-02-09T16:15:26Z",
+      "side": 1,
+      "message": "since this value isn\u0027t directly returned via any public api anymore do we need to store? In getTransferBufferAlignment can we just directly call this-\u003egetMinBufferAlignment()? If there is worry about the if check each call I would say we then store fMinBufferAlignment, but I would hope the if ends up optimized since we always take one code path for a given device.",
+      "range": {
+        "startLine": 233,
+        "startChar": 4,
+        "endLine": 233,
+        "endChar": 36
+      },
+      "revId": "6f5ca52c0ba7daddcbc752bb9552c9d42d50086c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
