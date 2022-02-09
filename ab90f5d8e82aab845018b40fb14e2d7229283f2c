@@ -198,6 +198,30 @@
       },
       "revId": "ab90f5d8e82aab845018b40fb14e2d7229283f2c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e4d706d5_21e62342",
+        "filename": "experimental/graphite/src/UploadTask.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-02-09T15:41:05Z",
+      "side": 1,
+      "message": "Hmm that is a good point that we could potentially avoid doing a full copy if we do some of the conversions into a buffer. Maybe it is worth then doing that all in here after we have the buffer ptr.",
+      "parentUuid": "84e8978d_34797f7f",
+      "range": {
+        "startLine": 141,
+        "startChar": 8,
+        "endLine": 142,
+        "endChar": 29
+      },
+      "revId": "ab90f5d8e82aab845018b40fb14e2d7229283f2c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
