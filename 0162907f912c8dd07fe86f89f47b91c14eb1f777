@@ -70,6 +70,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5d575883_0f09d761",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-02-09T15:46:44Z",
+      "side": 1,
+      "message": "Agreed. I think this is because of how I changed hash_and_encode, which was partly because skcms didn\u0027t have r8 support. I\u0027ll have to see if I can trick it.",
+      "parentUuid": "0e19ba8a_4e512c13",
+      "revId": "0162907f912c8dd07fe86f89f47b91c14eb1f777",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6b578284_06177692",
@@ -153,6 +171,30 @@
       "writtenOn": "2022-02-09T15:38:10Z",
       "side": 1,
       "message": "yeah I feel like there is no alignment pattern here. Something in this list is always violating the rules",
+      "parentUuid": "0047e71b_b83593a3",
+      "range": {
+        "startLine": 213,
+        "startChar": 0,
+        "endLine": 213,
+        "endChar": 84
+      },
+      "revId": "0162907f912c8dd07fe86f89f47b91c14eb1f777",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "100c5160_5baeb329",
+        "filename": "src/core/SkRasterPipelineBlitter.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 213,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-02-09T15:46:44Z",
+      "side": 1,
+      "message": "More or less. It would look better if I had indented everything one more space to line up with the end of kSRGBA_... I didn\u0027t do that when I added kSRGBA, so that threw the whole thing off. (They\u0027re supposed to be right-justified up to the \u0027:\u0027).",
       "parentUuid": "0047e71b_b83593a3",
       "range": {
         "startLine": 213,
