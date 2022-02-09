@@ -52,6 +52,24 @@
       "parentUuid": "49c91012_8e38f719",
       "revId": "63e7ec9a813fdaf9418e6ffb3a5cadf5e18781c5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "14c90bf7_3bd265d5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-02-09T14:40:35Z",
+      "side": 1,
+      "message": "Fixed at http://review.skia.org/505939",
+      "parentUuid": "a2cb84d8_b33d6606",
+      "revId": "63e7ec9a813fdaf9418e6ffb3a5cadf5e18781c5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
