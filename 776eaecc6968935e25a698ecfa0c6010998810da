@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "95bc9899_8eeca311",
+        "filename": "tests/BUILD.bazel",
+        "patchSetId": 5
+      },
+      "lineNbr": 323,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-02-09T17:13:00Z",
+      "side": 1,
+      "message": "Note that in the GN build we have separate `test` and `tests` source sets. The `test` source set has just the `Test.(cpp|h)` and `TestUtils.(cpp|h)`. This is nice because it calls out the difference between the test framework and the tests themselves. I think in GN we only do this for tests, but it would be nice to have `gm` and `gms` as well.",
+      "revId": "776eaecc6968935e25a698ecfa0c6010998810da",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

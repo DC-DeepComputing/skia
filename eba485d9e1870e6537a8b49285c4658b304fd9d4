@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "495d479f_690a43ee",
+        "filename": "tools/fonts/BUILD.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-02-09T17:13:00Z",
+      "side": 1,
+      "message": "Not sure why this ended up removed? This file now does include this header.",
+      "revId": "eba485d9e1870e6537a8b49285c4658b304fd9d4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
