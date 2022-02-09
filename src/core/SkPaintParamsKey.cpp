@@ -82,7 +82,17 @@ int SkPaintParamsKey::AddBlockToShaderInfo(SkShaderCodeDictionary* dict,
     if (codeSnippetID != SkBuiltInCodeSnippetID::kSimpleBlendMode) {
         auto entry = dict->getEntry(codeSnippetID);
 
-        result->add(*entry);
+        result->add1(*entry);
+
+        // The child blocks appear right after the parent block's header in the key but go
+        // after the parent's SnippetEntry in the shader info
+        int childOffset = headerOffset + kBlockHeaderSizeInBytes;
+        for (int i = 0; i < entry->fNumChildren; ++i) {
+            SkASSERT(childOffset < headerOffset + blockSize);
+
+            int childBlockSize = AddBlockToShaderInfo(dict, key, childOffset, result);
+            childOffset += childBlockSize;
+        }
 
         if (codeSnippetID != SkBuiltInCodeSnippetID::kDepthStencilOnlyDraw) {
             result->setWritesColor();

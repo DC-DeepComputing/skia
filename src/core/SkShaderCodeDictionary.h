@@ -20,18 +20,26 @@
 
 class SkShaderInfo {
 public:
+    struct SnippetEntry;
+    typedef std::string (*ProcedurallyGenerateSkSL)(const std::string& resultName,
+                                                    const SnippetEntry&,
+                                                    const std::vector<const std::string>& childNames);
+
     struct SnippetEntry {
+        SkBuiltInCodeSnippetID fID1;  // for creating a std::set of emitted static snippets
         SkSpan<const SkUniform> fUniforms;
         const char* fName;
-        const char* fCode;
+        const char* fStaticSkSL;
+        ProcedurallyGenerateSkSL fDynamicSkSL;
+        int fNumChildren;
     };
 
-    void add(const SnippetEntry& entry) {
+    void add1(const SnippetEntry& entry) {
         fEntries.push_back(entry);
     }
 
     // TODO: writing to color should be a property of the SnippetEntries and accumulated as the
-    //  entries are added. _Not_ set manually via 'setWritesColor'.
+    // entries are added. _Not_ set manually via 'setWritesColor'.
     void setWritesColor() { fWritesColor = true; }
     bool writesColor() const { return fWritesColor; }
 
@@ -40,6 +48,8 @@ public:
 #endif
 
 private:
+    std::string emitEntry(int* entryIndex, std::string* result) const;
+
     std::vector<SnippetEntry> fEntries;
     bool fWritesColor = false;
 };
