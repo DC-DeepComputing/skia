@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "62ee7c18_e99fa5bc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 36
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-02-09T13:53:01Z",
+      "side": 1,
+      "message": "I see live data in https://codesize.skia.org/, so that\u0027s exciting!",
+      "revId": "8acd2c5666a556410db6ac677544e65b92ca8533",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "54302bf4_f445f9fa",
@@ -49,6 +66,75 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d43346cf_89a8bc35",
+        "filename": "infra/bots/task_drivers/codesize/codesize.go",
+        "patchSetId": 36
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-02-09T13:53:01Z",
+      "side": 1,
+      "message": "The metadata should have a version field, right?",
+      "range": {
+        "startLine": 43,
+        "startChar": 5,
+        "endLine": 43,
+        "endChar": 25
+      },
+      "revId": "8acd2c5666a556410db6ac677544e65b92ca8533",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fe3246e4_ed1f1525",
+        "filename": "infra/bots/task_drivers/codesize/codesize.go",
+        "patchSetId": 36
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-02-09T13:53:01Z",
+      "side": 1,
+      "message": "This is a lot of arguments. What about making a struct with these fields and a method runSteps(ctx context.context)?",
+      "range": {
+        "startLine": 126,
+        "startChar": 115,
+        "endLine": 126,
+        "endChar": 129
+      },
+      "revId": "8acd2c5666a556410db6ac677544e65b92ca8533",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8ea2411b_9936544c",
+        "filename": "infra/bots/task_drivers/codesize/codesize.go",
+        "patchSetId": 36
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-02-09T13:53:01Z",
+      "side": 1,
+      "message": "taskID: https://github.com/golang/go/wiki/CodeReviewComments#initialisms\n\nbloatyCIPDVersion, makeGCSClient, computeTargetGCSDirectory as well",
+      "range": {
+        "startLine": 126,
+        "startChar": 147,
+        "endLine": 126,
+        "endChar": 153
+      },
+      "revId": "8acd2c5666a556410db6ac677544e65b92ca8533",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "72f21d9b_e1657d0b",
         "filename": "infra/bots/task_drivers/codesize/codesize.go",
         "patchSetId": 36
@@ -65,6 +151,236 @@
         "startChar": 0,
         "endLine": 135,
         "endChar": 2
+      },
+      "revId": "8acd2c5666a556410db6ac677544e65b92ca8533",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "680d19aa_efd1dd9a",
+        "filename": "infra/bots/task_drivers/codesize/codesize.go",
+        "patchSetId": 36
+      },
+      "lineNbr": 159,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-02-09T13:53:01Z",
+      "side": 1,
+      "message": "Are we sure we want the commit timestamp and not the current timestamp? If someone wants the commit timestamp, they can look it up via git. As is, it seems harder to find the timestamp at which the code size was calculated. If we do want it, let\u0027s call the field CommitTimestamp to be clear about what it is.",
+      "range": {
+        "startLine": 159,
+        "startChar": 28,
+        "endLine": 159,
+        "endChar": 43
+      },
+      "revId": "8acd2c5666a556410db6ac677544e65b92ca8533",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "076e7d0f_4dcee3b9",
+        "filename": "infra/bots/task_drivers/codesize/codesize.go",
+        "patchSetId": 36
+      },
+      "lineNbr": 165,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-02-09T13:53:01Z",
+      "side": 1,
+      "message": "I\u0027d prefer to keep metadata immutable after creation (constant data is easier to reason about that mutable variables). How about we set the bloaty arguments here and pass those into runBloaty?",
+      "range": {
+        "startLine": 165,
+        "startChar": 49,
+        "endLine": 165,
+        "endChar": 57
+      },
+      "revId": "8acd2c5666a556410db6ac677544e65b92ca8533",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3423110f_d7a8ba9a",
+        "filename": "infra/bots/task_drivers/codesize/codesize.go",
+        "patchSetId": 36
+      },
+      "lineNbr": 177,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-02-09T13:53:01Z",
+      "side": 1,
+      "message": "nit: Upload pretty-printed JSON ...",
+      "range": {
+        "startLine": 177,
+        "startChar": 3,
+        "endLine": 177,
+        "endChar": 16
+      },
+      "revId": "8acd2c5666a556410db6ac677544e65b92ca8533",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "23e863ca_f18e08c8",
+        "filename": "infra/bots/task_drivers/codesize/codesize.go",
+        "patchSetId": 36
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-02-09T13:53:01Z",
+      "side": 1,
+      "message": "Why make a new slice of the data and convert to a string?",
+      "range": {
+        "startLine": 182,
+        "startChar": 108,
+        "endLine": 182,
+        "endChar": 111
+      },
+      "revId": "8acd2c5666a556410db6ac677544e65b92ca8533",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f0554016_e84df59c",
+        "filename": "infra/bots/task_drivers/codesize/codesize_test.go",
+        "patchSetId": 36
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-02-09T13:53:01Z",
+      "side": 1,
+      "message": "const expected ... \u003d ...",
+      "range": {
+        "startLine": 28,
+        "startChar": 1,
+        "endLine": 28,
+        "endChar": 26
+      },
+      "revId": "8acd2c5666a556410db6ac677544e65b92ca8533",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7b4430a2_a05b809f",
+        "filename": "infra/bots/task_drivers/codesize/codesize_test.go",
+        "patchSetId": 36
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-02-09T13:53:01Z",
+      "side": 1,
+      "message": "nit: To match the format of the other tests, extract this as a variable before the expected parts\ninputPatch :\u003d types.Patch{} // empty patch means running on the CI post-submit",
+      "range": {
+        "startLine": 58,
+        "startChar": 15,
+        "endLine": 58,
+        "endChar": 20
+      },
+      "revId": "8acd2c5666a556410db6ac677544e65b92ca8533",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "101a6142_6ad1b982",
+        "filename": "infra/bots/task_drivers/codesize/codesize_test.go",
+        "patchSetId": 36
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-02-09T13:53:01Z",
+      "side": 1,
+      "message": "ubernit: inputPatch to make it clear what variables are inputs and expected outputs.",
+      "range": {
+        "startLine": 62,
+        "startChar": 1,
+        "endLine": 62,
+        "endChar": 6
+      },
+      "revId": "8acd2c5666a556410db6ac677544e65b92ca8533",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4523a741_9844ecba",
+        "filename": "infra/bots/task_drivers/codesize/codesize_test.go",
+        "patchSetId": 36
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-02-09T13:53:01Z",
+      "side": 1,
+      "message": "nit: more const ... \u003d ...",
+      "range": {
+        "startLine": 104,
+        "startChar": 1,
+        "endLine": 104,
+        "endChar": 15
+      },
+      "revId": "8acd2c5666a556410db6ac677544e65b92ca8533",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "764790cf_1a283133",
+        "filename": "infra/bots/task_drivers/codesize/codesize_test.go",
+        "patchSetId": 36
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-02-09T13:53:01Z",
+      "side": 1,
+      "message": "Add a comment that this data is realistic, but arbitrary.",
+      "range": {
+        "startLine": 104,
+        "startChar": 20,
+        "endLine": 104,
+        "endChar": 36
+      },
+      "revId": "8acd2c5666a556410db6ac677544e65b92ca8533",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a9a2a288_3a0ae9b1",
+        "filename": "infra/bots/task_drivers/codesize/codesize_test.go",
+        "patchSetId": 36
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-02-09T13:53:01Z",
+      "side": 1,
+      "message": "What\u0027s the rationale for this? I would expect either both are mocked or both are real. I would prefer both being mocked, TBH. If we must run real git, an explanation of why would be appreciated.",
+      "range": {
+        "startLine": 127,
+        "startChar": 4,
+        "endLine": 127,
+        "endChar": 8
       },
       "revId": "8acd2c5666a556410db6ac677544e65b92ca8533",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
