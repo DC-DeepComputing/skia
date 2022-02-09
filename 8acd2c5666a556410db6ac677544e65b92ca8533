@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8ce186fd_9065b510",
+        "filename": "infra/bots/gen_tasks_logic/gen_tasks_logic.go",
+        "patchSetId": 36
+      },
+      "lineNbr": 1461,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2022-02-09T21:09:16Z",
+      "side": 1,
+      "message": "Oops, fixed. Thanks for catching this.",
+      "parentUuid": "54302bf4_f445f9fa",
+      "range": {
+        "startLine": 1461,
+        "startChar": 43,
+        "endLine": 1461,
+        "endChar": 54
+      },
+      "revId": "8acd2c5666a556410db6ac677544e65b92ca8533",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dfe05468_9907f658",
@@ -64,6 +88,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1871fa42_8543af11",
+        "filename": "infra/bots/gen_tasks_logic/gen_tasks_logic.go",
+        "patchSetId": 36
+      },
+      "lineNbr": 1468,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2022-02-09T21:09:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dfe05468_9907f658",
+      "range": {
+        "startLine": 1467,
+        "startChar": 59,
+        "endLine": 1468,
+        "endChar": 40
+      },
+      "revId": "8acd2c5666a556410db6ac677544e65b92ca8533",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d43346cf_89a8bc35",
@@ -77,6 +125,30 @@
       "writtenOn": "2022-02-09T13:53:01Z",
       "side": 1,
       "message": "The metadata should have a version field, right?",
+      "range": {
+        "startLine": 43,
+        "startChar": 5,
+        "endLine": 43,
+        "endChar": 25
+      },
+      "revId": "8acd2c5666a556410db6ac677544e65b92ca8533",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ec8edb92_c3b7eb95",
+        "filename": "infra/bots/task_drivers/codesize/codesize.go",
+        "patchSetId": 36
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2022-02-09T21:09:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d43346cf_89a8bc35",
       "range": {
         "startLine": 43,
         "startChar": 5,
@@ -133,6 +205,54 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bdbc5ffb_76dcb184",
+        "filename": "infra/bots/task_drivers/codesize/codesize.go",
+        "patchSetId": 36
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2022-02-09T21:09:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8ea2411b_9936544c",
+      "range": {
+        "startLine": 126,
+        "startChar": 147,
+        "endLine": 126,
+        "endChar": 153
+      },
+      "revId": "8acd2c5666a556410db6ac677544e65b92ca8533",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6962a0ff_14de37a5",
+        "filename": "infra/bots/task_drivers/codesize/codesize.go",
+        "patchSetId": 36
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2022-02-09T21:09:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fe3246e4_ed1f1525",
+      "range": {
+        "startLine": 126,
+        "startChar": 115,
+        "endLine": 126,
+        "endChar": 129
+      },
+      "revId": "8acd2c5666a556410db6ac677544e65b92ca8533",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "72f21d9b_e1657d0b",
@@ -146,6 +266,30 @@
       "writtenOn": "2022-02-09T13:20:42Z",
       "side": 1,
       "message": "Can we send a request to gitiles/gerrit to retrieve this information rather than performing a full git checkout (and thus requiring the git CIPD package as well)?",
+      "range": {
+        "startLine": 129,
+        "startChar": 0,
+        "endLine": 135,
+        "endChar": 2
+      },
+      "revId": "8acd2c5666a556410db6ac677544e65b92ca8533",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d0578584_d2cb5b3e",
+        "filename": "infra/bots/task_drivers/codesize/codesize.go",
+        "patchSetId": 36
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2022-02-09T21:09:16Z",
+      "side": 1,
+      "message": "Done. The task driver is much faster now that it doesn\u0027t need to clone the Skia repo anymore. Thank you for the idea!",
+      "parentUuid": "72f21d9b_e1657d0b",
       "range": {
         "startLine": 129,
         "startChar": 0,
@@ -179,6 +323,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "985ea961_76fd3f99",
+        "filename": "infra/bots/task_drivers/codesize/codesize.go",
+        "patchSetId": 36
+      },
+      "lineNbr": 159,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2022-02-09T21:09:16Z",
+      "side": 1,
+      "message": "commitTimestamp SGTM. I also defined a timestamp field for the current timestamp, i.e. the same timestamp that\u0027s use to compute the YYYY/MM/DD part of the GCS path.",
+      "parentUuid": "680d19aa_efd1dd9a",
+      "range": {
+        "startLine": 159,
+        "startChar": 28,
+        "endLine": 159,
+        "endChar": 43
+      },
+      "revId": "8acd2c5666a556410db6ac677544e65b92ca8533",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "076e7d0f_4dcee3b9",
@@ -192,6 +360,30 @@
       "writtenOn": "2022-02-09T13:53:01Z",
       "side": 1,
       "message": "I\u0027d prefer to keep metadata immutable after creation (constant data is easier to reason about that mutable variables). How about we set the bloaty arguments here and pass those into runBloaty?",
+      "range": {
+        "startLine": 165,
+        "startChar": 49,
+        "endLine": 165,
+        "endChar": 57
+      },
+      "revId": "8acd2c5666a556410db6ac677544e65b92ca8533",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e16a2d6f_3aa7318f",
+        "filename": "infra/bots/task_drivers/codesize/codesize.go",
+        "patchSetId": 36
+      },
+      "lineNbr": 165,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2022-02-09T21:09:16Z",
+      "side": 1,
+      "message": "Done. I made runBloaty() return the list of arguments, so as to keep the code that crafts a Bloaty invocation encapsulated inside a single function.",
+      "parentUuid": "076e7d0f_4dcee3b9",
       "range": {
         "startLine": 165,
         "startChar": 49,
@@ -225,6 +417,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e7a32504_6195f111",
+        "filename": "infra/bots/task_drivers/codesize/codesize.go",
+        "patchSetId": 36
+      },
+      "lineNbr": 177,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2022-02-09T21:09:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3423110f_d7a8ba9a",
+      "range": {
+        "startLine": 177,
+        "startChar": 3,
+        "endLine": 177,
+        "endChar": 16
+      },
+      "revId": "8acd2c5666a556410db6ac677544e65b92ca8533",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "23e863ca_f18e08c8",
@@ -238,6 +454,30 @@
       "writtenOn": "2022-02-09T13:53:01Z",
       "side": 1,
       "message": "Why make a new slice of the data and convert to a string?",
+      "range": {
+        "startLine": 182,
+        "startChar": 108,
+        "endLine": 182,
+        "endChar": 111
+      },
+      "revId": "8acd2c5666a556410db6ac677544e65b92ca8533",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "caa633ee_24d302a3",
+        "filename": "infra/bots/task_drivers/codesize/codesize.go",
+        "patchSetId": 36
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2022-02-09T21:09:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "23e863ca_f18e08c8",
       "range": {
         "startLine": 182,
         "startChar": 108,
@@ -271,6 +511,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7b72df9b_5013f40f",
+        "filename": "infra/bots/task_drivers/codesize/codesize_test.go",
+        "patchSetId": 36
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2022-02-09T21:09:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f0554016_e84df59c",
+      "range": {
+        "startLine": 28,
+        "startChar": 1,
+        "endLine": 28,
+        "endChar": 26
+      },
+      "revId": "8acd2c5666a556410db6ac677544e65b92ca8533",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7b4430a2_a05b809f",
@@ -294,6 +558,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9ea3b4f3_b6860546",
+        "filename": "infra/bots/task_drivers/codesize/codesize_test.go",
+        "patchSetId": 36
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2022-02-09T21:09:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7b4430a2_a05b809f",
+      "range": {
+        "startLine": 58,
+        "startChar": 15,
+        "endLine": 58,
+        "endChar": 20
+      },
+      "revId": "8acd2c5666a556410db6ac677544e65b92ca8533",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "101a6142_6ad1b982",
@@ -307,6 +595,30 @@
       "writtenOn": "2022-02-09T13:53:01Z",
       "side": 1,
       "message": "ubernit: inputPatch to make it clear what variables are inputs and expected outputs.",
+      "range": {
+        "startLine": 62,
+        "startChar": 1,
+        "endLine": 62,
+        "endChar": 6
+      },
+      "revId": "8acd2c5666a556410db6ac677544e65b92ca8533",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7535ccd5_ab6c42eb",
+        "filename": "infra/bots/task_drivers/codesize/codesize_test.go",
+        "patchSetId": 36
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2022-02-09T21:09:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "101a6142_6ad1b982",
       "range": {
         "startLine": 62,
         "startChar": 1,
@@ -363,6 +675,54 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6da6e4e1_7f18b065",
+        "filename": "infra/bots/task_drivers/codesize/codesize_test.go",
+        "patchSetId": 36
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2022-02-09T21:09:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4523a741_9844ecba",
+      "range": {
+        "startLine": 104,
+        "startChar": 1,
+        "endLine": 104,
+        "endChar": 15
+      },
+      "revId": "8acd2c5666a556410db6ac677544e65b92ca8533",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9afe287e_9dec8345",
+        "filename": "infra/bots/task_drivers/codesize/codesize_test.go",
+        "patchSetId": 36
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2022-02-09T21:09:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "764790cf_1a283133",
+      "range": {
+        "startLine": 104,
+        "startChar": 20,
+        "endLine": 104,
+        "endChar": 36
+      },
+      "revId": "8acd2c5666a556410db6ac677544e65b92ca8533",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a9a2a288_3a0ae9b1",
@@ -376,6 +736,30 @@
       "writtenOn": "2022-02-09T13:53:01Z",
       "side": 1,
       "message": "What\u0027s the rationale for this? I would expect either both are mocked or both are real. I would prefer both being mocked, TBH. If we must run real git, an explanation of why would be appreciated.",
+      "range": {
+        "startLine": 127,
+        "startChar": 4,
+        "endLine": 127,
+        "endChar": 8
+      },
+      "revId": "8acd2c5666a556410db6ac677544e65b92ca8533",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a4d74811_e232ff00",
+        "filename": "infra/bots/task_drivers/codesize/codesize_test.go",
+        "patchSetId": 36
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2022-02-09T21:09:16Z",
+      "side": 1,
+      "message": "This is now obsolete because I replaced the operations that shelled out to Git with API calls to Gerrit and Gitiles.\n\nThe rationale for not mocking Git invocations was that it\u0027s easy to test against the real \"git\" command; all you need is a repo such as the one built with GitBuilder. So it seemed better to test against the real dependency at the expense of having a combination of mocked and non-mocked commands.",
+      "parentUuid": "a9a2a288_3a0ae9b1",
       "range": {
         "startLine": 127,
         "startChar": 4,
