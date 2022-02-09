@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fdec35a4_d5ec5fa8",
+        "filename": "tests/FontMgrFontConfigTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-02-09T21:28:52Z",
+      "side": 0,
+      "message": "Needed another \u0027true\u0027 here. Also `std::vector\u003cbool\u003e`.",
+      "range": {
+        "startLine": 145,
+        "startChar": 80,
+        "endLine": 145,
+        "endChar": 81
+      },
+      "revId": "81d4b5d5b45d8dfd547ecb314d31fc026a454cff",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
