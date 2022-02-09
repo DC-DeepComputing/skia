@@ -16,6 +16,24 @@
       "message": "Am I right that this will show ALL members of a struct as written-to, when any individual field is updated? I like keeping them in order, but I wonder if the highlighting is going to be confusing?",
       "revId": "3088ab51e5bdf5dbc6b85618b80115cc3000398f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a1610e7f_05201523",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-02-09T18:07:09Z",
+      "side": 1,
+      "message": "The write time controls the order of display, but the highlight is controlled by `fDirtyMask`. The dirty mask is also zeroed out on every step (so highlights go away), but the write time is not.",
+      "parentUuid": "6eecd080_a634dcb3",
+      "revId": "3088ab51e5bdf5dbc6b85618b80115cc3000398f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
