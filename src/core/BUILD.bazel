@@ -34,6 +34,7 @@ cc_library(
         ":SkCachedData_src",
         ":SkCanvasPriv_src",
         ":SkCanvas_src",
+        ":SkChromeRemoteGlyphCache_src",
         ":SkClipStackDevice_src",
         ":SkClipStack_src",
         ":SkColorFilter_Matrix_src",
@@ -685,7 +686,6 @@ generated_cc_atom(
         ":SkVM_hdr",
         "//include/core:SkBlender_hdr",
         "//include/core:SkColorSpace_hdr",
-        "//include/private:SkTOptional_hdr",
     ],
 )
 
@@ -1024,7 +1024,6 @@ generated_cc_atom(
         "//include/core:SkVertices_hdr",
         "//include/effects:SkRuntimeEffect_hdr",
         "//include/gpu:GrDirectContext_hdr",
-        "//include/private:SkTOptional_hdr",
         "//include/private:SkTo_hdr",
         "//include/private/chromium:GrSlug_hdr",
         "//include/utils:SkNoDrawCanvas_hdr",
@@ -5515,6 +5514,7 @@ generated_cc_atom(
         "//include/private/chromium:SkChromeRemoteGlyphCache_hdr",
         "//src/gpu:GrDrawOpAtlas_hdr",
         "//src/gpu/text:GrSDFTControl_hdr",
+        "//src/gpu/text:GrTextBlob_hdr",
     ],
 )
 
