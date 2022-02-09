@@ -16,6 +16,24 @@
       "message": "I\u0027m waiting to see what happens with the trybots (I ran CPU and GPU BonusConfigs - I expect this change won\u0027t impact most configs at all). WDYT? You mentioned making it configurable, but I feel like this might be the better default.",
       "revId": "6cdfd9892f123afe6cb3fc3182429d67f77a5af6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "88557906_6623b25d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-09T15:43:44Z",
+      "side": 1,
+      "message": "Ugh I\u0027m realizing this is more of a mess than I\u0027d thought, once you start considering back drop filters.\n\nIn that case, the roles of src and dst are swapped when calling drawFilteredImage, so if you were doing a backdrop filter on a base device with a limited color type like 565 or 1010102, the skif::Context\u0027s color type would be set to 8888 from the \"dst\" layer and not the base backdrop src.\n\nWith your change, I expected to see the backdrop filters being evaluated in 565 or 1010102 on the GPU backend, which can lead to some bad results as well for blurs having severe banding in the alpha channel. But I didn\u0027t see those diffs, which was strange.\n\nIt turns out in SkCanvas::internalDrawDeviceWithFilter, if there\u0027s a complex transform that requires an intermediate image, we create that using the same make_layer_info function. And all the backdrop filter GMs that would have produced banding have complex transforms, so that intermediate image did the format conversion from 1010102 to 8888 for us.\n\nUnfortunately, we just use snapSpecial() and sample a subset of the texture proxy when possible if the transform is axis-aligned, in which case there\u0027s no format conversion. Were we to still set the skif::Context to the promoted color type, the image filter pipeline would likely automatically convert that source image\u0027s color type to the context\u0027s color type as part of the first filter eval.\n\nWhat if instead of switching from dst to src color type here, we pick the color type with the highest bit depth, or highest alpha bit depth?\n\nAnother option would be we change drawFilteredImage to take a SkColorType that controls the color type used for filter evaluation directly, and SkCanvas can then set that to make_layer_info()\u0027s color type regardless of backdrop or forward image filtering?",
+      "parentUuid": "21372c0a_0d593d02",
+      "revId": "6cdfd9892f123afe6cb3fc3182429d67f77a5af6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
