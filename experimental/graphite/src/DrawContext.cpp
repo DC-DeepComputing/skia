@@ -97,6 +97,13 @@ void DrawContext::clear(const SkColor4f& clearColor) {
     fDrawPasses.clear();
 }
 
+bool DrawContext::writePixels(Recorder* recorder, const SkPixmap& src, SkIPoint dstPoint) {
+
+
+//    return fPendingUploads.appendUpload(recorder, fTarget, src.colorType(), )
+    return false;
+}
+
 void DrawContext::snapDrawPass(Recorder* recorder, const BoundsManager* occlusionCuller) {
     if (fPendingDraws->drawCount() == 0) {
         return;
