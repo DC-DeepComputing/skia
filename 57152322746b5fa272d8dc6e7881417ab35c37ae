@@ -82,6 +82,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "dd63e404_88002755",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 13
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-02-09T20:31:08Z",
+      "side": 1,
+      "message": "Yes. Just to be sure - I ran all SKPs with --forceRasterPipeline before and after this change. Nothing regressed by more than 10%, and most things were nearly zero (+- 1%). I\u0027m guessing even the 10% was noise. It\u0027s possible that micro-benchmarks could regress worse, but if SKPs are all fine, I think we\u0027re okay.",
+      "parentUuid": "30f30175_5647e171",
+      "revId": "57152322746b5fa272d8dc6e7881417ab35c37ae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9c1becdf_e60dae4d",
