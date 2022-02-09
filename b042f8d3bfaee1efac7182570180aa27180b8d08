@@ -50,6 +50,24 @@
       "message": "The runtime effect part looks fine.",
       "revId": "b042f8d3bfaee1efac7182570180aa27180b8d08",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5036554a_cd1c3e84",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2022-02-09T00:24:23Z",
+      "side": 1,
+      "message": "That\u0027s Manhattan aa for you. (Also what FillRRect uses.) If you prefer I\u0027ll switch to euclidian distance.",
+      "parentUuid": "3a156ee4_782cd17a",
+      "revId": "b042f8d3bfaee1efac7182570180aa27180b8d08",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
