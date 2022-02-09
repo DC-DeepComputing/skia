@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5e22277e_4c2bcec8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-02-09T13:19:25Z",
+      "side": 1,
+      "message": "The good news is that the failing tests mean your new toolchain is being used by our build process. The bad news is that we\u0027ll need to address the failures.\n\nIIUC, the logic in compile.sh should largely go away, right? That\u0027s been encoded in GN rules and the toolchain?",
+      "revId": "0435b2dd097ac5a2a83dc9313d22046a024d1d95",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9c76b19b_273b4e8a",
+        "filename": "bin/activate-emsdk",
+        "patchSetId": 9
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-02-09T13:19:25Z",
+      "side": 1,
+      "message": "nit: 2022 Google LLC",
+      "range": {
+        "startLine": 3,
+        "startChar": 12,
+        "endLine": 3,
+        "endChar": 28
+      },
+      "revId": "0435b2dd097ac5a2a83dc9313d22046a024d1d95",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
