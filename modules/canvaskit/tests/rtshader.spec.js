@@ -65,7 +65,6 @@ half4 main(float2 p) {
             CANVAS_WIDTH/2, CANVAS_HEIGHT/2,
             1, 0, 0, 1, // solid red
             0, 1, 0, 1], // solid green
-            true, /*=opaque*/
             localMatrix);
         paint.setShader(shader);
         canvas.drawRect(CanvasKit.LTRBRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT), paint);
@@ -109,9 +108,8 @@ half4 main(float2 p) {
         const shader = spiral.makeShader([
             0.3,
             CANVAS_WIDTH/2, CANVAS_HEIGHT/2,
-            1, 0, 0, 1, // solid red
-            0, 1, 0, 1], // solid green
-            true /*=opaque*/);
+            1, 0, 0, 1,   // solid red
+            0, 1, 0, 1]); // solid green
 
         const traced = CanvasKit.RuntimeEffect.MakeTraced(shader, CANVAS_WIDTH/2, CANVAS_HEIGHT/2);
         paint.setShader(traced.shader);
@@ -213,7 +211,7 @@ half4 main(float2 xy) {
 
                 const blendShader = thresholdEffect.makeShaderWithChildren(
                     [0.5, 5],
-                    true, [brickShader, mandrillShader, spiralShader], localMatrix);
+                    [brickShader, mandrillShader, spiralShader], localMatrix);
 
                 const surface = CanvasKit.MakeCanvasSurface('test');
                 expect(surface).toBeTruthy('Could not make surface');
