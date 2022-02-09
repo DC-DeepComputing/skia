@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "54302bf4_f445f9fa",
+        "filename": "infra/bots/gen_tasks_logic/gen_tasks_logic.go",
+        "patchSetId": 36
+      },
+      "lineNbr": 1461,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2022-02-09T13:20:42Z",
+      "side": 1,
+      "message": "This should be dashes, right?",
+      "range": {
+        "startLine": 1461,
+        "startChar": 43,
+        "endLine": 1461,
+        "endChar": 54
+      },
+      "revId": "8acd2c5666a556410db6ac677544e65b92ca8533",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dfe05468_9907f658",
+        "filename": "infra/bots/gen_tasks_logic/gen_tasks_logic.go",
+        "patchSetId": 36
+      },
+      "lineNbr": 1468,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2022-02-09T13:20:42Z",
+      "side": 1,
+      "message": "Let\u0027s actually make sure any such mappings live in gen_tasks_logic.  We\u0027d like to remove as much logic as possible from recipes/task drivers.",
+      "range": {
+        "startLine": 1467,
+        "startChar": 59,
+        "endLine": 1468,
+        "endChar": 40
+      },
+      "revId": "8acd2c5666a556410db6ac677544e65b92ca8533",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "72f21d9b_e1657d0b",
+        "filename": "infra/bots/task_drivers/codesize/codesize.go",
+        "patchSetId": 36
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2022-02-09T13:20:42Z",
+      "side": 1,
+      "message": "Can we send a request to gitiles/gerrit to retrieve this information rather than performing a full git checkout (and thus requiring the git CIPD package as well)?",
+      "range": {
+        "startLine": 129,
+        "startChar": 0,
+        "endLine": 135,
+        "endChar": 2
+      },
+      "revId": "8acd2c5666a556410db6ac677544e65b92ca8533",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
