@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e9ceddc9_1823ad39",
+        "filename": "tools/fonts/TestFontMgr.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-02-09T16:50:39Z",
+      "side": 1,
+      "message": "See here for where these are actually added.",
+      "revId": "2e4bbf70c3483f42e8559a02ddc0b1a0cba5c99c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
