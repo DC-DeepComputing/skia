@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "66244754_f1ed2d77",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18680
+      },
+      "writtenOn": "2022-02-09T20:53:07Z",
+      "side": 1,
+      "message": "Looks like download_model.py was deleted in commit 1afa5fb64b8a14164fb475fcc888fb0cf4e642ae per CL489617, hence the merge conflict.\n\nWe were using this script in Mesa\u0027s CI for SkQP testing. Cc\u0027ing anholt@ so they\u0027re aware.",
+      "revId": "8fc6d3a4005a090714fff7a03a7a484e5021add3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
