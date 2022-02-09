@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e5701b6d_81b04776",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2022-02-09T14:07:22Z",
+      "side": 1,
+      "message": "I don\u0027t know if gerrit will even let you merge an additional patch set on a CL after one has already been merged, but I don\u0027t think we should try to find out.  Instead I think the revert-of-the-revert as represented by Patchset 4 should go in it\u0027s own CL.  ",
+      "revId": "281126dff3aed311ece044c35d29e3e7488b8140",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
