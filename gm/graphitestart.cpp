@@ -9,6 +9,7 @@
 #include "include/core/SkCanvas.h"
 #include "include/core/SkImage.h"
 #include "include/core/SkPaint.h"
+#include "tools/Resources.h"
 
 namespace {
 
@@ -41,6 +42,10 @@ class GraphiteStartGM : public GM {
 public:
     GraphiteStartGM() {
         this->setBGColor(0xFFCCCCCC);
+        SkBitmap source;
+        GetResourceAsBitmap("images/color_wheel.gif", &source);
+        fBitmap.allocPixelsFlags(source.info().makeColorType(kN32_SkColorType), 0);
+        source.readPixels(fBitmap.info(), fBitmap.getPixels(), fBitmap.rowBytes(), 0, 0);
     }
 
 protected:
@@ -61,7 +66,11 @@ protected:
         canvas->drawRect({  2,   2, 127, 127}, p1);
         canvas->drawRect({129, 129, 255, 255}, p2);
         canvas->drawRect({  2, 129, 127, 255}, create_image_shader_paint());
+
+        canvas->writePixels(fBitmap, 2, 382);
     }
+
+    SkBitmap fBitmap;
 };
 
 //////////////////////////////////////////////////////////////////////////////

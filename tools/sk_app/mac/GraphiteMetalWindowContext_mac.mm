@@ -66,6 +66,7 @@ bool GraphiteMetalWindowContext_mac::onInitializeContext() {
     fMetalLayer.magnificationFilter = kCAFilterNearest;
     NSColorSpace* cs = fMainView.window.colorSpace;
     fMetalLayer.colorspace = cs.CGColorSpace;
+    fMetalLayer.framebufferOnly = false; // for now, for testing
 
     fMainView.layer = fMetalLayer;
     fMainView.wantsLayer = YES;
