@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "16eafa6e_f1ad777d",
+        "filename": "tests/sksl/errors/Ossfuzz40660.glsl",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-02-09T20:09:42Z",
+      "side": 1,
+      "message": "Previously we didn\u0027t report the absence of a } here, now we do",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 45
+      },
+      "revId": "ef55bc2de71ab7983282053191deaecdbcd6d80e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0ac52b79_f1886486",
+        "filename": "tests/sksl/runtime_errors/IllegalShaderUse.skvm",
+        "patchSetId": 2
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-02-09T20:09:42Z",
+      "side": 1,
+      "message": "Improved",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 70
+      },
+      "revId": "ef55bc2de71ab7983282053191deaecdbcd6d80e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "55b9c98d_b454e0bd",
+        "filename": "tests/sksl/runtime_errors/Ossfuzz36655.skvm",
+        "patchSetId": 2
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-02-09T20:09:42Z",
+      "side": 1,
+      "message": "All are improved",
+      "range": {
+        "startLine": 4,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 46
+      },
+      "revId": "ef55bc2de71ab7983282053191deaecdbcd6d80e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
