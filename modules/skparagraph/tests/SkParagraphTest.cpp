@@ -2047,7 +2047,7 @@ UNIX_ONLY_TEST(SkParagraph_JustifyRTLNewLine, reporter) {
         } else {
             REPORTER_ASSERT(reporter,
                             SkScalarNearlyEqual(line.width(), TestCanvasWidth - 100, EPSILON100),
-                            "#%d: %f <= %f\n", num, line.width(), TestCanvasWidth - 100);
+                            "#%ld: %f <= %d\n", num, line.width(), TestCanvasWidth - 100);
         }
     }
 }
