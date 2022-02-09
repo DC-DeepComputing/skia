@@ -12,10 +12,12 @@
 #include "experimental/graphite/src/Resource.h"
 #include "experimental/graphite/src/ResourceTypes.h"
 #include "include/core/SkSize.h"
+#include "src/gpu/ResourceKey.h"
 
 namespace skgpu {
 
 class Texture : public Resource {
+
 public:
     ~Texture() override;
 
@@ -31,6 +33,9 @@ protected:
     Ownership ownership() const { return fOwnership; }
 
 private:
+    friend class ResourceProvider; // For registerAsScratch
+    void registerAsScratch(const Caps&);
+
     SkISize fDimensions;
     TextureInfo fInfo;
     Ownership fOwnership;

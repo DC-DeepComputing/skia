@@ -72,7 +72,11 @@ sk_sp<GraphicsPipeline> ResourceProvider::GraphicsPipelineCache::refPipeline(
 }
 
 sk_sp<Texture> ResourceProvider::findOrCreateTexture(SkISize dimensions, const TextureInfo& info) {
-    return this->createTexture(dimensions, info);
+    auto texture = this->createTexture(dimensions, info);
+    if (texture) {
+        texture->registerAsScratch(*fGpu->caps());
+    }
+    return texture;
 }
 
 sk_sp<Sampler> ResourceProvider::findOrCreateCompatibleSampler(const SkSamplingOptions& smplOptions,

@@ -42,6 +42,10 @@ public:
 
     bool isRenderable(const skgpu::TextureInfo&) const override;
 
+    void computeScratchKeyForSurface(SkISize dimensions,
+                                     const skgpu::TextureInfo&,
+                                     ScratchKey*) const override;
+
 private:
     void initGPUFamily(const id<MTLDevice>);
 
