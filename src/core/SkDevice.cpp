@@ -325,10 +325,9 @@ void SkBaseDevice::drawFilteredImage(const skif::Mapping& mapping, SkSpecialImag
     skif::LayerSpace<SkIRect> targetOutput = mapping.deviceToLayer(
             skif::DeviceSpace<SkIRect>(this->devClipBounds()));
 
-    // FIXME If the saved layer (so src) was created to use F16, should we do all image filtering
-    // in F16 and then only flatten to the destination color encoding at the end?
-    // Currently, this context converts everything to the dst color type ASAP.
-    SkColorType colorType = this->imageInfo().colorType();
+    // We keep all image filtering in the same color type as the saved layer (src). In conjunction
+    // with the logic in make_layer_info, this ensures that filters produce (and preserve) alpha.
+    SkColorType colorType = src->colorType();
     if (colorType == kUnknown_SkColorType) {
         colorType = kRGBA_8888_SkColorType;
     }
