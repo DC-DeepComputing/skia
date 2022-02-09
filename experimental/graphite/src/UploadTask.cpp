@@ -74,7 +74,7 @@ bool UploadList::appendUpload(Recorder* recorder,
                               const std::vector<MipLevel>& levels,
                               const SkIRect& dstRect) {
     const Caps* caps = recorder->priv().caps();
-    SkASSERT(caps->isTexturable(textureProxy->textureInfo()));
+//    SkASSERT(caps->isTexturable(textureProxy->textureInfo()));
 
     unsigned int mipLevelCount = levels.size();
     // The assumption is either that we have no mipmaps, or that our rect is the entire texture
@@ -139,7 +139,7 @@ bool UploadList::appendUpload(Recorder* recorder,
         copyData[currentMipLevel].fBufferRowBytes = trimRowBytes;
         copyData[currentMipLevel].fRect = {
             dstRect.left(), dstRect.top(), // TODO: can we recompute this for mips?
-            currentWidth, currentHeight
+            dstRect.left() + currentWidth, dstRect.top() + currentHeight
         };
         copyData[currentMipLevel].fMipLevel = currentMipLevel;
 
