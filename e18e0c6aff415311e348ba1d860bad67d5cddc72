@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "13e6a45d_dff33687",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2022-02-09T20:43:15Z",
+      "side": 1,
+      "message": "https://skia-review.googlesource.com/c/skia/+/505476/6..7 fixes the GalaxyS20 issues.",
+      "revId": "e18e0c6aff415311e348ba1d860bad67d5cddc72",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
