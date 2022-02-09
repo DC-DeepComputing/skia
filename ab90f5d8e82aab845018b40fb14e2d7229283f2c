@@ -58,6 +58,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b05a5dbf_2f14aaa0",
+        "filename": "experimental/graphite/src/UploadTask.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-02-09T15:29:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a6f0ad3a_8c6f6667",
+      "range": {
+        "startLine": 55,
+        "startChar": 2,
+        "endLine": 56,
+        "endChar": 78
+      },
+      "revId": "ab90f5d8e82aab845018b40fb14e2d7229283f2c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d501240b_7c47bca8",
@@ -71,6 +95,30 @@
       "writtenOn": "2022-02-08T21:28:42Z",
       "side": 1,
       "message": "Is it possible that desiredAlignment is not a multiple of minTransferBufferAlignment?",
+      "range": {
+        "startLine": 60,
+        "startChar": 32,
+        "endLine": 60,
+        "endChar": 48
+      },
+      "revId": "ab90f5d8e82aab845018b40fb14e2d7229283f2c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ff8eeab0_adad351e",
+        "filename": "experimental/graphite/src/UploadTask.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-02-09T15:29:15Z",
+      "side": 1,
+      "message": "Punted on this -- using max() should work out for Metal fine.",
+      "parentUuid": "d501240b_7c47bca8",
       "range": {
         "startLine": 60,
         "startChar": 32,
@@ -118,6 +166,30 @@
       "side": 1,
       "message": "Yeah seems like that might be something that happens a step above this call. Like keep this call dealing with the raw data it is given.",
       "parentUuid": "9d08c106_25f84744",
+      "range": {
+        "startLine": 141,
+        "startChar": 8,
+        "endLine": 142,
+        "endChar": 29
+      },
+      "revId": "ab90f5d8e82aab845018b40fb14e2d7229283f2c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "84e8978d_34797f7f",
+        "filename": "experimental/graphite/src/UploadTask.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-02-09T15:29:15Z",
+      "side": 1,
+      "message": "What I was originally thinking was that we could avoid a copy if we convert/flip directly into the buffer. But for now I\u0027m going to assume that that processing happens further up.",
+      "parentUuid": "98e88740_fc06e6f8",
       "range": {
         "startLine": 141,
         "startChar": 8,
