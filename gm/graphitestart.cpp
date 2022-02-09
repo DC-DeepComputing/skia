@@ -12,7 +12,7 @@
 
 namespace {
 
-SkPaint create_image_shader_paint() {
+sk_sp<SkShader> create_image_shader() {
     SkImageInfo ii = SkImageInfo::Make(100, 100, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
     SkBitmap bitmap;
 
@@ -25,11 +25,19 @@ SkPaint create_image_shader_paint() {
     redPaint.setColor(SK_ColorRED);
     canvas.drawCircle(50, 50, 50, redPaint);
 
+    bitmap.setAlphaType(kOpaque_SkAlphaType);
+    bitmap.setImmutable();
+
     sk_sp<SkImage> img = SkImage::MakeFromBitmap(bitmap);
 
-    SkPaint p;
-    p.setShader(img->makeShader(SkTileMode::kRepeat, SkTileMode::kRepeat, SkSamplingOptions()));
-    return p;
+    return img->makeShader(SkTileMode::kRepeat, SkTileMode::kRepeat, SkSamplingOptions());
+}
+
+sk_sp<SkShader> create_blend_shader(SkBlendMode bm) {
+    constexpr SkColor4f kTransYellow = {1.0f, 1.0f, 0.0f, 0.5f};
+
+    sk_sp<SkShader> solid = SkShaders::Color(kTransYellow, nullptr);
+    return SkShaders::Blend(bm, std::move(solid), create_image_shader());
 }
 
 } // anonymous namespace
@@ -53,14 +61,24 @@ protected:
     }
 
     void onDraw(SkCanvas* canvas) override {
-        SkPaint p1, p2;
 
-        p1.setColor(SK_ColorRED);
-        p2.setColor(SK_ColorGREEN);
+        {
+            SkPaint p;
+            p.setColor(SK_ColorRED);
+            canvas->drawRect({2, 2, 127, 127}, p);
+        }
 
-        canvas->drawRect({  2,   2, 127, 127}, p1);
-        canvas->drawRect({129, 129, 255, 255}, p2);
-        canvas->drawRect({  2, 129, 127, 255}, create_image_shader_paint());
+        {
+            SkPaint p;
+            p.setShader(create_blend_shader(SkBlendMode::kDstOver));
+            canvas->drawRect({129, 129, 255, 255}, p);
+        }
+
+        {
+            SkPaint p;
+            p.setShader(create_image_shader());
+            canvas->drawRect({2, 129, 127, 255}, p);
+        }
     }
 };
 
