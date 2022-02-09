@@ -95,6 +95,7 @@ generated_cc_atom(
         "//include/core:SkCanvas_hdr",
         "//include/core:SkColor_hdr",
         "//include/core:SkData_hdr",
+        "//include/core:SkDrawable_hdr",
         "//include/core:SkEncodedImageFormat_hdr",
         "//include/core:SkFontStyle_hdr",
         "//include/core:SkImageInfo_hdr",
