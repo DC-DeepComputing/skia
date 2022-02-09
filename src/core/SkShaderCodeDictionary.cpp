@@ -7,13 +7,14 @@
 
 #include "src/core/SkShaderCodeDictionary.h"
 
+#include "include/private/SkSLString.h"
 #include "src/core/SkOpts.h"
+#include <set>
 
 // TODO: SkShaderInfo::toSkSL needs to work outside of both just graphite and metal. To do
 // so we'll need to switch over to using SkSL's uniform capabilities.
 #if SK_SUPPORT_GPU && defined(SK_GRAPHITE_ENABLED) && defined(SK_METAL)
 
-#include "include/private/SkSLString.h"
 
 // TODO: switch this over to using SkSL's uniform system
 namespace skgpu::mtl {
@@ -22,27 +23,60 @@ std::string GetMtlUniforms(int bufferID,
                            const std::vector<SkShaderInfo::SnippetEntry>&);
 }
 
+std::string SkShaderInfo::emitEntry(int* entryIndex, std::string* result) const {
+    const SkShaderInfo::SnippetEntry& entry = fEntries[*entryIndex];
+
+    std::string scopeOutputVar("outColor%d", *entryIndex);
+
+    SkSL::String::appendf(result, "half4 %s;\n", scopeOutputVar.c_str());
+    *result += "{\n";
+
+    std::vector<const std::string> childNames;
+    for (int j = 0; j < entry.fNumChildren; ++j) {
+        *entryIndex += 1;
+        std::string childOutputVar = emitEntry(entryIndex, result);
+        childNames.push_back(childOutputVar);
+    }
+
+    *result += (entry.fDynamicSkSL)(scopeOutputVar, entry, childNames);
+    *result += "}\n";
+
+    return scopeOutputVar;
+}
+
 // The current, incomplete, model for shader construction is:
-//   each code snippet defines a method with a unique name that takes 0 params and returns a half4.
-//   For each code snippet in the shader info, the matching method will be called and the result
-//            placed in a variable named "outColor%d". The integer is just that snippet's position
-//            in the shaderInfo.
-//   Currently, the last shader snippet's "outColor%d" is then copied into "sk_FragColor".
-// Note: that each entry's 'fName' field must match the name of the method in the 'fCode' field.
+//   each static code snippet (which can have an arbitrary signature) gets emitted once as a
+//            preamble
+//   glue code is then generated w/in the "main" method. The glue code is responsible for:
+//            gathering the correct (mangled?) uniforms
+//            passing the uniforms and any other parameters to the helper method
+//   The result of the last code snippet is then copied into "sk_FragColor".
+// Note: that each entry's 'fName' field must match the name of the method in the
+// 'fStaticSkSL' field.
 std::string SkShaderInfo::toSkSL() const {
+    // TODO: the uniform names need to be mangled for duplicates
     std::string result = skgpu::mtl::GetMtlUniforms(2, "FS", fEntries);
 
+    std::set<int> emittedStaticSnippets;
     for (auto c : fEntries) {
-        result += c.fCode;
+        if (emittedStaticSnippets.find((int) c.fID) == emittedStaticSnippets.end()) {
+            result += c.fStaticSkSL;
+            emittedStaticSnippets.insert((int) c.fID);
+        }
     }
 
     result += "layout(location = 0, index = 0) out half4 sk_FragColor;\n";
     result += "void main() {\n";
 
-    for (size_t i = 0; i < fEntries.size(); ++i) {
-        SkSL::String::appendf(&result, "half4 outColor%d = %s();\n", (int) i, fEntries[i].fName);
+    // TODO: for some effects (e.g., SW blending) we will need to feed the output variable
+    // name from the prior step into the current step's glue code (and deal with the
+    // initial color issue).
+    std::string lastOutputVar;
+    for (int entryIndex = 0; entryIndex < (int) fEntries.size(); ++entryIndex) {
+        lastOutputVar = this->emitEntry(&entryIndex, &result);
     }
-    SkSL::String::appendf(&result, "sk_FragColor = outColor%d;\n", (int) fEntries.size()-1);
+
+    SkSL::String::appendf(&result, "sk_FragColor = %s;\n", lastOutputVar.c_str());
     result += "}\n";
 
     return result;
@@ -94,12 +128,7 @@ SkSpan<const SkUniform> SkShaderCodeDictionary::getUniforms(SkBuiltInCodeSnippet
 }
 
 const SkShaderInfo::SnippetEntry* SkShaderCodeDictionary::getEntry(SkBuiltInCodeSnippetID id) const {
-    if (fCodeSnippets[(int) id].fCode) {
-        return &fCodeSnippets[(int) id];
-    }
-
-    // If we're missing a code snippet just draw solid blue
-    return this->getEntry(SkBuiltInCodeSnippetID::kDepthStencilOnlyDraw);
+    return &fCodeSnippets[(int) id];
 }
 
 void SkShaderCodeDictionary::getShaderInfo(SkUniquePaintParamsID uniqueID, SkShaderInfo* info) {
@@ -110,6 +139,32 @@ void SkShaderCodeDictionary::getShaderInfo(SkUniquePaintParamsID uniqueID, SkSha
 //--------------------------------------------------------------------------------------------------
 namespace {
 
+// The default glue code just calls a helper function with the signature:
+//    half4 helper();
+// and stores the result in a variable named "resultName".
+std::string DefaultProcedurallyGenerateSkSL(const std::string& resultName,
+                                            const SkShaderInfo::SnippetEntry& entry,
+                                            const std::vector<const std::string>& childNames) {
+    SkASSERT(childNames.empty());
+
+    std::string result;
+
+    // TODO: mangle the uniform name w/ the entry's index
+    SkSL::String::appendf(&result, "%s = %s(", resultName.c_str(), entry.fStaticFunctionName);
+    for (size_t i = 0; i < entry.fUniforms.size(); ++i) {
+        result += entry.fUniforms[i].name();
+
+        if (i+1 < entry.fUniforms.size()) {
+            result += ",";
+        }
+        result += "\n";
+    }
+    result += ");\n";
+
+    return result;
+}
+
+//--------------------------------------------------------------------------------------------------
 static constexpr int kFourStopGradient = 4;
 
 // TODO: For the sprint we unify all the gradient uniforms into a standard set of 6:
@@ -130,92 +185,188 @@ static constexpr SkUniform kGradientUniforms[kNumGradientUniforms] = {
 static const char *kLinearGradient4Name = "linear_grad_4_shader";
 static const char *kLinearGradient4SkSL =
         // TODO: This should use local coords
-        "half4 linear_grad_4_shader() {\n"
+        "half4 linear_grad_4_shader(half4 colorsParam[4],\n"
+        "                           float offsetsParam[4],\n"
+        "                           float2 point0Param,\n"
+        "                           float2 point1Param,\n"
+        "                           float radius0Param,\n"
+        "                           float radius1Param) {\n"
         "    float2 pos = sk_FragCoord.xy;\n"
-        "    float2 delta = point1 - point0;\n"
-        "    float2 pt = pos - point0;\n"
+        "    float2 delta = point1Param - point0Param;\n"
+        "    float2 pt = pos - point0Param;\n"
         "    float t = dot(pt, delta) / dot(delta, delta);\n"
-        "    float4 result = colors[0];\n"
-        "    result = mix(result, colors[1],\n"
-        "                 clamp((t-offsets[0])/(offsets[1]-offsets[0]),\n"
+        "    float4 result = colorsParam[0];\n"
+        "    result = mix(result, colorsParam[1],\n"
+        "                 clamp((t-offsetsParam[0])/(offsetsParam[1]-offsetsParam[0]),\n"
         "                       0, 1));\n"
-        "    result = mix(result, colors[2],\n"
-        "                 clamp((t-offsets[1])/(offsets[2]-offsets[1]),\n"
+        "    result = mix(result, colorsParam[2],\n"
+        "                 clamp((t-offsetsParam[1])/(offsetsParam[2]-offsetsParam[1]),\n"
         "                       0, 1));\n"
-        "    result = mix(result, colors[3],\n"
-        "                 clamp((t-offsets[2])/(offsets[3]-offsets[2]),\n"
+        "    result = mix(result, colorsParam[3],\n"
+        "                 clamp((t-offsetsParam[2])/(offsetsParam[3]-offsetsParam[2]),\n"
         "                 0, 1));\n"
         "    return half4(result);\n"
         "}\n";
 
 //--------------------------------------------------------------------------------------------------
-static constexpr int kNumSolidUniforms = 1;
-static constexpr SkUniform kSolidUniforms[kNumSolidUniforms] = {
+static constexpr int kNumSolidShaderUniforms = 1;
+static constexpr SkUniform kSolidShaderUniforms[kNumSolidShaderUniforms] = {
         { "color", SkSLType::kFloat4 }
 };
 
-static const char* kSolidColorName = "solid_shader";
-static const char* kSolidColorSkSL =
-        "half4 solid_shader() {\n"
-        "    return half4(color);\n"
+static const char* kSolidShaderName = "solid_shader";
+static const char* kSolidShaderSkSL =
+        "half4 solid_shader(float4 colorParam) {\n"
+        "    return half4(colorParam);\n"
         "}\n";
 
 //--------------------------------------------------------------------------------------------------
-static constexpr int kNumImageUniforms = 0;
+static constexpr int kNumImageShaderUniforms = 0;
 
-static const char* kImageName = "image_shader";
-static const char* kImageSkSL =
+static const char* kImageShaderName = "image_shader";
+static const char* kImageShaderSkSL =
         "half4 image_shader() {\n"
         "    float r = fract(abs(sk_FragCoord.x/10.0));\n"
         "    return half4(r, 0.0, 0.0, 1.0);\n"
         "}\n";
 
 //--------------------------------------------------------------------------------------------------
-// TODO: kNone is for depth-only draws, so should actually have a fragment output type
-// that only defines a [[depth]] attribute but no color calculation.
-static const char* kNoneName = "none";
-static const char* kNoneSkSL =
-        "half4 none() {\n"
-        "    return half4(0.0, 0.0, 1.0, 1.0);\n"
+static constexpr int kNumBlendShaderUniforms = 0;
+static constexpr int kNumBlendShaderChildren = 2;
+
+// Note: we're counting on the compiler to inline this code and trim it down to just the used
+// branch(es).
+static const char* kBlendShaderName = "blend_shader";
+static const char* kBlendShaderSkSL =
+        "const uint kClear    = 0u;\n"
+        "const uint kSrc      = 1u;\n"
+        "const uint kDst      = 2u;\n"
+        "const uint kSrcOver  = 3u;\n"
+        "const uint kDstOver  = 4u;\n"
+        "const uint kSrcIn    = 5u;\n"
+        "const uint kDstIn    = 6u;\n"
+        "const uint kSrcOut   = 7u;\n"
+        "const uint kDstOut   = 8u;\n"
+        "const uint kSrcATop  = 9u;\n"
+        "const uint kDstATop  = 10u;\n"
+        "const uint kXor      = 11u;\n"
+        "const uint kPlus     = 12u;\n"
+        "const uint kModulate = 13u;\n"
+        "const uint kScreen   = 14u;\n"
+        "half4 blend_shader(half4 src, half4 dst, uint mode) {\n"
+        "    switch (mode) {\n"
+        "        case kClear: return half4(0.0, 0.0, 0.0, 0.0);\n"
+        "        case kSrc: return src;\n"
+        "        case kDst: return dst;\n"
+        "        case kSrcOver: return src + (1.0-src.a) * dst;\n"
+        "        case kDstOver: return dst + (1.0-dst.a) * src;\n"
+        "        case kSrcIn: return src * dst.a;\n"
+        "        case kDstIn: return dst * src.a;\n"
+        "        case kSrcOut: return src * (1.0 - dst.a);\n"
+        "        case kDstOut: return dst * (1.0 - src.a);\n"
+        "        case kSrcATop: return src * dst.a + dst * (1.0 - src.a);\n"
+        "        case kDstATop: return dst * src.a + src * (1.0 - dst.a);\n"
+        "        case kXor: return src * (1.0 - dst.a) + dst * (1.0 - src.a);\n"
+        "        case kPlus: return min(src + dst, 1.0);\n"
+        "        case kModulate: return src * dst;\n"
+        "        case kScreen: return src + dst - src * dst;\n"
+        "    }\n"
+        "    return half4(0.0, 0.0, 0.0, 1.0);\n"
+        "}\n";
+
+std::string BlendProcedurallyGenerateSkSL(const std::string& resultName,
+                                          const SkShaderInfo::SnippetEntry& entry,
+                                          const std::vector<const std::string>& childNames) {
+    SkASSERT(childNames.size() == kNumBlendShaderChildren);
+
+    std::string result;
+
+    // TODO: actually feed in the blend mode either through a uniform or, somehow, feeding
+    // it in from the SkPaintParamsKey
+    SkSL::String::appendf(&result, "%s = blend_shader(%s, %s, kPlus);\n",
+                          resultName.c_str(),
+                          childNames[1].c_str(),
+                          childNames[0].c_str());
+
+    return result;
+}
+//--------------------------------------------------------------------------------------------------
+static constexpr int kNumErrorUniforms = 0;
+static const char* kErrorName = "error";
+static const char* kErrorSkSL =
+        "half4 error() {\n"
+        "    return half4(1.0, 0.0, 1.0, 1.0);\n"
         "}\n";
 
 } // anonymous namespace
+
+static constexpr int kNoChildren = 0;
 
 SkShaderCodeDictionary::SkShaderCodeDictionary() {
     // The 0th index is reserved as invalid
     fEntryVector.push_back(nullptr);
 
     fCodeSnippets[(int) SkBuiltInCodeSnippetID::kDepthStencilOnlyDraw] = {
-            {}, kNoneName, kNoneSkSL
+            SkBuiltInCodeSnippetID::kDepthStencilOnlyDraw,
+            { nullptr, kNumErrorUniforms },
+            kErrorName, kErrorSkSL,
+            DefaultProcedurallyGenerateSkSL,
+            kNoChildren
     };
     fCodeSnippets[(int) SkBuiltInCodeSnippetID::kSolidColorShader] = {
-            SkMakeSpan(kSolidUniforms, kNumSolidUniforms),
-            kSolidColorName, kSolidColorSkSL
+            SkBuiltInCodeSnippetID::kSolidColorShader,
+            SkMakeSpan(kSolidShaderUniforms, kNumSolidShaderUniforms),
+            kSolidShaderName, kSolidShaderSkSL,
+            DefaultProcedurallyGenerateSkSL,
+            kNoChildren
     };
     fCodeSnippets[(int) SkBuiltInCodeSnippetID::kLinearGradientShader] = {
+            SkBuiltInCodeSnippetID::kLinearGradientShader,
             SkMakeSpan(kGradientUniforms, kNumGradientUniforms),
-            kLinearGradient4Name, kLinearGradient4SkSL
+            kLinearGradient4Name, kLinearGradient4SkSL,
+            DefaultProcedurallyGenerateSkSL,
+            kNoChildren
     };
     fCodeSnippets[(int) SkBuiltInCodeSnippetID::kRadialGradientShader] = {
+            SkBuiltInCodeSnippetID::kRadialGradientShader,
             SkMakeSpan(kGradientUniforms, kNumGradientUniforms),
-            kLinearGradient4Name, kLinearGradient4SkSL
+            kLinearGradient4Name, kLinearGradient4SkSL,
+            DefaultProcedurallyGenerateSkSL,
+            kNoChildren
     };
     fCodeSnippets[(int) SkBuiltInCodeSnippetID::kSweepGradientShader] = {
+            SkBuiltInCodeSnippetID::kSweepGradientShader,
             SkMakeSpan(kGradientUniforms, kNumGradientUniforms),
-            kLinearGradient4Name, kLinearGradient4SkSL
+            kLinearGradient4Name, kLinearGradient4SkSL,
+            DefaultProcedurallyGenerateSkSL,
+            kNoChildren
     };
     fCodeSnippets[(int) SkBuiltInCodeSnippetID::kConicalGradientShader] = {
+            SkBuiltInCodeSnippetID::kConicalGradientShader,
             SkMakeSpan(kGradientUniforms, kNumGradientUniforms),
-            kLinearGradient4Name, kLinearGradient4SkSL
+            kLinearGradient4Name, kLinearGradient4SkSL,
+            DefaultProcedurallyGenerateSkSL,
+            kNoChildren
     };
     fCodeSnippets[(int) SkBuiltInCodeSnippetID::kImageShader] = {
-            { nullptr, kNumImageUniforms },
-            kImageName, kImageSkSL
+            SkBuiltInCodeSnippetID::kImageShader,
+            { nullptr, kNumImageShaderUniforms },
+            kImageShaderName, kImageShaderSkSL,
+            DefaultProcedurallyGenerateSkSL,
+            kNoChildren
     };
     fCodeSnippets[(int) SkBuiltInCodeSnippetID::kBlendShader] = {
-            {}, nullptr, nullptr
+            SkBuiltInCodeSnippetID::kBlendShader,
+            { nullptr, kNumBlendShaderUniforms },
+            kBlendShaderName, kBlendShaderSkSL,
+            BlendProcedurallyGenerateSkSL,
+            kNumBlendShaderChildren
     };
     fCodeSnippets[(int) SkBuiltInCodeSnippetID::kSimpleBlendMode] = {
-            {}, nullptr, nullptr
+            SkBuiltInCodeSnippetID::kSimpleBlendMode,
+            { nullptr, kNumErrorUniforms },
+            kErrorName, kErrorSkSL,
+            DefaultProcedurallyGenerateSkSL,
+            kNoChildren
     };
 }
