@@ -16,6 +16,69 @@
       "message": "Latest PS adds support in Vk, Mtl, D3D, fixes an issue on ES/WebGL where we might not be able to read-back to anything but 8888, and renames the new value to match the more recent color types.",
       "revId": "0162907f912c8dd07fe86f89f47b91c14eb1f777",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "51948d3e_6cab2a81",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-09T15:22:28Z",
+      "side": 1,
+      "message": "It looks good to me, but I wouldn\u0027t mind Greg\u0027s double checking on the GrColorType business. A quick glance at the GMs seemed like they were okay, although it is a bit of a mental bender to try and compare the \"grayscale\" red channel image back to the color image. It\u0027s worse when gold decides that the kG8 image is closest IMO.\n\nWould it be feasible to have gold draw the kR8 images as actual (r,0,0,1) images instead of (r,r,r,1)? Is that something in gold, or how we export the png data from dm?",
+      "revId": "0162907f912c8dd07fe86f89f47b91c14eb1f777",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6b578284_06177692",
+        "filename": "infra/bots/gen_tasks_logic/dm_flags.go",
+        "patchSetId": 3
+      },
+      "lineNbr": 509,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-09T15:22:28Z",
+      "side": 1,
+      "message": "line wrapping in go files?",
+      "range": {
+        "startLine": 509,
+        "startChar": 3,
+        "endLine": 509,
+        "endChar": 86
+      },
+      "revId": "0162907f912c8dd07fe86f89f47b91c14eb1f777",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0047e71b_b83593a3",
+        "filename": "src/core/SkRasterPipelineBlitter.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 213,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-09T15:22:28Z",
+      "side": 1,
+      "message": "Is the extra space between case and kR8 following the same alignment pattern as the switch? I haven\u0027t figured out the structure to it, though",
+      "range": {
+        "startLine": 213,
+        "startChar": 0,
+        "endLine": 213,
+        "endChar": 84
+      },
+      "revId": "0162907f912c8dd07fe86f89f47b91c14eb1f777",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
