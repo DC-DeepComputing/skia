@@ -34,6 +34,24 @@
       "parentUuid": "21372c0a_0d593d02",
       "revId": "6cdfd9892f123afe6cb3fc3182429d67f77a5af6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "28f9e249_fe1744af",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-09T15:44:59Z",
+      "side": 1,
+      "message": "oh, and there\u0027s one backdrop test (savelayer_with_backdrop) that uses simple transforms, but the content that\u0027s being filtered is all opaque, so while this change did cause pixel diffs, they were not obviously bad.",
+      "parentUuid": "88557906_6623b25d",
+      "revId": "6cdfd9892f123afe6cb3fc3182429d67f77a5af6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
