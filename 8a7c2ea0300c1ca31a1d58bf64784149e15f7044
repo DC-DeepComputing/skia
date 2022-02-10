@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "387d7d5b_17043192",
+        "filename": "gn/skqp_gn_args.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2022-02-10T19:24:22Z",
+      "side": 1,
+      "message": "I would drop this entirely from the code and file a bug about it.",
+      "revId": "8a7c2ea0300c1ca31a1d58bf64784149e15f7044",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ca92bc4d_99485825",
+        "filename": "platform_tools/android/apps/skqp/src/main/java/org/skia/skqp/SkQP.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2022-02-10T19:24:22Z",
+      "side": 1,
+      "message": "I like this name better as I think it signifies what the native code is intended for, but I think this may break the APK that gets produced by tools/skqp/make_apk.sh.",
+      "revId": "8a7c2ea0300c1ca31a1d58bf64784149e15f7044",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
