@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f6fdbf39_90fe9711",
+        "filename": "tools/skqp/src/jni_skqp.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2022-02-10T19:29:45Z",
+      "side": 0,
+      "message": "Looking at building the APK from Skia it seems that we may still need this function.  Still not sure yet how to make it work...",
+      "revId": "b6dfd97c52906c1748b9c2a2406eea44a8daf96c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
