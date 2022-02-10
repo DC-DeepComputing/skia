@@ -1,0 +1,211 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "485aa66c_47ad6529",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-10T21:36:02Z",
+      "side": 1,
+      "message": "nit: * next to type",
+      "range": {
+        "startLine": 15,
+        "startChar": 16,
+        "endLine": 15,
+        "endChar": 29
+      },
+      "revId": "b8a9a75094357cd713045fe0674dbe00d7a86cae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ed65c7bd_fdfd2837",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-10T21:36:02Z",
+      "side": 1,
+      "message": "\"/* emitted snippet sksl assigns to outColor%d */\"?\n\nthat would match how the default generator does it, and how emitEntry is currently written. But it also looks possible that emitEntry could append \"outColor%d \u003d\", then call the generator, and then add the semi-colon?\n\nThat has the benefit of matching what the comment says and making the generator functions responsibility to outputting a function invocation expression.",
+      "range": {
+        "startLine": 39,
+        "startChar": 11,
+        "endLine": 39,
+        "endChar": 48
+      },
+      "revId": "b8a9a75094357cd713045fe0674dbe00d7a86cae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a1bfeb3e_ff72e04f",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-10T21:36:02Z",
+      "side": 1,
+      "message": "It doesn\u0027t look like \u0027entryIndex\u0027 needs to be a mutable pointer?",
+      "range": {
+        "startLine": 42,
+        "startChar": 36,
+        "endLine": 42,
+        "endChar": 51
+      },
+      "revId": "b8a9a75094357cd713045fe0674dbe00d7a86cae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7f3a46bf_7957c23d",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-10T21:36:02Z",
+      "side": 1,
+      "message": "\"method defined in\"",
+      "range": {
+        "startLine": 66,
+        "startChar": 82,
+        "endLine": 66,
+        "endChar": 91
+      },
+      "revId": "b8a9a75094357cd713045fe0674dbe00d7a86cae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6a90d388_67317685",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-10T21:36:02Z",
+      "side": 1,
+      "message": "I don\u0027t think we need to limit ourselves to static snippets here. If we made it a set of function names, or a set of static-sksl\u0027s, we\u0027d only be adding the function definitions once as needed and we wouldn\u0027t have to add the SkBuiltInCodeId to the snippet entry.",
+      "range": {
+        "startLine": 72,
+        "startChar": 0,
+        "endLine": 72,
+        "endChar": 40
+      },
+      "revId": "b8a9a75094357cd713045fe0674dbe00d7a86cae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "db3ee267_9ad379f7",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 157,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-10T21:36:02Z",
+      "side": 1,
+      "message": "Do we expect to need other procedurally generated sksls?\n\nIf we don\u0027t, then maybe this should be folded into SkShaderCodeDictionary vs. being stored per snippet entry?\n\nIf we do, but for a limited scenario like one per backend, or one for static/built-in snippets and another for runtime sksl, maybe we configure them as fields on the code dictionary or \"ProgramBuilder\"?",
+      "range": {
+        "startLine": 157,
+        "startChar": 12,
+        "endLine": 157,
+        "endChar": 43
+      },
+      "revId": "b8a9a75094357cd713045fe0674dbe00d7a86cae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a4135323_4f8fbd4a",
+        "filename": "src/core/SkShaderCodeDictionary.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-10T21:36:02Z",
+      "side": 1,
+      "message": "using ProcedurallyGenerateSkSL \u003d std:string (*)(const std::string\u0026 resultName, const SnippetEntry\u0026, int index);\n\nI particularly like \u0027using\u0027 for function aliases since the name is more visible compared to a typedef for a function pointer.\n\nAfter reading more of the CL, it looks like fDynamicSkSL is only used to *invoke* the entry\u0027s function that was defined in fStaticSkSL, knowing what specific uniforms it needs to pass in, etc.",
+      "range": {
+        "startLine": 24,
+        "startChar": 4,
+        "endLine": 26,
+        "endChar": 64
+      },
+      "revId": "b8a9a75094357cd713045fe0674dbe00d7a86cae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "013df0ff_d7f3a7e1",
+        "filename": "src/core/SkShaderCodeDictionary.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-10T21:36:02Z",
+      "side": 1,
+      "message": "do we need this, or could it be handled implicitly by the function we set to fDynamicSkSL?",
+      "range": {
+        "startLine": 29,
+        "startChar": 0,
+        "endLine": 29,
+        "endChar": 90
+      },
+      "revId": "b8a9a75094357cd713045fe0674dbe00d7a86cae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9f6dada3_fc2b2ab0",
+        "filename": "src/core/SkShaderCodeDictionary.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-10T21:36:02Z",
+      "side": 1,
+      "message": "Can we name this something like emitEntryInvocation or something along those lines to highlight that it\u0027s not adding the static SkSL of the entry, just calling it?",
+      "range": {
+        "startLine": 50,
+        "startChar": 16,
+        "endLine": 50,
+        "endChar": 25
+      },
+      "revId": "b8a9a75094357cd713045fe0674dbe00d7a86cae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
