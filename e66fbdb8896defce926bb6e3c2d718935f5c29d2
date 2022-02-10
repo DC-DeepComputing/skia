@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f4494f20_9fd3b3c5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2022-02-10T20:05:11Z",
+      "side": 1,
+      "message": "you will need to land your CL in external/skqp prior to landing this CL.",
+      "revId": "e66fbdb8896defce926bb6e3c2d718935f5c29d2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
