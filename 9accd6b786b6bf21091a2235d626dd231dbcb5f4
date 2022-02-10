@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0a6500b5_424810a2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-02-10T23:40:14Z",
+      "side": 1,
+      "message": "modulo the colortype update, I think this and gold lgtm now",
+      "revId": "9accd6b786b6bf21091a2235d626dd231dbcb5f4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5c3752d8_a585040c",
@@ -14,6 +31,30 @@
       "writtenOn": "2022-02-10T23:17:33Z",
       "side": 1,
       "message": "Should this actually be kRGBA_F16 for gradients? Or is kR fine?",
+      "range": {
+        "startLine": 96,
+        "startChar": 43,
+        "endLine": 96,
+        "endChar": 49
+      },
+      "revId": "9accd6b786b6bf21091a2235d626dd231dbcb5f4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "81c203a7_b268b08e",
+        "filename": "src/gpu/ops/DashLinePathRenderer.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-02-10T23:40:14Z",
+      "side": 1,
+      "message": "From change looks like we want RGBA16",
+      "parentUuid": "5c3752d8_a585040c",
       "range": {
         "startLine": 96,
         "startChar": 43,
