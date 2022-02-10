@@ -11,15 +11,47 @@
 #include <array>
 #include <limits>
 #include "include/core/SkTypes.h"
+#include "include/private/SkTArray.h"
 #include "src/core/SkBuiltInCodeSnippetID.h"
+#include <vector>
 
 enum class SkBackend : uint8_t {
     kGanesh,
     kGraphite,
     kSkVM
 };
+class SkPaintParamsKey;
 class SkShaderCodeDictionary;
 class SkShaderInfo;
+
+class SkPaintParamsKeyBuilder {
+public:
+    SkPaintParamsKeyBuilder(SkShaderCodeDictionary*);
+
+    void beginBlock(int codeSnippetID);
+    void beginBlock(SkBuiltInCodeSnippetID id) { this->beginBlock(static_cast<int>(id)); }
+    void endBlock();
+
+    void addBytes(uint32_t numBytes, const uint8_t* data) {
+        fData.push_back_n(numBytes, data);
+    }
+    void addByte(uint8_t data) {
+        this->addBytes(1, &data);
+    }
+
+#ifdef SK_DEBUG
+    uint8_t byte(int offset) const { return fData[offset]; }
+#endif
+
+    std::unique_ptr<SkPaintParamsKey> snap();
+
+    size_t sizeInBytes() const { return fData.count(); }
+
+private:
+    SkShaderCodeDictionary* fDict;
+    std::vector<std::pair<int, int>> fStack;
+    SkTArray<uint8_t, true> fData;
+};
 
 // This class is a compact representation of the shader needed to implement a given
 // PaintParams. Its structure is a series of blocks where each block has a
@@ -30,10 +62,7 @@ public:
     static const int kBlockHeaderSizeInBytes = 2;
     static const int kBlockSizeOffsetInBytes = 1; // offset to the block size w/in the header
 
-    // Block headers have the following structure:
-    //  1st byte: codeSnippetID
-    //  2nd byte: total blockSize in bytes
-    // Returns the header's offset in the key - to be passed back into endBlock
+#if 0
     int beginBlock(SkBuiltInCodeSnippetID codeSnippetID) {
         SkASSERT(fNumBytes < kMaxKeySize);
 
@@ -49,6 +78,7 @@ public:
         SkASSERT(blockSize <= kMaxBlockSize);
         fData[headerOffset+1] = blockSize;
     }
+#endif
 
     std::pair<SkBuiltInCodeSnippetID, uint8_t> readCodeSnippetID(int headerOffset) const {
         SkASSERT(headerOffset < kMaxKeySize - kBlockHeaderSizeInBytes);
@@ -80,6 +110,10 @@ public:
     bool operator!=(const SkPaintParamsKey& that) const { return !(*this == that); }
 
 private:
+    friend class SkPaintParamsKeyBuilder;
+
+    SkPaintParamsKey();
+
     static int AddBlockToShaderInfo(SkShaderCodeDictionary*,
                                     const SkPaintParamsKey&,
                                     int headerOffset,

@@ -11,6 +11,53 @@
 #include "src/core/SkKeyHelpers.h"
 #include "src/core/SkShaderCodeDictionary.h"
 
+//--------------------------------------------------------------------------------------------------
+SkPaintParamsKeyBuilder::SkPaintParamsKeyBuilder(SkShaderCodeDictionary* dict)
+        : fDict(dict) {
+}
+
+// Block headers have the following structure:
+//  1st byte: codeSnippetID
+//  2nd byte: total blockSize in bytes
+// This call stores the header's offset in the key on the stack to be used in 'endBlock'
+void SkPaintParamsKeyBuilder::beginBlock(int codeSnippetID) {
+    SkASSERT(codeSnippetID >= 0 && codeSnippetID < fDict->maxCodeSnippetID());
+    // TODO: add assert that the id fits in a uint8_t
+
+    fData.reserve_back(SkPaintParamsKey::kBlockHeaderSizeInBytes);
+
+    this->addByte((uint8_t) codeSnippetID);
+    this->addByte(0);  // this needs to be patched up with a call to endBlock
+
+    fStack.push_back({codeSnippetID,
+                      this->sizeInBytes() - SkPaintParamsKey::kBlockHeaderSizeInBytes});
+}
+
+// Update the size byte of a block header
+void SkPaintParamsKeyBuilder::endBlock() {
+    // TODO: add code to make the key invalid if block begins and ends aren't aligned
+    SkASSERT(!fStack.empty());
+
+    int codeSnippetID = fStack.back().first;
+    int headerOffset = fStack.back().second;
+
+    SkASSERT(fData[headerOffset] == codeSnippetID);
+    int blockSize = this->sizeInBytes() - headerOffset;
+    // TODO: add an assert that 'blockSize' fits in a uint8_t - owise mark the key as invalid
+    fData[headerOffset+SkPaintParamsKey::kBlockSizeOffsetInBytes] = blockSize;
+
+    fStack.pop_back();
+}
+
+std::unique_ptr<SkPaintParamsKey> SkPaintParamsKeyBuilder::snap() {
+
+}
+
+//--------------------------------------------------------------------------------------------------
+SkPaintParamsKey::SkPaintParamsKey() {
+
+}
+
 bool SkPaintParamsKey::operator==(const SkPaintParamsKey& that) const {
     return fNumBytes == that.fNumBytes &&
            !memcmp(fData.data(), that.fData.data(), fNumBytes);
