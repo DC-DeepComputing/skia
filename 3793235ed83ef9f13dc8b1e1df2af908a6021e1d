@@ -39,6 +39,30 @@
       },
       "revId": "3793235ed83ef9f13dc8b1e1df2af908a6021e1d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d41774d2_5d4b7eb5",
+        "filename": "platform_tools/android/apps/viewer/build.gradle",
+        "patchSetId": 2
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2022-02-10T18:59:34Z",
+      "side": 1,
+      "message": "Anything lower spews this:\n\n\u003e Task :viewer:mergeExtDexArm64Debug\n\nAGPBI: {\"kind\":\"error\",\"text\":\"Invoke-customs are only supported starting with Android O (--min-api 26)\",\"sources\":[{}],\"tool\":\"D8\"}\n\nAGPBI: {\"kind\":\"error\",\"text\":\"Invoke-customs are only supported starting with Android O (--min-api 26)\",\"sources\":[{}],\"tool\":\"D8\"}\n\nAGPBI: {\"kind\":\"error\",\"text\":\"Invoke-customs are only supported starting with Android O (--min-api 26)\",\"sources\":[{}],\"tool\":\"D8\"}",
+      "parentUuid": "07594506_0668188d",
+      "range": {
+        "startLine": 18,
+        "startChar": 22,
+        "endLine": 18,
+        "endChar": 24
+      },
+      "revId": "3793235ed83ef9f13dc8b1e1df2af908a6021e1d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
