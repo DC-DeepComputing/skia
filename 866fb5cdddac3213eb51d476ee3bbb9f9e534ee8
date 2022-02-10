@@ -16,6 +16,29 @@
       "message": "PS4 verified that all the canaries passed.",
       "revId": "866fb5cdddac3213eb51d476ee3bbb9f9e534ee8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "923c97ed_2df4262a",
+        "filename": "RELEASE_NOTES.txt",
+        "patchSetId": 5
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-02-10T21:17:01Z",
+      "side": 1,
+      "message": "Could be helpful to be more explicit here. Something like\n\"always end your shader\u0027s SkSL code with `return color.rgb1;`\" or \"always set the alpha value of your shader\u0027s color to 1.0 as the last step of your SkSL shader\".",
+      "range": {
+        "startLine": 16,
+        "startChar": 37,
+        "endLine": 16,
+        "endChar": 68
+      },
+      "revId": "866fb5cdddac3213eb51d476ee3bbb9f9e534ee8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
