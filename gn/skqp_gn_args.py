@@ -6,6 +6,9 @@ def GetGNArgs(api_level, debug, arch=None, ndk=None, is_android_bp=False):
     gn_args = {
         'ndk_api':                          api_level,
         'is_debug':                         'true' if debug else 'false',
+        # SKQP requires SK_ENABLE_DUMP_GPU, SK_BUILD_FOR_SKQP, and SK_ALLOW_STATIC_GLOBAL_INITIALIZERS
+        # but this does not appear to apply them.
+        # TODO(nifong): find a way to apply these when building skqp.
         'extra_cflags':                     '[ "-DSK_ENABLE_DUMP_GPU", "-DSK_BUILD_FOR_SKQP" ]',
         'skia_enable_fontmgr_android':      'false',
         'skia_enable_fontmgr_empty':        'true',
