@@ -16,6 +16,23 @@
       "message": "It seems like we need to update some stuff in platform_tools:\n\n $ python2 platform_tools/android/bin/android_build_app -C out/ARelease viewer\n...\n  \u003e Task :viewer:compileArm64DebugJavaWithJavac FAILED\n /home/bsalomon/src/skia/platform_tools/android/apps/viewer/src/main/java/org/skia/viewer/ViewerActivity.java:24: error: package androidx.core.widget does not exist\nimport androidx.core.widget.DrawerLayout;\n",
       "revId": "dec95f24e1f1f2cddb8501156bdb062d370b64d1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ed02cdda_0e9932e6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2022-02-10T18:37:15Z",
+      "side": 1,
+      "message": "I have a fix for the build [1], but it\u0027s quite brute-forcy (as in I have no clue what I\u0027m doing other than following SO crumbs and bumping versions until it shuts up).\n\nWhy was this changed in the first place though?  I see some g3 CL was jetpacking the world, but AFAIK nobody builds or cares about viewer in g3?\n\n[1]: https://skia-review.googlesource.com/c/skia/+/506884)",
+      "revId": "dec95f24e1f1f2cddb8501156bdb062d370b64d1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
