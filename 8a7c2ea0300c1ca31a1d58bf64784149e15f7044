@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "80268ec6_4e48c42c",
+        "filename": "gn/skqp_gn_args.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 9065
+      },
+      "writtenOn": "2022-02-10T19:59:39Z",
+      "side": 1,
+      "message": "https://bugs.chromium.org/p/skia/issues/detail?id\u003d12939",
+      "parentUuid": "387d7d5b_17043192",
+      "revId": "8a7c2ea0300c1ca31a1d58bf64784149e15f7044",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fc3357a6_d369ea5f",
@@ -35,6 +53,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "56648f6c_eb1b431f",
+        "filename": "platform_tools/android/apps/skqp/src/main/assets/skqp/unittests.txt",
+        "patchSetId": 3
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 9065
+      },
+      "writtenOn": "2022-02-10T19:59:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fc3357a6_d369ea5f",
+      "revId": "8a7c2ea0300c1ca31a1d58bf64784149e15f7044",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ca92bc4d_99485825",
@@ -48,6 +84,24 @@
       "writtenOn": "2022-02-10T19:24:22Z",
       "side": 1,
       "message": "I like this name better as I think it signifies what the native code is intended for, but I think this may break the APK that gets produced by tools/skqp/make_apk.sh.",
+      "revId": "8a7c2ea0300c1ca31a1d58bf64784149e15f7044",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "00c44ced_5188976f",
+        "filename": "platform_tools/android/apps/skqp/src/main/java/org/skia/skqp/SkQP.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 9065
+      },
+      "writtenOn": "2022-02-10T19:59:39Z",
+      "side": 1,
+      "message": "https://bugs.chromium.org/p/skia/issues/detail?id\u003d12938\u0026q\u003d\u0026can\u003d3",
+      "parentUuid": "ca92bc4d_99485825",
       "revId": "8a7c2ea0300c1ca31a1d58bf64784149e15f7044",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
