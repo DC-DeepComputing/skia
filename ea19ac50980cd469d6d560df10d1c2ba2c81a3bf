@@ -52,6 +52,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "39dfffc9_247b11e6",
+        "filename": "src/gpu/tessellate/PatchWriter.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-10T21:47:02Z",
+      "side": 1,
+      "message": "I\u0027m not sure, but it\u0027s fewer lines, and matches what writeCubic does for loading its 4 points. At some point I\u0027d like to not have to support both SkPoint and float2, and just land on float2 if every use of PatchWriter involves some transformation, or back to SkPoint if the uses don\u0027t really do much work on the CPU.",
+      "parentUuid": "d7a2cf37_763d240a",
+      "revId": "ea19ac50980cd469d6d560df10d1c2ba2c81a3bf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c18335ee_5339b35b",
@@ -65,6 +83,30 @@
       "writtenOn": "2022-02-08T18:47:33Z",
       "side": 1,
       "message": "Can we say \"fAttribs \u0026 (PatchAttribs::kFanPoint | PatchAttribs::kJoinControlPoint)\"?",
+      "range": {
+        "startLine": 154,
+        "startChar": 14,
+        "endLine": 155,
+        "endChar": 56
+      },
+      "revId": "ea19ac50980cd469d6d560df10d1c2ba2c81a3bf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e85caf8c_db05e73c",
+        "filename": "src/gpu/tessellate/PatchWriter.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 155,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-10T21:47:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c18335ee_5339b35b",
       "range": {
         "startLine": 154,
         "startChar": 14,
@@ -98,6 +140,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "740c4893_357f86ee",
+        "filename": "src/gpu/tessellate/PatchWriter.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 185,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-10T21:47:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e3ccff42_366f53cd",
+      "range": {
+        "startLine": 184,
+        "startChar": 15,
+        "endLine": 185,
+        "endChar": 56
+      },
+      "revId": "ea19ac50980cd469d6d560df10d1c2ba2c81a3bf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bcbf59f4_de7f0d9d",
@@ -111,6 +177,30 @@
       "writtenOn": "2022-02-08T18:47:33Z",
       "side": 1,
       "message": "ditto",
+      "range": {
+        "startLine": 215,
+        "startChar": 14,
+        "endLine": 216,
+        "endChar": 56
+      },
+      "revId": "ea19ac50980cd469d6d560df10d1c2ba2c81a3bf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7f311c16_56a628c8",
+        "filename": "src/gpu/tessellate/PatchWriter.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 216,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-10T21:47:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bcbf59f4_de7f0d9d",
       "range": {
         "startLine": 215,
         "startChar": 14,
