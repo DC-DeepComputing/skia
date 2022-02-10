@@ -22,6 +22,7 @@ class SkShaderInfo {
 public:
     struct SnippetEntry;
     typedef std::string (*ProcedurallyGenerateSkSL)(const std::string& resultName,
+                                                    int entryIndex, // for uniform name mangling
                                                     const SnippetEntry&,
                                                     int indent);
 
