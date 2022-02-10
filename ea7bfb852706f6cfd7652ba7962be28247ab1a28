@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e408368a_52fec048",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-02-10T14:44:30Z",
+      "side": 1,
+      "message": "DrawContext::writePixels will need more fleshing out at some point, but this verifies that the upload framework works.",
+      "revId": "ea7bfb852706f6cfd7652ba7962be28247ab1a28",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
