@@ -16,6 +16,29 @@
       "message": "DrawContext::writePixels will need more fleshing out at some point, but this verifies that the upload framework works.",
       "revId": "ea7bfb852706f6cfd7652ba7962be28247ab1a28",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6f2377ad_fafda9f5",
+        "filename": "experimental/graphite/src/DrawContext.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-10T21:08:08Z",
+      "side": 1,
+      "message": "The draw-recording APIs in DrawContext are relatively simple, just storing state from the caller\u0027s decision making. I liked this as a goal for DrawContext even now that it\u0027s uploads and draws being recorded. But, I\u0027m also not as familiar with how writePixels is used by clients and by skia internally to know if that\u0027s feasible. A quick check suggests that we get into SurfaceContext::writePixels either from the Sksurface/Device, or providing backend texture update features used in gpu raster for chromium.\n\nIf we only had to worry about the surface write pixels case, I\u0027d vote for DrawContext just having a function that mirrored the UploadList API (similar to its functions mirroring DrawList). This would let Device handle the logic for falling back to a draw, etc, which with clip tracking maybe is important, but maybe not since we know we\u0027ve flushed everything else already.\n\nThe other use case for preparing backend objects would eventually likely only be used by the \"simple\" wrapper around DrawContext that we use for internal drawing/command preparation. If the set of validations and ways it can go wrong are significantly different, then I could still see Device having the untrusted writePixels and InternalHelper having the mipmap uploading that\u0027s more streamlined. But if they end up being near identical sets of logic, then keeping it in DrawContext entirely is probably for the best.\n\nSo that\u0027s a long way of saying, I don\u0027t have much to change about this right now, but maybe we keep it in mind as the rest of graphite fleshes out?",
+      "range": {
+        "startLine": 102,
+        "startChar": 18,
+        "endLine": 102,
+        "endChar": 29
+      },
+      "revId": "ea7bfb852706f6cfd7652ba7962be28247ab1a28",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
