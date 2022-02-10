@@ -231,20 +231,22 @@ function copy3x3MatrixToWasm(matr) {
       return _scratch3x3MatrixPtr;
     }
     throw 'invalid matrix size';
+  } else if (matr['m11'] === undefined) {
+    throw 'invalid matrix argument';
   }
-  var wasm3x3Matrix = _scratch3x3Matrix['toTypedArray']();
-  // Try as if it's a DOMMatrix. Reminder that DOMMatrix is column-major.
-  wasm3x3Matrix[0] = matr.m11;
-  wasm3x3Matrix[1] = matr.m21;
-  wasm3x3Matrix[2] = matr.m41;
+  wasm3x3Matrix = _scratch3x3Matrix['toTypedArray']();
+  // Reminder that DOMMatrix is column-major.
+  wasm3x3Matrix[0] = matr['m11'];
+  wasm3x3Matrix[1] = matr['m21'];
+  wasm3x3Matrix[2] = matr['m41'];
 
-  wasm3x3Matrix[3] = matr.m12;
-  wasm3x3Matrix[4] = matr.m22;
-  wasm3x3Matrix[5] = matr.m42;
+  wasm3x3Matrix[3] = matr['m12'];
+  wasm3x3Matrix[4] = matr['m22'];
+  wasm3x3Matrix[5] = matr['m42'];
 
-  wasm3x3Matrix[6] = matr.m14;
-  wasm3x3Matrix[7] = matr.m24;
-  wasm3x3Matrix[8] = matr.m44;
+  wasm3x3Matrix[6] = matr['m14'];
+  wasm3x3Matrix[7] = matr['m24'];
+  wasm3x3Matrix[8] = matr['m44'];
   return _scratch3x3MatrixPtr;
 }
 
@@ -297,27 +299,29 @@ function copy4x4MatrixToWasm(matr) {
       wasm4x4Matrix[15]=1;
     }
     return _scratch4x4MatrixPtr;
+  } else if (matr['m11'] === undefined) {
+    throw 'invalid matrix type';
   }
-  // Try as if it's a DOMMatrix. Reminder that DOMMatrix is column-major.
-  wasm4x4Matrix[0] = matr.m11;
-  wasm4x4Matrix[1] = matr.m21;
-  wasm4x4Matrix[2] = matr.m31;
-  wasm4x4Matrix[3] = matr.m41;
+  // Reminder that DOMMatrix is column-major.
+  wasm4x4Matrix[0] = matr['m11'];
+  wasm4x4Matrix[1] = matr['m21'];
+  wasm4x4Matrix[2] = matr['m31'];
+  wasm4x4Matrix[3] = matr['m41'];
 
-  wasm4x4Matrix[4] = matr.m12;
-  wasm4x4Matrix[5] = matr.m22;
-  wasm4x4Matrix[6] = matr.m32;
-  wasm4x4Matrix[7] = matr.m42;
+  wasm4x4Matrix[4] = matr['m12'];
+  wasm4x4Matrix[5] = matr['m22'];
+  wasm4x4Matrix[6] = matr['m32'];
+  wasm4x4Matrix[7] = matr['m42'];
 
-  wasm4x4Matrix[8] = matr.m13;
-  wasm4x4Matrix[9] = matr.m23;
-  wasm4x4Matrix[10] = matr.m33;
-  wasm4x4Matrix[11] = matr.m43;
+  wasm4x4Matrix[8] = matr['m13'];
+  wasm4x4Matrix[9] = matr['m23'];
+  wasm4x4Matrix[10] = matr['m33'];
+  wasm4x4Matrix[11] = matr['m43'];
 
-  wasm4x4Matrix[12] = matr.m14;
-  wasm4x4Matrix[13] = matr.m24;
-  wasm4x4Matrix[14] = matr.m34;
-  wasm4x4Matrix[15] = matr.m44;
+  wasm4x4Matrix[12] = matr['m14'];
+  wasm4x4Matrix[13] = matr['m24'];
+  wasm4x4Matrix[14] = matr['m34'];
+  wasm4x4Matrix[15] = matr['m44'];
   return _scratch4x4MatrixPtr;
 }
 
