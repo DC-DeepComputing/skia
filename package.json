@@ -1,0 +1,23 @@
+{
+  "//": ["For @bazel/concatjs we use 4.6.1 so the major version matches the major version of",
+    "build_bazel_rules_nodejs which emscripten uses (currently 4.4.1).",
+    "The other versions of these were the latest version avaiable at the time of writing",
+    "with the exception of jasmine.",
+    "Why these packages? We want to use the karma_web_test rule from @bazel/concatjs, which",
+    "has the dependencies listed https://github.com/bazelbuild/rules_nodejs/blob/700b7a3c5f97f2877320e6e699892ee706f85269/packages/concatjs/web_test/karma_web_test.bzl#L22",
+    "These are listed as 'peer dependencies', but unless actually included in the package.json,",
+    "the npm_install"
+  ],
+  "devDependencies": {
+    "@bazel/concatjs": "4.6.1",
+    "jasmine-core": "3.10.1",
+    "karma": "6.3.15",
+    "karma-chrome-launcher": "3.1.0",
+    "karma-coverage": "2.2.0",
+    "karma-firefox-launcher": "2.1.2",
+    "karma-jasmine": "4.0.1",
+    "karma-requirejs": "1.1.0",
+    "karma-sourcemap-loader": "0.3.8",
+    "requirejs": "2.3.6"
+  }
+}
