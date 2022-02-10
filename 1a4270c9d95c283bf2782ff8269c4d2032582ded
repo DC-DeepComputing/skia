@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "311d48e7_ebd22ccb",
+        "filename": "src/gpu/ops/DashLinePathRenderer.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2022-02-10T23:17:33Z",
+      "side": 1,
+      "message": "Let\u0027s just let it go to a texture for now.",
+      "parentUuid": "8c8318d2_3308d75c",
+      "range": {
+        "startLine": 31,
+        "startChar": 11,
+        "endLine": 32,
+        "endChar": 93
+      },
+      "revId": "1a4270c9d95c283bf2782ff8269c4d2032582ded",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1c67fa90_341bc414",
@@ -54,6 +78,30 @@
       "writtenOn": "2022-02-10T19:41:11Z",
       "side": 1,
       "message": "I\u0027m not sure we want to use the SDC\u0027s color info here since we\u0027re storing distances in the \"color\" variables. Since it\u0027s in the alpha channel, color space doesn\u0027t really matter, and for most gradient implementations, it\u0027ll be stored in float4s so that\u0027s fine. But if we fall back to a textured gradient, it uses 8888 unless the \"dst\" passed to the GrFPArgs ishigher than 8 bit (then it switches to f16).\n\nTexture gradients also suffer from visual quality and sloppiness when dealing with gradient stop positions; this is maybe hidden by treating it as an SDF. Maybe we set up the path op to not use the FP if it would hit the textured gradient case?",
+      "range": {
+        "startLine": 99,
+        "startChar": 58,
+        "endLine": 99,
+        "endChar": 74
+      },
+      "revId": "1a4270c9d95c283bf2782ff8269c4d2032582ded",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "df58b00f_d36ada88",
+        "filename": "src/gpu/ops/DashLinePathRenderer.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 5633
+      },
+      "writtenOn": "2022-02-10T23:17:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1c67fa90_341bc414",
       "range": {
         "startLine": 99,
         "startChar": 58,
