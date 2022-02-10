@@ -103,6 +103,29 @@
       "parentUuid": "144cc8e9_62e8f42b",
       "revId": "b042f8d3bfaee1efac7182570180aa27180b8d08",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f02b5bf4_b3b0f8bf",
+        "filename": "src/gpu/ops/DashLinePathRenderer.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-10T19:41:11Z",
+      "side": 1,
+      "message": "They do for internal effects if you unlock ES3 mode, which adds intrinsics like fwidth. See https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/gpu/gradients/GrGradientShader.cpp;drc\u003ddd50f0d6f251af65a2d1222ae41c6ae02488cb62;l\u003d320",
+      "range": {
+        "startLine": 27,
+        "startChar": 44,
+        "endLine": 27,
+        "endChar": 89
+      },
+      "revId": "b042f8d3bfaee1efac7182570180aa27180b8d08",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
