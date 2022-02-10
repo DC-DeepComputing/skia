@@ -39,6 +39,30 @@
       },
       "revId": "ea7bfb852706f6cfd7652ba7962be28247ab1a28",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "60431ef8_066fba54",
+        "filename": "experimental/graphite/src/DrawContext.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-02-10T22:00:53Z",
+      "side": 1,
+      "message": "They end up being near identical sets of logic, so they should go through the same path (see SurfaceContext::internalWritePixels). That said, I think trying to meet your goals is a good idea, if only to keep us focused on simplicity. I\u0027ll add a comment here for the moment.",
+      "parentUuid": "6f2377ad_fafda9f5",
+      "range": {
+        "startLine": 102,
+        "startChar": 18,
+        "endLine": 102,
+        "endChar": 29
+      },
+      "revId": "ea7bfb852706f6cfd7652ba7962be28247ab1a28",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
