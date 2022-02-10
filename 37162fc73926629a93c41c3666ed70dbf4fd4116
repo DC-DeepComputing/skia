@@ -33,6 +33,24 @@
       "message": "Since this sets `emsdk_dir` either `wasm.gni` should always be included or the `gcc_like_toolchain(\"wasm\")` below needs to be coniditional.",
       "revId": "37162fc73926629a93c41c3666ed70dbf4fd4116",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "edc82594_77c14f8e",
+        "filename": "gn/toolchain/BUILD.gn",
+        "patchSetId": 13
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 10154
+      },
+      "writtenOn": "2022-02-10T18:23:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "841ed24d_5e8df04a",
+      "revId": "37162fc73926629a93c41c3666ed70dbf4fd4116",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
