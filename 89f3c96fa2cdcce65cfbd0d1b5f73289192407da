@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bee337ed_cea9524b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-02-10T18:01:33Z",
+      "side": 1,
+      "message": "This is additional clean up and continuation of https://skia-review.googlesource.com/c/skia/+/413438 \"Plumbing for glyph drawable\". ",
+      "revId": "89f3c96fa2cdcce65cfbd0d1b5f73289192407da",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
