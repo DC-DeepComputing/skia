@@ -63,6 +63,30 @@
       },
       "revId": "3793235ed83ef9f13dc8b1e1df2af908a6021e1d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "64342adb_d4e7dbb7",
+        "filename": "platform_tools/android/apps/viewer/build.gradle",
+        "patchSetId": 2
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-02-10T19:41:56Z",
+      "side": 1,
+      "message": "Not sure what we\u0027re doing there, but we should make sure we\u0027re okay with bumping the min. 26 \u003d\u003d O, so we won\u0027t be able to run Viewer on N or previous. Based on Android Studio\u0027s estimate, that means ~17.3% of devices won\u0027t be able to run Viewer. I know Viewer isn\u0027t for public consumption, but if we want to test out on older devices, it might be useful.\n\nWhat versions does Chrome support? Last I checked, it was surprisingly (to me) old. Anyway, it may be fine to bump it up, but I\u0027d at least suggest mentioning it in the commit message, and possibly in the RELEASE_NOTES.\n\nI don\u0027t know what `Invoke-customs are only supported starting with Android O` means - you haven\u0027t changed the code, so maybe it\u0027s based on the thing you\u0027re importing? [This link](https://stackoverflow.com/questions/49891730/invoke-customs-are-only-supported-starting-with-android-0-min-api-26) suggests that you need to use `JavaVersion.VERSION_1_8`. `git grep`ping through our code, I see that we use that in AndroidKit (/androidkitdemo) and skottielib, but *not* viewer.",
+      "parentUuid": "d41774d2_5d4b7eb5",
+      "range": {
+        "startLine": 18,
+        "startChar": 22,
+        "endLine": 18,
+        "endChar": 24
+      },
+      "revId": "3793235ed83ef9f13dc8b1e1df2af908a6021e1d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
