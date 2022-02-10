@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "adcc40c5_a4a05149",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2022-02-10T19:01:02Z",
+      "side": 1,
+      "message": "Actually this fixes the build, but crashes at runtime:\n\n02-10 14:00:11.884 19391 19391 E AndroidRuntime: java.lang.RuntimeException: Unable to start activity ComponentInfo{org.skia.viewer/org.skia.viewer.ViewerActivity}: android.view.InflateException: Binary XML file line #3 in org.skia.viewer:layout/activity_main: Binary XML file line #3 in org.skia.viewer:layout/activity_main: Error inflating class androidx.drawerlayout.widget.DrawerLayout\n\nso not quite ready :shrug:",
+      "revId": "b53eb47d1169fb17064a4a862c6e3be4b45041d1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
