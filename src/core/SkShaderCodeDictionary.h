@@ -23,6 +23,7 @@ public:
     struct SnippetEntry;
     typedef std::string (*ProcedurallyGenerateSkSL)(const std::string& resultName,
                                                     const SnippetEntry&,
+                                                    const std::vector<std::string>& childNames,
                                                     int indent);
 
     struct SnippetEntry {
@@ -31,6 +32,7 @@ public:
         const char* fStaticFunctionName;
         const char* fStaticSkSL;
         ProcedurallyGenerateSkSL fDynamicSkSL;
+        int fNumChildren;
     };
 
     void add(const SnippetEntry& entry) {
