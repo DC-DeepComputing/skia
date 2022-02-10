@@ -34,6 +34,29 @@
       "parentUuid": "ba38432a_3d646514",
       "revId": "f029e217e68c748ad3285fbec70f98d02e92e515",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "363531e2_632cbc94",
+        "filename": "modules/canvaskit/tests/rtshader.spec.js",
+        "patchSetId": 1
+      },
+      "lineNbr": 210,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-02-10T16:09:36Z",
+      "side": 1,
+      "message": "missed one. The boolean value true was being treated as a DOMMatrix in copy3x3MatrixToWasm, which basically meant the localMatrix was 9 NaNs.\n\nI\u0027m going to add a check for that in another CL.",
+      "range": {
+        "startLine": 210,
+        "startChar": 33,
+        "endLine": 210,
+        "endChar": 37
+      },
+      "revId": "f029e217e68c748ad3285fbec70f98d02e92e515",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
