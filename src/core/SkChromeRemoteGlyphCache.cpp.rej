@@ -1,0 +1,24 @@
+--- src/core/SkChromeRemoteGlyphCache.cpp
++++ src/core/SkChromeRemoteGlyphCache.cpp
+@@ -256,8 +256,8 @@ public:
+     void resetScalerContext();
+ 
+ private:
+     void commonMaskLoop(
+-            SkDrawableGlyphBuffer* drawables, SkSourceGlyphBuffer* rejects, Rejector&& reject);
++            SkDrawableGlyphBuffer* accepted, SkSourceGlyphBuffer* rejected, Rejector&& reject);
+ 
+     // Same thing as MaskSummary, but for paths.
+     struct PathSummary {
+@@ -412,9 +412,9 @@ void RemoteStrike::writeGlyphPath(
+     serializer->write<bool>(glyph.pathIsHairline());
+ }
+ 
+ void RemoteStrike::commonMaskLoop(
+-        SkDrawableGlyphBuffer* drawables, SkSourceGlyphBuffer* rejects, Rejector&& reject) {
+-    drawables->forEachGlyphID(
++        SkDrawableGlyphBuffer* accepted, SkSourceGlyphBuffer* rejected, Rejector&& reject) {
++    accepted->forEachInput(
+             [&](size_t i, SkPackedGlyphID packedID, SkPoint position) {
+                 SkGlyphDigest* digest = fSentGlyphs.find(packedID.value());
+                 if (digest == nullptr) {
