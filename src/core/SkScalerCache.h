@@ -18,6 +18,8 @@
 #include "src/core/SkGlyphRunPainter.h"
 #include "src/core/SkStrikeForGPU.h"
 #include <memory>
+#include <map>
+#include <vector>
 
 class SkScalerContext;
 
@@ -133,6 +135,7 @@ private:
     // provides a dense index for glyphs.
     SkTHashTable<SkGlyphDigest, uint32_t, SkGlyphDigest> fDigestForPackedGlyphID SK_GUARDED_BY(fMu);
     std::vector<SkGlyph*> fGlyphForIndex SK_GUARDED_BY(fMu);
+    std::map<SkGlyphID, std::vector<uint32_t>> fDigestForGlyphID SK_GUARDED_BY(fMu);
 
     // so we don't grow our arrays a lot
     inline static constexpr size_t kMinGlyphCount = 8;

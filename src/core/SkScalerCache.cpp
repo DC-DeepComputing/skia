@@ -47,6 +47,16 @@ std::tuple<SkGlyphDigest, size_t> SkScalerCache::digest(SkPackedGlyphID packedGl
         return {*digest, 0};
     }
 
+    auto it = fDigestForGlyphID.find(packedGlyphID.glyphID());
+    if (it != fDigestForGlyphID.end()) {
+        uint32_t index = it->second[0];
+        SkGlyph* glyph = fGlyphForIndex[index];
+        fprintf(stderr, "EEEE found index\n");
+        return {SkGlyphDigest{index, *glyph}, 0};
+    }
+
+    fprintf(stderr, "EEEE packedGlyphID.value()=%s\n", packedGlyphID.dump().c_str());
+
     SkGlyph* glyph = fAlloc.make<SkGlyph>(fScalerContext->makeGlyph(packedGlyphID, &fAlloc));
     return {this->addGlyph(glyph), sizeof(SkGlyph)};
 }
@@ -55,6 +65,8 @@ SkGlyphDigest SkScalerCache::addGlyph(SkGlyph* glyph) {
     size_t index = fGlyphForIndex.size();
     SkGlyphDigest digest = SkGlyphDigest{index, *glyph};
     fDigestForPackedGlyphID.set(digest);
+    auto& indics = fDigestForGlyphID[glyph->getGlyphID()];
+    indics.push_back(index);
     fGlyphForIndex.push_back(glyph);
     return digest;
 }
@@ -143,7 +155,7 @@ std::tuple<SkGlyph*, size_t> SkScalerCache::mergeGlyphAndImage(
         if (from.setImageHasBeenCalled()) {
             if (to->setImageHasBeenCalled()) {
                 // Should never set an image on a glyph which already has an image.
-                SkDEBUGFAIL("Re-adding image to existing glyph. This should not happen.");
+                SkDebugf("Re-adding image to existing glyph. This should not happen.");
             }
             // TODO: assert that any metrics on `from` are the same.
             delta = to->setMetricsAndImage(&fAlloc, from);
