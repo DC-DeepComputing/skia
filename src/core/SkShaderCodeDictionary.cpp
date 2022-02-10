@@ -49,7 +49,14 @@ std::string SkShaderInfo::emitEntry(int* entryIndex, std::string* result, int in
     add_indent(result, indent);
     *result += "{\n";
 
-    *result += (entry.fDynamicSkSL)(scopeOutputVar, entry, indent+1);
+    std::vector<std::string> childNames;
+    for (int j = 0; j < entry.fNumChildren; ++j) {
+        *entryIndex += 1;
+        std::string childOutputVar = this->emitEntry(entryIndex, result, indent+1);
+        childNames.push_back(childOutputVar);
+    }
+
+    *result += (entry.fDynamicSkSL)(scopeOutputVar, entry, childNames, indent+1);
     add_indent(result, indent);
     *result += "}\n";
 
@@ -156,7 +163,10 @@ namespace {
 // and stores the result in a variable named "resultName".
 std::string DefaultProcedurallyGenerateSkSL(const std::string& resultName,
                                             const SkShaderInfo::SnippetEntry& entry,
+                                            const std::vector<std::string>& childNames,
                                             int indent) {
+    SkASSERT(childNames.empty());
+
     std::string result;
 
     add_indent(&result, indent);
@@ -241,6 +251,69 @@ static const char* kImageShaderSkSL =
         "}\n";
 
 //--------------------------------------------------------------------------------------------------
+static constexpr int kNumBlendShaderUniforms = 0;
+static constexpr int kNumBlendShaderChildren = 2;
+
+// Note: we're counting on the compiler to inline this code and trim it down to just the used
+// branch(es).
+static const char* kBlendShaderName = "blend_shader";
+static const char* kBlendShaderSkSL =
+        "const int kClear    = 0;\n"
+        "const int kSrc      = 1;\n"
+        "const int kDst      = 2;\n"
+        "const int kSrcOver  = 3;\n"
+        "const int kDstOver  = 4;\n"
+        "const int kSrcIn    = 5;\n"
+        "const int kDstIn    = 6;\n"
+        "const int kSrcOut   = 7;\n"
+        "const int kDstOut   = 8;\n"
+        "const int kSrcATop  = 9;\n"
+        "const int kDstATop  = 10;\n"
+        "const int kXor      = 11;\n"
+        "const int kPlus     = 12;\n"
+        "const int kModulate = 13;\n"
+        "const int kScreen   = 14;\n"
+        "half4 blend_shader(half4 src, half4 dst, int mode) {\n"
+        "    switch (mode) {\n"
+        "        case kClear: return half4(0.0, 0.0, 0.0, 0.0);\n"
+        "        case kSrc: return src;\n"
+        "        case kDst: return dst;\n"
+        "        case kSrcOver: return src + (1.0-src.a) * dst;\n"
+        "        case kDstOver: return dst + (1.0-dst.a) * src;\n"
+        "        case kSrcIn: return src * dst.a;\n"
+        "        case kDstIn: return dst * src.a;\n"
+        "        case kSrcOut: return src * (1.0 - dst.a);\n"
+        "        case kDstOut: return dst * (1.0 - src.a);\n"
+        "        case kSrcATop: return src * dst.a + dst * (1.0 - src.a);\n"
+        "        case kDstATop: return dst * src.a + src * (1.0 - dst.a);\n"
+        "        case kXor: return src * (1.0 - dst.a) + dst * (1.0 - src.a);\n"
+        "        case kPlus: return min(src + dst, 1.0);\n"
+        "        case kModulate: return src * dst;\n"
+        "        case kScreen: return src + dst - src * dst;\n"
+        "    }\n"
+        "    return half4(0.0, 0.0, 0.0, 1.0);\n"
+        "}\n";
+
+std::string BlendProcedurallyGenerateSkSL(const std::string& resultName,
+                                          const SkShaderInfo::SnippetEntry& entry,
+                                          const std::vector<std::string>& childNames,
+                                          int indent) {
+    SkASSERT(childNames.size() == kNumBlendShaderChildren);
+
+    std::string result;
+
+    add_indent(&result, indent);
+    // TODO: actually feed in the blend mode either through a uniform or, somehow, from the
+    // SkPaintParamsKey
+    SkSL::String::appendf(&result, "%s = blend_shader(%s, %s, kModulate);\n",
+                          resultName.c_str(),
+                          childNames[1].c_str(),
+                          childNames[0].c_str());
+
+    return result;
+}
+
+//--------------------------------------------------------------------------------------------------
 static constexpr int kNumErrorUniforms = 0;
 static const char* kErrorName = "error";
 static const char* kErrorSkSL =
@@ -249,6 +322,8 @@ static const char* kErrorSkSL =
         "}\n";
 
 } // anonymous namespace
+
+static constexpr int kNoChildren = 0;
 
 SkShaderCodeDictionary::SkShaderCodeDictionary() {
     // The 0th index is reserved as invalid
@@ -259,53 +334,62 @@ SkShaderCodeDictionary::SkShaderCodeDictionary() {
             { nullptr, kNumErrorUniforms },
             kErrorName, kErrorSkSL,
             DefaultProcedurallyGenerateSkSL,
+            kNoChildren
     };
     fCodeSnippets[(int) SkBuiltInCodeSnippetID::kSolidColorShader] = {
             SkBuiltInCodeSnippetID::kSolidColorShader,
             SkMakeSpan(kSolidShaderUniforms, kNumSolidShaderUniforms),
             kSolidShaderName, kSolidShaderSkSL,
             DefaultProcedurallyGenerateSkSL,
+            kNoChildren
     };
     fCodeSnippets[(int) SkBuiltInCodeSnippetID::kLinearGradientShader] = {
             SkBuiltInCodeSnippetID::kLinearGradientShader,
             SkMakeSpan(kGradientUniforms, kNumGradientUniforms),
             kLinearGradient4Name, kLinearGradient4SkSL,
             DefaultProcedurallyGenerateSkSL,
+            kNoChildren
     };
     fCodeSnippets[(int) SkBuiltInCodeSnippetID::kRadialGradientShader] = {
             SkBuiltInCodeSnippetID::kRadialGradientShader,
             SkMakeSpan(kGradientUniforms, kNumGradientUniforms),
             kLinearGradient4Name, kLinearGradient4SkSL,
             DefaultProcedurallyGenerateSkSL,
+            kNoChildren
     };
     fCodeSnippets[(int) SkBuiltInCodeSnippetID::kSweepGradientShader] = {
             SkBuiltInCodeSnippetID::kSweepGradientShader,
             SkMakeSpan(kGradientUniforms, kNumGradientUniforms),
             kLinearGradient4Name, kLinearGradient4SkSL,
             DefaultProcedurallyGenerateSkSL,
+            kNoChildren
     };
     fCodeSnippets[(int) SkBuiltInCodeSnippetID::kConicalGradientShader] = {
             SkBuiltInCodeSnippetID::kConicalGradientShader,
             SkMakeSpan(kGradientUniforms, kNumGradientUniforms),
             kLinearGradient4Name, kLinearGradient4SkSL,
             DefaultProcedurallyGenerateSkSL,
+            kNoChildren
     };
     fCodeSnippets[(int) SkBuiltInCodeSnippetID::kImageShader] = {
             SkBuiltInCodeSnippetID::kImageShader,
             { nullptr, kNumImageShaderUniforms },
             kImageShaderName, kImageShaderSkSL,
             DefaultProcedurallyGenerateSkSL,
+            kNoChildren
     };
     fCodeSnippets[(int) SkBuiltInCodeSnippetID::kBlendShader] = {
             SkBuiltInCodeSnippetID::kBlendShader,
-            { nullptr, kNumErrorUniforms },
-            kErrorName, kErrorSkSL,
-            DefaultProcedurallyGenerateSkSL,
+            { nullptr, kNumBlendShaderUniforms },
+            kBlendShaderName, kBlendShaderSkSL,
+            BlendProcedurallyGenerateSkSL,
+            kNumBlendShaderChildren
     };
     fCodeSnippets[(int) SkBuiltInCodeSnippetID::kSimpleBlendMode] = {
             SkBuiltInCodeSnippetID::kSimpleBlendMode,
             { nullptr, kNumErrorUniforms },
             kErrorName, kErrorSkSL,
             DefaultProcedurallyGenerateSkSL,
+            kNoChildren
     };
 }
