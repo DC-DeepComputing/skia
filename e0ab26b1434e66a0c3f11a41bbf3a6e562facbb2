@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6617548d_195c60d3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 17959
+      },
+      "writtenOn": "2022-02-10T14:20:59Z",
+      "side": 1,
+      "message": "This is set 2 out of 3 of jobs for the new Minis. Look reasonable to you? Thanks!",
+      "revId": "e0ab26b1434e66a0c3f11a41bbf3a6e562facbb2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
