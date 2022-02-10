@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b35af33e_d92203b7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-02-10T20:23:42Z",
+      "side": 1,
+      "message": "PS4 verified that all the canaries passed.",
+      "revId": "866fb5cdddac3213eb51d476ee3bbb9f9e534ee8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
