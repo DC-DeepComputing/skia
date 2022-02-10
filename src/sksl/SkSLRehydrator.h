@@ -81,11 +81,11 @@ public:
         kFor_Command,
         // Type type, uint16 function, uint8 argCount, Expression[] arguments
         kFunctionCall_Command,
-        // uint16 declaration, Statement body, uint8 refCount
-        kFunctionDefinition_Command,
         // uint16 id, Modifiers modifiers, String name, uint8 parameterCount, uint16[] parameterIds,
         // Type returnType
         kFunctionDeclaration_Command,
+        // uint16 declaration, Statement body, uint8 refCount
+        kFunctionDefinition_Command,
         // uint16 declaration
         kFunctionPrototype_Command,
         // bool isStatic, Expression test, Statement ifTrue, Statement ifFalse
@@ -110,8 +110,7 @@ public:
         kPostfix_Command,
         // uint8 op, Expression operand
         kPrefix_Command,
-        // uint8_t symbolTableCount, SymbolTable[] symbolTables, Elements elements,
-        // bool useFlipRTUniform
+        // uint8_t programKind, SymbolTable symbolTable, Elements elements, bool useFlipRTUniform
         kProgram_Command,
         // Expression value
         kReturn_Command,
