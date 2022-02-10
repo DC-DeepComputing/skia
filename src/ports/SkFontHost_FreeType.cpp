@@ -8,6 +8,7 @@
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkData.h"
+#include "include/core/SkDrawable.h"
 #include "include/core/SkFontMetrics.h"
 #include "include/core/SkPath.h"
 #include "include/core/SkStream.h"
@@ -388,6 +389,7 @@ protected:
     void generateMetrics(SkGlyph* glyph, SkArenaAlloc*) override;
     void generateImage(const SkGlyph& glyph) override;
     bool generatePath(const SkGlyph& glyph, SkPath* path) override;
+    sk_sp<SkDrawable> generateDrawable(const SkGlyph&) override;
     void generateFontMetrics(SkFontMetrics*) override;
 
 private:
@@ -1336,6 +1338,26 @@ void SkScalerContext_FreeType::generateImage(const SkGlyph& glyph) {
     generateGlyphImage(fFace, glyph, *bitmapMatrix);
 }
 
+sk_sp<SkDrawable> SkScalerContext_FreeType::generateDrawable(const SkGlyph& glyph) {
+    SkAutoMutexExclusive  ac(f_t_mutex());
+
+    if (this->setupSize()) {
+        sk_bzero(glyph.fImage, glyph.imageSize());
+        return nullptr;
+    }
+
+    FT_Error err = FT_Load_Glyph(fFace, glyph.getGlyphID(), fLoadGlyphFlags);
+    if (err != 0) {
+        SK_TRACEFTR(err, "SkScalerContext_FreeType::generateDrawable: FT_Load_Glyph(glyph:%d "
+                     "width:%d height:%d rb:%zu flags:%d) failed.",
+                     glyph.getGlyphID(), glyph.width(), glyph.height(), glyph.rowBytes(),
+                     fLoadGlyphFlags);
+        return nullptr;
+    }
+
+    emboldenIfNeeded(fFace, fFace->glyph, glyph.getGlyphID());
+    return generateGlyphDrawable(fFace, glyph);
+}
 
 bool SkScalerContext_FreeType::generatePath(const SkGlyph& glyph, SkPath* path) {
     SkASSERT(path);
