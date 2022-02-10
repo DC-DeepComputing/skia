@@ -31,7 +31,7 @@ sk_sp<SkImage> Surface_Graphite::onNewImageSnapshot(const SkIRect* subset) {
     SkImageInfo ii = subset ? this->imageInfo().makeDimensions(subset->size())
                             : this->imageInfo();
 
-    return sk_sp<Image_Graphite>(new Image_Graphite(ii));
+    return sk_sp<Image>(new Image(ii));
 }
 
 void Surface_Graphite::onWritePixels(const SkPixmap&, int x, int y) {}

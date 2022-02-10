@@ -12,10 +12,10 @@
 
 namespace skgpu {
 
-class Image_Graphite final : public SkImage_Base {
+class Image final : public SkImage_Base {
 public:
-    Image_Graphite(const SkImageInfo&);
-    ~Image_Graphite() override;
+    Image(const SkImageInfo&);
+    ~Image() override;
 
     bool onReadPixels(GrDirectContext*,
                       const SkImageInfo& dstInfo,
