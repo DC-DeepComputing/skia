@@ -20,6 +20,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "fc3357a6_d369ea5f",
+        "filename": "platform_tools/android/apps/skqp/src/main/assets/skqp/unittests.txt",
+        "patchSetId": 3
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2022-02-10T19:26:19Z",
+      "side": 1,
+      "message": "I think you will also need to add the following tests until we can figure out why they are failing on a Pixel 6 Pro.\n\nApplyGamma\nResourceAllocatorTest",
+      "revId": "8a7c2ea0300c1ca31a1d58bf64784149e15f7044",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ca92bc4d_99485825",
         "filename": "platform_tools/android/apps/skqp/src/main/java/org/skia/skqp/SkQP.java",
         "patchSetId": 3
