@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a0ad80eb_65d73085",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2022-02-11T18:21:11Z",
+      "side": 1,
+      "message": "lgtm with one nit. BTW, I cannot reviewer +1",
+      "revId": "9788170b12bd918d1125b5e3d1ab6d67c9ba13f2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7e1fba99_f1d9caf1",
+        "filename": "include/private/chromium/SkChromeRemoteGlyphCache.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2022-02-11T18:21:11Z",
+      "side": 1,
+      "message": "nit: why optional instead of nullptr (sk_sp)?",
+      "range": {
+        "startLine": 138,
+        "startChar": 4,
+        "endLine": 138,
+        "endChar": 17
+      },
+      "revId": "9788170b12bd918d1125b5e3d1ab6d67c9ba13f2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
