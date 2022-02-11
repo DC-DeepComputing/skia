@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "83db5893_8b96c7e9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-02-11T16:50:13Z",
+      "side": 1,
+      "message": "It looks like all the Canary failures are unrelated and no Gold images changed. So I looks like I will need to add a GM.",
+      "revId": "4d1cc1d968fbc0a41bb7d22a9d496968e58b7e79",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
