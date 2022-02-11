@@ -16,6 +16,11 @@ def karma_test(name, srcs, **kwargs):
         name: string, the name for the rule
         srcs: a non-empty list of js files that cannot end in spec.js or test.js.
         **kwargs: Any flags that karma_web_test normally takes.
+
+    Tips:
+        When passing in static_files, it can be non-obvious where the files will be served from
+        via the generated karma configuration file. Use `bazel run :my_test` and look in the
+        debug.html file using DevTools. That has a list of all the files made available.
     """
     if len(srcs) == 0:
         fail("Must pass at least one file into srcs or there will be no tests to run")

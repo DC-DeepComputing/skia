@@ -434,9 +434,32 @@ bool_flag(
     flag_name = "include_matrix_js",
 )
 
+# The emscripten bindings currently add in a mechansim to export CanvasKit using AMD modules or
+# define or exports.
+# https://github.com/emscripten-core/emscripten/blob/0d413d3c5af8b28349682496edc14656f5700c2f/emcc.py#L3510
+# The define case causes an error in the requirejs bundler used in karma_test
+#   Mismatched anonymous define() module: function() { return CanvasKitInit; }
+#   http://requirejs.org/docs/errors.html#mismatch
+# To work around this, we just remove the offending statement using sed and replace it with a no-op.
+genrule(
+    name = "remove_define",
+    # The rule :canvaskit_wasm produces multiple output files, so if we just use the rule, we have
+    # all the files show up in $(SRCS) and cannot use $< because of that. However, we can specify
+    # the one file we do care about using the following syntax.
+    srcs = [":canvaskit_wasm/canvaskit.js"],
+    outs = ["cleaned_canvaskit.js"],
+    # Reminder: $< means input file and $@ means output file
+    cmd = "sed --regexp-extended 's/^\\s+define.+/false;/g' $< > $@",
+)
+
 karma_test(
     name = "hello_world",
     srcs = [
+        "cleaned_canvaskit.js",
+        "tests/bazel_canvaskitinit.js",
         "tests/hello_world.js",
+    ],
+    static_files = [
+        ":canvaskit_wasm/canvaskit.wasm",
     ],
 )
