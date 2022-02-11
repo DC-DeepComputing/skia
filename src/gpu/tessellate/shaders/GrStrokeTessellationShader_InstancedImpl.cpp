@@ -104,6 +104,25 @@ void GrStrokeTessellationShader::InstancedImpl::onEmitCode(EmitArgs& args, GrGPA
         w = p3.x;
         p3 = p2;  // Setting p3 equal to p2 works for the remaining rotational logic.
     })");
+
+    // Emit code to call Wang's formula to determine parametric segments. We do this before
+    // transform points for hairlines so that it is consistent with how the CPU tested the control
+    // points for chopping.
+    // TODO: We know PARAMETRIC_PRECISION is exactly kTessellationPrecision, but the base
+    // GrStrokeTessellationShader has it as a uniform for now.
+    args.fVertBuilder->codeAppend(R"(
+    // Find how many parametric segments this stroke requires.
+    float numParametricSegments;
+    if (w < 0) {
+        numParametricSegments = wangs_formula_cubic(PARAMETRIC_PRECISION, p0, p1, p2, p3,
+                                                    AFFINE_MATRIX);
+    } else {
+        numParametricSegments = wangs_formula_conic(PARAMETRIC_PRECISION,
+                                                    AFFINE_MATRIX * p0,
+                                                    AFFINE_MATRIX * p1,
+                                                    AFFINE_MATRIX * p2, w);
+    })");
+
     if (shader.stroke().isHairlineStyle()) {
         // Hairline case. Transform the points before tessellation. We can still hold off on the
         // translate until the end; we just need to perform the scale and skew right now.
@@ -116,15 +135,6 @@ void GrStrokeTessellationShader::InstancedImpl::onEmitCode(EmitArgs& args, GrGPA
     }
 
     args.fVertBuilder->codeAppend(R"(
-    // Find how many parametric segments this stroke requires.
-    float numParametricSegments;
-    if (w < 0) {
-        numParametricSegments = wangs_formula_cubic(PARAMETRIC_PRECISION, p0, p1, p2, p3,
-                                                    float2x2(1));
-    } else {
-        numParametricSegments = wangs_formula_conic(PARAMETRIC_PRECISION, p0, p1, p2, w);
-    }
-
     // Find the starting and ending tangents.
     float2 tan0 = ((p0 == p1) ? (p1 == p2) ? p3 : p2 : p1) - p0;
     float2 tan1 = p3 - ((p3 == p2) ? (p2 == p1) ? p0 : p1 : p2);
