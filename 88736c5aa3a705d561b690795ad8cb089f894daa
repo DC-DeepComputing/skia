@@ -1,0 +1,209 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b96a2b76_6eb8ece9",
+        "filename": "gm/palette.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-02-11T17:50:07Z",
+      "side": 1,
+      "message": "There\u0027s no need for the awkwardness of a std::vector with static initialization time constructors and whatnot. This should just be a `constexpr const T name[] \u003d`. If you really want to bring in the headers, std::array is also fine, but doesn\u0027t really add anything.",
+      "range": {
+        "startLine": 32,
+        "startChar": 0,
+        "endLine": 32,
+        "endChar": 11
+      },
+      "revId": "88736c5aa3a705d561b690795ad8cb089f894daa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6c6ab1e2_a44a9c01",
+        "filename": "gm/palette.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-02-11T17:50:07Z",
+      "side": 1,
+      "message": "I don\u0027t understand the existence of this enum, nor all the switching. All of these can be better passed in to the constructor directly down in the DEF_GM. Currently the constructor is taking this enum and then this class is expanding that into some set parameter pack. This is very strange organization, just let the caller set the parameters (and the test name, etc).\n\nThis is in fact why all the `sets` on SkFontArguments return SkFontArguments\u0026, so that a new one can be created and set up and then passed directly, without needing to name the temporary. Likewise PaletteOverride can be compile time brace initialized, especially when `colorOverrides*` aren\u0027t std::vectors but just pointers.\n\nIn other words, just pass the `const char* name` and `const SkFontArguments\u0026 args` directly to the constructor and set them up in the parameter list of the constructor call in DEF_GM below.",
+      "revId": "88736c5aa3a705d561b690795ad8cb089f894daa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cbb18798_38510d98",
+        "filename": "src/core/SkFontDescriptor.h",
+        "patchSetId": 22
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-02-11T17:50:07Z",
+      "side": 1,
+      "message": "To land something like this it will also be necessary to allow the information to be set here as well, and then to serialize and deserialize it. The effect in Chrome would be that the printing process wouldn\u0027t set the palette (and it still won\u0027t on Windows or Mac at the moment, until palette support is added there or a SkFontMgr hint is also serialized, which is another thing on the todo list).",
+      "revId": "88736c5aa3a705d561b690795ad8cb089f894daa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7b74fe8f_531c92a3",
+        "filename": "src/ports/SkFontHost_FreeType.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 190,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-02-11T17:50:07Z",
+      "side": 1,
+      "message": "I see. So FreeType currently has a way to get the palette data, select a palette index, and set the foreground color. But it doesn\u0027t currently have a way to just set the palette. With the axes we just resolve them, send them off to FreeType and they\u0027re all just set.\n\nSince the web has a thing about setting palette data, perhaps this means we should suggest that FreeType add a means of setting palette entries much like this (and much like setting axes in a variable font).\n\nFor now, though, this is fine. Might want to comment here that as of right now FreeType doesn\u0027t allow setting individual palette entry values, so we need to keep track of the overrides.",
+      "revId": "88736c5aa3a705d561b690795ad8cb089f894daa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "065fb503_e17b7c13",
+        "filename": "src/ports/SkFontHost_FreeType.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 318,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-02-11T17:50:07Z",
+      "side": 1,
+      "message": "nit: 4sp indent",
+      "revId": "88736c5aa3a705d561b690795ad8cb089f894daa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "254d5dd4_7cc948e2",
+        "filename": "src/ports/SkFontHost_FreeType.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 358,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-02-11T17:50:07Z",
+      "side": 1,
+      "message": "nit: put these `setup` next to each other without a blank line between.",
+      "revId": "88736c5aa3a705d561b690795ad8cb089f894daa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a858c5a7_e65b96f0",
+        "filename": "src/ports/SkFontHost_FreeType.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 683,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-02-11T17:50:07Z",
+      "side": 1,
+      "message": "nit: only one newline needed here",
+      "revId": "88736c5aa3a705d561b690795ad8cb089f894daa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "93b9f90a_e444bcf6",
+        "filename": "src/ports/SkFontHost_FreeType.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 2054,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-02-11T17:50:07Z",
+      "side": 1,
+      "message": "I\u0027m not sure why this is here exactly. GetAxes happens here to get the axis parameters, not the current axis values. GetPalette is getting some palette\u0027s values, not really its parameters. It might make sense here to return the number of palettes available and the number of palette entries.\n\nThis function could return the number of available palettes, and GetPalette and resolvePaletteOverride should be merged to be more like computeAxisValues (maybe call it computePaletteValues to be parallel).",
+      "revId": "88736c5aa3a705d561b690795ad8cb089f894daa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cb5700d9_9488397a",
+        "filename": "src/ports/SkFontHost_FreeType.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 2190,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-02-11T17:50:07Z",
+      "side": 1,
+      "message": "This always seems to be a just created list of palette entries. Is there a reason to return a std::vector copy instead of just modifying in place?",
+      "range": {
+        "startLine": 2190,
+        "startChar": 8,
+        "endLine": 2190,
+        "endChar": 40
+      },
+      "revId": "88736c5aa3a705d561b690795ad8cb089f894daa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5f2e024d_95567bc5",
+        "filename": "src/ports/SkFontHost_FreeType.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 2207,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-02-11T17:50:07Z",
+      "side": 1,
+      "message": "Any reason not to just ignore instead of fail? I think we use `LOG_INFO` elsewhere in this class to notify of such inputs. When an unknown axis is set in a variable font it is just ignored.",
+      "revId": "88736c5aa3a705d561b690795ad8cb089f894daa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "60a7e143_09fccfad",
+        "filename": "src/ports/SkFontHost_FreeType_common.h",
+        "patchSetId": 22
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-02-11T17:50:07Z",
+      "side": 1,
+      "message": "Should be capital \"R\".",
+      "range": {
+        "startLine": 98,
+        "startChar": 36,
+        "endLine": 98,
+        "endChar": 37
+      },
+      "revId": "88736c5aa3a705d561b690795ad8cb089f894daa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
