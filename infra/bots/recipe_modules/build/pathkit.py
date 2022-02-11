@@ -6,6 +6,7 @@ DOCKER_IMAGE = 'gcr.io/skia-public/emsdk-base:3.1.3_v1'
 INNER_BUILD_SCRIPT = '/SRC/skia/infra/pathkit/build_pathkit.sh'
 
 def compile_fn(api, checkout_root, _ignore):
+  skia_dir = checkout_root.join('skia')
   out_dir = api.vars.cache_dir.join('docker', 'pathkit')
   configuration = api.vars.builder_cfg.get('configuration', '')
   target_arch   = api.vars.builder_cfg.get('target_arch',   '')
@@ -16,6 +17,13 @@ def compile_fn(api, checkout_root, _ignore):
   # further, we don't use the same out_dir as everyone else (thus the _ignore)
   # param. Instead, we use a "pathkit" subdirectory in the "docker" named_cache.
   api.file.ensure_directory('mkdirs out_dir', out_dir, mode=0o777)
+
+  # Download the emsdk binaries (we won't actually use the ones on the Docker
+  # image anymore, now that we have proper GN support)
+  with api.context(cwd=skia_dir):
+    api.run(api.python, 'activate-emsdk',
+            script=skia_dir.join('bin', 'activate-emsdk'),
+            infra_step=True)
 
   # This uses the emscriptem sdk docker image and says "run the
   # build_pathkit.sh helper script in there". Additionally, it binds two
