@@ -359,28 +359,33 @@ void GrStrokeTessellationShader::Impl::setData(const GrGLSLProgramDataManager& p
     const auto& shader = geomProc.cast<GrStrokeTessellationShader>();
     const auto& stroke = shader.stroke();
 
+    const float maxScale = shader.viewMatrix().getMaxScale();
+
+    // TODO: Only the hardware tessellation shader uses a true parametric precision, the fixed
+    // count stroker relies on the 2x2 vector transform. These shader uniforms can be simplified
+    // once the hardware stroker is the same, or removed.
+    float parametricPrecision = skgpu::kTessellationPrecision;
+    if (shader.mode() == GrStrokeTessellationShader::Mode::kHardwareTessellation) {
+        parametricPrecision *= maxScale;
+    }
+
     if (!shader.hasDynamicStroke()) {
-        // Set up the tessellation control uniforms.
-        skgpu::StrokeTolerances tolerances;
-        if (!stroke.isHairlineStyle()) {
-            tolerances = skgpu::StrokeTolerances::MakeNonHairline(shader.viewMatrix().getMaxScale(),
-                                                                  stroke.getWidth());
-        } else {
-            // In the hairline case we transform prior to tessellation. Set up tolerances for an
-            // identity viewMatrix and a strokeWidth of 1.
-            tolerances = skgpu::StrokeTolerances::MakeNonHairline(1, 1);
-        }
-        float strokeRadius = (stroke.isHairlineStyle()) ? .5f : stroke.getWidth() * .5;
+        // Set up the tessellation control uniforms. In the hairline case we transform prior to
+        // tessellation, so it uses an identity viewMatrix and a strokeWidth of 1.
+        const float effectiveMaxScale    = stroke.isHairlineStyle() ? 1.f : maxScale;
+        const float effectiveStrokeWidth = stroke.isHairlineStyle() ? 1.f : stroke.getWidth();
+        float numRadialSegmentsPerRadian =
+                skgpu::StrokeTolerances::CalcNumRadialSegmentsPerRadian(effectiveMaxScale,
+                                                                        effectiveStrokeWidth);
+
         pdman.set4f(fTessControlArgsUniform,
-                    tolerances.fParametricPrecision,  // PARAMETRIC_PRECISION
-                    tolerances.fNumRadialSegmentsPerRadian,  // NUM_RADIAL_SEGMENTS_PER_RADIAN
+                    parametricPrecision,  // PARAMETRIC_PRECISION
+                    numRadialSegmentsPerRadian,  // NUM_RADIAL_SEGMENTS_PER_RADIAN
                     skgpu::GetJoinType(stroke),  // JOIN_TYPE
-                    strokeRadius);  // STROKE_RADIUS
+                    0.5f * effectiveStrokeWidth);  // STROKE_RADIUS
     } else {
         SkASSERT(!stroke.isHairlineStyle());
-        float maxScale = shader.viewMatrix().getMaxScale();
-        pdman.set1f(fTessControlArgsUniform,
-                    skgpu::StrokeTolerances::CalcParametricPrecision(maxScale));
+        pdman.set1f(fTessControlArgsUniform, parametricPrecision);
     }
 
     if (shader.mode() == GrStrokeTessellationShader::Mode::kFixedCount) {
