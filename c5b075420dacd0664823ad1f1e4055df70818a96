@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c484ef8c_d5787f90",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 20
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-02-11T14:44:38Z",
+      "side": 1,
+      "message": "I have made a quick sweep through the CL and found some superficial things. There is nuance here that I will probably overlook if I were to do a more in depth review.\n\nHave you considered breaking this up into small focused CLs to ease the burden on the reviewer?",
+      "revId": "c5b075420dacd0664823ad1f1e4055df70818a96",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8e9effbb_6595ee7c",
+        "filename": "src/ports/SkFontMgr_android.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 449,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-02-11T14:44:38Z",
+      "side": 1,
+      "message": "Line length. Here and below.",
+      "range": {
+        "startLine": 449,
+        "startChar": 87,
+        "endLine": 449,
+        "endChar": 108
+      },
+      "revId": "c5b075420dacd0664823ad1f1e4055df70818a96",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
