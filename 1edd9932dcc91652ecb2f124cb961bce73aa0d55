@@ -16,6 +16,24 @@
       "message": "Maybe GrGlyphVector_TestingPeer ?",
       "revId": "1edd9932dcc91652ecb2f124cb961bce73aa0d55",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8de1fdc2_32b6a914",
+        "filename": "tests/GrGlyphVectorTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-02-11T13:57:11Z",
+      "side": 1,
+      "message": "I like having a single TestingPeer. That way I can pack all the private peeking test code in one class.",
+      "parentUuid": "5c6bc9bc_11f5f8ea",
+      "revId": "1edd9932dcc91652ecb2f124cb961bce73aa0d55",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
