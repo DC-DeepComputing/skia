@@ -29,7 +29,7 @@ class SkColorSpace;
 class SkImage;
 struct SkImageInfo;
 class SkPaint;
-class SkPaintParamsKey;
+class SkPaintParamsKeyBuilder;
 class SkRasterPipeline;
 class SkRuntimeEffect;
 class SkShaderCodeDictionary;
@@ -225,7 +225,7 @@ public:
     */
     virtual void addToKey(SkShaderCodeDictionary* dictionary,
                           SkBackend backend,
-                          SkPaintParamsKey* key,
+                          SkPaintParamsKeyBuilder* keyBuilder,
                           SkUniformBlock* uniformBlock) const;
 
 protected:

@@ -11,9 +11,67 @@
 #include "src/core/SkKeyHelpers.h"
 #include "src/core/SkShaderCodeDictionary.h"
 
+//--------------------------------------------------------------------------------------------------
+SkPaintParamsKeyBuilder::SkPaintParamsKeyBuilder(SkShaderCodeDictionary* dict)
+        : fDict(dict) {
+}
+
+// Block headers have the following structure:
+//  1st byte: codeSnippetID
+//  2nd byte: total blockSize in bytes
+// This call stores the header's offset in the key on the stack to be used in 'endBlock'
+void SkPaintParamsKeyBuilder::beginBlock(int codeSnippetID) {
+    SkASSERT(codeSnippetID >= 0 && codeSnippetID <= fDict->maxCodeSnippetID());
+    // TODO: add assert that the id fits in a uint8_t
+
+    fData.reserve_back(SkPaintParamsKey::kBlockHeaderSizeInBytes);
+
+    this->addByte((uint8_t) codeSnippetID);
+    this->addByte(0);  // this needs to be patched up with a call to endBlock
+
+    fStack.push_back({codeSnippetID,
+                      this->sizeInBytes() - SkPaintParamsKey::kBlockHeaderSizeInBytes});
+}
+
+// Update the size byte of a block header
+void SkPaintParamsKeyBuilder::endBlock() {
+    if (fStack.empty()) {
+        SkASSERT(0);
+        this->markInvalid();
+        return;
+    }
+
+    int headerOffset = fStack.back().fHeaderOffset;
+
+    SkASSERT(fData[headerOffset] == fStack.back().fCodeSnippetID);
+    SkASSERT(fData[headerOffset+SkPaintParamsKey::kBlockSizeOffsetInBytes] == 0);
+
+    int blockSize = this->sizeInBytes() - headerOffset;
+    // TODO: add a check that 'blockSize' fits in a uint8_t - otherwise mark the key as invalid
+    fData[headerOffset+SkPaintParamsKey::kBlockSizeOffsetInBytes] = blockSize;
+
+    fStack.pop_back();
+}
+
+std::unique_ptr<SkPaintParamsKey> SkPaintParamsKeyBuilder::snap() {
+    if (!fStack.empty()) {
+        this->markInvalid();
+    }
+
+    if (!this->isValid()) {
+
+    }
+
+    return std::unique_ptr<SkPaintParamsKey>(new SkPaintParamsKey(&fData));
+}
+
+//--------------------------------------------------------------------------------------------------
+SkPaintParamsKey::SkPaintParamsKey(SkTArray<uint8_t, true>* data) {
+    fData.swap(*data);
+}
+
 bool SkPaintParamsKey::operator==(const SkPaintParamsKey& that) const {
-    return fNumBytes == that.fNumBytes &&
-           !memcmp(fData.data(), that.fData.data(), fNumBytes);
+    return fData == that.fData;
 }
 
 #ifdef SK_DEBUG
