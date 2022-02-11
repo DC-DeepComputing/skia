@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "43340e87_3425a051",
+        "filename": "include/private/SkVx.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 868,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-02-11T21:17:47Z",
+      "side": 0,
+      "message": "We don\u0027t need these parens?",
+      "range": {
+        "startLine": 868,
+        "startChar": 44,
+        "endLine": 868,
+        "endChar": 45
+      },
+      "revId": "b4f87c81e05eb227ddae545be4817f3312485542",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
