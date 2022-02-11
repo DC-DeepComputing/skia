@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "be9201e2_2b5d33cf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-02-11T21:15:45Z",
+      "side": 1,
+      "message": "So looking at the results of this, it looks like we\u0027ve slowed down our current dash fast case by a lot (single on and single off lines), https://perf.skia.org/e/?begin\u003d1644592848\u0026end\u003d1644611924\u0026keys\u003dXace2ebd07b17cef8217a361073f5cc1c\u0026num_commits\u003d50\u0026request_type\u003d1\u0026xbaroffset\u003d59217.\n\nBut we did improve on lines that have multiple intervals:\nhttps://perf.skia.org/e/?begin\u003d1644592848\u0026end\u003d1644611924\u0026keys\u003dXbb8158634b2a92be0afa0fd477be72f4\u0026num_commits\u003d50\u0026request_type\u003d1\u0026xbaroffset\u003d59217\n\nWe either need to figure out why this approach is so much slower than DashOp and fix it or go back to DashOp and figure out how to safely bloat the bounds for DMSAA.",
+      "revId": "bbc4ee5e07b8d3d4fdb3c9583e2f754c81bad93c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
