@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6d526a26_5aba5c9d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 19
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2022-02-11T14:00:27Z",
+      "side": 1,
+      "message": "Friendly ping \u0026 adding additional reviewer. As https://chromium-review.googlesource.com/c/chromium/src/+/3447227/ is landing, I am now blocked on palette support in Skia, which I am contributing in this change and for which I need a review. This CL has been ready for review since January 20. I do appreciate the work that\u0027s been going into COLRv1 glyph scaling, but I\u0027d also be happy if we can make progress on reviewing this change after the approach had been informally discussed and agreed on.\n\nMy next step is to add the functional implementation in Chrome which locally passes all WPT tests for CSS font-palette and @font-palette-values, which is getting ready for review in https://chromium-review.googlesource.com/c/chromium/src/+/3447507 and only works with this change.",
+      "revId": "ae87a9200dde6c7e7a2b3dd45cef373f8bea54fb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
