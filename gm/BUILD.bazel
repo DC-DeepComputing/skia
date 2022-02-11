@@ -9552,20 +9552,6 @@ generated_cc_atom(
 )
 
 generated_cc_atom(
-    name = "xform_src",
-    srcs = ["xform.cpp"],
-    visibility = ["//:__subpackages__"],
-    deps = [
-        ":gm_hdr",
-        "//experimental/xform:SkShape_hdr",
-        "//experimental/xform:SkXform_hdr",
-        "//include/core:SkCanvas_hdr",
-        "//include/core:SkPaint_hdr",
-        "//tools/timer:TimeUtils_hdr",
-    ],
-)
-
-generated_cc_atom(
     name = "ycbcrimage_src",
     srcs = ["ycbcrimage.cpp"],
     visibility = ["//:__subpackages__"],
