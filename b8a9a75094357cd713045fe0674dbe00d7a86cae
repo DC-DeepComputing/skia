@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f237789d_1abcaeaa",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-02-11T14:49:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "485aa66c_47ad6529",
+      "range": {
+        "startLine": 15,
+        "startChar": 16,
+        "endLine": 15,
+        "endChar": 29
+      },
+      "revId": "b8a9a75094357cd713045fe0674dbe00d7a86cae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ed65c7bd_fdfd2837",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-02-10T21:36:02Z",
       "side": 1,
       "message": "\"/* emitted snippet sksl assigns to outColor%d */\"?\n\nthat would match how the default generator does it, and how emitEntry is currently written. But it also looks possible that emitEntry could append \"outColor%d \u003d\", then call the generator, and then add the semi-colon?\n\nThat has the benefit of matching what the comment says and making the generator functions responsibility to outputting a function invocation expression.",
+      "range": {
+        "startLine": 39,
+        "startChar": 11,
+        "endLine": 39,
+        "endChar": 48
+      },
+      "revId": "b8a9a75094357cd713045fe0674dbe00d7a86cae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7a6ca9af_9d4b2fd2",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-02-11T14:49:30Z",
+      "side": 1,
+      "message": "I\u0027ve updated the comment to:\n\n//         /* emitted snippet sksl assigns to outColor%d */\n\nsince the glue-generating code can do whatever it wants as long as the result is fed back into outColor%d.",
+      "parentUuid": "ed65c7bd_fdfd2837",
       "range": {
         "startLine": 39,
         "startChar": 11,
@@ -72,6 +120,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "44198283_c1674bd7",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-02-11T14:49:30Z",
+      "side": 1,
+      "message": "In the follow on, when children are added, it gets incremented in the recursive calls.",
+      "parentUuid": "a1bfeb3e_ff72e04f",
+      "range": {
+        "startLine": 42,
+        "startChar": 36,
+        "endLine": 42,
+        "endChar": 51
+      },
+      "revId": "b8a9a75094357cd713045fe0674dbe00d7a86cae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7f3a46bf_7957c23d",
         "filename": "src/core/SkShaderCodeDictionary.cpp",
         "patchSetId": 8
@@ -83,6 +155,30 @@
       "writtenOn": "2022-02-10T21:36:02Z",
       "side": 1,
       "message": "\"method defined in\"",
+      "range": {
+        "startLine": 66,
+        "startChar": 82,
+        "endLine": 66,
+        "endChar": 91
+      },
+      "revId": "b8a9a75094357cd713045fe0674dbe00d7a86cae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ff0d965e_6a729438",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-02-11T14:49:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7f3a46bf_7957c23d",
       "range": {
         "startLine": 66,
         "startChar": 82,
@@ -118,6 +214,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b68a0750_83fd764a",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-02-11T14:49:30Z",
+      "side": 1,
+      "message": "I\u0027ve pulled changing the set to using \u0027fStaticFunctionName\u0027 forward from:\nhttps://skia-review.googlesource.com/c/skia/+/506879.\n\nMore generally - this is in flux. In particular, I\u0027ve been thinking ahead to the gradients and how I would like to emit\n   tilingHelper\n   colorMappingHelper\n   combiner\nand, then, if a tilingHelper and colorMappingHelper are used multiple times we would\u0027ve only emitted the code once. Still TBD how that would work though.",
+      "parentUuid": "6a90d388_67317685",
+      "range": {
+        "startLine": 72,
+        "startChar": 0,
+        "endLine": 72,
+        "endChar": 40
+      },
+      "revId": "b8a9a75094357cd713045fe0674dbe00d7a86cae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "db3ee267_9ad379f7",
         "filename": "src/core/SkShaderCodeDictionary.cpp",
         "patchSetId": 8
@@ -129,6 +249,30 @@
       "writtenOn": "2022-02-10T21:36:02Z",
       "side": 1,
       "message": "Do we expect to need other procedurally generated sksls?\n\nIf we don\u0027t, then maybe this should be folded into SkShaderCodeDictionary vs. being stored per snippet entry?\n\nIf we do, but for a limited scenario like one per backend, or one for static/built-in snippets and another for runtime sksl, maybe we configure them as fields on the code dictionary or \"ProgramBuilder\"?",
+      "range": {
+        "startLine": 157,
+        "startChar": 12,
+        "endLine": 157,
+        "endChar": 43
+      },
+      "revId": "b8a9a75094357cd713045fe0674dbe00d7a86cae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1dd8890c_487a9e47",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 157,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-02-11T14:49:30Z",
+      "side": 1,
+      "message": "In the next CL I add a glue-generating helper for the compose/blend shader.\n\nI would imagine most of the snippets will be able to squeak by with the default but we would have a handful of special cases.\n\nI\u0027ve renamed this method: GenerateDefaultGlueCode.",
+      "parentUuid": "db3ee267_9ad379f7",
       "range": {
         "startLine": 157,
         "startChar": 12,
@@ -162,6 +306,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ac9f6f42_27644169",
+        "filename": "src/core/SkShaderCodeDictionary.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-02-11T14:49:30Z",
+      "side": 1,
+      "message": "Done - I\u0027ve also renamed it: GenerateGlueCodeForEntry.",
+      "parentUuid": "a4135323_4f8fbd4a",
+      "range": {
+        "startLine": 24,
+        "startChar": 4,
+        "endLine": 26,
+        "endChar": 64
+      },
+      "revId": "b8a9a75094357cd713045fe0674dbe00d7a86cae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "013df0ff_d7f3a7e1",
@@ -185,6 +353,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9a7ed29c_fc9cf5e7",
+        "filename": "src/core/SkShaderCodeDictionary.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-02-11T14:49:30Z",
+      "side": 1,
+      "message": "I\u0027ve pulled changing the set to using \u0027fStaticFunctionName\u0027 forward from:\nhttps://skia-review.googlesource.com/c/skia/+/506879\nand removed \u0027fID\u0027.",
+      "parentUuid": "013df0ff_d7f3a7e1",
+      "range": {
+        "startLine": 29,
+        "startChar": 0,
+        "endLine": 29,
+        "endChar": 90
+      },
+      "revId": "b8a9a75094357cd713045fe0674dbe00d7a86cae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9f6dada3_fc2b2ab0",
@@ -198,6 +390,30 @@
       "writtenOn": "2022-02-10T21:36:02Z",
       "side": 1,
       "message": "Can we name this something like emitEntryInvocation or something along those lines to highlight that it\u0027s not adding the static SkSL of the entry, just calling it?",
+      "range": {
+        "startLine": 50,
+        "startChar": 16,
+        "endLine": 50,
+        "endChar": 25
+      },
+      "revId": "b8a9a75094357cd713045fe0674dbe00d7a86cae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "74c1ef9d_fb3c3029",
+        "filename": "src/core/SkShaderCodeDictionary.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-02-11T14:49:30Z",
+      "side": 1,
+      "message": "I\u0027ve renamed it to emitGlueCodeForEntry.",
+      "parentUuid": "9f6dada3_fc2b2ab0",
       "range": {
         "startLine": 50,
         "startChar": 16,
