@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "37a20972_36cdfc02",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2022-02-11T19:34:43Z",
+      "side": 1,
+      "message": "needed to fix the android roller since https://skia-review.googlesource.com/c/skia/+/506459 failed its canary run into Android.",
+      "revId": "39b67e12fcddac7fdcafbcccf3725e3ac7aea0a0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
