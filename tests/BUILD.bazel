@@ -1631,8 +1631,13 @@ generated_cc_atom(
     deps = [
         ":Test_hdr",
         "//include/core:SkTypes_hdr",
+        "//include/private/chromium:SkChromeRemoteGlyphCache_hdr",
         "//src/core:SkDescriptor_hdr",
+        "//src/core:SkFontPriv_hdr",
+        "//src/core:SkReadBuffer_hdr",
         "//src/core:SkScalerContext_hdr",
+        "//src/core:SkWriteBuffer_hdr",
+        "//src/gpu:GrResourceProvider_hdr",
     ],
 )
 
