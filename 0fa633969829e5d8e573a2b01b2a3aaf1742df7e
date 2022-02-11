@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "516f3537_974b5a6b",
+        "filename": "include/private/SkMutex.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-02-11T23:18:34Z",
+      "side": 1,
+      "message": "I spent some time looking to see if there was any equivalent annotation for not-held mutexes, and as far as I can see, there isn\u0027t any (and that\u0027s fine).",
+      "range": {
+        "startLine": 36,
+        "startChar": 22,
+        "endLine": 36,
+        "endChar": 48
+      },
+      "revId": "0fa633969829e5d8e573a2b01b2a3aaf1742df7e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
