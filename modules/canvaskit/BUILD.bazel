@@ -434,9 +434,17 @@ bool_flag(
     flag_name = "include_matrix_js",
 )
 
+genrule(
+    name = "remove_define",
+    srcs = [":canvaskit_wasm/canvaskit.js"],
+    outs = ["copy_of_canvaskit.js"],
+    cmd = "cp $< $@",
+)
+
 karma_test(
     name = "hello_world",
     srcs = [
+        "copy_of_canvaskit.js",
         "tests/hello_world.js",
     ],
 )
