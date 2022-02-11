@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b599e329_3e8ff046",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 20
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2022-02-11T14:58:39Z",
+      "side": 1,
+      "message": "I\u0027ll consider if and how I can break this up further. Is it okay to break out pieces that will have code that\u0027s not exercised? I thought it\u0027s useful to have the SkFontArguments change and the palette.cpp GM test in the same CL. \n\nLine length issues addressed.",
+      "parentUuid": "c484ef8c_d5787f90",
+      "revId": "c5b075420dacd0664823ad1f1e4055df70818a96",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8e9effbb_6595ee7c",
@@ -31,6 +49,30 @@
       "writtenOn": "2022-02-11T14:44:38Z",
       "side": 1,
       "message": "Line length. Here and below.",
+      "range": {
+        "startLine": 449,
+        "startChar": 87,
+        "endLine": 449,
+        "endChar": 108
+      },
+      "revId": "c5b075420dacd0664823ad1f1e4055df70818a96",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "87fd18e3_c2ba5d77",
+        "filename": "src/ports/SkFontMgr_android.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 449,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2022-02-11T14:58:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8e9effbb_6595ee7c",
       "range": {
         "startLine": 449,
         "startChar": 87,
