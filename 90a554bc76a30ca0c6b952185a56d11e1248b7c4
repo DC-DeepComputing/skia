@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9eb46c58_b4ea359e",
+        "filename": "src/gpu/tessellate/StrokeFixedCountTessellator.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-11T01:42:38Z",
+      "side": 1,
+      "message": "Yep, it\u0027s cleaner that way. The hardware stroker still uses it vs. the vector xform approach, but that\u0027s only 1 spot in HwPatchWriter and 1 spot in calculating the shader uniform values.",
+      "parentUuid": "260e451f_fa79d4d0",
+      "range": {
+        "startLine": 105,
+        "startChar": 30,
+        "endLine": 105,
+        "endChar": 53
+      },
+      "revId": "90a554bc76a30ca0c6b952185a56d11e1248b7c4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2c66d85a_fe2b6a4e",
@@ -54,6 +78,30 @@
       "writtenOn": "2022-02-08T18:53:50Z",
       "side": 1,
       "message": "And now this just turns into \"matrixMaxScale\", and CalcNumRadialSegmentsPerRadian pivots accordingly.",
+      "range": {
+        "startLine": 114,
+        "startChar": 16,
+        "endLine": 114,
+        "endChar": 41
+      },
+      "revId": "90a554bc76a30ca0c6b952185a56d11e1248b7c4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "47dbfde7_fb977798",
+        "filename": "src/gpu/tessellate/StrokeFixedCountTessellator.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-11T01:42:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2c66d85a_fe2b6a4e",
       "range": {
         "startLine": 114,
         "startChar": 16,
@@ -87,6 +135,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "66f42398_bef2665c",
+        "filename": "src/gpu/tessellate/StrokeFixedCountTessellator.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-11T01:42:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8576aca8_9bfb762b",
+      "range": {
+        "startLine": 121,
+        "startChar": 42,
+        "endLine": 121,
+        "endChar": 67
+      },
+      "revId": "90a554bc76a30ca0c6b952185a56d11e1248b7c4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7f98cb66_9b3c5fc7",
@@ -100,6 +172,30 @@
       "writtenOn": "2022-02-08T18:53:50Z",
       "side": 1,
       "message": "Delete",
+      "range": {
+        "startLine": 86,
+        "startChar": 0,
+        "endLine": 94,
+        "endChar": 5
+      },
+      "revId": "90a554bc76a30ca0c6b952185a56d11e1248b7c4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f12568ae_ba4fc8d5",
+        "filename": "src/gpu/tessellate/StrokeTessellator.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-11T01:42:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7f98cb66_9b3c5fc7",
       "range": {
         "startLine": 86,
         "startChar": 0,
@@ -133,6 +229,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ce2db306_fce2dd63",
+        "filename": "src/gpu/tessellate/StrokeTessellator.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-11T01:42:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1aa0e022_29bb425d",
+      "range": {
+        "startLine": 100,
+        "startChar": 40,
+        "endLine": 100,
+        "endChar": 64
+      },
+      "revId": "90a554bc76a30ca0c6b952185a56d11e1248b7c4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e3115f9f_67c99aa7",
@@ -146,6 +266,30 @@
       "writtenOn": "2022-02-08T18:53:50Z",
       "side": 1,
       "message": "ditto",
+      "range": {
+        "startLine": 104,
+        "startChar": 40,
+        "endLine": 104,
+        "endChar": 67
+      },
+      "revId": "90a554bc76a30ca0c6b952185a56d11e1248b7c4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5f296094_f2cc9a98",
+        "filename": "src/gpu/tessellate/StrokeTessellator.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-11T01:42:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e3115f9f_67c99aa7",
       "range": {
         "startLine": 104,
         "startChar": 40,
