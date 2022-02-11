@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6711439e_d8ccd7be",
+        "filename": "src/core/SkTypeface_remote.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-02-11T19:30:56Z",
+      "side": 1,
+      "message": "Added kGlyphDrawable. This \"resurrects\" the deprecated values of the enumeration, but that should be fine since they aren\u0027t reported anymore and the counts should just be zero.",
+      "parentUuid": "a3b2d0cf_4fb4ab2c",
+      "range": {
+        "startLine": 69,
+        "startChar": 43,
+        "endLine": 69,
+        "endChar": 53
+      },
+      "revId": "4d1cc1d968fbc0a41bb7d22a9d496968e58b7e79",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dde625af_33292809",
@@ -54,6 +78,30 @@
       "writtenOn": "2022-02-11T18:11:38Z",
       "side": 1,
       "message": "Only attempt to draw a COLRv1 glyph if FreeType is new enough\n                     ^               ^",
+      "range": {
+        "startLine": 1274,
+        "startChar": 7,
+        "endLine": 1274,
+        "endChar": 66
+      },
+      "revId": "4d1cc1d968fbc0a41bb7d22a9d496968e58b7e79",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e9422272_cf9c173f",
+        "filename": "src/ports/SkFontHost_FreeType_common.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1274,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-02-11T19:30:56Z",
+      "side": 1,
+      "message": "Existing comment, but yeah, improved.",
+      "parentUuid": "dde625af_33292809",
       "range": {
         "startLine": 1274,
         "startChar": 7,
