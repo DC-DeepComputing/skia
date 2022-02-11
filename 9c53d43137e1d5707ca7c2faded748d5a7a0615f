@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "685f5668_43fad2e5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-11T01:50:57Z",
+      "side": 1,
+      "message": "Did a double take at gold diffs showing up, but then I realized that is to be expected. The curve and wedge tessellators switched from evaluating the local control points and a vectorXform of the total transform to evaluating the control points as written (transformed by an affine matrix) and a vectorXform representing only the extra transform the shader applies.\n\nLogically, this should all be equivalent, but I\u0027m sure it\u0027s floating point biting us again.",
+      "revId": "9c53d43137e1d5707ca7c2faded748d5a7a0615f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
