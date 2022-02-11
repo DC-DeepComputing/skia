@@ -68,6 +68,16 @@ enum class Shareable : bool {
     kYes = true,
 };
 
+/**
+ * This enum is used to notify the ResourceCache which type of ref just dropped to zero on a
+ * Resource.
+ */
+enum class LastRemovedRef {
+    kUsageRef,
+    kCommandBufferRef,
+    kCache, // This isn't a real ref but used to singal the resource was removed from the cache
+};
+
 };  // namespace skgpu
 
 #endif // skgpu_ResourceTypes_DEFINED

@@ -8,9 +8,14 @@
 #ifndef skgpu_Resource_DEFINED
 #define skgpu_Resource_DEFINED
 
-#include "include/core/SkTypes.h"
+#include "experimental/graphite/src/GraphiteResourceKey.h"
+#include "experimental/graphite/src/ResourceCache.h"
+#include "experimental/graphite/src/ResourceTypes.h"
+#include "include/private/SkMutex.h"
 
 #include <atomic>
+
+class SkMutex;
 
 namespace skgpu {
 
@@ -38,19 +43,33 @@ public:
         (void)fUsageRefCnt.fetch_add(+1, std::memory_order_relaxed);
     }
 
-    // This enum is used to notify the ResourceCache which type of ref just dropped to zero.
-    enum class LastRemovedRef {
-        kUsageRef,
-        kCommandBufferRef,
-    };
+    // This version of ref allows adding a ref when the usage count is 0. This should only be called
+    // from the ResourceCache.
+    void refCacheOnly() const {
+        // Only the cache should be able to add the first usage ref to a resource.
+        SkASSERT(fUsageRefCnt >= 0);
+        // No barrier required.
+        (void)fUsageRefCnt.fetch_add(+1, std::memory_order_relaxed);
+    }
 
     // Removes a usage ref from the resource
     void unref() const {
+        SkAutoMutexExclusive locked(fUnrefMutex);
         SkASSERT(this->hasUsageRef());
         // A release here acts in place of all releases we "should" have been doing in ref().
         if (1 == fUsageRefCnt.fetch_add(-1, std::memory_order_acq_rel)) {
             this->notifyARefIsZero(LastRemovedRef::kUsageRef);
         }
+    }
+
+    bool hasUsageRef() const {
+        if (0 == fUsageRefCnt.load(std::memory_order_acquire)) {
+            // The acquire barrier is only really needed if we return true.  It
+            // prevents code conditioned on the result of hasUsageRef() from running until previous
+            // owners are all totally done calling unref().
+            return false;
+        }
+        return true;
     }
 
     // Adds a command buffer ref to the resource
@@ -61,24 +80,27 @@ public:
 
     // Removes a command buffer ref from the resource
     void unrefCommandBuffer() const {
+        SkAutoMutexExclusive locked(fUnrefMutex);
         SkASSERT(this->hasCommandBufferRef());
         // A release here acts in place of all releases we "should" have been doing in ref().
         if (1 == fCommandBufferRefCnt.fetch_add(-1, std::memory_order_acq_rel)) {
-            this->notifyARefIsZero(LastRemovedRef::kCommandBufferUsage);
+            this->notifyARefIsZero(LastRemovedRef::kCommandBufferRef);
         }
     }
 
-protected:
-    ResourceRef() : fUsageRefCnt(1), fCommandBufferRefCnt(0) {}
+    // There is an "implicit" third type of ref which is whether or not the resource is being held
+    // by the cache or not. For the most part this is controlled by trying to return a resource via
+    // the ResourceCache::CacheAccess. However, we need a way to remove a resoure from the cache
+    // and safely check if we should call freeGpuData or not.
+    void removedFromCache() const {
+        SkAutoMutexExclusive locked(fUnrefMutex);
 
-    bool hasUsageRef() const {
-        if (0 == fUsageRefCnt.load(std::memory_order_acquire)) {
-            // The acquire barrier is only really needed if we return true.  It
-            // prevents code conditioned on the result of hasUsageRef() from running until previous
-            // owners are all totally done calling unref().
-            return false;
-        }
-        return true;
+        // This call should only ever be called once for a given resource. Either when the resource
+        // is purged from the cache or when when the cache is destroyed.
+        SkASSERT(!fCalledRemovedFromCache);
+        SkDEBUGCODE(fCalledRemovedFromCache = true;)
+
+        this->notifyARefIsZero(LastRemovedRef::kCache);
     }
 
     bool hasCommandBufferRef() const {
@@ -91,12 +113,12 @@ protected:
         return true;
     }
 
-    // Privileged method that allows going from ref count = 0 to ref count = 1.
-    void addInitialUsageRef() const {
-        SkASSERT(!this->hasUsageRef());
-        // No barrier required.
-        (void)fUsageRefCnt.fetch_add(+1, std::memory_order_relaxed);
+    bool hasAnyRefs() const {
+        return this->hasUsageRef() || this->hasCommandBufferRef();
     }
+
+protected:
+    ResourceRef() : fUsageRefCnt(1), fCommandBufferRefCnt(0) {}
 
 private:
     void notifyARefIsZero(LastRemovedRef removedRef) const {
@@ -105,6 +127,13 @@ private:
 
     mutable std::atomic<int32_t> fUsageRefCnt;
     mutable std::atomic<int32_t> fCommandBufferRefCnt;
+
+    // We need to guard calling unref on the usage and command buffer refs since they each could be
+    // unreffed on different threads. This can lead to calling notifyARefIsZero twice with each
+    // instance thinking there are no more refs left and both trying to delete the object.
+    mutable SkMutex fUnrefMutex;
+
+    SkDEBUGCODE(mutable bool fCalledRemovedFromCache = false;)
 };
 
 /**
@@ -121,10 +150,17 @@ public:
      */
     bool wasDestroyed() const { return fGpu == nullptr; }
 
+    bool isPurgeable() const;
+
     int* accessCacheIndex()  const { return &fCacheArrayIndex; }
 
     uint32_t timestamp() const { return fTimestamp; }
     void setTimestamp(uint32_t ts) { fTimestamp = ts; }
+
+    void registerWithCache(sk_sp<ResourceCache::CacheAccess>);
+
+    const GraphiteResourceKey& key() const { return fKey; }
+    void setKey(const GraphiteResourceKey& key) { fKey = key; }
 
 protected:
     Resource(const Gpu*);
@@ -143,9 +179,13 @@ private:
      */
     void freeGpuData();
 
-    // This is not ref'ed but abandon() or release() will be called before the Gpu object is
-    // destroyed. Those calls set will this to nullptr.
+    // This is not ref'ed but freeGpuData() will be called before the Gpu object is destroyed. That
+    // call will set this to nullptr.
     const Gpu* fGpu;
+
+    GraphiteResourceKey fKey;
+
+    sk_sp<ResourceCache::CacheAccess> fCacheAccess;
 
     // An index into a heap when this resource is purgeable or an array when not. This is maintained
     // by the cache.
