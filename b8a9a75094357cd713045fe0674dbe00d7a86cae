@@ -142,6 +142,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "41a92dfe_7d1235fc",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-11T20:12:05Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "44198283_c1674bd7",
+      "range": {
+        "startLine": 42,
+        "startChar": 36,
+        "endLine": 42,
+        "endChar": 51
+      },
+      "revId": "b8a9a75094357cd713045fe0674dbe00d7a86cae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7f3a46bf_7957c23d",
@@ -238,6 +262,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c2d43476_b0ca55eb",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-11T20:12:05Z",
+      "side": 1,
+      "message": "If those are each entries, that should just work out, right? The SkGradientShader would be mapped on to a composition of snippet entries, we don\u0027t have to necessarily require that all built-in effects map to a single snippet, right?",
+      "parentUuid": "b68a0750_83fd764a",
+      "range": {
+        "startLine": 72,
+        "startChar": 0,
+        "endLine": 72,
+        "endChar": 40
+      },
+      "revId": "b8a9a75094357cd713045fe0674dbe00d7a86cae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "db3ee267_9ad379f7",
         "filename": "src/core/SkShaderCodeDictionary.cpp",
         "patchSetId": 8
@@ -273,6 +321,30 @@
       "side": 1,
       "message": "In the next CL I add a glue-generating helper for the compose/blend shader.\n\nI would imagine most of the snippets will be able to squeak by with the default but we would have a handful of special cases.\n\nI\u0027ve renamed this method: GenerateDefaultGlueCode.",
       "parentUuid": "db3ee267_9ad379f7",
+      "range": {
+        "startLine": 157,
+        "startChar": 12,
+        "endLine": 157,
+        "endChar": 43
+      },
+      "revId": "b8a9a75094357cd713045fe0674dbe00d7a86cae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "98f5bada_1d5fc503",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 157,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-11T20:12:05Z",
+      "side": 1,
+      "message": "In Ganesh, we were generating the entire sksl dynamically, so when we\u0027d have to generate a child\u0027s sample function (e.g. for compose/blend), we could have it happen directly within the body of the compose/blend sksl.\n\nThat doesn\u0027t work with the goal of having every snippet be static SkSL, so the blend/compose shader\u0027s static function will have input arguments that represent the child evaluations, so we need custom glue code to invoke both children, and then pass them in.\n\nThis makes sense to me, but thinking about more advanced effects that repeatedly sample a child, or that compute values in their static SkSL that are then passed into the child, this approach won\u0027t work. I want to take a step back and outline what I think is a good theoretical foundation that covers the full features we need in the end, and then we can see if this glue approach can be extended easily in future CLs to get there. If not, I think I\u0027d prefer to calve off a early steps that would get us there. \n\nCCing Brian O on this as well, for his thoughts on what a good SkSL composition model could be:\n- every CodeSnippet, SkShader/etc., or GrFP can be thought of as a lambda having a signature like (float2 coords, half4 color) -\u003e half4 that captures values for its uniforms, its samplers, and child shader lambdas.\n- for a snippet that doesn\u0027t have any children, we could add a static function like `half4 eval_gradient(float2 coords, half4 color, float2 uniformA, ..., sampler\u0026 texA) {}` to the total SkSL program, and that would be the only definition of eval_gradient needed, even if we had multiple gradient snippets in the total program.\n- then invoking a specific gradient snippet would translate `myShader.eval(coords, color)` to `eval_gradient(coords, color, [uniforms/samplers captured by myShader]);`\n  - Up to this point, I think all the default glue code is modeling this idea.\n- for a snippet that has children, it has to capture its own uniforms as well as inheriting the captures of those children.\n  - if the snippet is invoking the child with dynamic expressions for coords or color, we can\u0027t lift calling the child outside so the \"static body\" of the calling snippet needs to be dynamically generated as well.\n    - its static eval function would include uniform args for itself and its children, and then pass the child uniform values to its children call sites.\n    - it\u0027s dynamic because if we had another instance of the parent bound to a child that required entirely different uniforms, then the we\u0027d end up with two different function signatures for the parent.\n    - this is actually somewhat the same case we\u0027re doing for the main function, except it may have to happen arbitrarily in the snippet graph.\n  - if we only invoke the child with constants or pass through values, then we can lift the child invocation out (which I believe is the case for the compose/blend shader).\n    - when we lift children out like this, the parent snippet\u0027s static function doesn\u0027t have to be dynamically generated per child type anymore\n    - the parent static function would have its uniform args and then one half4 arg per lifted child that is the result of that child\u0027s execution.\n    - the functions body replaces `myChild.eval(...)` with just referencing that result arg.\n    - glue code calling the parent has to be expanded to invoke each child first so it can pass the results to the parent static function\n    - importantly, the net capture state of the parent hasn\u0027t changed, just that we\u0027re not required to emit nearly-identical blocks of code for the parent just because children have changed to different snippet types.\n      \nThis model outline does assume that samplers can be captured and passed by reference to functions. If that\u0027s not the case, I think what we\u0027d end up doing is treating the sampler as an in-HW snippet lambda capturing the specific shader.\n\nHaving laid it out like this, I think I can see a path for expanding the \"gluing\" capabilities to handle all this capturing and potential lifting. Without having looked at it, it sounds like the blend/compose glue is manually doing the lifting since it knows its safe. If everything continues to work out okay as we add more shaders and handle the other glue cases, I\u0027d like to move towards all of this being internalized by the shader builder and the glue type is inferred based on parsing the SkSL.",
+      "parentUuid": "1dd8890c_487a9e47",
       "range": {
         "startLine": 157,
         "startChar": 12,

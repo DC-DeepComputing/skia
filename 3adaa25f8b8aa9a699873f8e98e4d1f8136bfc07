@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "12233c38_3365ac05",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-11T20:12:05Z",
+      "side": 1,
+      "message": "Lots of thoughts on long term plan of sksl generation/glue for graphite, so bringing Brian in again. It may be worth VC\u0027ing about.\n\nSorry about formatting in my one mega-comment. Gerrit was not figuring out how to do nested bullet points",
+      "revId": "3adaa25f8b8aa9a699873f8e98e4d1f8136bfc07",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
