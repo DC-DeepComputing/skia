@@ -20,8 +20,10 @@
 #include "include/core/SkShader.h"
 #include "include/core/SkSize.h"
 #include "include/core/SkString.h"
+#include "include/core/SkTextBlob.h"
 #include "include/core/SkTileMode.h"
 #include "include/core/SkTypes.h"
+#include "src/core/SkMatrixPriv.h"
 #include "tools/ToolUtils.h"
 
 static struct {
@@ -235,4 +237,99 @@ DEF_SIMPLE_GM(tiled_picture_shader, canvas, 400, 400) {
     p.setShader(picture->makeShader(SkTileMode::kRepeat, SkTileMode::kRepeat,
                                     SkFilterMode::kNearest));
     canvas->drawPaint(p);
+}
+
+DEF_SIMPLE_GM(picture_shader_persp, canvas, 320, 110) {
+    enum class DrawStrategy {
+        kDirect,
+        kPictureShader,
+        kScaledPictureImage,
+    };
+
+  	auto drawPicture = [](SkCanvas* canvas, sk_sp<SkPicture> picture, DrawStrategy strategy) {
+        // Only want local upper 50x50 of 'picture' before we apply decal (or clip)
+        SkRect bounds = {0.f, 0.f, 50.f, 50.f};
+        switch(strategy) {
+            case DrawStrategy::kDirect: {
+                canvas->clipRect(bounds, true);
+                canvas->drawPicture(picture);
+                break; }
+            case DrawStrategy::kPictureShader: {
+                SkPaint paint;
+                paint.setShader(picture->makeShader(SkTileMode::kDecal, SkTileMode::kDecal,
+                                                    SkFilterMode::kNearest, nullptr, &bounds));
+                canvas->drawRect({0.f, 0.f, 50.f, 50.f}, paint);
+                break; }
+            case DrawStrategy::kScaledPictureImage: {
+                SkSize scale;
+                SkMatrix m = canvas->getLocalToDevice().asM33();
+                if (!m.decomposeScale(&scale)) {
+                    SkScalar area = SkMatrixPriv::DifferentialAreaScale(m, SkPoint{25.f, 25.f});
+                    if (SkScalarIsFinite(area) && !SkScalarNearlyZero(area)) {
+                        scale.fWidth = scale.fHeight = SkScalarSqrt(area);
+                    } else {
+                        scale = {1.f, 1.f};
+                    }
+                }
+
+                SkISize tileSize = {SkScalarCeilToInt(scale.fWidth * bounds.width()),
+                                    SkScalarCeilToInt(scale.fHeight * bounds.height())};
+                SkMatrix scaleMatrix = SkMatrix::Scale(scale.fWidth, scale.fHeight);
+
+                sk_sp<SkImage> image = SkImage::MakeFromPicture(
+                        picture, tileSize, &scaleMatrix, nullptr,
+                        SkImage::BitDepth::kU8, SkColorSpace::MakeSRGB());
+                canvas->drawImageRect(image, bounds, SkSamplingOptions{SkFilterMode::kLinear});
+                break; }
+
+        }
+    };
+
+    auto picture = []() {
+        sk_sp<SkTypeface> typeface = SkTypeface::MakeDefault();
+        if (!typeface) {
+            typeface = SkTypeface::MakeFromName("monospace", SkFontStyle());
+        }
+        SkFont font;
+        font.setTypeface(typeface);
+        font.setHinting(SkFontHinting::kNormal);
+        font.setSize(8.f);
+
+        SkPaint paint;
+        paint.setColor(SK_ColorGREEN);
+        SkPictureRecorder recorder;
+        SkCanvas* record_canvas = recorder.beginRecording({0, 0, 100, 100});
+        record_canvas->drawTextBlob(SkTextBlob::MakeFromString("Hamburgefons", font),
+                                    0, 16.f, paint);
+        return recorder.finishRecordingAsPicture();
+    }();
+
+    SkM44 m;
+    m.preScale(2.f, 2.f);
+    SkM44 persp = SkM44::Perspective(0.01f, 10.f, SK_ScalarPI / 3.f);
+    persp.preTranslate(0.f, 5.f, -0.1f);
+    persp.preConcat(SkM44::Rotate({0.f, 1.f, 0.f}, 0.008f));
+    m.postConcat(persp);
+
+    canvas->clear(SK_ColorBLACK);
+    canvas->translate(5.f, 5.f);
+    for (auto strategy : { DrawStrategy::kDirect,
+                           DrawStrategy::kPictureShader,
+                           DrawStrategy::kScaledPictureImage }) {
+        canvas->save();
+
+        SkPaint outline;
+        outline.setColor(SK_ColorWHITE);
+        outline.setStyle(SkPaint::kStroke_Style);
+        outline.setStrokeWidth(1.f);
+        canvas->drawRect({-1, -1, 101, 101}, outline);
+
+        canvas->clipRect({0, 0, 100, 100});
+        canvas->concat(m);
+
+        drawPicture(canvas, picture, strategy);
+        canvas->restore();
+
+        canvas->translate(105.f, 0.f);
+    }
 }
