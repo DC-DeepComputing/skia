@@ -133,6 +133,10 @@ public:
     // Returns false if the data is invalid.
     SK_SPI bool readStrikeData(const volatile void* memory, size_t memorySize);
 
+    // Given a buffer, unflatten into a slug making sure to do the typefaceID translation from
+    // renderer to GPU. Returns nothing if there was a problem.
+    std::optional<sk_sp<GrSlug>> makeSlugFromBuffer(SkReadBuffer& buffer);
+
 private:
     std::unique_ptr<SkStrikeClientImpl> fImpl;
 };
