@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "baadafd0_03b1353c",
+        "filename": "infra/bots/task_drivers/codesize/codesize.go",
+        "patchSetId": 42
+      },
+      "lineNbr": 148,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2022-02-11T21:22:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e06421ca_2295e128",
+      "range": {
+        "startLine": 148,
+        "startChar": 32,
+        "endLine": 148,
+        "endChar": 43
+      },
+      "revId": "9d87f78f566911c69d3408ee2826d07db806b6ab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e35fb4d2_3a7f6582",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-02-10T13:14:58Z",
       "side": 1,
       "message": "Nit: you can just do args.RepoState.IsTryJob()",
+      "range": {
+        "startLine": 161,
+        "startChar": 4,
+        "endLine": 161,
+        "endChar": 63
+      },
+      "revId": "9d87f78f566911c69d3408ee2826d07db806b6ab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1c8a777d_d7fd687e",
+        "filename": "infra/bots/task_drivers/codesize/codesize.go",
+        "patchSetId": 42
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2022-02-11T21:22:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e35fb4d2_3a7f6582",
       "range": {
         "startLine": 161,
         "startChar": 4,
