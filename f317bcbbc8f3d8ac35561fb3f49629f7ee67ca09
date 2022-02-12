@@ -39,6 +39,30 @@
       },
       "revId": "f317bcbbc8f3d8ac35561fb3f49629f7ee67ca09",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "27db4273_a4278f93",
+        "filename": "fuzz/oss_fuzz/FuzzSkRuntimeEffect.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-02-12T00:50:53Z",
+      "side": 1,
+      "message": "PTAL the comment on L43:\n   \n     \"We just figure out how many uniform slots need to be filled, and write consecutive numbers into those slots.\"\n     \nShould I add another comment here as well?",
+      "parentUuid": "6fe9b773_c53d993d",
+      "range": {
+        "startLine": 54,
+        "startChar": 50,
+        "endLine": 54,
+        "endChar": 58
+      },
+      "revId": "f317bcbbc8f3d8ac35561fb3f49629f7ee67ca09",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
