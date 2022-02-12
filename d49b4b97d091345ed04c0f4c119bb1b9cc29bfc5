@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bf8e34c2_c6e1845e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-02-12T00:57:07Z",
+      "side": 1,
+      "message": "LGTM, and it looks like it is doing its job, finding issues. Probably fine to land this and make everyone green it up.",
+      "revId": "d49b4b97d091345ed04c0f4c119bb1b9cc29bfc5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
