@@ -63,6 +63,30 @@
       },
       "revId": "f317bcbbc8f3d8ac35561fb3f49629f7ee67ca09",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a750a3ff_3c989a4a",
+        "filename": "fuzz/oss_fuzz/FuzzSkRuntimeEffect.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-02-12T00:59:45Z",
+      "side": 1,
+      "message": "Now that you pointed it out, I think I failed to associate that part of the comment with the value assignments down here 😅.\n\nLGTM as is.",
+      "parentUuid": "27db4273_a4278f93",
+      "range": {
+        "startLine": 54,
+        "startChar": 50,
+        "endLine": 54,
+        "endChar": 58
+      },
+      "revId": "f317bcbbc8f3d8ac35561fb3f49629f7ee67ca09",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
