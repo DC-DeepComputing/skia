@@ -19,6 +19,7 @@
 #include "include/utils/SkPaintFilterCanvas.h"
 #include "src/core/SkAutoPixmapStorage.h"
 #include "src/core/SkColorSpacePriv.h"
+#include "src/core/SkGlyphRun.h"
 #include "src/core/SkImagePriv.h"
 #include "src/core/SkMD5.h"
 #include "src/core/SkOSFile.h"
@@ -349,6 +350,8 @@ Viewer::Viewer(int argc, char** argv, void* platformData)
     , fApplyBackingScale(true)
     , fZoomLevel(0.0f)
     , fRotation(0.0f)
+    , fXScale(1.0f)
+    , fXSkew(0.0f)
     , fOffset{0.5f, 0.5f}
     , fGestureDevice(GestureDevice::kNone)
     , fTiled(false)
@@ -1245,6 +1248,8 @@ SkMatrix Viewer::computePreTouchMatrix() {
 
     const SkISize slideSize = fSlides[fCurrentSlide]->getDimensions();
     m.preRotate(fRotation, slideSize.width() * 0.5f, slideSize.height() * 0.5f);
+    m.preScale(fXScale, 1, slideSize.width() * 0.5f, slideSize.height() * 0.5f);
+    m.preSkew(fXSkew, 0, slideSize.width() * 0.5f, slideSize.height() * 0.5f);
 
     if (kPerspective_Real == fPerspectiveMode) {
         SkMatrix persp = this->computePerspectiveMatrix();
@@ -1383,6 +1388,16 @@ public:
         this->SkPaintFilterCanvas::onDrawTextBlob(
             this->filterTextBlob(paint, blob, &cache), x, y, paint);
     }
+
+    void onDrawGlyphRunList(const SkGlyphRunList& glyphRunList, const SkPaint& paint) override {
+        sk_sp<SkTextBlob> cache;
+        sk_sp<SkTextBlob> blob = glyphRunList.makeBlob();
+        this->filterTextBlob(paint, blob.get(), &cache);
+        SkGlyphRunBuilder builder;
+        const SkGlyphRunList& filtered = builder.blobToGlyphRunList(*cache, glyphRunList.origin());
+        this->SkPaintFilterCanvas::onDrawGlyphRunList(filtered, paint);
+    }
+
     bool filterFont(SkTCopyOnFirstWrite<SkFont>* font) const {
         if (fFontOverrides->fTypeface) {
             font->writable()->setTypeface(fFont->refTypeface());
@@ -2087,6 +2102,18 @@ void Viewer::drawImGui() {
                 float deg = fRotation;
                 if (ImGui::SliderFloat("Rotate", &deg, -30, 360, "%.3f deg")) {
                     fRotation = deg;
+                    this->preTouchMatrixChanged();
+                    uiParamsChanged = true;
+                }
+                float xScale = fXScale;
+                if (ImGui::SliderFloat("X Scale", &xScale, -10, 10, "%.3f x+")) {
+                    fXScale = xScale;
+                    this->preTouchMatrixChanged();
+                    uiParamsChanged = true;
+                }
+                float xSkew = fXSkew;
+                if (ImGui::SliderFloat("X Skew", &xSkew, -30, 30, "%.3f x/")) {
+                    fXSkew = xSkew;
                     this->preTouchMatrixChanged();
                     uiParamsChanged = true;
                 }
