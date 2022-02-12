@@ -111,6 +111,30 @@
       },
       "revId": "f317bcbbc8f3d8ac35561fb3f49629f7ee67ca09",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c7b7be6c_c3089243",
+        "filename": "fuzz/oss_fuzz/FuzzSkRuntimeEffect.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-02-12T02:07:39Z",
+      "side": 1,
+      "message": "Thank you for the thoughtful change 👍",
+      "parentUuid": "ca24b5dc_9e4c2743",
+      "range": {
+        "startLine": 54,
+        "startChar": 50,
+        "endLine": 54,
+        "endChar": 58
+      },
+      "revId": "f317bcbbc8f3d8ac35561fb3f49629f7ee67ca09",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
