@@ -16,6 +16,24 @@
       "message": "This is very wrong. The entire point was to not take a mutex at all on newer versions of DirectWrite.",
       "revId": "61d967718ffd6534e932abe4c4c7d744f394102a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ed0d84df_d4571740",
+        "filename": "src/ports/SkScalerContext_win_dw.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-02-12T01:04:15Z",
+      "side": 1,
+      "message": "Oh, blah, I didn\u0027t realize this wasn\u0027t a clean merge. My bad.",
+      "parentUuid": "a5363638_e5ecc9b3",
+      "revId": "61d967718ffd6534e932abe4c4c7d744f394102a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
