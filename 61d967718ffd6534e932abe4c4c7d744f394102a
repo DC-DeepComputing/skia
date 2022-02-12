@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a5363638_e5ecc9b3",
+        "filename": "src/ports/SkScalerContext_win_dw.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-02-12T01:02:05Z",
+      "side": 1,
+      "message": "This is very wrong. The entire point was to not take a mutex at all on newer versions of DirectWrite.",
+      "revId": "61d967718ffd6534e932abe4c4c7d744f394102a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
