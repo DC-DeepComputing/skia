@@ -357,8 +357,6 @@ skia_core_sources = [
   "$_src/core/SkSemaphore.cpp",
   "$_src/core/SkShaderCodeDictionary.cpp",
   "$_src/core/SkShaderCodeDictionary.h",
-  "$_src/core/SkSharedMutex.cpp",
-  "$_src/core/SkSharedMutex.h",
   "$_src/core/SkSpecialImage.cpp",
   "$_src/core/SkSpecialImage.h",
   "$_src/core/SkSpecialSurface.cpp",

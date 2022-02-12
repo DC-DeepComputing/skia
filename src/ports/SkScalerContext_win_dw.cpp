@@ -24,7 +24,6 @@
 #include "src/core/SkMatrixProvider.h"
 #include "src/core/SkRasterClip.h"
 #include "src/core/SkScalerContext.h"
-#include "src/core/SkSharedMutex.h"
 #include "src/ports/SkScalerContext_win_dw.h"
 #include "src/ports/SkTypeface_win_dw.h"
 #include "src/sfnt/SkOTTable_EBLC.h"
@@ -40,6 +39,8 @@
 #include <dwrite.h>
 #include <dwrite_1.h>
 #include <dwrite_3.h>
+#include <mutex>
+#include <shared_mutex>
 
 namespace {
 
@@ -48,49 +49,13 @@ namespace {
  * The mutex returned from maybe_dw_mutex protects the calls that are
  * problematic.
  */
-static SkSharedMutex* maybe_dw_mutex(DWriteFontTypeface& typeface) {
-    static SkSharedMutex mutex;
-    return typeface.fDWriteFontFace4 ? nullptr : &mutex;
+static std::shared_mutex& get_dwrite_factory_mutex() {
+    static std::shared_mutex mutex;
+    return mutex;
 }
 
-class SK_SCOPED_CAPABILITY Exclusive {
-public:
-    explicit Exclusive(SkSharedMutex* maybe_lock) SK_ACQUIRE(*maybe_lock)
-        : fLock(maybe_lock) {
-        if (fLock) {
-            fLock->acquire();
-        }
-    }
-    ~Exclusive() SK_RELEASE_CAPABILITY() {
-        if (fLock) {
-            fLock->release();
-        }
-    }
-
-private:
-    SkSharedMutex* fLock;
-};
-class SK_SCOPED_CAPABILITY Shared {
-public:
-    explicit Shared(SkSharedMutex* maybe_lock) SK_ACQUIRE_SHARED(*maybe_lock)
-        : fLock(maybe_lock)  {
-        if (fLock) {
-            fLock->acquireShared();
-        }
-    }
-
-    // You would think this should be SK_RELEASE_SHARED_CAPABILITY, but SK_SCOPED_CAPABILITY
-    // doesn't fully understand the difference between shared and exclusive.
-    // Please review https://reviews.llvm.org/D52578 for more information.
-    ~Shared() SK_RELEASE_CAPABILITY() {
-        if (fLock) {
-            fLock->releaseShared();
-        }
-    }
-
-private:
-    SkSharedMutex* fLock;
-};
+using Exclusive = std::unique_lock<std::shared_mutex>;
+using Shared = std::shared_lock<std::shared_mutex>;
 
 static bool isLCD(const SkScalerContextRec& rec) {
     return SkMask::kLCD16_Format == rec.fMaskFormat;
