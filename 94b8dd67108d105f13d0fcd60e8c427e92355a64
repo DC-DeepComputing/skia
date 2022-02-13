@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a49deb34_e34b7ba9",
+        "filename": "src/utils/SkCycles.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-02-13T04:02:03Z",
+      "side": 1,
+      "message": "This isn\u0027t thing one is supposed to use (especially in a shipping product). I think one is supposed to use __rdtscp. I think this is the cause of the roll failures like https://ci.chromium.org/p/chromium/builders/try/android-marshmallow-x86-rel/410899? since this is Android x86 and I don\u0027t think this particular builtin is well behaved. These bots are failing on `signal 4 (SIGILL), code 2 (ILL_ILLOPN)` which may indicate that this isn\u0027t supported by the hardware at all, I think one needs to check __get_cpuid output to see if the hardware supports it at runtime. Also, this instruction is not always super fast, so using it unconditionally in all builds is not recommended. This should never end up in a consumer (Chromium, Google3, Flutter, etc) build.",
+      "range": {
+        "startLine": 24,
+        "startChar": 19,
+        "endLine": 24,
+        "endChar": 40
+      },
+      "revId": "94b8dd67108d105f13d0fcd60e8c427e92355a64",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
