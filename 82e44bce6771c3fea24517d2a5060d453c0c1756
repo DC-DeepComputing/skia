@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0dd7fdbc_e92429a3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-02-13T02:57:46Z",
+      "side": 1,
+      "message": "Note that this doesn\u0027t appear to affect `scaledemoji_rendering` because it uses `SK_ColorCYAN` as the foreground color for visibility. This happened to round trip in the fLumBits, so the result there turned out to be the same. `coloremoji` is affected by this because it sets the paint to half opacity and fLumBits doesn\u0027t handle opacity (it treats all colors as opaque).",
+      "revId": "82e44bce6771c3fea24517d2a5060d453c0c1756",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
