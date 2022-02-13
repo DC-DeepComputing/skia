@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8efc9d03_6ea700f6",
+        "filename": "src/gpu/tessellate/StrokeTessellator.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-13T19:25:44Z",
+      "side": 1,
+      "message": "The original equations used 1 - 2/(precision*maxScale*strokeWidth) but while working getting the sksl shaders off of parametric precision as well, I noticed that the sksl version of num_radial_segments_per_radian used (1 - 1/(precision*maxScale*strokeWidth)). Re-deriving the math for this based on a circle cap showed that the sksl version was correct, so I made the C++ versions consistent.",
+      "range": {
+        "startLine": 97,
+        "startChar": 33,
+        "endLine": 97,
+        "endChar": 36
+      },
+      "revId": "2493d09d7421a166d1bddf649c07919662135836",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
