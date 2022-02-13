@@ -207,6 +207,8 @@ private:
     bool                   fApplyBackingScale;
     SkScalar               fZoomLevel;
     SkScalar               fRotation;
+    SkScalar               fXScale;
+    SkScalar               fXSkew;
     SkVector               fOffset;
 
     sk_app::CommandSet     fCommands;

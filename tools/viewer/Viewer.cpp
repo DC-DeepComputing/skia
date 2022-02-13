@@ -349,6 +349,8 @@ Viewer::Viewer(int argc, char** argv, void* platformData)
     , fApplyBackingScale(true)
     , fZoomLevel(0.0f)
     , fRotation(0.0f)
+    , fXScale(1.0f)
+    , fXSkew(0.0f)
     , fOffset{0.5f, 0.5f}
     , fGestureDevice(GestureDevice::kNone)
     , fTiled(false)
@@ -1245,6 +1247,8 @@ SkMatrix Viewer::computePreTouchMatrix() {
 
     const SkISize slideSize = fSlides[fCurrentSlide]->getDimensions();
     m.preRotate(fRotation, slideSize.width() * 0.5f, slideSize.height() * 0.5f);
+    m.preScale(fXScale, 1, slideSize.width() * 0.5f, slideSize.height() * 0.5f);
+    m.preSkew(fXSkew, 0, slideSize.width() * 0.5f, slideSize.height() * 0.5f);
 
     if (kPerspective_Real == fPerspectiveMode) {
         SkMatrix persp = this->computePerspectiveMatrix();
@@ -2087,6 +2091,18 @@ void Viewer::drawImGui() {
                 float deg = fRotation;
                 if (ImGui::SliderFloat("Rotate", &deg, -30, 360, "%.3f deg")) {
                     fRotation = deg;
+                    this->preTouchMatrixChanged();
+                    uiParamsChanged = true;
+                }
+                float xScale = fXScale;
+                if (ImGui::SliderFloat("X Scale", &xScale, -10, 10, "%.3f x+")) {
+                    fXScale = xScale;
+                    this->preTouchMatrixChanged();
+                    uiParamsChanged = true;
+                }
+                float xSkew = fXSkew;
+                if (ImGui::SliderFloat("X Skew", &xSkew, -30, 30, "%.3f x/")) {
+                    fXSkew = xSkew;
                     this->preTouchMatrixChanged();
                     uiParamsChanged = true;
                 }
