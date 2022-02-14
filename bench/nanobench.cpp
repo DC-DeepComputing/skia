@@ -72,6 +72,9 @@ extern bool gUseSkVMBlitter;
 extern bool gSkVMAllowJIT;
 extern bool gSkVMJITViaDylib;
 
+#include "src/utils/SkBlitterTraceCommon.h"
+START_BLITTER_TRACE
+
 #ifndef SK_BUILD_FOR_WIN
     #include <unistd.h>
 
@@ -289,7 +292,11 @@ static double time(int loops, Benchmark* bench, Target* target) {
     bench->preDraw(canvas);
     double start = now_ms();
     canvas = target->beginTiming(canvas);
+
+    RESTORE_BLITTER_TRACE;
     bench->draw(loops, canvas);
+    SAVE_BLITTER_CAPTURE;
+
     target->endTiming();
     double elapsed = now_ms() - start;
     bench->postDraw(canvas);
@@ -1414,11 +1421,13 @@ int main(int argc, char** argv) {
                 if (configs.count() == 1) {
                     config = ""; // Only print the config if we run the same bench on more than one.
                 }
-                SkDebugf("%4d/%-4dMB\t%s\t%s\n"
+                SkDebugf("%4d/%-4dMB\t%s\t%s "
                          , sk_tools::getCurrResidentSetSizeMB()
                          , sk_tools::getMaxResidentSetSizeMB()
                          , bench->getUniqueName()
                          , config);
+                PRINT_BLITTER_TRACE;
+                SkDebugf("\n");
             } else if (FLAGS_quiet) {
                 const char* mark = " ";
                 const double stddev_percent =
