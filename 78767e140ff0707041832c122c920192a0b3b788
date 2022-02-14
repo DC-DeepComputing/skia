@@ -16,6 +16,24 @@
       "message": "Not sure about blob_rsxform_distortable and fontscalerdistortable on Gold - can\u0027t tell wether that has something to do with this change or not - can you advice?",
       "revId": "78767e140ff0707041832c122c920192a0b3b788",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "57172ea7_cb7df33d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 17
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2022-02-14T16:40:50Z",
+      "side": 1,
+      "message": "Still unsure about blob_rsxform_distortable and fontscalerdistortable, are these real issues? Any ideas?",
+      "parentUuid": "d0b3f1a2_3db7d450",
+      "revId": "78767e140ff0707041832c122c920192a0b3b788",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
