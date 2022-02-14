@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "45742905_aa996a7b",
+        "filename": "src/gpu/gl/GrGLCaps.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1043,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-02-14T16:22:13Z",
+      "side": 0,
+      "message": "from what I can tell looks like this enum changed.",
+      "range": {
+        "startLine": 1043,
+        "startChar": 66,
+        "endLine": 1043,
+        "endChar": 72
+      },
+      "revId": "3b0c30e93c05cab38b8b01be6d55941776555c9c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
