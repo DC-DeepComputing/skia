@@ -18,6 +18,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1b4817b2_9f1efda7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-02-14T20:17:26Z",
+      "side": 1,
+      "message": "As a model, SkTraceEventCommon.h is setup so that there is no code emitted at all (or even needs to be considered) when tracing is disabled. Instead of defining classes to be empty or do nothing, the use sites should expand to nothing.",
+      "revId": "f9dfec45d86f1432c08af703171cb1758ebfcbb1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ad295e2a_78db77a6",
