@@ -131,14 +131,25 @@ public:
     const GraphiteResourceKey& key() const { return fKey; }
     void setKey(const GraphiteResourceKey& key) { fKey = key; }
 
+    Ownership ownership() const { return fOwnership; }
+
+#ifdef SK_DEBUG
+    bool isUsableAsScratch() const {
+        return fKey.shareable() == Shareable::kNo && !this->hasUsageRef();
+    }
+#endif
+
 protected:
-    Resource(const Gpu*);
+    Resource(const Gpu*, Ownership);
     virtual ~Resource();
 
     /** Overridden to free GPU resources in the backend API. */
     virtual void onFreeGpuData() = 0;
 
 private:
+    // For validation access to has*Ref calls
+    SkDEBUGCODE(friend class ResourceCache;)
+
     bool hasUsageRef() const {
         if (0 == fUsageRefCnt.load(std::memory_order_acquire)) {
             // The acquire barrier is only really needed if we return true.  It
@@ -185,6 +196,8 @@ private:
     mutable std::atomic<int32_t> fCommandBufferRefCnt;
 
     GraphiteResourceKey fKey;
+
+    Ownership fOwnership;
 
     sk_sp<ResourceCache::CacheAccess> fCacheAccess;
 

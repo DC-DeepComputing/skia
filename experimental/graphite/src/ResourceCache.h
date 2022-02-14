@@ -106,7 +106,11 @@ private:
     PurgeableQueue fPurgeableQueue;
     ResourceArray fNonpurgeableResources;
 
+    SkDEBUGCODE(int fCount = 0;)
+
     ResourceMap fResourceMap;
+
+    SkDEBUGCODE(Resource* fNewlyPurgeableResourceForValidation = nullptr;)
 
     sk_sp<CacheAccess> fCacheAccess;
 
