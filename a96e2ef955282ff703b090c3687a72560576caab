@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f5014da2_c8714f13",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 10154
+      },
+      "writtenOn": "2022-02-14T18:56:45Z",
+      "side": 1,
+      "message": "LGTM",
+      "revId": "a96e2ef955282ff703b090c3687a72560576caab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0292bdac_559c3558",
+        "filename": "modules/canvaskit/README.md",
+        "patchSetId": 9
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 10154
+      },
+      "writtenOn": "2022-02-14T18:56:45Z",
+      "side": 1,
+      "message": "You can also use `./tools/git-sync-deps` to download and activate emsdk",
+      "range": {
+        "startLine": 12,
+        "startChar": 11,
+        "endLine": 12,
+        "endChar": 31
+      },
+      "revId": "a96e2ef955282ff703b090c3687a72560576caab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
