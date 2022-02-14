@@ -94,6 +94,18 @@ SkSpan<const SkUniform> SkShaderCodeDictionary::getUniforms(SkBuiltInCodeSnippet
     return fBuiltInCodeSnippets[(int) id].fUniforms;
 }
 
+SkSpan<const SkDataPayloadInfo> SkShaderCodeDictionary::getDataPayloadExpectations(
+        int codeSnippetID) const {
+    SkASSERT(codeSnippetID >= 0 && codeSnippetID <= this->maxCodeSnippetID());
+
+    if (codeSnippetID < kBuiltInCodeSnippetIDCount) {
+        return fBuiltInCodeSnippets[codeSnippetID].fDataPayloadExpectations;
+    }
+
+    int userDefinedCodeSnippetID = codeSnippetID - kBuiltInCodeSnippetIDCount;
+    return fUserDefinedCodeSnippets[userDefinedCodeSnippetID].fDataPayloadExpectations;
+}
+
 const SkShaderInfo::SnippetEntry* SkShaderCodeDictionary::getEntry(
         SkBuiltInCodeSnippetID id) const {
     if (fBuiltInCodeSnippets[(int) id].fCode) {
@@ -187,6 +199,15 @@ static const char* kNoneSkSL =
         "    return half4(0.0, 0.0, 1.0, 1.0);\n"
         "}\n";
 
+//--------------------------------------------------------------------------------------------------
+static constexpr int kNumBlendModeDataPayloadEntries = 1;
+static constexpr SkDataPayloadInfo kBlendModeDataPayloadEntries[kNumBlendModeDataPayloadEntries] = {
+        { "blendmode", DataPayloadType::kByte, 1 }
+};
+static constexpr int kBlendModeDataPayloadSizeInBytes = 1;
+
+//--------------------------------------------------------------------------------------------------
+
 } // anonymous namespace
 
 SkShaderCodeDictionary::SkShaderCodeDictionary() {
@@ -194,39 +215,50 @@ SkShaderCodeDictionary::SkShaderCodeDictionary() {
     fEntryVector.push_back(nullptr);
 
     fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kDepthStencilOnlyDraw] = {
-            {}, kNoneName, kNoneSkSL
+            {}, kNoneName, kNoneSkSL,
+            {}, 0
     };
     fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kError] = {
-            {}, kNoneName, kNoneSkSL
+            {}, kNoneName, kNoneSkSL,
+            {}, 0
     };
     fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kSolidColorShader] = {
             SkMakeSpan(kSolidUniforms, kNumSolidUniforms),
-            kSolidColorName, kSolidColorSkSL
+            kSolidColorName, kSolidColorSkSL,
+            {}, 0
     };
     fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kLinearGradientShader] = {
             SkMakeSpan(kGradientUniforms, kNumGradientUniforms),
-            kLinearGradient4Name, kLinearGradient4SkSL
+            kLinearGradient4Name, kLinearGradient4SkSL,
+            {}, 0
     };
     fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kRadialGradientShader] = {
             SkMakeSpan(kGradientUniforms, kNumGradientUniforms),
-            kLinearGradient4Name, kLinearGradient4SkSL
+            kLinearGradient4Name, kLinearGradient4SkSL,
+            {}, 0
     };
     fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kSweepGradientShader] = {
             SkMakeSpan(kGradientUniforms, kNumGradientUniforms),
-            kLinearGradient4Name, kLinearGradient4SkSL
+            kLinearGradient4Name, kLinearGradient4SkSL,
+            {}, 0
     };
     fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kConicalGradientShader] = {
             SkMakeSpan(kGradientUniforms, kNumGradientUniforms),
-            kLinearGradient4Name, kLinearGradient4SkSL
+            kLinearGradient4Name, kLinearGradient4SkSL,
+            {}, 0
     };
     fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kImageShader] = {
             { nullptr, kNumImageUniforms },
-            kImageName, kImageSkSL
+            kImageName, kImageSkSL,
+            {}, 0
     };
     fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kBlendShader] = {
-            {}, nullptr, nullptr
+            {}, nullptr, nullptr,
+            {}, 0
     };
     fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kSimpleBlendMode] = {
-            {}, nullptr, nullptr
+            {}, nullptr, nullptr,
+            SkMakeSpan(kBlendModeDataPayloadEntries, kNumBlendModeDataPayloadEntries),
+            kBlendModeDataPayloadSizeInBytes
     };
 }

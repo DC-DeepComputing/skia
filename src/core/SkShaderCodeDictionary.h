@@ -18,12 +18,24 @@
 #include "src/core/SkPaintParamsKey.h"
 #include "src/core/SkUniform.h"
 
+enum class DataPayloadType {
+    kByte,
+};
+
+struct SkDataPayloadInfo {
+    const char* fName;
+    DataPayloadType fType;
+    uint32_t fCount;
+};
+
 class SkShaderInfo {
 public:
     struct SnippetEntry {
         SkSpan<const SkUniform> fUniforms;
         const char* fName;
         const char* fCode;
+        SkSpan<const SkDataPayloadInfo> fDataPayloadExpectations;
+        int fDataPayloadSizeInBytes;
     };
 
     void add(const SnippetEntry& entry) {
@@ -75,6 +87,7 @@ public:
     const Entry* lookup(SkUniquePaintParamsID) const SK_EXCLUDES(fSpinLock);
 
     SkSpan<const SkUniform> getUniforms(SkBuiltInCodeSnippetID) const;
+    SkSpan<const SkDataPayloadInfo> getDataPayloadExpectations(int codeSnippetID) const;
     const SkShaderInfo::SnippetEntry* getEntry(SkBuiltInCodeSnippetID) const;
 
     void getShaderInfo(SkUniquePaintParamsID, SkShaderInfo*);

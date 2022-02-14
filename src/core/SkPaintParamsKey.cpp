@@ -29,12 +29,27 @@ void SkPaintParamsKeyBuilder::beginBlock(int codeSnippetID) {
     // TODO: add assert that the id fits in a uint8_t
 
     fData.reserve_back(SkPaintParamsKey::kBlockHeaderSizeInBytes);
+    fStack.push_back({ codeSnippetID, this->sizeInBytes() });
+
+#ifdef SK_DEBUG
+    static const SkDataPayloadInfo kHeader[2] = {
+        {"snippetID", DataPayloadType::kByte, 1},
+        {"blockSize", DataPayloadType::kByte, 1},
+    };
+
+    static const SkSpan<const SkDataPayloadInfo> kHeaderExpectations(kHeader, 2);
+
+    fDataPayloadExpectations = kHeaderExpectations;
+    fCurDataPayloadEntry = 0;
+#endif
 
     this->addByte((uint8_t) codeSnippetID);
     this->addByte(0);  // this needs to be patched up with a call to endBlock
 
-    fStack.push_back({codeSnippetID,
-                      this->sizeInBytes() - SkPaintParamsKey::kBlockHeaderSizeInBytes});
+#ifdef SK_DEBUG
+    fDataPayloadExpectations = fDict->getDataPayloadExpectations(codeSnippetID);
+    fCurDataPayloadEntry = 0;
+#endif
 }
 
 // Update the size byte of a block header
@@ -44,6 +59,15 @@ void SkPaintParamsKeyBuilder::endBlock() {
         this->markInvalid();
         return;
     }
+
+#ifdef SK_DEBUG
+    if (fCurDataPayloadEntry != static_cast<int>(fDataPayloadExpectations.size())) {
+        // Data payload expectations were not met
+        SkASSERT(0);
+        this->markInvalid();
+        return;
+    }
+#endif
 
     int headerOffset = fStack.back().fHeaderOffset;
 
@@ -59,6 +83,28 @@ void SkPaintParamsKeyBuilder::endBlock() {
     fData[headerOffset+SkPaintParamsKey::kBlockSizeOffsetInBytes] = blockSize;
 
     fStack.pop_back();
+}
+
+void SkPaintParamsKeyBuilder::addBytes(uint32_t numBytes, const uint8_t* data) {
+    if (fStack.empty()) {
+        // Missing call to 'beginBlock'
+        SkASSERT(0);
+        this->markInvalid();
+        return;
+    }
+
+#ifdef SK_DEBUG
+    if (fCurDataPayloadEntry > static_cast<int>(fDataPayloadExpectations.size()) ||
+        fDataPayloadExpectations[fCurDataPayloadEntry].fType != DataPayloadType::kByte ||
+        fDataPayloadExpectations[fCurDataPayloadEntry].fCount != numBytes) {
+        // Expectation mismatch
+        SkASSERT(0);
+        this->markInvalid();
+        return;
+    }
+#endif
+
+    fData.push_back_n(numBytes, data);
 }
 
 std::unique_ptr<SkPaintParamsKey> SkPaintParamsKeyBuilder::snap() {
