@@ -53,6 +53,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e7f4d813_64c1ab44",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-02-14T21:55:32Z",
+      "side": 1,
+      "message": "And I claim this does no such thing. If you wanted to even do timing you also need to have compile barriers and fences or the compiler can just move your code around. Even then, without all tests being on the same machine, with the machine running a real time OS or a minimal OS without any task switching or core migration, with all actions deterministically locked to a single thread of execution, etc, etc, I don\u0027t see how these tiny measurements are relevant or correct. Even then that won\u0027t be entirely interesting since how these differently load threads is also of interest. This will measure more noise than signal. We already consider most of our benches run in nanobench to be misleading at best, and these would be no different.\n\nIf we want to time RasterPipeline vs SkVM then just build with each and run, time, and profile real tests like the skp tests. You need real sized tests to get any real numbers. There are too many other interactions happening.",
+      "parentUuid": "0d3f4f18_a737c16b",
+      "revId": "f9dfec45d86f1432c08af703171cb1758ebfcbb1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ad295e2a_78db77a6",
