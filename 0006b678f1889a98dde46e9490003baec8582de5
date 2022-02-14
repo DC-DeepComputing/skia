@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7b94fa71_35d02664",
+        "filename": "src/sksl/SkSLRehydrator.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-02-14T15:27:21Z",
+      "side": 1,
+      "message": "Correcting an alphabetization fail.",
+      "range": {
+        "startLine": 70,
+        "startChar": 8,
+        "endLine": 70,
+        "endChar": 36
+      },
+      "revId": "0006b678f1889a98dde46e9490003baec8582de5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d2feea2e_6c75f7d7",
+        "filename": "src/sksl/SkSLRehydrator.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-02-14T15:27:21Z",
+      "side": 1,
+      "message": "We were, for reasons now lost to the mists of time, using kVarDeclarations_Command only for global variables (there is no SkSL::VarDeclarations anymore, so there\u0027s nothing else for it to even refer to). It also, despite the name, only allowed you to define one global variable.\n\nYeah, I dunno either. Whatever, it\u0027s fixed now.",
+      "range": {
+        "startLine": 72,
+        "startChar": 7,
+        "endLine": 72,
+        "endChar": 27
+      },
+      "revId": "0006b678f1889a98dde46e9490003baec8582de5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
