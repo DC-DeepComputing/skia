@@ -29,7 +29,8 @@ public:
                             int sampleCount,
                             const GrGLTexture::Desc& texDesc,
                             const GrGLRenderTarget::IDs&,
-                            GrMipmapStatus);
+                            GrMipmapStatus,
+                            const std::string& label);
 
     bool canAttemptStencilAttachment(bool useMultisampleFBO) const override;
 
@@ -67,7 +68,8 @@ private:
                             sk_sp<GrGLTextureParameters> parameters,
                             const GrGLRenderTarget::IDs& ids,
                             GrWrapCacheable,
-                            GrMipmapStatus);
+                            GrMipmapStatus,
+                            const std::string& label);
 
     size_t onGpuMemorySize() const override;
 };

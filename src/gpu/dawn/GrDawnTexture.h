@@ -33,7 +33,11 @@ public:
     wgpu::Texture texture() const { return fInfo.fTexture; }
     wgpu::TextureFormat format() const { return fInfo.fFormat; }
 protected:
-    GrDawnTexture(GrDawnGpu*, SkISize dimensions, const GrDawnTextureInfo&, GrMipmapStatus);
+    GrDawnTexture(GrDawnGpu*,
+                  SkISize dimensions,
+                  const GrDawnTextureInfo&,
+                  GrMipmapStatus,
+                  const std::string& label);
 
     GrDawnGpu* getDawnGpu() const;
 

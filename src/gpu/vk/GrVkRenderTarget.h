@@ -123,7 +123,8 @@ protected:
                      SkISize dimensions,
                      sk_sp<GrVkImage> colorAttachment,
                      sk_sp<GrVkImage> resolveImage,
-                     CreateType createType);
+                     CreateType createType,
+                     const std::string& label);
 
     void onAbandon() override;
     void onRelease() override;
@@ -135,7 +136,8 @@ private:
     // For external framebuffers that wrap a secondary command buffer
     GrVkRenderTarget(GrVkGpu* gpu,
                      SkISize dimensions,
-                     sk_sp<GrVkFramebuffer> externalFramebuffer);
+                     sk_sp<GrVkFramebuffer> externalFramebuffer,
+                     const std::string& label);
 
     void setFlags();
 

@@ -28,7 +28,7 @@ public:
 
     static GrTextureType TextureTypeFromTarget(GrGLenum textureTarget);
 
-    GrGLTexture(GrGLGpu*, SkBudgeted, const Desc&, GrMipmapStatus);
+    GrGLTexture(GrGLGpu*, SkBudgeted, const Desc&, GrMipmapStatus, const std::string& label);
 
     ~GrGLTexture() override {}
 
@@ -60,7 +60,11 @@ public:
 
 protected:
     // Constructor for subclasses.
-    GrGLTexture(GrGLGpu*, const Desc&, sk_sp<GrGLTextureParameters>, GrMipmapStatus);
+    GrGLTexture(GrGLGpu*,
+                const Desc&,
+                sk_sp<GrGLTextureParameters>,
+                GrMipmapStatus,
+                const std::string& label);
 
     // Constructor for instances wrapping backend objects.
     GrGLTexture(GrGLGpu*,
@@ -68,7 +72,8 @@ protected:
                 GrMipmapStatus,
                 sk_sp<GrGLTextureParameters>,
                 GrWrapCacheable,
-                GrIOType);
+                GrIOType,
+                const std::string& label);
 
     void init(const Desc&);
 

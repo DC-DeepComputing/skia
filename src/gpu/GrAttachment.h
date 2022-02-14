@@ -70,9 +70,9 @@ public:
 
 protected:
     GrAttachment(GrGpu* gpu, SkISize dimensions, UsageFlags supportedUsages, int sampleCnt,
-                 GrMipmapped mipmapped, GrProtected isProtected,
+                 GrMipmapped mipmapped, GrProtected isProtected, const std::string& label,
                  GrMemoryless memoryless = GrMemoryless::kNo)
-            : INHERITED(gpu, dimensions, isProtected)
+            : INHERITED(gpu, dimensions, isProtected, label)
             , fSupportedUsages(supportedUsages)
             , fSampleCnt(sampleCnt)
             , fMipmapped(mipmapped)

@@ -48,7 +48,8 @@ private:
                              sk_sp<GrMtlAttachment> texture,
                              sk_sp<GrMtlAttachment> colorAttachment,
                              sk_sp<GrMtlAttachment> resolveAttachment,
-                             GrMipmapStatus);
+                             GrMipmapStatus,
+                             const std::string& label);
 
     GrMtlTextureRenderTarget(GrMtlGpu* gpu,
                              SkISize,
@@ -56,7 +57,8 @@ private:
                              sk_sp<GrMtlAttachment> colorAttachment,
                              sk_sp<GrMtlAttachment> resolveAttachment,
                              GrMipmapStatus,
-                             GrWrapCacheable cacheable);
+                             GrWrapCacheable cacheable,
+                             const std::string& label);
 
     size_t onGpuMemorySize() const override;
 };

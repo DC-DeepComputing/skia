@@ -61,7 +61,8 @@ protected:
     GrVkTexture(GrVkGpu*,
                 SkISize dimensions,
                 sk_sp<GrVkImage> texture,
-                GrMipmapStatus);
+                GrMipmapStatus,
+                const std::string& label);
 
     GrVkGpu* getVkGpu() const;
 
@@ -80,9 +81,17 @@ protected:
     }
 
 private:
-    GrVkTexture(GrVkGpu*, SkBudgeted, SkISize, sk_sp<GrVkImage> texture, GrMipmapStatus);
+    GrVkTexture(GrVkGpu*,
+                SkBudgeted,
+                SkISize,
+                sk_sp<GrVkImage> texture,
+                GrMipmapStatus,
+                const std::string& label);
     GrVkTexture(GrVkGpu*, SkISize, sk_sp<GrVkImage> texture, GrMipmapStatus,
-                GrWrapCacheable, GrIOType, bool isExternal);
+                GrWrapCacheable,
+                GrIOType,
+                bool isExternal,
+                const std::string& label);
 
     sk_sp<GrVkImage> fTexture;
 

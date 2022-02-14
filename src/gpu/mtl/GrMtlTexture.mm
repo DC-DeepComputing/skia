@@ -21,8 +21,9 @@ GrMtlTexture::GrMtlTexture(GrMtlGpu* gpu,
                            SkBudgeted budgeted,
                            SkISize dimensions,
                            sk_sp<GrMtlAttachment> texture,
-                           GrMipmapStatus mipmapStatus)
-        : GrSurface(gpu, dimensions, GrProtected::kNo)
+                           GrMipmapStatus mipmapStatus,
+                           const std::string& label)
+        : GrSurface(gpu, dimensions, GrProtected::kNo, label)
         , INHERITED(gpu, dimensions, GrProtected::kNo, GrTextureType::k2D, mipmapStatus)
         , fTexture(std::move(texture)) {
     SkDEBUGCODE(id<MTLTexture> mtlTexture = fTexture->mtlTexture();)
@@ -43,8 +44,9 @@ GrMtlTexture::GrMtlTexture(GrMtlGpu* gpu,
                            sk_sp<GrMtlAttachment> texture,
                            GrMipmapStatus mipmapStatus,
                            GrWrapCacheable cacheable,
-                           GrIOType ioType)
-        : GrSurface(gpu, dimensions, GrProtected::kNo)
+                           GrIOType ioType,
+                           const std::string& label)
+        : GrSurface(gpu, dimensions, GrProtected::kNo, label)
         , INHERITED(gpu, dimensions, GrProtected::kNo, GrTextureType::k2D, mipmapStatus)
         , fTexture(std::move(texture)) {
     SkDEBUGCODE(id<MTLTexture> mtlTexture = fTexture->mtlTexture();)
@@ -62,8 +64,9 @@ GrMtlTexture::GrMtlTexture(GrMtlGpu* gpu,
 GrMtlTexture::GrMtlTexture(GrMtlGpu* gpu,
                            SkISize dimensions,
                            sk_sp<GrMtlAttachment> texture,
-                           GrMipmapStatus mipmapStatus)
-        : GrSurface(gpu, dimensions, GrProtected::kNo)
+                           GrMipmapStatus mipmapStatus,
+                           const std::string& label)
+        : GrSurface(gpu, dimensions, GrProtected::kNo, label)
         , INHERITED(gpu, dimensions, GrProtected::kNo, GrTextureType::k2D, mipmapStatus)
         , fTexture(std::move(texture)) {
     SkDEBUGCODE(id<MTLTexture> mtlTexture = fTexture->mtlTexture();)

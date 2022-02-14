@@ -169,7 +169,8 @@ sk_sp<GrVkImage> GrVkImage::Make(GrVkGpu* gpu,
                                           std::move(mutableState),
                                           std::move(framebufferView),
                                           std::move(textureView),
-                                          budgeted));
+                                          budgeted,
+                                          nullptr));
 }
 
 sk_sp<GrVkImage> GrVkImage::MakeWrapped(GrVkGpu* gpu,
@@ -201,7 +202,8 @@ sk_sp<GrVkImage> GrVkImage::MakeWrapped(GrVkGpu* gpu,
                                           std::move(textureView),
                                           backendOwnership,
                                           cacheable,
-                                          forSecondaryCB));
+                                          forSecondaryCB,
+                                          nullptr));
 }
 
 GrVkImage::GrVkImage(GrVkGpu* gpu,
@@ -211,13 +213,15 @@ GrVkImage::GrVkImage(GrVkGpu* gpu,
                      sk_sp<GrBackendSurfaceMutableStateImpl> mutableState,
                      sk_sp<const GrVkImageView> framebufferView,
                      sk_sp<const GrVkImageView> textureView,
-                     SkBudgeted budgeted)
+                     SkBudgeted budgeted,
+                     const std::string& label)
         : GrAttachment(gpu,
                        dimensions,
                        supportedUsages,
                        info.fSampleCount,
                        info.fLevelCount > 1 ? GrMipmapped::kYes : GrMipmapped::kNo,
                        info.fProtected,
+                       label,
                        info.fAlloc.fFlags & GrVkAlloc::kLazilyAllocated_Flag ? GrMemoryless::kYes
                                                                              : GrMemoryless::kNo)
         , fInfo(info)
@@ -239,13 +243,15 @@ GrVkImage::GrVkImage(GrVkGpu* gpu,
                      sk_sp<const GrVkImageView> textureView,
                      GrBackendObjectOwnership ownership,
                      GrWrapCacheable cacheable,
-                     bool forSecondaryCB)
+                     bool forSecondaryCB,
+                     const std::string& label)
         : GrAttachment(gpu,
                        dimensions,
                        supportedUsages,
                        info.fSampleCount,
                        info.fLevelCount > 1 ? GrMipmapped::kYes : GrMipmapped::kNo,
-                       info.fProtected)
+                       info.fProtected,
+                       label)
         , fInfo(info)
         , fInitialQueueFamily(info.fCurrentQueueFamily)
         , fMutableState(std::move(mutableState))

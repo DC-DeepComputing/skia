@@ -16,10 +16,16 @@ GrD3DAttachment::GrD3DAttachment(GrD3DGpu* gpu,
                                  const D3D12_RESOURCE_DESC& desc,
                                  const GrD3DTextureResourceInfo& info,
                                  sk_sp<GrD3DResourceState> state,
-                                 const GrD3DDescriptorHeap::CPUHandle& view)
-        : GrAttachment(gpu, dimensions, supportedUsages, desc.SampleDesc.Count, GrMipmapped::kNo,
-                       GrProtected::kNo)
-        , GrD3DTextureResource(info, state)
+                                 const GrD3DDescriptorHeap::CPUHandle& view,
+                                 const std::string& label)
+        : GrAttachment(gpu,
+                       dimensions,
+                       supportedUsages,
+                       desc.SampleDesc.Count,
+                       GrMipmapped::kNo,
+                       GrProtected::kNo,
+                       label)
+        , GrD3DTextureResource(info, state, label)
         , fView(view)
         , fFormat(format) {
     this->registerWithCache(SkBudgeted::kYes);

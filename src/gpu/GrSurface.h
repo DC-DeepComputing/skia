@@ -119,8 +119,11 @@ protected:
         fSurfaceFlags |= GrInternalSurfaceFlags::kVkRTSupportsInputAttachment;
     }
 
-    GrSurface(GrGpu* gpu, const SkISize& dimensions, GrProtected isProtected)
-            : INHERITED(gpu)
+    GrSurface(GrGpu* gpu,
+              const SkISize& dimensions,
+              GrProtected isProtected,
+              const std::string& label)
+            : INHERITED(gpu, label)
             , fDimensions(dimensions)
             , fSurfaceFlags(GrInternalSurfaceFlags::kNone)
             , fIsProtected(isProtected) {}

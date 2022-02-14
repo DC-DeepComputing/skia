@@ -10,8 +10,9 @@
 #include "src/gpu/GrGpuBuffer.h"
 
 GrGpuBuffer::GrGpuBuffer(GrGpu* gpu, size_t sizeInBytes, GrGpuBufferType type,
-                         GrAccessPattern pattern)
-        : GrGpuResource(gpu)
+                         GrAccessPattern pattern,
+                         const std::string& label)
+        : GrGpuResource(gpu, label)
         , fMapPtr(nullptr)
         , fSizeInBytes(sizeInBytes)
         , fAccessPattern(pattern)

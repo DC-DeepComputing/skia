@@ -15,8 +15,9 @@
 class GrMockBuffer : public GrGpuBuffer {
 public:
     GrMockBuffer(GrMockGpu* gpu, size_t sizeInBytes, GrGpuBufferType type,
-                 GrAccessPattern accessPattern)
-            : INHERITED(gpu, sizeInBytes, type, accessPattern) {
+                 GrAccessPattern accessPattern,
+                 const std::string& label)
+            : INHERITED(gpu, sizeInBytes, type, accessPattern, label) {
         this->registerWithCache(SkBudgeted::kYes);
     }
 
