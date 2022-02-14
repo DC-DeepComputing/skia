@@ -33,6 +33,24 @@
       "message": "I locally attempted to reproduce the ubsan issues here, but they didn\u0027t reproduce locally. I\u0027m pretty sure I don\u0027t have everything the same (I\u0027m on an Intel Mac and this is an M1, I\u0027m on 11.6.3 and this is on 12, etc). But I wouldn\u0027t expect that to change CPU values or ubsan. Oddly, the ubsan errors appear related to the test_BlurDrawing when drawing a path and doesn\u0027t use any text at all. It looks like this is the first arm64 Mac asan bot, so maybe that it related?",
       "revId": "d49b4b97d091345ed04c0f4c119bb1b9cc29bfc5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b151ad1c_9d7d14fb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-02-14T16:43:01Z",
+      "side": 1,
+      "message": "Well, the code ubsan is complaining about is in a `SK_ARM_HAS_NEON` ifdef, so pretty sure I\u0027d need to compile for arm64 to reproduce.",
+      "parentUuid": "4c023551_183b1715",
+      "revId": "d49b4b97d091345ed04c0f4c119bb1b9cc29bfc5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
