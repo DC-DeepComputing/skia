@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dcf63830_83f7cfe1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-02-14T20:11:00Z",
+      "side": 1,
+      "message": "I am against this setup in general. At the very least all the \"trace\" stuff must be macros that are only enabled by very specific builders. Second, even if this were completely out of all other builders I do not see how the resulting numbers could possibly be stable or relevant. I don\u0027t think this change by itself will detect the issue with the android x86 bot, because that bot will not run its tests just because these files changed (its a terrible setup, but that\u0027s how it managed to land in Chromium the first time).",
+      "revId": "f9dfec45d86f1432c08af703171cb1758ebfcbb1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ad295e2a_78db77a6",
+        "filename": "src/utils/SkCycles.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-02-14T20:11:00Z",
+      "side": 1,
+      "message": "Wanted to point out agin here that this is not something you should be using. This symbol is not documented. If one really wants to do things like this one would use the actual intrinsic __rdtscp.",
+      "range": {
+        "startLine": 32,
+        "startChar": 19,
+        "endLine": 32,
+        "endChar": 40
+      },
+      "revId": "f9dfec45d86f1432c08af703171cb1758ebfcbb1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
