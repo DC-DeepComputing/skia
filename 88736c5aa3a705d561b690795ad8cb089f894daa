@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d5783533_4ca86372",
+        "filename": "gm/palette.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2022-02-14T15:54:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b96a2b76_6eb8ece9",
+      "range": {
+        "startLine": 32,
+        "startChar": 0,
+        "endLine": 32,
+        "endChar": 11
+      },
+      "revId": "88736c5aa3a705d561b690795ad8cb089f894daa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6c6ab1e2_a44a9c01",
@@ -37,6 +61,24 @@
       "writtenOn": "2022-02-11T17:50:07Z",
       "side": 1,
       "message": "I don\u0027t understand the existence of this enum, nor all the switching. All of these can be better passed in to the constructor directly down in the DEF_GM. Currently the constructor is taking this enum and then this class is expanding that into some set parameter pack. This is very strange organization, just let the caller set the parameters (and the test name, etc).\n\nThis is in fact why all the `sets` on SkFontArguments return SkFontArguments\u0026, so that a new one can be created and set up and then passed directly, without needing to name the temporary. Likewise PaletteOverride can be compile time brace initialized, especially when `colorOverrides*` aren\u0027t std::vectors but just pointers.\n\nIn other words, just pass the `const char* name` and `const SkFontArguments\u0026 args` directly to the constructor and set them up in the parameter list of the constructor call in DEF_GM below.",
+      "revId": "88736c5aa3a705d561b690795ad8cb089f894daa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b85649b5_a0f0578a",
+        "filename": "gm/palette.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2022-02-14T15:54:59Z",
+      "side": 1,
+      "message": "Good points, simplified accordingly, but not using `const SkFontArguments\u0026` as constructor argument but just `const SkFontArguments::PaletteOverride\u0026` as that\u0027s the only part of font arguments that varies between tests.",
+      "parentUuid": "6c6ab1e2_a44a9c01",
       "revId": "88736c5aa3a705d561b690795ad8cb089f894daa",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -60,6 +102,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "210600f0_7fbd5b6a",
+        "filename": "src/core/SkFontDescriptor.h",
+        "patchSetId": 22
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2022-02-14T15:54:59Z",
+      "side": 1,
+      "message": "Would it be okay with you to do this in a forthcoming CL? It\u0027s a bit unfortunate that each class derived from SkTypeface_FreeType has its own `onGetFontDescriptor()`, so I was thinking it would get a bit noisy if I do this in the same CL. Filed as https://bugs.chromium.org/p/skia/issues/detail?id\u003d12948",
+      "parentUuid": "cbb18798_38510d98",
+      "revId": "88736c5aa3a705d561b690795ad8cb089f894daa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7b74fe8f_531c92a3",
         "filename": "src/ports/SkFontHost_FreeType.cpp",
         "patchSetId": 22
@@ -71,6 +131,24 @@
       "writtenOn": "2022-02-11T17:50:07Z",
       "side": 1,
       "message": "I see. So FreeType currently has a way to get the palette data, select a palette index, and set the foreground color. But it doesn\u0027t currently have a way to just set the palette. With the axes we just resolve them, send them off to FreeType and they\u0027re all just set.\n\nSince the web has a thing about setting palette data, perhaps this means we should suggest that FreeType add a means of setting palette entries much like this (and much like setting axes in a variable font).\n\nFor now, though, this is fine. Might want to comment here that as of right now FreeType doesn\u0027t allow setting individual palette entry values, so we need to keep track of the overrides.",
+      "revId": "88736c5aa3a705d561b690795ad8cb089f894daa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c5b782b1_9a2a32b8",
+        "filename": "src/ports/SkFontHost_FreeType.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 190,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2022-02-14T15:54:59Z",
+      "side": 1,
+      "message": "Filed as https://gitlab.freedesktop.org/freetype/freetype/-/issues/1134 and added a comment.",
+      "parentUuid": "7b74fe8f_531c92a3",
       "revId": "88736c5aa3a705d561b690795ad8cb089f894daa",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -92,6 +170,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "87651afd_1235dc89",
+        "filename": "src/ports/SkFontHost_FreeType.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 318,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2022-02-14T15:54:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "065fb503_e17b7c13",
+      "revId": "88736c5aa3a705d561b690795ad8cb089f894daa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "254d5dd4_7cc948e2",
@@ -105,6 +201,24 @@
       "writtenOn": "2022-02-11T17:50:07Z",
       "side": 1,
       "message": "nit: put these `setup` next to each other without a blank line between.",
+      "revId": "88736c5aa3a705d561b690795ad8cb089f894daa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "94c58e19_ab76d933",
+        "filename": "src/ports/SkFontHost_FreeType.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 358,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2022-02-14T15:54:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "254d5dd4_7cc948e2",
       "revId": "88736c5aa3a705d561b690795ad8cb089f894daa",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -126,6 +240,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d939beb5_7eb2639e",
+        "filename": "src/ports/SkFontHost_FreeType.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 683,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2022-02-14T15:54:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a858c5a7_e65b96f0",
+      "revId": "88736c5aa3a705d561b690795ad8cb089f894daa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "93b9f90a_e444bcf6",
@@ -139,6 +271,24 @@
       "writtenOn": "2022-02-11T17:50:07Z",
       "side": 1,
       "message": "I\u0027m not sure why this is here exactly. GetAxes happens here to get the axis parameters, not the current axis values. GetPalette is getting some palette\u0027s values, not really its parameters. It might make sense here to return the number of palettes available and the number of palette entries.\n\nThis function could return the number of available palettes, and GetPalette and resolvePaletteOverride should be merged to be more like computeAxisValues (maybe call it computePaletteValues to be parallel).",
+      "revId": "88736c5aa3a705d561b690795ad8cb089f894daa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d0fdabf4_6531677e",
+        "filename": "src/ports/SkFontHost_FreeType.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 2054,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2022-02-14T15:54:59Z",
+      "side": 1,
+      "message": "I hope I understand your intention correctly. There\u0027s a chance I misunderstood the suggestion. Perhaps let me mostly respond to the second part first, then come to the first part of your comment. \n\n\u003e This function could return the number of available palettes, and GetPalette and resolvePaletteOverride should be merged to be more like computeAxisValues (maybe call it computePaletteValues to be parallel).\n\nI think, if I don\u0027t want to refactor the use of `scanFont` everywhere, the reason for the difference and two-step incantation of `scanFont` + `ResolvePaletteOverrides` is that only `scanFont` instantiations the temporary `FT_Face` to analyse the font blob and extract required information from the font.\n\nThat\u0027s what the similarity is between `GetAxes()` and `GetPalette()`, both are required as a sort of template to validate the `SkFontArguments` and fill those in / override them with user values.\n\nThe purpose is to have a fully resolved palette as a combination of what\u0027s in the font (extracted from `scanFont`), overridden with user `SkFontArguments::PaletteOverride` which needs to be stored in `SkFontData`. If `SkFontData` would not have a fully resolved palette, not all code path leading to `SkTypeface_FreeType::FaceRec::Make` and from there to `setupAxes(*data)` could set the correct palette.",
+      "parentUuid": "93b9f90a_e444bcf6",
       "revId": "88736c5aa3a705d561b690795ad8cb089f894daa",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -166,6 +316,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4520f8ed_ab8d6501",
+        "filename": "src/ports/SkFontHost_FreeType.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 2190,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2022-02-14T15:54:59Z",
+      "side": 1,
+      "message": "I think this originates from earlier work when I wasn\u0027t sure about where the allocation should happen. Updated method to return `void` and have a pointer argument with a palette that gets updated, `PaletteFromFont` alias of `SkTArray` renamed to just `Palette`.",
+      "parentUuid": "cb5700d9_9488397a",
+      "range": {
+        "startLine": 2190,
+        "startChar": 8,
+        "endLine": 2190,
+        "endChar": 40
+      },
+      "revId": "88736c5aa3a705d561b690795ad8cb089f894daa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5f2e024d_95567bc5",
@@ -183,6 +357,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "007debd0_6a1d9277",
+        "filename": "src/ports/SkFontHost_FreeType.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 2207,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2022-02-14T15:54:59Z",
+      "side": 1,
+      "message": "Yes, I think I had that already in a local version that I did not upload for some reason. Ignoring instead of failing is also in line with the CSS spec which says these should be ignored.",
+      "parentUuid": "5f2e024d_95567bc5",
+      "revId": "88736c5aa3a705d561b690795ad8cb089f894daa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "60a7e143_09fccfad",
@@ -196,6 +388,30 @@
       "writtenOn": "2022-02-11T17:50:07Z",
       "side": 1,
       "message": "Should be capital \"R\".",
+      "range": {
+        "startLine": 98,
+        "startChar": 36,
+        "endLine": 98,
+        "endChar": 37
+      },
+      "revId": "88736c5aa3a705d561b690795ad8cb089f894daa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5bc2be18_6e1ca72b",
+        "filename": "src/ports/SkFontHost_FreeType_common.h",
+        "patchSetId": 22
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2022-02-14T15:54:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "60a7e143_09fccfad",
       "range": {
         "startLine": 98,
         "startChar": 36,
