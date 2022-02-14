@@ -1,0 +1,19 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library")
+
+go_library(
+    name = "gold_lib",
+    srcs = ["wasm_gold_aggregator.go"],
+    importpath = "go.skia.org/skia/infra/wasm-common/gold",
+    visibility = ["//visibility:private"],
+    deps = [
+        "@org_skia_go_infra//go/util",
+        "@org_skia_go_infra//golden/go/jsonio",
+        "@org_skia_go_infra//golden/go/types",
+    ],
+)
+
+go_binary(
+    name = "gold",
+    embed = [":gold_lib"],
+    visibility = ["//visibility:public"],
+)
