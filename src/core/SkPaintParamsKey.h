@@ -10,6 +10,7 @@
 
 #include <array>
 #include <limits>
+#include "include/core/SkSpan.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkTArray.h"
 #include "src/core/SkBuiltInCodeSnippetID.h"
@@ -20,6 +21,7 @@ enum class SkBackend : uint8_t {
     kGraphite,
     kSkVM
 };
+struct SkDataPayloadInfo;
 class SkPaintParamsKey;
 class SkShaderCodeDictionary;
 class SkShaderInfo;
@@ -59,6 +61,12 @@ private:
 
     bool fIsValid = true;
     SkShaderCodeDictionary* fDict;
+
+#ifdef SK_DEBUG
+    SkSpan<const SkDataPayloadInfo> fDataPayloadExpectations;
+    int fCurDataPayloadEntry = 0;
+#endif
+
     std::vector<StackFrame> fStack;
 
     // TODO: It is probably overkill but we could encode the SkBackend in the first byte of

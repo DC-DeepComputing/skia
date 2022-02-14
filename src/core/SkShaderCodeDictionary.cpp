@@ -94,6 +94,18 @@ SkSpan<const SkUniform> SkShaderCodeDictionary::getUniforms(SkBuiltInCodeSnippet
     return fBuiltInCodeSnippets[(int) id].fUniforms;
 }
 
+SkSpan<const SkDataPayloadInfo> SkShaderCodeDictionary::getDataPayloadExpectations(
+        int codeSnippetID) const {
+    SkASSERT(codeSnippetID < 0 || codeSnippetID > this->maxCodeSnippetID());
+
+    if (codeSnippetID < kBuiltInCodeSnippetIDCount) {
+        return fBuiltInCodeSnippets[codeSnippetID].fDataPayloadExpectations;
+    }
+
+    int userDefinedCodeSnippetID = codeSnippetID - kBuiltInCodeSnippetIDCount;
+    return fUserDefinedCodeSnippets[userDefinedCodeSnippetID].fDataPayloadExpectations;
+}
+
 const SkShaderInfo::SnippetEntry* SkShaderCodeDictionary::getEntry(
         SkBuiltInCodeSnippetID id) const {
     if (fBuiltInCodeSnippets[(int) id].fCode) {

@@ -33,6 +33,11 @@ void SkPaintParamsKeyBuilder::beginBlock(int codeSnippetID) {
     this->addByte((uint8_t) codeSnippetID);
     this->addByte(0);  // this needs to be patched up with a call to endBlock
 
+#ifdef SK_DEBUG
+    fDataPayloadExpectations = fDict->getDataPayloadExpectations(codeSnippetID);
+    fCurDataPayloadEntry = 0;
+#endif
+
     fStack.push_back({codeSnippetID,
                       this->sizeInBytes() - SkPaintParamsKey::kBlockHeaderSizeInBytes});
 }

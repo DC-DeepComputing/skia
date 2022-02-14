@@ -441,13 +441,8 @@ namespace {
 
 #ifdef SK_GRAPHITE_ENABLED
 
-inline static constexpr int kTileModeBits = 2;
-
-static const int kXTileModeShift = 0;
-static const int kYTileModeShift = kTileModeBits;
-
 #ifdef SK_DEBUG
-static const int kBlockDataSize = 1;
+static const int kBlockDataSize = 2;
 
 inline static constexpr int kTileModeMask = 0x3;
 
@@ -457,10 +452,8 @@ ImageData ExtractFromKey(const SkPaintParamsKey& key, uint32_t headerOffset) {
                               SkBuiltInCodeSnippetID::kImageShader,
                               kBlockDataSize);
 
-    uint8_t data = key.byte(headerOffset+SkPaintParamsKey::kBlockHeaderSizeInBytes);
-
-    SkTileMode tmX = to_tilemode(((data) >> kXTileModeShift) & kTileModeMask);
-    SkTileMode tmY = to_tilemode(((data) >> kYTileModeShift) & kTileModeMask);
+    SkTileMode tmX = to_tilemode(key.byte(headerOffset+SkPaintParamsKey::kBlockHeaderSizeInBytes));
+    SkTileMode tmY = to_tilemode(key.byte(headerOffset+SkPaintParamsKey::kBlockHeaderSizeInBytes)+1);
 
     return { tmX, tmY };
 }
@@ -497,13 +490,11 @@ void AddToKey(SkShaderCodeDictionary* dict,
 
 #ifdef SK_GRAPHITE_ENABLED
     if (backend == SkBackend::kGraphite) {
-
-        uint8_t data = (static_cast<uint8_t>(imgData.fTileModes[0]) << kXTileModeShift) |
-                       (static_cast<uint8_t>(imgData.fTileModes[1]) << kYTileModeShift);
-
         builder->beginBlock(SkBuiltInCodeSnippetID::kImageShader);
 
-        builder->addByte(data);
+        SkASSERT(SkTFitsIn<uint8_t>(SkTileMode::kLastTileMode));
+        builder->addByte(static_cast<uint8_t>(imgData.fTileModes[0]));
+        builder->addByte(static_cast<uint8_t>(imgData.fTileModes[1]));
 
         builder->endBlock();
 
