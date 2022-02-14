@@ -34,6 +34,24 @@
       "parentUuid": "d0b3f1a2_3db7d450",
       "revId": "78767e140ff0707041832c122c920192a0b3b788",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fe274502_313dadff",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 17
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-02-14T19:39:55Z",
+      "side": 1,
+      "message": "Looks like maybe this is breaking variable font support somehow?",
+      "parentUuid": "57172ea7_cb7df33d",
+      "revId": "78767e140ff0707041832c122c920192a0b3b788",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
