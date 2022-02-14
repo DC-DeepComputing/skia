@@ -12,6 +12,7 @@
 #include "src/core/SkColorSpaceXformSteps.h"
 #include "src/core/SkCoreBlitters.h"
 #include "src/core/SkOpts.h"
+#include "src/core/SkPaintPriv.h"
 #include "src/core/SkRasterPipeline.h"
 #include "src/core/SkSpriteBlitter.h"
 #include "src/core/SkVMBlitter.h"
@@ -196,35 +197,37 @@ SkBlitter* SkBlitter::ChooseSprite(const SkPixmap& dst, const SkPaint& paint,
     if (source.alphaType() == kUnpremul_SkAlphaType) {
         return nullptr;
     }
+    if (!SkPaintPriv::ShouldDither(paint, dst.colorType(), /*shaderOverride=*/true)) {
+        // These sprite blitters do not support dithering, although SkVMBlitter does
+        SkSpriteBlitter* blitter = nullptr;
 
-    SkSpriteBlitter* blitter = nullptr;
-
-    if (0 == SkColorSpaceXformSteps(source,dst).flags.mask() && !clipShader) {
-        if (!blitter && SkSpriteBlitter_Memcpy::Supports(dst, source, paint)) {
-            blitter = alloc->make<SkSpriteBlitter_Memcpy>(source);
-        }
-        if (!blitter) {
-            switch (dst.colorType()) {
-                case kN32_SkColorType:
-                    blitter = SkSpriteBlitter::ChooseL32(source, paint, alloc);
-                    break;
-                case kRGB_565_SkColorType:
-                    blitter = SkSpriteBlitter::ChooseL565(source, paint, alloc);
-                    break;
-                case kAlpha_8_SkColorType:
-                    blitter = SkSpriteBlitter::ChooseLA8(source, paint, alloc);
-                    break;
-                default:
-                    break;
+        if (0 == SkColorSpaceXformSteps(source,dst).flags.mask() && !clipShader) {
+            if (!blitter && SkSpriteBlitter_Memcpy::Supports(dst, source, paint)) {
+                blitter = alloc->make<SkSpriteBlitter_Memcpy>(source);
+            }
+            if (!blitter) {
+                switch (dst.colorType()) {
+                    case kN32_SkColorType:
+                        blitter = SkSpriteBlitter::ChooseL32(source, paint, alloc);
+                        break;
+                    case kRGB_565_SkColorType:
+                        blitter = SkSpriteBlitter::ChooseL565(source, paint, alloc);
+                        break;
+                    case kAlpha_8_SkColorType:
+                        blitter = SkSpriteBlitter::ChooseLA8(source, paint, alloc);
+                        break;
+                    default:
+                        break;
+                }
             }
         }
-    }
-    if (!blitter && !paint.getMaskFilter()) {
-        blitter = alloc->make<SkRasterPipelineSpriteBlitter>(source, alloc, clipShader);
-    }
+        if (!blitter && !paint.getMaskFilter()) {
+            blitter = alloc->make<SkRasterPipelineSpriteBlitter>(source, alloc, clipShader);
+        }
 
-    if (blitter && blitter->setup(dst, left,top, paint)) {
-        return blitter;
+        if (blitter && blitter->setup(dst, left,top, paint)) {
+            return blitter;
+        }
     }
 
     return SkVMBlitter::Make(dst, paint, source,left,top, alloc, std::move(clipShader));
