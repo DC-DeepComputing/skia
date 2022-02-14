@@ -286,6 +286,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b950b86f_c479468e",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-02-14T16:16:01Z",
+      "side": 1,
+      "message": "I think, in the gradient case, I would solve this problem by each snippet having a list of known sub-routines it uses. These could then be de-duped and only emitted once.",
+      "parentUuid": "c2d43476_b0ca55eb",
+      "range": {
+        "startLine": 72,
+        "startChar": 0,
+        "endLine": 72,
+        "endChar": 40
+      },
+      "revId": "b8a9a75094357cd713045fe0674dbe00d7a86cae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "db3ee267_9ad379f7",
         "filename": "src/core/SkShaderCodeDictionary.cpp",
         "patchSetId": 8
