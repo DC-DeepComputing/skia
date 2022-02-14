@@ -10,6 +10,7 @@
 
 #include <array>
 #include <limits>
+#include "include/core/SkSpan.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkTArray.h"
 #include "src/core/SkBuiltInCodeSnippetID.h"
@@ -20,6 +21,7 @@ enum class SkBackend : uint8_t {
     kGraphite,
     kSkVM
 };
+struct SkDataPayloadInfo;
 class SkPaintParamsKey;
 class SkShaderCodeDictionary;
 class SkShaderInfo;
@@ -32,9 +34,7 @@ public:
     void beginBlock(SkBuiltInCodeSnippetID id) { this->beginBlock(static_cast<int>(id)); }
     void endBlock();
 
-    void addBytes(uint32_t numBytes, const uint8_t* data) {
-        fData.push_back_n(numBytes, data);
-    }
+    void addBytes(uint32_t numBytes, const uint8_t* data);
     void addByte(uint8_t data) {
         this->addBytes(1, &data);
     }
@@ -52,9 +52,14 @@ public:
 private:
     void markInvalid() { fIsValid = false; }
 
+    // Information about the current block being written
     struct StackFrame {
         int fCodeSnippetID;
         int fHeaderOffset;
+#ifdef SK_DEBUG
+        SkSpan<const SkDataPayloadInfo> fDataPayloadExpectations;
+        int fCurDataPayloadEntry = 0;
+#endif
     };
 
     bool fIsValid = true;
