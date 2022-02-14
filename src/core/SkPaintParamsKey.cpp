@@ -26,15 +26,37 @@ void SkPaintParamsKeyBuilder::beginBlock(int codeSnippetID) {
         codeSnippetID = static_cast<int>(SkBuiltInCodeSnippetID::kError);   // fall through
     }
 
+#ifdef SK_DEBUG
+    if (!fStack.empty()) {
+        // The children of a block should appear before any of the parent's data
+        SkASSERT(fStack.back().fCurDataPayloadEntry == 0);
+    }
+#endif
+
     // TODO: add assert that the id fits in a uint8_t
 
     fData.reserve_back(SkPaintParamsKey::kBlockHeaderSizeInBytes);
+    fStack.push_back({ codeSnippetID, this->sizeInBytes(), {}, 0 });
+
+#ifdef SK_DEBUG
+    static const SkDataPayloadInfo kHeader[2] = {
+        {"snippetID", DataPayloadType::kByte, 1},
+        {"blockSize", DataPayloadType::kByte, 1},
+    };
+
+    static const SkSpan<const SkDataPayloadInfo> kHeaderExpectations(kHeader, 2);
+
+    fStack.back().fDataPayloadExpectations = kHeaderExpectations;
+    fStack.back().fCurDataPayloadEntry = 0;
+#endif
 
     this->addByte((uint8_t) codeSnippetID);
     this->addByte(0);  // this needs to be patched up with a call to endBlock
 
-    fStack.push_back({codeSnippetID,
-                      this->sizeInBytes() - SkPaintParamsKey::kBlockHeaderSizeInBytes});
+#ifdef SK_DEBUG
+    fStack.back().fDataPayloadExpectations = fDict->getDataPayloadExpectations(codeSnippetID);
+    fStack.back().fCurDataPayloadEntry = 0;
+#endif
 }
 
 // Update the size byte of a block header
@@ -44,6 +66,17 @@ void SkPaintParamsKeyBuilder::endBlock() {
         this->markInvalid();
         return;
     }
+
+#ifdef SK_DEBUG
+    if (fStack.back().fCurDataPayloadEntry != static_cast<int>(fStack.back().fDataPayloadExpectations.size())) {
+        // Data payload expectations were not met
+        SkASSERT(0);
+        this->markInvalid();
+        return;
+    }
+
+    // Sigh - we need to put the payload expectations on the stack and push & pop them w/ kids
+#endif
 
     int headerOffset = fStack.back().fHeaderOffset;
 
@@ -59,6 +92,40 @@ void SkPaintParamsKeyBuilder::endBlock() {
     fData[headerOffset+SkPaintParamsKey::kBlockSizeOffsetInBytes] = blockSize;
 
     fStack.pop_back();
+
+#ifdef SK_DEBUG
+    if (!fStack.empty()) {
+        // The children of a block should appear before any of the parent's data
+        SkASSERT(fStack.back().fCurDataPayloadEntry == 0);
+    }
+#endif
+}
+
+void SkPaintParamsKeyBuilder::addBytes(uint32_t numBytes, const uint8_t* data) {
+    if (fStack.empty()) {
+        // Missing call to 'beginBlock'
+        SkASSERT(0);
+        this->markInvalid();
+        return;
+    }
+
+#ifdef SK_DEBUG
+    // TODO: right now we reject writing 'n' bytes 1 at a time. We could allow it by tracking
+    // the number of bytes written.
+    if (fStack.back().fCurDataPayloadEntry > static_cast<int>(fStack.back().fDataPayloadExpectations.size()) ||
+            fStack.back().fDataPayloadExpectations.data() == nullptr ||
+            fStack.back().fDataPayloadExpectations[fStack.back().fCurDataPayloadEntry].fType != DataPayloadType::kByte ||
+            fStack.back().fDataPayloadExpectations[fStack.back().fCurDataPayloadEntry].fCount != numBytes) {
+        // Expectation mismatch
+        // TODO: add warning message!!
+        this->markInvalid();
+        return;
+    }
+
+    fStack.back().fCurDataPayloadEntry++;
+#endif
+
+    fData.push_back_n(numBytes, data);
 }
 
 std::unique_ptr<SkPaintParamsKey> SkPaintParamsKeyBuilder::snap() {

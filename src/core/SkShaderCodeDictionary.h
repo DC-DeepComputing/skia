@@ -18,12 +18,25 @@
 #include "src/core/SkPaintParamsKey.h"
 #include "src/core/SkUniform.h"
 
+enum class DataPayloadType {
+    kByte,
+};
+
+struct SkDataPayloadInfo {
+    const char* fName;
+    DataPayloadType fType;
+    uint32_t fCount;
+};
+
 class SkShaderInfo {
 public:
     struct SnippetEntry {
         SkSpan<const SkUniform> fUniforms;
         const char* fName;
         const char* fCode;
+        SkSpan<const SkDataPayloadInfo> fDataPayloadExpectations;
+        // TODO: we could automatically compute the payload's size in bytes
+        int fDataPayloadSizeInBytes;
     };
 
     void add(const SnippetEntry& entry) {
@@ -75,6 +88,7 @@ public:
     const Entry* lookup(SkUniquePaintParamsID) const SK_EXCLUDES(fSpinLock);
 
     SkSpan<const SkUniform> getUniforms(SkBuiltInCodeSnippetID) const;
+    SkSpan<const SkDataPayloadInfo> getDataPayloadExpectations(int codeSnippetID) const;
     const SkShaderInfo::SnippetEntry* getEntry(SkBuiltInCodeSnippetID) const;
 
     void getShaderInfo(SkUniquePaintParamsID, SkShaderInfo*);
@@ -86,7 +100,8 @@ public:
     // TODO: this is still experimental but, most likely, it will need to be made thread-safe
     // It returns the code snippet ID to use to identify the supplied user-defined code
     // TODO: add hooks for user to actually provide code.
-    int addUserDefinedSnippet();
+    int addUserDefinedSnippet(SkSpan<const SkDataPayloadInfo> dataPayloadExpectations,
+                              int dataPayloadSizeInBytes);
 
 private:
     Entry* makeEntry(std::unique_ptr<SkPaintParamsKey>);

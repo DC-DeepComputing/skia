@@ -52,7 +52,7 @@ void validate_block_header(const SkPaintParamsKeyBuilder* builder,
 
 #ifdef SK_GRAPHITE_ENABLED
 void add_blendmode_to_key(SkPaintParamsKeyBuilder* builder, SkBlendMode bm) {
-    SkASSERT(static_cast<int>(bm) <= std::numeric_limits<uint8_t>::max());
+    SkASSERT(static_cast<int>(SkBlendMode::kLastMode) <= std::numeric_limits<uint8_t>::max());
     builder->addByte(static_cast<uint8_t>(bm));
 }
 
@@ -441,15 +441,8 @@ namespace {
 
 #ifdef SK_GRAPHITE_ENABLED
 
-inline static constexpr int kTileModeBits = 2;
-
-static const int kXTileModeShift = 0;
-static const int kYTileModeShift = kTileModeBits;
-
 #ifdef SK_DEBUG
-static const int kBlockDataSize = 1;
-
-inline static constexpr int kTileModeMask = 0x3;
+static const int kBlockDataSize = 2;
 
 ImageData ExtractFromKey(const SkPaintParamsKey& key, uint32_t headerOffset) {
     validate_block_header_key(key,
@@ -457,10 +450,8 @@ ImageData ExtractFromKey(const SkPaintParamsKey& key, uint32_t headerOffset) {
                               SkBuiltInCodeSnippetID::kImageShader,
                               kBlockDataSize);
 
-    uint8_t data = key.byte(headerOffset+SkPaintParamsKey::kBlockHeaderSizeInBytes);
-
-    SkTileMode tmX = to_tilemode(((data) >> kXTileModeShift) & kTileModeMask);
-    SkTileMode tmY = to_tilemode(((data) >> kYTileModeShift) & kTileModeMask);
+    SkTileMode tmX = to_tilemode(key.byte(headerOffset+SkPaintParamsKey::kBlockHeaderSizeInBytes));
+    SkTileMode tmY = to_tilemode(key.byte(headerOffset+SkPaintParamsKey::kBlockHeaderSizeInBytes)+1);
 
     return { tmX, tmY };
 }
@@ -497,13 +488,11 @@ void AddToKey(SkShaderCodeDictionary* dict,
 
 #ifdef SK_GRAPHITE_ENABLED
     if (backend == SkBackend::kGraphite) {
-
-        uint8_t data = (static_cast<uint8_t>(imgData.fTileModes[0]) << kXTileModeShift) |
-                       (static_cast<uint8_t>(imgData.fTileModes[1]) << kYTileModeShift);
-
         builder->beginBlock(SkBuiltInCodeSnippetID::kImageShader);
 
-        builder->addByte(data);
+        SkASSERT(SkTFitsIn<uint8_t>(SkTileMode::kLastTileMode));
+        builder->addByte(static_cast<uint8_t>(imgData.fTileModes[0]));
+        builder->addByte(static_cast<uint8_t>(imgData.fTileModes[1]));
 
         builder->endBlock();
 
@@ -549,8 +538,7 @@ void AddToKey(SkShaderCodeDictionary* dict,
     if (backend == SkBackend::kGraphite) {
         builder->beginBlock(SkBuiltInCodeSnippetID::kBlendShader);
 
-        add_blendmode_to_key(builder, blendData.fBM);
-
+        // Child blocks always go right after the parent block's header
         // TODO: add startChild/endChild entry points to SkPaintParamsKeyBuilder. They could be
         // used to compute and store the number of children w/in a block's header.
         int start = builder->sizeInBytes();
@@ -560,6 +548,8 @@ void AddToKey(SkShaderCodeDictionary* dict,
         start = builder->sizeInBytes();
         as_SB(blendData.fSrc)->addToKey(dict, backend, builder, uniformBlock);
         int secondShaderSize = builder->sizeInBytes() - start;
+
+        add_blendmode_to_key(builder, blendData.fBM);
 
         builder->endBlock();
 
@@ -585,18 +575,19 @@ void Dump(const SkPaintParamsKey& key, int headerOffset) {
 
     int runningOffset = headerOffset + SkPaintParamsKey::kBlockHeaderSizeInBytes;
 
-    uint8_t data = key.byte(runningOffset);
-    SkBlendMode bm = to_blendmode(data);
-
-    SkDebugf("BlendMode: %s\n", SkBlendMode_Name(bm));
-    runningOffset += 1; // 1 byte for blendmode
-
     SkDebugf("\nDst:  ");
     int firstBlockSize = SkPaintParamsKey::DumpBlock(key, runningOffset);
     runningOffset += firstBlockSize;
 
     SkDebugf("Src: ");
     int secondBlockSize = SkPaintParamsKey::DumpBlock(key, runningOffset);
+    runningOffset += secondBlockSize;
+
+    uint8_t data = key.byte(runningOffset);
+    SkBlendMode bm = to_blendmode(data);
+
+    SkDebugf("BlendMode: %s\n", SkBlendMode_Name(bm));
+    runningOffset += 1; // 1 byte for blendmode
 
     int calculatedBlockSize = SkPaintParamsKey::kBlockHeaderSizeInBytes +
                               firstBlockSize + secondBlockSize + 1;
