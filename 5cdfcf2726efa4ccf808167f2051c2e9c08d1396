@@ -16,6 +16,24 @@
       "message": "I wanted to write a glyphRunList version of the filter, but the current API with the builder did not make it easy. Since this is doing terrible interception things anyway, did it this way. Let me know if you think there is a better way to filter the fonts in a glyphRunList here.",
       "revId": "5cdfcf2726efa4ccf808167f2051c2e9c08d1396",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "860f75ba_d4af868f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-02-14T14:41:18Z",
+      "side": 1,
+      "message": "I think this is a fine way to do it.",
+      "parentUuid": "8779b15f_e054bbd8",
+      "revId": "5cdfcf2726efa4ccf808167f2051c2e9c08d1396",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
