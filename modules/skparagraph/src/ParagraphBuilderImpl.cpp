@@ -162,13 +162,12 @@ std::unique_ptr<Paragraph> ParagraphBuilderImpl::Build() {
 }
 
 void ParagraphBuilderImpl::Reset() {
-    std::stack<TextStyle> text_styles;
-    fTextStyles.swap(text_styles);
+    while(fTextStyles.size() > 1) {
+        fTextStyles.pop();
+    }
     fUtf8.reset();
-    fStyledBlocks.reset();
+    fStyledBlocks.pop_back_n(fStyledBlocks.size() - 1);
     fPlaceholders.reset();
-
-    this->setParagraphStyle(fParagraphStyle);
 }
 
 }  // namespace textlayout
