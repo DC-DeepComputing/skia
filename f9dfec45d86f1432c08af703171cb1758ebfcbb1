@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0d3f4f18_a737c16b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-02-14T20:20:32Z",
+      "side": 1,
+      "message": "I will change the tracing to be macros.\nAs for the rest - this change collects information that is needed to compare SkVM vs RasterPipeline and optimize SkVM. We need it in the code one way or another so people can see the results of their optimizations.",
+      "parentUuid": "dcf63830_83f7cfe1",
+      "revId": "f9dfec45d86f1432c08af703171cb1758ebfcbb1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ad295e2a_78db77a6",
