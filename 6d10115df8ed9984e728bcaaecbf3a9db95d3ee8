@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a6c5ea87_ae296c26",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-14T21:35:03Z",
+      "side": 1,
+      "message": "I noticed this issue when working with banding appearing in blur image filters on phone screens, where the save layer\u0027s restore paint\u0027s dither setting was being ignored. This should mean dithering a large blur result will help avoid banding that appears in its pseudo-gradients.\n\nPS1 -\u003e PS2 shows the bug fixes. PS1 in gold shows the banding on the RHS of the new GM, although only for GPU backends. CPU backend had better checks for dithering and image draws.",
+      "revId": "6d10115df8ed9984e728bcaaecbf3a9db95d3ee8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2982017a_b5bf8f2d",
+        "filename": "src/core/SkBlitter_Sprite.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 200,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-14T21:35:03Z",
+      "side": 1,
+      "message": "The new GM doesn\u0027t actually get here because it\u0027s upscaling on the canvas matrix, so doesn\u0027t count as a sprite, but from code inspection, it is theoretically possible that a sprite draw that should otherwise use dithering could get here.\n\nThat being said, visually, maybe dithering at 1-to-1 scale on source colors that have already been packed into a lower bit representation isn\u0027t so meaningful. The improvements are mostly when bilinear filtering to produce new values that have higher precision.\n\nGiven that, should I just drop this check since sprites by definition won\u0027t be changing scale or bilerp? Regular image rect calls on the CPU backend go through the vm blitter or raster pipeline path that correctly handle dithering on the paint.",
+      "range": {
+        "startLine": 200,
+        "startChar": 8,
+        "endLine": 200,
+        "endChar": 83
+      },
+      "revId": "6d10115df8ed9984e728bcaaecbf3a9db95d3ee8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0a926704_b0f1dfdd",
+        "filename": "src/core/SkPaintPriv.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-14T21:35:03Z",
+      "side": 1,
+      "message": "Most CPU-backend uses stay in SkShader-land and move the image-as-a-shader into the paint that\u0027s passed into ShouldDither. However, for GPU\u0027s drawImage fallbacks that use SkPaintToGrPaintReplaceShader(), it would regularly report no dithering necessary since the paint\u0027s shader was often null.",
+      "range": {
+        "startLine": 37,
+        "startChar": 63,
+        "endLine": 37,
+        "endChar": 83
+      },
+      "revId": "6d10115df8ed9984e728bcaaecbf3a9db95d3ee8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c8c4cccd_f0413565",
+        "filename": "src/gpu/v1/Device_drawTexture.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 324,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-14T21:35:03Z",
+      "side": 1,
+      "message": "We don\u0027t need to check SkPaintPriv::UseDither here because this is sufficient. When the paint disables dithering, we don\u0027t care about the dst color type or if the paint has a non-constant effect, dithering is always disabled. When the paint does request dithering, we defer to the dst color type or their being a non-const shader, but since this is the drawImage canvas call, we know we\u0027re always overriding the paints shader so UseDither() will match isDither().",
+      "range": {
+        "startLine": 324,
+        "startChar": 62,
+        "endLine": 324,
+        "endChar": 80
+      },
+      "revId": "6d10115df8ed9984e728bcaaecbf3a9db95d3ee8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
