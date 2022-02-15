@@ -53,9 +53,13 @@ protected:
 private:
     class Offscreen {
     public:
-        Offscreen()
+        Offscreen(SkColor4f color)
             : fRGBSpace(nullptr)
             , fCG(nullptr)
+            // CoreText applies the CGContext fill color as the COLR foreground color.
+            // However, the alpha is applied to the whole glyph drawing.
+            // For now, cannot really support COLR foreground color alpha.
+            , fForegroundColor(CGColorCreateSRGB(color.fR, color.fG, color.fB, 1.0f))
             , fDoAA(false)
             , fDoLCD(false)
         {
@@ -74,6 +78,7 @@ private:
 
         // cached state
         SkUniqueCFRef<CGContextRef> fCG;
+        SkUniqueCFRef<CGColorRef> fForegroundColor;
         SkISize fSize;
         bool fDoAA;
         bool fDoLCD;

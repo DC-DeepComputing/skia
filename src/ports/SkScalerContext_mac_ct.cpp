@@ -118,6 +118,7 @@ SkScalerContext_Mac::SkScalerContext_Mac(sk_sp<SkTypeface_Mac> typeface,
                                          const SkScalerContextEffects& effects,
                                          const SkDescriptor* desc)
         : INHERITED(std::move(typeface), effects, desc)
+        , fOffscreen(SkColor4f::FromColor(fRec.fForegroundColor))
         , fDoSubPosition(SkToBool(fRec.fFlags & kSubpixelPositioning_Flag))
 
 {
@@ -214,8 +215,12 @@ CGRGBPixel* SkScalerContext_Mac::Offscreen::getCG(const SkScalerContext_Mac& con
 
         CGContextSetTextDrawingMode(fCG.get(), kCGTextFill);
 
-        // Draw black on white to create mask. (Special path exists to speed this up in CG.)
-        CGContextSetGrayFillColor(fCG.get(), 0.0f, 1.0f);
+        if (SkMask::kARGB32_Format != glyph.maskFormat()) {
+            // Draw black on white to create mask. (Special path exists to speed this up in CG.)
+            CGContextSetGrayFillColor(fCG.get(), 0.0f, 1.0f);
+        } else {
+            CGContextSetFillColorWithColor(fCG.get(), fForegroundColor.get());
+        }
 
         // force our checks below to happen
         fDoAA = !doAA;
