@@ -45,6 +45,30 @@
       },
       "revId": "878e92d2b7fb0797444b601cb258846935629f6b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9b079859_03ed0c9c",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 306,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-02-15T15:02:06Z",
+      "side": 1,
+      "message": "In fact, until https://skia-review.googlesource.com/c/skia/+/419099 (when I was trying to get rid of enums in SkSL), we even had this exact function.\n\nEven if we keep the switch() version here, using SkSL\u0027s blend intrinsics gets you driver bug workarounds in some of the more exotic blend modes.",
+      "parentUuid": "2108f17a_2b739c8d",
+      "range": {
+        "startLine": 292,
+        "startChar": 17,
+        "endLine": 306,
+        "endChar": 63
+      },
+      "revId": "878e92d2b7fb0797444b601cb258846935629f6b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
