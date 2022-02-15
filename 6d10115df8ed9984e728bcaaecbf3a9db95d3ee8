@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3d0ad08d_ff5f01bf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-15T01:39:37Z",
+      "side": 1,
+      "message": "although while driving I did realize that this will not be so useful for the blur case since the ideal time to apply the dither would be when upscaling the final blur pass, but at the moment this happens before the restore paint is available. Other optimizations could combine these into the same draw, or we should make dithering something you can specify at each filter stage. Regardless, those would all require the backends to handle dithering on drawImage calls correctly.",
+      "parentUuid": "a6c5ea87_ae296c26",
+      "revId": "6d10115df8ed9984e728bcaaecbf3a9db95d3ee8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2982017a_b5bf8f2d",
