@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fe5c2599_c702c64b",
+        "filename": "experimental/graphite/src/Resource.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-02-15T22:00:39Z",
+      "side": 1,
+      "message": "Thinking about this more, this is the correct memory ordering we want here. We don\u0027t care who adds refs and it what order. We don\u0027t do any work that is dependent of the ref count increasing. However, in the unref functions we do need to make sure only one thread ever triggers the \u00270\u0027 ref case. Thus these decrement operations must be ordered with acq_rel. We don\u0027t have to worry about ref() adding to the value in the middle of our acq_rel call because that by definition means another thread also has a ref on the object. So the acq_rel was couldn\u0027t have brought it to 0 anyways.\n\nThis is the same model used for memory order used by std::shared_ptr (as well as SkRefCnt and GrIORef). So I\u0027m not worried about running into issues here.",
+      "range": {
+        "startLine": 58,
+        "startChar": 53,
+        "endLine": 58,
+        "endChar": 73
+      },
+      "revId": "480b77793a81aa45fb232cf34355b43d2a75de27",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
