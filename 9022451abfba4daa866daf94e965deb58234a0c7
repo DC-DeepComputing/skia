@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4d331f9d_3d2f9253",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-15T17:24:17Z",
+      "side": 1,
+      "message": "Looking at the canary failures, I\u0027m seeing some small pixel diffs in image filter tests, which is not surprising and will need to be suppressed before this can land. There seem to be a lot of other issues going on in chrome land that appear unrelated to this change, so I\u0027m hopeful that I\u0027m not triggering the same readback issues you ran into previously (since no Make() functions that are public are changing behavior).",
+      "revId": "9022451abfba4daa866daf94e965deb58234a0c7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
