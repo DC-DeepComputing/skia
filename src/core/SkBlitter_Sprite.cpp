@@ -12,6 +12,7 @@
 #include "src/core/SkColorSpaceXformSteps.h"
 #include "src/core/SkCoreBlitters.h"
 #include "src/core/SkOpts.h"
+#include "src/core/SkPaintPriv.h"
 #include "src/core/SkRasterPipeline.h"
 #include "src/core/SkSpriteBlitter.h"
 #include "src/core/SkVMBlitter.h"
