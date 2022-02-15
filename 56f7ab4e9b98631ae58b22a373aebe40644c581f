@@ -33,6 +33,24 @@
       "message": "Are the two failing bots expected?",
       "revId": "56f7ab4e9b98631ae58b22a373aebe40644c581f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d2f330c9_c47a59c0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-02-15T18:28:33Z",
+      "side": 1,
+      "message": "The ASAN one yes, accidentally added that one. The other one no. It appears that CGColorCreateSRGB is new and added in 10.15, and the bots compile against 10.13 (and we\u0027re supposed to at least run on 10.11 I suppose).",
+      "parentUuid": "44e7adff_360f2e46",
+      "revId": "56f7ab4e9b98631ae58b22a373aebe40644c581f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
