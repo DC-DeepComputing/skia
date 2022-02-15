@@ -22,19 +22,47 @@ Resource::~Resource() {
     SkASSERT(this->wasDestroyed());
 }
 
-void Resource::notifyARefIsZero(LastRemovedRef removedRef) const {
-    // TODO: Eventually we'll go through the cache to release the resource, but for now we just do
-    // this immediately.
-    SkASSERT(removedRef == LastRemovedRef::kUsageRef);
+void Resource::registerWithCache(sk_sp<ResourceCache::Return> cacheReturn) {
+    SkASSERT(!fCacheReturn);
+    SkASSERT(cacheReturn);
+
+    fCacheReturn = std::move(cacheReturn);
+}
+
+bool Resource::notifyARefIsZero(LastRemovedRef removedRef) const {
+    SkASSERT(removedRef == LastRemovedRef::kUsageRef || removedRef == LastRemovedRef::kCache);
+
+    // No resource should have been destroyed if there was still any sort of ref on it.
+    SkASSERT(!this->wasDestroyed());
+
     Resource* mutableThis = const_cast<Resource*>(this);
-    mutableThis->freeGpuData();
+
+    // TODO: We have not switched all resources to use the ResourceCache yet. Once we do we should
+    // be able to assert that we have an fCacheReturn.
+    // SkASSERT(fCacheReturn);
+    if (removedRef != LastRemovedRef::kCache &&
+        fCacheReturn &&
+        fCacheReturn->returnResource(mutableThis, removedRef)) {
+        return false;
+    }
+
+    if (!this->hasAnyRefs()) {
+        return true;
+    }
+    return false;
 }
 
 void Resource::freeGpuData() {
     SkASSERT(fGpu);
     this->onFreeGpuData();
     fGpu = nullptr;
+    // TODO: If we ever support freeing all the backend objects without deleting the object, we'll
+    // need to add a hasAnyRefs() check here.
     delete this;
+}
+
+bool Resource::isPurgeable() const {
+    return !this->hasAnyRefs();
 }
 
 } // namespace skgpu
