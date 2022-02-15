@@ -14,11 +14,32 @@ if (skia_use_system_libjpeg_turbo) {
     libs = [ "jpeg" ]
   }
 } else {
+  action("patch_ubsan_issue") {
+    script = "patch.py"
+    file = "externals/libjpeg-turbo/simd/arm/aarch64/jchuff-neon"
+    src = "../$file.c"
+    dst = "../$file.patched.c"
+    find =    "unsigned int diff = (unsigned int)(vgetq_lane_u16(row0_diff, 0) << lz) >> lz;"
+    replace = "unsigned int diff = ((unsigned int)vgetq_lane_u16(row0_diff, 0) << lz) >> lz;"
+    sources = [ src ]
+    # The file uses a complex releative include scheme with multiple headers of the same name.
+    # To build this file in the target output directory all includes would need to be patched.
+    # Instead hack the output to be in the same directory as the input.
+    outputs = [ "$target_out_dir/" + rebase_path(dst, target_out_dir) ]
+    args = [
+      rebase_path(src),
+      rebase_path(dst),
+      find,
+      replace,
+    ]
+  }
   third_party("libjpeg") {
     public_include_dirs = [
       ".",
       "../externals/libjpeg-turbo",
     ]
+
+    deps = [ ":patch_ubsan_issue" ]
 
     defines = [
       "TURBO_FOR_WINDOWS",
@@ -108,7 +129,8 @@ if (skia_use_system_libjpeg_turbo) {
         ]
       } else if (current_cpu == "arm64") {
         sources += [
-          "../externals/libjpeg-turbo/simd/arm/aarch64/jchuff-neon.c",
+          #"../externals/libjpeg-turbo/simd/arm/aarch64/jchuff-neon.c",
+          "../externals/libjpeg-turbo/simd/arm/aarch64/jchuff-neon.patched.c",
           "../externals/libjpeg-turbo/simd/arm/aarch64/jsimd.c",
         ]
       }
