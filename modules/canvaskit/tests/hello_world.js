@@ -15,5 +15,9 @@ describe('The test harness', () => {
            const r = CanvasKit.LTRBRect(1, 2, 3, 4);
            expect(r.constructor.name).toEqual('Float32Array');
         });
-    })
+    });
+
+    it('can make a successful POST request to the gold server', () => {
+        expect("do not know what port to use for POSTING").toBeFalsy();
+    });
 })
