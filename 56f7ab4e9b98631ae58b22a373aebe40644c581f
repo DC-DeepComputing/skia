@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4f8b7594_3385b7d5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-02-15T16:54:08Z",
+      "side": 1,
+      "message": "CoreText here makes more obvious the issue with how to handle alpha in the glyph fill color. On the other backends we\u0027re currently using whatever is on the paint as the fill color, including the alpha. COLR palette entries may have alpha themselves, so it seems fine for the current color to also have alpha. However, the alpha on the paint will also be applied to the whole glyph when it is composited. These are two possibly distinct alphas. We\u0027re essentially overriding the paint\u0027s color with a shader that looks like a glyph, but that doesn\u0027t override the alpha of the paint.\n\nI don\u0027t think we need to make everything consistent right now, but will need to think about this.",
+      "revId": "56f7ab4e9b98631ae58b22a373aebe40644c581f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
