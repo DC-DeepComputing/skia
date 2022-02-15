@@ -16,6 +16,23 @@
       "message": "Lots of thoughts on long term plan of sksl generation/glue for graphite, so bringing Brian in again. It may be worth VC\u0027ing about.\n\nSorry about formatting in my one mega-comment. Gerrit was not figuring out how to do nested bullet points",
       "revId": "3adaa25f8b8aa9a699873f8e98e4d1f8136bfc07",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "59401d10_ffc163bf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-15T13:52:48Z",
+      "side": 1,
+      "message": "LGTM, given our meeting yesterday and where this sits in terms of long term plans. This gets the ball moving and isn\u0027t incompatible or difficult to adjust to the more general-purpose solutions that need more development/planning.",
+      "revId": "3adaa25f8b8aa9a699873f8e98e4d1f8136bfc07",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
