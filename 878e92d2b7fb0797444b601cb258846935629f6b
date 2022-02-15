@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d4f0585a_c4761b78",
+        "filename": "src/core/SkKeyHelpers.cpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 597,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-15T14:02:19Z",
+      "side": 1,
+      "message": "cleanup?",
+      "range": {
+        "startLine": 597,
+        "startChar": 0,
+        "endLine": 597,
+        "endChar": 54
+      },
+      "revId": "878e92d2b7fb0797444b601cb258846935629f6b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2108f17a_2b739c8d",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 306,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-15T14:02:19Z",
+      "side": 1,
+      "message": "The GPU sksl include (src/sksl/sksl_gpu.sksl) has functions like `blend_dst` and `blend_src_over` for all the modes. I\u0027m not sure if we need to do something on the backend to make sure this is available to graphite\u0027s shaders still, but it seems useful to lean on that, e.g.\n\n   switch (mode) {\n      case kClear: return blend_clear(src, dst);\n      ...\n   }",
+      "range": {
+        "startLine": 292,
+        "startChar": 17,
+        "endLine": 306,
+        "endChar": 63
+      },
+      "revId": "878e92d2b7fb0797444b601cb258846935629f6b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
