@@ -14,10 +14,44 @@ if (skia_use_system_libjpeg_turbo) {
     libs = [ "jpeg" ]
   }
 } else {
+  copy("patch_ubsan_issue_shift") {
+    file = "simd/arm/aarch64/jchuff-neon.patched.c"
+    src = "$file"
+    dst = "../externals/libjpeg-turbo/$file"
+    sources = [ src ]
+    # The file uses a complex releative include scheme with multiple headers of the same name.
+    # To build this file in the target output directory all includes would need to be patched.
+    # Instead hack the output to be in the same directory as the input.
+    outputs = [ "$target_out_dir/" + rebase_path(dst, target_out_dir) ]
+  }
+  action("patch_ubsan_issue_align") {
+    script = "patch.py"
+    file = "externals/libjpeg-turbo/simd/arm/jchuff.h"
+    src = "../$file"
+    dst = "../$file"
+    sources = [ src ]
+    # The file uses a complex releative include scheme with multiple headers of the same name.
+    # To build this file in the target output directory all includes would need to be patched.
+    # Instead hack the output to be in the same directory as the input.
+    #outputs = [ "$target_out_dir/" + rebase_path(dst, target_out_dir) ]
+    # Also need to modify this in place, so just lie and always try to patch.
+    outputs = [ "$target_out_dir/" + rebase_path(dst, target_out_dir) + ".stamp" ]
+    args = [
+      rebase_path(src),
+      rebase_path(dst),
+      "*((uint64_t *)buffer) = BUILTIN_BSWAP64(put_buffer); \\",
+      "uint64_t reverse = BUILTIN_BSWAP64(put_buffer); memcpy(buffer, &reverse, BIT_BUF_SIZE); \\",
+    ]
+  }
   third_party("libjpeg") {
     public_include_dirs = [
       ".",
       "../externals/libjpeg-turbo",
+    ]
+
+    deps = [
+      ":patch_ubsan_issue_shift",
+      ":patch_ubsan_issue_align",
     ]
 
     defines = [
@@ -108,7 +142,8 @@ if (skia_use_system_libjpeg_turbo) {
         ]
       } else if (current_cpu == "arm64") {
         sources += [
-          "../externals/libjpeg-turbo/simd/arm/aarch64/jchuff-neon.c",
+          #"../externals/libjpeg-turbo/simd/arm/aarch64/jchuff-neon.c",
+          "../externals/libjpeg-turbo/simd/arm/aarch64/jchuff-neon.patched.c",
           "../externals/libjpeg-turbo/simd/arm/aarch64/jsimd.c",
         ]
       }
