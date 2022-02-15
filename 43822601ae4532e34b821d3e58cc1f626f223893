@@ -1,0 +1,320 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5424ce28_2e970473",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 17
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-15T14:53:27Z",
+      "side": 1,
+      "message": "I like the builder and how it cleans up the key building code, a few minor nits/clarifications and then a larger question about dropping unique_ptr around the key type.",
+      "revId": "43822601ae4532e34b821d3e58cc1f626f223893",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "39908407_5db71836",
+        "filename": "src/core/SkBuiltInCodeSnippetID.h",
+        "patchSetId": 17
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-15T14:53:27Z",
+      "side": 1,
+      "message": "Can we get rid of this? The key builder already tracks validity, so we could just have snap() fail if it\u0027s invalid. Then there\u0027s no need to write bytes to a key\u0027s buffer that we know is bad.",
+      "range": {
+        "startLine": 19,
+        "startChar": 4,
+        "endLine": 19,
+        "endChar": 10
+      },
+      "revId": "43822601ae4532e34b821d3e58cc1f626f223893",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f0372af1_ea92d850",
+        "filename": "src/core/SkPaintParamsKey.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-15T14:53:27Z",
+      "side": 1,
+      "message": "just return and have endBlock() not fail popping a stack if it\u0027s already invalid?",
+      "range": {
+        "startLine": 26,
+        "startChar": 76,
+        "endLine": 26,
+        "endChar": 91
+      },
+      "revId": "43822601ae4532e34b821d3e58cc1f626f223893",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c8aa1909_32057f46",
+        "filename": "src/core/SkPaintParamsKey.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-15T14:53:27Z",
+      "side": 1,
+      "message": "SkTo\u003cuint8_t\u003e does the cast and the assert",
+      "range": {
+        "startLine": 33,
+        "startChar": 18,
+        "endLine": 33,
+        "endChar": 41
+      },
+      "revId": "43822601ae4532e34b821d3e58cc1f626f223893",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8b7f90e1_b05c4272",
+        "filename": "src/core/SkPaintParamsKey.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-15T14:53:27Z",
+      "side": 1,
+      "message": "matched? or that byte will be re-written in endBlock?",
+      "range": {
+        "startLine": 34,
+        "startChar": 43,
+        "endLine": 34,
+        "endChar": 51
+      },
+      "revId": "43822601ae4532e34b821d3e58cc1f626f223893",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c1ec1467_ef1fc123",
+        "filename": "src/core/SkPaintParamsKey.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-15T14:53:27Z",
+      "side": 1,
+      "message": "wdyt about having an `int offset \u003d fData.size();` right before we reserve and add bytes? I find that reads clearer that we\u0027re storing the offset to the beginning of what we\u0027re going to write vs. subtracting from where we ended up",
+      "range": {
+        "startLine": 37,
+        "startChar": 22,
+        "endLine": 37,
+        "endChar": 85
+      },
+      "revId": "43822601ae4532e34b821d3e58cc1f626f223893",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8e0b5181_9aa73375",
+        "filename": "src/core/SkPaintParamsKey.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-15T14:53:27Z",
+      "side": 1,
+      "message": "I think we can just return again here, if we\u0027re invalid we shouldn\u0027t crash the key building code but we also shouldn\u0027t try to keep going. As long as we don\u0027t expose the invalid fData to anyone that should be fine.",
+      "range": {
+        "startLine": 56,
+        "startChar": 8,
+        "endLine": 56,
+        "endChar": 46
+      },
+      "revId": "43822601ae4532e34b821d3e58cc1f626f223893",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "abbb1ec9_7fbe1b39",
+        "filename": "src/core/SkPaintParamsKey.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-15T14:53:27Z",
+      "side": 1,
+      "message": "just return null? Alternatively, could we have a SkPaintParamsKey with 0 bytes (vs. 1 block with kError ID and 0 data bytes) be the signal for an invalid key.\n\nShould also reset fStack since that may be why we got here (or we do that in the earlier if check?)",
+      "range": {
+        "startLine": 70,
+        "startChar": 8,
+        "endLine": 72,
+        "endChar": 45
+      },
+      "revId": "43822601ae4532e34b821d3e58cc1f626f223893",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d46997dd_eb0c02bc",
+        "filename": "src/core/SkPaintParamsKey.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-15T14:53:27Z",
+      "side": 1,
+      "message": "see below, but std::move(fData) should be possible and then we can tell easily that fData is being reset by the snap.",
+      "range": {
+        "startLine": 75,
+        "startChar": 67,
+        "endLine": 75,
+        "endChar": 72
+      },
+      "revId": "43822601ae4532e34b821d3e58cc1f626f223893",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1acb29b7_4f1572ff",
+        "filename": "src/core/SkPaintParamsKey.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-15T14:53:27Z",
+      "side": 1,
+      "message": "SkTArray supports the move operator so we could have this take a SkTArray\u0026\u0026 and use std::move in snap().",
+      "range": {
+        "startLine": 79,
+        "startChar": 34,
+        "endLine": 79,
+        "endChar": 64
+      },
+      "revId": "43822601ae4532e34b821d3e58cc1f626f223893",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "66d6fab8_17092ed3",
+        "filename": "src/core/SkPaintParamsKey.h",
+        "patchSetId": 17
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-15T14:53:27Z",
+      "side": 1,
+      "message": "nit: can we have our includes in one block first, newline, and then the \u003c\u003e includes?",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 16,
+        "endChar": 17
+      },
+      "revId": "43822601ae4532e34b821d3e58cc1f626f223893",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9a052943_943c5c88",
+        "filename": "src/core/SkPaintParamsKey.h",
+        "patchSetId": 17
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-15T14:53:27Z",
+      "side": 1,
+      "message": "I don\u0027t think we need to make SkPaintParamsKey wrapped in a unique_ptr here. SkTArray\u003cuint8_t\u003e already gives us one step of indirection and supports variable size. We can return an invalid key that has 0 size in its data array if the builder is invalid.\n\nThe biggest reason I\u0027m pushing for this is that in the tight loop of DrawPass::Make we\u0027re going to hopefully reuse the same builder and construct a key, query, and continue. Ideally we can then add a snapView() or similar to the builder that wraps its data buffer as a key w/o doing any copying or malloc. Copying would only happen in findOrCreate() if we needed to insert an entry. Otherwise once we have the uniqueID we can reset the builder and no longer need the key view.\n\nWhile we\u0027re not ready for that yet, adding unique_ptr and then pulling it back just seems like extra work when we can have snap() report failures in other ways.",
+      "range": {
+        "startLine": 46,
+        "startChar": 4,
+        "endLine": 46,
+        "endChar": 37
+      },
+      "revId": "43822601ae4532e34b821d3e58cc1f626f223893",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b580761d_c2e6cbe8",
+        "filename": "src/core/SkPaintParamsKey.h",
+        "patchSetId": 17
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-15T14:53:27Z",
+      "side": 1,
+      "message": "The only use I saw was to query the max code snippet ID. Do we need to store the dictionary for future things? And if we do, can it be const?",
+      "range": {
+        "startLine": 61,
+        "startChar": 4,
+        "endLine": 61,
+        "endChar": 33
+      },
+      "revId": "43822601ae4532e34b821d3e58cc1f626f223893",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ffdd8752_3c04d006",
+        "filename": "tests/graphite/KeyTest.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-15T14:53:27Z",
+      "side": 1,
+      "message": "here and the invalid code snippet ID case, look like they should be invalid keys. Testing key size being exactly a single block header is a little obfuscating. Should create_key/builder.snap() return a null key when it\u0027s invalid? Or should we be checking the builtin id \u003d\u003d kError?",
+      "range": {
+        "startLine": 57,
+        "startChar": 30,
+        "endLine": 57,
+        "endChar": 93
+      },
+      "revId": "43822601ae4532e34b821d3e58cc1f626f223893",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
