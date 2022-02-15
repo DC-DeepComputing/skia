@@ -98,25 +98,26 @@ std::string SkShaderInfo::toSkSL() const {
 }
 #endif
 
-SkShaderCodeDictionary::Entry* SkShaderCodeDictionary::makeEntry(const SkPaintParamsKey& key) {
-    return fArena.make([&](void *ptr) { return new(ptr) Entry(key); });
+SkShaderCodeDictionary::Entry* SkShaderCodeDictionary::makeEntry(
+        std::unique_ptr<SkPaintParamsKey> key) {
+    return fArena.make([&](void *ptr) { return new(ptr) Entry(std::move(key)); });
 }
 
-size_t SkShaderCodeDictionary::Hash::operator()(const SkPaintParamsKey& key) const {
-    return SkOpts::hash_fn(key.data(), key.sizeInBytes(), 0);
+size_t SkShaderCodeDictionary::Hash::operator()(const SkPaintParamsKey* key) const {
+    return SkOpts::hash_fn(key->data(), key->sizeInBytes(), 0);
 }
 
 const SkShaderCodeDictionary::Entry* SkShaderCodeDictionary::findOrCreate(
-        const SkPaintParamsKey& key) {
+        std::unique_ptr<SkPaintParamsKey> key) {
     SkAutoSpinlock lock{fSpinLock};
 
-    auto iter = fHash.find(key);
+    auto iter = fHash.find(key.get());
     if (iter != fHash.end()) {
         SkASSERT(fEntryVector[iter->second->uniqueID().asUInt()] == iter->second);
         return iter->second;
     }
 
-    Entry* newEntry = this->makeEntry(key);
+    Entry* newEntry = this->makeEntry(std::move(key));
     newEntry->setUniqueID(fEntryVector.size());
     fHash.insert(std::make_pair(newEntry->paintParamsKey(), newEntry));
     fEntryVector.push_back(newEntry);
@@ -139,18 +140,24 @@ const SkShaderCodeDictionary::Entry* SkShaderCodeDictionary::lookup(
 }
 
 SkSpan<const SkUniform> SkShaderCodeDictionary::getUniforms(SkBuiltInCodeSnippetID id) const {
-    return fCodeSnippets[(int) id].fUniforms;
+    return fBuiltInCodeSnippets[(int) id].fUniforms;
 }
 
 const SkShaderInfo::SnippetEntry* SkShaderCodeDictionary::getEntry(SkBuiltInCodeSnippetID id) const {
-    return &fCodeSnippets[(int) id];
+    return &fBuiltInCodeSnippets[(int) id];
 }
 
 void SkShaderCodeDictionary::getShaderInfo(SkUniquePaintParamsID uniqueID, SkShaderInfo* info) {
     auto entry = this->lookup(uniqueID);
 
-    entry->paintParamsKey().toShaderInfo(this, info);
+    entry->paintParamsKey()->toShaderInfo(this, info);
 }
+
+int SkShaderCodeDictionary::addUserDefinedSnippet() {
+    fUserDefinedCodeSnippets.push_back({});
+    return kBuiltInCodeSnippetIDCount + fUserDefinedCodeSnippets.size() - 1;
+}
+
 //--------------------------------------------------------------------------------------------------
 namespace {
 
@@ -260,47 +267,53 @@ SkShaderCodeDictionary::SkShaderCodeDictionary() {
     // The 0th index is reserved as invalid
     fEntryVector.push_back(nullptr);
 
-    fCodeSnippets[(int) SkBuiltInCodeSnippetID::kDepthStencilOnlyDraw] = {
+    fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kDepthStencilOnlyDraw] = {
             { nullptr, kNumErrorUniforms },
             kErrorName, kErrorSkSL,
             GenerateDefaultGlueCode,
     };
-    fCodeSnippets[(int) SkBuiltInCodeSnippetID::kSolidColorShader] = {
+    fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kError] = {
+            { nullptr, kNumErrorUniforms },
+            kErrorName, kErrorSkSL,
+            GenerateDefaultGlueCode,
+    };
+    fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kSolidColorShader] = {
             SkMakeSpan(kSolidShaderUniforms, kNumSolidShaderUniforms),
             kSolidShaderName, kSolidShaderSkSL,
             GenerateDefaultGlueCode,
     };
-    fCodeSnippets[(int) SkBuiltInCodeSnippetID::kLinearGradientShader] = {
+    fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kLinearGradientShader] = {
             SkMakeSpan(kGradientUniforms, kNumGradientUniforms),
             kLinearGradient4Name, kLinearGradient4SkSL,
             GenerateDefaultGlueCode,
     };
-    fCodeSnippets[(int) SkBuiltInCodeSnippetID::kRadialGradientShader] = {
+    fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kRadialGradientShader] = {
             SkMakeSpan(kGradientUniforms, kNumGradientUniforms),
             kLinearGradient4Name, kLinearGradient4SkSL,
             GenerateDefaultGlueCode,
     };
-    fCodeSnippets[(int) SkBuiltInCodeSnippetID::kSweepGradientShader] = {
+    fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kSweepGradientShader] = {
             SkMakeSpan(kGradientUniforms, kNumGradientUniforms),
             kLinearGradient4Name, kLinearGradient4SkSL,
             GenerateDefaultGlueCode,
     };
-    fCodeSnippets[(int) SkBuiltInCodeSnippetID::kConicalGradientShader] = {
+    fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kConicalGradientShader] = {
             SkMakeSpan(kGradientUniforms, kNumGradientUniforms),
             kLinearGradient4Name, kLinearGradient4SkSL,
             GenerateDefaultGlueCode,
     };
-    fCodeSnippets[(int) SkBuiltInCodeSnippetID::kImageShader] = {
+
+    fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kImageShader] = {
             { nullptr, kNumImageShaderUniforms },
             kImageShaderName, kImageShaderSkSL,
             GenerateDefaultGlueCode,
     };
-    fCodeSnippets[(int) SkBuiltInCodeSnippetID::kBlendShader] = {
+    fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kBlendShader] = {
             { nullptr, kNumErrorUniforms },
             kErrorName, kErrorSkSL,
             GenerateDefaultGlueCode,
     };
-    fCodeSnippets[(int) SkBuiltInCodeSnippetID::kSimpleBlendMode] = {
+    fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kSimpleBlendMode] = {
             { nullptr, kNumErrorUniforms },
             kErrorName, kErrorSkSL,
             GenerateDefaultGlueCode,
