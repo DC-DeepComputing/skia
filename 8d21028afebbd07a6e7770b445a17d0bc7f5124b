@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c37237b3_220863bb",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 853,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-15T18:22:08Z",
+      "side": 1,
+      "message": "this is the key fix for the fuzzer issue. Both src and dst already have valid, invertible matrices for fGlobalToDevice and fDeviceToGlobal.\n\nsrc-\u003egetRelativeTransform(*dst) computes (dst-\u003efGlobalToDevice * src-\u003efDeviceToGlobal).\n\nThe old code would then convert this to an SkMatrix and invert it, failing for this fuzzer bug because the product of the two matrices was no longer invertible. However, mathematically, the inverse is equivalent to \n    (dst-\u003efGlobalToDevice * src-\u003efDeviceToGlobal)^-1\n    src-\u003efDeviceToGlobal^-1 * dst-\u003efGlobalToDevice^-1\n    src-\u003efGlobalToDevice * dst-\u003efDeviceToGlobal \n    \nThis lets us do something that is approximately correct and avoid a not-so-useful assert.",
+      "range": {
+        "startLine": 853,
+        "startChar": 32,
+        "endLine": 853,
+        "endChar": 64
+      },
+      "revId": "8d21028afebbd07a6e7770b445a17d0bc7f5124b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
