@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "a1e6f0b6_4f421746",
+        "filename": "src/gpu/text/GrTextBlob.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 2729,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-02-15T21:58:11Z",
+      "side": 1,
+      "message": "Two things: Seems like we should check is the buffer.isValid() after we\u0027ve done all of our reading, and return nullptr if not. Related to that: Are the two failure conditions here (empty bounds and no sub-runs) indicative of a corrupted buffer? If so, write these like:\n\n  if (!buffer.validate(subRunCount !\u003d 0)) { return nullptr; }\n  \nWhich will also flag the buffer as bad for the original creator (and any subsequent users).",
+      "revId": "448ae9b479842523623be8d11a180c1ff29918ae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "cee86920_794bbdbb",
