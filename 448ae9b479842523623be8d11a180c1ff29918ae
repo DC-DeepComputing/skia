@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cee86920_794bbdbb",
+        "filename": "src/gpu/text/GrTextBlob.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 2732,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-02-15T21:51:10Z",
+      "side": 1,
+      "message": "Add this size of slug in here.",
+      "range": {
+        "startLine": 2732,
+        "startChar": 42,
+        "endLine": 2732,
+        "endChar": 54
+      },
+      "revId": "448ae9b479842523623be8d11a180c1ff29918ae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

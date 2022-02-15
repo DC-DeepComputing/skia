@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "58b2caac_f113f8bd",
+        "filename": "src/gpu/text/GrTextBlob.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 2668,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-02-15T21:51:10Z",
+      "side": 0,
+      "message": "Adding the size of Slug in at this point complicated the logic.",
+      "range": {
+        "startLine": 2668,
+        "startChar": 49,
+        "endLine": 2668,
+        "endChar": 61
+      },
+      "revId": "3ef285973ebf7e21e28331cf4f40aed02cfbb527",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
