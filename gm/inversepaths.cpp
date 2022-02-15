@@ -7,6 +7,7 @@
 
 #include "gm/gm.h"
 #include "include/core/SkCanvas.h"
+#include "include/core/SkMaskFilter.h"
 #include "include/core/SkPaint.h"
 #include "include/core/SkPath.h"
 #include "include/core/SkPathEffect.h"
@@ -15,6 +16,7 @@
 #include "include/core/SkScalar.h"
 #include "include/core/SkTypes.h"
 #include "include/effects/SkDashPathEffect.h"
+#include "include/effects/SkImageFilters.h"
 
 #include <utility>
 
@@ -134,4 +136,35 @@ DEF_SIMPLE_GM(inverse_paths, canvas, 800, 1200) {
             canvas->translate(0, dy);
         }
     }
+}
+
+DEF_SIMPLE_GM(inverse_fill_filters, canvas, 384, 128) {
+    auto draw = [canvas](const SkPaint& paint) {
+        SkPath path = SkPath::Circle(65.f, 65.f, 30.f);
+        path.setFillType(SkPathFillType::kInverseWinding);
+
+        canvas->save();
+        canvas->clipRect({0, 0, 128, 128});
+        canvas->drawPath(path, paint);
+        canvas->restore();
+
+        SkPaint stroke;
+        stroke.setStyle(SkPaint::kStroke_Style);
+        stroke.setColor(SK_ColorWHITE);
+        canvas->drawRect({0, 0, 128, 128}, stroke);
+    };
+
+    SkPaint paint;
+    paint.setAntiAlias(true);
+
+    draw(paint);
+
+    canvas->translate(128, 0);
+    paint.setImageFilter(SkImageFilters::Blur(5.f, 5.f, nullptr));
+    draw(paint);
+
+    canvas->translate(128, 0);
+    paint.setImageFilter(nullptr);
+    paint.setMaskFilter(SkMaskFilter::MakeBlur(kNormal_SkBlurStyle, 5));
+    draw(paint);
 }
