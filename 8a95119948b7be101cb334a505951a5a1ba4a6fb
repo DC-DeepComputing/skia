@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e1cc9c42_ff5d43c1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-15T17:31:19Z",
+      "side": 1,
+      "message": "PS2-\u003ePS3 shows the bug fixes. PS1 and PS2 just define the GMs, so gold on ps1+2 show what the GMs look like with the incorrect filtering. PS3 shows the correct results.",
+      "revId": "8a95119948b7be101cb334a505951a5a1ba4a6fb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
