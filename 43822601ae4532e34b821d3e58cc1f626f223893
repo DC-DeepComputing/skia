@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "35186a1d_0d1eda4c",
+        "filename": "src/core/SkBuiltInCodeSnippetID.h",
+        "patchSetId": 17
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-02-15T20:46:33Z",
+      "side": 1,
+      "message": "Well - I was leaving this be for now. I think the question is what do we want to have happen on key creation failure. By filling in the failed key with the error shader we\u0027ll draw some error color. If we fail the snap then, presumably, we would drop the draw.",
+      "parentUuid": "39908407_5db71836",
+      "range": {
+        "startLine": 19,
+        "startChar": 4,
+        "endLine": 19,
+        "endChar": 10
+      },
+      "revId": "43822601ae4532e34b821d3e58cc1f626f223893",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f0372af1_ea92d850",
         "filename": "src/core/SkPaintParamsKey.cpp",
         "patchSetId": 17
@@ -54,6 +78,30 @@
       "writtenOn": "2022-02-15T14:53:27Z",
       "side": 1,
       "message": "just return and have endBlock() not fail popping a stack if it\u0027s already invalid?",
+      "range": {
+        "startLine": 26,
+        "startChar": 76,
+        "endLine": 26,
+        "endChar": 91
+      },
+      "revId": "43822601ae4532e34b821d3e58cc1f626f223893",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "24def60c_a2951a50",
+        "filename": "src/core/SkPaintParamsKey.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-02-15T20:46:33Z",
+      "side": 1,
+      "message": "I\u0027ve revised the error handling so once a builder is marked as invalid every entry point early exits and removed all the fall throughs.",
+      "parentUuid": "f0372af1_ea92d850",
       "range": {
         "startLine": 26,
         "startChar": 76,
@@ -87,6 +135,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c3894462_5e6efc18",
+        "filename": "src/core/SkPaintParamsKey.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-02-15T20:46:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c8aa1909_32057f46",
+      "range": {
+        "startLine": 33,
+        "startChar": 18,
+        "endLine": 33,
+        "endChar": 41
+      },
+      "revId": "43822601ae4532e34b821d3e58cc1f626f223893",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8b7f90e1_b05c4272",
@@ -100,6 +172,30 @@
       "writtenOn": "2022-02-15T14:53:27Z",
       "side": 1,
       "message": "matched? or that byte will be re-written in endBlock?",
+      "range": {
+        "startLine": 34,
+        "startChar": 43,
+        "endLine": 34,
+        "endChar": 51
+      },
+      "revId": "43822601ae4532e34b821d3e58cc1f626f223893",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4f9f070f_fba0bbbd",
+        "filename": "src/core/SkPaintParamsKey.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-02-15T20:46:33Z",
+      "side": 1,
+      "message": "The byte will be re-written",
+      "parentUuid": "8b7f90e1_b05c4272",
       "range": {
         "startLine": 34,
         "startChar": 43,
@@ -133,6 +229,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1ac39cf4_5301e0a9",
+        "filename": "src/core/SkPaintParamsKey.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-02-15T20:46:33Z",
+      "side": 1,
+      "message": "Done - although I just moved the push_back to right after the reserve_back call.",
+      "parentUuid": "c1ec1467_ef1fc123",
+      "range": {
+        "startLine": 37,
+        "startChar": 22,
+        "endLine": 37,
+        "endChar": 85
+      },
+      "revId": "43822601ae4532e34b821d3e58cc1f626f223893",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8e0b5181_9aa73375",
@@ -146,6 +266,30 @@
       "writtenOn": "2022-02-15T14:53:27Z",
       "side": 1,
       "message": "I think we can just return again here, if we\u0027re invalid we shouldn\u0027t crash the key building code but we also shouldn\u0027t try to keep going. As long as we don\u0027t expose the invalid fData to anyone that should be fine.",
+      "range": {
+        "startLine": 56,
+        "startChar": 8,
+        "endLine": 56,
+        "endChar": 46
+      },
+      "revId": "43822601ae4532e34b821d3e58cc1f626f223893",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e52bf6c1_03e6b87f",
+        "filename": "src/core/SkPaintParamsKey.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-02-15T20:46:33Z",
+      "side": 1,
+      "message": "As noted above, I\u0027ve revised how the error handling works.",
+      "parentUuid": "8e0b5181_9aa73375",
       "range": {
         "startLine": 56,
         "startChar": 8,
@@ -181,6 +325,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "477da31c_f37bf0c2",
+        "filename": "src/core/SkPaintParamsKey.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-02-15T20:46:33Z",
+      "side": 1,
+      "message": "I\u0027ve reset fStack but note that, as currently written, the builder isn\u0027t intended (and currently isn\u0027t) reused.",
+      "parentUuid": "abbb1ec9_7fbe1b39",
+      "range": {
+        "startLine": 70,
+        "startChar": 8,
+        "endLine": 72,
+        "endChar": 45
+      },
+      "revId": "43822601ae4532e34b821d3e58cc1f626f223893",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d46997dd_eb0c02bc",
         "filename": "src/core/SkPaintParamsKey.cpp",
         "patchSetId": 17
@@ -192,6 +360,30 @@
       "writtenOn": "2022-02-15T14:53:27Z",
       "side": 1,
       "message": "see below, but std::move(fData) should be possible and then we can tell easily that fData is being reset by the snap.",
+      "range": {
+        "startLine": 75,
+        "startChar": 67,
+        "endLine": 75,
+        "endChar": 72
+      },
+      "revId": "43822601ae4532e34b821d3e58cc1f626f223893",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f10a251e_766c7e79",
+        "filename": "src/core/SkPaintParamsKey.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-02-15T20:46:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d46997dd_eb0c02bc",
       "range": {
         "startLine": 75,
         "startChar": 67,
@@ -225,6 +417,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "730fb532_1b1e92e0",
+        "filename": "src/core/SkPaintParamsKey.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-02-15T20:46:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1acb29b7_4f1572ff",
+      "range": {
+        "startLine": 79,
+        "startChar": 34,
+        "endLine": 79,
+        "endChar": 64
+      },
+      "revId": "43822601ae4532e34b821d3e58cc1f626f223893",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "66d6fab8_17092ed3",
@@ -238,6 +454,30 @@
       "writtenOn": "2022-02-15T14:53:27Z",
       "side": 1,
       "message": "nit: can we have our includes in one block first, newline, and then the \u003c\u003e includes?",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 16,
+        "endChar": 17
+      },
+      "revId": "43822601ae4532e34b821d3e58cc1f626f223893",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d9bfe8c7_28da0602",
+        "filename": "src/core/SkPaintParamsKey.h",
+        "patchSetId": 17
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-02-15T20:46:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "66d6fab8_17092ed3",
       "range": {
         "startLine": 11,
         "startChar": 0,
@@ -284,6 +524,30 @@
       "writtenOn": "2022-02-15T14:53:27Z",
       "side": 1,
       "message": "The only use I saw was to query the max code snippet ID. Do we need to store the dictionary for future things? And if we do, can it be const?",
+      "range": {
+        "startLine": 61,
+        "startChar": 4,
+        "endLine": 61,
+        "endChar": 33
+      },
+      "revId": "43822601ae4532e34b821d3e58cc1f626f223893",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0fcc94da_9737a2cb",
+        "filename": "src/core/SkPaintParamsKey.h",
+        "patchSetId": 17
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-02-15T20:46:33Z",
+      "side": 1,
+      "message": "In a follow-on CL we also use it to fetch the data-payload expectations for a code snippet but, even in that use case, const should be adequate.",
+      "parentUuid": "b580761d_c2e6cbe8",
       "range": {
         "startLine": 61,
         "startChar": 4,
