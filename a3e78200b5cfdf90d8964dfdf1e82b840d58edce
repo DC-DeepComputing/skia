@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4af5c76f_2877da8b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-02-15T15:24:56Z",
+      "side": 1,
+      "message": "Seems fine to me. At this point it\u0027s just making sure that it doesn\u0027t break any existing builds, which is more ad-hoc than anything else.",
+      "revId": "a3e78200b5cfdf90d8964dfdf1e82b840d58edce",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
