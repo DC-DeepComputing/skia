@@ -18,6 +18,16 @@
 #include "src/core/SkPaintParamsKey.h"
 #include "src/core/SkUniform.h"
 
+enum class DataPayloadType {
+    kByte,
+};
+
+struct SkDataPayloadInfo {
+    const char* fName;
+    DataPayloadType fType;
+    uint32_t fCount;
+};
+
 class SkShaderInfo {
 public:
     struct SnippetEntry;
@@ -33,6 +43,7 @@ public:
         const char* fStaticSkSL;
         GenerateGlueCodeForEntry fGlueCodeGenerator;
         int fNumChildren;
+        SkSpan<const SkDataPayloadInfo> fDataPayloadExpectations;
     };
 
     void add(const SnippetEntry& entry) {
@@ -65,12 +76,12 @@ public:
             SkASSERT(fUniqueID.isValid());
             return fUniqueID;
         }
-        const SkPaintParamsKey& paintParamsKey() const { return fPaintParamsKey; }
+        const SkPaintParamsKey* paintParamsKey() const { return fKey.get(); }
 
     private:
         friend class SkShaderCodeDictionary;
 
-        Entry(const SkPaintParamsKey& paintParamsKey) : fPaintParamsKey(paintParamsKey) {}
+        Entry(std::unique_ptr<SkPaintParamsKey> key) : fKey(std::move(key)) {}
 
         void setUniqueID(uint32_t newID) {
             SkASSERT(!fUniqueID.isValid());
@@ -78,31 +89,42 @@ public:
         }
 
         SkUniquePaintParamsID fUniqueID;  // fixed-size (uint32_t) unique ID assigned to a key
-        SkPaintParamsKey fPaintParamsKey; // variable-length paint key descriptor
+        std::unique_ptr<SkPaintParamsKey> fKey; // variable-length paint key descriptor
     };
 
-    const Entry* findOrCreate(const SkPaintParamsKey&) SK_EXCLUDES(fSpinLock);
+    const Entry* findOrCreate(std::unique_ptr<SkPaintParamsKey>) SK_EXCLUDES(fSpinLock);
 
     const Entry* lookup(SkUniquePaintParamsID) const SK_EXCLUDES(fSpinLock);
 
     SkSpan<const SkUniform> getUniforms(SkBuiltInCodeSnippetID) const;
+    SkSpan<const SkDataPayloadInfo> getDataPayloadExpectations(int codeSnippetID) const;
     const SkShaderInfo::SnippetEntry* getEntry(SkBuiltInCodeSnippetID) const;
 
     void getShaderInfo(SkUniquePaintParamsID, SkShaderInfo*);
 
+    int maxCodeSnippetID() const {
+        return static_cast<int>(SkBuiltInCodeSnippetID::kLast) + fUserDefinedCodeSnippets.size();
+    }
+
+    // TODO: this is still experimental but, most likely, it will need to be made thread-safe
+    // It returns the code snippet ID to use to identify the supplied user-defined code
+    // TODO: add hooks for user to actually provide code.
+    int addUserDefinedSnippet(SkSpan<const SkDataPayloadInfo> dataPayloadExpectations);
+
 private:
-    Entry* makeEntry(const SkPaintParamsKey&);
+    Entry* makeEntry(std::unique_ptr<SkPaintParamsKey>);
 
     struct Hash {
-        size_t operator()(const SkPaintParamsKey&) const;
+        size_t operator()(const SkPaintParamsKey*) const;
     };
 
-    std::array<SkShaderInfo::SnippetEntry, kBuiltInCodeSnippetIDCount> fCodeSnippets;
+    std::array<SkShaderInfo::SnippetEntry, kBuiltInCodeSnippetIDCount> fBuiltInCodeSnippets;
+    std::vector<SkShaderInfo::SnippetEntry> fUserDefinedCodeSnippets;
 
     // TODO: can we do something better given this should have write-seldom/read-often behavior?
     mutable SkSpinlock fSpinLock;
 
-    std::unordered_map<SkPaintParamsKey, Entry*, Hash> fHash SK_GUARDED_BY(fSpinLock);
+    std::unordered_map<const SkPaintParamsKey*, Entry*, Hash> fHash SK_GUARDED_BY(fSpinLock);
     std::vector<Entry*> fEntryVector SK_GUARDED_BY(fSpinLock);
 
     SkArenaAlloc fArena{256};
