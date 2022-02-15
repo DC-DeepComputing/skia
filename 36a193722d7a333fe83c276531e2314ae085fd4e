@@ -1,4 +1,21 @@
 {
-  "comments": [],
-  "submitRequirementResults": []
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "96a858ff_9f5c64cc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-15T18:59:30Z",
+      "side": 1,
+      "message": "chrome canary failure appears unrelated so submitting.",
+      "revId": "36a193722d7a333fe83c276531e2314ae085fd4e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
 }
