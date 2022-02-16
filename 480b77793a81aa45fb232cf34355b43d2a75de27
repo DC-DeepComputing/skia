@@ -70,6 +70,30 @@
       },
       "revId": "480b77793a81aa45fb232cf34355b43d2a75de27",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "397493f3_8d8c8abe",
+        "filename": "experimental/graphite/src/Resource.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-02-16T20:19:20Z",
+      "side": 1,
+      "message": "Sure but I don\u0027t care about the ordering between threads. All I care about is only one thread gets a return value of 1. Which thread that is doesn\u0027t matter. So in general acq_rel is fine here.\n\nBut thinking about this more, the fact that this call is wrapped in a mutex, I\u0027m pretty sure I don\u0027t need any ordering here and could just use relaxed. The mutex already guarantees that the unrefs will not conflict in their decrementing.",
+      "parentUuid": "9e42bd67_2f6ce54d",
+      "range": {
+        "startLine": 58,
+        "startChar": 53,
+        "endLine": 58,
+        "endChar": 73
+      },
+      "revId": "480b77793a81aa45fb232cf34355b43d2a75de27",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
