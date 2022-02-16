@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3283aaa3_8d1204bb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-02-16T18:09:23Z",
+      "side": 1,
+      "message": "Moved out some changes into a separate CL and fixed code review notes",
+      "revId": "e8f073a8e36b8570f91579cc3c12b8fb1f4bb45c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

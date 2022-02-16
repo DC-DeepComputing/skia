@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "21822fca_0c679b2f",
+        "filename": "gn/skia.gni",
+        "patchSetId": 4
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-02-16T18:09:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8daf84ee_0088b73b",
+      "range": {
+        "startLine": 105,
+        "startChar": 2,
+        "endLine": 105,
+        "endChar": 23
+      },
+      "revId": "c30d598c18de934c94a3783cc6e9da5a859a7157",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "791c904b_8838a516",
@@ -58,6 +82,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "21d4c07b_da46ba31",
+        "filename": "src/core/SkBlitter.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 635,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-02-16T18:09:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "791c904b_8838a516",
+      "revId": "c30d598c18de934c94a3783cc6e9da5a859a7157",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dda6b4d9_32858280",
@@ -71,6 +113,24 @@
       "writtenOn": "2022-02-15T21:28:45Z",
       "side": 1,
       "message": "This code is also just fixing how the blitter selection works.",
+      "revId": "c30d598c18de934c94a3783cc6e9da5a859a7157",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7e2c0ca0_91a29370",
+        "filename": "src/core/SkBlitter_Sprite.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 203,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-02-16T18:09:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dda6b4d9_32858280",
       "revId": "c30d598c18de934c94a3783cc6e9da5a859a7157",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
