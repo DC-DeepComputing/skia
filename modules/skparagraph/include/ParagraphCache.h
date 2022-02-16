@@ -45,6 +45,8 @@ public:
 
     bool isPossiblyTextEditing(ParagraphImpl* paragraph);
 
+    uint32_t lastFound() { return fLastFound; }
+
  private:
 
     struct Entry;
@@ -63,6 +65,7 @@ public:
     SkLRUCache<ParagraphCacheKey, std::unique_ptr<Entry>, KeyHash> fLRUCacheMap;
     bool fCacheIsOn;
     ParagraphCacheValue* fLastCachedValue;
+    uint32_t fLastFound;
 
 #ifdef PARAGRAPH_CACHE_STATS
     int fTotalRequests;

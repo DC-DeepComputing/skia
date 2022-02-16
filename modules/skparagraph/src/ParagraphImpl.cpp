@@ -78,6 +78,7 @@ ParagraphImpl::ParagraphImpl(const SkString& text,
         , fOldWidth(0)
         , fOldHeight(0)
         , fUnicode(std::move(unicode))
+        , fUnique(0)
 {
     SkASSERT(fUnicode);
 }
@@ -110,6 +111,8 @@ int32_t ParagraphImpl::unresolvedGlyphs() {
 }
 
 void ParagraphImpl::layout(SkScalar rawWidth) {
+
+    serializeLayout(rawWidth);
 
     // TODO: This rounding is done to match Flutter tests. Must be removed...
     auto floorWidth = SkScalarFloorToScalar(rawWidth);
@@ -212,6 +215,8 @@ void ParagraphImpl::layout(SkScalar rawWidth) {
 }
 
 void ParagraphImpl::paint(SkCanvas* canvas, SkScalar x, SkScalar y) {
+
+    serializePaint(x, y);
 
     if (fParagraphStyle.getDrawOptions() == DrawOptions::kDirect) {
         // Paint the text without recording it
@@ -481,6 +486,7 @@ bool ParagraphImpl::shapeTextIntoEndlessLine() {
 
     // Check the font-resolved text against the cache
     if (fFontCollection->getParagraphCache()->findParagraph(this)) {
+        this->serializeParagraph(SerializingType::found);
         return true;
     }
 
@@ -505,9 +511,72 @@ bool ParagraphImpl::shapeTextIntoEndlessLine() {
         return false;
     } else {
         // Add the paragraph to the cache
-        fFontCollection->getParagraphCache()->updateParagraph(this);
+        if (fFontCollection->getParagraphCache()->updateParagraph(this)) {
+            this->serializeParagraph(SerializingType::added);
+        } else {
+            this->serializeParagraph(SerializingType::notFound);
+        }
         return true;
     }
+}
+
+void ParagraphImpl::serializeParagraph(SerializingType type) {
+    fUnique = fFontCollection->getParagraphCache()->lastFound();
+    if (type == SerializingType::added &&
+        gUniqueParagraphs.find(fUnique) != gUniqueParagraphs.end()) {
+        SkDebugf("----- %u\n", fUnique);
+        return;
+    } else if (type == SerializingType::found &&
+               gUniqueParagraphs.find(fUnique) == gUniqueParagraphs.end()) {
+        SkDebugf("!!!!! %u\n", fUnique);
+        return;
+    }
+    if (type == SerializingType::added) {
+        gUniqueParagraphs.emplace(fUnique);
+    }
+    const char* prefix = "<nothing>";
+    switch (type) {
+        case SerializingType::added: prefix = ">>>>"; break;
+        case SerializingType::found: prefix = "===="; break;
+        case SerializingType::notFound: prefix = "*****"; break;
+    }
+
+    auto text = fText;
+    if (fText.size() > 50) {
+        text = SkString(fText.c_str(), 50);
+        text.append("...");
+    }
+    SkDebugf("%s %u Paragraph '%s'\n", prefix, fUnique, text.c_str());
+}
+
+void ParagraphImpl::serializeLayout(SkScalar width) {
+    SkDebugf("---> %u Layout(%f)\n", fUnique, width);
+}
+void ParagraphImpl::serializePaint(SkScalar x, SkScalar y) {
+    SkDebugf("---> %u Paint(%f, %f)\n", fUnique, x, y);
+}
+void ParagraphImpl::serializeGetRectsForRange(unsigned start,
+                                              unsigned end,
+                                              RectHeightStyle rectHeightStyle,
+                                              RectWidthStyle rectWidthStyle) {
+    SkDebugf("---> %u GetRectsForRange(%d, %d, %d, %d)\n",
+             fUnique,
+             start,
+             end,
+             (int)rectHeightStyle,
+             (int)rectWidthStyle);
+}
+void ParagraphImpl::serializeGetRectsForPlaceholders() {
+    SkDebugf("---> %u GetRectsForPlaceholders()\n", fUnique);
+}
+void ParagraphImpl::serializeGetLineMetrics() {
+    SkDebugf("---> %u GetLineMetrics()\n", fUnique);
+}
+void ParagraphImpl::serializeGetGlyphPositionAtCoordinate(SkScalar dx, SkScalar dy) {
+    SkDebugf("---> %u GetGlyphPositionAtCoordinate(%f, %f)\n", fUnique, dx, dy);
+}
+void ParagraphImpl::serializeGetWordBoundary(unsigned offset) {
+    SkDebugf("---> %u GetWordBoundary(%d)\n", fUnique, offset);
 }
 
 void ParagraphImpl::breakShapedTextIntoLines(SkScalar maxWidth) {
@@ -660,6 +729,7 @@ std::vector<TextBox> ParagraphImpl::getRectsForRange(unsigned start,
                                                      unsigned end,
                                                      RectHeightStyle rectHeightStyle,
                                                      RectWidthStyle rectWidthStyle) {
+    serializeGetRectsForRange(start, end, rectHeightStyle, rectWidthStyle);
     std::vector<TextBox> results;
     if (fText.isEmpty()) {
         if (start == 0 && end > 0) {
@@ -724,33 +794,38 @@ std::vector<TextBox> ParagraphImpl::getRectsForRange(unsigned start,
 }
 
 std::vector<TextBox> ParagraphImpl::getRectsForPlaceholders() {
-  std::vector<TextBox> boxes;
-  if (fText.isEmpty()) {
+
+    serializeGetRectsForPlaceholders();
+
+    std::vector<TextBox> boxes;
+    if (fText.isEmpty()) {
        return boxes;
-  }
-  if (fPlaceholders.size() == 1) {
+    }
+    if (fPlaceholders.size() == 1) {
        // We always have one fake placeholder
        return boxes;
-  }
-  for (auto& line : fLines) {
+    }
+    for (auto& line : fLines) {
       line.getRectsForPlaceholders(boxes);
-  }
-  /*
-  SkDebugf("getRectsForPlaceholders('%s'): %d\n", fText.c_str(), boxes.size());
-  for (auto& r : boxes) {
+    }
+    /*
+    SkDebugf("getRectsForPlaceholders('%s'): %d\n", fText.c_str(), boxes.size());
+    for (auto& r : boxes) {
       r.rect.fLeft = littleRound(r.rect.fLeft);
       r.rect.fRight = littleRound(r.rect.fRight);
       r.rect.fTop = littleRound(r.rect.fTop);
       r.rect.fBottom = littleRound(r.rect.fBottom);
       SkDebugf("[%f:%f * %f:%f] %s\n", r.rect.fLeft, r.rect.fRight, r.rect.fTop, r.rect.fBottom,
                (r.direction == TextDirection::kLtr ? "left" : "right"));
-  }
-  */
-  return boxes;
+    }
+    */
+    return boxes;
 }
 
 // TODO: Optimize (save cluster <-> codepoint connection)
 PositionWithAffinity ParagraphImpl::getGlyphPositionAtCoordinate(SkScalar dx, SkScalar dy) {
+
+    serializeGetGlyphPositionAtCoordinate(dx, dy);
 
     if (fText.isEmpty()) {
         return {0, Affinity::kDownstream};
@@ -783,6 +858,8 @@ PositionWithAffinity ParagraphImpl::getGlyphPositionAtCoordinate(SkScalar dx, Sk
 // By "glyph" they mean a character index - indicated by Minikin's code
 SkRange<size_t> ParagraphImpl::getWordBoundary(unsigned offset) {
 
+    serializeGetWordBoundary(offset);
+
     if (fWords.empty()) {
         if (!fUnicode->getWords(fText.c_str(), fText.size(), &fWords)) {
             return {0, 0 };
@@ -807,6 +884,8 @@ SkRange<size_t> ParagraphImpl::getWordBoundary(unsigned offset) {
 }
 
 void ParagraphImpl::getLineMetrics(std::vector<LineMetrics>& metrics) {
+    serializeGetLineMetrics();
+
     metrics.clear();
     for (auto& line : fLines) {
         metrics.emplace_back(line.getMetrics());

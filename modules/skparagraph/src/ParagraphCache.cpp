@@ -59,6 +59,7 @@ private:
     SkTArray<Block, true> fTextStyles;
     ParagraphStyle fParagraphStyle;
     uint32_t fHash;
+    uint32_t fUnique;
 };
 
 class ParagraphCacheValue {
@@ -70,7 +71,12 @@ public:
         , fWords(paragraph->fWords)
         , fBidiRegions(paragraph->fBidiRegions)
         , fUTF8IndexForUTF16Index(paragraph->fUTF8IndexForUTF16Index)
-        , fUTF16IndexForUTF8Index(paragraph->fUTF16IndexForUTF8Index) { }
+        , fUTF16IndexForUTF8Index(paragraph->fUTF16IndexForUTF8Index) {
+        static uint32_t unique = 0;
+        fUnique = (++unique);
+    }
+
+    uint32_t getUnique() { return fUnique; }
 
     // Input == key
     ParagraphCacheKey fKey;
@@ -83,6 +89,7 @@ public:
     std::vector<SkUnicode::BidiRegion> fBidiRegions;
     SkTArray<TextIndex, true> fUTF8IndexForUTF16Index;
     SkTArray<size_t, true> fUTF16IndexForUTF8Index;
+    uint32_t fUnique;
 };
 
 uint32_t ParagraphCacheKey::mix(uint32_t hash, uint32_t data) {
@@ -292,10 +299,12 @@ bool ParagraphCache::findParagraph(ParagraphImpl* paragraph) {
         ++fCacheMisses;
 #endif
         fChecker(paragraph, "missingParagraph", true);
+        fLastFound = 0;
         return false;
     }
     updateTo(paragraph, entry->get());
     fChecker(paragraph, "foundParagraph", true);
+    fLastFound = entry->get()->fValue->getUnique();
     return true;
 }
 
@@ -320,6 +329,7 @@ bool ParagraphCache::updateParagraph(ParagraphImpl* paragraph) {
         fLRUCacheMap.insert(value->fKey, std::make_unique<Entry>(value));
         fChecker(paragraph, "addedParagraph", true);
         fLastCachedValue = value;
+        fLastFound = value->getUnique();
         return true;
     } else {
         // We do not have to update the paragraph

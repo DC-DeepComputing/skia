@@ -36,6 +36,8 @@ class SkCanvas;
 namespace skia {
 namespace textlayout {
 
+static std::set<uint32_t> gUniqueParagraphs;
+
 enum CodeUnitFlags {
     kNoCodeUnitFlag = 0x00,
     kPartOfWhiteSpaceBreak = 0x01,
@@ -236,6 +238,23 @@ private:
 
     void computeEmptyMetrics();
 
+    enum SerializingType {
+        notFound = 0,
+        added = 1,
+        found = 2,
+    };
+    void serializeParagraph(SerializingType type);
+    void serializeLayout(SkScalar width);
+    void serializePaint(SkScalar x, SkScalar y);
+    void serializeGetRectsForRange(unsigned start,
+                                          unsigned end,
+                                          RectHeightStyle rectHeightStyle,
+                                          RectWidthStyle rectWidthStyle);
+    void serializeGetRectsForPlaceholders();
+    void serializeGetLineMetrics();
+    void serializeGetGlyphPositionAtCoordinate(SkScalar dx, SkScalar dy);
+    void serializeGetWordBoundary(unsigned offset);
+
     // Input
     SkTArray<StyleBlock<SkScalar>> fLetterSpaceStyles;
     SkTArray<StyleBlock<SkScalar>> fWordSpaceStyles;
@@ -274,6 +293,7 @@ private:
     SkScalar fMaxWidthWithTrailingSpaces;
 
     std::shared_ptr<SkUnicode> fUnicode;
+    uint32_t fUnique;
 };
 }  // namespace textlayout
 }  // namespace skia
