@@ -154,4 +154,3 @@ std::tuple<bool, int> GrGlyphVector::regenerateAtlas(int begin, int end,
         return {true, end - begin};
     }
 }
-
