@@ -16,6 +16,24 @@
       "message": "Why not just have this call ConvertBlob and then call RasterSlug ?",
       "revId": "d0208b2d885f571abc7157f3ad6807891ac239e5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1d4dccc1_676993fd",
+        "filename": "tests/SkRemoteGlyphCacheTest.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 191,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-02-16T19:53:14Z",
+      "side": 1,
+      "message": "I\u0027ll address this in my next CL which expands the testing for serialization.",
+      "parentUuid": "25280660_ab0c109e",
+      "revId": "d0208b2d885f571abc7157f3ad6807891ac239e5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
