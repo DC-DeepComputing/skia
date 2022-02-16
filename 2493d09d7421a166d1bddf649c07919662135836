@@ -56,6 +56,30 @@
       },
       "revId": "2493d09d7421a166d1bddf649c07919662135836",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f720f8e1_2329998b",
+        "filename": "src/gpu/tessellate/StrokeTessellator.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-02-16T15:56:36Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "8efc9d03_6ea700f6",
+      "range": {
+        "startLine": 97,
+        "startChar": 33,
+        "endLine": 97,
+        "endChar": 36
+      },
+      "revId": "2493d09d7421a166d1bddf649c07919662135836",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
