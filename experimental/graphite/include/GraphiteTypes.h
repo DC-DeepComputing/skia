@@ -30,6 +30,15 @@ enum class BackendApi : unsigned {
 };
 
 /**
+ * GPU SkImage and SkSurfaces can be stored such that (0, 0) in texture space may correspond to
+ * either the top-left or bottom-left content pixel.
+ */
+enum class SurfaceOrigin : int {
+    kTopLeft,
+    kBottomLeft,
+};
+
+/**
  * Is the texture mipmapped or not
  */
 enum class Mipmapped: bool {
