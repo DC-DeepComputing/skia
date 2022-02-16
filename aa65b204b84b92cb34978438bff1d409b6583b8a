@@ -162,6 +162,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1681cb4e_0beb0fcd",
+        "filename": "experimental/graphite/src/Image_Graphite.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-02-16T21:45:44Z",
+      "side": 1,
+      "message": "Yeah I guess I would have to understand more what a budgeted requests means in terms of higher level api calls and what we\u0027re trying to do. Maybe for now we can ignore this, but file a bug to say investigate if we need a similar system in Graphite or not.",
+      "parentUuid": "55f0e83d_c20ba653",
+      "range": {
+        "startLine": 71,
+        "startChar": 46,
+        "endLine": 71,
+        "endChar": 59
+      },
+      "revId": "aa65b204b84b92cb34978438bff1d409b6583b8a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "47f1da19_92fb70e3",
         "filename": "experimental/graphite/src/TextureProxyView.h",
         "patchSetId": 1
