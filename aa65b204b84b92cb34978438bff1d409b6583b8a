@@ -20,6 +20,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "93a438cd_a10cae90",
+        "filename": "experimental/graphite/include/GraphiteTypes.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-02-16T20:15:40Z",
+      "side": 1,
+      "message": "I\u0027m still skeptical if this is something we truly need in Graphite. Like all the modern APIs we want to use kTopLeft for everything. The only case this should come up is if someone has their own GL context that has a texture that is kBottomLeft. And then they want to export that into another API and then wrap it in Skia. Are there use cases for this pattern by any clients? What does chromes WebGL do when chrome is backed by another API. I imagine they are offscreen gl textures so they may be in kTopLeft coming out of WebGL.",
+      "range": {
+        "startLine": 36,
+        "startChar": 10,
+        "endLine": 36,
+        "endChar": 24
+      },
+      "revId": "aa65b204b84b92cb34978438bff1d409b6583b8a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1a0febc7_f7cd21d5",
         "filename": "experimental/graphite/src/Image_Graphite.h",
         "patchSetId": 1
@@ -67,6 +90,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "cdde74ea_194f88f2",
+        "filename": "experimental/graphite/src/Image_Graphite.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-02-16T20:15:40Z",
+      "side": 1,
+      "message": "I\u0027ll be honest I\u0027m not really sure what the policy does.\n\nI would just keep this name onAsView",
+      "parentUuid": "f331a067_4ca96a1d",
+      "range": {
+        "startLine": 71,
+        "startChar": 46,
+        "endLine": 71,
+        "endChar": 59
+      },
+      "revId": "aa65b204b84b92cb34978438bff1d409b6583b8a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "47f1da19_92fb70e3",
         "filename": "experimental/graphite/src/TextureProxyView.h",
         "patchSetId": 1
@@ -78,6 +125,30 @@
       "writtenOn": "2022-02-16T18:45:40Z",
       "side": 1,
       "message": "Not sure what the plan is here -- will Proxies have uniqueIDs?",
+      "range": {
+        "startLine": 40,
+        "startChar": 18,
+        "endLine": 40,
+        "endChar": 22
+      },
+      "revId": "aa65b204b84b92cb34978438bff1d409b6583b8a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ee57226a_26b82944",
+        "filename": "experimental/graphite/src/TextureProxyView.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-02-16T20:15:40Z",
+      "side": 1,
+      "message": "Proxies will not have any sort of IDs in graphite",
+      "parentUuid": "47f1da19_92fb70e3",
       "range": {
         "startLine": 40,
         "startChar": 18,
