@@ -1209,6 +1209,15 @@ private:
 sk_sp<SkFlattenable> SkRTShader::CreateProc(SkReadBuffer& buffer) {
     SkString sksl;
     buffer.readString(&sksl);
+
+    const char* kSample = "sample(uContentTexture, coord)";
+    int offset = sksl.find(kSample);
+    size_t len = strlen(kSample);
+    if (offset >= 0) {
+        sksl.remove(offset, len);
+        sksl.insert(offset, "uContentTexture.eval(coord)");
+    }
+
     sk_sp<SkData> uniforms = buffer.readByteArrayAsData();
     uint32_t flags = buffer.read32();
 
