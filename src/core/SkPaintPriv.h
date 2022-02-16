@@ -13,7 +13,6 @@
 #include <vector>
 
 enum class SkBackend : uint8_t;
-class SkPaintParamsKey;
 class SkReadBuffer;
 class SkShaderCodeDictionary;
 class SkWriteBuffer;
@@ -63,18 +62,6 @@ public:
     static void RemoveColorFilter(SkPaint*, SkColorSpace* dstCS);
 
     static SkScalar ComputeResScaleForStroking(const SkMatrix&);
-
-    /**
-        Return the SkPaintParamsKeys that would be needed to draw the provided paint.
-
-        @param paint      the paint to be decomposed
-        @param dictionary dictionary of code fragments available to be used in the SkPaintParamKeys
-        @param backend    the backend that would be carrying out the drawing
-        @return           the SkPaintParamsKeys that would be needed to draw this paint
-    */
-    static std::vector<std::unique_ptr<SkPaintParamsKey>> ToKeys(const SkPaint& paint,
-                                                                 SkShaderCodeDictionary* dictionary,
-                                                                 SkBackend backend);
 };
 
 #endif
