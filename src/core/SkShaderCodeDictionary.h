@@ -18,6 +18,16 @@
 #include "src/core/SkPaintParamsKey.h"
 #include "src/core/SkUniform.h"
 
+enum class DataPayloadType {
+    kByte,
+};
+
+struct SkDataPayloadInfo {
+    const char* fName;
+    DataPayloadType fType;
+    uint32_t fCount;
+};
+
 class SkShaderInfo {
 public:
     struct SnippetEntry;
@@ -33,6 +43,7 @@ public:
         const char* fStaticSkSL;
         GenerateGlueCodeForEntry fGlueCodeGenerator;
         int fNumChildren;
+        SkSpan<const SkDataPayloadInfo> fDataPayloadExpectations;
     };
 
     void add(const SnippetEntry& entry) {
@@ -86,6 +97,7 @@ public:
     const Entry* lookup(SkUniquePaintParamsID) const SK_EXCLUDES(fSpinLock);
 
     SkSpan<const SkUniform> getUniforms(SkBuiltInCodeSnippetID) const;
+    SkSpan<const SkDataPayloadInfo> getDataPayloadExpectations(int codeSnippetID) const;
     const SkShaderInfo::SnippetEntry* getEntry(SkBuiltInCodeSnippetID) const;
 
     void getShaderInfo(SkUniquePaintParamsID, SkShaderInfo*);
@@ -97,7 +109,7 @@ public:
     // TODO: this is still experimental but, most likely, it will need to be made thread-safe
     // It returns the code snippet ID to use to identify the supplied user-defined code
     // TODO: add hooks for user to actually provide code.
-    int addUserDefinedSnippet();
+    int addUserDefinedSnippet(SkSpan<const SkDataPayloadInfo> dataPayloadExpectations);
 
 private:
     Entry* makeEntry(std::unique_ptr<SkPaintParamsKey>);
