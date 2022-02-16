@@ -22,6 +22,30 @@
       },
       "revId": "8b374e1fa234b976280ea137a177e405c26e565b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "06f93c37_8019cc00",
+        "filename": "src/gpu/text/GrTextBlob.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 3321,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-02-16T18:23:36Z",
+      "side": 1,
+      "message": "I will make the change in the next CL. Thanks for the catch.",
+      "parentUuid": "62d4fbe3_ccfef850",
+      "range": {
+        "startLine": 3321,
+        "startChar": 11,
+        "endLine": 3321,
+        "endChar": 32
+      },
+      "revId": "8b374e1fa234b976280ea137a177e405c26e565b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
