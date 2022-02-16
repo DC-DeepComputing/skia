@@ -30,11 +30,35 @@ void SkPaintParamsKeyBuilder::beginBlock(int codeSnippetID) {
         return;
     }
 
+#ifdef SK_DEBUG
+    if (!fStack.empty()) {
+        // The children of a block should appear before any of the parent's data
+        SkASSERT(fStack.back().fCurDataPayloadEntry == 0);
+    }
+#endif
+
     fData.reserve_back(SkPaintParamsKey::kBlockHeaderSizeInBytes);
-    fStack.push_back({ codeSnippetID, this->sizeInBytes() });
+    fStack.push_back({ codeSnippetID, this->sizeInBytes(), {}, 0 });
+
+#ifdef SK_DEBUG
+    static const SkDataPayloadInfo kHeader[2] = {
+            {"snippetID", DataPayloadType::kByte, 1},
+            {"blockSize", DataPayloadType::kByte, 1},
+    };
+
+    static const SkSpan<const SkDataPayloadInfo> kHeaderExpectations(kHeader, 2);
+
+    fStack.back().fDataPayloadExpectations = kHeaderExpectations;
+    fStack.back().fCurDataPayloadEntry = 0;
+#endif
 
     this->addByte(SkTo<uint8_t>(codeSnippetID));
     this->addByte(0);  // this needs to be patched up with a call to endBlock
+
+#ifdef SK_DEBUG
+    fStack.back().fDataPayloadExpectations = fDict->getDataPayloadExpectations(codeSnippetID);
+    fStack.back().fCurDataPayloadEntry = 0;
+#endif
 }
 
 // Update the size byte of a block header
@@ -48,6 +72,18 @@ void SkPaintParamsKeyBuilder::endBlock() {
         this->makeInvalid();
         return;
     }
+
+#ifdef SK_DEBUG
+    if (fStack.back().fCurDataPayloadEntry !=
+        static_cast<int>(fStack.back().fDataPayloadExpectations.size())) {
+        // Data payload expectations were not met
+        SkASSERT(0);
+        this->makeInvalid();
+        return;
+    }
+
+    // Sigh - we need to put the payload expectations on the stack and push & pop them w/ kids
+#endif
 
     int headerOffset = fStack.back().fHeaderOffset;
 
@@ -63,12 +99,44 @@ void SkPaintParamsKeyBuilder::endBlock() {
     fData[headerOffset+SkPaintParamsKey::kBlockSizeOffsetInBytes] = blockSize;
 
     fStack.pop_back();
+
+#ifdef SK_DEBUG
+    if (!fStack.empty()) {
+        // The children of a block should appear before any of the parent's data
+        SkASSERT(fStack.back().fCurDataPayloadEntry == 0);
+    }
+#endif
 }
 
 void SkPaintParamsKeyBuilder::addBytes(uint32_t numBytes, const uint8_t* data) {
     if (!this->isValid()) {
         return;
     }
+
+    if (fStack.empty()) {
+        // Missing call to 'beginBlock'
+        SkASSERT(0);
+        this->makeInvalid();
+        return;
+    }
+
+#ifdef SK_DEBUG
+    const StackFrame& frame = fStack.back();
+
+    // TODO: right now we reject writing 'n' bytes 1 at a time. We could allow it by tracking
+    // the number of bytes written.
+    if (frame.fCurDataPayloadEntry > static_cast<int>(frame.fDataPayloadExpectations.size()) ||
+        frame.fDataPayloadExpectations.data() == nullptr ||
+        frame.fDataPayloadExpectations[frame.fCurDataPayloadEntry].fType != DataPayloadType::kByte ||
+        frame.fDataPayloadExpectations[frame.fCurDataPayloadEntry].fCount != numBytes) {
+        // Expectation mismatch
+        // TODO: add warning message!!
+        this->makeInvalid();
+        return;
+    }
+
+    fStack.back().fCurDataPayloadEntry++;
+#endif
 
     fData.push_back_n(numBytes, data);
 }
