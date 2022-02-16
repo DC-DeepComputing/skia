@@ -46,6 +46,30 @@
       },
       "revId": "480b77793a81aa45fb232cf34355b43d2a75de27",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9e42bd67_2f6ce54d",
+        "filename": "experimental/graphite/src/Resource.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-02-16T20:12:46Z",
+      "side": 1,
+      "message": "acq_rel has no relation to order between threads, and only imposes an ordering on reads and writes with respect to the atomic variable:\n\nHere is a concise explanation from StackOverFlow...\nEssentially memory_order_acq_rel provides read and write orderings relative to the atomic variable, while memory_order_seq_cst provides read and write ordering globally. That is, the sequentially consistent operations are visible in the same order across all threads.\n\nFound at:\nhttps://stackoverflow.com/questions/12340773/how-do-memory-order-seq-cst-and-memory-order-acq-rel-differ",
+      "parentUuid": "bf5e8c68_7da355b8",
+      "range": {
+        "startLine": 58,
+        "startChar": 53,
+        "endLine": 58,
+        "endChar": 73
+      },
+      "revId": "480b77793a81aa45fb232cf34355b43d2a75de27",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
