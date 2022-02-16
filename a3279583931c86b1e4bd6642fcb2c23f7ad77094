@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7a7a5200_d326b26c",
+        "filename": "include/core/SkFontArguments.h",
+        "patchSetId": 26
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-02-16T22:41:46Z",
+      "side": 1,
+      "message": "This is just `Palette`. It (optionally) contains overrides, but it also specifies the palette to use (which is something like a collection index here).",
+      "range": {
+        "startLine": 36,
+        "startChar": 11,
+        "endLine": 36,
+        "endChar": 26
+      },
+      "revId": "a3279583931c86b1e4bd6642fcb2c23f7ad77094",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7c6a3371_5c090500",
+        "filename": "include/core/SkFontArguments.h",
+        "patchSetId": 26
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-02-16T22:41:46Z",
+      "side": 1,
+      "message": "Likewise this is also just setting the palette.",
+      "range": {
+        "startLine": 82,
+        "startChar": 21,
+        "endLine": 82,
+        "endChar": 39
+      },
+      "revId": "a3279583931c86b1e4bd6642fcb2c23f7ad77094",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2dbadc12_7b2229ff",
+        "filename": "src/ports/SkFontHost_FreeType.cpp",
+        "patchSetId": 26
+      },
+      "lineNbr": 193,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-02-16T22:41:46Z",
+      "side": 1,
+      "message": "It seems you\u0027re using SkAutoSTArray with 0 just to get the `size()`? That\u0027s unfortunate because the zero size trailing storage probably isn\u0027t actually zero size.",
+      "range": {
+        "startLine": 193,
+        "startChar": 18,
+        "endLine": 193,
+        "endChar": 19
+      },
+      "revId": "a3279583931c86b1e4bd6642fcb2c23f7ad77094",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

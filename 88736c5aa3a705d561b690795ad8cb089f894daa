@@ -118,6 +118,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "96b6890a_4cb0f0b6",
+        "filename": "src/core/SkFontDescriptor.h",
+        "patchSetId": 22
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-02-16T22:41:46Z",
+      "side": 1,
+      "message": "No, it should either be in this CL or a *previous* CL. It\u0027s fine to work top down to figure out the right change to make, but after figuring that out the changes need to land bottom up. For example, this (correctly) fails `dm --match palette --config serialize-8888`.",
+      "parentUuid": "210600f0_7fbd5b6a",
+      "revId": "88736c5aa3a705d561b690795ad8cb089f894daa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7b74fe8f_531c92a3",
@@ -289,6 +307,24 @@
       "side": 1,
       "message": "I hope I understand your intention correctly. There\u0027s a chance I misunderstood the suggestion. Perhaps let me mostly respond to the second part first, then come to the first part of your comment. \n\n\u003e This function could return the number of available palettes, and GetPalette and resolvePaletteOverride should be merged to be more like computeAxisValues (maybe call it computePaletteValues to be parallel).\n\nI think, if I don\u0027t want to refactor the use of `scanFont` everywhere, the reason for the difference and two-step incantation of `scanFont` + `ResolvePaletteOverrides` is that only `scanFont` instantiations the temporary `FT_Face` to analyse the font blob and extract required information from the font.\n\nThat\u0027s what the similarity is between `GetAxes()` and `GetPalette()`, both are required as a sort of template to validate the `SkFontArguments` and fill those in / override them with user values.\n\nThe purpose is to have a fully resolved palette as a combination of what\u0027s in the font (extracted from `scanFont`), overridden with user `SkFontArguments::PaletteOverride` which needs to be stored in `SkFontData`. If `SkFontData` would not have a fully resolved palette, not all code path leading to `SkTypeface_FreeType::FaceRec::Make` and from there to `setupAxes(*data)` could set the correct palette.",
       "parentUuid": "93b9f90a_e444bcf6",
+      "revId": "88736c5aa3a705d561b690795ad8cb089f894daa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f5c0761c_da508563",
+        "filename": "src/ports/SkFontHost_FreeType.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 2054,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-02-16T22:41:46Z",
+      "side": 1,
+      "message": "I think the larger issue here is that none of this is needed at all. The only reason we resolve and cache the axis values is because the FreeType API of FT_Set_Var_Design_Coordinates take the axis values as a FT_Fixed array. There is no way to set them individually, so we do the work of resolving the user request of tags and values to indexes and clamped values and this is quite a bit of work so it is cached. With the palette on the other hand, we can just pass the palette index and any overrides around instead of resolving the whole palette. Then just set up the FT_Face palette directly. This also has the side benefit of pluming the palette index and overrides around so they can be reported later if we want to. Also, we can avoid round trips between FT_Color and SkColor. (Which would be needed if SkFontData stays in SkFontDescriptor.h. While I think it can and should move now, I\u0027d prefer not to do that in this CL.)",
+      "parentUuid": "d0fdabf4_6531677e",
       "revId": "88736c5aa3a705d561b690795ad8cb089f894daa",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
