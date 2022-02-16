@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f331a067_4ca96a1d",
+        "filename": "experimental/graphite/src/Image_Graphite.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-02-16T19:24:38Z",
+      "side": 1,
+      "message": "Related question is whether we need a GrImageTexGenPolicy equivalent.",
+      "parentUuid": "1a0febc7_f7cd21d5",
+      "range": {
+        "startLine": 71,
+        "startChar": 46,
+        "endLine": 71,
+        "endChar": 59
+      },
+      "revId": "aa65b204b84b92cb34978438bff1d409b6583b8a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "47f1da19_92fb70e3",
         "filename": "experimental/graphite/src/TextureProxyView.h",
         "patchSetId": 1
