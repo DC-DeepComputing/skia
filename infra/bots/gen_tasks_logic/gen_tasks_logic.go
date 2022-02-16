@@ -766,11 +766,14 @@ func (b *taskBuilder) defaultSwarmDimensions() {
 			"Mac12":      "Mac-12",
 			"Ubuntu18":   "Ubuntu-18.04",
 			"Win":        DEFAULT_OS_WIN,
-			"Win10":      "Windows-10-19041",
-			"Win2019":    DEFAULT_OS_WIN,
-			"Win7":       "Windows-7-SP1",
-			"Win8":       "Windows-8.1-SP0",
-			"iOS":        "iOS-13.3.1",
+			// TODO(lovisolo): Change to a more specific version (e.g "Windows-10-19043") once all our
+			//                 Win10 machines are updated to the same Windows version. See
+			//                 https://skia-review.googlesource.com/c/skia/+/418316.
+			"Win10":   "Windows-10",
+			"Win2019": DEFAULT_OS_WIN,
+			"Win7":    "Windows-7-SP1",
+			"Win8":    "Windows-8.1-SP0",
+			"iOS":     "iOS-13.3.1",
 		}[os]
 		if !ok {
 			log.Fatalf("Entry %q not found in OS mapping.", os)
