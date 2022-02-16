@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ec0937a2_d3ead44c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-02-16T18:45:40Z",
+      "side": 1,
+      "message": "First pass at this, PTAL.",
+      "revId": "aa65b204b84b92cb34978438bff1d409b6583b8a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1a0febc7_f7cd21d5",
+        "filename": "experimental/graphite/src/Image_Graphite.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-02-16T18:45:40Z",
+      "side": 1,
+      "message": "The intent was to disambiguate this from regular asView, but I just realized the arguments are different so the name change probably isn\u0027t needed.",
+      "range": {
+        "startLine": 71,
+        "startChar": 46,
+        "endLine": 71,
+        "endChar": 59
+      },
+      "revId": "aa65b204b84b92cb34978438bff1d409b6583b8a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "47f1da19_92fb70e3",
+        "filename": "experimental/graphite/src/TextureProxyView.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-02-16T18:45:40Z",
+      "side": 1,
+      "message": "Not sure what the plan is here -- will Proxies have uniqueIDs?",
+      "range": {
+        "startLine": 40,
+        "startChar": 18,
+        "endLine": 40,
+        "endChar": 22
+      },
+      "revId": "aa65b204b84b92cb34978438bff1d409b6583b8a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
