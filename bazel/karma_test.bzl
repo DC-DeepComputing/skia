@@ -1,0 +1,180 @@
+# https://github.com/bazelbuild/rules_webtesting/blob/master/web/web.bzl
+load("@io_bazel_rules_webtesting//web:web.bzl", "web_test_suite")
+load("@build_bazel_rules_nodejs//:providers.bzl", "ExternalNpmPackageInfo", "node_modules_aspect")
+
+def karma_test(name, srcs, config_file, **kwargs):
+    """Runs the given tests on Chromium downloaded via Bazel using Karma
+
+    Args:
+      srcs: A list of JavaScript test files or helpers.
+      config_file: A karma config file. The following template strings must be used...
+    """
+    if len(srcs) == 0:
+        fail("Must pass at least one file into srcs or there will be no tests to run")
+
+    wrapped_test_name = name + "_karma_test"
+    _karma_test(
+        name = name,  #wrapped_test_name,
+        srcs = srcs,
+        deps = [
+            "@npm//karma-chrome-launcher",
+            "@npm//karma-firefox-launcher",
+            "@npm//karma-jasmine",
+            "@npm//jasmine-core",
+        ],
+        config_file = config_file,
+        visibility = ["//visibility:private"],
+    )
+
+# This defines a "Bazel test_suite" [1], basically a different sub test for each
+# browser passed in. For now, this is just one, the hermetic version of chromium.
+# Many of the options on web_test_suite are defined on web_test [2].
+# [1] https://docs.bazel.build/versions/main/be/general.html#test_suite
+# [2] https://github.com/bazelbuild/rules_webtesting/blob/e9cf17123068b1123c68219edf9b274bf057b9cc/web/internal/web_test.bzl#L164
+#    web_test_suite(
+#        name = name,
+#        launcher = ":" + wrapped_test_name,
+#        browsers = ["@io_bazel_rules_webtesting//browsers:chromium-local"],
+#        test = wrapped_test_name,
+#        **kwargs
+#    )
+
+def _expand_templates_in_karma_config(ctx):
+    ctx.actions.expand_template(
+        output = ctx.outputs.configuration,
+        template = ctx.file.config_file,
+        substitutions = {
+            "BAZEL_SRCS_HERE": "TODO(srcs)",
+        },
+    )
+
+def _absolute_path(ctx, file):
+    # Referencing things in @npm yields a short_path that starts with ../
+    # For those cases, we can just remove the ../
+    if file.short_path.startswith("../"):
+        return file.short_path[3:]
+
+    # Otherwise, we have a local file, so we need to include the workspace path to make it
+    # an absolute path
+    return ctx.workspace_name + "/" + file.short_path
+
+def _create_bash_script_to_invoke_karma(ctx):
+    ctx.actions.write(
+        output = ctx.outputs.executable,
+        is_executable = True,
+        content = """#!/usr/bin/env bash
+# --- begin runfiles.bash initialization v2 ---
+# Copy-pasted from the Bazel Bash runfiles library v2.
+# https://github.com/bazelbuild/bazel/blob/master/tools/bash/runfiles/runfiles.bash
+set -uo pipefail; f=build_bazel_rules_nodejs/third_party/github.com/bazelbuild/bazel/tools/bash/runfiles/runfiles.bash
+source "${{RUNFILES_DIR:-/dev/null}}/$f" 2>/dev/null || \
+  source "$(grep -sm1 "^$f " "${{RUNFILES_MANIFEST_FILE:-/dev/null}}" | cut -f2- -d' ')" 2>/dev/null || \
+  source "$0.runfiles/$f" 2>/dev/null || \
+  source "$(grep -sm1 "^$f " "$0.runfiles_manifest" | cut -f2- -d' ')" 2>/dev/null || \
+  source "$(grep -sm1 "^$f " "$0.exe.runfiles_manifest" | cut -f2- -d' ')" 2>/dev/null || \
+  {{ echo>&2 "ERROR: cannot find $f"; exit 1; }}; f=; set -e
+# --- end runfiles.bash initialization v2 ---
+
+readonly KARMA=$(rlocation "{_KARMA_EXECUTABLE_SCRIPT}")
+readonly CONF=$(rlocation "{_KARMA_CONFIGURATION_FILE}")
+
+THESE_ARGS="$@"
+KARMA_ARGS=( "start" ${{CONF}} "--single-run" )
+
+KARMA_VERSION=$(${{KARMA}} --version)
+printf "\nRunning karma tests\n-----------------------------------------------------------------------------\n"
+echo "version     :" ${{KARMA_VERSION#Karma version: }}
+echo "pwd         :" ${{PWD}}
+echo "conf        :" ${{CONF}}
+echo "args        :" ${{THESE_ARGS}}
+echo "karma args  :" ${{KARMA_ARGS[@]}}
+printf "\n"
+
+# set a temporary directory as the home directory, because otherwise Chrome fails to
+# start up, complaining about a read-only file system.
+export HOME=$(mktemp -d)
+
+readonly COMMAND="${{KARMA}} ${{KARMA_ARGS[@]}}"
+${{COMMAND}}
+""".format(
+            _KARMA_EXECUTABLE_SCRIPT = _absolute_path(ctx, ctx.executable.karma),
+            _KARMA_CONFIGURATION_FILE = _absolute_path(ctx, ctx.outputs.configuration),
+        ),
+    )
+
+def _karma_test_impl(ctx):
+    _expand_templates_in_karma_config(ctx)
+    _create_bash_script_to_invoke_karma(ctx)
+
+    # Also include files from npm fine grained deps as inputs.
+    # These deps are identified by the ExternalNpmPackageInfo provider.
+    node_modules_depsets = []
+    for dep in ctx.attr.deps:
+        if ExternalNpmPackageInfo in dep:
+            node_modules_depsets.append(dep[ExternalNpmPackageInfo].sources)
+        else:
+            print("Not an external npm file?", dep)
+    node_modules = depset(transitive = node_modules_depsets)
+
+    # We need the karma configuration file...
+    runfiles = [
+        ctx.outputs.configuration,
+    ]
+
+    # ...the test files the user wants to run
+    runfiles += ctx.files.srcs
+
+    # ...the npm packages which karma is depending on being there (e.g. jasmine)
+    runfiles += ctx.files.deps
+
+    # https://docs.bazel.build/versions/main/skylark/lib/DefaultInfo.html
+    return [DefaultInfo(
+        # https://docs.bazel.build/versions/main/skylark/lib/depset.html
+        files = depset([ctx.outputs.executable]),
+        runfiles = ctx.runfiles(
+            files = runfiles,
+            transitive_files = depset(transitive = [node_modules]),
+        ).merge(ctx.attr.karma[DefaultInfo].data_runfiles),
+        executable = ctx.outputs.executable,
+    )]
+
+_karma_test = rule(
+    implementation = _karma_test_impl,
+    test = True,
+    executable = True,
+    attrs = {
+        "config_file": attr.label(
+            doc = "The karma config file",
+            mandatory = True,
+            allow_single_file = [".js"],
+        ),
+        "srcs": attr.label_list(
+            doc = "A list of JavaScript test files",
+            allow_files = [".js"],
+            mandatory = True,
+        ),
+        "deps": attr.label_list(
+            doc = """Any karma plugins (aka peer deps) required. These are generally listed
+            in the provided config_file.""",
+            allow_files = True,
+            aspects = [node_modules_aspect],
+        ),
+        "karma": attr.label(
+            doc = "karma binary label",
+            default = "@npm//karma/bin:karma",
+            executable = True,
+            cfg = "exec",
+            allow_files = True,
+        ),
+        "static_files": attr.label_list(
+            doc = """Arbitrary files which are available to be served on request.
+        Files are served at:
+        `/base/<WORKSPACE_NAME>/<path-to-file>`, e.g.
+        `/base/npm_bazel_typescript/examples/testing/static_script.js`""",
+            allow_files = True,
+        ),
+    },
+    outputs = {
+        "configuration": "%{name}.conf.js",
+    },
+)
