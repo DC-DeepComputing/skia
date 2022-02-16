@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "25280660_ab0c109e",
+        "filename": "tests/SkRemoteGlyphCacheTest.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 191,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-02-16T19:44:37Z",
+      "side": 1,
+      "message": "Why not just have this call ConvertBlob and then call RasterSlug ?",
+      "revId": "d0208b2d885f571abc7157f3ad6807891ac239e5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
