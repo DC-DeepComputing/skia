@@ -65,6 +65,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e8f4f061_06066f17",
+        "filename": "src/core/SkBuiltInCodeSnippetID.h",
+        "patchSetId": 17
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-02-17T17:04:12Z",
+      "side": 1,
+      "message": "This was discussed offline. The kError code snippet isn\u0027t just an error notification but actually implements/overrides the drawing when an error occurs. We\u0027ve decided to go with this behavior for the time being rather than returning an empty key can dropping draws.\n\nAlso, I will add a comment documenting this behavior in a follow on CL.",
+      "parentUuid": "35186a1d_0d1eda4c",
+      "range": {
+        "startLine": 19,
+        "startChar": 4,
+        "endLine": 19,
+        "endChar": 10
+      },
+      "revId": "43822601ae4532e34b821d3e58cc1f626f223893",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f0372af1_ea92d850",
@@ -347,6 +371,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c9149767_b2ec1a7a",
+        "filename": "src/core/SkPaintParamsKey.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-02-17T17:04:12Z",
+      "side": 1,
+      "message": "As discussed offline, the kError code snippet actually implements \"error\" drawing behavior in the failure case.\n\nhttps://skia-review.googlesource.com/c/skia/+/510016/ ([graphite] Update memory handling between keybuilder and the key) also adds an SkPaintParams::isErrorKey method in case some fancy fallback behavior (e.g., dropping draws) is required.",
+      "parentUuid": "477da31c_f37bf0c2",
+      "range": {
+        "startLine": 70,
+        "startChar": 8,
+        "endLine": 72,
+        "endChar": 45
+      },
+      "revId": "43822601ae4532e34b821d3e58cc1f626f223893",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d46997dd_eb0c02bc",
@@ -511,6 +559,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e5d2ec30_2f07f0fe",
+        "filename": "src/core/SkPaintParamsKey.h",
+        "patchSetId": 17
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-02-17T17:04:12Z",
+      "side": 1,
+      "message": "This should be addressed in https://skia-review.googlesource.com/c/skia/+/510016/ ([graphite] Update memory handling between keybuilder and the key)",
+      "parentUuid": "9a052943_943c5c88",
+      "range": {
+        "startLine": 46,
+        "startChar": 4,
+        "endLine": 46,
+        "endChar": 37
+      },
+      "revId": "43822601ae4532e34b821d3e58cc1f626f223893",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b580761d_c2e6cbe8",
@@ -571,6 +643,30 @@
       "writtenOn": "2022-02-15T14:53:27Z",
       "side": 1,
       "message": "here and the invalid code snippet ID case, look like they should be invalid keys. Testing key size being exactly a single block header is a little obfuscating. Should create_key/builder.snap() return a null key when it\u0027s invalid? Or should we be checking the builtin id \u003d\u003d kError?",
+      "range": {
+        "startLine": 57,
+        "startChar": 30,
+        "endLine": 57,
+        "endChar": 93
+      },
+      "revId": "43822601ae4532e34b821d3e58cc1f626f223893",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b6af388c_510bc629",
+        "filename": "tests/graphite/KeyTest.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-02-17T17:04:12Z",
+      "side": 1,
+      "message": "This is addressed in https://skia-review.googlesource.com/c/skia/+/510016/ ([graphite] Update memory handling between keybuilder and the key)",
+      "parentUuid": "ffdd8752_3c04d006",
       "range": {
         "startLine": 57,
         "startChar": 30,
