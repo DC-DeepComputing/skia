@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "04069921_d9c7b98b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 29
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-02-17T01:07:02Z",
+      "side": 1,
+      "message": "I locally applied Patchset 29 along with https://chromium-review.googlesource.com/c/chromium/src/+/3447507 (with the appropriate name changes) and observed that this seems to behave as expected. This includes the serialization for printing.",
+      "revId": "e63b869da6d5a74a54eccc6bf9820e9a115054c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
