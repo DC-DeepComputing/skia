@@ -16,6 +16,40 @@
       "message": "Adding Derek for include/core/SkFontArguments.h .",
       "revId": "292c156748b61d5d26788b18711bf871f539e008",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0e1b3389_c2875706",
+        "filename": "src/ports/SkFontHost_FreeType.cpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 193,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2022-02-17T10:37:59Z",
+      "side": 1,
+      "message": "Does fFTPalette need to be stored on the FaceRec if each setupPalette() call recreates this?",
+      "revId": "292c156748b61d5d26788b18711bf871f539e008",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fe7c4fb7_f023122b",
+        "filename": "src/ports/SkFontHost_FreeType.cpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 1953,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2022-02-17T10:37:59Z",
+      "side": 1,
+      "message": "With being able to access the palette in SetupPalette, I don\u0027t think scanFont needs to be able to return this information anymore, and if I haven\u0027t missed anything, I don\u0027t see these out arguments used anywhere in this CL.",
+      "revId": "292c156748b61d5d26788b18711bf871f539e008",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

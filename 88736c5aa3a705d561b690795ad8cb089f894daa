@@ -136,6 +136,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c7fabf59_874a9a2b",
+        "filename": "src/core/SkFontDescriptor.h",
+        "patchSetId": 22
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2022-02-17T10:37:59Z",
+      "side": 1,
+      "message": "Good to know. Is the serialize-8888 config one that sends everything through serialization and draws after that? Is there a NativeFonts bot that covers this?",
+      "parentUuid": "96b6890a_4cb0f0b6",
+      "revId": "88736c5aa3a705d561b690795ad8cb089f894daa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7b74fe8f_531c92a3",
@@ -325,6 +343,24 @@
       "side": 1,
       "message": "I think the larger issue here is that none of this is needed at all. The only reason we resolve and cache the axis values is because the FreeType API of FT_Set_Var_Design_Coordinates take the axis values as a FT_Fixed array. There is no way to set them individually, so we do the work of resolving the user request of tags and values to indexes and clamped values and this is quite a bit of work so it is cached. With the palette on the other hand, we can just pass the palette index and any overrides around instead of resolving the whole palette. Then just set up the FT_Face palette directly. This also has the side benefit of pluming the palette index and overrides around so they can be reported later if we want to. Also, we can avoid round trips between FT_Color and SkColor. (Which would be needed if SkFontData stays in SkFontDescriptor.h. While I think it can and should move now, I\u0027d prefer not to do that in this CL.)",
       "parentUuid": "d0fdabf4_6531677e",
+      "revId": "88736c5aa3a705d561b690795ad8cb089f894daa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "78f0c126_83d97759",
+        "filename": "src/ports/SkFontHost_FreeType.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 2054,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2022-02-17T10:37:59Z",
+      "side": 1,
+      "message": "Thank you for taking this further. I think by designing this similar to the axes, I didn\u0027t realize I just just access the font\u0027s palette in setupAxes using fFace.get() and FT_Palette_Data and FT_Palette_Select. With that in mind, it\u0027s indeed possible to save only the sparse palette / index+overrides in SkFontData.",
+      "parentUuid": "f5c0761c_da508563",
       "revId": "88736c5aa3a705d561b690795ad8cb089f894daa",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
