@@ -39,6 +39,30 @@
       },
       "revId": "f3a9a4b125475bf7eb2ca307c5cbe9dc6fc5c37c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e8348a5a_651b655a",
+        "filename": "src/gpu/v1/Device.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 977,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-02-17T22:33:50Z",
+      "side": 1,
+      "message": "I should probably have the glyphRunList not produced by a SkTextBlob use the code above. There are some glyphRunList that do not come from blobs. They are generated from drawText and drawString. The convertGlyphRunListToSlug handles all the text drawing. I opt to use the top level convert blob, because in the next CL, I will use SkStrikeClient/SkStrikeServer to simulate transferring the font information. Then, I must use a top level convert call.",
+      "parentUuid": "14c1666b_bedfb7d4",
+      "range": {
+        "startLine": 959,
+        "startChar": 0,
+        "endLine": 977,
+        "endChar": 0
+      },
+      "revId": "f3a9a4b125475bf7eb2ca307c5cbe9dc6fc5c37c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
