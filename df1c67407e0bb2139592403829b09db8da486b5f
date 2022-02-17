@@ -34,6 +34,24 @@
       "parentUuid": "47aa11d2_833c6876",
       "revId": "df1c67407e0bb2139592403829b09db8da486b5f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ca5df93d_bc6a9bcf",
+        "filename": "modules/skparagraph/tests/SkParagraphTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 335,
+      "author": {
+        "id": 18724
+      },
+      "writtenOn": "2022-02-17T19:59:22Z",
+      "side": 1,
+      "message": "I am having trouble running the test. Since I uses a mac, I tried changing this to DEF_TEST and try to run it using\n```\nout/Debug/dm --match SkParagraph_ReturnsCorrectRectsWhenEllipsized -v\n```\n\nbut it looks like it always finishes even if i change the code to intentionally fail the test\n\n```\n$ out/Debug/dm --match SkParagraph_ReturnsCorrectRectsWhenEllipsized -v\nSkipping config nonrendering: Don\u0027t understand \u0027nonrendering\u0027.\nSkipping config nonrendering: Don\u0027t understand \u0027nonrendering\u0027.\n0 srcs * 2 sinks + 1 tests \u003d\u003d 1 tasks\n0 srcs * 2 sinks + 1 tests \u003d\u003d 1 tasks\nstart unit test  SkParagraph_ReturnsCorrectRectsWhenEllipsized\ndone  unit test  SkParagraph_ReturnsCorrectRectsWhenEllipsized\n\n53MB RAM, 53MB peak, 0 queued, 0 active:\n\n53MB RAM, 53MB peak, 0 queued, 0 active:\nFinished!\nFinished!\n```",
+      "parentUuid": "3fea7b3e_0a6098d8",
+      "revId": "df1c67407e0bb2139592403829b09db8da486b5f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
