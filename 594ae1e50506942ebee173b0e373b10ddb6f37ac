@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b54eab8c_692091e1",
+        "filename": "src/gpu/d3d/GrD3DTextureRenderTarget.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-02-17T15:07:29Z",
+      "side": 1,
+      "message": "previously you were using \"\" and now nullptr. Lets be consistent and use \"\" everywhere.",
+      "range": {
+        "startLine": 160,
+        "startChar": 69,
+        "endLine": 160,
+        "endChar": 76
+      },
+      "revId": "594ae1e50506942ebee173b0e373b10ddb6f37ac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4deeb859_ac9b1e41",
+        "filename": "src/gpu/dawn/GrDawnRenderTarget.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-02-17T15:07:29Z",
+      "side": 1,
+      "message": "\"\"",
+      "range": {
+        "startLine": 27,
+        "startChar": 90,
+        "endLine": 27,
+        "endChar": 97
+      },
+      "revId": "594ae1e50506942ebee173b0e373b10ddb6f37ac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
