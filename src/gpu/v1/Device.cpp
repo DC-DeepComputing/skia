@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+
 #include "src/gpu/v1/Device_v1.h"
 
 #include "include/core/SkImageFilter.h"
@@ -33,6 +34,7 @@
 #include "src/core/SkStroke.h"
 #include "src/core/SkTLazy.h"
 #include "src/core/SkVerticesPriv.h"
+#include "src/core/SkWriteBuffer.h"
 #include "src/gpu/GrBlurUtils.h"
 #include "src/gpu/GrDirectContextPriv.h"
 #include "src/gpu/GrGpu.h"
@@ -50,7 +52,6 @@
 #include "src/utils/SkUTF.h"
 
 #define ASSERT_SINGLE_OWNER SKGPU_ASSERT_SINGLE_OWNER(fContext->priv().singleOwner())
-
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -957,13 +958,41 @@ void Device::onDrawGlyphRunList(SkCanvas* canvas,
     #if defined(SK_EXPERIMENTAL_SIMULATE_DRAWGLYPHRUNLIST_WITH_SLUG)
         auto slug = this->convertGlyphRunListToSlug(glyphRunList, paint);
         if (slug != nullptr) {
-            this->drawSlug(slug.get());
+            this->drawSlug(canvas, slug.get());
         }
         return;
-    #endif
+    #elif defined(SK_EXPERIMENTAL_SIMULATE_DRAWGLYPHRUNLIST_WITH_SLUG_SERIALIZE)
 
-    fSurfaceDrawContext->drawGlyphRunList(
-        canvas, this->clip(), this->asMatrixProvider(), glyphRunList, paint);
+        // This is not a text blob draw. Handle using the normal code.
+        if (glyphRunList.blob() == nullptr) {
+            fSurfaceDrawContext->drawGlyphRunList(
+                    canvas, this->clip(), this->asMatrixProvider(), glyphRunList, paint);
+            return;
+        }
+        auto srcSlug = GrSlug::ConvertBlob(
+                canvas, *glyphRunList.blob(), glyphRunList.origin(), paint);
+
+        // There is nothing to draw.
+        if (srcSlug == nullptr) { return; }
+
+        SkBinaryWriteBuffer writeBuffer;
+        srcSlug->flatten(writeBuffer);
+        auto data = writeBuffer.snapshotAsData();
+
+        SkReadBuffer readBuffer(data->data(), data->size());
+        auto dstSlug = GrSlug::MakeFromBuffer(readBuffer, nullptr);
+        SkASSERT(dstSlug != nullptr);
+        if (dstSlug != nullptr) {
+            this->drawSlug(canvas, dstSlug.get());
+        }
+
+        return;
+
+    #else
+            fSurfaceDrawContext->drawGlyphRunList(
+                    canvas, this->clip(), this->asMatrixProvider(), glyphRunList, paint);
+            return;
+     #endif
 }
 
 ///////////////////////////////////////////////////////////////////////////////
