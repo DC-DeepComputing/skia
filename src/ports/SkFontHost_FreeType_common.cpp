@@ -1594,6 +1594,7 @@ class SkFTGeometrySink {
         if (self.currentIsNot(pt)) {
             self.goingTo(pt);
             self.fPath->lineTo(SkFDot6ToScalar(pt->x), -SkFDot6ToScalar(pt->y));
+            printf("line: %f, %f\n", SkFDot6ToScalar(pt->x), -SkFDot6ToScalar(pt->y));
         }
         return 0;
     }
@@ -1604,6 +1605,11 @@ class SkFTGeometrySink {
             self.goingTo(pt1);
             self.fPath->quadTo(SkFDot6ToScalar(pt0->x), -SkFDot6ToScalar(pt0->y),
                                SkFDot6ToScalar(pt1->x), -SkFDot6ToScalar(pt1->y));
+            printf("quad: %f, %f, %f, %f\n",
+                   SkFDot6ToScalar(pt0->x),
+                   -SkFDot6ToScalar(pt0->y),
+                   SkFDot6ToScalar(pt1->x),
+                   -SkFDot6ToScalar(pt1->y));
         }
         return 0;
     }
@@ -1615,6 +1621,13 @@ class SkFTGeometrySink {
             self.fPath->cubicTo(SkFDot6ToScalar(pt0->x), -SkFDot6ToScalar(pt0->y),
                                 SkFDot6ToScalar(pt1->x), -SkFDot6ToScalar(pt1->y),
                                 SkFDot6ToScalar(pt2->x), -SkFDot6ToScalar(pt2->y));
+            printf("cubic: %f, %f, %f, %f, %f, %f\n",
+                   SkFDot6ToScalar(pt0->x),
+                   -SkFDot6ToScalar(pt0->y),
+                   SkFDot6ToScalar(pt1->x),
+                   -SkFDot6ToScalar(pt1->y),
+                   SkFDot6ToScalar(pt2->x),
+                   -SkFDot6ToScalar(pt2->y));
         }
         return 0;
     }
@@ -1646,6 +1659,7 @@ bool generateGlyphPathStatic(FT_Face face, SkPath* path) {
 }
 
 bool generateFacePathStatic(FT_Face face, SkGlyphID glyphID, SkPath* path) {
+    
     uint32_t flags = 0; //fLoadGlyphFlags;
     flags |= FT_LOAD_NO_BITMAP; // ignore embedded bitmaps so we're sure to get the outline
     flags &= ~FT_LOAD_RENDER;   // don't scan convert (we just want the outline)
@@ -1660,6 +1674,10 @@ bool generateFacePathStatic(FT_Face face, SkGlyphID glyphID, SkPath* path) {
         path->reset();
         return false;
     }
+
+    printf("== Glyph id: %d\n", glyphID);
+    path->dump();
+    
     return true;
 }
 
