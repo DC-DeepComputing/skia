@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include "src/core/SkWriteBuffer.h"
 #include "src/gpu/v1/Device_v1.h"
 
 #include "include/core/SkImageFilter.h"
@@ -49,8 +50,14 @@
 #include "src/image/SkSurface_Gpu.h"
 #include "src/utils/SkUTF.h"
 
+#if defined(SK_EXPERIMENTAL_SIMULATE_DRAWGLYPHRUNLIST_WITH_SLUG_SERIALIZE)
+#include "include/private/chromium/SkChromeRemoteGlyphCache.h"
+#endif
+
 #define ASSERT_SINGLE_OWNER SKGPU_ASSERT_SINGLE_OWNER(fContext->priv().singleOwner())
 
+// TODO: move to GrSlug?
+sk_sp<GrSlug> SkMakeSlugFromBuffer(SkReadBuffer& buffer, const SkStrikeClient* client);
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -947,8 +954,6 @@ void Device::drawAtlas(const SkRSXform xform[],
 
 ///////////////////////////////////////////////////////////////////////////////
 
-#include "include/private/chromium/SkChromeRemoteGlyphCache.h"
-
 void Device::onDrawGlyphRunList(SkCanvas* canvas,
                                 const SkGlyphRunList& glyphRunList,
                                 const SkPaint& paint) {
@@ -963,6 +968,39 @@ void Device::onDrawGlyphRunList(SkCanvas* canvas,
         }
         return;
     #elif defined(SK_EXPERIMENTAL_SIMULATE_DRAWGLYPHRUNLIST_WITH_SLUG_SERIALIZE)
+
+    // This is not a text blob draw. Handle using the normal code.
+    if (glyphRunList.blob() == nullptr) {
+        fSurfaceDrawContext->drawGlyphRunList(
+                canvas, this->clip(), this->asMatrixProvider(), glyphRunList, paint);
+        return;
+    }
+    auto srcSlug = GrSlug::ConvertBlob(
+            canvas, *glyphRunList.blob(), glyphRunList.origin(), paint);
+
+    // There is nothing to draw.
+    if (srcSlug == nullptr) { return; }
+
+    SkBinaryWriteBuffer writeBuffer;
+    srcSlug->flatten(writeBuffer);
+    auto data = writeBuffer.snapshotAsData();
+
+    SkReadBuffer readBuffer(data->data(), data->size());
+    auto dstSlug = SkMakeSlugFromBuffer(readBuffer, nullptr);
+    SkASSERT(dstSlug != nullptr);
+    if (dstSlug != nullptr) {
+        this->drawSlug(canvas, dstSlug.get());
+    }
+
+    return;
+
+    #elif defined(SK_EXPERIMENTAL_SIMULATE_DRAWGLYPHRUNLIST_WITH_SLUG_STRIKE_SERIALIZE)
+        if (glyphRunList.blob() == nullptr) {
+            fSurfaceDrawContext->drawGlyphRunList(
+                    canvas, this->clip(), this->asMatrixProvider(), glyphRunList, paint);
+            return;
+        }
+
         class DHM : public SkStrikeServer::DiscardableHandleManager {
         public:
             SkDiscardableHandleId createHandle() override { return 0; }
@@ -982,10 +1020,42 @@ void Device::onDrawGlyphRunList(SkCanvas* canvas,
         };
         CDHM* cdhm = new CDHM{};
         SkStrikeClient client{sk_ref_sp(cdhm)};
+        SkSurfaceProps surfaceProps;
+        if (!canvas->getProps(&surfaceProps)) {
+            SK_ABORT("Ahhhhh! can't get the surface props.");
+        }
+        sk_sp<SkColorSpace> colorSpace = canvas->imageInfo().refColorSpace();
+        bool useDFT = this->recordingContext()->asDirectContext()->supportsDistanceFieldText();
+        auto analysisCanvas = server.makeAnalysisCanvas(
+                canvas->getBaseLayerSize().width(), canvas->getBaseLayerSize().width(),
+                surfaceProps,
+                colorSpace,
+                useDFT
+                );
 
+        auto srcSlug = GrSlug::ConvertBlob(analysisCanvas.get(),
+                                        *glyphRunList.blob(),
+                                        glyphRunList.origin(),
+                                        paint);
+
+        std::vector<uint8_t> serverStrikeData;
+        server.writeStrikeData(&serverStrikeData);
+
+        if (!client.readStrikeData(serverStrikeData.data(), serverStrikeData.size())) {
+            SK_ABORT("Problem reading the strike cache updates");
+        }
+
+        SkBinaryWriteBuffer writeBuffer;
+        srcSlug->flatten(writeBuffer);
+        auto data = writeBuffer.snapshotAsData();
+        SkReadBuffer readBuffer(data->data(), data->size());
+        auto dstSlug = client.makeSlugFromBuffer(readBuffer);
+        this->drawSlug(canvas, dstSlug.get());
+        return;
     #else
         fSurfaceDrawContext->drawGlyphRunList(
             canvas, this->clip(), this->asMatrixProvider(), glyphRunList, paint);
+        return;
     #endif
 }
 
