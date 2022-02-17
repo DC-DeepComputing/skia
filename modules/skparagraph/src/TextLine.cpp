@@ -972,6 +972,10 @@ void TextLine::getRectsForRange(TextRange textRange0,
     this->iterateThroughVisualRuns(true,
         [textRange0, rectHeightStyle, rectWidthStyle, &boxes, &lastRun, startBox, this]
         (const Run* run, SkScalar runOffsetInLine, TextRange textRange, SkScalar* runWidthInLine) {
+        if (run->isEllipsis()) {
+            // Ellispsis text range is already included in the last run.
+            return true;
+        }
         *runWidthInLine = this->iterateThroughSingleRunByStyles(
         run, runOffsetInLine, textRange, StyleType::kNone,
         [run, runOffsetInLine, textRange0, rectHeightStyle, rectWidthStyle, &boxes, &lastRun, startBox, this]
