@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9d5cde37_69cff276",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-17T19:11:29Z",
+      "side": 1,
+      "message": "This is ready to reland, confirmed GpuTess bot is happy",
+      "revId": "ae8a8f58610088eff5823f6e4a35a3faa0ec289f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
