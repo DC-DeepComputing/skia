@@ -45,7 +45,7 @@ void dump_keys(SkShaderCodeDictionary *dict, const SkPaint &paint) {
 
     for (const auto& k : keys) {
         // TODO: we need a better way to assess that key creation succeeded
-        k->dump();
+        k->dump(dict);
     }
 #endif
 }
