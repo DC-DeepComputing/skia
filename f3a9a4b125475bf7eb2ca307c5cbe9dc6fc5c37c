@@ -16,6 +16,29 @@
       "message": "I guess Greg or Brian can approve the Options change.",
       "revId": "f3a9a4b125475bf7eb2ca307c5cbe9dc6fc5c37c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "14c1666b_bedfb7d4",
+        "filename": "src/gpu/v1/Device.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 977,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-02-17T21:13:45Z",
+      "side": 1,
+      "message": "There seems to be a subtle difference between these two debug options, and I\u0027m wondering if it\u0027s significant? If I\u0027m reading this right, the new code will still render non-text-blobs as before. The non-serializing code will presumably fail to render those? (Does convertGlyphRunListToSlug effectively do the same checks we have here, and then call GrSlug::ConvertBlob internally?). I know this is all debugging code, just want to understand what\u0027s happening.",
+      "range": {
+        "startLine": 959,
+        "startChar": 0,
+        "endLine": 977,
+        "endChar": 0
+      },
+      "revId": "f3a9a4b125475bf7eb2ca307c5cbe9dc6fc5c37c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
