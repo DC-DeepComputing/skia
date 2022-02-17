@@ -39,7 +39,30 @@
       },
       "revId": "8a494af36db8f2fc78a49a31f9e7d1fc6c959e74",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f103167d_46eb5664",
+        "filename": "include/core/SkFontArguments.h",
+        "patchSetId": 32
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2022-02-17T13:29:46Z",
+      "side": 1,
+      "message": "Yes, the CPAL palette in COLRv0 and COLRv1 fonts currently only has 32-bit sRGB entries, but indeed, while we were designing COLRv1, we started having conversation about color definitions, better color interpolation, OpenType variations for CPAL etc. for a future version of the standard - not all of the conversation was capture in this issue, but one way to track it is here: https://github.com/googlefonts/colr-gradients-spec/issues/356",
+      "parentUuid": "627c6f18_0f8327be",
+      "range": {
+        "startLine": 36,
+        "startChar": 12,
+        "endLine": 36,
+        "endChar": 19
+      },
+      "revId": "8a494af36db8f2fc78a49a31f9e7d1fc6c959e74",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
-  ],
-  "submitRequirementResults": []
+  ]
 }
