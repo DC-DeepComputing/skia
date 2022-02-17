@@ -16,6 +16,155 @@
       "message": "Moved out some changes into a separate CL and fixed code review notes",
       "revId": "e8f073a8e36b8570f91579cc3c12b8fb1f4bb45c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7031c16c_6a35b6f5",
+        "filename": "src/utils/SkBlitterTrace.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-02-17T20:41:44Z",
+      "side": 1,
+      "message": "These names are overly generic. All of the macros should start with `SK_BLITTER_TRACE_`.",
+      "range": {
+        "startLine": 24,
+        "startChar": 8,
+        "endLine": 24,
+        "endChar": 15
+      },
+      "revId": "e8f073a8e36b8570f91579cc3c12b8fb1f4bb45c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "108a597d_ca6ba585",
+        "filename": "src/utils/SkBlitterTrace.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-02-17T20:41:44Z",
+      "side": 1,
+      "message": "These names are all over the place and don\u0027t show that they are related. `SKIA_COMPARE_VM_VS_RP`, `SKVM_BLITTER_TRACE_ON`, `RASTER_PIPELINE_BLITTER_TRACE_ON`",
+      "range": {
+        "startLine": 38,
+        "startChar": 7,
+        "endLine": 38,
+        "endChar": 39
+      },
+      "revId": "e8f073a8e36b8570f91579cc3c12b8fb1f4bb45c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8c8d850b_fe8307e0",
+        "filename": "src/utils/SkBlitterTraceCommon.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-02-17T20:41:44Z",
+      "side": 1,
+      "message": "Why is this also defined here?",
+      "revId": "e8f073a8e36b8570f91579cc3c12b8fb1f4bb45c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "30dcd54d_17c77a7b",
+        "filename": "src/utils/SkBlitterTraceCommon.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 155,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-02-17T20:41:44Z",
+      "side": 1,
+      "message": "I don\u0027t understand why any of these macros exist since they provide no needed flexibility or configurability and simply make the logic difficult to follow.",
+      "range": {
+        "startLine": 155,
+        "startChar": 8,
+        "endLine": 155,
+        "endChar": 32
+      },
+      "revId": "e8f073a8e36b8570f91579cc3c12b8fb1f4bb45c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e9ae1262_b1f3bc65",
+        "filename": "src/utils/SkBlitterTraceCommon.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 157,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-02-17T20:41:44Z",
+      "side": 1,
+      "message": "`SK_BLITTER_TRACE_INIT` maybe? This doesn\u0027t really start anything, just declares a few globals and defines two translation unit unit specific traces? Why are these statics being declared in this header file?",
+      "range": {
+        "startLine": 157,
+        "startChar": 8,
+        "endLine": 157,
+        "endChar": 27
+      },
+      "revId": "e8f073a8e36b8570f91579cc3c12b8fb1f4bb45c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "00ae1395_d296f4d9",
+        "filename": "src/utils/SkBlitterTraceCommon.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-02-17T20:41:44Z",
+      "side": 1,
+      "message": "So this and `SAVE_BLITTER_CAPTURE` are supposed to come as a pair. But that isn\u0027t very obvious from the names. Maybe `SK_BLITTER_TRACE_LOCAL_SETUP` and `SK_BLITTER_TRACE_LOCAL_TEARDOWN` or something like that.",
+      "range": {
+        "startLine": 164,
+        "startChar": 8,
+        "endLine": 164,
+        "endChar": 29
+      },
+      "revId": "e8f073a8e36b8570f91579cc3c12b8fb1f4bb45c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "32f4180d_a82c9158",
+        "filename": "src/utils/SkBlitterTraceCommon.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 177,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-02-17T20:41:44Z",
+      "side": 1,
+      "message": "Put a `// SKIA_COMPARE_VM_VS_RP` here, this is a long way from the `#if`.",
+      "revId": "e8f073a8e36b8570f91579cc3c12b8fb1f4bb45c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
