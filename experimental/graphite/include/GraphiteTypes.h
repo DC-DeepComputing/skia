@@ -9,7 +9,6 @@
 #define skgpu_GraphiteTypes_DEFINED
 
 #include "include/core/SkTypes.h"
-#include "include/private/SkVx.h"
 
 namespace skgpu {
 
@@ -27,6 +26,15 @@ enum class SyncToCpu : bool {
 enum class BackendApi : unsigned {
     kMetal,
     kMock,
+};
+
+/**
+ * GPU SkImage and SkSurfaces can be stored such that (0, 0) in texture space may correspond to
+ * either the top-left or bottom-left content pixel.
+ */
+enum class SurfaceOrigin : int {
+    kTopLeft,
+    kBottomLeft,
 };
 
 /**

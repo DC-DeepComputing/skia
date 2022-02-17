@@ -56,6 +56,7 @@ public:
     TextureProxy* proxy() const { return fProxy.get(); }
     sk_sp<TextureProxy> refProxy() const { return fProxy; }
 
+    SurfaceOrigin origin() const { return fOrigin; }
     Swizzle swizzle() const { return fSwizzle; }
 
     void concatSwizzle(Swizzle swizzle) {
@@ -104,6 +105,7 @@ public:
 
 private:
     sk_sp<TextureProxy> fProxy;
+    SurfaceOrigin fOrigin = SurfaceOrigin::kTopLeft;
     Swizzle fSwizzle;
 };
 
