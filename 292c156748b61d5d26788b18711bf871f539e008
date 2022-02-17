@@ -53,6 +53,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d9beedf8_8bc90129",
+        "filename": "src/ports/SkFontHost_FreeType.cpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 193,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-02-17T12:59:15Z",
+      "side": 1,
+      "message": "As you pointed out earlier, after calling `FT_Palette_Select` there is no way to get this pointer out of FreeType again without resetting some information. So I was stashing it here initially on the idea that we could use it later. Turns out we only want the palette on the Skia side in SkColor form, so it never got used.",
+      "parentUuid": "2e8d6282_298219cf",
+      "revId": "292c156748b61d5d26788b18711bf871f539e008",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fe7c4fb7_f023122b",
@@ -84,6 +102,24 @@
       "side": 1,
       "message": "Removed scanFont changes - as that seems no longer needed.",
       "parentUuid": "fe7c4fb7_f023122b",
+      "revId": "292c156748b61d5d26788b18711bf871f539e008",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a824e15f_2f35e74b",
+        "filename": "src/ports/SkFontHost_FreeType.cpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 1953,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-02-17T12:59:15Z",
+      "side": 1,
+      "message": "The theory was that one could add a resolver to the overrides with this information. That is to say, avoid keeping and copying around any overridden (duplicate index) or invalid (palette index or entry index out of range) overrides. However, this isn\u0027t difficult to add back later if we do that. It isn\u0027t an issue for Chromium/Blink since they\u0027re already being resolved (I think).",
+      "parentUuid": "a52cc492_d2118a5d",
       "revId": "292c156748b61d5d26788b18711bf871f539e008",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
