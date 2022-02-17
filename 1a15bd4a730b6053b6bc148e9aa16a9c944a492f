@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b1ad5057_82bd4b6c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-17T16:46:20Z",
+      "side": 1,
+      "message": "Introduced a regression in previous drawImageRect dithering CL that made it so a constant-color shader would be dithered.",
+      "revId": "1a15bd4a730b6053b6bc148e9aa16a9c944a492f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
