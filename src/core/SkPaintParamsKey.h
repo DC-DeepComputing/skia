@@ -8,6 +8,7 @@
 #ifndef SkPaintParamsKey_DEFINED
 #define SkPaintParamsKey_DEFINED
 
+#include "include/core/SkSpan.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkTArray.h"
 #include "src/core/SkBuiltInCodeSnippetID.h"
@@ -21,6 +22,7 @@ enum class SkBackend : uint8_t {
     kGraphite,
     kSkVM
 };
+struct SkDataPayloadInfo;
 class SkPaintParamsKey;
 class SkShaderCodeDictionary;
 class SkShaderInfo;
@@ -51,9 +53,14 @@ public:
 private:
     void makeInvalid();
 
+    // Information about the current block being written
     struct StackFrame {
         int fCodeSnippetID;
         int fHeaderOffset;
+#ifdef SK_DEBUG
+        SkSpan<const SkDataPayloadInfo> fDataPayloadExpectations;
+        int fCurDataPayloadEntry = 0;
+#endif
     };
 
     bool fIsValid = true;
@@ -80,7 +87,7 @@ public:
     static const int kMaxBlockSize = std::numeric_limits<uint8_t>::max();
 
     std::pair<SkBuiltInCodeSnippetID, uint8_t> readCodeSnippetID(int headerOffset) const {
-        SkASSERT(headerOffset < this->sizeInBytes() - kBlockHeaderSizeInBytes);
+        SkASSERT(headerOffset <= this->sizeInBytes() - kBlockHeaderSizeInBytes);
 
         SkBuiltInCodeSnippetID id = static_cast<SkBuiltInCodeSnippetID>(fData[headerOffset]);
         uint8_t blockSize = fData[headerOffset+1];
@@ -94,8 +101,8 @@ public:
         SkASSERT(offset < this->sizeInBytes());
         return fData[offset];
     }
-    static int DumpBlock(const SkPaintParamsKey&, int headerOffset);
-    void dump() const;
+    static int DumpBlock(const SkShaderCodeDictionary*, const SkPaintParamsKey&, int headerOffset);
+    void dump(const SkShaderCodeDictionary*) const;
 #endif
     void toShaderInfo(SkShaderCodeDictionary*, SkShaderInfo*) const;
 
@@ -104,6 +111,10 @@ public:
 
     bool operator==(const SkPaintParamsKey& that) const;
     bool operator!=(const SkPaintParamsKey& that) const { return !(*this == that); }
+
+#if GR_TEST_UTILS
+    bool isErrorKey() const;
+#endif
 
 private:
     friend class SkPaintParamsKeyBuilder;
