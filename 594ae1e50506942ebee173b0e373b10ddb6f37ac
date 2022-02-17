@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a84a3f8a_83ebe4cf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-02-17T15:35:12Z",
+      "side": 1,
+      "message": "Actually thinking about this some more, why do we use std::string_view to pass these labels through all the constructors and then store then just store the result in a std::string at the end in GrGpuResource. Also to be very explicit on the types at what we\u0027re doing, when passing in an empty std::string_view to a ctor, we can just use {} as the parameter.",
+      "revId": "594ae1e50506942ebee173b0e373b10ddb6f37ac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b54eab8c_692091e1",
