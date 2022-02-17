@@ -153,9 +153,9 @@ public:
         fTail = newTail;
     }
     bool isEmpty() const { return fHead == nullptr; }
-    Iterator begin() { return Iterator{ fHead.get()}; }
+    Iterator begin() { return Iterator{fHead.get()}; }
     Iterator end() { return Iterator{nullptr}; }
-    Iterator begin() const { return Iterator{ fHead.get()}; }
+    Iterator begin() const { return Iterator{fHead.get()}; }
     Iterator end() const { return Iterator{nullptr}; }
     GrSubRun& front() const {return *fHead; }
 
