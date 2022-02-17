@@ -332,6 +332,61 @@ UNIX_ONLY_TEST(SkParagraph_InlinePlaceholderParagraph, reporter) {
     REPORTER_ASSERT(reporter, SkScalarNearlyEqual(boxes[6].rect.bottom(), 50, EPSILON100));
 }
 
+DEF_TEST(SkParagraph_ReturnsCorrectRectsWhenEllipsized, reporter) {
+    sk_sp<ResourceFontCollection> fontCollection = sk_make_sp<ResourceFontCollection>();
+    if (!fontCollection->fontsFound()) return;
+    TestCanvas canvas("SkParagraph_Ellipsize.png");
+    const char* text =
+            "This is a very long sentence to test if the text will properly wrap "
+            "around and go to the next line. Sometimes, short sentence. Longer "
+            "sentences are okay too because they are nessecary. Very short. ";
+    const size_t len = strlen(text);
+
+    ParagraphStyle paragraph_style;
+    paragraph_style.setMaxLines(1);
+    std::u16string ellipsis = u"\u2026";
+    paragraph_style.setEllipsis(ellipsis);
+    std::u16string e = paragraph_style.getEllipsisUtf16();
+    paragraph_style.turnHintingOff();
+    ParagraphBuilderImpl builder(paragraph_style, fontCollection);
+
+    TextStyle text_style;
+    text_style.setFontFamilies({SkString("Roboto")});
+    text_style.setColor(SK_ColorBLACK);
+    builder.pushStyle(text_style);
+    builder.addText(text, len);
+    builder.pop();
+
+    auto paragraph = builder.Build();
+    paragraph->layout(TestCanvasWidth);
+    paragraph->paint(canvas.get(), 0, 0);
+
+    auto impl = static_cast<ParagraphImpl*>(paragraph.get());
+
+    // Check that the ellipsizer limited the text to one line and did not wrap to a second line.
+    REPORTER_ASSERT(reporter, impl->lines().size() == 1);
+
+    auto& line = impl->lines()[0];
+    std::vector<TextBox> boxes;
+    TextRange range(0, 2);
+    line.getRectsForRange(range, RectHeightStyle::kTight, RectWidthStyle::kTight, boxes);
+    REPORTER_ASSERT(reporter, boxes.size() == 1);
+
+    std::vector<TextBox> boxes2;
+    TextRange range2(0, 3);
+    line.getRectsForRange(range2, RectHeightStyle::kTight, RectWidthStyle::kTight, boxes2);
+    REPORTER_ASSERT(reporter, boxes2.size() == 1);
+
+    SkRect rect1 = boxes[0].rect;
+    SkRect rect2 = boxes2[0].rect;
+
+    REPORTER_ASSERT(reporter, rect1.fLeft == rect2.fLeft);
+    REPORTER_ASSERT(reporter, rect1.fTop == rect2.fTop);
+    REPORTER_ASSERT(reporter, rect1.fBottom == rect2.fBottom);
+    REPORTER_ASSERT(reporter, rect1.fRight < rect2.fRight);
+
+}
+
 UNIX_ONLY_TEST(SkParagraph_InlinePlaceholderBaselineParagraph, reporter) {
     sk_sp<ResourceFontCollection> fontCollection = sk_make_sp<ResourceFontCollection>();
     TestCanvas canvas("SkParagraph_InlinePlaceholderBaselineParagraph.png");
