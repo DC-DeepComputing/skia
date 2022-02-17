@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5c5b861b_a2e7e188",
+        "filename": "src/utils/SkBlitterTrace.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-02-17T21:25:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7031c16c_6a35b6f5",
+      "range": {
+        "startLine": 24,
+        "startChar": 8,
+        "endLine": 24,
+        "endChar": 15
+      },
+      "revId": "e8f073a8e36b8570f91579cc3c12b8fb1f4bb45c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "108a597d_ca6ba585",
@@ -54,6 +78,30 @@
       "writtenOn": "2022-02-17T20:41:44Z",
       "side": 1,
       "message": "These names are all over the place and don\u0027t show that they are related. `SKIA_COMPARE_VM_VS_RP`, `SKVM_BLITTER_TRACE_ON`, `RASTER_PIPELINE_BLITTER_TRACE_ON`",
+      "range": {
+        "startLine": 38,
+        "startChar": 7,
+        "endLine": 38,
+        "endChar": 39
+      },
+      "revId": "e8f073a8e36b8570f91579cc3c12b8fb1f4bb45c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7a263b69_bd8ff10a",
+        "filename": "src/utils/SkBlitterTrace.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-02-17T21:25:01Z",
+      "side": 1,
+      "message": "First one allows nanobench to generate different output; it comes from the build argument.\nThe other two allow to collect the information for the output. They turn on the tracing.\nI added a comment to SkBlitterTrace.h header.",
+      "parentUuid": "108a597d_ca6ba585",
       "range": {
         "startLine": 38,
         "startChar": 7,
@@ -81,6 +129,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d27cb97c_2e067c54",
+        "filename": "src/utils/SkBlitterTraceCommon.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-02-17T21:25:01Z",
+      "side": 1,
+      "message": "Actually -it should only be defined here (with the prefix).",
+      "parentUuid": "8c8d850b_fe8307e0",
+      "revId": "e8f073a8e36b8570f91579cc3c12b8fb1f4bb45c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "30dcd54d_17c77a7b",
@@ -94,6 +160,30 @@
       "writtenOn": "2022-02-17T20:41:44Z",
       "side": 1,
       "message": "I don\u0027t understand why any of these macros exist since they provide no needed flexibility or configurability and simply make the logic difficult to follow.",
+      "range": {
+        "startLine": 155,
+        "startChar": 8,
+        "endLine": 155,
+        "endChar": 32
+      },
+      "revId": "e8f073a8e36b8570f91579cc3c12b8fb1f4bb45c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "44b8e94f_aaa7039a",
+        "filename": "src/utils/SkBlitterTraceCommon.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 155,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-02-17T21:25:01Z",
+      "side": 1,
+      "message": "Leftovers from the idea that didn\u0027t work. Removed.",
+      "parentUuid": "30dcd54d_17c77a7b",
       "range": {
         "startLine": 155,
         "startChar": 8,
@@ -127,6 +217,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f186352b_8050b216",
+        "filename": "src/utils/SkBlitterTraceCommon.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 157,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-02-17T21:25:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e9ae1262_b1f3bc65",
+      "range": {
+        "startLine": 157,
+        "startChar": 8,
+        "endLine": 157,
+        "endChar": 27
+      },
+      "revId": "e8f073a8e36b8570f91579cc3c12b8fb1f4bb45c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "00ae1395_d296f4d9",
@@ -150,6 +264,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "99185cc0_391ceda0",
+        "filename": "src/utils/SkBlitterTraceCommon.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-02-17T21:25:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "00ae1395_d296f4d9",
+      "range": {
+        "startLine": 164,
+        "startChar": 8,
+        "endLine": 164,
+        "endChar": 29
+      },
+      "revId": "e8f073a8e36b8570f91579cc3c12b8fb1f4bb45c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "32f4180d_a82c9158",
@@ -163,6 +301,24 @@
       "writtenOn": "2022-02-17T20:41:44Z",
       "side": 1,
       "message": "Put a `// SKIA_COMPARE_VM_VS_RP` here, this is a long way from the `#if`.",
+      "revId": "e8f073a8e36b8570f91579cc3c12b8fb1f4bb45c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "183e8e12_8298956d",
+        "filename": "src/utils/SkBlitterTraceCommon.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 177,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-02-17T21:25:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "32f4180d_a82c9158",
       "revId": "e8f073a8e36b8570f91579cc3c12b8fb1f4bb45c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
