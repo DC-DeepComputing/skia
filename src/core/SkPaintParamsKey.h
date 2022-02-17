@@ -8,6 +8,7 @@
 #ifndef SkPaintParamsKey_DEFINED
 #define SkPaintParamsKey_DEFINED
 
+#include "include/core/SkSpan.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkTArray.h"
 #include "src/core/SkBuiltInCodeSnippetID.h"
@@ -21,6 +22,7 @@ enum class SkBackend : uint8_t {
     kGraphite,
     kSkVM
 };
+struct SkDataPayloadInfo;
 class SkPaintParamsKey;
 class SkShaderCodeDictionary;
 class SkShaderInfo;
@@ -51,9 +53,14 @@ public:
 private:
     void makeInvalid();
 
+    // Information about the current block being written
     struct StackFrame {
         int fCodeSnippetID;
         int fHeaderOffset;
+#ifdef SK_DEBUG
+        SkSpan<const SkDataPayloadInfo> fDataPayloadExpectations;
+        int fCurDataPayloadEntry = 0;
+#endif
     };
 
     bool fIsValid = true;
@@ -104,6 +111,10 @@ public:
 
     bool operator==(const SkPaintParamsKey& that) const;
     bool operator!=(const SkPaintParamsKey& that) const { return !(*this == that); }
+
+#if GR_TEST_UTILS
+    bool isErrorKey() const;
+#endif
 
 private:
     friend class SkPaintParamsKeyBuilder;
