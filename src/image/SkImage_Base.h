@@ -22,6 +22,10 @@
 class GrTexture;
 #endif
 
+#ifdef SK_GRAPHITE_ENABLED
+#include "experimental/graphite/src/TextureProxyView.h"
+#endif
+
 #include <new>
 
 class GrDirectContext;
@@ -120,6 +124,16 @@ public:
 
     virtual GrBackendTexture onGetBackendTexture(bool flushPendingGrContextIO,
                                                  GrSurfaceOrigin* origin) const;
+
+#ifdef SK_GRAPHITE_ENABLED
+    // Returns aProxyView representation of the image, if possible. This also returns
+    // a color type. This may be different than the image's color type when the image is not
+    // texture-backed and the capabilities of the GPU require a data type conversion to put
+    // the data in a texture.
+    std::tuple<skgpu::TextureProxyView, SkColorType> asView(
+            skgpu::Recorder*,
+            skgpu::Mipmapped mipmapped) const;
+#endif
 #endif
 
     virtual bool onPinAsTexture(GrRecordingContext*) const { return false; }
@@ -209,6 +223,13 @@ private:
             const SkMatrix&,
             const SkRect* subset,
             const SkRect* domain) const = 0;
+#ifdef SK_GRAPHITE_ENABLED
+    virtual std::tuple<skgpu::TextureProxyView, SkColorType> onAsView(
+            skgpu::Recorder*,
+            skgpu::Mipmapped mipmapped) const {
+        return {}; // TODO: once incompatible derived classes are removed make this pure virtual
+    }
+#endif
 #endif
     // Set true by caches when they cache content that's derived from the current pixels.
     mutable std::atomic<bool> fAddedToRasterCache;

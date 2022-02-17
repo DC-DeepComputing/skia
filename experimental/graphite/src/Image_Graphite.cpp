@@ -7,6 +7,10 @@
 
 #include "experimental/graphite/src/Image_Graphite.h"
 
+#include "experimental/graphite/include/Recorder.h"
+#include "experimental/graphite/src/Caps.h"
+#include "experimental/graphite/src/RecorderPriv.h"
+
 #if SK_SUPPORT_GPU
 // TODO: move onAsFragmentProcessor off of SkImage_Base and remove this include
 #include "src/gpu/GrFragmentProcessor.h"
@@ -14,14 +18,54 @@
 
 namespace skgpu {
 
-Image_Graphite::Image_Graphite(const SkImageInfo& ii)
-    : SkImage_Base(ii, kNeedNewImageUniqueID) {
+Image::Image(Recorder*,
+             TextureProxyView view,
+             SkColorInfo info)
+    : SkImage_Base(SkImageInfo::Make(view.proxy()->dimensions(), std::move(info)),
+                   kNeedNewImageUniqueID)
+    , fSwizzle(view.swizzle())
+    , fOrigin(view.origin()) {
 }
 
-Image_Graphite::~Image_Graphite() {}
+Image::~Image() {}
 
 #if SK_SUPPORT_GPU
-std::unique_ptr<GrFragmentProcessor> Image_Graphite::onAsFragmentProcessor(
+sk_sp<SkImage> Image::makeTextureImage(Recorder* recorder,
+                                       Mipmapped mipmapped,
+                                       SkBudgeted budgeted) const {
+    if (!recorder) {
+        return nullptr;
+    }
+    if (this->dimensions().area() <= 1) {
+        mipmapped = Mipmapped::kNo;
+    }
+
+    if (this->isTextureBacked()) {
+        //**** We need to store a recorder but only for the time that the
+        //**** image is bound to the recorder (i.e. until it is uploaded).
+        //**** After that anyone can copy it (or, I guess, use it?)
+//        if (!as_IB(this)->context()->priv().matches(dContext)) {
+//            return nullptr;
+//        }
+
+        if (mipmapped == Mipmapped::kNo || this->hasMipmaps()) {
+            const SkImage* image = this;
+            return sk_ref_sp(const_cast<SkImage*>(image));
+        }
+    }
+    auto [view, ct] = as_IB(this)->asView(recorder, mipmapped);
+    if (!view) {
+        return nullptr;
+    }
+    SkASSERT(view.proxy());
+    SkASSERT(mipmapped == Mipmapped::kNo || view.proxy()->mipmapped() == Mipmapped::kYes);
+    SkColorInfo colorInfo(ct, this->alphaType(), this->refColorSpace());
+    return sk_make_sp<Image>(recorder,
+                             std::move(view),
+                             std::move(colorInfo));
+}
+
+std::unique_ptr<GrFragmentProcessor> Image::onAsFragmentProcessor(
         GrRecordingContext*,
         SkSamplingOptions,
         const SkTileMode[2],
@@ -33,3 +77,8 @@ std::unique_ptr<GrFragmentProcessor> Image_Graphite::onAsFragmentProcessor(
 #endif
 
 } // namespace skgpu
+
+#if SK_SUPPORT_GPU
+#endif
+
+
