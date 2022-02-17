@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "df0ba288_40c31adb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-02-17T18:39:18Z",
+      "side": 1,
+      "message": "I think this is probably the perf issue. I\u0027d like to try it and see. It\u0027s possible that just getting the list of tables is being expensive, but I hope not.",
+      "revId": "a1a8a26ed119728b937607ed36a77b22e6ad56b0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
