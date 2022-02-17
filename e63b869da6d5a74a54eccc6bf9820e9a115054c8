@@ -52,6 +52,24 @@
       "parentUuid": "3dbad905_a2b4dce8",
       "revId": "e63b869da6d5a74a54eccc6bf9820e9a115054c8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d722368f_d572c54b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 29
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-02-17T03:11:50Z",
+      "side": 1,
+      "message": "As a note, my working test looks like\n\n```\n\u003c!DOCTYPE html\u003e\n\u003chtml\u003e\n\u003chead\u003e\n\u003cmeta charset\u003d\"utf-8\"\u003e\n\u003ctitle\u003eTests for font-palette, @font-palette-values, base-palette, and override-colors\u003c/title\u003e\n\u003cstyle\u003e\n@font-face {\n    font-family: \"COLR-test-font\";\n    src: url(\"more_samples-glyf_colr_1.ttf\") format(\"truetype\");\n}\n\n@font-palette-values --P1 {\n    font-family: \"COLR-test-font\";\n    base-palette: 1;\n}\n\n@font-palette-values --P2 {\n    font-family: \"COLR-test-font\";\n    base-palette: 2;\n}\n\n@font-palette-values --P3 {\n    font-family: \"COLR-test-font\";\n    base-palette: 2;\n    override-colors: 2 #02dfe2ff;\n}\n\n@font-palette-values --P4 {\n    font-family: \"COLR-test-font\";\n    base-palette: 2;\n    override-colors:\n        0 #310b55ff,\n        1 #510970ff,\n        2 #76078fff,\n        3 #9606aaff,\n        4 #b404c4ff,\n        5 #d802e2ff,\n        6 #fa00ffff,\n        7 #888888ff,\n        8 #888888ff,\n        9 #888888ff,\n        10 #888888ff,\n        11 #888888ff;\n}\n\u003c/style\u003e\n\u003c/head\u003e\n\u003cbody\u003e\n\u003cdiv id\u003d\"target\" style\u003d\"font: 48px \u0027COLR-test-font\u0027;                    \"\u003e2 3\u003c/div\u003e\n\u003cdiv id\u003d\"target\" style\u003d\"font: 48px \u0027COLR-test-font\u0027; font-palette: --P1;\"\u003e2 3\u003c/div\u003e\n\u003cdiv id\u003d\"target\" style\u003d\"font: 48px \u0027COLR-test-font\u0027; font-palette: --P2;\"\u003e2 3\u003c/div\u003e\n\u003cdiv id\u003d\"target\" style\u003d\"font: 48px \u0027COLR-test-font\u0027; font-palette: --P3;\"\u003e2 3\u003c/div\u003e\n\u003cdiv id\u003d\"target\" style\u003d\"font: 48px \u0027COLR-test-font\u0027; font-palette: --P4;\"\u003e2 3\u003c/div\u003e\n\u003c/body\u003e\n\u003c/html\u003e\n```\n\nserved up from a local directory which also contains the test font from this CL.",
+      "parentUuid": "4ac16ca6_11d42aa2",
+      "revId": "e63b869da6d5a74a54eccc6bf9820e9a115054c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
