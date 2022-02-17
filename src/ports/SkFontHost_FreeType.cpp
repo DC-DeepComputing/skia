@@ -196,7 +196,7 @@ public:
 
 private:
     FaceRec(std::unique_ptr<SkStreamAsset> stream);
-    void setupAxes(const SkFontData& data);
+    void setupAxes(int index, const SkFixed* variation_axes, int axes_count);
     void setupPalette(const SkFontData& data);
 
     // Private to ref_ft_library and unref_ft_library
@@ -269,37 +269,41 @@ SkTypeface_FreeType::FaceRec::~FaceRec() {
     unref_ft_library();
 }
 
-void SkTypeface_FreeType::FaceRec::setupAxes(const SkFontData& data) {
+void SkTypeface_FreeType::FaceRec::setupAxes(int font_index,
+                                             const SkFixed* variation_axes,
+                                             int axes_count) {
+    SkDebugf("Setup Axes: %d\n", axes_count);
     if (!(fFace->face_flags & FT_FACE_FLAG_MULTIPLE_MASTERS)) {
         return;
     }
 
     // If a named variation is requested, don't overwrite the named variation's position.
-    if (data.getIndex() > 0xFFFF) {
+    if (font_index > 0xFFFF) {
         return;
     }
 
     SkDEBUGCODE(
-        FT_MM_Var* variations = nullptr;
-        if (FT_Get_MM_Var(fFace.get(), &variations)) {
-            LOG_INFO("INFO: font %s claims variations, but none found.\n",
-                     rec->fFace->family_name);
-            return;
-        }
-        SkAutoFree autoFreeVariations(variations);
+            FT_MM_Var* variations = nullptr; if (FT_Get_MM_Var(fFace.get(), &variations)) {
+                LOG_INFO("INFO: font %s claims variations, but none found.\n",
+                         rec->fFace->family_name);
+                return;
+            } SkAutoFree autoFreeVariations(variations);
 
-        if (static_cast<FT_UInt>(data.getAxisCount()) != variations->num_axis) {
-            LOG_INFO("INFO: font %s has %d variations, but %d were specified.\n",
-                     rec->fFace->family_name, variations->num_axis, data.getAxisCount());
-            return;
-        }
-    )
+            if (static_cast<FT_UInt>(axes_count) != variations->num_axis) {
+                LOG_INFO("INFO: font %s has %d variations, but %d were specified.\n",
+                         rec->fFace->family_name,
+                         variations->num_axis,
+                         data.getAxisCount());
+                return;
+            })
 
-    SkAutoSTMalloc<4, FT_Fixed> coords(data.getAxisCount());
-    for (int i = 0; i < data.getAxisCount(); ++i) {
-        coords[i] = data.getAxis()[i];
+            SkAutoSTMalloc<4, FT_Fixed>
+                    coords(axes_count);
+    for (int i = 0; i < axes_count; ++i) {
+        SkDebugf("Variation %d\n", variation_axes[i]);
+        coords[i] = variation_axes[i];
     }
-    if (FT_Set_Var_Design_Coordinates(fFace.get(), data.getAxisCount(), coords.get())) {
+    if (FT_Set_Var_Design_Coordinates(fFace.get(), axes_count, coords.get())) {
         LOG_INFO("INFO: font %s has variations, but specified variations could not be set.\n",
                  rec->fFace->family_name);
         return;
@@ -344,6 +348,9 @@ void SkTypeface_FreeType::FaceRec::setupPalette(const SkFontData& data) {
 #endif
 }
 
+// Weight axes in the variation position.
+constexpr SkFourByteTag kWght = SkSetFourByteTag('w', 'g', 'h', 't');
+
 // Will return nullptr on failure
 // Caller must lock f_t_mutex() before calling this function.
 std::unique_ptr<SkTypeface_FreeType::FaceRec>
@@ -380,7 +387,38 @@ SkTypeface_FreeType::FaceRec::Make(const SkTypeface_FreeType* typeface) {
     }
     SkASSERT(rec->fFace);
 
-    rec->setupAxes(*data);
+    // TODO(skau): Can this be more explicit?
+    if (data->getAxis()) {
+        SkDebugf("Axes set explicitly\n");
+        rec->setupAxes(data->getIndex(), data->getAxis(), data->getAxisCount());
+    } else {
+        // SYNTHESIZE FROM STYLE?
+        Scanner::AxisDefinitions axisDefinitions;
+        if (!Scanner::GetAxes(rec->fFace.get(), &axisDefinitions)) {
+            // Something bad has happened.
+            SkDebugf("SomETHING BAD Happened\n");
+        }
+        SkAutoSTMalloc<4, SkFixed> axisValues(axisDefinitions.count());
+        for (int i = 0; i < axisDefinitions.count(); i++) {
+            const Scanner::AxisDefinition& axis = axisDefinitions[i];
+            if (axis.fTag != kWght) {
+                // For non-wght, just copy the default.
+                // THIS IS PROBABLY WRONG
+                axisValues[i] = axis.fDefault;
+                continue;
+            }
+
+            // SHOULD SET FROM Axes instead of from style.  Set style from axes.
+            SkFixed weight = SkScalarToFixed(typeface->fontStyle().weight());
+            SkDebugf("Set wght to %d. Min %d. Max %d\n", weight, axis.fMinimum, axis.fMaximum);
+            const SkFixed axisValue = SkTPin(weight, axis.fMinimum, axis.fMaximum);
+            axisValues[i] = axisValue;
+            SkDebugf("Set axis value: %d\n", axisValues[i]);
+        }
+        rec->setupAxes(data->getIndex(), axisValues, axisDefinitions.count());
+        SkDebugf("Axes setup\n");
+    }
+
     rec->setupPalette(*data);
 
     // FreeType will set the charmap to the "most unicode" cmap if it exists.
@@ -680,6 +718,7 @@ static int GetVariationDesignPosition(AutoFTAccess& fta,
     for (FT_UInt i = 0; i < variations->num_axis; ++i) {
         coordinates[i].axis = variations->axis[i].tag;
         coordinates[i].value = SkFixedToScalar(coords[i]);
+        SkDebugf("Coordinate value %f\n", coordinates[i].value);
     }
 
     return variations->num_axis;
@@ -1731,7 +1770,9 @@ bool SkTypeface_FreeType::onGlyphMaskNeedsCurrentColor() const {
 int SkTypeface_FreeType::onGetVariationDesignPosition(
     SkFontArguments::VariationPosition::Coordinate coordinates[], int coordinateCount) const
 {
+    SkDebugf("Enter GetVarationDesign\n");
     AutoFTAccess fta(this);
+    SkDebugf("FT Face obtained\n");
     return GetVariationDesignPosition(fta, coordinates, coordinateCount);
 }
 

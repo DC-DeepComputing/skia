@@ -203,13 +203,23 @@ protected:
             return nullptr;
         }
 
-        // Check if a typeface with this FontIdentity is already in the FontIdentity cache.
-        sk_sp<SkTypeface> face = fTFCache.findByProcAndRef(find_by_FontIdentity, &identity);
-        if (!face) {
-            face.reset(SkTypeface_FCI::Create(fFCI, identity, std::move(outFamilyName), outStyle));
-            // Add this FontIdentity to the FontIdentity cache.
-            fTFCache.add(face);
+        SkDebugf("Weight from family name match %d. Requested: %d\n",
+                 outStyle.weight(),
+                 requestedStyle.weight());
+
+        // if a we have a variable font, adjust style since FontConfig will set
+        // style values to the defualt positions.
+        if (outStyle.variable()) {
+            SkDebugf("Found a variable font. Attempt to set axes.\n");
+            // TODO: How do partial matches work?
+            outStyle = requestedStyle;
         }
+
+        // TODO(skau): Restore the typeface cache somehow.
+
+        // Check if a typeface with this FontIdentity is already in the FontIdentity cache.
+        sk_sp<SkTypeface> face =
+                sk_sp(SkTypeface_FCI::Create(fFCI, identity, std::move(outFamilyName), outStyle));
         return face.release();
     }
 

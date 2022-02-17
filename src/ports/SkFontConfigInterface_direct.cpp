@@ -356,6 +356,15 @@ static int get_int(FcPattern* pattern, const char object[], int missing) {
     return value;
 }
 
+// Retrieves is variable property from |font|.
+static bool get_bool(FcPattern* pattern, const char object[], FcBool missing) {
+    FcBool value;
+    if (FcPatternGetBool(pattern, object, 0, &value) != FcResultMatch) {
+        return missing == FcTrue;
+    }
+    return value == FcTrue;
+}
+
 static int map_range(SkScalar value,
                      SkScalar old_min, SkScalar old_max,
                      SkScalar new_min, SkScalar new_max)
@@ -435,7 +444,10 @@ static SkFontStyle skfontstyle_from_fcpattern(FcPattern* pattern) {
         default: SkASSERT(false); break;
     }
 
-    return SkFontStyle(SkScalarRoundToInt(weight), SkScalarRoundToInt(width), slant);
+    bool variable = get_bool(pattern, FC_VARIABLE, FcFalse);
+    SkDebugf("Font is variable %d\n", variable);
+
+    return SkFontStyle(SkScalarRoundToInt(weight), SkScalarRoundToInt(width), slant, variable);
 }
 
 static void fcpattern_from_skfontstyle(SkFontStyle style, FcPattern* pattern) {
@@ -611,6 +623,10 @@ bool SkFontConfigInterfaceDirect::matchFamilyName(const char familyName[],
     fcpattern_from_skfontstyle(style, pattern);
 
     FcPatternAddBool(pattern, FC_SCALABLE, FcTrue);
+
+    // This will match named instances if we have an exact match and variable
+    // fonts otherwise.
+    FcPatternAddBool(pattern, FC_VARIABLE, FcDontCare);
 
     FcConfigSubstitute(fc, pattern, FcMatchPattern);
     FcDefaultSubstitute(pattern);

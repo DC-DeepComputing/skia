@@ -45,13 +45,19 @@ public:
         kOblique_Slant,
     };
 
-    constexpr SkFontStyle(int weight, int width, Slant slant) : fValue(
-        (SkTPin<int>(weight, kInvisible_Weight, kExtraBlack_Weight)) +
-        (SkTPin<int>(width, kUltraCondensed_Width, kUltraExpanded_Width) << 16) +
-        (SkTPin<int>(slant, kUpright_Slant, kOblique_Slant) << 24)
-     ) { }
+    constexpr SkFontStyle(int weight, int width, Slant slant)
+            : fValue((SkTPin<int>(weight, kInvisible_Weight, kExtraBlack_Weight)) +
+                     (SkTPin<int>(width, kUltraCondensed_Width, kUltraExpanded_Width) << 16) +
+                     (SkTPin<int>(slant, kUpright_Slant, kOblique_Slant) << 24))
+            , fVariable(false) {}
 
-    constexpr SkFontStyle() : SkFontStyle{kNormal_Weight, kNormal_Width, kUpright_Slant} { }
+    constexpr SkFontStyle(int weight, int width, Slant slant, bool variable)
+            : fValue((SkTPin<int>(weight, kInvisible_Weight, kExtraBlack_Weight)) +
+                     (SkTPin<int>(width, kUltraCondensed_Width, kUltraExpanded_Width) << 16) +
+                     (SkTPin<int>(slant, kUpright_Slant, kOblique_Slant) << 24))
+            , fVariable(variable) {}
+
+    constexpr SkFontStyle() : SkFontStyle{kNormal_Weight, kNormal_Width, kUpright_Slant, false} {}
 
     bool operator==(const SkFontStyle& rhs) const {
         return fValue == rhs.fValue;
@@ -60,6 +66,8 @@ public:
     int weight() const { return fValue & 0xFFFF; }
     int width() const { return (fValue >> 16) & 0xFF; }
     Slant slant() const { return (Slant)((fValue >> 24) & 0xFF); }
+
+    bool variable() const { return fVariable; }
 
     static constexpr SkFontStyle Normal() {
         return SkFontStyle(kNormal_Weight, kNormal_Width, kUpright_Slant);
@@ -76,6 +84,7 @@ public:
 
 private:
     int32_t fValue;
+    bool fVariable;
 };
 
 #endif
