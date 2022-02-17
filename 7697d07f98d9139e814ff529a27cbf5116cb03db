@@ -1,0 +1,153 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "65d12c34_4738b38d",
+        "filename": "src/utils/SkBlitterTrace.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-02-17T23:39:29Z",
+      "side": 1,
+      "message": "So this is more like `SK_BLITTER_TRACE_IS_SKVM`.",
+      "range": {
+        "startLine": 29,
+        "startChar": 7,
+        "endLine": 29,
+        "endChar": 28
+      },
+      "revId": "7697d07f98d9139e814ff529a27cbf5116cb03db",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b995ed0b_8d9383ba",
+        "filename": "src/utils/SkBlitterTrace.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-02-17T23:39:29Z",
+      "side": 1,
+      "message": "`SK_BLITTER_TRACE_STEP`",
+      "range": {
+        "startLine": 32,
+        "startChar": 8,
+        "endLine": 32,
+        "endChar": 26
+      },
+      "revId": "7697d07f98d9139e814ff529a27cbf5116cb03db",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5aad850f_b12875a5",
+        "filename": "src/utils/SkBlitterTrace.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-02-17T23:39:29Z",
+      "side": 1,
+      "message": "This is more like `SK_BLITTER_TRACE_IS_RASTER_PIPELINE`.",
+      "range": {
+        "startLine": 39,
+        "startChar": 7,
+        "endLine": 39,
+        "endChar": 39
+      },
+      "revId": "7697d07f98d9139e814ff529a27cbf5116cb03db",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2f034c76_045477a4",
+        "filename": "src/utils/SkBlitterTrace.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-02-17T23:39:29Z",
+      "side": 1,
+      "message": "I don\u0027t understand this `#undef` (or the similar one above for SKVM). It should be an error (a compile time error) for both `RASTER_PIPELINE_BLITTER_TRACE_ON` and `SKVM_BLITTER_TRACE_ON` to be defined (or the suggested names for these `SK_BLITTER_TRACE_IS_RASTER_PIPELINE` and `SK_BLITTER_TRACE_IS_SKVM`). It looks like it should also be an error to get here and neither of them be defined. So should ensure exactly one of them is defined at this point.",
+      "revId": "7697d07f98d9139e814ff529a27cbf5116cb03db",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "68737ebe_f252a80e",
+        "filename": "src/utils/SkBlitterTrace.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-02-17T23:39:29Z",
+      "side": 1,
+      "message": "`SK_BLITTER_TRACE_STEP_ACCUMULATE`",
+      "range": {
+        "startLine": 49,
+        "startChar": 8,
+        "endLine": 49,
+        "endChar": 33
+      },
+      "revId": "7697d07f98d9139e814ff529a27cbf5116cb03db",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a5e3e40b_fef84043",
+        "filename": "src/utils/SkBlitterTrace.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-02-17T23:39:29Z",
+      "side": 1,
+      "message": "This macro takes `scanlines` and `pixels` but doesn\u0027t use them?",
+      "revId": "7697d07f98d9139e814ff529a27cbf5116cb03db",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dd382bf1_06760e42",
+        "filename": "src/utils/SkBlitterTraceCommon.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 167,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-02-17T23:39:29Z",
+      "side": 1,
+      "message": "`SK_BLITTER_TRACE_PRINT`",
+      "range": {
+        "startLine": 167,
+        "startChar": 8,
+        "endLine": 167,
+        "endChar": 27
+      },
+      "revId": "7697d07f98d9139e814ff529a27cbf5116cb03db",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
