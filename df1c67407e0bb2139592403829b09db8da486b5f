@@ -52,6 +52,24 @@
       "parentUuid": "3fea7b3e_0a6098d8",
       "revId": "df1c67407e0bb2139592403829b09db8da486b5f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dc775e83_dd288317",
+        "filename": "modules/skparagraph/tests/SkParagraphTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 335,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-02-17T20:03:38Z",
+      "side": 1,
+      "message": "It\u0027s because you defined it as UNIX_ONLY_TEST. Actually, all our tests are UNIX_ONLY_TEST.\nYou can change it to DEF_TEST instead to run on Mac but do not check it it like that.\nOut tests compare numbers and the numbers cannot match on Linux and Mac at the same time.",
+      "parentUuid": "ca5df93d_bc6a9bcf",
+      "revId": "df1c67407e0bb2139592403829b09db8da486b5f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
