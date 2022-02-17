@@ -41,11 +41,11 @@ sk_sp<SkShader> make_blend_shader(sk_sp<SkShader> shaderA,
 
 void dump_keys(SkShaderCodeDictionary *dict, const SkPaint &paint) {
 #ifdef SK_DEBUG
-    auto keys = SkPaintPriv::ToKeys(paint, dict, SkBackend::kGraphite);
+    auto keys = SkPaintPriv::ToKeys1(paint, dict, SkBackend::kGraphite);
 
     for (const auto& k : keys) {
         // TODO: we need a better way to assess that key creation succeeded
-        k->dump();
+        k.dump();
     }
 #endif
 }
