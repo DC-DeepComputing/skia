@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "01356b8d_2abb8185",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-17T19:12:16Z",
+      "side": 1,
+      "message": "This should be good to go now. Canary hasn\u0027t reported back but its try bots are green.",
+      "revId": "b68a48118b5f19eb725c8c5901c741ff735a7e02",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
