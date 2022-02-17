@@ -254,13 +254,21 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(CommandBufferTest, reporter, context) {
     TextureInfo textureInfo;
 #endif
 
-    std::unique_ptr<SkPaintParamsKey> key = CreateKey(dict,
-                                                      SkBackend::kGraphite,
-                                                      ShaderCombo::ShaderType::kSolidColor,
-                                                      SkTileMode::kClamp,
-                                                      SkBlendMode::kSrc);
+    const SkShaderCodeDictionary::Entry* entry;
 
-    auto entry = dict->findOrCreate(std::move(key));
+    {
+        SkPaintParamsKeyPersistentData persistentData;
+        SkPaintParamsKeyBuilder builder(dict, &persistentData);
+
+        SkPaintParamsKey key = CreateKey(dict,
+                                         SkBackend::kGraphite,
+                                         &builder,
+                                         ShaderCombo::ShaderType::kSolidColor,
+                                         SkTileMode::kClamp,
+                                         SkBlendMode::kSrc);
+
+        entry = dict->findOrCreate(key);
+    }
 
     auto target = sk_sp<TextureProxy>(new TextureProxy(textureSize, textureInfo));
     REPORTER_ASSERT(reporter, target);
