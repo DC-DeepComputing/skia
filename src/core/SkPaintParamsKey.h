@@ -8,6 +8,7 @@
 #ifndef SkPaintParamsKey_DEFINED
 #define SkPaintParamsKey_DEFINED
 
+#include "include/core/SkSpan.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkTArray.h"
 #include "src/core/SkBuiltInCodeSnippetID.h"
@@ -25,9 +26,69 @@ class SkPaintParamsKey;
 class SkShaderCodeDictionary;
 class SkShaderInfo;
 
+class SkPaintParamsKeyPersistentData {
+public:
+    ~SkPaintParamsKeyPersistentData() {
+        SkASSERT(!this->isLocked());
+    }
+
+private:
+    friend class SkPaintParamsKeyBuilder;
+    friend class SkPaintParamsKey;
+
+    // TODO: templatize these
+    uint8_t& operator[] (int i) {
+        SkASSERT(!this->isLocked());
+        return fData[i];
+    }
+
+    uint8_t operator[] (int i) const {
+        return fData[i];
+    }
+
+    void push_back_n(int n, const uint8_t* data) {
+        SkASSERT(!this->isLocked());
+        fData.push_back_n(n, data);
+    }
+
+    void reserve_back(int n) {
+        SkASSERT(!this->isLocked());
+        fData.reserve_back(n);
+    }
+
+    void reset() {
+        SkASSERT(!this->isLocked());
+        fData.reset();
+    }
+
+    int count() const { return fData.count(); }
+    const uint8_t* data() const { return fData.data(); }
+
+    void lock() {
+        SkASSERT(!fLocked);
+        SkDEBUGCODE(fLocked = true;)
+    }
+
+    void unlock() {
+        SkASSERT(fLocked);
+        fData.reset();
+        SkDEBUGCODE(fLocked = false;)
+    }
+#ifdef SK_DEBUG
+    bool isLocked() const { return fLocked; }
+
+    bool fLocked = false;
+#endif
+
+    // TODO: this could be an SkArena
+    SkTArray<uint8_t, true> fData;
+};
+
+// TODO: Make the builder carry the 'backend' rather than passing it everywhere separately
 class SkPaintParamsKeyBuilder {
 public:
-    SkPaintParamsKeyBuilder(const SkShaderCodeDictionary*);
+    SkPaintParamsKeyBuilder(const SkShaderCodeDictionary*,
+                            SkPaintParamsKeyPersistentData*);
 
     void beginBlock(int codeSnippetID);
     void beginBlock(SkBuiltInCodeSnippetID id) { this->beginBlock(static_cast<int>(id)); }
@@ -39,12 +100,14 @@ public:
     }
 
 #ifdef SK_DEBUG
-    uint8_t byte(int offset) const { return fData[offset]; }
+    // Check that the builder has been reset to its initial state prior to creating a new key.
+    void checkReset();
+    uint8_t byte(int offset) const { return (*fPersistentData)[offset]; }
 #endif
 
-    std::unique_ptr<SkPaintParamsKey> snap();
+    SkPaintParamsKey snap();
 
-    int sizeInBytes() const { return fData.count(); }
+    int sizeInBytes() const { return fPersistentData->count(); }
 
     bool isValid() const { return fIsValid; }
 
@@ -62,7 +125,7 @@ private:
 
     // TODO: It is probably overkill but we could encode the SkBackend in the first byte of
     // the key.
-    SkTArray<uint8_t, true> fData;
+    SkPaintParamsKeyPersistentData* fPersistentData;
 };
 
 // This class is a compact representation of the shader needed to implement a given
@@ -78,6 +141,8 @@ public:
     static const int kBlockHeaderSizeInBytes = 2;
     static const int kBlockSizeOffsetInBytes = 1; // offset to the block size w/in the header
     static const int kMaxBlockSize = std::numeric_limits<uint8_t>::max();
+
+    ~SkPaintParamsKey();
 
     std::pair<SkBuiltInCodeSnippetID, uint8_t> readCodeSnippetID(int headerOffset) const {
         SkASSERT(headerOffset < this->sizeInBytes() - kBlockHeaderSizeInBytes);
@@ -99,23 +164,42 @@ public:
 #endif
     void toShaderInfo(SkShaderCodeDictionary*, SkShaderInfo*) const;
 
-    const void* data() const { return fData.data(); }
-    int sizeInBytes() const { return fData.count(); }
+    SkSpan<const uint8_t> asSpan() const { return fData; }
+    const uint8_t* data() const { return fData.data(); }
+    int sizeInBytes() const { return SkTo<int>(fData.size()); }
 
     bool operator==(const SkPaintParamsKey& that) const;
     bool operator!=(const SkPaintParamsKey& that) const { return !(*this == that); }
 
-private:
-    friend class SkPaintParamsKeyBuilder;
+#if GR_TEST_UTILS
+    bool isErrorKey() const;
+#endif
 
-    SkPaintParamsKey(SkTArray<uint8_t, true>&&);
+private:
+    friend class SkPaintParamsKeyBuilder;   // for the parented-data ctor
+    friend class SkShaderCodeDictionary;    // for the raw-data ctor
+
+    // This ctor is to be used when paintparam keys are being consecutively generated
+    // by paintparam key builders. The persistent data is shared between the builder and
+    // its keys.
+    SkPaintParamsKey(SkSpan<const uint8_t> span, SkPaintParamsKeyPersistentData*);
+
+    // This ctor is used when there is no persistentData object associated with the key
+    // (i.e., when the key is in the dictionary)
+    SkPaintParamsKey(SkSpan<const uint8_t> rawData);
 
     static int AddBlockToShaderInfo(SkShaderCodeDictionary*,
                                     const SkPaintParamsKey&,
                                     int headerOffset,
                                     SkShaderInfo*);
 
-    SkTArray<uint8_t, true> fData;
+    // The memory referenced in 'fData' is always owned by someone else. If 'fPersistentData' is
+    // null, an SkArena owns the memory and no explicit freeing is required. If 'fPersistentData'
+    // is non-null then the memory must be explicitly locked (in the ctor) and unlocked (in the
+    // dtor).
+    SkSpan<const uint8_t> fData;
+    // This class should only ever access the 'lock' and 'unlock' calls on 'fPersistentData'
+    SkPaintParamsKeyPersistentData* fPersistentData;
 };
 
 #endif // SkPaintParamsKey_DEFINED
