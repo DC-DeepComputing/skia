@@ -36,9 +36,9 @@ constexpr SkColor gColors[] = {
 
 constexpr GradData gGradData[] = {
     { 1, gColors, nullptr },
-    { 2, gColors, nullptr },
-    { 3, gColors, nullptr },
-    { 4, gColors, nullptr },
+    // { 2, gColors, nullptr },
+    // { 3, gColors, nullptr },
+    // { 4, gColors, nullptr },
 };
 
 static sk_sp<SkShader> MakeLinear(const SkPoint pts[2], const GradData& data, SkTileMode tm) {
@@ -87,7 +87,8 @@ static sk_sp<SkShader> Make2Conical(const SkPoint pts[2], const GradData& data, 
 typedef sk_sp<SkShader> (*GradMaker)(const SkPoint pts[2], const GradData& data, SkTileMode tm);
 
 constexpr GradMaker gGradMakers[] = {
-    MakeLinear, MakeRadial, MakeSweep, Make2Radial, Make2Conical,
+    MakeLinear,
+    // MakeRadial, MakeSweep, Make2Radial, Make2Conical,
 };
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -116,7 +117,7 @@ protected:
         paint.setDither(fDither);
 
         canvas->translate(SkIntToScalar(20), SkIntToScalar(20));
-        constexpr uint8_t kAlphas[] = { 0xff, 0x40 };
+        constexpr uint8_t kAlphas[] = { 0x40 };
         for (size_t a = 0; a < SK_ARRAY_COUNT(kAlphas); ++a) {
             for (size_t i = 0; i < SK_ARRAY_COUNT(gGradData); ++i) {
                 canvas->save();
