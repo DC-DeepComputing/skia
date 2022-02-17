@@ -947,6 +947,8 @@ void Device::drawAtlas(const SkRSXform xform[],
 
 ///////////////////////////////////////////////////////////////////////////////
 
+#include "include/private/chromium/SkChromeRemoteGlyphCache.h"
+
 void Device::onDrawGlyphRunList(SkCanvas* canvas,
                                 const SkGlyphRunList& glyphRunList,
                                 const SkPaint& paint) {
@@ -957,13 +959,34 @@ void Device::onDrawGlyphRunList(SkCanvas* canvas,
     #if defined(SK_EXPERIMENTAL_SIMULATE_DRAWGLYPHRUNLIST_WITH_SLUG)
         auto slug = this->convertGlyphRunListToSlug(glyphRunList, paint);
         if (slug != nullptr) {
-            this->drawSlug(slug.get());
+            this->drawSlug(canvas, slug.get());
         }
         return;
-    #endif
+    #elif defined(SK_EXPERIMENTAL_SIMULATE_DRAWGLYPHRUNLIST_WITH_SLUG_SERIALIZE)
+        class DHM : public SkStrikeServer::DiscardableHandleManager {
+        public:
+            SkDiscardableHandleId createHandle() override { return 0; }
+            bool lockHandle(SkDiscardableHandleId id) override { return true; }
+            bool isHandleDeleted(SkDiscardableHandleId id) override { return false; }
+        };
+        DHM dhm;
+        SkStrikeServer server{&dhm};
 
-    fSurfaceDrawContext->drawGlyphRunList(
-        canvas, this->clip(), this->asMatrixProvider(), glyphRunList, paint);
+        class CDHM : public SkStrikeClient::DiscardableHandleManager {
+        public:
+            bool deleteHandle(SkDiscardableHandleId id) override { return true; }
+            void notifyCacheMiss(SkStrikeClient::CacheMissType type, int fontSize) override {}
+            void notifyReadFailure(
+                const SkStrikeClient::DiscardableHandleManager::ReadFailureData& data) override {
+            }
+        };
+        CDHM* cdhm = new CDHM{};
+        SkStrikeClient client{sk_ref_sp(cdhm)};
+
+    #else
+        fSurfaceDrawContext->drawGlyphRunList(
+            canvas, this->clip(), this->asMatrixProvider(), glyphRunList, paint);
+    #endif
 }
 
 ///////////////////////////////////////////////////////////////////////////////
