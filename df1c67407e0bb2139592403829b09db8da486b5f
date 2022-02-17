@@ -16,6 +16,24 @@
       "message": "This test is not complete, i couldn\u0027t find a way to run the test in this file, may need some advise",
       "revId": "df1c67407e0bb2139592403829b09db8da486b5f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3fea7b3e_0a6098d8",
+        "filename": "modules/skparagraph/tests/SkParagraphTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 335,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-02-17T19:54:01Z",
+      "side": 1,
+      "message": "Look at SkParagraph_Ellipsize test and add there a call for getRectsForRange.\nYou can play with paragraph_style.setMaxLines({number of lines}) to get different text on the screen.\nSelect the entire text range and make sure the rectangle coming from getRectsForRange is correct.",
+      "parentUuid": "47aa11d2_833c6876",
+      "revId": "df1c67407e0bb2139592403829b09db8da486b5f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
