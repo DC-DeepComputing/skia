@@ -70,6 +70,23 @@
       "parentUuid": "4ac16ca6_11d42aa2",
       "revId": "e63b869da6d5a74a54eccc6bf9820e9a115054c8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "936a9681_94d27d27",
+        "filename": "include/core/SkFontArguments.h",
+        "patchSetId": 29
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-02-17T03:55:47Z",
+      "side": 1,
+      "message": "Actually, there\u0027s no need for this here. Probably a left over from when specifying palette entries by name? Probably best in the future to just let the user get the palette entry names that are available and resolve to indexes anyway.",
+      "revId": "e63b869da6d5a74a54eccc6bf9820e9a115054c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
