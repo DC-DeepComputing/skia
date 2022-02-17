@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b17e59e0_da5ca543",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 32
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2022-02-17T13:16:02Z",
+      "side": 1,
+      "message": "Public API LGTM",
+      "revId": "8a494af36db8f2fc78a49a31f9e7d1fc6c959e74",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "627c6f18_0f8327be",
+        "filename": "include/core/SkFontArguments.h",
+        "patchSetId": 32
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2022-02-17T13:16:02Z",
+      "side": 1,
+      "message": "This does limit us to 32-bit sRGB.  I know the current specs/implementations are limited to this.  I think the next logical extension here would be for future iterations of this struct to be updated to use SkColor4f so that we can accept wide color gamut values as well.  I imagine some clients, such as CSS, will have the notion of wide color and limiting the range to sRGB may be somewhat unexpected to those users.",
+      "range": {
+        "startLine": 36,
+        "startChar": 12,
+        "endLine": 36,
+        "endChar": 19
+      },
+      "revId": "8a494af36db8f2fc78a49a31f9e7d1fc6c959e74",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
