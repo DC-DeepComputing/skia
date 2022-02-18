@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ad99ba0f_ad68bb58",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-02-18T16:36:23Z",
+      "side": 1,
+      "message": "Still not a big fan, but this is fine.",
+      "revId": "7e680d719c7936068fcd530f86c9db085921034b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aafee986_02cc7cd3",
+        "filename": "src/core/SkRasterPipelineBlitter.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 352,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-02-18T16:36:23Z",
+      "side": 1,
+      "message": "nit: indent",
+      "range": {
+        "startLine": 352,
+        "startChar": 23,
+        "endLine": 352,
+        "endChar": 27
+      },
+      "revId": "7e680d719c7936068fcd530f86c9db085921034b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fe8b30e0_87afeaa9",
+        "filename": "src/core/SkRasterPipelineBlitter.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 573,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-02-18T16:36:23Z",
+      "side": 1,
+      "message": "nit: indent",
+      "range": {
+        "startLine": 573,
+        "startChar": 20,
+        "endLine": 573,
+        "endChar": 23
+      },
+      "revId": "7e680d719c7936068fcd530f86c9db085921034b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4f103c88_bf8f3dbc",
+        "filename": "src/core/SkVMBlitter.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 738,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-02-18T16:36:23Z",
+      "side": 1,
+      "message": "nit: indent",
+      "range": {
+        "startLine": 738,
+        "startChar": 22,
+        "endLine": 738,
+        "endChar": 27
+      },
+      "revId": "7e680d719c7936068fcd530f86c9db085921034b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
