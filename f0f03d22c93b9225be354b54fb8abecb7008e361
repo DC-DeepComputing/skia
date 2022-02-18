@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dfe7c34e_2ca7fd0b",
+        "filename": "src/core/SkPaintParamsKey.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-18T17:15:55Z",
+      "side": 1,
+      "message": "nit, new line between paragraphs?",
+      "range": {
+        "startLine": 33,
+        "startChar": 24,
+        "endLine": 33,
+        "endChar": 25
+      },
+      "revId": "f0f03d22c93b9225be354b54fb8abecb7008e361",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b8ed1665_cfbc4b0b",
+        "filename": "src/core/SkPaintParamsKey.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-18T17:15:55Z",
+      "side": 1,
+      "message": "don\u0027t?",
+      "range": {
+        "startLine": 36,
+        "startChar": 49,
+        "endLine": 36,
+        "endChar": 50
+      },
+      "revId": "f0f03d22c93b9225be354b54fb8abecb7008e361",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a39bc451_b0c6c3c0",
+        "filename": "src/core/SkPaintParamsKey.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-18T17:15:55Z",
+      "side": 1,
+      "message": "can be private?",
+      "range": {
+        "startLine": 57,
+        "startChar": 9,
+        "endLine": 57,
+        "endChar": 19
+      },
+      "revId": "f0f03d22c93b9225be354b54fb8abecb7008e361",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "76046069_6c68b843",
+        "filename": "src/core/SkPaintParamsKey.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-18T17:15:55Z",
+      "side": 1,
+      "message": "wdyt of renaming snap() to something like lockAsKey() to reflect the memory not truly being snapped off anymore?",
+      "range": {
+        "startLine": 61,
+        "startChar": 21,
+        "endLine": 61,
+        "endChar": 25
+      },
+      "revId": "f0f03d22c93b9225be354b54fb8abecb7008e361",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "715accde_ec9b5a38",
+        "filename": "src/core/SkPaintParamsKey.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 171,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-18T17:15:55Z",
+      "side": 1,
+      "message": "surround this and its usages in SkDEBUGCODE?",
+      "range": {
+        "startLine": 170,
+        "startChar": 4,
+        "endLine": 171,
+        "endChar": 49
+      },
+      "revId": "f0f03d22c93b9225be354b54fb8abecb7008e361",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
