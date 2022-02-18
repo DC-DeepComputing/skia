@@ -846,10 +846,9 @@ protected:
                               ctxOptions.fMinDistanceFieldFontSize,
                               ctxOptions.fGlyphsAsPathsFontSize};
 
-        SkMatrix drawMatrix = this->localToDevice();
-
-        // Run to fill the cache with the right strike transfer information.
-        drawMatrix.preTranslate(glyphRunList.origin().x(), glyphRunList.origin().y());
+        // Full matrix for placing glyphs.
+        SkMatrix positionMatrix = this->localToDevice();
+        positionMatrix.preTranslate(glyphRunList.origin().x(), glyphRunList.origin().y());
 
         // TODO these two passes can be converted into one when the SkRemoteGlyphCache's strike
         //  cache is fortified with enough information for supporting slug creation.
@@ -859,14 +858,15 @@ protected:
         for (auto& glyphRun : glyphRunList) {
             fPainter.processGlyphRun(nullptr,
                                      glyphRun,
-                                     drawMatrix,
+                                     positionMatrix,
                                      paint,
                                      control,
                                      "Convert Slug Analysis");
         }
 
         // Use the glyph strike cache to get actual glyph information.
-        return skgpu::v1::MakeSlug(drawMatrix, glyphRunList, paint, control, &fConvertPainter);
+        return skgpu::v1::MakeSlug(
+                this->localToDevice(), glyphRunList, paint, control, &fConvertPainter);
     }
     #endif  // SK_SUPPORT_GPU
 
@@ -1158,7 +1158,9 @@ bool SkStrikeClientImpl::translateTypefaceID(SkAutoDescriptor* toChange) const {
         // Get the local typeface from remote typefaceID.
         auto* tfPtr = fRemoteFontIdToTypeface.find(rec.fTypefaceID);
         // Received a strike for a typeface which doesn't exist.
-        if (!tfPtr) { return false; }
+        if (!tfPtr) {
+            return false;
+        }
         // Update the typeface id to work with the client side.
         rec.fTypefaceID = tfPtr->get()->uniqueID();
         std::memcpy(ptr, &rec, size);
