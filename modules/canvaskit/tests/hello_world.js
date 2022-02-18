@@ -6,14 +6,28 @@ describe('The test harness', () => {
         expect(null).toBeFalsy();
     });
 
-    describe('the CanvasKit loading promise', () => {
+    describe('the EverythingLoaded promise', () => {
         beforeEach(async () => {
-            await LoadCanvasKit;
+            await EverythingLoaded;
         });
 
         it('has access to CanvasKit', () => {
            const r = CanvasKit.LTRBRect(1, 2, 3, 4);
            expect(r.constructor.name).toEqual('Float32Array');
         });
+
+        it('can talk to Gold', (done) => {
+            expect(GoldReportPort).toBeTruthy();
+            fetch(`http://localhost:${GoldReportPort}/test`)
+              .then((resp) => resp.text())
+              .then((text) => {
+                  console.log("Response was", text);
+                  expect(text).toBeTruthy();
+                  done();
+              }).catch((err) =>{
+                  fail("Got an error talking to Gold:", err);
+                  done();
+            })
+        })
     });
 })

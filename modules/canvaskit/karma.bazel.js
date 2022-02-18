@@ -1,3 +1,9 @@
+const path = require('path');
+// This should be a file created by gold_test_env.go which contains the port number
+// on which it is listening.
+const testOnEnvPortPath = path.join(process.env['ENV_DIR'], 'port');
+console.log(process.env);
+
 module.exports = function(config) {
   // Set the default values to be what are needed when testing the
   // WebAssembly build locally.
@@ -9,7 +15,9 @@ module.exports = function(config) {
     // list of files / patterns to load in the browser
     files: [],
 
-    proxies: {},
+    proxies: {
+      '/test_on_env_port': '/absolute'+testOnEnvPortPath,
+    },
 
     // test results reporter to use
     // possible values: 'dots', 'progress'
@@ -30,6 +38,8 @@ module.exports = function(config) {
 
   // Bazel will inject some code here to set up things like which browser to target.
   BAZEL_APPLY_SETTINGS(cfg)
+
+  console.log(cfg.proxies);
 
   config.set(cfg);
 };

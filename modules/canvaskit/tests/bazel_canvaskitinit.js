@@ -3,7 +3,7 @@
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 60000;
 
 let CanvasKit = null;
-const LoadCanvasKit = new Promise((resolve, reject) => {
+const _LoadCanvasKit = new Promise((resolve, reject) => {
     console.log('canvaskit loading', new Date());
     CanvasKitInit({
         locateFile: (file) => '/base/skia/modules/canvaskit/canvaskit_wasm/'+file,
@@ -16,3 +16,12 @@ const LoadCanvasKit = new Promise((resolve, reject) => {
         reject();
     });
 });
+let GoldReportPort = null;
+const _FetchGoldPort = fetch('/test_on_env_port')
+  .then((resp) => resp.text())
+  .then((text) => {
+      console.log('Gold should be listening on port', text);
+      GoldReportPort = text;
+  });
+
+const EverythingLoaded = Promise.all([_LoadCanvasKit, _FetchGoldPort]);
