@@ -94,6 +94,30 @@
       },
       "revId": "f5e86bae8543216a047668dddd1a9df99490cf2d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5df20dc5_6d54b0e2",
+        "filename": "modules/skparagraph/tests/SkParagraphTest.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 335,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-02-18T20:42:37Z",
+      "side": 1,
+      "message": "It\u0027s not entirely true. Text range for ellipsis is [0:2) but it\u0027s not what you need. For getRectForRange we should give the text-based indexes. Line 338 connects the canvas with png file (by the way, you need a unique name for that, SkParagraph_Ellipsize.png already taken). \nDraw the rectangle that you get from your getRectForRange for [0:2) on canvas and take a look at the png file. There are many examples how to do that - I visually verify every test.\nYou will see than [0:2) will select first 2 letters in the entire paragraph.\n(Which is not what you want).",
+      "parentUuid": "d8b07fe3_8c0e07df",
+      "range": {
+        "startLine": 335,
+        "startChar": 0,
+        "endLine": 335,
+        "endChar": 14
+      },
+      "revId": "f5e86bae8543216a047668dddd1a9df99490cf2d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
