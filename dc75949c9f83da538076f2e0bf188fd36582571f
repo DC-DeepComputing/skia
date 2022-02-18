@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "df89532e_6f5b03b2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-02-18T15:40:47Z",
+      "side": 1,
+      "message": "It looks like Skia perf did pick up a perf change with the original change (https://skia-review.googlesource.com/c/skia/+/510206) However, all the perf changes are to \"image\" tests, which appear to just be decoding various image formats and rendering them. This change shouldn\u0027t have much to do with that?",
+      "revId": "dc75949c9f83da538076f2e0bf188fd36582571f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
