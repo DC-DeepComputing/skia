@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "64d8a80e_6aeb8f13",
+        "filename": "src/core/SkPaintParamsKey.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-02-18T20:21:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dfe7c34e_2ca7fd0b",
+      "range": {
+        "startLine": 33,
+        "startChar": 24,
+        "endLine": 33,
+        "endChar": 25
+      },
+      "revId": "f0f03d22c93b9225be354b54fb8abecb7008e361",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b8ed1665_cfbc4b0b",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-02-18T17:15:55Z",
       "side": 1,
       "message": "don\u0027t?",
+      "range": {
+        "startLine": 36,
+        "startChar": 49,
+        "endLine": 36,
+        "endChar": 50
+      },
+      "revId": "f0f03d22c93b9225be354b54fb8abecb7008e361",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "59103965_2ed05fa3",
+        "filename": "src/core/SkPaintParamsKey.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-02-18T20:21:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b8ed1665_cfbc4b0b",
       "range": {
         "startLine": 36,
         "startChar": 49,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5ff2c529_27d0f29a",
+        "filename": "src/core/SkPaintParamsKey.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-02-18T20:21:47Z",
+      "side": 1,
+      "message": "Not w/o friending. It is called in a couple external places right before a key gets constructed (i.e., in ExtractPaintData and CreateKey)",
+      "parentUuid": "a39bc451_b0c6c3c0",
+      "range": {
+        "startLine": 57,
+        "startChar": 9,
+        "endLine": 57,
+        "endChar": 19
+      },
+      "revId": "f0f03d22c93b9225be354b54fb8abecb7008e361",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "76046069_6c68b843",
@@ -93,6 +165,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b9b4ec8c_6ed93c95",
+        "filename": "src/core/SkPaintParamsKey.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-02-18T20:21:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "76046069_6c68b843",
+      "range": {
+        "startLine": 61,
+        "startChar": 21,
+        "endLine": 61,
+        "endChar": 25
+      },
+      "revId": "f0f03d22c93b9225be354b54fb8abecb7008e361",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "715accde_ec9b5a38",
@@ -106,6 +202,30 @@
       "writtenOn": "2022-02-18T17:15:55Z",
       "side": 1,
       "message": "surround this and its usages in SkDEBUGCODE?",
+      "range": {
+        "startLine": 170,
+        "startChar": 4,
+        "endLine": 171,
+        "endChar": 49
+      },
+      "revId": "f0f03d22c93b9225be354b54fb8abecb7008e361",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "08cc6c75_099ac0de",
+        "filename": "src/core/SkPaintParamsKey.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 171,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-02-18T20:21:47Z",
+      "side": 1,
+      "message": "Unfortunately, since unlocking resets the memory in the builder we still need to unlock (and thus need this pointer) even in release.",
+      "parentUuid": "715accde_ec9b5a38",
       "range": {
         "startLine": 170,
         "startChar": 4,
