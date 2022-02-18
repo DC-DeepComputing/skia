@@ -16,6 +16,23 @@
       "message": "Removed an unnecessary (and dangerous) assertion.",
       "revId": "b860757e88eb338507f0a1f9e7ae36828ef574c2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7ad16492_e20d4ff0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18724
+      },
+      "writtenOn": "2022-02-18T23:11:20Z",
+      "side": 1,
+      "message": "Confirmed fixed https://github.com/flutter/flutter/issues/98603",
+      "revId": "b860757e88eb338507f0a1f9e7ae36828ef574c2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
