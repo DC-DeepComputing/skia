@@ -323,11 +323,12 @@ void SkTypeface_FreeType::FaceRec::setupPalette(const SkFontData& data) {
 
     for (int i = 0; i < data.getPaletteOverrideCount(); ++i) {
         const SkFontArguments::Palette::Override& paletteOverride = data.getPaletteOverrides()[i];
-        if (paletteOverride.index > fFTPaletteEntryCount) {
+        const int& overrideIndex = paletteOverride.index;
+        if (overrideIndex < 0 || fFTPaletteEntryCount <= overrideIndex) {
             continue;
         }
         const SkColor& skColor = paletteOverride.color;
-        FT_Color& ftColor = ftPalette[i];
+        FT_Color& ftColor = ftPalette[paletteOverride.index];
         ftColor.blue  = SkColorGetB(skColor);
         ftColor.green = SkColorGetG(skColor);
         ftColor.red   = SkColorGetR(skColor);
