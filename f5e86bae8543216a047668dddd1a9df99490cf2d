@@ -118,6 +118,30 @@
       },
       "revId": "f5e86bae8543216a047668dddd1a9df99490cf2d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3952639a_441b9014",
+        "filename": "modules/skparagraph/tests/SkParagraphTest.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 335,
+      "author": {
+        "id": 18724
+      },
+      "writtenOn": "2022-02-18T20:54:23Z",
+      "side": 1,
+      "message": "ah I think I forgot to mention. I am not trying to select the ellipsis in the test, I just want to verify it returns correct text box.\n\nThe original issue is here https://github.com/flutter/flutter/issues/98603\n\nThe correct behavior when I call getRectForRange(0, 2) should return one text box for range [0, 2] in paragraph.\n\nWhat it actually returns are two text boxes. One box for range [0, 2] in paragraph, another box for [n-3, n] in paragraph which is the ellipsis. This is because the additional ellipsis run matches the input range",
+      "parentUuid": "5df20dc5_6d54b0e2",
+      "range": {
+        "startLine": 335,
+        "startChar": 0,
+        "endLine": 335,
+        "endChar": 14
+      },
+      "revId": "f5e86bae8543216a047668dddd1a9df99490cf2d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
