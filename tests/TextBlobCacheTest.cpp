@@ -287,7 +287,7 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(TextBlobIntegerOverflowTest, reporter, ctxInf
 }
 #endif
 
-static const bool kDumpPngs = true;
+static const bool kDumpPngs = false;
 // dump pngs needs a "good" and a "bad" directory to put the results in. This allows the use of the
 // skdiff tool to visualize the differences.
 
