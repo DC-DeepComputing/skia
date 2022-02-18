@@ -16,6 +16,24 @@
       "message": "nit: textRange",
       "revId": "88d9399f575ee0c7555ebfe75721ed91f1cedff7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "57dcc384_a0ba12ed",
+        "filename": "modules/skparagraph/src/TextLine.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 763,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-02-18T21:23:26Z",
+      "side": 1,
+      "message": "No, there is textRange declaration above. In some builds it would be an error, but even without it - it\u0027s not good to hide a declaration.\nBesides, it\u0027s a test range really - we are trying it to find the text style that we need.",
+      "parentUuid": "ba4d6289_07bf32f1",
+      "revId": "88d9399f575ee0c7555ebfe75721ed91f1cedff7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
