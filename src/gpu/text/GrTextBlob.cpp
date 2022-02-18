@@ -1818,7 +1818,6 @@ SDFTSubRun::makeAtlasTextOp(const GrClip* clip,
                             skgpu::v1::SurfaceDrawContext* sdc,
                             GrAtlasSubRunOwner) const {
     SkASSERT(this->glyphCount() != 0);
-    SkASSERT(!viewMatrix.localToDevice().hasPerspective());
 
     const SkMatrix& drawMatrix = viewMatrix.localToDevice();
 
