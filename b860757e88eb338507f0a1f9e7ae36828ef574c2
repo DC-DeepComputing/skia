@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "96d3a30f_d1f66050",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-02-18T21:30:00Z",
+      "side": 1,
+      "message": "Removed an unnecessary (and dangerous) assertion.",
+      "revId": "b860757e88eb338507f0a1f9e7ae36828ef574c2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
