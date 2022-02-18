@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f6edfbd7_0deaed78",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-02-18T23:40:21Z",
+      "side": 1,
+      "message": "Locally built Chromium with this and https://chromium-review.googlesource.com/c/chromium/src/+/3447507 and https://v-fonts.com/fonts/gimme-constructo-variable works much better.",
+      "revId": "9b543dd6ed11619ebf6bae53a1d23bd57fad19ea",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
