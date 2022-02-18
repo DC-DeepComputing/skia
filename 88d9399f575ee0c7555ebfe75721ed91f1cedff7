@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ba4d6289_07bf32f1",
+        "filename": "modules/skparagraph/src/TextLine.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 763,
+      "author": {
+        "id": 18724
+      },
+      "writtenOn": "2022-02-18T21:20:27Z",
+      "side": 1,
+      "message": "nit: textRange",
+      "revId": "88d9399f575ee0c7555ebfe75721ed91f1cedff7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
