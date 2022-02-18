@@ -1016,6 +1016,7 @@ SkScalerContext_FreeType::~SkScalerContext_FreeType() {
 FT_Error SkScalerContext_FreeType::setupSize() {
     f_t_mutex().assertHeld();
     FT_Error err = FT_Activate_Size(fFTSize);
+    printf("yscale: %f\n", 1000 * SkFT_FixedToScalar(fFTSize->metrics.y_scale) / 64.0f);
     if (err != 0) {
         return err;
     }

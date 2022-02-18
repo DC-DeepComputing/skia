@@ -26,7 +26,8 @@
 namespace skiagm {
 
 namespace {
-const char kColrCpalTestFontPath[] = "fonts/more_samples-glyf_colr_1.ttf";
+const char kColrCpalTestFontPath[] = "fonts/more_samples-glyf_colr_1.ttf";  
+  // const char kColrCpalTestFontPath[] = "fonts/GimmeConstructoVariable_02.ttf";
 
 constexpr SkFontArguments::Palette::Override kColorOverridesAll[] = {
         // A gradient of dark to light purple for the circle palette test glyph.
@@ -54,8 +55,13 @@ constexpr SkFontArguments::Palette kOnePaletteOverride{
 constexpr SkFontArguments::Palette kAllPaletteOverride{
         0, kColorOverridesAll, SK_ARRAY_COUNT(kColorOverridesAll)};
 
-constexpr uint16_t kTestGlyphs[] = {56, 57};
+  //constexpr uint16_t kTestGlyphs[] = {26};
+constexpr uint16_t kTestGlyphs[] = {56};
 
+
+    // <GlyphID id="71" name="circle_r300"/>
+    // <GlyphID id="72" name="circle_r350"/>
+  
 }  // namespace
 
 class FontPaletteGM : public GM {
@@ -72,6 +78,9 @@ protected:
     void onOnceBeforeDraw() override {
         SkFontArguments paletteArguments;
         paletteArguments.setPalette(fPalette);
+        SkFontArguments::VariationPosition::Coordinate coordinates[] = {
+                {SkSetFourByteTag('w', 'g', 'h', 't'), 700}};
+        paletteArguments.setVariationDesignPosition(SkFontArguments::VariationPosition{coordinates, 1});
 
         fTypefaceDefault = MakeResourceAsTypeface(kColrCpalTestFontPath);
         fTypefaceCloned =
@@ -102,34 +111,21 @@ protected:
         SkFontMetrics metrics;
         SkScalar y = 0;
         SkScalar textSize = 200;
-        for (auto& typeface : { fTypefaceFromStream, fTypefaceCloned} ) {
-            SkFont defaultFont(fTypefaceDefault);
-            SkFont paletteFont(typeface);
-            defaultFont.setSize(textSize);
-            paletteFont.setSize(textSize);
+        SkFont defaultFont(fTypefaceDefault);
+        defaultFont.setSize(textSize);
 
-            defaultFont.getMetrics(&metrics);
-            y += -metrics.fAscent;
-            // Set a recognizable foreground color which is not to be overriden.
-            paint.setColor(SK_ColorGRAY);
-            // Draw the default palette on the left, for COLRv0 and COLRv1.
-            canvas->drawSimpleText(kTestGlyphs,
-                                   SK_ARRAY_COUNT(kTestGlyphs) * sizeof(uint16_t),
-                                   SkTextEncoding::kGlyphID,
-                                   0,
-                                   y,
-                                   defaultFont,
-                                   paint);
-            // Draw the overriden palette on the right.
-            canvas->drawSimpleText(kTestGlyphs,
-                                   SK_ARRAY_COUNT(kTestGlyphs) * sizeof(uint16_t),
-                                   SkTextEncoding::kGlyphID,
-                                   440,
-                                   y,
-                                   paletteFont,
-                                   paint);
-            y += metrics.fDescent + metrics.fLeading;
-        }
+        defaultFont.getMetrics(&metrics);
+        y += -metrics.fAscent;
+        // Set a recognizable foreground color which is not to be overriden.
+        paint.setColor(SK_ColorGRAY);
+        // Draw the default palette on the left, for COLRv0 and COLRv1.
+        canvas->drawSimpleText(kTestGlyphs,
+                               SK_ARRAY_COUNT(kTestGlyphs) * sizeof(uint16_t),
+                               SkTextEncoding::kGlyphID,
+                               0,
+                               y,
+                               defaultFont,
+                               paint);
         return DrawResult::kOk;
     }
 
