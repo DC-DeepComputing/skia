@@ -22,6 +22,7 @@ enum class SkBackend : uint8_t {
     kGraphite,
     kSkVM
 };
+struct SkDataPayloadInfo;
 class SkPaintParamsKey;
 class SkShaderCodeDictionary;
 class SkShaderInfo;
@@ -82,9 +83,14 @@ public:
 private:
     void makeInvalid();
 
+    // Information about the current block being written
     struct StackFrame {
         int fCodeSnippetID;
         int fHeaderOffset;
+#ifdef SK_DEBUG
+        SkSpan<const SkDataPayloadInfo> fDataPayloadExpectations;
+        int fCurDataPayloadEntry = 0;
+#endif
     };
 
     bool fIsValid = true;
@@ -114,7 +120,7 @@ public:
     ~SkPaintParamsKey();
 
     std::pair<SkBuiltInCodeSnippetID, uint8_t> readCodeSnippetID(int headerOffset) const {
-        SkASSERT(headerOffset < this->sizeInBytes() - kBlockHeaderSizeInBytes);
+        SkASSERT(headerOffset <= this->sizeInBytes() - kBlockHeaderSizeInBytes);
 
         SkBuiltInCodeSnippetID id = static_cast<SkBuiltInCodeSnippetID>(fData[headerOffset]);
         uint8_t blockSize = fData[headerOffset+1];
@@ -128,8 +134,7 @@ public:
         SkASSERT(offset < this->sizeInBytes());
         return fData[offset];
     }
-    static int DumpBlock(const SkPaintParamsKey&, int headerOffset);
-    void dump() const;
+    void dump(const SkShaderCodeDictionary*) const;
 #endif
     void toShaderInfo(SkShaderCodeDictionary*, SkShaderInfo*) const;
 

@@ -16,13 +16,14 @@ namespace {
 
 SkPaintParamsKey create_key(SkPaintParamsKeyBuilder* builder, int dummySnippetID, int size) {
 
+    SkASSERT(size <= 1024);
+    static const uint8_t kDummyData[1024] = { 0 };
+
     SkDEBUGCODE(builder->checkReset());
 
     builder->beginBlock(dummySnippetID);
 
-    for (int i = 0; i < size; ++i) {
-        builder->addByte(i % 256);
-    }
+    builder->addBytes(size, kDummyData);
 
     builder->endBlock();
 
@@ -37,26 +38,44 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(KeyTest, reporter, context) {
 
     SkPaintParamsKeyBuilder builder(dict);
 
-    static const int kMaxBlockDataSize = SkPaintParamsKey::kMaxBlockSize -
-                                         SkPaintParamsKey::kBlockHeaderSizeInBytes;
-
     // invalid code snippet ID
     {
-        SkPaintParamsKey key = create_key(&builder, kBuiltInCodeSnippetIDCount, kMaxBlockDataSize);
+        SkPaintParamsKey key = create_key(&builder, kBuiltInCodeSnippetIDCount, 32);
+        // key creation fails
         REPORTER_ASSERT(reporter, key.isErrorKey());
     }
 
-    int dummySnippetID = dict->addUserDefinedSnippet();
-
     // _Just_ on the edge of being too big
     {
-        SkPaintParamsKey key = create_key(&builder, dummySnippetID, kMaxBlockDataSize);
+        static const int kMaxBlockDataSize = SkPaintParamsKey::kMaxBlockSize -
+                                             SkPaintParamsKey::kBlockHeaderSizeInBytes;
+
+        static constexpr int kNumDataPayloadEntries1 = 1;
+        static constexpr SkDataPayloadInfo kDataPayloadEntries1[kNumDataPayloadEntries1] = {
+            { "data", DataPayloadType::kByte, kMaxBlockDataSize },
+        };
+
+        int dummySnippetID1 = dict->addUserDefinedSnippet("keyAlmostTooBig",
+                                                          SkMakeSpan(kDataPayloadEntries1,
+                                                                     kNumDataPayloadEntries1));
+
+        SkPaintParamsKey key = create_key(&builder, dummySnippetID1, kMaxBlockDataSize);
         REPORTER_ASSERT(reporter, key.sizeInBytes() == SkPaintParamsKey::kMaxBlockSize);
     }
 
     // Too big
     {
-        SkPaintParamsKey key = create_key(&builder, dummySnippetID, 1024);
+        static constexpr int kNumDataPayloadEntries2 = 1;
+        static constexpr SkDataPayloadInfo kDataPayloadEntries2[kNumDataPayloadEntries2] = {
+                { "data", DataPayloadType::kByte, 1024 },
+        };
+
+        int dummySnippetID2 = dict->addUserDefinedSnippet("keyTooBig",
+                                                          SkMakeSpan(kDataPayloadEntries2,
+                                                                     kNumDataPayloadEntries2));
+
+        SkPaintParamsKey key = create_key(&builder, dummySnippetID2, 1024);
+        // key creation fails
         REPORTER_ASSERT(reporter, key.isErrorKey());
     }
 }
