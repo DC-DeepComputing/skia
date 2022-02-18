@@ -12,6 +12,7 @@
 #include "src/core/SkStrikeSpec.h"
 #include "src/core/SkWriteBuffer.h"
 #include "src/gpu/text/GrAtlasManager.h"
+#include "include/private/chromium/SkChromeRemoteGlyphCache.h"
 
 GrGlyphVector::GrGlyphVector(sk_sp<SkStrike>&& strike, SkSpan<Variant> glyphs)
         : fStrike{std::move(strike)}
@@ -33,9 +34,14 @@ GrGlyphVector GrGlyphVector::Make(
 }
 
 std::optional<GrGlyphVector> GrGlyphVector::MakeFromBuffer(SkReadBuffer& buffer,
+                                                           const SkStrikeClient* client,
                                                            GrSubRunAllocator* alloc) {
     auto descriptor = SkAutoDescriptor::MakeFromBuffer(buffer);
     if (!descriptor.has_value()) { return {}; }
+
+    if (client != nullptr) {
+        if (!client->translateTypefaceID(&descriptor.value())) { return {}; }
+    }
 
     sk_sp<SkStrike> strike = SkStrikeCache::GlobalStrikeCache()->findStrike(*descriptor->getDesc());
 
