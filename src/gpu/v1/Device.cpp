@@ -50,6 +50,10 @@
 #include "src/image/SkSurface_Gpu.h"
 #include "src/utils/SkUTF.h"
 
+#if defined(SK_EXPERIMENTAL_SIMULATE_DRAWGLYPHRUNLIST_WITH_SLUG_STRIKE_SERIALIZE)
+    #include "include/private/chromium/SkChromeRemoteGlyphCache.h"
+#endif
+
 #define ASSERT_SINGLE_OWNER SKGPU_ASSERT_SINGLE_OWNER(fContext->priv().singleOwner())
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -988,7 +992,68 @@ void Device::onDrawGlyphRunList(SkCanvas* canvas,
         }
 
         return;
+    #elif defined(SK_EXPERIMENTAL_SIMULATE_DRAWGLYPHRUNLIST_WITH_SLUG_STRIKE_SERIALIZE)
+        if (glyphRunList.blob() == nullptr) {
+            fSurfaceDrawContext->drawGlyphRunList(
+                    canvas, this->clip(), this->asMatrixProvider(), glyphRunList, paint);
+            return;
+        }
 
+        class DHM : public SkStrikeServer::DiscardableHandleManager {
+        public:
+            SkDiscardableHandleId createHandle() override { return 0; }
+            bool lockHandle(SkDiscardableHandleId id) override { return true; }
+            bool isHandleDeleted(SkDiscardableHandleId id) override { return false; }
+        };
+        DHM dhm;
+        SkStrikeServer server{&dhm};
+
+        class CDHM : public SkStrikeClient::DiscardableHandleManager {
+        public:
+            bool deleteHandle(SkDiscardableHandleId id) override { return true; }
+            void notifyCacheMiss(SkStrikeClient::CacheMissType type, int fontSize) override {}
+            void notifyReadFailure(
+                    const SkStrikeClient::DiscardableHandleManager::ReadFailureData& data) override {
+            }
+        };
+        CDHM* cdhm = new CDHM{};
+        SkStrikeClient client{sk_ref_sp(cdhm)};
+        SkSurfaceProps surfaceProps;
+        if (!canvas->getProps(&surfaceProps)) {
+            SK_ABORT("Ahhhhh! can't get the surface props.");
+        }
+        sk_sp<SkColorSpace> colorSpace = canvas->imageInfo().refColorSpace();
+        bool useDFT = this->recordingContext()->asDirectContext()->supportsDistanceFieldText();
+        auto analysisCanvas = server.makeAnalysisCanvas(
+                canvas->getBaseLayerSize().width(), canvas->getBaseLayerSize().width(),
+                surfaceProps,
+                colorSpace,
+                useDFT
+        );
+
+        auto srcSlug = GrSlug::ConvertBlob(analysisCanvas.get(),
+                                           *glyphRunList.blob(),
+                                           glyphRunList.origin(),
+                                           paint);
+
+        if (srcSlug == nullptr) {
+            return;
+        }
+
+        std::vector<uint8_t> serverStrikeData;
+        server.writeStrikeData(&serverStrikeData);
+
+        if (!client.readStrikeData(serverStrikeData.data(), serverStrikeData.size())) {
+            SK_ABORT("Problem reading the strike cache updates");
+        }
+
+        SkBinaryWriteBuffer writeBuffer;
+        srcSlug->flatten(writeBuffer);
+        auto data = writeBuffer.snapshotAsData();
+        SkReadBuffer readBuffer(data->data(), data->size());
+        auto dstSlug = client.makeSlugFromBuffer(readBuffer);
+        this->drawSlug(canvas, dstSlug.get());
+        return;
     #else
             fSurfaceDrawContext->drawGlyphRunList(
                     canvas, this->clip(), this->asMatrixProvider(), glyphRunList, paint);
