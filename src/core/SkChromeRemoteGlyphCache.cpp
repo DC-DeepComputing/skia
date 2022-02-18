@@ -865,6 +865,7 @@ protected:
                                      "Convert Slug Analysis");
         }
 
+        drawMatrix = this->localToDevice();
         // Use the glyph strike cache to get actual glyph information.
         return skgpu::v1::MakeSlug(drawMatrix, glyphRunList, paint, control, &fConvertPainter);
     }
