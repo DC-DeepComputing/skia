@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "22fb17c0_e770b6f7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18724
+      },
+      "writtenOn": "2022-02-18T21:48:17Z",
+      "side": 1,
+      "message": "Superseded by https://skia-review.googlesource.com/c/skia/+/510857",
+      "revId": "f5e86bae8543216a047668dddd1a9df99490cf2d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "44feabc6_46d2aea1",
