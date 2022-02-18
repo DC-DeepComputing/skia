@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "643b314d_231932b7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-02-18T14:47:04Z",
+      "side": 1,
+      "message": "While Chromium isn\u0027t using this, it\u0027s a good idea to patch up what could be an exploitable buffer overrun.",
+      "revId": "629ef5d6db10cf2ca7e721b690ba9313211054cc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
