@@ -22,6 +22,30 @@
       },
       "revId": "f5e86bae8543216a047668dddd1a9df99490cf2d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f3800c6a_3d958c74",
+        "filename": "modules/skparagraph/tests/SkParagraphTest.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 335,
+      "author": {
+        "id": 18724
+      },
+      "writtenOn": "2022-02-18T17:12:06Z",
+      "side": 1,
+      "message": "The original issue is that the Ellipsis run will have a TextRange(0, 3), so getRectForRange(0, 2) will also have a match with the Ellipsis run. and would also crash at line 992, the method asserts input text range is the same as run text range.",
+      "parentUuid": "44feabc6_46d2aea1",
+      "range": {
+        "startLine": 335,
+        "startChar": 0,
+        "endLine": 335,
+        "endChar": 14
+      },
+      "revId": "f5e86bae8543216a047668dddd1a9df99490cf2d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
