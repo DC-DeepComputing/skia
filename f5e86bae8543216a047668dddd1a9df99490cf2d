@@ -70,6 +70,30 @@
       },
       "revId": "f5e86bae8543216a047668dddd1a9df99490cf2d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d8b07fe3_8c0e07df",
+        "filename": "modules/skparagraph/tests/SkParagraphTest.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 335,
+      "author": {
+        "id": 18724
+      },
+      "writtenOn": "2022-02-18T17:41:39Z",
+      "side": 1,
+      "message": "I copied the code from existing Ellispsize test, so it should have been ellipsized. The line 361 also makes sure that. As long as it ellipsizes, the code will send an extra ellipsis run which cause the crash if the getRectForRange is (0, 2) because it would match the textrange of ellipsis run.\n\nI am not totally sure why the ellipsis text range is always(0,3) and not (len(text)-3, len(text)), but it looks like some code depends on it? I also found out that the last run would already contain the range of ellipsis, so we may as well just discard the ellipsis run in this method",
+      "parentUuid": "66c55472_46dbf8f3",
+      "range": {
+        "startLine": 335,
+        "startChar": 0,
+        "endLine": 335,
+        "endChar": 14
+      },
+      "revId": "f5e86bae8543216a047668dddd1a9df99490cf2d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
