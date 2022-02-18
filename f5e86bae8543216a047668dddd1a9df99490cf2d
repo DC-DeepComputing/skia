@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "44feabc6_46d2aea1",
+        "filename": "modules/skparagraph/tests/SkParagraphTest.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 335,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-02-18T15:02:17Z",
+      "side": 1,
+      "message": "I am not sure what this test is doing.\nYou check [0:2) and [0:3) text ranges that are nowhere near the ellipsis.\nYou should check [len - 2: len), probably, to make sure your code works.\nAlso, I think we need more than one check, think of some other cases.",
+      "range": {
+        "startLine": 335,
+        "startChar": 0,
+        "endLine": 335,
+        "endChar": 14
+      },
+      "revId": "f5e86bae8543216a047668dddd1a9df99490cf2d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
