@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c9817767_83994e90",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2022-02-18T21:26:15Z",
+      "side": 1,
+      "message": "you will also want to cherry-pick this CL to android/next-release.",
+      "revId": "21806e50253e5c2d57229199add89c85447737b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
