@@ -39,10 +39,6 @@ public:
     void appendFloatArray(const char* owner,
                           const char* name,
                           const std::vector<float>& value);
-    // Deprecated.
-    void appendStringArray(const char* owner,
-                           const char* attrName,
-                           const std::vector<SkString>& values);
     void appendNodeIdArray(const char* owner,
                            const char* attrName,
                            const std::vector<int>& nodeIds);

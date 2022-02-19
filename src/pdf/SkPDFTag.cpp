@@ -115,24 +115,6 @@ void SkPDF::AttributeList::appendFloatArray(
     fAttrs->appendObject(std::move(attrDict));
 }
 
-// Deprecated.
-void SkPDF::AttributeList::appendStringArray(
-         const char* owner,
-         const char* name,
-         const std::vector<SkString>& values) {
-    if (!fAttrs)
-        fAttrs = SkPDFMakeArray();
-    std::unique_ptr<SkPDFDict> attrDict = SkPDFMakeDict();
-    attrDict->insertName("O", owner);
-    std::unique_ptr<SkPDFArray> pdfArray = SkPDFMakeArray();
-    for (const SkString& element : values) {
-        pdfArray->appendString(element);
-    }
-    attrDict->insertObject(name, std::move(pdfArray));
-    fAttrs->appendObject(std::move(attrDict));
-}
-
-
 void SkPDF::AttributeList::appendNodeIdArray(
         const char* owner,
         const char* name,
