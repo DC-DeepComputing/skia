@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c54d19b4_9fc0375a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-02-20T21:54:29Z",
+      "side": 1,
+      "message": "Need to wait for https://chromium-review.googlesource.com/c/chromium/src/+/3475793 to land first.",
+      "revId": "8d86f8cb17213749524813ec3599728951c2412c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
