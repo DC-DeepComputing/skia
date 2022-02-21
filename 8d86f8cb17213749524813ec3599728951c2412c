@@ -16,6 +16,23 @@
       "message": "Need to wait for https://chromium-review.googlesource.com/c/chromium/src/+/3475793 to land first.",
       "revId": "8d86f8cb17213749524813ec3599728951c2412c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8eec3a28_4200f0b8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2022-02-21T09:26:53Z",
+      "side": 1,
+      "message": "Non owner LGTM, thanks for the fix. What does COLRv0 then usually end up being set to? I tried to understand that from [1]. What sequence of events would prevent autohinting for COLRv0? \n\n[1] https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/ports/SkFontHost_FreeType.cpp;l\u003d826?q\u003dfLoadGlyphFlags",
+      "revId": "8d86f8cb17213749524813ec3599728951c2412c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
