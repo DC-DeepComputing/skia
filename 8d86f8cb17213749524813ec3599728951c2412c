@@ -50,6 +50,23 @@
       "message": "Or am I actually an OWNER? ",
       "revId": "8d86f8cb17213749524813ec3599728951c2412c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "01e56a25_cbc0a9f3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2022-02-21T12:30:41Z",
+      "side": 1,
+      "message": "I can confirm this improves the \"Gimme Constructo\" rendering of the issue reported in https://bugs.chromium.org/p/skia/issues/detail?id\u003d12956 and from my point of view makes it work as expected. Circular shapes remain circular, using the variable font slider works as expected without discontiguous appearance of the variable parts of the glyph.\n\nSimilarly for the example reported in https://gitlab.freedesktop.org/freetype/freetype/-/issues/1135 - the curve appears contiguous. ",
+      "revId": "8d86f8cb17213749524813ec3599728951c2412c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
