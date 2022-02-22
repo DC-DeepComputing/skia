@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "abaae412_1c3179cc",
+        "filename": "bazel/karma_test.bzl",
+        "patchSetId": 3
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2022-02-22T22:19:16Z",
+      "side": 1,
+      "message": "Ubernit: Indent with two spaces, here and on `static_files`.",
+      "range": {
+        "startLine": 26,
+        "startChar": 0,
+        "endLine": 26,
+        "endChar": 46
+      },
+      "revId": "5c949c6c4f93a2fe70d9f07de746c64f8653b641",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b96aa91c_ddd69417",
+        "filename": "bazel/karma_test.bzl",
+        "patchSetId": 3
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2022-02-22T22:19:16Z",
+      "side": 1,
+      "message": "I think `/static` might be a more conventional prefix.",
+      "range": {
+        "startLine": 99,
+        "startChar": 18,
+        "endLine": 99,
+        "endChar": 22
+      },
+      "revId": "5c949c6c4f93a2fe70d9f07de746c64f8653b641",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3a9938b4_6210d9ec",
+        "filename": "bazel/karma_test.bzl",
+        "patchSetId": 3
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2022-02-22T22:19:16Z",
+      "side": 1,
+      "message": "Suggestion: Method chaining might simplify this a bit.",
+      "range": {
+        "startLine": 170,
+        "startChar": 47,
+        "endLine": 170,
+        "endChar": 55
+      },
+      "revId": "5c949c6c4f93a2fe70d9f07de746c64f8653b641",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
