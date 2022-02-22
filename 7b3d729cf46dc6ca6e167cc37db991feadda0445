@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dd6b3312_3ce6afbd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 10154
+      },
+      "writtenOn": "2022-02-22T17:54:26Z",
+      "side": 1,
+      "message": "Added some options to make CanvasKit build more flexible in terms of ICU data. This is because in the Flutter repo we use an unmodified //third_party/icu which doesn\u0027t have the option to build the ICU data cpp file as in the Skia repo.",
+      "revId": "7b3d729cf46dc6ca6e167cc37db991feadda0445",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
