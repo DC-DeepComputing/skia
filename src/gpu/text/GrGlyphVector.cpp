@@ -7,12 +7,12 @@
 
 #include "src/gpu/text/GrGlyphVector.h"
 
+#include "include/private/chromium/SkChromeRemoteGlyphCache.h"
 #include "src/core/SkReadBuffer.h"
 #include "src/core/SkStrikeCache.h"
 #include "src/core/SkStrikeSpec.h"
 #include "src/core/SkWriteBuffer.h"
 #include "src/gpu/text/GrAtlasManager.h"
-#include "include/private/chromium/SkChromeRemoteGlyphCache.h"
 
 GrGlyphVector::GrGlyphVector(sk_sp<SkStrike>&& strike, SkSpan<Variant> glyphs)
         : fStrike{std::move(strike)}
