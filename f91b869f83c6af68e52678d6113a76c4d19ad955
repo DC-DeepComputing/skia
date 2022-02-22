@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "af176689_def27a2b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-22T21:32:43Z",
+      "side": 1,
+      "message": "This is covered by https://skia-review.googlesource.com/c/skia/+/512016, which already has a +2",
+      "revId": "f91b869f83c6af68e52678d6113a76c4d19ad955",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
