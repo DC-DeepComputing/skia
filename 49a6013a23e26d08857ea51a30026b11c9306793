@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9a37cf4a_25b2bbd4",
+        "filename": "include/private/chromium/GrSlug.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2022-02-22T16:35:15Z",
+      "side": 1,
+      "message": "If my understanding is correct, Renderer just allocates 16kb (or more at [1]) shared memory from the command buffer, and then assumes it is enough for one raster task. (images, font use separate buffer instead of this 16kb). It will fail, if a raster task needs more memory.\n\n[1] https://source.chromium.org/chromium/chromium/src/+/main:gpu/command_buffer/client/raster_implementation.cc;l\u003d1379?q\u003draster_implementation.cc\u0026ss\u003dchromium",
+      "parentUuid": "06404f69_e9205f37",
+      "range": {
+        "startLine": 49,
+        "startChar": 18,
+        "endLine": 49,
+        "endChar": 27
+      },
+      "revId": "49a6013a23e26d08857ea51a30026b11c9306793",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "eb8e5c94_d7a461af",
