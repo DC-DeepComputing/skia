@@ -147,7 +147,7 @@ void GrPathUtils::QuadUVMatrix::set(const SkPoint qPts[3]) {
     double y1 = qPts[1].fY;
     double x2 = qPts[2].fX;
     double y2 = qPts[2].fY;
-    double det = x0*y1 - y0*x1 + x2*y0 - y2*x0 + x1*y2 - y1*x2;
+    double det = (x0*y1 - y0*x1) + (x2*y0 - y2*x0) + (x1*y2 - y1*x2);
 
     if (!sk_float_isfinite(det)
         || SkScalarNearlyZero((float)det, SK_ScalarNearlyZero * SK_ScalarNearlyZero)) {
