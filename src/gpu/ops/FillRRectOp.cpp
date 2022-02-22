@@ -83,7 +83,7 @@ public:
     }
 
     void onPrepareDraws(GrMeshDrawTarget*) override;
-
+    void onPrepareProgram(GrOpFlushState*, const SkRect& chainBounds) override;
     void onExecute(GrOpFlushState*, const SkRect& chainBounds) override;
 
 private:
@@ -823,6 +823,22 @@ void FillRRectOpImpl::onCreateProgramInfo(const GrCaps* caps,
                                              std::move(appliedClip), dstProxyView, gp,
                                              GrPrimitiveType::kTriangles, renderPassXferBarriers,
                                              colorLoadOp);
+}
+
+void FillRRectOpImpl::onPrepareProgram(GrOpFlushState* flushState, const SkRect& chainBounds) {
+    if (!fInstanceBuffer || !fIndexBuffer || !fVertexBuffer) {
+        return;  // Setup failed.
+    }
+
+    flushState->preparePipeline(*fProgramInfo, this->bounds());
+
+    // flushState->bindPipelineAndScissorClip(*fProgramInfo, this->bounds());
+    // flushState->bindTextures(fProgramInfo->geomProc(), nullptr, fProgramInfo->pipeline());
+    // flushState->bindBuffers(std::move(fIndexBuffer), std::move(fInstanceBuffer),
+    //                         std::move(fVertexBuffer));
+    // flushState->drawIndexedInstanced(SK_ARRAY_COUNT(kIndexData), 0, fInstanceCount,
+    // fBaseInstance,
+    //  0);
 }
 
 void FillRRectOpImpl::onExecute(GrOpFlushState* flushState, const SkRect& chainBounds) {

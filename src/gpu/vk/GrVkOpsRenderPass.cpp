@@ -622,6 +622,19 @@ void GrVkOpsRenderPass::onEnd() {
     }
 }
 
+bool GrVkOpsRenderPass::onPreparePipeline(const GrProgramInfo& programInfo,
+                                          const SkRect& drawBounds) {
+    if (!fCurrentRenderPass) {
+        SkASSERT(fGpu->isDeviceLost());
+        return false;
+    }
+
+    VkRenderPass compatibleRenderPass = fCurrentRenderPass->vkRenderPass();
+    fGpu->resourceProvider().prepareCompatiblePipelineState(
+            fRenderTarget, programInfo, compatibleRenderPass, fOverridePipelinesForResolveLoad);
+    return true;
+}
+
 bool GrVkOpsRenderPass::onBindPipeline(const GrProgramInfo& programInfo, const SkRect& drawBounds) {
     if (!fCurrentRenderPass) {
         SkASSERT(fGpu->isDeviceLost());

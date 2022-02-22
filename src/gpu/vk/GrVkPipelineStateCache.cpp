@@ -5,9 +5,14 @@
  * found in the LICENSE file.
  */
 
+#include <condition_variable>
+#include <mutex>
+#include <optional>
+
 #include "include/gpu/GrContextOptions.h"
 #include "include/gpu/GrDirectContext.h"
 #include "src/core/SkOpts.h"
+#include "src/core/SkTaskGroup.h"
 #include "src/gpu/GrDirectContextPriv.h"
 #include "src/gpu/GrFragmentProcessor.h"
 #include "src/gpu/GrProcessor.h"
@@ -25,18 +30,40 @@ static const bool c_DisplayVkPipelineCache{false};
 #endif
 
 struct GrVkResourceProvider::PipelineStateCache::Entry {
-    Entry(GrVkGpu* gpu, GrVkPipelineState* pipelineState)
-    : fGpu(gpu)
-    , fPipelineState(pipelineState) {}
+public:
+    Entry(GrVkGpu* gpu) : fGpu(gpu) {}
 
     ~Entry() {
-        if (fPipelineState) {
-            fPipelineState->freeGPUResources(fGpu);
+        waitForReady();
+        if (*fPipelineState) {
+            (*fPipelineState)->freeGPUResources(fGpu);
         }
     }
 
+    GrVkPipelineState* pipelineState() const {
+        waitForReady();
+        return fPipelineState ? fPipelineState->get() : nullptr;
+    }
+
+    void setPipelineState(GrVkPipelineState* pipelineState) {
+        std::unique_lock uniqueLock(fMutex);
+        SkASSERT(!fPipelineState);
+        fPipelineState.emplace(pipelineState);
+        fReadyConditionVariable.notify_all();
+    }
+
+private:
+    void waitForReady() const {
+        std::unique_lock uniqueLock(fMutex);
+        while (!fPipelineState) {
+            fReadyConditionVariable.wait(uniqueLock);
+        }
+    }
+
+    mutable std::mutex fMutex;
+    mutable std::condition_variable fReadyConditionVariable;
     GrVkGpu* fGpu;
-    std::unique_ptr<GrVkPipelineState> fPipelineState;
+    std::optional<std::unique_ptr<GrVkPipelineState>> fPipelineState;
 };
 
 GrVkResourceProvider::PipelineStateCache::PipelineStateCache(GrVkGpu* gpu)
@@ -94,8 +121,8 @@ GrVkPipelineState* GrVkResourceProvider::PipelineStateCache::findOrCreatePipelin
     }
 
     Stats::ProgramCacheResult stat;
-    auto tmp = this->findOrCreatePipelineStateImpl(desc, programInfo, compatibleRenderPass,
-                                                   overrideSubpassForResolveLoad, &stat);
+    auto tmp = this->findOrCreatePipelineStateImpl(
+            desc, programInfo, compatibleRenderPass, overrideSubpassForResolveLoad, &stat, false);
     if (!tmp) {
         fStats.incNumInlineCompilationFailures();
     } else {
@@ -105,28 +132,77 @@ GrVkPipelineState* GrVkResourceProvider::PipelineStateCache::findOrCreatePipelin
     return tmp;
 }
 
+void GrVkResourceProvider::PipelineStateCache::preparePipelineState(
+        GrRenderTarget* renderTarget,
+        const GrProgramInfo& programInfo,
+        VkRenderPass compatibleRenderPass,
+        bool overrideSubpassForResolveLoad) {
+#ifdef SK_DEBUG
+    if (programInfo.isStencilEnabled()) {
+        SkASSERT(renderTarget->getStencilAttachment(programInfo.numSamples() > 1));
+        SkASSERT(renderTarget->numStencilBits(programInfo.numSamples() > 1) == 8);
+        SkASSERT(renderTarget->getStencilAttachment(programInfo.numSamples() > 1)->numSamples() ==
+                 programInfo.numSamples());
+    }
+#endif
+
+    auto flags = overrideSubpassForResolveLoad
+                         ? GrCaps::ProgramDescOverrideFlags::kVulkanHasResolveLoadSubpass
+                         : GrCaps::ProgramDescOverrideFlags::kNone;
+
+    GrProgramDesc desc = fGpu->caps()->makeDesc(renderTarget, programInfo, flags);
+    if (!desc.isValid()) {
+        GrCapsDebugf(fGpu->caps(), "Failed to build vk program descriptor!\n");
+        return;
+    }
+
+    Stats::ProgramCacheResult stat;
+    this->findOrCreatePipelineStateImpl(
+            desc, programInfo, compatibleRenderPass, overrideSubpassForResolveLoad, &stat, true);
+}
+
 GrVkPipelineState* GrVkResourceProvider::PipelineStateCache::findOrCreatePipelineStateImpl(
         const GrProgramDesc& desc,
         const GrProgramInfo& programInfo,
         VkRenderPass compatibleRenderPass,
         bool overrideSubpassForResolveLoad,
-        Stats::ProgramCacheResult* stat) {
+        Stats::ProgramCacheResult* stat,
+        bool prepare) {
     if (stat) {
         *stat = Stats::ProgramCacheResult::kHit;
     }
 
+    SkTaskGroup* taskGroup = fGpu->getContext()->priv().getTaskGroup();
     std::unique_ptr<Entry>* entry = fMap.find(desc);
     if (!entry) {
         if (stat) {
             *stat = Stats::ProgramCacheResult::kMiss;
         }
+
+        if (taskGroup && prepare) {
+            entry = fMap.insert(desc, std::make_unique<Entry>(fGpu));
+            auto* entryPtr = entry->get();
+            taskGroup->add([=] {
+                GrVkPipelineState* pipelineState(GrVkPipelineStateBuilder::CreatePipelineState(
+                        fGpu,
+                        desc,
+                        programInfo,
+                        compatibleRenderPass,
+                        overrideSubpassForResolveLoad));
+                entryPtr->setPipelineState(pipelineState);
+            });
+            return nullptr;
+        }
+
         GrVkPipelineState* pipelineState(GrVkPipelineStateBuilder::CreatePipelineState(
                 fGpu, desc, programInfo, compatibleRenderPass, overrideSubpassForResolveLoad));
         if (!pipelineState) {
             return nullptr;
         }
-        entry = fMap.insert(desc, std::make_unique<Entry>(fGpu, pipelineState));
-        return (*entry)->fPipelineState.get();
+
+        entry = fMap.insert(desc, std::make_unique<Entry>(fGpu));
+        (*entry)->setPipelineState(pipelineState);
     }
-    return (*entry)->fPipelineState.get();
+
+    return (*entry)->pipelineState();
 }

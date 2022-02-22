@@ -49,6 +49,8 @@ public:
     // Signals the end of recording to the GrOpsRenderPass and that it can now be submitted.
     void end();
 
+    void preparePipeline(const GrProgramInfo&, const SkRect& drawBounds);
+
     // Updates the internal pipeline state for drawing with the provided GrProgramInfo. Enters an
     // internal "bad" state if the pipeline could not be set.
     void bindPipeline(const GrProgramInfo&, const SkRect& drawBounds);
@@ -176,6 +178,7 @@ private:
     // overridden by backend-specific derived class to perform the rendering command.
     virtual void onBegin() {}
     virtual void onEnd() {}
+    virtual bool onPreparePipeline(const GrProgramInfo&, const SkRect& drawBounds) { return true; }
     virtual bool onBindPipeline(const GrProgramInfo&, const SkRect& drawBounds) = 0;
     virtual void onSetScissorRect(const SkIRect&) = 0;
     virtual bool onBindTextures(const GrGeometryProcessor&,

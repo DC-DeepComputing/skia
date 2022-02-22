@@ -202,6 +202,8 @@ GrVkPipelineState* GrVkPipelineStateBuilder::finalize(const GrProgramDesc& desc,
     SkReadBuffer reader;
     SkFourByteTag shaderType = 0;
     auto persistentCache = fGpu->getContext()->priv().getPersistentCache();
+    // TODO: support persistentCache.
+    persistentCache = nullptr;
     if (persistentCache) {
         // Here we shear off the Vk-specific portion of the Desc in order to create the
         // persistent key. This is bc Vk only caches the SPIRV code, not the fully compiled

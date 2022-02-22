@@ -59,6 +59,70 @@ void GrOpsRenderPass::executeDrawable(std::unique_ptr<SkDrawable::GpuDrawHandler
     this->onExecuteDrawable(std::move(drawable));
 }
 
+void GrOpsRenderPass::preparePipeline(const GrProgramInfo& programInfo, const SkRect& drawBounds) {
+#ifdef SK_DEBUG
+    // Both the 'programInfo' and this renderPass have an origin. Since they come from the same
+    // place (i.e., the target renderTargetProxy) they had best agree.
+    SkASSERT(programInfo.origin() == fOrigin);
+    if (programInfo.geomProc().hasInstanceAttributes()) {
+        SkASSERT(this->gpu()->caps()->drawInstancedSupport());
+    }
+    if (programInfo.pipeline().usesConservativeRaster()) {
+        SkASSERT(this->gpu()->caps()->conservativeRasterSupport());
+    }
+    if (programInfo.pipeline().isWireframe()) {
+        SkASSERT(this->gpu()->caps()->wireframeSupport());
+    }
+    if (this->gpu()->caps()->twoSidedStencilRefsAndMasksMustMatch() &&
+        programInfo.isStencilEnabled()) {
+        const GrUserStencilSettings* stencil = programInfo.userStencilSettings();
+        if (stencil->isTwoSided(programInfo.pipeline().hasStencilClip())) {
+            SkASSERT(stencil->fCCWFace.fRef == stencil->fCWFace.fRef);
+            SkASSERT(stencil->fCCWFace.fTestMask == stencil->fCWFace.fTestMask);
+            SkASSERT(stencil->fCCWFace.fWriteMask == stencil->fCWFace.fWriteMask);
+        }
+    }
+    if (GrPrimitiveType::kPatches == programInfo.primitiveType()) {
+        SkASSERT(this->gpu()->caps()->shaderCaps()->tessellationSupport());
+    }
+    programInfo.checkAllInstantiated();
+    programInfo.checkMSAAAndMIPSAreResolved();
+#endif
+
+    if (programInfo.geomProc().numVertexAttributes() > this->gpu()->caps()->maxVertexAttributes()) {
+        fDrawPipelineStatus = DrawPipelineStatus::kFailedToBind;
+        return;
+    }
+
+    if (!this->onPreparePipeline(programInfo, drawBounds)) {
+        fDrawPipelineStatus = DrawPipelineStatus::kFailedToBind;
+        return;
+    }
+
+#ifdef SK_DEBUG
+    fScissorStatus = (programInfo.pipeline().isScissorTestEnabled())
+                             ? DynamicStateStatus::kUninitialized
+                             : DynamicStateStatus::kDisabled;
+    bool hasTextures = (programInfo.geomProc().numTextureSamplers() > 0);
+    if (!hasTextures) {
+        programInfo.pipeline().visitProxies(
+                [&hasTextures](GrSurfaceProxy*, GrMipmapped) { hasTextures = true; });
+    }
+    fTextureBindingStatus =
+            (hasTextures) ? DynamicStateStatus::kUninitialized : DynamicStateStatus::kDisabled;
+    fHasIndexBuffer = false;
+    fInstanceBufferStatus = (programInfo.geomProc().hasInstanceAttributes())
+                                    ? DynamicStateStatus::kUninitialized
+                                    : DynamicStateStatus::kDisabled;
+    fVertexBufferStatus = (programInfo.geomProc().hasVertexAttributes())
+                                  ? DynamicStateStatus::kUninitialized
+                                  : DynamicStateStatus::kDisabled;
+#endif
+
+    fDrawPipelineStatus = DrawPipelineStatus::kOk;
+    fXferBarrierType = programInfo.pipeline().xferBarrierType(*this->gpu()->caps());
+}
+
 void GrOpsRenderPass::bindPipeline(const GrProgramInfo& programInfo, const SkRect& drawBounds) {
 #ifdef SK_DEBUG
     // Both the 'programInfo' and this renderPass have an origin. Since they come from the same

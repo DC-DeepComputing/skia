@@ -141,6 +141,10 @@ public:
             const GrProgramInfo&,
             VkRenderPass compatibleRenderPass,
             bool overrideSubpassForResolveLoad);
+    void prepareCompatiblePipelineState(GrRenderTarget*,
+                                        const GrProgramInfo&,
+                                        VkRenderPass compatibleRenderPass,
+                                        bool overrideSubpassForResolveLoad);
 
     GrVkPipelineState* findOrCreateCompatiblePipelineState(
             const GrProgramDesc&,
@@ -234,8 +238,19 @@ private:
                                                      const GrProgramInfo& programInfo,
                                                      VkRenderPass compatibleRenderPass,
                                                      Stats::ProgramCacheResult* stat) {
-            return this->findOrCreatePipelineStateImpl(desc, programInfo, compatibleRenderPass,
-                                                       false, stat);
+            return this->findOrCreatePipelineStateImpl(
+                    desc, programInfo, compatibleRenderPass, false, stat, false);
+        }
+        void preparePipelineState(GrRenderTarget* renderTarget,
+                                  const GrProgramInfo& programInfo,
+                                  VkRenderPass compatibleRenderPass,
+                                  bool overrideSubpassForResolveLoad);
+        void preparePipelineState(const GrProgramDesc& desc,
+                                  const GrProgramInfo& programInfo,
+                                  VkRenderPass compatibleRenderPass) {
+            Stats::ProgramCacheResult stat;
+            this->findOrCreatePipelineStateImpl(
+                    desc, programInfo, compatibleRenderPass, false, &stat, true);
         }
 
     private:
@@ -245,7 +260,8 @@ private:
                                                          const GrProgramInfo&,
                                                          VkRenderPass compatibleRenderPass,
                                                          bool overrideSubpassForResolveLoad,
-                                                         Stats::ProgramCacheResult*);
+                                                         Stats::ProgramCacheResult*,
+                                                         bool prepare);
 
         struct DescHash {
             uint32_t operator()(const GrProgramDesc& desc) const {
