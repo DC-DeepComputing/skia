@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "721de924_eff11bcb",
+        "filename": "bazel/karma_test.bzl",
+        "patchSetId": 11
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2022-02-22T22:19:50Z",
+      "side": 1,
+      "message": "Nit: `If set, the test will be wrapped in a test_on_env rule, and this binary will be used as the \"env\" part of test_on_env.`.",
+      "range": {
+        "startLine": 40,
+        "startChar": 42,
+        "endLine": 40,
+        "endChar": 50
+      },
+      "revId": "e95d9bce0d1eea31500257937f0569bf567d2d12",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e47651ea_820da829",
+        "filename": "bazel/karma_test.bzl",
+        "patchSetId": 11
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2022-02-22T22:19:50Z",
+      "side": 1,
+      "message": "Ubernit: `if env is None`\n\nOr:\n\n  if env:\n    ...\n  else:\n    ...",
+      "range": {
+        "startLine": 69,
+        "startChar": 4,
+        "endLine": 69,
+        "endChar": 18
+      },
+      "revId": "e95d9bce0d1eea31500257937f0569bf567d2d12",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d1b76c82_96e0c54f",
+        "filename": "modules/canvaskit/tests/bazel_canvaskitinit.js",
+        "patchSetId": 11
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2022-02-22T22:19:50Z",
+      "side": 1,
+      "message": "This doesn\u0027t appear to be used anywhere. Can it be removed?",
+      "range": {
+        "startLine": 20,
+        "startChar": 0,
+        "endLine": 20,
+        "endChar": 31
+      },
+      "revId": "e95d9bce0d1eea31500257937f0569bf567d2d12",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5a3e61ba_3dbb207a",
+        "filename": "modules/canvaskit/tests/hello_world.js",
+        "patchSetId": 11
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2022-02-22T22:19:50Z",
+      "side": 1,
+      "message": "Nit: Consider using `await` here for a shorter test. If the fetch fails, it will throw an exception and the test case will fail.\n\n  const resp \u003d await fetch(\u0027/gold_rpc/report\u0027, {body: JSON.stringify(payload), method: \u0027POST\u0027});\n  expect(resp.status).toEqual(201);\n\nSame below.",
+      "range": {
+        "startLine": 25,
+        "startChar": 0,
+        "endLine": 25,
+        "endChar": 39
+      },
+      "revId": "e95d9bce0d1eea31500257937f0569bf567d2d12",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
