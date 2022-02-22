@@ -46,6 +46,30 @@
       },
       "revId": "9011c7b9aa349f15cf0898073d186bb1ef16d95e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f8c4bcd0_7485ad4d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-02-22T15:11:05Z",
+      "side": 1,
+      "message": "The API is changed to mirror serialize/Deserialize for SkTextBlob in the next CL:\nhttps://skia-review.googlesource.com/c/skia/+/511601",
+      "parentUuid": "7cb95d66_c462fc06",
+      "range": {
+        "startLine": 12,
+        "startChar": 18,
+        "endLine": 12,
+        "endChar": 26
+      },
+      "revId": "9011c7b9aa349f15cf0898073d186bb1ef16d95e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
