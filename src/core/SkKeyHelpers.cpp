@@ -78,7 +78,6 @@ namespace DepthStencilOnlyBlock {
 static const int kBlockDataSize = 0;
 
 void AddToKey(SkShaderCodeDictionary* /* dict */,
-              SkBackend /* backend */,
               SkPaintParamsKeyBuilder* builder,
               SkUniformBlock* /* uniformBlock */) {
     builder->beginBlock(SkBuiltInCodeSnippetID::kDepthStencilOnlyDraw);
@@ -134,13 +133,12 @@ sk_sp<SkUniformData> make_solid_uniform_data(SkShaderCodeDictionary* dict, SkCol
 } // anonymous namespace
 
 void AddToKey(SkShaderCodeDictionary* dict,
-              SkBackend backend,
               SkPaintParamsKeyBuilder* builder,
               SkUniformBlock* uniformBlock,
               const SkColor4f& color) {
 
 #ifdef SK_GRAPHITE_ENABLED
-    if (backend == SkBackend::kGraphite) {
+    if (builder->backend() == SkBackend::kGraphite) {
         builder->beginBlock(SkBuiltInCodeSnippetID::kSolidColorShader);
         builder->endBlock();
 
@@ -155,7 +153,7 @@ void AddToKey(SkShaderCodeDictionary* dict,
     }
 #endif // SK_GRAPHITE_ENABLED
 
-    if (backend == SkBackend::kSkVM || backend == SkBackend::kGanesh) {
+    if (builder->backend() == SkBackend::kSkVM || builder->backend() == SkBackend::kGanesh) {
         // TODO: add implementation of other backends
     }
 
@@ -332,13 +330,12 @@ GradientData::GradientData(SkShader::GradientType type,
 }
 
 void AddToKey(SkShaderCodeDictionary* dict,
-              SkBackend backend,
               SkPaintParamsKeyBuilder *builder,
               SkUniformBlock* uniformBlock,
               const GradientData& gradData) {
 
 #ifdef SK_GRAPHITE_ENABLED
-    if (backend == SkBackend::kGraphite) {
+    if (builder->backend() == SkBackend::kGraphite) {
         SkBuiltInCodeSnippetID codeSnippetID = SkBuiltInCodeSnippetID::kSolidColorShader;
         switch (gradData.fType) {
             case SkShader::kLinear_GradientType:
@@ -384,9 +381,9 @@ void AddToKey(SkShaderCodeDictionary* dict,
     }
 #endif // SK_GRAPHITE_ENABLED
 
-    if (backend == SkBackend::kSkVM || backend == SkBackend::kGanesh) {
+    if (builder->backend() == SkBackend::kSkVM || builder->backend() == SkBackend::kGanesh) {
         // TODO: add implementation of other backends
-        SolidColorShaderBlock::AddToKey(dict, backend, builder, uniformBlock, SkColors::kRed);
+        SolidColorShaderBlock::AddToKey(dict, builder, uniformBlock, SkColors::kRed);
     }
 }
 
@@ -498,13 +495,12 @@ sk_sp<SkUniformData> make_image_uniform_data(SkShaderCodeDictionary* dict,
 } // anonymous namespace
 
 void AddToKey(SkShaderCodeDictionary* dict,
-              SkBackend backend,
               SkPaintParamsKeyBuilder* builder,
               SkUniformBlock* uniformBlock,
               const ImageData& imgData) {
 
 #ifdef SK_GRAPHITE_ENABLED
-    if (backend == SkBackend::kGraphite) {
+    if (builder->backend() == SkBackend::kGraphite) {
 
         uint8_t data = (static_cast<uint8_t>(imgData.fTileModes[0]) << kXTileModeShift) |
                        (static_cast<uint8_t>(imgData.fTileModes[1]) << kYTileModeShift);
@@ -522,9 +518,9 @@ void AddToKey(SkShaderCodeDictionary* dict,
     }
 #endif // SK_GRAPHITE_ENABLED
 
-    if (backend == SkBackend::kSkVM || backend == SkBackend::kGanesh) {
+    if (builder->backend() == SkBackend::kSkVM || builder->backend() == SkBackend::kGanesh) {
         // TODO: add implementation for other backends
-        SolidColorShaderBlock::AddToKey(dict, backend, builder, uniformBlock, SkColors::kRed);
+        SolidColorShaderBlock::AddToKey(dict, builder, uniformBlock, SkColors::kRed);
     }
 }
 
@@ -548,24 +544,23 @@ void Dump(const SkPaintParamsKey& key, int headerOffset) {
 namespace BlendShaderBlock {
 
 void AddToKey(SkShaderCodeDictionary* dict,
-              SkBackend backend,
               SkPaintParamsKeyBuilder *builder,
               SkUniformBlock* uniformBlock,
               const BlendData& blendData) {
 
 #ifdef SK_GRAPHITE_ENABLED
-    if (backend == SkBackend::kGraphite) {
+    if (builder->backend() == SkBackend::kGraphite) {
         builder->beginBlock(SkBuiltInCodeSnippetID::kBlendShader);
 
         // Child blocks always go right after the parent block's header
         // TODO: add startChild/endChild entry points to SkPaintParamsKeyBuilder. They could be
         // used to compute and store the number of children w/in a block's header.
         int start = builder->sizeInBytes();
-        as_SB(blendData.fDst)->addToKey(dict, backend, builder, uniformBlock);
+        as_SB(blendData.fDst)->addToKey(dict, builder, uniformBlock);
         int firstShaderSize = builder->sizeInBytes() - start;
 
         start = builder->sizeInBytes();
-        as_SB(blendData.fSrc)->addToKey(dict, backend, builder, uniformBlock);
+        as_SB(blendData.fSrc)->addToKey(dict, builder, uniformBlock);
         int secondShaderSize = builder->sizeInBytes() - start;
 
         add_blendmode_to_key(builder, blendData.fBM);
@@ -580,9 +575,9 @@ void AddToKey(SkShaderCodeDictionary* dict,
     }
 #endif // SK_GRAPHITE_ENABLED
 
-    if (backend == SkBackend::kSkVM || backend == SkBackend::kGanesh) {
+    if (builder->backend() == SkBackend::kSkVM || builder->backend() == SkBackend::kGanesh) {
         // TODO: add implementation for other backends
-        SolidColorShaderBlock::AddToKey(dict, backend, builder, uniformBlock, SkColors::kRed);
+        SolidColorShaderBlock::AddToKey(dict, builder, uniformBlock, SkColors::kRed);
     }
 }
 
@@ -625,13 +620,12 @@ static const int kBlockDataSize = 1;
 #endif
 
 void AddToKey(SkShaderCodeDictionary* dict,
-              SkBackend backend,
               SkPaintParamsKeyBuilder *builder,
               SkUniformBlock* uniformBlock,
               SkBlendMode bm) {
 
 #ifdef SK_GRAPHITE_ENABLED
-    if (backend == SkBackend::kGraphite) {
+    if (builder->backend() == SkBackend::kGraphite) {
         builder->beginBlock(SkBuiltInCodeSnippetID::kSimpleBlendMode);
         add_blendmode_to_key(builder, bm);
         builder->endBlock();
@@ -643,9 +637,9 @@ void AddToKey(SkShaderCodeDictionary* dict,
     }
 #endif// SK_GRAPHITE_ENABLED
 
-    if (backend == SkBackend::kSkVM || backend == SkBackend::kGanesh) {
+    if (builder->backend() == SkBackend::kSkVM || builder->backend() == SkBackend::kGanesh) {
         // TODO: add implementation for other backends
-        SolidColorShaderBlock::AddToKey(dict, backend, builder, uniformBlock, SkColors::kRed);
+        SolidColorShaderBlock::AddToKey(dict, builder, uniformBlock, SkColors::kRed);
     }
 }
 
@@ -679,7 +673,6 @@ void Dump(const SkPaintParamsKey& key, int headerOffset) {
 //--------------------------------------------------------------------------------------------------
 #ifdef SK_GRAPHITE_ENABLED
 SkPaintParamsKey CreateKey(SkShaderCodeDictionary* dict,
-                           SkBackend backend,
                            SkPaintParamsKeyBuilder* builder,
                            skgpu::ShaderCombo::ShaderType s,
                            SkTileMode tm,
@@ -688,30 +681,30 @@ SkPaintParamsKey CreateKey(SkShaderCodeDictionary* dict,
 
     switch (s) {
         case skgpu::ShaderCombo::ShaderType::kNone:
-            DepthStencilOnlyBlock::AddToKey(dict, backend, builder, nullptr);
+            DepthStencilOnlyBlock::AddToKey(dict, builder, nullptr);
             break;
         case skgpu::ShaderCombo::ShaderType::kSolidColor:
-            SolidColorShaderBlock::AddToKey(dict, backend, builder, nullptr, SkColors::kRed);
+            SolidColorShaderBlock::AddToKey(dict, builder, nullptr, SkColors::kRed);
             break;
         case skgpu::ShaderCombo::ShaderType::kLinearGradient:
-            GradientShaderBlocks::AddToKey(dict, backend, builder, nullptr,
+            GradientShaderBlocks::AddToKey(dict, builder, nullptr,
                                            { SkShader::kLinear_GradientType, tm, 0 });
             break;
         case skgpu::ShaderCombo::ShaderType::kRadialGradient:
-            GradientShaderBlocks::AddToKey(dict, backend, builder, nullptr,
+            GradientShaderBlocks::AddToKey(dict, builder, nullptr,
                                            { SkShader::kRadial_GradientType, tm, 0 });
             break;
         case skgpu::ShaderCombo::ShaderType::kSweepGradient:
-            GradientShaderBlocks::AddToKey(dict, backend, builder, nullptr,
+            GradientShaderBlocks::AddToKey(dict, builder, nullptr,
                                            { SkShader::kSweep_GradientType, tm, 0 });
             break;
         case skgpu::ShaderCombo::ShaderType::kConicalGradient:
-            GradientShaderBlocks::AddToKey(dict, backend, builder, nullptr,
+            GradientShaderBlocks::AddToKey(dict, builder, nullptr,
                                            { SkShader::kConical_GradientType, tm, 0 });
             break;
     }
 
-    BlendModeBlock::AddToKey(dict, backend, builder, nullptr, bm);
+    BlendModeBlock::AddToKey(dict, builder, nullptr, bm);
     return builder->lockAsKey();
 }
 #endif
