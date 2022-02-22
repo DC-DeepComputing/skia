@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "10ab6914_5e9dddf1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-02-22T20:35:39Z",
+      "side": 1,
+      "message": "LGTM assuming the texture/samplerstates are initialized too.",
+      "revId": "e0ca39fa83aec97968e3e6ad0617e1efd6f82f5a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "baaad24e_571d55f1",
+        "filename": "experimental/graphite/src/mtl/MtlRenderCommandEncoder.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 257,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-02-22T20:35:39Z",
+      "side": 1,
+      "message": "Ah right, the original code used ARC so they were automatically set to nil.",
+      "range": {
+        "startLine": 249,
+        "startChar": 8,
+        "endLine": 257,
+        "endChar": 0
+      },
+      "revId": "e0ca39fa83aec97968e3e6ad0617e1efd6f82f5a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6ee04002_3bb65a81",
+        "filename": "experimental/graphite/src/mtl/MtlRenderCommandEncoder.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 276,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-02-22T20:35:39Z",
+      "side": 1,
+      "message": "These need to be initialized as well.",
+      "range": {
+        "startLine": 275,
+        "startChar": 4,
+        "endLine": 276,
+        "endChar": 62
+      },
+      "revId": "e0ca39fa83aec97968e3e6ad0617e1efd6f82f5a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
