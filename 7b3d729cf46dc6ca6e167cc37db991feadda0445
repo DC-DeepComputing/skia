@@ -39,6 +39,30 @@
       },
       "revId": "7b3d729cf46dc6ca6e167cc37db991feadda0445",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bc689892_6edbcd45",
+        "filename": "third_party/icu/BUILD.gn",
+        "patchSetId": 1
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 10154
+      },
+      "writtenOn": "2022-02-22T18:21:27Z",
+      "side": 1,
+      "message": "I\u0027ll try that, but I think it will require changing the compile.sh script for the SKP debugger",
+      "parentUuid": "ab3f2c2e_40d2e405",
+      "range": {
+        "startLine": 119,
+        "startChar": 16,
+        "endLine": 119,
+        "endChar": 42
+      },
+      "revId": "7b3d729cf46dc6ca6e167cc37db991feadda0445",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
