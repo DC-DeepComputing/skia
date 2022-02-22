@@ -25,6 +25,12 @@ sk_sp<SkData> GrSlug::serialize() const {
     return buffer.snapshotAsData();
 }
 
+size_t GrSlug::serialize(void* buffer, size_t size) const {
+    SkBinaryWriteBuffer writeBuffer{buffer, size};
+    this->doFlatten(writeBuffer);
+    return writeBuffer.usingInitialStorage() ? writeBuffer.bytesWritten() : 0u;
+}
+
 sk_sp<GrSlug> SkMakeSlugFromBuffer(SkReadBuffer& buffer, const SkStrikeClient* client);
 sk_sp<GrSlug> GrSlug::Deserialize(const void* data, size_t size, const SkStrikeClient* client) {
     SkReadBuffer buffer{data, size};
