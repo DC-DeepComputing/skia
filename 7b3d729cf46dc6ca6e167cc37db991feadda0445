@@ -18,6 +18,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "df767c7e_15423723",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-02-22T19:23:08Z",
+      "side": 1,
+      "message": "At Patchset 1 I cannot reason about the actual effects well enough to suggest a better approach because everything is so random.",
+      "revId": "7b3d729cf46dc6ca6e167cc37db991feadda0445",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a161fbb4_0f0ce229",
@@ -31,6 +48,23 @@
       "writtenOn": "2022-02-22T19:07:22Z",
       "side": 1,
       "message": "Why is this here instead of in //third_party/icu/BUILD.gn? CanvasKit shouldn\u0027t know anything about this or how to build it.",
+      "revId": "7b3d729cf46dc6ca6e167cc37db991feadda0445",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "51e4fb8f_c8fed9ae",
+        "filename": "third_party/icu/BUILD.gn",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-02-22T19:23:08Z",
+      "side": 1,
+      "message": "The idea that this is pulling in canvaskit.gni only in order to effectively not use it indicates there is some failure of separation of concerns here. It appears you still want to build this particular icu, but not the dat file because there is some other way to provide the dat file or to build it in. But then that should all be here. If you want to use a different icu or a dat file for a different icu, then there needs to be a separate icu build.",
       "revId": "7b3d729cf46dc6ca6e167cc37db991feadda0445",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
