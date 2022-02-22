@@ -159,4 +159,6 @@ bazel_canvaskit_release:
 	ls -l build
 
 bazel_test_canvaskit:
-	bazelisk test :hello_world --compilation_mode opt --spawn_strategy=local --test_output=all
+	bazelisk test :hello_world_test_with_env --compilation_mode opt --spawn_strategy=local --test_output=all
+	echo "test output in //bazel-testlogs/modules/canvaskit/hello_world_test_with_env/test.outputs/"
+	ls ../../bazel-testlogs/modules/canvaskit/hello_world_test_with_env/test.outputs/
