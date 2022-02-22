@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eb8e5c94_d7a461af",
+        "filename": "include/private/chromium/GrSlug.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-02-22T15:26:36Z",
+      "side": 1,
+      "message": "the appropriate SkStrikeClient ?",
+      "range": {
+        "startLine": 51,
+        "startChar": 35,
+        "endLine": 51,
+        "endChar": 37
+      },
+      "revId": "49a6013a23e26d08857ea51a30026b11c9306793",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
