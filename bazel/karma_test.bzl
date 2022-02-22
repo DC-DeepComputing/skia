@@ -1,8 +1,10 @@
+"""This module defines rules for running JS tests in a browser."""
+
 # https://github.com/bazelbuild/rules_webtesting/blob/master/web/web.bzl
 load("@io_bazel_rules_webtesting//web:web.bzl", "web_test")
 load("@build_bazel_rules_nodejs//:providers.bzl", "ExternalNpmPackageInfo", "node_modules_aspect")
 
-def karma_test(name, srcs, config_file, **kwargs):
+def karma_test(name, config_file, srcs, static_files = None, **kwargs):
     """Tests the given JS files using Karma and a browser provided by Bazel (Chromium)
 
     This rule injects some JS code into the karma config file and produces both that modified
@@ -20,12 +22,23 @@ def karma_test(name, srcs, config_file, **kwargs):
     situations nor bundle everything together.
 
     Args:
-      srcs: A list of JavaScript test files or helpers.
+      name: The name of the rule which actually runs the tests. generated dependent rules will use
+          this name plus an applicable suffix.
       config_file: A karma config file. The user is to expect a function called BAZEL_APPLY_SETTINGS
         is defined and should call it with the configuration object before passing it to config.set.
+      srcs: A list of JavaScript test files or helpers.
+      static_files: Arbitrary files which are available to be loaded. Files are served at:
+             - `/base/<WORKSPACE_NAME>/<path-to-file>` or
+             - `/base/<WORKSPACE_NAME>/<path-to-rule>/<file>`
+            Examples:
+             - `/base/skia/modules/canvaskit/tests/assets/color_wheel.gif`
+             - `/base/skia/modules/canvaskit/canvaskit_wasm/canvaskit.wasm`
+      **kwargs: Additional arguments are passed to @io_bazel_rules_webtesting/web_test.
     """
     if len(srcs) == 0:
         fail("Must pass at least one file into srcs or there will be no tests to run")
+    if not static_files:
+        static_files = []
 
     wrapped_test_name = name + "_karma_test"
     _karma_test(
@@ -38,6 +51,7 @@ def karma_test(name, srcs, config_file, **kwargs):
             "@npm//jasmine-core",
         ],
         config_file = config_file,
+        static_files = static_files,
         visibility = ["//visibility:private"],
     )
 
@@ -58,6 +72,10 @@ def karma_test(name, srcs, config_file, **kwargs):
 # and exit (e.g. the user ran `bazel test foo`) or if we want to have an interactive session
 # (e.g. the user ran `bazel run foo`).
 _apply_bazel_settings_js_code = """
+// This is is a JS function provided via environment variables to let us resolve files
+// https://bazelbuild.github.io/rules_nodejs/Built-ins.html#nodejs_binary-templated_args
+const runfiles = require(process.env['BAZEL_NODE_RUNFILES_HELPER']);
+
 // Apply the paths to any files that are coming from other Bazel rules (e.g. compiled JS).
 function addFilePaths(cfg) {
   if (!cfg.files) {
@@ -65,6 +83,21 @@ function addFilePaths(cfg) {
   }
   cfg.files = cfg.files.concat([_BAZEL_SRCS]);
   cfg.basePath = "_BAZEL_BASE_PATH";
+
+  // The following is based off of the concatjs version
+  // https://github.com/bazelbuild/rules_nodejs/blob/700b7a3c5f97f2877320e6e699892ee706f85269/packages/concatjs/web_test/karma.conf.js#L276
+  const staticFiles = [_BAZEL_STATIC_FILES];
+  for (const file of staticFiles) {
+    // We need to find the actual path (symlinks can apparently cause issues on Windows).
+    const resolvedFile = runfiles.resolve(file);
+    cfg.files.push({pattern: resolvedFile, included: false});
+    // We want the file to be available on a path according to its location in the workspace
+    // (and not the path on disk), so we use a proxy to redirect.
+    // Prefixing the proxy path with '/absolute' allows karma to load files that are not
+    // underneath the basePath. This doesn't see to be an official API.
+    // https://github.com/karma-runner/karma/issues/2703
+    cfg.proxies['/base/' + file] = '/absolute' + resolvedFile;
+  }
 }
 
 // Returns true if invoked with bazel run, i.e. the user wants to see the results on a real
@@ -75,7 +108,7 @@ function isBazelRun() {
 }
 
 // Configures the settings to run chrome.
-function applyChromiumSettings(cfg, runfiles, chromiumPath) {
+function applyChromiumSettings(cfg, chromiumPath) {
   if (isBazelRun()) {
     cfg.browsers = ['Chrome'];
     cfg.singleRun = false;
@@ -96,9 +129,6 @@ function applyChromiumSettings(cfg, runfiles, chromiumPath) {
 
 function applyBazelSettings(cfg) {
   addFilePaths(cfg)
-  // This is is a JS function provided via environment variables to let us resolve files
-  // https://bazelbuild.github.io/rules_nodejs/Built-ins.html#nodejs_binary-templated_args
-  const runfiles = require(process.env['BAZEL_NODE_RUNFILES_HELPER']);
 
   // This is a JSON file that contains this metadata, mixed in with some other data, e.g.
   // the link to the correct executable for the given platform.
@@ -108,7 +138,7 @@ function applyBazelSettings(cfg) {
   const webTestFiles = webTestMetadata['webTestFiles'][0];
   const path = webTestFiles['namedFiles']['CHROMIUM'];
   if (path) {
-    applyChromiumSettings(cfg, runfiles, path);
+    applyChromiumSettings(cfg, path);
   } else {
     throw new Error("not supported yet");
   }
@@ -131,10 +161,14 @@ def _expand_templates_in_karma_config(ctx):
     config_segments = len(ctx.outputs.configuration.short_path.split("/"))
     base_path = "/".join([".."] * config_segments)
 
+    static_files = ['"{}"'.format(_absolute_path(ctx, f)) for f in ctx.files.static_files]
+    static_list = ", ".join(static_files)
+
     # Replace the placeholders in the embedded JS with those files. We cannot use .format() because
     # the curly braces from the JS code throw it off.
     apply_bazel_settings = _apply_bazel_settings_js_code.replace("_BAZEL_SRCS", src_list)
     apply_bazel_settings = apply_bazel_settings.replace("_BAZEL_BASE_PATH", base_path)
+    apply_bazel_settings = apply_bazel_settings.replace("_BAZEL_STATIC_FILES", static_list)
 
     # Add in the JS fragment that applies the Bazel-specific settings to the provided config.
     # https://docs.bazel.build/versions/main/skylark/lib/actions.html#expand_template
@@ -195,11 +229,13 @@ def _karma_test_impl(ctx):
     # The files that need to be included when we run the bash script that invokes Karma are:
     #   - The templated configuration file
     #   - Any JS test files the user provided
+    #   - Any static files the user specified
     #   - The other dependencies from npm (e.g. jasmine-core)
     runfiles = [
         ctx.outputs.configuration,
     ]
     runfiles += ctx.files.srcs
+    runfiles += ctx.files.static_files
     runfiles += ctx.files.deps
 
     # We need to add the sources for our Karma dependencies as transitive dependencies, otherwise
@@ -210,7 +246,7 @@ def _karma_test_impl(ctx):
         if ExternalNpmPackageInfo in dep:
             node_modules_depsets.append(dep[ExternalNpmPackageInfo].sources)
         else:
-            print("Not an external npm file?", dep)
+            fail("Not an external npm file: " + dep)
     node_modules = depset(transitive = node_modules_depsets)
 
     # https://docs.bazel.build/versions/main/skylark/lib/DefaultInfo.html
@@ -239,7 +275,7 @@ _karma_test = rule(
         ),
         "deps": attr.label_list(
             doc = """Any karma plugins (aka peer deps) required. These are generally listed
-            in the provided config_file.""",
+            in the provided config_file""",
             allow_files = True,
             aspects = [node_modules_aspect],
             mandatory = True,
@@ -250,6 +286,10 @@ _karma_test = rule(
             default = "@npm//karma/bin:karma",
             executable = True,
             cfg = "exec",
+            allow_files = True,
+        ),
+        "static_files": attr.label_list(
+            doc = "Additional files which are available to be loaded",
             allow_files = True,
         ),
     },
