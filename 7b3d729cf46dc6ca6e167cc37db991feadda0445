@@ -16,6 +16,29 @@
       "message": "Added some options to make CanvasKit build more flexible in terms of ICU data. This is because in the Flutter repo we use an unmodified //third_party/icu which doesn\u0027t have the option to build the ICU data cpp file as in the Skia repo.",
       "revId": "7b3d729cf46dc6ca6e167cc37db991feadda0445",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ab3f2c2e_40d2e405",
+        "filename": "third_party/icu/BUILD.gn",
+        "patchSetId": 1
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-02-22T18:12:08Z",
+      "side": 1,
+      "message": "I feel like it would be cleaner if we never included the ICU data from here for wasm, but always from the CanvasKit BUILD.gn. Right now, it sometimes gets set one way and sometimes set another way.\n\nWDYT?",
+      "range": {
+        "startLine": 119,
+        "startChar": 16,
+        "endLine": 119,
+        "endChar": 42
+      },
+      "revId": "7b3d729cf46dc6ca6e167cc37db991feadda0445",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
