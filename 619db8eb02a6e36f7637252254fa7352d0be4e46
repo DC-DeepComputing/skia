@@ -1,0 +1,101 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dcc07f93_c92c49df",
+        "filename": "src/gpu/v1/Device.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 996,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-02-22T14:53:57Z",
+      "side": 1,
+      "message": "Can we break all this (and maybe, separately, the contents of the SK_EXPERIMENTAL_SIMULATE_DRAWGLYPHRUNLIST_WITH_SLUG_SERIALIZE branch) into a subroutine like testingOnly_DrawViaSerialization? We could also have a comment like:\n\n// This testing method draws a blob by analyzing it to create strike cache\n// differences and then serializing the Blob to a Slug. This creates a hard \n// break between the original glyph data, and the proxied glyph data - and\n// closely mimics how Chrome draws text.\n\n?",
+      "revId": "619db8eb02a6e36f7637252254fa7352d0be4e46",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "df8fba11_26dea70f",
+        "filename": "src/gpu/v1/Device.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1002,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-02-22T14:53:57Z",
+      "side": 1,
+      "message": "SDHM - Server DHM?",
+      "range": {
+        "startLine": 1002,
+        "startChar": 14,
+        "endLine": 1002,
+        "endChar": 17
+      },
+      "revId": "619db8eb02a6e36f7637252254fa7352d0be4e46",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "64073d3c_aa4722dc",
+        "filename": "src/gpu/v1/Device.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1016,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-02-22T14:53:57Z",
+      "side": 1,
+      "message": "\u0027\\n\u0027",
+      "revId": "619db8eb02a6e36f7637252254fa7352d0be4e46",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "27dad3ff_18d188e2",
+        "filename": "src/gpu/v1/Device.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1016,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-02-22T14:53:57Z",
+      "side": 1,
+      "message": "Do we need this prefix ?",
+      "range": {
+        "startLine": 1016,
+        "startChar": 26,
+        "endLine": 1016,
+        "endChar": 66
+      },
+      "revId": "619db8eb02a6e36f7637252254fa7352d0be4e46",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "144b1870_7cba7f37",
+        "filename": "src/gpu/v1/Device.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1030,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-02-22T14:53:57Z",
+      "side": 1,
+      "message": "std::move",
+      "revId": "619db8eb02a6e36f7637252254fa7352d0be4e46",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
