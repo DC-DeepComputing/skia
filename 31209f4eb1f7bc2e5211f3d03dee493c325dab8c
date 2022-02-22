@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "27d8a43b_cfb153f5",
+        "filename": "modules/canvaskit/BUILD.gn",
+        "patchSetId": 1
+      },
+      "lineNbr": 354,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-22T19:35:06Z",
+      "side": 1,
+      "message": "can we call this `skia_canvaskit_legacy_draw_vertices_blend_mode`? The blend modes themselves aren\u0027t legacy, and the behavior is only relevant for SkCanvas::drawVertices.",
+      "range": {
+        "startLine": 354,
+        "startChar": 6,
+        "endLine": 354,
+        "endChar": 39
+      },
+      "revId": "31209f4eb1f7bc2e5211f3d03dee493c325dab8c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
