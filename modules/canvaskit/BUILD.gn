@@ -2,8 +2,8 @@
 #
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
-import("//gn/skia.gni")
-import("//gn/toolchain/wasm.gni")
+import("../../gn/skia.gni")
+import("../../gn/toolchain/wasm.gni")
 import("canvaskit.gni")
 
 # These targets depend on components that are only declared if
@@ -79,6 +79,18 @@ action("create_notomono_cpp") {
   ]
 }
 
+action("icudtl_object") {
+  icudtl_output = "$root_build_dir/canvaskit_icu/icudtl.cpp"
+  script = "../../third_party/icu/make_data_cpp.py"
+  inputs = [ "$skia_canvaskit_icudata_input" ]
+  outputs = [ "$icudtl_output" ]
+  args = [
+    "icudt${skia_canvaskit_icu_version_major_num}_dat",
+    rebase_path(inputs[0], root_build_dir),
+    rebase_path(icudtl_output),
+  ]
+}
+
 skia_wasm_lib("canvaskit") {
   deps = [ "../..:skia" ]
   if (skia_canvaskit_enable_paragraph) {
@@ -101,6 +113,9 @@ skia_wasm_lib("canvaskit") {
   }
   if (skia_canvaskit_enable_embedded_font) {
     deps += [ ":create_notomono_cpp" ]
+  }
+  if (skia_canvaskit_use_icudata) {
+    deps += [ ":icudtl_object" ]
   }
 
   sources = [
@@ -132,6 +147,9 @@ skia_wasm_lib("canvaskit") {
     sources += [
       "$root_out_dir/modules/canvaskit/fonts/NotoMono-Regular.ttf.ninja.cpp",
     ]
+  }
+  if (skia_canvaskit_use_icudata) {
+    sources += [ "$root_build_dir/canvaskit_icu/icudtl.cpp" ]
   }
 
   ldflags = []

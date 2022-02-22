@@ -19,6 +19,11 @@ declare_args() {
   skia_canvaskit_include_viewer = false
   skia_canvaskit_force_tracing = false
   skia_canvaskit_profile_build = false
+  skia_canvaskit_use_icudata = false
+  skia_canvaskit_icudata_input =
+      "//third_party/externals/icu/flutter/icudtl.dat"
+  skia_canvaskit_icu_version_major_num =
+      "69"  # defined in third_party/icu/source/common/unicode/uvernum.h
 }
 
 # Assert that skia_canvaskit_profile_build implies release mode.

@@ -4,6 +4,7 @@
 # found in the LICENSE file.
 
 import("../../gn/skia.gni")
+import("../../modules/canvaskit/canvaskit.gni")
 import("../third_party.gni")
 import("icu.gni")
 
@@ -115,7 +116,7 @@ if (skia_use_system_icu) {
         "../externals/icu/source/stubdata/stubdata.cpp",
         "SkLoadICU.cpp",
       ]
-    } else {
+    } else if (!skia_canvaskit_use_icudata) {
       sources += [ "$data_assembly" ]
       deps = [ ":make_data_assembly" ]
     }
