@@ -20,6 +20,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a161fbb4_0f0ce229",
+        "filename": "modules/canvaskit/BUILD.gn",
+        "patchSetId": 1
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-02-22T19:07:22Z",
+      "side": 1,
+      "message": "Why is this here instead of in //third_party/icu/BUILD.gn? CanvasKit shouldn\u0027t know anything about this or how to build it.",
+      "revId": "7b3d729cf46dc6ca6e167cc37db991feadda0445",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ab3f2c2e_40d2e405",
         "filename": "third_party/icu/BUILD.gn",
         "patchSetId": 1
