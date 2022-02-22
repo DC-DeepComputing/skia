@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "aba82684_0996be5b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 7952
+      },
+      "writtenOn": "2022-02-22T03:00:40Z",
+      "side": 1,
+      "message": "nit: I found SkReadBuffer and SkWriteBuffer aren\u0027t public API, skia needs to make them public, or provides other methods with memory pointer and size arguments directly.",
+      "range": {
+        "startLine": 12,
+        "startChar": 18,
+        "endLine": 12,
+        "endChar": 26
+      },
+      "revId": "9011c7b9aa349f15cf0898073d186bb1ef16d95e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
