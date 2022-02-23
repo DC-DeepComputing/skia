@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1aebaef5_8384acce",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 10154
+      },
+      "writtenOn": "2022-02-23T18:46:20Z",
+      "side": 1,
+      "message": "Thanks. I reverted the ICU changes. PTAL",
+      "revId": "bd487b494edd8377592f56103dffdc50f959156b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

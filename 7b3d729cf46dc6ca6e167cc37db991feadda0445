@@ -106,6 +106,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "46e6fc64_2d763930",
+        "filename": "modules/canvaskit/BUILD.gn",
+        "patchSetId": 1
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 10154
+      },
+      "writtenOn": "2022-02-23T18:46:20Z",
+      "side": 1,
+      "message": "Reverted the icu changes in favor of upstreaming the WASM build steps to chromium",
+      "parentUuid": "d0d4d9e6_725fe442",
+      "revId": "7b3d729cf46dc6ca6e167cc37db991feadda0445",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "51e4fb8f_c8fed9ae",
