@@ -16,6 +16,414 @@
       "message": "Updated to remove the Return class. Now the mutex and return functions all live on ResourceCache and the Resources all take a ref to the ResourceCache instead of the Return.",
       "revId": "4d9c90325ff7308599d262aca3d7a35020685228",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a22bf09d_08974b1e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-23T17:34:51Z",
+      "side": 1,
+      "message": "Lots of thoughts, some I think should be done now, some could be follow-ups. I think right now the mix of mutex+atomic is confusing and I think we should just use a mutex for now (really simple) as we sort through the rest of the lifetime/ref/return logics. But I outlined what I think is a way to get us to a single atomic and no mutex while still having different classes of ref for CB, usage, and cache.",
+      "revId": "4d9c90325ff7308599d262aca3d7a35020685228",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f6308002_ba4df0f6",
+        "filename": "experimental/graphite/src/Resource.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-23T17:34:51Z",
+      "side": 1,
+      "message": "running through a possible scenario, where a Resource has one CB ref and one usage ref, and each is unref\u0027ed on separate threads. Assuming that a 0 CB ref count does *not* return the resource to the cache.\n\nIf we have two separate ref counts and the unref mutex:\n - the unref mutex is held over modification of the ref count and the call to notifyARefIsZero so the two unrefs will be processed in some exclusive ordering\n - if CB unref happens first, notifyARefIsZero\u0027s call to hasAnyRefs() returns true so no cleanup is performed; then usage ref happens and we attempt to return it to the cache; if that fails, we see there are no refs left (correctly) and delete it.\n - if the usage unref happens first, and the return to the cache is successful, we\u0027ve added it to the return queue. Importantly, nothing has changed on Resource to reflect that though, so when the CB unref is processed, it sees that hasAnyRefs() is false and actually deletes it. When the resource cache processes the return queue, we get into a bad state.\n \nIf we have a single atomic uint64_t and no mutex (see my other comments):\n - the initial ref value is 01 | 01\n - the usage unref does an atomic subtraction of 00 | 01 and the CB unref does an atomic subtraction of 01 | 00.\n - even with memory:acq_release, we should be safe to assume that the usage unref\u0027ing thread sees \u0027prior\u0027 \u003d\u003d 01|01 or 00|01. and the CB unref\u0027ing thread sees \u0027prior\u0027 \u003d\u003d 01|01 or 01|00.\n - it should not be the case that both threads see 01|01 as the prior value, though, so one thread will correctly detect that we no longer have any refs at all and could delete the object.\n - however, we do still have the issue where the usage unref\u0027ing thread returns the resource but the CB unref\u0027ing thread saw prior \u003d\u003d 01|00 and deletes the object entirely.\n \nIn either case, I think we need something marked on the Resource that says it\u0027s in the return queue. I wonder if this is just making the cache ref explicit instead of implicit? From the cache ref\u0027s POV, I think we\u0027d have that ref held whether or not it\u0027s in the return queue or the main arrays. We could have it as the lowest bit in the atomic ref counter and always just be 0 or 1, and usage refs shift by 1. Then full delete can safely happen on any thread when the new value is 0.",
+      "range": {
+        "startLine": 34,
+        "startChar": 0,
+        "endLine": 34,
+        "endChar": 66
+      },
+      "revId": "4d9c90325ff7308599d262aca3d7a35020685228",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "12ff3cab_80f2043d",
+        "filename": "experimental/graphite/src/Resource.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-23T17:34:51Z",
+      "side": 1,
+      "message": "see note in unrefCommandBuffer(), but this maybe isn\u0027t right?",
+      "range": {
+        "startLine": 45,
+        "startChar": 8,
+        "endLine": 45,
+        "endChar": 44
+      },
+      "revId": "4d9c90325ff7308599d262aca3d7a35020685228",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "60c79c4f_37172345",
+        "filename": "experimental/graphite/src/Resource.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-23T17:34:51Z",
+      "side": 1,
+      "message": "Maybe rename internalDispose()? freeGpuData() doesn\u0027t emphasize that the C++ object is deleted as well.",
+      "range": {
+        "startLine": 57,
+        "startChar": 15,
+        "endLine": 57,
+        "endChar": 26
+      },
+      "revId": "4d9c90325ff7308599d262aca3d7a35020685228",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "57577e4b_da86a5eb",
+        "filename": "experimental/graphite/src/Resource.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-23T17:34:51Z",
+      "side": 1,
+      "message": "notifyARefIsZero asserts that the last removed ref is kUsageRef or kCache; ignoring the assert issue, it looks like this could end up having the resource returned to the cache twice, once for the usage ref hitting 0 and once for the command buffer ref hitting 0.\n\nIt should be that command buffer refs only preserve aliveness; they should have been returned to the cache earlier when the usage ref hit 0, since any future use would be enqueued after the current command buffer ref finishes. In the case of mapped resources, it\u0027s expected they take the extra work of holding on to a usage ref for the same duration as the command buffer ref so that it\u0027s not returned to the cache too early.",
+      "range": {
+        "startLine": 82,
+        "startChar": 0,
+        "endLine": 82,
+        "endChar": 87
+      },
+      "revId": "4d9c90325ff7308599d262aca3d7a35020685228",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "94bbe259_71f52b47",
+        "filename": "experimental/graphite/src/Resource.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-23T17:34:51Z",
+      "side": 1,
+      "message": "typo",
+      "range": {
+        "startLine": 93,
+        "startChar": 74,
+        "endLine": 93,
+        "endChar": 81
+      },
+      "revId": "4d9c90325ff7308599d262aca3d7a35020685228",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "002dcae7_9adde3cf",
+        "filename": "experimental/graphite/src/Resource.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-23T17:34:51Z",
+      "side": 1,
+      "message": "out of date?",
+      "range": {
+        "startLine": 93,
+        "startChar": 26,
+        "endLine": 93,
+        "endChar": 37
+      },
+      "revId": "4d9c90325ff7308599d262aca3d7a35020685228",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b20d5952_639a27fd",
+        "filename": "experimental/graphite/src/Resource.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-23T17:34:51Z",
+      "side": 1,
+      "message": "Is this only callable by ResourceCache? I think given how coupled Resource and ResourceCache are, I could see making them friends so we can define public API that any part of graphite or clients can use, the interaction API between Resource and Cache, and the internal API of each. Those 3 groups seem like useful boundaries to enforce.",
+      "range": {
+        "startLine": 132,
+        "startChar": 0,
+        "endLine": 132,
+        "endChar": 49
+      },
+      "revId": "4d9c90325ff7308599d262aca3d7a35020685228",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fbb27ed6_7c8471da",
+        "filename": "experimental/graphite/src/Resource.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 177,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-23T17:34:51Z",
+      "side": 1,
+      "message": "Having a mutex and two atomics, and the mutex only being used on the unref (and not on the matching ref) feels brittle and/or overkill.\n\nI had the thought that maybe we can have a single atomic\u003cuint64_t\u003e that represents both types of refs. Encoding the ref types gets a little trickier, but I think the rest of the threading logic being simpler makes up for it.\n\nYou\u0027d have `std::atomic\u003cuint64_t\u003e fRefCnts;`\n\nAdding a usage ref would `fetch_add(+1, relaxed)` and a command buffer ref would `fetch_add(+1\u003c\u003c32, relaxed)`. Unreffing would subtract 1 or subtract 1\u003c\u003c32. hasAnyRefs() is trivially just checking if fRefCnts is 0, and hasUsageRef or hasCommandBufferRef uses fetch_and(upper/lower bit mask) to check each half of the 64 bit int. I don\u0027t think we\u0027d need a mutex at all then?",
+      "range": {
+        "startLine": 173,
+        "startChar": 0,
+        "endLine": 177,
+        "endChar": 32
+      },
+      "revId": "4d9c90325ff7308599d262aca3d7a35020685228",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4f2b2add_0591dce2",
+        "filename": "experimental/graphite/src/ResourceCache.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-23T17:34:51Z",
+      "side": 1,
+      "message": "Should shutdown assert that it\u0027s a single owner? Or is the intent that we can shutdown from any thread?",
+      "range": {
+        "startLine": 38,
+        "startChar": 0,
+        "endLine": 38,
+        "endChar": 32
+      },
+      "revId": "4d9c90325ff7308599d262aca3d7a35020685228",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a0908bcf_fc6a200f",
+        "filename": "experimental/graphite/src/ResourceCache.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-23T17:34:51Z",
+      "side": 1,
+      "message": "If we\u0027re not asserting single owner, we could have two threads pass the SkASSERT(!fIsShutdown) assert, then take the fReturnMutex in some order. We should check if fIsShutdown is true and return early so we don\u0027t double-process the rest of the shutdown logic.\n\nAlternatively, we can make fIsShutdown an atomic\u003cbool\u003e and then use fIsShutdown.compare_and_exchange_strong, except that gets more complicated with making sure no further resources are returned after we shutdown so fReturnMutex is probably best.",
+      "range": {
+        "startLine": 42,
+        "startChar": 8,
+        "endLine": 43,
+        "endChar": 27
+      },
+      "revId": "4d9c90325ff7308599d262aca3d7a35020685228",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "218ae983_28df48d9",
+        "filename": "experimental/graphite/src/ResourceCache.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-23T17:34:51Z",
+      "side": 1,
+      "message": "ASSERT_SINGLE_OWNER?",
+      "range": {
+        "startLine": 87,
+        "startChar": 25,
+        "endLine": 87,
+        "endChar": 43
+      },
+      "revId": "4d9c90325ff7308599d262aca3d7a35020685228",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "88a3a1fb_0be1bda1",
+        "filename": "experimental/graphite/src/ResourceCache.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-23T17:34:51Z",
+      "side": 1,
+      "message": "typo",
+      "range": {
+        "startLine": 95,
+        "startChar": 36,
+        "endLine": 95,
+        "endChar": 45
+      },
+      "revId": "4d9c90325ff7308599d262aca3d7a35020685228",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5abc1956_c5490dd4",
+        "filename": "experimental/graphite/src/ResourceCache.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-23T17:34:51Z",
+      "side": 1,
+      "message": "typo",
+      "range": {
+        "startLine": 149,
+        "startChar": 22,
+        "endLine": 149,
+        "endChar": 30
+      },
+      "revId": "4d9c90325ff7308599d262aca3d7a35020685228",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fa76ea1f_f0952e48",
+        "filename": "experimental/graphite/src/ResourceCache.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-23T17:34:51Z",
+      "side": 1,
+      "message": "will this ever be called directly? Or just by Resource?",
+      "range": {
+        "startLine": 49,
+        "startChar": 9,
+        "endLine": 49,
+        "endChar": 23
+      },
+      "revId": "4d9c90325ff7308599d262aca3d7a35020685228",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "53968237_3e229990",
+        "filename": "experimental/graphite/src/ResourceCache.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-23T17:34:51Z",
+      "side": 1,
+      "message": "It looks like the intent is that all the private functions are not necessarily thread safe, and are meant to be used on the ResourceCache\u0027s owning thread, but with the requirement that the public API uses ASSERT_SINGLE_OWNER. This seems reasonable to me, but can we add a comment emphasizing that design choice here?",
+      "range": {
+        "startLine": 59,
+        "startChar": 0,
+        "endLine": 59,
+        "endChar": 8
+      },
+      "revId": "4d9c90325ff7308599d262aca3d7a35020685228",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "acf5d6f4_4d9079ae",
+        "filename": "experimental/graphite/src/ResourceCache.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-23T17:34:51Z",
+      "side": 1,
+      "message": "nit: using",
+      "range": {
+        "startLine": 103,
+        "startChar": 4,
+        "endLine": 103,
+        "endChar": 12
+      },
+      "revId": "4d9c90325ff7308599d262aca3d7a35020685228",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7d5cf7a8_53319586",
+        "filename": "experimental/graphite/src/ResourceTypes.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-23T17:34:51Z",
+      "side": 1,
+      "message": "typo",
+      "range": {
+        "startLine": 78,
+        "startChar": 49,
+        "endLine": 78,
+        "endChar": 55
+      },
+      "revId": "4d9c90325ff7308599d262aca3d7a35020685228",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
