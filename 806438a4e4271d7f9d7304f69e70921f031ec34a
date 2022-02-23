@@ -39,6 +39,30 @@
       },
       "revId": "806438a4e4271d7f9d7304f69e70921f031ec34a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b2323e53_2c4a45ae",
+        "filename": "src/gpu/geometry/GrPathUtils.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 218,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-23T14:54:35Z",
+      "side": 1,
+      "message": "I wonder if it was incidental? Or was present because previously `(a2 + a5 + a8)` wasn\u0027t bit-exact with `det`? Now they should be bit-exact so we could experiment with replacing it with 1.0.\n\nOn the other hand, maybe there\u0027s some benefit to having kMPersp2 be det * (1/det) so that that doesn\u0027t evaluate to exactly 1.0, there\u0027s some additional scale factor to adjust `*scale` in the other matrix components?\n\nAnd wait, there is! (I just had to expand the diff tool). I think we should set kMPersp2 \u003d 1.0 and delete the matrix normalization code at line 221 to 237.",
+      "parentUuid": "45114a2f_ced51d39",
+      "range": {
+        "startLine": 218,
+        "startChar": 41,
+        "endLine": 218,
+        "endChar": 53
+      },
+      "revId": "806438a4e4271d7f9d7304f69e70921f031ec34a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
