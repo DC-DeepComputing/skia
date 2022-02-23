@@ -16,6 +16,24 @@
       "message": "How sure are we that this is unused? Do we have a CL to link against for when it was deleted?",
       "revId": "be19be4295c008f3c34b319dc4aa0ed8b3c5c8b2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dd66c1b5_442835be",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2022-02-23T18:56:28Z",
+      "side": 1,
+      "message": "That\u0027s the issue, I\u0027m not 100% on if it is not being used. After I handed this off to infra to get a job set up, I\u0027m not really sure what happened to it.\nThe only thing I can think of is lottie gold (this provides on Android 5x5 pngs of lotties rendering, so there might be a job set up for this). I\u0027m hoping a test will yell or a big bulk triage will show up if so.",
+      "parentUuid": "24d26934_a642afaa",
+      "revId": "be19be4295c008f3c34b319dc4aa0ed8b3c5c8b2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
