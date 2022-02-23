@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e5526ac1_fdf5cccf",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 433,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-23T14:46:43Z",
+      "side": 1,
+      "message": "This seems okay to me, since we shouldn\u0027t be adding user defined snippets willy-nilly.",
+      "range": {
+        "startLine": 431,
+        "startChar": 4,
+        "endLine": 433,
+        "endChar": 33
+      },
+      "revId": "abaa3ffd4a234df0e3f6ddff1be8270d64084f0a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e4026c7e_1b59d615",
+        "filename": "src/core/SkShaderCodeDictionary.h",
+        "patchSetId": 23
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-23T14:46:43Z",
+      "side": 1,
+      "message": "I think DataPayloadType and SkDataPayloadInfo should be defined in SkPaintParamsKey, modulo any name changing you agree on.",
+      "range": {
+        "startLine": 21,
+        "startChar": 0,
+        "endLine": 25,
+        "endChar": 26
+      },
+      "revId": "abaa3ffd4a234df0e3f6ddff1be8270d64084f0a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1e6765ce_06f561ad",
+        "filename": "src/core/SkShaderCodeDictionary.h",
+        "patchSetId": 23
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-23T14:46:43Z",
+      "side": 1,
+      "message": "To me this name reads a little too generic, when it\u0027s really describing the data payload specifically for the SkPaintParamsKey.\n\nwdyt about SkPaintKeyField? DataPayload is pretty generic, so trying to move away from that, and \"Info\" doesn\u0027t feel like it embodies the responsibility of this type. Field reinforces that it\u0027s just defining a specific piece within the payload and the entire payload will be described by the span still.",
+      "range": {
+        "startLine": 25,
+        "startChar": 7,
+        "endLine": 25,
+        "endChar": 25
+      },
+      "revId": "abaa3ffd4a234df0e3f6ddff1be8270d64084f0a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a4f6039a_64e250e5",
+        "filename": "src/core/SkShaderCodeDictionary.h",
+        "patchSetId": 23
+      },
+      "lineNbr": 154,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-23T14:46:43Z",
+      "side": 1,
+      "message": "wdyt about having the SnippetEntries also allocated in fArena, and then a single std::vector\u003cSkShaderInfo::SnippetEntry*\u003e array where the first kBuiltInCodeSnippetIDCount entries match the SkBuiltInCodeSnippetID and everything else afterwards are user defined?",
+      "range": {
+        "startLine": 150,
+        "startChar": 4,
+        "endLine": 154,
+        "endChar": 86
+      },
+      "revId": "abaa3ffd4a234df0e3f6ddff1be8270d64084f0a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
