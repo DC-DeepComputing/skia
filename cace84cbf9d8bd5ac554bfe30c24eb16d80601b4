@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "28be1fd3_0eee505e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-23T19:10:48Z",
+      "side": 1,
+      "message": "lgtm, minus forward declaration questions. Adding Rob since he\u0027s the main mover on the ShaderCodeDictionary right now.",
+      "revId": "cace84cbf9d8bd5ac554bfe30c24eb16d80601b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "16b3fbc1_92fce996",
+        "filename": "src/shaders/SkShaderBase.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-23T19:10:48Z",
+      "side": 1,
+      "message": "All the shader subclasses should still be picking this up for their headers, right?",
+      "range": {
+        "startLine": 35,
+        "startChar": 0,
+        "endLine": 35,
+        "endChar": 29
+      },
+      "revId": "cace84cbf9d8bd5ac554bfe30c24eb16d80601b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a1c0af9e_f54505c4",
+        "filename": "src/shaders/gradients/SkSweepGradient.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-23T19:10:48Z",
+      "side": 1,
+      "message": "Do we need these forward declarations if SkShaderBase forward declares it already?",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 13,
+        "endChar": 29
+      },
+      "revId": "cace84cbf9d8bd5ac554bfe30c24eb16d80601b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
