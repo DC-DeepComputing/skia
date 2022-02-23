@@ -214,6 +214,7 @@ public:
                         skvm::Uniforms* uniforms, SkArenaAlloc* alloc) const;
 
 
+#ifdef SK_ENABLE_SKSL
     /**
         Add implementation details, for the specified backend, of this SkShader to the
         provided key.
@@ -227,6 +228,7 @@ public:
                           SkBackend backend,
                           SkPaintParamsKeyBuilder* builder,
                           SkUniformBlock* uniformBlock) const;
+#endif
 
 protected:
     SkShaderBase(const SkMatrix* localMatrix = nullptr);
