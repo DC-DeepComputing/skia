@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "99f935a3_66e4023b",
+        "filename": "include/core/SkPath.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-02-23T19:55:15Z",
+      "side": 1,
+      "message": "micro-nit: We generally keep forward declarations sorted, so this would go before SkRRect",
+      "range": {
+        "startLine": 22,
+        "startChar": 0,
+        "endLine": 22,
+        "endChar": 16
+      },
+      "revId": "67eeaec8eb096e77a39b1060928aa242c8942650",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
