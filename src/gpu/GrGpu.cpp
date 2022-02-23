@@ -41,9 +41,24 @@ GrGpu::~GrGpu() {
     this->callSubmittedProcs(false);
 }
 
-void GrGpu::initCapsAndCompiler(sk_sp<const GrCaps> caps) {
-    fCaps = std::move(caps);
-    fCompiler = std::make_unique<SkSL::Compiler>(fCaps->shaderCaps());
+void GrGpu::initCapsAndCompiler(sk_sp<const GrCaps> caps) { fCaps = std::move(caps); }
+
+std::unique_ptr<SkSL::Compiler> GrGpu::getShaderCompiler() {
+    std::unique_lock uniqueLock(fMutex);
+    std::unique_ptr<SkSL::Compiler> compiler;
+    if (fCompilers.empty()) {
+        compiler = std::make_unique<SkSL::Compiler>(fCaps->shaderCaps());
+    } else {
+        compiler = std::move(fCompilers.back());
+        fCompilers.pop_back();
+    }
+    return compiler;
+}
+
+void GrGpu::returnShaderCompiler(std::unique_ptr<SkSL::Compiler> compiler) {
+    std::unique_lock uniqueLock(fMutex);
+    SkASSERT(compiler);
+    fCompilers.push_back(std::move(compiler));
 }
 
 void GrGpu::disconnect(DisconnectType type) {}

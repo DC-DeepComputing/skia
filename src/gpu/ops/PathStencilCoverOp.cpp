@@ -317,6 +317,33 @@ void PathStencilCoverOp::onPrepare(GrOpFlushState* flushState) {
     }
 }
 
+void PathStencilCoverOp::onPrepareProgram(GrOpFlushState* flushState, const SkRect& chainBounds) {
+    if (!fTessellator) {
+        return;
+    }
+
+    if (fCoverBBoxProgram && fCoverBBoxProgram->geomProc().hasVertexAttributes() &&
+        !fBBoxVertexBufferIfNoIDSupport) {
+        return;
+    }
+
+    // Stencil the inner fan, if any.
+    if (fFanVertexCount > 0) {
+        SkASSERT(fStencilFanProgram);
+        SkASSERT(fFanBuffer);
+        flushState->preparePipeline(*fStencilFanProgram, this->bounds());
+    }
+
+    // Stencil the rest of the path.
+    SkASSERT(fStencilPathProgram);
+    flushState->preparePipeline(*fStencilPathProgram, this->bounds());
+
+    // Fill in the bounding box (if not in stencil-only mode).
+    if (fCoverBBoxProgram) {
+        flushState->preparePipeline(*fCoverBBoxProgram, this->bounds());
+    }
+}
+
 void PathStencilCoverOp::onExecute(GrOpFlushState* flushState, const SkRect& chainBounds) {
     if (!fTessellator) {
         return;

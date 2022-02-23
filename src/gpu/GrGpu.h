@@ -8,6 +8,8 @@
 #ifndef GrGpu_DEFINED
 #define GrGpu_DEFINED
 
+#include <mutex>
+
 #include "include/core/SkPath.h"
 #include "include/core/SkSpan.h"
 #include "include/core/SkSurface.h"
@@ -66,7 +68,8 @@ public:
 
     virtual GrRingBuffer* uniformsRingBuffer() { return nullptr; }
 
-    SkSL::Compiler* shaderCompiler() const { return fCompiler.get(); }
+    std::unique_ptr<SkSL::Compiler> getShaderCompiler();
+    void returnShaderCompiler(std::unique_ptr<SkSL::Compiler> compiler);
 
     enum class DisconnectType {
         // No cleanup should be attempted, immediately cease making backend API calls
@@ -818,9 +821,12 @@ private:
     void callSubmittedProcs(bool success);
 
     sk_sp<const GrCaps>             fCaps;
+
+    std::mutex fMutex;
+
     // Compiler used for compiling SkSL into backend shader code. We only want to create the
     // compiler once, as there is significant overhead to the first compile.
-    std::unique_ptr<SkSL::Compiler> fCompiler;
+    std::vector<std::unique_ptr<SkSL::Compiler>> fCompilers;
 
     uint32_t fResetBits;
     // The context owns us, not vice-versa, so this ptr is not ref'ed by Gpu.

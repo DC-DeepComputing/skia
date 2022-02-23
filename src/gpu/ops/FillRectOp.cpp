@@ -297,6 +297,26 @@ private:
         }
     }
 
+    void onPrepareProgram(GrOpFlushState* flushState, const SkRect& chainBounds) override {
+        if (!fVertexBuffer) {
+            return;
+        }
+
+        const VertexSpec vertexSpec = this->vertexSpec();
+
+        if (vertexSpec.needsIndexBuffer() && !fIndexBuffer) {
+            return;
+        }
+
+        if (!fProgramInfo) {
+            this->createProgramInfo(flushState);
+        }
+
+        const int totalNumVertices = fQuads.count() * vertexSpec.verticesPerQuad();
+
+        flushState->preparePipeline(*fProgramInfo, chainBounds);
+    }
+
     void onExecute(GrOpFlushState* flushState, const SkRect& chainBounds) override {
         if (!fVertexBuffer) {
             return;

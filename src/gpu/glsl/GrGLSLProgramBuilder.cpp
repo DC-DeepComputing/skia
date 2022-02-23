@@ -48,25 +48,31 @@ void GrGLSLProgramBuilder::addFeature(GrShaderFlags shaders,
 bool GrGLSLProgramBuilder::emitAndInstallProcs() {
     // First we loop over all of the installed processors and collect coord transforms.  These will
     // be sent to the ProgramImpl in its emitCode function
-    SkSL::dsl::Start(this->shaderCompiler());
+    auto compiler = this->getShaderCompiler();
+    SkSL::dsl::Start(compiler.get());
     SkString inputColor;
     SkString inputCoverage;
     if (!this->emitAndInstallPrimProc(&inputColor, &inputCoverage)) {
+        this->returnShaderCompiler(std::move(compiler));
         return false;
     }
     if (!this->emitAndInstallDstTexture()) {
+        this->returnShaderCompiler(std::move(compiler));
         return false;
     }
     if (!this->emitAndInstallFragProcs(&inputColor, &inputCoverage)) {
+        this->returnShaderCompiler(std::move(compiler));
         return false;
     }
     if (!this->emitAndInstallXferProc(inputColor, inputCoverage)) {
+        this->returnShaderCompiler(std::move(compiler));
         return false;
     }
     fGPImpl->emitTransformCode(&fVS, this->uniformHandler());
     SkSL::dsl::End();
-
-    return this->checkSamplerCounts();
+    auto count = this->checkSamplerCounts();
+    this->returnShaderCompiler(std::move(compiler));
+    return count;
 }
 
 bool GrGLSLProgramBuilder::emitAndInstallPrimProc(SkString* outputColor, SkString* outputCoverage) {

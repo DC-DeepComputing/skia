@@ -45,7 +45,8 @@ public:
         return fProgramInfo.pipeline().snapVerticesToPixelCenters();
     }
     bool hasPointSize() const { return fProgramInfo.primitiveType() == GrPrimitiveType::kPoints; }
-    virtual SkSL::Compiler* shaderCompiler() const = 0;
+    virtual std::unique_ptr<SkSL::Compiler> getShaderCompiler() = 0;
+    virtual void returnShaderCompiler(std::unique_ptr<SkSL::Compiler>) = 0;
 
     const GrProgramDesc& desc() const { return fDesc; }
 

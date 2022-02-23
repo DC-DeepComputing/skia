@@ -468,6 +468,31 @@ void PathInnerTriangulateOp::onPrepare(GrOpFlushState* flushState) {
     }
 }
 
+void PathInnerTriangulateOp::onPrepareProgram(GrOpFlushState* flushState,
+                                              const SkRect& chainBounds) {
+    if (fCoverHullsProgram && fCoverHullsProgram->geomProc().hasVertexAttributes() &&
+        !fHullVertexBufferIfNoIDSupport) {
+        return;
+    }
+
+    if (fStencilCurvesProgram) {
+        SkASSERT(fTessellator);
+        flushState->preparePipeline(*fStencilCurvesProgram, this->bounds());
+    }
+
+    // Allocation of the fan vertex buffer may have failed but we already pushed back fan programs.
+    if (fFanBuffer) {
+        for (const GrProgramInfo* fanProgram : fFanPrograms) {
+            flushState->preparePipeline(*fanProgram, this->bounds());
+        }
+    }
+
+    if (fCoverHullsProgram) {
+        SkASSERT(fTessellator);
+        flushState->preparePipeline(*fCoverHullsProgram, this->bounds());
+    }
+}
+
 void PathInnerTriangulateOp::onExecute(GrOpFlushState* flushState, const SkRect& chainBounds) {
     if (fCoverHullsProgram &&
         fCoverHullsProgram->geomProc().hasVertexAttributes() &&

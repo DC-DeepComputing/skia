@@ -918,6 +918,23 @@ private:
         }
     }
 
+    void onPrepareProgram(GrOpFlushState* flushState, const SkRect& chainBounds) override {
+        if (!fDesc->fVertexBuffer) {
+            return;
+        }
+
+        if (fDesc->fVertexSpec.needsIndexBuffer() && !fDesc->fIndexBuffer) {
+            return;
+        }
+
+        if (!fDesc->fProgramInfo) {
+            this->createProgramInfo(flushState);
+            SkASSERT(fDesc->fProgramInfo);
+        }
+
+        flushState->preparePipeline(*fDesc->fProgramInfo, chainBounds);
+    }
+
     void onExecute(GrOpFlushState* flushState, const SkRect& chainBounds) override {
         if (!fDesc->fVertexBuffer) {
             return;

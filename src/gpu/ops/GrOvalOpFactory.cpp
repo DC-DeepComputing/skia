@@ -1400,6 +1400,14 @@ private:
                          GrPrimitiveRestart::kNo, std::move(vertexBuffer), firstVertex);
     }
 
+    void onPrepareProgram(GrOpFlushState* flushState, const SkRect& chainBounds) override {
+        if (!fProgramInfo || !fMesh) {
+            return;
+        }
+
+        flushState->preparePipeline(*fProgramInfo, chainBounds);
+    }
+
     void onExecute(GrOpFlushState* flushState, const SkRect& chainBounds) override {
         if (!fProgramInfo || !fMesh) {
             return;
@@ -1731,6 +1739,14 @@ private:
                           GrPrimitiveRestart::kNo, std::move(vertexBuffer), firstVertex);
     }
 
+    void onPrepareProgram(GrOpFlushState* flushState, const SkRect& chainBounds) override {
+        if (!fProgramInfo || !fMesh) {
+            return;
+        }
+
+        flushState->preparePipeline(*fProgramInfo, chainBounds);
+    }
+
     void onExecute(GrOpFlushState* flushState, const SkRect& chainBounds) override {
         if (!fProgramInfo || !fMesh) {
             return;
@@ -2031,6 +2047,14 @@ private:
         fMesh = helper.mesh();
     }
 
+    void onPrepareProgram(GrOpFlushState* flushState, const SkRect& chainBounds) override {
+        if (!fProgramInfo || !fMesh) {
+            return;
+        }
+
+        flushState->preparePipeline(*fProgramInfo, chainBounds);
+    }
+
     void onExecute(GrOpFlushState* flushState, const SkRect& chainBounds) override {
         if (!fProgramInfo || !fMesh) {
             return;
@@ -2303,6 +2327,14 @@ private:
                             origin_centered_tri_strip(innerCoordX, innerCoordY));
         }
         fMesh = helper.mesh();
+    }
+
+    void onPrepareProgram(GrOpFlushState* flushState, const SkRect& chainBounds) override {
+        if (!fProgramInfo || !fMesh) {
+            return;
+        }
+
+        flushState->preparePipeline(*fProgramInfo, chainBounds);
     }
 
     void onExecute(GrOpFlushState* flushState, const SkRect& chainBounds) override {
@@ -2769,6 +2801,14 @@ private:
                           GrPrimitiveRestart::kNo, std::move(vertexBuffer), firstVertex);
     }
 
+    void onPrepareProgram(GrOpFlushState* flushState, const SkRect& chainBounds) override {
+        if (!fProgramInfo || !fMesh) {
+            return;
+        }
+
+        flushState->preparePipeline(*fProgramInfo, chainBounds);
+    }
+
     void onExecute(GrOpFlushState* flushState, const SkRect& chainBounds) override {
         if (!fProgramInfo || !fMesh) {
             return;
@@ -3090,6 +3130,14 @@ private:
             }
         }
         fMesh = helper.mesh();
+    }
+
+    void onPrepareProgram(GrOpFlushState* flushState, const SkRect& chainBounds) override {
+        if (!fProgramInfo || !fMesh) {
+            return;
+        }
+
+        flushState->preparePipeline(*fProgramInfo, chainBounds);
     }
 
     void onExecute(GrOpFlushState* flushState, const SkRect& chainBounds) override {

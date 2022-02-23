@@ -238,6 +238,14 @@ private:
         fMesh->set(std::move(vertexBuffer), vertexCount, firstVertex);
     }
 
+    void onPrepareProgram(GrOpFlushState* flushState, const SkRect& chainBounds) override {
+        if (!fMesh) {
+            return;
+        }
+
+        flushState->preparePipeline(*fProgramInfo, chainBounds);
+    }
+
     void onExecute(GrOpFlushState* flushState, const SkRect& chainBounds) override {
         if (!fMesh) {
             return;
@@ -525,6 +533,7 @@ private:
                              GrLoadOp colorLoadOp) override;
 
     void onPrepareDraws(GrMeshDrawTarget*) override;
+    void onPrepareProgram(GrOpFlushState*, const SkRect& chainBounds) override;
     void onExecute(GrOpFlushState*, const SkRect& chainBounds) override;
 
 #if GR_TEST_UTILS
@@ -661,6 +670,14 @@ void AAStrokeRectOp::onPrepareDraws(GrMeshDrawTarget* target) {
                                            target->usesMSAASurface());
     }
     fMesh = helper.mesh();
+}
+
+void AAStrokeRectOp::onPrepareProgram(GrOpFlushState* flushState, const SkRect& chainBounds) {
+    if (!fProgramInfo || !fMesh) {
+        return;
+    }
+
+    flushState->preparePipeline(*fProgramInfo, chainBounds);
 }
 
 void AAStrokeRectOp::onExecute(GrOpFlushState* flushState, const SkRect& chainBounds) {

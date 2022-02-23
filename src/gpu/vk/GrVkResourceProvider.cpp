@@ -262,6 +262,14 @@ GrVkPipelineState* GrVkResourceProvider::findOrCreateCompatiblePipelineState(
                                                           overrideSubpassForResolveLoad);
 }
 
+void GrVkResourceProvider::prepareCompatiblePipelineState(GrRenderTarget* renderTarget,
+                                                          const GrProgramInfo& programInfo,
+                                                          VkRenderPass compatibleRenderPass,
+                                                          bool overrideSubpassForResolveLoad) {
+    fPipelineStateCache->preparePipelineState(
+            renderTarget, programInfo, compatibleRenderPass, overrideSubpassForResolveLoad);
+}
+
 GrVkPipelineState* GrVkResourceProvider::findOrCreateCompatiblePipelineState(
         const GrProgramDesc& desc,
         const GrProgramInfo& programInfo,

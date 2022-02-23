@@ -188,6 +188,12 @@ public:
     }
 
     /** Issues the op's commands to GrGpu. */
+    void prepareProgram(GrOpFlushState* state, const SkRect& chainBounds) {
+        TRACE_EVENT0("skia.gpu", name());
+        this->onPrepareProgram(state, chainBounds);
+    }
+
+    /** Issues the op's commands to GrGpu. */
     void execute(GrOpFlushState* state, const SkRect& chainBounds) {
         TRACE_EVENT0("skia.gpu", name());
         this->onExecute(state, chainBounds);
@@ -316,6 +322,7 @@ private:
     virtual void onPrepare(GrOpFlushState*) = 0;
     // If this op is chained then chainBounds is the union of the bounds of all ops in the chain.
     // Otherwise, this op's bounds.
+    virtual void onPrepareProgram(GrOpFlushState*, const SkRect& chainBounds) {}
     virtual void onExecute(GrOpFlushState*, const SkRect& chainBounds) = 0;
 #if GR_TEST_UTILS
     virtual SkString onDumpInfo() const { return SkString(); }

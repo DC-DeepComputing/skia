@@ -67,6 +67,7 @@ private:
 
     void onEnd() override;
 
+    bool onPreparePipeline(const GrProgramInfo&, const SkRect& drawBounds) override;
     bool onBindPipeline(const GrProgramInfo&, const SkRect& drawBounds) override;
     void onSetScissorRect(const SkIRect&) override;
     bool onBindTextures(const GrGeometryProcessor&,
