@@ -35,7 +35,7 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(KeyTest, reporter, context) {
 
     auto dict = context->priv().shaderCodeDictionary();
 
-    SkPaintParamsKeyBuilder builder(dict);
+    SkPaintParamsKeyBuilder builder(dict, SkBackend::kGraphite);
 
     static const int kMaxBlockDataSize = SkPaintParamsKey::kMaxBlockSize -
                                          SkPaintParamsKey::kBlockHeaderSizeInBytes;
