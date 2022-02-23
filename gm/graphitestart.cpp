@@ -78,11 +78,16 @@ protected:
 
         // UL corner
         {
+            SkRect r{129, 2, 255, 127};
             SkPaint p;
             p.setColor(SK_ColorRED);
+            p.setShader(create_gradient_shader(r));
+            p.setBlendMode(SkBlendMode::kMultiply);
+            p.setAntiAlias(false);
             canvas->drawRect({2, 2, 127, 127}, p);
         }
 
+#if 0
         // UR corner
         {
             SkRect r{129, 2, 255, 127};
@@ -109,8 +114,10 @@ protected:
         // TODO: failing serialize test on Linux, not sure what's going on
         canvas->writePixels(fBitmap, 0, 256);
 #endif
+#endif
     }
 
+private:
     SkBitmap fBitmap;
 };
 
