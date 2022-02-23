@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5379049a_ee07b9de",
+        "filename": "src/gpu/v1/Device.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 997,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-02-23T17:54:17Z",
+      "side": 1,
+      "message": "We normally jam all the preprocessor stuff all the way to the left",
+      "revId": "954afc64fc3bfe6cf7cb6e5ec00bc2c6518b1a31",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "029806ce_6f9b8348",
+        "filename": "src/gpu/v1/Device_v1.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 213,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-02-23T17:54:17Z",
+      "side": 1,
+      "message": "same here",
+      "revId": "954afc64fc3bfe6cf7cb6e5ec00bc2c6518b1a31",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
