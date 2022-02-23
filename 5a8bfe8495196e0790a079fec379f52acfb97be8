@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e478dff5_8f26d5e2",
+        "filename": "src/core/SkKeyHelpers.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-02-23T19:04:32Z",
+      "side": 1,
+      "message": "It doesn\u0027t look like we ever set up a SkPaintParamsKeyBuilder with these values -- might be good to have a unit test or something to exercise this code (and other AddToKey defs).",
+      "range": {
+        "startLine": 156,
+        "startChar": 8,
+        "endLine": 156,
+        "endChar": 90
+      },
+      "revId": "5a8bfe8495196e0790a079fec379f52acfb97be8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
