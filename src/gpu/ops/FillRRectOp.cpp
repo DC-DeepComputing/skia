@@ -83,7 +83,6 @@ public:
     }
 
     void onPrepareDraws(GrMeshDrawTarget*) override;
-
     void onExecute(GrOpFlushState*, const SkRect& chainBounds) override;
 
 private:

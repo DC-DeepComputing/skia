@@ -42,7 +42,7 @@ public:
              GrVkRenderPass::SelfDependencyFlags selfDepFlags,
              GrVkRenderPass::LoadFromResolve loadFromResolve,
              const SkTArray<GrSurfaceProxy*, true>& sampledProxies);
-    void reset();
+    void reset() override;
 
     void submit();
 
@@ -67,6 +67,7 @@ private:
 
     void onEnd() override;
 
+    bool onPreparePipeline(const GrProgramInfo&) override;
     bool onBindPipeline(const GrProgramInfo&, const SkRect& drawBounds) override;
     void onSetScissorRect(const SkIRect&) override;
     bool onBindTextures(const GrGeometryProcessor&,

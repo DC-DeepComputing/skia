@@ -39,7 +39,8 @@ public:
 
     GrVkGpu* gpu() const { return fGpu; }
 
-    SkSL::Compiler* shaderCompiler() const override;
+    std::unique_ptr<SkSL::Compiler> getShaderCompiler() override;
+    void returnShaderCompiler(std::unique_ptr<SkSL::Compiler>) override;
 
     void finalizeFragmentOutputColor(GrShaderVar& outputColor) override;
     void finalizeFragmentSecondaryColor(GrShaderVar& outputColor) override;

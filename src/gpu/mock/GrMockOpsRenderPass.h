@@ -27,6 +27,8 @@ public:
 
     int numDraws() const { return fNumDraws; }
 
+    void reset() override {}
+
 private:
     void onBegin() override {
         if (GrLoadOp::kClear == fColorLoadOp) {
