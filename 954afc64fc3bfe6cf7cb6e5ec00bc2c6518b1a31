@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "526d6fc2_7401e2a4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-02-23T18:15:46Z",
+      "side": 1,
+      "message": "Thanks for the quick review!",
+      "revId": "954afc64fc3bfe6cf7cb6e5ec00bc2c6518b1a31",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5379049a_ee07b9de",
@@ -18,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6f140b1e_02e4213f",
+        "filename": "src/gpu/v1/Device.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 997,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-02-23T18:15:46Z",
+      "side": 1,
+      "message": "When you say \"we\". That is not universal throughout Skia. Certainly core is not like that. So, I assume you mean in Ganesh. So, I will fix this in the next CL.",
+      "parentUuid": "5379049a_ee07b9de",
+      "revId": "954afc64fc3bfe6cf7cb6e5ec00bc2c6518b1a31",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "029806ce_6f9b8348",
@@ -31,6 +66,24 @@
       "writtenOn": "2022-02-23T17:54:17Z",
       "side": 1,
       "message": "same here",
+      "revId": "954afc64fc3bfe6cf7cb6e5ec00bc2c6518b1a31",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "29b1d1bb_0d4bf10d",
+        "filename": "src/gpu/v1/Device_v1.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 213,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-02-23T18:15:46Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "029806ce_6f9b8348",
       "revId": "954afc64fc3bfe6cf7cb6e5ec00bc2c6518b1a31",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
