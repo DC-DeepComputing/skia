@@ -147,7 +147,12 @@ void GrPathUtils::QuadUVMatrix::set(const SkPoint qPts[3]) {
     double y1 = qPts[1].fY;
     double x2 = qPts[2].fX;
     double y2 = qPts[2].fY;
-    double det = x0*y1 - y0*x1 + x2*y0 - y2*x0 + x1*y2 - y1*x2;
+
+    // pre-calculate some adjugate matrix factors for determinant
+    double a2 = x1*y2-x2*y1;
+    double a5 = x2*y0-x0*y2;
+    double a8 = x0*y1-x1*y0;
+    double det = a2 + a5 + a8;
 
     if (!sk_float_isfinite(det)
         || SkScalarNearlyZero((float)det, SK_ScalarNearlyZero * SK_ScalarNearlyZero)) {
@@ -191,16 +196,12 @@ void GrPathUtils::QuadUVMatrix::set(const SkPoint qPts[3]) {
         double scale = 1.0/det;
 
         // compute adjugate matrix
-        double a2, a3, a4, a5, a6, a7, a8;
-        a2 = x1*y2-x2*y1;
-
+        double a3, a4, a6, a7;
         a3 = y2-y0;
         a4 = x0-x2;
-        a5 = x2*y0-x0*y2;
 
         a6 = y0-y1;
         a7 = x1-x0;
-        a8 = x0*y1-x1*y0;
 
         // this performs the uv_pts*adjugate(control_pts) multiply,
         // then does the scale by 1/det afterwards to improve precision
@@ -215,26 +216,7 @@ void GrPathUtils::QuadUVMatrix::set(const SkPoint qPts[3]) {
         // kMPersp0 & kMPersp1 should algebraically be zero
         m[SkMatrix::kMPersp0] = 0.0f;
         m[SkMatrix::kMPersp1] = 0.0f;
-        m[SkMatrix::kMPersp2] = (float)((a2 + a5 + a8)*scale);
-
-        // It may not be normalized to have 1.0 in the bottom right
-        float m33 = m.get(SkMatrix::kMPersp2);
-        if (1.f != m33) {
-            m33 = 1.f / m33;
-            fM[0] = m33 * m.get(SkMatrix::kMScaleX);
-            fM[1] = m33 * m.get(SkMatrix::kMSkewX);
-            fM[2] = m33 * m.get(SkMatrix::kMTransX);
-            fM[3] = m33 * m.get(SkMatrix::kMSkewY);
-            fM[4] = m33 * m.get(SkMatrix::kMScaleY);
-            fM[5] = m33 * m.get(SkMatrix::kMTransY);
-        } else {
-            fM[0] = m.get(SkMatrix::kMScaleX);
-            fM[1] = m.get(SkMatrix::kMSkewX);
-            fM[2] = m.get(SkMatrix::kMTransX);
-            fM[3] = m.get(SkMatrix::kMSkewY);
-            fM[4] = m.get(SkMatrix::kMScaleY);
-            fM[5] = m.get(SkMatrix::kMTransY);
-        }
+        m[SkMatrix::kMPersp2] = 1.0f;
     }
 }
 
