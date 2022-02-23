@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3e1bae47_54077c16",
+        "filename": "include/core/SkCanvas.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 2359,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2022-02-23T16:48:20Z",
+      "side": 1,
+      "message": "This is POD storage on the class so this memory won\u0027t be invalid until after the destructor returns.\n\nIs this triggering a sanitizer warning?  If so, I think you change is perfectly valid to address the sanitizer warning, but otherwise wouldn\u0027t be required.",
+      "range": {
+        "startLine": 2359,
+        "startChar": 13,
+        "endLine": 2359,
+        "endChar": 72
+      },
+      "revId": "e8e98f66d72a84b3faae4d6f65d880ea1e78fd70",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
