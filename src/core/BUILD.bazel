@@ -3126,8 +3126,6 @@ generated_cc_atom(
         ":SkBlenderBase_hdr",
         ":SkColorFilterBase_hdr",
         ":SkColorSpacePriv_hdr",
-        ":SkKeyHelpers_hdr",
-        ":SkPaintParamsKey_hdr",
         ":SkPaintPriv_hdr",
         ":SkXfermodePriv_hdr",
         "//include/core:SkPaint_hdr",
@@ -5656,7 +5654,9 @@ generated_cc_atom(
     visibility = ["//:__subpackages__"],
     deps = [
         ":SkBuiltInCodeSnippetID_hdr",
+        "//include/core:SkSpan_hdr",
         "//include/core:SkTypes_hdr",
+        "//include/private:SkTArray_hdr",
     ],
 )
 
