@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "356d137a_c3516970",
+        "filename": "bazel/karma_test.bzl",
+        "patchSetId": 3
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-02-23T14:17:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "abaae412_1c3179cc",
+      "range": {
+        "startLine": 26,
+        "startChar": 0,
+        "endLine": 26,
+        "endChar": 46
+      },
+      "revId": "5c949c6c4f93a2fe70d9f07de746c64f8653b641",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b96aa91c_ddd69417",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4d020f14_cbeb5158",
+        "filename": "bazel/karma_test.bzl",
+        "patchSetId": 3
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-02-23T14:17:25Z",
+      "side": 1,
+      "message": "Good suggestion. I wasn\u0027t sure if it was a magical Karma name or not - it does not appear to be.",
+      "parentUuid": "b96aa91c_ddd69417",
+      "range": {
+        "startLine": 99,
+        "startChar": 18,
+        "endLine": 99,
+        "endChar": 22
+      },
+      "revId": "5c949c6c4f93a2fe70d9f07de746c64f8653b641",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3a9938b4_6210d9ec",
@@ -60,6 +108,30 @@
       "writtenOn": "2022-02-22T22:19:16Z",
       "side": 1,
       "message": "Suggestion: Method chaining might simplify this a bit.",
+      "range": {
+        "startLine": 170,
+        "startChar": 47,
+        "endLine": 170,
+        "endChar": 55
+      },
+      "revId": "5c949c6c4f93a2fe70d9f07de746c64f8653b641",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5835ec32_5a3c40b3",
+        "filename": "bazel/karma_test.bzl",
+        "patchSetId": 3
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-02-23T14:17:25Z",
+      "side": 1,
+      "message": "Yes, but the autoformatter for .bzl files doesn\u0027t let you dangle do things like:\n_apply_bazel_settings_js_code\n            .replace(...)\n            .replace(...)\n            .replace(...)\nso the chaining needs to all be on one line, which is not as clear.",
+      "parentUuid": "3a9938b4_6210d9ec",
       "range": {
         "startLine": 170,
         "startChar": 47,
