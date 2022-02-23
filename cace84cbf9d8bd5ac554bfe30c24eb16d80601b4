@@ -62,6 +62,30 @@
       },
       "revId": "cace84cbf9d8bd5ac554bfe30c24eb16d80601b4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fd31b638_8ff0f2b2",
+        "filename": "src/shaders/gradients/SkSweepGradient.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-02-23T19:17:57Z",
+      "side": 1,
+      "message": "I was under the impression that having \"too many\" forward declares is not an issue and it is a good idea to forward declare anything used by this header. I might have misunderstood something though and can change if necessary.",
+      "parentUuid": "a1c0af9e_f54505c4",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 13,
+        "endChar": 29
+      },
+      "revId": "cace84cbf9d8bd5ac554bfe30c24eb16d80601b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
