@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c58b0aa1_21de0d67",
+        "filename": "src/shaders/SkShaderBase.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-23T21:28:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "16b3fbc1_92fce996",
+      "range": {
+        "startLine": 35,
+        "startChar": 0,
+        "endLine": 35,
+        "endChar": 29
+      },
+      "revId": "cace84cbf9d8bd5ac554bfe30c24eb16d80601b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a1c0af9e_f54505c4",
@@ -78,6 +102,30 @@
       "side": 1,
       "message": "I was under the impression that having \"too many\" forward declares is not an issue and it is a good idea to forward declare anything used by this header. I might have misunderstood something though and can change if necessary.",
       "parentUuid": "a1c0af9e_f54505c4",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 13,
+        "endChar": 29
+      },
+      "revId": "cace84cbf9d8bd5ac554bfe30c24eb16d80601b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4db73302_0612b63b",
+        "filename": "src/shaders/gradients/SkSweepGradient.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-23T21:28:46Z",
+      "side": 1,
+      "message": "That\u0027s fair, and we\u0027ve probably been too far the other direction in many places in skia without including/declaring what we use. In the case where the type is only there because of declaring an override, I am less concerned about iwyu, but since it\u0027s already written, I\u0027m okay having them forward declared too.",
+      "parentUuid": "fd31b638_8ff0f2b2",
       "range": {
         "startLine": 13,
         "startChar": 0,
