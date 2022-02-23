@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fe55c970_070ddfed",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 9065
+      },
+      "writtenOn": "2022-02-23T15:40:50Z",
+      "side": 1,
+      "message": "SK_BUILD_FOR_DEBUGGER is not used anywhere yet right?\nbefore using it, I think it should also be set when debugger is built with bazel.\nthere are currently two ways to build it, and this one (compile.sh) is the deprecated one",
+      "revId": "ba15969eaeb6e92ad8bf18e11d36e195b1a61d6b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
