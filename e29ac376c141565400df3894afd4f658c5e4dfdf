@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0fcb3dc5_17dc2c66",
+        "filename": "bazel/gcs_mirror/gcs_mirror.go",
+        "patchSetId": 7
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-02-23T14:02:32Z",
+      "side": 1,
+      "message": "No - this prints out the link for copy-paste reasons instead of making the user find the URL and replace one sha with another.",
+      "parentUuid": "ce195f17_08c8d703",
+      "range": {
+        "startLine": 69,
+        "startChar": 0,
+        "endLine": 69,
+        "endChar": 97
+      },
+      "revId": "e29ac376c141565400df3894afd4f658c5e4dfdf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cc262175_c43f76a2",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-02-22T22:18:56Z",
       "side": 1,
       "message": "Would it make sense to have a default config file with reasonable defaults?",
+      "range": {
+        "startLine": 5,
+        "startChar": 27,
+        "endLine": 5,
+        "endChar": 38
+      },
+      "revId": "e29ac376c141565400df3894afd4f658c5e4dfdf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "13db9f18_e591657e",
+        "filename": "bazel/karma_test.bzl",
+        "patchSetId": 7
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-02-23T14:02:32Z",
+      "side": 1,
+      "message": "Maybe at some point, but for now I don\u0027t know enough to say for certain.",
+      "parentUuid": "cc262175_c43f76a2",
       "range": {
         "startLine": 5,
         "startChar": 27,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4d00f5e0_29febaef",
+        "filename": "bazel/karma_test.bzl",
+        "patchSetId": 7
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-02-23T14:02:32Z",
+      "side": 1,
+      "message": "I wrapped this code with an IIFE instead to prevent scope creep.",
+      "parentUuid": "7ec2e480_301719b3",
+      "range": {
+        "startLine": 62,
+        "startChar": 9,
+        "endLine": 62,
+        "endChar": 21
+      },
+      "revId": "e29ac376c141565400df3894afd4f658c5e4dfdf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d926c1b6_3050498f",
@@ -83,6 +155,30 @@
       "writtenOn": "2022-02-22T22:18:56Z",
       "side": 1,
       "message": "Nit: comma-separated?",
+      "range": {
+        "startLine": 123,
+        "startChar": 67,
+        "endLine": 123,
+        "endChar": 82
+      },
+      "revId": "e29ac376c141565400df3894afd4f658c5e4dfdf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e0aa9f01_023f841a",
+        "filename": "bazel/karma_test.bzl",
+        "patchSetId": 7
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-02-23T14:02:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d926c1b6_3050498f",
       "range": {
         "startLine": 123,
         "startChar": 67,
@@ -116,6 +212,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d135d215_fb818e74",
+        "filename": "bazel/karma_test.bzl",
+        "patchSetId": 7
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-02-23T14:02:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "489c24e2_be103ccd",
+      "range": {
+        "startLine": 163,
+        "startChar": 8,
+        "endLine": 163,
+        "endChar": 40
+      },
+      "revId": "e29ac376c141565400df3894afd4f658c5e4dfdf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "425fb6bd_7bf237a8",
@@ -129,6 +249,30 @@
       "writtenOn": "2022-02-22T22:18:56Z",
       "side": 1,
       "message": "Do we need to clean this up, or will Bazel clean it up for us?",
+      "range": {
+        "startLine": 181,
+        "startChar": 0,
+        "endLine": 181,
+        "endChar": 24
+      },
+      "revId": "e29ac376c141565400df3894afd4f658c5e4dfdf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4838d052_366e6f94",
+        "filename": "bazel/karma_test.bzl",
+        "patchSetId": 7
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-02-23T14:02:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "425fb6bd_7bf237a8",
       "range": {
         "startLine": 181,
         "startChar": 0,
@@ -162,6 +306,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c1217154_e25a621e",
+        "filename": "bazel/karma_test.bzl",
+        "patchSetId": 7
+      },
+      "lineNbr": 213,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-02-23T14:02:32Z",
+      "side": 1,
+      "message": "This is changed to fail in a follow-up CL",
+      "parentUuid": "3e6526b6_f82497b1",
+      "range": {
+        "startLine": 213,
+        "startChar": 0,
+        "endLine": 213,
+        "endChar": 51
+      },
+      "revId": "e29ac376c141565400df3894afd4f658c5e4dfdf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "829abd09_c6853a93",
@@ -185,6 +353,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "146d2849_f09813e3",
+        "filename": "modules/canvaskit/karma.bazel.js",
+        "patchSetId": 7
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-02-23T14:02:32Z",
+      "side": 1,
+      "message": "I added documentation here about what Bazel will add/modify. I removed the zero values - basically if we don\u0027t need anything special, we leave it unset and let Bazel do what it needs.",
+      "parentUuid": "829abd09_c6853a93",
+      "range": {
+        "startLine": 10,
+        "startChar": 4,
+        "endLine": 10,
+        "endChar": 14
+      },
+      "revId": "e29ac376c141565400df3894afd4f658c5e4dfdf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8e7d5a2c_c02c35cb",
@@ -198,6 +390,30 @@
       "writtenOn": "2022-02-22T22:18:56Z",
       "side": 1,
       "message": "IIUC this will always be overwritten by `BAZEL_APPLY_SETTINGS` so it\u0027s probably clearer to leave it blank.",
+      "range": {
+        "startLine": 28,
+        "startChar": 15,
+        "endLine": 28,
+        "endChar": 30
+      },
+      "revId": "e29ac376c141565400df3894afd4f658c5e4dfdf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "85554bc5_8ddd689a",
+        "filename": "modules/canvaskit/karma.bazel.js",
+        "patchSetId": 7
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-02-23T14:02:32Z",
+      "side": 1,
+      "message": "This was left over from a previous attempt. Removed.",
+      "parentUuid": "8e7d5a2c_c02c35cb",
       "range": {
         "startLine": 28,
         "startChar": 15,
