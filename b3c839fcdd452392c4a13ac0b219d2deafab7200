@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ce114c0b_255dbcf5",
+        "filename": "src/core/SkKeyHelpers.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 555,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-02-23T15:27:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "851ad055_c0b5d85a",
+      "range": {
+        "startLine": 555,
+        "startChar": 0,
+        "endLine": 555,
+        "endChar": 53
+      },
+      "revId": "b3c839fcdd452392c4a13ac0b219d2deafab7200",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "620b3946_0edebca3",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5865c802_2afcf4f9",
+        "filename": "src/core/SkKeyHelpers.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 560,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-02-23T15:27:17Z",
+      "side": 1,
+      "message": "Right - that is the plan. I\u0027ve added a comment/TODO in front of SkUniformBlock.",
+      "parentUuid": "620b3946_0edebca3",
+      "range": {
+        "startLine": 560,
+        "startChar": 0,
+        "endLine": 560,
+        "endChar": 53
+      },
+      "revId": "b3c839fcdd452392c4a13ac0b219d2deafab7200",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a929e906_3c58f7e8",
@@ -60,6 +108,30 @@
       "writtenOn": "2022-02-23T14:31:01Z",
       "side": 1,
       "message": "Is this manually aligning everything to 16 bytes for now?",
+      "range": {
+        "startLine": 285,
+        "startChar": 41,
+        "endLine": 285,
+        "endChar": 79
+      },
+      "revId": "b3c839fcdd452392c4a13ac0b219d2deafab7200",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "365283fa_e6eb36a3",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 285,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-02-23T15:27:17Z",
+      "side": 1,
+      "message": "Yep 😞",
+      "parentUuid": "a929e906_3c58f7e8",
       "range": {
         "startLine": 285,
         "startChar": 41,
