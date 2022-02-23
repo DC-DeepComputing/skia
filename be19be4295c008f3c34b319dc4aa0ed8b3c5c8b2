@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "24d26934_a642afaa",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-02-23T18:50:23Z",
+      "side": 1,
+      "message": "How sure are we that this is unused? Do we have a CL to link against for when it was deleted?",
+      "revId": "be19be4295c008f3c34b319dc4aa0ed8b3c5c8b2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
