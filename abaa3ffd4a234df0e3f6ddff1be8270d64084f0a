@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f5ff6147_5c13ce9d",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 433,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-02-23T17:50:33Z",
+      "side": 1,
+      "message": "Right - I just wanted to delay the work until later (but not forget about it) since right now the user-defined code snippets are only used for testing. In fact, if the client is diligent they should be adding all their user-defined snippets at once. Ideally, on startup.",
+      "parentUuid": "e5526ac1_fdf5cccf",
+      "range": {
+        "startLine": 431,
+        "startChar": 4,
+        "endLine": 433,
+        "endChar": 33
+      },
+      "revId": "abaa3ffd4a234df0e3f6ddff1be8270d64084f0a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e4026c7e_1b59d615",
@@ -70,6 +94,54 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "908b1f08_78fc5597",
+        "filename": "src/core/SkShaderCodeDictionary.h",
+        "patchSetId": 23
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-02-23T17:50:33Z",
+      "side": 1,
+      "message": "I\u0027ve gone with:\n\nDataPayloadType -\u003e SkPaintParamsKey::DataPayloadType\nSkDataPayloadInfo -\u003e SkPaintParamsKey::DataPayloadField",
+      "parentUuid": "1e6765ce_06f561ad",
+      "range": {
+        "startLine": 25,
+        "startChar": 7,
+        "endLine": 25,
+        "endChar": 25
+      },
+      "revId": "abaa3ffd4a234df0e3f6ddff1be8270d64084f0a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "02d83bac_32d49025",
+        "filename": "src/core/SkShaderCodeDictionary.h",
+        "patchSetId": 23
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-02-23T17:50:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e4026c7e_1b59d615",
+      "range": {
+        "startLine": 21,
+        "startChar": 0,
+        "endLine": 25,
+        "endChar": 26
+      },
+      "revId": "abaa3ffd4a234df0e3f6ddff1be8270d64084f0a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a4f6039a_64e250e5",
@@ -83,6 +155,30 @@
       "writtenOn": "2022-02-23T14:46:43Z",
       "side": 1,
       "message": "wdyt about having the SnippetEntries also allocated in fArena, and then a single std::vector\u003cSkShaderInfo::SnippetEntry*\u003e array where the first kBuiltInCodeSnippetIDCount entries match the SkBuiltInCodeSnippetID and everything else afterwards are user defined?",
+      "range": {
+        "startLine": 150,
+        "startChar": 4,
+        "endLine": 154,
+        "endChar": 86
+      },
+      "revId": "abaa3ffd4a234df0e3f6ddff1be8270d64084f0a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "84a027cb_7ca39753",
+        "filename": "src/core/SkShaderCodeDictionary.h",
+        "patchSetId": 23
+      },
+      "lineNbr": 154,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-02-23T17:50:33Z",
+      "side": 1,
+      "message": "sgtm - the user-defined snippets are just a testing after thought at the point.",
+      "parentUuid": "a4f6039a_64e250e5",
       "range": {
         "startLine": 150,
         "startChar": 4,
