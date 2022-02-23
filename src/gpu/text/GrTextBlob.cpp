@@ -82,19 +82,33 @@ const GrBlobSubRun* GrSubRun::blobCast() const {
 }
 
 namespace {
+
+template <typename T>
+bool pun_read(SkReadBuffer& buffer, T* dst) {
+    return buffer.readPad32(dst, sizeof(T));
+}
+
+template <typename T>
+void pun_write(SkWriteBuffer& buffer, const T& src) {
+    buffer.writePad32(&src, sizeof(T));
+}
+
 // -- TransformedMaskVertexFiller ------------------------------------------------------------------
 class TransformedMaskVertexFiller {
 public:
-    TransformedMaskVertexFiller(GrMaskFormat maskFormat,
-                                int dstPadding,
-                                SkScalar strikeToSourceScale);
-
     struct PositionAndExtent {
         const SkPoint pos;
         // The rectangle of the glyphs in strike space. But, for kDirectMask this also implies a
         // device space rect.
         GrIRect16 rect;
     };
+
+    TransformedMaskVertexFiller(GrMaskFormat maskFormat,
+                                int dstPadding,
+                                SkScalar strikeToSourceScale);
+
+    static TransformedMaskVertexFiller MakeFromBuffer(SkReadBuffer& buffer);
+    void flatten(SkWriteBuffer& buffer) const;
 
     size_t vertexStride(const SkMatrix& matrix) const {
         if (fMaskType != kARGB_GrMaskFormat) {
@@ -173,6 +187,20 @@ TransformedMaskVertexFiller::TransformedMaskVertexFiller(GrMaskFormat maskFormat
         : fMaskType{maskFormat}
         , fPaddingInset{SkPoint::Make(dstPadding, dstPadding)}
         , fStrikeToSourceScale{strikeToSourceScale} {}
+
+TransformedMaskVertexFiller TransformedMaskVertexFiller::MakeFromBuffer(SkReadBuffer& buffer) {
+    GrMaskFormat maskType = (GrMaskFormat)buffer.readInt();
+    int dstPadding = buffer.readInt();
+    SkScalar strikeToSourceScale = buffer.readScalar();
+
+    return TransformedMaskVertexFiller{maskType, dstPadding, strikeToSourceScale};
+}
+
+void TransformedMaskVertexFiller::flatten(SkWriteBuffer& buffer) const {
+    buffer.writeInt(fMaskType);
+    buffer.writeInt(SkScalarRoundToInt(fPaddingInset.x()));
+    buffer.writeScalar(fStrikeToSourceScale);
+}
 
 void TransformedMaskVertexFiller::fillVertexData(SkSpan<const GrGlyph*> glyphs,
                                                  SkSpan<const PositionAndExtent> positioning,
@@ -1106,13 +1134,20 @@ const GrAtlasSubRun* DirectMaskSubRun::testingOnly_atlasSubRun() const {
 // -- TransformedMaskSubRun ------------------------------------------------------------------------
 class TransformedMaskSubRun final : public GrSubRun, public GrBlobSubRun, public GrAtlasSubRun {
 public:
-    using VertexData = TransformedMaskVertexFiller::PositionAndExtent;
+    using SourcePositionAndExtent = TransformedMaskVertexFiller::PositionAndExtent;
 
     TransformedMaskSubRun(const GrTextReferenceFrame* referenceFrame,
                           GrMaskFormat format,
                           SkScalar strikeToSourceScale,
                           const SkRect& bounds,
-                          SkSpan<const VertexData> vertexData,
+                          SkSpan<const SourcePositionAndExtent> positionAndExtent,
+                          GrGlyphVector&& glyphs);
+
+
+    TransformedMaskSubRun(const GrTextReferenceFrame* referenceFrame,
+                          TransformedMaskVertexFiller&& vertexFiller,
+                          const SkRect& sourceBounds,
+                          SkSpan<const SourcePositionAndExtent> positionAndExtent,
                           GrGlyphVector&& glyphs);
 
     static GrSubRunOwner Make(const GrTextReferenceFrame* referenceFrame,
@@ -1125,9 +1160,7 @@ public:
     static GrSubRunOwner MakeFromBuffer(const GrTextReferenceFrame* referenceFrame,
                                         SkReadBuffer& buffer,
                                         GrSubRunAllocator* alloc,
-                                        const SkStrikeClient* client) {
-        return nullptr;
-    }
+                                        const SkStrikeClient* client);
 
     void draw(SkCanvas*,
               const GrClip*,
@@ -1145,7 +1178,7 @@ public:
                     GrAtlasSubRunOwner) const override;
 
     const GrBlobSubRun* blobCast() const override { return this; }
-    int unflattenSize() const override { return 0; }
+    int unflattenSize() const override;
 
     bool canReuse(const SkPaint& paint, const SkMatrix& positionMatrix) const override;
 
@@ -1166,9 +1199,7 @@ public:
 
 protected:
     SubRunType subRunType() const override { return kTransformMask; }
-
-    // TODO: implement
-    void doFlatten(SkWriteBuffer& buffer) const override { }
+    void doFlatten(SkWriteBuffer& buffer) const override;
 
 private:
     // The rectangle that surrounds all the glyph bounding boxes in device space.
@@ -1179,24 +1210,36 @@ private:
     const GrTextReferenceFrame* const fReferenceFrame;
 
     // The bounds in source space. The bounds are the joined rectangles of all the glyphs.
-    const SkRect fVertexBounds;
-    const SkSpan<const VertexData> fVertexData;
+    const SkRect fSourceBounds;
+    const SkSpan<const SourcePositionAndExtent> fPositionAndExtent;
 
     // The regenerateAtlas method mutates fGlyphs. It should be called from onPrepare which must
     // be single threaded.
     mutable GrGlyphVector fGlyphs;
 };
+TransformedMaskSubRun::TransformedMaskSubRun(
+    const GrTextReferenceFrame* referenceFrame,
+    TransformedMaskVertexFiller&& vertexFiller,
+    const SkRect& sourceBounds,
+    SkSpan<const SourcePositionAndExtent> positionAndExtent,
+    GrGlyphVector&& glyphs)
+        : fVertexFiller{std::move(vertexFiller)}
+        , fReferenceFrame{referenceFrame}
+        , fSourceBounds{sourceBounds}
+        , fPositionAndExtent{positionAndExtent}
+        , fGlyphs{std::move(glyphs)} {}
 
-TransformedMaskSubRun::TransformedMaskSubRun(const GrTextReferenceFrame* referenceFrame,
-                                             GrMaskFormat format,
-                                             SkScalar strikeToSourceScale,
-                                             const SkRect& bounds,
-                                             SkSpan<const VertexData> vertexData,
-                                             GrGlyphVector&& glyphs)
+TransformedMaskSubRun::TransformedMaskSubRun(
+    const GrTextReferenceFrame* referenceFrame,
+    GrMaskFormat format,
+    SkScalar strikeToSourceScale,
+    const SkRect& bounds,
+    SkSpan<const SourcePositionAndExtent> positionAndExtent,
+    GrGlyphVector&& glyphs)
         : fVertexFiller{format, 0, strikeToSourceScale}
         , fReferenceFrame{referenceFrame}
-        , fVertexBounds{bounds}
-        , fVertexData{vertexData}
+        , fSourceBounds{bounds}
+        , fPositionAndExtent{positionAndExtent}
         , fGlyphs{std::move(glyphs)} { }
 
 GrSubRunOwner TransformedMaskSubRun::Make(const GrTextReferenceFrame* referenceFrame,
@@ -1207,7 +1250,7 @@ GrSubRunOwner TransformedMaskSubRun::Make(const GrTextReferenceFrame* referenceF
                                           GrSubRunAllocator* alloc) {
     SkRect bounds = SkRectPriv::MakeLargestInverted();
 
-    SkSpan<VertexData> vertexData = alloc->makePODArray<VertexData>(
+    SkSpan<SourcePositionAndExtent> vertexData = alloc->makePODArray<SourcePositionAndExtent>(
             accepted,
             [&](auto e) {
                 auto [variant, pos] = e;
@@ -1220,12 +1263,53 @@ GrSubRunOwner TransformedMaskSubRun::Make(const GrTextReferenceFrame* referenceF
                         rb = SkPoint::Make(r, b) * strikeToSourceScale + pos;
 
                 bounds.joinPossiblyEmptyRect(SkRect::MakeLTRB(lt.x(), lt.y(), rb.x(), rb.y()));
-                return VertexData{pos, {l, t, r, b}};
+                return SourcePositionAndExtent{pos, {l, t, r, b}};
             });
 
     return alloc->makeUnique<TransformedMaskSubRun>(
             referenceFrame, format, strikeToSourceScale, bounds, vertexData,
             GrGlyphVector::Make(std::move(strike), accepted.get<0>(), alloc));
+}
+
+GrSubRunOwner TransformedMaskSubRun::MakeFromBuffer(const GrTextReferenceFrame* referenceFrame,
+                                                    SkReadBuffer& buffer,
+                                                    GrSubRunAllocator* alloc,
+                                                    const SkStrikeClient* client) {
+    TransformedMaskVertexFiller vertexFiller = TransformedMaskVertexFiller::MakeFromBuffer(buffer);
+    SkRect sourceBounds = buffer.readRect();
+    int glyphCount = buffer.readInt();
+    if (!buffer.validate(0 < glyphCount)) { return {}; }
+    SourcePositionAndExtent* positionAndExtentData =
+            alloc->makePODArray<SourcePositionAndExtent>(glyphCount);
+    for (int i = 0; i < glyphCount; ++i) {
+        pun_read(buffer, &positionAndExtentData[i]);
+    }
+    SkSpan<SourcePositionAndExtent> positionAndExtent(positionAndExtentData, glyphCount);
+
+    auto glyphVector = GrGlyphVector::MakeFromBuffer(buffer, client, alloc);
+    if (!buffer.validate(glyphVector.has_value())) { return {}; }
+    if (!buffer.validate(SkCount(glyphVector->glyphs()) == glyphCount)) { return {}; }
+    return alloc->makeUnique<TransformedMaskSubRun>(referenceFrame,
+                                                    std::move(vertexFiller),
+                                                    sourceBounds,
+                                                    positionAndExtent,
+                                                    std::move(glyphVector.value()));
+}
+
+int TransformedMaskSubRun::unflattenSize() const {
+    return sizeof(TransformedMaskSubRun) +
+           fGlyphs.unflattenSize() +
+           sizeof(SourcePositionAndExtent) * fGlyphs.glyphs().size();
+}
+
+void TransformedMaskSubRun::doFlatten(SkWriteBuffer& buffer) const {
+    fVertexFiller.flatten(buffer);
+    buffer.writeRect(fSourceBounds);
+    buffer.writeInt(SkCount(fPositionAndExtent));
+    for (auto posAndExt : fPositionAndExtent) {
+        pun_write(buffer, posAndExt);
+    }
+    fGlyphs.flatten(buffer);
 }
 
 void TransformedMaskSubRun::draw(SkCanvas*,
@@ -1299,7 +1383,7 @@ void TransformedMaskSubRun::fillVertexData(void* vertexDst, int offset, int coun
                                            SkIRect clip) const {
     const SkMatrix positionMatrix = position_matrix(drawMatrix, drawOrigin);
     fVertexFiller.fillVertexData(fGlyphs.glyphs().subspan(offset, count),
-                                 fVertexData.subspan(offset, count),
+                                 fPositionAndExtent.subspan(offset, count),
                                  color,
                                  positionMatrix,
                                  clip,
@@ -1311,11 +1395,11 @@ size_t TransformedMaskSubRun::vertexStride(const SkMatrix& drawMatrix) const {
 }
 
 int TransformedMaskSubRun::glyphCount() const {
-    return SkCount(fVertexData);
+    return SkCount(fPositionAndExtent);
 }
 
 SkRect TransformedMaskSubRun::deviceRect(const SkMatrix& drawMatrix, SkPoint drawOrigin) const {
-    SkRect outBounds = fVertexBounds;
+    SkRect outBounds = fSourceBounds;
     outBounds.offset(drawOrigin);
     return drawMatrix.mapRect(outBounds);
 }
@@ -2927,11 +3011,6 @@ GrSubRunOwner DirectMaskSubRunSlug::Make(const GrTextReferenceFrame* referenceFr
             GrGlyphVector{std::move(strike), {glyphIDs, goodPosCount}});
 }
 
-template <typename T>
-static bool pun_read(SkReadBuffer& buffer, T* dst) {
-    return buffer.readPad32(dst, sizeof(T));
-}
-
 GrSubRunOwner DirectMaskSubRunSlug::MakeFromBuffer(const GrTextReferenceFrame* referenceFrame,
                                                    SkReadBuffer& buffer,
                                                    GrSubRunAllocator* alloc,
@@ -2957,11 +3036,6 @@ GrSubRunOwner DirectMaskSubRunSlug::MakeFromBuffer(const GrTextReferenceFrame* r
     if (SkTo<int>(glyphVector->glyphs().size()) != glyphCount) { return nullptr; }
     return alloc->makeUnique<DirectMaskSubRunSlug>(
             referenceFrame, format, runBounds, positions, std::move(glyphVector.value()));
-}
-
-template <typename T>
-static void pun_write(SkWriteBuffer& buffer, const T& src) {
-    buffer.writePad32(&src, sizeof(T));
 }
 
 void DirectMaskSubRunSlug::doFlatten(SkWriteBuffer& buffer) const {
