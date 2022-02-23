@@ -13,10 +13,12 @@
 
 #include "include/codec/SkCodec.h"
 #include "include/core/SkBitmap.h"
+#include "include/core/SkData.h"
 #include "include/core/SkDrawable.h"
 #include "include/core/SkFontMetrics.h"
 #include "include/core/SkPath.h"
 #include "include/private/SkMutex.h"
+#include "include/private/SkTDArray.h"
 #include "include/private/SkTo.h"
 #include "src/core/SkDraw.h"
 #include "src/core/SkEndian.h"
