@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6d9153b3_9e3613f9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-02-24T14:44:24Z",
+      "side": 1,
+      "message": "Sigh. I like this change quite a bit, but it looks like you\u0027d have to resolve IWYU issues in G3, Chromium, AND Android.",
+      "revId": "3639374b1a039969018c2dd44492a2b223f412b3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
