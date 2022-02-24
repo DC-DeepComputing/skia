@@ -14,7 +14,7 @@
 #include "src/gpu/gl/GrGLContext.h"
 #include "src/sksl/codegen/SkSLGLSLCodeGenerator.h"
 
-std::unique_ptr<SkSL::Program> GrSkSLtoGLSL(const GrGLGpu* gpu,
+std::unique_ptr<SkSL::Program> GrSkSLtoGLSL(GrGLGpu* gpu,
                                             SkSL::ProgramKind programKind,
                                             const std::string& sksl,
                                             const SkSL::Program::Settings& settings,

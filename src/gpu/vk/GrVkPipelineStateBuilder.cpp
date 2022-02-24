@@ -59,8 +59,12 @@ const GrCaps* GrVkPipelineStateBuilder::caps() const {
     return fGpu->caps();
 }
 
-SkSL::Compiler* GrVkPipelineStateBuilder::shaderCompiler() const {
-    return fGpu->shaderCompiler();
+std::unique_ptr<SkSL::Compiler> GrVkPipelineStateBuilder::getShaderCompiler() {
+    return fGpu->getShaderCompiler();
+}
+
+void GrVkPipelineStateBuilder::returnShaderCompiler(std::unique_ptr<SkSL::Compiler> compiler) {
+    fGpu->returnShaderCompiler(std::move(compiler));
 }
 
 void GrVkPipelineStateBuilder::finalizeFragmentOutputColor(GrShaderVar& outputColor) {
@@ -202,6 +206,8 @@ GrVkPipelineState* GrVkPipelineStateBuilder::finalize(const GrProgramDesc& desc,
     SkReadBuffer reader;
     SkFourByteTag shaderType = 0;
     auto persistentCache = fGpu->getContext()->priv().getPersistentCache();
+    // TODO: support persistentCache.
+    persistentCache = nullptr;
     if (persistentCache) {
         // Here we shear off the Vk-specific portion of the Desc in order to create the
         // persistent key. This is bc Vk only caches the SPIRV code, not the fully compiled

@@ -297,6 +297,24 @@ private:
         }
     }
 
+    void onPreparePipeline(GrOpFlushState* flushState) override {
+        if (!fVertexBuffer) {
+            return;
+        }
+
+        const VertexSpec vertexSpec = this->vertexSpec();
+
+        if (vertexSpec.needsIndexBuffer() && !fIndexBuffer) {
+            return;
+        }
+
+        if (!fProgramInfo) {
+            this->createProgramInfo(flushState);
+        }
+
+        flushState->preparePipeline(*fProgramInfo);
+    }
+
     void onExecute(GrOpFlushState* flushState, const SkRect& chainBounds) override {
         if (!fVertexBuffer) {
             return;

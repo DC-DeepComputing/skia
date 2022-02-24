@@ -33,9 +33,7 @@ public:
     void set(GrRenderTarget*, bool useMSAASurface, const SkIRect& contentBounds, GrSurfaceOrigin,
              const LoadAndStoreInfo&, const StencilLoadAndStoreInfo&);
 
-    void reset() {
-        fRenderTarget = nullptr;
-    }
+    void reset() { fRenderTarget = nullptr; }
 
 private:
     GrGpu* gpu() override { return fGpu; }

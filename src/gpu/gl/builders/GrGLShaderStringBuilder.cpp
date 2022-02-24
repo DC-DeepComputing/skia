@@ -18,13 +18,13 @@
 static const bool gPrintSKSL = false;
 static const bool gPrintGLSL = false;
 
-std::unique_ptr<SkSL::Program> GrSkSLtoGLSL(const GrGLGpu* gpu,
+std::unique_ptr<SkSL::Program> GrSkSLtoGLSL(GrGLGpu* gpu,
                                             SkSL::ProgramKind programKind,
                                             const std::string& sksl,
                                             const SkSL::Program::Settings& settings,
                                             std::string* glsl,
                                             GrContextOptions::ShaderErrorHandler* errorHandler) {
-    SkSL::Compiler* compiler = gpu->shaderCompiler();
+    auto compiler = gpu->getShaderCompiler();
     std::unique_ptr<SkSL::Program> program;
 #ifdef SK_DEBUG
     std::string src = SkShaderUtils::PrettyPrint(sksl);
@@ -34,6 +34,7 @@ std::unique_ptr<SkSL::Program> GrSkSLtoGLSL(const GrGLGpu* gpu,
     program = compiler->convertProgram(programKind, src, settings);
     if (!program || !compiler->toGLSL(*program, glsl)) {
         errorHandler->compileError(src.c_str(), compiler->errorText().c_str());
+        gpu->returnShaderCompiler(std::move(compiler));
         return nullptr;
     }
 
@@ -49,6 +50,7 @@ std::unique_ptr<SkSL::Program> GrSkSLtoGLSL(const GrGLGpu* gpu,
         }
     }
 
+    gpu->returnShaderCompiler(std::move(compiler));
     return program;
 }
 

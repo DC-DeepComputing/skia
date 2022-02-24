@@ -99,8 +99,25 @@ public:
                                          SelfDependencyFlags selfDepFlags,
                                          LoadFromResolve);
 
+    const GrVkRenderPass* findRenderPass(
+            GrVkRenderTarget* target,
+            const GrOpsRenderPass::LoadAndStoreInfo& colorInfo,
+            const GrOpsRenderPass::LoadAndStoreInfo& resolveInfo,
+            const GrOpsRenderPass::StencilLoadAndStoreInfo& stencilInfo,
+            CompatibleRPHandle* compatibleHandle,
+            bool withResolve,
+            bool withStencil,
+            SelfDependencyFlags selfDepFlags,
+            LoadFromResolve);
+
     // The CompatibleRPHandle must be a valid handle previously set by a call to findRenderPass or
     // findCompatibleRenderPass.
+    const GrVkRenderPass* findRenderPass(
+            const CompatibleRPHandle& compatibleHandle,
+            const GrOpsRenderPass::LoadAndStoreInfo& colorInfo,
+            const GrOpsRenderPass::LoadAndStoreInfo& resolveInfo,
+            const GrOpsRenderPass::StencilLoadAndStoreInfo& stencilInfo);
+
     const GrVkRenderPass* findRenderPass(const CompatibleRPHandle& compatibleHandle,
                                          const GrVkRenderPass::LoadStoreOps& colorOps,
                                          const GrVkRenderPass::LoadStoreOps& resolveOps,
@@ -141,6 +158,10 @@ public:
             const GrProgramInfo&,
             VkRenderPass compatibleRenderPass,
             bool overrideSubpassForResolveLoad);
+    void prepareCompatiblePipelineState(GrRenderTarget*,
+                                        const GrProgramInfo&,
+                                        VkRenderPass compatibleRenderPass,
+                                        bool overrideSubpassForResolveLoad);
 
     GrVkPipelineState* findOrCreateCompatiblePipelineState(
             const GrProgramDesc&,
@@ -234,8 +255,19 @@ private:
                                                      const GrProgramInfo& programInfo,
                                                      VkRenderPass compatibleRenderPass,
                                                      Stats::ProgramCacheResult* stat) {
-            return this->findOrCreatePipelineStateImpl(desc, programInfo, compatibleRenderPass,
-                                                       false, stat);
+            return this->findOrCreatePipelineStateImpl(
+                    desc, programInfo, compatibleRenderPass, false, stat, false);
+        }
+        void preparePipelineState(GrRenderTarget* renderTarget,
+                                  const GrProgramInfo& programInfo,
+                                  VkRenderPass compatibleRenderPass,
+                                  bool overrideSubpassForResolveLoad);
+        void preparePipelineState(const GrProgramDesc& desc,
+                                  const GrProgramInfo& programInfo,
+                                  VkRenderPass compatibleRenderPass) {
+            Stats::ProgramCacheResult stat;
+            this->findOrCreatePipelineStateImpl(
+                    desc, programInfo, compatibleRenderPass, false, &stat, true);
         }
 
     private:
@@ -245,7 +277,8 @@ private:
                                                          const GrProgramInfo&,
                                                          VkRenderPass compatibleRenderPass,
                                                          bool overrideSubpassForResolveLoad,
-                                                         Stats::ProgramCacheResult*);
+                                                         Stats::ProgramCacheResult*,
+                                                         bool prepare);
 
         struct DescHash {
             uint32_t operator()(const GrProgramDesc& desc) const {

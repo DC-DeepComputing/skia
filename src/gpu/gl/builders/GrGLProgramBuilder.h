@@ -55,7 +55,8 @@ public:
 
     GrGLGpu* gpu() const { return fGpu; }
 
-    SkSL::Compiler* shaderCompiler() const override;
+    std::unique_ptr<SkSL::Compiler> getShaderCompiler() override;
+    void returnShaderCompiler(std::unique_ptr<SkSL::Compiler>) override;
 
 private:
     GrGLProgramBuilder(GrGLGpu*, const GrProgramDesc&, const GrProgramInfo&);

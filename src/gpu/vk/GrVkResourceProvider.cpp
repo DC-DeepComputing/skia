@@ -20,6 +20,38 @@
 #include "src/gpu/vk/GrVkRenderTarget.h"
 #include "src/gpu/vk/GrVkUtil.h"
 
+void get_vk_load_store_ops(GrLoadOp loadOpIn,
+                           GrStoreOp storeOpIn,
+                           VkAttachmentLoadOp* loadOp,
+                           VkAttachmentStoreOp* storeOp) {
+    switch (loadOpIn) {
+        case GrLoadOp::kLoad:
+            *loadOp = VK_ATTACHMENT_LOAD_OP_LOAD;
+            break;
+        case GrLoadOp::kClear:
+            *loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR;
+            break;
+        case GrLoadOp::kDiscard:
+            *loadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
+            break;
+        default:
+            SK_ABORT("Invalid LoadOp");
+            *loadOp = VK_ATTACHMENT_LOAD_OP_LOAD;
+    }
+
+    switch (storeOpIn) {
+        case GrStoreOp::kStore:
+            *storeOp = VK_ATTACHMENT_STORE_OP_STORE;
+            break;
+        case GrStoreOp::kDiscard:
+            *storeOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
+            break;
+        default:
+            SK_ABORT("Invalid StoreOp");
+            *storeOp = VK_ATTACHMENT_STORE_OP_STORE;
+    }
+}
+
 GrVkResourceProvider::GrVkResourceProvider(GrVkGpu* gpu)
     : fGpu(gpu)
     , fPipelineCache(VK_NULL_HANDLE) {
@@ -198,6 +230,56 @@ const GrVkRenderPass* GrVkResourceProvider::findRenderPass(
     return this->findRenderPass(*pRPHandle, colorOps, resolveOps, stencilOps);
 }
 
+const GrVkRenderPass* GrVkResourceProvider::findRenderPass(
+        GrVkRenderTarget* target,
+        const GrOpsRenderPass::LoadAndStoreInfo& colorInfo,
+        const GrOpsRenderPass::LoadAndStoreInfo& resolveInfo,
+        const GrOpsRenderPass::StencilLoadAndStoreInfo& stencilInfo,
+        CompatibleRPHandle* compatibleHandle,
+        bool withResolve,
+        bool withStencil,
+        SelfDependencyFlags selfDepFlags,
+        LoadFromResolve loadFromResolve) {
+    VkAttachmentLoadOp loadOp;
+    VkAttachmentStoreOp storeOp;
+    get_vk_load_store_ops(colorInfo.fLoadOp, colorInfo.fStoreOp, &loadOp, &storeOp);
+    GrVkRenderPass::LoadStoreOps vkColorOps(loadOp, storeOp);
+
+    get_vk_load_store_ops(resolveInfo.fLoadOp, resolveInfo.fStoreOp, &loadOp, &storeOp);
+    GrVkRenderPass::LoadStoreOps vkResolveOps(loadOp, storeOp);
+
+    get_vk_load_store_ops(stencilInfo.fLoadOp, stencilInfo.fStoreOp, &loadOp, &storeOp);
+    GrVkRenderPass::LoadStoreOps vkStencilOps(loadOp, storeOp);
+
+    return this->findRenderPass(target,
+                                vkColorOps,
+                                vkResolveOps,
+                                vkStencilOps,
+                                compatibleHandle,
+                                withResolve,
+                                withStencil,
+                                selfDepFlags,
+                                loadFromResolve);
+}
+
+const GrVkRenderPass* GrVkResourceProvider::findRenderPass(
+        const CompatibleRPHandle& compatibleHandle,
+        const GrOpsRenderPass::LoadAndStoreInfo& colorInfo,
+        const GrOpsRenderPass::LoadAndStoreInfo& resolveInfo,
+        const GrOpsRenderPass::StencilLoadAndStoreInfo& stencilInfo) {
+    VkAttachmentLoadOp loadOp;
+    VkAttachmentStoreOp storeOp;
+    get_vk_load_store_ops(colorInfo.fLoadOp, colorInfo.fStoreOp, &loadOp, &storeOp);
+    GrVkRenderPass::LoadStoreOps vkColorOps(loadOp, storeOp);
+
+    get_vk_load_store_ops(resolveInfo.fLoadOp, resolveInfo.fStoreOp, &loadOp, &storeOp);
+    GrVkRenderPass::LoadStoreOps vkResolveOps(loadOp, storeOp);
+
+    get_vk_load_store_ops(stencilInfo.fLoadOp, stencilInfo.fStoreOp, &loadOp, &storeOp);
+    GrVkRenderPass::LoadStoreOps vkStencilOps(loadOp, storeOp);
+    return this->findRenderPass(compatibleHandle, vkColorOps, vkResolveOps, vkStencilOps);
+}
+
 const GrVkRenderPass*
 GrVkResourceProvider::findRenderPass(const CompatibleRPHandle& compatibleHandle,
                                      const GrVkRenderPass::LoadStoreOps& colorOps,
@@ -260,6 +342,14 @@ GrVkPipelineState* GrVkResourceProvider::findOrCreateCompatiblePipelineState(
     return fPipelineStateCache->findOrCreatePipelineState(renderTarget, programInfo,
                                                           compatibleRenderPass,
                                                           overrideSubpassForResolveLoad);
+}
+
+void GrVkResourceProvider::prepareCompatiblePipelineState(GrRenderTarget* renderTarget,
+                                                          const GrProgramInfo& programInfo,
+                                                          VkRenderPass compatibleRenderPass,
+                                                          bool overrideSubpassForResolveLoad) {
+    fPipelineStateCache->preparePipelineState(
+            renderTarget, programInfo, compatibleRenderPass, overrideSubpassForResolveLoad);
 }
 
 GrVkPipelineState* GrVkResourceProvider::findOrCreateCompatiblePipelineState(
