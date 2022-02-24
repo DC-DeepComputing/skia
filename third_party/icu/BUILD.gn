@@ -36,13 +36,10 @@ if (skia_use_system_icu) {
   }
   action("make_data_assembly") {
     if (target_cpu == "wasm") {
-      _u_icu_version_major_num =
-          "69"  # defined in source/common/unicode/uvernum.h
-      script = "make_data_cpp.py"
+      script = "../externals/icu/scripts/make_data_cpp.py"
       inputs = [ "$data_dir/icudtl.dat" ]
       outputs = [ data_assembly ]
       args = [
-        "icudt${_u_icu_version_major_num}_dat",
         rebase_path(inputs[0], root_build_dir),
         rebase_path(data_assembly, root_build_dir),
       ]
