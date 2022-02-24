@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1825154e_8b405079",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-24T01:54:43Z",
+      "side": 1,
+      "message": "Giving this the +1 so that the ANGLE roller can hopefully complete over night since it\u0027s so behind.",
+      "revId": "8e21e66678bcbf20dcee32719dc76e5f1de8fe44",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8232049c_5d34b2be",
@@ -14,6 +31,30 @@
       "writtenOn": "2022-02-24T01:52:34Z",
       "side": 1,
       "message": "The CL description says 19043, which one is the right dimension?",
+      "range": {
+        "startLine": 769,
+        "startChar": 29,
+        "endLine": 769,
+        "endChar": 34
+      },
+      "revId": "8e21e66678bcbf20dcee32719dc76e5f1de8fe44",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "99856c43_0a6d1ee2",
+        "filename": "infra/bots/gen_tasks_logic/gen_tasks_logic.go",
+        "patchSetId": 8
+      },
+      "lineNbr": 769,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-24T01:54:43Z",
+      "side": 1,
+      "message": "ah wait, your chat message says skolo is at 19044 but chops is at 19043 so the gen tasks dimension should be fine, we\u0027re just not picking up matches from the chops bots that aren\u0027t updated yet.",
+      "parentUuid": "8232049c_5d34b2be",
       "range": {
         "startLine": 769,
         "startChar": 29,
