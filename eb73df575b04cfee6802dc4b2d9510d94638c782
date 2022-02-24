@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fa14dd48_7f87c8dd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-02-24T16:17:40Z",
+      "side": 1,
+      "message": "Seems like the same should be done for Drawable?",
+      "revId": "eb73df575b04cfee6802dc4b2d9510d94638c782",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f165c52f_6c66f86e",
+        "filename": "src/core/SkGlyphBuffer.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-02-24T16:17:40Z",
+      "side": 1,
+      "message": "Remove? (Also the earlier one in this comment.)",
+      "range": {
+        "startLine": 94,
+        "startChar": 63,
+        "endLine": 94,
+        "endChar": 70
+      },
+      "revId": "eb73df575b04cfee6802dc4b2d9510d94638c782",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
