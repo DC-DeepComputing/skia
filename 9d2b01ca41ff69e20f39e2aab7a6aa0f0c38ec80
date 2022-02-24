@@ -22,6 +22,30 @@
       },
       "revId": "9d2b01ca41ff69e20f39e2aab7a6aa0f0c38ec80",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "82ab9ae2_91173dde",
+        "filename": "tests/SkSLTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 386,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-02-24T18:03:30Z",
+      "side": 1,
+      "message": "Done. I ran clang-format on the file which also modified the aligned test file names. I personally prefer the formatted version but let me know if folks would be unhappy with the formatting.",
+      "parentUuid": "5a97ef3c_3b65246d",
+      "range": {
+        "startLine": 383,
+        "startChar": 93,
+        "endLine": 386,
+        "endChar": 103
+      },
+      "revId": "9d2b01ca41ff69e20f39e2aab7a6aa0f0c38ec80",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
