@@ -12,14 +12,25 @@
 #include <unordered_map>
 #include <vector>
 #include "include/core/SkSpan.h"
+#include "include/private/SkColorData.h"
 #include "include/private/SkSpinlock.h"
 #include "include/private/SkUniquePaintParamsID.h"
 #include "src/core/SkArenaAlloc.h"
 #include "src/core/SkPaintParamsKey.h"
 #include "src/core/SkUniform.h"
 
+
 class SkShaderInfo {
 public:
+    struct BlendInfo {
+
+//    GrBlendEquation fEquation = kAdd_GrBlendEquation;
+//    GrBlendCoeff    fSrcBlend = kOne_GrBlendCoeff;
+//    GrBlendCoeff    fDstBlend = kZero_GrBlendCoeff;
+        SkPMColor4f     fBlendConstant = SK_PMColor4fTRANSPARENT;
+        bool            fWritesColor = true;
+    };
+
     struct SnippetEntry;
     using GenerateGlueCodeForEntry = std::string (*)(const std::string& resultName,
                                                      int entryIndex, // for uniform name mangling
@@ -41,7 +52,7 @@ public:
              , fStaticSkSL(code)
              , fGlueCodeGenerator(glueCodeGenerator)
              , fNumChildren(numChildren)
-             , fDataPayloadExpectations(dataPayloadExpectations) {
+             , fDataPayloadExpectations1(dataPayloadExpectations) {
         }
 
         std::string getMangledUniformName(int uniformIndex, int mangleId) const;
@@ -51,17 +62,19 @@ public:
         const char* fStaticSkSL = nullptr;
         GenerateGlueCodeForEntry fGlueCodeGenerator = nullptr;
         int fNumChildren = 0;
-        SkSpan<const SkPaintParamsKey::DataPayloadField> fDataPayloadExpectations;
+        SkSpan<const SkPaintParamsKey::DataPayloadField> fDataPayloadExpectations1;
     };
 
-    void add(const SnippetEntry& entry) {
-        fEntries.push_back(entry);
+    void add1(const SnippetEntry& entry, SkSpan<const uint8_t> dataPayload) {
+        fEntries.push_back({entry, dataPayload});
     }
 
     // TODO: writing to color should be a property of the SnippetEntries and accumulated as the
     // entries are added. _Not_ set manually via 'setWritesColor'.
-    void setWritesColor() { fWritesColor = true; }
-    bool writesColor() const { return fWritesColor; }
+//    void setWritesColor() { fWritesColor = true; }
+//    bool writesColor() const { return fWritesColor; }
+
+    const BlendInfo& blendInfo() const { return fBlendInfo; }
 
 #if SK_SUPPORT_GPU && defined(SK_GRAPHITE_ENABLED) && defined(SK_METAL)
     std::string toSkSL() const;
@@ -70,8 +83,8 @@ public:
 private:
     std::string emitGlueCodeForEntry(int* entryIndex, std::string* result, int indent) const;
 
-    std::vector<SnippetEntry> fEntries;
-    bool fWritesColor = false;
+    std::vector<std::pair<const SnippetEntry, SkSpan<const uint8_t>>> fEntries;
+    BlendInfo fBlendInfo;
 };
 
 class SkShaderCodeDictionary {
@@ -106,7 +119,7 @@ public:
 
     SkSpan<const SkUniform> getUniforms(SkBuiltInCodeSnippetID) const;
 
-    SkSpan<const SkPaintParamsKey::DataPayloadField> dataPayloadExpectations(int snippetID) const;
+    SkSpan<const SkPaintParamsKey::DataPayloadField> dataPayloadExpectations1(int snippetID) const;
 
     // This method can return nullptr
     const SkShaderInfo::SnippetEntry* getEntry(int codeSnippetID) const;
