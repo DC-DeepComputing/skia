@@ -11,6 +11,7 @@
 #include "include/private/chromium/GrSlug.h"
 #include "include/private/chromium/SkChromeRemoteGlyphCache.h"
 #include "src/core/SkFontPriv.h"
+#include "src/core/SkGlyph.h"
 #include "src/core/SkMaskFilterBase.h"
 #include "src/core/SkMatrixProvider.h"
 #include "src/core/SkPaintPriv.h"
@@ -428,6 +429,8 @@ private:
     struct PathAndPosition {
         SkPath fPath;
         SkPoint fPosition;
+        // Support for serialization.
+        SkPackedGlyphID fPackedID;
     };
     const bool fIsAntiAliased;
     const SkScalar fStrikeToSourceScale;
@@ -461,7 +464,8 @@ PathOpSubmitter PathOpSubmitter::Make(const SkZip<SkGlyphVariant, SkPoint>& acce
             accepted.size(),
             [&](int i){
                 auto [variant, pos] = accepted[i];
-                return PathAndPosition{*variant.path(), pos};
+                const SkGlyph& glyph = *variant.glyph();
+                return PathAndPosition{*glyph.path(), pos, glyph.getPackedID()};
             });
     SkSpan<PathAndPosition> paths{pathData.get(), accepted.size()};
 
@@ -564,6 +568,8 @@ protected:
 private:
     PathOpSubmitter fPathDrawing;
 };
+
+
 
 // -- DrawableOpSubmitter --------------------------------------------------------------------------
 // Shared code for submitting GPU ops for drawing glyphs as drawables.
