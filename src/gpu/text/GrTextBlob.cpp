@@ -19,6 +19,7 @@
 #include "src/core/SkReadBuffer.h"
 #include "src/core/SkStrikeCache.h"
 #include "src/core/SkStrikeSpec.h"
+#include "src/core/SkZip.h"
 #include "src/gpu/GrClip.h"
 #include "src/gpu/GrGlyph.h"
 #include "src/gpu/GrMeshDrawTarget.h"
@@ -131,7 +132,7 @@ public:
                         void* vertexBuffer) const;
 
     AtlasTextOp::MaskType opMaskType() const;
-    GrMaskFormat grMaskType() const {return fMaskType;}
+    GrMaskFormat grMaskType() const { return fMaskType; }
 
 private:
     struct AtlasPt {
@@ -147,7 +148,8 @@ private:
     };
 
     struct ARGB2DVertex {
-        ARGB2DVertex(SkPoint d, GrColor, AtlasPt a) : devicePos{d}, atlasPos{a} {}
+        ARGB2DVertex(SkPoint d, GrColor, AtlasPt a)
+                : devicePos{d}, atlasPos{a} {}
 
         SkPoint devicePos;
         AtlasPt atlasPos;
@@ -161,7 +163,8 @@ private:
     };
 
     struct ARGB3DVertex {
-        ARGB3DVertex(SkPoint3 d, GrColor, AtlasPt a) : devicePos{d}, atlasPos{a} {}
+        ARGB3DVertex(SkPoint3 d, GrColor, AtlasPt a)
+                : devicePos{d}, atlasPos{a} {}
 
         SkPoint3 devicePos;
         AtlasPt atlasPos;
@@ -169,12 +172,12 @@ private:
 
     std::array<SkScalar, 4> sourceRect(PositionAndExtent positionAndExtent) const;
 
-    template<typename Quad, typename VertexData>
+    template <typename Quad, typename VertexData>
     void fill2D(SkZip<Quad, const GrGlyph*, const VertexData> quadData,
                 GrColor color,
                 const SkMatrix& matrix) const;
 
-    template<typename Quad, typename VertexData>
+    template <typename Quad, typename VertexData>
     void fill3D(SkZip<Quad, const GrGlyph*, const VertexData> quadData,
                 GrColor color,
                 const SkMatrix& matrix) const;
@@ -219,45 +222,45 @@ void TransformedMaskVertexFiller::fillVertexData(SkSpan<const GrGlyph*> glyphs,
         if (fMaskType == GrMaskFormat::kARGB_GrMaskFormat) {
             using Quad = ARGB2DVertex[4];
             SkASSERT(sizeof(ARGB2DVertex) == this->vertexStride(positionMatrix));
-            this->fill2D(quadData((Quad*) vertexBuffer), color, positionMatrix);
+            this->fill2D(quadData((Quad*)vertexBuffer), color, positionMatrix);
         } else {
             using Quad = Mask2DVertex[4];
             SkASSERT(sizeof(Mask2DVertex) == this->vertexStride(positionMatrix));
-            this->fill2D(quadData((Quad*) vertexBuffer), color, positionMatrix);
+            this->fill2D(quadData((Quad*)vertexBuffer), color, positionMatrix);
         }
     } else {
         if (fMaskType == GrMaskFormat::kARGB_GrMaskFormat) {
             using Quad = ARGB3DVertex[4];
             SkASSERT(sizeof(ARGB3DVertex) == this->vertexStride(positionMatrix));
-            this->fill3D(quadData((Quad*) vertexBuffer), color, positionMatrix);
+            this->fill3D(quadData((Quad*)vertexBuffer), color, positionMatrix);
         } else {
             using Quad = Mask3DVertex[4];
             SkASSERT(sizeof(Mask3DVertex) == this->vertexStride(positionMatrix));
-            this->fill3D(quadData((Quad*) vertexBuffer), color, positionMatrix);
+            this->fill3D(quadData((Quad*)vertexBuffer), color, positionMatrix);
         }
     }
 }
 
 std::array<SkScalar, 4>
 TransformedMaskVertexFiller::sourceRect(PositionAndExtent positionAndExtent) const {
-    auto[pos, rect] = positionAndExtent;
-    auto[l, t, r, b] = rect;
+    auto [pos, rect] = positionAndExtent;
+    auto [l, t, r, b] = rect;
     SkPoint LT = (SkPoint::Make(l, t) + fPaddingInset) * fStrikeToSourceScale + pos,
             RB = (SkPoint::Make(r, b) - fPaddingInset) * fStrikeToSourceScale + pos;
     return {LT.x(), LT.y(), RB.x(), RB.y()};
 }
 
-template<typename Quad, typename VertexData>
+template <typename Quad, typename VertexData>
 void TransformedMaskVertexFiller::fill2D(SkZip<Quad, const GrGlyph*, const VertexData> quadData,
                                          GrColor color,
                                          const SkMatrix& positionMatrix) const {
-    for (auto[quad, glyph, positionAndExtent] : quadData) {
+    for (auto [quad, glyph, positionAndExtent] : quadData) {
         auto [l, t, r, b] = this->sourceRect(positionAndExtent);
         SkPoint lt = positionMatrix.mapXY(l, t),
                 lb = positionMatrix.mapXY(l, b),
                 rt = positionMatrix.mapXY(r, t),
                 rb = positionMatrix.mapXY(r, b);
-        auto[al, at, ar, ab] = glyph->fAtlasLocator.getUVs();
+        auto [al, at, ar, ab] = glyph->fAtlasLocator.getUVs();
         quad[0] = {lt, color, {al, at}};  // L,T
         quad[1] = {lb, color, {al, ab}};  // L,B
         quad[2] = {rt, color, {ar, at}};  // R,T
@@ -265,7 +268,7 @@ void TransformedMaskVertexFiller::fill2D(SkZip<Quad, const GrGlyph*, const Verte
     }
 }
 
-template<typename Quad, typename VertexData>
+template <typename Quad, typename VertexData>
 void TransformedMaskVertexFiller::fill3D(SkZip<Quad, const GrGlyph*, const VertexData> quadData,
                                          GrColor color,
                                          const SkMatrix& positionMatrix) const {
@@ -275,13 +278,13 @@ void TransformedMaskVertexFiller::fill3D(SkZip<Quad, const GrGlyph*, const Verte
         positionMatrix.mapHomogeneousPoints(&result, &pt, 1);
         return result;
     };
-    for (auto[quad, glyph, positionAndExtent] : quadData) {
+    for (auto [quad, glyph, positionAndExtent] : quadData) {
         auto [l, t, r, b] = this->sourceRect(positionAndExtent);
         SkPoint3 lt = mapXYZ(l, t),
                  lb = mapXYZ(l, b),
                  rt = mapXYZ(r, t),
                  rb = mapXYZ(r, b);
-        auto[al, at, ar, ab] = glyph->fAtlasLocator.getUVs();
+        auto [al, at, ar, ab] = glyph->fAtlasLocator.getUVs();
         quad[0] = {lt, color, {al, at}};  // L,T
         quad[1] = {lb, color, {al, ab}};  // L,B
         quad[2] = {rt, color, {ar, at}};  // R,T
@@ -291,9 +294,12 @@ void TransformedMaskVertexFiller::fill3D(SkZip<Quad, const GrGlyph*, const Verte
 
 AtlasTextOp::MaskType TransformedMaskVertexFiller::opMaskType() const {
     switch (fMaskType) {
-        case kA8_GrMaskFormat:   return AtlasTextOp::MaskType::kGrayscaleCoverage;
-        case kA565_GrMaskFormat: return AtlasTextOp::MaskType::kLCDCoverage;
-        case kARGB_GrMaskFormat: return AtlasTextOp::MaskType::kColorBitmap;
+        case kA8_GrMaskFormat:
+            return AtlasTextOp::MaskType::kGrayscaleCoverage;
+        case kA565_GrMaskFormat:
+            return AtlasTextOp::MaskType::kLCDCoverage;
+        case kARGB_GrMaskFormat:
+            return AtlasTextOp::MaskType::kColorBitmap;
     }
     SkUNREACHABLE;
 }
@@ -311,7 +317,8 @@ struct Mask2DVertex {
 };
 
 struct ARGB2DVertex {
-    ARGB2DVertex(SkPoint d, GrColor, AtlasPt a) : devicePos{d}, atlasPos{a} {}
+    ARGB2DVertex(SkPoint d, GrColor, AtlasPt a)
+            : devicePos{d}, atlasPos{a} {}
 
     SkPoint devicePos;
     AtlasPt atlasPos;
@@ -325,7 +332,8 @@ struct Mask3DVertex {
 };
 
 struct ARGB3DVertex {
-    ARGB3DVertex(SkPoint3 d, GrColor, AtlasPt a) : devicePos{d}, atlasPos{a} {}
+    ARGB3DVertex(SkPoint3 d, GrColor, AtlasPt a)
+            : devicePos{d}, atlasPos{a} {}
 
     SkPoint3 devicePos;
     AtlasPt atlasPos;
@@ -333,9 +341,12 @@ struct ARGB3DVertex {
 
 AtlasTextOp::MaskType op_mask_type(GrMaskFormat grMaskFormat) {
     switch (grMaskFormat) {
-        case kA8_GrMaskFormat:   return AtlasTextOp::MaskType::kGrayscaleCoverage;
-        case kA565_GrMaskFormat: return AtlasTextOp::MaskType::kLCDCoverage;
-        case kARGB_GrMaskFormat: return AtlasTextOp::MaskType::kColorBitmap;
+        case kA8_GrMaskFormat:
+            return AtlasTextOp::MaskType::kGrayscaleCoverage;
+        case kA565_GrMaskFormat:
+            return AtlasTextOp::MaskType::kLCDCoverage;
+        case kARGB_GrMaskFormat:
+            return AtlasTextOp::MaskType::kColorBitmap;
     }
     SkUNREACHABLE;
 }
@@ -361,23 +372,23 @@ SkPMColor4f calculate_colors(skgpu::SurfaceContext* sc,
     return grPaint->getColor4f();
 }
 
-template<typename Quad, typename VertexData>
+template <typename Quad, typename VertexData>
 void fill_transformed_vertices_2D(SkZip<Quad, const GrGlyph*, const VertexData> quadData,
                                   SkScalar dstPadding,
                                   SkScalar strikeToSource,
                                   GrColor color,
                                   const SkMatrix& matrix) {
     SkPoint inset = {dstPadding, dstPadding};
-    for (auto[quad, glyph, vertexData] : quadData) {
-        auto[pos, rect] = vertexData;
-        auto[l, t, r, b] = rect;
+    for (auto [quad, glyph, vertexData] : quadData) {
+        auto [pos, rect] = vertexData;
+        auto [l, t, r, b] = rect;
         SkPoint sLT = (SkPoint::Make(l, t) + inset) * strikeToSource + pos,
                 sRB = (SkPoint::Make(r, b) - inset) * strikeToSource + pos;
         SkPoint lt = matrix.mapXY(sLT.x(), sLT.y()),
                 lb = matrix.mapXY(sLT.x(), sRB.y()),
                 rt = matrix.mapXY(sRB.x(), sLT.y()),
                 rb = matrix.mapXY(sRB.x(), sRB.y());
-        auto[al, at, ar, ab] = glyph->fAtlasLocator.getUVs();
+        auto [al, at, ar, ab] = glyph->fAtlasLocator.getUVs();
         quad[0] = {lt, color, {al, at}};  // L,T
         quad[1] = {lb, color, {al, ab}};  // L,B
         quad[2] = {rt, color, {ar, at}};  // R,T
@@ -396,28 +407,33 @@ std::tuple<bool, SkVector> can_use_direct(
     // (0, 0) through both the initial position matrix and the position matrix; take the difference.
     SkVector translation = positionMatrix.mapOrigin() - initialPositionMatrix.mapOrigin();
     return {initialPositionMatrix.getScaleX() == positionMatrix.getScaleX() &&
-            initialPositionMatrix.getScaleY() == positionMatrix.getScaleY() &&
-            initialPositionMatrix.getSkewX()  == positionMatrix.getSkewX()  &&
-            initialPositionMatrix.getSkewY()  == positionMatrix.getSkewY()  &&
-            SkScalarIsInt(translation.x()) && SkScalarIsInt(translation.y()),
+                    initialPositionMatrix.getScaleY() == positionMatrix.getScaleY() &&
+                    initialPositionMatrix.getSkewX() == positionMatrix.getSkewX() &&
+                    initialPositionMatrix.getSkewY() == positionMatrix.getSkewY() &&
+                    SkScalarIsInt(translation.x()) && SkScalarIsInt(translation.y()),
             translation};
 }
 
 // -- PathOpSubmitter ------------------------------------------------------------------------------
 // Shared code for submitting GPU ops for drawing glyphs as paths.
 class PathOpSubmitter {
-    struct PathAndPosition;
+    union Variant;
+
 public:
     PathOpSubmitter(bool isAntiAliased,
                     SkScalar strikeToSourceScale,
-                    SkSpan<PathAndPosition> paths,
-                    std::unique_ptr<PathAndPosition[], GrSubRunAllocator::ArrayDestroyer> pathData);
+                    SkSpan<SkPoint> positions,
+                    SkSpan<Variant> variants,
+                    sk_sp<SkStrike>&& strike);
 
     PathOpSubmitter(PathOpSubmitter&& that);
+
+    ~PathOpSubmitter();
 
     static PathOpSubmitter Make(const SkZip<SkGlyphVariant, SkPoint>& accepted,
                                 bool isAntiAliased,
                                 SkScalar strikeToSourceScale,
+                                sk_sp<SkStrike>&& strike,
                                 GrSubRunAllocator* alloc);
 
     void submitOps(SkCanvas*,
@@ -428,50 +444,81 @@ public:
                    skgpu::v1::SurfaceDrawContext* sdc) const;
 
 private:
-    struct PathAndPosition {
-        SkPath fPath;
-        SkPoint fPosition;
-        // Support for serialization.
-        SkPackedGlyphID fPackedID;
+    union Variant {
+        // Initially, filled with packed id, but changed to GrGlyph* in the onPrepare stage.
+        SkGlyphID glyphID;
+        SkPath path;
+        // Add ctors to help SkArenaAlloc create arrays.
+        Variant(SkGlyphID id) : glyphID{id} {}
     };
+
     const bool fIsAntiAliased;
     const SkScalar fStrikeToSourceScale;
-    const SkSpan<const PathAndPosition> fPaths;
-    std::unique_ptr<PathAndPosition[], GrSubRunAllocator::ArrayDestroyer> fPathData;
+    const SkSpan<const SkPoint> fPositions;
+    SkSpan<Variant> fVariants;
+
+    // If fStrike == nullptr, then the glyphIDs have been converted into Paths.
+    mutable sk_sp<SkStrike> fStrike;
 };
+
 
 PathOpSubmitter::PathOpSubmitter(
         bool isAntiAliased,
         SkScalar strikeToSourceScale,
-        SkSpan<PathAndPosition> paths,
-        std::unique_ptr<PathAndPosition[], GrSubRunAllocator::ArrayDestroyer> pathData)
-            : fIsAntiAliased{isAntiAliased}
-            , fStrikeToSourceScale{strikeToSourceScale}
-            , fPaths{paths}
-            , fPathData{std::move(pathData)} {
-    SkASSERT(!fPaths.empty());
+        SkSpan<SkPoint> positions,
+        SkSpan<Variant> variants,
+        sk_sp<SkStrike>&& strike)
+        : fIsAntiAliased{isAntiAliased}
+        , fStrikeToSourceScale{strikeToSourceScale}
+        , fPositions{positions}
+        , fVariants{variants}
+        , fStrike{std::move(strike)} {
+    SkASSERT(!fPositions.empty());
+    SkASSERT(fStrike != nullptr);
 }
 
 PathOpSubmitter::PathOpSubmitter(PathOpSubmitter&& that)
-    : fIsAntiAliased{that.fIsAntiAliased}
-    , fStrikeToSourceScale{that.fStrikeToSourceScale}
-    , fPaths{that.fPaths}
-    , fPathData{std::move(that.fPathData)} {}
+        : fIsAntiAliased{that.fIsAntiAliased}
+        , fStrikeToSourceScale{that.fStrikeToSourceScale}
+        , fPositions{that.fPositions}
+        , fVariants{that.fVariants}
+        , fStrike{std::move(that.fStrike)} {
+    // Clear out the variants, so "that" does not try to call the dtors of all the Paths.
+    that.fVariants = SkSpan<Variant>();
+}
+
+PathOpSubmitter::~PathOpSubmitter() {
+    // The glyphIDs have been converted to SkPaths, so now we need to destruct them.
+    if (fStrike == nullptr) {
+        for (auto& variant : fVariants) {
+            variant.path.~SkPath();
+        }
+    }
+}
 
 PathOpSubmitter PathOpSubmitter::Make(const SkZip<SkGlyphVariant, SkPoint>& accepted,
                                       bool isAntiAliased,
                                       SkScalar strikeToSourceScale,
+                                      sk_sp<SkStrike>&& strike,
                                       GrSubRunAllocator* alloc) {
-    auto pathData = alloc->makeUniqueArray<PathAndPosition>(
-            accepted.size(),
-            [&](int i){
-                auto [variant, pos] = accepted[i];
-                const SkGlyph& glyph = *variant.glyph();
-                return PathAndPosition{*glyph.path(), pos, glyph.getPackedID()};
-            });
-    SkSpan<PathAndPosition> paths{pathData.get(), accepted.size()};
+    int glyphCount = SkCount(accepted);
+    Variant* variantStorage = (Variant*)alloc->alignedBytes(
+            glyphCount * sizeof(Variant), alignof(Variant));
 
-    return PathOpSubmitter{isAntiAliased, strikeToSourceScale, paths, std::move(pathData)};
+    SkPoint* positions = alloc->makePODArray<SkPoint>(glyphCount);
+
+     for (auto [pathVariant, dstPos, variant, srcPos]
+            : SkMakeZip(variantStorage, positions, accepted.get<0>(), accepted.get<1>())) {
+         const SkGlyph& glyph = *variant.glyph();
+         new (&pathVariant) Variant{glyph.getGlyphID()};
+         dstPos = srcPos;
+    }
+
+    return PathOpSubmitter{isAntiAliased,
+                           strikeToSourceScale,
+                           SkMakeSpan(positions, glyphCount),
+                           SkMakeSpan(variantStorage, glyphCount),
+                           std::move(strike)};
 }
 
 void PathOpSubmitter::submitOps(SkCanvas* canvas,
@@ -480,6 +527,15 @@ void PathOpSubmitter::submitOps(SkCanvas* canvas,
                                 SkPoint drawOrigin,
                                 const SkPaint& paint,
                                 skgpu::v1::SurfaceDrawContext* sdc) const {
+    if (fStrike != nullptr) {
+        // Need to convert the glyphIDs into paths.
+        SkBulkGlyphMetricsAndPaths pathGetter{std::move(fStrike)};
+        for (Variant& variant : fVariants) {
+            new (&variant.path) SkPath(*pathGetter.glyph(variant.glyphID)->path());
+        }
+        fStrike = nullptr;
+    }
+
     SkPaint runPaint{paint};
     runPaint.setAntiAlias(fIsAntiAliased);
     // If there are shaders, blurs or styles, the path must be scaled into source
@@ -496,29 +552,25 @@ void PathOpSubmitter::submitOps(SkCanvas* canvas,
     SkMatrix strikeToSource = SkMatrix::Scale(fStrikeToSourceScale, fStrikeToSourceScale);
     strikeToSource.postTranslate(drawOrigin.x(), drawOrigin.y());
     if (!needsExactCTM) {
-        for (const auto& pathPos : fPaths) {
-            const SkPath& path = pathPos.fPath;
-            const SkPoint pos = pathPos.fPosition;
+        for (const auto& [variant, pos] : SkMakeZip(fVariants, fPositions)) {
             // Transform the glyph to source space.
             SkMatrix pathMatrix = strikeToSource;
             pathMatrix.postTranslate(pos.x(), pos.y());
 
             SkAutoCanvasRestore acr(canvas, true);
             canvas->concat(pathMatrix);
-            canvas->drawPath(path, runPaint);
+            canvas->drawPath(variant.path, runPaint);
         }
     } else {
         // Transform the path to device because the deviceMatrix must be unchanged to
         // draw effect, filter or shader paths.
-        for (const auto& pathPos : fPaths) {
-            const SkPath& path = pathPos.fPath;
-            const SkPoint pos = pathPos.fPosition;
+        for (const auto& [variant, pos] : SkMakeZip(fVariants, fPositions)) {
             // Transform the glyph to source space.
             SkMatrix pathMatrix = strikeToSource;
             pathMatrix.postTranslate(pos.x(), pos.y());
 
             SkPath deviceOutline;
-            path.transform(pathMatrix, &deviceOutline);
+            variant.path.transform(pathMatrix, &deviceOutline);
             deviceOutline.setIsVolatile(true);
             canvas->drawPath(deviceOutline, runPaint);
         }
@@ -533,9 +585,11 @@ public:
     static GrSubRunOwner Make(const SkZip<SkGlyphVariant, SkPoint>& accepted,
                               bool isAntiAliased,
                               SkScalar strikeToSourceScale,
+                              sk_sp<SkStrike>&& strike,
                               GrSubRunAllocator* alloc) {
         return alloc->makeUnique<PathSubRun>(
-                PathOpSubmitter::Make(accepted, isAntiAliased, strikeToSourceScale, alloc));
+                PathOpSubmitter::Make(
+                        accepted, isAntiAliased, strikeToSourceScale, std::move(strike), alloc));
     }
 
     void draw(SkCanvas* canvas,
@@ -2026,9 +2080,10 @@ void GrTextBlob::processDeviceMasks(
 
 void GrTextBlob::processSourcePaths(const SkZip<SkGlyphVariant, SkPoint>& accepted,
                                     const SkFont& runFont,
+                                    sk_sp<SkStrike>&& strike,
                                     SkScalar strikeToSourceScale) {
     fSubRunList.append(PathSubRun::Make(
-            accepted, has_some_antialiasing(runFont), strikeToSourceScale, &fAlloc));
+        accepted, has_some_antialiasing(runFont), strikeToSourceScale, std::move(strike), &fAlloc));
 }
 
 void GrTextBlob::processSourceDrawables(const SkZip<SkGlyphVariant, SkPoint>& accepted,
@@ -2733,11 +2788,13 @@ void GrSubRunNoCachePainter::processSourceMasks(const SkZip<SkGlyphVariant, SkPo
 
 void GrSubRunNoCachePainter::processSourcePaths(const SkZip<SkGlyphVariant, SkPoint>& accepted,
                                                 const SkFont& runFont,
+                                                sk_sp<SkStrike>&& strike,
                                                 SkScalar strikeToSourceScale) {
     PathOpSubmitter pathDrawing =
             PathOpSubmitter::Make(accepted,
                                   has_some_antialiasing(runFont),
                                   strikeToSourceScale,
+                                  std::move(strike),
                                   fAlloc);
 
     pathDrawing.submitOps(fCanvas, fClip, fViewMatrix, fGlyphRunList.origin(), fPaint, fSDC);
@@ -2815,7 +2872,7 @@ public:
             SkScalar strikeToSourceScale) override;
     void processSourcePaths(
             const SkZip<SkGlyphVariant, SkPoint>& accepted, const SkFont& runFont,
-            SkScalar strikeToSourceScale) override;
+            sk_sp<SkStrike>&& strike, SkScalar strikeToSourceScale) override;
     void processSourceDrawables(
             const SkZip<SkGlyphVariant, SkPoint>& drawables, const SkFont& runFont,
             SkScalar strikeToSourceScale) override;
@@ -3408,9 +3465,10 @@ sk_sp<Slug> Slug::Make(const SkMatrixProvider& viewMatrix,
 void Slug::processSourcePaths(const SkZip<SkGlyphVariant,
                               SkPoint>& accepted,
                               const SkFont& runFont,
+                              sk_sp<SkStrike>&& strike,
                               SkScalar strikeToSourceScale) {
     fSubRuns.append(PathSubRun::Make(
-            accepted, has_some_antialiasing(runFont), strikeToSourceScale, &fAlloc));
+        accepted, has_some_antialiasing(runFont), strikeToSourceScale, std::move(strike), &fAlloc));
 }
 
 void Slug::processSourceDrawables(const SkZip<SkGlyphVariant, SkPoint>& accepted,
