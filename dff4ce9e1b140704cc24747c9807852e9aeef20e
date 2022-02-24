@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "699b841a_c32dd784",
+        "filename": "tests/SkSLTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 266,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-02-24T03:27:19Z",
+      "side": 1,
+      "message": "Maybe this should be renamed to SKSL_TEST_GPU_ES3 to be even more explicit. I think this might have added to the confusion.",
+      "range": {
+        "startLine": 266,
+        "startChar": 18,
+        "endLine": 266,
+        "endChar": 21
+      },
+      "revId": "dff4ce9e1b140704cc24747c9807852e9aeef20e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
