@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5a97ef3c_3b65246d",
+        "filename": "tests/SkSLTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 386,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-02-24T15:16:11Z",
+      "side": 1,
+      "message": "nit: line too long (100 column limit in Skia; see http://go/skiastyle )",
+      "range": {
+        "startLine": 383,
+        "startChar": 93,
+        "endLine": 386,
+        "endChar": 103
+      },
+      "revId": "9d2b01ca41ff69e20f39e2aab7a6aa0f0c38ec80",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
