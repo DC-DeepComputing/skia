@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8232049c_5d34b2be",
+        "filename": "infra/bots/gen_tasks_logic/gen_tasks_logic.go",
+        "patchSetId": 8
+      },
+      "lineNbr": 769,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-24T01:52:34Z",
+      "side": 1,
+      "message": "The CL description says 19043, which one is the right dimension?",
+      "range": {
+        "startLine": 769,
+        "startChar": 29,
+        "endLine": 769,
+        "endChar": 34
+      },
+      "revId": "8e21e66678bcbf20dcee32719dc76e5f1de8fe44",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
