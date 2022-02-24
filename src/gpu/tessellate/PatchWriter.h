@@ -22,8 +22,90 @@ class PathTessellator;
 class StrokeTessellator;
 #endif
 
+template <PatchAttribs Attribs>
+struct Required {
+    static constexpr PatchAttribs kRequired = Attribs;
+    static constexpr PatchAttribs kEnabled  = Attribs;
+};
+
+template <PatchAttribs Attribs>
+struct Optional {
+    static constexpr PatchAttribs kRequired = PatchAttribs::kNone;
+    static constexpr PatchAttribs kEnabled  = Attribs;
+};
+
+enum class Policy {
+    kAutoDefer,
+    kAutoUpdateJoin,
+    kAutoChopCurves,
+    kAutoFillTriangles
+};
+// TODO Or can we have empty structs with nice names? Or have policy structs that have static
+// constexpr kRequired and kEnabled fields that can be used in place of Optional/Required to help
+// with readability but basically produce the behavior?
+// - If we actually do the policy though, we can separate auto deferral from join control and make
+// the HW stroker not use it...
+
 // Writes out tessellation patches, formatted with their specific attribs, to a GPU buffer.
+// template <PatchAttribs Enabled, PatchAttribs Dynamic>
+template <typename... Traits>
 class PatchWriter {
+    static constexpr PatchAttribs kRequired = (Traits::kRequired | ... | PatchAttribs::kNone);
+    static constexpr PatchAttribs kEnabled =  (Traits::kEnabled  | ... | PatchAttribs::kNone);
+    static constexpr PatchAttribs kDisabled = PatchAttribs::kAll & ~kEnabled;
+
+    struct DeferredJoinStorage {
+        static constexpr size_t kMaxStride = PatchAttribStride(kEnabled);
+
+        // Only used if kJoinControlPointAttrib is set in fAttribs, in which case it holds data for
+        // a single patch waiting for the incoming join control point to be computed.
+        // Contents are valid (sans join control point) if fHasDeferredPatch is true.
+        char fDeferredPatchStorage[kMaxStride];
+        bool fHasDeferredPatch = false;
+
+        SkPoint fJoin;
+        bool fHasJoinControlPoint = false; // this bool is special and more or less part of the
+        // deferred patch system, and not part of the join control attribute.
+    };
+
+    using ColorType = std::conditional_t<kEnabled & PatchAttribs::kWideColorIfEnabled,
+            std::conditional_t<kRequired & PatchAttribs::kWideColorIfEnabled, SkPMColor4f, VertexColor>, uint32_t>;
+
+    // NOTE: using std::monostate for disabled attributes still uses up 1 byte of storage in
+    // PatchWriter per attribute. We could get 0 storage overhead for disabled attributes if we
+    // used templated, multiple inheritence but that gets very cumbersome.
+    template <typename T, PatchAttribs Attrib>
+    using AttribType = std::conditional_t<kEnabled & Attrib,
+            std::conditional_t<kRequired & Attrib, T, std::optional<T>>, std::monostate>;
+    // TODO vertex writer overrides for optional<T> and monostate
+
+    // TODO: Should we have these be another wrapper? Neither is meant to be optional.
+    // TODO: JoinAttrib is also a little more than the actual attrib storage, so shouldn't be
+    // passed to vertex writer directly, which makes it a little different from the other 3.
+    // TODO: alternatively do we split it into structures one for the attribute itself, which could
+    // hypothetically then be use as any other optional attribute, and one that handles the
+    // deferring? There could be some merit here, then the actual logic is something separate from
+    // the PatchAttribs and is functionality based -> e.g. auto-update join control point, auto-defer patch,
+    // and similarly we have auto-triangulate? We can then have the policy have a default value that
+    // means compute from patch attribs, but it helps explicitly layout the choices being made
+    // and make the constexpr ifs more readable.
+    using JoinAttrib         = AttribType<DeferredJoinStorage, PatchAttribs::kJoinControlPoint>;
+    using FanPointAttrib     = AttribType<SkPoint, PatchAttribs::kFanPoint>;
+
+    using StrokeParamsAttrib = AttribType<StrokeParams, PatchAttribs::kStrokeParams>;
+    using ColorAttrib        = AttribType<ColorType, PatchAttribs::kColor>;
+    // TODO: anything for explicit curve type? both it and the join control point are coming in
+    // via emitPatchAttribs() so just having them be T seems fine; the compiler can inline and drop
+    // them if needed. But that means we're at 2 types that really have the full attrib business.
+    // In the future we may be adding depth, so 3. Other than not being optional and having side
+    // effects on curve generation, the fan point brings it up to 4. I don't see any reason not to
+    // allow it to be optional except that it impacts the curve generation.
+
+    // TODO triangulator type that isn't an attrib really
+
+    static constexpr bool kPatchesHaveArea = kRequired & (PatchAttribs::kJoinControlPoint |
+                                                          PatchAttribs::kFanPoint);
+
     using VectorXform = wangs_formula::VectorXform;
 public:
     PatchWriter(GrMeshDrawTarget* target,
@@ -36,9 +118,12 @@ public:
             , fMaxSegments_pow2(pow2(maxTessellationSegments))
             , fMaxSegments_pow4(pow2(fMaxSegments_pow2))
             , fChunker(target, vertexChunkArray, patchStride, initialAllocCount) {
+        // TODO assert that attribs has all required attributes and that it has no disabled attributes
+
         // For fans or strokes, the minimum required segment count is 1 (making either a triangle
         // with the fan point, or a stroked line). Otherwise, we need 2 segments to represent
         // triangles purely from the tessellated vertices.
+        // TODO Should we just have writeTriangle fold this in? or should we have writeTriangle only enabled for curves?
         fCurrMinSegments_pow4 = (attribs & PatchAttribs::kFanPoint ||
                                  attribs & PatchAttribs::kJoinControlPoint) ? 1.f : 16.f; // 2^4
     }
@@ -53,8 +138,10 @@ public:
 #endif
 
     ~PatchWriter() {
-        // finishStrokeContour() should have been called before this was deleted (or never used).
-        SkASSERT(!fHasDeferredPatch && !fHasJoinControlPoint);
+        if constexpr (kRequired & PatchAttribs::kJoinControlPoint) {
+            // finishStrokeContour() should have been called before this was deleted (or never used)
+            SkASSERT(!fJoin.fHasDeferredPatch && !fJoin.fHasControlPoint);
+        }
     }
 
     PatchAttribs attribs() const { return fAttribs; }
@@ -72,16 +159,16 @@ public:
     // automatically adjusted when appending various geometries (e.g. Conic/Cubic), but sometimes
     // must be set explicitly.
     //
-    // PatchAttribs::kJoinControlPoint must be enabled.
-    void updateJoinControlPointAttrib(SkPoint lastControlPoint) {
-        SkASSERT(fAttribs & PatchAttribs::kJoinControlPoint && lastControlPoint.isFinite());
-        fJoinControlPointAttrib = lastControlPoint;
-        fHasJoinControlPoint = true;
+    // PatchAttribs::kJoinControlPoint must be required at compile time.
+    std::enable_if_t<kRequired & PatchAttribs::kJoinControlPoint>
+    updateJoinControlPointAttrib(SkPoint lastControlPoint) {
+        fJoin.fControlPoint = lastControlPoint;
+        fJoin.fHasControlPoint = true;
     }
     // Completes a closed contour of a stroke by rewriting a deferred patch with now-available
     // join control point information. Automatically resets the join control point attribute.
     //
-    // PatchAttribs::kJoinControlPoint must be enabled.
+    // PatchAttribs::kJoinControlPoint must be required at compile time.
     void writeDeferredStrokePatch() {
         SkASSERT(fAttribs & PatchAttribs::kJoinControlPoint);
         if (fHasDeferredPatch) {
@@ -100,35 +187,52 @@ public:
     }
     // TODO: These are only used by StrokeHardwareTessellator and ideally its patch writing logic
     // should be simplified like StrokeFixedCountTessellator's, and then this can go away.
-    void resetJoinControlPointAttrib() {
-        SkASSERT(fAttribs & PatchAttribs::kJoinControlPoint);
+    std::enable_if_t<kRequired & PatchAttribs::kJoinControlPoint>
+    resetJoinControlPointAttrib() {
         // Should have already been written or caller should manually defer
-        SkASSERT(!fHasDeferredPatch);
-        fHasJoinControlPoint = false;
+        SkASSERT(!fJoin.fHasDeferredPatch);
+        fJoin.fHasControlPoint = false;
     }
-    SkPoint joinControlPoint() const { return fJoinControlPointAttrib; }
-    bool hasJoinControlPoint() const { return fHasJoinControlPoint; }
+    std::enable_if_t<kRequired & PatchAttribs::kJoinControlPoint, SkPoint>
+    joinControlPoint() const { return fJoin.fControlPoint; }
+    std::enable_if_t<kRequired & PatchAttribs::kJoinControlPoint, bool>
+    hasJoinControlPoint() const { return fJoin.fHasControlPoint; }
 
     // Updates the fan point that will be written out with each patch (i.e., the point that wedges
     // fan around).
-    // PatchAttribs::kFanPoint must be enabled.
-    void updateFanPointAttrib(SkPoint fanPoint) {
+    //
+    // PatchAttribs::kFanPoint must be marked as required at compile time, or enabled and
+    // activated at runtime.
+    std::enable_if_t<kEnabled & PatchAttribs::kFanPoint>
+    updateFanPointAttrib(SkPoint fanPoint) {
         SkASSERT(fAttribs & PatchAttribs::kFanPoint);
         fFanPointAttrib = fanPoint;
     }
 
     // Updates the stroke params that are written out with each patch.
-    // PatchAttribs::kStrokeParams must be enabled.
-    void updateStrokeParamsAttrib(StrokeParams strokeParams) {
+    //
+    // PatchAttribs::kStrokeParams must be marked as required at compile time, or enabled and
+    // activated at runtime.
+    std::enable_if_t<kEnabled & PatchAttribs::kStrokeParams>
+    updateStrokeParamsAttrib(StrokeParams strokeParams) {
         SkASSERT(fAttribs & PatchAttribs::kStrokeParams);
         fStrokeParamsAttrib = strokeParams;
     }
 
     // Updates the color that will be written out with each patch.
-    // PatchAttribs::kColor must be enabled.
-    void updateColorAttrib(const SkPMColor4f& color) {
+    //
+    // PatchAttribs::kColor must be marked as required at compile time, or enabled and
+    // activated at runtime.
+    std::enable_if_t<kEnabled & PatchAttribs::kColor>
+    updateColorAttrib(const SkPMColor4f& color) {
         SkASSERT(fAttribs & PatchAttribs::kColor);
-        fColorAttrib.set(color, fAttribs & PatchAttribs::kWideColorIfEnabled);
+        if constexpr (kRequired & PatchAttribs::kWideColorIfEnabled) {
+            fColorAttrib = color;
+        } else if constexpr (kRequired & PatchAttribs::kWideColorIfEnabled) {
+            fColorAttrib.set(color, fAttribs & PatchAttribs::kWideColorIfEnabled);
+        } else {
+            fColorAttrib = color.toBytes_RGBA();
+        }
     }
 
     /**
@@ -272,17 +376,24 @@ public:
     }
 
 private:
-    template <typename T>
-    static VertexWriter::Conditional<T> If(bool c, const T& v) { return VertexWriter::If(c,v); }
+    // template <typename T>
+    // static VertexWriter::Conditional<T> If(bool c, const T& v) { return VertexWriter::If(c,v); }
 
     AI void emitPatchAttribs(VertexWriter vertexWriter,
                              SkPoint joinControlPoint,
                              float explicitCurveType) {
-        vertexWriter << If((fAttribs & PatchAttribs::kJoinControlPoint), joinControlPoint)
-                     << If((fAttribs & PatchAttribs::kFanPoint), fFanPointAttrib)
-                     << If((fAttribs & PatchAttribs::kStrokeParams), fStrokeParamsAttrib)
-                     << If((fAttribs & PatchAttribs::kColor), fColorAttrib)
-                     << If((fAttribs & PatchAttribs::kExplicitCurveType), explicitCurveType);
+        // TODO if we wnat this to work, joinControlPOint actuallyneeds to be typed as JoinAttrib
+        // so that writePatch can just pass in fJoin and have it turn into std::monostate when it's
+        // dsiabled. Similarly for explicitCurveType, although that one is trickier because it can
+        // actually be optional and I don't want to the overhead bundling it up in std::optional
+        // when most cases it won't be written.
+        // - I'd rather just have it be the rare case where we do a constexpr guard and wrap in VertexWriter::If().
+        vertexWriter << joinControlPoint << fFanPoint << fStrokeParams << fColor << explicitCurveType;
+        // vertexWriter << If((fAttribs & PatchAttribs::kJoinControlPoint), joinControlPoint)
+        //              << If((fAttribs & PatchAttribs::kFanPoint), fFanPointAttrib)
+        //              << If((fAttribs & PatchAttribs::kStrokeParams), fStrokeParamsAttrib)
+        //              << If((fAttribs & PatchAttribs::kColor), fColorAttrib)
+        //              << If((fAttribs & PatchAttribs::kExplicitCurveType), explicitCurveType);
     }
 
     AI void writePatch(float2 p0, float2 p1, float2 p2, float2 p3, float explicitCurveType) {
@@ -364,25 +475,25 @@ private:
 
     GrVertexChunkBuilder fChunker;
 
-    SkPoint fJoinControlPointAttrib;
-    SkPoint fFanPointAttrib;
-    StrokeParams fStrokeParamsAttrib;
-    VertexColor fColorAttrib;
-
-    static constexpr size_t kMaxStride =
-            4 * sizeof(SkPoint) + // control points
-                sizeof(SkPoint) + // join control point or fan attrib point (not used at same time)
-                sizeof(StrokeParams) + // stroke params
-            4 * sizeof(uint32_t); // wide vertex color
-
-    // Only used if kJoinControlPointAttrib is set in fAttribs, in which case it holds data for
-    // a single patch waiting for the incoming join control point to be computed.
-    // Contents are valid (sans join control point) if fHasDeferredPatch is true.
-    char fDeferredPatchStorage[kMaxStride];
-    bool fHasDeferredPatch = false;
-
-    bool fHasJoinControlPoint = false;
+    JoinControlAttrib fJoin;
+    FanPointAttrib    fFanPoint;
+    StrokeAttrib      fStrokeParams;
+    ColorAttrib       fColor;
 };
+
+using CurvePatchWriter = PatchWriter<Optional<PatchAttribs::kColor>,
+                                     Optional<PatchAttribs::kWideColorIfEnabled>,
+                                     Optional<PatchAttribs::kExplicitCurveType>>;
+using WedgePatchWriter = PatchWriter<Required<PatchAttribs::kFanPoint>,
+                                     Optional<PatchAttribs::kColor |
+                                              PatchAttribs::kWideColorIfEnabled |
+                                              PatchAttribs::kExplicitCurveType>>;
+using StrokePatchWriter = PatchWriter<Required<PatchAttribs::kJoinControlPoint>,
+                                      Optional<PatchAttribs::kStrokeParams |
+                                               PatchAttribs::kColor |
+                                               PatchAttribs::kWideColorIfEnabled |
+                                               PatchAttribs::kExplicitCurveType>>;
+
 
 }  // namespace skgpu
 
