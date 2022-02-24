@@ -335,6 +335,8 @@ static MTLRenderPipelineColorAttachmentDescriptor* create_color_attachment(
         MTLPixelFormat format, const GrPipeline& pipeline, SkBinaryWriteBuffer* writer) {
     auto mtlColorAttachment = [[MTLRenderPipelineColorAttachmentDescriptor alloc] init];
 
+    $$$$
+
     // pixel format
     mtlColorAttachment.pixelFormat = format;
     if (writer) {

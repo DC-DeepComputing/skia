@@ -352,8 +352,18 @@ std::string GetMtlUniforms(int bufferID,
     return result;
 }
 
+static MTLRenderPipelineColorAttachmentDescriptor* create_color_attachment(
+        MTLPixelFormat format) {
 
-enum ShaderType {
+    // TODO: I *think* this gets cleaned up by the pipelineDescriptor as well?
+    auto mtlColorAttachment = [[MTLRenderPipelineColorAttachmentDescriptor alloc] init];
+
+    mtlColorAttachment.pixelFormat = format;
+
+    return mtlColorAttachment;
+}
+
+        enum ShaderType {
     kVertex_ShaderType = 0,
     kFragment_ShaderType = 1,
 
@@ -416,13 +426,15 @@ sk_sp<GraphicsPipeline> GraphicsPipeline::Make(ResourceProvider* resourceProvide
     // TODO: I *think* this gets cleaned up by the pipelineDescriptor?
     (*psoDescriptor).vertexDescriptor = create_vertex_descriptor(pipelineDesc.renderStep());
 
-    // TODO: I *think* this gets cleaned up by the pipelineDescriptor as well?
-    auto mtlColorAttachment = [[MTLRenderPipelineColorAttachmentDescriptor alloc] init];
-
     mtl::TextureInfo mtlTexInfo;
     renderPassDesc.fColorAttachment.fTextureInfo.getMtlTextureInfo(&mtlTexInfo);
 
-    mtlColorAttachment.pixelFormat = (MTLPixelFormat)mtlTexInfo.fFormat;
+    auto mtlColorAttachment = create_color_attachment((MTLPixelFormat)mtlTexInfo.fFormat);
+
+
+
+
+
 
     mtlColorAttachment.blendingEnabled = FALSE;
 
