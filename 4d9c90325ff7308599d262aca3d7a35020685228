@@ -169,6 +169,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9ce45bb1_7b2ce3b6",
+        "filename": "experimental/graphite/src/Resource.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-02-24T16:31:40Z",
+      "side": 1,
+      "message": "Done. Left the virtual as freeGpuData because that is what the virtual actually does.",
+      "parentUuid": "60c79c4f_37172345",
+      "range": {
+        "startLine": 57,
+        "startChar": 15,
+        "endLine": 57,
+        "endChar": 26
+      },
+      "revId": "4d9c90325ff7308599d262aca3d7a35020685228",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "57577e4b_da86a5eb",
@@ -205,6 +229,30 @@
       "writtenOn": "2022-02-24T15:13:16Z",
       "side": 1,
       "message": "Not an issue; the ResourceCache handles what to do based on the ref type that\u0027s returning the resource.",
+      "parentUuid": "57577e4b_da86a5eb",
+      "range": {
+        "startLine": 82,
+        "startChar": 0,
+        "endLine": 82,
+        "endChar": 87
+      },
+      "revId": "4d9c90325ff7308599d262aca3d7a35020685228",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2c8a7c8c_4a20f83d",
+        "filename": "experimental/graphite/src/Resource.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-02-24T16:31:40Z",
+      "side": 1,
+      "message": "Yeah the assert on last removed ref isn\u0027t actually something that should be there. I think I probably added it while debugging since we don\u0027t have any cb refs right now.\n\nYes is it is intended that both types of refs can send a resource back to the cache. The main reason being to check if a Resource can be moved from Non-purgeable to purgeable. If it is a UsageRef that it also allows use to put non-shareable resources back into our key map.",
       "parentUuid": "57577e4b_da86a5eb",
       "range": {
         "startLine": 82,
@@ -262,6 +310,54 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "067100e0_4c2c0151",
+        "filename": "experimental/graphite/src/Resource.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-02-24T16:31:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "94bbe259_71f52b47",
+      "range": {
+        "startLine": 93,
+        "startChar": 74,
+        "endLine": 93,
+        "endChar": 81
+      },
+      "revId": "4d9c90325ff7308599d262aca3d7a35020685228",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d7e7fa47_ceb13eb8",
+        "filename": "experimental/graphite/src/Resource.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-02-24T16:31:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "002dcae7_9adde3cf",
+      "range": {
+        "startLine": 93,
+        "startChar": 26,
+        "endLine": 93,
+        "endChar": 37
+      },
+      "revId": "4d9c90325ff7308599d262aca3d7a35020685228",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b20d5952_639a27fd",
@@ -275,6 +371,30 @@
       "writtenOn": "2022-02-23T17:34:51Z",
       "side": 1,
       "message": "Is this only callable by ResourceCache? I think given how coupled Resource and ResourceCache are, I could see making them friends so we can define public API that any part of graphite or clients can use, the interaction API between Resource and Cache, and the internal API of each. Those 3 groups seem like useful boundaries to enforce.",
+      "range": {
+        "startLine": 132,
+        "startChar": 0,
+        "endLine": 132,
+        "endChar": 49
+      },
+      "revId": "4d9c90325ff7308599d262aca3d7a35020685228",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "39daf160_f058ca00",
+        "filename": "experimental/graphite/src/Resource.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-02-24T16:31:40Z",
+      "side": 1,
+      "message": "Moved things only accessed by ResourceCache into private and friended. I didn\u0027t friend Resource in the Cache because really only two things can access the Cache, Resource and ResourceProvider so I\u0027m not worried about needing to hide anything there.",
+      "parentUuid": "b20d5952_639a27fd",
       "range": {
         "startLine": 132,
         "startChar": 0,
@@ -308,6 +428,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "379ada59_51dd96fd",
+        "filename": "experimental/graphite/src/Resource.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 177,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-02-24T16:31:40Z",
+      "side": 1,
+      "message": "As talked about offline, just the atomic doesn\u0027t work. The atomic can be used to make sure only one thread will try to delete the object, but it can\u0027t guarantee the order of the threads. Thus the thread that thinks it should delete may end up running first and delete the object before the other thread runs and access the object.",
+      "parentUuid": "fbb27ed6_7c8471da",
+      "range": {
+        "startLine": 173,
+        "startChar": 0,
+        "endLine": 177,
+        "endChar": 32
+      },
+      "revId": "4d9c90325ff7308599d262aca3d7a35020685228",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4f2b2add_0591dce2",
@@ -321,6 +465,30 @@
       "writtenOn": "2022-02-23T17:34:51Z",
       "side": 1,
       "message": "Should shutdown assert that it\u0027s a single owner? Or is the intent that we can shutdown from any thread?",
+      "range": {
+        "startLine": 38,
+        "startChar": 0,
+        "endLine": 38,
+        "endChar": 32
+      },
+      "revId": "4d9c90325ff7308599d262aca3d7a35020685228",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a2052fb1_ae419131",
+        "filename": "experimental/graphite/src/ResourceCache.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-02-24T16:31:40Z",
+      "side": 1,
+      "message": "Yup it can assert single owner, i\u0027ll add that. This will only get call by the ResourceProvider\u0027s dtor called by the Recorder\u0027s dtor.",
+      "parentUuid": "4f2b2add_0591dce2",
       "range": {
         "startLine": 38,
         "startChar": 0,
@@ -354,6 +522,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "30a694a2_1fbc08ee",
+        "filename": "experimental/graphite/src/ResourceCache.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-02-24T16:31:40Z",
+      "side": 1,
+      "message": "Give the above I don\u0027t think there is anything to do here.",
+      "parentUuid": "a0908bcf_fc6a200f",
+      "range": {
+        "startLine": 42,
+        "startChar": 8,
+        "endLine": 43,
+        "endChar": 27
+      },
+      "revId": "4d9c90325ff7308599d262aca3d7a35020685228",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "218ae983_28df48d9",
@@ -367,6 +559,30 @@
       "writtenOn": "2022-02-23T17:34:51Z",
       "side": 1,
       "message": "ASSERT_SINGLE_OWNER?",
+      "range": {
+        "startLine": 87,
+        "startChar": 25,
+        "endLine": 87,
+        "endChar": 43
+      },
+      "revId": "4d9c90325ff7308599d262aca3d7a35020685228",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "14a1ff4a_ba5d8204",
+        "filename": "experimental/graphite/src/ResourceCache.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-02-24T16:31:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "218ae983_28df48d9",
       "range": {
         "startLine": 87,
         "startChar": 25,
@@ -400,6 +616,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cbba8b1c_047d5c98",
+        "filename": "experimental/graphite/src/ResourceCache.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-02-24T16:31:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "88a3a1fb_0be1bda1",
+      "range": {
+        "startLine": 95,
+        "startChar": 36,
+        "endLine": 95,
+        "endChar": 45
+      },
+      "revId": "4d9c90325ff7308599d262aca3d7a35020685228",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5abc1956_c5490dd4",
@@ -413,6 +653,30 @@
       "writtenOn": "2022-02-23T17:34:51Z",
       "side": 1,
       "message": "typo",
+      "range": {
+        "startLine": 149,
+        "startChar": 22,
+        "endLine": 149,
+        "endChar": 30
+      },
+      "revId": "4d9c90325ff7308599d262aca3d7a35020685228",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dda2a3d3_2b218052",
+        "filename": "experimental/graphite/src/ResourceCache.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-02-24T16:31:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5abc1956_c5490dd4",
       "range": {
         "startLine": 149,
         "startChar": 22,
@@ -446,6 +710,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2466eb29_c0174324",
+        "filename": "experimental/graphite/src/ResourceCache.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-02-24T16:31:40Z",
+      "side": 1,
+      "message": "Just by resource. But the only things that have a pointer to the Cache are the ResourceProvider and privately on Resource. So I\u0027m not too worried about others randomly calling this.",
+      "parentUuid": "fa76ea1f_f0952e48",
+      "range": {
+        "startLine": 49,
+        "startChar": 9,
+        "endLine": 49,
+        "endChar": 23
+      },
+      "revId": "4d9c90325ff7308599d262aca3d7a35020685228",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "53968237_3e229990",
@@ -459,6 +747,30 @@
       "writtenOn": "2022-02-23T17:34:51Z",
       "side": 1,
       "message": "It looks like the intent is that all the private functions are not necessarily thread safe, and are meant to be used on the ResourceCache\u0027s owning thread, but with the requirement that the public API uses ASSERT_SINGLE_OWNER. This seems reasonable to me, but can we add a comment emphasizing that design choice here?",
+      "range": {
+        "startLine": 59,
+        "startChar": 0,
+        "endLine": 59,
+        "endChar": 8
+      },
+      "revId": "4d9c90325ff7308599d262aca3d7a35020685228",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "28833833_e3c24e4a",
+        "filename": "experimental/graphite/src/ResourceCache.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-02-24T16:31:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "53968237_3e229990",
       "range": {
         "startLine": 59,
         "startChar": 0,
@@ -492,6 +804,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "92a2d4d9_0a96695b",
+        "filename": "experimental/graphite/src/ResourceCache.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-02-24T16:31:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "acf5d6f4_4d9079ae",
+      "range": {
+        "startLine": 103,
+        "startChar": 4,
+        "endLine": 103,
+        "endChar": 12
+      },
+      "revId": "4d9c90325ff7308599d262aca3d7a35020685228",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7d5cf7a8_53319586",
@@ -505,6 +841,30 @@
       "writtenOn": "2022-02-23T17:34:51Z",
       "side": 1,
       "message": "typo",
+      "range": {
+        "startLine": 78,
+        "startChar": 49,
+        "endLine": 78,
+        "endChar": 55
+      },
+      "revId": "4d9c90325ff7308599d262aca3d7a35020685228",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f660f1e0_8a625262",
+        "filename": "experimental/graphite/src/ResourceTypes.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-02-24T16:31:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7d5cf7a8_53319586",
       "range": {
         "startLine": 78,
         "startChar": 49,
