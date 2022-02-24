@@ -245,7 +245,7 @@ private:
     RenderCommandEncoder(const Gpu* gpu, sk_cfp<id<MTLRenderCommandEncoder>> encoder)
         : Resource(gpu), fCommandEncoder(std::move(encoder)) {}
 
-    void onFreeGpuData() override {
+    void freeGpuData() override {
         fCommandEncoder.reset();
     }
 
