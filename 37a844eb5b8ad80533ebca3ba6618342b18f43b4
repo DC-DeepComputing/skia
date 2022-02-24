@@ -16,6 +16,24 @@
       "message": "can you associate a bug with this CL so that we can use it as we track next steps, like moving the exclusion to the same file that the test is declared?",
       "revId": "37a844eb5b8ad80533ebca3ba6618342b18f43b4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "eb7cba45_3bd09e83",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 9065
+      },
+      "writtenOn": "2022-02-24T18:32:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "36f717a5_07421a62",
+      "revId": "37a844eb5b8ad80533ebca3ba6618342b18f43b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
