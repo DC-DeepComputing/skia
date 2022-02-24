@@ -47,6 +47,8 @@
 #include "src/image/SkImage_Gpu.h"
 #include "src/image/SkSurface_Gpu.h"
 
+#include "src/gpu/GrOpFlushState.h"
+
 #include "include/gpu/vk/GrVkExtensions.h"
 #include "include/gpu/vk/GrVkTypes.h"
 
@@ -2115,6 +2117,114 @@ bool GrVkGpu::onSubmitToGpu(bool syncCpu) {
     } else {
         return this->submitCommandBuffer(kSkip_SyncQueue);
     }
+}
+
+bool GrVkGpu::onPreparePipeline(GrOpFlushState* flushState, const GrProgramInfo& programInfo) {
+    const auto& opArgs = flushState->drawOpArgs();
+    GrRenderTargetProxy* proxy = opArgs.rtProxy();
+    GrRenderTarget* renderTarget = proxy->peekRenderTarget();
+    const GrCaps& caps = *flushState->gpu()->caps();
+    const bool usesMSAASurface = opArgs.usesMSAASurface();
+    GrVkRenderTarget* vkRT = static_cast<GrVkRenderTarget*>(renderTarget);
+
+    const GrXferBarrierFlags renderPassBarriers = opArgs.renderPassBarriers();
+
+    // Covert the GrXferBarrierFlags into render pass self dependency flags
+    GrVkRenderPass::SelfDependencyFlags selfDepFlags = GrVkRenderPass::SelfDependencyFlags::kNone;
+    if (renderPassBarriers & GrXferBarrierFlags::kBlend) {
+        selfDepFlags |= GrVkRenderPass::SelfDependencyFlags::kForNonCoherentAdvBlend;
+    }
+    if (renderPassBarriers & GrXferBarrierFlags::kTexture) {
+        selfDepFlags |= GrVkRenderPass::SelfDependencyFlags::kForInputAttachment;
+    }
+
+    GrLoadOp fColorLoadOp = GrLoadOp::kLoad;
+    std::array<float, 4> fLoadClearColor = {0, 0, 0, 0};
+    GrOpsRenderPass::LoadAndStoreInfo colorInfo = {
+            fColorLoadOp, GrStoreOp::kStore, fLoadClearColor};
+
+    bool withResolve = false;
+    GrVkRenderPass::LoadFromResolve loadFromResolve = GrVkRenderPass::LoadFromResolve::kNo;
+    GrOpsRenderPass::LoadAndStoreInfo resolveInfo{GrLoadOp::kLoad, GrStoreOp::kStore, {}};
+    if (usesMSAASurface && this->vkCaps().renderTargetSupportsDiscardableMSAA(vkRT)) {
+        withResolve = true;
+        colorInfo.fStoreOp = GrStoreOp::kDiscard;
+        if (colorInfo.fLoadOp == GrLoadOp::kLoad) {
+            loadFromResolve = GrVkRenderPass::LoadFromResolve::kLoad;
+            colorInfo.fLoadOp = GrLoadOp::kDiscard;
+        } else {
+            resolveInfo.fLoadOp = GrLoadOp::kDiscard;
+        }
+    }
+
+    if (proxy->needsStencil()) {
+        SkASSERT(proxy->canUseStencil(caps));
+        if (!flushState->resourceProvider()->attachStencilAttachment(renderTarget,
+                                                                     usesMSAASurface)) {
+            SkDebugf("WARNING: failed to attach a stencil buffer. Rendering will be skipped.\n");
+            return false;
+        }
+    }
+
+    GrLoadOp stencilLoadOp = GrLoadOp::kClear;
+    // switch (fInitialStencilContent) {
+    //     case StencilContent::kDontCare:
+    //         stencilLoadOp = GrLoadOp::kDiscard;
+    //         break;
+    //     case StencilContent::kUserBitsCleared:
+    //         SkASSERT(!caps.performStencilClearsAsDraws());
+    //         SkASSERT(stencil);
+    //         if (caps.discardStencilValuesAfterRenderPass()) {
+    //             // Always clear the stencil if it is being discarded after render passes. This is
+    //             // also an optimization because we are on a tiler and it avoids loading the
+    //             values
+    //             // from memory.
+    //             stencilLoadOp = GrLoadOp::kClear;
+    //             break;
+    //         }
+    //         if (!stencil->hasPerformedInitialClear()) {
+    //             stencilLoadOp = GrLoadOp::kClear;
+    //             stencil->markHasPerformedInitialClear();
+    //             break;
+    //         }
+    //         // SurfaceDrawContexts are required to leave the user stencil bits in a cleared state
+    //         // once finished, meaning the stencil values will always remain cleared after the
+    //         // initial clear. Just fall through to reloading the existing (cleared) stencil
+    //         values
+    //         // from memory.
+    //         [[fallthrough]];
+    //     case StencilContent::kPreserved:
+    //         SkASSERT(stencil);
+    //         stencilLoadOp = GrLoadOp::kLoad;
+    //         break;
+    // }
+    GrStoreOp stencilStoreOp =
+            caps.discardStencilValuesAfterRenderPass() ? GrStoreOp::kDiscard : GrStoreOp::kStore;
+
+    const GrOpsRenderPass::StencilLoadAndStoreInfo stencilLoadAndStoreInfo{
+            stencilLoadOp,
+            stencilStoreOp,
+    };
+
+    GrVkResourceProvider::CompatibleRPHandle compatibleHandle;
+    const GrVkRenderPass* vkRenderPass = fResourceProvider.findRenderPass(vkRT,
+                                                                          colorInfo,
+                                                                          resolveInfo,
+                                                                          stencilLoadAndStoreInfo,
+                                                                          &compatibleHandle,
+                                                                          withResolve,
+                                                                          proxy->needsStencil(),
+                                                                          selfDepFlags,
+                                                                          loadFromResolve);
+    if (!vkRenderPass) return false;
+
+    VkRenderPass compatibleRenderPass = vkRenderPass->vkRenderPass();
+    constexpr bool fOverridePipelinesForResolveLoad = false;
+    fResourceProvider.prepareCompatiblePipelineState(
+            renderTarget, programInfo, compatibleRenderPass, fOverridePipelinesForResolveLoad);
+    vkRenderPass->unref();
+
+    return true;
 }
 
 void GrVkGpu::finishOutstandingGpuWork() {

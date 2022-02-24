@@ -103,6 +103,8 @@ protected:
                                    GrXferBarrierFlags renderPassXferBarriers,
                                    GrLoadOp colorLoadOp);
 
+    void onPrepare(GrOpFlushState* state) override;
+
 private:
     virtual GrProgramInfo* programInfo() = 0;
     // This method is responsible for creating all the programInfos required
@@ -125,9 +127,10 @@ private:
         this->onPrePrepareDraws(context, writeView, clip, dstProxyView, renderPassXferBarriers,
                                 colorLoadOp);
     }
-    void onPrepare(GrOpFlushState* state) final;
 
     virtual void onPrepareDraws(GrMeshDrawTarget*) = 0;
+    virtual void onPreparePipeline(GrOpFlushState* state) {}
+
     using INHERITED = GrDrawOp;
 };
 

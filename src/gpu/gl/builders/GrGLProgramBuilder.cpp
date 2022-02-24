@@ -92,8 +92,12 @@ const GrCaps* GrGLProgramBuilder::caps() const {
     return fGpu->caps();
 }
 
-SkSL::Compiler* GrGLProgramBuilder::shaderCompiler() const {
-    return fGpu->shaderCompiler();
+std::unique_ptr<SkSL::Compiler> GrGLProgramBuilder::getShaderCompiler() {
+    return fGpu->getShaderCompiler();
+}
+
+void GrGLProgramBuilder::returnShaderCompiler(std::unique_ptr<SkSL::Compiler> compiler) {
+    return fGpu->returnShaderCompiler(std::move(compiler));
 }
 
 bool GrGLProgramBuilder::compileAndAttachShaders(const std::string& glsl,

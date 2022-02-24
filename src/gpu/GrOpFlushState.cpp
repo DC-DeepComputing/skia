@@ -243,6 +243,10 @@ void GrOpFlushState::drawMesh(const GrSimpleMesh& mesh) {
     }
 }
 
+void GrOpFlushState::preparePipeline(const GrProgramInfo& programInfo) {
+    fGpu->preparePipeline(this, programInfo);
+}
+
 //////////////////////////////////////////////////////////////////////////////
 
 GrOpFlushState::Draw::~Draw() {
