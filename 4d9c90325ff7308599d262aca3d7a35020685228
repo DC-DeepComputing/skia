@@ -35,6 +35,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "08b35e06_0e5ff5b2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-24T15:13:16Z",
+      "side": 1,
+      "message": "lgtm after offline discussion and pending the minor nits and asserts.",
+      "revId": "4d9c90325ff7308599d262aca3d7a35020685228",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f6308002_ba4df0f6",
@@ -58,6 +75,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e0b26582_1cfd8e8c",
+        "filename": "experimental/graphite/src/Resource.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-24T15:13:16Z",
+      "side": 1,
+      "message": "Talking offline, while this lets the ref counts be modified safely, it doesn\u0027t prevent the thread that is handling the actual `delete this` from running before other thread\u0027s notify is finished, which would lead unpleasantness.\n\nWe\u0027re tabling the idea of non-locking ref counting for now since this should do everything we need.",
+      "parentUuid": "f6308002_ba4df0f6",
+      "range": {
+        "startLine": 34,
+        "startChar": 0,
+        "endLine": 34,
+        "endChar": 66
+      },
+      "revId": "4d9c90325ff7308599d262aca3d7a35020685228",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "12ff3cab_80f2043d",
@@ -71,6 +112,30 @@
       "writtenOn": "2022-02-23T17:34:51Z",
       "side": 1,
       "message": "see note in unrefCommandBuffer(), but this maybe isn\u0027t right?",
+      "range": {
+        "startLine": 45,
+        "startChar": 8,
+        "endLine": 45,
+        "endChar": 44
+      },
+      "revId": "4d9c90325ff7308599d262aca3d7a35020685228",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dbda2b63_12fa1bae",
+        "filename": "experimental/graphite/src/Resource.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-24T15:13:16Z",
+      "side": 1,
+      "message": "Talking offline, this is correct; we want to call returnResource for both CB and usage refs so that it can check purgeability; returnResource handles checking the ref type to re-record in the cache\u0027s maps.",
+      "parentUuid": "12ff3cab_80f2043d",
       "range": {
         "startLine": 45,
         "startChar": 8,
@@ -117,6 +182,30 @@
       "writtenOn": "2022-02-23T17:34:51Z",
       "side": 1,
       "message": "notifyARefIsZero asserts that the last removed ref is kUsageRef or kCache; ignoring the assert issue, it looks like this could end up having the resource returned to the cache twice, once for the usage ref hitting 0 and once for the command buffer ref hitting 0.\n\nIt should be that command buffer refs only preserve aliveness; they should have been returned to the cache earlier when the usage ref hit 0, since any future use would be enqueued after the current command buffer ref finishes. In the case of mapped resources, it\u0027s expected they take the extra work of holding on to a usage ref for the same duration as the command buffer ref so that it\u0027s not returned to the cache too early.",
+      "range": {
+        "startLine": 82,
+        "startChar": 0,
+        "endLine": 82,
+        "endChar": 87
+      },
+      "revId": "4d9c90325ff7308599d262aca3d7a35020685228",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "da208892_4c87fee3",
+        "filename": "experimental/graphite/src/Resource.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-02-24T15:13:16Z",
+      "side": 1,
+      "message": "Not an issue; the ResourceCache handles what to do based on the ref type that\u0027s returning the resource.",
+      "parentUuid": "57577e4b_da86a5eb",
       "range": {
         "startLine": 82,
         "startChar": 0,
