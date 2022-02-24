@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f017c8e9_fed1724d",
+        "filename": "src/gpu/text/GrTextBlob.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 437,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-02-24T22:55:35Z",
+      "side": 1,
+      "message": "Not sure about this comment? Seems to contain a GlyphID and a SkPath, which aren\u0027t packed id or GrGlyph*?",
+      "revId": "47ef7e7c02421137cce31c74324d3a1025ac7b90",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "204224b0_2a97d87f",
+        "filename": "src/gpu/text/GrTextBlob.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 441,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-02-24T22:55:35Z",
+      "side": 1,
+      "message": "But now you need to destroy the SkPath if it is active? Oh, I see \n~PathOpSubmitter is doing that. Still, this should have an explicit do nothing destructor with a comment about who destroys the content?",
+      "revId": "47ef7e7c02421137cce31c74324d3a1025ac7b90",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
