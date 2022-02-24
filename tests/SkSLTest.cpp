@@ -248,20 +248,26 @@ static void test_rehydrate(skiatest::Reporter* r, const char* testFile) {
     DEF_TEST(name ## _CPU, r) {                                     \
         test_cpu(r, path, true);                                    \
     }
-// The CPU backend lacks support for MANY ES3 features. However, if you know a test uses a subset
-// of ES3 that is supported, you can force it to run there:
-#define SKSL_TEST_CPU_ES3(name, path)                               \
-    DEF_TEST(name ## _CPU, r) {                                     \
+
+// Tests that only use the CPU backend but without "strict ES2 mode", which limits SkSL language
+// features to GLSL ES 1.0. The CPU backend lacks support for many ES3 features. This is
+// appropriate for tests that use a subset of ES3 that is supported.
+#define SKSL_TEST_CPU_NO_STRICT_ES2(name, path)                     \
+    DEF_TEST(name ## _CPU_NO_STRICT_ES2, r) {                       \
         test_cpu(r, path, false);                                   \
     }
+
 #define SKSL_TEST_GPU(name, path)                                   \
     DEF_GPUTEST_FOR_RENDERING_CONTEXTS(name ## _GPU, r, ctxInfo) {  \
         test_gpu(r, ctxInfo.directContext(), path);                 \
     }
+
+// Tests that run on GPUs with ES3 support only.
 #define SKSL_TEST_ES3(name, path)                                   \
     DEF_GPUTEST_FOR_RENDERING_CONTEXTS(name ## _GPU, r, ctxInfo) {  \
         test_es3(r, ctxInfo.directContext(), path);                 \
     }
+
 #define SKSL_TEST_REHYDRATE(name, path)                             \
     DEF_TEST(name ## _REHYDRATE, r) {                               \
         test_rehydrate(r, path);                                    \
@@ -369,10 +375,15 @@ SKSL_TEST(SkSLLoopFloat,                       "runtime/LoopFloat.rts")
 SKSL_TEST(SkSLLoopInt,                         "runtime/LoopInt.rts")
 SKSL_TEST(SkSLQualifierOrder,                  "runtime/QualifierOrder.rts")
 SKSL_TEST(SkSLPrecisionQualifiers,             "runtime/PrecisionQualifiers.rts")
-SKSL_TEST_CPU_ES3(SkSLRecursiveComparison_Arrays,  "runtime/RecursiveComparison_Arrays.rts")
-SKSL_TEST_CPU_ES3(SkSLRecursiveComparison_Structs, "runtime/RecursiveComparison_Structs.rts")
-SKSL_TEST_CPU_ES3(SkSLRecursiveComparison_Types,   "runtime/RecursiveComparison_Types.rts")
-SKSL_TEST_CPU_ES3(SkSLRecursiveComparison_Vectors, "runtime/RecursiveComparison_Vectors.rts")
+
+// These tests specifically rely on SkVM backend behavior that is difficult to enforce on Metal and
+// GLSL implementations and specifically differs from Vulkan behavior (skia:12977). They also
+// rely on equality operators on array types which are not available in GLSL ES 1.00. Therefore
+// these tests are restricted to run on CPU and with "strict ES2 mode" disabled.
+SKSL_TEST_CPU_NO_STRICT_ES2(SkSLRecursiveComparison_Arrays,  "runtime/RecursiveComparison_Arrays.rts")
+SKSL_TEST_CPU_NO_STRICT_ES2(SkSLRecursiveComparison_Structs, "runtime/RecursiveComparison_Structs.rts")
+SKSL_TEST_CPU_NO_STRICT_ES2(SkSLRecursiveComparison_Types,   "runtime/RecursiveComparison_Types.rts")
+SKSL_TEST_CPU_NO_STRICT_ES2(SkSLRecursiveComparison_Vectors, "runtime/RecursiveComparison_Vectors.rts")
 
 SKSL_TEST_ES3(SkSLArrayComparison,             "shared/ArrayComparison.sksl")
 SKSL_TEST_ES3(SkSLArrayConstructors,           "shared/ArrayConstructors.sksl")
@@ -410,9 +421,9 @@ SKSL_TEST(SkSLInoutParameters,                 "shared/InoutParameters.sksl")
 SKSL_TEST(SkSLMatrices,                        "shared/Matrices.sksl")
 SKSL_TEST_ES3(SkSLMatricesNonsquare,           "shared/MatricesNonsquare.sksl")
 // TODO(skia:12443) These tests actually don't work on MANY devices. The GLSL conformance suite
-// does a terrible job of enforcing this rule. We still test them on newer (ES3) devices, and CPU.
-SKSL_TEST_CPU_ES3(SkSLMatrixConstructorsES2,   "shared/MatrixConstructorsES2.sksl")
-SKSL_TEST_CPU_ES3(SkSLMatrixConstructorsES3,   "shared/MatrixConstructorsES3.sksl")
+// does a terrible job of enforcing this rule. We still test them on CPU.
+SKSL_TEST_CPU(SkSLMatrixConstructorsES2,       "shared/MatrixConstructorsES2.sksl")
+SKSL_TEST_CPU_NO_STRICT_ES2(SkSLMatrixConstructorsES3,   "shared/MatrixConstructorsES3.sksl")
 SKSL_TEST(SkSLMatrixEquality,                  "shared/MatrixEquality.sksl")
 SKSL_TEST(SkSLMatrixScalarMath,                "shared/MatrixScalarMath.sksl")
 SKSL_TEST(SkSLMatrixToVectorCast,              "shared/MatrixToVectorCast.sksl")
