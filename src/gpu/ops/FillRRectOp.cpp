@@ -83,6 +83,7 @@ public:
     }
 
     void onPrepareDraws(GrMeshDrawTarget*) override;
+    void onPreparePipeline(GrOpFlushState* flushState) override;
 
     void onExecute(GrOpFlushState*, const SkRect& chainBounds) override;
 
@@ -823,6 +824,14 @@ void FillRRectOpImpl::onCreateProgramInfo(const GrCaps* caps,
                                              std::move(appliedClip), dstProxyView, gp,
                                              GrPrimitiveType::kTriangles, renderPassXferBarriers,
                                              colorLoadOp);
+}
+
+void FillRRectOpImpl::onPreparePipeline(GrOpFlushState* flushState) {
+    if (!fInstanceBuffer || !fIndexBuffer || !fVertexBuffer) {
+        return;  // Setup failed.
+    }
+
+    flushState->preparePipeline(*fProgramInfo);
 }
 
 void FillRRectOpImpl::onExecute(GrOpFlushState* flushState, const SkRect& chainBounds) {

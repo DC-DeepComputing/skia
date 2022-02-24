@@ -58,9 +58,13 @@ public:
     /** Additional data required on a per-op basis when executing GrOps. */
     struct OpArgs {
         // TODO: why does OpArgs have the op we're going to pass it to as a member? Remove it.
-        explicit OpArgs(GrOp* op, const GrSurfaceProxyView& surfaceView, bool usesMSAASurface,
-                        GrAppliedClip* appliedClip, const GrDstProxyView& dstProxyView,
-                        GrXferBarrierFlags renderPassXferBarriers, GrLoadOp colorLoadOp)
+        explicit OpArgs(GrOp* op,
+                        const GrSurfaceProxyView& surfaceView,
+                        bool usesMSAASurface,
+                        GrAppliedClip* appliedClip,
+                        const GrDstProxyView& dstProxyView,
+                        GrXferBarrierFlags renderPassXferBarriers,
+                        GrLoadOp colorLoadOp)
                 : fOp(op)
                 , fSurfaceView(surfaceView)
                 , fRenderTargetProxy(surfaceView.asRenderTargetProxy())
@@ -214,6 +218,7 @@ public:
     void drawMesh(const GrSimpleMesh& mesh);
 
     // Pass-through methods to GrOpsRenderPass.
+    void preparePipeline(const GrProgramInfo& programInfo);
     void bindPipeline(const GrProgramInfo& programInfo, const SkRect& drawBounds) {
         fOpsRenderPass->bindPipeline(programInfo, drawBounds);
     }

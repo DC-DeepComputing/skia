@@ -326,6 +326,8 @@ private:
 
     bool onSubmitToGpu(bool syncCpu) override;
 
+    bool onPreparePipeline(GrOpFlushState* flushState, const GrProgramInfo& programInfo) override;
+
     void onReportSubmitHistograms() override;
 
     // Ends and submits the current command buffer to the queue and then creates a new command

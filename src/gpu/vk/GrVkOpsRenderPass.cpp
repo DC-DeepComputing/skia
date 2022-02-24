@@ -32,36 +32,6 @@
 
 /////////////////////////////////////////////////////////////////////////////
 
-void get_vk_load_store_ops(GrLoadOp loadOpIn, GrStoreOp storeOpIn,
-                           VkAttachmentLoadOp* loadOp, VkAttachmentStoreOp* storeOp) {
-    switch (loadOpIn) {
-        case GrLoadOp::kLoad:
-            *loadOp = VK_ATTACHMENT_LOAD_OP_LOAD;
-            break;
-        case GrLoadOp::kClear:
-            *loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR;
-            break;
-        case GrLoadOp::kDiscard:
-            *loadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
-            break;
-        default:
-            SK_ABORT("Invalid LoadOp");
-            *loadOp = VK_ATTACHMENT_LOAD_OP_LOAD;
-    }
-
-    switch (storeOpIn) {
-        case GrStoreOp::kStore:
-            *storeOp = VK_ATTACHMENT_STORE_OP_STORE;
-            break;
-        case GrStoreOp::kDiscard:
-            *storeOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
-            break;
-        default:
-            SK_ABORT("Invalid StoreOp");
-            *storeOp = VK_ATTACHMENT_STORE_OP_STORE;
-    }
-}
-
 GrVkOpsRenderPass::GrVkOpsRenderPass(GrVkGpu* gpu) : fGpu(gpu) {}
 
 void GrVkOpsRenderPass::setAttachmentLayouts(LoadFromResolve loadFromResolve) {
@@ -229,23 +199,10 @@ bool GrVkOpsRenderPass::beginRenderPass(const VkClearValue& clearColor,
 bool GrVkOpsRenderPass::init(const GrOpsRenderPass::LoadAndStoreInfo& colorInfo,
                              const GrOpsRenderPass::LoadAndStoreInfo& resolveInfo,
                              const GrOpsRenderPass::StencilLoadAndStoreInfo& stencilInfo) {
-    VkAttachmentLoadOp loadOp;
-    VkAttachmentStoreOp storeOp;
-    get_vk_load_store_ops(colorInfo.fLoadOp, colorInfo.fStoreOp, &loadOp, &storeOp);
-    GrVkRenderPass::LoadStoreOps vkColorOps(loadOp, storeOp);
-
-    get_vk_load_store_ops(resolveInfo.fLoadOp, resolveInfo.fStoreOp, &loadOp, &storeOp);
-    GrVkRenderPass::LoadStoreOps vkResolveOps(loadOp, storeOp);
-
-    get_vk_load_store_ops(stencilInfo.fLoadOp, stencilInfo.fStoreOp, &loadOp, &storeOp);
-    GrVkRenderPass::LoadStoreOps vkStencilOps(loadOp, storeOp);
-
     GrVkResourceProvider::CompatibleRPHandle rpHandle = fFramebuffer->compatibleRenderPassHandle();
     SkASSERT(rpHandle.isValid());
-    fCurrentRenderPass = fGpu->resourceProvider().findRenderPass(rpHandle,
-                                                                 vkColorOps,
-                                                                 vkResolveOps,
-                                                                 vkStencilOps);
+    fCurrentRenderPass =
+            fGpu->resourceProvider().findRenderPass(rpHandle, colorInfo, resolveInfo, stencilInfo);
 
     if (!fCurrentRenderPass) {
         return false;
@@ -620,6 +577,18 @@ void GrVkOpsRenderPass::onEnd() {
     if (fCurrentSecondaryCommandBuffer && !this->wrapsSecondaryCommandBuffer()) {
         fCurrentSecondaryCommandBuffer->end(fGpu);
     }
+}
+
+bool GrVkOpsRenderPass::onPreparePipeline(const GrProgramInfo& programInfo) {
+    if (!fCurrentRenderPass) {
+        SkASSERT(fGpu->isDeviceLost());
+        return false;
+    }
+
+    VkRenderPass compatibleRenderPass = fCurrentRenderPass->vkRenderPass();
+    fGpu->resourceProvider().prepareCompatiblePipelineState(
+            fRenderTarget, programInfo, compatibleRenderPass, fOverridePipelinesForResolveLoad);
+    return true;
 }
 
 bool GrVkOpsRenderPass::onBindPipeline(const GrProgramInfo& programInfo, const SkRect& drawBounds) {

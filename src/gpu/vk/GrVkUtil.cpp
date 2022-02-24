@@ -93,20 +93,23 @@ bool GrCompileVkShaderModule(GrVkGpu* gpu,
                              SkSL::Program::Inputs* outInputs) {
     TRACE_EVENT0("skia.shaders", "CompileVkShaderModule");
     auto errorHandler = gpu->getContext()->priv().getShaderErrorHandler();
-    std::unique_ptr<SkSL::Program> program = gpu->shaderCompiler()->convertProgram(
-            vk_shader_stage_to_skiasl_kind(stage), shaderString, settings);
+    // TODO: reuse compiler.
+    auto compiler = gpu->getShaderCompiler();
+    std::unique_ptr<SkSL::Program> program =
+            compiler->convertProgram(vk_shader_stage_to_skiasl_kind(stage), shaderString, settings);
     if (!program) {
-        errorHandler->compileError(shaderString.c_str(),
-                                   gpu->shaderCompiler()->errorText().c_str());
+        errorHandler->compileError(shaderString.c_str(), compiler->errorText().c_str());
+        gpu->returnShaderCompiler(std::move(compiler));
         return false;
     }
     *outInputs = program->fInputs;
-    if (!gpu->shaderCompiler()->toSPIRV(*program, outSPIRV)) {
-        errorHandler->compileError(shaderString.c_str(),
-                                   gpu->shaderCompiler()->errorText().c_str());
+    if (!compiler->toSPIRV(*program, outSPIRV)) {
+        errorHandler->compileError(shaderString.c_str(), compiler->errorText().c_str());
+        gpu->returnShaderCompiler(std::move(compiler));
         return false;
     }
 
+    gpu->returnShaderCompiler(std::move(compiler));
     return GrInstallVkShaderModule(gpu, *outSPIRV, stage, shaderModule, stageInfo);
 }
 

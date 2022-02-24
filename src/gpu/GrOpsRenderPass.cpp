@@ -59,6 +59,16 @@ void GrOpsRenderPass::executeDrawable(std::unique_ptr<SkDrawable::GpuDrawHandler
     this->onExecuteDrawable(std::move(drawable));
 }
 
+void GrOpsRenderPass::preparePipeline(const GrProgramInfo& programInfo) {
+    if (programInfo.geomProc().numVertexAttributes() > this->gpu()->caps()->maxVertexAttributes()) {
+        return;
+    }
+
+    if (!this->onPreparePipeline(programInfo)) {
+        return;
+    }
+}
+
 void GrOpsRenderPass::bindPipeline(const GrProgramInfo& programInfo, const SkRect& drawBounds) {
 #ifdef SK_DEBUG
     // Both the 'programInfo' and this renderPass have an origin. Since they come from the same

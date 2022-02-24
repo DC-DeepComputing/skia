@@ -445,8 +445,12 @@ const GrCaps* GrDawnProgramBuilder::caps() const {
     return fGpu->caps();
 }
 
-SkSL::Compiler* GrDawnProgramBuilder::shaderCompiler() const {
-    return fGpu->shaderCompiler();
+std::unique_ptr<SkSL::Compiler> GrDawnProgramBuilder::getShaderCompiler() {
+    return fGpu->getShaderCompiler();
+}
+
+void GrDawnProgramBuilder::returnShaderCompiler(std::unique_ptr<SkSL::Compiler> compiler) {
+    fGpu->returnShaderCompiler(std::move(compiler));
 }
 
 void GrDawnProgram::setRenderTargetState(const GrRenderTarget* rt, GrSurfaceOrigin origin) {
