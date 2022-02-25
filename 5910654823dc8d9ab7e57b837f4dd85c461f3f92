@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6397320d_b506d9a4",
+        "filename": "src/sksl/SkSLRehydrator.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-02-25T20:52:29Z",
+      "side": 1,
+      "message": "This is what I went with for now. ethannicholas@ any thoughts on this approach and the comment above?",
+      "range": {
+        "startLine": 127,
+        "startChar": 37,
+        "endLine": 127,
+        "endChar": 62
+      },
+      "revId": "5910654823dc8d9ab7e57b837f4dd85c461f3f92",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
