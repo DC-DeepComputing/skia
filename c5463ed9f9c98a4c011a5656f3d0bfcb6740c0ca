@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "edbb4a7b_2fd56572",
+        "filename": "src/sksl/SkSLRehydrator.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-02-25T22:29:30Z",
+      "side": 1,
+      "message": "Equally concerning, the config may also differ from the program that was originally dehydrated!\n\nIdeally though neither one should matter--our goal isn\u0027t to compile a new program, it\u0027s just to assemble some IR that looks like the original dehydrated IR.",
+      "range": {
+        "startLine": 119,
+        "startChar": 56,
+        "endLine": 119,
+        "endChar": 66
+      },
+      "revId": "c5463ed9f9c98a4c011a5656f3d0bfcb6740c0ca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a7d6e111_ac36d343",
+        "filename": "src/sksl/SkSLRehydrator.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-02-25T22:29:30Z",
+      "side": 1,
+      "message": "This part probably doesn\u0027t need to be explicitly spelled out (AFAICS), at least not in the header. We don\u0027t allow multiple threads to use the Compiler at the same time or anything like that, and we restore its state, so a temporary mutation should be invisible to a caller.",
+      "range": {
+        "startLine": 120,
+        "startChar": 0,
+        "endLine": 121,
+        "endChar": 43
+      },
+      "revId": "c5463ed9f9c98a4c011a5656f3d0bfcb6740c0ca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cd97e1d0_d60f5d09",
+        "filename": "src/sksl/SkSLRehydrator.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-02-25T22:29:30Z",
+      "side": 1,
+      "message": "This TODO doesn\u0027t seem specific enough to be actionable; what side-effect, and bug-prone how?",
+      "range": {
+        "startLine": 122,
+        "startChar": 6,
+        "endLine": 125,
+        "endChar": 47
+      },
+      "revId": "c5463ed9f9c98a4c011a5656f3d0bfcb6740c0ca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
