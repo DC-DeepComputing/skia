@@ -16,6 +16,24 @@
       "message": "Hello Robert, PTAL. I had to add code to translate the TypefaceID.",
       "revId": "1ec9fce9caa2d7fada428e41a87fc3ba55b2e163",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "31816490_3068f5d0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-02-25T16:39:55Z",
+      "side": 1,
+      "message": "Still lgtm",
+      "parentUuid": "91b648ff_3d025d73",
+      "revId": "1ec9fce9caa2d7fada428e41a87fc3ba55b2e163",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
