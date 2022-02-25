@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d6944007_40cf497f",
+        "filename": "src/gpu/text/GrTextBlob.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 449,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-02-25T15:39:43Z",
+      "side": 1,
+      "message": "Why don\u0027t we need the other fields in PathOpSubmitter in here ?",
+      "revId": "a9cdb7c622e87af2a988948cad74727b986ae3c9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
