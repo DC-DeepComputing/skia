@@ -184,6 +184,14 @@ public:
         ChildPtr(sk_sp<SkColorFilter> cf) : fChild(std::move(cf)) {}
         ChildPtr(sk_sp<SkBlender> b) : fChild(std::move(b)) {}
 
+        // For internal use
+        ChildPtr(sk_sp<SkFlattenable> f) : fChild(std::move(f)) {
+            SkASSERT(!fChild ||
+                     fChild->getFlattenableType() == SkFlattenable::kSkShader_Type ||
+                     fChild->getFlattenableType() == SkFlattenable::kSkColorFilter_Type ||
+                     fChild->getFlattenableType() == SkFlattenable::kSkBlender_Type);
+        }
+
         std::optional<ChildType> type() const;
 
         SkShader* shader() const;
