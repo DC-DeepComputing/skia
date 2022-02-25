@@ -425,6 +425,12 @@ public:
                                 sk_sp<SkStrike>&& strike,
                                 GrSubRunAllocator* alloc);
 
+    int unflattenSize() const;
+    void flatten(SkWriteBuffer& buffer) const;
+    static std::optional<PathOpSubmitter> MakeFromBuffer(SkReadBuffer& buffer,
+                                                         GrSubRunAllocator* alloc,
+                                                         const SkStrikeClient* client);
+
     void submitOps(SkCanvas*,
                    const GrClip* clip,
                    const SkMatrixProvider& viewMatrix,
@@ -452,6 +458,63 @@ private:
     // If fStrike == nullptr, then the glyphIDs have been converted into Paths.
     mutable sk_sp<SkStrike> fStrike;
 };
+
+int PathOpSubmitter::unflattenSize() const {
+    return fPositions.size_bytes() + fVariants.size_bytes();
+}
+
+void PathOpSubmitter::flatten(SkWriteBuffer& buffer) const {
+    if (fStrike == nullptr) {
+        SK_ABORT("The PathOpSubmitter has been used to draw, and no longer contains the glyph ids"
+                " needed to serialize.");
+    }
+    buffer.writeInt(fIsAntiAliased);
+    buffer.writeScalar(fStrikeToSourceScale);
+    buffer.writeInt(SkCount(fPositions));
+    SkASSERT(SkCount(fPositions) == SkCount(fVariants));
+    for (auto pos : fPositions) {
+        buffer.writePoint(pos);
+    }
+    for (const auto& variant : fVariants) {
+        buffer.writeInt(variant.glyphID);
+    }
+    fStrike->getDescriptor().flatten(buffer);
+}
+
+std::optional<PathOpSubmitter> PathOpSubmitter::MakeFromBuffer(SkReadBuffer& buffer,
+                                                               GrSubRunAllocator* alloc,
+                                                               const SkStrikeClient* client) {
+    bool isAntiAlias = buffer.readInt();
+    SkScalar strikeToSourceScale = buffer.readScalar();
+
+    int glyphCount = buffer.readInt();
+    if (!buffer.validate(0 < glyphCount)) { return {}; }
+    if (!buffer.validateCanReadN<SkPoint>(glyphCount)) { return {}; }
+    SkPoint* positionsStorage = alloc->makePODArray<SkPoint>(glyphCount);
+    for (int i = 0; i < glyphCount; ++i) {
+        positionsStorage[i] = buffer.readPoint();
+    }
+
+    // Remember, we stored an int for glyph id.
+    if (!buffer.validateCanReadN<int>(glyphCount)) { return {}; }
+    Variant* variantStorage = (Variant*)alloc->alignedBytes(
+            glyphCount * sizeof(Variant), alignof(Variant));
+    for (int i = 0; i < glyphCount; ++i) {
+        new (&variantStorage[i]) Variant{SkTo<SkGlyphID>(buffer.readInt())};
+    }
+
+    auto descriptor = SkAutoDescriptor::MakeFromBuffer(buffer);
+    if (!buffer.validate(descriptor.has_value())) { return {}; }
+    auto strike = SkStrikeCache::GlobalStrikeCache()->findStrike(*descriptor->getDesc());
+    if (!buffer.validate(strike != nullptr)) { return {}; }
+
+    SkASSERT(buffer.isValid());
+    return {PathOpSubmitter{isAntiAlias,
+                            strikeToSourceScale,
+                            SkMakeSpan(positionsStorage, glyphCount),
+                            SkMakeSpan(variantStorage, glyphCount),
+                            std::move(strike)}};
+}
 
 PathOpSubmitter::PathOpSubmitter(
         bool isAntiAliased,
@@ -593,7 +656,7 @@ public:
     }
 
     const GrBlobSubRun* blobCast() const override { return this; }
-    int unflattenSize() const override { return 0; }
+    int unflattenSize() const override;
 
     bool canReuse(const SkPaint& paint, const SkMatrix& positionMatrix) const override {
         return true;
@@ -602,19 +665,32 @@ public:
     static GrSubRunOwner MakeFromBuffer(const GrTextReferenceFrame* referenceFrame,
                                         SkReadBuffer& buffer,
                                         GrSubRunAllocator* alloc,
-                                        const SkStrikeClient* client) {
-        return nullptr;
-    }
+                                        const SkStrikeClient* client);
 
 protected:
     SubRunType subRunType() const override { return kPath; }
-
-    // TODO: implement
-    void doFlatten(SkWriteBuffer& buffer) const override { }
+    void doFlatten(SkWriteBuffer& buffer) const override;
 
 private:
     PathOpSubmitter fPathDrawing;
 };
+
+int PathSubRun::unflattenSize() const {
+    return sizeof(PathSubRun) + fPathDrawing.unflattenSize();
+}
+
+void PathSubRun::doFlatten(SkWriteBuffer& buffer) const {
+    fPathDrawing.flatten(buffer);
+}
+
+GrSubRunOwner PathSubRun::MakeFromBuffer(const GrTextReferenceFrame* referenceFrame,
+                                         SkReadBuffer& buffer,
+                                         GrSubRunAllocator* alloc,
+                                         const SkStrikeClient* client) {
+    auto pathOpSubmitter = PathOpSubmitter::MakeFromBuffer(buffer, alloc, client);
+    if (!buffer.validate(pathOpSubmitter.has_value())) { return nullptr; }
+    return alloc->makeUnique<PathSubRun>(std::move(*pathOpSubmitter));
+}
 
 // -- DrawableOpSubmitter --------------------------------------------------------------------------
 // Shared code for submitting GPU ops for drawing glyphs as drawables.
