@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b2ffd43b_18a3b73b",
+        "filename": "src/sksl/SkSLRehydrator.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-02-25T20:57:51Z",
+      "side": 1,
+      "message": "initialized",
+      "range": {
+        "startLine": 119,
+        "startChar": 28,
+        "endLine": 119,
+        "endChar": 39
+      },
+      "revId": "5910654823dc8d9ab7e57b837f4dd85c461f3f92",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6397320d_b506d9a4",
         "filename": "src/sksl/SkSLRehydrator.h",
         "patchSetId": 2
@@ -14,6 +37,30 @@
       "writtenOn": "2022-02-25T20:52:29Z",
       "side": 1,
       "message": "This is what I went with for now. ethannicholas@ any thoughts on this approach and the comment above?",
+      "range": {
+        "startLine": 127,
+        "startChar": 37,
+        "endLine": 127,
+        "endChar": 62
+      },
+      "revId": "5910654823dc8d9ab7e57b837f4dd85c461f3f92",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a51c39f7_012b27fc",
+        "filename": "src/sksl/SkSLRehydrator.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-02-25T20:57:51Z",
+      "side": 1,
+      "message": "I thought about something like this, but I am not sure there is any reason to make the caller specify this explicitly. It seems safe to assume that the dehydrated program was checked for strict-ES2-ness when it was originally assembled. When rehydrating the program, we can just set fEnforceES2Restrictions \u003d false, and the right thing should naturally occur--ES2-compliant programs will continue to be ES2-compliant (since they should rehydrate into exactly the same IR tree).",
+      "parentUuid": "6397320d_b506d9a4",
       "range": {
         "startLine": 127,
         "startChar": 37,
