@@ -11,6 +11,7 @@
 #include "include/private/SkTemplates.h"
 #include "include/private/chromium/GrSlug.h"
 #include "include/private/chromium/SkChromeRemoteGlyphCache.h"
+#include "src/core/SkEnumerate.h"
 #include "src/core/SkFontPriv.h"
 #include "src/core/SkGlyph.h"
 #include "src/core/SkMaskFilterBase.h"
@@ -450,7 +451,7 @@ PathOpSubmitter::PathOpSubmitter(
         , fPositions{positions}
         , fGlyphIDs{glyphIDs}
         , fPaths{std::move(paths)}
-        , fDescriptor {descriptor} {
+        , fDescriptor{descriptor} {
     SkASSERT(!fPositions.empty());
 }
 
@@ -589,6 +590,12 @@ public:
                                     const SkDescriptor& descriptor,
                                     GrSubRunAllocator* alloc);
 
+    int unflattenSize() const;
+    void flatten(SkWriteBuffer& buffer) const;
+    static std::optional<DrawableOpSubmitter> MakeFromBuffer(SkReadBuffer& buffer,
+                                                             GrSubRunAllocator* alloc,
+                                                             const SkStrikeClient* client);
+
     void submitOps(SkCanvas*,
                    const GrClip* clip,
                    const SkMatrixProvider& viewMatrix,
@@ -604,6 +611,72 @@ private:
     std::unique_ptr<sk_sp<SkDrawable>[], GrSubRunAllocator::ArrayDestroyer> fDrawables;
     const SkAutoDescriptor fDescriptor;
 };
+
+int DrawableOpSubmitter::unflattenSize() const {
+    return fPositions.size_bytes() +
+           fGlyphIDs.size_bytes() +
+           SkCount(fPositions) * sizeof(sk_sp<SkDrawable>);
+}
+
+void DrawableOpSubmitter::flatten(SkWriteBuffer& buffer) const {
+    buffer.writeScalar(fStrikeToSourceScale);
+    buffer.writeInt(SkCount(fPositions));
+    for (auto pos : fPositions) {
+        buffer.writePoint(pos);
+    }
+    for (SkGlyphID glyphID : fGlyphIDs) {
+        buffer.writeInt(glyphID);
+    }
+    fDescriptor.getDesc()->flatten(buffer);
+}
+
+std::optional<DrawableOpSubmitter> DrawableOpSubmitter::MakeFromBuffer(
+        SkReadBuffer& buffer, GrSubRunAllocator* alloc, const SkStrikeClient* client) {
+    SkScalar strikeToSourceScale = buffer.readScalar();
+
+    int glyphCount = buffer.readInt();
+    if (!buffer.validate(0 < glyphCount)) { return {}; }
+    if (!buffer.validateCanReadN<SkPoint>(glyphCount)) { return {}; }
+    SkPoint* positions = alloc->makePODArray<SkPoint>(glyphCount);
+    for (int i = 0; i < glyphCount; ++i) {
+        positions[i] = buffer.readPoint();
+    }
+
+    // Remember, we stored an int for glyph id.
+    if (!buffer.validateCanReadN<int>(glyphCount)) { return {}; }
+    SkGlyphID* glyphIDs = alloc->makePODArray<SkGlyphID>(glyphCount);
+    for (int i = 0; i < glyphCount; ++i) {
+        glyphIDs[i] = SkTo<SkGlyphID>(buffer.readInt());
+    }
+
+    auto descriptor = SkAutoDescriptor::MakeFromBuffer(buffer);
+    if (!buffer.validate(descriptor.has_value())) { return {}; }
+
+    // Translate the TypefaceID if this was transferred from the GPU process.
+    if (client != nullptr) {
+        if (!client->translateTypefaceID(&descriptor.value())) { return {}; }
+    }
+
+    auto strike = SkStrikeCache::GlobalStrikeCache()->findStrike(*descriptor->getDesc());
+    if (!buffer.validate(strike != nullptr)) { return {}; }
+
+    auto drawables = alloc->makeUniqueArray<sk_sp<SkDrawable>>(glyphCount);
+    SkBulkGlyphMetricsAndDrawables drawableGetter{std::move(strike)};
+    auto glyphs = drawableGetter.glyphs(SkMakeSpan(glyphIDs, glyphCount));
+
+    for (auto [i, glyph] : SkMakeEnumerate(glyphs)) {
+        drawables[i] = sk_ref_sp(glyph->drawable());
+    }
+
+    SkASSERT(buffer.isValid());
+    return {DrawableOpSubmitter{strikeToSourceScale,
+                                SkMakeSpan(positions, glyphCount),
+                                SkMakeSpan(glyphIDs, glyphCount),
+                                std::move(drawables),
+                                *descriptor->getDesc()}};
+}
+
+
 
 DrawableOpSubmitter::DrawableOpSubmitter(
         SkScalar strikeToSourceScale,
