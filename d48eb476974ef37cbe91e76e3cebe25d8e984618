@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "60ce1131_923e82dd",
+        "filename": "src/gpu/text/GrTextBlob.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 581,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-02-25T17:00:53Z",
+      "side": 0,
+      "message": "What happened to antialiasing? Is that in the Drawable?",
+      "range": {
+        "startLine": 581,
+        "startChar": 29,
+        "endLine": 581,
+        "endChar": 42
+      },
+      "revId": "d48eb476974ef37cbe91e76e3cebe25d8e984618",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
