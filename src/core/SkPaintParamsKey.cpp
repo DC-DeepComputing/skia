@@ -66,7 +66,7 @@ void SkPaintParamsKeyBuilder::beginBlock(int codeSnippetID) {
     this->addByte(0);  // this needs to be patched up with a call to endBlock
 
 #ifdef SK_DEBUG
-    fStack.back().fDataPayloadExpectations = fDict->dataPayloadExpectations(codeSnippetID);
+    fStack.back().fDataPayloadExpectations = fDict->dataPayloadExpectations1(codeSnippetID);
     fStack.back().fCurDataPayloadEntry = 0;
 #endif
 }
@@ -234,7 +234,7 @@ int dump_block(const SkShaderCodeDictionary* dict,
         curOffset += childSize;
     }
 
-    for (auto e : entry->fDataPayloadExpectations) {
+    for (auto e : entry->fDataPayloadExpectations1) {
         output_indent(indent);
         SkDebugf("%s[%d]: ", e.fName, e.fCount);
         // TODO: add some sort of templatized reader object for this
@@ -251,6 +251,19 @@ int dump_block(const SkShaderCodeDictionary* dict,
 }
 
 } // anonymous namespace
+
+SkPaintParamsKey::BlockReader SkPaintParamsKey::reader(SkShaderCodeDictionary* dict,
+                                                       int headerOffset) const {
+    SkASSERT(headerOffset <= this->sizeInBytes() - kBlockHeaderSizeInBytes);
+
+    auto [codeSnippetID, _] = this->readCodeSnippetID(headerOffset);
+
+    const SkShaderInfo::SnippetEntry* entry = dict->getEntry(codeSnippetID);
+
+    return BlockReader(fData.subspan(headerOffset, fData[headerOffset+kBlockSizeOffsetInBytes]),
+                       entry->fDataPayloadExpectations1,
+                       entry->fNumChildren);
+}
 
 // This just iterates over the top-level blocks calling block-specific dump methods.
 void SkPaintParamsKey::dump(const SkShaderCodeDictionary* dict) const {
@@ -269,27 +282,27 @@ int SkPaintParamsKey::AddBlockToShaderInfo(SkShaderCodeDictionary* dict,
                                            const SkPaintParamsKey& key,
                                            int headerOffset,
                                            SkShaderInfo* result) {
+    SkPaintParamsKey::BlockReader reader = key.reader(dict, headerOffset);
+
     auto [codeSnippetID, blockSize] = key.readCodeSnippetID(headerOffset);
 
-    if (codeSnippetID != SkBuiltInCodeSnippetID::kSimpleBlendMode) {
-        auto entry = dict->getEntry(codeSnippetID);
+    const SkShaderInfo::SnippetEntry* entry = dict->getEntry(codeSnippetID);
 
-        result->add(*entry);
+    result->add1(*entry, reader.dataPayload());
 
-        // The child blocks appear right after the parent block's header in the key and go
-        // right after the parent's SnippetEntry in the shader info
-        int childOffset = headerOffset + kBlockHeaderSizeInBytes;
-        for (int i = 0; i < entry->fNumChildren; ++i) {
-            SkASSERT(childOffset < headerOffset + blockSize);
+    // The child blocks appear right after the parent block's header in the key and go
+    // right after the parent's SnippetEntry in the shader info
+    int childOffset = headerOffset + kBlockHeaderSizeInBytes;
+    for (int i = 0; i < entry->fNumChildren; ++i) {
+        SkASSERT(childOffset < headerOffset + blockSize);
 
-            int childBlockSize = AddBlockToShaderInfo(dict, key, childOffset, result);
-            childOffset += childBlockSize;
-        }
-
-        if (codeSnippetID != SkBuiltInCodeSnippetID::kDepthStencilOnlyDraw) {
-            result->setWritesColor();
-        }
+        int childBlockSize = AddBlockToShaderInfo(dict, key, childOffset, result);
+        childOffset += childBlockSize;
     }
+
+//    if (codeSnippetID != SkBuiltInCodeSnippetID::kDepthStencilOnlyDraw) {
+//            result->setWritesColor();
+//    }
 
     return blockSize;
 }

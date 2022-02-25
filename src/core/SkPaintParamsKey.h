@@ -60,11 +60,59 @@ public:
         SkASSERT(headerOffset <= this->sizeInBytes() - kBlockHeaderSizeInBytes);
 
         SkBuiltInCodeSnippetID id = static_cast<SkBuiltInCodeSnippetID>(fData[headerOffset]);
-        uint8_t blockSize = fData[headerOffset+1];
+        uint8_t blockSize = fData[headerOffset+kBlockSizeOffsetInBytes];
         SkASSERT(headerOffset + blockSize <= this->sizeInBytes());
 
         return { id, blockSize };
     }
+
+    class BlockReader {
+    public:
+        SkBuiltInCodeSnippetID codeSnippetId() const {
+            return static_cast<SkBuiltInCodeSnippetID>(fBlock[0]);
+        }
+
+        uint8_t blockSize() const {
+            SkASSERT(fBlock[kBlockSizeOffsetInBytes] == fBlock.size());
+            return SkTo<uint8_t>(fBlock.size());
+        }
+
+        int numChildren() const { return fEntry->fNumChildren; }
+
+        BlockReader child(int childIndex) {
+            return BlockReader();
+        }
+
+        SkSpan<const SkPaintParamsKey::DataPayloadField> dataPayloadStructure() const {
+            return fEntry->fPayloadStructure;
+        }
+
+        SkSpan<const uint8_t> dataPayload() const {
+            int payloadOffset = kBlockHeaderSizeInBytes;
+            for (int i = 0; i < fEntry->fNumChildren; ++i) {
+                SkASSERT(payloadOffset < this->blockSize());
+                uint8_t childBlockSize = fBlock[payloadOffset+kBlockSizeOffsetInBytes];
+                payloadOffset += childBlockSize;
+            }
+
+            return fBlock.subspan(payloadOffset, count);
+        }
+
+    private:
+        friend class SkPaintParamsKey;
+
+        BlockReader(SkSpan<const uint8_t> block,
+                    const SkShaderInfo::SnippetEntry* entry)
+                : fBlock(block)
+                , fEntry(entry) {
+            SkASSERT(fBlock.size() >= kBlockHeaderSizeInBytes);
+        }
+
+        SkSpan<const uint8_t> fBlock;
+        const SkShaderInfo::SnippetEntry* fEntry;
+    };
+
+    BlockReader reader(SkShaderCodeDictionary*, int headerOffset) const;
 
 #ifdef SK_DEBUG
     uint8_t byte(int offset) const {
