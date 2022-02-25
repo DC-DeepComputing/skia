@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f0fa43dd_fca758a7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-02-25T16:53:02Z",
+      "side": 1,
+      "message": "I talked with Ben, and he doesn\u0027t think the the antialias flag is needed. So, I removed it and its plumbing.\n\nPTAL",
+      "revId": "5da2d3ffa0d77bb332e90b930812006f41f16530",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
