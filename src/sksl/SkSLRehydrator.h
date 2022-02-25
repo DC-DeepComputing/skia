@@ -114,6 +114,15 @@ public:
     std::vector<std::unique_ptr<ProgramElement>> elements();
 
     // Reads an entire program.
+    //
+    // NOTE: The program is initialized using a new ProgramConfig that may differ from the one that
+    // was assigned to the context of the Compiler this Rehydrator was constructed with.
+    // The context state of that Compiler instance will be temporarily mutated and subsequently
+    // restored before this method returns.
+    //
+    // TODO(armansito): This side-effect may be bug prone depending on how this class gets used.
+    // Consider preventing such a side-effect by making this method not dependent on the state of
+    // the compiler at the time it gets called.
     std::unique_ptr<Program> program();
 
 private:
