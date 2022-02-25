@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8063d9cc_53bbf151",
+        "filename": "src/sksl/SkSLDSLParser.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 941,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-02-25T21:44:10Z",
+      "side": 1,
+      "message": "optional (here and above): when arraySize() fails, you always return immediately. If you invert the if check, then you don\u0027t need an else clause. Feels slightly easier to follow (a reader can skim past the error handling more quickly IMO).\n\n  if (!this-\u003earraySize(\u0026size)) {\n    return false;\n  }\n  actualType \u003d ...;",
+      "range": {
+        "startLine": 941,
+        "startChar": 20,
+        "endLine": 941,
+        "endChar": 49
+      },
+      "revId": "fc557b97ae5a95acbaac54f84d0cdbbc2093b121",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d0f08f91_11eab23b",
+        "filename": "src/sksl/SkSLDSLParser.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-02-25T21:44:10Z",
+      "side": 1,
+      "message": "Why? Wouldn\u0027t it be better if failure cases always returned false?",
+      "range": {
+        "startLine": 130,
+        "startChar": 53,
+        "endLine": 131,
+        "endChar": 74
+      },
+      "revId": "fc557b97ae5a95acbaac54f84d0cdbbc2093b121",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
