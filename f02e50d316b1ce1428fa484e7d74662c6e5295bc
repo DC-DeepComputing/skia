@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "98c893bc_81f36d0b",
+        "filename": "tests/SkSLTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 275,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-02-25T15:05:52Z",
+      "side": 1,
+      "message": "nit: double-underscore in a name is UB.\n\n17.4.3.1.2 Global names [lib.global.names]\nCertain sets of names and function signatures are always reserved to the implementation:\n\nEach name that contains a double underscore (__) or begins with an underscore followed by an uppercase letter (2.11) is reserved to the implementation for any use.",
+      "range": {
+        "startLine": 275,
+        "startChar": 4,
+        "endLine": 275,
+        "endChar": 7
+      },
+      "revId": "f02e50d316b1ce1428fa484e7d74662c6e5295bc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
