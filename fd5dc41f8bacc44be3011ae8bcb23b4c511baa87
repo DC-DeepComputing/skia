@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "51595598_d437ac15",
+        "filename": "src/sksl/SkSLDehydrator.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-02-25T19:47:30Z",
+      "side": 1,
+      "message": "Follow-up: Can we replace these various checks with calls to SkTFitsIn?",
+      "range": {
+        "startLine": 89,
+        "startChar": 32,
+        "endLine": 89,
+        "endChar": 42
+      },
+      "revId": "fd5dc41f8bacc44be3011ae8bcb23b4c511baa87",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
