@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a6f7f5cd_b61b1573",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-02-25T12:55:19Z",
+      "side": 1,
+      "message": "Assuming the Android and Flutter rolls pass, this is just blocked on Flutter rolling into G3.",
+      "revId": "bd2ed0a2943e1619cb498d9408223ba4b071f219",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
