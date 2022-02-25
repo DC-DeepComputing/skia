@@ -16,6 +16,24 @@
       "message": "Do we actually need this #include ?",
       "revId": "2db359a7ed74b10a4a59192aa9885133bbc715e7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8dd067d7_f3875097",
+        "filename": "src/gpu/text/GrTextBlob.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-02-25T15:44:47Z",
+      "side": 1,
+      "message": "I will fix this in the serialize CL.",
+      "parentUuid": "80f73533_d40ac369",
+      "revId": "2db359a7ed74b10a4a59192aa9885133bbc715e7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
