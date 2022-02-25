@@ -53,6 +53,10 @@ sk_sp<SkShader> create_blend_shader(SkBlendMode bm) {
     return SkShaders::Blend(bm, std::move(solid), create_image_shader());
 }
 
+sk_sp<SkShader> create_solid_shader(SkColor4f color) {
+    return SkShaders::Color(color, nullptr);
+}
+
 } // anonymous namespace
 
 namespace skiagm {
@@ -80,9 +84,13 @@ protected:
         {
             SkPaint p;
             p.setColor(SK_ColorRED);
+            p.setShader(create_solid_shader(SkColors::kBlue));
+            p.setBlendMode(SkBlendMode::kMultiply);
+            p.setAntiAlias(false);
             canvas->drawRect({2, 2, 127, 127}, p);
         }
 
+#if 0
         // UR corner
         {
             SkRect r{129, 2, 255, 127};
@@ -109,8 +117,10 @@ protected:
         // TODO: failing serialize test on Linux, not sure what's going on
         canvas->writePixels(fBitmap, 0, 256);
 #endif
+#endif
     }
 
+private:
     SkBitmap fBitmap;
 };
 
