@@ -14,10 +14,10 @@
 
 namespace skgpu {
 
-class Image_Graphite final : public SkImage_Base {
+class Image final : public SkImage_Base {
 public:
-    Image_Graphite(const SkImageInfo&);
-    ~Image_Graphite() override;
+    Image(TextureProxyView, SkColorInfo);
+    ~Image() override;
 
     bool onReadPixels(GrDirectContext*,
                       const SkImageInfo& dstInfo,
@@ -50,16 +50,11 @@ public:
     }
 
 protected:
+    bool onIsTextureBacked() const override { return true; }
 
 private:
-#if SK_SUPPORT_GPU
-    std::tuple<GrSurfaceProxyView, GrColorType> onAsView(
-            GrRecordingContext*,
-            GrMipmapped,
-            GrImageTexGenPolicy policy) const override {
-        return {};
-    }
 
+#if SK_SUPPORT_GPU
     std::unique_ptr<GrFragmentProcessor> onAsFragmentProcessor(
             GrRecordingContext*,
             SkSamplingOptions,
@@ -67,14 +62,18 @@ private:
             const SkMatrix&,
             const SkRect* subset,
             const SkRect* domain) const override;
-
-    std::tuple<TextureProxyView, SkColorType> onAsView(
-            Recorder*,
-            Mipmapped) const /*override*/ {
+    std::tuple<GrSurfaceProxyView, GrColorType> onAsView(
+            GrRecordingContext*,
+            GrMipmapped,
+            GrImageTexGenPolicy policy) const override {
         return {};
     }
+
+    std::tuple<TextureProxyView, SkColorType> onAsView(Recorder*, Mipmapped) const override;
 #endif
 
+    sk_sp<TextureProxy> fTextureProxy;
+    Swizzle fSwizzle;
 };
 
 } // namespace skgpu
