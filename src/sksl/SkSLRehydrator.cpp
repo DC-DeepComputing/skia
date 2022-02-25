@@ -266,7 +266,7 @@ const Type* Rehydrator::type() {
     return (const Type*) result;
 }
 
-std::unique_ptr<Program> Rehydrator::program() {
+std::unique_ptr<Program> Rehydrator::program(bool strictES2Mode) {
     [[maybe_unused]] uint8_t command = this->readU8();
     Context& context = this->context();
     SkASSERT(command == kProgram_Command);
@@ -274,6 +274,7 @@ std::unique_ptr<Program> Rehydrator::program() {
     ModifiersPool* oldModifiersPool = context.fModifiersPool;
     auto config = std::make_unique<ProgramConfig>();
     config->fKind = (ProgramKind)this->readU8();
+    config->fSettings.fEnforceES2Restrictions = strictES2Mode;
     context.fConfig = config.get();
     fSymbolTable = fCompiler.moduleForProgramKind(config->fKind).fSymbols;
     auto modifiers = std::make_unique<ModifiersPool>();
