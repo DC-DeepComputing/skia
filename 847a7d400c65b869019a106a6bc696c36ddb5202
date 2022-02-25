@@ -1,0 +1,84 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c780315d_93a42639",
+        "filename": "experimental/graphite/src/Image_Graphite.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-02-25T20:47:27Z",
+      "side": 1,
+      "message": "This could probably just go in the header",
+      "range": {
+        "startLine": 39,
+        "startChar": 0,
+        "endLine": 39,
+        "endChar": 19
+      },
+      "revId": "847a7d400c65b869019a106a6bc696c36ddb5202",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ac4690c3_8866bcbd",
+        "filename": "experimental/graphite/src/Image_Graphite.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-02-25T20:47:27Z",
+      "side": 1,
+      "message": "I don\u0027t think this needs to be in an #if block (and, if it were, it would be a SK_GRAPHITE_ENABLED block). afaict nothing in SkImage_Gpu.h is guarded. \n\nThis file shouldn\u0027t be compiled unless Graphite is enabled.",
+      "revId": "847a7d400c65b869019a106a6bc696c36ddb5202",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "31cd4c3f_de411ad9",
+        "filename": "experimental/graphite/src/Image_Graphite.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-02-25T20:47:27Z",
+      "side": 1,
+      "message": "SK_GRAPHITE_ENABLED ?",
+      "range": {
+        "startLine": 55,
+        "startChar": 4,
+        "endLine": 55,
+        "endChar": 18
+      },
+      "revId": "847a7d400c65b869019a106a6bc696c36ddb5202",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cb3ca00e_846f6751",
+        "filename": "experimental/graphite/src/Image_Graphite.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-02-25T20:47:27Z",
+      "side": 1,
+      "message": "This is a bit odd in that SkImage_Gpu will also return true. Do we want to split this into:\n\nonIsGaneshBacked\nonIsGraphiteBacked\n\n?",
+      "revId": "847a7d400c65b869019a106a6bc696c36ddb5202",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
