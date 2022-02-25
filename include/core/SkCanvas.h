@@ -26,10 +26,10 @@
 #include "include/core/SkString.h"
 #include "include/core/SkSurfaceProps.h"
 #include "include/core/SkTypes.h"
-#include "include/private/SkDeque.h"
 #include "include/private/SkMacros.h"
 
 #include <cstring>
+#include <deque>
 #include <memory>
 #include <optional>
 #include <vector>
@@ -2352,15 +2352,9 @@ private:
         void reset(SkBaseDevice* device);
     };
 
-    // the first N recs that can fit here mean we won't call malloc
-    static constexpr int kMCRecSize      = 96; // most recent measurement
-    static constexpr int kMCRecCount     = 32; // common depth for save/restores
-
-    intptr_t fMCRecStorage[kMCRecSize * kMCRecCount / sizeof(intptr_t)];
-
-    SkDeque     fMCStack;
+    std::deque<MCRec> fMCStack;
     // points to top of stack
-    MCRec*      fMCRec;
+    MCRec* fMCRec;
 
     // Installed via init()
     sk_sp<SkBaseDevice> fBaseDevice;
