@@ -69,6 +69,30 @@
       },
       "revId": "5910654823dc8d9ab7e57b837f4dd85c461f3f92",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2b6cbe30_bba246fb",
+        "filename": "src/sksl/SkSLRehydrator.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-02-25T21:20:14Z",
+      "side": 1,
+      "message": "I\u0027ll add that I\u0027m also uncomfortable with the general idea of calling out a single setting to be overridable in a top-level API like this - even if we did need to provide the ability to override program settings, it doesn\u0027t seem like having the overridable settings be individual parameters to program() is necessarily the best way to do it.\n\nBut yeah, I think John has the right of it and we don\u0027t actually need to worry about this in the first place - for right now, we can just assume !strictES2 on rehydrate. And if in the future we need to track additional program settings that can\u0027t be handled so cleanly, we can just write those into the binary so they rehydrate properly and there shouldn\u0027t be a need for the API to express it.",
+      "parentUuid": "a51c39f7_012b27fc",
+      "range": {
+        "startLine": 127,
+        "startChar": 37,
+        "endLine": 127,
+        "endChar": 62
+      },
+      "revId": "5910654823dc8d9ab7e57b837f4dd85c461f3f92",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
