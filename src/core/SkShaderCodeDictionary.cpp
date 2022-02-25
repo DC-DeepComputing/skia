@@ -169,10 +169,10 @@ SkSpan<const SkUniform> SkShaderCodeDictionary::getUniforms(SkBuiltInCodeSnippet
     return fBuiltInCodeSnippets[(int) id].fUniforms;
 }
 
-SkSpan<const SkPaintParamsKey::DataPayloadField> SkShaderCodeDictionary::dataPayloadExpectations(
+SkSpan<const SkPaintParamsKey::DataPayloadField> SkShaderCodeDictionary::dataPayloadExpectations1(
         int codeSnippetID) const {
     // All callers of this entry point should already have ensured that 'codeSnippetID' is valid
-    return this->getEntry(codeSnippetID)->fDataPayloadExpectations;
+    return this->getEntry(codeSnippetID)->fDataPayloadExpectations1;
 }
 
 const SkShaderInfo::SnippetEntry* SkShaderCodeDictionary::getEntry(int codeSnippetID) const {
@@ -420,6 +420,33 @@ static constexpr SkPaintParamsKey::DataPayloadField kBlendModeFields[kNumBlendMo
         { "blendmode", SkPaintParamsKey::DataPayloadType::kByte, 1 }
 };
 
+std::string GenerateBlendModeGlueCode(const std::string& resultName,
+                                      int entryIndex,
+                                      const SkShaderInfo::SnippetEntry& entry,
+                                      const std::vector<std::string>& childNames,
+                                      int indent) {
+    SkASSERT(childNames.empty());
+
+    std::string result;
+
+    if (0) {
+
+    }
+
+    add_indent(&result, indent);
+    SkSL::String::appendf(&result, "%s = %s(", resultName.c_str(), entry.fStaticFunctionName);
+    for (size_t i = 0; i < entry.fUniforms.size(); ++i) {
+        // The uniform names are mangled w/ the entry's index as a suffix
+        result += entry.getMangledUniformName(i, entryIndex);
+        if (i+1 < entry.fUniforms.size()) {
+            result += ", ";
+        }
+    }
+    result += ");\n";
+
+    return result;
+}
+
 //--------------------------------------------------------------------------------------------------
 
 } // anonymous namespace
@@ -516,7 +543,7 @@ SkShaderCodeDictionary::SkShaderCodeDictionary() {
     fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kSimpleBlendMode] = {
             { nullptr, kNumErrorUniforms },
             kErrorName, kErrorSkSL,
-            GenerateDefaultGlueCode,
+            GenerateBlendModeGlueCode,
             kNoChildren,
             { kBlendModeFields, kNumBlendModeFields }
     };
