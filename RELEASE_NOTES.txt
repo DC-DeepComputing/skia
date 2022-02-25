@@ -16,6 +16,7 @@ Milestone 100
     shader to produce opaque output, do so in the shader's SkSL code. This can be done by adjusting
     any `return` statement in your shader with a swizzle: `return color.rgb1;`.
     https://review.skia.org/506462
+  * Add maxSurfaceSampleCountForColorType(SkColorType ct) in GrContextThreadSafeProxy
 
 * * *
 
