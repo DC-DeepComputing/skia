@@ -420,26 +420,32 @@ bool DSLParser::functionDeclarationEnd(const DSLModifiers& modifiers,
     return true;
 }
 
-SKSL_INT DSLParser::arraySize() {
+bool DSLParser::arraySize(SKSL_INT* outResult) {
     DSLExpression sizeExpr = this->expression();
-    if (!sizeExpr.isValid()) {
-        return 1;
+    if (!sizeExpr.hasValue()) {
+        return false;
     }
-    std::unique_ptr<SkSL::Expression> sizeLiteral = sizeExpr.release();
-    SKSL_INT size;
-    if (!ConstantFolder::GetConstantInt(*sizeLiteral, &size)) {
-        this->error(sizeLiteral->fLine, "array size must be an integer");
-        return 1;
+    // Start out with a safe value that won't generate any errors downstream
+    *outResult = 1;
+    if (sizeExpr.isValid()) {
+        std::unique_ptr<SkSL::Expression> sizeLiteral = sizeExpr.release();
+        SKSL_INT size;
+        if (!ConstantFolder::GetConstantInt(*sizeLiteral, &size)) {
+            this->error(sizeLiteral->fLine, "array size must be an integer");
+            return true;
+        }
+        if (size > INT32_MAX) {
+            this->error(sizeLiteral->fLine, "array size out of bounds");
+            return true;
+        }
+        if (size <= 0) {
+            this->error(sizeLiteral->fLine, "array size must be positive");
+            return true;
+        }
+        // Now that we've validated it, output the real value
+        *outResult = size;
     }
-    if (size > INT32_MAX) {
-        this->error(sizeLiteral->fLine, "array size out of bounds");
-        return 1;
-    }
-    if (size <= 0) {
-        this->error(sizeLiteral->fLine, "array size must be positive");
-        return 1;
-    }
-    return size;
+    return true;
 }
 
 bool DSLParser::parseArrayDimensions(int line, DSLType* type) {
@@ -447,7 +453,12 @@ bool DSLParser::parseArrayDimensions(int line, DSLType* type) {
         if (this->checkNext(Token::Kind::TK_RBRACKET)) {
             this->error(line, "expected array dimension");
         } else {
-            *type = Array(*type, this->arraySize(), this->position(line));
+            SKSL_INT size;
+            if (this->arraySize(&size)) {
+                *type = Array(*type, size, this->position(line));
+            } else {
+                return false;
+            }
             if (!this->expect(Token::Kind::TK_RBRACKET, "']'")) {
                 return false;
             }
@@ -633,7 +644,12 @@ std::optional<DSLType> DSLParser::structDeclaration() {
             }
 
             while (this->checkNext(Token::Kind::TK_LBRACKET)) {
-                actualType = dsl::Array(actualType, this->arraySize(), this->position(memberName));
+                SKSL_INT size;
+                if (this->arraySize(&size)) {
+                    actualType = dsl::Array(actualType, size, this->position(memberName));
+                } else {
+                    return std::nullopt;
+                }
                 if (!this->expect(Token::Kind::TK_RBRACKET, "']'")) {
                     return std::nullopt;
                 }
@@ -874,7 +890,12 @@ std::optional<DSLType> DSLParser::type(DSLModifiers* modifiers) {
     DSLType result(this->text(type), modifiers, this->position(type));
     while (this->checkNext(Token::Kind::TK_LBRACKET)) {
         if (this->peek().fKind != Token::Kind::TK_RBRACKET) {
-            result = Array(result, this->arraySize(), this->position(type));
+            SKSL_INT size;
+            if (this->arraySize(&size)) {
+                result = Array(result, size, this->position(type));
+            } else {
+                return std::nullopt;
+            }
         } else {
             this->error(this->peek(), "expected array dimension");
         }
@@ -885,7 +906,7 @@ std::optional<DSLType> DSLParser::type(DSLModifiers* modifiers) {
 
 /* IDENTIFIER LBRACE
      varDeclaration+
-   RBRACE (IDENTIFIER (LBRACKET expression? RBRACKET)*)? SEMICOLON */
+   RBRACE (IDENTIFIER (LBRACKET expression RBRACKET)*)? SEMICOLON */
 bool DSLParser::interfaceBlock(const dsl::DSLModifiers& modifiers) {
     Token typeName;
     if (!this->expectIdentifier(&typeName)) {
@@ -916,8 +937,12 @@ bool DSLParser::interfaceBlock(const dsl::DSLModifiers& modifiers) {
             if (this->checkNext(Token::Kind::TK_LBRACKET)) {
                 Token sizeToken = this->peek();
                 if (sizeToken.fKind != Token::Kind::TK_RBRACKET) {
-                    actualType = Array(std::move(actualType), this->arraySize(),
-                                       this->position(typeName));
+                    SKSL_INT size;
+                    if (this->arraySize(&size)) {
+                        actualType = Array(std::move(actualType), size, this->position(typeName));
+                    } else {
+                        return false;
+                    }
                 } else {
                     this->error(sizeToken, "unsized arrays are not permitted");
                 }
@@ -945,11 +970,13 @@ bool DSLParser::interfaceBlock(const dsl::DSLModifiers& modifiers) {
     }
     std::string_view instanceName;
     Token instanceNameToken;
-    SKSL_INT arraySize = 0;
+    SKSL_INT size = 0;
     if (this->checkIdentifier(&instanceNameToken)) {
         instanceName = this->text(instanceNameToken);
         if (this->checkNext(Token::Kind::TK_LBRACKET)) {
-            arraySize = this->arraySize();
+            if (!this->arraySize(&size)) {
+                return false;
+            }
             this->expect(Token::Kind::TK_RBRACKET, "']'");
         }
     }
@@ -959,7 +986,7 @@ bool DSLParser::interfaceBlock(const dsl::DSLModifiers& modifiers) {
                               "' must contain at least one member");
     } else {
         dsl::InterfaceBlock(modifiers, this->text(typeName), std::move(fields), instanceName,
-                            arraySize, this->position(typeName));
+                            size, this->position(typeName));
     }
     return true;
 }
