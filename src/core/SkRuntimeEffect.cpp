@@ -49,6 +49,12 @@
 
 #include <algorithm>
 
+#if defined(SK_BUILD_FOR_DEBUGGER)
+    #define SK_LENIENT_SKSL_DESERIALIZATION 1
+#else
+    #define SK_LENIENT_SKSL_DESERIALIZATION 0
+#endif
+
 using ChildType = SkRuntimeEffect::ChildType;
 
 #ifdef SK_ENABLE_SKSL
@@ -114,26 +120,48 @@ static bool verify_child_effects(const std::vector<SkRuntimeEffect::Child>& refl
     return true;
 }
 
+/**
+ * If `effect` is specified, then the number and type of child objects are validated against the
+ * children() of `effect`. If it's nullptr, this is skipped, allowing deserialization of children,
+ * even when the effect could not be constructed (ie, due to malformed SkSL).
+ */
 static bool read_child_effects(SkReadBuffer& buffer,
                                const SkRuntimeEffect* effect,
                                SkTArray<SkRuntimeEffect::ChildPtr>* children) {
     size_t childCount = buffer.read32();
-    if (!buffer.validate(childCount == effect->children().size())) {
+    if (effect && !buffer.validate(childCount == effect->children().size())) {
         return false;
     }
 
     children->reset();
     children->reserve_back(childCount);
 
-    for (const auto& child : effect->children()) {
-        if (child.type == ChildType::kShader) {
-            children->emplace_back(buffer.readShader());
-        } else if (child.type == ChildType::kColorFilter) {
-            children->emplace_back(buffer.readColorFilter());
-        } else if (child.type == ChildType::kBlender) {
-            children->emplace_back(buffer.readBlender());
-        } else {
-            return false;
+    for (size_t i = 0; i < childCount; i++) {
+        sk_sp<SkFlattenable> obj(buffer.readRawFlattenable());
+        // nullptr flattenables are valid as any type (and we can't distinguish), so just pretend
+        // they're shaders here (to make this loop simpler).
+        switch (obj ? obj->getFlattenableType() : SkFlattenable::kSkShader_Type) {
+            case SkFlattenable::kSkShader_Type:
+            case SkFlattenable::kSkColorFilter_Type:
+            case SkFlattenable::kSkBlender_Type:
+                children->push_back(std::move(obj));
+                break;
+            default:
+                // We never want other kinds of flattenables showing up
+                buffer.validate(false);
+                return false;
+        }
+    }
+
+    // If we are validating against an effect, make sure any (non-null) children are the right type
+    if (effect) {
+        auto childInfo = effect->children();
+        SkASSERT(childInfo.size() == children->size());
+        for (size_t i = 0; i < childCount; i++) {
+            std::optional<ChildType> ct = (*children)[i].type();
+            if (ct.has_value() && (*ct) != childInfo[i].type) {
+                buffer.validate(false);
+            }
         }
     }
 
@@ -1219,14 +1247,32 @@ sk_sp<SkFlattenable> SkRTShader::CreateProc(SkReadBuffer& buffer) {
     }
 
     auto effect = SkMakeCachedRuntimeEffect(SkRuntimeEffect::MakeForShader, std::move(sksl));
+#if !SK_LENIENT_SKSL_DESERIALIZATION
     if (!buffer.validate(effect != nullptr)) {
         return nullptr;
     }
+#endif
 
     SkSTArray<4, SkRuntimeEffect::ChildPtr> children;
     if (!read_child_effects(buffer, effect.get(), &children)) {
         return nullptr;
     }
+
+#if SK_LENIENT_SKSL_DESERIALIZATION
+    if (!effect) {
+        // If any children were SkShaders, return the first one. This is a reasonable fallback.
+        for (int i = 0; i < children.count(); i++) {
+            if (children[i].shader()) {
+                SkDebugf("Serialized SkSL failed to compile. Replacing shader with child %d.\n", i);
+                return sk_ref_sp(children[i].shader());
+            }
+        }
+
+        // We don't know what to do, so just return nullptr (but *don't* poison the buffer).
+        SkDebugf("Serialized SkSL failed to compile. Ignoring/dropping SkSL shader.\n");
+        return nullptr;
+    }
+#endif
 
     return effect->makeShader(std::move(uniforms), SkMakeSpan(children), localMPtr);
 }
