@@ -47,6 +47,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4b6575d7_0fda58e4",
+        "filename": "src/sksl/SkSLRehydrator.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-02-25T22:42:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a7d6e111_ac36d343",
+      "range": {
+        "startLine": 120,
+        "startChar": 0,
+        "endLine": 121,
+        "endChar": 43
+      },
+      "revId": "c5463ed9f9c98a4c011a5656f3d0bfcb6740c0ca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cd97e1d0_d60f5d09",
@@ -60,6 +84,30 @@
       "writtenOn": "2022-02-25T22:29:30Z",
       "side": 1,
       "message": "This TODO doesn\u0027t seem specific enough to be actionable; what side-effect, and bug-prone how?",
+      "range": {
+        "startLine": 122,
+        "startChar": 6,
+        "endLine": 125,
+        "endChar": 47
+      },
+      "revId": "c5463ed9f9c98a4c011a5656f3d0bfcb6740c0ca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ca0e82a3_9b81d33a",
+        "filename": "src/sksl/SkSLRehydrator.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-02-25T22:42:58Z",
+      "side": 1,
+      "message": "Given your reply above about this always running on a single thread, this is not a problem.\n\nWhen I first saw that Rehydrator mutates a Compiler instance that it doesn\u0027t directly own in this way, my defensive instinct made me want to have an immutable alternative. The kinds of bugs I was thinking of were those that could be caused by bugs in the Rehydrator itself. Though I\u0027m not familiar enough with the codebase to have a reasonable suggestion here, so I\u0027ll remove the TODO.",
+      "parentUuid": "cd97e1d0_d60f5d09",
       "range": {
         "startLine": 122,
         "startChar": 6,
