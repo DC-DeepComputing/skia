@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7b676ca3_838c7a4d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-02-25T18:22:25Z",
+      "side": 1,
+      "message": "Drawables is the last SubRun type to serialize. This CL should be the first pass of the Slug serialization system.",
+      "revId": "66fc2240ba350bcee5414e373eb7563ee32a10df",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
