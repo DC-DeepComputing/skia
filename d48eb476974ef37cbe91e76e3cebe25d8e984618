@@ -46,6 +46,30 @@
       },
       "revId": "d48eb476974ef37cbe91e76e3cebe25d8e984618",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8b3cfe33_4f257ca7",
+        "filename": "src/gpu/text/GrTextBlob.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 581,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-02-25T17:51:44Z",
+      "side": 0,
+      "message": "Yeah, see for example https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/ports/SkScalerContext_win_dw.cpp;l\u003d1279;drc\u003dce3036ef5e8f7ddcef1eb6f5c29a74db103e78fe which calls into `drawColorGlyphImage` which sets the antialiasing https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/ports/SkScalerContext_win_dw.cpp;l\u003d1062;drc\u003dce3036ef5e8f7ddcef1eb6f5c29a74db103e78fe .\n\nThe path case is different because a path doesn\u0027t know how to draw itself. It needs the additional information about antialiasing and hairline for that. But a drawable should be self-contained and already have everything baked in. (As if there were a public SkPath like type with antialiasing, hairline, etc.)",
+      "parentUuid": "60ce1131_923e82dd",
+      "range": {
+        "startLine": 581,
+        "startChar": 29,
+        "endLine": 581,
+        "endChar": 42
+      },
+      "revId": "d48eb476974ef37cbe91e76e3cebe25d8e984618",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
