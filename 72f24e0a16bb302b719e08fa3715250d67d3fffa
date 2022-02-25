@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "46dbfad0_5aae48d1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-02-25T02:10:11Z",
+      "side": 1,
+      "message": "This is the 4th of 5 SubRuns types, and I think covers all the glyph drawing cases currently in the field? The last SubRun type to tackle is SkDrawables. ",
+      "revId": "72f24e0a16bb302b719e08fa3715250d67d3fffa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
