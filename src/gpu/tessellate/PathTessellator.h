@@ -23,8 +23,6 @@ class GrOpFlushState;
 
 namespace skgpu {
 
-class PatchWriter;
-
 // Prepares GPU data for, and then draws a path's tessellated geometry. Depending on the subclass,
 // the caller may or may not be required to draw the path's inner fan separately.
 class PathTessellator {
@@ -67,12 +65,15 @@ public:
     // PatchWriter will allocate more buffer(s).
     virtual int patchPreallocCount(int totalCombinedPathVerbCnt) const = 0;
 
-    // Writes out patches to the given PatchWriter, chopping as necessary so the curves all fit in
-    // maxTessellationSegments or fewer.
+    // Writes out patches using a specialized PatchWriter, chopping as necessary so the curves all
+    // fit in maxTessellationSegments or fewer.
     //
     // Each path's fPathMatrix in the list is applied on the CPU while the geometry is being written
     // out. This is a tool for batching, and is applied in addition to the shader's on-GPU matrix.
-    virtual void writePatches(PatchWriter&,
+    // FIXME pass in breadcrumb triangles too for sample spport?
+    virtual void writePatches(GrMeshDrawTarget* target,
+                              int preallocCount,
+                              int maxTessellationSegments,
                               const SkMatrix& shaderMatrix,
                               const PathDrawList&) = 0;
 
@@ -88,8 +89,8 @@ public:
                  int totalCombinedPathVerbCnt,
                  bool willUseTessellationShaders) {
         if (int patchPreallocCount = this->patchPreallocCount(totalCombinedPathVerbCnt)) {
-            PatchWriter patchWriter(target, this, maxTessellationSegments, patchPreallocCount);
-            this->writePatches(patchWriter, shaderMatrix, pathDrawList);
+            this->writePatches(target, patchPreallocCount, maxTessellationSegments,
+                               shaderMatrix, pathDrawList);
         }
         if (!willUseTessellationShaders) {
             this->prepareFixedCountBuffers(target);
@@ -147,8 +148,6 @@ protected:
     int fFixedResolveLevel = 0;
 
 #if SK_GPU_V1
-    friend class PatchWriter;  // To access fVertexChunkArray.
-
     GrVertexChunkArray fVertexChunkArray;
 
     // If using fixed-count rendering, these are the vertex and index buffers.

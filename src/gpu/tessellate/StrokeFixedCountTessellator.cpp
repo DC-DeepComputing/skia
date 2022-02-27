@@ -22,6 +22,14 @@ namespace skgpu {
 
 namespace {
 
+using StrokePatchWriter = PatchWriter<Required<PatchAttribs::kJoinControlPoint>,
+                                      Optional<PatchAttribs::kStrokeParams>,
+                                      Optional<PatchAttribs::kColor>,
+                                      Optional<PatchAttribs::kWideColorIfEnabled>,
+                                      Optional<PatchAttribs::kExplicitCurveType>,
+                                      AutoDeferPatches,
+                                      AutoUpdateJoin>;
+
 // Returns the worst-case number of edges we will need in order to draw a join of the given type.
 int worst_case_edges_in_join(SkPaint::Join joinType, float numRadialSegmentsPerRadian) {
     int numEdges = StrokeFixedCountTessellator::NumFixedEdgesInJoin(joinType);
@@ -45,10 +53,14 @@ int StrokeFixedCountTessellator::patchPreallocCount(int totalCombinedStrokeVerbC
     return strokePreallocCount + capPreallocCount;
 }
 
-int StrokeFixedCountTessellator::writePatches(PatchWriter& patchWriter,
+int StrokeFixedCountTessellator::writePatches(GrMeshDrawTarget* target,
+                                              int preallocCount,
                                               const SkMatrix& shaderMatrix,
                                               std::array<float,2> matrixMinMaxScales,
                                               PathStrokeList* pathStrokeList) {
+    StrokePatchWriter patchWriter{target, &fVertexChunkArray, fAttribs, kMaxParametricSegments,
+                                  sizeof(SkPoint)*4 + PatchAttribsStride(fAttribs), preallocCount};
+
     int maxEdgesInJoin = 0;
     float maxRadialSegmentsPerRadian = 0;
     const float matrixMaxScale = matrixMinMaxScales[1];
@@ -221,13 +233,8 @@ int StrokeFixedCountTessellator::prepare(GrMeshDrawTarget* target,
                                          std::array<float,2> matrixMinMaxScales,
                                          PathStrokeList* pathStrokeList,
                                          int totalCombinedStrokeVerbCnt) {
-    // NOTE: For now InstanceWriter manually chops curves that exceed kMaxParametricSegments_pow4,
-    // so passing in kMaxParametricSegments to PatchWriter avoids its auto-chopping while still
-    // correctly accumulating the min required segment count.
-    PatchWriter patchWriter(target, this, kMaxParametricSegments,
-                            this->patchPreallocCount(totalCombinedStrokeVerbCnt));
-
-    fFixedEdgeCount = this->writePatches(patchWriter,
+    fFixedEdgeCount = this->writePatches(target,
+                                         this->patchPreallocCount(totalCombinedStrokeVerbCnt),
                                          shaderMatrix,
                                          matrixMinMaxScales,
                                          pathStrokeList);

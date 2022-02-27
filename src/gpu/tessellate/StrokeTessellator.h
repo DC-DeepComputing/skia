@@ -22,8 +22,6 @@ class GrOpFlushState;
 
 namespace skgpu {
 
-class PatchWriter;
-
 // Prepares GPU data for, and then draws a stroke's tessellated geometry.
 class StrokeTessellator {
 public:
@@ -43,11 +41,12 @@ public:
     // PatchWriter will allocate more buffer(s).
     virtual int patchPreallocCount(int totalCombinedStrokeVerbCnt) const = 0;
 
-    // Writes out patches to the given PatchWriter, chopping as necessary.
+    // Writes out patches using a customized PatchWriter, chopping as necessary.
     //
     // Returns the fixed number of edges the tessellator will draw per patch, if using fixed-count
     // rendering, otherwise 0.
-    virtual int writePatches(PatchWriter&,
+    virtual int writePatches(GrMeshDrawTarget*,
+                             int preallocCount,
                              const SkMatrix& shaderMatrix,
                              std::array<float,2> matrixMinMaxScales,
                              PathStrokeList*) = 0;
@@ -76,7 +75,6 @@ protected:
 #if SK_GPU_V1
     GrVertexChunkArray fVertexChunkArray;
 
-    friend class PatchWriter;  // To access fVertexChunkArray.
 #endif
 };
 
