@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a45dafdc_8978a929",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2022-02-28T22:05:16Z",
+      "side": 1,
+      "message": "I just noticed SkTrimPathEffect is not usable in Fiddle, turns out we forgot to add it to public headers.\n\nI think the .bazel file is already in good shape, please verify.",
+      "revId": "8bf2ed78bcf2b4a00d9f10e741ee3d5ba7f9c05d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
