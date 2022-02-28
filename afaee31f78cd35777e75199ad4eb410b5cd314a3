@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e99ac430_4f33a958",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-02-28T23:54:35Z",
+      "side": 1,
+      "message": "Let me know if this approach is reasonable.",
+      "range": {
+        "startLine": 10,
+        "startChar": 50,
+        "endLine": 10,
+        "endChar": 64
+      },
+      "revId": "afaee31f78cd35777e75199ad4eb410b5cd314a3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c2cf1050_fbe191b2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-02-28T23:54:35Z",
+      "side": 1,
+      "message": "PTAL. The existing Negation.sksl test exercised constant-folding and it seemed desirable to maintain tests for that case. I decided to split it into one that uses constant vector/matrix values and one that constructs them using a uniform value. Let me know if this separation makes sense; the two test cases are identical otherwise.",
+      "revId": "afaee31f78cd35777e75199ad4eb410b5cd314a3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
