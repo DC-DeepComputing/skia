@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8d317999_4f22c7f9",
+        "filename": "experimental/graphite/src/Image_Graphite.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-02-28T14:56:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c780315d_93a42639",
+      "range": {
+        "startLine": 39,
+        "startChar": 0,
+        "endLine": 39,
+        "endChar": 19
+      },
+      "revId": "847a7d400c65b869019a106a6bc696c36ddb5202",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ac4690c3_8866bcbd",
@@ -37,6 +61,24 @@
       "writtenOn": "2022-02-25T20:47:27Z",
       "side": 1,
       "message": "I don\u0027t think this needs to be in an #if block (and, if it were, it would be a SK_GRAPHITE_ENABLED block). afaict nothing in SkImage_Gpu.h is guarded. \n\nThis file shouldn\u0027t be compiled unless Graphite is enabled.",
+      "revId": "847a7d400c65b869019a106a6bc696c36ddb5202",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "87f0f091_49c3c982",
+        "filename": "experimental/graphite/src/Image_Graphite.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-02-28T14:56:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ac4690c3_8866bcbd",
       "revId": "847a7d400c65b869019a106a6bc696c36ddb5202",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -64,6 +106,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "08cfdd87_3290d2f3",
+        "filename": "experimental/graphite/src/Image_Graphite.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-02-28T14:56:32Z",
+      "side": 1,
+      "message": "Removed based on comment above.",
+      "parentUuid": "31cd4c3f_de411ad9",
+      "range": {
+        "startLine": 55,
+        "startChar": 4,
+        "endLine": 55,
+        "endChar": 18
+      },
+      "revId": "847a7d400c65b869019a106a6bc696c36ddb5202",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cb3ca00e_846f6751",
@@ -77,6 +143,24 @@
       "writtenOn": "2022-02-25T20:47:27Z",
       "side": 1,
       "message": "This is a bit odd in that SkImage_Gpu will also return true. Do we want to split this into:\n\nonIsGaneshBacked\nonIsGraphiteBacked\n\n?",
+      "revId": "847a7d400c65b869019a106a6bc696c36ddb5202",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c1d63b2e_fbc5590e",
+        "filename": "experimental/graphite/src/Image_Graphite.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-02-28T14:56:32Z",
+      "side": 1,
+      "message": "isTextureBacked needs to stay for the moment -- Chrome is using it. My suggestion is to add isGaneshBackend and isGraphiteBacked, and let Image_Graphite return false for isTextureBacked (they may make decisions to use Ganesh interfaces based on the result). Then I can migrate Chrome to isGaneshBacked.",
+      "parentUuid": "cb3ca00e_846f6751",
       "revId": "847a7d400c65b869019a106a6bc696c36ddb5202",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
