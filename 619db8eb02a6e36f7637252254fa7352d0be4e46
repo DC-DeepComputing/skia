@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7c9ab7a4_6038d37c",
+        "filename": "src/gpu/v1/Device.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 996,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-02-28T21:16:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dcc07f93_c92c49df",
+      "revId": "619db8eb02a6e36f7637252254fa7352d0be4e46",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "df8fba11_26dea70f",
@@ -31,6 +49,30 @@
       "writtenOn": "2022-02-22T14:53:57Z",
       "side": 1,
       "message": "SDHM - Server DHM?",
+      "range": {
+        "startLine": 1002,
+        "startChar": 14,
+        "endLine": 1002,
+        "endChar": 17
+      },
+      "revId": "619db8eb02a6e36f7637252254fa7352d0be4e46",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b463da98_29eb9427",
+        "filename": "src/gpu/v1/Device.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1002,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-02-28T21:16:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "df8fba11_26dea70f",
       "range": {
         "startLine": 1002,
         "startChar": 14,
@@ -81,6 +123,48 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "85ce13ab_6e8dba25",
+        "filename": "src/gpu/v1/Device.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1016,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-02-28T21:16:23Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "64073d3c_aa4722dc",
+      "revId": "619db8eb02a6e36f7637252254fa7352d0be4e46",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7e8702d5_6cc1c19b",
+        "filename": "src/gpu/v1/Device.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1016,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-02-28T21:16:23Z",
+      "side": 1,
+      "message": "Re-did the whole discardable handle thing.",
+      "parentUuid": "27dad3ff_18d188e2",
+      "range": {
+        "startLine": 1016,
+        "startChar": 26,
+        "endLine": 1016,
+        "endChar": 66
+      },
+      "revId": "619db8eb02a6e36f7637252254fa7352d0be4e46",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "144b1870_7cba7f37",
@@ -94,6 +178,24 @@
       "writtenOn": "2022-02-22T14:53:57Z",
       "side": 1,
       "message": "std::move",
+      "revId": "619db8eb02a6e36f7637252254fa7352d0be4e46",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d73177de_76bb9d51",
+        "filename": "src/gpu/v1/Device.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1030,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-02-28T21:16:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "144b1870_7cba7f37",
       "revId": "619db8eb02a6e36f7637252254fa7352d0be4e46",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
