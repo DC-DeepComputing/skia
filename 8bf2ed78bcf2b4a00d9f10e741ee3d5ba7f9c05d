@@ -16,6 +16,23 @@
       "message": "I just noticed SkTrimPathEffect is not usable in Fiddle, turns out we forgot to add it to public headers.\n\nI think the .bazel file is already in good shape, please verify.",
       "revId": "8bf2ed78bcf2b4a00d9f10e741ee3d5ba7f9c05d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "89cc1342_c4048a92",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-02-28T22:08:17Z",
+      "side": 1,
+      "message": "BUILD.bazel looks fine: https://github.com/google/skia/blob/1fc0c1c0f8af028accf947147b18817a0aa37964/src/effects/BUILD.bazel#L25",
+      "revId": "8bf2ed78bcf2b4a00d9f10e741ee3d5ba7f9c05d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
