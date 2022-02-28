@@ -17,6 +17,8 @@ Milestone 100
     any `return` statement in your shader with a swizzle: `return color.rgb1;`.
     https://review.skia.org/506462
   * SkRSXform is now exported to DLL/.so files.
+  * Add maxSurfaceSampleCountForColorType(SkColorType ct) in GrContextThreadSafeProxy
+
 * * *
 
 Milestone 99
