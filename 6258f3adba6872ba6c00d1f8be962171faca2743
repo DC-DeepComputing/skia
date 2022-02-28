@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f3cad9e5_84539ca0",
+        "filename": "modules/skottie/src/text/SkottieShaper.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2022-02-28T19:23:40Z",
+      "side": 1,
+      "message": "Since this is a quasi-public header (in g3), let\u0027s document a bit:\n\n  // Relative text size scale, when using an auto-scaling ResizePolicy\n  // (otherwise 1.0).  This is informative of the final text size, and is\n  // not required to render the Result.",
+      "revId": "6258f3adba6872ba6c00d1f8be962171faca2743",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
