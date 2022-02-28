@@ -1,0 +1,107 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1bd0280b_c36cb22d",
+        "filename": "experimental/graphite/src/Image_Graphite.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-02-28T15:23:51Z",
+      "side": 1,
+      "message": "Should this be const\u0026 ?",
+      "revId": "bd5f95c9ee66646a36af0e07af39467b85f6a34e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "56fdef4e_8d6478ff",
+        "filename": "experimental/graphite/src/Image_Graphite.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-02-28T15:23:51Z",
+      "side": 1,
+      "message": "What do we gain by splitting the TextureProxyView into its two components here?",
+      "revId": "bd5f95c9ee66646a36af0e07af39467b85f6a34e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "31c88183_3c0b4f91",
+        "filename": "experimental/graphite/src/Surface_Graphite.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-02-28T15:23:51Z",
+      "side": 1,
+      "message": "Some clang bot, somewhere, must be waiting in the wings to complain about this being unused.",
+      "range": {
+        "startLine": 35,
+        "startChar": 0,
+        "endLine": 35,
+        "endChar": 24
+      },
+      "revId": "bd5f95c9ee66646a36af0e07af39467b85f6a34e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cdab0a90_876547ae",
+        "filename": "include/core/SkImage.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 1139,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-02-28T15:23:51Z",
+      "side": 1,
+      "message": "This seems out of date.",
+      "range": {
+        "startLine": 1138,
+        "startChar": 71,
+        "endLine": 1139,
+        "endChar": 60
+      },
+      "revId": "bd5f95c9ee66646a36af0e07af39467b85f6a34e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "44eb7af6_93fc6949",
+        "filename": "include/core/SkImage.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 1146,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-02-28T15:23:51Z",
+      "side": 1,
+      "message": "rm ?",
+      "range": {
+        "startLine": 1146,
+        "startChar": 62,
+        "endLine": 1146,
+        "endChar": 96
+      },
+      "revId": "bd5f95c9ee66646a36af0e07af39467b85f6a34e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
