@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7ddd3f8d_f19267fa",
+        "filename": "src/gpu/GrContextThreadSafeProxy.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 172,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-02-28T20:58:38Z",
+      "side": 1,
+      "message": "this is all checked in the backends which have the validate the GrBackendFormat when it gets the actually backend format. So don\u0027t know if its worth checking here.",
+      "range": {
+        "startLine": 170,
+        "startChar": 1,
+        "endLine": 172,
+        "endChar": 5
+      },
+      "revId": "af5e60c19648962d4b8386ed44a5611268d542f1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
