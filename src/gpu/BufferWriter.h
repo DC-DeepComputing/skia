@@ -12,7 +12,10 @@
 #include "include/private/SkColorData.h"
 #include "include/private/SkNx.h"
 #include "include/private/SkTemplates.h"
+
+#include <optional>
 #include <type_traits>
+#include <variant>
 
 namespace skgpu {
 
@@ -276,6 +279,20 @@ inline VertexWriter& operator<<(VertexWriter& w, const VertexWriter::Conditional
     if (val.fCondition) {
         w << val.fValue;
     }
+    return w;
+}
+
+template <typename T>
+inline VertexWriter& operator<<(VertexWriter& w, const std::optional<T>& val) {
+    static_assert(std::is_pod<T>::value, "");
+    if (val.has_value()) {
+        w << *val;
+    }
+    return w;
+}
+
+// no-op for compile-time disabled vertex attributes
+inline VertexWriter& operator<<(VertexWriter& w, const std::monostate& val) {
     return w;
 }
 

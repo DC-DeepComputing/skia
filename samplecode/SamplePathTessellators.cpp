@@ -140,6 +140,8 @@ private:
                                 patchPreallocCount);
 
         if (needsInnerFan) {
+            // FIXME needs some similar backdoor like PathInnerTriangulateOp, for pretty much the
+            // same reason. But like that, can assume it's a PathCurveTessellator.
             // Write out inner fan triangles.
             AffineMatrix m(pathMatrix);
             for (PathMiddleOutFanIter it(fPath); !it.done();) {

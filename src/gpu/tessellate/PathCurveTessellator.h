@@ -30,9 +30,14 @@ public:
 
     int patchPreallocCount(int totalCombinedPathVerbCnt) const final;
 
-    void writePatches(PatchWriter& patchWriter,
+    void writePatches(GrMeshDrawTarget* target,
+                      int preallocCount,
+                      int maxTessellationSegments,
                       const SkMatrix& shaderMatrix,
                       const PathDrawList& pathDrawList) final;
+
+    // For PathInnerTriangulateOp to include additional patches from the output of its triangulation
+    void writePatchesAndBreadCrumbs();
 
     // Size of the vertex buffer to use when rendering with a fixed count shader.
     constexpr static int FixedVertexBufferSize(int maxFixedResolveLevel) {

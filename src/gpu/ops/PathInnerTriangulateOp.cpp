@@ -448,7 +448,7 @@ void PathInnerTriangulateOp::onPrepare(GrOpFlushState* flushState) {
         SkASSERT(breadcrumbCount == fFanBreadcrumbs.count());
 
         // Write out the curves.
-        fTessellator->writePatches(patchWriter,
+        fTessellator->writePatches(flushState,
                                    tessShader->viewMatrix(),
                                    {SkMatrix::I(), fPath, SK_PMColor4fTRANSPARENT});
 

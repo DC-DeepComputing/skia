@@ -135,6 +135,11 @@ constexpr size_t PatchAttribsStride(PatchAttribs attribs) {
            (attribs & PatchAttribs::kExplicitCurveType ? sizeof(float) : 0);
 }
 
+// Returns the packed size in bytes of a patch instance, including attribs and 4 control points.
+constexpr size_t PatchStride(PatchAttribs attribs) {
+    return 4 * sizeof(SkPoint) + PatchAttribsStride(attribs);
+}
+
 // Don't tessellate paths that might have an individual curve that requires more than 1024 segments.
 // (See wangs_formula::worst_case_cubic). If this is the case, call "PreChopPathCurves" first.
 constexpr static float kMaxTessellationSegmentsPerCurve SK_MAYBE_UNUSED = 1024;

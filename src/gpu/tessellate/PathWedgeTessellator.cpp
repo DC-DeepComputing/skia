@@ -122,6 +122,11 @@ private:
     int fMidpointWeight;
 };
 
+using WedgePatchWriter = PatchWriter<Required<PatchAttribs::kFanPoint>,
+                                     Optional<PatchAttribs::kColor>,
+                                     Optional<PatchAttribs::kWideColorIfEnabled>,
+                                     Optional<PatchAttribs::kExplicitCurveType>>;
+
 }  // namespace
 
 int PathWedgeTessellator::patchPreallocCount(int totalCombinedPathVerbCnt) const {
@@ -130,9 +135,14 @@ int PathWedgeTessellator::patchPreallocCount(int totalCombinedPathVerbCnt) const
     return (maxWedges * 5 + 3) / 4;  // i.e., ceil(maxWedges * 5/4)
 }
 
-void PathWedgeTessellator::writePatches(PatchWriter& patchWriter,
+void PathWedgeTessellator::writePatches(GrMeshDrawTarget* target,
+                                        int preallocCount,
+                                        int maxTessellationSegments,
                                         const SkMatrix& shaderMatrix,
                                         const PathDrawList& pathDrawList) {
+    WedgePatchWriter patchWriter{target, &fVertexChunkArray, fAttribs,
+                                 maxTessellationSegments, preallocCount};
+
     wangs_formula::VectorXform shaderXform(shaderMatrix);
     for (auto [pathMatrix, path, color] : pathDrawList) {
         AffineMatrix m(pathMatrix);

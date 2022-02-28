@@ -20,6 +20,15 @@
 
 namespace skgpu {
 
+namespace {
+
+using CurvePatchWriter  = PatchWriter<Optional<PatchAttribs::kColor>,
+                                      Optional<PatchAttribs::kWideColorIfEnabled>,
+                                      Optional<PatchAttribs::kExplicitCurveType>,
+                                      AddTrianglesWhenChopping,
+                                      DiscardFlatCurves>;
+}  // namespace
+
 int PathCurveTessellator::patchPreallocCount(int totalCombinedPathVerbCnt) const {
     // Over-allocate enough curves for 1 in 4 to chop.
     int approxNumChops = (totalCombinedPathVerbCnt + 3) / 4;
@@ -28,9 +37,14 @@ int PathCurveTessellator::patchPreallocCount(int totalCombinedPathVerbCnt) const
     return totalCombinedPathVerbCnt + approxNumChops * 2;
 }
 
-void PathCurveTessellator::writePatches(PatchWriter& patchWriter,
+void PathCurveTessellator::writePatches(GrMeshDrawTarget* target,
+                                        int preallocCount,
+                                        int maxTessellationSegments,
                                         const SkMatrix& shaderMatrix,
                                         const PathDrawList& pathDrawList) {
+    CurvePatchWriter patchWriter{target, &fVertexChunkArray, fAttribs,
+                                 maxTessellationSegments, preallocCount};
+
     wangs_formula::VectorXform shaderXform(shaderMatrix);
     for (auto [pathMatrix, path, color] : pathDrawList) {
         AffineMatrix m(pathMatrix);
