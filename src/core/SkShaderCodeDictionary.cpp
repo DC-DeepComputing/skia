@@ -19,8 +19,7 @@ void add_indent(std::string* result, int indent) {
 } // anonymous namespace
 
 
-std::string SkShaderInfo::SnippetEntry::getMangledUniformName(int uniformIndex,
-                                                              int mangleId) const {
+std::string SkSnippetEntry::getMangledUniformName(int uniformIndex, int mangleId) const {
     std::string result;
     result = fUniforms[uniformIndex].name() + std::string("_") + std::to_string(mangleId);
     return result;
@@ -36,7 +35,7 @@ std::string SkShaderInfo::SnippetEntry::getMangledUniformName(int uniformIndex,
 namespace skgpu::mtl {
 std::string GetMtlUniforms(int bufferID,
                            const char* name,
-                           const std::vector<SkShaderInfo::SnippetEntry>&);
+                           const std::vector<std::pair<const SkSnippetEntry*, SkSpan<const uint8_t>>>&);
 } // namespace skgpu::mtl
 
 // Emit the glue code needed to invoke a single static helper isolated w/in its own scope.
@@ -55,7 +54,7 @@ std::string GetMtlUniforms(int bufferID,
 std::string SkShaderInfo::emitGlueCodeForEntry(int* entryIndex,
                                                std::string* result,
                                                int indent) const {
-    const SkShaderInfo::SnippetEntry& entry = fEntries[*entryIndex];
+    const SkSnippetEntry* entry = fEntries[*entryIndex].first;
     int curEntryIndex = *entryIndex;
 
     std::string scopeOutputVar(std::string("outColor") + std::to_string(curEntryIndex));
@@ -68,14 +67,14 @@ std::string SkShaderInfo::emitGlueCodeForEntry(int* entryIndex,
     // Although the children appear after the parent in the shader info they are emitted
     // before the parent
     std::vector<std::string> childNames;
-    for (int j = 0; j < entry.fNumChildren; ++j) {
+    for (int j = 0; j < entry->fNumChildren; ++j) {
         *entryIndex += 1;
         std::string childOutputVar = this->emitGlueCodeForEntry(entryIndex, result, indent+1);
         childNames.push_back(childOutputVar);
     }
 
-    *result += (entry.fGlueCodeGenerator)(scopeOutputVar, curEntryIndex,
-                                          entry, childNames, indent+1);
+    *result += (entry->fGlueCodeGenerator)(scopeOutputVar, curEntryIndex,
+                                           *entry, childNames, indent+1);
     add_indent(result, indent);
     *result += "}\n";
 
@@ -96,10 +95,10 @@ std::string SkShaderInfo::toSkSL() const {
     std::string result = skgpu::mtl::GetMtlUniforms(2, "FS", fEntries);
 
     std::set<const char*> emittedStaticSnippets;
-    for (auto c : fEntries) {
-        if (emittedStaticSnippets.find(c.fStaticFunctionName) == emittedStaticSnippets.end()) {
-            result += c.fStaticSkSL;
-            emittedStaticSnippets.insert(c.fStaticFunctionName);
+    for (auto e : fEntries) {
+        if (emittedStaticSnippets.find(e.first->fStaticFunctionName) == emittedStaticSnippets.end()) {
+            result += e.first->fStaticSkSL;
+            emittedStaticSnippets.insert(e.first->fStaticFunctionName);
         }
     }
 
@@ -169,13 +168,13 @@ SkSpan<const SkUniform> SkShaderCodeDictionary::getUniforms(SkBuiltInCodeSnippet
     return fBuiltInCodeSnippets[(int) id].fUniforms;
 }
 
-SkSpan<const SkPaintParamsKey::DataPayloadField> SkShaderCodeDictionary::dataPayloadExpectations(
+SkSpan<const SkPaintParamsKey::DataPayloadField> SkShaderCodeDictionary::dataPayloadExpectations1(
         int codeSnippetID) const {
     // All callers of this entry point should already have ensured that 'codeSnippetID' is valid
-    return this->getEntry(codeSnippetID)->fDataPayloadExpectations;
+    return this->getEntry(codeSnippetID)->fDataPayloadExpectations1;
 }
 
-const SkShaderInfo::SnippetEntry* SkShaderCodeDictionary::getEntry(int codeSnippetID) const {
+const SkSnippetEntry* SkShaderCodeDictionary::getEntry(int codeSnippetID) const {
     SkASSERT(codeSnippetID >= 0 && codeSnippetID <= this->maxCodeSnippetID());
 
     if (codeSnippetID < kBuiltInCodeSnippetIDCount) {
@@ -204,7 +203,7 @@ namespace {
 // and stores the result in a variable named "resultName".
 std::string GenerateDefaultGlueCode(const std::string& resultName,
                                     int entryIndex,
-                                    const SkShaderInfo::SnippetEntry& entry,
+                                    const SkSnippetEntry& entry,
                                     const std::vector<std::string>& childNames,
                                     int indent) {
     SkASSERT(childNames.empty());
@@ -386,7 +385,7 @@ static const char* kBlendShaderSkSL =
 
 std::string GenerateBlendShaderGlueCode(const std::string& resultName,
                                         int entryIndex,
-                                        const SkShaderInfo::SnippetEntry& entry,
+                                        const SkSnippetEntry& entry,
                                         const std::vector<std::string>& childNames,
                                         int indent) {
     SkASSERT(childNames.size() == kNumBlendShaderChildren);
@@ -420,6 +419,33 @@ static constexpr SkPaintParamsKey::DataPayloadField kBlendModeFields[kNumBlendMo
         { "blendmode", SkPaintParamsKey::DataPayloadType::kByte, 1 }
 };
 
+std::string GenerateBlendModeGlueCode(const std::string& resultName,
+                                      int entryIndex,
+                                      const SkSnippetEntry& entry,
+                                      const std::vector<std::string>& childNames,
+                                      int indent) {
+    SkASSERT(childNames.empty());
+
+    std::string result;
+
+    if (0) {
+
+    }
+
+    add_indent(&result, indent);
+    SkSL::String::appendf(&result, "%s = %s(", resultName.c_str(), entry.fStaticFunctionName);
+    for (size_t i = 0; i < entry.fUniforms.size(); ++i) {
+        // The uniform names are mangled w/ the entry's index as a suffix
+        result += entry.getMangledUniformName(i, entryIndex);
+        if (i+1 < entry.fUniforms.size()) {
+            result += ", ";
+        }
+    }
+    result += ");\n";
+
+    return result;
+}
+
 //--------------------------------------------------------------------------------------------------
 
 } // anonymous namespace
@@ -430,7 +456,7 @@ int SkShaderCodeDictionary::addUserDefinedSnippet(
         const char* name,
         SkSpan<const SkPaintParamsKey::DataPayloadField> dataPayloadExpectations) {
 
-    std::unique_ptr<SkShaderInfo::SnippetEntry> entry(new SkShaderInfo::SnippetEntry(
+    std::unique_ptr<SkSnippetEntry> entry(new SkSnippetEntry(
             {}, // no uniforms
             name,
             ";",
@@ -516,7 +542,7 @@ SkShaderCodeDictionary::SkShaderCodeDictionary() {
     fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kSimpleBlendMode] = {
             { nullptr, kNumErrorUniforms },
             kErrorName, kErrorSkSL,
-            GenerateDefaultGlueCode,
+            GenerateBlendModeGlueCode,
             kNoChildren,
             { kBlendModeFields, kNumBlendModeFields }
     };
