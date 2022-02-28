@@ -163,6 +163,24 @@
       "parentUuid": "cb3ca00e_846f6751",
       "revId": "847a7d400c65b869019a106a6bc696c36ddb5202",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bdafbbe2_f662661b",
+        "filename": "experimental/graphite/src/Image_Graphite.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-02-28T20:48:52Z",
+      "side": 1,
+      "message": "Removed for now.",
+      "parentUuid": "c1d63b2e_fbc5590e",
+      "revId": "847a7d400c65b869019a106a6bc696c36ddb5202",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

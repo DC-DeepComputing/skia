@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a2183398_033d714f",
+        "filename": "experimental/graphite/src/Image_Graphite.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-02-28T20:48:52Z",
+      "side": 1,
+      "message": "Done. The only reason I can think that this is this way in SkImage_Gpu is that it\u0027s a signal that the Image will take a ref of the SkColorInfo (or at least the data inside).",
+      "parentUuid": "1bd0280b_c36cb22d",
+      "revId": "bd5f95c9ee66646a36af0e07af39467b85f6a34e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "56fdef4e_8d6478ff",
@@ -35,6 +53,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1bf0bead_af56ced3",
+        "filename": "experimental/graphite/src/Image_Graphite.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-02-28T20:48:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "56fdef4e_8d6478ff",
+      "revId": "bd5f95c9ee66646a36af0e07af39467b85f6a34e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "31c88183_3c0b4f91",
@@ -48,6 +84,30 @@
       "writtenOn": "2022-02-28T15:23:51Z",
       "side": 1,
       "message": "Some clang bot, somewhere, must be waiting in the wings to complain about this being unused.",
+      "range": {
+        "startLine": 35,
+        "startChar": 0,
+        "endLine": 35,
+        "endChar": 24
+      },
+      "revId": "bd5f95c9ee66646a36af0e07af39467b85f6a34e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3de809fd_905b6e8e",
+        "filename": "experimental/graphite/src/Surface_Graphite.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-02-28T20:48:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "31c88183_3c0b4f91",
       "range": {
         "startLine": 35,
         "startChar": 0,
@@ -81,6 +141,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5e6177ff_b6be6129",
+        "filename": "include/core/SkImage.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 1139,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-02-28T20:48:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cdab0a90_876547ae",
+      "range": {
+        "startLine": 1138,
+        "startChar": 71,
+        "endLine": 1139,
+        "endChar": 60
+      },
+      "revId": "bd5f95c9ee66646a36af0e07af39467b85f6a34e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "44eb7af6_93fc6949",
@@ -104,6 +188,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d87446d6_19079398",
+        "filename": "include/core/SkImage.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 1146,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-02-28T20:48:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "44eb7af6_93fc6949",
+      "range": {
+        "startLine": 1146,
+        "startChar": 62,
+        "endLine": 1146,
+        "endChar": 96
+      },
+      "revId": "bd5f95c9ee66646a36af0e07af39467b85f6a34e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cceb3569_bab0ad73",
@@ -117,6 +225,30 @@
       "writtenOn": "2022-02-28T15:29:03Z",
       "side": 1,
       "message": "missing \u0027 \u0027 ?",
+      "range": {
+        "startLine": 129,
+        "startChar": 15,
+        "endLine": 129,
+        "endChar": 25
+      },
+      "revId": "bd5f95c9ee66646a36af0e07af39467b85f6a34e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6c698b00_a50d26b3",
+        "filename": "src/image/SkImage_Base.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-02-28T20:48:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cceb3569_bab0ad73",
       "range": {
         "startLine": 129,
         "startChar": 15,
