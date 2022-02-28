@@ -1709,8 +1709,18 @@ void MetalCodeGenerator::writePrefixExpression(const PrefixExpression& p,
     if (Precedence::kPrefix >= parentPrecedence) {
         this->write("(");
     }
-    this->write(p.getOperator().tightOperatorName());
+
+    // According to the MSL specification, the arithmetic unary operators (+ and –) do not act
+    // upon matrix type operands. Transform the unary "-" on a matrix type to a multiplication by
+    // -1.
+    if (p.getOperator().kind() == Token::Kind::TK_MINUS &&
+        p.operand()->type().isMatrix()) {
+        this->write("-1.0 * ");
+    } else {
+        this->write(p.getOperator().tightOperatorName());
+    }
     this->writeExpression(*p.operand(), Precedence::kPrefix);
+
     if (Precedence::kPrefix >= parentPrecedence) {
         this->write(")");
     }
