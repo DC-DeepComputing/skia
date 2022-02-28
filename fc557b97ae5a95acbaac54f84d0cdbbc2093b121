@@ -93,6 +93,30 @@
       },
       "revId": "fc557b97ae5a95acbaac54f84d0cdbbc2093b121",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9e7a14c9_2040a411",
+        "filename": "src/sksl/SkSLDSLParser.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-02-28T15:35:18Z",
+      "side": 1,
+      "message": "Gotcha, makes sense. We do also have `fEncounteredFatalError` as a signal for parsing-off-the-rails; what if we set that in parsing-failure cases?",
+      "parentUuid": "0cb6c5a4_b5bb6a07",
+      "range": {
+        "startLine": 130,
+        "startChar": 53,
+        "endLine": 131,
+        "endChar": 74
+      },
+      "revId": "fc557b97ae5a95acbaac54f84d0cdbbc2093b121",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
