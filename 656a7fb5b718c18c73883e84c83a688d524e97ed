@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "012bd6af_2ad8a18f",
+        "filename": "modules/canvaskit/tests/bazel/test_reporter.js",
+        "patchSetId": 5
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-02-28T20:17:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ffabe7fd_7a732898",
+      "range": {
+        "startLine": 5,
+        "startChar": 4,
+        "endLine": 8,
+        "endChar": 41
+      },
+      "revId": "656a7fb5b718c18c73883e84c83a688d524e97ed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1e1eae5f_2f95034c",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-02-28T18:48:01Z",
       "side": 1,
       "message": "Leftover from a debugging session?",
+      "range": {
+        "startLine": 44,
+        "startChar": 0,
+        "endLine": 44,
+        "endChar": 21
+      },
+      "revId": "656a7fb5b718c18c73883e84c83a688d524e97ed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5cd142f1_f5642065",
+        "filename": "modules/canvaskit/tests/bazel/test_reporter.js",
+        "patchSetId": 5
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-02-28T20:17:47Z",
+      "side": 1,
+      "message": "This is intentionally here to make catching the async errors easier.",
+      "parentUuid": "1e1eae5f_2f95034c",
       "range": {
         "startLine": 44,
         "startChar": 0,
