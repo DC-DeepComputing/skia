@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "69543f05_91826973",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-02-28T14:42:20Z",
+      "side": 1,
+      "message": "Hello Kevin,\n\nI have the seed descriptors we talked about long ago. They are raw sk_sp\u003cSkData\u003e items. If this is not a good format, we can chat about changing it.",
+      "revId": "58a7c2b8f63d7d53019ea3c91f7f3a247e227a75",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
