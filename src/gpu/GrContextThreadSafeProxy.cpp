@@ -153,6 +153,12 @@ GrBackendFormat GrContextThreadSafeProxy::defaultBackendFormat(SkColorType skCol
     return format;
 }
 
+int GrContextThreadSafeProxy::maxSurfaceSampleCountForColorType(SkColorType colorType) const {
+    GrBackendFormat format = fCaps->getDefaultBackendFormat(SkColorTypeToGrColorType(colorType),
+                                                            GrRenderable::kYes);
+    return fCaps->maxRenderTargetSampleCount(format);
+}
+
 GrBackendFormat GrContextThreadSafeProxy::compressedBackendFormat(SkImage::CompressionType c) const {
     SkASSERT(fCaps);
 
@@ -183,4 +189,3 @@ void GrContextThreadSafeProxyPriv::init(sk_sp<const GrCaps> caps,
                                         sk_sp<GrThreadSafePipelineBuilder> builder) const {
     fProxy->init(std::move(caps), std::move(builder));
 }
-

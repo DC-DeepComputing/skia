@@ -114,6 +114,8 @@ public:
      */
     GrBackendFormat compressedBackendFormat(SkImage::CompressionType c) const;
 
+    int maxSurfaceSampleCountForColorType(SkColorType colorType) const;
+
     bool isValid() const { return nullptr != fCaps; }
 
     bool operator==(const GrContextThreadSafeProxy& that) const {

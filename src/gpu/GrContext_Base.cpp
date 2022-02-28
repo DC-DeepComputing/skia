@@ -40,6 +40,10 @@ GrBackendFormat GrContext_Base::defaultBackendFormat(SkColorType skColorType,
     return fThreadSafeProxy->defaultBackendFormat(skColorType, renderable);
 }
 
+int GrContext_Base::maxSurfaceSampleCountForColorType(SkColorType colorType) const {
+    return fThreadSafeProxy->maxSurfaceSampleCountForColorType(colorType);
+}
+
 GrBackendFormat GrContext_Base::compressedBackendFormat(SkImage::CompressionType c) const {
     return fThreadSafeProxy->compressedBackendFormat(c);
 }

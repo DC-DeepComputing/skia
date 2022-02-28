@@ -45,6 +45,8 @@ public:
 
     SK_API GrBackendFormat compressedBackendFormat(SkImage::CompressionType) const;
 
+    SK_API int maxSurfaceSampleCountForColorType(SkColorType colorType) const;
+
     // TODO: When the public version is gone, rename to refThreadSafeProxy and add raw ptr ver.
     sk_sp<GrContextThreadSafeProxy> threadSafeProxy();
 
