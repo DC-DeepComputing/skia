@@ -155,6 +155,30 @@
       },
       "revId": "afaee31f78cd35777e75199ad4eb410b5cd314a3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7134fa26_cbb3fd87",
+        "filename": "tests/sksl/shared/NegationDynamicVal.asm.frag",
+        "patchSetId": 1
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-03-01T01:00:32Z",
+      "side": 1,
+      "message": "Filed as http://go/crb/skia/12992\n\nWe won\u0027t be able to run this test in SkSLTest.cpp until this is fixed.",
+      "parentUuid": "9b9a8086_f2b76d44",
+      "range": {
+        "startLine": 1,
+        "startChar": 23,
+        "endLine": 5,
+        "endChar": 0
+      },
+      "revId": "afaee31f78cd35777e75199ad4eb410b5cd314a3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
