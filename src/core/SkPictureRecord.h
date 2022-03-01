@@ -47,6 +47,10 @@ public:
         return fTextBlobs;
     }
 
+    const SkTArray<sk_sp<const GrSlug>>& getSlugs() const {
+        return fSlugs;
+    }
+
     const SkTArray<sk_sp<const SkVertices>>& getVertices() const {
         return fVertices;
     }
@@ -144,6 +148,7 @@ private:
     void addSampling(const SkSamplingOptions&);
     void addText(const void* text, size_t byteLength);
     void addTextBlob(const SkTextBlob* blob);
+    void addSlug(const GrSlug* slug);
     void addVertices(const SkVertices*);
 
     int find(const SkBitmap& bitmap);
@@ -172,7 +177,7 @@ protected:
 
     void onDrawTextBlob(const SkTextBlob* blob, SkScalar x, SkScalar y,
                                 const SkPaint& paint) override;
-
+    void doDrawSlug(const GrSlug* slug) override;
     void onDrawPatch(const SkPoint cubics[12], const SkColor colors[4],
                      const SkPoint texCoords[4], SkBlendMode, const SkPaint& paint) override;
 
@@ -245,6 +250,7 @@ private:
     SkTArray<sk_sp<const SkPicture>>  fPictures;
     SkTArray<sk_sp<SkDrawable>>       fDrawables;
     SkTArray<sk_sp<const SkTextBlob>> fTextBlobs;
+    SkTArray<sk_sp<const GrSlug>>     fSlugs;
     SkTArray<sk_sp<const SkVertices>> fVertices;
 
     uint32_t fRecordFlags;

@@ -20,6 +20,10 @@
 
 #include <new>
 
+#if SK_SUPPORT_GPU
+#include "include/private/chromium/GrSlug.h"
+#endif
+
 template <typename T> int SafeCount(const T* obj) {
     return obj ? obj->count() : 0;
 }
@@ -39,6 +43,7 @@ SkPictureData::SkPictureData(const SkPictureRecord& record,
     : fPictures(record.getPictures())
     , fDrawables(record.getDrawables())
     , fTextBlobs(record.getTextBlobs())
+    , fSlugs(record.getSlugs())
     , fVertices(record.getVertices())
     , fImages(record.getImages())
     , fInfo(info) {
@@ -164,6 +169,13 @@ void SkPictureData::flattenToBuffer(SkWriteBuffer& buffer, bool textBlobsOnly) c
         write_tag_size(buffer, SK_PICT_TEXTBLOB_BUFFER_TAG, fTextBlobs.count());
         for (const auto& blob : fTextBlobs) {
             SkTextBlobPriv::Flatten(*blob, buffer);
+        }
+    }
+
+    if (!textBlobsOnly) {
+        write_tag_size(buffer, SK_PICT_SLUG_BUFFER_TAG, fSlugs.count());
+        for (const auto& slug : fSlugs) {
+            slug->doFlatten(buffer);
         }
     }
 
@@ -436,6 +448,9 @@ void SkPictureData::parseBufferTag(SkReadBuffer& buffer, uint32_t tag, uint32_t 
             } break;
         case SK_PICT_TEXTBLOB_BUFFER_TAG:
             new_array_from_buffer(buffer, size, fTextBlobs, SkTextBlobPriv::MakeFromBuffer);
+            break;
+        case SK_PICT_SLUG_BUFFER_TAG:
+            new_array_from_buffer(buffer, size, fSlugs, GrSlug::MakeFromBuffer);
             break;
         case SK_PICT_VERTICES_BUFFER_TAG:
             new_array_from_buffer(buffer, size, fVertices, SkVerticesPriv::Decode);
