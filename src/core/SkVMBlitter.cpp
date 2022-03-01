@@ -234,6 +234,8 @@ SkVMBlitter::Params SkVMBlitter::EffectiveParams(const SkPixmap& device,
                                                  SkPaint paint,
                                                  const SkMatrixProvider& matrices,
                                                  sk_sp<SkShader> clip) {
+
+    bool isConstant = !clip;
     // Sprites take priority over any shader.  (There's rarely one set, and it's meaningless.)
     if (sprite) {
         paint.setShader(sk_make_sp<SpriteShader>(*sprite));
@@ -255,6 +257,9 @@ SkVMBlitter::Params SkVMBlitter::EffectiveParams(const SkPixmap& device,
         shader = sk_make_sp<SkColorFilterShader>(std::move(shader),
                                                  paint.getAlphaf(),
                                                  sk_make_sp<NoopColorFilter>());
+        isConstant &= as_SB(shader)->isConstant();
+    } else {
+        isConstant = false;
     }
 
     // Add dither to the end of the shader pipeline if requested and needed.
@@ -285,6 +290,11 @@ SkVMBlitter::Params SkVMBlitter::EffectiveParams(const SkPixmap& device,
         blender = SkBlender::Mode(SkBlendMode::kSrc);
     }
 
+    isConstant &= as_BB(blender)->asBlendMode() == SkBlendMode::kSrc &&
+                  (device.colorType() == kBGRA_8888_SkColorType ? shader->isOpaque() || paint.getColor4f() == SkColors::kTransparent
+                  :device.colorType() == kAlpha_8_SkColorType ? paint.getColor4f() == SkColors::kTransparent
+                  :false);
+
     SkColor4f paintColor = paint.getColor4f();
     SkColorSpaceXformSteps{sk_srgb_singleton(), kUnpremul_SkAlphaType,
                            device.colorSpace(), kUnpremul_SkAlphaType}
@@ -298,6 +308,7 @@ SkVMBlitter::Params SkVMBlitter::EffectiveParams(const SkPixmap& device,
         Coverage::Full,  // Placeholder... withCoverage() will change as needed.
         paintColor,
         matrices,
+        isConstant, 0,
     };
 }
 
@@ -666,14 +677,95 @@ const void* SkVMBlitter::isSprite(int x, int y) const {
     return nullptr;
 }
 
+void SkVMBlitter::blitRect(int x, int y, int width, int height) {
+    SkASSERT(width > 0);
+    // Special case: drawing a constant color in Src mode.
+    // We can sometimes just memset.
+    if (fParams.isConstant) {
+
+        SkColor c = fParams.paint.toSkColor();
+        switch (fParams.dst.shiftPerPixel()) {
+            case 0: {
+                //SkDebugf("VM_1: @(%u, %u) + (%u, %u): %lu\n", y, x, width, height, c);
+                //SK_BLITTER_TRACE_STEP(
+                //        blitMemset0, true, /*scanlines=*/height, /*pixels=*/height * width);
+                void* p = fDevice.writable_addr(x, y);
+                while (height-- > 0) {
+                    memset(p, c, width);
+                    p = SkTAddOffset<void>(p, fDevice.rowBytes());
+                }
+                return;
+            }
+            case 1: {
+                //SK_BLITTER_TRACE_STEP(
+                //        blitMemset1, true, /*scanlines=*/height, /*pixels=*/height * width);
+                // SkDebugf("VM_2: @(%u, %u) + (%u, %u): %lu\n", y, x, width, height, c);
+                SkOpts::rect_memset16(
+                        fDevice.writable_addr16(x, y), c, width, fDevice.rowBytes(), height);
+                return;
+            }
+            case 2: {
+                //SK_BLITTER_TRACE_STEP(
+                //        blitMemset2, true, /*scanlines=*/height, /*pixels=*/height * width);
+                //SkDebugf("VM_3: @(%u, %u) + (%u, %u): %lu\n", y, x, width, height, (uint32_t)c);
+                SkOpts::rect_memset32(
+                        fDevice.writable_addr32(x, y), c, width, fDevice.rowBytes(), height);
+                return;
+            }
+            case 3: {
+                //SK_BLITTER_TRACE_STEP(
+                //        blitMemset3, true, /*scanlines=*/height, /*pixels=*/height * width);
+                // SkDebugf("VM_4: @(%u, %u) + (%u, %u): %lu\n", y, x, width, height, c);
+                SkOpts::rect_memset64(
+                        fDevice.writable_addr64(x, y), c, width, fDevice.rowBytes(), height);
+                return;
+            }
+        }
+    }
+
+    while (--height >= 0) {
+        this->blitH(x, y++, width);
+    }
+}
+
 void SkVMBlitter::blitH(int x, int y, int w) {
+    // Special case: drawing a constant color in Src mode.
+    // We can sometimes just memset.
+    if (fParams.isConstant) {
+
+        //SK_BLITTER_TRACE_STEP(blitH0, true, /*scanlines=*/1, /*pixels=*/w);
+        SkColor c = fParams.paint.toSkColor();
+        switch (fParams.dst.shiftPerPixel()) {
+            case 0:
+                //SkDebugf("VM1: @(%u, %u) + (%u, %u): %lu\n", y, x, w, 1, c);
+                memset(fDevice.writable_addr(x, y), c, w);
+                break;
+
+            case 1:
+                //SkDebugf("VM2: @(%u, %u) + (%u, %u): %lu\n", y, x, w, 1, c);
+                SkOpts::memset16(fDevice.writable_addr16(x,y), c, w);
+                break;
+
+            case 2:
+                //SkDebugf("VM3: @(%u, %u) + (%u, %u): %lu\n", y, x, w, 1, c);
+                SkOpts::memset32(fDevice.writable_addr32(x,y), c, w);
+                break;
+
+            case 3:
+                //SkDebugf("VM4: @(%u, %u) + (%u, %u): %lu\n", y, x, w, 1, c);
+                SkOpts::memset64(fDevice.writable_addr64(x,y), c, w);
+                break;
+        }
+        return;
+    }
+
     skvm::Program* blit_h = this->buildProgram(Coverage::Full);
     this->updateUniforms(x+w, y);
     if (const void* sprite = this->isSprite(x,y)) {
-        SK_BLITTER_TRACE_STEP(blitH1, true, /*scanlines=*/1, /*pixels=*/w);
+        //SK_BLITTER_TRACE_STEP(blitH1, true, /*scanlines=*/1, /*pixels=*/w);
         blit_h->eval(w, fUniforms.buf.data(), fDevice.addr(x,y), sprite);
     } else {
-        SK_BLITTER_TRACE_STEP(blitH2, true, /*scanlines=*/1, /*pixels=*/w);
+        //SK_BLITTER_TRACE_STEP(blitH2, true, /*scanlines=*/1, /*pixels=*/w);
         blit_h->eval(w, fUniforms.buf.data(), fDevice.addr(x,y));
     }
 }
