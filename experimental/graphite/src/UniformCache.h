@@ -13,7 +13,7 @@
 #include <unordered_map>
 #include <vector>
 
-class SkUniformBlock;
+class SkPipelineData;
 
 namespace skgpu {
 

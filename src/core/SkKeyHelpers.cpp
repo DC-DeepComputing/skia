@@ -90,7 +90,7 @@ sk_sp<SkUniformData> make_solid_uniform_data(SkShaderCodeDictionary* dict, SkCol
 
 void AddToKey(SkShaderCodeDictionary* dict,
               SkPaintParamsKeyBuilder* builder,
-              SkUniformBlock* uniformBlock,
+              SkPipelineData* pipelineData,
               const SkColor4f& color) {
 
 #ifdef SK_GRAPHITE_ENABLED
@@ -102,8 +102,8 @@ void AddToKey(SkShaderCodeDictionary* dict,
                               SkBuiltInCodeSnippetID::kSolidColorShader,
                               kBlockDataSize);
 
-        if (uniformBlock) {
-            uniformBlock->add(make_solid_uniform_data(dict, color));
+        if (pipelineData) {
+            pipelineData->add(make_solid_uniform_data(dict, color));
         }
         return;
     }
@@ -272,7 +272,7 @@ GradientData::GradientData(SkShader::GradientType type,
 
 void AddToKey(SkShaderCodeDictionary* dict,
               SkPaintParamsKeyBuilder *builder,
-              SkUniformBlock* uniformBlock,
+              SkPipelineData* pipelineData,
               const GradientData& gradData) {
 
 #ifdef SK_GRAPHITE_ENABLED
@@ -362,7 +362,7 @@ sk_sp<SkUniformData> make_image_uniform_data(SkShaderCodeDictionary* dict,
 
 void AddToKey(SkShaderCodeDictionary* dict,
               SkPaintParamsKeyBuilder* builder,
-              SkUniformBlock* uniformBlock,
+              SkPipelineData* pipelineData,
               const ImageData& imgData) {
 
 #ifdef SK_GRAPHITE_ENABLED
@@ -424,7 +424,7 @@ sk_sp<SkUniformData> make_blendshader_uniform_data(SkShaderCodeDictionary* dict,
 
 void AddToKey(SkShaderCodeDictionary* dict,
               SkPaintParamsKeyBuilder *builder,
-              SkUniformBlock* uniformBlock,
+              SkPipelineData* pipelineData,
               const BlendData& blendData) {
 
 #ifdef SK_GRAPHITE_ENABLED
@@ -476,7 +476,7 @@ static const int kBlockDataSize = 1;
 
 void AddToKey(SkShaderCodeDictionary* dict,
               SkPaintParamsKeyBuilder *builder,
-              SkUniformBlock* uniformBlock,
+              SkPipelineData* pipelineData,
               SkBlendMode bm) {
 
 #ifdef SK_GRAPHITE_ENABLED

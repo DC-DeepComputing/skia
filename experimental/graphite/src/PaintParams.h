@@ -13,9 +13,9 @@
 
 enum class SkBackend : uint8_t;
 class SkPaintParamsKeyBuilder;
+class SkPipelineData;
 class SkShader;
 class SkShaderCodeDictionary;
-class SkUniformBlock;
 
 namespace skgpu {
 

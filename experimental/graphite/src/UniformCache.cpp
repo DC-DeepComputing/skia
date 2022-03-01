@@ -12,15 +12,15 @@
 
 namespace skgpu {
 
-size_t UniformCache::Hash::operator()(SkUniformBlock* ub) const {
-    if (!ub) {
+size_t UniformCache::Hash::operator()(SkPipelineData* pd) const {
+    if (!pd) {
         return 0;
     }
 
-    return ub->hash();
+    return pd->hash();
 }
 
-bool UniformCache::Eq::operator()(SkUniformBlock* a, SkUniformBlock* b) const {
+bool UniformCache::Eq::operator()(SkPipelineData* a, SkPipelineData* b) const {
     if (!a || !b) {
         return !a && !b;
     }
@@ -46,22 +46,22 @@ void UniformCache::validate() const {
 }
 #endif
 
-uint32_t UniformCache::insert(std::unique_ptr<SkUniformBlock> block) {
-    auto kv = fUniformBlockIDs.find(block.get());
+uint32_t UniformCache::insert(std::unique_ptr<SkPipelineData> pipelineData) {
+    auto kv = fUniformBlockIDs.find(pipelineData.get());
     if (kv != fUniformBlockIDs.end()) {
         return kv->second;
     }
 
     uint32_t id = SkTo<uint32_t>(fUniformBlock.size());
-    SkASSERT(block && id != kInvalidUniformID);
+    SkASSERT(pipelineData && id != kInvalidUniformID);
 
-    fUniformBlockIDs.insert({block.get(), id});
-    fUniformBlock.push_back(std::move(block));
+    fUniformBlockIDs.insert({pipelineData.get(), id});
+    fUniformBlock.push_back(std::move(pipelineData));
     this->validate();
     return id;
 }
 
-SkUniformBlock* UniformCache::lookup(uint32_t uniqueID) {
+SkPipelineData* UniformCache::lookup(uint32_t uniqueID) {
     SkASSERT(uniqueID < fUniformBlock.size());
     return fUniformBlock[uniqueID].get();
 }

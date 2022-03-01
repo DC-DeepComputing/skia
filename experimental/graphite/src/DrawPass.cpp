@@ -178,14 +178,14 @@ public:
     UniformBindingCache(DrawBufferManager* bufferMgr, UniformCache* cache)
             : fBufferMgr(bufferMgr), fCache(cache) {}
 
-    uint32_t addUniforms(std::unique_ptr<SkUniformBlock> uniformBlock) {
-        if (!uniformBlock || uniformBlock->empty()) {
+    uint32_t addUniforms(std::unique_ptr<SkProgramData> programData) {
+        if (!programData || programData->empty()) {
             return UniformCache::kInvalidUniformID;
         }
 
-        uint32_t index = fCache->insert(std::move(uniformBlock));
+        uint32_t index = fCache->insert(std::move(programData));
         if (fBindings.find(index) == fBindings.end()) {
-            SkUniformBlock* tmp = fCache->lookup(index);
+            SkProgramData* tmp = fCache->lookup(index);
             // First time encountering this data, so upload to the GPU
             size_t totalDataSize = tmp->totalSize();
             auto [writer, bufferInfo] = fBufferMgr->getUniformWriter(totalDataSize);
@@ -319,13 +319,13 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
             uint32_t geometryIndex = UniformCache::kInvalidUniformID;
             if (step->numUniforms() > 0) {
                 // TODO: Get layout from the GPU
-                auto uniforms = step->writeUniforms(Layout::kMetal,
-                                                    draw.fClip.scissor(),
-                                                    draw.fTransform,
-                                                    draw.fShape);
+                auto pipelineData = step->writeUniforms(Layout::kMetal,
+                                                        draw.fClip.scissor(),
+                                                        draw.fTransform,
+                                                        draw.fShape);
 
                 geometryIndex = geometryUniformBindings.addUniforms(
-                        std::make_unique<SkUniformBlock>(std::move(uniforms)));
+                        std::make_unique<SkPipelineData>(std::move(pipelineData)));
             }
 
             GraphicsPipelineDesc desc;

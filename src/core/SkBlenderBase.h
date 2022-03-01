@@ -19,9 +19,9 @@ enum class SkBackend : uint8_t;
 struct GrFPArgs;
 class GrFragmentProcessor;
 class SkPaintParamsKeyBuilder;
+class SkPipelineData;
 class SkRuntimeEffect;
 class SkShaderCodeDictionary;
-class SkUniformBlock;
 
 /**
  * Encapsulates a blend function, including non-public APIs.
