@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c6f953d6_ecff5668",
+        "filename": "gn/gn_to_bp.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 451,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2022-03-01T16:11:29Z",
+      "side": 1,
+      "message": "change this to CTS",
+      "range": {
+        "startLine": 451,
+        "startChar": 19,
+        "endLine": 451,
+        "endChar": 32
+      },
+      "revId": "4b08175ebc8bb1651188af69f0877a92a4a5b9ed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
