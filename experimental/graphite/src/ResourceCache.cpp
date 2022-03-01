@@ -126,7 +126,26 @@ bool ResourceCache::returnResource(Resource* resource, LastRemovedRef removedRef
     }
 
     SkASSERT(resource);
+
+    // We only allow one instance of a Resource to be in the return queue at a time. The reason for
+    // this is that Resources in the return queue may not have any refs on them. So when we try to
+    // return the first instances of the Resource, we may end up deleting the Resource for budget
+    // reasons. Thus we can't have the same Resources in the queue multiple times.
+    if (*resource->accessReturnIndex() >= 0) {
+        // If the resource is already in the return queue we promote the LastRemovedRef to be
+        // kUsageRef if that is what is returned here.
+        if (removedRef == LastRemovedRef::kUsageRef) {
+            fReturnQueue[*resource->accessReturnIndex()].second = removedRef;
+        }
+        return true;
+    }
+#ifdef SK_DEBUG
+    for (auto& nextResource : fReturnQueue) {
+        SkASSERT(nextResource.first != resource);
+    }
+#endif
     fReturnQueue.push_back(std::tie(resource, removedRef));
+    *resource->accessReturnIndex() = fReturnQueue.size() - 1;
     return true;
 }
 
@@ -139,6 +158,8 @@ void ResourceCache::processReturnedResources() {
 
     for (auto& nextResource : fReturnQueue) {
         auto [resource, ref] = nextResource;
+        SkASSERT(*resource->accessReturnIndex() >= 0);
+        *resource->accessReturnIndex() = -1;
         this->returnResourceToCache(resource, ref);
     }
     fReturnQueue.clear();

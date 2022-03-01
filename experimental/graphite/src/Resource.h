@@ -118,6 +118,7 @@ private:
     }
 
     bool isPurgeable() const;
+    int* accessReturnIndex()  const { return &fReturnIndex; }
     int* accessCacheIndex()  const { return &fCacheArrayIndex; }
 
     uint32_t timestamp() const { return fTimestamp; }
@@ -197,6 +198,9 @@ private:
     GraphiteResourceKey fKey;
 
     sk_sp<ResourceCache> fReturnCache;
+    // An index into the return cache so we know whether or not the resource is already waiting to
+    // be returned or not.
+    mutable int fReturnIndex = -1;
 
     // An index into a heap when this resource is purgeable or an array when not. This is maintained
     // by the cache.
