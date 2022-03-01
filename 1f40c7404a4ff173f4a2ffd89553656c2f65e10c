@@ -16,6 +16,23 @@
       "message": "PTAL",
       "revId": "1f40c7404a4ff173f4a2ffd89553656c2f65e10c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6992cd11_e6f6dda7",
+        "filename": "infra/bots/gen_tasks_logic/dm_flags.go",
+        "patchSetId": 1
+      },
+      "lineNbr": 1153,
+      "author": {
+        "id": 17959
+      },
+      "writtenOn": "2022-03-01T19:21:11Z",
+      "side": 1,
+      "message": "Looks fine, though we could also merge it with the above block.",
+      "revId": "1f40c7404a4ff173f4a2ffd89553656c2f65e10c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
