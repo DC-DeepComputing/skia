@@ -5,11 +5,13 @@
  * found in the LICENSE file.
  */
 
+#include "SkPictureFlat.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkRSXform.h"
 #include "include/core/SkTextBlob.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkTDArray.h"
+#include "include/private/chromium/GrSlug.h"
 #include "src/core/SkCanvasPriv.h"
 #include "src/core/SkDrawShadowInfo.h"
 #include "src/core/SkFontPriv.h"
@@ -600,6 +602,12 @@ void SkPicturePlayback::handleOp(SkReadBuffer* reader,
             BREAK_ON_READ_ERROR(reader);
 
             canvas->drawTextBlob(blob, x, y, paint);
+        } break;
+        case DRAW_SLUG: {
+            const GrSlug* slug = fPictureData->getSlug(reader);
+            BREAK_ON_READ_ERROR(reader);
+
+            slug->draw(canvas);
         } break;
         case DRAW_VERTICES_OBJECT: {
             const SkPaint& paint = fPictureData->requiredPaint(reader);

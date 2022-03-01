@@ -61,6 +61,7 @@ public:
 #define SK_PICT_PAINT_BUFFER_TAG    SkSetFourByteTag('p', 'n', 't', ' ')
 #define SK_PICT_PATH_BUFFER_TAG     SkSetFourByteTag('p', 't', 'h', ' ')
 #define SK_PICT_TEXTBLOB_BUFFER_TAG SkSetFourByteTag('b', 'l', 'o', 'b')
+#define SK_PICT_SLUG_BUFFER_TAG SkSetFourByteTag('s', 'l', 'u', 'g')
 #define SK_PICT_VERTICES_BUFFER_TAG SkSetFourByteTag('v', 'e', 'r', 't')
 #define SK_PICT_IMAGE_BUFFER_TAG    SkSetFourByteTag('i', 'm', 'a', 'g')
 
@@ -127,6 +128,10 @@ public:
         return read_index_base_1_or_null(reader, fTextBlobs);
     }
 
+    const GrSlug* getSlug(SkReadBuffer* reader) const {
+        return read_index_base_1_or_null(reader, fSlugs);
+    }
+
     const SkVertices* getVertices(SkReadBuffer* reader) const {
         return read_index_base_1_or_null(reader, fVertices);
     }
@@ -150,6 +155,7 @@ private:
     SkTArray<sk_sp<const SkPicture>>   fPictures;
     SkTArray<sk_sp<SkDrawable>>        fDrawables;
     SkTArray<sk_sp<const SkTextBlob>>  fTextBlobs;
+    SkTArray<sk_sp<const GrSlug>>      fSlugs;
     SkTArray<sk_sp<const SkVertices>>  fVertices;
     SkTArray<sk_sp<const SkImage>>     fImages;
 
