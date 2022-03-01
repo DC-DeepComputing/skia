@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9bb5a5d2_646316e7",
+        "filename": "resources/sksl/shared/UnaryPositiveNegative.sksl",
+        "patchSetId": 2
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-03-01T18:08:58Z",
+      "side": 1,
+      "message": "optional: Consider using `testMatrix2x2`?",
+      "range": {
+        "startLine": 32,
+        "startChar": 17,
+        "endLine": 32,
+        "endChar": 40
+      },
+      "revId": "bf5e3d46678684aa7dfa544cea09c924971f77b3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3059b395_75358a7f",
+        "filename": "resources/sksl/shared/UnaryPositiveNegative.sksl",
+        "patchSetId": 2
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-03-01T18:08:58Z",
+      "side": 1,
+      "message": "optional: Consider using `testMatrix3x3`?\n\n(I never added a testMatrix4x4 though)",
+      "range": {
+        "startLine": 39,
+        "startChar": 17,
+        "endLine": 39,
+        "endChar": 39
+      },
+      "revId": "bf5e3d46678684aa7dfa544cea09c924971f77b3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "786ee15a_41eae2a9",
+        "filename": "src/sksl/codegen/SkSLMetalCodeGenerator.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1711,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-03-01T18:08:58Z",
+      "side": 1,
+      "message": "This code block only handles +, so consider moving this sentence to a separate comment below (on ~L1716 or even ~L1724)",
+      "range": {
+        "startLine": 1710,
+        "startChar": 34,
+        "endLine": 1711,
+        "endChar": 11
+      },
+      "revId": "bf5e3d46678684aa7dfa544cea09c924971f77b3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "39a49f3b_18339dfc",
+        "filename": "src/sksl/codegen/SkSLMetalCodeGenerator.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1719,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-03-01T18:08:58Z",
+      "side": 1,
+      "message": "up to you: We call this `needParens` elsewhere, seems easier to grok at a glance",
+      "range": {
+        "startLine": 1719,
+        "startChar": 15,
+        "endLine": 1719,
+        "endChar": 32
+      },
+      "revId": "bf5e3d46678684aa7dfa544cea09c924971f77b3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
