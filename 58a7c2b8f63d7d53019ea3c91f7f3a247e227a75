@@ -16,6 +16,23 @@
       "message": "Hello Kevin,\n\nI have the seed descriptors we talked about long ago. They are raw sk_sp\u003cSkData\u003e items. If this is not a good format, we can chat about changing it.",
       "revId": "58a7c2b8f63d7d53019ea3c91f7f3a247e227a75",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e211399d_1862fcad",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-03-01T13:23:37Z",
+      "side": 1,
+      "message": "No longer needed due to https://github.com/google/oss-fuzz/pull/7337/ having landed",
+      "revId": "58a7c2b8f63d7d53019ea3c91f7f3a247e227a75",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
