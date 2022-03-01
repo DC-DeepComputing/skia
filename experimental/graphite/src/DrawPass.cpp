@@ -178,14 +178,14 @@ public:
     UniformBindingCache(DrawBufferManager* bufferMgr, UniformCache* cache)
             : fBufferMgr(bufferMgr), fCache(cache) {}
 
-    uint32_t addUniforms(std::unique_ptr<SkUniformBlock> uniformBlock) {
-        if (!uniformBlock || uniformBlock->empty()) {
+    uint32_t addUniforms(std::unique_ptr<SkPipelineData> pipelineData) {
+        if (!pipelineData || pipelineData->empty()) {
             return UniformCache::kInvalidUniformID;
         }
 
-        uint32_t index = fCache->insert(std::move(uniformBlock));
+        uint32_t index = fCache->insert(std::move(pipelineData));
         if (fBindings.find(index) == fBindings.end()) {
-            SkUniformBlock* tmp = fCache->lookup(index);
+            SkPipelineData* tmp = fCache->lookup(index);
             // First time encountering this data, so upload to the GPU
             size_t totalDataSize = tmp->totalSize();
             auto [writer, bufferInfo] = fBufferMgr->getUniformWriter(totalDataSize);
@@ -297,12 +297,12 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
         // bound independently of those used by the rest of the RenderStep, then we can upload now
         // and remember the location for re-use on any RenderStep that does shading.
         SkUniquePaintParamsID shaderID;
-        std::unique_ptr<SkUniformBlock> shadingUniforms;
+        std::unique_ptr<SkPipelineData> pipelineData;
         uint32_t shadingIndex = UniformCache::kInvalidUniformID;
         if (draw.fPaintParams.has_value()) {
-            std::tie(shaderID, shadingUniforms) = ExtractPaintData(dict, &builder,
-                                                                   draw.fPaintParams.value());
-            shadingIndex = shadingUniformBindings.addUniforms(std::move(shadingUniforms));
+            std::tie(shaderID, pipelineData) = ExtractPaintData(dict, &builder,
+                                                                draw.fPaintParams.value());
+            shadingIndex = shadingUniformBindings.addUniforms(std::move(pipelineData));
         } // else depth-only
 
         for (int stepIndex = 0; stepIndex < draw.fRenderer.numRenderSteps(); ++stepIndex) {
@@ -325,7 +325,7 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
                                                     draw.fShape);
 
                 geometryIndex = geometryUniformBindings.addUniforms(
-                        std::make_unique<SkUniformBlock>(std::move(uniforms)));
+                        std::make_unique<SkPipelineData>(std::move(uniforms)));
             }
 
             GraphicsPipelineDesc desc;
