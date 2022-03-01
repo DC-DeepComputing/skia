@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "014d22f2_714ea69d",
+        "filename": "src/gpu/v1/Device.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 988,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-03-01T19:42:41Z",
+      "side": 1,
+      "message": "What\u0027s up with this indentation ?\nAlso, duplicate assert ?",
+      "revId": "230085862057aa8206af0ee3163751cb70656e40",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1bebe063_6405cc0a",
+        "filename": "src/gpu/v1/Device.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 1010,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-03-01T19:42:41Z",
+      "side": 1,
+      "message": "should we have all the \"guarded by\" decorations ?",
+      "revId": "230085862057aa8206af0ee3163751cb70656e40",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1811aabb_1df2a5e9",
+        "filename": "src/gpu/v1/Device.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 1028,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-03-01T19:42:41Z",
+      "side": 1,
+      "message": "We never actually seem to change \u0027fLastDeletedHandleId\u0027",
+      "revId": "230085862057aa8206af0ee3163751cb70656e40",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
