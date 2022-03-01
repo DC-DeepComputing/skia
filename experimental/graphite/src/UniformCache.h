@@ -13,7 +13,7 @@
 #include <unordered_map>
 #include <vector>
 
-class SkUniformBlock;
+class SkPipelineData;
 
 namespace skgpu {
 
@@ -45,9 +45,9 @@ public:
 
     // Add the block of uniform data to the cache and return a unique ID that corresponds to its
     // contents. If an identical block of data is already in the cache, that unique ID is returned.
-    uint32_t insert(std::unique_ptr<SkUniformBlock>);
+    uint32_t insert(std::unique_ptr<SkPipelineData>);
 
-    SkUniformBlock* lookup(uint32_t uniqueID);
+    SkPipelineData* lookup(uint32_t uniqueID);
 
     // The number of unique UniformBlock objects in the cache
     size_t count() const {
@@ -58,16 +58,16 @@ public:
 private:
     struct Hash {
         // This hash operator de-references and hashes the data contents
-        size_t operator()(SkUniformBlock*) const;
+        size_t operator()(SkPipelineData*) const;
     };
     struct Eq {
         // This equality operator de-references and compares the actual data contents
-        bool operator()(SkUniformBlock*, SkUniformBlock*) const;
+        bool operator()(SkPipelineData*, SkPipelineData*) const;
     };
 
     // The UniformBlock's unique ID is only unique w/in a Recorder _not_ globally
-    std::unordered_map<SkUniformBlock*, uint32_t, Hash, Eq> fUniformBlockIDs;
-    std::vector<std::unique_ptr<SkUniformBlock>> fUniformBlock;
+    std::unordered_map<SkPipelineData*, uint32_t, Hash, Eq> fUniformBlockIDs;
+    std::vector<std::unique_ptr<SkPipelineData>> fUniformBlock;
 
 #ifdef SK_DEBUG
     void validate() const;
