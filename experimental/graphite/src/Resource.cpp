@@ -29,6 +29,14 @@ void Resource::registerWithCache(sk_sp<ResourceCache> returnCache) {
     SkASSERT(returnCache);
 
     fReturnCache = std::move(returnCache);
+    fRegisteredToCache = true;
+}
+
+void Resource::unregisterWithCache() {
+    SkASSERT(fReturnCache);
+    SkASSERT(fRegisteredToCache);
+
+    fRegisteredToCache = false;
 }
 
 bool Resource::notifyARefIsZero(LastRemovedRef removedRef) const {

@@ -67,6 +67,8 @@ private:
 
     uint32_t getNextTimestamp();
 
+    bool inPurgeableQueue(Resource*) const;
+
 #ifdef SK_DEBUG
     bool isInCache(const Resource* r) const;
     void validate() const;
