@@ -47,15 +47,15 @@ void ResourceCache::shutdown() {
     while (fNonpurgeableResources.count()) {
         Resource* back = *(fNonpurgeableResources.end() - 1);
         SkASSERT(!back->wasDestroyed());
-        back->removedFromCache();
         this->removeFromNonpurgeableArray(back);
+        back->unrefCache();
     }
 
     while (fPurgeableQueue.count()) {
         Resource* top = fPurgeableQueue.peek();
         SkASSERT(!top->wasDestroyed());
-        top->removedFromCache();
-        fPurgeableQueue.remove(top);
+        this->removeFromPurgeableQueue(top);
+        top->unrefCache();
     }
 }
 
@@ -70,6 +70,7 @@ void ResourceCache::insertResource(Resource* resource) {
     this->processReturnedResources();
 
     resource->registerWithCache(sk_ref_sp(this));
+    resource->refCache();
 
     // We must set the timestamp before adding to the array in case the timestamp wraps and we wind
     // up iterating over all the resources that already have timestamps.
@@ -108,12 +109,12 @@ void ResourceCache::refAndMakeResourceMRU(Resource* resource) {
     SkASSERT(resource);
     SkASSERT(this->isInCache(resource));
 
-    if (resource->isPurgeable()) {
+    if (this->inPurgeableQueue(resource)) {
         // It's about to become unpurgeable.
-        fPurgeableQueue.remove(resource);
+        this->removeFromPurgeableQueue(resource);
         this->addToNonpurgeableArray(resource);
     }
-    resource->refCacheOnly();
+    resource->initialUsageRef();
 
     resource->setTimestamp(this->getNextTimestamp());
     this->validate();
@@ -126,22 +127,60 @@ bool ResourceCache::returnResource(Resource* resource, LastRemovedRef removedRef
     }
 
     SkASSERT(resource);
+
+    // We only allow one instance of a Resource to be in the return queue at a time. We do this so
+    // that the ReturnQueue stays small and quick to process.
+    //
+    // Because we take CacheRefs to all Resources added to the ReturnQueue, we would be safe if we
+    // decided to have multiple instances of a Resource. Even if an earlier returned instance  of a
+    // Resource triggers that Resource to get purged from the cache, the Resource itself wouldn't
+    // get deleted until we drop all the CacheRefs in this ReturnQueue.
+    if (*resource->accessReturnIndex() >= 0) {
+        // If the resource is already in the return queue we promote the LastRemovedRef to be
+        // kUsageRef if that is what is returned here.
+        if (removedRef == LastRemovedRef::kUsageRef) {
+            fReturnQueue[*resource->accessReturnIndex()].second = removedRef;
+        }
+        return true;
+    }
+#ifdef SK_DEBUG
+    for (auto& nextResource : fReturnQueue) {
+        SkASSERT(nextResource.first != resource);
+    }
+#endif
     fReturnQueue.push_back(std::tie(resource, removedRef));
+    *resource->accessReturnIndex() = fReturnQueue.size() - 1;
+    resource->refCache();
     return true;
 }
 
 void ResourceCache::processReturnedResources() {
-    // TODO: There is currently some non-trivial amount of work that happens in
-    // ResourceCache::returnResource for each returned Resource. During this time we are keeping the
-    // fReturnMutex locked. It would ideal if instead we could quickly move the Resource's off of
-    // fReturnQueue, drop the lock, and then send them back to the ResourceCache.
-    SkAutoMutexExclusive locked(fReturnMutex);
-
-    for (auto& nextResource : fReturnQueue) {
-        auto [resource, ref] = nextResource;
-        this->returnResourceToCache(resource, ref);
+    // We need to move the returned Resources off of the ReturnQueue before we start processing them
+    // so that we can drop the fReturnMutex. When we process a Resource we may need to grab its
+    // UnrefMutex. This could cause a deadlock if on another thread the Resource has the UnrefMutex
+    // and is waiting on the ReturnMutex to be free.
+    ReturnQueue tempQueue;
+    {
+        SkAutoMutexExclusive locked(fReturnMutex);
+        // TODO: Instead of doing a copy of the vector, we may be able to improve the performance
+        // here by storing some form of linked list, then just move the pointer the first element
+        // and reset the ReturnQueue's top element to nullptr.
+        tempQueue = fReturnQueue;
+        fReturnQueue.clear();
+        for (auto& nextResource : tempQueue) {
+            auto [resource, ref] = nextResource;
+            SkASSERT(*resource->accessReturnIndex() >= 0);
+            *resource->accessReturnIndex() = -1;
+        }
     }
-    fReturnQueue.clear();
+    for (auto& nextResource : tempQueue) {
+        auto [resource, ref] = nextResource;
+        // Remove cache ref help by ReturnQueue
+        if (*resource->accessCacheIndex() != -1) {
+            this->returnResourceToCache(resource, ref);
+        }
+        resource->unrefCache();
+    }
 }
 
 void ResourceCache::returnResourceToCache(Resource* resource, LastRemovedRef removedRef) {
@@ -162,7 +201,17 @@ void ResourceCache::returnResourceToCache(Resource* resource, LastRemovedRef rem
         }
     }
 
-    if (!resource->isPurgeable()) {
+    // If we weren't using multiple threads, it is ok to assume a resource that isn't purgeable must
+    // be in the non purgeable array. However, since resources can be unreffed from multiple
+    // threads, it is possible that a resource became purgeable while we are in the middle of
+    // returning resources. For example, a resource could have 1 usage and 1 command buffer ref. We
+    // then unref the usage which puts the resource in the return queue. Then the ResourceCache
+    // thread locks the ReturnQueue as it returns the Resource. At this same time another thread
+    // unrefs the command buffer usage but can't add the Resource to the ReturnQueue as it is
+    // locked. When we go to return the Resource to the cache it will look like it is purgeable so
+    // we switch it over then. Then later when we return the command buffer ref, the Resource will
+    // have already been switched to purgeable and we don't need to do it again.
+    if (!resource->isPurgeable() || this->inPurgeableQueue(resource)) {
         this->validate();
         return;
     }
@@ -186,7 +235,24 @@ void ResourceCache::removeFromNonpurgeableArray(Resource* resource) {
     fNonpurgeableResources[*index] = tail;
     *tail->accessCacheIndex() = *index;
     fNonpurgeableResources.pop();
-    SkDEBUGCODE(*index = -1);
+    *index = -1;
+}
+
+void ResourceCache::removeFromPurgeableQueue(Resource* resource) {
+    fPurgeableQueue.remove(resource);
+    // SkTDPQueue will set the index back to -1 in debug builds, but we are using the index as a
+    // flag for whether the Resource has been purged from the cache or not. So we need to make sure
+    // it always gets set.
+    *resource->accessCacheIndex() = -1;
+}
+
+bool ResourceCache::inPurgeableQueue(Resource* resource) const {
+    SkASSERT(this->isInCache(resource));
+    int index = *resource->accessCacheIndex();
+    if (index < fPurgeableQueue.count() && fPurgeableQueue.at(index) == resource) {
+        return true;
+    }
+    return false;
 }
 
 uint32_t ResourceCache::getNextTimestamp() {
