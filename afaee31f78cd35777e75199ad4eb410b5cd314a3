@@ -88,6 +88,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "512f4326_9046faf7",
+        "filename": "src/sksl/codegen/SkSLMetalCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1718,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-03-01T17:55:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e3fc2eef_aa0165ca",
+      "range": {
+        "startLine": 1718,
+        "startChar": 20,
+        "endLine": 1718,
+        "endChar": 29
+      },
+      "revId": "afaee31f78cd35777e75199ad4eb410b5cd314a3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0cca9e71_0f55d94b",
@@ -111,6 +135,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "98e3f379_c23481ea",
+        "filename": "src/sksl/codegen/SkSLMetalCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1720,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-03-01T17:55:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0cca9e71_0f55d94b",
+      "range": {
+        "startLine": 1720,
+        "startChar": 8,
+        "endLine": 1720,
+        "endChar": 57
+      },
+      "revId": "afaee31f78cd35777e75199ad4eb410b5cd314a3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f94e6098_9998d65b",
@@ -124,6 +172,30 @@
       "writtenOn": "2022-03-01T00:51:14Z",
       "side": 1,
       "message": "Actually, this test should probably be moved to the folding/ directory. Most tests that focus on the constant-folder live there. (Then you also wouldn\u0027t need an explicit constval/dynamicval distinction.)",
+      "range": {
+        "startLine": 451,
+        "startChar": 47,
+        "endLine": 451,
+        "endChar": 78
+      },
+      "revId": "afaee31f78cd35777e75199ad4eb410b5cd314a3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cf2e317e_6f444cdc",
+        "filename": "tests/SkSLTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 451,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-03-01T17:55:28Z",
+      "side": 1,
+      "message": "Done. I noticed that there is a shared/UnaryPositiveNegative.sksl test already but it only tests half2. I decided to extend that test case to cover matrices instead.",
+      "parentUuid": "f94e6098_9998d65b",
       "range": {
         "startLine": 451,
         "startChar": 47,
@@ -171,6 +243,30 @@
       "side": 1,
       "message": "Filed as http://go/crb/skia/12992\n\nWe won\u0027t be able to run this test in SkSLTest.cpp until this is fixed.",
       "parentUuid": "9b9a8086_f2b76d44",
+      "range": {
+        "startLine": 1,
+        "startChar": 23,
+        "endLine": 5,
+        "endChar": 0
+      },
+      "revId": "afaee31f78cd35777e75199ad4eb410b5cd314a3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "70e63726_a39092d3",
+        "filename": "tests/sksl/shared/NegationDynamicVal.asm.frag",
+        "patchSetId": 1
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-03-01T17:55:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7134fa26_cbb3fd87",
       "range": {
         "startLine": 1,
         "startChar": 23,
