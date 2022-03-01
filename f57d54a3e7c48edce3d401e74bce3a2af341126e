@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e509e277_9c6a1b5d",
+        "filename": "include/core/SkImage.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 1133,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-03-01T18:18:16Z",
+      "side": 1,
+      "message": "Since this is the public api, should we add the SkBudgeted in now? Do we think we won\u0027t want to use it? What are the use cases that a client passes in kNo here?\n\nIts fine for now if we ignore the param inside the call, but if we think we\u0027ll want it in the long run, might as well add it now.",
+      "range": {
+        "startLine": 1132,
+        "startChar": 66,
+        "endLine": 1133,
+        "endChar": 65
+      },
+      "revId": "f57d54a3e7c48edce3d401e74bce3a2af341126e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
