@@ -1706,12 +1706,30 @@ void MetalCodeGenerator::writeTernaryExpression(const TernaryExpression& t,
 
 void MetalCodeGenerator::writePrefixExpression(const PrefixExpression& p,
                                                Precedence parentPrecedence) {
-    if (Precedence::kPrefix >= parentPrecedence) {
+    // According to the MSL specification, the arithmetic unary operators (+ and –) do not act
+    // upon matrix type operands. Transform the unary "-" on a matrix type to a multiplication by
+    // -1. We treat the unary "+" as NOP for all operands.
+    const Operator op = p.getOperator();
+    if (op.kind() == Token::Kind::TK_PLUS) {
+        return this->writeExpression(*p.operand(), Precedence::kPrefix);
+    }
+
+    const bool matrixNegation =
+            op.kind() == Token::Kind::TK_MINUS && p.operand()->type().isMatrix();
+    const bool enforcePrecedence = Precedence::kPrefix >= parentPrecedence || matrixNegation;
+
+    if (enforcePrecedence) {
         this->write("(");
     }
-    this->write(p.getOperator().tightOperatorName());
+
+    if (matrixNegation) {
+        this->write("-1.0 * ");
+    } else {
+        this->write(p.getOperator().tightOperatorName());
+    }
     this->writeExpression(*p.operand(), Precedence::kPrefix);
-    if (Precedence::kPrefix >= parentPrecedence) {
+
+    if (enforcePrecedence) {
         this->write(")");
     }
 }

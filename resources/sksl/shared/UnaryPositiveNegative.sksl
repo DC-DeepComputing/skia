@@ -1,8 +1,60 @@
 uniform half4 colorWhite, colorGreen, colorRed;
 
-half4 main(float2 coords) {
+bool test_fscalar() {
+    float x = colorWhite.r;
+    x = +x;
+    x = -x;
+    return x == -1;
+}
+
+bool test_iscalar() {
+    int x = int(colorWhite.r);
+    x = +x;
+    x = -x;
+    return x == -1;
+}
+
+bool test_fvec() {
     half2 x = colorWhite.rg;
     x = +x;
     x = -x;
-    return x == half2(-1) ? colorGreen : colorRed;
+    return x == half2(-1);
+}
+
+bool test_ivec() {
+    int2 x = int2(colorWhite.r);
+    x = +x;
+    x = -x;
+    return x == int2(-1);
+}
+
+bool test_mat2() {
+    float2x2 x = float2x2(colorWhite.r);
+    x = +x;
+    x = -x;
+    return x == float2x2(-1);
+}
+
+bool test_mat3() {
+    float3x3 x = float3x3(colorWhite.r);
+    x = +x;
+    x = -x;
+    return x == float3x3(-1);
+}
+
+bool test_mat4() {
+    float4x4 x = float4x4(colorWhite.r);
+    x = +x;
+    x = -x;
+    return x == float4x4(-1);
+}
+
+half4 main(float2 coords) {
+    return test_fscalar()
+            && test_iscalar()
+            && test_fvec()
+            && test_ivec()
+            && test_mat2()
+            && test_mat3()
+            && test_mat4() ? colorGreen : colorRed;
 }
