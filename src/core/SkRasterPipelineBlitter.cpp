@@ -281,6 +281,7 @@ SkBlitter* SkRasterPipelineBlitter::Create(const SkPixmap& dst,
 
         switch (blitter->fDst.shiftPerPixel()) {
             case 0: blitter->fMemset2D = [](SkPixmap* dst, int x,int y, int w,int h, uint64_t c) {
+                //SkDebugf("RP1: @(%u, %u) + (%u, %u): %lu\n", y, x, w, h, c);
                 void* p = dst->writable_addr(x,y);
                 while (h --> 0) {
                     memset(p, c, w);
@@ -289,14 +290,17 @@ SkBlitter* SkRasterPipelineBlitter::Create(const SkPixmap& dst,
             }; break;
 
             case 1: blitter->fMemset2D = [](SkPixmap* dst, int x,int y, int w,int h, uint64_t c) {
+                //SkDebugf("RP2: @(%u, %u) + (%u, %u): %lu\n", y, x, w, h, c);
                 SkOpts::rect_memset16(dst->writable_addr16(x,y), c, w, dst->rowBytes(), h);
             }; break;
 
             case 2: blitter->fMemset2D = [](SkPixmap* dst, int x,int y, int w,int h, uint64_t c) {
+                //SkDebugf("RP3: @(%u, %u) + (%u, %u): %lu\n", y, x, w, h, c);
                 SkOpts::rect_memset32(dst->writable_addr32(x,y), c, w, dst->rowBytes(), h);
             }; break;
 
             case 3: blitter->fMemset2D = [](SkPixmap* dst, int x,int y, int w,int h, uint64_t c) {
+                //SkDebugf("RP4: @(%u, %u) + (%u, %u): %lu\n", y, x, w, h, c);
                 SkOpts::rect_memset64(dst->writable_addr64(x,y), c, w, dst->rowBytes(), h);
             }; break;
 

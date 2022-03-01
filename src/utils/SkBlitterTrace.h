@@ -34,7 +34,7 @@
 #endif
 
 #ifdef SK_BLITTER_TRACE_IS_SKVM
-SkBlitterTrace gSkVMBlitterTrace("VM", false);
+SkBlitterTrace gSkVMBlitterTrace("VM", true);
 #define SK_BLITTER_TRACE_STEP(name, trace, scanlines, pixels) \
     SkBlitterTrace::Step name(trace ? &gSkVMBlitterTrace : nullptr, \
                               #name,     \
@@ -43,7 +43,7 @@ SkBlitterTrace gSkVMBlitterTrace("VM", false);
 #endif
 
 #ifdef SK_BLITTER_TRACE_IS_RASTER_PIPELINE
-SkBlitterTrace gSkRPBlitterTrace("RP", false);
+SkBlitterTrace gSkRPBlitterTrace("RP", true);
 #define SK_BLITTER_TRACE_STEP(name, trace, scanlines, pixels) \
     SkBlitterTrace::Step name(trace ? &gSkRPBlitterTrace : nullptr, \
                               #name,     \

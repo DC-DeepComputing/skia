@@ -68,6 +68,9 @@ private:
         SkColor4f               paint;
         const SkMatrixProvider& matrices;
 
+        bool                    isConstant;
+        uint64_t                constanColor;
+
         Params withCoverage(Coverage c) const;
     };
 
@@ -91,6 +94,7 @@ private:
 
     void blitH(int x, int y, int w) override;
     void blitAntiH(int x, int y, const SkAlpha cov[], const int16_t runs[]) override;
+    void blitRect  (int x, int y, int width, int height) override;
 
 private:
     void blitMask(const SkMask& mask, const SkIRect& clip) override;
