@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "715d993e_700d5476",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-03-01T15:17:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2f41be3f_ff9fd808",
+      "range": {
+        "startLine": 11,
+        "startChar": 2,
+        "endLine": 11,
+        "endChar": 3
+      },
+      "revId": "9860fa70ad6ad51d698d0e9005387f17d3de3ec4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "86fd088d_3eceea5c",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7ef547e0_517cdb07",
+        "filename": "src/sksl/SkSLRehydrator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 296,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-03-01T15:17:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "86fd088d_3eceea5c",
+      "range": {
+        "startLine": 296,
+        "startChar": 102,
+        "endLine": 296,
+        "endChar": 110
+      },
+      "revId": "9860fa70ad6ad51d698d0e9005387f17d3de3ec4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2840ff04_86f496d9",
@@ -60,6 +108,30 @@
       "writtenOn": "2022-03-01T15:01:19Z",
       "side": 1,
       "message": "This is totally correct but took me a long time to convince myself that it was. It might be easier to reason about if we do this pool-pointer extraction immediately after the `detachFromThread` call above, e.g.\n\n    ThreadContext::MemoryPool()-\u003edetachFromThread();\n    std::unique_ptr\u003cPool\u003e pool \u003d std::move(ThreadContext::MemoryPool());\n    \nNBD either way.",
+      "range": {
+        "startLine": 298,
+        "startChar": 48,
+        "endLine": 298,
+        "endChar": 86
+      },
+      "revId": "9860fa70ad6ad51d698d0e9005387f17d3de3ec4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8407929c_fafe1687",
+        "filename": "src/sksl/SkSLRehydrator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 298,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-03-01T15:17:29Z",
+      "side": 1,
+      "message": "I ended up grabbing the pointer first so we don\u0027t have to call ThreadContext::MemoryPool() twice, but otherwise followed your suggestion.",
+      "parentUuid": "2840ff04_86f496d9",
       "range": {
         "startLine": 298,
         "startChar": 48,
