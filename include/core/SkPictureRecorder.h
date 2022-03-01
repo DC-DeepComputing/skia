@@ -18,6 +18,10 @@ namespace android {
 };
 #endif
 
+#if SK_SUPPORT_GPU
+#include "include/private/chromium/GrSlug.h"
+#endif
+
 class SkCanvas;
 class SkDrawable;
 class SkMiniRecorder;
