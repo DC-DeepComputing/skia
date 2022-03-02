@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "443bfc08_d348be44",
+        "filename": "src/sksl/codegen/SkSLVMCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 678,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-03-02T23:35:32Z",
+      "side": 0,
+      "message": "Upon revisiting this code, I realized that this value was always treated as a boolean by the trace player (a slot is either a function return value or it isn\u0027t) so there\u0027s no need to do a lookup.",
+      "range": {
+        "startLine": 678,
+        "startChar": 4,
+        "endLine": 678,
+        "endChar": 76
+      },
+      "revId": "d97e2769d1fe89a9a87e8f75eb3423975f93656b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
