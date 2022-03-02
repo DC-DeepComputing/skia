@@ -354,6 +354,10 @@ bool GrBackendFormat::operator==(const GrBackendFormat& that) const {
         return false;
     }
 
+    if (fTextureType != that.fTextureType) {
+        return false;
+    }
+
     switch (fBackend) {
 #ifdef SK_GL
         case GrBackendApi::kOpenGL:
