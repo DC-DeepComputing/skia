@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "85ad2add_f136c81d",
+        "filename": "modules/skottie/src/text/TextAdapter.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 338,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2022-03-02T20:31:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "adb283f1_3af68f44",
+      "range": {
+        "startLine": 338,
+        "startChar": 1,
+        "endLine": 338,
+        "endChar": 5
+      },
+      "revId": "9778bae06fb8e75cee4dd7cf01e7e2aba7f9daf2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8bc57c50_8fa3a718",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-03-02T19:40:01Z",
       "side": 1,
       "message": "This has to go in g3/BUILD, otherwise there\u0027s no way to flip it on that side.",
+      "range": {
+        "startLine": 754,
+        "startChar": 0,
+        "endLine": 755,
+        "endChar": 36
+      },
+      "revId": "9778bae06fb8e75cee4dd7cf01e7e2aba7f9daf2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4544fd2a_48e0feb7",
+        "filename": "public.bzl",
+        "patchSetId": 1
+      },
+      "lineNbr": 755,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2022-03-02T20:31:22Z",
+      "side": 1,
+      "message": "g3 cl is out for review cl/431981094",
+      "parentUuid": "8bc57c50_8fa3a718",
       "range": {
         "startLine": 754,
         "startChar": 0,
