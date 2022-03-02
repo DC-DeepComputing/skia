@@ -49,8 +49,12 @@ sk_sp<SkShader> create_image_shader() {
 sk_sp<SkShader> create_blend_shader(SkBlendMode bm) {
     constexpr SkColor4f kTransYellow = {1.0f, 1.0f, 0.0f, 0.5f};
 
-    sk_sp<SkShader> solid = SkShaders::Color(kTransYellow, nullptr);
-    return SkShaders::Blend(bm, std::move(solid), create_image_shader());
+    sk_sp<SkShader> src = SkShaders::Color(kTransYellow, nullptr);
+    return SkShaders::Blend(bm, create_image_shader(), std::move(src));
+}
+
+sk_sp<SkShader> create_solid_shader(SkColor4f color) {
+    return SkShaders::Color(color, nullptr);
 }
 
 } // anonymous namespace
@@ -76,13 +80,19 @@ protected:
 
     void onDraw(SkCanvas* canvas) override {
 
+#if 0
         // UL corner
         {
             SkPaint p;
             p.setColor(SK_ColorRED);
+            p.setShader(create_solid_shader(SkColors::kBlue));
+            p.setBlendMode(SkBlendMode::kMultiply);
+            p.setAntiAlias(false);
             canvas->drawRect({2, 2, 127, 127}, p);
         }
+#endif
 
+#if 0
         // UR corner
         {
             SkRect r{129, 2, 255, 127};
@@ -97,20 +107,29 @@ protected:
             p.setShader(create_image_shader());
             canvas->drawRect({2, 129, 127, 255}, p);
         }
+#endif
 
+#if 1
         // LR corner
         {
             SkPaint p;
+            p.setColor(SK_ColorRED);
             p.setShader(create_blend_shader(SkBlendMode::kModulate));
+            p.setBlendMode(SkBlendMode::kMultiply);
+            p.setAntiAlias(false);
             canvas->drawRect({129, 129, 255, 255}, p);
         }
+#endif
 
+#if 0
 #ifdef SK_GRAPHITE_ENABLED
         // TODO: failing serialize test on Linux, not sure what's going on
         canvas->writePixels(fBitmap, 0, 256);
 #endif
+#endif
     }
 
+private:
     SkBitmap fBitmap;
 };
 

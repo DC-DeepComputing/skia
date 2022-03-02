@@ -64,7 +64,7 @@ public:
     SkColor4Shader(const SkColor4f&, sk_sp<SkColorSpace>);
 
     bool isOpaque()   const override { return fColor.isOpaque(); }
-    bool isConstant() const override { return true; }
+    bool isConstant() const override { return false; }
 
 #if SK_SUPPORT_GPU
     std::unique_ptr<GrFragmentProcessor> asFragmentProcessor(const GrFPArgs&) const override;
