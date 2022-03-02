@@ -722,14 +722,28 @@ public:
     */
     bool peekPixels(SkPixmap* pixmap) const;
 
-    /** Returns true the contents of SkImage was created on or uploaded to GPU memory,
-        and is available as a GPU texture.
+    /** Returns true the contents of SkImage was created on or uploaded to GPU memory
+        via Ganesh, and is available as a GPU texture.
 
-        @return  true if SkImage is a GPU texture
+        @return  true if SkImage is a GPU Ganesh-backed texture
+    */
+    bool isGaneshBacked() const;
+
+    /** Returns true the contents of SkImage was created on or uploaded to GPU memory,
+        and is available as a GPU texture. Currently only true for Ganesh-backed SkImages.
+
+        @return  true if SkImage is a GPU Ganesh-backed texture
 
         example: https://fiddle.skia.org/c/@Image_isTextureBacked
     */
-    bool isTextureBacked() const;
+    bool isTextureBacked() const { return isGaneshBacked(); }
+
+    /** Returns true the contents of SkImage was created on or uploaded to GPU memory
+        via Graphite, and is available as a GPU texture.
+
+        @return  true if SkImage is a GPU Graphite-backed texture
+    */
+    bool isGraphiteBacked() const;
 
     /** Returns an approximation of the amount of texture memory used by the image. Returns
         zero if the image is not texture backed or if the texture has an external format.

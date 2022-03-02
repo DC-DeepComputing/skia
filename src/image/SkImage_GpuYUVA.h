@@ -32,7 +32,7 @@ public:
 
     GrSemaphoresSubmitted onFlush(GrDirectContext*, const GrFlushInfo&) const override;
 
-    bool onIsTextureBacked() const override { return true; }
+    bool onIsGaneshBacked() const override { return true; }
 
     size_t onTextureSize() const override;
 

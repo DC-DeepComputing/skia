@@ -29,6 +29,8 @@ public:
 
     bool onHasMipmaps() const override { return false; }
 
+    bool onIsGraphiteBacked() const override { return true; }
+
     bool getROPixels(GrDirectContext*,
                      SkBitmap*,
                      CachingHint = kAllow_CachingHint) const override { return false; }

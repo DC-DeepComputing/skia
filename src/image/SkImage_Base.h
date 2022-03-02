@@ -140,8 +140,11 @@ public:
     // True for picture-backed and codec-backed
     virtual bool onIsLazyGenerated() const { return false; }
 
-    // True for images instantiated in GPU memory
-    virtual bool onIsTextureBacked() const { return false; }
+    // True for images instantiated by Ganesh in GPU memory
+    virtual bool onIsGaneshBacked() const { return false; }
+
+    // True for images instantiated by Graphite in GPU memory
+    virtual bool onIsGraphiteBacked() const { return false; }
 
     // Amount of texture memory used by texture-backed images.
     virtual size_t onTextureSize() const { return 0; }
