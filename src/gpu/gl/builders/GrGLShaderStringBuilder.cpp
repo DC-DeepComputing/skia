@@ -15,7 +15,7 @@
 #include "src/utils/SkShaderUtils.h"
 
 // Print the source code for all shaders generated.
-static const bool gPrintSKSL = false;
+static const bool gPrintSKSL = true;
 static const bool gPrintGLSL = false;
 
 std::unique_ptr<SkSL::Program> GrSkSLtoGLSL(const GrGLGpu* gpu,
