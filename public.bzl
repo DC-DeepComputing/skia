@@ -751,6 +751,8 @@ def base_copts(os_conditions):
 
 def base_defines(os_conditions):
     return [
+        # temp scaled stroke defines
+        "SK_SCALED_STROKE_DISABLED",
         # Chrome DEFINES.
         "SK_USE_FREETYPE_EMBOLDEN",
         # Turn on a few Google3-specific build fixes.
