@@ -43,6 +43,10 @@ public:
 
     void clearCaches();
 
+    void setTextTrace(bool value) { fTextTrace = value; }
+    bool getTextTrace() const { return fTextTrace; }
+
+
 private:
     std::vector<sk_sp<SkFontMgr>> getFontManagerOrder() const;
 
@@ -73,6 +77,7 @@ private:
 
     std::vector<SkString> fDefaultFamilyNames;
     ParagraphCache fParagraphCache;
+    bool fTextTrace;
 };
 }  // namespace textlayout
 }  // namespace skia

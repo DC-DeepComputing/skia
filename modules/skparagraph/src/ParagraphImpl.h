@@ -102,14 +102,16 @@ public:
                   SkTArray<Block, true> blocks,
                   SkTArray<Placeholder, true> placeholders,
                   sk_sp<FontCollection> fonts,
-                  std::shared_ptr<SkUnicode> unicode);
+                  std::shared_ptr<SkUnicode> unicode,
+                  size_t uniqueID = 0);
 
     ParagraphImpl(const std::u16string& utf16text,
                   ParagraphStyle style,
                   SkTArray<Block, true> blocks,
                   SkTArray<Placeholder, true> placeholders,
                   sk_sp<FontCollection> fonts,
-                  std::shared_ptr<SkUnicode> unicode);
+                  std::shared_ptr<SkUnicode> unicode,
+                  size_t uniqueID = 0);
     ~ParagraphImpl() override;
 
     void layout(SkScalar width) override;
@@ -184,6 +186,8 @@ public:
 
     int32_t unresolvedGlyphs() override;
 
+    bool isSimpleText(SkScalar width, SkString* diagnostics) override;
+
     void setState(InternalState state);
     sk_sp<SkPicture> getPicture() { return fPicture; }
 
@@ -236,6 +240,8 @@ private:
 
     void computeEmptyMetrics();
 
+    SkString uniqueName() const { return SkStringPrintf("paragraph%zu", fUniqueId); }
+
     // Input
     SkTArray<StyleBlock<SkScalar>> fLetterSpaceStyles;
     SkTArray<StyleBlock<SkScalar>> fWordSpaceStyles;
@@ -274,6 +280,8 @@ private:
     SkScalar fMaxWidthWithTrailingSpaces;
 
     std::shared_ptr<SkUnicode> fUnicode;
+
+    size_t fUniqueId;
 };
 }  // namespace textlayout
 }  // namespace skia
