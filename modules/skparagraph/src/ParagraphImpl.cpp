@@ -1,5 +1,10 @@
 // Copyright 2019 Google LLC.
 
+#include "modules/skparagraph/src/ParagraphImpl.h"
+#include <math.h>
+#include <algorithm>
+#include <unordered_set>
+#include <utility>
 #include "include/core/SkCanvas.h"
 #include "include/core/SkFontMetrics.h"
 #include "include/core/SkMatrix.h"
@@ -13,15 +18,10 @@
 #include "modules/skparagraph/include/ParagraphStyle.h"
 #include "modules/skparagraph/include/TextStyle.h"
 #include "modules/skparagraph/src/OneLineShaper.h"
-#include "modules/skparagraph/src/ParagraphImpl.h"
 #include "modules/skparagraph/src/Run.h"
 #include "modules/skparagraph/src/TextLine.h"
 #include "modules/skparagraph/src/TextWrapper.h"
 #include "src/utils/SkUTF.h"
-#include <math.h>
-#include <algorithm>
-#include <utility>
-
 
 namespace skia {
 namespace textlayout {
@@ -66,7 +66,8 @@ ParagraphImpl::ParagraphImpl(const SkString& text,
                              SkTArray<Block, true> blocks,
                              SkTArray<Placeholder, true> placeholders,
                              sk_sp<FontCollection> fonts,
-                             std::shared_ptr<SkUnicode> unicode)
+                             std::shared_ptr<SkUnicode> unicode,
+                             size_t uniqueId)
         : Paragraph(std::move(style), std::move(fonts))
         , fTextStyles(std::move(blocks))
         , fPlaceholders(std::move(placeholders))
@@ -78,6 +79,7 @@ ParagraphImpl::ParagraphImpl(const SkString& text,
         , fOldWidth(0)
         , fOldHeight(0)
         , fUnicode(std::move(unicode))
+        , fUniqueId(uniqueId)
 {
     SkASSERT(fUnicode);
 }
@@ -87,13 +89,15 @@ ParagraphImpl::ParagraphImpl(const std::u16string& utf16text,
                              SkTArray<Block, true> blocks,
                              SkTArray<Placeholder, true> placeholders,
                              sk_sp<FontCollection> fonts,
-                             std::shared_ptr<SkUnicode> unicode)
+                             std::shared_ptr<SkUnicode> unicode,
+                             size_t uniqueId)
         : ParagraphImpl(SkString(),
                         std::move(style),
                         std::move(blocks),
                         std::move(placeholders),
                         std::move(fonts),
-                        std::move(unicode))
+                        std::move(unicode),
+                        uniqueId)
 {
     SkASSERT(fUnicode);
     fText =  fUnicode->convertUtf16ToUtf8(utf16text);
@@ -158,6 +162,16 @@ void ParagraphImpl::layout(SkScalar rawWidth) {
             this->fOldWidth = floorWidth;
             this->fOldHeight = this->fHeight;
 
+            if (fFontCollection->getTextTrace()) {
+                SkDebugf("%s->layout(%f);\n", this->uniqueName().c_str(), rawWidth);
+                SkString diagnostics;
+                if (this->isSimpleText(rawWidth, &diagnostics)) {
+                    SkDebugf("// *** Paragraph %s is a simple text ***\n", this->uniqueName().c_str());
+                } else {
+                    SkDebugf("// *** Paragraph %s is not a simple text because:\n%s",
+                             this->uniqueName().c_str(), diagnostics.c_str());
+                }
+            }
             return;
         }
         fState = kShaped;
@@ -208,10 +222,24 @@ void ParagraphImpl::layout(SkScalar rawWidth) {
         fMaxIntrinsicWidth = fMinIntrinsicWidth;
     }
 
+    if (fFontCollection->getTextTrace()) {
+        SkDebugf("%s->layout(%f);\n", this->uniqueName().c_str(), rawWidth);
+        SkString diagnostics;
+        if (this->isSimpleText(rawWidth, &diagnostics)) {
+            SkDebugf("// *** Paragraph %s is a simple text ***\n", this->uniqueName().c_str());
+        } else {
+            SkDebugf("// *** Paragraph %s is not a simple text because:\n%s",
+                     this->uniqueName().c_str(), diagnostics.c_str());
+        }
+    }
     //SkDebugf("layout('%s', %f): %f %f\n", fText.c_str(), rawWidth, fMinIntrinsicWidth, fMaxIntrinsicWidth);
 }
 
 void ParagraphImpl::paint(SkCanvas* canvas, SkScalar x, SkScalar y) {
+
+    if (fFontCollection->getTextTrace()) {
+        SkDebugf("%s->paint(canvas, %f, %f);\n", this->uniqueName().c_str(), x, y);
+    }
 
     if (fParagraphStyle.getDrawOptions() == DrawOptions::kDirect) {
         // Paint the text without recording it
@@ -660,6 +688,10 @@ std::vector<TextBox> ParagraphImpl::getRectsForRange(unsigned start,
                                                      unsigned end,
                                                      RectHeightStyle rectHeightStyle,
                                                      RectWidthStyle rectWidthStyle) {
+    if (fFontCollection->getTextTrace()) {
+        SkDebugf("%s->getRectsForRange(%u, %u, %d, %d);\n", this->uniqueName().c_str(),
+                 start, end, (int)rectHeightStyle, (int)rectWidthStyle);
+    }
     std::vector<TextBox> results;
     if (fText.isEmpty()) {
         if (start == 0 && end > 0) {
@@ -724,34 +756,40 @@ std::vector<TextBox> ParagraphImpl::getRectsForRange(unsigned start,
 }
 
 std::vector<TextBox> ParagraphImpl::getRectsForPlaceholders() {
-  std::vector<TextBox> boxes;
-  if (fText.isEmpty()) {
-       return boxes;
-  }
-  if (fPlaceholders.size() == 1) {
+    if (fFontCollection->getTextTrace()) {
+        SkDebugf("%s->getRectsForPlaceholders();\n", this->uniqueName().c_str());
+    }
+    std::vector<TextBox> boxes;
+    if (fText.isEmpty()) {
+        return boxes;
+    }
+    if (fPlaceholders.size() == 1) {
        // We always have one fake placeholder
        return boxes;
-  }
-  for (auto& line : fLines) {
-      line.getRectsForPlaceholders(boxes);
-  }
-  /*
-  SkDebugf("getRectsForPlaceholders('%s'): %d\n", fText.c_str(), boxes.size());
-  for (auto& r : boxes) {
-      r.rect.fLeft = littleRound(r.rect.fLeft);
-      r.rect.fRight = littleRound(r.rect.fRight);
-      r.rect.fTop = littleRound(r.rect.fTop);
-      r.rect.fBottom = littleRound(r.rect.fBottom);
-      SkDebugf("[%f:%f * %f:%f] %s\n", r.rect.fLeft, r.rect.fRight, r.rect.fTop, r.rect.fBottom,
+    }
+    for (auto& line : fLines) {
+        line.getRectsForPlaceholders(boxes);
+    }
+    /*
+    SkDebugf("getRectsForPlaceholders('%s'): %d\n", fText.c_str(), boxes.size());
+    for (auto& r : boxes) {
+        r.rect.fLeft = littleRound(r.rect.fLeft);
+        r.rect.fRight = littleRound(r.rect.fRight);
+        r.rect.fTop = littleRound(r.rect.fTop);
+        r.rect.fBottom = littleRound(r.rect.fBottom);
+        SkDebugf("[%f:%f * %f:%f] %s\n", r.rect.fLeft, r.rect.fRight, r.rect.fTop, r.rect.fBottom,
                (r.direction == TextDirection::kLtr ? "left" : "right"));
-  }
-  */
-  return boxes;
+    }
+    */
+    return boxes;
 }
 
 // TODO: Optimize (save cluster <-> codepoint connection)
 PositionWithAffinity ParagraphImpl::getGlyphPositionAtCoordinate(SkScalar dx, SkScalar dy) {
 
+    if (fFontCollection->getTextTrace()) {
+        SkDebugf("%s->getGlyphPositionAtCoordinate(%f, %f);\n", this->uniqueName().c_str(), dx, dy);
+    }
     if (fText.isEmpty()) {
         return {0, Affinity::kDownstream};
     }
@@ -783,6 +821,10 @@ PositionWithAffinity ParagraphImpl::getGlyphPositionAtCoordinate(SkScalar dx, Sk
 // By "glyph" they mean a character index - indicated by Minikin's code
 SkRange<size_t> ParagraphImpl::getWordBoundary(unsigned offset) {
 
+    if (fFontCollection->getTextTrace()) {
+        SkDebugf("%s->getWordBoundary(%u);\n", this->uniqueName().c_str(), offset);
+    }
+
     if (fWords.empty()) {
         if (!fUnicode->getWords(fText.c_str(), fText.size(), &fWords)) {
             return {0, 0 };
@@ -807,6 +849,9 @@ SkRange<size_t> ParagraphImpl::getWordBoundary(unsigned offset) {
 }
 
 void ParagraphImpl::getLineMetrics(std::vector<LineMetrics>& metrics) {
+    if (fFontCollection->getTextTrace()) {
+        SkDebugf("%s->getLineMetrics();\n", this->uniqueName().c_str());
+    }
     metrics.clear();
     for (auto& line : fLines) {
         metrics.emplace_back(line.getMetrics());
@@ -1094,6 +1139,113 @@ void ParagraphImpl::visit(const Visitor& visitor) {
         visitor(lineNumber, nullptr);   // signal end of line
         lineNumber += 1;
     }
+}
+
+bool ParagraphImpl::isSimpleText(SkScalar width, SkString* diagnostics) {
+
+    if (nullptr == fUnicode) {
+        return false;
+    }
+
+    // No hard line breaks
+    for (auto& cup : fCodeUnitProperties) {
+        if ((cup & CodeUnitFlags::kHardLineBreakBefore) == CodeUnitFlags::kHardLineBreakBefore) {
+            if (diagnostics != nullptr) {
+                diagnostics->append("// There are hard line breaks.\n");
+            }
+            return false;
+        }
+    }
+    if (fTextStyles.size() == 0 || fTextStyles.size() > 1 ||
+               fTextStyles[0].fRange.width() != fText.size()) {
+        // One text style for the entire paragraph
+        if (diagnostics != nullptr) {
+            diagnostics->append(
+                    SkStringPrintf("// Wrong number of text styles: %zu.\n", fTextStyles.size()));
+        }
+        return false;
+    } else if (fFontCollection->fontFallbackEnabled()) {
+        // No font fallback
+        if (diagnostics != nullptr) {
+            diagnostics->append("// Font fallback is enabled.\n");
+
+            SkASSERT(fTextStyles.size() == 1);
+
+            // Print declared
+            if (fTextStyles[0].fStyle.getFontFamilies().empty()) {
+                diagnostics->append("// No fonts are in text style.\n");
+            } else {
+                diagnostics->append(SkStringPrintf("// %zu fonts are in text style:",
+                                                   fTextStyles[0].fStyle.getFontFamilies().size()));
+                for (auto& font : fTextStyles[0].fStyle.getFontFamilies()) {
+                    diagnostics->append(" ");
+                    diagnostics->append(font.c_str());
+                }
+                diagnostics->append("\n");
+            }
+
+            // Print used
+            SkTHashMap<SkString, size_t> map;
+            for (auto& run : fRuns) {
+                SkString name;
+                run.font().getTypeface()->getFamilyName(&name);
+                map[name] += 1;
+            }
+            if (map.count() == 1) {
+                diagnostics->append(SkStringPrintf("// Only one font is used: %s.\n",
+                                                   map.begin()->first.c_str()));
+            } else {
+                diagnostics->append("// %zu fonts are used:");
+                SkString fonts;
+                for (auto& pair : map) {
+                    fonts.append(SkStringPrintf(" %s (%zu)", pair.first.c_str(), pair.second));
+                }
+                diagnostics->append(fonts.c_str());
+            }
+        }
+        return false;
+    } else if (fTextStyles[0].fStyle.getFontFamilies().size() != 1) {
+        // Single font
+        if (diagnostics != nullptr) {
+            diagnostics->append(SkStringPrintf("// Wrong number of fonts (%zu):",
+                                fTextStyles[0].fStyle.getFontFamilies().size()));
+            for (auto& font : fTextStyles[0].fStyle.getFontFamilies()) {
+                diagnostics->append(" ");
+                diagnostics->append(font.c_str());
+            }
+            diagnostics->append("\n");
+        }
+        return false;
+    } if (fBidiRegions.size() != 1) {
+        // One text directionality
+        if (diagnostics != nullptr) {
+            diagnostics->append(SkStringPrintf("// Wrong number of bidi regions: %zu.\n",
+                                               fBidiRegions.size()));
+        }
+        return false;
+    } else if (fParagraphStyle.getTextAlign() == TextAlign::kJustify ||
+               !SkScalarNearlyZero(fTextStyles[0].fStyle.getWordSpacing())) {
+        // No text shaping modifications such as word spacing or text justification
+        if (diagnostics != nullptr) {
+            diagnostics->append("// There is a shaping modification: "
+                                "(word spacing or text justification).\n");
+        }
+        return false;
+    } else if (SkScalarIsFinite(width) && width < fMaxIntrinsicWidth) {
+        if (fParagraphStyle.getMaxLines() != 1) {
+            // Only one line of text (also, means no ellipsis)
+            if (diagnostics != nullptr) {
+                diagnostics->append(SkStringPrintf("// More than one line: %f < %f\n", width, fMaxIntrinsicWidth));
+            }
+            return false;
+        } else if (fParagraphStyle.ellipsized()) {
+            if (diagnostics != nullptr) {
+                diagnostics->append("// Ellipsis is set.\n");
+            }
+            return false;
+        }
+    }
+    return true;
 }
 
 }  // namespace textlayout
