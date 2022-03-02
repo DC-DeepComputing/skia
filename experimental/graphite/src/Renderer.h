@@ -193,6 +193,8 @@ public:
     // are stateless singletons and remain alive for the entire program. Each Renderer corresponds
     // to a specific recording function on DrawList and fill type.
     static const Renderer& StencilAndFillPath(SkPathFillType);
+
+    static const Renderer& Convex();
     // TODO: Not on the immediate sprint target, but show what needs to be added for DrawList's API
     // static const Renderer& FillConvexPath();
     // static const Renderer& StrokePath();

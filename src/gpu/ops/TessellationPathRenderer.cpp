@@ -34,9 +34,9 @@ GrOp::Owner make_non_convex_fill_op(GrRecordingContext* rContext,
                                     const SkMatrix& viewMatrix,
                                     const SkPath& path,
                                     GrPaint&& paint) {
-    SkASSERT(!path.isConvex() || path.isInverseFillType());
+    // SkASSERT(!path.isConvex() || path.isInverseFillType());
     int numVerbs = path.countVerbs();
-    if (numVerbs > 0 && !path.isInverseFillType()) {
+    if (false && numVerbs > 0 && !path.isInverseFillType()) {
         // Check if the path is large and/or simple enough that we can triangulate the inner fan
         // on the CPU. This is our fastest approach. It allows us to stencil only the curves,
         // and then fill the inner fan directly to the final render target, thus drawing the

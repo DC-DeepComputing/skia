@@ -16,9 +16,9 @@ namespace skgpu {
 namespace {
 
 // TODO: Tune these values on real world data
-static constexpr size_t kVertexBufferSize = 2 << 10;
-static constexpr size_t kIndexBufferSize = 2 << 10;
-static constexpr size_t kUniformBufferSize = 2 << 10;
+static constexpr size_t kVertexBufferSize = 1 << 14;
+static constexpr size_t kIndexBufferSize = 1 << 15;
+static constexpr size_t kUniformBufferSize = 1 << 15;
 
 void* map_offset(BindBufferInfo binding) {
     // DrawBufferManager owns the Buffer, and this is only ever called when we know
@@ -142,6 +142,30 @@ void DrawBufferManager::transferToCommandBuffer(CommandBuffer* commandBuffer) {
         commandBuffer->trackResource(std::move(buffer));
     }
     fUsedBuffers.clear();
+}
+
+BindBufferInfo DrawBufferManager::getStaticBuffer(BufferType type,
+                                                  InitializeBufferFn initFn,
+                                                  BufferSizeFn sizeFn) {
+    uintptr_t key = reinterpret_cast<uintptr_t>(initFn);
+    auto cachedBuffer = fStaticBuffers.find(key);
+    if (cachedBuffer != fStaticBuffers.end()) {
+        return {cachedBuffer->second.get(), 0};
+    }
+
+    // Create a new one and add it to the DBM
+    // TODO: These should probably be REsourceProvider cached, but that requires multithread safety
+    // since multiple recordings may want to init the buffer at the same time.
+    size_t size = sizeFn();
+    sk_sp<Buffer> buffer = fResourceProvider->findOrCreateBuffer(size, type, PrioritizeGpuReads::kNo);
+    if (!buffer) {
+        return {nullptr, 0};
+    }
+
+    BindBufferInfo bindInfo = {buffer.get(), 0};
+    initFn(VertexWriter(map_offset(bindInfo)), size);
+    fStaticBuffers.insert({key, buffer});
+    return bindInfo;
 }
 
 } // namespace skgpu

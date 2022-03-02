@@ -43,6 +43,9 @@ void GrMtlOpsRenderPass::submit() {
     SkIRect iBounds;
     fBounds.roundOut(&iBounds);
     fGpu->submitIndirectCommandBuffer(fRenderTarget, fOrigin, &iBounds);
+    if (fActiveRenderCmdEncoder) {
+        fActiveRenderCmdEncoder->dumpAndReset();
+    }
     fActiveRenderCmdEncoder = nil;
 }
 

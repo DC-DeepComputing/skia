@@ -48,6 +48,9 @@ void DrawList::stencilAndFillPath(const Transform& localToDevice,
     SkASSERT(localToDevice.valid());
     SkASSERT(!shape.isEmpty() && !clip.drawBounds().isEmptyNegativeOrNaN());
 
+    // TODO: StencilAndFillPath() expects all the patches to be chopped so that we
+    // don't exceed a max tessellation count. This pre-chopping needs to happen now
+    // because it produces a new shape that must be consistent across all steps.
     const Renderer& renderer = Renderer::StencilAndFillPath(shape.fillType());
     fDraws.push_back({renderer, this->deduplicateTransform(localToDevice),
                       shape, clip, ordering, paint, nullptr});
@@ -63,10 +66,10 @@ void DrawList::fillConvexPath(const Transform& localToDevice,
     SkASSERT(!shape.isEmpty() && !clip.drawBounds().isEmptyNegativeOrNaN());
     // TODO actually record this, but for now just drop the draw since the Renderer
     // isn't implemented yet
-    // fDraws.push_back({Renderer::FillConvexPath(),
-    //                   this->deduplicateTransform(localToDevice),
-    //                   shape, clip, ordering, paint, nullptr});
-    // fRenderStepCount += Renderer::FillConvexPath().numRenderSteps();
+    fDraws.push_back({Renderer::Convex(),
+                      this->deduplicateTransform(localToDevice),
+                      shape, clip, ordering, paint, nullptr});
+    fRenderStepCount += Renderer::Convex().numRenderSteps();
 }
 
 void DrawList::strokePath(const Transform& localToDevice,

@@ -24,7 +24,7 @@ using CubicPatch = PatchWriter::CubicPatch;
 using ConicPatch = PatchWriter::ConicPatch;
 using TrianglePatch = PatchWriter::TrianglePatch;
 
-int PathCurveTessellator::patchPreallocCount(int totalCombinedPathVerbCnt) const {
+int PathCurveTessellator::PatchPreallocCount(int totalCombinedPathVerbCnt) {
     // Over-allocate enough curves for 1 in 4 to chop.
     int approxNumChops = (totalCombinedPathVerbCnt + 3) / 4;
     // Every chop introduces 2 new patches: another curve patch and a triangle patch that glues the
@@ -32,8 +32,9 @@ int PathCurveTessellator::patchPreallocCount(int totalCombinedPathVerbCnt) const
     return totalCombinedPathVerbCnt + approxNumChops * 2;
 }
 
-void PathCurveTessellator::writePatches(PatchWriter& patchWriter,
+int PathCurveTessellator::WritePatches(PatchWriter& patchWriter,
                                         int maxTessellationSegments,
+                                        PatchAttribs attribs,
                                         const SkMatrix& shaderMatrix,
                                         const PathDrawList& pathDrawList) {
     float maxSegments_pow2 = pow2(maxTessellationSegments);
@@ -46,7 +47,7 @@ void PathCurveTessellator::writePatches(PatchWriter& patchWriter,
     for (auto [pathMatrix, path, color] : pathDrawList) {
         AffineMatrix m(pathMatrix);
         wangs_formula::VectorXform totalXform(SkMatrix::Concat(shaderMatrix, pathMatrix));
-        if (fAttribs & PatchAttribs::kColor) {
+        if (attribs & PatchAttribs::kColor) {
             patchWriter.updateColorAttrib(color);
         }
         for (auto [verb, pts, w] : SkPathPriv::Iterate(path)) {
@@ -60,6 +61,8 @@ void PathCurveTessellator::writePatches(PatchWriter& patchWriter,
                     if (n4 <= 1) {
                         break;  // This quad only needs 1 segment, which is empty.
                     }
+
+                    patchWriter.updateFixedSegments(n4);
                     if (n4 <= maxSegments_pow4) {
                         // This quad already fits in "maxTessellationSegments".
                         CubicPatch(patchWriter) << QuadToCubic{p0, p1, p2};
@@ -86,6 +89,7 @@ void PathCurveTessellator::writePatches(PatchWriter& patchWriter,
                     if (n2 <= 1) {
                         break;  // This conic only needs 1 segment, which is empty.
                     }
+                    patchWriter.updateFixedSegments(n2*n2);
                     if (n2 <= maxSegments_pow2) {
                         // This conic already fits in "maxTessellationSegments".
                         ConicPatch(patchWriter) << p0 << p1 << p2 << *w;
@@ -110,6 +114,7 @@ void PathCurveTessellator::writePatches(PatchWriter& patchWriter,
                     if (n4 <= 1) {
                         break;  // This cubic only needs 1 segment, which is empty.
                     }
+                    patchWriter.updateFixedSegments(n4);
                     if (n4 <= maxSegments_pow4) {
                         // This cubic already fits in "maxTessellationSegments".
                         CubicPatch(patchWriter) << p0 << p1 << p2 << p3;
@@ -131,12 +136,13 @@ void PathCurveTessellator::writePatches(PatchWriter& patchWriter,
         }
     }
 
-    // log16(n^4) == log2(n).
-    // We already chopped curves to make sure none needed a higher resolveLevel than
-    // kMaxFixedResolveLevel.
-    fFixedResolveLevel = SkTPin(wangs_formula::nextlog16(numFixedSegments_pow4),
-                                fFixedResolveLevel,
-                                int(kMaxFixedResolveLevel));
+    return wangs_formula::nextlog16(numFixedSegments_pow4);
+    // // log16(n^4) == log2(n).
+    // // We already chopped curves to make sure none needed a higher resolveLevel than
+    // // kMaxFixedResolveLevel.
+    // fFixedResolveLevel = SkTPin(wangs_formula::nextlog16(numFixedSegments_pow4),
+    //                             fFixedResolveLevel,
+    //                             int(kMaxFixedResolveLevel));
 }
 
 void PathCurveTessellator::WriteFixedVertexBuffer(VertexWriter vertexWriter, size_t bufferSize) {

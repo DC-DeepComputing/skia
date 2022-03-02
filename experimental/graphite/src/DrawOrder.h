@@ -161,4 +161,9 @@ private:
 
 } // namespace skgpu
 
+template<typename Sequence>
+struct ::std::hash<skgpu::MonotonicValue<Sequence>> {
+    size_t operator()(const skgpu::MonotonicValue<Sequence>& s) const noexcept { return s.bits(); }
+};
+
 #endif // skgpu_DrawOrder_DEFINED

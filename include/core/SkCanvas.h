@@ -2524,7 +2524,7 @@ private:
     void validateClip() const;
 
     std::unique_ptr<SkGlyphRunBuilder> fScratchGlyphRunBuilder;
-
+    int fDrawPathCount = 0;
     using INHERITED = SkRefCnt;
 };
 

@@ -100,6 +100,19 @@ public:
     uint32_t geometryUniforms()  const { return GeometryUniformField::get(fUniformKey); }
     uint32_t shadingUniforms()   const { return ShadingUniformField::get(fUniformKey);  }
 
+    SkString toString() const {
+        return SkStringPrintf("SortKey(cd=%d,s=%d,p=%d|%d,u=%d|%d) -> Draw(%p,d=%d,%s)",
+                ColorDepthOrderField::get(fPipelineKey),
+                StencilIndexField::get(fPipelineKey),
+                RenderStepField::get(fPipelineKey),
+                this->pipeline(),
+                this->geometryUniforms(),
+                this->shadingUniforms(),
+                fDraw,
+                fDraw->fOrder.depth().bits(),
+                fDraw->fRenderer.name());
+    }
+
 private:
     // Fields are ordered from most-significant to least when sorting by 128-bit value.
     // NOTE: We don't use bit fields because field ordering is implementation defined and we need
@@ -134,16 +147,21 @@ public:
     void bindDrawBuffers(BindBufferInfo vertexAttribs,
                          BindBufferInfo instanceAttribs,
                          BindBufferInfo indices) override {
+                             SkDebugf("bind vertex attrs\n");
         fPass->fCommands.emplace_back(BindDrawBuffers{vertexAttribs, instanceAttribs, indices});
     }
 
     void draw(PrimitiveType type, unsigned int baseVertex, unsigned int vertexCount) override {
         fPass->fCommands.emplace_back(Draw{type, baseVertex, vertexCount});
+        count++;
+        SkDebugf("DRAW %d\n", count);
     }
 
     void drawIndexed(PrimitiveType type, unsigned int baseIndex,
                      unsigned int indexCount, unsigned int baseVertex) override {
         fPass->fCommands.emplace_back(DrawIndexed{type, baseIndex, indexCount, baseVertex});
+        count++;
+        SkDebugf("DRAW %d\n", count);
     }
 
     void drawInstanced(PrimitiveType type,
@@ -151,6 +169,8 @@ public:
                        unsigned int baseInstance, unsigned int instanceCount) override {
         fPass->fCommands.emplace_back(DrawInstanced{type, baseVertex, vertexCount,
                                                     baseInstance, instanceCount});
+                                                    count++;
+                                                            SkDebugf("DRAW %d\n", count);
     }
 
     void drawIndexedInstanced(PrimitiveType type,
@@ -159,10 +179,14 @@ public:
                               unsigned int instanceCount) override {
         fPass->fCommands.emplace_back(DrawIndexedInstanced{type, baseIndex, indexCount, baseVertex,
                                                            baseInstance, instanceCount});
+                                                           count++;
+                                                    SkDebugf("DRAW %d\n", count);
     }
 
 private:
     DrawPass* fPass;
+    public:
+    int count = 0;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -356,13 +380,17 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
     uint32_t lastGeometryUniforms = UniformCache::kInvalidUniformID;
     SkIRect lastScissor = SkIRect::MakeSize(drawPass->fTarget->dimensions());
 
+    int pipelineChangeCt = 0;
+    int stateChangeCt = 0;
+    int i = 0;
     for (const SortKey& key : keys) {
+        SkDebugf("%d/%d: %s\n", i, (int) keys.size(), key.toString().c_str());
         const DrawList::Draw& draw = *key.draw();
         const RenderStep& renderStep = key.renderStep();
 
         const bool pipelineChange = key.pipeline() != lastPipeline;
-        const bool stateChange = key.geometryUniforms() != lastGeometryUniforms ||
-                                 key.shadingUniforms() != lastShadingUniforms ||
+        const bool stateChange = (key.geometryUniforms() != UniformCache::kInvalidUniformID && key.geometryUniforms() != lastGeometryUniforms) ||
+                                 (key.shadingUniforms() != UniformCache::kInvalidUniformID && key.shadingUniforms() != lastShadingUniforms) ||
                                  draw.fClip.scissor() != lastScissor;
 
         // Update DrawWriter *before* we actually change any state so that accumulated draws from
@@ -379,36 +407,51 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
         if (pipelineChange) {
             drawPass->fCommands.emplace_back(BindGraphicsPipeline{key.pipeline()});
             lastPipeline = key.pipeline();
-            lastShadingUniforms = UniformCache::kInvalidUniformID;
-            lastGeometryUniforms = UniformCache::kInvalidUniformID;
+//            lastShadingUniforms = UniformCache::kInvalidUniformID;
+//            lastGeometryUniforms = UniformCache::kInvalidUniformID;
+            pipelineChangeCt++;
+            SkDebugf("%d: PIPELINECHANGE %d\n", i, pipelineChangeCt);
         }
         if (stateChange) {
+            bool changePending = false;
             if (key.geometryUniforms() != lastGeometryUniforms) {
                 if (key.geometryUniforms() != UniformCache::kInvalidUniformID) {
                     auto binding = geometryUniformBindings.getBinding(key.geometryUniforms());
                     drawPass->fCommands.emplace_back(
                             BindUniformBuffer{binding, UniformSlot::kRenderStep});
+                    lastGeometryUniforms = key.geometryUniforms();
+                    changePending = true;
+                    // FIXME presumably if the uniforms are invalid, this assumes the shader doesn't read from them, so we can keep the old binding around until a new pipeline uses it. But if we were supposed to read uniforms and we couldn't save the data, which gave us an invalid ID, then we are in trouble... but not sure the old code that set the ID all the time actually was better.
                 }
-                lastGeometryUniforms = key.geometryUniforms();
             }
             if (key.shadingUniforms() != lastShadingUniforms) {
                 if (key.shadingUniforms() != UniformCache::kInvalidUniformID) {
                     auto binding = shadingUniformBindings.getBinding(key.shadingUniforms());
                     drawPass->fCommands.emplace_back(
                             BindUniformBuffer{binding, UniformSlot::kPaint});
+                    lastShadingUniforms = key.shadingUniforms();
+                    changePending = true;
                 }
-                lastShadingUniforms = key.shadingUniforms();
             }
             if (draw.fClip.scissor() != lastScissor) {
                 drawPass->fCommands.emplace_back(SetScissor{draw.fClip.scissor()});
                 lastScissor = draw.fClip.scissor();
+                changePending = true;
+            }
+            if (changePending) {
+                stateChangeCt++;
+                SkDebugf("%d STATE CHANGE %d\n", i, stateChangeCt);
             }
         }
 
         renderStep.writeVertices(&drawWriter, draw.fClip.scissor(), draw.fTransform, draw.fShape);
+        i++;
     }
     // Finish recording draw calls for any collected data at the end of the loop
     drawWriter.flush();
+
+    SkDebugf("DrawPass: # pipeline binds: %d, # state changes: %d, # draw calls: %d\n",
+            pipelineChangeCt, stateChangeCt, drawer.count);
 
     passBounds.roundOut();
     drawPass->fBounds = SkIRect::MakeLTRB((int) passBounds.left(), (int) passBounds.top(),

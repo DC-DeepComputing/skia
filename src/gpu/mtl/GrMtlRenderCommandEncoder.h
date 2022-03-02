@@ -29,6 +29,28 @@ public:
         return std::unique_ptr<GrMtlRenderCommandEncoder>(new GrMtlRenderCommandEncoder(encoder));
     }
 
+    int pipelineChange = 0;
+    int stateChange = 0;
+    int drawCount = 0;
+    bool statePending = false;
+
+    void dumpAndReset() {
+        SkDebugf("MtlOpsRenderPass: # pipeline binds: %d, # state changes: %d, # draw calls: %d\n",
+                pipelineChange, stateChange, drawCount);
+        pipelineChange = 0;
+        stateChange = 0;
+        drawCount = 0;
+        statePending = false;
+    }
+
+    void onDraw() {
+        if (statePending) {
+            stateChange++;
+            statePending = false;
+        }
+        drawCount++;
+    }
+
     void setLabel(NSString* label) {
         [fCommandEncoder setLabel:label];
     }
@@ -47,6 +69,7 @@ public:
         if (fCurrentRenderPipelineState != pso) {
             [fCommandEncoder setRenderPipelineState:pso];
             fCurrentRenderPipelineState = pso;
+            pipelineChange++;
         }
     }
 
@@ -78,6 +101,8 @@ public:
                                      atIndex:index];
             fCurrentVertexBuffer[index] = buffer;
             fCurrentVertexOffset[index] = offset;
+                        statePending |= (index == GrMtlUniformHandler::kUniformBinding);
+
         }
     }
     void setVertexBufferOffset(NSUInteger offset, NSUInteger index)
@@ -86,6 +111,8 @@ public:
             [fCommandEncoder setVertexBufferOffset:offset
                                            atIndex:index];
             fCurrentVertexOffset[index] = offset;
+                        statePending |= (index == GrMtlUniformHandler::kUniformBinding);
+
         }
     }
 
@@ -102,6 +129,8 @@ public:
                                        atIndex:index];
             fCurrentFragmentBuffer[index] = buffer;
             fCurrentFragmentOffset[index] = offset;
+                                    statePending |= (index == GrMtlUniformHandler::kUniformBinding);
+
         }
     }
     void setFragmentBufferOffset(NSUInteger offset, NSUInteger index)
@@ -110,6 +139,8 @@ public:
             [fCommandEncoder setFragmentBufferOffset:offset
                                              atIndex:index];
             fCurrentFragmentOffset[index] = offset;
+                                    statePending |= (index == GrMtlUniformHandler::kUniformBinding);
+
         }
     }
 
@@ -118,12 +149,16 @@ public:
         [fCommandEncoder setVertexBytes:bytes
                                  length:length
                                 atIndex:index];
+                                                        statePending |= (index == GrMtlUniformHandler::kUniformBinding);
+
     }
     void setFragmentBytes(const void* bytes, NSUInteger length, NSUInteger index)
             SK_API_AVAILABLE(macos(10.11), ios(8.3)) {
         [fCommandEncoder setFragmentBytes:bytes
                                    length:length
                                   atIndex:index];
+                                                          statePending |= (index == GrMtlUniformHandler::kUniformBinding);
+
     }
 
     void setFragmentTexture(id<MTLTexture> texture, NSUInteger index) {
@@ -173,6 +208,7 @@ public:
             fCurrentScissorRect.height != scissorRect.height) {
             [fCommandEncoder setScissorRect:scissorRect];
             fCurrentScissorRect = scissorRect;
+statePending = true;
         }
     }
 
@@ -181,6 +217,7 @@ public:
         [fCommandEncoder drawPrimitives:primitiveType
                             vertexStart:vertexStart
                             vertexCount:vertexCount];
+                            onDraw();
     }
     void drawPrimitives(MTLPrimitiveType primitiveType, NSUInteger vertexStart,
                         NSUInteger vertexCount, NSUInteger instanceCount,
@@ -190,12 +227,14 @@ public:
                             vertexCount:vertexCount
                           instanceCount:instanceCount
                            baseInstance:baseInstance];
+                           onDraw();
     }
     void drawPrimitives(MTLPrimitiveType primitiveType, id<MTLBuffer> indirectBuffer,
                         NSUInteger indirectBufferOffset) SK_API_AVAILABLE(macos(10.11), ios(9.0)) {
         [fCommandEncoder drawPrimitives:primitiveType
                          indirectBuffer:indirectBuffer
                    indirectBufferOffset:indirectBufferOffset];
+                   onDraw();
     }
 
     void drawIndexedPrimitives(MTLPrimitiveType primitiveType, NSUInteger indexCount,
@@ -206,6 +245,7 @@ public:
                                      indexType:indexType
                                    indexBuffer:indexBuffer
                              indexBufferOffset:indexBufferOffset];
+                             onDraw();
     }
     void drawIndexedPrimitives(MTLPrimitiveType primitiveType, NSUInteger indexCount,
                                MTLIndexType indexType, id<MTLBuffer> indexBuffer,
@@ -221,6 +261,7 @@ public:
                                  instanceCount:instanceCount
                                     baseVertex:baseVertex
                                   baseInstance:baseInstance];
+                                  onDraw();
     }
     void drawIndexedPrimitives(MTLPrimitiveType primitiveType,
                                MTLIndexType indexType, id<MTLBuffer> indexBuffer,
@@ -233,6 +274,7 @@ public:
                              indexBufferOffset:indexBufferOffset
                                 indirectBuffer:indirectBuffer
                           indirectBufferOffset:indirectBufferOffset];
+                          onDraw();
     }
 
     void endEncoding() {

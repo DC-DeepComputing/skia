@@ -19,6 +19,9 @@
 #include "include/gpu/ShaderErrorHandler.h"
 #include "include/private/SkSLString.h"
 
+#include "src/gpu/tessellate/WangsFormula.h"
+
+
 namespace skgpu::mtl {
 
 namespace {
@@ -143,6 +146,9 @@ SkSL::String get_sksl_vs(const GraphicsPipelineDesc& desc) {
     if (step->numUniforms() > 0) {
         sksl += emit_SKSL_uniforms(1, "Step", step->uniforms());
     }
+
+    // Make wangs formula functions available
+    sksl += skgpu::wangs_formula::as_sksl().c_str();
 
     // Vertex shader function declaration
     sksl += "void main() {\n";

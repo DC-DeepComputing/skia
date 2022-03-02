@@ -476,6 +476,7 @@ SkCanvas::SkCanvas(const SkBitmap& bitmap, ColorBehavior)
 #endif
 
 SkCanvas::~SkCanvas() {
+    SkDebugf("SkCanvas::drawPath = %d\n", fDrawPathCount);
     // Mark all pending layers to be discarded during restore (rather than drawn)
     SkDeque::Iter iter(fMCStack, SkDeque::Iter::kFront_IterStart);
     for (;;) {
@@ -2127,7 +2128,15 @@ void SkCanvas::onDrawPath(const SkPath& path, const SkPaint& paint) {
         return;
     }
 
-    auto layer = this->aboutToDraw(this, paint, &pathBounds);
+    if (paint.getStyle() != SkPaint::kFill_Style) return;
+    // if (path.isConvex()) return;
+    fDrawPathCount++;
+
+    SkPaint constPaint;
+    constPaint.setColor(SK_ColorRED);
+    constPaint.setAntiAlias(true);
+
+    auto layer = this->aboutToDraw(this, constPaint, &pathBounds);
     if (layer) {
         this->topDevice()->drawPath(path, layer->paint());
     }

@@ -146,8 +146,8 @@ void PathStencilCoverOp::prePreparePrograms(const GrTessellationShader::ProgramA
     const GrUserStencilSettings* stencilSettings = GrPathTessellationShader::StencilPathSettings(
                     GrFillRuleForPathFillType(this->pathFillType()));
 
-    if (fTotalCombinedPathVerbCnt > 50 &&
-        this->bounds().height() * this->bounds().width() > 256 * 256) {
+    if (true || (fTotalCombinedPathVerbCnt > 50 &&
+        this->bounds().height() * this->bounds().width() > 256 * 256)) {
         // Large complex paths do better with a dedicated triangle shader for the inner fan.
         // This takes less PCI bus bandwidth (6 floats per triangle instead of 8) and allows us
         // to make sure it has an efficient middle-out topology.

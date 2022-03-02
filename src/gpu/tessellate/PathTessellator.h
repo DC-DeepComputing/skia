@@ -124,7 +124,6 @@ public:
         return totalCombinedPathVerbCnt;
     }
 
-protected:
     // How many triangles are in a curve with 2^resolveLevel line segments?
     constexpr static int NumCurveTrianglesAtResolveLevel(int resolveLevel) {
         // resolveLevel=0 -> 0 line segments -> 0 triangles
@@ -134,6 +133,7 @@ protected:
         // ...
         return (1 << resolveLevel) - 1;
     }
+protected:
 
     PathTessellator(bool infinitySupport, PatchAttribs attribs) : fAttribs(attribs) {
         if (!infinitySupport) {

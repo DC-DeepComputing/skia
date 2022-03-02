@@ -30,31 +30,31 @@ namespace skgpu::v1 {
 
 PathRendererChain::PathRendererChain(GrRecordingContext* context, const Options& options) {
     const GrCaps& caps = *context->priv().caps();
-    if (options.fGpuPathRenderers & GpuPathRenderers::kDashLine) {
-        fChain.push_back(sk_make_sp<DashLinePathRenderer>());
-    }
-    if (options.fGpuPathRenderers & GpuPathRenderers::kAAConvex) {
-        fChain.push_back(sk_make_sp<AAConvexPathRenderer>());
-    }
-    if (options.fGpuPathRenderers & GpuPathRenderers::kAAHairline) {
-        fChain.push_back(sk_make_sp<AAHairLinePathRenderer>());
-    }
-    if (options.fGpuPathRenderers & GpuPathRenderers::kAALinearizing) {
-        fChain.push_back(sk_make_sp<AALinearizingConvexPathRenderer>());
-    }
-    if (options.fGpuPathRenderers & GpuPathRenderers::kAtlas) {
-        if (auto atlasPathRenderer = AtlasPathRenderer::Make(context)) {
-            fAtlasPathRenderer = atlasPathRenderer.get();
-            context->priv().addOnFlushCallbackObject(atlasPathRenderer.get());
-            fChain.push_back(std::move(atlasPathRenderer));
-        }
-    }
-    if (options.fGpuPathRenderers & GpuPathRenderers::kSmall) {
-        fChain.push_back(sk_make_sp<SmallPathRenderer>());
-    }
-    if (options.fGpuPathRenderers & GpuPathRenderers::kTriangulating) {
-        fChain.push_back(sk_make_sp<TriangulatingPathRenderer>());
-    }
+    // if (options.fGpuPathRenderers & GpuPathRenderers::kDashLine) {
+    //     fChain.push_back(sk_make_sp<DashLinePathRenderer>());
+    // }
+    // if (options.fGpuPathRenderers & GpuPathRenderers::kAAConvex) {
+    //     fChain.push_back(sk_make_sp<AAConvexPathRenderer>());
+    // }
+    // if (options.fGpuPathRenderers & GpuPathRenderers::kAAHairline) {
+    //     fChain.push_back(sk_make_sp<AAHairLinePathRenderer>());
+    // }
+    // if (options.fGpuPathRenderers & GpuPathRenderers::kAALinearizing) {
+    //     fChain.push_back(sk_make_sp<AALinearizingConvexPathRenderer>());
+    // }
+    // if (options.fGpuPathRenderers & GpuPathRenderers::kAtlas) {
+    //     if (auto atlasPathRenderer = AtlasPathRenderer::Make(context)) {
+    //         fAtlasPathRenderer = atlasPathRenderer.get();
+    //         context->priv().addOnFlushCallbackObject(atlasPathRenderer.get());
+    //         fChain.push_back(std::move(atlasPathRenderer));
+    //     }
+    // }
+    // if (options.fGpuPathRenderers & GpuPathRenderers::kSmall) {
+    //     fChain.push_back(sk_make_sp<SmallPathRenderer>());
+    // }
+    // if (options.fGpuPathRenderers & GpuPathRenderers::kTriangulating) {
+    //     fChain.push_back(sk_make_sp<TriangulatingPathRenderer>());
+    // }
     if (options.fGpuPathRenderers & GpuPathRenderers::kTessellation) {
         if (TessellationPathRenderer::IsSupported(caps)) {
             auto tess = sk_make_sp<TessellationPathRenderer>();
@@ -64,7 +64,7 @@ PathRendererChain::PathRendererChain(GrRecordingContext* context, const Options&
     }
 
     // We always include the default path renderer (as well as SW), so we can draw any path
-    fChain.push_back(sk_make_sp<DefaultPathRenderer>());
+    // fChain.push_back(sk_make_sp<DefaultPathRenderer>());
 }
 
 PathRenderer* PathRendererChain::getPathRenderer(const PathRenderer::CanDrawPathArgs& args,
