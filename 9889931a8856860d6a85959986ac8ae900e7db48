@@ -22,6 +22,30 @@
       },
       "revId": "9889931a8856860d6a85959986ac8ae900e7db48",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7b8a24cd_3b50214a",
+        "filename": "resources/sksl/runtime/LoopInt.rts",
+        "patchSetId": 2
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-03-02T14:40:42Z",
+      "side": 1,
+      "message": "Good call, that definitely deserves a comment. Done.",
+      "parentUuid": "682e4e39_92a9163e",
+      "range": {
+        "startLine": 108,
+        "startChar": 67,
+        "endLine": 108,
+        "endChar": 80
+      },
+      "revId": "9889931a8856860d6a85959986ac8ae900e7db48",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
