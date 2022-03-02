@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a9a485b3_f2373a47",
+        "filename": "experimental/graphite/src/ResourceCache.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 405,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-03-02T20:26:20Z",
+      "side": 1,
+      "message": "Some comments on the checks here might be useful for future readers, i.e., why does scratch have these expectations vs. non-shareable vs. shareable.",
+      "range": {
+        "startLine": 392,
+        "startChar": 12,
+        "endLine": 405,
+        "endChar": 13
+      },
+      "revId": "8b4136450b70936edcf711934a20c5fd16e527ff",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
