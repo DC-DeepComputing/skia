@@ -73,6 +73,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2fbf4c67_23382c21",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-03-02T21:47:34Z",
+      "side": 1,
+      "message": "Ok, revised based on offline discussion, PTAL.",
+      "parentUuid": "aa58482d_7a735fbe",
+      "revId": "36a039cf81b4195dbc64f648228c42c40968a913",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "40485e56_a76754df",
         "filename": "include/core/SkImage.h",
         "patchSetId": 1
@@ -84,6 +102,30 @@
       "writtenOn": "2022-03-02T17:04:44Z",
       "side": 1,
       "message": "this-\u003e ?",
+      "range": {
+        "startLine": 739,
+        "startChar": 42,
+        "endLine": 739,
+        "endChar": 56
+      },
+      "revId": "36a039cf81b4195dbc64f648228c42c40968a913",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b14084be_69efee9d",
+        "filename": "include/core/SkImage.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 739,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-03-02T21:47:34Z",
+      "side": 1,
+      "message": "Revised.",
+      "parentUuid": "40485e56_a76754df",
       "range": {
         "startLine": 739,
         "startChar": 42,
