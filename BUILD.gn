@@ -1551,6 +1551,7 @@ group("modules") {
   ]
 
   if (is_wasm) {
+    testonly = true
     deps += [ "modules/canvaskit" ]
   }
 }

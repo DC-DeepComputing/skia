@@ -37,6 +37,7 @@ template("skia_wasm_lib") {
   }
 
   group("$_lib_name") {
+    forward_variables_from(invoker, [ "testonly" ])
     deps = [ ":${_lib_name}.js" ]
   }
 }
