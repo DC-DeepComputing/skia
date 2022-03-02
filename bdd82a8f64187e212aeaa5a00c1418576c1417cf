@@ -16,6 +16,29 @@
       "message": "I\u0027d also like a review from Brian who knows a bit more about Skia than me.",
       "revId": "bdd82a8f64187e212aeaa5a00c1418576c1417cf",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "11f2b89a_355bced3",
+        "filename": "tools/debugger/DrawCommand.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 471,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-03-02T14:03:55Z",
+      "side": 1,
+      "message": "I\u0027d suggest we pass true here. This parameter (dumpAsHex) controls whether we write the path control points as regular floating point values (1.0f) or exact hexadecimal bit-patterns (0x3f800000). If you\u0027re trying to replicate a tricky bug, the latter can be important - the non-hex version doesn\u0027t always print enough digits to perfectly round-trip.",
+      "range": {
+        "startLine": 471,
+        "startChar": 24,
+        "endLine": 471,
+        "endChar": 29
+      },
+      "revId": "bdd82a8f64187e212aeaa5a00c1418576c1417cf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
