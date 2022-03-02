@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f07ccdd9_25eff846",
+        "filename": "experimental/graphite/src/ResourceCache.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 195,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-03-02T17:25:41Z",
+      "side": 1,
+      "message": "If I\u0027m following this scenario correctly, would it be just as valid to check in returnResource() that it wasn\u0027t already purged between when it unreffed and when it got the return queue lock? Then the CB unref in this story would never re-add the purged resource to the queue.",
+      "range": {
+        "startLine": 181,
+        "startChar": 8,
+        "endLine": 195,
+        "endChar": 79
+      },
+      "revId": "2e809350f9126ee91388e04e1560ef58cee1d4eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

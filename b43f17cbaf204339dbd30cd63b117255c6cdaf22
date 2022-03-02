@@ -190,6 +190,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "161b626c_d4a2a35f",
+        "filename": "experimental/graphite/src/ResourceCache.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-03-02T17:25:41Z",
+      "side": 1,
+      "message": "I think calling unrefCache() from ResourceCache is good now that unregisterWithCache() is gone.",
+      "parentUuid": "63e08db5_368aadea",
+      "range": {
+        "startLine": 51,
+        "startChar": 8,
+        "endLine": 52,
+        "endChar": 27
+      },
+      "revId": "b43f17cbaf204339dbd30cd63b117255c6cdaf22",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4f198989_8314101b",
@@ -227,6 +251,30 @@
       "side": 1,
       "message": "Correct, it will be unreffed when the resource gets purged or removed during shutdown. The purging is not implemented yet.",
       "parentUuid": "4f198989_8314101b",
+      "range": {
+        "startLine": 75,
+        "startChar": 4,
+        "endLine": 75,
+        "endChar": 25
+      },
+      "revId": "b43f17cbaf204339dbd30cd63b117255c6cdaf22",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "df29828b_bc8c72e1",
+        "filename": "experimental/graphite/src/ResourceCache.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-03-02T17:25:41Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "7bc4a342_63d3098d",
       "range": {
         "startLine": 75,
         "startChar": 4,
@@ -462,6 +510,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "17670fd8_d70dbe30",
+        "filename": "experimental/graphite/src/ResourceCache.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-03-02T17:25:41Z",
+      "side": 1,
+      "message": "posted a follow-up clarification to the long story scenario.",
+      "parentUuid": "0f254a14_ba2700c1",
+      "range": {
+        "startLine": 181,
+        "startChar": 22,
+        "endLine": 181,
+        "endChar": 43
+      },
+      "revId": "b43f17cbaf204339dbd30cd63b117255c6cdaf22",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "38cdee32_47db26f1",
         "filename": "experimental/graphite/src/ResourceCache.cpp",
         "patchSetId": 2
@@ -497,6 +569,30 @@
       "side": 1,
       "message": "Yes that is generally the gist of it. I tried to clarify the comment a little. Let me know if that makes it any clearer.",
       "parentUuid": "38cdee32_47db26f1",
+      "range": {
+        "startLine": 213,
+        "startChar": 15,
+        "endLine": 215,
+        "endChar": 80
+      },
+      "revId": "b43f17cbaf204339dbd30cd63b117255c6cdaf22",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5c4310cd_c81deca7",
+        "filename": "experimental/graphite/src/ResourceCache.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 215,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-03-02T17:25:41Z",
+      "side": 1,
+      "message": "sounds good to me.",
+      "parentUuid": "e371cb67_71b34963",
       "range": {
         "startLine": 213,
         "startChar": 15,
