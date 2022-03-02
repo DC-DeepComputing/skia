@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e1e5773f_389cfa8a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-03-02T16:47:41Z",
+      "side": 1,
+      "message": "In reviewing makeTextureImage Rob pointed out that isTextureBacked is ambiguous, and in fact in places we are depending on it meaning \"Ganesh backed\". So this removes the ambiguity.\n\nI\u0027m not tied to the names.",
+      "revId": "36a039cf81b4195dbc64f648228c42c40968a913",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
