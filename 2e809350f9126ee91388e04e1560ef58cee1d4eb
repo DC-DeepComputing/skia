@@ -22,6 +22,30 @@
       },
       "revId": "2e809350f9126ee91388e04e1560ef58cee1d4eb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b10a0301_4d1c5c36",
+        "filename": "experimental/graphite/src/ResourceCache.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 195,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-03-02T17:47:52Z",
+      "side": 1,
+      "message": "That would definitely be the cleaner things, expect that means making access to the cacheIndex (or some other flag) thread safe. Since we\u0027re using the cacheAccess as the key we actually drop it to -1 between moving it between non-purgeable and purgeable. So if something tried to read it at this time it would get the wrong value. So if we went this route I would suggest just having a separate flag that is thread safe.\n\nHowever, that actually does fix things. Given the same sort of scenario above we could have two threads sitting at this point:\n\nThread 1:\n\n// Resource is purgeable because the unref on Thread2 has already happened and we // checked purgeable in this thread after that unref\nvoid purgeResource(Resource* resource) {\n    ...\n    fPurgeableQueue.remove(resource);\n    // Thread paused here\n    resource-\u003eremovedFromCache();\n    resource-\u003eunrefCache();\n}\n\nThread 2:\n\nbool ResourceCache::returnResource(Resource* resource, LastRemovedRef removedRef) {\n    ...\n    if (resource-\u003epartOfCache()) {\n        // Thread paused here\n        fReturnQueue.push_back(std::tie(resource, removedRef));\n        *resource-\u003eaccessReturnIndex() \u003d fReturnQueue.size() - 1;\n        resource-\u003erefCache();\n    }\n}\n\nThe only way to make this work was to have a mutex around purgeResource() and returnResource, but have to be careful not to deadlock with the Resources unref Mutex. Also need to add a check in purgeResource to see if a Resource has been added to the ReturnQueue or not.\n\nIn the end I think things get a lot more complicated if we try to make this logic in here thread safe.",
+      "parentUuid": "f07ccdd9_25eff846",
+      "range": {
+        "startLine": 181,
+        "startChar": 8,
+        "endLine": 195,
+        "endChar": 79
+      },
+      "revId": "2e809350f9126ee91388e04e1560ef58cee1d4eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
