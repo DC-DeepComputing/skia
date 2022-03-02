@@ -39,6 +39,30 @@
       },
       "revId": "bdd82a8f64187e212aeaa5a00c1418576c1417cf",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a31d15b0_355f4278",
+        "filename": "tools/debugger/DrawCommand.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 471,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-03-02T14:14:31Z",
+      "side": 1,
+      "message": "Alternatively (and probably even better, honestly) would be to fix our non-hex path dumping code to print floats such that they round-trip. I\u0027m pretty sure that\u0027s as simple as changing this line:\n\nhttps://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/core/SkStringUtils.cpp;l\u003d19;drc\u003d57665886a1bb4533871c9b28f1e6b977755457e3\n\n... so that it uses \"%.9g\" rather than \"%g\". Justification:\n\nhttps://randomascii.wordpress.com/2013/02/07/float-precision-revisited-nine-digit-float-portability/",
+      "parentUuid": "11f2b89a_355bced3",
+      "range": {
+        "startLine": 471,
+        "startChar": 24,
+        "endLine": 471,
+        "endChar": 29
+      },
+      "revId": "bdd82a8f64187e212aeaa5a00c1418576c1417cf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
