@@ -24,7 +24,8 @@ size_t FontCollection::FamilyKey::Hasher::operator()(const FontCollection::Famil
 
 FontCollection::FontCollection()
         : fEnableFontFallback(true)
-        , fDefaultFamilyNames({SkString(DEFAULT_FONT_FAMILY)}) { }
+        , fDefaultFamilyNames({SkString(DEFAULT_FONT_FAMILY)})
+        , fTextTrace(false) { }
 
 size_t FontCollection::getFontManagersCount() const { return this->getFontManagerOrder().size(); }
 

@@ -66,7 +66,8 @@ ParagraphImpl::ParagraphImpl(const SkString& text,
                              SkTArray<Block, true> blocks,
                              SkTArray<Placeholder, true> placeholders,
                              sk_sp<FontCollection> fonts,
-                             std::shared_ptr<SkUnicode> unicode)
+                             std::shared_ptr<SkUnicode> unicode,
+                             size_t uniqueId)
         : Paragraph(std::move(style), std::move(fonts))
         , fTextStyles(std::move(blocks))
         , fPlaceholders(std::move(placeholders))
@@ -78,6 +79,7 @@ ParagraphImpl::ParagraphImpl(const SkString& text,
         , fOldWidth(0)
         , fOldHeight(0)
         , fUnicode(std::move(unicode))
+        , fUniqueId(uniqueId)
 {
     SkASSERT(fUnicode);
 }
@@ -87,13 +89,15 @@ ParagraphImpl::ParagraphImpl(const std::u16string& utf16text,
                              SkTArray<Block, true> blocks,
                              SkTArray<Placeholder, true> placeholders,
                              sk_sp<FontCollection> fonts,
-                             std::shared_ptr<SkUnicode> unicode)
+                             std::shared_ptr<SkUnicode> unicode,
+                             size_t uniqueId)
         : ParagraphImpl(SkString(),
                         std::move(style),
                         std::move(blocks),
                         std::move(placeholders),
                         std::move(fonts),
-                        std::move(unicode))
+                        std::move(unicode),
+                        uniqueId)
 {
     SkASSERT(fUnicode);
     fText =  fUnicode->convertUtf16ToUtf8(utf16text);
@@ -111,6 +115,9 @@ int32_t ParagraphImpl::unresolvedGlyphs() {
 
 void ParagraphImpl::layout(SkScalar rawWidth) {
 
+    if (fFontCollection->getTextTrace()) {
+        SkDebugf("%s->layout(%f);\n", this->uniqueName().c_str(), rawWidth);
+    }
     // TODO: This rounding is done to match Flutter tests. Must be removed...
     auto floorWidth = SkScalarFloorToScalar(rawWidth);
 
@@ -212,6 +219,10 @@ void ParagraphImpl::layout(SkScalar rawWidth) {
 }
 
 void ParagraphImpl::paint(SkCanvas* canvas, SkScalar x, SkScalar y) {
+
+    if (fFontCollection->getTextTrace()) {
+        SkDebugf("%s->paint(canvas, %f, %f);\n", this->uniqueName().c_str(), x, y);
+    }
 
     if (fParagraphStyle.getDrawOptions() == DrawOptions::kDirect) {
         // Paint the text without recording it
@@ -1094,6 +1105,61 @@ void ParagraphImpl::visit(const Visitor& visitor) {
         visitor(lineNumber, nullptr);   // signal end of line
         lineNumber += 1;
     }
+}
+
+bool ParagraphImpl::isSimpleText(SkScalar width) {
+
+    if (nullptr == fUnicode) {
+        return false;
+    }
+
+    // Get bidi regions
+    auto textDirection = fParagraphStyle.getTextDirection() == TextDirection::kLtr
+                              ? SkUnicode::TextDirection::kLTR
+                              : SkUnicode::TextDirection::kRTL;
+    if (!fUnicode->getBidiRegions(fText.c_str(), fText.size(), textDirection, &fBidiRegions)) {
+        return false;
+    }
+
+    // Get line breaks
+    bool hasHardLineBreak = false;
+    std::vector<SkUnicode::LineBreakBefore> lineBreaks;
+    if (!fUnicode->getLineBreaks(fText.c_str(), fText.size(), &lineBreaks)) {
+        return false;
+    }
+    for (auto& lineBreak : lineBreaks) {
+        fCodeUnitProperties[lineBreak.pos] |= lineBreak.breakType == SkUnicode::LineBreakType::kHardLineBreak
+                                           ? CodeUnitFlags::kHardLineBreakBefore
+                                           : CodeUnitFlags::kSoftLineBreakBefore;
+        hasHardLineBreak |= lineBreak.breakType == SkUnicode::LineBreakType::kHardLineBreak;
+    }
+
+    if (fFontCollection->fontFallbackEnabled()) {
+        // No font fallback
+        return false;
+    } else if (fTextStyles[0].fStyle.getFontFamilies().size() != 1) {
+        // Single font
+        return false;
+    } else if (fTextStyles.size() != 1 || fTextStyles[0].fRange .width() != fText.size()) {
+        // One text style for the entire paragraph
+        return false;
+    } if (fBidiRegions.size() != 1) {
+        // One text directionality
+        return false;
+    } else if (fParagraphStyle.getTextAlign() == TextAlign::kJustify ||
+               SkScalarNearlyZero(fTextStyles[0].fStyle.getWordSpacing())) {
+        // No text shaping modifications such as word spacing or text justification
+        return false;
+    } else if (hasHardLineBreak) {
+        // No hard breaks
+        return false;
+    } else if (SkScalarIsFinite(width) && width > fMaxIntrinsicWidth) {
+        if (fParagraphStyle.getMaxLines() != 1 || fParagraphStyle.ellipsized()) {
+         // Only one line of text (also, means no ellipsis)
+            return false;
+        }
+    }
+    return true;
 }
 
 }  // namespace textlayout
