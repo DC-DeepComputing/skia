@@ -18,6 +18,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8eaf1913_0201e53b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-03-02T17:20:10Z",
+      "side": 1,
+      "message": "I\u0027m trying to imagine what clients want here, especially as we start to have Ganesh and Graphite in clients. Maybe there are uses where clients are doing different things with Graphite backed vs Ganesh backed textures. But I would also kind of hope they would already know that which of those GPU backends they were using and wouldn\u0027t need us to tell them via an SkImage. So I think it general clients will just want to know if an SkImage is a \"gpu\" texture image or not. Which makes me think we just want isTextureBacked which would return true for either Ganesh or Graphite. This also helps clients start to transfer over to only using texture backend SkImages in Ganesh and can use the same asserts later. ",
+      "revId": "36a039cf81b4195dbc64f648228c42c40968a913",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "40485e56_a76754df",
