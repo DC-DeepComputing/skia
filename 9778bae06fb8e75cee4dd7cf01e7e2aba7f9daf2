@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "adb283f1_3af68f44",
+        "filename": "modules/skottie/src/text/TextAdapter.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 338,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2022-03-02T19:40:01Z",
+      "side": 1,
+      "message": "#else",
+      "range": {
+        "startLine": 338,
+        "startChar": 1,
+        "endLine": 338,
+        "endChar": 5
+      },
+      "revId": "9778bae06fb8e75cee4dd7cf01e7e2aba7f9daf2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8bc57c50_8fa3a718",
+        "filename": "public.bzl",
+        "patchSetId": 1
+      },
+      "lineNbr": 755,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2022-03-02T19:40:01Z",
+      "side": 1,
+      "message": "This has to go in g3/BUILD, otherwise there\u0027s no way to flip it on that side.",
+      "range": {
+        "startLine": 754,
+        "startChar": 0,
+        "endLine": 755,
+        "endChar": 36
+      },
+      "revId": "9778bae06fb8e75cee4dd7cf01e7e2aba7f9daf2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
