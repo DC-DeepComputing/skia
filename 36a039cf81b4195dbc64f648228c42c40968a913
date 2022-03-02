@@ -55,6 +55,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "aa58482d_7a735fbe",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-03-02T19:04:22Z",
+      "side": 1,
+      "message": "I guess I would argue we should makes this API work as we would ideally want it to work. So if we want isTextureBackend to be its a gpu texture image (which I think we do), then we should update clients to behave in that way. Obviously right now there will be cases where a client (i.e. chrome) uses that function and calls ganesh only things after, but that is something we\u0027ll have to sort out during the transition.\n\nIf we don\u0027t have a strong reason where a client needs to branch on an SkImage know graphite or ganesh right now, I say let\u0027s wait until we have that reason to add these APIs.\n\nAlso FWIW if our transition works correctly, Chrome will always things they are in a graphite context. They don\u0027t explicitly need to know that ganesh sits under the API.\n\nOn a side note, I really really hope no client ever tries to have an active GrContext and skgpu::Context active at the same time....",
+      "parentUuid": "0f3235b1_2de1e787",
+      "revId": "36a039cf81b4195dbc64f648228c42c40968a913",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "40485e56_a76754df",
         "filename": "include/core/SkImage.h",
         "patchSetId": 1
