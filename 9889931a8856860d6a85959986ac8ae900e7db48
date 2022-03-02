@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "682e4e39_92a9163e",
+        "filename": "resources/sksl/runtime/LoopInt.rts",
+        "patchSetId": 2
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-03-02T02:04:51Z",
+      "side": 1,
+      "message": "I suggest adding a comment here referencing the LLVM crash to clarify why this particular test is not referencing the local variable.",
+      "range": {
+        "startLine": 108,
+        "startChar": 67,
+        "endLine": 108,
+        "endChar": 80
+      },
+      "revId": "9889931a8856860d6a85959986ac8ae900e7db48",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
