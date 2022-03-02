@@ -3621,6 +3621,7 @@ protected:
 
         canvas->drawColor(SK_ColorWHITE);
         auto fontCollection = sk_make_sp<TestFontCollection>(GetResourcePath("fonts").c_str(), true, true);
+        fontCollection->setTextTrace(true);
         TextStyle text_style;
         text_style.setFontFamilies({SkString("Ahem")});
         text_style.setFontSize(10);
@@ -3650,6 +3651,41 @@ protected:
                                                  RectHeightStyle::kIncludeLineSpacingTop, RectWidthStyle::kMax);
         for (auto& box : boxes) {
             SkDebugf("[%f, %f, %f, %f]: %s\n", box.rect.left(), box.rect.top(), box.rect.right(), box.rect.bottom(), box.direction == TextDirection::kLtr ? "left" : "right");
+        }
+
+        {
+ParagraphStyle style9;
+{
+    StrutStyle strutStyle9;
+    strutStyle9.setFontFamilies({SkString("Ahem")});
+    strutStyle9.setFontSize(16.000000);
+    strutStyle9.setHeight(4.000000);
+    strutStyle9.setForceStrutHeight(true);
+    strutStyle9.setStrutEnabled(true);
+    strutStyle9.setHeightOverride(true);
+    style9.setStrutStyle(strutStyle9);
+}
+{
+    TextStyle defaultTextStyle9;
+    defaultTextStyle9.setFontFamilies({SkString("Ahem")});
+    defaultTextStyle9.setFontSize(10.000000);
+    SkPaint foreground9(SkColors::kBlack);
+    defaultTextStyle9.setForegroundColor(foreground9);
+    style9.setTextStyle(defaultTextStyle9);
+}
+ParagraphBuilderImpl builder9(style9, fontCollection);
+{
+    TextStyle textStyle9;
+    textStyle9.setFontFamilies({SkString("Ahem")});
+    textStyle9.setFontSize(10.000000);
+    SkPaint foreground9(SkColors::kBlack);
+    textStyle9.setForegroundColor(foreground9);
+    builder9.pushStyle(textStyle9);
+}
+builder9.addText("Atwater Peel Sherbrooke Bonaventure""\nhi""\nwasssup!");
+auto paragraph9 = builder9.Build();
+paragraph9->layout(797.000000);
+paragraph9->paint(canvas, 0.000000, 0.000000);
         }
     }
 

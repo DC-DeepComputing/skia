@@ -71,6 +71,34 @@ public:
     static std::unique_ptr<ParagraphBuilder> make(const ParagraphStyle& style,
                                                   sk_sp<FontCollection> fontCollection);
 private:
+    enum class ObjectType {
+        Paragraph,
+        Builder,
+        ParagraphStyle,
+        TextStyle,
+        DefaultTextStyle,
+        StrutStyle,
+        Placeholder,
+        Background,
+        Foreground,
+        FontCollection
+    };
+    SkString uniqueName(ObjectType type) const;
+    void traceParagraphStyle(const ParagraphStyle& style) const;
+    void tracePlaceholder(const PlaceholderStyle& style) const;
+    bool traceStrutStyle(const StrutStyle& style) const;
+    void traceTextStyle(const TextStyle& style, bool isDefault) const;
+
+    static SkString text(const char* str, size_t len);
+
+    static const char* toString(TextAlign textAlign);
+    static const char* toString(TextDirection textDirection);
+    static const char* toString(TextHeightBehavior textHeightBehavior);
+    static const char* toString(SkFontStyle fontStyle);
+    static const char* toString(PlaceholderAlignment placeholderAlignment);
+    static const char* toString(TextBaseline textBaseline);
+    static const char* colorToString(SkColor color);
+
     void endRunIfNeeded();
     void addPlaceholder(const PlaceholderStyle& placeholderStyle, bool lastOne);
 
@@ -82,6 +110,8 @@ private:
     ParagraphStyle fParagraphStyle;
 
     std::shared_ptr<SkUnicode> fUnicode;
+
+    size_t fUniqueId;
 };
 }  // namespace textlayout
 }  // namespace skia
