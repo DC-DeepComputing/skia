@@ -1043,7 +1043,8 @@ sk_sp<GrRenderTask> SurfaceContext::copy(sk_sp<GrSurfaceProxy> src,
     const GrCaps* caps = fContext->priv().caps();
 
     SkASSERT(src->backendFormat().textureType() != GrTextureType::kExternal);
-    SkASSERT(src->backendFormat() == this->asSurfaceProxy()->backendFormat());
+    SkASSERT(src->backendFormat().makeTexture2D() ==
+             this->asSurfaceProxy()->backendFormat().makeTexture2D());
 
     if (this->asSurfaceProxy()->framebufferOnly()) {
         return nullptr;
