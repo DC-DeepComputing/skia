@@ -37,6 +37,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0f3235b1_2de1e787",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-03-02T18:51:43Z",
+      "side": 1,
+      "message": "I can\u0027t find it right now, but there\u0027s at least one example in Chrome where they check for texture-backed for an sk_sp\u003cSkImage\u003e and then call a method that\u0027s only valid when used with Ganesh. We have examples like that in our test and sample code as well. \n\nIf you\u0027re working with only one backend I agree it would be okay. My concern is that as when we\u0027re making the transition from Ganesh to Graphite we could be in this hybrid mode where we don\u0027t know what\u0027s what\u0027s backing the SkImage, will call wrong methods, and that will lead to crashes. However, if we can be sure there will only be a GrDirectContext, or a Recorder, and not both, then maybe it\u0027s not much of a concern.\n\nI think ideally there would be:\n* isTextureBacked -- it\u0027s a GPU texture image\n* isGaneshBacked -- you can call GrDirectContext-based image calls on this\n* isGraphiteBacked -- you can call Recorder-based image calls on this\n\nBut isTextureBacked is in use out there already as the first two meanings.",
+      "parentUuid": "8eaf1913_0201e53b",
+      "revId": "36a039cf81b4195dbc64f648228c42c40968a913",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "40485e56_a76754df",
         "filename": "include/core/SkImage.h",
         "patchSetId": 1
