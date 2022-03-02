@@ -22,6 +22,30 @@
       },
       "revId": "f57d54a3e7c48edce3d401e74bce3a2af341126e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "de6190b2_dd7dce82",
+        "filename": "include/core/SkImage.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 1133,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-03-02T15:36:26Z",
+      "side": 1,
+      "message": "Chrome does use it in a few places, so I\u0027ve added it back in.",
+      "parentUuid": "e509e277_9c6a1b5d",
+      "range": {
+        "startLine": 1132,
+        "startChar": 66,
+        "endLine": 1133,
+        "endChar": 65
+      },
+      "revId": "f57d54a3e7c48edce3d401e74bce3a2af341126e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
