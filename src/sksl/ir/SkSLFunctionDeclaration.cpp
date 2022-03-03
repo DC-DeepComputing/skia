@@ -8,28 +8,31 @@
 #include "src/sksl/ir/SkSLFunctionDeclaration.h"
 
 #include "include/private/SkStringView.h"
+#include "include/private/SkTHash.h"
 #include "src/sksl/SkSLCompiler.h"
 #include "src/sksl/ir/SkSLUnresolvedFunction.h"
 
 namespace SkSL {
 
-static IntrinsicKind identify_intrinsic(std::string_view functionName) {
-    #define SKSL_INTRINSIC(name) {#name, k_##name##_IntrinsicKind},
-    static const auto* kAllIntrinsics = new std::unordered_map<std::string_view, IntrinsicKind>{
-        SKSL_INTRINSIC_LIST
-    };
+static const SkTHashMap<std::string_view, IntrinsicKind>& make_intrinsic_map() {
+    auto* intrinsicMap = new SkTHashMap<std::string_view, IntrinsicKind>;
+
+    #define SKSL_INTRINSIC(name) intrinsicMap->set(#name, k_##name##_IntrinsicKind);
+    SKSL_INTRINSIC_LIST
     #undef SKSL_INTRINSIC
+
+    return *intrinsicMap;
+}
+
+static IntrinsicKind identify_intrinsic(std::string_view functionName) {
+    static const SkTHashMap<std::string_view, IntrinsicKind>& kAllIntrinsics = make_intrinsic_map();
 
     if (skstd::starts_with(functionName, '$')) {
         functionName.remove_prefix(1);
     }
 
-    auto iter = kAllIntrinsics->find(functionName);
-    if (iter != kAllIntrinsics->end()) {
-        return iter->second;
-    }
-
-    return kNotIntrinsic;
+    const IntrinsicKind* kind = kAllIntrinsics.find(functionName);
+    return kind ? *kind : kNotIntrinsic;
 }
 
 static bool check_modifiers(const Context& context,
