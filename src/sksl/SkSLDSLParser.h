@@ -9,6 +9,7 @@
 #define SKSL_DSLPARSER
 
 #include "include/private/SkSLProgramKind.h"
+#include "include/private/SkTHash.h"
 #include "include/sksl/DSL.h"
 #include "include/sksl/DSLSymbols.h"
 #include "src/sksl/SkSLLexer.h"
@@ -17,7 +18,6 @@
 #include <memory>
 #include <optional>
 #include <string_view>
-#include <unordered_map>
 
 namespace SkSL {
 
