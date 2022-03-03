@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "87ec493a_d2e094ac",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2022-03-03T18:59:48Z",
+      "side": 1,
+      "message": "Feel free to +1, note the cl will not be pushed until scuba diff is pushed.",
+      "revId": "7a0c19946e9ef0edc92cff130ebf642385999cc3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
