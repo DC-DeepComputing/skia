@@ -16,6 +16,24 @@
       "message": "There are some timeouts in the Canary-G3 bot. I\u0027m going to try restarting it in borg.",
       "revId": "a287c93326a2713add8a586f181e234b0349bee1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d4b11be7_b4ce5c0a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5145
+      },
+      "writtenOn": "2022-03-03T15:40:04Z",
+      "side": 1,
+      "message": "Please try kicking it off again whenever you are ready",
+      "parentUuid": "7904700f_afeafca2",
+      "revId": "a287c93326a2713add8a586f181e234b0349bee1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
