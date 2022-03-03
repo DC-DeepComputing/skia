@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e50f4fab_0ecce838",
+        "filename": "include/private/SkTHash.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-03-03T22:03:38Z",
+      "side": 1,
+      "message": "Other than this new assertion, the implementation of resize() is unchanged; it\u0027s just no longer private.",
+      "range": {
+        "startLine": 142,
+        "startChar": 8,
+        "endLine": 142,
+        "endChar": 37
+      },
+      "revId": "3ad1bcabbab46bba277f8c111382fe42f5c02173",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
