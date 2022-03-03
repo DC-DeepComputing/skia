@@ -10,7 +10,7 @@
 #include "include/gpu/GrTypes.h"
 #include "include/private/SkMacros.h"
 #include "include/private/SkTo.h"
-#include "src/gpu/GrBlend.h"
+#include "src/gpu/Blend.h"
 #include "src/gpu/GrCaps.h"
 #include "src/gpu/GrPipeline.h"
 #include "src/gpu/GrProcessor.h"
@@ -42,8 +42,11 @@ public:
         kLast_OutputType = kISCModulate_OutputType
     };
 
-    constexpr BlendFormula(OutputType primaryOut, OutputType secondaryOut, GrBlendEquation equation,
-                           GrBlendCoeff srcCoeff, GrBlendCoeff dstCoeff)
+    constexpr BlendFormula(OutputType primaryOut,
+                           OutputType secondaryOut,
+                           skgpu::BlendEquation equation,
+                           skgpu::BlendCoeff srcCoeff,
+                           skgpu::BlendCoeff dstCoeff)
             : fPrimaryOutputType(primaryOut)
             , fSecondaryOutputType(secondaryOut)
             , fBlendEquation(equation)
@@ -84,15 +87,15 @@ public:
         return SkToBool(fProps & kCanTweakAlphaForCoverage_Property);
     }
 
-    GrBlendEquation equation() const {
+    skgpu::BlendEquation equation() const {
         return fBlendEquation;
     }
 
-    GrBlendCoeff srcCoeff() const {
+    skgpu::BlendCoeff srcCoeff() const {
         return fSrcCoeff;
     }
 
-    GrBlendCoeff dstCoeff() const {
+    skgpu::BlendCoeff dstCoeff() const {
         return fDstCoeff;
     }
 
@@ -119,25 +122,27 @@ private:
     /**
      * Deduce the properties of a BlendFormula.
      */
-    static constexpr Properties GetProperties(OutputType PrimaryOut, OutputType SecondaryOut,
-                                              GrBlendEquation BlendEquation, GrBlendCoeff SrcCoeff,
-                                              GrBlendCoeff DstCoeff);
+    static constexpr Properties GetProperties(OutputType PrimaryOut,
+                                              OutputType SecondaryOut,
+                                              skgpu::BlendEquation BlendEquation,
+                                              skgpu::BlendCoeff SrcCoeff,
+                                              skgpu::BlendCoeff DstCoeff);
 
     struct {
         // We allot the enums one more bit than they require because MSVC seems to sign-extend
         // them when the top bit is set. (This is in violation of the C++03 standard 9.6/4)
-        OutputType        fPrimaryOutputType    : 4;
-        OutputType        fSecondaryOutputType  : 4;
-        GrBlendEquation   fBlendEquation        : 6;
-        GrBlendCoeff      fSrcCoeff             : 6;
-        GrBlendCoeff      fDstCoeff             : 6;
-        Properties        fProps                : 32 - (4 + 4 + 6 + 6 + 6);
+        OutputType           fPrimaryOutputType    : 4;
+        OutputType           fSecondaryOutputType  : 4;
+        skgpu::BlendEquation fBlendEquation        : 6;
+        skgpu::BlendCoeff    fSrcCoeff             : 6;
+        skgpu::BlendCoeff    fDstCoeff             : 6;
+        Properties           fProps                : 32 - (4 + 4 + 6 + 6 + 6);
     };
 
-    static_assert(kLast_OutputType      < (1 << 3));
-    static_assert(kLast_GrBlendEquation < (1 << 5));
-    static_assert(kLast_GrBlendCoeff    < (1 << 5));
-    static_assert(kLast_Property        < (1 << 6));
+    static_assert(kLast_OutputType                              < (1 << 3));
+    static_assert(static_cast<int>(skgpu::BlendEquation::kLast) < (1 << 5));
+    static_assert(static_cast<int>(skgpu::BlendCoeff::kLast)    < (1 << 5));
+    static_assert(kLast_Property                                < (1 << 6));
 };
 
 static_assert(4 == sizeof(BlendFormula));
@@ -146,34 +151,34 @@ SK_MAKE_BITFIELD_OPS(BlendFormula::Properties)
 
 constexpr BlendFormula::Properties BlendFormula::GetProperties(OutputType PrimaryOut,
                                                                OutputType SecondaryOut,
-                                                               GrBlendEquation BlendEquation,
-                                                               GrBlendCoeff SrcCoeff,
-                                                               GrBlendCoeff DstCoeff) {
+                                                               skgpu::BlendEquation BlendEquation,
+                                                               skgpu::BlendCoeff SrcCoeff,
+                                                               skgpu::BlendCoeff DstCoeff) {
     return
     // The provided formula should already be optimized before a BlendFormula is constructed.
     // Assert that here while setting up the properties in the constexpr constructor.
-    SkASSERT((kNone_OutputType == PrimaryOut) == !GrBlendCoeffsUseSrcColor(SrcCoeff, DstCoeff)),
-    SkASSERT(!GrBlendCoeffRefsSrc2(SrcCoeff)),
-    SkASSERT((kNone_OutputType == SecondaryOut) == !GrBlendCoeffRefsSrc2(DstCoeff)),
+    SkASSERT((kNone_OutputType == PrimaryOut) == !skgpu::BlendCoeffsUseSrcColor(SrcCoeff, DstCoeff)),
+    SkASSERT(!skgpu::BlendCoeffRefsSrc2(SrcCoeff)),
+    SkASSERT((kNone_OutputType == SecondaryOut) == !skgpu::BlendCoeffRefsSrc2(DstCoeff)),
     SkASSERT(PrimaryOut != SecondaryOut || kNone_OutputType == PrimaryOut),
     SkASSERT(kNone_OutputType != PrimaryOut || kNone_OutputType == SecondaryOut),
 
     static_cast<Properties>(
-        (GrBlendModifiesDst(BlendEquation, SrcCoeff, DstCoeff) ? kModifiesDst_Property : 0) |
-        (!GrBlendCoeffsUseDstColor(SrcCoeff, DstCoeff, false/*srcColorIsOpaque*/)
+        (skgpu::BlendModifiesDst(BlendEquation, SrcCoeff, DstCoeff) ? kModifiesDst_Property : 0) |
+        (!skgpu::BlendCoeffsUseDstColor(SrcCoeff, DstCoeff, false/*srcColorIsOpaque*/)
                     ? kUnaffectedByDst_Property
                     : 0) |
-        (!GrBlendCoeffsUseDstColor(SrcCoeff, DstCoeff, true/*srcColorIsOpaque*/)
+        (!skgpu::BlendCoeffsUseDstColor(SrcCoeff, DstCoeff, true/*srcColorIsOpaque*/)
                     ? kUnaffectedByDstIfOpaque_Property
                     : 0) |
-        ((PrimaryOut >= kModulate_OutputType && GrBlendCoeffsUseSrcColor(SrcCoeff, DstCoeff)) ||
+        ((PrimaryOut >= kModulate_OutputType && skgpu::BlendCoeffsUseSrcColor(SrcCoeff, DstCoeff)) ||
                             (SecondaryOut >= kModulate_OutputType &&
-                            GrBlendCoeffRefsSrc2(DstCoeff))
+                            skgpu::BlendCoeffRefsSrc2(DstCoeff))
                     ? kUsesInputColor_Property
                     : 0) |  // We assert later that SrcCoeff doesn't ref src2.
         ((kModulate_OutputType == PrimaryOut || kNone_OutputType == PrimaryOut) &&
                             kNone_OutputType == SecondaryOut &&
-                            GrBlendAllowsCoverageAsAlpha(BlendEquation, SrcCoeff, DstCoeff)
+                            skgpu::BlendAllowsCoverageAsAlpha(BlendEquation, SrcCoeff, DstCoeff)
                     ? kCanTweakAlphaForCoverage_Property
                     : 0));
 }
@@ -182,23 +187,25 @@ constexpr BlendFormula::Properties BlendFormula::GetProperties(OutputType Primar
  * When there is no coverage, or the blend mode can tweak alpha for coverage, we use the standard
  * Porter Duff formula.
  */
-static constexpr BlendFormula MakeCoeffFormula(GrBlendCoeff srcCoeff, GrBlendCoeff dstCoeff) {
+static constexpr BlendFormula MakeCoeffFormula(skgpu::BlendCoeff srcCoeff,
+                                               skgpu::BlendCoeff dstCoeff) {
     // When the coeffs are (Zero, Zero) or (Zero, One) we set the primary output to none.
-    return (kZero_GrBlendCoeff == srcCoeff &&
-            (kZero_GrBlendCoeff == dstCoeff || kOne_GrBlendCoeff == dstCoeff))
+    return (skgpu::BlendCoeff::kZero == srcCoeff &&
+            (skgpu::BlendCoeff::kZero == dstCoeff || skgpu::BlendCoeff::kOne == dstCoeff))
            ? BlendFormula(BlendFormula::kNone_OutputType, BlendFormula::kNone_OutputType,
-                          kAdd_GrBlendEquation, kZero_GrBlendCoeff, dstCoeff)
+                          skgpu::BlendEquation::kAdd, skgpu::BlendCoeff::kZero, dstCoeff)
            : BlendFormula(BlendFormula::kModulate_OutputType, BlendFormula::kNone_OutputType,
-                        kAdd_GrBlendEquation, srcCoeff, dstCoeff);
+                          skgpu::BlendEquation::kAdd, srcCoeff, dstCoeff);
 }
 
 /**
  * Basic coeff formula similar to MakeCoeffFormula but we will make the src f*Sa. This is used in
  * LCD dst-out.
  */
-static constexpr BlendFormula MakeSAModulateFormula(GrBlendCoeff srcCoeff, GrBlendCoeff dstCoeff) {
+static constexpr BlendFormula MakeSAModulateFormula(skgpu::BlendCoeff srcCoeff,
+                                                    skgpu::BlendCoeff dstCoeff) {
     return BlendFormula(BlendFormula::kSAModulate_OutputType, BlendFormula::kNone_OutputType,
-                        kAdd_GrBlendEquation, srcCoeff, dstCoeff);
+                        skgpu::BlendEquation::kAdd, srcCoeff, dstCoeff);
 }
 
 /**
@@ -216,9 +223,9 @@ static constexpr BlendFormula MakeSAModulateFormula(GrBlendCoeff srcCoeff, GrBle
  * Xfer modes: dst-atop (Sa!=1)
  */
 static constexpr BlendFormula MakeCoverageFormula(
-        BlendFormula::OutputType oneMinusDstCoeffModulateOutput, GrBlendCoeff srcCoeff) {
+        BlendFormula::OutputType oneMinusDstCoeffModulateOutput, skgpu::BlendCoeff srcCoeff) {
     return BlendFormula(BlendFormula::kModulate_OutputType, oneMinusDstCoeffModulateOutput,
-                        kAdd_GrBlendEquation, srcCoeff, kIS2C_GrBlendCoeff);
+                        skgpu::BlendEquation::kAdd, srcCoeff, skgpu::BlendCoeff::kIS2C);
 }
 
 /**
@@ -238,7 +245,8 @@ static constexpr BlendFormula MakeCoverageFormula(
 static constexpr BlendFormula MakeCoverageSrcCoeffZeroFormula(
         BlendFormula::OutputType oneMinusDstCoeffModulateOutput) {
     return BlendFormula(oneMinusDstCoeffModulateOutput, BlendFormula::kNone_OutputType,
-                        kReverseSubtract_GrBlendEquation, kDC_GrBlendCoeff, kOne_GrBlendCoeff);
+                        skgpu::BlendEquation::kReverseSubtract, skgpu::BlendCoeff::kDC,
+                        skgpu::BlendCoeff::kOne);
 }
 
 /**
