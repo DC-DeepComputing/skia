@@ -312,11 +312,12 @@ void SkTypeface_FreeType::FaceRec::setupPalette(const SkFontData& data) {
     if (FT_Palette_Data_Get(fFace.get(), &paletteData)) {
         return;
     }
-    if (paletteData.num_palettes < data.getPaletteIndex() ) {
-        return;
+    int basePaletteIndex = data.getPaletteIndex();
+    if (basePaletteIndex > paletteData.num_palettes) {
+        basePaletteIndex = 0;
     }
     FT_Color* ftPalette = nullptr;
-    if (FT_Palette_Select(fFace.get(), data.getPaletteIndex(), &ftPalette)) {
+    if (FT_Palette_Select(fFace.get(), basePaletteIndex, &ftPalette)) {
         return;
     }
     fFTPaletteEntryCount = paletteData.num_palette_entries;
