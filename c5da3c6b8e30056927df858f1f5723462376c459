@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ffb29f5f_a3e310ed",
+        "filename": "src/core/SkShaderCodeDictionary.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-03-03T17:20:53Z",
+      "side": 1,
+      "message": "wdyt about SkShaderSnippet?\n\nEntry doesn\u0027t clarify much and without being inside SkShaderInfo, \"snippet\" could be a snippet of anything.",
+      "range": {
+        "startLine": 22,
+        "startChar": 7,
+        "endLine": 22,
+        "endChar": 21
+      },
+      "revId": "c5da3c6b8e30056927df858f1f5723462376c459",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
