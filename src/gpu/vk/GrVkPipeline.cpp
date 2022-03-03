@@ -291,25 +291,25 @@ static void setup_multisample_state(int numSamples,
 
 static VkBlendFactor blend_coeff_to_vk_blend(GrBlendCoeff coeff) {
     switch (coeff) {
-        case kZero_GrBlendCoeff:
+        case skgpu::BlendCoeff::kZero:
             return VK_BLEND_FACTOR_ZERO;
-        case kOne_GrBlendCoeff:
+        case skgpu::BlendCoeff::kOne:
             return VK_BLEND_FACTOR_ONE;
-        case kSC_GrBlendCoeff:
+        case skgpu::BlendCoeff::kSC:
             return VK_BLEND_FACTOR_SRC_COLOR;
-        case kISC_GrBlendCoeff:
+        case skgpu::BlendCoeff::kISC:
             return VK_BLEND_FACTOR_ONE_MINUS_SRC_COLOR;
-        case kDC_GrBlendCoeff:
+        case skgpu::BlendCoeff::kDC:
             return VK_BLEND_FACTOR_DST_COLOR;
         case kIDC_GrBlendCoeff:
             return VK_BLEND_FACTOR_ONE_MINUS_DST_COLOR;
-        case kSA_GrBlendCoeff:
+        case skgpu::BlendCoeff::kSA:
             return VK_BLEND_FACTOR_SRC_ALPHA;
-        case kISA_GrBlendCoeff:
+        case skgpu::BlendCoeff::kISA:
             return VK_BLEND_FACTOR_ONE_MINUS_SRC_ALPHA;
-        case kDA_GrBlendCoeff:
+        case skgpu::BlendCoeff::kDA:
             return VK_BLEND_FACTOR_DST_ALPHA;
-        case kIDA_GrBlendCoeff:
+        case skgpu::BlendCoeff::kIDA:
             return VK_BLEND_FACTOR_ONE_MINUS_DST_ALPHA;
         case kConstC_GrBlendCoeff:
             return VK_BLEND_FACTOR_CONSTANT_COLOR;
@@ -317,11 +317,11 @@ static VkBlendFactor blend_coeff_to_vk_blend(GrBlendCoeff coeff) {
             return VK_BLEND_FACTOR_ONE_MINUS_CONSTANT_COLOR;
         case kS2C_GrBlendCoeff:
             return VK_BLEND_FACTOR_SRC1_COLOR;
-        case kIS2C_GrBlendCoeff:
+        case skgpu::BlendCoeff::kIS2C:
             return VK_BLEND_FACTOR_ONE_MINUS_SRC1_COLOR;
         case kS2A_GrBlendCoeff:
             return VK_BLEND_FACTOR_SRC1_ALPHA;
-        case kIS2A_GrBlendCoeff:
+        case skgpu::BlendCoeff::kIS2A:
             return VK_BLEND_FACTOR_ONE_MINUS_SRC1_ALPHA;
         case kIllegal_GrBlendCoeff:
             return VK_BLEND_FACTOR_ZERO;
@@ -356,15 +356,15 @@ static VkBlendOp blend_equation_to_vk_blend_op(GrBlendEquation equation) {
         // Illegal.
         VK_BLEND_OP_ADD,
     };
-    static_assert(0 == kAdd_GrBlendEquation);
-    static_assert(1 == kSubtract_GrBlendEquation);
-    static_assert(2 == kReverseSubtract_GrBlendEquation);
-    static_assert(3 == kScreen_GrBlendEquation);
-    static_assert(4 == kOverlay_GrBlendEquation);
-    static_assert(5 == kDarken_GrBlendEquation);
-    static_assert(6 == kLighten_GrBlendEquation);
-    static_assert(7 == kColorDodge_GrBlendEquation);
-    static_assert(8 == kColorBurn_GrBlendEquation);
+    static_assert(0 == skgpu::BlendEquation::kAdd);
+    static_assert(1 == skgpu::BlendEquation::kSubtract);
+    static_assert(2 == skgpu::BlendEquation::kReverseSubtract);
+    static_assert(3 == skgpu::BlendEquation::kScreen);
+    static_assert(4 == skgpu::BlendEquation::kOverlay);
+    static_assert(5 == skgpu::BlendEquation::kDarken);
+    static_assert(6 == skgpu::BlendEquation::kLighten);
+    static_assert(7 == skgpu::BlendEquation::kColorDodge);
+    static_assert(8 == skgpu::BlendEquation::kColorBurn);
     static_assert(9 == kHardLight_GrBlendEquation);
     static_assert(10 == kSoftLight_GrBlendEquation);
     static_assert(11 == kDifference_GrBlendEquation);
