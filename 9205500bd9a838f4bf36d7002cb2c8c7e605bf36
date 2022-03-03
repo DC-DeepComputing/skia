@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "21fdb124_d1d24952",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-03-03T18:53:34Z",
+      "side": 1,
+      "message": "lgtm % introducing a unit test for the fix.",
+      "revId": "9205500bd9a838f4bf36d7002cb2c8c7e605bf36",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6bc8c76a_155360e7",
