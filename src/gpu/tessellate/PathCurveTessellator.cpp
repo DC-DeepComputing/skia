@@ -20,7 +20,7 @@
 
 namespace skgpu {
 
-int PathCurveTessellator::patchPreallocCount(int totalCombinedPathVerbCnt) const {
+int PathCurveTessellator::PatchPreallocCount(int totalCombinedPathVerbCnt) {
     // Over-allocate enough curves for 1 in 4 to chop.
     int approxNumChops = (totalCombinedPathVerbCnt + 3) / 4;
     // Every chop introduces 2 new patches: another curve patch and a triangle patch that glues the
@@ -28,13 +28,13 @@ int PathCurveTessellator::patchPreallocCount(int totalCombinedPathVerbCnt) const
     return totalCombinedPathVerbCnt + approxNumChops * 2;
 }
 
-void PathCurveTessellator::writePatches(PatchWriter& patchWriter,
-                                        const SkMatrix& shaderMatrix,
-                                        const PathDrawList& pathDrawList) {
+int PathCurveTessellator::WritePatches(Writer&& patchWriter,
+                                       const SkMatrix& shaderMatrix,
+                                       const PathDrawList& pathDrawList) {
     wangs_formula::VectorXform shaderXform(shaderMatrix);
     for (auto [pathMatrix, path, color] : pathDrawList) {
         AffineMatrix m(pathMatrix);
-        if (fAttribs & PatchAttribs::kColor) {
+        if (patchWriter.attribs() & PatchAttribs::kColor) {
             patchWriter.updateColorAttrib(color);
         }
         for (auto [verb, pts, w] : SkPathPriv::Iterate(path)) {
@@ -68,11 +68,7 @@ void PathCurveTessellator::writePatches(PatchWriter& patchWriter,
         }
     }
 
-    // We already chopped curves to make sure none needed a higher resolveLevel than
-    // kMaxFixedResolveLevel.
-    fFixedResolveLevel = SkTPin(patchWriter.requiredResolveLevel(),
-                                fFixedResolveLevel,
-                                int(kMaxFixedResolveLevel));
+    return patchWriter.requiredResolveLevel();
 }
 
 void PathCurveTessellator::WriteFixedVertexBuffer(VertexWriter vertexWriter, size_t bufferSize) {

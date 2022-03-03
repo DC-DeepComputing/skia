@@ -126,7 +126,7 @@ bool ResourceCache::returnResource(Resource* resource, LastRemovedRef removedRef
     }
 
     SkASSERT(resource);
-    fReturnQueue.push_back(std::tie(resource, removedRef));
+    fReturnQueue.push_back(std::make_pair(resource, removedRef));
     return true;
 }
 

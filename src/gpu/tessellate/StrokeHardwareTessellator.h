@@ -22,7 +22,8 @@ public:
 
     int patchPreallocCount(int totalCombinedStrokeVerbCnt) const final;
 
-    int writePatches(PatchWriter&,
+    int writePatches(GrMeshDrawTarget* target,
+                     int preallocCount,
                      const SkMatrix& shaderMatrix,
                      std::array<float,2> matrixMinMaxScales,
                      PathStrokeList*) final;
