@@ -16,6 +16,24 @@
       "message": "Thinking about this some more I am happier with exposing the API to get the GL enum and then having the client/chrome use that however they like. I still feel like chrome should already be getting the correct format themselves here instead of hoping everything works out. So this moves a little closer to Chrome directly managing a format (even if it is just to rewrap it with a different target).",
       "revId": "5dbd3d64af1e221ca19e8543c4565ae5e98d3cab",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "680b9060_22ea767f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 7953
+      },
+      "writtenOn": "2022-03-03T22:01:37Z",
+      "side": 1,
+      "message": "FYI, I recalled why we query default backend format for color type from skia. It is because, skia can have many backends (GL, Vulkan, DX, Dawn). and skia may make some different decision based on gpu caps, format properties (some default formats are not renderable, skia may choose other format to simulate them?). So we would like to always depend on skia to make the decision, chrome code will follow it.",
+      "parentUuid": "c6eded79_065467ec",
+      "revId": "5dbd3d64af1e221ca19e8543c4565ae5e98d3cab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
