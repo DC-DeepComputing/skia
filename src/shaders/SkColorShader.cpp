@@ -26,6 +26,21 @@ bool SkColorShader::isOpaque() const {
     return SkColorGetA(fColor) == 255;
 }
 
+SkColor SkColorShader::constantColor(SkColorSpace* colorSpace) const {
+    //SkColor4f paintColor = SkColor4f::FromColor(fColor);
+    //SkColorSpaceXformSteps { sk_srgb_singleton(), kUnpremul_SkAlphaType,
+    //                         colorSpace, kUnpremul_SkAlphaType }
+    //                        .apply(paintColor.premul().vec());
+    return fColor;
+}
+
+SkColor SkColor4Shader::constantColor(SkColorSpace* colorSpace) const {
+    SkColor4f color = fColor;
+    SkColorSpaceXformSteps(fColorSpace.get(), kUnpremul_SkAlphaType,
+                           colorSpace,        kUnpremul_SkAlphaType).apply(color.vec());
+    return color.toSkColor();
+}
+
 sk_sp<SkFlattenable> SkColorShader::CreateProc(SkReadBuffer& buffer) {
     return sk_make_sp<SkColorShader>(buffer.readColor());
 }

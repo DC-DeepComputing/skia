@@ -21,6 +21,7 @@
 #include "src/core/SkVM.h"
 #include "src/core/SkVMBlitter.h"
 #include "src/shaders/SkColorFilterShader.h"
+#include "src/shaders/SkColorShader.h"
 
 #include <cinttypes>
 
@@ -250,6 +251,13 @@ SkVMBlitter::Params SkVMBlitter::EffectiveParams(const SkPixmap& device,
     // but if there is a shader, it's modulated by the paint alpha.
     sk_sp<SkShader> shader = paint.refShader();
     if (!shader) {
+        /*
+        SkColor4f paintColor = SkColor4f::FromColor(paint.getColor());
+        SkColorSpaceXformSteps(sk_srgb_singleton(), kUnpremul_SkAlphaType,
+                               device.colorSpace(), kPremul_SkAlphaType)
+                .apply(paintColor.vec());
+        shader = sk_make_sp<SkColorShader>(paintColor.toSkColor());
+        */
         shader = sk_make_sp<PaintColorShader>(paint.getColor4f().isOpaque());
     } else if (paint.getAlphaf() < 1.0f) {
         shader = sk_make_sp<SkColorFilterShader>(std::move(shader),
@@ -664,6 +672,58 @@ const void* SkVMBlitter::isSprite(int x, int y) const {
                             y - fSpriteOffset.y());
     }
     return nullptr;
+}
+
+void SkVMBlitter::blitRect(int x, int y, int width, int height) {
+
+    auto shader = as_SB(fParams.shader);
+    if (shader->isConstant() && false) {
+        SkColor c = shader->constantColor(fDevice.colorSpace());
+        SkDebugf("VM blitRect1 @(%d,%d) %dx%d %lu\n", x, y, width, height, c);
+        switch (fParams.dst.shiftPerPixel()) {
+            case 0: {
+                //SkDebugf("VM_1: @(%u, %u) + (%u, %u): %lu\n", y, x, width, height, c);
+                //SK_BLITTER_TRACE_STEP(
+                //        blitMemset0, true, /*scanlines=*/height, /*pixels=*/height * width);
+                void* p = fDevice.writable_addr(x, y);
+                while (height-- > 0) {
+                    memset(p, c, width);
+                    p = SkTAddOffset<void>(p, fDevice.rowBytes());
+                }
+                return;
+            }
+            case 1: {
+                //SK_BLITTER_TRACE_STEP(
+                //        blitMemset1, true, /*scanlines=*/height, /*pixels=*/height * width);
+                // SkDebugf("VM_2: @(%u, %u) + (%u, %u): %lu\n", y, x, width, height, c);
+                SkOpts::rect_memset16(
+                        fDevice.writable_addr16(x, y), c, width, fDevice.rowBytes(), height);
+                return;
+            }
+            case 2: {
+                //SK_BLITTER_TRACE_STEP(
+                //        blitMemset2, true, /*scanlines=*/height, /*pixels=*/height * width);
+                //SkDebugf("VM_3: @(%u, %u) + (%u, %u): %lu\n", y, x, width, height, (uint32_t)c);
+                SkOpts::rect_memset32(
+                        fDevice.writable_addr32(x, y), c, width, fDevice.rowBytes(), height);
+                return;
+            }
+            case 3: {
+                //SK_BLITTER_TRACE_STEP(
+                //        blitMemset3, true, /*scanlines=*/height, /*pixels=*/height * width);
+                // SkDebugf("VM_4: @(%u, %u) + (%u, %u): %lu\n", y, x, width, height, c);
+                SkOpts::rect_memset64(
+                        fDevice.writable_addr64(x, y), c, width, fDevice.rowBytes(), height);
+                return;
+            }
+        }
+        return;
+    }
+    SkDebugf("VM blitRect2 @(%d,%d) %dx%d\n", x, y, width, height);
+    SkASSERT(width > 0);
+    while (--height >= 0) {
+        this->blitH(x, y++, width);
+    }
 }
 
 void SkVMBlitter::blitH(int x, int y, int w) {
