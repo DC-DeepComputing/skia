@@ -18,11 +18,11 @@
 #include "src/core/SkPaintParamsKey.h"
 #include "src/core/SkUniform.h"
 
-
 struct SkShaderSnippet {
     using GenerateGlueCodeForEntry = std::string (*)(const std::string& resultName,
                                                      int entryIndex, // for uniform name mangling
-                                                     const SkShaderSnippet&,
+                                                     const SkPaintParamsKey::BlockReader& reader,
+                                                     const std::string& priorStageOutputName,
                                                      const std::vector<std::string>& childNames,
                                                      int indent);
 
@@ -39,7 +39,7 @@ struct SkShaderSnippet {
             , fStaticSkSL(code)
             , fGlueCodeGenerator(glueCodeGenerator)
             , fNumChildren(numChildren)
-            , fDataPayloadExpectations(dataPayloadExpectations) {
+            , fDataPayloadExpectations1(dataPayloadExpectations) {
     }
 
     std::string getMangledUniformName(int uniformIndex, int mangleId) const;
@@ -49,28 +49,29 @@ struct SkShaderSnippet {
     const char* fStaticSkSL = nullptr;
     GenerateGlueCodeForEntry fGlueCodeGenerator = nullptr;
     int fNumChildren = 0;
-    SkSpan<const SkPaintParamsKey::DataPayloadField> fDataPayloadExpectations;
+    SkSpan<const SkPaintParamsKey::DataPayloadField> fDataPayloadExpectations1;
 };
 
 class SkShaderInfo {
 public:
-    void add(const SkShaderSnippet& entry) {
-        fEntries.push_back(entry);
-    }
+    void add1(const SkPaintParamsKey::BlockReader&);
 
     // TODO: writing to color should be a property of the SnippetEntries and accumulated as the
     // entries are added. _Not_ set manually via 'setWritesColor'.
-    void setWritesColor() { fWritesColor = true; }
-    bool writesColor() const { return fWritesColor; }
+//    void setWritesColor() { fWritesColor = true; }
+//    bool writesColor() const { return fWritesColor; }
 
 #if SK_SUPPORT_GPU && defined(SK_GRAPHITE_ENABLED) && defined(SK_METAL)
     std::string toSkSL() const;
 #endif
 
 private:
-    std::string emitGlueCodeForEntry(int* entryIndex, std::string* result, int indent) const;
+    std::string emitGlueCodeForEntry(int* entryIndex,
+                                     const std::string& priorStageOutputName,
+                                     std::string* result,
+                                     int indent) const;
 
-    std::vector<SkShaderSnippet> fEntries;
+    std::vector<SkPaintParamsKey::BlockReader> fEntries1;
     bool fWritesColor = false;
 };
 
