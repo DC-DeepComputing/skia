@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c6eded79_065467ec",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-03-03T21:54:23Z",
+      "side": 1,
+      "message": "Thinking about this some more I am happier with exposing the API to get the GL enum and then having the client/chrome use that however they like. I still feel like chrome should already be getting the correct format themselves here instead of hoping everything works out. So this moves a little closer to Chrome directly managing a format (even if it is just to rewrap it with a different target).",
+      "revId": "5dbd3d64af1e221ca19e8543c4565ae5e98d3cab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
