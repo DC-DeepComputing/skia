@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "de26824c_06bd9481",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6395
+      },
+      "writtenOn": "2022-03-03T16:15:41Z",
+      "side": 1,
+      "message": "This would be useful to land in Skia so I can avoid explicit \"in-range\" checks (based on font data) on the blink side.",
+      "revId": "b44efa23424a136f3574f31d07f7bd78b094d385",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
