@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "11df2d11_4616e227",
+        "filename": "src/gpu/ResourceKey.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-03-03T20:16:09Z",
+      "side": 1,
+      "message": "This part is purely a refactor that can added on to this CL. In ResourceKey we had this as private, but in all the subclasses we made them public, so I just made them public from the get go.",
+      "range": {
+        "startLine": 42,
+        "startChar": 4,
+        "endLine": 49,
+        "endChar": 69
+      },
+      "revId": "b132c14af2644dc722148e3f5a889d26c95864cd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
