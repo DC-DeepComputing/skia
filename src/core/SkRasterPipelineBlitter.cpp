@@ -348,6 +348,7 @@ void SkRasterPipelineBlitter::blitRect(int x, int y, int w, int h) {
 
 void SkRasterPipelineBlitter::blitRectWithTrace(int x, int y, int w, int h, bool trace) {
     if (fMemset2D) {
+        SkDebugf("RP blitRect @(%d,%d) %dx%d %lu\n", x, y, w, h, fMemsetColor);
         SK_BLITTER_TRACE_STEP(blitRectByMemset,
                            trace,
                            /*scanlines=*/h,

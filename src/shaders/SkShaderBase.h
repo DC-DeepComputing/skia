@@ -50,6 +50,8 @@ public:
      *  Subclasses can override this to allow loop-hoisting optimization.
      */
     virtual bool isConstant() const { return false; }
+    virtual SkColor constantColor(SkColorSpace* colorSpace) const
+                            { SkASSERT(false); return SK_ColorTRANSPARENT; }
 
     const SkMatrix& getLocalMatrix() const { return fLocalMatrix; }
 
