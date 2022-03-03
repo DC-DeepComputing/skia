@@ -16,6 +16,40 @@
       "message": "This would be useful to land in Skia so I can avoid explicit \"in-range\" checks (based on font data) on the blink side.",
       "revId": "b44efa23424a136f3574f31d07f7bd78b094d385",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "235a76b0_9910bdc8",
+        "filename": "src/ports/SkFontHost_FreeType.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 316,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-03-03T17:45:00Z",
+      "side": 1,
+      "message": "Would need to also check for less than zero. Also, I think this needs to be \u003e\u003d since this is comparing an index and count for out of range. Also, we should be checking this fits in an FT_UShort so we don\u0027t confuse things.",
+      "revId": "b44efa23424a136f3574f31d07f7bd78b094d385",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ae14ef86_c2d7feb7",
+        "filename": "src/ports/SkFontHost_FreeType.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 325,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-03-03T17:45:00Z",
+      "side": 1,
+      "message": "It seems the real issue here is that we aren\u0027t setting fSkPalette. I\u0027m fine with defaulting to palette 0 if out of range (essentially treating it like not specifying a palette index) but if it is out of range I\u0027m not sure the palette overrides should apply (since they\u0027re overrides for that palette index). On the other hand, it seems like specifying an out of range palette index and then specifying all the palette entry indexes as overrides (fully specifying a palette) should work.\n\nAnyhow this seems to be confusing css behavior https://www.w3.org/TR/css-fonts-4/#base-palette-desc . Need to make a note of that.",
+      "revId": "b44efa23424a136f3574f31d07f7bd78b094d385",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
