@@ -10,51 +10,130 @@
 
 #include "include/private/SkColorData.h"
 #include "src/gpu/GrVertexChunkArray.h"
+#include "src/gpu/tessellate/MiddleOutPolygonTriangulator.h"
 #include "src/gpu/tessellate/Tessellation.h"
 #include "src/gpu/tessellate/WangsFormula.h"
 
+#include <type_traits>
+#include <variant>
+
 #define AI SK_ALWAYS_INLINE
+#define ENABLE_IF(cond, rt) template <typename RT=rt> std::enable_if_t<cond, RT>
+#define ENABLE_FOR_ATTRIB(attrib) ENABLE_IF(has_attrib<PatchAttribs::attrib>::value, void)
 
 namespace skgpu {
 
-#if SK_GPU_V1
-class PathTessellator;
-class StrokeTessellator;
-#endif
+// TODO: Document trait system for attribs and behaviors in PatchWriter
+template <PatchAttribs A> struct Required {};
+template <PatchAttribs A> struct Optional {};
+
+// TODO: combine defer and update join into one feature
+struct AutoDeferPatches {};
+struct AutoUpdateJoin {};
+struct AddTrianglesWhenChopping {};
+struct DiscardFlatCurves {};
+struct WriteRawPatches {};
+
+template <PatchAttribs Enabled>
+struct DeferredPatchImpl {
+    static constexpr size_t kMaxStride = 4 * sizeof(SkPoint) + PatchAttribsStride(Enabled);
+
+    // Holds an entire patch, except with an undefined join control point.
+    char fData[kMaxStride];
+    bool fHasPending = false; // True means the deferred patch in fData needs to be written out
+    bool fMustDefer  = false; // True means next patch must be deferred
+};
+
+// An no-op object that has the same constructor signature as MiddleOutPolygonTriangulator
+struct NullTriangulator {
+    NullTriangulator(int, SkPoint) {}
+};
 
 // Writes out tessellation patches, formatted with their specific attribs, to a GPU buffer.
+// template <PatchAttribs Enabled, PatchAttribs Dynamic>
+template <typename... Traits>
 class PatchWriter {
+    // Helpers to extract specifics from the template traits pack.
+    template <typename F>     struct has_feature : std::disjunction<std::is_same<F, Traits>...> {};
+    template <PatchAttribs A> using  req_attrib  = has_feature<Required<A>>;
+    template <PatchAttribs A> using  opt_attrib  = has_feature<Optional<A>>;
+    template <PatchAttribs A> using  has_attrib  = std::disjunction<req_attrib<A>, opt_attrib<A>>;
+
+    template <template<PatchAttribs> typename W, typename T>
+    struct filter : std::integral_constant<PatchAttribs, PatchAttribs::kNone> {};
+    template <template<PatchAttribs> typename W, PatchAttribs A>
+    struct filter<W, W<A>> : std::integral_constant<PatchAttribs, A> {};
+
+    // NOTE: using an empty struct (std::monostate) for disabled attributes still uses up 1 byte in
+    // PatchWriter since C++ required that each field is uniquely addressable.
+    template <typename T, PatchAttribs A>
+    using attrib_t = std::conditional_t<req_attrib<A>::value, T,
+                     std::conditional_t<opt_attrib<A>::value, std::optional<T>,
+                                                   /* else */ std::monostate>>;
+
+    static constexpr bool kDeferPatches             = has_feature<AutoDeferPatches>::value;
+    static constexpr bool kUpdateJoin               = has_feature<AutoUpdateJoin>::value;
+    static constexpr bool kAddTrianglesWhenChopping = has_feature<AddTrianglesWhenChopping>::value;
+    static constexpr bool kDiscardFlatCurves        = has_feature<DiscardFlatCurves>::value;
+
+    static constexpr PatchAttribs kRequired = (filter<Required, Traits>::value | ... | PatchAttribs::kNone);
+    static constexpr PatchAttribs kEnabled =  (filter<Optional, Traits>::value | ... | kRequired);
+
+    using JoinAttrib     = attrib_t<SkPoint,      PatchAttribs::kJoinControlPoint>;
+    using FanPointAttrib = attrib_t<SkPoint,      PatchAttribs::kFanPoint>;
+    using StrokeAttrib   = attrib_t<StrokeParams, PatchAttribs::kStrokeParams>;
+
+    // kWideColorIfEnabled does not define an attribute, but changes the type of the kColor attrib.
+    using Color          =
+            std::conditional_t<req_attrib<PatchAttribs::kWideColorIfEnabled>::value, SkPMColor4f,
+            std::conditional_t<opt_attrib<PatchAttribs::kWideColorIfEnabled>::value, VertexColor,
+                                                                          /* else */ uint32_t>>;
+    using ColorAttrib    = attrib_t<Color, PatchAttribs::kColor>;
+    // NOTE: We don't bother defining a type for kExplicitCurveType attrib since emitPatchAttribs()
+    // just ignores the float parameter, it's never stored on the PatchWriter itself.
+
+    // Types that vary depending on the activated features, but do not define the patch data.
+    // TODO: worth doing it this way? Or just always having somethign with max stride that might
+    // just be ignored?
+    using DeferredPatch = std::conditional_t<kDeferPatches,
+            DeferredPatchImpl<kEnabled>, std::monostate>;
+
+    // TODO: See if performance changes with just always using middle out triangulator;
+    // maybe now that chopEtc are in header, the compiler can see they aren't ever used and delete
+    //  it entirely -> seems unlikely since ctor could have side effects it can't know about?
+    //    -> or maybe that will lead to errors because in the constexpr disabled cases we now never
+    //       actually reference it anymore?
+    using InnerTriangulator = std::conditional_t<kAddTrianglesWhenChopping,
+            MiddleOutPolygonTriangulator, NullTriangulator>;
     using VectorXform = wangs_formula::VectorXform;
+
+    static_assert((!kDeferPatches && !kUpdateJoin) || (kRequired & PatchAttribs::kJoinControlPoint),
+                  "Deferred patches and auto-updating joins requires kJoinControlPoint attrib");
 public:
     PatchWriter(GrMeshDrawTarget* target,
                 GrVertexChunkArray* vertexChunkArray,
                 PatchAttribs attribs,
                 int maxTessellationSegments,
-                size_t patchStride,
                 int initialAllocCount)
             : fAttribs(attribs)
             , fMaxSegments_pow2(pow2(maxTessellationSegments))
             , fMaxSegments_pow4(pow2(fMaxSegments_pow2))
-            , fChunker(target, vertexChunkArray, patchStride, initialAllocCount) {
-        // For fans or strokes, the minimum required segment count is 1 (making either a triangle
-        // with the fan point, or a stroked line). Otherwise, we need 2 segments to represent
-        // triangles purely from the tessellated vertices.
-        fCurrMinSegments_pow4 = (attribs & PatchAttribs::kFanPoint ||
-                                 attribs & PatchAttribs::kJoinControlPoint) ? 1.f : 16.f; // 2^4
+            , fCurrMinSegments_pow4(1.f)
+            , fChunker(target, vertexChunkArray, PatchStride(attribs), initialAllocCount) {
+        // TODO: This gets cleaner if PatchAttribs is updated to use EnumBitMask.h
+        SkASSERT(((int) attribs & (int) kRequired) == (int) kRequired); // all required must be set
+        SkASSERT(((int) attribs & ~(int) kEnabled) == 0); // no disabled attribs are requested
+
+        // TODO: Need to initialize all the attrib values, which can't just be {} for those that
+        // map to std::optional<T> because we want to check attribs&A. If it's runtime enabled then
+        // the optional should have T{} by default; otherwise it should not have any value.
     }
 
-#if SK_GPU_V1
-    // Create PatchWriters that write directly to the GrVertexChunkArrays stored on the provided
-    // tessellators.
-    PatchWriter(GrMeshDrawTarget*, PathTessellator*,
-                int maxTessellationSegments, int initialPatchAllocCount);
-    PatchWriter(GrMeshDrawTarget*, StrokeTessellator*,
-                int maxTessellationSegments, int initialPatchAllocCount);
-#endif
-
     ~PatchWriter() {
-        // finishStrokeContour() should have been called before this was deleted (or never used).
-        SkASSERT(!fHasDeferredPatch && !fHasJoinControlPoint);
+        if constexpr (kDeferPatches) {
+            // finishStrokeContour() should have been called before this was deleted (or never used)
+            SkASSERT(!fDeferredPatch.fHasPending);
+        }
     }
 
     PatchAttribs attribs() const { return fAttribs; }
@@ -71,64 +150,56 @@ public:
     // Updates the stroke's join control point that will be written out with each patch. This is
     // automatically adjusted when appending various geometries (e.g. Conic/Cubic), but sometimes
     // must be set explicitly.
-    //
-    // PatchAttribs::kJoinControlPoint must be enabled.
-    void updateJoinControlPointAttrib(SkPoint lastControlPoint) {
-        SkASSERT(fAttribs & PatchAttribs::kJoinControlPoint && lastControlPoint.isFinite());
-        fJoinControlPointAttrib = lastControlPoint;
-        fHasJoinControlPoint = true;
+    ENABLE_FOR_ATTRIB(kJoinControlPoint) updateJoinControlPointAttrib(SkPoint lastControlPoint) {
+        SkASSERT(fAttribs & PatchAttribs::kJoinControlPoint);
+        fJoin = lastControlPoint;
+        if constexpr (kDeferPatches) {
+            fDeferredPatch.fMustDefer = false;
+        }
     }
     // Completes a closed contour of a stroke by rewriting a deferred patch with now-available
     // join control point information. Automatically resets the join control point attribute.
-    //
-    // PatchAttribs::kJoinControlPoint must be enabled.
-    void writeDeferredStrokePatch() {
-        SkASSERT(fAttribs & PatchAttribs::kJoinControlPoint);
-        if (fHasDeferredPatch) {
-            SkASSERT(fHasJoinControlPoint);
+    ENABLE_IF(kDeferPatches, void) writeDeferredStrokePatch() {
+        if (fDeferredPatch.fHasPending) {
+            SkASSERT(!fDeferredPatch.fMustDefer);
             // Overwrite join control point with updated value, which is the first attribute
             // after the 4 control points.
-            memcpy(SkTAddOffset<void>(fDeferredPatchStorage, 4 * sizeof(SkPoint)),
-                   &fJoinControlPointAttrib, sizeof(SkPoint));
+            memcpy(SkTAddOffset<void>(fDeferredPatch.fData, 4 * sizeof(SkPoint)),
+                   &fJoin, sizeof(SkPoint));
             if (VertexWriter vw = fChunker.appendVertex()) {
-                vw << VertexWriter::Array<char>(fDeferredPatchStorage, fChunker.stride());
+                vw << VertexWriter::Array<char>(fDeferredPatch.fData, fChunker.stride());
             }
         }
 
-        fHasDeferredPatch = false;
-        fHasJoinControlPoint = false;
+        fDeferredPatch.fHasPending = false;
+        fDeferredPatch.fMustDefer = true;
     }
-    // TODO: These are only used by StrokeHardwareTessellator and ideally its patch writing logic
-    // should be simplified like StrokeFixedCountTessellator's, and then this can go away.
-    void resetJoinControlPointAttrib() {
-        SkASSERT(fAttribs & PatchAttribs::kJoinControlPoint);
-        // Should have already been written or caller should manually defer
-        SkASSERT(!fHasDeferredPatch);
-        fHasJoinControlPoint = false;
-    }
-    SkPoint joinControlPoint() const { return fJoinControlPointAttrib; }
-    bool hasJoinControlPoint() const { return fHasJoinControlPoint; }
 
     // Updates the fan point that will be written out with each patch (i.e., the point that wedges
     // fan around).
-    // PatchAttribs::kFanPoint must be enabled.
-    void updateFanPointAttrib(SkPoint fanPoint) {
+    ENABLE_FOR_ATTRIB(kFanPoint) updateFanPointAttrib(SkPoint fanPoint) {
         SkASSERT(fAttribs & PatchAttribs::kFanPoint);
-        fFanPointAttrib = fanPoint;
+        fFanPoint = fanPoint;
     }
 
     // Updates the stroke params that are written out with each patch.
-    // PatchAttribs::kStrokeParams must be enabled.
-    void updateStrokeParamsAttrib(StrokeParams strokeParams) {
+    ENABLE_FOR_ATTRIB(kStrokeParams) updateStrokeParamsAttrib(StrokeParams strokeParams) {
         SkASSERT(fAttribs & PatchAttribs::kStrokeParams);
-        fStrokeParamsAttrib = strokeParams;
+        fStrokeParams = strokeParams;
     }
 
     // Updates the color that will be written out with each patch.
-    // PatchAttribs::kColor must be enabled.
-    void updateColorAttrib(const SkPMColor4f& color) {
+    ENABLE_FOR_ATTRIB(kColor) updateColorAttrib(const SkPMColor4f& color) {
         SkASSERT(fAttribs & PatchAttribs::kColor);
-        fColorAttrib.set(color, fAttribs & PatchAttribs::kWideColorIfEnabled);
+        if constexpr (kRequired & PatchAttribs::kWideColorIfEnabled) {
+            fColor = color;
+        } else if constexpr (kEnabled & PatchAttribs::kWideColorIfEnabled) {
+            // FIXME this probably compiles, but optional<Color> can't have set called.
+            // -> default init everything? is std::optional<> the best choice for this?
+            fColor->set(color, fAttribs & PatchAttribs::kWideColorIfEnabled);
+        } else {
+            fColor = color.toBytes_RGBA();
+        }
     }
 
     /**
@@ -139,8 +210,11 @@ public:
      */
 
     // Writes four control points manually prepared.
-    // TODO: Only used by StrokeHardwareTessellator
-    AI void writeHwPatch(const SkPoint p[4]) {
+    // NOTE: Can be removed if/when StrokeHardwareTessellator is deleted.
+    // TODO: could just make writePatch a protected function since HwPatchWriter extends it
+    template <typename Void = void>
+    AI std::enable_if_t<has_feature<WriteRawPatches>::value, Void>
+    writeRawPatch(const SkPoint p[4]) {
         float4 p0p1 = float4::Load(p);
         float4 p2p3 = float4::Load(p + 2);
         this->writePatch(p0p1.lo, p0p1.hi, p2p3.lo, p2p3.hi, /*unused*/0.f);
@@ -151,14 +225,15 @@ public:
                        const VectorXform& shaderXform,
                        float precision = kTessellationPrecision) {
         float n4 = wangs_formula::cubic_pow4(precision, p0, p1, p2, p3, shaderXform);
-        if (this->writesCurvesOnly()) {
+        // if constexpr (kDiscardFlatCurves) {
+        if constexpr (has_feature<DiscardFlatCurves>::value) {
             if (n4 <= 1.f) {
                 // This cubic only needs one segment (e.g. a line) but we're not filling space with
                 // fans or stroking, so nothing actually needs to be drawn.
                 return;
             }
         }
-        if (this->updateRequiredSegments(n4)) {
+        if (this->curveFitsInMaxSegments(n4)) {
             this->writeCubicPatch(p0, p1, p2, p3);
         } else {
             int numPatches = SkScalarCeilToInt(wangs_formula::root4(
@@ -180,14 +255,14 @@ public:
                        const VectorXform& shaderXform,
                        float precision = kTessellationPrecision) {
         float n2 = wangs_formula::conic_pow2(precision, p0, p1, p2, w, shaderXform);
-        if (this->writesCurvesOnly()) {
+        if constexpr (kDiscardFlatCurves) {
             if (n2 <= 1.f) {
                 // This conic only needs one segment (e.g. a line) but we're not filling space with
                 // fans or stroking, so nothing actually needs to be drawn.
                 return;
             }
         }
-        if (this->updateRequiredSegments(n2*n2)) {
+        if (this->curveFitsInMaxSegments(n2*n2)) {
             this->writeConicPatch(p0, p1, p2, w);
         } else {
             int numPatches = SkScalarCeilToInt(sqrtf(
@@ -210,14 +285,14 @@ public:
                            const VectorXform& shaderXform,
                            float precision = kTessellationPrecision) {
         float n4 = wangs_formula::quadratic_pow4(precision, p0, p1, p2, shaderXform);
-        if (this->writesCurvesOnly()) {
+        if constexpr (kDiscardFlatCurves) {
             if (n4 <= 1.f) {
                 // This quad only needs one segment (e.g. a line) but we're not filling space with
                 // fans or stroking, so nothing actually needs to be drawn.
                 return;
             }
         }
-        if (this->updateRequiredSegments(n4)) {
+        if (this->curveFitsInMaxSegments(n4)) {
             this->writeQuadPatch(p0, p1, p2);
         } else {
             int numPatches = SkScalarCeilToInt(wangs_formula::root4(
@@ -236,8 +311,7 @@ public:
 
     // Write a line that is automatically converted into an equivalent cubic.
     AI void writeLine(float4 p0p1) {
-        // No chopping needed, and should have been reset to 1 segment if using writeLine
-        SkASSERT(fCurrMinSegments_pow4 >= 1.f);
+        // No chopping needed, minimum segments is always at least 1
         this->writeCubicPatch(p0p1.lo, (p0p1.zwxy() - p0p1) * (1/3.f) + p0p1, p0p1.hi);
     }
     AI void writeLine(float2 p0, float2 p1) { this->writeLine({p0, p1}); }
@@ -248,8 +322,9 @@ public:
     // Write a triangle by setting it to a conic with w=Inf, and using a distinct
     // explicit curve type for when inf isn't supported in shaders.
     AI void writeTriangle(float2 p0, float2 p1, float2 p2) {
-        // No chopping needed, and should have been reset to 2 segments if using writeTriangle.
-        SkASSERT(fCurrMinSegments_pow4 >= (2*2*2*2));
+        // No chopping needed, the max supported segment count should always support 2 lines
+        // (which form a triangle when implicitly closed).
+        SkAssertResult(this->curveFitsInMaxSegments(2.f * 2.f * 2.f * 2.f));
         this->writePatch(p0, p1, p2, {SK_FloatInfinity, SK_FloatInfinity},
                          kTriangularConicCurveType);
     }
@@ -261,10 +336,11 @@ public:
 
     // Writes a circle used for round caps and joins in stroking, encoded as a cubic with
     // identical control points and an empty join.
-    AI void writeCircle(SkPoint p) {
+    template <typename Void = void>
+    AI std::enable_if_t<kEnabled & PatchAttribs::kJoinControlPoint, Void>
+    writeCircle(SkPoint p) {
         // This does not use writePatch() because it uses its own location as the join attribute
-        // value instead of fJoinControlPointAttrib and never defers.
-        SkASSERT(fAttribs & PatchAttribs::kJoinControlPoint);
+        // value instead of fJoin and never defers.
         if (VertexWriter vw = fChunker.appendVertex()) {
             vw << VertexWriter::Repeat<4>(p); // p0,p1,p2,p3 = p -> 4 copies
             this->emitPatchAttribs(std::move(vw), p, kCubicCurveType);
@@ -272,48 +348,53 @@ public:
     }
 
 private:
-    template <typename T>
-    static VertexWriter::Conditional<T> If(bool c, const T& v) { return VertexWriter::If(c,v); }
-
     AI void emitPatchAttribs(VertexWriter vertexWriter,
-                             SkPoint joinControlPoint,
+                             const JoinAttrib& join,
                              float explicitCurveType) {
-        vertexWriter << If((fAttribs & PatchAttribs::kJoinControlPoint), joinControlPoint)
-                     << If((fAttribs & PatchAttribs::kFanPoint), fFanPointAttrib)
-                     << If((fAttribs & PatchAttribs::kStrokeParams), fStrokeParamsAttrib)
-                     << If((fAttribs & PatchAttribs::kColor), fColorAttrib)
-                     << If((fAttribs & PatchAttribs::kExplicitCurveType), explicitCurveType);
+        // NOTE: operator<< overrides automatically handle optional and disabled attribs.
+        vertexWriter << join << fFanPoint << fStrokeParams << fColor;
+        if constexpr (kRequired & PatchAttribs::kExplicitCurveType) {
+            vertexWriter << explicitCurveType;
+        } else if constexpr (kEnabled & PatchAttribs::kExplicitCurveType) {
+            vertexWriter << VertexWriter::If(fAttribs & PatchAttribs::kExplicitCurveType,
+                                             explicitCurveType);
+        } // else disabled so don't write the type out
+    }
+
+    AI VertexWriter appendPatch() {
+        if constexpr (kDeferPatches) {
+            if (fDeferredPatch.fMustDefer) {
+                SkASSERT(!fDeferredPatch.fHasPending);
+                SkASSERT(fChunker.stride() <= DeferredPatch::kMaxStride);
+                fDeferredPatch.fHasPending = true;
+                return {fDeferredPatch.fData, fChunker.stride()};
+            }
+        }
+        return fChunker.appendVertex();
     }
 
     AI void writePatch(float2 p0, float2 p1, float2 p2, float2 p3, float explicitCurveType) {
-        const bool defer = (fAttribs & PatchAttribs::kJoinControlPoint) &&
-                           !fHasJoinControlPoint;
-
-        SkASSERT(!defer || !fHasDeferredPatch);
-        SkASSERT(fChunker.stride() <= kMaxStride);
-        VertexWriter vw = defer ? VertexWriter{fDeferredPatchStorage, fChunker.stride()}
-                                : fChunker.appendVertex();
-        fHasDeferredPatch |= defer;
-
-        if (vw) {
+        if (VertexWriter vw = this->appendPatch()) {
             vw << p0 << p1 << p2 << p3;
-            // NOTE: fJoinControlPointAttrib will contain NaN if we're writing to a deferred
-            // patch. If that's the case, correct data will overwrite it when the contour is
-            // closed (this is fine since a deferred patch writes to CPU memory instead of
-            // directly to the GPU buffer).
-            this->emitPatchAttribs(std::move(vw), fJoinControlPointAttrib, explicitCurveType);
+            // NOTE: fJoin will be undefined if we're writing to a deferred patch. If that's the
+            // case, correct data will overwrite it when the contour is closed (this is fine since a
+            // deferred patch writes to CPU memory instead of directly to the GPU buffer).
+            this->emitPatchAttribs(std::move(vw), fJoin, explicitCurveType);
+
             // Automatically update join control point for next patch.
-            if (fAttribs & PatchAttribs::kJoinControlPoint) {
-                fHasJoinControlPoint = true;
+            if constexpr (kUpdateJoin) {
                 if (explicitCurveType == kCubicCurveType && any(p3 != p2)) {
                     // p2 is control point defining the tangent vector into the next patch.
-                    p2.store(&fJoinControlPointAttrib);
+                    p2.store(&fJoin);
                 } else if (any(p2 != p1)) {
                     // p1 is the control point defining the tangent vector.
-                    p1.store(&fJoinControlPointAttrib);
+                    p1.store(&fJoin);
                 } else {
                     // p0 is the control point defining the tangent vector.
-                    p0.store(&fJoinControlPointAttrib);
+                    p0.store(&fJoin);
+                }
+                if constexpr (kDeferPatches) {
+                    fDeferredPatch.fMustDefer = false;
                 }
             }
         }
@@ -332,15 +413,8 @@ private:
         this->writePatch(p0, p1, p2, {w, SK_FloatInfinity}, kConicCurveType);
     }
 
-    // Helpers that chop the curve type into 'numPatches' parametrically uniform curves. It is
-    // assumed that 'numPatches' is calculated such that the resulting curves require the maximum
-    // number of segments to draw appropriately (since the original presumably needed even more).
-    void chopAndWriteQuads(float2 p0, float2 p1, float2 p2, int numPatches);
-    void chopAndWriteConics(float2 p0, float2 p1, float2 p2, float w, int numPatches);
-    void chopAndWriteCubics(float2 p0, float2 p1, float2 p2, float2 p3, int numPatches);
-
-    // Returns true if curve can be written w/o needing to chop
-    bool updateRequiredSegments(float n4) {
+    // Returns true if curve can be written w/o needing to chop (e.g. represented by one instance)
+    bool curveFitsInMaxSegments(float n4) {
         if (n4 <= fMaxSegments_pow4) {
             fCurrMinSegments_pow4 = std::max(n4, fCurrMinSegments_pow4);
             return true;
@@ -350,12 +424,144 @@ private:
         }
     }
 
-    // True if the patch writer only draws curves (presumably for filling), e.g. does not add a
-    // wedge fan point to help fill space, or a join control point for stroking.
-    bool writesCurvesOnly() const {
-        return !(fAttribs & (PatchAttribs::kJoinControlPoint | PatchAttribs::kFanPoint));
+    // Helpers that chop the curve type into 'numPatches' parametrically uniform curves. It is
+    // assumed that 'numPatches' is calculated such that the resulting curves require the maximum
+    // number of segments to draw appropriately (since the original presumably needed even more).
+    void chopAndWriteQuads(float2 p0, float2 p1, float2 p2, int numPatches) {
+        InnerTriangulator innerTriangulator(numPatches, skvx::bit_pun<SkPoint>(p0));
+        for (; numPatches >= 3; numPatches -= 2) {
+            // Chop into 3 quads.
+            float4 T = float4(1,1,2,2) / numPatches;
+            float4 ab = mix(p0.xyxy(), p1.xyxy(), T);
+            float4 bc = mix(p1.xyxy(), p2.xyxy(), T);
+            float4 abc = mix(ab, bc, T);
+            // p1 & p2 of the cubic representation of the middle quad.
+            float4 middle = mix(ab, bc, mix(T, T.zwxy(), 2/3.f));
+
+            this->writeQuadPatch(p0, ab.lo, abc.lo);  // Write the 1st quad.
+            if constexpr (kAddTrianglesWhenChopping) {
+                this->writeTriangle(p0, abc.lo, abc.hi);
+            }
+            this->writeCubicPatch(abc.lo, middle, abc.hi);  // Write the 2nd quad (already a cubic)
+            if constexpr (kAddTrianglesWhenChopping) {
+                this->writeTriangleStack(innerTriangulator.pushVertex(skvx::bit_pun<SkPoint>(abc.hi)));
+            }
+            std::tie(p0, p1) = {abc.hi, bc.hi};  // Save the 3rd quad.
+        }
+        if (numPatches == 2) {
+            // Chop into 2 quads.
+            float2 ab = (p0 + p1) * .5f;
+            float2 bc = (p1 + p2) * .5f;
+            float2 abc = (ab + bc) * .5f;
+
+            this->writeQuadPatch(p0, ab, abc);  // Write the 1st quad.
+            if constexpr (kAddTrianglesWhenChopping) {
+                this->writeTriangle(p0, abc, p2);
+            }
+            this->writeQuadPatch(abc, bc, p2);  // Write the 2nd quad.
+        } else {
+            SkASSERT(numPatches == 1);
+            this->writeQuadPatch(p0, p1, p2);  // Write the single remaining quad.
+        }
+        if constexpr (kAddTrianglesWhenChopping) {
+            this->writeTriangleStack(innerTriangulator.pushVertex(skvx::bit_pun<SkPoint>(p2)));
+            this->writeTriangleStack(innerTriangulator.close());
+        }
     }
 
+    void chopAndWriteConics(float2 p0, float2 p1, float2 p2, float w, int numPatches) {
+        InnerTriangulator innerTriangulator(numPatches, skvx::bit_pun<SkPoint>(p0));
+        // Load the conic in 3d homogeneous (unprojected) space.
+        float4 h0 = float4(p0,1,1);
+        float4 h1 = float4(p1,1,1) * w;
+        float4 h2 = float4(p2,1,1);
+        for (; numPatches >= 2; --numPatches) {
+            // Chop in homogeneous space.
+            float T = 1.f/numPatches;
+            float4 ab = mix(h0, h1, T);
+            float4 bc = mix(h1, h2, T);
+            float4 abc = mix(ab, bc, T);
+
+            // Project and write the 1st conic.
+            float2 midpoint = abc.xy() / abc.w();
+            this->writeConicPatch(h0.xy() / h0.w(),
+                                  ab.xy() / ab.w(),
+                                  midpoint,
+                                  ab.w() / sqrtf(h0.w() * abc.w()));
+            if constexpr (kAddTrianglesWhenChopping) {
+                this->writeTriangleStack(innerTriangulator.pushVertex(skvx::bit_pun<SkPoint>(midpoint)));
+            }
+            std::tie(h0, h1) = {abc, bc};  // Save the 2nd conic (in homogeneous space).
+        }
+        // Project and write the remaining conic.
+        SkASSERT(numPatches == 1);
+        this->writeConicPatch(h0.xy() / h0.w(),
+                              h1.xy() / h1.w(),
+                              h2.xy(), // h2.w == 1
+                              h1.w() / sqrtf(h0.w()));
+        if constexpr (kAddTrianglesWhenChopping) {
+            this->writeTriangleStack(innerTriangulator.pushVertex(skvx::bit_pun<SkPoint>(h2.xy())));
+            this->writeTriangleStack(innerTriangulator.close());
+        }
+    }
+
+    void chopAndWriteCubics(float2 p0, float2 p1, float2 p2, float2 p3, int numPatches) {
+        InnerTriangulator innerTriangulator(numPatches, skvx::bit_pun<SkPoint>(p0));
+        for (; numPatches >= 3; numPatches -= 2) {
+            // Chop into 3 cubics.
+            float4 T = float4(1,1,2,2) / numPatches;
+            float4 ab = mix(p0.xyxy(), p1.xyxy(), T);
+            float4 bc = mix(p1.xyxy(), p2.xyxy(), T);
+            float4 cd = mix(p2.xyxy(), p3.xyxy(), T);
+            float4 abc = mix(ab, bc, T);
+            float4 bcd = mix(bc, cd, T);
+            float4 abcd = mix(abc, bcd, T);
+            float4 middle = mix(abc, bcd, T.zwxy());  // p1 & p2 of the middle cubic.
+
+            this->writeCubicPatch(p0, ab.lo, abc.lo, abcd.lo);  // Write the 1st cubic.
+            if constexpr (kAddTrianglesWhenChopping) {
+                this->writeTriangle(p0, abcd.lo, abcd.hi);
+            }
+            this->writeCubicPatch(abcd.lo, middle, abcd.hi);  // Write the 2nd cubic.
+            if constexpr (kAddTrianglesWhenChopping) {
+                this->writeTriangleStack(innerTriangulator.pushVertex(skvx::bit_pun<SkPoint>(abcd.hi)));
+            }
+            std::tie(p0, p1, p2) = {abcd.hi, bcd.hi, cd.hi};  // Save the 3rd cubic.
+        }
+        if (numPatches == 2) {
+            // Chop into 2 cubics.
+            float2 ab = (p0 + p1) * .5f;
+            float2 bc = (p1 + p2) * .5f;
+            float2 cd = (p2 + p3) * .5f;
+            float2 abc = (ab + bc) * .5f;
+            float2 bcd = (bc + cd) * .5f;
+            float2 abcd = (abc + bcd) * .5f;
+
+            this->writeCubicPatch(p0, ab, abc, abcd);  // Write the 1st cubic.
+            if constexpr (kAddTrianglesWhenChopping) {
+                this->writeTriangle(p0, abcd, p3);
+            }
+            this->writeCubicPatch(abcd, bcd, cd, p3);  // Write the 2nd cubic.
+        } else {
+            SkASSERT(numPatches == 1);
+            this->writeCubicPatch(p0, p1, p2, p3);  // Write the single remaining cubic.
+        }
+        if constexpr (kAddTrianglesWhenChopping) {
+            this->writeTriangleStack(innerTriangulator.pushVertex(skvx::bit_pun<SkPoint>(p3)));
+            this->writeTriangleStack(innerTriangulator.close());
+        }
+    }
+
+    template <typename Void = void>
+    std::enable_if_t<kAddTrianglesWhenChopping, Void>
+    writeTriangleStack(MiddleOutPolygonTriangulator::PoppedTriangleStack&& stack) {
+        for (auto [p0, p1, p2] : stack) {
+            this->writeTriangle(p0, p1, p2);
+        }
+    }
+
+    // Runtime configuration, will always contain kRequired attribs but may not have all optional
+    // attribs enabled (e.g. depending on caps or batching).
     const PatchAttribs fAttribs;
 
     const float fMaxSegments_pow2;
@@ -363,25 +569,13 @@ private:
     float fCurrMinSegments_pow4;
 
     GrVertexChunkBuilder fChunker;
+    DeferredPatch fDeferredPatch; // only usable if kDeferPatches is true
 
-    SkPoint fJoinControlPointAttrib;
-    SkPoint fFanPointAttrib;
-    StrokeParams fStrokeParamsAttrib;
-    VertexColor fColorAttrib;
-
-    static constexpr size_t kMaxStride =
-            4 * sizeof(SkPoint) + // control points
-                sizeof(SkPoint) + // join control point or fan attrib point (not used at same time)
-                sizeof(StrokeParams) + // stroke params
-            4 * sizeof(uint32_t); // wide vertex color
-
-    // Only used if kJoinControlPointAttrib is set in fAttribs, in which case it holds data for
-    // a single patch waiting for the incoming join control point to be computed.
-    // Contents are valid (sans join control point) if fHasDeferredPatch is true.
-    char fDeferredPatchStorage[kMaxStride];
-    bool fHasDeferredPatch = false;
-
-    bool fHasJoinControlPoint = false;
+    // Instance attribute state written after the 4 control points of a patch
+    JoinAttrib fJoin;
+    FanPointAttrib    fFanPoint;
+    StrokeAttrib      fStrokeParams;
+    ColorAttrib       fColor;
 };
 
 }  // namespace skgpu

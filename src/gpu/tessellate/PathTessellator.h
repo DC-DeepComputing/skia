@@ -23,8 +23,6 @@ class GrOpFlushState;
 
 namespace skgpu {
 
-class PatchWriter;
-
 // Prepares GPU data for, and then draws a path's tessellated geometry. Depending on the subclass,
 // the caller may or may not be required to draw the path's inner fan separately.
 class PathTessellator {
@@ -62,39 +60,17 @@ public:
 
     PatchAttribs patchAttribs() const { return fAttribs; }
 
-    // Gives an approximate initial buffer size for this class to write patches into. Ideally the
-    // whole path will fit into this initial buffer, but if it requires a lot of chopping, the
-    // PatchWriter will allocate more buffer(s).
-    virtual int patchPreallocCount(int totalCombinedPathVerbCnt) const = 0;
-
-    // Writes out patches to the given PatchWriter, chopping as necessary so the curves all fit in
-    // maxTessellationSegments or fewer.
-    //
-    // Each path's fPathMatrix in the list is applied on the CPU while the geometry is being written
-    // out. This is a tool for batching, and is applied in addition to the shader's on-GPU matrix.
-    virtual void writePatches(PatchWriter&,
-                              const SkMatrix& shaderMatrix,
-                              const PathDrawList&) = 0;
-
 #if SK_GPU_V1
     // Initializes the internal vertex and index buffers required for drawFixedCount().
     virtual void prepareFixedCountBuffers(GrMeshDrawTarget*) = 0;
 
     // Called before draw(). Prepares GPU buffers containing the geometry to tessellate.
-    void prepare(GrMeshDrawTarget* target,
+    virtual void prepare(GrMeshDrawTarget* target,
                  int maxTessellationSegments,
                  const SkMatrix& shaderMatrix,
                  const PathDrawList& pathDrawList,
                  int totalCombinedPathVerbCnt,
-                 bool willUseTessellationShaders) {
-        if (int patchPreallocCount = this->patchPreallocCount(totalCombinedPathVerbCnt)) {
-            PatchWriter patchWriter(target, this, maxTessellationSegments, patchPreallocCount);
-            this->writePatches(patchWriter, shaderMatrix, pathDrawList);
-        }
-        if (!willUseTessellationShaders) {
-            this->prepareFixedCountBuffers(target);
-        }
-    }
+                 bool willUseTessellationShaders) = 0;
 
     // Issues hardware tessellation draw calls over the patches. The caller is responsible for
     // binding its desired pipeline ahead of time.
@@ -111,6 +87,12 @@ public:
             this->drawFixedCount(flushState);
         }
     }
+
+    void updateResolveLevel(int resolveLevel) {
+        // We should already chopped curves to make sure none needed a higher resolveLevel than
+        // kMaxFixedResolveLevel.
+        fFixedResolveLevel = SkTPin(resolveLevel, fFixedResolveLevel, kMaxFixedResolveLevel);
+    }
 #endif
 
     // Returns an upper bound on the number of combined edges there might be from all inner fans in
@@ -123,7 +105,6 @@ public:
         return totalCombinedPathVerbCnt;
     }
 
-protected:
     // How many triangles are in a curve with 2^resolveLevel line segments?
     constexpr static int NumCurveTrianglesAtResolveLevel(int resolveLevel) {
         // resolveLevel=0 -> 0 line segments -> 0 triangles
@@ -134,6 +115,7 @@ protected:
         return (1 << resolveLevel) - 1;
     }
 
+protected:
     PathTessellator(bool infinitySupport, PatchAttribs attribs) : fAttribs(attribs) {
         if (!infinitySupport) {
             fAttribs |= PatchAttribs::kExplicitCurveType;
@@ -142,12 +124,10 @@ protected:
 
     PatchAttribs fAttribs;
 
+#if SK_GPU_V1
     // Calculated during prepare(). If using fixed count, this is the resolveLevel to use on our
     // instanced draws. 2^resolveLevel == numSegments.
     int fFixedResolveLevel = 0;
-
-#if SK_GPU_V1
-    friend class PatchWriter;  // To access fVertexChunkArray.
 
     GrVertexChunkArray fVertexChunkArray;
 

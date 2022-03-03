@@ -8,6 +8,7 @@
 #ifndef tessellate_StrokeFixedCountTessellator_DEFINED
 #define tessellate_StrokeFixedCountTessellator_DEFINED
 
+#include "src/gpu/tessellate/PatchWriter.h"
 #include "src/gpu/tessellate/StrokeTessellator.h"
 
 #if SK_GPU_V1
@@ -20,17 +21,26 @@ namespace skgpu {
 // instance are emitted as degenerate triangles.
 class StrokeFixedCountTessellator final : public StrokeTessellator {
 public:
+    using Writer = PatchWriter<Required<PatchAttribs::kJoinControlPoint>,
+                               Optional<PatchAttribs::kStrokeParams>,
+                               Optional<PatchAttribs::kColor>,
+                               Optional<PatchAttribs::kWideColorIfEnabled>,
+                               Optional<PatchAttribs::kExplicitCurveType>,
+                               AutoDeferPatches,
+                               AutoUpdateJoin>;
+
     constexpr static int kMaxParametricSegments = 32;
     constexpr static int8_t kMaxParametricSegments_log2 = 5;  // log2(32)
 
     StrokeFixedCountTessellator(PatchAttribs attribs) : StrokeTessellator(attribs) {}
 
-    int patchPreallocCount(int totalCombinedStrokeVerbCnt) const final;
+    static int PatchPreallocCount(int totalCombinedStrokeVerbCnt);
 
-    int writePatches(PatchWriter&,
-                     const SkMatrix& shaderMatrix,
-                     std::array<float,2> matrixMinMaxScales,
-                     PathStrokeList*) final;
+    // Returns the fixed number of edges the tessellator will draw per patch.
+    static int WritePatches(Writer&& writer,
+                            const SkMatrix& shaderMatrix,
+                            std::array<float,2> matrixMinMaxScales,
+                            PathStrokeList*);
 
 #if SK_GPU_V1
     int prepare(GrMeshDrawTarget*,

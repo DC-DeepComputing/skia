@@ -124,19 +124,19 @@ private:
 
 }  // namespace
 
-int PathWedgeTessellator::patchPreallocCount(int totalCombinedPathVerbCnt) const {
+int PathWedgeTessellator::PatchPreallocCount(int totalCombinedPathVerbCnt) {
     // Over-allocate enough wedges for 1 in 4 to chop.
     int maxWedges = MaxCombinedFanEdgesInPathDrawList(totalCombinedPathVerbCnt);
     return (maxWedges * 5 + 3) / 4;  // i.e., ceil(maxWedges * 5/4)
 }
 
-void PathWedgeTessellator::writePatches(PatchWriter& patchWriter,
-                                        const SkMatrix& shaderMatrix,
-                                        const PathDrawList& pathDrawList) {
+int PathWedgeTessellator::WritePatches(Writer&& patchWriter,
+                                       const SkMatrix& shaderMatrix,
+                                       const PathDrawList& pathDrawList) {
     wangs_formula::VectorXform shaderXform(shaderMatrix);
     for (auto [pathMatrix, path, color] : pathDrawList) {
         AffineMatrix m(pathMatrix);
-        if (fAttribs & PatchAttribs::kColor) {
+        if (patchWriter.attribs() & PatchAttribs::kColor) {
             patchWriter.updateColorAttrib(color);
         }
         MidpointContourParser parser(path);
@@ -198,11 +198,7 @@ void PathWedgeTessellator::writePatches(PatchWriter& patchWriter,
         }
     }
 
-    // We already chopped curves to make sure none needed a higher resolveLevel than
-    // kMaxFixedResolveLevel.
-    fFixedResolveLevel = SkTPin(patchWriter.requiredResolveLevel(),
-                                fFixedResolveLevel,
-                                int(kMaxFixedResolveLevel));
+    return patchWriter.requiredResolveLevel();
 }
 
 void PathWedgeTessellator::WriteFixedVertexBuffer(VertexWriter vertexWriter, size_t bufferSize) {
