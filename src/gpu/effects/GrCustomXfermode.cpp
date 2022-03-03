@@ -28,7 +28,7 @@ bool GrCustomXfermode::IsSupportedMode(SkBlendMode mode) {
 // Static helpers
 ///////////////////////////////////////////////////////////////////////////////
 
-static constexpr GrBlendEquation hw_blend_equation(SkBlendMode mode) {
+static constexpr skgpu::BlendEquation hw_blend_equation(SkBlendMode mode) {
     constexpr int kEqOffset = (kOverlay_GrBlendEquation - (int)SkBlendMode::kOverlay);
     static_assert(kOverlay_GrBlendEquation == (int)SkBlendMode::kOverlay + kEqOffset);
     static_assert(kDarken_GrBlendEquation == (int)SkBlendMode::kDarken + kEqOffset);
@@ -52,7 +52,7 @@ static constexpr GrBlendEquation hw_blend_equation(SkBlendMode mode) {
 #undef EQ_OFFSET
 }
 
-static bool can_use_hw_blend_equation(GrBlendEquation equation,
+static bool can_use_hw_blend_equation(skgpu::BlendEquation equation,
                                       GrProcessorAnalysisCoverage coverage, const GrCaps& caps) {
     if (!caps.advancedBlendEquationSupport()) {
         return false;
@@ -72,7 +72,7 @@ static bool can_use_hw_blend_equation(GrBlendEquation equation,
 
 class CustomXP : public GrXferProcessor {
 public:
-    CustomXP(SkBlendMode mode, GrBlendEquation hwBlendEquation)
+    CustomXP(SkBlendMode mode, skgpu::BlendEquation hwBlendEquation)
         : INHERITED(kCustomXP_ClassID)
         , fMode(mode)
         , fHWBlendEquation(hwBlendEquation) {}
@@ -80,7 +80,7 @@ public:
     CustomXP(SkBlendMode mode, GrProcessorAnalysisCoverage coverage)
             : INHERITED(kCustomXP_ClassID, /*willReadDstColor=*/true, coverage)
             , fMode(mode)
-            , fHWBlendEquation(kIllegal_GrBlendEquation) {
+            , fHWBlendEquation(skgpu::BlendEquation::kIllegal) {
     }
 
     const char* name() const override { return "Custom Xfermode"; }
@@ -90,7 +90,7 @@ public:
     GrXferBarrierType xferBarrierType(const GrCaps&) const override;
 
 private:
-    bool hasHWBlendEquation() const { return kIllegal_GrBlendEquation != fHWBlendEquation; }
+    bool hasHWBlendEquation() const { return skgpu::BlendEquation::kIllegal != fHWBlendEquation; }
 
     void onAddToKey(const GrShaderCaps&, skgpu::KeyBuilder*) const override;
 
@@ -98,8 +98,8 @@ private:
 
     bool onIsEqual(const GrXferProcessor& xpBase) const override;
 
-    const SkBlendMode      fMode;
-    const GrBlendEquation  fHWBlendEquation;
+    const SkBlendMode          fMode;
+    const skgpu::BlendEquation fHWBlendEquation;
 
     using INHERITED = GrXferProcessor;
 };
