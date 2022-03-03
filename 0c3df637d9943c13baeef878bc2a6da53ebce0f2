@@ -1,0 +1,159 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "19483d8d_da150654",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-03-03T20:30:16Z",
+      "side": 1,
+      "message": "nit: Should be a blank line after the first line in your comment message.",
+      "range": {
+        "startLine": 8,
+        "startChar": 0,
+        "endLine": 8,
+        "endChar": 30
+      },
+      "revId": "0c3df637d9943c13baeef878bc2a6da53ebce0f2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fce7ef87_c3058f5c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-03-03T20:30:16Z",
+      "side": 1,
+      "message": "Please add some more details. I\u0027d probably write this commit message as something like:\n\n```\n  Recognize 10 bit HEIF images\n  \n  ag/16935648 adds a function for determining the color depth of\n  an HEIF image. Call the new function and default SkAndroidCodec\n  to 1010102 for 10 bit images.\n  \n  Add color depth to SkEncodedInfo.\n```",
+      "revId": "0c3df637d9943c13baeef878bc2a6da53ebce0f2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "96cbbc60_64a8dfa2",
+        "filename": "include/private/SkEncodedInfo.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-03-03T20:30:16Z",
+      "side": 1,
+      "message": "A few issues here:\n- The reason we had two methods here was to avoid default arguments. I personally prefer default arguments, but let\u0027s stick with the status quo and the [style guide](https://engdoc.corp.google.com/eng/doc/devguide/cpp/styleguide.md?cl\u003dhead#Default_Arguments)\n- The parameters should be in the same order, regardless of which overload you use. (Here, the first one places `colorDepth` right after `bitsPerComponent`, but another one snuck in between them for the second overload.)\n- I think in most cases, the `colorDepth` should match the `bitsPerComponent`. (This is more or less what we\u0027ve presumed elsewhere.) But for most `SkCodec` subclasses, you\u0027ve left it set to `0`. You could fix this without changing the rest of the code with something like\n\n  static SkEncodedInfo Make(int width, int height, Color color, Alpha alpha,\n      int bitsPerComponent) {\n    return Make(width, height, color, alpha, bitsPerComponent, nullptr);\n  }\n  static SkEncodedInfo Make(int width, int height, Color color, Alpha alpha,\n      int bitsPerComponent, std::unique_ptr\u003cICCProfile\u003e profile) {\n    return Make(width, height, color, alpha, bitsPerComponent, profile,\n                bitsPerComponent);\n  }\n  static SkEncodedInfo Make(int width, int height, Color color, Alpha alpha,\n      int bitsPerComponent, std::unique_ptr\u003cICCProfile\u003e profile, int colorDepth) {\n      ...\n  }",
+      "range": {
+        "startLine": 98,
+        "startChar": 0,
+        "endLine": 105,
+        "endChar": 33
+      },
+      "revId": "0c3df637d9943c13baeef878bc2a6da53ebce0f2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c5c2fff4_52e47d5f",
+        "filename": "include/private/SkEncodedInfo.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 235,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-03-03T20:30:16Z",
+      "side": 1,
+      "message": "Please add a comment describing this, including how it\u0027s different from bitsPerComponent.",
+      "range": {
+        "startLine": 233,
+        "startChar": 0,
+        "endLine": 235,
+        "endChar": 5
+      },
+      "revId": "0c3df637d9943c13baeef878bc2a6da53ebce0f2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "36cc5f08_2a9219b2",
+        "filename": "src/codec/SkHeifCodec.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 218,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-03-03T20:30:16Z",
+      "side": 1,
+      "message": "You\u0027ll need to add this method to `src/codec/SkStubHeifDecoderAPI.h` for this to build on our bots.",
+      "range": {
+        "startLine": 218,
+        "startChar": 25,
+        "endLine": 218,
+        "endChar": 37
+      },
+      "revId": "0c3df637d9943c13baeef878bc2a6da53ebce0f2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "87e81b3d_28503d06",
+        "filename": "src/codec/SkHeifCodec.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 242,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-03-03T20:30:16Z",
+      "side": 1,
+      "message": "Will you please also check whether the image is opaque?",
+      "range": {
+        "startLine": 242,
+        "startChar": 15,
+        "endLine": 242,
+        "endChar": 33
+      },
+      "revId": "0c3df637d9943c13baeef878bc2a6da53ebce0f2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "545548e3_3d81c0fb",
+        "filename": "src/codec/SkHeifCodec.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 453,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-03-03T20:30:16Z",
+      "side": 1,
+      "message": "Rather than recomputing the same logic as `conversionSupported`, I think this would be cleaner if we added a method on `SkCodec` to retrieve the format:\n\n  SkCodec.h\n  class SkCodec {\n     ...\n   protected:\n       XformFormat getXformFormat() const { return fXformFormat; }\n     ...\n   };\n \nThen this can just be:\n \n   switch (this-\u003egetXformFormat()) {\n     case skcms_PixelFormat_RGBA_1010102:\n       swizzlerDstInfo \u003d swizzlerDstInfo.makeColorType(kRGBA_1010102_SkColorType);\n     case :\n       swizzlerDstInfo \u003d swizzlerDstInfo.makeColorType(kRGBA_8888_SkColorType);\n     default:\n       SkASSERT(false);\n   }",
+      "range": {
+        "startLine": 447,
+        "startChar": 0,
+        "endLine": 453,
+        "endChar": 9
+      },
+      "revId": "0c3df637d9943c13baeef878bc2a6da53ebce0f2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
