@@ -325,7 +325,7 @@ private:
         bool fOldEncounteredFatalError;
     };
 
-    static std::unordered_map<std::string_view, LayoutToken>* layoutTokens;
+    static SkTHashMap<std::string_view, LayoutToken>* sLayoutTokens;
 
     Compiler& fCompiler;
     ProgramSettings fSettings;
