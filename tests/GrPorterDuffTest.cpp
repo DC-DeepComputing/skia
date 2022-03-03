@@ -134,9 +134,9 @@ static void test_lcd_coverage(skiatest::Reporter* reporter, const GrCaps& caps) 
                 TEST_ASSERT(!xpi.fUnaffectedByDstValue);
                 TEST_ASSERT(kInvalid_OutputType == xpi.fPrimaryOutputType);
                 TEST_ASSERT(kInvalid_OutputType == xpi.fSecondaryOutputType);
-                TEST_ASSERT(kAdd_GrBlendEquation == xpi.fBlendInfo.fEquation);
-                TEST_ASSERT(kOne_GrBlendCoeff == xpi.fBlendInfo.fSrcBlend);
-                TEST_ASSERT(kZero_GrBlendCoeff == xpi.fBlendInfo.fDstBlend);
+                TEST_ASSERT(skgpu::BlendEquation::kAdd == xpi.fBlendInfo.fEquation);
+                TEST_ASSERT(skgpu::BlendCoeff::kOne == xpi.fBlendInfo.fSrcBlend);
+                TEST_ASSERT(skgpu::BlendCoeff::kZero == xpi.fBlendInfo.fDstBlend);
                 TEST_ASSERT(xpi.fBlendInfo.fWriteColor);
                 break;
             case SkBlendMode::kSrc:
@@ -145,9 +145,9 @@ static void test_lcd_coverage(skiatest::Reporter* reporter, const GrCaps& caps) 
                 TEST_ASSERT(!xpi.fUnaffectedByDstValue);
                 TEST_ASSERT(kInvalid_OutputType == xpi.fPrimaryOutputType);
                 TEST_ASSERT(kInvalid_OutputType == xpi.fSecondaryOutputType);
-                TEST_ASSERT(kAdd_GrBlendEquation == xpi.fBlendInfo.fEquation);
-                TEST_ASSERT(kOne_GrBlendCoeff == xpi.fBlendInfo.fSrcBlend);
-                TEST_ASSERT(kZero_GrBlendCoeff == xpi.fBlendInfo.fDstBlend);
+                TEST_ASSERT(skgpu::BlendEquation::kAdd == xpi.fBlendInfo.fEquation);
+                TEST_ASSERT(skgpu::BlendCoeff::kOne == xpi.fBlendInfo.fSrcBlend);
+                TEST_ASSERT(skgpu::BlendCoeff::kZero == xpi.fBlendInfo.fDstBlend);
                 TEST_ASSERT(xpi.fBlendInfo.fWriteColor);
                 break;
             case SkBlendMode::kDst:
@@ -156,9 +156,9 @@ static void test_lcd_coverage(skiatest::Reporter* reporter, const GrCaps& caps) 
                 TEST_ASSERT(!xpi.fUnaffectedByDstValue);
                 TEST_ASSERT(kInvalid_OutputType == xpi.fPrimaryOutputType);
                 TEST_ASSERT(kInvalid_OutputType == xpi.fSecondaryOutputType);
-                TEST_ASSERT(kAdd_GrBlendEquation == xpi.fBlendInfo.fEquation);
-                TEST_ASSERT(kOne_GrBlendCoeff == xpi.fBlendInfo.fSrcBlend);
-                TEST_ASSERT(kZero_GrBlendCoeff == xpi.fBlendInfo.fDstBlend);
+                TEST_ASSERT(skgpu::BlendEquation::kAdd == xpi.fBlendInfo.fEquation);
+                TEST_ASSERT(skgpu::BlendCoeff::kOne == xpi.fBlendInfo.fSrcBlend);
+                TEST_ASSERT(skgpu::BlendCoeff::kZero == xpi.fBlendInfo.fDstBlend);
                 TEST_ASSERT(xpi.fBlendInfo.fWriteColor);
                 break;
             case SkBlendMode::kSrcOver:
@@ -167,9 +167,9 @@ static void test_lcd_coverage(skiatest::Reporter* reporter, const GrCaps& caps) 
                 TEST_ASSERT(!xpi.fUnaffectedByDstValue);
                 TEST_ASSERT(kModulate_OutputType == xpi.fPrimaryOutputType);
                 TEST_ASSERT(kSAModulate_OutputType == xpi.fSecondaryOutputType);
-                TEST_ASSERT(kAdd_GrBlendEquation == xpi.fBlendInfo.fEquation);
-                TEST_ASSERT(kOne_GrBlendCoeff == xpi.fBlendInfo.fSrcBlend);
-                TEST_ASSERT(kIS2C_GrBlendCoeff == xpi.fBlendInfo.fDstBlend);
+                TEST_ASSERT(skgpu::BlendEquation::kAdd == xpi.fBlendInfo.fEquation);
+                TEST_ASSERT(skgpu::BlendCoeff::kOne == xpi.fBlendInfo.fSrcBlend);
+                TEST_ASSERT(skgpu::BlendCoeff::kIS2C == xpi.fBlendInfo.fDstBlend);
                 TEST_ASSERT(xpi.fBlendInfo.fWriteColor);
                 break;
             case SkBlendMode::kDstOver:
@@ -178,9 +178,9 @@ static void test_lcd_coverage(skiatest::Reporter* reporter, const GrCaps& caps) 
                 TEST_ASSERT(!xpi.fUnaffectedByDstValue);
                 TEST_ASSERT(kInvalid_OutputType == xpi.fPrimaryOutputType);
                 TEST_ASSERT(kInvalid_OutputType == xpi.fSecondaryOutputType);
-                TEST_ASSERT(kAdd_GrBlendEquation == xpi.fBlendInfo.fEquation);
-                TEST_ASSERT(kOne_GrBlendCoeff == xpi.fBlendInfo.fSrcBlend);
-                TEST_ASSERT(kZero_GrBlendCoeff == xpi.fBlendInfo.fDstBlend);
+                TEST_ASSERT(skgpu::BlendEquation::kAdd == xpi.fBlendInfo.fEquation);
+                TEST_ASSERT(skgpu::BlendCoeff::kOne == xpi.fBlendInfo.fSrcBlend);
+                TEST_ASSERT(skgpu::BlendCoeff::kZero == xpi.fBlendInfo.fDstBlend);
                 TEST_ASSERT(xpi.fBlendInfo.fWriteColor);
                 break;
             case SkBlendMode::kSrcIn:
@@ -189,9 +189,9 @@ static void test_lcd_coverage(skiatest::Reporter* reporter, const GrCaps& caps) 
                 TEST_ASSERT(!xpi.fUnaffectedByDstValue);
                 TEST_ASSERT(kInvalid_OutputType == xpi.fPrimaryOutputType);
                 TEST_ASSERT(kInvalid_OutputType == xpi.fSecondaryOutputType);
-                TEST_ASSERT(kAdd_GrBlendEquation == xpi.fBlendInfo.fEquation);
-                TEST_ASSERT(kOne_GrBlendCoeff == xpi.fBlendInfo.fSrcBlend);
-                TEST_ASSERT(kZero_GrBlendCoeff == xpi.fBlendInfo.fDstBlend);
+                TEST_ASSERT(skgpu::BlendEquation::kAdd == xpi.fBlendInfo.fEquation);
+                TEST_ASSERT(skgpu::BlendCoeff::kOne == xpi.fBlendInfo.fSrcBlend);
+                TEST_ASSERT(skgpu::BlendCoeff::kZero == xpi.fBlendInfo.fDstBlend);
                 TEST_ASSERT(xpi.fBlendInfo.fWriteColor);
                 break;
             case SkBlendMode::kDstIn:
@@ -200,9 +200,9 @@ static void test_lcd_coverage(skiatest::Reporter* reporter, const GrCaps& caps) 
                 TEST_ASSERT(!xpi.fUnaffectedByDstValue);
                 TEST_ASSERT(kInvalid_OutputType == xpi.fPrimaryOutputType);
                 TEST_ASSERT(kInvalid_OutputType == xpi.fSecondaryOutputType);
-                TEST_ASSERT(kAdd_GrBlendEquation == xpi.fBlendInfo.fEquation);
-                TEST_ASSERT(kOne_GrBlendCoeff == xpi.fBlendInfo.fSrcBlend);
-                TEST_ASSERT(kZero_GrBlendCoeff == xpi.fBlendInfo.fDstBlend);
+                TEST_ASSERT(skgpu::BlendEquation::kAdd == xpi.fBlendInfo.fEquation);
+                TEST_ASSERT(skgpu::BlendCoeff::kOne == xpi.fBlendInfo.fSrcBlend);
+                TEST_ASSERT(skgpu::BlendCoeff::kZero == xpi.fBlendInfo.fDstBlend);
                 TEST_ASSERT(xpi.fBlendInfo.fWriteColor);
                 break;
             case SkBlendMode::kSrcOut:
@@ -211,9 +211,9 @@ static void test_lcd_coverage(skiatest::Reporter* reporter, const GrCaps& caps) 
                 TEST_ASSERT(!xpi.fUnaffectedByDstValue);
                 TEST_ASSERT(kInvalid_OutputType == xpi.fPrimaryOutputType);
                 TEST_ASSERT(kInvalid_OutputType == xpi.fSecondaryOutputType);
-                TEST_ASSERT(kAdd_GrBlendEquation == xpi.fBlendInfo.fEquation);
-                TEST_ASSERT(kOne_GrBlendCoeff == xpi.fBlendInfo.fSrcBlend);
-                TEST_ASSERT(kZero_GrBlendCoeff == xpi.fBlendInfo.fDstBlend);
+                TEST_ASSERT(skgpu::BlendEquation::kAdd == xpi.fBlendInfo.fEquation);
+                TEST_ASSERT(skgpu::BlendCoeff::kOne == xpi.fBlendInfo.fSrcBlend);
+                TEST_ASSERT(skgpu::BlendCoeff::kZero == xpi.fBlendInfo.fDstBlend);
                 TEST_ASSERT(xpi.fBlendInfo.fWriteColor);
                 break;
             case SkBlendMode::kDstOut:
@@ -222,9 +222,9 @@ static void test_lcd_coverage(skiatest::Reporter* reporter, const GrCaps& caps) 
                 TEST_ASSERT(!xpi.fUnaffectedByDstValue);
                 TEST_ASSERT(kInvalid_OutputType == xpi.fPrimaryOutputType);
                 TEST_ASSERT(kInvalid_OutputType == xpi.fSecondaryOutputType);
-                TEST_ASSERT(kAdd_GrBlendEquation == xpi.fBlendInfo.fEquation);
-                TEST_ASSERT(kOne_GrBlendCoeff == xpi.fBlendInfo.fSrcBlend);
-                TEST_ASSERT(kZero_GrBlendCoeff == xpi.fBlendInfo.fDstBlend);
+                TEST_ASSERT(skgpu::BlendEquation::kAdd == xpi.fBlendInfo.fEquation);
+                TEST_ASSERT(skgpu::BlendCoeff::kOne == xpi.fBlendInfo.fSrcBlend);
+                TEST_ASSERT(skgpu::BlendCoeff::kZero == xpi.fBlendInfo.fDstBlend);
                 TEST_ASSERT(xpi.fBlendInfo.fWriteColor);
                 break;
             case SkBlendMode::kSrcATop:
@@ -233,9 +233,9 @@ static void test_lcd_coverage(skiatest::Reporter* reporter, const GrCaps& caps) 
                 TEST_ASSERT(!xpi.fUnaffectedByDstValue);
                 TEST_ASSERT(kInvalid_OutputType == xpi.fPrimaryOutputType);
                 TEST_ASSERT(kInvalid_OutputType == xpi.fSecondaryOutputType);
-                TEST_ASSERT(kAdd_GrBlendEquation == xpi.fBlendInfo.fEquation);
-                TEST_ASSERT(kOne_GrBlendCoeff == xpi.fBlendInfo.fSrcBlend);
-                TEST_ASSERT(kZero_GrBlendCoeff == xpi.fBlendInfo.fDstBlend);
+                TEST_ASSERT(skgpu::BlendEquation::kAdd == xpi.fBlendInfo.fEquation);
+                TEST_ASSERT(skgpu::BlendCoeff::kOne == xpi.fBlendInfo.fSrcBlend);
+                TEST_ASSERT(skgpu::BlendCoeff::kZero == xpi.fBlendInfo.fDstBlend);
                 TEST_ASSERT(xpi.fBlendInfo.fWriteColor);
                 break;
             case SkBlendMode::kDstATop:
@@ -244,9 +244,9 @@ static void test_lcd_coverage(skiatest::Reporter* reporter, const GrCaps& caps) 
                 TEST_ASSERT(!xpi.fUnaffectedByDstValue);
                 TEST_ASSERT(kInvalid_OutputType == xpi.fPrimaryOutputType);
                 TEST_ASSERT(kInvalid_OutputType == xpi.fSecondaryOutputType);
-                TEST_ASSERT(kAdd_GrBlendEquation == xpi.fBlendInfo.fEquation);
-                TEST_ASSERT(kOne_GrBlendCoeff == xpi.fBlendInfo.fSrcBlend);
-                TEST_ASSERT(kZero_GrBlendCoeff == xpi.fBlendInfo.fDstBlend);
+                TEST_ASSERT(skgpu::BlendEquation::kAdd == xpi.fBlendInfo.fEquation);
+                TEST_ASSERT(skgpu::BlendCoeff::kOne == xpi.fBlendInfo.fSrcBlend);
+                TEST_ASSERT(skgpu::BlendCoeff::kZero == xpi.fBlendInfo.fDstBlend);
                 TEST_ASSERT(xpi.fBlendInfo.fWriteColor);
                 break;
             case SkBlendMode::kXor:
@@ -255,9 +255,9 @@ static void test_lcd_coverage(skiatest::Reporter* reporter, const GrCaps& caps) 
                 TEST_ASSERT(!xpi.fUnaffectedByDstValue);
                 TEST_ASSERT(kInvalid_OutputType == xpi.fPrimaryOutputType);
                 TEST_ASSERT(kInvalid_OutputType == xpi.fSecondaryOutputType);
-                TEST_ASSERT(kAdd_GrBlendEquation == xpi.fBlendInfo.fEquation);
-                TEST_ASSERT(kOne_GrBlendCoeff == xpi.fBlendInfo.fSrcBlend);
-                TEST_ASSERT(kZero_GrBlendCoeff == xpi.fBlendInfo.fDstBlend);
+                TEST_ASSERT(skgpu::BlendEquation::kAdd == xpi.fBlendInfo.fEquation);
+                TEST_ASSERT(skgpu::BlendCoeff::kOne == xpi.fBlendInfo.fSrcBlend);
+                TEST_ASSERT(skgpu::BlendCoeff::kZero == xpi.fBlendInfo.fDstBlend);
                 TEST_ASSERT(xpi.fBlendInfo.fWriteColor);
                 break;
             case SkBlendMode::kPlus:
@@ -266,9 +266,9 @@ static void test_lcd_coverage(skiatest::Reporter* reporter, const GrCaps& caps) 
                 TEST_ASSERT(!xpi.fUnaffectedByDstValue);
                 TEST_ASSERT(kInvalid_OutputType == xpi.fPrimaryOutputType);
                 TEST_ASSERT(kInvalid_OutputType == xpi.fSecondaryOutputType);
-                TEST_ASSERT(kAdd_GrBlendEquation == xpi.fBlendInfo.fEquation);
-                TEST_ASSERT(kOne_GrBlendCoeff == xpi.fBlendInfo.fSrcBlend);
-                TEST_ASSERT(kZero_GrBlendCoeff == xpi.fBlendInfo.fDstBlend);
+                TEST_ASSERT(skgpu::BlendEquation::kAdd == xpi.fBlendInfo.fEquation);
+                TEST_ASSERT(skgpu::BlendCoeff::kOne == xpi.fBlendInfo.fSrcBlend);
+                TEST_ASSERT(skgpu::BlendCoeff::kZero == xpi.fBlendInfo.fDstBlend);
                 TEST_ASSERT(xpi.fBlendInfo.fWriteColor);
                 break;
             case SkBlendMode::kModulate:
@@ -277,9 +277,9 @@ static void test_lcd_coverage(skiatest::Reporter* reporter, const GrCaps& caps) 
                 TEST_ASSERT(!xpi.fUnaffectedByDstValue);
                 TEST_ASSERT(kInvalid_OutputType == xpi.fPrimaryOutputType);
                 TEST_ASSERT(kInvalid_OutputType == xpi.fSecondaryOutputType);
-                TEST_ASSERT(kAdd_GrBlendEquation == xpi.fBlendInfo.fEquation);
-                TEST_ASSERT(kOne_GrBlendCoeff == xpi.fBlendInfo.fSrcBlend);
-                TEST_ASSERT(kZero_GrBlendCoeff == xpi.fBlendInfo.fDstBlend);
+                TEST_ASSERT(skgpu::BlendEquation::kAdd == xpi.fBlendInfo.fEquation);
+                TEST_ASSERT(skgpu::BlendCoeff::kOne == xpi.fBlendInfo.fSrcBlend);
+                TEST_ASSERT(skgpu::BlendCoeff::kZero == xpi.fBlendInfo.fDstBlend);
                 TEST_ASSERT(xpi.fBlendInfo.fWriteColor);
                 break;
             case SkBlendMode::kScreen:
@@ -288,9 +288,9 @@ static void test_lcd_coverage(skiatest::Reporter* reporter, const GrCaps& caps) 
                 TEST_ASSERT(!xpi.fUnaffectedByDstValue);
                 TEST_ASSERT(kInvalid_OutputType == xpi.fPrimaryOutputType);
                 TEST_ASSERT(kInvalid_OutputType == xpi.fSecondaryOutputType);
-                TEST_ASSERT(kAdd_GrBlendEquation == xpi.fBlendInfo.fEquation);
-                TEST_ASSERT(kOne_GrBlendCoeff == xpi.fBlendInfo.fSrcBlend);
-                TEST_ASSERT(kZero_GrBlendCoeff == xpi.fBlendInfo.fDstBlend);
+                TEST_ASSERT(skgpu::BlendEquation::kAdd == xpi.fBlendInfo.fEquation);
+                TEST_ASSERT(skgpu::BlendCoeff::kOne == xpi.fBlendInfo.fSrcBlend);
+                TEST_ASSERT(skgpu::BlendCoeff::kZero == xpi.fBlendInfo.fDstBlend);
                 TEST_ASSERT(xpi.fBlendInfo.fWriteColor);
                 break;
             default:
