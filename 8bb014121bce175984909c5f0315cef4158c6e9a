@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0c81ebfd_690cb00e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-03-04T18:15:01Z",
+      "side": 1,
+      "message": "LGTM % 1 minor fixup",
+      "revId": "8bb014121bce175984909c5f0315cef4158c6e9a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "565e5b5c_073e0d3e",
+        "filename": "src/sksl/codegen/SkSLMetalCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 244,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-03-04T18:15:01Z",
+      "side": 1,
+      "message": "I find this formulation more explicit than the previous insert/didInsert, so +1 for improved readability.",
+      "range": {
+        "startLine": 243,
+        "startChar": 12,
+        "endLine": 244,
+        "endChar": 37
+      },
+      "revId": "8bb014121bce175984909c5f0315cef4158c6e9a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "47324574_9209b5aa",
+        "filename": "src/sksl/codegen/SkSLMetalCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1076,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-03-04T18:15:01Z",
+      "side": 1,
+      "message": "I think this comment made more sense with the early return. I suggest changing it to read like the logical inverse, or perhaps reverting the code back to the early return if (fHelpers.contains(name)) {...}",
+      "range": {
+        "startLine": 1076,
+        "startChar": 4,
+        "endLine": 1076,
+        "endChar": 93
+      },
+      "revId": "8bb014121bce175984909c5f0315cef4158c6e9a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
