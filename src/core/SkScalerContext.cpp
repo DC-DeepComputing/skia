@@ -766,7 +766,7 @@ void SkScalerContext::internalGetPath(SkGlyph& glyph, SkArenaAlloc* alloc) {
                                 fRec.fMiterLimit);
         }
 
-        if (fPathEffect) {
+        if (fPathEffect && !localPath.getBounds().isEmpty()) {
             SkPath effectPath;
             if (fPathEffect->filterPath(&effectPath, localPath, &rec, nullptr, matrix)) {
                 localPath.swap(effectPath);
