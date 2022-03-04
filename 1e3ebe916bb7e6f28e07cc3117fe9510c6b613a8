@@ -70,6 +70,30 @@
       },
       "revId": "1e3ebe916bb7e6f28e07cc3117fe9510c6b613a8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b976e987_64d09b75",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 432,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-03-04T15:32:45Z",
+      "side": 1,
+      "message": "Right, the \"ShaderBased\" refers to calling the \"blend\" function.\n\nFor now, I\u0027ve renamed this GenerateShaderBasedBlenderGlueCode and changed the SkBuiltInCodeSnippetID to be kShaderBasedBlender. We can refine the names further as we add the new ones.",
+      "parentUuid": "be8e48b4_29881c60",
+      "range": {
+        "startLine": 432,
+        "startChar": 12,
+        "endLine": 432,
+        "endChar": 37
+      },
+      "revId": "1e3ebe916bb7e6f28e07cc3117fe9510c6b613a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
