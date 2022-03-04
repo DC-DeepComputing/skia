@@ -459,14 +459,11 @@ bool SkImageShader::doStages(const SkStageRec& rec, TransformShader* updater) co
     SkASSERT(!needs_subset(fImage.get(), fSubset)); // TODO(skbug.com/12784)
     // We only support certain sampling options in stages so far
     auto sampling = fSampling;
-    if (sampling.useCubic) {
-        if (!is_default_cubic_resampler(sampling.cubic)) {
-            return false;
-        }
-    } else if (sampling.mipmap == SkMipmapMode::kLinear) {
+    if (sampling.mipmap == SkMipmapMode::kLinear) {
         return false;
     }
 
+    const bool is_default_cubic = sampling.useCubic && is_default_cubic_resampler(sampling.cubic);
 
     if (updater && (sampling.mipmap != SkMipmapMode::kNone)) {
         // TODO: medium: recall RequestBitmap and update width/height accordingly
@@ -656,7 +653,7 @@ bool SkImageShader::doStages(const SkStageRec& rec, TransformShader* updater) co
     }
     if (true
         && (ct == kRGBA_8888_SkColorType || ct == kBGRA_8888_SkColorType)
-        && sampling.useCubic
+        && is_default_cubic
         && fTileModeX == SkTileMode::kClamp && fTileModeY == SkTileMode::kClamp) {
 
         p->append(SkRasterPipeline::bicubic_clamp_8888, gather);
@@ -667,7 +664,7 @@ bool SkImageShader::doStages(const SkStageRec& rec, TransformShader* updater) co
     }
     if (true
         && (ct == kRGBA_8888_SkColorType || ct == kBGRA_8888_SkColorType) // TODO: all formats
-        && sampling.useCubic
+        && is_default_cubic
         && fTileModeX != SkTileMode::kDecal // TODO decal too?
         && fTileModeY != SkTileMode::kDecal) {
 
@@ -693,6 +690,8 @@ bool SkImageShader::doStages(const SkStageRec& rec, TransformShader* updater) co
     };
 
     if (sampling.useCubic) {
+        CubicResamplerMatrix(sampling.cubic.B, sampling.cubic.C).getColMajor(sampler->weights);
+
         p->append(SkRasterPipeline::save_xy, sampler);
 
         sample(SkRasterPipeline::bicubic_n3x, SkRasterPipeline::bicubic_n3y);
