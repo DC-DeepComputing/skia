@@ -269,25 +269,25 @@ static void setup_vertex_input_layout(const GrGeometryProcessor& geomProc,
 
 static D3D12_BLEND blend_coeff_to_d3d_blend(GrBlendCoeff coeff) {
     switch (coeff) {
-    case kZero_GrBlendCoeff:
+    case skgpu::BlendCoeff::kZero:
         return D3D12_BLEND_ZERO;
-    case kOne_GrBlendCoeff:
+    case skgpu::BlendCoeff::kOne:
         return D3D12_BLEND_ONE;
-    case kSC_GrBlendCoeff:
+    case skgpu::BlendCoeff::kSC:
         return D3D12_BLEND_SRC_COLOR;
-    case kISC_GrBlendCoeff:
+    case skgpu::BlendCoeff::kISC:
         return D3D12_BLEND_INV_SRC_COLOR;
-    case kDC_GrBlendCoeff:
+    case skgpu::BlendCoeff::kDC:
         return D3D12_BLEND_DEST_COLOR;
-    case kIDC_GrBlendCoeff:
+    case skgpu::BlendCoeff::kIDC:
         return D3D12_BLEND_INV_DEST_COLOR;
-    case kSA_GrBlendCoeff:
+    case skgpu::BlendCoeff::kSA:
         return D3D12_BLEND_SRC_ALPHA;
-    case kISA_GrBlendCoeff:
+    case skgpu::BlendCoeff::kISA:
         return D3D12_BLEND_INV_SRC_ALPHA;
-    case kDA_GrBlendCoeff:
+    case skgpu::BlendCoeff::kDA:
         return D3D12_BLEND_DEST_ALPHA;
-    case kIDA_GrBlendCoeff:
+    case skgpu::BlendCoeff::kIDA:
         return D3D12_BLEND_INV_DEST_ALPHA;
     case kConstC_GrBlendCoeff:
         return D3D12_BLEND_BLEND_FACTOR;
@@ -295,11 +295,11 @@ static D3D12_BLEND blend_coeff_to_d3d_blend(GrBlendCoeff coeff) {
         return D3D12_BLEND_INV_BLEND_FACTOR;
     case kS2C_GrBlendCoeff:
         return D3D12_BLEND_SRC1_COLOR;
-    case kIS2C_GrBlendCoeff:
+    case skgpu::BlendCoeff::kIS2C:
         return D3D12_BLEND_INV_SRC1_COLOR;
     case kS2A_GrBlendCoeff:
         return D3D12_BLEND_SRC1_ALPHA;
-    case kIS2A_GrBlendCoeff:
+    case skgpu::BlendCoeff::kIS2A:
         return D3D12_BLEND_INV_SRC1_ALPHA;
     case kIllegal_GrBlendCoeff:
         return D3D12_BLEND_ZERO;
@@ -310,17 +310,17 @@ static D3D12_BLEND blend_coeff_to_d3d_blend(GrBlendCoeff coeff) {
 static D3D12_BLEND blend_coeff_to_d3d_blend_for_alpha(GrBlendCoeff coeff) {
     switch (coeff) {
         // Force all srcColor used in alpha slot to alpha version.
-    case kSC_GrBlendCoeff:
+    case skgpu::BlendCoeff::kSC:
         return D3D12_BLEND_SRC_ALPHA;
-    case kISC_GrBlendCoeff:
+    case skgpu::BlendCoeff::kISC:
         return D3D12_BLEND_INV_SRC_ALPHA;
-    case kDC_GrBlendCoeff:
+    case skgpu::BlendCoeff::kDC:
         return D3D12_BLEND_DEST_ALPHA;
-    case kIDC_GrBlendCoeff:
+    case skgpu::BlendCoeff::kIDC:
         return D3D12_BLEND_INV_DEST_ALPHA;
     case kS2C_GrBlendCoeff:
         return D3D12_BLEND_SRC1_ALPHA;
-    case kIS2C_GrBlendCoeff:
+    case skgpu::BlendCoeff::kIS2C:
         return D3D12_BLEND_INV_SRC1_ALPHA;
 
     default:
@@ -331,11 +331,11 @@ static D3D12_BLEND blend_coeff_to_d3d_blend_for_alpha(GrBlendCoeff coeff) {
 
 static D3D12_BLEND_OP blend_equation_to_d3d_op(GrBlendEquation equation) {
     switch (equation) {
-    case kAdd_GrBlendEquation:
+    case skgpu::BlendEquation::kAdd:
         return D3D12_BLEND_OP_ADD;
-    case kSubtract_GrBlendEquation:
+    case skgpu::BlendEquation::kSubtract:
         return D3D12_BLEND_OP_SUBTRACT;
-    case kReverseSubtract_GrBlendEquation:
+    case skgpu::BlendEquation::kReverseSubtract:
         return D3D12_BLEND_OP_REV_SUBTRACT;
     default:
         SkUNREACHABLE;
@@ -704,4 +704,3 @@ sk_sp<GrD3DPipeline> GrD3DPipelineStateBuilder::MakeComputePipeline(GrD3DGpu* gp
 
     return GrD3DPipeline::Make(std::move(pipelineState));
 }
-
