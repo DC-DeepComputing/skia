@@ -328,7 +328,7 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
                                                     draw.fShape);
 
                 geometryIndex = geometryUniformBindings.addUniforms(
-                        std::make_unique<SkPipelineData>(std::move(uniforms)));
+                        std::make_unique<SkPipelineData>(std::move(uniforms), true)); //$$
             }
 
             GraphicsPipelineDesc desc;
