@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a74f1bee_05b76918",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 432,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-03-04T14:34:51Z",
+      "side": 1,
+      "message": "I confused myself on initial review, conflating this with the blend-shader work that has already been done. But it made me wonder what we could call the blending stage of the skia coloring pipeline to help differentiate these, particularly since the glue code for calling an SkBlender at this stage will be very similar.\n\nWDYT about GenerateBlendModeBlenderGlueCode for this, and Generate[Runtime?]BlenderGlueCode for the more general case later on?",
+      "range": {
+        "startLine": 432,
+        "startChar": 12,
+        "endLine": 432,
+        "endChar": 37
+      },
+      "revId": "1e3ebe916bb7e6f28e07cc3117fe9510c6b613a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
