@@ -28,7 +28,7 @@ std::tuple<SkUniquePaintParamsID, std::unique_ptr<SkPipelineData>> ExtractPaintD
 
     SkDEBUGCODE(builder->checkReset());
 
-    std::unique_ptr<SkPipelineData> pipelineData = std::make_unique<SkPipelineData>();
+    std::unique_ptr<SkPipelineData> pipelineData = std::make_unique<SkPipelineData>(true); //$$
 
     p.toKey(dict, builder, pipelineData.get());
 

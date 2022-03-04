@@ -1,0 +1,84 @@
+FS for blending
+
+   1	half4 _dstColor;
+   2	uniform half4 uDstTextureCoords_S0;
+   3	uniform sampler2D uDstTextureSampler_S0;
+   4	flat in half4 vcolor_S0;
+   5	out half4 sk_FragColor;
+   6	void main()
+   7	{
+   8		// Stage 0, QuadPerEdgeAAGeometryProcessor
+   9		half4 outputColor_S0;
+  10		outputColor_S0 = vcolor_S0;
+  11		const half4 outputCoverage_S0 = half4(1);
+  12		// Read color from copy of the destination
+  13		half2 _dstTexCoord = (half2(sk_FragCoord.xy) - uDstTextureCoords_S0.xy) * uDstTextureCoords_S0.zw;
+  14		_dstTexCoord.y = 1.0 - _dstTexCoord.y;
+  15		_dstColor = sample(uDstTextureSampler_S0, _dstTexCoord);
+  16		{
+  17			// Xfer Processor: Custom Xfermode
+  18			if (all(lessThanEqual(outputCoverage_S0.rgb, half3(0))))
+  19			{
+  20				discard;
+  21			}
+  22			sk_FragColor = blend_multiply(outputColor_S0, _dstColor);
+  23			sk_FragColor = outputCoverage_S0 * sk_FragColor + (half4(1.0) - outputCoverage_S0) * _dstColor;
+  24		}
+  25	}
+  26
+
+
+FS for compose w/ 1 solid child and one texture child
+
+---- Fragment shader ----------------------------------------------------
+SKSL:
+   1	half4 _dstColor;
+   2	uniform half4 uDstTextureCoords_S0;
+   3	uniform half4 ucolor_S1_c0;
+   4	uniform float3x3 umatrix_S1_c1;
+   5	uniform sampler2D uDstTextureSampler_S0;
+   6	uniform sampler2D uTextureSampler_0_S1;
+   7	flat in half4 vcolor_S0;
+   8	noperspective in float2 vTransformedCoords_4_S0;
+   9	out half4 sk_FragColor;
+  10	half4 color_fp_S1_c0(half4 _input)
+  11	{
+  12		half4 _tmp_0_inColor = _input;
+  13		return half4(ucolor_S1_c0);
+  14	}
+  15	half4 TextureEffect_S1_c1_c0(half4 _input)
+  16	{
+  17		return sample(uTextureSampler_0_S1, vTransformedCoords_4_S0);
+  18	}
+  19	half4 MatrixEffect_S1_c1(half4 _input)
+  20	{
+  21		return TextureEffect_S1_c1_c0(_input);
+  22	}
+  23	half4 Blend_S1(half4 _src, half4 _dst)
+  24	{
+  25		// Blend mode: Modulate
+  26		return blend_modulate(color_fp_S1_c0(_src), MatrixEffect_S1_c1(_src));
+  27	}
+  28	void main()
+  29	{
+  30		// Stage 0, QuadPerEdgeAAGeometryProcessor
+  31		half4 outputColor_S0;
+  32		outputColor_S0 = vcolor_S0;
+  33		const half4 outputCoverage_S0 = half4(1);
+  34		// Read color from copy of the destination
+  35		half2 _dstTexCoord = (half2(sk_FragCoord.xy) - uDstTextureCoords_S0.xy) * uDstTextureCoords_S0.zw;
+  36		_dstTexCoord.y = 1.0 - _dstTexCoord.y;
+  37		_dstColor = sample(uDstTextureSampler_S0, _dstTexCoord);
+  38		half4 output_S1;
+  39		output_S1 = Blend_S1(outputColor_S0, half4(1));
+  40		{
+  41			// Xfer Processor: Custom Xfermode
+  42			if (all(lessThanEqual(outputCoverage_S0.rgb, half3(0))))
+  43			{
+  44				discard;
+  45			}
+  46			sk_FragColor = blend_multiply(output_S1, _dstColor);
+  47			sk_FragColor = outputCoverage_S0 * sk_FragColor + (half4(1.0) - outputCoverage_S0) * _dstColor;
+  48		}
+  49	}
+  50
