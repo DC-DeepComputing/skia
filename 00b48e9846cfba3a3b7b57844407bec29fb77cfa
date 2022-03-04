@@ -20,6 +20,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ed014d98_b5418826",
+        "filename": "src/core/SkRasterPipeline.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-03-04T17:54:44Z",
+      "side": 1,
+      "message": "only for generic bicubic?\nonly for bicubic_[np][13][xy]; bicubic and bicubic_clamp_8888 use hard-coded values?\n\nor rename `bicubic` and `bicubic_clamp_8888` to `bicubic_mitchell`, `bicubic_mitchell_clamp_8888`?",
+      "range": {
+        "startLine": 140,
+        "startChar": 36,
+        "endLine": 140,
+        "endChar": 43
+      },
+      "revId": "00b48e9846cfba3a3b7b57844407bec29fb77cfa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "cf285927_b90ee832",
         "filename": "src/opts/SkRasterPipeline_opts.h",
         "patchSetId": 2
@@ -101,6 +124,29 @@
         "startChar": 0,
         "endLine": 462,
         "endChar": 51
+      },
+      "revId": "00b48e9846cfba3a3b7b57844407bec29fb77cfa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4812b888_53f45fc9",
+        "filename": "src/shaders/SkImageShader.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 466,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-03-04T17:54:44Z",
+      "side": 1,
+      "message": "style nit: we\u0027d do isDefaultCubic right?",
+      "range": {
+        "startLine": 466,
+        "startChar": 15,
+        "endLine": 466,
+        "endChar": 32
       },
       "revId": "00b48e9846cfba3a3b7b57844407bec29fb77cfa",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
