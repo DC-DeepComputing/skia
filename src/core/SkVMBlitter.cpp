@@ -21,6 +21,7 @@
 #include "src/core/SkVM.h"
 #include "src/core/SkVMBlitter.h"
 #include "src/shaders/SkColorFilterShader.h"
+#include "src/shaders/SkColorShader.h"
 
 #include <cinttypes>
 
@@ -246,11 +247,11 @@ SkVMBlitter::Params SkVMBlitter::EffectiveParams(const SkPixmap& device,
     }
     SkASSERT(!paint.getColorFilter());
 
-    // If there's no explicit shader, the paint color is the shader,
+    // If there's no explicit shader, SkColorShader is the shader,
     // but if there is a shader, it's modulated by the paint alpha.
     sk_sp<SkShader> shader = paint.refShader();
     if (!shader) {
-        shader = sk_make_sp<PaintColorShader>(paint.getColor4f().isOpaque());
+        shader = sk_make_sp<SkColorShader>(paint.getColor());
     } else if (paint.getAlphaf() < 1.0f) {
         shader = sk_make_sp<SkColorFilterShader>(std::move(shader),
                                                  paint.getAlphaf(),
