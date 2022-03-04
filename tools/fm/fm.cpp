@@ -41,6 +41,7 @@
 #if defined(SK_ENABLE_SVG)
 #include "modules/svg/include/SkSVGDOM.h"
 #include "modules/svg/include/SkSVGNode.h"
+#include "modules/svg/include/SkSVGDecoder_SkSVG.h"
 #endif
 
 #if defined(SK_ENABLE_SKOTTIE)
@@ -387,6 +388,10 @@ int main(int argc, char** argv) {
     if (FLAGS_cpuDetect) {
         SkGraphics::Init();
     }
+#if defined(SK_ENABLE_SVG)
+    SkGraphics::SetSVGDecoder(std::make_unique<SkSVGDecoder_SkSVG>());
+#endif
+
     gUseSkVMBlitter  = FLAGS_skvm;
     gSkVMAllowJIT    = FLAGS_jit;
     gSkVMJITViaDylib = FLAGS_dylib;

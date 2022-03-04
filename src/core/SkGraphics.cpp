@@ -15,6 +15,7 @@
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkShader.h"
 #include "include/core/SkStream.h"
+#include "include/core/SkSVGDecoder.h"
 #include "include/core/SkTime.h"
 #include "src/core/SkBlitter.h"
 #include "src/core/SkCpu.h"
@@ -123,6 +124,18 @@ int SkGraphics::GetFontCacheCountUsed() {
 void SkGraphics::PurgeFontCache() {
     SkStrikeCache::GlobalStrikeCache()->purgeAll();
     SkTypefaceCache::PurgeAll();
+}
+
+static SkSVGDecoder* gSVGDecoder = nullptr;
+
+std::unique_ptr<SkSVGDecoder> SkGraphics::SetSVGDecoder(std::unique_ptr<SkSVGDecoder> svgDecoder) {
+    std::unique_ptr<SkSVGDecoder> old(gSVGDecoder);
+    gSVGDecoder = svgDecoder.release();
+    return old;
+}
+
+SkSVGDecoder* SkGraphics::GetSVGDecoder() {
+    return gSVGDecoder;
 }
 
 extern bool gSkVMAllowJIT;

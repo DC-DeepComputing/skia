@@ -101,6 +101,7 @@ public:
     virtual void appendChild(sk_sp<SkSVGNode>) = 0;
 
     void render(const SkSVGRenderContext&) const;
+    void render(const SkSVGRenderContext&, SkSVGNode&) const;
     bool asPaint(const SkSVGRenderContext&, SkPaint*) const;
     SkPath asPath(const SkSVGRenderContext&) const;
     SkRect objectBoundingBox(const SkSVGRenderContext&) const;

@@ -76,6 +76,10 @@
     #include "tools/viewer/SkottieSlide.h"
 #endif
 
+#if defined(SK_ENABLE_SVG)
+    #include "modules/svg/include/SkSVGDecoder_SkSVG.h"
+#endif
+
 class CapturingShaderErrorHandler : public GrContextOptions::ShaderErrorHandler {
 public:
     void compileError(const char* shader, const char* errors) override {
@@ -354,6 +358,9 @@ Viewer::Viewer(int argc, char** argv, void* platformData)
     , fPerspectiveMode(kPerspective_Off)
 {
     SkGraphics::Init();
+#if defined(SK_ENABLE_SVG)
+    SkGraphics::SetSVGDecoder(std::make_unique<SkSVGDecoder_SkSVG>());
+#endif
 
     gPathRendererNames[GpuPathRenderers::kDefault] = "Default Path Renderers";
     gPathRendererNames[GpuPathRenderers::kAtlas] = "Atlas (tessellation)";

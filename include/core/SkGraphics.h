@@ -12,6 +12,7 @@
 
 class SkData;
 class SkImageGenerator;
+class SkSVGDecoder;
 class SkTraceMemoryDump;
 
 class SK_API SkGraphics {
@@ -136,6 +137,9 @@ public:
      */
     static ImageGeneratorFromEncodedDataFactory
                     SetImageGeneratorFromEncodedDataFactory(ImageGeneratorFromEncodedDataFactory);
+
+    static std::unique_ptr<SkSVGDecoder> SetSVGDecoder(std::unique_ptr<SkSVGDecoder>);
+    static SkSVGDecoder* GetSVGDecoder();
 
     /**
      *  Call early in main() to allow Skia to use a JIT to accelerate CPU-bound operations.

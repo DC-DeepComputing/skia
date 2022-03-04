@@ -33,6 +33,18 @@ void SkSVGNode::render(const SkSVGRenderContext& ctx) const {
     }
 }
 
+void SkSVGNode::render(const SkSVGRenderContext& ctx, SkSVGNode& node) const {
+    SkSVGRenderContext localContext(ctx, this);
+
+    if (this->onPrepareToRender(&localContext)) {
+        if (this == &node) {
+            this->onRender(ctx);
+        } else {
+            node.render(localContext);
+        }
+    }
+}
+
 bool SkSVGNode::asPaint(const SkSVGRenderContext& ctx, SkPaint* paint) const {
     SkSVGRenderContext localContext(ctx);
 
