@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dab70dc6_8c43abd6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-03-04T20:47:41Z",
+      "side": 1,
+      "message": "Haha, I was looking at this, too. I think that technically, the correct fix is to make index be unsigned right away (declared as uint32_t, and call readUInt instead of read32). That would make the subtraction safe, and keep the existing behavior that negative values (ie, very large unsigned values) would actually fail the read - by calling validate(false).\n\nThe version you wrote means that having a negative (very large) index behaves the same as 0, which means \"we serialized a null object, so return that\". Ultimately, it\u0027s going to work just as well, though - the corrupted buffer is probably going to fail validation shortly after this...",
+      "revId": "a94ab76e7edab93ad5f0a2ef0259c5303547e0a6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
