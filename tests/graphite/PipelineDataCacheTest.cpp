@@ -37,7 +37,7 @@ std::unique_ptr<SkPipelineData> make_pd(int numUniforms, int dataSize) {
         ud->data()[i] = i % 255;
     }
 
-    return std::make_unique<SkPipelineData>(std::move(ud));
+    return std::make_unique<SkPipelineData>(std::move(ud), true);
 }
 
 } // anonymous namespace
