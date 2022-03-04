@@ -1,0 +1,65 @@
+# Copyright 2022 Google Inc.
+#
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+import("../third_party.gni")
+
+third_party("svg-native-viewer") {
+  public_defines = [ "SVG_NATIVE_VIEWER" ]
+  public_include_dirs = [
+    ".",
+    "../externals/svg-native-viewer/svgnative/include",
+  ]
+
+  include_dirs = [
+    "../externals/svg-native-viewer/svgnative/src",
+
+    # Really need to clean up the includes
+    "../externals/svg-native-viewer/svgnative/include/svgnative",
+
+    "../../include/codec",
+    "../../include/config",
+    "../../include/core",
+    "../../include/effects",
+    "../../include/encode",
+    "../../include/gpu",
+  ]
+
+  deps = [
+    "//:skia",
+    "//third_party/expat",
+  ]
+
+  defines = [ "USE_SKIA" ]
+
+  configs = [
+    "//gn/portable:add_rtti",
+    "//gn/portable:add_exceptions",
+  ]
+
+  public = [
+    "SkSVGDecoder_SVGNative.h",
+    "../externals/svg-native-viewer/svgnative/include/svgnative/Config.h",
+    "../externals/svg-native-viewer/svgnative/include/svgnative/SVGDocument.h",
+    "../externals/svg-native-viewer/svgnative/include/svgnative/SVGNativeCWrapper.h",
+    "../externals/svg-native-viewer/svgnative/include/svgnative/SVGRenderer.h",
+    "../externals/svg-native-viewer/svgnative/include/svgnative/ports/skia/SkiaSVGRenderer.h",
+  ]
+
+  sources = [
+    "SkSVGDecoder_SVGNative.cpp",
+    "../externals/svg-native-viewer/svgnative/src/CSSColorKeywords.h",
+    "../externals/svg-native-viewer/svgnative/src/Constants.h",
+    "../externals/svg-native-viewer/svgnative/src/SVGDocument.cpp",
+    "../externals/svg-native-viewer/svgnative/src/SVGDocumentImpl.cpp",
+    "../externals/svg-native-viewer/svgnative/src/SVGDocumentImpl.h",
+    "../externals/svg-native-viewer/svgnative/src/SVGNativeCWrapper.cpp",
+    "../externals/svg-native-viewer/svgnative/src/SVGParserArcToCurve.cpp",
+    "../externals/svg-native-viewer/svgnative/src/SVGStringParser.cpp",
+    "../externals/svg-native-viewer/svgnative/src/SVGStringParser.h",
+    "../externals/svg-native-viewer/svgnative/src/ports/skia/SkiaSVGRenderer.cpp",
+    "../externals/svg-native-viewer/svgnative/src/xml/ExpatXMLParser.cpp",
+    "../externals/svg-native-viewer/svgnative/src/xml/XMLParser.h",
+  ]
+}

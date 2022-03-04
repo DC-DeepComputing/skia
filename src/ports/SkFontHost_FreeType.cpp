@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include "include/core/SkBBHFactory.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkData.h"
@@ -1280,6 +1281,31 @@ void SkScalerContext_FreeType::generateMetrics(SkGlyph* glyph, SkArenaAlloc* all
                                              SkIntToScalar(fFace->glyph->bitmap.rows ));
             fMatrix22Scalar.mapRect(&bounds);
             setGlyphBounds(glyph, &bounds, this->shouldSubpixelBitmap(*glyph, fMatrix22Scalar));
+
+#if defined(FT_CONFIG_OPTION_SVG)
+        } else if (fFace->glyph->format == FT_GLYPH_FORMAT_SVG) {
+            glyph->fScalerContextBits = ScalerContextBits::SVG;
+            glyph->fMaskFormat = SkMask::kARGB32_Format;
+            glyph->setPath(alloc, nullptr, false);
+
+            SkPictureRecorder recorder;
+            SkRect infiniteRect = SkRect::MakeLTRB(-SK_ScalarInfinity, -SK_ScalarInfinity,
+                                                    SK_ScalarInfinity,  SK_ScalarInfinity);
+            sk_sp<SkBBoxHierarchy> bboxh = SkRTreeFactory()();
+            SkSpan<SkColor> palette(fFaceRec->fSkPalette.get(), fFaceRec->fFTPaletteEntryCount);
+            SkCanvas* recordingCanvas = recorder.beginRecording(infiniteRect, bboxh);
+            if (!this->drawSVGGlyph(fFace, *glyph, fLoadGlyphFlags, palette, recordingCanvas)) {
+                glyph->zeroMetrics();
+                return;
+            }
+            sk_sp<SkPicture> pic = recorder.finishRecordingAsPicture();
+            SkRect bounds = pic->cullRect();
+            SkASSERT(bounds.isFinite());
+
+            // drawSVGGlyph already applied the subpixel positioning.
+            setGlyphBounds(glyph, &bounds, false);
+#endif  // FT_CONFIG_OPTION_SVG
+
         } else {
             SkDEBUGFAIL("unknown glyph format");
             glyph->zeroMetrics();
@@ -1321,9 +1347,9 @@ void SkScalerContext_FreeType::generateImage(const SkGlyph& glyph) {
     }
 
     if (glyph.fScalerContextBits == ScalerContextBits::COLRv0 ||
-        glyph.fScalerContextBits == ScalerContextBits::COLRv1)
+        glyph.fScalerContextBits == ScalerContextBits::COLRv1 ||
+        glyph.fScalerContextBits == ScalerContextBits::SVG     )
     {
-#ifdef FT_COLOR_H
         SkASSERT(glyph.maskFormat() == SkMask::kARGB32_Format);
         SkBitmap dstBitmap;
         // TODO: mark this as sRGB when the blits will be sRGB.
@@ -1343,13 +1369,21 @@ void SkScalerContext_FreeType::generateImage(const SkGlyph& glyph) {
 
         SkSpan<SkColor> palette(fFaceRec->fSkPalette.get(), fFaceRec->fFTPaletteEntryCount);
         if (glyph.fScalerContextBits == ScalerContextBits::COLRv0) {
+#ifdef FT_COLOR_H
             this->drawCOLRv0Glyph(fFace, glyph, fLoadGlyphFlags, palette, &canvas);
+#endif
         } else if (glyph.fScalerContextBits == ScalerContextBits::COLRv1) {
 #ifdef TT_SUPPORT_COLRV1
             this->drawCOLRv1Glyph(fFace, glyph, fLoadGlyphFlags, palette, &canvas);
 #endif
+        } else if (glyph.fScalerContextBits == ScalerContextBits::SVG) {
+#if defined(FT_CONFIG_OPTION_SVG)
+            if (FT_Load_Glyph(fFace, glyph.getGlyphID(), fLoadGlyphFlags)) {
+                return;
+            }
+            this->drawSVGGlyph(fFace, glyph, fLoadGlyphFlags, palette, &canvas);
+#endif
         }
-#endif  // FT_COLOR_H
         return;
     }
 
@@ -1386,16 +1420,20 @@ sk_sp<SkDrawable> SkScalerContext_FreeType::generateDrawable(const SkGlyph& glyp
     }
 
     if (glyph.fScalerContextBits == ScalerContextBits::COLRv0 ||
-        glyph.fScalerContextBits == ScalerContextBits::COLRv1)
+        glyph.fScalerContextBits == ScalerContextBits::COLRv1 ||
+        glyph.fScalerContextBits == ScalerContextBits::SVG     )
     {
-#ifdef FT_COLOR_H
         SkSpan<SkColor> palette(fFaceRec->fSkPalette.get(), fFaceRec->fFTPaletteEntryCount);
         SkPictureRecorder recorder;
         SkCanvas* recordingCanvas = recorder.beginRecording(SkRect::Make(glyph.mask().fBounds));
         if (glyph.fScalerContextBits == ScalerContextBits::COLRv0) {
+#ifdef FT_COLOR_H
             if (!this->drawCOLRv0Glyph(fFace, glyph, fLoadGlyphFlags, palette, recordingCanvas)) {
                 return nullptr;
             }
+#else
+            return nullptr;
+#endif
         } else if (glyph.fScalerContextBits == ScalerContextBits::COLRv1) {
 #ifdef TT_SUPPORT_COLRV1
             if (!this->drawCOLRv1Glyph(fFace, glyph, fLoadGlyphFlags, palette, recordingCanvas)) {
@@ -1404,9 +1442,19 @@ sk_sp<SkDrawable> SkScalerContext_FreeType::generateDrawable(const SkGlyph& glyp
 #else
             return nullptr;
 #endif
+        } else if (glyph.fScalerContextBits == ScalerContextBits::SVG) {
+#if defined(FT_CONFIG_OPTION_SVG)
+            if (FT_Load_Glyph(fFace, glyph.getGlyphID(), fLoadGlyphFlags)) {
+                return nullptr;
+            }
+            if (!this->drawSVGGlyph(fFace, glyph, fLoadGlyphFlags, palette, recordingCanvas)) {
+                return nullptr;
+            }
+#else
+            return nullptr;
+#endif
         }
         return recorder.finishRecordingAsDrawable();
-#endif  // FT_COLOR_H
     }
     return nullptr;
 }
@@ -1591,8 +1639,15 @@ void SkScalerContext_FreeType::generateFontMetrics(SkFontMetrics* metrics) {
     metrics->fStrikeoutThickness = strikeoutThickness * fScale.y();
     metrics->fStrikeoutPosition = strikeoutPosition * fScale.y();
 
-    if (face->face_flags & FT_FACE_FLAG_MULTIPLE_MASTERS) {
-        // The bounds are only valid for the default variation.
+    if (face->face_flags & FT_FACE_FLAG_MULTIPLE_MASTERS
+#if defined(FT_CONFIG_OPTION_SVG)
+        || face->face_flags & FT_FACE_FLAG_SVG
+#endif  // FT_CONFIG_OPTION_SVG
+    ) {
+        // The bounds are only valid for the default variation of variable glyphs.
+        // https://docs.microsoft.com/en-us/typography/opentype/spec/head
+        // For SVG glyphs this number is often incorrect for its non-`glyf` points.
+        // https://github.com/fonttools/fonttools/issues/2566
         metrics->fFlags |= SkFontMetrics::kBoundsInvalid_Flag;
     }
 }
@@ -1723,6 +1778,10 @@ bool SkTypeface_FreeType::onGlyphMaskNeedsCurrentColor() const {
     fGlyphMasksMayNeedCurrentColorOnce([this]{
         static constexpr SkFourByteTag COLRTag = SkSetFourByteTag('C', 'O', 'L', 'R');
         fGlyphMasksMayNeedCurrentColor = this->getTableSize(COLRTag) > 0;
+#if defined(FT_CONFIG_OPTION_SVG)
+        static constexpr SkFourByteTag SVGTag = SkSetFourByteTag('S', 'V', 'G', ' ');
+        fGlyphMasksMayNeedCurrentColor |= this->getTableSize(SVGTag) > 0 ;
+#endif  // FT_CONFIG_OPTION_SVG
     });
     return fGlyphMasksMayNeedCurrentColor;
 }
