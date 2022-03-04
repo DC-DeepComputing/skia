@@ -2663,16 +2663,21 @@ SI F bicubic_far(F t) {
     return (t*t)*mad((7/18.0f), t, (-6/18.0f));
 }
 
+SI F bicubic_wts(F t, float A, float B, float C, float D) {
+    return mad(t, mad(t, mad(t, D, C), B), A);
+}
+
 template <int kScale>
 SI void bicubic_x(SkRasterPipeline_SamplerCtx* ctx, F* x) {
     *x = sk_unaligned_load<F>(ctx->x) + (kScale * 0.5f);
     F fx = sk_unaligned_load<F>(ctx->fx);
 
     F scalex;
-    if (kScale == -3) { scalex = bicubic_far (1.0f - fx); }
-    if (kScale == -1) { scalex = bicubic_near(1.0f - fx); }
-    if (kScale == +1) { scalex = bicubic_near(       fx); }
-    if (kScale == +3) { scalex = bicubic_far (       fx); }
+    const float* w = ctx->weights;
+    if (kScale == -3) { scalex = bicubic_wts(fx, w[0], w[4], w[ 8], w[12]); }
+    if (kScale == -1) { scalex = bicubic_wts(fx, w[1], w[5], w[ 9], w[13]); }
+    if (kScale == +1) { scalex = bicubic_wts(fx, w[2], w[6], w[10], w[14]); }
+    if (kScale == +3) { scalex = bicubic_wts(fx, w[3], w[7], w[11], w[15]); }
     sk_unaligned_store(ctx->scalex, scalex);
 }
 template <int kScale>
@@ -2681,10 +2686,11 @@ SI void bicubic_y(SkRasterPipeline_SamplerCtx* ctx, F* y) {
     F fy = sk_unaligned_load<F>(ctx->fy);
 
     F scaley;
-    if (kScale == -3) { scaley = bicubic_far (1.0f - fy); }
-    if (kScale == -1) { scaley = bicubic_near(1.0f - fy); }
-    if (kScale == +1) { scaley = bicubic_near(       fy); }
-    if (kScale == +3) { scaley = bicubic_far (       fy); }
+    const float* w = ctx->weights;
+    if (kScale == -3) { scaley = bicubic_wts(fy, w[0], w[4], w[ 8], w[12]); }
+    if (kScale == -1) { scaley = bicubic_wts(fy, w[1], w[5], w[ 9], w[13]); }
+    if (kScale == +1) { scaley = bicubic_wts(fy, w[2], w[6], w[10], w[14]); }
+    if (kScale == +3) { scaley = bicubic_wts(fy, w[3], w[7], w[11], w[15]); }
     sk_unaligned_store(ctx->scaley, scaley);
 }
 

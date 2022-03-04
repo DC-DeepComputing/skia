@@ -136,6 +136,8 @@ struct SkRasterPipeline_SamplerCtx {
     float     fy[SkRasterPipeline_kMaxStride];
     float scalex[SkRasterPipeline_kMaxStride];
     float scaley[SkRasterPipeline_kMaxStride];
+
+    float weights[16];  // only for bicubic
 };
 
 struct SkRasterPipeline_TileCtx {
