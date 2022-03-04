@@ -2274,6 +2274,7 @@ generated_cc_atom(
         "//include/core:SkPathEffect_hdr",
         "//include/core:SkPath_hdr",
         "//include/core:SkRefCnt_hdr",
+        "//include/core:SkSVGDecoder_hdr",
         "//include/core:SkShader_hdr",
         "//include/core:SkStream_hdr",
         "//include/core:SkTime_hdr",

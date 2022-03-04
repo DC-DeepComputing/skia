@@ -2838,6 +2838,7 @@ if (skia_enable_tools) {
         "modules/sksg:samples",
         "modules/svg",
         "//third_party/imgui",
+        "//third_party/svg-native-viewer",
       ]
       if (skia_use_vulkan) {
         deps += [

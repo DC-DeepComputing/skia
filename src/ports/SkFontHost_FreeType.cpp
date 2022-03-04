@@ -5,12 +5,14 @@
  * found in the LICENSE file.
  */
 
+#include "include/core/SkBBHFactory.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkData.h"
 #include "include/core/SkDrawable.h"
 #include "include/core/SkFontMetrics.h"
 #include "include/core/SkPath.h"
+#include "include/core/SkPictureRecorder.h"
 #include "include/core/SkStream.h"
 #include "include/core/SkString.h"
 #include "include/private/SkColorData.h"
@@ -1329,6 +1331,31 @@ void SkScalerContext_FreeType::generateMetrics(SkGlyph* glyph, SkArenaAlloc* all
             glyph->fTop     = SkToS16(irect.top());
             glyph->fLeft    = SkToS16(irect.left());
         }
+#if defined(FT_CONFIG_OPTION_SVG)
+    } else if (fFace->glyph->format == FT_GLYPH_FORMAT_SVG) {
+        glyph->fMaskFormat = SkMask::kARGB32_Format;
+        glyph->setPath(alloc, nullptr, false);
+
+        SkPictureRecorder recorder;
+        SkRect infiniteRect = SkRect::MakeLTRB(-SK_ScalarInfinity, -SK_ScalarInfinity,
+                                                SK_ScalarInfinity,  SK_ScalarInfinity);
+        sk_sp<SkBBoxHierarchy> bboxh = SkRTreeFactory()();
+        SkSpan<SkColor> palette(fFaceRec->fSkPalette.get(), fFaceRec->fFTPaletteEntryCount);
+        SkCanvas* recordingCanvas = recorder.beginRecording(infiniteRect, bboxh);
+        if (!this->drawSVGGlyph(fFace, *glyph, fLoadGlyphFlags, palette, recordingCanvas)) {
+            glyph->zeroMetrics();
+            return;
+        }
+        sk_sp<SkPicture> pic = recorder.finishRecordingAsPicture();
+        SkRect rect = pic->cullRect();
+        SkASSERT(rect.isFinite());
+
+        SkIRect irect = rect.roundOut();
+        glyph->fWidth   = SkToU16(irect.width());
+        glyph->fHeight  = SkToU16(irect.height());
+        glyph->fTop     = SkToS16(irect.top());
+        glyph->fLeft    = SkToS16(irect.left());
+#endif  // FT_CONFIG_OPTION_SVG
     } else {
         SkDEBUGFAIL("unknown glyph format");
         glyph->zeroMetrics();
@@ -1600,8 +1627,15 @@ void SkScalerContext_FreeType::generateFontMetrics(SkFontMetrics* metrics) {
     metrics->fStrikeoutThickness = strikeoutThickness * fScale.y();
     metrics->fStrikeoutPosition = strikeoutPosition * fScale.y();
 
-    if (face->face_flags & FT_FACE_FLAG_MULTIPLE_MASTERS) {
-        // The bounds are only valid for the default variation.
+    if (face->face_flags & FT_FACE_FLAG_MULTIPLE_MASTERS
+#if defined(FT_CONFIG_OPTION_SVG)
+        || face->face_flags & FT_FACE_FLAG_SVG
+#endif  // FT_CONFIG_OPTION_SVG
+    ) {
+        // The bounds are only valid for the default variation of variable glyphs.
+        // https://docs.microsoft.com/en-us/typography/opentype/spec/head
+        // For SVG glyphs this number is often incorrect for its non-`glyf` points.
+        // https://github.com/fonttools/fonttools/issues/2566
         metrics->fFlags |= SkFontMetrics::kBoundsInvalid_Flag;
     }
 }
@@ -1732,6 +1766,10 @@ bool SkTypeface_FreeType::onGlyphMaskNeedsCurrentColor() const {
     fGlyphMasksMayNeedCurrentColorOnce([this]{
         static constexpr SkFourByteTag COLRTag = SkSetFourByteTag('C', 'O', 'L', 'R');
         fGlyphMasksMayNeedCurrentColor = this->getTableSize(COLRTag) > 0;
+#if defined(FT_CONFIG_OPTION_SVG)
+        static constexpr SkFourByteTag SVGTag = SkSetFourByteTag('S', 'V', 'G', ' ');
+        fGlyphMasksMayNeedCurrentColor |= this->getTableSize(SVGTag) > 0 ;
+#endif  // FT_CONFIG_OPTION_SVG
     });
     return fGlyphMasksMayNeedCurrentColor;
 }
