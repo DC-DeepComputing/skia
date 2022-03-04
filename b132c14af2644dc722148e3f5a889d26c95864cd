@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bc2c232e_33995503",
+        "filename": "experimental/graphite/src/ResourceProvider.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-03-04T15:10:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "763bf9a5_66283cec",
+      "range": {
+        "startLine": 97,
+        "startChar": 62,
+        "endLine": 97,
+        "endChar": 77
+      },
+      "revId": "b132c14af2644dc722148e3f5a889d26c95864cd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "11df2d11_4616e227",
