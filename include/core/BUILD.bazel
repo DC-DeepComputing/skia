@@ -956,3 +956,14 @@ generated_cc_atom(
     visibility = ["//:__subpackages__"],
     deps = [":SkTypes_hdr"],
 )
+
+generated_cc_atom(
+    name = "SkSVGDecoder_hdr",
+    hdrs = ["SkSVGDecoder.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkColor_hdr",
+        ":SkSpan_hdr",
+        ":SkTypes_hdr",
+    ],
+)
