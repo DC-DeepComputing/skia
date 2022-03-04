@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b9eaf6d1_e7040b2c",
+        "filename": "src/shaders/SkImageShader.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 462,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-03-04T16:48:52Z",
+      "side": 1,
+      "message": "This will reject cases where `sampling.useCubic \u0026\u0026 sampling.mipmap \u003d\u003d SkMipmapMode::kLinear` whereas previously we would have allowed it. Do these values come from the outside world?",
+      "range": {
+        "startLine": 462,
+        "startChar": 0,
+        "endLine": 462,
+        "endChar": 51
+      },
+      "revId": "00b48e9846cfba3a3b7b57844407bec29fb77cfa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
