@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2fb7588e_70677e08",
+        "filename": "src/core/SkVMBlitter.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 189,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-03-04T21:10:53Z",
+      "side": 1,
+      "message": "Should be able to delete this class now?",
+      "revId": "050dbc0406760111ec9cda791a9a42e2b915e7cc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3fd0ee03_9cb07793",
+        "filename": "src/core/SkVMBlitter.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 254,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-03-04T21:10:53Z",
+      "side": 1,
+      "message": "Can we use SkColor4Shader(paint.getColor4f(), nullptr) instead? In most cases, it will produce the same results, but it\u0027s possible that the color in the paint has values bigger than 1 (if it\u0027s a color that doesn\u0027t exist in sRGB color space). If we use the SkColor4Shader, it will preserve those colors. (SkColorShader will clamp them to 1).",
+      "revId": "050dbc0406760111ec9cda791a9a42e2b915e7cc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
