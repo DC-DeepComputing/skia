@@ -39,10 +39,11 @@ protected:
     };
     static constexpr char const * const sampleText = ToolUtils::emoji_sample_text();
     static constexpr const Test tests[] = {
-        { Test::Source::Resource, "fonts/colr.ttf", sampleText },
-        { Test::Source::Resource, "fonts/sbix.ttf", sampleText },
-        { Test::Source::Resource, "fonts/cbdt.ttf", sampleText },
-        { Test::Source::Portable, "Emoji"         , sampleText },
+        { Test::Source::Resource, "fonts/colr.ttf"     , sampleText  },
+        { Test::Source::Resource, "fonts/sbix.ttf"     , sampleText  },
+        { Test::Source::Resource, "fonts/cbdt.ttf"     , sampleText  },
+        { Test::Source::Portable, "Emoji"              , sampleText  },
+        { Test::Source::Resource, "fonts/SampleSVG.ttf", "abcdefghi" },
     };
     sk_sp<SkTypeface> typefaces[SK_ARRAY_COUNT(tests)];
     void onOnceBeforeDraw() override {
@@ -76,6 +77,9 @@ protected:
 
         SkPaint advancePaint;
         advancePaint.setColor(SK_ColorRED);
+
+        SkPaint strokePaint;
+        strokePaint.setStrokeWidth(5);
 
         SkScalar y = 0;
         for (auto&& [i, test] : SkMakeEnumerate(tests)) {
