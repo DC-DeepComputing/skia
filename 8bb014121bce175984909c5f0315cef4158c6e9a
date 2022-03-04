@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "86c74b4d_dd03093e",
+        "filename": "src/sksl/codegen/SkSLMetalCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 244,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-03-04T18:24:16Z",
+      "side": 1,
+      "message": "The one-shot insert is supposed to be the \"ideal\" way because you only need to hash/equality-compare the key and poke through the hash table\u0027s contents one time. But yeah, it\u0027s not pleasant to read. Anyway, our key is a raw pointer, so hashing and equality-checking it are very cheap.",
+      "parentUuid": "565e5b5c_073e0d3e",
+      "range": {
+        "startLine": 243,
+        "startChar": 12,
+        "endLine": 244,
+        "endChar": 37
+      },
+      "revId": "8bb014121bce175984909c5f0315cef4158c6e9a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "47324574_9209b5aa",
@@ -54,6 +78,30 @@
       "writtenOn": "2022-03-04T18:15:01Z",
       "side": 1,
       "message": "I think this comment made more sense with the early return. I suggest changing it to read like the logical inverse, or perhaps reverting the code back to the early return if (fHelpers.contains(name)) {...}",
+      "range": {
+        "startLine": 1076,
+        "startChar": 4,
+        "endLine": 1076,
+        "endChar": 93
+      },
+      "revId": "8bb014121bce175984909c5f0315cef4158c6e9a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a0030347_fc9484e5",
+        "filename": "src/sksl/codegen/SkSLMetalCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1076,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-03-04T18:24:16Z",
+      "side": 1,
+      "message": "Good catch. Inverted the comment.",
+      "parentUuid": "47324574_9209b5aa",
       "range": {
         "startLine": 1076,
         "startChar": 4,
