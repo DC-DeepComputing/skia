@@ -19,6 +19,7 @@ generated_cc_atom(
         "//modules/skottie/include:Skottie_hdr",
         "//modules/skresources/include:SkResources_hdr",
         "//modules/svg/include:SkSVGDOM_hdr",
+        "//modules/svg/include:SkSVGDecoder_SkSVG_hdr",
         "//modules/svg/include:SkSVGNode_hdr",
         "//src/core:SkColorSpacePriv_hdr",
         "//src/core:SkMD5_hdr",

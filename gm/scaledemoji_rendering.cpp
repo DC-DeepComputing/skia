@@ -30,13 +30,31 @@ public:
     ScaledEmojiRenderingGM() {}
 
 protected:
-    sk_sp<SkTypeface> typefaces[4];
+    struct Test {
+        char const * const fontName;
+        enum class Type { Resource, Portable };
+        Type const fontType;
+        char const * const text;
+        sk_sp<SkTypeface> typeface;
+    };
+    Test tests[5] = {
+        { "fonts/colr.ttf",      Test::Type::Resource, ToolUtils::emoji_sample_text(), nullptr },
+        { "fonts/sbix.ttf",      Test::Type::Resource, ToolUtils::emoji_sample_text(), nullptr },
+        { "fonts/cbdt.ttf",      Test::Type::Resource, ToolUtils::emoji_sample_text(), nullptr },
+        { "Emoji",               Test::Type::Portable, ToolUtils::emoji_sample_text(), nullptr },
+        { "fonts/SampleSVG.ttf", Test::Type::Resource, "abcdefghi"                   , nullptr },
+    };
 
     void onOnceBeforeDraw() override {
-        typefaces[0] = MakeResourceAsTypeface("fonts/colr.ttf");
-        typefaces[1] = MakeResourceAsTypeface("fonts/sbix.ttf");
-        typefaces[2] = MakeResourceAsTypeface("fonts/cbdt.ttf");
-        typefaces[3] = ToolUtils::create_portable_typeface("Emoji", SkFontStyle());
+        for (auto&& test : tests) {
+            if (test.fontType == Test::Type::Resource) {
+                test.typeface = MakeResourceAsTypeface(test.fontName);
+            } else if (test.fontType == Test::Type::Portable) {
+                test.typeface = ToolUtils::create_portable_typeface(test.fontName, SkFontStyle());
+            } else {
+                SK_ABORT("Unknown test type");
+            }
+        }
     }
 
     SkString onShortName() override {
@@ -51,12 +69,15 @@ protected:
         SkPaint paint;
         paint.setColor(SK_ColorCYAN);
 
+        SkPaint strokePaint;
+        strokePaint.setStrokeWidth(5);
+
         SkScalar y = 0;
-        for (const auto& typeface: typefaces) {
-            SkFont font(typeface);
+        for (auto&& test : tests) {
+            SkFont font(test.typeface);
             font.setEdging(SkFont::Edging::kAlias);
 
-            const char*   text = ToolUtils::emoji_sample_text();
+            const char* text = test.text;
             SkFontMetrics metrics;
 
             for (SkScalar textSize : { 70, 150 }) {
@@ -73,7 +94,8 @@ protected:
                     SkRect bounds;
                     font.measureText(text, strlen(text), SkTextEncoding::kUTF8, &bounds, &paint);
                     canvas->drawSimpleText(text, strlen(text), SkTextEncoding::kUTF8,
-                                           x + bounds.left(), y, font, paint);
+                                           x - bounds.left(), y, font, paint);
+                    //canvas->drawLine(x, y, x + bounds.width(), y, strokePaint);
                     x += bounds.width() * 1.2;
                 }
                 y += metrics.fDescent + metrics.fLeading;
