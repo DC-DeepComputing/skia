@@ -22,6 +22,30 @@
       },
       "revId": "1e3ebe916bb7e6f28e07cc3117fe9510c6b613a8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bacf8334_36310769",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 432,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-03-04T15:10:09Z",
+      "side": 1,
+      "message": "Right, I think we might end up with Generate[XX]BlenderGlueCode with:\nFixedFunction (no dest read)\nShaderBased (emits dest read helper)\nUserDefined (emits dest read helper)",
+      "parentUuid": "a74f1bee_05b76918",
+      "range": {
+        "startLine": 432,
+        "startChar": 12,
+        "endLine": 432,
+        "endChar": 37
+      },
+      "revId": "1e3ebe916bb7e6f28e07cc3117fe9510c6b613a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
