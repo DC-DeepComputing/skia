@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c3dbecfa_303edca6",
+        "filename": "include/codec/SkCodec.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 763,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-03-04T15:55:50Z",
+      "side": 1,
+      "message": "nit: should be const.",
+      "range": {
+        "startLine": 763,
+        "startChar": 16,
+        "endLine": 763,
+        "endChar": 33
+      },
+      "revId": "822440284081c40237b7d32f9f5de06280d85ce1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b4f29168_eee7bee2",
+        "filename": "include/private/SkEncodedInfo.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-03-04T15:55:50Z",
+      "side": 1,
+      "message": "I think this should be bitsPerComponent. We should assume that this is the colordepth, too.",
+      "range": {
+        "startLine": 105,
+        "startChar": 87,
+        "endLine": 105,
+        "endChar": 88
+      },
+      "revId": "822440284081c40237b7d32f9f5de06280d85ce1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
