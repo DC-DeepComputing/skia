@@ -443,6 +443,17 @@ void SkSVGDOM::render(SkCanvas* canvas) const {
     }
 }
 
+void SkSVGDOM::render(SkCanvas* canvas, SkSVGPresentationContext& pctx, const char* id) const {
+    TRACE_EVENT0("skia", TRACE_FUNC);
+    sk_sp<SkSVGNode>* node = ((SkSVGDOM*)this)->findNodeById(id);
+    if (fRoot && node && *node) {
+        SkSVGLengthContext lctx(fContainerSize);
+        fRoot->render(SkSVGRenderContext(canvas, fFontMgr, fResourceProvider, fIDMapper, lctx, pctx,
+                                         {nullptr, nullptr}),
+                      **node);
+    }
+}
+
 const SkSize& SkSVGDOM::containerSize() const {
     return fContainerSize;
 }

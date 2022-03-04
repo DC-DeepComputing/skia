@@ -5,7 +5,6 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
-
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
@@ -32,6 +31,20 @@
 #include <freetype/ftsizes.h>
 // In the past, FT_GlyphSlot_Own_Bitmap was defined in this header file.
 #include <freetype/ftsynth.h>
+
+#if defined(FT_CONFIG_OPTION_SVG)
+#   include "modules/svg/include/SkSVGDOM.h"
+#   include "modules/svg/include/SkSVGNode.h"
+#   include "modules/svg/include/SkSVGSVG.h"
+#   include "modules/svg/include/SkSVGRenderContext.h"
+#   include "modules/svg/include/SkSVGUse.h"
+#   include "modules/skresources/include/SkResources.h"
+
+#   include <freetype/otsvg.h>
+#   include "include/utils/SkBase64.h"
+#endif
+
+//#define SK_SHOW_TEXT_BLIT_COVERAGE 1
 
 #ifdef TT_SUPPORT_COLRV1
 // FT_ClipBox and FT_Get_Color_Glyph_ClipBox introduced VER-2-11-0-18-g47cf8ebf4
@@ -1249,6 +1262,11 @@ bool SkScalerContext_FreeType_Base::drawColorGlyph(FT_Face face,
                                                    SkSpan<SkColor> palette,
                                                    SkCanvas* canvas) {
 
+    if (this->isSubpixel()) {
+        canvas->translate(SkFixedToScalar(glyph.getSubXFixed()),
+                          SkFixedToScalar(glyph.getSubYFixed()));
+    }
+
     // Only attempt to draw a COLRv1 glyph if FreeType is new enough to have the COLRv1 support.
 #ifdef TT_SUPPORT_COLRV1
     VisitedSet visited_set;
@@ -1286,6 +1304,109 @@ bool SkScalerContext_FreeType_Base::drawColorGlyph(FT_Face face,
     return haveLayers;
 }
 #endif  // FT_COLOR_H
+
+class DataResourceProvider final : public skresources::ResourceProvider {
+public:
+    static sk_sp<skresources::ResourceProvider> Make() {
+        return sk_sp<skresources::ResourceProvider>(new DataResourceProvider());
+    }
+
+    sk_sp<skresources::ImageAsset> loadImageAsset(const char rpath[],
+                                                  const char rname[],
+                                                  const char rid[]) const override {
+        if (auto data = decode_datauri("data:image/", rname)) {
+            return skresources::MultiFrameImageAsset::Make(std::move(data));
+        }
+        return nullptr;
+    }
+
+private:
+    DataResourceProvider() = default;
+
+    static sk_sp<SkData> decode_datauri(const char prefix[], const char uri[]) {
+        // We only handle B64 encoded image dataURIs: data:image/<type>;base64,<data>
+        // (https://en.wikipedia.org/wiki/Data_URI_scheme)
+        static constexpr char kDataURIEncodingStr[] = ";base64,";
+
+        const size_t prefixLen = strlen(prefix);
+        if (strncmp(uri, prefix, prefixLen) != 0) {
+            return nullptr;
+        }
+
+        const char* encoding = strstr(uri + prefixLen, kDataURIEncodingStr);
+        if (!encoding) {
+            return nullptr;
+        }
+
+        const char* b64Data = encoding + SK_ARRAY_COUNT(kDataURIEncodingStr) - 1;
+        size_t b64DataLen = strlen(b64Data);
+        size_t dataLen;
+        if (SkBase64::Decode(b64Data, b64DataLen, nullptr, &dataLen) != SkBase64::kNoError) {
+            return nullptr;
+        }
+
+        sk_sp<SkData> data = SkData::MakeUninitialized(dataLen);
+        void* rawData = data->writable_data();
+        if (SkBase64::Decode(b64Data, b64DataLen, rawData, &dataLen) != SkBase64::kNoError) {
+            return nullptr;
+        }
+
+        return data;
+    }
+
+    using INHERITED = ResourceProvider;
+};
+
+#if defined(FT_CONFIG_OPTION_SVG)
+bool SkScalerContext_FreeType_Base::drawSVGGlyph(FT_Face face,
+                                                 const SkGlyph& glyph,
+                                                 uint32_t loadGlyphFlags,
+                                                 SkSpan<SkColor> palette,
+                                                 SkCanvas* canvas) {
+    FT_SVG_Document ftSvg = (FT_SVG_Document)face->glyph->other;
+    SkMatrix m;
+    FT_Matrix ftMatrix = ftSvg->transform;
+    FT_Vector ftOffset = ftSvg->delta;
+    m.setAll(
+        SkFixedToFloat(ftMatrix.xx), -SkFixedToFloat(ftMatrix.xy),  SkFixedToFloat(ftOffset.x),
+       -SkFixedToFloat(ftMatrix.yx),  SkFixedToFloat(ftMatrix.yy), -SkFixedToFloat(ftOffset.y),
+        0                          ,  0                          ,  1                        );
+    m.postScale(SkFixedToFloat(ftSvg->metrics.x_scale) / 64.0f,
+                SkFixedToFloat(ftSvg->metrics.y_scale) / 64.0f);
+    m.postTranslate(SkFixedToScalar(glyph.getSubXFixed()),
+                    SkFixedToScalar(glyph.getSubYFixed()));
+    canvas->concat(m);
+
+    // The matrix is in the canvas, but the following information still needs to go into drawing.
+    // ftSvg->svg_document, ftSvg->svg_document_length, ftSvg->units_per_EM, glyph.getGlyphID()
+    // fRec.fForegroundColor, SkSpan<SkColor> palette
+
+    std::unique_ptr<SkStreamAsset> stream =
+            SkMemoryStream::MakeDirect(ftSvg->svg_document, ftSvg->svg_document_length);
+    if (!stream) {
+        return false;
+    }
+    SkSVGDOM::Builder builder;
+    builder.setResourceProvider(DataResourceProvider::Make());
+    sk_sp<SkSVGDOM> skSvg = builder.make(*stream);
+    if (!skSvg) {
+        return false;
+    }
+
+    SkSize emSize = SkSize::Make(SkScalar(ftSvg->units_per_EM), SkScalar(ftSvg->units_per_EM));
+    skSvg->setContainerSize(emSize);
+
+    SkSVGPresentationContext pctx;
+    pctx.fInherited.fColor = SkSVGProperty<SkSVGColorType , true>(fRec.fForegroundColor);
+
+    constexpr const size_t glyphStringLen = sizeof("glyph") - 1;
+    char glyphIdString[glyphStringLen + kSkStrAppendU32_MaxSize + 1] = "glyph";
+    *SkStrAppendU32(glyphIdString + glyphStringLen, glyph.getGlyphID()) = 0;
+
+    skSvg->render(canvas, pctx, glyphIdString);
+    return true;
+}
+#endif  // FT_CONFIG_OPTION_SVG
 
 void SkScalerContext_FreeType_Base::generateGlyphImage(FT_Face face,
                                                        const SkGlyph& glyph,
@@ -1328,11 +1449,6 @@ void SkScalerContext_FreeType_Base::generateGlyphImage(FT_Face face,
                 canvas.clear(SK_ColorTRANSPARENT);
 #endif
                 canvas.translate(-glyph.fLeft, -glyph.fTop);
-
-                if (this->isSubpixel()) {
-                    canvas.translate(SkFixedToScalar(glyph.getSubXFixed()),
-                                     SkFixedToScalar(glyph.getSubYFixed()));
-                }
 
                 bool haveLayers = this->drawColorGlyph(face, glyph, loadGlyphFlags,
                                                        customPalette, &canvas);
@@ -1440,10 +1556,19 @@ void SkScalerContext_FreeType_Base::generateGlyphImage(FT_Face face,
 
                 FT_Outline_Get_Bitmap(face->glyph->library, outline, &target);
 #ifdef SK_SHOW_TEXT_BLIT_COVERAGE
-                for (int y = 0; y < glyph.fHeight; ++y) {
-                    for (int x = 0; x < glyph.fWidth; ++x) {
-                        uint8_t& a = ((uint8_t*)glyph.fImage)[(glyph.rowBytes() * y) + x];
-                        a = std::max<uint8_t>(a, 0x20);
+                if (glyph.fMaskFormat == SkMask::kBW_Format) {
+                    for (int y = 0; y < glyph.fHeight; y += 2) {
+                        for (int x = 0; x < glyph.fWidth; x+=2) {
+                            uint8_t& b = ((uint8_t*)glyph.fImage)[(glyph.rowBytes() * y) + (x >> 3)];
+                            b = b ^ (1 << (x & 0x7));
+                        }
+                    }
+                } else {
+                    for (int y = 0; y < glyph.fHeight; ++y) {
+                        for (int x = 0; x < glyph.fWidth; ++x) {
+                            uint8_t& a = ((uint8_t*)glyph.fImage)[(glyph.rowBytes() * y) + x];
+                            a = std::max<uint8_t>(a, 0x20);
+                        }
                     }
                 }
 #endif
@@ -1542,7 +1667,26 @@ void SkScalerContext_FreeType_Base::generateGlyphImage(FT_Face face,
             }
 
         } break;
+#if defined(FT_CONFIG_OPTION_SVG)
+        case FT_GLYPH_FORMAT_SVG: {
+            SkBitmap dstBitmap;
+            // TODO: mark this as sRGB when the blits will be sRGB.
+            dstBitmap.setInfo(SkImageInfo::Make(glyph.fWidth, glyph.fHeight,
+                                                kN32_SkColorType,
+                                                kPremul_SkAlphaType),
+                                                glyph.rowBytes());
+            dstBitmap.setPixels(glyph.fImage);
 
+            SkCanvas canvas(dstBitmap);
+#ifdef SK_SHOW_TEXT_BLIT_COVERAGE
+            canvas.clear(0x33FF0000);
+#else
+            canvas.clear(SK_ColorTRANSPARENT);
+#endif
+            canvas.translate(-glyph.fLeft, -glyph.fTop);
+            this->drawSVGGlyph(face, glyph, loadGlyphFlags, customPalette, &canvas);
+        } break;
+#endif  // FT_CONFIG_OPTION_SVG
         default:
             SkDEBUGFAIL("unknown glyph format");
             memset(glyph.fImage, 0, glyph.rowBytes() * glyph.fHeight);
@@ -1641,9 +1785,13 @@ public:
 };
 
 bool generateGlyphPathStatic(FT_Face face, SkPath* path) {
+    if (face->glyph->format != FT_GLYPH_FORMAT_OUTLINE) {
+        path->reset();
+        return false;
+    }
+
     SkFTGeometrySink sink{path};
     FT_Error err = FT_Outline_Decompose(&face->glyph->outline, &SkFTGeometrySink::Funcs, &sink);
-
     if (err != 0) {
         path->reset();
         return false;
@@ -1790,5 +1938,16 @@ sk_sp<SkDrawable> SkScalerContext_FreeType_Base::generateGlyphDrawable(
         return recorder.finishRecordingAsDrawable();
     }
 #endif  // FT_COLOR_H
+
+#if defined(FT_CONFIG_OPTION_SVG)
+    if (face->glyph->format == FT_GLYPH_FORMAT_SVG) {
+        SkPictureRecorder recorder;
+        SkCanvas* recordingCanvas = recorder.beginRecording(SkRect::Make(glyph.mask().fBounds));
+        if (!this->drawSVGGlyph(face, glyph, loadGlyphFlags, palette, recordingCanvas)) {
+            return nullptr;
+        }
+        return recorder.finishRecordingAsDrawable();
+    }
+#endif
     return nullptr;
 }
