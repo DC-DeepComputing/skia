@@ -22,6 +22,30 @@
       },
       "revId": "ba1baafea21d57ba9598266a4ace3b87d91319b5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0d6efbd6_fa548240",
+        "filename": "experimental/graphite/src/ResourceProvider.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-03-04T15:23:22Z",
+      "side": 1,
+      "message": "Different ResourceTypes. Between the two methods you could share the buildKeyForTexture call as well, but there will be other functions (e.g. findOrCreateScratchTexture) that will also use findOrCreateTextureWithKey but builds its key differently.",
+      "parentUuid": "86354e90_0838eb7a",
+      "range": {
+        "startLine": 105,
+        "startChar": 33,
+        "endLine": 105,
+        "endChar": 70
+      },
+      "revId": "ba1baafea21d57ba9598266a4ace3b87d91319b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
