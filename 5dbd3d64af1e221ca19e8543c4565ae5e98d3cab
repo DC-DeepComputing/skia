@@ -34,6 +34,24 @@
       "parentUuid": "c6eded79_065467ec",
       "revId": "5dbd3d64af1e221ca19e8543c4565ae5e98d3cab",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "86b3c79e_3fa3ac26",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-03-04T14:28:25Z",
+      "side": 1,
+      "message": "That makes sense for the majority of textures chrome will ever need. But in this case, chrome is getting a surface from the OS and not directly making it on its own. So Chrome really should be making sure these objects have the same format. If chrome decides it wants to Skia to tell it what format to request from the OS that\u0027s fine, but as of right now there is no connection between the recording side calling getDefaultBackendFormat and where Chrome is actually getting io surface. So right now it all seems to be dependent on luck.",
+      "parentUuid": "680b9060_22ea767f",
+      "revId": "5dbd3d64af1e221ca19e8543c4565ae5e98d3cab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
