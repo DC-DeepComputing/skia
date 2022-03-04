@@ -24,6 +24,9 @@ bool SkPathEffect::filterPath(SkPath* dst, const SkPath& src, SkStrokeRec* rec,
     if (dst == &src) {
         tmpDst = &tmp;
     }
+    if (src.getBounds().isEmpty()) {
+        return false;
+    }
     if (as_PEB(this)->onFilterPath(tmpDst, src, rec, bounds, ctm)) {
         if (dst == &src) {
             *dst = tmp;
