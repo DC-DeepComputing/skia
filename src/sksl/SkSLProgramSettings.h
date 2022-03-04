@@ -84,6 +84,23 @@ struct ProgramSettings {
     // symbol table of the Program, but ownership is *not* transferred. It is up to the caller to
     // keep them alive.
     const std::vector<std::unique_ptr<ExternalFunction>>* fExternalFunctions = nullptr;
+
+    bool isStorageBuffer(int binding) {
+        SkASSERT(binding >= 0 && binding <= 31);
+        return fStorageBufferMask & (1 << binding);
+    }
+
+    void setStorageBuffer(int binding) {
+        SkASSERT(binding >= 0 && binding <= 31);
+        fStorageBufferMask |= 1 << binding;
+    }
+
+private:
+    // Any 1 bits in the storage buffer mask mark that the uniform buffers with the corresponding
+    // bindings are to be implemented by SSBOs rather than UBOs. This will create one synthetic
+    // vertex attribute (after the "real" vertex attributes) per SSBO, to pass in the SSBO index.
+    // The LSB represents binding 0.
+    int32_t fStorageBufferMask = 0;
 };
 
 /**
