@@ -154,7 +154,37 @@ sk_sp<Sampler> ResourceProvider::findOrCreateCompatibleSampler(const SkSamplingO
 sk_sp<Buffer> ResourceProvider::findOrCreateBuffer(size_t size,
                                                    BufferType type,
                                                    PrioritizeGpuReads prioritizeGpuReads) {
-    return this->createBuffer(size, type, prioritizeGpuReads);
+    static const ResourceType kType = GraphiteResourceKey::GenerateResourceType();
+
+    GraphiteResourceKey key;
+    {
+        // For the key we need ((sizeof(size_t) + 3) / 4) uint32_t's for the size and one unint32_t for
+        // the rest.
+        static int kKeyNum32DataCnt = ((sizeof(size_t) + 3) / 4) + 1;
+
+        SkASSERT(static_cast<uint32_t>(type)               < (1u << 3));
+        SkASSERT(static_cast<uint32_t>(prioritizeGpuReads) < (1u << 1));
+
+        GraphiteResourceKey::Builder builder(&key, kType, kKeyNum32DataCnt, Shareable::kNo);
+        builder[0] = (static_cast<uint32_t>(type)               << 0) |
+                     (static_cast<uint32_t>(prioritizeGpuReads) << 3);
+        builder[1] = (uint32_t)size;
+        if (sizeof(size_t) > 4) {
+            builder[2] = (uint32_t)((uint64_t)size >> 32);
+        }
+    }
+
+    if (Resource* resource = fResourceCache->findAndRefResource(key)) {
+        return sk_sp<Buffer>(static_cast<Buffer*>(resource));
+    }
+    auto buffer = this->createBuffer(size, type, prioritizeGpuReads);
+    if (!buffer) {
+        return nullptr;
+    }
+
+    buffer->setKey(key);
+    fResourceCache->insertResource(buffer.get());
+    return buffer;
 }
 
 

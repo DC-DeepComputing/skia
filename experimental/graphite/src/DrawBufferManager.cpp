@@ -16,7 +16,7 @@ namespace skgpu {
 namespace {
 
 // TODO: Tune these values on real world data
-static constexpr size_t kVertexBufferSize = 2 << 10;
+static constexpr size_t kVertexBufferSize = 16 << 10;
 static constexpr size_t kIndexBufferSize = 2 << 10;
 static constexpr size_t kUniformBufferSize = 2 << 10;
 
