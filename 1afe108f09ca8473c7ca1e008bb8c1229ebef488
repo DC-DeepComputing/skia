@@ -33,6 +33,24 @@
       "message": "Ben, any update on this?",
       "revId": "1afe108f09ca8473c7ca1e008bb8c1229ebef488",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "aaa388d1_f1ed5d28",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-03-04T17:27:09Z",
+      "side": 1,
+      "message": "Not really, it doesn\u0027t build. Someone should take a look and see if this got fixed in actual ICU and, if so, backport the patch to our upstream (the Chromium copy of ICU).",
+      "parentUuid": "364294d6_12edc397",
+      "revId": "1afe108f09ca8473c7ca1e008bb8c1229ebef488",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
