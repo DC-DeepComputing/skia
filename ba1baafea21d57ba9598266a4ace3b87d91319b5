@@ -46,6 +46,30 @@
       },
       "revId": "ba1baafea21d57ba9598266a4ace3b87d91319b5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "88668c9f_7172336a",
+        "filename": "experimental/graphite/src/ResourceProvider.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-03-04T15:26:42Z",
+      "side": 1,
+      "message": "It also allows us down the road to easily change the signature and what we key for the different types. Like maybe for depth stencil we decide we don\u0027t really need to key the whole TextureInfo and instead could create the key just from size, sampleCnt, and DepthStencilFlags (assuming this always map to the same format and other property flags).",
+      "parentUuid": "0d6efbd6_fa548240",
+      "range": {
+        "startLine": 105,
+        "startChar": 33,
+        "endLine": 105,
+        "endChar": 70
+      },
+      "revId": "ba1baafea21d57ba9598266a4ace3b87d91319b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
