@@ -46,6 +46,30 @@
       },
       "revId": "1e3ebe916bb7e6f28e07cc3117fe9510c6b613a8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "be8e48b4_29881c60",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 432,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-03-04T15:21:04Z",
+      "side": 1,
+      "message": "ShaderBased refers to calling the fixed-function `blend` in the shader, right? Maybe we call that one EmulatedFF? I don\u0027t know, names are hard...\n\nI like GenerateFixedFunctionBlenderGlueCode a lot.",
+      "parentUuid": "bacf8334_36310769",
+      "range": {
+        "startLine": 432,
+        "startChar": 12,
+        "endLine": 432,
+        "endChar": 37
+      },
+      "revId": "1e3ebe916bb7e6f28e07cc3117fe9510c6b613a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
