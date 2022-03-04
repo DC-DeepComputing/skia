@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "15c80625_b51b1a7a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-03-04T18:20:12Z",
+      "side": 1,
+      "message": "I wasn\u0027t positive how much this would impact perf. The real reason is that the special cases use different RP context objects, and those are shared by even more stages, so I wasn\u0027t sure about bloating them all with the bicubic weights.",
+      "parentUuid": "7ab80e47_2d03cac1",
+      "revId": "00b48e9846cfba3a3b7b57844407bec29fb77cfa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ed014d98_b5418826",
         "filename": "src/core/SkRasterPipeline.h",
         "patchSetId": 2
