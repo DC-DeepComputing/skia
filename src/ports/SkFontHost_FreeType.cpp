@@ -55,6 +55,15 @@
 #include <freetype/t1tables.h>
 #include <freetype/ftfntfmt.h>
 
+#if defined(FT_CONFIG_OPTION_SVG)
+#   include <freetype/otsvg.h>
+#   include "modules/svg/include/SkSVGDOM.h"
+#   include "modules/svg/include/SkSVGNode.h"
+#   include "modules/svg/include/SkSVGSVG.h"
+#   include "modules/svg/include/SkSVGRenderContext.h"
+#   include "include/utils/SkNullCanvas.h"
+#endif
+
 // SK_FREETYPE_MINIMUM_RUNTIME_VERSION 0x<major><minor><patch><flags>
 // Flag SK_FREETYPE_DLOPEN: also try dlopen to get newer features.
 #define SK_FREETYPE_DLOPEN (0x1)
@@ -1327,6 +1336,50 @@ void SkScalerContext_FreeType::generateMetrics(SkGlyph* glyph, SkArenaAlloc* all
             glyph->fTop     = SkToS16(irect.top());
             glyph->fLeft    = SkToS16(irect.left());
         }
+#if defined(FT_CONFIG_OPTION_SVG)
+    } else if (fFace->glyph->format == FT_GLYPH_FORMAT_SVG) {
+        glyph->fMaskFormat = SkMask::kARGB32_Format;
+        glyph->setPath(alloc, nullptr, false);
+
+        FT_SVG_Document ftSvg = (FT_SVG_Document)fFace->glyph->other;
+        std::unique_ptr<SkStreamAsset> stream = SkMemoryStream::MakeDirect(ftSvg->svg_document, ftSvg->svg_document_length);
+        if (!stream) {
+            return;
+        }
+        sk_sp<SkSVGDOM> skSvg = SkSVGDOM::MakeFromStream(*stream);
+        if (!skSvg) {
+            return;
+        }
+        SkSize emSize = SkSize::Make(SkScalar(ftSvg->units_per_EM), SkScalar(ftSvg->units_per_EM));
+        skSvg->setContainerSize(emSize);
+        SkSVGLengthContext lengthContext(emSize);
+
+        auto canvas = SkMakeNullCanvas();
+        SkSVGRenderContext renderContext(canvas.get(), nullptr, nullptr, SkSVGIDMapper(),
+                                         lengthContext, SkSVGPresentationContext(),
+                                         {nullptr, nullptr});
+        // objectBoundingBox takes a renderContext with a canvas, but ignores the canvas.
+        SkRect rect = skSvg->getRoot()->objectBoundingBox(renderContext);
+
+        SkMatrix m;
+        FT_Matrix ftMatrix = ftSvg->transform;
+        FT_Vector ftOffset = ftSvg->delta;
+        SkScalar dx = SkFixedToScalar(glyph->getSubXFixed());
+        SkScalar dy = SkFixedToScalar(glyph->getSubYFixed());
+        m.setAll( SkFixedToFloat(ftMatrix.xx), -SkFixedToFloat(ftMatrix.xy),  SkFixedToFloat(ftOffset.x),
+                 -SkFixedToFloat(ftMatrix.yx),  SkFixedToFloat(ftMatrix.yy), -SkFixedToFloat(ftOffset.y),
+                 0, 0, 1);
+        m.postScale(SkFixedToFloat(ftSvg->metrics.x_scale) / 64.0f,
+                    SkFixedToFloat(ftSvg->metrics.y_scale) / 64.0f);
+        m.postTranslate(dx, dy);
+        m.mapRect(&rect);
+
+        SkIRect irect = rect.roundOut();
+        glyph->fWidth   = SkToU16(irect.width());
+        glyph->fHeight  = SkToU16(irect.height());
+        glyph->fTop     = SkToS16(irect.top());
+        glyph->fLeft    = SkToS16(irect.left());
+#endif  // FT_CONFIG_OPTION_SVG
     } else {
         SkDEBUGFAIL("unknown glyph format");
         glyph->zeroMetrics();
