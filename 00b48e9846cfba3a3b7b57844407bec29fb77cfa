@@ -22,6 +22,30 @@
       },
       "revId": "00b48e9846cfba3a3b7b57844407bec29fb77cfa",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6e1601db_db3a572d",
+        "filename": "src/shaders/SkImageShader.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 462,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-03-04T16:50:40Z",
+      "side": 1,
+      "message": "No, in fact we don\u0027t allow that at all (see line 482). The constructors of SkSamplingOptions are designed to prevent it.",
+      "parentUuid": "b9eaf6d1_e7040b2c",
+      "range": {
+        "startLine": 462,
+        "startChar": 0,
+        "endLine": 462,
+        "endChar": 51
+      },
+      "revId": "00b48e9846cfba3a3b7b57844407bec29fb77cfa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
