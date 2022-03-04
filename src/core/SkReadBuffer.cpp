@@ -398,7 +398,7 @@ SkFlattenable* SkReadBuffer::readFlattenable(SkFlattenable::Type ft) {
 
     if (fFactoryCount > 0) {
         int32_t index = this->read32();
-        if (0 == index || !this->isValid()) {
+        if (index <= 0 || !this->isValid()) {
             return nullptr; // writer failed to give us the flattenable
         }
         index -= 1;     // we stored the index-base-1
