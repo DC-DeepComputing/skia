@@ -401,6 +401,10 @@ SkFlattenable* SkReadBuffer::readFlattenable(SkFlattenable::Type ft) {
         if (0 == index || !this->isValid()) {
             return nullptr; // writer failed to give us the flattenable
         }
+        if (index < 0) {
+            this->validate(false);
+            return nullptr;
+        }
         index -= 1;     // we stored the index-base-1
         if ((unsigned)index >= (unsigned)fFactoryCount) {
             this->validate(false);
