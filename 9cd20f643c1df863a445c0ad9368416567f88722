@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7a7178e6_fca6a976",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-03-04T16:04:08Z",
+      "side": 1,
+      "message": "Are we seeing issues just with the overscroll-stretch shader, or are many shaders broken? Additional context here might be interesting for future readers.",
+      "range": {
+        "startLine": 14,
+        "startChar": 21,
+        "endLine": 15,
+        "endChar": 40
+      },
+      "revId": "9cd20f643c1df863a445c0ad9368416567f88722",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "03ca8403_4a166eeb",
+        "filename": "include/effects/SkRuntimeEffect.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 192,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-03-04T16:04:08Z",
+      "side": 1,
+      "message": "(see below)",
+      "range": {
+        "startLine": 189,
+        "startChar": 21,
+        "endLine": 192,
+        "endChar": 83
+      },
+      "revId": "9cd20f643c1df863a445c0ad9368416567f88722",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "100edcaa_f2eaa8e1",
+        "filename": "src/core/SkRuntimeEffect.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 146,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-03-04T16:04:08Z",
+      "side": 1,
+      "message": "up to you: This logic is a rephrasing of the logic in my \"see below\" and is kinda difficult to read compared to the assertion\u0027s phrasing (presumably to avoid invoking the virtual method more than once, but to still keep it as a single expression).\n\nWould it make sense to wrap this logic in a static helper method to give it a name?  We could use it in the assertion above, and here as well.\n\n\n```\nbool ChildPtr::IsValidFlattenable(const sk_sp\u003cSkFlattenable\u003e f) {\n   if (!f) { return true; }\n   switch (f-\u003egetFlattenableType()) { \n      case ...: return true; \n      default: return false;\n   }\n}\n```",
+      "range": {
+        "startLine": 143,
+        "startChar": 0,
+        "endLine": 146,
+        "endChar": 48
+      },
+      "revId": "9cd20f643c1df863a445c0ad9368416567f88722",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a5cf23df_9def98c5",
+        "filename": "src/core/SkRuntimeEffect.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1237,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-03-04T16:04:08Z",
+      "side": 1,
+      "message": "Would it make sense to do the same kind of fallback for color filters? Or is that a non-issue for Android?",
+      "range": {
+        "startLine": 1237,
+        "startChar": 33,
+        "endLine": 1237,
+        "endChar": 43
+      },
+      "revId": "9cd20f643c1df863a445c0ad9368416567f88722",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
