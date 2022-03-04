@@ -99,19 +99,37 @@ sk_sp<Texture> ResourceProvider::findOrCreateDepthStencilAttachment(SkISize dime
     // stomping on each other's data.
     fGpu->caps()->buildKeyForTexture(dimensions, info, kType, Shareable::kYes, &key);
 
+    return this->findOrCreateTextureWithKey(dimensions, info, key);
+}
+
+sk_sp<Texture> ResourceProvider::findOrCreateDiscardableMSAAAttachment(SkISize dimensions,
+                                                                       const TextureInfo& info) {
+    SkASSERT(info.isValid());
+
+    static const ResourceType kType = GraphiteResourceKey::GenerateResourceType();
+
+    GraphiteResourceKey key;
+    fGpu->caps()->buildKeyForTexture(dimensions, info, kType, Shareable::kYes, &key);
+
+    return this->findOrCreateTextureWithKey(dimensions, info, key);
+}
+
+sk_sp<Texture> ResourceProvider::findOrCreateTextureWithKey(SkISize dimensions,
+                                                            const TextureInfo& info,
+                                                            const GraphiteResourceKey& key) {
     if (Resource* resource = fResourceCache->findAndRefResource(key)) {
         return sk_sp<Texture>(static_cast<Texture*>(resource));
     }
 
-    auto stencil = this->createTexture(dimensions, info);
-    if (!stencil) {
+    auto tex = this->createTexture(dimensions, info);
+    if (!tex) {
         return nullptr;
     }
 
-    stencil->setKey(key);
-    fResourceCache->insertResource(stencil.get());
+    tex->setKey(key);
+    fResourceCache->insertResource(tex.get());
 
-    return stencil;
+    return tex;
 }
 
 sk_sp<Sampler> ResourceProvider::findOrCreateCompatibleSampler(const SkSamplingOptions& smplOptions,
