@@ -2,6 +2,7 @@
 #ifndef TextStyle_DEFINED
 #define TextStyle_DEFINED
 
+#include <optional>
 #include <vector>
 #include "include/core/SkColor.h"
 #include "include/core/SkFont.h"
@@ -148,7 +149,9 @@ struct PlaceholderStyle {
 class TextStyle {
 public:
     TextStyle() = default;
-    TextStyle(const TextStyle& other, bool placeholder);
+    TextStyle(const TextStyle& other);
+
+    TextStyle cloneForPlaceholder();
 
     bool equals(const TextStyle& other) const;
     bool equalsByFonts(const TextStyle& that) const;
@@ -206,6 +209,12 @@ public:
     void addFontFeature(const SkString& fontFeature, int value)
         { fFontFeatures.emplace_back(fontFeature, value); }
     void resetFontFeatures() { fFontFeatures.clear(); }
+
+    // Font arguments
+    std::optional<SkFontArguments> getFontArguments() const { return fFontArgs; }
+    // The contents of the SkFontArguments will be copied into the TextStyle,
+    // and the SkFontArguments can be safely deleted after setFontArguments returns.
+    void setFontArguments(const std::optional<SkFontArguments>& args);
 
     SkScalar getFontSize() const { return fFontSize; }
     void setFontSize(SkScalar size) { fFontSize = size; }
@@ -290,6 +299,10 @@ private:
     bool fIsPlaceholder = false;
 
     std::vector<FontFeature> fFontFeatures;
+
+    std::optional<SkFontArguments> fFontArgs;
+    std::vector<SkFontArguments::VariationPosition::Coordinate> fArgsCoordinates;
+    std::vector<SkFontArguments::Palette::Override> fArgsOverrides;
 };
 
 typedef size_t TextIndex;
