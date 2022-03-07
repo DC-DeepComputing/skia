@@ -94,8 +94,8 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(UniformTest, reporter, context) {
 
             for (auto bm : { SkBlendMode::kSrc, SkBlendMode::kSrcOver }) {
                 auto [ p, expectedNumUniforms ] = create_paint(s, tm, bm);
-                auto [ actualID, uniformBlock] = ExtractPaintData(dict, &builder, PaintParams(p));
-                int actualNumUniforms = uniformBlock->count();
+                auto [ actualID, pipelineData] = ExtractPaintData(dict, &builder, PaintParams(p));
+                int actualNumUniforms = pipelineData->count();
 
                 auto entry = dict->lookup(actualID);
 
@@ -103,7 +103,7 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(UniformTest, reporter, context) {
 
                 REPORTER_ASSERT(reporter, expected == entry->paintParamsKey());
                 REPORTER_ASSERT(reporter, expectedNumUniforms == actualNumUniforms);
-                for (auto& u : *uniformBlock) {
+                for (auto& u : *pipelineData) {
                     for (int i = 0; i < u->count(); ++i) {
                         REPORTER_ASSERT(reporter,
                                         u->offset(i) >= 0 && u->offset(i) < u->dataSize());

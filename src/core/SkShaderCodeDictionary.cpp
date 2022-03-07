@@ -35,7 +35,7 @@ std::string SkShaderSnippet::getMangledUniformName(int uniformIndex, int mangleI
 namespace skgpu::mtl {
 std::string GetMtlUniforms(int bufferID,
                            const char* name,
-                           const std::vector<SkShaderSnippet>&);
+                           const std::vector<SkPaintParamsKey::BlockReader>&);
 } // namespace skgpu::mtl
 
 // Emit the glue code needed to invoke a single static helper isolated w/in its own scope.
@@ -55,7 +55,7 @@ std::string SkShaderInfo::emitGlueCodeForEntry(int* entryIndex,
                                                const std::string& priorStageOutputName,
                                                std::string* result,
                                                int indent) const {
-    const SkShaderSnippet& entry = fEntries[*entryIndex];
+    const SkPaintParamsKey::BlockReader& reader = fBlockReaders[*entryIndex];
     int curEntryIndex = *entryIndex;
 
     std::string scopeOutputVar(std::string("outColor") + std::to_string(curEntryIndex));
@@ -68,15 +68,16 @@ std::string SkShaderInfo::emitGlueCodeForEntry(int* entryIndex,
     // Although the children appear after the parent in the shader info they are emitted
     // before the parent
     std::vector<std::string> childNames;
-    for (int j = 0; j < entry.fNumChildren; ++j) {
+    for (int j = 0; j < reader.numChildren(); ++j) {
         *entryIndex += 1;
         std::string childOutputVar = this->emitGlueCodeForEntry(entryIndex, priorStageOutputName,
                                                                 result, indent+1);
         childNames.push_back(childOutputVar);
     }
 
-    *result += (entry.fGlueCodeGenerator)(scopeOutputVar, curEntryIndex, entry,
-                                          priorStageOutputName, childNames, indent+1);
+    *result += (reader.entry()->fGlueCodeGenerator)(scopeOutputVar, curEntryIndex,
+                                                   reader, priorStageOutputName,
+                                                   childNames, indent+1);
     add_indent(result, indent);
     *result += "}\n";
 
@@ -94,13 +95,14 @@ std::string SkShaderInfo::emitGlueCodeForEntry(int* entryIndex,
 // in the 'fStaticSkSL' field.
 std::string SkShaderInfo::toSkSL() const {
     // The uniforms are mangled by having their index in 'fEntries' as a suffix (i.e., "_%d")
-    std::string result = skgpu::mtl::GetMtlUniforms(2, "FS", fEntries);
+    std::string result = skgpu::mtl::GetMtlUniforms(2, "FS", fBlockReaders);
 
     std::set<const char*> emittedStaticSnippets;
-    for (auto c : fEntries) {
-        if (emittedStaticSnippets.find(c.fStaticFunctionName) == emittedStaticSnippets.end()) {
-            result += c.fStaticSkSL;
-            emittedStaticSnippets.insert(c.fStaticFunctionName);
+    for (const auto& reader : fBlockReaders) {
+        const SkShaderSnippet* e = reader.entry();
+        if (emittedStaticSnippets.find(e->fStaticFunctionName) == emittedStaticSnippets.end()) {
+            result += e->fStaticSkSL;
+            emittedStaticSnippets.insert(e->fStaticFunctionName);
         }
     }
 
@@ -114,7 +116,7 @@ std::string SkShaderInfo::toSkSL() const {
     SkSL::String::appendf(&result, "half4 %s = half4(0.0, 0.0, 0.0, 0.0);",
                           lastOutputVar.c_str());
 
-    for (int entryIndex = 0; entryIndex < (int) fEntries.size(); ++entryIndex) {
+    for (int entryIndex = 0; entryIndex < (int) fBlockReaders.size(); ++entryIndex) {
         lastOutputVar = this->emitGlueCodeForEntry(&entryIndex, lastOutputVar, &result, 1);
     }
 
@@ -125,20 +127,22 @@ std::string SkShaderInfo::toSkSL() const {
 }
 #endif
 
-SkShaderCodeDictionary::Entry* SkShaderCodeDictionary::makeEntry(const SkPaintParamsKey& key) {
+SkShaderCodeDictionary::Entry* SkShaderCodeDictionary::makeEntry(const SkPaintParamsKey& key,
+                                                                 const SkPipelineData::BlendInfo& blendInfo) {
     uint8_t* newKeyData = fArena.makeArray<uint8_t>(key.sizeInBytes());
     memcpy(newKeyData, key.data(), key.sizeInBytes());
 
     SkSpan<const uint8_t> newKeyAsSpan = SkMakeSpan(newKeyData, key.sizeInBytes());
-    return fArena.make([&](void *ptr) { return new(ptr) Entry(newKeyAsSpan); });
+    return fArena.make([&](void *ptr) { return new(ptr) Entry(newKeyAsSpan, blendInfo); });
 }
 
 size_t SkShaderCodeDictionary::Hash::operator()(const SkPaintParamsKey* key) const {
     return SkOpts::hash_fn(key->data(), key->sizeInBytes(), 0);
 }
 
-const SkShaderCodeDictionary::Entry* SkShaderCodeDictionary::findOrCreate(
-        const SkPaintParamsKey& key) {
+const SkShaderCodeDictionary::Entry* SkShaderCodeDictionary::findOrCreate1(
+        const SkPaintParamsKey& key,
+        const SkPipelineData::BlendInfo& blendInfo) {
     SkAutoSpinlock lock{fSpinLock};
 
     auto iter = fHash.find(&key);
@@ -147,7 +151,7 @@ const SkShaderCodeDictionary::Entry* SkShaderCodeDictionary::findOrCreate(
         return iter->second;
     }
 
-    Entry* newEntry = this->makeEntry(key);
+    Entry* newEntry = this->makeEntry(key, blendInfo);
     newEntry->setUniqueID(fEntryVector.size());
     fHash.insert(std::make_pair(&newEntry->paintParamsKey(), newEntry));
     fEntryVector.push_back(newEntry);
@@ -176,7 +180,7 @@ SkSpan<const SkUniform> SkShaderCodeDictionary::getUniforms(SkBuiltInCodeSnippet
 SkSpan<const SkPaintParamsKey::DataPayloadField> SkShaderCodeDictionary::dataPayloadExpectations(
         int codeSnippetID) const {
     // All callers of this entry point should already have ensured that 'codeSnippetID' is valid
-    return this->getEntry(codeSnippetID)->fDataPayloadExpectations;
+    return this->getEntry(codeSnippetID)->fDataPayloadExpectations1;
 }
 
 const SkShaderSnippet* SkShaderCodeDictionary::getEntry(int codeSnippetID) const {
@@ -195,9 +199,9 @@ const SkShaderSnippet* SkShaderCodeDictionary::getEntry(int codeSnippetID) const
 }
 
 void SkShaderCodeDictionary::getShaderInfo(SkUniquePaintParamsID uniqueID, SkShaderInfo* info) {
-    auto entry = this->lookup(uniqueID);
+    const SkShaderCodeDictionary::Entry* entry = this->lookup(uniqueID);
 
-    entry->paintParamsKey().toShaderInfo(this, info);
+    entry->paintParamsKey().toShaderInfo(this, info, entry->blendInfo());
 }
 
 //--------------------------------------------------------------------------------------------------
@@ -210,7 +214,7 @@ using DataPayloadField = SkPaintParamsKey::DataPayloadField;
 // and stores the result in a variable named "resultName".
 std::string GenerateDefaultGlueCode(const std::string& resultName,
                                     int entryIndex,
-                                    const SkShaderSnippet& entry,
+                                    const SkPaintParamsKey::BlockReader& reader,
                                     const std::string& priorStageOutputName,
                                     const std::vector<std::string>& childNames,
                                     int indent) {
@@ -219,11 +223,13 @@ std::string GenerateDefaultGlueCode(const std::string& resultName,
     std::string result;
 
     add_indent(&result, indent);
-    SkSL::String::appendf(&result, "%s = %s(", resultName.c_str(), entry.fStaticFunctionName);
-    for (size_t i = 0; i < entry.fUniforms.size(); ++i) {
+    SkSL::String::appendf(&result, "%s = %s(",
+                          resultName.c_str(),
+                          reader.entry()->fStaticFunctionName);
+    for (size_t i = 0; i < reader.entry()->fUniforms.size(); ++i) {
         // The uniform names are mangled w/ the entry's index as a suffix
-        result += entry.getMangledUniformName(i, entryIndex);
-        if (i+1 < entry.fUniforms.size()) {
+        result += reader.entry()->getMangledUniformName(i, entryIndex);
+        if (i+1 < reader.entry()->fUniforms.size()) {
             result += ", ";
         }
     }
@@ -302,7 +308,7 @@ static const char* kImageShaderName = "image_shader";
 static const char* kImageShaderSkSL =
         "half4 image_shader() {\n"
         "    float c = fract(abs(sk_FragCoord.x/10.0));\n"
-        "    return half4(c, c, c, 1.0);\n"
+        "    return half4(1.0, 1.0 - c, 1.0 - c, 1.0);\n"
         "}\n";
 
 static constexpr int kNumImageShaderFields = 2;
@@ -393,21 +399,21 @@ static const char* kBlendHelperSkSL =
 
 std::string GenerateBlendShaderGlueCode(const std::string& resultName,
                                         int entryIndex,
-                                        const SkShaderSnippet& entry,
+                                        const SkPaintParamsKey::BlockReader& reader,
                                         const std::string& priorStageOutputName,
                                         const std::vector<std::string>& childNames,
                                         int indent) {
     SkASSERT(childNames.size() == kNumBlendShaderChildren);
-    SkASSERT(entry.fUniforms.size() == 4); // actual blend uniform + 3 padding int
+    SkASSERT(reader.entry()->fUniforms.size() == 4); // actual blend uniform + 3 padding int
 
-    std::string uniformName = entry.getMangledUniformName(0, entryIndex);
+    std::string uniformName = reader.entry()->getMangledUniformName(0, entryIndex);
 
     std::string result;
 
     add_indent(&result, indent);
     SkSL::String::appendf(&result, "%s = %s(%s, %s, %s);\n",
                           resultName.c_str(),
-                          entry.fStaticFunctionName,
+                          reader.entry()->fStaticFunctionName,
                           uniformName.c_str(),
                           childNames[1].c_str(),
                           childNames[0].c_str());
@@ -433,27 +439,28 @@ static constexpr DataPayloadField kShaderBasedBlenderFields[kNumShaderBasedBlend
 // in the shader (i.e., fixed function blending isn't possible).
 std::string GenerateShaderBasedBlenderGlueCode(const std::string& resultName,
                                                int entryIndex,
-                                               const SkShaderSnippet& entry,
+                                               const SkPaintParamsKey::BlockReader& reader,
                                                const std::string& priorStageOutputName,
                                                const std::vector<std::string>& childNames,
                                                int indent) {
     SkASSERT(childNames.empty());
-    SkASSERT(entry.fUniforms.empty());
+    SkASSERT(reader.entry()->fUniforms.empty());
+    SkASSERT(reader.numDataPayloadFields() == 1);
 
-    // TODO: get this from the paint params key's data payload
-    uint8_t blendMode = SkTo<uint8_t>(SkBlendMode::kSrcOver);
-
-    std::string result;
+    SkSpan<const uint8_t> blendMode = reader.bytes(0);
+    SkASSERT(blendMode.size() == 1);
+    SkASSERT(blendMode[0] <= static_cast<int>(SkBlendMode::kLastMode));
 
     // TODO: emit code to perform dest read
+    std::string result;
     add_indent(&result, indent);
     result += "half4 dummyDst = half4(1.0, 1.0, 1.0, 1.0);\n";
 
     add_indent(&result, indent);
     SkSL::String::appendf(&result, "%s = %s(%d, %s, dummyDst);",
                           resultName.c_str(),
-                          entry.fStaticFunctionName,
-                          blendMode,
+                          reader.entry()->fStaticFunctionName,
+                          blendMode[0],
                           priorStageOutputName.c_str());
 
     return result;

@@ -35,7 +35,7 @@ sk_sp<skgpu::CommandBuffer> ResourceProvider::createCommandBuffer() {
     return CommandBuffer::Make(this->mtlGpu());
 }
 
-sk_sp<skgpu::GraphicsPipeline> ResourceProvider::onCreateGraphicsPipeline(
+sk_sp<skgpu::GraphicsPipeline> ResourceProvider::onCreateGraphicsPipeline1(
         const GraphicsPipelineDesc& pipelineDesc,
         const RenderPassDesc& renderPassDesc) {
     return GraphicsPipeline::Make(this,

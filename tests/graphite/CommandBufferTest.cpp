@@ -259,13 +259,16 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(CommandBufferTest, reporter, context) {
     {
         SkPaintParamsKeyBuilder builder(dict, SkBackend::kGraphite);
 
+        // TODO: blendInfo should be created by CreateKey
+        SkPipelineData::BlendInfo blendInfo;
+
         SkPaintParamsKey key = CreateKey(dict,
                                          &builder,
                                          ShaderCombo::ShaderType::kSolidColor,
                                          SkTileMode::kClamp,
                                          SkBlendMode::kSrc);
 
-        entry = dict->findOrCreate(key);
+        entry = dict->findOrCreate1(key, blendInfo);
     }
 
     auto target = sk_sp<TextureProxy>(new TextureProxy(textureSize, textureInfo));
@@ -309,11 +312,11 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(CommandBufferTest, reporter, context) {
 
     auto draw = [&](const RenderStep* step, std::vector<RectAndColor> draws) {
         GraphicsPipelineDesc pipelineDesc;
-        pipelineDesc.setProgram(step, entry->uniqueID());
+        pipelineDesc.setProgram(step, entry->uniqueID(), entry->blendInfo());
         drawWriter.newPipelineState(step->primitiveType(),
                                     step->vertexStride(),
                                     step->instanceStride());
-        auto pipeline = resourceProvider->findOrCreateGraphicsPipeline(pipelineDesc,
+        auto pipeline = resourceProvider->findOrCreateGraphicsPipeline1(pipelineDesc,
                                                                        renderPassDesc);
         commandBuffer->bindGraphicsPipeline(std::move(pipeline));
 

@@ -17,6 +17,8 @@
 #include "include/private/SkTArray.h"
 #include "include/private/SkUniquePaintParamsID.h"
 
+#include "src/core/SkUniformData.h"
+
 #include <array>
 namespace skgpu {
 
@@ -44,12 +46,14 @@ public:
     // (except for renderpass-level state that will never change between draws).
     const RenderStep* renderStep() const { return fRenderStep; }
     // UniqueID of the required PaintParams
-    SkUniquePaintParamsID paintParamsID() const { return fUniqueID; }
+    SkUniquePaintParamsID paintParamsID1() const { return fUniqueID; }
 
-    void setProgram(const RenderStep* step, SkUniquePaintParamsID uniqueID) {
+    void setProgram(const RenderStep* step, SkUniquePaintParamsID uniqueID,
+                    const SkPipelineData::BlendInfo& blendInfo) {
         SkASSERT(step);
         fRenderStep = step;
         fUniqueID = uniqueID;
+        fBlendInfo = blendInfo;
 
         uintptr_t addr = reinterpret_cast<uintptr_t>(fRenderStep);
         memcpy(fKey.data(), &addr, sizeof(uintptr_t));
@@ -81,6 +85,8 @@ private:
     const RenderStep* fRenderStep = nullptr;
 
     SkUniquePaintParamsID fUniqueID;
+
+    SkPipelineData::BlendInfo fBlendInfo;
 };
 
 } // namespace skgpu

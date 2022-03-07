@@ -34,7 +34,7 @@ std::tuple<SkUniquePaintParamsID, std::unique_ptr<SkPipelineData>> ExtractPaintD
 
     SkPaintParamsKey key = builder->lockAsKey();
 
-    auto entry = dict->findOrCreate(key);
+    const SkShaderCodeDictionary::Entry* entry = dict->findOrCreate1(key, pipelineData->blendInfo());
 
     return { entry->uniqueID(), std::move(pipelineData) };
 }

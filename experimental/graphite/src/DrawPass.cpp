@@ -202,7 +202,7 @@ public:
         return index;
     }
 
-    BindBufferInfo getBinding(uint32_t uniformIndex) {
+    BindBufferInfo getBinding1(uint32_t uniformIndex) {
         auto lookup = fBindings.find(uniformIndex);
         SkASSERT(lookup != fBindings.end());
         return lookup->second;
@@ -300,11 +300,13 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
         // bound independently of those used by the rest of the RenderStep, then we can upload now
         // and remember the location for re-use on any RenderStep that does shading.
         SkUniquePaintParamsID shaderID;
-        std::unique_ptr<SkPipelineData> pipelineData;
         uint32_t shadingIndex = PipelineDataCache::kInvalidUniformID;
+        SkPipelineData::BlendInfo blendInfo;
         if (draw.fPaintParams.has_value()) {
+            std::unique_ptr<SkPipelineData> pipelineData;
             std::tie(shaderID, pipelineData) = ExtractPaintData(dict, &builder,
                                                                 draw.fPaintParams.value());
+            blendInfo = pipelineData->blendInfo();
             shadingIndex = shadingUniformBindings.addUniforms(std::move(pipelineData));
         } // else depth-only
 
@@ -314,9 +316,11 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
 
             SkUniquePaintParamsID stepShaderID;
             uint32_t stepShadingIndex = PipelineDataCache::kInvalidUniformID;
+            SkPipelineData::BlendInfo stepBlendInfo;
             if (performsShading) {
                 stepShaderID = shaderID;
                 stepShadingIndex = shadingIndex;
+                stepBlendInfo = blendInfo;
             } // else depth-only draw or stencil-only step of renderer so no shading is needed
 
             uint32_t geometryIndex = PipelineDataCache::kInvalidUniformID;
@@ -332,7 +336,7 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
             }
 
             GraphicsPipelineDesc desc;
-            desc.setProgram(step, stepShaderID);
+            desc.setProgram(step, stepShaderID, stepBlendInfo);
             uint32_t pipelineIndex = 0;
             auto pipelineLookup = pipelineDescToIndex.find(&desc);
             if (pipelineLookup == pipelineDescToIndex.end()) {
@@ -402,7 +406,7 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
         if (stateChange) {
             if (key.geometryUniforms() != lastGeometryUniforms) {
                 if (key.geometryUniforms() != PipelineDataCache::kInvalidUniformID) {
-                    auto binding = geometryUniformBindings.getBinding(key.geometryUniforms());
+                    auto binding = geometryUniformBindings.getBinding1(key.geometryUniforms());
                     drawPass->fCommands.emplace_back(
                             BindUniformBuffer{binding, UniformSlot::kRenderStep});
                 }
@@ -410,7 +414,7 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
             }
             if (key.shadingUniforms() != lastShadingUniforms) {
                 if (key.shadingUniforms() != PipelineDataCache::kInvalidUniformID) {
-                    auto binding = shadingUniformBindings.getBinding(key.shadingUniforms());
+                    auto binding = shadingUniformBindings.getBinding1(key.shadingUniforms());
                     drawPass->fCommands.emplace_back(
                             BindUniformBuffer{binding, UniformSlot::kPaint});
                 }
@@ -444,7 +448,7 @@ void DrawPass::addCommands(ResourceProvider* resourceProvider,
     std::vector<sk_sp<GraphicsPipeline>> fullPipelines;
     fullPipelines.reserve(fPipelineDescs.count());
     for (const GraphicsPipelineDesc& pipelineDesc : fPipelineDescs.items()) {
-        fullPipelines.push_back(resourceProvider->findOrCreateGraphicsPipeline(pipelineDesc,
+        fullPipelines.push_back(resourceProvider->findOrCreateGraphicsPipeline1(pipelineDesc,
                                                                                renderPassDesc));
     }
 
