@@ -1,0 +1,680 @@
+GrSkSLFP_Specialized PASSED
+* * *
+GrSkSLFP_UniformArray PASSED
+* * *
+SkSLArrayCast_GPU PASSED
+* * *
+SkSLArrayCast_GPU_NoSkQP PASSED
+* * *
+SkSLArrayComparison_GPU PASSED
+* * *
+SkSLArrayComparison_GPU_NoSkQP PASSED
+* * *
+SkSLArrayConstructors_GPU PASSED
+* * *
+SkSLArrayConstructors_GPU_NoSkQP PASSED
+* * *
+SkSLArrayFollowedByScalar_GPU PASSED
+* * *
+SkSLArrayFollowedByScalar_GPU_NoSkQP PASSED
+* * *
+SkSLArrayNarrowingConversions_GPU PASSED
+* * *
+SkSLArrayNarrowingConversions_GPU_NoSkQP PASSED
+* * *
+SkSLArraySizeFolding_GPU PASSED
+* * *
+SkSLArraySizeFolding_GPU_NoSkQP PASSED
+* * *
+SkSLArrayTypes_GPU PASSED
+* * *
+SkSLArrayTypes_GPU_NoSkQP PASSED
+* * *
+SkSLAssignmentOps_GPU PASSED
+* * *
+SkSLAssignmentOps_GPU_NoSkQP PASSED
+* * *
+SkSLAssignment_GPU PASSED
+* * *
+SkSLAssignment_GPU_NoSkQP PASSED
+* * *
+SkSLBoolFolding_GPU PASSED
+* * *
+SkSLBoolFolding_GPU_NoSkQP PASSED
+* * *
+SkSLCastFolding_GPU PASSED
+* * *
+SkSLCastFolding_GPU_NoSkQP PASSED
+* * *
+SkSLCastsRoundTowardZero_GPU PASSED
+* * *
+SkSLCastsRoundTowardZero_GPU_NoSkQP PASSED
+* * *
+SkSLCommaMixedTypes_GPU PASSED
+* * *
+SkSLCommaMixedTypes_GPU_NoSkQP PASSED
+* * *
+SkSLCommaSideEffects_GPU PASSED
+* * *
+SkSLCommaSideEffects_GPU_NoSkQP PASSED
+* * *
+SkSLConstArray_GPU PASSED
+* * *
+SkSLConstArray_GPU_NoSkQP PASSED
+* * *
+SkSLConstVariableComparison_GPU PASSED
+* * *
+SkSLConstVariableComparison_GPU_NoSkQP PASSED
+* * *
+SkSLConstantIf_GPU PASSED
+* * *
+SkSLConstantIf_GPU_NoSkQP PASSED
+* * *
+SkSLCross PASSED
+* * *
+SkSLDeadIfStatement_GPU PASSED
+* * *
+SkSLDeadIfStatement_GPU_NoSkQP PASSED
+* * *
+SkSLDeadLoopVariable_GPU PASSED
+* * *
+SkSLDeadLoopVariable_GPU_NoSkQP PASSED
+* * *
+SkSLDeadReturn_GPU PASSED
+* * *
+SkSLDeadReturn_GPU_NoSkQP PASSED
+* * *
+SkSLDeadStripFunctions_GPU PASSED
+* * *
+SkSLDeadStripFunctions_GPU_NoSkQP PASSED
+* * *
+SkSLDependentInitializers_GPU PASSED
+* * *
+SkSLDependentInitializers_GPU_NoSkQP PASSED
+* * *
+SkSLDoWhileBodyMustBeInlinedIntoAScope_GPU PASSED
+* * *
+SkSLDoWhileBodyMustBeInlinedIntoAScope_GPU_NoSkQP PASSED
+* * *
+SkSLDoWhileControlFlow_GPU PASSED
+* * *
+SkSLDoWhileControlFlow_GPU_NoSkQP PASSED
+* * *
+SkSLDoWhileTestCannotBeInlined_GPU PASSED
+* * *
+SkSLDoWhileTestCannotBeInlined_GPU_NoSkQP PASSED
+* * *
+SkSLEmptyBlocksES2_GPU PASSED
+* * *
+SkSLEmptyBlocksES2_GPU_NoSkQP PASSED
+* * *
+SkSLEmptyBlocksES3_GPU PASSED
+* * *
+SkSLEmptyBlocksES3_GPU_NoSkQP PASSED
+* * *
+SkSLFloatFolding_GPU PASSED
+* * *
+SkSLFloatFolding_GPU_NoSkQP PASSED
+* * *
+SkSLForBodyMustBeInlinedIntoAScope_GPU PASSED
+* * *
+SkSLForBodyMustBeInlinedIntoAScope_GPU_NoSkQP PASSED
+* * *
+SkSLForInitializerExpressionsCanBeInlined_GPU PASSED
+* * *
+SkSLForInitializerExpressionsCanBeInlined_GPU_NoSkQP PASSED
+* * *
+SkSLForLoopControlFlow_GPU PASSED
+* * *
+SkSLForLoopControlFlow_GPU_NoSkQP PASSED
+* * *
+SkSLForWithReturnInsideCannotBeInlined_GPU PASSED
+* * *
+SkSLForWithReturnInsideCannotBeInlined_GPU_NoSkQP PASSED
+* * *
+SkSLForWithoutReturnInsideCanBeInlined_GPU PASSED
+* * *
+SkSLForWithoutReturnInsideCanBeInlined_GPU_NoSkQP PASSED
+* * *
+SkSLFunctionAnonymousParameters_GPU PASSED
+* * *
+SkSLFunctionAnonymousParameters_GPU_NoSkQP PASSED
+* * *
+SkSLFunctionArgTypeMatch_GPU PASSED
+* * *
+SkSLFunctionArgTypeMatch_GPU_NoSkQP PASSED
+* * *
+SkSLFunctionPrototype_GPU PASSED
+* * *
+SkSLFunctionPrototype_GPU_NoSkQP PASSED
+* * *
+SkSLFunctionReturnTypeMatch_GPU PASSED
+* * *
+SkSLFunctionReturnTypeMatch_GPU_NoSkQP PASSED
+* * *
+SkSLFunctions_GPU PASSED
+* * *
+SkSLFunctions_GPU_NoSkQP PASSED
+* * *
+SkSLGeometricIntrinsics_GPU PASSED
+* * *
+SkSLGeometricIntrinsics_GPU_NoSkQP PASSED
+* * *
+SkSLHelloWorld_GPU PASSED
+* * *
+SkSLHelloWorld_GPU_NoSkQP PASSED
+* * *
+SkSLHexUnsigned_GPU PASSED
+* * *
+SkSLHexUnsigned_GPU_NoSkQP PASSED
+* * *
+SkSLHex_GPU PASSED
+* * *
+SkSLHex_GPU_NoSkQP PASSED
+* * *
+SkSLIfBodyMustBeInlinedIntoAScope_GPU PASSED
+* * *
+SkSLIfBodyMustBeInlinedIntoAScope_GPU_NoSkQP PASSED
+* * *
+SkSLIfElseBodyMustBeInlinedIntoAScope_GPU PASSED
+* * *
+SkSLIfElseBodyMustBeInlinedIntoAScope_GPU_NoSkQP PASSED
+* * *
+SkSLIfElseChainWithReturnsCanBeInlined_GPU PASSED
+* * *
+SkSLIfElseChainWithReturnsCanBeInlined_GPU_NoSkQP PASSED
+* * *
+SkSLIfTestCanBeInlined_GPU PASSED
+* * *
+SkSLIfTestCanBeInlined_GPU_NoSkQP PASSED
+* * *
+SkSLIfWithReturnsCanBeInlined_GPU PASSED
+* * *
+SkSLIfWithReturnsCanBeInlined_GPU_NoSkQP PASSED
+* * *
+SkSLInlineKeywordOverridesThreshold_GPU PASSED
+* * *
+SkSLInlineKeywordOverridesThreshold_GPU_NoSkQP PASSED
+* * *
+SkSLInlineThreshold_GPU PASSED
+* * *
+SkSLInlineThreshold_GPU_NoSkQP PASSED
+* * *
+SkSLInlineWithModifiedArgument_GPU PASSED
+* * *
+SkSLInlineWithModifiedArgument_GPU_NoSkQP PASSED
+* * *
+SkSLInlineWithNestedBigCalls_GPU PASSED
+* * *
+SkSLInlineWithNestedBigCalls_GPU_NoSkQP PASSED
+* * *
+SkSLInlineWithUnmodifiedArgument_GPU PASSED
+* * *
+SkSLInlineWithUnmodifiedArgument_GPU_NoSkQP PASSED
+* * *
+SkSLInlineWithUnnecessaryBlocks_GPU PASSED
+* * *
+SkSLInlineWithUnnecessaryBlocks_GPU_NoSkQP PASSED
+* * *
+SkSLInlinerAvoidsVariableNameOverlap_GPU PASSED
+* * *
+SkSLInlinerAvoidsVariableNameOverlap_GPU_NoSkQP PASSED
+* * *
+SkSLInlinerElidesTempVarForReturnsInsideBlock_GPU PASSED
+* * *
+SkSLInlinerElidesTempVarForReturnsInsideBlock_GPU_NoSkQP PASSED
+* * *
+SkSLInlinerUsesTempVarForMultipleReturns_GPU PASSED
+* * *
+SkSLInlinerUsesTempVarForMultipleReturns_GPU_NoSkQP PASSED
+* * *
+SkSLInlinerUsesTempVarForReturnsInsideBlockWithVar_GPU PASSED
+* * *
+SkSLInlinerUsesTempVarForReturnsInsideBlockWithVar_GPU_NoSkQP PASSED
+* * *
+SkSLInoutParameters_GPU PASSED
+* * *
+SkSLInoutParameters_GPU_NoSkQP PASSED
+* * *
+SkSLIntFoldingES2_GPU PASSED
+* * *
+SkSLIntFoldingES2_GPU_NoSkQP PASSED
+* * *
+SkSLIntFoldingES3_GPU PASSED
+* * *
+SkSLIntFoldingES3_GPU_NoSkQP PASSED
+* * *
+SkSLIntrinsicAbsFloat_GPU PASSED
+* * *
+SkSLIntrinsicAbsFloat_GPU_NoSkQP PASSED
+* * *
+SkSLIntrinsicAbsInt_GPU PASSED
+* * *
+SkSLIntrinsicAbsInt_GPU_NoSkQP PASSED
+* * *
+SkSLIntrinsicCeil_GPU PASSED
+* * *
+SkSLIntrinsicCeil_GPU_NoSkQP PASSED
+* * *
+SkSLIntrinsicClampFloat_GPU PASSED
+* * *
+SkSLIntrinsicClampFloat_GPU_NoSkQP PASSED
+* * *
+SkSLIntrinsicClampInt_GPU PASSED
+* * *
+SkSLIntrinsicClampInt_GPU_NoSkQP PASSED
+* * *
+SkSLIntrinsicClampUInt_GPU PASSED
+* * *
+SkSLIntrinsicClampUInt_GPU_NoSkQP PASSED
+* * *
+SkSLIntrinsicDFdx_GPU PASSED
+* * *
+SkSLIntrinsicDFdx_GPU_NoSkQP PASSED
+* * *
+SkSLIntrinsicDFdy_GPU PASSED
+* * *
+SkSLIntrinsicDFdy_GPU_NoSkQP PASSED
+* * *
+SkSLIntrinsicDeterminant_GPU PASSED
+* * *
+SkSLIntrinsicDeterminant_GPU_NoSkQP PASSED
+* * *
+SkSLIntrinsicFloatBitsToInt_GPU PASSED
+* * *
+SkSLIntrinsicFloatBitsToInt_GPU_NoSkQP PASSED
+* * *
+SkSLIntrinsicFloatBitsToUint_GPU PASSED
+* * *
+SkSLIntrinsicFloatBitsToUint_GPU_NoSkQP PASSED
+* * *
+SkSLIntrinsicFwidth_GPU PASSED
+* * *
+SkSLIntrinsicFwidth_GPU_NoSkQP PASSED
+* * *
+SkSLIntrinsicIntBitsToFloat_GPU PASSED
+* * *
+SkSLIntrinsicIntBitsToFloat_GPU_NoSkQP PASSED
+* * *
+SkSLIntrinsicIsInf_GPU PASSED
+* * *
+SkSLIntrinsicIsInf_GPU_NoSkQP PASSED
+* * *
+SkSLIntrinsicMatrixCompMultES2_GPU PASSED
+* * *
+SkSLIntrinsicMatrixCompMultES2_GPU_NoSkQP PASSED
+* * *
+SkSLIntrinsicMatrixCompMultES3_GPU PASSED
+* * *
+SkSLIntrinsicMatrixCompMultES3_GPU_NoSkQP PASSED
+* * *
+SkSLIntrinsicMaxFloat_GPU PASSED
+* * *
+SkSLIntrinsicMaxFloat_GPU_NoSkQP PASSED
+* * *
+SkSLIntrinsicMaxInt_GPU PASSED
+* * *
+SkSLIntrinsicMaxInt_GPU_NoSkQP PASSED
+* * *
+SkSLIntrinsicMinFloat_GPU PASSED
+* * *
+SkSLIntrinsicMinFloat_GPU_NoSkQP PASSED
+* * *
+SkSLIntrinsicMinInt_GPU PASSED
+* * *
+SkSLIntrinsicMinInt_GPU_NoSkQP PASSED
+* * *
+SkSLIntrinsicMixFloat_GPU PASSED
+* * *
+SkSLIntrinsicMixFloat_GPU_NoSkQP PASSED
+* * *
+SkSLIntrinsicModf_GPU PASSED
+* * *
+SkSLIntrinsicModf_GPU_NoSkQP PASSED
+* * *
+SkSLIntrinsicOuterProduct_GPU PASSED
+* * *
+SkSLIntrinsicOuterProduct_GPU_NoSkQP PASSED
+* * *
+SkSLIntrinsicRoundEven_GPU PASSED
+* * *
+SkSLIntrinsicRoundEven_GPU_NoSkQP PASSED
+* * *
+SkSLIntrinsicRound_GPU PASSED
+* * *
+SkSLIntrinsicRound_GPU_NoSkQP PASSED
+* * *
+SkSLIntrinsicSignFloat_GPU PASSED
+* * *
+SkSLIntrinsicSignFloat_GPU_NoSkQP PASSED
+* * *
+SkSLIntrinsicSignInt_GPU PASSED
+* * *
+SkSLIntrinsicSignInt_GPU_NoSkQP PASSED
+* * *
+SkSLIntrinsicStep_GPU PASSED
+* * *
+SkSLIntrinsicStep_GPU_NoSkQP PASSED
+* * *
+SkSLIntrinsicTranspose_GPU PASSED
+* * *
+SkSLIntrinsicTranspose_GPU_NoSkQP PASSED
+* * *
+SkSLIntrinsicTrunc_GPU PASSED
+* * *
+SkSLIntrinsicTrunc_GPU_NoSkQP PASSED
+* * *
+SkSLIntrinsicUintBitsToFloat_GPU PASSED
+* * *
+SkSLIntrinsicUintBitsToFloat_GPU_NoSkQP PASSED
+* * *
+SkSLLoopFloat_GPU PASSED
+* * *
+SkSLLoopFloat_GPU_NoSkQP PASSED
+* * *
+SkSLLoopInt_GPU PASSED
+* * *
+SkSLLoopInt_GPU_NoSkQP PASSED
+* * *
+SkSLMatricesNonsquare_GPU PASSED
+* * *
+SkSLMatricesNonsquare_GPU_NoSkQP PASSED
+* * *
+SkSLMatrices_GPU PASSED
+* * *
+SkSLMatrices_GPU_NoSkQP PASSED
+* * *
+SkSLMatrixConstructorsES2_GPU PASSED
+* * *
+SkSLMatrixConstructorsES2_GPU_NoSkQP PASSED
+* * *
+SkSLMatrixConstructorsES3_GPU PASSED
+* * *
+SkSLMatrixConstructorsES3_GPU_NoSkQP PASSED
+* * *
+SkSLMatrixEquality_GPU PASSED
+* * *
+SkSLMatrixEquality_GPU_NoSkQP PASSED
+* * *
+SkSLMatrixFoldingES2_GPU PASSED
+* * *
+SkSLMatrixFoldingES2_GPU_NoSkQP PASSED
+* * *
+SkSLMatrixFoldingES3_GPU PASSED
+* * *
+SkSLMatrixFoldingES3_GPU_NoSkQP PASSED
+* * *
+SkSLMatrixScalarMath_GPU PASSED
+* * *
+SkSLMatrixScalarMath_GPU_NoSkQP PASSED
+* * *
+SkSLMatrixToVectorCast_GPU PASSED
+* * *
+SkSLMatrixToVectorCast_GPU_NoSkQP PASSED
+* * *
+SkSLMultipleAssignments_GPU PASSED
+* * *
+SkSLMultipleAssignments_GPU_NoSkQP PASSED
+* * *
+SkSLNegation_GPU PASSED
+* * *
+SkSLNegation_GPU_NoSkQP PASSED
+* * *
+SkSLNoInline_GPU PASSED
+* * *
+SkSLNoInline_GPU_NoSkQP PASSED
+* * *
+SkSLNumberCasts_GPU PASSED
+* * *
+SkSLNumberCasts_GPU_NoSkQP PASSED
+* * *
+SkSLOperatorsES2_GPU PASSED
+* * *
+SkSLOperatorsES2_GPU_NoSkQP PASSED
+* * *
+SkSLOperatorsES3_GPU PASSED
+* * *
+SkSLOperatorsES3_GPU_NoSkQP PASSED
+* * *
+SkSLOssfuzz36852_GPU PASSED
+* * *
+SkSLOssfuzz36852_GPU_NoSkQP PASSED
+* * *
+SkSLOutParamsAreDistinct_GPU PASSED
+* * *
+SkSLOutParamsAreDistinct_GPU_NoSkQP PASSED
+* * *
+SkSLOutParamsTricky_GPU PASSED
+* * *
+SkSLOutParamsTricky_GPU_NoSkQP PASSED
+* * *
+SkSLOutParams_GPU PASSED
+* * *
+SkSLOutParams_GPU_NoSkQP PASSED
+* * *
+SkSLPrecisionQualifiers_GPU PASSED
+* * *
+SkSLPrecisionQualifiers_GPU_NoSkQP PASSED
+* * *
+SkSLQualifierOrder_GPU PASSED
+* * *
+SkSLQualifierOrder_GPU_NoSkQP PASSED
+* * *
+SkSLRecursiveComparison_Arrays_GPU PASSED
+* * *
+SkSLRecursiveComparison_Arrays_GPU_NoSkQP PASSED
+* * *
+SkSLRecursiveComparison_Structs_GPU PASSED
+* * *
+SkSLRecursiveComparison_Structs_GPU_NoSkQP PASSED
+* * *
+SkSLRecursiveComparison_Types_GPU PASSED
+* * *
+SkSLRecursiveComparison_Types_GPU_NoSkQP PASSED
+* * *
+SkSLRecursiveComparison_Vectors_GPU PASSED
+* * *
+SkSLRecursiveComparison_Vectors_GPU_NoSkQP PASSED
+* * *
+SkSLResizeMatrixNonsquare_GPU PASSED
+* * *
+SkSLResizeMatrixNonsquare_GPU_NoSkQP PASSED
+* * *
+SkSLResizeMatrix_GPU PASSED
+* * *
+SkSLResizeMatrix_GPU_NoSkQP PASSED
+* * *
+SkSLReturnsValueOnEveryPathES2_GPU PASSED
+* * *
+SkSLReturnsValueOnEveryPathES2_GPU_NoSkQP PASSED
+* * *
+SkSLReturnsValueOnEveryPathES3_GPU PASSED
+* * *
+SkSLReturnsValueOnEveryPathES3_GPU_NoSkQP PASSED
+* * *
+SkSLScalarConversionConstructorsES2_GPU PASSED
+* * *
+SkSLScalarConversionConstructorsES2_GPU_NoSkQP PASSED
+* * *
+SkSLScalarConversionConstructorsES3_GPU PASSED
+* * *
+SkSLScalarConversionConstructorsES3_GPU_NoSkQP PASSED
+* * *
+SkSLScopedSymbol_GPU PASSED
+* * *
+SkSLScopedSymbol_GPU_NoSkQP PASSED
+* * *
+SkSLSelfAssignment_GPU PASSED
+* * *
+SkSLSelfAssignment_GPU_NoSkQP PASSED
+* * *
+SkSLShortCircuitBoolFolding_GPU PASSED
+* * *
+SkSLShortCircuitBoolFolding_GPU_NoSkQP PASSED
+* * *
+SkSLShortCircuitEvaluationsCannotInlineRightHandSide_GPU PASSED
+* * *
+SkSLShortCircuitEvaluationsCannotInlineRightHandSide_GPU_NoSkQP PASSED
+* * *
+SkSLStackingVectorCasts_GPU PASSED
+* * *
+SkSLStackingVectorCasts_GPU_NoSkQP PASSED
+* * *
+SkSLStaticIf_GPU PASSED
+* * *
+SkSLStaticIf_GPU_NoSkQP PASSED
+* * *
+SkSLStaticSwitchInline_GPU PASSED
+* * *
+SkSLStaticSwitchInline_GPU_NoSkQP PASSED
+* * *
+SkSLStaticSwitch_GPU PASSED
+* * *
+SkSLStaticSwitch_GPU_NoSkQP PASSED
+* * *
+SkSLStructArrayFollowedByScalar_GPU PASSED
+* * *
+SkSLStructArrayFollowedByScalar_GPU_NoSkQP PASSED
+* * *
+SkSLStructsCanBeInlinedSafely_GPU PASSED
+* * *
+SkSLStructsCanBeInlinedSafely_GPU_NoSkQP PASSED
+* * *
+SkSLStructsInFunctions_GPU PASSED
+* * *
+SkSLStructsInFunctions_GPU_NoSkQP PASSED
+* * *
+SkSLSwitchCaseFolding_GPU PASSED
+* * *
+SkSLSwitchCaseFolding_GPU_NoSkQP PASSED
+* * *
+SkSLSwitchDefaultOnly_GPU PASSED
+* * *
+SkSLSwitchDefaultOnly_GPU_NoSkQP PASSED
+* * *
+SkSLSwitchWithFallthrough_GPU PASSED
+* * *
+SkSLSwitchWithFallthrough_GPU_NoSkQP PASSED
+* * *
+SkSLSwitchWithLoops_GPU PASSED
+* * *
+SkSLSwitchWithLoops_GPU_NoSkQP PASSED
+* * *
+SkSLSwitch_GPU PASSED
+* * *
+SkSLSwitch_GPU_NoSkQP PASSED
+* * *
+SkSLSwizzleBoolConstants_GPU PASSED
+* * *
+SkSLSwizzleBoolConstants_GPU_NoSkQP PASSED
+* * *
+SkSLSwizzleByConstantIndex_GPU PASSED
+* * *
+SkSLSwizzleByConstantIndex_GPU_NoSkQP PASSED
+* * *
+SkSLSwizzleByIndex_GPU PASSED
+* * *
+SkSLSwizzleByIndex_GPU_NoSkQP PASSED
+* * *
+SkSLSwizzleCanBeInlinedDirectly_GPU PASSED
+* * *
+SkSLSwizzleCanBeInlinedDirectly_GPU_NoSkQP PASSED
+* * *
+SkSLSwizzleConstants_GPU PASSED
+* * *
+SkSLSwizzleConstants_GPU_NoSkQP PASSED
+* * *
+SkSLSwizzleFolding_GPU PASSED
+* * *
+SkSLSwizzleFolding_GPU_NoSkQP PASSED
+* * *
+SkSLSwizzleLTRB_GPU PASSED
+* * *
+SkSLSwizzleLTRB_GPU_NoSkQP PASSED
+* * *
+SkSLSwizzleOpt_GPU PASSED
+* * *
+SkSLSwizzleOpt_GPU_NoSkQP PASSED
+* * *
+SkSLSwizzleScalarBool_GPU PASSED
+* * *
+SkSLSwizzleScalarBool_GPU_NoSkQP PASSED
+* * *
+SkSLSwizzleScalarInt_GPU PASSED
+* * *
+SkSLSwizzleScalarInt_GPU_NoSkQP PASSED
+* * *
+SkSLSwizzleScalar_GPU PASSED
+* * *
+SkSLSwizzleScalar_GPU_NoSkQP PASSED
+* * *
+SkSLTernaryAsLValueEntirelyFoldable_GPU PASSED
+* * *
+SkSLTernaryAsLValueEntirelyFoldable_GPU_NoSkQP PASSED
+* * *
+SkSLTernaryAsLValueFoldableTest_GPU PASSED
+* * *
+SkSLTernaryAsLValueFoldableTest_GPU_NoSkQP PASSED
+* * *
+SkSLTernaryExpression_GPU PASSED
+* * *
+SkSLTernaryExpression_GPU_NoSkQP PASSED
+* * *
+SkSLTernaryResultsCannotBeInlined_GPU PASSED
+* * *
+SkSLTernaryResultsCannotBeInlined_GPU_NoSkQP PASSED
+* * *
+SkSLTernaryTestCanBeInlined_GPU PASSED
+* * *
+SkSLTernaryTestCanBeInlined_GPU_NoSkQP PASSED
+* * *
+SkSLTrivialArgumentsInlineDirectly_GPU PASSED
+* * *
+SkSLTrivialArgumentsInlineDirectly_GPU_NoSkQP PASSED
+* * *
+SkSLUnaryPositiveNegative_GPU PASSED
+* * *
+SkSLUnaryPositiveNegative_GPU_NoSkQP PASSED
+* * *
+SkSLUniformArray_GPU PASSED
+* * *
+SkSLUniformArray_GPU_NoSkQP PASSED
+* * *
+SkSLUnusedVariables_GPU PASSED
+* * *
+SkSLUnusedVariables_GPU_NoSkQP PASSED
+* * *
+SkSLVectorConstructors_GPU PASSED
+* * *
+SkSLVectorConstructors_GPU_NoSkQP PASSED
+* * *
+SkSLVectorScalarFolding_GPU PASSED
+* * *
+SkSLVectorScalarFolding_GPU_NoSkQP PASSED
+* * *
+SkSLVectorScalarMath_GPU PASSED
+* * *
+SkSLVectorScalarMath_GPU_NoSkQP PASSED
+* * *
+SkSLVectorToMatrixCast_GPU PASSED
+* * *
+SkSLVectorToMatrixCast_GPU_NoSkQP PASSED
+* * *
+SkSLVectorVectorFolding_GPU PASSED
+* * *
+SkSLVectorVectorFolding_GPU_NoSkQP PASSED
+* * *
+SkSLWhileBodyMustBeInlinedIntoAScope_GPU PASSED
+* * *
+SkSLWhileBodyMustBeInlinedIntoAScope_GPU_NoSkQP PASSED
+* * *
+SkSLWhileLoopControlFlow_GPU PASSED
+* * *
+SkSLWhileLoopControlFlow_GPU_NoSkQP PASSED
+* * *
+SkSLWhileTestCannotBeInlined_GPU PASSED
+* * *
+SkSLWhileTestCannotBeInlined_GPU_NoSkQP PASSED
+* * *
+SkSL_ES2Conformance_Pass_GPU PASSED
+* * *
