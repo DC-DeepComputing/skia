@@ -90,7 +90,7 @@ void GrPipeline::genKey(skgpu::KeyBuilder* b, const GrCaps& caps) const {
     b->addBool(blendInfo.fWriteColor, "writeColor");
     b->addBits(kBlendCoeffSize, blendInfo.fSrcBlend, "srcBlend");
     b->addBits(kBlendCoeffSize, blendInfo.fDstBlend, "dstBlend");
-    b->addBits(kBlendEquationSize, blendInfo.fEquation, "equation");
+    b->addBits(kBlendEquationSize, blendInfo.fEquation1, "equation");
     b->addBool(this->usesDstInputAttachment(), "inputAttach");
 }
 

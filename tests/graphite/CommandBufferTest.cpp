@@ -254,19 +254,13 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(CommandBufferTest, reporter, context) {
     TextureInfo textureInfo;
 #endif
 
-    const SkShaderCodeDictionary::Entry* entry;
+    SkPaintParamsKeyBuilder builder(dict, SkBackend::kGraphite);
 
-    {
-        SkPaintParamsKeyBuilder builder(dict, SkBackend::kGraphite);
-
-        SkPaintParamsKey key = CreateKey(dict,
-                                         &builder,
-                                         ShaderCombo::ShaderType::kSolidColor,
-                                         SkTileMode::kClamp,
-                                         SkBlendMode::kSrc);
-
-        entry = dict->findOrCreate(key);
-    }
+    SkUniquePaintParamsID uniqueID = CreateKey(dict,
+                                               &builder,
+                                               ShaderCombo::ShaderType::kSolidColor,
+                                               SkTileMode::kClamp,
+                                               SkBlendMode::kSrc);
 
     auto target = sk_sp<TextureProxy>(new TextureProxy(textureSize, textureInfo));
     REPORTER_ASSERT(reporter, target);
@@ -309,7 +303,7 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(CommandBufferTest, reporter, context) {
 
     auto draw = [&](const RenderStep* step, std::vector<RectAndColor> draws) {
         GraphicsPipelineDesc pipelineDesc;
-        pipelineDesc.setProgram(step, entry->uniqueID());
+        pipelineDesc.setProgram(step, uniqueID);
         drawWriter.newPipelineState(step->primitiveType(),
                                     step->vertexStride(),
                                     step->instanceStride());
