@@ -80,15 +80,24 @@ static bool should_skip(const char* const* rules, size_t count, const char* name
 }
 
 static void parse_args(int argc, char *argv[], Args *args) {
+<<<<<<< HEAD   (50f359 SkDebug_android: undef LOG_TAG if defined)
   if (argc < 4) {
       std::cerr << "Usage:\n  " << argv[0]
                 << " ASSET_DIR RENDER_TESTS OUTPUT_DIR [TEST_MATCH_RULES]\n"
+=======
+  if (argc < 3) {
+      std::cerr << "Usage:\n  " << argv[0] << " ASSET_DIR OUTPUT_DIR [TEST_MATCH_RULES]\n"
+>>>>>>> CHANGE (88f360 Remove unused argument from skqp command-line tool.)
                 << kSkipUsage << '\n';
       exit(1);
   }
   args->assetDir = argv[1];
+<<<<<<< HEAD   (50f359 SkDebug_android: undef LOG_TAG if defined)
   args->renderTests = argv[2];
   args->outputDir = argv[3];
+=======
+  args->outputDir = argv[2];
+>>>>>>> CHANGE (88f360 Remove unused argument from skqp command-line tool.)
 }
 
 int main(int argc, char *argv[]) {
@@ -105,8 +114,8 @@ int main(int argc, char *argv[]) {
     skqp.init(&mgr, args.renderTests, args.outputDir);
     int ret = 0;
 
-    const char* const* matchRules = &argv[4];
-    size_t matchRulesCount = (size_t)(argc - 4);
+    const char* const* matchRules = &argv[3];
+    size_t matchRulesCount = (size_t)(argc - 3);
 
     // Rendering Tests
     std::ostream& out = std::cout;
