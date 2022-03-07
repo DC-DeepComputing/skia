@@ -1,7 +1,14 @@
 {
   "D3D12MemAlloc.h": "SK_GAZELLE_IGNORE TODO //third_party:d3d12allocator",
 
-  "dawn/webgpu_cpp.h": "SK_GAZELLE_IGNORE TODO //third_party:dawn",
+  "dawn/dawn_proc.h": "//third_party:dawn",
+  "dawn/dawn_wsi.h": "//third_party:dawn",
+  "dawn/native/D3D12Backend.h": "//third_party:dawn",
+  "dawn/native/DawnNative.h": "//third_party:dawn",
+  "dawn/native/OpenGLBackend.h": "//third_party:dawn",
+  "dawn/native/VulkanBackend.h": "//third_party:dawn",
+  "webgpu/webgpu.h": "//third_party:dawn",
+  "webgpu/webgpu_cpp.h": "//third_party:dawn",
 
   "dng_area_task.h": "//third_party:dng_sdk",
   "dng_color_space.h": "//third_party:dng_sdk",

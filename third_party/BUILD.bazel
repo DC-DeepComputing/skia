@@ -2421,3 +2421,90 @@ cc_library(
         "etc1/etc1.h",
     ],
 )
+
+py_binary(
+    name = "dawn_json_generator",
+    srcs = ["externals/dawn/generator/dawn_json_generator.py"],
+)
+
+genrule(
+    name = "generate_webgpu_cpp",
+    srcs = [
+        "externals/dawn/generator/templates/api_cpp.h",
+        "externals/dawn/generator/templates/api_cpp_print.h",
+        "externals/dawn/generator/templates/BSD_LICENSE",
+        "externals/dawn/dawn.json",
+        "externals/dawn/dawn_wire.json",
+    ],
+    outs = [
+        "externals/dawn/bazel_generated/include/dawn/webgpu_cpp.h",
+        "externals/dawn/bazel_generated/include/dawn/webgpu_cpp_print.h",
+    ],
+    cmd = "$(location :dawn_json_generator) " +
+          "--dawn-json $(location externals/dawn/dawn.json) " +
+          "--wire-json $(location externals/dawn/dawn_wire.json) " +
+          "--template-dir $$(dirname $(location externals/dawn/generator/templates/api_cpp.h)) " +
+          "--targets cpp_headers " +
+          "--output-dir $(RULEDIR)/externals/dawn/bazel_generated",
+    tools = [":dawn_json_generator"],
+)
+
+genrule(
+    name = "generate_webgpu",
+    srcs = [
+        "externals/dawn/generator/templates/api.h",
+        "externals/dawn/generator/templates/dawn_proc_table.h",
+        "externals/dawn/generator/templates/BSD_LICENSE",
+        "externals/dawn/dawn.json",
+        "externals/dawn/dawn_wire.json",
+    ],
+    outs = [
+        "externals/dawn/bazel_generated/include/dawn/webgpu.h",
+        "externals/dawn/bazel_generated/include/dawn/dawn_proc_table.h",
+    ],
+    cmd = "$(location :dawn_json_generator) " +
+          "--dawn-json $(location externals/dawn/dawn.json) " +
+          "--wire-json $(location externals/dawn/dawn_wire.json) " +
+          "--template-dir $$(dirname $(location externals/dawn/generator/templates/api.h)) " +
+          "--targets headers " +
+          "--output-dir $(RULEDIR)/externals/dawn/bazel_generated",
+    tools = [":dawn_json_generator"],
+)
+
+DAWN_HDRS = [
+    "externals/dawn/include/dawn/EnumClassBitmasks.h",
+    "externals/dawn/include/dawn/dawn_proc.h",
+    "externals/dawn/include/dawn/dawn_thread_dispatch_proc.h",
+    "externals/dawn/include/dawn/dawn_wsi.h",
+    "externals/dawn/include/dawn/native/D3D12Backend.h",
+    "externals/dawn/include/dawn/native/DawnNative.h",
+    "externals/dawn/include/dawn/native/MetalBackend.h",
+    "externals/dawn/include/dawn/native/NullBackend.h",
+    "externals/dawn/include/dawn/native/OpenGLBackend.h",
+    "externals/dawn/include/dawn/native/VulkanBackend.h",
+    "externals/dawn/include/dawn/native/dawn_native_export.h",
+    "externals/dawn/include/dawn/platform/DawnPlatform.h",
+    "externals/dawn/include/dawn/platform/dawn_platform_export.h",
+    "externals/dawn/include/dawn/wire/Wire.h",
+    "externals/dawn/include/dawn/wire/WireClient.h",
+    "externals/dawn/include/dawn/wire/WireServer.h",
+    "externals/dawn/include/dawn/wire/dawn_wire_export.h",
+    "externals/dawn/include/webgpu/webgpu.h",
+    "externals/dawn/include/webgpu/webgpu_cpp.h",
+]
+
+DAWN_SRCS = [
+    "externals/dawn/bazel_generated/include/dawn/webgpu.h",
+    "externals/dawn/bazel_generated/include/dawn/webgpu_cpp.h",
+    "externals/dawn/bazel_generated/include/dawn/dawn_proc_table.h",
+]
+
+cc_library(
+    name = "dawn",
+    srcs = DAWN_SRCS,
+    hdrs = DAWN_HDRS,
+    includes = [
+        "externals/dawn/bazel_generated/include",
+        "externals/dawn/include",
+    ],
+)
