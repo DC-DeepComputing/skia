@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8572eb01_81ac6d0b",
+        "filename": "src/core/SkBlitter.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 750,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-03-07T16:34:23Z",
+      "side": 0,
+      "message": "I think if we just revert this section, then shaders that REQUIRE raster pipeline will work again?",
+      "range": {
+        "startLine": 737,
+        "startChar": 0,
+        "endLine": 750,
+        "endChar": 9
+      },
+      "revId": "e44440233362b93909614a52ffc85e1d7f837153",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
