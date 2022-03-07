@@ -60,6 +60,15 @@
 #include "client_utils/android/BitmapRegionDecoder.h"
 #endif
 
+#ifdef SK_GRAPHITE_ENABLED
+#include "experimental/graphite/include/Context.h"
+#include "experimental/graphite/include/Recorder.h"
+#include "experimental/graphite/include/Recording.h"
+#include "experimental/graphite/include/SkStuff.h"
+#include "tools/graphite/ContextFactory.h"
+#include "tools/graphite/GraphiteTestContext.h"
+#endif
+
 #include <cinttypes>
 #include <memory>
 #include <optional>
@@ -281,6 +290,53 @@ struct GPUTarget : public Target {
         context->priv().printCacheStats();
         context->priv().printGpuStats();
         context->priv().printContextStats();
+    }
+};
+
+struct GraphiteTarget : public Target {
+    explicit GraphiteTarget(const Config& c) : Target(c) {}
+    skiatest::graphite::ContextFactory::ContextInfo contextInfo;
+    std::unique_ptr<skiatest::graphite::ContextFactory> factory;
+
+    ~GraphiteTarget() override {}
+
+    void setup() override {}
+
+    void endTiming() override {
+        if (this->contextInfo.testContext()) {
+            this->contextInfo.testContext()->flushAndWaitOnSync(contextInfo.directContext());
+        }
+    }
+    void fence() override { this->contextInfo.testContext()->finish(); }
+
+    bool needsFrameTiming(int* maxFrameLag) const override {
+        if (!this->contextInfo.testContext()->getMaxGpuFrameLag(maxFrameLag)) {
+            // Frame lag is unknown.
+            *maxFrameLag = FLAGS_gpuFrameLag;
+        }
+        return true;
+    }
+    bool init(SkImageInfo info, Benchmark* bench) override {
+        GrContextOptions options = grContextOpts;
+        bench->modifyGrContextOptions(&options);
+        this->factory = std::make_unique<GrContextFactory>(options);
+        SkSurfaceProps props(this->config.surfaceFlags, kRGB_H_SkPixelGeometry);
+        this->surface = SkSurface::MakeRenderTarget(
+                this->factory->get(this->config.ctxType, this->config.ctxOverrides),
+                SkBudgeted::kNo, info, this->config.samples, &props);
+        this->contextInfo =
+                this->factory->getContextInfo(this->config.ctxType, this->config.ctxOverrides);
+        if (!this->surface) {
+            return false;
+        }
+        if (!this->contextInfo.testContext()->fenceSyncSupport()) {
+            SkDebugf("WARNING: GL context for config \"%s\" does not support fence sync. "
+                     "Timings might not be accurate.\n", this->config.name.c_str());
+        }
+        return true;
+    }
+
+    void dumpStats() override {
     }
 };
 
