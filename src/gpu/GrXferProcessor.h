@@ -92,10 +92,10 @@ public:
     struct BlendInfo {
         SkDEBUGCODE(SkString dump() const;)
 
-        GrBlendEquation fEquation = kAdd_GrBlendEquation;
+        GrBlendEquation fEquation1 = kAdd_GrBlendEquation;
         GrBlendCoeff    fSrcBlend = kOne_GrBlendCoeff;
         GrBlendCoeff    fDstBlend = kZero_GrBlendCoeff;
-        SkPMColor4f     fBlendConstant = SK_PMColor4fTRANSPARENT;
+        SkPMColor4f     fBlendConstant1 = SK_PMColor4fTRANSPARENT;
         bool            fWriteColor = true;
     };
 

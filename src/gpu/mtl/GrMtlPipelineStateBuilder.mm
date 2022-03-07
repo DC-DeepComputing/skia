@@ -344,7 +344,7 @@ static MTLRenderPipelineColorAttachmentDescriptor* create_color_attachment(
     // blending
     const GrXferProcessor::BlendInfo& blendInfo = pipeline.getXferProcessor().getBlendInfo();
 
-    GrBlendEquation equation = blendInfo.fEquation;
+    GrBlendEquation equation = blendInfo.fEquation1;
     GrBlendCoeff srcCoeff = blendInfo.fSrcBlend;
     GrBlendCoeff dstCoeff = blendInfo.fDstBlend;
     bool blendOn = !GrBlendShouldDisable(equation, srcCoeff, dstCoeff);
