@@ -176,7 +176,7 @@ GrXferBarrierType CustomXP::xferBarrierType(const GrCaps& caps) const {
 
 void CustomXP::onGetBlendInfo(BlendInfo* blendInfo) const {
     if (this->hasHWBlendEquation()) {
-        blendInfo->fEquation = fHWBlendEquation;
+        blendInfo->fEquation1 = fHWBlendEquation;
     }
 }
 

@@ -36,7 +36,7 @@ private:
     const Gpu* mtlGpu();
 
     sk_sp<skgpu::CommandBuffer> createCommandBuffer() override;
-    sk_sp<skgpu::GraphicsPipeline> onCreateGraphicsPipeline(const GraphicsPipelineDesc&,
+    sk_sp<skgpu::GraphicsPipeline> onCreateGraphicsPipeline1(const GraphicsPipelineDesc&,
                                                             const RenderPassDesc&) override;
     sk_sp<skgpu::Texture> createTexture(SkISize, const skgpu::TextureInfo&) override;
     sk_sp<skgpu::Buffer> createBuffer(size_t size, BufferType type, PrioritizeGpuReads) override;

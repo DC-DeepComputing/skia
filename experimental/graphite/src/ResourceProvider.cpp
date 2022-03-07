@@ -35,7 +35,7 @@ ResourceProvider::~ResourceProvider() {
     fResourceCache->shutdown();
 }
 
-sk_sp<GraphicsPipeline> ResourceProvider::findOrCreateGraphicsPipeline(
+sk_sp<GraphicsPipeline> ResourceProvider::findOrCreateGraphicsPipeline1(
         const GraphicsPipelineDesc& pipelineDesc,
         const RenderPassDesc& renderPassDesc) {
     return fGraphicsPipelineCache->refPipeline(fGpu->caps(), pipelineDesc, renderPassDesc);
@@ -74,7 +74,7 @@ sk_sp<GraphicsPipeline> ResourceProvider::GraphicsPipelineCache::refPipeline(
 	std::unique_ptr<Entry>* entry = fMap.find(pipelineKey);
 
     if (!entry) {
-        auto pipeline = fResourceProvider->onCreateGraphicsPipeline(pipelineDesc, renderPassDesc);
+        auto pipeline = fResourceProvider->onCreateGraphicsPipeline1(pipelineDesc, renderPassDesc);
         if (!pipeline) {
             return nullptr;
         }

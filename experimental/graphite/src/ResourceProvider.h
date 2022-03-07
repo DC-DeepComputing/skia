@@ -39,7 +39,7 @@ public:
 
     virtual sk_sp<CommandBuffer> createCommandBuffer() = 0;
 
-    sk_sp<GraphicsPipeline> findOrCreateGraphicsPipeline(const GraphicsPipelineDesc&,
+    sk_sp<GraphicsPipeline> findOrCreateGraphicsPipeline1(const GraphicsPipelineDesc&,
                                                          const RenderPassDesc&);
 
     sk_sp<Texture> findOrCreateTexture(SkISize, const TextureInfo&);
@@ -62,7 +62,7 @@ protected:
     const Gpu* fGpu;
 
 private:
-    virtual sk_sp<GraphicsPipeline> onCreateGraphicsPipeline(const GraphicsPipelineDesc&,
+    virtual sk_sp<GraphicsPipeline> onCreateGraphicsPipeline1(const GraphicsPipelineDesc&,
                                                              const RenderPassDesc&) = 0;
     virtual sk_sp<Texture> createTexture(SkISize, const TextureInfo&) = 0;
     virtual sk_sp<Buffer> createBuffer(size_t size, BufferType type, PrioritizeGpuReads) = 0;
