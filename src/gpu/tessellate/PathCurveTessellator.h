@@ -9,6 +9,7 @@
 #define tessellate_PathCurveTessellator_DEFINED
 
 #include "src/core/SkArenaAlloc.h"
+#include "src/gpu/tessellate/PatchWriter.h"
 #include "src/gpu/tessellate/PathTessellator.h"
 
 namespace skgpu {
@@ -18,6 +19,12 @@ namespace skgpu {
 // conics with w=Inf.
 class PathCurveTessellator final : public PathTessellator {
 public:
+    using Writer = PatchWriter<Optional<PatchAttribs::kColor>,
+                               Optional<PatchAttribs::kWideColorIfEnabled>,
+                               Optional<PatchAttribs::kExplicitCurveType>,
+                               AddTrianglesWhenChopping,
+                               DiscardFlatCurves>;
+
     static PathCurveTessellator* Make(SkArenaAlloc* arena,
                                       bool infinitySupport,
                                       PatchAttribs attribs = PatchAttribs::kNone) {
@@ -28,11 +35,11 @@ public:
                          PatchAttribs attribs = PatchAttribs::kNone)
             : PathTessellator(infinitySupport, attribs) {}
 
-    int patchPreallocCount(int totalCombinedPathVerbCnt) const final;
+    static int PatchPreallocCount(int totalCombinedPathVerbCnt);
 
-    void writePatches(PatchWriter& patchWriter,
-                      const SkMatrix& shaderMatrix,
-                      const PathDrawList& pathDrawList) final;
+    static int WritePatches(Writer&& patchWriter,
+                            const SkMatrix& shaderMatrix,
+                            const PathDrawList& pathDrawList);
 
     // Size of the vertex buffer to use when rendering with a fixed count shader.
     constexpr static int FixedVertexBufferSize(int maxFixedResolveLevel) {
@@ -55,6 +62,38 @@ public:
     static void WriteFixedIndexBufferBaseIndex(VertexWriter, size_t bufferSize, uint16_t baseIndex);
 
 #if SK_GPU_V1
+    // PathCurveTessellator exposes the inner pieces used in prepare() so that
+    // PathInnerTriangulateOp can inject breadcrumb triangles so that the normal stenciled curves
+    // seam correctly with its inner triangulation.
+    Writer makeWriter(GrMeshDrawTarget* target, int preallocCount, int maxTessellationSegments) {
+        return Writer{target, &fVertexChunkArray, fAttribs, maxTessellationSegments, preallocCount};
+    }
+
+    void writeAndPrepare(GrMeshDrawTarget* target,
+                         Writer&& patchWriter,
+                         const SkMatrix& shaderMatrix,
+                         const PathDrawList& pathDrawList,
+                         bool willUseTessellationShaders) {
+        int resolveLevel = WritePatches(std::move(patchWriter), shaderMatrix, pathDrawList);
+        this->updateResolveLevel(resolveLevel);
+        if (!willUseTessellationShaders) {
+            this->prepareFixedCountBuffers(target);
+        }
+    }
+
+    void prepare(GrMeshDrawTarget* target,
+                 int maxTessellationSegments,
+                 const SkMatrix& shaderMatrix,
+                 const PathDrawList& pathDrawList,
+                 int totalCombinedPathVerbCnt,
+                 bool willUseTessellationShaders) final {
+        if (int patchPreallocCount = PatchPreallocCount(totalCombinedPathVerbCnt)) {
+            Writer writer = this->makeWriter(target, patchPreallocCount, maxTessellationSegments);
+            this->writeAndPrepare(target, std::move(writer), shaderMatrix, pathDrawList,
+                                  willUseTessellationShaders);
+        }
+    }
+
     void prepareFixedCountBuffers(GrMeshDrawTarget*) final;
 
     void drawTessellated(GrOpFlushState*) const final;
