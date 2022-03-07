@@ -46,7 +46,7 @@ public:
                            GrBlendCoeff srcCoeff, GrBlendCoeff dstCoeff)
             : fPrimaryOutputType(primaryOut)
             , fSecondaryOutputType(secondaryOut)
-            , fBlendEquation(equation)
+            , fBlendEquation1(equation)
             , fSrcCoeff(srcCoeff)
             , fDstCoeff(dstCoeff)
             , fProps(GetProperties(primaryOut, secondaryOut, equation, srcCoeff, dstCoeff)) {}
@@ -57,7 +57,7 @@ public:
     bool operator==(const BlendFormula& that) const {
         return fPrimaryOutputType == that.fPrimaryOutputType &&
                fSecondaryOutputType == that. fSecondaryOutputType &&
-               fBlendEquation == that.fBlendEquation &&
+               fBlendEquation1 == that.fBlendEquation1 &&
                fSrcCoeff == that.fSrcCoeff &&
                fDstCoeff == that.fDstCoeff &&
                fProps == that.fProps;
@@ -85,7 +85,7 @@ public:
     }
 
     GrBlendEquation equation() const {
-        return fBlendEquation;
+        return fBlendEquation1;
     }
 
     GrBlendCoeff srcCoeff() const {
@@ -128,7 +128,7 @@ private:
         // them when the top bit is set. (This is in violation of the C++03 standard 9.6/4)
         OutputType        fPrimaryOutputType    : 4;
         OutputType        fSecondaryOutputType  : 4;
-        GrBlendEquation   fBlendEquation        : 6;
+        GrBlendEquation   fBlendEquation1        : 6;
         GrBlendCoeff      fSrcCoeff             : 6;
         GrBlendCoeff      fDstCoeff             : 6;
         Properties        fProps                : 32 - (4 + 4 + 6 + 6 + 6);
@@ -391,7 +391,7 @@ private:
     bool onHasSecondaryOutput() const override { return fBlendFormula.hasSecondaryOutput(); }
 
     void onGetBlendInfo(GrXferProcessor::BlendInfo* blendInfo) const override {
-        blendInfo->fEquation = fBlendFormula.equation();
+        blendInfo->fEquation1 = fBlendFormula.equation();
         blendInfo->fSrcBlend = fBlendFormula.srcCoeff();
         blendInfo->fDstBlend = fBlendFormula.dstCoeff();
         blendInfo->fWriteColor = fBlendFormula.modifiesDst();

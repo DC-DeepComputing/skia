@@ -10,8 +10,13 @@
 
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSpan.h"
+#include "include/private/SkColorData.h"
 #include "src/core/SkUniform.h"
 #include <vector>
+
+#ifdef SK_GRAPHITE_ENABLED
+#include "src/gpu/GrBlend.h"
+#endif
 
 /*
  * TODO: Here is the plan of record for SkUniformData
@@ -79,7 +84,18 @@ private:
 // obviously, vastly complicate uniform accumulation.
 class SkPipelineData {
 public:
+#ifdef SK_GRAPHITE_ENABLED
+    struct BlendInfo {
+        GrBlendEquation fEquation = kAdd_GrBlendEquation;
+        GrBlendCoeff    fSrcBlend = kOne_GrBlendCoeff;
+        GrBlendCoeff    fDstBlend = kZero_GrBlendCoeff;
+        SkPMColor4f     fBlendConstant = SK_PMColor4fTRANSPARENT;
+        bool            fWritesColor = true;
+    };
+#endif
+
     SkPipelineData() = default;
+
     SkPipelineData(sk_sp<SkUniformData> initial) {
         fUniformData.push_back(std::move(initial));
     }
@@ -106,6 +122,10 @@ public:
 private:
     // TODO: SkUniformData should be held uniquely
     std::vector<sk_sp<SkUniformData>> fUniformData;
+
+#ifdef SK_GRAPHITE_ENABLED
+    BlendInfo fBlendInfo;
+#endif
 };
 
 #endif // SkUniformData_DEFINED

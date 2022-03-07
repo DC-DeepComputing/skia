@@ -2625,7 +2625,7 @@ void GrGLGpu::flushBlendAndColorWrite(
         }
 
         if (GrBlendCoeffRefsConstant(srcCoeff) || GrBlendCoeffRefsConstant(dstCoeff)) {
-            SkPMColor4f blendConst = swizzle.applyTo(blendInfo.fBlendConstant);
+            SkPMColor4f blendConst = swizzle.applyTo(blendInfo.fBlendConstant1);
             if (!fHWBlendState.fConstColorValid || fHWBlendState.fConstColor != blendConst) {
                 GL_CALL(BlendColor(blendConst.fR, blendConst.fG, blendConst.fB, blendConst.fA));
                 fHWBlendState.fConstColor = blendConst;
