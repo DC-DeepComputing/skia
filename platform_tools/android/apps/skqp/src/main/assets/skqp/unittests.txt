@@ -113,3 +113,6 @@ VkWrapTests
 
 XfermodeImageFilterCroppedInput_Gpu
 skbug5221_GPU
+
+# Fails on a bunch of devices
+DMSAA_dual_source_blend_disable
