@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a8f9a2c4_ab10b604",
+        "filename": "experimental/graphite/src/DrawBufferManager.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-03-07T21:35:07Z",
+      "side": 1,
+      "message": "Can we rewrite these to be 1 \u003c\u003c 14 and 1 \u003c\u003c 11 so it\u0027s easier to tell the pow2 they are meant to be?",
+      "range": {
+        "startLine": 19,
+        "startChar": 43,
+        "endLine": 21,
+        "endChar": 53
+      },
+      "revId": "c8c628e5874fae82d95155a0c81ed8fda3ee9ab0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d4dba4ec_3a80da90",
+        "filename": "experimental/graphite/src/ResourceProvider.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-03-07T21:35:07Z",
+      "side": 1,
+      "message": "nit: spelling",
+      "range": {
+        "startLine": 161,
+        "startChar": 90,
+        "endLine": 161,
+        "endChar": 99
+      },
+      "revId": "c8c628e5874fae82d95155a0c81ed8fda3ee9ab0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0c87d082_0f167c29",
+        "filename": "experimental/graphite/src/ResourceProvider.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 172,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-03-07T21:35:07Z",
+      "side": 1,
+      "message": "if you wanted, we are allowed to make this `if constexpr (sizeof(size_t) \u003e 4)` although as written, we probably want to assert that sizeof(size_t) \u003c\u003d 8. Maybe this gets cleaner as a loop?\n\n   size_t szKey \u003d size;\n   for (int i \u003d 0; i \u003c (sizeof(size_t) + 3) / 4; ++i) {\n      buffer[i + 1] \u003d (uint32_t) szKey;\n      szKey \u003d szKey \u003e\u003e 32;\n   }",
+      "range": {
+        "startLine": 172,
+        "startChar": 8,
+        "endLine": 172,
+        "endChar": 33
+      },
+      "revId": "c8c628e5874fae82d95155a0c81ed8fda3ee9ab0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
