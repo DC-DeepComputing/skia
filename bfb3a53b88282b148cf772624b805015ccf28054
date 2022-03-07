@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7fc9f579_f053e5ea",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-03-07T22:02:32Z",
+      "side": 1,
+      "message": "Cherry-pick to android/next-release so that it can be merged to tm-dev",
+      "revId": "bfb3a53b88282b148cf772624b805015ccf28054",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
