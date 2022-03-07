@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4e49e827_84eb43f5",
+        "filename": "tools/skqp/src/jni_skqp.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-03-07T19:07:57Z",
+      "side": 1,
+      "message": "Filed at http://go/crb/skia/13031",
+      "parentUuid": "1724b132_60394667",
+      "revId": "fe77542448d51a3a762164ec7407d42c9668b29c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "342a4e68_1fe2ea04",
@@ -31,6 +49,24 @@
       "writtenOn": "2022-03-07T19:03:05Z",
       "side": 1,
       "message": "I don\u0027t think this binary is used by our buildbots and the only shell script that uses this executable just passes through the command line params to this function so I think you are good to just remove this altogether from here.\n\nThe only edits would be that argv[3] and argv[4] below need their indices updated.",
+      "revId": "fe77542448d51a3a762164ec7407d42c9668b29c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4f7a1f0f_5d311e94",
+        "filename": "tools/skqp/src/skqp_main.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-03-07T19:07:57Z",
+      "side": 1,
+      "message": "OK, I\u0027ll make a followup CL which strips this out. On the off chance that someone is actually relying on the number of arguments without our knowledge, I think it\u0027s safest to check that in as a separate CL that can be reverted without undoing the rest of the changes.",
+      "parentUuid": "342a4e68_1fe2ea04",
       "revId": "fe77542448d51a3a762164ec7407d42c9668b29c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
