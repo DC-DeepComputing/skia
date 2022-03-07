@@ -2421,3 +2421,8 @@ cc_library(
         "etc1/etc1.h",
     ],
 )
+
+cc_library(
+    name = "dawn",
+    # TODO(kjlubick)
+)
