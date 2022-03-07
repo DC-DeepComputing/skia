@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "41a0ccc6_eb103420",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-03-07T13:59:14Z",
+      "side": 1,
+      "message": "What happens with other fully opaque types (like shader or sampler?)",
+      "revId": "f40b2ab1ec39cc9e5bd1ddf72270b054321e4f85",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
