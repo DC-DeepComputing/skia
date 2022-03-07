@@ -6,8 +6,8 @@ generated_cc_atom(
     visibility = ["//:__subpackages__"],
     deps = [
         ":WindowContextFactory_unix_hdr",
-        "//dawn_native:DawnNative_hdr",
-        "//dawn_native:VulkanBackend_hdr",
+        "//dawn/native:DawnNative_hdr",
+        "//dawn/native:VulkanBackend_hdr",
         "//src/ports:SkOSLibrary_hdr",
         "//tools/gpu/vk:VkTestUtils_hdr",
         "//tools/sk_app:DawnWindowContext_hdr",
@@ -54,6 +54,7 @@ generated_cc_atom(
     name = "WindowContextFactory_unix_hdr",
     hdrs = ["WindowContextFactory_unix.h"],
     visibility = ["//:__subpackages__"],
+    deps = ["//webgpu:webgpu_cpp_hdr"],
 )
 
 generated_cc_atom(

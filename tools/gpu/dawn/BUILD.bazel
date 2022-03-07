@@ -15,9 +15,10 @@ generated_cc_atom(
         ":DawnTestContext_hdr",
         "//GL:glx_hdr",
         "//dawn:dawn_proc_hdr",
-        "//dawn:webgpu_hdr",
-        "//dawn_native:OpenGLBackend_hdr",
+        "//dawn/native:OpenGLBackend_hdr",
         "//include/gpu:GrDirectContext_hdr",
         "//tools:AutoreleasePool_hdr",
+        "//webgpu:webgpu_cpp_hdr",
+        "//webgpu:webgpu_hdr",
     ],
 )

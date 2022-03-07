@@ -55,9 +55,10 @@ generated_cc_atom(
     deps = [
         ":WindowContext_hdr",
         "//dawn:dawn_wsi_hdr",
-        "//dawn_native:DawnNative_hdr",
+        "//dawn/native:DawnNative_hdr",
         "//include/core:SkRefCnt_hdr",
         "//include/core:SkSurface_hdr",
+        "//webgpu:webgpu_cpp_hdr",
     ],
 )
 
