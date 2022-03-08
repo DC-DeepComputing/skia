@@ -49,7 +49,7 @@ public:
                            skgpu::BlendCoeff dstCoeff)
             : fPrimaryOutputType(primaryOut)
             , fSecondaryOutputType(secondaryOut)
-            , fBlendEquation(SkTo<uint8_t>(equation))
+            , fBlendEquation1(SkTo<uint8_t>(equation))
             , fSrcCoeff(SkTo<uint8_t>(srcCoeff))
             , fDstCoeff(SkTo<uint8_t>(dstCoeff))
             , fProps(GetProperties(primaryOut, secondaryOut, equation, srcCoeff, dstCoeff)) {}
@@ -60,7 +60,7 @@ public:
     bool operator==(const BlendFormula& that) const {
         return fPrimaryOutputType == that.fPrimaryOutputType &&
                fSecondaryOutputType == that. fSecondaryOutputType &&
-               fBlendEquation == that.fBlendEquation &&
+               fBlendEquation1 == that.fBlendEquation1 &&
                fSrcCoeff == that.fSrcCoeff &&
                fDstCoeff == that.fDstCoeff &&
                fProps == that.fProps;
@@ -88,7 +88,7 @@ public:
     }
 
     skgpu::BlendEquation equation() const {
-        return static_cast<skgpu::BlendEquation>(fBlendEquation);
+        return static_cast<skgpu::BlendEquation>(fBlendEquation1);
     }
 
     skgpu::BlendCoeff srcCoeff() const {
@@ -133,7 +133,7 @@ private:
         // them when the top bit is set. (This is in violation of the C++03 standard 9.6/4)
         OutputType fPrimaryOutputType   : 4;
         OutputType fSecondaryOutputType : 4;
-        uint32_t   fBlendEquation       : 6;
+        uint32_t   fBlendEquation1       : 6;
         uint32_t   fSrcCoeff            : 6;
         uint32_t   fDstCoeff            : 6;
         Properties fProps               : 32 - (4 + 4 + 6 + 6 + 6);
@@ -415,10 +415,10 @@ private:
     bool onHasSecondaryOutput() const override { return fBlendFormula.hasSecondaryOutput(); }
 
     void onGetBlendInfo(GrXferProcessor::BlendInfo* blendInfo) const override {
-        blendInfo->fEquation = fBlendFormula.equation();
+        blendInfo->fEquation1 = fBlendFormula.equation();
         blendInfo->fSrcBlend = fBlendFormula.srcCoeff();
         blendInfo->fDstBlend = fBlendFormula.dstCoeff();
-        blendInfo->fWriteColor = fBlendFormula.modifiesDst();
+        blendInfo->fWriteColor1 = fBlendFormula.modifiesDst();
     }
 
     bool onIsEqual(const GrXferProcessor& xpBase) const override {
@@ -577,7 +577,7 @@ private:
     void onGetBlendInfo(GrXferProcessor::BlendInfo* blendInfo) const override {
         blendInfo->fSrcBlend = skgpu::BlendCoeff::kConstC;
         blendInfo->fDstBlend = skgpu::BlendCoeff::kISC;
-        blendInfo->fBlendConstant = fBlendConstant;
+        blendInfo->fBlendConstant1 = fBlendConstant;
     }
 
     bool onIsEqual(const GrXferProcessor& xpBase) const override {

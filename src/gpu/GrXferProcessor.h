@@ -92,11 +92,11 @@ public:
     struct BlendInfo {
         SkDEBUGCODE(SkString dump() const;)
 
-        skgpu::BlendEquation fEquation = skgpu::BlendEquation::kAdd;
+        skgpu::BlendEquation fEquation1 = skgpu::BlendEquation::kAdd;
         skgpu::BlendCoeff    fSrcBlend = skgpu::BlendCoeff::kOne;
         skgpu::BlendCoeff    fDstBlend = skgpu::BlendCoeff::kZero;
-        SkPMColor4f          fBlendConstant = SK_PMColor4fTRANSPARENT;
-        bool                 fWriteColor = true;
+        SkPMColor4f          fBlendConstant1 = SK_PMColor4fTRANSPARENT;
+        bool                 fWriteColor1 = true;
     };
 
     inline BlendInfo getBlendInfo() const {

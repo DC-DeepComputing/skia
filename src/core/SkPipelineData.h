@@ -20,8 +20,33 @@ class SkUniformData;
 // obviously, vastly complicate uniform accumulation.
 class SkPipelineData {
 public:
+#ifdef SK_GRAPHITE_ENABLED
+    struct BlendInfo {
+        bool operator==(const BlendInfo& other) const {
+            return fEquation == other.fEquation &&
+                   fSrcBlend == other.fSrcBlend &&
+                   fDstBlend == other.fDstBlend &&
+                   fBlendConstant == other.fBlendConstant &&
+                   fWritesColor == other.fWritesColor;
+        }
+
+        skgpu::BlendEquation fEquation = skgpu::BlendEquation::kAdd;
+        skgpu::BlendCoeff    fSrcBlend = skgpu::BlendCoeff::kOne;
+        skgpu::BlendCoeff    fDstBlend = skgpu::BlendCoeff::kZero;
+        SkPMColor4f          fBlendConstant = SK_PMColor4fTRANSPARENT;
+        bool                 fWritesColor = true;
+    };
+#endif
+
     SkPipelineData() = default;
     SkPipelineData(sk_sp<SkUniformData> initial);
+
+#ifdef SK_GRAPHITE_ENABLED
+    void setBlendInfo(const SkPipelineData::BlendInfo& blendInfo) {
+        fBlendInfo = blendInfo;
+    }
+    const BlendInfo& blendInfo() const { return fBlendInfo; }
+#endif
 
     void add(sk_sp<SkUniformData>);
 
@@ -45,6 +70,10 @@ public:
 private:
     // TODO: SkUniformData should be held uniquely
     std::vector<sk_sp<SkUniformData>> fUniformData;
+
+#ifdef SK_GRAPHITE_ENABLED
+    BlendInfo fBlendInfo;
+#endif
 };
 
 #endif // SkPipelineData_DEFINED
