@@ -428,6 +428,8 @@ bool SkPaint::canComputeFastBounds() const {
 const SkRect& SkPaint::doComputeFastBounds(const SkRect& origSrc,
                                            SkRect* storage,
                                            Style style) const {
+    // Things like stroking, etc... will do math on the bounds rect, assuming that it's sorted.
+    SkASSERT(origSrc.isSorted());
     SkASSERT(storage);
 
     const SkRect* src = &origSrc;
