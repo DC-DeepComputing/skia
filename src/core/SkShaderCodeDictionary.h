@@ -22,7 +22,7 @@
 struct SkShaderSnippet {
     using GenerateGlueCodeForEntry = std::string (*)(const std::string& resultName,
                                                      int entryIndex, // for uniform name mangling
-                                                     const SkShaderSnippet&,
+                                                     const SkPaintParamsKey::BlockReader&,
                                                      const std::string& priorStageOutputName,
                                                      const std::vector<std::string>& childNames,
                                                      int indent);
@@ -55,8 +55,8 @@ struct SkShaderSnippet {
 
 class SkShaderInfo {
 public:
-    void add(const SkShaderSnippet& entry) {
-        fEntries.push_back(entry);
+    void add(const SkPaintParamsKey::BlockReader& reader) {
+        fBlockReaders.push_back(reader);
     }
 
     // TODO: writing to color should be a property of the SnippetEntries and accumulated as the
@@ -74,7 +74,7 @@ private:
                                      std::string* result,
                                      int indent) const;
 
-    std::vector<SkShaderSnippet> fEntries;
+    std::vector<SkPaintParamsKey::BlockReader> fBlockReaders;
     bool fWritesColor = false;
 };
 
