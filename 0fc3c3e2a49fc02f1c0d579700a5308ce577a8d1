@@ -22,6 +22,30 @@
       },
       "revId": "0fc3c3e2a49fc02f1c0d579700a5308ce577a8d1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "756e3be6_aee02db7",
+        "filename": "tools/Registry.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-03-08T14:35:41Z",
+      "side": 1,
+      "message": "Yeah, it\u0027s probably super dead. I\u0027ll nuke it in a followup.",
+      "parentUuid": "2321027c_ea28e106",
+      "range": {
+        "startLine": 48,
+        "startChar": 0,
+        "endLine": 59,
+        "endChar": 6
+      },
+      "revId": "0fc3c3e2a49fc02f1c0d579700a5308ce577a8d1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
