@@ -10,7 +10,12 @@
 
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSpan.h"
+#include "include/private/SkColorData.h"
 #include "src/core/SkUniform.h"
+
+#ifdef SK_GRAPHITE_ENABLED
+#include "src/gpu/Blend.h"
+#endif
 
 /*
  * TODO: Here is the plan of record for SkUniformData

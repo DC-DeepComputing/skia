@@ -344,7 +344,7 @@ static MTLRenderPipelineColorAttachmentDescriptor* create_color_attachment(
     // blending
     const GrXferProcessor::BlendInfo& blendInfo = pipeline.getXferProcessor().getBlendInfo();
 
-    skgpu::BlendEquation equation = blendInfo.fEquation;
+    skgpu::BlendEquation equation = blendInfo.fEquation1;
     skgpu::BlendCoeff srcCoeff = blendInfo.fSrcBlend;
     skgpu::BlendCoeff dstCoeff = blendInfo.fDstBlend;
     bool blendOn = !skgpu::BlendShouldDisable(equation, srcCoeff, dstCoeff);
