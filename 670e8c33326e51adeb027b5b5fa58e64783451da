@@ -296,6 +296,30 @@
       },
       "revId": "670e8c33326e51adeb027b5b5fa58e64783451da",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1feb0433_9f98c884",
+        "filename": "tests/SkSLTest.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 298,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2022-03-08T17:09:02Z",
+      "side": 1,
+      "message": "I think SkQP is an easy shorthand and have no problem with it in principle.  I just assumed that others would have a hard time understanding what it was, but that also assumes that they know what CTS is.  I\u0027m fine with sticking with SkQP.\n\nCome to think of it Fuchsia was using SkQP for a while so perhaps having a platform independent name would be better.",
+      "parentUuid": "97ffe8f7_ee0ba80d",
+      "range": {
+        "startLine": 298,
+        "startChar": 24,
+        "endLine": 298,
+        "endChar": 35
+      },
+      "revId": "670e8c33326e51adeb027b5b5fa58e64783451da",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
