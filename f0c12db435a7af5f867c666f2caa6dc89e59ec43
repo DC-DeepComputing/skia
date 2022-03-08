@@ -83,6 +83,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7d123ce3_801d9378",
+        "filename": "src/core/SkPaintParamsKey.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-03-08T14:51:18Z",
+      "side": 1,
+      "message": "As discussed off line we\u0027re going to keep this as it is and revisit later.",
+      "parentUuid": "11d2e2de_4895955b",
+      "range": {
+        "startLine": 59,
+        "startChar": 10,
+        "endLine": 59,
+        "endChar": 21
+      },
+      "revId": "f0c12db435a7af5f867c666f2caa6dc89e59ec43",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a1e2d28c_34436dad",
