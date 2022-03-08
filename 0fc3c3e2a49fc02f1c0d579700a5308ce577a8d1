@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2321027c_ea28e106",
+        "filename": "tools/Registry.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-03-08T13:54:58Z",
+      "side": 1,
+      "message": "As a follow-up, this is my first time seeing that we have this code. It\u0027s been here ~forever, and I can\u0027t fathom how or why this was the right fix to anything. Hoping we can remove it?",
+      "range": {
+        "startLine": 48,
+        "startChar": 0,
+        "endLine": 59,
+        "endChar": 6
+      },
+      "revId": "0fc3c3e2a49fc02f1c0d579700a5308ce577a8d1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
