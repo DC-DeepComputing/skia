@@ -30,7 +30,7 @@ release_viewer:
 
 debug:
 	# Does an incremental build where possible.
-	./compile.sh debug --enable_debugger
+	./compile.sh debug
 	- rm -rf build/
 	mkdir build
 	cp ../../out/canvaskit_wasm_debug/canvaskit.js   ./build/
