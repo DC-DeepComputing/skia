@@ -200,6 +200,30 @@
       },
       "revId": "670e8c33326e51adeb027b5b5fa58e64783451da",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0a412bf7_c28ec371",
+        "filename": "tests/SkSLTest.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 298,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-03-08T16:16:53Z",
+      "side": 1,
+      "message": "I think the SkQP bit is helpful (because then CTS can run dm with a flag to select all of those tests, similar to --cpu or --gpu), the SkSL one is less compelling.",
+      "parentUuid": "84f36769_73e24a2a",
+      "range": {
+        "startLine": 298,
+        "startChar": 24,
+        "endLine": 298,
+        "endChar": 35
+      },
+      "revId": "670e8c33326e51adeb027b5b5fa58e64783451da",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
