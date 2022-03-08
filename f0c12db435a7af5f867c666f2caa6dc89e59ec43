@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6b098eb7_9ad8a704",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-03-08T14:31:42Z",
+      "side": 1,
+      "message": "Right - the BlockReader is how the PaintParamsKey\u0027s data payload is going to be made accessible to the glue code - so only during program construction.\n\nThe painful access method (of recreating the offset each time) need not be permanent. I could see either forcing the glue code to access the fields in order or store the offsets in the key.",
+      "parentUuid": "b9e675db_619e6d72",
+      "revId": "f0c12db435a7af5f867c666f2caa6dc89e59ec43",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d67677fa_e38496fa",
@@ -31,6 +49,30 @@
       "writtenOn": "2022-03-07T21:52:01Z",
       "side": 1,
       "message": "Should we just call this \"Block\"? My mental association with FooReader is that it\u0027s like a stream where you just progress through the data. This class lets us access the children and data payload in any order.",
+      "range": {
+        "startLine": 59,
+        "startChar": 10,
+        "endLine": 59,
+        "endChar": 21
+      },
+      "revId": "f0c12db435a7af5f867c666f2caa6dc89e59ec43",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "11d2e2de_4895955b",
+        "filename": "src/core/SkPaintParamsKey.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-03-08T14:31:42Z",
+      "side": 1,
+      "message": "Right - I don\u0027t really like the offset computation and suspect we will revert to serial access. \n\nI\u0027ll probably hold off on that decision until we have a data payload w/ more than one entry so I can see if it is a burden.",
+      "parentUuid": "d67677fa_e38496fa",
       "range": {
         "startLine": 59,
         "startChar": 10,
@@ -64,6 +106,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "80a3099b_01ff5848",
+        "filename": "src/core/SkPaintParamsKey.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-03-08T14:31:42Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "a1e2d28c_34436dad",
+      "range": {
+        "startLine": 61,
+        "startChar": 8,
+        "endLine": 62,
+        "endChar": 50
+      },
+      "revId": "f0c12db435a7af5f867c666f2caa6dc89e59ec43",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fc978a13_bace7b5d",
@@ -77,6 +143,30 @@
       "writtenOn": "2022-03-07T21:52:01Z",
       "side": 1,
       "message": "other than the default constructors, the main BlockReader ctor asserts that this is not null.  When do we need it or have it be null?",
+      "range": {
+        "startLine": 102,
+        "startChar": 0,
+        "endLine": 102,
+        "endChar": 48
+      },
+      "revId": "f0c12db435a7af5f867c666f2caa6dc89e59ec43",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8bbea067_74eae31a",
+        "filename": "src/core/SkPaintParamsKey.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-03-08T14:31:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fc978a13_bace7b5d",
       "range": {
         "startLine": 102,
         "startChar": 0,
