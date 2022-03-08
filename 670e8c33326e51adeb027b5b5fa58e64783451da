@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a1ba60eb_161579da",
+        "filename": "tests/SkSLTest.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2022-03-08T14:45:02Z",
+      "side": 1,
+      "message": "style wise can you instead use the pattern that we have in SkCpu.h?\n\n```\n\u003d 1 \u003c\u003c 0;\n\u003d 1 \u003c\u003c 1;\n...\n```\n\nhttps://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/core/SkCpu.h;l\u003d15",
+      "revId": "670e8c33326e51adeb027b5b5fa58e64783451da",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1c4f9f01_2ad29edb",
         "filename": "tests/SkSLTest.cpp",
         "patchSetId": 10
@@ -19,6 +36,29 @@
         "startChar": 0,
         "endLine": 183,
         "endChar": 5
+      },
+      "revId": "670e8c33326e51adeb027b5b5fa58e64783451da",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7cdeafbe_f9a69dd6",
+        "filename": "tests/SkSLTest.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 298,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2022-03-08T14:45:02Z",
+      "side": 1,
+      "message": "Do you anticipate adding `_NoSkQP` to the end of all non-SkQP test changes or is this a stepping stone to another change?",
+      "range": {
+        "startLine": 298,
+        "startChar": 24,
+        "endLine": 298,
+        "endChar": 35
       },
       "revId": "670e8c33326e51adeb027b5b5fa58e64783451da",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
