@@ -22,16 +22,16 @@ void ErrorReporter::error(std::string_view msg, PositionInfo position) {
     this->handleError(msg, position);
 }
 
-void ErrorReporter::error(int line, std::string_view msg) {
+void ErrorReporter::error(PositionInfo pos, std::string_view msg) {
     if (skstd::contains(msg, Compiler::POISON_TAG)) {
         // don't report errors on poison values
         return;
     }
-    if (line == -1) {
+    if (pos.valid()) {
+        this->error(msg, pos);
+    } else {
         ++fErrorCount;
         fPendingErrors.push_back(std::string(msg));
-    } else {
-        this->error(msg, PositionInfo(/*file=*/nullptr, line));
     }
 }
 
