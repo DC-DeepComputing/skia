@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "be4174db_e1c17987",
+        "filename": "tests/SkSLTest.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 309,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-03-08T22:39:15Z",
+      "side": 1,
+      "message": "I noted this failure here but intentionally didn\u0027t comment out the test for now. Let me know if I should.\n\nThe failure is only with OpenGL so perhaps I should introduce a variant that at least runs this with Vulkan on all GPUs?",
+      "range": {
+        "startLine": 309,
+        "startChar": 0,
+        "endLine": 309,
+        "endChar": 54
+      },
+      "revId": "b2f0bc70ad2c6c1f9d28f40d180b08799bc985e3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
