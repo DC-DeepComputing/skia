@@ -11,6 +11,7 @@
 #include <memory>
 
 #include "include/core/SkColor.h"
+#include "include/core/SkData.h"
 #include "include/core/SkM44.h"
 #include "include/core/SkRefCnt.h"
 
