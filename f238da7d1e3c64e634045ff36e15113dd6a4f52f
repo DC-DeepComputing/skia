@@ -63,6 +63,30 @@
       },
       "revId": "f238da7d1e3c64e634045ff36e15113dd6a4f52f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ab104f93_03304c26",
+        "filename": "OWNERS.android",
+        "patchSetId": 1
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-03-08T18:50:37Z",
+      "side": 1,
+      "message": "Yes, that\u0027s might concern, too. Maybe removing the `*` makes that less likely?",
+      "parentUuid": "b1803dd7_b7146a54",
+      "range": {
+        "startLine": 2,
+        "startChar": 0,
+        "endLine": 2,
+        "endChar": 1
+      },
+      "revId": "f238da7d1e3c64e634045ff36e15113dd6a4f52f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
