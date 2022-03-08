@@ -61,6 +61,7 @@ bool Window_unix::initWindow(Display* display) {
     constexpr int initialWidth = 1280;
     constexpr int initialHeight = 960;
 
+#ifdef SK_GL
     // Attempt to create a window that supports GL
 
     // We prefer the more recent glXChooseFBConfig but fall back to glXChooseVisual. They have
@@ -137,7 +138,10 @@ bool Window_unix::initWindow(Display* display) {
                                 fVisualInfo->visual,
                                 CWEventMask | CWColormap,
                                 &swa);
-    } else {
+    }
+#endif
+    if (!fWindow) {
+        SkDebugf("Making simple window\n");
         // Create a simple window instead.  We will not be able to show GL
         fWindow = XCreateSimpleWindow(display,
                                       DefaultRootWindow(display),
@@ -150,6 +154,7 @@ bool Window_unix::initWindow(Display* display) {
     }
 
     if (!fWindow) {
+        SkDebugf("Could not make a window\n");
         return false;
     }
 
@@ -422,6 +427,7 @@ bool Window_unix::attach(BackendType attachType) {
                     window_context_factory::MakeRasterForXlib(winInfo, fRequestedDisplayParams);
             break;
     }
+    SkDebugf("Window context %p\n", fWindowContext.get());
     this->onBackendCreated();
 
     return (SkToBool(fWindowContext));

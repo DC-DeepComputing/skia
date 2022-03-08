@@ -26,9 +26,9 @@ std::unique_ptr<WindowContext> MakeVulkanForXlib(const XlibWindowInfo& info,
                                                  const DisplayParams& displayParams) {
     PFN_vkGetInstanceProcAddr instProc;
     if (!sk_gpu_test::LoadVkLibraryAndGetProcAddrFuncs(&instProc)) {
+        SkDebugf("Could not load vulkan library\n");
         return nullptr;
     }
-
     auto createVkSurface = [&info, instProc](VkInstance instance) -> VkSurfaceKHR {
         static PFN_vkCreateXcbSurfaceKHR createXcbSurfaceKHR = nullptr;
         if (!createXcbSurfaceKHR) {
@@ -53,9 +53,10 @@ std::unique_ptr<WindowContext> MakeVulkanForXlib(const XlibWindowInfo& info,
 
         return surface;
     };
-
+    SkDebugf("five %p\n", instProc);
     auto canPresent = [&info, instProc](VkInstance instance, VkPhysicalDevice physDev,
                               uint32_t queueFamilyIndex) {
+        SkDebugf("seven %p\n", instProc);
         static PFN_vkGetPhysicalDeviceXcbPresentationSupportKHR
                                                 getPhysicalDeviceXcbPresentationSupportKHR = nullptr;
         if (!getPhysicalDeviceXcbPresentationSupportKHR) {
@@ -63,16 +64,17 @@ std::unique_ptr<WindowContext> MakeVulkanForXlib(const XlibWindowInfo& info,
                 (PFN_vkGetPhysicalDeviceXcbPresentationSupportKHR)
                     instProc(instance, "vkGetPhysicalDeviceXcbPresentationSupportKHR");
         }
-
+        return true; // FIXME(kjlubick)
 
         Display* display = info.fDisplay;
-        VisualID visualID = info.fVisualInfo->visualid;
+        VisualID visualID = 0; //info.fVisualInfo->visualid; // FIXME(kjlubick)
         VkBool32 check = getPhysicalDeviceXcbPresentationSupportKHR(physDev,
                                                                     queueFamilyIndex,
                                                                     XGetXCBConnection(display),
                                                                     visualID);
         return (VK_FALSE != check);
     };
+    SkDebugf("six\n");
     std::unique_ptr<WindowContext> ctx(
             new VulkanWindowContext(displayParams, createVkSurface, canPresent, instProc));
     if (!ctx->isValid()) {

@@ -15,7 +15,7 @@
     #elif defined SK_BUILD_FOR_MAC
         #define SK_GPU_TOOLS_VK_LIBRARY_NAME libvk_swiftshader.dylib
     #else
-        #define SK_GPU_TOOLS_VK_LIBRARY_NAME libvulkan.so
+        #define SK_GPU_TOOLS_VK_LIBRARY_NAME libvulkan.so.1
     #endif
 #endif
 
