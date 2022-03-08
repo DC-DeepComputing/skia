@@ -152,6 +152,30 @@
       },
       "revId": "670e8c33326e51adeb027b5b5fa58e64783451da",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "04b406bf_1a5e3dc8",
+        "filename": "tests/SkSLTest.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 298,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2022-03-08T15:53:04Z",
+      "side": 1,
+      "message": "I think this is would be an acceptable end state for SkSL tests, but we run SkQP on more than just SkSL tests.  My end goal is to remove the need for `unittests.txt` from the SkQP app altogether.  I think that end goal would be better served by storing a member variable on the Test class like we do for GPU and Graphite tests.\n\nhttps://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/tests/Test.h;l\u003d85\n\nThe reason I saw this as a stepping stone is that you could use the logic you have here to be able to set that member variable.  This would allow other non-SkSL tests to follow a similar pattern.",
+      "parentUuid": "f7209be2_0779c00e",
+      "range": {
+        "startLine": 298,
+        "startChar": 24,
+        "endLine": 298,
+        "endChar": 35
+      },
+      "revId": "670e8c33326e51adeb027b5b5fa58e64783451da",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
