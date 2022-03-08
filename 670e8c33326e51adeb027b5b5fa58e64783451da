@@ -176,6 +176,30 @@
       },
       "revId": "670e8c33326e51adeb027b5b5fa58e64783451da",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "84f36769_73e24a2a",
+        "filename": "tests/SkSLTest.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 298,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-03-08T16:14:04Z",
+      "side": 1,
+      "message": "OK, I wasn\u0027t aware that we wanted to delete `unit_tests.txt` entirely. In that case, granted, this doesn\u0027t quite get us there. (I think you could make a compelling case for hard-coding a global skqp rule that skips over any test with a `_NoSkQP` suffix on its name, but that\u0027s neither here nor there.)\n\nAdding member variables to Test is easy; I can take care of that. There are two relevant bits that I can think of: \"this is an SkSL test\" and \"SkQP should run this test\". They seem pretty independent. Should I add both bits?\n\nRight now we have two bools, should I make it into an int of flag-bits instead? Or maybe an Options struct? Otherwise we\u0027re going to have a gaggle of bools, which becomes error-prone and hard to read.",
+      "parentUuid": "04b406bf_1a5e3dc8",
+      "range": {
+        "startLine": 298,
+        "startChar": 24,
+        "endLine": 298,
+        "endChar": 35
+      },
+      "revId": "670e8c33326e51adeb027b5b5fa58e64783451da",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
