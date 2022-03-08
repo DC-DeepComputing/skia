@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "960d11d9_21a4dd53",
+        "filename": "src/gpu/ops/PathInnerTriangulateOp.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 433,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-03-08T18:13:57Z",
+      "side": 0,
+      "message": "this has been moved into PathCurveTessellator::prepareWithTriangles()",
+      "range": {
+        "startLine": 432,
+        "startChar": 8,
+        "endLine": 433,
+        "endChar": 79
+      },
+      "revId": "88f360e963424ea3eb62216cab397ed0fb821b2c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "59b3dbd0_db761b89",
+        "filename": "src/gpu/tessellate/PathTessellator.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-03-08T18:13:57Z",
+      "side": 0,
+      "message": "This logic has been folded into the curve and wedge tessellators; it\u0027s a little redundant but means there\u0027s only the one virtual prepare() function now.",
+      "range": {
+        "startLine": 90,
+        "startChar": 8,
+        "endLine": 96,
+        "endChar": 9
+      },
+      "revId": "88f360e963424ea3eb62216cab397ed0fb821b2c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e36639f6_4de44d30",
+        "filename": "experimental/graphite/src/ResourceCache.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-03-08T18:13:57Z",
+      "side": 1,
+      "message": "For some reason, clang on windows complains about std::tie here...",
+      "range": {
+        "startLine": 158,
+        "startChar": 32,
+        "endLine": 158,
+        "endChar": 41
+      },
+      "revId": "d6eefecfaa9834ea3090f3f9f0d577b03b5f4e2b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "612a0113_5487ebe6",
+        "filename": "samplecode/SamplePathTessellators.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-03-08T18:13:57Z",
+      "side": 1,
+      "message": "I had experimented in the omnibus CL with having PathCurveTessellator expose a makeWriter() function that returned its PatchWriter, allowing callers to have control over how the extra triangles were sent to the writer.\n\nI think this is cleaner, since prepareWithTriangles is really only for gpu-v1 and the PathInnerTriangulateOp. Mapping the middle-out triangles manually within a sample seems like a reasonable trade off to me, and allows the curve tessellator\u0027s patch writer definition to be entirely private still.",
+      "range": {
+        "startLine": 130,
+        "startChar": 12,
+        "endLine": 131,
+        "endChar": 100
+      },
+      "revId": "d6eefecfaa9834ea3090f3f9f0d577b03b5f4e2b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "48a2a852_2bade289",
+        "filename": "src/gpu/tessellate/PathCurveTessellator.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-03-08T18:13:57Z",
+      "side": 1,
+      "message": "Eventually, the static gpu-impl agnostic functions will remain in src/gpu/tessellate and used by ganesh and graphite. The member functions guarded by SK_GPU_V1 will move into a separate set of classes that encode the current virtual hierarchy.\n\nPatchPreallocCount across the different tessellators had been a virtual and I\u0027m using this as an opportunity to lift it into the static helpers.",
+      "range": {
+        "startLine": 32,
+        "startChar": 15,
+        "endLine": 32,
+        "endChar": 33
+      },
+      "revId": "d6eefecfaa9834ea3090f3f9f0d577b03b5f4e2b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
