@@ -272,6 +272,30 @@
       },
       "revId": "670e8c33326e51adeb027b5b5fa58e64783451da",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "97ffe8f7_ee0ba80d",
+        "filename": "tests/SkSLTest.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 298,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-03-08T16:35:54Z",
+      "side": 1,
+      "message": "Interesting that you say that. I spent a good chunk of yesterday waffling on the name of the flag in `SKSL_TEST` for controlling SkQP and trying to decide what was the most intuitive.\n\nI started with three candidates: \"Conformance\", \"CTS\", \"SkQP\". I originally decided to try Conformance and showed Brian the code cold. The meaning of the flag wasn\u0027t intuitive for him, so we decided Conformance was no good. \n\nWe hashed out both CTS and SkQP and I think we landed on SkQP because that seemed easier to reason about for me. SkQP is something we own; it\u0027s in our source tree, we directly control it. It\u0027s easy to reason about \"this bit controls what SkQP does\" and search the code and see what the bit does concretely. Actually getting tests into Android CTS is the ultimate goal, but that\u0027s the furthest removed from us, and many of us have no idea how CTS actually interacts with SkQP/DM, so it\u0027s more hazy. But this is just a gut check, so maybe I\u0027m off base.",
+      "parentUuid": "c81a8cb2_9ddbb04d",
+      "range": {
+        "startLine": 298,
+        "startChar": 24,
+        "endLine": 298,
+        "endChar": 35
+      },
+      "revId": "670e8c33326e51adeb027b5b5fa58e64783451da",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
