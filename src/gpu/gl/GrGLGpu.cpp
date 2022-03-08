@@ -2558,7 +2558,7 @@ void GrGLGpu::flushBlendAndColorWrite(
         return;
     }
 
-    skgpu::BlendEquation equation = blendInfo.fEquation;
+    skgpu::BlendEquation equation = blendInfo.fEquation1;
     skgpu::BlendCoeff srcCoeff = blendInfo.fSrcBlend;
     skgpu::BlendCoeff dstCoeff = blendInfo.fDstBlend;
 
@@ -2625,7 +2625,7 @@ void GrGLGpu::flushBlendAndColorWrite(
         }
 
         if (skgpu::BlendCoeffRefsConstant(srcCoeff) || skgpu::BlendCoeffRefsConstant(dstCoeff)) {
-            SkPMColor4f blendConst = swizzle.applyTo(blendInfo.fBlendConstant);
+            SkPMColor4f blendConst = swizzle.applyTo(blendInfo.fBlendConstant1);
             if (!fHWBlendState.fConstColorValid || fHWBlendState.fConstColor != blendConst) {
                 GL_CALL(BlendColor(blendConst.fR, blendConst.fG, blendConst.fB, blendConst.fA));
                 fHWBlendState.fConstColor = blendConst;

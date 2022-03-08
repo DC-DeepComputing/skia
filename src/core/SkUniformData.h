@@ -10,8 +10,13 @@
 
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSpan.h"
+#include "include/private/SkColorData.h"
 #include "src/core/SkUniform.h"
 #include <vector>
+
+#ifdef SK_GRAPHITE_ENABLED
+#include "src/gpu/Blend.h"
+#endif
 
 /*
  * TODO: Here is the plan of record for SkUniformData
@@ -79,10 +84,32 @@ private:
 // obviously, vastly complicate uniform accumulation.
 class SkPipelineData {
 public:
+#ifdef SK_GRAPHITE_ENABLED
+    struct BlendInfo {
+        bool operator==(const BlendInfo& other) const {
+            return fEquation == other.fEquation &&
+                   fSrcBlend == other.fSrcBlend &&
+                   fDstBlend == other.fDstBlend &&
+                   fBlendConstant == other.fBlendConstant &&
+                   fWritesColor == other.fWritesColor;
+        }
+
+        skgpu::BlendEquation fEquation = skgpu::BlendEquation::kAdd;
+        skgpu::BlendCoeff    fSrcBlend = skgpu::BlendCoeff::kOne;
+        skgpu::BlendCoeff    fDstBlend = skgpu::BlendCoeff::kZero;
+        SkPMColor4f          fBlendConstant = SK_PMColor4fTRANSPARENT;
+        bool                 fWritesColor = true;
+    };
+#endif
+
     SkPipelineData() = default;
+
     SkPipelineData(sk_sp<SkUniformData> initial) {
         fUniformData.push_back(std::move(initial));
     }
+#ifdef SK_GRAPHITE_ENABLED
+    const BlendInfo& blendInfo() const { return fBlendInfo; }
+#endif
 
     void add(sk_sp<SkUniformData>);
 
@@ -106,6 +133,10 @@ public:
 private:
     // TODO: SkUniformData should be held uniquely
     std::vector<sk_sp<SkUniformData>> fUniformData;
+
+#ifdef SK_GRAPHITE_ENABLED
+    BlendInfo fBlendInfo;
+#endif
 };
 
 #endif // SkUniformData_DEFINED
