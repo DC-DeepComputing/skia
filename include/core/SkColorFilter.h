@@ -10,6 +10,7 @@
 
 #include "include/core/SkBlendMode.h"
 #include "include/core/SkColor.h"
+#include "include/core/SkColorSpace.h"
 #include "include/core/SkFlattenable.h"
 
 class SkColorMatrix;

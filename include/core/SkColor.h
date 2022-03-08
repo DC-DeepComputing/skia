@@ -8,9 +8,10 @@
 #ifndef SkColor_DEFINED
 #define SkColor_DEFINED
 
-#include "include/core/SkImageInfo.h"
+#include "include/core/SkAlphaType.h"
 #include "include/core/SkScalar.h"
 #include "include/core/SkTypes.h"
+// #include "include/core/SkImageInfo.h" // TODO(kjlubick) remove once clients updated.
 
 #include <array>
 
