@@ -4897,8 +4897,6 @@ std::vector<GrCaps::TestFormatColorTypeCombination> GrGLCaps::getTestingCombinat
           GrBackendFormat::MakeGL(GR_GL_LUMINANCE8_ALPHA8, GR_GL_TEXTURE_2D) },
         { GrColorType::kAlpha_F16,
           GrBackendFormat::MakeGL(GR_GL_R16F, GR_GL_TEXTURE_2D) },
-        { GrColorType::kAlpha_F16,
-          GrBackendFormat::MakeGL(GR_GL_LUMINANCE16F, GR_GL_TEXTURE_2D) },
         { GrColorType::kRGBA_F16,
           GrBackendFormat::MakeGL(GR_GL_RGBA16F, GR_GL_TEXTURE_2D) },
         { GrColorType::kRGBA_F16_Clamped,
