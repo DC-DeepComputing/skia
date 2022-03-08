@@ -95,21 +95,25 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(UniformTest, reporter, context) {
 
             for (auto bm : { SkBlendMode::kSrc, SkBlendMode::kSrcOver }) {
                 auto [ p, expectedNumUniforms ] = create_paint(s, tm, bm);
-                auto [ actualID, uniformBlock] = ExtractPaintData(dict, &builder, PaintParams(p));
-                int actualNumUniforms = uniformBlock->count();
 
-                auto entry = dict->lookup(actualID);
+                auto [ uniqueID1, pipelineData1] = ExtractPaintData(dict, &builder, PaintParams(p));
 
-                SkPaintParamsKey expected = CreateKey(dict, &builder, s, tm, bm);
-
-                REPORTER_ASSERT(reporter, expected == entry->paintParamsKey());
-                REPORTER_ASSERT(reporter, expectedNumUniforms == actualNumUniforms);
-                for (auto& u : *uniformBlock) {
-                    for (int i = 0; i < u->count(); ++i) {
-                        REPORTER_ASSERT(reporter,
-                                        u->offset(i) >= 0 && u->offset(i) < u->dataSize());
+                // ExtractPaintData made the uniforms we expected
+                {
+                    int actualNumUniforms = pipelineData1->count();
+                    REPORTER_ASSERT(reporter, expectedNumUniforms == actualNumUniforms);
+                    for (auto& u : *pipelineData1) {
+                        for (int i = 0; i < u->count(); ++i) {
+                            REPORTER_ASSERT(reporter,
+                                            u->offset(i) >= 0 && u->offset(i) < u->dataSize());
+                        }
                     }
                 }
+
+                SkUniquePaintParamsID uniqueID2 = CreateKey(dict, &builder, s, tm, bm);
+
+                // ExtractPaintData and CreateKey agree
+                REPORTER_ASSERT(reporter, uniqueID1 == uniqueID2);
             }
         }
     }

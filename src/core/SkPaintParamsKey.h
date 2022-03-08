@@ -13,6 +13,8 @@
 #include "include/private/SkTArray.h"
 #include "src/core/SkBuiltInCodeSnippetID.h"
 
+#include "src/core/SkUniformData.h"
+
 #include <array>
 #include <limits>
 #include <vector>
@@ -58,6 +60,9 @@ public:
 
     class BlockReader {
     public:
+        BlockReader() = default;
+        BlockReader(const BlockReader&) = default;
+
         uint8_t blockSize() const {
             SkASSERT(fBlock[kBlockSizeOffsetInBytes] == fBlock.size());
             return SkTo<uint8_t>(fBlock.size());
@@ -96,7 +101,7 @@ public:
         SkSpan<const uint8_t> dataPayload() const;
 
         SkSpan<const uint8_t> fBlock;
-        const SkShaderSnippet* fEntry;
+        const SkShaderSnippet* fEntry = nullptr;
     };
 
     BlockReader reader(const SkShaderCodeDictionary*, int headerOffset) const;
