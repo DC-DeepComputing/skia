@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "467a506a_b9efb1d9",
+        "filename": "experimental/graphite/src/mtl/MtlGraphicsPipeline.mm",
+        "patchSetId": 12
+      },
+      "lineNbr": 340,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-03-08T22:40:59Z",
+      "side": 1,
+      "message": "TBD, I assume.",
+      "range": {
+        "startLine": 340,
+        "startChar": 41,
+        "endLine": 340,
+        "endChar": 46
+      },
+      "revId": "3d85813ba0d0dd91b4f7a62809e1ae4f840b1186",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
