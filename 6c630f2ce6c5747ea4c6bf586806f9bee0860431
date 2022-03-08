@@ -16,6 +16,24 @@
       "message": "Why is this removed?",
       "revId": "6c630f2ce6c5747ea4c6bf586806f9bee0860431",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "06d94703_bd0cb5da",
+        "filename": "include/core/SkPaint.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 655,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-03-08T18:40:55Z",
+      "side": 0,
+      "message": "It moved to doComputeFastBounds in SkPaint.cpp. If we kept it here, we had to have SkPaint include SkRect instead of just forward declaring it.\n\nWe could also just move this implementation to SkPaint.cpp if you prefer.",
+      "parentUuid": "5449f06d_8d6f5c06",
+      "revId": "6c630f2ce6c5747ea4c6bf586806f9bee0860431",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
