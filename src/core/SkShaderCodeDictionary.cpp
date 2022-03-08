@@ -125,12 +125,14 @@ std::string SkShaderInfo::toSkSL() const {
 }
 #endif
 
-SkShaderCodeDictionary::Entry* SkShaderCodeDictionary::makeEntry(const SkPaintParamsKey& key) {
+SkShaderCodeDictionary::Entry* SkShaderCodeDictionary::makeEntry(
+        const SkPaintParamsKey& key,
+        const SkPipelineData::BlendInfo& blendInfo) {
     uint8_t* newKeyData = fArena.makeArray<uint8_t>(key.sizeInBytes());
     memcpy(newKeyData, key.data(), key.sizeInBytes());
 
     SkSpan<const uint8_t> newKeyAsSpan = SkMakeSpan(newKeyData, key.sizeInBytes());
-    return fArena.make([&](void *ptr) { return new(ptr) Entry(newKeyAsSpan); });
+    return fArena.make([&](void *ptr) { return new(ptr) Entry(newKeyAsSpan, blendInfo); });
 }
 
 size_t SkShaderCodeDictionary::Hash::operator()(const SkPaintParamsKey* key) const {
@@ -138,7 +140,8 @@ size_t SkShaderCodeDictionary::Hash::operator()(const SkPaintParamsKey* key) con
 }
 
 const SkShaderCodeDictionary::Entry* SkShaderCodeDictionary::findOrCreate(
-        const SkPaintParamsKey& key) {
+        const SkPaintParamsKey& key,
+        const SkPipelineData::BlendInfo& blendInfo) {
     SkAutoSpinlock lock{fSpinLock};
 
     auto iter = fHash.find(&key);
@@ -147,7 +150,7 @@ const SkShaderCodeDictionary::Entry* SkShaderCodeDictionary::findOrCreate(
         return iter->second;
     }
 
-    Entry* newEntry = this->makeEntry(key);
+    Entry* newEntry = this->makeEntry(key, blendInfo);
     newEntry->setUniqueID(fEntryVector.size());
     fHash.insert(std::make_pair(&newEntry->paintParamsKey(), newEntry));
     fEntryVector.push_back(newEntry);
@@ -198,6 +201,8 @@ void SkShaderCodeDictionary::getShaderInfo(SkUniquePaintParamsID uniqueID, SkSha
     auto entry = this->lookup(uniqueID);
 
     entry->paintParamsKey().toShaderInfo(this, info);
+
+    info->setBlendInfo(entry->blendInfo());
 }
 
 //--------------------------------------------------------------------------------------------------
