@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1c4f9f01_2ad29edb",
+        "filename": "tests/SkSLTest.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 183,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-03-08T14:29:21Z",
+      "side": 1,
+      "message": "When I first read this, I started thinking that we\u0027d hit both of these calls in one invocation (similar for gpu, below). We won\u0027t (as long as we never use CPU + CPU_ES3), and that\u0027s all fine.\n\nWhat it also made me realize, though, is that we share a surface for all permutations. And for the two cases in test_permutations, it\u0027s theoretically possible that the first case draws correctly, and the second case fails dramatically enough to not draw (unlikely).\n\nTL;DR: Can we add a surface-\u003egetCanvas()-\u003eclear(SK_ColorBLACK) in test_one_permutation, to isolate tests somewhat?",
+      "range": {
+        "startLine": 178,
+        "startChar": 0,
+        "endLine": 183,
+        "endChar": 5
+      },
+      "revId": "670e8c33326e51adeb027b5b5fa58e64783451da",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
