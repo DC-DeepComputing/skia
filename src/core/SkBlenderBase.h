@@ -10,6 +10,7 @@
 
 #include "include/core/SkBlender.h"
 #include "include/core/SkColorSpace.h"
+#include "include/core/SkImageInfo.h"
 #include "src/core/SkArenaAlloc.h"
 #include "src/core/SkVM.h"
 
