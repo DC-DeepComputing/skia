@@ -51,6 +51,7 @@ private:
             Registry* reg = gHead;
             while (reg) {
                 if (reg == this) {
+                    SK_ABORT("encountered double-initialization bug");
                     return;
                 }
                 reg = reg->fChain;
