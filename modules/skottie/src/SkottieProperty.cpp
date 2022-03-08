@@ -31,6 +31,8 @@ bool TextPropertyValue::operator==(const TextPropertyValue& other) const {
         && fBox == other.fBox
         && fFillColor == other.fFillColor
         && fStrokeColor == other.fStrokeColor
+        && fPaintOrder == other.fPaintOrder
+        && fStrokeJoin == other.fStrokeJoin
         && fHasFill == other.fHasFill
         && fHasStroke == other.fHasStroke;
 }
