@@ -39,6 +39,30 @@
       },
       "revId": "f238da7d1e3c64e634045ff36e15113dd6a4f52f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b1803dd7_b7146a54",
+        "filename": "OWNERS.android",
+        "patchSetId": 1
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 5145
+      },
+      "writtenOn": "2022-03-08T17:55:08Z",
+      "side": 1,
+      "message": "My one concern is that we might end up running into the `domain of the code owner email \u0027android-autoroll@skia-corp.google.com.iam.gserviceaccount.com\u0027 in \u0027/include/OWNERS\u0027 is not allowed for code owners` error that we saw before in https://b.corp.google.com/issues/199385287#comment4\nThat used to happen during upload in the roller.\n\nIf we did start seeing that then we might have to first remove the file from Android (so that the OWNERS checking stops) and then revert this (hopefully that works). Might not happen though, so just an FYI.",
+      "parentUuid": "b9a0d1ba_3ba03431",
+      "range": {
+        "startLine": 2,
+        "startChar": 0,
+        "endLine": 2,
+        "endChar": 1
+      },
+      "revId": "f238da7d1e3c64e634045ff36e15113dd6a4f52f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
