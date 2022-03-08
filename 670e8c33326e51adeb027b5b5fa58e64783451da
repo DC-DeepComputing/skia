@@ -248,6 +248,30 @@
       },
       "revId": "670e8c33326e51adeb027b5b5fa58e64783451da",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c81a8cb2_9ddbb04d",
+        "filename": "tests/SkSLTest.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 298,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2022-03-08T16:21:03Z",
+      "side": 1,
+      "message": "Agreed.  I don\u0027t think we need a flag for SkSL.  I\u0027m also happy to just have a boolean for skqp.  Something like `fIncludeInAndroidCTS` should be explicit for test authors who then don\u0027t need to know what SkQP stands for.",
+      "parentUuid": "c71970af_9911100d",
+      "range": {
+        "startLine": 298,
+        "startChar": 24,
+        "endLine": 298,
+        "endChar": 35
+      },
+      "revId": "670e8c33326e51adeb027b5b5fa58e64783451da",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
