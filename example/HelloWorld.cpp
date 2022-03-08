@@ -20,8 +20,14 @@ Application* Application::Create(int argc, char** argv, void* platformData) {
 }
 
 HelloWorld::HelloWorld(int argc, char** argv, void* platformData)
-        : fBackendType(Window::kNativeGL_BackendType)
-        , fRotationAngle(0) {
+#if defined(SK_GL)
+        : fBackendType(Window::kNativeGL_BackendType),
+#elif defined(SK_VULKAN)
+        : fBackendType(Window::kVulkan_BackendType),
+#else
+        : fBackendType(Window::kRaster_BackendType),
+#endif
+        fRotationAngle(0) {
     SkGraphics::Init();
 
     fWindow = Window::CreateNativeWindow(platformData);
@@ -111,8 +117,16 @@ void HelloWorld::onIdle() {
 
 bool HelloWorld::onChar(SkUnichar c, skui::ModifierKey modifiers) {
     if (' ' == c) {
-        fBackendType = Window::kRaster_BackendType == fBackendType ? Window::kNativeGL_BackendType
-                                                                   : Window::kRaster_BackendType;
+        if (Window::kRaster_BackendType == fBackendType) {
+#if defined(SK_GL)
+            fBackendType = Window::kNativeGL_BackendType;
+#elif defined(SK_VULKAN)
+            fBackendType = Window::kVulkan_BackendType;
+#else
+            SkDebugf("No GPU backend configured\n");
+            return true;
+#endif
+        }
         fWindow->detach();
         fWindow->attach(fBackendType);
     }
