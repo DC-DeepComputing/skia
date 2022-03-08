@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "56620c54_ce180fa8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-03-08T17:27:23Z",
+      "side": 1,
+      "message": "Since this only applies to the Android repo, we could also submit this directly in Android. I don\u0027t have a strong preference, but lean towards having upstream the source of truth, unless there\u0027s a strong reason not to.",
+      "revId": "f238da7d1e3c64e634045ff36e15113dd6a4f52f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b9a0d1ba_3ba03431",
+        "filename": "OWNERS.android",
+        "patchSetId": 1
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-03-08T17:27:23Z",
+      "side": 1,
+      "message": "In the email thread, they said that it might work without this line. I was worried that it might mean that *no one* is an owner, so no one can submit. (But that seems unlikely?)",
+      "range": {
+        "startLine": 2,
+        "startChar": 0,
+        "endLine": 2,
+        "endChar": 1
+      },
+      "revId": "f238da7d1e3c64e634045ff36e15113dd6a4f52f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
