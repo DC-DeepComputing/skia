@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "db437971_cb3429ae",
+        "filename": "experimental/graphite/src/DrawBufferManager.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-03-08T17:36:01Z",
+      "side": 1,
+      "message": "left it as 10, but added comments to help make it obvious it shows the buffer size in KB",
+      "parentUuid": "a8f9a2c4_ab10b604",
+      "range": {
+        "startLine": 19,
+        "startChar": 43,
+        "endLine": 21,
+        "endChar": 53
+      },
+      "revId": "c8c628e5874fae82d95155a0c81ed8fda3ee9ab0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d4dba4ec_3a80da90",
         "filename": "experimental/graphite/src/ResourceProvider.cpp",
         "patchSetId": 3
@@ -70,6 +94,54 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d3adae44_428f0ca6",
+        "filename": "experimental/graphite/src/ResourceProvider.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-03-08T17:36:01Z",
+      "side": 1,
+      "message": "I wrote sizeof(unit32_t) in the comment and broke the cnt into two different statics so hopefully that makes it clearer whats suppose to be happening here. Adding the sizeof(uint32_t) in the code made it harder to read imo.",
+      "parentUuid": "a087fa0a_73a220e2",
+      "range": {
+        "startLine": 161,
+        "startChar": 55,
+        "endLine": 161,
+        "endChar": 56
+      },
+      "revId": "c8c628e5874fae82d95155a0c81ed8fda3ee9ab0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3a0e3cf5_45f792a2",
+        "filename": "experimental/graphite/src/ResourceProvider.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-03-08T17:36:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d4dba4ec_3a80da90",
+      "range": {
+        "startLine": 161,
+        "startChar": 90,
+        "endLine": 161,
+        "endChar": 99
+      },
+      "revId": "c8c628e5874fae82d95155a0c81ed8fda3ee9ab0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0c87d082_0f167c29",
@@ -83,6 +155,30 @@
       "writtenOn": "2022-03-07T21:35:07Z",
       "side": 1,
       "message": "if you wanted, we are allowed to make this `if constexpr (sizeof(size_t) \u003e 4)` although as written, we probably want to assert that sizeof(size_t) \u003c\u003d 8. Maybe this gets cleaner as a loop?\n\n   size_t szKey \u003d size;\n   for (int i \u003d 0; i \u003c (sizeof(size_t) + 3) / 4; ++i) {\n      buffer[i + 1] \u003d (uint32_t) szKey;\n      szKey \u003d szKey \u003e\u003e 32;\n   }",
+      "range": {
+        "startLine": 172,
+        "startChar": 8,
+        "endLine": 172,
+        "endChar": 33
+      },
+      "revId": "c8c628e5874fae82d95155a0c81ed8fda3ee9ab0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "34363ec5_e66cfdf3",
+        "filename": "experimental/graphite/src/ResourceProvider.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 172,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-03-08T17:36:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0c87d082_0f167c29",
       "range": {
         "startLine": 172,
         "startChar": 8,
