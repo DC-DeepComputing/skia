@@ -18,6 +18,7 @@
 #include "include/private/SkTo.h"
 #include "src/core/SkAutoMalloc.h"
 #include "src/core/SkCompressedDataUtils.h"
+#include "src/core/SkLRUCache.h"
 #include "src/core/SkMipmap.h"
 #include "src/core/SkScopeExit.h"
 #include "src/core/SkTraceEvent.h"
@@ -227,7 +228,6 @@ public:
     SamplerObjectCache(GrGLGpu* gpu) : fGpu(gpu) {
         fNumTextureUnits = fGpu->glCaps().shaderCaps()->maxFragmentSamplers();
         fTextureUnitStates = std::make_unique<UnitState[]>(fNumTextureUnits);
-        std::fill_n(fSamplers, kNumSamplers, 0);
     }
 
     ~SamplerObjectCache() {
@@ -235,24 +235,18 @@ public:
             // We've already been abandoned.
             return;
         }
-        for (GrGLuint sampler : fSamplers) {
-            // The spec states that "zero" values should be silently ignored, however they still
-            // trigger GL errors on some NVIDIA platforms.
-            if (sampler) {
-                GR_GL_CALL(fGpu->glInterface(), DeleteSamplers(1, &sampler));
-            }
-        }
     }
 
     void bindSampler(int unitIdx, GrSamplerState state) {
-        int index = state.asIndex();
-        if (!fSamplers[index]) {
+        uint32_t key = state.asKey();
+        const GrGLuint* sampler = fSamplers[key];
+        if (!sampler) {
             GrGLuint s;
             GR_GL_CALL(fGpu->glInterface(), GenSamplers(1, &s));
             if (!s) {
                 return;
             }
-            fSamplers[index] = s;
+            fSamplers.insert(key, s);
             GrGLenum minFilter = filter_to_gl_min_filter(state.filter(), state.mipmapMode());
             GrGLenum magFilter = filter_to_gl_mag_filter(state.filter());
             GrGLenum wrapX = wrap_mode_to_gl_wrap(state.wrapModeX(), fGpu->glCaps());
@@ -286,6 +280,7 @@ public:
     }
 
     void abandon() {
+        fSamplers.foreach([](GrGLuint& sampler) { sampler = 0; });
         fTextureUnitStates.reset();
         fNumTextureUnits = 0;
     }
@@ -295,22 +290,22 @@ public:
             // We've already been abandoned.
             return;
         }
-        GR_GL_CALL(fGpu->glInterface(), DeleteSamplers(kNumSamplers, fSamplers));
-        std::fill_n(fSamplers, kNumSamplers, 0);
+        fSamplers.reset();
         // Deleting a bound sampler implicitly binds sampler 0. We just invalidate all of our
         // knowledge.
         std::fill_n(fTextureUnitStates.get(), fNumTextureUnits, UnitState{});
     }
 
 private:
-    static constexpr int kNumSamplers = GrSamplerState::kNumUniqueSamplers;
+    static constexpr int kMaxSamplers = 32;
+
+    SkLRUCache<uint32_t, GrGLuint> fSamplers{kMaxSamplers};
     struct UnitState {
         bool fKnown = false;
         GrGLuint fSamplerIDIfKnown = 0;
     };
     GrGLGpu* fGpu;
     std::unique_ptr<UnitState[]> fTextureUnitStates;
-    GrGLuint fSamplers[kNumSamplers];
     int fNumTextureUnits;
 };
 

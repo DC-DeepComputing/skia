@@ -33,10 +33,15 @@ public:
     explicit SkLRUCache(int maxCount)
     : fMaxCount(maxCount) {}
 
+    SkLRUCache(int maxCount, std::function<void(V&)> removeAction) : fMaxCount(maxCount), fRemoveAction(std::move(removeAction)) {}
+
     ~SkLRUCache() {
         Entry* node = fLRU.head();
         while (node) {
             fLRU.remove(node);
+            if (fRemoveAction) {
+                fRemoveAction(node->fValue);
+            }
             delete node;
             node = fLRU.head();
         }
@@ -93,6 +98,9 @@ public:
         fMap.reset();
         for (Entry* e = fLRU.head(); e; e = fLRU.head()) {
             fLRU.remove(e);
+            if (fRemoveAction) {
+                fRemoveAction(e->fValue);
+            }
             delete e;
         }
     }
@@ -115,12 +123,16 @@ private:
         SkASSERT(key == entry->fKey);
         fMap.remove(key);
         fLRU.remove(entry);
+        if (fRemoveAction) {
+            fRemoveAction(entry->fValue);
+        }
         delete entry;
     }
 
     int                             fMaxCount;
     SkTHashTable<Entry*, K, Traits> fMap;
     SkTInternalLList<Entry>         fLRU;
+    std::function<void(V&)>         fRemoveAction;
 };
 
 #endif
