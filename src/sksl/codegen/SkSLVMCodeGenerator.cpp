@@ -193,7 +193,8 @@ private:
                                   int* groupIndex, int fnReturnValue);
 
     /** Used by `getSlot` to create a new slot on its first access. */
-    size_t createSlot(const std::string& name, const Type& type, int line, int fnReturnValue);
+    size_t createSlot(const std::string& name, const Type& type, int line,
+            int fnReturnValue);
 
     /**
      * Returns the slot holding v's Val(s). Allocates storage if this is first time 'v' is
@@ -668,7 +669,8 @@ size_t SkVMGenerator::getSlot(const Variable& v) {
         return *entry;
     }
 
-    size_t slot = this->createSlot(std::string(v.name()), v.type(), v.fLine, /*fnReturnValue=*/-1);
+    size_t slot = this->createSlot(std::string(v.name()), v.type(), v.fPosition.line(),
+            /*fnReturnValue=*/-1);
     fSlotMap.set(&v, slot);
     return slot;
 }
@@ -682,7 +684,7 @@ size_t SkVMGenerator::getFunctionSlot(const IRNode& callSite, const FunctionDefi
     const FunctionDeclaration& decl = fn.declaration();
     size_t slot = this->createSlot("[" + std::string(decl.name()) + "].result",
                                    decl.returnType(),
-                                   fn.fLine,
+                                   fn.fPosition.line(),
                                    /*fnReturnValue=*/1);
     fSlotMap.set(&callSite, slot);
     return slot;
@@ -1885,7 +1887,7 @@ void SkVMGenerator::writeForStatement(const ForStatement& f) {
             this->writeStatement(*f.statement());
             fLoopMask |= fContinueMask;
 
-            this->emitTraceLine(f.test() ? f.test()->fLine : f.fLine);
+            this->emitTraceLine(f.test() ? f.test()->fPosition.line() : f.fPosition.line());
             val += loop.fDelta;
         }
 
@@ -1989,7 +1991,7 @@ void SkVMGenerator::emitTraceScope(skvm::I32 executionMask, int delta) {
 }
 
 void SkVMGenerator::writeStatement(const Statement& s) {
-    this->emitTraceLine(s.fLine);
+    this->emitTraceLine(s.fPosition.line());
 
     switch (s.kind()) {
         case Statement::Kind::kBlock:

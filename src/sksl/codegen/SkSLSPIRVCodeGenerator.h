@@ -200,7 +200,7 @@ private:
 
     std::vector<SpvId> getAccessChain(const Expression& expr, OutputStream& out);
 
-    void writeLayout(const Layout& layout, SpvId target, int line);
+    void writeLayout(const Layout& layout, SpvId target, PositionInfo pos);
 
     void writeFieldLayout(const Layout& layout, SpvId target, int member);
 
@@ -472,7 +472,7 @@ private:
 
     void writeUniformBuffer(std::shared_ptr<SymbolTable> topLevelSymbolTable);
 
-    void addRTFlipUniform(int line);
+    void addRTFlipUniform(PositionInfo pos);
 
     const MemoryLayout fDefaultLayout;
 
