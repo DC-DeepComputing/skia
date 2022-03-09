@@ -33,6 +33,24 @@
       "message": "add a \u0027\\n\u0027 ?",
       "revId": "367f8b99bbcae18b6d26e52004d5abc3367261af",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a58c1c21_e6529a42",
+        "filename": "src/gpu/tessellate/StrokeHardwareTessellator.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 272,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-03-09T20:17:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dc6bca13_f91dfb40",
+      "revId": "367f8b99bbcae18b6d26e52004d5abc3367261af",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

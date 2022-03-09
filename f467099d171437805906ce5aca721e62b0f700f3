@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d655c2da_12a57222",
+        "filename": "src/gpu/tessellate/PatchWriter.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-03-09T20:17:41Z",
+      "side": 1,
+      "message": "Renamed to has_trait so it can fit on line. It turns out for bool folds we can leave off the `|| false` so this reads a little cleaner.",
+      "range": {
+        "startLine": 166,
+        "startChar": 4,
+        "endLine": 168,
+        "endChar": 88
+      },
+      "revId": "f467099d171437805906ce5aca721e62b0f700f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3702b973_a5ae32da",
+        "filename": "src/gpu/tessellate/PatchWriter.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 183,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-03-09T20:17:41Z",
+      "side": 1,
+      "message": "the rest of the code didn\u0027t need the booleans, just the templates for MSVC, so I opted to have them produced by a macro so that we\u0027re as close to what we can move to once MSVC is fixed.",
+      "range": {
+        "startLine": 182,
+        "startChar": 4,
+        "endLine": 183,
+        "endChar": 60
+      },
+      "revId": "f467099d171437805906ce5aca721e62b0f700f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
