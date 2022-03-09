@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "47195519_8db95644",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2022-03-09T19:49:47Z",
+      "side": 1,
+      "message": "It\u0027s unfortunate that TextDesc is used g3.  Some cleanup is needed, but for now we can relocate the new field to the end of the struct (so that it falls outside existing initializer lists), and add default initializers to all fields.",
+      "revId": "07dad6af0d6105bc5e9661db6d719f353f48f91d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
