@@ -35,6 +35,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2f42721a_e27857df",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-03-09T18:54:01Z",
+      "side": 1,
+      "message": "Will land with `*`; I\u0027ll keep an eye on the roller to see if it causes problems.",
+      "revId": "f238da7d1e3c64e634045ff36e15113dd6a4f52f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b9a0d1ba_3ba03431",
