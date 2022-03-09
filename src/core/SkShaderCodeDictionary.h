@@ -19,11 +19,10 @@
 #include "src/core/SkPipelineData.h"
 #include "src/core/SkUniform.h"
 
-
 struct SkShaderSnippet {
     using GenerateGlueCodeForEntry = std::string (*)(const std::string& resultName,
                                                      int entryIndex, // for uniform name mangling
-                                                     const SkShaderSnippet&,
+                                                     const SkPaintParamsKey::BlockReader& reader,
                                                      const std::string& priorStageOutputName,
                                                      const std::vector<std::string>& childNames,
                                                      int indent);
@@ -58,8 +57,8 @@ struct SkShaderSnippet {
 // for program creation and its invocation.
 class SkShaderInfo {
 public:
-    void add(const SkShaderSnippet& entry) {
-        fEntries.push_back(entry);
+    void add(const SkPaintParamsKey::BlockReader& reader) {
+        fBlockReaders.push_back(reader);
     }
 #ifdef SK_GRAPHITE_ENABLED
     void setBlendInfo(const SkPipelineData::BlendInfo& blendInfo) {
@@ -78,7 +77,7 @@ private:
                                      std::string* result,
                                      int indent) const;
 
-    std::vector<SkShaderSnippet> fEntries;
+    std::vector<SkPaintParamsKey::BlockReader> fBlockReaders;
 
 #ifdef SK_GRAPHITE_ENABLED
     // The blendInfo doesn't actually contribute to the program's creation but, it contains the

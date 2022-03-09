@@ -214,14 +214,15 @@ void SkPaintParamsKey::dump(const SkShaderCodeDictionary* dict) const {
         reader.dump(dict, /* indent */ 0);
         curHeaderOffset += reader.blockSize();
     }
+    //$ dump the blendinfo here too!
 }
+
 #endif // SK_DEBUG
 
 void SkPaintParamsKey::AddBlockToShaderInfo(SkShaderCodeDictionary* dict,
                                             const SkPaintParamsKey::BlockReader& reader,
                                             SkShaderInfo* result) {
-
-    result->add(*reader.entry());
+    result->add(reader);
 
     // The child blocks appear right after the parent block's header in the key and go
     // right after the parent's SnippetEntry in the shader info

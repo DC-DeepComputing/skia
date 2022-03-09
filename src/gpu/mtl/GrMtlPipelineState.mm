@@ -169,7 +169,7 @@ void GrMtlPipelineState::setBlendConstants(GrMtlRenderCommandEncoder* renderCmdE
     skgpu::BlendCoeff dstCoeff = blendInfo.fDstBlend;
     if (skgpu::BlendCoeffRefsConstant(srcCoeff) || skgpu::BlendCoeffRefsConstant(dstCoeff)) {
         // Swizzle the blend to match what the shader will output.
-        SkPMColor4f blendConst = swizzle.applyTo(blendInfo.fBlendConstant);
+        SkPMColor4f blendConst = swizzle.applyTo(blendInfo.fBlendConstant1);
 
         renderCmdEncoder->setBlendColor(blendConst);
     }
