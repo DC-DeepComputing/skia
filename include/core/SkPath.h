@@ -1748,6 +1748,8 @@ public:
     */
     uint32_t getGenerationID() const;
 
+    void hack_just_for_experiment();
+
     /** Returns if SkPath data is consistent. Corrupt SkPath data is detected if
         internal values are out of range or internal storage does not match
         array dimensions.

@@ -356,6 +356,10 @@ uint32_t SkPath::getGenerationID() const {
     return genID;
 }
 
+void SkPath::hack_just_for_experiment() {
+    fPathRef->hack_just_for_experiment();
+}
+
 SkPath& SkPath::reset() {
     SkDEBUGCODE(this->validate();)
 

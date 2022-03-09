@@ -325,6 +325,8 @@ public:
      */
     void writeToBuffer(SkWBuffer* buffer) const;
 
+    void hack_just_for_experiment();
+
     /**
      * Gets the number of bytes that would be written in writeBuffer()
      */
