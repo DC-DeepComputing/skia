@@ -34,6 +34,24 @@
       "parentUuid": "5449f06d_8d6f5c06",
       "revId": "6c630f2ce6c5747ea4c6bf586806f9bee0860431",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "268e0900_75915fff",
+        "filename": "include/core/SkPaint.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 655,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-03-09T14:33:15Z",
+      "side": 0,
+      "message": "I think I\u0027d rather move this to SkPaint.cpp, so we don\u0027t lose the assert for the fast/common case that returns before calling doComputeFastBounds.",
+      "parentUuid": "06d94703_bd0cb5da",
+      "revId": "6c630f2ce6c5747ea4c6bf586806f9bee0860431",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
