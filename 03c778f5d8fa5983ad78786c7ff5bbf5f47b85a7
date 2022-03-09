@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "806f5533_9316e34f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-03-09T17:08:17Z",
+      "side": 1,
+      "message": "After making the Skottie version not cash, I played around with this for a bit. The post fling animation needs a lot of work to not go crazy, but I did want to make this a bit more understandable (and not periodically only draw only backfaces and disappear when rotating really fast).",
+      "revId": "03c778f5d8fa5983ad78786c7ff5bbf5f47b85a7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
