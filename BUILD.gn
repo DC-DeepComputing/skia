@@ -949,7 +949,7 @@ optional("gpu") {
     ]
     if (dawn_enable_d3d12 || dawn_enable_desktop_gl || dawn_enable_metal ||
         dawn_enable_opengles || dawn_enable_vulkan) {
-      deps += [ "//third_party/externals/dawn/src/dawn_native" ]
+      deps += [ "//third_party/externals/dawn/src/dawn/native" ]
     }
     if (dawn_enable_d3d12) {
       libs += [
