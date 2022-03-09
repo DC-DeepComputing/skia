@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "00429ea7_5c1288d0",
+        "filename": "platform_tools/android/apps/skqp/src/main/assets/skqp/unittests.txt",
+        "patchSetId": 1
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2022-03-09T19:09:02Z",
+      "side": 1,
+      "message": "some Qualcomm devices",
+      "range": {
+        "startLine": 117,
+        "startChar": 28,
+        "endLine": 117,
+        "endChar": 42
+      },
+      "revId": "3f8f1eb0d421312d3c74f21c48954f8c8bd22a32",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
