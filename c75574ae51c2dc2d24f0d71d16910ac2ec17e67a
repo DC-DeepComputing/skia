@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "70b21451_33a51f75",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-03-09T18:43:12Z",
+      "side": 1,
+      "message": "In Graphite, ResourceProvider::findOrCreateCompatibleSampler will need to do something similar when we\u0027re ready to start caching those.",
+      "revId": "c75574ae51c2dc2d24f0d71d16910ac2ec17e67a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
