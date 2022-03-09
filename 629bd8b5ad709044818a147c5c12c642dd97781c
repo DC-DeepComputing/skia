@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "067b571e_321a4389",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-03-09T17:12:39Z",
+      "side": 1,
+      "message": "Thank you for the restructuring, I think this is much better than the macros. LGTM % one tiny spelling nit.",
+      "revId": "629bd8b5ad709044818a147c5c12c642dd97781c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cdbb70ff_e0d392fc",
+        "filename": "tests/SkSLTest.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-03-09T17:12:39Z",
+      "side": 1,
+      "message": "spelling nit: \"Fuchsia\" (my eye has been trained for this over the last 5 years).",
+      "range": {
+        "startLine": 50,
+        "startChar": 42,
+        "endLine": 50,
+        "endChar": 49
+      },
+      "revId": "629bd8b5ad709044818a147c5c12c642dd97781c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
