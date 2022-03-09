@@ -27,14 +27,14 @@ public:
     const VkSampler* samplerPtr() const { return &fSampler; }
 
     struct Key {
-        Key(uint8_t samplerKey, const GrVkSamplerYcbcrConversion::Key& ycbcrKey) {
+        Key(uint32_t samplerKey, const GrVkSamplerYcbcrConversion::Key& ycbcrKey) {
             // We must memset here since the GrVkSamplerYcbcrConversion has a 64 bit value which may
             // force alignment padding to occur in the middle of the Key struct.
             memset(this, 0, sizeof(Key));
             fSamplerKey = samplerKey;
             fYcbcrKey = ycbcrKey;
         }
-        uint8_t                         fSamplerKey;
+        uint32_t                        fSamplerKey;
         GrVkSamplerYcbcrConversion::Key fYcbcrKey;
 
         bool operator==(const Key& that) const {

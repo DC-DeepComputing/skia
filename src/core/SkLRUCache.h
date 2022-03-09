@@ -12,6 +12,8 @@
 #include "include/private/SkTHash.h"
 #include "src/core/SkTInternalLList.h"
 
+#include <functional>
+
 /**
  * A generic LRU cache.
  */
@@ -33,12 +35,12 @@ public:
     explicit SkLRUCache(int maxCount)
     : fMaxCount(maxCount) {}
 
+    SkLRUCache(int maxCount, std::function<void(V&)> removeAction)
+            : fMaxCount(maxCount), fRemoveAction(std::move(removeAction)) {}
+
     ~SkLRUCache() {
-        Entry* node = fLRU.head();
-        while (node) {
-            fLRU.remove(node);
-            delete node;
-            node = fLRU.head();
+        while (Entry* entry = fLRU.head()) {
+            this->removeEntry(entry);
         }
     }
 
@@ -92,8 +94,7 @@ public:
     void reset() {
         fMap.reset();
         for (Entry* e = fLRU.head(); e; e = fLRU.head()) {
-            fLRU.remove(e);
-            delete e;
+            this->removeEntry(e);
         }
     }
 
@@ -114,13 +115,21 @@ private:
         Entry* entry = *value;
         SkASSERT(key == entry->fKey);
         fMap.remove(key);
+        this->removeEntry(entry);
+    }
+
+    void removeEntry(Entry* entry) {
         fLRU.remove(entry);
+        if (fRemoveAction) {
+            fRemoveAction(entry->fValue);
+        }
         delete entry;
     }
 
     int                             fMaxCount;
     SkTHashTable<Entry*, K, Traits> fMap;
     SkTInternalLList<Entry>         fLRU;
+    std::function<void(V&)> fRemoveAction;
 };
 
 #endif
