@@ -87,10 +87,10 @@ void GrPipeline::genKey(skgpu::KeyBuilder* b, const GrCaps& caps) const {
     static_assert(static_cast<int>(skgpu::BlendCoeff::kLast) < (1 << kBlendCoeffSize));
     static_assert(static_cast<int>(skgpu::BlendEquation::kLast) < (1 << kBlendEquationSize));
 
-    b->addBool(blendInfo.fWriteColor, "writeColor");
+    b->addBool(blendInfo.fWriteColor1, "writeColor");
     b->addBits(kBlendCoeffSize, static_cast<int>(blendInfo.fSrcBlend), "srcBlend");
     b->addBits(kBlendCoeffSize, static_cast<int>(blendInfo.fDstBlend), "dstBlend");
-    b->addBits(kBlendEquationSize, static_cast<int>(blendInfo.fEquation), "equation");
+    b->addBits(kBlendEquationSize, static_cast<int>(blendInfo.fEquation1), "equation");
     b->addBool(this->usesDstInputAttachment(), "inputAttach");
 }
 

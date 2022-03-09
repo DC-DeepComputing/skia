@@ -16,6 +16,7 @@
 
 #ifdef SK_GRAPHITE_ENABLED
 #include "experimental/graphite/src/UniformManager.h"
+#include "src/gpu/Blend.h"
 #endif
 
 namespace {
@@ -470,8 +471,47 @@ void AddToKey(SkShaderCodeDictionary* dict,
 //--------------------------------------------------------------------------------------------------
 namespace BlendModeBlock {
 
+class BlendFormula {
+public:
+    constexpr BlendFormula(skgpu::BlendEquation equation,
+                           skgpu::BlendCoeff srcCoeff,
+                           skgpu::BlendCoeff dstCoeff)
+              : fEquation(equation)
+              , fSrcCoeff(srcCoeff)
+              , fDstCoeff(dstCoeff) {
+    }
+
+    skgpu::BlendEquation fEquation;
+    skgpu::BlendCoeff    fSrcCoeff;
+    skgpu::BlendCoeff    fDstCoeff;
+};
+
+namespace {
+
+/*>> No coverage, input color unknown <<*/
+static constexpr BlendFormula gBlendTable[(int)SkBlendMode::kLastCoeffMode + 1] = {
+    /* clear */      BlendFormula(skgpu::BlendEquation::kAdd, skgpu::BlendCoeff::kZero, skgpu::BlendCoeff::kZero),
+    /* src */        BlendFormula(skgpu::BlendEquation::kAdd, skgpu::BlendCoeff::kOne,  skgpu::BlendCoeff::kZero),
+    /* dst */        BlendFormula(skgpu::BlendEquation::kAdd, skgpu::BlendCoeff::kZero, skgpu::BlendCoeff::kOne),
+    /* src-over */   BlendFormula(skgpu::BlendEquation::kAdd, skgpu::BlendCoeff::kOne,  skgpu::BlendCoeff::kISA),
+    /* dst-over */   BlendFormula(skgpu::BlendEquation::kAdd, skgpu::BlendCoeff::kIDA,  skgpu::BlendCoeff::kOne),
+    /* src-in */     BlendFormula(skgpu::BlendEquation::kAdd, skgpu::BlendCoeff::kDA,   skgpu::BlendCoeff::kZero),
+    /* dst-in */     BlendFormula(skgpu::BlendEquation::kAdd, skgpu::BlendCoeff::kZero, skgpu::BlendCoeff::kSA),
+    /* src-out */    BlendFormula(skgpu::BlendEquation::kAdd, skgpu::BlendCoeff::kIDA,  skgpu::BlendCoeff::kZero),
+    /* dst-out */    BlendFormula(skgpu::BlendEquation::kAdd, skgpu::BlendCoeff::kZero, skgpu::BlendCoeff::kISA),
+    /* src-atop */   BlendFormula(skgpu::BlendEquation::kAdd, skgpu::BlendCoeff::kDA,   skgpu::BlendCoeff::kISA),
+    /* dst-atop */   BlendFormula(skgpu::BlendEquation::kAdd, skgpu::BlendCoeff::kIDA,  skgpu::BlendCoeff::kSA),
+    /* xor */        BlendFormula(skgpu::BlendEquation::kAdd, skgpu::BlendCoeff::kIDA,  skgpu::BlendCoeff::kISA),
+    /* plus */       BlendFormula(skgpu::BlendEquation::kAdd, skgpu::BlendCoeff::kOne,  skgpu::BlendCoeff::kOne),
+    /* modulate */   BlendFormula(skgpu::BlendEquation::kAdd, skgpu::BlendCoeff::kZero, skgpu::BlendCoeff::kSC),
+    /* screen */     BlendFormula(skgpu::BlendEquation::kAdd, skgpu::BlendCoeff::kOne,  skgpu::BlendCoeff::kISC)
+};
+
+} // anonymous namespace
+
 #ifdef SK_GRAPHITE_ENABLED
-static const int kBlockDataSize = 1;
+static const int kFixedFunctionBlockDataSize = 1;
+static const int kShaderBasedBlockDataSize = 1;
 #endif
 
 void AddToKey(SkShaderCodeDictionary* dict,
@@ -481,17 +521,37 @@ void AddToKey(SkShaderCodeDictionary* dict,
 
 #ifdef SK_GRAPHITE_ENABLED
     if (builder->backend() == SkBackend::kGraphite) {
-        builder->beginBlock(SkBuiltInCodeSnippetID::kShaderBasedBlender);
-        add_blendmode_to_key(builder, bm);
-        builder->endBlock();
+        if (bm <= SkBlendMode::kLastCoeffMode) {
+            builder->beginBlock(SkBuiltInCodeSnippetID::kFixedFunctionBlender);
+            add_blendmode_to_key(builder, bm);
+            builder->endBlock();
 
-        validate_block_header(builder,
-                              SkBuiltInCodeSnippetID::kShaderBasedBlender,
-                              kBlockDataSize);
+            validate_block_header(builder,
+                                  SkBuiltInCodeSnippetID::kFixedFunctionBlender,
+                                  kFixedFunctionBlockDataSize);
 
-        if (pipelineData) {
-            // TODO: set up the correct blend info
-            pipelineData->setBlendInfo(SkPipelineData::BlendInfo());
+            if (pipelineData) {
+                SkPipelineData::BlendInfo bi;
+
+                bi.fEquation = gBlendTable[(int)bm].fEquation;
+                bi.fSrcBlend = gBlendTable[(int)bm].fSrcCoeff;
+                bi.fDstBlend = gBlendTable[(int)bm].fDstCoeff;
+                bi.fWritesColor = skgpu::BlendModifiesDst(bi.fEquation, bi.fSrcBlend, bi.fDstBlend);
+                pipelineData->setBlendInfo(bi);
+            }
+        } else {
+            builder->beginBlock(SkBuiltInCodeSnippetID::kShaderBasedBlender);
+            add_blendmode_to_key(builder, bm);
+            builder->endBlock();
+
+            validate_block_header(builder,
+                                  SkBuiltInCodeSnippetID::kShaderBasedBlender,
+                                  kShaderBasedBlockDataSize);
+
+            if (pipelineData) {
+                // TODO: set up the correct blend info
+                pipelineData->setBlendInfo(SkPipelineData::BlendInfo());
+            }
         }
         return;
     }
