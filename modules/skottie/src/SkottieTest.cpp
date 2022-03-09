@@ -321,6 +321,7 @@ DEF_TEST(Skottie_Properties, reporter) {
       120,
       12,
       0,
+      0,
       SkTextUtils::kLeft_Align,
       Shaper::VAlign::kTopBaseline,
       Shaper::ResizePolicy::kNone,
