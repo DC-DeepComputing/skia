@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "479d5b43_2e1c2e44",
+        "filename": "tests/SkSLTest.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-03-09T16:59:44Z",
+      "side": 1,
+      "message": "I had comments down below (by the SKSL_TEST block) explaining what the flags do, but I agree, they belong here as well. Copied them up.",
+      "parentUuid": "3151f137_56e4a647",
+      "range": {
+        "startLine": 38,
+        "startChar": 25,
+        "endLine": 38,
+        "endChar": 28
+      },
+      "revId": "fe6269178f83a4a783c3d1cc488ebfe37abfd0e5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9b4d8589_ece8f94a",
@@ -64,6 +88,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "47b7cc79_0054413f",
+        "filename": "tests/SkSLTest.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-03-09T16:59:44Z",
+      "side": 1,
+      "message": "Renamed to `is_strict_es2` and negated the check.",
+      "parentUuid": "9b4d8589_ece8f94a",
+      "range": {
+        "startLine": 53,
+        "startChar": 22,
+        "endLine": 53,
+        "endChar": 28
+      },
+      "revId": "fe6269178f83a4a783c3d1cc488ebfe37abfd0e5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fc9f76ba_e34a87dc",
@@ -77,6 +125,24 @@
       "writtenOn": "2022-03-09T00:25:07Z",
       "side": 1,
       "message": "I would wrap the entire test declarations block in `// clang-format off` and `// clang-format on`. That way the formatter won\u0027t try to re-indent. That will also make it obvious to readers that the formatting here is meant to be preserved.",
+      "revId": "fe6269178f83a4a783c3d1cc488ebfe37abfd0e5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "481fb7e0_9bb6c709",
+        "filename": "tests/SkSLTest.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 302,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-03-09T16:59:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fc9f76ba_e34a87dc",
       "revId": "fe6269178f83a4a783c3d1cc488ebfe37abfd0e5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -117,6 +183,30 @@
       "writtenOn": "2022-03-09T16:20:45Z",
       "side": 1,
       "message": "Should there be a concise catch-all define (like SKSL_TEST_ALL?) that\u0027s equivalent to SKSL_TEST(CPU + GPU + SkQP)?",
+      "range": {
+        "startLine": 342,
+        "startChar": 0,
+        "endLine": 342,
+        "endChar": 27
+      },
+      "revId": "fe6269178f83a4a783c3d1cc488ebfe37abfd0e5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bfe51679_53c80069",
+        "filename": "tests/SkSLTest.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 342,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-03-09T16:59:44Z",
+      "side": 1,
+      "message": "The end goal is to make SkQP opt-in/opt-out status explicitly visible on each test so that we consider it when adding new tests. Ideally I don\u0027t want to dilute that.",
+      "parentUuid": "a1a05760_0e19e8a4",
       "range": {
         "startLine": 342,
         "startChar": 0,
