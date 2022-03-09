@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c48d74d0_060e694b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-03-09T22:18:58Z",
+      "side": 1,
+      "message": "I appreciate that this is slightly weird. I\u0027m very open to other ways to solve this problem.",
+      "revId": "9fc6a704b1f450f01481cb94d0bf376e2ca8d307",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
