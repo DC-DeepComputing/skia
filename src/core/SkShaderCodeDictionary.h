@@ -19,7 +19,6 @@
 #include "src/core/SkPipelineData.h"
 #include "src/core/SkUniform.h"
 
-
 struct SkShaderSnippet {
     using GenerateGlueCodeForEntry = std::string (*)(const std::string& resultName,
                                                      int entryIndex, // for uniform name mangling
