@@ -22,6 +22,30 @@
       },
       "revId": "3d85813ba0d0dd91b4f7a62809e1ae4f840b1186",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "79cc5a11_dc7a8ad2",
+        "filename": "experimental/graphite/src/mtl/MtlGraphicsPipeline.mm",
+        "patchSetId": 12
+      },
+      "lineNbr": 340,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-03-09T14:11:58Z",
+      "side": 1,
+      "message": "Right - the next CL actual starts using the BlendInfo for fixed-function blending.",
+      "parentUuid": "467a506a_b9efb1d9",
+      "range": {
+        "startLine": 340,
+        "startChar": 41,
+        "endLine": 340,
+        "endChar": 46
+      },
+      "revId": "3d85813ba0d0dd91b4f7a62809e1ae4f840b1186",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
