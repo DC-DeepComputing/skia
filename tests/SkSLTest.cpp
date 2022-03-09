@@ -63,6 +63,16 @@ static constexpr bool is_strict_es2(int flags) {
     return !(flags & (SkSLTestFlags::CPU_ES3 | SkSLTestFlags::GPU_ES3));
 }
 
+static constexpr bool should_run_in_skqp(int flags) {
+#if defined(SK_BUILD_FOR_SKQP)
+    // Official SkQP builds should only run tests marked with the SkQP flag.
+    return flags & (SkSLTestFlags::SkQP);
+#else
+    // Other test binaries (dm/fm) should run every test, regardless of the SkQP flag.
+    return true;
+#endif
+}
+
 template <typename T>
 static void set_uniform(SkRuntimeShaderBuilder* builder, const char* name, const T& value) {
     SkRuntimeShaderBuilder::BuilderUniform uniform = builder->uniform(name);
@@ -288,14 +298,15 @@ static void test_rehydrate(skiatest::Reporter* r, const char* testFile, int flag
             rehydrated->description().c_str());
 }
 
-#define SKSL_TEST(flags, name, path)                                                              \
-    DEF_CONDITIONAL_TEST(SkSL##name##_CPU, r, is_cpu(flags)) {                                    \
-        test_cpu(r, path, flags);                                                                 \
-    }                                                                                             \
-    DEF_CONDITIONAL_GPUTEST_FOR_RENDERING_CONTEXTS(SkSL##name##_GPU, r, ctxInfo, is_gpu(flags)) { \
-        test_gpu(r, ctxInfo.directContext(), path, flags);                                        \
-    }                                                                                             \
-    DEF_TEST(SkSL##name##_Clone, r) { test_clone(r, path, flags); }                               \
+#define SKSL_TEST(flags, name, path)                                                        \
+    DEF_CONDITIONAL_TEST(SkSL##name##_CPU, r, is_cpu(flags) && should_run_in_skqp(flags)) { \
+        test_cpu(r, path, flags);                                                           \
+    }                                                                                       \
+    DEF_CONDITIONAL_GPUTEST_FOR_RENDERING_CONTEXTS(                                         \
+            SkSL##name##_GPU, r, ctxInfo, is_gpu(flags) && should_run_in_skqp(flags)) {     \
+        test_gpu(r, ctxInfo.directContext(), path, flags);                                  \
+    }                                                                                       \
+    DEF_TEST(SkSL##name##_Clone, r) { test_clone(r, path, flags); }                         \
     DEF_TEST(SkSL##name##_Rehydrate, r) { test_rehydrate(r, path, flags); }
 
 /**
