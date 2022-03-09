@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "eee63bf1_d69d24da",
+        "filename": "src/gpu/tessellate/PatchWriter.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-03-09T21:51:07Z",
+      "side": 1,
+      "message": "but it also turns that at least one android clang compiler doesn\u0027t think these fold expressions are actually constexpr so then complains. I\u0027ve kept the macros with explicit booleans for MSVC, and switched has_trait back to extending std::disjunction which makes android happy...",
+      "parentUuid": "d655c2da_12a57222",
+      "range": {
+        "startLine": 166,
+        "startChar": 4,
+        "endLine": 168,
+        "endChar": 88
+      },
+      "revId": "f467099d171437805906ce5aca721e62b0f700f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3702b973_a5ae32da",
