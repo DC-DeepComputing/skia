@@ -1,0 +1,84 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0c6cd32a_cef7a9d8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-03-09T00:25:07Z",
+      "side": 1,
+      "message": "A couple suggestions. lgtm, otherwise.",
+      "revId": "fe6269178f83a4a783c3d1cc488ebfe37abfd0e5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3151f137_56e4a647",
+        "filename": "tests/SkSLTest.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-03-09T00:25:07Z",
+      "side": 1,
+      "message": "Maybe CPU and GPU should be renamed (or probably documented) to mean \"CPU/GPU + strict ES2 mode\", since CPU/CPU_ES3 and GPU/GPU_ES3 pairs are not mutually exclusive (it is legal to pass GPU + GPU_ES3 in flags).",
+      "range": {
+        "startLine": 38,
+        "startChar": 25,
+        "endLine": 38,
+        "endChar": 28
+      },
+      "revId": "fe6269178f83a4a783c3d1cc488ebfe37abfd0e5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9b4d8589_ece8f94a",
+        "filename": "tests/SkSLTest.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-03-09T00:25:07Z",
+      "side": 1,
+      "message": "Maybe rename this to \"is_strict_es2_mode\" or its negative? I\u0027m suggesting this because it\u0027s easy (at least for me) to confuse this with \"run only on an OpenGL ES 3 context\". I like the explicitness of using \"strict ES2 mode\" in these names since that matches the naming in `settings.fEnforceES2Restrictions` and leaves less room for confusion.",
+      "range": {
+        "startLine": 53,
+        "startChar": 22,
+        "endLine": 53,
+        "endChar": 28
+      },
+      "revId": "fe6269178f83a4a783c3d1cc488ebfe37abfd0e5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fc9f76ba_e34a87dc",
+        "filename": "tests/SkSLTest.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 302,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-03-09T00:25:07Z",
+      "side": 1,
+      "message": "I would wrap the entire test declarations block in `// clang-format off` and `// clang-format on`. That way the formatter won\u0027t try to re-indent. That will also make it obvious to readers that the formatting here is meant to be preserved.",
+      "revId": "fe6269178f83a4a783c3d1cc488ebfe37abfd0e5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
