@@ -442,7 +442,7 @@ uint32_t TextAdapter::shaperFlags() const {
 
     // We need granular fragments (as opposed to consolidated blobs) when animating, or when
     // positioning on a path.
-    if (!fAnimators.empty()  || fPathInfo) flags |= Shaper::Flags::kFragmentGlyphs;
+    if (!fAnimators.empty()  || fPathInfo || fText->fMaxLines) flags |= Shaper::Flags::kFragmentGlyphs;
     if (fRequiresAnchorPoint)              flags |= Shaper::Flags::kTrackFragmentAdvanceAscent;
 
     return flags;
@@ -457,6 +457,7 @@ void TextAdapter::reshape() {
         fText->fLineHeight,
         fText->fLineShift,
         fText->fAscent,
+        fText->fMaxLines,
         fText->fHAlign,
         fText->fVAlign,
         fText->fResize,
