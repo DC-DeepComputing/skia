@@ -23,13 +23,20 @@ namespace SkSL {
 
 class Position {
 public:
-    Position(const char* file = nullptr, int line = -1)
-        : fFile(file)
-        , fLine(line) {}
+    Position()
+        : fFile(nullptr)
+        , fLine(-1) {}
+
+    static Position Line(int line, const char* file = nullptr) {
+        Position result;
+        result.fFile = file;
+        result.fLine = line;
+        return result;
+    }
 
 #if __has_builtin(__builtin_FILE) && __has_builtin(__builtin_LINE)
     static Position Capture(const char* file = __builtin_FILE(), int line = __builtin_LINE()) {
-        return Position(file, line);
+    return Position::Line(line, file);
     }
 #else
     static Position Capture() { return Position(); }
@@ -39,13 +46,41 @@ public:
         return fFile;
     }
 
+    bool valid() const {
+        return fLine != -1;
+    }
+
     int line() const {
         return fLine;
     }
 
+    bool operator==(const Position& other) const {
+        return fFile == other.fFile && fLine == other.fLine;
+    }
+
+    bool operator!=(const Position& other) const {
+        return !(*this == other);
+    }
+
+    bool operator>(const Position& other) const {
+        return fFile == other.fFile && fLine > other.fLine;
+    }
+
+    bool operator>=(const Position& other) const {
+        return fFile == other.fFile && fLine >= other.fLine;
+    }
+
+    bool operator<(const Position& other) const {
+        return fFile == other.fFile && fLine < other.fLine;
+    }
+
+    bool operator<=(const Position& other) const {
+        return fFile == other.fFile && fLine <= other.fLine;
+    }
+
 private:
     const char* fFile = nullptr;
-    int32_t fLine = -1;
+    int32_t fLine;
 };
 
 /**
@@ -65,7 +100,7 @@ public:
      * Reports an error message at the given line of the source text. Errors reported
      * with a line of -1 will be queued until line number information can be determined.
      */
-    void error(int line, std::string_view msg);
+    void error(Position pos, std::string_view msg);
 
     const char* source() const { return fSource; }
 
