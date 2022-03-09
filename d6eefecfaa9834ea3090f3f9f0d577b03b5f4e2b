@@ -43,6 +43,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8bb7e09b_7b119b41",
+        "filename": "samplecode/SamplePathTessellators.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-03-09T01:44:15Z",
+      "side": 1,
+      "message": "Including extra triangles is only used in two places\n - the sample slide for convenience (the equivalent middle-out triangles in regular use are drawn with an entirely separate op class)\n - PathInnerTriangulateOp so that it can have breadcrumb triangles written in the stencil buffer\n\nI need to do more digging to see if these triangles are necessary if we write a better triangulator not based on GrTriangulator, or if we can include them some other way\n    \nRegardless, the only real use is PathInnerTriangulateOp and that specifically uses a PathCurveTessellator and not the PathTessellator base class. Wedges aren\u0027t compatible with extra triangles anyways since the extra fan point they include take care of covering the path area. As such, I would rather keep this semi-leaky interaction between PathCurveTessellator and PathInnerTriangulateOp as narrow as possible.",
+      "parentUuid": "6f268bbe_c85cd6d0",
+      "revId": "d6eefecfaa9834ea3090f3f9f0d577b03b5f4e2b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "612a0113_5487ebe6",
         "filename": "samplecode/SamplePathTessellators.cpp",
         "patchSetId": 1
