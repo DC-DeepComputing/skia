@@ -16,6 +16,24 @@
       "message": "SkSL::Position currently has two members, a const char* (filename) and a line number. The filename is almost always \"\u003cunknown\u003e\" (anything parsed by DSLParser, afaics)\n\nI\u0027m concerned about growing every single IRNode object by 8 bytes (the cost of the const char*); that\u0027s a nontrivial cost. Will we lose anything if we remove Position::fFile?",
       "revId": "fb907daf7fc995aadc76ea037bd9a8b7d43665f9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "78f131dd_749f9214",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-03-09T22:28:29Z",
+      "side": 1,
+      "message": "Coming in a followup. We are still going to be bumping up the size of the nodes - I have to add a length field - but it\u0027ll be by 4 bytes.",
+      "parentUuid": "ba12d0aa_6541f8ab",
+      "revId": "fb907daf7fc995aadc76ea037bd9a8b7d43665f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
