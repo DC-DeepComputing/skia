@@ -505,6 +505,7 @@ generated_cc_atom(
         ":SkMatrix_hdr",
         ":SkPathTypes_hdr",
         ":SkPath_hdr",
+        ":SkRefCnt_hdr",
         "//include/private:SkTDArray_hdr",
     ],
 )
@@ -545,7 +546,7 @@ generated_cc_atom(
     deps = [
         ":SkMatrix_hdr",
         ":SkPathTypes_hdr",
-        "//include/private:SkPathRef_hdr",
+        ":SkRefCnt_hdr",
         "//include/private:SkTo_hdr",
     ],
 )

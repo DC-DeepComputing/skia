@@ -81,6 +81,7 @@ string_flag_with_values(
     values = [
         "gl_backend",
         "vulkan_backend",
+        "dawn_backend",
     ],
 )
 

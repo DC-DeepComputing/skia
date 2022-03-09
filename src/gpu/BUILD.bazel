@@ -651,13 +651,6 @@ generated_cc_atom(
 )
 
 generated_cc_atom(
-    name = "GrBlend_hdr",
-    hdrs = ["GrBlend.h"],
-    visibility = ["//:__subpackages__"],
-    deps = ["//include/core:SkTypes_hdr"],
-)
-
-generated_cc_atom(
     name = "GrBlurUtils_hdr",
     hdrs = ["GrBlurUtils.h"],
     visibility = ["//:__subpackages__"],
@@ -742,7 +735,7 @@ generated_cc_atom(
     hdrs = ["GrCaps.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrBlend_hdr",
+        ":Blend_hdr",
         ":GrSamplerState_hdr",
         ":GrShaderCaps_hdr",
         ":GrSurfaceProxy_hdr",
@@ -3283,7 +3276,7 @@ generated_cc_atom(
     hdrs = ["GrXferProcessor.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrBlend_hdr",
+        ":Blend_hdr",
         ":GrNonAtomicRef_hdr",
         ":GrProcessorAnalysis_hdr",
         ":GrProcessor_hdr",
@@ -3341,7 +3334,7 @@ generated_cc_atom(
     hdrs = ["SkGr.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrBlend_hdr",
+        ":Blend_hdr",
         ":GrCaps_hdr",
         ":GrColor_hdr",
         ":GrSamplerState_hdr",
@@ -3538,4 +3531,11 @@ generated_cc_atom(
         ":Swizzle_hdr",
         "//src/core:SkRasterPipeline_hdr",
     ],
+)
+
+generated_cc_atom(
+    name = "Blend_hdr",
+    hdrs = ["Blend.h"],
+    visibility = ["//:__subpackages__"],
+    deps = ["//include/core:SkTypes_hdr"],
 )
