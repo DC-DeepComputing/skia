@@ -33,6 +33,24 @@
       "message": "LGTM. The only think I notice is that there\u0027s only 1 machine matching the new Radeon job: build336-a9. But since it\u0027s not a CQ job, I think it\u0027s alright.",
       "revId": "2814a40cfee3c566e216cc61d328872581f23850",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "68b1c8aa_df1912d2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-03-09T18:12:38Z",
+      "side": 1,
+      "message": "If it becomes an issue we can remove it. I just wanted to get some discrete GPU coverage as well as the integrated Intel.",
+      "parentUuid": "09c2280b_8f123fb4",
+      "revId": "2814a40cfee3c566e216cc61d328872581f23850",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
