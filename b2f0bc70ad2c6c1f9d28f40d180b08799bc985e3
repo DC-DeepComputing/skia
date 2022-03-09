@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9961678a_d27e597e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-03-09T00:36:11Z",
+      "side": 1,
+      "message": "I\u0027m not entirely sure what the \"Validation Performance Warning\" messages mean. Though doesn\u0027t the following mean that the shader actually ran and returned a red color?\n\n\t../../../../../../skia/tests/SkSLTest.cpp:144\tExpected: solid green. Actual:\nRRGGBBAA RRGGBBAA\nFF0000FF FF0000FF\nFF0000FF FF0000FF [SkSLPreserveSideEffects_GPU, Vulkan]\n\t../../../../../../skia/tests/SkSLTest.cpp:144\tExpected: solid green. Actual:\nRRGGBBAA RRGGBBAA\nFF0000FF FF0000FF\nFF0000FF FF0000FF [SkSLPreserveSideEffects_GPU, Vulkan]\n\t../../../../../../skia/tests/SkSLTest.cpp:144\tExpected: solid green. Actual:\nRRGGBBAA RRGGBBAA\nFF0000FF FF0000FF\nFF0000FF FF0000FF [SkSLPreserveSideEffects_GPU, Vulkan]\n\t../../../../../../skia/tests/SkSLTest.cpp:144\tExpected: solid green. Actual:\nRRGGBBAA RRGGBBAA\nFF0000FF FF0000FF\nFF0000FF FF0000FF [SkSLPreserveSideEffects_GPU, Vulkan]\n2 failures\n2 failures",
+      "parentUuid": "319fcd2e_98be6aaf",
+      "revId": "b2f0bc70ad2c6c1f9d28f40d180b08799bc985e3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "be4174db_e1c17987",
         "filename": "tests/SkSLTest.cpp",
         "patchSetId": 5
