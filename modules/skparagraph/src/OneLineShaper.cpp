@@ -16,15 +16,19 @@ namespace textlayout {
 
 void OneLineShaper::commitRunBuffer(const RunInfo&) {
 
+/*
     fCurrentRun->commit();
 
     auto oldUnresolvedCount = fUnresolvedBlocks.size();
+*/
+
 /*
     SkDebugf("Run [%zu:%zu)\n", fCurrentRun->fTextRange.start, fCurrentRun->fTextRange.end);
     for (size_t i = 0; i < fCurrentRun->size(); ++i) {
         SkDebugf("[%zu] %hu %u %f\n", i, fCurrentRun->fGlyphs[i], fCurrentRun->fClusterIndexes[i], fCurrentRun->fPositions[i].fX);
     }
 */
+/*
     // Find all unresolved blocks
     sortOutGlyphs([&](GlyphRange block){
         if (block.width() == 0) {
@@ -52,6 +56,7 @@ void OneLineShaper::commitRunBuffer(const RunInfo&) {
     }
 
     fillGaps(oldUnresolvedCount);
+*/
 }
 
 #ifdef SK_DEBUG
@@ -622,6 +627,53 @@ bool OneLineShaper::iterateThroughShapingRegions(const ShapeVisitor& shape) {
 
 bool OneLineShaper::shape() {
 
+    auto textStyle = fParagraph->styles().front();
+    matchResolvedFonts(textStyle.fStyle, [this](sk_sp<SkTypeface>typeface) {
+
+        // Set up the shaper and shape the next
+        auto shaper = SkShaper::MakeShapeDontWrapOrReorder();
+        if (shaper == nullptr) {
+            // For instance, loadICU does not work. We have to stop the process
+            return Resolved::Something;
+        }
+
+        auto unresolvedText = fParagraph->text();
+        auto textStyle = fParagraph->styles().front();
+
+        // Create one more font to try
+        SkFont font(std::move(typeface), textStyle.fStyle.getFontSize());
+        font.setEdging(SkFont::Edging::kAntiAlias);
+        font.setHinting(SkFontHinting::kSlight);
+        font.setSubpixel(true);
+
+        // Apply fake bold and/or italic settings to the font if the
+        // typeface's attributes do not match the intended font style.
+        int wantedWeight = textStyle.fStyle.getFontStyle().weight();
+        bool fakeBold =
+            wantedWeight >= SkFontStyle::kSemiBold_Weight &&
+            wantedWeight - font.getTypeface()->fontStyle().weight() >= 200;
+        bool fakeItalic =
+            textStyle.fStyle.getFontStyle().slant() == SkFontStyle::kItalic_Slant &&
+            font.getTypeface()->fontStyle().slant() != SkFontStyle::kItalic_Slant;
+        font.setEmbolden(fakeBold);
+        font.setSkewX(fakeItalic ? -SK_Scalar1 / 4 : 0);
+
+        SkShaper::TrivialFontRunIterator fontIter(font, unresolvedText.size());
+        SkShaper::TrivialLanguageRunIterator langIter(textStyle.fStyle.getLocale().c_str(),
+                                                      unresolvedText.size());
+        SkShaper::TrivialBiDiRunIterator bidiIter(0, unresolvedText.size());
+        SkShaper::TrivialScriptRunIterator scriptIter(SkSetFourByteTag('e', 'n', 'U', 'S'),
+                                                      unresolvedText.size());
+
+        shaper->shape(unresolvedText.begin(), unresolvedText.size(),
+                fontIter, bidiIter,scriptIter, langIter,
+                nullptr, 0,
+                std::numeric_limits<SkScalar>::max(), this);
+
+        return Resolved::Everything;
+    });
+    return true;
+/*
     // The text can be broken into many shaping sequences
     // (by place holders, possibly, by hard line breaks or tabs, too)
     auto limitlessWidth = std::numeric_limits<SkScalar>::max();
@@ -714,8 +766,8 @@ bool OneLineShaper::shape() {
 
         return true;
     });
-
     return result;
+*/
 }
 
 // When we extend TextRange to the grapheme edges, we also extend glyphs range
