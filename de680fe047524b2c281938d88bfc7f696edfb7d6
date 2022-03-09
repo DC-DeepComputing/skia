@@ -102,6 +102,30 @@
       },
       "revId": "de680fe047524b2c281938d88bfc7f696edfb7d6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "08a0621b_317aef71",
+        "filename": "src/gpu/vk/GrVkTexture.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 18274
+      },
+      "writtenOn": "2022-03-09T17:47:34Z",
+      "side": 1,
+      "message": "Greg, I am wondering how building locally did not throw any error for missing a bracket or missing a header like you pointed in another comment. Are there some configuration I am missing that are needed while building?\n\nI have also noticed while making any deliberate errors in .mm files are not caught in the build process. Will the errors in .mm be caught only when ran on Mac devices?",
+      "parentUuid": "64cb4f96_1957baf6",
+      "range": {
+        "startLine": 118,
+        "startChar": 91,
+        "endLine": 118,
+        "endChar": 92
+      },
+      "revId": "de680fe047524b2c281938d88bfc7f696edfb7d6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
