@@ -34,6 +34,162 @@
       "parentUuid": "ba12d0aa_6541f8ab",
       "revId": "fb907daf7fc995aadc76ea037bd9a8b7d43665f9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7c3fd14e_d92426b5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-03-09T22:47:06Z",
+      "side": 1,
+      "message": "We could actually get away with making fKind a uint16, and length a uint16, if we wanted to preserve the IRNode existing size. (Or even fKind:8, length:24, if we are concerned about ridiculously long statements--but I don\u0027t think I am concerned.) I think that\u0027s a safe tradeoff.\n\nI\u0027m OK with this CL, contingent on removing fFile in a followup.",
+      "parentUuid": "78f131dd_749f9214",
+      "revId": "fb907daf7fc995aadc76ea037bd9a8b7d43665f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "45dff7ef_4a2ab7c8",
+        "filename": "include/private/SkSLModifiers.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-03-09T22:47:06Z",
+      "side": 1,
+      "message": "Now that Position is a first-class thing, it should probably live in its own header. It feels weird to need to #include ErrorReporter just because we need a Position struct.",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 43
+      },
+      "revId": "fb907daf7fc995aadc76ea037bd9a8b7d43665f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "19be1178_657cd66a",
+        "filename": "include/sksl/SkSLErrorReporter.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-03-09T22:47:06Z",
+      "side": 1,
+      "message": "`Line` is a strange name for a function that takes a line *and* a file; is this because the file argument vanishes in a followup CL? What will the end-state API look like?",
+      "range": {
+        "startLine": 30,
+        "startChar": 20,
+        "endLine": 30,
+        "endChar": 24
+      },
+      "revId": "fb907daf7fc995aadc76ea037bd9a8b7d43665f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4aa70eb1_6c75e3e7",
+        "filename": "include/sksl/SkSLErrorReporter.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-03-09T22:47:06Z",
+      "side": 1,
+      "message": "tiny nit: indentation",
+      "range": {
+        "startLine": 39,
+        "startChar": 0,
+        "endLine": 39,
+        "endChar": 4
+      },
+      "revId": "fb907daf7fc995aadc76ea037bd9a8b7d43665f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7caa6ae6_cb1eca7d",
+        "filename": "include/sksl/SkSLErrorReporter.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-03-09T22:47:06Z",
+      "side": 1,
+      "message": "These aren\u0027t valid relational operators; if fFile doesn\u0027t match, we would have `a\u003cb`, `b\u003ca`, and `a!\u003db` all at the same time. That\u0027s impossible (and will break many algorithms like sort or partition). We could technically just ignore fFile entirely here, and we\u0027d have a valid ordering (assuming fFile is irrelevant)",
+      "range": {
+        "startLine": 64,
+        "startChar": 0,
+        "endLine": 80,
+        "endChar": 0
+      },
+      "revId": "fb907daf7fc995aadc76ea037bd9a8b7d43665f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b2046638_e10f64ee",
+        "filename": "include/sksl/SkSLErrorReporter.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-03-09T22:47:06Z",
+      "side": 1,
+      "message": "Please add `// TODO(skia:bugid): remove fFile`",
+      "range": {
+        "startLine": 82,
+        "startChar": 4,
+        "endLine": 82,
+        "endChar": 32
+      },
+      "revId": "fb907daf7fc995aadc76ea037bd9a8b7d43665f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "688c7b37_77b40a50",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 3481,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-03-09T22:47:06Z",
+      "side": 1,
+      "message": "pos",
+      "range": {
+        "startLine": 3481,
+        "startChar": 32,
+        "endLine": 3481,
+        "endChar": 42
+      },
+      "revId": "fb907daf7fc995aadc76ea037bd9a8b7d43665f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
