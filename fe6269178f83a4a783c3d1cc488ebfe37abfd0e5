@@ -79,6 +79,52 @@
       "message": "I would wrap the entire test declarations block in `// clang-format off` and `// clang-format on`. That way the formatter won\u0027t try to re-indent. That will also make it obvious to readers that the formatting here is meant to be preserved.",
       "revId": "fe6269178f83a4a783c3d1cc488ebfe37abfd0e5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "09d33cdd_ffa221c7",
+        "filename": "tests/SkSLTest.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 305,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-03-09T16:20:45Z",
+      "side": 1,
+      "message": "This syntax is pretty neat!",
+      "range": {
+        "startLine": 305,
+        "startChar": 0,
+        "endLine": 305,
+        "endChar": 26
+      },
+      "revId": "fe6269178f83a4a783c3d1cc488ebfe37abfd0e5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a1a05760_0e19e8a4",
+        "filename": "tests/SkSLTest.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 342,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-03-09T16:20:45Z",
+      "side": 1,
+      "message": "Should there be a concise catch-all define (like SKSL_TEST_ALL?) that\u0027s equivalent to SKSL_TEST(CPU + GPU + SkQP)?",
+      "range": {
+        "startLine": 342,
+        "startChar": 0,
+        "endLine": 342,
+        "endChar": 27
+      },
+      "revId": "fe6269178f83a4a783c3d1cc488ebfe37abfd0e5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
