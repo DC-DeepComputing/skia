@@ -52,6 +52,24 @@
       "parentUuid": "06d94703_bd0cb5da",
       "revId": "6c630f2ce6c5747ea4c6bf586806f9bee0860431",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ee923885_934463c6",
+        "filename": "include/core/SkPaint.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 655,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-03-09T14:50:54Z",
+      "side": 0,
+      "message": "Done",
+      "parentUuid": "268e0900_75915fff",
+      "revId": "6c630f2ce6c5747ea4c6bf586806f9bee0860431",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
