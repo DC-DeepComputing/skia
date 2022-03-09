@@ -16,6 +16,29 @@
       "message": "looks good, thanks for the updates",
       "revId": "de680fe047524b2c281938d88bfc7f696edfb7d6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "64cb4f96_1957baf6",
+        "filename": "src/gpu/vk/GrVkTexture.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-03-09T01:45:33Z",
+      "side": 1,
+      "message": "missing a \u0027)\u0027 at the end here",
+      "range": {
+        "startLine": 118,
+        "startChar": 91,
+        "endLine": 118,
+        "endChar": 92
+      },
+      "revId": "de680fe047524b2c281938d88bfc7f696edfb7d6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
