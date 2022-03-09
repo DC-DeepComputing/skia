@@ -126,6 +126,30 @@
       },
       "revId": "de680fe047524b2c281938d88bfc7f696edfb7d6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6b9e83d3_349936af",
+        "filename": "src/gpu/vk/GrVkTexture.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 18274
+      },
+      "writtenOn": "2022-03-09T23:16:12Z",
+      "side": 1,
+      "message": "Figured this out. Vulkan files were not building. After adding skia_use_vulkan\u003dtrue in args.gn, it included vulkan files in the build. Will fix this in the next patchset.",
+      "parentUuid": "08a0621b_317aef71",
+      "range": {
+        "startLine": 118,
+        "startChar": 91,
+        "endLine": 118,
+        "endChar": 92
+      },
+      "revId": "de680fe047524b2c281938d88bfc7f696edfb7d6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
