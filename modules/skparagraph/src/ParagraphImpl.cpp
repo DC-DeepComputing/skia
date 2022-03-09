@@ -165,12 +165,12 @@ void ParagraphImpl::layout(SkScalar rawWidth) {
 
     if (fState < kMarked) {
         this->fClusters.reset();
-        this->resetShifts();
+        //this->resetShifts();
         this->fClustersIndexFromCodeUnit.reset();
         this->fClustersIndexFromCodeUnit.push_back_n(fText.size() + 1, EMPTY_INDEX);
         this->buildClusterTable();
         fState = kClusterized;
-        this->spaceGlyphs();
+        //this->spaceGlyphs();
         fState = kMarked;
     }
 
@@ -185,7 +185,7 @@ void ParagraphImpl::layout(SkScalar rawWidth) {
 
     if (fState < kFormatted) {
         // Build the picture lazily not until we actually have to paint (or never)
-        this->formatLines(fWidth);
+        //this->formatLines(fWidth);
         fState = kFormatted;
     }
 
@@ -258,14 +258,20 @@ bool ParagraphImpl::computeCodeUnitProperties() {
     }
 
     // Get bidi regions
+    fBidiRegions.emplace_back(
+        SkUnicode::BidiRegion(0ul,
+                              fText.size(),
+                              fParagraphStyle.getTextDirection() == TextDirection::kLtr ? 0 :1 ));
+    /* SIMPLE
     auto textDirection = fParagraphStyle.getTextDirection() == TextDirection::kLtr
                               ? SkUnicode::TextDirection::kLTR
                               : SkUnicode::TextDirection::kRTL;
     if (!fUnicode->getBidiRegions(fText.c_str(), fText.size(), textDirection, &fBidiRegions)) {
         return false;
     }
-
+    */
     // Get all spaces
+    /* SIMPLE
     fUnicode->forEachCodepoint(fText.c_str(), fText.size(),
        [this](SkUnichar unichar, int32_t start, int32_t end, int32_t count) {
             if (fUnicode->isWhitespace(unichar)) {
@@ -279,8 +285,9 @@ bool ParagraphImpl::computeCodeUnitProperties() {
                 }
             }
        });
-
+    */
     // Get line breaks
+    /*
     std::vector<SkUnicode::LineBreakBefore> lineBreaks;
     if (!fUnicode->getLineBreaks(fText.c_str(), fText.size(), &lineBreaks)) {
         return false;
@@ -290,8 +297,9 @@ bool ParagraphImpl::computeCodeUnitProperties() {
                                            ? CodeUnitFlags::kHardLineBreakBefore
                                            : CodeUnitFlags::kSoftLineBreakBefore;
     }
-
+    */
     // Get graphemes
+    /*
     std::vector<SkUnicode::Position> graphemes;
     if (!fUnicode->getGraphemes(fText.c_str(), fText.size(), &graphemes)) {
         return false;
@@ -299,7 +307,7 @@ bool ParagraphImpl::computeCodeUnitProperties() {
     for (auto pos : graphemes) {
         fCodeUnitProperties[pos] |= CodeUnitFlags::kGraphemeStart;
     }
-
+    */
     return true;
 }
 
@@ -383,6 +391,13 @@ SkScalar Run::calculateWidth(size_t start, size_t end, bool clip) const {
 
 // Clusters in the order of the input text
 void ParagraphImpl::buildClusterTable() {
+
+    if (!fRuns.empty()) {
+        auto& run = fRuns[0];
+        fClusters
+            .emplace_back(this, 0, 0, run.size(), this->text(), run.advance().x(), run.advance().y());
+    }
+    /* SIMPLE
     int cluster_count = 1;
     for (auto& run : fRuns) {
         cluster_count += run.isPlaceholder() ? 1 : run.size();
@@ -423,11 +438,13 @@ void ParagraphImpl::buildClusterTable() {
         run.setClusterRange(runStart, fClusters.size());
         fMaxIntrinsicWidth += run.advance().fX;
     }
+    */
     fClustersIndexFromCodeUnit[fText.size()] = fClusters.size();
     fClusters.emplace_back(this, EMPTY_RUN, 0, 0, this->text({fText.size(), fText.size()}), 0, 0);
 }
 
 void ParagraphImpl::spaceGlyphs() {
+    /* SIMPLE
 
     // Walk through all the clusters in the direction of shaped text
     // (we have to walk through the styles in the same order, too)
@@ -471,6 +488,7 @@ void ParagraphImpl::spaceGlyphs() {
             }
         });
     }
+    */
 }
 
 bool ParagraphImpl::shapeTextIntoEndlessLine() {
@@ -511,6 +529,32 @@ bool ParagraphImpl::shapeTextIntoEndlessLine() {
 }
 
 void ParagraphImpl::breakShapedTextIntoLines(SkScalar maxWidth) {
+
+    if (this->fRuns.empty()) {
+        return;
+    }
+    auto& run = this->fRuns[0];
+    auto textRange = TextRange(0, this->text().size());
+    auto clusterRange = ClusterRange(0, this->clusters().size() - 1);
+    auto advance = run.advance();
+    InternalLineMetrics metrics(run.fFont, false);
+
+    if (advance.x() > maxWidth) {
+        advance.fX = maxWidth;
+    }
+    this->addLine(SkPoint::Make(0, 0), advance, textRange, textRange, textRange,
+                  clusterRange, clusterRange, advance.x(),
+                  metrics);
+
+    fLongestLine = advance.x();
+    fHeight = advance.y();
+    fWidth = maxWidth;
+    fMaxIntrinsicWidth = advance.x();
+    fMinIntrinsicWidth = advance.x();
+    fAlphabeticBaseline = fLines.empty() ? fEmptyMetrics.alphabeticBaseline() : fLines.front().alphabeticBaseline();
+    fIdeographicBaseline = fLines.empty() ? fEmptyMetrics.ideographicBaseline() : fLines.front().ideographicBaseline();
+    fExceededMaxLines = false;
+    /* SIMPLE
     TextWrapper textWrapper;
     textWrapper.breakTextIntoLines(
             this,
@@ -543,9 +587,12 @@ void ParagraphImpl::breakShapedTextIntoLines(SkScalar maxWidth) {
     fAlphabeticBaseline = fLines.empty() ? fEmptyMetrics.alphabeticBaseline() : fLines.front().alphabeticBaseline();
     fIdeographicBaseline = fLines.empty() ? fEmptyMetrics.ideographicBaseline() : fLines.front().ideographicBaseline();
     fExceededMaxLines = textWrapper.exceededMaxLines();
+    */
 }
 
 void ParagraphImpl::formatLines(SkScalar maxWidth) {
+
+    /*
     auto effectiveAlign = fParagraphStyle.effective_align();
 
     if (!SkScalarIsFinite(maxWidth) && effectiveAlign != TextAlign::kLeft) {
@@ -558,6 +605,7 @@ void ParagraphImpl::formatLines(SkScalar maxWidth) {
     for (auto& line : fLines) {
         line.format(effectiveAlign, maxWidth);
     }
+    */
 }
 
 void ParagraphImpl::paintLinesIntoPicture(SkScalar x, SkScalar y) {

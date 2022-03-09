@@ -115,6 +115,8 @@ void Run::copyTo(SkTextBlobBuilder& builder, size_t pos, size_t size) const {
 // Cluster range is normalized ([start:end) start < end regardless of TextDirection
 // Boolean value in triple indicates whether the cluster range was found or not
 std::tuple<bool, ClusterIndex, ClusterIndex> Run::findLimitingClusters(TextRange text) const {
+    return std::make_tuple(true, 0, 0);
+    /* SIMPLE
     if (text.width() == 0) {
         // Special Flutter case for "\n" and "...\n"
         if (text.end > this->fTextRange.start) {
@@ -131,6 +133,7 @@ std::tuple<bool, ClusterIndex, ClusterIndex> Run::findLimitingClusters(TextRange
         std::swap(startIndex, endIndex);
     }
     return std::make_tuple(startIndex != fClusterRange.end && endIndex != fClusterRange.end, startIndex, endIndex);
+   */
 }
 
 // Adjust the text to grapheme edges so the first grapheme start is in the text and the last grapheme start is in the text

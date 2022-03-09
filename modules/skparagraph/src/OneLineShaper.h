@@ -79,6 +79,16 @@ private:
     void commitLine() override {}
 
     Buffer runBuffer(const RunInfo& info) override {
+        fCurrentRun = std::make_shared<Run>(fParagraph->fRuns.emplace_back(
+                                           fParagraph,
+                                           info,
+                                           fCurrentText.start,
+                                           fHeight,
+                                           fUseHalfLeading,
+                                           fBaselineShift,
+                                           0,
+                                           fAdvance.fX));
+        /*
         fCurrentRun = std::make_shared<Run>(fParagraph,
                                            info,
                                            fCurrentText.start,
@@ -87,6 +97,7 @@ private:
                                            fBaselineShift,
                                            ++fUniqueRunId,
                                            fAdvance.fX);
+        */
         return fCurrentRun->newRunBuffer();
     }
 

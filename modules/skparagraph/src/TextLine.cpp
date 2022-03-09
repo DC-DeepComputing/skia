@@ -168,7 +168,23 @@ SkRect TextLine::paint(SkCanvas* textCanvas, SkScalar x, SkScalar y) {
         return bounds;
     }
 
+    TextStyle& style = this->fOwner->styles()[0].fStyle;
+    Run& run = this->fOwner->run(0);
+    size_t end = 0;
+    while (end < run.size() && run.fPositions[end].fX < fAdvance.fX) {
+        ++end;
+    }
+    TextRange textRange = this->text();
+    ClipContext context = { &run,
+                          0,
+                          end,
+                          0,
+                          SkRect::MakeXYWH(0, 0, this->width(), this->height()),
+                          0,
+                          false };
     if (fHasBackground) {
+        this->paintBackground(textCanvas, x, y, textRange, style, context);
+        /* SIMPLE
         this->iterateThroughVisualRuns(false,
             [textCanvas, x, y, this]
             (const Run* run, SkScalar runOffsetInLine, TextRange textRange, SkScalar* runWidthInLine) {
@@ -179,9 +195,13 @@ SkRect TextLine::paint(SkCanvas* textCanvas, SkScalar x, SkScalar y) {
                 });
             return true;
             });
+        */
     }
 
     if (fHasShadows) {
+        auto shadowBounds = this->paintShadow(textCanvas, x, y, textRange, style, context);
+        bounds.joinPossiblyEmptyRect(shadowBounds);
+        /* SIMPLE
         this->iterateThroughVisualRuns(false,
             [textCanvas, x, y, &bounds, this]
             (const Run* run, SkScalar runOffsetInLine, TextRange textRange, SkScalar* runWidthInLine) {
@@ -193,6 +213,7 @@ SkRect TextLine::paint(SkCanvas* textCanvas, SkScalar x, SkScalar y) {
                 });
             return true;
             });
+        */
     }
 
     ensureTextBlobCachePopulated();
@@ -205,6 +226,8 @@ SkRect TextLine::paint(SkCanvas* textCanvas, SkScalar x, SkScalar y) {
     }
 
     if (fHasDecorations) {
+        this->paintDecorations(textCanvas, x, y, textRange, style, context);
+        /* SIMPLE
         this->iterateThroughVisualRuns(false,
             [textCanvas, x, y, this]
             (const Run* run, SkScalar runOffsetInLine, TextRange textRange, SkScalar* runWidthInLine) {
@@ -215,6 +238,7 @@ SkRect TextLine::paint(SkCanvas* textCanvas, SkScalar x, SkScalar y) {
                 });
                 return true;
         });
+        */
     }
 
     return bounds;
@@ -224,6 +248,23 @@ void TextLine::ensureTextBlobCachePopulated() {
     if (fTextBlobCachePopulated) {
         return;
     }
+
+    TextStyle& style = this->fOwner->styles()[0].fStyle;
+    Run& run = this->fOwner->run(0);
+    TextRange textRange = this->text();
+    size_t end = 0;
+    while (end < run.size() && run.fPositions[end].fX < fAdvance.fX) {
+        ++end;
+    }
+    ClipContext context = { &run,
+                          0,
+                          end,
+                          0,
+                          SkRect::MakeXYWH(0, 0, this->width(), this->height()),
+                          0,
+                          false };
+    this->buildTextBlob(textRange, style, context);
+    /* SIMPLE
     this->iterateThroughVisualRuns(false,
             [this]
             (const Run* run, SkScalar runOffsetInLine, TextRange textRange, SkScalar* runWidthInLine) {
@@ -238,6 +279,7 @@ void TextLine::ensureTextBlobCachePopulated() {
             });
             return true;
         });
+    */
     fTextBlobCachePopulated = true;
 }
 
