@@ -2548,7 +2548,7 @@ void GrGLGpu::flushWireframeState(bool enabled) {
 
 void GrGLGpu::flushBlendAndColorWrite(
         const GrXferProcessor::BlendInfo& blendInfo, const skgpu::Swizzle& swizzle) {
-    if (this->glCaps().neverDisableColorWrites() && !blendInfo.fWriteColor) {
+    if (this->glCaps().neverDisableColorWrites() && !blendInfo.fWriteColor1) {
         // We need to work around a driver bug by using a blend state that preserves the dst color,
         // rather than disabling color writes.
         GrXferProcessor::BlendInfo preserveDstBlend;
@@ -2558,14 +2558,14 @@ void GrGLGpu::flushBlendAndColorWrite(
         return;
     }
 
-    skgpu::BlendEquation equation = blendInfo.fEquation;
+    skgpu::BlendEquation equation = blendInfo.fEquation1;
     skgpu::BlendCoeff srcCoeff = blendInfo.fSrcBlend;
     skgpu::BlendCoeff dstCoeff = blendInfo.fDstBlend;
 
     // Any optimization to disable blending should have already been applied and
     // tweaked the equation to "add" or "subtract", and the coeffs to (1, 0).
     bool blendOff = skgpu::BlendShouldDisable(equation, srcCoeff, dstCoeff) ||
-                    !blendInfo.fWriteColor;
+                    !blendInfo.fWriteColor1;
 
     if (blendOff) {
         if (kNo_TriState != fHWBlendState.fEnabled) {
@@ -2625,7 +2625,7 @@ void GrGLGpu::flushBlendAndColorWrite(
         }
 
         if (skgpu::BlendCoeffRefsConstant(srcCoeff) || skgpu::BlendCoeffRefsConstant(dstCoeff)) {
-            SkPMColor4f blendConst = swizzle.applyTo(blendInfo.fBlendConstant);
+            SkPMColor4f blendConst = swizzle.applyTo(blendInfo.fBlendConstant1);
             if (!fHWBlendState.fConstColorValid || fHWBlendState.fConstColor != blendConst) {
                 GL_CALL(BlendColor(blendConst.fR, blendConst.fG, blendConst.fB, blendConst.fA));
                 fHWBlendState.fConstColor = blendConst;
@@ -2634,7 +2634,7 @@ void GrGLGpu::flushBlendAndColorWrite(
         }
     }
 
-    this->flushColorWrite(blendInfo.fWriteColor);
+    this->flushColorWrite(blendInfo.fWriteColor1);
 }
 
 void GrGLGpu::bindTexture(int unitIdx, GrSamplerState samplerState, const skgpu::Swizzle& swizzle,
