@@ -298,6 +298,29 @@ void SkPathRef::writeToBuffer(SkWBuffer* buffer) const {
     SkASSERT(buffer->pos() - beforePos == (size_t) this->writeSize());
 }
 
+#include "src/core/SkOpts.h"
+
+void SkPathRef::hack_just_for_experiment() {
+    uint32_t hash = 0;
+
+    const SkRect& bounds = this->getBounds();
+
+    int counts[3] = {
+        fVerbs.count(),
+        fPoints.count(),
+        fConicWeights.count()
+    };
+
+    hash = SkOpts::hash_fn(counts, sizeof(counts), hash);
+    hash = SkOpts::hash_fn(fVerbs.begin(), fVerbs.bytes(), hash);
+    hash = SkOpts::hash_fn(fPoints.begin(), fVerbs.bytes(), hash);
+    hash = SkOpts::hash_fn(fConicWeights.begin(), fConicWeights.bytes(), hash);
+    hash = SkOpts::hash_fn(&bounds, sizeof(bounds), hash);
+
+    fGenerationID = hash;
+}
+
+
 uint32_t SkPathRef::writeSize() const {
     return uint32_t(5 * sizeof(uint32_t) +
                     fVerbs.bytes() + fPoints.bytes() + fConicWeights.bytes() +

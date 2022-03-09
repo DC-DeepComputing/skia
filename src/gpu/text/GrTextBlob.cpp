@@ -577,6 +577,8 @@ std::optional<PathOpSubmitter> PathOpSubmitter::MakeFromBuffer(SkReadBuffer& buf
 
     for (auto [i, glyphID] : SkMakeEnumerate(SkMakeSpan(glyphIDs, glyphCount))) {
         paths[i] = *pathGetter.glyph(glyphID)->path();
+
+        paths[i].hack_just_for_experiment();
     }
 
     SkASSERT(buffer.isValid());
