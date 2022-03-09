@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3d2df5fc_0147da40",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 13
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-03-09T17:02:38Z",
+      "side": 1,
+      "message": "% the MSVC woes",
+      "revId": "367f8b99bbcae18b6d26e52004d5abc3367261af",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dc6bca13_f91dfb40",
+        "filename": "src/gpu/tessellate/StrokeHardwareTessellator.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 272,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-03-09T17:02:38Z",
+      "side": 1,
+      "message": "add a \u0027\\n\u0027 ?",
+      "revId": "367f8b99bbcae18b6d26e52004d5abc3367261af",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
