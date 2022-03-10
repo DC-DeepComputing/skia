@@ -87,6 +87,24 @@
       "parentUuid": "1648dd04_2ed3f7f6",
       "revId": "9fc6a704b1f450f01481cb94d0bf376e2ca8d307",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a4dba728_00457f06",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2022-03-10T16:36:48Z",
+      "side": 1,
+      "message": "Oh, I do like that idea.  I don\u0027t like SK_BUILD_FOR_SKQP and would be happy to remove it if we could.  I\u0027m good with proceeding with this type of method and will look to get Brian\u0027s feedback on a SK_BUILD_FOR_ANDROID guarded method for API level on GrContextOptions.",
+      "parentUuid": "7808c144_5e0a72e7",
+      "revId": "9fc6a704b1f450f01481cb94d0bf376e2ca8d307",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
