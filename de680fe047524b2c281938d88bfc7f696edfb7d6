@@ -150,6 +150,30 @@
       },
       "revId": "de680fe047524b2c281938d88bfc7f696edfb7d6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0c6c89bd_a5e1e40a",
+        "filename": "src/gpu/vk/GrVkTexture.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-03-10T17:27:23Z",
+      "side": 1,
+      "message": "yeah we have things for the other backends as well:\nskia_use_metal\nskia_use_direct3d\nskia_use_dawn\n\nSome of these are OS dependent. For example, you couldn\u0027t set skia_use_metal \u003d true on a non mac device or skia_use_direct3d on a non windows device (modulo lots of magic to get the build frameworks right and to support the cross compiling).",
+      "parentUuid": "6b9e83d3_349936af",
+      "range": {
+        "startLine": 118,
+        "startChar": 91,
+        "endLine": 118,
+        "endChar": 92
+      },
+      "revId": "de680fe047524b2c281938d88bfc7f696edfb7d6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
