@@ -22,6 +22,98 @@
       },
       "revId": "25a6221a70bc9ad0bfd1696402e525afd1cd3a54",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "10a9d863_c7df1cb2",
+        "filename": "src/sksl/SkSLCompiler.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 476,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-03-10T20:56:32Z",
+      "side": 1,
+      "message": "Was this a latent bug? This feels like it doesn\u0027t belong in this CL but I don\u0027t really know why it needed to be added at all.",
+      "range": {
+        "startLine": 476,
+        "startChar": 0,
+        "endLine": 476,
+        "endChar": 38
+      },
+      "revId": "25a6221a70bc9ad0bfd1696402e525afd1cd3a54",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c569eceb_c27900e1",
+        "filename": "src/sksl/SkSLErrorReporter.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-03-10T20:56:32Z",
+      "side": 1,
+      "message": "very tiny nit: please restore blank line before `} // namespace SkSL`",
+      "range": {
+        "startLine": 48,
+        "startChar": 0,
+        "endLine": 49,
+        "endChar": 1
+      },
+      "revId": "25a6221a70bc9ad0bfd1696402e525afd1cd3a54",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "61275520_989c2fc1",
+        "filename": "src/sksl/codegen/SkSLVMCodeGenerator.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 672,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-03-10T20:56:32Z",
+      "side": 1,
+      "message": "This will cost O(n) on the length of the program source, for every Variable, Function, Statement, and For-loop iteration. (The Statement/For loop costs could be dodged in non-Debug builds, but as it stands in this CL, we do pay it.) Will a followup fix it?",
+      "range": {
+        "startLine": 672,
+        "startChar": 0,
+        "endLine": 672,
+        "endChar": 51
+      },
+      "revId": "25a6221a70bc9ad0bfd1696402e525afd1cd3a54",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eb322371_9dc25a36",
+        "filename": "src/sksl/codegen/SkSLVMCodeGenerator.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 1900,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-03-10T20:56:32Z",
+      "side": 1,
+      "message": "This will be the same every iteration through the loop, so we should probably compute this line number once outside the loop. (Even if it\u0027s inexpensive once we\u0027re done, it\u0027s still not going to be as cheap as not doing it)",
+      "range": {
+        "startLine": 1900,
+        "startChar": 32,
+        "endLine": 1900,
+        "endChar": 91
+      },
+      "revId": "25a6221a70bc9ad0bfd1696402e525afd1cd3a54",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
