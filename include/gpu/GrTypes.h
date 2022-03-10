@@ -16,6 +16,8 @@ class GrBackendSemaphore;
 class SkImage;
 class SkSurface;
 
+#define SK_EXPERIMENTAL_SIMULATE_DRAWGLYPHRUNLIST_WITH_SLUG_SERIALIZE 1
+
 ////////////////////////////////////////////////////////////////////////////////
 
 /**

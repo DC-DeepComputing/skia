@@ -577,6 +577,8 @@ std::optional<PathOpSubmitter> PathOpSubmitter::MakeFromBuffer(SkReadBuffer& buf
 
     for (auto [i, glyphID] : SkMakeEnumerate(SkMakeSpan(glyphIDs, glyphCount))) {
         paths[i] = *pathGetter.glyph(glyphID)->path();
+
+        paths[i].hack_just_for_experiment();
     }
 
     SkASSERT(buffer.isValid());
@@ -669,7 +671,8 @@ void PathOpSubmitter::submitOps(SkCanvas* canvas,
 
             SkPath deviceOutline;
             path.transform(pathMatrix, &deviceOutline);
-            deviceOutline.setIsVolatile(true);
+//            deviceOutline.setIsVolatile(true);
+            deviceOutline.hack_just_for_experiment();
             canvas->drawPath(deviceOutline, runPaint);
         }
     }
