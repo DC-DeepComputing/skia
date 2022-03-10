@@ -58,6 +58,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b37f4f96_ac3d4ea6",
+        "filename": "src/gpu/d3d/GrD3DTextureRenderTarget.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 18274
+      },
+      "writtenOn": "2022-03-10T20:11:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1c59fb20_c352d64f",
+      "range": {
+        "startLine": 101,
+        "startChar": 74,
+        "endLine": 101,
+        "endChar": 75
+      },
+      "revId": "de680fe047524b2c281938d88bfc7f696edfb7d6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5683f0ae_7a0ba8a9",
@@ -71,6 +95,30 @@
       "writtenOn": "2022-03-09T01:57:12Z",
       "side": 1,
       "message": "missing header changes",
+      "range": {
+        "startLine": 24,
+        "startChar": 33,
+        "endLine": 24,
+        "endChar": 55
+      },
+      "revId": "de680fe047524b2c281938d88bfc7f696edfb7d6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "48c53348_4f3ac174",
+        "filename": "src/gpu/mtl/GrMtlAttachment.mm",
+        "patchSetId": 2
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 18274
+      },
+      "writtenOn": "2022-03-10T20:11:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5683f0ae_7a0ba8a9",
       "range": {
         "startLine": 24,
         "startChar": 33,
@@ -165,6 +213,30 @@
       "writtenOn": "2022-03-10T17:27:23Z",
       "side": 1,
       "message": "yeah we have things for the other backends as well:\nskia_use_metal\nskia_use_direct3d\nskia_use_dawn\n\nSome of these are OS dependent. For example, you couldn\u0027t set skia_use_metal \u003d true on a non mac device or skia_use_direct3d on a non windows device (modulo lots of magic to get the build frameworks right and to support the cross compiling).",
+      "parentUuid": "6b9e83d3_349936af",
+      "range": {
+        "startLine": 118,
+        "startChar": 91,
+        "endLine": 118,
+        "endChar": 92
+      },
+      "revId": "de680fe047524b2c281938d88bfc7f696edfb7d6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "42642d02_3ea8c111",
+        "filename": "src/gpu/vk/GrVkTexture.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 18274
+      },
+      "writtenOn": "2022-03-10T20:11:35Z",
+      "side": 1,
+      "message": "Thanks Greg. Fixed the issues in the latest patch set.",
       "parentUuid": "6b9e83d3_349936af",
       "range": {
         "startLine": 118,
