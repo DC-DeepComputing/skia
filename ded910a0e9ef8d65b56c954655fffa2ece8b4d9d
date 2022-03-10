@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "779a3830_c4b832b8",
+        "filename": "tests/ResourceCacheTest.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1142,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-03-10T21:30:30Z",
+      "side": 1,
+      "message": "looks like you need {} here, crashing test bots.",
+      "range": {
+        "startLine": 1142,
+        "startChar": 48,
+        "endLine": 1142,
+        "endChar": 55
+      },
+      "revId": "ded910a0e9ef8d65b56c954655fffa2ece8b4d9d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
