@@ -138,6 +138,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4cbd93cf_1bf531ab",
+        "filename": "include/private/SkSLModifiers.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-03-10T20:43:06Z",
+      "side": 1,
+      "message": "Does SkSLModifiers actually need to #include ErrorReporter? I see it\u0027s fixed in various other spots...",
+      "parentUuid": "8feb6bf4_dbc6c836",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 43
+      },
+      "revId": "fb907daf7fc995aadc76ea037bd9a8b7d43665f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "19be1178_657cd66a",
         "filename": "include/sksl/SkSLErrorReporter.h",
         "patchSetId": 7
@@ -173,6 +197,30 @@
       "side": 1,
       "message": "It\u0027s going to have Position::Line(int) and Position::Range(int, int).",
       "parentUuid": "19be1178_657cd66a",
+      "range": {
+        "startLine": 30,
+        "startChar": 20,
+        "endLine": 30,
+        "endChar": 24
+      },
+      "revId": "fb907daf7fc995aadc76ea037bd9a8b7d43665f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "681a007a_9586f01d",
+        "filename": "include/sksl/SkSLErrorReporter.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-03-10T20:43:06Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "737d0efe_0ef42a59",
       "range": {
         "startLine": 30,
         "startChar": 20,

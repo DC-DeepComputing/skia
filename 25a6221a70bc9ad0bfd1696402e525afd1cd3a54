@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a556bbd8_3c055c74",
+        "filename": "include/sksl/SkSLPosition.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-03-10T20:43:06Z",
+      "side": 1,
+      "message": "Please add a comment here explaining how this variable works. (It looks like the value of fEndOffset dictates whether the variable contains a line number or a start offset?)",
+      "range": {
+        "startLine": 109,
+        "startChar": 12,
+        "endLine": 109,
+        "endChar": 30
+      },
+      "revId": "25a6221a70bc9ad0bfd1696402e525afd1cd3a54",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
