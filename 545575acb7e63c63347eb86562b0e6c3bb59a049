@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6eb04cb8_9b69c056",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 47
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-03-10T21:16:43Z",
+      "side": 1,
+      "message": "Metal bits LGTM",
+      "revId": "545575acb7e63c63347eb86562b0e6c3bb59a049",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
