@@ -941,7 +941,7 @@ SkScalerContext_FreeType::SkScalerContext_FreeType(sk_sp<SkTypeface_FreeType> ty
     FT_F26Dot6 scaleX = SkScalarToFDot6(fScale.fX);
     FT_F26Dot6 scaleY = SkScalarToFDot6(fScale.fY);
 
-    if (FT_IS_SCALABLE(fFaceRec->fFace)) {
+    if (FT_IS_SCALABLE(fFaceRec->fFace) && !FT_HAS_SBIX(fFaceRec->fFace)) {
         err = FT_Set_Char_Size(fFaceRec->fFace.get(), scaleX, scaleY, 72, 72);
         if (err != 0) {
             SK_TRACEFTR(err, "FT_Set_CharSize(%s, %f, %f) failed.",

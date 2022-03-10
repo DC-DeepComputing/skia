@@ -51,6 +51,8 @@ protected:
     void generateFontMetrics(SkFontMetrics*) override;
 
 private:
+    void getVerticalOffset(CGGlyph glyphID, SkPoint* offset) const;
+
     class Offscreen {
     public:
         Offscreen(SkColor foregroundColor);

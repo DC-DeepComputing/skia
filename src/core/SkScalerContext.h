@@ -291,7 +291,7 @@ public:
     }
 
     // DEPRECATED
-    bool isVertical() const { return false; }
+    bool isVertical() const { return true; }
 
     SkGlyph     makeGlyph(SkPackedGlyphID, SkArenaAlloc*);
     void        getImage(const SkGlyph&);

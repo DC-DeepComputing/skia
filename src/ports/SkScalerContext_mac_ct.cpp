@@ -52,7 +52,16 @@
 #include <algorithm>
 
 class SkDescriptor;
-
+void SkScalerContext_Mac::getVerticalOffset(CGGlyph glyphID, SkPoint* offset) const {
+    // CTFontGetVerticalTranslationsForGlyphs produces cgVertOffset in CG units (pixels, y up).
+    CGSize cgVertOffset;
+    CTFontGetVerticalTranslationsForGlyphs(fCTFont.get(), &glyphID, &cgVertOffset, 1);
+    cgVertOffset = CGSizeApplyAffineTransform(cgVertOffset, fTransform);
+    SkPoint skVertOffset = { (SkScalar)cgVertOffset.width, (SkScalar)cgVertOffset.height };
+    // From CG units (pixels, y up) to SkGlyph units (pixels, y down).
+    skVertOffset.fY = -skVertOffset.fY;
+    *offset = skVertOffset;
+}
 
 // Set to make glyph bounding boxes visible.
 #define SK_SHOW_TEXT_BLIT_COVERAGE 0
@@ -275,6 +284,14 @@ CGRGBPixel* SkScalerContext_Mac::Offscreen::getCG(const SkScalerContext_Mac& con
         subY = SkFixedToFloat(glyph.getSubYFixed());
     }
 
+    // CoreText and CoreGraphics always draw using the horizontal baseline origin.
+    if ((true)) {
+        SkPoint offset;
+        context.getVerticalOffset(glyphID, &offset);
+        subX += offset.fX;
+        subY += offset.fY;
+    }
+
     CGPoint point = CGPointMake(-glyph.left() + subX, glyph.top() + glyph.height() - subY);
     // Prior to 10.10, CTFontDrawGlyphs acted like CGContextShowGlyphsAtPositions and took
     // 'positions' which are in text space. The glyph location (in device space) must be
@@ -308,8 +325,13 @@ void SkScalerContext_Mac::generateMetrics(SkGlyph* glyph, SkArenaAlloc* alloc) {
 
     // The following block produces cgAdvance in CG units (pixels, y up).
     CGSize cgAdvance;
-    CTFontGetAdvancesForGlyphs(fCTFont.get(), kCTFontOrientationHorizontal,
+    CTFontGetAdvancesForGlyphs(fCTFont.get(), kCTFontOrientationVertical,
                                &cgGlyph, &cgAdvance, 1);
+    // Vertical advances are returned as widths instead of heights.
+    using std::swap;
+    swap(cgAdvance.height, cgAdvance.width);
+    cgAdvance.height = -cgAdvance.height;
+
     cgAdvance = CGSizeApplyAffineTransform(cgAdvance, fTransform);
     glyph->fAdvanceX =  SkFloatFromCGFloat(cgAdvance.width);
     glyph->fAdvanceY = -SkFloatFromCGFloat(cgAdvance.height);
@@ -350,6 +372,12 @@ void SkScalerContext_Mac::generateMetrics(SkGlyph* glyph, SkArenaAlloc* alloc) {
         skBounds = SkRect::MakeXYWH(cgBounds.origin.x, -cgBounds.origin.y - cgBounds.size.height,
                                     cgBounds.size.width, cgBounds.size.height);
     }
+
+    // Due to possible vertical bounds bugs and simplicity, skBounds is the horizontal bounds.
+    // Convert these horizontal bounds into vertical bounds.
+    SkPoint offset;
+    this->getVerticalOffset(cgGlyph, &offset);
+    skBounds.offset(offset);
 
     // Currently the bounds are based on being rendered at (0,0).
     // The top left must not move, since that is the base from which subpixel positioning is offset.
