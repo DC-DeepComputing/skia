@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d5040050_88604e5b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18274
+      },
+      "writtenOn": "2022-03-10T22:45:48Z",
+      "side": 1,
+      "message": "Apologies for multiple patches to fix the issue, Greg. If possible, is there a way I can get permission to run CQ? Would make it easy to run beforehand :)",
+      "revId": "c1396006685f89cc2f992a82b68282de4202085b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
