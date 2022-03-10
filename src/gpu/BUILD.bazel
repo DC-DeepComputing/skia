@@ -211,6 +211,25 @@ cc_library(
 )
 
 cc_library(
+    name = "dawn_srcs",
+    deps = [
+        "//src/gpu/dawn:GrDawnAttachment_src",
+        "//src/gpu/dawn:GrDawnBuffer_src",
+        "//src/gpu/dawn:GrDawnCaps_src",
+        "//src/gpu/dawn:GrDawnGpu_src",
+        "//src/gpu/dawn:GrDawnOpsRenderPass_src",
+        "//src/gpu/dawn:GrDawnProgramBuilder_src",
+        "//src/gpu/dawn:GrDawnProgramDataManager_src",
+        "//src/gpu/dawn:GrDawnRenderTarget_src",
+        "//src/gpu/dawn:GrDawnRingBuffer_src",
+        "//src/gpu/dawn:GrDawnTextureRenderTarget_src",
+        "//src/gpu/dawn:GrDawnTexture_src",
+        "//src/gpu/dawn:GrDawnTypesPriv_src",
+        "//src/gpu/dawn:GrDawnUtil_src",
+    ],
+)
+
+cc_library(
     name = "gl_srcs",
     deps = [
         "//src/gpu/gl:GrGLAssembleGLESInterfaceAutogen_src",
@@ -335,6 +354,10 @@ cc_library(
     name = "srcs",
     visibility = ["//:__subpackages__"],
     deps = [":core_srcs"] + select({
+        "//bazel/common_config_settings:dawn_backend": [
+            ":dawn_srcs",
+            ":v1_srcs",
+        ],
         "//bazel/common_config_settings:gl_backend": [
             ":gl_srcs",
             ":v1_srcs",
@@ -651,13 +674,6 @@ generated_cc_atom(
 )
 
 generated_cc_atom(
-    name = "GrBlend_hdr",
-    hdrs = ["GrBlend.h"],
-    visibility = ["//:__subpackages__"],
-    deps = ["//include/core:SkTypes_hdr"],
-)
-
-generated_cc_atom(
     name = "GrBlurUtils_hdr",
     hdrs = ["GrBlurUtils.h"],
     visibility = ["//:__subpackages__"],
@@ -681,6 +697,7 @@ generated_cc_atom(
         ":GrThreadSafeCache_hdr",
         ":GrUtil_hdr",
         ":SkGr_hdr",
+        "//include/core:SkBitmap_hdr",
         "//include/core:SkPaint_hdr",
         "//include/gpu:GrDirectContext_hdr",
         "//include/gpu:GrRecordingContext_hdr",
@@ -742,7 +759,7 @@ generated_cc_atom(
     hdrs = ["GrCaps.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrBlend_hdr",
+        ":Blend_hdr",
         ":GrSamplerState_hdr",
         ":GrShaderCaps_hdr",
         ":GrSurfaceProxy_hdr",
@@ -1095,6 +1112,7 @@ generated_cc_atom(
         ":SkGr_hdr",
         ":SurfaceContext_hdr",
         ":SurfaceFillContext_hdr",
+        "//include/core:SkBitmap_hdr",
         "//include/gpu:GrContextThreadSafeProxy_hdr",
         "//include/gpu:GrDirectContext_hdr",
         "//src/core:SkRuntimeEffectPriv_hdr",
@@ -2602,6 +2620,7 @@ generated_cc_atom(
         ":GrTextureProxy_hdr",
         ":SkGr_hdr",
         ":SurfaceContext_hdr",
+        "//include/core:SkBitmap_hdr",
         "//include/gpu:GrRecordingContext_hdr",
         "//src/core:SkMatrixProvider_hdr",
         "//src/gpu/geometry:GrStyledShape_hdr",
@@ -3283,7 +3302,7 @@ generated_cc_atom(
     hdrs = ["GrXferProcessor.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrBlend_hdr",
+        ":Blend_hdr",
         ":GrNonAtomicRef_hdr",
         ":GrProcessorAnalysis_hdr",
         ":GrProcessor_hdr",
@@ -3341,7 +3360,7 @@ generated_cc_atom(
     hdrs = ["SkGr.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":GrBlend_hdr",
+        ":Blend_hdr",
         ":GrCaps_hdr",
         ":GrColor_hdr",
         ":GrSamplerState_hdr",
@@ -3538,4 +3557,11 @@ generated_cc_atom(
         ":Swizzle_hdr",
         "//src/core:SkRasterPipeline_hdr",
     ],
+)
+
+generated_cc_atom(
+    name = "Blend_hdr",
+    hdrs = ["Blend.h"],
+    visibility = ["//:__subpackages__"],
+    deps = ["//include/core:SkTypes_hdr"],
 )
