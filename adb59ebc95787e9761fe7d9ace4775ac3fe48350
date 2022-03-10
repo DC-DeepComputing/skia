@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "37fd7139_0e107b24",
+        "filename": "src/core/SkKeyHelpers.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 328,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-03-10T20:09:39Z",
+      "side": 1,
+      "message": "Move these to a constexpr and name it kErrorColor?",
+      "range": {
+        "startLine": 328,
+        "startChar": 69,
+        "endLine": 328,
+        "endChar": 84
+      },
+      "revId": "adb59ebc95787e9761fe7d9ace4775ac3fe48350",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "87bc36dc_988db0f2",
+        "filename": "src/shaders/SkShader.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-03-10T20:09:39Z",
+      "side": 1,
+      "message": "Let\u0027s just use {1.f, 0.f, 0.f, 1.f} and not modify a header in include/ (even if it\u0027s in private).",
+      "range": {
+        "startLine": 160,
+        "startChar": 65,
+        "endLine": 160,
+        "endChar": 80
+      },
+      "revId": "adb59ebc95787e9761fe7d9ace4775ac3fe48350",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
