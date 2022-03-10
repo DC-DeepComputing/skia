@@ -16,6 +16,23 @@
       "message": "It\u0027s unfortunate that TextDesc is used g3.  Some cleanup is needed, but for now we can relocate the new field to the end of the struct (so that it falls outside existing initializer lists), and add default initializers to all fields.",
       "revId": "07dad6af0d6105bc5e9661db6d719f353f48f91d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "413f9e56_6e5dbed5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2022-03-10T02:21:59Z",
+      "side": 1,
+      "message": "Canary failures seem to be unrelated.",
+      "revId": "07dad6af0d6105bc5e9661db6d719f353f48f91d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
