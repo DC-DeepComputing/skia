@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "19713b30_90473684",
+        "filename": "modules/skottie/src/text/TextAdapter.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 593,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2022-03-10T17:44:09Z",
+      "side": 1,
+      "message": "Indeed, empirically, tracking is always centered -- although that may be a Bodymovin limitation/artifact.  There was a comment to that effect, I was about to remove it inadvertently.  Restored below.",
+      "parentUuid": "cfb8c167_2ff2f0d2",
+      "revId": "016c414eb5790ffba7a06b94da4e8628946ad5cf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f5c07f19_ea5dc0f7",
@@ -48,6 +66,24 @@
       "writtenOn": "2022-03-10T16:31:31Z",
       "side": 1,
       "message": "Now that there are two SkV2, it would be helpful to name them here.",
+      "revId": "016c414eb5790ffba7a06b94da4e8628946ad5cf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ec34b7a9_c5e25391",
+        "filename": "modules/skottie/src/text/TextAdapter.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2022-03-10T17:44:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f5c07f19_ea5dc0f7",
       "revId": "016c414eb5790ffba7a06b94da4e8628946ad5cf",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
