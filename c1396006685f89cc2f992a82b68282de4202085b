@@ -16,6 +16,24 @@
       "message": "Apologies for multiple patches to fix the issue, Greg. If possible, is there a way I can get permission to run CQ? Would make it easy to run beforehand :)",
       "revId": "c1396006685f89cc2f992a82b68282de4202085b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "16682df4_74476780",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-03-10T23:34:58Z",
+      "side": 1,
+      "message": "Unfortunately I think they have that locked down and I\u0027m not if outside folks can be whitelisted. You can read the bot failure logs though right?",
+      "parentUuid": "d5040050_88604e5b",
+      "revId": "c1396006685f89cc2f992a82b68282de4202085b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
