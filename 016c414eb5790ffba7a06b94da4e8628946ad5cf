@@ -16,6 +16,40 @@
       "message": "Test before: https://imgur.com/a/agh6eOF\nTest after: https://imgur.com/a/5xuIvvJ",
       "revId": "016c414eb5790ffba7a06b94da4e8628946ad5cf",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cfb8c167_2ff2f0d2",
+        "filename": "modules/skottie/src/text/TextAdapter.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 593,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-03-10T16:31:31Z",
+      "side": 1,
+      "message": "So tracking in AE is always centered? I\u0027m just trying to figure out how this is different from how I normally think of tracking, which is just that it\u0027s something to add to the advance width. It looks like the issue is that different parts of the line can have different tracking, so the half on each side is similar to the compromise in CSS layout where the leading is half on top and half on bottom (except when adjusted for the first and last line).",
+      "revId": "016c414eb5790ffba7a06b94da4e8628946ad5cf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f5c07f19_ea5dc0f7",
+        "filename": "modules/skottie/src/text/TextAdapter.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-03-10T16:31:31Z",
+      "side": 1,
+      "message": "Now that there are two SkV2, it would be helpful to name them here.",
+      "revId": "016c414eb5790ffba7a06b94da4e8628946ad5cf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
