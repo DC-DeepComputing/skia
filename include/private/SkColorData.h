@@ -433,6 +433,7 @@ using SkPMColor4f = SkRGBA4f<kPremul_SkAlphaType>;
 constexpr SkPMColor4f SK_PMColor4fTRANSPARENT = { 0, 0, 0, 0 };
 constexpr SkPMColor4f SK_PMColor4fBLACK = { 0, 0, 0, 1 };
 constexpr SkPMColor4f SK_PMColor4fWHITE = { 1, 1, 1, 1 };
+constexpr SkPMColor4f SK_PMColor4fRED = { 1, 0, 0, 1 };
 constexpr SkPMColor4f SK_PMColor4fILLEGAL = { SK_FloatNegativeInfinity,
                                               SK_FloatNegativeInfinity,
                                               SK_FloatNegativeInfinity,
