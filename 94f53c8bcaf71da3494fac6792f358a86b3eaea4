@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2ae1027f_a4b8b5eb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 48
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-03-10T21:39:17Z",
+      "side": 1,
+      "message": "Non-metal changes look fine barring maybe simplifying away from BlendFormula",
+      "revId": "94f53c8bcaf71da3494fac6792f358a86b3eaea4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "48dbfc3d_8205eab4",
+        "filename": "src/core/SkKeyHelpers.cpp",
+        "patchSetId": 48
+      },
+      "lineNbr": 519,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-03-10T21:39:17Z",
+      "side": 1,
+      "message": "This function is constexpr, so we could just make a fixed array of BlendInfo\u0027s instead of adding the BlendFormula struct?",
+      "range": {
+        "startLine": 519,
+        "startChar": 33,
+        "endLine": 519,
+        "endChar": 49
+      },
+      "revId": "94f53c8bcaf71da3494fac6792f358a86b3eaea4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
