@@ -52,6 +52,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2878ec23_b02213f7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-03-10T15:17:21Z",
+      "side": 1,
+      "message": "Looks like the roll is doing okay.",
+      "parentUuid": "2f42721a_e27857df",
+      "revId": "f238da7d1e3c64e634045ff36e15113dd6a4f52f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b9a0d1ba_3ba03431",
