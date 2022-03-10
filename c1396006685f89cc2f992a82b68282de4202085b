@@ -34,6 +34,24 @@
       "parentUuid": "d5040050_88604e5b",
       "revId": "c1396006685f89cc2f992a82b68282de4202085b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c20ec609_ac67a98e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18274
+      },
+      "writtenOn": "2022-03-10T23:53:34Z",
+      "side": 1,
+      "message": "Ah, I see. Yes, I can read the bot\u0027s failure logs. I have pushed fixed, and I guess this run should be passed just fine. 😊",
+      "parentUuid": "16682df4_74476780",
+      "revId": "c1396006685f89cc2f992a82b68282de4202085b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
