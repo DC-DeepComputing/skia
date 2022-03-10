@@ -30,6 +30,7 @@ def _clang_impl(ctx):
     features = []
     features += _make_default_flags()
     features += _make_diagnostic_flags()
+    features += _make_iwyu_flags()
 
     # https://docs.bazel.build/versions/main/skylark/lib/cc_common.html#create_cc_toolchain_config_info
     # Note, this rule is defined in Java code, not Starlark
@@ -326,6 +327,48 @@ def _make_diagnostic_flags():
             enabled = False,
             flag_sets = [
                 link_search_dirs,
+            ],
+        ),
+    ]
+
+def _make_iwyu_flags():
+    """Here we define the flags that signal whether or not to enforce IWYU."""
+
+    # https://bazel.build/docs/cc-toolchain-config-reference#features
+    # What kjlubick@ wanted was to define a feature that defaults to off and then have
+    # certain files opt-in by turning the feature on. However, it appears that Bazel does not
+    # work like that - if a feature is off by default (i.e. set to enabled = False below),
+    # then the only way to turn it on is via the CLI. Enabling it on a per-rule basis did
+    # not appear to work (at least with Bazel 5.0).
+    # As such, we need to do things the opposite way, design a feature to be on by default
+    # that we can selectively turn off. So the default feature state is "Skip enforcement of
+    # include-what-you-use". If a rule disables this feature, then we will use IWYU to make
+    # sure the #includes are correct.
+    do_not_enforce_clean_includes = flag_set(
+        actions = [
+            ACTION_NAMES.c_compile,
+            ACTION_NAMES.cpp_compile,
+        ],
+        flag_groups = [
+            flag_group(
+                flags = [
+                    # This define does not impact compilation, but it acts as a signal to the
+                    # clang_trampoline.sh whether it should just compile the file with clang
+                    # or with clang and then check it with include-what-you-use.
+                    # A define was chosen because it is ignored by clang and IWYU, but can be
+                    # easily found with bash.
+                    "-DSKIA_SKIP_IWYU",
+                ],
+            ),
+        ],
+    )
+
+    return [
+        feature(
+            "skip_includes_check",
+            enabled = True,
+            flag_sets = [
+                do_not_enforce_clean_includes,
             ],
         ),
     ]

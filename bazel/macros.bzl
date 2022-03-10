@@ -50,11 +50,14 @@ def select_multi(values_map, default, name = ""):
         })
     return rv
 
-def generated_cc_atom(name, **kwargs):
+def generated_cc_atom(name, enforce_iwyu = False, **kwargs):
     """A self-annotating label for a generated cc_library for exactly one file.
 
     Args:
         name: string, the name of the cc_library
+        enforce_iwyu: boolean, if true, this file will fail to compile if the headers to not comply
+            with the include-what-you-use standards. This does not affect dependencies nor
+            dependents. Only the file listed in srcs/hdrs.
         **kwargs: All other arguments are passed verbatim to cc_library
     """
     if len(kwargs.get("srcs", [])) > 1 or len(kwargs.get("hdrs", [])) > 1:
@@ -66,7 +69,18 @@ def generated_cc_atom(name, **kwargs):
     deps = kwargs.get("deps", [])
     deps.append("//bazel:defines_from_flags")
     kwargs["deps"] = deps
+
+    # It is a little counter-intuitive, but it is not possible to turn on features from the
+    # rule definition alone. Instead, we have to enable the feature for everything and then
+    # turn it off selectively. Therefore, the IWYU toolchain feature defaults to turning off
+    # IWYU. As a result, when we "opt-in", we are really turning the "skip IWYU" off for this file.
+    if enforce_iwyu:
+        kwargs["features"] = kwargs.get("features", []).append("-skip_includes_check")
     native.cc_library(
         name = name,
         **kwargs
     )
+
+def enforce_iwyu_on_package():
+    """A self-annotating macro to set force_iwyu = True on all rules in this package."""
+    native.package(features = ["-skip_includes_check"])
