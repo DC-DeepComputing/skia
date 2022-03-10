@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e36b1e3f_5b124d84",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5145
+      },
+      "writtenOn": "2022-03-10T13:54:59Z",
+      "side": 1,
+      "message": "FYI: The Canary-G3 had an infra failure alert so I restarted the borg job and going to retrigger it.",
+      "revId": "9601c4d0f5c3a8c048b0eee15313860b8db225e1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
