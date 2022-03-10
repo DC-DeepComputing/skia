@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "36345105_64786ee4",
+        "filename": "tests/SkSLTest.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 324,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-03-10T14:19:02Z",
+      "side": 1,
+      "message": "We have dozens of disabled tests, let\u0027s not comment each one inside the list of tests. It\u0027d be too much.",
+      "range": {
+        "startLine": 324,
+        "startChar": 0,
+        "endLine": 324,
+        "endChar": 49
+      },
+      "revId": "81863f2e1749916a25819670fd329a43f4c4045b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
