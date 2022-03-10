@@ -68,6 +68,7 @@ generated_cc_atom(
 generated_cc_atom(
     name = "CommandSet_src",
     srcs = ["CommandSet.cpp"],
+    features = ["-skip_includes_check"],
     visibility = ["//:__subpackages__"],
     deps = [
         ":CommandSet_hdr",

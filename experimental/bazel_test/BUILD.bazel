@@ -17,6 +17,7 @@ cc_binary(
 generated_cc_atom(
     name = "bazel_test_src",
     srcs = ["bazel_test.cpp"],
+    features = ["-skip_includes_check"],
     visibility = ["//:__subpackages__"],
     deps = [
         "//include/core:SkTypes_hdr",
