@@ -27,7 +27,7 @@ private:
     bool onIsEqual(const GrXferProcessor& xpBase) const override { return true; }
     void onAddToKey(const GrShaderCaps&, skgpu::KeyBuilder*) const override {}
     void onGetBlendInfo(GrXferProcessor::BlendInfo* blendInfo) const override {
-        blendInfo->fWriteColor = false;
+        blendInfo->fWriteColor1 = false;
     }
     std::unique_ptr<ProgramImpl> makeProgramImpl() const override;
 
