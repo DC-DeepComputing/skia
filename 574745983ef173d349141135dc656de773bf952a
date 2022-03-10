@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9811b0d0_0494ba29",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-03-10T01:43:21Z",
+      "side": 1,
+      "message": "Chris originally +1\u0027ed this, but I didn\u0027t land it because we were hitting asserts on the graphite bots. The use of reserve() was requesting more bytes than the original 2kb limit (may not be triggered on the new 16kb limit). But it exposed a limitation on DrawBufferManager where it would fail any request larger than kVertexBufferSize.\n\nIn PS5 -\u003e PS6, I added logic so that it can handle larger request sizes and rounds \u0027requiredBytes\u0027 up to the nearest unit of the buffer size. This should avoid the assert.\n\nAlternatively, we could maintain this limitation of DBM and adjust the documentation around DrawWriter\u0027s reserve() to instead be a request that may not succeed. That should be okay for current situations since the tessellating code appends one instance at a time. However, we\u0027d reencounter this issue if we renderers that actually used DrawWriter::append() with a required byte count higher than the buffer size, since append() returns a VertexWriter that has to have the contiguous data.",
+      "revId": "574745983ef173d349141135dc656de773bf952a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
