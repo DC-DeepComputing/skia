@@ -69,6 +69,24 @@
       "parentUuid": "e71c26bb_ee450dff",
       "revId": "9fc6a704b1f450f01481cb94d0bf376e2ca8d307",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7808c144_5e0a72e7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-03-10T15:52:14Z",
+      "side": 1,
+      "message": "Oh, OK, got it, like we discussed earlier. \n\nRather than driving this logic via #ifs, do you think it might make sense to use GrContextOptions? We could add an \"fAndroidAPILevel\" value that SkQP could set, and other callers could leave it at zero. Requiring SK_BUILD_FOR_SKQP is non-ideal whether or not my CL lands, because it means the raw skql binary on Android will behave differently than the full packaged one, and that could be super confusing (as we saw with the dm/skqp delta earlier)",
+      "parentUuid": "1648dd04_2ed3f7f6",
+      "revId": "9fc6a704b1f450f01481cb94d0bf376e2ca8d307",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
