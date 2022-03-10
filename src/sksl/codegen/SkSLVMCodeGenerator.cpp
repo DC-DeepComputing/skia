@@ -216,6 +216,11 @@ private:
     void writeToSlot(int slot, skvm::Val value);
 
     /**
+     * Returns the line number corresponding to a position.
+     */
+    int getLine(Position pos);
+
+    /**
      * Emits an trace_line opcode. writeStatement does this, and statements that alter control flow
      * may need to explicitly add additional traces.
      */
@@ -662,13 +667,22 @@ size_t SkVMGenerator::createSlot(const std::string& name,
     return slot;
 }
 
+int SkVMGenerator::getLine(Position pos) {
+    if (pos.valid()) {
+        return pos.line(fProgram.fSource->c_str());
+    } else {
+        return -1;
+    }
+}
+
 size_t SkVMGenerator::getSlot(const Variable& v) {
     size_t* entry = fSlotMap.find(&v);
     if (entry != nullptr) {
         return *entry;
     }
 
-    size_t slot = this->createSlot(std::string(v.name()), v.type(), v.fLine, /*fnReturnValue=*/-1);
+    size_t slot = this->createSlot(std::string(v.name()), v.type(), this->getLine(v.fPosition),
+            /*fnReturnValue=*/-1);
     fSlotMap.set(&v, slot);
     return slot;
 }
@@ -682,7 +696,7 @@ size_t SkVMGenerator::getFunctionSlot(const IRNode& callSite, const FunctionDefi
     const FunctionDeclaration& decl = fn.declaration();
     size_t slot = this->createSlot("[" + std::string(decl.name()) + "].result",
                                    decl.returnType(),
-                                   fn.fLine,
+                                   this->getLine(fn.fPosition),
                                    /*fnReturnValue=*/1);
     fSlotMap.set(&callSite, slot);
     return slot;
@@ -1883,7 +1897,7 @@ void SkVMGenerator::writeForStatement(const ForStatement& f) {
             this->writeStatement(*f.statement());
             fLoopMask |= fContinueMask;
 
-            this->emitTraceLine(f.test() ? f.test()->fLine : f.fLine);
+            this->emitTraceLine(this->getLine(f.test() ? f.test()->fPosition : f.fPosition));
             val += loop.fDelta;
         }
 
@@ -1987,7 +2001,7 @@ void SkVMGenerator::emitTraceScope(skvm::I32 executionMask, int delta) {
 }
 
 void SkVMGenerator::writeStatement(const Statement& s) {
-    this->emitTraceLine(s.fLine);
+    this->emitTraceLine(this->getLine(s.fPosition));
 
     switch (s.kind()) {
         case Statement::Kind::kBlock:
