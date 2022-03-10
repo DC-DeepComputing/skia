@@ -16,6 +16,23 @@
       "message": "I appreciate that this is slightly weird. I\u0027m very open to other ways to solve this problem.",
       "revId": "9fc6a704b1f450f01481cb94d0bf376e2ca8d307",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c258726c_d968d6cc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2022-03-10T15:13:09Z",
+      "side": 1,
+      "message": "I don\u0027t object to having something like this for our testing code, but it doesn\u0027t remove the need to SK_BUILD_FOR_SKQP since we need it to be visible to both our test and production files (e.g. GrGLCaps.cpp).\n\nIf we have to make sure SK_BUILD_FOR_SKQP is there still value to maintaining this code path?",
+      "revId": "9fc6a704b1f450f01481cb94d0bf376e2ca8d307",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
