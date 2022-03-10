@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a2784fc6_a4209cac",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-03-10T01:50:17Z",
+      "side": 1,
+      "message": "This is the last(?) piece to adjust DrawWriter\u0027s capabilities so that the patch writer tessellation algorithms can sit on top of it cleanly.",
+      "revId": "d63793601bb457403d6514fa2931a0342a12fff1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
