@@ -1,0 +1,6 @@
+[
+  { include: ["<__functional/function.h>", "private", "<functional>", "public"] },
+
+  { include: ["<__algorithm/max.h>", "private", "<algorithm>", "public"] },
+  { include: ["<__algorithm/stable_sort.h>", "private", "<algorithm>", "public"] },
+]

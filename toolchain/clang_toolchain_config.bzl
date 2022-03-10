@@ -30,6 +30,7 @@ def _clang_impl(ctx):
     features = []
     features += _make_default_flags()
     features += _make_diagnostic_flags()
+    features += _make_iwyu_flags()
 
     # https://docs.bazel.build/versions/main/skylark/lib/cc_common.html#create_cc_toolchain_config_info
     # Note, this rule is defined in Java code, not Starlark
@@ -326,6 +327,32 @@ def _make_diagnostic_flags():
             enabled = False,
             flag_sets = [
                 link_search_dirs,
+            ],
+        ),
+    ]
+
+def _make_iwyu_flags():
+    """Here we define the flags that can be turned on via features to check includes."""
+    cxx_include_what_you_use = flag_set(
+        actions = [
+            ACTION_NAMES.c_compile,
+            ACTION_NAMES.cpp_compile,
+        ],
+        flag_groups = [
+            flag_group(
+                flags = [
+                    "-DSKIA_SKIP_IWYU",
+                ],
+            ),
+        ],
+    )
+
+    return [
+        feature(
+            "skip_includes_check",
+            enabled = True,
+            flag_sets = [
+                cxx_include_what_you_use,
             ],
         ),
     ]
