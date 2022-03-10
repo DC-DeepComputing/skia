@@ -71,6 +71,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c33ddae4_3653ad6f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-03-10T19:07:27Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "7c3fd14e_d92426b5",
+      "revId": "fb907daf7fc995aadc76ea037bd9a8b7d43665f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "45dff7ef_4a2ab7c8",
@@ -84,6 +102,30 @@
       "writtenOn": "2022-03-09T22:47:06Z",
       "side": 1,
       "message": "Now that Position is a first-class thing, it should probably live in its own header. It feels weird to need to #include ErrorReporter just because we need a Position struct.",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 43
+      },
+      "revId": "fb907daf7fc995aadc76ea037bd9a8b7d43665f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8feb6bf4_dbc6c836",
+        "filename": "include/private/SkSLModifiers.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-03-10T19:07:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "45dff7ef_4a2ab7c8",
       "range": {
         "startLine": 12,
         "startChar": 0,
@@ -119,6 +161,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "737d0efe_0ef42a59",
+        "filename": "include/sksl/SkSLErrorReporter.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-03-10T19:07:27Z",
+      "side": 1,
+      "message": "It\u0027s going to have Position::Line(int) and Position::Range(int, int).",
+      "parentUuid": "19be1178_657cd66a",
+      "range": {
+        "startLine": 30,
+        "startChar": 20,
+        "endLine": 30,
+        "endChar": 24
+      },
+      "revId": "fb907daf7fc995aadc76ea037bd9a8b7d43665f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4aa70eb1_6c75e3e7",
         "filename": "include/sksl/SkSLErrorReporter.h",
         "patchSetId": 7
@@ -130,6 +196,30 @@
       "writtenOn": "2022-03-09T22:47:06Z",
       "side": 1,
       "message": "tiny nit: indentation",
+      "range": {
+        "startLine": 39,
+        "startChar": 0,
+        "endLine": 39,
+        "endChar": 4
+      },
+      "revId": "fb907daf7fc995aadc76ea037bd9a8b7d43665f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0c50c0b0_85d3570a",
+        "filename": "include/sksl/SkSLErrorReporter.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-03-10T19:07:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4aa70eb1_6c75e3e7",
       "range": {
         "startLine": 39,
         "startChar": 0,
@@ -163,6 +253,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d3815250_f3efe521",
+        "filename": "include/sksl/SkSLErrorReporter.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-03-10T19:07:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7caa6ae6_cb1eca7d",
+      "range": {
+        "startLine": 64,
+        "startChar": 0,
+        "endLine": 80,
+        "endChar": 0
+      },
+      "revId": "fb907daf7fc995aadc76ea037bd9a8b7d43665f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b2046638_e10f64ee",
@@ -176,6 +290,30 @@
       "writtenOn": "2022-03-09T22:47:06Z",
       "side": 1,
       "message": "Please add `// TODO(skia:bugid): remove fFile`",
+      "range": {
+        "startLine": 82,
+        "startChar": 4,
+        "endLine": 82,
+        "endChar": 32
+      },
+      "revId": "fb907daf7fc995aadc76ea037bd9a8b7d43665f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d590c04e_8d9ca28e",
+        "filename": "include/sksl/SkSLErrorReporter.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-03-10T19:07:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b2046638_e10f64ee",
       "range": {
         "startLine": 82,
         "startChar": 4,
@@ -209,6 +347,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6fc37fa4_864ce11d",
+        "filename": "src/sksl/SkSLDSLParser.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 239,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-03-10T19:07:27Z",
+      "side": 1,
+      "message": "I was going to fix this in the next CL, but will roll it into this one. Full range support (i.e. each statement / expression\u0027s position covering its entire range) will come in followups.",
+      "parentUuid": "3989a5fe_f05e092a",
+      "range": {
+        "startLine": 234,
+        "startChar": 0,
+        "endLine": 239,
+        "endChar": 9
+      },
+      "revId": "fb907daf7fc995aadc76ea037bd9a8b7d43665f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "688c7b37_77b40a50",
@@ -222,6 +384,30 @@
       "writtenOn": "2022-03-09T22:47:06Z",
       "side": 1,
       "message": "pos",
+      "range": {
+        "startLine": 3481,
+        "startChar": 32,
+        "endLine": 3481,
+        "endChar": 42
+      },
+      "revId": "fb907daf7fc995aadc76ea037bd9a8b7d43665f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c6b94b43_8de7da9c",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 3481,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-03-10T19:07:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "688c7b37_77b40a50",
       "range": {
         "startLine": 3481,
         "startChar": 32,
