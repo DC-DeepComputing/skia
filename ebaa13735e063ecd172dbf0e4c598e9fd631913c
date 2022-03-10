@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b2b128f8_c27d173c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2022-03-10T16:37:19Z",
+      "side": 1,
+      "message": "Does this remove our dependence on SK_BUILD_FOR_SKQP from all current code?",
+      "revId": "ebaa13735e063ecd172dbf0e4c598e9fd631913c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
