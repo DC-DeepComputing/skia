@@ -16,6 +16,23 @@
       "message": "Pretty annoying change to guard...",
       "revId": "3e86469c5bff47e91c1fecd12065ab625f30344d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f7f8aec3_a021726e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2022-03-11T13:09:11Z",
+      "side": 1,
+      "message": "Canary failures are unrelated.",
+      "revId": "3e86469c5bff47e91c1fecd12065ab625f30344d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
