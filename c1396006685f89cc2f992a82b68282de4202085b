@@ -52,6 +52,24 @@
       "parentUuid": "16682df4_74476780",
       "revId": "c1396006685f89cc2f992a82b68282de4202085b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "db592736_6dd3727e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-03-11T00:54:46Z",
+      "side": 1,
+      "message": "it still says patchset 5, which is the last one that failed. Did your fix not upload all the way?",
+      "parentUuid": "c20ec609_ac67a98e",
+      "revId": "c1396006685f89cc2f992a82b68282de4202085b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
