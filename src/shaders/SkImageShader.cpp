@@ -379,10 +379,26 @@ std::unique_ptr<GrFragmentProcessor> SkImageShader::asFragmentProcessor(
 #endif
 
 #ifdef SK_ENABLE_SKSL
-void SkImageShader::addToKey(SkShaderCodeDictionary* dict,
+
+#include "experimental/graphite/src/Image_Graphite.h"
+#include "src/core/SkKeyContext.h"
+
+
+void SkImageShader::addToKey(const SkKeyContext& keyContext,
                              SkPaintParamsKeyBuilder* builder,
                              SkPipelineData* pipelineData) const {
-    ImageShaderBlock::AddToKey(dict, builder, pipelineData, { fTileModeX, fTileModeY });
+    ImageShaderBlock::ImageData imgData(fSampling, fTileModeX, fTileModeY, fSubset);
+
+    if (as_IB(fImage)->isGraphiteBacked()) {
+        skgpu::Image* grImage = static_cast<skgpu::Image*>(fImage.get());
+
+        auto mipmapped = (fSampling.mipmap != SkMipmapMode::kNone) ? skgpu::Mipmapped::kYes
+                                                                   : skgpu::Mipmapped::kNo;
+        auto[view, ct] = grImage->asView(keyContext.fRecorder, mipmapped);
+        imgData.fTextureProxy = view.refProxy();
+    }
+
+    ImageShaderBlock::AddToKey(keyContext, builder, pipelineData, imgData);
 }
 #endif
 
