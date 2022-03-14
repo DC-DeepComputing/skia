@@ -15,7 +15,9 @@ enum class SkBackend : uint8_t;
 class SkPaintParamsKeyBuilder;
 class SkPipelineData;
 class SkShader;
-class SkShaderCodeDictionary;
+class SkKeyContext;
+
+class GrRecordingContext;
 
 namespace skgpu {
 
@@ -44,7 +46,7 @@ public:
     SkShader* shader() const { return fShader.get(); }
     sk_sp<SkShader> refShader() const;
 
-    void toKey(SkShaderCodeDictionary*,
+    void toKey(const SkKeyContext&,
                SkPaintParamsKeyBuilder*,
                SkPipelineData*) const;
 
