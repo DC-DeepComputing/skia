@@ -96,7 +96,7 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(UniformTest, reporter, context) {
             for (auto bm : { SkBlendMode::kSrc, SkBlendMode::kSrcOver }) {
                 auto [ p, expectedNumUniforms ] = create_paint(s, tm, bm);
                 auto [ uniqueID1, uniformBlock] = ExtractPaintData(dict, &builder, PaintParams(p));
-                int actualNumUniforms = uniformBlock->count();
+                int actualNumUniforms = uniformBlock->numUniforms();
 
                 SkUniquePaintParamsID uniqueID2 = CreateKey(dict, &builder, s, tm, bm);
 
