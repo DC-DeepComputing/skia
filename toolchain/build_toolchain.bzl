@@ -99,6 +99,12 @@ debs_to_install = [
         "sha256": "80a2413ace2a0a073f2472059b9e589737cbf8a336fb6862684a5811bf640aa3",
         "url": "https://ftp.debian.org/debian/pool/main/libx/libx11/libx11-xcb-dev_1.7.2-1_amd64.deb",
     },
+    # This is used to make sure we include only the headers we need
+    {
+        # From https://packages.debian.org/bullseye/amd64/iwyu/download
+        "sha256": "5e7dc4452a69285bbdaae7561cf4ef41a5e635c0af9edc36d01f8673cd6f34f1",
+        "url": "https://ftp.debian.org/debian/pool/main/i/iwyu/iwyu_8.15-2_amd64.deb",
+    },
 ]
 
 def _download_and_extract_deb(ctx, deb, sha256, prefix, output = ""):
