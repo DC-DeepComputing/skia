@@ -69,6 +69,24 @@
       "parentUuid": "712461a4_d276fe99",
       "revId": "f95b0517aded49921332298f62f87e8ba3ca1a32",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0fde8c74_8a7030f1",
+        "filename": "experimental/graphite/src/DrawBufferManager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 153,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-03-14T17:12:38Z",
+      "side": 1,
+      "message": "I considered that as well. I think I prefer it this way because it also clears the fCurrent*Buffer pointers, which we\u0027d have to do anyway.",
+      "parentUuid": "1c5c036b_5f5fc20a",
+      "revId": "f95b0517aded49921332298f62f87e8ba3ca1a32",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
