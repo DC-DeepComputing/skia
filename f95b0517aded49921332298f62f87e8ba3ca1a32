@@ -33,6 +33,24 @@
       "message": "Are these buffers not in the fUsedBuffers array? If not what makes them different?",
       "revId": "f95b0517aded49921332298f62f87e8ba3ca1a32",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1c5c036b_5f5fc20a",
+        "filename": "experimental/graphite/src/DrawBufferManager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 153,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-03-14T17:05:00Z",
+      "side": 1,
+      "message": "Reading a bit more of how these are used, I see that we only push onto fUsedBuffers once we filled up a buffer and get a new one. So yeah we can either do as you did here. Or move all these buffers onto fUsedBuffers at the start here and then just have the one loop doing the unmap/tracking. Option 2 has the downside of adding things to the array just to remove them.",
+      "parentUuid": "712461a4_d276fe99",
+      "revId": "f95b0517aded49921332298f62f87e8ba3ca1a32",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
