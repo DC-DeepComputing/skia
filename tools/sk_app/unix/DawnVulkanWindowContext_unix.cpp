@@ -12,8 +12,10 @@
 #include "src/ports/SkOSLibrary.h"
 #include "tools/gpu/vk/VkTestUtils.h"
 
+#include <X11/Xlib-xcb.h> // We must include this header before vulkan_xcb.h
+
 #include <vulkan/vulkan.h>
-#include <X11/Xlib-xcb.h>
+#include <vulkan/vulkan_xcb.h>
 
 using sk_app::window_context_factory::XlibWindowInfo;
 using sk_app::DisplayParams;
