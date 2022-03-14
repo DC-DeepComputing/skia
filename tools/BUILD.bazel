@@ -240,6 +240,8 @@ generated_cc_atom(
     hdrs = ["Resources.h"],
     visibility = ["//:__subpackages__"],
     deps = [
+        "//include/core:SkBitmap_hdr",
+        "//include/core:SkData_hdr",
         "//include/core:SkImage_hdr",
         "//include/core:SkString_hdr",
     ],
@@ -325,6 +327,7 @@ generated_cc_atom(
         "//include/core:SkData_hdr",
         "//include/core:SkImage_hdr",
         "//include/core:SkSerialProcs_hdr",
+        "//include/core:SkStream_hdr",
     ],
 )
 
