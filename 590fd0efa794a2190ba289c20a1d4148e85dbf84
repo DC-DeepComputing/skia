@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "59dced85_d127e92d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-03-14T16:56:41Z",
+      "side": 1,
+      "message": "This seems fine.\n\nWhile iwyu is a great tool, I\u0027ve always been hesitant to make it an actual gating condition for anything. It should be considered alpha quality (it documents this) as the problem it is trying to solve is mechanically ridiculously difficult in general and also mixed up with a bit of policy.",
+      "revId": "590fd0efa794a2190ba289c20a1d4148e85dbf84",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0ea445c0_ae26f993",
+        "filename": "toolchain/IWYU_mapping.imp",
+        "patchSetId": 9
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-03-14T16:56:41Z",
+      "side": 1,
+      "message": "I\u0027m somewhat surprised that these are not in one of the built in imps. Is it just that we\u0027re using a newer stdlib than this iwyu was targeting?",
+      "revId": "590fd0efa794a2190ba289c20a1d4148e85dbf84",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5db24d89_5cdc0e64",
+        "filename": "toolchain/build_toolchain.bzl",
+        "patchSetId": 9
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-03-14T16:56:41Z",
+      "side": 1,
+      "message": "So I\u0027m guessing this is the clang-11 version of IWYU. It\u0027s a year and a half old now, but I suppose that\u0027s ok. If we run into issues we will want to update.",
+      "range": {
+        "startLine": 106,
+        "startChar": 68,
+        "endLine": 106,
+        "endChar": 74
+      },
+      "revId": "590fd0efa794a2190ba289c20a1d4148e85dbf84",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
