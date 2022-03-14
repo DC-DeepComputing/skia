@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ef997ce1_4fac110e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-03-14T20:58:04Z",
+      "side": 1,
+      "message": "I considered moving more into ResourceProvider and using GraphiteResourceKeys, but that just spread the change out. Given how much is up in the air around issue 13059, I figured something that was workable but compact would be easier to adjust down the line.",
+      "revId": "0b2c07b5aa5545d5aa277a79aa1a46358728fe7d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
