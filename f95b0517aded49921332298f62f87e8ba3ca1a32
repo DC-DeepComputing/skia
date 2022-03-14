@@ -16,6 +16,23 @@
       "message": "While this does fix the issue it may not be what you had in mind for DrawBufferManager. Was the intent to use the same draw buffer for multiple Recordings?",
       "revId": "f95b0517aded49921332298f62f87e8ba3ca1a32",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "712461a4_d276fe99",
+        "filename": "experimental/graphite/src/DrawBufferManager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 153,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-03-14T16:58:29Z",
+      "side": 1,
+      "message": "Are these buffers not in the fUsedBuffers array? If not what makes them different?",
+      "revId": "f95b0517aded49921332298f62f87e8ba3ca1a32",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
