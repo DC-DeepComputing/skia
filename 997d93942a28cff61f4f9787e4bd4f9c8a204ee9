@@ -16,6 +16,24 @@
       "message": "Why are we trying to set nil buffers?",
       "revId": "997d93942a28cff61f4f9787e4bd4f9c8a204ee9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d4c43514_e851570d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-03-14T16:56:11Z",
+      "side": 1,
+      "message": "Yup you are right, there shouldn\u0027t be nil buffers getting into here. Worked with Rob to track down the cause and it should now be fixed with, https://skia-review.googlesource.com/c/skia/+/519079",
+      "parentUuid": "ce973cc1_5d7a1fb2",
+      "revId": "997d93942a28cff61f4f9787e4bd4f9c8a204ee9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
