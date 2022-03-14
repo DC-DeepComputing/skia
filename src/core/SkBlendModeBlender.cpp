@@ -64,14 +64,14 @@ sk_sp<SkBlender> SkBlender::Mode(SkBlendMode mode) {
 }
 
 #ifdef SK_ENABLE_SKSL
-void SkBlenderBase::addToKey(SkShaderCodeDictionary* dict,
+void SkBlenderBase::addToKey(const SkKeyContext& ww,
                              SkPaintParamsKeyBuilder* builder,
                              SkPipelineData* pipelineData) const {
 
     if (std::optional<SkBlendMode> bm = as_BB(this)->asBlendMode(); bm.has_value()) {
-        BlendModeBlock::AddToKey(dict, builder, pipelineData, bm.value());
+        BlendModeBlock::AddToKey(ww, builder, pipelineData, bm.value());
     } else {
-        BlendModeBlock::AddToKey(dict, builder, pipelineData, SkBlendMode::kSrcOver);
+        BlendModeBlock::AddToKey(ww, builder, pipelineData, SkBlendMode::kSrcOver);
     }
 }
 #endif

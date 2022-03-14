@@ -1,0 +1,20 @@
+/*
+ * Copyright 2022 Google LLC
+ *
+ * Use of this source code is governed by a BSD-style license that can be
+ * found in the LICENSE file.
+ */
+
+#include "src/core/SkKeyContext.h"
+
+#include "experimental/graphite/src/RecorderPriv.h"
+#include "experimental/graphite/src/ResourceProvider.h"
+
+SkKeyContext::SkKeyContext(skgpu::Recorder* recorder) : fRecorder(recorder) {
+    fDictionary = fRecorder->priv().resourceProvider()->shaderCodeDictionary();
+}
+
+SkKeyContext::SkKeyContext(GrRecordingContext* rContext) : fRecordingContext(rContext) {
+    // TODO: fill this out for Ganesh
+    fDictionary = nullptr;
+}
