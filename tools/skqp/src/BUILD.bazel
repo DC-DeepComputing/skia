@@ -37,6 +37,7 @@ generated_cc_atom(
     deps = [
         ":skqp_hdr",
         "//gm:gm_hdr",
+        "//include/core:SkBitmap_hdr",
         "//include/core:SkFontStyle_hdr",
         "//include/core:SkGraphics_hdr",
         "//include/core:SkStream_hdr",
