@@ -153,12 +153,11 @@ private:
                                                                const SkMatrix&,
                                                                const SkRect*,
                                                                const SkRect*) const override;
+#endif
 #ifdef SK_GRAPHITE_ENABLED
     std::tuple<skgpu::TextureProxyView, SkColorType> onAsView(skgpu::Recorder*,
-                                                              skgpu::Mipmapped) const override {
-        return {}; // TODO
-    }
-#endif
+                                                              skgpu::Mipmapped,
+                                                              SkBudgeted) const override;
 #endif
 
     SkBitmap fBitmap;
@@ -473,4 +472,102 @@ std::unique_ptr<GrFragmentProcessor> SkImage_Raster::onAsFragmentProcessor(
                                          subset,
                                          domain);
 }
+#endif
+
+#ifdef SK_GRAPHITE_ENABLED
+// Based on Ganesh, we may need to use this in more than one place,
+// so pulling it out to make it more modular.
+std::tuple<skgpu::TextureProxyView, SkColorType> make_bitmap_proxy_view(skgpu::Recorder* recorder,
+                                                                        const SkBitmap& bitmap,
+                                                                        skgpu::Mipmapped mipmapped,
+                                                                        SkBackingFit fit,
+                                                                        SkBudgeted budgeted) {
+    // Adjust params based on Caps
+    if (bitmap.dimensions().area() <= 1) {
+        mipmapped = Mipmapped::kNo;
+    }
+    //*****
+    const Caps* caps = recorder->caps();
+    if (!caps->getDefaultBackendFormat(ct, GrRenderable::kNo).isValid()) {
+        ct = SkColorType::kRGBA_8888;
+    }
+
+    // Convert bitmap to texture colortype if necessary
+    SkBitmap bmpToUpload;
+    if (ct != bitmap.info().colorType()) {
+        if (!bmpToUpload.tryAllocPixels(bitmap.info().makeColorType(ct)) ||
+            !bitmap.readPixels(bmpToUpload.pixmap())) {
+            return {};
+        }
+        bmpToUpload.setImmutable();
+    } else {
+        bmpToUpload = bitmap; //*** er... a copy here? Always? Not pixel data but still...
+    }
+
+    // Set up texture proxy and pixel data upload
+    if (!SkImageInfoIsValid(bmpToUpload.info())) {
+        return {};
+    }
+
+    //**** move to upload code
+    ATRACE_ANDROID_FRAMEWORK("Upload %sTexture [%ux%u]",
+                             Mipmapped::kYes == mipMapped ? "MipMap " : "",
+                             bmpToUpload.width(), bmpToUpload.height());
+
+    ///------------
+    ///
+    sk_sp<TextureProxy> proxy;
+
+    //**** setup MipLevels
+    std::unique_ptr<MipLevel[]> texels;
+    if (mipMapped == Mipmapped::kNo ||
+        0 == SkMipmap::ComputeLevelCount(bmpToUpload.width(), bmpToUpload.height())) {
+        proxy = this->createNonMippedProxyFromBitmap(bmpToUpload, fit, budgeted);
+    } else {
+        sk_sp<SkMipmap> mipmaps(SkMipmap::Build(bitmap.pixmap(), nullptr));
+        if (!mipmaps) {
+            return {};
+        }
+
+        const int mipLevelCount = mipmaps->countLevels() + 1;
+        std::unique_ptr<GrMipLevel[]> texels(new GrMipLevel[mipLevelCount]);
+        auto colorType = SkColorTypeToGrColorType(bitmap.colorType());
+
+        texels[0].fPixels = bitmap.getPixels();
+        texels[0].fRowBytes = bitmap.rowBytes();
+
+        for (int i = 1; i < mipLevelCount; ++i) {
+            SkMipmap::Level generatedMipLevel;
+            mipmaps->getLevel(i - 1, &generatedMipLevel);
+            texels[i].fPixels = generatedMipLevel.fPixmap.addr();
+            texels[i].fRowBytes = generatedMipLevel.fPixmap.rowBytes();
+            SkASSERT(texels[i].fPixels);
+            SkASSERT(generatedMipLevel.fPixmap.colorType() == bitmap.colorType());
+        }
+
+        proxy = this->createMippedProxyFromBitmap(bmpToUpload, budgeted);
+    }
+
+    //**** we need more than a Recorder here -- we need a DrawContext as well.
+    //**** Recorder to create the Buffer, DrawContext to add the upload
+
+    ///------------
+
+    SkASSERT(!proxy || mipmapped == Mipmapped::kNo || proxy->mipmapped() == Mipmapped::kYes);
+
+    if (proxy) {
+        skgpu::Swizzle swizzle = caps->getReadSwizzle(proxy->backendFormat(), ct);
+        SkASSERT(mipmapped == Mipmapped::kNo || proxy->mipmapped() == Mipmapped::kYes);
+        return {{std::move(proxy), swizzle}, ct};
+    }
+    return {};
+}
+
+std::tuple<skgpu::TextureProxyView, SkColorType> SkImage_Raster::onAsView(
+        skgpu::Recorder* recorder,
+        skgpu::Mipmapped mipmapped,
+        SkBudgeted budgeted) const {
+    return make_bitmap_proxy_view(recorder, fBitmap, mipmapped, SkBackingFit::kExact, budgeted);
+}
+
 #endif

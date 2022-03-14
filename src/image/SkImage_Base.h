@@ -230,7 +230,8 @@ private:
 #ifdef SK_GRAPHITE_ENABLED
     virtual std::tuple<skgpu::TextureProxyView, SkColorType> onAsView(
             skgpu::Recorder*,
-            skgpu::Mipmapped mipmapped) const {
+            skgpu::Mipmapped mipmapped,
+            SkBudgeted) const {
         return {}; // TODO: once incompatible derived classes are removed make this pure virtual
     }
 #endif
