@@ -427,6 +427,8 @@ skia_core_sources = [
   "$_src/core/SkValidationUtils.h",
   "$_src/core/SkVertState.cpp",
   "$_src/core/SkVertices.cpp",
+  "$_src/core/SkWhatWhat.cpp",
+  "$_src/core/SkWhatWhat.h",
   "$_src/core/SkWriteBuffer.cpp",
   "$_src/core/SkWriter32.cpp",
   "$_src/core/SkWriter32.h",

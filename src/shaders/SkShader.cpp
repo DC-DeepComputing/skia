@@ -154,10 +154,10 @@ SkUpdatableShader* SkShaderBase::onUpdatableShader(SkArenaAlloc* alloc) const {
 
 #ifdef SK_ENABLE_SKSL
 // TODO: add implementations for derived classes
-void SkShaderBase::addToKey(SkShaderCodeDictionary* dict,
+void SkShaderBase::addToKey(const SkWhatWhat& ww,
                             SkPaintParamsKeyBuilder* builder,
                             SkPipelineData* pipelineData) const {
-    SolidColorShaderBlock::AddToKey(dict, builder, pipelineData, {1, 0, 0, 1});
+    SolidColorShaderBlock::AddToKey(ww, builder, pipelineData, {1, 0, 0, 1});
 }
 #endif
 

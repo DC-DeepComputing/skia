@@ -31,6 +31,7 @@
 #include "src/core/SkKeyHelpers.h"
 #include "src/core/SkShaderCodeDictionary.h"
 #include "src/core/SkUniformData.h"
+#include "src/core/SkWhatWhat.h"
 
 #if GRAPHITE_TEST_UTILS
 // set to 1 if you want to do GPU capture of the commandBuffer
@@ -235,8 +236,8 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(CommandBufferTest, reporter, context) {
     gpu->testingOnly_startCapture();
 #endif
     auto recorder = context->makeRecorder();
+    SkWhatWhat ww(recorder.get());
     auto resourceProvider = recorder->priv().resourceProvider();
-    auto dict = resourceProvider->shaderCodeDictionary();
     auto commandBuffer = resourceProvider->createCommandBuffer();
 
     SkISize textureSize = { kTextureWidth, kTextureHeight };
@@ -256,9 +257,11 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(CommandBufferTest, reporter, context) {
 
     SkUniquePaintParamsID uniqueID;
     {
+        auto dict = ww.dict();
+
         SkPaintParamsKeyBuilder builder(dict, SkBackend::kGraphite);
 
-        uniqueID = CreateKey(dict,
+        uniqueID = CreateKey(ww,
                              &builder,
                              ShaderCombo::ShaderType::kSolidColor,
                              SkTileMode::kClamp,

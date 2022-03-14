@@ -13,21 +13,26 @@
 #include "src/core/SkBlenderBase.h"
 #include "src/core/SkPipelineData.h"
 #include "src/core/SkShaderCodeDictionary.h"
+#include "src/core/SkWhatWhat.h"
 
 namespace skgpu {
 
 std::tuple<SkUniquePaintParamsID, std::unique_ptr<SkPipelineData>> ExtractPaintData(
-        SkShaderCodeDictionary* dict,
+        Recorder* recorder,
         SkPaintParamsKeyBuilder* builder,
         const PaintParams& p) {
 
     SkDEBUGCODE(builder->checkReset());
 
+    SkWhatWhat ww(recorder);
+
     std::unique_ptr<SkPipelineData> pipelineData = std::make_unique<SkPipelineData>();
 
-    p.toKey(dict, builder, pipelineData.get());
+    p.toKey(ww, builder, pipelineData.get());
 
     SkPaintParamsKey key = builder->lockAsKey();
+
+    auto dict = ww.dict();
 
     auto entry = dict->findOrCreate(key, pipelineData->blendInfo());
 

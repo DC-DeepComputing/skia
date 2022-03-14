@@ -31,7 +31,7 @@ public:
 #endif
 
 #ifdef SK_ENABLE_SKSL
-    void addToKey(SkShaderCodeDictionary*,
+    void addToKey(const SkWhatWhat&,
                   SkPaintParamsKeyBuilder*,
                   SkPipelineData*) const override;
 #endif

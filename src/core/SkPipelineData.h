@@ -14,8 +14,16 @@
 #include "src/core/SkUniformData.h"
 
 #ifdef SK_GRAPHITE_ENABLED
+#include "experimental/graphite/src/TextureProxy.h"
 #include "src/gpu/Blend.h"
+namespace skgpu {
+    class Recorder;
+    //class TextureProxy;
+}
 #endif
+
+class SkImage;
+struct SkSamplingOptions;
 
 // TODO: The current plan for fixing uniform padding is for the SkPipelineData to hold a
 // persistent uniformManager. A stretch goal for this system would be for this combination
@@ -49,6 +57,8 @@ public:
         fBlendInfo = blendInfo;
     }
     const BlendInfo& blendInfo() const { return fBlendInfo; }
+
+    void addImage(skgpu::Recorder*, const SkSamplingOptions&, sk_sp<skgpu::TextureProxy>);
 #endif
 
     void add(sk_sp<SkUniformData>);
@@ -75,6 +85,7 @@ private:
     std::vector<sk_sp<SkUniformData>> fUniformData;
 
 #ifdef SK_GRAPHITE_ENABLED
+    std::vector<sk_sp<skgpu::TextureProxy>> fProxies;
     BlendInfo fBlendInfo;
 #endif
 };

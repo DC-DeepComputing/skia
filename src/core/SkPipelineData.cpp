@@ -5,8 +5,10 @@
  * found in the LICENSE file.
  */
 
+#include "experimental/graphite/src/Image_Graphite.h"
 #include "src/core/SkOpts.h"
 #include "src/core/SkPipelineData.h"
+#include "src/image/SkImage_Base.h"
 
 SkPipelineData::SkPipelineData(sk_sp<SkUniformData> initial) {
     SkASSERT(initial && initial->count());
@@ -16,6 +18,12 @@ SkPipelineData::SkPipelineData(sk_sp<SkUniformData> initial) {
 void SkPipelineData::add(sk_sp<SkUniformData> uniforms) {
     SkASSERT(uniforms && uniforms->count());
     fUniformData.push_back(std::move(uniforms));
+}
+
+void SkPipelineData::addImage(skgpu::Recorder* recorder,
+                              const SkSamplingOptions& sampling,
+                              sk_sp<skgpu::TextureProxy> proxy) {
+    fProxies.push_back(std::move(proxy));
 }
 
 size_t SkPipelineData::totalUniformSize() const {
