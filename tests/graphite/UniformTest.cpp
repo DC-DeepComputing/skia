@@ -95,7 +95,6 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(UniformTest, reporter, context) {
 
             for (auto bm : { SkBlendMode::kSrc, SkBlendMode::kSrcOver }) {
                 auto [ p, expectedNumUniforms ] = create_paint(s, tm, bm);
-
                 auto [ uniqueID1, pipelineData] = ExtractPaintData(dict, &builder, PaintParams(p));
 
                 SkUniquePaintParamsID uniqueID2 = CreateKey(dict, &builder, s, tm, bm);
@@ -104,7 +103,7 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(UniformTest, reporter, context) {
 
                 // ExtractPaintData made the pipeline data we expected
                 {
-                    int actualNumUniforms = pipelineData->count();
+                    int actualNumUniforms = pipelineData->numUniforms();
                     REPORTER_ASSERT(reporter, expectedNumUniforms == actualNumUniforms);
                     for (const auto& u: *pipelineData) {
                         for (int i = 0; i < u->count(); ++i) {
