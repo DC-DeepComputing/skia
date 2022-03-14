@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fdc16733_206ed1be",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-03-14T17:12:14Z",
+      "side": 1,
+      "message": "FWIW, the Java code is checked in to Skia, too. Another approach would be to update it to not expect to find GMs. Did you say there is already a bug filed to clean up the Java code?",
+      "revId": "61f84c531c1c3d8168aba8a0cfe948af8c32d605",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
