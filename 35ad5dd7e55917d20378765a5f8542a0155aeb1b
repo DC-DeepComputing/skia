@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "513e951b_d3ba6d92",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 9996
+      },
+      "writtenOn": "2022-03-14T04:57:52Z",
+      "side": 1,
+      "message": "The gold failures actually show fixes here - if you look at https://www.w3.org/Graphics/SVG/Test/20110816/svg/paths-data-20-f.svg it indicates that no red should be visible in the image. After this change, all the shapes are green.",
+      "revId": "35ad5dd7e55917d20378765a5f8542a0155aeb1b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
