@@ -68,6 +68,24 @@
       "message": "Maybe add a comment:\n\n  // https://www.w3.org/TR/SVG11/paths.html#PathDataBNF\n  //\n  // flag:\n  //    \"0\" | \"1\"",
       "revId": "35ad5dd7e55917d20378765a5f8542a0155aeb1b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ba04eef3_91acc866",
+        "filename": "src/utils/SkParsePath.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 9996
+      },
+      "writtenOn": "2022-03-14T18:09:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "608e71bd_8fad044f",
+      "revId": "35ad5dd7e55917d20378765a5f8542a0155aeb1b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
