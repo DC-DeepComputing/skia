@@ -150,6 +150,19 @@ void DrawBufferManager::transferToCommandBuffer(CommandBuffer* commandBuffer) {
         commandBuffer->trackResource(std::move(buffer));
     }
     fUsedBuffers.clear();
+
+    if (fCurrentVertexBuffer) {
+        fCurrentVertexBuffer->unmap();
+        commandBuffer->trackResource(std::move(fCurrentVertexBuffer));
+    }
+    if (fCurrentIndexBuffer) {
+        fCurrentIndexBuffer->unmap();
+        commandBuffer->trackResource(std::move(fCurrentIndexBuffer));
+    }
+    if (fCurrentUniformBuffer) {
+        fCurrentUniformBuffer->unmap();
+        commandBuffer->trackResource(std::move(fCurrentUniformBuffer));
+    }
 }
 
 } // namespace skgpu
