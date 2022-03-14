@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c05305fa_989eef1f",
+        "filename": "toolchain/IWYU_mapping.imp",
+        "patchSetId": 9
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-03-14T17:18:31Z",
+      "side": 1,
+      "message": "I\u0027m not quite sure. The built-in mapping is here and I don\u0027t see anything that handles the more fine-grained header files. https://github.com/include-what-you-use/include-what-you-use/blob/master/iwyu_include_picker.cc",
+      "parentUuid": "0ea445c0_ae26f993",
+      "revId": "590fd0efa794a2190ba289c20a1d4148e85dbf84",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5db24d89_5cdc0e64",
@@ -48,6 +66,30 @@
       "writtenOn": "2022-03-14T16:56:41Z",
       "side": 1,
       "message": "So I\u0027m guessing this is the clang-11 version of IWYU. It\u0027s a year and a half old now, but I suppose that\u0027s ok. If we run into issues we will want to update.",
+      "range": {
+        "startLine": 106,
+        "startChar": 68,
+        "endLine": 106,
+        "endChar": 74
+      },
+      "revId": "590fd0efa794a2190ba289c20a1d4148e85dbf84",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "18d6aa29_4b85ad6f",
+        "filename": "toolchain/build_toolchain.bzl",
+        "patchSetId": 9
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-03-14T17:18:31Z",
+      "side": 1,
+      "message": "Agreed. I just picked this version because it was pre-compiled and available.",
+      "parentUuid": "5db24d89_5cdc0e64",
       "range": {
         "startLine": 106,
         "startChar": 68,
