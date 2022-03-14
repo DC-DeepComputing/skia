@@ -33,6 +33,24 @@
       "message": "Deferring to folks who know about the SVG code more than I do.",
       "revId": "35ad5dd7e55917d20378765a5f8542a0155aeb1b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3ee02f8a_f5e405bb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 9996
+      },
+      "writtenOn": "2022-03-14T15:20:26Z",
+      "side": 1,
+      "message": "SG. I picked you because I discovered this while fooling around with PathKit and expected it to be a bug there initially 😊",
+      "parentUuid": "11da33b8_55312ad1",
+      "revId": "35ad5dd7e55917d20378765a5f8542a0155aeb1b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
