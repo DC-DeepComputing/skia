@@ -87,6 +87,24 @@
       "parentUuid": "1c5c036b_5f5fc20a",
       "revId": "f95b0517aded49921332298f62f87e8ba3ca1a32",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3885eac3_829eb131",
+        "filename": "experimental/graphite/src/DrawBufferManager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 153,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-03-14T17:22:28Z",
+      "side": 1,
+      "message": "Okay lets just add a comment that says, the fCurrent*Buffers have not been added to fUsedBuffers yet, so we need to manually handle them.",
+      "parentUuid": "0fde8c74_8a7030f1",
+      "revId": "f95b0517aded49921332298f62f87e8ba3ca1a32",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
