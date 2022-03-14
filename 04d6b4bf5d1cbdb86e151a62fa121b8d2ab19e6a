@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "db76c5c3_e440146e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-03-14T19:23:07Z",
+      "side": 1,
+      "message": "I confirmed that w/o the change to SkBlockAllocator, the new unit test triggers the same assert you were running into with graphite+nanobench.",
+      "revId": "04d6b4bf5d1cbdb86e151a62fa121b8d2ab19e6a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
