@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "61eca8d4_007ea5b0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-03-14T17:08:04Z",
+      "side": 1,
+      "message": "Just saw this comment. DrawBufferManager will be used for multiple recordings, but I don\u0027t think we want the buffers to cross multiple recordings. So I think generally what you did is correct.",
+      "parentUuid": "f6bd1115_4967dd83",
+      "revId": "f95b0517aded49921332298f62f87e8ba3ca1a32",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "712461a4_d276fe99",
