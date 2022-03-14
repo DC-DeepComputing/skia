@@ -21,6 +21,7 @@
 #include "include/core/SkPathTypes.h"
 #include "src/core/SkKeyHelpers.h"
 #include "src/core/SkShaderCodeDictionary.h"
+#include "src/core/SkWhatWhat.h"
 
 #ifdef SK_METAL
 #include "experimental/graphite/src/mtl/MtlTrampoline.h"
@@ -73,6 +74,7 @@ void Context::preCompile(const PaintCombo& paintCombo) {
             &Renderer::StencilAndFillPath(SkPathFillType::kInverseEvenOdd)
     };
 
+    SkWhatWhat ww(nullptr);
     SkShaderCodeDictionary* dict = fGlobalCache->shaderCodeDictionary();
 
     SkPaintParamsKeyBuilder builder(dict, SkBackend::kGraphite);
@@ -81,7 +83,7 @@ void Context::preCompile(const PaintCombo& paintCombo) {
         for (auto& shaderCombo: paintCombo.fShaders) {
             for (auto shaderType: shaderCombo.fTypes) {
                 for (auto tm: shaderCombo.fTileModes) {
-                    auto uniqueID = CreateKey(dict, &builder, shaderType, tm, bm);
+                    auto uniqueID = CreateKey(ww, &builder, shaderType, tm, bm);
 
                     GraphicsPipelineDesc desc;
 

@@ -13,7 +13,7 @@
 #include "src/shaders/SkBitmapProcShader.h"
 #include "src/shaders/SkShaderBase.h"
 
-class SkShaderCodeDictionary;
+class SkWhatWhat;
 
 class SkImageShader : public SkShaderBase {
 public:
@@ -46,7 +46,7 @@ public:
     std::unique_ptr<GrFragmentProcessor> asFragmentProcessor(const GrFPArgs&) const override;
 #endif
 #ifdef SK_ENABLE_SKSL
-    void addToKey(SkShaderCodeDictionary*,
+    void addToKey(const SkWhatWhat&,
                   SkPaintParamsKeyBuilder*,
                   SkPipelineData*) const override;
 #endif

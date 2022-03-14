@@ -15,7 +15,10 @@
 
 #ifdef SK_GRAPHITE_ENABLED
 #include "src/gpu/Blend.h"
+namespace skgpu { class Recorder; }
 #endif
+
+class SkImage;
 
 // TODO: The current plan for fixing uniform padding is for the SkPipelineData to hold a
 // persistent uniformManager. A stretch goal for this system would be for this combination
@@ -49,6 +52,8 @@ public:
         fBlendInfo = blendInfo;
     }
     const BlendInfo& blendInfo() const { return fBlendInfo; }
+
+    void addImage(skgpu::Recorder*, SkImage*);
 #endif
 
     void add(sk_sp<SkUniformData>);

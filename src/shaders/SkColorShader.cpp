@@ -141,16 +141,16 @@ std::unique_ptr<GrFragmentProcessor> SkColor4Shader::asFragmentProcessor(
 #endif
 
 #ifdef SK_ENABLE_SKSL
-void SkColorShader::addToKey(SkShaderCodeDictionary* dict,
+void SkColorShader::addToKey(const SkWhatWhat& ww,
                              SkPaintParamsKeyBuilder* builder,
                              SkPipelineData* pipelineData) const {
-    SolidColorShaderBlock::AddToKey(dict, builder, pipelineData,
+    SolidColorShaderBlock::AddToKey(ww, builder, pipelineData,
                                     SkColor4f::FromColor(fColor).premul());
 }
 
-void SkColor4Shader::addToKey(SkShaderCodeDictionary* dict,
+void SkColor4Shader::addToKey(const SkWhatWhat& ww,
                               SkPaintParamsKeyBuilder* builder,
                               SkPipelineData* pipelineData) const {
-    SolidColorShaderBlock::AddToKey(dict, builder, pipelineData, fColor.premul());
+    SolidColorShaderBlock::AddToKey(ww, builder, pipelineData, fColor.premul());
 }
 #endif

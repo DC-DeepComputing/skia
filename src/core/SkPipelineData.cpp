@@ -5,8 +5,10 @@
  * found in the LICENSE file.
  */
 
+#include "experimental/graphite/src/Image_Graphite.h"
 #include "src/core/SkOpts.h"
 #include "src/core/SkPipelineData.h"
+#include "src/image/SkImage_Base.h"
 
 SkPipelineData::SkPipelineData(sk_sp<SkUniformData> initial) {
     fUniformData.push_back(std::move(initial));
@@ -14,6 +16,14 @@ SkPipelineData::SkPipelineData(sk_sp<SkUniformData> initial) {
 
 void SkPipelineData::add(sk_sp<SkUniformData> uniforms) {
     fUniformData.push_back(std::move(uniforms));
+}
+
+void SkPipelineData::addImage(skgpu::Recorder* recorder, SkImage* image) {
+    SkASSERT(as_IB(image)->isGraphiteBacked());
+
+    skgpu::Image* grImage = static_cast<skgpu::Image*>(image);
+
+    auto [view, ct] = grImage->asView(recorder, skgpu::Mipmapped::kNo);
 }
 
 size_t SkPipelineData::totalSize() const {
