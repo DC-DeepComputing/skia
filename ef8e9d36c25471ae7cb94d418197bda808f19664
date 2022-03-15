@@ -16,6 +16,24 @@
       "message": "Looks like this needs to be in a `#ifdef SK_CODEC_DECODES_JPEG` block. It seems this wasn\u0027t set on your iwyu run? (I see where `bazel/BUILD.bazel` can set it, so it seems that it can be set.)",
       "revId": "ef8e9d36c25471ae7cb94d418197bda808f19664",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fd719065_c34b8c87",
+        "filename": "src/svg/SkSVGDevice.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-03-15T18:19:58Z",
+      "side": 0,
+      "message": "Done",
+      "parentUuid": "60e438b3_397acb8b",
+      "revId": "ef8e9d36c25471ae7cb94d418197bda808f19664",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
