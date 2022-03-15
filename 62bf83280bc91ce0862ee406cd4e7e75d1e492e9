@@ -16,6 +16,24 @@
       "message": "In principle this looks fine, but it seems like it\u0027s kicking in for perspective matrices and causing an assert.",
       "revId": "62bf83280bc91ce0862ee406cd4e7e75d1e492e9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c6f1bd0d_2d1e7c99",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-03-15T17:23:06Z",
+      "side": 1,
+      "message": "I\u0027ve made a separate CL that universally pre-transforms perspective matrices for now at the Device level. Barring the handling of static buffers in this CL\u0027s parent, this shouldn\u0027t assert any more.",
+      "parentUuid": "07aa00ac_72f0f375",
+      "revId": "62bf83280bc91ce0862ee406cd4e7e75d1e492e9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
