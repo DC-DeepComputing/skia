@@ -45,15 +45,8 @@ static sk_sp<SkData> open_asset_data(const char* path) {
     return data;
 }
 
-namespace {
-struct AndroidAssetManager : public SkQPAssetManager {
-    sk_sp<SkData> open(const char* path) override { return open_asset_data(path); }
-};
-}
-
 // TODO(halcanary): Should not have global variables; SkQP Java object should
 // own pointers and manage concurency.
-static AndroidAssetManager gAndroidAssetManager;
 static std::mutex gMutex;
 static SkQP gSkQP;
 
@@ -113,7 +106,7 @@ void Java_org_skia_skqp_SkQP_nInit(JNIEnv* env, jobject object, jobject assetMan
     jassert(env, gAAssetManager,);
 
     std::lock_guard<std::mutex> lock(gMutex);
-    gSkQP.init(&gAndroidAssetManager, reportDirectory.c_str());
+    gSkQP.init(/*assetDirectory=*/"", reportDirectory.c_str());
 
     const std::vector<SkQP::UnitTest>& unitTests = gSkQP.getUnitTests();
 

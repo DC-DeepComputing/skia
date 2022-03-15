@@ -27,16 +27,6 @@ struct Test;
 class SkStreamAsset;
 
 ////////////////////////////////////////////////////////////////////////////////
-class SkQPAssetManager {
-public:
-    SkQPAssetManager() {}
-    virtual ~SkQPAssetManager() {}
-    virtual sk_sp<SkData> open(const char* path) = 0;
-private:
-    SkQPAssetManager(const SkQPAssetManager&) = delete;
-    SkQPAssetManager& operator=(const SkQPAssetManager&) = delete;
-};
-
 class SkQP {
 public:
     enum class SkiaBackend {
@@ -57,10 +47,10 @@ public:
     /**
         Initialize Skia and the SkQP.  Should be executed only once.
 
-        @param assetManager - provides assets for the models.  Does not take ownership.
+        @param assetDirectory - the path to the resources/ directory.
         @param reportDirectory - where to write out report.
     */
-    void init(SkQPAssetManager* assetManager, const char* reportDirectory);
+    void init(const char* assetDirectory, const char* reportDirectory);
 
     /** @return a (hopefully empty) list of errors produced by this unit test.  */
     std::vector<std::string> executeTest(UnitTest);
@@ -80,7 +70,6 @@ private:
     };
     std::vector<UnitTestResult> fUnitTestResults;
     std::vector<SkiaBackend> fSupportedBackends;
-    SkQPAssetManager* fAssetManager = nullptr;
     std::string fReportDirectory;
     std::vector<UnitTest> fUnitTests;
 

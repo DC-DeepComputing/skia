@@ -17,20 +17,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 namespace {
-class StdAssetManager : public SkQPAssetManager {
-public:
-    StdAssetManager(const char* p) : fPrefix(p) {
-        SkASSERT(!fPrefix.empty());
-        //TODO(halcanary): does this need to be changed if I run SkQP in Windows?
-        fPrefix += "/";
-    }
-    sk_sp<SkData> open(const char* path) override {
-        return SkData::MakeFromFileName((fPrefix + path).c_str());
-    }
-private:
-    std::string fPrefix;
-};
-
 struct Args {
   char *assetDir;
   char *outputDir;
@@ -97,9 +83,8 @@ int main(int argc, char *argv[]) {
         std::cerr << "sk_mkdir(" << args.outputDir << ") failed.\n";
         return 2;
     }
-    StdAssetManager mgr(args.assetDir);
     SkQP skqp;
-    skqp.init(&mgr, args.outputDir);
+    skqp.init(args.assetDir, args.outputDir);
     int ret = 0;
 
     const char* const* matchRules = &argv[3];
