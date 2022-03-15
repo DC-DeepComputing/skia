@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b477091c_617076ae",
+        "filename": "src/sksl/SkSLThreadContext.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 219,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-03-15T18:23:38Z",
+      "side": 1,
+      "message": "Please initialize to a safe value (\"\" or \"\u003cunknown\u003e\" maybe)",
+      "range": {
+        "startLine": 219,
+        "startChar": 16,
+        "endLine": 219,
+        "endChar": 26
+      },
+      "revId": "db177ebdfa30c5a5c8d5582165af68bad2eb14ed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
