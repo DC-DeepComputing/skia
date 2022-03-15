@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f56f4589_fda133d5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-03-15T17:19:29Z",
+      "side": 1,
+      "message": "This is a little cleanup I\u0027ve had in mind for a while that will make it easier to add new Renderers and keep selection logic consolidated.",
+      "revId": "90c41d4373df5440de516c02a507f511b063a00f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
