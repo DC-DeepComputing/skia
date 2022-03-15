@@ -425,6 +425,7 @@ sk_sp<const GrGLInterface> GrGLMakeAssembledGLESInterface(void *ctx, GrGLGetProc
         GET_PROC(BindSampler);
         GET_PROC(DeleteSamplers);
         GET_PROC(GenSamplers);
+        GET_PROC(SamplerParameterf);
         GET_PROC(SamplerParameteri);
         GET_PROC(SamplerParameteriv);
     }

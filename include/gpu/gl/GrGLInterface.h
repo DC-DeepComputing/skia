@@ -250,6 +250,7 @@ public:
         GrGLFunction<GrGLResolveMultisampleFramebufferFn> fResolveMultisampleFramebuffer;
         GrGLFunction<GrGLSamplerParameteriFn> fSamplerParameteri;
         GrGLFunction<GrGLSamplerParameterivFn> fSamplerParameteriv;
+        GrGLFunction<GrGLSamplerParameterfFn> fSamplerParameterf;
         GrGLFunction<GrGLScissorFn> fScissor;
         GrGLFunction<GrGLSetFenceFn> fSetFence;
         GrGLFunction<GrGLShaderSourceFn> fShaderSource;

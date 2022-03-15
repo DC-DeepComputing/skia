@@ -690,6 +690,7 @@ bool GrGLInterface::validate() const {
         if (!fFunctions.fBindSampler ||
             !fFunctions.fDeleteSamplers ||
             !fFunctions.fGenSamplers ||
+            !fFunctions.fSamplerParameterf ||
             !fFunctions.fSamplerParameteri ||
             !fFunctions.fSamplerParameteriv) {
             RETURN_FALSE_INTERFACE;

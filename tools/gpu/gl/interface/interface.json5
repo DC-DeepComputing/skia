@@ -610,7 +610,7 @@
 
     "functions": [
       "BindSampler", "DeleteSamplers", "GenSamplers",
-      "SamplerParameteri", "SamplerParameteriv",
+      "SamplerParameteri", "SamplerParameteriv", "SamplerParameterf"
     ],
   },
 

@@ -202,7 +202,51 @@ DEF_SIMPLE_GM(drawimage_sampling, canvas, 500, 500) {
             canvas->translate(0, dst.height() + 8);
         }
     }
+}
 
+DEF_SIMPLE_GM(drawimage_aniso, canvas, 500, 500) {
+    constexpr int N = 128;
+
+    auto img = make_checker_img(N, N, SK_ColorBLACK, SK_ColorWHITE, 32)->withDefaultMipmaps();
+
+    std::vector<SkMatrix> matrices;
+    matrices.push_back(SkMatrix::Scale(0.2f, 1.1f));
+    matrices.push_back(SkMatrix::Scale(1.1f, 0.2f));
+    matrices.push_back(SkMatrix::RotateDeg(45.f, {img->width()/2.f, img->height()/2.f}));
+    matrices.back().postScale(0.2f, 1.1f);
+
+    SkPaint paint;
+
+    canvas->clear(SK_ColorDKGRAY);
+
+    canvas->translate(10, 10);
+    canvas->save();
+    for (const auto& m : matrices) {
+        // for (auto mm : {SkMipmapMode::kNone, SkMipmapMode::kNearest, SkMipmapMode::kLinear}) {
+        auto bounds = SkRect::Make(img->dimensions());
+        m.mapRect(&bounds);
+        bounds.sort();
+        float dx = bounds.width()  + 10.f;
+        float dy = bounds.height() + 10.f;
+        canvas->save();
+        canvas->translate(-bounds.left(), -bounds.top());
+        for (int maxAniso : {1, 2, 16}) {
+            SkSamplingOptions sampling = SkSamplingOptions::Aniso(maxAniso);
+
+            canvas->save();
+            canvas->concat(m);
+            canvas->drawImage(img.get(), 0, 0, sampling);
+            canvas->restore();
+
+            canvas->translate(0, dy);
+            canvas->flush();
+        }
+        canvas->restore();
+        canvas->translate(dx, 0);
+        canvas->save();
+        //}
+    }
+    canvas->restore();
 }
 
 // Test case for skbug.com/12685 (texture-backed image shaders silently fail drawing to CPU canvas)
