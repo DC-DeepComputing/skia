@@ -37,7 +37,7 @@
 #include <regex>
 
 static constexpr char kUnitTestReportPath[] = "unit_tests.txt";
-static constexpr char kUnitTestsPath[]   = "skqp/unittests.txt";
+static constexpr char kUnitTestsPath[]      = "skqp/unittests.txt";
 
 // Kind of like Python's readlines(), but without any allocation.
 // Calls f() on each line.
@@ -60,12 +60,11 @@ static void readlines(const void* data, size_t size, F f) {
 // when exclude is false, only tests matching lines from the file are run.
 // Each line is a regular expression matching test names.
 // Lines may start with # to indicate a comment
-static void get_unit_tests(SkQPAssetManager* mgr,
+static void get_unit_tests(const char* assetDirectory,
                            std::vector<SkQP::UnitTest>* unitTests,
                            bool exclude) {
     std::vector<std::regex> patterns;
     auto insert = [&patterns](const char* s, size_t l) {
-        SkASSERT(l > 1) ;
         if (l > 0 && s[l - 1] == '\n') {  // strip line endings.
             --l;
         }
@@ -73,7 +72,8 @@ static void get_unit_tests(SkQPAssetManager* mgr,
             patterns.emplace_back(std::string(s, l));
         }
     };
-    if (sk_sp<SkData> dat = mgr->open(kUnitTestsPath)) {
+    std::string fullPath = std::string(assetDirectory) + "/" + kUnitTestsPath;
+    if (sk_sp<SkData> dat = SkData::MakeFromFileName(fullPath.c_str())) {
         readlines(dat->data(), dat->size(), insert);
     }
     for (const skiatest::Test& test : skiatest::TestRegistry::Range()) {
@@ -181,10 +181,8 @@ SkQP::SkQP() {}
 
 SkQP::~SkQP() {}
 
-void SkQP::init(SkQPAssetManager* am, const char* reportDirectory) {
-    SkASSERT_RELEASE(!fAssetManager);
-    SkASSERT_RELEASE(am);
-    fAssetManager = am;
+void SkQP::init(const char* assetDirectory, const char* reportDirectory) {
+    SkASSERT_RELEASE(assetDirectory);
     fReportDirectory = reportDirectory;
 
     SkGraphics::Init();
@@ -194,14 +192,13 @@ void SkQP::init(SkQPAssetManager* am, const char* reportDirectory) {
        unit tests.  Otherwise run only tests that do not match a line in that file.
        The list is checked in at platform_tools/android/apps/skqp/src/main/assets/skqp/unittests.txt
     */
-    get_unit_tests(fAssetManager, &fUnitTests, true);
+    get_unit_tests(assetDirectory, &fUnitTests, true);
     fSupportedBackends = get_backends();
 
     print_backend_info((fReportDirectory + "/grdump.txt").c_str(), fSupportedBackends);
 }
 
 std::vector<std::string> SkQP::executeTest(SkQP::UnitTest test) {
-    SkASSERT_RELEASE(fAssetManager);
     struct : public skiatest::Reporter {
         std::vector<std::string> fErrors;
         void reportFailed(const skiatest::Failure& failure) override {
@@ -227,7 +224,6 @@ inline void write(SkWStream* wStream, const T& text) {
 }
 
 void SkQP::makeReport() {
-    SkASSERT_RELEASE(fAssetManager);
     if (!sk_isdir(fReportDirectory.c_str())) {
         SkDebugf("Report destination does not exist: '%s'\n", fReportDirectory.c_str());
         return;
