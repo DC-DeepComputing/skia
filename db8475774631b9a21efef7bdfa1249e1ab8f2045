@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cfad9749_b08c33db",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-03-15T16:10:55Z",
+      "side": 1,
+      "message": "I believe we\u0027d discussed removing these once we fixed the bug. As an alternative, I could change the messages to `SK_ABORT`. I don\u0027t have a strong preference.",
+      "revId": "db8475774631b9a21efef7bdfa1249e1ab8f2045",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
