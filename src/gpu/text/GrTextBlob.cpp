@@ -20,6 +20,7 @@
 #include "src/core/SkReadBuffer.h"
 #include "src/core/SkStrikeCache.h"
 #include "src/core/SkStrikeSpec.h"
+#include "src/core/SkTLazy.h"
 #include "src/gpu/GrClip.h"
 #include "src/gpu/GrGlyph.h"
 #include "src/gpu/GrMeshDrawTarget.h"
@@ -641,9 +642,26 @@ void PathOpSubmitter::submitOps(SkCanvas* canvas,
     // different effects.
     GrStyle style(runPaint);
 
+    SkMaskFilterBase* maskFilter = as_MFB(runPaint.getMaskFilter());
+    SkPaint& workingPaint = runPaint;
+    SkTLazy<SkPaint> adjustedBlurPaint;
+    SkMaskFilterBase::BlurRec blurRec;
+    const SkMatrix& ctm = canvas->getTotalMatrix();
+    bool blurHandledWithScale = false;
+    if (maskFilter != nullptr && maskFilter->asABlur(&blurRec)) {
+        if (ctm.isScaleTranslate() && ctm.getScaleX() == ctm.getScaleY()) {
+            adjustedBlurPaint.init(runPaint);
+            adjustedBlurPaint->setMaskFilter(
+                    SkMaskFilter::MakeBlur(blurRec.fStyle, blurRec.fSigma / fStrikeToSourceScale));
+            workingPaint = *adjustedBlurPaint;
+            blurHandledWithScale = true;
+        }
+    }
+
     bool needsExactCTM = runPaint.getShader()
                          || style.applies()
-                         || runPaint.getMaskFilter();
+                         || (maskFilter != nullptr && (!maskFilter->asABlur(&blurRec) ||
+                             !blurHandledWithScale));
 
     // Calculate the matrix that maps the path glyphs from their size in the strike to
     // the graphics source space.
@@ -657,7 +675,7 @@ void PathOpSubmitter::submitOps(SkCanvas* canvas,
 
             SkAutoCanvasRestore acr(canvas, true);
             canvas->concat(pathMatrix);
-            canvas->drawPath(path, runPaint);
+            canvas->drawPath(path, workingPaint);
         }
     } else {
         // Transform the path to device because the deviceMatrix must be unchanged to
