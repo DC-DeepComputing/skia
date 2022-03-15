@@ -641,9 +641,10 @@ void PathOpSubmitter::submitOps(SkCanvas* canvas,
     // different effects.
     GrStyle style(runPaint);
 
+    SkMaskFilterBase* maskFilter = as_MFB(runPaint.getMaskFilter());
     bool needsExactCTM = runPaint.getShader()
                          || style.applies()
-                         || runPaint.getMaskFilter();
+                         || (maskFilter != nullptr && !maskFilter->asABlur(nullptr));
 
     // Calculate the matrix that maps the path glyphs from their size in the strike to
     // the graphics source space.
