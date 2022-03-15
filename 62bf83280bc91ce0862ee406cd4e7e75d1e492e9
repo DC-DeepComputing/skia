@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "07aa00ac_72f0f375",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-03-15T15:21:31Z",
+      "side": 1,
+      "message": "In principle this looks fine, but it seems like it\u0027s kicking in for perspective matrices and causing an assert.",
+      "revId": "62bf83280bc91ce0862ee406cd4e7e75d1e492e9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
