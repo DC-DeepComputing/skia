@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8fa7829d_31e8f570",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-03-15T19:41:13Z",
+      "side": 1,
+      "message": "I\u0027m fine landing this as is for now, with the expectation we are ripping it all out soon. But in the mean times gives us a little perf win and allows us to be using static buffers.",
+      "revId": "a580622a161bbfdec4656a76523e18b2673f0499",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
