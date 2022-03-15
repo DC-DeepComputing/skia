@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "297c5948_a9217e3c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-03-15T17:21:04Z",
+      "side": 1,
+      "message": "The path renderers in graphite punt on perspective, so pre-transform them at the Device.\n\nThis currently drops local coords/matrices on the floor, but since the shaders aren\u0027t set up for that yet either, it\u0027s fine.",
+      "revId": "8d4e00ec7becccd058436343f3dd095423eccf7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
