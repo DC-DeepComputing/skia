@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7a0c82cc_3a43d7fb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-03-15T17:20:07Z",
+      "side": 1,
+      "message": "This lets us draw strokes so visually the feature is supported",
+      "revId": "f1254a1c9acf147456460df9f3e5467fdc6f5a65",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
