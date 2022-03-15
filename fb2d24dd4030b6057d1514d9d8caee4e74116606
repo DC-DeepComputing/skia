@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "44ac779b_0b69a3fd",
+        "filename": "experimental/graphite/src/DrawBufferManager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-03-15T15:26:36Z",
+      "side": 1,
+      "message": "If we do add this, we may not want to use the term StaticBuffer, as that\u0027s tied to GL usage terminology.",
+      "range": {
+        "startLine": 147,
+        "startChar": 37,
+        "endLine": 147,
+        "endChar": 43
+      },
+      "revId": "fb2d24dd4030b6057d1514d9d8caee4e74116606",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d0548a0b_14be9a9f",
         "filename": "experimental/graphite/src/DrawBufferManager.cpp",
         "patchSetId": 4
@@ -14,6 +37,30 @@
       "writtenOn": "2022-03-15T15:12:47Z",
       "side": 1,
       "message": "I\u0027m really not a fan of adding another map/cache for resources. Like until we know how we want this all to behave and live, maybe just grab a new vertex buffer each time?",
+      "range": {
+        "startLine": 154,
+        "startChar": 24,
+        "endLine": 154,
+        "endChar": 43
+      },
+      "revId": "fb2d24dd4030b6057d1514d9d8caee4e74116606",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1deb10de_d65fec0d",
+        "filename": "experimental/graphite/src/DrawBufferManager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 154,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-03-15T15:26:36Z",
+      "side": 1,
+      "message": "Yeah, I\u0027m not convinced we need this right now.",
+      "parentUuid": "d0548a0b_14be9a9f",
       "range": {
         "startLine": 154,
         "startChar": 24,
