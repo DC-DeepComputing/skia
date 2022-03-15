@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "088ff4e3_809c9ee6",
+        "filename": "src/core/SkKeyContext.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-03-15T16:53:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1391cd5a_ee63fd2d",
+      "range": {
+        "startLine": 36,
+        "startChar": 0,
+        "endLine": 36,
+        "endChar": 41
+      },
+      "revId": "4e3621d60ae8574fa18b59bb5d5792f79586d654",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "03303a3a_5ee4b164",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4cd43682_4df3c51f",
+        "filename": "src/core/SkKeyContext.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-03-15T16:53:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "03303a3a_5ee4b164",
+      "range": {
+        "startLine": 42,
+        "startChar": 4,
+        "endLine": 42,
+        "endChar": 52
+      },
+      "revId": "4e3621d60ae8574fa18b59bb5d5792f79586d654",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f29f65f4_8ce879f6",
@@ -60,6 +108,30 @@
       "writtenOn": "2022-03-15T16:21:39Z",
       "side": 1,
       "message": "private: ?",
+      "range": {
+        "startLine": 45,
+        "startChar": 4,
+        "endLine": 45,
+        "endChar": 40
+      },
+      "revId": "4e3621d60ae8574fa18b59bb5d5792f79586d654",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8af7a8b5_d6b80ceb",
+        "filename": "src/core/SkKeyContext.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-03-15T16:53:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f29f65f4_8ce879f6",
       "range": {
         "startLine": 45,
         "startChar": 4,
