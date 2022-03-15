@@ -17,7 +17,7 @@ size_t PipelineDataCache::Hash::operator()(SkPipelineData* pd) const {
         return 0;
     }
 
-    return pd->hash();
+    return pd->hash1();
 }
 
 bool PipelineDataCache::Eq::operator()(SkPipelineData* a, SkPipelineData* b) const {
@@ -46,7 +46,7 @@ void PipelineDataCache::validate() const {
 }
 #endif
 
-uint32_t PipelineDataCache::insert(std::unique_ptr<SkPipelineData> pipelineData) {
+uint32_t PipelineDataCache::insert1(std::unique_ptr<SkPipelineData> pipelineData) {
     auto kv = fUniformBlockIDs.find(pipelineData.get());
     if (kv != fUniformBlockIDs.end()) {
         return kv->second;
@@ -61,7 +61,7 @@ uint32_t PipelineDataCache::insert(std::unique_ptr<SkPipelineData> pipelineData)
     return id;
 }
 
-SkPipelineData* PipelineDataCache::lookup(uint32_t uniqueID) {
+SkPipelineData* PipelineDataCache::lookup1(uint32_t uniqueID) {
     SkASSERT(uniqueID < fUniformBlock.size());
     return fUniformBlock[uniqueID].get();
 }
