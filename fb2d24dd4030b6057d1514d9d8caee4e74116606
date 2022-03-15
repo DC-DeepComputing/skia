@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7b2fbd4c_78cffde3",
+        "filename": "experimental/graphite/src/DrawBufferManager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-03-15T19:53:59Z",
+      "side": 1,
+      "message": "I will come up with alternative terminology when writing up the finalized approach documented in issue 13059.",
+      "parentUuid": "44ac779b_0b69a3fd",
+      "range": {
+        "startLine": 147,
+        "startChar": 37,
+        "endLine": 147,
+        "endChar": 43
+      },
+      "revId": "fb2d24dd4030b6057d1514d9d8caee4e74116606",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d0548a0b_14be9a9f",
@@ -71,6 +95,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0be3711e_08047a2b",
+        "filename": "experimental/graphite/src/DrawBufferManager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 154,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-03-15T19:53:59Z",
+      "side": 1,
+      "message": "Yep, all of this will be deleted once I\u0027m able to write up the decided-upon approach for \"static\" buffers. This just lets us move forward with the tessellation render steps and emit command sequences that correspond to what the final approach will produce as well.\n\nSince this is just isolated to DrawBufferManager, it will be easy to delete. Added a comment to the header to reflect that it\u0027s temporary and shouldn\u0027t be used beyond RenderSteps that don\u0027t have other options right now.",
+      "parentUuid": "1deb10de_d65fec0d",
+      "range": {
+        "startLine": 154,
+        "startChar": 24,
+        "endLine": 154,
+        "endChar": 43
+      },
+      "revId": "fb2d24dd4030b6057d1514d9d8caee4e74116606",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9c27b4d2_9db40f0c",
@@ -84,6 +132,30 @@
       "writtenOn": "2022-03-15T15:12:47Z",
       "side": 1,
       "message": "What is the plan here for the future. I don\u0027t want to have to ref every static buffer every frame. Maybe this is a sign that we shouldn\u0027t be going through DrawBufferManager so that the callers can put the buffers they use on the command buffer themselves?",
+      "range": {
+        "startLine": 199,
+        "startChar": 4,
+        "endLine": 201,
+        "endChar": 5
+      },
+      "revId": "fb2d24dd4030b6057d1514d9d8caee4e74116606",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2548da03_8256e7b1",
+        "filename": "experimental/graphite/src/DrawBufferManager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 201,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-03-15T19:53:59Z",
+      "side": 1,
+      "message": "Based on team meeting\u0027s decisions, the buffers will be guaranteed to live as long as the Context, so there\u0027s no need to call CB::trackResource for them, greatly simplifying this problem.",
+      "parentUuid": "9c27b4d2_9db40f0c",
       "range": {
         "startLine": 199,
         "startChar": 4,
