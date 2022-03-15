@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b9e9269f_c1f1611b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-03-15T19:39:40Z",
+      "side": 1,
+      "message": "Ok. This one works. I\u0027m going to tighten up the logic to make it clearer, but you can see the principle at work.",
+      "revId": "f83d8ead11c5b6e47423f971ac4a289d4f68d38b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
