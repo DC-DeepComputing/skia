@@ -98,6 +98,30 @@
       },
       "revId": "590fd0efa794a2190ba289c20a1d4148e85dbf84",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "139d7b54_50d6750e",
+        "filename": "toolchain/build_toolchain.bzl",
+        "patchSetId": 9
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-03-15T15:27:15Z",
+      "side": 1,
+      "message": "I tested this out on some other code and, sure enough, ran into some issues. I updated to the clang-13 version and it appears to be working better.",
+      "parentUuid": "18d6aa29_4b85ad6f",
+      "range": {
+        "startLine": 106,
+        "startChar": 68,
+        "endLine": 106,
+        "endChar": 74
+      },
+      "revId": "590fd0efa794a2190ba289c20a1d4148e85dbf84",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
