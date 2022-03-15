@@ -34,6 +34,24 @@
       "parentUuid": "60e438b3_397acb8b",
       "revId": "ef8e9d36c25471ae7cb94d418197bda808f19664",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c70e2edf_fc6037ab",
+        "filename": "src/svg/SkSVGDevice.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-03-15T18:27:16Z",
+      "side": 0,
+      "message": "I think this was one of the many things I ran into with iwyu that\u0027s just a hard problem. `gn` runs into it as well with `gn --check` where one needs to annotate most conditional includes with `//nogncheck`[0]. I suppose the equivalent is `// IWYU pragma: keep`. Though generally if one can do a \"maximal\" iwyu build that works out best. It would be nice to be able to do something like codesearch does and somehow combine the output of multiple compiles to get a better picture, but I don\u0027t think anyone is working on that. \n\n\n[0] https://gn.googlesource.com/gn/+/HEAD/docs/reference.md#nogncheck",
+      "parentUuid": "fd719065_c34b8c87",
+      "revId": "ef8e9d36c25471ae7cb94d418197bda808f19664",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
