@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d0548a0b_14be9a9f",
+        "filename": "experimental/graphite/src/DrawBufferManager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 154,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-03-15T15:12:47Z",
+      "side": 1,
+      "message": "I\u0027m really not a fan of adding another map/cache for resources. Like until we know how we want this all to behave and live, maybe just grab a new vertex buffer each time?",
+      "range": {
+        "startLine": 154,
+        "startChar": 24,
+        "endLine": 154,
+        "endChar": 43
+      },
+      "revId": "fb2d24dd4030b6057d1514d9d8caee4e74116606",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9c27b4d2_9db40f0c",
+        "filename": "experimental/graphite/src/DrawBufferManager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 201,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-03-15T15:12:47Z",
+      "side": 1,
+      "message": "What is the plan here for the future. I don\u0027t want to have to ref every static buffer every frame. Maybe this is a sign that we shouldn\u0027t be going through DrawBufferManager so that the callers can put the buffers they use on the command buffer themselves?",
+      "range": {
+        "startLine": 199,
+        "startChar": 4,
+        "endLine": 201,
+        "endChar": 5
+      },
+      "revId": "fb2d24dd4030b6057d1514d9d8caee4e74116606",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
