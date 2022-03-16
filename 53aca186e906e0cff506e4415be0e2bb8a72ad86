@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0aa05569_63f9941b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-03-16T19:52:28Z",
+      "side": 1,
+      "message": "This looks like it\u0027s only the fast path. It wasn\u0027t needed for the drawVertices or blur paths?",
+      "revId": "53aca186e906e0cff506e4415be0e2bb8a72ad86",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
