@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "480975ba_486e9db0",
+        "filename": "toolchain/clang_trampoline.sh",
+        "patchSetId": 10
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-03-16T12:34:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d231d84e_749fa1d1",
+      "range": {
+        "startLine": 10,
+        "startChar": 79,
+        "endLine": 10,
+        "endChar": 86
+      },
+      "revId": "ef8e9d36c25471ae7cb94d418197bda808f19664",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7170db82_5ac391c1",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-03-15T19:37:28Z",
       "side": 1,
       "message": "IIUC this will fail anyway given the `set +e` statement on line 20 and the fact that `include-what-you-use` will return a non-zero exit code. Can the `exit 1` statement be removed? If not, maybe add a comment explaining why it\u0027s necessary.",
+      "range": {
+        "startLine": 39,
+        "startChar": 4,
+        "endLine": 39,
+        "endChar": 27
+      },
+      "revId": "ef8e9d36c25471ae7cb94d418197bda808f19664",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "91de255a_2a0ca941",
+        "filename": "toolchain/clang_trampoline.sh",
+        "patchSetId": 10
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-03-16T12:34:18Z",
+      "side": 1,
+      "message": "You are correct that this will fail and return a non-zero exit code. My goal with writing Bash scripts is to make them as unsurprising as possible, because I find them hard to maintain otherwise. For example, I didn\u0027t remember the fact you pointed out as I was writing the script and I probably will forget it shortly here after. By explicitly failing here (similar to Golang\u0027s os.Exit(1)), I am trying to help out Future Kevin who tries to read this script and remember how it works without having tor remember Bash minutia.",
+      "parentUuid": "7170db82_5ac391c1",
       "range": {
         "startLine": 39,
         "startChar": 4,
