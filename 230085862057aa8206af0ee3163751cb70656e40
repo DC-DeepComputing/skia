@@ -53,6 +53,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b3a10dcc_422f9f04",
+        "filename": "src/gpu/v1/Device.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 1010,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-03-16T17:07:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1bebe063_6405cc0a",
+      "revId": "230085862057aa8206af0ee3163751cb70656e40",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1811aabb_1df2a5e9",
@@ -66,6 +84,24 @@
       "writtenOn": "2022-03-01T19:42:41Z",
       "side": 1,
       "message": "We never actually seem to change \u0027fLastDeletedHandleId\u0027",
+      "revId": "230085862057aa8206af0ee3163751cb70656e40",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a18b0ec0_4916a16e",
+        "filename": "src/gpu/v1/Device.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 1028,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-03-16T17:07:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1811aabb_1df2a5e9",
       "revId": "230085862057aa8206af0ee3163751cb70656e40",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
