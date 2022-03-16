@@ -22,6 +22,30 @@
       },
       "revId": "8b0ee177736d82e1d089098c09919ab4f768654e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9ed26a3a_12559b7e",
+        "filename": "src/android/SkAnimatedImage.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 306,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-03-16T20:41:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5f0f5582_72985d9d",
+      "range": {
+        "startLine": 306,
+        "startChar": 23,
+        "endLine": 306,
+        "endChar": 31
+      },
+      "revId": "8b0ee177736d82e1d089098c09919ab4f768654e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
