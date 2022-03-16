@@ -1581,8 +1581,8 @@ int main(int argc, char** argv) {
                          , sk_tools::getMaxResidentSetSizeMB()
                          , bench->getUniqueName()
                          , config);
-                SK_BLITTER_TRACE_PRINT;
-                SkDebugf("\n");
+                SK_BLITTER_TRACE_PRINT; SkDebugf("\n");
+                //SK_BLITTER_TRACE_STEP_PRINT; SkDebugf("\n");
             } else if (FLAGS_quiet) {
                 const char* mark = " ";
                 const double stddev_percent =

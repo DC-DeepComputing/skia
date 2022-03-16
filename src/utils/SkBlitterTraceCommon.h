@@ -24,6 +24,7 @@
 #ifdef SKIA_COMPARE_VM_VS_RP
 
 #include "src/utils/SkCycles.h"
+#include "include/private/SkTHash.h"
 
 class SkBlitterTrace {
 /*
@@ -73,12 +74,14 @@ public:
         if (fTraceSteps) {
             printIncrements(name, cycles, scanLines, pixels);
         }
+        fCounts[SkString(name)] += cycles;
     }
 
     void reset() {
         fCycles = 0ul;
         fScanlines = 0ul;
         fPixels = 0ul;
+        fCounts.reset();
     }
 
     void printIncrements(const char* name,
@@ -102,6 +105,15 @@ public:
                  fScanlines,
                  fPixels);
         SkDebugf(" ");
+    }
+
+    void printCountsBySteps() const {
+        uint64_t total = 0;
+        for (auto& pair : fCounts) {
+            SkDebugf(" %s: %" PRIu64, pair.first.c_str(), pair.second);
+            total += pair.second;
+        }
+        SkDebugf(" total: %" PRIu64, total);
     }
 
     uint64_t getCycles() const { return fCycles; }
@@ -148,6 +160,7 @@ private:
     uint64_t fCycles = 0ul;
     uint64_t fScanlines = 0ul;
     uint64_t fPixels = 0ul;
+    SkTHashMap<SkString, uint64_t> fCounts;
 };
 
 #define SK_BLITTER_TRACE_INIT \
@@ -170,11 +183,17 @@ static SkBlitterTrace gSkRPBlitterTraceCapture("RP", false);
     SkDebugf("0 "); \
     gSkRPBlitterTraceCapture.printCounts("Total")
 
+#define SK_BLITTER_TRACE_STEP_PRINT \
+    gSkVMBlitterTraceCapture.printCountsBySteps(); \
+    SkDebugf("\n"); \
+    gSkRPBlitterTraceCapture.printCountsBySteps()
+
 #else
 #define SK_BLITTER_TRACE_INIT
 #define SK_BLITTER_TRACE_LOCAL_SETUP SK_BLITTER_TRACE_NO_CODE
 #define SK_BLITTER_TRACE_LOCAL_TEARDOWN SK_BLITTER_TRACE_NO_CODE
 #define SK_BLITTER_TRACE_PRINT SK_BLITTER_TRACE_NO_CODE
+#define SK_BLITTER_TRACE_STEP_PRINT SK_BLITTER_TRACE_NO_CODE
 #endif // SKIA_COMPARE_VM_VS_RP
 
 #endif // SkBlitterTraceCommon_DEFINED

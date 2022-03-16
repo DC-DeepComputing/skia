@@ -37,7 +37,7 @@
 SkBlitterTrace gSkVMBlitterTrace("VM", false);
 #define SK_BLITTER_TRACE_STEP(name, trace, scanlines, pixels) \
     SkBlitterTrace::Step name(trace ? &gSkVMBlitterTrace : nullptr, \
-                              #name,     \
+                              "VM"#name,   \
                               scanlines, \
                               pixels)
 #endif
@@ -46,7 +46,7 @@ SkBlitterTrace gSkVMBlitterTrace("VM", false);
 SkBlitterTrace gSkRPBlitterTrace("RP", false);
 #define SK_BLITTER_TRACE_STEP(name, trace, scanlines, pixels) \
     SkBlitterTrace::Step name(trace ? &gSkRPBlitterTrace : nullptr, \
-                              #name,     \
+                              "RP"#name,   \
                               scanlines, \
                               pixels)
 #endif
