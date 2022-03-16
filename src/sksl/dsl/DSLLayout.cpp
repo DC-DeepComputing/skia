@@ -9,6 +9,9 @@
 
 #include "src/sksl/SkSLThreadContext.h"
 
+#include <iosfwd>
+#include <string>
+
 namespace SkSL {
 
 namespace dsl {

@@ -14,6 +14,8 @@ namespace SkSL {
 
 namespace dsl {
 
+class DSLFunction;
+
 using Block = DSLBlock;
 using Case = DSLCase;
 using Expression = DSLExpression;
