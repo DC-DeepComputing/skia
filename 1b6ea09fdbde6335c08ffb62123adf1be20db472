@@ -87,6 +87,24 @@
       "parentUuid": "dd81d6fc_8d1227e7",
       "revId": "1b6ea09fdbde6335c08ffb62123adf1be20db472",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "66927d6d_4f87634c",
+        "filename": "src/gpu/v1/Device_v1.h",
+        "patchSetId": 23
+      },
+      "lineNbr": 219,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-03-16T19:06:13Z",
+      "side": 1,
+      "message": "Got it. Fixed.",
+      "parentUuid": "3759e8a6_1821caa0",
+      "revId": "1b6ea09fdbde6335c08ffb62123adf1be20db472",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
