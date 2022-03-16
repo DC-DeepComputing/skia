@@ -50,7 +50,7 @@ class ShowMipLevels3 : public skiagm::GM {
     DrawResult onDraw(SkCanvas* canvas, SkString*) override {
         if (canvas->recordingContext()) {
             // mips not supported yet
-            return DrawResult::kSkip;
+            //return DrawResult::kSkip;
         }
 
         canvas->drawColor(0xFFDDDDDD);

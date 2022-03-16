@@ -1190,6 +1190,7 @@ private:
 
     friend class SkImage_Raster;
     friend class SkReadBuffer;        // unflatten
+    friend class GrProxyProvider;
 };
 
 ///////////////////////////////////////////////////////////////////////////////
