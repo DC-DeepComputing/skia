@@ -13,6 +13,7 @@
 #include "src/core/SkColorFilterBase.h"
 #include "src/core/SkColorSpacePriv.h"
 #include "src/core/SkColorSpaceXformSteps.h"
+#include "src/core/SkConvertPixels.h"
 #include "src/core/SkCoreBlitters.h"
 #include "src/core/SkLRUCache.h"
 #include "src/core/SkMatrixProvider.h"
@@ -653,6 +654,84 @@ void SkVMBlitter::blitH(int x, int y, int w) {
     } else {
         SK_BLITTER_TRACE_STEP(blitH2, true, /*scanlines=*/1, /*pixels=*/w);
         blit_h->eval(w, fUniforms.buf.data(), fDevice.addr(x,y));
+    }
+}
+
+void SkVMBlitter::blitRect(int x, int y, int width, int height) {
+    // Check if there is a constant color
+    auto shader = as_SB(fParams.shader);
+    if (shader->isConstant() &&
+        as_BB(fParams.blender)->asBlendMode() == SkBlendMode::kSrc &&
+        !fParams.clip) {
+        SkImageInfo info = fDevice.info();
+        SkColor src = shader->constantColor();
+        uint64_t dst;
+        SkImageInfo srcInfo = SkImageInfo::Make(1, 1,
+                                                kBGRA_8888_SkColorType,
+                                                kUnpremul_SkAlphaType,
+                                                SkColorSpace::MakeSRGB());
+
+        SkImageInfo dstInfo = SkImageInfo::Make(1, 1,
+                                                info.colorType(),
+                                                info.alphaType(),
+                                                sk_ref_sp(info.colorSpace()));
+
+        if (SkConvertPixels(dstInfo,
+                            &dst,
+                            dstInfo.bytesPerPixel(),
+                            srcInfo,
+                            &src,
+                            srcInfo.bytesPerPixel())) {
+            switch (fParams.dst.shiftPerPixel()) {
+                case 0: {
+                    SK_BLITTER_TRACE_STEP(
+                            blitMemset0, true, /*scanlines=*/height, /*pixels=*/height * width);
+                    if (height > 1)
+                    SkDebugf("VM blitMemset0 @(%d,%d) %dx%d %lu\n", x, y, width, height, dst);
+
+                    void* p = fDevice.writable_addr(x, y);
+                    while (height-- > 0) {
+                        memset(p, dst, width);
+                        p = SkTAddOffset<void>(p, fDevice.rowBytes());
+                    }
+                    return;
+                }
+                case 1: {
+                    SK_BLITTER_TRACE_STEP(
+                            blitMemset1, true, /*scanlines=*/height, /*pixels=*/height * width);
+                    if (height > 1)
+                    SkDebugf("VM blitMemset1 @(%d,%d) %dx%d %lu\n", x, y, width, height, dst);
+                    SkOpts::rect_memset16(
+                            fDevice.writable_addr16(x, y), dst, width, fDevice.rowBytes(), height);
+                    return;
+                }
+                case 2: {
+                    SK_BLITTER_TRACE_STEP(
+                            blitMemset2, true, /*scanlines=*/height, /*pixels=*/height * width);
+                    if (height > 1)
+                    SkDebugf("VM blitMemset2 @(%d,%d) %dx%d %lu\n", x, y, width, height, dst);
+                    SkOpts::rect_memset32(
+                            fDevice.writable_addr32(x, y), dst, width, fDevice.rowBytes(), height);
+                    return;
+                }
+                case 3: {
+                    SK_BLITTER_TRACE_STEP(
+                            blitMemset3, true, /*scanlines=*/height, /*pixels=*/height * width);
+                    if (height > 1)
+                    SkDebugf("VM blitMemset3 @(%d,%d) %dx%d %lu\n", x, y, width, height, dst);
+                    SkOpts::rect_memset64(
+                            fDevice.writable_addr64(x, y), dst, width, fDevice.rowBytes(), height);
+                    return;
+                }
+            }
+        }
+    }
+
+    if (height > 1)
+    SkDebugf("VM blitRect @(%d,%d) %dx%d\n", x, y, width,height);
+    SkASSERT(width > 0);
+    while (--height >= 0) {
+        this->blitH(x, y++, width);
     }
 }
 

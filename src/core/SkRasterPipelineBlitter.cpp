@@ -352,6 +352,7 @@ void SkRasterPipelineBlitter::blitRectWithTrace(int x, int y, int w, int h, bool
                            trace,
                            /*scanlines=*/h,
                            /*pixels=*/w * h);
+        if (h > 1) SkDebugf("RP blitRect1 @(%d,%d) %dx%d %lu\n", x, y, w, h, fMemsetColor);
         fMemset2D(&fDst, x,y, w,h, fMemsetColor);
         return;
     }
@@ -386,6 +387,7 @@ void SkRasterPipelineBlitter::blitRectWithTrace(int x, int y, int w, int h, bool
     }
 
     SK_BLITTER_TRACE_STEP(blitRect, trace, /*scanlines=*/h, /*pixels=*/w * h);
+    if (h > 1) SkDebugf("RP blitRect2 @(%d,%d) %dx%d\n", x, y, w, h);
     fBlitRect(x,y,w,h);
 }
 
