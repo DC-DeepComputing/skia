@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ec1e87a4_a7e16d67",
+        "filename": "src/core/SkDevice.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 273,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-03-16T20:15:22Z",
+      "side": 1,
+      "message": "I think we can strike \u0027SkPaint and\u0027 here. The paint is always self-descriptive (it has colors in a variety of forms, and those continue to operate like they did before). The new flag is specifically talking about the vertex colors, I think?",
+      "range": {
+        "startLine": 273,
+        "startChar": 7,
+        "endLine": 273,
+        "endChar": 19
+      },
+      "revId": "9f9fd8f9793542be2aaa46cf23bbbf534159e5a4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "66febdf9_a59e7235",
+        "filename": "src/core/SkDraw_vertices.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 209,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-03-16T20:15:22Z",
+      "side": 1,
+      "message": "nit: You actually only need this line - the src color space can continue to always be sRGB. That\u0027s not obvious, but is consistent with the rest of skia, because of our universal handling of nullptr src or dst color spaces: https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/core/SkColorSpaceXformSteps.cpp;l\u003d24;drc\u003d9f1e06aef93b0bc4746dee1d60eb332be036e5d4\n\nBasically: nullptr src means sRGB. nullptr dst means \"whatever the src was\" (or alternatively, \"disable color space conversion\")",
+      "range": {
+        "startLine": 209,
+        "startChar": 4,
+        "endLine": 209,
+        "endChar": 64
+      },
+      "revId": "9f9fd8f9793542be2aaa46cf23bbbf534159e5a4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
