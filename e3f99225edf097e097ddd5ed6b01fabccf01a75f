@@ -46,6 +46,30 @@
       },
       "revId": "e3f99225edf097e097ddd5ed6b01fabccf01a75f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8000e8d3_177b8aec",
+        "filename": "src/core/SkVMBlitter.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 668,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-03-16T20:36:06Z",
+      "side": 1,
+      "message": "Right. Note that the call to SkConvertPixels would have trashed the stack, though (because it would still try to write 128 bits to \u0026dst). ;)",
+      "parentUuid": "975a960f_b97897d0",
+      "range": {
+        "startLine": 668,
+        "startChar": 7,
+        "endLine": 668,
+        "endChar": 21
+      },
+      "revId": "e3f99225edf097e097ddd5ed6b01fabccf01a75f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
