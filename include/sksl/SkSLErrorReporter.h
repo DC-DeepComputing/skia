@@ -38,9 +38,9 @@ public:
      */
     void error(Position pos, std::string_view msg);
 
-    const char* source() const { return fSource; }
+    const std::string* source() const { return fSource; }
 
-    void setSource(const char* source) { fSource = source; }
+    void setSource(const std::string* source) {fSource = source; }
 
     void reportPendingErrors(Position pos);
 
@@ -61,7 +61,7 @@ protected:
 private:
     Position position(int offset) const;
 
-    const char* fSource = nullptr;
+    const std::string* fSource = nullptr;
     std::vector<std::string> fPendingErrors;
     int fErrorCount = 0;
 };
