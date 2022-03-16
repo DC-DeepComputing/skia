@@ -45,9 +45,9 @@ public:
 
     // Add the block of uniform data to the cache and return a unique ID that corresponds to its
     // contents. If an identical block of data is already in the cache, that unique ID is returned.
-    uint32_t insert(std::unique_ptr<SkPipelineData>);
+    uint32_t insert1(std::unique_ptr<SkPipelineData>);
 
-    SkPipelineData* lookup(uint32_t uniqueID);
+    SkPipelineData* lookup1(uint32_t uniqueID);
 
     // The number of unique UniformBlock objects in the cache
     size_t count() const {
