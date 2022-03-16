@@ -8,7 +8,8 @@
 #ifndef SKSL_REGEXNODE
 #define SKSL_REGEXNODE
 
-#include <string>
+#include <iosfwd>
+#include <utility>
 #include <vector>
 
 struct NFA;

@@ -10,6 +10,7 @@
 
 #include "src/sksl/lex/RegexNode.h"
 
+#include <iosfwd>
 #include <stack>
 #include <string>
 
