@@ -16,6 +16,24 @@
       "message": "This looks like it\u0027s only the fast path. It wasn\u0027t needed for the drawVertices or blur paths?",
       "revId": "53aca186e906e0cff506e4415be0e2bb8a72ad86",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6d0165d0_687c5963",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-03-16T20:01:14Z",
+      "side": 1,
+      "message": "Correct. The other shadow rendering paths already convert the ambient/spot colors to the destination space on the CPU (the SkColorFilters::Blend code takes care of this for both drawVertices and blur paths).\n\nYou can observe the difference in fast path shadows if you open GM_shadow_utils in viewer and set the color mode to one of the managed modes with non-sRGB primaries (I used Rec. 2020).",
+      "parentUuid": "0aa05569_63f9941b",
+      "revId": "53aca186e906e0cff506e4415be0e2bb8a72ad86",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
