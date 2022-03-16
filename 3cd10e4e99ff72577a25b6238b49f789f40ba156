@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "25ccd583_e1e2b780",
+        "filename": "src/gpu/v1/SurfaceDrawContext.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1186,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-03-16T20:18:37Z",
+      "side": 1,
+      "message": "I\u0027d add a comment here along the lines of:\n\nThe ShadowRRectOp still uses 8888 colors, so if the shadow color doesn\u0027t fit in bytes after being transformed to the destination color space, we will clamp/clip the color. However, that can\u0027t happen unless the destination color space is smaller than sRGB, which is incredibly unlikely.",
+      "revId": "3cd10e4e99ff72577a25b6238b49f789f40ba156",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
