@@ -1183,7 +1183,7 @@ bool SurfaceDrawContext::drawFastShadow(const GrClip* clip,
             ambientRRect = SkRRect::MakeRectXY(outsetRect, outsetRad, outsetRad);
         }
 
-        GrColor ambientColor = SkColorToPremulGrColor(rec.fAmbientColor);
+        GrColor ambientColor = SkColorToPMColor4f(rec.fAmbientColor, colorInfo()).toBytes_RGBA();
         if (transparent) {
             // set a large inset to force a fill
             devSpaceInsetWidth = ambientRRect.width();
@@ -1292,8 +1292,7 @@ bool SurfaceDrawContext::drawFastShadow(const GrClip* clip,
             spotShadowRRect = SkRRect::MakeRectXY(outsetRect, outsetRad, outsetRad);
         }
 
-        GrColor spotColor = SkColorToPremulGrColor(rec.fSpotColor);
-
+        GrColor spotColor = SkColorToPMColor4f(rec.fSpotColor, colorInfo()).toBytes_RGBA();
         GrOp::Owner op = ShadowRRectOp::Make(fContext,
                                              spotColor,
                                              viewMatrix,
