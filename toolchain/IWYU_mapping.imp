@@ -1,10 +1,12 @@
 [
   { include: ["<__algorithm/max.h>", "private", "<algorithm>", "public"] },
   { include: ["<__algorithm/stable_sort.h>", "private", "<algorithm>", "public"] },
+  { include: ["<__algorithm/remove_if.h>", "private", "<algorithm>", "public"] },
 
   { include: ["<__functional/function.h>", "private", "<functional>", "public"] },
 
   { include: ["<__memory/unique_ptr.h>", "private", "<memory>", "public"] },
+  { include: ["<__memory/shared_ptr.h>", "private", "<memory>", "public"] },
 
   { include: ["<string.h>", "public", "<string>", "public"] },
 
