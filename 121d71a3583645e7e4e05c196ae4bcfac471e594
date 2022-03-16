@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3f939747_b0779daa",
+        "filename": "OWNERS.android",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-03-16T16:08:03Z",
+      "side": 1,
+      "message": "Given that uploaders may simply use the Gerrit UI to find OWNERS (which will still say anyone can approve), this may not be as useful, but I figure it doesn\u0027t hurt.\n\nI also think documenting the motivation for the `*` is useful for future reference.",
+      "range": {
+        "startLine": 6,
+        "startChar": 0,
+        "endLine": 8,
+        "endChar": 25
+      },
+      "revId": "121d71a3583645e7e4e05c196ae4bcfac471e594",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
