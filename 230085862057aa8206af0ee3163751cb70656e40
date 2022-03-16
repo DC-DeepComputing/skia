@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "23217dcb_3bc619d7",
+        "filename": "src/gpu/v1/Device.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 988,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-03-16T16:49:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "014d22f2_714ea69d",
+      "revId": "230085862057aa8206af0ee3163751cb70656e40",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1bebe063_6405cc0a",
