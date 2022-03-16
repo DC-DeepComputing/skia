@@ -355,7 +355,6 @@ generated_cc_atom(
     hdrs = ["SkImageEncoder.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":SkBitmap_hdr",
         ":SkData_hdr",
         ":SkEncodedImageFormat_hdr",
         ":SkPixmap_hdr",
