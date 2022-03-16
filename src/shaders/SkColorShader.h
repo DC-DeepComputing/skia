@@ -27,6 +27,7 @@ public:
 
     bool isOpaque() const override;
     bool isConstant() const override { return true; }
+    SkColor4f constantColor4f() const override { return SkColor4f::FromColor(fColor); }
 
     GradientType asAGradient(GradientInfo* info) const override;
 
@@ -65,6 +66,8 @@ public:
 
     bool isOpaque()   const override { return fColor.isOpaque(); }
     bool isConstant() const override { return true; }
+    SkColor4f constantColor4f() const override { return fColor; }
+    sk_sp<SkColorSpace> constantColorSpace() const override { return fColorSpace; }
 
 #if SK_SUPPORT_GPU
     std::unique_ptr<GrFragmentProcessor> asFragmentProcessor(const GrFPArgs&) const override;
