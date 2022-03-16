@@ -5576,6 +5576,7 @@ generated_cc_atom(
     deps = [
         "//experimental/graphite/include:Context_hdr",
         "//include/core:SkBlendMode_hdr",
+        "//include/core:SkSamplingOptions_hdr",
         "//include/core:SkShader_hdr",
         "//include/core:SkTileMode_hdr",
         "//include/private:SkColorData_hdr",
@@ -5588,12 +5589,15 @@ generated_cc_atom(
     visibility = ["//:__subpackages__"],
     deps = [
         ":SkDebugUtils_hdr",
+        ":SkKeyContext_hdr",
         ":SkKeyHelpers_hdr",
         ":SkPaintParamsKey_hdr",
         ":SkPipelineData_hdr",
         ":SkShaderCodeDictionary_hdr",
         ":SkUniform_hdr",
+        "//experimental/graphite/src:TextureProxy_hdr",
         "//experimental/graphite/src:UniformManager_hdr",
+        "//src/gpu:Blend_hdr",
         "//src/shaders:SkShaderBase_hdr",
     ],
 )
@@ -5692,7 +5696,10 @@ generated_cc_atom(
     visibility = ["//:__subpackages__"],
     deps = [
         ":SkUniformData_hdr",
+        "//experimental/graphite/src:TextureProxy_hdr",
         "//include/core:SkRefCnt_hdr",
+        "//include/core:SkSamplingOptions_hdr",
+        "//include/core:SkTileMode_hdr",
         "//include/private:SkColorData_hdr",
         "//src/gpu:Blend_hdr",
     ],
@@ -5705,5 +5712,24 @@ generated_cc_atom(
     deps = [
         ":SkOpts_hdr",
         ":SkPipelineData_hdr",
+    ],
+)
+
+generated_cc_atom(
+    name = "SkKeyContext_hdr",
+    hdrs = ["SkKeyContext.h"],
+    visibility = ["//:__subpackages__"],
+    deps = ["//include/gpu:GrTypes_hdr"],
+)
+
+generated_cc_atom(
+    name = "SkKeyContext_src",
+    srcs = ["SkKeyContext.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkKeyContext_hdr",
+        "//experimental/graphite/src:RecorderPriv_hdr",
+        "//experimental/graphite/src:ResourceProvider_hdr",
+        "//include/gpu:GrRecordingContext_hdr",
     ],
 )

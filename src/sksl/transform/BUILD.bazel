@@ -1,4 +1,6 @@
-load("//bazel:macros.bzl", "generated_cc_atom")
+load("//bazel:macros.bzl", "generated_cc_atom", "enforce_iwyu_on_package")
+
+enforce_iwyu_on_package()
 
 generated_cc_atom(
     name = "SkSLBuiltinVariableScanner_src",
