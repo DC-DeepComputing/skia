@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "43188f75_8d72f017",
+        "filename": "include/sksl/SkSLErrorReporter.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-03-16T21:11:32Z",
+      "side": 1,
+      "message": "tiny nit: padding",
+      "range": {
+        "startLine": 43,
+        "startChar": 46,
+        "endLine": 43,
+        "endChar": 47
+      },
+      "revId": "71a3d96877b20a4961e915a7f4619f23d2f48855",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
