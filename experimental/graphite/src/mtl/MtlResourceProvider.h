@@ -30,7 +30,7 @@ public:
     sk_sp<skgpu::Texture> createWrappedTexture(const BackendTexture&) override;
 
     // Finds or creates a compatible DepthStencilState based on the enum
-    id<MTLDepthStencilState> findOrCreateCompatibleDepthStencilState(const DepthStencilSettings&);
+    sk_cfp<id<MTLDepthStencilState>> findOrCreateCompatibleDepthStencilState(const DepthStencilSettings&);
 
 private:
     const Gpu* mtlGpu();
