@@ -16,6 +16,23 @@
       "message": "This CL is ready for review.",
       "revId": "68c82606783c4371e600f0db5f3d688bbf027ffb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "38cd3df3_35892f4e",
+        "filename": "src/gpu/text/GrTextBlob.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 667,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-03-16T12:47:09Z",
+      "side": 1,
+      "message": "This is actually mutating runPaint (to be a copy of adjustedBluePaint). It would be idiomatic (with a lazy paint involved), to have workingPaint be a pointer, then pass *workingPaint to drawPath later. But given that runPaint is local here, we could just set the mask filter on it directly, and bypass the lazy copy entirely?",
+      "revId": "68c82606783c4371e600f0db5f3d688bbf027ffb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
