@@ -16,6 +16,24 @@
       "message": "SkCQ is for some reason failing to submit this:\n`Got error response status code 409 from the HTTP POST request to https://skia-review.googlesource.com/a/changes/521536/submit`",
       "revId": "91b0dafc5bda1004fd11e1c19f5acb4565103176",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3848778b_f74a3363",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5145
+      },
+      "writtenOn": "2022-03-16T18:15:42Z",
+      "side": 1,
+      "message": "Still failing. Can you try submitting one of the CLs in it\u0027s dependency chain first?",
+      "parentUuid": "caa522e1_fb124244",
+      "revId": "91b0dafc5bda1004fd11e1c19f5acb4565103176",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
