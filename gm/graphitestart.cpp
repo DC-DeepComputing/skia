@@ -25,7 +25,7 @@ sk_sp<SkShader> create_gradient_shader(SkRect r) {
                                         SkTileMode::kClamp);
 }
 
-sk_sp<SkShader> create_image_shader() {
+sk_sp<SkShader> create_image_shader(SkCanvas* canvas0) {
     SkImageInfo ii = SkImageInfo::Make(100, 100, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
     SkBitmap bitmap;
 
@@ -42,16 +42,16 @@ sk_sp<SkShader> create_image_shader() {
     bitmap.setImmutable();
 
     sk_sp<SkImage> img = SkImage::MakeFromBitmap(bitmap);
-    // TODO: we'll need a 'makeTextureImage' call here
+//    sk_sp<SkImage> gpuImage = img->makeTextureImage(canvas0->recorder());
 
     return img->makeShader(SkTileMode::kRepeat, SkTileMode::kRepeat, SkSamplingOptions());
 }
 
-sk_sp<SkShader> create_blend_shader(SkBlendMode bm) {
+sk_sp<SkShader> create_blend_shader(SkCanvas* canvas, SkBlendMode bm) {
     constexpr SkColor4f kTransYellow = {1.0f, 1.0f, 0.0f, 0.5f};
 
     sk_sp<SkShader> dst = SkShaders::Color(kTransYellow, nullptr);
-    return SkShaders::Blend(bm, std::move(dst), create_image_shader());
+    return SkShaders::Blend(bm, std::move(dst), create_image_shader(canvas));
 }
 
 void draw_blend_mode_swatches(SkCanvas* canvas, SkRect clipRect) {
@@ -137,14 +137,14 @@ protected:
         // LL corner
         {
             SkPaint p;
-            p.setShader(create_image_shader());
+            p.setShader(create_image_shader(canvas));
             canvas->drawRect({2, 129, 127, 255}, p);
         }
 
         // LR corner
         {
             SkPaint p;
-            p.setShader(create_blend_shader(SkBlendMode::kModulate));
+            p.setShader(create_blend_shader(canvas, SkBlendMode::kModulate));
             canvas->drawRect({129, 129, 255, 255}, p);
         }
 

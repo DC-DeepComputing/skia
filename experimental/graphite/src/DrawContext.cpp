@@ -138,11 +138,17 @@ bool DrawContext::writePixels(Recorder* recorder, const SkPixmap& src, SkIPoint 
     levels.push_back({src.addr(), src.rowBytes()});
 
     SkIRect dstRect = SkIRect::MakePtSize(dstPoint, src.dimensions());
-    return fPendingUploads->appendUpload(recorder,
-                                         fTarget,
-                                         src.colorType(),
-                                         levels,
-                                         dstRect);
+    UploadCommand upload;
+    if (!upload.init(recorder,
+                     fTarget,
+                     src.colorType(),
+                     levels,
+                     dstRect)) {
+        return false;
+    }
+    fPendingUploads->appendUpload(upload);
+
+    return true;
 }
 
 void DrawContext::snapDrawPass(Recorder* recorder, const BoundsManager* occlusionCuller) {

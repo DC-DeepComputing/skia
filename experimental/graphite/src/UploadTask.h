@@ -34,14 +34,20 @@ struct MipLevel {
  * An UploadCommand represents a single set of uploads from a buffer to texture that
  * can be processed in a single command.
  */
-struct UploadCommand {
+class UploadCommand {
+public:
+    bool init(Recorder*,
+              sk_sp<TextureProxy> targetProxy,
+              SkColorType colorType,
+              const std::vector<MipLevel>& levels,
+              const SkIRect& dstRect);
     void addCommand(ResourceProvider*, CommandBuffer*) const;
 
+private:
     sk_sp<Buffer> fBuffer;
     sk_sp<TextureProxy> fTextureProxy;
     std::vector<BufferTextureCopyData> fCopyData;
 };
-
 
 /**
  * An UploadList is a mutable collection of UploadCommands.
@@ -54,11 +60,7 @@ struct UploadCommand {
  */
 class UploadList {
 public:
-    bool appendUpload(Recorder*,
-                      sk_sp<TextureProxy> targetProxy,
-                      SkColorType colorType,
-                      const std::vector<MipLevel>& levels,
-                      const SkIRect& dstRect);
+    void appendUpload(const UploadCommand&);
 
 private:
     friend class UploadTask;
@@ -75,6 +77,7 @@ private:
 class UploadTask final : public Task {
 public:
     static sk_sp<UploadTask> Make(UploadList*);
+    static sk_sp<UploadTask> Make(const UploadCommand&);
 
     ~UploadTask() override;
 

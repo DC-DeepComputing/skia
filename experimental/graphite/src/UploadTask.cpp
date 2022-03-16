@@ -20,25 +20,6 @@
 
 namespace skgpu {
 
-void UploadCommand::addCommand(ResourceProvider* resourceProvider,
-                               CommandBuffer* commandBuffer) const {
-    if (!fTextureProxy) {
-        SKGPU_LOG_E("No texture proxy specified for UploadTask");
-        return;
-    }
-    if (!fTextureProxy->instantiate(resourceProvider)) {
-        SKGPU_LOG_E("Could not instantiate texture proxy for UploadTask!");
-        return;
-    }
-
-    commandBuffer->copyBufferToTexture(std::move(fBuffer),
-                                       fTextureProxy->refTexture(),
-                                       fCopyData.data(),
-                                       fCopyData.size());
-}
-
-//---------------------------------------------------------------------------
-
 size_t compute_combined_buffer_size(int mipLevelCount,
                                     size_t bytesPerPixel,
                                     size_t minTransferBufferAlignment,
@@ -68,11 +49,11 @@ size_t compute_combined_buffer_size(int mipLevelCount,
     return combinedBufferSize;
 }
 
-bool UploadList::appendUpload(Recorder* recorder,
-                              sk_sp<TextureProxy> textureProxy,
-                              SkColorType dataColorType,
-                              const std::vector<MipLevel>& levels,
-                              const SkIRect& dstRect) {
+bool UploadCommand::init(Recorder* recorder,
+                         sk_sp<TextureProxy> textureProxy,
+                         SkColorType dataColorType,
+                         const std::vector<MipLevel>& levels,
+                         const SkIRect& dstRect) {
     const Caps* caps = recorder->priv().caps();
     SkASSERT(caps->isTexturable(textureProxy->textureInfo()));
 
@@ -111,16 +92,16 @@ bool UploadList::appendUpload(Recorder* recorder,
 
     // TODO: get staging buffer or {void* offset, sk_sp<Buffer> buffer} pair.
     ResourceProvider* resourceProvider = recorder->priv().resourceProvider();
-    sk_sp<Buffer> buffer = resourceProvider->findOrCreateBuffer(combinedBufferSize,
+    fBuffer = resourceProvider->findOrCreateBuffer(combinedBufferSize,
                                                                 BufferType::kXferCpuToGpu,
                                                                 PrioritizeGpuReads::kNo);
 
-    std::vector<BufferTextureCopyData> copyData(mipLevelCount);
+    fCopyData.resize(mipLevelCount);
 
-    if (!buffer) {
+    if (!fBuffer) {
         return false;
     }
-    char* bufferData = (char*) buffer->map(); // TODO: get from staging buffer instead
+    char* bufferData = (char*) fBuffer->map(); // TODO: get from staging buffer instead
     size_t baseOffset = 0;
 
     int currentWidth = dstRect.width();
@@ -134,30 +115,57 @@ bool UploadList::appendUpload(Recorder* recorder,
         const char* src = (const char*)levels[currentMipLevel].fPixels;
         SkRectMemcpy(dst, trimRowBytes, src, rowBytes, trimRowBytes, currentHeight);
 
-        copyData[currentMipLevel].fBufferOffset =
+        fCopyData[currentMipLevel].fBufferOffset =
                 baseOffset + individualMipOffsets[currentMipLevel];
-        copyData[currentMipLevel].fBufferRowBytes = trimRowBytes;
-        copyData[currentMipLevel].fRect = {
+        fCopyData[currentMipLevel].fBufferRowBytes = trimRowBytes;
+        fCopyData[currentMipLevel].fRect = {
             dstRect.left(), dstRect.top(), // TODO: can we recompute this for mips?
             dstRect.left() + currentWidth, dstRect.top() + currentHeight
         };
-        copyData[currentMipLevel].fMipLevel = currentMipLevel;
+        fCopyData[currentMipLevel].fMipLevel = currentMipLevel;
 
         currentWidth = std::max(1, currentWidth/2);
         currentHeight = std::max(1, currentHeight/2);
     }
 
-    buffer->unmap();
-
-    fCommands.push_back({std::move(buffer), std::move(textureProxy), std::move(copyData)});
+    fBuffer->unmap();
+    fTextureProxy = std::move(textureProxy);
 
     return true;
+}
+
+void UploadCommand::addCommand(ResourceProvider* resourceProvider,
+                               CommandBuffer* commandBuffer) const {
+    if (!fTextureProxy) {
+        SKGPU_LOG_E("No texture proxy specified for UploadTask");
+        return;
+    }
+    if (!fTextureProxy->instantiate(resourceProvider)) {
+        SKGPU_LOG_E("Could not instantiate texture proxy for UploadTask!");
+        return;
+    }
+
+    commandBuffer->copyBufferToTexture(std::move(fBuffer),
+                                       fTextureProxy->refTexture(),
+                                       fCopyData.data(),
+                                       fCopyData.size());
+}
+
+//---------------------------------------------------------------------------
+
+void UploadList::appendUpload(const UploadCommand& command) {
+    fCommands.push_back(command);
 }
 
 //---------------------------------------------------------------------------
 
 sk_sp<UploadTask> UploadTask::Make(UploadList* uploadList) {
     return sk_sp<UploadTask>(new UploadTask(std::move(uploadList->fCommands)));
+}
+
+sk_sp<UploadTask> UploadTask::Make(const UploadCommand& upload) {
+    std::vector<UploadCommand> commands { upload };
+    return sk_sp<UploadTask>(new UploadTask(std::move(commands)));
 }
 
 UploadTask::UploadTask(std::vector<UploadCommand> commands) : fCommands(std::move(commands)) {}

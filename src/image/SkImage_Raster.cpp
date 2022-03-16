@@ -24,14 +24,17 @@
 #include "src/gpu/SkGr.h"
 #include "src/gpu/effects/GrBicubicEffect.h"
 #include "src/gpu/effects/GrTextureEffect.h"
+#endif
 
 #ifdef SK_GRAPHITE_ENABLED
-namespace skgpu {
-enum class Mipmapped : bool;
-class Recorder;
-class TextureProxyView;
-}
-#endif
+#include "experimental/graphite/include/GraphiteTypes.h"
+#include "experimental/graphite/include/Recorder.h"
+#include "experimental/graphite/src/Buffer.h"
+#include "experimental/graphite/src/Caps.h"
+#include "experimental/graphite/src/CommandBuffer.h"
+#include "experimental/graphite/src/RecorderPriv.h"
+#include "experimental/graphite/src/TextureProxyView.h"
+#include "experimental/graphite/src/UploadTask.h"
 #endif
 
 // fixes https://bug.skia.org/5096
@@ -153,12 +156,11 @@ private:
                                                                const SkMatrix&,
                                                                const SkRect*,
                                                                const SkRect*) const override;
+#endif
 #ifdef SK_GRAPHITE_ENABLED
     std::tuple<skgpu::TextureProxyView, SkColorType> onAsView(skgpu::Recorder*,
-                                                              skgpu::Mipmapped) const override {
-        return {}; // TODO
-    }
-#endif
+                                                              skgpu::Mipmapped,
+                                                              SkBudgeted) const override;
 #endif
 
     SkBitmap fBitmap;
@@ -473,4 +475,112 @@ std::unique_ptr<GrFragmentProcessor> SkImage_Raster::onAsFragmentProcessor(
                                          subset,
                                          domain);
 }
+#endif
+
+#ifdef SK_GRAPHITE_ENABLED
+// Based on Ganesh, we may need to use this in more than one place,
+// so pulling it out to make it more modular.
+std::tuple<skgpu::TextureProxyView, SkColorType> make_bitmap_proxy_view(skgpu::Recorder* recorder,
+                                                                        const SkBitmap& bitmap,
+                                                                        skgpu::Mipmapped mipmapped,
+                                                                        SkBackingFit fit,
+                                                                        SkBudgeted budgeted) {
+    // Adjust params based on Caps
+    if (bitmap.dimensions().area() <= 1) {
+        mipmapped = skgpu::Mipmapped::kNo;
+    }
+    SkColorType ct = bitmap.info().colorType();
+//    TODO
+//    const skgpu::Caps* caps = recorder->caps();
+//    if (!caps->getDefaultBackendFormat(ct, GrRenderable::kNo).isValid()) {
+//        ct = kRGBA_8888_SkColorType;
+//    }
+
+    // Convert bitmap to texture colortype if necessary
+    SkBitmap bmpToUpload;
+//    if (ct != bitmap.info().colorType()) {
+//        if (!bmpToUpload.tryAllocPixels(bitmap.info().makeColorType(ct)) ||
+//            !bitmap.readPixels(bmpToUpload.pixmap())) {
+//            return {};
+//        }
+//        bmpToUpload.setImmutable();
+//    } else {
+        bmpToUpload = bitmap;
+//    }
+
+    // Set up texture proxy and pixel data upload
+    if (!SkImageInfoIsValid(bmpToUpload.info())) {
+        return {};
+    }
+
+    //**** move to upload code
+//    ATRACE_ANDROID_FRAMEWORK("Upload %sTexture [%ux%u]",
+//                             skgpu::Mipmapped::kYes == mipmapped ? "MipMap " : "",
+//                             bmpToUpload.width(), bmpToUpload.height());
+
+    // setup MipLevels
+    std::vector<skgpu::MipLevel> texels;
+    int mipLevelCount;
+    if (mipmapped == skgpu::Mipmapped::kNo ||
+        0 == SkMipmap::ComputeLevelCount(bmpToUpload.width(), bmpToUpload.height())) {
+        mipLevelCount = 1;
+        texels.resize(mipLevelCount);
+        texels[0].fPixels = bitmap.getPixels();
+        texels[0].fRowBytes = bitmap.rowBytes();
+    } else {
+        sk_sp<SkMipmap> mipmaps(SkMipmap::Build(bitmap.pixmap(), nullptr));
+        if (!mipmaps) {
+            return {};
+        }
+
+        mipLevelCount = mipmaps->countLevels() + 1;
+        texels.resize(mipLevelCount);
+
+        texels[0].fPixels = bitmap.getPixels();
+        texels[0].fRowBytes = bitmap.rowBytes();
+
+        for (int i = 1; i < mipLevelCount; ++i) {
+            SkMipmap::Level generatedMipLevel;
+            mipmaps->getLevel(i - 1, &generatedMipLevel);
+            texels[i].fPixels = generatedMipLevel.fPixmap.addr();
+            texels[i].fRowBytes = generatedMipLevel.fPixmap.rowBytes();
+            SkASSERT(texels[i].fPixels);
+            SkASSERT(generatedMipLevel.fPixmap.colorType() == bitmap.colorType());
+        }
+    }
+
+    auto textureInfo = recorder->priv().caps()->getDefaultSampledTextureInfo(ct,
+                                                                             mipLevelCount,
+                                                                             skgpu::Protected::kNo,
+                                                                             skgpu::Renderable::kNo);
+    sk_sp<skgpu::TextureProxy> proxy(new skgpu::TextureProxy(bitmap.dimensions(), textureInfo));
+
+    // Add UploadTask to Recorder here
+    skgpu::UploadCommand upload;
+    upload.init(recorder,
+                proxy,
+                ct,
+                texels,
+                SkIRect::MakeSize(bitmap.dimensions()));
+    recorder->priv().add(skgpu::UploadTask::Make(upload));
+
+    SkASSERT(!proxy || mipmapped == skgpu::Mipmapped::kNo ||
+             proxy->mipmapped() == skgpu::Mipmapped::kYes);
+
+    if (proxy) {
+        skgpu::Swizzle swizzle = skgpu::Swizzle::RGBA();  // for now
+        SkASSERT(mipmapped == skgpu::Mipmapped::kNo ||
+                 proxy->mipmapped() == skgpu::Mipmapped::kYes);
+        return {{std::move(proxy), swizzle}, ct};
+    }
+    return {};
+}
+
+std::tuple<skgpu::TextureProxyView, SkColorType> SkImage_Raster::onAsView(
+        skgpu::Recorder* recorder,
+        skgpu::Mipmapped mipmapped,
+        SkBudgeted budgeted) const {
+    return make_bitmap_proxy_view(recorder, fBitmap, mipmapped, SkBackingFit::kExact, budgeted);
+}
+
 #endif
