@@ -22,6 +22,75 @@
       },
       "revId": "71a3d96877b20a4961e915a7f4619f23d2f48855",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ceaf38a9_544c3983",
+        "filename": "include/sksl/SkSLErrorReporter.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-03-16T21:17:25Z",
+      "side": 1,
+      "message": "Idea: `fSource` feels like it could be a good use of string_view? Strings convert trivially to string_view, and getting the length is O(1). It gives the caller more type flexibility.",
+      "range": {
+        "startLine": 64,
+        "startChar": 4,
+        "endLine": 64,
+        "endChar": 23
+      },
+      "revId": "71a3d96877b20a4961e915a7f4619f23d2f48855",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e5a2183a_ec642699",
+        "filename": "src/sksl/SkSLPosition.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-03-16T21:17:25Z",
+      "side": 1,
+      "message": "If this is considered a precondition, let\u0027s move it to the top (even though we don\u0027t technically need it when fEndOffset isn\u0027t set)",
+      "range": {
+        "startLine": 20,
+        "startChar": 0,
+        "endLine": 20,
+        "endChar": 21
+      },
+      "revId": "71a3d96877b20a4961e915a7f4619f23d2f48855",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "07794caf_9b5d18c8",
+        "filename": "src/sksl/SkSLPosition.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-03-16T21:17:25Z",
+      "side": 1,
+      "message": "tiny nit: Skia style generally has zero spaces after a cast: `(int)source-\u003elength()`",
+      "range": {
+        "startLine": 22,
+        "startChar": 39,
+        "endLine": 22,
+        "endChar": 42
+      },
+      "revId": "71a3d96877b20a4961e915a7f4619f23d2f48855",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
