@@ -69,6 +69,24 @@
       "parentUuid": "ba113272_644dfe26",
       "revId": "1b6ea09fdbde6335c08ffb62123adf1be20db472",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3759e8a6_1821caa0",
+        "filename": "src/gpu/v1/Device_v1.h",
+        "patchSetId": 23
+      },
+      "lineNbr": 219,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-03-16T18:03:31Z",
+      "side": 1,
+      "message": "Isn\u0027t this duplicated w/ the above declaration?",
+      "parentUuid": "dd81d6fc_8d1227e7",
+      "revId": "1b6ea09fdbde6335c08ffb62123adf1be20db472",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
