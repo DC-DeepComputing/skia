@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "594b96b3_0a86f9cc",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 2086,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-03-16T20:30:30Z",
+      "side": 1,
+      "message": "This is the real change here (moving errors on SK_SECONDARYFRAGCOLOR_BUILTIN from the declaration to the reference). The rest is just restructuring this from an if chain to a switch.",
+      "range": {
+        "startLine": 2079,
+        "startChar": 0,
+        "endLine": 2086,
+        "endChar": 0
+      },
+      "revId": "93c1e6ed5c8f91dc9107e549412be55743bb9b5f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
