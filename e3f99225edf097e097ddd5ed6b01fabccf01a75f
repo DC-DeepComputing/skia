@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "14f7a812_e05ab674",
+        "filename": "src/core/SkVMBlitter.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 668,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-03-16T20:05:30Z",
+      "side": 1,
+      "message": "Overall, yes - I think this approcach makes sense, and this CL looks correct.\n\nHowever, I just realized one tiny problem: When the raster-pipeline version of this code was written, I think that the largest SkColorType was 64-bits. That\u0027s not true anymore - we have kRGBA_F32_SkColorType, which is actually 128 bits/pixel. (You can use this color type with `--config f32` in dm).\n\nWe could make `dst` larger, and add another case below if shiftPerPixel is 4, but it gets more complicated (because there\u0027s no 128-bit integer type). It\u0027s probably easier to just add another condition above here (that shiftPerPixel \u003c\u003d 3)?",
+      "range": {
+        "startLine": 668,
+        "startChar": 7,
+        "endLine": 668,
+        "endChar": 21
+      },
+      "revId": "e3f99225edf097e097ddd5ed6b01fabccf01a75f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
