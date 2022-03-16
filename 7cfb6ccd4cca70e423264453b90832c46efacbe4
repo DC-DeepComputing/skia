@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "370dc851_70cf551b",
+        "filename": "tools/skqp/src/skqp_main.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-03-16T17:42:48Z",
+      "side": 1,
+      "message": "😄",
+      "range": {
+        "startLine": 35,
+        "startChar": 4,
+        "endLine": 35,
+        "endChar": 9
+      },
+      "revId": "7cfb6ccd4cca70e423264453b90832c46efacbe4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1e178051_824ebfa7",
+        "filename": "tools/skqp/src/skqp_main.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-03-16T17:42:48Z",
+      "side": 1,
+      "message": "Can/should this be a const ref? (I don\u0027t think there\u0027s currently anything in there that\u0027s expensive to copy, though.)",
+      "range": {
+        "startLine": 109,
+        "startChar": 9,
+        "endLine": 109,
+        "endChar": 23
+      },
+      "revId": "7cfb6ccd4cca70e423264453b90832c46efacbe4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
