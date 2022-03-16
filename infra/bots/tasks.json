@@ -18845,7 +18845,7 @@
         {
           "name": "skia/bots/go",
           "path": "go",
-          "version": "version:14"
+          "version": "version:15"
         }
       ],
       "command": [
@@ -18941,7 +18941,7 @@
         {
           "name": "skia/bots/go",
           "path": "go",
-          "version": "version:14"
+          "version": "version:15"
         },
         {
           "name": "skia/bots/protoc",
@@ -19261,7 +19261,7 @@
         {
           "name": "skia/bots/go",
           "path": "go",
-          "version": "version:14"
+          "version": "version:15"
         }
       ],
       "command": [
@@ -19329,7 +19329,7 @@
         {
           "name": "skia/bots/go",
           "path": "go",
-          "version": "version:14"
+          "version": "version:15"
         }
       ],
       "command": [
@@ -19397,7 +19397,7 @@
         {
           "name": "skia/bots/go",
           "path": "go",
-          "version": "version:14"
+          "version": "version:15"
         }
       ],
       "command": [
@@ -19592,7 +19592,7 @@
         {
           "name": "skia/bots/go",
           "path": "go",
-          "version": "version:14"
+          "version": "version:15"
         }
       ],
       "command": [
@@ -19890,7 +19890,7 @@
         {
           "name": "skia/bots/go",
           "path": "go",
-          "version": "version:14"
+          "version": "version:15"
         }
       ],
       "command": [
@@ -20357,7 +20357,7 @@
         {
           "name": "skia/bots/go",
           "path": "go",
-          "version": "version:14"
+          "version": "version:15"
         }
       ],
       "command": [
