@@ -45,6 +45,30 @@
       },
       "revId": "7cfb6ccd4cca70e423264453b90832c46efacbe4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5d24f02a_047cb913",
+        "filename": "tools/skqp/src/skqp_main.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-03-16T17:44:16Z",
+      "side": 1,
+      "message": "UnitTest is a typedef for `skiatest::Test*` so it\u0027s already pointer-ified. I agree that this kind of makes the code more difficult to read but wasn\u0027t planning on refactoring it (at least, not right now)",
+      "parentUuid": "1e178051_824ebfa7",
+      "range": {
+        "startLine": 109,
+        "startChar": 9,
+        "endLine": 109,
+        "endChar": 23
+      },
+      "revId": "7cfb6ccd4cca70e423264453b90832c46efacbe4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
