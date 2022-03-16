@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1e2ca78c_647f0a46",
+        "filename": "src/gpu/v1/Device.cpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 1069,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-03-16T17:45:24Z",
+      "side": 1,
+      "message": "std::mv ?",
+      "revId": "1b6ea09fdbde6335c08ffb62123adf1be20db472",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ba113272_644dfe26",
+        "filename": "src/gpu/v1/Device_v1.h",
+        "patchSetId": 23
+      },
+      "lineNbr": 219,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-03-16T17:45:24Z",
+      "side": 1,
+      "message": "duplicate ?",
+      "revId": "1b6ea09fdbde6335c08ffb62123adf1be20db472",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
