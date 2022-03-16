@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1a90049b_13367875",
+        "filename": "src/shaders/SkColorShader.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-03-16T17:59:55Z",
+      "side": 1,
+      "message": "This is probably clamping the color values, when the original color was floating point values that were less than 0 or larger than 1.",
+      "range": {
+        "startLine": 69,
+        "startChar": 59,
+        "endLine": 69,
+        "endChar": 68
+      },
+      "revId": "72a360c3ad61849dab59ef25eb61747b5f8487dc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
