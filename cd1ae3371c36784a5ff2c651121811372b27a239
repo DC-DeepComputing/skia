@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5ba641f7_6aef4ea6",
+        "filename": "src/gpu/text/GrTextBlob.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 649,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-03-16T14:01:02Z",
+      "side": 1,
+      "message": "non-blur mask filters ?",
+      "range": {
+        "startLine": 649,
+        "startChar": 29,
+        "endLine": 649,
+        "endChar": 34
+      },
+      "revId": "cd1ae3371c36784a5ff2c651121811372b27a239",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
