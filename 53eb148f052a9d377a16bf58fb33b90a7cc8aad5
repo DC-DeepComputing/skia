@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "db36f1b4_48aed9bf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-03-16T20:44:24Z",
+      "side": 1,
+      "message": "PS 1/2 were supposed to show the GM that reproduced the fuzzy elliptical curve, but it accidentally always took the circular rrect path since I made the original x and y radii too close together.\n\nPS 7 updates the GM to be effectively circular but definitely take the elliptical code path, and comments out the radius-based scale decision in the effect so it should show the fuzzy curve. PS 8 then re-enables the fix so should show the fuzzy curve replaced by the correct one.\n\nNormally I\u0027d wait until all the bots finished so I could confirm that what I just said was true (and it is based on my local machine), but I wanted to get this out for review since it has to land before https://chromium-review.googlesource.com/c/chromium/src/+/3516507, which ideally should make it into m101 tomorrow and it stumbled onto this bug and chrome\u0027s gold won\u0027t let it land if it makes bad images...",
+      "revId": "53eb148f052a9d377a16bf58fb33b90a7cc8aad5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
