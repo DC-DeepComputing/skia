@@ -22,6 +22,30 @@
       },
       "revId": "e3f99225edf097e097ddd5ed6b01fabccf01a75f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "975a960f_b97897d0",
+        "filename": "src/core/SkVMBlitter.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 668,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-03-16T20:23:39Z",
+      "side": 1,
+      "message": "This is how it works even right now. If switch does not find shiftPerPixel (0 - 3) it goes to the common non-constant case.\nOf course, we make few extra steps for 128 bits/pixel so I am going to add what you suggested.",
+      "parentUuid": "14f7a812_e05ab674",
+      "range": {
+        "startLine": 668,
+        "startChar": 7,
+        "endLine": 668,
+        "endChar": 21
+      },
+      "revId": "e3f99225edf097e097ddd5ed6b01fabccf01a75f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
