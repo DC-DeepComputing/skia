@@ -1,6 +1,29 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "22bffe6e_58732007",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 2084,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-03-16T21:11:07Z",
+      "side": 1,
+      "message": "Don\u0027t we usually use -1 for invalid IDs? Not that it matters much.",
+      "range": {
+        "startLine": 2084,
+        "startChar": 19,
+        "endLine": 2084,
+        "endChar": 20
+      },
+      "revId": "93c1e6ed5c8f91dc9107e549412be55743bb9b5f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "594b96b3_0a86f9cc",
@@ -14,6 +37,30 @@
       "writtenOn": "2022-03-16T20:30:30Z",
       "side": 1,
       "message": "This is the real change here (moving errors on SK_SECONDARYFRAGCOLOR_BUILTIN from the declaration to the reference). The rest is just restructuring this from an if chain to a switch.",
+      "range": {
+        "startLine": 2079,
+        "startChar": 0,
+        "endLine": 2086,
+        "endChar": 0
+      },
+      "revId": "93c1e6ed5c8f91dc9107e549412be55743bb9b5f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8fee06de_915e1871",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 2086,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-03-16T21:11:07Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "594b96b3_0a86f9cc",
       "range": {
         "startLine": 2079,
         "startChar": 0,
