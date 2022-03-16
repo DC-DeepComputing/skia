@@ -282,7 +282,7 @@ void CommandBuffer::onBindTextures(const TextureBindEntry* entries, int count) {
     for (int i = 0; i < count; ++i) {
         SkASSERT(entries[i].fTexture);
         id<MTLTexture> texture = ((Texture*)entries[i].fTexture.get())->mtlTexture();
-        fActiveRenderCommandEncoder->setFragmentTexture(texture, entries[i].fBindIndex);
+        fActiveRenderCommandEncoder->setFragmentTexture(texture, entries[i].fBindIndex1);
     }
 }
 
@@ -290,7 +290,7 @@ void CommandBuffer::onBindSamplers(const SamplerBindEntry* entries, int count) {
     for (int i = 0; i < count; ++i) {
         SkASSERT(entries[i].fSampler);
         id<MTLSamplerState> samplerState = ((Sampler*)entries[i].fSampler.get())->mtlSamplerState();
-        fActiveRenderCommandEncoder->setFragmentSamplerState(samplerState, entries[i].fBindIndex);
+        fActiveRenderCommandEncoder->setFragmentSamplerState(samplerState, entries[i].fBindIndex1);
     }
 }
 

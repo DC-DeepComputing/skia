@@ -85,23 +85,15 @@ public:
     // Can only be used within renderpasses
     //---------------------------------------------------------------
     void bindGraphicsPipeline(sk_sp<GraphicsPipeline> graphicsPipeline);
-    void bindUniformBuffer(UniformSlot, sk_sp<Buffer>, size_t bufferOffset);
+    void bindUniformBuffer1(UniformSlot, sk_sp<Buffer>, size_t bufferOffset);
 
-    void bindDrawBuffers(BindBufferInfo vertices,
-                         BindBufferInfo instances,
-                         BindBufferInfo indices) final;
+    void bindDrawBuffers(BindBufferInfo1 vertices,
+                         BindBufferInfo1 instances,
+                         BindBufferInfo1 indices) final;
 
-    struct TextureBindEntry {
-        sk_sp<Texture> fTexture;
-        unsigned int   fBindIndex;
-    };
-    void bindTextures(const TextureBindEntry* entries, int count);
+    void bindTextures1(const TextureBindEntry* entries, int count);
 
-    struct SamplerBindEntry {
-        sk_sp<Sampler> fSampler;
-        unsigned int   fBindIndex;
-    };
-    void bindSamplers(const SamplerBindEntry* entries, int count);
+    void bindSamplers1(const SamplerBindEntry* entries, int count);
 
     // TODO: do we want to handle multiple scissor rects and viewports?
     void setScissor(unsigned int left, unsigned int top, unsigned int width, unsigned int height) {
