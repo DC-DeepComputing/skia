@@ -33,6 +33,24 @@
       "message": "It\u0027s unfortunate that we need this. I wish I remembered why SkColor4Shader doesn\u0027t just convert the stored color to sRGB (and discard the color space). If we did that, then we could say that \"constantColor4f\" returns the constant color in sRGB.\n\nNote that SkPaint actually uses this approach: https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/core/SkPaint.cpp;l\u003d130;drc\u003d28f8c4edef0c91c02a15ec3bd26f6f38a2d256ca\n\nIt\u0027s not a blocker, though. This is all internal, and it doesn\u0027t add any new public API, so we could easily go back and remove it later.",
       "revId": "a60f697c4a05452fedb319f060c81c12518edbbe",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4e064ed4_ec8696fc",
+        "filename": "src/shaders/SkColorShader.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-03-16T21:11:43Z",
+      "side": 1,
+      "message": "That would be a different CL for sure.",
+      "parentUuid": "108578b9_d0489181",
+      "revId": "a60f697c4a05452fedb319f060c81c12518edbbe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
