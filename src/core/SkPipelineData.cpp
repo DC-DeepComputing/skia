@@ -61,7 +61,7 @@ bool SkPipelineData::operator==(const SkPipelineData& other) const {
     return true;
 }
 
-size_t SkPipelineData::hash() const {
+size_t SkPipelineData::hash1() const {
     int32_t hash = 0;
 
     for (auto& u : fUniformData) {

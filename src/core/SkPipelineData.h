@@ -62,9 +62,11 @@ public:
     size_t totalUniformSize() const;  // TODO: cache this?
     int numUniforms() const;         // TODO: cache this?
 
+    bool hasTextures() const { return !fProxies.empty(); }
+
     bool operator==(const SkPipelineData&) const;
     bool operator!=(const SkPipelineData& other) const { return !(*this == other);  }
-    size_t hash() const;
+    size_t hash1() const;
 
     using container = std::vector<sk_sp<SkUniformData>>;
     using iterator = container::iterator;

@@ -17,7 +17,7 @@ size_t PipelineDataCache::Hash::operator()(SkPipelineData* pd) const {
         return 0;
     }
 
-    return pd->hash();
+    return pd->hash1();
 }
 
 bool PipelineDataCache::Eq::operator()(SkPipelineData* a, SkPipelineData* b) const {
@@ -32,7 +32,7 @@ PipelineDataCache::PipelineDataCache() {
     // kInvalidUniformID is reserved
     static_assert(kInvalidUniformID == 0);
     fUniformBlock.push_back(nullptr);
-    fUniformBlockIDs.insert({nullptr, 0});
+    fUniformBlockIDs.insert({nullptr, PipelineDataID()});
 }
 
 #ifdef SK_DEBUG
@@ -41,19 +41,19 @@ void PipelineDataCache::validate() const {
         auto kv = fUniformBlockIDs.find(fUniformBlock[i].get());
         SkASSERT(kv != fUniformBlockIDs.end());
         SkASSERT(kv->first == fUniformBlock[i].get());
-        SkASSERT(SkTo<uint32_t>(i) == kv->second);
+        SkASSERT(SkTo<uint32_t>(i) == kv->second.asUInt());
     }
 }
 #endif
 
-uint32_t PipelineDataCache::insert(std::unique_ptr<SkPipelineData> pipelineData) {
+PipelineDataCache::PipelineDataID PipelineDataCache::insert1(std::unique_ptr<SkPipelineData> pipelineData) {
     auto kv = fUniformBlockIDs.find(pipelineData.get());
     if (kv != fUniformBlockIDs.end()) {
         return kv->second;
     }
 
-    uint32_t id = SkTo<uint32_t>(fUniformBlock.size());
-    SkASSERT(pipelineData && id != kInvalidUniformID);
+    PipelineDataID id(SkTo<uint32_t>(fUniformBlock.size()));
+    SkASSERT(pipelineData && id.isValid());
 
     fUniformBlockIDs.insert({pipelineData.get(), id});
     fUniformBlock.push_back(std::move(pipelineData));
@@ -61,9 +61,9 @@ uint32_t PipelineDataCache::insert(std::unique_ptr<SkPipelineData> pipelineData)
     return id;
 }
 
-SkPipelineData* PipelineDataCache::lookup(uint32_t uniqueID) {
-    SkASSERT(uniqueID < fUniformBlock.size());
-    return fUniformBlock[uniqueID].get();
+SkPipelineData* PipelineDataCache::lookup1(PipelineDataID uniqueID) {
+    SkASSERT(uniqueID.asUInt() < fUniformBlock.size());
+    return fUniformBlock[uniqueID.asUInt()].get();
 }
 
 } // namespace skgpu
