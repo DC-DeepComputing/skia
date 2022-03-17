@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "16e4cb46_b4803f8b",
+        "filename": "src/ports/SkFontHost_FreeType_common.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1737,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-03-17T21:26:37Z",
+      "side": 1,
+      "message": "Unfortunately, currently a lot of fonts that should be setting this flag are not setting it. It isn\u0027t clear at this point if we should simplify all glyph paths from variable fonts or if we should just implement this and let fonts get updated.",
+      "revId": "5f4b7ba4a655f5ab43b9e1e8f1d89732000bfe42",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
