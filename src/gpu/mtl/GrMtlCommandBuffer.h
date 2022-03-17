@@ -49,6 +49,7 @@ public:
     // Replaces current renderCommandEncoder with new one
     GrMtlRenderCommandEncoder* getRenderCommandEncoder(MTLRenderPassDescriptor*,
                                                        GrMtlOpsRenderPass*);
+    id<MTLComputeCommandEncoder> getComputeCommandEncoder();
 
     void addCompletedHandler(MTLCommandBufferHandler block) {
         [fCmdBuffer addCompletedHandler:block];
@@ -97,6 +98,7 @@ private:
         : fCmdBuffer(cmdBuffer)
         , fActiveBlitCommandEncoder(nil)
         , fActiveRenderCommandEncoder(nil)
+        , fActiveComputeCommandEncoder(nil)
         , fPreviousRenderPassDescriptor(nil)
         , fHasWork(false) {}
 
@@ -111,6 +113,7 @@ private:
     id<MTLCommandBuffer>        fCmdBuffer;
     id<MTLBlitCommandEncoder>   fActiveBlitCommandEncoder;
     std::unique_ptr<GrMtlRenderCommandEncoder> fActiveRenderCommandEncoder;
+    id<MTLComputeCommandEncoder> fActiveComputeCommandEncoder;
     MTLRenderPassDescriptor*    fPreviousRenderPassDescriptor;
     bool                        fHasWork;
 

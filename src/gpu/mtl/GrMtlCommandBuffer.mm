@@ -185,6 +185,19 @@ GrMtlRenderCommandEncoder* GrMtlCommandBuffer::getRenderCommandEncoder(
     return fActiveRenderCommandEncoder.get();
 }
 
+id<MTLComputeCommandEncoder> GrMtlCommandBuffer::getComputeCommandEncoder() {
+    if (fActiveComputeCommandEncoder) {
+        return fActiveComputeCommandEncoder;
+    }
+
+    this->endAllEncoding();
+    fActiveComputeCommandEncoder =
+            [fCmdBuffer computeCommandEncoderWithDispatchType:MTLDispatchTypeConcurrent];
+    fHasWork = true;
+
+    return fActiveComputeCommandEncoder;
+}
+
 bool GrMtlCommandBuffer::commit(bool waitUntilCompleted) {
     this->endAllEncoding();
     if (fCmdBuffer.status != MTLCommandBufferStatusNotEnqueued) {
@@ -224,6 +237,10 @@ void GrMtlCommandBuffer::endAllEncoding() {
     if (fActiveBlitCommandEncoder) {
         [fActiveBlitCommandEncoder endEncoding];
         fActiveBlitCommandEncoder = nil;
+    }
+    if (fActiveComputeCommandEncoder) {
+        [fActiveComputeCommandEncoder endEncoding];
+        fActiveComputeCommandEncoder = nil;
     }
 }
 
