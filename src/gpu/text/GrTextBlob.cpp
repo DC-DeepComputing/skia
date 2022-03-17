@@ -636,20 +636,30 @@ void PathOpSubmitter::submitOps(SkCanvas* canvas,
                                 skgpu::v1::SurfaceDrawContext* sdc) const {
     SkPaint runPaint{paint};
     runPaint.setAntiAlias(fIsAntiAliased);
-    // If there are shaders, blurs or styles, the path must be scaled into source
-    // space independently of the CTM. This allows the CTM to be correct for the
-    // different effects.
-    GrStyle style(runPaint);
 
-    bool needsExactCTM = runPaint.getShader()
-                         || style.applies()
-                         || runPaint.getMaskFilter();
+
+    SkMaskFilterBase* maskFilter = as_MFB(runPaint.getMaskFilter());
 
     // Calculate the matrix that maps the path glyphs from their size in the strike to
     // the graphics source space.
     SkMatrix strikeToSource = SkMatrix::Scale(fStrikeToSourceScale, fStrikeToSourceScale);
     strikeToSource.postTranslate(drawOrigin.x(), drawOrigin.y());
+
+    // If there are shaders, non-blur mask filters or styles, the path must be scaled into source
+    // space independently of the CTM. This allows the CTM to be correct for the different effects.
+    GrStyle style(runPaint);
+    bool needsExactCTM = runPaint.getShader()
+                         || style.applies()
+                         || (maskFilter != nullptr && !maskFilter->asABlur(nullptr));
     if (!needsExactCTM) {
+        SkMaskFilterBase::BlurRec blurRec;
+
+        // If there is a blur mask filter, then sigma needs to be adjusted to account for the
+        // scaling of fStrikeToSourceScale.
+        if (maskFilter != nullptr && maskFilter->asABlur(&blurRec)) {
+            runPaint.setMaskFilter(
+                    SkMaskFilter::MakeBlur(blurRec.fStyle, blurRec.fSigma / fStrikeToSourceScale));
+        }
         for (auto [path, pos] : SkMakeZip(fPaths.get(), fPositions)) {
             // Transform the glyph to source space.
             SkMatrix pathMatrix = strikeToSource;
@@ -2918,7 +2928,7 @@ public:
     void surfaceDraw(SkCanvas*,
                      const GrClip* clip,
                      const SkMatrixProvider& viewMatrix,
-                     skgpu::v1::SurfaceDrawContext* sdc);
+                     skgpu::v1::SurfaceDrawContext* sdc) const;
 
     void doFlatten(SkWriteBuffer& buffer) const override;
     SkRect sourceBounds() const override { return fSourceBounds; }
@@ -2984,7 +2994,7 @@ Slug::Slug(SkRect sourceBounds,
            , fOrigin{origin} { }
 
 void Slug::surfaceDraw(SkCanvas* canvas, const GrClip* clip, const SkMatrixProvider& viewMatrix,
-                       skgpu::v1::SurfaceDrawContext* sdc) {
+                       skgpu::v1::SurfaceDrawContext* sdc) const {
     for (const GrSubRun& subRun : fSubRuns) {
         subRun.draw(canvas, clip, viewMatrix, fOrigin, fPaint, sdc);
     }
@@ -3577,7 +3587,7 @@ Device::convertGlyphRunListToSlug(const SkGlyphRunList& glyphRunList, const SkPa
             this->asMatrixProvider(), glyphRunList, paint);
 }
 
-void Device::drawSlug(SkCanvas* canvas, GrSlug* slug) {
+void Device::drawSlug(SkCanvas* canvas, const GrSlug* slug) {
     fSurfaceDrawContext->drawSlug(canvas, this->clip(), this->asMatrixProvider(), slug);
 }
 
@@ -3597,8 +3607,8 @@ SurfaceDrawContext::convertGlyphRunListToSlug(const SkMatrixProvider& viewMatrix
 void SurfaceDrawContext::drawSlug(SkCanvas* canvas,
                                   const GrClip* clip,
                                   const SkMatrixProvider& viewMatrix,
-                                  GrSlug* slugPtr) {
-    Slug* slug = static_cast<Slug*>(slugPtr);
+                                  const GrSlug* slugPtr) {
+    const Slug* slug = static_cast<const Slug*>(slugPtr);
 
     slug->surfaceDraw(canvas, clip, viewMatrix, this);
 }

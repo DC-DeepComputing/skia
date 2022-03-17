@@ -144,12 +144,61 @@ std::tuple<UniformWriter, BindBufferInfo> DrawBufferManager::getUniformWriter(
     return {UniformWriter(map_offset(bindInfo), requiredBytes), bindInfo};
 }
 
+BindBufferInfo DrawBufferManager::getStaticBuffer(BufferType type,
+                                                  InitializeBufferFn initFn,
+                                                  BufferSizeFn sizeFn) {
+    // TODO(skbug:13059) - This should really be encapsulated in ResourceProvider using a shareable
+    // GraphiteResourceKey. However, this lets us track resources cleanly and since DBM "shares" the
+    // read-only BindBufferInfo across draw steps, we get equivalent behavior.
+    uintptr_t key = reinterpret_cast<uintptr_t>(initFn);
+    auto cachedBuffer = fStaticBuffers.find(key);
+    if (cachedBuffer != fStaticBuffers.end()) {
+        return {cachedBuffer->second.get(), 0};
+    }
+
+    // Create a new buffer and fill it in.
+    // TODO: Ideally created once and then copied into a vertex buffer with PrioritizeGpuReads::kYes
+    // but this lets us easily lazily initialize it for now.
+    size_t size = sizeFn();
+    auto buffer = fResourceProvider->findOrCreateBuffer(size, type, PrioritizeGpuReads::kNo);
+    if (!buffer) {
+        return {};
+    }
+
+    initFn(VertexWriter{buffer->map(), size}, size);
+    buffer->unmap();
+    fStaticBuffers.insert({key, buffer});
+    return {buffer.get(), 0};
+}
+
 void DrawBufferManager::transferToCommandBuffer(CommandBuffer* commandBuffer) {
     for (auto& buffer : fUsedBuffers) {
         buffer->unmap();
         commandBuffer->trackResource(std::move(buffer));
     }
     fUsedBuffers.clear();
+
+    // The current draw buffers have not been added to fUsedBuffers,
+    // so we need to handle them as well.
+    if (fCurrentVertexBuffer) {
+        fCurrentVertexBuffer->unmap();
+        commandBuffer->trackResource(std::move(fCurrentVertexBuffer));
+    }
+    if (fCurrentIndexBuffer) {
+        fCurrentIndexBuffer->unmap();
+        commandBuffer->trackResource(std::move(fCurrentIndexBuffer));
+    }
+    if (fCurrentUniformBuffer) {
+        fCurrentUniformBuffer->unmap();
+        commandBuffer->trackResource(std::move(fCurrentUniformBuffer));
+    }
+    // Assume all static buffers were used, but don't lose our ref
+    // TODO(skbug:13059) - If static buffers are stored in the ResourceProvider and queried on each
+    // draw or owned by the RenderStep, we still need a way to track the static buffer *once* per
+    // frame that relies on it.
+    for (auto [_, buffer] : fStaticBuffers) {
+        commandBuffer->trackResource(buffer);
+    }
 }
 
 } // namespace skgpu
