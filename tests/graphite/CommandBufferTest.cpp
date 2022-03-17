@@ -292,7 +292,7 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(CommandBufferTest, reporter, context) {
 
     // Create Sampler -- for now, just to test creation
     sk_sp<Sampler> sampler = resourceProvider->findOrCreateCompatibleSampler(
-            SkSamplingOptions(SkFilterMode::kLinear), SkTileMode::kClamp, SkTileMode::kDecal);
+            SkSamplingOptions(SkFilterMode::kLinear), SkTileMode::kClamp, SkTileMode::kDecal, true);
     REPORTER_ASSERT(reporter, sampler);
 
     commandBuffer->beginRenderPass(renderPassDesc, target->refTexture(), nullptr,
@@ -332,7 +332,7 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(CommandBufferTest, reporter, context) {
                 auto [writer, bindInfo] =
                         bufferMgr.getUniformWriter(renderStepUniforms->dataSize());
                 writer.write(renderStepUniforms->data(), renderStepUniforms->dataSize());
-                commandBuffer->bindUniformBuffer(UniformSlot::kRenderStep,
+                commandBuffer->bindUniformBuffer1(UniformSlot::kRenderStep,
                                                  sk_ref_sp(bindInfo.fBuffer),
                                                  bindInfo.fOffset);
             }
@@ -340,7 +340,7 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(CommandBufferTest, reporter, context) {
             // TODO: Rely on uniform writer and GetUniforms(kSolidColor).
             auto [writer, bindInfo] = bufferMgr.getUniformWriter(sizeof(SkColor4f));
             writer.write(&d.fColor, sizeof(SkColor4f));
-            commandBuffer->bindUniformBuffer(UniformSlot::kPaint,
+            commandBuffer->bindUniformBuffer1(UniformSlot::kPaint,
                                              sk_ref_sp(bindInfo.fBuffer),
                                              bindInfo.fOffset);
 
