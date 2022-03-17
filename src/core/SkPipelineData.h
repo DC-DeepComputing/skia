@@ -53,40 +53,88 @@ public:
     }
     const BlendInfo& blendInfo() const { return fBlendInfo; }
 
-    void addImage(const SkSamplingOptions&, const SkTileMode[2], sk_sp<skgpu::TextureProxy>);
-#endif
+    class TextureDataBlock {
+    public:
+        struct TextureInfo {
+            bool operator==(const TextureInfo&) const;
+            bool operator!=(const TextureInfo& other) const { return !(*this == other);  }
 
-    void add(sk_sp<SkUniformData>);
+            uint32_t samplingAsKey() const {
+                return static_cast<int>(fTileModes[0]) +
+                       static_cast<int>(fTileModes[1]) * kSkTileModeCount +
+                       static_cast<int>(fSamplingOptions.filter) * kSkTileModeCount*kSkTileModeCount +
+                       static_cast<int>(fSamplingOptions.mipmap) * kSkTileModeCount*kSkTileModeCount*kSkFilterModeCount;
+            }
 
-    bool hasUniforms() const { return !fUniformData.empty(); }
-    size_t totalUniformSize() const;  // TODO: cache this?
-    int numUniforms() const;         // TODO: cache this?
+            sk_sp<skgpu::TextureProxy> fProxy;
+            SkSamplingOptions          fSamplingOptions;
+            SkTileMode                 fTileModes[2];
+        };
 
-    bool operator==(const SkPipelineData&) const;
-    bool operator!=(const SkPipelineData& other) const { return !(*this == other);  }
-    size_t hash() const;
+        bool empty() const { return fTextureData.empty(); }
+        int size() const { return SkTo<int>(fTextureData.size()); }
+        const TextureInfo& operator[](int i) { return fTextureData[i]; }
 
-    using container = std::vector<sk_sp<SkUniformData>>;
-    using iterator = container::iterator;
-    using const_iterator = container::const_iterator;
+        bool operator==(const TextureDataBlock&) const;
+        bool operator!=(const TextureDataBlock& other) const { return !(*this == other);  }
 
-    inline iterator begin() noexcept { return fUniformData.begin(); }
-    inline const_iterator cbegin() const noexcept { return fUniformData.cbegin(); }
-    inline iterator end() noexcept { return fUniformData.end(); }
-    inline const_iterator cend() const noexcept { return fUniformData.cend(); }
+        size_t hash1() const;
 
-private:
-    // TODO: SkUniformData should be held uniquely
-    std::vector<sk_sp<SkUniformData>> fUniformData;
+        void add(const SkSamplingOptions& sampling,
+                 const SkTileMode tileModes[2],
+                 sk_sp<skgpu::TextureProxy> proxy) {
+            fTextureData.push_back({std::move(proxy), sampling, {tileModes[0], tileModes[1]}});
+        }
 
-#ifdef SK_GRAPHITE_ENABLED
-    struct TextureInfo {
-        sk_sp<skgpu::TextureProxy> fProxy;
-        SkSamplingOptions          fSamplingOptions;
-        SkTileMode                 fTileModes[2];
+        int numTextures() const { return SkTo<int>(fTextureData.size()); }
+        const TextureInfo& texture(int index) { return fTextureData[index]; }
+
+    private:
+        std::vector<TextureInfo> fTextureData;
     };
 
-    std::vector<TextureInfo> fProxies;
+    bool hasTextures() const { return !fTextureDataBlock.empty(); }
+
+    void add(const SkSamplingOptions&, const SkTileMode[2], sk_sp<skgpu::TextureProxy>);
+    const TextureDataBlock& textureDataBlock() { return fTextureDataBlock; }
+#endif
+
+    class UniformDataBlock {
+    public:
+        bool empty() const { return fUniformData.empty(); }
+        int numUniforms() const; // TODO: cache this?
+        size_t totalUniformSize() const;  // TODO: cache this?
+
+        bool operator==(const UniformDataBlock&) const;
+        bool operator!=(const UniformDataBlock& other) const { return !(*this == other);  }
+
+        using container = std::vector<sk_sp<SkUniformData>>;
+        using iterator = container::iterator;
+
+        inline iterator begin() noexcept { return fUniformData.begin(); }
+        inline iterator end() noexcept { return fUniformData.end(); }
+
+        size_t hash1() const;
+
+        void add(sk_sp<SkUniformData> u) {
+            fUniformData.push_back(std::move(u));
+        }
+
+    private:
+        // TODO: SkUniformData should be held uniquely
+        std::vector<sk_sp<SkUniformData>> fUniformData;
+    };
+
+    void add(sk_sp<SkUniformData>);
+    bool hasUniforms() const { return !fUniformDataBlock.empty(); }
+
+    UniformDataBlock& uniformDataBlock() { return fUniformDataBlock; }
+
+private:
+    UniformDataBlock fUniformDataBlock;
+
+#ifdef SK_GRAPHITE_ENABLED
+    TextureDataBlock fTextureDataBlock;
     BlendInfo fBlendInfo;
 #endif
 };
