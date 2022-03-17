@@ -8,11 +8,12 @@
 #ifndef SKSL_DSL_FPS
 #define SKSL_DSL_FPS
 
-#include "include/sksl/DSL.h"
-
 #if !defined(SKSL_STANDALONE) && SK_SUPPORT_GPU
 
+#include "include/sksl/DSLExpression.h"
+#include "include/sksl/DSLVar.h"
 #include "src/gpu/GrFragmentProcessor.h"
+#include "src/gpu/glsl/GrGLSLUniformHandler.h"
 
 namespace SkSL {
 
