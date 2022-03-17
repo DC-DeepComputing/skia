@@ -13,6 +13,7 @@
 #include "include/core/SkMaskFilter.h"
 #include "include/core/SkPathEffect.h"
 #include "include/core/SkStrokeRec.h"
+#include "include/pathops/SkPathOps.h"
 #include "include/private/SkColorData.h"
 #include "include/private/SkTo.h"
 #include "src/core/SkAutoMalloc.h"
@@ -727,6 +728,8 @@ void SkScalerContext::internalGetPath(SkGlyph& glyph, SkArenaAlloc* alloc) {
         glyph.setPath(alloc, (SkPath*)nullptr, hairline);
         return;
     }
+
+    Simplify(path, &path);
 
     if (fRec.fFlags & SkScalerContext::kSubpixelPositioning_Flag) {
         SkFixed dx = glyphID.getSubXFixed();
