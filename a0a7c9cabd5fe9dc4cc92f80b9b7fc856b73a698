@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c1b7b445_832ca27f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-03-17T14:35:52Z",
+      "side": 1,
+      "message": "Thanks for the quick review!",
+      "revId": "a0a7c9cabd5fe9dc4cc92f80b9b7fc856b73a698",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "27df691e_c3fdb5f0",
@@ -14,6 +31,24 @@
       "writtenOn": "2022-03-17T14:03:48Z",
       "side": 1,
       "message": "It\u0027s interesting that this is really a \"developer\" assert. We do want this assert when we\u0027re normally running tests and the like, but we kinda don\u0027t want this assert around (or maybe log but not fail) when built for the fuzzer (a debug log developer asserts build?). We need to be able to handle the case correctly, so this assert isn\u0027t really asserting a precondition, it\u0027s asserting that other code is correct. The fuzzer is \"correct\" to write garbage into the buffer, but for all other code it is incorrect to write a negative value. In theory this assert should go into all writers of the buffer (except the fuzzer) but that\u0027s potentially every write in the process, so can\u0027t really do that. Don\u0027t know what to do about that, but it\u0027s interesting.",
+      "revId": "a0a7c9cabd5fe9dc4cc92f80b9b7fc856b73a698",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2ff6931c_efcffa11",
+        "filename": "src/gpu/text/GrTextBlob.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 3028,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-03-17T14:35:52Z",
+      "side": 1,
+      "message": "Maybe, validate should assert in debug, but log during fuzzing. Is there a way to tell if we are fuzzing at runtime?",
+      "parentUuid": "27df691e_c3fdb5f0",
       "revId": "a0a7c9cabd5fe9dc4cc92f80b9b7fc856b73a698",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
