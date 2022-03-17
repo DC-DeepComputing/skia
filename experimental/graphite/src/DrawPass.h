@@ -26,6 +26,7 @@ class DrawList;
 class Recorder;
 struct RenderPassDesc;
 class ResourceProvider;
+class Sampler;
 class TextureProxy;
 enum class UniformSlot;
 
@@ -89,13 +90,16 @@ private:
         uint32_t fPipelineIndex;
     };
     struct BindUniformBuffer {
-        BindBufferInfo fInfo;
+        BindBufferInfo1 fInfo1;
         UniformSlot fSlot;
     };
+    struct BindTextureSamplers {
+        TextureBindInfo fInfo2;
+    };
     struct BindDrawBuffers {
-        BindBufferInfo fVertices;
-        BindBufferInfo fInstances;
-        BindBufferInfo fIndices;
+        BindBufferInfo1 fVertices;
+        BindBufferInfo1 fInstances;
+        BindBufferInfo1 fIndices;
     };
     struct Draw {
         PrimitiveType fType;
@@ -131,8 +135,9 @@ private:
 
     enum class CommandType {
         kBindGraphicsPipeline,
-        kBindUniformBuffer,
-        kBindDrawBuffers,
+        kBindUniformBuffer1,
+        kBindTextures,
+        kBindDrawBuffers1,
         kDraw,
         kDrawIndexed,
         kDrawInstanced,
@@ -149,6 +154,7 @@ private:
         union {
             BindGraphicsPipeline fBindGraphicsPipeline;
             BindUniformBuffer    fBindUniformBuffer;
+            BindTextureSamplers  fBindTextureSamplers;
             BindDrawBuffers      fBindDrawBuffers;
             Draw                 fDraw;
             DrawIndexed          fDrawIndexed;
@@ -160,9 +166,11 @@ private:
         explicit Command(BindGraphicsPipeline d)
                 : fType(CommandType::kBindGraphicsPipeline), fBindGraphicsPipeline(d) {}
         explicit Command(BindUniformBuffer d)
-                : fType(CommandType::kBindUniformBuffer), fBindUniformBuffer(d) {}
+                : fType(CommandType::kBindUniformBuffer1), fBindUniformBuffer(d) {}
+        explicit Command(BindTextureSamplers f)
+                : fType(CommandType::kBindTextures), fBindTextureSamplers(f) {}
         explicit Command(BindDrawBuffers d)
-                : fType(CommandType::kBindDrawBuffers), fBindDrawBuffers(d) {}
+                : fType(CommandType::kBindDrawBuffers1), fBindDrawBuffers(d) {}
         explicit Command(Draw d)
                 : fType(CommandType::kDraw), fDraw(d) {}
         explicit Command(DrawIndexed d)

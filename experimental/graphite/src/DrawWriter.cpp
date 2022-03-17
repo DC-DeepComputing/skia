@@ -35,9 +35,9 @@ DrawWriter::DrawWriter(DrawDispatcher* dispatcher,
     SkASSERT(dispatcher && bufferManager);
 }
 
-void DrawWriter::setTemplate(BindBufferInfo vertices,
-                             BindBufferInfo indices,
-                             BindBufferInfo instances,
+void DrawWriter::setTemplate(BindBufferInfo1 vertices,
+                             BindBufferInfo1 indices,
+                             BindBufferInfo1 instances,
                              int templateCount) {
     if (vertices != fVertices || instances != fInstances || fIndices != indices) {
         if (fPendingCount > 0) {

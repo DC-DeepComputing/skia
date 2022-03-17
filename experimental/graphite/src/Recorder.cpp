@@ -27,7 +27,8 @@ namespace skgpu {
 Recorder::Recorder(sk_sp<Gpu> gpu, sk_sp<GlobalCache> globalCache)
         : fGpu(std::move(gpu))
         , fGraph(new TaskGraph)
-        , fPipelineDataCache(new PipelineDataCache) {
+        , fUniformDataCache(new UniformDataCache)
+        , fTextureDataCache(new TextureDataCache) {
 
     fResourceProvider = fGpu->makeResourceProvider(std::move(globalCache), this->singleOwner());
     fDrawBufferManager.reset(new DrawBufferManager(fResourceProvider.get(),
