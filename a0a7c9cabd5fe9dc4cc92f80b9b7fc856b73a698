@@ -69,6 +69,24 @@
       "parentUuid": "2ff6931c_efcffa11",
       "revId": "a0a7c9cabd5fe9dc4cc92f80b9b7fc856b73a698",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "64968fbd_a42fcaed",
+        "filename": "src/gpu/text/GrTextBlob.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 3028,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-03-17T15:37:03Z",
+      "side": 1,
+      "message": "Interesting, I had thought asserts were on for this fuzzer (because the crash caught was an assert failing), but this assert was actually an SK_ASSERT_RELEASE. So this assert is fine. Thanks for the clarification.",
+      "parentUuid": "be9c3274_cb9047f3",
+      "revId": "a0a7c9cabd5fe9dc4cc92f80b9b7fc856b73a698",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
