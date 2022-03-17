@@ -16,6 +16,24 @@
       "message": "I don\u0027t think startOffset can exist as a uint16. Weird programs \u003e64K are definitely possible. \n\nMy earlier suggestion was, store the length of the range as a uint16, and change IRNode::fKind to an uint16. So in this scenario `fEndOffset` would become `uint16 fLength`. We would need to make sure that fKind and fLength are next to each other (this seems to happen naturally). ",
       "revId": "d4d8acc5f13794a3ffd2168de2336903585d0bcf",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "aa44b60f_c08be82a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-03-17T18:31:07Z",
+      "side": 1,
+      "message": "Example https://godbolt.org/z/7YGcb8ba5",
+      "parentUuid": "10c5225e_89df0552",
+      "revId": "d4d8acc5f13794a3ffd2168de2336903585d0bcf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
