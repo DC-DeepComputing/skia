@@ -47,6 +47,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "35c0c83e_dde296eb",
+        "filename": "include/sksl/SkSLErrorReporter.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-03-17T14:03:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ceaf38a9_544c3983",
+      "range": {
+        "startLine": 64,
+        "startChar": 4,
+        "endLine": 64,
+        "endChar": 23
+      },
+      "revId": "71a3d96877b20a4961e915a7f4619f23d2f48855",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e5a2183a_ec642699",
@@ -70,6 +94,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2758b6d4_4ea57e95",
+        "filename": "src/sksl/SkSLPosition.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-03-17T14:03:09Z",
+      "side": 1,
+      "message": "It\u0027s not a precondition - it\u0027s fine for it to be null as long as end offset is -1.",
+      "parentUuid": "e5a2183a_ec642699",
+      "range": {
+        "startLine": 20,
+        "startChar": 0,
+        "endLine": 20,
+        "endChar": 21
+      },
+      "revId": "71a3d96877b20a4961e915a7f4619f23d2f48855",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "07794caf_9b5d18c8",
@@ -83,6 +131,30 @@
       "writtenOn": "2022-03-16T21:17:25Z",
       "side": 1,
       "message": "tiny nit: Skia style generally has zero spaces after a cast: `(int)source-\u003elength()`",
+      "range": {
+        "startLine": 22,
+        "startChar": 39,
+        "endLine": 22,
+        "endChar": 42
+      },
+      "revId": "71a3d96877b20a4961e915a7f4619f23d2f48855",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f98af74f_ce822a8f",
+        "filename": "src/sksl/SkSLPosition.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-03-17T14:03:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "07794caf_9b5d18c8",
       "range": {
         "startLine": 22,
         "startChar": 39,
