@@ -10,23 +10,23 @@
 
 SkPipelineData::SkPipelineData(sk_sp<SkUniformData> initial) {
     SkASSERT(initial && initial->count());
-    fUniformData.push_back(std::move(initial));
+    fUniformDataBlock.add(std::move(initial));
 }
 
 void SkPipelineData::add(sk_sp<SkUniformData> uniforms) {
     SkASSERT(uniforms && uniforms->count());
-    fUniformData.push_back(std::move(uniforms));
+    fUniformDataBlock.add(std::move(uniforms));
 }
 
 #ifdef SK_GRAPHITE_ENABLED
 void SkPipelineData::addImage(const SkSamplingOptions& sampling,
                               const SkTileMode tileModes[2],
                               sk_sp<skgpu::TextureProxy> proxy) {
-    fProxies.push_back({std::move(proxy), sampling, {tileModes[0], tileModes[1]}});
+    fTextureDataBlock.add(sampling, tileModes, std::move(proxy));
 }
 #endif
 
-size_t SkPipelineData::totalUniformSize() const {
+size_t SkPipelineData::UniformDataBlock::totalUniformSize() const {
     size_t total = 0;
 
     // TODO: It seems like we need to worry about alignment between the separate sets of uniforms
@@ -37,7 +37,7 @@ size_t SkPipelineData::totalUniformSize() const {
     return total;
 }
 
-int SkPipelineData::numUniforms() const {
+int SkPipelineData::UniformDataBlock::numUniforms() const {
     int total = 0;
 
     for (auto& u : fUniformData) {
@@ -47,7 +47,7 @@ int SkPipelineData::numUniforms() const {
     return total;
 }
 
-bool SkPipelineData::operator==(const SkPipelineData& other) const {
+bool SkPipelineData::UniformDataBlock::operator==(const SkPipelineData::UniformDataBlock& other) const {
     if (fUniformData.size() != other.fUniformData.size()) {
         return false;
     }
@@ -61,7 +61,7 @@ bool SkPipelineData::operator==(const SkPipelineData& other) const {
     return true;
 }
 
-size_t SkPipelineData::hash() const {
+size_t SkPipelineData::UniformDataBlock::hash1() const {
     int32_t hash = 0;
 
     for (auto& u : fUniformData) {

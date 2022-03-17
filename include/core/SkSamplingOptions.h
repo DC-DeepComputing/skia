@@ -18,6 +18,8 @@ enum class SkFilterMode {
     kLast = kLinear,
 };
 
+static constexpr int kSkFilterModeCount = static_cast<int>(SkFilterMode::kLast) + 1;
+
 enum class SkMipmapMode {
     kNone,      // ignore mipmap levels, sample from the "base"
     kNearest,   // sample from the nearest level

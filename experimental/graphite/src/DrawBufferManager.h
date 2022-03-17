@@ -27,9 +27,9 @@ public:
     DrawBufferManager(ResourceProvider*, size_t uniformStartAlignment);
     ~DrawBufferManager();
 
-    std::tuple<VertexWriter, BindBufferInfo> getVertexWriter(size_t requiredBytes);
-    std::tuple<IndexWriter, BindBufferInfo> getIndexWriter(size_t requiredBytes);
-    std::tuple<UniformWriter, BindBufferInfo> getUniformWriter(size_t requiredBytes);
+    std::tuple<VertexWriter, BindBufferInfo1> getVertexWriter(size_t requiredBytes);
+    std::tuple<IndexWriter, BindBufferInfo1> getIndexWriter(size_t requiredBytes);
+    std::tuple<UniformWriter, BindBufferInfo1> getUniformWriter(size_t requiredBytes);
 
     // Returns the last 'unusedBytes' from the last call to getVertexWriter(). Assumes that
     // 'unusedBytes' is less than the 'requiredBytes' to the original allocation.
@@ -44,7 +44,7 @@ public:
     // to the new initialization pattern in the near future.
     using BufferSizeFn = size_t(*)();
     using InitializeBufferFn = void(*)(skgpu::VertexWriter, size_t bufferSize);
-    BindBufferInfo getStaticBuffer(BufferType type,
+    BindBufferInfo1 getStaticBuffer(BufferType type,
                                    InitializeBufferFn,
                                    BufferSizeFn);
 

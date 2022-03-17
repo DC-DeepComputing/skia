@@ -10,6 +10,7 @@
 
 #include "include/core/SkRefCnt.h"
 #include "include/private/SingleOwner.h"
+#include "experimental/graphite/src/PipelineDataCache.h"
 
 #include <vector>
 
@@ -25,7 +26,6 @@ class Recording;
 class ResourceProvider;
 class Task;
 class TaskGraph;
-class PipelineDataCache;
 
 class Recorder final {
 public:
@@ -79,7 +79,8 @@ private:
     std::unique_ptr<ResourceProvider> fResourceProvider;
 
     std::unique_ptr<TaskGraph> fGraph;
-    std::unique_ptr<PipelineDataCache> fPipelineDataCache;
+    std::unique_ptr<UniformDataCache> fUniformDataCache;
+    std::unique_ptr<TextureDataCache> fTextureDataCache;
     std::unique_ptr<DrawBufferManager> fDrawBufferManager;
     std::vector<Device*> fTrackedDevices;
 

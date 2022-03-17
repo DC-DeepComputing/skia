@@ -27,7 +27,7 @@ public:
     static sk_sp<Sampler> Make(const Gpu*,
                                const SkSamplingOptions& samplingOptions,
                                SkTileMode xTileMode,
-                               SkTileMode yTileMode);
+                               SkTileMode yTileMode, bool);
 
     ~Sampler() override {}
 
@@ -35,7 +35,7 @@ public:
 
 private:
     Sampler(const Gpu* gpu,
-            sk_cfp<id<MTLSamplerState>>);
+            sk_cfp<id<MTLSamplerState>>, bool);
 
     void freeGpuData() override;
 
