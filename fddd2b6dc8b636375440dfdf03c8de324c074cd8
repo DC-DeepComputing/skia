@@ -53,6 +53,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f4f8485e_75a3f7b9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-03-17T14:45:38Z",
+      "side": 1,
+      "message": "Ahh I think I was looking at MtlCommandBuffer::onBindGP",
+      "parentUuid": "f3884b00_ba5aa312",
+      "revId": "fddd2b6dc8b636375440dfdf03c8de324c074cd8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "901b2a0c_7b6afcad",
