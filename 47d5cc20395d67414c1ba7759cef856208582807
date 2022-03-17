@@ -16,6 +16,23 @@
       "message": "I don\u0027t have access to the oss-fuzz issue, so it\u0027s difficult to evaluate if this makes sense. Is this coming from Slug::MakeFrom buffer? I suppose that basically every path into here could have issues anyway with the whole treating `int` like a `size_t` thing. The issue of course is that we allow the user to pass obviously invalid data (negative sizes) but then have no way to fail in the constructor except crash.\n\nI mean, all the way up in `Slug::MakeFromBuffer` (for instance) there is an `::operator new (sizeof(Slug) + subRunsFlattenSizeHint` where `subRunsFlattenSizeHint could be negative (same for subRunCount which seems to be checked against `!\u003d 0` but not `\u003e 0`).",
       "revId": "47d5cc20395d67414c1ba7759cef856208582807",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "710ce989_ea71b9c2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-03-17T13:27:10Z",
+      "side": 1,
+      "message": "Also, this (at PS1) won\u0027t actually fix the report will it? This would just be asserting in a different place.",
+      "revId": "47d5cc20395d67414c1ba7759cef856208582807",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
