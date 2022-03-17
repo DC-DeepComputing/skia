@@ -59,7 +59,10 @@ SkMipmapAccessor::SkMipmapAccessor(const SkImage_Base* image, const SkMatrix& in
                                SkIntToScalar(pm.height()) / image->height()) * inv;
     };
 
-    int levelNum = sk_float_floor2int(level);
+    // Nearest mode always uses the lower level so we round to pick the closest. In linear mode
+    // we want the one above and below our computed level.
+    int levelNum = resolvedMode == SkMipmapMode::kNearest ? sk_float_round2int(level)
+                                                          : sk_float_floor2int(level);
     float lowerWeight = level - levelNum;   // fract(level)
     SkASSERT(levelNum >= 0);
 

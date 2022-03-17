@@ -735,7 +735,8 @@ float SkMipmap::ComputeLevel(SkSize scaleSize) {
         return -1;
     }
 
-    SkScalar L = -SkScalarLog2(scale);
+    // The -0.5 bias here is to emulate GPU's sharpen mipmap option.
+    SkScalar L = -SkScalarLog2(scale) - 0.5f;
     if (!SkScalarIsFinite(L)) {
         return -1;
     }
@@ -749,7 +750,7 @@ bool SkMipmap::extractLevel(SkSize scaleSize, Level* levelPtr) const {
     }
 
     float L = ComputeLevel(scaleSize);
-    int level = SkScalarFloorToInt(L);
+    int level = sk_float_round2int(L);
     if (level <= 0) {
         return false;
     }
