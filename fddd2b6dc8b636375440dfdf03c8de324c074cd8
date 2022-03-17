@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f3884b00_ba5aa312",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-03-17T14:43:36Z",
+      "side": 1,
+      "message": "We track the GraphicsPipeline in CommandBuffer::bindGraphicsPipeline(), which ends up tracking both of them.",
+      "parentUuid": "0de74805_36c0c8d6",
+      "revId": "fddd2b6dc8b636375440dfdf03c8de324c074cd8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "901b2a0c_7b6afcad",
@@ -48,6 +66,30 @@
       "writtenOn": "2022-03-17T13:30:41Z",
       "side": 1,
       "message": "100 chars",
+      "range": {
+        "startLine": 33,
+        "startChar": 100,
+        "endLine": 33,
+        "endChar": 106
+      },
+      "revId": "fddd2b6dc8b636375440dfdf03c8de324c074cd8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "858f2b84_7cd117fb",
+        "filename": "experimental/graphite/src/mtl/MtlResourceProvider.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-03-17T14:43:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "901b2a0c_7b6afcad",
       "range": {
         "startLine": 33,
         "startChar": 100,
