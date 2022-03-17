@@ -7,17 +7,38 @@
 
 #include "include/sksl/DSLVar.h"
 
+#include "include/core/SkTypes.h"
+#include "include/private/GrTypesPriv.h"
+#include "include/private/SkSLDefines.h"
+#include "include/private/SkSLLayout.h"
+#include "include/private/SkSLModifiers.h"
+#include "include/private/SkSLStatement.h"
+#include "include/private/SkSLString.h"
+#include "include/private/SkSLSymbol.h"
 #include "include/sksl/DSLModifiers.h"
 #include "include/sksl/DSLType.h"
+#include "src/core/SkSLTypeShared.h"
+#include "src/gpu/GrFragmentProcessor.h"
+#include "src/gpu/glsl/GrGLSLUniformHandler.h"
+#include "src/sksl/SkSLBuiltinTypes.h"
 #include "src/sksl/SkSLCompiler.h"
+#include "src/sksl/SkSLContext.h"
+#include "src/sksl/SkSLLexer.h"
+#include "src/sksl/SkSLModifiersPool.h"
 #include "src/sksl/SkSLThreadContext.h"
 #include "src/sksl/SkSLUtil.h"
 #include "src/sksl/dsl/priv/DSLWriter.h"
 #include "src/sksl/ir/SkSLBinaryExpression.h"
+#include "src/sksl/ir/SkSLExpression.h"
+#include "src/sksl/ir/SkSLFieldAccess.h"
 #include "src/sksl/ir/SkSLFunctionCall.h"
 #include "src/sksl/ir/SkSLSymbolTable.h"
+#include "src/sksl/ir/SkSLType.h"
 #include "src/sksl/ir/SkSLVariable.h"
-#include "src/sksl/ir/SkSLVariableReference.h"
+
+#include <iosfwd>
+#include <string>
+#include <type_traits>
 
 namespace SkSL {
 

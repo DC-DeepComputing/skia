@@ -3311,15 +3311,21 @@ generated_cc_atom(
     visibility = ["//:__subpackages__"],
     deps = [
         ":Test_hdr",
+        "//include/core:SkBitmap_hdr",
         "//include/core:SkCanvas_hdr",
-        "//include/core:SkColorPriv_hdr",
         "//include/core:SkColorSpace_hdr",
+        "//include/core:SkColorType_hdr",
+        "//include/core:SkColor_hdr",
         "//include/core:SkDocument_hdr",
         "//include/core:SkFont_hdr",
+        "//include/core:SkImageInfo_hdr",
         "//include/core:SkImage_hdr",
         "//include/core:SkPictureRecorder_hdr",
         "//include/core:SkPicture_hdr",
         "//include/core:SkRRect_hdr",
+        "//include/core:SkRect_hdr",
+        "//include/core:SkSerialProcs_hdr",
+        "//include/core:SkStream_hdr",
         "//include/core:SkString_hdr",
         "//include/core:SkSurface_hdr",
         "//include/core:SkTextBlob_hdr",
@@ -5488,6 +5494,7 @@ generated_cc_atom(
 generated_cc_atom(
     name = "SkDSLRuntimeEffectTest_src",
     srcs = ["SkDSLRuntimeEffectTest.cpp"],
+    enforce_iwyu = True,
     visibility = ["//:__subpackages__"],
     deps = [
         ":Test_hdr",
@@ -5674,6 +5681,7 @@ generated_cc_atom(
 generated_cc_atom(
     name = "SkSLCross_src",
     srcs = ["SkSLCross.cpp"],
+    enforce_iwyu = True,
     visibility = ["//:__subpackages__"],
     deps = [
         ":Test_hdr",
@@ -5686,6 +5694,7 @@ generated_cc_atom(
 generated_cc_atom(
     name = "SkSLDSLErrorLineNumbers_src",
     srcs = ["SkSLDSLErrorLineNumbers.cpp"],
+    enforce_iwyu = True,
     visibility = ["//:__subpackages__"],
     deps = [
         ":Test_hdr",
@@ -5702,6 +5711,7 @@ generated_cc_atom(
 generated_cc_atom(
     name = "SkSLDSLOnlyTest_src",
     srcs = ["SkSLDSLOnlyTest.cpp"],
+    enforce_iwyu = False,  # DSL.h intentionally supplies transitive dependencies
     visibility = ["//:__subpackages__"],
     deps = [
         ":Test_hdr",
@@ -5712,6 +5722,7 @@ generated_cc_atom(
 generated_cc_atom(
     name = "SkSLDSLTest_src",
     srcs = ["SkSLDSLTest.cpp"],
+    enforce_iwyu = True,
     visibility = ["//:__subpackages__"],
     deps = [
         ":Test_hdr",
@@ -5731,6 +5742,7 @@ generated_cc_atom(
 generated_cc_atom(
     name = "SkSLES2ConformanceTest_src",
     srcs = ["SkSLES2ConformanceTest.cpp"],
+    enforce_iwyu = True,
     visibility = ["//:__subpackages__"],
     deps = [
         ":Test_hdr",
@@ -5760,6 +5772,7 @@ generated_cc_atom(
 generated_cc_atom(
     name = "SkSLGLSLTestbed_src",
     srcs = ["SkSLGLSLTestbed.cpp"],
+    enforce_iwyu = True,
     visibility = ["//:__subpackages__"],
     deps = [
         ":Test_hdr",
@@ -5770,6 +5783,7 @@ generated_cc_atom(
 generated_cc_atom(
     name = "SkSLInterpreterTest_src",
     srcs = ["SkSLInterpreterTest.cpp"],
+    enforce_iwyu = True,
     visibility = ["//:__subpackages__"],
     deps = [
         ":Test_hdr",
@@ -5786,6 +5800,7 @@ generated_cc_atom(
 generated_cc_atom(
     name = "SkSLMemoryLayoutTest_src",
     srcs = ["SkSLMemoryLayoutTest.cpp"],
+    enforce_iwyu = True,
     visibility = ["//:__subpackages__"],
     deps = [
         ":Test_hdr",
@@ -5799,6 +5814,7 @@ generated_cc_atom(
 generated_cc_atom(
     name = "SkSLMetalTestbed_src",
     srcs = ["SkSLMetalTestbed.cpp"],
+    enforce_iwyu = True,
     visibility = ["//:__subpackages__"],
     deps = [
         ":Test_hdr",
@@ -5809,6 +5825,7 @@ generated_cc_atom(
 generated_cc_atom(
     name = "SkSLSPIRVTestbed_src",
     srcs = ["SkSLSPIRVTestbed.cpp"],
+    enforce_iwyu = True,
     visibility = ["//:__subpackages__"],
     deps = [
         ":Test_hdr",
@@ -5819,6 +5836,7 @@ generated_cc_atom(
 generated_cc_atom(
     name = "SkSLTest_src",
     srcs = ["SkSLTest.cpp"],
+    enforce_iwyu = True,
     visibility = ["//:__subpackages__"],
     deps = [
         ":TestHarness_hdr",
@@ -5853,6 +5871,7 @@ generated_cc_atom(
 generated_cc_atom(
     name = "SkSLTypeTest_src",
     srcs = ["SkSLTypeTest.cpp"],
+    enforce_iwyu = True,
     visibility = ["//:__subpackages__"],
     deps = [
         ":Test_hdr",
@@ -7017,6 +7036,7 @@ generated_cc_atom(
 generated_cc_atom(
     name = "SkSLErrorTest_src",
     srcs = ["SkSLErrorTest.cpp"],
+    enforce_iwyu = True,
     visibility = ["//:__subpackages__"],
     deps = [
         ":Test_hdr",

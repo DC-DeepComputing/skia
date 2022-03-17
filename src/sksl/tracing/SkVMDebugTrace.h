@@ -8,12 +8,15 @@
 #ifndef SKVMDEBUGTRACE
 #define SKVMDEBUGTRACE
 
-#include "include/core/SkPoint.h"
 #include "include/sksl/SkSLDebugTrace.h"
+
+#include "include/core/SkPoint.h"
 #include "src/core/SkVM.h"
 #include "src/sksl/ir/SkSLType.h"
 
-#include <string>
+#include <stdint.h>
+#include <iosfwd>
+#include <memory>
 #include <vector>
 
 class SkStream;
