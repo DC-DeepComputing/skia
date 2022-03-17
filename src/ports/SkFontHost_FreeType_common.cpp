@@ -13,6 +13,7 @@
 #include "include/core/SkPath.h"
 #include "include/core/SkPictureRecorder.h"
 #include "include/effects/SkGradientShader.h"
+#include "include/pathops/SkPathOps.h"
 #include "include/private/SkColorData.h"
 #include "include/private/SkTo.h"
 #include "src/core/SkFDot6.h"
@@ -1730,7 +1731,13 @@ bool generateFacePathCOLRv1(FT_Face face, SkGlyphID glyphID, SkPath* path) {
 }  // namespace
 
 bool SkScalerContext_FreeType_Base::generateGlyphPath(FT_Face face, SkPath* path) {
-    return generateGlyphPathStatic(face, path);
+    if (!generateGlyphPathStatic(face, path)) {
+        return false;
+    }
+    if (face->glyph->outline.flags & FT_OUTLINE_OVERLAP) {
+        Simplify(*path, path);
+    }
+    return true;
 }
 
 bool SkScalerContext_FreeType_Base::generateFacePath(FT_Face face,
