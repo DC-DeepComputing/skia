@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2ae14ef7_d7603dd3",
+        "filename": "src/gpu/gl/GrGLCaps.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 2004,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-03-17T20:38:10Z",
+      "side": 1,
+      "message": "I\u0027m not fully convinced reading all the specs that this is always right, but it at least leaves the case where we use the apple extension the same as before this CL.",
+      "range": {
+        "startLine": 2004,
+        "startChar": 20,
+        "endLine": 2004,
+        "endChar": 70
+      },
+      "revId": "09d842bcf2c8811a1f56e48439ec3102143f091e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
