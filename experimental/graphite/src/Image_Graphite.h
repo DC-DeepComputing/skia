@@ -14,6 +14,9 @@
 
 namespace skgpu {
 
+class Context;
+class Recorder;
+
 class Image final : public SkImage_Base {
 public:
     Image(TextureProxyView, const SkColorInfo&);
@@ -26,6 +29,13 @@ public:
                       int srcX,
                       int srcY,
                       CachingHint) const override { return false; }
+    bool onReadPixels(Context*,
+                      Recorder*,
+                      const SkImageInfo& dstInfo,
+                      void* dstPixels,
+                      size_t dstRowBytes,
+                      int srcX,
+                      int srcY);
 
     bool onHasMipmaps() const override { return false; }
 
@@ -70,7 +80,9 @@ private:
     }
 #endif
 
-    std::tuple<TextureProxyView, SkColorType> onAsView(Recorder*, Mipmapped) const override;
+    std::tuple<TextureProxyView, SkColorType> onAsView(Recorder*,
+                                                       Mipmapped,
+                                                       SkBudgeted) const override;
 
     TextureProxyView fTextureProxyView;
 };
