@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "13822ba8_dc1e3c56",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-03-17T13:16:12Z",
+      "side": 1,
+      "message": "I checked this morning and PS7 -\u003e PS8 shows the expected fuzzy curve to correct curve. I noticed that in my updates to the GM that I dropped a \u0027bounds.outset(2,2)\u0027 that was automatically creating borders of solid black around the inverse filled rrect effect, so I brought that back. Running a canary to see if this makes chrome unhappy and then will land.",
+      "revId": "571511d141a382c3c584bb8d18b844b261581742",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
