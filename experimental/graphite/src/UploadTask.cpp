@@ -164,7 +164,7 @@ UploadTask::UploadTask(std::vector<UploadCommand> commands) : fCommands(std::mov
 
 UploadTask::~UploadTask() {}
 
-void UploadTask::addCommands(ResourceProvider* resourceProvider,
+void UploadTask::addCommands1(ResourceProvider* resourceProvider,
                              CommandBuffer* commandBuffer) {
     for (unsigned int i = 0; i < fCommands.size(); ++i) {
         fCommands[i].addCommand(resourceProvider, commandBuffer);
