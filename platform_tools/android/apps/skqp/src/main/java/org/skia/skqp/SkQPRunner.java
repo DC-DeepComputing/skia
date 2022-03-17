@@ -28,6 +28,7 @@ import org.junit.runner.notification.RunNotifier;
 @RunWith(SkQPRunner.class)
 public class SkQPRunner extends Runner implements Filterable {
     private Description[] mUnitTestDesc;
+    private Description[] mSkSLErrorTestDesc;
     private Description mSuiteDesc;
     private String mOutputDirectory;
     private SkQP mImpl;
@@ -52,9 +53,15 @@ public class SkQPRunner extends Runner implements Filterable {
         mImpl.nInit(assetManager, mOutputDirectory);
 
         mUnitTestDesc = new Description[mImpl.mUnitTests.length];
-        for (int index = 0; index < mImpl.mUnitTests.length; ++index) {
+        for (int index = 0; index < mUnitTestDesc.length; ++index) {
             mUnitTestDesc[index] = Description.createTestDescription(
-                    SkQPRunner.class, "unitTest_" + mImpl.mUnitTests[index]);
+                    SkQPRunner.class, "UnitTest_" + mImpl.mUnitTests[index]);
+        }
+       
+        mSkSLErrorTestDesc = new Description[mImpl.mSkSLErrorTestName.length];
+        for (int index = 0; index < mSkSLErrorTestDesc.length; ++index) {
+            mSkSLErrorTestDesc[index] = Description.createTestDescription(
+                    SkQPRunner.class, "SkSLErrorTest_" + mImpl.mSkSLErrorTestName[index]);
         }
 
         this.applyFilter(null);
@@ -63,6 +70,7 @@ public class SkQPRunner extends Runner implements Filterable {
     private void applyFilter(Filter filter) {
         mSuiteDesc = Description.createSuiteDescription(SkQP.class);
         addFilteredTestsToSuite(mUnitTestDesc, filter);
+        addFilteredTestsToSuite(mSkSLErrorTestDesc, filter);
     }
 
     private void addFilteredTestsToSuite(Description[] tests, Filter filter) {
@@ -90,7 +98,15 @@ public class SkQPRunner extends Runner implements Filterable {
 
     @Override
     public void run(RunNotifier notifier) {
-        int testNumber = 0;  // out of number of actually run tests.
+        int testNumber = 0;
+        testNumber = runSkSLErrorTests(notifier, testNumber);
+        testNumber = runUnitTests(notifier, testNumber);
+
+        mImpl.nMakeReport();
+        Log.i(TAG, String.format("output written to \"%s\"", mOutputDirectory));   
+    }
+
+    private int runUnitTests(RunNotifier notifier, int testNumber) {
         for (int index = 0; index < mUnitTestDesc.length; index++) {
             Description desc = mUnitTestDesc[index];
             if (desc.isEmpty()) {
@@ -113,9 +129,30 @@ public class SkQPRunner extends Runner implements Filterable {
             }
             notifier.fireTestFinished(desc);
             Log.i(TAG, String.format("Test '%s' complete (%d/%d). [%s]",
-                                     name, testNumber, mSuiteDesc.testCount(), result));
+                                    name, testNumber, mSuiteDesc.testCount(), result));
         }
-        mImpl.nMakeReport();
-        Log.i(TAG, String.format("output written to \"%s\"", mOutputDirectory));
-    }
+        return testNumber;
+    } 
+
+    private int runSkSLErrorTests(RunNotifier notifier, int testNumber) {
+        for (int index = 0; index < mSkSLErrorTestDesc.length; index++) {
+            Description desc = mSkSLErrorTestDesc[index];
+            if (desc.isEmpty()) {
+                // This test was filtered out and can be skipped.
+                continue;
+            }
+
+            String name = desc.getMethodName();
+            ++testNumber;
+            notifier.fireTestStarted(desc);
+
+            String result = "pass";
+            // TODO: compile shader
+
+            notifier.fireTestFinished(desc);
+            Log.i(TAG, String.format("Test '%s' complete (%d/%d). [%s]",
+                                    name, testNumber, mSuiteDesc.testCount(), result));
+        }
+        return testNumber;
+    } 
 }
