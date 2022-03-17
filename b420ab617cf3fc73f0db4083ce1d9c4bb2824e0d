@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "483f1af6_eae3e3b6",
+        "filename": "experimental/graphite/src/UploadTask.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-03-17T13:11:04Z",
+      "side": 1,
+      "message": "nit: alignment",
+      "range": {
+        "startLine": 144,
+        "startChar": 31,
+        "endLine": 144,
+        "endChar": 32
+      },
+      "revId": "b420ab617cf3fc73f0db4083ce1d9c4bb2824e0d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
