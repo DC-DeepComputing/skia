@@ -33,6 +33,24 @@
       "message": "Also, this (at PS1) won\u0027t actually fix the report will it? This would just be asserting in a different place.",
       "revId": "47d5cc20395d67414c1ba7759cef856208582807",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a7f11d33_8bc07795",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-03-17T13:29:14Z",
+      "side": 1,
+      "message": "Have access to the issue now. Not sure about the actual sizes involved, but this is from `Slug::MakeFromBuffer` and the `subRunsFlattenSizeHint` does need to be checked (and the `subRunCount` needs to be checked correctly).",
+      "parentUuid": "52ed8bc6_8b1cd222",
+      "revId": "47d5cc20395d67414c1ba7759cef856208582807",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
