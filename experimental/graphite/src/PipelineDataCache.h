@@ -24,6 +24,19 @@ public:
 
     PipelineDataCache();
 
+    class PipelineDataID {
+    public:
+        bool operator==(const PipelineDataID& that) const { return fIndex == that.fIndex; }
+        bool operator!=(const PipelineDataID& that) const { return !(*this == that); }
+        PipelineDataID() : fIndex(PipelineDataCache::kInvalidUniformID) {}
+        explicit PipelineDataID(uint32_t index) : fIndex(index) {}
+        bool isValid() const { return fIndex != PipelineDataCache::kInvalidUniformID; }
+        uint32_t asUInt() const { return fIndex; }
+        void update(uint32_t index) { fIndex = index; }
+    private:
+        uint32_t fIndex;
+    };
+
     // TODO: Revisit the PipelineDataCache::insert and UniformData::Make APIs:
     // 1. UniformData::Make requires knowing the data size up front, which involves two invocations
     //    of the UniformManager. Ideally, we could align uniforms on the fly into a dynamic buffer.
@@ -45,9 +58,9 @@ public:
 
     // Add the block of uniform data to the cache and return a unique ID that corresponds to its
     // contents. If an identical block of data is already in the cache, that unique ID is returned.
-    uint32_t insert(std::unique_ptr<SkPipelineData>);
+    PipelineDataID insert1(std::unique_ptr<SkPipelineData>);
 
-    SkPipelineData* lookup(uint32_t uniqueID);
+    SkPipelineData* lookup1(PipelineDataID uniqueID);
 
     // The number of unique UniformBlock objects in the cache
     size_t count() const {
@@ -66,7 +79,7 @@ private:
     };
 
     // The UniformBlock's unique ID is only unique w/in a Recorder _not_ globally
-    std::unordered_map<SkPipelineData*, uint32_t, Hash, Eq> fUniformBlockIDs;
+    std::unordered_map<SkPipelineData*, PipelineDataID, Hash, Eq> fUniformBlockIDs;
     std::vector<std::unique_ptr<SkPipelineData>> fUniformBlock;
 
 #ifdef SK_DEBUG

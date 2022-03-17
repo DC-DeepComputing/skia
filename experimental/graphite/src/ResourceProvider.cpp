@@ -147,8 +147,8 @@ sk_sp<Texture> ResourceProvider::findOrCreateTextureWithKey(SkISize dimensions,
 
 sk_sp<Sampler> ResourceProvider::findOrCreateCompatibleSampler(const SkSamplingOptions& smplOptions,
                                                                SkTileMode xTileMode,
-                                                               SkTileMode yTileMode) {
-    return this->createSampler(smplOptions, xTileMode, yTileMode);
+                                                               SkTileMode yTileMode, bool foo) {
+    return this->createSampler(smplOptions, xTileMode, yTileMode, foo);
 }
 
 sk_sp<Buffer> ResourceProvider::findOrCreateBuffer(size_t size,

@@ -54,6 +54,16 @@ public:
     const BlendInfo& blendInfo() const { return fBlendInfo; }
 
     void addImage(const SkSamplingOptions&, const SkTileMode[2], sk_sp<skgpu::TextureProxy>);
+
+    struct TextureInfo {
+        sk_sp<skgpu::TextureProxy> fProxy;
+        SkSamplingOptions          fSamplingOptions;
+        SkTileMode                 fTileModes[2];
+    };
+
+    bool hasTextures() const { return !fProxies.empty(); }
+    int numTextures() const { return SkTo<int>(fProxies.size()); }
+    const TextureInfo& texture(int index) { return fProxies[index]; }
 #endif
 
     void add(sk_sp<SkUniformData>);
@@ -64,7 +74,7 @@ public:
 
     bool operator==(const SkPipelineData&) const;
     bool operator!=(const SkPipelineData& other) const { return !(*this == other);  }
-    size_t hash() const;
+    size_t hash1() const;
 
     using container = std::vector<sk_sp<SkUniformData>>;
     using iterator = container::iterator;
@@ -80,12 +90,6 @@ private:
     std::vector<sk_sp<SkUniformData>> fUniformData;
 
 #ifdef SK_GRAPHITE_ENABLED
-    struct TextureInfo {
-        sk_sp<skgpu::TextureProxy> fProxy;
-        SkSamplingOptions          fSamplingOptions;
-        SkTileMode                 fTileModes[2];
-    };
-
     std::vector<TextureInfo> fProxies;
     BlendInfo fBlendInfo;
 #endif

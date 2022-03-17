@@ -67,7 +67,7 @@ void CommandBuffer::bindGraphicsPipeline(sk_sp<GraphicsPipeline> graphicsPipelin
     this->trackResource(std::move(graphicsPipeline));
 }
 
-void CommandBuffer::bindUniformBuffer(UniformSlot slot,
+void CommandBuffer::bindUniformBuffer1(UniformSlot slot,
                                       sk_sp<Buffer> uniformBuffer,
                                       size_t offset) {
     this->onBindUniformBuffer(slot, uniformBuffer.get(), offset);
@@ -93,15 +93,15 @@ void CommandBuffer::bindIndexBuffer(sk_sp<Buffer> indexBuffer, size_t bufferOffs
     }
 }
 
-void CommandBuffer::bindDrawBuffers(BindBufferInfo vertices,
-                                    BindBufferInfo instances,
-                                    BindBufferInfo indices) {
+void CommandBuffer::bindDrawBuffers(BindBufferInfo1 vertices,
+                                    BindBufferInfo1 instances,
+                                    BindBufferInfo1 indices) {
     this->bindVertexBuffers(sk_ref_sp(vertices.fBuffer), vertices.fOffset,
                             sk_ref_sp(instances.fBuffer), instances.fOffset);
     this->bindIndexBuffer(sk_ref_sp(indices.fBuffer), indices.fOffset);
 }
 
-void CommandBuffer::bindTextures(const TextureBindEntry* entries, int count) {
+void CommandBuffer::bindTextures1(const TextureBindEntry* entries, int count) {
     this->onBindTextures(entries, count);
     for (int i = 0; i < count; ++i) {
         SkASSERT(entries[i].fTexture);
@@ -109,7 +109,7 @@ void CommandBuffer::bindTextures(const TextureBindEntry* entries, int count) {
     }
 }
 
-void CommandBuffer::bindSamplers(const SamplerBindEntry* entries, int count) {
+void CommandBuffer::bindSamplers1(const SamplerBindEntry* entries, int count) {
     this->onBindSamplers(entries, count);
     for (int i = 0; i < count; ++i) {
         SkASSERT(entries[i].fSampler);

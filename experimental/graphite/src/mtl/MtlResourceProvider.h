@@ -43,7 +43,7 @@ private:
 
     sk_sp<skgpu::Sampler> createSampler(const SkSamplingOptions&,
                                         SkTileMode xTileMode,
-                                        SkTileMode yTileMode) override;
+                                        SkTileMode yTileMode, bool) override;
 
     SkTHashMap<DepthStencilSettings, sk_cfp<id<MTLDepthStencilState>>> fDepthStencilStates;
 };
