@@ -57,6 +57,7 @@ const (
 	ISOLATE_SDK_LINUX_NAME     = "Housekeeper-PerCommit-IsolateAndroidSDKLinux"
 	ISOLATE_WIN_TOOLCHAIN_NAME = "Housekeeper-PerCommit-IsolateWinToolchain"
 
+	DEBIAN_11_OS                   = "Debian-11.2"
 	DEFAULT_OS_DEBIAN              = "Debian-10.10"
 	DEFAULT_OS_LINUX_GCE           = "Debian-10.3"
 	OLD_OS_LINUX_GCE               = "Debian-9.8"
@@ -760,6 +761,7 @@ func (b *taskBuilder) defaultSwarmDimensions() {
 			"ChromeOS":   "ChromeOS",
 			"Debian9":    DEFAULT_OS_LINUX_GCE, // Runs in Deb9 Docker.
 			"Debian10":   DEFAULT_OS_LINUX_GCE,
+			"Debian11":   DEBIAN_11_OS,
 			"Mac":        DEFAULT_OS_MAC,
 			"Mac10.12":   "Mac-10.12",
 			"Mac10.13":   "Mac-10.13.6",
@@ -908,6 +910,7 @@ func (b *taskBuilder) defaultSwarmDimensions() {
 					"IntelHD405":    "8086:22b1",
 					"IntelIris640":  "8086:5926",
 					"QuadroP400":    "10de:1cb3-430.14",
+					"RadeonVega6":   "1002:1636",
 				}[b.parts["cpu_or_gpu_value"]]
 				if !ok {
 					log.Fatalf("Entry %q not found in Ubuntu GPU mapping.", b.parts["cpu_or_gpu_value"])
@@ -966,7 +969,10 @@ func (b *taskBuilder) defaultSwarmDimensions() {
 			}
 		}
 	} else {
+		//if d["os"] != DEBIAN_11_OS {
 		d["gpu"] = "none"
+		//} else
+
 		if d["os"] == DEFAULT_OS_LINUX_GCE {
 			if b.extraConfig("CanvasKit", "CMake", "Docker", "PathKit") || b.role("BuildStats", "CodeSize") {
 				b.linuxGceDimensions(MACHINE_TYPE_MEDIUM)
