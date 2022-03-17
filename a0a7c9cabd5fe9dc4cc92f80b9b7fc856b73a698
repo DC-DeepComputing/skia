@@ -51,6 +51,24 @@
       "parentUuid": "27df691e_c3fdb5f0",
       "revId": "a0a7c9cabd5fe9dc4cc92f80b9b7fc856b73a698",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "be9c3274_cb9047f3",
+        "filename": "src/gpu/text/GrTextBlob.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 3028,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-03-17T14:43:23Z",
+      "side": 1,
+      "message": "We do not run most fuzzers with SkASSERTs on.\n\nHere are the GN args we use when building the fuzzers https://github.com/google/oss-fuzz/blob/master/projects/skia/build.sh#L78",
+      "parentUuid": "2ff6931c_efcffa11",
+      "revId": "a0a7c9cabd5fe9dc4cc92f80b9b7fc856b73a698",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
