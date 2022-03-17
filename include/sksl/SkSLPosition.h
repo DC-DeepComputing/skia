@@ -22,19 +22,21 @@ class Position {
 public:
     Position()
         : fFile(nullptr)
-        , fStartOffsetOrLine(-1)
-        , fEndOffset(-1) {}
+        , fStartOffsetOrLine(NO_VALUE)
+        , fEndOffset(NO_VALUE) {}
 
     static Position Line(int line, const char* file = nullptr) {
         Position result;
+        SkASSERT(line <= MAX_OFFSET);
         result.fFile = file;
         result.fStartOffsetOrLine = line;
-        result.fEndOffset = -1;
+        result.fEndOffset = NO_VALUE;
         return result;
     }
 
     static Position Range(int startOffset, int endOffset) {
         Position result;
+        SkASSERT(startOffset <= MAX_OFFSET && endOffset <= MAX_OFFSET);
         result.fFile = nullptr;
         result.fStartOffsetOrLine = startOffset;
         result.fEndOffset = endOffset;
@@ -54,18 +56,18 @@ public:
     }
 
     bool valid() const {
-        return fStartOffsetOrLine != -1;
+        return fStartOffsetOrLine != NO_VALUE;
     }
 
     int line(std::string_view source = std::string_view()) const;
 
     int startOffset() const {
-        SkASSERT(fEndOffset != -1);
+        SkASSERT(fEndOffset != NO_VALUE);
         return fStartOffsetOrLine;
     }
 
     int endOffset() const {
-        SkASSERT(fEndOffset != -1);
+        SkASSERT(fEndOffset != NO_VALUE);
         return fEndOffset;
     }
 
@@ -97,9 +99,15 @@ public:
 private:
     // TODO(skia:13051): remove fFile
     const char* fFile = nullptr;
-    // Contains either a start offset (if fEndOffset != -1) or a line number (if fEndOffset == -1)
-    int32_t fStartOffsetOrLine;
-    int32_t fEndOffset;
+    // Since every IRNode contains a Position, we use the smallest type we can get away with
+    typedef uint16_t offset;
+    // Reserve the max value as a sentinel
+    static constexpr int NO_VALUE = std::numeric_limits<offset>::max();
+    static constexpr int MAX_OFFSET = NO_VALUE - 1;
+    // Contains either a start offset (if fEndOffset != NO_VALUE) or a line number
+    // (if fEndOffset == NO_VALUE)
+    offset fStartOffsetOrLine;
+    offset fEndOffset;
 };
 
 } // namespace SkSL
