@@ -10,9 +10,13 @@
 
 #include "experimental/graphite/include/GraphiteTypes.h"
 
+#include "include/core/SkRefCnt.h"
+
 namespace skgpu {
 
 class Buffer;
+class Sampler;
+class Texture;
 
 enum class CType : unsigned {
     // Any float/half, vector of floats/half, or matrices of floats/halfs are a tightly
@@ -177,6 +181,25 @@ struct BindBufferInfo {
         return !(*this == o);
     }
 };
+
+#if 0
+struct TextureBindEntry {
+    sk_sp<Texture> fTexture;
+    unsigned int   fBindIndex1;
+};
+
+struct SamplerBindEntry {
+    sk_sp<Sampler> fSampler;
+    unsigned int   fBindIndex1;
+};
+
+struct TextureBindInfo {
+    const SamplerBindEntry* fSamplerBindEntries = nullptr;
+    int fNumSamplerBindEntries = 0;
+    const TextureBindEntry* fTextureBindEntries = nullptr;
+    int fNumTextureBindEntries = 0;
+};
+#endif
 
 /*
  * Depth and stencil settings

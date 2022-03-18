@@ -19,7 +19,7 @@ class Task : public SkRefCnt {
 public:
     ~Task() override;
 
-    virtual void addCommands(ResourceProvider*, CommandBuffer*) = 0;
+    virtual void addCommands1(ResourceProvider*, CommandBuffer*) = 0;
 
 protected:
     Task();

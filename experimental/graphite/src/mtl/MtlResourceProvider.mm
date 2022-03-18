@@ -69,8 +69,8 @@ sk_sp<skgpu::Buffer> ResourceProvider::createBuffer(size_t size,
 
 sk_sp<skgpu::Sampler> ResourceProvider::createSampler(const SkSamplingOptions& samplingOptions,
                                                       SkTileMode xTileMode,
-                                                      SkTileMode yTileMode) {
-    return Sampler::Make(this->mtlGpu(), samplingOptions, xTileMode, yTileMode);
+                                                      SkTileMode yTileMode, bool foo) {
+    return Sampler::Make(this->mtlGpu(), samplingOptions, xTileMode, yTileMode, foo);
 }
 
 namespace {
