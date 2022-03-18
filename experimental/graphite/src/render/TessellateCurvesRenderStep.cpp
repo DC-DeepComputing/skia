@@ -28,8 +28,8 @@ namespace {
 struct DrawWriterAllocator {
     DrawWriterAllocator(size_t stride, // required for PatchAllocator
                         DrawWriter& writer,
-                        BindBufferInfo fixedVertexBuffer,
-                        BindBufferInfo fixedIndexBuffer,
+                        BindBufferInfo1 fixedVertexBuffer,
+                        BindBufferInfo1 fixedIndexBuffer,
                         unsigned int reserveCount)
             : fInstances(writer, fixedVertexBuffer, fixedIndexBuffer) {
         SkASSERT(writer.instanceStride() == stride);
@@ -154,11 +154,11 @@ void TessellateCurvesRenderStep::writeVertices(DrawWriter* dw,
     static constexpr int kMaxTessellationSegments = 1 << PathTessellator::kMaxFixedResolveLevel;
     SkPath path = shape.asPath(); // TODO: Iterate the Shape directly
 
-    BindBufferInfo fixedVertexBuffer = dw->bufferManager()->getStaticBuffer(
+    BindBufferInfo1 fixedVertexBuffer = dw->bufferManager()->getStaticBuffer(
             BufferType::kVertex,
             PathCurveTessellator::WriteFixedVertexBuffer,
             FixedVertexBufferSize);
-    BindBufferInfo fixedIndexBuffer = dw->bufferManager()->getStaticBuffer(
+    BindBufferInfo1 fixedIndexBuffer = dw->bufferManager()->getStaticBuffer(
             BufferType::kIndex,
             PathCurveTessellator::WriteFixedIndexBuffer,
             FixedIndexBufferSize);
