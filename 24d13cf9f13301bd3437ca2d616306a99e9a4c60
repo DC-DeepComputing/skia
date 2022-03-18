@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b6bf727e_8f08fd30",
+        "filename": "src/core/SkPipelineData.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-03-18T17:00:25Z",
+      "side": 1,
+      "message": "I think this would be clearer using bit manipulation ops, since the +/* are meant to move the ints into specific bit ranges.\n\n   static_assert(kSkTileModeCount \u003c\u003d 4 \u0026\u0026 kSkFilterModeCount \u003c\u003d 2);\n   return (static_cast\u003cuint32_t\u003e(fTileModes[0])           \u003c\u003c 0) |\n          (static_cast\u003cuint32_t\u003e(fTileModes[1])           \u003c\u003c 2) |\n          (static_cast\u003cuint32_t\u003e(fSamplingOptions.filter) \u003c\u003c 4) |\n          (static_cast\u003cuint32_t\u003e(fSamplingOptions.mipmap) \u003c\u003c 5);\n          \nwdyt?",
+      "range": {
+        "startLine": 78,
+        "startChar": 5,
+        "endLine": 83,
+        "endChar": 1
+      },
+      "revId": "24d13cf9f13301bd3437ca2d616306a99e9a4c60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f07d4a11_9de8cb40",
+        "filename": "src/core/SkPipelineData.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-03-18T17:00:25Z",
+      "side": 1,
+      "message": "consider `samplerKey`?",
+      "range": {
+        "startLine": 62,
+        "startChar": 21,
+        "endLine": 62,
+        "endChar": 34
+      },
+      "revId": "24d13cf9f13301bd3437ca2d616306a99e9a4c60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
