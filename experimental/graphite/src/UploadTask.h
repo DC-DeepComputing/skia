@@ -95,7 +95,7 @@ public:
 
     ~UploadTask() override;
 
-    void addCommands(ResourceProvider*, CommandBuffer*) override;
+    void addCommands1(ResourceProvider*, CommandBuffer*) override;
 
 private:
     UploadTask(std::vector<UploadInstance>);

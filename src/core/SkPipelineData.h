@@ -45,7 +45,6 @@ public:
 #endif
 
     SkPipelineData() = default;
-    SkPipelineData(sk_sp<SkUniformData> initial);
 
 #ifdef SK_GRAPHITE_ENABLED
     void setBlendInfo(const SkPipelineData::BlendInfo& blendInfo) {
@@ -131,12 +130,6 @@ public:
     bool hasUniforms() const { return !fUniformDataBlock.empty(); }
 
     UniformDataBlock& uniformDataBlock() { return fUniformDataBlock; }
-
-    // TODO: remove these two once the PipelineDataCache has been split
-    bool operator==(const SkPipelineData& that) const {
-        return fUniformDataBlock == that.fUniformDataBlock;
-    }
-    uint32_t hash() const { return fUniformDataBlock.hash(); }
 
 private:
     UniformDataBlock fUniformDataBlock;
