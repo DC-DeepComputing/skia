@@ -16,6 +16,24 @@
       "message": "Unfortunately, currently a lot of fonts that should be setting this flag are not setting it. It isn\u0027t clear at this point if we should simplify all glyph paths from variable fonts or if we should just implement this and let fonts get updated.",
       "revId": "5f4b7ba4a655f5ab43b9e1e8f1d89732000bfe42",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "26c5c062_44a672a0",
+        "filename": "src/ports/SkFontHost_FreeType_common.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1737,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-03-18T19:59:39Z",
+      "side": 1,
+      "message": "It turns out at lot of this was due to woff2 not allowing the overlap bits to be encoded. There is a proposal to fix this (which is somewhat important on Mac with non-variable fonts).\n\nhttps://www.w3.org/TR/WOFF2/#glyf_table_format",
+      "parentUuid": "16e4cb46_b4803f8b",
+      "revId": "5f4b7ba4a655f5ab43b9e1e8f1d89732000bfe42",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
