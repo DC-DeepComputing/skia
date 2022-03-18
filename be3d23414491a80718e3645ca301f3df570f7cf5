@@ -45,6 +45,30 @@
       },
       "revId": "be3d23414491a80718e3645ca301f3df570f7cf5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "262fc195_b1272613",
+        "filename": "platform_tools/android/apps/skqp/src/main/java/org/skia/skqp/SkQPRunner.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 190,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-03-18T21:04:24Z",
+      "side": 1,
+      "message": "Here\u0027s what the inputs look like:\n\n    code\n    foobar\n    code\n    /*%%*\n    error: 2: got \u0027foobar\u0027, expected \u0027code\u0027\n    *%%*/\n\nThe split on `*%%*` gives us an array with the error text in the middle in `[1]`. We can easily ignore the surrounding code (in `[0]` and `[2]`) which we don\u0027t care about here.\n    \nIt\u0027s also possible for the split to return a single-element array. In that case, no `%**%` section exists in the test at all. A few tests like that exist; for those, we just want to verify that shader fails compilation in some way. We don\u0027t care about the specific error message. (e.g. nonsense fuzzer code falls into this case)\n\nTechnically it\u0027s possible to craft a malicious input that would split in weird ways, like\n\n    code\n    /*%%* *%%* *%%* *%%* foo */\n    \nBut we aren\u0027t trying to test the test parsing code :) We write the tests ourselves and have control over the test inputs. I didn\u0027t see a need to be super-defensive about malicious test inputs.",
+      "parentUuid": "bb08b4da_2a3492b3",
+      "range": {
+        "startLine": 190,
+        "startChar": 20,
+        "endLine": 190,
+        "endChar": 73
+      },
+      "revId": "be3d23414491a80718e3645ca301f3df570f7cf5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
