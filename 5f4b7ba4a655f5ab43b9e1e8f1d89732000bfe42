@@ -34,6 +34,24 @@
       "parentUuid": "16e4cb46_b4803f8b",
       "revId": "5f4b7ba4a655f5ab43b9e1e8f1d89732000bfe42",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f32d5fee_92955b42",
+        "filename": "src/ports/SkFontHost_FreeType_common.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1737,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-03-18T20:08:53Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "26c5c062_44a672a0",
+      "revId": "5f4b7ba4a655f5ab43b9e1e8f1d89732000bfe42",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
