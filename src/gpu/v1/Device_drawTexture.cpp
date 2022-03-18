@@ -783,7 +783,7 @@ void Device::drawImageQuad(const SkImage* image,
     const SkMatrix& ctm(matrixProvider.localToDevice());
 
     SkSamplingOptions sampling = origSampling;
-    bool sharpenMM = fContext->priv().options().fSharpenMipmappedTextures;
+    bool sharpenMM = true;
     if (sampling.mipmap != SkMipmapMode::kNone && can_disable_mipmap(ctm, srcToDst, sharpenMM)) {
         sampling = SkSamplingOptions(sampling.filter);
     }
