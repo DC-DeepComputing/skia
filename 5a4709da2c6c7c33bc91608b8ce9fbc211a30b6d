@@ -22,6 +22,30 @@
       },
       "revId": "5a4709da2c6c7c33bc91608b8ce9fbc211a30b6d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d5c574e7_7f3f5730",
+        "filename": "tools/skqp/src/jni_skqp.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-03-18T20:52:57Z",
+      "side": 0,
+      "message": "I suspect that in order to see this, you\u0027d need to to run `adb logcat`. That said, I agree this should be an `SK_ABORT`, which, since I fixed b/224771432, should print the error.",
+      "parentUuid": "0b5cd5d1_bedf0059",
+      "range": {
+        "startLine": 39,
+        "startChar": 20,
+        "endLine": 39,
+        "endChar": 28
+      },
+      "revId": "5a4709da2c6c7c33bc91608b8ce9fbc211a30b6d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
