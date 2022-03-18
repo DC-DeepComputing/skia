@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e437abcc_6a7c7b07",
+        "filename": "experimental/graphite/src/render/StencilAndFillPathRenderer.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-03-18T20:07:34Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "f4ec4bbd_2ce0f6f7",
+      "range": {
+        "startLine": 20,
+        "startChar": 25,
+        "endLine": 20,
+        "endChar": 35
+      },
+      "revId": "89d1c06d1ffecce7a37394b4767202644d2d7291",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fd4603a7_aa7ed2cd",
@@ -54,6 +78,30 @@
       "writtenOn": "2022-03-18T18:56:05Z",
       "side": 1,
       "message": "This `+ 1` is where the index count diverges from what\u0027s used TessellateCurveRenderStep.",
+      "range": {
+        "startLine": 44,
+        "startChar": 21,
+        "endLine": 44,
+        "endChar": 25
+      },
+      "revId": "89d1c06d1ffecce7a37394b4767202644d2d7291",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "267037ed_53bc6534",
+        "filename": "experimental/graphite/src/render/TessellateWedgesRenderStep.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-03-18T20:07:34Z",
+      "side": 1,
+      "message": "Should this be a comment in the code ?",
+      "parentUuid": "fd4603a7_aa7ed2cd",
       "range": {
         "startLine": 44,
         "startChar": 21,
@@ -110,6 +158,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5a60b715_a32d8645",
+        "filename": "experimental/graphite/src/render/TessellateWedgesRenderStep.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-03-18T20:07:34Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "bf40122b_630cae74",
+      "range": {
+        "startLine": 97,
+        "startChar": 8,
+        "endLine": 99,
+        "endChar": 9
+      },
+      "revId": "89d1c06d1ffecce7a37394b4767202644d2d7291",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "47fa7c68_61ec537c",
@@ -123,6 +195,30 @@
       "writtenOn": "2022-03-18T18:56:05Z",
       "side": 1,
       "message": "These follow a very similar pattern to the code in the curve render step, but call out to PathWedgeTessellator instead of PathCurveTessellator.",
+      "range": {
+        "startLine": 163,
+        "startChar": 4,
+        "endLine": 170,
+        "endChar": 34
+      },
+      "revId": "89d1c06d1ffecce7a37394b4767202644d2d7291",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "722a29b1_d7211489",
+        "filename": "experimental/graphite/src/render/TessellateWedgesRenderStep.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-03-18T20:07:34Z",
+      "side": 1,
+      "message": "Should this be a comment in the code ?",
+      "parentUuid": "47fa7c68_61ec537c",
       "range": {
         "startLine": 163,
         "startChar": 4,
@@ -158,6 +254,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "399c7a7f_66f71274",
+        "filename": "experimental/graphite/src/render/TessellateWedgesRenderStep.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 194,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-03-18T20:07:34Z",
+      "side": 1,
+      "message": "Comment in the code ?",
+      "parentUuid": "1a09fef2_aa385327",
+      "range": {
+        "startLine": 189,
+        "startChar": 4,
+        "endLine": 194,
+        "endChar": 61
+      },
+      "revId": "89d1c06d1ffecce7a37394b4767202644d2d7291",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1f51d0ed_7deaca71",
         "filename": "experimental/graphite/src/render/TessellateWedgesRenderStep.cpp",
         "patchSetId": 6
@@ -181,6 +301,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7208852c_c7484ef0",
+        "filename": "experimental/graphite/src/render/TessellateWedgesRenderStep.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 208,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-03-18T20:07:34Z",
+      "side": 1,
+      "message": "Comment in the code ?",
+      "parentUuid": "1f51d0ed_7deaca71",
+      "range": {
+        "startLine": 201,
+        "startChar": 16,
+        "endLine": 208,
+        "endChar": 17
+      },
+      "revId": "89d1c06d1ffecce7a37394b4767202644d2d7291",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ecba02ce_24cf831b",
         "filename": "experimental/graphite/src/render/TessellateWedgesRenderStep.cpp",
         "patchSetId": 6
@@ -192,6 +336,30 @@
       "writtenOn": "2022-03-18T18:56:05Z",
       "side": 1,
       "message": "Wedges have to explicitly handle the \"implicit\" close, whereas the curve+tris renderering would be closed automatically by the triangle-filling step.",
+      "range": {
+        "startLine": 241,
+        "startChar": 8,
+        "endLine": 243,
+        "endChar": 9
+      },
+      "revId": "89d1c06d1ffecce7a37394b4767202644d2d7291",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "62e73623_df5075d0",
+        "filename": "experimental/graphite/src/render/TessellateWedgesRenderStep.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 243,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-03-18T20:07:34Z",
+      "side": 1,
+      "message": "Comment in the code ?",
+      "parentUuid": "ecba02ce_24cf831b",
       "range": {
         "startLine": 241,
         "startChar": 8,
