@@ -386,7 +386,6 @@ generated_cc_atom(
         "//src/gpu:GrRecordingContextPriv_hdr",
         "//src/gpu:GrRenderTarget_hdr",
         "//src/gpu:GrTexture_hdr",
-        "//src/gpu:SkRenderEngineAbortf_hdr",
     ],
 )
 
