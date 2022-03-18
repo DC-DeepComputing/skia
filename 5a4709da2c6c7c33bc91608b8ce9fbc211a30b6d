@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0b5cd5d1_bedf0059",
+        "filename": "tools/skqp/src/jni_skqp.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-03-18T19:15:25Z",
+      "side": 0,
+      "message": "An SkDebugf does not show up anywhere during an atest run, not even deep in the logs, so this line was effectively a no-op. If an asset read fails, this indicates a terrible problem and failing is more appropriate than silently continuing.",
+      "range": {
+        "startLine": 39,
+        "startChar": 20,
+        "endLine": 39,
+        "endChar": 28
+      },
+      "revId": "5a4709da2c6c7c33bc91608b8ce9fbc211a30b6d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
