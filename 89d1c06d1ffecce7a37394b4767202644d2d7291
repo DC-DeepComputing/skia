@@ -1,0 +1,228 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f62ad0c5_6c8d959b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-03-18T18:56:05Z",
+      "side": 1,
+      "message": "I did vigorous testing by hacking the Device\u0027s Renderer selection to only use the StencilTessellatedWedges Renderer and confirmed that the motionmark arcs GM drew the same as it did with StencilTessellatedCurvesAndTris.",
+      "revId": "89d1c06d1ffecce7a37394b4767202644d2d7291",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f4ec4bbd_2ce0f6f7",
+        "filename": "experimental/graphite/src/render/StencilAndFillPathRenderer.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-03-18T18:56:05Z",
+      "side": 1,
+      "message": "These RenderSteps are held inside functions to avoid worrying about chromium complaining about static initializers. It won\u0027t matter in the long run when Context owns the Renderers and RenderSteps.\n\nThis does let us use the same bounds covering render steps between the curve+tris and wedges renderers, so those steps can batch, regardless of how the stencil buffer was prepared.",
+      "range": {
+        "startLine": 20,
+        "startChar": 25,
+        "endLine": 20,
+        "endChar": 35
+      },
+      "revId": "89d1c06d1ffecce7a37394b4767202644d2d7291",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fd4603a7_aa7ed2cd",
+        "filename": "experimental/graphite/src/render/TessellateWedgesRenderStep.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-03-18T18:56:05Z",
+      "side": 1,
+      "message": "This `+ 1` is where the index count diverges from what\u0027s used TessellateCurveRenderStep.",
+      "range": {
+        "startLine": 44,
+        "startChar": 21,
+        "endLine": 44,
+        "endChar": 25
+      },
+      "revId": "89d1c06d1ffecce7a37394b4767202644d2d7291",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aa5756cc_f21c701b",
+        "filename": "experimental/graphite/src/render/TessellateWedgesRenderStep.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-03-18T18:56:05Z",
+      "side": 1,
+      "message": "The PatchAttribs and PatchWriter templates are different between the curve and wedge steps.",
+      "range": {
+        "startLine": 56,
+        "startChar": 0,
+        "endLine": 58,
+        "endChar": 62
+      },
+      "revId": "89d1c06d1ffecce7a37394b4767202644d2d7291",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bf40122b_630cae74",
+        "filename": "experimental/graphite/src/render/TessellateWedgesRenderStep.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-03-18T18:56:05Z",
+      "side": 1,
+      "message": "Ideally we\u0027ll consolidate this SkSL into a buildable string that can be used by both wedge and curve steps.",
+      "range": {
+        "startLine": 97,
+        "startChar": 8,
+        "endLine": 99,
+        "endChar": 9
+      },
+      "revId": "89d1c06d1ffecce7a37394b4767202644d2d7291",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "47fa7c68_61ec537c",
+        "filename": "experimental/graphite/src/render/TessellateWedgesRenderStep.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-03-18T18:56:05Z",
+      "side": 1,
+      "message": "These follow a very similar pattern to the code in the curve render step, but call out to PathWedgeTessellator instead of PathCurveTessellator.",
+      "range": {
+        "startLine": 163,
+        "startChar": 4,
+        "endLine": 170,
+        "endChar": 34
+      },
+      "revId": "89d1c06d1ffecce7a37394b4767202644d2d7291",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1a09fef2_aa385327",
+        "filename": "experimental/graphite/src/render/TessellateWedgesRenderStep.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 194,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-03-18T18:56:05Z",
+      "side": 1,
+      "message": "Wedges iterate over the path points and verbs via the MidpointContourParser, and not a direct path iterator.",
+      "range": {
+        "startLine": 189,
+        "startChar": 4,
+        "endLine": 194,
+        "endChar": 61
+      },
+      "revId": "89d1c06d1ffecce7a37394b4767202644d2d7291",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1f51d0ed_7deaca71",
+        "filename": "experimental/graphite/src/render/TessellateWedgesRenderStep.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 208,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-03-18T18:56:05Z",
+      "side": 1,
+      "message": "The curve render step skipped lines since they would be handled by the separate triangle pass, but wedges have to handle them.",
+      "range": {
+        "startLine": 201,
+        "startChar": 16,
+        "endLine": 208,
+        "endChar": 17
+      },
+      "revId": "89d1c06d1ffecce7a37394b4767202644d2d7291",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ecba02ce_24cf831b",
+        "filename": "experimental/graphite/src/render/TessellateWedgesRenderStep.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 243,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-03-18T18:56:05Z",
+      "side": 1,
+      "message": "Wedges have to explicitly handle the \"implicit\" close, whereas the curve+tris renderering would be closed automatically by the triangle-filling step.",
+      "range": {
+        "startLine": 241,
+        "startChar": 8,
+        "endLine": 243,
+        "endChar": 9
+      },
+      "revId": "89d1c06d1ffecce7a37394b4767202644d2d7291",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7b296e2f_c01239a4",
+        "filename": "src/gpu/tessellate/MidpointContourParser.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-03-18T18:56:05Z",
+      "side": 1,
+      "message": "This was lifted w/o any changes from PathWedgeTessellator.cpp",
+      "range": {
+        "startLine": 26,
+        "startChar": 6,
+        "endLine": 26,
+        "endChar": 27
+      },
+      "revId": "89d1c06d1ffecce7a37394b4767202644d2d7291",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
