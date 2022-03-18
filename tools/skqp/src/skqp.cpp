@@ -128,7 +128,10 @@ static std::vector<SkQP::SkSLErrorTest> get_sksl_error_tests(const ExclusionList
             if (!shaderText) {
                 continue;
             }
-            skslErrorTests.push_back({name.c_str(), static_cast<const char*>(shaderText->data())});
+            skslErrorTests.push_back({
+                name.c_str(),
+                std::string(static_cast<const char*>(shaderText->data()), shaderText->size())
+            });
         }
     };
 
