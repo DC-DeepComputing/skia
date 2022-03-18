@@ -5,20 +5,29 @@
  * found in the LICENSE file.
  */
 
-#include "src/sksl/SkSLAnalysis.h"
-
+#include "include/core/SkTypes.h"
 #include "include/private/SkSLProgramElement.h"
 #include "include/private/SkSLStatement.h"
 #include "include/private/SkTHash.h"
+#include "include/sksl/SkSLErrorReporter.h"
+#include "include/sksl/SkSLPosition.h"
 #include "src/core/SkSafeMath.h"
+#include "src/sksl/SkSLAnalysis.h"
 #include "src/sksl/SkSLContext.h"
-#include "src/sksl/SkSLProgramSettings.h"
 #include "src/sksl/analysis/SkSLProgramVisitor.h"
+#include "src/sksl/ir/SkSLExpression.h"
 #include "src/sksl/ir/SkSLForStatement.h"
 #include "src/sksl/ir/SkSLFunctionCall.h"
+#include "src/sksl/ir/SkSLFunctionDeclaration.h"
 #include "src/sksl/ir/SkSLFunctionDefinition.h"
 #include "src/sksl/ir/SkSLProgram.h"
 
+#include <cstddef>
+#include <iosfwd>
+#include <memory>
+#include <string>
+#include <type_traits>
+#include <utility>
 #include <vector>
 
 namespace SkSL {

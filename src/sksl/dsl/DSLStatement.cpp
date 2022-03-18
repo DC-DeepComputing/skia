@@ -7,11 +7,13 @@
 
 #include "include/sksl/DSLStatement.h"
 
+#include "include/private/SkSLDefines.h"
 #include "include/sksl/DSLBlock.h"
 #include "include/sksl/DSLExpression.h"
-#include "src/sksl/SkSLCompiler.h"
+#include "src/gpu/GrFragmentProcessor.h"
 #include "src/sksl/SkSLThreadContext.h"
 #include "src/sksl/ir/SkSLBlock.h"
+#include "src/sksl/ir/SkSLExpression.h"
 #include "src/sksl/ir/SkSLExpressionStatement.h"
 #include "src/sksl/ir/SkSLNop.h"
 

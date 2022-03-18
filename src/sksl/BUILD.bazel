@@ -127,6 +127,7 @@ generated_cc_atom(
         "//include/core:SkSpan_hdr",
         "//include/private:SkSLDefines_hdr",
         "//include/private:SkSLSampleUsage_hdr",
+        "//include/sksl:SkSLErrorReporter_hdr",
     ],
 )
 
@@ -277,6 +278,7 @@ generated_cc_atom(
     deps = [
         ":SkSLOperators_hdr",
         "//include/private:SkSLDefines_hdr",
+        "//include/sksl:SkSLErrorReporter_hdr",
     ],
 )
 
@@ -327,29 +329,54 @@ generated_cc_atom(
 generated_cc_atom(
     name = "SkSLDSLParser_hdr",
     hdrs = ["SkSLDSLParser.h"],
+    enforce_iwyu = True,
     visibility = ["//:__subpackages__"],
     deps = [
+        ":SkSLCompiler_hdr",
         ":SkSLLexer_hdr",
+        ":SkSLProgramSettings_hdr",
+        "//include/core:SkTypes_hdr",
+        "//include/private:SkSLDefines_hdr",
         "//include/private:SkSLProgramKind_hdr",
+        "//include/private:SkTArray_hdr",
         "//include/private:SkTHash_hdr",
-        "//include/sksl:DSLSymbols_hdr",
-        "//include/sksl:DSL_hdr",
-        "//src/sksl/ir:SkSLProgram_hdr",
+        "//include/sksl:DSLCore_hdr",
+        "//include/sksl:DSLExpression_hdr",
+        "//include/sksl:DSLLayout_hdr",
+        "//include/sksl:DSLModifiers_hdr",
+        "//include/sksl:DSLStatement_hdr",
+        "//include/sksl:DSLType_hdr",
+        "//include/sksl:SkSLErrorReporter_hdr",
+        "//include/sksl:SkSLPosition_hdr",
     ],
 )
 
 generated_cc_atom(
     name = "SkSLDSLParser_src",
     srcs = ["SkSLDSLParser.cpp"],
+    enforce_iwyu = True,
     visibility = ["//:__subpackages__"],
     deps = [
         ":SkSLCompiler_hdr",
         ":SkSLConstantFolder_hdr",
         ":SkSLDSLParser_hdr",
+        ":SkSLParsedModule_hdr",
         ":SkSLThreadContext_hdr",
+        "//include/core:SkSpan_hdr",
+        "//include/private:SkSLModifiers_hdr",
+        "//include/private:SkSLProgramElement_hdr",
         "//include/private:SkSLString_hdr",
+        "//include/sksl:DSLBlock_hdr",
+        "//include/sksl:DSLCase_hdr",
+        "//include/sksl:DSLFunction_hdr",
+        "//include/sksl:DSLSymbols_hdr",
+        "//include/sksl:DSLVar_hdr",
+        "//include/sksl:DSLWrapper_hdr",
+        "//include/sksl:DSL_hdr",
         "//src/sksl/dsl/priv:DSLWriter_hdr",
         "//src/sksl/dsl/priv:DSL_priv_hdr",
+        "//src/sksl/ir:SkSLExpression_hdr",
+        "//src/sksl/ir:SkSLProgram_hdr",
     ],
 )
 
@@ -430,6 +457,7 @@ generated_cc_atom(
         ":SkSLCompiler_hdr",
         "//include/private:SkStringView_hdr",
         "//include/sksl:SkSLErrorReporter_hdr",
+        "//include/sksl:SkSLPosition_hdr",
         "//src/sksl/dsl/priv:DSLWriter_hdr",
     ],
 )
