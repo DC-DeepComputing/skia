@@ -70,6 +70,30 @@
       },
       "revId": "5a4709da2c6c7c33bc91608b8ce9fbc211a30b6d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "57d299aa_f2c71fd2",
+        "filename": "tools/skqp/src/jni_skqp.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-03-18T21:10:59Z",
+      "side": 0,
+      "message": "Weird...",
+      "parentUuid": "fe738d92_096fa7b8",
+      "range": {
+        "startLine": 39,
+        "startChar": 20,
+        "endLine": 39,
+        "endChar": 28
+      },
+      "revId": "5a4709da2c6c7c33bc91608b8ce9fbc211a30b6d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
