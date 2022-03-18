@@ -292,7 +292,7 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(CommandBufferTest, reporter, context) {
 
     // Create Sampler -- for now, just to test creation
     sk_sp<Sampler> sampler = resourceProvider->findOrCreateCompatibleSampler(
-            SkSamplingOptions(SkFilterMode::kLinear), SkTileMode::kClamp, SkTileMode::kDecal);
+            SkSamplingOptions(SkFilterMode::kLinear), SkTileMode::kClamp, SkTileMode::kDecal, true);
     REPORTER_ASSERT(reporter, sampler);
 
     commandBuffer->beginRenderPass(renderPassDesc, target->refTexture(), nullptr,
