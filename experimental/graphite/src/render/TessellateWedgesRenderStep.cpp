@@ -10,7 +10,6 @@
 #include "experimental/graphite/src/DrawWriter.h"
 #include "experimental/graphite/src/geom/Shape.h"
 #include "experimental/graphite/src/geom/Transform_graphite.h"
-#include "experimental/graphite/src/render/StencilAndCoverDSS.h"
 
 #include "src/gpu/tessellate/AffineMatrix.h"
 #include "src/gpu/tessellate/MidpointContourParser.h"
@@ -66,17 +65,21 @@ static size_t FixedIndexBufferSize() {
 
 }  // namespace
 
-TessellateWedgesRenderStep::TessellateWedgesRenderStep(bool evenOdd)
-        : RenderStep(Flags::kRequiresMSAA,
+TessellateWedgesRenderStep::TessellateWedgesRenderStep(const char* variantName,
+                                                       DepthStencilSettings depthStencilSettings)
+        : RenderStep(Flags::kRequiresMSAA |
+                     (depthStencilSettings.fDepthWriteEnabled ? Flags::kPerformsShading
+                                                              : Flags::kNone),
                      /*uniforms=*/{},
                      PrimitiveType::kTriangles,
-                     evenOdd ? kEvenOddStencilPass : kWindingStencilPass,
+                     depthStencilSettings,
                      /*vertexAttrs=*/  {{"resolveLevel_and_idx",
                                          VertexAttribType::kFloat2, SkSLType::kFloat2}},
                      /*instanceAttrs=*/{{"p01", VertexAttribType::kFloat4, SkSLType::kFloat4},
                                         {"p23", VertexAttribType::kFloat4, SkSLType::kFloat4},
                                         {"fanPointAttrib", VertexAttribType::kFloat2,
-                                                           SkSLType::kFloat2}}) {
+                                                           SkSLType::kFloat2}})
+        , fName(SkStringPrintf("TessellateWedgeRenderStep[%s]", variantName)) {
     SkASSERT(this->instanceStride() == PatchStride(kAttribs));
 }
 

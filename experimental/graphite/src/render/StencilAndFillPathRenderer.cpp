@@ -9,6 +9,7 @@
 
 #include "experimental/graphite/src/render/CoverBoundsRenderStep.h"
 #include "experimental/graphite/src/render/MiddleOutFanRenderStep.h"
+#include "experimental/graphite/src/render/StencilAndCoverDSS.h"
 #include "experimental/graphite/src/render/TessellateCurvesRenderStep.h"
 #include "experimental/graphite/src/render/TessellateWedgesRenderStep.h"
 #include "include/core/SkPathTypes.h"
@@ -26,6 +27,16 @@ static const RenderStep* inverse_cover_step() {
     static const CoverBoundsRenderStep kInverseFill{true};
     return &kInverseFill;
 }
+
+static constexpr DepthStencilSettings kDirectShadingPass = {
+        /*frontStencil=*/{},
+        /*backStencil=*/ {},
+        /*refValue=*/    0,
+        /*stencilTest=*/ false,
+        /*depthCompare=*/CompareOp::kAlways, // greater
+        /*depthTest=*/   true,
+        /*depthWrite=*/  true
+};
 
 }  // namespace
 
@@ -66,8 +77,8 @@ const Renderer& Renderer::StencilTessellatedCurvesAndTris(SkPathFillType fillTyp
 const Renderer& Renderer::StencilTessellatedWedges(SkPathFillType fillType) {
     // Because each fill type uses a different stencil settings, there is one Renderer per type.
     // However, at each stage (stencil vs. cover), there are only two RenderSteps to branch on.
-    static const TessellateWedgesRenderStep kWindingStencilWedges{false};
-    static const TessellateWedgesRenderStep kEvenOddStencilWedges{true};
+    static const TessellateWedgesRenderStep kWindingStencilWedges{"stencil,winding", kWindingStencilPass};
+    static const TessellateWedgesRenderStep kEvenOddStencilWedges{"stencil,even-odd", kEvenOddStencilPass};
 
     // TODO: Uncomment and include the curve stenciling steps to draw curved paths
     static const Renderer kWindingRenderer{"StencilTessellatedWedges[winding]",
@@ -90,6 +101,12 @@ const Renderer& Renderer::StencilTessellatedWedges(SkPathFillType fillType) {
         case SkPathFillType::kInverseEvenOdd: return kInverseEvenOddRenderer;
     }
     SkUNREACHABLE;
+}
+
+const Renderer& Renderer::ConvexTessellatedWedges() {
+    static const TessellateWedgesRenderStep kConvexWedges{"convex", kDirectShadingPass};
+    static const Renderer kConvexWedgeRenderer{"ConvexTessellatedWedges", &kConvexWedges};
+    return kConvexWedgeRenderer;
 }
 
 } // namespace skgpu
