@@ -20,6 +20,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f577cb69_d5917fdc",
+        "filename": "src/sksl/dsl/DSLBlock.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-03-18T20:09:29Z",
+      "side": 1,
+      "message": "nit: two blank lines in a row",
+      "revId": "843423e9a9612ca3f168168a24babbf888dfc208",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3c592a3a_0f837944",
         "filename": "src/sksl/lex/TransitionTable.cpp",
         "patchSetId": 7
