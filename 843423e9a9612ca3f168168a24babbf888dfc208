@@ -16,6 +16,29 @@
       "message": "Did you want +1 even with the ",
       "revId": "843423e9a9612ca3f168168a24babbf888dfc208",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3c592a3a_0f837944",
+        "filename": "src/sksl/lex/TransitionTable.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-03-18T20:02:54Z",
+      "side": 1,
+      "message": "Dang, more autogen stuff. Don\u0027t +2 that CL just yet!",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 20
+      },
+      "revId": "843423e9a9612ca3f168168a24babbf888dfc208",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
