@@ -56,7 +56,7 @@ public:
 
     sk_sp<Sampler> findOrCreateCompatibleSampler(const SkSamplingOptions&,
                                                  SkTileMode xTileMode,
-                                                 SkTileMode yTileMode);
+                                                 SkTileMode yTileMode, bool);
 
     SkShaderCodeDictionary* shaderCodeDictionary() const;
 
@@ -73,7 +73,7 @@ private:
 
     virtual sk_sp<Sampler> createSampler(const SkSamplingOptions&,
                                          SkTileMode xTileMode,
-                                         SkTileMode yTileMode) = 0;
+                                         SkTileMode yTileMode, bool) = 0;
 
     sk_sp<Texture> findOrCreateTextureWithKey(SkISize dimensions,
                                               const TextureInfo& info,
