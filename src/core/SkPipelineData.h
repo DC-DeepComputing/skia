@@ -53,7 +53,43 @@ public:
     }
     const BlendInfo& blendInfo() const { return fBlendInfo; }
 
-    void addImage(const SkSamplingOptions&, const SkTileMode[2], sk_sp<skgpu::TextureProxy>);
+    class TextureDataBlock {
+    public:
+        struct TextureInfo {
+            bool operator==(const TextureInfo&) const;
+            bool operator!=(const TextureInfo& other) const { return !(*this == other);  }
+
+            uint32_t samplingAsKey() const;
+
+            sk_sp<skgpu::TextureProxy> fProxy;
+            SkSamplingOptions          fSamplingOptions;
+            SkTileMode                 fTileModes[2];
+        };
+
+        TextureDataBlock() = default;
+
+        bool empty() const { return fTextureData.empty(); }
+        int numTextures() const { return SkTo<int>(fTextureData.size()); }
+        const TextureInfo& texture(int index) { return fTextureData[index]; }
+
+        bool operator==(const TextureDataBlock&) const;
+        bool operator!=(const TextureDataBlock& other) const { return !(*this == other);  }
+        uint32_t hash() const;
+
+        void add(const SkSamplingOptions& sampling,
+                 const SkTileMode tileModes[2],
+                 sk_sp<skgpu::TextureProxy> proxy) {
+            fTextureData.push_back({std::move(proxy), sampling, {tileModes[0], tileModes[1]}});
+        }
+
+    private:
+        std::vector<TextureInfo> fTextureData;
+    };
+
+    void add(const SkSamplingOptions&, const SkTileMode[2], sk_sp<skgpu::TextureProxy>);
+    bool hasTextures() const { return !fTextureDataBlock.empty(); }
+
+    const TextureDataBlock& textureDataBlock() { return fTextureDataBlock; }
 #endif
 
     void add(sk_sp<SkUniformData>);
@@ -80,14 +116,8 @@ private:
     std::vector<sk_sp<SkUniformData>> fUniformData;
 
 #ifdef SK_GRAPHITE_ENABLED
-    struct TextureInfo {
-        sk_sp<skgpu::TextureProxy> fProxy;
-        SkSamplingOptions          fSamplingOptions;
-        SkTileMode                 fTileModes[2];
-    };
-
-    std::vector<TextureInfo> fProxies;
-    BlendInfo fBlendInfo;
+    TextureDataBlock fTextureDataBlock;
+    BlendInfo        fBlendInfo;
 #endif
 };
 
