@@ -148,10 +148,6 @@
     "functions": [
       "ClearTexImage", "ClearTexSubImage",
     ],
-    // https://bugs.chromium.org/p/skia/issues/detail?id=8913
-    "optional": [
-      "ClearTexImage", "ClearTexSubImage",
-    ]
   },
 
   {
