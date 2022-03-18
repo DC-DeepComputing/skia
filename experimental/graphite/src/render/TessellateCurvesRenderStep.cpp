@@ -93,8 +93,8 @@ const char* TessellateCurvesRenderStep::vertexSkSL() const {
         if (isinf(p23.z)) {
             // This patch is an exact triangle.
             localcoord = (resolveLevel != 0)      ? p01.zw
-                        : (idxInResolveLevel != 0) ? p23.xy
-                                                    : p01.xy;
+                       : (idxInResolveLevel != 0) ? p23.xy
+                                                  : p01.xy;
         } else {
             float2 p0=p01.xy, p1=p01.zw, p2=p23.xy, p3=p23.zw;
             float w = -1;  // w < 0 tells us to treat the instance as an integral cubic.
@@ -108,7 +108,7 @@ const char* TessellateCurvesRenderStep::vertexSkSL() const {
             } else {
                 // The patch is an integral cubic.
                 maxResolveLevel = wangs_formula_cubic_log2(4, p0, p1, p2, p3,
-                                                            float2x2(1.0, 0.0, 0.0, 1.0));
+                                                           float2x2(1.0, 0.0, 0.0, 1.0));
             }
             if (resolveLevel > maxResolveLevel) {
                 // This vertex is at a higher resolve level than we need. Demote to a lower
