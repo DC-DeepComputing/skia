@@ -14,6 +14,7 @@
 
 #include "include/core/SkStream.h"
 #include "include/private/SkTo.h"
+#include "src/utils/SkOSPath.h"
 #include "tools/ResourceFactory.h"
 
 #include "tools/skqp/src/skqp.h"
@@ -36,7 +37,7 @@ static sk_sp<SkData> open_asset_data(const char* path) {
                 data = SkData::MakeUninitialized(size);
                 int ret = AAsset_read(asset, data->writable_data(), size);
                 if (ret != SkToInt(size)) {
-                    SkDebugf("ERROR: AAsset_read != AAsset_getLength (%s)\n", path);
+                    SK_ABORT("ERROR: AAsset_read != AAsset_getLength (%s)\n", path);
                 }
             }
             AAsset_close(asset);
