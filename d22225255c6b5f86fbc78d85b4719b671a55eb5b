@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eb688da7_0cf0dee5",
+        "filename": "experimental/graphite/src/DrawPass.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-03-18T16:45:58Z",
+      "side": 1,
+      "message": "nit: align |\u0027s for prettiness 😊",
+      "range": {
+        "startLine": 88,
+        "startChar": 66,
+        "endLine": 89,
+        "endChar": 69
+      },
+      "revId": "d22225255c6b5f86fbc78d85b4719b671a55eb5b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2e4a423c_e24ba902",
+        "filename": "experimental/graphite/src/DrawPass.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-03-18T16:45:58Z",
+      "side": 1,
+      "message": "nit: newline",
+      "range": {
+        "startLine": 110,
+        "startChar": 0,
+        "endLine": 110,
+        "endChar": 7
+      },
+      "revId": "d22225255c6b5f86fbc78d85b4719b671a55eb5b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
