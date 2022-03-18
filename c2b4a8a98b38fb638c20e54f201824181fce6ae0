@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ed74856c_278ae4df",
+        "filename": "src/sksl/SkSLLexer.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-03-18T19:55:26Z",
+      "side": 0,
+      "message": "This is autogenned code. I will fix up the autogen in a separate CL.",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 18
+      },
+      "revId": "c2b4a8a98b38fb638c20e54f201824181fce6ae0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0fb76806_bd7a7f1a",
+        "filename": "src/sksl/SkSLUtil.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-03-18T19:55:26Z",
+      "side": 0,
+      "message": "Did IWYU remove __STDC_FORMAT_MACROS...? That\u0027s kinda weird (but seems correct)!\n\nAlso, why does GrShaderCaps need to be conditionally wrapped now?",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 19,
+        "endChar": 0
+      },
+      "revId": "c2b4a8a98b38fb638c20e54f201824181fce6ae0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
