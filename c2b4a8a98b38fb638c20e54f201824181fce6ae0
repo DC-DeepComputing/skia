@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7ac4d41f_f82393c4",
+        "filename": "include/sksl/DSLLayout.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-03-18T20:41:14Z",
+      "side": 0,
+      "message": "Yeah, I know. I was surprised too!",
+      "parentUuid": "1b910e5a_6cc534ab",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 35
+      },
+      "revId": "c2b4a8a98b38fb638c20e54f201824181fce6ae0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ed74856c_278ae4df",
@@ -71,6 +95,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1d033708_fd7d9a97",
+        "filename": "src/sksl/SkSLLexer.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-03-18T20:41:14Z",
+      "side": 0,
+      "message": "Your CL looks good to me. I had modified both the generated and the generator code here too, but doing it in a smaller CL is fine.",
+      "parentUuid": "61a0dbb2_bc76f282",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 18
+      },
+      "revId": "c2b4a8a98b38fb638c20e54f201824181fce6ae0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0fb76806_bd7a7f1a",
@@ -108,6 +156,30 @@
       "side": 0,
       "message": "Just realized GrShaderCaps is only used in sections where `defined(SKSL_STANDALONE) || !SK_SUPPORT_GPU` is false.",
       "parentUuid": "0fb76806_bd7a7f1a",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 19,
+        "endChar": 0
+      },
+      "revId": "c2b4a8a98b38fb638c20e54f201824181fce6ae0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7a5e913d_7e426073",
+        "filename": "src/sksl/SkSLUtil.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-03-18T20:41:14Z",
+      "side": 0,
+      "message": "No, I removed __STDC_FORMAT_MACROS because IWYU wanted me to include something that defined the macro, but then I did some research and realized it was no longer doing anything (had previously been used to work around some issue in #include \u003ccinttypes\u003e, which is not included anymore)\n\nhttps://skia-review.googlesource.com/c/skia/+/5084/",
+      "parentUuid": "65e256a7_82698b21",
       "range": {
         "startLine": 14,
         "startChar": 0,
