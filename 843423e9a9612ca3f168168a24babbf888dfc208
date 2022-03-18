@@ -39,6 +39,30 @@
       },
       "revId": "843423e9a9612ca3f168168a24babbf888dfc208",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1fc1fec4_45c1ceb7",
+        "filename": "src/sksl/lex/TransitionTable.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-03-18T20:03:32Z",
+      "side": 1,
+      "message": "Oh, never mind. This isn\u0027t autogenned code. This is the code generator itself.",
+      "parentUuid": "3c592a3a_0f837944",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 20
+      },
+      "revId": "843423e9a9612ca3f168168a24babbf888dfc208",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
