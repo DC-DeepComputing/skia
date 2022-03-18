@@ -1,0 +1,329 @@
+[
+{
+   "backend": "OpenGL",
+   "caps": {
+      "MIP Map Support": true,
+      "NPOT Texture Tile Support": true,
+      "Reuse Scratch Textures": true,
+      "Reuse Scratch Buffers": true,
+      "Gpu Tracing Support": true,
+      "Oversized Stencil Support": true,
+      "Texture Barrier Support": true,
+      "Sample Locations Support": true,
+      "Draw Instanced Support": true,
+      "Native Draw Indirect Support": false,
+      "Use client side indirect buffers": true,
+      "Conservative Raster Support": false,
+      "Wireframe Support": true,
+      "MSAA Resolves Automatically": false,
+      "Use primitive restart": false,
+      "Prefer client-side dynamic buffers": false,
+      "Prefer fullscreen clears (and stencil discard)": false,
+      "Two-sided Stencil Refs And Masks Must Match": false,
+      "Must clear buffer memory": false,
+      "Should initialize textures": false,
+      "Supports importing AHardwareBuffers": false,
+      "Fence sync support": true,
+      "Semaphore support": true,
+      "Cross context texture support": true,
+      "Half float vertex attribute support": true,
+      "Specify GeometryProcessor textures as a dynamic state array": true,
+      "Use draws for partial clears": false,
+      "Use draws for color clears": false,
+      "Avoid Large IndexBuffer Draws": false,
+      "Use draws for stencil clip clears": false,
+      "Supports transfers from buffers to textures": true,
+      "Supports transfers from textures to buffers": true,
+      "Write pixels row bytes support": true,
+      "Transfer pixels to row bytes support": true,
+      "Read pixels row bytes support": true,
+      "Disable msaa clip mask atlas on current driver [workaround]": false,
+      "Disable TessellationPathRenderer current driver [workaround]": false,
+      "Clamp-to-border": true,
+      "Prefer VRAM Use over flushes [workaround]": true,
+      "Avoid stencil buffers [workaround]": false,
+      "Avoid writePixels fast path [workaround]": false,
+      "Requires manual FB barrier after tessellated stencilDraw [workaround]": false,
+      "Native draw indexed indirect is broken [workaround]": false,
+      "Avoid DAG reordering [workaround]": false,
+      "Avoid Dithering [workaround]": false,
+      "Max Vertex Attributes": 16,
+      "Max Texture Size": 16384,
+      "Max Render Target Size": 16384,
+      "Max Preferred Render Target Size": 16384,
+      "Max Window Rectangles": 0,
+      "Sample Count for Internal MSAA": 4,
+      "Min Path Verbs for HW Tessellation": 25,
+      "Min Stroke Verbs for HW Tessellation": 50,
+      "Blend Equation Support": "Basic",
+      "Map Buffer Support": "can_map partial sync_read",
+      "GL caps": {
+         "Stencil Formats": [
+            { "stencil bits": 8, "total bytes": 1 },
+            { "stencil bits": 16, "total bytes": 2 },
+            { "stencil bits": 8, "total bytes": 4 }
+         ],
+         "Core Profile": true,
+         "MSAA Type": "Standard",
+         "Invalidate FB Type": "None",
+         "Map Buffer Type": "MapBufferRange",
+         "Multi Draw Type": "kNone",
+         "Max FS Uniform Vectors": 1024,
+         "Pack Flip Y support": false,
+         "Texture Usage support": false,
+         "GL_ARB_imaging support": false,
+         "Vertex array object support": true,
+         "Debug support": false,
+         "ES2 compatibility support": true,
+         "drawRangeElements support": true,
+         "Base (vertex base) instance support": false,
+         "Bind uniform location support": false,
+         "Rectangle texture support": true,
+         "Mipmap LOD control support": true,
+         "Mipmap level control support": true,
+         "Use buffer data null hint": true,
+         "Clear texture support": false,
+         "Program binary support": false,
+         "Program parameters support": true,
+         "Sampler object support": true,
+         "Using sampler objects": true,
+         "Texture swizzle support": true,
+         "Tiled rendering support": false,
+         "FB fetch requires enable per sample": false,
+         "sRGB Write Control": true,
+         "Intermediate texture for partial updates of unorm textures ever bound to FBOs": false,
+         "Intermediate texture for all updates of textures bound to FBOs": false,
+         "Max instances per draw without crashing (or zero)": false,
+         "formats": [
+            { "flags": "0x0", "f_type": "0x0", "c_internal": "0x0", "i_for_teximage": "0x0", "i_for_renderbuffer": "0x0", "default_ex_format": "0x0", "default_ex_type": "0x0", "default_color_type": "0x0", "surface color types": [] },
+            { "flags": "0x1f", "f_type": "0x1", "c_internal": "0x0", "i_for_teximage": "0x8058", "i_for_renderbuffer": "0x8058", "default_ex_format": "0x1908", "default_ex_type": "0x1401", "default_color_type": "0x4", "surface color types": [
+                  { "colorType": "0x4", "flags": "0x3", "data color types": [
+                        { "colorType": "0x4", "ex_type": "0x1401", "ex_teximage": "0x1908", "ex_read": "0x1908" },
+                        { "colorType": "0x8", "ex_type": "0x1401", "ex_teximage": "0x0", "ex_read": "0x80e1" }
+                     ] },
+                  { "colorType": "0x8", "flags": "0x3", "data color types": [
+                        { "colorType": "0x8", "ex_type": "0x1401", "ex_teximage": "0x80e1", "ex_read": "0x80e1" },
+                        { "colorType": "0x4", "ex_type": "0x1401", "ex_teximage": "0x0", "ex_read": "0x1908" }
+                     ] },
+                  { "colorType": "0x6", "flags": "0x1", "data color types": [
+                        { "colorType": "0x6", "ex_type": "0x1401", "ex_teximage": "0x1908", "ex_read": "0x1908" }
+                     ] }
+               ] },
+            { "flags": "0x1f", "f_type": "0x1", "c_internal": "0x0", "i_for_teximage": "0x8229", "i_for_renderbuffer": "0x8229", "default_ex_format": "0x1903", "default_ex_type": "0x1401", "default_color_type": "0x1a", "surface color types": [
+                  { "colorType": "0x1a", "flags": "0x3", "data color types": [
+                        { "colorType": "0x1a", "ex_type": "0x1401", "ex_teximage": "0x1903", "ex_read": "0x1903" },
+                        { "colorType": "0x18", "ex_type": "0x1401", "ex_teximage": "0x0", "ex_read": "0x1908" }
+                     ] },
+                  { "colorType": "0x1", "flags": "0x3", "data color types": [
+                        { "colorType": "0x1", "ex_type": "0x1401", "ex_teximage": "0x1903", "ex_read": "0x1903" },
+                        { "colorType": "0x15", "ex_type": "0x1401", "ex_teximage": "0x0", "ex_read": "0x1908" }
+                     ] },
+                  { "colorType": "0xb", "flags": "0x1", "data color types": [
+                        { "colorType": "0xb", "ex_type": "0x1401", "ex_teximage": "0x1903", "ex_read": "0x1903" },
+                        { "colorType": "0x17", "ex_type": "0x1401", "ex_teximage": "0x0", "ex_read": "0x1908" }
+                     ] }
+               ] },
+            { "flags": "0x0", "f_type": "0x1", "c_internal": "0x0", "i_for_teximage": "0x1906", "i_for_renderbuffer": "0x803c", "default_ex_format": "0x1906", "default_ex_type": "0x1401", "default_color_type": "0x1", "surface color types": [] },
+            { "flags": "0x0", "f_type": "0x1", "c_internal": "0x0", "i_for_teximage": "0x1909", "i_for_renderbuffer": "0x8040", "default_ex_format": "0x1909", "default_ex_type": "0x1401", "default_color_type": "0xb", "surface color types": [] },
+            { "flags": "0x0", "f_type": "0x1", "c_internal": "0x0", "i_for_teximage": "0x190a", "i_for_renderbuffer": "0x8045", "default_ex_format": "0x190a", "default_ex_type": "0x1401", "default_color_type": "0xc", "surface color types": [] },
+            { "flags": "0x0", "f_type": "0x1", "c_internal": "0x0", "i_for_teximage": "0x1908", "i_for_renderbuffer": "0x8058", "default_ex_format": "0x80e1", "default_ex_type": "0x1401", "default_color_type": "0x8", "surface color types": [] },
+            { "flags": "0x17", "f_type": "0x1", "c_internal": "0x0", "i_for_teximage": "0x8d62", "i_for_renderbuffer": "0x8d62", "default_ex_format": "0x1907", "default_ex_type": "0x8363", "default_color_type": "0x2", "surface color types": [
+                  { "colorType": "0x2", "flags": "0x3", "data color types": [
+                        { "colorType": "0x2", "ex_type": "0x8363", "ex_teximage": "0x1907", "ex_read": "0x1907" },
+                        { "colorType": "0x4", "ex_type": "0x1401", "ex_teximage": "0x0", "ex_read": "0x1908" }
+                     ] }
+               ] },
+            { "flags": "0x1f", "f_type": "0x2", "c_internal": "0x0", "i_for_teximage": "0x881a", "i_for_renderbuffer": "0x881a", "default_ex_format": "0x1908", "default_ex_type": "0x140b", "default_color_type": "0xe", "surface color types": [
+                  { "colorType": "0xe", "flags": "0x3", "data color types": [
+                        { "colorType": "0xe", "ex_type": "0x140b", "ex_teximage": "0x1908", "ex_read": "0x1908" },
+                        { "colorType": "0x10", "ex_type": "0x1406", "ex_teximage": "0x0", "ex_read": "0x1908" }
+                     ] },
+                  { "colorType": "0xf", "flags": "0x3", "data color types": [
+                        { "colorType": "0xf", "ex_type": "0x140b", "ex_teximage": "0x1908", "ex_read": "0x1908" },
+                        { "colorType": "0x10", "ex_type": "0x1406", "ex_teximage": "0x0", "ex_read": "0x1908" }
+                     ] }
+               ] },
+            { "flags": "0x1f", "f_type": "0x2", "c_internal": "0x0", "i_for_teximage": "0x822d", "i_for_renderbuffer": "0x822d", "default_ex_format": "0x1903", "default_ex_type": "0x140b", "default_color_type": "0x1c", "surface color types": [
+                  { "colorType": "0xd", "flags": "0x3", "data color types": [
+                        { "colorType": "0xd", "ex_type": "0x140b", "ex_teximage": "0x1903", "ex_read": "0x1903" },
+                        { "colorType": "0x16", "ex_type": "0x1406", "ex_teximage": "0x0", "ex_read": "0x1908" }
+                     ] }
+               ] },
+            { "flags": "0x1b", "f_type": "0x1", "c_internal": "0x0", "i_for_teximage": "0x8051", "i_for_renderbuffer": "0x8051", "default_ex_format": "0x1907", "default_ex_type": "0x1401", "default_color_type": "0x19", "surface color types": [
+                  { "colorType": "0x6", "flags": "0x3", "data color types": [
+                        { "colorType": "0x19", "ex_type": "0x1401", "ex_teximage": "0x1907", "ex_read": "0x0" },
+                        { "colorType": "0x4", "ex_type": "0x1401", "ex_teximage": "0x0", "ex_read": "0x1908" }
+                     ] }
+               ] },
+            { "flags": "0x0", "f_type": "0x1", "c_internal": "0x0", "i_for_teximage": "0x0", "i_for_renderbuffer": "0x96ba", "default_ex_format": "0x1907", "default_ex_type": "0x1401", "default_color_type": "0x6", "surface color types": [] },
+            { "flags": "0x1f", "f_type": "0x1", "c_internal": "0x0", "i_for_teximage": "0x822b", "i_for_renderbuffer": "0x822b", "default_ex_format": "0x8227", "default_ex_type": "0x1401", "default_color_type": "0x7", "surface color types": [
+                  { "colorType": "0x7", "flags": "0x3", "data color types": [
+                        { "colorType": "0x7", "ex_type": "0x1401", "ex_teximage": "0x8227", "ex_read": "0x8227" },
+                        { "colorType": "0x4", "ex_type": "0x1401", "ex_teximage": "0x0", "ex_read": "0x1908" }
+                     ] }
+               ] },
+            { "flags": "0x1f", "f_type": "0x1", "c_internal": "0x0", "i_for_teximage": "0x8059", "i_for_renderbuffer": "0x8059", "default_ex_format": "0x1908", "default_ex_type": "0x8368", "default_color_type": "0x9", "surface color types": [
+                  { "colorType": "0x9", "flags": "0x3", "data color types": [
+                        { "colorType": "0x9", "ex_type": "0x8368", "ex_teximage": "0x1908", "ex_read": "0x1908" },
+                        { "colorType": "0x4", "ex_type": "0x1401", "ex_teximage": "0x0", "ex_read": "0x1908" }
+                     ] },
+                  { "colorType": "0xa", "flags": "0x3", "data color types": [
+                        { "colorType": "0xa", "ex_type": "0x8368", "ex_teximage": "0x80e1", "ex_read": "0x80e1" },
+                        { "colorType": "0x4", "ex_type": "0x1401", "ex_teximage": "0x0", "ex_read": "0x1908" }
+                     ] }
+               ] },
+            { "flags": "0x19", "f_type": "0x1", "c_internal": "0x0", "i_for_teximage": "0x8056", "i_for_renderbuffer": "0x8056", "default_ex_format": "0x1908", "default_ex_type": "0x8033", "default_color_type": "0x3", "surface color types": [
+                  { "colorType": "0x3", "flags": "0x3", "data color types": [
+                        { "colorType": "0x3", "ex_type": "0x8033", "ex_teximage": "0x1908", "ex_read": "0x1908" },
+                        { "colorType": "0x4", "ex_type": "0x1401", "ex_teximage": "0x0", "ex_read": "0x1908" }
+                     ] }
+               ] },
+            { "flags": "0x1f", "f_type": "0x1", "c_internal": "0x0", "i_for_teximage": "0x8c43", "i_for_renderbuffer": "0x8c43", "default_ex_format": "0x1908", "default_ex_type": "0x1401", "default_color_type": "0x5", "surface color types": [
+                  { "colorType": "0x5", "flags": "0x3", "data color types": [
+                        { "colorType": "0x5", "ex_type": "0x1401", "ex_teximage": "0x1908", "ex_read": "0x1908" }
+                     ] }
+               ] },
+            { "flags": "0x0", "f_type": "0x1", "c_internal": "0x0", "i_for_teximage": "0x8d64", "i_for_renderbuffer": "0x0", "default_ex_format": "0x0", "default_ex_type": "0x0", "default_color_type": "0x0", "surface color types": [] },
+            { "flags": "0x0", "f_type": "0x1", "c_internal": "0x0", "i_for_teximage": "0x9274", "i_for_renderbuffer": "0x0", "default_ex_format": "0x0", "default_ex_type": "0x0", "default_color_type": "0x0", "surface color types": [] },
+            { "flags": "0x1", "f_type": "0x1", "c_internal": "0x0", "i_for_teximage": "0x83f0", "i_for_renderbuffer": "0x0", "default_ex_format": "0x0", "default_ex_type": "0x0", "default_color_type": "0x0", "surface color types": [] },
+            { "flags": "0x1", "f_type": "0x1", "c_internal": "0x0", "i_for_teximage": "0x83f1", "i_for_renderbuffer": "0x0", "default_ex_format": "0x0", "default_ex_type": "0x0", "default_color_type": "0x0", "surface color types": [] },
+            { "flags": "0x1f", "f_type": "0x1", "c_internal": "0x0", "i_for_teximage": "0x822a", "i_for_renderbuffer": "0x822a", "default_ex_format": "0x1903", "default_ex_type": "0x1403", "default_color_type": "0x1b", "surface color types": [
+                  { "colorType": "0x11", "flags": "0x3", "data color types": [
+                        { "colorType": "0x11", "ex_type": "0x1403", "ex_teximage": "0x1903", "ex_read": "0x1903" },
+                        { "colorType": "0x15", "ex_type": "0x1401", "ex_teximage": "0x0", "ex_read": "0x1908" }
+                     ] }
+               ] },
+            { "flags": "0x1f", "f_type": "0x1", "c_internal": "0x0", "i_for_teximage": "0x822c", "i_for_renderbuffer": "0x822c", "default_ex_format": "0x8227", "default_ex_type": "0x1403", "default_color_type": "0x12", "surface color types": [
+                  { "colorType": "0x12", "flags": "0x3", "data color types": [
+                        { "colorType": "0x12", "ex_type": "0x1403", "ex_teximage": "0x8227", "ex_read": "0x8227" },
+                        { "colorType": "0x4", "ex_type": "0x1401", "ex_teximage": "0x0", "ex_read": "0x1908" }
+                     ] }
+               ] },
+            { "flags": "0x1f", "f_type": "0x1", "c_internal": "0x0", "i_for_teximage": "0x805b", "i_for_renderbuffer": "0x805b", "default_ex_format": "0x1908", "default_ex_type": "0x1403", "default_color_type": "0x14", "surface color types": [
+                  { "colorType": "0x14", "flags": "0x3", "data color types": [
+                        { "colorType": "0x14", "ex_type": "0x1403", "ex_teximage": "0x1908", "ex_read": "0x1908" },
+                        { "colorType": "0x4", "ex_type": "0x1401", "ex_teximage": "0x0", "ex_read": "0x1908" }
+                     ] }
+               ] },
+            { "flags": "0x1f", "f_type": "0x2", "c_internal": "0x0", "i_for_teximage": "0x822f", "i_for_renderbuffer": "0x822f", "default_ex_format": "0x8227", "default_ex_type": "0x140b", "default_color_type": "0x13", "surface color types": [
+                  { "colorType": "0x13", "flags": "0x3", "data color types": [
+                        { "colorType": "0x13", "ex_type": "0x140b", "ex_teximage": "0x8227", "ex_read": "0x8227" },
+                        { "colorType": "0x10", "ex_type": "0x1406", "ex_teximage": "0x0", "ex_read": "0x1908" }
+                     ] }
+               ] },
+            { "flags": "0x0", "f_type": "0x2", "c_internal": "0x0", "i_for_teximage": "0x0", "i_for_renderbuffer": "0x881e", "default_ex_format": "0x1909", "default_ex_type": "0x140b", "default_color_type": "0x1d", "surface color types": [] }
+         ]
+      },
+      "shaderCaps": {
+         "Shader Derivative Support": true,
+         "Dst Read In Shader Support": false,
+         "Dual Source Blending Support": true,
+         "Integer Support": true,
+         "Nonsquare Matrix Support": true,
+         "Inverse Hyperbolic Support": true,
+         "FB Fetch Support": false,
+         "Uses precision modifiers": false,
+         "Can use any() function": true,
+         "Can use min() and abs() together": true,
+         "Can use fract() for negative values": true,
+         "Must force negated atan param to float": false,
+         "Must force negated ldexp param to multiply": false,
+         "Must do op between floor and abs": false,
+         "Must use local out color for FBFetch": false,
+         "Must obfuscate uniform color": false,
+         "Must guard division even after explicit zero check": false,
+         "Can use gl_FragCoord": true,
+         "Incomplete short int precision": false,
+         "Add and true to loops workaround": false,
+         "Unfold short circuit as ternary": false,
+         "Emulate abs(int) function": false,
+         "Rewrite do while loops": false,
+         "Rewrite switch statements": false,
+         "Rewrite pow with constant exponent": false,
+         "Must write to sk_FragColor [workaround]": false,
+         "Don't add default precision statement for samplerExternalOES": false,
+         "Rewrite matrix-vector multiply": false,
+         "Rewrite matrix equality comparisons": false,
+         "Flat interpolation support": true,
+         "Prefer flat interpolation": true,
+         "No perspective interpolation support": true,
+         "Sample mask support": true,
+         "External texture support": false,
+         "sk_VertexID support": true,
+         "Infinity support": true,
+         "Non-constant array index support": true,
+         "Bit manipulation support": true,
+         "float == fp32": true,
+         "half == fp32": true,
+         "Has poor fragment precision": false,
+         "Color space math needs float": false,
+         "Builtin fma() support": true,
+         "Builtin determinant() support": true,
+         "Use node pools": true,
+         "Max FS Samplers": 16,
+         "Max Tessellation Segments": 0,
+         "Advanced blend equation interaction": "Not Supported"
+      }
+   },
+   "gpu": {
+      "GL GPU": {
+         "GL_VERSION": "4.1 ATI-4.7.103",
+         "GL_RENDERER": "AMD Radeon Pro 5300M OpenGL Engine",
+         "GL_VENDOR": "ATI Technologies Inc.",
+         "GL_SHADING_LANGUAGE_VERSION": "4.10",
+         "extensions": [
+            "GL_APPLE_client_storage",
+            "GL_APPLE_container_object_shareable",
+            "GL_APPLE_flush_render",
+            "GL_APPLE_object_purgeable",
+            "GL_APPLE_rgb_422",
+            "GL_APPLE_row_bytes",
+            "GL_APPLE_texture_range",
+            "GL_ARB_ES2_compatibility",
+            "GL_ARB_blend_func_extended",
+            "GL_ARB_draw_buffers_blend",
+            "GL_ARB_draw_indirect",
+            "GL_ARB_explicit_attrib_location",
+            "GL_ARB_gpu_shader5",
+            "GL_ARB_gpu_shader_fp64",
+            "GL_ARB_instanced_arrays",
+            "GL_ARB_internalformat_query",
+            "GL_ARB_occlusion_query2",
+            "GL_ARB_sample_shading",
+            "GL_ARB_sampler_objects",
+            "GL_ARB_separate_shader_objects",
+            "GL_ARB_shader_bit_encoding",
+            "GL_ARB_shader_subroutine",
+            "GL_ARB_shading_language_include",
+            "GL_ARB_tessellation_shader",
+            "GL_ARB_texture_buffer_object_rgb32",
+            "GL_ARB_texture_cube_map_array",
+            "GL_ARB_texture_gather",
+            "GL_ARB_texture_query_lod",
+            "GL_ARB_texture_rgb10_a2ui",
+            "GL_ARB_texture_storage",
+            "GL_ARB_texture_swizzle",
+            "GL_ARB_timer_query",
+            "GL_ARB_transform_feedback2",
+            "GL_ARB_transform_feedback3",
+            "GL_ARB_vertex_attrib_64bit",
+            "GL_ARB_vertex_type_2_10_10_10_rev",
+            "GL_ARB_viewport_array",
+            "GL_ATI_texture_mirror_once",
+            "GL_EXT_debug_label",
+            "GL_EXT_debug_marker",
+            "GL_EXT_depth_bounds_test",
+            "GL_EXT_texture_compression_s3tc",
+            "GL_EXT_texture_filter_anisotropic",
+            "GL_EXT_texture_mirror_clamp",
+            "GL_EXT_texture_sRGB_decode",
+            "GL_NV_texture_barrier"
+         ]
+      }
+   },
+   "context": {
+      "path_masks_generated": 0,
+      "path_mask_cache_hits": 0
+   }
+} ,
+]
