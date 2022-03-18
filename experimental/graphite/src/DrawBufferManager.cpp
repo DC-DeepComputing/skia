@@ -20,7 +20,7 @@ static constexpr size_t kVertexBufferSize = 16 << 10; // 16 KB
 static constexpr size_t kIndexBufferSize =   2 << 10; //  2 KB
 static constexpr size_t kUniformBufferSize = 2 << 10; //  2 KB
 
-void* map_offset(BindBufferInfo binding) {
+void* map_offset(BindBufferInfo1 binding) {
     // DrawBufferManager owns the Buffer, and this is only ever called when we know
     // it's okay to remove 'const' from the Buffer*
     return SkTAddOffset<void>(const_cast<Buffer*>(binding.fBuffer)->map(),
@@ -56,9 +56,9 @@ static bool can_fit(size_t requestedSize,
     return requestedSize <= (buffer->size() - startOffset);
 }
 
-std::tuple<VertexWriter, BindBufferInfo> DrawBufferManager::getVertexWriter(size_t requiredBytes) {
+std::tuple<VertexWriter, BindBufferInfo1> DrawBufferManager::getVertexWriter(size_t requiredBytes) {
     if (!requiredBytes) {
-        return {VertexWriter(), BindBufferInfo()};
+        return {VertexWriter(), BindBufferInfo1()};
     }
     if (fCurrentVertexBuffer &&
         !can_fit(requiredBytes, fCurrentVertexBuffer.get(), fVertexOffset, /*alignment=*/1)) {
@@ -72,10 +72,10 @@ std::tuple<VertexWriter, BindBufferInfo> DrawBufferManager::getVertexWriter(size
                                                                      PrioritizeGpuReads::kNo);
         fVertexOffset = 0;
         if (!fCurrentVertexBuffer) {
-            return {VertexWriter(), BindBufferInfo()};
+            return {VertexWriter(), BindBufferInfo1()};
         }
     }
-    BindBufferInfo bindInfo;
+    BindBufferInfo1 bindInfo;
     bindInfo.fBuffer = fCurrentVertexBuffer.get();
     bindInfo.fOffset = fVertexOffset;
     fVertexOffset += requiredBytes;
@@ -87,9 +87,9 @@ void DrawBufferManager::returnVertexBytes(size_t unusedBytes) {
     fVertexOffset -= unusedBytes;
 }
 
-std::tuple<IndexWriter, BindBufferInfo> DrawBufferManager::getIndexWriter(size_t requiredBytes) {
+std::tuple<IndexWriter, BindBufferInfo1> DrawBufferManager::getIndexWriter(size_t requiredBytes) {
     if (!requiredBytes) {
-        return {IndexWriter(), BindBufferInfo()};
+        return {IndexWriter(), BindBufferInfo1()};
     }
     if (fCurrentIndexBuffer &&
         !can_fit(requiredBytes, fCurrentIndexBuffer.get(), fIndexOffset, /*alignment=*/1)) {
@@ -103,20 +103,20 @@ std::tuple<IndexWriter, BindBufferInfo> DrawBufferManager::getIndexWriter(size_t
                                                                     PrioritizeGpuReads::kNo);
         fIndexOffset = 0;
         if (!fCurrentIndexBuffer) {
-            return {IndexWriter(), BindBufferInfo()};
+            return {IndexWriter(), BindBufferInfo1()};
         }
     }
-    BindBufferInfo bindInfo;
+    BindBufferInfo1 bindInfo;
     bindInfo.fBuffer = fCurrentIndexBuffer.get();
     bindInfo.fOffset = fIndexOffset;
     fIndexOffset += requiredBytes;
     return {IndexWriter(map_offset(bindInfo), requiredBytes), bindInfo};
 }
 
-std::tuple<UniformWriter, BindBufferInfo> DrawBufferManager::getUniformWriter(
+std::tuple<UniformWriter, BindBufferInfo1> DrawBufferManager::getUniformWriter(
         size_t requiredBytes) {
     if (!requiredBytes) {
-        return {UniformWriter(), BindBufferInfo()};
+        return {UniformWriter(), BindBufferInfo1()};
     }
     if (fCurrentUniformBuffer &&
         !can_fit(requiredBytes,
@@ -133,18 +133,18 @@ std::tuple<UniformWriter, BindBufferInfo> DrawBufferManager::getUniformWriter(
                                                                       PrioritizeGpuReads::kNo);
         fUniformOffset = 0;
         if (!fCurrentUniformBuffer) {
-            return {UniformWriter(), BindBufferInfo()};
+            return {UniformWriter(), BindBufferInfo1()};
         }
     }
     fUniformOffset = SkAlignTo(fUniformOffset, fUniformStartAlignment);
-    BindBufferInfo bindInfo;
+    BindBufferInfo1 bindInfo;
     bindInfo.fBuffer = fCurrentUniformBuffer.get();
     bindInfo.fOffset = fUniformOffset;
     fUniformOffset += requiredBytes;
     return {UniformWriter(map_offset(bindInfo), requiredBytes), bindInfo};
 }
 
-BindBufferInfo DrawBufferManager::getStaticBuffer(BufferType type,
+BindBufferInfo1 DrawBufferManager::getStaticBuffer(BufferType type,
                                                   InitializeBufferFn initFn,
                                                   BufferSizeFn sizeFn) {
     // TODO(skbug:13059) - This should really be encapsulated in ResourceProvider using a shareable

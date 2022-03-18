@@ -14,7 +14,8 @@
 namespace skgpu::mtl {
 
 Sampler::Sampler(const Gpu* gpu,
-                 sk_cfp<id<MTLSamplerState>> samplerState)
+                 sk_cfp<id<MTLSamplerState>> samplerState,
+                 bool)
         : skgpu::Sampler(gpu)
         , fSamplerState(std::move(samplerState)) {}
 
@@ -47,7 +48,8 @@ static inline MTLSamplerAddressMode tile_mode_to_mtl_sampler_address(SkTileMode 
 sk_sp<Sampler> Sampler::Make(const Gpu* gpu,
                              const SkSamplingOptions& samplingOptions,
                              SkTileMode xTileMode,
-                             SkTileMode yTileMode) {
+                             SkTileMode yTileMode,
+                             bool foo) {
     sk_cfp<MTLSamplerDescriptor*> desc([[MTLSamplerDescriptor alloc] init]);
 
     MTLSamplerMinMagFilter minMagFilter = [&] {
@@ -89,7 +91,7 @@ sk_sp<Sampler> Sampler::Make(const Gpu* gpu,
     if (!sampler) {
         return nullptr;
     }
-    return sk_sp<Sampler>(new Sampler(gpu, std::move(sampler)));
+    return sk_sp<Sampler>(new Sampler(gpu, std::move(sampler), foo));
 }
 
 void Sampler::freeGpuData() {
@@ -97,4 +99,3 @@ void Sampler::freeGpuData() {
 }
 
 } // namespace skgpu::mtl
-
