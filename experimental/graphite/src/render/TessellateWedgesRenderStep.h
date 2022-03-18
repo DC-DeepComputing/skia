@@ -9,19 +9,18 @@
 #define skgpu_render_TessellateWedgesRenderStep_DEFINED
 
 #include "experimental/graphite/src/Renderer.h"
+#include "include/core/SkString.h"
 
 namespace skgpu {
 
 class TessellateWedgesRenderStep final : public RenderStep {
 public:
-    // TODO: If this takes DepthStencilSettings directly and a way to adjust the flags to specify
-    // that it performs shading, this RenderStep definition can be shared between the stencil and
-    // the convex rendering variants.
-    TessellateWedgesRenderStep(bool evenOdd);
+    TessellateWedgesRenderStep(const char* variantName,
+                               DepthStencilSettings depthStencilSettings);
 
     ~TessellateWedgesRenderStep() override;
 
-    const char* name() const override { return "TessellateWedgesRenderStep"; }
+    const char* name() const override { return fName.c_str(); }
 
     const char* vertexSkSL() const override;
     void writeVertices(DrawWriter*,
@@ -32,6 +31,9 @@ public:
                                        const SkIRect&,
                                        const Transform&,
                                        const Shape&) const override;
+
+private:
+    const SkString fName;
 };
 
 }  // namespace skgpu
