@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b149ddaf_6b1fc10b",
+        "filename": "src/core/SkPipelineData.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-03-18T18:51:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b6bf727e_8f08fd30",
+      "range": {
+        "startLine": 78,
+        "startChar": 5,
+        "endLine": 83,
+        "endChar": 1
+      },
+      "revId": "24d13cf9f13301bd3437ca2d616306a99e9a4c60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f07d4a11_9de8cb40",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-03-18T17:00:25Z",
       "side": 1,
       "message": "consider `samplerKey`?",
+      "range": {
+        "startLine": 62,
+        "startChar": 21,
+        "endLine": 62,
+        "endChar": 34
+      },
+      "revId": "24d13cf9f13301bd3437ca2d616306a99e9a4c60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d005f8e7_b753d33f",
+        "filename": "src/core/SkPipelineData.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-03-18T18:51:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f07d4a11_9de8cb40",
       "range": {
         "startLine": 62,
         "startChar": 21,
