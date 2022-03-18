@@ -269,7 +269,10 @@ bool GrGLInterface::validate() const {
           fExtensions.has("GL_ARB_clear_texture"))) ||
        (GR_IS_GR_GL_ES(fStandard) && (
           fExtensions.has("GL_EXT_clear_texture")))) {
-        // all functions were marked optional or test_only
+        if (!fFunctions.fClearTexImage ||
+            !fFunctions.fClearTexSubImage) {
+            RETURN_FALSE_INTERFACE;
+        }
     }
 
     if ((GR_IS_GR_GL(fStandard) && (
