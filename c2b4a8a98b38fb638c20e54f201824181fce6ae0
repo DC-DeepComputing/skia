@@ -92,6 +92,30 @@
       },
       "revId": "c2b4a8a98b38fb638c20e54f201824181fce6ae0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "65e256a7_82698b21",
+        "filename": "src/sksl/SkSLUtil.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-03-18T20:10:37Z",
+      "side": 0,
+      "message": "Just realized GrShaderCaps is only used in sections where `defined(SKSL_STANDALONE) || !SK_SUPPORT_GPU` is false.",
+      "parentUuid": "0fb76806_bd7a7f1a",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 19,
+        "endChar": 0
+      },
+      "revId": "c2b4a8a98b38fb638c20e54f201824181fce6ae0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
