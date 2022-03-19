@@ -59,10 +59,10 @@ using Writer = PatchWriter<DrawWriterAllocator,
                            AddTrianglesWhenChopping,
                            DiscardFlatCurves>;
 
-static size_t FixedVertexBufferSize() {
+size_t fixed_vertex_buffer_size() {
     return PathCurveTessellator::FixedVertexBufferSize(PathTessellator::kMaxFixedResolveLevel);
 }
-static size_t FixedIndexBufferSize() {
+size_t fixed_index_buffer_size() {
     return PathCurveTessellator::FixedIndexBufferSize(PathTessellator::kMaxFixedResolveLevel);
 }
 
@@ -157,11 +157,11 @@ void TessellateCurvesRenderStep::writeVertices(DrawWriter* dw,
     BindBufferInfo fixedVertexBuffer = dw->bufferManager()->getStaticBuffer(
             BufferType::kVertex,
             PathCurveTessellator::WriteFixedVertexBuffer,
-            FixedVertexBufferSize);
+            fixed_vertex_buffer_size);
     BindBufferInfo fixedIndexBuffer = dw->bufferManager()->getStaticBuffer(
             BufferType::kIndex,
             PathCurveTessellator::WriteFixedIndexBuffer,
-            FixedIndexBufferSize);
+            fixed_index_buffer_size);
 
     int patchReserveCount = PathCurveTessellator::PatchPreallocCount(path.countVerbs());
     Writer writer{kAttribs, kMaxTessellationSegments,
