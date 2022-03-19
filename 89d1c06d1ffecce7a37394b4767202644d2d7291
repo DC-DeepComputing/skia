@@ -112,6 +112,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e80c4e94_1c79ed90",
+        "filename": "experimental/graphite/src/render/TessellateWedgesRenderStep.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-03-19T18:31:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "267037ed_53bc6534",
+      "range": {
+        "startLine": 44,
+        "startChar": 21,
+        "endLine": 44,
+        "endChar": 25
+      },
+      "revId": "89d1c06d1ffecce7a37394b4767202644d2d7291",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "aa5756cc_f21c701b",
@@ -229,6 +253,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2fa89334_74820b5d",
+        "filename": "experimental/graphite/src/render/TessellateWedgesRenderStep.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-03-19T18:31:26Z",
+      "side": 1,
+      "message": "As discussed offline, pointing out this distinction long term has less value, and will hopefully get clearer when the refactor around PathTessellator, PathCurveTessellator, and PathWedgeTessellator is done (e.g. FixedCountTessellation::WriteWedgeVertexBuffer vs. WriteCurveVertexBuffer).",
+      "parentUuid": "722a29b1_d7211489",
+      "range": {
+        "startLine": 163,
+        "startChar": 4,
+        "endLine": 170,
+        "endChar": 34
+      },
+      "revId": "89d1c06d1ffecce7a37394b4767202644d2d7291",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1a09fef2_aa385327",
@@ -266,6 +314,30 @@
       "side": 1,
       "message": "Comment in the code ?",
       "parentUuid": "1a09fef2_aa385327",
+      "range": {
+        "startLine": 189,
+        "startChar": 4,
+        "endLine": 194,
+        "endChar": 61
+      },
+      "revId": "89d1c06d1ffecce7a37394b4767202644d2d7291",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "123b0e30_0fcfb215",
+        "filename": "experimental/graphite/src/render/TessellateWedgesRenderStep.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 194,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-03-19T18:31:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "399c7a7f_66f71274",
       "range": {
         "startLine": 189,
         "startChar": 4,
@@ -323,6 +395,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1cf2a48c_d32224e9",
+        "filename": "experimental/graphite/src/render/TessellateWedgesRenderStep.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 208,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-03-19T18:31:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7208852c_c7484ef0",
+      "range": {
+        "startLine": 201,
+        "startChar": 16,
+        "endLine": 208,
+        "endChar": 17
+      },
+      "revId": "89d1c06d1ffecce7a37394b4767202644d2d7291",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ecba02ce_24cf831b",
@@ -360,6 +456,30 @@
       "side": 1,
       "message": "Comment in the code ?",
       "parentUuid": "ecba02ce_24cf831b",
+      "range": {
+        "startLine": 241,
+        "startChar": 8,
+        "endLine": 243,
+        "endChar": 9
+      },
+      "revId": "89d1c06d1ffecce7a37394b4767202644d2d7291",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2f4aa0da_01deaafe",
+        "filename": "experimental/graphite/src/render/TessellateWedgesRenderStep.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 243,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-03-19T18:31:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "62e73623_df5075d0",
       "range": {
         "startLine": 241,
         "startChar": 8,

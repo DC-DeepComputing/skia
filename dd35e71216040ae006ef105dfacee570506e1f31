@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "93fb0af8_aea1c532",
+        "filename": "experimental/graphite/src/render/StencilAndFillPathRenderer.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-03-19T18:31:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0810f0ee_04f14391",
+      "revId": "dd35e71216040ae006ef105dfacee570506e1f31",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "12a2ad56_f97d11e1",
@@ -41,6 +59,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "518ac10d_a9768cee",
+        "filename": "experimental/graphite/src/render/StencilAndFillPathRenderer.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-03-19T18:31:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "12a2ad56_f97d11e1",
+      "range": {
+        "startLine": 25,
+        "startChar": 0,
+        "endLine": 25,
+        "endChar": 6
+      },
+      "revId": "dd35e71216040ae006ef105dfacee570506e1f31",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8edea3cf_c905e4f8",
@@ -54,6 +96,30 @@
       "writtenOn": "2022-03-18T20:07:34Z",
       "side": 1,
       "message": "rm \u0027static\u0027 here and in following? Should the names have \u0027_\u0027s ?",
+      "range": {
+        "startLine": 60,
+        "startChar": 0,
+        "endLine": 60,
+        "endChar": 6
+      },
+      "revId": "dd35e71216040ae006ef105dfacee570506e1f31",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dc622ce2_1bd4f36c",
+        "filename": "experimental/graphite/src/render/TessellateWedgesRenderStep.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-03-19T18:31:26Z",
+      "side": 1,
+      "message": "Done, they had been copied out of the class when it was entirely internal and had them declared as static members",
+      "parentUuid": "8edea3cf_c905e4f8",
       "range": {
         "startLine": 60,
         "startChar": 0,
