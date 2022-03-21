@@ -114,6 +114,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6efbfce3_715381ca",
+        "filename": "experimental/graphite/src/Image_Graphite.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-03-21T16:56:41Z",
+      "side": 1,
+      "message": "In general we don\u0027t need a Device to do an image upload right? Like all the uploads should already directly be added Tasks (i.e. CopyTasks). So for the current model for SkImages I don\u0027t think we\u0027d need a flush. Like snapping an image from a surface would cause the surface to flush its Device into a Task at snap time.\n\nHowever, my thoughts of why we would need this is for the case where in our new model we allow clients to have \u003d SkSurfaces and SkImages both wrapping the same object, so that SkImages are no longer immutable. But in this world I wonder if we should think a little bit more about how our Task graph works and if/how proxies know about what Tasks/Devices currently are modifying them. Like what writes do we expect to be visible to the read. I don\u0027t think we can support writes on other recorders since that is all dependent on the client ordering of Recordings. But within a Recorder we should probably have an SkImage::readPixels be able to see draws from an SkSurface to the same proxy. I think? So I think ideally we\u0027d want to be able to go from Proxy-\u003eDevice (on a per Recorder basis) to know what needs to be flushed.\n\nI guess I just want to know on a high level what our long term plan for reading SkImages is. And then maybe this is fine to land now (with a big comment describing why it is needed in the short term).",
+      "parentUuid": "b2dd8d97_645d5100",
+      "range": {
+        "startLine": 34,
+        "startChar": 31,
+        "endLine": 34,
+        "endChar": 71
+      },
+      "revId": "22f2d41a6685f69394f978d1ca5314041a6e2303",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6161181c_b0eaefc6",
         "filename": "experimental/graphite/src/Image_Graphite.h",
         "patchSetId": 9
@@ -149,6 +173,30 @@
       "side": 1,
       "message": "I\u0027m adding this so I can write tests as well to verify makeTextureImage, but not to be exposed at a higher level.",
       "parentUuid": "6161181c_b0eaefc6",
+      "range": {
+        "startLine": 32,
+        "startChar": 4,
+        "endLine": 38,
+        "endChar": 32
+      },
+      "revId": "22f2d41a6685f69394f978d1ca5314041a6e2303",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dfd5f77f_006c4440",
+        "filename": "experimental/graphite/src/Image_Graphite.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-03-21T16:56:41Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "ebcf4b51_ab9712a2",
       "range": {
         "startLine": 32,
         "startChar": 4,
@@ -278,6 +326,30 @@
       "side": 1,
       "message": "This is how it was in the original Device::readPixels(). If it\u0027s already mapped, Buffer::map() just returns the pointer. I think we only need the unmap for writePixels()/upload, to ensure the buffer is flushed on Intel Macs before the copy.",
       "parentUuid": "0b201efc_980635f6",
+      "range": {
+        "startLine": 162,
+        "startChar": 36,
+        "endLine": 162,
+        "endChar": 39
+      },
+      "revId": "22f2d41a6685f69394f978d1ca5314041a6e2303",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c4505983_b0f4216d",
+        "filename": "experimental/graphite/src/TextureUtils.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-03-21T16:56:41Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "d9d3cb6f_f566549a",
       "range": {
         "startLine": 162,
         "startChar": 36,
