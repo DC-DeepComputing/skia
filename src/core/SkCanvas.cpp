@@ -953,13 +953,13 @@ void SkCanvas::internalDrawDeviceWithFilter(SkBaseDevice* src,
     }
 
     if (filterInput) {
-        const bool use_nn = draw_layer_as_sprite(mapping.deviceMatrix(),
+        const bool use_nn = draw_layer_as_sprite(mapping.layerToDevice(),
                                                  filterInput->subset().size());
         SkSamplingOptions sampling{use_nn ? SkFilterMode::kNearest : SkFilterMode::kLinear};
         if (filter) {
             dst->drawFilteredImage(mapping, filterInput.get(), filter, sampling, paint);
         } else {
-            dst->drawSpecial(filterInput.get(), mapping.deviceMatrix(), sampling, paint);
+            dst->drawSpecial(filterInput.get(), mapping.layerToDevice(), sampling, paint);
         }
     }
 }
@@ -1114,7 +1114,9 @@ void SkCanvas::internalSaveLayer(const SaveLayerRec& rec, SaveLayerStrategy stra
     // 'newLayerMapping' only defines the transforms between the two devices and it must be updated
     // to the global coordinate system.
     if (!newDevice->setDeviceCoordinateSystem(priorDevice->deviceToGlobal() *
-                                              SkM44(newLayerMapping.deviceMatrix()),
+                                              SkM44(newLayerMapping.layerToDevice()),
+                                              SkM44(newLayerMapping.deviceToLayer()) *
+                                              priorDevice->globalToDevice(),
                                               SkM44(newLayerMapping.layerMatrix()),
                                               layerBounds.left(), layerBounds.top())) {
         // If we made it this far and the coordinate system is invalid, we most likely had a valid
