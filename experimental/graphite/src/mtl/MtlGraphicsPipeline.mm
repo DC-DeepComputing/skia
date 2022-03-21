@@ -464,6 +464,37 @@ std::string GetMtlUniforms(int bufferID,
     return result;
 }
 
+// [[texture(0)]]
+// [[sampler(0)]]
+std::string get_texture_and_sampler(SkSpan<const SkTextureAndSampler1> texturesAndSamplers, int manglingSuffix) {
+    std::string result;
+
+    for (auto t : texturesAndSamplers) {
+//        SkSL::String::appendf(&result, "    layout(offset=%d) ", *offset);
+
+        result.append(" ");
+        result.append(t.name());
+        if (manglingSuffix >= 0) {
+            result.append("_");
+            result.append(std::to_string(manglingSuffix));
+        }
+        result.append(";\n");
+    }
+
+    return result;
+}
+
+std::string GetMtlTexturesAndSamplers(const std::vector<SkPaintParamsKey::BlockReader>& readers) {
+
+    std::string result;
+    for (int i = 0; i < (int) readers.size(); ++i) {
+        result += get_texture_and_sampler(readers[i].entry()->fTexturesAndSamplers, i);
+    }
+    result.append("};\n\n");
+
+    return result;
+}
+
 
 enum ShaderType {
     kVertex_ShaderType = 0,
