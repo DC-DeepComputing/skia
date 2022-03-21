@@ -130,7 +130,7 @@ array of the test names and what they drew.
       log(`Starting GM ${name}`);
       const pngAndMetadata = GM.RunGM(grcontext, name);
       if (!pngAndMetadata || !pngAndMetadata.hash) {
-        console.debug('No output for ', name);
+        log('    No output (was skipped)');
         continue; // Was skipped
       }
       log(`    drew ${pngAndMetadata.hash}`);
@@ -160,9 +160,11 @@ array of the test names and what they drew.
         successfulPOSTs += 1;
       } else {
         console.error('not ok response', resp);
+        log('not ok response ' + resp.toString());
       }
     }).catch((e) => {
       console.error('Could not post PNG', e);
+      log('Could not post PNG ' + resp.toString());
     });
   }
 
