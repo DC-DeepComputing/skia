@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5fa9a7eb_99acdb15",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 18
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-03-21T15:26:25Z",
+      "side": 1,
+      "message": "The bazel part lgtm, though I\u0027m not as familiar with how Dawn wants to be built, etc.",
+      "revId": "c1a759760ccd983800696399b6c1905ea2c94ab3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
