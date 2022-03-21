@@ -34,6 +34,24 @@
       "parentUuid": "44fb6e48_b978750b",
       "revId": "82016a3d69245dbf9fbb4ea881ef17c1e426b4e2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "776e845c_234d995c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-03-21T16:20:58Z",
+      "side": 1,
+      "message": "Ah, now I get it. I had not realized that SK_GPU_V1 could be true if SK_SUPPORT_GPU was false.",
+      "parentUuid": "6439eaac_9c125200",
+      "revId": "82016a3d69245dbf9fbb4ea881ef17c1e426b4e2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
