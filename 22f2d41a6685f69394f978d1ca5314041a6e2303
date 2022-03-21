@@ -43,6 +43,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "effdeaa3_558762a7",
+        "filename": "experimental/graphite/src/Image_Graphite.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-03-21T13:56:51Z",
+      "side": 1,
+      "message": "In my head I think I have an idea about why we would want or need this. But I\u0027m curious to hear your reasoning.",
+      "range": {
+        "startLine": 34,
+        "startChar": 31,
+        "endLine": 34,
+        "endChar": 71
+      },
+      "revId": "22f2d41a6685f69394f978d1ca5314041a6e2303",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6161181c_b0eaefc6",
         "filename": "experimental/graphite/src/Image_Graphite.h",
         "patchSetId": 9
@@ -119,6 +142,52 @@
       "side": 1,
       "message": "We do for the Copy routines below, but that said I\u0027m not sure if we\u0027ll be using them or not.",
       "parentUuid": "dcf4fd40_210467a3",
+      "revId": "22f2d41a6685f69394f978d1ca5314041a6e2303",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "94579440_c9729a75",
+        "filename": "experimental/graphite/src/TextureUtils.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-03-21T13:56:51Z",
+      "side": 1,
+      "message": "bmpToUpload?",
+      "range": {
+        "startLine": 73,
+        "startChar": 28,
+        "endLine": 73,
+        "endChar": 34
+      },
+      "revId": "22f2d41a6685f69394f978d1ca5314041a6e2303",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0b201efc_980635f6",
+        "filename": "experimental/graphite/src/TextureUtils.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-03-21T13:56:51Z",
+      "side": 1,
+      "message": "should we be unmapping here after the copy? The buffers refs will drop the zero and then be returned to the cache which then be grabbed for some other use case. The buffer returned will already be mapped. Is that a problem? Is there worries in anything API calling map a second time?",
+      "range": {
+        "startLine": 162,
+        "startChar": 36,
+        "endLine": 162,
+        "endChar": 39
+      },
       "revId": "22f2d41a6685f69394f978d1ca5314041a6e2303",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
