@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8729ed82_5f36c4d4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-03-21T19:32:00Z",
+      "side": 1,
+      "message": "I opted to have subclasses provide class name and variant separately so that we could maintain consistency across subclasses. Alternatively, we could keep the base RenderStep responsible for holding onto the std::string, but only taking a single string_view.\n\nAs almost all non-test RenderSteps subclasses will actually have multiple variants dependent on their stencil settings, it seemed nicer to consolidate the string concat operations.",
+      "revId": "81d9931345f98d6cf775125eb6cc9ff011ff11fc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

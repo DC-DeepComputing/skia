@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ba52f138_66f4bf0d",
+        "filename": "experimental/graphite/src/Renderer.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 157,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-03-21T19:32:00Z",
+      "side": 1,
+      "message": "operator+ between const char* and string_view aren\u0027t defined, so this was the simplest way of effectively doing `className + \"[\" + variantName + \"]\"` and we don\u0027t have C++20, so there\u0027s no nice format utility yet.",
+      "range": {
+        "startLine": 155,
+        "startChar": 12,
+        "endLine": 157,
+        "endChar": 25
+      },
+      "revId": "add74c29bc89ace256c5f0b92aa2928bf91eafb3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
