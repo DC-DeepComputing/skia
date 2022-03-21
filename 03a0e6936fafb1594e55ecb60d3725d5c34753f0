@@ -16,6 +16,93 @@
       "message": "A few things of note:\n1. W/o the changes to MtlUtils, GMs that only contain convex shapes would only want a depth attachment, which was then returning false from that function and we\u0027d then error out of the RenderPassTask.\n2. I noticed a few visual discrepancies after this patch, but after fixing #1, I believe it\u0027s not issues with the per-draw logic, but that the current use of std::sort() is not a stable sort. Since nothing writes out the correct depth value, if the sort isn\u0027t stable, we can end up drawing opaque things out of order and get incorrect results.\n\nWith depth-writing being on the table this week, I should be able to confirm that, and if need be, come back to debugging this step.",
       "revId": "03a0e6936fafb1594e55ecb60d3725d5c34753f0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "66e60f49_aaaf44f1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-03-21T15:12:05Z",
+      "side": 1,
+      "message": "For 2, are you suggesting landing this first and then things will get fixed later when depth is written correctly or delay landing until the depth fixes land? Either is fine assuming we\u0027ll get the depth changes soon, just curious.",
+      "parentUuid": "4c392f4a_23d65da5",
+      "revId": "03a0e6936fafb1594e55ecb60d3725d5c34753f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8a70e283_2f103cb4",
+        "filename": "experimental/graphite/src/Device.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 495,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-03-21T15:12:05Z",
+      "side": 1,
+      "message": "100 chars",
+      "range": {
+        "startLine": 495,
+        "startChar": 100,
+        "endLine": 495,
+        "endChar": 104
+      },
+      "revId": "03a0e6936fafb1594e55ecb60d3725d5c34753f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1e390f75_5c1f8783",
+        "filename": "experimental/graphite/src/render/TessellateWedgesRenderStep.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-03-21T15:12:05Z",
+      "side": 1,
+      "message": "std::string_view?",
+      "range": {
+        "startLine": 18,
+        "startChar": 31,
+        "endLine": 18,
+        "endChar": 41
+      },
+      "revId": "03a0e6936fafb1594e55ecb60d3725d5c34753f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3123b139_4d08c89c",
+        "filename": "experimental/graphite/src/render/TessellateWedgesRenderStep.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-03-21T15:12:05Z",
+      "side": 1,
+      "message": "std::string?",
+      "range": {
+        "startLine": 36,
+        "startChar": 10,
+        "endLine": 36,
+        "endChar": 18
+      },
+      "revId": "03a0e6936fafb1594e55ecb60d3725d5c34753f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
