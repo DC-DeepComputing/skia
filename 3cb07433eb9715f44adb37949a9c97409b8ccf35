@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "240db298_ea28bb70",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-03-21T16:15:06Z",
+      "side": 1,
+      "message": "I put \"_image_scale\" in the name to distinguish from forthcoming anisotropic as a sampling option.",
+      "revId": "3cb07433eb9715f44adb37949a9c97409b8ccf35",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
