@@ -43,6 +43,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6161181c_b0eaefc6",
+        "filename": "experimental/graphite/src/Image_Graphite.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-03-21T13:30:53Z",
+      "side": 1,
+      "message": "Do we want/need to add this API here now? We currently have a similar Context version on Surface_Graphite, but we don\u0027t actually want to be doing that since it requires thread synchronization between recorders and context. We did it in the short term so we have an API call to get some readPixels for tests. But ideally we just want to be recording all readPixel calls asynchronously on Recorders.\n\nMaybe this is worth putting in this hacky version on Image for now if it unblocks a lot of stuff, but maybe it is time that we start thinking about implementing this how we want it to be long term.",
+      "range": {
+        "startLine": 32,
+        "startChar": 4,
+        "endLine": 38,
+        "endChar": 32
+      },
+      "revId": "22f2d41a6685f69394f978d1ca5314041a6e2303",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "dcf4fd40_210467a3",
         "filename": "experimental/graphite/src/TextureProxyView.h",
         "patchSetId": 9
