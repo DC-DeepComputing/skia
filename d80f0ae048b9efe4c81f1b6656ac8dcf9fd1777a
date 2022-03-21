@@ -22,6 +22,30 @@
       },
       "revId": "d80f0ae048b9efe4c81f1b6656ac8dcf9fd1777a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bc479195_8e95b354",
+        "filename": "resources/sksl/errors/MatrixIndexOutOfRange.sksl",
+        "patchSetId": 1
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-03-21T23:03:25Z",
+      "side": 0,
+      "message": "Good catch, looks like a copy-paste error. I\u0027ll clean it up.",
+      "parentUuid": "b5e5b178_fe47a796",
+      "range": {
+        "startLine": 25,
+        "startChar": 0,
+        "endLine": 31,
+        "endChar": 100
+      },
+      "revId": "d80f0ae048b9efe4c81f1b6656ac8dcf9fd1777a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
