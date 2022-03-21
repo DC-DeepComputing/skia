@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "44fb6e48_b978750b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-03-21T14:31:52Z",
+      "side": 1,
+      "message": "Does this help with the linking bugs on https://skia-review.googlesource.com/c/skia/+/521958?",
+      "revId": "82016a3d69245dbf9fbb4ea881ef17c1e426b4e2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
