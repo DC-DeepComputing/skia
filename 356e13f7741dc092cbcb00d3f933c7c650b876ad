@@ -1,0 +1,142 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d3302f8e_47550a43",
+        "filename": "experimental/graphite/include/Recorder.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-03-21T16:38:14Z",
+      "side": 1,
+      "message": "This seems problematic since Recorder is a public header. Can UniformDataCache be defined if UniformDataBlock is also forward declared?\n\nOtherwise, should we allow this for now, and move to some pattern of Recorder+RecorderBase or IRecorder and Recorder, where the type in include/ doesn\u0027t have to declare any of its internal structure?",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 13,
+        "endChar": 36
+      },
+      "revId": "356e13f7741dc092cbcb00d3f933c7c650b876ad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e807c07a_f0a55b26",
+        "filename": "experimental/graphite/src/DrawPass.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-03-21T16:38:14Z",
+      "side": 1,
+      "message": "nit: we can compact this whitespace on these 3 lines since the return type doesn\u0027t let us align to the rest of the block anymore.",
+      "range": {
+        "startLine": 107,
+        "startChar": 46,
+        "endLine": 107,
+        "endChar": 54
+      },
+      "revId": "356e13f7741dc092cbcb00d3f933c7c650b876ad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d4bce3fe_11b24eba",
+        "filename": "experimental/graphite/src/PipelineDataCache.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-03-21T16:38:14Z",
+      "side": 1,
+      "message": "nit: move these below the ctors?",
+      "range": {
+        "startLine": 58,
+        "startChar": 8,
+        "endLine": 58,
+        "endChar": 13
+      },
+      "revId": "356e13f7741dc092cbcb00d3f933c7c650b876ad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bdb9f114_3d44b5bf",
+        "filename": "experimental/graphite/src/PipelineDataCache.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-03-21T16:38:14Z",
+      "side": 1,
+      "message": "nit: newline between ctors",
+      "range": {
+        "startLine": 62,
+        "startChar": 8,
+        "endLine": 62,
+        "endChar": 13
+      },
+      "revId": "356e13f7741dc092cbcb00d3f933c7c650b876ad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5fc20cdc_3374f368",
+        "filename": "experimental/graphite/src/PipelineDataCache.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-03-21T16:38:14Z",
+      "side": 1,
+      "message": "discount? \u0027eliminate\u0027 sounds like it will be removed",
+      "range": {
+        "startLine": 93,
+        "startChar": 49,
+        "endLine": 93,
+        "endChar": 59
+      },
+      "revId": "356e13f7741dc092cbcb00d3f933c7c650b876ad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "18ff143d_b2b3d532",
+        "filename": "experimental/graphite/src/PipelineDataCache.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-03-21T16:38:14Z",
+      "side": 1,
+      "message": "Is there a TODO for this?",
+      "range": {
+        "startLine": 134,
+        "startChar": 67,
+        "endLine": 135,
+        "endChar": 46
+      },
+      "revId": "356e13f7741dc092cbcb00d3f933c7c650b876ad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
