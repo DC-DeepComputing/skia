@@ -2260,8 +2260,12 @@ Result ViaSerialization::draw(
     // Record our Src into a picture.
     auto size = src.size();
     SkPictureRecorder recorder;
-    Result result = src.draw(nullptr, recorder.beginRecording(SkIntToScalar(size.width()),
-                                                              SkIntToScalar(size.height())));
+    SkCanvas* recordingCanvas = recorder.beginRecording(SkIntToScalar(size.width()),
+                                                        SkIntToScalar(size.height()));
+    SkCanvas* slugConversionCanvas = fSink->slugConversionCanvas();
+    if (slugConversionCanvas != nullptr) {
+    }
+    Result result = src.draw(nullptr, recordingCanvas);
     if (!result.isOk()) {
         return result;
     }

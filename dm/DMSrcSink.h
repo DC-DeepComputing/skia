@@ -132,6 +132,8 @@ struct Sink {
 
     /** Returns the color type and space used by the sink. */
     virtual SkColorInfo colorInfo() const { return SkColorInfo(); }
+
+    virtual SkCanvas* slugConversionCanvas() const { return nullptr; }
 };
 
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
