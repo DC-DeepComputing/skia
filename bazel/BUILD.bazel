@@ -37,6 +37,10 @@ GPU_DEFINES = select({
         "SK_SUPPORT_GPU=1",
         "SK_USE_VMA",  # TODO(kjlubick) This will need to be configurable
     ],
+    "//bazel/common_config_settings:dawn_backend": [
+        "SK_DAWN",
+        "SK_SUPPORT_GPU=1",
+    ],
     "//conditions:default": [
         "SK_SUPPORT_GPU=0",
     ],
