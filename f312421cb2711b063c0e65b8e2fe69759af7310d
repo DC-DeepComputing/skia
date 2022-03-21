@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bcf9c2fa_ec69a7e8",
+        "filename": "experimental/graphite/src/render/TessellateWedgesRenderStep.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-03-21T19:51:07Z",
+      "side": 1,
+      "message": "I believe you shouldn\u0027t use const\u0026 for string_views. They are meant to me light weight that you can copy by value into functions.",
+      "range": {
+        "startLine": 17,
+        "startChar": 31,
+        "endLine": 17,
+        "endChar": 54
+      },
+      "revId": "f312421cb2711b063c0e65b8e2fe69759af7310d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
