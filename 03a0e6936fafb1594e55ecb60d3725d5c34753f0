@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4c392f4a_23d65da5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-03-21T14:31:01Z",
+      "side": 1,
+      "message": "A few things of note:\n1. W/o the changes to MtlUtils, GMs that only contain convex shapes would only want a depth attachment, which was then returning false from that function and we\u0027d then error out of the RenderPassTask.\n2. I noticed a few visual discrepancies after this patch, but after fixing #1, I believe it\u0027s not issues with the per-draw logic, but that the current use of std::sort() is not a stable sort. Since nothing writes out the correct depth value, if the sort isn\u0027t stable, we can end up drawing opaque things out of order and get incorrect results.\n\nWith depth-writing being on the table this week, I should be able to confirm that, and if need be, come back to debugging this step.",
+      "revId": "03a0e6936fafb1594e55ecb60d3725d5c34753f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
