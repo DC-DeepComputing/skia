@@ -45,14 +45,17 @@ SkBaseDevice::SkBaseDevice(const SkImageInfo& info, const SkSurfaceProps& surfac
 }
 
 bool SkBaseDevice::setDeviceCoordinateSystem(const SkM44& deviceToGlobal,
+                                             const SkM44& globalToDevice,
                                              const SkM44& localToDevice,
                                              int bufferOriginX,
                                              int bufferOriginY) {
     fDeviceToGlobal = deviceToGlobal;
     fDeviceToGlobal.normalizePerspective();
-    if (!fDeviceToGlobal.invert(&fGlobalToDevice)) {
-        return false;
-    }
+    fGlobalToDevice = globalToDevice;
+    fGlobalToDevice.normalizePerspective();
+    SkM44 tmp;
+    SkASSERT(fDeviceToGlobal.invert(&tmp));
+    SkASSERT(fGlobalToDevice == tmp);
 
     fLocalToDevice = localToDevice;
     fLocalToDevice.normalizePerspective();
@@ -342,7 +345,7 @@ void SkBaseDevice::drawFilteredImage(const skif::Mapping& mapping, SkSpecialImag
     SkIPoint offset;
     sk_sp<SkSpecialImage> result = as_IFB(filter)->filterImage(ctx).imageAndOffset(&offset);
     if (result) {
-        SkMatrix deviceMatrixWithOffset = mapping.deviceMatrix();
+        SkMatrix deviceMatrixWithOffset = mapping.layerToDevice();
         deviceMatrixWithOffset.preTranslate(offset.fX, offset.fY);
         this->drawSpecial(result.get(), deviceMatrixWithOffset, sampling, paint);
     }
