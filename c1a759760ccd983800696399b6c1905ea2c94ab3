@@ -39,6 +39,30 @@
       },
       "revId": "c1a759760ccd983800696399b6c1905ea2c94ab3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5b84ce51_61d41760",
+        "filename": "tools/sk_app/unix/DawnVulkanWindowContext_unix.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-03-21T16:45:36Z",
+      "side": 1,
+      "message": "I\u0027m not sure what changed, but this just flat out refuses to compile as is for me.\n\nhttps://paste.googleplex.com/6164255523995648",
+      "parentUuid": "56813680_fef4265b",
+      "range": {
+        "startLine": 18,
+        "startChar": 10,
+        "endLine": 18,
+        "endChar": 26
+      },
+      "revId": "c1a759760ccd983800696399b6c1905ea2c94ab3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
