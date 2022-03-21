@@ -343,10 +343,7 @@ cc_binary_with_flags(
             "custom_embedded_fontmgr_factory",
         ],
         "gpu_backend": [
-            "gl_backend",
-        ],
-        "with_gl_standard": [
-            "webgl_standard",
+            "dawn_backend",
         ],
         "use_icu": [
             "True",
