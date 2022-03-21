@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "29d4b3df_16ddc8bd",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 7515
+      },
+      "writtenOn": "2022-03-21T22:23:35Z",
+      "side": 1,
+      "message": "nit: Gloval -\u003e Global, and cahge -\u003e change",
+      "revId": "852b0a4d139979ef8a4076e6485cca6ac67b658e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b01e46e0_c7ba41cb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 7515
+      },
+      "writtenOn": "2022-03-21T22:23:35Z",
+      "side": 1,
+      "message": "Nice! Can you ask michaelludwig to review after addressing the following minor changes?",
+      "revId": "852b0a4d139979ef8a4076e6485cca6ac67b658e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "22380679_5bbb2a1b",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1118,
+      "author": {
+        "id": 7515
+      },
+      "writtenOn": "2022-03-21T22:23:35Z",
+      "side": 1,
+      "message": "Can you add a comment in the change description about why this is equal to the inverted matrix that was previously calculated? Maybe something like:\n\nWe can remove a matrix inversion in setDeviceCoordinateSystem by taking\nadvantage of the fact that we can easily compute the inverted matrix\nfrom values available on hand. The code previously computed:\n  fGlobalToDevice \u003d (priorDeviceToGlobal * newLayerMappingLayerToDevice)\u0027\n\nWe have access to the following values:\n  newLayerMappingLayerToDevice\u0027 \u003d newLayerMappingDeviceToLayer\n  priorDeviceToGlobal\u0027 \u003d priorGlobalToDevice\n\nWith the matrix property (A * B)\u0027 \u003d B\u0027 * A\u0027, we can calculate:\n  fGlobalToDevice \u003d newLayerMappingDeviceToLayer * priorGlobalToDevice\n\n\nCan you also add a little context for the change with the following:\n0.1% of all cpu time (M1 Mac) for Motionmark1.2 is spent doing this inversion.",
+      "revId": "852b0a4d139979ef8a4076e6485cca6ac67b658e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8bdbbc89_586dad82",
+        "filename": "src/core/SkDevice.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 7515
+      },
+      "writtenOn": "2022-03-21T22:23:35Z",
+      "side": 1,
+      "message": "What do you think of the following (changes: tmp -\u003e inverse, and put behind a SK_DEBUG ifdef):\n  #ifdef SK_DEBUG\n    SkM44 inverse;\n    SkASSERT(fDeviceToGlobal.invert(\u0026inverse));\n    SkASSERT(fGlobalToDevice \u003d\u003d inverse);\n  #endif",
+      "revId": "852b0a4d139979ef8a4076e6485cca6ac67b658e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
