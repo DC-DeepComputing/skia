@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8f3ffa05_8c8966ab",
+        "filename": "experimental/graphite/src/Device.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 199,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-03-21T16:10:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3ae70aee_7ede88fe",
+      "range": {
+        "startLine": 198,
+        "startChar": 24,
+        "endLine": 199,
+        "endChar": 29
+      },
+      "revId": "22f2d41a6685f69394f978d1ca5314041a6e2303",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "effdeaa3_558762a7",
@@ -54,6 +78,30 @@
       "writtenOn": "2022-03-21T13:56:51Z",
       "side": 1,
       "message": "In my head I think I have an idea about why we would want or need this. But I\u0027m curious to hear your reasoning.",
+      "range": {
+        "startLine": 34,
+        "startChar": 31,
+        "endLine": 34,
+        "endChar": 71
+      },
+      "revId": "22f2d41a6685f69394f978d1ca5314041a6e2303",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b2dd8d97_645d5100",
+        "filename": "experimental/graphite/src/Image_Graphite.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-03-21T16:10:14Z",
+      "side": 1,
+      "message": "At the level I would be calling this, I don\u0027t have access to the particular Device being used for the image upload. So this just punts and flushes all the Devices attached to the Recorder.",
+      "parentUuid": "effdeaa3_558762a7",
       "range": {
         "startLine": 34,
         "startChar": 31,
@@ -169,6 +217,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "da42eac4_c73e443b",
+        "filename": "experimental/graphite/src/TextureUtils.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-03-21T16:10:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "94579440_c9729a75",
+      "range": {
+        "startLine": 73,
+        "startChar": 28,
+        "endLine": 73,
+        "endChar": 34
+      },
+      "revId": "22f2d41a6685f69394f978d1ca5314041a6e2303",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0b201efc_980635f6",
@@ -182,6 +254,30 @@
       "writtenOn": "2022-03-21T13:56:51Z",
       "side": 1,
       "message": "should we be unmapping here after the copy? The buffers refs will drop the zero and then be returned to the cache which then be grabbed for some other use case. The buffer returned will already be mapped. Is that a problem? Is there worries in anything API calling map a second time?",
+      "range": {
+        "startLine": 162,
+        "startChar": 36,
+        "endLine": 162,
+        "endChar": 39
+      },
+      "revId": "22f2d41a6685f69394f978d1ca5314041a6e2303",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d9d3cb6f_f566549a",
+        "filename": "experimental/graphite/src/TextureUtils.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-03-21T16:10:14Z",
+      "side": 1,
+      "message": "This is how it was in the original Device::readPixels(). If it\u0027s already mapped, Buffer::map() just returns the pointer. I think we only need the unmap for writePixels()/upload, to ensure the buffer is flushed on Intel Macs before the copy.",
+      "parentUuid": "0b201efc_980635f6",
       "range": {
         "startLine": 162,
         "startChar": 36,
