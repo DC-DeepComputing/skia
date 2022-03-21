@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e4999fdd_cc95b75a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5145
+      },
+      "writtenOn": "2022-03-21T19:58:24Z",
+      "side": 1,
+      "message": "Compare the checks run at patchset2 (which included a change to experimental/graphite) and patchset3.",
+      "revId": "6322a5b45457d43dce14b46b5faad6b9334a1055",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
