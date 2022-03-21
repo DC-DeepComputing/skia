@@ -36,6 +36,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f4f3a5da_2fdb8ea1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-03-21T19:41:16Z",
+      "side": 1,
+      "message": "My plan will be to land this, and then handle the depth fixing. Will post here when the naming CL is up and this is rebased onto it.",
+      "parentUuid": "66e60f49_aaaf44f1",
+      "revId": "03a0e6936fafb1594e55ecb60d3725d5c34753f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8a70e283_2f103cb4",
@@ -49,6 +67,30 @@
       "writtenOn": "2022-03-21T15:12:05Z",
       "side": 1,
       "message": "100 chars",
+      "range": {
+        "startLine": 495,
+        "startChar": 100,
+        "endLine": 495,
+        "endChar": 104
+      },
+      "revId": "03a0e6936fafb1594e55ecb60d3725d5c34753f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1333203f_018974ba",
+        "filename": "experimental/graphite/src/Device.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 495,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-03-21T19:41:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8a70e283_2f103cb4",
       "range": {
         "startLine": 495,
         "startChar": 100,
@@ -82,6 +124,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1bb6e6cb_6d15fbe7",
+        "filename": "experimental/graphite/src/render/TessellateWedgesRenderStep.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-03-21T19:41:16Z",
+      "side": 1,
+      "message": "I\u0027m going to pull the std::string[_view] related changes into an earlier CL, and update the other RenderSteps at the same time, then rebase this one top of it.",
+      "parentUuid": "1e390f75_5c1f8783",
+      "range": {
+        "startLine": 18,
+        "startChar": 31,
+        "endLine": 18,
+        "endChar": 41
+      },
+      "revId": "03a0e6936fafb1594e55ecb60d3725d5c34753f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3123b139_4d08c89c",
@@ -95,6 +161,30 @@
       "writtenOn": "2022-03-21T15:12:05Z",
       "side": 1,
       "message": "std::string?",
+      "range": {
+        "startLine": 36,
+        "startChar": 10,
+        "endLine": 36,
+        "endChar": 18
+      },
+      "revId": "03a0e6936fafb1594e55ecb60d3725d5c34753f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "aba78400_c921810d",
+        "filename": "experimental/graphite/src/render/TessellateWedgesRenderStep.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-03-21T19:41:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3123b139_4d08c89c",
       "range": {
         "startLine": 36,
         "startChar": 10,
