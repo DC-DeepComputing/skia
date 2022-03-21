@@ -16,6 +16,24 @@
       "message": "Does this help with the linking bugs on https://skia-review.googlesource.com/c/skia/+/521958?",
       "revId": "82016a3d69245dbf9fbb4ea881ef17c1e426b4e2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6439eaac_9c125200",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-03-21T15:16:54Z",
+      "side": 1,
+      "message": "If you look at the NoGpu build, this is what I was talking about Friday. The Ganesh headers are behind a V1 #define, but that define is set even in NoGpu.",
+      "parentUuid": "44fb6e48_b978750b",
+      "revId": "82016a3d69245dbf9fbb4ea881ef17c1e426b4e2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
