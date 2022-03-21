@@ -16,6 +16,23 @@
       "message": "I ran the Canaries on the previous PS (which differs only in comments).\n\nFlutter: Linux failures that look unrelated. Flutter doesn\u0027t use SW, so should be OK\n\nChrome: Everything passed except fuschia_x64 viz_unittests. Failures looked unrelated (e.g. Vulkan related). Passed when that bot was individually rerun.\n\nAndroid: unrelated failure. Android doesn\u0027t use mip maps.\n\nG3: Passed",
       "revId": "9644aa7366dbff4238dd7e09a19e5f0ed1573897",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f5466ee8_a28e5d53",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-03-21T14:14:03Z",
+      "side": 1,
+      "message": "lgtm, might be good to run a chrome canary",
+      "revId": "9644aa7366dbff4238dd7e09a19e5f0ed1573897",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
