@@ -195,13 +195,17 @@ void TextWrapper::moveForward(bool hasEllipsis) {
 void TextWrapper::trimEndSpaces(TextAlign align) {
     // Remember the breaking position
     fEndLine.saveBreak();
-    // Skip all space cluster at the end
-    for (auto cluster = fEndLine.endCluster();
-         cluster >= fEndLine.startCluster() && cluster->isWhitespaceBreak();
-         --cluster) {
-        fEndLine.trim(cluster);
+    if (fEndLine.endCluster()->run().leftToRight()) {
+        // Skip all space cluster at the end
+        for (auto cluster = fEndLine.endCluster();
+             cluster >= fEndLine.startCluster() && cluster->isWhitespaceBreak();
+             --cluster) {
+            fEndLine.trim(cluster);
+        }
+        fEndLine.trim();
+    } else if (fEndLine.endCluster()->isHardBreak()) {
+        fEndLine.trim(fEndLine.endCluster());
     }
-    fEndLine.trim();
 }
 
 SkScalar TextWrapper::getClustersTrimmedWidth() {
@@ -306,7 +310,7 @@ void TextWrapper::breakTextIntoLines(ParagraphImpl* parent,
 
         if (needEllipsis && !fHardLineBreak) {
             // This is what we need to do to preserve a space before the ellipsis
-            fEndLine.restoreBreak();
+            //fEndLine.restoreBreak();
             widthWithSpaces = fEndLine.widthWithGhostSpaces();
         }
 
