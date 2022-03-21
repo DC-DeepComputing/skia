@@ -75,6 +75,7 @@ static const struct {
     { "glestestprecompile",    "gpu", "api=gles,testPrecompile=true" },
     { "glddl",                 "gpu", "api=gl,useDDLSink=true" },
     { "glooprddl",             "gpu", "api=gl,OOPRish=true" },
+    { "glserializeslug",       "gpu", "api=gl,serializeSlug=true" },
     { "glreducedshaders",      "gpu", "api=gl,reducedShaders=true" },
     { "glesreducedshaders",    "gpu", "api=gles,reducedShaders=true" },
     { "angle_d3d11_es2",       "gpu", "api=angle_d3d11_es2" },
@@ -532,6 +533,7 @@ SkCommandLineConfigGpu::SkCommandLineConfigGpu(const SkString&           tag,
                                                bool                      useDDLSink,
                                                bool                      OOPRish,
                                                bool                      reducedShaders,
+                                               bool                      serializeSlug,
                                                SurfType                  surfType)
         : SkCommandLineConfig(tag, SkString("gpu"), viaParts)
         , fContextType(contextType)
@@ -546,6 +548,7 @@ SkCommandLineConfigGpu::SkCommandLineConfigGpu(const SkString&           tag,
         , fUseDDLSink(useDDLSink)
         , fOOPRish(OOPRish)
         , fReducedShaders(reducedShaders)
+        , fSerializeSlug(serializeSlug)
         , fSurfType(surfType) {
     if (!useStencilBuffers) {
         fContextOverrides |= ContextOverrides::kAvoidStencilBuffers;
@@ -576,6 +579,7 @@ SkCommandLineConfigGpu* parse_command_line_config_gpu(const SkString&           
     bool                                ooprish             = false;
     bool                                reducedShaders      = false;
     bool                                fakeGLESVersion2    = false;
+    bool                                serializeSlug       = false;
     SkCommandLineConfigGpu::SurfType    surfType = SkCommandLineConfigGpu::SurfType::kDefault;
 
     bool            parseSucceeded = false;
@@ -597,6 +601,7 @@ SkCommandLineConfigGpu* parse_command_line_config_gpu(const SkString&           
             extendedOptions.get_option_bool("useDDLSink", &useDDLs) &&
             extendedOptions.get_option_bool("OOPRish", &ooprish) &&
             extendedOptions.get_option_bool("reducedShaders", &reducedShaders) &&
+            extendedOptions.get_option_bool("serializeSlug", &serializeSlug) &&
             extendedOptions.get_option_gpu_surf_type("surf", &surfType);
 
     // testing threading and the persistent cache are mutually exclusive.
@@ -627,6 +632,7 @@ SkCommandLineConfigGpu* parse_command_line_config_gpu(const SkString&           
                                       useDDLs,
                                       ooprish,
                                       reducedShaders,
+                                      serializeSlug,
                                       surfType);
 }
 

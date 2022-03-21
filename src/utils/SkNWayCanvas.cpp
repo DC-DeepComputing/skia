@@ -8,8 +8,11 @@
 #include "include/core/SkShader.h"
 #include "include/utils/SkNWayCanvas.h"
 #include "src/core/SkCanvasPriv.h"
+#include "src/gpu/BaseDevice.h"
 
 SkNWayCanvas::SkNWayCanvas(int width, int height) : INHERITED(width, height) {}
+SkNWayCanvas::SkNWayCanvas(sk_sp<SkBaseDevice> device)
+        : INHERITED(device) {}
 
 SkNWayCanvas::~SkNWayCanvas() {
     this->removeAll();
@@ -289,6 +292,13 @@ void SkNWayCanvas::onDrawTextBlob(const SkTextBlob* blob, SkScalar x, SkScalar y
     Iter iter(fList);
     while (iter.next()) {
         iter->drawTextBlob(blob, x, y, paint);
+    }
+}
+
+void SkNWayCanvas::doDrawSlug(const GrSlug* slug) {
+    Iter iter(fList);
+    while (iter.next()) {
+        iter->drawSlug(slug);
     }
 }
 

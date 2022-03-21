@@ -73,6 +73,7 @@ public:
                         SkScalar x,
                         SkScalar y,
                         const SkPaint& paint) override;
+    void doDrawSlug(const GrSlug* slug) override;
     void onDrawGlyphRunList(const SkGlyphRunList& glyphRunList, const SkPaint& paint) override;
     void onDrawPatch(const SkPoint cubics[12], const SkColor colors[4],
                      const SkPoint texCoords[4], SkBlendMode,

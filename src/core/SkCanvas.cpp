@@ -2469,7 +2469,7 @@ void SkCanvas::drawTextBlob(const SkTextBlob* blob, SkScalar x, SkScalar y,
         totalGlyphCount += r.fGlyphCount;
     }
 
-#if SK_SUPPORT_GPU && GR_TEST_UTILS
+#if 0 && SK_SUPPORT_GPU && GR_TEST_UTILS
     // Draw using text blob normally or if the blob has RSX form because slugs can't convert that
     // form.
     if (!gSkBlobAsSlugTesting ||
@@ -2479,7 +2479,7 @@ void SkCanvas::drawTextBlob(const SkTextBlob* blob, SkScalar x, SkScalar y,
     {
         this->onDrawTextBlob(blob, x, y, paint);
     }
-#if SK_SUPPORT_GPU && GR_TEST_UTILS
+#if 0 && SK_SUPPORT_GPU && GR_TEST_UTILS
     else {
         auto slug = GrSlug::ConvertBlob(this, *blob, {x, y}, paint);
         slug->draw(this);

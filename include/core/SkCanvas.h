@@ -67,6 +67,7 @@ class SkTextBlob;
 class SkVertices;
 
 namespace skgpu { class Recorder; }
+namespace SkRecords { class Draw; }
 
 /** \class SkCanvas
     SkCanvas provides an interface for drawing, and how the drawing is clipped and transformed.
@@ -2402,6 +2403,8 @@ private:
     friend class SkPictureRecord;   // predrawNotify (why does it need it? <reed>)
     friend class SkOverdrawCanvas;
     friend class SkRasterHandleAllocator;
+    friend class SkRecords::Draw;
+
 protected:
     // For use by SkNoDrawCanvas (via SkCanvasVirtualEnforcer, which can't be a friend)
     SkCanvas(const SkIRect& bounds);

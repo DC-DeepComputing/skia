@@ -104,7 +104,7 @@ protected:
     }
 
     void onDraw(SkCanvas* canvas) override {
-        for (unsigned b = 0; b < SK_ARRAY_COUNT(blobConfigs); ++b) {
+        for (unsigned b = 0; b < 1 /*SK_ARRAY_COUNT(blobConfigs)*/; ++b) {
             sk_sp<SkTextBlob> blob(this->makeBlob(b));
 
             SkPaint p;

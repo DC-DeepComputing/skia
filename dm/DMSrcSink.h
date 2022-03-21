@@ -132,6 +132,8 @@ struct Sink {
 
     /** Returns the color type and space used by the sink. */
     virtual SkColorInfo colorInfo() const { return SkColorInfo(); }
+
+    virtual SkCanvas* slugConversionCanvas() const { return nullptr; }
 };
 
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
@@ -396,6 +398,14 @@ public:
 protected:
     sk_sp<SkSurface> createDstSurface(GrDirectContext*, SkISize size) const;
     bool readBack(SkSurface*, SkBitmap* dst) const;
+    template <typename UsesFactoryContextAndSurface>
+    Result applyFactorySurfaceAndContext(
+            const GrContextOptions& baseOptions,
+            SkISize size,
+            SkBitmap* dst,
+            SkString* log,
+            std::function<void(GrDirectContext*)> initContext,
+            UsesFactoryContextAndSurface useFactoryContextAndSurface) const;
 
 private:
     sk_gpu_test::GrContextFactory::ContextType        fContextType;
@@ -408,6 +418,15 @@ private:
     sk_sp<SkColorSpace>                               fColorSpace;
     GrContextOptions                                  fBaseContextOptions;
     sk_gpu_test::MemoryCache                          fMemoryCache;
+};
+
+class GPUSerializeSlugSink : public GPUSink {
+public:
+    GPUSerializeSlugSink(const SkCommandLineConfigGpu*, const GrContextOptions&);
+    Result draw(const Src&, SkBitmap*, SkWStream*, SkString*) const override;
+
+private:
+    GPUSink fCompareSink;
 };
 
 class GPUThreadTestingSink : public GPUSink {

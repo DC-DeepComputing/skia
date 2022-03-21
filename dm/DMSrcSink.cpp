@@ -28,6 +28,7 @@
 #include "include/ports/SkImageGeneratorWIC.h"
 #include "include/private/SkImageInfoPriv.h"
 #include "include/private/SkTLogic.h"
+#include "include/private/chromium/GrSlug.h"
 #include "include/third_party/skcms/skcms.h"
 #include "include/utils/SkNullCanvas.h"
 #include "include/utils/SkPaintFilterCanvas.h"
@@ -46,6 +47,7 @@
 #include "src/core/SkTaskGroup.h"
 #include "src/gpu/GrDirectContextPriv.h"
 #include "src/gpu/GrGpu.h"
+#include "src/image/SkSurface_Gpu.h"
 #include "src/utils/SkMultiPictureDocumentPriv.h"
 #include "src/utils/SkOSPath.h"
 #include "tools/DDLPromiseImageHelper.h"
@@ -1486,30 +1488,26 @@ bool GPUSink::readBack(SkSurface* surface, SkBitmap* dst) const {
     return canvas->readPixels(*dst, 0, 0);
 }
 
-Result GPUSink::onDraw(const Src& src, SkBitmap* dst, SkWStream*, SkString* log,
-                       const GrContextOptions& baseOptions,
-                       std::function<void(GrDirectContext*)> initContext) const {
-    GrContextOptions grOptions = baseOptions;
-
-    // We don't expect the src to mess with the persistent cache or the executor.
-    SkDEBUGCODE(auto cache = grOptions.fPersistentCache);
-    SkDEBUGCODE(auto exec = grOptions.fExecutor);
-    src.modifyGrContextOptions(&grOptions);
-    SkASSERT(cache == grOptions.fPersistentCache);
-    SkASSERT(exec == grOptions.fExecutor);
-
-    GrContextFactory factory(grOptions);
+template <typename UsesFactoryContextAndSurface>
+Result GPUSink::applyFactorySurfaceAndContext(
+        const GrContextOptions& options,
+        SkISize size,
+        SkBitmap* dst,
+        SkString* log,
+        std::function<void(GrDirectContext*)> initContext,
+        UsesFactoryContextAndSurface useFactoryContextAndSurface) const {
+    GrContextFactory factory(options);
     auto direct = factory.getContextInfo(fContextType, fContextOverrides).directContext();
     if (initContext) {
         initContext(direct);
     }
 
     const int maxDimension = direct->priv().caps()->maxTextureSize();
-    if (maxDimension < std::max(src.size().width(), src.size().height())) {
+    if (maxDimension < std::max(size.width(), size.height())) {
         return Result::Skip("Src too large to create a texture.\n");
     }
 
-    sk_sp<SkSurface> surface = this->createDstSurface(direct, src.size());
+    sk_sp<SkSurface> surface = this->createDstSurface(direct, size);
     if (!surface) {
         return Result::Fatal("Could not create a surface.");
     }
@@ -1517,11 +1515,17 @@ Result GPUSink::onDraw(const Src& src, SkBitmap* dst, SkWStream*, SkString* log,
         factory.abandonContexts();
     }
 
-    Result result = src.draw(direct, surface->getCanvas());
+    Result result = useFactoryContextAndSurface(&factory, direct, surface.get());
+
     if (!result.isOk()) {
         return result;
     }
     surface->flushAndSubmit();
+    if (FLAGS_gpuStats) {
+        direct->priv().dumpCacheStats(log);
+        direct->priv().dumpGpuStats(log);
+        direct->priv().dumpContextStats(log);
+    }
     if (FLAGS_gpuStats) {
         direct->priv().dumpCacheStats(log);
         direct->priv().dumpGpuStats(log);
@@ -1536,14 +1540,116 @@ Result GPUSink::onDraw(const Src& src, SkBitmap* dst, SkWStream*, SkString* log,
         factory.releaseResourcesAndAbandonContexts();
     }
 
-    if (grOptions.fPersistentCache) {
+    if (options.fPersistentCache) {
         direct->storeVkPipelineCacheData();
     }
     return Result::Ok();
 }
 
+Result GPUSink::onDraw(const Src& src, SkBitmap* dst, SkWStream*, SkString* log,
+                       const GrContextOptions& baseOptions,
+                       std::function<void(GrDirectContext*)> initContext) const {
+    GrContextOptions grOptions = baseOptions;
+
+    // We don't expect the src to mess with the persistent cache or the executor.
+    SkDEBUGCODE(auto cache = grOptions.fPersistentCache);
+    SkDEBUGCODE(auto exec = grOptions.fExecutor);
+    src.modifyGrContextOptions(&grOptions);
+    SkASSERT(cache == grOptions.fPersistentCache);
+    SkASSERT(exec == grOptions.fExecutor);
+
+    return this->applyFactorySurfaceAndContext(grOptions, src.size(), dst, log, initContext,
+        [&](GrContextFactory* factory, GrDirectContext* direct, SkSurface* surface) {
+            return src.draw(direct, surface->getCanvas());
+        });
+}
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
+static DEFINE_bool(check, true, "If true, have most Via- modes fail if they affect the output.");
+
+// Is *bitmap identical to what you get drawing src into sink?
+static Result check_against_reference(const SkBitmap* bitmap, const Src& src, const Sink* sink) {
+    // We can only check raster outputs.
+    // (Non-raster outputs like .pdf, .skp, .svg may differ but still draw identically.)
+    if (FLAGS_check && bitmap) {
+        SkBitmap reference;
+        SkString log;
+        SkDynamicMemoryWStream wStream;
+        Result result = sink->draw(src, &reference, &wStream, &log);
+        // If we can draw into this Sink via some pipeline, we should be able to draw directly.
+        SkASSERT(result.isOk());
+        if (!result.isOk()) {
+            return result;
+        }
+        return compare_bitmaps(reference, *bitmap);
+    }
+    return Result::Ok();
+}
+
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+GPUSerializeSlugSink::GPUSerializeSlugSink(const SkCommandLineConfigGpu* config,
+                                           const GrContextOptions& options)
+    : GPUSink(config, options)
+    , fCompareSink(config, options) { }
+
+Result GPUSerializeSlugSink::draw(const Src& src, SkBitmap* dst, SkWStream*, SkString* log) const {
+    class ConvertingCanvas : public SkNWayCanvas {
+    public:
+        ConvertingCanvas(sk_sp<SkBaseDevice> device,
+                         SkCanvas* convertingCanvas,
+                         SkCanvas* recordingCanvas)
+                : SkNWayCanvas(device)
+                , fConvertingCanvas{convertingCanvas} {
+            this->addCanvas(recordingCanvas);
+        }
+
+        void onDrawTextBlob(const SkTextBlob* blob,
+                            SkScalar x,
+                            SkScalar y,
+                            const SkPaint& paint) override {
+            auto slug = GrSlug::ConvertBlob(fConvertingCanvas, *blob, {x, y}, paint);
+            slug->draw(this);
+        }
+
+        sk_sp<GrSlug> doConvertBlobToSlug(const SkTextBlob& blob,
+                                          SkPoint origin,
+                                          const SkPaint& paint) override {
+            return GrSlug::ConvertBlob(fConvertingCanvas, blob, origin, paint);
+        }
+
+    private:
+        SkCanvas* const fConvertingCanvas;
+    };
+
+    auto size = src.size();
+    return this->applyFactorySurfaceAndContext(
+            this->baseContextOptions(), size, dst, log, nullptr,
+        [&](GrContextFactory* factory, GrDirectContext* direct, SkSurface* surface) {
+            SkPictureRecorder recorder;
+            SkCanvas* recordingCanvas = recorder.beginRecording(SkIntToScalar(size.width()),
+                                                                SkIntToScalar(size.height()));
+
+            SkCanvas* gpuCanvas = surface->getCanvas();
+
+            ConvertingCanvas canvas(sk_ref_sp(static_cast<SkSurface_Gpu*>(surface)->getDevice()),
+                                    gpuCanvas,
+                                    recordingCanvas);
+            Result result = src.draw(nullptr, &canvas);
+            if (!result.isOk()) {
+                return result;
+            }
+            sk_sp<SkPicture> pic(recorder.finishRecordingAsPicture());
+            // Serialize it and then deserialize it.
+            auto data = SkPicture::MakeFromData(pic->serialize().get());
+            sk_sp<SkPicture> deserialized(data);
+
+            gpuCanvas->drawPicture(deserialized);
+
+            return check_against_reference(dst, src, &fCompareSink);
+        });
+}
+
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 GPUThreadTestingSink::GPUThreadTestingSink(const SkCommandLineConfigGpu* config,
                                            const GrContextOptions& grCtxOptions)
         : INHERITED(config, grCtxOptions)
@@ -1613,7 +1719,6 @@ Result GPUPersistentCacheTestingSink::draw(const Src& src, SkBitmap* dst, SkWStr
 
     return compare_bitmaps(reference, *dst);
 }
-
 
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
@@ -2177,29 +2282,6 @@ static Result draw_to_canvas(Sink* sink, SkBitmap* bitmap, SkWStream* stream,
 
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
-static DEFINE_bool(check, true, "If true, have most Via- modes fail if they affect the output.");
-
-// Is *bitmap identical to what you get drawing src into sink?
-static Result check_against_reference(const SkBitmap* bitmap, const Src& src, Sink* sink) {
-    // We can only check raster outputs.
-    // (Non-raster outputs like .pdf, .skp, .svg may differ but still draw identically.)
-    if (FLAGS_check && bitmap) {
-        SkBitmap reference;
-        SkString log;
-        SkDynamicMemoryWStream wStream;
-        Result result = sink->draw(src, &reference, &wStream, &log);
-        // If we can draw into this Sink via some pipeline, we should be able to draw directly.
-        SkASSERT(result.isOk());
-        if (!result.isOk()) {
-            return result;
-        }
-        return compare_bitmaps(reference, *bitmap);
-    }
-    return Result::Ok();
-}
-
-/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-
 static SkISize auto_compute_translate(SkMatrix* matrix, int srcW, int srcH) {
     SkRect bounds = SkRect::MakeIWH(srcW, srcH);
     matrix->mapRect(&bounds);
@@ -2260,8 +2342,9 @@ Result ViaSerialization::draw(
     // Record our Src into a picture.
     auto size = src.size();
     SkPictureRecorder recorder;
-    Result result = src.draw(nullptr, recorder.beginRecording(SkIntToScalar(size.width()),
-                                                              SkIntToScalar(size.height())));
+    SkCanvas* recordingCanvas = recorder.beginRecording(SkIntToScalar(size.width()),
+                                                        SkIntToScalar(size.height()));
+    Result result = src.draw(nullptr, recordingCanvas);
     if (!result.isOk()) {
         return result;
     }
