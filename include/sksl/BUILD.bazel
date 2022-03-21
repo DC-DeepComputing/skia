@@ -47,8 +47,9 @@ generated_cc_atom(
     visibility = ["//:__subpackages__"],
     deps = [
         ":DSLWrapper_hdr",
-        ":SkSLErrorReporter_hdr",
+        ":SkSLPosition_hdr",
         "//include/core:SkTypes_hdr",
+        "//include/private:SkSLDefines_hdr",
         "//include/private:SkTArray_hdr",
     ],
 )
@@ -71,7 +72,7 @@ generated_cc_atom(
     hdrs = ["DSLLayout.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":SkSLErrorReporter_hdr",
+        ":SkSLPosition_hdr",
         "//include/private:SkSLLayout_hdr",
     ],
 )
@@ -170,4 +171,11 @@ generated_cc_atom(
     hdrs = ["SkSLDebugTrace.h"],
     visibility = ["//:__subpackages__"],
     deps = ["//include/core:SkRefCnt_hdr"],
+)
+
+generated_cc_atom(
+    name = "SkSLPosition_hdr",
+    hdrs = ["SkSLPosition.h"],
+    visibility = ["//:__subpackages__"],
+    deps = ["//include/core:SkTypes_hdr"],
 )
