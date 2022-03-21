@@ -27,7 +27,7 @@ namespace skgpu {
 Recorder::Recorder(sk_sp<Gpu> gpu, sk_sp<GlobalCache> globalCache)
         : fGpu(std::move(gpu))
         , fGraph(new TaskGraph)
-        , fPipelineDataCache(new PipelineDataCache) {
+        , fUniformDataCache(new UniformDataCache) {
 
     fResourceProvider = fGpu->makeResourceProvider(std::move(globalCache), this->singleOwner());
     fDrawBufferManager.reset(new DrawBufferManager(fResourceProvider.get(),
@@ -48,13 +48,17 @@ std::unique_ptr<Recording> Recorder::snap() {
         device->flushPendingWorkToRecorder();
     }
 
+    // TODO: fulfill all promise images in the TextureDataCache here
+    // TODO: create all the samplers needed in the TextureDataCache here
+
     auto commandBuffer = fResourceProvider->createCommandBuffer();
 
     fGraph->addCommands(fResourceProvider.get(), commandBuffer.get());
     fDrawBufferManager->transferToCommandBuffer(commandBuffer.get());
 
     fGraph->reset();
-    return std::unique_ptr<Recording>(new Recording(std::move(commandBuffer)));
+    std::unique_ptr<Recording> recording(new Recording(std::move(commandBuffer)));
+    return recording;
 }
 
 void Recorder::registerDevice(Device* device) {
