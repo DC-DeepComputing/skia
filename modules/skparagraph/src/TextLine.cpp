@@ -512,7 +512,8 @@ void TextLine::createEllipsis(SkScalar maxWidth, const SkString& ellipsis, bool)
         // Shape the ellipsis
         std::unique_ptr<Run> run = shapeEllipsis(ellipsis, cluster->run());
         run->fClusterStart = cluster->textRange().start;
-      run->setOwner(fOwner);
+        run->setOwner(fOwner);
+        run->fBidiLevel = cluster->run().fBidiLevel;
 
         // See if it fits
         if (width + run->advance().fX > maxWidth) {
@@ -522,8 +523,24 @@ void TextLine::createEllipsis(SkScalar maxWidth, const SkString& ellipsis, bool)
         }
 
         fEllipsis = std::move(run);
-        fEllipsis->shift(width, 0);
         fAdvance.fX = width;
+        fWidthWithSpaces = width;
+
+        if (cluster->run().leftToRight()) {
+            // Ellipsis is attached to the right side
+            fEllipsis->fOffset.fX = width;
+            fClusterRange.end = cluster - fOwner->clusters().data() + 1;
+            fGhostClusterRange.end = fClusterRange.end;
+            fText.end = cluster->textRange().end;
+        } else {
+            // Attach the ellipsis to the left
+            fEllipsis->fOffset.fX = maxWidth - width - fEllipsis->advance().fX;
+            fClusterRange.start = cluster - fOwner->clusters().data() + 1;
+            fGhostClusterRange.start = fClusterRange.start;
+            fText.start = cluster->textRange().start;
+        }
+        fTextExcludingSpaces = fText;
+        fTextIncludingNewlines = fText;
         return true;
     };
 
@@ -696,14 +713,16 @@ TextLine::ClipContext TextLine::measureTextInsideOneRun(TextRange textRange,
     textStartInLine -= leftCorrection;
     result.clip.offset(textStartInLine, 0);
 
-    if (compareRound(result.clip.fRight, fAdvance.fX) > 0 && !includeGhostSpaces) {
+    if (run->leftToRight() &&
+        compareRound(result.clip.fRight, fAdvance.fX) > 0 &&
+        !includeGhostSpaces) {
         // There are few cases when we need it.
         // The most important one: we measure the text with spaces at the end (or at the beginning in RTL)
         // and we should ignore these spaces
-        if (run->leftToRight()) {
-            // We only use this member for LTR
-            result.fExcludedTrailingSpaces = std::max(result.clip.fRight - fAdvance.fX, 0.0f);
-        }
+
+        // We only use this member for LTR
+        result.fExcludedTrailingSpaces = std::max(result.clip.fRight - fAdvance.fX, 0.0f);
+
         result.clippingNeeded = true;
         result.clip.fRight = fAdvance.fX;
     }
@@ -855,6 +874,13 @@ void TextLine::iterateThroughVisualRuns(bool includingGhostSpaces, const RunVisi
     SkScalar width = 0;
     SkScalar runOffset = 0;
     SkScalar totalWidth = 0;
+
+    if (this->ellipsis() != nullptr && !this->ellipsis()->leftToRight()) {
+        runOffset = this->ellipsis()->offset().fX;
+        if (visitor(ellipsis(), runOffset, ellipsis()->textRange(), &width)) {
+        }
+    }
+
     auto textRange = includingGhostSpaces ? this->textWithNewlines() : this->trimmedText();
     for (auto& runIndex : fRunsInVisualOrder) {
 
@@ -885,7 +911,7 @@ void TextLine::iterateThroughVisualRuns(bool includingGhostSpaces, const RunVisi
     runOffset += width;
     totalWidth += width;
 
-    if (this->ellipsis() != nullptr) {
+    if (this->ellipsis() != nullptr && this->ellipsis()->leftToRight()) {
         if (visitor(ellipsis(), runOffset, ellipsis()->textRange(), &width)) {
             totalWidth += width;
         }
