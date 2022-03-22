@@ -13,6 +13,7 @@ BASE_LINKOPTS = [
     "-s NODEJS_CATCH_EXIT=0",  # We don't have a 'main' so disable exit() catching
     "-s WASM=1",
     "-s USE_WEBGPU=1",
+    "-s ASYNCIFY",
 ]
 
 RELEASE_OPTS = [
@@ -44,6 +45,7 @@ cc_binary(
     # This target won't build successfully on its own because of missing emscripten
     # headers etc. Therefore, we hide it from wildcards.
     tags = ["manual"],
+    deps = ["//:skia_core"],
 )
 
 wasm_cc_binary(
