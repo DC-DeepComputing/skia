@@ -15,6 +15,7 @@
 #include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"
 #include "include/private/SkTArray.h"
+//#include "src/core/SkPipelineData.h"
 
 struct SkIRect;
 
