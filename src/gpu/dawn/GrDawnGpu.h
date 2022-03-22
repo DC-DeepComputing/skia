@@ -219,6 +219,8 @@ private:
 
     void moveStagingBuffersToBusyAndMapAsync();
     void checkForCompletedStagingBuffers();
+    // An adapter for fDevice::Tick(), which is not supported by WebGPU.
+    void deviceTick();
 
     wgpu::Device                                    fDevice;
     wgpu::Queue                                     fQueue;
