@@ -82,19 +82,22 @@ GrGLCaps::GrGLCaps(const GrContextOptions& contextOptions,
     // GL driver that our performance and correctness tuning was performed on. To avoid losing
     // that we strip the ANGLE info and for the rest of caps setup pretend we're directly on top of
     // the GL driver. Note that this means that some driver workarounds are likely implemented at
-    // two levels of the stack (Skia and ANGLE) but we haven't determined which.
+    // two levels of the stack (Skia and ANGLE) but we haven't determined which. There may be some
+    // checks that we do want to know if we're backed by angle (e.g. msaa bgra) so we pass in a flag
+    // to tell us that.
     if (ctxInfo.angleBackend() == GrGLANGLEBackend::kOpenGL) {
-        this->init(contextOptions, ctxInfo.makeNonAngle(), glInterface);
+        this->init(contextOptions, ctxInfo.makeNonAngle(), glInterface, true);
         // A major caveat is that ANGLE does not allow client side arrays.
         fPreferClientSideDynamicBuffers = false;
     } else {
-        this->init(contextOptions, ctxInfo, glInterface);
+        this->init(contextOptions, ctxInfo, glInterface, false);
     }
 }
 
 void GrGLCaps::init(const GrContextOptions& contextOptions,
                     const GrGLContextInfo& ctxInfo,
-                    const GrGLInterface* gli) {
+                    const GrGLInterface* gli,
+                    bool driverIsActuallyAngle) {
     GrGLStandard standard = ctxInfo.standard();
     // standard can be unused (optimized away) if SK_ASSUME_GL_ES is set
     sk_ignore_unused_variable(standard);
@@ -803,7 +806,7 @@ void GrGLCaps::init(const GrContextOptions& contextOptions,
     }
 
     // Requires msaa support, ES compatibility have already been detected.
-    this->initFormatTable(ctxInfo, gli, formatWorkarounds);
+    this->initFormatTable(ctxInfo, gli, formatWorkarounds, driverIsActuallyAngle);
 
     this->finishInitialization(contextOptions);
 
@@ -1361,7 +1364,8 @@ void GrGLCaps::setColorTypeFormat(GrColorType colorType, GrGLFormat format) {
 }
 
 void GrGLCaps::initFormatTable(const GrGLContextInfo& ctxInfo, const GrGLInterface* gli,
-                               const FormatWorkarounds& formatWorkarounds) {
+                               const FormatWorkarounds& formatWorkarounds,
+                               bool driverIsActuallyAngle) {
     GrGLStandard standard = ctxInfo.standard();
     // standard can be unused (optimized away) if SK_ASSUME_GL_ES is set
     sk_ignore_unused_variable(standard);
@@ -1984,7 +1988,7 @@ void GrGLCaps::initFormatTable(const GrGLContextInfo& ctxInfo, const GrGLInterfa
                 // We are confident that Angle does it as we expect. Our non-angle test bots do seem
                 // to pass and draw correctly so we could consider enabling this more broadly in the
                 // future.
-                if (ctxInfo.angleBackend() != GrGLANGLEBackend::kUnknown) {
+                if (driverIsActuallyAngle) {
                     info.fFlags |= msaaRenderFlags;
                 } else {
                     info.fFlags |= nonMSAARenderFlags;
