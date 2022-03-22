@@ -46,6 +46,30 @@
       },
       "revId": "d80f0ae048b9efe4c81f1b6656ac8dcf9fd1777a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "db72a695_99613313",
+        "filename": "resources/sksl/errors/MatrixIndexOutOfRange.sksl",
+        "patchSetId": 1
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-03-22T13:06:29Z",
+      "side": 0,
+      "message": "Done",
+      "parentUuid": "bc479195_8e95b354",
+      "range": {
+        "startLine": 25,
+        "startChar": 0,
+        "endLine": 31,
+        "endChar": 100
+      },
+      "revId": "d80f0ae048b9efe4c81f1b6656ac8dcf9fd1777a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
