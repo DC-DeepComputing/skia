@@ -16,6 +16,7 @@
 #include "experimental/graphite/src/ContextPriv.h"
 #include "experimental/graphite/src/CopyTask.h"
 #include "experimental/graphite/src/DrawContext.h"
+#include "experimental/graphite/src/DrawGeometry.h"
 #include "experimental/graphite/src/DrawList.h"
 #include "experimental/graphite/src/Gpu.h"
 #include "experimental/graphite/src/Log.h"
@@ -407,7 +408,7 @@ void Device::drawShape(const Shape& shape,
     if (styleType == SkStrokeRec::kStroke_Style ||
         styleType == SkStrokeRec::kHairline_Style ||
         styleType == SkStrokeRec::kStrokeAndFill_Style) {
-        StrokeParams stroke(style.getWidth(), style.getMiter(), style.getJoin(), style.getCap());
+        StrokeStyle stroke(style.getWidth(), style.getMiter(), style.getJoin(), style.getCap());
         this->recordDraw(localToDevice, shape, clip, order, &shading, &stroke);
     }
     if (styleType == SkStrokeRec::kFill_Style ||
@@ -434,7 +435,7 @@ void Device::recordDraw(const Transform& localToDevice,
                         const Clip& clip,
                         DrawOrder ordering,
                         const PaintParams* paint,
-                        const StrokeParams* stroke) {
+                        const StrokeStyle* stroke) {
     // TODO: remove after CPU-transform fallbacks are no longer needed
     static const Transform kIdentity{SkM44()};
 
