@@ -97,4 +97,3 @@ void Sampler::freeGpuData() {
 }
 
 } // namespace skgpu::mtl
-
