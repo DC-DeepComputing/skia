@@ -34,6 +34,24 @@
       "parentUuid": "6ad6057d_09ec7412",
       "revId": "b34e83e4c635a97755b3ad3b054ba22851f8a16c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ab7fece1_0c1c7c84",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 14
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-03-22T14:07:17Z",
+      "side": 1,
+      "message": "👍\n\nJust wanted to make sure the \"why\" was written down.",
+      "parentUuid": "360a4347_dec27b93",
+      "revId": "b34e83e4c635a97755b3ad3b054ba22851f8a16c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
