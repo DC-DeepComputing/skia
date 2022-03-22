@@ -10,6 +10,7 @@
 #include "include/core/SkCanvas.h"
 #include "include/core/SkImage.h"
 #include "include/core/SkPaint.h"
+#include "include/core/SkPath.h"
 #include "include/effects/SkGradientShader.h"
 #include "tools/Resources.h"
 
@@ -25,8 +26,8 @@ sk_sp<SkShader> create_gradient_shader(SkRect r) {
                                         SkTileMode::kClamp);
 }
 
-sk_sp<SkShader> create_image_shader() {
-    SkImageInfo ii = SkImageInfo::Make(100, 100, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
+sk_sp<SkShader> create_image_shader(skgpu::Recorder* recorder) {
+    SkImageInfo ii = SkImageInfo::Make(128, 128, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
     SkBitmap bitmap;
 
     bitmap.allocPixels(ii);
@@ -34,24 +35,36 @@ sk_sp<SkShader> create_image_shader() {
 
     SkCanvas canvas(bitmap);
 
-    SkPaint redPaint;
-    redPaint.setColor(SK_ColorRED);
-    canvas.drawCircle(50, 50, 50, redPaint);
+//    SkPaint redPaint;
+//    redPaint.setColor(SK_ColorGREEN);
+//    canvas.drawCircle(50, 50, 50, redPaint);
+
+    SkPaint paint;
+    paint.setColor(SK_ColorRED);
+    canvas.drawRect({0, 0, 32, 128}, paint);
+    paint.setColor(SK_ColorGREEN);
+    canvas.drawRect({32, 0, 64, 128}, paint);
+    paint.setColor(SK_ColorBLUE);
+    canvas.drawRect({64, 0, 96, 128}, paint);
+    paint.setColor(SK_ColorCYAN);
+    canvas.drawRect({96, 0, 128, 128}, paint);
+
 
     bitmap.setAlphaType(kOpaque_SkAlphaType);
     bitmap.setImmutable();
 
     sk_sp<SkImage> img = SkImage::MakeFromBitmap(bitmap);
+    img = img->makeTextureImage(recorder);
     // TODO: we'll need a 'makeTextureImage' call here
 
     return img->makeShader(SkTileMode::kRepeat, SkTileMode::kRepeat, SkSamplingOptions());
 }
 
-sk_sp<SkShader> create_blend_shader(SkBlendMode bm) {
+sk_sp<SkShader> create_blend_shader(skgpu::Recorder* recorder, SkBlendMode bm) {
     constexpr SkColor4f kTransYellow = {1.0f, 1.0f, 0.0f, 0.5f};
 
     sk_sp<SkShader> dst = SkShaders::Color(kTransYellow, nullptr);
-    return SkShaders::Blend(bm, std::move(dst), create_image_shader());
+    return SkShaders::Blend(bm, std::move(dst), create_image_shader(recorder));
 }
 
 void draw_blend_mode_swatches(SkCanvas* canvas, SkRect clipRect) {
@@ -102,12 +115,12 @@ class GraphiteStartGM : public GM {
 public:
     GraphiteStartGM() {
         this->setBGColor(SK_ColorBLACK);
-        GetResourceAsBitmap("images/color_wheel.gif", &fBitmap);
+//        GetResourceAsBitmap("images/color_wheel.gif", &fBitmap);
     }
 
 protected:
-    static const int kWidth = 256;
-    static const int kHeight = 384;
+    static const int kWidth = 32;
+    static const int kHeight = 32;
 
     SkString onShortName() override {
         return SkString("graphitestart");
@@ -119,6 +132,8 @@ protected:
 
     void onDraw(SkCanvas* canvas) override {
 
+        skgpu::Recorder* recorder = canvas->recorder();
+#if 0
         // UL corner
         {
             SkPaint p;
@@ -133,14 +148,24 @@ protected:
             p.setShader(create_gradient_shader(r));
             canvas->drawRect(r, p);
         }
+#endif
+
+        SkPath path;
+        path.moveTo(10, 10);
+        path.lineTo(20, 20);
+        path.lineTo(30, 10);
+        path.lineTo(20, 15);
+        path.close();
 
         // LL corner
         {
             SkPaint p;
-            p.setShader(create_image_shader());
-            canvas->drawRect({2, 129, 127, 255}, p);
+            p.setShader(create_image_shader(recorder));
+//            p.setColor(SK_ColorRED);
+            canvas->drawPath(path, p);
         }
 
+#if 0
         // LR corner
         {
             SkPaint p;
@@ -154,10 +179,11 @@ protected:
 #endif
 
         draw_blend_mode_swatches(canvas, SkRect::MakeXYWH(128, 256, 128, 128));
+#endif
     }
 
 private:
-    SkBitmap fBitmap;
+//    SkBitmap fBitmap;
 };
 
 //////////////////////////////////////////////////////////////////////////////
