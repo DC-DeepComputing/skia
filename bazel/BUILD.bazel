@@ -40,7 +40,6 @@ GPU_DEFINES = select({
     "//bazel/common_config_settings:dawn_backend": [
         "SK_DAWN",
         "SK_SUPPORT_GPU=1",
-        "VK_USE_PLATFORM_XCB_KHR",  # TODO(kjlubick) support dawn's dawn_enable_vulkan etc
     ],
     "//conditions:default": [
         "SK_SUPPORT_GPU=0",

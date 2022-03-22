@@ -15,8 +15,7 @@ BASE_LINKOPTS = [
     "-sDISABLE_EXCEPTION_CATCHING",  # Disable all exception catching
     "-sNODEJS_CATCH_EXIT=0",  # We don't have a 'main' so disable exit() catching
     "-sWASM",
-    "-sMAX_WEBGL_VERSION=2",
-    "-sUSE_WEBGL2=1",
+    "-s USE_WEBGPU=1",
     "-sFORCE_FILESYSTEM=0",
     "-sDYNAMIC_EXECUTION=0",
     "-sFILESYSTEM=0",
@@ -343,10 +342,7 @@ cc_binary_with_flags(
             "custom_embedded_fontmgr_factory",
         ],
         "gpu_backend": [
-            "gl_backend",
-        ],
-        "with_gl_standard": [
-            "webgl_standard",
+            "dawn_backend",
         ],
         "use_icu": [
             "True",
