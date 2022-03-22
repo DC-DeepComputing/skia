@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cdb93352_16cc2041",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-03-22T20:52:01Z",
+      "side": 1,
+      "message": "This is a precursor to getting the RenderSteps to use depth correctly, but should also make it easier to iterate down the road on what exactly it is that RenderSteps need to use.\n\nAlso renames StrokeParams to StrokeStyle since there was already a StrokeParams struct defined in the tessellation code",
+      "revId": "3484ea22f5b2b114976450ac249523ff8befda1c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
