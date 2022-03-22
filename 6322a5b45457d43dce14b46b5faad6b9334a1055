@@ -16,6 +16,29 @@
       "message": "Compare the checks run at patchset2 (which included a change to experimental/graphite) and patchset3.",
       "revId": "6322a5b45457d43dce14b46b5faad6b9334a1055",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f4b6fb50_293d7506",
+        "filename": "infra/bots/jobs.json",
+        "patchSetId": 3
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-03-22T01:38:03Z",
+      "side": 1,
+      "message": "Should these two get the cq_config update as well?",
+      "range": {
+        "startLine": 126,
+        "startChar": 2,
+        "endLine": 131,
+        "endChar": 4
+      },
+      "revId": "6322a5b45457d43dce14b46b5faad6b9334a1055",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
