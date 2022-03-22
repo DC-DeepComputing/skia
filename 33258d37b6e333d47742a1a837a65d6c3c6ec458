@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "da343850_910ca954",
+        "filename": "experimental/graphite/src/render/MiddleOutFanRenderStep.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-03-22T13:48:36Z",
+      "side": 1,
+      "message": "extra space ?",
+      "range": {
+        "startLine": 46,
+        "startChar": 35,
+        "endLine": 46,
+        "endChar": 36
+      },
+      "revId": "33258d37b6e333d47742a1a837a65d6c3c6ec458",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
