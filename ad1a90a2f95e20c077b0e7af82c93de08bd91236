@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5480c0dd_3a78232c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-03-22T19:39:15Z",
+      "side": 1,
+      "message": "This is just a quick renaming CL. I made a mistake with the naming doDrawSlug. This fixes that.",
+      "revId": "ad1a90a2f95e20c077b0e7af82c93de08bd91236",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
