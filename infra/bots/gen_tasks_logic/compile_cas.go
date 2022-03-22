@@ -46,10 +46,14 @@ var (
 		".clang-format",
 		".clang-tidy",
 		".vpython",
+		"BUILD.bazel",
+		"WORKSPACE.bazel",
+		"bazel",
 		"bin/activate-emsdk",
 		"bin/fetch-clang-format",
 		"bin/fetch-gn",
 		"buildtools",
+		"go_repositories.bzl",
 		"infra/bots/assets/android_ndk_darwin/VERSION",
 		"infra/bots/assets/android_ndk_linux/VERSION",
 		"infra/bots/assets/android_ndk_windows/VERSION",
@@ -57,10 +61,12 @@ var (
 		"infra/bots/assets/clang_linux/VERSION",
 		"infra/bots/assets/clang_win/VERSION",
 		"infra/bots/run_recipe.py",
+		"infra/bots/taskdrivers",
 		"infra/canvaskit",
 		"infra/pathkit",
 		"resources",
 		"third_party/externals",
+		"toolchain",
 	}
 )
 
