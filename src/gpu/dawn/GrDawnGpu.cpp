@@ -39,6 +39,10 @@
 #include <unistd.h>
 #endif // !defined(SK_BUILD_FOR_WIN)
 
+#ifdef __EMSCRIPTEN__
+#include <emscripten.h>
+#endif
+
 static const int kMaxRenderPipelineEntries = 1024;
 
 namespace {
@@ -56,7 +60,15 @@ public:
     }
 
     bool check() {
+#ifdef __EMSCRIPTEN__
+        EM_ASM(
+            Asyncify.handleSleep((wakeUp) => {
+                setTimeout(wakeUp, 0);
+            });
+        );
+#else
         fDevice.Tick();
+#endif
         return fCalled;
     }
 
@@ -538,7 +550,7 @@ void GrDawnGpu::checkForCompletedStagingBuffers() {
 
 void GrDawnGpu::waitOnAllBusyStagingBuffers() {
     while (!fBusyStagingBuffers.empty()) {
-        fDevice.Tick();
+        this->deviceTick();
         this->checkForCompletedStagingBuffers();
     }
 }
@@ -564,7 +576,7 @@ bool GrDawnGpu::onSubmitToGpu(bool syncCpu) {
         bool called = false;
         fDevice.GetQueue().OnSubmittedWorkDone(0, callback, &called);
         while (!called) {
-            fDevice.Tick();
+            this->deviceTick();
         }
         fFinishCallbacks.callAll(true);
     }
@@ -648,7 +660,7 @@ bool GrDawnGpu::onReadPixels(GrSurface* surface,
     bool mapped = false;
     buf.MapAsync(wgpu::MapMode::Read, 0, 0, callback, &mapped);
     while (!mapped) {
-        device().Tick();
+        this->deviceTick();
     }
     const void* readPixelsPtr = buf.GetConstMappedRange();
 
@@ -962,3 +974,16 @@ wgpu::ShaderModule GrDawnGpu::createShaderModule(const std::string& spirvSource)
 
     return fDevice.CreateShaderModule(&smDesc);
 }
+#ifdef __EMSCRIPTEN__
+void GrDawnGpu::deviceTick() {
+    EM_ASM(
+        Asyncify.handleSleep((wakeUp) => {
+            setTimeout(wakeUp, 0);
+        });
+    );
+}
+#else
+void GrDawnGpu::deviceTick() {
+    this->device().Tick();
+}
+#endif
