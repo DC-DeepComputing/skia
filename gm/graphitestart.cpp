@@ -25,7 +25,7 @@ sk_sp<SkShader> create_gradient_shader(SkRect r) {
                                         SkTileMode::kClamp);
 }
 
-sk_sp<SkShader> create_image_shader() {
+sk_sp<SkShader> create_image_shader(skgpu::Recorder* recorder) {
     SkImageInfo ii = SkImageInfo::Make(100, 100, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
     SkBitmap bitmap;
 
@@ -42,16 +42,17 @@ sk_sp<SkShader> create_image_shader() {
     bitmap.setImmutable();
 
     sk_sp<SkImage> img = SkImage::MakeFromBitmap(bitmap);
+    img = img->makeTextureImage(recorder);
     // TODO: we'll need a 'makeTextureImage' call here
 
     return img->makeShader(SkTileMode::kRepeat, SkTileMode::kRepeat, SkSamplingOptions());
 }
 
-sk_sp<SkShader> create_blend_shader(SkBlendMode bm) {
+sk_sp<SkShader> create_blend_shader(skgpu::Recorder* recorder, SkBlendMode bm) {
     constexpr SkColor4f kTransYellow = {1.0f, 1.0f, 0.0f, 0.5f};
 
     sk_sp<SkShader> dst = SkShaders::Color(kTransYellow, nullptr);
-    return SkShaders::Blend(bm, std::move(dst), create_image_shader());
+    return SkShaders::Blend(bm, std::move(dst), create_image_shader(recorder));
 }
 
 void draw_blend_mode_swatches(SkCanvas* canvas, SkRect clipRect) {
@@ -102,7 +103,7 @@ class GraphiteStartGM : public GM {
 public:
     GraphiteStartGM() {
         this->setBGColor(SK_ColorBLACK);
-        GetResourceAsBitmap("images/color_wheel.gif", &fBitmap);
+//        GetResourceAsBitmap("images/color_wheel.gif", &fBitmap);
     }
 
 protected:
@@ -119,6 +120,8 @@ protected:
 
     void onDraw(SkCanvas* canvas) override {
 
+        skgpu::Recorder* recorder = canvas->recorder();
+#if 0
         // UL corner
         {
             SkPaint p;
@@ -133,14 +136,16 @@ protected:
             p.setShader(create_gradient_shader(r));
             canvas->drawRect(r, p);
         }
+#endif
 
         // LL corner
         {
             SkPaint p;
-            p.setShader(create_image_shader());
+            p.setShader(create_image_shader(recorder));
             canvas->drawRect({2, 129, 127, 255}, p);
         }
 
+#if 0
         // LR corner
         {
             SkPaint p;
@@ -154,10 +159,11 @@ protected:
 #endif
 
         draw_blend_mode_swatches(canvas, SkRect::MakeXYWH(128, 256, 128, 128));
+#endif
     }
 
 private:
-    SkBitmap fBitmap;
+//    SkBitmap fBitmap;
 };
 
 //////////////////////////////////////////////////////////////////////////////

@@ -36,6 +36,7 @@ namespace skgpu::mtl {
 std::string GetMtlUniforms(int bufferID,
                            const char* name,
                            const std::vector<SkPaintParamsKey::BlockReader>&);
+std::string GetMtlTexturesAndSamplers(const std::vector<SkPaintParamsKey::BlockReader>&);
 } // namespace skgpu::mtl
 
 // Emit the glue code needed to invoke a single static helper isolated w/in its own scope.
@@ -95,6 +96,8 @@ std::string SkShaderInfo::emitGlueCodeForEntry(int* entryIndex,
 std::string SkShaderInfo::toSkSL() const {
     // The uniforms are mangled by having their index in 'fEntries' as a suffix (i.e., "_%d")
     std::string result = skgpu::mtl::GetMtlUniforms(2, "FS", fBlockReaders);
+
+    result += skgpu::mtl::GetMtlTexturesAndSamplers(fBlockReaders);
 
     std::set<const char*> emittedStaticSnippets;
     for (const auto& reader : fBlockReaders) {
@@ -325,11 +328,15 @@ static constexpr SkUniform kImageShaderUniforms[kNumImageShaderUniforms] = {
         { "subset",  SkSLType::kFloat4 },
 };
 
+static constexpr int kNumImageShaderTexturesAndSamplers = 1;
+static constexpr SkTextureAndSampler1 kImageShaderTexturesAndSamplers[kNumImageShaderTexturesAndSamplers] = {
+        { "sampler" },
+};
+
 static const char* kImageShaderName = "image_shader";
 static const char* kImageShaderSkSL =
         "half4 image_shader(float4 subset) {\n"
-        "    float c = fract(abs(sk_FragCoord.x/10.0));\n"
-        "    return half4(1.0, 1.0 - c, 1.0 - c, 1.0);\n"
+        "    return half4(1, 0, 0, 1);\n"
         "}\n";
 
 static constexpr int kNumImageShaderFields = 2;
@@ -337,6 +344,34 @@ static constexpr DataPayloadField kImageShaderFields[kNumImageShaderFields] = {
         { "tilemodeX", SkPaintParamsKey::DataPayloadType::kByte, 1 },
         { "tilemodeY", SkPaintParamsKey::DataPayloadType::kByte, 1 }
 };
+
+// This is not(!) what we want to do.
+// Ideally the "image_shader" code snippet could just take texture and
+// sampler references. That is going to take more time to figure out though so,
+// for the sake of expediency, we're generating custom code.
+std::string GenerateImageShaderGlueCode(const std::string& resultName,
+                                        int entryIndex,
+                                        const SkPaintParamsKey::BlockReader& reader,
+                                        const std::string& priorStageOutputName,
+                                        const std::vector<std::string>& childNames,
+                                        int indent) {
+    SkASSERT(childNames.empty());
+
+    std::string samplerName = std::string("sampler_") + std::to_string(entryIndex);
+
+    std::string result;
+    add_indent(&result, indent);
+    result += "float2 coords = float2(0.5, 0.5);\n";
+
+    add_indent(&result, indent);
+    SkSL::String::appendf(&result,
+                          "%s = sample(%s, coords);\n",
+                          resultName.c_str(),
+                          samplerName.c_str());
+
+
+    return result;
+}
 
 //--------------------------------------------------------------------------------------------------
 static constexpr int kNumBlendShaderUniforms = 4;
@@ -443,7 +478,6 @@ std::string GenerateBlendShaderGlueCode(const std::string& resultName,
 }
 
 //--------------------------------------------------------------------------------------------------
-static constexpr int kNumErrorUniforms = 0;
 static const char* kErrorName = "error";
 static const char* kErrorSkSL =
         "half4 error() {\n"
@@ -531,6 +565,7 @@ int SkShaderCodeDictionary::addUserDefinedSnippet(
         SkSpan<const SkPaintParamsKey::DataPayloadField> dataPayloadExpectations) {
 
     std::unique_ptr<SkShaderSnippet> entry(new SkShaderSnippet({}, // no uniforms
+                                                               {}, // no samplers
                                                                name,
                                                                ";",
                                                                GenerateDefaultGlueCode,
@@ -550,14 +585,16 @@ SkShaderCodeDictionary::SkShaderCodeDictionary() {
     fEntryVector.push_back(nullptr);
 
     fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kDepthStencilOnlyDraw] = {
-            { nullptr, kNumErrorUniforms },
+            { },     // no uniforms
+            { },     // no samplers
             kErrorName, kErrorSkSL,
             GenerateDefaultGlueCode,
             kNoChildren,
             {}
     };
     fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kError] = {
-            { nullptr, kNumErrorUniforms },
+            { },     // no uniforms
+            { },     // no samplers
             kErrorName, kErrorSkSL,
             GenerateDefaultGlueCode,
             kNoChildren,
@@ -565,6 +602,7 @@ SkShaderCodeDictionary::SkShaderCodeDictionary() {
     };
     fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kSolidColorShader] = {
             SkMakeSpan(kSolidShaderUniforms, kNumSolidShaderUniforms),
+            { },     // no samplers
             kSolidShaderName, kSolidShaderSkSL,
             GenerateDefaultGlueCode,
             kNoChildren,
@@ -572,6 +610,7 @@ SkShaderCodeDictionary::SkShaderCodeDictionary() {
     };
     fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kLinearGradientShader] = {
             SkMakeSpan(kGradientUniforms, kNumGradientUniforms),
+            { },     // no samplers
             kLinearGradient4Name, kLinearGradient4SkSL,
             GenerateDefaultGlueCode,
             kNoChildren,
@@ -579,6 +618,7 @@ SkShaderCodeDictionary::SkShaderCodeDictionary() {
     };
     fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kRadialGradientShader] = {
             SkMakeSpan(kGradientUniforms, kNumGradientUniforms),
+            { },     // no samplers
             kLinearGradient4Name, kLinearGradient4SkSL,
             GenerateDefaultGlueCode,
             kNoChildren,
@@ -586,6 +626,7 @@ SkShaderCodeDictionary::SkShaderCodeDictionary() {
     };
     fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kSweepGradientShader] = {
             SkMakeSpan(kGradientUniforms, kNumGradientUniforms),
+            { },     // no samplers
             kLinearGradient4Name, kLinearGradient4SkSL,
             GenerateDefaultGlueCode,
             kNoChildren,
@@ -593,6 +634,7 @@ SkShaderCodeDictionary::SkShaderCodeDictionary() {
     };
     fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kConicalGradientShader] = {
             SkMakeSpan(kGradientUniforms, kNumGradientUniforms),
+            { },     // no samplers
             kLinearGradient4Name, kLinearGradient4SkSL,
             GenerateDefaultGlueCode,
             kNoChildren,
@@ -600,13 +642,15 @@ SkShaderCodeDictionary::SkShaderCodeDictionary() {
     };
     fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kImageShader] = {
             SkMakeSpan(kImageShaderUniforms, kNumImageShaderUniforms),
+            SkMakeSpan(kImageShaderTexturesAndSamplers, kNumImageShaderTexturesAndSamplers),
             kImageShaderName, kImageShaderSkSL,
-            GenerateDefaultGlueCode,
+            GenerateImageShaderGlueCode,
             kNoChildren,
             { kImageShaderFields, kNumImageShaderFields }
     };
     fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kBlendShader] = {
             { kBlendShaderUniforms, kNumBlendShaderUniforms },
+            { },     // no samplers
             kBlendHelperName, kBlendHelperSkSL,
             GenerateBlendShaderGlueCode,
             kNumBlendShaderChildren,
@@ -614,6 +658,7 @@ SkShaderCodeDictionary::SkShaderCodeDictionary() {
     };
     fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kFixedFunctionBlender] = {
             { },     // no uniforms
+            { },     // no samplers
             "FF-blending", "",  // fixed function blending doesn't have any static SkSL
             GenerateFixedFunctionBlenderGlueCode,
             kNoChildren,
@@ -621,6 +666,7 @@ SkShaderCodeDictionary::SkShaderCodeDictionary() {
     };
     fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kShaderBasedBlender] = {
             { },     // no uniforms
+            { },     // no samplers
             kBlendHelperName, kBlendHelperSkSL,
             GenerateShaderBasedBlenderGlueCode,
             kNoChildren,
