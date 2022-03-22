@@ -39,6 +39,30 @@
       },
       "revId": "6322a5b45457d43dce14b46b5faad6b9334a1055",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dbca1927_add0e1d2",
+        "filename": "infra/bots/jobs.json",
+        "patchSetId": 3
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 5145
+      },
+      "writtenOn": "2022-03-22T12:28:23Z",
+      "side": 1,
+      "message": "The empty cq_config here signifies that these bots show up in the default CQ runs (i.e. for all modified paths not just experimental/graphite). I figure it will not hurt to leave them as they are.",
+      "parentUuid": "f4b6fb50_293d7506",
+      "range": {
+        "startLine": 126,
+        "startChar": 2,
+        "endLine": 131,
+        "endChar": 4
+      },
+      "revId": "6322a5b45457d43dce14b46b5faad6b9334a1055",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
