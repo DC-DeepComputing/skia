@@ -16,6 +16,24 @@
       "message": "What\u0027s the rationale for compiling on the Skolo machines instead of GCE?",
       "revId": "b34e83e4c635a97755b3ad3b054ba22851f8a16c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "360a4347_dec27b93",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 14
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5205
+      },
+      "writtenOn": "2022-03-22T13:59:21Z",
+      "side": 1,
+      "message": "1. We don\u0027t have Debian 11 machines in GCE.\n2. These are very beefy machines, so the compiles should be fast.\n3. We have 20 if these machines, so plenty of capacity to run both Build, Test, and Perf.\n4. If we can do the same thing for Win10 compiles we could save a good chunk\nof the $$$ we spend every year on Windows Cloud licenses.",
+      "parentUuid": "6ad6057d_09ec7412",
+      "revId": "b34e83e4c635a97755b3ad3b054ba22851f8a16c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
