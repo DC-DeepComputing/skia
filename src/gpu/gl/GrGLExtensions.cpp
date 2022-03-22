@@ -102,6 +102,7 @@ bool GrGLExtensions::init(GrGLStandard standard,
         for (int i = 0; i < extensionCnt; ++i) {
             const char* ext = (const char*) getStringi(GR_GL_EXTENSIONS, i);
             fStrings[i] = ext;
+            SkDebugf("extension[%d]: %s\n", i, ext);
         }
     } else {
         const char* extensions = (const char*) getString(GR_GL_EXTENSIONS);

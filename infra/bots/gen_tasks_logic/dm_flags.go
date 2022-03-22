@@ -1172,7 +1172,7 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 
 	if len(match) > 0 {
 		args = append(args, "--match")
-		args = append(args, match...)
+		args = append(args, "surface_underdraw_bert")
 	}
 
 	// These bots run out of memory running RAW codec tests. Do not run them in
