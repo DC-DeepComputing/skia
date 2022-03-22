@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6a9aff8a_57376e53",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 2128,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-03-22T18:50:22Z",
+      "side": 1,
+      "message": "Please update `Position(), Position()` to `/*pos\u003d*/Position(), /*modifiersPosition\u003d*/Position()` throughout.\n\nAlternatively, we could try swapping the second and third arguments to provide a hint to the reader of the meaning of the second Position (not sure that I like this better than explicit labels, but it\u0027s an option):\n\n`new Variable(Position(), modifiers, Position(), ...`",
+      "range": {
+        "startLine": 2127,
+        "startChar": 60,
+        "endLine": 2128,
+        "endChar": 71
+      },
+      "revId": "1563db01d985f7abcb35f3b8681becd699db62a2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
