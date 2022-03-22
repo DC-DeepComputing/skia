@@ -145,6 +145,7 @@ DSLGlobalVar::DSLGlobalVar(const char* name)
 
         fVar = ThreadContext::SymbolTable()->takeOwnershipOfIRNode(std::make_unique<SkSL::Variable>(
                 Position(),
+                Position(),
                 modifiers,
                 fName,
                 ThreadContext::Context().fTypes.fFloat2.get(),

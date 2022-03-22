@@ -2125,6 +2125,7 @@ SpvId SPIRVCodeGenerator::writeVariableReference(const VariableReference& ref, O
                 Modifiers modifiers;
                 modifiers.fLayout.fBuiltin = DEVICE_FRAGCOORDS_BUILTIN;
                 auto coordsVar = std::make_unique<Variable>(Position(),
+                                                            Position(),
                                                             fContext.fModifiersPool->add(modifiers),
                                                             DEVICE_COORDS_NAME,
                                                             fContext.fTypes.fFloat4.get(),
@@ -2159,6 +2160,7 @@ SpvId SPIRVCodeGenerator::writeVariableReference(const VariableReference& ref, O
                 Modifiers modifiers;
                 modifiers.fLayout.fBuiltin = DEVICE_CLOCKWISE_BUILTIN;
                 auto clockwiseVar = std::make_unique<Variable>(Position(),
+                        Position(),
                         fContext.fModifiersPool->add(modifiers),
                         DEVICE_CLOCKWISE_NAME,
                         fContext.fTypes.fBool.get(),
@@ -3080,6 +3082,7 @@ SpvId SPIRVCodeGenerator::writeInterfaceBlock(const InterfaceBlock& intf, bool a
                             /*interfaceBlock=*/true));
             const Variable* modifiedVar = fProgram.fSymbols->takeOwnershipOfSymbol(
                     std::make_unique<Variable>(intfVar.fPosition,
+                                               intfVar.modifiersPosition(),
                                                &intfVar.modifiers(),
                                                intfVar.name(),
                                                rtFlipStructType,
@@ -3483,7 +3486,7 @@ void SPIRVCodeGenerator::writeUniformBuffer(std::shared_ptr<SymbolTable> topLeve
     Modifiers modifiers{layout, Modifiers::kUniform_Flag};
 
     fUniformBuffer.fInnerVariable = std::make_unique<Variable>(
-            Position(), fProgram.fModifiers->add(modifiers), kUniformBufferName,
+            Position(), Position(), fProgram.fModifiers->add(modifiers), kUniformBufferName,
             fUniformBuffer.fStruct.get(), /*builtin=*/false, Variable::Storage::kGlobal);
 
     // Create an interface block object for this global variable.
@@ -3549,6 +3552,7 @@ void SPIRVCodeGenerator::addRTFlipUniform(Position pos) {
     }
     const Variable* intfVar = fSynthetics.takeOwnershipOfSymbol(
             std::make_unique<Variable>(Position(),
+                                       Position(),
                                        modsPtr,
                                        name,
                                        intfStruct,
