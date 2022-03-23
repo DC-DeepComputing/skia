@@ -197,6 +197,14 @@ public:
     // Ensure that non-RSXForm runs are passed to onDrawGlyphRunList.
     void drawGlyphRunList(SkCanvas*, const SkGlyphRunList& glyphRunList, const SkPaint& paint);
 
+    // GrSlug handling routines.
+#if SK_SUPPORT_GPU
+    virtual sk_sp<GrSlug> convertGlyphRunListToSlug(
+            const SkGlyphRunList& glyphRunList,
+            const SkPaint& paint);
+    virtual void drawSlug(SkCanvas*, const GrSlug* slug);
+#endif
+
 protected:
     enum TileUsage {
         kPossible_TileUsage,    //!< the created device may be drawn tiled
@@ -308,14 +316,6 @@ protected:
 
     // Only called with glyphRunLists that do not contain RSXForm.
     virtual void onDrawGlyphRunList(SkCanvas*, const SkGlyphRunList&, const SkPaint&) = 0;
-
-    // GrSlug handling routines.
-#if SK_SUPPORT_GPU
-    virtual sk_sp<GrSlug> convertGlyphRunListToSlug(
-            const SkGlyphRunList& glyphRunList,
-            const SkPaint& paint);
-    virtual void drawSlug(SkCanvas*, const GrSlug* slug);
-#endif
 
     /**
      * The SkDevice passed will be an SkDevice which was returned by a call to
