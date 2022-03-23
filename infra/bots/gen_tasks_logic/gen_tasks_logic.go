@@ -912,7 +912,7 @@ func (b *taskBuilder) defaultSwarmDimensions() {
 					"IntelHD2000":   "8086:0102",
 					"IntelHD405":    "8086:22b1",
 					"IntelIris640":  "8086:5926",
-					"QuadroP400":    "10de:1cb3-440.100",
+					"QuadroP400":    "10de:1cb3-510.60.02",
 					"RTX3060":       "10de:2489-460.91.03",
 				}[b.parts["cpu_or_gpu_value"]]
 				if !ok {
@@ -1633,7 +1633,7 @@ func (b *jobBuilder) dm() {
 			b.asset("valgrind")
 			// Since Valgrind runs on the same bots as the CQ, we restrict Valgrind to a subset of the bots
 			// to ensure there are always bots free for CQ tasks.
-			b.dimension("valgrind:1")
+			// b.dimension("valgrind:1")
 		} else if b.extraConfig("MSAN") {
 			b.timeout(9 * time.Hour)
 		} else if b.arch("x86") && b.debug() {
