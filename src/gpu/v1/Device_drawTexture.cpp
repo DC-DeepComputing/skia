@@ -690,7 +690,7 @@ bool can_disable_mipmap(const SkMatrix& viewM,
                         bool sharpenMipmappedTextures) {
     SkMatrix matrix;
     matrix.setConcat(viewM, localM);
-    // With sharp mips, we bias lookups by -0.5. That means our final LOD is >= 0 until
+    // We bias lookups by -0.5. That means our final LOD is >= 0 until
     // the computed LOD is >= 0.5. At what scale factor does a texture get an LOD of
     // 0.5?
     //
@@ -699,8 +699,7 @@ bool can_disable_mipmap(const SkMatrix& viewM,
     //        2^0.5   = 1/s
     //        1/2^0.5 = s
     //        2^0.5/2 = s
-    SkScalar mipScale = sharpenMipmappedTextures ? SK_ScalarRoot2Over2 : SK_Scalar1;
-    return matrix.getMinScale() >= mipScale;
+    return matrix.getMinScale() >= SK_ScalarRoot2Over2;
 }
 
 } // anonymous namespace
@@ -783,8 +782,7 @@ void Device::drawImageQuad(const SkImage* image,
     const SkMatrix& ctm(matrixProvider.localToDevice());
 
     SkSamplingOptions sampling = origSampling;
-    bool sharpenMM = fContext->priv().options().fSharpenMipmappedTextures;
-    if (sampling.mipmap != SkMipmapMode::kNone && can_disable_mipmap(ctm, srcToDst, sharpenMM)) {
+    if (sampling.mipmap != SkMipmapMode::kNone && can_disable_mipmap(ctm, srcToDst)) {
         sampling = SkSamplingOptions(sampling.filter);
     }
     auto clip = this->clip();
