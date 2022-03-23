@@ -47,4 +47,9 @@ SkCanvas* SkAndroidFrameworkUtils::getBaseWrappedCanvas(SkCanvas* canvas) {
     }
     return result;
 }
+
+void SkAndroidFrameworkUtils::concatPreTransform(SkCanvas* canvas, const SkMatrix& matrix) {
+    canvas->internal_private_concatPreTransform(matrix);
+}
+
 #endif // SK_BUILD_FOR_ANDROID_FRAMEWORK

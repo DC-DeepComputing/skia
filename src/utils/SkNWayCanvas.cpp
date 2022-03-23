@@ -121,6 +121,13 @@ void SkNWayCanvas::didScale(SkScalar x, SkScalar y) {
     }
 }
 
+void SkNWayCanvas::didSetPreTransform(const SkM44& m) {
+    Iter iter(fList);
+    while (iter.next()) {
+        iter->setPreTransform(m);
+    }
+}
+
 void SkNWayCanvas::onClipRect(const SkRect& rect, SkClipOp op, ClipEdgeStyle edgeStyle) {
     Iter iter(fList);
     while (iter.next()) {

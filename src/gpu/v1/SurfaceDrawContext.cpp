@@ -1107,7 +1107,8 @@ void SurfaceDrawContext::drawRRect(const GrClip* origClip,
 bool SurfaceDrawContext::drawFastShadow(const GrClip* clip,
                                         const SkMatrix& viewMatrix,
                                         const SkPath& path,
-                                        const SkDrawShadowRec& rec) {
+                                        const SkDrawShadowRec& rec,
+                                        const SkMatrix& preTransform) {
     ASSERT_SINGLE_OWNER
     if (fContext->abandoned()) {
         return true;
@@ -1154,6 +1155,12 @@ bool SurfaceDrawContext::drawFastShadow(const GrClip* clip,
     if (!directional) {
         // transform light
         viewMatrix.mapPoints((SkPoint*)&devLightPos.fX, 1);
+        if (!preTransform.isIdentity()) {
+            SkMatrix inverse;
+            if (preTransform.invert(&inverse)) {
+                inverse.mapPoints((SkPoint*)&devLightPos.fX, 1);
+            }
+        }
     }
 
     // 1/scale

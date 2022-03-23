@@ -638,7 +638,8 @@ static bool validate_rec(const SkDrawShadowRec& rec) {
            SkScalarIsFinite(rec.fLightRadius);
 }
 
-void SkBaseDevice::drawShadow(const SkPath& path, const SkDrawShadowRec& rec) {
+void SkBaseDevice::drawShadow(const SkPath& path, const SkDrawShadowRec& rec,
+                              const SkMatrix& preTransform) {
     auto drawVertsProc = [this](const SkVertices* vertices, SkBlendMode mode, const SkPaint& paint,
                                 SkScalar tx, SkScalar ty, bool hasPerspective) {
         if (vertices->priv().vertexCount()) {
@@ -674,6 +675,12 @@ void SkBaseDevice::drawShadow(const SkPath& path, const SkDrawShadowRec& rec) {
     SkPoint3 devLightPos = rec.fLightPos;
     if (!directional) {
         viewMatrix.mapPoints((SkPoint*)&devLightPos.fX, 1);
+        if (!preTransform.isIdentity()) {
+            SkMatrix inverse;
+            if (preTransform.invert(&inverse)) {
+                inverse.mapPoints((SkPoint*)&devLightPos.fX, 1);
+            }
+        }
     }
     float lightRadius = rec.fLightRadius;
 
