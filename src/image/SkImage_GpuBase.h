@@ -49,7 +49,7 @@ public:
                                                            GrBackendFormat,
                                                            GrMipmapped,
                                                            PromiseImageTextureFulfillProc,
-                                                           sk_sp<GrRefCntedCallback> releaseHelper);
+                                                           sk_sp<skgpu::RefCntedCallback> releaseHelper);
 
 protected:
     SkImage_GpuBase(sk_sp<GrImageContext>, SkImageInfo, uint32_t uniqueID);
