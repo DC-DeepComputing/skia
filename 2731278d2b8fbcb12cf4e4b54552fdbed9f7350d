@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "62870b46_8d735818",
+        "filename": "src/gpu/GrBackendTextureImageGenerator.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-03-23T20:34:12Z",
+      "side": 1,
+      "message": "nit: align",
+      "range": {
+        "startLine": 79,
+        "startChar": 41,
+        "endLine": 79,
+        "endChar": 46
+      },
+      "revId": "2731278d2b8fbcb12cf4e4b54552fdbed9f7350d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "53ef1acc_206dd2f5",
+        "filename": "src/gpu/GrDirectContext.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 503,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-03-23T20:34:12Z",
+      "side": 1,
+      "message": "nit: length",
+      "range": {
+        "startLine": 503,
+        "startChar": 0,
+        "endLine": 503,
+        "endChar": 105
+      },
+      "revId": "2731278d2b8fbcb12cf4e4b54552fdbed9f7350d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
