@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "525df1c5_980efc8d",
+        "filename": "include/gpu/GrContextOptions.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 173,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-03-23T18:00:30Z",
+      "side": 1,
+      "message": "maybe it\u0027s just my brain, but while this sentence does *mean* `fSharpenMipmappedTextures` is ignored, it didn\u0027t read that way initially. Wdyt about \n\n   Unused. The behavior that this controlled is now enabled unconditionally.",
+      "range": {
+        "startLine": 173,
+        "startChar": 17,
+        "endLine": 173,
+        "endChar": 79
+      },
+      "revId": "bc453117b74afd927746c25af034b5325b1a9b78",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a37fa1d3_500babd7",
+        "filename": "src/gpu/d3d/GrD3DPipelineStateBuilder.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 561,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-03-23T18:00:30Z",
+      "side": 1,
+      "message": "Will we also be taking this setting out? Or do we want to keep SkSL\u0027s sampling behavior flexible relative to what Skia chooses to use?",
+      "range": {
+        "startLine": 561,
+        "startChar": 4,
+        "endLine": 561,
+        "endChar": 37
+      },
+      "revId": "bc453117b74afd927746c25af034b5325b1a9b78",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3e67df1d_90deeb24",
+        "filename": "tests/CompressedBackendAllocationTest.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-03-23T18:00:30Z",
+      "side": 1,
+      "message": "extra?",
+      "range": {
+        "startLine": 76,
+        "startChar": 79,
+        "endLine": 76,
+        "endChar": 85
+      },
+      "revId": "bc453117b74afd927746c25af034b5325b1a9b78",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
