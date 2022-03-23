@@ -20,6 +20,7 @@
 namespace skgpu {
 
 class BackendTexture;
+class CommandBuffer;
 class ContextPriv;
 class GlobalCache;
 class Gpu;
@@ -70,7 +71,11 @@ public:
 
     std::unique_ptr<Recorder> makeRecorder();
 
-    void insertRecording(std::unique_ptr<Recording>);
+    // TODO: Remove the need to pass in the unique_ptr to the Recording here. This call should
+    // pull everything it needs out of the recording and record it to a backend command buffer
+    // during this call. However, currently we have the Recordings make a backend command buffer
+    // so we only have one instance of the Recording that we pass around with unique_ptr.
+    void insertRecording(const InsertRecordingInfo&);
     void submit(SyncToCpu = SyncToCpu::kNo);
 
     void preCompile(const PaintCombo&);
@@ -106,7 +111,8 @@ protected:
 private:
     friend class ContextPriv;
 
-    std::vector<std::unique_ptr<Recording>> fRecordings;
+    sk_sp<CommandBuffer> fCurrentCommandBuffer;
+
     sk_sp<Gpu> fGpu;
     sk_sp<GlobalCache> fGlobalCache;
     BackendApi fBackend;

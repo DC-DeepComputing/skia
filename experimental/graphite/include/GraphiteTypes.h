@@ -10,7 +10,31 @@
 
 #include "include/core/SkTypes.h"
 
+#include <memory>
+
 namespace skgpu {
+
+class Recording;
+
+using GpuFinishedContext = void*;
+using GpuFinishedProc = void (*)(GpuFinishedContext finishedContext);
+
+struct InsertRecordingInfo {
+    Recording* fRecording = nullptr;
+    GpuFinishedContext fFinishedContext = nullptr;
+    GpuFinishedProc fFinishedProc = nullptr;
+
+#if 0
+    InsertRecordingInfo();
+    ~InsertRecordingInfo();
+
+    // TODO: Once this no longer holds a unique_ptr we can allow copying again.
+//    InsertRecordingInfo(const InsertRecordingInfo&) = delete;
+//    InsertRecordingInfo& operator=(const InsertRecordingInfo&) = delete;
+    InsertRecordingInfo(InsertRecordingInfo&&);
+    InsertRecordingInfo& operator=(InsertRecordingInfo&&);
+#endif
+};
 
 /**
  * Actually submit work to the GPU and track its completion

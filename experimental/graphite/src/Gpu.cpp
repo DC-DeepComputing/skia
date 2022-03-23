@@ -58,7 +58,13 @@ bool Gpu::submit(sk_sp<CommandBuffer> commandBuffer) {
     }
 #endif
 
-    return this->onSubmit(std::move(commandBuffer));
+    auto submission = this->onSubmit(std::move(commandBuffer));
+    if (!submission) {
+        return false;
+    }
+
+    new (fOutstandingSubmissions.push_back()) OutstandingSubmission(std::move(submission));
+    return true;
 }
 
 void Gpu::checkForFinishedWork(SyncToCpu sync) {
