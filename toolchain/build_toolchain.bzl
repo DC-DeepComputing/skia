@@ -120,7 +120,12 @@ def _download_and_extract_deb(ctx, deb, sha256, prefix, output = ""):
 
     # https://docs.bazel.build/versions/main/skylark/lib/repository_ctx.html#execute
     # This uses the extracted llvm-ar that comes with clang.
-    ctx.execute(["bin/llvm-ar", "x", "deb.ar"])
+    result = ctx.execute(["bin/llvm-ar", "x", "deb.ar"], quiet = False)
+
+    ctx.execute(["echo", deb], quiet = False)
+    ctx.execute(["pwd"], quiet = False)
+    ctx.execute(["ls"], quiet = False)
+    print(result)
 
     # https://docs.bazel.build/versions/main/skylark/lib/repository_ctx.html#extract
     extract_info = ctx.extract(
