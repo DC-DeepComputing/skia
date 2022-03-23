@@ -8,18 +8,13 @@
 #include "tools/skqp/src/skqp.h"
 
 #include "gm/gm.h"
-#include "include/core/SkBitmap.h"
-#include "include/core/SkFontStyle.h"
 #include "include/core/SkGraphics.h"
 #include "include/core/SkStream.h"
 #include "include/core/SkSurface.h"
-#include "include/encode/SkPngEncoder.h"
 #include "include/gpu/GrContextOptions.h"
 #include "include/gpu/GrDirectContext.h"
-#include "include/private/SkImageInfoPriv.h"
 #include "src/core/SkFontMgrPriv.h"
 #include "src/core/SkOSFile.h"
-#include "src/core/SkStreamPriv.h"
 #include "src/utils/SkOSPath.h"
 #include "tests/Test.h"
 #include "tests/TestHarness.h"
@@ -30,6 +25,10 @@
 #endif
 #ifdef SK_VULKAN
 #include "tools/gpu/vk/VkTestContext.h"
+#endif
+
+#ifdef SK_BUILD_FOR_ANDROID
+#include <sys/system_properties.h>
 #endif
 
 #include <limits.h>
@@ -166,7 +165,18 @@ static std::unique_ptr<sk_gpu_test::TestContext> make_test_context(SkQP::SkiaBac
 static GrContextOptions context_options(skiagm::GM* gm = nullptr) {
     GrContextOptions grContextOptions;
     grContextOptions.fAllowPathMaskCaching = true;
+
+#ifdef SK_BUILD_FOR_ANDROID
+    char firstAPIVersionStr[PROP_VALUE_MAX];
+    int strLength = __system_property_get("ro.product.first_api_level", firstAPIVersionStr);
+    // Defaults to zero since most checks care if it is greater than a specific value. So this will
+    // just default to it being less.
+    int firstAPIVersion = (strLength == 0) ? 0 : atoi(firstAPIVersionStr);
+    grContextOptions.fDisableDriverCorrectnessWorkaroundsPriorToAPI = firstAPIVersion;
+#else
     grContextOptions.fDisableDriverCorrectnessWorkarounds = true;
+#endif
+
     if (gm) {
         gm->modifyGrContextOptions(&grContextOptions);
     }
@@ -262,8 +272,8 @@ std::vector<std::string> SkQP::executeTest(SkQP::UnitTest test) {
             fErrors.push_back(std::string(desc.c_str(), desc.size()));
         }
     } r;
-    GrContextOptions options;
-    options.fDisableDriverCorrectnessWorkarounds = true;
+    GrContextOptions options = context_options();
+
     if (test->fContextOptionsProc) {
         test->fContextOptionsProc(&options);
     }
