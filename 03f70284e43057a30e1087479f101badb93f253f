@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3d753d05_4db8e12c",
+        "filename": "src/gpu/gl/GrGLCaps.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 4228,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-03-23T14:48:07Z",
+      "side": 1,
+      "message": "This workaround will get enabled now. I don\u0027t think it was possible to hit this case previously.",
+      "range": {
+        "startLine": 4228,
+        "startChar": 34,
+        "endLine": 4228,
+        "endChar": 60
+      },
+      "revId": "03f70284e43057a30e1087479f101badb93f253f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
