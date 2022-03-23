@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7148b03f_11c0658b",
+        "filename": "experimental/graphite/src/DrawGeometry.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-03-23T18:09:00Z",
+      "side": 1,
+      "message": "Agreed, I can add those sorts of asserts when I do clipping.",
+      "parentUuid": "74404189_0eae49e6",
+      "revId": "3484ea22f5b2b114976450ac249523ff8befda1c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3c0fa064_5bb6130c",
@@ -58,6 +76,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0c3ca9f3_342f73d1",
+        "filename": "experimental/graphite/src/DrawGeometry.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-03-23T18:09:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3c0fa064_5bb6130c",
+      "range": {
+        "startLine": 83,
+        "startChar": 82,
+        "endLine": 83,
+        "endChar": 89
+      },
+      "revId": "3484ea22f5b2b114976450ac249523ff8befda1c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "72343fad_0c3b72fb",
@@ -71,6 +113,24 @@
       "writtenOn": "2022-03-23T14:45:49Z",
       "side": 1,
       "message": "Do we need this ?",
+      "revId": "3484ea22f5b2b114976450ac249523ff8befda1c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f1b81984_8b3c6773",
+        "filename": "experimental/graphite/src/TextureUtils.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-03-23T18:09:00Z",
+      "side": 1,
+      "message": "Yeah, clang on windows complains about std::function being undefined.",
+      "parentUuid": "72343fad_0c3b72fb",
       "revId": "3484ea22f5b2b114976450ac249523ff8befda1c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
