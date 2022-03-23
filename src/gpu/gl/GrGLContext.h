@@ -31,8 +31,20 @@ public:
     GrGLStandard standard() const { return fInterface->fStandard; }
     GrGLVersion version() const { return fDriverInfo.fVersion; }
     SkSL::GLSLGeneration glslGeneration() const { return fGLSLGeneration; }
-    GrGLVendor vendor() const { return fDriverInfo.fVendor; }
-    GrGLRenderer renderer() const { return fDriverInfo.fRenderer; }
+    GrGLVendor vendor() const {
+        if (this->angleBackend() == GrGLANGLEBackend::kUnknown) {
+            return fDriverInfo.fVendor;
+        } else {
+            return this->angleVendor();
+        }
+    }
+    GrGLRenderer renderer() const {
+        if (this->angleBackend() == GrGLANGLEBackend::kUnknown) {
+            return fDriverInfo.fRenderer;
+        } else {
+            return this->angleRenderer();
+        }
+    }
     GrGLANGLEBackend angleBackend() const { return fDriverInfo.fANGLEBackend; }
     GrGLVendor angleVendor() const { return fDriverInfo.fANGLEVendor; }
     GrGLRenderer angleRenderer() const { return fDriverInfo.fANGLERenderer; }
@@ -50,13 +62,6 @@ public:
     }
 
     const GrGLExtensions& extensions() const { return fInterface->fExtensions; }
-
-    /**
-     * Makes a version of this context info that strips the "angle-ness". It will report kUnknown
-     * for angleBackend() and report this info's angleRenderer() as renderer() and similiar for
-     * driver(), driverVersion(), and vendor().
-     */
-    GrGLContextInfo makeNonAngle() const;
 
 protected:
     GrGLContextInfo& operator=(const GrGLContextInfo&) = default;
