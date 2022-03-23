@@ -37,16 +37,20 @@
 #include "src/codec/SkSwizzler.h"
 #include "src/core/SkAutoMalloc.h"
 #include "src/core/SkAutoPixmapStorage.h"
+#include "src/core/SkGlyphRun.h"
 #include "src/core/SkOSFile.h"
 #include "src/core/SkOpts.h"
 #include "src/core/SkPictureCommon.h"
 #include "src/core/SkPictureData.h"
 #include "src/core/SkRecordDraw.h"
 #include "src/core/SkRecorder.h"
+#include "src/core/SkTLazy.h"
 #include "src/core/SkTaskGroup.h"
 #include "src/gpu/GrDirectContextPriv.h"
 #include "src/gpu/GrGpu.h"
+#include "src/image/SkSurface_Gpu.h"
 #include "src/utils/SkMultiPictureDocumentPriv.h"
+#include "src/utils/SkTestCanvas.h"
 #include "src/utils/SkOSPath.h"
 #include "tools/DDLPromiseImageHelper.h"
 #include "tools/DDLTileHelper.h"
@@ -1382,7 +1386,6 @@ Result NullSink::draw(const Src& src, SkBitmap*, SkWStream*, SkString*) const {
 }
 
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-
 static Result compare_bitmaps(const SkBitmap& reference, const SkBitmap& bitmap) {
     // The dimensions are a property of the Src only, and so should be identical.
     SkASSERT(reference.computeByteSize() == bitmap.computeByteSize());
@@ -1413,7 +1416,6 @@ static Result compare_bitmaps(const SkBitmap& reference, const SkBitmap& bitmap)
 }
 
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-
 static DEFINE_bool(gpuStats, false, "Append GPU stats to the log for each GPU task?");
 static DEFINE_bool(preAbandonGpuContext, false,
                    "Test abandoning the GrContext before running the test.");
@@ -1549,7 +1551,24 @@ Result GPUSink::onDraw(const Src& src, SkBitmap* dst, SkWStream*, SkString* log,
 }
 
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+GPUSlug::GPUSlug(const SkCommandLineConfigGpu* config, const GrContextOptions& options)
+        : GPUSink(config, options) {}
 
+Result GPUSlug::draw(const Src& src, SkBitmap* dst, SkWStream* write, SkString* log) const {
+    GrContextOptions grOptions = this->baseContextOptions();
+    // Force padded atlas entries for slug drawing.
+    grOptions.fSupportBilerpFromGlyphAtlas |= true;
+
+    SkTLazy<SkTestCanvas<SkSlugTestKey>> testCanvas;
+
+    return onDraw(src, dst, write, log, grOptions, nullptr,
+        [&](SkCanvas* canvas){
+            testCanvas.init(canvas);
+            return testCanvas.get();
+        });
+}
+
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 GPUThreadTestingSink::GPUThreadTestingSink(const SkCommandLineConfigGpu* config,
                                            const GrContextOptions& grCtxOptions)
         : INHERITED(config, grCtxOptions)
@@ -1584,7 +1603,6 @@ Result GPUThreadTestingSink::draw(const Src& src, SkBitmap* dst, SkWStream* wStr
 }
 
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-
 GPUPersistentCacheTestingSink::GPUPersistentCacheTestingSink(const SkCommandLineConfigGpu* config,
                                                              const GrContextOptions& grCtxOptions)
     : INHERITED(config, grCtxOptions)
@@ -1620,9 +1638,7 @@ Result GPUPersistentCacheTestingSink::draw(const Src& src, SkBitmap* dst, SkWStr
     return compare_bitmaps(reference, *dst);
 }
 
-
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-
 GPUPrecompileTestingSink::GPUPrecompileTestingSink(const SkCommandLineConfigGpu* config,
                                                    const GrContextOptions& grCtxOptions)
     : INHERITED(config, grCtxOptions) {}
