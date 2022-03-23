@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0c866215_10e54467",
+        "filename": "include/gpu/GrContextOptions.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 173,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-03-23T19:08:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "525df1c5_980efc8d",
+      "range": {
+        "startLine": 173,
+        "startChar": 17,
+        "endLine": 173,
+        "endChar": 79
+      },
+      "revId": "bc453117b74afd927746c25af034b5325b1a9b78",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a37fa1d3_500babd7",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "12f6f45b_f372b363",
+        "filename": "src/gpu/d3d/GrD3DPipelineStateBuilder.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 561,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-03-23T19:08:24Z",
+      "side": 1,
+      "message": "Maybe. I think my preferred approach is to remove both the flag and the bias code injection from SkSL and have Ganesh/Graphite do this (e.g. in textureeffect/op in Ganesh). But I haven\u0027t figured out how much work this is yet.",
+      "parentUuid": "a37fa1d3_500babd7",
+      "range": {
+        "startLine": 561,
+        "startChar": 4,
+        "endLine": 561,
+        "endChar": 37
+      },
+      "revId": "bc453117b74afd927746c25af034b5325b1a9b78",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3e67df1d_90deeb24",
@@ -60,6 +108,30 @@
       "writtenOn": "2022-03-23T18:00:30Z",
       "side": 1,
       "message": "extra?",
+      "range": {
+        "startLine": 76,
+        "startChar": 79,
+        "endLine": 76,
+        "endChar": 85
+      },
+      "revId": "bc453117b74afd927746c25af034b5325b1a9b78",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1688fc05_d0041701",
+        "filename": "tests/CompressedBackendAllocationTest.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-03-23T19:08:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3e67df1d_90deeb24",
       "range": {
         "startLine": 76,
         "startChar": 79,
