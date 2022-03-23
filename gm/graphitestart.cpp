@@ -10,6 +10,7 @@
 #include "include/core/SkCanvas.h"
 #include "include/core/SkImage.h"
 #include "include/core/SkPaint.h"
+#include "include/core/SkPath.h"
 #include "include/effects/SkGradientShader.h"
 #include "include/gpu/GrRecordingContext.h"
 #include "tools/Resources.h"
@@ -59,7 +60,7 @@ sk_sp<SkShader> create_gradient_shader(SkRect r) {
 }
 
 sk_sp<SkShader> create_image_shader(const MetaContext& context) {
-    SkImageInfo ii = SkImageInfo::Make(100, 100, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
+    SkImageInfo ii = SkImageInfo::Make(128, 128, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
     SkBitmap bitmap;
 
     bitmap.allocPixels(ii);
@@ -67,9 +68,20 @@ sk_sp<SkShader> create_image_shader(const MetaContext& context) {
 
     SkCanvas canvas(bitmap);
 
-    SkPaint redPaint;
-    redPaint.setColor(SK_ColorRED);
-    canvas.drawCircle(50, 50, 50, redPaint);
+//    SkPaint redPaint;
+//    redPaint.setColor(SK_ColorGREEN);
+//    canvas.drawCircle(50, 50, 50, redPaint);
+
+    SkPaint paint;
+    paint.setColor(SK_ColorRED);
+    canvas.drawRect({0, 0, 32, 128}, paint);
+    paint.setColor(SK_ColorGREEN);
+    canvas.drawRect({32, 0, 64, 128}, paint);
+    paint.setColor(SK_ColorBLUE);
+    canvas.drawRect({64, 0, 96, 128}, paint);
+    paint.setColor(SK_ColorCYAN);
+    canvas.drawRect({96, 0, 128, 128}, paint);
+
 
     bitmap.setAlphaType(kOpaque_SkAlphaType);
     bitmap.setImmutable();
@@ -139,8 +151,8 @@ public:
     }
 
 protected:
-    static const int kWidth = 256;
-    static const int kHeight = 384;
+    static const int kWidth = 32;
+    static const int kHeight = 32;
 
     SkString onShortName() override {
         return SkString("graphitestart");
@@ -169,11 +181,18 @@ protected:
             canvas->drawRect(r, p);
         }
 
+        SkPath path;
+        path.moveTo(0, 10);
+        path.lineTo(16, 20);
+        path.lineTo(32, 10);
+        path.lineTo(16, 15);
+        path.close();
+
         // LL corner
         {
             SkPaint p;
             p.setShader(create_image_shader(context));
-            canvas->drawRect({2, 129, 127, 255}, p);
+            canvas->drawPath(path, p);
         }
 
         // LR corner
