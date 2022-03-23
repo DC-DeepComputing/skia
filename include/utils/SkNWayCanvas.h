@@ -16,6 +16,7 @@
 class SK_API SkNWayCanvas : public SkCanvasVirtualEnforcer<SkNoDrawCanvas> {
 public:
     SkNWayCanvas(int width, int height);
+    SkNWayCanvas(sk_sp<SkBaseDevice> device);
     ~SkNWayCanvas() override;
 
     virtual void addCanvas(SkCanvas*);

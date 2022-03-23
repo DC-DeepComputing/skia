@@ -373,7 +373,8 @@ public:
     Result draw(const Src&, SkBitmap*, SkWStream*, SkString*) const override;
     Result onDraw(const Src&, SkBitmap*, SkWStream*, SkString*,
                   const GrContextOptions& baseOptions,
-                  std::function<void(GrDirectContext*)> initContext = nullptr) const;
+                  std::function<void(GrDirectContext*)> initContext = nullptr,
+                  std::function<SkCanvas*(SkCanvas*)> wrapCanvas = nullptr) const;
 
     sk_gpu_test::GrContextFactory::ContextType contextType() const { return fContextType; }
     const sk_gpu_test::GrContextFactory::ContextOverrides& contextOverrides() const {
@@ -408,6 +409,15 @@ private:
     sk_sp<SkColorSpace>                               fColorSpace;
     GrContextOptions                                  fBaseContextOptions;
     sk_gpu_test::MemoryCache                          fMemoryCache;
+};
+
+class GPUSlug : public GPUSink {
+public:
+    GPUSlug(const SkCommandLineConfigGpu*, const GrContextOptions&);
+
+    Result draw(const Src&, SkBitmap*, SkWStream*, SkString*) const override;
+
+private:
 };
 
 class GPUThreadTestingSink : public GPUSink {
