@@ -94,6 +94,21 @@
 #include <cmath>
 #include <functional>
 
+template <typename Key> class SkTestCanvas;
+
+struct SkSlugTestKey {};
+
+template <>
+class SkTestCanvas<SkSlugTestKey> : public SkNWayCanvas {
+public:
+    SkTestCanvas(SkISize size) : SkNWayCanvas(size.width(), size.height()) {}
+    void wrapCanvas(SkCanvas* canvas) {
+        this->addCanvas(canvas);
+    }
+    void onDrawGlyphRunList(const SkGlyphRunList& glyphRunList, const SkPaint& paint) override {}
+private:
+};
+
 static DEFINE_bool(multiPage, false,
                    "For document-type backends, render the source into multiple pages");
 static DEFINE_bool(RAW_threading, true, "Allow RAW decodes to run on multiple threads?");
@@ -1488,7 +1503,8 @@ bool GPUSink::readBack(SkSurface* surface, SkBitmap* dst) const {
 
 Result GPUSink::onDraw(const Src& src, SkBitmap* dst, SkWStream*, SkString* log,
                        const GrContextOptions& baseOptions,
-                       std::function<void(GrDirectContext*)> initContext) const {
+                       std::function<void(GrDirectContext*)> initContext,
+                       std::function<SkCanvas*(SkCanvas*)> wrapCanvas) const {
     GrContextOptions grOptions = baseOptions;
 
     // We don't expect the src to mess with the persistent cache or the executor.
@@ -1517,7 +1533,12 @@ Result GPUSink::onDraw(const Src& src, SkBitmap* dst, SkWStream*, SkString* log,
         factory.abandonContexts();
     }
 
-    Result result = src.draw(direct, surface->getCanvas());
+    SkCanvas* canvas = surface->getCanvas();
+    if (wrapCanvas) {
+        canvas = wrapCanvas(canvas);
+    }
+
+    Result result = src.draw(direct, canvas);
     if (!result.isOk()) {
         return result;
     }
@@ -1540,6 +1561,24 @@ Result GPUSink::onDraw(const Src& src, SkBitmap* dst, SkWStream*, SkString* log,
         direct->storeVkPipelineCacheData();
     }
     return Result::Ok();
+}
+
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
+GPUSlugSink::GPUSlugSink(const SkCommandLineConfigGpu* config, const GrContextOptions& options)
+        : GPUSink(config, options) {}
+
+
+Result GPUSlugSink::draw(const Src& src, SkBitmap* dst, SkWStream* dstStream, SkString* log) const {
+    SkTestCanvas<SkSlugTestKey> convertToSlugCanvas(src.size());
+
+    auto wrapCanvas = [&](SkCanvas* oldCanvas) -> SkCanvas* {
+        convertToSlugCanvas.addCanvas(oldCanvas);
+
+        return &convertToSlugCanvas;
+    };
+
+    return this->onDraw(src, dst, dstStream, log, this->baseContextOptions(), nullptr, wrapCanvas);
 }
 
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
