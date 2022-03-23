@@ -7,13 +7,22 @@
 
 #include "src/sksl/SkSLThreadContext.h"
 
+#include "include/private/SkSLProgramElement.h"
 #include "include/sksl/DSLSymbols.h"
+#include "src/sksl/SkSLBuiltinMap.h"
+#include "src/sksl/SkSLCompiler.h"
+#include "src/sksl/SkSLModifiersPool.h"
+#include "src/sksl/SkSLParsedModule.h"
+#include "src/sksl/SkSLPool.h"
+#include "src/sksl/SkSLUtil.h"
+#include "src/sksl/ir/SkSLExternalFunction.h"
+#include "src/sksl/ir/SkSLSymbolTable.h"
+
+#include <type_traits>
+
 #if !defined(SKSL_STANDALONE) && SK_SUPPORT_GPU
 #include "src/gpu/glsl/GrGLSLFragmentShaderBuilder.h"
 #endif // !defined(SKSL_STANDALONE) && SK_SUPPORT_GPU
-#include "src/sksl/SkSLBuiltinMap.h"
-#include "src/sksl/SkSLCompiler.h"
-#include "src/sksl/ir/SkSLExternalFunction.h"
 
 namespace SkSL {
 
@@ -129,7 +138,7 @@ void ThreadContext::ReportError(std::string_view msg, Position pos) {
 void ThreadContext::DefaultErrorReporter::handleError(std::string_view msg, Position pos) {
     if (pos.line() > -1) {
         SK_ABORT("error: %s: %d: %.*sNo SkSL error reporter configured, treating this as a fatal "
-                 "error\n", pos.file_name(), pos.line(), (int)msg.length(), msg.data());
+                 "error\n", ThreadContext::Filename(), pos.line(), (int)msg.length(), msg.data());
     } else {
         SK_ABORT("error: %.*s\nNo SkSL error reporter configured, treating this as a fatal error\n",
                  (int)msg.length(), msg.data());

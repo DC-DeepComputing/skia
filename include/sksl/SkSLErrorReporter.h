@@ -9,7 +9,6 @@
 #define SKSL_ERROR_REPORTER
 
 #include "include/core/SkTypes.h"
-#include "include/private/SkSLString.h"
 
 #include <string>
 #include <string_view>
@@ -38,9 +37,9 @@ public:
      */
     void error(Position pos, std::string_view msg);
 
-    const char* source() const { return fSource; }
+    std::string_view source() const { return fSource; }
 
-    void setSource(const char* source) { fSource = source; }
+    void setSource(std::string_view source) { fSource = source; }
 
     void reportPendingErrors(Position pos);
 
@@ -61,7 +60,7 @@ protected:
 private:
     Position position(int offset) const;
 
-    const char* fSource = nullptr;
+    std::string_view fSource;
     std::vector<std::string> fPendingErrors;
     int fErrorCount = 0;
 };

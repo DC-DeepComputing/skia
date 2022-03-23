@@ -991,7 +991,7 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 		skip(ALL, "tests", ALL, "SkSLLoopInt_GPU")
 	}
 
-	if b.gpu("QuadroP400") || b.gpu("GTX660") || b.gpu("GTX960") || b.gpu("Tegra3") {
+	if b.gpu("QuadroP400") || b.gpu("GTX660") || b.gpu("GTX960") || b.gpu("Tegra3") || b.gpu("RTX3060") {
 		if !b.extraConfig("Vulkan") {
 			// Various Nvidia GPUs crash or generate errors when assembling weird matrices
 			skip(ALL, "tests", ALL, "SkSLMatrixConstructorsES2_GPU") // skia:12443
@@ -1012,6 +1012,11 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 		// Fails on Ubuntu18-Golo bots with QuadroP400 GPUs on Vulkan and OpenGL
 		skip(ALL, "tests", ALL, "SkSLPreserveSideEffects_GPU") // skia:13035
 	}
+
+	if b.gpu("QuadroP400") && b.matchOs("Win10") && b.matchModel("Golo") {
+	    // Times out with driver 30.0.15.1179
+		skip("vkmsaa4", "gm", ALL, "shadow_utils")
+    }
 
 	if b.gpu("PowerVRGE8320") || b.gpu("Tegra3") || b.gpu("Adreno308") {
 		skip(ALL, "tests", ALL, "SkSLVectorScalarMath_GPU") // skia:11919

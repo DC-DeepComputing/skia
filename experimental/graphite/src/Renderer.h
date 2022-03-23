@@ -20,6 +20,8 @@
 
 #include <array>
 #include <initializer_list>
+#include <string>
+#include <string_view>
 #include <vector>
 
 struct SkIRect;
@@ -61,7 +63,9 @@ public:
                                                const Transform&,
                                                const Shape&) const = 0;
 
-    virtual const char* name()      const = 0;
+    // Returns a name formatted as "Subclass[variant]", where "Subclass" matches the C++ class name
+    // and variant is a unique term describing instance's specific configuration.
+    const char* name() const { return fName.c_str(); }
 
     // TODO: This is only temporary. Eventually the RenderStep will define its logic in SkSL and
     // be able to have code operate in both the vertex and fragment shaders. Ideally the RenderStep
@@ -106,13 +110,13 @@ public:
 
 
     // TODO: Actual API to do things
-    // 1. Provide stencil settings
     // 6. Some Renderers benefit from being able to share vertices between RenderSteps. Must find a
     //    way to support that. It may mean that RenderSteps get state per draw.
     //    - Does Renderer make RenderStepFactories that create steps for each DrawList::Draw?
     //    - Does DrawList->DrawPass conversion build a separate array of blind data that the
     //      stateless Renderstep can refer to for {draw,step} pairs?
     //    - Does each DrawList::Draw have extra space (e.g. 8 bytes) that steps can cache data in?
+    // 7. Painter's order for the draw sent as uniform or attribute
 protected:
     enum class Flags : unsigned {
         kNone            = 0b000,
@@ -124,7 +128,9 @@ protected:
     // While RenderStep does not define the full program that's run for a draw, it defines the
     // entire vertex layout of the pipeline. This is not allowed to change, so can be provided to
     // the RenderStep constructor by subclasses.
-    RenderStep(Mask<Flags> flags,
+    RenderStep(std::string_view className,
+               std::string_view variantName,
+               Mask<Flags> flags,
                std::initializer_list<SkUniform> uniforms,
                PrimitiveType primitiveType,
                DepthStencilSettings depthStencilSettings,
@@ -137,12 +143,18 @@ protected:
             , fVertexAttrs(vertexAttrs)
             , fInstanceAttrs(instanceAttrs)
             , fVertexStride(0)
-            , fInstanceStride(0) {
+            , fInstanceStride(0)
+            , fName(className) {
         for (auto v : this->vertexAttributes()) {
             fVertexStride += v.sizeAlign4();
         }
         for (auto i : this->instanceAttributes()) {
             fInstanceStride += i.sizeAlign4();
+        }
+        if (variantName.size() > 0) {
+            fName += "[";
+            fName += variantName;
+            fName += "]";
         }
     }
 
@@ -168,6 +180,8 @@ private:
 
     size_t fVertexStride;   // derived from vertex attribute set
     size_t fInstanceStride; // derived from instance attribute set
+
+    std::string fName;
 };
 SKGPU_MAKE_MASK_OPS(RenderStep::Flags);
 
@@ -192,9 +206,13 @@ public:
     // across draw calls, and reduce the number of shader permutations required. These Renderers
     // are stateless singletons and remain alive for the entire program. Each Renderer corresponds
     // to a specific recording function on DrawList and fill type.
-    static const Renderer& StencilAndFillPath(SkPathFillType);
+    static const Renderer& StencilTessellatedCurvesAndTris(SkPathFillType);
+
+    static const Renderer& StencilTessellatedWedges(SkPathFillType);
+
+    static const Renderer& ConvexTessellatedWedges();
+
     // TODO: Not on the immediate sprint target, but show what needs to be added for DrawList's API
-    // static const Renderer& FillConvexPath();
     // static const Renderer& StrokePath();
     // TODO: Will add more of these as primitive rendering etc. is fleshed out
 

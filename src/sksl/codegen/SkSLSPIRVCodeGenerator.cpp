@@ -7,14 +7,33 @@
 
 #include "src/sksl/codegen/SkSLSPIRVCodeGenerator.h"
 
-#include "src/sksl/GLSL.std.450.h"
-
+#include "include/core/SkSpan.h"
+#include "include/core/SkTypes.h"
+#include "include/private/SkSLProgramElement.h"
+#include "include/private/SkSLStatement.h"
+#include "include/private/SkSLSymbol.h"
+#include "include/private/SkTArray.h"
 #include "include/sksl/DSLCore.h"
+#include "include/sksl/DSLExpression.h"
+#include "include/sksl/DSLType.h"
+#include "include/sksl/DSLVar.h"
+#include "include/sksl/SkSLErrorReporter.h"
+#include "include/sksl/SkSLPosition.h"
+#include "src/sksl/GLSL.std.450.h"
+#include "src/sksl/SkSLBuiltinTypes.h"
 #include "src/sksl/SkSLCompiler.h"
+#include "src/sksl/SkSLContext.h"
+#include "src/sksl/SkSLLexer.h"
+#include "src/sksl/SkSLModifiersPool.h"
 #include "src/sksl/SkSLOperators.h"
+#include "src/sksl/SkSLOutputStream.h"
+#include "src/sksl/SkSLPool.h"
+#include "src/sksl/SkSLProgramSettings.h"
 #include "src/sksl/SkSLThreadContext.h"
+#include "src/sksl/SkSLUtil.h"
 #include "src/sksl/ir/SkSLBinaryExpression.h"
 #include "src/sksl/ir/SkSLBlock.h"
+#include "src/sksl/ir/SkSLConstructor.h"
 #include "src/sksl/ir/SkSLConstructorArrayCast.h"
 #include "src/sksl/ir/SkSLConstructorCompound.h"
 #include "src/sksl/ir/SkSLConstructorCompoundCast.h"
@@ -23,6 +42,7 @@
 #include "src/sksl/ir/SkSLConstructorScalarCast.h"
 #include "src/sksl/ir/SkSLConstructorSplat.h"
 #include "src/sksl/ir/SkSLDoStatement.h"
+#include "src/sksl/ir/SkSLExpression.h"
 #include "src/sksl/ir/SkSLExpressionStatement.h"
 #include "src/sksl/ir/SkSLExtension.h"
 #include "src/sksl/ir/SkSLField.h"
@@ -34,18 +54,23 @@
 #include "src/sksl/ir/SkSLIfStatement.h"
 #include "src/sksl/ir/SkSLIndexExpression.h"
 #include "src/sksl/ir/SkSLInterfaceBlock.h"
+#include "src/sksl/ir/SkSLLiteral.h"
 #include "src/sksl/ir/SkSLPostfixExpression.h"
 #include "src/sksl/ir/SkSLPrefixExpression.h"
+#include "src/sksl/ir/SkSLProgram.h"
 #include "src/sksl/ir/SkSLReturnStatement.h"
+#include "src/sksl/ir/SkSLSwitchCase.h"
 #include "src/sksl/ir/SkSLSwitchStatement.h"
 #include "src/sksl/ir/SkSLSwizzle.h"
 #include "src/sksl/ir/SkSLTernaryExpression.h"
 #include "src/sksl/ir/SkSLVarDeclarations.h"
 #include "src/sksl/ir/SkSLVariableReference.h"
 
-#ifdef SK_VULKAN
-#include "src/gpu/vk/GrVkCaps.h"
-#endif
+#include <cmath>
+#include <optional>
+#include <set>
+#include <type_traits>
+#include <utility>
 
 #define kLast_Capability SpvCapabilityMultiViewport
 
@@ -2061,91 +2086,99 @@ std::unique_ptr<SPIRVCodeGenerator::LValue> SPIRVCodeGenerator::getLValue(const 
 
 SpvId SPIRVCodeGenerator::writeVariableReference(const VariableReference& ref, OutputStream& out) {
     const Variable* variable = ref.variable();
-    if (variable->modifiers().fLayout.fBuiltin == DEVICE_FRAGCOORDS_BUILTIN) {
-        // Down below, we rewrite raw references to sk_FragCoord with expressions that reference
-        // DEVICE_FRAGCOORDS_BUILTIN. This is a fake variable that means we need to directly access
-        // the fragcoord; do so now.
-        dsl::DSLGlobalVar fragCoord("sk_FragCoord");
-        return this->getLValue(*dsl::DSLExpression(fragCoord).release(), out)->load(out);
-    }
-    if (variable->modifiers().fLayout.fBuiltin == DEVICE_CLOCKWISE_BUILTIN) {
-        // Down below, we rewrite raw references to sk_Clockwise with expressions that reference
-        // DEVICE_CLOCKWISE_BUILTIN. This is a fake variable that means we need to directly
-        // access front facing; do so now.
-        dsl::DSLGlobalVar clockwise("sk_Clockwise");
-        return this->getLValue(*dsl::DSLExpression(clockwise).release(), out)->load(out);
-    }
-
-    // Handle inserting use of uniform to flip y when referencing sk_FragCoord.
-    if (variable->modifiers().fLayout.fBuiltin == SK_FRAGCOORD_BUILTIN) {
-        this->addRTFlipUniform(ref.fPosition);
-        // Use sk_RTAdjust to compute the flipped coordinate
-        using namespace dsl;
-        const char* DEVICE_COORDS_NAME = "$device_FragCoords";
-        SymbolTable& symbols = *ThreadContext::SymbolTable();
-        // Use a uniform to flip the Y coordinate. The new expression will be written in
-        // terms of $device_FragCoords, which is a fake variable that means "access the
-        // underlying fragcoords directly without flipping it".
-        DSLExpression rtFlip(ThreadContext::Compiler().convertIdentifier(Position(),
-                SKSL_RTFLIP_NAME));
-        if (!symbols[DEVICE_COORDS_NAME]) {
-            AutoAttachPoolToThread attach(fProgram.fPool.get());
-            Modifiers modifiers;
-            modifiers.fLayout.fBuiltin = DEVICE_FRAGCOORDS_BUILTIN;
-            auto coordsVar = std::make_unique<Variable>(Position(),
-                                                        fContext.fModifiersPool->add(modifiers),
-                                                        DEVICE_COORDS_NAME,
-                                                        fContext.fTypes.fFloat4.get(),
-                                                        /*builtin=*/true,
-                                                        Variable::Storage::kGlobal);
-            fSPIRVBonusVariables.add(coordsVar.get());
-            symbols.add(std::move(coordsVar));
+    switch (variable->modifiers().fLayout.fBuiltin) {
+        case DEVICE_FRAGCOORDS_BUILTIN: {
+            // Down below, we rewrite raw references to sk_FragCoord with expressions that reference
+            // DEVICE_FRAGCOORDS_BUILTIN. This is a fake variable that means we need to directly
+            // access the fragcoord; do so now.
+            dsl::DSLGlobalVar fragCoord("sk_FragCoord");
+            return this->getLValue(*dsl::DSLExpression(fragCoord).release(), out)->load(out);
         }
-        DSLGlobalVar deviceCoord(DEVICE_COORDS_NAME);
-        std::unique_ptr<Expression> rtFlipSkSLExpr = rtFlip.release();
-        DSLExpression x = DSLExpression(rtFlipSkSLExpr->clone()).x();
-        DSLExpression y = DSLExpression(std::move(rtFlipSkSLExpr)).y();
-        return this->writeExpression(*dsl::Float4(deviceCoord.x(),
-                                                  std::move(x) + std::move(y) * deviceCoord.y(),
-                                                  deviceCoord.z(),
-                                                  deviceCoord.w()).release(),
-                                     out);
-    }
-
-    // Handle flipping sk_Clockwise.
-    if (variable->modifiers().fLayout.fBuiltin == SK_CLOCKWISE_BUILTIN) {
-        this->addRTFlipUniform(ref.fPosition);
-        using namespace dsl;
-        const char* DEVICE_CLOCKWISE_NAME = "$device_Clockwise";
-        SymbolTable& symbols = *ThreadContext::SymbolTable();
-        // Use a uniform to flip the Y coordinate. The new expression will be written in
-        // terms of $device_Clockwise, which is a fake variable that means "access the
-        // underlying FrontFacing directly".
-        DSLExpression rtFlip(ThreadContext::Compiler().convertIdentifier(Position(),
-                SKSL_RTFLIP_NAME));
-        if (!symbols[DEVICE_CLOCKWISE_NAME]) {
-            AutoAttachPoolToThread attach(fProgram.fPool.get());
-            Modifiers modifiers;
-            modifiers.fLayout.fBuiltin = DEVICE_CLOCKWISE_BUILTIN;
-            auto clockwiseVar = std::make_unique<Variable>(Position(),
-                                                           fContext.fModifiersPool->add(modifiers),
-                                                           DEVICE_CLOCKWISE_NAME,
-                                                           fContext.fTypes.fBool.get(),
-                                                           /*builtin=*/true,
-                                                           Variable::Storage::kGlobal);
-            fSPIRVBonusVariables.add(clockwiseVar.get());
-            symbols.add(std::move(clockwiseVar));
+        case DEVICE_CLOCKWISE_BUILTIN: {
+            // Down below, we rewrite raw references to sk_Clockwise with expressions that reference
+            // DEVICE_CLOCKWISE_BUILTIN. This is a fake variable that means we need to directly
+            // access front facing; do so now.
+            dsl::DSLGlobalVar clockwise("sk_Clockwise");
+            return this->getLValue(*dsl::DSLExpression(clockwise).release(), out)->load(out);
         }
-        DSLGlobalVar deviceClockwise(DEVICE_CLOCKWISE_NAME);
-        // FrontFacing in Vulkan is defined in terms of a top-down render target. In skia,
-        // we use the default convention of "counter-clockwise face is front".
-        return this->writeExpression(*dsl::Bool(Select(rtFlip.y() > 0,
-                                                       !deviceClockwise,
-                                                       deviceClockwise)).release(),
-                                     out);
+        case SK_SECONDARYFRAGCOLOR_BUILTIN: {
+            // sk_SecondaryFragColor corresponds to gl_SecondaryFragColorEXT, which isn't supposed
+            // to appear in a SPIR-V program (it's only valid in ES2). Report an error.
+            fContext.fErrors->error(ref.fPosition,
+                    "sk_SecondaryFragColor is not allowed in SPIR-V");
+            return (SpvId)-1;
+        }
+        case SK_FRAGCOORD_BUILTIN: {
+            // Handle inserting use of uniform to flip y when referencing sk_FragCoord.
+            this->addRTFlipUniform(ref.fPosition);
+            // Use sk_RTAdjust to compute the flipped coordinate
+            using namespace dsl;
+            const char* DEVICE_COORDS_NAME = "$device_FragCoords";
+            SymbolTable& symbols = *ThreadContext::SymbolTable();
+            // Use a uniform to flip the Y coordinate. The new expression will be written in
+            // terms of $device_FragCoords, which is a fake variable that means "access the
+            // underlying fragcoords directly without flipping it".
+            DSLExpression rtFlip(ThreadContext::Compiler().convertIdentifier(Position(),
+                    SKSL_RTFLIP_NAME));
+            if (!symbols[DEVICE_COORDS_NAME]) {
+                AutoAttachPoolToThread attach(fProgram.fPool.get());
+                Modifiers modifiers;
+                modifiers.fLayout.fBuiltin = DEVICE_FRAGCOORDS_BUILTIN;
+                auto coordsVar = std::make_unique<Variable>(Position(),
+                                                            fContext.fModifiersPool->add(modifiers),
+                                                            DEVICE_COORDS_NAME,
+                                                            fContext.fTypes.fFloat4.get(),
+                                                            /*builtin=*/true,
+                                                            Variable::Storage::kGlobal);
+                fSPIRVBonusVariables.add(coordsVar.get());
+                symbols.add(std::move(coordsVar));
+            }
+            DSLGlobalVar deviceCoord(DEVICE_COORDS_NAME);
+            std::unique_ptr<Expression> rtFlipSkSLExpr = rtFlip.release();
+            DSLExpression x = DSLExpression(rtFlipSkSLExpr->clone()).x();
+            DSLExpression y = DSLExpression(std::move(rtFlipSkSLExpr)).y();
+            return this->writeExpression(*dsl::Float4(deviceCoord.x(),
+                                                      std::move(x) + std::move(y) * deviceCoord.y(),
+                                                      deviceCoord.z(),
+                                                      deviceCoord.w()).release(),
+                                         out);
+        }
+        case SK_CLOCKWISE_BUILTIN: {
+            // Handle flipping sk_Clockwise.
+            this->addRTFlipUniform(ref.fPosition);
+            using namespace dsl;
+            const char* DEVICE_CLOCKWISE_NAME = "$device_Clockwise";
+            SymbolTable& symbols = *ThreadContext::SymbolTable();
+            // Use a uniform to flip the Y coordinate. The new expression will be written in
+            // terms of $device_Clockwise, which is a fake variable that means "access the
+            // underlying FrontFacing directly".
+            DSLExpression rtFlip(ThreadContext::Compiler().convertIdentifier(Position(),
+                    SKSL_RTFLIP_NAME));
+            if (!symbols[DEVICE_CLOCKWISE_NAME]) {
+                AutoAttachPoolToThread attach(fProgram.fPool.get());
+                Modifiers modifiers;
+                modifiers.fLayout.fBuiltin = DEVICE_CLOCKWISE_BUILTIN;
+                auto clockwiseVar = std::make_unique<Variable>(Position(),
+                        fContext.fModifiersPool->add(modifiers),
+                        DEVICE_CLOCKWISE_NAME,
+                        fContext.fTypes.fBool.get(),
+                        /*builtin=*/true,
+                        Variable::Storage::kGlobal);
+                fSPIRVBonusVariables.add(clockwiseVar.get());
+                symbols.add(std::move(clockwiseVar));
+            }
+            DSLGlobalVar deviceClockwise(DEVICE_CLOCKWISE_NAME);
+            // FrontFacing in Vulkan is defined in terms of a top-down render target. In skia,
+            // we use the default convention of "counter-clockwise face is front".
+            return this->writeExpression(*dsl::Bool(Select(rtFlip.y() > 0,
+                                                           !deviceClockwise,
+                                                           deviceClockwise)).release(),
+                                         out);
+        }
+        default:
+            return this->getLValue(ref, out)->load(out);
     }
 
-    return this->getLValue(ref, out)->load(out);
 }
 
 SpvId SPIRVCodeGenerator::writeIndexExpression(const IndexExpression& expr, OutputStream& out) {
@@ -3120,13 +3153,6 @@ void SPIRVCodeGenerator::writeGlobalVar(ProgramKind kind, const VarDeclaration& 
     const Type& type = var.type();
     SpvId id = this->nextId(&type);
     fVariableMap.set(&var, id);
-    if (var.modifiers().fLayout.fBuiltin == SK_SECONDARYFRAGCOLOR_BUILTIN) {
-        // sk_SecondaryFragColor corresponds to gl_SecondaryFragColorEXT, which isn't supposed to
-        // appear in a SPIR-V program (it's only valid in ES2). Report an error.
-        fContext.fErrors->error(varDecl.fPosition,
-                "sk_SecondaryFragColor is not allowed in SPIR-V");
-        return;
-    }
     Layout layout = var.modifiers().fLayout;
     if (layout.fSet < 0 && storageClass == SpvStorageClassUniformConstant) {
         layout.fSet = fProgram.fConfig->fSettings.fDefaultUniformSet;

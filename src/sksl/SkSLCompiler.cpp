@@ -7,51 +7,52 @@
 
 #include "src/sksl/SkSLCompiler.h"
 
-#include <memory>
-#include <unordered_set>
-
+#include "include/private/SkSLLayout.h"
+#include "include/private/SkSLModifiers.h"
+#include "include/private/SkSLStatement.h"
+#include "include/private/SkSLSymbol.h"
 #include "include/sksl/DSLCore.h"
+#include "include/sksl/DSLModifiers.h"
+#include "include/sksl/DSLType.h"
 #include "src/core/SkTraceEvent.h"
+#include "src/sksl/SkSLAnalysis.h"
 #include "src/sksl/SkSLBuiltinMap.h"
-#include "src/sksl/SkSLConstantFolder.h"
+#include "src/sksl/SkSLBuiltinTypes.h"
+#include "src/sksl/SkSLContext.h"
 #include "src/sksl/SkSLDSLParser.h"
-#include "src/sksl/SkSLOperators.h"
+#include "src/sksl/SkSLOutputStream.h"
 #include "src/sksl/SkSLProgramSettings.h"
 #include "src/sksl/SkSLRehydrator.h"
+#include "src/sksl/SkSLStringStream.h"
 #include "src/sksl/SkSLThreadContext.h"
+#include "src/sksl/SkSLUtil.h"
 #include "src/sksl/codegen/SkSLGLSLCodeGenerator.h"
 #include "src/sksl/codegen/SkSLMetalCodeGenerator.h"
 #include "src/sksl/codegen/SkSLSPIRVCodeGenerator.h"
 #include "src/sksl/codegen/SkSLSPIRVtoHLSL.h"
-#include "src/sksl/dsl/priv/DSLWriter.h"
-#include "src/sksl/dsl/priv/DSL_priv.h"
 #include "src/sksl/ir/SkSLExpression.h"
-#include "src/sksl/ir/SkSLExpressionStatement.h"
+#include "src/sksl/ir/SkSLExternalFunction.h"
 #include "src/sksl/ir/SkSLExternalFunctionReference.h"
 #include "src/sksl/ir/SkSLField.h"
 #include "src/sksl/ir/SkSLFieldAccess.h"
-#include "src/sksl/ir/SkSLFunctionCall.h"
+#include "src/sksl/ir/SkSLFunctionDeclaration.h"
 #include "src/sksl/ir/SkSLFunctionDefinition.h"
 #include "src/sksl/ir/SkSLFunctionReference.h"
 #include "src/sksl/ir/SkSLInterfaceBlock.h"
-#include "src/sksl/ir/SkSLLiteral.h"
-#include "src/sksl/ir/SkSLModifiersDeclaration.h"
-#include "src/sksl/ir/SkSLNop.h"
 #include "src/sksl/ir/SkSLSymbolTable.h"
-#include "src/sksl/ir/SkSLTernaryExpression.h"
+#include "src/sksl/ir/SkSLType.h"
 #include "src/sksl/ir/SkSLTypeReference.h"
 #include "src/sksl/ir/SkSLUnresolvedFunction.h"
 #include "src/sksl/ir/SkSLVarDeclarations.h"
-#include "src/sksl/transform/SkSLProgramWriter.h"
+#include "src/sksl/ir/SkSLVariable.h"
+#include "src/sksl/ir/SkSLVariableReference.h"
 #include "src/sksl/transform/SkSLTransform.h"
-#include "src/utils/SkBitSet.h"
 
-#include <fstream>
-
-#if !defined(SKSL_STANDALONE) & SK_SUPPORT_GPU
-#include "include/gpu/GrContextOptions.h"
-#include "src/gpu/GrShaderCaps.h"
-#endif
+#include <atomic>
+#include <cstdint>
+#include <memory>
+#include <stdio.h>
+#include <utility>
 
 #ifdef SK_ENABLE_SPIRV_VALIDATION
 #include "spirv-tools/libspirv.hpp"
@@ -59,6 +60,7 @@
 
 #ifdef SKSL_STANDALONE
 #define REHYDRATE 0
+#include <fstream>
 #else
 #define REHYDRATE 1
 #endif
@@ -93,14 +95,14 @@ using RefKind = VariableReference::RefKind;
 
 class AutoSource {
 public:
-    AutoSource(Compiler* compiler, const char* source)
+    AutoSource(Compiler* compiler, std::string_view source)
             : fCompiler(compiler) {
-        SkASSERT(!fCompiler->errorReporter().source());
+        SkASSERT(!fCompiler->errorReporter().source().data());
         fCompiler->errorReporter().setSource(source);
     }
 
     ~AutoSource() {
-        fCompiler->errorReporter().setSource(nullptr);
+        fCompiler->errorReporter().setSource(std::string_view());
     }
 
     Compiler* fCompiler;
@@ -626,11 +628,11 @@ bool Compiler::finalize(Program& program) {
     return this->errorCount() == 0;
 }
 
-#if defined(SKSL_STANDALONE) || SK_SUPPORT_GPU
+#if defined(SKSL_STANDALONE) || SK_SUPPORT_GPU || SK_GRAPHITE_ENABLED
 
 bool Compiler::toSPIRV(Program& program, OutputStream& out) {
     TRACE_EVENT0("skia.shaders", "SkSL::Compiler::toSPIRV");
-    AutoSource as(this, program.fSource->c_str());
+    AutoSource as(this, *program.fSource);
     ProgramSettings settings;
     settings.fDSLUseMemoryPool = false;
     dsl::Start(this, program.fConfig->fKind, settings);
@@ -690,7 +692,7 @@ bool Compiler::toSPIRV(Program& program, std::string* out) {
 
 bool Compiler::toGLSL(Program& program, OutputStream& out) {
     TRACE_EVENT0("skia.shaders", "SkSL::Compiler::toGLSL");
-    AutoSource as(this, program.fSource->c_str());
+    AutoSource as(this, *program.fSource);
     GLSLCodeGenerator cg(fContext.get(), &program, &out);
     bool result = cg.generateCode();
     return result;
@@ -731,7 +733,7 @@ bool Compiler::toHLSL(Program& program, std::string* out) {
 
 bool Compiler::toMetal(Program& program, OutputStream& out) {
     TRACE_EVENT0("skia.shaders", "SkSL::Compiler::toMetal");
-    AutoSource as(this, program.fSource->c_str());
+    AutoSource as(this, *program.fSource);
     MetalCodeGenerator cg(fContext.get(), &program, &out);
     bool result = cg.generateCode();
     return result;
@@ -746,7 +748,7 @@ bool Compiler::toMetal(Program& program, std::string* out) {
     return result;
 }
 
-#endif // defined(SKSL_STANDALONE) || SK_SUPPORT_GPU
+#endif // defined(SKSL_STANDALONE) || SK_SUPPORT_GPU || SK_GRAPHITE_ENABLED
 
 void Compiler::handleError(std::string_view msg, Position pos) {
     fErrorText += "error: ";

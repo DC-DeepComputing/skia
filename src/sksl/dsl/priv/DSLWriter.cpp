@@ -7,15 +7,33 @@
 
 #include "src/sksl/dsl/priv/DSLWriter.h"
 
+#include "include/core/SkTypes.h"
+#include "include/private/SkSLDefines.h"
+#include "include/private/SkSLProgramElement.h"
+#include "include/private/SkSLStatement.h"
 #include "include/sksl/DSLCore.h"
+#include "include/sksl/DSLExpression.h"
+#include "include/sksl/DSLModifiers.h"
 #include "include/sksl/DSLStatement.h"
 #include "include/sksl/DSLSymbols.h"
+#include "include/sksl/DSLType.h"
 #include "include/sksl/DSLVar.h"
+#include "include/sksl/SkSLPosition.h"
+#include "src/sksl/SkSLMangler.h"
+#include "src/sksl/SkSLModifiersPool.h"
+#include "src/sksl/SkSLProgramSettings.h"
 #include "src/sksl/SkSLThreadContext.h"
 #include "src/sksl/ir/SkSLBlock.h"
+#include "src/sksl/ir/SkSLExpression.h"
 #include "src/sksl/ir/SkSLNop.h"
+#include "src/sksl/ir/SkSLType.h"
 #include "src/sksl/ir/SkSLVarDeclarations.h"
 #include "src/sksl/ir/SkSLVariable.h"
+
+#include <string>
+#include <type_traits>
+#include <utility>
+#include <vector>
 
 namespace SkSL {
 
@@ -101,11 +119,12 @@ void DSLWriter::AddVarDeclaration(DSLStatement& existing, DSLVar& additional) {
         SkASSERT(!block.isScope());
         block.children().push_back(Declare(additional).release());
     } else if (existing.fStatement->is<VarDeclaration>()) {
+        Position pos = existing.fStatement->fPosition;
         StatementArray stmts;
         stmts.reserve_back(2);
         stmts.push_back(std::move(existing.fStatement));
         stmts.push_back(Declare(additional).release());
-        existing.fStatement = SkSL::Block::MakeUnscoped(Position(), std::move(stmts));
+        existing.fStatement = SkSL::Block::MakeUnscoped(pos, std::move(stmts));
     } else if (existing.fStatement->isEmpty()) {
         // If the variable declaration generated an error, we can end up with a Nop statement here.
         existing.fStatement = Declare(additional).release();

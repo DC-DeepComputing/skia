@@ -10,6 +10,7 @@
 #include "experimental/graphite/include/Recorder.h"
 #include "experimental/graphite/src/Caps.h"
 #include "experimental/graphite/src/RecorderPriv.h"
+#include "experimental/graphite/src/TextureUtils.h"
 
 namespace skgpu {
 
@@ -22,7 +23,29 @@ Image::Image(TextureProxyView view,
 
 Image::~Image() {}
 
-std::tuple<TextureProxyView, SkColorType> Image::onAsView(Recorder*, Mipmapped mipmapped) const {
+bool Image::testingOnly_ReadPixels(Context* context,
+                                   Recorder* recorder,
+                                   const SkImageInfo& dstInfo,
+                                   void* dstPixels,
+                                   size_t dstRowBytes,
+                                   int srcX,
+                                   int srcY) {
+    return ReadPixelsHelper([recorder]() {
+                                recorder->priv().flushTrackedDevices();
+                            },
+                            context,
+                            recorder,
+                            fTextureProxyView.proxy(),
+                            dstInfo,
+                            dstPixels,
+                            dstRowBytes,
+                            srcX,
+                            srcY);
+}
+
+std::tuple<TextureProxyView, SkColorType> Image::onAsView(Recorder*,
+                                                          Mipmapped mipmapped,
+                                                          SkBudgeted) const {
     if (fTextureProxyView.proxy()->mipmapped() != mipmapped) {
         // We will not generate miplevels
         return {};
@@ -35,7 +58,7 @@ std::tuple<TextureProxyView, SkColorType> Image::onAsView(Recorder*, Mipmapped m
 
 sk_sp<SkImage> SkImage::makeTextureImage(skgpu::Recorder* recorder,
                                          skgpu::Mipmapped mipmapped,
-                                         SkBudgeted) const {
+                                         SkBudgeted budgeted) const {
     if (!recorder) {
         return nullptr;
     }
@@ -49,7 +72,7 @@ sk_sp<SkImage> SkImage::makeTextureImage(skgpu::Recorder* recorder,
             return sk_ref_sp(const_cast<SkImage*>(image));
         }
     }
-    auto [view, ct] = as_IB(this)->asView(recorder, mipmapped);
+    auto [view, ct] = as_IB(this)->asView(recorder, mipmapped, budgeted);
     if (!view) {
         return nullptr;
     }

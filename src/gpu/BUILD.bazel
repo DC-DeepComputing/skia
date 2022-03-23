@@ -173,6 +173,7 @@ cc_library(
         "//src/gpu/ops:PathInnerTriangulateOp_src",
         "//src/gpu/ops:PathStencilCoverOp_src",
         "//src/gpu/ops:PathTessellateOp_src",
+        "//src/gpu/ops:PathTessellator_src",
         "//src/gpu/ops:QuadPerEdgeAA_src",
         "//src/gpu/ops:RegionOp_src",
         "//src/gpu/ops:ShadowRRectOp_src",
@@ -182,13 +183,11 @@ cc_library(
         "//src/gpu/ops:SoftwarePathRenderer_src",
         "//src/gpu/ops:StrokeRectOp_src",
         "//src/gpu/ops:StrokeTessellateOp_src",
+        "//src/gpu/ops:StrokeTessellator_src",
         "//src/gpu/ops:TessellationPathRenderer_src",
         "//src/gpu/ops:TextureOp_src",
         "//src/gpu/ops:TriangulatingPathRenderer_src",
-        "//src/gpu/tessellate:PathCurveTessellator_src",
-        "//src/gpu/tessellate:PathWedgeTessellator_src",
-        "//src/gpu/tessellate:StrokeFixedCountTessellator_src",
-        "//src/gpu/tessellate:StrokeHardwareTessellator_src",
+        "//src/gpu/tessellate:FixedCountBufferUtils_src",
         "//src/gpu/tessellate:Tessellation_src",
         "//src/gpu/tessellate/shaders:GrPathTessellationShader_Hardware_src",
         "//src/gpu/tessellate/shaders:GrPathTessellationShader_MiddleOut_src",
@@ -206,6 +205,25 @@ cc_library(
         "//src/gpu/text:GrStrikeCache_src",
         "//src/gpu/text:GrTextBlobRedrawCoordinator_src",
         "//src/gpu/text:GrTextBlob_src",
+    ],
+)
+
+cc_library(
+    name = "dawn_srcs",
+    deps = [
+        "//src/gpu/dawn:GrDawnAttachment_src",
+        "//src/gpu/dawn:GrDawnBuffer_src",
+        "//src/gpu/dawn:GrDawnCaps_src",
+        "//src/gpu/dawn:GrDawnGpu_src",
+        "//src/gpu/dawn:GrDawnOpsRenderPass_src",
+        "//src/gpu/dawn:GrDawnProgramBuilder_src",
+        "//src/gpu/dawn:GrDawnProgramDataManager_src",
+        "//src/gpu/dawn:GrDawnRenderTarget_src",
+        "//src/gpu/dawn:GrDawnRingBuffer_src",
+        "//src/gpu/dawn:GrDawnTextureRenderTarget_src",
+        "//src/gpu/dawn:GrDawnTexture_src",
+        "//src/gpu/dawn:GrDawnTypesPriv_src",
+        "//src/gpu/dawn:GrDawnUtil_src",
     ],
 )
 
@@ -334,6 +352,10 @@ cc_library(
     name = "srcs",
     visibility = ["//:__subpackages__"],
     deps = [":core_srcs"] + select({
+        "//bazel/common_config_settings:dawn_backend": [
+            ":dawn_srcs",
+            ":v1_srcs",
+        ],
         "//bazel/common_config_settings:gl_backend": [
             ":gl_srcs",
             ":v1_srcs",
@@ -3506,13 +3528,6 @@ generated_cc_atom(
         "//include/gpu:ShaderErrorHandler_hdr",
         "//src/utils:SkShaderUtils_hdr",
     ],
-)
-
-generated_cc_atom(
-    name = "SkRenderEngineAbortf_hdr",
-    hdrs = ["SkRenderEngineAbortf.h"],
-    visibility = ["//:__subpackages__"],
-    deps = ["//include/core:SkTypes_hdr"],
 )
 
 generated_cc_atom(

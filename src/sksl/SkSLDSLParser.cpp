@@ -7,13 +7,32 @@
 
 #include "src/sksl/SkSLDSLParser.h"
 
+#include "include/core/SkSpan.h"
+#include "include/private/SkSLModifiers.h"
+#include "include/private/SkSLProgramElement.h"
 #include "include/private/SkSLString.h"
+#include "include/sksl/DSL.h"
+#include "include/sksl/DSLBlock.h"
+#include "include/sksl/DSLCase.h"
+#include "include/sksl/DSLFunction.h"
+#include "include/sksl/DSLSymbols.h"
+#include "include/sksl/DSLVar.h"
+#include "include/sksl/DSLWrapper.h"
 #include "src/sksl/SkSLCompiler.h"
 #include "src/sksl/SkSLConstantFolder.h"
+#include "src/sksl/SkSLParsedModule.h"
 #include "src/sksl/SkSLThreadContext.h"
 #include "src/sksl/dsl/priv/DSLWriter.h"
 #include "src/sksl/dsl/priv/DSL_priv.h"
+#include "src/sksl/ir/SkSLExpression.h"
+#include "src/sksl/ir/SkSLProgram.h"
+
 #include <memory>
+#include <type_traits>
+#include <unordered_map>
+#include <unordered_set>
+#include <utility>
+#include <vector>
 
 using namespace SkSL::dsl;
 
@@ -254,13 +273,13 @@ std::unique_ptr<Program> DSLParser::program() {
     ErrorReporter* errorReporter = &fCompiler.errorReporter();
     Start(&fCompiler, fKind, fSettings);
     SetErrorReporter(errorReporter);
-    errorReporter->setSource(fText->c_str());
+    errorReporter->setSource(*fText);
     this->declarations();
     std::unique_ptr<Program> result;
     if (!GetErrorReporter().errorCount()) {
         result = dsl::ReleaseProgram(std::move(fText));
     }
-    errorReporter->setSource(nullptr);
+    errorReporter->setSource(std::string_view());
     End();
     return result;
 }
@@ -269,12 +288,12 @@ SkSL::LoadedModule DSLParser::moduleInheritingFrom(SkSL::ParsedModule baseModule
     ErrorReporter* errorReporter = &fCompiler.errorReporter();
     StartModule(&fCompiler, fKind, fSettings, std::move(baseModule));
     SetErrorReporter(errorReporter);
-    errorReporter->setSource(fText->c_str());
+    errorReporter->setSource(*fText);
     this->declarations();
     CurrentSymbolTable()->takeOwnershipOfString(std::move(*fText));
     SkSL::LoadedModule result{ fKind, CurrentSymbolTable(),
             std::move(ThreadContext::ProgramElements()) };
-    errorReporter->setSource(nullptr);
+    errorReporter->setSource(std::string_view());
     End();
     return result;
 }
