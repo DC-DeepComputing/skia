@@ -1486,30 +1486,26 @@ bool GPUSink::readBack(SkSurface* surface, SkBitmap* dst) const {
     return canvas->readPixels(*dst, 0, 0);
 }
 
-Result GPUSink::onDraw(const Src& src, SkBitmap* dst, SkWStream*, SkString* log,
-                       const GrContextOptions& baseOptions,
-                       std::function<void(GrDirectContext*)> initContext) const {
-    GrContextOptions grOptions = baseOptions;
-
-    // We don't expect the src to mess with the persistent cache or the executor.
-    SkDEBUGCODE(auto cache = grOptions.fPersistentCache);
-    SkDEBUGCODE(auto exec = grOptions.fExecutor);
-    src.modifyGrContextOptions(&grOptions);
-    SkASSERT(cache == grOptions.fPersistentCache);
-    SkASSERT(exec == grOptions.fExecutor);
-
-    GrContextFactory factory(grOptions);
+template <typename UsesFactoryContextAndSurface>
+Result GPUSink::applyFactorySurfaceAndContext(
+        const GrContextOptions& options,
+        SkISize size,
+        SkBitmap* dst,
+        SkString* log,
+        std::function<void(GrDirectContext*)> initContext,
+        UsesFactoryContextAndSurface useFactoryContextAndSurface) const {
+    GrContextFactory factory(options);
     auto direct = factory.getContextInfo(fContextType, fContextOverrides).directContext();
     if (initContext) {
         initContext(direct);
     }
 
     const int maxDimension = direct->priv().caps()->maxTextureSize();
-    if (maxDimension < std::max(src.size().width(), src.size().height())) {
+    if (maxDimension < std::max(size.width(), size.height())) {
         return Result::Skip("Src too large to create a texture.\n");
     }
 
-    sk_sp<SkSurface> surface = this->createDstSurface(direct, src.size());
+    sk_sp<SkSurface> surface = this->createDstSurface(direct, size);
     if (!surface) {
         return Result::Fatal("Could not create a surface.");
     }
@@ -1517,11 +1513,17 @@ Result GPUSink::onDraw(const Src& src, SkBitmap* dst, SkWStream*, SkString* log,
         factory.abandonContexts();
     }
 
-    Result result = src.draw(direct, surface->getCanvas());
+    Result result = useFactoryContextAndSurface(&factory, direct, surface.get());
+
     if (!result.isOk()) {
         return result;
     }
     surface->flushAndSubmit();
+    if (FLAGS_gpuStats) {
+        direct->priv().dumpCacheStats(log);
+        direct->priv().dumpGpuStats(log);
+        direct->priv().dumpContextStats(log);
+    }
     if (FLAGS_gpuStats) {
         direct->priv().dumpCacheStats(log);
         direct->priv().dumpGpuStats(log);
@@ -1536,10 +1538,28 @@ Result GPUSink::onDraw(const Src& src, SkBitmap* dst, SkWStream*, SkString* log,
         factory.releaseResourcesAndAbandonContexts();
     }
 
-    if (grOptions.fPersistentCache) {
+    if (options.fPersistentCache) {
         direct->storeVkPipelineCacheData();
     }
     return Result::Ok();
+}
+
+Result GPUSink::onDraw(const Src& src, SkBitmap* dst, SkWStream*, SkString* log,
+                       const GrContextOptions& baseOptions,
+                       std::function<void(GrDirectContext*)> initContext) const {
+    GrContextOptions grOptions = baseOptions;
+
+    // We don't expect the src to mess with the persistent cache or the executor.
+    SkDEBUGCODE(auto cache = grOptions.fPersistentCache);
+    SkDEBUGCODE(auto exec = grOptions.fExecutor);
+    src.modifyGrContextOptions(&grOptions);
+    SkASSERT(cache == grOptions.fPersistentCache);
+    SkASSERT(exec == grOptions.fExecutor);
+
+    return this->applyFactorySurfaceAndContext(grOptions, src.size(), dst, log, initContext,
+                                               [&](GrContextFactory* factory, GrDirectContext* direct, SkSurface* surface) {
+                                                   return src.draw(direct, surface->getCanvas());
+                                               });
 }
 
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
@@ -1578,7 +1598,6 @@ Result GPUThreadTestingSink::draw(const Src& src, SkBitmap* dst, SkWStream* wStr
 }
 
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-
 GPUPersistentCacheTestingSink::GPUPersistentCacheTestingSink(const SkCommandLineConfigGpu* config,
                                                              const GrContextOptions& grCtxOptions)
     : INHERITED(config, grCtxOptions)
@@ -1613,7 +1632,6 @@ Result GPUPersistentCacheTestingSink::draw(const Src& src, SkBitmap* dst, SkWStr
 
     return compare_bitmaps(reference, *dst);
 }
-
 
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
