@@ -67,6 +67,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a69d9ae6_0246faf0",
+        "filename": "src/gpu/gl/GrGLCaps.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-03-23T14:47:56Z",
+      "side": 1,
+      "message": "See follow on change to see if that handles what you\u0027re suggesting here.",
+      "parentUuid": "25c6e380_59a0b8f4",
+      "range": {
+        "startLine": 89,
+        "startChar": 72,
+        "endLine": 89,
+        "endChar": 76
+      },
+      "revId": "9d1b8b502fb1a794cdb3885cabf6d777778fe580",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "28402de5_483ddeb4",
         "filename": "src/gpu/gl/GrGLCaps.cpp",
         "patchSetId": 2
@@ -78,6 +102,30 @@
       "writtenOn": "2022-03-23T14:15:26Z",
       "side": 1,
       "message": "GL_BGRA_EXT?",
+      "range": {
+        "startLine": 1993,
+        "startChar": 36,
+        "endLine": 1993,
+        "endChar": 47
+      },
+      "revId": "9d1b8b502fb1a794cdb3885cabf6d777778fe580",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "83701dbc_ad02108f",
+        "filename": "src/gpu/gl/GrGLCaps.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1993,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-03-23T14:47:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "28402de5_483ddeb4",
       "range": {
         "startLine": 1993,
         "startChar": 36,
