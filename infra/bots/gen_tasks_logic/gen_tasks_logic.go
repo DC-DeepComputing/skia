@@ -1634,6 +1634,7 @@ func (b *jobBuilder) dm() {
 			// Since Valgrind runs on the same bots as the CQ, we restrict Valgrind to a subset of the bots
 			// to ensure there are always bots free for CQ tasks.
 			b.dimension("valgrind:1")
+			b.dimension("id:lin-179-g580")
 		} else if b.extraConfig("MSAN") {
 			b.timeout(9 * time.Hour)
 		} else if b.arch("x86") && b.debug() {
