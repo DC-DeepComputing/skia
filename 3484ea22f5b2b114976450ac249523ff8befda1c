@@ -16,6 +16,63 @@
       "message": "This is a precursor to getting the RenderSteps to use depth correctly, but should also make it easier to iterate down the road on what exactly it is that RenderSteps need to use.\n\nAlso renames StrokeParams to StrokeStyle since there was already a StrokeParams struct defined in the tessellation code",
       "revId": "3484ea22f5b2b114976450ac249523ff8befda1c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "74404189_0eae49e6",
+        "filename": "experimental/graphite/src/DrawGeometry.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-03-23T14:45:49Z",
+      "side": 1,
+      "message": "Not in this CL - but it seems like we should have some asserts in the ctor re drawBounds being contained by scissor",
+      "revId": "3484ea22f5b2b114976450ac249523ff8befda1c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3c0fa064_5bb6130c",
+        "filename": "experimental/graphite/src/DrawGeometry.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-03-23T14:45:49Z",
+      "side": 1,
+      "message": "typo",
+      "range": {
+        "startLine": 83,
+        "startChar": 82,
+        "endLine": 83,
+        "endChar": 89
+      },
+      "revId": "3484ea22f5b2b114976450ac249523ff8befda1c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "72343fad_0c3b72fb",
+        "filename": "experimental/graphite/src/TextureUtils.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-03-23T14:45:49Z",
+      "side": 1,
+      "message": "Do we need this ?",
+      "revId": "3484ea22f5b2b114976450ac249523ff8befda1c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
