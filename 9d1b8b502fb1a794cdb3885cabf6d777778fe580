@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0b96adb6_66e9a4c4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-03-23T13:33:34Z",
+      "side": 1,
+      "message": "ptal at the updates",
+      "revId": "9d1b8b502fb1a794cdb3885cabf6d777778fe580",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "47afc76c_fd1ac3ab",
+        "filename": "src/gpu/gl/GrGLCaps.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-03-23T13:33:34Z",
+      "side": 1,
+      "message": "Once this CL lands my plan is to remove this flag and then update our caps that currently use Angle to explicitly be checking for D3D. That way we don\u0027t have to pretend that we\u0027re not running on Angle when using OpenGL. I assume we\u0027ll still apply our openGL workarounds even if its set to Angle-OpenGL right?\n\nI just want to land this using the flag for now as it is a safer cherry-pick",
+      "range": {
+        "startLine": 89,
+        "startChar": 72,
+        "endLine": 89,
+        "endChar": 76
+      },
+      "revId": "9d1b8b502fb1a794cdb3885cabf6d777778fe580",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
