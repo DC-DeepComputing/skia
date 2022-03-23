@@ -478,23 +478,24 @@ void GrVkCaps::applyDriverCorrectnessWorkarounds(const VkPhysicalDevicePropertie
     if (kNvidia_VkVendor == properties.vendorID || kIntel_VkVendor == properties.vendorID) {
         fMustSyncCommandBuffersWithQueue = true;
     }
-#elif defined(SK_BUILD_FOR_ANDROID)
-    if (kImagination_VkVendor == properties.vendorID) {
-        fMustSyncCommandBuffersWithQueue = true;
-    }
-#endif
 
     // Defaults to zero since all our workaround checks that use this consider things "fixed" once
     // above a certain api level. So this will just default to it being less which will enable
     // workarounds.
     int androidAPIVersion = 0;
+    int androidDisableAfterAPI = 0;
 #if defined(SK_BUILD_FOR_ANDROID)
     char androidAPIVersionStr[PROP_VALUE_MAX];
     int strLength = __system_property_get("ro.build.version.sdk", androidAPIVersionStr);
     // Defaults to zero since most checks care if it is greater than a specific value. So this will
     // just default to it being less.
     androidAPIVersion = (strLength == 0) ? 0 : atoi(androidAPIVersionStr);
+    androidDisableAfterAPI = contextOptions.fDisableDriverCorrectnessWorkaroundsPriorToAPI;
 #endif
+
+    if (kImagination_VkVendor == properties.vendorID && androidDisableAfterAPI < 33) {
+        fMustSyncCommandBuffersWithQueue = true;
+    }
 
     // Protected memory features have problems in Android P and earlier.
     if (fSupportsProtectedMemory && (kQualcomm_VkVendor == properties.vendorID)) {
@@ -529,21 +530,23 @@ void GrVkCaps::applyDriverCorrectnessWorkarounds(const VkPhysicalDevicePropertie
     // On Mali G series GPUs, applying transfer functions in the fragment shader with half-floats
     // produces answers that are much less accurate than expected/required. This forces full floats
     // for some intermediate values to get acceptable results.
-    if (kARM_VkVendor == properties.vendorID) {
+    if (kARM_VkVendor == properties.vendorID && androidDisableAfterAPI < 33) {
         fShaderCaps->fColorSpaceMathNeedsFloat = true;
     }
 
     // On various devices, when calling vkCmdClearAttachments on a primary command buffer, it
     // corrupts the bound buffers on the command buffer. As a workaround we invalidate our knowledge
     // of bound buffers so that we will rebind them on the next draw.
-    if (kQualcomm_VkVendor == properties.vendorID || kAMD_VkVendor == properties.vendorID) {
+    if ((kQualcomm_VkVendor == properties.vendorID || kAMD_VkVendor == properties.vendorID) &&
+        androidDisableAfterAPI < 33) {
         fMustInvalidatePrimaryCmdBufferStateAfterClearAttachments = true;
     }
 
     // On Qualcomm and Arm the gpu resolves an area larger than the render pass bounds when using
     // discardable msaa attachments. This causes the resolve to resolve uninitialized data from the
     // msaa image into the resolve image.
-    if (kQualcomm_VkVendor == properties.vendorID || kARM_VkVendor == properties.vendorID) {
+    if ((kQualcomm_VkVendor == properties.vendorID || kARM_VkVendor == properties.vendorID) &&
+        androidDisableAfterAPI < 33) {
         fMustLoadFullImageWithDiscardableMSAA = true;
     }
 
@@ -570,18 +573,18 @@ void GrVkCaps::applyDriverCorrectnessWorkarounds(const VkPhysicalDevicePropertie
     fDriverDisableMSAAClipAtlas = true;
 #endif
 
-    if (kARM_VkVendor == properties.vendorID) {
+    if (kARM_VkVendor == properties.vendorID && androidDisableAfterAPI < 33) {
         fAvoidWritePixelsFastPath = true; // bugs.skia.org/8064
     }
 
     // AMD advertises support for MAX_UINT vertex input attributes, but in reality only supports 32.
-    if (kAMD_VkVendor == properties.vendorID) {
+    if (kAMD_VkVendor == properties.vendorID && androidDisableAfterAPI < 33) {
         fMaxVertexAttributes = std::min(fMaxVertexAttributes, 32);
     }
 
     // Adreno devices fail when trying to read the dest using an input attachment and texture
     // barriers.
-    if (kQualcomm_VkVendor == properties.vendorID) {
+    if (kQualcomm_VkVendor == properties.vendorID && androidDisableAfterAPI < 33) {
         fTextureBarrierSupport = false;
     }
 
@@ -595,7 +598,7 @@ void GrVkCaps::applyDriverCorrectnessWorkarounds(const VkPhysicalDevicePropertie
     // GrShaderCaps workarounds
     ////////////////////////////////////////////////////////////////////////////
 
-    if (kImagination_VkVendor == properties.vendorID) {
+    if (kImagination_VkVendor == properties.vendorID && androidDisableAfterAPI < 33) {
         fShaderCaps->fAtan2ImplementedAsAtanYOverX = true;
     }
 }
