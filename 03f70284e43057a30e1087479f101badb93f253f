@@ -87,6 +87,24 @@
       "message": "Maybe a comment here about how we accumulated a lot of driver workarounds and performance tweaks for GL without ANGLE and we don\u0027t know (particularly for the workarounds) which ones are necessary on top of ANGLE and were pessimistically assuming all of them are.",
       "revId": "03f70284e43057a30e1087479f101badb93f253f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3f40bbbb_e323994d",
+        "filename": "src/gpu/gl/GrGLContext.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-03-23T16:32:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fbfa27f6_dcfb7d8d",
+      "revId": "03f70284e43057a30e1087479f101badb93f253f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
