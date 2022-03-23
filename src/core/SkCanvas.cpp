@@ -56,6 +56,7 @@
 #include "include/private/chromium/GrSlug.h"
 #include "src/gpu/BaseDevice.h"
 #include "src/gpu/SkGr.h"
+#include "src/utils/SkTestCanvas.h"
 #if defined(SK_BUILD_FOR_ANDROID_FRAMEWORK)
 #   include "src/gpu/GrRenderTarget.h"
 #   include "src/gpu/GrRenderTargetProxy.h"
@@ -2875,4 +2876,27 @@ SkRasterHandleAllocator::MakeCanvas(std::unique_ptr<SkRasterHandleAllocator> all
     return hndl ? std::unique_ptr<SkCanvas>(new SkCanvas(bm, std::move(alloc), hndl)) : nullptr;
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
+SkTestCanvas<SkSlugTestKey>::SkTestCanvas(sk_sp<SkBaseDevice> device, SkCanvas* convertCanvas)
+        : SkNWayCanvas(device)
+        , fGPUCanvas(convertCanvas) {
+    this->addCanvas(convertCanvas);
+}
+
+void SkTestCanvas<SkSlugTestKey>::onDrawGlyphRunList(
+        const SkGlyphRunList& glyphRunList, const SkPaint& paint) {
+    SkRect bounds = glyphRunList.sourceBounds();
+    if (this->internalQuickReject(bounds, paint)) {
+        return;
+    }
+    auto layer = this->aboutToDraw(this, paint, &bounds);
+    if (layer) {
+        auto device = fGPUCanvas->topDevice();
+        auto slug = device->convertGlyphRunListToSlug(glyphRunList, layer->paint());
+        if (slug != nullptr) {
+            device->drawSlug(this, slug.get());
+        }
+    }
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////

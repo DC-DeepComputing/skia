@@ -418,6 +418,15 @@ private:
     sk_gpu_test::MemoryCache                          fMemoryCache;
 };
 
+class GPUSlug : public GPUSink {
+public:
+    GPUSlug(const SkCommandLineConfigGpu*, const GrContextOptions&);
+
+    Result draw(const Src&, SkBitmap*, SkWStream*, SkString*) const override;
+
+private:
+};
+
 class GPUThreadTestingSink : public GPUSink {
 public:
     GPUThreadTestingSink(const SkCommandLineConfigGpu*, const GrContextOptions&);
