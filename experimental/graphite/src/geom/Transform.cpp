@@ -22,13 +22,37 @@ Rect map_rect(const SkM44& m, const Rect& r) {
     return SkMatrixPriv::MapRect(m, r.asSkRect());
 }
 
+Transform::Type detect_type(const SkM44& m) {
+    static constexpr SkV4 kNoPerspective = {0.f, 0.f, 0.f, 1.f};
+    static constexpr SkV4 kNoZ = {0.f, 0.f, 1.f, 0.f};
+
+    if (m.row(3) != kNoPerspective || m.col(2) != kNoZ || m.row(2) != kNoZ) {
+        // TODO: If there was no perspective, but the transform modifies Z, we could possibly argue
+        // for discarding z (orthographic projection) and still let the type be a lower value, but
+        // this seems safer for now.
+        return Transform::Type::kPerspective;
+    } else if (m.rc(1,0) == 0.f && m.rc(0,1) == 0.f) {
+        float sx = m.rc(0, 0);
+        float sy = m.rc(1, 1);
+        if (sx == 1.f && sy == 1.f && m.rc(0, 3) == 0.f && m.rc(1, 3) == 0.f) {
+            return Transform::Type::kIdentity;
+        } else if (sx > 0.f && sy > 0.f) {
+            return Transform::Type::kSimpleRectStaysRect;
+        } else {
+            return Transform::Type::kRectStaysRect;
+        }
+    } else {
+        return Transform::Type::kAffine;
+    }
+}
+
 } // anonymous namespace
 
 Transform::Transform(const SkM44& m)
         : fM(m) {
     if (fM.invert(&fInvM)) {
-        // TODO: actually detect these
-        fType = (fM == SkM44()) ? Type::kIdentity : Type::kPerspective;
+        fType = detect_type(m);
+        // TODO: Actually calculate scale factor (not needed until stroking is implemented though)
         fScale = {1.f, 1.f};
     } else {
         fType = Type::kInvalid;
