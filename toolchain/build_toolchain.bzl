@@ -1,13 +1,52 @@
 """
 This file assembles a toolchain for Linux using the Clang Compiler glibc.
 
-It downloads the necessary header files and pre-compiled static/shared libraries to
+It downloads the necessary header files and pre-compiled static/shared libraries to link against.
 """
 
-# From https://github.com/llvm/llvm-project/releases/download/llvmorg-13.0.0/clang+llvm-13.0.0-x86_64-linux-gnu-ubuntu-20.04.tar.xz.sha256
-clang_prefix = "clang+llvm-13.0.0-x86_64-linux-gnu-ubuntu-20.04/"
-clang_sha256 = "2c2fb857af97f41a5032e9ecadf7f78d3eff389a5cd3c9ec620d24f134ceb3c8"
-clang_url = "https://github.com/llvm/llvm-project/releases/download/llvmorg-13.0.0/clang+llvm-13.0.0-x86_64-linux-gnu-ubuntu-20.04.tar.xz"
+clang_versions = {
+    "13.0.0": {
+        "prefix": "clang+llvm-13.0.0-x86_64-linux-gnu-ubuntu-20.04/",
+        # From https://github.com/llvm/llvm-project/releases/download/llvmorg-13.0.0/clang+llvm-13.0.0-x86_64-linux-gnu-ubuntu-20.04.tar.xz.sha256
+        "sha256": "2c2fb857af97f41a5032e9ecadf7f78d3eff389a5cd3c9ec620d24f134ceb3c8",
+        "url": "https://github.com/llvm/llvm-project/releases/download/llvmorg-13.0.0/clang+llvm-13.0.0-x86_64-linux-gnu-ubuntu-20.04.tar.xz",
+        "extra_debs": [{
+            # This corresponds to IWYU version 0.17, which uses Clang 13.
+            # From https://packages.debian.org/sid/amd64/iwyu/download
+            "sha256": "9fd6932a7609e89364f7edc5f9613892c98c21c88a3931e51cf1a0f8744759bd",
+            "url": "https://ftp.debian.org/debian/pool/main/i/iwyu/iwyu_8.17-1_amd64.deb",
+        }, {
+            # https://packages.debian.org/sid/amd64/libclang-cpp13/download
+            "url": "https://ftp.debian.org/debian/pool/main/l/llvm-toolchain-13/libclang-cpp13_13.0.1-3+b1_amd64.deb",
+            "sha256": "c6e2471de8f3ec06e40c8e006e06bbd251dd0c8000dee820a4b6dca3d3290c0d",
+        }, {
+            # https://packages.debian.org/sid/amd64/libstdc++6/download
+            "url": "https://ftp.debian.org/debian/pool/main/g/gcc-12/libstdc++6_12-20220319-1_amd64.deb",
+            "sha256": "f37e5954423955938c5309a8d0e475f7e84e92b56b8301487fb885192dee8085",
+        }],
+    },
+    "11.0.1": {
+        # The choice of ubuntu-16.04 is important here to support older installed versions of GLIBC.
+        # If we used clang+llvm-11.0.1...ubuntu-20.14, that would be an older clang built for a
+        # newer GLIBC.
+        "prefix": "clang+llvm-11.0.1-x86_64-linux-gnu-ubuntu-16.04/",
+        "sha256": "67f18660231d7dd09dc93502f712613247b7b4395e6f48c11226629b250b53c5",
+        "url": "https://github.com/llvm/llvm-project/releases/download/llvmorg-11.0.1/clang+llvm-11.0.1-x86_64-linux-gnu-ubuntu-16.04.tar.xz",
+        "extra_debs": [{
+            # https://packages.debian.org/bullseye/amd64/iwyu/download
+            "url": "https://ftp.debian.org/debian/pool/main/i/iwyu/iwyu_8.15-2_amd64.deb",
+            "sha256": "5e7dc4452a69285bbdaae7561cf4ef41a5e635c0af9edc36d01f8673cd6f34f1",
+        }, {
+            # https://packages.debian.org/bullseye/amd64/libclang-cpp11/download
+            "url": "https://ftp.debian.org/debian/pool/main/l/llvm-toolchain-11/libclang-cpp11_11.0.1-2_amd64.deb",
+            "sha256": "1270ec4dde24e115df31d933773fd25a9c7c861782cf9a4451cf860a1df1ccd3",
+        }, {
+            # https://packages.debian.org/bullseye/amd64/libstdc++6/download
+            "url": "https://ftp.debian.org/debian/pool/main/g/gcc-10/libstdc++6_10.2.1-6_amd64.deb",
+            "sha256": "5c155c58935870bf3b4bfe769116841c0d286a74f59eccfd5645693ac23f06b1",
+        }],
+    },
+}
 
 # Files are expected to be in the mirror location named after their sha256 hash. The files should
 # still have their file extension, as some of the Starlark functions sniff the file extension
@@ -99,13 +138,6 @@ debs_to_install = [
         "sha256": "80a2413ace2a0a073f2472059b9e589737cbf8a336fb6862684a5811bf640aa3",
         "url": "https://ftp.debian.org/debian/pool/main/libx/libx11/libx11-xcb-dev_1.7.2-1_amd64.deb",
     },
-    # This is used to make sure we include only the headers we need. This corresponds to
-    # IWYU version 0.17, which uses Clang 13, like we compile with.
-    {
-        # From https://packages.debian.org/sid/amd64/iwyu/download
-        "sha256": "9fd6932a7609e89364f7edc5f9613892c98c21c88a3931e51cf1a0f8744759bd",
-        "url": "https://ftp.debian.org/debian/pool/main/i/iwyu/iwyu_8.17-1_amd64.deb",
-    },
 ]
 
 def _download_and_extract_deb(ctx, deb, sha256, prefix, output = ""):
@@ -120,7 +152,10 @@ def _download_and_extract_deb(ctx, deb, sha256, prefix, output = ""):
 
     # https://docs.bazel.build/versions/main/skylark/lib/repository_ctx.html#execute
     # This uses the extracted llvm-ar that comes with clang.
-    ctx.execute(["bin/llvm-ar", "x", "deb.ar"])
+    res = ctx.execute(["bin/llvm-ar", "x", "deb.ar"])
+    if res.return_code != 0:
+        ctx.execute(["bin/llvm-ar", "x", "deb.ar"], quiet = False)
+        fail("Could not open deb.ar from " + deb)
 
     # https://docs.bazel.build/versions/main/skylark/lib/repository_ctx.html#extract
     extract_info = ctx.extract(
@@ -134,19 +169,45 @@ def _download_and_extract_deb(ctx, deb, sha256, prefix, output = ""):
     ctx.delete("data.tar.xz")
     ctx.delete("control.tar.xz")
 
+def _find_host_glibc_version(ctx):
+    # https://bazel.build/rules/lib/exec_result
+    res = ctx.execute(["ldd", "--version"])
+    if res.return_code != 0:
+        fail("You must have glibc binaries installed.")
+
+    # We expect the stdout to be something like
+    # ldd (Debian GLIBC 2.33-6) 2.33
+    first = res.stdout.splitlines()[0]
+
+    # break the first line up at the space boundaries...
+    parts = first.split(" ")
+
+    # ... so we can get the last segment, which is the version of glibc
+    return parts[-1]
+
 def _build_cpp_toolchain_impl(ctx):
+    clang_version = "13.0.0"
+    host_glibc = _find_host_glibc_version(ctx)
+    if host_glibc < "2.29":
+        clang_version = "11.0.1"
+
+    clang = clang_versions[clang_version]
+
     # Download the clang toolchain (the extraction can take a while)
     # https://docs.bazel.build/versions/main/skylark/lib/repository_ctx.html#download_and_extract
     download_info = ctx.download_and_extract(
-        url = _mirror([clang_url, mirror_prefix + clang_sha256 + ".tar.xz"]),
+        url = _mirror([
+            clang["url"],
+            mirror_prefix + clang["sha256"] + ".tar.xz",
+        ]),
         output = "",
-        stripPrefix = clang_prefix,
-        sha256 = clang_sha256,
+        stripPrefix = clang["prefix"],
+        sha256 = clang["sha256"],
     )
 
     # Extract all the debs into our sysroot. This is very similar to installing them, except their
     # dependencies are not installed automatically.
-    for deb in debs_to_install:
+    for deb in debs_to_install + clang["extra_debs"]:
         _download_and_extract_deb(
             ctx,
             deb["url"],
