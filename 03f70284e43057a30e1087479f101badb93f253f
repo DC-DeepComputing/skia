@@ -22,6 +22,47 @@
       },
       "revId": "03f70284e43057a30e1087479f101badb93f253f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f354dc2c_29868105",
+        "filename": "src/gpu/gl/GrGLCaps.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 4228,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-03-23T14:52:20Z",
+      "side": 1,
+      "message": "yeah, I think you\u0027re right.",
+      "parentUuid": "3d753d05_4db8e12c",
+      "range": {
+        "startLine": 4228,
+        "startChar": 34,
+        "endLine": 4228,
+        "endChar": 60
+      },
+      "revId": "03f70284e43057a30e1087479f101badb93f253f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fbfa27f6_dcfb7d8d",
+        "filename": "src/gpu/gl/GrGLContext.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-03-23T14:52:20Z",
+      "side": 1,
+      "message": "Maybe a comment here about how we accumulated a lot of driver workarounds and performance tweaks for GL without ANGLE and we don\u0027t know (particularly for the workarounds) which ones are necessary on top of ANGLE and were pessimistically assuming all of them are.",
+      "revId": "03f70284e43057a30e1087479f101badb93f253f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
