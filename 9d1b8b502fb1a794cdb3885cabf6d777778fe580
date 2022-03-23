@@ -39,6 +39,53 @@
       },
       "revId": "9d1b8b502fb1a794cdb3885cabf6d777778fe580",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "25c6e380_59a0b8f4",
+        "filename": "src/gpu/gl/GrGLCaps.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-03-23T14:15:26Z",
+      "side": 1,
+      "message": "I think to do what you propose we have to look at what GrGLContextInfo reports for vendor() and renderer() when angleBackend() is kOpenGL. I believe they don\u0027t reflect the underlying driver that ANGLE is layered on but rather those values are returned by angleVendor() and angleRenderer().",
+      "parentUuid": "47afc76c_fd1ac3ab",
+      "range": {
+        "startLine": 89,
+        "startChar": 72,
+        "endLine": 89,
+        "endChar": 76
+      },
+      "revId": "9d1b8b502fb1a794cdb3885cabf6d777778fe580",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "28402de5_483ddeb4",
+        "filename": "src/gpu/gl/GrGLCaps.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1993,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-03-23T14:15:26Z",
+      "side": 1,
+      "message": "GL_BGRA_EXT?",
+      "range": {
+        "startLine": 1993,
+        "startChar": 36,
+        "endLine": 1993,
+        "endChar": 47
+      },
+      "revId": "9d1b8b502fb1a794cdb3885cabf6d777778fe580",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
