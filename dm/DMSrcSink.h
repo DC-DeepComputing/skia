@@ -396,6 +396,14 @@ public:
 protected:
     sk_sp<SkSurface> createDstSurface(GrDirectContext*, SkISize size) const;
     bool readBack(SkSurface*, SkBitmap* dst) const;
+    template <typename UsesFactoryContextAndSurface>
+    Result applyFactorySurfaceAndContext(
+            const GrContextOptions& baseOptions,
+            SkISize size,
+            SkBitmap* dst,
+            SkString* log,
+            std::function<void(GrDirectContext*)> initContext,
+            UsesFactoryContextAndSurface useFactoryContextAndSurface) const;
 
 private:
     sk_gpu_test::GrContextFactory::ContextType        fContextType;
