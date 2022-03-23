@@ -18,6 +18,9 @@ else
   # IWYU always returns a non-zero code because it doesn't produce the .o file (that's why
   # we ran Clang first). As such, we do not want bash to fail after running IWYU.
   set +e
+  # IWYU 8.15 has a dynamic dependency on libclang-cpp.so.11, so we need to add it to the
+  # LD search path.
+  export LD_LIBRARY_PATH="external/clang_linux_amd64/usr/lib/llvm-11/lib"
   # Get absolute path to the mapping file because resolving the relative path is tricky, given
   # how Bazel locates the toolchain files.
   MAPPING_FILE=$(realpath $(dirname ${BASH_SOURCE[0]}))"/IWYU_mapping.imp"

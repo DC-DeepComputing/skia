@@ -215,6 +215,8 @@ def _make_default_flags():
                     "-isystem",
                     EXTERNAL_TOOLCHAIN + "/lib/clang/13.0.0/include",
                     "-isystem",
+                    EXTERNAL_TOOLCHAIN + "/lib/clang/11.0.1/include",
+                    "-isystem",
                     EXTERNAL_TOOLCHAIN + "/usr/include/x86_64-linux-gnu",
                     # We do not want clang to search in absolute paths for files. This makes
                     # Bazel think we are using an outside resource and fail the compile.
