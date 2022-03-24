@@ -2196,6 +2196,10 @@ protected:
     virtual void didTranslate(SkScalar, SkScalar) {}
     virtual void didScale(SkScalar, SkScalar) {}
 
+    // Android-only: pretransform methods
+    void setPreTransform(const SkM44&);
+    virtual void didSetPreTransform(const SkM44&) {}
+
 #ifndef SK_ENABLE_EXPERIMENTAL_CUSTOM_MESH
     // Define this in protected so we can still access internally for testing.
     void drawCustomMesh(SkCustomMesh cm, sk_sp<SkBlender> blender, const SkPaint& paint);
@@ -2347,6 +2351,7 @@ private:
 
         std::unique_ptr<BackImage> fBackImage;
         SkM44 fMatrix;
+        SkM44 fPreTransformMatrix;
         int fDeferredSaveCount = 0;
 
         MCRec(SkBaseDevice* device);
@@ -2361,7 +2366,7 @@ private:
     };
 
     // the first N recs that can fit here mean we won't call malloc
-    static constexpr int kMCRecSize      = 96; // most recent measurement
+    static constexpr int kMCRecSize      = 160; // most recent measurement
     static constexpr int kMCRecCount     = 32; // common depth for save/restores
 
     intptr_t fMCRecStorage[kMCRecSize * kMCRecCount / sizeof(intptr_t)];
@@ -2516,6 +2521,8 @@ private:
     void internal_private_resetClip();
 
     virtual SkPaintFilterCanvas* internal_private_asPaintFilterCanvas() const { return nullptr; }
+
+    void internal_private_concatPreTransform(const SkMatrix&);
 
     // Keep track of the device clip bounds in the canvas' global space to reject draws before
     // invoking the top-level device.

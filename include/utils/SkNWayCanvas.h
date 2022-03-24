@@ -34,6 +34,7 @@ protected:
     void didSetM44(const SkM44&) override;
     void didScale(SkScalar, SkScalar) override;
     void didTranslate(SkScalar, SkScalar) override;
+    void didSetPreTransform(const SkM44&) override;
 
     void onDrawDRRect(const SkRRect&, const SkRRect&, const SkPaint&) override;
     void onDrawGlyphRunList(const SkGlyphRunList&, const SkPaint&) override;

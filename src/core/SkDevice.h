@@ -279,7 +279,7 @@ protected:
 #ifdef SK_ENABLE_SKSL
     virtual void drawCustomMesh(SkCustomMesh cm, sk_sp<SkBlender>, const SkPaint&) = 0;
 #endif
-    virtual void drawShadow(const SkPath&, const SkDrawShadowRec&);
+    virtual void drawShadow(const SkPath&, const SkDrawShadowRec&, const SkMatrix& preTransform);
 
     // default implementation calls drawVertices
     virtual void drawPatch(const SkPoint cubics[12], const SkColor colors[4],

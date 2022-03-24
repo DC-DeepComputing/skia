@@ -903,19 +903,21 @@ void Device::drawCustomMesh(SkCustomMesh customMesh,
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void Device::drawShadow(const SkPath& path, const SkDrawShadowRec& rec) {
+void Device::drawShadow(const SkPath& path, const SkDrawShadowRec& rec,
+                        const SkMatrix& preTransform) {
 #if GR_TEST_UTILS
     if (fContext->priv().options().fAllPathsVolatile && !path.isVolatile()) {
-        this->drawShadow(SkPath(path).setIsVolatile(true), rec);
+        this->drawShadow(SkPath(path).setIsVolatile(true), rec, preTransform);
         return;
     }
 #endif
     ASSERT_SINGLE_OWNER
     GR_CREATE_TRACE_MARKER_CONTEXT("skgpu::v1::Device", "drawShadow", fContext.get());
 
-    if (!fSurfaceDrawContext->drawFastShadow(this->clip(), this->localToDevice(), path, rec)) {
+    if (!fSurfaceDrawContext->drawFastShadow(this->clip(), this->localToDevice(), path, rec,
+                                             preTransform)) {
         // failed to find an accelerated case
-        this->INHERITED::drawShadow(path, rec);
+        this->INHERITED::drawShadow(path, rec, preTransform);
     }
 }
 
