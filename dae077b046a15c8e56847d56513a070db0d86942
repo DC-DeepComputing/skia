@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0cb45571_e922e052",
+        "filename": "experimental/graphite/src/geom/Transform.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-03-24T15:53:39Z",
+      "side": 1,
+      "message": "Maybe change to kProjection to include orthographic?",
+      "range": {
+        "startLine": 33,
+        "startChar": 32,
+        "endLine": 33,
+        "endChar": 44
+      },
+      "revId": "dae077b046a15c8e56847d56513a070db0d86942",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5dc67675_95cc25f1",
+        "filename": "experimental/graphite/src/geom/Transform.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-03-24T15:53:39Z",
+      "side": 1,
+      "message": "There are some RectStaysRect cases that are being classified here instead (rotation by 90, 180, 270). I\u0027m not sure how exact you\u0027re trying to be.",
+      "range": {
+        "startLine": 45,
+        "startChar": 32,
+        "endLine": 45,
+        "endChar": 39
+      },
+      "revId": "dae077b046a15c8e56847d56513a070db0d86942",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
