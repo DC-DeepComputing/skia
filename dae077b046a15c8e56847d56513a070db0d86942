@@ -45,6 +45,30 @@
       },
       "revId": "dae077b046a15c8e56847d56513a070db0d86942",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f70985d2_9450f486",
+        "filename": "experimental/graphite/src/geom/Transform.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-03-24T15:54:17Z",
+      "side": 1,
+      "message": "I guess 180 is still under *RectStaysRect.",
+      "parentUuid": "5dc67675_95cc25f1",
+      "range": {
+        "startLine": 45,
+        "startChar": 32,
+        "endLine": 45,
+        "endChar": 39
+      },
+      "revId": "dae077b046a15c8e56847d56513a070db0d86942",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
