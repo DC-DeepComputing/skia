@@ -54,6 +54,18 @@ public:
      *  @return SkCanvas that was found in the innermost SkPaintFilterCanvas.
      */
     static SkCanvas* getBaseWrappedCanvas(SkCanvas* canvas);
+
+    /**
+     * Concatenates the given matrix to the CTM, and stores the current value
+     * for other operations.
+     *
+     *  @param  canvas An SkCanvas or SkNWayCanvas subclass.
+     *  @param  preTransform A matrix that represents the screen rotation transformation.
+     *
+     *  @return SkCanvas that was found in the innermost SkPaintFilterCanvas.
+     */
+    static void ConcatPreTransform(SkCanvas* canvas, const SkMatrix& preTransform);
+
 };
 
 #endif // SK_BUILD_FOR_ANDROID_ANDROID

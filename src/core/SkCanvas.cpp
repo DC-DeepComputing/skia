@@ -212,7 +212,10 @@ SkCanvas::MCRec::MCRec(SkBaseDevice* device) : fDevice(device) {
     inc_rec();
 }
 
-SkCanvas::MCRec::MCRec(const MCRec* prev) : fDevice(prev->fDevice), fMatrix(prev->fMatrix) {
+SkCanvas::MCRec::MCRec(const MCRec* prev)
+    : fDevice(prev->fDevice)
+    , fMatrix(prev->fMatrix)
+    , fPreTransformMatrix(prev->fPreTransformMatrix) {
     SkASSERT(fDevice);
     inc_rec();
 }
@@ -1414,6 +1417,18 @@ void SkCanvas::resetMatrix() {
     this->setMatrix(SkM44());
 }
 
+void SkCanvas::internal_private_concatPreTransform(const SkMatrix& matrix) {
+    this->setPreTransform(SkM44(matrix));
+    if (!matrix.isIdentity()) {
+        this->concat(fMCRec->fPreTransformMatrix);
+    }
+    this->didSetPreTransform(fMCRec->fPreTransformMatrix);
+}
+
+void SkCanvas::setPreTransform(const SkM44& matrix) {
+    fMCRec->fPreTransformMatrix = matrix;
+}
+
 //////////////////////////////////////////////////////////////////////////////
 
 void SkCanvas::clipRect(const SkRect& rect, SkClipOp op, bool doAA) {
@@ -1929,7 +1944,7 @@ void SkCanvas::onDrawShadowRec(const SkPath& path, const SkDrawShadowRec& rec) {
     if (!this->predrawNotify()) {
         return;
     }
-    this->topDevice()->drawShadow(path, rec);
+    this->topDevice()->drawShadow(path, rec, fMCRec->fPreTransformMatrix.asM33());
 }
 
 void SkCanvas::experimental_DrawEdgeAAQuad(const SkRect& rect, const SkPoint clip[4],

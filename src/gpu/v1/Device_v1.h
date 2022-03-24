@@ -118,7 +118,7 @@ public:
 
     void drawVertices(const SkVertices*, sk_sp<SkBlender>, const SkPaint&, bool) override;
     void drawCustomMesh(SkCustomMesh, sk_sp<SkBlender>, const SkPaint&) override;
-    void drawShadow(const SkPath&, const SkDrawShadowRec&) override;
+    void drawShadow(const SkPath&, const SkDrawShadowRec&, const SkMatrix&) override;
     void drawAtlas(const SkRSXform[], const SkRect[], const SkColor[], int count, sk_sp<SkBlender>,
                    const SkPaint&) override;
 

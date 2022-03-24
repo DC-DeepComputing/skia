@@ -330,7 +330,8 @@ public:
     bool drawFastShadow(const GrClip*,
                         const SkMatrix& viewMatrix,
                         const SkPath& path,
-                        const SkDrawShadowRec& rec);
+                        const SkDrawShadowRec& rec,
+                        const SkMatrix& preTransform);
 
     /**
      * Draws a path.
