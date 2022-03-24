@@ -16,6 +16,46 @@
       "message": "Wrote this to finally answer all the questions raised by https://gitlab.freedesktop.org/freetype/freetype/-/merge_requests/139 . It would be nice to keep all of this around in the event we need to double check or the behavior needs to change.",
       "revId": "26cf1e86cccd324f2a5259f2e38d518c715f2b65",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "94e84f19_5d11367a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-03-24T20:51:10Z",
+      "side": 1,
+      "message": "Looks like you are missing a symbol from the build failures.",
+      "revId": "26cf1e86cccd324f2a5259f2e38d518c715f2b65",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7a35a874_5105932d",
+        "filename": "src/sfnt/SkOTTable_glyf.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-03-24T20:51:10Z",
+      "side": 1,
+      "message": "wrap",
+      "range": {
+        "startLine": 45,
+        "startChar": 98,
+        "endLine": 45,
+        "endChar": 103
+      },
+      "revId": "26cf1e86cccd324f2a5259f2e38d518c715f2b65",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
