@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "565a26c3_f4b39e5f",
+        "filename": "src/core/SkVM.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 1020,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-03-24T20:25:56Z",
+      "side": 1,
+      "message": "This is more like `unapplyBitNot` than anything, since it only returns a real Val if the instruction contains a bit-not. I changed it to `holdsBitNot` so that it looks less like a boolean return (although it still does a little, but I don\u0027t know how to convey \"retrieve the original Val iff this points to a bit-not\" succinctly enough)",
+      "parentUuid": "18b30806_c9ec9c1d",
+      "range": {
+        "startLine": 1020,
+        "startChar": 12,
+        "endLine": 1020,
+        "endChar": 20
+      },
+      "revId": "1d87d71f3057d7f530cbe6f948b5c8adc9030b33",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ef01b032_404942cf",
@@ -54,6 +78,30 @@
       "writtenOn": "2022-03-24T19:41:59Z",
       "side": 1,
       "message": "nice!",
+      "range": {
+        "startLine": 81,
+        "startChar": 14,
+        "endLine": 81,
+        "endChar": 17
+      },
+      "revId": "1d87d71f3057d7f530cbe6f948b5c8adc9030b33",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "333794d6_a6619631",
+        "filename": "tests/sksl/runtime/LoopFloat.skvm",
+        "patchSetId": 3
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-03-24T20:25:56Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "ef01b032_404942cf",
       "range": {
         "startLine": 81,
         "startChar": 14,
@@ -87,6 +135,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b022a045_3be8a846",
+        "filename": "tests/sksl/runtime/LoopInt.skvm",
+        "patchSetId": 3
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-03-24T20:25:56Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "1312e856_dac89e77",
+      "range": {
+        "startLine": 77,
+        "startChar": 14,
+        "endLine": 77,
+        "endChar": 17
+      },
+      "revId": "1d87d71f3057d7f530cbe6f948b5c8adc9030b33",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2113f9c6_9ed73ae6",
@@ -100,6 +172,30 @@
       "writtenOn": "2022-03-24T19:41:59Z",
       "side": 1,
       "message": "👍",
+      "range": {
+        "startLine": 1,
+        "startChar": 14,
+        "endLine": 1,
+        "endChar": 17
+      },
+      "revId": "1d87d71f3057d7f530cbe6f948b5c8adc9030b33",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2ee2ecde_1ee7e271",
+        "filename": "tests/sksl/runtime/SwitchWithLoops.skvm",
+        "patchSetId": 3
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-03-24T20:25:56Z",
+      "side": 1,
+      "message": "Yeah, this one was huge!",
+      "parentUuid": "2113f9c6_9ed73ae6",
       "range": {
         "startLine": 1,
         "startChar": 14,
