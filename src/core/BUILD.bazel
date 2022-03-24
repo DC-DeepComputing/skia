@@ -5600,6 +5600,7 @@ generated_cc_atom(
         ":SkShaderCodeDictionary_hdr",
         ":SkUniform_hdr",
         "//experimental/graphite/src:TextureProxy_hdr",
+        "//experimental/graphite/src:Texture_hdr",
         "//experimental/graphite/src:UniformManager_hdr",
         "//src/gpu:Blend_hdr",
         "//src/shaders:SkShaderBase_hdr",
