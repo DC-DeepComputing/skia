@@ -9,6 +9,7 @@
 #define skgpu_TextureUtils_DEFINED
 
 #include "experimental/graphite/src/TextureProxyView.h"
+#include <functional>
 
 class SkBitmap;
 enum SkColorType : int;

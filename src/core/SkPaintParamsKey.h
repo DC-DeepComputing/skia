@@ -215,6 +215,8 @@ private:
 #endif
     };
 
+    static_assert(std::is_trivially_copy_assignable<StackFrame>::value);
+
     bool fIsValid = true;
     const SkShaderCodeDictionary* fDict;
     const SkBackend fBackend;
