@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e0a6f476_1f13fb02",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5145
+      },
+      "writtenOn": "2022-03-24T14:41:05Z",
+      "side": 1,
+      "message": "FYI: Canary-G3 is having some infra failures in borg. I\u0027m trying to restart the job and retrigger the canary.",
+      "revId": "3d3b2024a0036d3b5bba73ed238cdffcab7e87f5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
