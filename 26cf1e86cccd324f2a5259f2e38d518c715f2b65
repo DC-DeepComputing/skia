@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cec71492_305e3ab4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-03-24T21:55:31Z",
+      "side": 1,
+      "message": "Yeah,not all of our builders bring in FreeType. That part can be optional.",
+      "parentUuid": "94e84f19_5d11367a",
+      "revId": "26cf1e86cccd324f2a5259f2e38d518c715f2b65",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7a35a874_5105932d",
@@ -48,6 +66,30 @@
       "writtenOn": "2022-03-24T20:51:10Z",
       "side": 1,
       "message": "wrap",
+      "range": {
+        "startLine": 45,
+        "startChar": 98,
+        "endLine": 45,
+        "endChar": 103
+      },
+      "revId": "26cf1e86cccd324f2a5259f2e38d518c715f2b65",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "60854467_a79cc31d",
+        "filename": "src/sfnt/SkOTTable_glyf.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-03-24T21:55:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7a35a874_5105932d",
       "range": {
         "startLine": 45,
         "startChar": 98,
