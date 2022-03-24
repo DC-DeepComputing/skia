@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e332f66b_aded5ae2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2022-03-24T13:44:21Z",
+      "side": 1,
+      "message": "Want to get your thoughts on this approach before I take it further.",
+      "revId": "f19ca44042b54e378ec83905856e51fd02d28faf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9976ae31_7857fc76",
+        "filename": "src/gpu/gl/GrGLCaps.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 4159,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2022-03-24T13:44:21Z",
+      "side": 1,
+      "message": "If we want to go with this model for selectively disabling workarounds then I think we need to add this conditional check to ever if statement in this method.",
+      "revId": "f19ca44042b54e378ec83905856e51fd02d28faf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "39fbaca8_f67c5744",
+        "filename": "src/gpu/vk/GrVkCaps.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 497,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2022-03-24T13:44:21Z",
+      "side": 1,
+      "message": "I would like to make this a simple std::function so that it would be clearer to the reader something like enablePriorToAndroidAPI(33).",
+      "range": {
+        "startLine": 497,
+        "startChar": 56,
+        "endLine": 497,
+        "endChar": 83
+      },
+      "revId": "f19ca44042b54e378ec83905856e51fd02d28faf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
