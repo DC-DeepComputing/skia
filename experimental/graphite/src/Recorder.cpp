@@ -54,7 +54,12 @@ std::unique_ptr<Recording> Recorder::snap() {
 
     auto commandBuffer = fResourceProvider->createCommandBuffer();
 
-    fGraph->addCommands(fResourceProvider.get(), commandBuffer.get());
+    if (!fGraph->addCommands3(fResourceProvider.get(), commandBuffer.get())) {
+        fGraph->reset();
+        fTextureDataCache = std::make_unique<TextureDataCache>();
+        return nullptr;
+    }
+
     fDrawBufferManager->transferToCommandBuffer(commandBuffer.get());
 
     fGraph->reset();
