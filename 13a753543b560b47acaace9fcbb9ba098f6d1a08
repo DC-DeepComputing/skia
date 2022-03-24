@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6f67a90e_d9fc9249",
+        "filename": "dm/DMSrcSink.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 414,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-03-24T19:53:59Z",
+      "side": 1,
+      "message": "// Wrap a gpu canvas in one that routes all text draws through GrSlugs.\n// Note that text blobs that have an RSXForm aren\u0027t converted.\n\n?",
+      "revId": "13a753543b560b47acaace9fcbb9ba098f6d1a08",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a9472ae4_303f0fbb",
+        "filename": "tools/flags/CommonFlagsConfig.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-03-24T19:53:59Z",
+      "side": 1,
+      "message": "wdyt about making this (and all the related names) \u0027testSlugs\u0027 or \u0027useSlugs\u0027 ?",
+      "range": {
+        "startLine": 71,
+        "startChar": 46,
+        "endLine": 71,
+        "endChar": 50
+      },
+      "revId": "13a753543b560b47acaace9fcbb9ba098f6d1a08",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
