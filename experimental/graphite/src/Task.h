@@ -19,7 +19,8 @@ class Task : public SkRefCnt {
 public:
     ~Task() override;
 
-    virtual void addCommands(ResourceProvider*, CommandBuffer*) = 0;
+    // Returns true on succcess; false on failure.
+    virtual bool addCommands(ResourceProvider*, CommandBuffer*) = 0;
 
 protected:
     Task();
