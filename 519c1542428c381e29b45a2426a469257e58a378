@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "67294144_5101887d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-03-24T14:07:30Z",
+      "side": 1,
+      "message": "Most of this CL is for Rob, related to the key builder secretly not re-using its memory allocations.\n\nBut adding Brian O for the public include update, and Ben W to just double-check the change around operator\u003d and is_trivially_copyable.",
+      "revId": "519c1542428c381e29b45a2426a469257e58a378",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c1f63f51_d02255a7",
+        "filename": "include/core/SkSpan.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-03-24T14:07:30Z",
+      "side": 1,
+      "message": "This was needed so that GCC didn\u0027t complain about using a non-trivially copyable type in a memcpy (part of SkTDArray).\n\nI believe the manual operator\u003d is equivalent to the default but was preventing `std::is_trivially_copyable\u003cSkSpan\u003cT\u003e\u003e::value` from being true; after this change `std::is_trivially_copyable\u003c\u003e` is true.",
+      "range": {
+        "startLine": 36,
+        "startChar": 4,
+        "endLine": 36,
+        "endChar": 62
+      },
+      "revId": "519c1542428c381e29b45a2426a469257e58a378",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
