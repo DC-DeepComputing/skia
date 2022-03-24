@@ -8,8 +8,10 @@
 #include "include/core/SkShader.h"
 #include "include/utils/SkNWayCanvas.h"
 #include "src/core/SkCanvasPriv.h"
+#include "src/core/SkDevice.h"
 
 SkNWayCanvas::SkNWayCanvas(int width, int height) : INHERITED(width, height) {}
+SkNWayCanvas::SkNWayCanvas(sk_sp<SkBaseDevice> device) : INHERITED(device) {}
 
 SkNWayCanvas::~SkNWayCanvas() {
     this->removeAll();
