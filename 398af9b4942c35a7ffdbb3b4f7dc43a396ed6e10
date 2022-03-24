@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0f25f6f8_e9450e1f",
+        "filename": "include/utils/SkNWayCanvas.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-03-24T16:16:45Z",
+      "side": 1,
+      "message": "I changed it to take a canvas.\n\nThe right answer to all these problems is to create an honest canvas wrapper class.\n\nI\u0027ve added checking code for multiple adds.",
+      "parentUuid": "785b105c_41082eee",
+      "range": {
+        "startLine": 22,
+        "startChar": 4,
+        "endLine": 22,
+        "endChar": 45
+      },
+      "revId": "398af9b4942c35a7ffdbb3b4f7dc43a396ed6e10",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "302897f4_433cfcb8",
@@ -54,6 +78,30 @@
       "writtenOn": "2022-03-24T15:55:32Z",
       "side": 1,
       "message": "std::move?",
+      "range": {
+        "startLine": 14,
+        "startChar": 67,
+        "endLine": 14,
+        "endChar": 73
+      },
+      "revId": "398af9b4942c35a7ffdbb3b4f7dc43a396ed6e10",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "91fbe204_c6a505c2",
+        "filename": "src/utils/SkNWayCanvas.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-03-24T16:16:45Z",
+      "side": 1,
+      "message": "Changed to taking a canvas.",
+      "parentUuid": "302897f4_433cfcb8",
       "range": {
         "startLine": 14,
         "startChar": 67,
