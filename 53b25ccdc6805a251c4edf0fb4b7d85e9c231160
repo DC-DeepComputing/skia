@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9573f9b2_a76c713c",
+        "filename": "experimental/graphite/include/Recorder.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-03-24T19:46:38Z",
+      "side": 1,
+      "message": "For now, I\u0027ve just made it inline since there are no other users.",
+      "parentUuid": "1c0c829e_b0a40e99",
+      "range": {
+        "startLine": 84,
+        "startChar": 9,
+        "endLine": 84,
+        "endChar": 14
+      },
+      "revId": "53b25ccdc6805a251c4edf0fb4b7d85e9c231160",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5485c0de_b3d16cda",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-03-24T19:02:46Z",
       "side": 1,
       "message": "Do we really want to do this? The devices are still possibly held by SkSurfaces and could be used for future operations. Given the current ways in which snapping can fail, it doesn\u0027t seem like it should make the devices unusable.\n\nAt least when this is called internally, the devices have all been flushed, so there shouldn\u0027t be any pending work that would need to be reset.",
+      "range": {
+        "startLine": 47,
+        "startChar": 4,
+        "endLine": 49,
+        "endChar": 5
+      },
+      "revId": "53b25ccdc6805a251c4edf0fb4b7d85e9c231160",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "817a7601_1a440993",
+        "filename": "experimental/graphite/src/Recorder.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-03-24T19:46:38Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "5485c0de_b3d16cda",
       "range": {
         "startLine": 47,
         "startChar": 4,
