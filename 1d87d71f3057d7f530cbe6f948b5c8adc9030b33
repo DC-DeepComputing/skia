@@ -65,6 +65,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "15b7fd47_bb4a4fc5",
+        "filename": "src/core/SkVM.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 1020,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-03-24T20:33:14Z",
+      "side": 1,
+      "message": "Maybe \"unwrapBitNot\"? If we\u0027re ok with C++17 then a return type of `std::optional\u003cVal\u003e` would bake in the conditional \"maybe return\" part into the signature but I think unwrapBitNot + the comments are sufficient to understand what\u0027s happening.",
+      "parentUuid": "565a26c3_f4b39e5f",
+      "range": {
+        "startLine": 1020,
+        "startChar": 12,
+        "endLine": 1020,
+        "endChar": 20
+      },
+      "revId": "1d87d71f3057d7f530cbe6f948b5c8adc9030b33",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ef01b032_404942cf",
