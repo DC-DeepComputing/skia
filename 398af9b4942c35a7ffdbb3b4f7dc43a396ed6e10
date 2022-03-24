@@ -16,6 +16,52 @@
       "message": "I think I addressed the failing bots. PTAL.",
       "revId": "398af9b4942c35a7ffdbb3b4f7dc43a396ed6e10",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "785b105c_41082eee",
+        "filename": "include/utils/SkNWayCanvas.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-03-24T15:55:32Z",
+      "side": 1,
+      "message": "Does it make any sense for this to take an SkCanvas. Then the call extracts the baseDevice and also adds the one canvas itself. If we go this route is it worth adding some debug thing to make sure only 1 canvas is added?",
+      "range": {
+        "startLine": 22,
+        "startChar": 4,
+        "endLine": 22,
+        "endChar": 45
+      },
+      "revId": "398af9b4942c35a7ffdbb3b4f7dc43a396ed6e10",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "302897f4_433cfcb8",
+        "filename": "src/utils/SkNWayCanvas.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-03-24T15:55:32Z",
+      "side": 1,
+      "message": "std::move?",
+      "range": {
+        "startLine": 14,
+        "startChar": 67,
+        "endLine": 14,
+        "endChar": 73
+      },
+      "revId": "398af9b4942c35a7ffdbb3b4f7dc43a396ed6e10",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
