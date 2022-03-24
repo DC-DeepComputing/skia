@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "23661301_a9b835f2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-03-24T20:17:03Z",
+      "side": 1,
+      "message": "I\u0027ve verified that this is working in my test app, so conceptually I think it\u0027s fine. One question I have is how far you want/need me to go in making this a true SkCanvas citizen, i.e., adding support to other SkCanvas types or picture recording.",
+      "revId": "56b7a0509260700805344616caca54664cd9052a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
