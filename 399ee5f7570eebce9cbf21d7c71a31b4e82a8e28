@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7a644e3d_06d09e57",
+        "filename": "experimental/graphite/src/geom/Transform.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-03-24T20:12:56Z",
+      "side": 1,
+      "message": "This matches what SkMatrix::decomposeScale() does. SkMatrix::getMin/MaxScale() use singular values and I haven\u0027t gone back through all that math to see how it\u0027s different.",
+      "range": {
+        "startLine": 73,
+        "startChar": 17,
+        "endLine": 73,
+        "endChar": 64
+      },
+      "revId": "399ee5f7570eebce9cbf21d7c71a31b4e82a8e28",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
