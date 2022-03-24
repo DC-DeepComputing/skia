@@ -34,6 +34,24 @@
       "parentUuid": "967ff76f_2af806a9",
       "revId": "7f2f3556f13b9d176e8e3a6014f7fe355d0f705f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "36934e9c_f4422375",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-03-24T16:37:12Z",
+      "side": 1,
+      "message": "So the bots have come in and I am not seeing the flakiness that we are seeing on our current bots. However, this driver does have a bug with 1010102 it looks like. Maybe that is still a better state as we can just blacklist the 1010102 config?",
+      "parentUuid": "c8fdf1ff_4541d86d",
+      "revId": "7f2f3556f13b9d176e8e3a6014f7fe355d0f705f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
