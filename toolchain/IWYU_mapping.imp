@@ -6,6 +6,8 @@
   { include: ["<__algorithm/sort.h>", "private", "<algorithm>", "public"] },
   { include: ["<__algorithm/stable_sort.h>", "private", "<algorithm>", "public"] },
 
+  { symbol: ["std::size_t", "public", "<cstddef>", "public"] },
+
   { include: ["<__functional/function.h>", "private", "<functional>", "public"] },
 
   { include: ["<__locale>", "private", "<locale>", "public"] },
@@ -26,4 +28,10 @@
   { include: ["<__utility/move.h>", "private", "<utility>", "public"] },
   { include: ["<__utility/swap.h>", "private", "<utility>", "public"] },
   { include: ["<__utility/pair.h>", "private", "<utility>", "public"] },
+  { symbol: ["std::move", "public", "<utility>", "public"] },
+  { symbol: ["std::swap", "public", "<utility>", "public"] },
+  { symbol: ["std::forward", "public", "<utility>", "public"] },
+
+
+  { symbol: ["SkSL::String::printf", "public", '"include/private/SkSLString.h"', "public"] },
 ]
