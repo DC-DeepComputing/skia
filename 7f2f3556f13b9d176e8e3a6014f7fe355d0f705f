@@ -70,6 +70,24 @@
       "parentUuid": "36934e9c_f4422375",
       "revId": "7f2f3556f13b9d176e8e3a6014f7fe355d0f705f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cc93399f_ddb4f3f3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-03-24T17:29:07Z",
+      "side": 1,
+      "message": "Since there aren\u0027t \"too many\" gms, we can keep 1010102 running on that bot mark the GMs as bad and file a bug to track it.\n\nAlternatively if we want to use a different bot, I think we just remove/change this line https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/infra/bots/gen_tasks_logic/dm_flags.go;l\u003d418.\n\nI\u0027m not sure what the best bot to move it to. Is there a vulkan bot we have a bunch of extra capacity to add 1010102 to?",
+      "parentUuid": "2d1de203_a610a883",
+      "revId": "7f2f3556f13b9d176e8e3a6014f7fe355d0f705f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
