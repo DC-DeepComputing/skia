@@ -1008,6 +1008,9 @@ namespace skvm {
             return this->allImm(id, &imm) && imm == want;
         }
 
+        template <typename F32_or_I32>
+        void canonicalizeIdOrder(F32_or_I32& x, F32_or_I32& y);
+
         SkTHashMap<Instruction, Val, InstructionHash> fIndex;
         std::vector<Instruction>                      fProgram;
         std::vector<TraceHook*>                       fTraceHooks;
