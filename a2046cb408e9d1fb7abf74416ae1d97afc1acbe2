@@ -16,6 +16,92 @@
       "message": "PTAL",
       "revId": "a2046cb408e9d1fb7abf74416ae1d97afc1acbe2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9f26aeff_b7c425a3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-03-24T16:30:11Z",
+      "side": 1,
+      "message": "None of my comments are actually blocking, so feel free to update as you see fit.",
+      "revId": "a2046cb408e9d1fb7abf74416ae1d97afc1acbe2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a3107ff0_69baf4a2",
+        "filename": "include/utils/SkNWayCanvas.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-03-24T16:30:11Z",
+      "side": 1,
+      "message": "update comment",
+      "range": {
+        "startLine": 20,
+        "startChar": 79,
+        "endLine": 21,
+        "endChar": 50
+      },
+      "revId": "a2046cb408e9d1fb7abf74416ae1d97afc1acbe2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e2186612_e8843b5d",
+        "filename": "include/utils/SkNWayCanvas.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-03-24T16:30:11Z",
+      "side": 1,
+      "message": "Is this something that we want to expose to clients? Are there weird interactions with it storing a possible read Device instead of the SkNoPixelsDevice the old ctor ends up making? Maybe we just wrap this in #if SK_SUPPORT_GPU \u0026\u0026 GR_TEST_UTILS if its really only intended to be used for this specific test (and always loosen the guards later).",
+      "range": {
+        "startLine": 22,
+        "startChar": 4,
+        "endLine": 22,
+        "endChar": 28
+      },
+      "revId": "a2046cb408e9d1fb7abf74416ae1d97afc1acbe2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "247b61cd_26d0271b",
+        "filename": "src/utils/SkNWayCanvas.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-03-24T16:30:11Z",
+      "side": 1,
+      "message": "should we just be adding the canvas here instead of making the caller do it?",
+      "range": {
+        "startLine": 14,
+        "startChar": 91,
+        "endLine": 14,
+        "endChar": 92
+      },
+      "revId": "a2046cb408e9d1fb7abf74416ae1d97afc1acbe2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
