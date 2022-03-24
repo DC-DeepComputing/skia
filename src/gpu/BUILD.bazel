@@ -1590,6 +1590,7 @@ generated_cc_atom(
         ":GrOpsRenderPass_hdr",
         ":GrPixmap_hdr",
         ":GrXferProcessor_hdr",
+        ":RefCntedCallback_hdr",
         ":Swizzle_hdr",
         "//include/core:SkPath_hdr",
         "//include/core:SkSpan_hdr",
@@ -1686,7 +1687,7 @@ generated_cc_atom(
     hdrs = ["GrManagedResource.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        "//include/private:GrTypesPriv_hdr",
+        ":RefCntedCallback_hdr",
         "//include/private:SkMutex_hdr",
         "//include/private:SkTHash_hdr",
         "//include/utils:SkRandom_hdr",
@@ -2186,6 +2187,7 @@ generated_cc_atom(
     deps = [
         ":BaseDevice_hdr",
         ":GrImageContextPriv_hdr",
+        ":RefCntedCallback_hdr",
         "//include/core:SkPaint_hdr",
         "//include/gpu:GrRecordingContext_hdr",
         "//src/gpu/text:GrSDFTControl_hdr",
@@ -2868,6 +2870,7 @@ generated_cc_atom(
     visibility = ["//:__subpackages__"],
     deps = [
         ":GrGpuResource_hdr",
+        ":RefCntedCallback_hdr",
         "//include/core:SkImageInfo_hdr",
         "//include/core:SkRect_hdr",
         "//include/gpu:GrBackendSurface_hdr",
@@ -3556,4 +3559,11 @@ generated_cc_atom(
     hdrs = ["Blend.h"],
     visibility = ["//:__subpackages__"],
     deps = ["//include/core:SkTypes_hdr"],
+)
+
+generated_cc_atom(
+    name = "RefCntedCallback_hdr",
+    hdrs = ["RefCntedCallback.h"],
+    visibility = ["//:__subpackages__"],
+    deps = ["//include/core:SkRefCnt_hdr"],
 )
