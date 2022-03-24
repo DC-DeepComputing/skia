@@ -52,6 +52,24 @@
       "parentUuid": "c8fdf1ff_4541d86d",
       "revId": "7f2f3556f13b9d176e8e3a6014f7fe355d0f705f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2d1de203_a610a883",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5145
+      },
+      "writtenOn": "2022-03-24T17:17:21Z",
+      "side": 1,
+      "message": "SGTM. I\u0027ll ask for 50% of the bots to be put on the new version and will switch our config to use them.\nRemind me where the 1010102 config needs to be blacklisted?",
+      "parentUuid": "36934e9c_f4422375",
+      "revId": "7f2f3556f13b9d176e8e3a6014f7fe355d0f705f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
