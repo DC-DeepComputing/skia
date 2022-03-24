@@ -16,6 +16,10 @@
 class SK_API SkNWayCanvas : public SkCanvasVirtualEnforcer<SkNoDrawCanvas> {
 public:
     SkNWayCanvas(int width, int height);
+
+    // You can turn NWay canvas into a canvas a wrapper for a single canvas by passing the
+    // device, and adding just one canvas to wrap.
+    SkNWayCanvas(SkCanvas*);
     ~SkNWayCanvas() override;
 
     virtual void addCanvas(SkCanvas*);

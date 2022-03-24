@@ -8,14 +8,22 @@
 #include "include/core/SkShader.h"
 #include "include/utils/SkNWayCanvas.h"
 #include "src/core/SkCanvasPriv.h"
+#include "src/core/SkDevice.h"
 
 SkNWayCanvas::SkNWayCanvas(int width, int height) : INHERITED(width, height) {}
+SkNWayCanvas::SkNWayCanvas(SkCanvas* canvas) : INHERITED(sk_ref_sp(canvas->baseDevice())) {}
 
 SkNWayCanvas::~SkNWayCanvas() {
     this->removeAll();
 }
 
 void SkNWayCanvas::addCanvas(SkCanvas* canvas) {
+    if (!fList.isEmpty()) {
+        // We are using the nway canvas as a wrapper for the originally added canvas, and the device
+        // on the nway may contradict calls for the device on this canvas. So, to add a second
+        // canvas, the devices on the first canvas, and the nway base device must be different.
+        SkASSERT(fList[0]->baseDevice() != this->baseDevice());
+    }
     if (canvas) {
         *fList.append() = canvas;
     }
