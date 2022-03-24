@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7e9a9fc8_6c1f9a32",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-03-24T20:29:24Z",
+      "side": 1,
+      "message": "Wrote this to finally answer all the questions raised by https://gitlab.freedesktop.org/freetype/freetype/-/merge_requests/139 . It would be nice to keep all of this around in the event we need to double check or the behavior needs to change.",
+      "revId": "26cf1e86cccd324f2a5259f2e38d518c715f2b65",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
