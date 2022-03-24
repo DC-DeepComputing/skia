@@ -24,6 +24,10 @@
 #include "src/gpu/gl/GrGLRenderTarget.h"
 #include "src/gpu/gl/GrGLTexture.h"
 
+#ifdef SK_BUILD_FOR_ANDROID
+#include <sys/system_properties.h>
+#endif
+
 #if defined(SK_BUILD_FOR_IOS)
 #include <TargetConditionals.h>
 #endif
@@ -3665,6 +3669,13 @@ void GrGLCaps::applyDriverCorrectnessWorkarounds(const GrGLContextInfo& ctxInfo,
                                                  const GrGLInterface* glInterface,
                                                  GrShaderCaps* shaderCaps,
                                                  FormatWorkarounds* formatWorkarounds) {
+    // Defaults to zero since all our workaround checks consider things "fixed" once we are above
+    // a certain api level.
+    int androidDisableAfterAPI = 0;
+#if defined(SK_BUILD_FOR_ANDROID)
+    androidDisableAfterAPI = contextOptions.fDisableDriverCorrectnessWorkaroundsPriorToAPI;
+#endif
+
     // A driver bug on the nexus 6 causes incorrect dst copies when invalidate is called beforehand.
     // Thus we are disabling this extension for now on Adreno4xx devices.
     if (ctxInfo.renderer() == GrGLRenderer::kAdreno430       ||
@@ -4141,10 +4152,11 @@ void GrGLCaps::applyDriverCorrectnessWorkarounds(const GrGLContextInfo& ctxInfo,
     // the second draw the driver has a bug where it tries to access the second color output again.
     // This is fixed by reseting the blend function to anything that does not reference src2 when we
     // disable blending.
-    if (ctxInfo.renderer() == GrGLRenderer::kAdreno530 ||
-        ctxInfo.renderer() == GrGLRenderer::kAdreno5xx_other ||
-        ctxInfo.renderer() == GrGLRenderer::kAdreno620 ||
-        ctxInfo.renderer() == GrGLRenderer::kAdreno640) {
+    if ((ctxInfo.renderer() == GrGLRenderer::kAdreno530 ||
+         ctxInfo.renderer() == GrGLRenderer::kAdreno5xx_other ||
+         ctxInfo.renderer() == GrGLRenderer::kAdreno620 ||
+         ctxInfo.renderer() == GrGLRenderer::kAdreno640) &&
+        androidDisableAfterAPI < 33) {
         fMustResetBlendFuncBetweenDualSourceAndDisable = true;
     }
 
@@ -4276,8 +4288,10 @@ void GrGLCaps::applyDriverCorrectnessWorkarounds(const GrGLContextInfo& ctxInfo,
     // All Adrenos claim to support LUM16F but don't appear to actually do so.
     // The failing devices/gpus were: Nexus5/Adreno330, Nexus5x/Adreno418, Pixel/Adreno530,
     // Pixel2XL/Adreno540 and Pixel3/Adreno630
-    formatWorkarounds->fDisableLuminance16F = ctxInfo.renderer() == GrGLRenderer::kIntelBroadwell ||
-                                              ctxInfo.vendor()   == GrGLVendor::kQualcomm;
+    formatWorkarounds->fDisableLuminance16F =
+            (ctxInfo.renderer() == GrGLRenderer::kIntelBroadwell ||
+             ctxInfo.vendor() == GrGLVendor::kQualcomm) &&
+            androidDisableAfterAPI < 33;
 
 #ifdef SK_BUILD_FOR_MAC
     // On a MacBookPro 11.5 running MacOS 10.13 with a Radeon M370X the TransferPixelsFrom test

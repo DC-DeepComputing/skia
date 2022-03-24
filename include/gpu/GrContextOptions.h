@@ -201,6 +201,15 @@ struct SK_API GrContextOptions {
      */
     bool fDisableDriverCorrectnessWorkarounds = false;
 
+#if defined(SK_BUILD_FOR_ANDROID)
+    /**
+     * If this value is non-zero and fDisableDriverCorrectnessWorkarounds is false then all driver
+     * workarounds are enabled except those that are expected to be fixed at the provided Android
+     * API level.
+     */
+    int fDisableDriverCorrectnessWorkaroundsPriorToAPI = 0;
+#endif
+
     /**
      * Maximum number of GPU programs or pipelines to keep active in the runtime cache.
      */
