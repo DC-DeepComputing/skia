@@ -465,9 +465,9 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
     return drawPass;
 }
 
-void DrawPass::addCommands(ResourceProvider* resourceProvider,
-                           CommandBuffer* buffer,
-                           const RenderPassDesc& renderPassDesc) const {
+bool DrawPass::addCommands1(ResourceProvider* resourceProvider,
+                            CommandBuffer* buffer,
+                            const RenderPassDesc& renderPassDesc) const {
     // TODO: Validate RenderPass state against DrawPass's target and requirements?
     // Generate actual GraphicsPipeline objects combining the target-level properties and each of
     // the GraphicsPipelineDesc's referenced in this DrawPass.
@@ -494,7 +494,26 @@ void DrawPass::addCommands(ResourceProvider* resourceProvider,
             case CommandType::kBindUniformBuffer: {
                 auto& d = c.fBindUniformBuffer;
                 buffer->bindUniformBuffer(d.fSlot, sk_ref_sp(d.fInfo.fBuffer), d.fInfo.fOffset);
-                break; }
+            } break;
+            case CommandType::kBindTexturesAndSamplers: {
+                auto& d = c.fBindTexturesAndSamplers;
+
+                for (int i = 0; i < d.fTextureBlock->numTextures(); ++i) {
+                    const auto &texture = d.fTextureBlock->texture(i);
+                    if (!texture.fProxy->texture()) {
+                        return false;
+                    }
+
+                    sk_sp<Sampler> sampler = resourceProvider->findOrCreateCompatibleSampler(
+                            texture.fSamplingOptions, texture.fTileModes[0], texture.fTileModes[1]);
+
+                    SkASSERT(sampler);
+                    buffer->bindTextureAndSampler(texture.fProxy->refTexture(),
+                                                  std::move(sampler),
+                                                  i);
+                }
+
+            } break;
             case CommandType::kBindDrawBuffers: {
                 auto& d = c.fBindDrawBuffers;
                 buffer->bindDrawBuffers(d.fVertices, d.fInstances, d.fIndices);
@@ -525,6 +544,8 @@ void DrawPass::addCommands(ResourceProvider* resourceProvider,
             }
         }
     }
+
+    return true;
 }
 
 } // namespace skgpu
