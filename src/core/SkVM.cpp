@@ -1167,6 +1167,10 @@ namespace skvm {
         if (this->isImm(x.id, 0)) { return z; }               // false ? y : z == z
         if (this->isImm(y.id, 0)) { return bit_clear(z,x); }  //     x ? 0 : z == ~x&z
         if (this->isImm(z.id, 0)) { return bit_and  (y,x); }  //     x ? y : 0 ==  x&y
+        if (Val notX = this->isBitNot(x.id); notX != NA) {    // (!x ? y : z) == (x ? z : y)
+            x.id = notX;
+            std::swap(y, z);
+        }
         return {this, this->push(Op::select, x.id, y.id, z.id)};
     }
 
