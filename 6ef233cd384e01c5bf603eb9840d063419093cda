@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f85c9908_ec3b109b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-03-24T19:48:50Z",
+      "side": 1,
+      "message": "I\u0027ve looked through it and have no issues given that the shader block is there to give us something foundational and improve upon.",
+      "revId": "6ef233cd384e01c5bf603eb9840d063419093cda",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
