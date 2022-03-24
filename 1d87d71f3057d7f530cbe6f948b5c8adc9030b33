@@ -113,6 +113,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6b58e0a8_b8e6543b",
+        "filename": "src/core/SkVM.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 1020,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-03-24T20:41:16Z",
+      "side": 1,
+      "message": "Yeah, it really wasn\u0027t a strong suggestion, I think the semantics are obvious from the comments. I think just using a verb imperative in the name that conveys the unwrapping/flattening that happens here would suffice.",
+      "parentUuid": "b8fc302a_fb9cce29",
+      "range": {
+        "startLine": 1020,
+        "startChar": 12,
+        "endLine": 1020,
+        "endChar": 20
+      },
+      "revId": "1d87d71f3057d7f530cbe6f948b5c8adc9030b33",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ef01b032_404942cf",
