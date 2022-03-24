@@ -69,6 +69,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "da7eb96f_c14c838b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-03-24T16:15:16Z",
+      "side": 1,
+      "message": "We shouldn\u0027t get too large, since the stack depth is related directly to the SkShader graph that was already created. \n\nThat said, the SkPaintParamsKeyBuilder is created in DrawPass::Make and is deleted when that completes, so even if a draw used a really large key compared to the other draws in a DrawPass, we\u0027d be reset for the next frame. The rewind() is most useful in avoiding malloc\u0027s between recorded draw calls within a DrawPass.",
+      "parentUuid": "99046f60_10e6a85a",
+      "revId": "519c1542428c381e29b45a2426a469257e58a378",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c1f63f51_d02255a7",
