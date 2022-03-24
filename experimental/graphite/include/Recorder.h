@@ -81,6 +81,8 @@ private:
     void registerDevice(Device*);
     void deregisterDevice(const Device*);
 
+    void reset();
+
     sk_sp<Gpu> fGpu;
     std::unique_ptr<ResourceProvider> fResourceProvider;
 

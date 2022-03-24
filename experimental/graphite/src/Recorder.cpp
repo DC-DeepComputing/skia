@@ -43,6 +43,18 @@ Recorder::~Recorder() {
     }
 }
 
+void Recorder::reset() {
+    for (auto& device : fTrackedDevices) {
+        device->abandonRecorder();
+    }
+
+    fDrawBufferManager.reset(new DrawBufferManager(fResourceProvider.get(),
+                                                   fGpu->caps()->requiredUniformBufferAlignment()));
+    fTextureDataCache = std::make_unique<TextureDataCache>();
+    // We leave the UniformDataCache alone
+    fGraph->reset();
+}
+
 std::unique_ptr<Recording> Recorder::snap() {
     ASSERT_SINGLE_OWNER
     for (auto& device : fTrackedDevices) {
@@ -54,7 +66,11 @@ std::unique_ptr<Recording> Recorder::snap() {
 
     auto commandBuffer = fResourceProvider->createCommandBuffer();
 
-    fGraph->addCommands(fResourceProvider.get(), commandBuffer.get());
+    if (!fGraph->addCommands(fResourceProvider.get(), commandBuffer.get())) {
+        this->reset();
+        return nullptr;
+    }
+
     fDrawBufferManager->transferToCommandBuffer(commandBuffer.get());
 
     fGraph->reset();
