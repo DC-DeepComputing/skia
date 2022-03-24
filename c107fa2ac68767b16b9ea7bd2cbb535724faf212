@@ -39,6 +39,30 @@
       },
       "revId": "c107fa2ac68767b16b9ea7bd2cbb535724faf212",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "10054fc8_fa0bad4a",
+        "filename": "modules/skparagraph/src/TextLine.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 512,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-03-24T18:06:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9bc600ad_41cdea58",
+      "range": {
+        "startLine": 512,
+        "startChar": 60,
+        "endLine": 512,
+        "endChar": 64
+      },
+      "revId": "c107fa2ac68767b16b9ea7bd2cbb535724faf212",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
