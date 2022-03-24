@@ -18,10 +18,10 @@
 static sk_sp<const SkMipmap> try_load_mips(const SkImage_Base* image) {
     sk_sp<const SkMipmap> mips = image->refMips();
     if (!mips) {
-        mips.reset(SkMipmapCache::FindAndRef(SkBitmapCacheDesc::Make(image)));
+//        mips.reset(SkMipmapCache::FindAndRef(SkBitmapCacheDesc::Make(image)));
     }
     if (!mips) {
-        mips.reset(SkMipmapCache::AddAndRef(image));
+//        mips.reset(SkMipmapCache::AddAndRef(image));
     }
     return mips;
 }

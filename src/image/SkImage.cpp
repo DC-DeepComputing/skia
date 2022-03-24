@@ -314,7 +314,12 @@ std::tuple<GrSurfaceProxyView, GrColorType> SkImage_Base::asView(GrRecordingCont
     if (!context) {
         return {};
     }
-    if (!context->priv().caps()->mipmapSupport() || this->dimensions().area() <= 1) {
+    if (!context->priv().caps()->mipmapSupport() ||
+        this->dimensions().area() <= 1           ||
+        !this->hasMipmaps()) {
+        mipmapped = GrMipmapped::kNo;
+    }
+    if (!this->hasMipmaps()) {
         mipmapped = GrMipmapped::kNo;
     }
     return this->onAsView(context, mipmapped, policy);
@@ -334,7 +339,7 @@ std::unique_ptr<GrFragmentProcessor> SkImage_Base::asFragmentProcessor(
         return {};
     }
     if (sampling.mipmap != SkMipmapMode::kNone &&
-        (!rContext->priv().caps()->mipmapSupport() || this->dimensions().area() <= 1)) {
+        (!rContext->priv().caps()->mipmapSupport() || this->dimensions().area() <= 1 || !this->hasMipmaps())) {
         sampling = SkSamplingOptions(sampling.filter);
     }
     return this->onAsFragmentProcessor(rContext, sampling, tileModes, m, subset, domain);

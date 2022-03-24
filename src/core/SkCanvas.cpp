@@ -1897,10 +1897,19 @@ void SkCanvas::drawImageLattice(const SkImage* image, const Lattice& lattice, co
     }
 }
 
+static SkSamplingOptions clean_sampling_for_image(const SkSamplingOptions& options,
+                                                  const SkImage* image) {
+    if (options.mipmap != SkMipmapMode::kNone && !image->hasMipmaps()) {
+        return SkSamplingOptions(options.filter);
+    }
+    return options;
+}
+
 void SkCanvas::drawAtlas(const SkImage* atlas, const SkRSXform xform[], const SkRect tex[],
                          const SkColor colors[], int count, SkBlendMode mode,
-                         const SkSamplingOptions& sampling, const SkRect* cull,
+                         const SkSamplingOptions& origSampling, const SkRect* cull,
                          const SkPaint* paint) {
+    SkSamplingOptions sampling = clean_sampling_for_image(origSampling, atlas);
     TRACE_EVENT0("skia", TRACE_FUNC);
     RETURN_ON_NULL(atlas);
     if (count <= 0) {
@@ -2207,8 +2216,9 @@ static SkPaint clean_paint_for_drawVertices(SkPaint paint) {
 }
 
 void SkCanvas::onDrawImage2(const SkImage* image, SkScalar x, SkScalar y,
-                            const SkSamplingOptions& sampling, const SkPaint* paint) {
+                            const SkSamplingOptions& origSampling, const SkPaint* paint) {
     SkPaint realPaint = clean_paint_for_drawImage(paint);
+    SkSamplingOptions sampling = clean_sampling_for_image(origSampling, image);
 
     SkRect bounds = SkRect::MakeXYWH(x, y, image->width(), image->height());
     if (this->internalQuickReject(bounds, realPaint)) {
@@ -2257,9 +2267,10 @@ void SkCanvas::onDrawImage2(const SkImage* image, SkScalar x, SkScalar y,
 }
 
 void SkCanvas::onDrawImageRect2(const SkImage* image, const SkRect& src, const SkRect& dst,
-                                const SkSamplingOptions& sampling, const SkPaint* paint,
+                                const SkSamplingOptions& origSampling, const SkPaint* paint,
                                 SrcRectConstraint constraint) {
     SkPaint realPaint = clean_paint_for_drawImage(paint);
+    SkSamplingOptions sampling = clean_sampling_for_image(origSampling, image);
 
     if (this->internalQuickReject(dst, realPaint)) {
         return;
@@ -2583,9 +2594,10 @@ void SkCanvas::onDrawDrawable(SkDrawable* dr, const SkMatrix* matrix) {
 
 void SkCanvas::onDrawAtlas2(const SkImage* atlas, const SkRSXform xform[], const SkRect tex[],
                             const SkColor colors[], int count, SkBlendMode bmode,
-                            const SkSamplingOptions& sampling, const SkRect* cull,
+                            const SkSamplingOptions& origSampling, const SkRect* cull,
                             const SkPaint* paint) {
     // drawAtlas is a combination of drawVertices and drawImage...
+    SkSamplingOptions sampling = clean_sampling_for_image(origSampling, atlas);
     SkPaint realPaint = clean_paint_for_drawVertices(clean_paint_for_drawImage(paint));
     realPaint.setShader(atlas->makeShader(sampling));
 
