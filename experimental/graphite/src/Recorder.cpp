@@ -54,7 +54,17 @@ std::unique_ptr<Recording> Recorder::snap() {
 
     auto commandBuffer = fResourceProvider->createCommandBuffer();
 
-    fGraph->addCommands(fResourceProvider.get(), commandBuffer.get());
+    if (!fGraph->addCommands(fResourceProvider.get(), commandBuffer.get())) {
+        // Leaving 'fTrackedDevices' alone since they were flushed earlier and could still be
+        // attached to extant SkSurfaces.
+        fDrawBufferManager.reset(new DrawBufferManager(fResourceProvider.get(),
+                                                       fGpu->caps()->requiredUniformBufferAlignment()));
+        fTextureDataCache = std::make_unique<TextureDataCache>();
+        // We leave the UniformDataCache alone
+        fGraph->reset();
+        return nullptr;
+    }
+
     fDrawBufferManager->transferToCommandBuffer(commandBuffer.get());
 
     fGraph->reset();
