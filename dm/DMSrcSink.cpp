@@ -2148,6 +2148,9 @@ Result GraphiteSink::draw(const Src& src,
     }
 
     std::unique_ptr<skgpu::Recording> recording = recorder->snap();
+    if (!recording) {
+        return Result::Fatal("Could not create a recording.");
+    }
 
     context->insertRecording(std::move(recording));
     context->submit(skgpu::SyncToCpu::kYes);
