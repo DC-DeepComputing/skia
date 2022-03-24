@@ -708,7 +708,7 @@ void GLSLCodeGenerator::writeFunctionCall(const FunctionCall& c) {
         this->writeExpression(*arg, Precedence::kSequence);
     }
     if (fProgram.fConfig->fSettings.fSharpenTextures && isTextureFunctionWithBias) {
-        this->write(", -0.5");
+        this->write(", -0.49");
     }
     this->write(closingParen);
 }
