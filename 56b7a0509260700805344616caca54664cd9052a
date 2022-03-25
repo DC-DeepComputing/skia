@@ -99,6 +99,30 @@
       },
       "revId": "56b7a0509260700805344616caca54664cd9052a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4688da57_cf5ec5e9",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1423,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-03-25T19:21:24Z",
+      "side": 1,
+      "message": "If we\u0027re going to require this only be called when canvas matrix is identity then maybe we should make it a surface factory param and have the client recreate the surface if they want a diff matrix. I\u0027m assuming android is wrapping an existing fbo/ahwb and so surface creation is \"free\".",
+      "parentUuid": "b9153007_5902f448",
+      "range": {
+        "startLine": 1423,
+        "startChar": 8,
+        "endLine": 1423,
+        "endChar": 50
+      },
+      "revId": "56b7a0509260700805344616caca54664cd9052a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
