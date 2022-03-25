@@ -17,7 +17,7 @@
 
 namespace skgpu {
 
-std::tuple<SkUniquePaintParamsID, std::unique_ptr<SkPipelineData>> ExtractPaintData(
+std::tuple<SkUniquePaintParamsID, std::unique_ptr<SkPipelineDataGatherer>> ExtractPaintData(
         Recorder* recorder,
         SkPaintParamsKeyBuilder* builder,
         const PaintParams& p) {
@@ -26,7 +26,7 @@ std::tuple<SkUniquePaintParamsID, std::unique_ptr<SkPipelineData>> ExtractPaintD
 
     SkKeyContext keyContext(recorder);
 
-    std::unique_ptr<SkPipelineData> pipelineData = std::make_unique<SkPipelineData>();
+    std::unique_ptr<SkPipelineDataGatherer> pipelineData = std::make_unique<SkPipelineDataGatherer>();
 
     p.toKey(keyContext, builder, pipelineData.get());
 

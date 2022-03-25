@@ -15,7 +15,7 @@
 
 enum class CodeSnippetID : uint8_t;
 class SkPaintParamsKeyBuilder;
-class SkPipelineData;
+class SkPipelineDataGatherer;
 class SkShaderCodeDictionary;
 class SkUniform;
 class SkUniquePaintParamsID;
@@ -24,7 +24,7 @@ namespace skgpu {
 
 class PaintParams;
 
-std::tuple<SkUniquePaintParamsID, std::unique_ptr<SkPipelineData>> ExtractPaintData(
+std::tuple<SkUniquePaintParamsID, std::unique_ptr<SkPipelineDataGatherer>> ExtractPaintData(
         Recorder*,
         SkPaintParamsKeyBuilder* builder,
         const PaintParams&);

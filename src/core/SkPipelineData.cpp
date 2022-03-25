@@ -8,7 +8,7 @@
 #include "src/core/SkOpts.h"
 #include "src/core/SkPipelineData.h"
 
-void SkPipelineData::add(sk_sp<SkUniformData> uniforms) {
+void SkPipelineDataGatherer::add(sk_sp<SkUniformData> uniforms) {
     SkASSERT(uniforms && uniforms->count());
     fUniformDataBlock.add(std::move(uniforms));
 }

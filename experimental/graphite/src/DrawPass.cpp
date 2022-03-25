@@ -323,12 +323,12 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
         UniformDataCache::Index shadingUniformIndex;
         TextureDataCache::Index textureBindingIndex;
         if (draw.fPaintParams.has_value()) {
-            std::unique_ptr<SkPipelineData> pipelineData;
-            std::tie(shaderID, pipelineData) = ExtractPaintData(recorder, &builder,
-                                                                draw.fPaintParams.value());
+            std::unique_ptr<SkPipelineDataGatherer> gatherer;
+            std::tie(shaderID, gatherer) = ExtractPaintData(recorder, &builder,
+                                                            draw.fPaintParams.value());
             shadingUniformIndex = shadingUniformBindings.addUniforms(
-                    pipelineData->uniformDataBlock());
-            textureBindingIndex = textureDataCache->insert(pipelineData->textureDataBlock());
+                    gatherer->uniformDataBlock());
+            textureBindingIndex = textureDataCache->insert(gatherer->textureDataBlock());
         } // else depth-only
 
         for (int stepIndex = 0; stepIndex < draw.fRenderer.numRenderSteps(); ++stepIndex) {
