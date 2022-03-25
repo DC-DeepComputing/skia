@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "64d45450_97c46f7a",
+        "filename": "experimental/graphite/src/Caps.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-03-25T19:04:01Z",
+      "side": 1,
+      "message": "Do we need this header?",
+      "revId": "7909dc5af5b97f5729a0d49b834211a54ce0f0fb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c4c7a288_a1fc5952",
         "filename": "experimental/graphite/src/Caps.h",
         "patchSetId": 2
@@ -20,6 +37,23 @@
         "endLine": 82,
         "endChar": 44
       },
+      "revId": "7909dc5af5b97f5729a0d49b834211a54ce0f0fb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4fc7f1fa_275ac5c8",
+        "filename": "experimental/graphite/src/Caps.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-03-25T19:04:01Z",
+      "side": 1,
+      "message": "wdyt about having this in the derived class(es)?\n\n// A vector of the viable sample counts (e.g., { 1, 2, 4, 8 }).\n?",
       "revId": "7909dc5af5b97f5729a0d49b834211a54ce0f0fb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -66,6 +100,46 @@
         "endLine": 81,
         "endChar": 26
       },
+      "revId": "7909dc5af5b97f5729a0d49b834211a54ce0f0fb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6d563d4d_79f5f385",
+        "filename": "experimental/graphite/src/mtl/MtlCaps.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-03-25T19:04:01Z",
+      "side": 1,
+      "message": "Ganesh ?",
+      "range": {
+        "startLine": 81,
+        "startChar": 20,
+        "endLine": 81,
+        "endChar": 26
+      },
+      "revId": "7909dc5af5b97f5729a0d49b834211a54ce0f0fb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "04036c27_6de3be9d",
+        "filename": "experimental/graphite/src/mtl/MtlCaps.mm",
+        "patchSetId": 2
+      },
+      "lineNbr": 292,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-03-25T19:04:01Z",
+      "side": 1,
+      "message": "Maybe a static assert somewhere that kNumMtlFormats \u003d\u003d sizeof(kMtlFormats) ?",
       "revId": "7909dc5af5b97f5729a0d49b834211a54ce0f0fb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
