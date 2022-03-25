@@ -90,6 +90,7 @@ std::unique_ptr<Expression> IndexExpression::Convert(const Context& context,
 std::unique_ptr<Expression> IndexExpression::Make(const Context& context,
                                                   std::unique_ptr<Expression> base,
                                                   std::unique_ptr<Expression> index) {
+    Position pos = base->fPosition;
     const Type& baseType = base->type();
     SkASSERT(baseType.isArray() || baseType.isMatrix() || baseType.isVector());
     SkASSERT(index->type().isInteger());
@@ -101,7 +102,8 @@ std::unique_ptr<Expression> IndexExpression::Make(const Context& context,
             if (baseType.isVector()) {
                 // Constant array indexes on vectors can be converted to swizzles: `v[2]` --> `v.z`.
                 // Swizzling is harmless and can unlock further simplifications for some base types.
-                return Swizzle::Make(context, std::move(base), ComponentArray{(int8_t)indexValue});
+                return Swizzle::Make(context, pos, std::move(base),
+                        ComponentArray{(int8_t)indexValue});
             }
 
             if (baseType.isArray() && !base->hasSideEffects()) {
@@ -143,7 +145,6 @@ std::unique_ptr<Expression> IndexExpression::Make(const Context& context,
                 }
 
                 if (!ctorArgs.empty()) {
-                    Position pos = ctorArgs.front()->fPosition;
                     return ConstructorCompound::Make(context, pos, vecType, std::move(ctorArgs));
                 }
             }

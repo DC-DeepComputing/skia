@@ -59,6 +59,14 @@ public:
         return fEndOffset;
     }
 
+    // Returns the position from this through, and including the entirety of, end.
+    Position rangeThrough(Position end) const {
+        if (fEndOffset == -1 || end.fEndOffset == -1) {
+            return *this;
+        }
+        return Range(this->startOffset(), end.endOffset());
+    }
+
     bool operator==(const Position& other) const {
         return fStartOffsetOrLine == other.fStartOffsetOrLine &&
                 fEndOffset == other.fEndOffset;
