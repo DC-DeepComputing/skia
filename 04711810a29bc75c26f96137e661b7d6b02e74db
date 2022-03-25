@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "64c285f9_74c36367",
+        "filename": "src/sksl/SkSLConstantFolder.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 178,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-03-25T20:47:58Z",
+      "side": 1,
+      "message": "this comment is probably not that necessary as the argument expression already reads similarly.",
+      "range": {
+        "startLine": 178,
+        "startChar": 42,
+        "endLine": 178,
+        "endChar": 58
+      },
+      "revId": "04711810a29bc75c26f96137e661b7d6b02e74db",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
