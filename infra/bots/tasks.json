@@ -29225,7 +29225,7 @@
         "Housekeeper-PerCommit-BundleRecipes"
       ],
       "dimensions": [
-        "gpu:10de:1cb3-440.100",
+        "gpu:10de:1cb3-510.60.02",
         "os:Ubuntu-18.04",
         "pool:Skia"
       ],
@@ -29329,7 +29329,7 @@
         "Housekeeper-PerCommit-BundleRecipes"
       ],
       "dimensions": [
-        "gpu:10de:1cb3-440.100",
+        "gpu:10de:1cb3-510.60.02",
         "os:Ubuntu-18.04",
         "pool:Skia"
       ],
@@ -29438,7 +29438,7 @@
         "Housekeeper-PerCommit-BundleRecipes"
       ],
       "dimensions": [
-        "gpu:10de:1cb3-440.100",
+        "gpu:10de:1cb3-510.60.02",
         "os:Ubuntu-18.04",
         "pool:Skia"
       ],
@@ -29542,7 +29542,7 @@
         "Housekeeper-PerCommit-BundleRecipes"
       ],
       "dimensions": [
-        "gpu:10de:1cb3-440.100",
+        "gpu:10de:1cb3-510.60.02",
         "os:Ubuntu-18.04",
         "pool:Skia"
       ],
@@ -29651,10 +29651,9 @@
         "Housekeeper-PerCommit-BundleRecipes"
       ],
       "dimensions": [
-        "gpu:10de:1cb3-440.100",
+        "gpu:10de:1cb3-510.60.02",
         "os:Ubuntu-18.04",
-        "pool:Skia",
-        "valgrind:1"
+        "pool:Skia"
       ],
       "environment": {
         "RECIPES_USE_PY3": "true",
@@ -29761,7 +29760,7 @@
         "Housekeeper-PerCommit-BundleRecipes"
       ],
       "dimensions": [
-        "gpu:10de:1cb3-440.100",
+        "gpu:10de:1cb3-510.60.02",
         "os:Ubuntu-18.04",
         "pool:Skia"
       ],
@@ -29849,7 +29848,7 @@
         "Housekeeper-PerCommit-BuildTaskDrivers_linux_amd64"
       ],
       "dimensions": [
-        "gpu:10de:1cb3-440.100",
+        "gpu:10de:1cb3-510.60.02",
         "os:Ubuntu-18.04",
         "pool:Skia"
       ],
@@ -29918,7 +29917,7 @@
         "Housekeeper-PerCommit-BuildTaskDrivers_linux_amd64"
       ],
       "dimensions": [
-        "gpu:10de:1cb3-440.100",
+        "gpu:10de:1cb3-510.60.02",
         "os:Ubuntu-18.04",
         "pool:Skia"
       ],
@@ -29989,7 +29988,7 @@
         "Housekeeper-PerCommit-BuildTaskDrivers_linux_amd64"
       ],
       "dimensions": [
-        "gpu:10de:1cb3-440.100",
+        "gpu:10de:1cb3-510.60.02",
         "os:Ubuntu-18.04",
         "pool:Skia"
       ],
@@ -30060,7 +30059,7 @@
         "Housekeeper-PerCommit-BuildTaskDrivers_linux_amd64"
       ],
       "dimensions": [
-        "gpu:10de:1cb3-440.100",
+        "gpu:10de:1cb3-510.60.02",
         "os:Ubuntu-18.04",
         "pool:Skia"
       ],
@@ -30131,7 +30130,7 @@
         "Housekeeper-PerCommit-BuildTaskDrivers_linux_amd64"
       ],
       "dimensions": [
-        "gpu:10de:1cb3-440.100",
+        "gpu:10de:1cb3-510.60.02",
         "os:Ubuntu-18.04",
         "pool:Skia"
       ],
@@ -30202,7 +30201,7 @@
         "Housekeeper-PerCommit-BuildTaskDrivers_linux_amd64"
       ],
       "dimensions": [
-        "gpu:10de:1cb3-440.100",
+        "gpu:10de:1cb3-510.60.02",
         "os:Ubuntu-18.04",
         "pool:Skia"
       ],
@@ -30297,7 +30296,7 @@
         "Housekeeper-PerCommit-BundleRecipes"
       ],
       "dimensions": [
-        "gpu:10de:1cb3-440.100",
+        "gpu:10de:1cb3-510.60.02",
         "os:Ubuntu-18.04",
         "pool:Skia"
       ],
@@ -30410,7 +30409,7 @@
         "Housekeeper-PerCommit-BundleRecipes"
       ],
       "dimensions": [
-        "gpu:10de:1cb3-440.100",
+        "gpu:10de:1cb3-510.60.02",
         "os:Ubuntu-18.04",
         "pool:Skia"
       ],
@@ -53820,7 +53819,7 @@
         "Housekeeper-PerCommit-BundleRecipes"
       ],
       "dimensions": [
-        "gpu:10de:1cb3-440.100",
+        "gpu:10de:1cb3-510.60.02",
         "os:Ubuntu-18.04",
         "pool:Skia"
       ],
@@ -53929,7 +53928,7 @@
         "Housekeeper-PerCommit-BundleRecipes"
       ],
       "dimensions": [
-        "gpu:10de:1cb3-440.100",
+        "gpu:10de:1cb3-510.60.02",
         "os:Ubuntu-18.04",
         "pool:Skia"
       ],
@@ -54044,7 +54043,7 @@
         "Housekeeper-PerCommit-BundleRecipes"
       ],
       "dimensions": [
-        "gpu:10de:1cb3-440.100",
+        "gpu:10de:1cb3-510.60.02",
         "os:Ubuntu-18.04",
         "pool:Skia"
       ],
@@ -54154,7 +54153,7 @@
         "Housekeeper-PerCommit-BundleRecipes"
       ],
       "dimensions": [
-        "gpu:10de:1cb3-440.100",
+        "gpu:10de:1cb3-510.60.02",
         "os:Ubuntu-18.04",
         "pool:Skia"
       ],
@@ -54268,7 +54267,7 @@
         "Housekeeper-PerCommit-BundleRecipes"
       ],
       "dimensions": [
-        "gpu:10de:1cb3-440.100",
+        "gpu:10de:1cb3-510.60.02",
         "os:Ubuntu-18.04",
         "pool:Skia"
       ],
@@ -54378,7 +54377,7 @@
         "Housekeeper-PerCommit-BundleRecipes"
       ],
       "dimensions": [
-        "gpu:10de:1cb3-440.100",
+        "gpu:10de:1cb3-510.60.02",
         "os:Ubuntu-18.04",
         "pool:Skia"
       ],
@@ -54492,7 +54491,7 @@
         "Housekeeper-PerCommit-BundleRecipes"
       ],
       "dimensions": [
-        "gpu:10de:1cb3-440.100",
+        "gpu:10de:1cb3-510.60.02",
         "os:Ubuntu-18.04",
         "pool:Skia"
       ],
@@ -54597,7 +54596,7 @@
         "Housekeeper-PerCommit-BundleRecipes"
       ],
       "dimensions": [
-        "gpu:10de:1cb3-440.100",
+        "gpu:10de:1cb3-510.60.02",
         "os:Ubuntu-18.04",
         "pool:Skia"
       ],
@@ -54711,7 +54710,7 @@
         "Housekeeper-PerCommit-BundleRecipes"
       ],
       "dimensions": [
-        "gpu:10de:1cb3-440.100",
+        "gpu:10de:1cb3-510.60.02",
         "os:Ubuntu-18.04",
         "pool:Skia"
       ],
@@ -54821,7 +54820,7 @@
         "Housekeeper-PerCommit-BundleRecipes"
       ],
       "dimensions": [
-        "gpu:10de:1cb3-440.100",
+        "gpu:10de:1cb3-510.60.02",
         "os:Ubuntu-18.04",
         "pool:Skia"
       ],
@@ -54931,7 +54930,7 @@
         "Housekeeper-PerCommit-BundleRecipes"
       ],
       "dimensions": [
-        "gpu:10de:1cb3-440.100",
+        "gpu:10de:1cb3-510.60.02",
         "os:Ubuntu-18.04",
         "pool:Skia"
       ],
@@ -55045,7 +55044,7 @@
         "Housekeeper-PerCommit-BundleRecipes"
       ],
       "dimensions": [
-        "gpu:10de:1cb3-440.100",
+        "gpu:10de:1cb3-510.60.02",
         "os:Ubuntu-18.04",
         "pool:Skia"
       ],
@@ -55154,7 +55153,7 @@
         "Housekeeper-PerCommit-BundleRecipes"
       ],
       "dimensions": [
-        "gpu:10de:1cb3-440.100",
+        "gpu:10de:1cb3-510.60.02",
         "os:Ubuntu-18.04",
         "pool:Skia"
       ],
@@ -55268,7 +55267,7 @@
         "Housekeeper-PerCommit-BundleRecipes"
       ],
       "dimensions": [
-        "gpu:10de:1cb3-440.100",
+        "gpu:10de:1cb3-510.60.02",
         "os:Ubuntu-18.04",
         "pool:Skia"
       ],
@@ -55372,7 +55371,7 @@
         "Housekeeper-PerCommit-BundleRecipes"
       ],
       "dimensions": [
-        "gpu:10de:1cb3-440.100",
+        "gpu:10de:1cb3-510.60.02",
         "os:Ubuntu-18.04",
         "pool:Skia"
       ],
@@ -55486,7 +55485,7 @@
         "Housekeeper-PerCommit-BundleRecipes"
       ],
       "dimensions": [
-        "gpu:10de:1cb3-440.100",
+        "gpu:10de:1cb3-510.60.02",
         "os:Ubuntu-18.04",
         "pool:Skia"
       ],
@@ -55595,10 +55594,9 @@
         "Housekeeper-PerCommit-BundleRecipes"
       ],
       "dimensions": [
-        "gpu:10de:1cb3-440.100",
+        "gpu:10de:1cb3-510.60.02",
         "os:Ubuntu-18.04",
-        "pool:Skia",
-        "valgrind:1"
+        "pool:Skia"
       ],
       "environment": {
         "RECIPES_USE_PY3": "true",
@@ -55705,10 +55703,9 @@
         "Housekeeper-PerCommit-BundleRecipes"
       ],
       "dimensions": [
-        "gpu:10de:1cb3-440.100",
+        "gpu:10de:1cb3-510.60.02",
         "os:Ubuntu-18.04",
-        "pool:Skia",
-        "valgrind:1"
+        "pool:Skia"
       ],
       "environment": {
         "RECIPES_USE_PY3": "true",
@@ -55815,10 +55812,9 @@
         "Housekeeper-PerCommit-BundleRecipes"
       ],
       "dimensions": [
-        "gpu:10de:1cb3-440.100",
+        "gpu:10de:1cb3-510.60.02",
         "os:Ubuntu-18.04",
-        "pool:Skia",
-        "valgrind:1"
+        "pool:Skia"
       ],
       "environment": {
         "RECIPES_USE_PY3": "true",
@@ -55930,7 +55926,7 @@
         "Housekeeper-PerCommit-BundleRecipes"
       ],
       "dimensions": [
-        "gpu:10de:1cb3-440.100",
+        "gpu:10de:1cb3-510.60.02",
         "os:Ubuntu-18.04",
         "pool:Skia"
       ],
@@ -56041,7 +56037,7 @@
         "Housekeeper-PerCommit-BuildTaskDrivers_linux_amd64"
       ],
       "dimensions": [
-        "gpu:10de:1cb3-440.100",
+        "gpu:10de:1cb3-510.60.02",
         "os:Ubuntu-18.04",
         "pool:Skia"
       ],
