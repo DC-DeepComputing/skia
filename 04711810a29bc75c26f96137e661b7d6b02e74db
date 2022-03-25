@@ -22,6 +22,30 @@
       },
       "revId": "04711810a29bc75c26f96137e661b7d6b02e74db",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f6135aa3_598c5e91",
+        "filename": "src/sksl/SkSLConstantFolder.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 178,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-03-25T21:42:40Z",
+      "side": 1,
+      "message": "Yeah... I debated this in my head when initially adding it and decided to keep it because simplify_matrix_times_vector does basically the exact same thing but flipped (columns \u003c-\u003e rows). Just wanted to eliminate any doubt.",
+      "parentUuid": "64c285f9_74c36367",
+      "range": {
+        "startLine": 178,
+        "startChar": 42,
+        "endLine": 178,
+        "endChar": 58
+      },
+      "revId": "04711810a29bc75c26f96137e661b7d6b02e74db",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
