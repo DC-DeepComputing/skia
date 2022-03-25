@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0ced3e01_76a649c5",
+        "filename": "dm/DMSrcSink.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 414,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-03-25T14:12:39Z",
+      "side": 1,
+      "message": "When I click on this, it ends up in totally the wrong place in the code. Very strange bug. Done.",
+      "parentUuid": "6f67a90e_d9fc9249",
+      "revId": "13a753543b560b47acaace9fcbb9ba098f6d1a08",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a9472ae4_303f0fbb",
@@ -31,6 +49,30 @@
       "writtenOn": "2022-03-24T19:53:59Z",
       "side": 1,
       "message": "wdyt about making this (and all the related names) \u0027testSlugs\u0027 or \u0027useSlugs\u0027 ?",
+      "range": {
+        "startLine": 71,
+        "startChar": 46,
+        "endLine": 71,
+        "endChar": 50
+      },
+      "revId": "13a753543b560b47acaace9fcbb9ba098f6d1a08",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7a008963_d636a751",
+        "filename": "tools/flags/CommonFlagsConfig.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-03-25T14:12:39Z",
+      "side": 1,
+      "message": "There are going to end up being 3 or 4 of these tests. I don\u0027t see how add use or test will help to remember the flag. \"use\" or \"test\" is just one more thing to remember.",
+      "parentUuid": "a9472ae4_303f0fbb",
       "range": {
         "startLine": 71,
         "startChar": 46,
