@@ -8,10 +8,13 @@
 #ifndef skgpu_Caps_DEFINED
 #define skgpu_Caps_DEFINED
 
+#include <vector>
+
 #include "experimental/graphite/src/ResourceTypes.h"
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkRefCnt.h"
 #include "src/gpu/ResourceKey.h"
+#include "src/gpu/Swizzle.h"
 
 namespace SkSL {
 struct ShaderCaps;
@@ -76,6 +79,7 @@ protected:
     size_t fRequiredUniformBufferAlignment = 0;
 
     std::unique_ptr<SkSL::ShaderCaps> fShaderCaps;
+    std::vector<uint32_t> fColorSampleCounts;
 
     bool fClampToBorderSupport = true;
 
