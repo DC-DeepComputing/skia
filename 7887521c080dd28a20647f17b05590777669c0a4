@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bc20d555_fc31b13a",
+        "filename": "include/sksl/SkSLPosition.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-03-25T16:42:30Z",
+      "side": 1,
+      "message": "If this ever happens, something is broken. I\u0027ll add an assert to catch this rather than change the logic.",
+      "parentUuid": "143c012f_a70f5092",
+      "range": {
+        "startLine": 67,
+        "startChar": 0,
+        "endLine": 67,
+        "endChar": 59
+      },
+      "revId": "7887521c080dd28a20647f17b05590777669c0a4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6031ac71_9dc66ccc",
@@ -66,6 +90,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4727a716_7d7012aa",
+        "filename": "src/sksl/SkSLRehydrator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 498,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-03-25T16:42:30Z",
+      "side": 1,
+      "message": "This is the first of many upcoming changes adding new Position() parameters to calls in this method. It seemed cleaner to just have one reference to Position() as opposed to repeating it over and over, so I slipped this cleanup into the first such CL.",
+      "parentUuid": "6031ac71_9dc66ccc",
+      "range": {
+        "startLine": 498,
+        "startChar": 0,
+        "endLine": 498,
+        "endChar": 17
+      },
+      "revId": "7887521c080dd28a20647f17b05590777669c0a4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "33529f9a_632cf829",
         "filename": "src/sksl/ir/SkSLIndexExpression.cpp",
         "patchSetId": 1
@@ -77,6 +125,30 @@
       "writtenOn": "2022-03-25T15:24:07Z",
       "side": 1,
       "message": "This could safely move to L102 (after `!index_out_of_range`) to do less work in the common/un-optimizable case.",
+      "range": {
+        "startLine": 93,
+        "startChar": 0,
+        "endLine": 93,
+        "endChar": 35
+      },
+      "revId": "7887521c080dd28a20647f17b05590777669c0a4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d77e8af4_281057f7",
+        "filename": "src/sksl/ir/SkSLIndexExpression.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-03-25T16:42:30Z",
+      "side": 1,
+      "message": "Done, but this is going to be a moot point soon, as pos is becoming a parameter in an upcoming CL.",
+      "parentUuid": "33529f9a_632cf829",
       "range": {
         "startLine": 93,
         "startChar": 0,
