@@ -95,8 +95,14 @@ std::string SkShaderInfo::emitGlueCodeForEntry(int* entryIndex,
 // Note: that each entry's 'fStaticFunctionName' field must match the name of the method defined
 // in the 'fStaticSkSL' field.
 std::string SkShaderInfo::toSkSL() const {
+    std::string result =
+            "layout (binding=0) uniform intrinsicUniforms {\n"
+            "    layout(offset=0) float4 rtAdjust;\n"
+            "};\n"
+            "\n";
+
     // The uniforms are mangled by having their index in 'fEntries' as a suffix (i.e., "_%d")
-    std::string result = skgpu::mtl::GetMtlUniforms(2, "FS", fBlockReaders);
+    result += skgpu::mtl::GetMtlUniforms(2, "FS", fBlockReaders);
 
     int binding = 0;
     result += skgpu::mtl::GetMtlTexturesAndSamplers(fBlockReaders, &binding);

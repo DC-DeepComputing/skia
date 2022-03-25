@@ -10,6 +10,7 @@
 #include "include/core/SkCanvas.h"
 #include "include/core/SkImage.h"
 #include "include/core/SkPaint.h"
+#include "include/core/SkPath.h"
 #include "include/effects/SkGradientShader.h"
 #include "include/gpu/GrRecordingContext.h"
 #include "tools/Resources.h"
@@ -149,8 +150,8 @@ public:
     }
 
 protected:
-    static const int kWidth = 256;
-    static const int kHeight = 384;
+    static const int kWidth = 32;
+    static const int kHeight = 32;
 
     SkString onShortName() override {
         return SkString("graphitestart");
