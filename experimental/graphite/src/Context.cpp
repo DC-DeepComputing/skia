@@ -53,6 +53,7 @@ std::unique_ptr<Recorder> Context::makeRecorder() {
 }
 
 void Context::insertRecording(const InsertRecordingInfo& info) {
+    SkASSERT(info.fRecording);
     SkASSERT(!fCurrentCommandBuffer);
     // For now we only allow one CommandBuffer. So we just ref it off the InsertRecordingInfo and
     // hold onto it until we submit.
@@ -61,7 +62,11 @@ void Context::insertRecording(const InsertRecordingInfo& info) {
         fCurrentCommandBuffer->addFinishedProc(RefCntedCallback::Make(info.fFinishedProc,
                                                                       info.fFinishedContext));
     }
+    if (recording) {
+        fRecordings.emplace_back(std::move(recording));
+    }
 }
+
 
 void Context::submit(SyncToCpu syncToCpu) {
     SkASSERT(fCurrentCommandBuffer);

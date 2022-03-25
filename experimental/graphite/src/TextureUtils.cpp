@@ -156,7 +156,10 @@ bool ReadPixelsHelper(FlushPendingWorkCallback&& flushPendingWork,
     recorder->priv().add(std::move(task));
     auto recording = recorder->snap();
 
-    // TODO: Can snapping ever fail?
+    std::unique_ptr<Recording> recording = recorder->snap();
+    if (!recording) {
+        return false;
+    }
     skgpu::InsertRecordingInfo info;
     info.fRecording = recording.get();
     context->insertRecording(info);
