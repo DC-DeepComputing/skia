@@ -22,6 +22,30 @@
       },
       "revId": "67a0f39374f8b177d4353e42f6c16f07934e3009",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "81d9f2e6_1cea23d9",
+        "filename": "src/ports/SkTypeface_mac_ct.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-03-25T20:11:33Z",
+      "side": 1,
+      "message": "It appears XCode decided to show \"Documentation comments\" in Helvetica at a smaller size instead of the monospaced font used for everything else. Thanks XCode!",
+      "parentUuid": "e657670b_fcf69be3",
+      "range": {
+        "startLine": 96,
+        "startChar": 100,
+        "endLine": 96,
+        "endChar": 102
+      },
+      "revId": "67a0f39374f8b177d4353e42f6c16f07934e3009",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
