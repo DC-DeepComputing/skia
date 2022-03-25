@@ -69,8 +69,61 @@ private:
     bool onIsTexturable(const skgpu::TextureInfo&) const override;
     bool isTexturable(MTLPixelFormat) const;
     bool isRenderable(MTLPixelFormat, uint32_t numSamples) const;
+    uint32_t maxRenderTargetSampleCount(MTLPixelFormat) const;
 
     size_t getTransferBufferAlignment(size_t bytesPerPixel) const override;
+
+    // ColorTypeInfo for a specific format
+    struct ColorTypeInfo {
+        SkColorType fColorType = kUnknown_SkColorType;
+        enum {
+            kUploadData_Flag = 0x1,
+            // Does Ganesh itself support rendering to this colorType & format pair. Renderability
+            // still additionally depends on if the format itself is renderable.
+            kRenderable_Flag = 0x2,
+        };
+        uint32_t fFlags = 0;
+
+        skgpu::Swizzle fReadSwizzle;
+        skgpu::Swizzle fWriteSwizzle;
+    };
+
+    struct FormatInfo {
+        uint32_t colorTypeFlags(SkColorType colorType) const {
+            for (int i = 0; i < fColorTypeInfoCount; ++i) {
+                if (fColorTypeInfos[i].fColorType == colorType) {
+                    return fColorTypeInfos[i].fFlags;
+                }
+            }
+            return 0;
+        }
+
+        enum {
+            kTexturable_Flag  = 0x1,
+            kRenderable_Flag  = 0x2, // Color attachment and blendable
+            kMSAA_Flag        = 0x4,
+            kResolve_Flag     = 0x8,
+        };
+        static const uint16_t kAllFlags = kTexturable_Flag | kRenderable_Flag |
+                                          kMSAA_Flag | kResolve_Flag;
+
+        uint16_t fFlags = 0;
+
+        std::unique_ptr<ColorTypeInfo[]> fColorTypeInfos;
+        int fColorTypeInfoCount = 0;
+    };
+    inline static constexpr size_t kNumMtlFormats = 8;
+
+    static size_t GetFormatIndex(MTLPixelFormat);
+    FormatInfo fFormatTable[kNumMtlFormats];
+
+    const FormatInfo& getFormatInfo(const MTLPixelFormat pixelFormat) const {
+        size_t index = GetFormatIndex(pixelFormat);
+        return fFormatTable[index];
+    }
+
+    MTLPixelFormat fColorTypeToFormatTable[kSkColorTypeCnt];
+    void setColorType(SkColorType, std::initializer_list<MTLPixelFormat> formats);
 
     GPUFamily fGPUFamily;
     int fFamilyGroup;
