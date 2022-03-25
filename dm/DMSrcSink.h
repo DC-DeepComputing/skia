@@ -374,7 +374,7 @@ public:
     Result onDraw(const Src&, SkBitmap*, SkWStream*, SkString*,
                   const GrContextOptions& baseOptions,
                   std::function<void(GrDirectContext*)> initContext = nullptr,
-                  std::function<SkCanvas*(SkCanvas*)> wrapCanvas = nullptr) const;
+                  std::function<Result(GrDirectContext*, SkCanvas*)> replaceDraw = nullptr) const;
 
     sk_gpu_test::GrContextFactory::ContextType contextType() const { return fContextType; }
     const sk_gpu_test::GrContextFactory::ContextOverrides& contextOverrides() const {
@@ -397,6 +397,8 @@ public:
 protected:
     sk_sp<SkSurface> createDstSurface(GrDirectContext*, SkISize size) const;
     bool readBack(SkSurface*, SkBitmap* dst) const;
+    using InnerDraw = std::function<Result(
+            sk_gpu_test::GrContextFactory*, GrDirectContext*, SkSurface*)>;
 
 private:
     sk_gpu_test::GrContextFactory::ContextType        fContextType;
@@ -418,6 +420,15 @@ public:
     GPUSlugSink(const SkCommandLineConfigGpu*, const GrContextOptions&);
 
     Result draw(const Src&, SkBitmap*, SkWStream*, SkString*) const override;
+};
+
+class GPUSerializeSlugSink : public GPUSink {
+public:
+    GPUSerializeSlugSink(const SkCommandLineConfigGpu*, const GrContextOptions&);
+    Result draw(const Src&, SkBitmap*, SkWStream*, SkString*) const override;
+
+private:
+    GPUSink fCompareSink;
 };
 
 class GPUThreadTestingSink : public GPUSink {

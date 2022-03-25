@@ -28,6 +28,7 @@
 #include "include/ports/SkImageGeneratorWIC.h"
 #include "include/private/SkImageInfoPriv.h"
 #include "include/private/SkTLogic.h"
+#include "include/private/chromium/GrSlug.h"
 #include "include/third_party/skcms/skcms.h"
 #include "include/utils/SkNullCanvas.h"
 #include "include/utils/SkPaintFilterCanvas.h"
@@ -43,7 +44,6 @@
 #include "src/core/SkPictureData.h"
 #include "src/core/SkRecordDraw.h"
 #include "src/core/SkRecorder.h"
-#include "src/core/SkTLazy.h"
 #include "src/core/SkTaskGroup.h"
 #include "src/gpu/GrDirectContextPriv.h"
 #include "src/gpu/GrGpu.h"
@@ -1491,7 +1491,7 @@ bool GPUSink::readBack(SkSurface* surface, SkBitmap* dst) const {
 Result GPUSink::onDraw(const Src& src, SkBitmap* dst, SkWStream*, SkString* log,
                        const GrContextOptions& baseOptions,
                        std::function<void(GrDirectContext*)> initContext,
-                       std::function<SkCanvas*(SkCanvas*)> wrapCanvas) const {
+                       std::function<Result(GrDirectContext*, SkCanvas*)> replaceDraw) const {
     GrContextOptions grOptions = baseOptions;
 
     // We don't expect the src to mess with the persistent cache or the executor.
@@ -1521,11 +1521,8 @@ Result GPUSink::onDraw(const Src& src, SkBitmap* dst, SkWStream*, SkString* log,
     }
 
     auto canvas = surface->getCanvas();
-    if (wrapCanvas != nullptr) {
-        canvas = wrapCanvas(canvas);
-    }
+    Result result = !replaceDraw ? src.draw(direct, canvas) : replaceDraw(direct, canvas);
 
-    Result result = src.draw(direct, canvas);
     if (!result.isOk()) {
         return result;
     }
@@ -1559,12 +1556,10 @@ Result GPUSlugSink::draw(const Src& src, SkBitmap* dst, SkWStream* write, SkStri
     // Force padded atlas entries for slug drawing.
     grOptions.fSupportBilerpFromGlyphAtlas |= true;
 
-    SkTLazy<SkTestCanvas<SkSlugTestKey>> testCanvas;
-
     return onDraw(src, dst, write, log, grOptions, nullptr,
-        [&](SkCanvas* canvas){
-            testCanvas.init(canvas);
-            return testCanvas.get();
+        [&](GrDirectContext* context, SkCanvas* canvas) -> Result {
+            SkTestCanvas<SkSlugTestKey> slugCanvas{canvas};
+            return src.draw(context, &slugCanvas);
         });
 }
 
