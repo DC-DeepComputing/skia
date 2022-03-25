@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e657670b_fcf69be3",
+        "filename": "src/ports/SkTypeface_mac_ct.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-03-25T20:06:01Z",
+      "side": 1,
+      "message": "wrapping",
+      "range": {
+        "startLine": 96,
+        "startChar": 100,
+        "endLine": 96,
+        "endChar": 102
+      },
+      "revId": "67a0f39374f8b177d4353e42f6c16f07934e3009",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
