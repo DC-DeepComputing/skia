@@ -499,11 +499,11 @@ void SPIRVCodeGenerator::writeStruct(const Type& type, const MemoryLayout& memor
         const Layout& fieldLayout = field.fModifiers.fLayout;
         if (fieldLayout.fOffset >= 0) {
             if (fieldLayout.fOffset < (int) offset) {
-                fContext.fErrors->error(type.fPosition, "offset of field '" +
+                fContext.fErrors->error(field.fPosition, "offset of field '" +
                         std::string(field.fName) + "' must be at least " + std::to_string(offset));
             }
             if (fieldLayout.fOffset % alignment) {
-                fContext.fErrors->error(type.fPosition,
+                fContext.fErrors->error(field.fPosition,
                         "offset of field '" + std::string(field.fName) +
                         "' must be a multiple of " + std::to_string(alignment));
             }
@@ -3063,7 +3063,8 @@ SpvId SPIRVCodeGenerator::writeInterfaceBlock(const InterfaceBlock& intf, bool a
         // entirely new block when the variable is referenced. And we can't modify the existing
         // block, so we instead create a modified copy of it and write that.
         std::vector<Type::Field> fields = type.fields();
-        fields.emplace_back(Modifiers(Layout(/*flags=*/0,
+        fields.emplace_back(Position(),
+                            Modifiers(Layout(/*flags=*/0,
                                              /*location=*/-1,
                                              fProgram.fConfig->fSettings.fRTFlipOffset,
                                              /*binding=*/-1,
@@ -3474,7 +3475,7 @@ void SPIRVCodeGenerator::writeUniformBuffer(std::shared_ptr<SymbolTable> topLeve
     for (const VarDeclaration* topLevelUniform : fTopLevelUniforms) {
         const Variable* var = &topLevelUniform->var();
         fTopLevelUniformMap.set(var, (int)fields.size());
-        fields.emplace_back(var->modifiers(), var->name(), &var->type());
+        fields.emplace_back(var->fPosition, var->modifiers(), var->name(), &var->type());
     }
     fUniformBuffer.fStruct = Type::MakeStructType(Position(), kUniformBufferName, std::move(fields),
             /*interfaceBlock=*/true);
@@ -3510,7 +3511,8 @@ void SPIRVCodeGenerator::addRTFlipUniform(Position pos) {
     if (fProgram.fConfig->fSettings.fRTFlipOffset < 0) {
         fContext.fErrors->error(pos, "RTFlipOffset is negative");
     }
-    fields.emplace_back(Modifiers(Layout(/*flags=*/0,
+    fields.emplace_back(pos,
+                        Modifiers(Layout(/*flags=*/0,
                                          /*location=*/-1,
                                          fProgram.fConfig->fSettings.fRTFlipOffset,
                                          /*binding=*/-1,

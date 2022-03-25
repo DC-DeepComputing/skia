@@ -23,6 +23,7 @@ std::unique_ptr<Expression> ConstructorSplat::Make(const Context& context,
 
     // A "splat" to a scalar type is a no-op and can be eliminated.
     if (type.isScalar()) {
+        arg->fPosition = pos;
         return arg;
     }
 

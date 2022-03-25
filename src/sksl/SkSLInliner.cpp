@@ -327,6 +327,7 @@ std::unique_ptr<Expression> Inliner::inlineExpression(Position pos,
         case Expression::Kind::kBinary: {
             const BinaryExpression& binaryExpr = expression.as<BinaryExpression>();
             return BinaryExpression::Make(*fContext,
+                                          pos,
                                           expr(binaryExpr.left()),
                                           binaryExpr.getOperator(),
                                           expr(binaryExpr.right()));
@@ -404,7 +405,7 @@ std::unique_ptr<Expression> Inliner::inlineExpression(Position pos,
             return expression.clone();
         case Expression::Kind::kFieldAccess: {
             const FieldAccess& f = expression.as<FieldAccess>();
-            return FieldAccess::Make(*fContext, expr(f.base()), f.fieldIndex(), f.ownerKind());
+            return FieldAccess::Make(*fContext, pos, expr(f.base()), f.fieldIndex(), f.ownerKind());
         }
         case Expression::Kind::kFunctionCall: {
             const FunctionCall& funcCall = expression.as<FunctionCall>();
@@ -418,23 +419,25 @@ std::unique_ptr<Expression> Inliner::inlineExpression(Position pos,
             return expression.clone();
         case Expression::Kind::kIndex: {
             const IndexExpression& idx = expression.as<IndexExpression>();
-            return IndexExpression::Make(*fContext, expr(idx.base()), expr(idx.index()));
+            return IndexExpression::Make(*fContext, pos, expr(idx.base()), expr(idx.index()));
         }
         case Expression::Kind::kMethodReference:
             return expression.clone();
         case Expression::Kind::kPrefix: {
             const PrefixExpression& p = expression.as<PrefixExpression>();
-            return PrefixExpression::Make(*fContext, p.getOperator(), expr(p.operand()));
+            return PrefixExpression::Make(*fContext, pos, p.getOperator(),
+                    expr(p.operand()));
         }
         case Expression::Kind::kPostfix: {
             const PostfixExpression& p = expression.as<PostfixExpression>();
-            return PostfixExpression::Make(*fContext, expr(p.operand()), p.getOperator());
+            return PostfixExpression::Make(*fContext, pos, expr(p.operand()),
+                    p.getOperator());
         }
         case Expression::Kind::kSetting:
             return expression.clone();
         case Expression::Kind::kSwizzle: {
             const Swizzle& s = expression.as<Swizzle>();
-            return Swizzle::Make(*fContext, expr(s.base()), s.components());
+            return Swizzle::Make(*fContext, pos, expr(s.base()), s.components());
         }
         case Expression::Kind::kTernary: {
             const TernaryExpression& t = expression.as<TernaryExpression>();
@@ -559,6 +562,7 @@ std::unique_ptr<Statement> Inliner::inlineStatement(Position pos,
                     *fContext,
                     BinaryExpression::Make(
                             *fContext,
+                            pos,
                             clone_with_ref_kind(**resultExpr, VariableRefKind::kWrite),
                             Token::Kind::TK_EQ,
                             expr(r.expression())));

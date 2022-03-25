@@ -21,7 +21,8 @@ public:
     inline static constexpr Kind kStatementKind = Kind::kBreak;
 
     BreakStatement(Position pos)
-        : INHERITED(pos, kStatementKind) {}
+        : INHERITED(pos, kStatementKind) {
+    }
 
     static std::unique_ptr<Statement> Make(Position pos) {
         return std::make_unique<BreakStatement>(pos);

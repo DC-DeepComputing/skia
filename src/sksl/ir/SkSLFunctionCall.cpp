@@ -1008,6 +1008,7 @@ std::unique_ptr<Expression> FunctionCall::Make(const Context& context,
                                                                        function.intrinsicKind(),
                                                                        arguments,
                                                                        *returnType)) {
+            expr->fPosition = pos;
             return expr;
         }
     }

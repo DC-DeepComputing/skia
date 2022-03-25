@@ -92,7 +92,7 @@ public:
         return DSLStatement(std::move(*this)).release();
     }
 
-private:
+//private:
     std::unique_ptr<SkSL::Statement> fStatement;
 
     friend class DSLStatement;

@@ -54,7 +54,7 @@ std::unique_ptr<Variable> Variable::Make(const Context& context, Position pos,
     int arraySizeValue = 0;
     if (isArray) {
         SkASSERT(arraySize);
-        arraySizeValue = type->convertArraySize(context, std::move(arraySize));
+        arraySizeValue = type->convertArraySize(context, pos, std::move(arraySize));
         if (!arraySizeValue) {
             return nullptr;
         }

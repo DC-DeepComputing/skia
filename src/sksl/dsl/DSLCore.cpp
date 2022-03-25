@@ -226,10 +226,10 @@ public:
                                      ThreadContext::SymbolTable());
     }
 
-    static DSLPossibleStatement If(DSLExpression test, DSLStatement ifTrue, DSLStatement ifFalse,
-                                   bool isStatic) {
-        return IfStatement::Convert(ThreadContext::Context(), Position(), isStatic, test.release(),
-                ifTrue.release(), ifFalse.releaseIfPossible());
+    static DSLStatement If(DSLExpression test, DSLStatement ifTrue, DSLStatement ifFalse,
+            bool isStatic, Position pos) {
+        return DSLStatement(IfStatement::Convert(ThreadContext::Context(), pos, isStatic,
+                test.release(), ifTrue.release(), ifFalse.releaseIfPossible()), Position());
     }
 
     static void FindRTAdjust(SkSL::InterfaceBlock& intf, Position pos) {
@@ -268,8 +268,8 @@ public:
                     field.fModifiers.fPosition, field.fModifiers.fModifiers, baseType,
                     Variable::Storage::kInterfaceBlock);
             GetErrorReporter().reportPendingErrors(field.fPosition);
-            skslFields.push_back(SkSL::Type::Field(field.fModifiers.fModifiers, field.fName,
-                                                   &field.fType.skslType()));
+            skslFields.push_back(SkSL::Type::Field(field.fPosition, field.fModifiers.fModifiers,
+                    field.fName, &field.fType.skslType()));
         }
         const SkSL::Type* structType =
                 ThreadContext::SymbolTable()->takeOwnershipOfSymbol(SkSL::Type::MakeStructType(
@@ -291,7 +291,7 @@ public:
             if (varName.empty()) {
                 const std::vector<SkSL::Type::Field>& structFields = structType->fields();
                 for (size_t i = 0; i < structFields.size(); ++i) {
-                    ThreadContext::SymbolTable()->add(std::make_unique<SkSL::Field>(pos,
+                    ThreadContext::SymbolTable()->add(std::make_unique<SkSL::Field>(structFields[i].fPosition,
                                                                                     skslVar,
                                                                                     i));
                 }
@@ -313,7 +313,7 @@ public:
 
     static DSLExpression Swizzle(DSLExpression base, SkSL::SwizzleComponent::Type a,
                                  Position pos) {
-        return DSLExpression(Swizzle::Convert(ThreadContext::Context(), base.release(),
+        return DSLExpression(Swizzle::Convert(ThreadContext::Context(), pos, base.release(),
                                               ComponentArray{a}),
                              pos);
     }
@@ -322,7 +322,7 @@ public:
                                  SkSL::SwizzleComponent::Type a,
                                  SkSL::SwizzleComponent::Type b,
                                  Position pos) {
-        return DSLExpression(Swizzle::Convert(ThreadContext::Context(), base.release(),
+        return DSLExpression(Swizzle::Convert(ThreadContext::Context(), pos, base.release(),
                                               ComponentArray{a, b}),
                              pos);
     }
@@ -332,7 +332,7 @@ public:
                                  SkSL::SwizzleComponent::Type b,
                                  SkSL::SwizzleComponent::Type c,
                                  Position pos) {
-        return DSLExpression(Swizzle::Convert(ThreadContext::Context(), base.release(),
+        return DSLExpression(Swizzle::Convert(ThreadContext::Context(), pos, base.release(),
                                               ComponentArray{a, b, c}),
                              pos);
     }
@@ -343,7 +343,7 @@ public:
                                  SkSL::SwizzleComponent::Type c,
                                  SkSL::SwizzleComponent::Type d,
                                  Position pos) {
-        return DSLExpression(Swizzle::Convert(ThreadContext::Context(), base.release(),
+        return DSLExpression(Swizzle::Convert(ThreadContext::Context(), pos, base.release(),
                                               ComponentArray{a,b,c,d}),
                              pos);
     }
@@ -462,9 +462,8 @@ DSLStatement For(DSLStatement initializer, DSLExpression test, DSLExpression nex
 }
 
 DSLStatement If(DSLExpression test, DSLStatement ifTrue, DSLStatement ifFalse, Position pos) {
-    return DSLStatement(DSLCore::If(std::move(test), std::move(ifTrue), std::move(ifFalse),
-                                    /*isStatic=*/false),
-                        pos);
+    return DSLCore::If(std::move(test), std::move(ifTrue), std::move(ifFalse), /*isStatic=*/false,
+            pos);
 }
 
 DSLGlobalVar InterfaceBlock(const DSLModifiers& modifiers,  std::string_view typeName,
@@ -491,9 +490,8 @@ DSLExpression Select(DSLExpression test, DSLExpression ifTrue, DSLExpression ifF
 
 DSLStatement StaticIf(DSLExpression test, DSLStatement ifTrue, DSLStatement ifFalse,
                       Position pos) {
-    return DSLStatement(DSLCore::If(std::move(test), std::move(ifTrue), std::move(ifFalse),
-                                    /*isStatic=*/true),
-                         pos);
+    return DSLCore::If(std::move(test), std::move(ifTrue), std::move(ifFalse), /*isStatic=*/true,
+            pos);
 }
 
 DSLPossibleStatement PossibleStaticSwitch(DSLExpression value, SkTArray<DSLCase> cases) {

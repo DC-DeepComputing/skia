@@ -20,7 +20,7 @@ namespace SkSL {
 struct IndexExpression final : public Expression {
     inline static constexpr Kind kExpressionKind = Kind::kIndex;
 
-    IndexExpression(const Context& context, std::unique_ptr<Expression> base,
+    IndexExpression(const Context& context, Position pos, std::unique_ptr<Expression> base,
                     std::unique_ptr<Expression> index)
         : INHERITED(base->fPosition, kExpressionKind, &IndexType(context, base->type()))
         , fBase(std::move(base))
@@ -29,11 +29,13 @@ struct IndexExpression final : public Expression {
     // Returns a simplified index-expression; reports errors via the ErrorReporter.
     static std::unique_ptr<Expression> Convert(const Context& context,
                                                SymbolTable& symbolTable,
+                                               Position pos,
                                                std::unique_ptr<Expression> base,
                                                std::unique_ptr<Expression> index);
 
     // Returns a simplified index-expression; reports errors via ASSERT.
     static std::unique_ptr<Expression> Make(const Context& context,
+                                            Position pos,
                                             std::unique_ptr<Expression> base,
                                             std::unique_ptr<Expression> index);
 
@@ -63,7 +65,8 @@ struct IndexExpression final : public Expression {
     }
 
     std::unique_ptr<Expression> clone() const override {
-        return std::unique_ptr<Expression>(new IndexExpression(this->base()->clone(),
+        return std::unique_ptr<Expression>(new IndexExpression(fPosition,
+                                                               this->base()->clone(),
                                                                this->index()->clone(),
                                                                &this->type()));
     }
@@ -75,8 +78,8 @@ struct IndexExpression final : public Expression {
     using INHERITED = Expression;
 
 private:
-    IndexExpression(std::unique_ptr<Expression> base, std::unique_ptr<Expression> index,
-                    const Type* type)
+    IndexExpression(Position pos, std::unique_ptr<Expression> base,
+            std::unique_ptr<Expression> index, const Type* type)
         : INHERITED(base->fPosition, Kind::kIndex, type)
         , fBase(std::move(base))
         , fIndex(std::move(index)) {}

@@ -31,6 +31,7 @@ public:
     }
 
     static Position Range(int startOffset, int endOffset) {
+        SkASSERT(startOffset <= endOffset);
         Position result;
         result.fStartOffsetOrLine = startOffset;
         result.fEndOffset = endOffset;
@@ -59,6 +60,28 @@ public:
         return fEndOffset;
     }
 
+    // Returns the position from this to the beginning of, and not including, end.
+    Position rangeTo(Position end) const {
+        if (fEndOffset == -1 || end.fEndOffset == -1) {
+            return *this;
+        }
+        return Range(this->startOffset(), end.startOffset());
+    }
+
+    // Returns the position from this through, and including the entirety of, end.
+    Position rangeThrough(Position end) const {
+        if (fEndOffset == -1 || end.fEndOffset == -1) {
+            return *this;
+        }
+        SkASSERT(this->startOffset() <= end.startOffset() && this->endOffset() <= end.endOffset());
+        return Range(this->startOffset(), end.endOffset());
+    }
+
+    // Returns a position representing the character immediately after this position
+    Position after() const {
+        return Range(fEndOffset, fEndOffset + 1);
+    }
+
     bool operator==(const Position& other) const {
         return fStartOffsetOrLine == other.fStartOffsetOrLine &&
                 fEndOffset == other.fEndOffset;
@@ -83,6 +106,15 @@ public:
     bool operator<=(const Position& other) const {
         return fStartOffsetOrLine <= other.fStartOffsetOrLine;
     }
+
+    Position& operator=(const Position& other) {
+        fStartOffsetOrLine = other.fStartOffsetOrLine;
+        fEndOffset = other.fEndOffset;
+        SkASSERT(fStartOffsetOrLine != 19110);
+        return *this;
+    }
+
+    Position(const Position& other) = default;
 
 private:
     // Contains either a start offset (if fEndOffset != -1) or a line number (if fEndOffset == -1)

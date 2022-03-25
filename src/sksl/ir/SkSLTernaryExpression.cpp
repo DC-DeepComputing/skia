@@ -24,7 +24,7 @@ std::unique_ptr<Expression> TernaryExpression::Convert(const Context& context,
     if (!test || !ifTrue || !ifFalse) {
         return nullptr;
     }
-    Position pos = test->fPosition;
+    Position pos = test->fPosition.rangeThrough(ifFalse->fPosition);
     if (ifTrue->type().componentType().isOpaque()) {
         context.fErrors->error(pos, "ternary expression of opaque type '" +
                 ifTrue->type().displayName() + "' not allowed");

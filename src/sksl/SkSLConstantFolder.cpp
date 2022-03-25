@@ -220,11 +220,12 @@ static std::unique_ptr<Expression> splat_scalar(const Context& context,
 }
 
 static std::unique_ptr<Expression> cast_expression(const Context& context,
+                                                   Position pos,
                                                    const Expression& expr,
                                                    const Type& type) {
     ExpressionArray ctorArgs;
     ctorArgs.push_back(expr.clone());
-    return Constructor::Convert(context, expr.fPosition, type, std::move(ctorArgs));
+    return Constructor::Convert(context, pos, type, std::move(ctorArgs));
 }
 
 bool ConstantFolder::GetConstantInt(const Expression& value, SKSL_INT* out) {
@@ -320,6 +321,7 @@ std::unique_ptr<Expression> ConstantFolder::MakeConstantValueForVariable(
 }
 
 static std::unique_ptr<Expression> simplify_no_op_arithmetic(const Context& context,
+                                                             Position pos,
                                                              const Expression& left,
                                                              Operator op,
                                                              const Expression& right,
@@ -327,49 +329,52 @@ static std::unique_ptr<Expression> simplify_no_op_arithmetic(const Context& cont
     switch (op.kind()) {
         case Token::Kind::TK_PLUS:
             if (is_constant_value(right, 0.0)) {  // x + 0
-                return cast_expression(context, left, resultType);
+                return cast_expression(context, pos, left, resultType);
             }
             if (is_constant_value(left, 0.0)) {   // 0 + x
-                return cast_expression(context, right, resultType);
+                return cast_expression(context, pos, right, resultType);
             }
             break;
 
         case Token::Kind::TK_STAR:
             if (is_constant_value(right, 1.0)) {  // x * 1
-                return cast_expression(context, left, resultType);
+                return cast_expression(context, pos, left, resultType);
             }
             if (is_constant_value(left, 1.0)) {   // 1 * x
-                return cast_expression(context, right, resultType);
+                return cast_expression(context, pos, right, resultType);
             }
             if (is_constant_value(right, 0.0) && !left.hasSideEffects()) {  // x * 0
-                return cast_expression(context, right, resultType);
+                return cast_expression(context, pos, right, resultType);
             }
             if (is_constant_value(left, 0.0) && !right.hasSideEffects()) {  // 0 * x
-                return cast_expression(context, left, resultType);
+                return cast_expression(context, pos, left, resultType);
             }
             break;
 
         case Token::Kind::TK_MINUS:
             if (is_constant_value(right, 0.0)) {  // x - 0
-                return cast_expression(context, left, resultType);
+                return cast_expression(context, pos, left, resultType);
             }
             if (is_constant_value(left, 0.0)) {   // 0 - x (to `-x`)
-                if (std::unique_ptr<Expression> val = cast_expression(context, right, resultType)) {
-                    return PrefixExpression::Make(context, Token::Kind::TK_MINUS, std::move(val));
+                if (std::unique_ptr<Expression> val = cast_expression(context, pos, right,
+                        resultType)) {
+                    return PrefixExpression::Make(context, pos, Token::Kind::TK_MINUS,
+                            std::move(val));
                 }
             }
             break;
 
         case Token::Kind::TK_SLASH:
             if (is_constant_value(right, 1.0)) {  // x / 1
-                return cast_expression(context, left, resultType);
+                return cast_expression(context, pos, left, resultType);
             }
             break;
 
         case Token::Kind::TK_PLUSEQ:
         case Token::Kind::TK_MINUSEQ:
             if (is_constant_value(right, 0.0)) {  // x += 0, x -= 0
-                if (std::unique_ptr<Expression> var = cast_expression(context, left, resultType)) {
+                if (std::unique_ptr<Expression> var = cast_expression(context, pos, left,
+                        resultType)) {
                     Analysis::UpdateVariableRefKind(var.get(), VariableRefKind::kRead);
                     return var;
                 }
@@ -379,7 +384,8 @@ static std::unique_ptr<Expression> simplify_no_op_arithmetic(const Context& cont
         case Token::Kind::TK_STAREQ:
         case Token::Kind::TK_SLASHEQ:
             if (is_constant_value(right, 1.0)) {  // x *= 1, x /= 1
-                if (std::unique_ptr<Expression> var = cast_expression(context, left, resultType)) {
+                if (std::unique_ptr<Expression> var = cast_expression(context, pos, left,
+                        resultType)) {
                     Analysis::UpdateVariableRefKind(var.get(), VariableRefKind::kRead);
                     return var;
                 }
@@ -498,8 +504,8 @@ std::unique_ptr<Expression> ConstantFolder::Simplify(const Context& context,
     const Type& rightType = right->type();
     if ((leftType.isScalar() || leftType.isVector()) &&
         (rightType.isScalar() || rightType.isVector())) {
-        std::unique_ptr<Expression> expr = simplify_no_op_arithmetic(context, *left, op, *right,
-                                                                     resultType);
+        std::unique_ptr<Expression> expr = simplify_no_op_arithmetic(context, pos, *left, op,
+                *right, resultType);
         if (expr) {
             return expr;
         }

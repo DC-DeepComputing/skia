@@ -34,6 +34,7 @@ static bool is_low_precision_matrix_vector_multiply(const Expression& left,
 }
 
 static std::unique_ptr<Expression> rewrite_matrix_vector_multiply(const Context& context,
+                                                                  Position pos,
                                                                   const Expression& left,
                                                                   const Operator& op,
                                                                   const Expression& right,
@@ -42,20 +43,24 @@ static std::unique_ptr<Expression> rewrite_matrix_vector_multiply(const Context&
     std::unique_ptr<Expression> sum;
     for (int n = 0; n < left.type().rows(); ++n) {
         // Get mat[N] with an index expression.
-        std::unique_ptr<Expression> matN = IndexExpression::Make(
-                context, left.clone(), Literal::MakeInt(context, left.fPosition, n));
+        std::unique_ptr<Expression> matN = IndexExpression::Make(context,
+                left.fPosition.rangeThrough(right.fPosition), left.clone(),
+                Literal::MakeInt(context, left.fPosition, n));
         // Get vec[N] with a swizzle expression.
-        std::unique_ptr<Expression> vecN = Swizzle::Make(
-                context, right.clone(), ComponentArray{(SkSL::SwizzleComponent::Type)n});
+        std::unique_ptr<Expression> vecN = Swizzle::Make(context,
+                left.fPosition.rangeThrough(right.fPosition), right.clone(),
+                ComponentArray{(SkSL::SwizzleComponent::Type)n});
         // Multiply them together.
         const Type* matNType = &matN->type();
         std::unique_ptr<Expression> product =
-                BinaryExpression::Make(context, std::move(matN), op, std::move(vecN), matNType);
+                BinaryExpression::Make(context, pos, std::move(matN), op, std::move(vecN),
+                                       matNType);
         // Sum all the components together.
         if (!sum) {
             sum = std::move(product);
         } else {
             sum = BinaryExpression::Make(context,
+                                         pos,
                                          std::move(sum),
                                          Operator(Token::Kind::TK_PLUS),
                                          std::move(product),
@@ -67,13 +72,13 @@ static std::unique_ptr<Expression> rewrite_matrix_vector_multiply(const Context&
 }
 
 std::unique_ptr<Expression> BinaryExpression::Convert(const Context& context,
+                                                      Position pos,
                                                       std::unique_ptr<Expression> left,
                                                       Operator op,
                                                       std::unique_ptr<Expression> right) {
     if (!left || !right) {
         return nullptr;
     }
-    const Position pos = left->fPosition;
 
     const Type* rawLeftType = (left->isIntLiteral() && right->type().isInteger())
             ? &right->type()
@@ -130,10 +135,11 @@ std::unique_ptr<Expression> BinaryExpression::Convert(const Context& context,
         return nullptr;
     }
 
-    return BinaryExpression::Make(context, std::move(left), op, std::move(right), resultType);
+    return BinaryExpression::Make(context, pos, std::move(left), op, std::move(right), resultType);
 }
 
 std::unique_ptr<Expression> BinaryExpression::Make(const Context& context,
+                                                   Position pos,
                                                    std::unique_ptr<Expression> left,
                                                    Operator op,
                                                    std::unique_ptr<Expression> right) {
@@ -144,10 +150,11 @@ std::unique_ptr<Expression> BinaryExpression::Make(const Context& context,
     SkAssertResult(op.determineBinaryType(context, left->type(), right->type(),
                                           &leftType, &rightType, &resultType));
 
-    return BinaryExpression::Make(context, std::move(left), op, std::move(right), resultType);
+    return BinaryExpression::Make(context, pos, std::move(left), op, std::move(right), resultType);
 }
 
 std::unique_ptr<Expression> BinaryExpression::Make(const Context& context,
+                                                   Position pos,
                                                    std::unique_ptr<Expression> left,
                                                    Operator op,
                                                    std::unique_ptr<Expression> right,
@@ -166,7 +173,6 @@ std::unique_ptr<Expression> BinaryExpression::Make(const Context& context,
     }
 
     // Perform constant-folding on the expression.
-    const Position pos = left->fPosition;
     if (std::unique_ptr<Expression> result = ConstantFolder::Simplify(context, pos, *left,
                                                                       op, *right, *resultType)) {
         return result;
@@ -185,7 +191,8 @@ std::unique_ptr<Expression> BinaryExpression::Make(const Context& context,
             if (capsBitIsTrue || !caps->isBoolLiteral()) {
                 // Rewrite the multiplication as a sum of vector-scalar products.
                 std::unique_ptr<Expression> rewrite =
-                        rewrite_matrix_vector_multiply(context, *left, op, *right, *resultType);
+                        rewrite_matrix_vector_multiply(context, pos, *left, op, *right,
+                                                       *resultType);
 
                 // If we know the caps bit is true, return the rewritten expression directly.
                 if (capsBitIsTrue) {

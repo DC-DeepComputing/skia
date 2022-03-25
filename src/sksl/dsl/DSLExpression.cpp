@@ -121,6 +121,14 @@ bool DSLExpression::isValid() const {
     return this->hasValue() && !fExpression->is<SkSL::Poison>();
 }
 
+Position DSLExpression::position() const {
+    return fExpression->fPosition;
+}
+
+void DSLExpression::setPosition(Position pos) {
+    fExpression->fPosition = pos;
+}
+
 void DSLExpression::swap(DSLExpression& other) {
     std::swap(fExpression, other.fExpression);
 }
@@ -175,17 +183,23 @@ DSLExpression DSLExpression::a(Position pos) {
 
 DSLExpression DSLExpression::field(std::string_view name, Position pos) {
     return DSLExpression(FieldAccess::Convert(ThreadContext::Context(),
-            *ThreadContext::SymbolTable(), this->release(), name), pos);
+            *ThreadContext::SymbolTable(), pos, this->release(), name), pos);
 }
 
 DSLPossibleExpression DSLExpression::operator=(DSLExpression right) {
-    return BinaryExpression::Convert(ThreadContext::Context(), this->release(),
+    Position pos = this->position();
+    return BinaryExpression::Convert(ThreadContext::Context(), pos, this->release(),
             SkSL::Token::Kind::TK_EQ, right.release());
 }
 
-DSLPossibleExpression DSLExpression::operator[](DSLExpression right) {
-    return IndexExpression::Convert(ThreadContext::Context(), *ThreadContext::SymbolTable(),
-            this->release(), right.release());
+DSLPossibleExpression DSLExpression::operator[](DSLExpression index) {
+    return this->index(std::move(index), fExpression->fPosition);
+
+}
+
+DSLPossibleExpression DSLExpression::index(DSLExpression index, Position pos) {
+    return IndexExpression::Convert(ThreadContext::Context(), *ThreadContext::SymbolTable(), pos,
+            this->release(), index.release());
 }
 
 DSLPossibleExpression DSLExpression::operator()(SkTArray<DSLWrapper<DSLExpression>> args,
@@ -203,22 +217,33 @@ DSLPossibleExpression DSLExpression::operator()(ExpressionArray args, Position p
             std::move(args));
 }
 
+DSLPossibleExpression DSLExpression::prefix(SkSL::Token::Kind op, Position pos) {
+    return PrefixExpression::Convert(ThreadContext::Context(), pos, op, this->release());
+}
+
+DSLPossibleExpression DSLExpression::postfix(SkSL::Token::Kind op, Position pos) {
+    return PostfixExpression::Convert(ThreadContext::Context(), pos, this->release(), op);
+}
+
+DSLPossibleExpression DSLExpression::binary(SkSL::Token::Kind op, DSLExpression right,
+        Position pos) {
+    return BinaryExpression::Convert(ThreadContext::Context(), pos, this->release(), op,
+            right.release());
+}
+
 #define OP(op, token)                                                                              \
 DSLPossibleExpression operator op(DSLExpression left, DSLExpression right) {                       \
-    return BinaryExpression::Convert(ThreadContext::Context(), left.release(),                     \
-            SkSL::Token::Kind::token, right.release());                                            \
+    return left.binary(SkSL::Token::Kind::token, std::move(right), left.position());               \
 }
 
 #define PREFIXOP(op, token)                                                                        \
 DSLPossibleExpression operator op(DSLExpression expr) {                                            \
-    return PrefixExpression::Convert(ThreadContext::Context(), SkSL::Token::Kind::token,           \
-            expr.release());                                                                       \
+    return expr.prefix(SkSL::Token::Kind::token, expr.position());                                 \
 }
 
 #define POSTFIXOP(op, token)                                                                       \
 DSLPossibleExpression operator op(DSLExpression expr, int) {                                       \
-    return PostfixExpression::Convert(ThreadContext::Context(), expr.release(),                    \
-            SkSL::Token::Kind::token);                                                             \
+    return expr.postfix(SkSL::Token::Kind::token, expr.position());                                \
 }
 
 OP(+, TK_PLUS)
@@ -244,7 +269,8 @@ OP(|=, TK_BITWISEOREQ)
 OP(^, TK_BITWISEXOR)
 OP(^=, TK_BITWISEXOREQ)
 DSLPossibleExpression LogicalXor(DSLExpression left, DSLExpression right) {
-    return BinaryExpression::Convert(ThreadContext::Context(), left.release(),
+    Position pos = left.position().rangeThrough(right.position());
+    return BinaryExpression::Convert(ThreadContext::Context(), pos, left.release(),
             SkSL::Token::Kind::TK_LOGICALXOR, right.release());
 }
 OP(==, TK_EQEQ)
@@ -264,22 +290,26 @@ PREFIXOP(--, TK_MINUSMINUS)
 POSTFIXOP(--, TK_MINUSMINUS)
 
 DSLPossibleExpression operator,(DSLExpression left, DSLExpression right) {
-    return BinaryExpression::Convert(ThreadContext::Context(), left.release(),
+    Position pos = left.position().rangeThrough(right.position());
+    return BinaryExpression::Convert(ThreadContext::Context(), pos, left.release(),
             SkSL::Token::Kind::TK_COMMA, right.release());
 }
 
 DSLPossibleExpression operator,(DSLPossibleExpression left, DSLExpression right) {
-    return BinaryExpression::Convert(ThreadContext::Context(),
+    Position pos = left.position().rangeThrough(right.position());
+    return BinaryExpression::Convert(ThreadContext::Context(), pos,
             DSLExpression(std::move(left)).release(), SkSL::Token::Kind::TK_COMMA, right.release());
 }
 
 DSLPossibleExpression operator,(DSLExpression left, DSLPossibleExpression right) {
-    return BinaryExpression::Convert(ThreadContext::Context(), left.release(),
+    Position pos = left.position().rangeThrough(right.position());
+    return BinaryExpression::Convert(ThreadContext::Context(), pos, left.release(),
             SkSL::Token::Kind::TK_COMMA, DSLExpression(std::move(right)).release());
 }
 
 DSLPossibleExpression operator,(DSLPossibleExpression left, DSLPossibleExpression right) {
-    return BinaryExpression::Convert(ThreadContext::Context(),
+    Position pos = left.position().rangeThrough(right.position());
+    return BinaryExpression::Convert(ThreadContext::Context(), pos,
             DSLExpression(std::move(left)).release(), SkSL::Token::Kind::TK_COMMA,
             DSLExpression(std::move(right)).release());
 }
@@ -307,6 +337,10 @@ DSLType DSLPossibleExpression::type() {
         return kVoid_Type;
     }
     return &fExpression->type();
+}
+
+Position DSLPossibleExpression::position() const {
+    return fExpression->fPosition;
 }
 
 DSLExpression DSLPossibleExpression::x(Position pos) {

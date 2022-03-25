@@ -183,7 +183,7 @@ DSLPossibleExpression DSLVarBase::operator[](DSLExpression&& index) {
 }
 
 DSLPossibleExpression DSLVarBase::assign(DSLExpression expr) {
-    return BinaryExpression::Convert(ThreadContext::Context(),
+    return BinaryExpression::Convert(ThreadContext::Context(), Position(),
             DSLExpression(*this, Position()).release(), SkSL::Token::Kind::TK_EQ,
             expr.release());
 }
@@ -206,7 +206,7 @@ std::unique_ptr<SkSL::Expression> DSLGlobalVar::methodCall(std::string_view meth
         ThreadContext::ReportError("type does not support method calls", pos);
         return nullptr;
     }
-    return FieldAccess::Convert(ThreadContext::Context(), *ThreadContext::SymbolTable(),
+    return FieldAccess::Convert(ThreadContext::Context(), *ThreadContext::SymbolTable(), pos,
             DSLExpression(*this, Position()).release(), methodName);
 }
 

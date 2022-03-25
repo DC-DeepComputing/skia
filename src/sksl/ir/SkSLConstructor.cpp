@@ -71,7 +71,9 @@ static std::unique_ptr<Expression> convert_compound_constructor(const Context& c
             // A vector constructor containing a single vector with the same number of columns is a
             // cast (e.g. float3 -> int3).
             if (type.isVector() && argument->type().columns() == type.columns()) {
-                return ConstructorCompoundCast::Make(context, pos, type, std::move(argument));
+                auto result = ConstructorCompoundCast::Make(context, pos, type, std::move(argument));
+                SkASSERT(result->fPosition == pos);
+                return result;
             }
         } else if (argument->type().isMatrix()) {
             // A matrix constructor containing a single matrix can be a resize, typecast, or both.
@@ -124,12 +126,11 @@ static std::unique_ptr<Expression> convert_compound_constructor(const Context& c
         // literal, this will make sure it's the right type of literal. If an expression of matching
         // type, the expression will be returned as-is. If it's an expression of mismatched type,
         // this adds a cast.
-        Position ctorPosition = arg->fPosition;
         const Type& ctorType = type.componentType().toCompound(context, arg->type().columns(),
                                                                /*rows=*/1);
         ExpressionArray ctorArg;
         ctorArg.push_back(std::move(arg));
-        arg = Constructor::Convert(context, ctorPosition, ctorType, std::move(ctorArg));
+        arg = Constructor::Convert(context, pos, ctorType, std::move(ctorArg));
         if (!arg) {
             return nullptr;
         }
@@ -153,6 +154,10 @@ std::unique_ptr<Expression> Constructor::Convert(const Context& context,
     if (args.size() == 1 && args[0]->type().matches(type) && !type.componentType().isOpaque()) {
         // Don't generate redundant casts; if the expression is already of the correct type, just
         // return it as-is.
+        // We need to update the position, because if we run into something like i + 0, we end up
+        // returning just i but need the range to cover the entire expression for error reporting
+        // purposes.
+        args[0]->fPosition = pos;
         return std::move(args[0]);
     }
     if (type.isScalar()) {

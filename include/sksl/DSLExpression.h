@@ -10,6 +10,7 @@
 
 #include "include/private/SkTArray.h"
 #include "include/sksl/SkSLPosition.h"
+#include "src/sksl/SkSLLexer.h"
 
 #include <cstdint>
 #include <memory>
@@ -123,6 +124,11 @@ public:
      */
     DSLPossibleExpression operator[](DSLExpression index);
 
+    /**
+     * Equivalent to operator[].
+     */
+    DSLPossibleExpression index(DSLExpression index, Position pos = Position::Capture());
+
     DSLPossibleExpression operator()(SkTArray<DSLWrapper<DSLExpression>> args,
                                      Position pos = Position::Capture());
 
@@ -142,6 +148,19 @@ public:
      * Returns true if this object contains an expression which is not poison.
      */
     bool isValid() const;
+
+    Position position() const;
+
+    void setPosition(Position pos);
+
+    // Invokes a prefix operator
+    DSLPossibleExpression prefix(SkSL::Token::Kind op, Position pos);
+
+    // Invokes a postfix operator
+    DSLPossibleExpression postfix(SkSL::Token::Kind op, Position pos);
+
+    // Invokes a binary operator
+    DSLPossibleExpression binary(SkSL::Token::Kind op, DSLExpression right, Position pos);
 
     SK_CLANG_REINITIALIZES void swap(DSLExpression& other);
 
@@ -239,6 +258,8 @@ public:
     void reportErrors(Position pos);
 
     DSLType type();
+
+    Position position() const;
 
     DSLExpression x(Position pos = Position::Capture());
 

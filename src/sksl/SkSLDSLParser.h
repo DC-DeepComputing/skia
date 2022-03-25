@@ -137,6 +137,10 @@ private:
     void error(Token token, std::string msg);
     void error(Position position, std::string msg);
 
+    // Returns the range from start to the current parse position.
+    Position rangeFrom(Position start);
+    Position rangeFrom(Token start);
+
     // these functions parse individual grammar rules from the current parse position; you probably
     // don't need to call any of these outside of the parser. The function declarations in the .cpp
     // file have comments describing the grammar rules.
@@ -156,7 +160,8 @@ private:
 
     bool declaration();
 
-    bool functionDeclarationEnd(const dsl::DSLModifiers& modifiers,
+    bool functionDeclarationEnd(Position start,
+                                const dsl::DSLModifiers& modifiers,
                                 dsl::DSLType type,
                                 const Token& name);
 
@@ -175,7 +180,8 @@ private:
 
     std::optional<dsl::DSLType> structDeclaration();
 
-    SkTArray<dsl::DSLGlobalVar> structVarDeclaration(const dsl::DSLModifiers& modifiers);
+    SkTArray<dsl::DSLGlobalVar> structVarDeclaration(Position pos,
+            const dsl::DSLModifiers& modifiers);
 
     bool parseArrayDimensions(Position pos, dsl::DSLType* type);
 
@@ -259,8 +265,7 @@ private:
 
     dsl::DSLExpression postfixExpression();
 
-    dsl::DSLExpression swizzle(Position pos, dsl::DSLExpression base,
-            std::string_view swizzleMask);
+    dsl::DSLExpression swizzle(Position pos, dsl::DSLExpression base, std::string_view swizzleMask);
 
     dsl::DSLExpression call(Position pos, dsl::DSLExpression base, ExpressionArray args);
 

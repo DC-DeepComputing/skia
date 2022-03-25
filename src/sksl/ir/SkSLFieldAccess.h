@@ -29,9 +29,9 @@ public:
 
     inline static constexpr Kind kExpressionKind = Kind::kFieldAccess;
 
-    FieldAccess(std::unique_ptr<Expression> base, int fieldIndex,
+    FieldAccess(Position pos, std::unique_ptr<Expression> base, int fieldIndex,
                 OwnerKind ownerKind = OwnerKind::kDefault)
-    : INHERITED(base->fPosition, kExpressionKind, base->type().fields()[fieldIndex].fType)
+    : INHERITED(pos, kExpressionKind, base->type().fields()[fieldIndex].fType)
     , fFieldIndex(fieldIndex)
     , fOwnerKind(ownerKind)
     , fBase(std::move(base)) {}
@@ -39,11 +39,13 @@ public:
     // Returns a field-access expression; reports errors via the ErrorReporter.
     static std::unique_ptr<Expression> Convert(const Context& context,
                                                SymbolTable& symbolTable,
+                                               Position pos,
                                                std::unique_ptr<Expression> base,
                                                std::string_view field);
 
     // Returns a field-access expression; reports errors via ASSERT.
     static std::unique_ptr<Expression> Make(const Context& context,
+                                            Position pos,
                                             std::unique_ptr<Expression> base,
                                             int fieldIndex,
                                             OwnerKind ownerKind = OwnerKind::kDefault);
@@ -69,7 +71,8 @@ public:
     }
 
     std::unique_ptr<Expression> clone() const override {
-        return std::unique_ptr<Expression>(new FieldAccess(this->base()->clone(),
+        return std::unique_ptr<Expression>(new FieldAccess(this->fPosition,
+                                                           this->base()->clone(),
                                                            this->fieldIndex(),
                                                            this->ownerKind()));
     }

@@ -42,8 +42,9 @@ std::shared_ptr<SymbolTable> CurrentSymbolTable() {
     return ThreadContext::SymbolTable();
 }
 
-DSLPossibleExpression Symbol(std::string_view name, Position pos) {
-    return ThreadContext::Compiler().convertIdentifier(pos, name);
+DSLExpression Symbol(std::string_view name, Position pos) {
+    std::unique_ptr<Expression> result = ThreadContext::Compiler().convertIdentifier(pos, name);
+    return result ? DSLExpression(std::move(result)) : DSLExpression::Poison(pos);
 }
 
 bool IsType(std::string_view name) {
