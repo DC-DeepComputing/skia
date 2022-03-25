@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c0f98f64_ca3a49bf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-03-25T19:14:25Z",
+      "side": 1,
+      "message": "The test failure is happening because I added a format that it expected to fail, but it\u0027s succeeding, so it fails.",
+      "revId": "7909dc5af5b97f5729a0d49b834211a54ce0f0fb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "64d45450_97c46f7a",
@@ -60,6 +77,48 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "bbf08828_9dc1c30f",
+        "filename": "experimental/graphite/src/Caps.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-03-25T19:14:25Z",
+      "side": 1,
+      "message": "I searched for it Vulkan but didn\u0027t notice that it was in the format table itself. I\u0027ll pull down to mtl::Caps.",
+      "parentUuid": "c4c7a288_a1fc5952",
+      "range": {
+        "startLine": 82,
+        "startChar": 26,
+        "endLine": 82,
+        "endChar": 44
+      },
+      "revId": "7909dc5af5b97f5729a0d49b834211a54ce0f0fb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "007aa01e_7720b47e",
+        "filename": "experimental/graphite/src/Caps.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-03-25T19:14:25Z",
+      "side": 1,
+      "message": "From what Greg says it has to be.",
+      "parentUuid": "4fc7f1fa_275ac5c8",
+      "revId": "7909dc5af5b97f5729a0d49b834211a54ce0f0fb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1387a943_af011e98",
         "filename": "experimental/graphite/src/mtl/MtlCaps.h",
         "patchSetId": 2
@@ -71,6 +130,30 @@
       "writtenOn": "2022-03-25T19:03:00Z",
       "side": 1,
       "message": "Do we think this struct should just be shared with all the backends? My quick scans of the Ganesh backends and they all seem to use identical ColorTypeInfo structs.",
+      "range": {
+        "startLine": 77,
+        "startChar": 11,
+        "endLine": 77,
+        "endChar": 24
+      },
+      "revId": "7909dc5af5b97f5729a0d49b834211a54ce0f0fb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "26670694_c31a4e98",
+        "filename": "experimental/graphite/src/mtl/MtlCaps.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-03-25T19:14:25Z",
+      "side": 1,
+      "message": "Yeah, I\u0027ll pull it up.",
+      "parentUuid": "1387a943_af011e98",
       "range": {
         "startLine": 77,
         "startChar": 11,
