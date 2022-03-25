@@ -115,6 +115,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f350798e_2561ab5b",
+        "filename": "include/sksl/SkSLPosition.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-03-25T20:16:41Z",
+      "side": 1,
+      "message": "That would only be an issue if we were to land a change which started using rangeFrom for binary expressions without any modifications to ConstantFolder.\n\nI won\u0027t be doing that. There are a ton of upcoming changes, including to ConstantFolder, to make everything work properly. I just ran this example through my final error handling CL, of which this is the first carved-off piece, without issue (I had to change the return types to int to get it to report a divide by zero rather than complain about returning values from void functions).",
+      "parentUuid": "f6cce633_f66af675",
+      "range": {
+        "startLine": 67,
+        "startChar": 0,
+        "endLine": 67,
+        "endChar": 59
+      },
+      "revId": "7887521c080dd28a20647f17b05590777669c0a4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6031ac71_9dc66ccc",
         "filename": "src/sksl/SkSLRehydrator.cpp",
         "patchSetId": 1
