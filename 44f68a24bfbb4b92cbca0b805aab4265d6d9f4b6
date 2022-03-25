@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6465426f_96a0ae8c",
+        "filename": "experimental/graphite/src/mtl/MtlCaps.mm",
+        "patchSetId": 1
+      },
+      "lineNbr": 289,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-03-25T17:47:35Z",
+      "side": 1,
+      "message": "While testing, I ran into an assert in GetFormatIndex() where we were creating a depth texture and checking to see if it was renderable. It made me think that it would be cleaner to add these texture formats into the table rather than having to check for DepthOrStencil every time before verifying Renderable or Texturable.",
+      "range": {
+        "startLine": 287,
+        "startChar": 4,
+        "endLine": 289,
+        "endChar": 40
+      },
+      "revId": "44f68a24bfbb4b92cbca0b805aab4265d6d9f4b6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
