@@ -55,7 +55,8 @@ struct CTFontVariation {
     OpszVariation opsz;
 };
 
-CTFontVariation SkCTVariationFromSkFontArguments(CTFontRef ct, const SkFontArguments& args);
+CTFontVariation SkCTVariationFromSkFontArguments(CTFontRef ct, CFArrayRef ctAxes,
+                                                 const SkFontArguments& args);
 
 SkUniqueCFRef<CTFontRef> SkCTFontCreateExactCopy(CTFontRef baseFont, CGFloat textSize,
                                                  OpszVariation opsz);
@@ -91,6 +92,15 @@ public:
     const OpszVariation fOpszVariation;
     const bool fHasColorGlyphs;
 
+    /**
+     * Because CTFontCopyVariationAxes provides the localized name of all axes from the name table, it is very slow.
+     * This is unfortunate, because sometimes this is called just to see if there are any axes at all.
+     * To avoid calling internal APIs cache the result of CTFontCopyVariationAxes so it is only called once per typeface.
+     * https://github.com/WebKit/WebKit/commit/1842365d413ed87868e7d33d4fad1691fa3a8129
+     * https://bugs.webkit.org/show_bug.cgi?id=232690
+     */
+    CFArrayRef getVariationAxes() const;
+
 protected:
     int onGetUPEM() const override;
     std::unique_ptr<SkStreamAsset> onOpenStream(int* ttcIndex) const override;
@@ -121,8 +131,10 @@ protected:
 
 private:
     mutable std::unique_ptr<SkStreamAsset> fStream;
+    mutable SkUniqueCFRef<CFArrayRef> fVariationAxes;
     bool fIsFromStream;
     mutable SkOnce fInitStream;
+    mutable SkOnce fInitVariationAxes;
 
     using INHERITED = SkTypeface;
 };
