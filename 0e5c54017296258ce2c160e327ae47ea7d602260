@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1b98bf5a_e8997916",
+        "filename": "src/sksl/analysis/SkSLGetLoopUnrollInfo.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 188,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-03-25T21:06:30Z",
+      "side": 1,
+      "message": "Out of curiosity, does this get narrowed down in a followup? This would presumably highlight the entire loop body instead of the offending statement.",
+      "range": {
+        "startLine": 186,
+        "startChar": 4,
+        "endLine": 188,
+        "endChar": 42
+      },
+      "revId": "0e5c54017296258ce2c160e327ae47ea7d602260",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3c6cd545_af355964",
+        "filename": "src/sksl/analysis/SkSLGetLoopUnrollInfo.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 246,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-03-25T21:06:30Z",
+      "side": 1,
+      "message": "Should this be `loopTest-\u003efPosition`? e.g.\n\n  for (int i\u003d0; i\u003c1000000; ++i) {}\n                ^^^^^^^^^  loop must guarantee termination in fewer iterations",
+      "range": {
+        "startLine": 246,
+        "startChar": 71,
+        "endLine": 246,
+        "endChar": 78
+      },
+      "revId": "0e5c54017296258ce2c160e327ae47ea7d602260",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
