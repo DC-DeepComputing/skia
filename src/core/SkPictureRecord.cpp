@@ -921,13 +921,16 @@ void SkPictureRecord::addRegion(const SkRegion& region) {
 }
 
 void SkPictureRecord::addSampling(const SkSamplingOptions& sampling) {
-    fWriter.writeBool(sampling.useCubic);
-    if (sampling.useCubic) {
-        fWriter.writeScalar(sampling.cubic.B);
-        fWriter.writeScalar(sampling.cubic.C);
-    } else {
-        fWriter.writeInt(static_cast<uint32_t>(sampling.filter));
-        fWriter.writeInt(static_cast<uint32_t>(sampling.mipmap));
+    fWriter.writeInt(sampling.maxAniso);
+    if (sampling.maxAniso > 1) {
+        fWriter.writeBool(sampling.useCubic);
+        if (sampling.useCubic) {
+            fWriter.writeScalar(sampling.cubic.B);
+            fWriter.writeScalar(sampling.cubic.C);
+        } else {
+            fWriter.writeInt(static_cast<uint32_t>(sampling.filter));
+            fWriter.writeInt(static_cast<uint32_t>(sampling.mipmap));
+        }
     }
 }
 

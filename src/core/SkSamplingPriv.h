@@ -40,7 +40,17 @@ public:
     static bool NoChangeWithIdentityMatrix(const SkSamplingOptions& sampling) {
         // If B == 0, the cubic resampler should have no effect for identity matrices
         // https://entropymine.com/imageworsener/bicubic/
+        // We assume aniso has no effect with an identity transform.
         return !sampling.useCubic || sampling.cubic.B == 0;
+    }
+
+    // Makes a fallback SkSamplingOptions for cases where anisotropic filtering is not allowed.
+    // anisotropic filtering can access mip levels if present, but we don't add mipmaps to non-
+    // mipmapped images when the user requests anisotropic. So we shouldn't fall back to a
+    // sampling that would trigger mip map creation.
+    static SkSamplingOptions AnisoFallback(bool imageIsMipped) {
+        auto mm = imageIsMipped ? SkMipmapMode::kLinear : SkMipmapMode::kNone;
+        return SkSamplingOptions(SkFilterMode::kLinear, mm);
     }
 
     static SkSamplingOptions Read(SkReadBuffer&);
