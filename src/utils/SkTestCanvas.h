@@ -35,4 +35,20 @@ private:
     SkCanvas* fGPUCanvas;
 };
 
+// A test canvas to test using slug rendering instead of text blob rendering.
+struct SkSerializedSlugTestKey {};
+template <>
+class SkTestCanvas<SkSerializedSlugTestKey> : public SkNWayCanvas {
+public:
+    SkTestCanvas(SkCanvas* convertCanvas,
+                 SkCanvas* recordingCanvas);
+    void onDrawTextBlob(const SkTextBlob* blob, SkScalar x, SkScalar y,
+                        const SkPaint& paint) override;
+    void onDrawGlyphRunList(const SkGlyphRunList& glyphRunList, const SkPaint& paint) override;
+
+private:
+    SkCanvas* fGPUCanvas;
+    SkCanvas* fRecordingCanvas;
+};
+
 #endif  // SkTestCanvas_DEFINED

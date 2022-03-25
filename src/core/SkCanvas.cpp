@@ -2893,7 +2893,39 @@ void SkTestCanvas<SkSlugTestKey>::onDrawGlyphRunList(
             fGPUCanvas->onDrawGlyphRunList(glyphRunList, layer->paint());
         } else {
             auto slug = fGPUCanvas->onConvertGlyphRunListToSlug(glyphRunList, layer->paint());
-            fGPUCanvas->drawSlug(slug.get());
+            this->drawSlug(slug.get());
+        }
+    }
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+SkTestCanvas<SkSerializedSlugTestKey>::SkTestCanvas(SkCanvas* convertCanvas,
+                                                    SkCanvas* recordingCanvas)
+        : SkNWayCanvas(convertCanvas)
+        , fGPUCanvas(convertCanvas)
+        , fRecordingCanvas(recordingCanvas) {
+    this->addCanvas(recordingCanvas);
+}
+
+void SkTestCanvas<SkSerializedSlugTestKey>::onDrawTextBlob(
+        const SkTextBlob* blob, SkScalar x, SkScalar y, const SkPaint& paint) {
+    auto glyphRunList = fScratchGlyphRunBuilder->blobToGlyphRunList(*blob, {x, y});
+    this->onDrawGlyphRunList(glyphRunList, paint);
+}
+
+void SkTestCanvas<SkSerializedSlugTestKey>::onDrawGlyphRunList(
+        const SkGlyphRunList& glyphRunList, const SkPaint& paint) {
+    SkRect bounds = glyphRunList.sourceBounds();
+    if (this->internalQuickReject(bounds, paint)) {
+        return;
+    }
+    auto layer = this->aboutToDraw(this, paint, &bounds);
+    if (layer) {
+        if (glyphRunList.hasRSXForm()) {
+            fRecordingCanvas->onDrawGlyphRunList(glyphRunList, layer->paint());
+        } else {
+            auto slug = fGPUCanvas->onConvertGlyphRunListToSlug(glyphRunList, layer->paint());
+            fRecordingCanvas->drawSlug(slug.get());
         }
     }
 }

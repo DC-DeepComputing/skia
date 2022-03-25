@@ -968,7 +968,7 @@ static Sink* create_sink(const GrContextOptions& grCtxOptions, const SkCommandLi
             } else if (gpuConfig->getOOPRish()) {
                 return new GPUOOPRSink(gpuConfig, grCtxOptions);
             } else if (gpuConfig->getSlug()) {
-                return new GPUSlugSink(gpuConfig, grCtxOptions);
+                return new GPUSerializeSlugSink(gpuConfig, grCtxOptions);
             } else {
                 return new GPUSink(gpuConfig, grCtxOptions);
             }

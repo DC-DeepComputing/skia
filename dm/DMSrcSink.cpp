@@ -28,6 +28,7 @@
 #include "include/ports/SkImageGeneratorWIC.h"
 #include "include/private/SkImageInfoPriv.h"
 #include "include/private/SkTLogic.h"
+#include "include/private/chromium/GrSlug.h"
 #include "include/third_party/skcms/skcms.h"
 #include "include/utils/SkNullCanvas.h"
 #include "include/utils/SkPaintFilterCanvas.h"
@@ -43,7 +44,6 @@
 #include "src/core/SkPictureData.h"
 #include "src/core/SkRecordDraw.h"
 #include "src/core/SkRecorder.h"
-#include "src/core/SkTLazy.h"
 #include "src/core/SkTaskGroup.h"
 #include "src/gpu/GrDirectContextPriv.h"
 #include "src/gpu/GrGpu.h"
@@ -1491,7 +1491,7 @@ bool GPUSink::readBack(SkSurface* surface, SkBitmap* dst) const {
 Result GPUSink::onDraw(const Src& src, SkBitmap* dst, SkWStream*, SkString* log,
                        const GrContextOptions& baseOptions,
                        std::function<void(GrDirectContext*)> initContext,
-                       std::function<SkCanvas*(SkCanvas*)> wrapCanvas) const {
+                       std::function<Result(GrDirectContext*, SkCanvas*)> replaceDraw) const {
     GrContextOptions grOptions = baseOptions;
 
     // We don't expect the src to mess with the persistent cache or the executor.
@@ -1521,11 +1521,8 @@ Result GPUSink::onDraw(const Src& src, SkBitmap* dst, SkWStream*, SkString* log,
     }
 
     auto canvas = surface->getCanvas();
-    if (wrapCanvas != nullptr) {
-        canvas = wrapCanvas(canvas);
-    }
+    Result result = !replaceDraw ? src.draw(direct, canvas) : replaceDraw(direct, canvas);
 
-    Result result = src.draw(direct, canvas);
     if (!result.isOk()) {
         return result;
     }
@@ -1551,6 +1548,7 @@ Result GPUSink::onDraw(const Src& src, SkBitmap* dst, SkWStream*, SkString* log,
 }
 
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
 GPUSlugSink::GPUSlugSink(const SkCommandLineConfigGpu* config, const GrContextOptions& options)
         : GPUSink(config, options) {}
 
@@ -1559,14 +1557,73 @@ Result GPUSlugSink::draw(const Src& src, SkBitmap* dst, SkWStream* write, SkStri
     // Force padded atlas entries for slug drawing.
     grOptions.fSupportBilerpFromGlyphAtlas |= true;
 
-    SkTLazy<SkTestCanvas<SkSlugTestKey>> testCanvas;
-
     return onDraw(src, dst, write, log, grOptions, nullptr,
-        [&](SkCanvas* canvas){
-            testCanvas.init(canvas);
-            return testCanvas.get();
+        [&](GrDirectContext* context, SkCanvas* canvas) -> Result {
+            SkTestCanvas<SkSlugTestKey> slugCanvas{canvas};
+            return src.draw(context, &slugCanvas);
         });
 }
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
+static DEFINE_bool(check, true, "If true, have most Via- modes fail if they affect the output.");
+
+// Is *bitmap identical to what you get drawing src into sink?
+static Result check_against_reference(const SkBitmap* bitmap, const Src& src, const Sink* sink) {
+    // We can only check raster outputs.
+    // (Non-raster outputs like .pdf, .skp, .svg may differ but still draw identically.)
+    if (FLAGS_check && bitmap) {
+        SkBitmap reference;
+        SkString log;
+        SkDynamicMemoryWStream wStream;
+        Result result = sink->draw(src, &reference, &wStream, &log);
+        // If we can draw into this Sink via some pipeline, we should be able to draw directly.
+        SkASSERT(result.isOk());
+        if (!result.isOk()) {
+            return result;
+        }
+        return compare_bitmaps(reference, *bitmap);
+    }
+    return Result::Ok();
+}
+
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
+GPUSerializeSlugSink::GPUSerializeSlugSink(const SkCommandLineConfigGpu* config,
+                                           const GrContextOptions& options)
+        : GPUSink(config, options)
+        , fCompareSink(config, options) { }
+
+Result GPUSerializeSlugSink::draw(
+        const Src& src, SkBitmap* dst, SkWStream* write, SkString* log) const {
+    GrContextOptions grOptions = this->baseContextOptions();
+    // Force padded atlas entries for slug drawing.
+    grOptions.fSupportBilerpFromGlyphAtlas |= true;
+    auto size = src.size();
+    return this->onDraw(
+            src, dst, write, log, grOptions, nullptr,
+            [&](GrDirectContext* direct, SkCanvas* gpuCanvas) -> Result {
+                SkPictureRecorder recorder;
+                SkCanvas* recordingCanvas = recorder.beginRecording(SkIntToScalar(size.width()),
+                                                                    SkIntToScalar(size.height()));
+
+                SkTestCanvas<SkSerializedSlugTestKey> slugConversionCanvas(
+                        gpuCanvas, recordingCanvas);
+
+                Result result = src.draw(nullptr, &slugConversionCanvas);
+                if (!result.isOk()) {
+                    return result;
+                }
+                sk_sp<SkPicture> pic(recorder.finishRecordingAsPicture());
+                // Serialize it and then deserialize it.
+                auto data = SkPicture::MakeFromData(pic->serialize().get());
+                sk_sp<SkPicture> deserialized(data);
+
+                gpuCanvas->drawPicture(deserialized);
+
+                return check_against_reference(dst, src, &fCompareSink);
+            });
+}
+
 
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 GPUThreadTestingSink::GPUThreadTestingSink(const SkCommandLineConfigGpu* config,
@@ -2198,29 +2255,6 @@ static Result draw_to_canvas(Sink* sink, SkBitmap* bitmap, SkWStream* stream,
         const DrawToCanvasFn& fDraw;
     };
     return sink->draw(ProxySrc(size, draw), bitmap, stream, log);
-}
-
-/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-
-static DEFINE_bool(check, true, "If true, have most Via- modes fail if they affect the output.");
-
-// Is *bitmap identical to what you get drawing src into sink?
-static Result check_against_reference(const SkBitmap* bitmap, const Src& src, Sink* sink) {
-    // We can only check raster outputs.
-    // (Non-raster outputs like .pdf, .skp, .svg may differ but still draw identically.)
-    if (FLAGS_check && bitmap) {
-        SkBitmap reference;
-        SkString log;
-        SkDynamicMemoryWStream wStream;
-        Result result = sink->draw(src, &reference, &wStream, &log);
-        // If we can draw into this Sink via some pipeline, we should be able to draw directly.
-        SkASSERT(result.isOk());
-        if (!result.isOk()) {
-            return result;
-        }
-        return compare_bitmaps(reference, *bitmap);
-    }
-    return Result::Ok();
 }
 
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
