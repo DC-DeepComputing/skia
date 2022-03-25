@@ -67,6 +67,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "cdd6fa93_3f468380",
+        "filename": "include/sksl/SkSLPosition.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-03-25T17:08:44Z",
+      "side": 1,
+      "message": "Couldn\u0027t the inliner cause this to occur? I don\u0027t think we change the position of an inlined element (and don\u0027t think we need to). e.g.\n\n  void foo(int a, int b) {\n      return b / a;\n  }\n  void bar() { return foo(0, 1); }\n  \nI think we may end up inside the Constant Folder with something that looks like\n\n  return 1 / 0;\n         ^^^^^   divide by zero\n\nWhere the 0 and 1 have flipped positions. Up until this point it\u0027s been a non-concern.",
+      "parentUuid": "bc20d555_fc31b13a",
+      "range": {
+        "startLine": 67,
+        "startChar": 0,
+        "endLine": 67,
+        "endChar": 59
+      },
+      "revId": "7887521c080dd28a20647f17b05590777669c0a4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6031ac71_9dc66ccc",
         "filename": "src/sksl/SkSLRehydrator.cpp",
         "patchSetId": 1
@@ -102,6 +126,30 @@
       "side": 1,
       "message": "This is the first of many upcoming changes adding new Position() parameters to calls in this method. It seemed cleaner to just have one reference to Position() as opposed to repeating it over and over, so I slipped this cleanup into the first such CL.",
       "parentUuid": "6031ac71_9dc66ccc",
+      "range": {
+        "startLine": 498,
+        "startChar": 0,
+        "endLine": 498,
+        "endChar": 17
+      },
+      "revId": "7887521c080dd28a20647f17b05590777669c0a4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "33e58077_10547498",
+        "filename": "src/sksl/SkSLRehydrator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 498,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-03-25T17:08:44Z",
+      "side": 1,
+      "message": "I don\u0027t think I understand. How is repeating `pos` cleaner than repeating `Position()`? It\u0027s a few less characters but the goal is to optimize for readability, not minimizing length. \n\nIf the goal is to have a shorter stand-in for `Position()`, let\u0027s make it `const` to make it more obvious that the variable doesn\u0027t ever get assigned a value.",
+      "parentUuid": "4727a716_7d7012aa",
       "range": {
         "startLine": 498,
         "startChar": 0,
