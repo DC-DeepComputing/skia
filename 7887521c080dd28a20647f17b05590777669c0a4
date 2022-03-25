@@ -91,6 +91,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f6cce633_f66af675",
+        "filename": "include/sksl/SkSLPosition.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-03-25T17:21:01Z",
+      "side": 1,
+      "message": "I think this is a concrete example: http://go/paste/4509626016989184\n\nWe get an error on line 6 (where the literals are). This comes from ConstantFolder::Simplify, which takes a Left and Right expression along with an operator and the operator\u0027s Position. The Left and Right will be backwards, and the Operator\u0027s position will be on a completely different line.",
+      "parentUuid": "cdd6fa93_3f468380",
+      "range": {
+        "startLine": 67,
+        "startChar": 0,
+        "endLine": 67,
+        "endChar": 59
+      },
+      "revId": "7887521c080dd28a20647f17b05590777669c0a4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6031ac71_9dc66ccc",
         "filename": "src/sksl/SkSLRehydrator.cpp",
         "patchSetId": 1
