@@ -52,6 +52,29 @@
       "parentUuid": "166d32c6_62bb5d0f",
       "revId": "56b7a0509260700805344616caca54664cd9052a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b7699d72_0e8e35d8",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1423,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-03-25T18:52:19Z",
+      "side": 1,
+      "message": "So what do we expect to happen if the Canvas already has a matrix on it? Should we allow that (i.e. require canvas to be identity when this is called)?",
+      "range": {
+        "startLine": 1423,
+        "startChar": 8,
+        "endLine": 1423,
+        "endChar": 50
+      },
+      "revId": "56b7a0509260700805344616caca54664cd9052a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
