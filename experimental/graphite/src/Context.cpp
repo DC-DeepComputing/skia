@@ -52,7 +52,10 @@ std::unique_ptr<Recorder> Context::makeRecorder() {
 }
 
 void Context::insertRecording(std::unique_ptr<Recording> recording) {
-    fRecordings.emplace_back(std::move(recording));
+    SkASSERT(recording);
+    if (recording) {
+        fRecordings.emplace_back(std::move(recording));
+    }
 }
 
 void Context::submit(SyncToCpu syncToCpu) {
