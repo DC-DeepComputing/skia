@@ -22,6 +22,30 @@
       },
       "revId": "44f68a24bfbb4b92cbca0b805aab4265d6d9f4b6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b49e80d7_29f09918",
+        "filename": "experimental/graphite/src/mtl/MtlCaps.mm",
+        "patchSetId": 1
+      },
+      "lineNbr": 289,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-03-25T19:03:00Z",
+      "side": 1,
+      "message": "Yes I don\u0027t think we should be treating Depth Stencil any differently than normal formats. We would then add additional feature flags to the format to say whether they are depth/stencilable.",
+      "parentUuid": "6465426f_96a0ae8c",
+      "range": {
+        "startLine": 287,
+        "startChar": 4,
+        "endLine": 289,
+        "endChar": 40
+      },
+      "revId": "44f68a24bfbb4b92cbca0b805aab4265d6d9f4b6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
