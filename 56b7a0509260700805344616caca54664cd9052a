@@ -34,6 +34,24 @@
       "parentUuid": "23661301_a9b835f2",
       "revId": "56b7a0509260700805344616caca54664cd9052a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3c22db55_9a5d0f21",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-03-25T17:38:57Z",
+      "side": 1,
+      "message": "The only difference would be that shadows would be in the wrong place if the display were rotated. The GPU code that would be run would be identical.",
+      "parentUuid": "166d32c6_62bb5d0f",
+      "revId": "56b7a0509260700805344616caca54664cd9052a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
