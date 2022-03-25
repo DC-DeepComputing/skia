@@ -174,7 +174,7 @@ struct SK_API GrContextOptions {
      * This has the effect of sharpening those textures, at the cost of some aliasing, and possible
      * performance impact.
      */
-    bool fSharpenMipmappedTextures = false;
+    bool fSharpenMipmappedTextures = true;
 
     /**
      * Enables driver workaround to use draws instead of HW clears, e.g. glClear on the GL backend.

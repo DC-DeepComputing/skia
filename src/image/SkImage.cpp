@@ -31,6 +31,7 @@
 #include "include/gpu/GrBackendSurface.h"
 #include "include/gpu/GrContextThreadSafeProxy.h"
 #include "include/gpu/GrDirectContext.h"
+#include "src/core/SkSamplingPriv.h"
 #include "src/gpu/GrDirectContextPriv.h"
 #include "src/gpu/GrFragmentProcessor.h"
 #include "src/gpu/GrImageContextPriv.h"
@@ -388,10 +389,20 @@ std::unique_ptr<GrFragmentProcessor> SkImage_Base::MakeFragmentProcessorFromView
                                      GrBicubicEffect::Direction::kXY,
                                      *rContext->priv().caps());
     }
-    if (view.proxy()->asTextureProxy()->mipmapped() == GrMipmapped::kNo) {
+    if (sampling.isAniso()) {
+        if (!rContext->priv().caps()->anisoSupport()) {
+            // Fallback to linear
+            sampling = SkSamplingPriv::AnisoFallback(view.mipmapped());
+        }
+    } else if (view.mipmapped() == GrMipmapped::kNo) {
         sampling = SkSamplingOptions(sampling.filter);
     }
-    GrSamplerState sampler(wmx, wmy, sampling.filter, sampling.mipmap);
+    GrSamplerState sampler;
+    if (sampling.isAniso()) {
+        sampler = GrSamplerState::Aniso(wmx, wmy, sampling.maxAniso);
+    } else {
+        sampler = GrSamplerState(wmx, wmy, sampling.filter, sampling.mipmap);
+    }
     if (subset) {
         if (domain) {
             return GrTextureEffect::MakeSubset(std::move(view),
