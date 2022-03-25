@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "96d41bef_361307c9",
+        "filename": "experimental/graphite/src/Caps.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-03-25T19:36:42Z",
+      "side": 1,
+      "message": "I put it here for the future, when I add getReadSwizzle/getWriteSwizzle. But it\u0027s needed for the ColorTypeInfo now.",
+      "parentUuid": "64d45450_97c46f7a",
+      "revId": "7909dc5af5b97f5729a0d49b834211a54ce0f0fb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c4c7a288_a1fc5952",
@@ -117,6 +135,48 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ce504ddf_08366c13",
+        "filename": "experimental/graphite/src/Caps.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-03-25T19:36:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bbf08828_9dc1c30f",
+      "range": {
+        "startLine": 82,
+        "startChar": 26,
+        "endLine": 82,
+        "endChar": 44
+      },
+      "revId": "7909dc5af5b97f5729a0d49b834211a54ce0f0fb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b631f979_0bf39442",
+        "filename": "experimental/graphite/src/Caps.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-03-25T19:36:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "007aa01e_7720b47e",
+      "revId": "7909dc5af5b97f5729a0d49b834211a54ce0f0fb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1387a943_af011e98",
@@ -164,6 +224,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c0e8a634_69d6495d",
+        "filename": "experimental/graphite/src/mtl/MtlCaps.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-03-25T19:36:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "26670694_c31a4e98",
+      "range": {
+        "startLine": 77,
+        "startChar": 11,
+        "endLine": 77,
+        "endChar": 24
+      },
+      "revId": "7909dc5af5b97f5729a0d49b834211a54ce0f0fb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "93050679_3530c04c",
@@ -200,6 +284,54 @@
       "writtenOn": "2022-03-25T19:04:01Z",
       "side": 1,
       "message": "Ganesh ?",
+      "range": {
+        "startLine": 81,
+        "startChar": 20,
+        "endLine": 81,
+        "endChar": 26
+      },
+      "revId": "7909dc5af5b97f5729a0d49b834211a54ce0f0fb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "15efefd6_67664011",
+        "filename": "experimental/graphite/src/mtl/MtlCaps.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-03-25T19:36:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6d563d4d_79f5f385",
+      "range": {
+        "startLine": 81,
+        "startChar": 20,
+        "endLine": 81,
+        "endChar": 26
+      },
+      "revId": "7909dc5af5b97f5729a0d49b834211a54ce0f0fb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d9ae9213_10891258",
+        "filename": "experimental/graphite/src/mtl/MtlCaps.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-03-25T19:36:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "93050679_3530c04c",
       "range": {
         "startLine": 81,
         "startChar": 20,
