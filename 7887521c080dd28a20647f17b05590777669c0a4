@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "143c012f_a70f5092",
+        "filename": "include/sksl/SkSLPosition.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-03-25T15:24:07Z",
+      "side": 1,
+      "message": "Seems like this could make an inverted range if start and end are backwards somehow (e.g. an optimization could change the relative position of two expressions). Should we do something like this for safety?\n\n  Range(min(this-\u003estartOffset(), end.startOffset()),\n        max(this-\u003eendOffset(),   end.endOffset()))",
+      "range": {
+        "startLine": 67,
+        "startChar": 0,
+        "endLine": 67,
+        "endChar": 59
+      },
+      "revId": "7887521c080dd28a20647f17b05590777669c0a4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6031ac71_9dc66ccc",
+        "filename": "src/sksl/SkSLRehydrator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 498,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-03-25T15:24:07Z",
+      "side": 1,
+      "message": "Was this change intentional? It seems unrelated to this CL, and I don\u0027t understand the benefit. Pos is never assigned-to AFAICS, so it\u0027s equivalent to just default-constructing `Position()` everywhere.",
+      "range": {
+        "startLine": 498,
+        "startChar": 0,
+        "endLine": 498,
+        "endChar": 17
+      },
+      "revId": "7887521c080dd28a20647f17b05590777669c0a4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "33529f9a_632cf829",
+        "filename": "src/sksl/ir/SkSLIndexExpression.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-03-25T15:24:07Z",
+      "side": 1,
+      "message": "This could safely move to L102 (after `!index_out_of_range`) to do less work in the common/un-optimizable case.",
+      "range": {
+        "startLine": 93,
+        "startChar": 0,
+        "endLine": 93,
+        "endChar": 35
+      },
+      "revId": "7887521c080dd28a20647f17b05590777669c0a4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
