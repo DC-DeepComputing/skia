@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e942069e_4875892d",
+        "filename": "src/sksl/analysis/SkSLGetLoopUnrollInfo.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 188,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-03-26T23:39:03Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "ba3106ff_aa0264ab",
+      "range": {
+        "startLine": 186,
+        "startChar": 4,
+        "endLine": 188,
+        "endChar": 42
+      },
+      "revId": "0e5c54017296258ce2c160e327ae47ea7d602260",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3c6cd545_af355964",
@@ -85,6 +109,30 @@
       "side": 1,
       "message": "Since it\u0027s not just the product of the test (i.e. i\u003c1000000 is fine if i\u003d999999 or i+\u003d100000) I decided it would make more sense to highlight the whole loop.",
       "parentUuid": "3c6cd545_af355964",
+      "range": {
+        "startLine": 246,
+        "startChar": 71,
+        "endLine": 246,
+        "endChar": 78
+      },
+      "revId": "0e5c54017296258ce2c160e327ae47ea7d602260",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c2a019c1_f5b845d0",
+        "filename": "src/sksl/analysis/SkSLGetLoopUnrollInfo.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 246,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-03-26T23:39:03Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "4e2381c5_4abd249f",
       "range": {
         "startLine": 246,
         "startChar": 71,
