@@ -16,6 +16,24 @@
       "message": "The key is still the typeface id, you would need to change the key to be a hash of the SkFont (unless you really just want one per typeface).\n\nAlso, I highly doubt this is really needed. I would need some real perf numbers with and without this (and both after https://skia.googlesource.com/skia.git/+show/e85afc2b18212360b9be8e6ca8c786b4ec6348b5 ).",
       "revId": "8f0e4339386fe9722d7b268a282b1ff6da120a8a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "23f756e8_cef3e801",
+        "filename": "modules/skshaper/src/SkShaper_harfbuzz.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1368,
+      "author": {
+        "id": 7708
+      },
+      "writtenOn": "2022-03-28T16:30:57Z",
+      "side": 1,
+      "message": "Yes - the key is still the typeface ID, and there is only one cache entry per typeface.\n\nThe hb_font in the cache represents the parts of an hb_font that are based only on attributes of the SkTypeface (the hb_face, plus the variation design position).  You still need to call hb_font_create_sub_font for the attributes that are in the SkFont.\n\nThe goal is to avoid constructing the parent hb_font and calling getVariationDesignPosition/hb_font_set_variations on every call to ShaperHarfBuzz::shape.\n\nImplementations like SkTypeface_Mac::onGetVariationDesignPosition may still be doing nontrivial work even with https://skia.googlesource.com/skia.git/+show/e85afc2b18212360b9be8e6ca8c786b4ec6348b5.  And AFAICT that work will yield the same results on every call for a given typeface and does not need to be repeated for each shaping.",
+      "parentUuid": "0a3090ed_875e52bb",
+      "revId": "8f0e4339386fe9722d7b268a282b1ff6da120a8a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
