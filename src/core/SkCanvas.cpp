@@ -2897,6 +2897,11 @@ void SkTestCanvas<SkSlugTestKey>::onDrawGlyphRunList(
         }
     }
 }
+
+// This is needed to get some GPU GMs to work.
+GrRecordingContext* SkTestCanvas<SkSlugTestKey>::recordingContext() {
+    return fGPUCanvas->recordingContext();
+}
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////

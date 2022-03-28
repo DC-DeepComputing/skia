@@ -30,6 +30,7 @@ class SkTestCanvas<SkSlugTestKey> : public SkNWayCanvas {
 public:
     SkTestCanvas(SkCanvas* convertCanvas);
     void onDrawGlyphRunList(const SkGlyphRunList& glyphRunList, const SkPaint& paint) override;
+    GrRecordingContext* recordingContext() override;
 
 private:
     SkCanvas* fGPUCanvas;
