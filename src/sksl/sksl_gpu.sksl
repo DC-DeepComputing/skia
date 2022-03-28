@@ -497,6 +497,41 @@ half4 blend_luminosity(half4 src, half4 dst) {
                  src.a + dst.a - alpha);
 }
 
+half4 sk_blend(int mode, half4 src, half4 dst) {
+    switch (mode) {
+        case  0: { return blend_clear(src, dst); }
+        case  1: { return blend_src(src, dst); }
+        case  2: { return blend_dst(src, dst); }
+        case  3: { return blend_src_over(src, dst); }
+        case  4: { return blend_dst_over(src, dst); }
+        case  5: { return blend_src_in(src, dst); }
+        case  6: { return blend_dst_in(src, dst); }
+        case  7: { return blend_src_out(src, dst); }
+        case  8: { return blend_dst_out(src, dst); }
+        case  9: { return blend_src_atop(src, dst); }
+        case 10: { return blend_dst_atop(src, dst); }
+        case 11: { return blend_xor(src, dst); }
+        case 12: { return blend_plus(src, dst); }
+        case 13: { return blend_modulate(src, dst); }
+        case 14: { return blend_screen(src, dst); }
+        case 15: { return blend_overlay(src, dst); }
+        case 16: { return blend_darken(src, dst); }
+        case 17: { return blend_lighten(src, dst); }
+        case 18: { return blend_color_dodge(src, dst); }
+        case 19: { return blend_color_burn(src, dst); }
+        case 20: { return blend_hard_light(src, dst); }
+        case 21: { return blend_soft_light(src, dst); }
+        case 22: { return blend_difference(src, dst); }
+        case 23: { return blend_exclusion(src, dst); }
+        case 24: { return blend_multiply(src, dst); }
+        case 25: { return blend_hue(src, dst); }
+        case 26: { return blend_saturation(src, dst); }
+        case 27: { return blend_color(src, dst); }
+        case 28: { return blend_luminosity(src, dst); }
+        default: return half4(0);  // Avoids 'blend can exit without returning a value' error
+    }
+}
+
 // The max() guards against division by zero when the incoming color is transparent black
 half4  unpremul(half4 color)  { return half4(color.rgb / max(color.a, 0.0001), color.a); }
 float4 unpremul(float4 color) { return float4(color.rgb / max(color.a, 0.0001), color.a); }

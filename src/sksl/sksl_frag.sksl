@@ -7,3 +7,46 @@ layout(builtin=17) in bool sk_Clockwise;  // Similar to gl_FrontFacing, but defi
 layout(location=0,index=0,builtin=10001) out half4 sk_FragColor;
 layout(builtin=10008) half4 sk_LastFragColor;
 layout(builtin=10012) out half4 sk_SecondaryFragColor;
+
+// Graphite built-in shaders
+
+float dot($genType x, $genType y);
+$genType mix($genType x, $genType y, float a);
+$genType clamp($genType x, float minVal, float maxVal);
+
+half4 sk_error() {
+    return half4(1.0, 0.0, 1.0, 1.0);
+}
+
+half4 sk_solid_shader(float4 colorParam) {
+    return half4(colorParam);
+}
+
+half4 sk_image_shader(float4 subset) {
+    return half4(1, 0, 0, 1);
+}
+
+half4 sk_linear_grad_4_shader(float4 colorsParam[4],
+                              float offsetsParam[4],
+                              float2 point0Param,
+                              float2 point1Param,
+                              float radius0Param,
+                              float radius1Param,
+                              float2 padding) {
+    // TODO: This should use local coords
+    float2 pos = sk_FragCoord.xy;
+    float2 delta = point1Param - point0Param;
+    float2 pt = pos - point0Param;
+    float t = dot(pt, delta) / dot(delta, delta);
+    float4 result = colorsParam[0];
+    result = mix(result, colorsParam[1],
+                 clamp((t-offsetsParam[0])/(offsetsParam[1]-offsetsParam[0]),
+                       0, 1));
+    result = mix(result, colorsParam[2],
+                 clamp((t-offsetsParam[1])/(offsetsParam[2]-offsetsParam[1]),
+                       0, 1));
+    result = mix(result, colorsParam[3],
+                 clamp((t-offsetsParam[2])/(offsetsParam[3]-offsetsParam[2]),
+                 0, 1));
+    return half4(result);
+}
