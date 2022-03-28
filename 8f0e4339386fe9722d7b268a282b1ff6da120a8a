@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0a3090ed_875e52bb",
+        "filename": "modules/skshaper/src/SkShaper_harfbuzz.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1368,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-03-28T15:20:26Z",
+      "side": 1,
+      "message": "The key is still the typeface id, you would need to change the key to be a hash of the SkFont (unless you really just want one per typeface).\n\nAlso, I highly doubt this is really needed. I would need some real perf numbers with and without this (and both after https://skia.googlesource.com/skia.git/+show/e85afc2b18212360b9be8e6ca8c786b4ec6348b5 ).",
+      "revId": "8f0e4339386fe9722d7b268a282b1ff6da120a8a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
