@@ -27,7 +27,16 @@ bool Caps::areColorTypeAndTextureInfoCompatible(SkColorType type, const TextureI
         return false;
     }
 
+    // TODO: add SkImage::CompressionType handling
+
     return this->onAreColorTypeAndTextureInfoCompatible(type, info);
 }
+
+skgpu::Swizzle Caps::getReadSwizzle(SkColorType colorType, const TextureInfo& info) const {
+    // TODO: add SkImage::CompressionType handling
+
+    return this->onGetReadSwizzle(colorType, info);
+}
+
 
 } // namespace skgpu

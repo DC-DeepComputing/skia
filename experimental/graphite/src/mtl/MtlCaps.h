@@ -34,6 +34,8 @@ public:
                                                          uint32_t sampleCount,
                                                          Protected) const override;
 
+    skgpu::Swizzle getWriteSwizzle(SkColorType, const skgpu::TextureInfo&) const override;
+
     UniqueKey makeGraphicsPipelineKey(const GraphicsPipelineDesc&,
                                       const RenderPassDesc&) const override;
 
@@ -67,6 +69,7 @@ private:
 
     bool onAreColorTypeAndTextureInfoCompatible(SkColorType,
                                                 const skgpu::TextureInfo&) const override;
+    skgpu::Swizzle onGetReadSwizzle(SkColorType, const skgpu::TextureInfo&) const override;
 
     bool onIsTexturable(const skgpu::TextureInfo&) const override;
     bool isTexturable(MTLPixelFormat) const;

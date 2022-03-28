@@ -571,5 +571,4 @@ std::tuple<skgpu::TextureProxyView, SkColorType> SkImage_Raster::onAsView(
         SkBudgeted budgeted) const {
     return MakeBitmapProxyView(recorder, fBitmap, mipmapped, budgeted);
 }
-
 #endif
