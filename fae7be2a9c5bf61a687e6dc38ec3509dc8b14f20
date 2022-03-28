@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8e15e87b_a6ca5150",
+        "filename": "tests/sksl/shared/Ossfuzz36770.glsl",
+        "patchSetId": 2
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-03-28T13:46:34Z",
+      "side": 0,
+      "message": "This change is valid--the shader has a reference to sk_FragCoord that can be optimized away. (It\u0027s fuzz nonsense, just a free-standing no-op expression.) Previously we added the RTFlip dependency as soon as the variable was mentioned. Now we only do it if the variable survives optimization.",
+      "range": {
+        "startLine": 2,
+        "startChar": 0,
+        "endLine": 2,
+        "endChar": 24
+      },
+      "revId": "fae7be2a9c5bf61a687e6dc38ec3509dc8b14f20",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
