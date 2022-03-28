@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0881a6bd_09bd56f6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-03-28T22:23:13Z",
+      "side": 1,
+      "message": "This give very good results, but I think that textblobrandomfont is a lie. It is getting a new canvas that is not doing the slug conversion, but I think this is better than what I currently have.",
+      "revId": "0ba9b7e67682298ec30bd305b21b6a540d076487",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
