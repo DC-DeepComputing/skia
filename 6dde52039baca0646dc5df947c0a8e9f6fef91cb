@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9a4272b2_c9e918a0",
+        "filename": "infra/bots/task_drivers/bazel_check_includes/bazel_check_includes.go",
+        "patchSetId": 7
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-03-28T13:48:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8f2cb722_ba0c3447",
+      "revId": "6dde52039baca0646dc5df947c0a8e9f6fef91cb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a9524b9d_dcd9de8b",
@@ -31,6 +49,30 @@
       "writtenOn": "2022-03-28T13:36:35Z",
       "side": 1,
       "message": "Seems like this should be broken out as a const to be used by subsequent task_drivers.",
+      "range": {
+        "startLine": 74,
+        "startChar": 12,
+        "endLine": 74,
+        "endChar": 15
+      },
+      "revId": "6dde52039baca0646dc5df947c0a8e9f6fef91cb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8e601cf4_e3013add",
+        "filename": "infra/bots/task_drivers/bazel_check_includes/bazel_check_includes.go",
+        "patchSetId": 7
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-03-28T13:48:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a9524b9d_dcd9de8b",
       "range": {
         "startLine": 74,
         "startChar": 12,
