@@ -33,6 +33,24 @@
       "message": "In general I\u0027m fine with this change but I just want to throw something out there and see what you think.\n\nInstead of adding onGet*Swizzle virtuals we just add one virtual:\n\nvirtual const ColorTypeInfo* getColorTypeInfo(SkColorType, const TextureInfo\u0026) const \u003d 0;\n\nThen all these queries that are just reading data off of ColorTypeInfo can use the same virtual without having to add new ones to the backends each time.\nFor example:\n\nskgpu::Swizzle Caps::getReadSwizzle(SkColorType colorType, const TextureInfo\u0026 info) {\n    const ColorTypeInfo* ctInfo \u003d this-\u003egetColorTypeInfo(colorType, info);\n    if (!ctInfo) { return failure_value; }\n    return ctInfo-\u003efReadSwizzle;\n}",
       "revId": "07983f9dc57b6d0d1abd32a507806088c0af77cf",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "46b7cd76_33d028f6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-03-28T19:02:45Z",
+      "side": 1,
+      "message": "Yeah, with the ColorTypeInfo in the base class now I think this is better. I\u0027ll work that up.",
+      "parentUuid": "c3dc015d_c8f06c48",
+      "revId": "07983f9dc57b6d0d1abd32a507806088c0af77cf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
