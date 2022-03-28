@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "239f5770_0b91c956",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-03-28T20:10:56Z",
+      "side": 1,
+      "message": "This seems fine, but as discussed offline there are other functions that also impact getting the GPUs to work: onImageInfo() and onNewSurface() for starters.\n\nSkCanvas inheritance is pretty brittle, and the more I think about it, the more I think we should have an SkProxyDevice that wraps an SkBaseDevice (and a matching SkProxySurface). Then SkTestCanvas would be replaced by a regular SkCanvas initialized with an SkTestDevice (extending SkProxyDevice).\n\nAll of the bespoke, client-specific, hacky things we expose at the canvas level that aren\u0027t necessarily virtual get mapped back to a much more typical virtual interface at the device-level. In particular, I am thinking of how SkCanvasPriv::TopLevelSurfaceDrawContext is used in GMs. A proxy device approach would handle this pretty trivially, a proxy canvas less so.",
+      "revId": "f0a3f4f3ccdc92b8da9f58d0c3777ccecaaba73b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
