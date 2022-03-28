@@ -22,12 +22,36 @@ bool Caps::isTexturable(const TextureInfo& info) const {
     return this->onIsTexturable(info);
 }
 
-bool Caps::areColorTypeAndTextureInfoCompatible(SkColorType type, const TextureInfo& info) const {
-    if (type == kUnknown_SkColorType) {
+bool Caps::areColorTypeAndTextureInfoCompatible(SkColorType ct, const TextureInfo& info) const {
+    if (ct == kUnknown_SkColorType) {
         return false;
     }
 
-    return this->onAreColorTypeAndTextureInfoCompatible(type, info);
+    // TODO: add SkImage::CompressionType handling
+    // (can be handled by setting up the colorTypeInfo instead?)
+
+    return SkToBool(this->getColorTypeInfo(ct, info));
+}
+
+skgpu::Swizzle Caps::getReadSwizzle(SkColorType ct, const TextureInfo& info) const {
+    // TODO: add SkImage::CompressionType handling
+    // (can be handled by setting up the colorTypeInfo instead?)
+
+    auto colorTypeInfo = this->getColorTypeInfo(ct, info);
+    if (!colorTypeInfo) {
+        return {};
+    }
+
+    return colorTypeInfo->fReadSwizzle;
+}
+
+skgpu::Swizzle Caps::getWriteSwizzle(SkColorType ct, const skgpu::TextureInfo& info) const {
+    auto colorTypeInfo = this->getColorTypeInfo(ct, info);
+    if (!colorTypeInfo) {
+        return {};
+    }
+
+    return colorTypeInfo->fWriteSwizzle;
 }
 
 } // namespace skgpu

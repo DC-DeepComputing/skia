@@ -65,13 +65,7 @@ private:
     static bool GetGPUFamilyFromFeatureSet(id<MTLDevice> device, GPUFamily* gpuFamily,
                                            int* group);
 
-    MTLPixelFormat getFormatFromColorType(SkColorType colorType) const {
-        int idx = static_cast<int>(colorType);
-        return fColorTypeToFormatTable[idx];
-    }
-
-    bool onAreColorTypeAndTextureInfoCompatible(SkColorType,
-                                                const skgpu::TextureInfo&) const override;
+    const ColorTypeInfo* getColorTypeInfo(SkColorType, const skgpu::TextureInfo&) const override;
 
     bool onIsTexturable(const skgpu::TextureInfo&) const override;
     bool isTexturable(MTLPixelFormat) const;

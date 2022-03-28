@@ -476,7 +476,7 @@ skgpu::TextureInfo Caps::getDefaultSampledTextureInfo(SkColorType colorType,
     TextureInfo info;
     info.fSampleCount = 1;
     info.fLevelCount = levelCount;
-    info.fFormat = this->getFormatFromColorType(colorType);
+    info.fFormat = SkColorTypeToFormat(colorType);
     info.fUsage = usage;
     info.fStorageMode = MTLStorageModePrivate;
     info.fFramebufferOnly = false;
@@ -492,7 +492,7 @@ skgpu::TextureInfo Caps::getDefaultMSAATextureInfo(SkColorType colorType,
     TextureInfo info;
     info.fSampleCount = sampleCount;
     info.fLevelCount = 1;
-    info.fFormat = this->getFormatFromColorType(colorType);
+    info.fFormat = SkColorTypeToFormat(colorType);
     info.fUsage = usage;
     info.fStorageMode = MTLStorageModePrivate;
     info.fFramebufferOnly = false;
@@ -512,6 +512,24 @@ skgpu::TextureInfo Caps::getDefaultDepthStencilTextureInfo(Mask<DepthStencilFlag
     info.fFramebufferOnly = false;
 
     return info;
+}
+
+const skgpu::Caps::ColorTypeInfo* Caps::getColorTypeInfo(
+        SkColorType ct, const skgpu::TextureInfo& textureInfo) const {
+    MTLPixelFormat mtlFormat = static_cast<MTLPixelFormat>(textureInfo.mtlTextureSpec().fFormat);
+    SkASSERT(mtlFormat != MTLPixelFormatInvalid);
+
+    const FormatInfo& info = this->getFormatInfo(mtlFormat);
+    for (int i = 0; i < info.fColorTypeInfoCount; ++i) {
+        const ColorTypeInfo& ctInfo = info.fColorTypeInfos[i];
+        if (ctInfo.fColorType == ct) {
+            return &ctInfo;
+        }
+    }
+
+    SkDEBUGFAILF("Illegal color type (%d) and format (%d) combination.", static_cast<int>(ct),
+                 static_cast<int>(mtlFormat));
+    return nullptr;
 }
 
 UniqueKey Caps::makeGraphicsPipelineKey(const GraphicsPipelineDesc& pipelineDesc,
@@ -573,19 +591,6 @@ uint32_t Caps::maxRenderTargetSampleCount(MTLPixelFormat format) const {
     } else {
         return 1;
     }
-}
-
-bool Caps::onAreColorTypeAndTextureInfoCompatible(SkColorType ct,
-                                                  const skgpu::TextureInfo& textureInfo) const {
-    MTLPixelFormat mtlFormat = static_cast<MTLPixelFormat>(textureInfo.mtlTextureSpec().fFormat);
-
-    const auto& info = this->getFormatInfo(mtlFormat);
-    for (int i = 0; i < info.fColorTypeInfoCount; ++i) {
-        if (info.fColorTypeInfos[i].fColorType == ct) {
-            return true;
-        }
-    }
-    return false;
 }
 
 size_t Caps::getTransferBufferAlignment(size_t bytesPerPixel) const {

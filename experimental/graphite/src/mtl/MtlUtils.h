@@ -26,6 +26,8 @@ bool FormatIsDepthOrStencil(MTLPixelFormat);
 bool FormatIsDepth(MTLPixelFormat);
 bool FormatIsStencil(MTLPixelFormat);
 
+MTLPixelFormat SkColorTypeToFormat(SkColorType);
+
 MTLPixelFormat DepthStencilFlagsToFormat(Mask<DepthStencilFlags>);
 
 /**
