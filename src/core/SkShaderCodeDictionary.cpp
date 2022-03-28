@@ -101,15 +101,6 @@ std::string SkShaderInfo::toSkSL() const {
     int binding = 0;
     result += skgpu::mtl::GetMtlTexturesAndSamplers(fBlockReaders, &binding);
 
-    std::set<const char*> emittedStaticSnippets;
-    for (const auto& reader : fBlockReaders) {
-        const SkShaderSnippet* e = reader.entry();
-        if (emittedStaticSnippets.find(e->fStaticFunctionName) == emittedStaticSnippets.end()) {
-            result += e->fStaticSkSL;
-            emittedStaticSnippets.insert(e->fStaticFunctionName);
-        }
-    }
-
     result += "layout(location = 0, index = 0) out half4 sk_FragColor;\n";
     result += "void main() {\n";
 
@@ -285,32 +276,7 @@ static constexpr SkUniform kGradientUniforms[kNumGradientUniforms] = {
         { "padding", SkSLType::kFloat2 } // TODO: add automatic uniform padding
 };
 
-static const char *kLinearGradient4Name = "linear_grad_4_shader";
-static const char *kLinearGradient4SkSL =
-        // TODO: This should use local coords
-        "half4 linear_grad_4_shader(float4 colorsParam[4],\n"
-        "                           float offsetsParam[4],\n"
-        "                           float2 point0Param,\n"
-        "                           float2 point1Param,\n"
-        "                           float radius0Param,\n"
-        "                           float radius1Param,\n"
-        "                           float2 padding) {\n"
-        "    float2 pos = sk_FragCoord.xy;\n"
-        "    float2 delta = point1Param - point0Param;\n"
-        "    float2 pt = pos - point0Param;\n"
-        "    float t = dot(pt, delta) / dot(delta, delta);\n"
-        "    float4 result = colorsParam[0];\n"
-        "    result = mix(result, colorsParam[1],\n"
-        "                 clamp((t-offsetsParam[0])/(offsetsParam[1]-offsetsParam[0]),\n"
-        "                       0, 1));\n"
-        "    result = mix(result, colorsParam[2],\n"
-        "                 clamp((t-offsetsParam[1])/(offsetsParam[2]-offsetsParam[1]),\n"
-        "                       0, 1));\n"
-        "    result = mix(result, colorsParam[3],\n"
-        "                 clamp((t-offsetsParam[2])/(offsetsParam[3]-offsetsParam[2]),\n"
-        "                 0, 1));\n"
-        "    return half4(result);\n"
-        "}\n";
+static const char *kLinearGradient4Name = "sk_linear_grad_4_shader";
 
 //--------------------------------------------------------------------------------------------------
 static constexpr int kNumSolidShaderUniforms = 1;
@@ -318,11 +284,7 @@ static constexpr SkUniform kSolidShaderUniforms[kNumSolidShaderUniforms] = {
         { "color", SkSLType::kFloat4 }
 };
 
-static const char* kSolidShaderName = "solid_shader";
-static const char* kSolidShaderSkSL =
-        "half4 solid_shader(float4 colorParam) {\n"
-        "    return half4(colorParam);\n"
-        "}\n";
+static const char* kSolidShaderName = "sk_solid_shader";
 
 //--------------------------------------------------------------------------------------------------
 static constexpr int kNumImageShaderUniforms = 1;
@@ -335,11 +297,7 @@ static constexpr SkTextureAndSampler kISTexturesAndSamplers[kNumImageShaderTextu
         { "sampler" },
 };
 
-static const char* kImageShaderName = "image_shader";
-static const char* kImageShaderSkSL =
-        "half4 image_shader(float4 subset) {\n"
-        "    return half4(1, 0, 0, 1);\n"
-        "}\n";
+static const char* kImageShaderName = "sk_image_shader";
 
 static constexpr int kNumImageShaderFields = 2;
 static constexpr DataPayloadField kImageShaderFields[kNumImageShaderFields] = {
@@ -388,74 +346,7 @@ static constexpr SkUniform kBlendShaderUniforms[kNumBlendShaderUniforms] = {
 
 static constexpr int kNumBlendShaderChildren = 2;
 
-// Note: we're counting on the compiler to inline this code and trim it down to just the used
-// branch(es) in the blend-mode case. In the blend-shader case it should remain un-inlined.
-static const char* kBlendHelperName = "blend";
-static const char* kBlendHelperSkSL =
-        "const int kClear      = 0;\n"
-        "const int kSrc        = 1;\n"
-        "const int kDst        = 2;\n"
-        "const int kSrcOver    = 3;\n"
-        "const int kDstOver    = 4;\n"
-        "const int kSrcIn      = 5;\n"
-        "const int kDstIn      = 6;\n"
-        "const int kSrcOut     = 7;\n"
-        "const int kDstOut     = 8;\n"
-        "const int kSrcATop    = 9;\n"
-        "const int kDstATop    = 10;\n"
-        "const int kXor        = 11;\n"
-        "const int kPlus       = 12;\n"
-        "const int kModulate   = 13;\n"
-        "const int kScreen     = 14;\n"
-        "const int kOverlay    = 15;\n"
-        "const int kDarken     = 16;\n"
-        "const int kLighten    = 17;\n"
-        "const int kColorDodge = 18;\n"
-        "const int kColorBurn  = 19;\n"
-        "const int kHardLight  = 20;\n"
-        "const int kSoftLight  = 21;\n"
-        "const int kDifference = 22;\n"
-        "const int kExclusion  = 23;\n"
-        "const int kMultiply   = 24;\n"
-        "const int kHue        = 25;\n"
-        "const int kSaturation = 26;\n"
-        "const int kColor      = 27;\n"
-        "const int kLuminosity = 28;\n"
-        "\n"
-        "half4 blend(int mode, half4 src, half4 dst) {\n"
-        "    switch (mode) {\n"
-        "        case kClear:      { return blend_clear(src, dst); }\n"
-        "        case kSrc:        { return blend_src(src, dst); }\n"
-        "        case kDst:        { return blend_dst(src, dst); }\n"
-        "        case kSrcOver:    { return blend_src_over(src, dst); }\n"
-        "        case kDstOver:    { return blend_dst_over(src, dst); }\n"
-        "        case kSrcIn:      { return blend_src_in(src, dst); }\n"
-        "        case kDstIn:      { return blend_dst_in(src, dst); }\n"
-        "        case kSrcOut:     { return blend_src_out(src, dst); }\n"
-        "        case kDstOut:     { return blend_dst_out(src, dst); }\n"
-        "        case kSrcATop:    { return blend_src_atop(src, dst); }\n"
-        "        case kDstATop:    { return blend_dst_atop(src, dst); }\n"
-        "        case kXor:        { return blend_xor(src, dst); }\n"
-        "        case kPlus:       { return blend_plus(src, dst); }\n"
-        "        case kModulate:   { return blend_modulate(src, dst); }\n"
-        "        case kScreen:     { return blend_screen(src, dst); }\n"
-        "        case kOverlay:    { return blend_overlay(src, dst); }\n"
-        "        case kDarken:     { return blend_darken(src, dst); }\n"
-        "        case kLighten:    { return blend_lighten(src, dst); }\n"
-        "        case kColorDodge: { return blend_color_dodge(src, dst); }\n"
-        "        case kColorBurn:  { return blend_color_burn(src, dst); }\n"
-        "        case kHardLight:  { return blend_hard_light(src, dst); }\n"
-        "        case kSoftLight:  { return blend_soft_light(src, dst); }\n"
-        "        case kDifference: { return blend_difference(src, dst); }\n"
-        "        case kExclusion:  { return blend_exclusion(src, dst); }\n"
-        "        case kMultiply:   { return blend_multiply(src, dst); }\n"
-        "        case kHue:        { return blend_hue(src, dst); }\n"
-        "        case kSaturation: { return blend_saturation(src, dst); }\n"
-        "        case kColor:      { return blend_color(src, dst); }\n"
-        "        case kLuminosity: { return blend_luminosity(src, dst); }\n"
-        "        default: return half4(0);  // Avoids 'blend can exit without returning a value' error\n"
-        "    }\n"
-        "}\n";
+static const char* kBlendHelperName = "sk_blend";
 
 std::string GenerateBlendShaderGlueCode(const std::string& resultName,
                                         int entryIndex,
@@ -482,11 +373,7 @@ std::string GenerateBlendShaderGlueCode(const std::string& resultName,
 }
 
 //--------------------------------------------------------------------------------------------------
-static const char* kErrorName = "error";
-static const char* kErrorSkSL =
-        "half4 error() {\n"
-        "    return half4(1.0, 0.0, 1.0, 1.0);\n"
-        "}\n";
+static const char* kErrorName = "sk_error";
 
 //--------------------------------------------------------------------------------------------------
 static constexpr int kNumFixedFunctionBlenderFields = 1;
@@ -571,7 +458,6 @@ int SkShaderCodeDictionary::addUserDefinedSnippet(
     std::unique_ptr<SkShaderSnippet> entry(new SkShaderSnippet({}, // no uniforms
                                                                {}, // no samplers
                                                                name,
-                                                               ";",
                                                                GenerateDefaultGlueCode,
                                                                kNoChildren,
                                                                dataPayloadExpectations));
@@ -591,7 +477,7 @@ SkShaderCodeDictionary::SkShaderCodeDictionary() {
     fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kDepthStencilOnlyDraw] = {
             { },     // no uniforms
             { },     // no samplers
-            kErrorName, kErrorSkSL,
+            kErrorName,
             GenerateDefaultGlueCode,
             kNoChildren,
             {}
@@ -599,7 +485,7 @@ SkShaderCodeDictionary::SkShaderCodeDictionary() {
     fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kError] = {
             { },     // no uniforms
             { },     // no samplers
-            kErrorName, kErrorSkSL,
+            kErrorName,
             GenerateDefaultGlueCode,
             kNoChildren,
             {}
@@ -607,7 +493,7 @@ SkShaderCodeDictionary::SkShaderCodeDictionary() {
     fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kSolidColorShader] = {
             SkMakeSpan(kSolidShaderUniforms, kNumSolidShaderUniforms),
             { },     // no samplers
-            kSolidShaderName, kSolidShaderSkSL,
+            kSolidShaderName,
             GenerateDefaultGlueCode,
             kNoChildren,
             {}
@@ -615,7 +501,7 @@ SkShaderCodeDictionary::SkShaderCodeDictionary() {
     fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kLinearGradientShader] = {
             SkMakeSpan(kGradientUniforms, kNumGradientUniforms),
             { },     // no samplers
-            kLinearGradient4Name, kLinearGradient4SkSL,
+            kLinearGradient4Name,
             GenerateDefaultGlueCode,
             kNoChildren,
             { kLinearGrad4Fields, kNumLinearGrad4Fields }
@@ -623,7 +509,7 @@ SkShaderCodeDictionary::SkShaderCodeDictionary() {
     fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kRadialGradientShader] = {
             SkMakeSpan(kGradientUniforms, kNumGradientUniforms),
             { },     // no samplers
-            kLinearGradient4Name, kLinearGradient4SkSL,
+            kLinearGradient4Name,
             GenerateDefaultGlueCode,
             kNoChildren,
             { kLinearGrad4Fields, kNumLinearGrad4Fields }
@@ -631,7 +517,7 @@ SkShaderCodeDictionary::SkShaderCodeDictionary() {
     fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kSweepGradientShader] = {
             SkMakeSpan(kGradientUniforms, kNumGradientUniforms),
             { },     // no samplers
-            kLinearGradient4Name, kLinearGradient4SkSL,
+            kLinearGradient4Name,
             GenerateDefaultGlueCode,
             kNoChildren,
             { kLinearGrad4Fields, kNumLinearGrad4Fields }
@@ -639,7 +525,7 @@ SkShaderCodeDictionary::SkShaderCodeDictionary() {
     fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kConicalGradientShader] = {
             SkMakeSpan(kGradientUniforms, kNumGradientUniforms),
             { },     // no samplers
-            kLinearGradient4Name, kLinearGradient4SkSL,
+            kLinearGradient4Name,
             GenerateDefaultGlueCode,
             kNoChildren,
             { kLinearGrad4Fields, kNumLinearGrad4Fields }
@@ -647,7 +533,7 @@ SkShaderCodeDictionary::SkShaderCodeDictionary() {
     fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kImageShader] = {
             SkMakeSpan(kImageShaderUniforms, kNumImageShaderUniforms),
             SkMakeSpan(kISTexturesAndSamplers, kNumImageShaderTexturesAndSamplers),
-            kImageShaderName, kImageShaderSkSL,
+            kImageShaderName,
             GenerateImageShaderGlueCode,
             kNoChildren,
             { kImageShaderFields, kNumImageShaderFields }
@@ -655,7 +541,7 @@ SkShaderCodeDictionary::SkShaderCodeDictionary() {
     fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kBlendShader] = {
             { kBlendShaderUniforms, kNumBlendShaderUniforms },
             { },     // no samplers
-            kBlendHelperName, kBlendHelperSkSL,
+            kBlendHelperName,
             GenerateBlendShaderGlueCode,
             kNumBlendShaderChildren,
             {}
@@ -663,7 +549,7 @@ SkShaderCodeDictionary::SkShaderCodeDictionary() {
     fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kFixedFunctionBlender] = {
             { },     // no uniforms
             { },     // no samplers
-            "FF-blending", "",  // fixed function blending doesn't have any static SkSL
+            "FF-blending",   // fixed function blending doesn't use static SkSL
             GenerateFixedFunctionBlenderGlueCode,
             kNoChildren,
             { kFixedFunctionBlenderFields, kNumFixedFunctionBlenderFields }
@@ -671,7 +557,7 @@ SkShaderCodeDictionary::SkShaderCodeDictionary() {
     fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kShaderBasedBlender] = {
             { },     // no uniforms
             { },     // no samplers
-            kBlendHelperName, kBlendHelperSkSL,
+            kBlendHelperName,
             GenerateShaderBasedBlenderGlueCode,
             kNoChildren,
             { kShaderBasedBlenderFields, kNumShaderBasedBlenderFields }
