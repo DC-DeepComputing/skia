@@ -26,8 +26,9 @@ GrTextureProxy::GrTextureProxy(const GrBackendFormat& format,
                                GrProtected isProtected,
                                GrInternalSurfaceFlags surfaceFlags,
                                UseAllocator useAllocator,
-                               GrDDLProvider creatingProvider)
-        : INHERITED(format, dimensions, fit, budgeted, isProtected, surfaceFlags, useAllocator)
+                               GrDDLProvider creatingProvider,
+                               std::string_view label)
+        : INHERITED(format, dimensions, fit, budgeted, isProtected, surfaceFlags, useAllocator, label)
         , fMipmapped(mipMapped)
         , fMipmapStatus(mipmapStatus)
         SkDEBUGCODE(, fInitialMipmapStatus(fMipmapStatus))
@@ -51,9 +52,10 @@ GrTextureProxy::GrTextureProxy(LazyInstantiateCallback&& callback,
                                GrProtected isProtected,
                                GrInternalSurfaceFlags surfaceFlags,
                                UseAllocator useAllocator,
-                               GrDDLProvider creatingProvider)
+                               GrDDLProvider creatingProvider,
+                               std::string_view label)
         : INHERITED(std::move(callback), format, dimensions, fit, budgeted, isProtected,
-                    surfaceFlags, useAllocator)
+                    surfaceFlags, useAllocator, label)
         , fMipmapped(mipMapped)
         , fMipmapStatus(mipmapStatus)
         SkDEBUGCODE(, fInitialMipmapStatus(fMipmapStatus))
@@ -69,8 +71,9 @@ GrTextureProxy::GrTextureProxy(LazyInstantiateCallback&& callback,
 // Wrapped version
 GrTextureProxy::GrTextureProxy(sk_sp<GrSurface> surf,
                                UseAllocator useAllocator,
-                               GrDDLProvider creatingProvider)
-        : INHERITED(std::move(surf), SkBackingFit::kExact, useAllocator)
+                               GrDDLProvider creatingProvider,
+                               std::string_view label)
+        : INHERITED(std::move(surf), SkBackingFit::kExact, useAllocator, label)
         , fMipmapped(fTarget->asTexture()->mipmapped())
         , fMipmapStatus(fTarget->asTexture()->mipmapStatus())
         SkDEBUGCODE(, fInitialMipmapStatus(fMipmapStatus))

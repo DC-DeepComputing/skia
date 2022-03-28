@@ -129,7 +129,8 @@ protected:
                         SkBudgeted,
                         GrProtected,
                         GrInternalSurfaceFlags,
-                        UseAllocator);
+                        UseAllocator,
+                        std::string_view label);
 
     enum class WrapsVkSecondaryCB : bool { kNo = false, kYes = true };
 
@@ -152,11 +153,13 @@ protected:
                         GrProtected,
                         GrInternalSurfaceFlags,
                         UseAllocator,
-                        WrapsVkSecondaryCB);
+                        WrapsVkSecondaryCB,
+                        std::string_view label);
 
     // Wrapped version
     GrRenderTargetProxy(sk_sp<GrSurface>,
                         UseAllocator,
+                        std::string_view label,
                         WrapsVkSecondaryCB = WrapsVkSecondaryCB::kNo);
 
     sk_sp<GrSurface> createSurface(GrResourceProvider*) const override;

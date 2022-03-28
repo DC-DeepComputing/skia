@@ -32,8 +32,10 @@ GrRenderTargetProxy::GrRenderTargetProxy(const GrCaps& caps,
                                          SkBudgeted budgeted,
                                          GrProtected isProtected,
                                          GrInternalSurfaceFlags surfaceFlags,
-                                         UseAllocator useAllocator)
-        : INHERITED(format, dimensions, fit, budgeted, isProtected, surfaceFlags, useAllocator)
+                                         UseAllocator useAllocator,
+                                         std::string_view label)
+        : INHERITED(
+                  format, dimensions, fit, budgeted, isProtected, surfaceFlags, useAllocator, label)
         , fSampleCnt(sampleCount)
         , fWrapsVkSecondaryCB(WrapsVkSecondaryCB::kNo) {}
 
@@ -47,17 +49,19 @@ GrRenderTargetProxy::GrRenderTargetProxy(LazyInstantiateCallback&& callback,
                                          GrProtected isProtected,
                                          GrInternalSurfaceFlags surfaceFlags,
                                          UseAllocator useAllocator,
-                                         WrapsVkSecondaryCB wrapsVkSecondaryCB)
+                                         WrapsVkSecondaryCB wrapsVkSecondaryCB,
+                                         std::string_view label)
         : INHERITED(std::move(callback), format, dimensions, fit, budgeted, isProtected,
-                    surfaceFlags, useAllocator)
+                    surfaceFlags, useAllocator, label)
         , fSampleCnt(sampleCount)
         , fWrapsVkSecondaryCB(wrapsVkSecondaryCB) {}
 
 // Wrapped version
 GrRenderTargetProxy::GrRenderTargetProxy(sk_sp<GrSurface> surf,
                                          UseAllocator useAllocator,
+                                         std::string_view label,
                                          WrapsVkSecondaryCB wrapsVkSecondaryCB)
-        : INHERITED(std::move(surf), SkBackingFit::kExact, useAllocator)
+        : INHERITED(std::move(surf), SkBackingFit::kExact, useAllocator, label)
         , fSampleCnt(fTarget->asRenderTarget()->numSamples())
         , fWrapsVkSecondaryCB(wrapsVkSecondaryCB) {
     // The kRequiresManualMSAAResolve flag better not be set if we are not multisampled or if
