@@ -34,6 +34,24 @@
       "parentUuid": "0a3090ed_875e52bb",
       "revId": "8f0e4339386fe9722d7b268a282b1ff6da120a8a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "25a07c6f_f6eb19fd",
+        "filename": "modules/skshaper/src/SkShaper_harfbuzz.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1368,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-03-28T17:19:46Z",
+      "side": 1,
+      "message": "Ah yes, I see. This is working around the interesting difference in where the line is drawn in SkTypeface/SkFont and hb_face/hb_font. SkTypeface bakes in the variation but hb_face does not. So the idea here is to make an hb_font which bakes in everything that is on the SkTypeface, then specialize that hb_font (as a sub-font) with whatever SkFont provides. That seems fine.",
+      "parentUuid": "23f756e8_cef3e801",
+      "revId": "8f0e4339386fe9722d7b268a282b1ff6da120a8a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
