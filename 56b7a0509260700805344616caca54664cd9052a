@@ -140,6 +140,24 @@
       "message": "I\u0027m setting the rec.fLightPos in Android at the same time that I compute what the pretransform is.  Can I just map the points by the pretranform before passing the rec.fLightPos to this function or does the view matrix mapping need to happen first?",
       "revId": "56b7a0509260700805344616caca54664cd9052a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "21ad4b36_1d672fed",
+        "filename": "src/utils/SkShadowUtils.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 678,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2022-03-28T17:40:27Z",
+      "side": 1,
+      "message": "Actually I have lightPos prior to calling into Skia which looks like it isn\u0027t the same thing as this because it could have been mutated by the kDirectionalLight_ShadowFlag.  So I think my previous question does not matter.",
+      "parentUuid": "0e428abf_fde9c7f7",
+      "revId": "56b7a0509260700805344616caca54664cd9052a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
