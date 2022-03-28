@@ -9,6 +9,7 @@
 #define SKSL_LAYOUT
 
 #include "include/private/SkSLString.h"
+#include "include/core/SkTypes.h"  // FIXME(kjlubick)
 
 namespace SkSL {
 
