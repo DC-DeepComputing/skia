@@ -476,7 +476,7 @@ skgpu::TextureInfo Caps::getDefaultSampledTextureInfo(SkColorType colorType,
     TextureInfo info;
     info.fSampleCount = 1;
     info.fLevelCount = levelCount;
-    info.fFormat = SkColorTypeToFormat(colorType);
+    info.fFormat = this->getFormatFromColorType(colorType);
     info.fUsage = usage;
     info.fStorageMode = MTLStorageModePrivate;
     info.fFramebufferOnly = false;
@@ -492,7 +492,7 @@ skgpu::TextureInfo Caps::getDefaultMSAATextureInfo(SkColorType colorType,
     TextureInfo info;
     info.fSampleCount = sampleCount;
     info.fLevelCount = 1;
-    info.fFormat = SkColorTypeToFormat(colorType);
+    info.fFormat = this->getFormatFromColorType(colorType);
     info.fUsage = usage;
     info.fStorageMode = MTLStorageModePrivate;
     info.fFramebufferOnly = false;
@@ -512,6 +512,38 @@ skgpu::TextureInfo Caps::getDefaultDepthStencilTextureInfo(Mask<DepthStencilFlag
     info.fFramebufferOnly = false;
 
     return info;
+}
+
+skgpu::Swizzle Caps::onGetReadSwizzle(SkColorType ct, const skgpu::TextureInfo& textureInfo) const {
+    MTLPixelFormat mtlFormat = static_cast<MTLPixelFormat>(textureInfo.mtlTextureSpec().fFormat);
+    SkASSERT(mtlFormat != MTLPixelFormatInvalid);
+
+    const auto& info = this->getFormatInfo(mtlFormat);
+    for (int i = 0; i < info.fColorTypeInfoCount; ++i) {
+        const auto& ctInfo = info.fColorTypeInfos[i];
+        if (ctInfo.fColorType == ct) {
+            return ctInfo.fReadSwizzle;
+        }
+    }
+    SkDEBUGFAILF("Illegal color type (%d) and format (%d) combination.", (int)ct,
+                 static_cast<int>(mtlFormat));
+    return {};
+}
+
+skgpu::Swizzle Caps::getWriteSwizzle(SkColorType ct, const skgpu::TextureInfo& textureInfo) const {
+    MTLPixelFormat mtlFormat = static_cast<MTLPixelFormat>(textureInfo.mtlTextureSpec().fFormat);
+    SkASSERT(mtlFormat != MTLPixelFormatInvalid);
+
+    const auto& info = this->getFormatInfo(mtlFormat);
+    for (int i = 0; i < info.fColorTypeInfoCount; ++i) {
+        const auto& ctInfo = info.fColorTypeInfos[i];
+        if (ctInfo.fColorType == ct) {
+            return ctInfo.fWriteSwizzle;
+        }
+    }
+    SkDEBUGFAILF("Illegal color type (%d) and format (%d) combination.", (int)ct,
+                 static_cast<int>(mtlFormat));
+    return {};
 }
 
 UniqueKey Caps::makeGraphicsPipelineKey(const GraphicsPipelineDesc& pipelineDesc,

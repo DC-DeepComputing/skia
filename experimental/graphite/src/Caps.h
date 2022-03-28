@@ -70,6 +70,14 @@ public:
 
     bool clampToBorderSupport() const { return fClampToBorderSupport; }
 
+    // Returns the skgpu::Swizzle to use when sampling or reading back from a texture with the
+    // passed in SkColorType and TextureInfo.
+    skgpu::Swizzle getReadSwizzle(SkColorType colorType, const TextureInfo& info) const;
+
+    // Returns the skgpu::Swizzle to use when writing colors to a surface with the passed in
+    // SkColorType and TextureInfo.
+    virtual skgpu::Swizzle getWriteSwizzle(SkColorType, const TextureInfo&) const = 0;
+
 protected:
     Caps();
 
@@ -99,6 +107,7 @@ protected:
 private:
     virtual bool onIsTexturable(const TextureInfo&) const = 0;
     virtual bool onAreColorTypeAndTextureInfoCompatible(SkColorType, const TextureInfo&) const = 0;
+    virtual skgpu::Swizzle onGetReadSwizzle(SkColorType, const TextureInfo&) const = 0;
 };
 
 } // namespace skgpu
