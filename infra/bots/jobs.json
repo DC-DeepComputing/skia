@@ -104,6 +104,12 @@
   },
   {"name": "Build-Debian10-EMCC-wasm-Release-PathKit"},
   {"name": "Build-Debian10-EMCC-wasm-Release-WasmGMTests"},
+<<<<<<< HEAD   (ef69dc [infra] Use ATL Golo Windows machines)
+=======
+  {"name": "Build-Debian11-Clang-x86_64-Debug"},
+  {"name": "Build-Debian11-Clang-x86_64-Debug-ASAN"},
+  {"name": "Build-Debian11-Clang-x86_64-Release"},
+>>>>>>> CHANGE (a753b0 [infra] Move ASAN jobs from Golo machines to Skolo)
   {"name": "Build-Mac-Clang-arm64-Debug"},
   {"name": "Build-Mac-Clang-arm64-Debug-Android"},
   {"name": "Build-Mac-Clang-arm64-Debug-Metal"},
@@ -351,6 +357,11 @@
   {"name": "Perf-Debian10-EMCC-GCE-CPU-AVX2-wasm-Release-All-Puppeteer_RenderSKP"},
   {"name": "Perf-Debian10-EMCC-GCE-CPU-AVX2-wasm-Release-All-Puppeteer_CanvasPerf"},
   {"name": "Perf-Debian10-none-GCE-CPU-AVX2-x86_64-Release-All-LottieWeb"},
+<<<<<<< HEAD   (ef69dc [infra] Use ATL Golo Windows machines)
+=======
+  {"name": "Perf-Debian11-Clang-NUC9i7QN-GPU-RTX3060-x86_64-Debug-All-ASAN"},
+  {"name": "Perf-Debian11-Clang-NUC9i7QN-GPU-RTX3060-x86_64-Release-All"},
+>>>>>>> CHANGE (a753b0 [infra] Move ASAN jobs from Golo machines to Skolo)
   {"name": "Perf-Mac10.13-Clang-MacBook10.1-GPU-IntelHD615-x86_64-Release-All"},
   {"name": "Perf-Mac10.13-Clang-MacBook10.1-GPU-IntelHD615-x86_64-Release-All-CommandBuffer"},
   {"name": "Perf-Mac10.13-Clang-MacBookPro11.5-CPU-AVX2-x86_64-Release-All"},
@@ -368,12 +379,14 @@
   {"name": "Perf-Mac11-Clang-MacMini9.1-GPU-AppleM1-arm64-Release-All-Skpbench"},
   {"name": "Perf-Mac11-Clang-MacMini9.1-GPU-AppleM1-arm64-Release-All-AllPathsVolatile_Skpbench"},
   {"name": "Perf-Mac11-Clang-MacMini9.1-GPU-AppleM1-arm64-Release-All-Metal_AllPathsVolatile_Skpbench"},
-  {"name": "Perf-Ubuntu18-Clang-Golo-GPU-QuadroP400-x86_64-Debug-All-ASAN"},
   {"name": "Perf-Ubuntu18-Clang-Golo-GPU-QuadroP400-x86_64-Release-All"},
+<<<<<<< HEAD   (ef69dc [infra] Use ATL Golo Windows machines)
   {
     "name": "Perf-Ubuntu18-Clang-Golo-GPU-QuadroP400-x86_64-Release-All-ASAN",
     "cq_config": {}
   },
+=======
+>>>>>>> CHANGE (a753b0 [infra] Move ASAN jobs from Golo machines to Skolo)
   {"name": "Perf-Ubuntu18-Clang-Golo-GPU-QuadroP400-x86_64-Release-All-Valgrind_SK_CPU_LIMIT_SSE41"},
   {"name": "Perf-Ubuntu18-Clang-Golo-GPU-QuadroP400-x86_64-Release-All-Vulkan"},
   {"name": "Perf-Ubuntu18-Clang-Golo-GPU-QuadroP400-x86_64-Release-All-DMSAAStats"},
@@ -557,6 +570,7 @@
   {"name": "Test-Debian10-Clang-NUCDE3815TYKHE-GPU-IntelBayTrail-x86_64-Release-All"},
   {"name": "Test-Debian10-Clang-ShuttleA-GPU-IntelHD2000-x86_64-Debug-All"},
   {"name": "Test-Debian10-Clang-ShuttleA-GPU-IntelHD2000-x86_64-Release-All"},
+<<<<<<< HEAD   (ef69dc [infra] Use ATL Golo Windows machines)
   {
     "name": "Test-Debian10-EMCC-GCE-CPU-AVX2-asmjs-Release-All-PathKit",
     "cq_config": {}
@@ -581,6 +595,27 @@
       ]
     }
   },
+=======
+  {"name": "Test-Debian10-EMCC-GCE-CPU-AVX2-asmjs-Release-All-PathKit",
+   "cq_config": {}
+   },
+  {"name": "Test-Debian10-EMCC-GCE-CPU-AVX2-wasm-Release-All-CanvasKit",
+   "cq_config": {"location_regexes": ["modules/canvaskit/.*"]}
+   },
+  {"name": "Test-Debian10-EMCC-GCE-CPU-AVX2-wasm-Release-All-PathKit",
+   "cq_config": {}
+   },
+  {"name": "Test-Debian10-EMCC-GCE-GPU-AVX2-wasm-Release-All-CanvasKit",
+   "cq_config": {"location_regexes": ["modules/canvaskit/.*"]}
+   },
+  {"name": "Test-Debian11-Clang-NUC9i7QN-GPU-RTX3060-x86_64-Debug-All"},
+  {"name": "Test-Debian11-Clang-NUC9i7QN-GPU-RTX3060-x86_64-Debug-All-ASAN",
+   "cq_config": {}
+   },
+  {"name": "Test-Debian11-Clang-NUC9i7QN-GPU-RTX3060-x86_64-Debug-All-DDL3_ASAN"},
+  {"name": "Test-Debian11-Clang-NUC9i7QN-GPU-RTX3060-x86_64-Debug-All-OOPRDDL_ASAN"},
+  {"name": "Test-Debian11-Clang-NUC9i7QN-GPU-RTX3060-x86_64-Release-All"},
+>>>>>>> CHANGE (a753b0 [infra] Move ASAN jobs from Golo machines to Skolo)
   {"name": "Test-Mac10.12-Clang-MacMini7.1-CPU-AVX2-x86_64-Debug-All-NativeFonts"},
   {"name": "Test-Mac10.13-Clang-MacBook10.1-GPU-IntelHD615-x86_64-Debug-All"},
   {"name": "Test-Mac10.13-Clang-MacBook10.1-GPU-IntelHD615-x86_64-Debug-All-CommandBuffer"},
@@ -639,18 +674,27 @@
   {"name": "Test-Mac12-Clang-MacMini9.1-GPU-AppleM1-arm64-Debug-All-NativeFonts"},
   {"name": "Test-Mac12-Clang-MacMini9.1-GPU-AppleM1-arm64-Debug-All-Metal"},
   {"name": "Test-Mac12-Clang-MacMini9.1-GPU-AppleM1-arm64-Release-All-Metal"},
+<<<<<<< HEAD   (ef69dc [infra] Use ATL Golo Windows machines)
   {
     "name": "Test-Ubuntu18-Clang-Golo-GPU-QuadroP400-x86_64-Debug-All-ASAN",
     "cq_config": {}
   },
+=======
+>>>>>>> CHANGE (a753b0 [infra] Move ASAN jobs from Golo machines to Skolo)
   {"name": "Test-Ubuntu18-Clang-Golo-GPU-QuadroP400-x86_64-Debug-All-DDL1"},
   {"name": "Test-Ubuntu18-Clang-Golo-GPU-QuadroP400-x86_64-Debug-All-DDL1_Vulkan"},
+<<<<<<< HEAD   (ef69dc [infra] Use ATL Golo Windows machines)
   {"name": "Test-Ubuntu18-Clang-Golo-GPU-QuadroP400-x86_64-Debug-All-DDL3_ASAN"},
   {
     "name": "Test-Ubuntu18-Clang-Golo-GPU-QuadroP400-x86_64-Debug-All-DDL3_Vulkan",
     "cq_config": {}
   },
   {"name": "Test-Ubuntu18-Clang-Golo-GPU-QuadroP400-x86_64-Debug-All-OOPRDDL_ASAN"},
+=======
+  {"name": "Test-Ubuntu18-Clang-Golo-GPU-QuadroP400-x86_64-Debug-All-DDL3_Vulkan",
+   "cq_config": {}
+   },
+>>>>>>> CHANGE (a753b0 [infra] Move ASAN jobs from Golo machines to Skolo)
   {"name": "Test-Ubuntu18-Clang-Golo-GPU-QuadroP400-x86_64-Debug-All-OOPRDDL_Vulkan"},
   {"name": "Test-Ubuntu18-Clang-Golo-GPU-QuadroP400-x86_64-Debug-All-PreAbandonGpuContext"},
   {
