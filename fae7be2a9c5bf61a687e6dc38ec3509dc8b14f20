@@ -22,6 +22,30 @@
       },
       "revId": "fae7be2a9c5bf61a687e6dc38ec3509dc8b14f20",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "29765b7f_89415185",
+        "filename": "tests/sksl/shared/Ossfuzz36770.glsl",
+        "patchSetId": 2
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-03-28T15:12:26Z",
+      "side": 0,
+      "message": "Ack",
+      "parentUuid": "8e15e87b_a6ca5150",
+      "range": {
+        "startLine": 2,
+        "startChar": 0,
+        "endLine": 2,
+        "endChar": 24
+      },
+      "revId": "fae7be2a9c5bf61a687e6dc38ec3509dc8b14f20",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
