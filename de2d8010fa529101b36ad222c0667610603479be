@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7dcb2d26_149fb207",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-03-28T22:36:57Z",
+      "side": 1,
+      "message": "I feel like we\u0027re at the point where it\u0027s useful to have results we can view in gold/perf. In the short term we can still have all the graphite images ignored in gold until we get a larger set of them drawing correctly. But this will at least let us see the results.",
+      "revId": "de2d8010fa529101b36ad222c0667610603479be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
