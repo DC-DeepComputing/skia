@@ -10,6 +10,7 @@
 
 #include "include/private/SkTArray.h"
 #include "include/sksl/SkSLPosition.h"
+#include "src/sksl/SkSLLexer.h"
 
 #include <cstdint>
 #include <memory>
@@ -23,6 +24,7 @@
 
 namespace SkSL {
 
+class DSLParser;
 class Expression;
 class ExpressionArray;
 
@@ -90,7 +92,11 @@ public:
 
     ~DSLExpression();
 
-    DSLType type();
+    DSLType type() const;
+
+    std::string description() const;
+
+    Position position() const;
 
     /**
      * Overloads the '=' operator to create an SkSL assignment statement.
@@ -152,6 +158,18 @@ public:
     std::unique_ptr<SkSL::Expression> release();
 
 private:
+    void setPosition(Position pos);
+
+    /**
+     * Invokes a prefix operator.
+     */
+    DSLExpression prefix(SkSL::Token::Kind op, Position pos);
+
+    /**
+     * Equivalent to operator[].
+     */
+    DSLExpression index(DSLExpression index, Position pos = Position::Capture());
+
     /**
      * Calls release if this expression has a value, otherwise returns null.
      */
@@ -167,6 +185,7 @@ private:
     friend class DSLType;
     friend class DSLVarBase;
     friend class DSLWriter;
+    friend class SkSL::DSLParser;
     template<typename T> friend class DSLWrapper;
 };
 
@@ -238,7 +257,11 @@ public:
      */
     void reportErrors(Position pos);
 
-    DSLType type();
+    DSLType type() const;
+
+    std::string description() const;
+
+    Position position() const;
 
     DSLExpression x(Position pos = Position::Capture());
 
