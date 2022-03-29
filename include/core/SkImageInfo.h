@@ -9,10 +9,10 @@
 #define SkImageInfo_DEFINED
 
 #include "include/core/SkAlphaType.h"
-#include "include/core/SkColorSpace.h"
 #include "include/core/SkColorType.h"
 #include "include/core/SkMath.h"
 #include "include/core/SkRect.h"
+#include "include/core/SkRefCnt.h"
 #include "include/core/SkSize.h"
 
 #include "include/private/SkTFitsIn.h"
@@ -20,7 +20,7 @@
 
 class SkReadBuffer;
 class SkWriteBuffer;
-
+class SkColorSpace;
 
 /** Returns the number of bytes required to store a pixel, including unused padding.
     Returns zero if ct is kUnknown_SkColorType or invalid.
@@ -110,8 +110,7 @@ public:
         combination is supported.
         @return        created SkColorInfo
     */
-    SkColorInfo(SkColorType ct, SkAlphaType at, sk_sp<SkColorSpace> cs)
-            : fColorSpace(std::move(cs)), fColorType(ct), fAlphaType(at) {}
+    SkColorInfo(SkColorType ct, SkAlphaType at, sk_sp<SkColorSpace> cs);
 
     SkColorInfo(const SkColorInfo&) = default;
     SkColorInfo(SkColorInfo&&) = default;
@@ -119,8 +118,8 @@ public:
     SkColorInfo& operator=(const SkColorInfo&) = default;
     SkColorInfo& operator=(SkColorInfo&&) = default;
 
-    SkColorSpace* colorSpace() const { return fColorSpace.get(); }
-    sk_sp<SkColorSpace> refColorSpace() const { return fColorSpace; }
+    SkColorSpace* colorSpace() const;
+    sk_sp<SkColorSpace> refColorSpace() const;
     SkColorType colorType() const { return fColorType; }
     SkAlphaType alphaType() const { return fAlphaType; }
 
@@ -129,13 +128,10 @@ public:
             || SkColorTypeIsAlwaysOpaque(fColorType);
     }
 
-    bool gammaCloseToSRGB() const { return fColorSpace && fColorSpace->gammaCloseToSRGB(); }
+    bool gammaCloseToSRGB() const;
 
     /** Does other represent the same color type, alpha type, and color space? */
-    bool operator==(const SkColorInfo& other) const {
-        return fColorType == other.fColorType && fAlphaType == other.fAlphaType &&
-               SkColorSpace::Equals(fColorSpace.get(), other.fColorSpace.get());
-    }
+    bool operator==(const SkColorInfo& other) const;
 
     /** Does other represent a different color type, alpha type, or color space? */
     bool operator!=(const SkColorInfo& other) const { return !(*this == other); }
@@ -146,23 +142,17 @@ public:
         Created SkColorInfo contains newAlphaType even if it is incompatible with
         SkColorType, in which case SkAlphaType in SkColorInfo is ignored.
     */
-    SkColorInfo makeAlphaType(SkAlphaType newAlphaType) const {
-        return SkColorInfo(this->colorType(), newAlphaType, this->refColorSpace());
-    }
+    SkColorInfo makeAlphaType(SkAlphaType newAlphaType) const;
 
     /** Creates new SkColorInfo with same SkAlphaType, SkColorSpace, with SkColorType
         set to newColorType.
     */
-    SkColorInfo makeColorType(SkColorType newColorType) const {
-        return SkColorInfo(newColorType, this->alphaType(), this->refColorSpace());
-    }
+    SkColorInfo makeColorType(SkColorType newColorType) const;
 
     /** Creates SkColorInfo with same SkAlphaType, SkColorType, with SkColorSpace
         set to cs. cs may be nullptr.
     */
-    SkColorInfo makeColorSpace(sk_sp<SkColorSpace> cs) const {
-        return SkColorInfo(this->colorType(), this->alphaType(), std::move(cs));
-    }
+    SkColorInfo makeColorSpace(sk_sp<SkColorSpace> cs) const;
 
     /** Returns number of bytes per pixel required by SkColorType.
         Returns zero if colorType() is kUnknown_SkColorType.
@@ -223,13 +213,9 @@ public:
         @return        created SkImageInfo
     */
     static SkImageInfo Make(int width, int height, SkColorType ct, SkAlphaType at,
-                            sk_sp<SkColorSpace> cs = nullptr) {
-        return SkImageInfo({width, height}, {ct, at, std::move(cs)});
-    }
+                            sk_sp<SkColorSpace> cs = nullptr);
     static SkImageInfo Make(SkISize dimensions, SkColorType ct, SkAlphaType at,
-                            sk_sp<SkColorSpace> cs = nullptr) {
-        return SkImageInfo(dimensions, {ct, at, std::move(cs)});
-    }
+                            sk_sp<SkColorSpace> cs = nullptr);
 
     /** Creates SkImageInfo from integral dimensions and SkColorInfo colorInfo,
 

@@ -5,6 +5,9 @@
  * found in the LICENSE file.
  */
 
+#include "include/core/SkImageInfo.h"
+
+#include "include/core/SkColorSpace.h"
 #include "include/private/SkImageInfoPriv.h"
 #include "src/core/SkReadBuffer.h"
 #include "src/core/SkSafeMath.h"
@@ -45,9 +48,43 @@ bool SkColorTypeIsAlwaysOpaque(SkColorType ct) {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
+SkColorInfo::SkColorInfo(SkColorType ct, SkAlphaType at, sk_sp<SkColorSpace> cs)
+            : fColorSpace(std::move(cs)), fColorType(ct), fAlphaType(at) {}
+
+SkColorSpace* SkColorInfo::colorSpace() const { return fColorSpace.get(); }
+sk_sp<SkColorSpace> SkColorInfo::refColorSpace() const { return fColorSpace; }
+
 int SkColorInfo::bytesPerPixel() const { return SkColorTypeBytesPerPixel(fColorType); }
 
+bool SkColorInfo::gammaCloseToSRGB() const { return fColorSpace && fColorSpace->gammaCloseToSRGB(); }
+
 int SkColorInfo::shiftPerPixel() const { return SkColorTypeShiftPerPixel(fColorType); }
+
+bool SkColorInfo::operator==(const SkColorInfo& other) const {
+    return fColorType == other.fColorType && fAlphaType == other.fAlphaType &&
+           SkColorSpace::Equals(fColorSpace.get(), other.fColorSpace.get());
+}
+
+SkColorInfo SkColorInfo::makeAlphaType(SkAlphaType newAlphaType) const {
+    return SkColorInfo(this->colorType(), newAlphaType, this->refColorSpace());
+}
+
+SkColorInfo SkColorInfo::makeColorType(SkColorType newColorType) const {
+    return SkColorInfo(newColorType, this->alphaType(), this->refColorSpace());
+}
+
+SkColorInfo SkColorInfo::makeColorSpace(sk_sp<SkColorSpace> cs) const {
+    return SkColorInfo(this->colorType(), this->alphaType(), std::move(cs));
+}
+
+static SkImageInfo SkColorInfo::Make(int width, int height, SkColorType ct, SkAlphaType at,
+                        sk_sp<SkColorSpace> cs = nullptr) {
+    return SkImageInfo({width, height}, {ct, at, std::move(cs)});
+}
+static SkImageInfo SkColorInfo::Make(SkISize dimensions, SkColorType ct, SkAlphaType at,
+                        sk_sp<SkColorSpace> cs = nullptr) {
+    return SkImageInfo(dimensions, {ct, at, std::move(cs)});
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
