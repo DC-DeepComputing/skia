@@ -18,8 +18,12 @@ cd ../..
 PLATFORM=${2:-linux_amd64} # use linux_amd64 if not specified
 
 # Build the executables and extract them to the folder in the first argument.
+# We specify the cache directory to be somewhere other than the default (home directory)
+# Because the home directory is mounted on / which typically does not have a lot of disk space.
+# /mnt/pd0 is the bigger disk mounted to the GCE VM.
 bazelisk build //infra/bots:all_task_drivers \
-    --platforms=@io_bazel_rules_go//go/toolchain:${PLATFORM}
+    --platforms=@io_bazel_rules_go//go/toolchain:${PLATFORM} \
+    --output_user_root=/mnt/pd0/bazel_cache
 tar -xf bazel-bin/infra/bots/built_task_drivers.tar -C ${1}
 # Bazel outputs are write-protected, so we make sure everybody can write them. This way there
 # are no expected errors in deleting them later.
