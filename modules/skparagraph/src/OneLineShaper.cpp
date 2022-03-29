@@ -651,7 +651,7 @@ bool OneLineShaper::shape() {
             fCurrentText = block.fRange;
             fUnresolvedBlocks.emplace_back(RunBlock(block.fRange));
 
-            matchResolvedFonts(block.fStyle, [&](sk_sp<SkTypeface> typeface) {
+            this->matchResolvedFonts(block.fStyle, [&](sk_sp<SkTypeface> typeface) {
 
                 // Create one more font to try
                 SkFont font(std::move(typeface), block.fStyle.getFontSize());
