@@ -267,7 +267,7 @@ void TextLine::scanStyles(StyleType styleType, const RunStyleVisitor& visitor) {
         return;
     }
 
-    this->iterateThroughVisualRuns(false,
+    this->iterateThroughVisualRuns(true,
         [this, visitor, styleType](const Run* run, SkScalar runOffset, TextRange textRange, SkScalar* width) {
             *width = this->iterateThroughSingleRunByStyles(
                 run, runOffset, textRange, styleType,
@@ -665,9 +665,27 @@ TextLine::ClipContext TextLine::measureTextInsideOneRun(TextRange textRange,
         }
         return result;
     }
+
     // Find [start:end] clusters for the text
     Cluster* start = nullptr;
     Cluster* end = nullptr;
+    if (fOwner->requiredLevel() == BreakLevel::kText) {
+        start = &fOwner->cluster(0);
+        end = &fOwner->cluster(fClusterRange.end - 1);
+        SkASSERT(start->runIndex() == end->runIndex());
+        result.pos = 0;
+        result.size = run->leftToRight()
+                              ? end->endPos() - start->startPos()
+                              : start->startPos() - end->endPos();
+        result.fTextShift = 0.0f;
+        result.clip =
+                SkRect::MakeXYWH(0,
+                                 sizes().runTop(run, this->fAscentStyle),
+                                 this->width(),
+                                 this->height());
+        return result;
+    }
+
     do {
         bool found;
         ClusterIndex startIndex;
