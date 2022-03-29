@@ -24,6 +24,7 @@
 #include "include/core/SkString.h"
 #include "include/core/SkTextBlob.h"
 #include "include/core/SkVertices.h"
+#include "include/private/chromium/GrSlug.h"
 #include "src/core/SkDrawShadowInfo.h"
 
 namespace SkRecords {
@@ -74,6 +75,7 @@ namespace SkRecords {
     M(DrawRect)                                                     \
     M(DrawRegion)                                                   \
     M(DrawTextBlob)                                                 \
+    M(DrawSlug)                                                     \
     M(DrawAtlas)                                                    \
     M(DrawVertices)                                                 \
     M(DrawShadowRec)                                                \
@@ -293,6 +295,8 @@ RECORD(DrawTextBlob, kDraw_Tag|kHasText_Tag|kHasPaint_Tag,
         sk_sp<const SkTextBlob> blob;
         SkScalar x;
         SkScalar y);
+RECORD(DrawSlug, kDraw_Tag|kHasText_Tag,
+       sk_sp<const GrSlug> slug);
 RECORD(DrawPatch, kDraw_Tag|kHasPaint_Tag,
         SkPaint paint;
         PODArray<SkPoint> cubics;
