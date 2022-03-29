@@ -16,6 +16,24 @@
       "message": "Did you intend to remove and not replace the following bot:\n\nPerf-Ubuntu18-Clang-Golo-GPU-QuadroP400-x86_64-Release-All-ASAN",
       "revId": "a753b0da89caecc4c4568f9ecd56fa600dc7c714",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "27369886_f9baa83a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-03-29T15:18:41Z",
+      "side": 1,
+      "message": "Yes. I\u0027m skeptical of any value the Perf+ASAN jobs have in general, given that our Test+ASAN jobs should be more thorough. I did keep one Perf+Debug+ASAN job, but the Perf+Release+ASAN job felt unnecessary.",
+      "parentUuid": "7f761f57_44aed98f",
+      "revId": "a753b0da89caecc4c4568f9ecd56fa600dc7c714",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
