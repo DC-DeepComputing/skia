@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0a178675_9f912451",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-03-29T21:08:08Z",
+      "side": 1,
+      "message": "Yes, I wanted to do a proof-of-concept for the idea, but right now it\u0027s hard to test in Graphite because there are not many slides that actually work well enough to verify a change like this. The ultimate goal would be to land this change in Graphite instead of using the current giant-switch approach. \n\nIf you think this should just go straight to Graphite I can migrate the change over there and drop this CL.",
+      "parentUuid": "5d715c94_333a27da",
+      "revId": "9c3e1479b01264761640dbe76eccba61662dd2f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dda73325_51a8c637",
@@ -31,6 +49,30 @@
       "writtenOn": "2022-03-29T20:47:17Z",
       "side": 1,
       "message": "Should we use SkBlendMode_AsCoeff here? Might have to discard anything that uses k[I]SC (or modify the shader code to allow it).",
+      "range": {
+        "startLine": 25,
+        "startChar": 0,
+        "endLine": 43,
+        "endChar": 0
+      },
+      "revId": "9c3e1479b01264761640dbe76eccba61662dd2f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "323955aa_47704bc9",
+        "filename": "src/gpu/effects/GrBlendFragmentProcessor.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-03-29T21:08:08Z",
+      "side": 1,
+      "message": "AsCoeff supports three modes that my approach doesn\u0027t support:\n\n        { SkBlendModeCoeff::kOne,     SkBlendModeCoeff::kOne  }, // plus\n        \nMy code doesn\u0027t clamp the result, and I didn\u0027t want to introduce an extra op that only helped in one case. But it we wanted to wrap the whole thing in `min(vec4(1), ...)` I could support Plus with the current approach. If we think it\u0027s a net win to add in Plus, that SGTM.\n        \n        { SkBlendModeCoeff::kZero,    SkBlendModeCoeff::kSC   }, // modulate\n        { SkBlendModeCoeff::kOne,     SkBlendModeCoeff::kISC  }, // screen\n\nI don\u0027t have any space left to add the signal for SC/ISC. I\u0027m not quite sure how I could fit in the signal for SC/ISC without consuming another uniform float, or making the equation significantly more complex. \n\nActually, that\u0027s not entirely accurate. I can get down the current implementation to a vec3 by adding in two more calls to max, freeing up a slot for the SC/ISC signal. (It was this way at Patchset 6.) Unfortunately, that impacts my ability to support the Plus op (since the vec3 version doesn\u0027t have a way to signal a One coefficient on both the source and dest simultaneously)\n\nI guess, having typed this all out, I think I could probably support either Plus or Modulate/Screen and make it work, at the cost of a few extra ops. To support all three at the same time, I\u0027m not quite sure, unless we\u0027re willing to burn more uniform space. I can keep mulling it over and see if anything comes to me.",
+      "parentUuid": "dda73325_51a8c637",
       "range": {
         "startLine": 25,
         "startChar": 0,
