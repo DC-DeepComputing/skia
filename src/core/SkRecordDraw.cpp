@@ -139,6 +139,7 @@ DRAW(DrawRRect, drawRRect(r.rrect, r.paint));
 DRAW(DrawRect, drawRect(r.rect, r.paint));
 DRAW(DrawRegion, drawRegion(r.region, r.paint));
 DRAW(DrawTextBlob, drawTextBlob(r.blob.get(), r.x, r.y, r.paint));
+DRAW(DrawSlug, drawSlug(r.slug.get()));
 DRAW(DrawAtlas, drawAtlas(r.atlas.get(), r.xforms, r.texs, r.colors, r.count, r.mode, r.sampling,
                           r.cull, r.paint));
 DRAW(DrawVertices, drawVertices(r.vertices, r.bmode, r.paint));
@@ -468,6 +469,11 @@ private:
         SkRect dst = op.blob->bounds();
         dst.offset(op.x, op.y);
         return this->adjustAndMap(dst, &op.paint);
+    }
+
+    Bounds bounds(const DrawSlug& op) const {
+        SkRect dst = op.slug->sourceBounds();
+        return this->adjustAndMap(dst, &op.slug->paint());
     }
 
     Bounds bounds(const DrawDrawable& op) const {
