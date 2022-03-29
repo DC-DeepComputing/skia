@@ -3210,7 +3210,7 @@
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
         "gpu:none",
-        "machine_type:n1-highcpu-64",
+        "machine_type:n1-standard-16",
         "os:Debian-10.3",
         "pool:Skia"
       ],
@@ -20346,7 +20346,7 @@
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
         "gpu:none",
-        "machine_type:n1-highcpu-64",
+        "machine_type:n1-standard-16",
         "os:Debian-10.3",
         "pool:Skia"
       ],
