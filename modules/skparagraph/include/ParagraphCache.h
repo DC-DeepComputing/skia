@@ -33,6 +33,7 @@ public:
     void abandon();
     void reset();
     bool updateParagraph(ParagraphImpl* paragraph);
+    bool updateParagraphTables(ParagraphImpl* paragraph);
     bool findParagraph(ParagraphImpl* paragraph);
 
     // For testing
@@ -50,6 +51,7 @@ public:
     struct Entry;
     void updateFrom(const ParagraphImpl* paragraph, Entry* entry);
     void updateTo(ParagraphImpl* paragraph, const Entry* entry);
+    void updateTables(ParagraphImpl* paragraph, const Entry* entry);
 
      mutable SkMutex fParagraphMutex;
      std::function<void(ParagraphImpl* impl, const char*, bool)> fChecker;

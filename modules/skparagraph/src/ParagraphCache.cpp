@@ -72,8 +72,7 @@ public:
         , fCodeUnitProperties(paragraph->fCodeUnitProperties)
         , fWords(paragraph->fWords)
         , fBidiRegions(paragraph->fBidiRegions)
-        , fUTF8IndexForUTF16Index(paragraph->fUTF8IndexForUTF16Index)
-        , fUTF16IndexForUTF8Index(paragraph->fUTF16IndexForUTF8Index) { }
+        , fRequiredLevel(paragraph->fRequiredLevel) { }
 
     // Input == key
     ParagraphCacheKey fKey;
@@ -86,8 +85,7 @@ public:
     SkTArray<CodeUnitFlags> fCodeUnitProperties;
     std::vector<size_t> fWords;
     std::vector<SkUnicode::BidiRegion> fBidiRegions;
-    SkTArray<TextIndex, true> fUTF8IndexForUTF16Index;
-    SkTArray<size_t, true> fUTF16IndexForUTF8Index;
+    BreakLevel fRequiredLevel;
 };
 
 uint32_t ParagraphCacheKey::mix(uint32_t hash, uint32_t data) {
@@ -242,8 +240,8 @@ ParagraphCache::ParagraphCache()
 
 ParagraphCache::~ParagraphCache() { }
 
-void ParagraphCache::updateTo(ParagraphImpl* paragraph, const Entry* entry) {
-
+void ParagraphCache::updateTo(ParagraphImpl* paragraph,
+                              const Entry* entry) {
     paragraph->fRuns.reset();
     paragraph->fRuns = entry->fValue->fRuns;
     paragraph->fClusters = entry->fValue->fClusters;
@@ -251,13 +249,26 @@ void ParagraphCache::updateTo(ParagraphImpl* paragraph, const Entry* entry) {
     paragraph->fCodeUnitProperties = entry->fValue->fCodeUnitProperties;
     paragraph->fWords = entry->fValue->fWords;
     paragraph->fBidiRegions = entry->fValue->fBidiRegions;
-    paragraph->fUTF8IndexForUTF16Index = entry->fValue->fUTF8IndexForUTF16Index;
-    paragraph->fUTF16IndexForUTF8Index = entry->fValue->fUTF16IndexForUTF8Index;
     for (auto& run : paragraph->fRuns) {
         run.setOwner(paragraph);
     }
     for (auto& cluster : paragraph->fClusters) {
         cluster.setOwner(paragraph);
+    }
+    paragraph->fRequiredLevel = entry->fValue->fRequiredLevel;
+}
+
+void ParagraphCache::updateTables(ParagraphImpl* paragraph,
+                                  const Entry* entry) {
+    if (paragraph->fRequiredLevel == BreakLevel::kGrapheme) {
+        ParagraphCacheValue* value = entry->fValue.get();
+        if (value->fRequiredLevel == BreakLevel::kText) {
+            value->fClusters = paragraph->fClusters;
+            value->fClustersIndexFromCodeUnit = paragraph->fClustersIndexFromCodeUnit;
+            value->fCodeUnitProperties = paragraph->fCodeUnitProperties;
+            value->fRequiredLevel = paragraph->fRequiredLevel;
+        }
+
     }
 }
 
@@ -334,6 +345,32 @@ bool ParagraphCache::updateParagraph(ParagraphImpl* paragraph) {
         return true;
     } else {
         // We do not have to update the paragraph
+        return false;
+    }
+}
+
+bool ParagraphCache::updateParagraphTables(ParagraphImpl* paragraph) {
+    if (!fCacheIsOn) {
+        return false;
+    }
+    SkAutoMutexExclusive lock(fParagraphMutex);
+
+    ParagraphCacheKey key(paragraph);
+    std::unique_ptr<Entry>* entry = fLRUCacheMap.find(key);
+    if (!entry) {
+        // isTooMuchMemoryWasted(paragraph) not needed for now
+        if (isPossiblyTextEditing(paragraph)) {
+            // Skip this paragraph
+            return false;
+        }
+        ParagraphCacheValue* value = new ParagraphCacheValue(std::move(key), paragraph);
+        fLRUCacheMap.insert(value->fKey, std::make_unique<Entry>(value));
+        fChecker(paragraph, "addedParagraph", true);
+        fLastCachedValue = value;
+        return true;
+    } else {
+        // We do not have to update the paragraph
+        updateTables(paragraph, entry->get());
         return false;
     }
 }
