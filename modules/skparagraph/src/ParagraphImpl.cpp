@@ -110,7 +110,6 @@ int32_t ParagraphImpl::unresolvedGlyphs() {
 }
 
 void ParagraphImpl::layout(SkScalar rawWidth) {
-
     // TODO: This rounding is done to match Flutter tests. Must be removed...
     auto floorWidth = SkScalarFloorToScalar(rawWidth);
 
@@ -128,6 +127,28 @@ void ParagraphImpl::layout(SkScalar rawWidth) {
         // Nothing changed case: we can reuse the data from the last layout
     }
 
+    this->setBreakingLevel(BreakLevel::kText);
+    this->complexLayout(floorWidth);
+    if (!this->isLayoutFailed()) {
+        return;
+    }
+    this->setBreakingLevel(BreakLevel::kGrapheme);
+    this->complexLayout(floorWidth);
+}
+
+bool ParagraphImpl::simpleLayout(SkScalar floorWidth) {
+    return false;
+}
+
+void ParagraphImpl::complexLayout(SkScalar floorWidth) {
+
+    if (fRequiredLevel == BreakLevel::kText) {
+        if (fPlaceholders.size() > 1 || fTextStyles.size() > 1) {
+            fLayoutFailed = true;
+            return;
+        }
+    }
+
     if (fState < kShaped) {
         this->fCodeUnitProperties.reset();
         this->fCodeUnitProperties.push_back_n(fText.size() + 1, CodeUnitFlags::kNoCodeUnitFlag);
@@ -139,7 +160,10 @@ void ParagraphImpl::layout(SkScalar rawWidth) {
         this->fClusters.reset();
         this->fClustersIndexFromCodeUnit.reset();
         this->fClustersIndexFromCodeUnit.push_back_n(fText.size() + 1, EMPTY_INDEX);
-        if (!this->shapeTextIntoEndlessLine()) {
+        if (!this->shapeTextIntoEndlessLine(floorWidth)) {
+            if (this->isLayoutFailed()) {
+                return;
+            }
             this->resetContext();
             // TODO: merge the two next calls - they always come together
             this->resolveStrut();
@@ -166,6 +190,10 @@ void ParagraphImpl::layout(SkScalar rawWidth) {
         fState = kMarked;
     }
 
+    if (this->isLayoutFailed()) {
+        return;
+    }
+
     if (fState < kLineBroken) {
         this->resetContext();
         this->resolveStrut();
@@ -175,11 +203,19 @@ void ParagraphImpl::layout(SkScalar rawWidth) {
         fState = kLineBroken;
     }
 
+    if (this->isLayoutFailed()) {
+        return;
+    }
+
     if (fState < kFormatted) {
         // Build the picture lazily not until we actually have to paint (or never)
         this->resetShifts();
         this->formatLines(fWidth);
         fState = kFormatted;
+    }
+
+    if (this->isLayoutFailed()) {
+        return;
     }
 
     this->fOldWidth = floorWidth;
@@ -246,6 +282,8 @@ void ParagraphImpl::resetContext() {
 // shapeTextIntoEndlessLine is the thing that calls this method
 bool ParagraphImpl::computeCodeUnitProperties() {
 
+    fCurrentLevel = BreakLevel::kNone;
+
     if (nullptr == fUnicode) {
         return false;
     }
@@ -259,8 +297,10 @@ bool ParagraphImpl::computeCodeUnitProperties() {
     }
 
     // Get all spaces
+    bool hasLineBreak = false;
     fUnicode->forEachCodepoint(fText.c_str(), fText.size(),
-       [this](SkUnichar unichar, int32_t start, int32_t end, int32_t count) {
+       [this, &hasLineBreak]
+       (SkUnichar unichar, int32_t start, int32_t end, int32_t count) {
             if (fUnicode->isWhitespace(unichar)) {
                 for (auto i = start; i < end; ++i) {
                     fCodeUnitProperties[i] |=  CodeUnitFlags::kPartOfWhiteSpaceBreak;
@@ -271,7 +311,19 @@ bool ParagraphImpl::computeCodeUnitProperties() {
                     fCodeUnitProperties[i] |=  CodeUnitFlags::kPartOfIntraWordBreak;
                 }
             }
+            if (fUnicode->isHardLineBreak(unichar)) {
+                hasLineBreak = true;
+            }
        });
+
+    if (fRequiredLevel == BreakLevel::kText) {
+        if (hasLineBreak) {
+            fLayoutFailed = true;
+        } else {
+            fCurrentLevel = fRequiredLevel;
+        }
+        return true;
+    }
 
     // Get line breaks
     std::vector<SkUnicode::LineBreakBefore> lineBreaks;
@@ -293,6 +345,7 @@ bool ParagraphImpl::computeCodeUnitProperties() {
         fCodeUnitProperties[pos] |= CodeUnitFlags::kGraphemeStart;
     }
 
+    fCurrentLevel = fRequiredLevel;
     return true;
 }
 
@@ -415,7 +468,7 @@ void ParagraphImpl::buildClusterTable() {
     fClusters.emplace_back(this, EMPTY_RUN, 0, 0, this->text({fText.size(), fText.size()}), 0, 0);
 }
 
-bool ParagraphImpl::shapeTextIntoEndlessLine() {
+bool ParagraphImpl::shapeTextIntoEndlessLine(SkScalar floorWidth) {
 
     if (fText.size() == 0) {
         return false;
@@ -426,8 +479,12 @@ bool ParagraphImpl::shapeTextIntoEndlessLine() {
         return true;
     }
 
-    if (!computeCodeUnitProperties()) {
+    if (!this->computeCodeUnitProperties()) {
         return false;
+    }
+
+    if (this->isLayoutFailed()) {
+        return true;
     }
 
     fFontSwitches.reset();
@@ -435,6 +492,15 @@ bool ParagraphImpl::shapeTextIntoEndlessLine() {
     OneLineShaper oneLineShaper(this);
     auto result = oneLineShaper.shape();
     fUnresolvedGlyphs = oneLineShaper.unresolvedGlyphs();
+
+    if (fCurrentLevel == BreakLevel::kText) {
+        if ((fUnresolvedGlyphs > 0) ||
+            (fRuns.size() > 1) ||
+            (fRuns.size() == 1 && fRuns[0].advance().x() > floorWidth)) {
+            fLayoutFailed = true;
+            return true;
+        }
+    }
 
     // It's possible that one grapheme includes few runs; we cannot handle it
     // so we break graphemes by the runs instead
@@ -453,6 +519,7 @@ bool ParagraphImpl::shapeTextIntoEndlessLine() {
 }
 
 void ParagraphImpl::breakShapedTextIntoLines(SkScalar maxWidth) {
+
     TextWrapper textWrapper;
     textWrapper.breakTextIntoLines(
             this,
@@ -478,6 +545,11 @@ void ParagraphImpl::breakShapedTextIntoLines(SkScalar maxWidth) {
                 fLongestLine = std::max(fLongestLine, nearlyZero(advance.fX) ? widthWithSpaces : advance.fX);
             });
 
+    if (fRequiredLevel == BreakLevel::kText && fLines.size() > 1) {
+        fLayoutFailed = true;
+        return;
+    }
+
     fHeight = textWrapper.height();
     fWidth = maxWidth;
     fMaxIntrinsicWidth = textWrapper.maxIntrinsicWidth();
@@ -488,6 +560,13 @@ void ParagraphImpl::breakShapedTextIntoLines(SkScalar maxWidth) {
 }
 
 void ParagraphImpl::formatLines(SkScalar maxWidth) {
+
+    if (fRequiredLevel == BreakLevel::kText &&
+        fParagraphStyle.getTextAlign() == TextAlign::kJustify) {
+        fLayoutFailed = true;
+        return;
+    }
+
     auto effectiveAlign = fParagraphStyle.effective_align();
 
     if (!SkScalarIsFinite(maxWidth) && effectiveAlign != TextAlign::kLeft) {
@@ -966,6 +1045,12 @@ TextIndex ParagraphImpl::findNextGraphemeBoundary(TextIndex utf8) {
 }
 
 void ParagraphImpl::ensureUTF16Mapping() {
+
+    if (fRequiredLevel == BreakLevel::kText) {
+        this->setBreakingLevel(BreakLevel::kGrapheme);
+        this->complexLayout(fWidth);
+    }
+
     if (!fUTF16IndexForUTF8Index.empty()) {
         return;
     }
