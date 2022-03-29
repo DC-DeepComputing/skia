@@ -9,6 +9,7 @@
 
 #include <string>
 #include "experimental/graphite/src/PaintParams.h"
+#include "experimental/graphite/src/RecorderPriv.h"
 #include "include/private/SkUniquePaintParamsID.h"
 #include "src/core/SkBlenderBase.h"
 #include "src/core/SkKeyContext.h"
@@ -17,26 +18,31 @@
 
 namespace skgpu {
 
-std::tuple<SkUniquePaintParamsID, std::unique_ptr<SkPipelineData>> ExtractPaintData(
+std::tuple<SkUniquePaintParamsID, UniformDataCache::Index, TextureDataCache::Index> ExtractPaintData(
         Recorder* recorder,
+        SkPipelineDataGatherer* gatherer,
         SkPaintParamsKeyBuilder* builder,
         const PaintParams& p) {
 
+    SkDEBUGCODE(gatherer->checkReset());
     SkDEBUGCODE(builder->checkReset());
 
     SkKeyContext keyContext(recorder);
 
-    std::unique_ptr<SkPipelineData> pipelineData = std::make_unique<SkPipelineData>();
-
-    p.toKey(keyContext, builder, pipelineData.get());
+    p.toKey(keyContext, builder, gatherer);
 
     SkPaintParamsKey key = builder->lockAsKey();
 
     auto dict = keyContext.dict();
+    UniformDataCache* uniformDataCache = recorder->priv().uniformDataCache();
+    TextureDataCache* textureDataCache = recorder->priv().textureDataCache();
 
-    auto entry = dict->findOrCreate(key, pipelineData->blendInfo());
+    auto entry = dict->findOrCreate(key, gatherer->blendInfo());
 
-    return { entry->uniqueID(), std::move(pipelineData) };
+    UniformDataCache::Index shadingUniformIndex = uniformDataCache->insert(gatherer->uniformDataBlock());
+    TextureDataCache::Index textureBindingIndex = textureDataCache->insert(gatherer->textureDataBlock());
+
+    return { entry->uniqueID(), shadingUniformIndex, textureBindingIndex };
 }
 
 } // namespace skgpu

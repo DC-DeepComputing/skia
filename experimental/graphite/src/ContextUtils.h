@@ -9,13 +9,14 @@
 #define skgpu_ContextUtils_DEFINED
 
 #include "experimental/graphite/include/Context.h"
+#include "experimental/graphite/src/PipelineDataCache.h"
 #include "include/core/SkBlendMode.h"
 #include "include/core/SkSpan.h"
 #include "include/core/SkTileMode.h"
 
 enum class CodeSnippetID : uint8_t;
 class SkPaintParamsKeyBuilder;
-class SkPipelineData;
+class SkPipelineDataGatherer;
 class SkShaderCodeDictionary;
 class SkUniform;
 class SkUniquePaintParamsID;
@@ -24,8 +25,9 @@ namespace skgpu {
 
 class PaintParams;
 
-std::tuple<SkUniquePaintParamsID, std::unique_ptr<SkPipelineData>> ExtractPaintData(
+std::tuple<SkUniquePaintParamsID, UniformDataCache::Index, TextureDataCache::Index> ExtractPaintData(
         Recorder*,
+        SkPipelineDataGatherer* gatherer,
         SkPaintParamsKeyBuilder* builder,
         const PaintParams&);
 
