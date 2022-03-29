@@ -86,11 +86,17 @@ private:
 };
 #endif // SK_GRAPHITE_ENABLED
 
-// TODO: The current plan for fixing uniform padding is for the SkPipelineData to hold a
+// The PipelineDataGatherer is just used to collect information for a given PaintParams object.
+//   The BlendInfo is ultimately stored in the SkShaderCodeDictionary next to its associated
+//       PaintParamsKey
+//
+//
+
+// TODO: The current plan for fixing uniform padding is for the SkPipelineDataGatherer to hold a
 // persistent uniformManager. A stretch goal for this system would be for this combination
 // to accumulate all the uniforms and then rearrange them to minimize padding. This would,
 // obviously, vastly complicate uniform accumulation.
-class SkPipelineData {
+class SkPipelineDataGatherer {
 public:
 #ifdef SK_GRAPHITE_ENABLED
     struct BlendInfo {
@@ -110,10 +116,13 @@ public:
     };
 #endif
 
-    SkPipelineData() = default;
+    SkPipelineDataGatherer() = default;
+
+    // Check that the gatherer has been reset to its initial state prior to collecting new data.
+    SkDEBUGCODE(void checkReset();)
 
 #ifdef SK_GRAPHITE_ENABLED
-    void setBlendInfo(const SkPipelineData::BlendInfo& blendInfo) {
+    void setBlendInfo(const SkPipelineDataGatherer::BlendInfo& blendInfo) {
         fBlendInfo = blendInfo;
     }
     const BlendInfo& blendInfo() const { return fBlendInfo; }
