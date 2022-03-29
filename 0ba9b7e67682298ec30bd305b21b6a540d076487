@@ -51,6 +51,24 @@
       "parentUuid": "0881a6bd_09bd56f6",
       "revId": "0ba9b7e67682298ec30bd305b21b6a540d076487",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1993f9e3_d35f31c0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-03-29T14:16:47Z",
+      "side": 1,
+      "message": "The reason it is creating a surface with unknown pixel geometry is to force off LCD drawing. I\u0027m investigating all the old CLs for the GM. It maybe that it gets the coverage it needs by drawing to 8888 or 565 canvases.",
+      "parentUuid": "44864bf8_19cf0f5b",
+      "revId": "0ba9b7e67682298ec30bd305b21b6a540d076487",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
