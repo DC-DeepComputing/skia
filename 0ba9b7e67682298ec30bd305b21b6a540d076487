@@ -16,6 +16,41 @@
       "message": "This give very good results, but I think that textblobrandomfont is a lie. It is getting a new canvas that is not doing the slug conversion, but I think this is better than what I currently have.",
       "revId": "0ba9b7e67682298ec30bd305b21b6a540d076487",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "80f83bdd_cf827709",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-03-29T00:36:19Z",
+      "side": 1,
+      "message": "I prefer this solution, and we can then clean up the SkNWayCanvas constructor that takes a canvas.",
+      "revId": "0ba9b7e67682298ec30bd305b21b6a540d076487",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "44864bf8_19cf0f5b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-03-29T00:36:19Z",
+      "side": 1,
+      "message": "To make that work, you\u0027d need SkTestCanvas to override onNewSurface(). It would get it\u0027s real SkSurface and then for every SkTestCanvas there\u0027d be a matching SkTestSurface that wrapped the return value of SkSurface::getCanvas(). The other option would be restructure the GM to not rely on that temporary surface?",
+      "parentUuid": "0881a6bd_09bd56f6",
+      "revId": "0ba9b7e67682298ec30bd305b21b6a540d076487",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
