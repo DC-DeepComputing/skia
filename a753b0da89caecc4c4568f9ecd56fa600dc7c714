@@ -34,6 +34,24 @@
       "parentUuid": "7f761f57_44aed98f",
       "revId": "a753b0da89caecc4c4568f9ecd56fa600dc7c714",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7599f121_447761a5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-03-29T15:39:41Z",
+      "side": 1,
+      "message": "I just remembered that our Debug perf bots set \u0027--loops 1 --samples 1\u0027, which means each perf test only gets run once. One of the advantages of the Release perf bot was it tested our code when things got drawn multiple times (e.g. tests different paths through our caching). I think this is something worth running through ASAN. So maybe we either want just the Release version or both still (making Debug do the extra loops makes the bot very slow).",
+      "parentUuid": "27369886_f9baa83a",
+      "revId": "a753b0da89caecc4c4568f9ecd56fa600dc7c714",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
