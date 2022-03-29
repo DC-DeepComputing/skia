@@ -30,7 +30,8 @@ public:
         : fText(paragraph->fText.c_str(), paragraph->fText.size())
         , fPlaceholders(paragraph->fPlaceholders)
         , fTextStyles(paragraph->fTextStyles)
-        , fParagraphStyle(paragraph->paragraphStyle()) {
+        , fParagraphStyle(paragraph->paragraphStyle())
+        , fRequiredLevel(paragraph->fRequiredLevel) {
         fHash = computeHash();
     }
 
@@ -41,6 +42,7 @@ public:
         , fPlaceholders(std::move(other.fPlaceholders))
         , fTextStyles(std::move(other.fTextStyles))
         , fParagraphStyle(std::move(other.fParagraphStyle))
+        , fRequiredLevel(other.fRequiredLevel)
         , fHash(other.fHash) {
         other.fHash = 0;
     }
@@ -59,6 +61,7 @@ private:
     SkTArray<Placeholder, true> fPlaceholders;
     SkTArray<Block, true> fTextStyles;
     ParagraphStyle fParagraphStyle;
+    BreakLevel fRequiredLevel;
     uint32_t fHash;
 };
 
@@ -153,6 +156,7 @@ uint32_t ParagraphCacheKey::computeHash() const {
     }
 
     hash = mix(hash, SkGoodHash()(fText));
+    hash = mix(hash, SkGoodHash()(fRequiredLevel));
     return hash;
 }
 
@@ -171,6 +175,9 @@ bool ParagraphCacheKey::operator==(const ParagraphCacheKey& other) const {
         return false;
     }
     if (fTextStyles.size() != other.fTextStyles.size()) {
+        return false;
+    }
+    if (fRequiredLevel != other.fRequiredLevel) {
         return false;
     }
 
