@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "82507aa9_4e02f7a1",
+        "filename": "include/sksl/SkSLOperator.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-03-30T20:34:34Z",
+      "side": 1,
+      "message": "And same here - this was a rename of a copyright 2021 file.",
+      "parentUuid": "415a2e9a_dbe5a14b",
+      "range": {
+        "startLine": 2,
+        "startChar": 13,
+        "endLine": 2,
+        "endChar": 17
+      },
+      "revId": "87827381c5651378d5a1d2cb40ed6520b3423a72",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "03a38594_afef396f",
         "filename": "src/sksl/SkSLOperator.cpp",
         "patchSetId": 15
