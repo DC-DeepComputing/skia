@@ -461,6 +461,7 @@ sksl_shared_tests = [
   "/sksl/shared/Ossfuzz41000.sksl",
   "/sksl/shared/OutParams.sksl",
   "/sksl/shared/OutParamsAreDistinct.sksl",
+  "/sksl/shared/OutParamsAreDistinctFromGlobal.sksl",
   "/sksl/shared/OutParamsTricky.sksl",
   "/sksl/shared/Overflow.sksl",
   "/sksl/shared/RectangleTexture.sksl",

@@ -8,5 +8,5 @@ bool out_params_are_distinct(out half x, out half y) {
 
 half4 main(float2 coords) {
     half x = 0;
-    return out_params_are_distinct(x, x) ? colorGreen : colorRed;
+    return (out_params_are_distinct(x, x) && x == 2) ? colorGreen : colorRed;
 }

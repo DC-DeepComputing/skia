@@ -28,6 +28,6 @@ fragment Outputs fragmentMain(Inputs _in [[stage_in]], constant Uniforms& _unifo
     Outputs _out;
     (void)_out;
     half x = 0.0h;
-    _out.sk_FragColor =     _skOutParamHelper0_out_params_are_distinct_bhh(x, x) ? _uniforms.colorGreen : _uniforms.colorRed;
+    _out.sk_FragColor =     _skOutParamHelper0_out_params_are_distinct_bhh(x, x) && x == 2.0h ? _uniforms.colorGreen : _uniforms.colorRed;
     return _out;
 }
