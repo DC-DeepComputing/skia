@@ -72,6 +72,7 @@ generated_cc_atom(
     deps = [
         ":DebugCanvas_hdr",
         ":DebugLayerManager_hdr",
+        "//include/core:SkColorSpace_hdr",
         "//include/core:SkImageInfo_hdr",
         "//include/core:SkImage_hdr",
         "//include/core:SkPicture_hdr",

@@ -7,6 +7,7 @@
 
 #include "tools/debugger/DebugLayerManager.h"
 
+#include "include/core/SkColorSpace.h"
 #include "include/core/SkImage.h"
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkPicture.h"
