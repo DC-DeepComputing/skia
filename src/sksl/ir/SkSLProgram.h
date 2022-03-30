@@ -26,7 +26,7 @@
 #endif
 
 // name of the uniform used to handle features that are sensitive to whether Y is flipped.
-#define SKSL_RTFLIP_NAME "u_skRTFlip"
+//#define SKSL_RTFLIP_NAME "u_skRTFlip"
 
 namespace SkSL {
 
@@ -66,9 +66,14 @@ struct Program {
     using Settings = ProgramSettings;
 
     struct Inputs {
-        bool fUseFlipRTUniform = false;
+        Inputs(bool) {}
+
+        bool fUseFlipRTUniform1 = false;
+        std::string fRTFlipName7 = "u_skRTFlip";
+
         bool operator==(const Inputs& that) const {
-            return fUseFlipRTUniform == that.fUseFlipRTUniform;
+            return fUseFlipRTUniform1 == that.fUseFlipRTUniform1 &&
+                   fRTFlipName7 == that.fRTFlipName7;
         }
         bool operator!=(const Inputs& that) const { return !(*this == that); }
     };

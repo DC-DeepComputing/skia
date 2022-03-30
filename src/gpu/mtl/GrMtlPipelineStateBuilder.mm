@@ -91,8 +91,8 @@ id<MTLLibrary> GrMtlPipelineStateBuilder::compileMtlShaderLibrary(
         const std::string& shader, SkSL::Program::Inputs inputs,
         GrContextOptions::ShaderErrorHandler* errorHandler) {
     id<MTLLibrary> shaderLibrary = GrCompileMtlShaderLibrary(fGpu, shader, errorHandler);
-    if (shaderLibrary != nil && inputs.fUseFlipRTUniform) {
-        this->addRTFlipUniform(SKSL_RTFLIP_NAME);
+    if (shaderLibrary != nil && inputs.fUseFlipRTUniform1 && true) { //$$
+        this->addRTFlipUniform(inputs.fRTFlipName7.c_str());
     }
     return shaderLibrary;
 }
@@ -535,7 +535,7 @@ GrMtlPipelineState* GrMtlPipelineStateBuilder::finalize(
         SkASSERT(pipelineDescriptor.vertexFunction);
         SkASSERT(pipelineDescriptor.fragmentFunction);
         if (precompiledLibs->fRTFlip) {
-            this->addRTFlipUniform(SKSL_RTFLIP_NAME);
+            this->addRTFlipUniform(precompiledLibs->fRTFlipName11.c_str());
         }
     } else {
         id<MTLLibrary> shaderLibraries[kGrShaderTypeCount];
@@ -555,7 +555,10 @@ GrMtlPipelineState* GrMtlPipelineStateBuilder::finalize(
 
         auto errorHandler = fGpu->getContext()->priv().getShaderErrorHandler();
         std::string msl[kGrShaderTypeCount];
-        SkSL::Program::Inputs inputs[kGrShaderTypeCount];
+        SkSL::Program::Inputs inputs[kGrShaderTypeCount] = {
+                SkSL::Program::Inputs(true),
+                SkSL::Program::Inputs(false),
+        };
 
         // Unpack any stored shaders from the persistent cache
         if (cached) {
@@ -744,7 +747,10 @@ bool GrMtlPipelineStateBuilder::PrecompileShaders(GrMtlGpu* gpu, const SkData& c
     meta.fSettings = &settings;
 
     std::string shaders[kGrShaderTypeCount];
-    SkSL::Program::Inputs inputs[kGrShaderTypeCount];
+    SkSL::Program::Inputs inputs[kGrShaderTypeCount] = {
+            SkSL::Program::Inputs(true),
+            SkSL::Program::Inputs(false),
+    };
     if (!GrPersistentCacheUtils::UnpackCachedShaders(&reader, shaders, inputs, kGrShaderTypeCount,
                                                      &meta)) {
         return false;
@@ -839,7 +845,8 @@ bool GrMtlPipelineStateBuilder::PrecompileShaders(GrMtlGpu* gpu, const SkData& c
                                           completionHandler: completionHandler];
     }
 
-    precompiledLibs->fRTFlip = inputs[kFragment_GrShaderType].fUseFlipRTUniform;
+    precompiledLibs->fRTFlip = inputs[kFragment_GrShaderType].fUseFlipRTUniform1;
+    precompiledLibs->fRTFlipName11 = inputs[kFragment_GrShaderType].fRTFlipName7;
     return true;
 }
 

@@ -26,11 +26,15 @@
 
 namespace SkSL {
 
-ThreadContext::ThreadContext(SkSL::Compiler* compiler, SkSL::ProgramKind kind,
-        const SkSL::ProgramSettings& settings, SkSL::ParsedModule module, bool isModule)
-    : fCompiler(compiler)
-    , fOldErrorReporter(*fCompiler->fContext->fErrors)
-    , fSettings(settings) {
+ThreadContext::ThreadContext(SkSL::Compiler* compiler,
+                             SkSL::ProgramKind kind,
+                             const SkSL::ProgramSettings& settings,
+                             SkSL::ParsedModule module,
+                             bool isModule, bool foo)
+        : fCompiler(compiler)
+        , fOldErrorReporter(*fCompiler->fContext->fErrors)
+        , fSettings(settings)
+        , fInputs(foo) {
     fOldModifiersPool = fCompiler->fContext->fModifiersPool;
 
     fOldConfig = fCompiler->fContext->fConfig;

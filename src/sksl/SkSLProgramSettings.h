@@ -21,6 +21,7 @@ class ExternalFunction;
  * Holds the compiler settings for a program.
  */
 struct ProgramSettings {
+    bool fYeehaw = false;
     // If true the destination fragment color is read sk_FragColor. It must be declared inout.
     bool fFragColorIsInOut = false;
     // if true, Setting objects (e.g. sk_Caps.fbFetchSupport) should be replaced with their

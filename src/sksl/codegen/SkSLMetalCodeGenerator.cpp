@@ -733,7 +733,7 @@ bool MetalCodeGenerator::writeIntrinsicCall(const FunctionCall& c, IntrinsicKind
             return true;
         }
         case k_dFdy_IntrinsicKind: {
-            this->write("(" + fRTFlipName + ".y * dfdy");
+            this->write("(" + fRTFlipName107 + ".y * dfdy");
             this->writeArgumentList(c.arguments());
             this->write(")");
             return true;
@@ -1337,12 +1337,16 @@ void MetalCodeGenerator::writeCastConstructor(const AnyConstructor& c,
 }
 
 void MetalCodeGenerator::writeFragCoord() {
-    SkASSERT(fRTFlipName.length());
+#if 1
+    SkASSERT(fRTFlipName107.length());
     this->write("float4(_fragCoord.x, ");
-    this->write(fRTFlipName.c_str());
+    this->write(fRTFlipName107.c_str());
     this->write(".x + ");
-    this->write(fRTFlipName.c_str());
+    this->write(fRTFlipName107.c_str());
     this->write(".y * _fragCoord.y, 0.0, _fragCoord.w)");
+#else
+    this->write("float4(_fragCoord.x, _fragCoord.y, 0.0, _fragCoord.w)");
+#endif
 }
 
 void MetalCodeGenerator::writeVariableReference(const VariableReference& ref) {
@@ -1370,7 +1374,7 @@ void MetalCodeGenerator::writeVariableReference(const VariableReference& ref) {
         case SK_CLOCKWISE_BUILTIN:
             // We'd set the front facing winding in the MTLRenderCommandEncoder to be counter
             // clockwise to match Skia convention.
-            this->write("(" + fRTFlipName + ".y < 0 ? _frontFacing : !_frontFacing)");
+            this->write("(" + fRTFlipName107 + ".y < 0 ? _frontFacing : !_frontFacing)");
             break;
         default:
             const Variable& var = *ref.variable();
@@ -1872,8 +1876,8 @@ int MetalCodeGenerator::getUniformSet(const Modifiers& m) {
 }
 
 bool MetalCodeGenerator::writeFunctionDeclaration(const FunctionDeclaration& f) {
-    fRTFlipName = fProgram.fInputs.fUseFlipRTUniform
-                          ? "_globals._anonInterface0->" SKSL_RTFLIP_NAME
+    fRTFlipName107 = fProgram.fInputs.fUseFlipRTUniform1
+                          ? std::string("_globals._anonInterface0->") + fProgram.fInputs.fRTFlipName7
                           : "";
     const char* separator = "";
     if (f.isMain()) {
@@ -1931,9 +1935,9 @@ bool MetalCodeGenerator::writeFunctionDeclaration(const FunctionDeclaration& f) 
             }
         }
         if (fProgram.fConfig->fKind == ProgramKind::kFragment) {
-            if (fProgram.fInputs.fUseFlipRTUniform && fInterfaceBlockNameMap.empty()) {
+            if (fProgram.fInputs.fUseFlipRTUniform1 && fInterfaceBlockNameMap.empty()) {
                 this->write(", constant sksl_synthetic_uniforms& _anonInterface0 [[buffer(1)]]");
-                fRTFlipName = "_anonInterface0." SKSL_RTFLIP_NAME;
+                fRTFlipName107 = std::string("_anonInterface0.") + fProgram.fInputs.fRTFlipName7;
             }
             this->write(", bool _frontFacing [[front_facing]]");
             this->write(", float4 _fragCoord [[position]]");
@@ -2058,8 +2062,10 @@ void MetalCodeGenerator::writeInterfaceBlock(const InterfaceBlock& intf) {
     }
     fIndentation++;
     this->writeFields(structType->fields(), structType->fPosition, &intf);
-    if (fProgram.fInputs.fUseFlipRTUniform) {
-        this->writeLine("float2 " SKSL_RTFLIP_NAME ";");
+    if (fProgram.fInputs.fUseFlipRTUniform1) {
+        this->write("float2 ");
+        this->write(fProgram.fInputs.fRTFlipName7);
+        this->writeLine(";");
     }
     fIndentation--;
     this->write("}");
@@ -2447,9 +2453,11 @@ void MetalCodeGenerator::writeInterfaceBlocks() {
             wroteInterfaceBlock = true;
         }
     }
-    if (!wroteInterfaceBlock && fProgram.fInputs.fUseFlipRTUniform) {
+    if (!wroteInterfaceBlock && fProgram.fInputs.fUseFlipRTUniform1) {
         this->writeLine("struct sksl_synthetic_uniforms {");
-        this->writeLine("    float2 " SKSL_RTFLIP_NAME ";");
+        this->write("    float2 ");
+        this->write(fProgram.fInputs.fRTFlipName7);
+        this->writeLine(";");
         this->writeLine("};");
     }
 }

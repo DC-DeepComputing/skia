@@ -499,8 +499,12 @@ sk_sp<GraphicsPipeline> GraphicsPipeline::Make(ResourceProvider* resourceProvide
     sk_cfp<MTLRenderPipelineDescriptor*> psoDescriptor([[MTLRenderPipelineDescriptor alloc] init]);
 
     std::string msl[kShaderTypeCount];
-    SkSL::Program::Inputs inputs[kShaderTypeCount];
+    SkSL::Program::Inputs inputs[kShaderTypeCount] = {
+            SkSL::Program::Inputs(true),
+            SkSL::Program::Inputs(false), //$$
+    };
     SkSL::Program::Settings settings;
+    settings.fYeehaw = true; //$$
 
     ShaderErrorHandler* errorHandler = DefaultShaderErrorHandler();
     if (!SkSLToMSL(gpu,

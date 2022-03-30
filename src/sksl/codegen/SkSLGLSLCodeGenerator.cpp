@@ -526,7 +526,9 @@ void GLSLCodeGenerator::writeFunctionCall(const FunctionCall& c) {
         case k_dFdy_IntrinsicKind:
             // Flipping Y also negates the Y derivatives.
             closingParen = "))";
-            this->write("(" SKSL_RTFLIP_NAME ".y * dFdy");
+            this->write("(" ");");
+            this->write(fProgram.fInputs.fRTFlipName7.c_str());
+            this->write(".y * dFdy");
             nameWritten = true;
             [[fallthrough]];
         case k_dFdx_IntrinsicKind:
@@ -782,10 +784,10 @@ void GLSLCodeGenerator::writeFragCoord() {
     if (!fSetupFragPosition) {
         fFunctionHeader += usesPrecisionModifiers() ? "highp " : "";
         fFunctionHeader += "    vec4 sk_FragCoord = vec4("
-                "gl_FragCoord.x, "
-                SKSL_RTFLIP_NAME ".x + " SKSL_RTFLIP_NAME ".y * gl_FragCoord.y, "
-                "gl_FragCoord.z, "
-                "gl_FragCoord.w);\n";
+                           "gl_FragCoord.x, ";
+        fFunctionHeader += fProgram.fInputs.fRTFlipName7 + ".x + ";
+        fFunctionHeader += fProgram.fInputs.fRTFlipName7 + ".y * gl_FragCoord.y, ";
+        fFunctionHeader += "gl_FragCoord.z, gl_FragCoord.w);\n";
         fSetupFragPosition = true;
     }
     this->write("sk_FragCoord");
@@ -810,7 +812,9 @@ void GLSLCodeGenerator::writeVariableReference(const VariableReference& ref) {
             if (!fSetupClockwise) {
                 fFunctionHeader +=
                         "    bool sk_Clockwise = gl_FrontFacing;\n"
-                        "    if (" SKSL_RTFLIP_NAME ".y < 0.0) {\n"
+                        "    if (";
+                fFunctionHeader += fProgram.fInputs.fRTFlipName7;
+                fFunctionHeader += ".y < 0.0) {\n"
                         "        sk_Clockwise = !sk_Clockwise;\n"
                         "    }\n";
                 fSetupClockwise = true;
@@ -1573,11 +1577,13 @@ void GLSLCodeGenerator::writeProgramElement(const ProgramElement& e) {
 }
 
 void GLSLCodeGenerator::writeInputVars() {
-    if (fProgram.fInputs.fUseFlipRTUniform) {
+    if (fProgram.fInputs.fUseFlipRTUniform1) {
         const char* precision = usesPrecisionModifiers() ? "highp " : "";
         fGlobals.writeText("uniform ");
         fGlobals.writeText(precision);
-        fGlobals.writeText("vec2 " SKSL_RTFLIP_NAME ";\n");
+        fGlobals.writeText("vec2 ");
+        fGlobals.writeText(fProgram.fInputs.fRTFlipName7.c_str());
+        fGlobals.writeText(";\n");
     }
 }
 
