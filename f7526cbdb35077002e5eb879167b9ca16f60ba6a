@@ -16,6 +16,40 @@
       "message": "This is still a bit rough and subject to a lot of change, but it does work. Mostly looking to see if there are any suggestions about the modules/svg proposed changes. Are there better ways to do this?",
       "revId": "f7526cbdb35077002e5eb879167b9ca16f60ba6a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1b2bd264_5e31a67d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2022-03-30T19:57:45Z",
+      "side": 1,
+      "message": "+Tyler",
+      "revId": "f7526cbdb35077002e5eb879167b9ca16f60ba6a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a2cf08e4_d6d02ddd",
+        "filename": "modules/svg/src/SkSVGDecoder_SkSVG.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2022-03-30T19:57:45Z",
+      "side": 1,
+      "message": "So the intent is to render only a particular node, and override its presentation color?\n\nWould something like this do the trick instead:\n\n  RenderContext ctx(...);\n  auto node \u003d skSvg-\u003efindNodeById(id);\n  node-\u003esetColor(color);\n  node-\u003erender(ctx);\n  \n?\n\nAdding an SkSVGDOM::render specialization seems fine if needed, but I think we can avoid an explicit presentation context by setting the color prop directly on the node, and the node lookup can also be handled with existing public APIs.",
+      "revId": "f7526cbdb35077002e5eb879167b9ca16f60ba6a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
