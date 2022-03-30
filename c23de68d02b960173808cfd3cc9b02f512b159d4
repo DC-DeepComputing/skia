@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "19cf8fbc_d47fefb1",
+        "filename": "resources/sksl/shared/InoutParamsAreDistinct.sksl",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 17889
+      },
+      "writtenOn": "2022-03-30T18:02:42Z",
+      "side": 1,
+      "message": "Is this valid? Is there a requirement that the out parameters are written back in any order?",
+      "revId": "c23de68d02b960173808cfd3cc9b02f512b159d4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
