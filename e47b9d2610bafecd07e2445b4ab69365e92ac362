@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2460d3f3_7997ec04",
+        "filename": "experimental/graphite/include/GraphiteTypes.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-03-30T20:57:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ce8ee24c_013be797",
+      "range": {
+        "startLine": 27,
+        "startChar": 68,
+        "endLine": 27,
+        "endChar": 79
+      },
+      "revId": "e47b9d2610bafecd07e2445b4ab69365e92ac362",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4a0c6718_ea60bd82",
@@ -37,6 +61,24 @@
       "writtenOn": "2022-03-30T19:16:57Z",
       "side": 1,
       "message": "Why are we ignoring the callback result parameter here ?",
+      "revId": "e47b9d2610bafecd07e2445b4ab69365e92ac362",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "02fd8e4f_8adaaf9d",
+        "filename": "tools/gpu/FlushFinishTracker.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-03-30T20:57:30Z",
+      "side": 1,
+      "message": "Because the callback here doesn\u0027t care if things were actually submitted to the GPU or not. It just cares if there are outstanding things running on the GPU and the callback being called at all answers that.\n\nIf instead the callback was doing something like reading back the results of the draw and comparing them on CPU then it would care about the Result param.",
+      "parentUuid": "4a0c6718_ea60bd82",
       "revId": "e47b9d2610bafecd07e2445b4ab69365e92ac362",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
