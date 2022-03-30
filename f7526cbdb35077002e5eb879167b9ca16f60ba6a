@@ -50,6 +50,24 @@
       "message": "So the intent is to render only a particular node, and override its presentation color?\n\nWould something like this do the trick instead:\n\n  RenderContext ctx(...);\n  auto node \u003d skSvg-\u003efindNodeById(id);\n  node-\u003esetColor(color);\n  node-\u003erender(ctx);\n  \n?\n\nAdding an SkSVGDOM::render specialization seems fine if needed, but I think we can avoid an explicit presentation context by setting the color prop directly on the node, and the node lookup can also be handled with existing public APIs.",
       "revId": "f7526cbdb35077002e5eb879167b9ca16f60ba6a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e2bfa9c9_d701ec73",
+        "filename": "modules/svg/src/SkSVGDecoder_SkSVG.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-03-30T20:13:53Z",
+      "side": 1,
+      "message": "The issue here is that the initial viewBox needs to be respected. Also the `...` in your suggestion leaves out that the SkSVGRenderContext requires a SkSVGIDMapper, which I also don\u0027t have.",
+      "parentUuid": "a2cf08e4_d6d02ddd",
+      "revId": "f7526cbdb35077002e5eb879167b9ca16f60ba6a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
