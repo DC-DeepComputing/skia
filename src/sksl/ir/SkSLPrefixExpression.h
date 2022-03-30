@@ -37,6 +37,10 @@ public:
     static std::unique_ptr<Expression> Make(const Context& context, Operator op,
                                             std::unique_ptr<Expression> base);
 
+    // TODO(ethannicholas): make Position required
+    static std::unique_ptr<Expression> Make(const Context& context, Position pos, Operator op,
+                                            std::unique_ptr<Expression> base);
+
     Operator getOperator() const {
         return fOperator;
     }
