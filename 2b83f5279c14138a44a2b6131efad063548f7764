@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ac052999_4a695a12",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-03-30T18:06:53Z",
+      "side": 1,
+      "message": "I confirmed with viewer\u0027s shader list that before this change, the quads intersecting the edge switched to analytic coverage mode, and after the change, all quads used the same non-AA shader.",
+      "revId": "2b83f5279c14138a44a2b6131efad063548f7764",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
