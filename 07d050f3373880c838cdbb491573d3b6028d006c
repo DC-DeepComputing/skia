@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6cdea381_2c0fcfb9",
+        "filename": "tools/debugger/BUILD.bazel",
+        "patchSetId": 3
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-03-30T13:45:00Z",
+      "side": 1,
+      "message": "This is how we control the iwyu enforcement (only applied during Bazel builds).",
+      "revId": "07d050f3373880c838cdbb491573d3b6028d006c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ff4df418_2f5159f7",
         "filename": "tools/debugger/DebugCanvas.h",
         "patchSetId": 3
