@@ -16,6 +16,24 @@
       "message": "And then you\u0027ll set this to true somehow externally if you want to run in the simulator on an M1? Sorry, I\u0027m not very familiar with Ninja.",
       "revId": "ff8ea94503f8a390696cb6761c97a9d191e116de",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "522aa6b3_50442328",
+        "filename": "gn/BUILDCONFIG.gn",
+        "patchSetId": 3
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-03-30T19:59:51Z",
+      "side": 1,
+      "message": "You\u0027d set this in your gn args (like in `out/Debug/args.gn`).",
+      "parentUuid": "2bd511b2_2cc46088",
+      "revId": "ff8ea94503f8a390696cb6761c97a9d191e116de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
