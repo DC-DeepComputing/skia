@@ -55,11 +55,15 @@ std::unique_ptr<Recorder> Context::makeRecorder() {
 void Context::insertRecording(const InsertRecordingInfo& info) {
     sk_sp<RefCntedCallback> callback;
     if (info.fFinishedProc) {
-        callback = RefCntedCallback::Make(info.fFinishedProc, info.fFinishedContext);
+        callback = RefCntedCallback::Make(info.fFinishedProc,
+                                          info.fFinishedContext);
     }
 
     SkASSERT(info.fRecording);
     if (!info.fRecording) {
+        if (callback) {
+            callback->setFailureResult();
+        }
         return;
     }
 
