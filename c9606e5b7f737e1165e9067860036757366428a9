@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "35139a4e_800f14ff",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-03-30T18:45:27Z",
+      "side": 1,
+      "message": "wow that\u0027s a big foot gun around using SkMask, I had no idea!",
+      "revId": "c9606e5b7f737e1165e9067860036757366428a9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
