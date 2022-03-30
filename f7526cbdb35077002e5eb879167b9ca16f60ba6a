@@ -37,6 +37,40 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "fa6a4318_89584be8",
+        "filename": "modules/svg/include/SkSVGDOM.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2022-03-30T20:56:59Z",
+      "side": 1,
+      "message": "Assuming you can already look up nodes and set their presentation color in client code, I think this could be\n\n  renderNode(SkCanvas*, const SkSVGNode\u0026) const;",
+      "revId": "f7526cbdb35077002e5eb879167b9ca16f60ba6a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0990c355_521ba7f6",
+        "filename": "modules/svg/include/SkSVGNode.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2022-03-30T20:56:59Z",
+      "side": 1,
+      "message": "SkSVGDom fRoot is a known node type, we could add this to SkSVGSVG instead.",
+      "revId": "f7526cbdb35077002e5eb879167b9ca16f60ba6a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a2cf08e4_d6d02ddd",
         "filename": "modules/svg/src/SkSVGDecoder_SkSVG.cpp",
         "patchSetId": 7
@@ -66,6 +100,24 @@
       "side": 1,
       "message": "The issue here is that the initial viewBox needs to be respected. Also the `...` in your suggestion leaves out that the SkSVGRenderContext requires a SkSVGIDMapper, which I also don\u0027t have.",
       "parentUuid": "a2cf08e4_d6d02ddd",
+      "revId": "f7526cbdb35077002e5eb879167b9ca16f60ba6a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "11f6ec51_fc57c8fb",
+        "filename": "modules/svg/src/SkSVGDecoder_SkSVG.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2022-03-30T20:56:59Z",
+      "side": 1,
+      "message": "Got it.  It still feels like there should be a more elegant way to select a particular glyph via \u003cuse\u003e/href/whatnot, but I have no clue how much control you have over the font svg structure.",
+      "parentUuid": "e2bfa9c9_d701ec73",
       "revId": "f7526cbdb35077002e5eb879167b9ca16f60ba6a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
