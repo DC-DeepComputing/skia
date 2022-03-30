@@ -16,6 +16,24 @@
       "message": "I also got Modulate working, but honestly I think your intuition was right--most places where Modulate is used, it is pretty implausible that we would ever want to swap in a different Porter-Duff blend mode and then reuse the rest of the shader. Modulate is a pretty specialized op.",
       "revId": "af638aeee0f78a03b05e902bd7d3282470774c92",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3903151e_04a9a084",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-03-30T17:30:35Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "b6b82357_43365bcd",
+      "revId": "af638aeee0f78a03b05e902bd7d3282470774c92",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
