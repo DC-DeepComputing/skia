@@ -2932,8 +2932,7 @@ protected:
         ParagraphStyle paragraph_style;
 
         auto column = width()/3;
-        auto draw = [&](DrawOptions options, SkScalar x) {
-            paragraph_style.setDrawOptions(options);
+        auto draw = [&](SkScalar x) {
             ParagraphBuilderImpl builder(paragraph_style, fontCollection);
             TextStyle text_style;
             text_style.setColor(SK_ColorBLACK);
@@ -2948,9 +2947,7 @@ protected:
             paragraph->paint(canvas, x, 400);
         };
 
-        draw(DrawOptions::kReplay, column*0);
-        draw(DrawOptions::kRecord, column*1);
-        draw(DrawOptions::kDirect, column*2);
+        draw(column*0);
     }
 
 private:
