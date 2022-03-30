@@ -39,7 +39,7 @@ struct GrContextOptions;
 using namespace skia::text;
 
 UNIX_ONLY_TEST(SkText_ShapedText_LTR, reporter) {
-    TrivialFontChain* fontChain = new TrivialFontChain("Roboto", 40.0f, SkFontStyle::Normal());
+    auto fontChain = sk_ref_sp(new TrivialFontChain("Roboto", 40.0f, SkFontStyle::Normal()));
     if (fontChain->empty()) return;
 
     std::u16string utf16(u"Hello world\nHello world");
@@ -58,7 +58,7 @@ UNIX_ONLY_TEST(SkText_ShapedText_LTR, reporter) {
 }
 
 UNIX_ONLY_TEST(SkText_ShapedText_RTL, reporter) {
-    sk_sp<TrivialFontChain> fontChain = sk_make_sp<TrivialFontChain>("Roboto", 40.0f, SkFontStyle::Normal());
+    auto fontChain = sk_ref_sp(new TrivialFontChain("Roboto", 40.0f, SkFontStyle::Normal()));
     if (fontChain->empty()) return;
 
     std::u16string utf16(u"\u202EHELLO WORLD\nHELLO WORLD");
