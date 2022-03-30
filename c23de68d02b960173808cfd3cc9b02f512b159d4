@@ -16,6 +16,24 @@
       "message": "Is this valid? Is there a requirement that the out parameters are written back in any order?",
       "revId": "c23de68d02b960173808cfd3cc9b02f512b159d4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "45e1726e_05b4a375",
+        "filename": "resources/sksl/shared/InoutParamsAreDistinct.sksl",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-03-30T18:04:08Z",
+      "side": 1,
+      "message": "Good catch. No, it\u0027s not valid. I had thought it was documented as left-to-right, but I was wrong:\n\n\"The order in which output parameters are copied back to the caller is undefined.\"",
+      "parentUuid": "19cf8fbc_d47fefb1",
+      "revId": "c23de68d02b960173808cfd3cc9b02f512b159d4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
