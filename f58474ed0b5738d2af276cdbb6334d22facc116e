@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3933dfd1_3adc38a7",
+        "filename": "experimental/graphite/src/ContextUtils.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-03-30T14:35:56Z",
+      "side": 1,
+      "message": "Just to keep all three parallel. As in: grab something from the recorder and use it to uniquify a resource. The \u0027keyContext.dict\u0027 just seemed to be obfuscating.",
+      "parentUuid": "6e9bb63f_441b69d8",
+      "range": {
+        "startLine": 37,
+        "startChar": 4,
+        "endLine": 37,
+        "endChar": 76
+      },
+      "revId": "f58474ed0b5738d2af276cdbb6334d22facc116e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "27f39add_e68f1f2e",
         "filename": "experimental/graphite/src/DrawPass.cpp",
         "patchSetId": 10
@@ -37,6 +61,30 @@
       "writtenOn": "2022-03-30T14:24:07Z",
       "side": 1,
       "message": "This version of addUniforms() is only used for the RenderStep\u0027s uniforms now, right? After we have shading uniforms updated to use the gatherer, will that be compatible with updating RenderStep\u0027s writeUniforms() function to use a gatherer as well?",
+      "range": {
+        "startLine": 198,
+        "startChar": 28,
+        "endLine": 198,
+        "endChar": 39
+      },
+      "revId": "f58474ed0b5738d2af276cdbb6334d22facc116e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5b895f29_f5049460",
+        "filename": "experimental/graphite/src/DrawPass.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 198,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-03-30T14:35:56Z",
+      "side": 1,
+      "message": "Right to the first question and, yeah, I was leaving altering the RenderStep\u0027s usage of the gatherer to a follow up but it should follow a similar pattern to the shader uniforms (i.e., an ExtractRenderStepData method that reuses the space).",
+      "parentUuid": "27f39add_e68f1f2e",
       "range": {
         "startLine": 198,
         "startChar": 28,
