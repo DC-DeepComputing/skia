@@ -91,6 +91,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "37c528b2_ef0abd90",
+        "filename": "gn/ios.gni",
+        "patchSetId": 1
+      },
+      "lineNbr": 217,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-03-30T19:10:30Z",
+      "side": 1,
+      "message": "Put it in BUILDCONFIG to match what I did with ios_min_target.",
+      "parentUuid": "bdf58bcb_c4c11d50",
+      "range": {
+        "startLine": 217,
+        "startChar": 10,
+        "endLine": 217,
+        "endChar": 56
+      },
+      "revId": "629a3655a8c24bad346b0fc9cfe2469c8e680fad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2111466a_8e0bbc73",
         "filename": "gn/skia/BUILD.gn",
         "patchSetId": 1
@@ -125,6 +149,30 @@
       "writtenOn": "2022-03-30T18:02:36Z",
       "side": 1,
       "message": "And all of this just be `use_ios_simulator`. It doesn\u0027t seem like the check for arm64 here is actually useful.",
+      "range": {
+        "startLine": 29,
+        "startChar": 8,
+        "endLine": 30,
+        "endChar": 52
+      },
+      "revId": "629a3655a8c24bad346b0fc9cfe2469c8e680fad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6a9bca39_8c4433b5",
+        "filename": "gn/skia/BUILD.gn",
+        "patchSetId": 1
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-03-30T19:10:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9f76df50_c2473c04",
       "range": {
         "startLine": 29,
         "startChar": 8,
