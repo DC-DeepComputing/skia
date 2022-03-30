@@ -165,6 +165,30 @@
       },
       "revId": "9c3e1479b01264761640dbe76eccba61662dd2f0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b3cc45ab_6782eb33",
+        "filename": "src/gpu/effects/GrBlendFragmentProcessor.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-03-30T13:13:15Z",
+      "side": 1,
+      "message": "SG. Maybe we should have an alternate factory that takes the mode as template arg to signal it will always be the same value from that call site.",
+      "parentUuid": "e27a15e5_748401f0",
+      "range": {
+        "startLine": 25,
+        "startChar": 0,
+        "endLine": 43,
+        "endChar": 0
+      },
+      "revId": "9c3e1479b01264761640dbe76eccba61662dd2f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
