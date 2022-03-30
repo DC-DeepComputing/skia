@@ -23,7 +23,7 @@ public:
 
     SkScalar getHeight() { return fHeight; }
 
-    SkScalar getMinIntrinsicWidth() { return fMinIntrinsicWidth; }
+    virtual SkScalar getMinIntrinsicWidth() { return fMinIntrinsicWidth; }
 
     SkScalar getMaxIntrinsicWidth() { return fMaxIntrinsicWidth; }
 

@@ -297,30 +297,8 @@ void ParagraphImpl::complexLayout(SkScalar floorWidth) {
 }
 
 void ParagraphImpl::paint(SkCanvas* canvas, SkScalar x, SkScalar y) {
-
-    if (fParagraphStyle.getDrawOptions() == DrawOptions::kDirect) {
-        // Paint the text without recording it
-        this->paintLines(canvas, x, y);
-        return;
-    }
-
-    if (fState < kDrawn) {
-        // Record the picture anyway (but if we have some pieces in the cache they will be used)
-        this->paintLinesIntoPicture(0, 0);
-        fState = kDrawn;
-    }
-
-    if (fParagraphStyle.getDrawOptions() == DrawOptions::kReplay) {
-        // Replay the recorded picture
-        canvas->save();
-        canvas->translate(x, y);
-        fPicture->playback(canvas);
-        canvas->restore();
-    } else {
-        // Draw the picture
-        SkMatrix matrix = SkMatrix::Translate(x, y);
-        canvas->drawPicture(fPicture, &matrix, nullptr);
-    }
+    // Paint the text without recording it
+    this->paintLines(canvas, x, y);
 }
 
 void ParagraphImpl::resetContext() {
@@ -571,11 +549,17 @@ bool ParagraphImpl::shapeTextIntoEndlessLine(SkScalar floorWidth) {
 void ParagraphImpl::moveShapedTextIntoSingleLine(SkScalar maxWidth) {
     SkASSERT(fRequiredLevel == BreakLevel::kText);
     SkASSERT(fRuns.size() == 1);
+    SkASSERT(fRuns[0].advance().x() <= maxWidth);
     auto& run = this->fRuns[0];
     auto textRange = TextRange(0, this->text().size());
     auto clusterRange = ClusterRange(0, this->clusters().size() - 1);
-    InternalLineMetrics simpleMetrics(this->paragraphStyle().getStrutStyle().getForceStrutHeight());
+    InternalLineMetrics simpleMetrics;
     simpleMetrics.add(&run);
+
+    if (fParagraphStyle.getStrutStyle().getStrutEnabled()) {
+        simpleMetrics.setForceStrut(fParagraphStyle.getStrutStyle().getForceStrutHeight());
+        fStrutMetrics.updateLineMetrics(simpleMetrics);
+    }
 
     auto disableFirstAscent = (paragraphStyle().getTextHeightBehavior() & TextHeightBehavior::kDisableFirstAscent) == TextHeightBehavior::kDisableFirstAscent;
     auto disableLastDescent = (paragraphStyle().getTextHeightBehavior() & TextHeightBehavior::kDisableLastDescent) == TextHeightBehavior::kDisableLastDescent;
@@ -583,8 +567,7 @@ void ParagraphImpl::moveShapedTextIntoSingleLine(SkScalar maxWidth) {
         disableFirstAscent ? simpleMetrics.rawAscent() : simpleMetrics.ascent(),
         disableLastDescent ? simpleMetrics.rawDescent() : simpleMetrics.descent(),
         simpleMetrics.leading());
-
-    SkScalar width = std::min(run.advance().x(), maxWidth);
+    SkScalar width = run.advance().x();
     SkScalar height = simpleMetrics.height();
 
     this->addLine(SkPoint::Make(0, 0),
@@ -605,6 +588,8 @@ void ParagraphImpl::moveShapedTextIntoSingleLine(SkScalar maxWidth) {
     fAlphabeticBaseline = fLines.empty() ? fEmptyMetrics.alphabeticBaseline() : fLines.front().alphabeticBaseline();
     fIdeographicBaseline = fLines.empty() ? fEmptyMetrics.ideographicBaseline() : fLines.front().ideographicBaseline();
     fExceededMaxLines = false;
+
+    SkDebugf("moveShapedTextIntoSingleLine(%s): %f\n", fText.c_str(), fHeight);
 }
 
 void ParagraphImpl::breakShapedTextIntoLines(SkScalar maxWidth) {
@@ -906,10 +891,22 @@ SkRange<size_t> ParagraphImpl::getWordBoundary(unsigned offset) {
 }
 
 void ParagraphImpl::getLineMetrics(std::vector<LineMetrics>& metrics) {
+    if (fRequiredLevel == BreakLevel::kText) {
+        this->setBreakingLevel(BreakLevel::kGrapheme);
+        this->complexLayout(fWidth);
+    }
     metrics.clear();
     for (auto& line : fLines) {
         metrics.emplace_back(line.getMetrics());
     }
+}
+
+SkScalar ParagraphImpl::getMinIntrinsicWidth() {
+    if (fRequiredLevel == BreakLevel::kText) {
+        this->setBreakingLevel(BreakLevel::kGrapheme);
+        this->complexLayout(fWidth);
+    }
+    return fMinIntrinsicWidth;
 }
 
 SkSpan<const char> ParagraphImpl::text(TextRange textRange) {

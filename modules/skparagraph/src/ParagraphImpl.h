@@ -129,6 +129,7 @@ public:
     std::vector<TextBox> getRectsForPlaceholders() override;
     void getLineMetrics(std::vector<LineMetrics>&) override;
     PositionWithAffinity getGlyphPositionAtCoordinate(SkScalar dx, SkScalar dy) override;
+    SkScalar getMinIntrinsicWidth() override;
     SkRange<size_t> getWordBoundary(unsigned offset) override;
 
     size_t lineNumber() override { return fLines.size(); }
