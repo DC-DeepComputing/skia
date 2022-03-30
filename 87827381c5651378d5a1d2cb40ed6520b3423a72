@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "415a2e9a_dbe5a14b",
+        "filename": "include/sksl/SkSLOperator.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-03-30T20:15:36Z",
+      "side": 1,
+      "message": "2022",
+      "range": {
+        "startLine": 2,
+        "startChar": 13,
+        "endLine": 2,
+        "endChar": 17
+      },
+      "revId": "87827381c5651378d5a1d2cb40ed6520b3423a72",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
