@@ -31,6 +31,7 @@
 #include "include/gpu/GrBackendSurface.h"
 #include "include/gpu/GrContextThreadSafeProxy.h"
 #include "include/gpu/GrDirectContext.h"
+#include "src/core/SkSamplingPriv.h"
 #include "src/gpu/GrDirectContextPriv.h"
 #include "src/gpu/GrFragmentProcessor.h"
 #include "src/gpu/GrImageContextPriv.h"
@@ -388,10 +389,20 @@ std::unique_ptr<GrFragmentProcessor> SkImage_Base::MakeFragmentProcessorFromView
                                      GrBicubicEffect::Direction::kXY,
                                      *rContext->priv().caps());
     }
-    if (view.proxy()->asTextureProxy()->mipmapped() == GrMipmapped::kNo) {
+    if (sampling.isAniso()) {
+        if (!rContext->priv().caps()->anisoSupport()) {
+            // Fallback to linear
+            sampling = SkSamplingPriv::AnisoFallback(view.mipmapped() == GrMipmapped::kYes);
+        }
+    } else if (view.mipmapped() == GrMipmapped::kNo) {
         sampling = SkSamplingOptions(sampling.filter);
     }
-    GrSamplerState sampler(wmx, wmy, sampling.filter, sampling.mipmap);
+    GrSamplerState sampler;
+    if (sampling.isAniso()) {
+        sampler = GrSamplerState::Aniso(wmx, wmy, sampling.maxAniso, view.mipmapped());
+    } else {
+        sampler = GrSamplerState(wmx, wmy, sampling.filter, sampling.mipmap);
+    }
     if (subset) {
         if (domain) {
             return GrTextureEffect::MakeSubset(std::move(view),
@@ -756,27 +767,4 @@ SkSamplingOptions SkSamplingPriv::FromFQ(SkLegacyFQ fq, SkMediumAs behavior) {
             break;
     }
     return SkSamplingOptions(SkFilterMode::kNearest, SkMipmapMode::kNone);
-}
-
-SkSamplingOptions SkSamplingPriv::Read(SkReadBuffer& buffer) {
-    if (buffer.readBool()) {
-        SkScalar B = buffer.readScalar(),
-                 C = buffer.readScalar();
-        return SkSamplingOptions({B,C});
-    } else {
-        auto filter = buffer.read32LE<SkFilterMode>(SkFilterMode::kLinear);
-        auto mipmap = buffer.read32LE<SkMipmapMode>(SkMipmapMode::kLinear);
-        return SkSamplingOptions(filter, mipmap);
-    }
-}
-
-void SkSamplingPriv::Write(SkWriteBuffer& buffer, const SkSamplingOptions& sampling) {
-    buffer.writeBool(sampling.useCubic);
-    if (sampling.useCubic) {
-        buffer.writeScalar(sampling.cubic.B);
-        buffer.writeScalar(sampling.cubic.C);
-    } else {
-        buffer.writeUInt((unsigned)sampling.filter);
-        buffer.writeUInt((unsigned)sampling.mipmap);
-    }
 }

@@ -44,6 +44,7 @@
 #include <cstddef>
 #include <cstring>
 #include <type_traits>
+#include "src/core/SkSamplingPriv.h"
 
 inline SkImage_Gpu::ProxyChooser::ProxyChooser(sk_sp<GrSurfaceProxy> stableProxy)
         : fStableProxy(std::move(stableProxy)) {
