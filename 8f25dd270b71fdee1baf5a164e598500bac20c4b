@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "930602df_b92ab07f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-03-30T14:19:44Z",
+      "side": 1,
+      "message": "Forgot to doublecheck the WASM build before https://skia-review.googlesource.com/c/skia/+/525796",
+      "revId": "8f25dd270b71fdee1baf5a164e598500bac20c4b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
