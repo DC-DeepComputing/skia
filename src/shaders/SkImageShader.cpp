@@ -138,7 +138,7 @@ sk_sp<SkFlattenable> SkImageShader::CreateProc(SkReadBuffer& buffer) {
         // we just default to Nearest in sampling
     }
     if (readSampling) {
-        sampling = SkSamplingPriv::Read(buffer);
+        sampling = buffer.readSampling();
     }
 
     SkMatrix localMatrix;
@@ -162,7 +162,7 @@ void SkImageShader::flatten(SkWriteBuffer& buffer) const {
     buffer.writeUInt((unsigned)fTileModeX);
     buffer.writeUInt((unsigned)fTileModeY);
 
-    SkSamplingPriv::Write(buffer, fSampling);
+    buffer.writeSampling(fSampling);
 
     buffer.writeMatrix(this->getLocalMatrix());
     buffer.writeImage(fImage.get());
@@ -222,6 +222,11 @@ SkShaderBase::Context* SkImageShader::onMakeContext(const ContextRec& rec,
         return nullptr;
     }
 
+    SkSamplingOptions sampling = fSampling;
+    if (sampling.isAniso()) {
+        sampling = SkSamplingPriv::AnisoFallback(fImage->hasMipmaps());
+    }
+
     auto supported = [](const SkSamplingOptions& sampling) {
         const std::tuple<SkFilterMode,SkMipmapMode> supported[] = {
             {SkFilterMode::kNearest, SkMipmapMode::kNone},    // legacy None
@@ -235,7 +240,7 @@ SkShaderBase::Context* SkImageShader::onMakeContext(const ContextRec& rec,
         }
         return false;
     };
-    if (fSampling.useCubic || !supported(fSampling)) {
+    if (sampling.useCubic || !supported(sampling)) {
         return nullptr;
     }
 
@@ -264,7 +269,7 @@ SkShaderBase::Context* SkImageShader::onMakeContext(const ContextRec& rec,
         return nullptr;
     }
 
-    return SkBitmapProcLegacyShader::MakeContext(*this, fTileModeX, fTileModeY, fSampling,
+    return SkBitmapProcLegacyShader::MakeContext(*this, fTileModeX, fTileModeY, sampling,
                                                  as_IB(fImage.get()), rec, alloc);
 }
 #endif
