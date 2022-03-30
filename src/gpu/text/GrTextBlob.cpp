@@ -66,6 +66,9 @@ enum GrSubRun::SubRunType : int {
     kSubRunTypeCount,
 };
 
+// The maximum number of glyph per SubRun - an arbitrary but large number.
+static constexpr int kMaxGlyphCount = 1 << 20;
+
 // -- GrBlobSubRun ---------------------------------------------------------------------------------
 class GrBlobSubRun {
 public:
@@ -248,7 +251,7 @@ std::optional<TransformedMaskVertexFiller> TransformedMaskVertexFiller::MakeFrom
     SkRect sourceBounds = buffer.readRect();
 
     int glyphCount = buffer.readInt();
-    if (!buffer.validate(0 < glyphCount)) { return {}; }
+    if (!buffer.validate(0 < glyphCount && glyphCount < kMaxGlyphCount)) { return {}; }
     PositionAndExtent* positionAndExtentStorage =
             alloc->makePODArray<PositionAndExtent>(glyphCount);
     for (int i = 0; i < glyphCount; ++i) {
@@ -547,7 +550,7 @@ std::optional<PathOpSubmitter> PathOpSubmitter::MakeFromBuffer(SkReadBuffer& buf
     SkScalar strikeToSourceScale = buffer.readScalar();
 
     int glyphCount = buffer.readInt();
-    if (!buffer.validate(0 < glyphCount)) { return {}; }
+    if (!buffer.validate(0 < glyphCount && glyphCount < kMaxGlyphCount)) { return {}; }
     if (!buffer.validateCanReadN<SkPoint>(glyphCount)) { return {}; }
     SkPoint* positions = alloc->makePODArray<SkPoint>(glyphCount);
     for (int i = 0; i < glyphCount; ++i) {
@@ -809,7 +812,7 @@ std::optional<DrawableOpSubmitter> DrawableOpSubmitter::MakeFromBuffer(
     SkScalar strikeToSourceScale = buffer.readScalar();
 
     int glyphCount = buffer.readInt();
-    if (!buffer.validate(0 < glyphCount)) { return {}; }
+    if (!buffer.validate(0 < glyphCount && glyphCount < kMaxGlyphCount)) { return {}; }
     if (!buffer.validateCanReadN<SkPoint>(glyphCount)) { return {}; }
     SkPoint* positions = alloc->makePODArray<SkPoint>(glyphCount);
     for (int i = 0; i < glyphCount; ++i) {
@@ -3194,7 +3197,7 @@ GrSubRunOwner DirectMaskSubRunSlug::MakeFromBuffer(const GrTextReferenceFrame* r
     pun_read(buffer, &runBounds);
 
     int glyphCount = buffer.readInt();
-    if (!buffer.validate(0 < glyphCount)) { return nullptr; }
+    if (!buffer.validate(0 < glyphCount && glyphCount < kMaxGlyphCount)) { return nullptr; }
     if (!buffer.validateCanReadN<DevicePosition>(glyphCount)) { return nullptr; }
     DevicePosition* positionsData = alloc->makePODArray<DevicePosition>(glyphCount);
     for (int i = 0; i < glyphCount; ++i) {
