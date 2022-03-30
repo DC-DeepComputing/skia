@@ -1,0 +1,8 @@
+# We only use this to build glslang in service of ANGLE
+
+# Paths to glslang dependencies in ANGLE
+glslang_spirv_tools_dir = "//third_party/externals/spirv-tools"
+
+# Reduce glslang's features to what the Vulkan backend of ANGLE uses. This both speeds up glslang's
+# initialization and reduces binary footprint.
+# glslang_angle = true
