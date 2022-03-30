@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f67a75ae_104cd33d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-03-30T19:25:32Z",
+      "side": 1,
+      "message": "A lot to digest in here, but I believe this lgtm. But would like Rob to at least give it a scan over to make sure I didn\u0027t miss something",
+      "revId": "01e972ffe2277771aad4896c31048a244d51efae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2b895119_e349de94",
+        "filename": "experimental/graphite/src/geom/Transform.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-03-30T19:25:32Z",
+      "side": 1,
+      "message": "Yeah this seems like a good utility function that isn\u0027t special to Transform. So I support moving it up.",
+      "range": {
+        "startLine": 26,
+        "startChar": 16,
+        "endLine": 26,
+        "endChar": 45
+      },
+      "revId": "01e972ffe2277771aad4896c31048a244d51efae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
