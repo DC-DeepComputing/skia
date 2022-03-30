@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b25a90e6_3d20e5c9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-03-30T14:11:36Z",
+      "side": 1,
+      "message": "A shame we\u0027re stuck with this for Metal and Dawn.",
+      "revId": "f8f2ffef8a1d4d4c661338816306577ab336373c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
