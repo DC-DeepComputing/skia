@@ -184,7 +184,7 @@ DSLPossibleExpression DSLVarBase::operator[](DSLExpression&& index) {
 
 DSLPossibleExpression DSLVarBase::assign(DSLExpression expr) {
     return BinaryExpression::Convert(ThreadContext::Context(),
-            DSLExpression(*this, Position()).release(), SkSL::Token::Kind::TK_EQ,
+            DSLExpression(*this, Position()).release(), SkSL::Operator::Kind::EQ,
             expr.release());
 }
 
