@@ -8,7 +8,10 @@
 #ifndef SkGradientShader_DEFINED
 #define SkGradientShader_DEFINED
 
+#include "include/core/SkColorSpace.h"
+#include "include/core/SkRefCnt.h"
 #include "include/core/SkShader.h"
+#include "include/core/SkTileMode.h"
 
 /** \class SkGradientShader
 

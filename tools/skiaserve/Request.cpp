@@ -9,6 +9,7 @@
 
 #include <memory>
 
+#include "include/core/SkColorSpace.h"
 #include "include/core/SkPictureRecorder.h"
 #include "include/gpu/GrDirectContext.h"
 #include "src/utils/SkJSONWriter.h"
