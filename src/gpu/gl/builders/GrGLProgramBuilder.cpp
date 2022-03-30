@@ -145,8 +145,8 @@ void GrGLProgramBuilder::computeCountsAndStrides(GrGLuint programID,
 }
 
 void GrGLProgramBuilder::addInputVars(const SkSL::Program::Inputs& inputs) {
-    if (inputs.fUseFlipRTUniform) {
-        this->addRTFlipUniform(SKSL_RTFLIP_NAME);
+    if (inputs.fUseFlipRTUniform1) {
+        this->addRTFlipUniform(inputs.fRTFlipName7.c_str());
     }
 }
 

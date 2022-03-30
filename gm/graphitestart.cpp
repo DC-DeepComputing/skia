@@ -179,6 +179,7 @@ protected:
             canvas->drawPath(path, p);
         }
 
+#if 0
         // UR corner
         {
             SkRect r{129, 2, 255, 127};
@@ -207,6 +208,7 @@ protected:
 #endif
 
         draw_blend_mode_swatches(canvas, SkRect::MakeXYWH(128, 256, 128, 128));
+#endif
     }
 
 private:

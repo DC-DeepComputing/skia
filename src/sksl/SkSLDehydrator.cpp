@@ -655,11 +655,12 @@ void Dehydrator::write(const Program& program) {
     this->writeCommand(Rehydrator::kElementsComplete_Command);
 
     // Write the inputs
-    struct KnownSkSLProgramInputs { bool useRTFlipUniform; };
+    struct KnownSkSLProgramInputs { bool useRTFlipUniform; std::string fRTFlipName; };
     // Since it would be easy to forget to update this code in the face of Inputs changes and any
     // resulting bugs could be very subtle, assert that the struct hasn't changed:
     static_assert(sizeof(SkSL::Program::Inputs) == sizeof(KnownSkSLProgramInputs));
-    this->writeU8(program.fInputs.fUseFlipRTUniform);
+    this->writeU8(program.fInputs.fUseFlipRTUniform1);
+    // ??
 }
 
 void Dehydrator::finish(OutputStream& out) {

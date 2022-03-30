@@ -305,7 +305,8 @@ std::unique_ptr<Program> Rehydrator::program() {
     context.fConfig = oldConfig;
     context.fModifiersPool = oldModifiersPool;
     Program::Inputs inputs;
-    inputs.fUseFlipRTUniform = this->readU8();
+    inputs.fUseFlipRTUniform1 = this->readU8();
+    inputs.fRTFlipName7 = this->readString();
     std::unique_ptr<Pool> pool = std::move(ThreadContext::MemoryPool());
     pool->detachFromThread();
     std::unique_ptr<Program> result = std::make_unique<Program>(nullptr, std::move(config),
