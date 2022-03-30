@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "dfe44246_29559ca6",
+        "filename": "gn/ios.gni",
+        "patchSetId": 1
+      },
+      "lineNbr": 217,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-03-30T18:08:34Z",
+      "side": 1,
+      "message": "Where\u0027s a good place to put it where it can be seen here and in gn/skia/BUILD.gn? I don\u0027t have a good sense of the tree of GN file dependencies.",
+      "parentUuid": "b240dc43_22587e3c",
+      "range": {
+        "startLine": 217,
+        "startChar": 10,
+        "endLine": 217,
+        "endChar": 56
+      },
+      "revId": "629a3655a8c24bad346b0fc9cfe2469c8e680fad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2111466a_8e0bbc73",
         "filename": "gn/skia/BUILD.gn",
         "patchSetId": 1
