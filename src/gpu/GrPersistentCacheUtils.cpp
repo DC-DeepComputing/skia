@@ -13,14 +13,14 @@
 
 namespace GrPersistentCacheUtils {
 
-static constexpr int kCurrentVersion = 8;
+static constexpr int kCurrentVersion = 9;
 
 int GetCurrentVersion() {
     // The persistent cache stores a copy of the SkSL::Program::Inputs struct. If you alter the
     // Program::Inputs struct in any way, you must increment kCurrentVersion to invalidate the
     // outdated persistent cache files. The KnownSkSLProgramInputs struct must also be updated to
     // match the new contents of Program::Inputs.
-    struct KnownSkSLProgramInputs { bool useRTFlipUniform; };
+    struct KnownSkSLProgramInputs { bool useRTFlipUniform; std::string fRTFlipName; };
     static_assert(sizeof(SkSL::Program::Inputs) == sizeof(KnownSkSLProgramInputs));
 
     return kCurrentVersion;

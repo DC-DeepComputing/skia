@@ -1103,7 +1103,7 @@ SpvId SPIRVCodeGenerator::writeSpecialIntrinsic(const FunctionCall& c, SpecialIn
             this->addRTFlipUniform(c.fPosition);
             using namespace dsl;
             DSLExpression rtFlip(ThreadContext::Compiler().convertIdentifier(Position(),
-                    SKSL_RTFLIP_NAME));
+                                                                             fProgram.fInputs.fRTFlipName7));
             SpvId rtFlipY = this->vectorize(*rtFlip.y().release(), callType.columns(), out);
             SpvId flipped = this->nextId(&callType);
             this->writeInstruction(SpvOpFMul, this->getType(callType), flipped, result, rtFlipY,
@@ -2119,7 +2119,7 @@ SpvId SPIRVCodeGenerator::writeVariableReference(const VariableReference& ref, O
             // terms of $device_FragCoords, which is a fake variable that means "access the
             // underlying fragcoords directly without flipping it".
             DSLExpression rtFlip(ThreadContext::Compiler().convertIdentifier(Position(),
-                    SKSL_RTFLIP_NAME));
+                                                                             fProgram.fInputs.fRTFlipName7));
             if (!symbols[DEVICE_COORDS_NAME]) {
                 AutoAttachPoolToThread attach(fProgram.fPool.get());
                 Modifiers modifiers;
@@ -2154,7 +2154,7 @@ SpvId SPIRVCodeGenerator::writeVariableReference(const VariableReference& ref, O
             // terms of $device_Clockwise, which is a fake variable that means "access the
             // underlying FrontFacing directly".
             DSLExpression rtFlip(ThreadContext::Compiler().convertIdentifier(Position(),
-                    SKSL_RTFLIP_NAME));
+                                                                             fProgram.fInputs.fRTFlipName7));
             if (!symbols[DEVICE_CLOCKWISE_NAME]) {
                 AutoAttachPoolToThread attach(fProgram.fPool.get());
                 Modifiers modifiers;
@@ -3057,7 +3057,7 @@ SpvId SPIRVCodeGenerator::writeInterfaceBlock(const InterfaceBlock& intf, bool a
         return this->nextId(nullptr);
     }
     SpvStorageClass_ storageClass = get_storage_class(intf.variable(), SpvStorageClassFunction);
-    if (fProgram.fInputs.fUseFlipRTUniform && appendRTFlip && type.isStruct()) {
+    if (fProgram.fInputs.fUseFlipRTUniform1 && appendRTFlip && type.isStruct()) {
         // We can only have one interface block (because we use push_constant and that is limited
         // to one per program), so we need to append rtflip to this one rather than synthesize an
         // entirely new block when the variable is referenced. And we can't modify the existing
@@ -3072,7 +3072,7 @@ SpvId SPIRVCodeGenerator::writeInterfaceBlock(const InterfaceBlock& intf, bool a
                                              /*builtin=*/-1,
                                              /*inputAttachmentIndex=*/-1),
                                       /*flags=*/0),
-                            SKSL_RTFLIP_NAME,
+                            fProgram.fInputs.fRTFlipName7,
                             fContext.fTypes.fFloat2.get());
         {
             AutoAttachPoolToThread attach(fProgram.fPool.get());
@@ -3519,7 +3519,7 @@ void SPIRVCodeGenerator::addRTFlipUniform(Position pos) {
                                          /*builtin=*/-1,
                                          /*inputAttachmentIndex=*/-1),
                                   /*flags=*/0),
-                        SKSL_RTFLIP_NAME,
+                        fProgram.fInputs.fRTFlipName7,
                         fContext.fTypes.fFloat2.get());
     std::string_view name = "sksl_synthetic_uniforms";
     const Type* intfStruct = fSynthetics.takeOwnershipOfSymbol(

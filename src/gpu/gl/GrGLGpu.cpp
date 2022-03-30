@@ -3181,7 +3181,7 @@ bool GrGLGpu::createCopyProgram(GrTexture* srcTex) {
     GrGLuint vshader = GrGLCompileAndAttachShader(*fGLContext, fCopyPrograms[progIdx].fProgram,
                                                   GR_GL_VERTEX_SHADER, glsl, fProgramCache->stats(),
                                                   errorHandler);
-    SkASSERT(program->fInputs == SkSL::Program::Inputs());
+    SkASSERT(program->fInputs == SkSL::Program::Inputs(true));
 
     sksl.assign(fshaderTxt.c_str(), fshaderTxt.size());
     program = GrSkSLtoGLSL(this, SkSL::ProgramKind::kFragment, sksl, settings, &glsl,
@@ -3189,7 +3189,7 @@ bool GrGLGpu::createCopyProgram(GrTexture* srcTex) {
     GrGLuint fshader = GrGLCompileAndAttachShader(*fGLContext, fCopyPrograms[progIdx].fProgram,
                                                   GR_GL_FRAGMENT_SHADER, glsl,
                                                   fProgramCache->stats(), errorHandler);
-    SkASSERT(program->fInputs == SkSL::Program::Inputs());
+    SkASSERT(program->fInputs == SkSL::Program::Inputs(true));
 
     GL_CALL(LinkProgram(fCopyPrograms[progIdx].fProgram));
 
@@ -3335,7 +3335,7 @@ bool GrGLGpu::createMipmapProgram(int progIdx) {
     GrGLuint vshader = GrGLCompileAndAttachShader(*fGLContext, fMipmapPrograms[progIdx].fProgram,
                                                   GR_GL_VERTEX_SHADER, glsl,
                                                   fProgramCache->stats(), errorHandler);
-    SkASSERT(program->fInputs == SkSL::Program::Inputs());
+    SkASSERT(program->fInputs == SkSL::Program::Inputs(true));
 
     sksl.assign(fshaderTxt.c_str(), fshaderTxt.size());
     program = GrSkSLtoGLSL(this, SkSL::ProgramKind::kFragment, sksl, settings, &glsl,
@@ -3343,7 +3343,7 @@ bool GrGLGpu::createMipmapProgram(int progIdx) {
     GrGLuint fshader = GrGLCompileAndAttachShader(*fGLContext, fMipmapPrograms[progIdx].fProgram,
                                                   GR_GL_FRAGMENT_SHADER, glsl,
                                                   fProgramCache->stats(), errorHandler);
-    SkASSERT(program->fInputs == SkSL::Program::Inputs());
+    SkASSERT(program->fInputs == SkSL::Program::Inputs(true));
 
     GL_CALL(LinkProgram(fMipmapPrograms[progIdx].fProgram));
 

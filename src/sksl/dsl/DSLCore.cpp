@@ -61,13 +61,13 @@ void Start(SkSL::Compiler* compiler, ProgramKind kind) {
 
 void Start(SkSL::Compiler* compiler, ProgramKind kind, const ProgramSettings& settings) {
     ThreadContext::SetInstance(std::make_unique<ThreadContext>(compiler, kind, settings,
-            compiler->moduleForProgramKind(kind), /*isModule=*/false));
+            compiler->moduleForProgramKind(kind), /*isModule=*/false, true));
 }
 
 void StartModule(SkSL::Compiler* compiler, ProgramKind kind, const ProgramSettings& settings,
                  SkSL::ParsedModule baseModule) {
     ThreadContext::SetInstance(std::make_unique<ThreadContext>(compiler, kind, settings,
-            baseModule, /*isModule=*/true));
+            baseModule, /*isModule=*/true, true));
 }
 
 void End() {
