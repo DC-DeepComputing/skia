@@ -8,8 +8,8 @@
 #ifndef SKSL_POSTFIXEXPRESSION
 #define SKSL_POSTFIXEXPRESSION
 
+#include "include/sksl/SkSLOperator.h"
 #include "src/sksl/SkSLLexer.h"
-#include "src/sksl/SkSLOperators.h"
 #include "src/sksl/ir/SkSLExpression.h"
 
 namespace SkSL {
