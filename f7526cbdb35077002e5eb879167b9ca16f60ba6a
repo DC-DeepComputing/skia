@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f6c4dcd3_5c52843e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-03-30T16:58:51Z",
+      "side": 1,
+      "message": "This is still a bit rough and subject to a lot of change, but it does work. Mostly looking to see if there are any suggestions about the modules/svg proposed changes. Are there better ways to do this?",
+      "revId": "f7526cbdb35077002e5eb879167b9ca16f60ba6a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
