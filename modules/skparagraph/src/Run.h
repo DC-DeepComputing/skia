@@ -155,7 +155,7 @@ public:
 
     void commit();
 
-    SkRect getBounds(size_t pos) const { return fBounds[pos]; }
+    //SkRect getBounds(size_t pos) const { return fBounds[pos]; }
 
     void resetJustificationShifts() {
         fJustificationShifts.reset();
@@ -185,13 +185,13 @@ private:
         SkSTArray<64, SkGlyphID, true> glyphs;
         SkSTArray<64, SkPoint, true> positions;
         SkSTArray<64, uint32_t, true> clusterIndexes;
-        SkSTArray<64, SkRect, true> bounds;
+        //SkSTArray<64, SkRect, true> bounds;
     };
     std::shared_ptr<GlyphData> fGlyphData;
     SkSTArray<64, SkGlyphID, true>& fGlyphs;
     SkSTArray<64, SkPoint, true>& fPositions;
     SkSTArray<64, uint32_t, true>& fClusterIndexes;
-    SkSTArray<64, SkRect, true>& fBounds;
+    //SkSTArray<64, SkRect, true>& fBounds;
 
     SkSTArray<64, SkPoint, true> fJustificationShifts; // For justification (current and prev shifts)
 

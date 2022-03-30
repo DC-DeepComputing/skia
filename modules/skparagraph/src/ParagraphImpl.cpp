@@ -110,6 +110,7 @@ int32_t ParagraphImpl::unresolvedGlyphs() {
 }
 
 void ParagraphImpl::layout(SkScalar rawWidth) {
+
     // TODO: This rounding is done to match Flutter tests. Must be removed...
     auto floorWidth = SkScalarFloorToScalar(rawWidth);
 
@@ -127,46 +128,7 @@ void ParagraphImpl::layout(SkScalar rawWidth) {
         // Nothing changed case: we can reuse the data from the last layout
     }
 
-
-    this->simpleLayout(floorWidth);
-    if (!fLayoutFailed) {
-        return;
-    }
-    this->setBreakingLevel(BreakLevel::kGrapheme);
-    this->complexLayout(floorWidth);
-}
-
-void ParagraphImpl::emptyLayout(SkScalar floorWidth) {
-    // Set the important values that are not zero
-    fWidth = floorWidth;
-    fHeight = fEmptyMetrics.height();
-    if (fParagraphStyle.getStrutStyle().getStrutEnabled() &&
-        fParagraphStyle.getStrutStyle().getForceStrutHeight()) {
-        fHeight = fStrutMetrics.height();
-    }
-    fAlphabeticBaseline = fEmptyMetrics.alphabeticBaseline();
-    fIdeographicBaseline = fEmptyMetrics.ideographicBaseline();
-    fLongestLine = FLT_MIN - FLT_MAX; // That is what flutter has
-    fMinIntrinsicWidth = 0;
-    fMaxIntrinsicWidth = 0;
-    fOldWidth = floorWidth;
-    fOldHeight = fHeight;
-}
-
-bool ParagraphImpl::simpleLayout(SkScalar floorWidth) {
-
-    this->setBreakingLevel(BreakLevel::kText);
-
-    if (fTextStyles.size() > 1) {
-        fLayoutFailed = true;
-        return false;
-    }
-
     if (fState < kShaped) {
-        if (fPlaceholders.size() > 1 || fBidiRegions.size() > 1) {
-            fLayoutFailed = true;
-            return false;
-        }
         this->fCodeUnitProperties.reset();
         this->fCodeUnitProperties.push_back_n(fText.size() + 1, CodeUnitFlags::kNoCodeUnitFlag);
         this->fWords.clear();
@@ -177,85 +139,28 @@ bool ParagraphImpl::simpleLayout(SkScalar floorWidth) {
         this->fClusters.reset();
         this->fClustersIndexFromCodeUnit.reset();
         this->fClustersIndexFromCodeUnit.push_back_n(fText.size() + 1, EMPTY_INDEX);
-        if (!this->shapeTextIntoEndlessLine(floorWidth)) {
-            // Empty text always simple
-            SkASSERT(!fLayoutFailed);
+        if (!this->shapeTextIntoEndlessLine()) {
             this->resetContext();
-            this->resetShifts();
-            this->emptyLayout(floorWidth);
-            return true;
-        }
-        fState = kMarked;
-    }
+            // TODO: merge the two next calls - they always come together
+            this->resolveStrut();
+            this->computeEmptyMetrics();
+            this->fLines.reset();
 
-    if (fLayoutFailed) {
-        return false;
-    }
+            // Set the important values that are not zero
+            fWidth = floorWidth;
+            fHeight = fEmptyMetrics.height();
+            if (fParagraphStyle.getStrutStyle().getStrutEnabled() &&
+                fParagraphStyle.getStrutStyle().getForceStrutHeight()) {
+                fHeight = fStrutMetrics.height();
+            }
+            fAlphabeticBaseline = fEmptyMetrics.alphabeticBaseline();
+            fIdeographicBaseline = fEmptyMetrics.ideographicBaseline();
+            fLongestLine = FLT_MIN - FLT_MAX; // That is what flutter has
+            fMinIntrinsicWidth = 0;
+            fMaxIntrinsicWidth = 0;
+            this->fOldWidth = floorWidth;
+            this->fOldHeight = this->fHeight;
 
-    if (fState < kLineBroken) {
-        if ((fUnresolvedGlyphs > 0) ||
-            (fRuns.size() > 1) ||
-            (fRuns.size() == 1 && fRuns[0].advance().x() > floorWidth)) {
-            fLayoutFailed = true;
-            return true;
-        }
-        this->resetContext();
-        this->moveShapedTextIntoSingleLine(floorWidth);
-        fState = kLineBroken;
-    }
-
-    if (fState < kFormatted) {
-        if (fParagraphStyle.getTextAlign() == TextAlign::kJustify) {
-            fLayoutFailed = true;
-            return false;
-        }
-        this->resetShifts();
-        this->formatLines(fWidth);
-        fState = kFormatted;
-    }
-
-    this->fOldWidth = floorWidth;
-    this->fOldHeight = this->fHeight;
-
-    // TODO: This rounding is done to match Flutter tests. Must be removed...
-    fMinIntrinsicWidth = littleRound(fMinIntrinsicWidth);
-    fMaxIntrinsicWidth = littleRound(fMaxIntrinsicWidth);
-
-    // TODO: This is strictly Flutter thing. Must be factored out into some flutter code
-    if (fParagraphStyle.getMaxLines() == 1 ||
-        (fParagraphStyle.unlimited_lines() && fParagraphStyle.ellipsized())) {
-        fMinIntrinsicWidth = fMaxIntrinsicWidth;
-    }
-
-    // TODO: Since min and max are calculated differently it's possible to get a rounding error
-    //  that would make min > max. Sort it out later, make it the same for now
-    if (fMaxIntrinsicWidth < fMinIntrinsicWidth) {
-        fMaxIntrinsicWidth = fMinIntrinsicWidth;
-    }
-
-    //SkDebugf("layout('%s', %f): %f %f\n", fText.c_str(), rawWidth, fMinIntrinsicWidth, fMaxIntrinsicWidth);
-    return true;
-}
-
-void ParagraphImpl::complexLayout(SkScalar floorWidth) {
-
-    if (fState < kShaped) {
-
-        this->fCodeUnitProperties.reset();
-        this->fCodeUnitProperties.push_back_n(fText.size() + 1, CodeUnitFlags::kNoCodeUnitFlag);
-        this->fWords.clear();
-        this->fBidiRegions.clear();
-        this->fUTF8IndexForUTF16Index.reset();
-        this->fUTF16IndexForUTF8Index.reset();
-        this->fRuns.reset();
-        this->fClusters.reset();
-        this->fClustersIndexFromCodeUnit.reset();
-        this->fClustersIndexFromCodeUnit.push_back_n(fText.size() + 1, EMPTY_INDEX);
-
-        if (!this->shapeTextIntoEndlessLine(floorWidth)) {
-            this->resetContext();
-            this->resetShifts();
-            this->emptyLayout(floorWidth);
             return;
         }
         fState = kMarked;
@@ -263,6 +168,9 @@ void ParagraphImpl::complexLayout(SkScalar floorWidth) {
 
     if (fState < kLineBroken) {
         this->resetContext();
+        this->resolveStrut();
+        this->computeEmptyMetrics();
+        this->fLines.reset();
         this->breakShapedTextIntoLines(floorWidth);
         fState = kLineBroken;
     }
@@ -297,29 +205,8 @@ void ParagraphImpl::complexLayout(SkScalar floorWidth) {
 }
 
 void ParagraphImpl::paint(SkCanvas* canvas, SkScalar x, SkScalar y) {
-
-    if (fParagraphStyle.getDrawOptions() == DrawOptions::kDirect) {
-        // Paint the text without recording it
-        this->paintLines(canvas, x, y);
-        return;
-    }
-
-    if (fState < kDrawn) {
-        // Record the picture anyway (but if we have some pieces in the cache they will be used)
-        this->paintLinesIntoPicture(0, 0);
-        fState = kDrawn;
-    }
-
-    if (fParagraphStyle.getDrawOptions() == DrawOptions::kReplay) {
-        // Replay the recorded picture
-        canvas->save();
-        canvas->translate(x, y);
-        fPicture->playback(canvas);
-        canvas->restore();
-    } else {
-        // Draw the picture
-        SkMatrix matrix = SkMatrix::Translate(x, y);
-        canvas->drawPicture(fPicture, &matrix, nullptr);
+    for (auto& line : fLines) {
+        line.paint(canvas, x, y);
     }
 }
 
@@ -333,15 +220,10 @@ void ParagraphImpl::resetContext() {
     fLongestLine = 0;
     fMaxWidthWithTrailingSpaces = 0;
     fExceededMaxLines = false;
-
-    this->resolveStrut();
-    this->computeEmptyMetrics();
-    this->fLines.reset();
 }
 
+// shapeTextIntoEndlessLine is the thing that calls this method
 bool ParagraphImpl::computeCodeUnitProperties() {
-
-    fCurrentLevel = BreakLevel::kNone;
 
     if (nullptr == fUnicode) {
         return false;
@@ -356,10 +238,8 @@ bool ParagraphImpl::computeCodeUnitProperties() {
     }
 
     // Get all spaces
-    bool hasLineBreak = false;
     fUnicode->forEachCodepoint(fText.c_str(), fText.size(),
-       [this, &hasLineBreak]
-       (SkUnichar unichar, int32_t start, int32_t end, int32_t count) {
+       [this](SkUnichar unichar, int32_t start, int32_t end, int32_t count) {
             if (fUnicode->isWhitespace(unichar)) {
                 for (auto i = start; i < end; ++i) {
                     fCodeUnitProperties[i] |=  CodeUnitFlags::kPartOfWhiteSpaceBreak;
@@ -370,19 +250,7 @@ bool ParagraphImpl::computeCodeUnitProperties() {
                     fCodeUnitProperties[i] |=  CodeUnitFlags::kPartOfIntraWordBreak;
                 }
             }
-            if (fUnicode->isHardLineBreak(unichar)) {
-                hasLineBreak = true;
-            }
        });
-
-    if (fRequiredLevel == BreakLevel::kText) {
-        if (hasLineBreak) {
-            fLayoutFailed = true;
-        } else {
-            fCurrentLevel = fRequiredLevel;
-        }
-        return true;
-    }
 
     // Get line breaks
     std::vector<SkUnicode::LineBreakBefore> lineBreaks;
@@ -404,7 +272,6 @@ bool ParagraphImpl::computeCodeUnitProperties() {
         fCodeUnitProperties[pos] |= CodeUnitFlags::kGraphemeStart;
     }
 
-    fCurrentLevel = fRequiredLevel;
     return true;
 }
 
@@ -527,7 +394,7 @@ void ParagraphImpl::buildClusterTable() {
     fClusters.emplace_back(this, EMPTY_RUN, 0, 0, this->text({fText.size(), fText.size()}), 0, 0);
 }
 
-bool ParagraphImpl::shapeTextIntoEndlessLine(SkScalar floorWidth) {
+bool ParagraphImpl::shapeTextIntoEndlessLine() {
 
     if (fText.size() == 0) {
         return false;
@@ -538,12 +405,8 @@ bool ParagraphImpl::shapeTextIntoEndlessLine(SkScalar floorWidth) {
         return true;
     }
 
-    if (!this->computeCodeUnitProperties()) {
+    if (!computeCodeUnitProperties()) {
         return false;
-    }
-
-    if (fLayoutFailed) {
-        return true;
     }
 
     fFontSwitches.reset();
@@ -559,7 +422,7 @@ bool ParagraphImpl::shapeTextIntoEndlessLine(SkScalar floorWidth) {
         fCodeUnitProperties[run.fTextRange.start] |= CodeUnitFlags::kGraphemeStart;
     }
 
-    if (!result || fRuns.empty()) {
+    if (!result) {
         return false;
     } else {
         // Add the paragraph to the cache
@@ -568,47 +431,7 @@ bool ParagraphImpl::shapeTextIntoEndlessLine(SkScalar floorWidth) {
     }
 }
 
-void ParagraphImpl::moveShapedTextIntoSingleLine(SkScalar maxWidth) {
-    SkASSERT(fRequiredLevel == BreakLevel::kText);
-    SkASSERT(fRuns.size() == 1);
-    auto& run = this->fRuns[0];
-    auto textRange = TextRange(0, this->text().size());
-    auto clusterRange = ClusterRange(0, this->clusters().size() - 1);
-    InternalLineMetrics simpleMetrics(this->paragraphStyle().getStrutStyle().getForceStrutHeight());
-    simpleMetrics.add(&run);
-
-    auto disableFirstAscent = (paragraphStyle().getTextHeightBehavior() & TextHeightBehavior::kDisableFirstAscent) == TextHeightBehavior::kDisableFirstAscent;
-    auto disableLastDescent = (paragraphStyle().getTextHeightBehavior() & TextHeightBehavior::kDisableLastDescent) == TextHeightBehavior::kDisableLastDescent;
-    simpleMetrics.update(
-        disableFirstAscent ? simpleMetrics.rawAscent() : simpleMetrics.ascent(),
-        disableLastDescent ? simpleMetrics.rawDescent() : simpleMetrics.descent(),
-        simpleMetrics.leading());
-
-    SkScalar width = std::min(run.advance().x(), maxWidth);
-    SkScalar height = simpleMetrics.height();
-
-    this->addLine(SkPoint::Make(0, 0),
-                  { width, height },
-                  textRange,
-                  textRange,
-                  textRange,
-                  clusterRange,
-                  clusterRange,
-                  width,
-                  simpleMetrics);
-
-    fLongestLine = width;
-    fHeight = height;
-    fWidth = maxWidth;
-    fMaxIntrinsicWidth = width;
-    fMinIntrinsicWidth = width;
-    fAlphabeticBaseline = fLines.empty() ? fEmptyMetrics.alphabeticBaseline() : fLines.front().alphabeticBaseline();
-    fIdeographicBaseline = fLines.empty() ? fEmptyMetrics.ideographicBaseline() : fLines.front().ideographicBaseline();
-    fExceededMaxLines = false;
-}
-
 void ParagraphImpl::breakShapedTextIntoLines(SkScalar maxWidth) {
-
     TextWrapper textWrapper;
     textWrapper.breakTextIntoLines(
             this,
@@ -644,7 +467,6 @@ void ParagraphImpl::breakShapedTextIntoLines(SkScalar maxWidth) {
 }
 
 void ParagraphImpl::formatLines(SkScalar maxWidth) {
-
     auto effectiveAlign = fParagraphStyle.effective_align();
 
     if (!SkScalarIsFinite(maxWidth) && effectiveAlign != TextAlign::kLeft) {
@@ -656,25 +478,6 @@ void ParagraphImpl::formatLines(SkScalar maxWidth) {
 
     for (auto& line : fLines) {
         line.format(effectiveAlign, maxWidth);
-    }
-}
-
-void ParagraphImpl::paintLinesIntoPicture(SkScalar x, SkScalar y) {
-    SkPictureRecorder recorder;
-    SkCanvas* textCanvas = recorder.beginRecording(this->getMaxWidth(), this->getHeight());
-
-    auto bounds = SkRect::MakeEmpty();
-    for (auto& line : fLines) {
-        auto boundaries = line.paint(textCanvas, x, y);
-        bounds.joinPossiblyEmptyRect(boundaries);
-    }
-
-    fPicture = recorder.finishRecordingAsPictureWithCull(bounds);
-}
-
-void ParagraphImpl::paintLines(SkCanvas* canvas, SkScalar x, SkScalar y) {
-    for (auto& line : fLines) {
-        line.paint(canvas, x, y);
     }
 }
 
@@ -969,10 +772,13 @@ void ParagraphImpl::setState(InternalState state) {
         case kMarked:
         case kLineBroken:
             this->resetContext();
+            this->resolveStrut();
+            this->computeEmptyMetrics();
+            this->resetShifts();
+            fLines.reset();
             [[fallthrough]];
 
         case kFormatted:
-            this->resetShifts();
             fPicture = nullptr;
             [[fallthrough]];
 
@@ -1120,12 +926,6 @@ TextIndex ParagraphImpl::findNextGraphemeBoundary(TextIndex utf8) {
 }
 
 void ParagraphImpl::ensureUTF16Mapping() {
-
-    if (fRequiredLevel == BreakLevel::kText) {
-        this->setBreakingLevel(BreakLevel::kGrapheme);
-        this->complexLayout(fWidth);
-    }
-
     if (!fUTF16IndexForUTF8Index.empty()) {
         return;
     }

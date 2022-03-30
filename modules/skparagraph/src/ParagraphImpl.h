@@ -202,11 +202,8 @@ public:
     bool computeCodeUnitProperties();
 
     void buildClusterTable();
-    bool shapeTextIntoEndlessLine(SkScalar floorWidth);
+    bool shapeTextIntoEndlessLine();
     void breakShapedTextIntoLines(SkScalar maxWidth);
-    void moveShapedTextIntoSingleLine(SkScalar maxWidth);
-    void paintLinesIntoPicture(SkScalar x, SkScalar y);
-    void paintLines(SkCanvas* canvas, SkScalar x, SkScalar y);
 
     void updateTextAlign(TextAlign textAlign) override;
     void updateText(size_t from, SkString text) override;
@@ -230,20 +227,6 @@ public:
     bool codeUnitHasProperty(size_t index, CodeUnitFlags property) const { return (fCodeUnitProperties[index] & property) == property; }
 
     SkUnicode* getUnicode() { return fUnicode.get(); }
-
-    void setBreakingLevel(BreakLevel level) {
-        fState = InternalState::kUnknown;
-        fCurrentLevel = BreakLevel::kNone;
-        fRequiredLevel = level;
-        fLayoutFailed = false;
-    }
-
-    bool isLayoutFailed() const { return fLayoutFailed; }
-    BreakLevel requiredLevel() const { return fRequiredLevel; }
-
-    bool simpleLayout(SkScalar floorWidth);
-    void complexLayout(SkScalar floorWidth);
-    void emptyLayout(SkScalar floorWidth);
 
 private:
     friend class ParagraphBuilder;
@@ -295,10 +278,6 @@ private:
     SkScalar fMaxWidthWithTrailingSpaces;
 
     std::shared_ptr<SkUnicode> fUnicode;
-
-    BreakLevel fCurrentLevel = BreakLevel::kNone;
-    BreakLevel fRequiredLevel = BreakLevel::kText;
-    bool fLayoutFailed = false;
 };
 
 }  // namespace textlayout

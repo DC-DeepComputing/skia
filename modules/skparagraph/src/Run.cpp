@@ -31,7 +31,7 @@ Run::Run(ParagraphImpl* owner,
     , fGlyphs(fGlyphData->glyphs)
     , fPositions(fGlyphData->positions)
     , fClusterIndexes(fGlyphData->clusterIndexes)
-    , fBounds(fGlyphData->bounds)
+    //, fBounds(fGlyphData->bounds)
     , fHeightMultiplier(heightMultiplier)
     , fUseHalfLeading(useHalfLeading)
     , fBaselineShift(baselineShift)
@@ -43,7 +43,7 @@ Run::Run(ParagraphImpl* owner,
     fOffset = SkVector::Make(offsetX, 0);
 
     fGlyphs.push_back_n(info.glyphCount);
-    fBounds.push_back_n(info.glyphCount);
+    //fBounds.push_back_n(info.glyphCount);
     fPositions.push_back_n(info.glyphCount + 1);
     fClusterIndexes.push_back_n(info.glyphCount + 1);
     info.fFont.getMetrics(&fFontMetrics);
@@ -85,7 +85,7 @@ SkShaper::RunHandler::Buffer Run::newRunBuffer() {
 }
 
 void Run::commit() {
-    fFont.getBounds(fGlyphs.data(), fGlyphs.size(), fBounds.data(), nullptr);
+    fFont.getBounds(fGlyphs.data(), fGlyphs.size(), /*fBounds.data()*/nullptr, nullptr);
 }
 
 void Run::copyTo(SkTextBlobBuilder& builder, size_t pos, size_t size) const {
