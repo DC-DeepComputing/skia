@@ -467,6 +467,7 @@ std::unique_ptr<Expression> Swizzle::Make(const Context& context,
             }
         }
         if (identity) {
+            expr->fPosition = pos;
             return expr;
         }
     }
@@ -494,7 +495,7 @@ std::unique_ptr<Expression> Swizzle::Make(const Context& context,
     if (value->is<ConstructorSplat>()) {
         const ConstructorSplat& splat = value->as<ConstructorSplat>();
         return ConstructorSplat::Make(
-                context, splat.fPosition,
+                context, pos,
                 splat.type().componentType().toCompound(context, components.size(), /*rows=*/1),
                 splat.argument()->clone());
     }
