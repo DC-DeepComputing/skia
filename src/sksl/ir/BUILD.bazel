@@ -10,8 +10,8 @@ generated_cc_atom(
         ":SkSLIndexExpression_hdr",
         ":SkSLSwizzle_hdr",
         ":SkSLTernaryExpression_hdr",
+        "//include/sksl:SkSLOperator_hdr",
         "//src/sksl:SkSLLexer_hdr",
-        "//src/sksl:SkSLOperators_hdr",
     ],
 )
 
@@ -786,8 +786,8 @@ generated_cc_atom(
     visibility = ["//:__subpackages__"],
     deps = [
         ":SkSLExpression_hdr",
+        "//include/sksl:SkSLOperator_hdr",
         "//src/sksl:SkSLLexer_hdr",
-        "//src/sksl:SkSLOperators_hdr",
     ],
 )
 
@@ -810,8 +810,8 @@ generated_cc_atom(
     visibility = ["//:__subpackages__"],
     deps = [
         ":SkSLExpression_hdr",
+        "//include/sksl:SkSLOperator_hdr",
         "//src/sksl:SkSLLexer_hdr",
-        "//src/sksl:SkSLOperators_hdr",
     ],
 )
 
@@ -1005,9 +1005,9 @@ generated_cc_atom(
         ":SkSLLiteral_hdr",
         ":SkSLTernaryExpression_hdr",
         "//include/sksl:SkSLErrorReporter_hdr",
+        "//include/sksl:SkSLOperator_hdr",
         "//src/sksl:SkSLConstantFolder_hdr",
         "//src/sksl:SkSLContext_hdr",
-        "//src/sksl:SkSLOperators_hdr",
         "//src/sksl:SkSLProgramSettings_hdr",
     ],
 )
