@@ -67,6 +67,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "bdf58bcb_c4c11d50",
+        "filename": "gn/ios.gni",
+        "patchSetId": 1
+      },
+      "lineNbr": 217,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-03-30T18:14:48Z",
+      "side": 1,
+      "message": "I think `gn/skia.gni` is probably a good place? It\u0027s not already pulled in by `gn/skia/BUILD.gn` but is already pulled in by `gn/ios.gni`.",
+      "parentUuid": "dfe44246_29559ca6",
+      "range": {
+        "startLine": 217,
+        "startChar": 10,
+        "endLine": 217,
+        "endChar": 56
+      },
+      "revId": "629a3655a8c24bad346b0fc9cfe2469c8e680fad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2111466a_8e0bbc73",
         "filename": "gn/skia/BUILD.gn",
         "patchSetId": 1
