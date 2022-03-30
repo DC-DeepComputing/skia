@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "eae43bb6_b494a4de",
+        "filename": "include/sksl/SkSLOperator.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-03-30T20:52:07Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "82507aa9_4e02f7a1",
+      "range": {
+        "startLine": 2,
+        "startChar": 13,
+        "endLine": 2,
+        "endChar": 17
+      },
+      "revId": "87827381c5651378d5a1d2cb40ed6520b3423a72",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "03a38594_afef396f",
@@ -85,6 +109,30 @@
       "side": 1,
       "message": "Gerrit isn\u0027t detecting it as a rename, but it was just SkSLOperators.cpp -\u003e SkSLOperator.cpp, so I left the copyright alone.",
       "parentUuid": "03a38594_afef396f",
+      "range": {
+        "startLine": 2,
+        "startChar": 13,
+        "endLine": 2,
+        "endChar": 17
+      },
+      "revId": "87827381c5651378d5a1d2cb40ed6520b3423a72",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fbe36a76_94828e1c",
+        "filename": "src/sksl/SkSLOperator.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-03-30T20:52:07Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "14db45db_7a946ac7",
       "range": {
         "startLine": 2,
         "startChar": 13,
