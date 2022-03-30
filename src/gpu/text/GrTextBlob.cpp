@@ -240,6 +240,10 @@ TransformedMaskVertexFiller TransformedMaskVertexFiller::Make(
             maskType, dstPadding, strikeToSourceScale, sourceBounds, positionAndExtent};
 }
 
+static bool check_glyph_count(SkReadBuffer& buffer, int glyphCount) {
+    return 0 < glyphCount && static_cast<size_t>(glyphCount) < (buffer.available() / 4);
+}
+
 std::optional<TransformedMaskVertexFiller> TransformedMaskVertexFiller::MakeFromBuffer(
         SkReadBuffer& buffer, GrSubRunAllocator* alloc) {
     GrMaskFormat maskType = (GrMaskFormat)buffer.readInt();
@@ -248,7 +252,7 @@ std::optional<TransformedMaskVertexFiller> TransformedMaskVertexFiller::MakeFrom
     SkRect sourceBounds = buffer.readRect();
 
     int glyphCount = buffer.readInt();
-    if (!buffer.validate(0 < glyphCount)) { return {}; }
+    if (!buffer.validate(check_glyph_count(buffer, glyphCount))) { return {}; }
     PositionAndExtent* positionAndExtentStorage =
             alloc->makePODArray<PositionAndExtent>(glyphCount);
     for (int i = 0; i < glyphCount; ++i) {
@@ -547,7 +551,7 @@ std::optional<PathOpSubmitter> PathOpSubmitter::MakeFromBuffer(SkReadBuffer& buf
     SkScalar strikeToSourceScale = buffer.readScalar();
 
     int glyphCount = buffer.readInt();
-    if (!buffer.validate(0 < glyphCount)) { return {}; }
+    if (!buffer.validate(check_glyph_count(buffer, glyphCount))) { return {}; }
     if (!buffer.validateCanReadN<SkPoint>(glyphCount)) { return {}; }
     SkPoint* positions = alloc->makePODArray<SkPoint>(glyphCount);
     for (int i = 0; i < glyphCount; ++i) {
@@ -809,7 +813,7 @@ std::optional<DrawableOpSubmitter> DrawableOpSubmitter::MakeFromBuffer(
     SkScalar strikeToSourceScale = buffer.readScalar();
 
     int glyphCount = buffer.readInt();
-    if (!buffer.validate(0 < glyphCount)) { return {}; }
+    if (!buffer.validate(check_glyph_count(buffer, glyphCount))) { return {}; }
     if (!buffer.validateCanReadN<SkPoint>(glyphCount)) { return {}; }
     SkPoint* positions = alloc->makePODArray<SkPoint>(glyphCount);
     for (int i = 0; i < glyphCount; ++i) {
@@ -3194,7 +3198,7 @@ GrSubRunOwner DirectMaskSubRunSlug::MakeFromBuffer(const GrTextReferenceFrame* r
     pun_read(buffer, &runBounds);
 
     int glyphCount = buffer.readInt();
-    if (!buffer.validate(0 < glyphCount)) { return nullptr; }
+    if (!buffer.validate(check_glyph_count(buffer, glyphCount))) { return nullptr; }
     if (!buffer.validateCanReadN<DevicePosition>(glyphCount)) { return nullptr; }
     DevicePosition* positionsData = alloc->makePODArray<DevicePosition>(glyphCount);
     for (int i = 0; i < glyphCount; ++i) {
