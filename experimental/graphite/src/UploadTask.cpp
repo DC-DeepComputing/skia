@@ -169,7 +169,7 @@ bool UploadList::appendUpload(Recorder* recorder,
                               SkColorType dataColorType,
                               const std::vector<MipLevel>& levels,
                               const SkIRect& dstRect) {
-    UploadInstance instance = UploadInstance::Make(recorder, textureProxy, dataColorType,
+    UploadInstance instance = UploadInstance::Make(recorder, std::move(textureProxy), dataColorType,
                                                    levels, dstRect);
     if (!instance.isValid()) {
         return false;
