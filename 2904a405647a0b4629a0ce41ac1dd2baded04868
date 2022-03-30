@@ -34,6 +34,24 @@
       "parentUuid": "ec7f4532_42ed405f",
       "revId": "2904a405647a0b4629a0ce41ac1dd2baded04868",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8f5eab6c_3d97f484",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2022-03-30T15:33:01Z",
+      "side": 1,
+      "message": "I was in the middle of switching this before realizing I put auto-submit on :/\nCan revert and re-land when VJ gets to it.",
+      "parentUuid": "052c4285_7358b3f9",
+      "revId": "2904a405647a0b4629a0ce41ac1dd2baded04868",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
