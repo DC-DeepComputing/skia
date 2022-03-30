@@ -55,6 +55,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "04a059ad_3a7f1d84",
+        "filename": "tools/debugger/BUILD.bazel",
+        "patchSetId": 3
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-03-30T13:50:58Z",
+      "side": 1,
+      "message": "This command will compile the debugger cc_library and enforce IWYU\n\nbazelisk build //tools/debugger --config\u003dclang --gpu_backend\u003dgl_backend --features skia_enforce_iwyu\n\n(the --features part is what turns on the enforcement or not)\nIf it finds something amiss, it will print an error message like:\nhttp://go/paste/5885104325918720",
+      "parentUuid": "1d6f2bf0_33549e06",
+      "revId": "07d050f3373880c838cdbb491573d3b6028d006c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ff4df418_2f5159f7",
         "filename": "tools/debugger/DebugCanvas.h",
         "patchSetId": 3
