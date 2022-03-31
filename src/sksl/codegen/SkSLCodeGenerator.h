@@ -45,7 +45,7 @@ protected:
     // for some such draws in our unit tests on GLES. They do not at -.48. All other GPUs passed
     // tests with -.499. Though, at this time the bias is not implemented in the MSL codegen and so
     // iOS/Metal was not tested.
-    static constexpr float kSharpenTexturesBias = -.48f;
+    static constexpr float kSharpenTexturesBias = -.475f;
 #endif
 
     const Context& fContext;
