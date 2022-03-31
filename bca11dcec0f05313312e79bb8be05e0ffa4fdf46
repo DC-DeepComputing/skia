@@ -1,0 +1,158 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3968af6e_cd24c6e9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 14
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-03-31T18:19:00Z",
+      "side": 1,
+      "message": "Thanks for doing this Kevin!",
+      "revId": "bca11dcec0f05313312e79bb8be05e0ffa4fdf46",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7a153d67_1b582920",
+        "filename": "src/core/SkDevice.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 508,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-03-31T18:19:00Z",
+      "side": 1,
+      "message": "Missing \u0027 \u0027 here",
+      "range": {
+        "startLine": 508,
+        "startChar": 4,
+        "endLine": 508,
+        "endChar": 5
+      },
+      "revId": "bca11dcec0f05313312e79bb8be05e0ffa4fdf46",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "106fd7b0_9439c6f9",
+        "filename": "src/core/SkImageInfo.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-03-31T18:19:00Z",
+      "side": 1,
+      "message": "If it won\u0027t fit on one line move the body down please",
+      "range": {
+        "startLine": 87,
+        "startChar": 45,
+        "endLine": 87,
+        "endChar": 51
+      },
+      "revId": "bca11dcec0f05313312e79bb8be05e0ffa4fdf46",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dbc6fde2_a6d6ec8c",
+        "filename": "src/core/SkMipmap.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 387,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-03-31T18:19:00Z",
+      "side": 1,
+      "message": "Nowadays we can replace these w/ the actual base type",
+      "revId": "bca11dcec0f05313312e79bb8be05e0ffa4fdf46",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cc790d7c_28d4f393",
+        "filename": "src/core/SkRasterPipeline.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-03-31T18:19:00Z",
+      "side": 1,
+      "message": "Do we actually need this here ?",
+      "revId": "bca11dcec0f05313312e79bb8be05e0ffa4fdf46",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1d6cc306_781466e6",
+        "filename": "src/shaders/gradients/SkGradientShader.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-03-31T18:19:00Z",
+      "side": 1,
+      "message": "Extra \u0027 \u0027 ?",
+      "range": {
+        "startLine": 46,
+        "startChar": 0,
+        "endLine": 46,
+        "endChar": 1
+      },
+      "revId": "bca11dcec0f05313312e79bb8be05e0ffa4fdf46",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d0fb6b8b_37caa607",
+        "filename": "tools/gpu/BackendSurfaceFactory.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-03-31T18:19:00Z",
+      "side": 1,
+      "message": "I guess we don\u0027t care if this is in a header since it is just our tools ?",
+      "revId": "bca11dcec0f05313312e79bb8be05e0ffa4fdf46",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4014b205_2c52a2b0",
+        "filename": "tools/gpu/YUVUtils.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-03-31T18:19:00Z",
+      "side": 1,
+      "message": "Same here ?",
+      "revId": "bca11dcec0f05313312e79bb8be05e0ffa4fdf46",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
