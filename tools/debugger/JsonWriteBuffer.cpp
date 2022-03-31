@@ -9,6 +9,7 @@
 
 #include "include/core/SkFlattenable.h"
 #include "include/core/SkPoint.h"
+#include "include/core/SkSamplingOptions.h"
 #include "include/core/SkString.h"
 #include "src/utils/SkJSONWriter.h"
 #include "tools/debugger/DrawCommand.h"
@@ -190,6 +191,16 @@ void JsonWriteBuffer::writeRegion(const SkRegion& region) {
 void JsonWriteBuffer::writePath(const SkPath& path) {
     this->append("path");
     DrawCommand::MakeJsonPath(*fWriter, path);
+}
+
+void JsonWriteBuffer::writeSampling(const SkSamplingOptions& sampling) {
+    this->append("sampling");
+    fWriter->appendS32(sampling.maxAniso);
+    fWriter->appendBool(sampling.useCubic);
+    fWriter->appendS32((int)sampling.filter);
+    fWriter->appendS32((int)sampling.mipmap);
+    fWriter->appendFloat(sampling.cubic.B);
+    fWriter->appendFloat(sampling.cubic.C);
 }
 
 size_t JsonWriteBuffer::writeStream(SkStream* stream, size_t length) {
