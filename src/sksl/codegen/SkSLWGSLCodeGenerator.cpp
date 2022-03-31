@@ -10,7 +10,17 @@
 #include "src/sksl/SkSLCompiler.h"
 #include "src/sksl/SkSLStringStream.h"
 #include "src/sksl/SkSLUtil.h"
+#include "src/sksl/ir/SkSLBinaryExpression.h"
+#include "src/sksl/ir/SkSLBlock.h"
+#include "src/sksl/ir/SkSLConstructor.h"
+#include "src/sksl/ir/SkSLConstructorCompound.h"
+#include "src/sksl/ir/SkSLExpression.h"
+#include "src/sksl/ir/SkSLExpressionStatement.h"
+#include "src/sksl/ir/SkSLFunctionDeclaration.h"
+#include "src/sksl/ir/SkSLFunctionDefinition.h"
 #include "src/sksl/ir/SkSLInterfaceBlock.h"
+#include "src/sksl/ir/SkSLLiteral.h"
+#include "src/sksl/ir/SkSLReturnStatement.h"
 #include "src/sksl/ir/SkSLVarDeclarations.h"
 
 // TODO(skia:13092): This is a temporary debug feature. Remove when the implementation is
@@ -19,6 +29,26 @@
 
 namespace SkSL {
 namespace {
+
+// See https://www.w3.org/TR/WGSL/#memory-view-types
+enum class PtrAddressSpace {
+    kFunction,
+    kPrivate,
+    kStorage,
+};
+
+std::string addressSpaceToString(PtrAddressSpace addressSpace) {
+    switch (addressSpace) {
+        case PtrAddressSpace::kFunction:
+            return "function";
+        case PtrAddressSpace::kPrivate:
+            return "private";
+        case PtrAddressSpace::kStorage:
+            return "storage";
+    }
+    SkDEBUGFAIL("unsupported ptr address space");
+    return "unsupported";
+}
 
 std::string toScalarType(const Type& type) {
     SkASSERT(type.typeKind() == Type::TypeKind::kScalar);
@@ -56,6 +86,10 @@ std::string toWGSLType(const Type& type) {
             break;
     }
     return std::string(type.name());
+}
+
+std::string toPtrType(const Type& type, PtrAddressSpace addressSpace = PtrAddressSpace::kFunction) {
+    return "ptr<" + addressSpaceToString(addressSpace) + ", " + toWGSLType(type) + ">";
 }
 
 std::string toWGSLBuiltinName(WGSLCodeGenerator::Builtin kind) {
@@ -114,6 +148,10 @@ std::optional<WGSLCodeGenerator::Builtin> builtinFromSkSLName(int builtin) {
             break;
     }
     return std::nullopt;
+}
+
+std::shared_ptr<SymbolTable> topLevelSymbolTable(const FunctionDefinition& f) {
+    return f.body()->as<Block>().symbolTable()->fParent;
 }
 
 }  // namespace
@@ -207,8 +245,299 @@ void WGSLCodeGenerator::writeBuiltinVariableDecl(const Type& type,
     this->writeLine(";");
 }
 
-void WGSLCodeGenerator::writeProgramElement(const ProgramElement& e) {
+void WGSLCodeGenerator::writeFunction(const FunctionDefinition& f) {
+    this->writeFunctionDeclaration(f.declaration());
+    this->write(" ");
+    this->writeBlock(f.body()->as<Block>());
+
+    if (f.declaration().isMain()) {
+        // We just emitted the user-defined main function. We next generate a program entry point
+        // that calls the user-defined main.
+        this->writeEntryPoint(f);
+    }
+}
+
+void WGSLCodeGenerator::writeFunctionDeclaration(const FunctionDeclaration& f) {
+    this->write("fn ");
+    this->write(f.mangledName());
+
+    // TODO(skia:13092): If a user-defined function references a pipeline stage input or output
+    // parameter, then that need to be propagated as part of the stage input/output struct down
+    // from the program entry point. We need to synthesize the necessary function arguments by
+    // walking the function body beforehand to determine required parameters (similarly to how
+    // SkSLMetalCodeGenerator does it).
+    this->write("(");
+    const char* separator = "";
+    for (const auto& param : f.parameters()) {
+        this->write(separator);
+        separator = ", ";
+        this->writeName(param->name());
+        this->write(": ");
+
+        // Declare an "out" function parameter as a pointer.
+        if (param->modifiers().fFlags & Modifiers::kOut_Flag) {
+            this->write(toPtrType(param->type()));
+        } else {
+            this->write(toWGSLType(param->type()));
+        }
+    }
+    this->write(")");
+
+    if (f.returnType().typeKind() != Type::TypeKind::kVoid) {
+        this->write(" -> ");
+        this->write(toWGSLType(f.returnType()));
+    }
+}
+
+void WGSLCodeGenerator::writeEntryPoint(const FunctionDefinition& main) {
+    SkASSERT(main.declaration().isMain());
+
+    // The input and output parameters for a vertex/fragment stage entry point function have the
+    // FSIn/FSOut/VSIn/VSOut struct types that have been synthesized in generateCode(). An entry
+    // point always has the same signature and acts as a trampoline to the user-defined main
+    // function.
+    std::string outputType;
+    if (fProgram.fConfig->fKind == ProgramKind::kVertex) {
+        this->writeLine("@stage(vertex) fn vertexMain(_stageIn: VSIn) -> VSOut {");
+        outputType = "VSOut";
+    } else if (fProgram.fConfig->fKind == ProgramKind::kFragment) {
+        this->writeLine("@stage(fragment) fn fragmentMain(_stageIn: FSIn) -> FSOut {");
+        outputType = "FSOut";
+    } else {
+        fContext.fErrors->error(Position(), "program kind not supported");
+        return;
+    }
+
+    // Declare the stage output struct.
+    fIndentation++;
+    this->write("var _stageOut: ");
+    this->write(outputType);
+    this->writeLine(";");
+
+    // Generate the function call to the user-defined main:
+    if (fProgram.fConfig->fKind == ProgramKind::kFragment) {
+        auto symbolTable = topLevelSymbolTable(main);
+        const Symbol* symbol = (*symbolTable)["sk_FragColor"];
+        SkASSERT(symbol);
+        if (main.declaration().returnType().matches(symbol->type())) {
+            this->write("_stageOut.sk_FragColor = ");
+        }
+    }
+
+    this->write(main.declaration().mangledName());
+    this->write("(");
+
+    // TODO(skia:13092): Inject stage input/output struct if the function needs to access varying
+    // variables.
+    if (main.declaration().parameters().size() != 0) {
+        const Type& type = main.declaration().parameters()[0]->type();
+        if (!type.matches(*fContext.fTypes.fFloat2)) {
+            fContext.fErrors->error(
+                    main.fPosition,
+                    "main function has unsupported parameter: " + type.description());
+            return;
+        }
+
+        this->write("_stageIn.sk_FragCoord.xy");
+    }
+
+    this->writeLine(");");
+
+    this->writeLine("return _stageOut;");
+    fIndentation--;
+    this->writeLine("}");
+}
+
+void WGSLCodeGenerator::writeStatement(const Statement& s) {
+    switch (s.kind()) {
+        case Statement::Kind::kBlock:
+            this->writeBlock(s.as<Block>());
+            break;
+        case Statement::Kind::kExpression:
+            this->writeExpressionStatement(s.as<ExpressionStatement>());
+            break;
+        case Statement::Kind::kReturn:
+            this->writeReturnStatement(s.as<ReturnStatement>());
+            break;
+        case Statement::Kind::kVarDeclaration:
+            this->writeVarDeclaration(s.as<VarDeclaration>());
+            break;
+        default:
+            SkDEBUGFAILF("unsupported statement (kind: %d) %s", s.kind(), s.description().c_str());
+            break;
+    }
+}
+
+void WGSLCodeGenerator::writeStatements(const StatementArray& statements) {
+    for (const auto& s : statements) {
+        if (!s->isEmpty()) {
+            this->writeStatement(*s);
+            this->finishLine();
+        }
+    }
+}
+
+void WGSLCodeGenerator::writeBlock(const Block& b) {
+    // Write scope markers if this block is a scope, or if the block is empty (since we need to emit
+    // something here to make the code valid).
+    bool isScope = b.isScope() || b.isEmpty();
+    if (isScope) {
+        this->writeLine("{");
+        fIndentation++;
+    }
+    this->writeStatements(b.children());
+    if (isScope) {
+        fIndentation--;
+        this->writeLine("}");
+    }
+}
+
+void WGSLCodeGenerator::writeExpressionStatement(const ExpressionStatement& s) {
+    if (s.expression()->hasSideEffects()) {
+        this->writeExpression(*s.expression(), Precedence::kTopLevel);
+        this->write(";");
+    }
+}
+
+void WGSLCodeGenerator::writeReturnStatement(const ReturnStatement& s) {
+    this->write("return");
+    if (s.expression()) {
+        this->write(" ");
+        this->writeExpression(*s.expression(), Precedence::kTopLevel);
+    }
+    this->write(";");
+}
+
+void WGSLCodeGenerator::writeVarDeclaration(const VarDeclaration& varDecl) {
+    bool isConst = varDecl.var().modifiers().fFlags & Modifiers::kConst_Flag;
+    if (isConst) {
+        this->write("let ");
+    } else {
+        this->write("var ");
+    }
+    this->writeName(varDecl.var().name());
+    this->write(": ");
+    this->write(toWGSLType(varDecl.var().type()));
+
+    if (varDecl.value()) {
+        this->write(" = ");
+        this->writeExpression(*varDecl.value(), Precedence::kTopLevel);
+    } else if (isConst) {
+        fContext.fErrors->error(varDecl.fPosition, "A let-declared constant must specify a value");
+    }
+
+    this->write(";");
+}
+
+void WGSLCodeGenerator::writeExpression(const Expression& e, Precedence parentPrecedence) {
+    switch (e.kind()) {
+        case Expression::Kind::kBinary:
+            this->writeBinaryExpression(e.as<BinaryExpression>(), parentPrecedence);
+            break;
+        case Expression::Kind::kConstructorCompound:
+            this->writeConstructorCompound(e.as<ConstructorCompound>(), parentPrecedence);
+            break;
+        case Expression::Kind::kLiteral:
+            this->writeLiteral(e.as<Literal>());
+            break;
+        default:
+            SkDEBUGFAILF("unsupported expression (kind: %d) %s", e.kind(), e.description().c_str());
+            break;
+    }
+}
+
+void WGSLCodeGenerator::writeBinaryExpression(const BinaryExpression& b,
+                                              Precedence parentPrecedence) {
     // TODO(skia:13092): implement
+}
+
+void WGSLCodeGenerator::writeLiteral(const Literal& l) {
+    const Type& type = l.type();
+    if (type.isFloat()) {
+        this->write(skstd::to_string(l.floatValue()));
+        return;
+    }
+    if (type.isBoolean()) {
+        this->write(l.boolValue() ? "true" : "false");
+        return;
+    }
+    SkASSERT(type.isInteger());
+    if (type.matches(*fContext.fTypes.fUInt)) {
+        this->write(std::to_string(l.intValue() & 0xffffffff));
+        this->write("u");
+    } else if (type.matches(*fContext.fTypes.fUShort)) {
+        this->write(std::to_string(l.intValue() & 0xffff));
+        this->write("u");
+    } else {
+        this->write(std::to_string(l.intValue()));
+    }
+}
+
+void WGSLCodeGenerator::writeAnyConstructor(const AnyConstructor& c, Precedence parentPrecedence) {
+    this->write(toWGSLType(c.type()));
+    this->write("(");
+    const char* separator = "";
+    for (const auto& e : c.argumentSpan()) {
+        this->write(separator);
+        separator = ", ";
+        this->writeExpression(*e, Precedence::kSequence);
+    }
+    this->write(")");
+}
+
+void WGSLCodeGenerator::writeConstructorCompound(const ConstructorCompound& c,
+                                                 Precedence parentPrecedence) {
+    // TODO(skia:13092): Support matrix constructors
+    if (c.type().isVector()) {
+        this->writeConstructorCompoundVector(c, parentPrecedence);
+    } else {
+        fContext.fErrors->error(c.fPosition, "unsupported compound constructor");
+    }
+}
+
+void WGSLCodeGenerator::writeConstructorCompoundVector(const ConstructorCompound& c,
+                                                       Precedence parentPrecedence) {
+    // TODO(skia:13092): WGSL supports constructing vectors from a mix of scalars and vectors but
+    // not matrices. SkSL supports vec4(mat2x2) which we need to handle here
+    // (see https://www.w3.org/TR/WGSL/#type-constructor-expr).
+    this->writeAnyConstructor(c, parentPrecedence);
+}
+
+void WGSLCodeGenerator::writeProgramElement(const ProgramElement& e) {
+    switch (e.kind()) {
+        case ProgramElement::Kind::kExtension:
+            // TODO(skia:13092): WGSL supports extensions via the "enable" directive
+            // (https://www.w3.org/TR/WGSL/#language-extensions). While we could easily emit this
+            // directive, we should first ensure that all possible SkSL extension names are
+            // converted to their appropriate WGSL extension. Currently there are no known supported
+            // WGSL extensions aside from the hypotheticals listed in the spec.
+            break;
+        case ProgramElement::Kind::kGlobalVar:
+            // All global declarations are handled explicitly as the "program header" in
+            // generateCode().
+            break;
+        case ProgramElement::Kind::kInterfaceBlock:
+            // All interface block declarations are handled explicitly as the "program header" in
+            // generateCode().
+            break;
+        case ProgramElement::Kind::kStructDefinition:
+            // All struct type declarations are handled explicitly as the "program header" in
+            // generateCode().
+            break;
+        case ProgramElement::Kind::kFunctionPrototype:
+            // A WGSL function declaration must contain its body and the function name is in scope
+            // for the entire program (see https://www.w3.org/TR/WGSL/#function-declaration and
+            // https://www.w3.org/TR/WGSL/#declaration-and-scope).
+            //
+            // As such, we don't emit function prototypes.
+            break;
+        case ProgramElement::Kind::kFunction:
+            this->writeFunction(e.as<FunctionDefinition>());
+            break;
+        default:
+            SkDEBUGFAILF("unsupported program element: %s\n", e.description().c_str());
+            break;
+    }
 }
 
 void WGSLCodeGenerator::writeStageInputStruct() {
