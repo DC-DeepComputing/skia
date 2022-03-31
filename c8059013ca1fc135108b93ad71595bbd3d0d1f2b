@@ -86,6 +86,30 @@
       },
       "revId": "c8059013ca1fc135108b93ad71595bbd3d0d1f2b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4bdbe6e7_7b5e6ce4",
+        "filename": "src/gpu/GrSurfaceProxy.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-03-31T18:52:33Z",
+      "side": 1,
+      "message": "A GrSurface is a GrGpuResource. So we can add a sring_view getter on GrGpuResource and that pass that into fLabel on the GrSurfaceProxy here.\n\nA Proxy will only ever have one surface connected to it. But we\u0027ve already created a GrSurface with a label. The proxy should have a matching label as the GrSurface. So it makes sense to take the label from the GrSurface instead of requiring the caller to pass it in (which they might mess up and pass in a different label).",
+      "parentUuid": "0d42654f_70b94d06",
+      "range": {
+        "startLine": 92,
+        "startChar": 31,
+        "endLine": 92,
+        "endChar": 53
+      },
+      "revId": "c8059013ca1fc135108b93ad71595bbd3d0d1f2b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
