@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b9a17970_fe929063",
+        "filename": "src/core/SkDevice.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 508,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-03-31T19:09:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7a153d67_1b582920",
+      "range": {
+        "startLine": 508,
+        "startChar": 4,
+        "endLine": 508,
+        "endChar": 5
+      },
+      "revId": "bca11dcec0f05313312e79bb8be05e0ffa4fdf46",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "106fd7b0_9439c6f9",
@@ -54,6 +78,30 @@
       "writtenOn": "2022-03-31T18:19:00Z",
       "side": 1,
       "message": "If it won\u0027t fit on one line move the body down please",
+      "range": {
+        "startLine": 87,
+        "startChar": 45,
+        "endLine": 87,
+        "endChar": 51
+      },
+      "revId": "bca11dcec0f05313312e79bb8be05e0ffa4fdf46",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "05195aa9_931e1c45",
+        "filename": "src/core/SkImageInfo.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-03-31T19:09:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "106fd7b0_9439c6f9",
       "range": {
         "startLine": 87,
         "startChar": 45,
@@ -81,6 +129,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "89da9cdd_afb290f4",
+        "filename": "src/core/SkMipmap.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 387,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-03-31T19:09:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dbc6fde2_a6d6ec8c",
+      "revId": "bca11dcec0f05313312e79bb8be05e0ffa4fdf46",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cc790d7c_28d4f393",
@@ -94,6 +160,24 @@
       "writtenOn": "2022-03-31T18:19:00Z",
       "side": 1,
       "message": "Do we actually need this here ?",
+      "revId": "bca11dcec0f05313312e79bb8be05e0ffa4fdf46",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e1d6bac1_39541e37",
+        "filename": "src/core/SkRasterPipeline.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-03-31T19:09:38Z",
+      "side": 1,
+      "message": "You are correct, it does not. Replaced with a forward declare. SkRasterPipeline_opts.h *does* need it included.",
+      "parentUuid": "cc790d7c_28d4f393",
       "revId": "bca11dcec0f05313312e79bb8be05e0ffa4fdf46",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -121,6 +205,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0e16168c_80ecc877",
+        "filename": "src/shaders/gradients/SkGradientShader.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-03-31T19:09:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1d6cc306_781466e6",
+      "range": {
+        "startLine": 46,
+        "startChar": 0,
+        "endLine": 46,
+        "endChar": 1
+      },
+      "revId": "bca11dcec0f05313312e79bb8be05e0ffa4fdf46",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d0fb6b8b_37caa607",
@@ -134,6 +242,24 @@
       "writtenOn": "2022-03-31T18:19:00Z",
       "side": 1,
       "message": "I guess we don\u0027t care if this is in a header since it is just our tools ?",
+      "revId": "bca11dcec0f05313312e79bb8be05e0ffa4fdf46",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0655fa76_aac4f97e",
+        "filename": "tools/gpu/BackendSurfaceFactory.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-03-31T19:09:38Z",
+      "side": 1,
+      "message": "Right. My goal was to get \"include/core/SkColorSpace.h\" out of //include, to avoid it being included by a bunch of things. I\u0027m not as concerned for our tools on this pass.",
+      "parentUuid": "d0fb6b8b_37caa607",
       "revId": "bca11dcec0f05313312e79bb8be05e0ffa4fdf46",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -161,6 +287,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5471c550_d5f9bb36",
+        "filename": "tools/gpu/BackendSurfaceFactory.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-03-31T19:09:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "90dc48aa_1f5a843b",
+      "range": {
+        "startLine": 18,
+        "startChar": 6,
+        "endLine": 18,
+        "endChar": 18
+      },
+      "revId": "bca11dcec0f05313312e79bb8be05e0ffa4fdf46",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4014b205_2c52a2b0",
@@ -174,6 +324,24 @@
       "writtenOn": "2022-03-31T18:19:00Z",
       "side": 1,
       "message": "Same here ?",
+      "revId": "bca11dcec0f05313312e79bb8be05e0ffa4fdf46",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "921887e0_6ad1f5cd",
+        "filename": "tools/gpu/YUVUtils.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-03-31T19:09:38Z",
+      "side": 1,
+      "message": "Same as before.",
+      "parentUuid": "4014b205_2c52a2b0",
       "revId": "bca11dcec0f05313312e79bb8be05e0ffa4fdf46",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
