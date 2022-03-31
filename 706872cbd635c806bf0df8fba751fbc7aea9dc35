@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c7a0a218_b7324457",
+        "filename": "src/sksl/dsl/DSLExpression.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 359,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-03-31T15:01:45Z",
+      "side": 1,
+      "message": "Do we want to assert here if `this` contains Poison? Poison still has a valid position.\nWondering if `hasValue()` would be safer than `valid()`.\n\n(Same thought for `description()` directly above)",
+      "range": {
+        "startLine": 359,
+        "startChar": 19,
+        "endLine": 359,
+        "endChar": 24
+      },
+      "revId": "706872cbd635c806bf0df8fba751fbc7aea9dc35",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "30a38f0c_529cf13b",
+        "filename": "src/sksl/ir/SkSLConstructor.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 155,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-03-31T15:01:45Z",
+      "side": 1,
+      "message": "Seems like an incorrect example. Wouldn\u0027t this cover a case like `float(x)` where x is already float? Stripping away no-op math happens elsewhere; this is stripping away no-op ctors.\n\nAt any rate, the comment could probably be shrunk down a lot anyway--it isn\u0027t especially noteworthy that an optimizing pass could simplify an expression but preserve the original expression\u0027s position in the simplified form. (e.g. ConstructorSplat L26 does the same thing without comment)",
+      "range": {
+        "startLine": 155,
+        "startChar": 81,
+        "endLine": 155,
+        "endChar": 86
+      },
+      "revId": "706872cbd635c806bf0df8fba751fbc7aea9dc35",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b0bdef30_84c67a56",
+        "filename": "src/sksl/ir/SkSLFunctionCall.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 658,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-03-31T15:01:45Z",
+      "side": 1,
+      "message": "Why do we need to change the subexpression\u0027s position here, but not elsewhere? I don\u0027t see why this is different than normalize, or faceforward, or reflect...?",
+      "range": {
+        "startLine": 654,
+        "startChar": 0,
+        "endLine": 658,
+        "endChar": 14
+      },
+      "revId": "706872cbd635c806bf0df8fba751fbc7aea9dc35",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
