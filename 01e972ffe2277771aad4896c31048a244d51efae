@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b5134dfb_39ad5f74",
+        "filename": "experimental/graphite/src/ClipStack.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-03-31T15:56:06Z",
+      "side": 1,
+      "message": "Yes, removed.",
+      "parentUuid": "b1259fea_2d8c3761",
+      "range": {
+        "startLine": 105,
+        "startChar": 0,
+        "endLine": 107,
+        "endChar": 99
+      },
+      "revId": "01e972ffe2277771aad4896c31048a244d51efae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0526ef8b_9d659b65",
@@ -54,6 +78,30 @@
       "writtenOn": "2022-03-30T21:42:48Z",
       "side": 1,
       "message": "Extra \"//\"",
+      "range": {
+        "startLine": 204,
+        "startChar": 4,
+        "endLine": 204,
+        "endChar": 9
+      },
+      "revId": "01e972ffe2277771aad4896c31048a244d51efae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "226a8e57_afcdfe36",
+        "filename": "experimental/graphite/src/ClipStack.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 204,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-03-31T15:56:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0526ef8b_9d659b65",
       "range": {
         "startLine": 204,
         "startChar": 4,
@@ -122,6 +170,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3458286f_7d2dba90",
+        "filename": "experimental/graphite/src/ClipStack.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 497,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-03-31T15:56:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0386111d_1930a649",
+      "range": {
+        "startLine": 494,
+        "startChar": 0,
+        "endLine": 497,
+        "endChar": 99
+      },
+      "revId": "01e972ffe2277771aad4896c31048a244d51efae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f66f60c2_e2fd3b02",
@@ -135,6 +207,24 @@
       "writtenOn": "2022-03-31T14:31:06Z",
       "side": 1,
       "message": "We should probably have a high level comment somewhere just describing how the clip stack works.",
+      "revId": "01e972ffe2277771aad4896c31048a244d51efae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c82c168d_a3c7dd65",
+        "filename": "experimental/graphite/src/ClipStack.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 594,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-03-31T15:56:06Z",
+      "side": 1,
+      "message": "Added a bit of a description to the header file, and a link to go/grclipstack-2.0, which has a pretty thorough description of how Elements and SaveRecords are tracked. All of that is still valid for this clip stack as well.",
+      "parentUuid": "f66f60c2_e2fd3b02",
       "revId": "01e972ffe2277771aad4896c31048a244d51efae",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -156,6 +246,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "60d998cd_36d1f8b4",
+        "filename": "experimental/graphite/src/ClipStack.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 791,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-03-31T15:56:06Z",
+      "side": 1,
+      "message": "Done, also added the idea about writing to an alpha image and sampling it in the draw.",
+      "parentUuid": "542843c8_66ec9cc3",
+      "revId": "01e972ffe2277771aad4896c31048a244d51efae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fd01cdae_2ebd20ab",
@@ -173,6 +281,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9e150086_d27e880e",
+        "filename": "experimental/graphite/src/ClipStack_graphite.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-03-31T15:56:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fd01cdae_2ebd20ab",
+      "revId": "01e972ffe2277771aad4896c31048a244d51efae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a80c8d20_6960126a",
@@ -186,6 +312,24 @@
       "writtenOn": "2022-03-31T14:31:06Z",
       "side": 1,
       "message": "Can we get away w/out having this header ?",
+      "revId": "01e972ffe2277771aad4896c31048a244d51efae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d0575346_c9db25ca",
+        "filename": "experimental/graphite/src/ClipStack_graphite.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-03-31T15:56:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a80c8d20_6960126a",
       "revId": "01e972ffe2277771aad4896c31048a244d51efae",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -238,6 +382,30 @@
       "writtenOn": "2022-03-30T19:25:32Z",
       "side": 1,
       "message": "Yeah this seems like a good utility function that isn\u0027t special to Transform. So I support moving it up.",
+      "range": {
+        "startLine": 26,
+        "startChar": 16,
+        "endLine": 26,
+        "endChar": 45
+      },
+      "revId": "01e972ffe2277771aad4896c31048a244d51efae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1591c812_664cc2ec",
+        "filename": "experimental/graphite/src/geom/Transform.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-03-31T15:56:06Z",
+      "side": 1,
+      "message": "My current thinking is that I\u0027ll accumulate these sorts of utility functions in Transform for now, and then when the dust has settled a bit, figure out the right way to have the public API handle the use cases that graphite added.",
+      "parentUuid": "2b895119_e349de94",
       "range": {
         "startLine": 26,
         "startChar": 16,
