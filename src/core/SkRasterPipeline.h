@@ -15,7 +15,9 @@
 #include "include/core/SkTileMode.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkTArray.h"
+#include "include/third_party/skcms/skcms.h"
 #include "src/core/SkArenaAlloc.h"
+
 #include <functional>
 
 class SkData;
