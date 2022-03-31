@@ -18,7 +18,9 @@
 #include "src/core/SkTextBlobPriv.h"
 #include "src/utils/SkUTF.h"
 
+#include <algorithm>
 #include <limits.h>
+#include <numeric>
 
 namespace skottie {
 namespace {
@@ -45,6 +47,10 @@ SkRect ComputeBlobBounds(const sk_sp<SkTextBlob>& blob) {
 
     return bounds;
 }
+
+static bool is_whitespace(char c) {
+    return c == ' ' || c == '\t' || c == '\r' || c == '\n';
+};
 
 // Helper for interfacing with SkShaper: buffers shaper-fed runs and performs
 // per-line position adjustments (for external line breaking, horizontal alignment, etc).
@@ -116,7 +122,54 @@ public:
     void commitLine() override {
         fOffset.fY += fDesc.fLineHeight;
 
-        // TODO: justification adjustments
+        // Observed AE handling of whitespace, for alignment purposes:
+        //
+        //   - leading whitespace contributes to alignment
+        //   - trailing whitespace is ignored
+        //   - auto line breaking retains all separating whitespace on the first line (no artificial
+        //     leading WS is created).
+        auto adjust_line_trailing_whitespace = [this]() {
+            // For left-alignment, trailing WS doesn't make any difference.
+            if (fLineRuns.empty() || fDesc.fHAlign == SkTextUtils::Align::kLeft_Align) {
+                return;
+            }
+
+            // Technically, trailing whitespace could span multiple runs, but realisticaly,
+            // SkShaper has no reason to split it.  Hence we're only checking the last run.
+            size_t ws_count = 0;
+            for (size_t i = 0; i < fLineRuns.back().fGlyphCount; ++i) {
+                if (is_whitespace(fUTF8[fLineClusters[SkToInt(fLineGlyphCount - i - 1)]])) {
+                    ++ws_count;
+                } else {
+                    break;
+                }
+            }
+
+            // No trailing whitespace.
+            if (!ws_count) {
+                return;
+            }
+
+            // Compute the cumulative whitespace advance.
+            fAdvanceBuffer.resize(ws_count);
+            fLineRuns.back().fFont.getWidths(fLineGlyphs.data() + fLineGlyphCount - ws_count,
+                                             SkToInt(ws_count), fAdvanceBuffer.data(), nullptr);
+
+            const auto ws_advance = std::accumulate(fAdvanceBuffer.begin(),
+                                                    fAdvanceBuffer.end(),
+                                                    0.0f);
+
+            // The offset needed to compensate for whitespace.
+            const auto   h_offset = ws_advance*-fHAlignFactor;
+
+            // Shift the whole line horizontally by the computed offset.
+            std::transform(fLinePos.data(),
+                           fLinePos.data() + fLineGlyphCount,
+                           fLinePos.data(),
+                           [&h_offset](SkPoint pos) { return SkPoint{pos.fX + h_offset, pos.fY}; });
+        };
+
+        adjust_line_trailing_whitespace();
 
         const auto commit_proc = (fDesc.fFlags & Shaper::Flags::kFragmentGlyphs)
             ? &BlobMaker::commitFragementedRun
@@ -125,6 +178,7 @@ public:
         size_t run_offset = 0;
         for (const auto& rec : fLineRuns) {
             SkASSERT(run_offset < fLineGlyphCount);
+
             (this->*commit_proc)(rec,
                         fLineGlyphs.get()   + run_offset,
                         fLinePos.get()      + run_offset,
@@ -258,11 +312,6 @@ private:
                               const SkPoint* pos,
                               const uint32_t* clusters,
                               uint32_t line_index) {
-
-        static const auto is_whitespace = [](char c) {
-            return c == ' ' || c == '\t' || c == '\r' || c == '\n';
-        };
-
         float ascent = 0;
 
         if (fDesc.fFlags & Shaper::Flags::kTrackFragmentAdvanceAscent) {
@@ -313,7 +362,7 @@ private:
             blob_buffer.glyphs[i] = glyphs[i];
             fResult.fMissingGlyphCount += (glyphs[i] == kMissingGlyphID);
         }
-        sk_careful_memcpy(blob_buffer.pos   , pos   , rec.fGlyphCount * sizeof(SkPoint));
+        sk_careful_memcpy(blob_buffer.pos, pos, rec.fGlyphCount * sizeof(SkPoint));
     }
 
     static float HAlignFactor(SkTextUtils::Align align) {
