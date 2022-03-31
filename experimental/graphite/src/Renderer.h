@@ -34,7 +34,7 @@ class DrawWriter;
 class DrawGeometry;
 class ResourceProvider;
 
-enum class Layout;
+enum class Layout : uint8_t;
 
 class RenderStep {
 public:

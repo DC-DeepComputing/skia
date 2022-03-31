@@ -22,9 +22,6 @@ static_assert(sizeof(SkHalf) == 2);
 namespace skgpu {
 
 //////////////////////////////////////////////////////////////////////////////
-
-UniformManager::UniformManager(Layout layout) : fLayout(layout) {}
-
 template<typename BaseType>
 static constexpr size_t tight_vec_size(int vecLength) {
     return sizeof(BaseType) * vecLength;
@@ -493,10 +490,31 @@ SkSLType UniformManager::getUniformTypeForLayout(SkSLType type) {
     return type;
 }
 
-uint32_t UniformManager::writeUniforms(SkSpan<const SkUniform> uniforms,
-                                       const void** srcs,
-                                       uint32_t* offsets,
-                                       char *dst) {
+
+UniformManager::UniformManager(Layout layout, bool) : fLayout(layout) {
+    this->reset();
+}
+
+void UniformManager::reset() {
+#ifdef SK_DEBUG
+    fCurUBOOffset = 0;
+    fCurUBOMaxAlignment = 0;
+#endif // SK_DEBUG
+
+    fOffset = 0;
+}
+
+#ifdef SK_DEBUG
+void UniformManager::checkReset() const {
+    SkASSERT(fCurUBOOffset == 0);
+    SkASSERT(fCurUBOMaxAlignment == 0);
+    SkASSERT(fOffset == 0);
+}
+#endif
+
+void UniformManager::writeUniforms1(SkSpan<const SkUniform> uniforms,
+                                    const void** srcs,
+                                    uint32_t* offsets) {
     decltype(&Writer<Rules140>::WriteUniform) write;
     switch (fLayout) {
         case Layout::kStd140:
@@ -510,38 +528,30 @@ uint32_t UniformManager::writeUniforms(SkSpan<const SkUniform> uniforms,
             break;
     }
 
-#ifdef SK_DEBUG
-    uint32_t curUBOOffset = 0;
-    uint32_t curUBOMaxAlignment = 0;
-#endif // SK_DEBUG
-
-    uint32_t offset = 0;
-
     for (int i = 0; i < (int) uniforms.size(); ++i) {
         const SkUniform& u = uniforms[i];
         SkSLType uniformType = this->getUniformTypeForLayout(u.type());
 
 #ifdef SK_DEBUG
-        uint32_t debugOffset = get_ubo_aligned_offset(&curUBOOffset,
-                                                      &curUBOMaxAlignment,
+        uint32_t debugOffset = get_ubo_aligned_offset(&fCurUBOOffset,
+                                                      &fCurUBOMaxAlignment,
                                                       uniformType,
                                                       u.count());
 #endif // SK_DEBUG
 
-        uint32_t bytesWritten = write(uniformType,
-                                      CType::kDefault,
-                                      dst ? &dst[offset] : nullptr,
-                                      u.count(),
-                                      srcs ? srcs[i] : nullptr);
-        SkASSERT(debugOffset == offset);
+        uint32_t bytesNeeded = write(uniformType, CType::kDefault, nullptr, u.count(), nullptr);
+
+        char* dst = this->getMem(bytesNeeded);
+        uint32_t bytesWritten = write(uniformType, CType::kDefault, dst, u.count(), srcs[i]);
+
+        SkASSERT(bytesNeeded == bytesWritten);
+        SkASSERT(debugOffset == fOffset);
 
         if (offsets) {
-            offsets[i] = offset;
+            offsets[i] = fOffset;
         }
-        offset += bytesWritten;
+        fOffset += bytesWritten;
     }
-
-    return offset;
 }
 
 } // namespace skgpu
