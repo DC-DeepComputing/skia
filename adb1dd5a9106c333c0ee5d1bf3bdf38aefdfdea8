@@ -16,6 +16,24 @@
       "message": "This is missing deps on whatever provides the SVG code. SkSVG understandably depends on Skia the library, but this file ends up as part of Skia the library but depends on SkSVG. This will apply to an svgnative build as well, since svgnative is going to want to build against some Skia.\n\nSo it looks like there will need to be some sort of runtime link to allow for breaking this circular dependency at build time.",
       "revId": "adb1dd5a9106c333c0ee5d1bf3bdf38aefdfdea8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "090adba5_e8e37640",
+        "filename": "src/ports/SkFontHost_FreeType.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-03-31T04:28:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "db92a96f_34ccc54b",
+      "revId": "adb1dd5a9106c333c0ee5d1bf3bdf38aefdfdea8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
