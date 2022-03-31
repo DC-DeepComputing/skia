@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2c66a1c2_29ed00bb",
+        "filename": "src/gpu/text/GrTextBlob.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 254,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-03-31T11:38:52Z",
+      "side": 1,
+      "message": "I prefer glyphCount \u003c (buffer.available() / 4) instead of a hard-coded limit.\n\nIf we go with a hard-coded limit, then we should check after we read in that the buffer is still valid (i.e. we did not run out of bytes along the way).",
+      "range": {
+        "startLine": 254,
+        "startChar": 56,
+        "endLine": 254,
+        "endChar": 70
+      },
+      "revId": "8f167a490777efae4b1ca0624ed330e83165af12",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
