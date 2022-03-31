@@ -33,6 +33,20 @@ public:
     void setOutputStream(OutputStream* output) { fOut = output; }
 
 protected:
+#if SK_USE_LEGACY_MIPMAP_LOD_BIAS
+    static constexpr float kSharpenTexturesBias = -.5f;
+#else
+    // For SkMipmapMode::kLinear we want a bias such that when the unbiased LOD value is
+    // midway between levels we select just the larger level, i.e. a bias of -.5. However, using
+    // this bias with kNearest mode with a draw that is a perfect power of two downscale puts us
+    // right on the rounding edge where it could go up or down depending on the particular GPU.
+    // Experimentally we found that at -.49 iOS devices (iPhone 7, 8,and 11, and iPad Pro
+    // [PowerVRGT7800 version]) all round to the lower level for some such draws in our unit tests
+    // on GLES but do not at -.48. All other GPUs passed tests with -.499. Though, at this time
+    // the bias is not implemented in Metal and so that was not tested.
+    static constexpr float kSharpenTexturesBias = -.48f;
+#endif
+
     const Context& fContext;
     const Program& fProgram;
     OutputStream* fOut;
