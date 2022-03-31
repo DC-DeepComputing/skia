@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8e3f41b9_ba3b3c3d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2022-03-31T13:30:23Z",
+      "side": 1,
+      "message": "SkSVG bits LGTM.",
+      "revId": "fc7419aa780d171a9e70d680c0c51a2d7a3a6012",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2da928ec_3d594fa4",
+        "filename": "DEPS",
+        "patchSetId": 9
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2022-03-31T13:30:23Z",
+      "side": 1,
+      "message": "Is GH now allowed for third-party stuff, or should it be mirrored to skia.googlesource.com?",
+      "range": {
+        "startLine": 46,
+        "startChar": 47,
+        "endLine": 46,
+        "endChar": 65
+      },
+      "revId": "fc7419aa780d171a9e70d680c0c51a2d7a3a6012",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d6e521d4_871fddc4",
+        "filename": "include/core/SkSVGDecoder.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2022-03-31T13:30:23Z",
+      "side": 1,
+      "message": "To avoid parsing the SVG repeatedly, for every glyph, it seems you\u0027d ideally/eventually want a more stateful API.\n\nMaybe fission into SkSVGDecoderFactory (which you can set in SkGraphics), and SkSVGDecoder (which holds the SVG dom and can be cached/reused to render multiple glyphs)?",
+      "range": {
+        "startLine": 20,
+        "startChar": 24,
+        "endLine": 20,
+        "endChar": 90
+      },
+      "revId": "fc7419aa780d171a9e70d680c0c51a2d7a3a6012",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dc8efb85_6751431d",
+        "filename": "modules/svg/include/SkSVGDOM.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2022-03-31T13:30:23Z",
+      "side": 1,
+      "message": "naming nit: renderNode",
+      "range": {
+        "startLine": 85,
+        "startChar": 9,
+        "endLine": 85,
+        "endChar": 15
+      },
+      "revId": "fc7419aa780d171a9e70d680c0c51a2d7a3a6012",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
