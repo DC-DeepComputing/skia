@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "84ee57e6_6300fbbc",
+        "filename": "experimental/graphite/src/ClipStack.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-03-31T20:16:52Z",
+      "side": 1,
+      "message": "Can we have our own version of this ?",
+      "range": {
+        "startLine": 145,
+        "startChar": 8,
+        "endLine": 145,
+        "endChar": 18
+      },
+      "revId": "e501e8261cbe7bdebe34c20ce906596d41cc7183",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b9cdb15a_66bcbf28",
+        "filename": "experimental/graphite/src/ClipStack.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 695,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-03-31T20:16:52Z",
+      "side": 1,
+      "message": "Why go through SkRect::Make for this conversion ?",
+      "range": {
+        "startLine": 695,
+        "startChar": 24,
+        "endLine": 695,
+        "endChar": 36
+      },
+      "revId": "e501e8261cbe7bdebe34c20ce906596d41cc7183",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "13c6b250_d60e41c9",
+        "filename": "experimental/graphite/src/ClipStack_graphite.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-03-31T20:16:52Z",
+      "side": 1,
+      "message": "outdated ?",
+      "range": {
+        "startLine": 141,
+        "startChar": 32,
+        "endLine": 141,
+        "endChar": 49
+      },
+      "revId": "e501e8261cbe7bdebe34c20ce906596d41cc7183",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
