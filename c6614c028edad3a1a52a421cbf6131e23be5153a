@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5a796c45_cc763005",
+        "filename": "modules/skparagraph/src/Run.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-03-31T15:33:44Z",
+      "side": 1,
+      "message": "This call doesn\u0027t seem to do anything anymore?",
+      "revId": "c6614c028edad3a1a52a421cbf6131e23be5153a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "94ab477d_a9165206",
+        "filename": "modules/skparagraph/src/Run.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 194,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-03-31T15:33:44Z",
+      "side": 1,
+      "message": "Is there a good reason to comment these out instead of just removing them?",
+      "revId": "c6614c028edad3a1a52a421cbf6131e23be5153a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
