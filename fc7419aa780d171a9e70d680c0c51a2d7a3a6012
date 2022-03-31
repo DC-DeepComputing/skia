@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3d57fb1d_1f11789b",
+        "filename": "DEPS",
+        "patchSetId": 9
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-03-31T15:01:11Z",
+      "side": 1,
+      "message": "No, we\u0027ll need to get a mirror, this is just for local testing at the moment. Thanks for putting a comment here, I was going to make a note of that myself and forgot.",
+      "parentUuid": "2da928ec_3d594fa4",
+      "range": {
+        "startLine": 46,
+        "startChar": 47,
+        "endLine": 46,
+        "endChar": 65
+      },
+      "revId": "fc7419aa780d171a9e70d680c0c51a2d7a3a6012",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d6e521d4_871fddc4",
         "filename": "include/core/SkSVGDecoder.h",
         "patchSetId": 9
@@ -66,6 +90,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "adba5174_608e4d34",
+        "filename": "include/core/SkSVGDecoder.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-03-31T15:01:11Z",
+      "side": 1,
+      "message": "Yes, we\u0027re going to probably want something like that. Unfortunately, the only way to know the bounds of an SVG glyph is to just render it, which means parsing it, which generally means creating a DOM. However, we would need to know how big the DOM is, we\u0027d need to stick it in the glyph cache somewhere, and we\u0027d also want some way to get the DOMs evicted from the cache before other things. As a first pass I\u0027m fine with not caching anything (even the bounds finding needs a lot of work and is overly slow at the moment).\n\nNote that we\u0027d generally only do this twice for each glyph (per SkScalerContext) since the StrikeCache is going to cache the metrics and then cache the result of any draw calls. In theory we could cache across all the glyphs a given SVG document covers, though that would be an interesting cache. While this single SVG document supporting multiple glyphs is a thing we need to support, it doesn\u0027t seem to get used extensively, mostly just for bases+accents and such. Most OT-SVG fonts seem to be constructed such that each glyph has its own small SVG document all to itself. So generally speaking this isn\u0027t parsing one enormous SVG which contains all of the glyph drawing for the whole font (though that is in theory possible).",
+      "parentUuid": "d6e521d4_871fddc4",
+      "range": {
+        "startLine": 20,
+        "startChar": 24,
+        "endLine": 20,
+        "endChar": 90
+      },
+      "revId": "fc7419aa780d171a9e70d680c0c51a2d7a3a6012",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "dc8efb85_6751431d",
         "filename": "modules/svg/include/SkSVGDOM.h",
         "patchSetId": 9
@@ -77,6 +125,30 @@
       "writtenOn": "2022-03-31T13:30:23Z",
       "side": 1,
       "message": "naming nit: renderNode",
+      "range": {
+        "startLine": 85,
+        "startChar": 9,
+        "endLine": 85,
+        "endChar": 15
+      },
+      "revId": "fc7419aa780d171a9e70d680c0c51a2d7a3a6012",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f9d2b2ce_dface738",
+        "filename": "modules/svg/include/SkSVGDOM.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-03-31T15:01:11Z",
+      "side": 1,
+      "message": "Here I didn\u0027t need to change the name, but yeah, probably a good idea to keep it the same.",
+      "parentUuid": "dc8efb85_6751431d",
       "range": {
         "startLine": 85,
         "startChar": 9,
