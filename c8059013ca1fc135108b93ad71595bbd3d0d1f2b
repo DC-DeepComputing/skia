@@ -62,6 +62,30 @@
       },
       "revId": "c8059013ca1fc135108b93ad71595bbd3d0d1f2b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0d42654f_70b94d06",
+        "filename": "src/gpu/GrSurfaceProxy.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 18274
+      },
+      "writtenOn": "2022-03-31T18:46:42Z",
+      "side": 1,
+      "message": "Greg, need a little more understanding for this. GrSurface does not store string, but it just passes the string to GrGpuResource. Not sure how we can fetch the label string from GrSurface to GrSurfaceProxy.\n\nCan the proxy ever point to a different surface from the one passed into the constructor?",
+      "parentUuid": "8c3cb929_ea0f24b4",
+      "range": {
+        "startLine": 92,
+        "startChar": 31,
+        "endLine": 92,
+        "endChar": 53
+      },
+      "revId": "c8059013ca1fc135108b93ad71595bbd3d0d1f2b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
