@@ -22,6 +22,30 @@
       },
       "revId": "1e665de7e167b1185ddddf596622ab8936619be2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ade827b2_f7376726",
+        "filename": "experimental/graphite/src/DrawContext.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-03-31T13:25:39Z",
+      "side": 1,
+      "message": "I actually went the other way, as we won\u0027t always be appending -- there may be some reordering in the future.",
+      "parentUuid": "4d6cca73_98c05e5d",
+      "range": {
+        "startLine": 63,
+        "startChar": 9,
+        "endLine": 63,
+        "endChar": 21
+      },
+      "revId": "1e665de7e167b1185ddddf596622ab8936619be2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
