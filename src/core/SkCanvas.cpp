@@ -518,10 +518,6 @@ void SkCanvas::onFlush() {
 #endif
 }
 
-SkSurface* SkCanvas::getSurface() const {
-    return fSurfaceBase;
-}
-
 SkISize SkCanvas::getBaseLayerSize() const {
     return this->baseDevice()->imageInfo().dimensions();
 }

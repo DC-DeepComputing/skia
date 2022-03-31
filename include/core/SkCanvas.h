@@ -306,11 +306,6 @@ public:
      */
     virtual skgpu::Recorder* recorder();
 
-    /** Sometimes a canvas is owned by a surface. If it is, getSurface() will return a bare
-     *  pointer to that surface, else this will return nullptr.
-     */
-    SkSurface* getSurface() const;
-
     /** Returns the pixel base address, SkImageInfo, rowBytes, and origin if the pixels
         can be read directly. The returned address is only valid
         while SkCanvas is in scope and unchanged. Any SkCanvas call or SkSurface call
