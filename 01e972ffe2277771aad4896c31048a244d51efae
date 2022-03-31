@@ -81,6 +81,132 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "dfe0b30e_a3ea7607",
+        "filename": "experimental/graphite/src/ClipStack.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 492,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-03-31T14:31:06Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "07af6ac7_6745ca2f",
+      "revId": "01e972ffe2277771aad4896c31048a244d51efae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0386111d_1930a649",
+        "filename": "experimental/graphite/src/ClipStack.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 497,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-03-31T14:31:06Z",
+      "side": 1,
+      "message": "wdyt about this being a validate method ?",
+      "range": {
+        "startLine": 494,
+        "startChar": 0,
+        "endLine": 497,
+        "endChar": 99
+      },
+      "revId": "01e972ffe2277771aad4896c31048a244d51efae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f66f60c2_e2fd3b02",
+        "filename": "experimental/graphite/src/ClipStack.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 594,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-03-31T14:31:06Z",
+      "side": 1,
+      "message": "We should probably have a high level comment somewhere just describing how the clip stack works.",
+      "revId": "01e972ffe2277771aad4896c31048a244d51efae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "542843c8_66ec9cc3",
+        "filename": "experimental/graphite/src/ClipStack.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 791,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-03-31T14:31:06Z",
+      "side": 1,
+      "message": "// One idea is to use sample locations and draw the clipShader into the depth buffer\n\n?",
+      "revId": "01e972ffe2277771aad4896c31048a244d51efae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fd01cdae_2ebd20ab",
+        "filename": "experimental/graphite/src/ClipStack_graphite.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-03-31T14:31:06Z",
+      "side": 1,
+      "message": "Maybe add a TODO somewhere about adding a lot of unit tests ?",
+      "revId": "01e972ffe2277771aad4896c31048a244d51efae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a80c8d20_6960126a",
+        "filename": "experimental/graphite/src/ClipStack_graphite.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-03-31T14:31:06Z",
+      "side": 1,
+      "message": "Can we get away w/out having this header ?",
+      "revId": "01e972ffe2277771aad4896c31048a244d51efae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0177e3c7_b7f2d414",
+        "filename": "experimental/graphite/src/ClipStack_graphite.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-03-31T14:31:06Z",
+      "side": 1,
+      "message": "Only made it to here",
+      "revId": "01e972ffe2277771aad4896c31048a244d51efae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2b895119_e349de94",
