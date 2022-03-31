@@ -3,6 +3,75 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9bde34bc_77c24200",
+        "filename": "src/sksl/SkSLDSLParser.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 278,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-03-31T15:15:13Z",
+      "side": 1,
+      "message": "tiny style nit: could be ternary",
+      "range": {
+        "startLine": 273,
+        "startChar": 0,
+        "endLine": 278,
+        "endChar": 5
+      },
+      "revId": "706872cbd635c806bf0df8fba751fbc7aea9dc35",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bcd052fb_2ab2ac2d",
+        "filename": "src/sksl/SkSLDSLParser.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 1358,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-03-31T15:15:13Z",
+      "side": 1,
+      "message": "This is a tiny bit spooky to me because it means debug mode will operate differently than release (this can lex forward and fill the push-back).\nConsider `[[maybe_unused]] Token start \u003d this-\u003epeek();` just for safety?",
+      "range": {
+        "startLine": 1358,
+        "startChar": 0,
+        "endLine": 1358,
+        "endChar": 44
+      },
+      "revId": "706872cbd635c806bf0df8fba751fbc7aea9dc35",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "59cb5fd6_98914a8e",
+        "filename": "src/sksl/SkSLDSLParser.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-03-31T15:15:13Z",
+      "side": 1,
+      "message": "nit: I misread this as \"the start of the program\" at first because start wasn\u0027t quoted, and I hadn\u0027t looked at the function signature yet. Add quotes/backticks?",
+      "range": {
+        "startLine": 140,
+        "startChar": 30,
+        "endLine": 140,
+        "endChar": 35
+      },
+      "revId": "706872cbd635c806bf0df8fba751fbc7aea9dc35",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c7a0a218_b7324457",
         "filename": "src/sksl/dsl/DSLExpression.cpp",
         "patchSetId": 14
@@ -65,6 +134,75 @@
         "startChar": 0,
         "endLine": 658,
         "endChar": 14
+      },
+      "revId": "706872cbd635c806bf0df8fba751fbc7aea9dc35",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "99275fee_382fda07",
+        "filename": "src/sksl/ir/SkSLIndexExpression.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-03-31T15:15:13Z",
+      "side": 1,
+      "message": "Idea: It might be worthwhile in a followup to add `Expression::clone(Position)` into the base class which just calls `clone()` then updates the Position. Seems to be a recurring theme (understandably!).",
+      "range": {
+        "startLine": 125,
+        "startChar": 0,
+        "endLine": 126,
+        "endChar": 44
+      },
+      "revId": "706872cbd635c806bf0df8fba751fbc7aea9dc35",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "06a74b06_11d02e4c",
+        "filename": "src/sksl/ir/SkSLSwizzle.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 460,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-03-31T15:15:13Z",
+      "side": 1,
+      "message": "optimize them away\n\n(\"return as-is\" is no longer quite accurate since we change the position)",
+      "range": {
+        "startLine": 460,
+        "startChar": 54,
+        "endLine": 460,
+        "endChar": 86
+      },
+      "revId": "706872cbd635c806bf0df8fba751fbc7aea9dc35",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fc52e87e_c3d1f71c",
+        "filename": "src/sksl/ir/SkSLTernaryExpression.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-03-31T15:15:13Z",
+      "side": 1,
+      "message": "This replaces the \u0027true\u0027/\u0027false\u0027 expression\u0027s position with the test-expression\u0027s position. Is that correct? Seems like it should be the union of the two.",
+      "range": {
+        "startLine": 73,
+        "startChar": 12,
+        "endLine": 73,
+        "endChar": 35
       },
       "revId": "706872cbd635c806bf0df8fba751fbc7aea9dc35",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
