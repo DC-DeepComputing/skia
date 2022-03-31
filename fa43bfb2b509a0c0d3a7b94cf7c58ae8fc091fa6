@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9241380d_fdb949fe",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2022-03-31T19:58:01Z",
+      "side": 1,
+      "message": "temp approval to run g3 canary",
+      "revId": "fa43bfb2b509a0c0d3a7b94cf7c58ae8fc091fa6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
