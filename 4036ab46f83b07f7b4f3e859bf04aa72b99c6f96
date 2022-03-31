@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b70c2878_77bee436",
+        "filename": "modules/skparagraph/src/OneLineShaper.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 226,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-03-31T15:58:59Z",
+      "side": 1,
+      "message": "should probably just remove",
+      "revId": "4036ab46f83b07f7b4f3e859bf04aa72b99c6f96",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2cf39752_6d5684cf",
+        "filename": "modules/skparagraph/src/Run.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-03-31T15:58:59Z",
+      "side": 1,
+      "message": "should remove",
+      "revId": "4036ab46f83b07f7b4f3e859bf04aa72b99c6f96",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "88f52442_d5deeb14",
+        "filename": "modules/skparagraph/src/Run.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-03-31T15:58:59Z",
+      "side": 1,
+      "message": "should remove",
+      "revId": "4036ab46f83b07f7b4f3e859bf04aa72b99c6f96",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
