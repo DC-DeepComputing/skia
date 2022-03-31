@@ -50,21 +50,43 @@ private:
 
     sk_sp<SkTypeface> matchTypeface(const SkString& familyName, SkFontStyle fontStyle);
 
-    struct FamilyKey {
-        FamilyKey(const std::vector<SkString>& familyNames, SkFontStyle style, const std::optional<SkFontArguments>& args)
-                : fFamilyNames(familyNames), fFontStyle(style), fFontArgs(args) {}
+    class FamilyKey {
+    public:
+        FamilyKey() = default;
+        FamilyKey(const std::vector<SkString>& familyNames, SkFontStyle style, const std::optional<SkFontArguments>& args);
 
-        FamilyKey() {}
-
-        std::vector<SkString> fFamilyNames;
-        SkFontStyle fFontStyle;
-        std::optional<SkFontArguments> fFontArgs;
+        virtual const std::vector<SkString>& getFamilyNames() const { return fFamilyNames; }
+        virtual SkFontStyle getFontStyle() const { return fFontStyle; }
+        virtual const std::optional<SkFontArguments>& getFontArguments() const { return fFontArgs; }
 
         bool operator==(const FamilyKey& other) const;
 
         struct Hasher {
             size_t operator()(const FamilyKey& key) const;
         };
+
+    protected:
+        std::vector<SkString> fFamilyNames;
+        SkFontStyle fFontStyle;
+        std::optional<SkFontArguments> fFontArgs;
+        std::vector<SkFontArguments::VariationPosition::Coordinate> fArgsCoordinates;
+        std::vector<SkFontArguments::Palette::Override> fArgsOverrides;
+    };
+
+    // A key that holds references to its arguments and can be used for lookups
+    // but can not be stored in the cache.
+    class TemporaryFamilyKey : public FamilyKey {
+    public:
+        TemporaryFamilyKey(const std::vector<SkString>& familyNames,
+                           SkFontStyle style,
+                           const std::optional<SkFontArguments>& args);
+
+        const std::vector<SkString>& getFamilyNames() const override { return fTempFamilyNames; }
+        const std::optional<SkFontArguments>& getFontArguments() const override { return fTempFontArgs; }
+
+    private:
+        const std::vector<SkString>& fTempFamilyNames;
+        const std::optional<SkFontArguments>& fTempFontArgs;
     };
 
     bool fEnableFontFallback;

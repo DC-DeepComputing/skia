@@ -223,31 +223,7 @@ void TextStyle::setFontArguments(const std::optional<SkFontArguments>& args) {
         return;
     }
 
-    fArgsCoordinates.clear();
-    SkFontArguments::VariationPosition argsPosition = args->getVariationDesignPosition();
-    for (int i = 0; i < argsPosition.coordinateCount; ++i) {
-        fArgsCoordinates.push_back(argsPosition.coordinates[i]);
-    }
-    SkFontArguments::VariationPosition position{
-        fArgsCoordinates.empty() ? nullptr : fArgsCoordinates.data(),
-        static_cast<int>(fArgsCoordinates.size())
-    };
-
-    fArgsOverrides.clear();
-    SkFontArguments::Palette argsPalette = args->getPalette();
-    for (int i = 0; i < argsPalette.overrideCount; ++i) {
-        fArgsOverrides.push_back(argsPalette.overrides[i]);
-    }
-    SkFontArguments::Palette palette{
-        argsPalette.index,
-        fArgsOverrides.empty() ? nullptr : fArgsOverrides.data(),
-        static_cast<int>(fArgsOverrides.size())
-    };
-
-    fFontArgs.emplace()
-        .setCollectionIndex(args->getCollectionIndex())
-        .setVariationDesignPosition(position)
-        .setPalette(palette);
+    FontArguments::Clone(*args, fFontArgs.emplace(), fArgsCoordinates, fArgsOverrides);
 }
 
 bool PlaceholderStyle::equals(const PlaceholderStyle& other) const {

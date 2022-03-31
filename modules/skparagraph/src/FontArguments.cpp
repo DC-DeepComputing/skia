@@ -58,3 +58,39 @@ namespace std {
         return hash;
     }
 }
+
+namespace skia {
+namespace textlayout {
+
+void FontArguments::Clone(const SkFontArguments& src,
+                          SkFontArguments& dst,
+                          std::vector<SkFontArguments::VariationPosition::Coordinate>& dstCoordinates,
+                          std::vector<SkFontArguments::Palette::Override>& dstOverrides) {
+    dstCoordinates.clear();
+    SkFontArguments::VariationPosition srcPosition = src.getVariationDesignPosition();
+    for (int i = 0; i < srcPosition.coordinateCount; ++i) {
+        dstCoordinates.push_back(srcPosition.coordinates[i]);
+    }
+    SkFontArguments::VariationPosition position{
+        dstCoordinates.empty() ? nullptr : dstCoordinates.data(),
+        static_cast<int>(dstCoordinates.size())
+    };
+
+    dstOverrides.clear();
+    SkFontArguments::Palette srcPalette = src.getPalette();
+    for (int i = 0; i < srcPalette.overrideCount; ++i) {
+        dstOverrides.push_back(srcPalette.overrides[i]);
+    }
+    SkFontArguments::Palette palette{
+        srcPalette.index,
+        dstOverrides.empty() ? nullptr : dstOverrides.data(),
+        static_cast<int>(dstOverrides.size())
+    };
+
+    dst.setCollectionIndex(src.getCollectionIndex());
+    dst.setVariationDesignPosition(position);
+    dst.setPalette(palette);
+}
+
+}  // namespace textlayout
+}  // namespace skia

@@ -10,19 +10,37 @@
 namespace skia {
 namespace textlayout {
 
+FontCollection::FamilyKey::FamilyKey(const std::vector<SkString>& familyNames,
+                                     SkFontStyle style,
+                                     const std::optional<SkFontArguments>& args)
+        : fFamilyNames(familyNames), fFontStyle(style) {
+    if (args) {
+        FontArguments::Clone(*args, fFontArgs.emplace(), fArgsCoordinates, fArgsOverrides);
+    }
+}
+
+FontCollection::TemporaryFamilyKey::TemporaryFamilyKey(const std::vector<SkString>& familyNames,
+                                                       SkFontStyle style,
+                                                       const std::optional<SkFontArguments>& args)
+        : fTempFamilyNames(familyNames), fTempFontArgs(args) {
+    fFontStyle = style;
+}
+
 bool FontCollection::FamilyKey::operator==(const FontCollection::FamilyKey& other) const {
-    return fFamilyNames == other.fFamilyNames && fFontStyle == other.fFontStyle && fFontArgs == other.fFontArgs;
+    return getFamilyNames() == other.getFamilyNames() &&
+           getFontStyle() == other.getFontStyle() &&
+           getFontArguments() == other.getFontArguments();
 }
 
 size_t FontCollection::FamilyKey::Hasher::operator()(const FontCollection::FamilyKey& key) const {
     size_t hash = 0;
-    for (const SkString& family : key.fFamilyNames) {
+    for (const SkString& family : key.getFamilyNames()) {
         hash ^= std::hash<std::string>()(family.c_str());
     }
     return hash ^
-           std::hash<uint32_t>()(key.fFontStyle.weight()) ^
-           std::hash<uint32_t>()(key.fFontStyle.slant()) ^
-           std::hash<std::optional<SkFontArguments>>()(key.fFontArgs);
+           std::hash<uint32_t>()(key.getFontStyle().weight()) ^
+           std::hash<uint32_t>()(key.getFontStyle().slant()) ^
+           std::hash<std::optional<SkFontArguments>>()(key.getFontArguments());
 }
 
 FontCollection::FontCollection()
@@ -83,8 +101,7 @@ std::vector<sk_sp<SkTypeface>> FontCollection::findTypefaces(const std::vector<S
 
 std::vector<sk_sp<SkTypeface>> FontCollection::findTypefaces(const std::vector<SkString>& familyNames, SkFontStyle fontStyle, const std::optional<SkFontArguments>& fontArgs) {
     // Look inside the font collections cache first
-    FamilyKey familyKey(familyNames, fontStyle, fontArgs);
-    auto found = fTypefaces.find(familyKey);
+    auto found = fTypefaces.find(TemporaryFamilyKey(familyNames, fontStyle, fontArgs));
     if (found) {
         return *found;
     }
@@ -121,7 +138,7 @@ std::vector<sk_sp<SkTypeface>> FontCollection::findTypefaces(const std::vector<S
         }
     }
 
-    fTypefaces.set(familyKey, typefaces);
+    fTypefaces.set(FamilyKey(familyNames, fontStyle, fontArgs), typefaces);
     return typefaces;
 }
 
