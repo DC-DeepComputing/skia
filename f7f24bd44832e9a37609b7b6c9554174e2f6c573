@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fd37f3d1_7d395538",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-03-31T14:25:28Z",
+      "side": 1,
+      "message": "Looking at the gold diffs, most are the golo machines with corruption, but there are changes to strict_constraint_batch_no_red_allowed. It is now drawing more correctly, because the tiles that changed were meant to be non-AA, but for very similar reasons to the original inadvertent introduction of AA from clipping, having the edge-AA version always considered \"AA\" meant that the tiles on the boundary had their edge flags turned on without checking the original overall edge-flags.",
+      "revId": "f7f24bd44832e9a37609b7b6c9554174e2f6c573",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
