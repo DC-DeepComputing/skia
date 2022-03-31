@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "70d32376_94114a38",
+        "filename": "modules/skparagraph/include/FontCollection.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-03-31T15:55:37Z",
+      "side": 1,
+      "message": "This should either go away or also be `FontArguments`.",
+      "revId": "1270d40a775a5d8348d722720f4cc128b1b9f3f8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "df794608_647373b8",
+        "filename": "modules/skparagraph/include/FontCollection.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-03-31T15:55:37Z",
+      "side": 1,
+      "message": "Yeah, nothing should ever be holding on to a `SkFontArguments` and this should probably be removed or replaced with `FontArguments`. If you want to hold onto any of the `SkFontArguments` data outside the call that the `SkFontArguments` was passed to a copy of the data should be made (much like `SkFontData` or `SkFontDescriptor` do internally).\n\nThe entire point of `SkFontArguments` is to not own anything (all the pointers are borrowed). It is literally an abstraction over passing a bunch of raw pointer parameters and lengths to a method. This abstraction means that more \"parameters\" can be added later (like the palette was) without needing to update all the functions this data needs to pass through. However, it does mean that one shouldn\u0027t hold onto it.\n\nThis CL goes most of the way to realizing this, but it should probably go all the way and just create a `FontArguments` (which does own all the data) and immediately drop the idea of having an `SkFontArguments`, potentially just creating an `SkFontArguments` temporary from the `FontArguments` should that ever been needed.",
+      "revId": "1270d40a775a5d8348d722720f4cc128b1b9f3f8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ad01f1a5_5db9f90d",
+        "filename": "modules/skparagraph/src/FontArguments.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-03-31T15:55:37Z",
+      "side": 1,
+      "message": "These should probably go on `FontArguments` now.",
+      "revId": "1270d40a775a5d8348d722720f4cc128b1b9f3f8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4cb1c3f1_575baebf",
+        "filename": "modules/skparagraph/src/FontArguments.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-03-31T15:55:37Z",
+      "side": 1,
+      "message": "And the hash should be of `FontArguments`.",
+      "revId": "1270d40a775a5d8348d722720f4cc128b1b9f3f8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
