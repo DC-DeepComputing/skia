@@ -789,7 +789,10 @@ func (b *taskBuilder) defaultSwarmDimensions() {
 		}
 		if os == "Win10" && b.parts["model"] == "Golo" {
 			// ChOps-owned machines have Windows 10 21h1.
-			d["os"] = "Windows-10-19043"
+			d["os"] = "Windows-10-19042"
+		}
+		if os == "Win10" && b.parts["cpu_or_gpu_value"] == "RTX3060" {
+			d["os"] = "Windows-10-19042"
 		}
 		if b.parts["model"] == "iPhone11" {
 			d["os"] = "iOS-13.6"
@@ -903,6 +906,7 @@ func (b *taskBuilder) defaultSwarmDimensions() {
 					"RadeonHD7770":  "1002:683d-26.20.13031.18002",
 					"RadeonR9M470X": "1002:6646-26.20.13031.18002",
 					"QuadroP400":    "10de:1cb3-30.0.15.1179",
+					"RTX3060":       "10de:2489-30.0.15.1165",
 				}[b.parts["cpu_or_gpu_value"]]
 				if !ok {
 					log.Fatalf("Entry %q not found in Win GPU mapping.", b.parts["cpu_or_gpu_value"])
