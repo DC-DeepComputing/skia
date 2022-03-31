@@ -1429,11 +1429,16 @@ sk_sp<GrTexture> GrGLGpu::onCreateTexture(SkISize dimensions,
             GL_CALL(DeleteTextures(1, &texDesc.fID));
             return return_null_texture();
         }
-        tex = sk_make_sp<GrGLTextureRenderTarget>(
-                this, budgeted, renderTargetSampleCnt, texDesc, rtIDDesc, mipmapStatus, "");
+        tex = sk_make_sp<GrGLTextureRenderTarget>(this,
+                                                  budgeted,
+                                                  renderTargetSampleCnt,
+                                                  texDesc,
+                                                  rtIDDesc,
+                                                  mipmapStatus,
+                                                  /*label=*/"");
         tex->baseLevelWasBoundToFBO();
     } else {
-        tex = sk_make_sp<GrGLTexture>(this, budgeted, texDesc, mipmapStatus, "");
+        tex = sk_make_sp<GrGLTexture>(this, budgeted, texDesc, mipmapStatus, /*label=*/"");
     }
     // The non-sampler params are still at their default values.
     tex->parameters()->set(&initialState, GrGLTextureParameters::NonsamplerState(),
@@ -1517,7 +1522,7 @@ sk_sp<GrTexture> GrGLGpu::onCreateCompressedTexture(SkISize dimensions,
                                                             ? GrMipmapStatus::kValid
                                                             : GrMipmapStatus::kNotAllocated;
 
-    auto tex = sk_make_sp<GrGLTexture>(this, budgeted, desc, mipmapStatus, "");
+    auto tex = sk_make_sp<GrGLTexture>(this, budgeted, desc, mipmapStatus, /*label=*/"");
     // The non-sampler params are still at their default values.
     tex->parameters()->set(&initialState, GrGLTextureParameters::NonsamplerState(),
                            fResetTimestampForTextureParameters);
