@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "870e75dd_8c84a130",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-04-01T20:28:52Z",
+      "side": 1,
+      "message": "I ran the Test...CommandBuffer bot on PS1 (which included a chromium roll), and it successfully passed. So this should unblock the roller.",
+      "revId": "d536b74b3eeb5a5125115be1fbf19a661b1b33a1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
