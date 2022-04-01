@@ -369,11 +369,92 @@ SkScalar Run::calculateWidth(size_t start, size_t end, bool clip) const {
     return posX(end) - posX(start) + correction;
 }
 
+void ParagraphImpl::updateShapingInfo() {
+
+    size_t letterSpacing = 0;
+    bool wordSpacing = false;
+    for (auto& block : fTextStyles) {
+        if (block.fRange.width() > 0) {
+            if (!SkScalarNearlyZero(block.fStyle.getLetterSpacing())) {
+                ++letterSpacing;
+            }
+            if (!SkScalarNearlyZero(block.fStyle.getWordSpacing())) {
+                wordSpacing = true;
+            }
+        }
+    }
+    bool nothingElseToDo = false;
+    if (letterSpacing == 0 && !wordSpacing) {
+        // We don't have to do anything about spacing
+        nothingElseToDo = true;
+    } else if (letterSpacing == 1 && !wordSpacing && fTextStyles.size() == 1 &&
+               fTextStyles[0].fRange.width() == fText.size() &&
+               fRuns.size() == 1) {
+        // Easy common case: we have to letter space the entire paragraph
+        auto& run = fRuns[0];
+        auto& style = fTextStyles[0].fStyle;
+        run.addSpacesEvenly(style.getLetterSpacing());
+        nothingElseToDo = true;
+    }
+
+    this->buildClusterTable();
+
+    if (nothingElseToDo) {
+        return;
+    }
+
+    // Walk through all the clusters in the direction of shaped text
+    // (we have to walk through the styles in the same order, too)
+    SkScalar shift = 0;
+    for (auto& run : fRuns) {
+
+        // Skip placeholder runs
+        if (run.isPlaceholder()) {
+            continue;
+        }
+        bool soFarWhitespacesOnly = true;
+        run.iterateThroughClusters([this, &run, &shift, &soFarWhitespacesOnly](Cluster* cluster) {
+            // Shift the cluster (shift collected from the previous clusters)
+            run.shift(cluster, shift);
+
+            // Synchronize styles (one cluster can be covered by few styles)
+            Block* currentStyle = fTextStyles.begin();
+            while (!cluster->startsIn(currentStyle->fRange)) {
+                currentStyle++;
+                SkASSERT(currentStyle != fTextStyles.end());
+            }
+
+            SkASSERT(!currentStyle->fStyle.isPlaceholder());
+
+            // Process word spacing
+            if (currentStyle->fStyle.getWordSpacing() != 0) {
+                if (cluster->isWhitespaceBreak() && cluster->isSoftBreak()) {
+                    if (!soFarWhitespacesOnly) {
+                        shift += run.addSpacesAtTheEnd(currentStyle->fStyle.getWordSpacing(), cluster);
+                    }
+                }
+            }
+            // Process letter spacing
+            if (currentStyle->fStyle.getLetterSpacing() != 0) {
+                shift += run.addSpacesEvenly(currentStyle->fStyle.getLetterSpacing(), cluster);
+            }
+
+            if (soFarWhitespacesOnly && !cluster->isWhitespaceBreak()) {
+                soFarWhitespacesOnly = false;
+            }
+        });
+    }
+}
+
 // Clusters in the order of the input text
 void ParagraphImpl::buildClusterTable() {
+    // It's possible that one grapheme includes few runs; we cannot handle it
+    // so we break graphemes by the runs instead
+    // It's not the ideal solution and has to be revisited later
     int cluster_count = 1;
     for (auto& run : fRuns) {
         cluster_count += run.isPlaceholder() ? 1 : run.size();
+        fCodeUnitProperties[run.fTextRange.start] |= CodeUnitFlags::kGraphemeStart;
     }
     fClusters.reserve_back(cluster_count);
 
@@ -436,12 +517,7 @@ bool ParagraphImpl::shapeTextIntoEndlessLine() {
     auto result = oneLineShaper.shape();
     fUnresolvedGlyphs = oneLineShaper.unresolvedGlyphs();
 
-    // It's possible that one grapheme includes few runs; we cannot handle it
-    // so we break graphemes by the runs instead
-    // It's not the ideal solution and has to be revisited later
-    for (auto& run : fRuns) {
-        fCodeUnitProperties[run.fTextRange.start] |= CodeUnitFlags::kGraphemeStart;
-    }
+    this->updateShapingInfo();
 
     if (!result) {
         return false;
