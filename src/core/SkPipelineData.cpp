@@ -8,29 +8,54 @@
 #include "src/core/SkOpts.h"
 #include "src/core/SkPipelineData.h"
 
+#ifdef SK_GRAPHITE_ENABLED
+#include "experimental/graphite/src/UniformManager.h"
+
+SkPipelineDataGatherer::SkPipelineDataGatherer(skgpu::Layout layout)
+        : fUniformManager(layout) {
+}
+#endif
+
+#if 0
+SkPipelineDataGatherer::SkPipelineDataGatherer() {
+#ifdef SK_GRAPHITE_ENABLED
+    fLayout = skgpu::Layout::kMetal;
+#endif
+}
+#endif
+
 void SkPipelineDataGatherer::reset() {
-    fUniformDataBlock.reset();
+//    fUniformDataBlock.reset();
 #ifdef SK_GRAPHITE_ENABLED
     fTextureDataBlock.reset();
     fBlendInfo = BlendInfo();
+    fUniformManager.reset();
 #endif
 }
 
 #ifdef SK_DEBUG
 void SkPipelineDataGatherer::checkReset() {
-    SkASSERT(fUniformDataBlock.empty());
+//    SkASSERT(fUniformDataBlock.empty());
 #ifdef SK_GRAPHITE_ENABLED
     SkASSERT(fTextureDataBlock.empty());
     SkASSERT(fBlendInfo == BlendInfo());
+    SkDEBUGCODE(fUniformManager.checkReset());
 #endif
 }
 #endif
 
+#if 0
 void SkPipelineDataGatherer::add(sk_sp<SkUniformData> uniforms) {
     SkASSERT(uniforms && uniforms->count());
     fUniformDataBlock.add(std::move(uniforms));
 }
+#endif
+////////////////////////////////////////////////////////////////////////////////////////////////////
+uint32_t SkUniformDataBlock2::hash() const {
+    return SkOpts::hash_fn(fData, fDataSize, 0);
+}
 
+////////////////////////////////////////////////////////////////////////////////////////////////////
 size_t SkUniformDataBlock::totalUniformSize() const {
     size_t total = 0;
 

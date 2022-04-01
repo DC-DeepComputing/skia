@@ -34,8 +34,6 @@ class DrawWriter;
 class DrawGeometry;
 class ResourceProvider;
 
-enum class Layout;
-
 class RenderStep {
 public:
     virtual ~RenderStep() = default;
@@ -54,8 +52,7 @@ public:
     // nice if we could remember the offsets for the layout/gpu and reuse them across draws.
     // Similarly, it would be nice if this could write into reusable storage and then DrawPass or
     // UniformCache handles making an sk_sp if we need to assign a new unique ID to the uniform data
-    virtual void writeUniforms(Layout layout,
-                               const DrawGeometry&,
+    virtual void writeUniforms(const DrawGeometry&,
                                SkPipelineDataGatherer*) const = 0;
 
     // Returns a name formatted as "Subclass[variant]", where "Subclass" matches the C++ class name
