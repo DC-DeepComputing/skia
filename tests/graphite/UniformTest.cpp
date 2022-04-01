@@ -14,6 +14,7 @@
 #include "experimental/graphite/src/PaintParams.h"
 #include "experimental/graphite/src/RecorderPriv.h"
 #include "experimental/graphite/src/ResourceProvider.h"
+#include "experimental/graphite/src/UniformManager.h"
 #include "include/core/SkPaint.h"
 #include "include/effects/SkGradientShader.h"
 #include "include/private/SkUniquePaintParamsID.h"
@@ -80,7 +81,7 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(UniformTest, reporter, context) {
     auto uCache = recorder->priv().uniformDataCache();
 
     SkPaintParamsKeyBuilder builder(dict, SkBackend::kGraphite);
-    SkPipelineDataGatherer gatherer;
+    SkPipelineDataGatherer gatherer(Layout::kMetal);
 
     // Intentionally does not include ShaderType::kNone, which represents no fragment shading stage
     // and is thus not relevant to uniform extraction/caching.

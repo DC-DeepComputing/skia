@@ -17,6 +17,7 @@
 
 #ifdef SK_GRAPHITE_ENABLED
 #include "experimental/graphite/src/TextureProxy.h"
+#include "experimental/graphite/src/UniformManager.h"
 #include "src/gpu/Blend.h"
 #endif
 
@@ -124,7 +125,10 @@ public:
     };
 #endif
 
-    SkPipelineDataGatherer() = default;
+#ifdef SK_GRAPHITE_ENABLED
+    SkPipelineDataGatherer(skgpu::Layout layout);
+#endif
+//    SkPipelineDataGatherer();
 
     void reset();
     // Check that the gatherer has been reset to its initial state prior to collecting new data.
@@ -146,6 +150,11 @@ public:
     const SkTextureDataBlock& textureDataBlock() { return fTextureDataBlock; }
 #endif
 
+    void writeUniforms(SkSpan<const SkUniform> expectedUniforms,
+                       const void** srcs) {
+        fUniformManager.writeUniforms1(expectedUniforms, srcs, nullptr);
+    }
+
     void add(sk_sp<SkUniformData>);
     bool hasUniforms() const { return !fUniformDataBlock.empty(); }
 
@@ -155,8 +164,9 @@ private:
     SkUniformDataBlock fUniformDataBlock;
 
 #ifdef SK_GRAPHITE_ENABLED
-    SkTextureDataBlock fTextureDataBlock;
-    BlendInfo        fBlendInfo;
+    SkTextureDataBlock    fTextureDataBlock;
+    BlendInfo             fBlendInfo;
+    skgpu::UniformManager fUniformManager;
 #endif
 };
 
