@@ -270,8 +270,8 @@ public:
                     field.fModifiers.fPosition, field.fModifiers.fModifiers, baseType,
                     Variable::Storage::kInterfaceBlock);
             GetErrorReporter().reportPendingErrors(field.fPosition);
-            skslFields.push_back(SkSL::Type::Field(field.fModifiers.fModifiers, field.fName,
-                                                   &field.fType.skslType()));
+            skslFields.push_back(SkSL::Type::Field(field.fPosition, field.fModifiers.fModifiers,
+                    field.fName, &field.fType.skslType()));
         }
         const SkSL::Type* structType =
                 ThreadContext::SymbolTable()->takeOwnershipOfSymbol(SkSL::Type::MakeStructType(
