@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8491d0f9_81121ff3",
+        "filename": "tests/graphite/UniformTest.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-04-01T17:32:54Z",
+      "side": 1,
+      "message": "Is this for later? It looks like it\u0027s always 0.",
+      "range": {
+        "startLine": 70,
+        "startChar": 29,
+        "endLine": 70,
+        "endChar": 40
+      },
+      "revId": "a768192ceb3364cda6a39328c34cf6aac6aa0a19",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
