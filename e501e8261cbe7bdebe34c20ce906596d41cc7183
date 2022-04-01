@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a273d285_104caedf",
+        "filename": "experimental/graphite/src/ClipStack.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-04-01T13:23:02Z",
+      "side": 1,
+      "message": "Subtract is a pretty gnarly function, so I wouldn\u0027t want to duplicate the code (right now it uses a template to switch between SkRect and SkIRect). We could do some work to make skgpu::Rect compatible with the template as well, but the logic is not very SIMD friendly so I don\u0027t feel like we\u0027d get a big win. I don\u0027t expect this to be called to frequently so am not as concerned about it being a bottleneck either.",
+      "parentUuid": "84ee57e6_6300fbbc",
+      "range": {
+        "startLine": 145,
+        "startChar": 8,
+        "endLine": 145,
+        "endChar": 18
+      },
+      "revId": "e501e8261cbe7bdebe34c20ce906596d41cc7183",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b9cdb15a_66bcbf28",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4535f791_e800c84c",
+        "filename": "experimental/graphite/src/ClipStack.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 695,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-04-01T13:23:02Z",
+      "side": 1,
+      "message": "skgpu::Rect doesn\u0027t have a constructor that takes SkIRect, but does have one that takes an SkRect.",
+      "parentUuid": "b9cdb15a_66bcbf28",
+      "range": {
+        "startLine": 695,
+        "startChar": 24,
+        "endLine": 695,
+        "endChar": 36
+      },
+      "revId": "e501e8261cbe7bdebe34c20ce906596d41cc7183",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "13c6b250_d60e41c9",
@@ -60,6 +108,30 @@
       "writtenOn": "2022-03-31T20:16:52Z",
       "side": 1,
       "message": "outdated ?",
+      "range": {
+        "startLine": 141,
+        "startChar": 32,
+        "endLine": 141,
+        "endChar": 49
+      },
+      "revId": "e501e8261cbe7bdebe34c20ce906596d41cc7183",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2d14ccac_41000c1d",
+        "filename": "experimental/graphite/src/ClipStack_graphite.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-04-01T13:23:02Z",
+      "side": 1,
+      "message": "Good catch, I updated it to reflect this clip stacks direct bounds strategy.",
+      "parentUuid": "13c6b250_d60e41c9",
       "range": {
         "startLine": 141,
         "startChar": 32,
