@@ -193,7 +193,7 @@ public:
     void resolveStrut();
 
     bool computeCodeUnitProperties();
-
+    void updateShapingInfo();
     void buildClusterTable();
     bool shapeTextIntoEndlessLine();
     void breakShapedTextIntoLines(SkScalar maxWidth);
