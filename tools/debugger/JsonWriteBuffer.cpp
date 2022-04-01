@@ -195,6 +195,7 @@ void JsonWriteBuffer::writePath(const SkPath& path) {
 
 void JsonWriteBuffer::writeSampling(const SkSamplingOptions& sampling) {
     this->append("sampling");
+    fWriter->appendS32(sampling.maxAniso);
     fWriter->appendBool(sampling.useCubic);
     fWriter->appendS32((int)sampling.filter);
     fWriter->appendS32((int)sampling.mipmap);

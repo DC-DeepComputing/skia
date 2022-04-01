@@ -6,6 +6,7 @@ Milestone 102
 -------------
   * Add glGetFloatv and glSamplerParameterf to GrGLInterface.
   * GrGLCreateNativeInterface is removed. Use GrGLMakeNativeInterface.
+  * SkSamplingOptions now includes anisotropic filtering. Implemented on GPU only.
 
 * * *
 
