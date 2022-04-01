@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bd893550_6722d520",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 16
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-01T22:18:09Z",
+      "side": 1,
+      "message": "Leaving +1 here in case you have solved the bot issue today; everything still LGTM ",
+      "revId": "22e72833074b5b82631a30f9b7485f61b4024c5a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
