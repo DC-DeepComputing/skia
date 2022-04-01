@@ -21,28 +21,48 @@ enum class Layout {
     kMetal, /** This is our own self-imposed layout we use for Metal. */
 };
 
+// This is only used in the SkPipelineDataGatherer - maybe hide it better.
 class UniformManager {
 public:
     UniformManager(Layout layout);
 
+    void reset();
+#ifdef SK_DEBUG
+    void checkReset() const;
+#endif
     /*
-     * Use the uniform 'definitions' to write the data in 'srcs' into 'dst' (if it is non-null).
-     * If non-null, 'offsets' is filled in with the offset of each uniform w/in 'dst'. The
-     * number of bytes that was written (or would've been written) to 'dst' is returned.
-     * In practice one should call:
-     *   auto bytes = writeUniforms(definitions, nullptr, nullptr, nullptr);
-     *   // allocate dst and offsets memory
-     *   writeUniforms(definitions, src, offsets, dst);
+     * Use the uniform 'definitions' to write the data in 'srcs'.
      */
-    uint32_t writeUniforms(SkSpan<const SkUniform> definitions,
-                           const void** srcs,
-                           uint32_t* offsets,
-                           char *dst);
+    void writeUniforms1(SkSpan<const SkUniform> definitions,
+                        const void** srcs);
 
 private:
     SkSLType getUniformTypeForLayout(SkSLType type);
 
     Layout fLayout;
+#ifdef SK_DEBUG
+    uint32_t fCurUBOOffset;
+    uint32_t fCurUBOMaxAlignment;
+#endif // SK_DEBUG
+    uint32_t fOffset;
+
+    char* getMem(size_t needed) {
+        if (fUsed + needed > fCapacity) {
+            char* newMem = new char[fUsed + needed];
+            memcpy(newMem, fDest, fUsed);
+            delete [] fDest;
+            fDest = newMem;
+            fCapacity = fUsed + needed;
+        }
+
+        size_t old = fUsed;
+        fUsed += needed;
+        return &fDest[old];
+    }
+
+    char* fDest = nullptr;
+    size_t fUsed = 0;
+    size_t fCapacity = 0;
 };
 
 } // namespace skgpu
