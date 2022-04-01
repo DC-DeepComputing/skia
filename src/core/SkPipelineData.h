@@ -9,6 +9,7 @@
 #define SkPipelineData_DEFINED
 
 #include <vector>
+#include "include/core/SkPoint.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSamplingOptions.h"
 #include "include/core/SkTileMode.h"
@@ -17,6 +18,7 @@
 
 #ifdef SK_GRAPHITE_ENABLED
 #include "experimental/graphite/src/TextureProxy.h"
+#include "experimental/graphite/src/UniformManager.h"
 #include "src/gpu/Blend.h"
 #endif
 
@@ -124,7 +126,10 @@ public:
     };
 #endif
 
-    SkPipelineDataGatherer() = default;
+#ifdef SK_GRAPHITE_ENABLED
+    SkPipelineDataGatherer(skgpu::Layout layout);
+#endif
+//    SkPipelineDataGatherer();
 
     void reset();
     // Check that the gatherer has been reset to its initial state prior to collecting new data.
@@ -146,17 +151,33 @@ public:
     const SkTextureDataBlock& textureDataBlock() { return fTextureDataBlock; }
 #endif
 
-    void add(sk_sp<SkUniformData>);
-    bool hasUniforms() const { return !fUniformDataBlock.empty(); }
+    void setExpectedUniforms(SkSpan<const SkUniform> expectedUniforms) {
+        fUniformManager.setExpectedUniforms(expectedUniforms);
+    }
 
-    SkUniformDataBlock& uniformDataBlock() { return fUniformDataBlock; }
+    void write(const SkColor4f* colors, int numColors) { fUniformManager.write(colors, numColors); }
+    void write(const SkPMColor4f& premulColor) { fUniformManager.write(&premulColor, 1); }
+    void write(const SkRect& rect) { fUniformManager.write(rect); }
+    void write(SkPoint point) { fUniformManager.write(point); }
+    void write(const float* floats, int count) { fUniformManager.write(floats, count); }
+    void write(float something) { fUniformManager.write(&something, 1); }
+    void write(int something) { fUniformManager.write(something); }
+    void doneWithExpectedUniforms() { fUniformManager.doneWithExpectedUniforms(); }
+
+    //void add(sk_sp<SkUniformData>);
+    bool hasUniforms1() const { return fUniformManager.size(); }
+
+    SkSpan<const char> peekUniformData() const { return fUniformManager.peekData(); }
+
+//    SkUniformDataBlock& uniformDataBlock() { return fUniformDataBlock; }
 
 private:
-    SkUniformDataBlock fUniformDataBlock;
+//    SkUniformDataBlock fUniformDataBlock;
 
 #ifdef SK_GRAPHITE_ENABLED
-    SkTextureDataBlock fTextureDataBlock;
-    BlendInfo        fBlendInfo;
+    SkTextureDataBlock    fTextureDataBlock;
+    BlendInfo             fBlendInfo;
+    skgpu::UniformManager fUniformManager;
 #endif
 };
 
