@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "216f3c78_d60d6e31",
+        "filename": "modules/skparagraph/include/FontCollection.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-04-01T02:21:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "70d32376_94114a38",
+      "revId": "1270d40a775a5d8348d722720f4cc128b1b9f3f8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "df794608_647373b8",
@@ -31,6 +49,24 @@
       "writtenOn": "2022-03-31T15:55:37Z",
       "side": 1,
       "message": "Yeah, nothing should ever be holding on to a `SkFontArguments` and this should probably be removed or replaced with `FontArguments`. If you want to hold onto any of the `SkFontArguments` data outside the call that the `SkFontArguments` was passed to a copy of the data should be made (much like `SkFontData` or `SkFontDescriptor` do internally).\n\nThe entire point of `SkFontArguments` is to not own anything (all the pointers are borrowed). It is literally an abstraction over passing a bunch of raw pointer parameters and lengths to a method. This abstraction means that more \"parameters\" can be added later (like the palette was) without needing to update all the functions this data needs to pass through. However, it does mean that one shouldn\u0027t hold onto it.\n\nThis CL goes most of the way to realizing this, but it should probably go all the way and just create a `FontArguments` (which does own all the data) and immediately drop the idea of having an `SkFontArguments`, potentially just creating an `SkFontArguments` temporary from the `FontArguments` should that ever been needed.",
+      "revId": "1270d40a775a5d8348d722720f4cc128b1b9f3f8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d8050fdf_afc6e50e",
+        "filename": "modules/skparagraph/include/FontCollection.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-04-01T02:21:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "df794608_647373b8",
       "revId": "1270d40a775a5d8348d722720f4cc128b1b9f3f8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },

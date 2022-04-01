@@ -16,6 +16,86 @@
       "message": "Rewrote this to replace use of SkFontArguments with a FontArguments class\n\nPTAL",
       "revId": "aa4de7c3721b7f1e0cecab103f16711cbb44648d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "058f9adf_4564016d",
+        "filename": "modules/skparagraph/include/FontArguments.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-04-01T02:21:16Z",
+      "side": 1,
+      "message": "Don\u0027t know if it makes a lot of difference, but a `FontArguments(FontArguments\u0026\u0026) \u003d default;` here would make moving more efficient (moving the vectors instead of copying them).\n\nAlso, I always find it awkward to mention the copy constructor here but not the assignment operator. Probably best to list all five of default, copy, move, assignment, and move assignment here and explicitly default or delete them.",
+      "revId": "aa4de7c3721b7f1e0cecab103f16711cbb44648d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2ac09903_16967dc3",
+        "filename": "modules/skparagraph/include/FontArguments.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-04-01T02:21:16Z",
+      "side": 1,
+      "message": "Since this is defaulted we don\u0027t really need to name this argument at all. If it does want a name, it would be `that`.",
+      "range": {
+        "startLine": 15,
+        "startChar": 39,
+        "endLine": 15,
+        "endChar": 43
+      },
+      "revId": "aa4de7c3721b7f1e0cecab103f16711cbb44648d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "29ef512a_c3cdd273",
+        "filename": "modules/skparagraph/src/FontArguments.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-04-01T02:21:16Z",
+      "side": 1,
+      "message": "These can just be done in the init list, like\n\n    : fCoordinates(args.getVariationDesignPosition().coordinates,\n                   args.getVariationDesignPosition().coordinates +\n                   args.getVariationDesignPosition().coordinateCount)\n    , fPaletteIndex(args.getPalette().index)\n    , fPaletteOverrides(args.getPalette().overrides,\n                        args.getPalette().overrides +\n                        args.getPalette().overrideCount)\n\n\nwhich avoids all the `push_back`s and potential resizes and copies and whatnot.",
+      "range": {
+        "startLine": 40,
+        "startChar": 0,
+        "endLine": 43,
+        "endChar": 5
+      },
+      "revId": "aa4de7c3721b7f1e0cecab103f16711cbb44648d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f08eea42_1a68267b",
+        "filename": "modules/skparagraph/src/FontArguments.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-04-01T02:21:16Z",
+      "side": 1,
+      "message": "The reason std::vector::data() was added in c++11 was so this empty test isn\u0027t needed (previously it was needed if you had to use begin()). I think here and above this line can just be fMyVector.data().\n\n(Though I see now that this code was existing and copied here.)",
+      "revId": "aa4de7c3721b7f1e0cecab103f16711cbb44648d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
