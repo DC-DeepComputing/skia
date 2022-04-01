@@ -59,7 +59,7 @@ def _clang_impl(ctx):
         toolchain_identifier = "clang-toolchain",
     )
 
-provide_clang_toolchain_config = rule(
+provide_linux_amd64_toolchain_config = rule(
     attrs = {},
     provides = [CcToolchainConfigInfo],
     implementation = _clang_impl,
