@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ad696f04_a97274ba",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2022-04-01T13:54:17Z",
+      "side": 1,
+      "message": "This fixes some longstanding alignment issues, and will require g3 rebaseline.\n\nTest (https://imgur.com/a/04vMZly):\n\n  - single line + implicit/paragraph line break\n  - left column has no leading/trailing white-space\n  - right column has 3x leading/trailing/inner white-space\n\n ",
+      "revId": "78fbc665d123652aae4eaefb3ddc6b1377182a0b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
