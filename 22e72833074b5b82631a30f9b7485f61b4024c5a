@@ -33,6 +33,24 @@
       "message": "include/ lgtm",
       "revId": "22e72833074b5b82631a30f9b7485f61b4024c5a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d6aa4a91_c24de997",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 16
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-04-01T23:02:09Z",
+      "side": 1,
+      "message": "Yep, it was a one-line change in patchset 16.",
+      "parentUuid": "bd893550_6722d520",
+      "revId": "22e72833074b5b82631a30f9b7485f61b4024c5a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
