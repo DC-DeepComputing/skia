@@ -58,6 +58,48 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bfc2c869_7580c32e",
+        "filename": "modules/skparagraph/include/FontArguments.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 7708
+      },
+      "writtenOn": "2022-04-01T03:41:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2ac09903_16967dc3",
+      "range": {
+        "startLine": 15,
+        "startChar": 39,
+        "endLine": 15,
+        "endChar": 43
+      },
+      "revId": "aa4de7c3721b7f1e0cecab103f16711cbb44648d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1cfaa8d7_a3ad5c99",
+        "filename": "modules/skparagraph/include/FontArguments.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 7708
+      },
+      "writtenOn": "2022-04-01T03:41:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "058f9adf_4564016d",
+      "revId": "aa4de7c3721b7f1e0cecab103f16711cbb44648d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "29ef512a_c3cdd273",
@@ -81,6 +123,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "73027e45_6141a794",
+        "filename": "modules/skparagraph/src/FontArguments.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 7708
+      },
+      "writtenOn": "2022-04-01T03:41:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "29ef512a_c3cdd273",
+      "range": {
+        "startLine": 40,
+        "startChar": 0,
+        "endLine": 43,
+        "endChar": 5
+      },
+      "revId": "aa4de7c3721b7f1e0cecab103f16711cbb44648d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f08eea42_1a68267b",
@@ -94,6 +160,24 @@
       "writtenOn": "2022-04-01T02:21:16Z",
       "side": 1,
       "message": "The reason std::vector::data() was added in c++11 was so this empty test isn\u0027t needed (previously it was needed if you had to use begin()). I think here and above this line can just be fMyVector.data().\n\n(Though I see now that this code was existing and copied here.)",
+      "revId": "aa4de7c3721b7f1e0cecab103f16711cbb44648d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f649a639_c20c155a",
+        "filename": "modules/skparagraph/src/FontArguments.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 7708
+      },
+      "writtenOn": "2022-04-01T03:41:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f08eea42_1a68267b",
       "revId": "aa4de7c3721b7f1e0cecab103f16711cbb44648d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
