@@ -58,6 +58,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e3ccfad2_81ced0db",
+        "filename": "src/sksl/SkSLDSLParser.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 278,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-04-01T16:31:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9bde34bc_77c24200",
+      "range": {
+        "startLine": 273,
+        "startChar": 0,
+        "endLine": 278,
+        "endChar": 5
+      },
+      "revId": "706872cbd635c806bf0df8fba751fbc7aea9dc35",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bcd052fb_2ab2ac2d",
@@ -81,6 +105,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9edc6134_15496d0c",
+        "filename": "src/sksl/SkSLDSLParser.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 1358,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-04-01T16:31:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bcd052fb_2ab2ac2d",
+      "range": {
+        "startLine": 1358,
+        "startChar": 0,
+        "endLine": 1358,
+        "endChar": 44
+      },
+      "revId": "706872cbd635c806bf0df8fba751fbc7aea9dc35",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "59cb5fd6_98914a8e",
@@ -94,6 +142,30 @@
       "writtenOn": "2022-03-31T15:15:13Z",
       "side": 1,
       "message": "nit: I misread this as \"the start of the program\" at first because start wasn\u0027t quoted, and I hadn\u0027t looked at the function signature yet. Add quotes/backticks?",
+      "range": {
+        "startLine": 140,
+        "startChar": 30,
+        "endLine": 140,
+        "endChar": 35
+      },
+      "revId": "706872cbd635c806bf0df8fba751fbc7aea9dc35",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "268f6235_eaf7ada1",
+        "filename": "src/sksl/SkSLDSLParser.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-04-01T16:31:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "59cb5fd6_98914a8e",
       "range": {
         "startLine": 140,
         "startChar": 30,
@@ -129,6 +201,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ef8c6006_9c13db4a",
+        "filename": "src/sksl/dsl/DSLExpression.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 359,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-04-01T16:31:31Z",
+      "side": 1,
+      "message": "This is DSLPossibleExpression, not DSLExpression. It doesn\u0027t even have hasValue().",
+      "parentUuid": "c7a0a218_b7324457",
+      "range": {
+        "startLine": 359,
+        "startChar": 19,
+        "endLine": 359,
+        "endChar": 24
+      },
+      "revId": "706872cbd635c806bf0df8fba751fbc7aea9dc35",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "30a38f0c_529cf13b",
         "filename": "src/sksl/ir/SkSLConstructor.cpp",
         "patchSetId": 14
@@ -140,6 +236,30 @@
       "writtenOn": "2022-03-31T15:01:45Z",
       "side": 1,
       "message": "Seems like an incorrect example. Wouldn\u0027t this cover a case like `float(x)` where x is already float? Stripping away no-op math happens elsewhere; this is stripping away no-op ctors.\n\nAt any rate, the comment could probably be shrunk down a lot anyway--it isn\u0027t especially noteworthy that an optimizing pass could simplify an expression but preserve the original expression\u0027s position in the simplified form. (e.g. ConstructorSplat L26 does the same thing without comment)",
+      "range": {
+        "startLine": 155,
+        "startChar": 81,
+        "endLine": 155,
+        "endChar": 86
+      },
+      "revId": "706872cbd635c806bf0df8fba751fbc7aea9dc35",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "61bc16e0_ace77a9d",
+        "filename": "src/sksl/ir/SkSLConstructor.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 155,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-04-01T16:31:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "30a38f0c_529cf13b",
       "range": {
         "startLine": 155,
         "startChar": 81,
@@ -173,6 +293,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cb300975_2c78e97a",
+        "filename": "src/sksl/ir/SkSLFunctionCall.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 658,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-04-01T16:31:31Z",
+      "side": 1,
+      "message": "Added a comment explaining this.",
+      "parentUuid": "b0bdef30_84c67a56",
+      "range": {
+        "startLine": 654,
+        "startChar": 0,
+        "endLine": 658,
+        "endChar": 14
+      },
+      "revId": "706872cbd635c806bf0df8fba751fbc7aea9dc35",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "99275fee_382fda07",
@@ -186,6 +330,30 @@
       "writtenOn": "2022-03-31T15:15:13Z",
       "side": 1,
       "message": "Idea: It might be worthwhile in a followup to add `Expression::clone(Position)` into the base class which just calls `clone()` then updates the Position. Seems to be a recurring theme (understandably!).",
+      "range": {
+        "startLine": 125,
+        "startChar": 0,
+        "endLine": 126,
+        "endChar": 44
+      },
+      "revId": "706872cbd635c806bf0df8fba751fbc7aea9dc35",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f5dd9301_9f318909",
+        "filename": "src/sksl/ir/SkSLIndexExpression.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-04-01T16:31:31Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "99275fee_382fda07",
       "range": {
         "startLine": 125,
         "startChar": 0,
@@ -219,6 +387,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1ce5fcb8_bf8a0d9d",
+        "filename": "src/sksl/ir/SkSLSwizzle.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 460,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-04-01T16:31:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "06a74b06_11d02e4c",
+      "range": {
+        "startLine": 460,
+        "startChar": 54,
+        "endLine": 460,
+        "endChar": 86
+      },
+      "revId": "706872cbd635c806bf0df8fba751fbc7aea9dc35",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fc52e87e_c3d1f71c",
@@ -232,6 +424,30 @@
       "writtenOn": "2022-03-31T15:15:13Z",
       "side": 1,
       "message": "This replaces the \u0027true\u0027/\u0027false\u0027 expression\u0027s position with the test-expression\u0027s position. Is that correct? Seems like it should be the union of the two.",
+      "range": {
+        "startLine": 73,
+        "startChar": 12,
+        "endLine": 73,
+        "endChar": 35
+      },
+      "revId": "706872cbd635c806bf0df8fba751fbc7aea9dc35",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dbb5d905_3b76f66b",
+        "filename": "src/sksl/ir/SkSLTernaryExpression.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-04-01T16:31:31Z",
+      "side": 1,
+      "message": "Sorry, coming in the next CL and meant to leave a TODO here.",
+      "parentUuid": "fc52e87e_c3d1f71c",
       "range": {
         "startLine": 73,
         "startChar": 12,
