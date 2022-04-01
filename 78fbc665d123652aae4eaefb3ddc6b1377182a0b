@@ -33,6 +33,24 @@
       "message": "Someday I\u0027ll get back around to shaping and reason about how \"whitespace\" should be handled. I\u0027m not sure how this works with visible whitespace (like the Ogham space mark, or just space glyphs that draw in general).",
       "revId": "78fbc665d123652aae4eaefb3ddc6b1377182a0b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2506145a_42569594",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2022-04-01T16:22:35Z",
+      "side": 1,
+      "message": "I convinced myself that SkShaper is doing the right thing in this case: it preserves whitespace before line breaks (at the end of the first line, next line starts with a non-whitespace char).\n\nAE does the same thing: trailing whitespace before line break is still there, it\u0027s just being ignored for alignment.  E.g. it extends outside the paragraph box with right-align, you can move the cursor through it, and it participates in character-based range selectors (for text animators).\n\nSo it would be incorrect/noticeable to trim, as I was thinking initially -- it\u0027s only alignment, which is handled outside SkShaper.",
+      "parentUuid": "af3b9bb6_c481aa7b",
+      "revId": "78fbc665d123652aae4eaefb3ddc6b1377182a0b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
