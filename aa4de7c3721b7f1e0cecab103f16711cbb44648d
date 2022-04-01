@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "971b8e9d_e298972b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 7708
+      },
+      "writtenOn": "2022-04-01T01:42:14Z",
+      "side": 1,
+      "message": "Rewrote this to replace use of SkFontArguments with a FontArguments class\n\nPTAL",
+      "revId": "aa4de7c3721b7f1e0cecab103f16711cbb44648d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
