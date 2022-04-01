@@ -8,11 +8,28 @@
 #include "src/core/SkOpts.h"
 #include "src/core/SkPipelineData.h"
 
+#ifdef SK_GRAPHITE_ENABLED
+#include "experimental/graphite/src/UniformManager.h"
+
+SkPipelineDataGatherer::SkPipelineDataGatherer(skgpu::Layout layout)
+        : fUniformManager(layout) {
+}
+#endif
+
+#if 0
+SkPipelineDataGatherer::SkPipelineDataGatherer() {
+#ifdef SK_GRAPHITE_ENABLED
+    fLayout = skgpu::Layout::kMetal;
+#endif
+}
+#endif
+
 void SkPipelineDataGatherer::reset() {
     fUniformDataBlock.reset();
 #ifdef SK_GRAPHITE_ENABLED
     fTextureDataBlock.reset();
     fBlendInfo = BlendInfo();
+    fUniformManager.reset();
 #endif
 }
 
@@ -22,6 +39,7 @@ void SkPipelineDataGatherer::checkReset() {
 #ifdef SK_GRAPHITE_ENABLED
     SkASSERT(fTextureDataBlock.empty());
     SkASSERT(fBlendInfo == BlendInfo());
+    SkDEBUGCODE(fUniformManager.checkReset());
 #endif
 }
 #endif
