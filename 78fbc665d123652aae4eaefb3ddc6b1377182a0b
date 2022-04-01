@@ -16,6 +16,23 @@
       "message": "This fixes some longstanding alignment issues, and will require g3 rebaseline.\n\nTest (https://imgur.com/a/04vMZly):\n\n  - single line + implicit/paragraph line break\n  - left column has no leading/trailing white-space\n  - right column has 3x leading/trailing/inner white-space\n\n ",
       "revId": "78fbc665d123652aae4eaefb3ddc6b1377182a0b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "af3b9bb6_c481aa7b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-04-01T16:00:13Z",
+      "side": 1,
+      "message": "Someday I\u0027ll get back around to shaping and reason about how \"whitespace\" should be handled. I\u0027m not sure how this works with visible whitespace (like the Ogham space mark, or just space glyphs that draw in general).",
+      "revId": "78fbc665d123652aae4eaefb3ddc6b1377182a0b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
