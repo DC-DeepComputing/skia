@@ -1112,6 +1112,7 @@ func (b *jobBuilder) createDockerImage(wasm bool) string {
 		b.linuxGceDimensions(MACHINE_TYPE_MEDIUM)
 		b.usesDocker()
 		b.cache(CACHES_DOCKER...)
+		b.env("DEPOT_TOOLS_UPDATE", "0")
 	})
 	return taskName
 }

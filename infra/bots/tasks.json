@@ -20898,6 +20898,9 @@
         "pool:Skia",
         "docker_installed:true"
       ],
+      "environment": {
+        "DEPOT_TOOLS_UPDATE": "0"
+      },
       "env_prefixes": {
         "PATH": [
           "cipd_bin_packages",
@@ -20981,6 +20984,9 @@
         "pool:Skia",
         "docker_installed:true"
       ],
+      "environment": {
+        "DEPOT_TOOLS_UPDATE": "0"
+      },
       "env_prefixes": {
         "PATH": [
           "cipd_bin_packages",
