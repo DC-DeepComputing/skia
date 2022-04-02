@@ -253,6 +253,7 @@ generated_cc_atom(
         "//src/sksl/codegen:SkSLMetalCodeGenerator_hdr",
         "//src/sksl/codegen:SkSLSPIRVCodeGenerator_hdr",
         "//src/sksl/codegen:SkSLSPIRVtoHLSL_hdr",
+        "//src/sksl/codegen:SkSLWGSLCodeGenerator_hdr",
         "//src/sksl/ir:SkSLExpression_hdr",
         "//src/sksl/ir:SkSLExternalFunctionReference_hdr",
         "//src/sksl/ir:SkSLExternalFunction_hdr",
