@@ -9,6 +9,7 @@ RUN cd /tmp \
   && git clone --depth 1 'https://chromium.googlesource.com/chromium/tools/depot_tools.git'
 
 ENV PATH=${PATH}:/tmp/depot_tools
+ENV DEPOT_TOOLS_UPDATE=0
 
 # Checkout Skia using fetch from depot_tools
 RUN mkdir -p /tmp/skia \
