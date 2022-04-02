@@ -14,13 +14,21 @@
 #include "src/sksl/ir/SkSLBlock.h"
 #include "src/sksl/ir/SkSLConstructor.h"
 #include "src/sksl/ir/SkSLConstructorCompound.h"
+#include "src/sksl/ir/SkSLDoStatement.h"
 #include "src/sksl/ir/SkSLExpression.h"
 #include "src/sksl/ir/SkSLExpressionStatement.h"
+#include "src/sksl/ir/SkSLForStatement.h"
+#include "src/sksl/ir/SkSLFunctionCall.h"
 #include "src/sksl/ir/SkSLFunctionDeclaration.h"
 #include "src/sksl/ir/SkSLFunctionDefinition.h"
+#include "src/sksl/ir/SkSLIfStatement.h"
 #include "src/sksl/ir/SkSLInterfaceBlock.h"
 #include "src/sksl/ir/SkSLLiteral.h"
+#include "src/sksl/ir/SkSLPostfixExpression.h"
+#include "src/sksl/ir/SkSLPrefixExpression.h"
 #include "src/sksl/ir/SkSLReturnStatement.h"
+#include "src/sksl/ir/SkSLSwitchCase.h"
+#include "src/sksl/ir/SkSLSwitchStatement.h"
 #include "src/sksl/ir/SkSLVarDeclarations.h"
 
 // TODO(skia:13092): This is a temporary debug feature. Remove when the implementation is
@@ -36,6 +44,18 @@ enum class PtrAddressSpace {
     kPrivate,
     kStorage,
 };
+
+std::string pipelineStructPrefix(ProgramKind kind) {
+    switch (kind) {
+        case ProgramKind::kVertex:
+            return "VS";
+        case ProgramKind::kFragment:
+            return "FS";
+        default:
+            break;
+    }
+    return "";
+}
 
 std::string addressSpaceToString(PtrAddressSpace addressSpace) {
     switch (addressSpace) {
@@ -154,6 +174,167 @@ std::shared_ptr<SymbolTable> topLevelSymbolTable(const FunctionDefinition& f) {
     return f.body()->as<Block>().symbolTable()->fParent;
 }
 
+class FunctionDependencyResolver {
+public:
+    using Deps = WGSLCodeGenerator::FunctionDependencies;
+    using DepsMap = SkTHashMap<const FunctionDeclaration*, Deps>;
+
+    // Walk the program tree record the parameter dependencies for every function definition.
+    WGSLCodeGenerator::ProgramRequirements resolve(const Program& program) {
+        for (const auto* e : program.elements()) {
+            if (e->is<FunctionDefinition>()) {
+                this->resolve(e->as<FunctionDefinition>().declaration());
+            }
+        }
+        return {
+                .dependencies = std::move(fDeps),
+                .mainNeedsCoordsArgument = fMainNeedsCoordsArgument,
+        };
+    }
+
+private:
+    Deps resolve(const FunctionDeclaration& f) {
+        if (f.isMain()) {
+            for (const Variable* v : f.parameters()) {
+                if (v->modifiers().fLayout.fBuiltin == SK_MAIN_COORDS_BUILTIN) {
+                    fMainNeedsCoordsArgument = true;
+                }
+            }
+        }
+        Deps* found = fDeps.find(&f);
+        if (found) {
+            return *found;
+        }
+
+        fDeps.set(&f, Deps::kNone);
+        const FunctionDefinition* funcDef = f.definition();
+        if (!funcDef) {
+            return Deps::kNone;
+        }
+
+        Deps deps = this->resolve(funcDef->body().get());
+        fDeps.set(&f, deps);
+        return deps;
+    }
+
+    Deps resolve(const Statement* s) {
+        if (!s) {
+            return Deps::kNone;
+        }
+        switch (s->kind()) {
+            case Statement::Kind::kBlock: {
+                Deps deps = Deps::kNone;
+                for (const auto& child : s->as<Block>().children()) {
+                    deps |= this->resolve(child.get());
+                }
+                return deps;
+            }
+            case Statement::Kind::kVarDeclaration:
+                return this->resolve(s->as<VarDeclaration>().value().get());
+            case Statement::Kind::kExpression:
+                return this->resolve(s->as<ExpressionStatement>().expression().get());
+            case Statement::Kind::kReturn:
+                return this->resolve(s->as<ReturnStatement>().expression().get());
+            case Statement::Kind::kIf: {
+                const IfStatement& i = s->as<IfStatement>();
+                return this->resolve(i.test().get()) | this->resolve(i.ifTrue().get()) |
+                       this->resolve(i.ifFalse().get());
+            }
+            case Statement::Kind::kFor: {
+                const ForStatement& f = s->as<ForStatement>();
+                return this->resolve(f.initializer().get()) | this->resolve(f.test().get()) |
+                       this->resolve(f.next().get()) | this->resolve(f.statement().get());
+            }
+            case Statement::Kind::kDo: {
+                const DoStatement& d = s->as<DoStatement>();
+                return this->resolve(d.test().get()) | this->resolve(d.statement().get());
+            }
+            case Statement::Kind::kSwitch: {
+                const SwitchStatement& sw = s->as<SwitchStatement>();
+                Deps deps = this->resolve(sw.value().get());
+                for (const auto& sc : sw.cases()) {
+                    deps |= this->resolve(sc->as<SwitchCase>().statement().get());
+                }
+                return deps;
+            }
+            default:
+                break;
+        }
+        return Deps::kNone;
+    }
+
+    Deps resolve(const Expression* e) {
+        if (!e) {
+            return Deps::kNone;
+        }
+        switch (e->kind()) {
+            case Expression::Kind::kFunctionCall: {
+                const FunctionCall& f = e->as<FunctionCall>();
+                Deps deps = this->resolve(f.function());
+                for (const auto& arg : f.arguments()) {
+                    deps |= this->resolve(arg.get());
+                }
+                return deps;
+            }
+            case Expression::Kind::kConstructorCompound:
+            case Expression::Kind::kConstructorCompoundCast:
+            case Expression::Kind::kConstructorArray:
+            case Expression::Kind::kConstructorArrayCast:
+            case Expression::Kind::kConstructorDiagonalMatrix:
+            case Expression::Kind::kConstructorScalarCast:
+            case Expression::Kind::kConstructorSplat:
+            case Expression::Kind::kConstructorStruct: {
+                const AnyConstructor& c = e->asAnyConstructor();
+                Deps deps = Deps::kNone;
+                for (const auto& arg : c.argumentSpan()) {
+                    deps |= this->resolve(arg.get());
+                }
+                return deps;
+            }
+            case Expression::Kind::kFieldAccess:
+                return this->resolve(e->as<FieldAccess>().base().get());
+            case Expression::Kind::kSwizzle:
+                return this->resolve(e->as<Swizzle>().base().get());
+            case Expression::Kind::kBinary: {
+                const BinaryExpression& b = e->as<BinaryExpression>();
+                return this->resolve(b.left().get()) | this->resolve(b.right().get());
+            }
+            case Expression::Kind::kIndex: {
+                const IndexExpression& i = e->as<IndexExpression>();
+                return this->resolve(i.base().get()) | this->resolve(i.index().get());
+            }
+            case Expression::Kind::kPrefix:
+                return this->resolve(e->as<PrefixExpression>().operand().get());
+            case Expression::Kind::kPostfix:
+                return this->resolve(e->as<PostfixExpression>().operand().get());
+            case Expression::Kind::kTernary: {
+                const TernaryExpression& t = e->as<TernaryExpression>();
+                return this->resolve(t.test().get()) | this->resolve(t.ifTrue().get()) |
+                       this->resolve(t.ifFalse().get());
+            }
+            case Expression::Kind::kVariableReference: {
+                const VariableReference& v = e->as<VariableReference>();
+                const Modifiers& modifiers = v.variable()->modifiers();
+                if (v.variable()->storage() == Variable::Storage::kGlobal) {
+                    if (modifiers.fFlags & Modifiers::kIn_Flag) {
+                        return Deps::kPipelineInputs;
+                    }
+                    if (modifiers.fFlags & Modifiers::kOut_Flag) {
+                        return Deps::kPipelineOutputs;
+                    }
+                }
+                return Deps::kNone;
+            }
+            default:
+                break;
+        }
+        return Deps::kNone;
+    }
+
+    DepsMap fDeps;
+    bool fMainNeedsCoordsArgument = false;
+};
+
 }  // namespace
 
 bool WGSLCodeGenerator::generateCode() {
@@ -161,6 +342,8 @@ bool WGSLCodeGenerator::generateCode() {
     // - Vertex and fragment stage attribute inputs and outputs are bundled
     //   inside synthetic structs called VSIn/VSOut/FSIn/FSOut.
     // - All uniform and storage type resources are declared in global scope.
+    this->preprocessProgram();
+
     StringStream header;
     {
         AutoOutputStream outputToHeader(this, &header, &fIndentation);
@@ -192,6 +375,11 @@ bool WGSLCodeGenerator::generateCode() {
     write_stringstream(body, *fOut);
     fContext.fErrors->reportPendingErrors(Position());
     return fContext.fErrors->errorCount() == 0;
+}
+
+void WGSLCodeGenerator::preprocessProgram() {
+    FunctionDependencyResolver resolver;
+    fRequirements = resolver.resolve(fProgram);
 }
 
 void WGSLCodeGenerator::write(std::string_view s) {
@@ -260,14 +448,27 @@ void WGSLCodeGenerator::writeFunction(const FunctionDefinition& f) {
 void WGSLCodeGenerator::writeFunctionDeclaration(const FunctionDeclaration& f) {
     this->write("fn ");
     this->write(f.mangledName());
-
-    // TODO(skia:13092): If a user-defined function references a pipeline stage input or output
-    // parameter, then that need to be propagated as part of the stage input/output struct down
-    // from the program entry point. We need to synthesize the necessary function arguments by
-    // walking the function body beforehand to determine required parameters (similarly to how
-    // SkSLMetalCodeGenerator does it).
     this->write("(");
     const char* separator = "";
+    FunctionDependencies* deps = fRequirements.dependencies.find(&f);
+    if (deps) {
+        std::string structNamePrefix = pipelineStructPrefix(fProgram.fConfig->fKind);
+        if (structNamePrefix.length() != 0) {
+            if ((*deps & FunctionDependencies::kPipelineInputs) != FunctionDependencies::kNone) {
+                separator = ", ";
+                this->write("_stageIn: ");
+                this->write(structNamePrefix);
+                this->write("In");
+            }
+            if ((*deps & FunctionDependencies::kPipelineOutputs) != FunctionDependencies::kNone) {
+                this->write(separator);
+                separator = ", ";
+                this->write("_stageOut: ptr<function, ");
+                this->write(structNamePrefix);
+                this->write("Out>");
+            }
+        }
+    }
     for (const auto& param : f.parameters()) {
         this->write(separator);
         separator = ", ";
@@ -282,7 +483,6 @@ void WGSLCodeGenerator::writeFunctionDeclaration(const FunctionDeclaration& f) {
         }
     }
     this->write(")");
-
     if (f.returnType().typeKind() != Type::TypeKind::kVoid) {
         this->write(" -> ");
         this->write(toWGSLType(f.returnType()));
@@ -314,7 +514,7 @@ void WGSLCodeGenerator::writeEntryPoint(const FunctionDefinition& main) {
     this->write(outputType);
     this->writeLine(";");
 
-    // Generate the function call to the user-defined main:
+    // Generate assignment to sk_FragColor built-in if the user-defined main returns a color.
     if (fProgram.fConfig->fKind == ProgramKind::kFragment) {
         auto symbolTable = topLevelSymbolTable(main);
         const Symbol* symbol = (*symbolTable)["sk_FragColor"];
@@ -324,26 +524,42 @@ void WGSLCodeGenerator::writeEntryPoint(const FunctionDefinition& main) {
         }
     }
 
+    // Generate the function call to the user-defined main:
     this->write(main.declaration().mangledName());
     this->write("(");
-
-    // TODO(skia:13092): Inject stage input/output struct if the function needs to access varying
-    // variables.
-    if (main.declaration().parameters().size() != 0) {
-        const Type& type = main.declaration().parameters()[0]->type();
-        if (!type.matches(*fContext.fTypes.fFloat2)) {
-            fContext.fErrors->error(
-                    main.fPosition,
-                    "main function has unsupported parameter: " + type.description());
-            return;
+    const char* separator = "";
+    FunctionDependencies* deps = fRequirements.dependencies.find(&main.declaration());
+    if (deps) {
+        if ((*deps & FunctionDependencies::kPipelineInputs) != FunctionDependencies::kNone) {
+            separator = ", ";
+            this->write("_stageIn");
         }
-
-        this->write("_stageIn.sk_FragCoord.xy");
+        if ((*deps & FunctionDependencies::kPipelineOutputs) != FunctionDependencies::kNone) {
+            this->write(separator);
+            separator = ", ";
+            this->write("&_stageOut");
+        }
     }
+    // TODO(armansito): Handle arbitrary parameters.
+    if (main.declaration().parameters().size() != 0) {
+        const Variable* v = main.declaration().parameters()[0];
+        const Type& type = v->type();
+        if (v->modifiers().fLayout.fBuiltin == SK_MAIN_COORDS_BUILTIN) {
+            if (!type.matches(*fContext.fTypes.fFloat2)) {
+                fContext.fErrors->error(
+                        main.fPosition,
+                        "main function has unsupported parameter: " + type.description());
+                return;
+            }
 
+            this->write(separator);
+            separator = ", ";
+            this->write("_stageIn.sk_FragCoord.xy");
+        }
+    }
     this->writeLine(");");
-
     this->writeLine("return _stageOut;");
+
     fIndentation--;
     this->writeLine("}");
 }
@@ -541,12 +757,8 @@ void WGSLCodeGenerator::writeProgramElement(const ProgramElement& e) {
 }
 
 void WGSLCodeGenerator::writeStageInputStruct() {
-    std::string structNamePrefix;
-    if (fProgram.fConfig->fKind == ProgramKind::kVertex) {
-        structNamePrefix = "VS";
-    } else if (fProgram.fConfig->fKind == ProgramKind::kFragment) {
-        structNamePrefix = "FS";
-    } else {
+    std::string structNamePrefix = pipelineStructPrefix(fProgram.fConfig->fKind);
+    if (structNamePrefix.length() == 0) {
         // There's no need to declare pipeline stage outputs.
         return;
     }
@@ -556,7 +768,9 @@ void WGSLCodeGenerator::writeStageInputStruct() {
     this->writeLine("In {");
     fIndentation++;
 
-    auto declareInVar = [this](Modifiers modifiers, const Type& type, std::string_view name) {
+    bool declaredFragCoordsBuiltin = false;
+    auto declareInVar = [this, &declaredFragCoordsBuiltin](
+                                Modifiers modifiers, const Type& type, std::string_view name) {
         // If a `layout(location=...)` has been specified, then treat this as a user-defined
         // variable, even if it's a built-in.
         int location = modifiers.fLayout.fLocation;
@@ -566,12 +780,13 @@ void WGSLCodeGenerator::writeStageInputStruct() {
             auto builtin = builtinFromSkSLName(modifiers.fLayout.fBuiltin);
             if (builtin.has_value()) {
                 this->writeBuiltinVariableDecl(type, name, *builtin);
+                if (modifiers.fLayout.fBuiltin == SK_FRAGCOORD_BUILTIN) {
+                    declaredFragCoordsBuiltin = true;
+                }
             }
         }
     };
 
-    // TODO(skia:13092): Remember all variables that are added to the input struct here so they
-    // can be referenced correctly when handling variable references.
     for (const ProgramElement* e : fProgram.elements()) {
         if (e->is<GlobalVarDeclaration>()) {
             const Variable& v =
@@ -592,6 +807,11 @@ void WGSLCodeGenerator::writeStageInputStruct() {
                 }
             }
         }
+    }
+
+    if (fProgram.fConfig->fKind == ProgramKind::kFragment &&
+        fRequirements.mainNeedsCoordsArgument && !declaredFragCoordsBuiltin) {
+        this->writeLine("@builtin(position) sk_FragCoord: vec4<f32>;");
     }
 
     fIndentation--;
