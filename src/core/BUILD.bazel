@@ -1189,7 +1189,6 @@ generated_cc_atom(
     visibility = ["//:__subpackages__"],
     deps = [
         ":SkVM_fwd_hdr",
-        "//include/core:SkColorSpace_hdr",
         "//include/core:SkImageInfo_hdr",
         "//include/private:SkImageInfoPriv_hdr",
     ],
