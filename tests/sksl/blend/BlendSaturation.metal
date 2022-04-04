@@ -25,7 +25,7 @@ half3 blend_set_color_luminance_Qh3h3hh3(half3 hueSatColor, half alpha, half3 lu
     }
 }
 half3 blend_set_color_saturation_helper_Qh3h3h(half3 minMidMax, half sat) {
-    if (minMidMax.x < minMidMax.z) {
+    if (minMidMax.z - minMidMax.x >= 0.0010000000474974513h) {
         return half3(0.0h, (sat * (minMidMax.y - minMidMax.x)) / (minMidMax.z - minMidMax.x), sat);
     } else {
         return half3(0.0h);
