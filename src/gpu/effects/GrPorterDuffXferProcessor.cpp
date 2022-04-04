@@ -558,8 +558,10 @@ std::unique_ptr<GrXferProcessor::ProgramImpl> ShaderPDXferProcessor::makeProgram
 
         void onSetData(const GrGLSLProgramDataManager& pdman,
                        const GrXferProcessor& proc) override {
-            const ShaderPDXferProcessor& xp = proc.cast<ShaderPDXferProcessor>();
-            GrGLSLBlend::SetBlendModeUniformData(pdman, fBlendUniform, xp.fXfermode);
+            if (fBlendUniform.isValid()) {
+                const ShaderPDXferProcessor& xp = proc.cast<ShaderPDXferProcessor>();
+                GrGLSLBlend::SetBlendModeUniformData(pdman, fBlendUniform, xp.fXfermode);
+            }
         }
 
         GrGLSLUniformHandler::UniformHandle fBlendUniform;

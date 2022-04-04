@@ -161,8 +161,10 @@ std::unique_ptr<GrXferProcessor::ProgramImpl> CustomXP::makeProgramImpl() const 
 
         void onSetData(const GrGLSLProgramDataManager& pdman,
                        const GrXferProcessor& proc) override {
-            const CustomXP& xp = proc.cast<CustomXP>();
-            GrGLSLBlend::SetBlendModeUniformData(pdman, fBlendUniform, xp.fMode);
+            if (fBlendUniform.isValid()) {
+                const CustomXP& xp = proc.cast<CustomXP>();
+                GrGLSLBlend::SetBlendModeUniformData(pdman, fBlendUniform, xp.fMode);
+            }
         }
 
         GrGLSLUniformHandler::UniformHandle fBlendUniform;
