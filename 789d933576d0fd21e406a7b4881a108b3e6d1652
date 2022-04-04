@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "548f95e5_1441e26e",
+        "filename": "public.bzl",
+        "patchSetId": 3
+      },
+      "lineNbr": 278,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2022-04-04T15:06:21Z",
+      "side": 1,
+      "message": "Is there anything Swiftshader-specific at this level?  I\u0027m guessing not -- we should rename to GL_SRCS_UNIX_EGL.",
+      "range": {
+        "startLine": 278,
+        "startChar": 13,
+        "endLine": 278,
+        "endChar": 24
+      },
+      "revId": "789d933576d0fd21e406a7b4881a108b3e6d1652",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d0c9f724_8b368aef",
         "filename": "public.bzl",
         "patchSetId": 3
@@ -20,6 +43,23 @@
         "endLine": 283,
         "endChar": 34
       },
+      "revId": "789d933576d0fd21e406a7b4881a108b3e6d1652",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "efb8bf1c_d4d2f1e5",
+        "filename": "public.bzl",
+        "patchSetId": 3
+      },
+      "lineNbr": 552,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2022-04-04T15:06:21Z",
+      "side": 1,
+      "message": "At some point we\u0027re going to run into scalability issues with this scheme -- e.g. soon enough someone will ask for swiftshader on MacOS or something.\n\nNot necessarily in this CL, but we should consider alternate solutions.  One approach that comes to mind is, instead of fully resolving skia_srcs/gl_srcs in public.blz, export modular source sets to G3/BUILD and keep all flag decisions localized there.  E.g. maybe have a skia_gl_egl cc_library that is enabled conditionally as a dependency for the main skia lib.",
       "revId": "789d933576d0fd21e406a7b4881a108b3e6d1652",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
