@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1a89f921_af121319",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-04-04T17:18:04Z",
+      "side": 1,
+      "message": "For the most part, this is just taking the clip invocation code from v1::Device, since that\u0027s not any different.\n\nI did change the type of ClipStack\u0027s fDeviceBounds, since skgpu::Rect has an alignment of 16. On 32-bit builds, this meant that ClipStack and now Device (with this CL) would also have 16 byte alignment and that isn\u0027t what\u0027s supported by `new`.",
+      "revId": "a0429a55b56a4157891356210a6afce36dc7c7ea",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
