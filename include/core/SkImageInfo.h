@@ -9,12 +9,12 @@
 #define SkImageInfo_DEFINED
 
 #include "include/core/SkAlphaType.h"
-#include "include/core/SkColorSpace.h"  // TODO(kjlubick) Remove this after clients fixed
 #include "include/core/SkColorType.h"
 #include "include/core/SkMath.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSize.h"
+//#include "include/core/SkColorSpace.h"  // TODO(kjlubick) Remove this after clients fixed
 
 #include "include/private/SkTFitsIn.h"
 #include "include/private/SkTo.h"
