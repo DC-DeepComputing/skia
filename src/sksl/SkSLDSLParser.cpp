@@ -1404,19 +1404,19 @@ DSLExpression DSLParser::expression() {
     return result;
 }
 
-#define OPERATOR_RIGHT(op, exprType)                                                    \
-    do {                                                                                \
-        this->nextToken();                                                              \
-        if (!depth.increase()) {                                                        \
-            return {};                                                                  \
-        }                                                                               \
-        DSLExpression right = this->exprType();                                         \
-        if (!right.hasValue()) {                                                        \
-            return {};                                                                  \
-        }                                                                               \
-        Position pos = result.position().rangeThrough(right.position());                \
-        DSLExpression next = DSLExpression(std::move(result) op std::move(right), pos); \
-        result.swap(next);                                                              \
+#define OPERATOR_RIGHT(op, exprType)                                                   \
+    do {                                                                               \
+        this->nextToken();                                                             \
+        if (!depth.increase()) {                                                       \
+            return {};                                                                 \
+        }                                                                              \
+        DSLExpression right = this->exprType();                                        \
+        if (!right.hasValue()) {                                                       \
+            return {};                                                                 \
+        }                                                                              \
+        Position pos = result.position().rangeThrough(right.position());               \
+        DSLExpression next = result.binary(Operator::Kind::op, std::move(right), pos); \
+        result.swap(next);                                                             \
     } while (false)
 
 /* ternaryExpression ((EQEQ | STAREQ | SLASHEQ | PERCENTEQ | PLUSEQ | MINUSEQ | SHLEQ | SHREQ |
@@ -1431,17 +1431,39 @@ DSLExpression DSLParser::assignmentExpression() {
     }
     for (;;) {
         switch (this->peek().fKind) {
-            case Token::Kind::TK_EQ:           OPERATOR_RIGHT(=,   assignmentExpression); break;
-            case Token::Kind::TK_STAREQ:       OPERATOR_RIGHT(*=,  assignmentExpression); break;
-            case Token::Kind::TK_SLASHEQ:      OPERATOR_RIGHT(/=,  assignmentExpression); break;
-            case Token::Kind::TK_PERCENTEQ:    OPERATOR_RIGHT(%=,  assignmentExpression); break;
-            case Token::Kind::TK_PLUSEQ:       OPERATOR_RIGHT(+=,  assignmentExpression); break;
-            case Token::Kind::TK_MINUSEQ:      OPERATOR_RIGHT(-=,  assignmentExpression); break;
-            case Token::Kind::TK_SHLEQ:        OPERATOR_RIGHT(<<=, assignmentExpression); break;
-            case Token::Kind::TK_SHREQ:        OPERATOR_RIGHT(>>=, assignmentExpression); break;
-            case Token::Kind::TK_BITWISEANDEQ: OPERATOR_RIGHT(&=,  assignmentExpression); break;
-            case Token::Kind::TK_BITWISEXOREQ: OPERATOR_RIGHT(^=,  assignmentExpression); break;
-            case Token::Kind::TK_BITWISEOREQ:  OPERATOR_RIGHT(|=,  assignmentExpression); break;
+            case Token::Kind::TK_EQ:
+                OPERATOR_RIGHT(EQ, assignmentExpression);
+                break;
+            case Token::Kind::TK_STAREQ:
+                OPERATOR_RIGHT(STAREQ,assignmentExpression);
+                break;
+            case Token::Kind::TK_SLASHEQ:
+                OPERATOR_RIGHT(SLASHEQ, assignmentExpression);
+                break;
+            case Token::Kind::TK_PERCENTEQ:
+                OPERATOR_RIGHT(PERCENTEQ, assignmentExpression);
+                break;
+            case Token::Kind::TK_PLUSEQ:
+                OPERATOR_RIGHT(PLUSEQ, assignmentExpression);
+                break;
+            case Token::Kind::TK_MINUSEQ:
+                OPERATOR_RIGHT(MINUSEQ, assignmentExpression);
+                break;
+            case Token::Kind::TK_SHLEQ:
+                OPERATOR_RIGHT(SHLEQ, assignmentExpression);
+                break;
+            case Token::Kind::TK_SHREQ:
+                OPERATOR_RIGHT(SHREQ, assignmentExpression);
+                break;
+            case Token::Kind::TK_BITWISEANDEQ:
+                OPERATOR_RIGHT(BITWISEANDEQ, assignmentExpression);
+                break;
+            case Token::Kind::TK_BITWISEXOREQ:
+                OPERATOR_RIGHT(BITWISEXOREQ, assignmentExpression);
+                break;
+            case Token::Kind::TK_BITWISEOREQ:
+                OPERATOR_RIGHT(BITWISEOREQ, assignmentExpression);
+                break;
             default:
                 return result;
         }
@@ -1484,7 +1506,7 @@ DSLExpression DSLParser::logicalOrExpression() {
         return {};
     }
     while (this->peek().fKind == Token::Kind::TK_LOGICALOR) {
-        OPERATOR_RIGHT(||, logicalXorExpression);
+        OPERATOR_RIGHT(LOGICALOR, logicalXorExpression);
     }
     return result;
 }
@@ -1519,7 +1541,7 @@ DSLExpression DSLParser::logicalAndExpression() {
         return {};
     }
     while (this->peek().fKind == Token::Kind::TK_LOGICALAND) {
-        OPERATOR_RIGHT(&&, bitwiseOrExpression);
+        OPERATOR_RIGHT(LOGICALAND, bitwiseOrExpression);
     }
     return result;
 }
@@ -1532,7 +1554,7 @@ DSLExpression DSLParser::bitwiseOrExpression() {
         return {};
     }
     while (this->peek().fKind == Token::Kind::TK_BITWISEOR) {
-        OPERATOR_RIGHT(|, bitwiseXorExpression);
+        OPERATOR_RIGHT(BITWISEOR, bitwiseXorExpression);
     }
     return result;
 }
@@ -1545,7 +1567,7 @@ DSLExpression DSLParser::bitwiseXorExpression() {
         return {};
     }
     while (this->peek().fKind == Token::Kind::TK_BITWISEXOR) {
-        OPERATOR_RIGHT(^, bitwiseAndExpression);
+        OPERATOR_RIGHT(BITWISEXOR, bitwiseAndExpression);
     }
     return result;
 }
@@ -1558,7 +1580,7 @@ DSLExpression DSLParser::bitwiseAndExpression() {
         return {};
     }
     while (this->peek().fKind == Token::Kind::TK_BITWISEAND) {
-        OPERATOR_RIGHT(&, equalityExpression);
+        OPERATOR_RIGHT(BITWISEAND, equalityExpression);
     }
     return result;
 }
@@ -1572,8 +1594,8 @@ DSLExpression DSLParser::equalityExpression() {
     }
     for (;;) {
         switch (this->peek().fKind) {
-            case Token::Kind::TK_EQEQ: OPERATOR_RIGHT(==, relationalExpression); break;
-            case Token::Kind::TK_NEQ:  OPERATOR_RIGHT(!=, relationalExpression); break;
+            case Token::Kind::TK_EQEQ: OPERATOR_RIGHT(EQEQ, relationalExpression); break;
+            case Token::Kind::TK_NEQ:  OPERATOR_RIGHT(NEQ,  relationalExpression); break;
             default: return result;
         }
     }
@@ -1588,10 +1610,10 @@ DSLExpression DSLParser::relationalExpression() {
     }
     for (;;) {
         switch (this->peek().fKind) {
-            case Token::Kind::TK_LT:   OPERATOR_RIGHT(<,  shiftExpression); break;
-            case Token::Kind::TK_GT:   OPERATOR_RIGHT(>,  shiftExpression); break;
-            case Token::Kind::TK_LTEQ: OPERATOR_RIGHT(<=, shiftExpression); break;
-            case Token::Kind::TK_GTEQ: OPERATOR_RIGHT(>=, shiftExpression); break;
+            case Token::Kind::TK_LT:   OPERATOR_RIGHT(LT,   shiftExpression); break;
+            case Token::Kind::TK_GT:   OPERATOR_RIGHT(GT,   shiftExpression); break;
+            case Token::Kind::TK_LTEQ: OPERATOR_RIGHT(LTEQ, shiftExpression); break;
+            case Token::Kind::TK_GTEQ: OPERATOR_RIGHT(GTEQ, shiftExpression); break;
             default: return result;
         }
     }
@@ -1606,8 +1628,8 @@ DSLExpression DSLParser::shiftExpression() {
     }
     for (;;) {
         switch (this->peek().fKind) {
-            case Token::Kind::TK_SHL: OPERATOR_RIGHT(<<, additiveExpression); break;
-            case Token::Kind::TK_SHR: OPERATOR_RIGHT(>>, additiveExpression); break;
+            case Token::Kind::TK_SHL: OPERATOR_RIGHT(SHL, additiveExpression); break;
+            case Token::Kind::TK_SHR: OPERATOR_RIGHT(SHR, additiveExpression); break;
             default: return result;
         }
     }
@@ -1622,8 +1644,8 @@ DSLExpression DSLParser::additiveExpression() {
     }
     for (;;) {
         switch (this->peek().fKind) {
-            case Token::Kind::TK_PLUS:  OPERATOR_RIGHT(+, multiplicativeExpression); break;
-            case Token::Kind::TK_MINUS: OPERATOR_RIGHT(-, multiplicativeExpression); break;
+            case Token::Kind::TK_PLUS:  OPERATOR_RIGHT(PLUS,  multiplicativeExpression); break;
+            case Token::Kind::TK_MINUS: OPERATOR_RIGHT(MINUS, multiplicativeExpression); break;
             default: return result;
         }
     }
@@ -1638,9 +1660,9 @@ DSLExpression DSLParser::multiplicativeExpression() {
     }
     for (;;) {
         switch (this->peek().fKind) {
-            case Token::Kind::TK_STAR:    OPERATOR_RIGHT(*, unaryExpression); break;
-            case Token::Kind::TK_SLASH:   OPERATOR_RIGHT(/, unaryExpression); break;
-            case Token::Kind::TK_PERCENT: OPERATOR_RIGHT(%, unaryExpression); break;
+            case Token::Kind::TK_STAR:    OPERATOR_RIGHT(STAR,    unaryExpression); break;
+            case Token::Kind::TK_SLASH:   OPERATOR_RIGHT(SLASH,   unaryExpression); break;
+            case Token::Kind::TK_PERCENT: OPERATOR_RIGHT(PERCENT, unaryExpression); break;
             default: return result;
         }
     }
