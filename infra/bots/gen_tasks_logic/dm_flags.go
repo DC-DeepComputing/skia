@@ -184,6 +184,9 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 		skip(ALL, "test", ALL, "GrThreadSafeCache16Verts")
 		// skbug.com/12829
 		skip(ALL, "test", ALL, "image_subset")
+                if b.extraConfig("MSAN") {
+                        args = append(args, "--nocpu")
+                }
 	} else if b.cpu() {
 		args = append(args, "--nogpu")
 
