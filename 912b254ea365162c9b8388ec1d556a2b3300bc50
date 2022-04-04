@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "be58c5f1_1ea44420",
+        "filename": "modules/skparagraph/src/ParagraphImpl.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 372,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-04-04T17:28:58Z",
+      "side": 1,
+      "message": "The name doesn\u0027t really seem to reflect what this does, maybe name this `applySpacing`?",
+      "range": {
+        "startLine": 372,
+        "startChar": 20,
+        "endLine": 372,
+        "endChar": 37
+      },
+      "revId": "912b254ea365162c9b8388ec1d556a2b3300bc50",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e88a6513_485c3e26",
+        "filename": "modules/skparagraph/src/ParagraphImpl.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 409,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-04-04T17:28:58Z",
+      "side": 1,
+      "message": "This method has the side effect of always calling `buildClusterTable`. It looks like it might just be called at the start of this method to make that more clear? This appears to be a side effect the caller relies on, so this interaction should be made clear.",
+      "revId": "912b254ea365162c9b8388ec1d556a2b3300bc50",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
