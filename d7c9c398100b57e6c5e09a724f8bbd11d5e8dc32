@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0f3c59f4_19a28489",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 153,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-04T13:32:55Z",
+      "side": 1,
+      "message": "Skia style for static functions is `static std::shared_ptr\u003cSymbolTable\u003e top_level_symbol_table(`",
+      "range": {
+        "startLine": 153,
+        "startChar": 0,
+        "endLine": 153,
+        "endChar": 48
+      },
+      "revId": "d7c9c398100b57e6c5e09a724f8bbd11d5e8dc32",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "180a9845_6c133662",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 254,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-04T13:32:55Z",
+      "side": 1,
+      "message": "\"Next, we generate\"",
+      "range": {
+        "startLine": 254,
+        "startChar": 59,
+        "endLine": 254,
+        "endChar": 75
+      },
+      "revId": "d7c9c398100b57e6c5e09a724f8bbd11d5e8dc32",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5f8c4fc6_aebffc59",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 271,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-04T13:32:55Z",
+      "side": 1,
+      "message": "style nit: avoid `auto` unless it makes the code clearer to readers unfamiliar with the project. (http://go/cstyle#Type_deduction)",
+      "range": {
+        "startLine": 271,
+        "startChar": 15,
+        "endLine": 271,
+        "endChar": 19
+      },
+      "revId": "d7c9c398100b57e6c5e09a724f8bbd11d5e8dc32",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cdb76e62_2b14fef7",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 286,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-04T13:32:55Z",
+      "side": 1,
+      "message": "`!f.returnType().isVoid()`",
+      "range": {
+        "startLine": 286,
+        "startChar": 7,
+        "endLine": 286,
+        "endChar": 58
+      },
+      "revId": "d7c9c398100b57e6c5e09a724f8bbd11d5e8dc32",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a55236c4_6c927a9a",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 426,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-04T13:32:55Z",
+      "side": 1,
+      "message": "This is also true in SkSL, so it\u0027s probably fine to debugfail if you reach this point. https://osscs.corp.google.com/skia/skia/+/main:src/sksl/ir/SkSLVarDeclarations.cpp;l\u003d182;drc\u003d7183f29125c90d036fe39ce2a659c119b4ebc810",
+      "range": {
+        "startLine": 426,
+        "startChar": 0,
+        "endLine": 426,
+        "endChar": 99
+      },
+      "revId": "d7c9c398100b57e6c5e09a724f8bbd11d5e8dc32",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
