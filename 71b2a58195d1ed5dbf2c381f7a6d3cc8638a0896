@@ -22,6 +22,30 @@
       },
       "revId": "71b2a58195d1ed5dbf2c381f7a6d3cc8638a0896",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9a7cb0bf_75f58d58",
+        "filename": "tools/debugger/JsonWriteBuffer.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 202,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-04-04T16:20:47Z",
+      "side": 1,
+      "message": "Done. Also moved this to a new DrawCommand::MakeJsonSampling() and wired it into the debugger draw commands so it shows up in the debugger.",
+      "parentUuid": "c2c55214_08326b9b",
+      "range": {
+        "startLine": 198,
+        "startChar": 0,
+        "endLine": 202,
+        "endChar": 43
+      },
+      "revId": "71b2a58195d1ed5dbf2c381f7a6d3cc8638a0896",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
