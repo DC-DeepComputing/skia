@@ -8,29 +8,65 @@
 #include "src/core/SkOpts.h"
 #include "src/core/SkPipelineData.h"
 
+#ifdef SK_GRAPHITE_ENABLED
+#include "experimental/graphite/src/UniformManager.h"
+
+SkPipelineDataGatherer::SkPipelineDataGatherer(skgpu::Layout layout)
+        : fUniformManager(layout) {
+}
+#endif
+
+#if 0
+SkPipelineDataGatherer::SkPipelineDataGatherer() {
+#ifdef SK_GRAPHITE_ENABLED
+    fLayout = skgpu::Layout::kMetal;
+#endif
+}
+#endif
+
 void SkPipelineDataGatherer::reset() {
-    fUniformDataBlock.reset();
+//    fUniformDataBlock.reset();
 #ifdef SK_GRAPHITE_ENABLED
     fTextureDataBlock.reset();
     fBlendInfo = BlendInfo();
+    fUniformManager.reset();
 #endif
 }
 
 #ifdef SK_DEBUG
 void SkPipelineDataGatherer::checkReset() {
-    SkASSERT(fUniformDataBlock.empty());
+//    SkASSERT(fUniformDataBlock.empty());
 #ifdef SK_GRAPHITE_ENABLED
     SkASSERT(fTextureDataBlock.empty());
     SkASSERT(fBlendInfo == BlendInfo());
+    SkDEBUGCODE(fUniformManager.checkReset());
 #endif
 }
 #endif
 
+#if 0
 void SkPipelineDataGatherer::add(sk_sp<SkUniformData> uniforms) {
     SkASSERT(uniforms && uniforms->dataSize());
     fUniformDataBlock.add(std::move(uniforms));
 }
+#endif
+////////////////////////////////////////////////////////////////////////////////////////////////////
+SkUniformDataBlock2 SkUniformDataBlock2::Make(const SkUniformDataBlock2& other,
+                                              SkArenaAlloc* arena) {
+    // TODO: kUniformAlignment should match whatever alignment the GPU buffers will require.
+    // Probably 16B.
+    static constexpr size_t kUniformAlignment = 4;
+    char* mem = static_cast<char*>(arena->makeBytesAlignedTo(other.size(), kUniformAlignment));
+    memcpy(mem, other.data(), other.size());
+    return SkUniformDataBlock2(SkMakeSpan(mem, other.size()));
+}
 
+uint32_t SkUniformDataBlock2::hash() const {
+    return SkOpts::hash_fn(fData.data(), fData.size(), 0);
+}
+
+#if 0
+////////////////////////////////////////////////////////////////////////////////////////////////////
 size_t SkUniformDataBlock::totalUniformSize() const {
     size_t total = 0;
 
@@ -65,10 +101,16 @@ uint32_t SkUniformDataBlock::hash() const {
 
     return hash;
 }
+#endif
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 #ifdef SK_GRAPHITE_ENABLED
 static constexpr int kSkFilterModeCount = static_cast<int>(SkFilterMode::kLast) + 1;
+
+std::unique_ptr<SkTextureDataBlock> SkTextureDataBlock::Make(const SkTextureDataBlock& other,
+                                                             SkArenaAlloc* arena) {
+    return std::make_unique<SkTextureDataBlock>(other);
+}
 
 bool SkTextureDataBlock::TextureInfo::operator==(const TextureInfo& other) const {
     return fProxy == other.fProxy &&
