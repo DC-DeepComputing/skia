@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "935393a9_5393b6f8",
+        "filename": "public.bzl",
+        "patchSetId": 3
+      },
+      "lineNbr": 278,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2022-04-04T16:37:17Z",
+      "side": 1,
+      "message": "I\u0027ll switch it to EGL in the name, but technically, because the way the g3 BUILD works, the select statement divides it based on operating system. There are other GL_SRCS for the other OS\u0027s that are missing files here, so this technically only supports EGL on UNIX",
+      "parentUuid": "a201d1f9_49bbf6c0",
+      "range": {
+        "startLine": 278,
+        "startChar": 13,
+        "endLine": 278,
+        "endChar": 24
+      },
+      "revId": "789d933576d0fd21e406a7b4881a108b3e6d1652",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d0c9f724_8b368aef",
@@ -61,6 +85,30 @@
       "writtenOn": "2022-04-04T14:22:19Z",
       "side": 1,
       "message": "Do we really need these? I noticed GrGLMakeEGLInterface.cpp unnecessarily includes src/gpu/gl/GrGLUtil.h. Not sure if that\u0027s related.",
+      "range": {
+        "startLine": 280,
+        "startChar": 0,
+        "endLine": 283,
+        "endChar": 34
+      },
+      "revId": "789d933576d0fd21e406a7b4881a108b3e6d1652",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b5c2826f_6b282f06",
+        "filename": "public.bzl",
+        "patchSetId": 3
+      },
+      "lineNbr": 283,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2022-04-04T16:37:17Z",
+      "side": 1,
+      "message": "I can investigate whether or not we can delete these in a follow up cl, but this CL aims to have the new build flag mirror the UNIX one while also adding the EGL files.",
+      "parentUuid": "d0c9f724_8b368aef",
       "range": {
         "startLine": 280,
         "startChar": 0,
