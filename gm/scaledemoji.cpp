@@ -174,9 +174,7 @@ protected:
         SkFont font;
         font.setTypeface(fEmojiFont.fTypeface);
         font.setSize(40);
-        const char* text = "\xF0\x9F\x98\x80"
-                           "\xE2\x99\xA2";  // 😀♢;
-        sk_sp<SkTextBlob> blob = make_hpos_test_blob_utf8(text, font);
+        sk_sp<SkTextBlob> blob = make_hpos_test_blob_utf8(fEmojiFont.fText, font);
 
         // draw text at different point sizes
         // Testing GPU bitmap path, SDF path with no scaling,
