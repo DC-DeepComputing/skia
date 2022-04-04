@@ -22,6 +22,30 @@
       },
       "revId": "4b999aa0998eda7bb0e498b7c80cda18d373c8b7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e0789f9b_7fb06132",
+        "filename": "experimental/graphite/src/ClipStack.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-04-04T17:15:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bbf57290_a6c9a179",
+      "range": {
+        "startLine": 57,
+        "startChar": 9,
+        "endLine": 57,
+        "endChar": 34
+      },
+      "revId": "4b999aa0998eda7bb0e498b7c80cda18d373c8b7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
