@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1606d00b_d720f8f9",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 196,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-04-04T13:17:25Z",
+      "side": 1,
+      "message": "Do things like this need to actually call this-\u003ewriteName() ?",
+      "range": {
+        "startLine": 196,
+        "startChar": 4,
+        "endLine": 196,
+        "endChar": 22
+      },
+      "revId": "b5612c8db98bfd2a1b5cedad3368264eb6a33f94",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
