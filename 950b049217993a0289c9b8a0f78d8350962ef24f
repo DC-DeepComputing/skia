@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3c4fe833_c1a72bfa",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 177,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-04T23:08:54Z",
+      "side": 1,
+      "message": "This should be expressed as a ProgramVisitor.\n\nhttps://osscs.corp.google.com/chromium/chromium/src/+/main:third_party/skia/src/sksl/analysis/SkSLProgramVisitor.h;l\u003d60;drc\u003d55f6115f8064439fe6c06a1d49c558c079b866df",
+      "range": {
+        "startLine": 177,
+        "startChar": 0,
+        "endLine": 177,
+        "endChar": 34
+      },
+      "revId": "950b049217993a0289c9b8a0f78d8350962ef24f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d7d6026c_2eba0ec8",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 192,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-04T23:08:54Z",
+      "side": 1,
+      "message": "This is C++20 syntax; we are limited to C++17. (Google3 allows this as an extension.)",
+      "range": {
+        "startLine": 189,
+        "startChar": 0,
+        "endLine": 192,
+        "endChar": 10
+      },
+      "revId": "950b049217993a0289c9b8a0f78d8350962ef24f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
