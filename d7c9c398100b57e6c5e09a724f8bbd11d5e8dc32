@@ -114,6 +114,29 @@
       },
       "revId": "d7c9c398100b57e6c5e09a724f8bbd11d5e8dc32",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c4f8c96a_a2e4d851",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 490,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-04T13:40:49Z",
+      "side": 1,
+      "message": "Based on https://www.w3.org/TR/WGSL/#construction-from-components it looks like WGSL has the same constraints on matrix construction that Metal has. In the case of Metal we emit helper functions which regroup the input values into properly-sized vectors. Maybe that logic can be shared somehow. (Right now it\u0027s a fair amount of code, although it might have some opportunities for simplification.)\n\nhttps://osscs.corp.google.com/skia/skia/+/main:src/sksl/codegen/SkSLMetalCodeGenerator.cpp;l\u003d1270-1271;drc\u003d3f5184cfa602e8ad469de1d6d21d9b99ad4b9e0b",
+      "range": {
+        "startLine": 490,
+        "startChar": 25,
+        "endLine": 490,
+        "endChar": 52
+      },
+      "revId": "d7c9c398100b57e6c5e09a724f8bbd11d5e8dc32",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
