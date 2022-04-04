@@ -66,6 +66,23 @@ public:
         uint32_t fIndex;
     };
 
+    Index insertInArena(const DataBlockT& dataBlock) {
+        auto kv = fDataBlockIDs.find(const_cast<DataBlockT*>(&dataBlock));
+        if (kv != fDataBlockIDs.end()) {
+            return kv->second;
+        }
+
+        Index id(SkTo<uint32_t>(fDataBlocks.size()));
+        SkASSERT(id.isValid());
+
+        // TODO: switch this over to using an SkArena
+        DataBlockT tmp(DataBlockT::Make(nullptr, dataBlock));
+        fDataBlockIDs.insert({tmp, id});
+        fDataBlocks.push_back(tmp);
+        this->validate();
+        return id;
+    }
+
     Index insert(const DataBlockT& dataBlock) {
         auto kv = fDataBlockIDs.find(const_cast<DataBlockT*>(&dataBlock));
         if (kv != fDataBlockIDs.end()) {
@@ -134,7 +151,7 @@ private:
 
 // A UniformDataCache lives for the entire duration of a Recorder. As such it has a greater
 // likelihood of overflowing a uint32_t index.
-using UniformDataCache = PipelineDataCache<SkUniformDataBlock>;
+using UniformDataCache = PipelineDataCache<SkUniformDataBlock2>;
 
 // A TextureDataCache only lives for a single Recording. When a Recording is snapped it is pulled
 // off of the Recorder and goes with the Recording as a record of the required Textures and

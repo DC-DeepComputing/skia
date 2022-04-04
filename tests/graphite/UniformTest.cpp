@@ -14,6 +14,7 @@
 #include "experimental/graphite/src/PaintParams.h"
 #include "experimental/graphite/src/RecorderPriv.h"
 #include "experimental/graphite/src/ResourceProvider.h"
+#include "experimental/graphite/src/UniformManager.h"
 #include "include/core/SkPaint.h"
 #include "include/effects/SkGradientShader.h"
 #include "include/private/SkUniquePaintParamsID.h"
