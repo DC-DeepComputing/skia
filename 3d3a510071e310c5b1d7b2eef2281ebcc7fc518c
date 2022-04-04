@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "513c4ede_c9c44367",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-04T14:13:51Z",
+      "side": 1,
+      "message": "This fixes http://go/crb/oss-fuzz/46289\n\nI independently reached the same DSLParser fix at http://review.skia.org/527065 ",
+      "revId": "3d3a510071e310c5b1d7b2eef2281ebcc7fc518c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
