@@ -186,10 +186,13 @@ static bool init_instance_extensions_and_layers(PFN_vkGetInstanceProcAddr getIns
     }
 
     uint32_t nonPatchVersion = remove_patch_version(specVersion);
+    SkDebugf("I have: %d instance layers!!!!!!\n", layerCount);
     for (size_t i = 0; i < SK_ARRAY_COUNT(kDebugLayerNames); ++i) {
         int idx = should_include_debug_layer(kDebugLayerNames[i], layerCount, layers,
                                              nonPatchVersion);
         if (idx != -1) {
+            SkDebugf("I am pushing back instance layer: %s\n", kDebugLayerNames[i]);
+
             instanceLayers->push_back() = layers[idx];
         }
     }
@@ -275,10 +278,12 @@ static bool init_device_extensions_and_layers(GrVkGetProc getProc, uint32_t spec
     }
 
     uint32_t nonPatchVersion = remove_patch_version(specVersion);
+    SkDebugf("I have: %d device layers!!!!!!\n", layerCount);
     for (size_t i = 0; i < SK_ARRAY_COUNT(kDebugLayerNames); ++i) {
         int idx = should_include_debug_layer(kDebugLayerNames[i], layerCount, layers,
                                              nonPatchVersion);
         if (idx != -1) {
+            SkDebugf("I am pushing back device layer: %s\n", kDebugLayerNames[i]);
             deviceLayers->push_back() = layers[idx];
         }
     }
