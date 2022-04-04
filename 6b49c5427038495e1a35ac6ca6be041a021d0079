@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1b1a1e00_d5110cbd",
+        "filename": "tools/flags/CommonFlagsConfig.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 603,
+      "author": {
+        "id": 9300
+      },
+      "writtenOn": "2022-04-04T13:48:56Z",
+      "side": 1,
+      "message": "The semicolon here looks very suspicious, at least at a naive glance.\n\nThis is now excluding the \"reducedShaders\" and \"surf\" options from impacting \"validOptions\".\n\nI suspect we intend this line to be:\n\n  extendedOptions.get_option_bool(\"slug\", \u0026slug) \u0026\u0026\n\n\nI don\u0027t have a Skia tree (saw this downstream in Android), so I haven\u0027t put up a follow-up fix, but this seems like a potential issue.",
+      "revId": "6b49c5427038495e1a35ac6ca6be041a021d0079",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
