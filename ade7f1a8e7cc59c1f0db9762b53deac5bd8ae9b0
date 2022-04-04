@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "373d81dd_765b6dbc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-04-04T13:14:27Z",
+      "side": 1,
+      "message": "I don\u0027t understand what happened here. I had it set to autosubmit + dry run, but it didn\u0027t submit. And you removed yourself from reviewer, so it\u0027s no longer approved 😞 Will you please re +1?",
+      "revId": "ade7f1a8e7cc59c1f0db9762b53deac5bd8ae9b0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
