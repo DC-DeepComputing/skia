@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d048cb74_e90ea6f5",
+        "filename": "src/core/SkKeyHelpers.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-04-04T15:32:22Z",
+      "side": 1,
+      "message": "const?",
+      "range": {
+        "startLine": 76,
+        "startChar": 28,
+        "endLine": 76,
+        "endChar": 50
+      },
+      "revId": "8d63b15eb83362847edd39442a73f7b2f9d8eda9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e2748d99_7eb98cde",
+        "filename": "src/core/SkKeyHelpers.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-04-04T15:32:22Z",
+      "side": 1,
+      "message": "Move to third argument? Since it\u0027s in the middle it\u0027s not clear that it\u0027s the thing that changes, other than the fact it\u0027s non-const.",
+      "range": {
+        "startLine": 77,
+        "startChar": 28,
+        "endLine": 77,
+        "endChar": 60
+      },
+      "revId": "8d63b15eb83362847edd39442a73f7b2f9d8eda9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3e5a55f3_a29add78",
+        "filename": "src/core/SkKeyHelpers.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-04-04T15:32:22Z",
+      "side": 1,
+      "message": "And here? (and below)",
+      "range": {
+        "startLine": 141,
+        "startChar": 38,
+        "endLine": 141,
+        "endChar": 70
+      },
+      "revId": "8d63b15eb83362847edd39442a73f7b2f9d8eda9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
