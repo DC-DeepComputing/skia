@@ -22,6 +22,52 @@
       },
       "revId": "b5612c8db98bfd2a1b5cedad3368264eb6a33f94",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "021b7912_e3a1f51c",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 232,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-04-04T13:19:22Z",
+      "side": 1,
+      "message": "It wasn\u0027t clear to me why this was the case until I saw the analogous comment down below in declareOutVar (I still can\u0027t say I 100% understand, but at least there\u0027s an explanation ;-) ). Maybe better to put the full explanation here, and then later have declareOutVar have something like:\n\n// If a `layout(location\u003d...)` has been specified, then treat this as a\n// user-defined variable, even if it\u0027s a built-in. See above in declareInVar\n// for an explanation.\n\nThat way someone reading either spot will see the explanation without you having to repeat yourself.",
+      "range": {
+        "startLine": 231,
+        "startChar": 8,
+        "endLine": 232,
+        "endChar": 45
+      },
+      "revId": "b5612c8db98bfd2a1b5cedad3368264eb6a33f94",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "21050a94_c5c3cb42",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 255,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-04-04T13:19:22Z",
+      "side": 1,
+      "message": "I believe this should say \"`in` interface blocks to the input struct\"",
+      "range": {
+        "startLine": 255,
+        "startChar": 40,
+        "endLine": 255,
+        "endChar": 83
+      },
+      "revId": "b5612c8db98bfd2a1b5cedad3368264eb6a33f94",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
