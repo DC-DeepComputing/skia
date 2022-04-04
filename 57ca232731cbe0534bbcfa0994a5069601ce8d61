@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8454e198_5fa27523",
+        "filename": "src/gpu/GrSamplerState.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-04-04T18:08:11Z",
+      "side": 0,
+      "message": "this was necessary pre C++17. Now static constexpr data members are implicitly inline.",
+      "range": {
+        "startLine": 31,
+        "startChar": 4,
+        "endLine": 31,
+        "endChar": 10
+      },
+      "revId": "57ca232731cbe0534bbcfa0994a5069601ce8d61",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
