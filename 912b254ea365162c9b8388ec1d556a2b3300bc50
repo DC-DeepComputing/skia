@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f48b06ca_cf9d0087",
+        "filename": "modules/skparagraph/src/ParagraphImpl.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 372,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-04-04T17:42:52Z",
+      "side": 1,
+      "message": "Yeah, given that, it seems like this is `applySpacingAndBuildClusterTable`. It\u0027s awkward, but that\u0027s actually a good reflection of the interesting bit. Just `updateShapingInfo` seems a bit overly broad.",
+      "parentUuid": "6a668ed4_e1d2b109",
+      "range": {
+        "startLine": 372,
+        "startChar": 20,
+        "endLine": 372,
+        "endChar": 37
+      },
+      "revId": "912b254ea365162c9b8388ec1d556a2b3300bc50",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e88a6513_485c3e26",
         "filename": "modules/skparagraph/src/ParagraphImpl.cpp",
         "patchSetId": 3
@@ -79,6 +103,24 @@
       "side": 1,
       "message": "That is a problem here. In both simple cases I space glyphs BEFORE I build cluster table so I don\u0027t have to update each cluster element later.\nIn a complex case I first build cluster table and then space glyphs by iterating it. The order of operations matters.",
       "parentUuid": "e88a6513_485c3e26",
+      "revId": "912b254ea365162c9b8388ec1d556a2b3300bc50",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ed8c123f_db522102",
+        "filename": "modules/skparagraph/src/ParagraphImpl.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 409,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-04-04T17:42:52Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "79604fb4_1d1ac374",
       "revId": "912b254ea365162c9b8388ec1d556a2b3300bc50",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
