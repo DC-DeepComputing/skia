@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1ea5b4d2_807aebc4",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 177,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-04T23:14:12Z",
+      "side": 1,
+      "message": "PTAL Analysis::ReferencesSampleCoords for a concrete example that matches one of your use cases. (Although it looks like no one is calling it right now...?)",
+      "parentUuid": "3c4fe833_c1a72bfa",
+      "range": {
+        "startLine": 177,
+        "startChar": 0,
+        "endLine": 177,
+        "endChar": 34
+      },
+      "revId": "950b049217993a0289c9b8a0f78d8350962ef24f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d7d6026c_2eba0ec8",
         "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
         "patchSetId": 1
