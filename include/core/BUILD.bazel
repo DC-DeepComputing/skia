@@ -932,6 +932,7 @@ generated_cc_atom(
 
 generated_cc_atom(
     name = "SkCustomMesh_hdr",
+    enforce_iwyu = True,
     hdrs = ["SkCustomMesh.h"],
     visibility = ["//:__subpackages__"],
     deps = [

@@ -1186,24 +1186,28 @@ generated_cc_atom(
 generated_cc_atom(
     name = "SkColorSpaceXformSteps_hdr",
     hdrs = ["SkColorSpaceXformSteps.h"],
+    enforce_iwyu = True,
     visibility = ["//:__subpackages__"],
     deps = [
-        ":SkVM_fwd_hdr",
-        "//include/core:SkColorSpace_hdr",
-        "//include/core:SkImageInfo_hdr",
-        "//include/private:SkImageInfoPriv_hdr",
+        ":SkVM_hdr",
+        "//include/core:SkAlphaType_hdr",
+        "//include/third_party/skcms:skcms_hdr",
     ],
 )
 
 generated_cc_atom(
     name = "SkColorSpaceXformSteps_src",
     srcs = ["SkColorSpaceXformSteps.cpp"],
+    enforce_iwyu = True,
     visibility = ["//:__subpackages__"],
     deps = [
         ":SkColorSpacePriv_hdr",
         ":SkColorSpaceXformSteps_hdr",
         ":SkRasterPipeline_hdr",
         ":SkVM_hdr",
+        "//include/core:SkColorSpace_hdr",
+        "//include/core:SkTypes_hdr",
+        "//include/private:SkFloatingPoint_hdr",
         "//include/third_party/skcms:skcms_hdr",
     ],
 )
@@ -5567,6 +5571,7 @@ generated_cc_atom(
 
 generated_cc_atom(
     name = "SkCustomMesh_src",
+    enforce_iwyu = True,
     srcs = ["SkCustomMesh.cpp"],
     visibility = ["//:__subpackages__"],
     deps = [
