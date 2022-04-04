@@ -66,6 +66,23 @@ public:
         uint32_t fIndex;
     };
 
+    Index insertInArena(const DataBlockT& dataBlock) {
+        auto kv = fDataBlockIDs.find(const_cast<DataBlockT*>(&dataBlock));
+        if (kv != fDataBlockIDs.end()) {
+            return kv->second;
+        }
+
+        Index id(SkTo<uint32_t>(fDataBlocks.size()));
+        SkASSERT(id.isValid());
+
+        // TODO: switch this over to using an SkArena
+        DataBlockT tmp(DataBlockT::Make(nullptr, dataBlock));
+        fDataBlockIDs.insert({tmp, id});
+        fDataBlocks.push_back(tmp);
+        this->validate();
+        return id;
+    }
+
     Index insert(const DataBlockT& dataBlock) {
         auto kv = fDataBlockIDs.find(const_cast<DataBlockT*>(&dataBlock));
         if (kv != fDataBlockIDs.end()) {
