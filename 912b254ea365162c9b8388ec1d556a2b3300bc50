@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6a668ed4_e1d2b109",
+        "filename": "modules/skparagraph/src/ParagraphImpl.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 372,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-04-04T17:39:18Z",
+      "side": 1,
+      "message": "It does apply spacing but it also builds cluster table.",
+      "parentUuid": "be58c5f1_1ea44420",
+      "range": {
+        "startLine": 372,
+        "startChar": 20,
+        "endLine": 372,
+        "endChar": 37
+      },
+      "revId": "912b254ea365162c9b8388ec1d556a2b3300bc50",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e88a6513_485c3e26",
         "filename": "modules/skparagraph/src/ParagraphImpl.cpp",
         "patchSetId": 3
@@ -37,6 +61,24 @@
       "writtenOn": "2022-04-04T17:28:58Z",
       "side": 1,
       "message": "This method has the side effect of always calling `buildClusterTable`. It looks like it might just be called at the start of this method to make that more clear? This appears to be a side effect the caller relies on, so this interaction should be made clear.",
+      "revId": "912b254ea365162c9b8388ec1d556a2b3300bc50",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "79604fb4_1d1ac374",
+        "filename": "modules/skparagraph/src/ParagraphImpl.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 409,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-04-04T17:39:18Z",
+      "side": 1,
+      "message": "That is a problem here. In both simple cases I space glyphs BEFORE I build cluster table so I don\u0027t have to update each cluster element later.\nIn a complex case I first build cluster table and then space glyphs by iterating it. The order of operations matters.",
+      "parentUuid": "e88a6513_485c3e26",
       "revId": "912b254ea365162c9b8388ec1d556a2b3300bc50",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
