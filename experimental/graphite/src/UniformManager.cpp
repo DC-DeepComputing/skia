@@ -11,6 +11,7 @@
 #include "include/core/SkMatrix.h"
 #include "include/private/SkHalf.h"
 #include "include/private/SkTemplates.h"
+#include "src/core/SkPipelineData.h"
 #include "src/core/SkUniform.h"
 
 // ensure that these types are the sizes the uniform data is expecting
@@ -511,45 +512,101 @@ void UniformManager::reset() {
 #ifdef SK_DEBUG
     fCurUBOOffset = 0;
     fCurUBOMaxAlignment = 0;
-#endif
-    fOffset = 0;
+#endif // SK_DEBUG
+
+    fOffset1 = 0;
 }
 
 #ifdef SK_DEBUG
 void UniformManager::checkReset() const {
     SkASSERT(fCurUBOOffset == 0);
     SkASSERT(fCurUBOMaxAlignment == 0);
-    SkASSERT(fOffset == 0);
+    SkASSERT(fOffset1 == 0);
 }
+
+SkUniformDataBlock2 UniformManager::peekData() const {
+    return SkUniformDataBlock2(SkMakeSpan(fDest, fUsed));
+}
+
+void UniformManager::setExpectedUniforms(SkSpan<const SkUniform> expectedUniforms) {
+    fExpectedUniforms = expectedUniforms;
+    fExpectedUniformIndex = 0;
+}
+
+void UniformManager::doneWithExpectedUniforms() {
+    fExpectedUniforms = {};
+    SkASSERT(fExpectedUniformIndex == static_cast<int>(fExpectedUniforms.size()));
+}
+
+void UniformManager::checkExpected(SkSLType type, unsigned int count) {
+    SkASSERT(fExpectedUniforms.size());
+    SkASSERT(fExpectedUniformIndex >= 0 && fExpectedUniformIndex < (int)fExpectedUniforms.size());
+
+    SkASSERT(fExpectedUniforms[fExpectedUniformIndex].type() == type);
+    SkASSERT(fExpectedUniforms[fExpectedUniformIndex].count() == count);
+    fExpectedUniformIndex++;
+
+    SkSLType revisedType = this->getUniformTypeForLayout(type);
+
+    uint32_t debugOffset = get_ubo_aligned_offset(&fCurUBOOffset,
+                                                  &fCurUBOMaxAlignment,
+                                                  revisedType,
+                                                  count);
+    SkASSERT(debugOffset == fOffset1);
+}
+
 #endif
 
-uint32_t UniformManager::writeUniforms(SkSpan<const SkUniform> uniforms,
-                                       const void** srcs,
-                                       char *dst) {
-    this->reset();
+void UniformManager::write(SkSLType type, unsigned int count, const void* src) {
+    SkSLType revisedType = this->getUniformTypeForLayout(type);
 
-    for (int i = 0; i < (int) uniforms.size(); ++i) {
-        const SkUniform& u = uniforms[i];
-        SkSLType uniformType = this->getUniformTypeForLayout(u.type());
+    uint32_t bytesNeeded = fWriteUniform(revisedType, CType::kDefault, nullptr, count, nullptr);
+    char* dst = this->getMem(bytesNeeded);
+    uint32_t bytesWritten = fWriteUniform(revisedType, CType::kDefault, dst, count, src);
+    SkASSERT(bytesNeeded == bytesWritten);
+    fOffset1 += bytesWritten;
+}
 
-#ifdef SK_DEBUG
-        uint32_t debugOffset = get_ubo_aligned_offset(&fCurUBOOffset,
-                                                      &fCurUBOMaxAlignment,
-                                                      uniformType,
-                                                      u.count());
-#endif // SK_DEBUG
+void UniformManager::write(const SkColor4f* colors, int count) {
+    static const SkSLType kType = SkSLType::kFloat4;
+    SkDEBUGCODE(this->checkExpected(kType, count);)
+    this->write(kType, count, colors);
+}
 
-        uint32_t bytesWritten = fWriteUniform(uniformType,
-                                              CType::kDefault,
-                                              dst ? &dst[fOffset] : nullptr,
-                                              u.count(),
-                                              srcs ? srcs[i] : nullptr);
-        SkASSERT(debugOffset == fOffset);
+void UniformManager::write(const SkPMColor4f* premulColors, int count) {
+    static const SkSLType kType = SkSLType::kFloat4;
+    SkDEBUGCODE(this->checkExpected(kType, count);)
+    this->write(kType, count, premulColors);
+}
 
-        fOffset += bytesWritten;
-    }
+void UniformManager::write(const SkRect& rect) {
+    static const SkSLType kType = SkSLType::kFloat4;
+    SkDEBUGCODE(this->checkExpected(kType, 1);)
+    this->write(kType, 1, &rect);
+}
 
-    return fOffset;
+void UniformManager::write(SkPoint point) {
+    static const SkSLType kType = SkSLType::kFloat2;
+    SkDEBUGCODE(this->checkExpected(kType, 1);)
+    this->write(kType, 1, &point);
+}
+
+void UniformManager::write(const float* floats, int count) {
+    static const SkSLType kType = SkSLType::kFloat;
+    SkDEBUGCODE(this->checkExpected(kType, count);)
+    this->write(kType, count, floats);
+}
+
+void UniformManager::write(int something) {
+    static const SkSLType kType = SkSLType::kInt;
+    SkDEBUGCODE(this->checkExpected(kType, 1);)
+    this->write(kType, 1, &something);
+}
+
+void UniformManager::write(float2 foo) {
+    static const SkSLType kType = SkSLType::kFloat2;
+    SkDEBUGCODE(this->checkExpected(kType, 1);)
+    this->write(kType, 1, &foo);
 }
 
 } // namespace skgpu
