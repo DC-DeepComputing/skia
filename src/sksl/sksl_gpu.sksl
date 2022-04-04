@@ -452,9 +452,9 @@ half $blend_color_saturation(half3 color) {
 }
 
 half3 $blend_set_color_saturation_helper(half3 minMidMax, half sat) {
-    if (minMidMax.r < minMidMax.b) {
+    if ((minMidMax.z - minMidMax.x) >= 0.001) {
         return half3(0,
-                    $guarded_divide(sat*(minMidMax.g - minMidMax.r), (minMidMax.b - minMidMax.r)),
+                    $guarded_divide(sat*(minMidMax.y - minMidMax.x), (minMidMax.z - minMidMax.x)),
                     sat);
     } else {
         return half3(0);
