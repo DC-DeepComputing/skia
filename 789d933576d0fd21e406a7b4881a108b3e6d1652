@@ -89,6 +89,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "532996e0_3472c18b",
+        "filename": "public.bzl",
+        "patchSetId": 3
+      },
+      "lineNbr": 278,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-04-04T19:27:49Z",
+      "side": 1,
+      "message": "Given that I think it makes sense to keep UNIX in the name. But SWIFTSHADER-\u003eEGL makes sense as this can work with other egl implementations.",
+      "parentUuid": "935393a9_5393b6f8",
+      "range": {
+        "startLine": 278,
+        "startChar": 13,
+        "endLine": 278,
+        "endChar": 24
+      },
+      "revId": "789d933576d0fd21e406a7b4881a108b3e6d1652",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d0c9f724_8b368aef",
