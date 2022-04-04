@@ -9,6 +9,7 @@
 #define SkPipelineData_DEFINED
 
 #include <vector>
+#include "include/core/SkPoint.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSamplingOptions.h"
 #include "include/core/SkTileMode.h"
@@ -18,41 +19,34 @@
 #ifdef SK_GRAPHITE_ENABLED
 #include "experimental/graphite/src/TextureProxy.h"
 #include "experimental/graphite/src/UniformManager.h"
+#include "experimental/graphite/src/geom/VectorTypes.h"
 #include "src/gpu/Blend.h"
 #endif
 
-class SkUniformDataBlock {
+class SkArenaAlloc;
+
+class SkUniformDataBlock2 {
 public:
-    SkUniformDataBlock() = default;
-    SkUniformDataBlock(sk_sp<SkUniformData> initial) {
-        SkASSERT(initial && initial->dataSize());
-        fUniformData.push_back(std::move(initial));
-    }
+    static SkUniformDataBlock2 Make(const SkUniformDataBlock2&, SkArenaAlloc*);
 
-    bool empty() const { return fUniformData.empty(); }
-    size_t totalUniformSize() const;  // TODO: cache this?
+    SkUniformDataBlock2(SkSpan<const char> data) : fData(data) {}
+    SkUniformDataBlock2() = default;
 
-    bool operator==(const SkUniformDataBlock&) const;
-    bool operator!=(const SkUniformDataBlock& other) const { return !(*this == other);  }
+    const char* data() const { return fData.data(); }
+    size_t size() const { return fData.size(); }
+
     uint32_t hash() const;
 
-    using container = std::vector<sk_sp<SkUniformData>>;
-    using iterator = container::iterator;
-
-    inline iterator begin() noexcept { return fUniformData.begin(); }
-    inline iterator end() noexcept { return fUniformData.end(); }
-
-    void add(sk_sp<SkUniformData> ud) {
-        fUniformData.push_back(std::move(ud));
+    bool operator==(const SkUniformDataBlock2& that) const {
+        return fData.size() == that.fData.size() &&
+               !memcmp(fData.data(), that.fData.data(), fData.size());
     }
+    bool operator!=(const SkUniformDataBlock2& that) const { return !(*this == that); }
 
-    void reset() {
-        fUniformData.clear();
-    }
+    const SkUniformDataBlock2* get() const { return this; }
 
 private:
-    // TODO: SkUniformData should be held uniquely
-    std::vector<sk_sp<SkUniformData>> fUniformData;
+    SkSpan<const char> fData;
 };
 
 #ifdef SK_GRAPHITE_ENABLED
@@ -69,11 +63,13 @@ public:
         SkTileMode                 fTileModes[2];
     };
 
+    static std::unique_ptr<SkTextureDataBlock> Make(const SkTextureDataBlock&, SkArenaAlloc*);
+
     SkTextureDataBlock() = default;
 
     bool empty() const { return fTextureData.empty(); }
     int numTextures() const { return SkTo<int>(fTextureData.size()); }
-    const TextureInfo& texture(int index) { return fTextureData[index]; }
+    const TextureInfo& texture(int index) const { return fTextureData[index]; }
 
     bool operator==(const SkTextureDataBlock&) const;
     bool operator!=(const SkTextureDataBlock& other) const { return !(*this == other);  }
@@ -125,15 +121,16 @@ public:
 #endif
 
 #ifdef SK_GRAPHITE_ENABLED
-    SkPipelineDataGatherer(skgpu::Layout layout) : fLayout(layout) {}
+    SkPipelineDataGatherer(skgpu::Layout layout);
 #endif
+//    SkPipelineDataGatherer();
 
     void reset();
     // Check that the gatherer has been reset to its initial state prior to collecting new data.
     SkDEBUGCODE(void checkReset();)
 
 #ifdef SK_GRAPHITE_ENABLED
-    skgpu::Layout layout() const { return fLayout; }
+//    skgpu::Layout layout() const { return fLayout; }
 
     void setBlendInfo(const SkPipelineDataGatherer::BlendInfo& blendInfo) {
         fBlendInfo = blendInfo;
@@ -150,18 +147,29 @@ public:
     const SkTextureDataBlock& textureDataBlock() { return fTextureDataBlock; }
 #endif
 
-    void add(sk_sp<SkUniformData>);
-    bool hasUniforms() const { return !fUniformDataBlock.empty(); }
+    void setExpectedUniforms(SkSpan<const SkUniform> expectedUniforms) {
+        fUniformManager.setExpectedUniforms(expectedUniforms);
+    }
 
-    SkUniformDataBlock& uniformDataBlock() { return fUniformDataBlock; }
+    void write(const SkColor4f* colors, int numColors) { fUniformManager.write(colors, numColors); }
+    void write(const SkPMColor4f& premulColor) { fUniformManager.write(&premulColor, 1); }
+    void write(const SkRect& rect) { fUniformManager.write(rect); }
+    void write(SkPoint point) { fUniformManager.write(point); }
+    void write(const float* floats, int count) { fUniformManager.write(floats, count); }
+    void write(float something) { fUniformManager.write(&something, 1); }
+    void write(int something) { fUniformManager.write(something); }
+    void write(skgpu::float2 foo) { fUniformManager.write(foo); }
+    void doneWithExpectedUniforms() { fUniformManager.doneWithExpectedUniforms(); }
+
+    bool hasUniforms() const { return fUniformManager.size(); }
+
+    SkUniformDataBlock2 peekUniformData() const { return fUniformManager.peekData(); }
 
 private:
-    SkUniformDataBlock fUniformDataBlock;
-
 #ifdef SK_GRAPHITE_ENABLED
-    SkTextureDataBlock fTextureDataBlock;
-    BlendInfo        fBlendInfo;
-    skgpu::Layout    fLayout;
+    SkTextureDataBlock    fTextureDataBlock;
+    BlendInfo             fBlendInfo;
+    skgpu::UniformManager fUniformManager;
 #endif
 };
 

@@ -8,10 +8,15 @@
 #ifndef skgpu_UniformManager_DEFINED
 #define skgpu_UniformManager_DEFINED
 
+#include "experimental/graphite/src/geom/VectorTypes.h"
 #include "include/core/SkSpan.h"
+#include "include/private/SkColorData.h"
 #include "src/core/SkSLTypeShared.h"
 
+struct SkPoint;
+struct SkRect;
 class SkUniform;
+class SkUniformDataBlock2;
 
 namespace skgpu {
 
@@ -23,30 +28,33 @@ enum class Layout {
     kMetal, /** This is our own self-imposed layout we use for Metal. */
 };
 
+// This is only used in the SkPipelineDataGatherer - maybe hide it better.
 class UniformManager {
 public:
     UniformManager(Layout layout);
 
+    SkUniformDataBlock2 peekData() const;
+    int size() const { return fUsed; }
+
     void reset();
 #ifdef SK_DEBUG
     void checkReset() const;
+    void setExpectedUniforms(SkSpan<const SkUniform>);
+    void checkExpected(SkSLType, unsigned int count);
+    void doneWithExpectedUniforms();
 #endif
 
-    /*
-     * Use the uniform 'definitions' to write the data in 'srcs' into 'dst' (if it is non-null).
-     * The number of bytes that was written (or would've been written) to 'dst' is returned.
-     * In practice one should call:
-     *   auto bytes = writeUniforms(definitions, nullptr, nullptr);
-     *   // allocate dst memory
-     *   writeUniforms(definitions, src, dst);
-     */
-    uint32_t writeUniforms(SkSpan<const SkUniform> definitions,
-                           const void** srcs,
-                           char *dst);
+    void write(const SkColor4f*, int count);
+    void write(const SkPMColor4f*, int count);
+    void write(const SkRect&);
+    void write(SkPoint);
+    void write(const float*, int count);
+    void write(int);
+    void write(float2);
 
 private:
     SkSLType getUniformTypeForLayout(SkSLType type);
-
+    void write(SkSLType type, unsigned int count, const void* src);
 
     using WriteUniformFn = uint32_t(*)(SkSLType type,
                                        CType ctype,
@@ -59,8 +67,29 @@ private:
 #ifdef SK_DEBUG
     uint32_t fCurUBOOffset;
     uint32_t fCurUBOMaxAlignment;
+
+    SkSpan<const SkUniform> fExpectedUniforms;
+    int fExpectedUniformIndex = 0;
 #endif // SK_DEBUG
     uint32_t fOffset;
+
+    char* getMem(size_t needed) {
+        if (fUsed + needed > fCapacity) {
+            char* newMem = new char[fUsed + needed];
+            memcpy(newMem, fDest, fUsed);
+            delete [] fDest;
+            fDest = newMem;
+            fCapacity = fUsed + needed;
+        }
+
+        size_t old = fUsed;
+        fUsed += needed;
+        return &fDest[old];
+    }
+
+    char* fDest = nullptr;
+    size_t fUsed = 0;
+    size_t fCapacity = 0;
 };
 
 } // namespace skgpu

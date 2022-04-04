@@ -14,7 +14,7 @@
 #include <vector>
 
 class SkTextureDataBlock;
-class SkUniformDataBlock;
+class SkUniformDataBlock2;
 
 namespace skgpu {
 
@@ -29,9 +29,9 @@ class ResourceProvider;
 class Task;
 class TaskGraph;
 
-template<typename DataBlockT> class PipelineDataCache;
-using UniformDataCache = PipelineDataCache<SkUniformDataBlock>;
-using TextureDataCache = PipelineDataCache<SkTextureDataBlock>;
+template<typename StorageT, typename BaseT> class PipelineDataCache;
+using UniformDataCache = PipelineDataCache<SkUniformDataBlock2, SkUniformDataBlock2>;
+using TextureDataCache = PipelineDataCache<std::unique_ptr<SkTextureDataBlock>, SkTextureDataBlock>;
 
 class Recorder final {
 public:
