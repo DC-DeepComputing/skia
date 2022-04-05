@@ -22,6 +22,30 @@
       },
       "revId": "033560fee270ec608a8221129c696811290a2bdc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bb504e32_fc59deb9",
+        "filename": "src/sksl/SkSLDSLParser.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1355,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-04-05T17:31:42Z",
+      "side": 1,
+      "message": "Another good point. Putting this together as a followup.",
+      "parentUuid": "51b67961_5786555d",
+      "range": {
+        "startLine": 1355,
+        "startChar": 0,
+        "endLine": 1355,
+        "endChar": 88
+      },
+      "revId": "033560fee270ec608a8221129c696811290a2bdc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
