@@ -14,12 +14,12 @@
 
 #include "experimental/graphite/src/Caps.h"
 
-namespace skgpu::mtl {
+namespace skgpu::graphite {
 
-class Caps final : public skgpu::Caps {
+class MtlCaps final : public skgpu::Caps {
 public:
-    Caps(const id<MTLDevice>);
-    ~Caps() override {}
+    MtlCaps(const id<MTLDevice>);
+    ~MtlCaps() override {}
 
     skgpu::TextureInfo getDefaultSampledTextureInfo(SkColorType,
                                                     uint32_t levelCount,
@@ -123,6 +123,6 @@ private:
     int fFamilyGroup;
 };
 
-} // namespace skgpu::mtl
+} // namespace skgpu::graphite
 
 #endif // skgpu_MtlCaps_DEFINED

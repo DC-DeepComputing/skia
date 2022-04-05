@@ -14,13 +14,16 @@
 #include "experimental/graphite/include/private/MtlTypesPriv.h"
 #endif
 
+// TODO: remove when all Metal classes moved to graphite
+using namespace skgpu::graphite;
+
 namespace skgpu {
 
 // Forward declares so we can friend classes in other namespaces
 #ifdef SK_METAL
-namespace mtl {
-    class Caps;
-    class Texture;
+namespace graphite {
+    class MtlCaps;
+    class MtlTexture;
 }
 #endif
 
@@ -28,7 +31,7 @@ class TextureInfo {
 public:
     TextureInfo() {}
 #ifdef SK_METAL
-    TextureInfo(const mtl::TextureInfo& mtlInfo)
+    TextureInfo(const MtlTextureInfo& mtlInfo)
             : fBackend(BackendApi::kMetal)
             , fValid(true)
             , fSampleCount(mtlInfo.fSampleCount)
@@ -52,20 +55,20 @@ public:
     Protected isProtected() const { return fProtected; }
 
 #ifdef SK_METAL
-    bool getMtlTextureInfo(mtl::TextureInfo* info) const {
+    bool getMtlTextureInfo(MtlTextureInfo* info) const {
         if (!this->isValid() || fBackend != BackendApi::kMetal) {
             return false;
         }
-        *info = mtl::TextureSpecToTextureInfo(fMtlSpec, fSampleCount, fLevelCount);
+        *info = MtlTextureSpecToTextureInfo(fMtlSpec, fSampleCount, fLevelCount);
         return true;
     }
 #endif
 
 private:
 #ifdef SK_METAL
-    friend class mtl::Caps;
-    friend class mtl::Texture;
-    const mtl::TextureSpec& mtlTextureSpec() const {
+    friend class graphite::MtlCaps;
+    friend class graphite::MtlTexture;
+    const MtlTextureSpec& mtlTextureSpec() const {
         SkASSERT(fValid && fBackend == BackendApi::kMetal);
         return fMtlSpec;
     }
@@ -80,7 +83,7 @@ private:
 
     union {
 #ifdef SK_METAL
-        mtl::TextureSpec fMtlSpec;
+        MtlTextureSpec fMtlSpec;
 #endif
     };
 };

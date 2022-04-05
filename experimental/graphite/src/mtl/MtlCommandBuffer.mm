@@ -109,7 +109,7 @@ bool CommandBuffer::onBeginRenderPass(const RenderPassDesc& renderPassDesc,
     if (colorTexture) {
         // TODO: check Texture matches RenderPassDesc
         auto colorAttachment = (*descriptor).colorAttachments[0];
-        colorAttachment.texture = ((Texture*)colorTexture)->mtlTexture();
+        colorAttachment.texture = ((MtlTexture*)colorTexture)->mtlTexture();
         const std::array<float, 4>& clearColor = renderPassDesc.fClearColor;
         colorAttachment.clearColor =
                 MTLClearColorMake(clearColor[0], clearColor[1], clearColor[2], clearColor[3]);
@@ -119,7 +119,7 @@ bool CommandBuffer::onBeginRenderPass(const RenderPassDesc& renderPassDesc,
         if (resolveTexture) {
             SkASSERT(renderPassDesc.fColorResolveAttachment.fStoreOp == StoreOp::kStore);
             // TODO: check Texture matches RenderPassDesc
-            colorAttachment.resolveTexture = ((Texture*)resolveTexture)->mtlTexture();
+            colorAttachment.resolveTexture = ((MtlTexture*)resolveTexture)->mtlTexture();
             // Inclusion of a resolve texture implies the client wants to finish the
             // renderpass with a resolve.
             if (@available(macOS 10.12, iOS 10.0, *)) {
@@ -141,8 +141,8 @@ bool CommandBuffer::onBeginRenderPass(const RenderPassDesc& renderPassDesc,
     auto& depthStencilInfo = renderPassDesc.fDepthStencilAttachment;
     if (depthStencilTexture) {
         // TODO: check Texture matches RenderPassDesc
-        id<MTLTexture> mtlTexture = ((Texture*)depthStencilTexture)->mtlTexture();
-        if (FormatIsDepth(mtlTexture.pixelFormat)) {
+        id<MTLTexture> mtlTexture = ((MtlTexture*)depthStencilTexture)->mtlTexture();
+        if (MtlFormatIsDepth(mtlTexture.pixelFormat)) {
             auto depthAttachment = (*descriptor).depthAttachment;
             depthAttachment.texture = mtlTexture;
             depthAttachment.clearDepth = renderPassDesc.fClearDepth;
@@ -151,7 +151,7 @@ bool CommandBuffer::onBeginRenderPass(const RenderPassDesc& renderPassDesc,
             depthAttachment.storeAction =
                      mtlStoreAction[static_cast<int>(depthStencilInfo.fStoreOp)];
         }
-        if (FormatIsStencil(mtlTexture.pixelFormat)) {
+        if (MtlFormatIsStencil(mtlTexture.pixelFormat)) {
             auto stencilAttachment = (*descriptor).stencilAttachment;
             stencilAttachment.texture = mtlTexture;
             stencilAttachment.clearStencil = renderPassDesc.fClearStencil;
@@ -164,9 +164,9 @@ bool CommandBuffer::onBeginRenderPass(const RenderPassDesc& renderPassDesc,
         SkASSERT(!depthStencilInfo.fTextureInfo.isValid());
     }
 
-    fActiveRenderCommandEncoder = RenderCommandEncoder::Make(fGpu,
-                                                             fCommandBuffer.get(),
-                                                             descriptor.get());
+    fActiveRenderCommandEncoder = MtlRenderCommandEncoder::Make(fGpu,
+                                                                fCommandBuffer.get(),
+                                                                descriptor.get());
 
     this->trackResource(fActiveRenderCommandEncoder);
 
@@ -179,7 +179,7 @@ void CommandBuffer::endRenderPass() {
     fActiveRenderCommandEncoder.reset();
 }
 
-BlitCommandEncoder* CommandBuffer::getBlitCommandEncoder() {
+MtlBlitCommandEncoder* CommandBuffer::getBlitCommandEncoder() {
     if (fActiveBlitCommandEncoder) {
         return fActiveBlitCommandEncoder.get();
     }
@@ -190,7 +190,7 @@ BlitCommandEncoder* CommandBuffer::getBlitCommandEncoder() {
     }
 #endif
 
-    fActiveBlitCommandEncoder = BlitCommandEncoder::Make(fGpu, fCommandBuffer.get());
+    fActiveBlitCommandEncoder = MtlBlitCommandEncoder::Make(fGpu, fCommandBuffer.get());
 
     if (!fActiveBlitCommandEncoder) {
         return nullptr;
@@ -229,8 +229,8 @@ void CommandBuffer::onBindUniformBuffer(UniformSlot slot,
                                         size_t uniformOffset) {
     SkASSERT(fActiveRenderCommandEncoder);
 
-    id<MTLBuffer> mtlBuffer = uniformBuffer ? static_cast<const Buffer*>(uniformBuffer)->mtlBuffer()
-                                            : nullptr;
+    id<MTLBuffer> mtlBuffer = uniformBuffer ?
+            static_cast<const MtlBuffer*>(uniformBuffer)->mtlBuffer() : nullptr;
 
     unsigned int bufferIndex;
     switch(slot) {
@@ -253,7 +253,7 @@ void CommandBuffer::onBindVertexBuffers(const skgpu::Buffer* vertexBuffer,
     SkASSERT(fActiveRenderCommandEncoder);
 
     if (vertexBuffer) {
-        id<MTLBuffer> mtlBuffer = static_cast<const Buffer*>(vertexBuffer)->mtlBuffer();
+        id<MTLBuffer> mtlBuffer = static_cast<const MtlBuffer*>(vertexBuffer)->mtlBuffer();
         // Metal requires buffer offsets to be aligned to the data type, which is at most 4 bytes
         // since we use [[attribute]] to automatically unpack float components into SIMD arrays.
         SkASSERT((vertexOffset & 0b11) == 0);
@@ -261,7 +261,7 @@ void CommandBuffer::onBindVertexBuffers(const skgpu::Buffer* vertexBuffer,
                                                      GraphicsPipeline::kVertexBufferIndex);
     }
     if (instanceBuffer) {
-        id<MTLBuffer> mtlBuffer = static_cast<const Buffer*>(instanceBuffer)->mtlBuffer();
+        id<MTLBuffer> mtlBuffer = static_cast<const MtlBuffer*>(instanceBuffer)->mtlBuffer();
         SkASSERT((instanceOffset & 0b11) == 0);
         fActiveRenderCommandEncoder->setVertexBuffer(mtlBuffer, instanceOffset,
                                                      GraphicsPipeline::kInstanceBufferIndex);
@@ -270,7 +270,7 @@ void CommandBuffer::onBindVertexBuffers(const skgpu::Buffer* vertexBuffer,
 
 void CommandBuffer::onBindIndexBuffer(const skgpu::Buffer* indexBuffer, size_t offset) {
     if (indexBuffer) {
-        fCurrentIndexBuffer = static_cast<const Buffer*>(indexBuffer)->mtlBuffer();
+        fCurrentIndexBuffer = static_cast<const MtlBuffer*>(indexBuffer)->mtlBuffer();
         fCurrentIndexBufferOffset = offset;
     } else {
         fCurrentIndexBuffer = nil;
@@ -283,7 +283,7 @@ void CommandBuffer::onBindTextureAndSampler(sk_sp<skgpu::Texture> texture,
                                             unsigned int bindIndex) {
     SkASSERT(texture && sampler);
 
-    id<MTLTexture> mtlTexture = ((Texture*)texture.get())->mtlTexture();
+    id<MTLTexture> mtlTexture = ((MtlTexture*)texture.get())->mtlTexture();
     id<MTLSamplerState> mtlSamplerState = ((Sampler*)sampler.get())->mtlSamplerState();
     fActiveRenderCommandEncoder->setFragmentTexture(mtlTexture, bindIndex);
     fActiveRenderCommandEncoder->setFragmentSamplerState(mtlSamplerState, bindIndex);
@@ -408,10 +408,10 @@ bool CommandBuffer::onCopyTextureToBuffer(const skgpu::Texture* texture,
         return false;
     }
 
-    id<MTLTexture> mtlTexture = static_cast<const Texture*>(texture)->mtlTexture();
-    id<MTLBuffer> mtlBuffer = static_cast<const Buffer*>(buffer)->mtlBuffer();
+    id<MTLTexture> mtlTexture = static_cast<const MtlTexture*>(texture)->mtlTexture();
+    id<MTLBuffer> mtlBuffer = static_cast<const MtlBuffer*>(buffer)->mtlBuffer();
 
-    BlitCommandEncoder* blitCmdEncoder = this->getBlitCommandEncoder();
+    MtlBlitCommandEncoder* blitCmdEncoder = this->getBlitCommandEncoder();
     if (!blitCmdEncoder) {
         return false;
     }
@@ -439,10 +439,10 @@ bool CommandBuffer::onCopyBufferToTexture(const skgpu::Buffer* buffer,
                                           int count) {
     SkASSERT(!fActiveRenderCommandEncoder);
 
-    id<MTLBuffer> mtlBuffer = static_cast<const Buffer*>(buffer)->mtlBuffer();
-    id<MTLTexture> mtlTexture = static_cast<const Texture*>(texture)->mtlTexture();
+    id<MTLBuffer> mtlBuffer = static_cast<const MtlBuffer*>(buffer)->mtlBuffer();
+    id<MTLTexture> mtlTexture = static_cast<const MtlTexture*>(texture)->mtlTexture();
 
-    BlitCommandEncoder* blitCmdEncoder = this->getBlitCommandEncoder();
+    MtlBlitCommandEncoder* blitCmdEncoder = this->getBlitCommandEncoder();
     if (!blitCmdEncoder) {
         return false;
     }

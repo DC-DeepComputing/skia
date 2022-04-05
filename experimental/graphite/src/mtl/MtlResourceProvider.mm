@@ -46,25 +46,25 @@ sk_sp<skgpu::GraphicsPipeline> ResourceProvider::onCreateGraphicsPipeline(
 
 sk_sp<skgpu::Texture> ResourceProvider::createTexture(SkISize dimensions,
                                                       const skgpu::TextureInfo& info) {
-    return Texture::Make(this->mtlGpu(), dimensions, info);
+    return MtlTexture::Make(this->mtlGpu(), dimensions, info);
 }
 
 sk_sp<skgpu::Texture> ResourceProvider::createWrappedTexture(const BackendTexture& texture) {
-    mtl::Handle mtlHandleTexture = texture.getMtlTexture();
+    MtlHandle mtlHandleTexture = texture.getMtlTexture();
     if (!mtlHandleTexture) {
         return nullptr;
     }
     sk_cfp<id<MTLTexture>> mtlTexture = sk_ret_cfp((id<MTLTexture>)mtlHandleTexture);
-    return Texture::MakeWrapped(this->mtlGpu(),
-                                texture.dimensions(),
-                                texture.info(),
-                                std::move(mtlTexture));
+    return MtlTexture::MakeWrapped(this->mtlGpu(),
+                                   texture.dimensions(),
+                                   texture.info(),
+                                   std::move(mtlTexture));
 }
 
 sk_sp<skgpu::Buffer> ResourceProvider::createBuffer(size_t size,
                                                     BufferType type,
                                                     PrioritizeGpuReads prioritizeGpuReads) {
-    return Buffer::Make(this->mtlGpu(), size, type, prioritizeGpuReads);
+    return MtlBuffer::Make(this->mtlGpu(), size, type, prioritizeGpuReads);
 }
 
 sk_sp<skgpu::Sampler> ResourceProvider::createSampler(const SkSamplingOptions& samplingOptions,

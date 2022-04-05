@@ -22,6 +22,9 @@
 
 #include "src/gpu/tessellate/WangsFormula.h"
 
+// TODO: remove when all of Metal is moved over
+using namespace skgpu::graphite;
+
 namespace skgpu::mtl {
 
 namespace {
@@ -527,12 +530,12 @@ sk_sp<GraphicsPipeline> GraphicsPipeline::Make(ResourceProvider* resourceProvide
 
     sk_cfp<id<MTLLibrary>> shaderLibraries[kShaderTypeCount];
 
-    shaderLibraries[kVertex_ShaderType] = CompileShaderLibrary(gpu,
-                                                               msl[kVertex_ShaderType],
-                                                               errorHandler);
-    shaderLibraries[kFragment_ShaderType] = CompileShaderLibrary(gpu,
-                                                                 msl[kFragment_ShaderType],
-                                                                 errorHandler);
+    shaderLibraries[kVertex_ShaderType] = MtlCompileShaderLibrary(gpu,
+                                                                  msl[kVertex_ShaderType],
+                                                                  errorHandler);
+    shaderLibraries[kFragment_ShaderType] = MtlCompileShaderLibrary(gpu,
+                                                                    msl[kFragment_ShaderType],
+                                                                    errorHandler);
     if (!shaderLibraries[kVertex_ShaderType] || !shaderLibraries[kFragment_ShaderType]) {
         return nullptr;
     }
@@ -547,7 +550,7 @@ sk_sp<GraphicsPipeline> GraphicsPipeline::Make(ResourceProvider* resourceProvide
     // TODO: I *think* this gets cleaned up by the pipelineDescriptor?
     (*psoDescriptor).vertexDescriptor = create_vertex_descriptor(pipelineDesc.renderStep());
 
-    mtl::TextureInfo mtlTexInfo;
+    MtlTextureInfo mtlTexInfo;
     renderPassDesc.fColorAttachment.fTextureInfo.getMtlTextureInfo(&mtlTexInfo);
 
     auto mtlColorAttachment = create_color_attachment((MTLPixelFormat)mtlTexInfo.fFormat,
@@ -557,12 +560,12 @@ sk_sp<GraphicsPipeline> GraphicsPipeline::Make(ResourceProvider* resourceProvide
 
     renderPassDesc.fDepthStencilAttachment.fTextureInfo.getMtlTextureInfo(&mtlTexInfo);
     MTLPixelFormat depthStencilFormat = (MTLPixelFormat)mtlTexInfo.fFormat;
-    if (FormatIsStencil(depthStencilFormat)) {
+    if (MtlFormatIsStencil(depthStencilFormat)) {
         (*psoDescriptor).stencilAttachmentPixelFormat = depthStencilFormat;
     } else {
         (*psoDescriptor).stencilAttachmentPixelFormat = MTLPixelFormatInvalid;
     }
-    if (FormatIsDepth(depthStencilFormat)) {
+    if (MtlFormatIsDepth(depthStencilFormat)) {
         (*psoDescriptor).depthAttachmentPixelFormat = depthStencilFormat;
     } else {
         (*psoDescriptor).depthAttachmentPixelFormat = MTLPixelFormatInvalid;
