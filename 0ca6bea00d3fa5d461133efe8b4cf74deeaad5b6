@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b5094816_caaf4f9a",
+        "filename": "example/BUILD.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-04-05T16:50:31Z",
+      "side": 1,
+      "message": "Mac toolchain is currently WIP. If you add this target to https://github.com/google/skia/blob/2fff9bf2bf76cb9ba6c889b65af88fe4e874e3ab/infra/bots/task_drivers/bazel_check_includes/bazel_check_includes.go#L56 (our one CI Build job), that can let you run Build-Debian10-BazelClang-x86_64-Release-IWYU to see if it works.\n\nI can also try this locally, if you prefer",
+      "parentUuid": "68e4e915_b14ca992",
+      "range": {
+        "startLine": 99,
+        "startChar": 0,
+        "endLine": 99,
+        "endChar": 20
+      },
+      "revId": "0ca6bea00d3fa5d461133efe8b4cf74deeaad5b6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "eaded706_f8601288",
         "filename": "example/BUILD.bazel",
         "patchSetId": 2
@@ -37,6 +61,30 @@
       "writtenOn": "2022-04-05T16:43:16Z",
       "side": 1,
       "message": "It\u0027s not obvious to me that if I was writing a new cc_binary_* from scratch that I would know to include all these libraries. Or maybe I don\u0027t need them? Is there anyways to move all this down lower (or higher) in the build hierarchy so that someone writing a little program like this wouldn\u0027t need to worry about them?",
+      "range": {
+        "startLine": 104,
+        "startChar": 4,
+        "endLine": 104,
+        "endChar": 12
+      },
+      "revId": "0ca6bea00d3fa5d461133efe8b4cf74deeaad5b6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b4a126f0_d46b89cd",
+        "filename": "example/BUILD.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-04-05T16:50:31Z",
+      "side": 1,
+      "message": "I doubt you need them. I think there is a way we can pass these in from a different source (called Toolchain Features) when they *are* needed.",
+      "parentUuid": "eaded706_f8601288",
       "range": {
         "startLine": 104,
         "startChar": 4,
@@ -72,6 +120,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3b380d79_a4ca8e22",
+        "filename": "example/BUILD.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-04-05T16:50:31Z",
+      "side": 1,
+      "message": "You shouldn\u0027t need to declare anything you don\u0027t use.",
+      "parentUuid": "e79591d1_a695677a",
+      "range": {
+        "startLine": 118,
+        "startChar": 6,
+        "endLine": 120,
+        "endChar": 10
+      },
+      "revId": "0ca6bea00d3fa5d461133efe8b4cf74deeaad5b6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "70971a18_7b5c49c9",
         "filename": "example/BUILD.bazel",
         "patchSetId": 2
@@ -83,6 +155,30 @@
       "writtenOn": "2022-04-05T16:43:16Z",
       "side": 1,
       "message": "Can we push this down to living inside skias gpu vulkan config setup? This example is unaware of memory allocators and doesn\u0027t need to be aware. Internally Skia vulkan backend handles it.",
+      "range": {
+        "startLine": 124,
+        "startChar": 8,
+        "endLine": 124,
+        "endChar": 45
+      },
+      "revId": "0ca6bea00d3fa5d461133efe8b4cf74deeaad5b6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "555da49e_dd62ce51",
+        "filename": "example/BUILD.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-04-05T16:50:31Z",
+      "side": 1,
+      "message": "Yes, I think we can.",
+      "parentUuid": "70971a18_7b5c49c9",
       "range": {
         "startLine": 124,
         "startChar": 8,
