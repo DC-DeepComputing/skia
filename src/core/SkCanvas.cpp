@@ -1941,14 +1941,25 @@ void SkCanvas::experimental_DrawEdgeAAQuad(const SkRect& rect, const SkPoint cli
     this->onDrawEdgeAAQuad(rect.makeSorted(), clip, aaFlags, color, mode);
 }
 
+static SkSamplingOptions clean_sampling_for_constraint(
+        const SkSamplingOptions& sampling,
+        SkCanvas::SrcRectConstraint constraint) {
+    if (constraint == SkCanvas::kStrict_SrcRectConstraint &&
+        sampling.mipmap != SkMipmapMode::kNone) {
+        return SkSamplingOptions(sampling.filter);
+    }
+    return sampling;
+}
+
 void SkCanvas::experimental_DrawEdgeAAImageSet(const ImageSetEntry imageSet[], int cnt,
                                                const SkPoint dstClips[],
                                                const SkMatrix preViewMatrices[],
                                                const SkSamplingOptions& sampling,
                                                const SkPaint* paint,
                                                SrcRectConstraint constraint) {
+    SkSamplingOptions realSampling = clean_sampling_for_constraint(sampling, constraint);
     TRACE_EVENT0("skia", TRACE_FUNC);
-    this->onDrawEdgeAAImageSet2(imageSet, cnt, dstClips, preViewMatrices, sampling, paint,
+    this->onDrawEdgeAAImageSet2(imageSet, cnt, dstClips, preViewMatrices, realSampling, paint,
                                 constraint);
 }
 
@@ -2253,14 +2264,26 @@ void SkCanvas::onDrawImage2(const SkImage* image, SkScalar x, SkScalar y,
     auto layer = this->aboutToDraw(this, realPaint, &bounds);
     if (layer) {
         this->topDevice()->drawImageRect(image, nullptr, bounds, sampling,
-                                         layer->paint(), kStrict_SrcRectConstraint);
+                                         layer->paint(), kFast_SrcRectConstraint);
     }
+}
+
+static SkCanvas::SrcRectConstraint clean_constraint_for_image_bounds(
+        SkCanvas::SrcRectConstraint constraint,
+        const SkRect& src,
+        const SkImage* image) {
+    if (constraint == SkCanvas::kStrict_SrcRectConstraint && src.contains(image->bounds())) {
+        return SkCanvas::kFast_SrcRectConstraint;
+    }
+    return constraint;
 }
 
 void SkCanvas::onDrawImageRect2(const SkImage* image, const SkRect& src, const SkRect& dst,
                                 const SkSamplingOptions& sampling, const SkPaint* paint,
                                 SrcRectConstraint constraint) {
     SkPaint realPaint = clean_paint_for_drawImage(paint);
+    constraint = clean_constraint_for_image_bounds(constraint, src, image);
+    SkSamplingOptions realSampling = clean_sampling_for_constraint(sampling, constraint);
 
     if (this->internalQuickReject(dst, realPaint)) {
         return;
@@ -2270,7 +2293,7 @@ void SkCanvas::onDrawImageRect2(const SkImage* image, const SkRect& src, const S
                                    image->isOpaque() ? kOpaque_ShaderOverrideOpacity
                                                      : kNotOpaque_ShaderOverrideOpacity);
     if (layer) {
-        this->topDevice()->drawImageRect(image, &src, dst, sampling, layer->paint(), constraint);
+        this->topDevice()->drawImageRect(image, &src, dst, realSampling, layer->paint(), constraint);
     }
 }
 
@@ -2302,7 +2325,9 @@ void SkCanvas::drawImageRect(const SkImage* image, const SkRect& src, const SkRe
     if (!fillable(dst) || !fillable(src)) {
         return;
     }
-    this->onDrawImageRect2(image, src, dst, sampling, paint, constraint);
+    constraint = clean_constraint_for_image_bounds(constraint, src, image);
+    SkSamplingOptions realSampling = clean_sampling_for_constraint(sampling, constraint);
+    this->onDrawImageRect2(image, src, dst, realSampling, paint, constraint);
 }
 
 void SkCanvas::drawImageRect(const SkImage* image, const SkRect& dst,
@@ -2633,6 +2658,7 @@ void SkCanvas::onDrawEdgeAAImageSet2(const ImageSetEntry imageSet[], int count,
     }
 
     SkPaint realPaint = clean_paint_for_drawImage(paint);
+    SkSamplingOptions realSampling = clean_sampling_for_constraint(sampling, constraint);
 
     // We could calculate the set's dstRect union to always check quickReject(), but we can't reject
     // individual entries and Chromium's occlusion culling already makes it likely that at least one
@@ -2662,8 +2688,8 @@ void SkCanvas::onDrawEdgeAAImageSet2(const ImageSetEntry imageSet[], int count,
 
     auto layer = this->aboutToDraw(this, realPaint, setBoundsValid ? &setBounds : nullptr);
     if (layer) {
-        this->topDevice()->drawEdgeAAImageSet(imageSet, count, dstClips, preViewMatrices, sampling,
-                                              layer->paint(), constraint);
+        this->topDevice()->drawEdgeAAImageSet(imageSet, count, dstClips, preViewMatrices,
+                                              realSampling, layer->paint(), constraint);
     }
 }
 

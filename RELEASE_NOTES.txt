@@ -9,6 +9,7 @@ Milestone 102
   * GrContextOptions::fSharpenMipmappedTextures is ignored. MIP LOD is now always
     biased on the GPU backend. The CPU backend implementation is modified to match
     this behavior.
+  * Passing SkCanvas::kStrict_SrcRectConstraint disables mipmapping.
 
 * * *
 
