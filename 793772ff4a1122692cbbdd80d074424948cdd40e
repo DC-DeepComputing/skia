@@ -22,6 +22,30 @@
       },
       "revId": "793772ff4a1122692cbbdd80d074424948cdd40e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fbc582eb_7f9120e6",
+        "filename": "tools/sk_app/BUILD.bazel",
+        "patchSetId": 1
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-04-05T22:05:47Z",
+      "side": 1,
+      "message": "Good suggestion!\n\nNot with native Bazel, but we make use of skylib [1] which does allow this. I\u0027ve done it one way. We also could have defined a new config_setting_group like:\n\nselects.config_setting_group(\n    name \u003d \"dawn_or_vulkan_unix\",\n    match_any \u003d [\n        \":dawn_unix\",\n        \":vulkan_unix\",\n    ],\n)\n\nand used it.\n\n[1] https://github.com/bazelbuild/bazel-skylib/blob/main/docs/selects_doc.md#selectswith_or",
+      "parentUuid": "f3514ae8_44351723",
+      "range": {
+        "startLine": 40,
+        "startChar": 8,
+        "endLine": 41,
+        "endChar": 38
+      },
+      "revId": "793772ff4a1122692cbbdd80d074424948cdd40e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
