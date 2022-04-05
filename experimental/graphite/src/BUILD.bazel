@@ -757,7 +757,10 @@ generated_cc_atom(
     hdrs = ["UniformManager.h"],
     visibility = ["//:__subpackages__"],
     deps = [
+        "//experimental/graphite/src/geom:VectorTypes_hdr",
         "//include/core:SkSpan_hdr",
+        "//include/private:SkColorData_hdr",
+        "//include/private:SkTDArray_hdr",
         "//src/core:SkSLTypeShared_hdr",
     ],
 )
@@ -772,6 +775,7 @@ generated_cc_atom(
         "//include/core:SkMatrix_hdr",
         "//include/private:SkHalf_hdr",
         "//include/private:SkTemplates_hdr",
+        "//src/core:SkPipelineData_hdr",
         "//src/core:SkUniform_hdr",
     ],
 )
@@ -974,6 +978,8 @@ generated_cc_atom(
     visibility = ["//:__subpackages__"],
     deps = [
         "//include/core:SkRefCnt_hdr",
+        "//include/private:SingleOwner_hdr",
+        "//src/core:SkArenaAlloc_hdr",
         "//src/core:SkPipelineData_hdr",
     ],
 )
