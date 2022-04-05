@@ -85,12 +85,13 @@ public:
 
         // TODO: A << API for uniforms would be nice, particularly if it could take pre-computed
         // offsets for each uniform.
-        float2 scale = geom.shape().rect().size();
-        float2 translate = geom.shape().rect().topLeft();
-        const void* srcs[kNumRectUniforms] = { &scale, &translate };
-
         skgpu::UniformManager mgr(gatherer->layout());
-        mgr.writeUniforms(SkMakeSpan(kRectUniforms, kNumRectUniforms), srcs);
+
+        SkDEBUGCODE(mgr.setExpectedUniforms(SkMakeSpan(kRectUniforms, kNumRectUniforms));)
+        mgr.write(geom.shape().rect().size());
+        mgr.write(geom.shape().rect().topLeft());
+        SkDEBUGCODE(mgr.doneWithExpectedUniforms();)
+
         sk_sp<SkUniformData> result = mgr.createUniformData();
         gatherer->add(std::move(result));
     }
@@ -149,12 +150,13 @@ public:
                 { "translate",  SkSLType::kFloat2 },
         };
 
-        SkPoint scale{2.0f, 2.0f};
-        SkPoint translate{-1.0f, -1.0f};
-        const void* srcs[kNumRectUniforms] = { &scale, &translate };
-
         skgpu::UniformManager mgr(gatherer->layout());
-        mgr.writeUniforms(SkMakeSpan(kRectUniforms, kNumRectUniforms), srcs);
+
+        SkDEBUGCODE(mgr.setExpectedUniforms(SkMakeSpan(kRectUniforms, kNumRectUniforms));)
+        mgr.write(SkPoint::Make(2.0f, 2.0f));
+        mgr.write(SkPoint::Make(-1.0f, -1.0f));
+        SkDEBUGCODE(mgr.doneWithExpectedUniforms();)
+
         sk_sp<SkUniformData> result = mgr.createUniformData();
         gatherer->add(std::move(result));
     }
