@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5c0ecdd1_4b6bcc2b",
+        "filename": "src/sksl/SkSLDSLParser.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-05T19:05:30Z",
+      "side": 1,
+      "message": "This class can remain in the cpp; it only needs to be forward-declared here.\nhttps://godbolt.org/z/Ghh1zv6KP",
+      "range": {
+        "startLine": 81,
+        "startChar": 4,
+        "endLine": 94,
+        "endChar": 6
+      },
+      "revId": "6cd21050f9f7e371cd50729be4e33568f41079b7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "363de394_645c6115",
+        "filename": "src/sksl/SkSLDSLParser.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 250,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-05T19:05:30Z",
+      "side": 1,
+      "message": "This seems like the Skia style for a static function, not a type. Maybe `BinaryParseFn`?",
+      "range": {
+        "startLine": 250,
+        "startChar": 10,
+        "endLine": 250,
+        "endChar": 25
+      },
+      "revId": "6cd21050f9f7e371cd50729be4e33568f41079b7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
