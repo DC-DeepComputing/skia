@@ -200,18 +200,15 @@ public:
             return {};
         }
 
-        SkUniformDataBlock *udb = fUniformDataCache->lookup(uIndex);
+        const SkUniformDataBlock* udb = fUniformDataCache->lookup(uIndex);
         SkASSERT(udb);
 
         if (fBindings.find(uIndex.asUInt()) == fBindings.end()) {
             // First time encountering this data, so upload to the GPU
-            size_t totalDataSize = udb->totalUniformSize();
+            size_t totalDataSize = udb->size();
             SkASSERT(totalDataSize);
             auto[writer, bufferInfo] = fBufferMgr->getUniformWriter(totalDataSize);
-            for (const auto &u : *udb) {
-                writer.write(u->data(), u->dataSize());
-            }
-
+            writer.write(udb->data(), udb->size());
             fBindings.insert({uIndex.asUInt(), bufferInfo});
         }
 
