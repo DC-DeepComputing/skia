@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dc0efe22_139ce7f4",
+        "filename": "tests/sksl/errors/LayoutRepeatedQualifiers.glsl",
+        "patchSetId": 3
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-04-05T20:28:34Z",
+      "side": 1,
+      "message": "Obviously the out-of-order errors are not ideal, but the positions aren\u0027t wrong - previously, the position (and thus the part that would be underlined in the error report) was the variable name, and now it\u0027s the modifiers.",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 17,
+        "endChar": 0
+      },
+      "revId": "c854a476a3968552c825ad615474b7dd9a69d76a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
