@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5559c4a6_2ee9b0fe",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-04-05T13:18:57Z",
+      "side": 1,
+      "message": "did you already triage the gold images? I don\u0027t see any diffs form this change when I go to the link",
+      "revId": "a5021deca15a985a6882c8b4ed6de4fe20390c36",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
