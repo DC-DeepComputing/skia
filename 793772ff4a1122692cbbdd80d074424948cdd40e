@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f3514ae8_44351723",
+        "filename": "tools/sk_app/BUILD.bazel",
+        "patchSetId": 1
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-04-05T19:36:01Z",
+      "side": 1,
+      "message": "I\u0027m guess there is not really a good \"or\" syntax here? As in something like\n\n\":dawn_unix\" or \":vulkan_unix\": [\"-lX11-xcb\"]",
+      "range": {
+        "startLine": 40,
+        "startChar": 8,
+        "endLine": 41,
+        "endChar": 38
+      },
+      "revId": "793772ff4a1122692cbbdd80d074424948cdd40e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
