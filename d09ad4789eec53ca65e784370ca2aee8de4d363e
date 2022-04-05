@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d41a4d42_807955ca",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5145
+      },
+      "writtenOn": "2022-04-05T13:18:10Z",
+      "side": 1,
+      "message": "FYI: The hash in DEPS is invalid, it has somehow put task scheduler in an invalid state so I\u0027m going through the builds and cancelling them.",
+      "revId": "d09ad4789eec53ca65e784370ca2aee8de4d363e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
