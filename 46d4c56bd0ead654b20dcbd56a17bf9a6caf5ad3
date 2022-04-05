@@ -16,6 +16,24 @@
       "message": "LGTM. I added the chromium canary, just to be sure this doesn\u0027t impact any layout tests. (I\u0027m guessing it won\u0027t, as it looks like there weren\u0027t any GM diffs?).",
       "revId": "46d4c56bd0ead654b20dcbd56a17bf9a6caf5ad3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0ae6395f_4f0d7a2f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-05T14:13:57Z",
+      "side": 1,
+      "message": "There were a ton of Gold diffs. I triaged last night.",
+      "parentUuid": "dd477824_9abaa231",
+      "revId": "46d4c56bd0ead654b20dcbd56a17bf9a6caf5ad3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
