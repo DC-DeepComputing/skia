@@ -67,6 +67,19 @@ private:
 class SingleOwner {}; // Provide a no-op implementation so we can pass pointers to constructors
 #endif
 
+
+template <typename T>
+class PassThrough {
+public:
+    PassThrough() = default;
+    PassThrough(T* t) : fT(t) {}
+
+    T* get() const { return fT; }
+
+private:
+    T* fT = nullptr;
+};
+
 } // namespace skgpu
 
 #endif
