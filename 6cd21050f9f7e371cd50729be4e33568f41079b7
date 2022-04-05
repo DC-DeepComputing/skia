@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4bd2c2cb_14cc397f",
+        "filename": "src/sksl/SkSLDSLParser.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-04-05T20:19:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5c0ecdd1_4b6bcc2b",
+      "range": {
+        "startLine": 81,
+        "startChar": 4,
+        "endLine": 94,
+        "endChar": 6
+      },
+      "revId": "6cd21050f9f7e371cd50729be4e33568f41079b7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "363de394_645c6115",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-04-05T19:05:30Z",
       "side": 1,
       "message": "This seems like the Skia style for a static function, not a type. Maybe `BinaryParseFn`?",
+      "range": {
+        "startLine": 250,
+        "startChar": 10,
+        "endLine": 250,
+        "endChar": 25
+      },
+      "revId": "6cd21050f9f7e371cd50729be4e33568f41079b7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "61fbbc54_e716b010",
+        "filename": "src/sksl/SkSLDSLParser.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 250,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-04-05T20:19:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "363de394_645c6115",
       "range": {
         "startLine": 250,
         "startChar": 10,
