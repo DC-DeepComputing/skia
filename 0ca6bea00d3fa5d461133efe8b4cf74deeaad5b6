@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "68e4e915_b14ca992",
+        "filename": "example/BUILD.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-04-05T16:43:16Z",
+      "side": 1,
+      "message": "Okay so I copied so basic stuff from the vulkan hello world example here but have some questions. On a high level how do a test if this actually builds and works as expected (currently on a mac)?",
+      "range": {
+        "startLine": 99,
+        "startChar": 0,
+        "endLine": 99,
+        "endChar": 20
+      },
+      "revId": "0ca6bea00d3fa5d461133efe8b4cf74deeaad5b6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eaded706_f8601288",
+        "filename": "example/BUILD.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-04-05T16:43:16Z",
+      "side": 1,
+      "message": "It\u0027s not obvious to me that if I was writing a new cc_binary_* from scratch that I would know to include all these libraries. Or maybe I don\u0027t need them? Is there anyways to move all this down lower (or higher) in the build hierarchy so that someone writing a little program like this wouldn\u0027t need to worry about them?",
+      "range": {
+        "startLine": 104,
+        "startChar": 4,
+        "endLine": 104,
+        "endChar": 12
+      },
+      "revId": "0ca6bea00d3fa5d461133efe8b4cf74deeaad5b6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e79591d1_a695677a",
+        "filename": "example/BUILD.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-04-05T16:43:16Z",
+      "side": 1,
+      "message": "Do I have to declare a fontmgr_factory here? My example doesn\u0027t use fonts, but will be it be required to buid Skia? If so can this live inside Skia?",
+      "range": {
+        "startLine": 118,
+        "startChar": 6,
+        "endLine": 120,
+        "endChar": 10
+      },
+      "revId": "0ca6bea00d3fa5d461133efe8b4cf74deeaad5b6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "70971a18_7b5c49c9",
+        "filename": "example/BUILD.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-04-05T16:43:16Z",
+      "side": 1,
+      "message": "Can we push this down to living inside skias gpu vulkan config setup? This example is unaware of memory allocators and doesn\u0027t need to be aware. Internally Skia vulkan backend handles it.",
+      "range": {
+        "startLine": 124,
+        "startChar": 8,
+        "endLine": 124,
+        "endChar": 45
+      },
+      "revId": "0ca6bea00d3fa5d461133efe8b4cf74deeaad5b6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
