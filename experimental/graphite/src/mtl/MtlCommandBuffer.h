@@ -19,10 +19,16 @@
 
 #import <Metal/Metal.h>
 
+namespace skgpu::graphite {
+class MtlBlitCommandEncoder;
+class MtlRenderCommandEncoder;
+}
+
+// TODO: remove when all Metal classes are moved to skgpu::graphite
+using namespace skgpu::graphite;
+
 namespace skgpu::mtl {
-class BlitCommandEncoder;
 class Gpu;
-class RenderCommandEncoder;
 
 class CommandBuffer final : public skgpu::CommandBuffer {
 public:
@@ -94,12 +100,12 @@ private:
                                const BufferTextureCopyData* copyData,
                                int count) override;
 
-    BlitCommandEncoder* getBlitCommandEncoder();
+    MtlBlitCommandEncoder* getBlitCommandEncoder();
     void endBlitCommandEncoder();
 
     sk_cfp<id<MTLCommandBuffer>> fCommandBuffer;
-    sk_sp<RenderCommandEncoder> fActiveRenderCommandEncoder;
-    sk_sp<BlitCommandEncoder> fActiveBlitCommandEncoder;
+    sk_sp<MtlRenderCommandEncoder> fActiveRenderCommandEncoder;
+    sk_sp<MtlBlitCommandEncoder> fActiveBlitCommandEncoder;
 
     size_t fCurrentVertexStride = 0;
     size_t fCurrentInstanceStride = 0;

@@ -35,12 +35,12 @@ sk_sp<skgpu::Gpu> Gpu::Make(const BackendContext& context) {
     sk_cfp<id<MTLDevice>> device = sk_ret_cfp((id<MTLDevice>)(context.fDevice.get()));
     sk_cfp<id<MTLCommandQueue>> queue = sk_ret_cfp((id<MTLCommandQueue>)(context.fQueue.get()));
 
-    sk_sp<const Caps> caps(new Caps(device.get()));
+    sk_sp<const MtlCaps> caps(new MtlCaps(device.get()));
 
     return sk_sp<skgpu::Gpu>(new Gpu(std::move(device), std::move(queue), std::move(caps)));
 }
 
-Gpu::Gpu(sk_cfp<id<MTLDevice>> device, sk_cfp<id<MTLCommandQueue>> queue, sk_sp<const Caps> caps)
+Gpu::Gpu(sk_cfp<id<MTLDevice>> device, sk_cfp<id<MTLCommandQueue>> queue, sk_sp<const MtlCaps> caps)
     : skgpu::Gpu(std::move(caps))
     , fDevice(std::move(device))
     , fQueue(std::move(queue)) {
@@ -87,7 +87,7 @@ skgpu::Gpu::OutstandingSubmission Gpu::onSubmit(sk_sp<skgpu::CommandBuffer> comm
 }
 
 BackendTexture Gpu::onCreateBackendTexture(SkISize dimensions, const skgpu::TextureInfo& info) {
-    sk_cfp<id<MTLTexture>> texture = Texture::MakeMtlTexture(this, dimensions, info);
+    sk_cfp<id<MTLTexture>> texture = MtlTexture::MakeMtlTexture(this, dimensions, info);
     if (!texture) {
         return {};
     }
@@ -96,7 +96,7 @@ BackendTexture Gpu::onCreateBackendTexture(SkISize dimensions, const skgpu::Text
 
 void Gpu::onDeleteBackendTexture(BackendTexture& texture) {
     SkASSERT(texture.backend() == BackendApi::kMetal);
-    Handle texHandle = texture.getMtlTexture();
+    MtlHandle texHandle = texture.getMtlTexture();
     SkCFSafeRelease(texHandle);
 }
 

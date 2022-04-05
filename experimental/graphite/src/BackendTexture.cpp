@@ -62,12 +62,12 @@ bool BackendTexture::operator==(const BackendTexture& that) const {
 }
 
 #ifdef SK_METAL
-BackendTexture::BackendTexture(SkISize dimensions, mtl::Handle mtlTexture)
+BackendTexture::BackendTexture(SkISize dimensions, MtlHandle mtlTexture)
         : fDimensions(dimensions)
-        , fInfo(mtl::TextureInfo(mtlTexture))
+        , fInfo(MtlTextureInfo(mtlTexture))
         , fMtlTexture(mtlTexture) {}
 
-mtl::Handle BackendTexture::getMtlTexture() const {
+MtlHandle BackendTexture::getMtlTexture() const {
     if (this->isValid() && this->backend() == BackendApi::kMetal) {
         return fMtlTexture;
     }

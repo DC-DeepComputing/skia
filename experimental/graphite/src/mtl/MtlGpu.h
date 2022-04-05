@@ -17,6 +17,9 @@
 
 #import <Metal/Metal.h>
 
+// TODO: remove when all Metal classes are moved over
+using namespace skgpu::graphite;
+
 namespace skgpu::mtl {
 
 class Gpu final : public skgpu::Gpu {
@@ -27,13 +30,13 @@ public:
     id<MTLDevice> device() const { return fDevice.get(); }
     id<MTLCommandQueue> queue() const { return fQueue.get(); }
 
-    const Caps& mtlCaps() const { return static_cast<const Caps&>(*this->caps()); }
+    const MtlCaps& mtlCaps() const { return static_cast<const MtlCaps&>(*this->caps()); }
 
     std::unique_ptr<skgpu::ResourceProvider> makeResourceProvider(
             sk_sp<GlobalCache>, SingleOwner*) const override;
 
 private:
-    Gpu(sk_cfp<id<MTLDevice>>, sk_cfp<id<MTLCommandQueue>>, sk_sp<const Caps>);
+    Gpu(sk_cfp<id<MTLDevice>>, sk_cfp<id<MTLCommandQueue>>, sk_sp<const MtlCaps>);
 
     skgpu::Gpu::OutstandingSubmission onSubmit(sk_sp<skgpu::CommandBuffer>) override;
 
