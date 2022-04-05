@@ -44,6 +44,8 @@ template <typename T> class DSLWrapper;
 
 }
 
+class DSLParser;
+
 /**
  * Consumes .sksl text and invokes DSL functions to instantiate the program.
  */
@@ -77,6 +79,21 @@ public:
     Position position(int line);
 
 private:
+    class AutoDSLDepth {
+    public:
+        AutoDSLDepth(DSLParser* p)
+        : fParser(p)
+        , fDepth(0) {}
+
+        ~AutoDSLDepth();
+
+        bool increase();
+
+    private:
+        DSLParser* fParser;
+        int fDepth;
+    };
+
     static void InitLayoutMap();
 
     /**
@@ -230,6 +247,10 @@ private:
     std::optional<dsl::DSLBlock> block();
 
     dsl::DSLStatement expressionStatement();
+
+    typedef dsl::DSLExpression (DSLParser::*binary_parse_fn)();
+    bool SK_WARN_UNUSED_RESULT operatorRight(AutoDSLDepth& depth, Operator::Kind op,
+            binary_parse_fn rightFn, dsl::DSLExpression& result);
 
     dsl::DSLExpression expression();
 
