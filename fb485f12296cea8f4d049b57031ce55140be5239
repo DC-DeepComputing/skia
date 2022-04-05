@@ -34,6 +34,24 @@
       "parentUuid": "9382de1c_9b47747a",
       "revId": "fb485f12296cea8f4d049b57031ce55140be5239",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "46ef7f04_292abbac",
+        "filename": "tools/skslc/BUILD.bazel",
+        "patchSetId": 3
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-05T23:08:08Z",
+      "side": 1,
+      "message": "I tried adding a cc_binary rule but it\u0027s not working. It tries to compile the Tint headers (?) with an old C++ version, and fails. I\u0027m not really sure what the dependency chain is there. I\u0027m also not sure how to set the C++ version in Bazel; I don\u0027t see any annotations on any of our existing cc_atoms/binaries calling out the C++ version.\n\nhttps://paste.googleplex.com/5830291013763072",
+      "parentUuid": "14661991_9a53040b",
+      "revId": "fb485f12296cea8f4d049b57031ce55140be5239",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
