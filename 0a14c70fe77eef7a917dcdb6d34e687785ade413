@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1e4b3b54_fa53c9cc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-04-05T16:49:07Z",
+      "side": 1,
+      "message": "Here is a Chromium Canary that was effectively run with just the \"entire image\" macro enabled (so downgrading filtering only if the src rect does not contain the whole image).\n\nhttps://chromium-review.googlesource.com/c/3571523",
+      "revId": "0a14c70fe77eef7a917dcdb6d34e687785ade413",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
