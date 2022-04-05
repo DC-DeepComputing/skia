@@ -95,6 +95,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a4fc970d_08fa4f16",
+        "filename": "example/BUILD.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-04-05T18:40:43Z",
+      "side": 1,
+      "message": "See https://skia-review.googlesource.com/c/skia/+/527697",
+      "parentUuid": "b4a126f0_d46b89cd",
+      "range": {
+        "startLine": 104,
+        "startChar": 4,
+        "endLine": 104,
+        "endChar": 12
+      },
+      "revId": "0ca6bea00d3fa5d461133efe8b4cf74deeaad5b6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e79591d1_a695677a",
@@ -179,6 +203,30 @@
       "side": 1,
       "message": "Yes, I think we can.",
       "parentUuid": "70971a18_7b5c49c9",
+      "range": {
+        "startLine": 124,
+        "startChar": 8,
+        "endLine": 124,
+        "endChar": 45
+      },
+      "revId": "0ca6bea00d3fa5d461133efe8b4cf74deeaad5b6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3fa5dcf0_88eee273",
+        "filename": "example/BUILD.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-04-05T18:40:43Z",
+      "side": 1,
+      "message": "See https://skia-review.googlesource.com/c/skia/+/527696",
+      "parentUuid": "555da49e_dd62ce51",
       "range": {
         "startLine": 124,
         "startChar": 8,
