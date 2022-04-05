@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "605a1e1e_2423fc2c",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 196,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-04-05T19:05:14Z",
+      "side": 1,
+      "message": "Ah yes, done.",
+      "parentUuid": "1606d00b_d720f8f9",
+      "range": {
+        "startLine": 196,
+        "startChar": 4,
+        "endLine": 196,
+        "endChar": 22
+      },
+      "revId": "b5612c8db98bfd2a1b5cedad3368264eb6a33f94",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "021b7912_e3a1f51c",
         "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
         "patchSetId": 1
@@ -49,6 +73,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4777d0bb_f4686437",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 232,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-04-05T19:05:14Z",
+      "side": 1,
+      "message": "Done. I rephrased the comment slightly and factored the lambdas out into a helper function instead of duplicating them, so hopefully things are a bit more clear.",
+      "parentUuid": "021b7912_e3a1f51c",
+      "range": {
+        "startLine": 231,
+        "startChar": 8,
+        "endLine": 232,
+        "endChar": 45
+      },
+      "revId": "b5612c8db98bfd2a1b5cedad3368264eb6a33f94",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "21050a94_c5c3cb42",
         "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
         "patchSetId": 1
@@ -60,6 +108,30 @@
       "writtenOn": "2022-04-04T13:19:22Z",
       "side": 1,
       "message": "I believe this should say \"`in` interface blocks to the input struct\"",
+      "range": {
+        "startLine": 255,
+        "startChar": 40,
+        "endLine": 255,
+        "endChar": 83
+      },
+      "revId": "b5612c8db98bfd2a1b5cedad3368264eb6a33f94",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "70fec855_ac0b34a9",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 255,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-04-05T19:05:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "21050a94_c5c3cb42",
       "range": {
         "startLine": 255,
         "startChar": 40,
