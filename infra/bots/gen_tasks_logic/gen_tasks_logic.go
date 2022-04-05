@@ -1582,7 +1582,7 @@ func (b *taskBuilder) commonTestPerfAssets() {
 	}
 
 	if b.isLinux() {
-		if b.extraConfig("Vulkan") {
+		if b.extraConfig("Vulkan", "SwiftShader") {
 			b.asset("linux_vulkan_sdk")
 		}
 		if b.matchGpu("Intel") {
