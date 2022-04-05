@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b4b122da_69a2eff6",
+        "filename": "src/sksl/SkSLDSLParser.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1393,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-04-05T16:32:48Z",
+      "side": 1,
+      "message": "Great catch, yes it can!",
+      "parentUuid": "4bf80b4c_e9cff216",
+      "range": {
+        "startLine": 1383,
+        "startChar": 5,
+        "endLine": 1393,
+        "endChar": 26
+      },
+      "revId": "578233e04fadd6ae20efefb1b6636df82ecae718",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8d815785_65fdf7a0",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-04-05T14:24:54Z",
       "side": 1,
       "message": "Can this use OPERATOR_RIGHT now?",
+      "range": {
+        "startLine": 1522,
+        "startChar": 0,
+        "endLine": 1532,
+        "endChar": 0
+      },
+      "revId": "578233e04fadd6ae20efefb1b6636df82ecae718",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5b7d5304_2b5e7660",
+        "filename": "src/sksl/SkSLDSLParser.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1532,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-04-05T16:32:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8d815785_65fdf7a0",
       "range": {
         "startLine": 1522,
         "startChar": 0,
