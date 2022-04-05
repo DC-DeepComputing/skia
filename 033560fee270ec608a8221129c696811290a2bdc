@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "51b67961_5786555d",
+        "filename": "src/sksl/SkSLDSLParser.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1355,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-05T16:35:39Z",
+      "side": 1,
+      "message": "Actually. OPERATOR_RIGHT no longer needs to be a macro at all! Previously it did `left op right` but now it\u0027s just passing an operator-kind.",
+      "range": {
+        "startLine": 1355,
+        "startChar": 0,
+        "endLine": 1355,
+        "endChar": 88
+      },
+      "revId": "033560fee270ec608a8221129c696811290a2bdc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
