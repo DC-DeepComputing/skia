@@ -20,6 +20,7 @@
 #include "include/sksl/DSLStatement.h"
 #include "include/sksl/DSLType.h"
 #include "include/sksl/SkSLErrorReporter.h"
+#include "include/sksl/SkSLOperator.h"
 #include "include/sksl/SkSLPosition.h"
 #include "src/sksl/SkSLCompiler.h"
 #include "src/sksl/SkSLLexer.h"
@@ -77,6 +78,21 @@ public:
     Position position(int line);
 
 private:
+    class AutoDSLDepth {
+    public:
+        AutoDSLDepth(DSLParser* p)
+        : fParser(p)
+        , fDepth(0) {}
+
+        ~AutoDSLDepth();
+
+        bool increase();
+
+    private:
+        DSLParser* fParser;
+        int fDepth;
+    };
+
     static void InitLayoutMap();
 
     /**
@@ -230,6 +246,10 @@ private:
     std::optional<dsl::DSLBlock> block();
 
     dsl::DSLStatement expressionStatement();
+
+    using binary_parse_fn = dsl::DSLExpression (DSLParser::*)();
+    bool SK_WARN_UNUSED_RESULT operatorRight(AutoDSLDepth& depth, Operator::Kind op,
+            binary_parse_fn rightFn, dsl::DSLExpression& result);
 
     dsl::DSLExpression expression();
 
