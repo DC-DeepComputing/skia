@@ -176,7 +176,8 @@ private:
 
     bool declaration();
 
-    bool functionDeclarationEnd(const dsl::DSLModifiers& modifiers,
+    bool functionDeclarationEnd(Position start,
+                                const dsl::DSLModifiers& modifiers,
                                 dsl::DSLType type,
                                 const Token& name);
 
@@ -195,7 +196,8 @@ private:
 
     std::optional<dsl::DSLType> structDeclaration();
 
-    SkTArray<dsl::DSLGlobalVar> structVarDeclaration(const dsl::DSLModifiers& modifiers);
+    SkTArray<dsl::DSLGlobalVar> structVarDeclaration(Position start,
+                                                     const dsl::DSLModifiers& modifiers);
 
     bool parseArrayDimensions(Position pos, dsl::DSLType* type);
 
