@@ -22,6 +22,30 @@
       },
       "revId": "834ff6301762ff74d9f1061fb1a0b8332e1f390e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5ccf3108_82679dc6",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-04-05T20:59:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0861d99c_6559abbe",
+      "range": {
+        "startLine": 111,
+        "startChar": 0,
+        "endLine": 112,
+        "endChar": 43
+      },
+      "revId": "834ff6301762ff74d9f1061fb1a0b8332e1f390e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
