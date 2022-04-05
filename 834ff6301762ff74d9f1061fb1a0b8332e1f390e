@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0861d99c_6559abbe",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-04-05T20:10:25Z",
+      "side": 1,
+      "message": "I\u0027d add a comment here that we need to deal with fUseFlipRTUniform. I wouldn\u0027t worry about trying to write the code yet, just leave a breadcrumb. (You can see how the other backends all have special code for this...)",
+      "range": {
+        "startLine": 111,
+        "startChar": 0,
+        "endLine": 112,
+        "endChar": 43
+      },
+      "revId": "834ff6301762ff74d9f1061fb1a0b8332e1f390e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
