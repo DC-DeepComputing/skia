@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "938febc1_5b435fe6",
+        "filename": "src/sksl/ir/SkSLExpression.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 212,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-04-05T13:53:45Z",
+      "side": 1,
+      "message": "Nice. As a follow-up, want to go back and use this in all the places where we were doing this manually?",
+      "range": {
+        "startLine": 212,
+        "startChar": 32,
+        "endLine": 212,
+        "endChar": 51
+      },
+      "revId": "7821b39d04f976ed0c2ee94a3dfe345ea5a994d7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
