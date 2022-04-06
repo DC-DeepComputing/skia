@@ -378,7 +378,7 @@ namespace {
 
 #ifdef SK_GRAPHITE_ENABLED
 
-void add_blendshader_uniform_data(SkShaderCodeDictionary* dict,
+void add_blendshader_uniform_data(const SkShaderCodeDictionary* dict,
                                   SkBlendMode bm,
                                   SkPipelineDataGatherer* gatherer) {
     SkDEBUGCODE(auto uniforms = dict->getUniforms(SkBuiltInCodeSnippetID::kBlendShader);)
