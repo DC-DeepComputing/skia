@@ -137,6 +137,167 @@
       },
       "revId": "81f458b584586f5573ca33e52fc7fc3bb1f90f3e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4a13feaf_dca7e88d",
+        "filename": "tests/sksl/errors/PrivateVariables.glsl",
+        "patchSetId": 3
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-06T19:26:33Z",
+      "side": 1,
+      "message": "nit: could narrow down to the variable name",
+      "range": {
+        "startLine": 5,
+        "startChar": 0,
+        "endLine": 5,
+        "endChar": 6
+      },
+      "revId": "81f458b584586f5573ca33e52fc7fc3bb1f90f3e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8015adcd_1602c4b0",
+        "filename": "tests/sksl/errors/ReturnFromVoid.glsl",
+        "patchSetId": 3
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-06T19:26:33Z",
+      "side": 1,
+      "message": "nit: could narrow down to expression",
+      "range": {
+        "startLine": 5,
+        "startChar": 11,
+        "endLine": 5,
+        "endChar": 23
+      },
+      "revId": "81f458b584586f5573ca33e52fc7fc3bb1f90f3e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "553ef540_7006c878",
+        "filename": "tests/sksl/errors/SwizzleDomain.glsl",
+        "patchSetId": 3
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-06T19:26:33Z",
+      "side": 1,
+      "message": "nit: could narrow down to swizzle",
+      "range": {
+        "startLine": 5,
+        "startChar": 23,
+        "endLine": 5,
+        "endChar": 29
+      },
+      "revId": "81f458b584586f5573ca33e52fc7fc3bb1f90f3e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a5133369_90f2f6dc",
+        "filename": "tests/sksl/errors/SwizzleOutOfBounds.glsl",
+        "patchSetId": 3
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-06T19:26:33Z",
+      "side": 1,
+      "message": "nit: could narrow down to swizzle",
+      "range": {
+        "startLine": 5,
+        "startChar": 28,
+        "endLine": 5,
+        "endChar": 41
+      },
+      "revId": "81f458b584586f5573ca33e52fc7fc3bb1f90f3e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "688d3c2c_e11644f6",
+        "filename": "tests/sksl/errors/SwizzleTooManyComponents.glsl",
+        "patchSetId": 3
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-06T19:26:33Z",
+      "side": 1,
+      "message": "nit: could narrow down to swizzle",
+      "range": {
+        "startLine": 5,
+        "startChar": 28,
+        "endLine": 5,
+        "endChar": 43
+      },
+      "revId": "81f458b584586f5573ca33e52fc7fc3bb1f90f3e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "24a85ed5_5447ea15",
+        "filename": "tests/sksl/errors/TernaryMismatch.glsl",
+        "patchSetId": 3
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-06T19:26:33Z",
+      "side": 1,
+      "message": "nit: could narrow down to ifTrue/ifFalse part",
+      "range": {
+        "startLine": 5,
+        "startChar": 35,
+        "endLine": 5,
+        "endChar": 53
+      },
+      "revId": "81f458b584586f5573ca33e52fc7fc3bb1f90f3e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "04776afb_07db189e",
+        "filename": "tests/sksl/errors/UnassignedOutParameter.glsl",
+        "patchSetId": 3
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-06T19:26:33Z",
+      "side": 1,
+      "message": "nit: would probably be better to highlight the modifiers on parameter `b` instead of the entire function body\n\n  void testOut(out float2 a, out float2 b, out float2 c)\n                             ^^^",
+      "range": {
+        "startLine": 5,
+        "startChar": 63,
+        "endLine": 5,
+        "endChar": 81
+      },
+      "revId": "81f458b584586f5573ca33e52fc7fc3bb1f90f3e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
