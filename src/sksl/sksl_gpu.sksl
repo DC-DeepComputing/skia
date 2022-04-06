@@ -450,11 +450,10 @@ half3 $blend_set_color_luminance(half3 hueSatColor, half alpha, half3 lumColor) 
     if (minComp < 0 && lum != minComp) {
         result = lum + (result - lum) * $guarded_divide(lum, (lum - minComp));
     }
-    if (maxComp > alpha && maxComp != lum) {
-        return lum + $guarded_divide((result - lum) * (alpha - lum), (maxComp - lum));
-    } else {
-        return result;
+    if (maxComp > alpha && lum != maxComp) {
+        result = lum + $guarded_divide((result - lum) * (alpha - lum), (maxComp - lum));
     }
+    return result;
 }
 
 half $blend_color_saturation(half3 color) {
