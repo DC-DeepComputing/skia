@@ -18,7 +18,7 @@
 struct SkPoint;
 struct SkRect;
 class SkUniform;
-class SkUniformData;
+class SkUniformDataBlock;
 
 namespace skgpu {
 
@@ -30,11 +30,12 @@ enum class Layout {
     kMetal, /** This is our own self-imposed layout we use for Metal. */
 };
 
+// This is only used in the SkPipelineDataGatherer - maybe hide it better.
 class UniformManager {
 public:
     UniformManager(Layout layout);
 
-    sk_sp<SkUniformData> createUniformData();
+    SkUniformDataBlock peekData() const;
     int size() const { return fStorage.count(); }
 
     void reset();

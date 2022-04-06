@@ -5719,6 +5719,8 @@ generated_cc_atom(
         ":SkUniformData_hdr",
         "//experimental/graphite/src:TextureProxy_hdr",
         "//experimental/graphite/src:UniformManager_hdr",
+        "//experimental/graphite/src/geom:VectorTypes_hdr",
+        "//include/core:SkPoint_hdr",
         "//include/core:SkRefCnt_hdr",
         "//include/core:SkSamplingOptions_hdr",
         "//include/core:SkTileMode_hdr",
@@ -5734,6 +5736,7 @@ generated_cc_atom(
     deps = [
         ":SkOpts_hdr",
         ":SkPipelineData_hdr",
+        "//experimental/graphite/src:UniformManager_hdr",
     ],
 )
 

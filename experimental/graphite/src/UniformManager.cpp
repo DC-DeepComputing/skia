@@ -11,6 +11,7 @@
 #include "include/core/SkMatrix.h"
 #include "include/private/SkHalf.h"
 #include "include/private/SkTemplates.h"
+#include "src/core/SkPipelineData.h"
 #include "src/core/SkUniform.h"
 #include "src/core/SkUniformData.h"
 
@@ -508,11 +509,6 @@ UniformManager::UniformManager(Layout layout) : fLayout(layout) {
     this->reset();
 }
 
-sk_sp<SkUniformData> UniformManager::createUniformData() {
-    return SkUniformData::Make(fStorage.begin(), fStorage.count());
-}
-
-
 void UniformManager::reset() {
 #ifdef SK_DEBUG
     fCurUBOOffset = 0;
@@ -528,6 +524,10 @@ void UniformManager::checkReset() const {
     SkASSERT(fCurUBOMaxAlignment == 0);
     SkASSERT(fOffset == 0);
     SkASSERT(fStorage.empty());
+}
+
+SkUniformDataBlock UniformManager::peekData() const {
+    return SkUniformDataBlock(SkMakeSpan(fStorage.begin(), fStorage.count()));
 }
 
 void UniformManager::setExpectedUniforms(SkSpan<const SkUniform> expectedUniforms) {
@@ -605,10 +605,10 @@ void UniformManager::write(int something) {
     this->write(kType, 1, &something);
 }
 
-void UniformManager::write(float2 something) {
+void UniformManager::write(float2 v) {
     static const SkSLType kType = SkSLType::kFloat2;
     SkDEBUGCODE(this->checkExpected(kType, 1);)
-    this->write(kType, 1, &something);
+    this->write(kType, 1, &v);
 }
 
 } // namespace skgpu

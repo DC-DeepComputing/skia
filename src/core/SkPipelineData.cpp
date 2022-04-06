@@ -8,67 +8,48 @@
 #include "src/core/SkOpts.h"
 #include "src/core/SkPipelineData.h"
 
+#ifdef SK_GRAPHITE_ENABLED
+#include "experimental/graphite/src/UniformManager.h"
+
+SkPipelineDataGatherer::SkPipelineDataGatherer(skgpu::Layout layout)
+        : fUniformManager(layout) {
+}
+#endif
+
 void SkPipelineDataGatherer::reset() {
-    fUniformDataBlock.reset();
 #ifdef SK_GRAPHITE_ENABLED
     fTextureDataBlock.reset();
     fBlendInfo = BlendInfo();
+    fUniformManager.reset();
 #endif
 }
 
 #ifdef SK_DEBUG
 void SkPipelineDataGatherer::checkReset() {
-    SkASSERT(fUniformDataBlock.empty());
 #ifdef SK_GRAPHITE_ENABLED
     SkASSERT(fTextureDataBlock.empty());
     SkASSERT(fBlendInfo == BlendInfo());
+    SkDEBUGCODE(fUniformManager.checkReset());
 #endif
 }
 #endif
 
-std::unique_ptr<SkUniformDataBlock> SkUniformDataBlock::Make(const SkUniformDataBlock& other,
-                                                             SkArenaAlloc* /* arena */) {
-    return std::make_unique<SkUniformDataBlock>(other);
-}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+SkUniformDataBlock* SkUniformDataBlock::Make(const SkUniformDataBlock& other,
+                                            SkArenaAlloc* arena) {
+    // TODO: kUniformAlignment should match whatever alignment the GPU buffers will require.
+    // Probably 16B.
+    static constexpr size_t kUniformAlignment = 4;
+    char* mem = static_cast<char*>(arena->makeBytesAlignedTo(other.size(), kUniformAlignment));
+    memcpy(mem, other.data(), other.size());
 
-void SkPipelineDataGatherer::add(sk_sp<SkUniformData> uniforms) {
-    SkASSERT(uniforms && uniforms->dataSize());
-    fUniformDataBlock.add(std::move(uniforms));
-}
-
-size_t SkUniformDataBlock::totalUniformSize() const {
-    size_t total = 0;
-
-    // TODO: It seems like we need to worry about alignment between the separate sets of uniforms
-    for (auto& u : fUniformData) {
-        total += u->dataSize();
-    }
-
-    return total;
-}
-
-bool SkUniformDataBlock::operator==(const SkUniformDataBlock& other) const {
-    if (fUniformData.size() != other.fUniformData.size()) {
-        return false;
-    }
-
-    for (size_t i = 0; i < fUniformData.size(); ++i) {
-        if (*fUniformData[i] != *other.fUniformData[i]) {
-            return false;
-        }
-    }
-
-    return true;
+    return arena->make([&](void* ptr) {
+        return new (ptr) SkUniformDataBlock(SkSpan<const char>(mem, other.size()));
+    });
 }
 
 uint32_t SkUniformDataBlock::hash() const {
-    uint32_t hash = 0;
-
-    for (auto& u : fUniformData) {
-        hash = SkOpts::hash_fn(u->data(), u->dataSize(), hash);
-    }
-
-    return hash;
+    return SkOpts::hash_fn(fData.data(), fData.size(), 0);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
