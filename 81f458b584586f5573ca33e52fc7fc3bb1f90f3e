@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "567fd8d5_7dbc79fa",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-04-06T21:08:58Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "131d1f79_61f494d6",
+      "revId": "81f458b584586f5573ca33e52fc7fc3bb1f90f3e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "76179c1a_d303d441",
@@ -31,6 +49,30 @@
       "writtenOn": "2022-04-06T18:45:35Z",
       "side": 1,
       "message": "Can we use `size_t` instead of casting (throughout)?",
+      "range": {
+        "startLine": 773,
+        "startChar": 13,
+        "endLine": 773,
+        "endChar": 16
+      },
+      "revId": "81f458b584586f5573ca33e52fc7fc3bb1f90f3e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8b7e4a8d_a2995169",
+        "filename": "src/sksl/SkSLCompiler.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 773,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-04-06T21:08:58Z",
+      "side": 1,
+      "message": "The Position offsets are ints, so unfortunately we have to have casts one way or the other. This direction resulted in fewer (and better placed) casts.",
+      "parentUuid": "76179c1a_d303d441",
       "range": {
         "startLine": 773,
         "startChar": 13,
@@ -64,6 +106,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "12df3c36_d61c02a3",
+        "filename": "src/sksl/SkSLCompiler.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 789,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-04-06T21:08:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4404f0b1_a3bbe637",
+      "range": {
+        "startLine": 789,
+        "startChar": 21,
+        "endLine": 789,
+        "endChar": 28
+      },
+      "revId": "81f458b584586f5573ca33e52fc7fc3bb1f90f3e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "23f77875_0aec298c",
@@ -77,6 +143,30 @@
       "writtenOn": "2022-04-06T18:45:35Z",
       "side": 1,
       "message": "I got so caught up in the `currentLine \u003d\u003d line` case, I forgot we were inside a `for` loop over the entire source! :)\nStructurally having this check down here is surprising since it\u0027s the thing that happens first, and the \"currentLine \u003d\u003d line\" case is the thing that happens second.\n\nWould it make more sense to break this up into two separate loops?\nloop 1 - find the start of the line\nloop 2 - print the line with the ^^^ marks\n\n(Also, it seems like loop 1 could be done with less work as \"walk backwards from the error\u0027s character offset until we find a \u0027\\n\u0027, but I\u0027m not sure if there is some edge case where that doesn\u0027t work)",
+      "range": {
+        "startLine": 809,
+        "startChar": 12,
+        "endLine": 811,
+        "endChar": 13
+      },
+      "revId": "81f458b584586f5573ca33e52fc7fc3bb1f90f3e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a2e6548d_7f70d93a",
+        "filename": "src/sksl/SkSLCompiler.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 811,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-04-06T21:08:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "23f77875_0aec298c",
       "range": {
         "startLine": 809,
         "startChar": 12,
@@ -110,6 +200,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9bfed5eb_d6350957",
+        "filename": "tests/sksl/errors/ArgumentModifiers.glsl",
+        "patchSetId": 3
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-04-06T21:08:58Z",
+      "side": 1,
+      "message": "For this one, easier to just go ahead and fix it.",
+      "parentUuid": "613781ab_d286bd3c",
+      "range": {
+        "startLine": 5,
+        "startChar": 0,
+        "endLine": 5,
+        "endChar": 20
+      },
+      "revId": "81f458b584586f5573ca33e52fc7fc3bb1f90f3e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "87173a95_afdd56ce",
@@ -123,6 +237,30 @@
       "writtenOn": "2022-04-06T19:04:46Z",
       "side": 1,
       "message": "nit: let\u0027s narrow down to the return type",
+      "range": {
+        "startLine": 5,
+        "startChar": 0,
+        "endLine": 5,
+        "endChar": 31
+      },
+      "revId": "81f458b584586f5573ca33e52fc7fc3bb1f90f3e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fef5678e_e28644d1",
+        "filename": "tests/sksl/errors/ArrayReturnTypes.glsl",
+        "patchSetId": 3
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-04-06T21:08:58Z",
+      "side": 1,
+      "message": "skbug:13169",
+      "parentUuid": "87173a95_afdd56ce",
       "range": {
         "startLine": 5,
         "startChar": 0,
@@ -156,6 +294,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e37087ec_8b843f17",
+        "filename": "tests/sksl/errors/InvalidToken.glsl",
+        "patchSetId": 3
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-04-06T21:08:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0e7d21ae_eeecec35",
+      "range": {
+        "startLine": 5,
+        "startChar": 0,
+        "endLine": 5,
+        "endChar": 2
+      },
+      "revId": "81f458b584586f5573ca33e52fc7fc3bb1f90f3e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4a13feaf_dca7e88d",
@@ -169,6 +331,30 @@
       "writtenOn": "2022-04-06T19:26:33Z",
       "side": 1,
       "message": "nit: could narrow down to the variable name",
+      "range": {
+        "startLine": 5,
+        "startChar": 0,
+        "endLine": 5,
+        "endChar": 6
+      },
+      "revId": "81f458b584586f5573ca33e52fc7fc3bb1f90f3e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f859a705_b0465e46",
+        "filename": "tests/sksl/errors/PrivateVariables.glsl",
+        "patchSetId": 3
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-04-06T21:08:58Z",
+      "side": 1,
+      "message": "skbug:13170",
+      "parentUuid": "4a13feaf_dca7e88d",
       "range": {
         "startLine": 5,
         "startChar": 0,
@@ -202,6 +388,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "134629f1_dc69f33a",
+        "filename": "tests/sksl/errors/ReturnFromVoid.glsl",
+        "patchSetId": 3
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-04-06T21:08:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8015adcd_1602c4b0",
+      "range": {
+        "startLine": 5,
+        "startChar": 11,
+        "endLine": 5,
+        "endChar": 23
+      },
+      "revId": "81f458b584586f5573ca33e52fc7fc3bb1f90f3e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "553ef540_7006c878",
@@ -215,6 +425,30 @@
       "writtenOn": "2022-04-06T19:26:33Z",
       "side": 1,
       "message": "nit: could narrow down to swizzle",
+      "range": {
+        "startLine": 5,
+        "startChar": 23,
+        "endLine": 5,
+        "endChar": 29
+      },
+      "revId": "81f458b584586f5573ca33e52fc7fc3bb1f90f3e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3efd65d3_a0a1beff",
+        "filename": "tests/sksl/errors/SwizzleDomain.glsl",
+        "patchSetId": 3
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-04-06T21:08:58Z",
+      "side": 1,
+      "message": "skbug:13171",
+      "parentUuid": "553ef540_7006c878",
       "range": {
         "startLine": 5,
         "startChar": 23,
@@ -248,6 +482,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "160e9698_237b3cb3",
+        "filename": "tests/sksl/errors/SwizzleOutOfBounds.glsl",
+        "patchSetId": 3
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-04-06T21:08:58Z",
+      "side": 1,
+      "message": "Also skbug:13171",
+      "parentUuid": "a5133369_90f2f6dc",
+      "range": {
+        "startLine": 5,
+        "startChar": 28,
+        "endLine": 5,
+        "endChar": 41
+      },
+      "revId": "81f458b584586f5573ca33e52fc7fc3bb1f90f3e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "688d3c2c_e11644f6",
@@ -261,6 +519,30 @@
       "writtenOn": "2022-04-06T19:26:33Z",
       "side": 1,
       "message": "nit: could narrow down to swizzle",
+      "range": {
+        "startLine": 5,
+        "startChar": 28,
+        "endLine": 5,
+        "endChar": 43
+      },
+      "revId": "81f458b584586f5573ca33e52fc7fc3bb1f90f3e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8e5b10fe_82337924",
+        "filename": "tests/sksl/errors/SwizzleTooManyComponents.glsl",
+        "patchSetId": 3
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-04-06T21:08:58Z",
+      "side": 1,
+      "message": "Also skbug:13171",
+      "parentUuid": "688d3c2c_e11644f6",
       "range": {
         "startLine": 5,
         "startChar": 28,
@@ -294,6 +576,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f7d2891a_010f933a",
+        "filename": "tests/sksl/errors/TernaryMismatch.glsl",
+        "patchSetId": 3
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-04-06T21:08:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "24a85ed5_5447ea15",
+      "range": {
+        "startLine": 5,
+        "startChar": 35,
+        "endLine": 5,
+        "endChar": 53
+      },
+      "revId": "81f458b584586f5573ca33e52fc7fc3bb1f90f3e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "04776afb_07db189e",
@@ -307,6 +613,30 @@
       "writtenOn": "2022-04-06T19:26:33Z",
       "side": 1,
       "message": "nit: would probably be better to highlight the modifiers on parameter `b` instead of the entire function body\n\n  void testOut(out float2 a, out float2 b, out float2 c)\n                             ^^^",
+      "range": {
+        "startLine": 5,
+        "startChar": 63,
+        "endLine": 5,
+        "endChar": 81
+      },
+      "revId": "81f458b584586f5573ca33e52fc7fc3bb1f90f3e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "202a1d38_1eee91c9",
+        "filename": "tests/sksl/errors/UnassignedOutParameter.glsl",
+        "patchSetId": 3
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-04-06T21:08:58Z",
+      "side": 1,
+      "message": "We don\u0027t have the position of just the modifiers at this point, but I\u0027ve switched it over to the parameter position.",
+      "parentUuid": "04776afb_07db189e",
       "range": {
         "startLine": 5,
         "startChar": 63,
@@ -340,6 +670,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4f407366_7c6cc90f",
+        "filename": "tests/sksl/runtime_errors/LoopConditionErrors.skvm",
+        "patchSetId": 3
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-04-06T21:08:58Z",
+      "side": 1,
+      "message": "skbug:13173",
+      "parentUuid": "a86afcd2_a5cf6a92",
+      "range": {
+        "startLine": 5,
+        "startChar": 22,
+        "endLine": 5,
+        "endChar": 45
+      },
+      "revId": "81f458b584586f5573ca33e52fc7fc3bb1f90f3e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1f370cca_bfbb356b",
@@ -353,6 +707,30 @@
       "writtenOn": "2022-04-06T19:35:31Z",
       "side": 1,
       "message": "nit: can we narrow down to {start of ForStatement, start of ForStatement.fStatement} to avoid including the entire for-stmt body?",
+      "range": {
+        "startLine": 5,
+        "startChar": 23,
+        "endLine": 5,
+        "endChar": 49
+      },
+      "revId": "81f458b584586f5573ca33e52fc7fc3bb1f90f3e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d72dc900_a6f7039a",
+        "filename": "tests/sksl/runtime_errors/LoopExpressionErrors.skvm",
+        "patchSetId": 3
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-04-06T21:08:58Z",
+      "side": 1,
+      "message": "skbug:13173",
+      "parentUuid": "1f370cca_bfbb356b",
       "range": {
         "startLine": 5,
         "startChar": 23,
@@ -386,6 +764,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d9c8c449_8ad0d542",
+        "filename": "tests/sksl/runtime_errors/LoopInitializerErrors.skvm",
+        "patchSetId": 3
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-04-06T21:08:58Z",
+      "side": 1,
+      "message": "skbug:13173",
+      "parentUuid": "54b7f53b_9063d25c",
+      "range": {
+        "startLine": 5,
+        "startChar": 35,
+        "endLine": 5,
+        "endChar": 61
+      },
+      "revId": "81f458b584586f5573ca33e52fc7fc3bb1f90f3e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cd9f7f75_11698938",
@@ -409,6 +811,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "75aedff2_edc7bdf1",
+        "filename": "tests/sksl/runtime_errors/LoopStructureErrors.skvm",
+        "patchSetId": 3
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-04-06T21:08:58Z",
+      "side": 1,
+      "message": "skbug:13173",
+      "parentUuid": "cd9f7f75_11698938",
+      "range": {
+        "startLine": 5,
+        "startChar": 28,
+        "endLine": 5,
+        "endChar": 63
+      },
+      "revId": "81f458b584586f5573ca33e52fc7fc3bb1f90f3e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "75f16fd7_42b1e70b",
@@ -422,6 +848,30 @@
       "writtenOn": "2022-04-06T19:35:31Z",
       "side": 1,
       "message": "nit: should show field x",
+      "range": {
+        "startLine": 5,
+        "startChar": 0,
+        "endLine": 5,
+        "endChar": 12
+      },
+      "revId": "81f458b584586f5573ca33e52fc7fc3bb1f90f3e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d1bbab23_9233cd7b",
+        "filename": "tests/sksl/spirv/LayoutMultipleOf4.asm.frag",
+        "patchSetId": 3
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-04-06T21:08:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "75f16fd7_42b1e70b",
       "range": {
         "startLine": 5,
         "startChar": 0,
