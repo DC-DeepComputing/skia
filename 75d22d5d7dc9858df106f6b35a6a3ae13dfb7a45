@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3e3466e7_b40b9c98",
+        "filename": "gn/compile_sksl_tests.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-04-06T22:25:49Z",
+      "side": 1,
+      "message": "Whoops, sorry about that.",
+      "parentUuid": "349f60b7_ca615616",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 20
+      },
+      "revId": "75d22d5d7dc9858df106f6b35a6a3ae13dfb7a45",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "04004b00_fd40510b",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-04-06T21:15:42Z",
       "side": 1,
       "message": "Interesting case! If the error happens on top of a line break it should probably be `^` and not `...`",
+      "range": {
+        "startLine": 26,
+        "startChar": 24,
+        "endLine": 26,
+        "endChar": 27
+      },
+      "revId": "75d22d5d7dc9858df106f6b35a6a3ae13dfb7a45",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "15a5764a_97699314",
+        "filename": "tests/sksl/runtime_errors/Ossfuzz36655.skvm",
+        "patchSetId": 4
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-04-06T22:25:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "04004b00_fd40510b",
       "range": {
         "startLine": 26,
         "startChar": 24,
