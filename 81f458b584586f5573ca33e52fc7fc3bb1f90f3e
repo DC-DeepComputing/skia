@@ -91,6 +91,52 @@
       },
       "revId": "81f458b584586f5573ca33e52fc7fc3bb1f90f3e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "87173a95_afdd56ce",
+        "filename": "tests/sksl/errors/ArrayReturnTypes.glsl",
+        "patchSetId": 3
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-06T19:04:46Z",
+      "side": 1,
+      "message": "nit: let\u0027s narrow down to the return type",
+      "range": {
+        "startLine": 5,
+        "startChar": 0,
+        "endLine": 5,
+        "endChar": 31
+      },
+      "revId": "81f458b584586f5573ca33e52fc7fc3bb1f90f3e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0e7d21ae_eeecec35",
+        "filename": "tests/sksl/errors/InvalidToken.glsl",
+        "patchSetId": 3
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-06T19:04:46Z",
+      "side": 1,
+      "message": "nit: this is off by one (we call nextToken before getting the position)",
+      "range": {
+        "startLine": 5,
+        "startChar": 0,
+        "endLine": 5,
+        "endChar": 2
+      },
+      "revId": "81f458b584586f5573ca33e52fc7fc3bb1f90f3e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
