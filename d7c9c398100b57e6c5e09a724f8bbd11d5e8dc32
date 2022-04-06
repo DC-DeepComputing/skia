@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "33e77d8f_9bd8a17b",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 153,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-04-06T21:40:10Z",
+      "side": 1,
+      "message": "Done. For now I omitted the static keyword since these are declared inside an anonymous namespace but let me know if you prefer to have static declared in there.",
+      "parentUuid": "0f3c59f4_19a28489",
+      "range": {
+        "startLine": 153,
+        "startChar": 0,
+        "endLine": 153,
+        "endChar": 48
+      },
+      "revId": "d7c9c398100b57e6c5e09a724f8bbd11d5e8dc32",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "180a9845_6c133662",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-04-04T13:32:55Z",
       "side": 1,
       "message": "\"Next, we generate\"",
+      "range": {
+        "startLine": 254,
+        "startChar": 59,
+        "endLine": 254,
+        "endChar": 75
+      },
+      "revId": "d7c9c398100b57e6c5e09a724f8bbd11d5e8dc32",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "26b7fd7d_fb136eeb",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 254,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-04-06T21:40:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "180a9845_6c133662",
       "range": {
         "startLine": 254,
         "startChar": 59,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fbd0554e_4412a646",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 271,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-04-06T21:40:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5f8c4fc6_aebffc59",
+      "range": {
+        "startLine": 271,
+        "startChar": 15,
+        "endLine": 271,
+        "endChar": 19
+      },
+      "revId": "d7c9c398100b57e6c5e09a724f8bbd11d5e8dc32",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cdb76e62_2b14fef7",
@@ -83,6 +155,30 @@
       "writtenOn": "2022-04-04T13:32:55Z",
       "side": 1,
       "message": "`!f.returnType().isVoid()`",
+      "range": {
+        "startLine": 286,
+        "startChar": 7,
+        "endLine": 286,
+        "endChar": 58
+      },
+      "revId": "d7c9c398100b57e6c5e09a724f8bbd11d5e8dc32",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e81a7e32_e144701b",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 286,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-04-06T21:40:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cdb76e62_2b14fef7",
       "range": {
         "startLine": 286,
         "startChar": 7,
@@ -116,6 +212,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d46a97dd_3de47519",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 426,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-04-06T21:40:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a55236c4_6c927a9a",
+      "range": {
+        "startLine": 426,
+        "startChar": 0,
+        "endLine": 426,
+        "endChar": 99
+      },
+      "revId": "d7c9c398100b57e6c5e09a724f8bbd11d5e8dc32",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c4f8c96a_a2e4d851",
@@ -129,6 +249,30 @@
       "writtenOn": "2022-04-04T13:40:49Z",
       "side": 1,
       "message": "Based on https://www.w3.org/TR/WGSL/#construction-from-components it looks like WGSL has the same constraints on matrix construction that Metal has. In the case of Metal we emit helper functions which regroup the input values into properly-sized vectors. Maybe that logic can be shared somehow. (Right now it\u0027s a fair amount of code, although it might have some opportunities for simplification.)\n\nhttps://osscs.corp.google.com/skia/skia/+/main:src/sksl/codegen/SkSLMetalCodeGenerator.cpp;l\u003d1270-1271;drc\u003d3f5184cfa602e8ad469de1d6d21d9b99ad4b9e0b",
+      "range": {
+        "startLine": 490,
+        "startChar": 25,
+        "endLine": 490,
+        "endChar": 52
+      },
+      "revId": "d7c9c398100b57e6c5e09a724f8bbd11d5e8dc32",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1d1e90b2_27d1e36b",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 490,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-04-06T21:40:10Z",
+      "side": 1,
+      "message": "Ack. Indeed, there are a lot of similarities between the metal backend and what I\u0027m building for WGSL. This and pipeline stage IO parameter injection into functions (i.e. \"function requirements\" in the MetalCodeGenerator) are two examples. I would like to find ways for the two backends to either share more code or take advantage some set of pre-codegen transformations to the IR.",
+      "parentUuid": "c4f8c96a_a2e4d851",
       "range": {
         "startLine": 490,
         "startChar": 25,
