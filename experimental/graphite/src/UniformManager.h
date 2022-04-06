@@ -8,13 +8,17 @@
 #ifndef skgpu_UniformManager_DEFINED
 #define skgpu_UniformManager_DEFINED
 
+#include "experimental/graphite/src/geom/VectorTypes.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSpan.h"
+#include "include/private/SkColorData.h"
 #include "include/private/SkTDArray.h"
 #include "src/core/SkSLTypeShared.h"
 
+struct SkPoint;
+struct SkRect;
 class SkUniform;
-class SkUniformData;
+class SkUniformDataBlock;
 
 namespace skgpu {
 
@@ -26,23 +30,29 @@ enum class Layout {
     kMetal, /** This is our own self-imposed layout we use for Metal. */
 };
 
+// This is only used in the SkPipelineDataGatherer - maybe hide it better.
 class UniformManager {
 public:
     UniformManager(Layout layout);
 
-    sk_sp<SkUniformData> createUniformData();
+    SkUniformDataBlock peekData() const;
     int size() const { return fStorage.count(); }
 
     void reset();
 #ifdef SK_DEBUG
     void checkReset() const;
-    void checkExpected(SkSLType type, unsigned int count);
+    void setExpectedUniforms(SkSpan<const SkUniform>);
+    void checkExpected(SkSLType, unsigned int count);
+    void doneWithExpectedUniforms();
 #endif
 
-    /*
-     * Use the uniform 'definitions' to write the data in 'srcs' into internally allocated memory.
-     */
-    void writeUniforms(SkSpan<const SkUniform> definitions, const void** srcs);
+    void write(const SkColor4f*, int count);
+    void write(const SkPMColor4f*, int count);
+    void write(const SkRect&);
+    void write(SkPoint);
+    void write(const float*, int count);
+    void write(int);
+    void write(float2);
 
 private:
     SkSLType getUniformTypeForLayout(SkSLType type);
@@ -59,6 +69,9 @@ private:
 #ifdef SK_DEBUG
     uint32_t fCurUBOOffset;
     uint32_t fCurUBOMaxAlignment;
+
+    SkSpan<const SkUniform> fExpectedUniforms;
+    int fExpectedUniformIndex = 0;
 #endif // SK_DEBUG
     uint32_t fOffset;
 

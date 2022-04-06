@@ -85,14 +85,10 @@ public:
 
         // TODO: A << API for uniforms would be nice, particularly if it could take pre-computed
         // offsets for each uniform.
-        float2 scale = geom.shape().rect().size();
-        float2 translate = geom.shape().rect().topLeft();
-        const void* srcs[kNumRectUniforms] = { &scale, &translate };
-
-        skgpu::UniformManager mgr(gatherer->layout());
-        mgr.writeUniforms(SkMakeSpan(kRectUniforms, kNumRectUniforms), srcs);
-        sk_sp<SkUniformData> result = mgr.createUniformData();
-        gatherer->add(std::move(result));
+        SkDEBUGCODE(gatherer->setExpectedUniforms(SkMakeSpan(kRectUniforms, kNumRectUniforms));)
+        gatherer->write(geom.shape().rect().size());
+        gatherer->write(geom.shape().rect().topLeft());
+        SkDEBUGCODE(gatherer->doneWithExpectedUniforms();)
     }
 
 private:
@@ -149,14 +145,10 @@ public:
                 { "translate",  SkSLType::kFloat2 },
         };
 
-        SkPoint scale{2.0f, 2.0f};
-        SkPoint translate{-1.0f, -1.0f};
-        const void* srcs[kNumRectUniforms] = { &scale, &translate };
-
-        skgpu::UniformManager mgr(gatherer->layout());
-        mgr.writeUniforms(SkMakeSpan(kRectUniforms, kNumRectUniforms), srcs);
-        sk_sp<SkUniformData> result = mgr.createUniformData();
-        gatherer->add(std::move(result));
+        SkDEBUGCODE(gatherer->setExpectedUniforms(SkMakeSpan(kRectUniforms, kNumRectUniforms));)
+        gatherer->write(SkPoint::Make(2.0f, 2.0f));
+        gatherer->write(SkPoint::Make(-1.0f, -1.0f));
+        SkDEBUGCODE(gatherer->doneWithExpectedUniforms();)
     }
 
 private:
@@ -334,12 +326,9 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(CommandBufferTest, reporter, context) {
             SkDEBUGCODE(gatherer.checkReset());
             step->writeUniforms(geom, &gatherer);
             if (gatherer.hasUniforms()) {
-                SkUniformDataBlock* renderStepUniforms = &gatherer.uniformDataBlock();
-                auto [writer, bindInfo] =
-                        bufferMgr.getUniformWriter(renderStepUniforms->totalUniformSize());
-                for (const auto &u : *renderStepUniforms) {
-                    writer.write(u->data(), u->dataSize());
-                }
+                SkUniformDataBlock renderStepUniforms = gatherer.peekUniformData();
+                auto [writer, bindInfo] = bufferMgr.getUniformWriter(renderStepUniforms.size());
+                writer.write(renderStepUniforms.data(), renderStepUniforms.size());
                 commandBuffer->bindUniformBuffer(UniformSlot::kRenderStep,
                                                  sk_ref_sp(bindInfo.fBuffer),
                                                  bindInfo.fOffset);
