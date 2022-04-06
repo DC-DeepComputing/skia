@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "08059e6a_e495ef47",
+        "filename": "tests/graphite/PipelineDataCacheTest.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-04-06T15:23:02Z",
+      "side": 1,
+      "message": "Nit: should this be size_t?",
+      "range": {
+        "startLine": 21,
+        "startChar": 63,
+        "endLine": 21,
+        "endChar": 66
+      },
+      "revId": "42b1123f90f9e50d5eff8d151085712b58911012",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
