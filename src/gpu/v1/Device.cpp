@@ -882,7 +882,7 @@ void Device::drawVertices(const SkVertices* vertices,
                                       skipColorXform);
 }
 
-void Device::drawCustomMesh(SkCustomMesh customMesh,
+void Device::drawCustomMesh(const SkCustomMesh& customMesh,
                             sk_sp<SkBlender> blender,
                             const SkPaint& paint) {
     ASSERT_SINGLE_OWNER
@@ -902,7 +902,7 @@ void Device::drawCustomMesh(SkCustomMesh customMesh,
     fSurfaceDrawContext->drawCustomMesh(this->clip(),
                                         std::move(grPaint),
                                         this->asMatrixProvider(),
-                                        std::move(customMesh));
+                                        customMesh);
 }
 
 ///////////////////////////////////////////////////////////////////////////////

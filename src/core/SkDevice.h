@@ -278,7 +278,7 @@ protected:
                               const SkPaint&,
                               bool skipColorXform = false) = 0;
 #ifdef SK_ENABLE_SKSL
-    virtual void drawCustomMesh(SkCustomMesh cm, sk_sp<SkBlender>, const SkPaint&) = 0;
+    virtual void drawCustomMesh(const SkCustomMesh& cm, sk_sp<SkBlender>, const SkPaint&) = 0;
 #endif
     virtual void drawShadow(const SkPath&, const SkDrawShadowRec&);
 
@@ -525,7 +525,7 @@ protected:
     void drawDevice(SkBaseDevice*, const SkSamplingOptions&, const SkPaint&) override {}
     void drawVertices(const SkVertices*, sk_sp<SkBlender>, const SkPaint&, bool) override {}
 #ifdef SK_ENABLE_SKSL
-    void drawCustomMesh(SkCustomMesh, sk_sp<SkBlender>, const SkPaint&) override {}
+    void drawCustomMesh(const SkCustomMesh&, sk_sp<SkBlender>, const SkPaint&) override {}
 #endif
 
     void drawFilteredImage(const skif::Mapping&, SkSpecialImage* src, const SkImageFilter*,

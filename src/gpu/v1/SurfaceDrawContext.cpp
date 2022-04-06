@@ -954,7 +954,7 @@ void SurfaceDrawContext::drawVertices(const GrClip* clip,
 void SurfaceDrawContext::drawCustomMesh(const GrClip* clip,
                                         GrPaint&& paint,
                                         const SkMatrixProvider& matrixProvider,
-                                        SkCustomMesh cm) {
+                                        const SkCustomMesh& cm) {
     ASSERT_SINGLE_OWNER
     RETURN_IF_ABANDONED
     SkDEBUGCODE(this->validate();)

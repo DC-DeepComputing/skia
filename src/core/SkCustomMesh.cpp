@@ -22,6 +22,9 @@
 using Attribute = SkCustomMeshSpecification::Attribute;
 using Varying   = SkCustomMeshSpecification::Varying;
 
+using IndexBuffer     = SkCustomMesh::IndexBuffer;
+using AttributeBuffer = SkCustomMesh::AttributeBuffer;
+
 #define RETURN_FAILURE(...) return Result{nullptr, SkStringPrintf(__VA_ARGS__)}
 
 #define RETURN_ERROR(...) return std::make_tuple(false, SkStringPrintf(__VA_ARGS__))
@@ -337,4 +340,22 @@ SkCustomMeshSpecification::SkCustomMeshSpecification(SkSpan<const Attribute>    
     auto atInt = static_cast<uint32_t>(fAlphaType);
     fHash = SkOpts::hash_fn(&atInt, sizeof(atInt), fHash);
 }
+
+SkCustomMesh::SkCustomMesh()  = default;
+SkCustomMesh::~SkCustomMesh() = default;
+
+SkCustomMesh::SkCustomMesh(const SkCustomMesh&) = default;
+SkCustomMesh::SkCustomMesh(SkCustomMesh&&)      = default;
+
+SkCustomMesh& SkCustomMesh::operator=(const SkCustomMesh&) = default;
+SkCustomMesh& SkCustomMesh::operator=(SkCustomMesh&&)      = default;
+
+sk_sp<IndexBuffer> SkCustomMesh::MakeIndexBuffer(GrDirectContext*, sk_sp<const SkData> data) {
+    return SkCustomMeshPriv::CpuIndexBuffer::Make(std::move(data));
+}
+
+sk_sp<AttributeBuffer> SkCustomMesh::MakeAttributeBuffer(GrDirectContext*, sk_sp<const SkData> data) {
+    return SkCustomMeshPriv::CpuAttributeBuffer::Make(std::move(data));
+}
+
 #endif //SK_ENABLE_SKSL

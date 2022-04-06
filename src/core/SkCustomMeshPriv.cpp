@@ -9,7 +9,10 @@
 
 #ifdef SK_ENABLE_SKSL
 
-static int min_vcount_for_mode(SkCustomMesh::Mode mode) {
+#include "include/core/SkData.h"
+#include "src/core/SkSafeMath.h"
+
+static size_t min_vcount_for_mode(SkCustomMesh::Mode mode) {
     switch (mode) {
         case SkCustomMesh::Mode::kTriangles:     return 3;
         case SkCustomMesh::Mode::kTriangleStrip: return 3;
@@ -26,43 +29,77 @@ bool SkValidateCustomMesh(const SkCustomMesh& cm) {
         return false;
     }
 
-    if (cm.vcount <= 0) {
+    if (cm.vcount == 0) {
         return false;
     }
 
-    if (cm.indices) {
+    auto vb = static_cast<SkCustomMeshPriv::AB*>(cm.vb.get());
+    auto ib = static_cast<SkCustomMeshPriv::IB*>(cm.ib.get());
+
+    SkSafeMath sm;
+    size_t vsize = sm.mul(cm.spec->stride(), cm.vcount);
+    if (sm.add(vsize, cm.voffset) > vb->size()) {
+        return false;
+    }
+
+    if (!SkIsAlign4(cm.voffset)) {
+        return false;
+    }
+
+    if (ib) {
         if (cm.icount < min_vcount_for_mode(cm.mode)) {
             return false;
         }
+        size_t isize = sm.mul(sizeof(uint16_t), cm.icount);
+        if (sm.add(isize, cm.ioffset) > ib->size()) {
+            return false;
+        }
+        // If we allow 32 bit indices then this should enforce 4 byte alignment in that case.
+        if (!SkIsAlign2(cm.ioffset)) {
+            return false;
+        }
     } else {
-        if (cm.icount > 0) {
+        if (cm.vcount < min_vcount_for_mode(cm.mode)) {
+            return false;
+        }
+        if (cm.icount > 0 || cm.ioffset > 0) {
             return false;
         }
     }
 
-    return true;
+    return sm.ok();
 }
 
-std::unique_ptr<const char[]> SkCopyCustomMeshVB(const SkCustomMesh& cm) {
-    SkASSERT(cm.spec);
-    size_t size = cm.spec->stride()*cm.vcount;
+//////////////////////////////////////////////////////////////////////////////
 
-    auto vb = std::make_unique<char[]>(size);
-    std::memcpy(vb.get(), cm.vb, size);
+SkCustomMeshPriv::CpuIndexBuffer::CpuIndexBuffer() = default;
 
-    return std::move(vb);
+SkCustomMeshPriv::CpuIndexBuffer::~CpuIndexBuffer() = default;
+
+sk_sp<SkCustomMesh::IndexBuffer> SkCustomMeshPriv::CpuIndexBuffer::Make(sk_sp<const SkData> data) {
+    auto result = new CpuIndexBuffer;
+    result->fData = std::move(data);
+    return sk_sp<IndexBuffer>(result);
 }
 
-std::unique_ptr<const uint16_t[]> SkCopyCustomMeshIB(const SkCustomMesh& cm) {
-    SkASSERT(cm.spec);
-    SkASSERT(SkToBool(cm.indices) == SkToBool(cm.icount));
-    if (!cm.indices) {
-        return nullptr;
-    }
-    auto ib = std::make_unique<uint16_t[]>(cm.icount);
-    std::copy_n(cm.indices, cm.icount, ib.get());
+sk_sp<const SkData> SkCustomMeshPriv::CpuIndexBuffer::asData() const { return fData; }
 
-    return std::move(ib);
+size_t SkCustomMeshPriv::CpuIndexBuffer::size() const { return fData->size(); }
+
+//////////////////////////////////////////////////////////////////////////////
+
+SkCustomMeshPriv::CpuAttributeBuffer::CpuAttributeBuffer() = default;
+
+SkCustomMeshPriv::CpuAttributeBuffer::~CpuAttributeBuffer() = default;
+
+sk_sp<SkCustomMesh::AttributeBuffer>
+SkCustomMeshPriv::CpuAttributeBuffer::Make(sk_sp<const SkData> data) {
+    auto result = new CpuAttributeBuffer;
+    result->fData = std::move(data);
+    return sk_sp<AttributeBuffer>(result);
 }
 
+sk_sp<const SkData> SkCustomMeshPriv::CpuAttributeBuffer::asData() const { return fData; }
+
+size_t SkCustomMeshPriv::CpuAttributeBuffer::size() const { return fData->size(); }
 #endif

@@ -387,7 +387,7 @@ public:
     void drawCustomMesh(const GrClip*,
                         GrPaint&& paint,
                         const SkMatrixProvider& matrixProvider,
-                        SkCustomMesh);
+                        const SkCustomMesh&);
 
     /**
      * Draws textured sprites from an atlas with a paint. This currently does not support AA for the

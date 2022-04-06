@@ -8,11 +8,11 @@
 #ifndef GrDirectContext_DEFINED
 #define GrDirectContext_DEFINED
 
+#include "include/core/SkSpan.h"
+#include "include/gpu/GrBackendSurface.h"
 #include "include/gpu/GrRecordingContext.h"
 
-#include "include/gpu/GrBackendSurface.h"
-
-// We shouldn't need this but currently Android is relying on this being include transitively.
+// We shouldn't need this but currently Android is relying on this being included transitively.
 #include "include/core/SkUnPreMultiply.h"
 
 class GrAtlasManager;
@@ -45,6 +45,8 @@ namespace skgpu {
 class Swizzle;
 namespace v1 { class SmallPathAtlasMgr; }
 }
+
+class GrBuffer;
 
 class SK_API GrDirectContext : public GrRecordingContext {
 public:

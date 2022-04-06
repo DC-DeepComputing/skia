@@ -9,6 +9,7 @@
 #include "include/core/SkBlender.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkCustomMesh.h"
+#include "include/core/SkData.h"
 #include "include/core/SkSurface.h"
 #include "include/effects/SkGradientShader.h"
 #include "src/core/SkCanvasPriv.h"
@@ -100,6 +101,32 @@ protected:
                                                nullptr,
                                                2,
                                                SkTileMode::kMirror);
+        fColorVB = SkCustomMesh::MakeAttributeBuffer(
+                /*GrDirectContext*=*/nullptr,
+                SkData::MakeWithoutCopy(kColorQuad, sizeof(kColorQuad)));
+
+        // Make this one such that the data is offset into the buffer.
+        auto data = SkData::MakeUninitialized(sizeof(kNoColorQuad) + kNoColorOffset);
+        std::memcpy(SkTAddOffset<void>(data->writable_data(), kNoColorOffset),
+                    kNoColorQuad,
+                    sizeof(kNoColorQuad));
+        fNoColorVB = SkCustomMesh::MakeAttributeBuffer(/*GrDirectContext*=*/nullptr,
+                                                       std::move(data));
+
+        fColorIndexedVB = SkCustomMesh::MakeAttributeBuffer(
+                /*GrDirectContext*=*/nullptr,
+                SkData::MakeWithoutCopy(kColorIndexedQuad, sizeof(kColorIndexedQuad)));
+
+        fNoColorIndexedVB = SkCustomMesh::MakeAttributeBuffer(
+                /*GrDirectContext*=*/nullptr,
+                SkData::MakeWithoutCopy(kNoColorIndexedQuad, sizeof(kNoColorIndexedQuad)));
+
+        // Also make index buffer with an offset
+        data = SkData::MakeUninitialized(sizeof(kIndices) + kIndexOffset);
+        std::memcpy(SkTAddOffset<void>(data->writable_data(), kIndexOffset),
+                    kIndices,
+                    sizeof(kIndices));
+        fIB = SkCustomMesh::MakeIndexBuffer(/*GrDirectContext*=*/nullptr, std::move(data));
     }
 
     SkString onShortName() override { return SkString("custommesh"); }
@@ -118,17 +145,19 @@ protected:
                 cm.bounds = kRect;
                 // Rather than pile onto the combinatorics we draw every other test case indexed.
                 if ((i & 1) == 0) {
-                    cm.vb     = colors ? static_cast<const void*>(kColorQuad)
-                                       : static_cast<const void*>(kNoColorQuad);
+                    cm.vb     = colors ? fColorVB : fNoColorVB;
+                    if (!colors) {
+                        cm.voffset = kNoColorOffset;
+                    }
                     cm.vcount = 4;
                     cm.mode   = SkCustomMesh::Mode::kTriangleStrip;
                 } else {
-                    cm.vb      = colors ? static_cast<const void*>(kColorIndexedQuad)
-                                        : static_cast<const void*>(kNoColorIndexedQuad);
+                    cm.vb      = colors ? fColorIndexedVB : fNoColorIndexedVB;
                     cm.vcount  = 6;
                     cm.icount  = 6;
-                    cm.indices = kIndices;
-                    cm.mode   = SkCustomMesh::Mode::kTriangles;
+                    cm.ioffset = kIndexOffset;
+                    cm.ib      = fIB;
+                    cm.mode    = SkCustomMesh::Mode::kTriangles;
                 }
 
                 SkPaint paint;
@@ -136,7 +165,7 @@ protected:
                 paint.setShader(shader ? fShader : nullptr);
                 paint.setAlpha(alpha);
 
-                SkCanvasPriv::DrawCustomMesh(canvas, std::move(cm), blender, paint);
+                SkCanvasPriv::DrawCustomMesh(canvas, cm, blender, paint);
 
                 canvas->translate(0, 150);
                 ++i;
@@ -197,21 +226,20 @@ private:
 
     static constexpr uint16_t kIndices[]{0, 2, 4, 2, 5, 4};
 
+    static constexpr size_t kNoColorOffset = 4;
+    static constexpr size_t kIndexOffset   = 6;
+
     sk_sp<SkShader> fShader;
 
     sk_sp<SkCustomMeshSpecification> fSpecWithColor;
     sk_sp<SkCustomMeshSpecification> fSpecWithNoColor;
+
+    sk_sp<SkCustomMesh::IndexBuffer>     fIB;
+    sk_sp<SkCustomMesh::AttributeBuffer> fColorVB;
+    sk_sp<SkCustomMesh::AttributeBuffer> fNoColorVB;
+    sk_sp<SkCustomMesh::AttributeBuffer> fColorIndexedVB;
+    sk_sp<SkCustomMesh::AttributeBuffer> fNoColorIndexedVB;
 };
-
-constexpr SkRect CustomMeshGM::kRect;
-constexpr SkRect CustomMeshGM::kUV;
-
-constexpr CustomMeshGM::ColorVertex   CustomMeshGM::kColorQuad[];
-constexpr CustomMeshGM::NoColorVertex CustomMeshGM::kNoColorQuad[];
-constexpr CustomMeshGM::ColorVertex   CustomMeshGM::kColorIndexedQuad[];
-constexpr CustomMeshGM::NoColorVertex CustomMeshGM::kNoColorIndexedQuad[];
-
-constexpr uint16_t CustomMeshGM::kIndices[];
 
 DEF_GM( return new CustomMeshGM; )
 
@@ -277,6 +305,10 @@ protected:
         SkPoint pts[]    = {{kRect.fLeft, 0}, {kRect.centerX(), 0}};
         SkColor colors[] = {SK_ColorWHITE,    SK_ColorTRANSPARENT};
         fShader = SkGradientShader::MakeLinear(pts, colors, nullptr, 2, SkTileMode::kMirror);
+
+        fVB = SkCustomMesh::MakeAttributeBuffer(
+                nullptr,
+                SkData::MakeWithoutCopy(kQuad, sizeof(kQuad)));
     }
 
     SkString onShortName() override { return SkString("custommesh_cs"); }
@@ -302,7 +334,7 @@ protected:
                 SkCustomMesh cm;
                 cm.spec   = fSpecs[SpecIndex(unpremul, spin)];
                 cm.bounds = kRect;
-                cm.vb     = kQuad;
+                cm.vb     = fVB;
                 cm.vcount = 4;
                 cm.mode   = SkCustomMesh::Mode::kTriangleStrip;
 
@@ -345,14 +377,12 @@ private:
             {{kRect.right(), kRect.bottom()}, {0, 0, 1, 1}},
     };
 
+    sk_sp<SkCustomMesh::AttributeBuffer> fVB;
+
     sk_sp<SkCustomMeshSpecification> fSpecs[4];
 
     sk_sp<SkShader> fShader;
 };
-
-constexpr SkRect CustomMeshColorSpaceGM::kRect;
-
-constexpr CustomMeshColorSpaceGM::Vertex CustomMeshColorSpaceGM::kQuad[];
 
 DEF_GM( return new CustomMeshColorSpaceGM; )
 

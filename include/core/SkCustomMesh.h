@@ -20,6 +20,9 @@
 
 #include <vector>
 
+class GrDirectContext;
+class SkData;
+
 namespace SkSL { struct Program; }
 
 /**
@@ -187,14 +190,38 @@ private:
  * less than 'vcount'
  */
 struct SkCustomMesh {
+    class IndexBuffer     : public SkRefCnt {};
+    class AttributeBuffer : public SkRefCnt {};
+
+    SkCustomMesh();
+    ~SkCustomMesh();
+
+    SkCustomMesh(const SkCustomMesh&);
+    SkCustomMesh(SkCustomMesh&&);
+
+    SkCustomMesh& operator=(const SkCustomMesh&);
+    SkCustomMesh& operator=(SkCustomMesh&&);
+
+    static sk_sp<IndexBuffer> MakeIndexBuffer(GrDirectContext*, sk_sp<const SkData>);
+
+    static sk_sp<AttributeBuffer> MakeAttributeBuffer(GrDirectContext*, sk_sp<const SkData>);
+
     enum class Mode { kTriangles, kTriangleStrip };
-    sk_sp<SkCustomMeshSpecification>  spec;
-    Mode                              mode     = Mode::kTriangles;
-    SkRect                            bounds   = SkRect::MakeEmpty();
-    const void*                       vb       = nullptr;
-    int                               vcount   = 0;
-    const uint16_t*                   indices  = nullptr;
-    int                               icount   = 0;
+
+    sk_sp<SkCustomMeshSpecification> spec;
+
+    sk_sp<AttributeBuffer>           vb;
+    sk_sp<IndexBuffer>               ib;
+
+    size_t                           voffset = 0;  // Must be a multiple of 4
+    size_t                           vcount  = 0;
+
+    size_t                           ioffset = 0;  // Must be a multiple of sizeof(uint16_t)
+    size_t                           icount  = 0;
+
+    Mode                             mode    = Mode::kTriangles;
+
+    SkRect                           bounds  = SkRect::MakeEmpty();
 };
 
 #endif  // SK_ENABLE_SKSL
