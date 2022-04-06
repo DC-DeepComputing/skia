@@ -298,6 +298,121 @@
       },
       "revId": "81f458b584586f5573ca33e52fc7fc3bb1f90f3e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a86afcd2_a5cf6a92",
+        "filename": "tests/sksl/runtime_errors/LoopConditionErrors.skvm",
+        "patchSetId": 3
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-06T19:35:31Z",
+      "side": 1,
+      "message": "nit: can we narrow down to {start of ForStatement, start of ForStatement.fStatement} to avoid including the entire for-stmt body?",
+      "range": {
+        "startLine": 5,
+        "startChar": 22,
+        "endLine": 5,
+        "endChar": 45
+      },
+      "revId": "81f458b584586f5573ca33e52fc7fc3bb1f90f3e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1f370cca_bfbb356b",
+        "filename": "tests/sksl/runtime_errors/LoopExpressionErrors.skvm",
+        "patchSetId": 3
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-06T19:35:31Z",
+      "side": 1,
+      "message": "nit: can we narrow down to {start of ForStatement, start of ForStatement.fStatement} to avoid including the entire for-stmt body?",
+      "range": {
+        "startLine": 5,
+        "startChar": 23,
+        "endLine": 5,
+        "endChar": 49
+      },
+      "revId": "81f458b584586f5573ca33e52fc7fc3bb1f90f3e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "54b7f53b_9063d25c",
+        "filename": "tests/sksl/runtime_errors/LoopInitializerErrors.skvm",
+        "patchSetId": 3
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-06T19:35:31Z",
+      "side": 1,
+      "message": "nit: can we narrow down to {start of ForStatement, start of ForStatement.fStatement} to avoid including the entire for-stmt body?",
+      "range": {
+        "startLine": 5,
+        "startChar": 35,
+        "endLine": 5,
+        "endChar": 61
+      },
+      "revId": "81f458b584586f5573ca33e52fc7fc3bb1f90f3e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cd9f7f75_11698938",
+        "filename": "tests/sksl/runtime_errors/LoopStructureErrors.skvm",
+        "patchSetId": 3
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-06T19:35:31Z",
+      "side": 1,
+      "message": "nit: can we narrow down to {start of ForStatement, start of ForStatement.fStatement} to avoid including the entire for-stmt body?",
+      "range": {
+        "startLine": 5,
+        "startChar": 28,
+        "endLine": 5,
+        "endChar": 63
+      },
+      "revId": "81f458b584586f5573ca33e52fc7fc3bb1f90f3e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "75f16fd7_42b1e70b",
+        "filename": "tests/sksl/spirv/LayoutMultipleOf4.asm.frag",
+        "patchSetId": 3
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-06T19:35:31Z",
+      "side": 1,
+      "message": "nit: should show field x",
+      "range": {
+        "startLine": 5,
+        "startChar": 0,
+        "endLine": 5,
+        "endChar": 12
+      },
+      "revId": "81f458b584586f5573ca33e52fc7fc3bb1f90f3e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
