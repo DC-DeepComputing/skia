@@ -1,4 +1,14 @@
 load("//bazel:macros.bzl", "generated_cc_atom")
+load("@rules_cc//cc:defs.bzl", "cc_binary")
+
+cc_binary(
+    name = "skslc",
+    deps = [
+        ":Main_src",
+        "//src/sksl:skslc_deps",
+        "//src/sksl:srcs",
+    ],
+)
 
 generated_cc_atom(
     name = "Main_src",
