@@ -653,7 +653,7 @@ if (skia_compile_sksl_tests) {
       "src/core/SkThreadID.cpp",
       "src/core/SkUtils.cpp",
       "src/core/SkVM.cpp",
-      "src/gpu/GrMemoryPool.cpp",
+      "src/gpu/ganesh/GrMemoryPool.cpp",
       "src/ports/SkMemory_malloc.cpp",
       "src/ports/SkOSFile_stdio.cpp",
       "src/sksl/SkSLMain.cpp",
@@ -887,8 +887,8 @@ optional("gpu") {
     public_defines += [ "SK_GL" ]
     if (is_android) {
       sources += [
-        "src/gpu/gl/egl/GrGLMakeEGLInterface.cpp",
-        "src/gpu/gl/egl/GrGLMakeNativeInterface_egl.cpp",
+        "src/gpu/ganesh/gl/egl/GrGLMakeEGLInterface.cpp",
+        "src/gpu/ganesh/gl/egl/GrGLMakeNativeInterface_egl.cpp",
       ]
 
       # this lib is required to link against AHardwareBuffer
@@ -897,29 +897,29 @@ optional("gpu") {
       }
     } else if (skia_use_egl) {
       sources += [
-        "src/gpu/gl/egl/GrGLMakeEGLInterface.cpp",
-        "src/gpu/gl/egl/GrGLMakeNativeInterface_egl.cpp",
+        "src/gpu/ganesh/gl/egl/GrGLMakeEGLInterface.cpp",
+        "src/gpu/ganesh/gl/egl/GrGLMakeNativeInterface_egl.cpp",
       ]
       libs += [ "EGL" ]
     } else if (skia_use_webgl) {
-      sources += [ "src/gpu/gl/webgl/GrGLMakeNativeInterface_webgl.cpp" ]
+      sources += [ "src/gpu/ganesh/gl/webgl/GrGLMakeNativeInterface_webgl.cpp" ]
     } else if (is_linux && skia_use_x11) {
       sources += [
-        "src/gpu/gl/glx/GrGLMakeGLXInterface.cpp",
-        "src/gpu/gl/glx/GrGLMakeNativeInterface_glx.cpp",
+        "src/gpu/ganesh/gl/glx/GrGLMakeGLXInterface.cpp",
+        "src/gpu/ganesh/gl/glx/GrGLMakeNativeInterface_glx.cpp",
       ]
       libs += [ "GL" ]
     } else if (is_mac) {
-      sources += [ "src/gpu/gl/mac/GrGLMakeNativeInterface_mac.cpp" ]
+      sources += [ "src/gpu/ganesh/gl/mac/GrGLMakeNativeInterface_mac.cpp" ]
     } else if (is_ios) {
-      sources += [ "src/gpu/gl/iOS/GrGLMakeNativeInterface_iOS.cpp" ]
+      sources += [ "src/gpu/ganesh/gl/iOS/GrGLMakeNativeInterface_iOS.cpp" ]
     } else if (is_win && !skia_enable_winuwp) {
-      sources += [ "src/gpu/gl/win/GrGLMakeNativeInterface_win.cpp" ]
+      sources += [ "src/gpu/ganesh/gl/win/GrGLMakeNativeInterface_win.cpp" ]
       if (target_cpu != "arm64") {
         libs += [ "OpenGL32.lib" ]
       }
     } else {
-      sources += [ "src/gpu/gl/GrGLMakeNativeInterface_none.cpp" ]
+      sources += [ "src/gpu/ganesh/gl/GrGLMakeNativeInterface_none.cpp" ]
     }
     sources += skia_gl_gpu_sources
   }
@@ -1251,7 +1251,7 @@ if (skia_enable_gpu && skia_generate_workarounds) {
   action("workaround_list") {
     script = "tools/build_workaround_header.py"
 
-    inputs = [ "src/gpu/gpu_workaround_list.txt" ]
+    inputs = [ "src/gpu/ganesh/gpu_workaround_list.txt" ]
 
     # GN insists its outputs should go somewhere underneath root_out_dir, so we trick it with a
     # path that starts with root_out_dir and then uses ".." to back up into the src dir.

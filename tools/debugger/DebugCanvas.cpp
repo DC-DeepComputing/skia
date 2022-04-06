@@ -16,7 +16,7 @@
 #include "include/utils/SkPaintFilterCanvas.h"
 #include "src/core/SkCanvasPriv.h"
 #include "src/core/SkRectPriv.h"
-#include "src/gpu/GrRecordingContextPriv.h"
+#include "src/gpu/ganesh/GrRecordingContextPriv.h"
 #include "src/utils/SkJSONWriter.h"
 #include "tools/debugger/DebugLayerManager.h"
 #include "tools/debugger/DrawCommand.h"
@@ -24,7 +24,7 @@
 #include <string>
 
 #if SK_GPU_V1
-#include "src/gpu/GrAuditTrail.h"
+#include "src/gpu/ganesh/GrAuditTrail.h"
 #endif
 
 #define SKDEBUGCANVAS_VERSION 1
