@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "35c61139_03719c56",
+        "filename": "src/sksl/SkSLDSLParser.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 871,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-04-06T16:15:01Z",
+      "side": 1,
+      "message": "TIL we accept `const const float x \u003d 0;`, for variables that are extremely const.",
+      "range": {
+        "startLine": 871,
+        "startChar": 8,
+        "endLine": 871,
+        "endChar": 69
+      },
+      "revId": "cba7b366eab7055dd7351e81084bb5fcdfa4b241",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9c0c8c81_75d781ae",
+        "filename": "tests/sksl/errors/LayoutRepeatedQualifiers.glsl",
+        "patchSetId": 8
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-04-06T16:15:01Z",
+      "side": 1,
+      "message": "It\u0027s unfortunate that these are reported differently than the others (they were before, too). Ideally these would report on line 5, I think?",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 16,
+        "endChar": 71
+      },
+      "revId": "cba7b366eab7055dd7351e81084bb5fcdfa4b241",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
