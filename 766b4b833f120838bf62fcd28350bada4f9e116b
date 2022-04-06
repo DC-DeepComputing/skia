@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4d083b2a_18947052",
+        "filename": "experimental/graphite/src/UniformManager.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-04-06T17:06:41Z",
+      "side": 1,
+      "message": "name?",
+      "range": {
+        "startLine": 55,
+        "startChar": 21,
+        "endLine": 55,
+        "endChar": 30
+      },
+      "revId": "766b4b833f120838bf62fcd28350bada4f9e116b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "deba5ebd_90e9c832",
+        "filename": "src/core/SkKeyHelpers.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-04-06T17:06:41Z",
+      "side": 1,
+      "message": "maybe just combine this into `gatherer-\u003eadd(mgr.createUniformData())`?",
+      "range": {
+        "startLine": 150,
+        "startChar": 18,
+        "endLine": 150,
+        "endChar": 35
+      },
+      "revId": "766b4b833f120838bf62fcd28350bada4f9e116b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
