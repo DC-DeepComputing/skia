@@ -86,10 +86,10 @@ public:
 
         // TODO: A << API for uniforms would be nice, particularly if it could take pre-computed
         // offsets for each uniform.
-        SkDEBUGCODE(gatherer->setExpectedUniforms(SkMakeSpan(kRectUniforms, kNumRectUniforms));)
+        UniformExpectationsValidator uev(gatherer, SkMakeSpan(kRectUniforms, kNumRectUniforms));
+
         gatherer->write(geom.shape().rect().size());
         gatherer->write(geom.shape().rect().topLeft());
-        SkDEBUGCODE(gatherer->doneWithExpectedUniforms();)
     }
 
 private:
@@ -147,11 +147,10 @@ public:
                 { "translate",  SkSLType::kFloat2 },
         };
 #endif
+        UniformExpectationsValidator uev(gatherer, SkMakeSpan(kRectUniforms, kNumRectUniforms));
 
-        SkDEBUGCODE(gatherer->setExpectedUniforms(SkMakeSpan(kRectUniforms, kNumRectUniforms));)
         gatherer->write(SkPoint::Make(2.0f, 2.0f));
         gatherer->write(SkPoint::Make(-1.0f, -1.0f));
-        SkDEBUGCODE(gatherer->doneWithExpectedUniforms();)
     }
 
 private:
