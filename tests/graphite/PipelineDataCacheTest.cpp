@@ -16,19 +16,6 @@
 
 using namespace skgpu;
 
-namespace {
-
-std::unique_ptr<SkUniformDataBlock> make_udb(int seed, int dataSize) {
-    sk_sp<SkUniformData> ud = SkUniformData::Make(dataSize);
-    for (int i = 0; i < dataSize; ++i) {
-        ud->data()[i] = (seed+i) % 255;
-    }
-
-    return std::make_unique<SkUniformDataBlock>(std::move(ud));
-}
-
-} // anonymous namespace
-
 DEF_GRAPHITE_TEST_FOR_CONTEXTS(PipelineDataCacheTest, reporter, context) {
     std::unique_ptr<Recorder> recorder = context->makeRecorder();
 
@@ -45,40 +32,45 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(PipelineDataCacheTest, reporter, context) {
         REPORTER_ASSERT(reporter, !lookup);
     }
 
+    static const int kSize = 16;
+
     // Add a new unique UDB
-    std::unique_ptr<SkUniformDataBlock> udb1 = make_udb(7, 16);
+    char memory1[kSize] = { 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22 };
+    SkUniformDataBlock udb1(SkMakeSpan(memory1, kSize));
     UniformDataCache::Index id1;
     {
-        id1 = cache->insert(*udb1);
+        id1 = cache->insert(udb1);
         REPORTER_ASSERT(reporter, id1.isValid());
         const SkUniformDataBlock* lookup = cache->lookup(id1);
-        REPORTER_ASSERT(reporter, *lookup == *udb1);
+        REPORTER_ASSERT(reporter, *lookup == udb1);
 
         REPORTER_ASSERT(reporter, cache->count() == 1);
     }
 
     // Try to add a duplicate UDB
     {
-        std::unique_ptr<SkUniformDataBlock> udb2 = make_udb(7, 16);
-        UniformDataCache::Index id2 = cache->insert(*udb2);
+        char memory2[kSize] = { 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22 };
+        SkUniformDataBlock udb2(SkMakeSpan(memory2, kSize));
+        UniformDataCache::Index id2 = cache->insert(udb2);
         REPORTER_ASSERT(reporter, id2.isValid());
         REPORTER_ASSERT(reporter, id2 == id1);
         const SkUniformDataBlock* lookup = cache->lookup(id2);
-        REPORTER_ASSERT(reporter, *lookup == *udb1);
-        REPORTER_ASSERT(reporter, *lookup == *udb2);
+        REPORTER_ASSERT(reporter, *lookup == udb1);
+        REPORTER_ASSERT(reporter, *lookup == udb2);
 
         REPORTER_ASSERT(reporter, cache->count() == 1);
     }
 
     // Add a second new unique UDB
     {
-        std::unique_ptr<SkUniformDataBlock> udb3 = make_udb(13, 16);
-        UniformDataCache::Index id3 = cache->insert(*udb3);
+        char memory3[kSize] = { 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21 };
+        SkUniformDataBlock udb3(SkMakeSpan(memory3, kSize));
+        UniformDataCache::Index id3 = cache->insert(udb3);
         REPORTER_ASSERT(reporter, id3.isValid());
         REPORTER_ASSERT(reporter, id3 != id1);
         const SkUniformDataBlock* lookup = cache->lookup(id3);
-        REPORTER_ASSERT(reporter, *lookup == *udb3);
-        REPORTER_ASSERT(reporter, *lookup != *udb1);
+        REPORTER_ASSERT(reporter, *lookup == udb3);
+        REPORTER_ASSERT(reporter, *lookup != udb1);
 
         REPORTER_ASSERT(reporter, cache->count() == 2);
     }
