@@ -68,6 +68,29 @@
       },
       "revId": "81f458b584586f5573ca33e52fc7fc3bb1f90f3e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "613781ab_d286bd3c",
+        "filename": "tests/sksl/errors/ArgumentModifiers.glsl",
+        "patchSetId": 3
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-06T18:53:17Z",
+      "side": 1,
+      "message": "Should we cut low-priority bugs for things like this (where the error range is over-broad)?\nObviously not worth holding up +1 over, but could be a nice fixup later.",
+      "range": {
+        "startLine": 5,
+        "startChar": 0,
+        "endLine": 5,
+        "endChar": 20
+      },
+      "revId": "81f458b584586f5573ca33e52fc7fc3bb1f90f3e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
