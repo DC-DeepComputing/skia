@@ -16,6 +16,29 @@
       "message": "Here is a Chromium Canary that was effectively run with just the \"entire image\" macro enabled (so downgrading filtering only if the src rect does not contain the whole image).\n\nhttps://chromium-review.googlesource.com/c/3571523",
       "revId": "0a14c70fe77eef7a917dcdb6d34e687785ade413",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1e53576b_a72fe3ee",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 2332,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-04-06T14:35:50Z",
+      "side": 1,
+      "message": "Unnecessary since this is being handled in onDrawImageRect2 already. My preferences is for the onDrawImageRect virtual to handle the cleaning, both because that\u0027s how other similar clean ups are handled and because recording canvases track the original input values, rather than drawImageRect doing the cleaning before calling into the virtual.",
+      "range": {
+        "startLine": 2331,
+        "startChar": 4,
+        "endLine": 2332,
+        "endChar": 89
+      },
+      "revId": "0a14c70fe77eef7a917dcdb6d34e687785ade413",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
