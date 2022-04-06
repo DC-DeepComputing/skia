@@ -755,10 +755,51 @@ bool Compiler::toMetal(Program& program, std::string* out) {
 
 void Compiler::handleError(std::string_view msg, Position pos) {
     fErrorText += "error: ";
+    bool printLocation = false;
+    std::string_view src = this->errorReporter().source();
+    int line = -1;
     if (pos.valid()) {
-        fErrorText += std::to_string(pos.line(this->errorReporter().source())) + ": ";
+        line = pos.line();
+        if (line == -1) {
+            line = pos.line(src);
+            printLocation = true;
+        }
+        fErrorText += std::to_string(line) + ": ";
     }
     fErrorText += std::string(msg) + "\n";
+    if (printLocation) {
+        int currentLine = 1;
+        int lastLineOffset = 0;
+        for (int i = 0; i < (int)src.length(); ++i) {
+            if (src[i] == '\n' || i == (int)src.length() - 1) {
+                ++currentLine;
+                if (currentLine > line) {
+                    for (int j = lastLineOffset; j < i; j++) {
+                        switch (src[j]) {
+                            case '\t': fErrorText += "    "; break;
+                            case '\0': fErrorText += " ";    break;
+                            default:   fErrorText += src[j]; break;
+                        }
+                    }
+                    fErrorText += '\n';
+                    for (int j = lastLineOffset; j <= i; j++) {
+                        if (j >= pos.endOffset()) {
+                            break;
+                        } else {
+                            if (src[j] == '\t') {
+                                fErrorText += (j >= pos.startOffset()) ? "^^^^" : "    ";
+                            } else {
+                                fErrorText += (j >= pos.startOffset()) ? '^' : ' ';
+                            }
+                        }
+                    }
+                    fErrorText += '\n';
+                    break;
+                }
+                lastLineOffset = i + 1;
+            }
+        }
+    }
 }
 
 std::string Compiler::errorText(bool showCount) {
