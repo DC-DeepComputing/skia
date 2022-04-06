@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cb5fdca5_215d965d",
+        "filename": "src/core/SkPipelineData.cpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-04-06T20:52:33Z",
+      "side": 1,
+      "message": "nit alignment",
+      "range": {
+        "startLine": 31,
+        "startChar": 44,
+        "endLine": 31,
+        "endChar": 45
+      },
+      "revId": "adc0ed6417653612fbaf89be24c9f5b99bf65b11",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "52c291d7_43cb3fc0",
+        "filename": "src/core/SkPipelineData.cpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-04-06T20:52:33Z",
+      "side": 1,
+      "message": "I don\u0027t think we strictly need to, since memcpy can go from our un-aligned CPU data to the correctly-aligned GPU data safely. Then the actual GPU accesses will be fine. \n\nIf this uniform data block is mutable, where we could rewrite its data, we\u0027d just need its alignemnt to match the highest required by a specific uniform\u0027s CPU type. But since we handle the writing earlier, we probably don\u0027t need any alignment at all.",
+      "range": {
+        "startLine": 32,
+        "startChar": 13,
+        "endLine": 33,
+        "endChar": 20
+      },
+      "revId": "adc0ed6417653612fbaf89be24c9f5b99bf65b11",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1a4379ca_0f420c82",
+        "filename": "src/core/SkPipelineData.h",
+        "patchSetId": 28
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-04-06T20:52:33Z",
+      "side": 1,
+      "message": "ie. have a get() function?",
+      "range": {
+        "startLine": 53,
+        "startChar": 18,
+        "endLine": 53,
+        "endChar": 30
+      },
+      "revId": "adc0ed6417653612fbaf89be24c9f5b99bf65b11",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
