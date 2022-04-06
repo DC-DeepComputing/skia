@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c146c467_b41d5299",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2022-04-06T17:52:07Z",
+      "side": 1,
+      "message": "rubber stamp as I don\u0027t know the infra code, but I\u0027m supportive of fixing the issue.",
+      "revId": "64ff7302c23ce38f683c1b39ec81866d97f27e64",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
