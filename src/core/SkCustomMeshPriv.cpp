@@ -12,6 +12,10 @@
 #include "include/core/SkData.h"
 #include "src/core/SkSafeMath.h"
 
+#if SK_SUPPORT_GPU
+#include "src/gpu/GrGpuBuffer.h"
+#endif
+
 static size_t min_vcount_for_mode(SkCustomMesh::Mode mode) {
     switch (mode) {
         case SkCustomMesh::Mode::kTriangles:     return 3;
@@ -102,4 +106,51 @@ SkCustomMeshPriv::CpuAttributeBuffer::Make(sk_sp<const SkData> data) {
 sk_sp<const SkData> SkCustomMeshPriv::CpuAttributeBuffer::asData() const { return fData; }
 
 size_t SkCustomMeshPriv::CpuAttributeBuffer::size() const { return fData->size(); }
+#endif
+
+#if SK_SUPPORT_GPU
+//////////////////////////////////////////////////////////////////////////////
+
+SkCustomMeshPriv::GpuIndexBuffer::GpuIndexBuffer() = default;
+
+SkCustomMeshPriv::GpuIndexBuffer::~GpuIndexBuffer() = default;
+
+sk_sp<SkCustomMesh::IndexBuffer> SkCustomMeshPriv::GpuIndexBuffer::Make(sk_sp<GrGpuBuffer> buffer) {
+    if (!buffer) {
+        return nullptr;
+    }
+    if (buffer->intendedType() != GrGpuBufferType::kIndex) {
+        return nullptr;
+    }
+    auto result = new GpuIndexBuffer;
+    result->fBuffer = std::move(buffer);
+    return sk_sp<IndexBuffer>(result);
+}
+
+sk_sp<GrGpuBuffer> SkCustomMeshPriv::GpuIndexBuffer::asGpuBuffer() const { return fBuffer; }
+
+size_t SkCustomMeshPriv::GpuIndexBuffer::size() const { return fBuffer->size(); }
+
+//////////////////////////////////////////////////////////////////////////////
+
+SkCustomMeshPriv::GpuAttributeBuffer::GpuAttributeBuffer() = default;
+
+SkCustomMeshPriv::GpuAttributeBuffer::~GpuAttributeBuffer() = default;
+
+sk_sp<SkCustomMesh::AttributeBuffer> SkCustomMeshPriv::GpuAttributeBuffer::Make(sk_sp<GrGpuBuffer> buffer) {
+    if (!buffer) {
+        return nullptr;
+    }
+    if (buffer->intendedType() != GrGpuBufferType::kVertex) {
+        return nullptr;
+    }
+    auto result = new GpuAttributeBuffer;
+    result->fBuffer = std::move(buffer);
+    return sk_sp<AttributeBuffer>(result);
+}
+
+sk_sp<GrGpuBuffer> SkCustomMeshPriv::GpuAttributeBuffer::asGpuBuffer() const { return fBuffer; }
+
+size_t SkCustomMeshPriv::GpuAttributeBuffer::size() const { return fBuffer->size(); }
+
 #endif

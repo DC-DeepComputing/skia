@@ -703,6 +703,7 @@ void CustomMeshOp::onPrepareDraws(GrMeshDrawTarget* target) {
     size_t vertexStride = fSpecification->stride();
     sk_sp<const GrBuffer> vertexBuffer;
     int firstVertex = 0;
+    if (!fMeshes[0].isFromVertices() && fMeshes[0]
     skgpu::VertexWriter verts = target->makeVertexWriter(vertexStride,
                                                          fVertexCount,
                                                          &vertexBuffer,

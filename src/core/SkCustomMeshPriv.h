@@ -14,6 +14,8 @@
 #include "include/private/GrTypesPriv.h"
 #include "src/core/SkSLTypeShared.h"
 
+class GrGpuBuffer;
+
 struct SkCustomMeshSpecificationPriv {
     using Varying   = SkCustomMeshSpecification::Varying;
     using Attribute = SkCustomMeshSpecification::Attribute;
@@ -84,7 +86,8 @@ namespace SkCustomMeshPriv {
     class Buffer {
     public:
         virtual ~Buffer() = default;
-        virtual sk_sp<const SkData> asData() const = 0;
+        virtual sk_sp<const SkData> asData() const { return nullptr; }
+        virtual sk_sp<GrGpuBuffer> asGpuBuffer() const { return nullptr; }
         virtual size_t size() const = 0;
     };
 
@@ -121,6 +124,38 @@ namespace SkCustomMeshPriv {
     private:
         sk_sp<const SkData> fData;
     };
+
+#if SK_SUPPORT_GPU
+    class GpuIndexBuffer : public IB {
+    public:
+        GpuIndexBuffer();
+        ~GpuIndexBuffer() override;
+
+        static sk_sp<IndexBuffer> Make(sk_sp<GrGpuBuffer>);
+
+        sk_sp<GrGpuBuffer> asGpuBuffer() const override;
+
+        size_t size() const override;
+
+    private:
+        sk_sp<GrGpuBuffer> fBuffer;
+    };
+
+    class GpuAttributeBuffer : public AB {
+    public:
+        GpuAttributeBuffer();
+        ~GpuAttributeBuffer() override;
+
+        static sk_sp<AttributeBuffer> Make(sk_sp<GrGpuBuffer>);
+
+        sk_sp<GrGpuBuffer> asGpuBuffer() const override;
+
+        size_t size() const override;
+
+    private:
+        sk_sp<GrGpuBuffer> fBuffer;
+    };
+#endif
 };
 
 bool SkValidateCustomMesh(const SkCustomMesh&);

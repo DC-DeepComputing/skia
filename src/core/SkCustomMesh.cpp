@@ -17,6 +17,11 @@
 #include "src/sksl/ir/SkSLProgram.h"
 #include "src/sksl/ir/SkSLVarDeclarations.h"
 
+#if SK_SUPPORT_GPU
+#include "src/gpu/GrDirectContextPriv.h"
+#include "src/gpu/GrResourceProvider.h"
+#endif
+
 #include <locale>
 
 using Attribute = SkCustomMeshSpecification::Attribute;
@@ -350,12 +355,41 @@ SkCustomMesh::SkCustomMesh(SkCustomMesh&&)      = default;
 SkCustomMesh& SkCustomMesh::operator=(const SkCustomMesh&) = default;
 SkCustomMesh& SkCustomMesh::operator=(SkCustomMesh&&)      = default;
 
-sk_sp<IndexBuffer> SkCustomMesh::MakeIndexBuffer(GrDirectContext*, sk_sp<const SkData> data) {
-    return SkCustomMeshPriv::CpuIndexBuffer::Make(std::move(data));
+sk_sp<IndexBuffer> SkCustomMesh::MakeIndexBuffer(GrDirectContext* dc, sk_sp<const SkData> data) {
+    if (!dc) {
+        return SkCustomMeshPriv::CpuIndexBuffer::Make(std::move(data));
+    }
+#if SK_SUPPORT_GPU
+    auto buffer = dc->priv().resourceProvider()->createBuffer(
+            data->size(),
+            GrGpuBufferType::kIndex,
+            kStatic_GrAccessPattern,
+            data->data());
+    if (!buffer) {
+        return nullptr;
+    }
+    return SkCustomMeshPriv::GpuIndexBuffer::Make(std::move(buffer));
+#endif
+    return nullptr;
 }
 
-sk_sp<AttributeBuffer> SkCustomMesh::MakeAttributeBuffer(GrDirectContext*, sk_sp<const SkData> data) {
-    return SkCustomMeshPriv::CpuAttributeBuffer::Make(std::move(data));
+sk_sp<AttributeBuffer> SkCustomMesh::MakeAttributeBuffer(GrDirectContext* dc,
+                                                         sk_sp<const SkData> data) {
+    if (!dc) {
+        return SkCustomMeshPriv::CpuAttributeBuffer::Make(std::move(data));
+    }
+#if SK_SUPPORT_GPU
+    auto buffer = dc->priv().resourceProvider()->createBuffer(
+            data->size(),
+            GrGpuBufferType::kVertex,
+            kStatic_GrAccessPattern,
+            data->data());
+    if (!buffer) {
+        return nullptr;
+    }
+    return SkCustomMeshPriv::GpuAttributeBuffer::Make(std::move(buffer));
+#endif
+    return nullptr;
 }
 
 #endif //SK_ENABLE_SKSL
