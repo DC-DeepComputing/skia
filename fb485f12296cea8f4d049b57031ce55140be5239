@@ -52,6 +52,24 @@
       "parentUuid": "14661991_9a53040b",
       "revId": "fb485f12296cea8f4d049b57031ce55140be5239",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f7e7ca4a_4dbd14d6",
+        "filename": "tools/skslc/BUILD.bazel",
+        "patchSetId": 3
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-04-06T10:52:07Z",
+      "side": 1,
+      "message": "Just a guess, but if you are trying to build on Mac, it\u0027s using whatever C++ toolchain it can find installed (GCC maybe?) and that is not working. When I run on Linux without the hermetic toolchain, I see vaguely similar errors. You can add `--subcommands` to have Bazel spit out the actual commands it is executing, which can confirm.\n\nThe rule you added probably needs a dep on //:skia_core. See https://github.com/google/skia/blob/cf7ee60638bdff848e3f6d34750cbf1bd71c39f5/example/BUILD.bazel#L32 as an example",
+      "parentUuid": "46ef7f04_292abbac",
+      "revId": "fb485f12296cea8f4d049b57031ce55140be5239",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
