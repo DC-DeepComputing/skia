@@ -221,7 +221,7 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(CommandBufferTest, reporter, context) {
 
     SkISize textureSize = { kTextureWidth, kTextureHeight };
 #ifdef SK_METAL
-    skgpu::mtl::TextureInfo mtlTextureInfo = {
+    skgpu::graphiteTextureInfo mtlTextureInfo = {
         1,
         1,
         70,     // MTLPixelFormatRGBA8Unorm
