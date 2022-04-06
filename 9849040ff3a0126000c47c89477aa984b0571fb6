@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0928c682_36426069",
+        "filename": "infra/bots/jobs.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 600,
+      "author": {
+        "id": 5145
+      },
+      "writtenOn": "2022-04-06T18:24:47Z",
+      "side": 1,
+      "message": "merge conflict",
+      "revId": "9849040ff3a0126000c47c89477aa984b0571fb6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
