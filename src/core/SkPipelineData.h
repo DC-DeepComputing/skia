@@ -151,10 +151,10 @@ public:
     const SkTextureDataBlock& textureDataBlock() { return fTextureDataBlock; }
 
 #ifdef SK_DEBUG
-    void setExpectedUniforms(SkSpan<const SkUniform> expectedUniforms) {
+    void setExpectedUniforms1(SkSpan<const SkUniform> expectedUniforms) {
         fUniformManager.setExpectedUniforms(expectedUniforms);
     }
-    void doneWithExpectedUniforms() { fUniformManager.doneWithExpectedUniforms(); }
+    void doneWithExpectedUniforms1() { fUniformManager.doneWithExpectedUniforms(); }
 #endif // SK_DEBUG
 
     void write(const SkColor4f* colors, int numColors) { fUniformManager.write(colors, numColors); }
@@ -175,6 +175,33 @@ private:
     BlendInfo             fBlendInfo;
     skgpu::UniformManager fUniformManager;
 #endif // SK_GRAPHITE_ENABLED
+};
+
+class UniformExpectationsValidator {
+public:
+    UniformExpectationsValidator(SkPipelineDataGatherer* gatherer,
+                                 SkSpan<const SkUniform> expectedUniforms) {
+#ifdef SK_DEBUG
+        fGatherer = gatherer;
+        fGatherer->setExpectedUniforms1(expectedUniforms);
+#endif
+    }
+
+    ~UniformExpectationsValidator() {
+#ifdef SK_DEBUG
+        fGatherer->doneWithExpectedUniforms1();
+#endif
+    }
+
+private:
+#ifdef SK_DEBUG
+    SkPipelineDataGatherer* fGatherer;
+#endif
+
+    UniformExpectationsValidator(UniformExpectationsValidator&&) = delete;
+    UniformExpectationsValidator(const UniformExpectationsValidator&) = delete;
+    UniformExpectationsValidator& operator=(UniformExpectationsValidator&&) = delete;
+    UniformExpectationsValidator& operator=(const UniformExpectationsValidator&) = delete;
 };
 
 #endif // SkPipelineData_DEFINED
