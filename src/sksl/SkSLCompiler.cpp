@@ -755,10 +755,62 @@ bool Compiler::toMetal(Program& program, std::string* out) {
 
 void Compiler::handleError(std::string_view msg, Position pos) {
     fErrorText += "error: ";
+    bool printLocation = false;
+    std::string_view src = this->errorReporter().source();
+    int line = -1;
     if (pos.valid()) {
-        fErrorText += std::to_string(pos.line(this->errorReporter().source())) + ": ";
+        line = pos.line();
+        if (line == -1) {
+            line = pos.line(src);
+            printLocation = true;
+        }
+        fErrorText += std::to_string(line) + ": ";
     }
     fErrorText += std::string(msg) + "\n";
+    if (printLocation) {
+        int currentLine = 1;
+        // scan through the source until we reach the target line
+        for (int i = 0; i < (int)src.length(); ++i) {
+            if (currentLine == line) {
+                // echo the line
+                for (int j = i; j < (int)src.length(); j++) {
+                    switch (src[j]) {
+                        case '\t': fErrorText += "    "; break;
+                        case '\0': fErrorText += " ";    break;
+                        case '\n': j = src.length();     break;
+                        default:   fErrorText += src[j]; break;
+                    }
+                }
+                fErrorText += '\n';
+                // print the carets underneath it, pointing to the range in question
+                for (int j = i; j < (int)src.length(); j++) {
+                    if (j >= pos.endOffset()) {
+                        break;
+                    } else {
+                        switch (src[j]) {
+                            case '\t':
+                               fErrorText += (j >= pos.startOffset()) ? "^^^^" : "    ";
+                               break;
+                            case '\n':
+                                // the end of the range extends past the current line
+                                SkASSERT(j >= pos.startOffset());
+                                fErrorText += "...";
+                                j = src.length();
+                                break;
+                            default:
+                                fErrorText += (j >= pos.startOffset()) ? '^' : ' ';
+                                break;
+                        }
+                    }
+                }
+                fErrorText += '\n';
+                break;
+            }
+            if (src[i] == '\n' || i == (int)src.length() - 1) {
+                ++currentLine;
+            }
+        }
+    }
 }
 
 std::string Compiler::errorText(bool showCount) {
