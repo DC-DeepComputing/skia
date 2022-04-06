@@ -1,5 +1,5 @@
 release:
-	bazelisk build //experimental/webgpu-bazel/src:hello-world-wasm --compilation_mode opt
+	bazelisk build //experimental/webgpu-bazel/src:hello-world-wasm --compilation_mode opt --gpu_backend=dawn_backend
 	- rm -rf build/
 	mkdir build
 	cp ../../bazel-bin/experimental/webgpu-bazel/src/hello-world-wasm/hello-world.js build/hello-world.js

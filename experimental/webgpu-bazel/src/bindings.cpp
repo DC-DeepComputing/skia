@@ -52,7 +52,7 @@ wgpu::SwapChain getSwapChainForCanvas(wgpu::Device device, std::string canvasSel
     return device.CreateSwapChain(surface, &swap_chain_desc);
 }
 
-static bool drawSomethingWithSkia(std::string canvasSelector, int width, int height) {
+static bool drawSomethingWithSkia(std::string canvasSelector, int width, int height, bool flip) {
     SkDebugf("TODO draw something\n");
     GrContextOptions ctxOpts;
 
@@ -81,12 +81,14 @@ static bool drawSomethingWithSkia(std::string canvasSelector, int width, int hei
             &surfaceProps);
 
     SkPaint paint;
-    paint.setColor(SK_ColorCYAN);
+    paint.setColor(flip ? SK_ColorCYAN : SK_ColorMAGENTA);
 
-    surface->getCanvas()->drawRect(SkRect::MakeLTRB(10, 20, 50, 70), paint);
+    surface->getCanvas()->drawRect(SkRect::MakeLTRB(0, 0, width, height), paint);
 
+    SkDebugf("calling flushAndSubmit\n");
      // flushAndSubmit here appears to stall out, probably because Tick() is a busy wait.
-    surface->flush();
+    surface->flushAndSubmit(true);
+    SkDebugf("flushAndSubmit returned\n");
 
     return true;
 }

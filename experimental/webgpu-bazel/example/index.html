@@ -8,7 +8,7 @@
 
 <p id="log"></p>
 
-<canvas id="webgpu-demo-canvas" width=500 height=500></canvas>
+<canvas id="webgpu-demo-canvas" width=600 height=600></canvas>
 
 <script type="text/javascript" charset="utf-8">
   if ("gpu" in navigator) {
@@ -35,9 +35,16 @@
     // https://github.com/emscripten-core/emscripten/issues/12750#issuecomment-725001907
     wk.preinitializedWebGPUDevice = device;
 
-    function frame() {
-      const rv = wk.DrawSomethingWithSkia("#webgpu-demo-canvas", 500, 500);
-      log(`Drew something with return value ${rv}`);
+    last = 0;
+    flip = false;
+    function frame(now) {
+      if (last == 0 || now - last >= 500) {
+          last = now;
+          const rv = wk.DrawSomethingWithSkia("#webgpu-demo-canvas", 600, 600, flip);
+          flip = !flip;
+          log(`Drew something with return value ${rv}`);
+      }
+      requestAnimationFrame(frame);
     }
     requestAnimationFrame(frame);
   }
