@@ -46,6 +46,30 @@
       },
       "revId": "8bdd15d2945a2912fec349d1981875ae7b4b09aa",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0a30bde2_bfac9546",
+        "filename": "src/core/SkKeyHelpers.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-04-06T17:56:25Z",
+      "side": 1,
+      "message": "and I just double-checked, but the built-in uniforms are just an array index, so that\u0027s pretty minimal, vs. an unnecessary query to std::unordered_map or similar.",
+      "parentUuid": "aa8c6c8c_cbcc504f",
+      "range": {
+        "startLine": 80,
+        "startChar": 0,
+        "endLine": 80,
+        "endChar": 57
+      },
+      "revId": "8bdd15d2945a2912fec349d1981875ae7b4b09aa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
