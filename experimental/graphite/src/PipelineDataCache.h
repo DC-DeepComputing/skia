@@ -76,7 +76,7 @@ public:
         SkASSERT(id.isValid());
 
         // TODO: switch this over to using an SkArena
-        std::unique_ptr<DataBlockT> tmp(new DataBlockT(dataBlock));
+        std::unique_ptr<DataBlockT> tmp = DataBlockT::Make(dataBlock, nullptr);
         fDataBlockIDs.insert({tmp.get(), id});
         fDataBlocks.push_back(std::move(tmp));
         this->validate();
