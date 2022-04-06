@@ -10,7 +10,7 @@
 #ifdef SK_ENABLE_SKSL
 
 #include "src/core/SkCustomMeshPriv.h"
-#include "src/gpu/GrShaderCaps.h"
+#include "src/gpu/ganesh/GrShaderCaps.h"
 #include "src/sksl/SkSLCompiler.h"
 #include "src/sksl/SkSLSharedCompiler.h"
 #include "src/sksl/ir/SkSLFunctionDefinition.h"
