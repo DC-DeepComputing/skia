@@ -461,32 +461,28 @@ half $blend_color_saturation(half3 color) {
     return max(max(color.r, color.g), color.b) - min(min(color.r, color.g), color.b);
 }
 
-half3 $blend_set_color_saturation_helper(half3 minMidMax, half sat) {
-    if (minMidMax.r < minMidMax.b) {
-        return half3(0,
-                    $guarded_divide(sat*(minMidMax.g - minMidMax.r), (minMidMax.b - minMidMax.r)),
-                    sat);
-    } else {
-        return half3(0);
-    }
-}
-
 half3 $blend_set_color_saturation(half3 hueLumColor, half3 satColor) {
     half sat = $blend_color_saturation(satColor);
-    if (hueLumColor.r <= hueLumColor.g) {
-        if (hueLumColor.g <= hueLumColor.b) {
-            return $blend_set_color_saturation_helper(hueLumColor.rgb, sat);
-        } else if (hueLumColor.r <= hueLumColor.b) {
-            return $blend_set_color_saturation_helper(hueLumColor.rbg, sat).rbg;
-        } else {
-            return $blend_set_color_saturation_helper(hueLumColor.brg, sat).gbr;
-        }
-    } else if (hueLumColor.r <= hueLumColor.b) {
-       return $blend_set_color_saturation_helper(hueLumColor.grb, sat).grb;
-    } else if (hueLumColor.g <= hueLumColor.b) {
-       return $blend_set_color_saturation_helper(hueLumColor.gbr, sat).brg;
+    half3x3 unpermute = half3x3(1);
+    // Sort the RGB components of hueLumColor (and create an unscramble-matrix to match).
+    if (hueLumColor.r > hueLumColor.g) {
+        hueLumColor.rg = hueLumColor.gr;
+        unpermute = half3x3(unpermute[0].grb, unpermute[1].grb, unpermute[2].grb);
+    }
+    if (hueLumColor.r > hueLumColor.b) {
+        hueLumColor.rb = hueLumColor.br;
+        unpermute = half3x3(unpermute[0].bgr, unpermute[1].bgr, unpermute[2].bgr);
+    }
+    if (hueLumColor.g > hueLumColor.b) {
+        hueLumColor.gb = hueLumColor.bg;
+        unpermute = half3x3(unpermute[0].rbg, unpermute[1].rbg, unpermute[2].rbg);
+    }
+    // After being sorted, we should have r <= g <= b.
+    if (hueLumColor.b > hueLumColor.r) {
+        hueLumColor.gb -= hueLumColor.rr;
+        return half3(0, sat * hueLumColor.y / hueLumColor.z, sat) * unpermute;
     } else {
-       return $blend_set_color_saturation_helper(hueLumColor.bgr, sat).bgr;
+        return half3(0);
     }
 }
 
