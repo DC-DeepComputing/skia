@@ -16,6 +16,24 @@
       "message": "The M1 ASAN bot is now at least failing somewhere other than in libjpeg-turbo. Not sure why ASAN itself is asserting about the stack without much information as to why.",
       "revId": "9087c316e7a6e5cdd008658d0dd6f2132714f560",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9bb963d8_68b1e82c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-04-06T16:49:22Z",
+      "side": 1,
+      "message": "Similar report at https://github.com/google/sanitizers/issues/1465 .",
+      "parentUuid": "f1ed7239_d4c9df2d",
+      "revId": "9087c316e7a6e5cdd008658d0dd6f2132714f560",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
