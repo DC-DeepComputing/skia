@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "70a93a9b_7c8275fd",
+        "filename": "src/gpu/vk/GrVkSecondaryCBDrawContext.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-04-06T20:26:56Z",
+      "side": 1,
+      "message": "This is the one file that is actually used in Chrome and is intentionally in src. So I did the whole redirect jump until we can move chrome to the new file.",
+      "range": {
+        "startLine": 10,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 62
+      },
+      "revId": "ebd8d70b173219506f26ab02c7f895f1eaa7a8e7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
