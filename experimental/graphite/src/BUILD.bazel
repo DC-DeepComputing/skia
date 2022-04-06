@@ -1061,5 +1061,6 @@ generated_cc_atom(
         "//src/core:SkPathPriv_hdr",
         "//src/core:SkRRectPriv_hdr",
         "//src/core:SkRectPriv_hdr",
+        "//src/core:SkTLazy_hdr",
     ],
 )
