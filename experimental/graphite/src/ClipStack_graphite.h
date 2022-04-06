@@ -39,6 +39,8 @@ public:
         SkClipOp  fOp;
     };
 
+    using DrawFn = void(*)(const Transform&, const Shape&, DrawOrder);
+
     // 'deviceBounds' is an SkIRect because it must always represent the bounds of entire pixels.
     ClipStack(const SkIRect& deviceBounds);
 
@@ -58,9 +60,9 @@ public:
 
     // Clip stack manipulation
     void save();
-    void restore();
+    void restore(DrawFn);
 
-    void clipShape(const Transform& localToDevice, const Shape& shape, SkClipOp op);
+    void clipShape(const Transform& localToDevice, const Shape& shape, SkClipOp op, DrawFn);
     void clipShader(sk_sp<SkShader> shader);
 
     // Apply the clip stack to the draw described by the provided transform, shape, and stroke.
@@ -84,6 +86,8 @@ public:
                                                              const Shape&,
                                                              const SkStrokeRec&,
                                                              PaintersDepth z);
+
+    void recordDeferredClipDraws(DrawFn);
 
 private:
     // SaveRecords and Elements are stored in two parallel stacks. The top-most SaveRecord is the
@@ -143,7 +147,7 @@ private:
         // TODO: If an element was used by a draw and marked invalid, it can be drawn if it was in
         // the active save record, since it won't be coming back. If it's not the active save record
         // its draw can continue to be deferred until that save record is popped off the stack.
-        void markInvalid(const SaveRecord& current);
+        void markInvalid(const SaveRecord& current, DrawFn);
         void restoreValid(const SaveRecord& current);
 
         // 'added' represents a new op added to the element stack. Its combination with this element
@@ -169,6 +173,8 @@ private:
         std::pair<bool, CompressedPaintersOrder> updateForDraw(const BoundsManager* boundsManager,
                                                                const TransformedShape& draw,
                                                                PaintersDepth drawZ);
+
+        void drawClip(DrawFn);
 
         void validate() const;
 
@@ -245,19 +251,19 @@ private:
         void addShader(sk_sp<SkShader> shader);
 
         // Remove the elements owned by this save record, which must happen before the save record
-        // itself is removed from the clip stack.
-        // TODO: This will need to handle drawing any removed clip elements that affected draws.
-        void removeElements(RawElement::Stack* elements);
+        // itself is removed from the clip stack. Records draws for any removed elements that have
+        // draw usages.
+        void removeElements(RawElement::Stack* elements, DrawFn);
 
         // Restore element validity now that this record is the new top of the stack.
         void restoreElements(RawElement::Stack* elements);
 
     private:
         // These functions modify 'elements' and element-dependent state of the record
-        // (such as valid index and fState).
-        // TODO: This will need to handle drawing any inactivated clip elements that affected draws.
-        bool appendElement(RawElement&& toAdd, RawElement::Stack* elements);
-        void replaceWithElement(RawElement&& toAdd, RawElement::Stack* elements);
+        // (such as valid index and fState). Records draws for any clips that have deferred usages
+        // that are inactivated and cannot be restored (i.e. part of the active save record).
+        bool appendElement(RawElement&& toAdd, RawElement::Stack* elements, DrawFn);
+        void replaceWithElement(RawElement&& toAdd, RawElement::Stack* elements, DrawFn);
 
         // Inner bounds is always contained in outer bounds, or it is empty. All bounds will be
         // contained in the device bounds.
