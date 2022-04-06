@@ -26,12 +26,18 @@ void SkPipelineDataGatherer::checkReset() {
 }
 #endif // SK_DEBUG
 
-std::unique_ptr<SkUniformDataBlock> SkUniformDataBlock::Make(const SkUniformDataBlock& other,
-                                                             SkArenaAlloc* /* arena */) {
-    char* newMem = new char[other.size()];
-    memcpy(newMem, other.data(), other.size());
+////////////////////////////////////////////////////////////////////////////////////////////////////
+SkUniformDataBlock* SkUniformDataBlock::Make(const SkUniformDataBlock& other,
+                                            SkArenaAlloc* arena) {
+    // TODO: kUniformAlignment should match whatever alignment the GPU buffers will require.
+    // Probably 16B.
+    static constexpr size_t kUniformAlignment = 4;
+    char* mem = static_cast<char*>(arena->makeBytesAlignedTo(other.size(), kUniformAlignment));
+    memcpy(mem, other.data(), other.size());
 
-    return std::make_unique<SkUniformDataBlock>(SkSpan<const char>(newMem, other.size()), true);
+    return arena->make([&](void* ptr) {
+        return new (ptr) SkUniformDataBlock(SkSpan<const char>(mem, other.size()));
+    });
 }
 
 uint32_t SkUniformDataBlock::hash() const {

@@ -5718,6 +5718,7 @@ generated_cc_atom(
     deps = [
         ":SkOpts_hdr",
         ":SkPipelineData_hdr",
+        "//experimental/graphite/src:UniformManager_hdr",
     ],
 )
 
