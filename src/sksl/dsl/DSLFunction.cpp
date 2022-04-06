@@ -88,6 +88,7 @@ void DSLFunction::init(DSLModifiers modifiers, const DSLType& returnType, std::s
 
 void DSLFunction::define(DSLBlock block, Position pos) {
     std::unique_ptr<SkSL::Block> body = block.release();
+    body->fPosition = pos;
     if (!fDecl) {
         // Evidently we failed to create the declaration; error should already have been reported.
         // Release the block so we don't fail its destructor assert.
