@@ -16,6 +16,7 @@ Milestone 102
     use SkImage::makeSubset() to make a subset image and draw that. The previous GPU behavior is
     similar, though not exactly, equivalent to making a mipmapped image shader from the original
     image and applying that to a rectangle.
+  * SkSamplingOptions now includes anisotropic filtering. Implemented on GPU only.
 
 * * *
 
