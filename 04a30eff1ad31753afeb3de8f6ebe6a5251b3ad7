@@ -16,6 +16,24 @@
       "message": "You need to pass --gpu_backend\u003ddawn_backend here too.",
       "revId": "04a30eff1ad31753afeb3de8f6ebe6a5251b3ad7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "034d244b_4079f962",
+        "filename": "experimental/webgpu-bazel/Makefile",
+        "patchSetId": 6
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-04-06T17:28:55Z",
+      "side": 1,
+      "message": ":facepalm:",
+      "parentUuid": "76ed7149_63baed19",
+      "revId": "04a30eff1ad31753afeb3de8f6ebe6a5251b3ad7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
