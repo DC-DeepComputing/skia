@@ -57,10 +57,11 @@ class Fence {
 public:
     Fence(const wgpu::Device& device)
       : fDevice(device), fCalled(false) {
-        device.GetQueue().OnSubmittedWorkDone(0, callback, this);
+        device.GetQueue().OnSubmittedWorkDone(0, Fence::callback, this);
     }
 
     static void callback(WGPUQueueWorkDoneStatus status, void* userData) {
+        SkDebugf("@@CB: fence done!\n");
         Fence* fence = static_cast<Fence*>(userData);
         fence->fCalled = true;
     }
@@ -551,6 +552,7 @@ void GrDawnGpu::checkForCompletedStagingBuffers() {
 }
 
 void GrDawnGpu::waitOnAllBusyStagingBuffers() {
+    SkDebugf("@@@@ waitOnAllBusyStagingBuffers\n");
     while (!fBusyStagingBuffers.empty()) {
         this->deviceTick();
         this->checkForCompletedStagingBuffers();
@@ -563,27 +565,36 @@ void GrDawnGpu::takeOwnershipOfBuffer(sk_sp<GrGpuBuffer> buffer) {
 
 
 static void callback(WGPUQueueWorkDoneStatus status, void* userData) {
+    SkDebugf("@@CB: submitted work done!\n");
     *static_cast<bool*>(userData) = true;
 }
 
 bool GrDawnGpu::onSubmitToGpu(bool syncCpu) {
+    SkDebugf("@@@@@@ onSubmitToGpu\n");
     this->flushCopyEncoder();
+
     if (!fCommandBuffers.empty()) {
         fQueue.Submit(fCommandBuffers.size(), &fCommandBuffers.front());
         fCommandBuffers.clear();
     }
 
+    SkDebugf("calling: moveStagingBuffersToBusyAndMapAsync\n");
     this->moveStagingBuffersToBusyAndMapAsync();
+    SkDebugf("done: moveStagingBuffersToBusyAndMapAsync\n");
     if (syncCpu) {
+        SkDebugf("need to sync CPU\n");
         bool called = false;
         fDevice.GetQueue().OnSubmittedWorkDone(0, callback, &called);
         while (!called) {
             this->deviceTick();
         }
+        SkDebugf("callback called\n");
         fFinishCallbacks.callAll(true);
     }
 
+    SkDebugf("calling checkForCompletedStagingBuffers\n");
     this->checkForCompletedStagingBuffers();
+    SkDebugf("done checkForCompletedStagingBuffers\n");
 
     return true;
 }
@@ -620,6 +631,7 @@ bool GrDawnGpu::onCopySurface(GrSurface* dst,
 }
 
 static void callback(WGPUBufferMapAsyncStatus status, void* userdata) {
+    SkDebugf("@@CB: buffer map async done!\n");
     *static_cast<bool*>(userdata) = true;
 }
 
@@ -629,6 +641,7 @@ bool GrDawnGpu::onReadPixels(GrSurface* surface,
                              GrColorType dstColorType,
                              void* buffer,
                              size_t rowBytes) {
+    SkDebugf("@@@@@@ onReadPixels\n");
     wgpu::Texture tex = get_dawn_texture_from_surface(surface);
 
     if (!tex || 0 == rowBytes) {
@@ -659,11 +672,13 @@ bool GrDawnGpu::onReadPixels(GrSurface* surface,
     this->getCopyEncoder().CopyTextureToBuffer(&srcTexture, &dstBuffer, &copySize);
     this->submitToGpu(true);
 
+    SkDebugf("going to wait on map async\n");
     bool mapped = false;
     buf.MapAsync(wgpu::MapMode::Read, 0, 0, callback, &mapped);
     while (!mapped) {
         this->deviceTick();
     }
+    SkDebugf("map async done\n");
     const void* readPixelsPtr = buf.GetConstMappedRange();
 
     if (rowBytes == origRowBytes) {
@@ -856,6 +871,7 @@ void GrDawnGpu::checkFinishProcs() {
 }
 
 void GrDawnGpu::finishOutstandingGpuWork() {
+    SkDebugf("@@@@@@ finishOutstandingGpuWork\n");
     this->waitOnAllBusyStagingBuffers();
 }
 
@@ -978,7 +994,9 @@ wgpu::ShaderModule GrDawnGpu::createShaderModule(const std::string& spirvSource)
 }
 #ifdef __EMSCRIPTEN__
 void GrDawnGpu::deviceTick() {
+    SkDebugf("@@@ deviceTick begin\n");
     yieldUntilNextMicroTask();
+    SkDebugf("@@@ deviceTick done\n");
 }
 #else
 void GrDawnGpu::deviceTick() {

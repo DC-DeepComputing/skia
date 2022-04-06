@@ -18,6 +18,7 @@ Handler.extensions_map['.js'] = 'application/javascript'
 # Without the correct MIME type, async compilation doesn't work
 Handler.extensions_map['.wasm'] = 'application/wasm'
 
+socketserver.TCPServer.allow_reuse_address = True
 httpd = socketserver.TCPServer(("", PORT), Handler)
 
 httpd.serve_forever()
