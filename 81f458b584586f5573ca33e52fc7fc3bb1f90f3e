@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "76179c1a_d303d441",
+        "filename": "src/sksl/SkSLCompiler.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 773,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-06T18:45:35Z",
+      "side": 1,
+      "message": "Can we use `size_t` instead of casting (throughout)?",
+      "range": {
+        "startLine": 773,
+        "startChar": 13,
+        "endLine": 773,
+        "endChar": 16
+      },
+      "revId": "81f458b584586f5573ca33e52fc7fc3bb1f90f3e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4404f0b1_a3bbe637",
+        "filename": "src/sksl/SkSLCompiler.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 789,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-06T18:45:35Z",
+      "side": 1,
+      "message": "`else` unnecessary after unconditional `break` above",
+      "range": {
+        "startLine": 789,
+        "startChar": 21,
+        "endLine": 789,
+        "endChar": 28
+      },
+      "revId": "81f458b584586f5573ca33e52fc7fc3bb1f90f3e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "23f77875_0aec298c",
+        "filename": "src/sksl/SkSLCompiler.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 811,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-06T18:45:35Z",
+      "side": 1,
+      "message": "I got so caught up in the `currentLine \u003d\u003d line` case, I forgot we were inside a `for` loop over the entire source! :)\nStructurally having this check down here is surprising since it\u0027s the thing that happens first, and the \"currentLine \u003d\u003d line\" case is the thing that happens second.\n\nWould it make more sense to break this up into two separate loops?\nloop 1 - find the start of the line\nloop 2 - print the line with the ^^^ marks\n\n(Also, it seems like loop 1 could be done with less work as \"walk backwards from the error\u0027s character offset until we find a \u0027\\n\u0027, but I\u0027m not sure if there is some edge case where that doesn\u0027t work)",
+      "range": {
+        "startLine": 809,
+        "startChar": 12,
+        "endLine": 811,
+        "endChar": 13
+      },
+      "revId": "81f458b584586f5573ca33e52fc7fc3bb1f90f3e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
