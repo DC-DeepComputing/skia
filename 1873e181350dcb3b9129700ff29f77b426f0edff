@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e1e50282_274585ac",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 14
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-04-07T01:27:48Z",
+      "side": 1,
+      "message": "Adding Kevin since this has required lots of Bazel updates as well. The most interesting changes in gpu/BUILD.bazel and gpu/ganesh/BUILD.bazel. The files that are shared with graphite and ganesh live in gpu and the rest in gpu/ganesh. Right now this is setup inverted from what it probably should be. General Skia libraries are including src/gpu/ganesh:srcs. But they should probably be including src/gpu:srcs and then we have a flag to say whether or not to add src/gpu/graphite:srcs to the src/gpu:srcs deps. But I wanted to keep this CL as simple as possible so leaving those changes for later.\n\nOn a side note this change is failing the IWUY bot. However, the failure is caused by https://skia-review.googlesource.com/c/skia/+/527056 which weirdly doesn\u0027t look to have run that bot. Why did my CQ run that bot but the other change didn\u0027t?",
+      "revId": "1873e181350dcb3b9129700ff29f77b426f0edff",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
