@@ -69,6 +69,30 @@
       },
       "revId": "541bfa05b5fa787b210ba2c2ee9c4b58d6900699",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "96c92a2d_484be2cc",
+        "filename": "tests/SkVMDebugTracePlayerTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 306,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-04-07T20:19:04Z",
+      "side": 0,
+      "message": "Ah, I thought that was a red herring and it had only been stopping because of the (implicitly created) block while ignoring the variable declarations, but it turns out it normally stops at vardecls and there\u0027s special handling to deal with declarations in unscoped blocks.\n\nFixed.",
+      "parentUuid": "fa71c81f_b9d9d15c",
+      "range": {
+        "startLine": 302,
+        "startChar": 1,
+        "endLine": 306,
+        "endChar": 0
+      },
+      "revId": "541bfa05b5fa787b210ba2c2ee9c4b58d6900699",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
