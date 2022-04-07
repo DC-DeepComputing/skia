@@ -42,7 +42,7 @@ else:
                                   'Provisioning Profiles',
                                   '*.mobileprovision')):
     if re.search(r'''<key>Name</key>
-\t<string>''' + profile + r'''</string>''', open(p).read(), re.MULTILINE):
+\t<string>''' + profile + r'''</string>''', open(p, 'rb').read(), re.MULTILINE):
       mobileprovision = p
 if mobileprovision is None:
   print("Provisioning profile matching '" + profile + "' not found.")
@@ -56,7 +56,7 @@ shutil.copy(mobileprovision,
 # Extract the appliciation identitifer prefix from the .mobileprovision.
 m = re.search(r'''<key>ApplicationIdentifierPrefix</key>
 \t<array>
-\t<string>(.*)</string>''', open(mobileprovision).read(), re.MULTILINE)
+\t<string>(.*)</string>''', open(mobileprovision, 'rb').read(), re.MULTILINE)
 prefix = m.group(1)
 
 app, _ = os.path.splitext(os.path.basename(pkg))
