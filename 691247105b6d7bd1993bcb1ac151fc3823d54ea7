@@ -22,6 +22,30 @@
       },
       "revId": "691247105b6d7bd1993bcb1ac151fc3823d54ea7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6c974fa5_7d4298ff",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-07T20:07:28Z",
+      "side": 1,
+      "message": "I know SkVM has its own blend ops, but I wasn\u0027t sure if we could reach SkSL\u0027s by, e.g., evaluating a SkBlender from a runtime effect. This might be wrong though.",
+      "parentUuid": "7b70d8a6_f0d1d007",
+      "range": {
+        "startLine": 21,
+        "startChar": 65,
+        "endLine": 21,
+        "endChar": 69
+      },
+      "revId": "691247105b6d7bd1993bcb1ac151fc3823d54ea7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
