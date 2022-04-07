@@ -460,32 +460,30 @@ half $blend_color_saturation(half3 color) {
     return max(max(color.r, color.g), color.b) - min(min(color.r, color.g), color.b);
 }
 
-half3 $blend_set_color_saturation_helper(half3 minMidMax, half3 satColor) {
-    if (minMidMax.b > minMidMax.r) {
-        minMidMax.gb -= minMidMax.rr;
-        half sat = $blend_color_saturation(satColor);
-        return half3(0, sat * $guarded_divide(minMidMax.g, minMidMax.b), sat);
-    } else {
-        return half3(0);
-    }
-}
-
 half3 $blend_set_color_saturation(half3 hueLumColor, half3 satColor) {
-    if (hueLumColor.r <= hueLumColor.g) {
-        if (hueLumColor.g <= hueLumColor.b) {
-            return $blend_set_color_saturation_helper(hueLumColor.rgb, satColor);
-        } else if (hueLumColor.r <= hueLumColor.b) {
-            return $blend_set_color_saturation_helper(hueLumColor.rbg, satColor).rbg;
-        } else {
-            return $blend_set_color_saturation_helper(hueLumColor.brg, satColor).gbr;
-        }
-    } else if (hueLumColor.r <= hueLumColor.b) {
-       return $blend_set_color_saturation_helper(hueLumColor.grb, satColor).grb;
-    } else if (hueLumColor.g <= hueLumColor.b) {
-       return $blend_set_color_saturation_helper(hueLumColor.gbr, satColor).brg;
-    } else {
-       return $blend_set_color_saturation_helper(hueLumColor.bgr, satColor).bgr;
+    // Sort the RGB components of hueLumColor.
+    half3 swizzle = half3(-1, 0, 1);
+    if (hueLumColor.r > hueLumColor.g) {
+        hueLumColor = hueLumColor.grb;
+        swizzle = swizzle.grb;
     }
+    if (hueLumColor.r > hueLumColor.b) {
+        hueLumColor = hueLumColor.bgr;
+        swizzle = swizzle.bgr;
+    }
+    if (hueLumColor.g > hueLumColor.b) {
+        hueLumColor = hueLumColor.rbg;
+        swizzle = swizzle.rbg;
+    }
+    // After being sorted, we should have r <= g <= b.
+    hueLumColor -= hueLumColor.rrr;
+    if (hueLumColor.b > 0) {
+        half sat = $blend_color_saturation(satColor);
+        half mid = sat * $guarded_divide(hueLumColor.y, hueLumColor.z);
+        half3x3 m = half3x3(max(-swizzle, 0), 1 - abs(swizzle), max(swizzle, 0));
+        hueLumColor = half3(0, mid, sat) * m;
+    }
+    return hueLumColor;
 }
 
 half4 blend_hslc(half4 src, half4 dst, bool flip, bool saturate) {
