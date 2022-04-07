@@ -70,6 +70,30 @@
       },
       "revId": "691247105b6d7bd1993bcb1ac151fc3823d54ea7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3204ddbf_05a3fde7",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-07T20:11:24Z",
+      "side": 1,
+      "message": "Ah, of course, sksl_gpu wouldn\u0027t even exist.",
+      "parentUuid": "df815288_b40a2706",
+      "range": {
+        "startLine": 21,
+        "startChar": 65,
+        "endLine": 21,
+        "endChar": 69
+      },
+      "revId": "691247105b6d7bd1993bcb1ac151fc3823d54ea7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
