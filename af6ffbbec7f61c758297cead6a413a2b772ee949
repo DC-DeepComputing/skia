@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2ba80e33_634e1734",
+        "filename": "gn/codesign_ios.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-04-07T19:38:48Z",
+      "side": 1,
+      "message": "mobileprovision files include binary data, they are not (entirely) valid utf-8",
+      "revId": "af6ffbbec7f61c758297cead6a413a2b772ee949",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
