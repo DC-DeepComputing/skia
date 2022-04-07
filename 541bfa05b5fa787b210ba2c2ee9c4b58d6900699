@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fa71c81f_b9d9d15c",
+        "filename": "tests/SkVMDebugTracePlayerTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 306,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-07T18:51:32Z",
+      "side": 0,
+      "message": "We need the debugger to stop on Line 3.",
+      "range": {
+        "startLine": 302,
+        "startChar": 1,
+        "endLine": 306,
+        "endChar": 0
+      },
+      "revId": "541bfa05b5fa787b210ba2c2ee9c4b58d6900699",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
