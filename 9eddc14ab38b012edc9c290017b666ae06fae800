@@ -88,6 +88,24 @@
       "parentUuid": "09086935_5c640578",
       "revId": "9eddc14ab38b012edc9c290017b666ae06fae800",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9971a9c5_6ef4d87d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-07T19:42:47Z",
+      "side": 1,
+      "message": "Tested this on Jim\u0027s M1 machine (via http://experiments.mostafa.io/public/webgl-shader-playground/index.html ) and got the same result. Some bug in Apple\u0027s GL front-end.",
+      "parentUuid": "3c950eef_b262f3de",
+      "revId": "9eddc14ab38b012edc9c290017b666ae06fae800",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
