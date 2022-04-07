@@ -279,9 +279,9 @@ int main() {                          // Line 6
     SkSL::SkVMDebugTracePlayer player;
     player.reset(trace);
 
-    REPORTER_ASSERT(r, player.getLineNumbersReached() == LineNumberMap({{3, 1}, {4, 1}, {7, 1},
-                                                                        {8, 1}, {9, 1}, {10, 1},
-                                                                        {11, 1}, {12, 1}}));
+    REPORTER_ASSERT(r, player.getLineNumbersReached() == LineNumberMap({{4, 1}, {7, 1}, {8, 1},
+                                                                        {9, 1}, {10, 1}, {11, 1},
+                                                                        {12, 1}}));
     player.step();
 
     REPORTER_ASSERT(r, player.getCurrentLine() == 7);
@@ -297,11 +297,6 @@ int main() {                          // Line 6
     REPORTER_ASSERT(r, player.getCurrentLine() == 9);
     REPORTER_ASSERT(r, make_stack_string(*trace, player) == "int main()");
     REPORTER_ASSERT(r, make_local_vars_string(*trace, player) == "##b = true, a = 123");
-    player.step();
-
-    REPORTER_ASSERT(r, player.getCurrentLine() == 3);
-    REPORTER_ASSERT(r, make_stack_string(*trace, player) == "int main() -> float func()");
-    REPORTER_ASSERT(r, make_local_vars_string(*trace, player) == "");
     player.step();
 
     REPORTER_ASSERT(r, player.getCurrentLine() == 4);
