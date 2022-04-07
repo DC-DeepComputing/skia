@@ -16,6 +16,24 @@
       "message": "LGTM. Should there be a test that references the same constant composite in multiple places and verifies that the value gets constructed only once?",
       "revId": "92d3474e1626eee8ae420998236be71d7ffafa26",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2f76d495_b9fef38c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-07T16:20:37Z",
+      "side": 1,
+      "message": "Any of the tests here which reduced in size (e.g. Overflow.asm.frag) demonstrate the principle.\n\nI don\u0027t think we have any good approaches right now for testing codegen that generates less-than-optimal results. For correctness, we have everything in `SkSLTest`, and for checking the raw output we have the output in `/tests/`. But we don\u0027t have a good mechanism for writing a test that detects if SPIR-V emits working code but it contains the same constant twice. If someone breaks this somehow in the future, and the SPIR-V codegen is impacted, the idea is that it will be noticed in the .asm.frag output in code review. (I can see the case for making real pass-fail tests as well, we just don\u0027t have a framework for this today.)",
+      "parentUuid": "579f6af0_6ab6f19f",
+      "revId": "92d3474e1626eee8ae420998236be71d7ffafa26",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
