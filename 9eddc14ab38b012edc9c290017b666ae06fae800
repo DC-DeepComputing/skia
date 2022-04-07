@@ -70,6 +70,24 @@
       "parentUuid": "5d1bd4db_53491d27",
       "revId": "9eddc14ab38b012edc9c290017b666ae06fae800",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3c950eef_b262f3de",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-07T19:16:51Z",
+      "side": 1,
+      "message": "I also realized today, Apple is almost certainly done with AMD/Intel GPU improvements for the foreseeable future. Whatever condition the drivers are in right now, if it\u0027s not a kernel panic, it\u0027s probably as good as it\u0027s ever going to get. (If this repros on an M1, though, maybe...?)",
+      "parentUuid": "09086935_5c640578",
+      "revId": "9eddc14ab38b012edc9c290017b666ae06fae800",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
