@@ -10,6 +10,9 @@ struct Inputs {
 struct Outputs {
     half4 sk_FragColor [[color(0)]];
 };
+half blend_color_saturation_Qhh3(half3 color) {
+    return max(max(color.x, color.y), color.z) - min(min(color.x, color.y), color.z);
+}
 half4 blend_hslc_h4h4h4bb(half4 src, half4 dst, bool flip, bool saturate) {
     half alpha = dst.w * src.w;
     half3 sda = src.xyz * dst.w;
@@ -17,35 +20,10 @@ half4 blend_hslc_h4h4h4bb(half4 src, half4 dst, bool flip, bool saturate) {
     half3 l = flip ? dsa : sda;
     half3 r = flip ? sda : dsa;
     if (saturate) {
-        half3 _2_hueLumColor = l;
-        half3 _3_midPt = half3(0.0h);
-        half3 _4_satPt = half3(0.0h);
-        if (_2_hueLumColor.x <= _2_hueLumColor.y) {
-            if (_2_hueLumColor.y <= _2_hueLumColor.z) {
-                _2_hueLumColor -= _2_hueLumColor.xxx;
-                _3_midPt.y = (_4_satPt.z = 1.0h);
-            } else if (_2_hueLumColor.x <= _2_hueLumColor.z) {
-                _2_hueLumColor = _2_hueLumColor.xzy - _2_hueLumColor.xxx;
-                _3_midPt.z = (_4_satPt.y = 1.0h);
-            } else {
-                _2_hueLumColor = _2_hueLumColor.zxy - _2_hueLumColor.zzz;
-                _3_midPt.x = (_4_satPt.y = 1.0h);
-            }
-        } else if (_2_hueLumColor.x <= _2_hueLumColor.z) {
-            _2_hueLumColor = _2_hueLumColor.yxz - _2_hueLumColor.yyy;
-            _3_midPt.x = (_4_satPt.z = 1.0h);
-        } else if (_2_hueLumColor.y <= _2_hueLumColor.z) {
-            _2_hueLumColor = _2_hueLumColor.yzx - _2_hueLumColor.yyy;
-            _3_midPt.z = (_4_satPt.x = 1.0h);
-        } else {
-            _2_hueLumColor = _2_hueLumColor.zyx - _2_hueLumColor.zzz;
-            _3_midPt.y = (_4_satPt.x = 1.0h);
-        }
-        if (_2_hueLumColor.z > 0.0h) {
-            _3_midPt *= _2_hueLumColor.y / _2_hueLumColor.z;
-            _2_hueLumColor = (_3_midPt + _4_satPt) * (max(max(r.x, r.y), r.z) - min(min(r.x, r.y), r.z));
-        }
-        l = _2_hueLumColor;
+        half _2_mn = min(min(l.x, l.y), l.z);
+        half _3_mx = max(max(l.x, l.y), l.z);
+        half _4_sat = _3_mx - _2_mn;
+        l = _4_sat > 0.0h ? ((l - _2_mn) * blend_color_saturation_Qhh3(r)) / _4_sat : half3(0.0h);
         r = dsa;
     }
     half _5_lum = dot(half3(0.30000001192092896h, 0.5899999737739563h, 0.10999999940395355h), r);
