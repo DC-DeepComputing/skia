@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9e1b6120_43be7a36",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-07T19:01:33Z",
+      "side": 1,
+      "message": "LGTM modulo variables in debug traces.",
+      "revId": "3a0fe52e9cea5793cf5aa9ecf710d3d58e249e39",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
