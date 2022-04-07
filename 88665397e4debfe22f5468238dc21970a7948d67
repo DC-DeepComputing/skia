@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "46cc58e7_f88043eb",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-04-07T17:18:47Z",
+      "side": 1,
+      "message": "nit: common",
+      "range": {
+        "startLine": 7,
+        "startChar": 24,
+        "endLine": 7,
+        "endChar": 25
+      },
+      "revId": "88665397e4debfe22f5468238dc21970a7948d67",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
