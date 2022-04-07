@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7b70d8a6_f0d1d007",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-04-07T20:04:21Z",
+      "side": 1,
+      "message": "Note that currently, there\u0027s no way for this code to end up executed on skvm - the built-in sksl blend functions are all in sksl_gpu, and skvm has it\u0027s own direct implementation of all the blending functions.",
+      "range": {
+        "startLine": 21,
+        "startChar": 65,
+        "endLine": 21,
+        "endChar": 69
+      },
+      "revId": "691247105b6d7bd1993bcb1ac151fc3823d54ea7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
