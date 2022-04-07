@@ -38,9 +38,11 @@ public:
 
     DSLBlock(DSLBlock&& other) = default;
 
-    DSLBlock(SkSL::StatementArray statements, std::shared_ptr<SymbolTable> symbols = nullptr);
+    DSLBlock(SkSL::StatementArray statements, std::shared_ptr<SymbolTable> symbols = nullptr,
+            Position pos = Position::Capture());
 
-    DSLBlock(SkTArray<DSLStatement> statements, std::shared_ptr<SymbolTable> symbols = nullptr);
+    DSLBlock(SkTArray<DSLStatement> statements, std::shared_ptr<SymbolTable> symbols = nullptr,
+            Position pos = Position::Capture());
 
     ~DSLBlock();
 
@@ -56,6 +58,7 @@ public:
 private:
     SkSL::StatementArray fStatements;
     std::shared_ptr<SkSL::SymbolTable> fSymbols;
+    Position fPosition;
 
     friend class DSLStatement;
     friend class DSLFunction;
