@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "88727f84_70dfc915",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 231,
+      "author": {
+        "id": 18699
+      },
+      "writtenOn": "2022-04-07T04:48:50Z",
+      "side": 1,
+      "message": "I wrote some test cases to catch edge cases like this but I\u0027ll upload them in a follow up, since they rely on some SkSL expressions that are not yet supported.",
+      "range": {
+        "startLine": 228,
+        "startChar": 16,
+        "endLine": 231,
+        "endChar": 54
+      },
+      "revId": "0f583b97554ff2fba2cafb52f41bc4914e8611d0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
