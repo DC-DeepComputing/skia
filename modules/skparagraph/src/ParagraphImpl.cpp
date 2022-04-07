@@ -237,18 +237,27 @@ bool ParagraphImpl::computeCodeUnitProperties() {
         return false;
     }
 
-    // Get all spaces
+    // Collect all spaces and some extra information
+    fTrailingSpaces = fText.size();
     fUnicode->forEachCodepoint(fText.c_str(), fText.size(),
        [this](SkUnichar unichar, int32_t start, int32_t end, int32_t count) {
             if (fUnicode->isWhitespace(unichar)) {
                 for (auto i = start; i < end; ++i) {
                     fCodeUnitProperties[i] |=  CodeUnitFlags::kPartOfWhiteSpaceBreak;
                 }
+                if (fTrailingSpaces  == fText.size()) {
+                    fTrailingSpaces = start;
+                }
+            } else {
+                fTrailingSpaces = fText.size();
             }
             if (fUnicode->isSpace(unichar)) {
                 for (auto i = start; i < end; ++i) {
                     fCodeUnitProperties[i] |=  CodeUnitFlags::kPartOfIntraWordBreak;
                 }
+            }
+            if (fUnicode->isHardBreak(unichar)) {
+                fHasLineBreaks = true;
             }
        });
 
@@ -515,6 +524,50 @@ bool ParagraphImpl::shapeTextIntoEndlessLine() {
 }
 
 void ParagraphImpl::breakShapedTextIntoLines(SkScalar maxWidth) {
+
+    if (!fHasLineBreaks && fRuns.size() == 1 && fRuns[0].fAdvance.fX <= maxWidth) {
+        // TODO: Trailing spaces
+        auto& run = this->fRuns[0];
+        auto advance = run.advance();
+        auto textRange = TextRange(0, this->text().size());
+        auto textExcludingSpaces = TextRange(0, fTrailingSpaces);
+        ClusterIndex trailingSpaces = fClusters.size() - 1;
+        InternalLineMetrics metrics(run.fFont, false);
+
+        auto disableFirstAscent = this->paragraphStyle().getTextHeightBehavior() &
+                                  TextHeightBehavior::kDisableFirstAscent;
+        auto disableLastDescent = this->paragraphStyle().getTextHeightBehavior() &
+                                  TextHeightBehavior::kDisableLastDescent;
+
+        metrics.updateRawData(disableFirstAscent ? metrics.rawAscent() : metrics.ascent(),
+                              disableLastDescent ? metrics.rawDescent() : metrics.descent());
+        while (--trailingSpaces != 0) {
+            auto& cluster = fClusters[trailingSpaces];
+            if (!cluster.isWhitespaceBreak()) {
+                break;
+            }
+            advance.fX -= cluster.width();
+        }
+        advance.fY = metrics.height();
+        auto clusterRange = ClusterRange(0, trailingSpaces + 1);
+        auto clusterRangeWithGhosts = ClusterRange(0, this->clusters().size() - 1);
+
+        this->addLine(SkPoint::Make(0, 0), advance,
+                      textExcludingSpaces, textRange, textRange,
+                      clusterRange, clusterRangeWithGhosts, run.advance().x(),
+                      metrics);
+
+        fLongestLine = advance.fX;
+        fHeight = advance.fY;
+        fWidth = maxWidth;
+        fMaxIntrinsicWidth = advance.fX;
+        fMinIntrinsicWidth = advance.fY;
+        fAlphabeticBaseline = fLines.empty() ? fEmptyMetrics.alphabeticBaseline() : fLines.front().alphabeticBaseline();
+        fIdeographicBaseline = fLines.empty() ? fEmptyMetrics.ideographicBaseline() : fLines.front().ideographicBaseline();
+        fExceededMaxLines = false;
+        return;
+    }
+
     TextWrapper textWrapper;
     textWrapper.breakTextIntoLines(
             this,

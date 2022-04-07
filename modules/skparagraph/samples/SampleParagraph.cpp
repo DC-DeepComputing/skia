@@ -3621,22 +3621,18 @@ protected:
         fontCollection->setDefaultFontManager(SkFontMgr::RefDefault());
         TextStyle text_style;
         text_style.setFontFamilies({SkString("Roboto")});
-        text_style.setFontSize(100);
-        SkPaint black;
-        black.setColor(SK_ColorBLACK);
-        text_style.setForegroundColor(black);
-        SkPaint red;
-        red.setColor(SK_ColorRED);
-        text_style.setBackgroundColor(red);
+        text_style.setFontSize(40);
+        text_style.setColor(SK_ColorBLACK);
 
         ParagraphStyle paragraph_style;
         paragraph_style.setTextStyle(text_style);
+        paragraph_style.setTextAlign(TextAlign::kCenter);
         ParagraphBuilderImpl builder(paragraph_style, fontCollection);
 
         builder.pushStyle(text_style);
-        builder.addText(".");
+        builder.addText("Test starting...");
         auto paragraph = builder.Build();
-        paragraph->layout(SK_ScalarInfinity);
+        paragraph->layout(600);
         paragraph->paint(canvas, 0, 0);
     }
 
