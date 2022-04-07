@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a67d68e0_91478aaa",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 177,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-04-07T02:02:19Z",
+      "side": 1,
+      "message": "Done. It took me a little bit to figure out the inner workings of it.",
+      "parentUuid": "1ea5b4d2_807aebc4",
+      "range": {
+        "startLine": 177,
+        "startChar": 0,
+        "endLine": 177,
+        "endChar": 34
+      },
+      "revId": "950b049217993a0289c9b8a0f78d8350962ef24f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d7d6026c_2eba0ec8",
@@ -61,6 +85,30 @@
       "writtenOn": "2022-04-04T23:08:54Z",
       "side": 1,
       "message": "This is C++20 syntax; we are limited to C++17. (Google3 allows this as an extension.)",
+      "range": {
+        "startLine": 189,
+        "startChar": 0,
+        "endLine": 192,
+        "endChar": 10
+      },
+      "revId": "950b049217993a0289c9b8a0f78d8350962ef24f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e53ac6df_746baa7b",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 192,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-04-07T02:02:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d7d6026c_2eba0ec8",
       "range": {
         "startLine": 189,
         "startChar": 0,
