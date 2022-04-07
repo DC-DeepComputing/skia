@@ -16,6 +16,24 @@
       "message": "Clever. I wonder if this makes it more likely that we hit the various driver bugs with side-effects being ignored in comma-operator expressions? Conversely ... are those drivers any less likely to break if we do this in reverse?",
       "revId": "9eddc14ab38b012edc9c290017b666ae06fae800",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3037eda5_bd715e4a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-07T19:08:57Z",
+      "side": 1,
+      "message": "In practice I did actually find one driver bug here:\n\n    colorG.g \u003d (param \u003d true) ? 1 : 1;\n\nDid not work on my machine in GLSL. (Fine in SkVM and Metal though.) \nPost-optimization form was this:\n\n    colorG.g \u003d float((param \u003d true, 1));\n\nI did not do any deep investigation so I don\u0027t know if the unmodified form is actually safer, or exactly what went wrong. My hunch was that the `param\u003dtrue` was eliminated.",
+      "parentUuid": "7996b1df_d7beff79",
+      "revId": "9eddc14ab38b012edc9c290017b666ae06fae800",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
