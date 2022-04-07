@@ -421,6 +421,7 @@ generated_cc_atom(
         ":SlideDir_hdr",
         ":SvgSlide_hdr",
         ":Viewer_hdr",
+        "//@spirv_tools//:spirv_tools_opt",
         "//include/core:SkCanvas_hdr",
         "//include/core:SkData_hdr",
         "//include/core:SkGraphics_hdr",
