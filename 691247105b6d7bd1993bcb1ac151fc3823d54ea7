@@ -46,6 +46,30 @@
       },
       "revId": "691247105b6d7bd1993bcb1ac151fc3823d54ea7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "df815288_b40a2706",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-04-07T20:10:44Z",
+      "side": 1,
+      "message": "No, we\u0027d still never get past the VM generator. All public sksl (shader, blender, etc...) are all limited to what\u0027s in sksl_public, and any of the fixed-function blenders (SkBlendModeBlender) directly call skvm::Builder::blend() for the mode, etc.",
+      "parentUuid": "6c974fa5_7d4298ff",
+      "range": {
+        "startLine": 21,
+        "startChar": 65,
+        "endLine": 21,
+        "endChar": 69
+      },
+      "revId": "691247105b6d7bd1993bcb1ac151fc3823d54ea7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
