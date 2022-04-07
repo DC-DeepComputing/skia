@@ -34,6 +34,24 @@
       "parentUuid": "579f6af0_6ab6f19f",
       "revId": "92d3474e1626eee8ae420998236be71d7ffafa26",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "520152f9_d4c52945",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-04-07T16:27:25Z",
+      "side": 1,
+      "message": "Ah right, Overflow.sksl does exercise this but it\u0027s not obvious (the reference to the constant composites are implicit in the calls to saturate() afaict). I was just wondering if there should be brief test that does that explicitly, even without any automated pass/fail detection.",
+      "parentUuid": "2f76d495_b9fef38c",
+      "revId": "92d3474e1626eee8ae420998236be71d7ffafa26",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
