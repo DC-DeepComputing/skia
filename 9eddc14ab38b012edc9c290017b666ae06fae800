@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7996b1df_d7beff79",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-04-07T19:05:44Z",
+      "side": 1,
+      "message": "Clever. I wonder if this makes it more likely that we hit the various driver bugs with side-effects being ignored in comma-operator expressions? Conversely ... are those drivers any less likely to break if we do this in reverse?",
+      "revId": "9eddc14ab38b012edc9c290017b666ae06fae800",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
