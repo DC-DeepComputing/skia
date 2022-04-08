@@ -1353,9 +1353,7 @@ SpvId SPIRVCodeGenerator::writeConstantVector(const AnyConstructor& c) {
     SkASSERT(type.isVector() && c.isCompileTimeConstant());
 
     // Get each of the constructor components as SPIR-V constants.
-    SPIRVVectorConstant key{this->getType(type),
-                            /*fValueId=*/{SpvId(-1), SpvId(-1), SpvId(-1), SpvId(-1)}};
-
+    SkSTArray<4, SpvId> values;
     const Type& scalarType = type.componentType();
     for (int n = 0; n < type.columns(); n++) {
         std::optional<double> slotVal = c.getConstantValue(n);
@@ -1363,28 +1361,21 @@ SpvId SPIRVCodeGenerator::writeConstantVector(const AnyConstructor& c) {
             SkDEBUGFAILF("writeConstantVector: %s not actually constant", c.description().c_str());
             return (SpvId)-1;
         }
-        key.fValueId[n] = this->writeLiteral(*slotVal, scalarType);
+        values.push_back(this->writeLiteral(*slotVal, scalarType));
     }
 
-    return this->writeConstantVector(type, key);
+    return this->writeConstantVector(type, values);
 }
 
-SpvId SPIRVCodeGenerator::writeConstantVector(const Type& type, const SPIRVVectorConstant& key) {
-    // Check to see if we've already synthesized this vector constant.
-    if (SpvId* entry = fVectorConstants.find(key)) {
-        return *entry;
+SpvId SPIRVCodeGenerator::writeConstantVector(const Type& type, const SkTArray<SpvId>& values) {
+    SkSTArray<8, Word> words;
+    words.push_back(this->getType(type));
+    words.push_back(Word::Result(type));
+    for (SpvId value : values) {
+        words.push_back(value);
     }
 
-    // Emit an OpConstantComposite instruction for this constant.
-    SpvId result = this->nextId(&type);
-    this->writeOpCode(SpvOpConstantComposite, 3 + type.columns(), fConstantBuffer);
-    this->writeWord(key.fTypeId, fConstantBuffer);
-    this->writeWord(result, fConstantBuffer);
-    for (int i = 0; i < type.columns(); i++) {
-        this->writeWord(key.fValueId[i], fConstantBuffer);
-    }
-    fVectorConstants.set(key, result);
-    return result;
+    return this->writeInstruction(SpvOpConstantComposite, words, fConstantBuffer);
 }
 
 SpvId SPIRVCodeGenerator::castScalarToType(SpvId inputExprId,
@@ -1736,10 +1727,6 @@ SpvId SPIRVCodeGenerator::writeVectorConstructor(const ConstructorCompound& c, O
     const Type& componentType = type.componentType();
     SkASSERT(type.isVector());
 
-    if (c.isCompileTimeConstant()) {
-        return this->writeConstantVector(c);
-    }
-
     std::vector<SpvId> arguments;
     arguments.reserve(c.arguments().size());
     for (size_t i = 0; i < c.arguments().size(); i++) {
@@ -1783,27 +1770,17 @@ SpvId SPIRVCodeGenerator::writeCompositeAsConstant(const std::vector<SpvId>& arg
         // Only vectors are allowed.
         return (SpvId)-1;
     }
-    SPIRVVectorConstant key = {/*fTypeId=*/(SpvId)-1,
-                               /*fValueId=*/{(SpvId)-1, (SpvId)-1, (SpvId)-1, (SpvId)-1}};
+
+    SkSTArray<4, SpvId> values;
     for (size_t index = 0; index < arguments.size(); ++index) {
-        // See if this argument is a numeric constant by scanning fNumberConstants.
         SpvId arg = arguments[index];
-        bool found = false;
-        for (const auto& [k, v] : fNumberConstants) {
-            if (v == arg) {
-                found = true;
-                break;
-            }
-        }
-        if (!found) {
-            // This argument isn't a literal.
+        if (!fNumberConstants.contains(arg)) {
             return (SpvId)-1;
         }
-        key.fValueId[index] = arg;
+        values.push_back(arg);
     }
     // We found a composite that's composed entirely of literals. Write an OpConstantComposite.
-    key.fTypeId = this->getType(type);
-    return this->writeConstantVector(type, key);
+    return this->writeConstantVector(type, values);
 }
 
 SpvId SPIRVCodeGenerator::writeComposite(const std::vector<SpvId>& arguments,
@@ -3021,12 +2998,6 @@ SpvId SPIRVCodeGenerator::writeLiteral(double value, const Type& type) {
         valueBits = iValue;
     }
 
-    SPIRVNumberConstant key{valueBits, type.numberKind()};
-    // Don't rely on fNumberConstants for deduplication. Let `writeInstruction` do it.
-//    if (SpvId* entry = fNumberConstants.find(key)) {
-//        return *entry;
-//    }
-
     SpvId result;
 
     if (type.isBoolean()) {
@@ -3041,7 +3012,7 @@ SpvId SPIRVCodeGenerator::writeLiteral(double value, const Type& type) {
                 fConstantBuffer);
     }
 
-    fNumberConstants.set(key, result);
+    fNumberConstants.add(result);
     return result;
 }
 
