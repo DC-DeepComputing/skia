@@ -16,6 +16,52 @@
       "message": "Not intended to change any behavior on the happy path, cleans up a few things.",
       "revId": "4eeb847f3428bb01049d77ae12f0326b7510bfa9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b543053b_331596f0",
+        "filename": "src/ports/SkFontHost_FreeType_common.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 532,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-04-08T20:49:34Z",
+      "side": 1,
+      "message": "Camel Case?",
+      "range": {
+        "startLine": 532,
+        "startChar": 12,
+        "endLine": 532,
+        "endChar": 27
+      },
+      "revId": "4eeb847f3428bb01049d77ae12f0326b7510bfa9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "117fe6de_5431266d",
+        "filename": "src/ports/SkFontHost_FreeType_common.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1238,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-04-08T20:49:34Z",
+      "side": 1,
+      "message": "Can\u0027t this just be an \u0026\u0026?",
+      "range": {
+        "startLine": 1234,
+        "startChar": 4,
+        "endLine": 1238,
+        "endChar": 0
+      },
+      "revId": "4eeb847f3428bb01049d77ae12f0326b7510bfa9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
