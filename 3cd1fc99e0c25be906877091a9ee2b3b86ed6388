@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "64774a49_8a0848eb",
+        "filename": "src/sksl/tracing/SkVMDebugTrace.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 413,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-08T18:30:40Z",
+      "side": 1,
+      "message": "nit: no indent inside namespaces",
+      "range": {
+        "startLine": 397,
+        "startChar": 4,
+        "endLine": 413,
+        "endChar": 18
+      },
+      "revId": "3cd1fc99e0c25be906877091a9ee2b3b86ed6388",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
