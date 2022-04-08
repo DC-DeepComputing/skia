@@ -26,6 +26,7 @@
 #include "src/sksl/spirv.h"
 
 #include <stdint.h>
+#include <initializer_list>
 #include <memory>
 #include <stack>
 #include <string>
@@ -97,6 +98,21 @@ struct SPIRVVectorConstant {
     struct Hash {
         uint32_t operator()(const SPIRVVectorConstant& key) const {
             return SkOpts::hash(&key, sizeof(key));
+        }
+    };
+};
+
+struct SPIRVOp {
+    bool operator==(const SPIRVOp& that) const {
+        return fOp   == that.fOp &&
+               fWord == that.fWord;
+    }
+    SpvId                 fOp;
+    SkSTArray<8, int32_t> fWord;
+
+    struct Hash {
+        uint32_t operator()(const SPIRVOp& key) const {
+            return SkOpts::hash_fn(key.fWord.data(), key.fWord.count() * sizeof(int32_t), key.fOp);
         }
     };
 };
@@ -461,6 +477,10 @@ private:
                           int32_t word5, int32_t word6, int32_t word7, int32_t word8,
                           OutputStream& out);
 
+    // The SPIRVWord form of writeInstruction can deduplicate redundant ops.
+    struct SPIRVWord;
+    SpvId writeInstruction(SpvOp_ opCode, const SkSTArray<8, SPIRVWord>& words, OutputStream& out);
+
     bool isDead(const Variable& var) const;
 
     MemoryLayout memoryLayoutForVariable(const Variable&) const;
@@ -506,8 +526,10 @@ private:
     StringStream fNameBuffer;
     StringStream fDecorationBuffer;
 
+    SkTHashMap<SPIRVOp, SpvId, SPIRVOp::Hash> fOpCache;
     SkTHashMap<SPIRVNumberConstant, SpvId, SPIRVNumberConstant::Hash> fNumberConstants;
     SkTHashMap<SPIRVVectorConstant, SpvId, SPIRVVectorConstant::Hash> fVectorConstants;
+
     // label of the current block, or 0 if we are not in a block
     SpvId fCurrentBlock;
     std::stack<SpvId> fBreakTarget;
