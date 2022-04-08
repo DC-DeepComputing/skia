@@ -385,6 +385,7 @@ generated_cc_atom(
         "//src/sksl/ir:SkSLIfStatement_hdr",
         "//src/sksl/ir:SkSLIndexExpression_hdr",
         "//src/sksl/ir:SkSLLiteral_hdr",
+        "//src/sksl/ir:SkSLNop_hdr",
         "//src/sksl/ir:SkSLPostfixExpression_hdr",
         "//src/sksl/ir:SkSLPrefixExpression_hdr",
         "//src/sksl/ir:SkSLProgram_hdr",

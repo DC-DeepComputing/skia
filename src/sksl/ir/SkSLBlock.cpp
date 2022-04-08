@@ -15,7 +15,7 @@ namespace SkSL {
 std::unique_ptr<Statement> Block::MakeUnscoped(Position pos, StatementArray statements) {
     // If the Block is completely empty, synthesize a Nop.
     if (statements.empty()) {
-        return Nop::Make();
+        return Nop::Make(pos);
     }
 
     if (statements.size() > 1) {
