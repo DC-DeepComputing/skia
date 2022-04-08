@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1e0ad92c_7fbd649f",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-04-08T20:02:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4e9124af_6b4cf855",
+      "range": {
+        "startLine": 42,
+        "startChar": 0,
+        "endLine": 42,
+        "endChar": 11
+      },
+      "revId": "0f583b97554ff2fba2cafb52f41bc4914e8611d0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a03349b0_7aa3f759",
@@ -54,6 +78,30 @@
       "writtenOn": "2022-04-08T18:27:21Z",
       "side": 1,
       "message": "Seems like this could safely be `string_view`",
+      "range": {
+        "startLine": 54,
+        "startChar": 5,
+        "endLine": 54,
+        "endChar": 11
+      },
+      "revId": "0f583b97554ff2fba2cafb52f41bc4914e8611d0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "057b60db_4d3a0d67",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-04-08T20:02:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a03349b0_7aa3f759",
       "range": {
         "startLine": 54,
         "startChar": 5,
@@ -110,6 +158,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cea0d92e_4b5962f8",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 732,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-04-08T20:02:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1546aeea_45ef6514",
+      "range": {
+        "startLine": 732,
+        "startChar": 25,
+        "endLine": 732,
+        "endChar": 38
+      },
+      "revId": "0f583b97554ff2fba2cafb52f41bc4914e8611d0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3e5a2889_9f6d850d",
@@ -123,6 +195,30 @@
       "writtenOn": "2022-04-08T18:27:21Z",
       "side": 1,
       "message": "use `pipeline_struct_prefix`?",
+      "range": {
+        "startLine": 781,
+        "startChar": 0,
+        "endLine": 789,
+        "endChar": 5
+      },
+      "revId": "0f583b97554ff2fba2cafb52f41bc4914e8611d0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a19c2bb9_fd6de96c",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 789,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-04-08T20:02:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3e5a2889_9f6d850d",
       "range": {
         "startLine": 781,
         "startChar": 0,
