@@ -3707,12 +3707,6 @@ void GrGLCaps::applyDriverCorrectnessWorkarounds(const GrGLContextInfo& ctxInfo,
         fAllowBGRA8CopyTexSubImage = true;
     }
 
-    // http://anglebug.com/6030
-    if (fMSFBOType == kES_EXT_MsToTexture_MSFBOType &&
-        ctxInfo.angleBackend() == GrGLANGLEBackend::kD3D11) {
-        fDisallowDynamicMSAA = true;
-    }
-
     // http://skbug.com/12081
     if (GR_IS_GR_WEBGL(ctxInfo.standard())) {
         fDisallowDynamicMSAA = true;
@@ -4344,7 +4338,7 @@ void GrGLCaps::applyDriverCorrectnessWorkarounds(const GrGLContextInfo& ctxInfo,
          ctxInfo.angleVendor() == GrGLVendor::kIntel) &&
          (ctxInfo.renderer() < GrGLRenderer::kIntelIceLake ||
           !contextOptions.fAllowMSAAOnNewIntel)) {
-         fMSFBOType = kNone_MSFBOType;
+         //fMSFBOType = kNone_MSFBOType;
     }
 
     // ANGLE's D3D9 backend + AMD GPUs are flaky with program binary caching (skbug.com/10395)
