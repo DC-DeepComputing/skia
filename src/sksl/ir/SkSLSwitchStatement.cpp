@@ -250,7 +250,7 @@ std::unique_ptr<Statement> SwitchStatement::Make(const Context& context,
                 if (!defaultCase) {
                     // No default switch-case exists; the switch had no effect.
                     // We can eliminate the entire switch!
-                    return Nop::Make();
+                    return Nop::Make(pos);
                 }
                 // We had a default case; that's what we matched with.
                 matchingCase = defaultCase;

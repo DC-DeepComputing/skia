@@ -47,6 +47,7 @@
 #include "src/sksl/ir/SkSLIfStatement.h"
 #include "src/sksl/ir/SkSLIndexExpression.h"
 #include "src/sksl/ir/SkSLLiteral.h"
+#include "src/sksl/ir/SkSLNop.h"
 #include "src/sksl/ir/SkSLPostfixExpression.h"
 #include "src/sksl/ir/SkSLPrefixExpression.h"
 #include "src/sksl/ir/SkSLProgram.h"
@@ -2028,8 +2029,8 @@ void SkVMGenerator::emitTraceScope(skvm::I32 executionMask, int delta) {
 }
 
 void SkVMGenerator::writeStatement(const Statement& s) {
-    if (!s.is<Block>() || !s.as<Block>().isScope()) {
-        // we don't care about tracing the positions of curly braces
+    // we don't care about tracing the positions of curly braces or nops
+    if ((!s.is<Block>() || !s.as<Block>().isScope()) && !s.is<Nop>()) {
         this->emitTraceLine(this->getLine(s.fPosition));
     }
 

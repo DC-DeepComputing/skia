@@ -56,7 +56,7 @@ DSLStatement::DSLStatement(DSLPossibleStatement stmt, Position pos) {
     if (stmt.hasValue()) {
         fStatement = std::move(stmt.fStatement);
     } else {
-        fStatement = SkSL::Nop::Make();
+        fStatement = SkSL::Nop::Make(pos);
     }
     if (pos.valid() && !fStatement->fPosition.valid()) {
         fStatement->fPosition = pos;
