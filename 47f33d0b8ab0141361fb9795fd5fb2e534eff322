@@ -16,6 +16,24 @@
       "message": "looks like there are some build errors to sort out",
       "revId": "47f33d0b8ab0141361fb9795fd5fb2e534eff322",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a145cc7c_e52d7665",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18274
+      },
+      "writtenOn": "2022-04-08T00:02:35Z",
+      "side": 1,
+      "message": "There were some build errors due to extra parameter passed to GrSurfaceProxy. I have fixed that in the latest patchset. Can we please run the CQ once again to refresh the error list? There were few which I did not fully understood and wanted to check if other failures were related to the latest fix or not.",
+      "parentUuid": "08fa2c8c_000940d1",
+      "revId": "47f33d0b8ab0141361fb9795fd5fb2e534eff322",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
