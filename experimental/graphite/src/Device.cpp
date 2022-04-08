@@ -311,7 +311,7 @@ void Device::onClipRect(const SkRect& rect, SkClipOp op, bool aa) {
     // TODO: Cached transform?
     Transform localToDevice(this->localToDevice44());
     // TODO: Snap rect edges to pixel bounds if non-AA and axis-aligned?
-    fClip.clipShape(localToDevice, Shape{rect}, op);
+    fClip.clipShape(localToDevice, Shape{rect}, op, this);
 }
 
 void Device::onClipRRect(const SkRRect& rrect, SkClipOp op, bool aa) {
@@ -320,7 +320,7 @@ void Device::onClipRRect(const SkRRect& rrect, SkClipOp op, bool aa) {
     Transform localToDevice(this->localToDevice44());
     // TODO: Snap rrect edges to pixel bounds if non-AA and axis-aligned? Is that worth doing to
     // seam with non-AA rects even if the curves themselves are AA'ed?
-    fClip.clipShape(localToDevice, Shape{rrect}, op);
+    fClip.clipShape(localToDevice, Shape{rrect}, op, this);
 }
 
 void Device::onClipPath(const SkPath& path, SkClipOp op, bool aa) {
@@ -330,7 +330,7 @@ void Device::onClipPath(const SkPath& path, SkClipOp op, bool aa) {
     // TODO: Ensure all path inspection is handled here or in SkCanvas, and that non-AA rects as
     // paths are routed appropriately.
     // TODO: Must also detect paths that are lines so the clip stack can be set to empty
-    fClip.clipShape(localToDevice, Shape{path}, op);
+    fClip.clipShape(localToDevice, Shape{path}, op, this);
 }
 
 void Device::onClipShader(sk_sp<SkShader> shader) {
@@ -344,16 +344,16 @@ void Device::onClipRegion(const SkRegion& globalRgn, SkClipOp op) {
     Transform globalToDevice{this->globalToDevice()};
 
     if (globalRgn.isEmpty()) {
-        fClip.clipShape(globalToDevice, Shape{}, op);
+        fClip.clipShape(globalToDevice, Shape{}, op, this);
     } else if (globalRgn.isRect()) {
         // TODO: Region clips are non-AA so this should match non-AA onClipRect(), but we use a
         // different transform so can't just call that instead.
-        fClip.clipShape(globalToDevice, Shape{SkRect::Make(globalRgn.getBounds())}, op);
+        fClip.clipShape(globalToDevice, Shape{SkRect::Make(globalRgn.getBounds())}, op, this);
     } else {
         // TODO: Can we just iterate the region and do non-AA rects for each chunk?
         SkPath path;
         globalRgn.getBoundaryPath(&path);
-        fClip.clipShape(globalToDevice, Shape{path}, op);
+        fClip.clipShape(globalToDevice, Shape{path}, op, this);
     }
 }
 
@@ -538,9 +538,10 @@ void Device::drawShape(const Shape& shape,
     // Record the painters order and depth used for this draw
     // TODO: If recordDraw picked a coverage AA renderer, 'dependsOnDst' is out of date.
     const bool fullyOpaque = !dependsOnDst &&
+                             clipOrder == DrawOrder::kNoIntersection &&
                              shape.isRect() &&
                              localToDevice.type() <= Transform::Type::kRectStaysRect;
-    fColorDepthBoundsManager->recordDraw(shape.bounds(),
+    fColorDepthBoundsManager->recordDraw(clip.drawBounds(),
                                          order.paintOrder(),
                                          order.depth(),
                                          fullyOpaque);
@@ -651,8 +652,7 @@ void Device::flushPendingWorkToRecorder() {
         fRecorder->priv().add(std::move(uploadTask));
     }
 
-    // TODO: iterate the clip stack and issue a depth-only draw for every clip element that has
-    // a non-empty usage bounds, using that bounds as the scissor.
+    fClip.recordDeferredClipDraws(this);
     auto drawTask = fDC->snapRenderPassTask(fRecorder, fColorDepthBoundsManager.get());
     if (drawTask) {
         fRecorder->priv().add(std::move(drawTask));
@@ -668,9 +668,8 @@ void Device::flushPendingWorkToRecorder() {
 }
 
 bool Device::needsFlushBeforeDraw(int numNewDraws) const {
-    // TODO: iterate the clip stack and count the number of clip elements (both w/ and w/o usage
-    // since we want to know the max # of clip shapes that flushing might add as draws).
-    // numNewDraws += clip element count...
+    // Must also account for the elements in the clip stack that might need to be recorded.
+    numNewDraws += fClip.maxDeferredClipDraws();
     return (DrawList::kMaxDraws - fDC->pendingDrawCount()) < numNewDraws;
 }
 

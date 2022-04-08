@@ -59,7 +59,7 @@ private:
 
     // Clipping
     void onSave() override { fClip.save(); }
-    void onRestore() override { fClip.restore(); }
+    void onRestore() override { fClip.restore(this); }
 
     bool onClipIsWideOpen() const override {
         return fClip.clipState() == ClipStack::ClipState::kWideOpen;
@@ -186,6 +186,8 @@ private:
     PaintersDepth fCurrentDepth;
 
     bool fDrawsOverlap;
+
+    friend class ClipStack; // for recordDraw
 };
 
 SKGPU_MAKE_MASK_OPS(Device::DrawFlags)
