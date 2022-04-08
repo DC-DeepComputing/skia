@@ -16,6 +16,24 @@
       "message": "I\u0027m okay with this, but I wonder how much code size this is actually going to save? I\u0027m assuming that 99% of all DSL calls are in DSLParser, where it\u0027s passing an explicit position anyway, so the Capture calls aren\u0027t even present?",
       "revId": "30aae1dbf093b9d960e0f32915628f2f0cc47b87",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f0f7e919_ecf3cb55",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-04-08T17:23:30Z",
+      "side": 1,
+      "message": "It\u0027s probably not a significant savings, but it\u0027s certainly more than 1% of DSL calls that are outside the parser.",
+      "parentUuid": "92621d8a_b973143b",
+      "revId": "30aae1dbf093b9d960e0f32915628f2f0cc47b87",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
