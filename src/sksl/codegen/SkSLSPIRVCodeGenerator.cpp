@@ -78,6 +78,41 @@ constexpr int DEVICE_CLOCKWISE_BUILTIN  = -1001;
 
 namespace SkSL {
 
+// This class is used to pass values and result placeholder slots to writeInstruction.
+struct SPIRVCodeGenerator::Word {
+    enum class Kind {
+        kNone,
+        kSpvId,
+        kNumber,
+        kDefaultPrecisionResult,
+        kRelaxedPrecisionResult,
+    };
+
+    Word(int32_t val, Kind kind = Kind::kSpvId) : fValue(val), fKind(kind) {}
+
+    static Word Number(int32_t val) {
+        return Word{val, Kind::kNumber};
+    }
+
+    static Word Result(const Type& type) {
+        return Result(type.hasPrecision() && !type.highPrecision() ? Precision::kRelaxed
+                                                                   : Precision::kDefault);
+    }
+
+    static Word Result(Precision precision = Precision::kDefault) {
+        bool relaxed = (precision == Precision::kRelaxed &&
+                        !ThreadContext::Settings().fForceHighPrecision);
+        auto kind = relaxed ? Word::Kind::kRelaxedPrecisionResult
+                            : Word::Kind::kDefaultPrecisionResult;
+        return Word{-1, kind};
+    }
+
+    bool isResult() const { return fKind >= Kind::kDefaultPrecisionResult; }
+
+    int32_t fValue = -1;
+    Kind fKind = Kind::kSpvId;
+};
+
 // Skia's magic number is 31 and goes in the top 16 bits. We can use the lower bits to version the
 // sksl generator if we want.
 // https://github.com/KhronosGroup/SPIRV-Headers/blob/master/include/spirv/spir-v.xml#L84
@@ -446,6 +481,57 @@ void SPIRVCodeGenerator::writeInstruction(SpvOp_ opCode, int32_t word1, int32_t 
     this->writeWord(word6, out);
     this->writeWord(word7, out);
     this->writeWord(word8, out);
+}
+
+SpvId SPIRVCodeGenerator::writeInstruction(SpvOp_ opCode,
+                                           const SkTArray<Word>& words,
+                                           OutputStream& out) {
+    // Build up an cache key for this word.
+    SPIRVOp key;
+    key.fOp = opCode;
+
+    Word::Kind resultKind = Word::Kind::kNone;
+    for (const Word& word : words) {
+        if (word.isResult()) {
+            SkASSERT(resultKind == Word::Kind::kNone);
+            resultKind = word.fKind;
+            key.fWord.push_back(-1);
+        } else {
+            key.fWord.push_back(word.fValue);
+        }
+    }
+
+    SpvId result = (SpvId)-1;
+
+    if (resultKind != Word::Kind::kNone) {
+        // If this instruction exists in our op cache, return the cached SpvId.
+        if (SpvId* cachedOp = fOpCache.find(key)) {
+            return *cachedOp;
+        }
+
+        // Consume a new SpvId.
+        result = fIdCount++;
+        fOpCache.set(key, result);
+
+        // If the result is relaxed-precision, add the requisite decoration.
+        if (resultKind == Word::Kind::kRelaxedPrecisionResult) {
+            this->writeInstruction(SpvOpDecorate, result, SpvDecorationRelaxedPrecision,
+                                   fDecorationBuffer);
+        }
+    }
+
+    // Write the requested instruction.
+    this->writeOpCode(opCode, words.size() + 1, out);
+    for (const Word& word : words) {
+        if (word.isResult()) {
+            this->writeWord(result, out);
+        } else {
+            this->writeWord(word.fValue, out);
+        }
+    }
+
+    // Return the result.
+    return result;
 }
 
 void SPIRVCodeGenerator::writeCapabilities(OutputStream& out) {
@@ -2936,21 +3022,26 @@ SpvId SPIRVCodeGenerator::writeLiteral(double value, const Type& type) {
     }
 
     SPIRVNumberConstant key{valueBits, type.numberKind()};
-    if (SpvId* entry = fNumberConstants.find(key)) {
-        return *entry;
-    }
+    // Don't rely on fNumberConstants for deduplication. Let `writeInstruction` do it.
+//    if (SpvId* entry = fNumberConstants.find(key)) {
+//        return *entry;
+//    }
 
-    SpvId result = this->nextId(nullptr);
-    fNumberConstants.set(key, result);
+    SpvId result;
 
     if (type.isBoolean()) {
-        this->writeInstruction(valueBits ? SpvOpConstantTrue : SpvOpConstantFalse,
-                               this->getType(type), result, fConstantBuffer);
+        result = this->writeInstruction(
+                valueBits ? SpvOpConstantTrue : SpvOpConstantFalse,
+                {this->getType(type), Word::Result()},
+                fConstantBuffer);
     } else {
-        this->writeInstruction(SpvOpConstant, this->getType(type), result,
-                               (SpvId)valueBits, fConstantBuffer);
+        result = this->writeInstruction(
+                SpvOpConstant,
+                {this->getType(type), Word::Result(), Word::Number(valueBits)},
+                fConstantBuffer);
     }
 
+    fNumberConstants.set(key, result);
     return result;
 }
 
