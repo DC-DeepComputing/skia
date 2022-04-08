@@ -20,6 +20,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "21917fb1_d202f792",
+        "filename": "experimental/graphite/src/ClipStack.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 464,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-04-08T19:25:46Z",
+      "side": 1,
+      "message": "Not sure what the solution is, and I don\u0027t think a fix is needed for this CL, but putting an internal link in open-source code doesn\u0027t seem very friendly to external clients.",
+      "range": {
+        "startLine": 464,
+        "startChar": 23,
+        "endLine": 464,
+        "endChar": 42
+      },
+      "revId": "7d9474071a0e807915c84ea7664fdc88f3cb25f2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1c469376_a0c35ef4",
         "filename": "experimental/graphite/src/ClipStack_graphite.h",
         "patchSetId": 5
