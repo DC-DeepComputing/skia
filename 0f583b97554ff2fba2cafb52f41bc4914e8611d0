@@ -20,6 +20,52 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4e9124af_6b4cf855",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-08T18:27:21Z",
+      "side": 1,
+      "message": "Seems like this could safely be `string_view`",
+      "range": {
+        "startLine": 42,
+        "startChar": 0,
+        "endLine": 42,
+        "endChar": 11
+      },
+      "revId": "0f583b97554ff2fba2cafb52f41bc4914e8611d0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a03349b0_7aa3f759",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-08T18:27:21Z",
+      "side": 1,
+      "message": "Seems like this could safely be `string_view`",
+      "range": {
+        "startLine": 54,
+        "startChar": 5,
+        "endLine": 54,
+        "endChar": 11
+      },
+      "revId": "0f583b97554ff2fba2cafb52f41bc4914e8611d0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "88727f84_70dfc915",
         "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
         "patchSetId": 5
@@ -36,6 +82,52 @@
         "startChar": 16,
         "endLine": 231,
         "endChar": 54
+      },
+      "revId": "0f583b97554ff2fba2cafb52f41bc4914e8611d0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1546aeea_45ef6514",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 732,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-08T18:27:21Z",
+      "side": 1,
+      "message": "`empty()`",
+      "range": {
+        "startLine": 732,
+        "startChar": 25,
+        "endLine": 732,
+        "endChar": 38
+      },
+      "revId": "0f583b97554ff2fba2cafb52f41bc4914e8611d0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3e5a2889_9f6d850d",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 789,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-08T18:27:21Z",
+      "side": 1,
+      "message": "use `pipeline_struct_prefix`?",
+      "range": {
+        "startLine": 781,
+        "startChar": 0,
+        "endLine": 789,
+        "endChar": 5
       },
       "revId": "0f583b97554ff2fba2cafb52f41bc4914e8611d0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
