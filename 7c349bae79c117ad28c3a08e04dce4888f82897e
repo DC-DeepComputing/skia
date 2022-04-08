@@ -16,6 +16,29 @@
       "message": "Okay I think this is good to review now. PTAL",
       "revId": "7c349bae79c117ad28c3a08e04dce4888f82897e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "230b2b6b_7b640d6d",
+        "filename": "example/BUILD.bazel",
+        "patchSetId": 6
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-04-08T18:25:12Z",
+      "side": 1,
+      "message": "This can be removed after https://skia-review.googlesource.com/c/skia/+/528837 lands",
+      "range": {
+        "startLine": 90,
+        "startChar": 15,
+        "endLine": 90,
+        "endChar": 30
+      },
+      "revId": "7c349bae79c117ad28c3a08e04dce4888f82897e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
