@@ -107,7 +107,6 @@ generated_cc_atom(
     hdrs = ["DSLStatement.h"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":SkSLPosition_hdr",
         "//include/core:SkTypes_hdr",
         "//include/private:SkSLStatement_hdr",
     ],
@@ -117,10 +116,7 @@ generated_cc_atom(
     name = "DSLSymbols_hdr",
     hdrs = ["DSLSymbols.h"],
     visibility = ["//:__subpackages__"],
-    deps = [
-        ":DSLExpression_hdr",
-        ":SkSLPosition_hdr",
-    ],
+    deps = [":DSLExpression_hdr"],
 )
 
 generated_cc_atom(
