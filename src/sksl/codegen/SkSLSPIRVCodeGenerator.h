@@ -84,24 +84,6 @@ struct SPIRVNumberConstant {
     };
 };
 
-struct SPIRVVectorConstant {
-    bool operator==(const SPIRVVectorConstant& that) const {
-        return fTypeId     == that.fTypeId &&
-               fValueId[0] == that.fValueId[0] &&
-               fValueId[1] == that.fValueId[1] &&
-               fValueId[2] == that.fValueId[2] &&
-               fValueId[3] == that.fValueId[3];
-    }
-    SpvId fTypeId;
-    SpvId fValueId[4];
-
-    struct Hash {
-        uint32_t operator()(const SPIRVVectorConstant& key) const {
-            return SkOpts::hash(&key, sizeof(key));
-        }
-    };
-};
-
 struct SPIRVOp {
     bool operator==(const SPIRVOp& that) const {
         return fOp   == that.fOp &&
@@ -284,7 +266,7 @@ private:
 
     SpvId writeConstantVector(const AnyConstructor& c);
 
-    SpvId writeConstantVector(const Type& type, const SPIRVVectorConstant& key);
+    SpvId writeConstantVector(const Type& type, const SkTArray<SpvId>& values);
 
     SpvId writeScalarToMatrixSplat(const Type& matrixType, SpvId scalarId, OutputStream& out);
 
@@ -479,7 +461,7 @@ private:
 
     // The SPIRVWord form of writeInstruction can deduplicate redundant ops.
     struct SPIRVWord;
-    SpvId writeInstruction(SpvOp_ opCode, const SkSTArray<8, SPIRVWord>& words, OutputStream& out);
+    SpvId writeInstruction(SpvOp_ opCode, const SkTArray<SPIRVWord>& words, OutputStream& out);
 
     bool isDead(const Variable& var) const;
 
@@ -527,8 +509,7 @@ private:
     StringStream fDecorationBuffer;
 
     SkTHashMap<SPIRVOp, SpvId, SPIRVOp::Hash> fOpCache;
-    SkTHashMap<SPIRVNumberConstant, SpvId, SPIRVNumberConstant::Hash> fNumberConstants;
-    SkTHashMap<SPIRVVectorConstant, SpvId, SPIRVVectorConstant::Hash> fVectorConstants;
+    SkTHashSet<SpvId> fNumberConstants;
 
     // label of the current block, or 0 if we are not in a block
     SpvId fCurrentBlock;
