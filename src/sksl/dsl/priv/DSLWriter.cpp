@@ -100,7 +100,7 @@ std::unique_ptr<SkSL::Statement> DSLWriter::Declaration(DSLVarBase& var) {
         // We should have already reported an error before ending up here, just clean up the
         // initial value so it doesn't assert and return a nop.
         var.fInitialValue.releaseIfPossible();
-        return SkSL::Nop::Make();
+        return SkSL::Nop::Make(var.fPosition);
     }
     return std::move(var.fDeclaration);
 }

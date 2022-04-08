@@ -137,11 +137,18 @@ DSLStatement Discard(Position pos = Position::Capture());
  */
 DSLStatement Do(DSLStatement stmt, DSLExpression test, Position pos = Position::Capture());
 
+struct ForLoopOffsets {
+    int leftParenOffset = -1;
+    int firstSemicolonOffset = -1;
+    int secondSemicolonOffset = -1;
+    int rightParenOffset = -1;
+};
+
 /**
  * for (initializer; test; next) stmt;
  */
 DSLStatement For(DSLStatement initializer, DSLExpression test, DSLExpression next,
-                 DSLStatement stmt, Position pos = Position::Capture());
+                 DSLStatement stmt, Position pos = {}, ForLoopOffsets offsets = {});
 
 /**
  * if (test) ifTrue; [else ifFalse;]

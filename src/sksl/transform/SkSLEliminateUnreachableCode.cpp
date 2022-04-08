@@ -43,7 +43,7 @@ void Transform::EliminateUnreachableCode(Program& program, ProgramUsage* usage) 
                     if (fUsage) {
                         fUsage->remove(stmt.get());
                     }
-                    stmt = Nop::Make();
+                    stmt = Nop::Make(stmt->fPosition);
                 }
                 return false;
             }

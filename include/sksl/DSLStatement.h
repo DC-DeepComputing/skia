@@ -48,6 +48,16 @@ public:
 
     DSLStatement& operator=(DSLStatement&& other) = default;
 
+    Position position() {
+        SkASSERT(this->hasValue());
+        return fStatement->fPosition;
+    }
+
+    void setPosition(Position pos) {
+        SkASSERT(this->hasValue());
+        fStatement->fPosition = pos;
+    }
+
     bool hasValue() { return fStatement != nullptr; }
 
     std::unique_ptr<SkSL::Statement> release() {
