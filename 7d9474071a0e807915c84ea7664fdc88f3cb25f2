@@ -39,6 +39,29 @@
       },
       "revId": "7d9474071a0e807915c84ea7664fdc88f3cb25f2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9f7e173a_89772c2d",
+        "filename": "experimental/graphite/src/ClipStack_graphite.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-04-08T19:16:37Z",
+      "side": 1,
+      "message": "nit: draw",
+      "range": {
+        "startLine": 168,
+        "startChar": 42,
+        "endLine": 168,
+        "endChar": 46
+      },
+      "revId": "7d9474071a0e807915c84ea7664fdc88f3cb25f2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
