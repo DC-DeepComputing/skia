@@ -7,6 +7,7 @@
 
 #include "src/gpu/ganesh/mtl/GrMtlGpu.h"
 
+#include "include/core/SkColorSpace.h"
 #include "include/private/GrTypesPriv.h"
 #include "src/core/SkCompressedDataUtils.h"
 #include "src/core/SkConvertPixels.h"
