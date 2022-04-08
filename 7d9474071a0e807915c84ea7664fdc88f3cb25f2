@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "076c4813_7b002b2b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-04-08T13:27:45Z",
+      "side": 1,
+      "message": "It\u0027s referenced in code comments, but you can read go/clip-stack-order and go/grclipstack-2.0 for additional details",
+      "revId": "7d9474071a0e807915c84ea7664fdc88f3cb25f2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
