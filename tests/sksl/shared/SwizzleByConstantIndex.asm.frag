@@ -60,7 +60,6 @@ OpDecorate %47 RelaxedPrecision
 OpDecorate %48 RelaxedPrecision
 OpDecorate %49 RelaxedPrecision
 OpDecorate %50 RelaxedPrecision
-OpDecorate %51 RelaxedPrecision
 OpDecorate %_9_x RelaxedPrecision
 OpDecorate %54 RelaxedPrecision
 OpDecorate %55 RelaxedPrecision
@@ -78,7 +77,6 @@ OpDecorate %69 RelaxedPrecision
 OpDecorate %70 RelaxedPrecision
 OpDecorate %71 RelaxedPrecision
 OpDecorate %72 RelaxedPrecision
-OpDecorate %73 RelaxedPrecision
 OpDecorate %_13_v RelaxedPrecision
 OpDecorate %_14_x RelaxedPrecision
 OpDecorate %80 RelaxedPrecision
@@ -97,7 +95,6 @@ OpDecorate %92 RelaxedPrecision
 OpDecorate %93 RelaxedPrecision
 OpDecorate %94 RelaxedPrecision
 OpDecorate %95 RelaxedPrecision
-OpDecorate %96 RelaxedPrecision
 OpDecorate %98 RelaxedPrecision
 OpDecorate %108 RelaxedPrecision
 OpDecorate %114 RelaxedPrecision

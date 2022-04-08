@@ -93,7 +93,6 @@ OpDecorate %103 RelaxedPrecision
 OpDecorate %104 RelaxedPrecision
 OpDecorate %110 RelaxedPrecision
 OpDecorate %111 RelaxedPrecision
-OpDecorate %112 RelaxedPrecision
 OpDecorate %113 RelaxedPrecision
 OpDecorate %114 RelaxedPrecision
 OpDecorate %117 RelaxedPrecision
@@ -113,7 +112,6 @@ OpDecorate %137 RelaxedPrecision
 OpDecorate %138 RelaxedPrecision
 OpDecorate %139 RelaxedPrecision
 OpDecorate %140 RelaxedPrecision
-OpDecorate %141 RelaxedPrecision
 OpDecorate %142 RelaxedPrecision
 OpDecorate %_6_minComp RelaxedPrecision
 OpDecorate %146 RelaxedPrecision
@@ -135,7 +133,6 @@ OpDecorate %167 RelaxedPrecision
 OpDecorate %172 RelaxedPrecision
 OpDecorate %173 RelaxedPrecision
 OpDecorate %174 RelaxedPrecision
-OpDecorate %175 RelaxedPrecision
 OpDecorate %176 RelaxedPrecision
 OpDecorate %177 RelaxedPrecision
 OpDecorate %178 RelaxedPrecision
@@ -143,7 +140,6 @@ OpDecorate %179 RelaxedPrecision
 OpDecorate %180 RelaxedPrecision
 OpDecorate %181 RelaxedPrecision
 OpDecorate %182 RelaxedPrecision
-OpDecorate %183 RelaxedPrecision
 OpDecorate %184 RelaxedPrecision
 OpDecorate %185 RelaxedPrecision
 OpDecorate %186 RelaxedPrecision
@@ -152,7 +148,6 @@ OpDecorate %191 RelaxedPrecision
 OpDecorate %196 RelaxedPrecision
 OpDecorate %197 RelaxedPrecision
 OpDecorate %198 RelaxedPrecision
-OpDecorate %199 RelaxedPrecision
 OpDecorate %200 RelaxedPrecision
 OpDecorate %201 RelaxedPrecision
 OpDecorate %202 RelaxedPrecision
@@ -163,7 +158,6 @@ OpDecorate %206 RelaxedPrecision
 OpDecorate %207 RelaxedPrecision
 OpDecorate %208 RelaxedPrecision
 OpDecorate %209 RelaxedPrecision
-OpDecorate %210 RelaxedPrecision
 OpDecorate %211 RelaxedPrecision
 OpDecorate %212 RelaxedPrecision
 OpDecorate %213 RelaxedPrecision
@@ -186,7 +180,6 @@ OpDecorate %229 RelaxedPrecision
 OpDecorate %230 RelaxedPrecision
 OpDecorate %231 RelaxedPrecision
 OpDecorate %232 RelaxedPrecision
-OpDecorate %233 RelaxedPrecision
 OpDecorate %241 RelaxedPrecision
 OpDecorate %245 RelaxedPrecision
 %float = OpTypeFloat 32

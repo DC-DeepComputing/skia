@@ -30,7 +30,6 @@ OpDecorate %29 RelaxedPrecision
 OpDecorate %30 RelaxedPrecision
 OpDecorate %32 RelaxedPrecision
 OpDecorate %33 RelaxedPrecision
-OpDecorate %34 RelaxedPrecision
 %float = OpTypeFloat 32
 %v2float = OpTypeVector %float 2
 %mat2v2float = OpTypeMatrix %v2float 2

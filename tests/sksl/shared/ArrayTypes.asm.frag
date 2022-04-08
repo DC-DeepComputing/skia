@@ -20,7 +20,6 @@ OpDecorate %sk_Clockwise BuiltIn FrontFacing
 OpMemberDecorate %S 0 Offset 0
 OpDecorate %_arr_S_int_2 ArrayStride 16
 OpDecorate %_arr_v2float_int_2 ArrayStride 16
-OpDecorate %99 RelaxedPrecision
 %float = OpTypeFloat 32
 %v4float = OpTypeVector %float 4
 %_ptr_Output_v4float = OpTypePointer Output %v4float

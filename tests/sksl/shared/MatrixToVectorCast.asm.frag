@@ -33,21 +33,18 @@ OpDecorate %39 RelaxedPrecision
 OpDecorate %40 RelaxedPrecision
 OpDecorate %41 RelaxedPrecision
 OpDecorate %42 RelaxedPrecision
-OpDecorate %43 RelaxedPrecision
 OpDecorate %53 RelaxedPrecision
 OpDecorate %57 RelaxedPrecision
 OpDecorate %58 RelaxedPrecision
 OpDecorate %59 RelaxedPrecision
 OpDecorate %60 RelaxedPrecision
 OpDecorate %61 RelaxedPrecision
-OpDecorate %62 RelaxedPrecision
 OpDecorate %66 RelaxedPrecision
 OpDecorate %70 RelaxedPrecision
 OpDecorate %71 RelaxedPrecision
 OpDecorate %72 RelaxedPrecision
 OpDecorate %73 RelaxedPrecision
 OpDecorate %74 RelaxedPrecision
-OpDecorate %75 RelaxedPrecision
 OpDecorate %76 RelaxedPrecision
 OpDecorate %78 RelaxedPrecision
 OpDecorate %80 RelaxedPrecision
@@ -58,7 +55,6 @@ OpDecorate %98 RelaxedPrecision
 OpDecorate %99 RelaxedPrecision
 OpDecorate %100 RelaxedPrecision
 OpDecorate %101 RelaxedPrecision
-OpDecorate %102 RelaxedPrecision
 OpDecorate %103 RelaxedPrecision
 OpDecorate %105 RelaxedPrecision
 OpDecorate %107 RelaxedPrecision
@@ -173,8 +169,8 @@ OpBranchConditional %66 %67 %68
 %81 = OpConvertFToS %int %80
 %82 = OpCompositeExtract %float %75 3
 %83 = OpConvertFToS %int %82
-%84 = OpCompositeConstruct %v4int %77 %79 %81 %83
-%90 = OpIEqual %v4bool %84 %89
+%85 = OpCompositeConstruct %v4int %77 %79 %81 %83
+%90 = OpIEqual %v4bool %85 %89
 %91 = OpAll %bool %90
 OpBranch %68
 %68 = OpLabel

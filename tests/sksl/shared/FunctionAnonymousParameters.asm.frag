@@ -63,6 +63,7 @@ OpDecorate %71 RelaxedPrecision
 %true = OpConstantTrue %bool
 %int_123 = OpConstant %int 123
 %float_3_1400001 = OpConstant %float 3.1400001
+%68 = OpConstantComposite %S %int_0
 %_entrypoint_v = OpFunction %void None %17
 %18 = OpLabel
 %22 = OpVariable %_ptr_Function_v2float Function
@@ -113,7 +114,6 @@ OpBranch %58
 %57 = OpLabel
 OpStore %65 %int_123
 OpStore %67 %float_3_1400001
-%68 = OpCompositeConstruct %S %int_0
 OpStore %69 %68
 %70 = OpFunctionCall %v4float %fnRed_h4ifS %65 %67 %69
 OpStore %54 %70

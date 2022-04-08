@@ -194,7 +194,6 @@ OpDecorate %235 RelaxedPrecision
 OpDecorate %236 RelaxedPrecision
 OpDecorate %237 RelaxedPrecision
 OpDecorate %238 RelaxedPrecision
-OpDecorate %239 RelaxedPrecision
 OpDecorate %240 RelaxedPrecision
 %float = OpTypeFloat 32
 %v4float = OpTypeVector %float 4

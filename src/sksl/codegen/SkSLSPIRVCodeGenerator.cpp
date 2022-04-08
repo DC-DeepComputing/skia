@@ -1075,7 +1075,7 @@ SpvId SPIRVCodeGenerator::writeSpecialIntrinsic(const FunctionCall& c, SpecialIn
             args.push_back(Literal::MakeInt(fContext, Position(), /*value=*/0));
             args.push_back(Literal::MakeInt(fContext, Position(), /*value=*/0));
             ConstructorCompound ctor(Position(), *fContext.fTypes.fInt2, std::move(args));
-            SpvId coords = this->writeConstantVector(ctor);
+            SpvId coords = this->writeExpression(ctor, out);
             if (arguments.size() == 1) {
                 this->writeInstruction(SpvOpImageRead,
                                        this->getType(callType),
@@ -1346,36 +1346,6 @@ SpvId SPIRVCodeGenerator::writeFunctionCall(const FunctionCall& c, OutputStream&
     // Now that the call is complete, we copy temp out-variables back to their real lvalues.
     this->copyBackTempVars(tempVars, out);
     return result;
-}
-
-SpvId SPIRVCodeGenerator::writeConstantVector(const AnyConstructor& c) {
-    const Type& type = c.type();
-    SkASSERT(type.isVector() && c.isCompileTimeConstant());
-
-    // Get each of the constructor components as SPIR-V constants.
-    SkSTArray<4, SpvId> values;
-    const Type& scalarType = type.componentType();
-    for (int n = 0; n < type.columns(); n++) {
-        std::optional<double> slotVal = c.getConstantValue(n);
-        if (!slotVal.has_value()) {
-            SkDEBUGFAILF("writeConstantVector: %s not actually constant", c.description().c_str());
-            return (SpvId)-1;
-        }
-        values.push_back(this->writeLiteral(*slotVal, scalarType));
-    }
-
-    return this->writeConstantVector(type, values);
-}
-
-SpvId SPIRVCodeGenerator::writeConstantVector(const Type& type, const SkTArray<SpvId>& values) {
-    SkSTArray<8, SPIRVWord> words;
-    words.push_back(this->getType(type));
-    words.push_back(SPIRVWord::Result(type));
-    for (SpvId value : values) {
-        words.push_back(value);
-    }
-
-    return this->writeInstruction(SpvOpConstantComposite, words, fConstantBuffer);
 }
 
 SpvId SPIRVCodeGenerator::castScalarToType(SpvId inputExprId,
@@ -1763,53 +1733,32 @@ SpvId SPIRVCodeGenerator::writeVectorConstructor(const ConstructorCompound& c, O
     return this->writeComposite(arguments, type, out);
 }
 
-SpvId SPIRVCodeGenerator::writeCompositeAsConstant(const std::vector<SpvId>& arguments,
-                                                   const Type& type,
-                                                   OutputStream& out) {
-    if (!type.isVector()) {
-        // Only vectors are allowed.
-        return (SpvId)-1;
-    }
-
-    SkSTArray<4, SpvId> values;
-    for (size_t index = 0; index < arguments.size(); ++index) {
-        SpvId arg = arguments[index];
-        if (!fNumberConstants.contains(arg)) {
-            return (SpvId)-1;
-        }
-        values.push_back(arg);
-    }
-    // We found a composite that's composed entirely of literals. Write an OpConstantComposite.
-    return this->writeConstantVector(type, values);
-}
-
 SpvId SPIRVCodeGenerator::writeComposite(const std::vector<SpvId>& arguments,
                                          const Type& type,
                                          OutputStream& out) {
-    // If this is a vector composed entirely of literals, write a constant.
-    SpvId result = this->writeCompositeAsConstant(arguments, type, out);
-    if (result != (SpvId)-1) {
-        return result;
-    }
-
     SkASSERT(arguments.size() == (type.isStruct() ? type.fields().size() : (size_t)type.columns()));
 
-    result = this->nextId(&type);
-    this->writeOpCode(SpvOpCompositeConstruct, 3 + (int32_t) arguments.size(), out);
-    this->writeWord(this->getType(type), out);
-    this->writeWord(result, out);
-    for (SpvId id : arguments) {
-        this->writeWord(id, out);
+    // If this is a vector composed entirely of literals, write a constant instead.
+    bool isConstant = true;
+    for (SpvId arg : arguments) {
+        if (!fNumberConstants.contains(arg)) {
+            isConstant = false;
+            break;
+        }
     }
-    return result;
+
+    SkSTArray<8, SPIRVWord> words;
+    words.push_back(this->getType(type));
+    words.push_back(SPIRVWord::Result(type));
+    for (SpvId id : arguments) {
+        words.push_back(id);
+    }
+
+    return isConstant ? this->writeInstruction(SpvOpConstantComposite, words, fConstantBuffer)
+                      : this->writeInstruction(SpvOpCompositeConstruct, words, out);
 }
 
 SpvId SPIRVCodeGenerator::writeConstructorSplat(const ConstructorSplat& c, OutputStream& out) {
-    // Use writeConstantVector to deduplicate constant splats.
-    if (c.isCompileTimeConstant()) {
-        return this->writeConstantVector(c);
-    }
-
     // Write the splat argument.
     SpvId argument = this->writeExpression(*c.argument(), out);
 
