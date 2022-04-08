@@ -16,6 +16,23 @@
       "message": "PTAL.",
       "revId": "547d5fb4dcff089d585470286e48421e36355212",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e33479cc_75563582",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-04-08T19:35:58Z",
+      "side": 1,
+      "message": "Bazel stuff lgtm",
+      "revId": "547d5fb4dcff089d585470286e48421e36355212",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
