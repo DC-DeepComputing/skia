@@ -391,12 +391,12 @@ OpBranchConditional %245 %246 %247
 %249 = OpLoad %Compound %c2
 %250 = OpCompositeExtract %v4float %248 0
 %251 = OpCompositeExtract %v4float %249 0
-%252 = OpFOrdEqual %v4bool %250 %251
-%254 = OpAll %bool %252
+%253 = OpFOrdEqual %v4bool %250 %251
+%254 = OpAll %bool %253
 %255 = OpCompositeExtract %v3int %248 1
 %256 = OpCompositeExtract %v3int %249 1
-%257 = OpIEqual %v3bool %255 %256
-%259 = OpAll %bool %257
+%258 = OpIEqual %v3bool %255 %256
+%259 = OpAll %bool %258
 %260 = OpLogicalAnd %bool %259 %254
 OpBranch %247
 %247 = OpLabel

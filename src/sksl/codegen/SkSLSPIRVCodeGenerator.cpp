@@ -2268,20 +2268,24 @@ SpvId SPIRVCodeGenerator::writeBinaryOperation(const Type& resultType,
                                                const Type& operandType, SpvId lhs,
                                                SpvId rhs, SpvOp_ ifFloat, SpvOp_ ifInt,
                                                SpvOp_ ifUInt, SpvOp_ ifBool, OutputStream& out) {
-    SpvId result = this->nextId(&resultType);
+    SpvOp_ op;
     if (is_float(fContext, operandType)) {
-        this->writeInstruction(ifFloat, this->getType(resultType), result, lhs, rhs, out);
+        op = ifFloat;
     } else if (is_signed(fContext, operandType)) {
-        this->writeInstruction(ifInt, this->getType(resultType), result, lhs, rhs, out);
+        op = ifInt;
     } else if (is_unsigned(fContext, operandType)) {
-        this->writeInstruction(ifUInt, this->getType(resultType), result, lhs, rhs, out);
+        op = ifUInt;
     } else if (is_bool(fContext, operandType)) {
-        this->writeInstruction(ifBool, this->getType(resultType), result, lhs, rhs, out);
+        op = ifBool;
     } else {
-        fContext.fErrors->error(operandType.fPosition,
+        fContext.fErrors->error(
+                operandType.fPosition,
                 "unsupported operand for binary expression: " + operandType.description());
+        return (SpvId)-1;
     }
-    return result;
+
+    return this->writeInstruction(
+            op, {this->getType(resultType), Word::Result(resultType), lhs, rhs}, out);
 }
 
 SpvId SPIRVCodeGenerator::foldToBool(SpvId id, const Type& operandType, SpvOp op,

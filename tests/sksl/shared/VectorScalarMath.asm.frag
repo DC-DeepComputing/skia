@@ -307,8 +307,8 @@ OpSelectionMerge %67 None
 OpBranchConditional %65 %66 %67
 %66 = OpLabel
 %68 = OpLoad %v4int %x
-%71 = OpIEqual %v4bool %68 %70
-%73 = OpAll %bool %71
+%72 = OpIEqual %v4bool %68 %70
+%73 = OpAll %bool %72
 OpBranch %67
 %67 = OpLabel
 %74 = OpPhi %bool %false %25 %73 %66

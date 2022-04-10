@@ -193,8 +193,8 @@ OpStore %expectedWT %33
 %41 = OpAccessChain %_ptr_Uniform_v4float %10 %int_1
 %43 = OpLoad %v4float %41
 %35 = OpExtInst %v4float %1 FMix %40 %43 %44
-%46 = OpFOrdEqual %v4bool %35 %45
-%48 = OpAll %bool %46
+%47 = OpFOrdEqual %v4bool %35 %45
+%48 = OpAll %bool %47
 OpSelectionMerge %50 None
 OpBranchConditional %48 %49 %50
 %49 = OpLabel
@@ -262,8 +262,8 @@ OpBranchConditional %101 %102 %103
 %104 = OpExtInst %v2float %1 FMix %107 %110 %111
 %112 = OpLoad %v4float %expectedBW
 %113 = OpVectorShuffle %v2float %112 %112 0 1
-%114 = OpFOrdEqual %v2bool %104 %113
-%116 = OpAll %bool %114
+%115 = OpFOrdEqual %v2bool %104 %113
+%116 = OpAll %bool %115
 OpBranch %103
 %103 = OpLabel
 %117 = OpPhi %bool %false %88 %116 %102
@@ -279,8 +279,8 @@ OpBranchConditional %117 %118 %119
 %120 = OpExtInst %v3float %1 FMix %123 %127 %128
 %129 = OpLoad %v4float %expectedBW
 %130 = OpVectorShuffle %v3float %129 %129 0 1 2
-%131 = OpFOrdEqual %v3bool %120 %130
-%133 = OpAll %bool %131
+%132 = OpFOrdEqual %v3bool %120 %130
+%133 = OpAll %bool %132
 OpBranch %119
 %119 = OpLabel
 %134 = OpPhi %bool %false %103 %133 %118

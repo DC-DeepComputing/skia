@@ -147,8 +147,8 @@ OpStore %67 %66
 %69 = OpLoad %v4float %67
 OpStore %result %69
 %70 = OpLoad %v4float %result
-%72 = OpFOrdEqual %v4bool %70 %71
-%74 = OpAll %bool %72
+%73 = OpFOrdEqual %v4bool %70 %71
+%74 = OpAll %bool %73
 OpSelectionMerge %78 None
 OpBranchConditional %74 %76 %77
 %76 = OpLabel

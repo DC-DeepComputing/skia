@@ -249,8 +249,8 @@ OpBranchConditional %136 %137 %138
 %140 = OpLoad %_arr_v3int_int_2 %v2
 %141 = OpCompositeExtract %v3int %139 0
 %142 = OpCompositeExtract %v3int %140 0
-%143 = OpIEqual %v3bool %141 %142
-%145 = OpAll %bool %143
+%144 = OpIEqual %v3bool %141 %142
+%145 = OpAll %bool %144
 %146 = OpCompositeExtract %v3int %139 1
 %147 = OpCompositeExtract %v3int %140 1
 %148 = OpIEqual %v3bool %146 %147

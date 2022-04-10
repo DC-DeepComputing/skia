@@ -132,8 +132,8 @@ OpBranchConditional %31 %32 %33
 %41 = OpCompositeExtract %float %38 1 0
 %42 = OpCompositeExtract %float %38 1 1
 %43 = OpCompositeConstruct %v4float %39 %40 %41 %42
-%49 = OpFOrdEqual %v4bool %43 %48
-%51 = OpAll %bool %49
+%50 = OpFOrdEqual %v4bool %43 %48
+%51 = OpAll %bool %50
 OpBranch %33
 %33 = OpLabel
 %52 = OpPhi %bool %false %26 %51 %32

@@ -116,9 +116,9 @@ OpStore %outset %float_0_03125
 %63 = OpLoad %int %y
 %64 = OpIAdd %int %62 %63
 %66 = OpSMod %int %64 %int_2
-%67 = OpIEqual %bool %int_0 %66
+%68 = OpIEqual %bool %int_0 %66
 OpSelectionMerge %72 None
-OpBranchConditional %67 %70 %71
+OpBranchConditional %68 %70 %71
 %70 = OpLabel
 %73 = OpLoad %float %outset
 %74 = OpFNegate %float %73
