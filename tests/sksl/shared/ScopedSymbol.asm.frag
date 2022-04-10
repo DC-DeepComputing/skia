@@ -64,6 +64,7 @@ OpDecorate %87 RelaxedPrecision
 %S_0 = OpTypeStruct %int
 %_ptr_Function_S_0 = OpTypePointer Function %S_0
 %int_1 = OpConstant %int 1
+%45 = OpConstantComposite %S_0 %int_1
 %int_0 = OpConstant %int 0
 %_ptr_Function_int = OpTypePointer Function %int
 %55 = OpTypeFunction %v4float %_ptr_Function_v2float
@@ -94,7 +95,6 @@ OpFunctionEnd
 %local_struct_variable_hides_struct_type_b = OpFunction %bool None %30
 %40 = OpLabel
 %S_1 = OpVariable %_ptr_Function_S_0 Function
-%45 = OpCompositeConstruct %S_0 %int_1
 OpStore %S_1 %45
 %47 = OpAccessChain %_ptr_Function_int %S_1 %int_0
 %49 = OpLoad %int %47
