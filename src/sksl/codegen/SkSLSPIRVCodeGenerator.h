@@ -248,10 +248,6 @@ private:
 
     SpvId writeSpecialIntrinsic(const FunctionCall& c, SpecialIntrinsic kind, OutputStream& out);
 
-    SpvId writeConstantVector(const AnyConstructor& c);
-
-    SpvId writeConstantVector(const Type& type, const SkTArray<SpvId>& values);
-
     SpvId writeScalarToMatrixSplat(const Type& matrixType, SpvId scalarId, OutputStream& out);
 
     SpvId writeFloatConstructor(const AnyConstructor& c, OutputStream& out);
@@ -310,10 +306,6 @@ private:
     SpvId writeConstructorSplat(const ConstructorSplat& c, OutputStream& out);
 
     SpvId writeConstructorCompoundCast(const ConstructorCompoundCast& c, OutputStream& out);
-
-    SpvId writeCompositeAsConstant(const std::vector<SpvId>& arguments,
-                                   const Type& type,
-                                   OutputStream& out);
 
     SpvId writeComposite(const std::vector<SpvId>& arguments, const Type& type, OutputStream& out);
 
