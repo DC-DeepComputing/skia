@@ -845,8 +845,10 @@ void colrv1_transform(FT_Face face,
             break;
         }
         case FT_COLR_PAINTFORMAT_ROTATE: {
+            // COLRv1 angles are counter-clockwise, compare
+            // https://docs.microsoft.com/en-us/typography/opentype/spec/colr#formats-24-to-27-paintrotate-paintvarrotate-paintrotatearoundcenter-paintvarrotatearoundcenter
             transform = SkMatrix::RotateDeg(
-                    SkFixedToScalar(colrv1_paint.u.rotate.angle) * 180.0f,
+                    -SkFixedToScalar(colrv1_paint.u.rotate.angle) * 180.0f,
                     SkPoint::Make(SkFixedToScalar(colrv1_paint.u.rotate.center_x),
                                   -SkFixedToScalar(colrv1_paint.u.rotate.center_y)));
             break;
@@ -856,10 +858,12 @@ void colrv1_transform(FT_Face face,
             // snaps to 0 for values very close to 0. Do the same here.
 
             SkScalar rad_x =
-                    SkDegreesToRadians(-SkFixedToFloat(colrv1_paint.u.skew.x_skew_angle) * 180.0f);
+                    SkDegreesToRadians(SkFixedToFloat(colrv1_paint.u.skew.x_skew_angle) * 180.0f);
             float tan_x = SkScalarTan(rad_x);
             tan_x = SkScalarNearlyZero(tan_x) ? 0.0f : tan_x;
 
+            // Negate y_skew_angle due to Skia's y-down coordinate system to achieve
+            // counter-clockwise skew along the y-axis.
             SkScalar rad_y =
                     SkDegreesToRadians(-SkFixedToFloat(colrv1_paint.u.skew.y_skew_angle) * 180.0f);
             float tan_y = SkScalarTan(rad_y);
