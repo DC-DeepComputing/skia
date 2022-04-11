@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "720647ff_cdaf4d5b",
+        "filename": "experimental/graphite/src/ClipStack.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1061,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-04-11T15:14:39Z",
+      "side": 1,
+      "message": "Bug fix from earlier CL, where I\u0027d missed taking into account shape fill type for the draw bounds.",
+      "range": {
+        "startLine": 1059,
+        "startChar": 8,
+        "endLine": 1061,
+        "endChar": 52
+      },
+      "revId": "40f378926eb26619eef2ca53e93e0551c4112414",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "193992c4_afb1662a",
+        "filename": "experimental/graphite/src/Device.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 541,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-04-11T15:14:39Z",
+      "side": 1,
+      "message": "Bug fix that was causing clipped shapes (that weren\u0027t actually fully opaque anymore) to be considered occluders.",
+      "range": {
+        "startLine": 541,
+        "startChar": 29,
+        "endLine": 541,
+        "endChar": 71
+      },
+      "revId": "40f378926eb26619eef2ca53e93e0551c4112414",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "56425438_076b50da",
+        "filename": "experimental/graphite/src/Device.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 544,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-04-11T15:14:39Z",
+      "side": 1,
+      "message": "Bug fix, since shape.bounds() is in the local coord space. The NaiveBoundsManager masked this bug because it ignores the bounding box, but BruteForceBoundsManager highlighted it.",
+      "range": {
+        "startLine": 544,
+        "startChar": 40,
+        "endLine": 544,
+        "endChar": 59
+      },
+      "revId": "40f378926eb26619eef2ca53e93e0551c4112414",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "278c5ad0_b63d684a",
+        "filename": "experimental/graphite/src/Device.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 190,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-04-11T15:14:39Z",
+      "side": 1,
+      "message": "I considered having ClipStack (or just its functions that might need to record draws) take a BoundsManager and a DrawContext, but the recorded draws also need to through Renderer selection and need to use the IntersectionTreeSet to get a DisjointStencilIndex.\n\nThere are future plans to have a RendererSelector object that could be provided, and we could make IntersectionTreeSet a public type like BoundsManager. This would let ClipStack be defined without being coupled to Device, but since they are logically fairly intertwined already this doesn\u0027t feel bad. And in addition, right now recordDraw() does exactly everything we need it to do.",
+      "range": {
+        "startLine": 190,
+        "startChar": 4,
+        "endLine": 190,
+        "endChar": 45
+      },
+      "revId": "40f378926eb26619eef2ca53e93e0551c4112414",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
