@@ -174,8 +174,8 @@ OpBranchConditional %66 %67 %68
 %81 = OpConvertFToS %int %80
 %82 = OpCompositeExtract %float %75 3
 %83 = OpConvertFToS %int %82
-%84 = OpCompositeConstruct %v4int %77 %79 %81 %83
-%90 = OpIEqual %v4bool %84 %89
+%85 = OpCompositeConstruct %v4int %77 %79 %81 %83
+%90 = OpIEqual %v4bool %85 %89
 %91 = OpAll %bool %90
 OpBranch %68
 %68 = OpLabel
