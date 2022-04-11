@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7f660263_1421faf7",
+        "filename": "src/ports/SkFontHost_FreeType_common.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 532,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-04-11T18:30:45Z",
+      "side": 1,
+      "message": "So for the time being I was mostly leaving the FT types names with snake case. I suppose I can go convert them all.",
+      "parentUuid": "b543053b_331596f0",
+      "range": {
+        "startLine": 532,
+        "startChar": 12,
+        "endLine": 532,
+        "endChar": 27
+      },
+      "revId": "4eeb847f3428bb01049d77ae12f0326b7510bfa9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "117fe6de_5431266d",
@@ -54,6 +78,30 @@
       "writtenOn": "2022-04-08T20:49:34Z",
       "side": 1,
       "message": "Can\u0027t this just be an \u0026\u0026?",
+      "range": {
+        "startLine": 1234,
+        "startChar": 4,
+        "endLine": 1238,
+        "endChar": 0
+      },
+      "revId": "4eeb847f3428bb01049d77ae12f0326b7510bfa9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "51b32c33_094ce813",
+        "filename": "src/ports/SkFontHost_FreeType_common.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1238,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-04-11T18:30:45Z",
+      "side": 1,
+      "message": "Yep, removed one layer of cruft, didn\u0027t think about the next layer.",
+      "parentUuid": "117fe6de_5431266d",
       "range": {
         "startLine": 1234,
         "startChar": 4,
