@@ -62,8 +62,8 @@ OpDecorate %68 RelaxedPrecision
 %int_2 = OpConstant %int 2
 %int_3 = OpConstant %int 3
 %float_12 = OpConstant %float 12
-%v3float = OpTypeVector %float 3
 %float_n8 = OpConstant %float -8
+%v3float = OpTypeVector %float 3
 %60 = OpConstantComposite %v3float %float_n8 %float_n8 %float_12
 %float_9 = OpConstant %float 9
 %float_n18 = OpConstant %float -18

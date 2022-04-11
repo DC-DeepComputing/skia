@@ -69,39 +69,6 @@ struct IndexExpression;
 struct Program;
 struct Swizzle;
 
-struct SPIRVNumberConstant {
-    bool operator==(const SPIRVNumberConstant& that) const {
-        return fValueBits == that.fValueBits &&
-               fKind      == that.fKind;
-    }
-    int32_t                fValueBits;
-    SkSL::Type::NumberKind fKind;
-
-    struct Hash {
-        uint32_t operator()(const SPIRVNumberConstant& key) const {
-            return key.fValueBits ^ (int)key.fKind;
-        }
-    };
-};
-
-struct SPIRVVectorConstant {
-    bool operator==(const SPIRVVectorConstant& that) const {
-        return fTypeId     == that.fTypeId &&
-               fValueId[0] == that.fValueId[0] &&
-               fValueId[1] == that.fValueId[1] &&
-               fValueId[2] == that.fValueId[2] &&
-               fValueId[3] == that.fValueId[3];
-    }
-    SpvId fTypeId;
-    SpvId fValueId[4];
-
-    struct Hash {
-        uint32_t operator()(const SPIRVVectorConstant& key) const {
-            return SkOpts::hash(&key, sizeof(key));
-        }
-    };
-};
-
 /**
  * Converts a Program into a SPIR-V binary.
  */
@@ -268,8 +235,6 @@ private:
     SpvId writeSpecialIntrinsic(const FunctionCall& c, SpecialIntrinsic kind, OutputStream& out);
 
     SpvId writeConstantVector(const AnyConstructor& c);
-
-    SpvId writeConstantVector(const Type& type, const SPIRVVectorConstant& key);
 
     SpvId writeScalarToMatrixSplat(const Type& matrixType, SpvId scalarId, OutputStream& out);
 
@@ -470,6 +435,7 @@ private:
     SpvId writeOpConstantTrue(const Type& type);
     SpvId writeOpConstantFalse(const Type& type);
     SpvId writeOpConstant(const Type& type, int32_t valueBits);
+    SpvId writeOpConstantComposite(const Type& type, const SkTArray<SpvId>& values);
 
     void pruneReachableOps(size_t numReachableOps);
 
@@ -530,8 +496,7 @@ private:
     SkTHashMap<Instruction, SpvId, Instruction::Hash> fOpCache;  // maps instruction -> SpvId
     SkTHashMap<SpvId, Instruction> fSpvIdCache;                  // maps SpvId -> instruction
     std::vector<SpvId> fReachableOps;
-    SkTHashMap<SPIRVNumberConstant, SpvId, SPIRVNumberConstant::Hash> fNumberConstants;
-    SkTHashMap<SPIRVVectorConstant, SpvId, SPIRVVectorConstant::Hash> fVectorConstants;
+
     // label of the current block, or 0 if we are not in a block
     SpvId fCurrentBlock;
     std::stack<SpvId> fBreakTarget;
