@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ca792a91_5d87f6b0",
+        "filename": "src/core/SkEnumerate.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-04-11T20:04:48Z",
+      "side": 1,
+      "message": "Need a `tuple_like_cat`.",
+      "range": {
+        "startLine": 57,
+        "startChar": 19,
+        "endLine": 57,
+        "endChar": 33
+      },
+      "revId": "f7699e5ae85d0a917e95fe7688785482df5fcd08",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
