@@ -18,6 +18,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2e6310ab_838f8d39",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-04-11T15:00:39Z",
+      "side": 1,
+      "message": "lgtm assuming G3 canary passes",
+      "revId": "1af62036076de88772e264c05a47d6804c82caef",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3515c6f0_ef8f04e5",
@@ -34,6 +51,29 @@
       "range": {
         "startLine": 252,
         "startChar": 26,
+        "endLine": 252,
+        "endChar": 27
+      },
+      "revId": "1af62036076de88772e264c05a47d6804c82caef",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0a840cd6_bbb556d0",
+        "filename": "public.bzl",
+        "patchSetId": 3
+      },
+      "lineNbr": 252,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-04-11T15:00:39Z",
+      "side": 1,
+      "message": "src/gpu/graphite/**/* maybe?",
+      "range": {
+        "startLine": 252,
+        "startChar": 9,
         "endLine": 252,
         "endChar": 27
       },
