@@ -8,6 +8,7 @@
 #ifndef SKSL_SPIRVCODEGENERATOR
 #define SKSL_SPIRVCODEGENERATOR
 
+#include "include/core/SkSpan.h"
 #include "include/private/SkSLDefines.h"
 #include "include/private/SkSLLayout.h"
 #include "include/private/SkSLModifiers.h"
@@ -235,8 +236,6 @@ private:
 
     SpvId writeSpecialIntrinsic(const FunctionCall& c, SpecialIntrinsic kind, OutputStream& out);
 
-    SpvId writeConstantVector(const AnyConstructor& c);
-
     SpvId writeScalarToMatrixSplat(const Type& matrixType, SpvId scalarId, OutputStream& out);
 
     SpvId writeFloatConstructor(const AnyConstructor& c, OutputStream& out);
@@ -275,8 +274,8 @@ private:
      */
     SpvId writeMatrixCopy(SpvId src, const Type& srcType, const Type& dstType, OutputStream& out);
 
-    void addColumnEntry(const Type& columnType, std::vector<SpvId>* currentColumn,
-                        std::vector<SpvId>* columnIds, int rows, SpvId entry, OutputStream& out);
+    void addColumnEntry(const Type& columnType, SkTArray<SpvId>* currentColumn,
+                        SkTArray<SpvId>* columnIds, int rows, SpvId entry, OutputStream& out);
 
     SpvId writeConstructorCompound(const ConstructorCompound& c, OutputStream& out);
 
@@ -295,10 +294,6 @@ private:
     SpvId writeConstructorSplat(const ConstructorSplat& c, OutputStream& out);
 
     SpvId writeConstructorCompoundCast(const ConstructorCompoundCast& c, OutputStream& out);
-
-    SpvId writeCompositeAsConstant(const std::vector<SpvId>& arguments,
-                                   const Type& type,
-                                   OutputStream& out);
 
     SpvId writeComposite(const std::vector<SpvId>& arguments, const Type& type, OutputStream& out);
 
@@ -438,6 +433,11 @@ private:
     SpvId writeOpConstantFalse(const Type& type);
     SpvId writeOpConstant(const Type& type, int32_t valueBits);
     SpvId writeOpConstantComposite(const Type& type, const SkTArray<SpvId>& values);
+    SpvId writeOpCompositeConstruct(const Type& type, const SkTArray<SpvId>&, OutputStream& out);
+
+    // Converts the provided SpvId(s) into an array of scalar OpConstants, if it can be done.
+    bool toConstants(SpvId value, SkTArray<SpvId>* constants);
+    bool toConstants(SkSpan<const SpvId> values, SkTArray<SpvId>* constants);
 
     void pruneReachableOps(size_t numReachableOps);
 
