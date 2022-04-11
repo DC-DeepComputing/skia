@@ -7,6 +7,7 @@
 #ifndef SkStrike_DEFINED
 #define SkStrike_DEFINED
 
+#include "SkGlyph.h"
 #include "include/core/SkFontMetrics.h"
 #include "include/core/SkFontTypes.h"
 #include "include/private/SkMutex.h"
@@ -134,7 +135,8 @@ private:
     // SkGlyphDigest's fIndex field stores the index. This pointer provides an unchanging
     // reference to the SkGlyph as long as the strike is alive, and fGlyphForIndex
     // provides a dense index for glyphs.
-    SkTHashTable<SkGlyphDigest, uint32_t, SkGlyphDigest> fDigestForPackedGlyphID SK_GUARDED_BY(fMu);
+    SkTHashMap<SkPackedGlyphID, SkGlyphDigest, SkPackedGlyphID::Hash>
+            fDigestForPackedGlyphID SK_GUARDED_BY(fMu);
     std::vector<SkGlyph*> fGlyphForIndex SK_GUARDED_BY(fMu);
 
     // so we don't grow our arrays a lot
