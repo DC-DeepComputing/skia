@@ -30,7 +30,6 @@
 #include "include/core/SkStream.h"
 #include "include/core/SkTypeface.h"
 #include "include/encode/SkPngEncoder.h"
-#include "include/private/GrImageContext.h"
 #include "include/private/SkMalloc.h"
 #include "include/private/SkShadowFlags.h"
 #include "src/core/SkAutoMalloc.h"

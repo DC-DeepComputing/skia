@@ -171,7 +171,6 @@ generated_cc_atom(
         "//include/core:SkTypeface_hdr",
         "//include/encode:SkPngEncoder_hdr",
         "//include/gpu:GrRecordingContext_hdr",
-        "//include/private:GrImageContext_hdr",
         "//include/private:SkMalloc_hdr",
         "//include/private:SkShadowFlags_hdr",
         "//src/core:SkAutoMalloc_hdr",
