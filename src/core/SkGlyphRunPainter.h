@@ -84,9 +84,10 @@ public:
 #if SK_SUPPORT_GPU
     // A nullptr for process means that the calls to the cache will be performed, but none of the
     // callbacks will be called.
+    // N.B. The positionMatrix has already been translated to the glyph run list origin.
     void processGlyphRun(SkGlyphRunPainterInterface* process,
                          const SkGlyphRun& glyphRun,
-                         const SkMatrix& drawMatrix,
+                         const SkMatrix& positionMatrix,
                          const SkPaint& drawPaint,
                          const GrSDFTControl& control,
                          const char* tag = nullptr,
