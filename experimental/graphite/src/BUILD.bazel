@@ -190,6 +190,7 @@ generated_cc_atom(
         ":DrawOrder_hdr",
         ":EnumBitMask_hdr",
         "//experimental/graphite/src/geom:Rect_hdr",
+        "//experimental/graphite/src/geom:Transform_graphite_hdr",
         "//src/core:SkDevice_hdr",
     ],
 )
