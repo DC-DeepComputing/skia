@@ -17,6 +17,7 @@
 #include "include/private/SkColorData.h"
 #include "include/private/SkTo.h"
 #include "src/core/SkFDot6.h"
+#include "src/core/SkZip.h"
 #include "src/ports/SkFontHost_FreeType_common.h"
 
 #include <algorithm>
@@ -533,43 +534,34 @@ bool colrv1_configure_skpaint(FT_Face face,
             return false;
         }
 
-        // 5.7.11.2.4 ColorIndex, ColorStop and ColorLine
-        // "Applications shall apply the colorStops in increasing stopOffset order."
-        struct ColorStop {
-            SkScalar pos;
-            SkColor color;
-        };
-        std::vector<ColorStop> colorStopsSorted;
-        colorStopsSorted.resize(colorStopCount);
+        stops.resize(colorStopCount);
+        colors.resize(colorStopCount);
 
         FT_ColorStop color_stop;
         FT_ColorStopIterator mutable_color_stop_iterator = colorStopIterator;
         while (FT_Get_Colorline_Stops(face, &color_stop, &mutable_color_stop_iterator)) {
             FT_UInt index = mutable_color_stop_iterator.current_color_stop - 1;
-            colorStopsSorted[index].pos = color_stop.stop_offset / float(1 << 14);
+            stops[index] = color_stop.stop_offset / float(1 << 14);
             FT_UInt16& palette_index = color_stop.color.palette_index;
             if (palette_index == kForegroundColorPaletteIndex) {
                 U8CPU newAlpha = SkColorGetA(foregroundColor) *
                                  SkColrV1AlphaToFloat(color_stop.color.alpha);
-                colorStopsSorted[index].color = SkColorSetA(foregroundColor, newAlpha);
+                colors[index] = SkColorSetA(foregroundColor, newAlpha);
             } else if (palette_index >= palette.size()) {
                 return false;
             } else {
                 U8CPU newAlpha = SkColorGetA(palette[palette_index]) *
                                  SkColrV1AlphaToFloat(color_stop.color.alpha);
-                colorStopsSorted[index].color = SkColorSetA(palette[palette_index], newAlpha);
+                colors[index] = SkColorSetA(palette[palette_index], newAlpha);
             }
         }
 
-        std::stable_sort(colorStopsSorted.begin(), colorStopsSorted.end(),
-                         [](const ColorStop& a, const ColorStop& b) { return a.pos < b.pos; });
-
-        stops.resize(colorStopCount);
-        colors.resize(colorStopCount);
-        for (size_t i = 0; i < colorStopCount; ++i) {
-            stops[i] = colorStopsSorted[i].pos;
-            colors[i] = colorStopsSorted[i].color;
-        }
+        // 5.7.11.2.4 ColorIndex, ColorStop and ColorLine
+        // "Applications shall apply the colorStops in increasing stopOffset order."
+        auto zip = SkMakeZip(stops, colors);
+        std::stable_sort(zip.begin(), zip.end(), [](auto&& a, auto&& b) {
+            return std::get<0>(a) < std::get<0>(b);
+        });
         return true;
     };
 

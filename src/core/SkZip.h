@@ -18,32 +18,87 @@
 #include "include/private/SkTemplates.h"
 #include "include/private/SkTo.h"
 
+// Create a tuple like class here, so that an rvalue swap can be added and found through ADL.
+// This means adding back get, tuple_size, and tuple_element.
+template<typename... Ts>
+class SkZipReturnTuple : public std::tuple<Ts&...>{
+public:
+    using std::tuple<Ts&...>::tuple;
+    using std::tuple<Ts&...>::operator=;
+    using INHERITED = std::tuple<Ts&...>;
+
+    template<std::size_t I>
+    auto&& get()       &  { return std::get<I>(static_cast<INHERITED&>(*this)); }
+
+    template<std::size_t I>
+    auto&& get()       && { return std::get<I>(static_cast<INHERITED&&>(*this)); }
+
+    template<std::size_t I>
+    auto&& get() const &  { return std::get<I>(static_cast<const INHERITED&>(*this)); }
+
+    template<std::size_t I>
+    auto&& get() const && { return std::get<I>(static_cast<const INHERITED&&>(*this)); }
+
+    friend void swap(SkZipReturnTuple& a, SkZipReturnTuple& b) {
+        using std::swap;
+        swap(static_cast<INHERITED&>(a), static_cast<INHERITED&>(b));
+    }
+    friend void swap(SkZipReturnTuple&& a, SkZipReturnTuple&& b) {
+        using std::swap;
+        // This entire exercise was to make these rvalues into lvalues here.
+        swap(static_cast<INHERITED&>(a), static_cast<INHERITED&>(b));
+    }
+};
+
+namespace std {
+  // Template arguments of an outer class cannot be deduced, so SkZipReturnTuple must be top level.
+  template<typename... Ts> struct tuple_size<typename ::SkZipReturnTuple<Ts...>>
+      : public tuple_size<typename ::SkZipReturnTuple<Ts...>::INHERITED> {};
+  template<std::size_t I, typename... Ts> struct tuple_element<I, typename ::SkZipReturnTuple<Ts...>>
+      : public tuple_element<I, typename ::SkZipReturnTuple<Ts...>::INHERITED>{};
+}
+
 // Take a list of things that can be pointers, and use them all in parallel. The iterators and
 // accessor operator[] for the class produce a tuple of the items.
 template<typename... Ts>
 class SkZip {
-    using ReturnTuple = std::tuple<Ts&...>;
+    using ReturnTuple = SkZipReturnTuple<Ts...>;
 
-    class Iterator {
+    template<bool C> class Iterator {
     public:
         using value_type = ReturnTuple;
         using difference_type = ptrdiff_t;
-        using pointer = value_type*;
-        using reference = value_type;
-        using iterator_category = std::input_iterator_tag;
+        using pointer = typename std::conditional_t<C, value_type const*, value_type*>;
+        using reference = typename std::conditional_t<C, value_type const, value_type>;
+        using iterator_category = std::random_access_iterator_tag;
         constexpr Iterator(const SkZip* zip, size_t index) : fZip{zip}, fIndex{index} { }
-        constexpr Iterator(const Iterator& that) : Iterator{ that.fZip, that.fIndex } { }
+        constexpr Iterator(const Iterator&) = default;
+        constexpr Iterator& operator=(const Iterator& that) {
+            SkASSERT(this->fZip == that.fZip); this->fIndex = that.fIndex; return *this;
+        }
         constexpr Iterator& operator++() { ++fIndex; return *this; }
         constexpr Iterator operator++(int) { Iterator tmp(*this); operator++(); return tmp; }
+        constexpr Iterator& operator+=(difference_type n) { fIndex += n; return *this; }
+        friend constexpr Iterator operator+(Iterator lhs, difference_type n) { return lhs += n; }
+        friend constexpr Iterator operator+(difference_type n, Iterator rhs) { return rhs += n; }
+        constexpr Iterator& operator--() { --fIndex; return *this; }
+        constexpr Iterator operator--(int) { Iterator tmp(*this); operator--(); return tmp; }
+        constexpr Iterator& operator-=(difference_type n) { fIndex -= n; return *this; }
+        friend constexpr Iterator operator-(Iterator lhs, difference_type n) { return lhs -= n; }
         constexpr bool operator==(const Iterator& rhs) const { return fIndex == rhs.fIndex; }
         constexpr bool operator!=(const Iterator& rhs) const { return fIndex != rhs.fIndex; }
-        constexpr reference operator*() { return (*fZip)[fIndex]; }
+        constexpr bool operator<(const Iterator rhs) const { return fIndex < rhs.fIndex; }
+        constexpr bool operator<=(const Iterator rhs) const { return fIndex <= rhs.fIndex; }
+        constexpr bool operator>(const Iterator rhs) const { return fIndex > rhs.fIndex; }
+        constexpr bool operator>=(const Iterator rhs) const { return fIndex >= rhs.fIndex; }
+        constexpr reference operator*() const { return (*fZip)[fIndex]; }
+        constexpr reference operator[](difference_type i) const { return (*fZip)[fIndex + i]; }
         friend constexpr difference_type operator-(Iterator lhs, Iterator rhs) {
             return lhs.fIndex - rhs.fIndex;
         }
 
     private:
-        const SkZip* const fZip = nullptr;
+        SkZip const * const fZip = nullptr;
         size_t fIndex = 0;
     };
 
@@ -51,6 +106,9 @@ class SkZip {
     inline static constexpr T* nullify = nullptr;
 
 public:
+    using iterator = Iterator<false>;
+    using const_iterator = Iterator<true>;
+
     constexpr SkZip() : fPointers{nullify<Ts>...}, fSize{0} {}
     constexpr SkZip(size_t) = delete;
     constexpr SkZip(size_t size, Ts*... ts)
@@ -76,8 +134,11 @@ public:
     constexpr bool empty() const { return this->size() == 0; }
     constexpr ReturnTuple front() const { return this->index(0); }
     constexpr ReturnTuple back() const { return this->index(this->size() - 1); }
-    constexpr Iterator begin() const { return Iterator{this, 0}; }
-    constexpr Iterator end() const { return Iterator{this, this->size()}; }
+    /** begin and end are marked const to allow std::begin and std::end to work on SkZip xvalues. */
+    constexpr iterator begin() const { return iterator{this, 0}; }
+    constexpr iterator end() const { return iterator{this, this->size()}; }
+    constexpr const_iterator cbegin() const { return const_iterator{this, 0}; }
+    constexpr const_iterator cend() const { return const_iterator{this, this->size()}; }
     template<size_t I> constexpr auto get() const {
         return SkMakeSpan(std::get<I>(fPointers), fSize);
     }

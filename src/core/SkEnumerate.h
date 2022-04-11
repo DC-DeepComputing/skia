@@ -11,17 +11,49 @@
 #include <cstddef>
 #include <iterator>
 #include <tuple>
+#include <type_traits>
 #include <variant>
 
 template <typename Iter, typename C = std::monostate>
 class SkEnumerate {
     using Captured = decltype(*std::declval<Iter>());
+
+    template <typename T, std::size_t N, typename = void>
+    struct has_tuple_element : std::false_type {};
+
+    template <typename T, std::size_t N>
+    struct has_tuple_element<T, N,
+        std::void_t< typename std::tuple_element<N, std::remove_const_t<T>>::type> >
+        : std::true_type {};
+
+    template <typename T> struct has_tuple_elements {
+        // In C++20 this can be inlined as a lambda
+        template <std::size_t... N> static constexpr bool check(std::index_sequence<N...>) {
+            return (has_tuple_element<T, N>::value && ...);
+        }
+        static constexpr const bool value = check(std::make_index_sequence<std::tuple_size<T>::value>());
+    };
+
+    template <typename, typename = void>
+    struct has_tuple_size : std::false_type {};
+
+    template <typename T>
+    struct has_tuple_size<T, std::void_t<decltype( std::tuple_size<T>::value )>> : std::true_type {};
+
+    template <typename T> struct is_tuple_like
+        : std::conjunction<
+            std::negation<std::is_reference<T>>,
+            has_tuple_size<T>,
+            has_tuple_elements<T>>{};
+
     template <typename> struct is_tuple : std::false_type {};
     template <typename... T> struct is_tuple<std::tuple<T...>> : std::true_type {};
 
     // v must be a r-value to bind to temporary non-const references.
     static constexpr auto MakeResult(size_t i, Captured&& v) {
-        if constexpr (is_tuple<Captured>::value) {
+        if constexpr (is_tuple_like<Captured>::value) {
+            // https://github.com/cplusplus/papers/issues/876
+            // Need something like https://github.com/ericniebler/meta/blob/master/example/tuple_cat.cpp
             return std::tuple_cat(std::tuple<size_t>{i}, v);
         } else {
             // Capture v by reference instead of by value by using std::tie.
