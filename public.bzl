@@ -54,6 +54,8 @@ def skia_public_hdrs():
         ["include/**/*.h"],
         exclude = [
             "include/private/**/*",
+            # For now
+            "include/graphite/**/*",
         ],
     )
 
@@ -245,6 +247,12 @@ BASE_SRCS_ALL = struct(
 
         # Currently exclude all Dawn-specific files
         "src/gpu/ganesh/dawn/*",
+
+        # Currently exclude all Graphite specific files
+        "src/gpu/graphite/*",
+        "src/gpu/graphite/geom/*",
+        "src/gpu/graphite/mtl/*",
+        "src/gpu/graphite/render/*",
 
         # Defines main.
         "tools/skslc/Main.cpp",
