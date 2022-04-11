@@ -16,6 +16,23 @@
       "message": "See the change to gn/gn_to_bp.py",
       "revId": "b817c01ddfe910ebe255c229f5e65a696f59d4a0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bc7ebff6_d0ccdd8f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-11T20:15:12Z",
+      "side": 1,
+      "message": "RSLGTM",
+      "revId": "b817c01ddfe910ebe255c229f5e65a696f59d4a0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
