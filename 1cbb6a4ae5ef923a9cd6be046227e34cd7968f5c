@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9c53c03d_471b9e87",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-04-11T19:50:27Z",
+      "side": 1,
+      "message": "I must admit I haven\u0027t really looked into why this got reverted the first time.",
+      "revId": "1cbb6a4ae5ef923a9cd6be046227e34cd7968f5c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
