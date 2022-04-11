@@ -73,6 +73,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e431ad6e_7b4f4a77",
+        "filename": "src/core/SkPipelineData.cpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-04-11T18:20:57Z",
+      "side": 1,
+      "message": "Talking offline, we\u0027ll go with alignof(void*) so that this memcpy and the later CPU-\u003eGPU memcpy will not go down an unaligned copy slow path.\n\nYou can disregard my 2nd paragraph, since it\u0027ll be handled by the alignof(void*) anyways, but the thought had been if the data returned by the SkArenaAlloc could be written to directly by the UniformManager, we\u0027d need its alignment to be suitable for the uniform\u0027s CPU representation. alignof(void*) should be safe there, although we could go with alignof(std::max_align_t) instead.",
+      "parentUuid": "52c291d7_43cb3fc0",
+      "range": {
+        "startLine": 32,
+        "startChar": 13,
+        "endLine": 33,
+        "endChar": 20
+      },
+      "revId": "adc0ed6417653612fbaf89be24c9f5b99bf65b11",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1a4379ca_0f420c82",
         "filename": "src/core/SkPipelineData.h",
         "patchSetId": 28
