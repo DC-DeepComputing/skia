@@ -16,6 +16,29 @@
       "message": "I believe this is working now, PTAL.",
       "revId": "1af62036076de88772e264c05a47d6804c82caef",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3515c6f0_ef8f04e5",
+        "filename": "public.bzl",
+        "patchSetId": 3
+      },
+      "lineNbr": 252,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-04-11T15:00:01Z",
+      "side": 1,
+      "message": "Does ** cover all the subdirs?",
+      "range": {
+        "startLine": 252,
+        "startChar": 26,
+        "endLine": 252,
+        "endChar": 27
+      },
+      "revId": "1af62036076de88772e264c05a47d6804c82caef",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
