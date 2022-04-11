@@ -26,6 +26,7 @@
 #include "src/sksl/spirv.h"
 
 #include <stdint.h>
+#include <array>
 #include <memory>
 #include <stack>
 #include <string>
@@ -97,6 +98,26 @@ struct SPIRVVectorConstant {
     struct Hash {
         uint32_t operator()(const SPIRVVectorConstant& key) const {
             return SkOpts::hash(&key, sizeof(key));
+        }
+    };
+};
+
+struct SPIRVOp {
+    bool operator==(const SPIRVOp& that) const {
+        return fOp      == that.fOp &&
+               fControl == that.fControl &&
+               fWord    == that.fWord;
+    }
+    SpvId                  fOp;
+    uint32_t               fControl = 0;  // identifies the Kind of each Word (4 bits apiece)
+    std::array<int32_t, 8> fWord = {-1, -1, -1, -1, -1, -1, -1, -1};
+
+    struct Hash {
+        uint32_t operator()(const SPIRVOp& key) const {
+            uint32_t hash = key.fControl;
+            hash = SkOpts::hash_fn(&key.fOp, sizeof(key.fOp), hash);
+            hash = SkOpts::hash_fn(key.fWord.data(), key.fWord.size() * sizeof(int32_t), hash);
+            return hash;
         }
     };
 };
@@ -461,6 +482,16 @@ private:
                           int32_t word5, int32_t word6, int32_t word7, int32_t word8,
                           OutputStream& out);
 
+    // The Array<Word> form of writeInstruction can deduplicate redundant ops.
+    struct Word;
+    SpvId writeInstruction(SpvOp_ opCode, const SkTArray<Word>& words, OutputStream& out);
+
+    SpvId writeOpConstantTrue(const Type& type);
+    SpvId writeOpConstantFalse(const Type& type);
+    SpvId writeOpConstant(const Type& type, int32_t valueBits);
+
+    void pruneReachableOps(size_t numReachableOps);
+
     bool isDead(const Variable& var) const;
 
     MemoryLayout memoryLayoutForVariable(const Variable&) const;
@@ -506,8 +537,12 @@ private:
     StringStream fNameBuffer;
     StringStream fDecorationBuffer;
 
+    SkTHashMap<SPIRVOp, SpvId, SPIRVOp::Hash> fOpCache;    // maps instruction -> SpvId
+    SkTHashMap<SpvId, SPIRVOp> fSpvIdCache; // maps SpvId -> instruction
+    std::vector<SpvId> fReachableOps;
     SkTHashMap<SPIRVNumberConstant, SpvId, SPIRVNumberConstant::Hash> fNumberConstants;
     SkTHashMap<SPIRVVectorConstant, SpvId, SPIRVVectorConstant::Hash> fVectorConstants;
+
     // label of the current block, or 0 if we are not in a block
     SpvId fCurrentBlock;
     std::stack<SpvId> fBreakTarget;
