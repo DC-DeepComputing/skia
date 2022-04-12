@@ -229,6 +229,7 @@ generated_cc_atom(
     visibility = ["//:__subpackages__"],
     deps = [
         ":SkSLCodeGenerator_hdr",
+        "//include/core:SkSpan_hdr",
         "//include/private:SkSLDefines_hdr",
         "//include/private:SkSLLayout_hdr",
         "//include/private:SkSLModifiers_hdr",
