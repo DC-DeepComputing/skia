@@ -16,6 +16,109 @@
       "message": "Updated to be in src/gpu/graphite now.",
       "revId": "95dfebc5144c17a3f43ed8f3e32582e7a5c8dbab",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b1eab6c2_0023a8fc",
+        "filename": "src/gpu/graphite/ClipStack.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 328,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-04-12T16:00:13Z",
+      "side": 1,
+      "message": "element\u0027s",
+      "range": {
+        "startLine": 328,
+        "startChar": 14,
+        "endLine": 328,
+        "endChar": 22
+      },
+      "revId": "95dfebc5144c17a3f43ed8f3e32582e7a5c8dbab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1860c145_3ebb2c2e",
+        "filename": "src/gpu/graphite/ClipStack.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 346,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-04-12T16:00:13Z",
+      "side": 1,
+      "message": "Move this line above the others to match the order in the class and the ctor ?",
+      "revId": "95dfebc5144c17a3f43ed8f3e32582e7a5c8dbab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "de292804_7eaf1515",
+        "filename": "src/gpu/graphite/ClipStack.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 641,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-04-12T16:00:13Z",
+      "side": 1,
+      "message": "What?",
+      "range": {
+        "startLine": 641,
+        "startChar": 11,
+        "endLine": 641,
+        "endChar": 77
+      },
+      "revId": "95dfebc5144c17a3f43ed8f3e32582e7a5c8dbab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "72853d58_39de4212",
+        "filename": "src/gpu/graphite/ClipStack.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1057,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-04-12T16:00:13Z",
+      "side": 1,
+      "message": "Do you think there would be any value to having explicit localDrawBounds and devDrawBounds variables ?",
+      "range": {
+        "startLine": 1057,
+        "startChar": 9,
+        "endLine": 1057,
+        "endChar": 19
+      },
+      "revId": "95dfebc5144c17a3f43ed8f3e32582e7a5c8dbab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1fdabc2e_762dfcfc",
+        "filename": "src/gpu/graphite/ClipStack.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1069,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-04-12T16:00:13Z",
+      "side": 1,
+      "message": "\u0027\\n\u0027 ?",
+      "revId": "95dfebc5144c17a3f43ed8f3e32582e7a5c8dbab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
