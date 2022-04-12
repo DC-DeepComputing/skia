@@ -29,6 +29,7 @@ struct GrMtlPrecompiledLibraries {
     id<MTLLibrary> fVertexLibrary;
     id<MTLLibrary> fFragmentLibrary;
     bool fRTFlip = false;
+    std::string fRTFlipName;
 };
 
 class GrMtlPipelineStateBuilder : public GrGLSLProgramBuilder {

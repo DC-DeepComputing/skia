@@ -21,6 +21,9 @@ class ExternalFunction;
  * Holds the compiler settings for a program.
  */
 struct ProgramSettings {
+    // Graphite wants SkSL to use the 'rtAdjust' uniform name but not create it (Graphite
+    // will create the uniform itself in the 'intrinsicUniforms' block
+    bool fDoWhatGraphiteWants = false;
     // If true the destination fragment color is read sk_FragColor. It must be declared inout.
     bool fFragColorIsInOut = false;
     // if true, Setting objects (e.g. sk_Caps.fbFetchSupport) should be replaced with their
