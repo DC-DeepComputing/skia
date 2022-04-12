@@ -349,6 +349,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1a187afe_49b8fd79",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 467,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-04-12T19:36:22Z",
+      "side": 1,
+      "message": "Many other sites that use SkSTArray tend to have a comment like:\n\n// 8 Words is enough for nearly all instructions (except variable-length instructions like OpAccessChain...)",
+      "parentUuid": "e7242224_9a59973f",
+      "range": {
+        "startLine": 467,
+        "startChar": 4,
+        "endLine": 467,
+        "endChar": 37
+      },
+      "revId": "491f1b7ff109e433cde44f6ffe03b78c42a1c5c1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7ba388ac_827ff516",
         "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.h",
         "patchSetId": 20
