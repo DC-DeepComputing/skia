@@ -16,6 +16,29 @@
       "message": "Oops, needed include/ owners",
       "revId": "f47f346e1105853d1964ed98275715599f12c784",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bb0fa608_3827790b",
+        "filename": "include/core/SkSpan.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-04-12T21:03:00Z",
+      "side": 1,
+      "message": "I have no issue with this so happy for it land as is, but is it any clearer if this just called into the general subspan (and removed asserts here then)? Obviously last also says the same thing, but maybe using the same name is clearer?\n\n{\nreturn this-\u003esubspan(offset, this-\u003esize() - offset);\n}",
+      "range": {
+        "startLine": 62,
+        "startChar": 15,
+        "endLine": 62,
+        "endChar": 49
+      },
+      "revId": "f47f346e1105853d1964ed98275715599f12c784",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
