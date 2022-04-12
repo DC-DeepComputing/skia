@@ -26,7 +26,7 @@ struct GrShaderCaps;
 
 struct GrGLPrecompiledProgram {
     GrGLPrecompiledProgram(GrGLuint programID = 0,
-                           SkSL::Program::Inputs inputs = SkSL::Program::Inputs())
+                           SkSL::Program::Inputs inputs = SkSL::Program::Inputs(true))
         : fProgramID(programID)
         , fInputs(inputs) {}
 

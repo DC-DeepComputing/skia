@@ -298,7 +298,7 @@ protected:
     SkTHashMap<const FunctionDeclaration*, Requirements> fRequirements;
     SkTHashSet<std::string> fHelpers;
     int fUniformBuffer = -1;
-    std::string fRTFlipName;
+    std::string fRTFlipName107;
     const FunctionDeclaration* fCurrentFunction = nullptr;
     int fSwizzleHelperCount = 0;
     bool fIgnoreVariableReferenceModifiers = false;
