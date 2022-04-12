@@ -89,6 +89,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8c46a509_13a11aa3",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-12T20:57:06Z",
+      "side": 1,
+      "message": "Missed this, will add a comment in the followup",
+      "parentUuid": "8cf08eca_897a2466",
+      "range": {
+        "startLine": 102,
+        "startChar": 8,
+        "endLine": 102,
+        "endChar": 13
+      },
+      "revId": "491f1b7ff109e433cde44f6ffe03b78c42a1c5c1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3c75e23f_bc859e67",
@@ -277,6 +301,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "29f5b09f_653abb00",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 2911,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-12T20:57:06Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "e7e20314_9c3fc045",
+      "range": {
+        "startLine": 2911,
+        "startChar": 4,
+        "endLine": 2911,
+        "endChar": 50
+      },
+      "revId": "491f1b7ff109e433cde44f6ffe03b78c42a1c5c1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1f28eea8_d2e47e22",
@@ -433,6 +481,30 @@
       "side": 1,
       "message": "I see, thank you for the clarification. I think what you have now is good. You could also define a constant like \"kMaxInstructionNumWords \u003d 8;\" and use that in the \"Words\" definition.",
       "parentUuid": "03ca0da0_8c30aea5",
+      "range": {
+        "startLine": 467,
+        "startChar": 4,
+        "endLine": 467,
+        "endChar": 37
+      },
+      "revId": "491f1b7ff109e433cde44f6ffe03b78c42a1c5c1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6124c572_c9d99308",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 467,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-12T20:57:06Z",
+      "side": 1,
+      "message": "I don\u0027t want to make it seem more meaningful than it actually is. It\u0027s just an arbitrary choice based on what seemed reasonable at the time.",
+      "parentUuid": "de50d8ba_33aa2ccb",
       "range": {
         "startLine": 467,
         "startChar": 4,
