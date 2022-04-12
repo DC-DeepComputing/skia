@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a33162ec_91d26593",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-12T21:32:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "eb5270f1_1215d449",
+      "revId": "f47f346e1105853d1964ed98275715599f12c784",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bb0fa608_3827790b",
@@ -79,6 +97,30 @@
       "side": 1,
       "message": "LGTM",
       "parentUuid": "2b3401f2_6bf298ff",
+      "range": {
+        "startLine": 62,
+        "startChar": 15,
+        "endLine": 62,
+        "endChar": 49
+      },
+      "revId": "f47f346e1105853d1964ed98275715599f12c784",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a769a0d8_844de006",
+        "filename": "include/core/SkSpan.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-12T21:32:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a6d30bfb_cfe35061",
       "range": {
         "startLine": 62,
         "startChar": 15,
