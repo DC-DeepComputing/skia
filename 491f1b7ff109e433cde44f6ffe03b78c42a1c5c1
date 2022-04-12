@@ -325,6 +325,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e7242224_9a59973f",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 467,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-12T19:14:15Z",
+      "side": 1,
+      "message": "Background:\n\n`SkTArray` is basically a `vector` clone and is uninteresting by itself. (If `SkSTArray` didn\u0027t exist I would advocate for removing it!)\n\n`SkSTArray` is a subclass of `SkTArray` that can hold up to N elements on the stack (zero-allocation). This code is intended to make it so that in the general case, we can easily call `writeInstruction` with a small number of `Word`s without needing to allocate.\n \n8 elements isn\u0027t really that special, it\u0027s just large enough to hold the Word array for almost every instruction we use in our code without needing to allocate. Since we will use this in most `writeInstruction` call sites, `Words` felt like an appropriate name.\n\nI can add comments here, but this is too much--what do you think would add the most value?",
+      "parentUuid": "f301b8a8_115457ff",
+      "range": {
+        "startLine": 467,
+        "startChar": 4,
+        "endLine": 467,
+        "endChar": 37
+      },
+      "revId": "491f1b7ff109e433cde44f6ffe03b78c42a1c5c1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7ba388ac_827ff516",
         "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.h",
         "patchSetId": 20
@@ -359,6 +383,30 @@
       "writtenOn": "2022-04-12T17:48:24Z",
       "side": 1,
       "message": "Please document what it means for an ID to be reachable and how the contents of this evolve during codegen.",
+      "range": {
+        "startLine": 533,
+        "startChar": 4,
+        "endLine": 533,
+        "endChar": 37
+      },
+      "revId": "491f1b7ff109e433cde44f6ffe03b78c42a1c5c1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8b602620_72e52243",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 533,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-12T19:14:15Z",
+      "side": 1,
+      "message": "Good idea, will do.",
+      "parentUuid": "fc84d0ec_78ffa5fc",
       "range": {
         "startLine": 533,
         "startChar": 4,
