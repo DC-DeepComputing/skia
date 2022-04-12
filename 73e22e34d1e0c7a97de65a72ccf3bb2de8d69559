@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "86b8b5c1_6c65d89c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-04-12T18:03:57Z",
+      "side": 1,
+      "message": "Cap",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 1
+      },
+      "revId": "73e22e34d1e0c7a97de65a72ccf3bb2de8d69559",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3836cc57_4bd43358",
+        "filename": "src/core/SkGlyph.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 267,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-04-12T18:03:57Z",
+      "side": 1,
+      "message": "If you\u0027re going to add space to the left, you must add space to the right! My sense of balance is all askew!",
+      "range": {
+        "startLine": 267,
+        "startChar": 55,
+        "endLine": 267,
+        "endChar": 56
+      },
+      "revId": "73e22e34d1e0c7a97de65a72ccf3bb2de8d69559",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b662f197_b2f953b8",
+        "filename": "src/core/SkGlyph.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 280,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-04-12T18:03:57Z",
+      "side": 1,
+      "message": "It looks like the idea is to pack these all together (hence the use of SkPackedGlyphID::kEndData) but have we checked that all implementation actually pack the uint32_t and bools together? Should there be an assert about the size of this struct? I mean, they should be, and we are also hoping that bool is 32 bits or less here, not sure if it makes a lot of difference or not in the grand scheme of things.\n\nI\u0027m reminded of https://randomascii.wordpress.com/2010/06/06/bit-field-packing-with-visual-c/ where things can be rather surprising and maybe not fixable given ABI constraints.",
+      "revId": "73e22e34d1e0c7a97de65a72ccf3bb2de8d69559",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
