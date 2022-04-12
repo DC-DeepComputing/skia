@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fca34bab_57a1ff4e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-04-12T15:53:22Z",
+      "side": 1,
+      "message": "nit: one character too long",
+      "revId": "b615185f731804430a43e912f2b1bb1b087e2a63",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c4205a4a_50feac28",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-04-12T15:53:22Z",
+      "side": 1,
+      "message": "Should remove this blank line so the bug will be updated (see doc for git-trailers).",
+      "revId": "b615185f731804430a43e912f2b1bb1b087e2a63",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1201653b_08eb58b9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-04-12T15:53:22Z",
+      "side": 1,
+      "message": "I think all these negations look plausible.",
+      "revId": "b615185f731804430a43e912f2b1bb1b087e2a63",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
