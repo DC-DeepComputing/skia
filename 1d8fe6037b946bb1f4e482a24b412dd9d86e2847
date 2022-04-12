@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6308dbe6_9ae441cd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-04-12T19:12:58Z",
+      "side": 1,
+      "message": "LGTM % maybe using a more descriptive name instead of NA.\n\nP.S.: No need to block this CL on this but something I think we should consider: I think a construct like std::optional\u003cSpvId\u003e, which takes advantage of the type system to enforce valid/invalid values, has its benefits. Today, it\u0027s possible to unintentionally use NA, not only as a SpvId value but any SPIR-V word that is int32_t, since the type alias itself has no type safety around it. ",
+      "revId": "1d8fe6037b946bb1f4e482a24b412dd9d86e2847",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4cf774cc_de6e2de4",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-04-12T19:12:58Z",
+      "side": 1,
+      "message": "How about a more descriptive name, e.g. INVALID_ID?",
+      "range": {
+        "startLine": 110,
+        "startChar": 27,
+        "endLine": 110,
+        "endChar": 29
+      },
+      "revId": "1d8fe6037b946bb1f4e482a24b412dd9d86e2847",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
