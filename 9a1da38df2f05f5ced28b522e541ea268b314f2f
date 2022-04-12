@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6d502779_508d7ceb",
+        "filename": "site/docs/dev/testing/swarmingbots.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-04-12T13:43:33Z",
+      "side": 1,
+      "message": "Nit: we wrap markdown files to 100 cols",
+      "range": {
+        "startLine": 54,
+        "startChar": 91,
+        "endLine": 54,
+        "endChar": 95
+      },
+      "revId": "9a1da38df2f05f5ced28b522e541ea268b314f2f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
