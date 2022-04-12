@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b0c05245_3d33e74b",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-12T20:29:33Z",
+      "side": 1,
+      "message": "I am actually trying to get the implicit conversion here. Otherwise every SpvId in the word list would need to be decorated.",
+      "parentUuid": "e435aaf4_b781f865",
+      "range": {
+        "startLine": 109,
+        "startChar": 4,
+        "endLine": 109,
+        "endChar": 8
+      },
+      "revId": "9d323600d3e835306a9f9a95ebf0e9e429057148",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c52a75f6_15481682",
@@ -54,6 +78,30 @@
       "writtenOn": "2022-04-12T20:22:49Z",
       "side": 1,
       "message": "This is great, thank you!",
+      "range": {
+        "startLine": 543,
+        "startChar": 3,
+        "endLine": 549,
+        "endChar": 53
+      },
+      "revId": "9d323600d3e835306a9f9a95ebf0e9e429057148",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f77e4578_4eea5cd2",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.h",
+        "patchSetId": 23
+      },
+      "lineNbr": 549,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-12T20:29:33Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "c52a75f6_15481682",
       "range": {
         "startLine": 543,
         "startChar": 3,
