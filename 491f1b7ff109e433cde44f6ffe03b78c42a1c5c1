@@ -1,0 +1,228 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "537f3d74_0c30f259",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 20
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-04-12T17:48:24Z",
+      "side": 1,
+      "message": "Hey John, I made a few small suggestions. PTAL and let me know if something I suggested doesn\u0027t make sense.",
+      "revId": "491f1b7ff109e433cde44f6ffe03b78c42a1c5c1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dcd59daa_24f0dda1",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-04-12T17:48:24Z",
+      "side": 1,
+      "message": "What does the kNone kind represent?",
+      "range": {
+        "startLine": 102,
+        "startChar": 8,
+        "endLine": 102,
+        "endChar": 13
+      },
+      "revId": "491f1b7ff109e433cde44f6ffe03b78c42a1c5c1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3c75e23f_bc859e67",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-04-12T17:48:24Z",
+      "side": 1,
+      "message": "Is -1 here a placeholder for a Word kind that doesn\u0027t have a value? Words can be signed (if they are a number for example).\n\nIf I\u0027m understanding the usage here correctly, then perhaps consider std::optional here to add some type safety around `fValue` not having a value.",
+      "range": {
+        "startLine": 132,
+        "startChar": 20,
+        "endLine": 132,
+        "endChar": 23
+      },
+      "revId": "491f1b7ff109e433cde44f6ffe03b78c42a1c5c1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fda70fb8_30a74a1c",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 537,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-04-12T17:48:24Z",
+      "side": 1,
+      "message": "Consider std::optional to represent an uninitialized SpvId.",
+      "range": {
+        "startLine": 537,
+        "startChar": 26,
+        "endLine": 537,
+        "endChar": 28
+      },
+      "revId": "491f1b7ff109e433cde44f6ffe03b78c42a1c5c1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "79238fd6_9ff4f027",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 564,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-04-12T17:48:24Z",
+      "side": 1,
+      "message": "Maybe add a debug assertion that `result !\u003d -1` ?",
+      "range": {
+        "startLine": 564,
+        "startChar": 28,
+        "endLine": 564,
+        "endChar": 34
+      },
+      "revId": "491f1b7ff109e433cde44f6ffe03b78c42a1c5c1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "18a3dc61_f078560a",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 2911,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-04-12T17:48:24Z",
+      "side": 1,
+      "message": "Would it be possible add these at the call-site instead of repeating them in the individual functions, for example in writeExpression? I was wondering if we could make it harder for a future author to forget adding a call to pruneReachableOps where it would be beneficial.",
+      "range": {
+        "startLine": 2911,
+        "startChar": 4,
+        "endLine": 2911,
+        "endChar": 50
+      },
+      "revId": "491f1b7ff109e433cde44f6ffe03b78c42a1c5c1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1f28eea8_d2e47e22",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 3102,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-04-12T17:48:24Z",
+      "side": 1,
+      "message": "Remove dead code?",
+      "range": {
+        "startLine": 3100,
+        "startChar": 0,
+        "endLine": 3102,
+        "endChar": 7
+      },
+      "revId": "491f1b7ff109e433cde44f6ffe03b78c42a1c5c1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f301b8a8_115457ff",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 467,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-04-12T17:48:24Z",
+      "side": 1,
+      "message": "I suggest adding some comments here to explain why an 8-element Word array is special and why this typedef is useful. Perhaps consider using a more descriptive alias than just \"Words\", since `const SkTArray\u003cWord\u003e\u0026 words` also appears elsewhere.",
+      "range": {
+        "startLine": 467,
+        "startChar": 4,
+        "endLine": 467,
+        "endChar": 37
+      },
+      "revId": "491f1b7ff109e433cde44f6ffe03b78c42a1c5c1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7ba388ac_827ff516",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 473,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-04-12T17:48:24Z",
+      "side": 1,
+      "message": "If this represents multiple words in an instruction, then should it be named in the plural, i.e. fWords?",
+      "range": {
+        "startLine": 473,
+        "startChar": 31,
+        "endLine": 473,
+        "endChar": 36
+      },
+      "revId": "491f1b7ff109e433cde44f6ffe03b78c42a1c5c1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fc84d0ec_78ffa5fc",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 533,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-04-12T17:48:24Z",
+      "side": 1,
+      "message": "Please document what it means for an ID to be reachable and how the contents of this evolve during codegen.",
+      "range": {
+        "startLine": 533,
+        "startChar": 4,
+        "endLine": 533,
+        "endChar": 37
+      },
+      "revId": "491f1b7ff109e433cde44f6ffe03b78c42a1c5c1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
