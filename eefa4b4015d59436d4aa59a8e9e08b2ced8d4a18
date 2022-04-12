@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a7dc32c5_387f32ad",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-04-12T15:49:42Z",
+      "side": 1,
+      "message": "Yes. The packedID can be recovered by using the index to lookup the glyph, and get the packedID from there.",
+      "parentUuid": "2efabbcd_f85089a1",
+      "revId": "eefa4b4015d59436d4aa59a8e9e08b2ced8d4a18",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "792ef01f_fbdedc00",
@@ -31,6 +49,30 @@
       "writtenOn": "2022-04-12T15:45:25Z",
       "side": 1,
       "message": "nit: remove?",
+      "range": {
+        "startLine": 102,
+        "startChar": 4,
+        "endLine": 102,
+        "endChar": 5
+      },
+      "revId": "eefa4b4015d59436d4aa59a8e9e08b2ced8d4a18",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4877cc9c_95b2a600",
+        "filename": "src/core/SkGlyph.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-04-12T15:49:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "792ef01f_fbdedc00",
       "range": {
         "startLine": 102,
         "startChar": 4,
