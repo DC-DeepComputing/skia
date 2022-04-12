@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a4225df8_0fe80e37",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-04-12T18:47:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "86b8b5c1_6c65d89c",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 1
+      },
+      "revId": "73e22e34d1e0c7a97de65a72ccf3bb2de8d69559",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3836cc57_4bd43358",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3303ff81_82f13640",
+        "filename": "src/core/SkGlyph.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 267,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-04-12T18:47:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3836cc57_4bd43358",
+      "range": {
+        "startLine": 267,
+        "startChar": 55,
+        "endLine": 267,
+        "endChar": 56
+      },
+      "revId": "73e22e34d1e0c7a97de65a72ccf3bb2de8d69559",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b662f197_b2f953b8",
@@ -60,6 +108,24 @@
       "writtenOn": "2022-04-12T18:03:57Z",
       "side": 1,
       "message": "It looks like the idea is to pack these all together (hence the use of SkPackedGlyphID::kEndData) but have we checked that all implementation actually pack the uint32_t and bools together? Should there be an assert about the size of this struct? I mean, they should be, and we are also hoping that bool is 32 bits or less here, not sure if it makes a lot of difference or not in the grand scheme of things.\n\nI\u0027m reminded of https://randomascii.wordpress.com/2010/06/06/bit-field-packing-with-visual-c/ where things can be rather surprising and maybe not fixable given ABI constraints.",
+      "revId": "73e22e34d1e0c7a97de65a72ccf3bb2de8d69559",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ace07b6a_7cf79921",
+        "filename": "src/core/SkGlyph.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 280,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-04-12T18:47:16Z",
+      "side": 1,
+      "message": "In clang, this does what I want. The real problem is the fBounds need to be 16 byte aligned. I think this is ok for now. We can tighten things up when we have the SubRun creation data minimized.",
+      "parentUuid": "b662f197_b2f953b8",
       "revId": "73e22e34d1e0c7a97de65a72ccf3bb2de8d69559",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
