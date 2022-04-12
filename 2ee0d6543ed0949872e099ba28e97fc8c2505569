@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8752c5d7_492270ac",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-04-12T22:08:40Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "396c9b91_45da1e5b",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 2
+      },
+      "revId": "2ee0d6543ed0949872e099ba28e97fc8c2505569",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "055669e0_461ddf7a",
@@ -37,6 +61,24 @@
       "writtenOn": "2022-04-12T22:03:21Z",
       "side": 1,
       "message": "This commit message makes sense when it was written before the reverts, but now it makes a little less sense. Maybe use the original\n\n    Add glyph dimensions to SkGlyphDigest\n\n    Add dimensions to the glyph digest to enable SkRemoteGlyphCache to build\n    SubRuns directly.\n\nand then mention why SkGlyphRect isn\u0027t being used?",
+      "revId": "2ee0d6543ed0949872e099ba28e97fc8c2505569",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a0f8438b_dafe73c6",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-04-12T22:08:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "055669e0_461ddf7a",
       "revId": "2ee0d6543ed0949872e099ba28e97fc8c2505569",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
