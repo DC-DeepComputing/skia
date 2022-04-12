@@ -57,6 +57,10 @@ public:
         SkASSERT(postfixLen <= this->size());
         return SkSpan{fPtr + (this->size() - postfixLen), postfixLen};
     }
+    constexpr SkSpan<T> subspan(size_t offset) const {
+        SkASSERT(offset <= this->size());
+        return SkSpan{fPtr + offset, this->size() - offset};
+    }
     constexpr SkSpan<T> subspan(size_t offset, size_t count) const {
         SkASSERT(offset <= this->size());
         SkASSERT(count <= this->size() - offset);
