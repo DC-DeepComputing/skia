@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f44aa41a_f2798a25",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 594,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-12T21:02:55Z",
+      "side": 1,
+      "message": "Done (use `Words`). I think this was written before I had named that type.",
+      "parentUuid": "a87ab14f_a3b8852c",
+      "range": {
+        "startLine": 594,
+        "startChar": 4,
+        "endLine": 594,
+        "endChar": 22
+      },
+      "revId": "24a3f38ea058697761799c98ae0dc036428132c6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b0c10f82_169afdd8",
@@ -64,6 +88,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b59fb72a_89972309",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 622,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-12T21:02:55Z",
+      "side": 1,
+      "message": "This seemed like a great idea (enough that I implemented `subspan`!) but unfortunately, `fWords` is stored as an int32_t array, not a SpvId array. So making the span fails because the types don\u0027t match.",
+      "parentUuid": "b0c10f82_169afdd8",
+      "range": {
+        "startLine": 617,
+        "startChar": 11,
+        "endLine": 622,
+        "endChar": 24
+      },
+      "revId": "24a3f38ea058697761799c98ae0dc036428132c6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9d801a40_5d69a148",
@@ -77,6 +125,30 @@
       "writtenOn": "2022-04-12T20:03:45Z",
       "side": 1,
       "message": "The 4 literal is repeated often enough that perhaps define a module level constant like \"kMaxDimension\"?",
+      "range": {
+        "startLine": 2453,
+        "startChar": 14,
+        "endLine": 2453,
+        "endChar": 15
+      },
+      "revId": "24a3f38ea058697761799c98ae0dc036428132c6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fa8e53f3_a77c5d79",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 2453,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-12T21:02:55Z",
+      "side": 1,
+      "message": "Well, the idea that vector/matrix types top out at 4 is pretty well baked into everything SkSL does. It\u0027s hard coded into the type system and into every codegen. I honestly think it would add confusion if we used a constant like `kMaxComponents` in some places, since it would imply that we want some axis of flexibility here, and it would also imply that things would actually work cleanly if we changed the constant to a different value (they would not).",
+      "parentUuid": "9d801a40_5d69a148",
       "range": {
         "startLine": 2453,
         "startChar": 14,
