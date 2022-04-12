@@ -39,6 +39,30 @@
       },
       "revId": "1d8fe6037b946bb1f4e482a24b412dd9d86e2847",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c2d016ad_da2a8bf2",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-12T19:15:06Z",
+      "side": 1,
+      "message": "I want to keep consistency with SkVM, and I think brevity for a simple null-like type does add some value.",
+      "parentUuid": "4cf774cc_de6e2de4",
+      "range": {
+        "startLine": 110,
+        "startChar": 27,
+        "endLine": 110,
+        "endChar": 29
+      },
+      "revId": "1d8fe6037b946bb1f4e482a24b412dd9d86e2847",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
