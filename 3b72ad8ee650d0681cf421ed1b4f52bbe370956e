@@ -22,6 +22,30 @@
       },
       "revId": "3b72ad8ee650d0681cf421ed1b4f52bbe370956e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2f0ceefa_f568fdaf",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 660,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-04-12T20:27:22Z",
+      "side": 1,
+      "message": "I agree it\u0027s weird -- not sure what the answer is.",
+      "parentUuid": "5937671b_e9c5553a",
+      "range": {
+        "startLine": 660,
+        "startChar": 20,
+        "endLine": 660,
+        "endChar": 59
+      },
+      "revId": "3b72ad8ee650d0681cf421ed1b4f52bbe370956e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
