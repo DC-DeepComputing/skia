@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a1853c60_69eb9581",
+        "filename": "src/gpu/graphite/ClipStack.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 328,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-04-12T16:45:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b1eab6c2_0023a8fc",
+      "range": {
+        "startLine": 328,
+        "startChar": 14,
+        "endLine": 328,
+        "endChar": 22
+      },
+      "revId": "95dfebc5144c17a3f43ed8f3e32582e7a5c8dbab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1860c145_3ebb2c2e",
@@ -58,6 +82,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "487ccd23_00dfdd83",
+        "filename": "src/gpu/graphite/ClipStack.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 346,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-04-12T16:45:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1860c145_3ebb2c2e",
+      "revId": "95dfebc5144c17a3f43ed8f3e32582e7a5c8dbab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "de292804_7eaf1515",
@@ -71,6 +113,30 @@
       "writtenOn": "2022-04-12T16:00:13Z",
       "side": 1,
       "message": "What?",
+      "range": {
+        "startLine": 641,
+        "startChar": 11,
+        "endLine": 641,
+        "endChar": 77
+      },
+      "revId": "95dfebc5144c17a3f43ed8f3e32582e7a5c8dbab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bfd34e01_6cbeca1e",
+        "filename": "src/gpu/graphite/ClipStack.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 641,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-04-12T16:45:10Z",
+      "side": 1,
+      "message": "Re-worded the comment to be clearer (hopefully)",
+      "parentUuid": "de292804_7eaf1515",
       "range": {
         "startLine": 641,
         "startChar": 11,
@@ -106,6 +172,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4a785036_6ec01ecd",
+        "filename": "src/gpu/graphite/ClipStack.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1057,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-04-12T16:45:10Z",
+      "side": 1,
+      "message": "I think it would be pretty minor, unless others found it helped readability. Local draw bounds are represented by the Shape itself and it has a bounds() function too.",
+      "parentUuid": "72853d58_39de4212",
+      "range": {
+        "startLine": 1057,
+        "startChar": 9,
+        "endLine": 1057,
+        "endChar": 19
+      },
+      "revId": "95dfebc5144c17a3f43ed8f3e32582e7a5c8dbab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1fdabc2e_762dfcfc",
         "filename": "src/gpu/graphite/ClipStack.cpp",
         "patchSetId": 7
@@ -117,6 +207,24 @@
       "writtenOn": "2022-04-12T16:00:13Z",
       "side": 1,
       "message": "\u0027\\n\u0027 ?",
+      "revId": "95dfebc5144c17a3f43ed8f3e32582e7a5c8dbab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7905d6a1_86730dcb",
+        "filename": "src/gpu/graphite/ClipStack.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1069,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-04-12T16:45:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1fdabc2e_762dfcfc",
       "revId": "95dfebc5144c17a3f43ed8f3e32582e7a5c8dbab",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
