@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "43cda80b_e90284e6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 18
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-04-12T20:03:45Z",
+      "side": 1,
+      "message": "LGTM % minor nits",
+      "revId": "24a3f38ea058697761799c98ae0dc036428132c6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a87ab14f_a3b8852c",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 594,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-04-12T20:03:45Z",
+      "side": 1,
+      "message": "Use the `Words` alias from the header? IMO it reduces clarity a bit but IWBN to either use that alias everywhere or define a constexpr constant with a meaningful name for the \"8\".",
+      "range": {
+        "startLine": 594,
+        "startChar": 4,
+        "endLine": 594,
+        "endChar": 22
+      },
+      "revId": "24a3f38ea058697761799c98ae0dc036428132c6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b0c10f82_169afdd8",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 622,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-04-12T20:03:45Z",
+      "side": 1,
+      "message": "Could this turn into \"return this-\u003eto_constants(SkMakeSpan(instr-\u003efWord));\"?",
+      "range": {
+        "startLine": 617,
+        "startChar": 11,
+        "endLine": 622,
+        "endChar": 24
+      },
+      "revId": "24a3f38ea058697761799c98ae0dc036428132c6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9d801a40_5d69a148",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 2453,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-04-12T20:03:45Z",
+      "side": 1,
+      "message": "The 4 literal is repeated often enough that perhaps define a module level constant like \"kMaxDimension\"?",
+      "range": {
+        "startLine": 2453,
+        "startChar": 14,
+        "endLine": 2453,
+        "endChar": 15
+      },
+      "revId": "24a3f38ea058697761799c98ae0dc036428132c6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
