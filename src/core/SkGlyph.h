@@ -266,8 +266,7 @@ public:
     bool canDrawAsMask() const { return fCanDrawAsMask; }
     bool canDrawAsSDFT() const { return fCanDrawAsSDFT; }
     uint16_t maxDimension()  const {
-        auto [width, height] = fBounds.widthHeight();
-        return std::max(width.val, height.val);
+        return std::max(fWidth, fHeight);
     }
 
 private:
@@ -279,7 +278,8 @@ private:
         uint32_t fCanDrawAsMask : 1;
         uint32_t fCanDrawAsSDFT : 1;
     };
-    SkGlyphRect fBounds;
+    int16_t fLeft, fTop;
+    uint16_t fWidth, fHeight;
 };
 
 class SkGlyph {
