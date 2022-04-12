@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c8998c3b_38df686e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 23
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-04-12T20:22:49Z",
+      "side": 1,
+      "message": "LGTM % one extra comment. Thanks for the round trip!",
+      "revId": "9d323600d3e835306a9f9a95ebf0e9e429057148",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e435aaf4_b781f865",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-04-12T20:22:49Z",
+      "side": 1,
+      "message": "Maybe add \"explicit\" here to prevent an implicit conversion. (I\u0027m not sure if the Skia style has any rules about this but in Google C++ style we tend to discourage implicit constructors: https://google.github.io/styleguide/cppguide.html#Implicit_Conversions)",
+      "range": {
+        "startLine": 109,
+        "startChar": 4,
+        "endLine": 109,
+        "endChar": 8
+      },
+      "revId": "9d323600d3e835306a9f9a95ebf0e9e429057148",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c52a75f6_15481682",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.h",
+        "patchSetId": 23
+      },
+      "lineNbr": 549,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-04-12T20:22:49Z",
+      "side": 1,
+      "message": "This is great, thank you!",
+      "range": {
+        "startLine": 543,
+        "startChar": 3,
+        "endLine": 549,
+        "endChar": 53
+      },
+      "revId": "9d323600d3e835306a9f9a95ebf0e9e429057148",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

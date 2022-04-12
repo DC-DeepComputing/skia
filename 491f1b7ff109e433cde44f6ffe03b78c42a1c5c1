@@ -65,6 +65,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8cf08eca_897a2466",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-04-12T20:22:49Z",
+      "side": 1,
+      "message": "That makes sense. Consider documenting that here.",
+      "parentUuid": "1d307cde_673e7a0a",
+      "range": {
+        "startLine": 102,
+        "startChar": 8,
+        "endLine": 102,
+        "endChar": 13
+      },
+      "revId": "491f1b7ff109e433cde44f6ffe03b78c42a1c5c1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3c75e23f_bc859e67",
@@ -385,6 +409,30 @@
       "side": 1,
       "message": "Done",
       "parentUuid": "1a187afe_49b8fd79",
+      "range": {
+        "startLine": 467,
+        "startChar": 4,
+        "endLine": 467,
+        "endChar": 37
+      },
+      "revId": "491f1b7ff109e433cde44f6ffe03b78c42a1c5c1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "de50d8ba_33aa2ccb",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 467,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-04-12T20:22:49Z",
+      "side": 1,
+      "message": "I see, thank you for the clarification. I think what you have now is good. You could also define a constant like \"kMaxInstructionNumWords \u003d 8;\" and use that in the \"Words\" definition.",
+      "parentUuid": "03ca0da0_8c30aea5",
       "range": {
         "startLine": 467,
         "startChar": 4,
