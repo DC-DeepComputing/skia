@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1d307cde_673e7a0a",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-12T19:08:28Z",
+      "side": 1,
+      "message": "`Instruction::fResultKind` will be set to `kNone` if an instruction doesn\u0027t have a result. Right now there isn\u0027t any case where a Word would have that Kind.",
+      "parentUuid": "dcd59daa_24f0dda1",
+      "range": {
+        "startLine": 102,
+        "startChar": 8,
+        "endLine": 102,
+        "endChar": 13
+      },
+      "revId": "491f1b7ff109e433cde44f6ffe03b78c42a1c5c1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3c75e23f_bc859e67",
@@ -54,6 +78,30 @@
       "writtenOn": "2022-04-12T17:48:24Z",
       "side": 1,
       "message": "Is -1 here a placeholder for a Word kind that doesn\u0027t have a value? Words can be signed (if they are a number for example).\n\nIf I\u0027m understanding the usage here correctly, then perhaps consider std::optional here to add some type safety around `fValue` not having a value.",
+      "range": {
+        "startLine": 132,
+        "startChar": 20,
+        "endLine": 132,
+        "endChar": 23
+      },
+      "revId": "491f1b7ff109e433cde44f6ffe03b78c42a1c5c1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "72674a64_fc7d8df5",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-12T19:08:28Z",
+      "side": 1,
+      "message": "In practice, the default values aren\u0027t used. We don\u0027t default-construct Words; I was just being defensive. I\u0027ll remove the defaults.\n\nA SpvId of -1 is the SPIR-V code generator\u0027s sentinel for \"no SpvId here.\" To make this more clear to a casual reader, I\u0027ve put up a CL assigning these a name:  http://review.skia.org/529519 \n\nIf we wanted to represent a `Word` without no value, we could put its `fKind` as `kNone` and then the `fValue` would be ignored. But that isn\u0027t something we actually need at this CL.",
+      "parentUuid": "3c75e23f_bc859e67",
       "range": {
         "startLine": 132,
         "startChar": 20,
@@ -87,6 +135,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e22f5c74_05ac195b",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 537,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-12T19:08:28Z",
+      "side": 1,
+      "message": "Now uses constant `NA`",
+      "parentUuid": "fda70fb8_30a74a1c",
+      "range": {
+        "startLine": 537,
+        "startChar": 26,
+        "endLine": 537,
+        "endChar": 28
+      },
+      "revId": "491f1b7ff109e433cde44f6ffe03b78c42a1c5c1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "79238fd6_9ff4f027",
@@ -100,6 +172,30 @@
       "writtenOn": "2022-04-12T17:48:24Z",
       "side": 1,
       "message": "Maybe add a debug assertion that `result !\u003d -1` ?",
+      "range": {
+        "startLine": 564,
+        "startChar": 28,
+        "endLine": 564,
+        "endChar": 34
+      },
+      "revId": "491f1b7ff109e433cde44f6ffe03b78c42a1c5c1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "45e1e0cd_40826042",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 564,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-12T19:08:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "79238fd6_9ff4f027",
       "range": {
         "startLine": 564,
         "startChar": 28,
@@ -135,6 +231,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e7e20314_9c3fc045",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 2911,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-12T19:08:28Z",
+      "side": 1,
+      "message": "These are only added in places which use branches/phi nodes/blocks. Most expressions don\u0027t emit a branch and don\u0027t need to prune. Offhand I don\u0027t know of a better way to do these in a centralized way but I am open to ideas.",
+      "parentUuid": "18a3dc61_f078560a",
+      "range": {
+        "startLine": 2911,
+        "startChar": 4,
+        "endLine": 2911,
+        "endChar": 50
+      },
+      "revId": "491f1b7ff109e433cde44f6ffe03b78c42a1c5c1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1f28eea8_d2e47e22",
         "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
         "patchSetId": 20
@@ -146,6 +266,30 @@
       "writtenOn": "2022-04-12T17:48:24Z",
       "side": 1,
       "message": "Remove dead code?",
+      "range": {
+        "startLine": 3100,
+        "startChar": 0,
+        "endLine": 3102,
+        "endChar": 7
+      },
+      "revId": "491f1b7ff109e433cde44f6ffe03b78c42a1c5c1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ef988796_ae26b354",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 3102,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-12T19:08:28Z",
+      "side": 1,
+      "message": "This was left here to make it obvious to the CL reviewer that the op cache was doing something and was already removed in the followup CL :) OK, done.",
+      "parentUuid": "1f28eea8_d2e47e22",
       "range": {
         "startLine": 3100,
         "startChar": 0,
