@@ -52,7 +52,8 @@ class DSLWriter;
 class ThreadContext {
 public:
     ThreadContext(SkSL::Compiler* compiler,  SkSL::ProgramKind kind,
-              const SkSL::ProgramSettings& settings, SkSL::ParsedModule module, bool isModule);
+                  const SkSL::ProgramSettings& settings, SkSL::ParsedModule module,
+                  bool isModule, bool);
 
     ~ThreadContext();
 

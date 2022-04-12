@@ -161,6 +161,8 @@ std::string get_sksl_vs(const GraphicsPipelineDesc& desc) {
         "};\n"
         "\n";
 
+    // MtlGraphicsPipeline::kIntrinsicUniformBufferIndex
+
     if (step->numVertexAttributes() > 0 || step->numInstanceAttributes() > 0) {
         sksl += emit_SkSL_attributes(step->vertexAttributes(), step->instanceAttributes());
     }
@@ -499,8 +501,12 @@ sk_sp<MtlGraphicsPipeline> MtlGraphicsPipeline::Make(
     sk_cfp<MTLRenderPipelineDescriptor*> psoDescriptor([[MTLRenderPipelineDescriptor alloc] init]);
 
     std::string msl[kShaderTypeCount];
-    SkSL::Program::Inputs inputs[kShaderTypeCount];
+    SkSL::Program::Inputs inputs[kShaderTypeCount] = {
+            SkSL::Program::Inputs(true),
+            SkSL::Program::Inputs(true), //$$
+    };
     SkSL::Program::Settings settings;
+    settings.fDoWhatGraphiteWants = true; //$$
 
     ShaderErrorHandler* errorHandler = DefaultShaderErrorHandler();
     if (!SkSLToMSL(gpu,

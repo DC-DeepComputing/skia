@@ -145,8 +145,8 @@ void GrGLProgramBuilder::computeCountsAndStrides(GrGLuint programID,
 }
 
 void GrGLProgramBuilder::addInputVars(const SkSL::Program::Inputs& inputs) {
-    if (inputs.fUseFlipRTUniform) {
-        this->addRTFlipUniform(SKSL_RTFLIP_NAME);
+    if (inputs.fUseFlipRTUniform1 && inputs.fCreateOwnUniform) {
+        this->addRTFlipUniform(inputs.fRTFlipName7.c_str());
     }
 }
 
@@ -233,7 +233,7 @@ sk_sp<GrGLProgram> GrGLProgramBuilder::finalize(const GrGLPrecompiledProgram* pr
     settings.fSharpenTextures = true;
     settings.fFragColorIsInOut = this->fragColorIsInOut();
 
-    SkSL::Program::Inputs inputs;
+    SkSL::Program::Inputs inputs(/* doWhatGraphiteWants */ true);
     SkTDArray<GrGLuint> shadersToDelete;
 
     bool checkLinked = !fGpu->glCaps().skipErrorChecks();
@@ -534,7 +534,7 @@ bool GrGLProgramBuilder::PrecompileProgram(GrDirectContext* dContext,
     meta.fSettings = &settings;
 
     std::string shaders[kGrShaderTypeCount];
-    SkSL::Program::Inputs inputs;
+    SkSL::Program::Inputs inputs(true);
     if (!GrPersistentCacheUtils::UnpackCachedShaders(&reader, shaders, &inputs, 1, &meta)) {
         return false;
     }

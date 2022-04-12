@@ -308,6 +308,8 @@ void MtlCommandBuffer::onSetViewport(float x, float y, float width, float height
     // However, in NDC (-1, -1) is the bottom left. So we flip the origin here (assuming all
     // surfaces we have are TopLeft origin).
     float rtAdjust[4] = {invTwoW, -invTwoH, -1.f - x * invTwoW, 1.f + y * invTwoH};
+
+    SkDebugf("------------ rtAdjust: %.2f %.2f %.2f %.2f\n", rtAdjust[0], rtAdjust[1], rtAdjust[2], rtAdjust[3]);
     fActiveRenderCommandEncoder->setVertexBytes(rtAdjust, 4 * sizeof(float),
                                                 MtlGraphicsPipeline::kIntrinsicUniformBufferIndex);
 }
