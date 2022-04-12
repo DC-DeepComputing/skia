@@ -16,6 +16,23 @@
       "message": "I think I need to +1 this to get all the Canaries to run, and should probably wait until they all finish. However, if this is the behavior we want out of these particular values, lgtm.",
       "revId": "922ef85e07f4b99bafa3edb070017801ca09a12c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "32eed638_acbfa1df",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-04-12T19:00:23Z",
+      "side": 1,
+      "message": "Since Chromium seems to have more or less the same test, this change may want to go behind a flag (like `SK_IGNORE_COLRV1_TRANSFORM_FIX`), define the flag in Chromium\u0027s build of Skia, land this CL (with the change behind this flag), wait for Skia to roll into Chromium, remove the flag from Chromium (and rebaseline), then remove the flag from Skia.",
+      "revId": "922ef85e07f4b99bafa3edb070017801ca09a12c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
