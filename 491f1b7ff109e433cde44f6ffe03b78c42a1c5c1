@@ -371,6 +371,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "03ca0da0_8c30aea5",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 467,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-12T19:57:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a187afe_49b8fd79",
+      "range": {
+        "startLine": 467,
+        "startChar": 4,
+        "endLine": 467,
+        "endChar": 37
+      },
+      "revId": "491f1b7ff109e433cde44f6ffe03b78c42a1c5c1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7ba388ac_827ff516",
@@ -384,6 +408,30 @@
       "writtenOn": "2022-04-12T17:48:24Z",
       "side": 1,
       "message": "If this represents multiple words in an instruction, then should it be named in the plural, i.e. fWords?",
+      "range": {
+        "startLine": 473,
+        "startChar": 31,
+        "endLine": 473,
+        "endChar": 36
+      },
+      "revId": "491f1b7ff109e433cde44f6ffe03b78c42a1c5c1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ac54c766_c6c57321",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 473,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-12T19:57:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7ba388ac_827ff516",
       "range": {
         "startLine": 473,
         "startChar": 31,
