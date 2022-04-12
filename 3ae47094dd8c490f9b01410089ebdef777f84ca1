@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "29c30164_0369b2ea",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-04-12T20:38:50Z",
+      "side": 1,
+      "message": "This was motivated by the complexity of figuring out when to use COLRv0 or COLRv1 in SkScalerContext_FreeType::generateImage (and with the SVG change, if SVG was actually picked). Currently it is necessary to check for the presence of each format in the same way as was done in generateMetrics. It can be a bit expensive to go poking about in the font data to see if various formats are supported, so we don\u0027t want to do it more than we need to. But generateMetrics knows which one it picked, so could just use some of these bits as a private enum to just tell generateImage what to do directly. This should makes it easier to implement generateImage correctly, since it can just do what the bits say to do, instead of worrying about being structured exactly like generateMetrics.",
+      "revId": "3ae47094dd8c490f9b01410089ebdef777f84ca1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
