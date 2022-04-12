@@ -12,6 +12,7 @@
 #include "include/private/SkSLLayout.h"
 #include "include/private/SkSLModifiers.h"
 #include "include/private/SkSLProgramKind.h"
+#include "include/private/SkTArray.h"
 #include "include/private/SkTHash.h"
 #include "src/core/SkOpts.h"
 #include "src/sksl/SkSLMemoryLayout.h"
@@ -25,7 +26,7 @@
 #include "src/sksl/ir/SkSLVariable.h"
 #include "src/sksl/spirv.h"
 
-#include <stdint.h>
+#include <cstdint>
 #include <memory>
 #include <stack>
 #include <string>
@@ -464,6 +465,27 @@ private:
                           int32_t word5, int32_t word6, int32_t word7, int32_t word8,
                           OutputStream& out);
 
+    // This form of writeInstruction can deduplicate redundant ops.
+    struct Word;
+    using Words = SkSTArray<8, Word>;
+    SpvId writeInstruction(SpvOp_ opCode, const SkTArray<Word>& words, OutputStream& out);
+
+    struct Instruction {
+        SpvId                  fOp;
+        int32_t                fResultKind;
+        SkSTArray<8, int32_t>  fWord;
+
+        bool operator==(const Instruction& that) const;
+        struct Hash;
+    };
+
+    // The writeOpXxxxx calls will simplify and deduplicate ops where possible.
+    SpvId writeOpConstantTrue(const Type& type);
+    SpvId writeOpConstantFalse(const Type& type);
+    SpvId writeOpConstant(const Type& type, int32_t valueBits);
+
+    void pruneReachableOps(size_t numReachableOps);
+
     bool isDead(const Variable& var) const;
 
     MemoryLayout memoryLayoutForVariable(const Variable&) const;
@@ -509,6 +531,9 @@ private:
     StringStream fNameBuffer;
     StringStream fDecorationBuffer;
 
+    SkTHashMap<Instruction, SpvId, Instruction::Hash> fOpCache;  // maps instruction -> SpvId
+    SkTHashMap<SpvId, Instruction> fSpvIdCache;                  // maps SpvId -> instruction
+    std::vector<SpvId> fReachableOps;
     SkTHashMap<SPIRVNumberConstant, SpvId, SPIRVNumberConstant::Hash> fNumberConstants;
     SkTHashMap<SPIRVVectorConstant, SpvId, SPIRVVectorConstant::Hash> fVectorConstants;
     // label of the current block, or 0 if we are not in a block
