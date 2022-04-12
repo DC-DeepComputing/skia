@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2efabbcd_f85089a1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-04-12T15:45:25Z",
+      "side": 1,
+      "message": "So this is essentially just splitting up SkGlyphDigest and its key. Inside the map (which used to be more or less a set) the map will hold the SkPackedGlyphID as the key in the pair (in the map the actual data will be almost the same as it is prior to this change), but elsewhere SkGlyphDigest will be independent of the SkPackedGlyphID.",
+      "revId": "eefa4b4015d59436d4aa59a8e9e08b2ced8d4a18",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "792ef01f_fbdedc00",
+        "filename": "src/core/SkGlyph.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-04-12T15:45:25Z",
+      "side": 1,
+      "message": "nit: remove?",
+      "range": {
+        "startLine": 102,
+        "startChar": 4,
+        "endLine": 102,
+        "endChar": 5
+      },
+      "revId": "eefa4b4015d59436d4aa59a8e9e08b2ced8d4a18",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
