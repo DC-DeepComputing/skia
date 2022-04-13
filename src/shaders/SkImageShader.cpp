@@ -381,6 +381,12 @@ void SkImageShader::addToKey(const SkKeyContext& keyContext,
 
 #ifdef SK_GRAPHITE_ENABLED
     if (as_IB(fImage)->isGraphiteBacked()) {
+        bool SkShaderBase::computeTotalInverse(const SkMatrix& ctm,
+                                               const SkMatrix* outerLocalMatrix,
+                                               SkMatrix* totalInverse) const {
+            return SkMatrix::Concat(ctm, *this->totalLocalMatrix(outerLocalMatrix)).invert(totalInverse);
+        }
+
         skgpu::graphite::Image* grImage = static_cast<skgpu::graphite::Image*>(fImage.get());
 
         auto mipmapped = (fSampling.mipmap != SkMipmapMode::kNone) ?
