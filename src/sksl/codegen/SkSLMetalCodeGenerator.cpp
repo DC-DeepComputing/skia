@@ -732,7 +732,11 @@ bool MetalCodeGenerator::writeIntrinsicCall(const FunctionCall& c, IntrinsicKind
             return true;
         }
         case k_dFdy_IntrinsicKind: {
-            this->write("(" + fRTFlipName + ".y * dfdy");
+            if (!fRTFlipName.empty()) {
+                this->write("(" + fRTFlipName + ".y * dfdy");
+            } else {
+                this->write("(dfdy");
+            }
             this->writeArgumentList(c.arguments());
             this->write(")");
             return true;
@@ -1336,12 +1340,15 @@ void MetalCodeGenerator::writeCastConstructor(const AnyConstructor& c,
 }
 
 void MetalCodeGenerator::writeFragCoord() {
-    SkASSERT(fRTFlipName.length());
-    this->write("float4(_fragCoord.x, ");
-    this->write(fRTFlipName.c_str());
-    this->write(".x + ");
-    this->write(fRTFlipName.c_str());
-    this->write(".y * _fragCoord.y, 0.0, _fragCoord.w)");
+    if (!fRTFlipName.empty()) {
+        this->write("float4(_fragCoord.x, ");
+        this->write(fRTFlipName.c_str());
+        this->write(".x + ");
+        this->write(fRTFlipName.c_str());
+        this->write(".y * _fragCoord.y, 0.0, _fragCoord.w)");
+    } else {
+        this->write("float4(_fragCoord.x, _fragCoord.y, 0.0, _fragCoord.w)");
+    }
 }
 
 void MetalCodeGenerator::writeVariableReference(const VariableReference& ref) {
@@ -1369,7 +1376,11 @@ void MetalCodeGenerator::writeVariableReference(const VariableReference& ref) {
         case SK_CLOCKWISE_BUILTIN:
             // We'd set the front facing winding in the MTLRenderCommandEncoder to be counter
             // clockwise to match Skia convention.
-            this->write("(" + fRTFlipName + ".y < 0 ? _frontFacing : !_frontFacing)");
+            if (!fRTFlipName.empty()) {
+                this->write("(" + fRTFlipName + ".y < 0 ? _frontFacing : !_frontFacing)");
+            } else {
+                this->write("_frontFacing");
+            }
             break;
         default:
             const Variable& var = *ref.variable();
@@ -1871,7 +1882,7 @@ int MetalCodeGenerator::getUniformSet(const Modifiers& m) {
 }
 
 bool MetalCodeGenerator::writeFunctionDeclaration(const FunctionDeclaration& f) {
-    fRTFlipName = fProgram.fInputs.fUseFlipRTUniform
+    fRTFlipName = fProgram.fInputs.fUseFlipRTUniform7
                           ? "_globals._anonInterface0->" SKSL_RTFLIP_NAME
                           : "";
     const char* separator = "";
@@ -1930,7 +1941,7 @@ bool MetalCodeGenerator::writeFunctionDeclaration(const FunctionDeclaration& f) 
             }
         }
         if (fProgram.fConfig->fKind == ProgramKind::kFragment) {
-            if (fProgram.fInputs.fUseFlipRTUniform && fInterfaceBlockNameMap.empty()) {
+            if (fProgram.fInputs.fUseFlipRTUniform7 && fInterfaceBlockNameMap.empty()) {
                 this->write(", constant sksl_synthetic_uniforms& _anonInterface0 [[buffer(1)]]");
                 fRTFlipName = "_anonInterface0." SKSL_RTFLIP_NAME;
             }
@@ -1993,7 +2004,7 @@ static bool is_block_ending_with_return(const Statement* stmt) {
 }
 
 void MetalCodeGenerator::writeFunction(const FunctionDefinition& f) {
-    SkASSERT(!fProgram.fConfig->fSettings.fFragColorIsInOut);
+    SkASSERT(!fProgram.fConfig->fSettings.fFragColorIsInOut1);
 
     if (!this->writeFunctionDeclaration(f.declaration())) {
         return;
@@ -2057,7 +2068,7 @@ void MetalCodeGenerator::writeInterfaceBlock(const InterfaceBlock& intf) {
     }
     fIndentation++;
     this->writeFields(structType->fields(), structType->fPosition, &intf);
-    if (fProgram.fInputs.fUseFlipRTUniform) {
+    if (fProgram.fInputs.fUseFlipRTUniform7) {
         this->writeLine("float2 " SKSL_RTFLIP_NAME ";");
     }
     fIndentation--;
@@ -2446,7 +2457,7 @@ void MetalCodeGenerator::writeInterfaceBlocks() {
             wroteInterfaceBlock = true;
         }
     }
-    if (!wroteInterfaceBlock && fProgram.fInputs.fUseFlipRTUniform) {
+    if (!wroteInterfaceBlock && fProgram.fInputs.fUseFlipRTUniform7) {
         this->writeLine("struct sksl_synthetic_uniforms {");
         this->writeLine("    float2 " SKSL_RTFLIP_NAME ";");
         this->writeLine("};");

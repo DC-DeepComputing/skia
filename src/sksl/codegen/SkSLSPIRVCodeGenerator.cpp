@@ -3213,7 +3213,7 @@ SpvId SPIRVCodeGenerator::writeInterfaceBlock(const InterfaceBlock& intf, bool a
         return this->nextId(nullptr);
     }
     SpvStorageClass_ storageClass = get_storage_class(intf.variable(), SpvStorageClassFunction);
-    if (fProgram.fInputs.fUseFlipRTUniform && appendRTFlip && type.isStruct()) {
+    if (fProgram.fInputs.fUseFlipRTUniform7 && appendRTFlip && type.isStruct()) {
         // We can only have one interface block (because we use push_constant and that is limited
         // to one per program), so we need to append rtflip to this one rather than synthesize an
         // entirely new block when the variable is referenced. And we can't modify the existing
@@ -3297,7 +3297,7 @@ void SPIRVCodeGenerator::writeGlobalVar(ProgramKind kind, const VarDeclaration& 
     const Variable& var = varDecl.var();
     if (var.modifiers().fLayout.fBuiltin == SK_FRAGCOLOR_BUILTIN &&
         kind != ProgramKind::kFragment) {
-        SkASSERT(!fProgram.fConfig->fSettings.fFragColorIsInOut);
+        SkASSERT(!fProgram.fConfig->fSettings.fFragColorIsInOut1);
         return;
     }
     if (this->isDead(var)) {

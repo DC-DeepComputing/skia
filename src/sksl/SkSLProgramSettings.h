@@ -21,8 +21,11 @@ class ExternalFunction;
  * Holds the compiler settings for a program.
  */
 struct ProgramSettings {
+    // If true, the gradients and winding won't be modified by the rtFlip. Additionally,
+    // the XXX boolean will be force to false so no rtFlip uniform will be emitted.
+    bool fForceNoRTFlip = false;
     // If true the destination fragment color is read sk_FragColor. It must be declared inout.
-    bool fFragColorIsInOut = false;
+    bool fFragColorIsInOut1 = false;
     // if true, Setting objects (e.g. sk_Caps.fbFetchSupport) should be replaced with their
     // constant equivalents during compilation
     bool fReplaceSettings = true;
