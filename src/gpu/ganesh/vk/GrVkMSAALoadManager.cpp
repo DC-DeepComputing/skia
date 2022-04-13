@@ -233,4 +233,3 @@ void GrVkMSAALoadManager::destroyResources(GrVkGpu* gpu) {
         fPipelineLayout = VK_NULL_HANDLE;
     }
 }
-

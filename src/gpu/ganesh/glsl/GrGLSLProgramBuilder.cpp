@@ -486,6 +486,7 @@ void GrGLSLProgramBuilder::appendUniformDecls(GrShaderFlags visibility, SkString
 
 void GrGLSLProgramBuilder::addRTFlipUniform(const char* name) {
     SkASSERT(!fUniformHandles.fRTFlipUni.isValid());
+
     GrGLSLUniformHandler* uniformHandler = this->uniformHandler();
     fUniformHandles.fRTFlipUni =
             uniformHandler->internalAddUniformArray(nullptr,

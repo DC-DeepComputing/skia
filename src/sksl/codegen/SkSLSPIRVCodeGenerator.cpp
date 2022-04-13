@@ -3693,6 +3693,8 @@ void SPIRVCodeGenerator::writeUniformBuffer(std::shared_ptr<SymbolTable> topLeve
 }
 
 void SPIRVCodeGenerator::addRTFlipUniform(Position pos) {
+    SkASSERT(!fProgram.fConfig->fSettings.fForceNoRTFlip);
+
     if (fWroteRTFlip) {
         return;
     }

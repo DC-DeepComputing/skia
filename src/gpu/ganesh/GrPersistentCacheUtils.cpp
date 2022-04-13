@@ -46,6 +46,7 @@ sk_sp<SkData> PackCachedShaders(SkFourByteTag shaderType,
     if (meta) {
         writer.writeBool(SkToBool(meta->fSettings));
         if (meta->fSettings) {
+            writer.writeBool(meta->fSettings->fForceNoRTFlip);
             writer.writeBool(meta->fSettings->fFragColorIsInOut);
             writer.writeBool(meta->fSettings->fForceHighPrecision);
             writer.writeBool(meta->fSettings->fUsePushConstants);
@@ -96,7 +97,8 @@ bool UnpackCachedShaders(SkReadBuffer* reader,
         SkASSERT(meta->fSettings != nullptr);
 
         if (reader->readBool()) {
-            meta->fSettings->fFragColorIsInOut   = reader->readBool();
+            meta->fSettings->fForceNoRTFlip      = reader->readBool();
+            meta->fSettings->fFragColorIsInOut  = reader->readBool();
             meta->fSettings->fForceHighPrecision = reader->readBool();
             meta->fSettings->fUsePushConstants   = reader->readBool();
         }
