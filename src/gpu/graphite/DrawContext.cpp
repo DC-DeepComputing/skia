@@ -124,8 +124,30 @@ sk_sp<Task> DrawContext::snapRenderPassTask(Recorder* recorder,
     SkASSERT(fDrawPasses.size() == 1);
     RenderPassDesc desc;
     auto& drawPass = fDrawPasses[0];
-    desc.fColorAttachment.fTextureInfo = drawPass->target()->textureInfo();
-    std::tie(desc.fColorAttachment.fLoadOp, desc.fColorAttachment.fStoreOp) = drawPass->ops();
+    const TextureInfo& targetInfo = target->textureInfo();
+    auto [loadOp, storeOp] = drawPass->ops();
+    // It doesn't make sesne to have a storeOp for our main target not be store. Why are we doing
+    // this DrawPass then
+    SkASSERT(storeOp == StoreOp::kStore);
+    if (drawPass->requiresMSAA()) {
+        desc.fColorAttachment.fTextureInfo = caps->getDefaultMSAATextureInfo(targetInfo);
+        if (loadOp != LoadOp::kClear) {
+            desc.fColorAttachment.fLoadOp = LoadOp::kDiscard;
+        } else {
+            desc.fColorAttachment.fLoadOp = LoadOp::kClear;
+        }
+        desc.fColorAttachment.fStoreOp = StoreOp::kDiscard;
+
+        desc.fResolveAttachment.fTextureInfo = targetInfo;
+        if (loadOp != LoadOp::kLoad) {
+            desc.fResolveAttachment.fLoadOp = LoadOp::kDiscard;
+        } else {
+            desc.fResolveAttachment.fLoadOp = LoadOp::kLoad;
+        }
+        desc.fResolveAttachment.fStoreOp = storeOp;
+    } else {
+        desc.fColorAttachment.fTextureInfo = targetInfo;
+    }
     desc.fClearColor = drawPass->clearColor();
 
     if (drawPass->depthStencilFlags() != DepthStencilFlags::kNone) {

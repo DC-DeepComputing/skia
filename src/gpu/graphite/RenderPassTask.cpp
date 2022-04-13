@@ -52,19 +52,36 @@ bool RenderPassTask::addCommands(ResourceProvider* resourceProvider, CommandBuff
         }
     }
 
-    sk_sp<Texture> depthStencilTexture;
+    sk_sp<Texture> colorAttachment;
+    sk_sp<Texture> resolveAttachment;
+    if (desc.fResolveAttachment.isValid()) {
+        SkASSERT(target->numSamples() == 1 && desc.fColorAttachment.fTextureInfo.numSamples() > 1);
+        colorAttachment = resourceProvider->findOrCreateDiscardableMSAAAttachment(
+                fTarget->dimensions(), fRenderPassDesc.fColorAttachment.fTextureInfo);
+        if (!colorAttachment) {
+            SKGPU_LOG_W("Could not get Color attachment for RenderPassTask");
+            return false;
+        }
+        resolveAttachment = fTarget->refTexture();
+    } else {
+        colorAttachment = fTarget->refTexture();
+    }
+
+    sk_sp<Texture> depthStencilAttachment;
     if (fRenderPassDesc.fDepthStencilAttachment.fTextureInfo.isValid()) {
         // TODO: ensure this is a scratch/recycled texture
-        depthStencilTexture = resourceProvider->findOrCreateDepthStencilAttachment(
+        depthStencilAttachment = resourceProvider->findOrCreateDepthStencilAttachment(
                 fTarget->dimensions(), fRenderPassDesc.fDepthStencilAttachment.fTextureInfo);
-        if (!depthStencilTexture) {
+        if (!depthStencilAttachment) {
             SKGPU_LOG_W("Could not get DepthStencil attachment for RenderPassTask");
             return false;
         }
     }
 
-    if (commandBuffer->beginRenderPass(fRenderPassDesc, fTarget->refTexture(), nullptr,
-                                       std::move(depthStencilTexture))) {
+    if (commandBuffer->beginRenderPass(fRenderPassDesc,
+                                       std::move(colorAttachment),
+                                       std::move(resolveAttachment),
+                                       std::move(depthStencilAttachment))) {
         // Assuming one draw pass per renderpasstask for now
         SkASSERT(fDrawPasses.size() == 1);
         for (const auto& drawPass: fDrawPasses) {
