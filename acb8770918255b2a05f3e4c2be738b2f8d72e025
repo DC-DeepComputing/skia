@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b1a26050_8cd6f457",
+        "filename": "src/gpu/ganesh/gl/GrGLGpu.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1383,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-04-13T00:47:45Z",
+      "side": 0,
+      "message": "This function only really exists for some old drivers that would handle teximage commands differently depending on the filter/wrap params set on the texture (very old ios or android powervr IIRC). And we\u0027re setting the other params here to values that are different than the default. The default max aniso is already 1 so this is effectively a no-op anyway.",
+      "range": {
+        "startLine": 1381,
+        "startChar": 0,
+        "endLine": 1383,
+        "endChar": 5
+      },
+      "revId": "acb8770918255b2a05f3e4c2be738b2f8d72e025",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
