@@ -1,5 +1,23 @@
 {
-  "comments": [],
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fab9edfa_e109098c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6395
+      },
+      "writtenOn": "2022-04-13T14:42:46Z",
+      "side": 1,
+      "message": "Gating flag landed in Chrome in https://chromium-review.googlesource.com/c/chromium/src/+/3581991",
+      "revId": "c76a51bc69a0255bdd040670806af06c014ee213",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ],
   "submitRequirementResults": [
     {
       "submitRequirement": {
