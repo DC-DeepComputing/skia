@@ -2,6 +2,16 @@
 This file contains general helper macros that make our BUILD.bazel files easier to read.
 """
 
+# https://github.com/bazelbuild/bazel-skylib
+load("@bazel_skylib//lib:selects.bzl", _selects = "selects")
+load("@rules_python//python:defs.bzl", _py_binary = "py_binary")
+load("@py_deps//:requirements.bzl", _requirement = "requirement")
+
+# re-export symbols that are commonly used
+selects = _selects
+py_binary = _py_binary
+requirement = _requirement
+
 def select_multi(values_map, default, name = ""):
     """select() but allowing multiple matches of the keys.
 
