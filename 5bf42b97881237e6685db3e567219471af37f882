@@ -22,6 +22,30 @@
       },
       "revId": "5bf42b97881237e6685db3e567219471af37f882",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "482895e0_c5ee4e83",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 684,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-13T14:11:21Z",
+      "side": 1,
+      "message": "Yes, see L688\n\n    // TODO(johnstiles): add support for SpvOpCompositeConstruct\n\nUnfortunately it\u0027s way less simple because SpvOpCompositeConstruct allows mixed vecN and scalar arguments.",
+      "parentUuid": "d673b2f5_324f3afe",
+      "range": {
+        "startLine": 684,
+        "startChar": 21,
+        "endLine": 684,
+        "endChar": 43
+      },
+      "revId": "5bf42b97881237e6685db3e567219471af37f882",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
