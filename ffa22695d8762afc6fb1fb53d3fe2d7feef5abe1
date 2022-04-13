@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8c80ed0a_33fe2207",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-04-13T11:33:45Z",
+      "side": 1,
+      "message": "Please add some comments (either to the file or the commit message) about why this is necessary and what it means to pass in two hashes. A link to the docs would also be helpful.",
+      "range": {
+        "startLine": 7,
+        "startChar": 4,
+        "endLine": 7,
+        "endChar": 7
+      },
+      "revId": "ffa22695d8762afc6fb1fb53d3fe2d7feef5abe1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
