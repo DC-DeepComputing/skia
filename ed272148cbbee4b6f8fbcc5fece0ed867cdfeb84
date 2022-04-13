@@ -22,6 +22,30 @@
       },
       "revId": "ed272148cbbee4b6f8fbcc5fece0ed867cdfeb84",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "63dc23bd_244d13e2",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 642,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-13T23:49:28Z",
+      "side": 0,
+      "message": "Ack",
+      "parentUuid": "59286077_0e0f41f3",
+      "range": {
+        "startLine": 642,
+        "startChar": 0,
+        "endLine": 642,
+        "endChar": 97
+      },
+      "revId": "ed272148cbbee4b6f8fbcc5fece0ed867cdfeb84",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
