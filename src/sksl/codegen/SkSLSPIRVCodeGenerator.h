@@ -452,7 +452,7 @@ private:
     bool toConstants(SkSpan<const SpvId> values, SkTArray<SpvId>* constants);
 
     // Extracts the requested component SpvId from a composite instruction, if it can be done.
-    SpvId toComponent(const Instruction& instr, int component);
+    SpvId toComponent(SpvId id, int component);
 
     void pruneReachableOps(size_t numReachableOps);
 
