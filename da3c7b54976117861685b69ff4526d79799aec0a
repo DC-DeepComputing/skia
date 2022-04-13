@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0c842122_65f24d56",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-04-13T23:03:09Z",
+      "side": 1,
+      "message": "As a side effect this may or may not make it easier for Firefox to update their stuff, at least temporarily. They appear to be on C++17, so I don\u0027t think we\u0027re doing anything at this point to prevent them from updating, other than just being Skia and everything changing every five minutes.",
+      "revId": "da3c7b54976117861685b69ff4526d79799aec0a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
