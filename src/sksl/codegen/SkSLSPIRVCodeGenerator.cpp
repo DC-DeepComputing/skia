@@ -1317,6 +1317,9 @@ SpvId SPIRVCodeGenerator::writeSpecialIntrinsic(const FunctionCall& c, SpecialIn
             break;
         }
         case kDFdy_SpecialIntrinsic: {
+            // TODO: This needs to be updated so SKSL_RTFLIP_NAME isn't accessed when
+            // fContext.fConfig->fSettings.fForceNoRTFlip is true. Additionally, the call to
+            // addRTFlipUniform needs to be skipped.
             SpvId fn = this->writeExpression(*arguments[0], out);
             this->writeOpCode(SpvOpDPdy, 4, out);
             this->writeWord(this->getType(callType), out);
@@ -2267,6 +2270,10 @@ SpvId SPIRVCodeGenerator::writeVariableReference(const VariableReference& ref, O
             return NA;
         }
         case SK_FRAGCOORD_BUILTIN: {
+            // TODO: This needs to be updated so SKSL_RTFLIP_NAME isn't accessed when
+            // fContext.fConfig->fSettings.fForceNoRTFlip is true. Additionally, the call to
+            // addRTFlipUniform needs to be skipped.
+
             // Handle inserting use of uniform to flip y when referencing sk_FragCoord.
             this->addRTFlipUniform(ref.fPosition);
             // Use sk_RTAdjust to compute the flipped coordinate
@@ -2303,6 +2310,10 @@ SpvId SPIRVCodeGenerator::writeVariableReference(const VariableReference& ref, O
                                          out);
         }
         case SK_CLOCKWISE_BUILTIN: {
+            // TODO: This needs to be updated so SKSL_RTFLIP_NAME isn't accessed when
+            // fContext.fConfig->fSettings.fForceNoRTFlip is true. Additionally, the call to
+            // addRTFlipUniform needs to be skipped.
+
             // Handle flipping sk_Clockwise.
             this->addRTFlipUniform(ref.fPosition);
             using namespace dsl;
@@ -3693,6 +3704,8 @@ void SPIRVCodeGenerator::writeUniformBuffer(std::shared_ptr<SymbolTable> topLeve
 }
 
 void SPIRVCodeGenerator::addRTFlipUniform(Position pos) {
+    SkASSERT(!fProgram.fConfig->fSettings.fForceNoRTFlip);
+
     if (fWroteRTFlip) {
         return;
     }
