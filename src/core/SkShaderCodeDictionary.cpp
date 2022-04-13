@@ -274,28 +274,30 @@ static constexpr int kFourStopGradient = 4;
 //   kMaxStops offsets
 //   2 points
 //   2 radii
-static constexpr int kNumGradientUniforms = 7;
+static constexpr int kNumGradientUniforms = 8;
 static constexpr SkUniform kGradientUniforms[kNumGradientUniforms] = {
-        { "colors",  SkSLType::kFloat4, kFourStopGradient },
-        { "offsets", SkSLType::kFloat, kFourStopGradient },
-        { "point0",  SkSLType::kFloat2 },
-        { "point1",  SkSLType::kFloat2 },
-        { "radius0", SkSLType::kFloat },
-        { "radius1", SkSLType::kFloat },
-        { "padding", SkSLType::kFloat2 } // TODO: add automatic uniform padding
+        { "dev2local", SkSLType::kFloat4x4 },
+        { "colors",    SkSLType::kFloat4, kFourStopGradient },
+        { "offsets",   SkSLType::kFloat, kFourStopGradient },
+        { "point0",    SkSLType::kFloat2 },
+        { "point1",    SkSLType::kFloat2 },
+        { "radius0",   SkSLType::kFloat },
+        { "radius1",   SkSLType::kFloat },
+        { "padding",   SkSLType::kFloat2 } // TODO: add automatic uniform padding
 };
 
 static const char *kLinearGradient4Name = "linear_grad_4_shader";
 static const char *kLinearGradient4SkSL =
         // TODO: This should use local coords
-        "half4 linear_grad_4_shader(float4 colorsParam[4],\n"
+        "half4 linear_grad_4_shader(mat44 dev2local,\n"
+        "                           float4 colorsParam[4],\n"
         "                           float offsetsParam[4],\n"
         "                           float2 point0Param,\n"
         "                           float2 point1Param,\n"
         "                           float radius0Param,\n"
         "                           float radius1Param,\n"
         "                           float2 padding) {\n"
-        "    float2 pos = sk_FragCoord.xy;\n"
+        "    float2 pos = (dev2local * sk_FragCoord).xy;\n"
         "    float2 delta = point1Param - point0Param;\n"
         "    float2 pt = pos - point0Param;\n"
         "    float t = dot(pt, delta) / dot(delta, delta);\n"
@@ -325,9 +327,10 @@ static const char* kSolidShaderSkSL =
         "}\n";
 
 //--------------------------------------------------------------------------------------------------
-static constexpr int kNumImageShaderUniforms = 1;
+static constexpr int kNumImageShaderUniforms = 2;
 static constexpr SkUniform kImageShaderUniforms[kNumImageShaderUniforms] = {
-        { "subset",  SkSLType::kFloat4 },
+        { "dev2local", SkSLType::kFloat4x4 },
+        { "subset",    SkSLType::kFloat4 },
 };
 
 static constexpr int kNumImageShaderTexturesAndSamplers = 1;
@@ -337,7 +340,7 @@ static constexpr SkTextureAndSampler kISTexturesAndSamplers[kNumImageShaderTextu
 
 static const char* kImageShaderName = "image_shader";
 static const char* kImageShaderSkSL =
-        "half4 image_shader(float4 subset) {\n"
+        "half4 image_shader(mat44 dev2local, float4 subset) {\n"
         "    return half4(1, 0, 0, 1);\n"
         "}\n";
 
@@ -363,7 +366,8 @@ std::string GenerateImageShaderGlueCode(const std::string& resultName,
 
     std::string result;
     add_indent(&result, indent);
-    result += "float2 coords = float2(sk_FragCoord.x/128.0, sk_FragCoord.y/128.0);\n";
+    result += "float2 coords = (dev2local * sk_FragCoord).xy;\n";
+//    result += "float2 coords = float2(sk_FragCoord.x/128.0, sk_FragCoord.y/128.0);\n";
     add_indent(&result, indent);
     result += "coords = clamp(coords, float2(0.0, 0.0), float2(1.0, 1.0));\n";
 

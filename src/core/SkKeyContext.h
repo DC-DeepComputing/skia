@@ -11,6 +11,8 @@
 #include "include/gpu/GrTypes.h"
 
 #ifdef SK_GRAPHITE_ENABLED
+#include "include/core/SkM44.h"
+
 namespace skgpu::graphite { class Recorder; }
 #endif
 
@@ -28,7 +30,7 @@ public:
     // Constructor for the pre-compile code path
     SkKeyContext(SkShaderCodeDictionary* dict) : fDictionary(dict) {}
 #ifdef SK_GRAPHITE_ENABLED
-    SkKeyContext(skgpu::graphite::Recorder*);
+    SkKeyContext(skgpu::graphite::Recorder*, const SkM44& dev2Local);
     skgpu::graphite::Recorder* recorder() const { return fRecorder; }
 #endif
 #if SK_SUPPORT_GPU
@@ -41,6 +43,7 @@ public:
 private:
 #ifdef SK_GRAPHITE_ENABLED
     skgpu::graphite::Recorder* fRecorder = nullptr;
+    SkM44 fDev2Local;
 #endif
 
 #if SK_SUPPORT_GPU
