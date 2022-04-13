@@ -18,6 +18,41 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "30b7a059_ebdaac9b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-04-13T22:57:43Z",
+      "side": 1,
+      "message": "I see that the difference in the font_palette_* gms is that in the old font the center dot (LayerRecord 6, circle_r50) used to have a palette index of 0xFFFF and is now 6. This is unfortunate as this was an interesting place to test the current color. I thought maybe I had hacked that in, but the current version appears to come from https://skia-review.googlesource.com/c/skia/+/479616/7 from before I was involved with it. It seems to have been tweaked from PS5-7. Perhaps this font was already manually tweaked? I see no evidence in the history of more_samples-glyf_colr_1.py that it ever set circle_r50 to anything other than violet.\n\nAs a result, I think this change is more of a return to the previous normal and is currently expected based on the new font data. However, I did like that circle_r50 being the current color. So this is another note on how the font could be improved. I suppose I should go spend some time mucking about with more_samples-glyf_colr_1.py.",
+      "parentUuid": "a41f0456_d264e6d2",
+      "revId": "e9806ea7a36ed216ac6ad5d7009fe37e672dc133",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dd2be386_0907b6ba",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-04-13T22:57:43Z",
+      "side": 1,
+      "message": "I think this is right, so I want to land it so that we can be less wrong even in the worst case.",
+      "revId": "e9806ea7a36ed216ac6ad5d7009fe37e672dc133",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c5f62456_d9681f4a",
