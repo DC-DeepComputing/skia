@@ -180,7 +180,7 @@ private:
 
     void writeFieldLayout(const Layout& layout, SpvId target, int member);
 
-    void writeStruct(const Type& type, const MemoryLayout& layout, SpvId resultId);
+    SpvId writeStruct(const Type& type, const MemoryLayout& memoryLayout);
 
     void writeProgramElement(const ProgramElement& pe, OutputStream& out);
 
@@ -434,6 +434,8 @@ private:
         bool operator==(const Instruction& that) const;
         struct Hash;
     };
+
+    static Instruction BuildInstructionKey(SpvOp_ opCode, const SkTArray<Word>& words);
 
     // The writeOpXxxxx calls will simplify and deduplicate ops where possible.
     SpvId writeOpConstantTrue(const Type& type);
