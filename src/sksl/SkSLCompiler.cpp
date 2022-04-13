@@ -483,12 +483,15 @@ std::unique_ptr<Program> Compiler::convertProgram(ProgramKind kind,
 void Compiler::updateInputsForBuiltinVariable(const Variable& var) {
     switch (var.modifiers().fLayout.fBuiltin) {
         case SK_FRAGCOORD_BUILTIN:
-            if (fContext->fCaps.canUseFragCoord()) {
-                ThreadContext::Inputs().fUseFlipRTUniform = true;
+            if (fContext->fCaps.canUseFragCoord() &&
+                !fContext->fConfig->fSettings.fForceNoRTFlip) {
+                ThreadContext::Inputs().fUseFlipRTUniform7 = true;
             }
             break;
         case SK_CLOCKWISE_BUILTIN:
-            ThreadContext::Inputs().fUseFlipRTUniform = true;
+            if (!fContext->fConfig->fSettings.fForceNoRTFlip) {
+                ThreadContext::Inputs().fUseFlipRTUniform7 = true;
+            }
             break;
     }
 }
