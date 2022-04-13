@@ -162,11 +162,11 @@ void GrGLProgram::setRenderTargetState(const GrRenderTarget* rt,
         // GL's framebuffer space has (0, 0) at the bottom left. In NDC (-1, -1) is also the
         // bottom left. However, Skia's device coords has (0, 0) at the top left, so a flip is
         // required when the origin is kBottomLeft.
-        bool flip = (origin == kBottomLeft_GrSurfaceOrigin);
-        std::array<float, 4> v = SkSL::Compiler::GetRTAdjustVector(dimensions, flip);
+//        bool flip = (origin == kBottomLeft_GrSurfaceOrigin);
+        std::array<float, 4> v = SkSL::Compiler::GetRTAdjustVector(dimensions, false); // flip);
         fProgramDataManager.set4fv(fBuiltinUniformHandles.fRTAdjustmentUni, 1, v.data());
         if (fBuiltinUniformHandles.fRTFlipUni.isValid()) {
-            std::array<float, 2> d = SkSL::Compiler::GetRTFlipVector(dimensions.height(), flip);
+            std::array<float, 2> d = SkSL::Compiler::GetRTFlipVector(dimensions.height(), false); //flip);
             fProgramDataManager.set2fv(fBuiltinUniformHandles.fRTFlipUni, 1, d.data());
         }
     }

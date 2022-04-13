@@ -127,8 +127,9 @@ std::unique_ptr<FunctionDefinition> FunctionDefinition::Convert(const Context& c
             if (expr.is<FunctionCall>()) {
                 const FunctionDeclaration& func = expr.as<FunctionCall>().function();
                 if (func.isBuiltin()) {
-                    if (func.intrinsicKind() == k_dFdy_IntrinsicKind) {
-                        ThreadContext::Inputs().fUseFlipRTUniform = true;
+                    if (func.intrinsicKind() == k_dFdy_IntrinsicKind &&
+                        !fContext.fConfig->fSettings.fForceNoRTFlip) {
+                        ThreadContext::Inputs().fUseFlipRTUniform7 = true;
                     }
                     if (func.definition()) {
                         fReferencedBuiltinFunctions->insert(&func);

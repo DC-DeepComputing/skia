@@ -54,6 +54,8 @@ bool GrVkMSAALoadManager::createMSAALoadProgram(GrVkGpu* gpu) {
             "}");
 
     SkSL::Program::Settings settings;
+    settings.fForceNoRTFlip = true;
+
     std::string spirv;
     SkSL::Program::Inputs inputs;
     if (!GrCompileVkShaderModule(gpu, vertShaderText, VK_SHADER_STAGE_VERTEX_BIT,
@@ -233,4 +235,3 @@ void GrVkMSAALoadManager::destroyResources(GrVkGpu* gpu) {
         fPipelineLayout = VK_NULL_HANDLE;
     }
 }
-

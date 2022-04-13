@@ -260,11 +260,11 @@ void GrVkPipelineState::setRenderTargetState(SkISize colorAttachmentDimensions,
         // coords and with Vulkan's NDC that has (-1, -1) in the top left. So a flip is needed when
         // surface origin is kBottomLeft rather than kTopLeft.
         bool flip = (origin == kBottomLeft_GrSurfaceOrigin);
-        std::array<float, 4> v = SkSL::Compiler::GetRTAdjustVector(colorAttachmentDimensions, flip);
+        std::array<float, 4> v = SkSL::Compiler::GetRTAdjustVector(colorAttachmentDimensions, false); // flip);
         fDataManager.set4fv(fBuiltinUniformHandles.fRTAdjustmentUni, 1, v.data());
         if (fBuiltinUniformHandles.fRTFlipUni.isValid()) {
             std::array<float, 2> d =
-                    SkSL::Compiler::GetRTFlipVector(colorAttachmentDimensions.height(), flip);
+                    SkSL::Compiler::GetRTFlipVector(colorAttachmentDimensions.height(), false); // flip);
             fDataManager.set2fv(fBuiltinUniformHandles.fRTFlipUni, 1, d.data());
         }
     }

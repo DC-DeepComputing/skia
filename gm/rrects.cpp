@@ -173,6 +173,7 @@ protected:
             if (x != 1) {
                 y += kTileY;
             }
+            return DrawResult::kOk;
         }
         return DrawResult::kOk;
     }

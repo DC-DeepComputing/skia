@@ -145,7 +145,7 @@ void GrGLProgramBuilder::computeCountsAndStrides(GrGLuint programID,
 }
 
 void GrGLProgramBuilder::addInputVars(const SkSL::Program::Inputs& inputs) {
-    if (inputs.fUseFlipRTUniform) {
+    if (inputs.fUseFlipRTUniform7) {
         this->addRTFlipUniform(SKSL_RTFLIP_NAME);
     }
 }
@@ -230,8 +230,9 @@ sk_sp<GrGLProgram> GrGLProgramBuilder::finalize(const GrGLPrecompiledProgram* pr
     auto errorHandler = this->gpu()->getContext()->priv().getShaderErrorHandler();
     const GrGeometryProcessor& geomProc = this->geometryProcessor();
     SkSL::Program::Settings settings;
+    settings.fForceNoRTFlip = true;
     settings.fSharpenTextures = true;
-    settings.fFragColorIsInOut = this->fragColorIsInOut();
+    settings.fFragColorIsInOut1 = this->fragColorIsInOut();
 
     SkSL::Program::Inputs inputs;
     SkTDArray<GrGLuint> shadersToDelete;
@@ -529,6 +530,7 @@ bool GrGLProgramBuilder::PrecompileProgram(GrDirectContext* dContext,
     auto errorHandler = dContext->priv().getShaderErrorHandler();
 
     SkSL::Program::Settings settings;
+    settings.fForceNoRTFlip = true;
     settings.fSharpenTextures = true;
     GrPersistentCacheUtils::ShaderMetadata meta;
     meta.fSettings = &settings;
