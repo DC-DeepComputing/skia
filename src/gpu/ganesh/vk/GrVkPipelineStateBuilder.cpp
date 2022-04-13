@@ -187,6 +187,7 @@ GrVkPipelineState* GrVkPipelineStateBuilder::finalize(const GrProgramDesc& desc,
     bool usePushConstants = fUniformHandler.usePushConstants();
     VkPipelineShaderStageCreateInfo shaderStageInfo[3];
     SkSL::Program::Settings settings;
+    settings.fForceNoRTFlip = true;
     settings.fRTFlipBinding = this->gpu()->vkCaps().getFragmentUniformBinding();
     settings.fRTFlipSet = this->gpu()->vkCaps().getFragmentUniformSet();
     settings.fSharpenTextures = true;

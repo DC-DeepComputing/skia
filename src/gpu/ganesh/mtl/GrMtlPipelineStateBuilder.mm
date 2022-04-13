@@ -91,7 +91,7 @@ id<MTLLibrary> GrMtlPipelineStateBuilder::compileMtlShaderLibrary(
         const std::string& shader, SkSL::Program::Inputs inputs,
         GrContextOptions::ShaderErrorHandler* errorHandler) {
     id<MTLLibrary> shaderLibrary = GrCompileMtlShaderLibrary(fGpu, shader, errorHandler);
-    if (shaderLibrary != nil && inputs.fUseFlipRTUniform) {
+    if (shaderLibrary != nil && inputs.fUseFlipRTUniform7) {
         this->addRTFlipUniform(SKSL_RTFLIP_NAME);
     }
     return shaderLibrary;
@@ -543,6 +543,7 @@ GrMtlPipelineState* GrMtlPipelineStateBuilder::finalize(
         this->finalizeShaders();
 
         SkSL::Program::Settings settings;
+        settings.fForceNoRTFlip = true;
         settings.fSharpenTextures = true;
         SkASSERT(!this->fragColorIsInOut());
 
@@ -739,6 +740,7 @@ bool GrMtlPipelineStateBuilder::PrecompileShaders(GrMtlGpu* gpu, const SkData& c
     auto errorHandler = gpu->getContext()->priv().getShaderErrorHandler();
 
     SkSL::Program::Settings settings;
+    settings.fForceNoRTFlip = true;
     settings.fSharpenTextures = true;
     GrPersistentCacheUtils::ShaderMetadata meta;
     meta.fSettings = &settings;
@@ -839,7 +841,7 @@ bool GrMtlPipelineStateBuilder::PrecompileShaders(GrMtlGpu* gpu, const SkData& c
                                           completionHandler: completionHandler];
     }
 
-    precompiledLibs->fRTFlip = inputs[kFragment_GrShaderType].fUseFlipRTUniform;
+    precompiledLibs->fRTFlip = inputs[kFragment_GrShaderType].fUseFlipRTUniform7;
     return true;
 }
 

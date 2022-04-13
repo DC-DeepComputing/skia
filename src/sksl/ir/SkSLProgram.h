@@ -66,9 +66,9 @@ struct Program {
     using Settings = ProgramSettings;
 
     struct Inputs {
-        bool fUseFlipRTUniform = false;
+        bool fUseFlipRTUniform7 = false;
         bool operator==(const Inputs& that) const {
-            return fUseFlipRTUniform == that.fUseFlipRTUniform;
+            return fUseFlipRTUniform7 == that.fUseFlipRTUniform7;
         }
         bool operator!=(const Inputs& that) const { return !(*this == that); }
     };

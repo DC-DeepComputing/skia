@@ -525,7 +525,11 @@ void GLSLCodeGenerator::writeFunctionCall(const FunctionCall& c) {
         case k_dFdy_IntrinsicKind:
             // Flipping Y also negates the Y derivatives.
             closingParen = "))";
-            this->write("(" SKSL_RTFLIP_NAME ".y * dFdy");
+            this->write("(");
+            if (!fProgram.fConfig->fSettings.fForceNoRTFlip) {
+                this->write(SKSL_RTFLIP_NAME ".y * ");
+            }
+            this->write("dFdy");
             nameWritten = true;
             [[fallthrough]];
         case k_dFdx_IntrinsicKind:
@@ -779,10 +783,15 @@ void GLSLCodeGenerator::writeFragCoord() {
     }
 
     if (!fSetupFragPosition) {
-        fFunctionHeader += usesPrecisionModifiers() ? "highp " : "";
+        fFunctionHeader += this->usesPrecisionModifiers() ? "highp " : "";
         fFunctionHeader += "    vec4 sk_FragCoord = vec4("
-                "gl_FragCoord.x, "
-                SKSL_RTFLIP_NAME ".x + " SKSL_RTFLIP_NAME ".y * gl_FragCoord.y, "
+                "gl_FragCoord.x, ";
+        if (fProgram.fConfig->fSettings.fForceNoRTFlip) {
+            fFunctionHeader += "glFragCoord.y, ";
+        } else {
+            fFunctionHeader += SKSL_RTFLIP_NAME ".x + " SKSL_RTFLIP_NAME ".y * gl_FragCoord.y, ";
+        }
+        fFunctionHeader +=
                 "gl_FragCoord.z, "
                 "gl_FragCoord.w);\n";
         fSetupFragPosition = true;
@@ -807,11 +816,12 @@ void GLSLCodeGenerator::writeVariableReference(const VariableReference& ref) {
             break;
         case SK_CLOCKWISE_BUILTIN:
             if (!fSetupClockwise) {
-                fFunctionHeader +=
-                        "    bool sk_Clockwise = gl_FrontFacing;\n"
-                        "    if (" SKSL_RTFLIP_NAME ".y < 0.0) {\n"
-                        "        sk_Clockwise = !sk_Clockwise;\n"
-                        "    }\n";
+                fFunctionHeader += "    bool sk_Clockwise = gl_FrontFacing;\n";
+                if (!fProgram.fConfig->fSettings.fForceNoRTFlip) {
+                    fFunctionHeader += "    if (" SKSL_RTFLIP_NAME ".y < 0.0) {\n"
+                                       "        sk_Clockwise = !sk_Clockwise;\n"
+                                       "    }\n";
+                }
                 fSetupClockwise = true;
             }
             this->write("sk_Clockwise");
@@ -1535,7 +1545,7 @@ void GLSLCodeGenerator::writeProgramElement(const ProgramElement& e) {
                 this->finishLine();
             } else if (builtin == SK_FRAGCOLOR_BUILTIN &&
                        this->caps().mustDeclareFragmentShaderOutput()) {
-                if (fProgram.fConfig->fSettings.fFragColorIsInOut) {
+                if (fProgram.fConfig->fSettings.fFragColorIsInOut1) {
                     this->write("inout ");
                 } else {
                     this->write("out ");
@@ -1572,7 +1582,7 @@ void GLSLCodeGenerator::writeProgramElement(const ProgramElement& e) {
 }
 
 void GLSLCodeGenerator::writeInputVars() {
-    if (fProgram.fInputs.fUseFlipRTUniform) {
+    if (fProgram.fInputs.fUseFlipRTUniform7) {
         const char* precision = usesPrecisionModifiers() ? "highp " : "";
         fGlobals.writeText("uniform ");
         fGlobals.writeText(precision);
