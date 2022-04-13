@@ -33,6 +33,24 @@
       "message": "An issue with the test font is that it doesn\u0027t make it entirely clear when something is incorrect. In order to know if anything is as intended with this existing font one really needs to have a reference image to look at. I can\u0027t just see if these glyphs are being rendered as intended.\n\nFor example, it would be nice if all the sweep gradients in circles had an extra set of fixed (reference) thin wedges around the circle where the stops should more or less end up. Each wedge having the color of the associated stop. Then it would be easy to verify, for example, that there is at least one test where the start and end aren\u0027t axis aligned to see if the order of this rotate and flip is correct. It is difficult to tell just from looking at this code or the output that this rotate and flip are in the intended order, it requires digging through the font with the specification in hand.\n\nLikewise for the skew tests which were recently updated. If they had a thin inset outline in the glyph which is pre-skewed (as a ref) to match the expected skew and another thin outset outline with the same skew in a full transform it would become obvious from the glyph rendering alone if the pre-skew, skew, and transform skew were all equivalent.",
       "revId": "e9806ea7a36ed216ac6ad5d7009fe37e672dc133",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2b493112_fe1005c0",
+        "filename": "src/ports/SkFontHost_FreeType_common.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 761,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-04-13T18:17:12Z",
+      "side": 1,
+      "message": "I suppose more generally and logically the test glyphs could come in pairs, one test and one ref with the ref one being as simple as possible. Just having a standard of \"each pair should be visually the same\" would work well. It would also make it easier to argue over what the reference should look like, as the font itself would be the documentation of the current idea of what the test should look like.",
+      "parentUuid": "c5f62456_d9681f4a",
+      "revId": "e9806ea7a36ed216ac6ad5d7009fe37e672dc133",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
