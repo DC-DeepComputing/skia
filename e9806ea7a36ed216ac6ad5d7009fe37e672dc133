@@ -86,6 +86,24 @@
       "parentUuid": "c5f62456_d9681f4a",
       "revId": "e9806ea7a36ed216ac6ad5d7009fe37e672dc133",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a9f39db7_df16d6ed",
+        "filename": "src/ports/SkFontHost_FreeType_common.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 761,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2022-04-14T13:23:06Z",
+      "side": 1,
+      "message": "Agree that the font should give a better indication of what\u0027s correct. I think the idea of having some kind of dot indicating where the color stops should go in sweep gradients is useful. I think for sweep gradients it\u0027s difficult to produce reference images by means of any other primitives. \n\nFor some shape specific ones, pre-transforming might be possible - and has some potential for bugs in generating the pre-transforms. Maybe also some indications or dots where specific points should line up may make sense.",
+      "parentUuid": "2b493112_fe1005c0",
+      "revId": "e9806ea7a36ed216ac6ad5d7009fe37e672dc133",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
