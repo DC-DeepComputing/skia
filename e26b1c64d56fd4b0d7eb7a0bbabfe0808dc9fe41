@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ad793846_13e55608",
+        "filename": "src/ports/SkFontMgr_fuchsia.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-04-14T13:32:11Z",
+      "side": 1,
+      "message": "I\u0027d suggest including \"include/private/SkThreadAnnotations.h\". Then you can have the compiler enforce this with:\n\n  std::unordered_map\u003cint, SkData*\u003e fBuffers SK_GUARDED_BY(fMutex);",
+      "range": {
+        "startLine": 45,
+        "startChar": 4,
+        "endLine": 45,
+        "endChar": 50
+      },
+      "revId": "e26b1c64d56fd4b0d7eb7a0bbabfe0808dc9fe41",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "76a249a7_6508b03f",
+        "filename": "src/ports/SkFontMgr_fuchsia.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-04-14T13:32:11Z",
+      "side": 1,
+      "message": "It looks like SkData::MakeWithProc will never actually fail unless there\u0027s an OOM, but if it did, this would leak \u0027context\u0027 (which would then leak a dangling reference to the Cache). I\u0027d suggest either deleting context here, or adding an assert that (data !\u003d nullptr).",
+      "range": {
+        "startLine": 68,
+        "startChar": 4,
+        "endLine": 68,
+        "endChar": 30
+      },
+      "revId": "e26b1c64d56fd4b0d7eb7a0bbabfe0808dc9fe41",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
