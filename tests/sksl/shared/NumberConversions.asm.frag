@@ -78,7 +78,7 @@ OpDecorate %f2s RelaxedPrecision
 OpDecorate %63 RelaxedPrecision
 OpDecorate %b2s RelaxedPrecision
 OpDecorate %65 RelaxedPrecision
-OpDecorate %66 RelaxedPrecision
+OpDecorate %67 RelaxedPrecision
 OpDecorate %69 RelaxedPrecision
 OpDecorate %73 RelaxedPrecision
 OpDecorate %79 RelaxedPrecision
@@ -98,7 +98,7 @@ OpDecorate %f2us RelaxedPrecision
 OpDecorate %102 RelaxedPrecision
 OpDecorate %b2us RelaxedPrecision
 OpDecorate %104 RelaxedPrecision
-OpDecorate %105 RelaxedPrecision
+OpDecorate %107 RelaxedPrecision
 OpDecorate %109 RelaxedPrecision
 OpDecorate %115 RelaxedPrecision
 OpDecorate %119 RelaxedPrecision
@@ -308,8 +308,8 @@ OpStore %h2s %60
 %63 = OpConvertFToS %int %62
 OpStore %f2s %63
 %65 = OpLoad %bool %b
-%66 = OpSelect %int %65 %int_1 %int_0
-OpStore %b2s %66
+%67 = OpSelect %int %65 %int_1 %int_0
+OpStore %b2s %67
 %69 = OpLoad %int %s
 OpStore %s2i %69
 %71 = OpLoad %int %i
@@ -346,8 +346,8 @@ OpStore %h2us %99
 %102 = OpConvertFToU %uint %101
 OpStore %f2us %102
 %104 = OpLoad %bool %b
-%105 = OpSelect %uint %104 %uint_1 %uint_0
-OpStore %b2us %105
+%107 = OpSelect %uint %104 %uint_1 %uint_0
+OpStore %b2us %107
 %109 = OpLoad %int %s
 %110 = OpBitcast %uint %109
 OpStore %s2ui %110
@@ -384,8 +384,8 @@ OpStore %h2f %140
 %142 = OpLoad %float %f
 OpStore %f2f %142
 %144 = OpLoad %bool %b
-%145 = OpSelect %float %144 %float_1 %float_0
-OpStore %b2f %145
+%147 = OpSelect %float %144 %float_1 %float_0
+OpStore %b2f %147
 %148 = OpLoad %int %s
 %149 = OpConvertSToF %float %148
 %150 = OpLoad %int %i

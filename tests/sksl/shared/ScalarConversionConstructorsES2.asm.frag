@@ -133,16 +133,16 @@ OpStore %f1 %47
 %50 = OpConvertSToF %float %49
 OpStore %f2 %50
 %52 = OpLoad %bool %b
-%53 = OpSelect %float %52 %float_1 %float_0
-OpStore %f3 %53
+%54 = OpSelect %float %52 %float_1 %float_0
+OpStore %f3 %54
 %56 = OpLoad %float %f
 %57 = OpConvertFToS %int %56
 OpStore %i1 %57
 %59 = OpLoad %int %i
 OpStore %i2 %59
 %61 = OpLoad %bool %b
-%62 = OpSelect %int %61 %int_1 %int_0
-OpStore %i3 %62
+%63 = OpSelect %int %61 %int_1 %int_0
+OpStore %i3 %63
 %65 = OpLoad %float %f
 %66 = OpFUnordNotEqual %bool %65 %float_0
 OpStore %b1 %66

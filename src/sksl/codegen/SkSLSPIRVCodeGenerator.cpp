@@ -703,6 +703,7 @@ SPIRVCodeGenerator::Instruction* SPIRVCodeGenerator::resultTypeForInstruction(
         case SpvOpConstantComposite:
         case SpvOpCompositeConstruct:
         case SpvOpCompositeExtract:
+        case SpvOpSelect:
             resultTypeWord = 0;
             break;
 
@@ -820,6 +821,17 @@ SpvId SPIRVCodeGenerator::writeOpCompositeExtract(const Type& type,
                                    Word::Number(componentA),
                                    Word::Number(componentB)},
                                   out);
+}
+
+SpvId SPIRVCodeGenerator::writeOpSelect(const Type& type,
+                                        SpvId conditionId,
+                                        SpvId trueId,
+                                        SpvId falseId,
+                                        OutputStream& out) {
+    return this->writeInstruction(
+            SpvOpSelect,
+            {this->getType(type), Word::Result(type), conditionId, trueId, falseId},
+            out);
 }
 
 void SPIRVCodeGenerator::writeCapabilities(OutputStream& out) {
@@ -1453,12 +1465,11 @@ SpvId SPIRVCodeGenerator::writeSpecialIntrinsic(const FunctionCall& c, SpecialIn
                 SpvId falseId     = this->writeExpression(*arguments[0], out);
                 SpvId trueId      = this->writeExpression(*arguments[1], out);
                 SpvId conditionId = this->writeExpression(*arguments[2], out);
-                this->writeInstruction(SpvOpSelect, this->getType(arguments[0]->type()), result,
-                                       conditionId, trueId, falseId, out);
-            } else {
-                this->writeGLSLExtendedInstruction(callType, result, GLSLstd450FMix, SpvOpUndef,
-                                                   SpvOpUndef, args, out);
+                return this->writeOpSelect(arguments[0]->type(), conditionId, trueId, falseId, out);
             }
+
+            this->writeGLSLExtendedInstruction(callType, result, GLSLstd450FMix, SpvOpUndef,
+                                               SpvOpUndef, args, out);
             break;
         }
         case kSaturate_SpecialIntrinsic: {
@@ -1621,14 +1632,15 @@ SpvId SPIRVCodeGenerator::castScalarToFloat(SpvId inputId, const Type& inputType
     }
 
     // Given the input type, generate the appropriate instruction to cast to float.
-    SpvId result = this->nextId(&outputType);
     if (inputType.isBoolean()) {
         // Use OpSelect to convert the boolean argument to a literal 1.0 or 0.0.
         const SpvId oneID = this->writeLiteral(1.0, *fContext.fTypes.fFloat);
         const SpvId zeroID = this->writeLiteral(0.0, *fContext.fTypes.fFloat);
-        this->writeInstruction(SpvOpSelect, this->getType(outputType), result,
-                               inputId, oneID, zeroID, out);
-    } else if (inputType.isSigned()) {
+        return this->writeOpSelect(outputType, inputId, oneID, zeroID, out);
+    }
+
+    SpvId result = this->nextId(&outputType);
+    if (inputType.isSigned()) {
         this->writeInstruction(SpvOpConvertSToF, this->getType(outputType), result, inputId, out);
     } else if (inputType.isUnsigned()) {
         this->writeInstruction(SpvOpConvertUToF, this->getType(outputType), result, inputId, out);
@@ -1655,14 +1667,15 @@ SpvId SPIRVCodeGenerator::castScalarToSignedInt(SpvId inputId, const Type& input
     }
 
     // Given the input type, generate the appropriate instruction to cast to signed int.
-    SpvId result = this->nextId(&outputType);
     if (inputType.isBoolean()) {
         // Use OpSelect to convert the boolean argument to a literal 1 or 0.
         const SpvId oneID = this->writeLiteral(1.0, *fContext.fTypes.fInt);
         const SpvId zeroID = this->writeLiteral(0.0, *fContext.fTypes.fInt);
-        this->writeInstruction(SpvOpSelect, this->getType(outputType), result,
-                               inputId, oneID, zeroID, out);
-    } else if (inputType.isFloat()) {
+        return this->writeOpSelect(outputType, inputId, oneID, zeroID, out);
+    }
+
+    SpvId result = this->nextId(&outputType);
+    if (inputType.isFloat()) {
         this->writeInstruction(SpvOpConvertFToS, this->getType(outputType), result, inputId, out);
     } else if (inputType.isUnsigned()) {
         this->writeInstruction(SpvOpBitcast, this->getType(outputType), result, inputId, out);
@@ -1690,14 +1703,15 @@ SpvId SPIRVCodeGenerator::castScalarToUnsignedInt(SpvId inputId, const Type& inp
     }
 
     // Given the input type, generate the appropriate instruction to cast to unsigned int.
-    SpvId result = this->nextId(&outputType);
     if (inputType.isBoolean()) {
         // Use OpSelect to convert the boolean argument to a literal 1u or 0u.
         const SpvId oneID = this->writeLiteral(1.0, *fContext.fTypes.fUInt);
         const SpvId zeroID = this->writeLiteral(0.0, *fContext.fTypes.fUInt);
-        this->writeInstruction(SpvOpSelect, this->getType(outputType), result,
-                               inputId, oneID, zeroID, out);
-    } else if (inputType.isFloat()) {
+        return this->writeOpSelect(outputType, inputId, oneID, zeroID, out);
+    }
+
+    SpvId result = this->nextId(&outputType);
+    if (inputType.isFloat()) {
         this->writeInstruction(SpvOpConvertFToU, this->getType(outputType), result, inputId, out);
     } else if (inputType.isSigned()) {
         this->writeInstruction(SpvOpBitcast, this->getType(outputType), result, inputId, out);
@@ -2999,12 +3013,9 @@ SpvId SPIRVCodeGenerator::writeTernaryExpression(const TernaryExpression& t, Out
         t.ifTrue()->isCompileTimeConstant() &&
         t.ifFalse()->isCompileTimeConstant()) {
         // both true and false are constants, can just use OpSelect
-        SpvId result = this->nextId(nullptr);
         SpvId trueId = this->writeExpression(*t.ifTrue(), out);
         SpvId falseId = this->writeExpression(*t.ifFalse(), out);
-        this->writeInstruction(SpvOpSelect, this->getType(type), result, test, trueId, falseId,
-                               out);
-        return result;
+        return this->writeOpSelect(type, test, trueId, falseId, out);
     }
 
     size_t numReachableOps = fReachableOps.size();

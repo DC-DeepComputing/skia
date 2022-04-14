@@ -27,7 +27,7 @@ OpDecorate %47 RelaxedPrecision
 OpDecorate %49 RelaxedPrecision
 OpDecorate %50 RelaxedPrecision
 OpDecorate %52 RelaxedPrecision
-OpDecorate %54 RelaxedPrecision
+OpDecorate %55 RelaxedPrecision
 OpDecorate %57 RelaxedPrecision
 OpDecorate %59 RelaxedPrecision
 OpDecorate %61 RelaxedPrecision
@@ -94,13 +94,13 @@ OpStore %b4 %48
 OpStore %b4 %51
 %52 = OpLoad %v4bool %b4
 %53 = OpCompositeExtract %bool %52 0
-%54 = OpSelect %float %53 %float_1 %float_0
+%55 = OpSelect %float %53 %float_1 %float_0
 %56 = OpCompositeExtract %bool %52 1
 %57 = OpSelect %float %56 %float_1 %float_0
 %58 = OpCompositeExtract %bool %52 2
 %59 = OpSelect %float %58 %float_1 %float_0
 %60 = OpCompositeExtract %bool %52 3
 %61 = OpSelect %float %60 %float_1 %float_0
-%62 = OpCompositeConstruct %v4float %54 %57 %59 %61
+%62 = OpCompositeConstruct %v4float %55 %57 %59 %61
 OpReturnValue %62
 OpFunctionEnd
