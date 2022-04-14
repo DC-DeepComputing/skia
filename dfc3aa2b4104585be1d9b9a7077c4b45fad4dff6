@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6d14940b_1ee538df",
+        "filename": "third_party/BUILD.bazel",
+        "patchSetId": 1
+      },
+      "lineNbr": 2575,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-04-14T21:57:17Z",
+      "side": 1,
+      "message": "I had to tell Bazel that a new file was generated.",
+      "revId": "dfc3aa2b4104585be1d9b9a7077c4b45fad4dff6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0abb56fb_0b0a2640",
+        "filename": "third_party/BUILD.bazel",
+        "patchSetId": 1
+      },
+      "lineNbr": 2781,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-04-14T21:57:17Z",
+      "side": 1,
+      "message": "And then to use that new file.",
+      "revId": "dfc3aa2b4104585be1d9b9a7077c4b45fad4dff6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "12c343ba_bd548433",
+        "filename": "third_party/BUILD.bazel",
+        "patchSetId": 1
+      },
+      "lineNbr": 2868,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-04-14T21:57:17Z",
+      "side": 1,
+      "message": "These files had apparently also been added.",
+      "revId": "dfc3aa2b4104585be1d9b9a7077c4b45fad4dff6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2e7f94bc_3fe81947",
+        "filename": "third_party/BUILD.bazel",
+        "patchSetId": 1
+      },
+      "lineNbr": 3529,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-04-14T21:57:17Z",
+      "side": 1,
+      "message": "CacheKeyVk needed this",
+      "revId": "dfc3aa2b4104585be1d9b9a7077c4b45fad4dff6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
