@@ -42,6 +42,7 @@ public:
 
     enum class DataPayloadType {
         kByte,
+        kFloat4,
     };
 
     // A given snippet's data payload is stored as an SkSpan of DataPayloadFields in the
