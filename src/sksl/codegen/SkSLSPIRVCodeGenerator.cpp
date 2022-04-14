@@ -723,6 +723,7 @@ SPIRVCodeGenerator::Instruction* SPIRVCodeGenerator::resultTypeForInstruction(
         case SpvOpConstantComposite:
         case SpvOpCompositeConstruct:
         case SpvOpCompositeExtract:
+        case SpvOpSelect:
             resultTypeWord = 0;
             break;
 
@@ -840,6 +841,17 @@ SpvId SPIRVCodeGenerator::writeOpCompositeExtract(const Type& type,
                                    Word::Number(componentA),
                                    Word::Number(componentB)},
                                   out);
+}
+
+SpvId SPIRVCodeGenerator::writeOpSelect(const Type& type,
+                                        SpvId conditionId,
+                                        SpvId trueId,
+                                        SpvId falseId,
+                                        OutputStream& out) {
+    return this->writeInstruction(
+            SpvOpSelect,
+            {this->getType(type), Word::Result(type), conditionId, trueId, falseId},
+            out);
 }
 
 void SPIRVCodeGenerator::writeCapabilities(OutputStream& out) {
@@ -1291,9 +1303,11 @@ SpvId SPIRVCodeGenerator::writeSpecialIntrinsic(const FunctionCall& c, SpecialIn
                                                 OutputStream& out) {
     const ExpressionArray& arguments = c.arguments();
     const Type& callType = c.type();
-    SpvId result = this->nextId(nullptr);
+
+    SpvId result;
     switch (kind) {
         case kAtan_SpecialIntrinsic: {
+            result = this->nextId(nullptr);
             std::vector<SpvId> argumentIds;
             argumentIds.reserve(arguments.size());
             for (const std::unique_ptr<Expression>& arg : arguments) {
@@ -1311,6 +1325,7 @@ SpvId SPIRVCodeGenerator::writeSpecialIntrinsic(const FunctionCall& c, SpecialIn
         }
         case kSampledImage_SpecialIntrinsic: {
             SkASSERT(arguments.size() == 2);
+            result = this->nextId(nullptr);
             SpvId img = this->writeExpression(*arguments[0], out);
             SpvId sampler = this->writeExpression(*arguments[1], out);
             this->writeInstruction(SpvOpSampledImage,
@@ -1322,6 +1337,7 @@ SpvId SPIRVCodeGenerator::writeSpecialIntrinsic(const FunctionCall& c, SpecialIn
             break;
         }
         case kSubpassLoad_SpecialIntrinsic: {
+            result = this->nextId(nullptr);
             SpvId img = this->writeExpression(*arguments[0], out);
             ExpressionArray args;
             args.reserve_back(2);
@@ -1351,6 +1367,7 @@ SpvId SPIRVCodeGenerator::writeSpecialIntrinsic(const FunctionCall& c, SpecialIn
             break;
         }
         case kTexture_SpecialIntrinsic: {
+            result = this->nextId(nullptr);
             SpvOp_ op = SpvOpImageSampleImplicitLod;
             const Type& arg1Type = arguments[1]->type();
             switch (arguments[0]->type().dimensions()) {
@@ -1404,6 +1421,7 @@ SpvId SPIRVCodeGenerator::writeSpecialIntrinsic(const FunctionCall& c, SpecialIn
             break;
         }
         case kMod_SpecialIntrinsic: {
+            result = this->nextId(nullptr);
             std::vector<SpvId> args = this->vectorize(arguments, out);
             SkASSERT(args.size() == 2);
             const Type& operandType = arguments[0]->type();
@@ -1429,6 +1447,7 @@ SpvId SPIRVCodeGenerator::writeSpecialIntrinsic(const FunctionCall& c, SpecialIn
             // TODO: This needs to be updated so SKSL_RTFLIP_NAME isn't accessed when
             // fContext.fConfig->fSettings.fForceNoRTFlip is true. Additionally, the call to
             // addRTFlipUniform needs to be skipped.
+            result = this->nextId(nullptr);
             SpvId fn = this->writeExpression(*arguments[0], out);
             this->writeOpCode(SpvOpDPdy, 4, out);
             this->writeWord(this->getType(callType), out);
@@ -1446,6 +1465,7 @@ SpvId SPIRVCodeGenerator::writeSpecialIntrinsic(const FunctionCall& c, SpecialIn
             break;
         }
         case kClamp_SpecialIntrinsic: {
+            result = this->nextId(nullptr);
             std::vector<SpvId> args = this->vectorize(arguments, out);
             SkASSERT(args.size() == 3);
             this->writeGLSLExtendedInstruction(callType, result, GLSLstd450FClamp, GLSLstd450SClamp,
@@ -1453,6 +1473,7 @@ SpvId SPIRVCodeGenerator::writeSpecialIntrinsic(const FunctionCall& c, SpecialIn
             break;
         }
         case kMax_SpecialIntrinsic: {
+            result = this->nextId(nullptr);
             std::vector<SpvId> args = this->vectorize(arguments, out);
             SkASSERT(args.size() == 2);
             this->writeGLSLExtendedInstruction(callType, result, GLSLstd450FMax, GLSLstd450SMax,
@@ -1460,6 +1481,7 @@ SpvId SPIRVCodeGenerator::writeSpecialIntrinsic(const FunctionCall& c, SpecialIn
             break;
         }
         case kMin_SpecialIntrinsic: {
+            result = this->nextId(nullptr);
             std::vector<SpvId> args = this->vectorize(arguments, out);
             SkASSERT(args.size() == 2);
             this->writeGLSLExtendedInstruction(callType, result, GLSLstd450FMin, GLSLstd450SMin,
@@ -1474,9 +1496,10 @@ SpvId SPIRVCodeGenerator::writeSpecialIntrinsic(const FunctionCall& c, SpecialIn
                 SpvId falseId     = this->writeExpression(*arguments[0], out);
                 SpvId trueId      = this->writeExpression(*arguments[1], out);
                 SpvId conditionId = this->writeExpression(*arguments[2], out);
-                this->writeInstruction(SpvOpSelect, this->getType(arguments[0]->type()), result,
-                                       conditionId, trueId, falseId, out);
+                result = this->writeOpSelect(arguments[0]->type(), conditionId, trueId, falseId,
+                                             out);
             } else {
+                result = this->nextId(nullptr);
                 this->writeGLSLExtendedInstruction(callType, result, GLSLstd450FMix, SpvOpUndef,
                                                    SpvOpUndef, args, out);
             }
@@ -1484,6 +1507,7 @@ SpvId SPIRVCodeGenerator::writeSpecialIntrinsic(const FunctionCall& c, SpecialIn
         }
         case kSaturate_SpecialIntrinsic: {
             SkASSERT(arguments.size() == 1);
+            result = this->nextId(nullptr);
             ExpressionArray finalArgs;
             finalArgs.reserve_back(3);
             finalArgs.push_back(arguments[0]->clone());
@@ -1495,6 +1519,7 @@ SpvId SPIRVCodeGenerator::writeSpecialIntrinsic(const FunctionCall& c, SpecialIn
             break;
         }
         case kSmoothStep_SpecialIntrinsic: {
+            result = this->nextId(nullptr);
             std::vector<SpvId> args = this->vectorize(arguments, out);
             SkASSERT(args.size() == 3);
             this->writeGLSLExtendedInstruction(callType, result, GLSLstd450SmoothStep, SpvOpUndef,
@@ -1502,6 +1527,7 @@ SpvId SPIRVCodeGenerator::writeSpecialIntrinsic(const FunctionCall& c, SpecialIn
             break;
         }
         case kStep_SpecialIntrinsic: {
+            result = this->nextId(nullptr);
             std::vector<SpvId> args = this->vectorize(arguments, out);
             SkASSERT(args.size() == 2);
             this->writeGLSLExtendedInstruction(callType, result, GLSLstd450Step, SpvOpUndef,
@@ -1509,6 +1535,7 @@ SpvId SPIRVCodeGenerator::writeSpecialIntrinsic(const FunctionCall& c, SpecialIn
             break;
         }
         case kMatrixCompMult_SpecialIntrinsic: {
+            result = this->nextId(nullptr);
             SkASSERT(arguments.size() == 2);
             SpvId lhs = this->writeExpression(*arguments[0], out);
             SpvId rhs = this->writeExpression(*arguments[1], out);
@@ -1642,14 +1669,15 @@ SpvId SPIRVCodeGenerator::castScalarToFloat(SpvId inputId, const Type& inputType
     }
 
     // Given the input type, generate the appropriate instruction to cast to float.
-    SpvId result = this->nextId(&outputType);
     if (inputType.isBoolean()) {
         // Use OpSelect to convert the boolean argument to a literal 1.0 or 0.0.
         const SpvId oneID = this->writeLiteral(1.0, *fContext.fTypes.fFloat);
         const SpvId zeroID = this->writeLiteral(0.0, *fContext.fTypes.fFloat);
-        this->writeInstruction(SpvOpSelect, this->getType(outputType), result,
-                               inputId, oneID, zeroID, out);
-    } else if (inputType.isSigned()) {
+        return this->writeOpSelect(outputType, inputId, oneID, zeroID, out);
+    }
+
+    SpvId result = this->nextId(&outputType);
+    if (inputType.isSigned()) {
         this->writeInstruction(SpvOpConvertSToF, this->getType(outputType), result, inputId, out);
     } else if (inputType.isUnsigned()) {
         this->writeInstruction(SpvOpConvertUToF, this->getType(outputType), result, inputId, out);
@@ -1676,14 +1704,15 @@ SpvId SPIRVCodeGenerator::castScalarToSignedInt(SpvId inputId, const Type& input
     }
 
     // Given the input type, generate the appropriate instruction to cast to signed int.
-    SpvId result = this->nextId(&outputType);
     if (inputType.isBoolean()) {
         // Use OpSelect to convert the boolean argument to a literal 1 or 0.
         const SpvId oneID = this->writeLiteral(1.0, *fContext.fTypes.fInt);
         const SpvId zeroID = this->writeLiteral(0.0, *fContext.fTypes.fInt);
-        this->writeInstruction(SpvOpSelect, this->getType(outputType), result,
-                               inputId, oneID, zeroID, out);
-    } else if (inputType.isFloat()) {
+        return this->writeOpSelect(outputType, inputId, oneID, zeroID, out);
+    }
+
+    SpvId result = this->nextId(&outputType);
+    if (inputType.isFloat()) {
         this->writeInstruction(SpvOpConvertFToS, this->getType(outputType), result, inputId, out);
     } else if (inputType.isUnsigned()) {
         this->writeInstruction(SpvOpBitcast, this->getType(outputType), result, inputId, out);
@@ -1711,14 +1740,15 @@ SpvId SPIRVCodeGenerator::castScalarToUnsignedInt(SpvId inputId, const Type& inp
     }
 
     // Given the input type, generate the appropriate instruction to cast to unsigned int.
-    SpvId result = this->nextId(&outputType);
     if (inputType.isBoolean()) {
         // Use OpSelect to convert the boolean argument to a literal 1u or 0u.
         const SpvId oneID = this->writeLiteral(1.0, *fContext.fTypes.fUInt);
         const SpvId zeroID = this->writeLiteral(0.0, *fContext.fTypes.fUInt);
-        this->writeInstruction(SpvOpSelect, this->getType(outputType), result,
-                               inputId, oneID, zeroID, out);
-    } else if (inputType.isFloat()) {
+        return this->writeOpSelect(outputType, inputId, oneID, zeroID, out);
+    }
+
+    SpvId result = this->nextId(&outputType);
+    if (inputType.isFloat()) {
         this->writeInstruction(SpvOpConvertFToU, this->getType(outputType), result, inputId, out);
     } else if (inputType.isSigned()) {
         this->writeInstruction(SpvOpBitcast, this->getType(outputType), result, inputId, out);
@@ -3020,12 +3050,9 @@ SpvId SPIRVCodeGenerator::writeTernaryExpression(const TernaryExpression& t, Out
         t.ifTrue()->isCompileTimeConstant() &&
         t.ifFalse()->isCompileTimeConstant()) {
         // both true and false are constants, can just use OpSelect
-        SpvId result = this->nextId(nullptr);
         SpvId trueId = this->writeExpression(*t.ifTrue(), out);
         SpvId falseId = this->writeExpression(*t.ifFalse(), out);
-        this->writeInstruction(SpvOpSelect, this->getType(type), result, test, trueId, falseId,
-                               out);
-        return result;
+        return this->writeOpSelect(type, test, trueId, falseId, out);
     }
 
     size_t numReachableOps = fReachableOps.size();

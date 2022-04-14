@@ -178,8 +178,8 @@ OpStore %f2 %57
 %60 = OpConvertUToF %float %59
 OpStore %f3 %60
 %62 = OpLoad %bool %b
-%63 = OpSelect %float %62 %float_1 %float_0
-OpStore %f4 %63
+%64 = OpSelect %float %62 %float_1 %float_0
+OpStore %f4 %64
 %66 = OpLoad %float %f
 %67 = OpConvertFToS %int %66
 OpStore %i1 %67
@@ -189,8 +189,8 @@ OpStore %i2 %69
 %72 = OpBitcast %int %71
 OpStore %i3 %72
 %74 = OpLoad %bool %b
-%75 = OpSelect %int %74 %int_1 %int_0
-OpStore %i4 %75
+%76 = OpSelect %int %74 %int_1 %int_0
+OpStore %i4 %76
 %78 = OpLoad %float %f
 %79 = OpConvertFToU %uint %78
 OpStore %u1 %79
@@ -200,8 +200,8 @@ OpStore %u2 %82
 %84 = OpLoad %uint %u
 OpStore %u3 %84
 %86 = OpLoad %bool %b
-%87 = OpSelect %uint %86 %uint_1 %uint_0
-OpStore %u4 %87
+%89 = OpSelect %uint %86 %uint_1 %uint_0
+OpStore %u4 %89
 %91 = OpLoad %float %f
 %92 = OpFUnordNotEqual %bool %91 %float_0
 OpStore %b1 %92

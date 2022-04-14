@@ -446,6 +446,8 @@ private:
     SpvId writeOpCompositeExtract(const Type& type, SpvId base, int component, OutputStream& out);
     SpvId writeOpCompositeExtract(const Type& type, SpvId base, int componentA, int componentB,
                                   OutputStream& out);
+    SpvId writeOpSelect(const Type& type, SpvId conditionId, SpvId trueId, SpvId falseId,
+                        OutputStream& out);
 
     // Converts the provided SpvId(s) into an array of scalar OpConstants, if it can be done.
     bool toConstants(SpvId value, SkTArray<SpvId>* constants);
