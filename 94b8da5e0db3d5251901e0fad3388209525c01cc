@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cef63df1_f1abd5c8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-04-14T17:12:55Z",
+      "side": 1,
+      "message": "While testing various reported problems I am constantly tweaking this test with different fonts and different text, and looking at the bounds. Figured I\u0027d make that a bit easier.",
+      "revId": "94b8da5e0db3d5251901e0fad3388209525c01cc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
