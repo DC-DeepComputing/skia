@@ -2927,6 +2927,7 @@ public:
          const SkPaint& paint,
          const SkMatrix& positionMatrix,
          SkPoint origin,
+         bool supportBilerpAtlas,
          int allocSize);
     ~Slug() override = default;
 
@@ -2934,7 +2935,9 @@ public:
                             const SkGlyphRunList& glyphRunList,
                             const SkPaint& paint,
                             const GrSDFTControl& control,
+                            bool padAtlas,
                             SkGlyphRunListPainter* painter);
+
     static sk_sp<GrSlug> MakeFromBuffer(SkReadBuffer& buffer,
                                         const SkStrikeClient* client);
 
@@ -2992,6 +2995,7 @@ private:
     const SkPaint fPaint;
     const SkMatrix fInitialPositionMatrix;
     const SkPoint fOrigin;
+    const bool fSupportBilerpAtlas;
     GrSubRunList fSubRuns;
 };
 
@@ -2999,12 +3003,14 @@ Slug::Slug(SkRect sourceBounds,
            const SkPaint& paint,
            const SkMatrix& positionMatrix,
            SkPoint origin,
+           bool supportBilerpAtlas,
            int allocSize)
-           : fAlloc {SkTAddOffset<char>(this, sizeof(Slug)), allocSize, allocSize/2}
-           , fSourceBounds{sourceBounds}
-           , fPaint{paint}
-           , fInitialPositionMatrix{positionMatrix}
-           , fOrigin{origin} { }
+        : fAlloc{SkTAddOffset<char>(this, sizeof(Slug)), allocSize, allocSize / 2}
+        , fSourceBounds{sourceBounds}
+        , fPaint{paint}
+        , fInitialPositionMatrix{positionMatrix}
+        , fOrigin{origin}
+        , fSupportBilerpAtlas{supportBilerpAtlas} {}
 
 void Slug::surfaceDraw(SkCanvas* canvas, const GrClip* clip, const SkMatrixProvider& viewMatrix,
                        skgpu::v1::SurfaceDrawContext* sdc) const {
@@ -3051,6 +3057,7 @@ sk_sp<GrSlug> Slug::MakeFromBuffer(SkReadBuffer& buffer, const SkStrikeClient* c
                                   paint,
                                   positionMatrix,
                                   origin,
+                                  false,
                                   subRunsUnflattenSizeHint)};
     for (int i = 0; i < subRunCount; ++i) {
         auto subRun = GrSubRun::MakeFromBuffer(slug.get(), buffer, &slug->fAlloc, client);
@@ -3076,12 +3083,14 @@ public:
                          GrMaskFormat format,
                          SkGlyphRect deviceBounds,
                          SkSpan<const DevicePosition> devicePositions,
+                         bool supportBilerpAtlas,
                          GrGlyphVector&& glyphs);
 
     static GrSubRunOwner Make(const GrTextReferenceFrame* referenceFrame,
                               const SkZip<SkGlyphVariant, SkPoint>& accepted,
                               sk_sp<SkStrike>&& strike,
                               GrMaskFormat format,
+                              bool supportBilerpAtlas,
                               GrSubRunAllocator* alloc);
 
     static GrSubRunOwner MakeFromBuffer(const GrTextReferenceFrame* referenceFrame,
@@ -3143,6 +3152,11 @@ private:
     const SkGlyphRect fGlyphDeviceBounds;
     const SkSpan<const DevicePosition> fLeftTopDevicePos;
 
+    // This should be set if Slugs draw with different matrices, otherwise the slugs will be drawn
+    // like DirectMasksSubRuns from GrTextBlobs. The reset mode is used to draw non-TextBlob draw
+    // commands from canvas.
+    const bool fSupportBilerpAtlas;
+
     // The regenerateAtlas method mutates fGlyphs. It should be called from onPrepare which must
     // be single threaded.
     mutable GrGlyphVector fGlyphs;
@@ -3152,17 +3166,20 @@ DirectMaskSubRunSlug::DirectMaskSubRunSlug(const GrTextReferenceFrame* reference
                                            GrMaskFormat format,
                                            SkGlyphRect deviceBounds,
                                            SkSpan<const DevicePosition> devicePositions,
+                                           bool supportBilerpAtlas,
                                            GrGlyphVector&& glyphs)
         : fReferenceFrame{referenceFrame}
         , fMaskFormat{format}
         , fGlyphDeviceBounds{deviceBounds}
         , fLeftTopDevicePos{devicePositions}
+        , fSupportBilerpAtlas{supportBilerpAtlas}
         , fGlyphs{std::move(glyphs)} { }
 
 GrSubRunOwner DirectMaskSubRunSlug::Make(const GrTextReferenceFrame* referenceFrame,
                                          const SkZip<SkGlyphVariant, SkPoint>& accepted,
                                          sk_sp<SkStrike>&& strike,
                                          GrMaskFormat format,
+                                         bool supportBilerpAtlas,
                                          GrSubRunAllocator* alloc) {
     auto glyphLeftTop = alloc->makePODArray<DevicePosition>(accepted.size());
     auto glyphIDs = alloc->makePODArray<GrGlyphVector::Variant>(accepted.size());
@@ -3197,7 +3214,7 @@ GrSubRunOwner DirectMaskSubRunSlug::Make(const GrTextReferenceFrame* referenceFr
 
     SkSpan<const DevicePosition> leftTop{glyphLeftTop, goodPosCount};
     return alloc->makeUnique<DirectMaskSubRunSlug>(
-            referenceFrame, format, runBounds, leftTop,
+            referenceFrame, format, runBounds, leftTop, supportBilerpAtlas,
             GrGlyphVector{std::move(strike), {glyphIDs, goodPosCount}});
 }
 
@@ -3223,7 +3240,7 @@ GrSubRunOwner DirectMaskSubRunSlug::MakeFromBuffer(const GrTextReferenceFrame* r
     if (!buffer.validate(SkCount(glyphVector->glyphs()) == glyphCount)) { return nullptr; }
     SkASSERT(buffer.isValid());
     return alloc->makeUnique<DirectMaskSubRunSlug>(
-            referenceFrame, maskType, runBounds, positions, std::move(glyphVector.value()));
+            referenceFrame, maskType, runBounds, positions, true, std::move(glyphVector.value()));
 }
 
 void DirectMaskSubRunSlug::doFlatten(SkWriteBuffer& buffer) const {
@@ -3334,7 +3351,9 @@ void DirectMaskSubRunSlug::testingOnly_packedGlyphIDToGrGlyph(GrStrikeCache *cac
 
 std::tuple<bool, int>
 DirectMaskSubRunSlug::regenerateAtlas(int begin, int end, GrMeshDrawTarget* target) const {
-    return fGlyphs.regenerateAtlas(begin, end, fMaskFormat, 1, target, true);
+    int srcPadding = fSupportBilerpAtlas ? 1 : 0;
+    return fGlyphs.regenerateAtlas(
+            begin, end, fMaskFormat, srcPadding, target, fSupportBilerpAtlas);
 }
 
 template<typename Quad, typename VertexData>
@@ -3468,25 +3487,11 @@ DirectMaskSubRunSlug::deviceRectAndCheckTransform(const SkMatrix& positionMatrix
     return {false, SkRect::MakeEmpty()};
 }
 
-void Slug::processDeviceMasks(
-        const SkZip<SkGlyphVariant, SkPoint>& accepted, sk_sp<SkStrike>&& strike) {
-    auto addGlyphsWithSameFormat = [&] (const SkZip<SkGlyphVariant, SkPoint>& accepted,
-                                        GrMaskFormat format,
-                                        sk_sp<SkStrike>&& runStrike) {
-        GrSubRunOwner subRun = DirectMaskSubRunSlug::Make(
-                this, accepted, std::move(runStrike), format, &fAlloc);
-        if (subRun != nullptr) {
-            fSubRuns.append(std::move(subRun));
-        }
-    };
-
-    add_multi_mask_format(addGlyphsWithSameFormat, accepted, std::move(strike));
-}
-
 sk_sp<Slug> Slug::Make(const SkMatrixProvider& viewMatrix,
                        const SkGlyphRunList& glyphRunList,
                        const SkPaint& paint,
                        const GrSDFTControl& control,
+                       bool supportBilerpAtlas,
                        SkGlyphRunListPainter* painter) {
     // The difference in alignment from the per-glyph data to the SubRun;
     constexpr size_t alignDiff =
@@ -3511,6 +3516,7 @@ sk_sp<Slug> Slug::Make(const SkMatrixProvider& viewMatrix,
                                   paint,
                                   positionMatrix,
                                   glyphRunList.origin(),
+                                  supportBilerpAtlas,
                                   bytesNeededForSubRun)};
 
     const uint64_t uniqueID = glyphRunList.uniqueID();
@@ -3529,6 +3535,21 @@ sk_sp<Slug> Slug::Make(const SkMatrixProvider& viewMatrix,
     if (slug->fSubRuns.isEmpty()) { return nullptr; }
 
     return slug;
+}
+
+void Slug::processDeviceMasks(
+        const SkZip<SkGlyphVariant, SkPoint>& accepted, sk_sp<SkStrike>&& strike) {
+    auto addGlyphsWithSameFormat = [&] (const SkZip<SkGlyphVariant, SkPoint>& accepted,
+                                       GrMaskFormat format,
+                                       sk_sp<SkStrike>&& runStrike) {
+        GrSubRunOwner subRun = DirectMaskSubRunSlug::Make(
+                this, accepted, std::move(runStrike), format, fSupportBilerpAtlas, &fAlloc);
+        if (subRun != nullptr) {
+            fSubRuns.append(std::move(subRun));
+        }
+    };
+
+    add_multi_mask_format(addGlyphsWithSameFormat, accepted, std::move(strike));
 }
 
 void Slug::processSourcePaths(const SkZip<SkGlyphVariant,
@@ -3586,10 +3607,12 @@ Device::convertGlyphRunListToSlug(const SkGlyphRunList& glyphRunList, const SkPa
     const GrSDFTControl control = recordingContextPriv.getSDFTControl(
             this->surfaceProps().isUseDeviceIndependentFonts());
 
+    const bool supportBilerpAtlas = recordingContextPriv.options().fSupportBilerpFromGlyphAtlas;
     return Slug::Make(this->asMatrixProvider(),
                       glyphRunList,
                       paint,
                       control,
+                      supportBilerpAtlas,
                       fSurfaceDrawContext->glyphRunPainter());
 }
 
@@ -3603,7 +3626,7 @@ sk_sp<GrSlug> MakeSlug(const SkMatrixProvider& drawMatrix,
                        const SkPaint& paint,
                        const GrSDFTControl& control,
                        SkGlyphRunListPainter* painter) {
-    return Slug::Make(drawMatrix, glyphRunList, paint, control, painter);
+    return Slug::Make(drawMatrix, glyphRunList, paint, control, false, painter);
 }
 }  // namespace skgpu::v1
 
