@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4c38bae3_2ca0adba",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-04-14T18:01:51Z",
+      "side": 1,
+      "message": "I\u0027m re-generating the bazel files locally to update the CL...",
+      "revId": "95d43c8ba862f369c813b479a69b3a53e7c0c5a0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
