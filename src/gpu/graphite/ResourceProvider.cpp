@@ -130,10 +130,17 @@ sk_sp<Texture> ResourceProvider::findOrCreateDiscardableMSAAAttachment(SkISize d
 sk_sp<Texture> ResourceProvider::findOrCreateTextureWithKey(SkISize dimensions,
                                                             const TextureInfo& info,
                                                             const GraphiteResourceKey& key) {
+    static int msaaRequests = 0;
+    static int msaaFinds = 0;
+    static int msaaCreates = 0;
+    if (info.numSamples() > 1) ++msaaRequests;
     if (Resource* resource = fResourceCache->findAndRefResource(key)) {
+        if (info.numSamples() > 1) ++msaaFinds;
+        SkDebugf("Msaa stats. Requests: %d, Finds: %d, Creates: %d\n", msaaRequests, msaaFinds, msaaCreates);
         return sk_sp<Texture>(static_cast<Texture*>(resource));
     }
 
+    if (info.numSamples() > 1) ++msaaCreates;
     auto tex = this->createTexture(dimensions, info);
     if (!tex) {
         return nullptr;
@@ -141,7 +148,7 @@ sk_sp<Texture> ResourceProvider::findOrCreateTextureWithKey(SkISize dimensions,
 
     tex->setKey(key);
     fResourceCache->insertResource(tex.get());
-
+    SkDebugf("Msaa stats. Requests: %d, Finds: %d, Creates: %d\n", msaaRequests, msaaFinds, msaaCreates);
     return tex;
 }
 
