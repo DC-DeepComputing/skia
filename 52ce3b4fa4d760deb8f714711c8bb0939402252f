@@ -34,6 +34,24 @@
       "parentUuid": "8360f97f_9804833e",
       "revId": "52ce3b4fa4d760deb8f714711c8bb0939402252f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ffeb898c_510cd22b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-14T14:47:49Z",
+      "side": 1,
+      "message": "https://stackoverflow.com/a/68908516/291737\n\n\"In shader model 5, constant buffers are not object or variables, so no, you can\u0027t pass then as arguments to functions.\"\n\nPfft, I blame SPIRV-Cross",
+      "parentUuid": "5b0de92b_563e578f",
+      "revId": "52ce3b4fa4d760deb8f714711c8bb0939402252f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
