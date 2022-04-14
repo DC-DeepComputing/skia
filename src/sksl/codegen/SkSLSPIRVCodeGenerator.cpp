@@ -709,12 +709,102 @@ SpvId SPIRVCodeGenerator::writeOpCompositeConstruct(const Type& type,
     return this->writeInstruction(SpvOpCompositeConstruct, words, out);
 }
 
-SpvId SPIRVCodeGenerator::toComponent(const SPIRVCodeGenerator::Instruction& instr, int component) {
-    if (instr.fOp == SpvOpConstantComposite) {
-        // Add 2 to the component index to skip past ResultType and ResultID.
-        return instr.fWords[2 + component];
+SPIRVCodeGenerator::Instruction* SPIRVCodeGenerator::resultTypeForInstruction(
+        const Instruction& instr) {
+    // This list should contain every op that we cache that has a result and result-type.
+    // (If one is missing, we will not find some optimization opportunities.)
+    // Generally, the result type of an op is in the 0th word, but I'm not sure if this is
+    // universally true, so it's configurable on a per-op basis.
+    int resultTypeWord;
+    switch (instr.fOp) {
+        case SpvOpConstant:
+        case SpvOpConstantTrue:
+        case SpvOpConstantFalse:
+        case SpvOpConstantComposite:
+        case SpvOpCompositeConstruct:
+        case SpvOpCompositeExtract:
+            resultTypeWord = 0;
+            break;
+
+        default:
+            return nullptr;
     }
-    // TODO(johnstiles): add support for SpvOpCompositeConstruct
+
+    Instruction* typeInstr = fSpvIdCache.find(instr.fWords[resultTypeWord]);
+    SkASSERT(typeInstr);
+    return typeInstr;
+}
+
+SpvId SPIRVCodeGenerator::toComponent(SpvId id, int component) {
+    Instruction* instr = fSpvIdCache.find(id);
+    if (!instr) {
+        return NA;
+    }
+    if (instr->fOp == SpvOpConstantComposite) {
+        // SpvOpConstantComposite ResultType ResultID [components...]
+        int wordIdx = component + 2;
+        return (wordIdx < instr->fWords.count()) ? instr->fWords[wordIdx] : NA;
+    }
+    if (instr->fOp == SpvOpCompositeConstruct) {
+        // SpvOpCompositeConstruct ResultType ResultID [components...]
+        // Vectors have special rules; check to see if we are composing a vector.
+        Instruction* composedType = fSpvIdCache.find(instr->fWords[0]);
+        SkASSERT(composedType);
+
+        // When composing a non-vector, each instruction word maps 1:1 to the component index.
+        // We can just extract out the associated component directly.
+        if (composedType->fOp != SpvOpTypeVector) {
+            int wordIdx = component + 2;
+            return (wordIdx < instr->fWords.count()) ? instr->fWords[wordIdx] : NA;
+        }
+
+        // When composing a vector, components can be either scalars or vectors.
+        // This means we need to check the op type on each component.
+        for (int wordIdx = 2;; ++wordIdx) {
+            if (wordIdx >= instr->fWords.count()) {
+                SkDEBUGFAIL("component index goes past the end of this composite value");
+                return NA;
+            }
+            int32_t currentWord = instr->fWords[wordIdx];
+
+            // Retrieve the sub-instruction pointed to by OpCompositeConstruct.
+            Instruction* subinstr = fSpvIdCache.find(currentWord);
+            if (!subinstr) {
+                return NA;
+            }
+            // We need to know the sub-instruction's result type.
+            Instruction* subtype = this->resultTypeForInstruction(*subinstr);
+            if (!subtype) {
+                return NA;
+            }
+
+            int numComponents;
+            if (subtype->fOp == SpvOpTypeVector) {
+                // This is a vector; extract its column count.
+                //   SpvOpTypeVector ResultID ComponentType NumComponents
+                numComponents = subtype->fWords[2];
+            } else {
+                // This is a scalar. It has one component.
+                SkASSERT(subtype->fOp == SpvOpTypeFloat ||
+                         subtype->fOp == SpvOpTypeInt ||
+                         subtype->fOp == SpvOpTypeBool);
+                numComponents = 1;
+            }
+            // If this subinstruction contains the component we're looking for...
+            if (component < numComponents) {
+                if (numComponents == 1) {
+                    // ... it's a scalar. Return it.
+                    SkASSERT(component == 0);
+                    return currentWord;
+                } else {
+                    // ... it's a vector. Recurse into it.
+                    return this->toComponent(currentWord, component);
+                }
+            }
+            // This sub-instruction doesn't contain our component. Keep walking forward.
+            component -= numComponents;
+        }
+    }
     return NA;
 }
 
@@ -723,11 +813,9 @@ SpvId SPIRVCodeGenerator::writeOpCompositeExtract(const Type& type,
                                                   int component,
                                                   OutputStream& out) {
     // If the base op is a composite, we can extract from it directly.
-    if (Instruction* instr = fSpvIdCache.find(base)) {
-        SpvId result = this->toComponent(*instr, component);
-        if (result != NA) {
-            return result;
-        }
+    SpvId result = this->toComponent(base, component);
+    if (result != NA) {
+        return result;
     }
     return this->writeInstruction(
             SpvOpCompositeExtract,
@@ -741,11 +829,9 @@ SpvId SPIRVCodeGenerator::writeOpCompositeExtract(const Type& type,
                                                   int componentB,
                                                   OutputStream& out) {
     // If the base op is a composite, we can extract from it directly.
-    if (Instruction* instr = fSpvIdCache.find(base)) {
-        SpvId result = this->toComponent(*instr, componentA);
-        if (result != NA) {
-            return this->writeOpCompositeExtract(type, result, componentB, out);
-        }
+    SpvId result = this->toComponent(base, componentA);
+    if (result != NA) {
+        return this->writeOpCompositeExtract(type, result, componentB, out);
     }
     return this->writeInstruction(SpvOpCompositeExtract,
                                   {this->getType(type),
