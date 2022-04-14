@@ -16,6 +16,24 @@
       "message": "Thanks Leon, I didn\u0027t get a chance to get back to this. lgtm, I\u0027m not sure if my CQ commit will take though.",
       "revId": "97075d773642e99887a2f864162e502c0474a23d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ab1fcc12_7c2310a8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-04-14T13:37:20Z",
+      "side": 1,
+      "message": "No worries. Yeah, we\u0027ll need Derek\u0027s approval.",
+      "parentUuid": "0e4c13de_13d6b5c7",
+      "revId": "97075d773642e99887a2f864162e502c0474a23d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
