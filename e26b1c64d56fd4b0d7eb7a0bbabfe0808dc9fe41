@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e62fcf0b_0f0eb71f",
+        "filename": "src/ports/SkFontMgr_fuchsia.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 8948
+      },
+      "writtenOn": "2022-04-14T16:54:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ad793846_13e55608",
+      "range": {
+        "startLine": 45,
+        "startChar": 4,
+        "endLine": 45,
+        "endChar": 50
+      },
+      "revId": "e26b1c64d56fd4b0d7eb7a0bbabfe0808dc9fe41",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "76a249a7_6508b03f",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-04-14T13:32:11Z",
       "side": 1,
       "message": "It looks like SkData::MakeWithProc will never actually fail unless there\u0027s an OOM, but if it did, this would leak \u0027context\u0027 (which would then leak a dangling reference to the Cache). I\u0027d suggest either deleting context here, or adding an assert that (data !\u003d nullptr).",
+      "range": {
+        "startLine": 68,
+        "startChar": 4,
+        "endLine": 68,
+        "endChar": 30
+      },
+      "revId": "e26b1c64d56fd4b0d7eb7a0bbabfe0808dc9fe41",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a52da4cc_b90f1ae0",
+        "filename": "src/ports/SkFontMgr_fuchsia.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 8948
+      },
+      "writtenOn": "2022-04-14T16:54:06Z",
+      "side": 1,
+      "message": "replaced this line with an assert",
+      "parentUuid": "76a249a7_6508b03f",
       "range": {
         "startLine": 68,
         "startChar": 4,
