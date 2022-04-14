@@ -16,6 +16,23 @@
       "message": "While testing various reported problems I am constantly tweaking this test with different fonts and different text, and looking at the bounds. Figured I\u0027d make that a bit easier.",
       "revId": "94b8da5e0db3d5251901e0fad3388209525c01cc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4e3b01e6_fd91d872",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-04-14T17:46:10Z",
+      "side": 1,
+      "message": "You need to appease the Bazilisk by feeding your header changes.",
+      "revId": "94b8da5e0db3d5251901e0fad3388209525c01cc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
