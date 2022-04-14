@@ -16,6 +16,24 @@
       "message": "The D3D failures are interesting. Not sure if this exposed a bug in Spirv-Cross, or if we\u0027re actually deduping things that we shouldn\u0027t? ie: Was there previously some explicit \"UniformBuffer\" struct type declared in a way that would get translated to an HLSL struct declaration, separate from the cbuffer declaration?",
       "revId": "52ce3b4fa4d760deb8f714711c8bb0939402252f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5b0de92b_563e578f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-14T14:46:05Z",
+      "side": 1,
+      "message": "https://screenshot.googleplex.com/4PfdLPNQRQJ4Mjo\n\nCan we repro this on non-Golo machines?\nAre the Golo machines on older/crappier drivers?\nThe shader looks fine on initial inspection.",
+      "parentUuid": "8360f97f_9804833e",
+      "revId": "52ce3b4fa4d760deb8f714711c8bb0939402252f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
