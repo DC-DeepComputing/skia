@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "11bc1683_dc1f2db1",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 2134,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-15T23:49:27Z",
+      "side": 1,
+      "message": "Unfortunately no. Imagine the cache holds a store at %50, containing the value associated with `myVec4`. Now there is a store into %60, which is a non-memory object, specifically an OpAccessChain to `myVec4.z`. Storing into %60 invalidates the cached store at %50. Unfortunately we don\u0027t track the relationship between %50 and %60.\n\nI do realize, though, that we could clear the cache first, and then emit the OpStore. We do know the value at %60 with confidence.",
+      "parentUuid": "32ec0f63_e43864e7",
+      "range": {
+        "startLine": 2134,
+        "startChar": 8,
+        "endLine": 2134,
+        "endChar": 63
+      },
+      "revId": "ada7c9dbc62c6c2ae4957e05b6d354d6ac3e06de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1fe284e4_63a19da6",
         "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
         "patchSetId": 13
@@ -37,6 +61,30 @@
       "writtenOn": "2022-04-15T22:10:50Z",
       "side": 1,
       "message": "Would it be worth implementing a scheme where SPIRVCodeGenerator tracks the SpvId\u0027s on a per block basis and clear only the IDs that go out of scope?",
+      "range": {
+        "startLine": 3633,
+        "startChar": 4,
+        "endLine": 3633,
+        "endChar": 24
+      },
+      "revId": "ada7c9dbc62c6c2ae4957e05b6d354d6ac3e06de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e9e504b6_83622b5e",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 3633,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-15T23:49:27Z",
+      "side": 1,
+      "message": "If this CL proves to be really beneficial for performance, maybe it\u0027d be worth it! Right now I am experimenting and trying to find wins, even though the conventional wisdom is that the driver already optimizes well enough and we can be sloppy. We won\u0027t really know for sure until we try.",
+      "parentUuid": "1fe284e4_63a19da6",
       "range": {
         "startLine": 3633,
         "startChar": 4,
