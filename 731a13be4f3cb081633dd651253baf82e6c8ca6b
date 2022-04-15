@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e08d03ad_51b609db",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-04-15T21:57:00Z",
+      "side": 1,
+      "message": "The first in possible a series where I try to figure out how to use the increasingly difficult to use FreeType API.\n\nThe next one is how to handle SVG when we don\u0027t actually support it. We need to have FT_LOAD_COLOR set on the first load so that we can get color bitmaps, but that flag also prioritizes SVG over outlines (if SVG support is compiled into FreeType). So if the SVG for some reason fails (like we have no SVG hooks, the SVG is invalid, or whatever) we will need to re-load the glyph without FT_LOAD_COLOR (which unfortunately will skip any existing color bitmaps, but I suppose that\u0027s fine) and make another pass at it. Which is why I\u0027m interested in the ScalerContextBits, since it will be needed to communicate these awkward situations.",
+      "revId": "731a13be4f3cb081633dd651253baf82e6c8ca6b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
