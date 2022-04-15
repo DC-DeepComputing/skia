@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "152a0e4e_e9aef5b9",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 768,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-04-15T13:39:50Z",
+      "side": 1,
+      "message": "OpTypeMatrix doesn\u0027t have any of the flexibility of vector, right? (The arguments when constructing it have to be M columns vectors of exactly N rows each)?\n\nAnd structs are totally different, because they\u0027ll never end up here? (We\u0027d be using OpAccessChain?)",
+      "range": {
+        "startLine": 767,
+        "startChar": 0,
+        "endLine": 768,
+        "endChar": 69
+      },
+      "revId": "dd21dea8594de3938c84f4989e44b599fe090d40",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
