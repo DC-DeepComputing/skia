@@ -142,6 +142,35 @@ void SkPaintParamsKeyBuilder::addBytes(uint32_t numBytes, const uint8_t* data) {
     fData.append(numBytes, data);
 }
 
+void SkPaintParamsKeyBuilder::add(const SkColor4f& color) {
+    if (!this->isValid()) {
+        return;
+    }
+
+    if (fStack.empty()) {
+        // SKGPU_LOG_W("Missing call to 'beginBlock'.");
+        this->makeInvalid();
+        return;
+    }
+
+#ifdef SK_DEBUG
+    const StackFrame& frame = fStack.back();
+    const auto& expectations = frame.fDataPayloadExpectations;
+
+    SkASSERT(frame.fCurDataPayloadEntry < SkTo<int>(expectations.size()) &&
+             expectations.data() &&
+             expectations[frame.fCurDataPayloadEntry].fType ==
+                                              SkPaintParamsKey::DataPayloadType::kFloat4 &&
+             expectations[frame.fCurDataPayloadEntry].fCount == 1);
+
+    fStack.back().fCurDataPayloadEntry++;
+#endif
+
+    SkASSERT(!this->isLocked());
+
+    fData.append(16, reinterpret_cast<const uint8_t*>(&color));
+}
+
 SkPaintParamsKey SkPaintParamsKeyBuilder::lockAsKey() {
     if (!fStack.empty()) {
         // SKGPU_LOG_W("Mismatched beginBlock/endBlocks.");
