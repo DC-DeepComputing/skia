@@ -324,6 +324,9 @@ DEF_GPUTEST_FOR_CONTEXTS(SkRemoteGlyphCache_SlugSerialization,
                          sk_gpu_test::GrContextFactory::IsRenderingContext,
                          reporter, ctxInfo, use_padding_options) {
     auto dContext = ctxInfo.directContext();
+    if (!dContext->priv().options().fSupportBilerpFromGlyphAtlas) {
+        return;
+    }
     sk_sp<DiscardableManager> discardableManager = sk_make_sp<DiscardableManager>();
     SkStrikeServer server(discardableManager.get());
     SkStrikeClient client(discardableManager, false);
