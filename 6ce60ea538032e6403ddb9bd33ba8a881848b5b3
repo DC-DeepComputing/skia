@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e8deea50_8576e2b5",
+        "filename": "src/ports/SkFontHost_FreeType.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1245,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-04-15T19:00:34Z",
+      "side": 0,
+      "message": "The actual drawing doesn\u0027t do this, and it doesn\u0027t really make any sense to fake bold a color glyph like this anyway.",
+      "revId": "6ce60ea538032e6403ddb9bd33ba8a881848b5b3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

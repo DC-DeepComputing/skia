@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "81e1f6b2_9c636be4",
+        "filename": "src/ports/SkFontHost_FreeType.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1225,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-04-15T19:00:34Z",
+      "side": 1,
+      "message": "SkRect::join documents that it treats any empty SkRect as ignored for the purpose of the join. So there isn\u0027t a need to start with the \"most empty\" bounds like was done before.",
+      "revId": "ab44dbfae4a6e8370d5b51a4e2a7c84d5304fbef",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
