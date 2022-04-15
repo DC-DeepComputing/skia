@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6380919d_165f728d",
+        "filename": "src/core/SkKeyHelpers.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 342,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-04-15T20:18:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ff55aadf_23e3b008",
+      "range": {
+        "startLine": 342,
+        "startChar": 8,
+        "endLine": 342,
+        "endChar": 69
+      },
+      "revId": "7baee18ba780ddc8b18cbd73845320904456e678",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4487e912_cc790779",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-04-15T19:25:36Z",
       "side": 1,
       "message": "Is this used or just setup for later CLs?",
+      "range": {
+        "startLine": 377,
+        "startChar": 10,
+        "endLine": 377,
+        "endChar": 67
+      },
+      "revId": "7baee18ba780ddc8b18cbd73845320904456e678",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4f884f3e_41b2c1d5",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 377,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-04-15T20:18:53Z",
+      "side": 1,
+      "message": "It is setup for a later CL",
+      "parentUuid": "4487e912_cc790779",
       "range": {
         "startLine": 377,
         "startChar": 10,
