@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "187c1fb8_705aabb0",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 336,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-15T20:48:49Z",
+      "side": 0,
+      "message": "Long-dead function prototype discovered during this CL",
+      "range": {
+        "startLine": 336,
+        "startChar": 10,
+        "endLine": 336,
+        "endChar": 30
+      },
+      "revId": "ead4a3f5b3661b208d92decc632ee02b7b94bb9d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
