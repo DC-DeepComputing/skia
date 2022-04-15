@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ff55aadf_23e3b008",
+        "filename": "src/core/SkKeyHelpers.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 342,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-04-15T19:25:36Z",
+      "side": 1,
+      "message": "Is this still necessary? Maybe move up to add_image_uniform_data?",
+      "range": {
+        "startLine": 342,
+        "startChar": 8,
+        "endLine": 342,
+        "endChar": 69
+      },
+      "revId": "7baee18ba780ddc8b18cbd73845320904456e678",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4487e912_cc790779",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 377,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-04-15T19:25:36Z",
+      "side": 1,
+      "message": "Is this used or just setup for later CLs?",
+      "range": {
+        "startLine": 377,
+        "startChar": 10,
+        "endLine": 377,
+        "endChar": 67
+      },
+      "revId": "7baee18ba780ddc8b18cbd73845320904456e678",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
