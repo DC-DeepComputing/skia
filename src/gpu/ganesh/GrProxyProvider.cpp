@@ -404,7 +404,7 @@ sk_sp<GrTextureProxy> GrProxyProvider::createMippedProxyFromBitmap(const SkBitma
                         GrRenderable::kNo,
                         1,
                         desc.fBudgeted,
-                        GrMipMapped::kYes,
+                        GrMipmapped::kYes,
                         GrProtected::kNo,
                         texels.get()));
             },
