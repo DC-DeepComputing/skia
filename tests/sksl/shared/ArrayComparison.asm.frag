@@ -42,6 +42,18 @@ OpDecorate %_arr_mat2v2float_int_3 ArrayStride 32
 OpMemberDecorate %S 0 Offset 0
 OpMemberDecorate %S 1 Offset 4
 OpDecorate %_arr_S_int_3 ArrayStride 16
+OpDecorate %133 RelaxedPrecision
+OpDecorate %135 RelaxedPrecision
+OpDecorate %138 RelaxedPrecision
+OpDecorate %140 RelaxedPrecision
+OpDecorate %144 RelaxedPrecision
+OpDecorate %146 RelaxedPrecision
+OpDecorate %153 RelaxedPrecision
+OpDecorate %155 RelaxedPrecision
+OpDecorate %158 RelaxedPrecision
+OpDecorate %160 RelaxedPrecision
+OpDecorate %164 RelaxedPrecision
+OpDecorate %166 RelaxedPrecision
 OpDecorate %206 RelaxedPrecision
 OpDecorate %208 RelaxedPrecision
 OpDecorate %209 RelaxedPrecision
