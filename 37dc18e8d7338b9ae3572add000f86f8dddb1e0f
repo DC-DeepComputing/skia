@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d1a04584_10bc3786",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-04-15T13:22:11Z",
+      "side": 1,
+      "message": "You\u0027ll want to delete this blank line, or monorail isn\u0027t going to be updated.",
+      "revId": "37dc18e8d7338b9ae3572add000f86f8dddb1e0f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
