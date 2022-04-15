@@ -260,8 +260,8 @@ OpStore %v %123
 %128 = OpLoad %v4float %v
 %129 = OpVectorShuffle %v4float %128 %127 6 5 4 3
 OpStore %v %129
-%131 = OpFOrdEqual %v4bool %129 %130
-%133 = OpAll %bool %131
+%132 = OpFOrdEqual %v4bool %129 %130
+%133 = OpAll %bool %132
 OpSelectionMerge %137 None
 OpBranchConditional %133 %135 %136
 %135 = OpLabel

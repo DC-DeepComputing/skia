@@ -217,8 +217,8 @@ OpStore %v %94
 %95 = OpCompositeConstruct %v4float %float_0 %float_0 %92 %float_1
 OpStore %v %95
 OpStore %v %41
-%96 = OpFOrdEqual %v4bool %41 %41
-%98 = OpAll %bool %96
+%97 = OpFOrdEqual %v4bool %41 %41
+%98 = OpAll %bool %97
 OpSelectionMerge %102 None
 OpBranchConditional %98 %100 %101
 %100 = OpLabel

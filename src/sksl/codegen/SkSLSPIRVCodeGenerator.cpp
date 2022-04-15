@@ -94,6 +94,7 @@ struct SPIRVCodeGenerator::Instruction::Hash {
     }
 };
 
+
 // This class is used to pass values and result placeholder slots to writeInstruction.
 struct SPIRVCodeGenerator::Word {
     enum Kind {
@@ -748,14 +749,59 @@ SPIRVCodeGenerator::Instruction* SPIRVCodeGenerator::resultTypeForInstruction(
     // universally true, so it's configurable on a per-op basis.
     int resultTypeWord;
     switch (instr.fOp) {
+        case SpvOpAll:
+        case SpvOpAny:
+        case SpvOpBitcast:
+        case SpvOpBitwiseAnd:
+        case SpvOpBitwiseOr:
+        case SpvOpBitwiseXor:
         case SpvOpConstant:
         case SpvOpConstantTrue:
         case SpvOpConstantFalse:
         case SpvOpConstantComposite:
+        case SpvOpConvertFToS:
+        case SpvOpConvertFToU:
+        case SpvOpConvertSToF:
+        case SpvOpConvertUToF:
         case SpvOpCompositeConstruct:
         case SpvOpCompositeExtract:
-        case SpvOpLoad:
+        case SpvOpFAdd:
+        case SpvOpFDiv:
+        case SpvOpFMod:
+        case SpvOpFMul:
+        case SpvOpFOrdEqual:
+        case SpvOpFOrdLessThan:
+        case SpvOpFOrdLessThanEqual:
+        case SpvOpFOrdGreaterThan:
+        case SpvOpFOrdGreaterThanEqual:
+        case SpvOpFSub:
+        case SpvOpFUnordNotEqual:
+        case SpvOpIAdd:
+        case SpvOpIEqual:
+        case SpvOpIMul:
+        case SpvOpISub:
+        case SpvOpLogicalAnd:
+        case SpvOpLogicalEqual:
+        case SpvOpLogicalNotEqual:
+        case SpvOpLogicalOr:
+        case SpvOpINotEqual:
+        case SpvOpSDiv:
+        case SpvOpSGreaterThan:
+        case SpvOpSGreaterThanEqual:
+        case SpvOpSLessThan:
+        case SpvOpSLessThanEqual:
+        case SpvOpSMod:
         case SpvOpSelect:
+        case SpvOpShiftLeftLogical:
+        case SpvOpShiftRightArithmetic:
+        case SpvOpShiftRightLogical:
+        case SpvOpUDiv:
+        case SpvOpUGreaterThan:
+        case SpvOpUGreaterThanEqual:
+        case SpvOpULessThan:
+        case SpvOpULessThanEqual:
+        case SpvOpUMod:
+        case SpvOpUndef:
             resultTypeWord = 0;
             break;
 
@@ -1699,17 +1745,20 @@ SpvId SPIRVCodeGenerator::castScalarToFloat(SpvId inputId, const Type& inputType
         const SpvId zeroID = this->writeLiteral(0.0, *fContext.fTypes.fFloat);
         return this->writeOpSelect(outputType, inputId, oneID, zeroID, out);
     }
-
-    SpvId result = this->nextId(&outputType);
     if (inputType.isSigned()) {
-        this->writeInstruction(SpvOpConvertSToF, this->getType(outputType), result, inputId, out);
-    } else if (inputType.isUnsigned()) {
-        this->writeInstruction(SpvOpConvertUToF, this->getType(outputType), result, inputId, out);
-    } else {
-        SkDEBUGFAILF("unsupported type for float typecast: %s", inputType.description().c_str());
-        return NA;
+        return this->writeInstruction(
+                SpvOpConvertSToF,
+                {this->getType(outputType), Word::Result(outputType), inputId},
+                out);
     }
-    return result;
+    if (inputType.isUnsigned()) {
+        return this->writeInstruction(
+                SpvOpConvertUToF,
+                {this->getType(outputType), Word::Result(outputType), inputId},
+                out);
+    }
+    SkDEBUGFAILF("unsupported type for float typecast: %s", inputType.description().c_str());
+    return NA;
 }
 
 SpvId SPIRVCodeGenerator::writeIntConstructor(const AnyConstructor& c, OutputStream& out) {
@@ -1734,18 +1783,20 @@ SpvId SPIRVCodeGenerator::castScalarToSignedInt(SpvId inputId, const Type& input
         const SpvId zeroID = this->writeLiteral(0.0, *fContext.fTypes.fInt);
         return this->writeOpSelect(outputType, inputId, oneID, zeroID, out);
     }
-
-    SpvId result = this->nextId(&outputType);
     if (inputType.isFloat()) {
-        this->writeInstruction(SpvOpConvertFToS, this->getType(outputType), result, inputId, out);
-    } else if (inputType.isUnsigned()) {
-        this->writeInstruction(SpvOpBitcast, this->getType(outputType), result, inputId, out);
-    } else {
-        SkDEBUGFAILF("unsupported type for signed int typecast: %s",
-                     inputType.description().c_str());
-        return NA;
+        return this->writeInstruction(
+                SpvOpConvertFToS,
+                {this->getType(outputType), Word::Result(outputType), inputId},
+                out);
     }
-    return result;
+    if (inputType.isUnsigned()) {
+        return this->writeInstruction(
+                SpvOpBitcast,
+                {this->getType(outputType), Word::Result(outputType), inputId},
+                out);
+    }
+    SkDEBUGFAILF("unsupported type for signed int typecast: %s", inputType.description().c_str());
+    return NA;
 }
 
 SpvId SPIRVCodeGenerator::writeUIntConstructor(const AnyConstructor& c, OutputStream& out) {
@@ -1770,18 +1821,20 @@ SpvId SPIRVCodeGenerator::castScalarToUnsignedInt(SpvId inputId, const Type& inp
         const SpvId zeroID = this->writeLiteral(0.0, *fContext.fTypes.fUInt);
         return this->writeOpSelect(outputType, inputId, oneID, zeroID, out);
     }
-
-    SpvId result = this->nextId(&outputType);
     if (inputType.isFloat()) {
-        this->writeInstruction(SpvOpConvertFToU, this->getType(outputType), result, inputId, out);
-    } else if (inputType.isSigned()) {
-        this->writeInstruction(SpvOpBitcast, this->getType(outputType), result, inputId, out);
-    } else {
-        SkDEBUGFAILF("unsupported type for unsigned int typecast: %s",
-                     inputType.description().c_str());
-        return NA;
+        return this->writeInstruction(
+                SpvOpConvertFToU,
+                {this->getType(outputType), Word::Result(outputType), inputId},
+                out);
     }
-    return result;
+    if (inputType.isSigned()) {
+        return this->writeInstruction(
+                SpvOpBitcast,
+                {this->getType(outputType), Word::Result(outputType), inputId},
+                out);
+    }
+    SkDEBUGFAILF("unsupported type for unsigned int typecast: %s", inputType.description().c_str());
+    return NA;
 }
 
 SpvId SPIRVCodeGenerator::writeBooleanConstructor(const AnyConstructor& c, OutputStream& out) {
@@ -2528,20 +2581,23 @@ SpvId SPIRVCodeGenerator::writeBinaryOperation(const Type& resultType,
                                                const Type& operandType, SpvId lhs,
                                                SpvId rhs, SpvOp_ ifFloat, SpvOp_ ifInt,
                                                SpvOp_ ifUInt, SpvOp_ ifBool, OutputStream& out) {
-    SpvId result = this->nextId(&resultType);
+    SpvOp_ op;
     if (is_float(fContext, operandType)) {
-        this->writeInstruction(ifFloat, this->getType(resultType), result, lhs, rhs, out);
+        op = ifFloat;
     } else if (is_signed(fContext, operandType)) {
-        this->writeInstruction(ifInt, this->getType(resultType), result, lhs, rhs, out);
+        op = ifInt;
     } else if (is_unsigned(fContext, operandType)) {
-        this->writeInstruction(ifUInt, this->getType(resultType), result, lhs, rhs, out);
+        op = ifUInt;
     } else if (is_bool(fContext, operandType)) {
-        this->writeInstruction(ifBool, this->getType(resultType), result, lhs, rhs, out);
+        op = ifBool;
     } else {
-        fContext.fErrors->error(operandType.fPosition,
-                "unsupported operand for binary expression: " + operandType.description());
+        fContext.fErrors->error(operandType.fPosition, "unsupported operand for binary expression: "
+                                                       + operandType.description());
+        return NA;
     }
-    return result;
+
+    return this->writeInstruction(
+            op, {this->getType(resultType), Word::Result(resultType), lhs, rhs}, out);
 }
 
 SpvId SPIRVCodeGenerator::foldToBool(SpvId id, const Type& operandType, SpvOp op,
@@ -2571,14 +2627,13 @@ SpvId SPIRVCodeGenerator::writeMatrixComparison(const Type& operandType, SpvId l
     for (int i = 0; i < operandType.columns(); i++) {
         SpvId columnL = this->writeOpCompositeExtract(columnType, lhs, i, out);
         SpvId columnR = this->writeOpCompositeExtract(columnType, rhs, i, out);
-        SpvId compare = this->nextId(&operandType);
-        this->writeInstruction(compareOp, bvecType, compare, columnL, columnR, out);
-        SpvId merge = this->nextId(nullptr);
-        this->writeInstruction(vectorMergeOperator, boolType, merge, compare, out);
+        SpvId compare = this->writeInstruction(
+                compareOp, {bvecType, Word::Result(operandType), columnL, columnR}, out);
+        SpvId merge = this->writeInstruction(
+                vectorMergeOperator, {boolType, Word::Result(), compare}, out);
         if (result != 0) {
-            SpvId next = this->nextId(nullptr);
-            this->writeInstruction(mergeOperator, boolType, next, result, merge, out);
-            result = next;
+            result = this->writeInstruction(
+                    mergeOperator, {boolType, Word::Result(), result, merge}, out);
         } else {
             result = merge;
         }
@@ -2599,8 +2654,8 @@ SpvId SPIRVCodeGenerator::writeComponentwiseMatrixUnary(const Type& operandType,
     SkSTArray<4, SpvId> columns;
     for (int i = 0; i < operandType.columns(); i++) {
         SpvId srcColumn = this->writeOpCompositeExtract(columnType, operand, i, out);
-        SpvId dstColumn = this->nextId(&operandType);
-        this->writeInstruction(op, columnTypeId, dstColumn, srcColumn, out);
+        SpvId dstColumn = this->writeInstruction(
+                op, {columnTypeId, Word::Result(operandType), srcColumn}, out);
         columns.push_back(dstColumn);
     }
 
@@ -2619,8 +2674,8 @@ SpvId SPIRVCodeGenerator::writeComponentwiseMatrixBinary(const Type& operandType
     for (int i = 0; i < operandType.columns(); i++) {
         SpvId columnL = this->writeOpCompositeExtract(columnType, lhs, i, out);
         SpvId columnR = this->writeOpCompositeExtract(columnType, rhs, i, out);
-        columns.push_back(this->nextId(&operandType));
-        this->writeInstruction(op, columnTypeId, columns[i], columnL, columnR, out);
+        columns.push_back(this->writeInstruction(
+                op, {columnTypeId, Word::Result(operandType), columnL, columnR}, out));
     }
     return this->writeOpCompositeConstruct(operandType, columns, out);
 }
@@ -2628,9 +2683,8 @@ SpvId SPIRVCodeGenerator::writeComponentwiseMatrixBinary(const Type& operandType
 SpvId SPIRVCodeGenerator::writeReciprocal(const Type& type, SpvId value, OutputStream& out) {
     SkASSERT(type.isFloat());
     SpvId one = this->writeLiteral(1.0, type);
-    SpvId reciprocal = this->nextId(&type);
-    this->writeInstruction(SpvOpFDiv, this->getType(type), reciprocal, one, value, out);
-    return reciprocal;
+    return this->writeInstruction(
+            SpvOpFDiv, {this->getType(type), Word::Result(type), one, value}, out);
 }
 
 SpvId SPIRVCodeGenerator::writeScalarToMatrixSplat(const Type& matrixType,

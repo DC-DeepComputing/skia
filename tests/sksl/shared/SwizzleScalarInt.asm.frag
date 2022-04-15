@@ -21,11 +21,9 @@ OpDecorate %_UniformBuffer Block
 OpDecorate %10 Binding 0
 OpDecorate %10 DescriptorSet 0
 OpDecorate %32 RelaxedPrecision
+OpDecorate %44 RelaxedPrecision
+OpDecorate %45 RelaxedPrecision
 OpDecorate %46 RelaxedPrecision
-OpDecorate %48 RelaxedPrecision
-OpDecorate %50 RelaxedPrecision
-OpDecorate %52 RelaxedPrecision
-OpDecorate %53 RelaxedPrecision
 %float = OpTypeFloat 32
 %v4float = OpTypeVector %float 4
 %_ptr_Output_v4float = OpTypePointer Output %v4float
@@ -71,21 +69,14 @@ OpStore %i %33
 %37 = OpCompositeConstruct %v4int %33 %33 %33 %33
 OpStore %i4 %37
 %39 = OpCompositeConstruct %v2int %33 %33
-%40 = OpCompositeExtract %int %39 0
-%41 = OpCompositeExtract %int %39 1
-%43 = OpCompositeConstruct %v4int %40 %41 %int_0 %int_1
+%41 = OpCompositeConstruct %v4int %33 %33 %int_0 %int_1
+OpStore %i4 %41
+%42 = OpCompositeConstruct %v4int %int_0 %33 %int_1 %int_0
+OpStore %i4 %42
+%43 = OpCompositeConstruct %v4int %int_0 %33 %int_0 %33
 OpStore %i4 %43
-%44 = OpCompositeConstruct %v4int %int_0 %33 %int_1 %int_0
-OpStore %i4 %44
-%45 = OpCompositeConstruct %v4int %int_0 %33 %int_0 %33
-OpStore %i4 %45
-%46 = OpConvertSToF %float %int_0
-%47 = OpCompositeExtract %int %45 1
-%48 = OpConvertSToF %float %47
-%49 = OpCompositeExtract %int %45 2
-%50 = OpConvertSToF %float %49
-%51 = OpCompositeExtract %int %45 3
-%52 = OpConvertSToF %float %51
-%53 = OpCompositeConstruct %v4float %46 %48 %50 %52
-OpReturnValue %53
+%44 = OpConvertSToF %float %int_0
+%45 = OpConvertSToF %float %33
+%46 = OpCompositeConstruct %v4float %44 %45 %44 %45
+OpReturnValue %46
 OpFunctionEnd

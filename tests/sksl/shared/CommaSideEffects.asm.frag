@@ -127,8 +127,8 @@ OpStore %c %54
 OpStore %d %55
 %57 = OpAccessChain %_ptr_Uniform_v4float %11 %int_2
 %58 = OpLoad %v4float %57
-%59 = OpFOrdEqual %v4bool %52 %58
-%61 = OpAll %bool %59
+%60 = OpFOrdEqual %v4bool %52 %58
+%61 = OpAll %bool %60
 OpSelectionMerge %63 None
 OpBranchConditional %61 %62 %63
 %62 = OpLabel
