@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "196a6829_9d8f65b4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-04-15T13:24:26Z",
+      "side": 1,
+      "message": "Strangely I got Android Canary build failures on another CL related to a use of GrMipMapped that I hadn\u0027t changed. Anyway, that prompted me to knock out the remaining internal  uses of the type alias.\n\nBTW, I notice we now have skgpu::graphite:Mipmapped (and Protected and maybe others). Should we be putting things like that in skgpu:: and sharing? I can\u0027t imagine them ever diverging and clients wouldn\u0027t have to type graphite:: every time they use it. We could always have using GrMipmapped \u003d skgpu::graphite so we don\u0027t need to rewrite all the existing clients.",
+      "revId": "489f8921ec6c0c099b0949e97ff389834f56a8b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
