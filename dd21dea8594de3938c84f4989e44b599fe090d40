@@ -22,6 +22,30 @@
       },
       "revId": "dd21dea8594de3938c84f4989e44b599fe090d40",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "83828639_4d7f66a8",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 768,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-15T14:17:01Z",
+      "side": 1,
+      "message": "Re OpTypeMatrix. Based on the spec: https://www.khronos.org/registry/SPIR-V/specs/unified1/SPIRV.html#:~:text\u003dOpCompositeConstruct\n\n\"... top-level members/elements/components/columns have the same type as the types of the operands, with one exception. The exception is that for constructing a vector, the operands may also be vectors with the same component type as the Result Type component type.\"\n\nRe structs, OpCompositeExtract is allowed, and we use it in our implementation of `writeStructComparison` (but not in `FieldAccess` since that wants an lvalue/pointer). I think this is working as expected (one struct field \u003d one component).",
+      "parentUuid": "152a0e4e_e9aef5b9",
+      "range": {
+        "startLine": 767,
+        "startChar": 0,
+        "endLine": 768,
+        "endChar": 69
+      },
+      "revId": "dd21dea8594de3938c84f4989e44b599fe090d40",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
