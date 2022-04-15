@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "10cd7f82_06a3c8ce",
+        "filename": "src/gpu/ganesh/GrProxyProvider.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 287,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-04-15T20:23:09Z",
+      "side": 1,
+      "message": "This needs to be renamed to `mipmapped`",
+      "range": {
+        "startLine": 287,
+        "startChar": 50,
+        "endLine": 287,
+        "endChar": 59
+      },
+      "revId": "84e2586f153f840cb5399b05e12d4ac6b2475a27",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
