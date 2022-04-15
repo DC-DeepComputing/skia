@@ -62,9 +62,20 @@ SkShaderBase::totalLocalMatrix(const SkMatrix* preLocalMatrix) const {
     return m;
 }
 
+static void print_mat(const char* label, const SkMatrix& m) {
+    SkDebugf("mat: %s\n", label);
+    SkDebugf("%.2f %.2f %.2f\n", m[0], m[1], m[2]);
+    SkDebugf("%.2f %.2f %.2f\n", m[3], m[4], m[5]);
+    SkDebugf("%.2f %.2f %.2f\n", m[6], m[7], m[8]);
+}
+
 bool SkShaderBase::computeTotalInverse(const SkMatrix& ctm,
                                        const SkMatrix* outerLocalMatrix,
                                        SkMatrix* totalInverse) const {
+//    print_mat("ctm", ctm);
+//    print_mat("outerLocal", outerLocalMatrix ? *outerLocalMatrix : SkMatrix::I());
+//    print_mat("local", fLocalMatrix);
+
     return SkMatrix::Concat(ctm, *this->totalLocalMatrix(outerLocalMatrix)).invert(totalInverse);
 }
 

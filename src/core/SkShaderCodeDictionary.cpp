@@ -235,11 +235,11 @@ using DataPayloadField = SkPaintParamsKey::DataPayloadField;
 // The default glue code just calls a helper function with the signature:
 //    half4 fStaticFunctionName(/* all uniforms as parameters */);
 // and stores the result in a variable named "resultName".
-std::string GenerateDefaultGlueCode(const std::string& resultName,
+std::string GenerateDefaultGlueCode(const std::string &resultName,
                                     int entryIndex,
-                                    const SkPaintParamsKey::BlockReader& reader,
-                                    const std::string& priorStageOutputName,
-                                    const std::vector<std::string>& childNames,
+                                    const SkPaintParamsKey::BlockReader &reader,
+                                    const std::string &priorStageOutputName,
+                                    const std::vector<std::string> &childNames,
                                     int indent) {
     SkASSERT(childNames.empty());
 
@@ -252,7 +252,7 @@ std::string GenerateDefaultGlueCode(const std::string& resultName,
     for (size_t i = 0; i < reader.entry()->fUniforms.size(); ++i) {
         // The uniform names are mangled w/ the entry's index as a suffix
         result += reader.entry()->getMangledUniformName(i, entryIndex);
-        if (i+1 < reader.entry()->fUniforms.size()) {
+        if (i + 1 < reader.entry()->fUniforms.size()) {
             result += ", ";
         }
     }
@@ -264,7 +264,7 @@ std::string GenerateDefaultGlueCode(const std::string& resultName,
 //--------------------------------------------------------------------------------------------------
 static constexpr int kNumLinearGrad4Fields = 1;
 static constexpr DataPayloadField kLinearGrad4Fields[kNumLinearGrad4Fields] = {
-        { "tilemode", SkPaintParamsKey::DataPayloadType::kByte, 1 }
+        {"tilemode", SkPaintParamsKey::DataPayloadType::kByte, 1}
 };
 
 static constexpr int kFourStopGradient = 4;
@@ -274,28 +274,30 @@ static constexpr int kFourStopGradient = 4;
 //   kMaxStops offsets
 //   2 points
 //   2 radii
-static constexpr int kNumGradientUniforms = 7;
+static constexpr int kNumGradientUniforms = 8;
 static constexpr SkUniform kGradientUniforms[kNumGradientUniforms] = {
-        { "colors",  SkSLType::kFloat4, kFourStopGradient },
-        { "offsets", SkSLType::kFloat, kFourStopGradient },
-        { "point0",  SkSLType::kFloat2 },
-        { "point1",  SkSLType::kFloat2 },
-        { "radius0", SkSLType::kFloat },
-        { "radius1", SkSLType::kFloat },
-        { "padding", SkSLType::kFloat2 } // TODO: add automatic uniform padding
+        {"dev2local", SkSLType::kFloat4x4},
+        {"colors",    SkSLType::kFloat4, kFourStopGradient},
+        {"offsets",   SkSLType::kFloat,  kFourStopGradient},
+        {"point0",    SkSLType::kFloat2},
+        {"point1",    SkSLType::kFloat2},
+        {"radius0",   SkSLType::kFloat},
+        {"radius1",   SkSLType::kFloat},
+        {"padding",   SkSLType::kFloat2} // TODO: add automatic uniform padding
 };
 
 static const char *kLinearGradient4Name = "linear_grad_4_shader";
 static const char *kLinearGradient4SkSL =
         // TODO: This should use local coords
-        "half4 linear_grad_4_shader(float4 colorsParam[4],\n"
+        "half4 linear_grad_4_shader(float4x4 dev2local,\n"
+        "                           float4 colorsParam[4],\n"
         "                           float offsetsParam[4],\n"
         "                           float2 point0Param,\n"
         "                           float2 point1Param,\n"
         "                           float radius0Param,\n"
         "                           float radius1Param,\n"
         "                           float2 padding) {\n"
-        "    float2 pos = sk_FragCoord.xy;\n"
+        "    float2 pos = (dev2local * sk_FragCoord).xy;\n"
         "    float2 delta = point1Param - point0Param;\n"
         "    float2 pt = pos - point0Param;\n"
         "    float t = dot(pt, delta) / dot(delta, delta);\n"
@@ -315,42 +317,72 @@ static const char *kLinearGradient4SkSL =
 //--------------------------------------------------------------------------------------------------
 static constexpr int kNumSolidShaderUniforms = 1;
 static constexpr SkUniform kSolidShaderUniforms[kNumSolidShaderUniforms] = {
-        { "color", SkSLType::kFloat4 }
+        {"color", SkSLType::kFloat4}
 };
 
-static const char* kSolidShaderName = "solid_shader";
-static const char* kSolidShaderSkSL =
+static const char *kSolidShaderName = "solid_shader";
+static const char *kSolidShaderSkSL =
         "half4 solid_shader(float4 colorParam) {\n"
         "    return half4(colorParam);\n"
         "}\n";
 
 //--------------------------------------------------------------------------------------------------
-static constexpr int kNumImageShaderUniforms = 1;
+static constexpr int kNumImageShaderUniforms = 5;
 static constexpr SkUniform kImageShaderUniforms[kNumImageShaderUniforms] = {
-        { "subset",  SkSLType::kFloat4 },
+        {"subset",    SkSLType::kFloat4},
+        {"tilemodeX", SkSLType::kInt},
+        {"tilemodeY", SkSLType::kInt},
+        {"pad1",      SkSLType::kInt}, // TODO: add automatic uniform padding
+        {"pad2",      SkSLType::kInt},
 };
 
 static constexpr int kNumImageShaderTexturesAndSamplers = 1;
 static constexpr SkTextureAndSampler kISTexturesAndSamplers[kNumImageShaderTexturesAndSamplers] = {
-        { "sampler" },
+        {"sampler"},
 };
 
-static const char* kImageShaderName = "image_shader";
-static const char* kImageShaderSkSL =
-        "half4 image_shader(float4 subset) {\n"
-        "    return half4(1, 0, 0, 1);\n"
+static_assert(0 == static_cast<int>(SkTileMode::kClamp),  "ImageShader code depends on SkTileMode");
+static_assert(1 == static_cast<int>(SkTileMode::kRepeat), "ImageShader code depends on SkTileMode");
+static_assert(2 == static_cast<int>(SkTileMode::kMirror), "ImageShader code depends on SkTileMode");
+static_assert(3 == static_cast<int>(SkTileMode::kDecal),  "ImageShader code depends on SkTileMode");
+
+static const char *kImageShaderName = "compute_coords";
+static const char *kImageShaderSkSL =
+        "const int kClamp         = 0;\n"
+        "const int kRepeat        = 1;\n"
+        "const int kMirrorRepeat  = 2;\n"
+        "const int kClampToBorder = 3;\n"
+        "\n"
+        "float tile(int tm, float f, float origin, float length) {\n"
+        "    if (tm == kClamp) {\n"
+        "        return clamp(f, origin, origin+length) / length;"
+        "    } else if (tm == kRepeat) {\n"
+        "        return mod(f - origin, length) / length;\n"
+        "    } else if (tm == kMirrorRepeat) {\n"
+        "        // for now, just repeat\n"
+        "        return mod(f - origin, length) / length;\n"
+        "    } else { // kClampToBorder\n"
+        "        // For now, just clamp\n"
+        "        return clamp(f, origin, origin+length) / length;"
+        "    }\n"
+        "}\n"
+        "\n"
+        "float2 compute_coords(float4 subset, int tmX, int tmY) {\n"
+        "    float2 subsetWH = (subset.zw - subset.xy);\n"
+        "    float2 coords = float2(tile(tmX, sk_FragCoord.x, subset.x, subsetWH.x),\n"
+        "                           tile(tmY, sk_FragCoord.y, subset.y, subsetWH.y));\n"
+        "    return coords;\n"
         "}\n";
 
-static constexpr int kNumImageShaderFields = 2;
+static constexpr int kNumImageShaderFields = 1;
 static constexpr DataPayloadField kImageShaderFields[kNumImageShaderFields] = {
-        { "tilemodeX", SkPaintParamsKey::DataPayloadType::kByte, 1 },
-        { "tilemodeY", SkPaintParamsKey::DataPayloadType::kByte, 1 }
+        { "borderColor", SkPaintParamsKey::DataPayloadType::kFloat4, 1 }
 };
 
 // This is _not_ what we want to do.
-// Ideally the "image_shader" code snippet could just take texture and
-// sampler references. That is going to take more time to figure out though so,
-// for the sake of expediency, we're generating custom code.
+// Ideally the "compute_coords" code snippet could just take texture and
+// sampler references and do everything. That is going to take more time to figure out though so,
+// for the sake of expediency, we're generating custom code to do the sampling.
 std::string GenerateImageShaderGlueCode(const std::string& resultName,
                                         int entryIndex,
                                         const SkPaintParamsKey::BlockReader& reader,
@@ -361,11 +393,20 @@ std::string GenerateImageShaderGlueCode(const std::string& resultName,
 
     std::string samplerName = std::string("sampler_") + std::to_string(entryIndex) + "_0";
 
+    // TODO: upload the subset already in XYWH format
+    std::string subsetName = reader.entry()->getMangledUniformName(0, entryIndex);
+    std::string tmXName = reader.entry()->getMangledUniformName(1, entryIndex);
+    std::string tmYName = reader.entry()->getMangledUniformName(2, entryIndex);
+
     std::string result;
+
     add_indent(&result, indent);
-    result += "float2 coords = float2(sk_FragCoord.x/128.0, sk_FragCoord.y/128.0);\n";
-    add_indent(&result, indent);
-    result += "coords = clamp(coords, float2(0.0, 0.0), float2(1.0, 1.0));\n";
+    SkSL::String::appendf(&result,
+                          "float2 coords = %s(%s, %s, %s);",
+                          reader.entry()->fStaticFunctionName,
+                          subsetName.c_str(),
+                          tmXName.c_str(),
+                          tmYName.c_str());
 
     add_indent(&result, indent);
     SkSL::String::appendf(&result,

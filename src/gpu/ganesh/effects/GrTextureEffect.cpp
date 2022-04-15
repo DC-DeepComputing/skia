@@ -441,9 +441,11 @@ void GrTextureEffect::Impl::emitCode(EmitArgs& args) {
                 case ShaderMode::kRepeat_Linear_None:
                     fb->codeAppendf(
                             "subsetCoord.%s = mod(inCoord.%s - %s.%s, %s.%s - %s.%s) + %s.%s;",
-                            coordSwizzle, coordSwizzle, subsetName, subsetStartSwizzle, subsetName,
-                            subsetStopSwizzle, subsetName, subsetStartSwizzle, subsetName,
-                            subsetStartSwizzle);
+                            coordSwizzle, coordSwizzle,
+                            subsetName, subsetStartSwizzle,
+                            subsetName, subsetStopSwizzle,
+                            subsetName, subsetStartSwizzle,
+                            subsetName, subsetStartSwizzle);
                     break;
                 case ShaderMode::kRepeat_Nearest_Mipmap:
                 case ShaderMode::kRepeat_Linear_Mipmap:
