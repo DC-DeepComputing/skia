@@ -105,8 +105,7 @@ void GrGlyphVector::packedGlyphIDToGrGlyph(GrStrikeCache* cache) {
 std::tuple<bool, int> GrGlyphVector::regenerateAtlas(int begin, int end,
                                                      GrMaskFormat maskFormat,
                                                      int srcPadding,
-                                                     GrMeshDrawTarget* target,
-                                                     bool bilerpPadding) {
+                                                     GrMeshDrawTarget* target) {
     GrAtlasManager* atlasManager = target->atlasManager();
     GrDeferredUploadTarget* uploadTarget = target->deferredUploadTarget();
 
@@ -134,7 +133,7 @@ std::tuple<bool, int> GrGlyphVector::regenerateAtlas(int begin, int end,
                 const SkGlyph& skGlyph = *metricsAndImages.glyph(grGlyph->fPackedID);
                 auto code = atlasManager->addGlyphToAtlas(
                         skGlyph, grGlyph, srcPadding, target->resourceProvider(),
-                        uploadTarget, bilerpPadding);
+                        uploadTarget);
                 if (code != GrDrawOpAtlas::ErrorCode::kSucceeded) {
                     success = code != GrDrawOpAtlas::ErrorCode::kError;
                     break;
