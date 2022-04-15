@@ -54,7 +54,7 @@ OpDecorate %82 RelaxedPrecision
 OpDecorate %85 RelaxedPrecision
 OpDecorate %86 RelaxedPrecision
 OpDecorate %87 RelaxedPrecision
-OpDecorate %89 RelaxedPrecision
+OpDecorate %90 RelaxedPrecision
 OpDecorate %91 RelaxedPrecision
 OpDecorate %94 RelaxedPrecision
 OpDecorate %97 RelaxedPrecision
@@ -184,8 +184,8 @@ OpFunctionEnd
 %86 = OpFAdd %float %82 %85
 %87 = OpLoad %v4bool %47
 %88 = OpCompositeExtract %bool %87 0
-%89 = OpSelect %float %88 %float_1 %float_0
-%91 = OpFAdd %float %86 %89
+%90 = OpSelect %float %88 %float_1 %float_0
+%91 = OpFAdd %float %86 %90
 %92 = OpLoad %v2float %48
 %93 = OpCompositeExtract %float %92 0
 %94 = OpFAdd %float %91 %93

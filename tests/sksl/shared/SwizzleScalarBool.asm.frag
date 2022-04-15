@@ -21,7 +21,7 @@ OpDecorate %_UniformBuffer Block
 OpDecorate %10 Binding 0
 OpDecorate %10 DescriptorSet 0
 OpDecorate %32 RelaxedPrecision
-OpDecorate %47 RelaxedPrecision
+OpDecorate %48 RelaxedPrecision
 OpDecorate %50 RelaxedPrecision
 OpDecorate %52 RelaxedPrecision
 OpDecorate %54 RelaxedPrecision
@@ -81,13 +81,13 @@ OpStore %b4 %44
 OpStore %b4 %45
 %46 = OpCompositeConstruct %v4bool %false %33 %false %33
 OpStore %b4 %46
-%47 = OpSelect %float %false %float_1 %float_0
+%48 = OpSelect %float %false %float_1 %float_0
 %49 = OpCompositeExtract %bool %46 1
 %50 = OpSelect %float %49 %float_1 %float_0
 %51 = OpCompositeExtract %bool %46 2
 %52 = OpSelect %float %51 %float_1 %float_0
 %53 = OpCompositeExtract %bool %46 3
 %54 = OpSelect %float %53 %float_1 %float_0
-%55 = OpCompositeConstruct %v4float %47 %50 %52 %54
+%55 = OpCompositeConstruct %v4float %48 %50 %52 %54
 OpReturnValue %55
 OpFunctionEnd

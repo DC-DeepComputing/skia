@@ -179,8 +179,8 @@ OpStore %112 %111
 %113 = OpLoad %int %sk_VertexID
 %114 = OpSMod %int %113 %int_2
 %115 = OpIEqual %bool %int_0 %114
-%116 = OpSelect %int %115 %int_n1 %int_1
-%118 = OpConvertSToF %float %116
+%117 = OpSelect %int %115 %int_n1 %int_1
+%118 = OpConvertSToF %float %117
 %119 = OpAccessChain %_ptr_Output_float %vcoord_Stage0 %int_0
 OpStore %119 %118
 %121 = OpLoad %int %sk_VertexID

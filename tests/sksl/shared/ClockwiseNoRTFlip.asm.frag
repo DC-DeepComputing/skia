@@ -28,8 +28,8 @@ OpDecorate %19 RelaxedPrecision
 %main = OpFunction %void None %11
 %12 = OpLabel
 %13 = OpLoad %bool %sk_Clockwise
-%14 = OpSelect %int %13 %int_1 %int_n1
-%18 = OpConvertSToF %float %14
+%17 = OpSelect %int %13 %int_1 %int_n1
+%18 = OpConvertSToF %float %17
 %19 = OpCompositeConstruct %v4float %18 %18 %18 %18
 OpStore %sk_FragColor %19
 OpReturn

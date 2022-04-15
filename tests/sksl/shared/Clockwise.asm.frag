@@ -60,8 +60,8 @@ OpStore %25 %32
 OpBranch %29
 %29 = OpLabel
 %33 = OpLoad %bool %25
-%34 = OpSelect %int %33 %int_1 %int_n1
-%37 = OpConvertSToF %float %34
+%36 = OpSelect %int %33 %int_1 %int_n1
+%37 = OpConvertSToF %float %36
 %38 = OpCompositeConstruct %v4float %37 %37 %37 %37
 OpStore %sk_FragColor %38
 OpReturn
