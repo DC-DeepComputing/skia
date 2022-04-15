@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "32ec0f63_e43864e7",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 2134,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-04-15T22:10:50Z",
+      "side": 1,
+      "message": "Instead of clearing the cache below, could this emit a store here without touching the cache?",
+      "range": {
+        "startLine": 2134,
+        "startChar": 8,
+        "endLine": 2134,
+        "endChar": 63
+      },
+      "revId": "ada7c9dbc62c6c2ae4957e05b6d354d6ac3e06de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1fe284e4_63a19da6",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 3633,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-04-15T22:10:50Z",
+      "side": 1,
+      "message": "Would it be worth implementing a scheme where SPIRVCodeGenerator tracks the SpvId\u0027s on a per block basis and clear only the IDs that go out of scope?",
+      "range": {
+        "startLine": 3633,
+        "startChar": 4,
+        "endLine": 3633,
+        "endChar": 24
+      },
+      "revId": "ada7c9dbc62c6c2ae4957e05b6d354d6ac3e06de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
