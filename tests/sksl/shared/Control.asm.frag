@@ -23,7 +23,6 @@ OpDecorate %40 RelaxedPrecision
 OpDecorate %49 RelaxedPrecision
 OpDecorate %52 RelaxedPrecision
 OpDecorate %53 RelaxedPrecision
-OpDecorate %54 RelaxedPrecision
 %float = OpTypeFloat 32
 %v4float = OpTypeVector %float 4
 %_ptr_Output_v4float = OpTypePointer Output %v4float
@@ -97,46 +96,45 @@ OpBranch %46
 %46 = OpLabel
 OpBranch %47
 %47 = OpLabel
-%53 = OpLoad %v4float %sk_FragColor
-%54 = OpCompositeExtract %float %53 0
-%55 = OpFOrdLessThan %bool %54 %float_0_75
-OpBranchConditional %55 %44 %48
+%53 = OpCompositeExtract %float %52 0
+%54 = OpFOrdLessThan %bool %53 %float_0_75
+OpBranchConditional %54 %44 %48
 %48 = OpLabel
 OpStore %i_0 %int_0
+OpBranch %56
+%56 = OpLabel
+OpLoopMerge %60 %59 None
 OpBranch %57
 %57 = OpLabel
-OpLoopMerge %61 %60 None
-OpBranch %58
+%61 = OpLoad %int %i_0
+%62 = OpSLessThan %bool %61 %int_10
+OpBranchConditional %62 %58 %60
 %58 = OpLabel
-%62 = OpLoad %int %i_0
-%63 = OpSLessThan %bool %62 %int_10
-OpBranchConditional %63 %59 %61
-%59 = OpLabel
-%64 = OpLoad %int %i_0
-%66 = OpSMod %int %64 %int_2
-%67 = OpIEqual %bool %66 %int_1
-OpSelectionMerge %70 None
-OpBranchConditional %67 %68 %69
+%63 = OpLoad %int %i_0
+%65 = OpSMod %int %63 %int_2
+%66 = OpIEqual %bool %65 %int_1
+OpSelectionMerge %69 None
+OpBranchConditional %66 %67 %68
+%67 = OpLabel
+OpBranch %60
 %68 = OpLabel
-OpBranch %61
-%69 = OpLabel
-%71 = OpLoad %int %i_0
-%73 = OpSGreaterThan %bool %71 %int_100
-OpSelectionMerge %76 None
-OpBranchConditional %73 %74 %75
-%74 = OpLabel
+%70 = OpLoad %int %i_0
+%72 = OpSGreaterThan %bool %70 %int_100
+OpSelectionMerge %75 None
+OpBranchConditional %72 %73 %74
+%73 = OpLabel
 OpReturn
+%74 = OpLabel
+OpBranch %59
 %75 = OpLabel
-OpBranch %60
-%76 = OpLabel
-OpBranch %70
-%70 = OpLabel
-OpBranch %60
+OpBranch %69
+%69 = OpLabel
+OpBranch %59
+%59 = OpLabel
+%76 = OpLoad %int %i_0
+%77 = OpIAdd %int %76 %int_1
+OpStore %i_0 %77
+OpBranch %56
 %60 = OpLabel
-%77 = OpLoad %int %i_0
-%78 = OpIAdd %int %77 %int_1
-OpStore %i_0 %78
-OpBranch %57
-%61 = OpLabel
 OpReturn
 OpFunctionEnd

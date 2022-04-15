@@ -77,8 +77,8 @@ OpDecorate %vcoord_Stage0 NoPerspective
 %t = OpVariable %_ptr_Function_float Function
 %b = OpVariable %_ptr_Function_float Function
 %vertexpos = OpVariable %_ptr_Function_v2float Function
-%109 = OpVariable %_ptr_Function_float Function
-%123 = OpVariable %_ptr_Function_float Function
+%105 = OpVariable %_ptr_Function_float Function
+%119 = OpVariable %_ptr_Function_float Function
 %20 = OpLoad %int %sk_InstanceID
 %22 = OpSMod %int %20 %int_200
 OpStore %x %22
@@ -134,87 +134,83 @@ OpStore %outset %76
 %78 = OpLoad %int %ileft
 %79 = OpConvertSToF %float %78
 %81 = OpFMul %float %79 %float_0_0625
-%82 = OpLoad %float %outset
-%83 = OpFSub %float %81 %82
-OpStore %l %83
-%85 = OpLoad %int %iright
-%86 = OpConvertSToF %float %85
-%87 = OpFMul %float %86 %float_0_0625
-%88 = OpLoad %float %outset
-%89 = OpFAdd %float %87 %88
-OpStore %r %89
-%91 = OpLoad %int %itop
-%92 = OpConvertSToF %float %91
-%93 = OpFMul %float %92 %float_0_0625
-%94 = OpLoad %float %outset
-%95 = OpFSub %float %93 %94
-OpStore %t %95
-%97 = OpLoad %int %ibot
-%98 = OpConvertSToF %float %97
-%99 = OpFMul %float %98 %float_0_0625
-%100 = OpLoad %float %outset
-%101 = OpFAdd %float %99 %100
-OpStore %b %101
-%104 = OpLoad %int %x
-%105 = OpConvertSToF %float %104
-%106 = OpLoad %int %sk_VertexID
-%107 = OpSMod %int %106 %int_2
-%108 = OpIEqual %bool %int_0 %107
-OpSelectionMerge %112 None
-OpBranchConditional %108 %110 %111
-%110 = OpLabel
-%113 = OpLoad %float %l
-OpStore %109 %113
-OpBranch %112
-%111 = OpLabel
-%114 = OpLoad %float %r
-OpStore %109 %114
-OpBranch %112
-%112 = OpLabel
-%115 = OpLoad %float %109
-%116 = OpFAdd %float %105 %115
-%117 = OpAccessChain %_ptr_Function_float %vertexpos %int_0
-OpStore %117 %116
-%118 = OpLoad %int %y
-%119 = OpConvertSToF %float %118
-%120 = OpLoad %int %sk_VertexID
-%121 = OpSDiv %int %120 %int_2
-%122 = OpIEqual %bool %int_0 %121
-OpSelectionMerge %126 None
-OpBranchConditional %122 %124 %125
-%124 = OpLabel
-%127 = OpLoad %float %t
-OpStore %123 %127
-OpBranch %126
-%125 = OpLabel
-%128 = OpLoad %float %b
-OpStore %123 %128
-OpBranch %126
-%126 = OpLabel
-%129 = OpLoad %float %123
-%130 = OpFAdd %float %119 %129
-%131 = OpAccessChain %_ptr_Function_float %vertexpos %int_1
-OpStore %131 %130
-%132 = OpLoad %int %sk_VertexID
-%133 = OpSMod %int %132 %int_2
-%134 = OpIEqual %bool %int_0 %133
-%135 = OpSelect %int %134 %int_n1 %int_1
-%137 = OpConvertSToF %float %135
-%138 = OpAccessChain %_ptr_Output_float %vcoord_Stage0 %int_0
-OpStore %138 %137
-%140 = OpLoad %int %sk_VertexID
-%141 = OpSDiv %int %140 %int_2
-%142 = OpIEqual %bool %int_0 %141
-%143 = OpSelect %int %142 %int_n1 %int_1
-%144 = OpConvertSToF %float %143
-%145 = OpAccessChain %_ptr_Output_float %vcoord_Stage0 %int_1
-OpStore %145 %144
-%146 = OpLoad %v2float %vertexpos
-%147 = OpCompositeExtract %float %146 0
-%148 = OpLoad %v2float %vertexpos
-%149 = OpCompositeExtract %float %148 1
-%152 = OpCompositeConstruct %v4float %147 %149 %float_0 %float_1
-%153 = OpAccessChain %_ptr_Output_v4float %3 %int_0
-OpStore %153 %152
+%82 = OpFSub %float %81 %76
+OpStore %l %82
+%84 = OpLoad %int %iright
+%85 = OpConvertSToF %float %84
+%86 = OpFMul %float %85 %float_0_0625
+%87 = OpFAdd %float %86 %76
+OpStore %r %87
+%89 = OpLoad %int %itop
+%90 = OpConvertSToF %float %89
+%91 = OpFMul %float %90 %float_0_0625
+%92 = OpFSub %float %91 %76
+OpStore %t %92
+%94 = OpLoad %int %ibot
+%95 = OpConvertSToF %float %94
+%96 = OpFMul %float %95 %float_0_0625
+%97 = OpFAdd %float %96 %76
+OpStore %b %97
+%100 = OpLoad %int %x
+%101 = OpConvertSToF %float %100
+%102 = OpLoad %int %sk_VertexID
+%103 = OpSMod %int %102 %int_2
+%104 = OpIEqual %bool %int_0 %103
+OpSelectionMerge %108 None
+OpBranchConditional %104 %106 %107
+%106 = OpLabel
+%109 = OpLoad %float %l
+OpStore %105 %109
+OpBranch %108
+%107 = OpLabel
+%110 = OpLoad %float %r
+OpStore %105 %110
+OpBranch %108
+%108 = OpLabel
+%111 = OpLoad %float %105
+%112 = OpFAdd %float %101 %111
+%113 = OpAccessChain %_ptr_Function_float %vertexpos %int_0
+OpStore %113 %112
+%114 = OpLoad %int %y
+%115 = OpConvertSToF %float %114
+%116 = OpLoad %int %sk_VertexID
+%117 = OpSDiv %int %116 %int_2
+%118 = OpIEqual %bool %int_0 %117
+OpSelectionMerge %122 None
+OpBranchConditional %118 %120 %121
+%120 = OpLabel
+%123 = OpLoad %float %t
+OpStore %119 %123
+OpBranch %122
+%121 = OpLabel
+%124 = OpLoad %float %b
+OpStore %119 %124
+OpBranch %122
+%122 = OpLabel
+%125 = OpLoad %float %119
+%126 = OpFAdd %float %115 %125
+%127 = OpAccessChain %_ptr_Function_float %vertexpos %int_1
+OpStore %127 %126
+%128 = OpLoad %int %sk_VertexID
+%129 = OpSMod %int %128 %int_2
+%130 = OpIEqual %bool %int_0 %129
+%131 = OpSelect %int %130 %int_n1 %int_1
+%133 = OpConvertSToF %float %131
+%134 = OpAccessChain %_ptr_Output_float %vcoord_Stage0 %int_0
+OpStore %134 %133
+%136 = OpLoad %int %sk_VertexID
+%137 = OpSDiv %int %136 %int_2
+%138 = OpIEqual %bool %int_0 %137
+%139 = OpSelect %int %138 %int_n1 %int_1
+%140 = OpConvertSToF %float %139
+%141 = OpAccessChain %_ptr_Output_float %vcoord_Stage0 %int_1
+OpStore %141 %140
+%142 = OpLoad %v2float %vertexpos
+%143 = OpCompositeExtract %float %142 0
+%144 = OpLoad %v2float %vertexpos
+%145 = OpCompositeExtract %float %144 1
+%148 = OpCompositeConstruct %v4float %143 %145 %float_0 %float_1
+%149 = OpAccessChain %_ptr_Output_v4float %3 %int_0
+OpStore %149 %148
 OpReturn
 OpFunctionEnd

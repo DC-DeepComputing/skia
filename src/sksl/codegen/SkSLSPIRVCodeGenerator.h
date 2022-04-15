@@ -446,6 +446,9 @@ private:
     SpvId writeOpCompositeExtract(const Type& type, SpvId base, int component, OutputStream& out);
     SpvId writeOpCompositeExtract(const Type& type, SpvId base, int componentA, int componentB,
                                   OutputStream& out);
+    SpvId writeOpLoad(SpvId type, Precision precision, SpvId pointer, OutputStream& out);
+    void writeOpStore(SpvId type, Precision precision, SpvId pointer, SpvId value,
+                      OutputStream& out);
 
     // Converts the provided SpvId(s) into an array of scalar OpConstants, if it can be done.
     bool toConstants(SpvId value, SkTArray<SpvId>* constants);
@@ -507,8 +510,9 @@ private:
     // (by detecting an Instruction we've already issued and reusing the SpvId), and to introspect
     // and simplify code we've already emitted  (by taking a SpvId from an Instruction and following
     // it back to its source).
-    SkTHashMap<Instruction, SpvId, Instruction::Hash> fOpCache;  // maps instruction -> SpvId
-    SkTHashMap<SpvId, Instruction> fSpvIdCache;                  // maps SpvId -> instruction
+    SkTHashMap<Instruction, SpvId, Instruction::Hash> fOpCache;   // maps instruction -> SpvId
+    SkTHashMap<SpvId, Instruction> fSpvIdCache;                   // maps SpvId -> instruction
+    SkTHashMap<Instruction, SpvId, Instruction::Hash> fLoadCache; // maps OpLoad -> SpvId
 
     // "Reachable" ops are instructions which can safely be accessed from the current block.
     // For instance, if our SPIR-V contains `%3 = OpFAdd %1 %2`, we would be able to access and

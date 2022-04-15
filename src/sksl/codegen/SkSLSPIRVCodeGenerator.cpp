@@ -544,8 +544,14 @@ SpvId SPIRVCodeGenerator::writeInstruction(SpvOp_ opCode,
                                            OutputStream& out) {
     // If this instruction exists in our op cache, return the cached SpvId.
     Instruction key = BuildInstructionKey(opCode, words);
-    if (SpvId* cachedOp = fOpCache.find(key)) {
-        return *cachedOp;
+    if (opCode == SpvOpLoad) {
+        if (SpvId* cachedOp = fLoadCache.find(key)) {
+            return *cachedOp;
+        }
+    } else {
+        if (SpvId* cachedOp = fOpCache.find(key)) {
+            return *cachedOp;
+        }
     }
 
     SpvId result = NA;
@@ -566,13 +572,16 @@ SpvId SPIRVCodeGenerator::writeInstruction(SpvOp_ opCode,
         case Word::Kind::kRelaxedPrecisionResult:
             // Consume a new SpvId and cache the instruction.
             result = fIdCount++;
-            fOpCache.set(key, result);
-            fSpvIdCache.set(result, key);
+            if (opCode != SpvOpLoad) {
+                fOpCache.set(key, result);
+                fSpvIdCache.set(result, key);
 
-            // Globally-reachable ops are not subject to the whims of flow control.
-            if (!is_globally_reachable_op(opCode)) {
-                fReachableOps.push_back(result);
+                // Globally-reachable ops are not subject to the whims of flow control.
+                if (!is_globally_reachable_op(opCode)) {
+                    fReachableOps.push_back(result);
+                }
             }
+
             // If the result is relaxed-precision, add the requisite decoration.
             if (key.fResultKind == Word::Kind::kRelaxedPrecisionResult) {
                 this->writeInstruction(SpvOpDecorate, result, SpvDecorationRelaxedPrecision,
@@ -709,6 +718,29 @@ SpvId SPIRVCodeGenerator::writeOpCompositeConstruct(const Type& type,
     return this->writeInstruction(SpvOpCompositeConstruct, words, out);
 }
 
+SpvId SPIRVCodeGenerator::writeOpLoad(SpvId type,
+                                      Precision precision,
+                                      SpvId pointer,
+                                      OutputStream& out) {
+    Word result = (precision == Precision::kRelaxed) ? Word::RelaxedResult() : Word::Result();
+    return this->writeInstruction(SpvOpLoad, {type, result, pointer}, out);
+}
+
+void SPIRVCodeGenerator::writeOpStore(SpvId type,
+                                      Precision precision,
+                                      SpvId pointer,
+                                      SpvId value,
+                                      OutputStream& out) {
+    // We don't want to cache OpStores at all; call the uncached writeInstruction directly.
+    this->writeInstruction(SpvOpStore, pointer, value, out);
+
+    // Insert a matching "OpLoad" in the load cache. A writeOpLoad with these parameters will return
+    // the stored value as-is.
+    Word result = (precision == Precision::kRelaxed) ? Word::RelaxedResult() : Word::Result();
+    Instruction key = BuildInstructionKey(SpvOpLoad, {type, result, pointer});
+    fLoadCache.set(key, value);
+}
+
 SPIRVCodeGenerator::Instruction* SPIRVCodeGenerator::resultTypeForInstruction(
         const Instruction& instr) {
     // This list should contain every op that we cache that has a result and result-type.
@@ -723,6 +755,7 @@ SPIRVCodeGenerator::Instruction* SPIRVCodeGenerator::resultTypeForInstruction(
         case SpvOpConstantComposite:
         case SpvOpCompositeConstruct:
         case SpvOpCompositeExtract:
+        case SpvOpLoad:
             resultTypeWord = 0;
             break;
 
@@ -2119,13 +2152,11 @@ public:
     }
 
     SpvId load(OutputStream& out) override {
-        SpvId result = fGen.nextId(fPrecision);
-        fGen.writeInstruction(SpvOpLoad, fType, result, fPointer, out);
-        return result;
+        return fGen.writeOpLoad(fType, fPrecision, fPointer, out);
     }
 
     void store(SpvId value, OutputStream& out) override {
-        fGen.writeInstruction(SpvOpStore, fPointer, value, out);
+        fGen.writeOpStore(fType, fPrecision, fPointer, value, out);
     }
 
 private:
@@ -3476,6 +3507,9 @@ void SPIRVCodeGenerator::pruneReachableOps(size_t numReachableOps) {
 
         fReachableOps.pop_back();
     }
+
+    // TODO(johnstiles): track load-ops across blocks better
+    fLoadCache.reset();
 }
 
 void SPIRVCodeGenerator::writeIfStatement(const IfStatement& stmt, OutputStream& out) {

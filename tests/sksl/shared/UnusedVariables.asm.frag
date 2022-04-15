@@ -15,11 +15,11 @@ OpDecorate %sk_FragColor RelaxedPrecision
 OpDecorate %sk_FragColor Location 0
 OpDecorate %sk_FragColor Index 0
 OpDecorate %sk_Clockwise BuiltIn FrontFacing
-OpDecorate %51 RelaxedPrecision
-OpDecorate %54 RelaxedPrecision
+OpDecorate %50 RelaxedPrecision
+OpDecorate %52 RelaxedPrecision
+OpDecorate %55 RelaxedPrecision
 OpDecorate %58 RelaxedPrecision
-OpDecorate %62 RelaxedPrecision
-OpDecorate %63 RelaxedPrecision
+OpDecorate %59 RelaxedPrecision
 %float = OpTypeFloat 32
 %v4float = OpTypeVector %float 4
 %_ptr_Output_v4float = OpTypePointer Output %v4float
@@ -86,18 +86,14 @@ OpStore %b %46
 %47 = OpLoad %float %d
 %48 = OpFAdd %float %47 %float_1
 OpStore %d %48
-%49 = OpLoad %float %b
-%50 = OpFOrdEqual %bool %49 %float_2
-%51 = OpSelect %float %50 %float_1 %float_0
-%52 = OpLoad %float %b
-%53 = OpFOrdEqual %bool %52 %float_3
-%54 = OpSelect %float %53 %float_1 %float_0
-%55 = OpLoad %float %d
-%57 = OpFOrdEqual %bool %55 %float_5
+%49 = OpFOrdEqual %bool %46 %float_2
+%50 = OpSelect %float %49 %float_1 %float_0
+%51 = OpFOrdEqual %bool %46 %float_3
+%52 = OpSelect %float %51 %float_1 %float_0
+%54 = OpFOrdEqual %bool %48 %float_5
+%55 = OpSelect %float %54 %float_1 %float_0
+%57 = OpFOrdEqual %bool %48 %float_4
 %58 = OpSelect %float %57 %float_1 %float_0
-%59 = OpLoad %float %d
-%61 = OpFOrdEqual %bool %59 %float_4
-%62 = OpSelect %float %61 %float_1 %float_0
-%63 = OpCompositeConstruct %v4float %51 %54 %58 %62
-OpReturnValue %63
+%59 = OpCompositeConstruct %v4float %50 %52 %55 %58
+OpReturnValue %59
 OpFunctionEnd
