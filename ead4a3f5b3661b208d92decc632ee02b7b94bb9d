@@ -22,6 +22,30 @@
       },
       "revId": "ead4a3f5b3661b208d92decc632ee02b7b94bb9d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0d9d0db7_6729246b",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 336,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-04-15T21:38:12Z",
+      "side": 0,
+      "message": "Ack. There are a few dead function declarations lying around.",
+      "parentUuid": "187c1fb8_705aabb0",
+      "range": {
+        "startLine": 336,
+        "startChar": 10,
+        "endLine": 336,
+        "endChar": 30
+      },
+      "revId": "ead4a3f5b3661b208d92decc632ee02b7b94bb9d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
