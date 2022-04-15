@@ -16,6 +16,23 @@
       "message": "Nicolette, don\u0027t feel like you have to review this (I\u0027m not even sure if you\u0027re an owner yet) but thought it might be an easy one to look at.",
       "revId": "fb03cd6b9e9920c2901716ef7d1523a139f9a285",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a244c7cf_95202b07",
+        "filename": "src/gpu/ganesh/ops/AAHairLinePathRenderer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-04-15T15:59:19Z",
+      "side": 1,
+      "message": "// Add a comment here about the implicit NaN check? Basically a shorter version of your commit comment.",
+      "revId": "fb03cd6b9e9920c2901716ef7d1523a139f9a285",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
