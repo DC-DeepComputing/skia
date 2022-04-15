@@ -276,14 +276,12 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(SkRemoteGlyphCache_StrikeSerialization, repor
     discardableManager->unlockAndDeleteAll();
 }
 
-static void use_padding_options(GrContextOptions* options) {
-    options->fSupportBilerpFromGlyphAtlas = true;
-}
-
-DEF_GPUTEST_FOR_CONTEXTS(SkRemoteGlyphCache_StrikeSerializationSlug,
-                         sk_gpu_test::GrContextFactory::IsRenderingContext,
-                         reporter, ctxInfo, use_padding_options) {
+DEF_GPUTEST_FOR_RENDERING_CONTEXTS(SkRemoteGlyphCache_StrikeSerializationSlug, reporter, ctxInfo) {
     auto dContext = ctxInfo.directContext();
+    // It is only valid to run this when the whole DM run is using Bilerp support.
+    if (!dContext->priv().options().fSupportBilerpFromGlyphAtlas) {
+        return;
+    }
     sk_sp<DiscardableManager> discardableManager = sk_make_sp<DiscardableManager>();
     SkStrikeServer server(discardableManager.get());
     SkStrikeClient client(discardableManager, false);
@@ -320,13 +318,19 @@ DEF_GPUTEST_FOR_CONTEXTS(SkRemoteGlyphCache_StrikeSerializationSlug,
     discardableManager->unlockAndDeleteAll();
 }
 
+static void use_padding_options(GrContextOptions* options) {
+    options->fSupportBilerpFromGlyphAtlas = true;
+}
+
 DEF_GPUTEST_FOR_CONTEXTS(SkRemoteGlyphCache_SlugSerialization,
                          sk_gpu_test::GrContextFactory::IsRenderingContext,
                          reporter, ctxInfo, use_padding_options) {
     auto dContext = ctxInfo.directContext();
+    SkASSERT(dContext->priv().options().fSupportBilerpFromGlyphAtlas);
+
     sk_sp<DiscardableManager> discardableManager = sk_make_sp<DiscardableManager>();
     SkStrikeServer server(discardableManager.get());
-    SkStrikeClient client(discardableManager, false);
+    SkStrikeClient client(discardableManager, true);
     const SkPaint paint;
 
     // Server.
@@ -341,7 +345,9 @@ DEF_GPUTEST_FOR_CONTEXTS(SkRemoteGlyphCache_SlugSerialization,
 
     // Generate strike updates.
     auto srcSlug = GrSlug::ConvertBlob(analysisCanvas.get(), *serverBlob, {0.3f, 0}, paint);
+    REPORTER_ASSERT(reporter, srcSlug != nullptr);
     auto dstSlugData = srcSlug->serialize();
+    REPORTER_ASSERT(reporter, dstSlugData != nullptr);
 
     std::vector<uint8_t> serverStrikeData;
     server.writeStrikeData(&serverStrikeData);
