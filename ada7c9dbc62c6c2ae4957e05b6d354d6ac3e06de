@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8369c74d_326bfaff",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 2134,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-15T23:55:31Z",
+      "side": 1,
+      "message": "Done (Moved cache-reset upwards, and added this example to the comment in hopes of being more clear/explicit.)",
+      "parentUuid": "11bc1683_dc1f2db1",
+      "range": {
+        "startLine": 2134,
+        "startChar": 8,
+        "endLine": 2134,
+        "endChar": 63
+      },
+      "revId": "ada7c9dbc62c6c2ae4957e05b6d354d6ac3e06de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1fe284e4_63a19da6",
