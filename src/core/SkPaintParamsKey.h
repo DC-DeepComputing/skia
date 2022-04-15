@@ -8,6 +8,7 @@
 #ifndef SkPaintParamsKey_DEFINED
 #define SkPaintParamsKey_DEFINED
 
+#include "include/core/SkColor.h"
 #include "include/core/SkSpan.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkTDArray.h"
@@ -42,6 +43,7 @@ public:
 
     enum class DataPayloadType {
         kByte,
+        kFloat4,
     };
 
     // A given snippet's data payload is stored as an SkSpan of DataPayloadFields in the
@@ -174,6 +176,7 @@ public:
     void addByte(uint8_t data) {
         this->addBytes(1, &data);
     }
+    void add(const SkColor4f& color);
 
 #ifdef SK_DEBUG
     // Check that the builder has been reset to its initial state prior to creating a new key.
