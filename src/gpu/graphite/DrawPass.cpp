@@ -372,6 +372,7 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
 
         passBounds.join(draw.fGeometry.clip().drawBounds());
         drawPass->fDepthStencilFlags |= draw.fRenderer.depthStencilFlags();
+        SkDebugf("draw nees msaa: %d\n", draw.fRenderer.requiresMSAA());
         drawPass->fRequiresMSAA |= draw.fRenderer.requiresMSAA();
     }
 
