@@ -276,14 +276,12 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(SkRemoteGlyphCache_StrikeSerialization, repor
     discardableManager->unlockAndDeleteAll();
 }
 
-static void use_padding_options(GrContextOptions* options) {
-    options->fSupportBilerpFromGlyphAtlas = true;
-}
-
-DEF_GPUTEST_FOR_CONTEXTS(SkRemoteGlyphCache_StrikeSerializationSlug,
-                         sk_gpu_test::GrContextFactory::IsRenderingContext,
-                         reporter, ctxInfo, use_padding_options) {
+DEF_GPUTEST_FOR_RENDERING_CONTEXTS(SkRemoteGlyphCache_StrikeSerializationSlug, reporter, ctxInfo) {
     auto dContext = ctxInfo.directContext();
+    // It is only valid to run this when the whole DM run is using Bilerp support.
+    if (!dContext->priv().options().fSupportBilerpFromGlyphAtlas) {
+        return;
+    }
     sk_sp<DiscardableManager> discardableManager = sk_make_sp<DiscardableManager>();
     SkStrikeServer server(discardableManager.get());
     SkStrikeClient client(discardableManager, false);
@@ -320,10 +318,13 @@ DEF_GPUTEST_FOR_CONTEXTS(SkRemoteGlyphCache_StrikeSerializationSlug,
     discardableManager->unlockAndDeleteAll();
 }
 
-DEF_GPUTEST_FOR_CONTEXTS(SkRemoteGlyphCache_SlugSerialization,
-                         sk_gpu_test::GrContextFactory::IsRenderingContext,
-                         reporter, ctxInfo, use_padding_options) {
+DEF_GPUTEST_FOR_RENDERING_CONTEXTS(SkRemoteGlyphCache_SlugSerialization, reporter, ctxInfo) {
     auto dContext = ctxInfo.directContext();
+
+    // It is only valid to run this when the whole DM run is using Bilerp support.
+    if (!dContext->priv().options().fSupportBilerpFromGlyphAtlas) {
+        return;
+    }
     sk_sp<DiscardableManager> discardableManager = sk_make_sp<DiscardableManager>();
     SkStrikeServer server(discardableManager.get());
     SkStrikeClient client(discardableManager, false);
