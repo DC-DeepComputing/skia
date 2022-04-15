@@ -1444,7 +1444,7 @@ public:
     /** \enum SkCanvas::SrcRectConstraint
         SrcRectConstraint controls the behavior at the edge of source SkRect,
         provided to drawImageRect() when there is any filtering. If kStrict is set,
-        then extra code is used to ensure it nevers samples outside of the src-rect.
+        then extra code is used to ensure it never samples outside of the src-rect.
         kStrict_SrcRectConstraint disables the use of mipmaps.
     */
     enum SrcRectConstraint {

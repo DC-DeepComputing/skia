@@ -411,12 +411,6 @@ void Device::drawRRect(const SkRRect& rr, const SkPaint& paint) {
     this->drawShape(Shape(rr), paint, SkStrokeRec(paint));
 }
 
-void Device::drawPath(const SkPath& path, const SkPaint& paint, bool pathIsMutable) {
-    // TODO: If we do try to inspect the path, it should happen here and possibly after computing
-    // the path effect. Alternatively, all that should be handled in SkCanvas.
-    this->drawShape(Shape(path), paint, SkStrokeRec(paint));
-}
-
 void Device::drawPoints(SkCanvas::PointMode mode, size_t count,
                         const SkPoint* points, const SkPaint& paint) {
     // TODO: I'm [ml] not sure either CPU or GPU backend really has a fast path for this that
@@ -441,6 +435,79 @@ void Device::drawPoints(SkCanvas::PointMode mode, size_t count,
             this->drawShape(Shape(points[i], points[(i + 1) % count]), paint, stroke);
         }
     }
+}
+
+void Device::drawPath(const SkPath& path, const SkPaint& paint, bool pathIsMutable) {
+    // TODO: If we do try to inspect the path, it should happen here and possibly after computing
+    // the path effect. Alternatively, all that should be handled in SkCanvas.
+    this->drawShape(Shape(path), paint, SkStrokeRec(paint));
+}
+
+#include "src/shaders/SkImageShader.h"
+
+sk_sp<SkShader> SkMakeBitmapShaderForPaint(const SkPaint& paint, const SkBitmap& src,
+                                           SkTileMode tmx, SkTileMode tmy,
+                                           const SkSamplingOptions& sampling,
+                                           const SkMatrix* localMatrix, SkCopyPixelsMode mode) {
+    auto s = SkImageShader::Make(SkMakeImageFromRasterBitmap(src, mode),
+                                 tmx, tmy, sampling, localMatrix);
+    if (!s) {
+        return nullptr;
+    }
+    if (SkColorTypeIsAlphaOnly(src.colorType()) && paint.getShader()) {
+        // Compose the image shader with the paint's shader. Alpha images+shaders should output the
+        // texture's alpha multiplied by the shader's color. DstIn (d*sa) will achieve this with
+        // the source image and dst shader (MakeBlend takes dst first, src second).
+        s = SkShaders::Blend(SkBlendMode::kDstIn, paint.refShader(), std::move(s));
+    }
+    return s;
+}
+
+void Device::drawImageRect(const SkImage* image, const SkRect* src, const SkRect& dst,
+                           const SkSamplingOptions& sampling, const SkPaint& paint,
+                           SkCanvas::SrcRectConstraint constraint) {
+    SkASSERT(dst.isFinite());
+    SkASSERT(dst.isSorted());
+
+    SkRect tmpSrc, tmpDst = dst;
+    SkRect imgBounds = SkRect::Make(image->bounds());
+
+    if (src) {
+        tmpSrc = *src;
+    } else {
+        tmpSrc = SkRect::Make(image->bounds());
+    }
+    SkMatrix matrix = SkMatrix::RectToRect(tmpSrc, dst);
+
+    // clip the tmpSrc to the bounds of the image, and recompute the dest rect if
+    // needed (i.e., if the src was clipped). No check needed if src==null.
+    if (src) {
+        if (!imgBounds.contains(tmpSrc)) {
+            if (!tmpSrc.intersect(imgBounds)) {
+                return; // nothing to draw
+            }
+            // recompute dst, based on the smaller tmpSrc
+            matrix.mapRect(&tmpDst, tmpSrc);
+            if (!tmpDst.isFinite()) {
+                return;
+            }
+        }
+    }
+
+    // construct a shader, so we can call drawRect with the dst
+    auto s = SkMakeBitmapShaderForPaint(paint, *bitmapPtr, SkTileMode::kClamp, SkTileMode::kClamp,
+                                        sampling, &matrix, kNever_SkCopyPixelsMode);
+    if (!s) {
+        return;
+    }
+
+    SkPaint paintWithShader(paint);
+    paintWithShader.setStyle(SkPaint::kFill_Style);
+    paintWithShader.setShader(std::move(s));
+
+    // Call ourself, in case the subclass wanted to share this setup code
+    // but handle the drawRect code themselves.
+    this->drawRect(*dstPtr, paintWithShader);
 }
 
 void Device::drawShape(const Shape& shape,
