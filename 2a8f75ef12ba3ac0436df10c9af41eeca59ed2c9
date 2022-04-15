@@ -1,0 +1,124 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "61bf3787_4048e5f5",
+        "filename": "src/gpu/ganesh/text/GrTextBlob.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 2938,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-04-15T14:35:14Z",
+      "side": 1,
+      "message": "I prefer this name but it seems like, if we want to be consistent with the current naming, it should be \u0027supportBilerpAtlas\u0027",
+      "range": {
+        "startLine": 2938,
+        "startChar": 33,
+        "endLine": 2938,
+        "endChar": 41
+      },
+      "revId": "2a8f75ef12ba3ac0436df10c9af41eeca59ed2c9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ca0aec65_986d1916",
+        "filename": "src/gpu/ganesh/text/GrTextBlob.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 3060,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-04-15T14:35:14Z",
+      "side": 1,
+      "message": "// Always true since only used by RawDraw\n?",
+      "revId": "2a8f75ef12ba3ac0436df10c9af41eeca59ed2c9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5dba0229_735bf09b",
+        "filename": "src/gpu/ganesh/text/GrTextBlob.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 3242,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-04-15T14:35:14Z",
+      "side": 1,
+      "message": "// \u0027supportBilerpAtlas\u0027 is always true for now since this is only used by RawDraw",
+      "revId": "2a8f75ef12ba3ac0436df10c9af41eeca59ed2c9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "843dbee6_0dc47a77",
+        "filename": "src/gpu/ganesh/text/GrTextBlob.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 3243,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-04-15T14:35:14Z",
+      "side": 1,
+      "message": "/* supportBilerpAtlas */",
+      "range": {
+        "startLine": 3243,
+        "startChar": 59,
+        "endLine": 3243,
+        "endChar": 64
+      },
+      "revId": "2a8f75ef12ba3ac0436df10c9af41eeca59ed2c9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "117ed8db_24f2fd76",
+        "filename": "src/gpu/ganesh/text/GrTextBlob.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 3354,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-04-15T14:35:14Z",
+      "side": 1,
+      "message": "Can you think of a clearer name for what this does? fAtlasHasPadding? fAddPaddingToAtlas?",
+      "range": {
+        "startLine": 3354,
+        "startChar": 21,
+        "endLine": 3354,
+        "endChar": 40
+      },
+      "revId": "2a8f75ef12ba3ac0436df10c9af41eeca59ed2c9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0e99b26d_6d3d1c62",
+        "filename": "src/gpu/ganesh/text/GrTextBlob.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 3628,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-04-15T14:35:14Z",
+      "side": 1,
+      "message": "// Why is this instance always true ?",
+      "revId": "2a8f75ef12ba3ac0436df10c9af41eeca59ed2c9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
