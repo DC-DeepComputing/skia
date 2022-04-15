@@ -338,7 +338,10 @@ void AddToKey(const SkKeyContext& keyContext,
 
         auto dict = keyContext.dict();
         builder->beginBlock(SkBuiltInCodeSnippetID::kImageShader);
+
+        static_assert(SkTFitsIn<uint8_t>(SkTileMode::kLastTileMode));
         builder->add(SkColors::kTransparent);
+
         builder->endBlock();
 
         if (gatherer) {
