@@ -25,6 +25,7 @@
 #include "src/gpu/ganesh/dawn/GrDawnAttachment.h"
 #include "src/gpu/ganesh/dawn/GrDawnBuffer.h"
 #include "src/gpu/ganesh/dawn/GrDawnCaps.h"
+#include "src/gpu/ganesh/dawn/GrDawnFence.h"
 #include "src/gpu/ganesh/dawn/GrDawnOpsRenderPass.h"
 #include "src/gpu/ganesh/dawn/GrDawnProgramBuilder.h"
 #include "src/gpu/ganesh/dawn/GrDawnRenderTarget.h"
@@ -40,32 +41,6 @@
 #endif // !defined(SK_BUILD_FOR_WIN)
 
 static const int kMaxRenderPipelineEntries = 1024;
-
-namespace {
-
-class Fence {
-public:
-    Fence(const wgpu::Device& device)
-      : fDevice(device), fCalled(false) {
-        device.GetQueue().OnSubmittedWorkDone(0, callback, this);
-    }
-
-    static void callback(WGPUQueueWorkDoneStatus status, void* userData) {
-        Fence* fence = static_cast<Fence*>(userData);
-        fence->fCalled = true;
-    }
-
-    bool check() {
-        fDevice.Tick();
-        return fCalled;
-    }
-
-private:
-    wgpu::Device            fDevice;
-    bool                    fCalled;
-};
-
-}
 
 static wgpu::FilterMode to_dawn_filter_mode(GrSamplerState::Filter filter) {
     switch (filter) {
@@ -537,8 +512,9 @@ void GrDawnGpu::checkForCompletedStagingBuffers() {
 }
 
 void GrDawnGpu::waitOnAllBusyStagingBuffers() {
+    GrDawnAsyncWait wait(fDevice);
     while (!fBusyStagingBuffers.empty()) {
-        fDevice.Tick();
+        wait.yieldAndCheck();
         this->checkForCompletedStagingBuffers();
     }
 }
@@ -548,12 +524,9 @@ void GrDawnGpu::takeOwnershipOfBuffer(sk_sp<GrGpuBuffer> buffer) {
 }
 
 
-static void callback(WGPUQueueWorkDoneStatus status, void* userData) {
-    *static_cast<bool*>(userData) = true;
-}
-
 bool GrDawnGpu::onSubmitToGpu(bool syncCpu) {
     this->flushCopyEncoder();
+
     if (!fCommandBuffers.empty()) {
         fQueue.Submit(fCommandBuffers.size(), &fCommandBuffers.front());
         fCommandBuffers.clear();
@@ -561,11 +534,8 @@ bool GrDawnGpu::onSubmitToGpu(bool syncCpu) {
 
     this->moveStagingBuffersToBusyAndMapAsync();
     if (syncCpu) {
-        bool called = false;
-        fDevice.GetQueue().OnSubmittedWorkDone(0, callback, &called);
-        while (!called) {
-            fDevice.Tick();
-        }
+        GrDawnFence fence(fDevice);
+        fence.busyWait();
         fFinishCallbacks.callAll(true);
     }
 
@@ -605,10 +575,6 @@ bool GrDawnGpu::onCopySurface(GrSurface* dst,
     return true;
 }
 
-static void callback(WGPUBufferMapAsyncStatus status, void* userdata) {
-    *static_cast<bool*>(userdata) = true;
-}
-
 bool GrDawnGpu::onReadPixels(GrSurface* surface,
                              SkIRect rect,
                              GrColorType surfaceColorType,
@@ -645,11 +611,17 @@ bool GrDawnGpu::onReadPixels(GrSurface* surface,
     this->getCopyEncoder().CopyTextureToBuffer(&srcTexture, &dstBuffer, &copySize);
     this->submitToGpu(true);
 
-    bool mapped = false;
-    buf.MapAsync(wgpu::MapMode::Read, 0, 0, callback, &mapped);
-    while (!mapped) {
-        device().Tick();
-    }
+    GrDawnAsyncWait wait(fDevice);
+    buf.MapAsync(
+            wgpu::MapMode::Read, 0, 0,
+            [](WGPUBufferMapAsyncStatus, void* userData) {
+                // TODO(armansito): Check and take action on the operation status instead of
+                // assuming success.
+                static_cast<GrDawnAsyncWait*>(userData)->signal();
+            },
+            &wait);
+    wait.busyWait();
+
     const void* readPixelsPtr = buf.GetConstMappedRange();
 
     if (rowBytes == origRowBytes) {
@@ -806,16 +778,14 @@ void GrDawnGpu::submit(GrOpsRenderPass* renderPass) {
 }
 
 GrFence SK_WARN_UNUSED_RESULT GrDawnGpu::insertFence() {
-    return reinterpret_cast<GrFence>(new Fence(fDevice));
+    return reinterpret_cast<GrFence>(new GrDawnFence(fDevice));
 }
 
 bool GrDawnGpu::waitFence(GrFence fence) {
-    return reinterpret_cast<Fence*>(fence)->check();
+    return reinterpret_cast<const GrDawnFence*>(fence)->wait().yieldAndCheck();
 }
 
-void GrDawnGpu::deleteFence(GrFence fence) const {
-    delete reinterpret_cast<Fence*>(fence);
-}
+void GrDawnGpu::deleteFence(GrFence fence) const { delete reinterpret_cast<GrDawnFence*>(fence); }
 
 std::unique_ptr<GrSemaphore> SK_WARN_UNUSED_RESULT GrDawnGpu::makeSemaphore(bool isOwned) {
     SkASSERT(!"unimplemented");

@@ -93,6 +93,7 @@ generated_cc_atom(
         ":GrDawnAttachment_hdr",
         ":GrDawnBuffer_hdr",
         ":GrDawnCaps_hdr",
+        ":GrDawnFence_hdr",
         ":GrDawnGpu_hdr",
         ":GrDawnOpsRenderPass_hdr",
         ":GrDawnProgramBuilder_hdr",
@@ -313,4 +314,18 @@ generated_cc_atom(
     srcs = ["GrDawnUtil.cpp"],
     visibility = ["//:__subpackages__"],
     deps = [":GrDawnUtil_hdr"],
+)
+
+generated_cc_atom(
+    name = "GrDawnFence_hdr",
+    hdrs = ["GrDawnFence.h"],
+    visibility = ["//:__subpackages__"],
+    deps = ["//third_party:dawn"],
+)
+
+generated_cc_atom(
+    name = "GrDawnFence_src",
+    srcs = ["GrDawnFence.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [":GrDawnFence_hdr"],
 )

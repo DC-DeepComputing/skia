@@ -719,6 +719,8 @@ skia_dawn_sources = [
   "$_src/gpu/ganesh/dawn/GrDawnBuffer.h",
   "$_src/gpu/ganesh/dawn/GrDawnCaps.cpp",
   "$_src/gpu/ganesh/dawn/GrDawnCaps.h",
+  "$_src/gpu/ganesh/dawn/GrDawnFence.cpp",
+  "$_src/gpu/ganesh/dawn/GrDawnFence.h",
   "$_src/gpu/ganesh/dawn/GrDawnGpu.cpp",
   "$_src/gpu/ganesh/dawn/GrDawnGpu.h",
   "$_src/gpu/ganesh/dawn/GrDawnOpsRenderPass.cpp",

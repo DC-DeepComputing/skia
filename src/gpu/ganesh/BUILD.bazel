@@ -210,6 +210,7 @@ cc_library(
         "//src/gpu/ganesh/dawn:GrDawnAttachment_src",
         "//src/gpu/ganesh/dawn:GrDawnBuffer_src",
         "//src/gpu/ganesh/dawn:GrDawnCaps_src",
+        "//src/gpu/ganesh/dawn:GrDawnFence_src",
         "//src/gpu/ganesh/dawn:GrDawnGpu_src",
         "//src/gpu/ganesh/dawn:GrDawnOpsRenderPass_src",
         "//src/gpu/ganesh/dawn:GrDawnProgramBuilder_src",
