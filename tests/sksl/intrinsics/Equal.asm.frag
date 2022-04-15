@@ -36,10 +36,7 @@ OpDecorate %37 RelaxedPrecision
 OpDecorate %40 RelaxedPrecision
 OpDecorate %54 RelaxedPrecision
 OpDecorate %67 RelaxedPrecision
-OpDecorate %70 RelaxedPrecision
-OpDecorate %74 RelaxedPrecision
 OpDecorate %79 RelaxedPrecision
-OpDecorate %82 RelaxedPrecision
 %float = OpTypeFloat 32
 %v4float = OpTypeVector %float 4
 %_ptr_Output_v4float = OpTypePointer Output %v4float
@@ -113,27 +110,24 @@ OpStore %55 %54
 %67 = OpConvertSToF %float %66
 %68 = OpAccessChain %_ptr_Output_float %sk_FragColor %int_2
 OpStore %68 %67
-%70 = OpLoad %v4bool %expectTTFF
-%69 = OpAny %bool %70
-OpSelectionMerge %72 None
-OpBranchConditional %69 %72 %71
+%69 = OpAny %bool %25
+OpSelectionMerge %71 None
+OpBranchConditional %69 %71 %70
+%70 = OpLabel
+%72 = OpAny %bool %27
+OpBranch %71
 %71 = OpLabel
-%74 = OpLoad %v4bool %expectFFTT
-%73 = OpAny %bool %74
-OpBranch %72
-%72 = OpLabel
-%75 = OpPhi %bool %true %19 %73 %71
-OpSelectionMerge %77 None
-OpBranchConditional %75 %77 %76
-%76 = OpLabel
-%79 = OpLoad %v4bool %expectTTTT
-%78 = OpAny %bool %79
-OpBranch %77
-%77 = OpLabel
-%80 = OpPhi %bool %true %72 %78 %76
-%81 = OpSelect %int %80 %int_1 %int_0
-%82 = OpConvertSToF %float %81
-%83 = OpAccessChain %_ptr_Output_float %sk_FragColor %int_3
-OpStore %83 %82
+%73 = OpPhi %bool %true %19 %72 %70
+OpSelectionMerge %75 None
+OpBranchConditional %73 %75 %74
+%74 = OpLabel
+%76 = OpAny %bool %29
+OpBranch %75
+%75 = OpLabel
+%77 = OpPhi %bool %true %71 %76 %74
+%78 = OpSelect %int %77 %int_1 %int_0
+%79 = OpConvertSToF %float %78
+%80 = OpAccessChain %_ptr_Output_float %sk_FragColor %int_3
+OpStore %80 %79
 OpReturn
 OpFunctionEnd

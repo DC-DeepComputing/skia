@@ -58,11 +58,9 @@ OpDecorate %101 RelaxedPrecision
 OpDecorate %l RelaxedPrecision
 OpDecorate %121 RelaxedPrecision
 OpDecorate %122 RelaxedPrecision
+OpDecorate %128 RelaxedPrecision
 OpDecorate %129 RelaxedPrecision
-OpDecorate %130 RelaxedPrecision
-OpDecorate %131 RelaxedPrecision
-OpDecorate %134 RelaxedPrecision
-OpDecorate %138 RelaxedPrecision
+OpDecorate %135 RelaxedPrecision
 %float = OpTypeFloat 32
 %v4float = OpTypeVector %float 4
 %_ptr_Output_v4float = OpTypePointer Output %v4float
@@ -215,20 +213,17 @@ OpStore %116 %115
 OpStore %117 %123
 %124 = OpAccessChain %_ptr_Function_int %i4 %int_1
 %125 = OpLoad %int %124
-%126 = OpLoad %int %i
-%127 = OpIMul %int %125 %126
-OpStore %124 %127
-%128 = OpAccessChain %_ptr_Function_float %x %int_1
-%129 = OpLoad %float %128
-%130 = OpLoad %float %l
-%131 = OpFMul %float %129 %130
-OpStore %128 %131
-%132 = OpAccessChain %_ptr_Function_float %s %int_0
-%133 = OpLoad %float %132
-%134 = OpLoad %float %l
-%135 = OpFMul %float %133 %134
-OpStore %132 %135
-%136 = OpAccessChain %_ptr_Uniform_v4float %19 %int_0
-%138 = OpLoad %v4float %136
-OpReturnValue %138
+%126 = OpIMul %int %125 %int_0
+OpStore %124 %126
+%127 = OpAccessChain %_ptr_Function_float %x %int_1
+%128 = OpLoad %float %127
+%129 = OpFMul %float %128 %float_0
+OpStore %127 %129
+%130 = OpAccessChain %_ptr_Function_float %s %int_0
+%131 = OpLoad %float %130
+%132 = OpFMul %float %131 %float_0
+OpStore %130 %132
+%133 = OpAccessChain %_ptr_Uniform_v4float %19 %int_0
+%135 = OpLoad %v4float %133
+OpReturnValue %135
 OpFunctionEnd

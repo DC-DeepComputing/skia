@@ -22,7 +22,6 @@ OpDecorate %10 DescriptorSet 0
 OpDecorate %color RelaxedPrecision
 OpDecorate %33 RelaxedPrecision
 OpDecorate %42 RelaxedPrecision
-OpDecorate %50 RelaxedPrecision
 %float = OpTypeFloat 32
 %v4float = OpTypeVector %float 4
 %_ptr_Output_v4float = OpTypePointer Output %v4float
@@ -85,6 +84,5 @@ OpBranch %47
 OpStore %48 %float_1
 OpBranch %47
 %47 = OpLabel
-%50 = OpLoad %v4float %color
-OpReturnValue %50
+OpReturnValue %28
 OpFunctionEnd
