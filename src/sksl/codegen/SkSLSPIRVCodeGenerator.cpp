@@ -117,9 +117,7 @@ struct SPIRVCodeGenerator::Word {
     }
 
     static Word RelaxedResult() {
-        Kind kind = ThreadContext::Settings().fForceHighPrecision ? kDefaultPrecisionResult
-                                                                  : kRelaxedPrecisionResult;
-        return Word{(int32_t)NA, kind};
+        return Word{(int32_t)NA, kRelaxedPrecisionResult};
     }
 
     static Word UniqueResult() {
@@ -542,6 +540,10 @@ SPIRVCodeGenerator::Instruction SPIRVCodeGenerator::BuildInstructionKey(
 SpvId SPIRVCodeGenerator::writeInstruction(SpvOp_ opCode,
                                            const SkTArray<Word>& words,
                                            OutputStream& out) {
+    // writeOpLoad and writeOpStore have dedicated code.
+    SkASSERT(opCode != SpvOpLoad);
+    SkASSERT(opCode != SpvOpStore);
+
     // If this instruction exists in our op cache, return the cached SpvId.
     Instruction key = BuildInstructionKey(opCode, words);
     if (SpvId* cachedOp = fOpCache.find(key)) {
@@ -549,11 +551,12 @@ SpvId SPIRVCodeGenerator::writeInstruction(SpvOp_ opCode,
     }
 
     SpvId result = NA;
+    Precision precision = Precision::kDefault;
 
     switch (key.fResultKind) {
         case Word::Kind::kUniqueResult:
             // The instruction returns a SpvId, but we do not want deduplication.
-            result = fIdCount++;
+            result = this->nextId(Precision::kDefault);
             fSpvIdCache.set(result, key);
             break;
 
@@ -562,21 +565,19 @@ SpvId SPIRVCodeGenerator::writeInstruction(SpvOp_ opCode,
             fOpCache.set(key, result);
             break;
 
-        case Word::Kind::kDefaultPrecisionResult:
         case Word::Kind::kRelaxedPrecisionResult:
-            // Consume a new SpvId and cache the instruction.
-            result = fIdCount++;
+            precision = Precision::kRelaxed;
+            [[fallthrough]];
+
+        case Word::Kind::kDefaultPrecisionResult:
+            // Consume a new SpvId.
+            result = this->nextId(precision);
             fOpCache.set(key, result);
             fSpvIdCache.set(result, key);
 
             // Globally-reachable ops are not subject to the whims of flow control.
             if (!is_globally_reachable_op(opCode)) {
                 fReachableOps.push_back(result);
-            }
-            // If the result is relaxed-precision, add the requisite decoration.
-            if (key.fResultKind == Word::Kind::kRelaxedPrecisionResult) {
-                this->writeInstruction(SpvOpDecorate, result, SpvDecorationRelaxedPrecision,
-                                       fDecorationBuffer);
             }
             break;
 
@@ -598,6 +599,36 @@ SpvId SPIRVCodeGenerator::writeInstruction(SpvOp_ opCode,
 
     // Return the result.
     return result;
+}
+
+SpvId SPIRVCodeGenerator::writeOpLoad(SpvId type,
+                                      Precision precision,
+                                      SpvId pointer,
+                                      OutputStream& out) {
+    // Look for this pointer in our load-cache.
+    if (SpvId* cachedOp = fStoreCache.find(pointer)) {
+        return *cachedOp;
+    }
+
+    // Write the requested OpLoad instruction.
+    SpvId result = this->nextId(precision);
+    this->writeInstruction(SpvOpLoad, type, result, pointer, out);
+    return result;
+}
+
+void SPIRVCodeGenerator::writeOpStore(SpvStorageClass_ storageClass,
+                                      SpvId pointer,
+                                      SpvId value,
+                                      OutputStream& out) {
+    // Write the uncached SpvOpStore directly.
+    this->writeInstruction(SpvOpStore, pointer, value, out);
+
+    if (storageClass == SpvStorageClassFunction) {
+        // Insert a pointer-to-SpvId mapping into the load cache. A writeOpLoad to this pointer will
+        // return the cached value as-is.
+        fStoreCache.set(pointer, value);
+        fStoreOps.push_back(pointer);
+    }
 }
 
 SpvId SPIRVCodeGenerator::writeOpConstantTrue(const Type& type) {
@@ -723,6 +754,7 @@ SPIRVCodeGenerator::Instruction* SPIRVCodeGenerator::resultTypeForInstruction(
         case SpvOpConstantComposite:
         case SpvOpCompositeConstruct:
         case SpvOpCompositeExtract:
+        case SpvOpLoad:
             resultTypeWord = 0;
             break;
 
@@ -927,30 +959,6 @@ SpvId SPIRVCodeGenerator::writeStruct(const Type& type, const MemoryLayout& memo
     }
 
     return resultId;
-}
-
-const Type& SPIRVCodeGenerator::getActualType(const Type& type) {
-    if (type.isFloat()) {
-        return *fContext.fTypes.fFloat;
-    }
-    if (type.isSigned()) {
-        return *fContext.fTypes.fInt;
-    }
-    if (type.isUnsigned()) {
-        return *fContext.fTypes.fUInt;
-    }
-    if (type.isMatrix() || type.isVector()) {
-        if (type.componentType().matches(*fContext.fTypes.fHalf)) {
-            return fContext.fTypes.fFloat->toCompound(fContext, type.columns(), type.rows());
-        }
-        if (type.componentType().matches(*fContext.fTypes.fShort)) {
-            return fContext.fTypes.fInt->toCompound(fContext, type.columns(), type.rows());
-        }
-        if (type.componentType().matches(*fContext.fTypes.fUShort)) {
-            return fContext.fTypes.fUInt->toCompound(fContext, type.columns(), type.rows());
-        }
-    }
-    return type;
 }
 
 SpvId SPIRVCodeGenerator::getType(const Type& type) {
@@ -1551,7 +1559,7 @@ SpvId SPIRVCodeGenerator::writeFunctionCallArgument(const FunctionCall& call,
                            SpvStorageClassFunction,
                            fVariableBuffer);
     if (tmpValueId != NA) {
-        this->writeInstruction(SpvOpStore, tmpVar, tmpValueId, out);
+        this->writeOpStore(SpvStorageClassFunction, tmpVar, tmpValueId, out);
     }
     return tmpVar;
 }
@@ -1955,7 +1963,7 @@ SpvId SPIRVCodeGenerator::writeCompositeConstructor(const AnyConstructor& c, Out
 SpvId SPIRVCodeGenerator::writeConstructorScalarCast(const ConstructorScalarCast& c,
                                                      OutputStream& out) {
     const Type& type = c.type();
-    if (this->getActualType(type).matches(this->getActualType(c.argument()->type()))) {
+    if (type.componentType().numberKind() == c.argument()->type().componentType().numberKind()) {
         return this->writeExpression(*c.argument(), out);
     }
 
@@ -1972,7 +1980,7 @@ SpvId SPIRVCodeGenerator::writeConstructorCompoundCast(const ConstructorCompound
 
     // Write the composite that we are casting. If the actual type matches, we are done.
     SpvId compositeId = this->writeExpression(*c.argument(), out);
-    if (this->getActualType(ctorType).matches(this->getActualType(argType))) {
+    if (ctorType.componentType().numberKind() == argType.componentType().numberKind()) {
         return compositeId;
     }
 
@@ -2119,13 +2127,18 @@ public:
     }
 
     SpvId load(OutputStream& out) override {
-        SpvId result = fGen.nextId(fPrecision);
-        fGen.writeInstruction(SpvOpLoad, fType, result, fPointer, out);
-        return result;
+        return fGen.writeOpLoad(fType, fPrecision, fPointer, out);
     }
 
     void store(SpvId value, OutputStream& out) override {
-        fGen.writeInstruction(SpvOpStore, fPointer, value, out);
+        fGen.writeOpStore(fStorageClass, fPointer, value, out);
+
+        if (!fIsMemoryObject) {
+            // We just wrote into an access chain; e.g. one component of a vector, or one element of
+            // an array. This has the potential to desync our store cache with reality. To avoid
+            // relying on stale data, reset the store cache entirely.
+            fGen.fStoreCache.reset();
+        }
     }
 
 private:
@@ -2134,7 +2147,7 @@ private:
     const bool fIsMemoryObject;
     const SpvId fType;
     const SPIRVCodeGenerator::Precision fPrecision;
-    [[maybe_unused]] const SpvStorageClass_ fStorageClass;
+    const SpvStorageClass_ fStorageClass;
 };
 
 class SwizzleLValue : public SPIRVCodeGenerator::LValue {
@@ -2212,7 +2225,7 @@ public:
             }
             fGen.writeWord(offset, out);
         }
-        fGen.writeInstruction(SpvOpStore, fVecPointer, shuffle, out);
+        fGen.writeOpStore(fStorageClass, fVecPointer, shuffle, out);
     }
 
 private:
@@ -2221,7 +2234,7 @@ private:
     ComponentArray fComponents;
     const Type* fBaseType;
     const Type* fSwizzleType;
-    [[maybe_unused]] const SpvStorageClass_ fStorageClass;
+    const SpvStorageClass_ fStorageClass;
 };
 
 int SPIRVCodeGenerator::findUniformFieldIndex(const Variable& var) const {
@@ -2304,7 +2317,8 @@ std::unique_ptr<SPIRVCodeGenerator::LValue> SPIRVCodeGenerator::getLValue(const 
             SpvId pointerType = this->getPointerType(type, SpvStorageClassFunction);
             this->writeInstruction(SpvOpVariable, pointerType, result, SpvStorageClassFunction,
                                    fVariableBuffer);
-            this->writeInstruction(SpvOpStore, result, this->writeExpression(expr, out), out);
+            this->writeOpStore(SpvStorageClassFunction, result, this->writeExpression(expr, out),
+                               out);
             return std::make_unique<PointerLValue>(*this, result, /*isMemoryObjectPointer=*/true,
                                                    this->getType(type), precision,
                                                    SpvStorageClassFunction);
@@ -2582,6 +2596,16 @@ SpvId SPIRVCodeGenerator::writeScalarToMatrixSplat(const Type& matrixType,
     return this->writeOpCompositeConstruct(matrixType, matArguments, out);
 }
 
+static bool types_match(const Type& a, const Type& b) {
+    if (a.matches(b)) {
+        return true;
+    }
+    return (a.typeKind() == b.typeKind()) &&
+           (a.isScalar() || a.isVector() || a.isMatrix()) &&
+           (a.columns() == b.columns() && a.rows() == b.rows()) &&
+           a.componentType().numberKind() == b.componentType().numberKind();
+}
+
 SpvId SPIRVCodeGenerator::writeBinaryExpression(const Type& leftType, SpvId lhs, Operator op,
                                                 const Type& rightType, SpvId rhs,
                                                 const Type& resultType, OutputStream& out) {
@@ -2591,9 +2615,11 @@ SpvId SPIRVCodeGenerator::writeBinaryExpression(const Type& leftType, SpvId lhs,
     }
     // overall type we are operating on: float2, int, uint4...
     const Type* operandType;
-    // IR allows mismatched types in expressions (e.g. float2 * float), but they need special
-    // handling in SPIR-V
-    if (!this->getActualType(leftType).matches(this->getActualType(rightType))) {
+    if (types_match(leftType, rightType)) {
+        operandType = &leftType;
+    } else {
+        // IR allows mismatched types in expressions (e.g. float2 * float), but they need special
+        // handling in SPIR-V
         if (leftType.isVector() && rightType.isNumber()) {
             if (resultType.componentType().isFloat()) {
                 switch (op.kind()) {
@@ -2686,10 +2712,8 @@ SpvId SPIRVCodeGenerator::writeBinaryExpression(const Type& leftType, SpvId lhs,
             fContext.fErrors->error(leftType.fPosition, "unsupported mixed-type expression");
             return NA;
         }
-    } else {
-        operandType = &this->getActualType(leftType);
-        SkASSERT(operandType->matches(this->getActualType(rightType)));
     }
+
     switch (op.kind()) {
         case Operator::Kind::EQEQ: {
             if (operandType->isMatrix()) {
@@ -2967,7 +2991,7 @@ SpvId SPIRVCodeGenerator::writeLogicalAnd(const Expression& left, const Expressi
     SpvId falseConstant = this->writeLiteral(0.0, *fContext.fTypes.fBool);
     SpvId lhs = this->writeExpression(left, out);
 
-    size_t numReachableOps = fReachableOps.size();
+    ConditionalOpCounts conditionalOps = this->getConditionalOpCounts();
 
     SpvId rhsLabel = this->nextId(nullptr);
     SpvId end = this->nextId(nullptr);
@@ -2983,7 +3007,7 @@ SpvId SPIRVCodeGenerator::writeLogicalAnd(const Expression& left, const Expressi
     this->writeInstruction(SpvOpPhi, this->getType(*fContext.fTypes.fBool), result, falseConstant,
                            lhsBlock, rhs, rhsBlock, out);
 
-    this->pruneReachableOps(numReachableOps);
+    this->pruneConditionalOps(conditionalOps);
 
     return result;
 }
@@ -2993,7 +3017,7 @@ SpvId SPIRVCodeGenerator::writeLogicalOr(const Expression& left, const Expressio
     SpvId trueConstant = this->writeLiteral(1.0, *fContext.fTypes.fBool);
     SpvId lhs = this->writeExpression(left, out);
 
-    size_t numReachableOps = fReachableOps.size();
+    ConditionalOpCounts conditionalOps = this->getConditionalOpCounts();
 
     SpvId rhsLabel = this->nextId(nullptr);
     SpvId end = this->nextId(nullptr);
@@ -3009,7 +3033,7 @@ SpvId SPIRVCodeGenerator::writeLogicalOr(const Expression& left, const Expressio
     this->writeInstruction(SpvOpPhi, this->getType(*fContext.fTypes.fBool), result, trueConstant,
                            lhsBlock, rhs, rhsBlock, out);
 
-    this->pruneReachableOps(numReachableOps);
+    this->pruneConditionalOps(conditionalOps);
 
     return result;
 }
@@ -3029,7 +3053,7 @@ SpvId SPIRVCodeGenerator::writeTernaryExpression(const TernaryExpression& t, Out
         return result;
     }
 
-    size_t numReachableOps = fReachableOps.size();
+    ConditionalOpCounts conditionalOps = this->getConditionalOpCounts();
 
     // was originally using OpPhi to choose the result, but for some reason that is crashing on
     // Adreno. Switched to storing the result in a temp variable as glslang does.
@@ -3042,16 +3066,19 @@ SpvId SPIRVCodeGenerator::writeTernaryExpression(const TernaryExpression& t, Out
     this->writeInstruction(SpvOpSelectionMerge, end, SpvSelectionControlMaskNone, out);
     this->writeInstruction(SpvOpBranchConditional, test, trueLabel, falseLabel, out);
     this->writeLabel(trueLabel, out);
-    this->writeInstruction(SpvOpStore, var, this->writeExpression(*t.ifTrue(), out), out);
+    this->writeOpStore(SpvStorageClassFunction, var, this->writeExpression(*t.ifTrue(), out), out);
     this->writeInstruction(SpvOpBranch, end, out);
+
+    this->pruneConditionalOps(conditionalOps);
+
     this->writeLabel(falseLabel, out);
-    this->writeInstruction(SpvOpStore, var, this->writeExpression(*t.ifFalse(), out), out);
+    this->writeOpStore(SpvStorageClassFunction, var, this->writeExpression(*t.ifFalse(), out), out);
     this->writeInstruction(SpvOpBranch, end, out);
     this->writeLabel(end, out);
     SpvId result = this->nextId(&type);
     this->writeInstruction(SpvOpLoad, this->getType(type), result, var, out);
 
-    this->pruneReachableOps(numReachableOps);
+    this->pruneConditionalOps(conditionalOps);
 
     return result;
 }
@@ -3183,7 +3210,7 @@ SpvId SPIRVCodeGenerator::writeFunctionStart(const FunctionDeclaration& f, Outpu
 }
 
 SpvId SPIRVCodeGenerator::writeFunction(const FunctionDefinition& f, OutputStream& out) {
-    size_t numReachableOps = fReachableOps.size();
+    ConditionalOpCounts conditionalOps = this->getConditionalOpCounts();
 
     fVariableBuffer.reset();
     SpvId result = this->writeFunctionStart(f.declaration(), out);
@@ -3204,7 +3231,7 @@ SpvId SPIRVCodeGenerator::writeFunction(const FunctionDefinition& f, OutputStrea
         }
     }
     this->writeInstruction(SpvOpFunctionEnd, out);
-    this->pruneReachableOps(numReachableOps);
+    this->pruneConditionalOps(conditionalOps);
     return result;
 }
 
@@ -3394,7 +3421,7 @@ void SPIRVCodeGenerator::writeGlobalVar(ProgramKind kind, const VarDeclaration& 
         SkASSERT(!fCurrentBlock);
         fCurrentBlock = NA;
         SpvId value = this->writeExpression(*varDecl.value(), fGlobalInitializersBuffer);
-        this->writeInstruction(SpvOpStore, id, value, fGlobalInitializersBuffer);
+        this->writeOpStore(storageClass, id, value, fGlobalInitializersBuffer);
         fCurrentBlock = 0;
     }
     this->writeLayout(layout, id, var.fPosition);
@@ -3403,7 +3430,7 @@ void SPIRVCodeGenerator::writeGlobalVar(ProgramKind kind, const VarDeclaration& 
     }
     if (var.modifiers().fFlags & Modifiers::kNoPerspective_Flag) {
         this->writeInstruction(SpvOpDecorate, id, SpvDecorationNoPerspective,
-                                fDecorationBuffer);
+                               fDecorationBuffer);
     }
 }
 
@@ -3416,7 +3443,7 @@ void SPIRVCodeGenerator::writeVarDeclaration(const VarDeclaration& varDecl, Outp
     this->writeInstruction(SpvOpName, id, var.name(), fNameBuffer);
     if (varDecl.value()) {
         SpvId value = this->writeExpression(*varDecl.value(), out);
-        this->writeInstruction(SpvOpStore, id, value, out);
+        this->writeOpStore(SpvStorageClassFunction, id, value, out);
     }
 }
 
@@ -3470,8 +3497,13 @@ void SPIRVCodeGenerator::writeBlock(const Block& b, OutputStream& out) {
     }
 }
 
-void SPIRVCodeGenerator::pruneReachableOps(size_t numReachableOps) {
-    while (fReachableOps.size() > numReachableOps) {
+SPIRVCodeGenerator::ConditionalOpCounts SPIRVCodeGenerator::getConditionalOpCounts() {
+    return {fReachableOps.size(), fStoreOps.size()};
+}
+
+void SPIRVCodeGenerator::pruneConditionalOps(ConditionalOpCounts ops) {
+    // Remove ops which are no longer reachable.
+    while (fReachableOps.size() > ops.numReachableOps) {
         SpvId prunableSpvId = fReachableOps.back();
         const Instruction* prunableOp = fSpvIdCache.find(prunableSpvId);
 
@@ -3484,6 +3516,14 @@ void SPIRVCodeGenerator::pruneReachableOps(size_t numReachableOps) {
 
         fReachableOps.pop_back();
     }
+
+    // Remove any cached stores that occurred during the conditional block.
+    while (fStoreOps.size() > ops.numStoreOps) {
+        if (fStoreCache.find(fStoreOps.back())) {
+            fStoreCache.remove(fStoreOps.back());
+        }
+        fStoreOps.pop_back();
+    }
 }
 
 void SPIRVCodeGenerator::writeIfStatement(const IfStatement& stmt, OutputStream& out) {
@@ -3491,7 +3531,7 @@ void SPIRVCodeGenerator::writeIfStatement(const IfStatement& stmt, OutputStream&
     SpvId ifTrue = this->nextId(nullptr);
     SpvId ifFalse = this->nextId(nullptr);
 
-    size_t numReachableOps = fReachableOps.size();
+    ConditionalOpCounts conditionalOps = this->getConditionalOpCounts();
 
     if (stmt.ifFalse()) {
         SpvId end = this->nextId(nullptr);
@@ -3502,7 +3542,7 @@ void SPIRVCodeGenerator::writeIfStatement(const IfStatement& stmt, OutputStream&
         if (fCurrentBlock) {
             this->writeInstruction(SpvOpBranch, end, out);
         }
-        this->pruneReachableOps(numReachableOps);
+        this->pruneConditionalOps(conditionalOps);
 
         this->writeLabel(ifFalse, out);
         this->writeStatement(*stmt.ifFalse(), out);
@@ -3521,7 +3561,7 @@ void SPIRVCodeGenerator::writeIfStatement(const IfStatement& stmt, OutputStream&
         this->writeLabel(ifFalse, out);
     }
 
-    this->pruneReachableOps(numReachableOps);
+    this->pruneConditionalOps(conditionalOps);
 }
 
 void SPIRVCodeGenerator::writeForStatement(const ForStatement& f, OutputStream& out) {
@@ -3529,8 +3569,12 @@ void SPIRVCodeGenerator::writeForStatement(const ForStatement& f, OutputStream& 
         this->writeStatement(*f.initializer(), out);
     }
 
-    size_t numReachableOps = fReachableOps.size();
+    ConditionalOpCounts conditionalOps = this->getConditionalOpCounts();
 
+    // The store cache isn't trustworthy in the presence of branches; store caching only makes sense
+    // in the context of linear straight-line execution. If we wanted to be more clever, we could
+    // only invalidate store cache entries for variables affected by the loop body, but for now we
+    // simply clear the entire cache whenever branching occurs.
     SpvId header = this->nextId(nullptr);
     SpvId start = this->nextId(nullptr);
     SpvId body = this->nextId(nullptr);
@@ -3540,9 +3584,10 @@ void SPIRVCodeGenerator::writeForStatement(const ForStatement& f, OutputStream& 
     fBreakTarget.push(end);
     this->writeInstruction(SpvOpBranch, header, out);
     this->writeLabel(header, out);
+    fStoreCache.reset();  // cleared because we branch to label "header"
     this->writeInstruction(SpvOpLoopMerge, end, next, SpvLoopControlMaskNone, out);
     this->writeInstruction(SpvOpBranch, start, out);
-    this->writeLabel(start, out);
+    this->writeLabel(start, out);  // the branch to "start" is a no-op required by the SPIR-V model
     if (f.test()) {
         SpvId test = this->writeExpression(*f.test(), out);
         this->writeInstruction(SpvOpBranchConditional, test, body, end, out);
@@ -3550,25 +3595,32 @@ void SPIRVCodeGenerator::writeForStatement(const ForStatement& f, OutputStream& 
         this->writeInstruction(SpvOpBranch, body, out);
     }
     this->writeLabel(body, out);
+    fStoreCache.reset();  // cleared because we branch to label "body"
     this->writeStatement(*f.statement(), out);
     if (fCurrentBlock) {
         this->writeInstruction(SpvOpBranch, next, out);
     }
     this->writeLabel(next, out);
+    fStoreCache.reset();  // cleared because we branch to label "next"
     if (f.next()) {
         this->writeExpression(*f.next(), out);
     }
     this->writeInstruction(SpvOpBranch, header, out);
     this->writeLabel(end, out);
+    fStoreCache.reset();  // cleared because we branch to label "end"
     fBreakTarget.pop();
     fContinueTarget.pop();
 
-    this->pruneReachableOps(numReachableOps);
+    this->pruneConditionalOps(conditionalOps);
 }
 
 void SPIRVCodeGenerator::writeDoStatement(const DoStatement& d, OutputStream& out) {
-    size_t numReachableOps = fReachableOps.size();
+    ConditionalOpCounts conditionalOps = this->getConditionalOpCounts();
 
+    // The store cache isn't trustworthy in the presence of branches; store caching only makes sense
+    // in the context of linear straight-line execution. If we wanted to be more clever, we could
+    // only invalidate store cache entries for variables affected by the loop body, but for now we
+    // simply clear the entire cache whenever branching occurs.
     SpvId header = this->nextId(nullptr);
     SpvId start = this->nextId(nullptr);
     SpvId next = this->nextId(nullptr);
@@ -3578,30 +3630,37 @@ void SPIRVCodeGenerator::writeDoStatement(const DoStatement& d, OutputStream& ou
     fBreakTarget.push(end);
     this->writeInstruction(SpvOpBranch, header, out);
     this->writeLabel(header, out);
+    fStoreCache.reset();  // cleared because we branch to label "header"
     this->writeInstruction(SpvOpLoopMerge, end, continueTarget, SpvLoopControlMaskNone, out);
     this->writeInstruction(SpvOpBranch, start, out);
-    this->writeLabel(start, out);
+    this->writeLabel(start, out);  // the branch to "start" is a no-op required by the SPIR-V model
     this->writeStatement(*d.statement(), out);
     if (fCurrentBlock) {
         this->writeInstruction(SpvOpBranch, next, out);
     }
-    this->writeLabel(next, out);
+    this->writeLabel(next, out);  // the branch to "next" is a no-op required by the SPIR-V model
     this->writeInstruction(SpvOpBranch, continueTarget, out);
     this->writeLabel(continueTarget, out);
+    fStoreCache.reset();  // cleared because we branch to label "continueTarget"
     SpvId test = this->writeExpression(*d.test(), out);
     this->writeInstruction(SpvOpBranchConditional, test, header, end, out);
     this->writeLabel(end, out);
+    fStoreCache.reset();  // cleared because we branch to label "end"
     fBreakTarget.pop();
     fContinueTarget.pop();
 
-    this->pruneReachableOps(numReachableOps);
+    this->pruneConditionalOps(conditionalOps);
 }
 
 void SPIRVCodeGenerator::writeSwitchStatement(const SwitchStatement& s, OutputStream& out) {
     SpvId value = this->writeExpression(*s.value(), out);
 
-    size_t numReachableOps = fReachableOps.size();
+    ConditionalOpCounts conditionalOps = this->getConditionalOpCounts();
 
+    // The store cache isn't trustworthy in the presence of branches; store caching only makes sense
+    // in the context of linear straight-line execution. If we wanted to be more clever, we could
+    // only invalidate store cache entries for variables affected by the loop body, but for now we
+    // simply clear the entire cache whenever branching occurs.
     std::vector<SpvId> labels;
     SpvId end = this->nextId(nullptr);
     SpvId defaultLabel = end;
@@ -3634,13 +3693,15 @@ void SPIRVCodeGenerator::writeSwitchStatement(const SwitchStatement& s, OutputSt
     for (size_t i = 0; i < cases.size(); ++i) {
         const SwitchCase& c = cases[i]->as<SwitchCase>();
         this->writeLabel(labels[i], out);
+        fStoreCache.reset();  // cleared because we branch to this case label
         this->writeStatement(*c.statement(), out);
         if (fCurrentBlock) {
             this->writeInstruction(SpvOpBranch, labels[i + 1], out);
         }
-        this->pruneReachableOps(numReachableOps);
+        this->pruneConditionalOps(conditionalOps);
     }
     this->writeLabel(end, out);
+    fStoreCache.reset();  // cleared because we branch to this case label
     fBreakTarget.pop();
 }
 
