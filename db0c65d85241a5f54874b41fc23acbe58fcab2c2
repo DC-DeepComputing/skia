@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b7a8b530_edc390f1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-04-16T17:10:02Z",
+      "side": 1,
+      "message": "I had to employ some hackery to work around some build issues, which I documented in the BUILD.bazel file. I\u0027m open to suggestions!",
+      "revId": "db0c65d85241a5f54874b41fc23acbe58fcab2c2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
