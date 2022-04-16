@@ -1073,11 +1073,11 @@ void write_hw_patches(HwPatchWriter&& hwPatchWriter,
 
 SKGPU_DECLARE_STATIC_UNIQUE_KEY(gVertexIDFallbackBufferKey);
 
-int StrokeFixedCountTessellator::prepare(GrMeshDrawTarget* target,
-                                         const SkMatrix& shaderMatrix,
-                                         std::array<float,2> matrixMinMaxScales,
-                                         PathStrokeList* pathStrokeList,
-                                         int totalCombinedStrokeVerbCnt) {
+void StrokeFixedCountTessellator::prepare(GrMeshDrawTarget* target,
+                                          const SkMatrix& shaderMatrix,
+                                          std::array<float,2> matrixMinMaxScales,
+                                          PathStrokeList* pathStrokeList,
+                                          int totalCombinedStrokeVerbCnt) {
     int preallocCount = FixedCountStrokes::PreallocCount(totalCombinedStrokeVerbCnt);
     FixedCountStrokeWriter patchWriter{fAttribs, kMaxParametricSegments,
                                        target, &fVertexChunkArray, preallocCount};
@@ -1087,27 +1087,21 @@ int StrokeFixedCountTessellator::prepare(GrMeshDrawTarget* target,
                                                 matrixMinMaxScales,
                                                 pathStrokeList);
 
-    // Don't draw more vertices than can be indexed by a signed short. We just have to draw the line
-    // somewhere and this seems reasonable enough. (There are two vertices per edge, so 2^14 edges
-    // make 2^15 vertices.)
-    fFixedEdgeCount = std::min(fFixedEdgeCount, (1 << 14) - 1);
+    fFixedEdgeCount = std::min(fFixedEdgeCount, FixedCountStrokes::kMaxEdges);
 
     if (!target->caps().shaderCaps()->vertexIDSupport()) {
         // Our shader won't be able to use sk_VertexID. Bind a fallback vertex buffer with the IDs
         // in it instead.
-        constexpr static int kMaxEdgesInFallbackBuffer = 1024;
-        fFixedEdgeCount = std::min(fFixedEdgeCount, kMaxEdgesInFallbackBuffer);
+        fFixedEdgeCount = std::min(fFixedEdgeCount, FixedCountStrokes::kMaxEdgesNoVertexIDs);
 
         SKGPU_DEFINE_STATIC_UNIQUE_KEY(gVertexIDFallbackBufferKey);
 
         fVertexBufferIfNoIDSupport = target->resourceProvider()->findOrMakeStaticBuffer(
                 GrGpuBufferType::kVertex,
-                FixedCountStrokes::VertexBufferSize(kMaxEdgesInFallbackBuffer),
+                FixedCountStrokes::VertexBufferSize(),
                 gVertexIDFallbackBufferKey,
                 FixedCountStrokes::WriteVertexBuffer);
     }
-
-    return fFixedEdgeCount;
 }
 
 void StrokeFixedCountTessellator::draw(GrOpFlushState* flushState) const {
@@ -1127,11 +1121,11 @@ void StrokeFixedCountTessellator::draw(GrOpFlushState* flushState) const {
     }
 }
 
-int StrokeHardwareTessellator::prepare(GrMeshDrawTarget* target,
-                                       const SkMatrix& shaderMatrix,
-                                       std::array<float,2> matrixMinMaxScales,
-                                       PathStrokeList* pathStrokeList,
-                                       int totalCombinedStrokeVerbCnt) {
+void StrokeHardwareTessellator::prepare(GrMeshDrawTarget* target,
+                                        const SkMatrix& shaderMatrix,
+                                        std::array<float,2> matrixMinMaxScales,
+                                        PathStrokeList* pathStrokeList,
+                                        int totalCombinedStrokeVerbCnt) {
     // Over-allocate enough patches for 1 in 4 strokes to chop and for 8 extra caps.
     int strokePreallocCount = (totalCombinedStrokeVerbCnt * 5) / 4;
     int capPreallocCount = 8;
@@ -1140,7 +1134,6 @@ int StrokeHardwareTessellator::prepare(GrMeshDrawTarget* target,
     HwPatchWriter writer{target, &fVertexChunkArray, fAttribs, fMaxTessellationSegments,
                          preallocCount, matrixMinMaxScales[1]};
     write_hw_patches(std::move(writer), shaderMatrix, matrixMinMaxScales, pathStrokeList);
-    return 0; // 0 is returned for non-fixed-count stroke tessellation
 }
 
 void StrokeHardwareTessellator::draw(GrOpFlushState* flushState) const {
