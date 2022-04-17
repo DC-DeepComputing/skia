@@ -1002,8 +1002,7 @@ public:
                      const SkGlyphRect& deviceBounds,
                      SkSpan<const DevicePosition> devicePositions,
                      GrGlyphVector&& glyphs,
-                     bool glyphsOutOfBounds,
-                     bool supportBilerpAtlas);
+                     bool glyphsOutOfBounds);
 
     static GrSubRunOwner Make(const GrTextBlob* blob,
                               const SkZip<SkGlyphVariant, SkPoint>& accepted,
@@ -1075,8 +1074,7 @@ DirectMaskSubRun::DirectMaskSubRun(const GrTextReferenceFrame* referenceFrame,
                                    const SkGlyphRect& deviceBounds,
                                    SkSpan<const DevicePosition> devicePositions,
                                    GrGlyphVector&& glyphs,
-                                   bool glyphsOutOfBounds,
-                                   bool supportBilerpAtlas)
+                                   bool glyphsOutOfBounds)
         : fTextReferenceFrame{referenceFrame}
         , fMaskFormat{format}
         , fGlyphDeviceBounds{deviceBounds}
@@ -1127,8 +1125,7 @@ GrSubRunOwner DirectMaskSubRun::Make(const GrTextBlob* blob,
     return alloc->makeUnique<DirectMaskSubRun>(
             blob, format, runBounds, leftTop,
             GrGlyphVector{std::move(strike), {glyphIDs, goodPosCount}},
-            glyphsExcluded,
-            blob->supportBilerpAtlas());
+            glyphsExcluded);
 }
 
 bool DirectMaskSubRun::canReuse(const SkPaint& paint, const SkMatrix& positionMatrix) const {
@@ -2064,7 +2061,6 @@ GrTextBlob::~GrTextBlob() = default;
 sk_sp<GrTextBlob> GrTextBlob::Make(const SkGlyphRunList& glyphRunList,
                                    const SkPaint& paint,
                                    const SkMatrix& positionMatrix,
-                                   bool supportBilerpAtlas,
                                    const GrSDFTControl& control,
                                    SkGlyphRunListPainter* painter) {
     // The difference in alignment from the per-glyph data to the SubRun;
@@ -2086,8 +2082,7 @@ sk_sp<GrTextBlob> GrTextBlob::Make(const SkGlyphRunList& glyphRunList,
 
     SkColor initialLuminance = SkPaintPriv::ComputeLuminanceColor(paint);
     sk_sp<GrTextBlob> blob{
-        new (allocation) GrTextBlob(
-                bytesNeededForSubRun, supportBilerpAtlas, positionMatrix, initialLuminance)};
+        new (allocation) GrTextBlob(bytesNeededForSubRun, positionMatrix, initialLuminance)};
 
     const uint64_t uniqueID = glyphRunList.uniqueID();
     for (auto& glyphRun : glyphRunList) {
@@ -2159,12 +2154,10 @@ const GrAtlasSubRun* GrTextBlob::testingOnlyFirstSubRun() const {
 }
 
 GrTextBlob::GrTextBlob(int allocSize,
-                       bool supportBilerpAtlas,
                        const SkMatrix& positionMatrix,
                        SkColor initialLuminance)
         : fAlloc{SkTAddOffset<char>(this, sizeof(GrTextBlob)), allocSize, allocSize/2}
         , fSize{allocSize}
-        , fSupportBilerpAtlas{supportBilerpAtlas}
         , fInitialPositionMatrix{positionMatrix}
         , fInitialLuminance{initialLuminance} { }
 
