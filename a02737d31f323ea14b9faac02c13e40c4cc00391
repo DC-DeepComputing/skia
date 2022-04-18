@@ -18,6 +18,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a981fd46_7ebc4a65",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-04-18T17:46:47Z",
+      "side": 1,
+      "message": "ahh i never sent out my comments",
+      "revId": "a02737d31f323ea14b9faac02c13e40c4cc00391",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "960f47a8_4c5f31c1",
@@ -54,6 +71,70 @@
       "writtenOn": "2022-04-18T11:44:18Z",
       "side": 1,
       "message": "Instead of ifdefs, it might be cleaner to have two versions of this file: GrDawnFence_wasm and GrDawnFence_native or something like that.",
+      "revId": "a02737d31f323ea14b9faac02c13e40c4cc00391",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "27d6fc4a_46c552bb",
+        "filename": "src/gpu/ganesh/dawn/GrDawnFence.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-04-18T17:46:47Z",
+      "side": 1,
+      "message": "Personally, I think this is fine to use ifdefs since there is really on one line in the main logic that changes. That being said if it was two classes I also wouldn\u0027t tell you to move back to 1. So in short not a log of opinion here.",
+      "parentUuid": "07b2096f_b1630dd1",
+      "revId": "a02737d31f323ea14b9faac02c13e40c4cc00391",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ec71b062_04fefe23",
+        "filename": "src/gpu/ganesh/dawn/GrDawnFence.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-04-18T17:46:47Z",
+      "side": 1,
+      "message": "our style is to write \u0027this-\u003eyieldAndCheck()\u0027 here.",
+      "range": {
+        "startLine": 47,
+        "startChar": 12,
+        "endLine": 47,
+        "endChar": 13
+      },
+      "revId": "a02737d31f323ea14b9faac02c13e40c4cc00391",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "676c103c_a5ca7f46",
+        "filename": "src/gpu/ganesh/dawn/GrDawnGpu.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 517,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-04-18T17:46:47Z",
+      "side": 1,
+      "message": "what signals the wait here?",
+      "range": {
+        "startLine": 517,
+        "startChar": 8,
+        "endLine": 517,
+        "endChar": 29
+      },
       "revId": "a02737d31f323ea14b9faac02c13e40c4cc00391",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
