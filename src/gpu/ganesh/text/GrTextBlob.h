@@ -235,7 +235,6 @@ public:
     void addKey(const Key& key);
     bool hasPerspective() const;
     const SkMatrix& initialPositionMatrix() const override { return fInitialPositionMatrix; }
-    bool supportBilerpAtlas() const { return fSupportBilerpAtlas; }
 
     bool canReuse(const SkPaint& paint, const SkMatrix& positionMatrix) const;
 
@@ -284,9 +283,6 @@ private:
 
     // Overall size of this struct plus vertices and glyphs at the end.
     const int fSize;
-
-    // Support using bilerp for directly mapped sub runs.
-    const bool fSupportBilerpAtlas;
 
     // The initial view matrix combined with the initial origin. Used to determine if a cached
     // subRun can be used in this draw situation.
