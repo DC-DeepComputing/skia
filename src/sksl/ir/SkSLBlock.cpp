@@ -23,7 +23,7 @@ std::unique_ptr<Statement> Block::Make(Position pos,
 
     // If the Block is completely empty, synthesize a Nop.
     if (statements.empty()) {
-        return Nop::Make();
+        return Nop::Make(pos);
     }
 
     if (statements.size() > 1) {

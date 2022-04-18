@@ -31,6 +31,12 @@ struct LoadedModule;
 struct LoopUnrollInfo;
 struct Program;
 
+namespace dsl {
+
+struct ForLoopOffsets;
+
+} // namespace dsl
+
 /**
  * Provides utilities for analyzing SkSL statically before it's composed into a full program.
  */
@@ -165,6 +171,7 @@ bool IsConstantIndexExpression(const Expression& expr,
  * null is returned.
  */
 std::unique_ptr<LoopUnrollInfo> GetLoopUnrollInfo(Position pos,
+                                                  dsl::ForLoopOffsets offsets,
                                                   const Statement* loopInitializer,
                                                   const Expression* loopTest,
                                                   const Expression* loopNext,
