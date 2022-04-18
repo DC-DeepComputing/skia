@@ -21,6 +21,7 @@
 #include "include/core/SkShader.h"
 #include "include/core/SkSurface.h"
 #include "include/core/SkTextBlob.h"
+#include "include/gpu/GrRecordingContext.h"
 #include "include/ports/SkTypeface_win.h"
 #include "include/private/SkColorData.h"
 #include "include/private/SkFloatingPoint.h"
@@ -515,6 +516,22 @@ void sniff_paths(const char filepath[], std::function<PathSniffCallback> callbac
         }
         skp->playback(&pathSniffer);
     }
+}
+
+sk_sp<SkImage> MakeTextureImage(SkCanvas* canvas, sk_sp<SkImage> orig) {
+    if (!orig) {
+        return nullptr;
+    }
+
+    if (canvas->recordingContext() && canvas->recordingContext()->asDirectContext()) {
+        GrDirectContext* dContext = canvas->recordingContext()->asDirectContext();
+
+        return orig->makeTextureImage(dContext);
+    } else if (canvas->recorder()) {
+        return orig->makeTextureImage(canvas->recorder());
+    }
+
+    return orig;
 }
 
 }  // namespace ToolUtils
