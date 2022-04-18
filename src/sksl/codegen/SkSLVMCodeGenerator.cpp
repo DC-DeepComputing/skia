@@ -2030,7 +2030,7 @@ void SkVMGenerator::emitTraceScope(skvm::I32 executionMask, int delta) {
 
 void SkVMGenerator::writeStatement(const Statement& s) {
     // The debugger should stop on all types of statements, except for Blocks.
-    if (!s.is<Block>()) {
+    if (!s.is<Block>()/* && !s.is<Nop>()*/) {
         this->emitTraceLine(this->getLine(s.fPosition));
     }
 

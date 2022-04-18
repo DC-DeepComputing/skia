@@ -177,7 +177,10 @@ generated_cc_atom(
     name = "SkSLAnalysis_hdr",
     hdrs = ["SkSLAnalysis.h"],
     visibility = ["//:__subpackages__"],
-    deps = ["//include/private:SkSLSampleUsage_hdr"],
+    deps = [
+        "//include/private:SkSLSampleUsage_hdr",
+        "//include/sksl:DSLCore_hdr",
+    ],
 )
 
 generated_cc_atom(
