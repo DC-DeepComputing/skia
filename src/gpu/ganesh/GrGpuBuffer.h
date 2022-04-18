@@ -62,6 +62,8 @@ public:
 
     bool isCpuBuffer() const final { return false; }
 
+    GrGpuBufferType intendedType() const { return fIntendedType; }
+
     /**
      * Updates the buffer data.
      *
@@ -86,7 +88,6 @@ protected:
                 GrGpuBufferType,
                 GrAccessPattern,
                 std::string_view label);
-    GrGpuBufferType intendedType() const { return fIntendedType; }
 
     void* fMapPtr;
 
