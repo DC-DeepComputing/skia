@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a0dbc2f6_f77b0a00",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-04-18T20:33:59Z",
+      "side": 1,
+      "message": "I tried to fully get rid of third_party/vulkanmemoryallocator and instead directly handle the including of vk_mem_alloc.h in src/gpu/ganesh/vk/GrVkAMDMemoryAllocator.h/cpp, However, when we trigger the VMA_IMPLEMENTATION to compile in GrVkAMDMemoryAllocator.cpp, we get tons of clang warnings (which become errors) in vk_mem_alloc.h since technically the file we are compiling is in core Skia. Since we have no intention of fixing this clang issues in that vk_mem_alloc.h, we will continue to compile it in third_party/vulkanmemoryallocator/GrVulkanMemoryAllocator.cpp to avoid the warnings.",
+      "revId": "21407f53d23aae42cbed6e961671708d561146d2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
