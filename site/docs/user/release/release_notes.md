@@ -10,6 +10,66 @@ This page includes a list of high level updates for each milestone release.
 
 * * *
 
+Milestone 102
+-------------
+  * Add glGetFloatv and glSamplerParameterf to GrGLInterface.
+  * GrGLCreateNativeInterface is removed. Use GrGLMakeNativeInterface.
+  * GrContextOptions::fSharpenMipmappedTextures is removed. MIP LOD is now always
+    biased on the GPU backend. The CPU backend implementation is modified to match
+    this behavior.
+  * Passing SkCanvas::kStrict_SrcRectConstraint disables mipmapping. The old behavior differed
+    between GPU and CPU. CPU always computed a new set of mipmap based on the subset. GPU restricted
+    the sampling coordinates to the subset in the base level but upper level pixels that map to
+    pixels outside the subset in the base level were still used. To get the previous CPU behavior
+    use SkImage::makeSubset() to make a subset image and draw that. The previous GPU behavior is
+    similar, though not exactly, equivalent to making a mipmapped image shader from the original
+    image and applying that to a rectangle.
+
+* * *
+Milestone 101
+-------------
+  * Add maxSurfaceSampleCountForColorType(SkColorType ct) in GrContextThreadSafeProxy
+  * Enums SkAlphaType and SkColorType are broken out into their own header files in include/core/
+
+* * *
+
+Milestone 100
+-------------
+  * Skia now requires C++17 and the corresponding standard library (or newer).
+  * Skia on iOS now requires iOS 11 to build; earlier versions of iOS do not support C++17.
+  * The skstd::string_view and skstd::optional Skia classes have been replaced with the C++17 native
+    std::string_view and std::optional.
+  * Added SkSurface::resolveMSAA api to force Skia to resolve MSAA draws. Useful for when
+    Skia wraps a client's texture as the resolve target.
+  * All of the `makeShader` functions associated with `SkRuntimeEffect` no longer take an
+    `isOpaque` parameter. These functions will now make a best effort to determine if your
+    shader always produces opaque output, and optimize accordingly. If you definitely want your
+    shader to produce opaque output, do so in the shader's SkSL code. This can be done by adjusting
+    any `return` statement in your shader with a swizzle: `return color.rgb1;`.
+    https://review.skia.org/506462
+  * SkRSXform is now exported to DLL/.so files.
+
+* * *
+Milestone 99
+------------
+  * Added two new intrinsic functions to SkSL for use in runtime effects:
+      vec3 toLinearSrgb(vec3 color)
+      vec3 fromLinearSrgb(vec3 color)
+    These convert RGB color values between the working color space (the color space of the
+    destination surface) and a known, fixed color space. `toLinearSrgb` converts a color to the
+    sRGB color gamut, with a linear transfer function. `fromLinearSrgb` converts a color from that
+    same color space. These are helpful for effects that need to work in a specific color space, or
+    want to apply effects (like lighting) that work best in a linear color space.
+    Note that if the destination surface has no color space (color space is `nullptr`), these
+    intrinsics will do no conversion, and return the input color unchanged.
+    https://review.skia.org/481416
+  * Added a new variant of SkImageFilters::RuntimeShader that supports multiple child nodes.
+    https://review.skia.org/489536
+  * Add the ability to specify palette overrides in SkFontArguments. Implemented
+    for the FreeType-backed SkFontMgrs.
+
+* * *
+
 Milestone 98
 ------------
   * The following functions and methods are not defined in SkSurface when SK_SUPPORT_GPU is 0:
