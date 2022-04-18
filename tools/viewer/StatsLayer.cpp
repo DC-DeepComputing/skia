@@ -105,14 +105,20 @@ void StatsLayer::onPaint(SkSurface* surface) {
                                                          canvasSize.height() * kScale)));
 
     paint.setColor(SK_ColorBLACK);
+#if 0
     canvas->drawRect(rect, paint);
+#endif
     // draw the 16ms line
     paint.setColor(SK_ColorLTGRAY);
+#if 0
     canvas->drawLine(rect.fLeft, rect.fBottom - kBaseMS*kPixelPerMS,
                      rect.fRight, rect.fBottom - kBaseMS*kPixelPerMS, paint);
+#endif
     paint.setColor(SK_ColorRED);
     paint.setStyle(SkPaint::kStroke_Style);
+#if 0
     canvas->drawRect(rect, paint);
+#endif
     paint.setStyle(SkPaint::kFill_Style);
 
     int x = SkScalarTruncToInt(rect.fLeft) + kGraphPadding;
@@ -131,8 +137,10 @@ void StatsLayer::onPaint(SkSurface* surface) {
             int height = (int)(fTimers[timer].fTimes[i] * kPixelPerMS + 0.5);
             int endY = std::max(startY - height, kDisplayPadding + kTextHeight);
             paint.setColor(fTimers[timer].fColor);
+#if 0
             canvas->drawLine(SkIntToScalar(x), SkIntToScalar(startY),
                              SkIntToScalar(x), SkIntToScalar(endY), paint);
+#endif
             startY = endY;
             inc += fTimers[timer].fTimes[i];
             sumTimes[timer] += fTimers[timer].fTimes[i];
@@ -142,8 +150,10 @@ void StatsLayer::onPaint(SkSurface* surface) {
         height = std::max(0, height - (SkScalarTruncToInt(rect.fBottom) - startY));
         int endY = std::max(startY - height, kDisplayPadding + kTextHeight);
         paint.setColor(SK_ColorWHITE);
+#if 0
         canvas->drawLine(SkIntToScalar(x), SkIntToScalar(startY),
                          SkIntToScalar(x), SkIntToScalar(endY), paint);
+#endif
         totalTime += fTotalTimes[i];
         if (fTotalTimes[i] > 0) {
             ++totalCount;
@@ -162,14 +172,23 @@ void StatsLayer::onPaint(SkSurface* surface) {
     paint.setColor(SK_ColorWHITE);
     double time = totalTime / std::max(1, totalCount);
     double measure = fCumulativeMeasurementTime / std::max(1, fCumulativeMeasurementCount);
+#if 0
     canvas->drawString(SkStringPrintf("%4.3f ms -> %4.3f ms", time, measure),
                        rect.fLeft + 3, rect.fTop + 14, font, paint);
+#endif
+    SkDebugf("%s\n", SkStringPrintf("%4.3f ms -> %4.3f ms", time, measure).c_str());
 
     for (int timer = 0; timer < fTimers.count(); ++timer) {
         paint.setColor(fTimers[timer].fLabelColor);
+#if 0
         canvas->drawString(SkStringPrintf("%s: %4.3f ms", fTimers[timer].fLabel.c_str(),
                                           sumTimes[timer] / std::max(1, count)),
                            rect.fLeft + 3, rect.fTop + 28 + (14 * timer), font, paint);
+#endif
+#if 0
+        SkDebugf("%s\n", SkStringPrintf("%s: %4.3f ms", fTimers[timer].fLabel.c_str(),
+                                        sumTimes[timer] / std::max(1, count)).c_str());
+#endif
     }
 
     canvas->restore();
