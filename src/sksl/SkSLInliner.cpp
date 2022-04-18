@@ -522,8 +522,9 @@ std::unique_ptr<Statement> Inliner::inlineStatement(Position pos,
                 unrollInfo = std::make_unique<LoopUnrollInfo>(*f.unrollInfo());
                 unrollInfo->fIndex = RemapVariable(unrollInfo->fIndex, varMap);
             }
-            return ForStatement::Make(*fContext, pos, std::move(initializer), expr(f.test()),
-                                      expr(f.next()), stmt(f.statement()), std::move(unrollInfo),
+            return ForStatement::Make(*fContext, pos, dsl::ForLoopOffsets{}, std::move(initializer),
+                                      expr(f.test()), expr(f.next()), stmt(f.statement()),
+                                      std::move(unrollInfo),
                                       SymbolTable::WrapIfBuiltin(f.symbols()));
         }
         case Statement::Kind::kIf: {
@@ -540,7 +541,7 @@ std::unique_ptr<Statement> Inliner::inlineStatement(Position pos,
             if (!r.expression()) {
                 // This function doesn't return a value. We won't inline functions with early
                 // returns, so a return statement is a no-op and can be treated as such.
-                return Nop::Make();
+                return Nop::Make(pos);
             }
 
             // If a function only contains a single return, and it doesn't reference variables from
@@ -549,7 +550,7 @@ std::unique_ptr<Statement> Inliner::inlineStatement(Position pos,
             SkASSERT(resultExpr);
             if (returnComplexity <= ReturnComplexity::kSingleSafeReturn) {
                 *resultExpr = expr(r.expression());
-                return Nop::Make();
+                return Nop::Make(pos);
             }
 
             // For more complex functions, assign their result into a variable.
