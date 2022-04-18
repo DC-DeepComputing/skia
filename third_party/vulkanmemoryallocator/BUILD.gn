@@ -6,14 +6,16 @@
 import("../../gn/skia.gni")
 
 config("vulkanmemoryallocator_public") {
-  include_dirs = [ "." ]
+  include_dirs = [
+    ".",
+    "../externals/vulkanmemoryallocator/include",
+  ]
 }
 
 source_set("vulkanmemoryallocator") {
   public_configs = [ ":vulkanmemoryallocator_public" ]
 
   include_dirs = [
-    "../..",
     "../../include/third_party/vulkan",
   ]
 
