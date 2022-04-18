@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5f1fb951_253588e1",
+        "filename": "tests/sksl/runtime/LoopFloat.skvm",
+        "patchSetId": 9
+      },
+      "lineNbr": 728,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-18T21:18:54Z",
+      "side": 0,
+      "message": "We might want to keep these lines? These correspond to inside out loops that were optimized away:\n\n    // These loops are inside-out and execute zero times.\n    for (float i \u003d 3; i \u003c\u003d 1; ++i) { return false; }\n    for (float i \u003d 3; i \u003c\u003d 1; --i) { return false; }\n\nI would expect to stop at the for statement here. But they are technically inert, so if we\u0027re replacing them with a Nop, it does kind of make sense that they would vanish. What was the problem with Nops that you experienced that made you add positions?",
+      "range": {
+        "startLine": 727,
+        "startChar": 0,
+        "endLine": 728,
+        "endChar": 32
+      },
+      "revId": "4a6fbd84f4ecc4fa5f5d3cf6dbbbbbd7b0c47eda",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
