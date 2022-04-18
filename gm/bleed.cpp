@@ -128,10 +128,6 @@ protected:
     void drawImage(SkCanvas* canvas, sk_sp<SkImage> image, SkRect srcRect, SkRect dstRect,
                    const SkSamplingOptions& sampling, SkPaint* paint) {
         if (fBatch) {
-            if (!image) {
-                return;
-            }
-
             SkCanvas::ImageSetEntry imageSetEntry[1];
             imageSetEntry[0].fImage = image;
             imageSetEntry[0].fSrcRect = srcRect;
@@ -157,7 +153,7 @@ protected:
         paint.setColor(SK_ColorBLUE);
         paint.setAntiAlias(aa);
 
-        this->drawImage(canvas, fSmallImage, fSmallSrcRect, dst, sampling, &paint);
+        drawImage(canvas, fSmallImage, fSmallSrcRect, dst, sampling, &paint);
     }
 
     // Draw the area of interest of the large image
@@ -170,7 +166,7 @@ protected:
         paint.setColor(SK_ColorBLUE);
         paint.setAntiAlias(aa);
 
-        this->drawImage(canvas, fBigImage, fBigSrcRect, dst, sampling, &paint);
+        drawImage(canvas, fBigImage, fBigSrcRect, dst, sampling, &paint);
     }
 
     // Draw upper-left 1/4 of the area of interest of the large image
@@ -187,7 +183,7 @@ protected:
         paint.setColor(SK_ColorBLUE);
         paint.setAntiAlias(aa);
 
-        this->drawImage(canvas, fBigImage, src, dst, sampling, &paint);
+        drawImage(canvas, fBigImage, src, dst, sampling, &paint);
     }
 
     // Draw the area of interest of the small image with a normal blur
@@ -202,7 +198,7 @@ protected:
         paint.setColor(SK_ColorBLUE);
         paint.setAntiAlias(aa);
 
-        this->drawImage(canvas, fSmallImage, fSmallSrcRect, dst, sampling, &paint);
+        drawImage(canvas, fSmallImage, fSmallSrcRect, dst, sampling, &paint);
     }
 
     // Draw the area of interest of the small image with a outer blur
@@ -217,7 +213,7 @@ protected:
         paint.setColor(SK_ColorBLUE);
         paint.setAntiAlias(aa);
 
-        this->drawImage(canvas, fSmallImage, fSmallSrcRect, dst, sampling, &paint);
+        drawImage(canvas, fSmallImage, fSmallSrcRect, dst, sampling, &paint);
     }
 
     void onDraw(SkCanvas* canvas) override {
