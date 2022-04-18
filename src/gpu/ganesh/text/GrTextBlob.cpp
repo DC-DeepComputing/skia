@@ -1039,8 +1039,10 @@ public:
 
     void testingOnly_packedGlyphIDToGrGlyph(GrStrikeCache *cache) const override;
 
-    std::tuple<bool, int>
-    regenerateAtlas(int begin, int end, GrMeshDrawTarget*) const override;
+    std::tuple<bool, int> regenerateAtlas(int begin,
+                                          int end,
+                                          GrMeshDrawTarget*,
+                                          bool supportBilerpFromGlyphAtlas) const override;
 
     void fillVertexData(void* vertexDst, int offset, int count,
                         GrColor color,
@@ -1260,13 +1262,15 @@ DirectMaskSubRun::makeAtlasTextOp(const GrClip* clip,
                                                        sdc->arenaAlloc());
 
     GrRecordingContext* const rContext = sdc->recordingContext();
-    GrOp::Owner op = GrOp::Make<AtlasTextOp>(rContext,
-                                             op_mask_type(fMaskFormat),
-                                             false,
-                                             this->glyphCount(),
-                                             subRunBounds,
-                                             geometry,
-                                             std::move(grPaint));
+    GrOp::Owner op =
+            GrOp::Make<AtlasTextOp>(rContext,
+                                    op_mask_type(fMaskFormat),
+                                    false,
+                                    this->glyphCount(),
+                                    subRunBounds,
+                                    geometry,
+                                    std::move(grPaint),
+                                    rContext->priv().options().fSupportBilerpFromGlyphAtlas);
 
     return {clip, std::move(op)};
 }
@@ -1275,11 +1279,12 @@ void DirectMaskSubRun::testingOnly_packedGlyphIDToGrGlyph(GrStrikeCache *cache) 
     fGlyphs.packedGlyphIDToGrGlyph(cache);
 }
 
-std::tuple<bool, int>
-DirectMaskSubRun::regenerateAtlas(int begin, int end, GrMeshDrawTarget* target) const {
-    int srcPadding = fSupportBilerpAtlas ? 1 : 0;
-    return fGlyphs.regenerateAtlas(
-            begin, end, fMaskFormat, srcPadding, target, fSupportBilerpAtlas);
+std::tuple<bool, int> DirectMaskSubRun::regenerateAtlas(int begin,
+                                                        int end,
+                                                        GrMeshDrawTarget* target,
+                                                        bool supportBilerpFromGlyphAtlas) const {
+    int srcPadding = fSupportBilerpAtlas ? 1 : supportBilerpFromGlyphAtlas;
+    return fGlyphs.regenerateAtlas(begin, end, fMaskFormat, srcPadding, target);
 }
 
 // The 99% case. No clip. Non-color only.
@@ -1448,7 +1453,10 @@ public:
 
     void testingOnly_packedGlyphIDToGrGlyph(GrStrikeCache *cache) const override;
 
-    std::tuple<bool, int> regenerateAtlas(int begin, int end, GrMeshDrawTarget*) const override;
+    std::tuple<bool, int> regenerateAtlas(int begin,
+                                          int end,
+                                          GrMeshDrawTarget*,
+                                          bool supportBilerpFromGlyphAtlas) const override;
 
     void fillVertexData(
             void* vertexDst, int offset, int count,
@@ -1558,13 +1566,15 @@ TransformedMaskSubRun::makeAtlasTextOp(const GrClip* clip,
                                                        sdc->arenaAlloc());
 
     GrRecordingContext* const rContext = sdc->recordingContext();
-    GrOp::Owner op = GrOp::Make<AtlasTextOp>(rContext,
-                                             fVertexFiller.opMaskType(),
-                                             true,
-                                             this->glyphCount(),
-                                             this->deviceRect(drawMatrix, drawOrigin),
-                                             geometry,
-                                             std::move(grPaint));
+    GrOp::Owner op =
+            GrOp::Make<AtlasTextOp>(rContext,
+                                    fVertexFiller.opMaskType(),
+                                    true,
+                                    this->glyphCount(),
+                                    this->deviceRect(drawMatrix, drawOrigin),
+                                    geometry,
+                                    std::move(grPaint),
+                                    rContext->priv().options().fSupportBilerpFromGlyphAtlas);
     return {clip, std::move(op)};
 }
 
@@ -1581,9 +1591,9 @@ void TransformedMaskSubRun::testingOnly_packedGlyphIDToGrGlyph(GrStrikeCache *ca
     fGlyphs.packedGlyphIDToGrGlyph(cache);
 }
 
-std::tuple<bool, int> TransformedMaskSubRun::regenerateAtlas(int begin, int end,
-                                                             GrMeshDrawTarget* target) const {
-    return fGlyphs.regenerateAtlas(begin, end, fVertexFiller.grMaskType(), 1, target, true);
+std::tuple<bool, int> TransformedMaskSubRun::regenerateAtlas(
+        int begin, int end, GrMeshDrawTarget* target, bool supportBilerpFromGlyphAtlas) const {
+    return fGlyphs.regenerateAtlas(begin, end, fVertexFiller.grMaskType(), 1, target);
 }
 
 void TransformedMaskSubRun::fillVertexData(void* vertexDst, int offset, int count,
@@ -1662,7 +1672,10 @@ public:
 
     void testingOnly_packedGlyphIDToGrGlyph(GrStrikeCache *cache) const override;
 
-    std::tuple<bool, int> regenerateAtlas(int begin, int end, GrMeshDrawTarget*) const override;
+    std::tuple<bool, int> regenerateAtlas(int begin,
+                                          int end,
+                                          GrMeshDrawTarget*,
+                                          bool supportBilerpFromGlyphAtlas) const override;
 
     void fillVertexData(
             void* vertexDst, int offset, int count,
@@ -1836,16 +1849,18 @@ SDFTSubRun::makeAtlasTextOp(const GrClip* clip,
                                                        sdc->arenaAlloc());
 
     GrRecordingContext* const rContext = sdc->recordingContext();
-    GrOp::Owner op = GrOp::Make<AtlasTextOp>(rContext,
-                                             maskType,
-                                             true,
-                                             this->glyphCount(),
-                                             this->deviceRect(drawMatrix, drawOrigin),
-                                             SkPaintPriv::ComputeLuminanceColor(paint),
-                                             useGammaCorrectDistanceTable,
-                                             DFGPFlags,
-                                             geometry,
-                                             std::move(grPaint));
+    GrOp::Owner op =
+            GrOp::Make<AtlasTextOp>(rContext,
+                                    maskType,
+                                    true,
+                                    this->glyphCount(),
+                                    this->deviceRect(drawMatrix, drawOrigin),
+                                    SkPaintPriv::ComputeLuminanceColor(paint),
+                                    useGammaCorrectDistanceTable,
+                                    DFGPFlags,
+                                    geometry,
+                                    std::move(grPaint),
+                                    rContext->priv().options().fSupportBilerpFromGlyphAtlas);
 
     return {clip, std::move(op)};
 }
@@ -1859,7 +1874,7 @@ void SDFTSubRun::testingOnly_packedGlyphIDToGrGlyph(GrStrikeCache *cache) const 
 }
 
 std::tuple<bool, int> SDFTSubRun::regenerateAtlas(
-        int begin, int end, GrMeshDrawTarget *target) const {
+        int begin, int end, GrMeshDrawTarget *target, bool supportBilerpFromGlyphAtlas) const {
     return fGlyphs.regenerateAtlas(begin, end, kA8_GrMaskFormat, SK_DistanceFieldInset, target);
 }
 
@@ -2264,8 +2279,10 @@ public:
 
     void testingOnly_packedGlyphIDToGrGlyph(GrStrikeCache *cache) const override;
 
-    std::tuple<bool, int>
-    regenerateAtlas(int begin, int end, GrMeshDrawTarget*) const override;
+    std::tuple<bool, int> regenerateAtlas(int begin,
+                                          int end,
+                                          GrMeshDrawTarget*,
+                                          bool supportBilerpFromGlyphAtlas) const override;
 
     void fillVertexData(void* vertexDst, int offset, int count,
                         GrColor color,
@@ -2404,13 +2421,15 @@ DirectMaskSubRunNoCache::makeAtlasTextOp(const GrClip* clip,
             drawingColor
     };
 
-    GrOp::Owner op = GrOp::Make<AtlasTextOp>(rContext,
-                                             op_mask_type(fMaskFormat),
-                                             false,
-                                             this->glyphCount(),
-                                             fGlyphDeviceBounds,
-                                             geometry,
-                                             std::move(grPaint));
+    GrOp::Owner op =
+            GrOp::Make<AtlasTextOp>(rContext,
+                                    op_mask_type(fMaskFormat),
+                                    false,
+                                    this->glyphCount(),
+                                    fGlyphDeviceBounds,
+                                    geometry,
+                                    std::move(grPaint),
+                                    rContext->priv().options().fSupportBilerpFromGlyphAtlas);
 
     return {clip, std::move(op)};
 }
@@ -2419,13 +2438,10 @@ void DirectMaskSubRunNoCache::testingOnly_packedGlyphIDToGrGlyph(GrStrikeCache *
     fGlyphs.packedGlyphIDToGrGlyph(cache);
 }
 
-std::tuple<bool, int>
-DirectMaskSubRunNoCache::regenerateAtlas(int begin, int end, GrMeshDrawTarget* target) const {
-    if (fSupportBilerpAtlas) {
-        return fGlyphs.regenerateAtlas(begin, end, fMaskFormat, 1, target, true);
-    } else {
-        return fGlyphs.regenerateAtlas(begin, end, fMaskFormat, 0, target, false);
-    }
+std::tuple<bool, int> DirectMaskSubRunNoCache::regenerateAtlas(
+        int begin, int end, GrMeshDrawTarget* target, bool supportBilerpFromGlyphAtlas) const {
+    int srcPadding = fSupportBilerpAtlas ? 1 : supportBilerpFromGlyphAtlas;
+    return fGlyphs.regenerateAtlas(begin, end, fMaskFormat, srcPadding, target);
 }
 
 // The 99% case. No clip. Non-color only.
@@ -2504,7 +2520,10 @@ public:
 
     void testingOnly_packedGlyphIDToGrGlyph(GrStrikeCache *cache) const override;
 
-    std::tuple<bool, int> regenerateAtlas(int begin, int end, GrMeshDrawTarget*) const override;
+    std::tuple<bool, int> regenerateAtlas(int begin,
+                                          int end,
+                                          GrMeshDrawTarget*,
+                                          bool supportBilerpFromGlyphAtlas) const override;
 
     void fillVertexData(
             void* vertexDst, int offset, int count,
@@ -2576,13 +2595,15 @@ TransformedMaskSubRunNoCache::makeAtlasTextOp(const GrClip* clip,
     };
 
     GrRecordingContext* rContext = sdc->recordingContext();
-    GrOp::Owner op = GrOp::Make<AtlasTextOp>(rContext,
-                                             fVertexFiller.opMaskType(),
-                                             true,
-                                             this->glyphCount(),
-                                             this->deviceRect(drawMatrix, drawOrigin),
-                                             geometry,
-                                             std::move(grPaint));
+    GrOp::Owner op =
+            GrOp::Make<AtlasTextOp>(rContext,
+                                    fVertexFiller.opMaskType(),
+                                    true,
+                                    this->glyphCount(),
+                                    this->deviceRect(drawMatrix, drawOrigin),
+                                    geometry,
+                                    std::move(grPaint),
+                                    rContext->priv().options().fSupportBilerpFromGlyphAtlas);
     return {clip, std::move(op)};
 }
 
@@ -2591,8 +2612,8 @@ void TransformedMaskSubRunNoCache::testingOnly_packedGlyphIDToGrGlyph(GrStrikeCa
 }
 
 std::tuple<bool, int> TransformedMaskSubRunNoCache::regenerateAtlas(
-        int begin, int end, GrMeshDrawTarget* target) const {
-    return fGlyphs.regenerateAtlas(begin, end, fVertexFiller.grMaskType(), 1, target, true);
+        int begin, int end, GrMeshDrawTarget* target, bool supportBilerpFromGlyphAtlas) const {
+    return fGlyphs.regenerateAtlas(begin, end, fVertexFiller.grMaskType(), 1, target);
 }
 
 void TransformedMaskSubRunNoCache::fillVertexData(
@@ -2655,7 +2676,10 @@ public:
 
     void testingOnly_packedGlyphIDToGrGlyph(GrStrikeCache *cache) const override;
 
-    std::tuple<bool, int> regenerateAtlas(int begin, int end, GrMeshDrawTarget*) const override;
+    std::tuple<bool, int> regenerateAtlas(int begin,
+                                          int end,
+                                          GrMeshDrawTarget*,
+                                          bool supportBilerpFromGlyphAtlas) const override;
 
     void fillVertexData(
             void* vertexDst, int offset, int count,
@@ -2768,16 +2792,18 @@ SDFTSubRunNoCache::makeAtlasTextOp(const GrClip* clip,
     };
 
     GrRecordingContext* rContext = sdc->recordingContext();
-    GrOp::Owner op = GrOp::Make<AtlasTextOp>(rContext,
-                                             maskType,
-                                             true,
-                                             this->glyphCount(),
-                                             this->deviceRect(drawMatrix, drawOrigin),
-                                             SkPaintPriv::ComputeLuminanceColor(paint),
-                                             useGammaCorrectDistanceTable,
-                                             DFGPFlags,
-                                             geometry,
-                                             std::move(grPaint));
+    GrOp::Owner op =
+            GrOp::Make<AtlasTextOp>(rContext,
+                                    maskType,
+                                    true,
+                                    this->glyphCount(),
+                                    this->deviceRect(drawMatrix, drawOrigin),
+                                    SkPaintPriv::ComputeLuminanceColor(paint),
+                                    useGammaCorrectDistanceTable,
+                                    DFGPFlags,
+                                    geometry,
+                                    std::move(grPaint),
+                                    rContext->priv().options().fSupportBilerpFromGlyphAtlas);
 
     return {clip, std::move(op)};
 }
@@ -2787,7 +2813,7 @@ void SDFTSubRunNoCache::testingOnly_packedGlyphIDToGrGlyph(GrStrikeCache *cache)
 }
 
 std::tuple<bool, int> SDFTSubRunNoCache::regenerateAtlas(
-        int begin, int end, GrMeshDrawTarget *target) const {
+        int begin, int end, GrMeshDrawTarget *target, bool supportBilerpFromGlyphAtlas) const {
 
     return fGlyphs.regenerateAtlas(begin, end, fMaskFormat, SK_DistanceFieldInset, target);
 }
@@ -3118,8 +3144,10 @@ public:
 
     void testingOnly_packedGlyphIDToGrGlyph(GrStrikeCache *cache) const override;
 
-    std::tuple<bool, int>
-    regenerateAtlas(int begin, int end, GrMeshDrawTarget*) const override;
+    std::tuple<bool, int> regenerateAtlas(int begin,
+                                          int end,
+                                          GrMeshDrawTarget*,
+                                          bool supportBilerpFromGlyphAtlas) const override;
 
     void fillVertexData(void* vertexDst, int offset, int count,
                         GrColor color,
@@ -3318,13 +3346,15 @@ DirectMaskSubRunSlug::makeAtlasTextOp(const GrClip* clip,
                                                        sdc->arenaAlloc());
 
     GrRecordingContext* const rContext = sdc->recordingContext();
-    GrOp::Owner op = GrOp::Make<AtlasTextOp>(rContext,
-                                             op_mask_type(fMaskFormat),
-                                             !integerTranslate,
-                                             this->glyphCount(),
-                                             subRunDeviceBounds,
-                                             geometry,
-                                             std::move(grPaint));
+    GrOp::Owner op =
+            GrOp::Make<AtlasTextOp>(rContext,
+                                    op_mask_type(fMaskFormat),
+                                    !integerTranslate,
+                                    this->glyphCount(),
+                                    subRunDeviceBounds,
+                                    geometry,
+                                    std::move(grPaint),
+                                    rContext->priv().options().fSupportBilerpFromGlyphAtlas);
     return {clip, std::move(op)};
 }
 
@@ -3332,9 +3362,10 @@ void DirectMaskSubRunSlug::testingOnly_packedGlyphIDToGrGlyph(GrStrikeCache *cac
     fGlyphs.packedGlyphIDToGrGlyph(cache);
 }
 
-std::tuple<bool, int>
-DirectMaskSubRunSlug::regenerateAtlas(int begin, int end, GrMeshDrawTarget* target) const {
-    return fGlyphs.regenerateAtlas(begin, end, fMaskFormat, 1, target, true);
+std::tuple<bool, int> DirectMaskSubRunSlug::regenerateAtlas(
+        int begin, int end, GrMeshDrawTarget* target, bool supportBilerpFromGlyphAtlas) const {
+    return fGlyphs.regenerateAtlas(begin, end, fMaskFormat, supportBilerpFromGlyphAtlas ? 0 : 1,
+target);
 }
 
 template<typename Quad, typename VertexData>

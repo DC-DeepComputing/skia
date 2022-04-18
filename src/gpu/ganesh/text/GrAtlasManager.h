@@ -57,8 +57,7 @@ public:
                                              GrGlyph*,
                                              int srcPadding,
                                              GrResourceProvider*,
-                                             GrDeferredUploadTarget*,
-                                             bool);
+                                             GrDeferredUploadTarget*);
 
     // To ensure the GrDrawOpAtlas does not evict the Glyph Mask from its texture backing store,
     // the client must pass in the current op token along with the GrGlyph.

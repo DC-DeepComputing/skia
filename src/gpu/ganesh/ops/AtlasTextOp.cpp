@@ -63,7 +63,8 @@ AtlasTextOp::AtlasTextOp(MaskType maskType,
                          int glyphCount,
                          SkRect deviceRect,
                          Geometry* geo,
-                         GrPaint&& paint)
+                         GrPaint&& paint,
+                         bool supportBilerpFromGlyphAtlas)
         : INHERITED{ClassID()}
         , fProcessors(std::move(paint))
         , fNumGlyphs(glyphCount)
@@ -74,7 +75,8 @@ AtlasTextOp::AtlasTextOp(MaskType maskType,
         , fHasPerspective(needsTransform && geo->fDrawMatrix.hasPerspective())
         , fUseGammaCorrectDistanceTable(false)
         , fHead{geo}
-        , fTail{&fHead->fNext} {
+        , fTail{&fHead->fNext}
+        , fSupportBilerpFromGlyphAtlas(supportBilerpFromGlyphAtlas) {
     // We don't have tight bounds on the glyph paths in device space. For the purposes of bounds
     // we treat this as a set of non-AA rects rendered with a texture.
     this->setBounds(deviceRect, HasAABloat::kNo, IsHairline::kNo);
@@ -88,7 +90,8 @@ AtlasTextOp::AtlasTextOp(MaskType maskType,
                          bool useGammaCorrectDistanceTable,
                          uint32_t DFGPFlags,
                          Geometry* geo,
-                         GrPaint&& paint)
+                         GrPaint&& paint,
+                         bool supportBilerpFromGlyphAtlas)
         : INHERITED{ClassID()}
         , fProcessors(std::move(paint))
         , fNumGlyphs(glyphCount)
@@ -100,7 +103,8 @@ AtlasTextOp::AtlasTextOp(MaskType maskType,
         , fUseGammaCorrectDistanceTable(useGammaCorrectDistanceTable)
         , fLuminanceColor(luminanceColor)
         , fHead{geo}
-        , fTail{&fHead->fNext} {
+        , fTail{&fHead->fNext}
+        , fSupportBilerpFromGlyphAtlas(supportBilerpFromGlyphAtlas) {
     // We don't have tight bounds on the glyph paths in device space. For the purposes of bounds
     // we treat this as a set of non-AA rects rendered with a texture.
     this->setBounds(deviceRect, HasAABloat::kNo, IsHairline::kNo);
@@ -290,7 +294,8 @@ void AtlasTextOp::onPrepareDraws(GrMeshDrawTarget* target) {
             // Regenerate the atlas for the remainder of the glyphs in the run, or the remainder
             // of the glyphs to fill the vertex buffer.
             int regenEnd = subRunCursor + std::min(subRunEnd - subRunCursor, quadEnd - quadCursor);
-            auto[ok, glyphsRegenerated] = subRun.regenerateAtlas(subRunCursor, regenEnd, target);
+            auto [ok, glyphsRegenerated] = subRun.regenerateAtlas(
+                    subRunCursor, regenEnd, target, this->fSupportBilerpFromGlyphAtlas);
             // There was a problem allocating the glyph in the atlas. Bail.
             if (!ok) {
                 return;

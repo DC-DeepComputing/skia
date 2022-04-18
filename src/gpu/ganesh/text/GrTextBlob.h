@@ -84,8 +84,10 @@ public:
 
     // This call is not thread safe. It should only be called from GrDrawOp::onPrepare which
     // is single threaded.
-    virtual std::tuple<bool, int> regenerateAtlas(
-            int begin, int end, GrMeshDrawTarget* target) const = 0;
+    virtual std::tuple<bool, int> regenerateAtlas(int begin,
+                                                  int end,
+                                                  GrMeshDrawTarget* target,
+                                                  bool supportBilerpFromGlyphAtlas) const = 0;
 };
 
 // -- GrSubRun -------------------------------------------------------------------------------------

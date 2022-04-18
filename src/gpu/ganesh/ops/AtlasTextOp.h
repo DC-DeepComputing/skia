@@ -132,7 +132,8 @@ private:
                 int glyphCount,
                 SkRect deviceRect,
                 Geometry* geo,
-                GrPaint&& paint);
+                GrPaint&& paint,
+                bool supportBilerpFromGlyphAtlas);
 
     AtlasTextOp(MaskType maskType,
                 bool needsTransform,
@@ -142,7 +143,8 @@ private:
                 bool useGammaCorrectDistanceTable,
                 uint32_t DFGPFlags,
                 Geometry* geo,
-                GrPaint&& paint);
+                GrPaint&& paint,
+                bool supportBilerpFromGlyphAtlas);
 
     GrProgramInfo* programInfo() override {
         // TODO [PI]: implement
@@ -248,6 +250,8 @@ private:
 
     Geometry* fHead{nullptr};
     Geometry** fTail{&fHead};
+
+    const bool fSupportBilerpFromGlyphAtlas;
 
     using INHERITED = GrMeshDrawOp;
 };
