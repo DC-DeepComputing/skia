@@ -19,6 +19,7 @@
 #include "include/effects/SkImageFilters.h"
 
 #include "tools/Resources.h"
+#include "tools/ToolUtils.h"
 
 // TODO(michaelludwig) - This will be made public within SkImageFilters.h at some point
 #include "src/effects/imagefilters/SkCropImageFilter.h"
@@ -154,7 +155,7 @@ sk_sp<SkImage> make_image(SkCanvas* canvas, const SkRect* contentBounds) {
         surf->getCanvas()->clear(SK_ColorRED);
     }
 
-    return surf->makeImageSnapshot();
+    return ToolUtils::MakeTextureImage(canvas, surf->makeImageSnapshot());
 }
 
 void draw_example(
@@ -180,15 +181,17 @@ void draw_example(
         SkRect clippedContentBounds;
         if (clippedContentBounds.intersect(contentBounds, kExampleBounds)) {
             auto contentImage = image->makeSubset(clippedContentBounds.roundOut());
-            SkPaint tiledPaint;
-            tiledPaint.setShader(contentImage->makeShader(
-                    inputMode, inputMode, SkSamplingOptions(SkFilterMode::kLinear)));
-            tiledPaint.setAlphaf(0.15f);
+            if (contentImage) {
+                SkPaint tiledPaint;
+                tiledPaint.setShader(contentImage->makeShader(
+                        inputMode, inputMode, SkSamplingOptions(SkFilterMode::kLinear)));
+                tiledPaint.setAlphaf(0.15f);
 
-            canvas->save();
-            canvas->translate(clippedContentBounds.fLeft, clippedContentBounds.fTop);
-            canvas->drawPaint(tiledPaint);
-            canvas->restore();
+                canvas->save();
+                canvas->translate(clippedContentBounds.fLeft, clippedContentBounds.fTop);
+                canvas->drawPaint(tiledPaint);
+                canvas->restore();
+            }
         }
     }
 
