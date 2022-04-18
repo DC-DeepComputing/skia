@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2e8afa58_6907834c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-04-18T17:35:44Z",
+      "side": 1,
+      "message": "ctrl-c, ctrl-v :)\n\nBut really after this change we no longer need to modify the vk_mem_alloc file. So we are in a position to switch it to using the real DEPS systems. But I\u0027d prefer to do that in a follow up CL.",
+      "parentUuid": "d5bd3e2c_d23df24d",
+      "revId": "581452395c39a0b8bff52d26a121cee18713e72f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d2f7c331_27cb89b0",
         "filename": "src/gpu/graphite/Device.cpp",
         "patchSetId": 2
@@ -31,6 +49,30 @@
       "writtenOn": "2022-04-18T17:29:41Z",
       "side": 1,
       "message": "Where is newPaint defined? Is that a field?",
+      "range": {
+        "startLine": 417,
+        "startChar": 33,
+        "endLine": 417,
+        "endChar": 41
+      },
+      "revId": "581452395c39a0b8bff52d26a121cee18713e72f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a39e45f6_08b5e805",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 417,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-04-18T17:35:44Z",
+      "side": 1,
+      "message": "silly local changes sneaking into changes they don\u0027t belong. Removed.",
+      "parentUuid": "d2f7c331_27cb89b0",
       "range": {
         "startLine": 417,
         "startChar": 33,
