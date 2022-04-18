@@ -39,6 +39,30 @@
       },
       "revId": "d599ec7e6165365b7315f99d54c0fdfa0d9566e1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dd8f5c55_5ffd4a22",
+        "filename": "supported-branches.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2022-04-18T16:20:48Z",
+      "side": 1,
+      "message": "Whoops, done.",
+      "parentUuid": "fda24381_9e47be15",
+      "range": {
+        "startLine": 25,
+        "startChar": 16,
+        "endLine": 25,
+        "endChar": 23
+      },
+      "revId": "d599ec7e6165365b7315f99d54c0fdfa0d9566e1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
