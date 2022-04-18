@@ -8,6 +8,7 @@
 #include "include/core/SkTypes.h"
 #include "include/private/SkFloatingPoint.h"
 #include "include/private/SkSLStatement.h"
+#include "include/sksl/DSLCore.h"
 #include "include/sksl/SkSLErrorReporter.h"
 #include "include/sksl/SkSLOperator.h"
 #include "include/sksl/SkSLPosition.h"
@@ -53,6 +54,7 @@ static int calculate_count(double start, double end, double delta, bool forwards
 }
 
 std::unique_ptr<LoopUnrollInfo> Analysis::GetLoopUnrollInfo(Position loopPos,
+                                                            dsl::ForLoopOffsets offsets,
                                                             const Statement* loopInitializer,
                                                             const Expression* loopTest,
                                                             const Expression* loopNext,
@@ -66,7 +68,10 @@ std::unique_ptr<LoopUnrollInfo> Analysis::GetLoopUnrollInfo(Position loopPos,
     // init_declaration has the form: type_specifier identifier = constant_expression
     //
     if (!loopInitializer) {
-        errors.error(loopPos, "missing init declaration");
+        Position pos = offsets.leftParenOffset != -1 && offsets.firstSemicolonOffset != -1
+                ? Position::Range(offsets.leftParenOffset + 1, offsets.firstSemicolonOffset)
+                : loopPos;
+        errors.error(pos, "missing init declaration");
         return nullptr;
     }
     if (!loopInitializer->is<VarDeclaration>()) {
@@ -103,7 +108,11 @@ std::unique_ptr<LoopUnrollInfo> Analysis::GetLoopUnrollInfo(Position loopPos,
     // condition has the form: loop_index relational_operator constant_expression
     //
     if (!loopTest) {
-        errors.error(loopPos, "missing condition");
+        Position pos = offsets.firstSemicolonOffset != -1 && offsets.secondSemicolonOffset != -1
+                ? Position::Range(offsets.firstSemicolonOffset + 1,
+                    offsets.secondSemicolonOffset + 1)
+                : loopPos;
+        errors.error(pos, "missing condition");
         return nullptr;
     }
     if (!loopTest->is<BinaryExpression>()) {
@@ -144,7 +153,10 @@ std::unique_ptr<LoopUnrollInfo> Analysis::GetLoopUnrollInfo(Position loopPos,
     // it's an oversight, so we allow those as well.
     //
     if (!loopNext) {
-        errors.error(loopPos, "missing loop expression");
+        Position pos = offsets.secondSemicolonOffset != -1 && offsets.rightParenOffset != -1
+                ? Position::Range(offsets.secondSemicolonOffset + 1, offsets.rightParenOffset + 1)
+                : loopPos;
+        errors.error(pos, "missing loop expression");
         return nullptr;
     }
     switch (loopNext->kind()) {
