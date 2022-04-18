@@ -16,6 +16,29 @@
       "message": "This is part of the branch process.  +armansito who is the current gardener.",
       "revId": "d599ec7e6165365b7315f99d54c0fdfa0d9566e1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fda24381_9e47be15",
+        "filename": "supported-branches.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 5145
+      },
+      "writtenOn": "2022-04-18T16:18:22Z",
+      "side": 1,
+      "message": "Should this be hcm@?",
+      "range": {
+        "startLine": 25,
+        "startChar": 16,
+        "endLine": 25,
+        "endChar": 23
+      },
+      "revId": "d599ec7e6165365b7315f99d54c0fdfa0d9566e1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
