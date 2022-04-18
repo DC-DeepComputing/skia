@@ -33,6 +33,24 @@
       "message": "Not submittable because needs API owner approval. Might want to force submit.",
       "revId": "ac937e2b56abf90e95d85201c1678a434fb81267",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "db219670_f0dbc6bd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2022-04-18T15:35:07Z",
+      "side": 1,
+      "message": "I don\u0027t have the option to force submit.  Where can I find the list of API owners?  Is it possible to have SkCQ provide more detail, eg. \"add one of these people as reviewer\"?",
+      "parentUuid": "745a8b6e_bbe23b01",
+      "revId": "ac937e2b56abf90e95d85201c1678a434fb81267",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
