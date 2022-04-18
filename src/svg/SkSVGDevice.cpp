@@ -1140,7 +1140,7 @@ void SkSVGDevice::drawVertices(const SkVertices*, sk_sp<SkBlender>, const SkPain
 }
 
 #ifdef SK_ENABLE_SKSL
-void SkSVGDevice::drawCustomMesh(SkCustomMesh, sk_sp<SkBlender>, const SkPaint&) {
+void SkSVGDevice::drawCustomMesh(const SkCustomMesh&, sk_sp<SkBlender>, const SkPaint&) {
     // todo
 }
 #endif
