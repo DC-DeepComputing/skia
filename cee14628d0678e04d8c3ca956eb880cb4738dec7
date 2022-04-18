@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9c0cb115_20e4b0f1",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 525,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-04-18T14:43:46Z",
+      "side": 1,
+      "message": "nit: \u0027store cache\u0027 to match the naming above?",
+      "range": {
+        "startLine": 525,
+        "startChar": 79,
+        "endLine": 525,
+        "endChar": 83
+      },
+      "revId": "cee14628d0678e04d8c3ca956eb880cb4738dec7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
