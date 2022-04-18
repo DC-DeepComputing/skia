@@ -8,15 +8,15 @@
 #include "include/core/SkSize.h"
 #include "include/private/SkTDArray.h"
 #include "include/utils/SkRandom.h"
-#include "src/gpu/ganesh/GrRectanizerPow2.h"
-#include "src/gpu/ganesh/GrRectanizerSkyline.h"
+#include "src/gpu/RectanizerPow2.h"
+#include "src/gpu/RectanizerSkyline.h"
 #include "tests/Test.h"
 
 static const int kWidth = 1024;
 static const int kHeight = 1024;
 
-// Basic test of a GrRectanizer-derived class' functionality
-static void test_rectanizer_basic(skiatest::Reporter* reporter, GrRectanizer* rectanizer) {
+// Basic test of a Rectanizer-derived class' functionality
+static void test_rectanizer_basic(skiatest::Reporter* reporter, skgpu::Rectanizer* rectanizer) {
     REPORTER_ASSERT(reporter, kWidth == rectanizer->width());
     REPORTER_ASSERT(reporter, kHeight == rectanizer->height());
 
@@ -29,7 +29,7 @@ static void test_rectanizer_basic(skiatest::Reporter* reporter, GrRectanizer* re
 }
 
 static void test_rectanizer_inserts(skiatest::Reporter*,
-                                    GrRectanizer* rectanizer,
+                                    skgpu::Rectanizer* rectanizer,
                                     const SkTDArray<SkISize>& rects) {
     int i;
     for (i = 0; i < rects.count(); ++i) {
@@ -43,14 +43,14 @@ static void test_rectanizer_inserts(skiatest::Reporter*,
 }
 
 static void test_skyline(skiatest::Reporter* reporter, const SkTDArray<SkISize>& rects) {
-    GrRectanizerSkyline skylineRectanizer(kWidth, kHeight);
+    skgpu::RectanizerSkyline skylineRectanizer(kWidth, kHeight);
 
     test_rectanizer_basic(reporter, &skylineRectanizer);
     test_rectanizer_inserts(reporter, &skylineRectanizer, rects);
 }
 
 static void test_pow2(skiatest::Reporter* reporter, const SkTDArray<SkISize>& rects) {
-    GrRectanizerPow2 pow2Rectanizer(kWidth, kHeight);
+    skgpu::RectanizerPow2 pow2Rectanizer(kWidth, kHeight);
 
     test_rectanizer_basic(reporter, &pow2Rectanizer);
     test_rectanizer_inserts(reporter, &pow2Rectanizer, rects);

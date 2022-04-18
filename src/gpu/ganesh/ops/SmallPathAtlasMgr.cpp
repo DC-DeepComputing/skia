@@ -57,7 +57,7 @@ bool SmallPathAtlasMgr::initAtlas(GrProxyProvider* proxyProvider, const GrCaps* 
     GrDrawOpAtlasConfig atlasConfig(caps->maxTextureSize(), kMaxAtlasTextureBytes);
     SkISize size = atlasConfig.atlasDimensions(kA8_GrMaskFormat);
     fAtlas = GrDrawOpAtlas::Make(proxyProvider, format,
-                                 GrColorType::kAlpha_8, size.width(), size.height(),
+                                 kAlpha_8_SkColorType, 1, size.width(), size.height(),
                                  kPlotWidth, kPlotHeight, this,
                                  GrDrawOpAtlas::AllowMultitexturing::kYes, this);
 
