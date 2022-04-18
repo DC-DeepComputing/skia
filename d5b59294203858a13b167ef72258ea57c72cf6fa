@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f6d07db1_ea88a9e4",
+        "filename": "src/gpu/ganesh/text/GrTextBlob.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1079,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-04-18T18:17:49Z",
+      "side": 1,
+      "message": "This is deleted in a follow up, right?",
+      "range": {
+        "startLine": 1079,
+        "startChar": 40,
+        "endLine": 1079,
+        "endChar": 58
+      },
+      "revId": "d5b59294203858a13b167ef72258ea57c72cf6fa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
