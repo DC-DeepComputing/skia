@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "aa4df5d9_eb303386",
+        "filename": "include/sksl/DSLCore.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-18T21:16:25Z",
+      "side": 1,
+      "message": "Actually, one more change as long as we\u0027re here--rather than these character offsets, can we just send in three ranges?\n  \n    Position init;\n    Position test;\n    Position next;\n    \nIt seems like it would be a much better division of labor for the Parser to figure these out and pass them in. It\u0027s unusual for something high level like \"GetLoopUnrollInfo\" to have to think in terms of character offsets and manually check for -1s while building a range.",
+      "parentUuid": "6c358949_e217b407",
+      "range": {
+        "startLine": 140,
+        "startChar": 0,
+        "endLine": 140,
+        "endChar": 23
+      },
+      "revId": "7230c7060002c37d335e7309570f38663e02efae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c744ca9d_04c5f235",
         "filename": "src/sksl/ir/SkSLNop.h",
         "patchSetId": 9
