@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d5bd3e2c_d23df24d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-04-18T17:29:41Z",
+      "side": 1,
+      "message": "Please specify the command or commands you ran to get the vk_mem_alloc.h into the Skia repo.",
+      "revId": "581452395c39a0b8bff52d26a121cee18713e72f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d2f7c331_27cb89b0",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 417,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-04-18T17:29:41Z",
+      "side": 1,
+      "message": "Where is newPaint defined? Is that a field?",
+      "range": {
+        "startLine": 417,
+        "startChar": 33,
+        "endLine": 417,
+        "endChar": 41
+      },
+      "revId": "581452395c39a0b8bff52d26a121cee18713e72f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
