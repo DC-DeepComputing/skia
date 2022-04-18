@@ -22,6 +22,29 @@
       },
       "revId": "7230c7060002c37d335e7309570f38663e02efae",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c744ca9d_04c5f235",
+        "filename": "src/sksl/ir/SkSLNop.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-18T21:12:25Z",
+      "side": 1,
+      "message": "Up to you: It\u0027s not a big deal, but it seems like giving Nop a position caused enough ripple effects (including into the debugger!) that it would be worth splitting out into its own CL. Most of the files changed in this CL seem to be as a result of this innocuous addition.",
+      "range": {
+        "startLine": 23,
+        "startChar": 4,
+        "endLine": 23,
+        "endChar": 21
+      },
+      "revId": "7230c7060002c37d335e7309570f38663e02efae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
