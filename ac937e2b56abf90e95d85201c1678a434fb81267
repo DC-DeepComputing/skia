@@ -69,6 +69,24 @@
       "parentUuid": "db219670_f0dbc6bd",
       "revId": "ac937e2b56abf90e95d85201c1678a434fb81267",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b688feb8_12cf575d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2022-04-18T15:48:18Z",
+      "side": 1,
+      "message": "Thanks, I missed the suggestion button.",
+      "parentUuid": "e1d23f45_4f91cb88",
+      "revId": "ac937e2b56abf90e95d85201c1678a434fb81267",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
