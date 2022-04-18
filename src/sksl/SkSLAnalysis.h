@@ -9,6 +9,7 @@
 #define SkSLAnalysis_DEFINED
 
 #include "include/private/SkSLSampleUsage.h"
+#include "include/sksl/DSLCore.h"
 
 #include <stdint.h>
 #include <memory>
@@ -165,6 +166,7 @@ bool IsConstantIndexExpression(const Expression& expr,
  * null is returned.
  */
 std::unique_ptr<LoopUnrollInfo> GetLoopUnrollInfo(Position pos,
+                                                  dsl::ForLoopOffsets offsets,
                                                   const Statement* loopInitializer,
                                                   const Expression* loopTest,
                                                   const Expression* loopNext,

@@ -59,7 +59,7 @@ bool Transform::EliminateDeadLocalVariables(Program& program, ProgramUsage* usag
                     } else {
                         // The variable has no initial-value and can be cleanly eliminated.
                         fUsage->remove(stmt.get());
-                        stmt = Nop::Make();
+                        stmt = Nop::Make(stmt->fPosition);
                     }
                     fMadeChanges = true;
                 }
