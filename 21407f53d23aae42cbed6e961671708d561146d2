@@ -16,6 +16,29 @@
       "message": "I tried to fully get rid of third_party/vulkanmemoryallocator and instead directly handle the including of vk_mem_alloc.h in src/gpu/ganesh/vk/GrVkAMDMemoryAllocator.h/cpp, However, when we trigger the VMA_IMPLEMENTATION to compile in GrVkAMDMemoryAllocator.cpp, we get tons of clang warnings (which become errors) in vk_mem_alloc.h since technically the file we are compiling is in core Skia. Since we have no intention of fixing this clang issues in that vk_mem_alloc.h, we will continue to compile it in third_party/vulkanmemoryallocator/GrVulkanMemoryAllocator.cpp to avoid the warnings.",
       "revId": "21407f53d23aae42cbed6e961671708d561146d2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0198363c_ec0131fb",
+        "filename": "third_party/vulkanmemoryallocator/GrVulkanMemoryAllocator.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-04-18T20:37:42Z",
+      "side": 1,
+      "message": "I think this will make it really hard to include this from Bazel. Probably better to add externals/vulkanmemoryallocator as an include directory for GN.\n\nI can fix the Bazel rules as a follow-up",
+      "range": {
+        "startLine": 29,
+        "startChar": 13,
+        "endLine": 29,
+        "endChar": 22
+      },
+      "revId": "21407f53d23aae42cbed6e961671708d561146d2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
