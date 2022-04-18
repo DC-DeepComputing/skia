@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "960f47a8_4c5f31c1",
+        "filename": "src/gpu/ganesh/dawn/GrDawnFence.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-04-18T11:44:18Z",
+      "side": 1,
+      "message": "Google\u0027s been an LLC since 2015ish",
+      "range": {
+        "startLine": 2,
+        "startChar": 25,
+        "endLine": 2,
+        "endChar": 28
+      },
+      "revId": "a02737d31f323ea14b9faac02c13e40c4cc00391",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "07b2096f_b1630dd1",
+        "filename": "src/gpu/ganesh/dawn/GrDawnFence.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-04-18T11:44:18Z",
+      "side": 1,
+      "message": "Instead of ifdefs, it might be cleaner to have two versions of this file: GrDawnFence_wasm and GrDawnFence_native or something like that.",
+      "revId": "a02737d31f323ea14b9faac02c13e40c4cc00391",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
