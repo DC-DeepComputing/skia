@@ -51,6 +51,24 @@
       "parentUuid": "745a8b6e_bbe23b01",
       "revId": "ac937e2b56abf90e95d85201c1678a434fb81267",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e1d23f45_4f91cb88",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5145
+      },
+      "writtenOn": "2022-04-18T15:42:39Z",
+      "side": 1,
+      "message": "OWNERS are here: https://skia.googlesource.com/skia/+/main/include/OWNERS\n\nSkCQ cannot provide more detail because Gerrit only tells it \"CL is not submittable\". The missing owners approval is visible on Gerrit: https://screenshot.googleplex.com/6tzxEzLMhsihDDS\n\nYou can also click on the \"Suggest Owners\" button.\n\nMaybe the missing owners approval hides the Submit button. I did not know it did that. Though I believe you can also do Owners-Override+1 to bypass it.",
+      "parentUuid": "db219670_f0dbc6bd",
+      "revId": "ac937e2b56abf90e95d85201c1678a434fb81267",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
