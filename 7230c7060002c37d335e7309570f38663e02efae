@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6c358949_e217b407",
+        "filename": "include/sksl/DSLCore.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-18T21:04:27Z",
+      "side": 1,
+      "message": "Can this live in SkSLForStatement.h? We don\u0027t have any other SkSL IR nodes that directly rely on DSL structs AFAIK; this feels out of place.",
+      "range": {
+        "startLine": 140,
+        "startChar": 0,
+        "endLine": 140,
+        "endChar": 23
+      },
+      "revId": "7230c7060002c37d335e7309570f38663e02efae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
