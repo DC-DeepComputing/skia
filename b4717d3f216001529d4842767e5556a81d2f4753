@@ -39,6 +39,30 @@
       },
       "revId": "b4717d3f216001529d4842767e5556a81d2f4753",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "501a884d_1a97f630",
+        "filename": "src/gpu/ganesh/text/GrAtlasManager.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 174,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-04-18T18:19:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fe9ec4cc_e7b6c6ed",
+      "range": {
+        "startLine": 174,
+        "startChar": 19,
+        "endLine": 174,
+        "endChar": 30
+      },
+      "revId": "b4717d3f216001529d4842767e5556a81d2f4753",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
