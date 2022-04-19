@@ -171,8 +171,8 @@ OpFunctionEnd
 OpStore %x_0 %51
 %52 = OpFNegate %v2float %51
 OpStore %x_0 %52
-%55 = OpFOrdEqual %v2bool %52 %54
-%57 = OpAll %bool %55
+%56 = OpFOrdEqual %v2bool %52 %54
+%57 = OpAll %bool %56
 OpReturnValue %57
 OpFunctionEnd
 %test_ivec_b = OpFunction %bool None %33

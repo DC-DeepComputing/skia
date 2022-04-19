@@ -130,8 +130,8 @@ OpStore %h2x2 %63
 OpSelectionMerge %74 None
 OpBranchConditional %72 %73 %74
 %73 = OpLabel
-%75 = OpIEqual %v3bool %43 %43
-%77 = OpAll %bool %75
+%76 = OpIEqual %v3bool %43 %43
+%77 = OpAll %bool %76
 %78 = OpIEqual %v3bool %45 %45
 %79 = OpAll %bool %78
 %80 = OpLogicalAnd %bool %79 %77
