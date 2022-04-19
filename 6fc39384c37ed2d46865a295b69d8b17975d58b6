@@ -3,6 +3,23 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "8f1a5d63_142ff82a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2022-04-19T17:32:23Z",
+      "side": 1,
+      "message": "Is the idea that this is a demo for other clients? I wonder if it might be worth exposing feature at the Skottie player level instead of the SkottieSlide level. Other than that open question, LGTM",
+      "revId": "6fc39384c37ed2d46865a295b69d8b17975d58b6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "d59e74e5_1d254953",
         "filename": "tools/viewer/SkottieSlide.cpp",
         "patchSetId": 2
