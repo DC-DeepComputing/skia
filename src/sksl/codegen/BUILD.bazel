@@ -270,6 +270,7 @@ generated_cc_atom(
         "//include/sksl:SkSLOperator_hdr",
         "//include/sksl:SkSLPosition_hdr",
         "//src/sksl:GLSL.std.450_hdr",
+        "//src/sksl:SkSLAnalysis_hdr",
         "//src/sksl:SkSLBuiltinTypes_hdr",
         "//src/sksl:SkSLCompiler_hdr",
         "//src/sksl:SkSLContext_hdr",
