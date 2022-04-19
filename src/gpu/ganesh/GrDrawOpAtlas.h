@@ -154,6 +154,14 @@ public:
             fUVs[3] -= padding;
         }
 
+        void inset1(int padding) {
+            SkASSERT(padding <= this->width());
+            SkASSERT(padding <= this->height());
+
+            fUVs[0] += padding;
+            fUVs[1] += padding;
+        }
+
         void updatePlotLocator(PlotLocator p) {
             fPlotLocator = p;
             SkASSERT(fPlotLocator.pageIndex() <= 3);

@@ -56,16 +56,16 @@ protected:
         SkPaint p;
         p.setAntiAlias(true);
         canvas->clipIRect(SkIRect::MakeSize(this->getISize()).makeInset(40, 50));
-        canvas->scale(1.3f, 1.3f);
-        sk_sp<GrSlug> slug = GrSlug::ConvertBlob(canvas, *blob, {10, 10}, p);
+        sk_sp<GrSlug> slug = GrSlug::ConvertBlob(canvas, *blob, {30, 30}, p);
         if (slug == nullptr) {
             return;
         }
         canvas->translate(0.5, 0.5);
         canvas->translate(30, 30);
-        canvas->drawTextBlob(blob, 10, 10, p);
+        canvas->drawTextBlob(blob, 30, 30, p);
         canvas->translate(370, 0);
         slug->draw(canvas);
+        canvas->scale(1.3f, 1.3f);
         for (float scale = 1.5; scale < 4; scale += 0.5) {
             canvas->translate(-370, 20 * scale);
             canvas->save();
