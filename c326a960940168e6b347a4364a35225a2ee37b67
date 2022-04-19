@@ -16,6 +16,23 @@
       "message": "This removes all the text differences between slug and blob in my skdiff test.",
       "revId": "c326a960940168e6b347a4364a35225a2ee37b67",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cf6e0943_a8992da5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-04-19T22:35:08Z",
+      "side": 1,
+      "message": "Peng, after this CL goes in, I think we can try using SLugs for non-RawDraw again. I think this should remove all the differences.",
+      "revId": "c326a960940168e6b347a4364a35225a2ee37b67",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
