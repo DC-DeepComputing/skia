@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e05a0e50_25edad65",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-04-19T15:44:15Z",
+      "side": 1,
+      "message": "Makes sense (and we have isnan() if it\u0027s actually important).",
+      "revId": "da994fff630bfd9b4f099a0ca1732c9ce58e1754",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
