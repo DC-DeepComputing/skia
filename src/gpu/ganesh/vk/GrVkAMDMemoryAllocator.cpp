@@ -36,6 +36,7 @@ sk_sp<GrVkMemoryAllocator> GrVkAMDMemoryAllocator::Make(VkInstance instance,
 #define GR_COPY_FUNCTION_KHR(NAME) functions.vk##NAME##KHR = interface->fFunctions.f##NAME
 
     VmaVulkanFunctions functions;
+    memset(&functions, 0, sizeof(VmaVulkanFunctions));
     GR_COPY_FUNCTION(GetPhysicalDeviceProperties);
     GR_COPY_FUNCTION(GetPhysicalDeviceMemoryProperties);
     GR_COPY_FUNCTION(AllocateMemory);
