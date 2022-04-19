@@ -235,6 +235,7 @@ static std::unique_ptr<Expression> optimize_constructor_swizzle(const Context& c
 
 std::unique_ptr<Expression> Swizzle::Convert(const Context& context,
                                              Position pos,
+                                             Position maskPos,
                                              std::unique_ptr<Expression> base,
                                              std::string_view maskString) {
     ComponentArray components;
@@ -259,12 +260,12 @@ std::unique_ptr<Expression> Swizzle::Convert(const Context& context,
             case 'q': components.push_back(SwizzleComponent::Q);    break;
             case 'B': components.push_back(SwizzleComponent::UB);   break;
             default:
-                context.fErrors->error(pos,
+                context.fErrors->error(maskPos,
                                        String::printf("invalid swizzle component '%c'", field));
                 return nullptr;
         }
     }
-    return Convert(context, pos, std::move(base), std::move(components));
+    return Convert(context, pos, maskPos, std::move(base), std::move(components));
 }
 
 // Swizzles are complicated due to constant components. The most difficult case is a mask like
@@ -274,10 +275,14 @@ std::unique_ptr<Expression> Swizzle::Convert(const Context& context,
 // 'float4(base.xw, 1, 0).xzyw'.
 std::unique_ptr<Expression> Swizzle::Convert(const Context& context,
                                              Position pos,
+                                             Position maskPos,
                                              std::unique_ptr<Expression> base,
                                              ComponentArray inComponents) {
+    if (!maskPos.valid()) {
+        maskPos = pos;
+    }
     if (!validate_swizzle_domain(inComponents)) {
-        context.fErrors->error(pos, "invalid swizzle mask '" + mask_string(inComponents) + "'");
+        context.fErrors->error(maskPos, "invalid swizzle mask '" + mask_string(inComponents) + "'");
         return nullptr;
     }
 
@@ -290,7 +295,7 @@ std::unique_ptr<Expression> Swizzle::Convert(const Context& context,
     }
 
     if (inComponents.count() > 4) {
-        context.fErrors->error(pos,
+        context.fErrors->error(maskPos,
                 "too many components in swizzle mask '" + mask_string(inComponents) + "'");
         return nullptr;
     }
@@ -342,14 +347,14 @@ std::unique_ptr<Expression> Swizzle::Convert(const Context& context,
                 [[fallthrough]];
             default:
                 // The swizzle component references a field that doesn't exist in the base type.
-                context.fErrors->error(pos, String::printf("invalid swizzle component '%c'",
-                                                            mask_char(inComponents[i])));
+                context.fErrors->error(maskPos, String::printf("invalid swizzle component '%c'",
+                        mask_char(inComponents[i])));
                 return nullptr;
         }
     }
 
     if (!foundXYZW) {
-        context.fErrors->error(pos, "swizzle must refer to base expression");
+        context.fErrors->error(maskPos, "swizzle must refer to base expression");
         return nullptr;
     }
 
