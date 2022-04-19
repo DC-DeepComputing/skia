@@ -124,8 +124,8 @@ OpStore %_4_z %57
 %60 = OpVectorExtractDynamic %float %32 %59
 OpStore %_5_w %60
 %61 = OpCompositeConstruct %v4float %51 %54 %57 %60
-%64 = OpFOrdEqual %v4bool %61 %63
-%66 = OpAll %bool %64
+%65 = OpFOrdEqual %v4bool %61 %63
+%66 = OpAll %bool %65
 OpSelectionMerge %70 None
 OpBranchConditional %66 %68 %69
 %68 = OpLabel
