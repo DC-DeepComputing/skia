@@ -16,6 +16,24 @@
       "message": "Note that we could start using std::filesystem::path, also. (I don\u0027t think it\u0027s worth it unless there\u0027s some larger, compelling benefit to using std::filesystem in general).",
       "revId": "55863042036d7f76b2e7171969ae1f21b37fd6ce",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1a807e9a_236e9b36",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-19T12:54:09Z",
+      "side": 1,
+      "message": "That\u0027s an interesting idea. It does have some minor benefits--std::string vs SkString, and it has the concept of \"file extensions\" where SkOSPath does not.",
+      "parentUuid": "8891baf3_624fa077",
+      "revId": "55863042036d7f76b2e7171969ae1f21b37fd6ce",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
