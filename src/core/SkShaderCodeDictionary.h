@@ -41,6 +41,7 @@ struct SkShaderSnippet {
     SkShaderSnippet() = default;
 
     SkShaderSnippet(SkSpan<const SkUniform> uniforms,
+                    uint32_t extraUniformFlags,
                     SkSpan<const SkTextureAndSampler> texturesAndSamplers,
                     const char* functionName,
                     const char* code,
@@ -48,6 +49,7 @@ struct SkShaderSnippet {
                     int numChildren,
                     SkSpan<const SkPaintParamsKey::DataPayloadField> dataPayloadExpectations)
             : fUniforms(uniforms)
+            , fExtraUniformFlags(extraUniformFlags)
             , fTexturesAndSamplers(texturesAndSamplers)
             , fStaticFunctionName(functionName)
             , fStaticSkSL(code)
@@ -58,7 +60,13 @@ struct SkShaderSnippet {
 
     std::string getMangledUniformName(int uniformIndex, int mangleId) const;
 
+    enum ExtraUniforms {
+        kNone = 0x0,
+        kDev2LocalMat = 0x1,
+    };
+
     SkSpan<const SkUniform> fUniforms;
+    uint32_t fExtraUniformFlags = 0x0;
     SkSpan<const SkTextureAndSampler> fTexturesAndSamplers;
     const char* fStaticFunctionName = nullptr;
     const char* fStaticSkSL = nullptr;
