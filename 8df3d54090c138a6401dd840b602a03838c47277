@@ -33,6 +33,24 @@
       "message": "Interesting. Greg *just* rolled us to a newer version of the vulkan memory allocator (the code implicated in the MSAN failure), but it\u0027s not failing on the tree. Still, I suspect that roll much more than this CL.",
       "revId": "8df3d54090c138a6401dd840b602a03838c47277",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8b2a0282_ac151c9e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-04-19T12:48:19Z",
+      "side": 1,
+      "message": "Ah, no - that\u0027s not quite right. That MSAN bot has been failing for a long time with other issues. Ever since the new VMA landed, it\u0027s failing just like this at startup. (Doesn\u0027t show up on Interesting on status due to long failure history).\n\nThe D3D failure, though - no idea. I (or someone else with a windows box) probably needs to repro in a debugger.",
+      "parentUuid": "464b0bc3_cbacd0de",
+      "revId": "8df3d54090c138a6401dd840b602a03838c47277",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
