@@ -12,7 +12,8 @@ void SkPipelineDataGatherer::reset() {
 #ifdef SK_GRAPHITE_ENABLED
     fTextureDataBlock.reset();
     fBlendInfo = BlendInfo();
-    fUniformManager.reset();
+    fUniformManager1.reset();
+    fExtraUniformFlags = 0;
 #endif
 }
 
@@ -21,7 +22,8 @@ void SkPipelineDataGatherer::checkReset() {
 #ifdef SK_GRAPHITE_ENABLED
     SkASSERT(fTextureDataBlock.empty());
     SkASSERT(fBlendInfo == BlendInfo());
-    SkDEBUGCODE(fUniformManager.checkReset());
+    SkDEBUGCODE(fUniformManager1.checkReset());
+    SkASSERT(fExtraUniformFlags == 0);
 #endif
 }
 #endif // SK_DEBUG

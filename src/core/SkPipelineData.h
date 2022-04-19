@@ -131,10 +131,15 @@ public:
         SkPMColor4f          fBlendConstant = SK_PMColor4fTRANSPARENT;
         bool                 fWritesColor = true;
     };
+
+    enum ExtraUniformFlags {
+        kNone = 0x0,
+        kDev2LocalMat = 0x1,
+    };
 #endif
 
 #ifdef SK_GRAPHITE_ENABLED
-    SkPipelineDataGatherer(skgpu::graphite::Layout layout) : fUniformManager(layout) {}
+    SkPipelineDataGatherer(skgpu::graphite::Layout layout) : fUniformManager1(layout) {}
 #endif
 
     void reset();
@@ -154,34 +159,39 @@ public:
     }
     bool hasTextures() const { return !fTextureDataBlock.empty(); }
 
+    void add(ExtraUniformFlags flags) { fExtraUniformFlags |= flags; }
+    uint32_t flags() const { return fExtraUniformFlags; }
+
     const SkTextureDataBlock& textureDataBlock() { return fTextureDataBlock; }
 
-    void write(const SkColor4f* colors, int numColors) { fUniformManager.write(colors, numColors); }
-    void write(const SkPMColor4f& premulColor) { fUniformManager.write(&premulColor, 1); }
-    void write(const SkRect& rect) { fUniformManager.write(rect); }
-    void write(SkPoint point) { fUniformManager.write(point); }
-    void write(const float* floats, int count) { fUniformManager.write(floats, count); }
-    void write(float f) { fUniformManager.write(&f, 1); }
-    void write(int i) { fUniformManager.write(i); }
-    void write(skgpu::graphite::float2 v) { fUniformManager.write(v); }
+    void write(const SkM44& mat) { fUniformManager1.write(mat); }
+    void write(const SkColor4f* colors, int numColors) { fUniformManager1.write(colors, numColors); }
+    void write(const SkPMColor4f& premulColor) { fUniformManager1.write(&premulColor, 1); }
+    void write(const SkRect& rect) { fUniformManager1.write(rect); }
+    void write(SkPoint point) { fUniformManager1.write(point); }
+    void write(const float* floats, int count) { fUniformManager1.write(floats, count); }
+    void write(float f) { fUniformManager1.write(&f, 1); }
+    void write(int i) { fUniformManager1.write(i); }
+    void write(skgpu::graphite::float2 v) { fUniformManager1.write(v); }
 
-    bool hasUniforms() const { return fUniformManager.size(); }
+    bool hasUniforms() const { return fUniformManager1.size(); }
 
-    SkUniformDataBlock peekUniformData() const { return fUniformManager.peekData(); }
+    SkUniformDataBlock peekUniformData() const { return fUniformManager1.peekData(); }
 
 private:
 #ifdef SK_DEBUG
     friend class UniformExpectationsValidator;
 
     void setExpectedUniforms(SkSpan<const SkUniform> expectedUniforms) {
-        fUniformManager.setExpectedUniforms(expectedUniforms);
+        fUniformManager1.setExpectedUniforms(expectedUniforms);
     }
-    void doneWithExpectedUniforms() { fUniformManager.doneWithExpectedUniforms(); }
+    void doneWithExpectedUniforms() { fUniformManager1.doneWithExpectedUniforms(); }
 #endif // SK_DEBUG
 
     SkTextureDataBlock              fTextureDataBlock;
     BlendInfo                       fBlendInfo;
-    skgpu::graphite::UniformManager fUniformManager;
+    skgpu::graphite::UniformManager fUniformManager1;
+    uint32_t                        fExtraUniformFlags;
 #endif // SK_GRAPHITE_ENABLED
 };
 

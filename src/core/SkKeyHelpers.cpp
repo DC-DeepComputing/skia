@@ -128,6 +128,7 @@ static const int kBlockDataSize = 1;
 
 void add_linear_gradient_uniform_data(const SkShaderCodeDictionary* dict,
                                       const GradientData& gradData,
+                                      const SkM44& dev2Local,
                                       SkPipelineDataGatherer* gatherer) {
     VALIDATE_UNIFORMS(gatherer, dict, kLinearGradientShader)
     gatherer->write(gradData.fColor4fs, GradientData::kMaxStops);
@@ -137,10 +138,13 @@ void add_linear_gradient_uniform_data(const SkShaderCodeDictionary* dict,
     gatherer->write(gradData.fRadii[0]);        // unused
     gatherer->write(gradData.fRadii[1]);        // unused
     gatherer->write(SkPoint::Make(0.0f, 0.0f)); // padding
+
+    gatherer->add(SkPipelineDataGatherer::ExtraUniformFlags::kDev2LocalMat);
 };
 
 void add_radial_gradient_uniform_data(const SkShaderCodeDictionary* dict,
                                       const GradientData& gradData,
+                                      const SkM44& dev2Local,
                                       SkPipelineDataGatherer* gatherer) {
     VALIDATE_UNIFORMS(gatherer, dict, kRadialGradientShader)
     gatherer->write(gradData.fColor4fs, GradientData::kMaxStops);
@@ -150,10 +154,13 @@ void add_radial_gradient_uniform_data(const SkShaderCodeDictionary* dict,
     gatherer->write(gradData.fRadii[0]);
     gatherer->write(gradData.fRadii[1]);        // unused
     gatherer->write(SkPoint::Make(0.0f, 0.0f)); // padding
+
+    gatherer->add(SkPipelineDataGatherer::ExtraUniformFlags::kDev2LocalMat);
 };
 
 void add_sweep_gradient_uniform_data(const SkShaderCodeDictionary* dict,
                                      const GradientData& gradData,
+                                     const SkM44& dev2Local,
                                      SkPipelineDataGatherer* gatherer) {
     VALIDATE_UNIFORMS(gatherer, dict, kSweepGradientShader)
     gatherer->write(gradData.fColor4fs, GradientData::kMaxStops);
@@ -163,10 +170,13 @@ void add_sweep_gradient_uniform_data(const SkShaderCodeDictionary* dict,
     gatherer->write(gradData.fRadii[0]);        // unused
     gatherer->write(gradData.fRadii[1]);        // unused
     gatherer->write(SkPoint::Make(0.0f, 0.0f)); // padding
+
+    gatherer->add(SkPipelineDataGatherer::ExtraUniformFlags::kDev2LocalMat);
 };
 
 void add_conical_gradient_uniform_data(const SkShaderCodeDictionary* dict,
                                        const GradientData& gradData,
+                                       const SkM44& dev2Local,
                                        SkPipelineDataGatherer* gatherer) {
     VALIDATE_UNIFORMS(gatherer, dict, kConicalGradientShader)
     gatherer->write(gradData.fColor4fs, GradientData::kMaxStops);
@@ -176,6 +186,8 @@ void add_conical_gradient_uniform_data(const SkShaderCodeDictionary* dict,
     gatherer->write(gradData.fRadii[0]);
     gatherer->write(gradData.fRadii[1]);
     gatherer->write(SkPoint::Make(0.0f, 0.0f)); // padding
+
+    gatherer->add(SkPipelineDataGatherer::ExtraUniformFlags::kDev2LocalMat);
 };
 
 #endif // SK_GRAPHITE_ENABLED
@@ -240,25 +252,29 @@ void AddToKey(const SkKeyContext& keyContext,
             case SkShader::kLinear_GradientType:
                 codeSnippetID = SkBuiltInCodeSnippetID::kLinearGradientShader;
                 if (gatherer) {
-                    add_linear_gradient_uniform_data(dict, gradData, gatherer);
+                    add_linear_gradient_uniform_data(dict, gradData, keyContext.dev2Local(),
+                                                     gatherer);
                 }
                 break;
             case SkShader::kRadial_GradientType:
                 codeSnippetID = SkBuiltInCodeSnippetID::kRadialGradientShader;
                 if (gatherer) {
-                    add_radial_gradient_uniform_data(dict, gradData, gatherer);
+                    add_radial_gradient_uniform_data(dict, gradData, keyContext.dev2Local(),
+                                                     gatherer);
                 }
                 break;
             case SkShader::kSweep_GradientType:
                 codeSnippetID = SkBuiltInCodeSnippetID::kSweepGradientShader;
                 if (gatherer) {
-                    add_sweep_gradient_uniform_data(dict, gradData, gatherer);
+                    add_sweep_gradient_uniform_data(dict, gradData, keyContext.dev2Local(),
+                                                    gatherer);
                 }
                 break;
             case SkShader::GradientType::kConical_GradientType:
                 codeSnippetID = SkBuiltInCodeSnippetID::kConicalGradientShader;
                 if (gatherer) {
-                    add_conical_gradient_uniform_data(dict, gradData, gatherer);
+                    add_conical_gradient_uniform_data(dict, gradData, keyContext.dev2Local(),
+                                                      gatherer);
                 }
                 break;
             case SkShader::GradientType::kColor_GradientType:
