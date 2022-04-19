@@ -374,6 +374,24 @@ std::unique_ptr<GrFragmentProcessor> SkImageShader::asFragmentProcessor(
 #endif
 
 #ifdef SK_ENABLE_SKSL
+
+#if 0
+static void foo(const SkKeyContext& keyContext) {
+
+    // Returns the total local matrix for this shader:
+    //
+    //   M = postLocalMatrix x shaderLocalMatrix x preLocalMatrix
+    //
+    SkTCopyOnFirstWrite<SkMatrix> totalLocalMatrix(const SkMatrix* preLocalMatrix) const;
+    bool SkShaderBase::computeTotalInverse(const SkMatrix& ctm,
+                                           const SkMatrix* outerLocalMatrix,
+                                           SkMatrix* totalInverse) const {
+        SkMatrix local2dev = SkMatrix::Concat(ctm, *this->totalLocalMatrix(outerLocalMatrix));
+        local2dev.invert(dev2Local);
+    }
+}
+#endif
+
 void SkImageShader::addToKey(const SkKeyContext& keyContext,
                              SkPaintParamsKeyBuilder* builder,
                              SkPipelineDataGatherer* gatherer) const {

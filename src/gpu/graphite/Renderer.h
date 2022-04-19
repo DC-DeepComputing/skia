@@ -73,8 +73,8 @@ public:
     // and then including the function bodies returned here.
     virtual const char* vertexSkSL() const = 0;
 
-    bool          requiresMSAA()    const { return fFlags & Flags::kRequiresMSAA;    }
-    bool          performsShading() const { return fFlags & Flags::kPerformsShading; }
+    bool          requiresMSAA()    const { return fFlags1 & Flags::kRequiresMSAA;    }
+    bool          performsShading() const { return fFlags1 & Flags::kPerformsShading; }
 
     PrimitiveType primitiveType()   const { return fPrimitiveType;  }
     size_t        vertexStride()    const { return fVertexStride;   }
@@ -127,7 +127,7 @@ protected:
                DepthStencilSettings depthStencilSettings,
                std::initializer_list<Attribute> vertexAttrs,
                std::initializer_list<Attribute> instanceAttrs)
-            : fFlags(flags)
+            : fFlags1(flags)
             , fPrimitiveType(primitiveType)
             , fDepthStencilSettings(depthStencilSettings)
             , fUniforms(uniforms)
@@ -154,7 +154,7 @@ private:
     RenderStep(const RenderStep&) = delete;
     RenderStep(RenderStep&&)      = delete;
 
-    Mask<Flags>   fFlags;
+    Mask<Flags>   fFlags1;
     PrimitiveType fPrimitiveType;
 
     DepthStencilSettings fDepthStencilSettings;
