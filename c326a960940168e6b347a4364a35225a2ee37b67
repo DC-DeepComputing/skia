@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3252e572_2937f137",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-04-19T21:25:07Z",
+      "side": 1,
+      "message": "This removes all the text differences between slug and blob in my skdiff test.",
+      "revId": "c326a960940168e6b347a4364a35225a2ee37b67",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
