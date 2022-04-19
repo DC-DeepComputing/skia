@@ -114,6 +114,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3326b3c8_8dbfef73",
+        "filename": "include/core/SkSVGDecoder.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-04-19T14:12:46Z",
+      "side": 1,
+      "message": "Though it is probably cleaner to just implement this now (and having two implementations really helps here). Even if we don\u0027t cache at all right now, at least we can do so in the future.",
+      "parentUuid": "adba5174_608e4d34",
+      "range": {
+        "startLine": 20,
+        "startChar": 24,
+        "endLine": 20,
+        "endChar": 90
+      },
+      "revId": "fc7419aa780d171a9e70d680c0c51a2d7a3a6012",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "dc8efb85_6751431d",
         "filename": "modules/svg/include/SkSVGDOM.h",
         "patchSetId": 9
