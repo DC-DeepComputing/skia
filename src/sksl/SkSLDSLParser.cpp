@@ -591,6 +591,7 @@ DSLStatement DSLParser::localVarDeclarationEnd(Position pos, const dsl::DSLModif
         AddToSymbolTable(next, this->position(identifierName));
     }
     this->expect(Token::Kind::TK_SEMICOLON, "';'");
+    result.setPosition(this->rangeFrom(pos));
     return result;
 }
 
@@ -1217,21 +1218,24 @@ dsl::DSLStatement DSLParser::forStatement() {
     if (!this->expect(Token::Kind::TK_FOR, "'for'", &start)) {
         return {};
     }
-    if (!this->expect(Token::Kind::TK_LPAREN, "'('")) {
+    Token lparen;
+    if (!this->expect(Token::Kind::TK_LPAREN, "'('", &lparen)) {
         return {};
     }
     AutoDSLSymbolTable symbols;
     dsl::DSLStatement initializer;
     Token nextToken = this->peek();
+    int firstSemicolonOffset;
     if (nextToken.fKind == Token::Kind::TK_SEMICOLON) {
         // An empty init-statement.
-        this->nextToken();
+        firstSemicolonOffset = this->nextToken().fOffset;
     } else {
         // The init-statement must be an expression or variable declaration.
         initializer = this->varDeclarationsOrExpressionStatement();
         if (!initializer.hasValue()) {
             return {};
         }
+        firstSemicolonOffset = fLexer.getCheckpoint().fOffset - 1;
     }
     dsl::DSLExpression test;
     if (this->peek().fKind != Token::Kind::TK_SEMICOLON) {
@@ -1241,7 +1245,8 @@ dsl::DSLStatement DSLParser::forStatement() {
         }
         test.swap(testValue);
     }
-    if (!this->expect(Token::Kind::TK_SEMICOLON, "';'")) {
+    Token secondSemicolon;
+    if (!this->expect(Token::Kind::TK_SEMICOLON, "';'", &secondSemicolon)) {
         return {};
     }
     dsl::DSLExpression next;
@@ -1252,7 +1257,8 @@ dsl::DSLStatement DSLParser::forStatement() {
         }
         next.swap(nextValue);
     }
-    if (!this->expect(Token::Kind::TK_RPAREN, "')'")) {
+    Token rparen;
+    if (!this->expect(Token::Kind::TK_RPAREN, "')'", &rparen)) {
         return {};
     }
     dsl::DSLStatement statement = this->statement();
@@ -1263,7 +1269,12 @@ dsl::DSLStatement DSLParser::forStatement() {
                test.hasValue() ? std::move(test) : DSLExpression(),
                next.hasValue() ? std::move(next) : DSLExpression(),
                std::move(statement),
-               this->rangeFrom(start));
+               this->rangeFrom(start),
+               dsl::ForLoopPositions{
+                    Position::Range(lparen.fOffset + 1, firstSemicolonOffset + 1),
+                    Position::Range(firstSemicolonOffset + 1, secondSemicolon.fOffset + 1),
+                    Position::Range(secondSemicolon.fOffset + 1, rparen.fOffset + 1)
+               });
 }
 
 /* RETURN expression? SEMICOLON */
