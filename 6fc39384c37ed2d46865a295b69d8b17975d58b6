@@ -20,6 +20,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "2aef36a6_96cb87a1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2022-04-19T18:58:41Z",
+      "side": 1,
+      "message": "Demos only for now.\n\nWe can look into adding particle system support in Skottie, although\n\n1) not clear whether existing particle system effects in AE map to the current SkParticles feature set\n\n2) some clients may prefer to keep particles separate from Skottie, and integrate with other engines (e.g. xeno)",
+      "parentUuid": "8f1a5d63_142ff82a",
+      "revId": "6fc39384c37ed2d46865a295b69d8b17975d58b6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "d59e74e5_1d254953",
         "filename": "tools/viewer/SkottieSlide.cpp",
         "patchSetId": 2
