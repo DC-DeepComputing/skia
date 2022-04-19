@@ -137,6 +137,8 @@ void add_linear_gradient_uniform_data(const SkShaderCodeDictionary* dict,
     gatherer->write(gradData.fRadii[0]);        // unused
     gatherer->write(gradData.fRadii[1]);        // unused
     gatherer->write(SkPoint::Make(0.0f, 0.0f)); // padding
+
+    gatherer->add(SkPipelineDataGatherer::ExtraUniformFlags::kDev2LocalMat);
 };
 
 void add_radial_gradient_uniform_data(const SkShaderCodeDictionary* dict,
@@ -150,6 +152,8 @@ void add_radial_gradient_uniform_data(const SkShaderCodeDictionary* dict,
     gatherer->write(gradData.fRadii[0]);
     gatherer->write(gradData.fRadii[1]);        // unused
     gatherer->write(SkPoint::Make(0.0f, 0.0f)); // padding
+
+    gatherer->add(SkPipelineDataGatherer::ExtraUniformFlags::kDev2LocalMat);
 };
 
 void add_sweep_gradient_uniform_data(const SkShaderCodeDictionary* dict,
@@ -163,6 +167,8 @@ void add_sweep_gradient_uniform_data(const SkShaderCodeDictionary* dict,
     gatherer->write(gradData.fRadii[0]);        // unused
     gatherer->write(gradData.fRadii[1]);        // unused
     gatherer->write(SkPoint::Make(0.0f, 0.0f)); // padding
+
+    gatherer->add(SkPipelineDataGatherer::ExtraUniformFlags::kDev2LocalMat);
 };
 
 void add_conical_gradient_uniform_data(const SkShaderCodeDictionary* dict,
@@ -176,6 +182,8 @@ void add_conical_gradient_uniform_data(const SkShaderCodeDictionary* dict,
     gatherer->write(gradData.fRadii[0]);
     gatherer->write(gradData.fRadii[1]);
     gatherer->write(SkPoint::Make(0.0f, 0.0f)); // padding
+
+    gatherer->add(SkPipelineDataGatherer::ExtraUniformFlags::kDev2LocalMat);
 };
 
 #endif // SK_GRAPHITE_ENABLED
