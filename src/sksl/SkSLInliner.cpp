@@ -14,6 +14,7 @@
 #include "include/private/SkSLProgramElement.h"
 #include "include/private/SkSLStatement.h"
 #include "include/private/SkTArray.h"
+#include "include/sksl/DSLCore.h"
 #include "include/sksl/SkSLErrorReporter.h"
 #include "include/sksl/SkSLOperator.h"
 #include "include/sksl/SkSLPosition.h"
@@ -522,8 +523,9 @@ std::unique_ptr<Statement> Inliner::inlineStatement(Position pos,
                 unrollInfo = std::make_unique<LoopUnrollInfo>(*f.unrollInfo());
                 unrollInfo->fIndex = RemapVariable(unrollInfo->fIndex, varMap);
             }
-            return ForStatement::Make(*fContext, pos, std::move(initializer), expr(f.test()),
-                                      expr(f.next()), stmt(f.statement()), std::move(unrollInfo),
+            return ForStatement::Make(*fContext, pos, dsl::ForLoopPositions{}, std::move(initializer),
+                                      expr(f.test()), expr(f.next()), stmt(f.statement()),
+                                      std::move(unrollInfo),
                                       SymbolTable::WrapIfBuiltin(f.symbols()));
         }
         case Statement::Kind::kIf: {

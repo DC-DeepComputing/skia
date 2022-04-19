@@ -137,11 +137,17 @@ DSLStatement Discard(Position pos = {});
  */
 DSLStatement Do(DSLStatement stmt, DSLExpression test, Position pos = {});
 
+struct ForLoopPositions {
+    Position initPosition = Position();
+    Position conditionPosition = Position();
+    Position nextPosition = Position();
+};
+
 /**
  * for (initializer; test; next) stmt;
  */
 DSLStatement For(DSLStatement initializer, DSLExpression test, DSLExpression next,
-                 DSLStatement stmt, Position pos = {});
+                 DSLStatement stmt, Position pos = {}, ForLoopPositions positions = {});
 
 /**
  * if (test) ifTrue; [else ifFalse;]
