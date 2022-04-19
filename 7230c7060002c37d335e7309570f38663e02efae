@@ -74,6 +74,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3b56cc4c_deb7cb7d",
+        "filename": "include/sksl/DSLCore.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-19T21:10:13Z",
+      "side": 1,
+      "message": "Any chance I could convince you to move the struct into SkSLPosition.h? If we can keep IR and DSL from getting tangled together, I think we\u0027ll be better off.",
+      "parentUuid": "d2c00ed0_8514ea8f",
+      "range": {
+        "startLine": 140,
+        "startChar": 0,
+        "endLine": 140,
+        "endChar": 23
+      },
+      "revId": "7230c7060002c37d335e7309570f38663e02efae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c744ca9d_04c5f235",
         "filename": "src/sksl/ir/SkSLNop.h",
         "patchSetId": 9

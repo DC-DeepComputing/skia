@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "be24bf0d_e2ffb675",
+        "filename": "src/sksl/SkSLDSLParser.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 1274,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-19T21:10:13Z",
+      "side": 1,
+      "message": "Do we actually want to include the semicolon in the ranges? In 0-length ranges, okay, but other than that, it would line up better with existing errors to exclude it, don\u0027t you think?",
+      "range": {
+        "startLine": 1274,
+        "startChar": 76,
+        "endLine": 1274,
+        "endChar": 80
+      },
+      "revId": "332ea96f042b752781ab280f5960eb58a876f55a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6cbaa496_f80e5165",
+        "filename": "src/sksl/SkSLInliner.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 526,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-19T21:10:13Z",
+      "side": 1,
+      "message": "nit: line \u003e100 char",
+      "range": {
+        "startLine": 526,
+        "startChar": 100,
+        "endLine": 526,
+        "endChar": 102
+      },
+      "revId": "332ea96f042b752781ab280f5960eb58a876f55a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
