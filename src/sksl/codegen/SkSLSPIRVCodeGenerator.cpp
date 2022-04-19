@@ -381,16 +381,40 @@ void SPIRVCodeGenerator::writeOpCode(SpvOp_ opCode, int length, OutputStream& ou
     if (foundDeadCode) {
         // We just encountered dead code--an instruction that don't have an associated block.
         // Synthesize a label if this happens; this is necessary to satisfy the validator.
-        this->writeLabel(this->nextId(nullptr), out);
+        this->writeLabel(this->nextId(nullptr), kBranchlessBlock, out);
     }
 
     this->writeWord((length << 16) | opCode, out);
 }
 
-void SPIRVCodeGenerator::writeLabel(SpvId label, OutputStream& out) {
+void SPIRVCodeGenerator::writeLabel(SpvId label, StraightLineLabelType, OutputStream& out) {
+    // The straight-line label type is not important; in any case, no caches are invalidated.
     SkASSERT(!fCurrentBlock);
     fCurrentBlock = label;
     this->writeInstruction(SpvOpLabel, label, out);
+}
+
+void SPIRVCodeGenerator::writeLabel(SpvId label, BranchingLabelType type,
+                                    ConditionalOpCounts ops, OutputStream& out) {
+    switch (type) {
+        case kBranchIsBelow:
+        case kBranchesOnBothSides:
+            // With a backward or bidirectional branch, we haven't seen the code between the label
+            // and the branch yet, so any stored value is potentially suspect. Without scanning
+            // ahead to check, the only safe option is to ditch the store cache entirely.
+            fStoreCache.reset();
+            [[fallthrough]];
+
+        case kBranchIsAbove:
+            // With a forward branch, we can rely on stores that we had cached at the start of the
+            // statement/expression, if they haven't been touched yet. Anything newer than that is
+            // pruned.
+            this->pruneConditionalOps(ops);
+            break;
+    }
+
+    // Emit the label.
+    this->writeLabel(label, kBranchlessBlock, out);
 }
 
 void SPIRVCodeGenerator::writeInstruction(SpvOp_ opCode, OutputStream& out) {
@@ -425,7 +449,6 @@ void SPIRVCodeGenerator::writeInstruction(SpvOp_ opCode, std::string_view string
     this->writeOpCode(opCode, 1 + (string.length() + 4) / 4, out);
     this->writeString(string, out);
 }
-
 
 void SPIRVCodeGenerator::writeInstruction(SpvOp_ opCode, int32_t word1, std::string_view string,
                                           OutputStream& out) {
@@ -3000,11 +3023,11 @@ SpvId SPIRVCodeGenerator::writeLogicalAnd(const Expression& left, const Expressi
     SpvId lhsBlock = fCurrentBlock;
     this->writeInstruction(SpvOpSelectionMerge, end, SpvSelectionControlMaskNone, out);
     this->writeInstruction(SpvOpBranchConditional, lhs, rhsLabel, end, out);
-    this->writeLabel(rhsLabel, out);
+    this->writeLabel(rhsLabel, kBranchIsOnPreviousLine, out);
     SpvId rhs = this->writeExpression(right, out);
     SpvId rhsBlock = fCurrentBlock;
     this->writeInstruction(SpvOpBranch, end, out);
-    this->writeLabel(end, out);
+    this->writeLabel(end, kBranchIsAbove, conditionalOps, out);
     SpvId result = this->nextId(nullptr);
     this->writeInstruction(SpvOpPhi, this->getType(*fContext.fTypes.fBool), result, falseConstant,
                            lhsBlock, rhs, rhsBlock, out);
@@ -3026,11 +3049,11 @@ SpvId SPIRVCodeGenerator::writeLogicalOr(const Expression& left, const Expressio
     SpvId lhsBlock = fCurrentBlock;
     this->writeInstruction(SpvOpSelectionMerge, end, SpvSelectionControlMaskNone, out);
     this->writeInstruction(SpvOpBranchConditional, lhs, end, rhsLabel, out);
-    this->writeLabel(rhsLabel, out);
+    this->writeLabel(rhsLabel, kBranchIsOnPreviousLine, out);
     SpvId rhs = this->writeExpression(right, out);
     SpvId rhsBlock = fCurrentBlock;
     this->writeInstruction(SpvOpBranch, end, out);
-    this->writeLabel(end, out);
+    this->writeLabel(end, kBranchIsAbove, conditionalOps, out);
     SpvId result = this->nextId(nullptr);
     this->writeInstruction(SpvOpPhi, this->getType(*fContext.fTypes.fBool), result, trueConstant,
                            lhsBlock, rhs, rhsBlock, out);
@@ -3067,16 +3090,13 @@ SpvId SPIRVCodeGenerator::writeTernaryExpression(const TernaryExpression& t, Out
     SpvId end = this->nextId(nullptr);
     this->writeInstruction(SpvOpSelectionMerge, end, SpvSelectionControlMaskNone, out);
     this->writeInstruction(SpvOpBranchConditional, test, trueLabel, falseLabel, out);
-    this->writeLabel(trueLabel, out);
+    this->writeLabel(trueLabel, kBranchIsOnPreviousLine, out);
     this->writeOpStore(SpvStorageClassFunction, var, this->writeExpression(*t.ifTrue(), out), out);
     this->writeInstruction(SpvOpBranch, end, out);
-
-    this->pruneConditionalOps(conditionalOps);
-
-    this->writeLabel(falseLabel, out);
+    this->writeLabel(falseLabel, kBranchIsAbove, conditionalOps, out);
     this->writeOpStore(SpvStorageClassFunction, var, this->writeExpression(*t.ifFalse(), out), out);
     this->writeInstruction(SpvOpBranch, end, out);
-    this->writeLabel(end, out);
+    this->writeLabel(end, kBranchIsAbove, conditionalOps, out);
     SpvId result = this->nextId(&type);
     this->writeInstruction(SpvOpLoad, this->getType(type), result, var, out);
 
@@ -3217,7 +3237,7 @@ SpvId SPIRVCodeGenerator::writeFunction(const FunctionDefinition& f, OutputStrea
     fVariableBuffer.reset();
     SpvId result = this->writeFunctionStart(f.declaration(), out);
     fCurrentBlock = 0;
-    this->writeLabel(this->nextId(nullptr), out);
+    this->writeLabel(this->nextId(nullptr), kBranchlessBlock, out);
     StringStream bodyBuffer;
     this->writeBlock(f.body()->as<Block>(), bodyBuffer);
     write_stringstream(fVariableBuffer, out);
@@ -3539,28 +3559,26 @@ void SPIRVCodeGenerator::writeIfStatement(const IfStatement& stmt, OutputStream&
         SpvId end = this->nextId(nullptr);
         this->writeInstruction(SpvOpSelectionMerge, end, SpvSelectionControlMaskNone, out);
         this->writeInstruction(SpvOpBranchConditional, test, ifTrue, ifFalse, out);
-        this->writeLabel(ifTrue, out);
+        this->writeLabel(ifTrue, kBranchIsOnPreviousLine, out);
         this->writeStatement(*stmt.ifTrue(), out);
         if (fCurrentBlock) {
             this->writeInstruction(SpvOpBranch, end, out);
         }
-        this->pruneConditionalOps(conditionalOps);
-
-        this->writeLabel(ifFalse, out);
+        this->writeLabel(ifFalse, kBranchIsAbove, conditionalOps, out);
         this->writeStatement(*stmt.ifFalse(), out);
         if (fCurrentBlock) {
             this->writeInstruction(SpvOpBranch, end, out);
         }
-        this->writeLabel(end, out);
+        this->writeLabel(end, kBranchIsAbove, conditionalOps, out);
     } else {
         this->writeInstruction(SpvOpSelectionMerge, ifFalse, SpvSelectionControlMaskNone, out);
         this->writeInstruction(SpvOpBranchConditional, test, ifTrue, ifFalse, out);
-        this->writeLabel(ifTrue, out);
+        this->writeLabel(ifTrue, kBranchIsOnPreviousLine, out);
         this->writeStatement(*stmt.ifTrue(), out);
         if (fCurrentBlock) {
             this->writeInstruction(SpvOpBranch, ifFalse, out);
         }
-        this->writeLabel(ifFalse, out);
+        this->writeLabel(ifFalse, kBranchIsAbove, conditionalOps, out);
     }
 
     this->pruneConditionalOps(conditionalOps);
@@ -3585,31 +3603,27 @@ void SPIRVCodeGenerator::writeForStatement(const ForStatement& f, OutputStream& 
     SpvId end = this->nextId(nullptr);
     fBreakTarget.push(end);
     this->writeInstruction(SpvOpBranch, header, out);
-    this->writeLabel(header, out);
-    fStoreCache.reset();  // cleared because we branch to label "header"
+    this->writeLabel(header, kBranchIsBelow, conditionalOps, out);
     this->writeInstruction(SpvOpLoopMerge, end, next, SpvLoopControlMaskNone, out);
     this->writeInstruction(SpvOpBranch, start, out);
-    this->writeLabel(start, out);  // the branch to "start" is a no-op required by the SPIR-V model
+    this->writeLabel(start, kBranchIsOnPreviousLine, out);
     if (f.test()) {
         SpvId test = this->writeExpression(*f.test(), out);
         this->writeInstruction(SpvOpBranchConditional, test, body, end, out);
     } else {
         this->writeInstruction(SpvOpBranch, body, out);
     }
-    this->writeLabel(body, out);
-    fStoreCache.reset();  // cleared because we branch to label "body"
+    this->writeLabel(body, kBranchIsOnPreviousLine, out);
     this->writeStatement(*f.statement(), out);
     if (fCurrentBlock) {
         this->writeInstruction(SpvOpBranch, next, out);
     }
-    this->writeLabel(next, out);
-    fStoreCache.reset();  // cleared because we branch to label "next"
+    this->writeLabel(next, kBranchIsAbove, conditionalOps, out);
     if (f.next()) {
         this->writeExpression(*f.next(), out);
     }
     this->writeInstruction(SpvOpBranch, header, out);
-    this->writeLabel(end, out);
-    fStoreCache.reset();  // cleared because we branch to label "end"
+    this->writeLabel(end, kBranchIsAbove, conditionalOps, out);
     fBreakTarget.pop();
     fContinueTarget.pop();
 
@@ -3631,23 +3645,20 @@ void SPIRVCodeGenerator::writeDoStatement(const DoStatement& d, OutputStream& ou
     SpvId end = this->nextId(nullptr);
     fBreakTarget.push(end);
     this->writeInstruction(SpvOpBranch, header, out);
-    this->writeLabel(header, out);
-    fStoreCache.reset();  // cleared because we branch to label "header"
+    this->writeLabel(header, kBranchIsBelow, conditionalOps, out);
     this->writeInstruction(SpvOpLoopMerge, end, continueTarget, SpvLoopControlMaskNone, out);
     this->writeInstruction(SpvOpBranch, start, out);
-    this->writeLabel(start, out);  // the branch to "start" is a no-op required by the SPIR-V model
+    this->writeLabel(start, kBranchIsOnPreviousLine, out);
     this->writeStatement(*d.statement(), out);
     if (fCurrentBlock) {
         this->writeInstruction(SpvOpBranch, next, out);
     }
-    this->writeLabel(next, out);  // the branch to "next" is a no-op required by the SPIR-V model
+    this->writeLabel(next, kBranchIsOnPreviousLine, out);
     this->writeInstruction(SpvOpBranch, continueTarget, out);
-    this->writeLabel(continueTarget, out);
-    fStoreCache.reset();  // cleared because we branch to label "continueTarget"
+    this->writeLabel(continueTarget, kBranchIsAbove, conditionalOps, out);
     SpvId test = this->writeExpression(*d.test(), out);
     this->writeInstruction(SpvOpBranchConditional, test, header, end, out);
-    this->writeLabel(end, out);
-    fStoreCache.reset();  // cleared because we branch to label "end"
+    this->writeLabel(end, kBranchIsAbove, conditionalOps, out);
     fBreakTarget.pop();
     fContinueTarget.pop();
 
@@ -3694,16 +3705,17 @@ void SPIRVCodeGenerator::writeSwitchStatement(const SwitchStatement& s, OutputSt
     }
     for (size_t i = 0; i < cases.size(); ++i) {
         const SwitchCase& c = cases[i]->as<SwitchCase>();
-        this->writeLabel(labels[i], out);
-        fStoreCache.reset();  // cleared because we branch to this case label
+        if (i == 0) {
+            this->writeLabel(labels[i], kBranchIsOnPreviousLine, out);
+        } else {
+            this->writeLabel(labels[i], kBranchIsAbove, conditionalOps, out);
+        }
         this->writeStatement(*c.statement(), out);
         if (fCurrentBlock) {
             this->writeInstruction(SpvOpBranch, labels[i + 1], out);
         }
-        this->pruneConditionalOps(conditionalOps);
     }
-    this->writeLabel(end, out);
-    fStoreCache.reset();  // cleared because we branch to this case label
+    this->writeLabel(end, kBranchIsAbove, conditionalOps, out);
     fBreakTarget.pop();
 }
 
