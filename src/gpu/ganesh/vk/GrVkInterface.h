@@ -55,6 +55,8 @@ public:
      * operator.
      */
     struct Functions {
+        VkPtr<PFN_vkGetInstanceProcAddr> fGetInstanceProcAddr;
+        VkPtr<PFN_vkGetDeviceProcAddr> fGetDeviceProcAddr;
         VkPtr<PFN_vkCreateInstance> fCreateInstance;
         VkPtr<PFN_vkDestroyInstance> fDestroyInstance;
         VkPtr<PFN_vkEnumeratePhysicalDevices> fEnumeratePhysicalDevices;
