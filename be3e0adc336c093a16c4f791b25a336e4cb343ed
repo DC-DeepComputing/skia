@@ -22,6 +22,30 @@
       },
       "revId": "be3e0adc336c093a16c4f791b25a336e4cb343ed",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a704f8d8_a28bc4b4",
+        "filename": "src/ports/SkFontHost_FreeType.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 970,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-04-19T02:06:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "40b5e911_1bdf5bd3",
+      "range": {
+        "startLine": 970,
+        "startChar": 8,
+        "endLine": 970,
+        "endChar": 12
+      },
+      "revId": "be3e0adc336c093a16c4f791b25a336e4cb343ed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
