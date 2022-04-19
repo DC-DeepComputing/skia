@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d2c00ed0_8514ea8f",
+        "filename": "include/sksl/DSLCore.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-04-19T20:00:19Z",
+      "side": 1,
+      "message": "Since ForLoopOffsets is used by the DSL API, it has to be in a public include. Putting it in a DSL include felt cleaner to me than making SkSLForStatement.h public.\n\nI vacillated about using position vs. offsets; since 99% of the time we don\u0027t actually need the position, I didn\u0027t know if the increased cleanliness here was worth the (slight) extra work and memory. But I think you\u0027re right that this is better.",
+      "parentUuid": "aa4df5d9_eb303386",
+      "range": {
+        "startLine": 140,
+        "startChar": 0,
+        "endLine": 140,
+        "endChar": 23
+      },
+      "revId": "7230c7060002c37d335e7309570f38663e02efae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c744ca9d_04c5f235",
@@ -61,6 +85,30 @@
       "writtenOn": "2022-04-18T21:12:25Z",
       "side": 1,
       "message": "Up to you: It\u0027s not a big deal, but it seems like giving Nop a position caused enough ripple effects (including into the debugger!) that it would be worth splitting out into its own CL. Most of the files changed in this CL seem to be as a result of this innocuous addition.",
+      "range": {
+        "startLine": 23,
+        "startChar": 4,
+        "endLine": 23,
+        "endChar": 21
+      },
+      "revId": "7230c7060002c37d335e7309570f38663e02efae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4834dee1_5cbab8e3",
+        "filename": "src/sksl/ir/SkSLNop.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-04-19T20:00:19Z",
+      "side": 1,
+      "message": "As discussed below, it turns out we can avoid this change altogether.",
+      "parentUuid": "c744ca9d_04c5f235",
       "range": {
         "startLine": 23,
         "startChar": 4,

@@ -22,6 +22,30 @@
       },
       "revId": "4a6fbd84f4ecc4fa5f5d3cf6dbbbbbd7b0c47eda",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2c801785_1b8f3ea8",
+        "filename": "tests/sksl/runtime/LoopFloat.skvm",
+        "patchSetId": 9
+      },
+      "lineNbr": 728,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-04-19T20:00:19Z",
+      "side": 0,
+      "message": "I added positions to nops so that I could accurately determine the end of the initializer statement (since this consumes the semicolon, we can\u0027t just check the semicolon position directly). Normally it is unsafe to assume that the current parser position corresponds to the end of the previously parsed content, due to peeks (which can lookahead an arbitrary number of whitespace tokens, and do not rollback to the beginning of the whitespace). It turns out on further reflection that we never actually peek after consuming a semicolon, so this was unnecessarily defensive and we can in fact just check the parser position.\n\nThis avoids all of the nop changes and their knock-on effects that was having on tracing.",
+      "parentUuid": "5f1fb951_253588e1",
+      "range": {
+        "startLine": 727,
+        "startChar": 0,
+        "endLine": 728,
+        "endChar": 32
+      },
+      "revId": "4a6fbd84f4ecc4fa5f5d3cf6dbbbbbd7b0c47eda",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
