@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d59e74e5_1d254953",
+        "filename": "tools/viewer/SkottieSlide.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2022-04-19T15:41:40Z",
+      "side": 1,
+      "message": "For now this is the only/trivial option, but the idea is to add various particle generator options in the future.",
+      "revId": "6fc39384c37ed2d46865a295b69d8b17975d58b6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
