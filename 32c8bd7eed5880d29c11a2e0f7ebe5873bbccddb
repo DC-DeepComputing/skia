@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d16540d8_436c49d9",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 3035,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-04-19T14:25:31Z",
+      "side": 1,
+      "message": "This (and similar calls below) can also be removed now, right?",
+      "range": {
+        "startLine": 3035,
+        "startChar": 0,
+        "endLine": 3035,
+        "endChar": 46
+      },
+      "revId": "32c8bd7eed5880d29c11a2e0f7ebe5873bbccddb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
