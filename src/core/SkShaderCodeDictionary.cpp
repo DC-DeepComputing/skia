@@ -264,7 +264,7 @@ std::string GenerateDefaultGlueCode(const std::string& resultName,
 //--------------------------------------------------------------------------------------------------
 static constexpr int kNumLinearGrad4Fields = 1;
 static constexpr DataPayloadField kLinearGrad4Fields[kNumLinearGrad4Fields] = {
-        { "tilemode", SkPaintParamsKey::DataPayloadType::kByte, 1 }
+        {"tilemode", SkPaintParamsKey::DataPayloadType::kByte, 1}
 };
 
 static constexpr int kFourStopGradient = 4;
@@ -274,28 +274,30 @@ static constexpr int kFourStopGradient = 4;
 //   kMaxStops offsets
 //   2 points
 //   2 radii
-static constexpr int kNumGradientUniforms = 7;
+static constexpr int kNumGradientUniforms = 8;
 static constexpr SkUniform kGradientUniforms[kNumGradientUniforms] = {
-        { "colors",  SkSLType::kFloat4, kFourStopGradient },
-        { "offsets", SkSLType::kFloat,  kFourStopGradient },
-        { "point0",  SkSLType::kFloat2 },
-        { "point1",  SkSLType::kFloat2 },
-        { "radius0", SkSLType::kFloat },
-        { "radius1", SkSLType::kFloat },
-        { "padding", SkSLType::kFloat2 } // TODO: add automatic uniform padding
+        {"dev2local", SkSLType::kFloat4x4},
+        {"colors",    SkSLType::kFloat4, kFourStopGradient},
+        {"offsets",   SkSLType::kFloat,  kFourStopGradient},
+        {"point0",    SkSLType::kFloat2},
+        {"point1",    SkSLType::kFloat2},
+        {"radius0",   SkSLType::kFloat},
+        {"radius1",   SkSLType::kFloat},
+        {"padding",   SkSLType::kFloat2} // TODO: add automatic uniform padding
 };
 
 static const char *kLinearGradient4Name = "linear_grad_4_shader";
 static const char *kLinearGradient4SkSL =
         // TODO: This should use local coords
-        "half4 linear_grad_4_shader(float4 colorsParam[4],\n"
+        "half4 linear_grad_4_shader(float4x4 dev2local,\n"
+        "                           float4 colorsParam[4],\n"
         "                           float offsetsParam[4],\n"
         "                           float2 point0Param,\n"
         "                           float2 point1Param,\n"
         "                           float radius0Param,\n"
         "                           float radius1Param,\n"
         "                           float2 padding) {\n"
-        "    float2 pos = sk_FragCoord.xy;\n"
+        "    float2 pos = (dev2local * sk_FragCoord).xy;\n"
         "    float2 delta = point1Param - point0Param;\n"
         "    float2 pt = pos - point0Param;\n"
         "    float t = dot(pt, delta) / dot(delta, delta);\n"
@@ -315,7 +317,7 @@ static const char *kLinearGradient4SkSL =
 //--------------------------------------------------------------------------------------------------
 static constexpr int kNumSolidShaderUniforms = 1;
 static constexpr SkUniform kSolidShaderUniforms[kNumSolidShaderUniforms] = {
-        { "color", SkSLType::kFloat4 }
+        {"color", SkSLType::kFloat4}
 };
 
 static const char* kSolidShaderName = "solid_shader";
