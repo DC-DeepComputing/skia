@@ -135,6 +135,46 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3a1b5dc3_2c2d79bf",
+        "filename": "src/gpu/ganesh/dawn/GrDawnFence.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-04-19T13:32:17Z",
+      "side": 1,
+      "message": "\"`yieldAndCheck` and `busyWait`\", I presume?",
+      "range": {
+        "startLine": 29,
+        "startChar": 63,
+        "endLine": 29,
+        "endChar": 80
+      },
+      "revId": "a02737d31f323ea14b9faac02c13e40c4cc00391",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "227e342b_037ac6e4",
+        "filename": "src/gpu/ganesh/dawn/GrDawnFence.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-04-19T13:32:17Z",
+      "side": 1,
+      "message": "I\u0027d tag this with SK_WARN_UNUSED_RESULT (and/or change the name). `wait` sounds like a verb, and I can totally foresee someone calling fence.wait(), and expecting that to do the thing that\u0027s actually done by `busyWait`.",
+      "revId": "a02737d31f323ea14b9faac02c13e40c4cc00391",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "676c103c_a5ca7f46",
         "filename": "src/gpu/ganesh/dawn/GrDawnGpu.cpp",
         "patchSetId": 1
