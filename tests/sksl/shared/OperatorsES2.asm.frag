@@ -34,9 +34,9 @@ OpDecorate %10 Binding 0
 OpDecorate %10 DescriptorSet 0
 OpDecorate %61 RelaxedPrecision
 OpDecorate %70 RelaxedPrecision
-OpDecorate %118 RelaxedPrecision
+OpDecorate %117 RelaxedPrecision
+OpDecorate %119 RelaxedPrecision
 OpDecorate %120 RelaxedPrecision
-OpDecorate %121 RelaxedPrecision
 %float = OpTypeFloat 32
 %v4float = OpTypeVector %float 4
 %_ptr_Output_v4float = OpTypePointer Output %v4float
@@ -94,7 +94,7 @@ OpFunctionEnd
 %d = OpVariable %_ptr_Function_bool Function
 %e = OpVariable %_ptr_Function_bool Function
 %f = OpVariable %_ptr_Function_bool Function
-%110 = OpVariable %_ptr_Function_v4float Function
+%109 = OpVariable %_ptr_Function_v4float Function
 OpStore %x %float_1
 OpStore %y %float_2
 OpStore %z %int_3
@@ -180,30 +180,29 @@ OpStore %z %int_6
 OpSelectionMerge %103 None
 OpBranchConditional %101 %102 %103
 %102 = OpLabel
-%104 = OpFOrdEqual %bool %float_6 %float_6
 OpBranch %103
 %103 = OpLabel
-%105 = OpPhi %bool %false %80 %104 %102
-OpSelectionMerge %107 None
-OpBranchConditional %105 %106 %107
+%104 = OpPhi %bool %false %80 %101 %102
+OpSelectionMerge %106 None
+OpBranchConditional %104 %105 %106
+%105 = OpLabel
+%107 = OpIEqual %bool %int_6 %int_6
+OpBranch %106
 %106 = OpLabel
-%108 = OpIEqual %bool %int_6 %int_6
-OpBranch %107
-%107 = OpLabel
-%109 = OpPhi %bool %false %103 %108 %106
-OpSelectionMerge %114 None
-OpBranchConditional %109 %112 %113
+%108 = OpPhi %bool %false %103 %107 %105
+OpSelectionMerge %113 None
+OpBranchConditional %108 %111 %112
+%111 = OpLabel
+%114 = OpAccessChain %_ptr_Uniform_v4float %10 %int_0
+%117 = OpLoad %v4float %114
+OpStore %109 %117
+OpBranch %113
 %112 = OpLabel
-%115 = OpAccessChain %_ptr_Uniform_v4float %10 %int_0
-%118 = OpLoad %v4float %115
-OpStore %110 %118
-OpBranch %114
+%118 = OpAccessChain %_ptr_Uniform_v4float %10 %int_1
+%119 = OpLoad %v4float %118
+OpStore %109 %119
+OpBranch %113
 %113 = OpLabel
-%119 = OpAccessChain %_ptr_Uniform_v4float %10 %int_1
-%120 = OpLoad %v4float %119
-OpStore %110 %120
-OpBranch %114
-%114 = OpLabel
-%121 = OpLoad %v4float %110
-OpReturnValue %121
+%120 = OpLoad %v4float %109
+OpReturnValue %120
 OpFunctionEnd
