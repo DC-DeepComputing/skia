@@ -51,6 +51,24 @@
       "parentUuid": "464b0bc3_cbacd0de",
       "revId": "8df3d54090c138a6401dd840b602a03838c47277",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d7927809_97bd376d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-04-19T14:09:14Z",
+      "side": 1,
+      "message": "So, I can repro the MSVC/D3D failure on my Windows machine. It only seems to happen in release build, but it\u0027s failing at the end of the SlugSerialization test (while calling destructors on local objects). The actual failure is in the GrBagOfBytes destructor, where we end up with a cursor that\u0027s non-null, but also not valid (0x9 \u003c\u003c 59). So: Memory scribble? Order of destruction issues? Not clear (to me, at least).",
+      "parentUuid": "8b2a0282_ac151c9e",
+      "revId": "8df3d54090c138a6401dd840b602a03838c47277",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
