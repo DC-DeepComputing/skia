@@ -41,6 +41,7 @@ struct SkShaderSnippet {
     SkShaderSnippet() = default;
 
     SkShaderSnippet(SkSpan<const SkUniform> uniforms,
+                    SkPipelineDataGatherer::ExtraUniformFlags extraUniformFlags,
                     SkSpan<const SkTextureAndSampler> texturesAndSamplers,
                     const char* functionName,
                     const char* code,
@@ -48,6 +49,7 @@ struct SkShaderSnippet {
                     int numChildren,
                     SkSpan<const SkPaintParamsKey::DataPayloadField> dataPayloadExpectations)
             : fUniforms(uniforms)
+            , fExtraUniformFlags(extraUniformFlags)
             , fTexturesAndSamplers(texturesAndSamplers)
             , fStaticFunctionName(functionName)
             , fStaticSkSL(code)
@@ -59,6 +61,7 @@ struct SkShaderSnippet {
     std::string getMangledUniformName(int uniformIndex, int mangleId) const;
 
     SkSpan<const SkUniform> fUniforms;
+    SkPipelineDataGatherer::ExtraUniformFlags fExtraUniformFlags;
     SkSpan<const SkTextureAndSampler> fTexturesAndSamplers;
     const char* fStaticFunctionName = nullptr;
     const char* fStaticSkSL = nullptr;
@@ -71,9 +74,19 @@ struct SkShaderSnippet {
 // for program creation and its invocation.
 class SkShaderInfo {
 public:
-    void add(const SkPaintParamsKey::BlockReader& reader) {
+    SkShaderInfo() : fExtraUniformFlags(SkPipelineDataGatherer::ExtraUniformFlags::kNone) {}
+
+    void add1(const SkPaintParamsKey::BlockReader& reader) {
         fBlockReaders.push_back(reader);
     }
+    void addFlags1(skgpu::graphite::Mask<SkPipelineDataGatherer::ExtraUniformFlags> flags) {
+        fExtraUniformFlags |= flags;
+    }
+    bool needsDev2Local1() const {
+        return fExtraUniformFlags & SkPipelineDataGatherer::ExtraUniformFlags::kDev2LocalMat;
+    }
+
+
 #ifdef SK_GRAPHITE_ENABLED
     void setBlendInfo(const SkPipelineDataGatherer::BlendInfo& blendInfo) {
         fBlendInfo = blendInfo;
@@ -92,6 +105,7 @@ private:
                                      int indent) const;
 
     std::vector<SkPaintParamsKey::BlockReader> fBlockReaders;
+    skgpu::graphite::Mask<SkPipelineDataGatherer::ExtraUniformFlags> fExtraUniformFlags;
 
 #ifdef SK_GRAPHITE_ENABLED
     // The blendInfo doesn't actually contribute to the program's creation but, it contains the
@@ -153,6 +167,7 @@ public:
     const Entry* lookup(SkUniquePaintParamsID) const SK_EXCLUDES(fSpinLock);
 
     SkSpan<const SkUniform> getUniforms(SkBuiltInCodeSnippetID) const;
+    SkPipelineDataGatherer::ExtraUniformFlags getExtraUniformFlags(SkBuiltInCodeSnippetID) const;
 
     SkSpan<const SkPaintParamsKey::DataPayloadField> dataPayloadExpectations(int snippetID) const;
 

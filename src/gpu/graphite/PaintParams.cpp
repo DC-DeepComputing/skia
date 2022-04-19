@@ -9,8 +9,10 @@
 
 #include "include/core/SkShader.h"
 #include "src/core/SkBlenderBase.h"
+#include "src/core/SkKeyContext.h"
 #include "src/core/SkKeyHelpers.h"
 #include "src/core/SkPaintParamsKey.h"
+#include "src/core/SkPipelineData.h"
 #include "src/shaders/SkShaderBase.h"
 
 namespace skgpu::graphite {
@@ -54,6 +56,12 @@ void PaintParams::toKey(const SkKeyContext& keyContext,
         as_BB(fBlender)->addToKey(keyContext, builder, gatherer);
     } else {
         BlendModeBlock::AddToKey(keyContext, builder, gatherer, SkBlendMode::kSrcOver);
+    }
+
+    if (gatherer) {
+        if (gatherer->needsDev2Local()) {
+            gatherer->write(keyContext.dev2Local());
+        }
     }
 
     SkASSERT(builder->sizeInBytes() > 0);
