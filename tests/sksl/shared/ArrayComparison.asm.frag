@@ -196,8 +196,8 @@ OpBranch %108
 OpSelectionMerge %112 None
 OpBranchConditional %110 %111 %112
 %111 = OpLabel
-%113 = OpINotEqual %v3bool %50 %55
-%115 = OpAny %bool %113
+%114 = OpINotEqual %v3bool %50 %55
+%115 = OpAny %bool %114
 %116 = OpLogicalOr %bool %115 %false
 OpBranch %112
 %112 = OpLabel

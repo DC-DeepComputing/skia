@@ -139,8 +139,8 @@ OpStore %65 %64
 %66 = OpFunctionCall %void %func_vh4 %65
 %67 = OpLoad %v4float %65
 OpStore %result %67
-%69 = OpFOrdEqual %v4bool %67 %68
-%71 = OpAll %bool %69
+%70 = OpFOrdEqual %v4bool %67 %68
+%71 = OpAll %bool %70
 OpSelectionMerge %75 None
 OpBranchConditional %71 %73 %74
 %73 = OpLabel

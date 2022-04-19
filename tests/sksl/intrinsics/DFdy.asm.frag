@@ -114,8 +114,8 @@ OpBranchConditional %44 %45 %46
 %54 = OpCompositeConstruct %v2float %53 %53
 %55 = OpFMul %v2float %47 %54
 %56 = OpVectorShuffle %v2float %29 %29 0 1
-%57 = OpFOrdEqual %v2bool %55 %56
-%59 = OpAll %bool %57
+%58 = OpFOrdEqual %v2bool %55 %56
+%59 = OpAll %bool %58
 OpBranch %46
 %46 = OpLabel
 %60 = OpPhi %bool %false %26 %59 %45
@@ -132,8 +132,8 @@ OpBranchConditional %60 %61 %62
 %71 = OpCompositeConstruct %v3float %70 %70 %70
 %72 = OpFMul %v3float %63 %71
 %73 = OpVectorShuffle %v3float %29 %29 0 1 2
-%74 = OpFOrdEqual %v3bool %72 %73
-%76 = OpAll %bool %74
+%75 = OpFOrdEqual %v3bool %72 %73
+%76 = OpAll %bool %75
 OpBranch %62
 %62 = OpLabel
 %77 = OpPhi %bool %false %46 %76 %61
@@ -148,8 +148,8 @@ OpBranchConditional %77 %78 %79
 %85 = OpCompositeExtract %float %84 1
 %86 = OpCompositeConstruct %v4float %85 %85 %85 %85
 %87 = OpFMul %v4float %80 %86
-%88 = OpFOrdEqual %v4bool %87 %29
-%90 = OpAll %bool %88
+%89 = OpFOrdEqual %v4bool %87 %29
+%90 = OpAll %bool %89
 OpBranch %79
 %79 = OpLabel
 %91 = OpPhi %bool %false %62 %90 %78

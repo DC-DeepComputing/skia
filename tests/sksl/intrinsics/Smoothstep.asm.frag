@@ -142,8 +142,8 @@ OpSelectionMerge %41 None
 OpBranchConditional %true %40 %41
 %40 = OpLabel
 %42 = OpVectorShuffle %v2float %35 %35 0 1
-%43 = OpFOrdEqual %v2bool %19 %42
-%45 = OpAll %bool %43
+%44 = OpFOrdEqual %v2bool %19 %42
+%45 = OpAll %bool %44
 OpBranch %41
 %41 = OpLabel
 %46 = OpPhi %bool %false %25 %45 %40
@@ -151,8 +151,8 @@ OpSelectionMerge %48 None
 OpBranchConditional %46 %47 %48
 %47 = OpLabel
 %51 = OpVectorShuffle %v3float %35 %35 0 1 2
-%52 = OpFOrdEqual %v3bool %50 %51
-%54 = OpAll %bool %52
+%53 = OpFOrdEqual %v3bool %50 %51
+%54 = OpAll %bool %53
 OpBranch %48
 %48 = OpLabel
 %55 = OpPhi %bool %false %41 %54 %47
@@ -254,8 +254,8 @@ OpBranchConditional %123 %124 %125
 %133 = OpCompositeExtract %float %132 1
 %134 = OpCompositeConstruct %v4float %133 %133 %133 %133
 %126 = OpExtInst %v4float %1 SmoothStep %130 %134 %31
-%135 = OpFOrdEqual %v4bool %126 %35
-%137 = OpAll %bool %135
+%136 = OpFOrdEqual %v4bool %126 %35
+%137 = OpAll %bool %136
 OpBranch %125
 %125 = OpLabel
 %138 = OpPhi %bool %false %109 %137 %124

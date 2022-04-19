@@ -223,8 +223,8 @@ OpStore %x %62
 OpSelectionMerge %65 None
 OpBranchConditional %true %64 %65
 %64 = OpLabel
-%68 = OpIEqual %v4bool %62 %67
-%70 = OpAll %bool %68
+%69 = OpIEqual %v4bool %62 %67
+%70 = OpAll %bool %69
 OpBranch %65
 %65 = OpLabel
 %71 = OpPhi %bool %false %25 %70 %64

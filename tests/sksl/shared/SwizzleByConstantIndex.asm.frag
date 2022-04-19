@@ -177,8 +177,8 @@ OpStore %_15_y %float_1
 OpStore %_16_z %float_2
 OpStore %_17_w %float_3
 OpStore %c %66
-%77 = OpFOrdEqual %v4bool %43 %76
-%79 = OpAll %bool %77
+%78 = OpFOrdEqual %v4bool %43 %76
+%79 = OpAll %bool %78
 OpSelectionMerge %81 None
 OpBranchConditional %79 %80 %81
 %80 = OpLabel
