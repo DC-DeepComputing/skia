@@ -27,11 +27,13 @@ GrVkInterface::GrVkInterface(GrVkGetProc getProc,
         return;
     }
     // Global/Loader Procs.
+    ACQUIRE_PROC(GetInstanceProcAddr, VK_NULL_HANDLE, VK_NULL_HANDLE);
     ACQUIRE_PROC(CreateInstance, VK_NULL_HANDLE, VK_NULL_HANDLE);
     ACQUIRE_PROC(EnumerateInstanceExtensionProperties, VK_NULL_HANDLE, VK_NULL_HANDLE);
     ACQUIRE_PROC(EnumerateInstanceLayerProperties, VK_NULL_HANDLE, VK_NULL_HANDLE);
 
     // Instance Procs.
+    ACQUIRE_PROC(GetDeviceProcAddr, instance, VK_NULL_HANDLE);
     ACQUIRE_PROC(EnumeratePhysicalDevices, instance, VK_NULL_HANDLE);
     ACQUIRE_PROC(GetPhysicalDeviceFeatures, instance, VK_NULL_HANDLE);
     ACQUIRE_PROC(GetPhysicalDeviceFormatProperties, instance, VK_NULL_HANDLE);
@@ -263,7 +265,9 @@ GrVkInterface::GrVkInterface(GrVkGetProc getProc,
 bool GrVkInterface::validate(uint32_t instanceVersion, uint32_t physicalDeviceVersion,
                              const GrVkExtensions* extensions) const {
     // functions that are always required
-    if (nullptr == fFunctions.fCreateInstance ||
+    if (nullptr == functions.fGetInstanceProcAddr ||
+        nullptr == functions.fGetDeviceProcAddr ||
+        nullptr == fFunctions.fCreateInstance ||
         nullptr == fFunctions.fDestroyInstance ||
         nullptr == fFunctions.fEnumeratePhysicalDevices ||
         nullptr == fFunctions.fGetPhysicalDeviceFeatures ||
