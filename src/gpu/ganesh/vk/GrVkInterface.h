@@ -31,6 +31,7 @@ private:
         VkPtr() : fPtr(nullptr) {}
         VkPtr operator=(FNPTR_TYPE ptr) { fPtr = ptr; return *this; }
         operator FNPTR_TYPE() const { return fPtr; }
+        FNPTR_TYPE ptr() const { return fPtr; }
     private:
         FNPTR_TYPE fPtr;
     };
