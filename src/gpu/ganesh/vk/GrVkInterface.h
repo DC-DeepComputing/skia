@@ -31,6 +31,7 @@ private:
         VkPtr() : fPtr(nullptr) {}
         VkPtr operator=(FNPTR_TYPE ptr) { fPtr = ptr; return *this; }
         operator FNPTR_TYPE() const { return fPtr; }
+        FNPTR_TYPE ptr() const { return fPtr; }
     private:
         FNPTR_TYPE fPtr;
     };
@@ -55,6 +56,8 @@ public:
      * operator.
      */
     struct Functions {
+        VkPtr<PFN_vkGetInstanceProcAddr> fGetInstanceProcAddr;
+        VkPtr<PFN_vkGetDeviceProcAddr> fGetDeviceProcAddr;
         VkPtr<PFN_vkCreateInstance> fCreateInstance;
         VkPtr<PFN_vkDestroyInstance> fDestroyInstance;
         VkPtr<PFN_vkEnumeratePhysicalDevices> fEnumeratePhysicalDevices;
