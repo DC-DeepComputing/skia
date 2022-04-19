@@ -16,6 +16,23 @@
       "message": "Anyone understand why this breaks?",
       "revId": "8df3d54090c138a6401dd840b602a03838c47277",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "464b0bc3_cbacd0de",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-04-19T12:43:59Z",
+      "side": 1,
+      "message": "Interesting. Greg *just* rolled us to a newer version of the vulkan memory allocator (the code implicated in the MSAN failure), but it\u0027s not failing on the tree. Still, I suspect that roll much more than this CL.",
+      "revId": "8df3d54090c138a6401dd840b602a03838c47277",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
