@@ -771,13 +771,60 @@ SPIRVCodeGenerator::Instruction* SPIRVCodeGenerator::resultTypeForInstruction(
     // universally true, so it's configurable on a per-op basis.
     int resultTypeWord;
     switch (instr.fOp) {
+        case SpvOpAll:
+        case SpvOpAny:
+        case SpvOpBitcast:
+        case SpvOpBitwiseAnd:
+        case SpvOpBitwiseOr:
+        case SpvOpBitwiseXor:
         case SpvOpConstant:
         case SpvOpConstantTrue:
         case SpvOpConstantFalse:
         case SpvOpConstantComposite:
+        case SpvOpConvertFToS:
+        case SpvOpConvertFToU:
+        case SpvOpConvertSToF:
+        case SpvOpConvertUToF:
         case SpvOpCompositeConstruct:
         case SpvOpCompositeExtract:
+        case SpvOpFAdd:
+        case SpvOpFDiv:
+        case SpvOpFMod:
+        case SpvOpFMul:
+        case SpvOpFOrdEqual:
+        case SpvOpFOrdLessThan:
+        case SpvOpFOrdLessThanEqual:
+        case SpvOpFOrdGreaterThan:
+        case SpvOpFOrdGreaterThanEqual:
+        case SpvOpFSub:
+        case SpvOpFUnordNotEqual:
+        case SpvOpIAdd:
+        case SpvOpIEqual:
+        case SpvOpIMul:
+        case SpvOpISub:
         case SpvOpLoad:
+        case SpvOpLogicalAnd:
+        case SpvOpLogicalEqual:
+        case SpvOpLogicalNotEqual:
+        case SpvOpLogicalOr:
+        case SpvOpINotEqual:
+        case SpvOpSDiv:
+        case SpvOpSGreaterThan:
+        case SpvOpSGreaterThanEqual:
+        case SpvOpSLessThan:
+        case SpvOpSLessThanEqual:
+        case SpvOpSMod:
+        case SpvOpSelect:
+        case SpvOpShiftLeftLogical:
+        case SpvOpShiftRightArithmetic:
+        case SpvOpShiftRightLogical:
+        case SpvOpUDiv:
+        case SpvOpUGreaterThan:
+        case SpvOpUGreaterThanEqual:
+        case SpvOpULessThan:
+        case SpvOpULessThanEqual:
+        case SpvOpUMod:
+        case SpvOpUndef:
             resultTypeWord = 0;
             break;
 
@@ -2499,20 +2546,23 @@ SpvId SPIRVCodeGenerator::writeBinaryOperation(const Type& resultType,
                                                const Type& operandType, SpvId lhs,
                                                SpvId rhs, SpvOp_ ifFloat, SpvOp_ ifInt,
                                                SpvOp_ ifUInt, SpvOp_ ifBool, OutputStream& out) {
-    SpvId result = this->nextId(&resultType);
+    SpvOp_ op;
     if (is_float(fContext, operandType)) {
-        this->writeInstruction(ifFloat, this->getType(resultType), result, lhs, rhs, out);
+        op = ifFloat;
     } else if (is_signed(fContext, operandType)) {
-        this->writeInstruction(ifInt, this->getType(resultType), result, lhs, rhs, out);
+        op = ifInt;
     } else if (is_unsigned(fContext, operandType)) {
-        this->writeInstruction(ifUInt, this->getType(resultType), result, lhs, rhs, out);
+        op = ifUInt;
     } else if (is_bool(fContext, operandType)) {
-        this->writeInstruction(ifBool, this->getType(resultType), result, lhs, rhs, out);
+        op = ifBool;
     } else {
-        fContext.fErrors->error(operandType.fPosition,
-                "unsupported operand for binary expression: " + operandType.description());
+        fContext.fErrors->error(operandType.fPosition, "unsupported operand for binary expression: "
+                                                       + operandType.description());
+        return NA;
     }
-    return result;
+
+    return this->writeInstruction(
+            op, {this->getType(resultType), Word::Result(resultType), lhs, rhs}, out);
 }
 
 SpvId SPIRVCodeGenerator::foldToBool(SpvId id, const Type& operandType, SpvOp op,
