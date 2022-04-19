@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2c8f55d1_dcb7a5b3",
+        "filename": "src/gpu/ganesh/vk/GrVkAMDMemoryAllocator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-04-19T15:14:44Z",
+      "side": 1,
+      "message": "Alternatively, should we add code to copy the newly added functions? It looks like the ones they\u0027ve added as part of the roll are:\n  GetInstanceProcAddr\n  GetDeviceProcAddr\n  // If version \u003e\u003d 1.3:\n  GetDeviceBufferMemoryRequirements\n  GetDeviceImageMemoryRequirements",
+      "revId": "79ef681a5a9cd1dcd5348630fd45dcdfd5aabf0b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
