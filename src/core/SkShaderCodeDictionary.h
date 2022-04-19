@@ -41,6 +41,7 @@ struct SkShaderSnippet {
     SkShaderSnippet() = default;
 
     SkShaderSnippet(SkSpan<const SkUniform> uniforms,
+                    SkPipelineDataGatherer::ExtraUniformFlags extraUniformFlags,
                     SkSpan<const SkTextureAndSampler> texturesAndSamplers,
                     const char* functionName,
                     const char* code,
@@ -48,6 +49,7 @@ struct SkShaderSnippet {
                     int numChildren,
                     SkSpan<const SkPaintParamsKey::DataPayloadField> dataPayloadExpectations)
             : fUniforms(uniforms)
+            , fExtraUniformFlags(extraUniformFlags)
             , fTexturesAndSamplers(texturesAndSamplers)
             , fStaticFunctionName(functionName)
             , fStaticSkSL(code)
@@ -59,6 +61,7 @@ struct SkShaderSnippet {
     std::string getMangledUniformName(int uniformIndex, int mangleId) const;
 
     SkSpan<const SkUniform> fUniforms;
+    SkPipelineDataGatherer::ExtraUniformFlags fExtraUniformFlags;
     SkSpan<const SkTextureAndSampler> fTexturesAndSamplers;
     const char* fStaticFunctionName = nullptr;
     const char* fStaticSkSL = nullptr;
@@ -153,6 +156,7 @@ public:
     const Entry* lookup(SkUniquePaintParamsID) const SK_EXCLUDES(fSpinLock);
 
     SkSpan<const SkUniform> getUniforms(SkBuiltInCodeSnippetID) const;
+    SkPipelineDataGatherer::ExtraUniformFlags getExtraUniformFlags(SkBuiltInCodeSnippetID) const;
 
     SkSpan<const SkPaintParamsKey::DataPayloadField> dataPayloadExpectations(int snippetID) const;
 

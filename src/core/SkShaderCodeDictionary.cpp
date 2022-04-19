@@ -196,6 +196,11 @@ SkSpan<const SkUniform> SkShaderCodeDictionary::getUniforms(SkBuiltInCodeSnippet
     return fBuiltInCodeSnippets[(int) id].fUniforms;
 }
 
+SkPipelineDataGatherer::ExtraUniformFlags SkShaderCodeDictionary::getExtraUniformFlags(
+        SkBuiltInCodeSnippetID id) const {
+    return fBuiltInCodeSnippets[(int) id].fExtraUniformFlags;
+}
+
 SkSpan<const SkPaintParamsKey::DataPayloadField> SkShaderCodeDictionary::dataPayloadExpectations(
         int codeSnippetID) const {
     // All callers of this entry point should already have ensured that 'codeSnippetID' is valid
@@ -288,14 +293,15 @@ static constexpr SkUniform kGradientUniforms[kNumGradientUniforms] = {
 static const char *kLinearGradient4Name = "linear_grad_4_shader";
 static const char *kLinearGradient4SkSL =
         // TODO: This should use local coords
-        "half4 linear_grad_4_shader(float4 colorsParam[4],\n"
+        "half4 linear_grad_4_shader(float4x4 dev2local,\n"
+        "                           float4 colorsParam[4],\n"
         "                           float offsetsParam[4],\n"
         "                           float2 point0Param,\n"
         "                           float2 point1Param,\n"
         "                           float radius0Param,\n"
         "                           float radius1Param,\n"
         "                           float2 padding) {\n"
-        "    float2 pos = sk_FragCoord.xy;\n"
+        "    float2 pos = (dev2local * sk_FragCoord).xy;\n"
         "    float2 delta = point1Param - point0Param;\n"
         "    float2 pt = pos - point0Param;\n"
         "    float t = dot(pt, delta) / dot(delta, delta);\n"
@@ -606,13 +612,15 @@ int SkShaderCodeDictionary::addUserDefinedSnippet(
         const char* name,
         SkSpan<const SkPaintParamsKey::DataPayloadField> dataPayloadExpectations) {
 
-    std::unique_ptr<SkShaderSnippet> entry(new SkShaderSnippet({}, // no uniforms
-                                                               {}, // no samplers
-                                                               name,
-                                                               ";",
-                                                               GenerateDefaultGlueCode,
-                                                               kNoChildren,
-                                                               dataPayloadExpectations));
+    std::unique_ptr<SkShaderSnippet> entry(
+            new SkShaderSnippet({}, // no uniforms
+                                SkPipelineDataGatherer::ExtraUniformFlags::kNone,
+                                {}, // no samplers
+                                name,
+                                ";",
+                                GenerateDefaultGlueCode,
+                                kNoChildren,
+                                dataPayloadExpectations));
 
     // TODO: the memory for user-defined entries could go in the dictionary's arena but that
     // would have to be a thread safe allocation since the arena also stores entries for
@@ -628,6 +636,7 @@ SkShaderCodeDictionary::SkShaderCodeDictionary() {
 
     fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kDepthStencilOnlyDraw] = {
             { },     // no uniforms
+            SkPipelineDataGatherer::ExtraUniformFlags::kNone,
             { },     // no samplers
             kErrorName, kErrorSkSL,
             GenerateDefaultGlueCode,
@@ -636,6 +645,7 @@ SkShaderCodeDictionary::SkShaderCodeDictionary() {
     };
     fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kError] = {
             { },     // no uniforms
+            SkPipelineDataGatherer::ExtraUniformFlags::kNone,
             { },     // no samplers
             kErrorName, kErrorSkSL,
             GenerateDefaultGlueCode,
@@ -644,6 +654,7 @@ SkShaderCodeDictionary::SkShaderCodeDictionary() {
     };
     fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kSolidColorShader] = {
             SkMakeSpan(kSolidShaderUniforms, kNumSolidShaderUniforms),
+            SkPipelineDataGatherer::ExtraUniformFlags::kNone,
             { },     // no samplers
             kSolidShaderName, kSolidShaderSkSL,
             GenerateDefaultGlueCode,
@@ -652,6 +663,7 @@ SkShaderCodeDictionary::SkShaderCodeDictionary() {
     };
     fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kLinearGradientShader] = {
             SkMakeSpan(kGradientUniforms, kNumGradientUniforms),
+            SkPipelineDataGatherer::ExtraUniformFlags::kDev2LocalMat,
             { },     // no samplers
             kLinearGradient4Name, kLinearGradient4SkSL,
             GenerateDefaultGlueCode,
@@ -660,6 +672,7 @@ SkShaderCodeDictionary::SkShaderCodeDictionary() {
     };
     fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kRadialGradientShader] = {
             SkMakeSpan(kGradientUniforms, kNumGradientUniforms),
+            SkPipelineDataGatherer::ExtraUniformFlags::kNone,
             { },     // no samplers
             kLinearGradient4Name, kLinearGradient4SkSL,
             GenerateDefaultGlueCode,
@@ -668,6 +681,7 @@ SkShaderCodeDictionary::SkShaderCodeDictionary() {
     };
     fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kSweepGradientShader] = {
             SkMakeSpan(kGradientUniforms, kNumGradientUniforms),
+            SkPipelineDataGatherer::ExtraUniformFlags::kNone,
             { },     // no samplers
             kLinearGradient4Name, kLinearGradient4SkSL,
             GenerateDefaultGlueCode,
@@ -676,6 +690,7 @@ SkShaderCodeDictionary::SkShaderCodeDictionary() {
     };
     fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kConicalGradientShader] = {
             SkMakeSpan(kGradientUniforms, kNumGradientUniforms),
+            SkPipelineDataGatherer::ExtraUniformFlags::kNone,
             { },     // no samplers
             kLinearGradient4Name, kLinearGradient4SkSL,
             GenerateDefaultGlueCode,
@@ -684,6 +699,7 @@ SkShaderCodeDictionary::SkShaderCodeDictionary() {
     };
     fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kImageShader] = {
             SkMakeSpan(kImageShaderUniforms, kNumImageShaderUniforms),
+            SkPipelineDataGatherer::ExtraUniformFlags::kNone,
             SkMakeSpan(kISTexturesAndSamplers, kNumImageShaderTexturesAndSamplers),
             kImageShaderName, kImageShaderSkSL,
             GenerateImageShaderGlueCode,
@@ -692,6 +708,7 @@ SkShaderCodeDictionary::SkShaderCodeDictionary() {
     };
     fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kBlendShader] = {
             { kBlendShaderUniforms, kNumBlendShaderUniforms },
+            SkPipelineDataGatherer::ExtraUniformFlags::kNone,
             { },     // no samplers
             kBlendHelperName, kBlendHelperSkSL,
             GenerateBlendShaderGlueCode,
@@ -700,6 +717,7 @@ SkShaderCodeDictionary::SkShaderCodeDictionary() {
     };
     fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kFixedFunctionBlender] = {
             { },     // no uniforms
+            SkPipelineDataGatherer::ExtraUniformFlags::kNone,
             { },     // no samplers
             "FF-blending", "",  // fixed function blending doesn't have any static SkSL
             GenerateFixedFunctionBlenderGlueCode,
@@ -708,6 +726,7 @@ SkShaderCodeDictionary::SkShaderCodeDictionary() {
     };
     fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kShaderBasedBlender] = {
             { },     // no uniforms
+            SkPipelineDataGatherer::ExtraUniformFlags::kNone,
             { },     // no samplers
             kBlendHelperName, kBlendHelperSkSL,
             GenerateShaderBasedBlenderGlueCode,
