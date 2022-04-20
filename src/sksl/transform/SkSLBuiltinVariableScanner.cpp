@@ -102,7 +102,7 @@ void FindAndDeclareBuiltinVariables(const Context& context,
         scanner.addDeclaringElement(Compiler::FRAGCOLOR_NAME);
     }
 
-    if (programKind == ProgramKind::kFragment) {
+    if (ProgramConfig::IsFragment(programKind)) {
         // Vulkan requires certain builtin variables be present, even if they're unused. At one
         // time, validation errors would result if sk_Clockwise was missing. Now, it's just (Adreno)
         // driver bugs that drop or corrupt draws if they're missing.
