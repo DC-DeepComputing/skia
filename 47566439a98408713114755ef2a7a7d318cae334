@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "619b9ff7_4352265b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-04-20T20:50:16Z",
+      "side": 1,
+      "message": "This should be good to go now that Brian\u0027s CL:\nhttps://skia-review.googlesource.com/c/skia/+/532256\nhas landed.",
+      "revId": "47566439a98408713114755ef2a7a7d318cae334",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
