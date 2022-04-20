@@ -18,6 +18,7 @@
 
 #ifdef SK_GRAPHITE_ENABLED
 #include "src/gpu/Blend.h"
+#include "src/gpu/graphite/EnumBitMask.h"
 #include "src/gpu/graphite/TextureProxy.h"
 #include "src/gpu/graphite/UniformManager.h"
 #include "src/gpu/graphite/geom/VectorTypes.h"
@@ -131,10 +132,19 @@ public:
         SkPMColor4f          fBlendConstant = SK_PMColor4fTRANSPARENT;
         bool                 fWritesColor = true;
     };
+
+    enum class ExtraUniformFlags : uint32_t {
+        kNone = 0x0,
+        kDev2LocalMat = 0x1,
+    };
+    SKGPU_DECL_MASK_OPS_FRIENDS(ExtraUniformFlags);
 #endif
 
 #ifdef SK_GRAPHITE_ENABLED
-    SkPipelineDataGatherer(skgpu::graphite::Layout layout) : fUniformManager(layout) {}
+    SkPipelineDataGatherer(skgpu::graphite::Layout layout)
+            : fUniformManager(layout)
+            , fExtraUniformFlags(ExtraUniformFlags::kNone) {
+    }
 #endif
 
     void reset();
@@ -154,8 +164,12 @@ public:
     }
     bool hasTextures() const { return !fTextureDataBlock.empty(); }
 
+    void addFlags(skgpu::graphite::Mask<ExtraUniformFlags> flags) { fExtraUniformFlags |= flags; }
+    bool needsDev2Local() const { return fExtraUniformFlags & ExtraUniformFlags::kDev2LocalMat; }
+
     const SkTextureDataBlock& textureDataBlock() { return fTextureDataBlock; }
 
+    void write(const SkM44& mat) { fUniformManager.write(mat); }
     void write(const SkColor4f* colors, int numColors) { fUniformManager.write(colors, numColors); }
     void write(const SkPMColor4f& premulColor) { fUniformManager.write(&premulColor, 1); }
     void write(const SkRect& rect) { fUniformManager.write(rect); }
@@ -179,11 +193,15 @@ private:
     void doneWithExpectedUniforms() { fUniformManager.doneWithExpectedUniforms(); }
 #endif // SK_DEBUG
 
-    SkTextureDataBlock              fTextureDataBlock;
-    BlendInfo                       fBlendInfo;
-    skgpu::graphite::UniformManager fUniformManager;
+    SkTextureDataBlock                       fTextureDataBlock;
+    BlendInfo                                fBlendInfo;
+    skgpu::graphite::UniformManager          fUniformManager;
+    skgpu::graphite::Mask<ExtraUniformFlags> fExtraUniformFlags;
 #endif // SK_GRAPHITE_ENABLED
 };
+#ifdef SK_GRAPHITE_ENABLED
+SKGPU_MAKE_MASK_OPS(SkPipelineDataGatherer::ExtraUniformFlags);
+#endif
 
 #if defined(SK_DEBUG) && defined(SK_GRAPHITE_ENABLED)
 class UniformExpectationsValidator {
