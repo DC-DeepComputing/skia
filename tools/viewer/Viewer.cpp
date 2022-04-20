@@ -76,6 +76,10 @@
     #include "tools/viewer/SkottieSlide.h"
 #endif
 
+#if defined(SVG_NATIVE_VIEWER)
+    #include "SkOpenTypeSVGDecoder_SVGNative.h"
+#endif
+
 #if defined(SK_ENABLE_SVG)
     #include "modules/svg/include/SkSVGOpenTypeSVGDecoder.h"
 #endif
@@ -358,7 +362,9 @@ Viewer::Viewer(int argc, char** argv, void* platformData)
     , fPerspectiveMode(kPerspective_Off)
 {
     SkGraphics::Init();
-#if defined(SK_ENABLE_SVG)
+#if defined(SVG_NATIVE_VIEWER)
+    SkGraphics::SetOpenTypeSVGDecoderFactory(SkOpenTypeSVGDecoder_SVGNative::Make);
+#elif defined(SK_ENABLE_SVG)
     SkGraphics::SetOpenTypeSVGDecoderFactory(SkSVGOpenTypeSVGDecoder::Make);
 #endif
 
