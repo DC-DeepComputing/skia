@@ -15,6 +15,7 @@
 #include "include/sksl/DSLExpression.h"
 #include "include/sksl/DSLStatement.h"
 #include "include/sksl/DSLVar.h"
+#include "include/sksl/SkSLPosition.h"
 
 #include <memory>
 #include <string>
@@ -25,7 +26,6 @@ namespace SkSL {
 
 class Compiler;
 class ErrorReporter;
-class Position;
 struct Program;
 struct ProgramSettings;
 
@@ -141,7 +141,7 @@ DSLStatement Do(DSLStatement stmt, DSLExpression test, Position pos = {});
  * for (initializer; test; next) stmt;
  */
 DSLStatement For(DSLStatement initializer, DSLExpression test, DSLExpression next,
-                 DSLStatement stmt, Position pos = {});
+                 DSLStatement stmt, Position pos = {}, ForLoopPositions positions = {});
 
 /**
  * if (test) ifTrue; [else ifFalse;]

@@ -28,7 +28,7 @@ class DSLVarBase;
 
 static bool is_type_in_symbol_table(std::string_view name, SkSL::SymbolTable* symbols) {
     const SkSL::Symbol* s = (*symbols)[name];
-    return s && s->is<Type>();
+    return s && s->is<SkSL::Type>();
 }
 
 void PushSymbolTable() {

@@ -75,7 +75,7 @@ static const SkSL::Type* find_type(const Context& context,
                                    std::string_view name,
                                    Position modifiersPos,
                                    Modifiers* modifiers) {
-    const Type* type = find_type(context, overallPos, name);
+    const SkSL::Type* type = find_type(context, overallPos, name);
     type = type->applyPrecisionQualifiers(context, modifiers, ThreadContext::SymbolTable().get(),
             modifiersPos);
     ThreadContext::ReportErrors(overallPos);
@@ -310,8 +310,8 @@ DSLType Struct(std::string_view name, SkSpan<DSLField> fields, Position pos) {
         }
         skslFields.emplace_back(field.fPosition, field.fModifiers.fModifiers, field.fName, &type);
     }
-    const SkSL::Type* result = ThreadContext::SymbolTable()->add(Type::MakeStructType(pos, name,
-            skslFields));
+    const SkSL::Type* result = ThreadContext::SymbolTable()->add(SkSL::Type::MakeStructType(pos,
+            name, skslFields));
     if (result->isTooDeeplyNested()) {
         ThreadContext::ReportError("struct '" + std::string(name) + "' is too deeply nested", pos);
     }
