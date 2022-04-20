@@ -728,7 +728,6 @@ generated_cc_atom(
         "//include/private:SkSLDefines_hdr",
         "//include/private:SkSLLayout_hdr",
         "//include/private:SkSLModifiers_hdr",
-        "//include/private:SkSLSymbol_hdr",
         "//src/sksl/ir:SkSLSymbolTable_hdr",
     ],
 )
