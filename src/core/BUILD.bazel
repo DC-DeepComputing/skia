@@ -5724,6 +5724,7 @@ generated_cc_atom(
         "//include/core:SkTileMode_hdr",
         "//include/private:SkColorData_hdr",
         "//src/gpu:Blend_hdr",
+        "//src/gpu/graphite:EnumBitMask_hdr",
         "//src/gpu/graphite:TextureProxy_hdr",
         "//src/gpu/graphite:UniformManager_hdr",
         "//src/gpu/graphite/geom:VectorTypes_hdr",
@@ -5744,7 +5745,10 @@ generated_cc_atom(
     name = "SkKeyContext_hdr",
     hdrs = ["SkKeyContext.h"],
     visibility = ["//:__subpackages__"],
-    deps = ["//include/gpu:GrTypes_hdr"],
+    deps = [
+        "//include/core:SkM44_hdr",
+        "//include/gpu:GrTypes_hdr",
+    ],
 )
 
 generated_cc_atom(
