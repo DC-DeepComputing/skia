@@ -174,8 +174,9 @@ private:
     }
 
     template<typename T>
-    T* symbolRef(Symbol::Kind kind) {
+    T* symbolRef() {
         uint16_t result = this->readU16();
+        SkASSERTF(result != kBuiltin_Symbol, "use possiblyBuiltinSymbolRef() instead");
         SkASSERT(fSymbols.size() > result);
         return (T*) fSymbols[result];
     }
