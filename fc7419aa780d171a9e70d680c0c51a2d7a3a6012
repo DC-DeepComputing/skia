@@ -136,6 +136,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "aef15da6_29c4e2db",
+        "filename": "include/core/SkSVGDecoder.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-04-20T21:14:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3326b3c8_8dbfef73",
+      "range": {
+        "startLine": 20,
+        "startChar": 24,
+        "endLine": 20,
+        "endChar": 90
+      },
+      "revId": "fc7419aa780d171a9e70d680c0c51a2d7a3a6012",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dc8efb85_6751431d",
