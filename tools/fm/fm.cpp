@@ -40,6 +40,7 @@
 
 #if defined(SK_ENABLE_SVG)
 #include "modules/svg/include/SkSVGDOM.h"
+#include "modules/svg/include/SkSVGOpenTypeSVGDecoder.h"
 #include "modules/svg/include/SkSVGNode.h"
 #endif
 
@@ -387,6 +388,10 @@ int main(int argc, char** argv) {
     if (FLAGS_cpuDetect) {
         SkGraphics::Init();
     }
+#if defined(SK_ENABLE_SVG)
+    SkGraphics::SetOpenTypeSVGDecoderFactory(SkSVGOpenTypeSVGDecoder::Make);
+#endif
+
     gUseSkVMBlitter  = FLAGS_skvm;
     gSkVMAllowJIT    = FLAGS_jit;
     gSkVMJITViaDylib = FLAGS_dylib;
