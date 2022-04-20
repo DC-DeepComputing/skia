@@ -334,7 +334,7 @@ LoadedModule Compiler::loadModule(ProgramKind kind,
                                   ModuleData data,
                                   std::shared_ptr<SymbolTable> base,
                                   bool dehydrate) {
-    if (dehydrate) {
+    if (dehydrate && !base) {
         // NOTE: This is a workaround. When dehydrating includes, skslc doesn't know which module
         // it's preparing, nor what the correct base module is. We can't use 'Root', because many
         // GPU intrinsics reference private types, like samplers or textures. Today, 'Private' does
