@@ -241,6 +241,7 @@ void SkPaintParamsKey::AddBlockToShaderInfo(SkShaderCodeDictionary* dict,
                                             SkShaderInfo* result) {
 
     result->add(reader);
+    result->addFlags(dict->getExtraUniformFlags(reader.codeSnippetId()));
 
     // The child blocks appear right after the parent block's header in the key and go
     // right after the parent's SnippetEntry in the shader info
