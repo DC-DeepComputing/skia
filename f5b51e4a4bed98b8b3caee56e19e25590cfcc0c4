@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5007e856_415dfa1c",
+        "filename": "src/sksl/ir/SkSLForStatement.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 165,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-20T22:55:02Z",
+      "side": 1,
+      "message": "forLoopPositions",
+      "range": {
+        "startLine": 165,
+        "startChar": 63,
+        "endLine": 165,
+        "endChar": 72
+      },
+      "revId": "f5b51e4a4bed98b8b3caee56e19e25590cfcc0c4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b51c414d_4d36dd7d",
+        "filename": "src/sksl/ir/SkSLForStatement.h",
+        "patchSetId": 17
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-20T22:55:02Z",
+      "side": 1,
+      "message": "const\u0026",
+      "range": {
+        "startLine": 36,
+        "startChar": 17,
+        "endLine": 36,
+        "endChar": 33
+      },
+      "revId": "f5b51e4a4bed98b8b3caee56e19e25590cfcc0c4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7061c86e_d4e270ff",
+        "filename": "src/sksl/ir/SkSLForStatement.h",
+        "patchSetId": 17
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-20T22:55:02Z",
+      "side": 1,
+      "message": "const\u0026",
+      "range": {
+        "startLine": 55,
+        "startChar": 46,
+        "endLine": 55,
+        "endChar": 62
+      },
+      "revId": "f5b51e4a4bed98b8b3caee56e19e25590cfcc0c4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "87bbdf51_dfbec493",
+        "filename": "src/sksl/ir/SkSLForStatement.h",
+        "patchSetId": 17
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-20T22:55:02Z",
+      "side": 1,
+      "message": "const\u0026",
+      "range": {
+        "startLine": 71,
+        "startChar": 43,
+        "endLine": 71,
+        "endChar": 59
+      },
+      "revId": "f5b51e4a4bed98b8b3caee56e19e25590cfcc0c4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "656546d6_27fdab7e",
+        "filename": "src/sksl/ir/SkSLForStatement.h",
+        "patchSetId": 17
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-20T22:55:02Z",
+      "side": 1,
+      "message": "const\u0026",
+      "range": {
+        "startLine": 79,
+        "startChar": 4,
+        "endLine": 79,
+        "endChar": 20
+      },
+      "revId": "f5b51e4a4bed98b8b3caee56e19e25590cfcc0c4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
