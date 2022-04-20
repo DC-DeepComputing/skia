@@ -9,6 +9,7 @@
 
 #include "include/gpu/GrDirectContext.h"
 #include "src/core/SkATrace.h"
+#include "src/core/SkPerfTrace.h"
 #include "src/core/SkAutoMalloc.h"
 #include "src/core/SkReadBuffer.h"
 #include "src/core/SkTraceEvent.h"
