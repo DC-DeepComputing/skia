@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1d1380a6_18db441d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-04-20T18:54:33Z",
+      "side": 1,
+      "message": "Will need to wait for https://chromium-review.googlesource.com/c/chromium/src/+/3597483 ",
+      "revId": "5260386c70426aca337496886489fd459b6480f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
