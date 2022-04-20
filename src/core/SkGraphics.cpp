@@ -13,6 +13,7 @@
 #include "include/core/SkPath.h"
 #include "include/core/SkPathEffect.h"
 #include "include/core/SkRefCnt.h"
+#include "include/core/SkSVGDecoder.h"
 #include "include/core/SkShader.h"
 #include "include/core/SkStream.h"
 #include "include/core/SkTime.h"
@@ -123,6 +124,18 @@ int SkGraphics::GetFontCacheCountUsed() {
 void SkGraphics::PurgeFontCache() {
     SkStrikeCache::GlobalStrikeCache()->purgeAll();
     SkTypefaceCache::PurgeAll();
+}
+
+static SkGraphics::SVGDecoderFactory gSVGDecoderFactory = nullptr;
+
+auto SkGraphics::SetSVGDecoderFactory(SVGDecoderFactory svgDecoderFactory) -> SVGDecoderFactory {
+    SVGDecoderFactory old(gSVGDecoderFactory);
+    gSVGDecoderFactory = svgDecoderFactory;
+    return old;
+}
+
+auto SkGraphics::GetSVGDecoderFactory() -> SVGDecoderFactory {
+    return gSVGDecoderFactory;
 }
 
 extern bool gSkVMAllowJIT;

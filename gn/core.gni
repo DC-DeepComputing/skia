@@ -83,6 +83,7 @@ skia_core_public = [
   "$_include/core/SkSurface.h",
   "$_include/core/SkSurfaceCharacterization.h",
   "$_include/core/SkSurfaceProps.h",
+  "$_include/core/SkSVGDecoder.h",
   "$_include/core/SkSwizzle.h",
   "$_include/core/SkTextBlob.h",
   "$_include/core/SkTime.h",
