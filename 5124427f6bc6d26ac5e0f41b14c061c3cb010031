@@ -1,0 +1,165 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8f1df7b4_86ea18d5",
+        "filename": "src/sksl/SkSLInliner.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-20T18:32:31Z",
+      "side": 1,
+      "message": "SkSLPosition.h",
+      "range": {
+        "startLine": 17,
+        "startChar": 0,
+        "endLine": 17,
+        "endChar": 33
+      },
+      "revId": "5124427f6bc6d26ac5e0f41b14c061c3cb010031",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "55916c0b_e2f459d7",
+        "filename": "src/sksl/analysis/SkSLGetLoopUnrollInfo.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-20T18:32:31Z",
+      "side": 1,
+      "message": "Can be removed? (might be caught by iwyu)",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 33
+      },
+      "revId": "5124427f6bc6d26ac5e0f41b14c061c3cb010031",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "818689d2_ec8968fb",
+        "filename": "src/sksl/analysis/SkSLGetLoopUnrollInfo.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-20T18:32:31Z",
+      "side": 1,
+      "message": "const\u0026",
+      "range": {
+        "startLine": 57,
+        "startChar": 60,
+        "endLine": 57,
+        "endChar": 76
+      },
+      "revId": "5124427f6bc6d26ac5e0f41b14c061c3cb010031",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "024d66f8_5f4f6606",
+        "filename": "src/sksl/dsl/DSLCore.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 227,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-20T18:32:31Z",
+      "side": 1,
+      "message": "const\u0026",
+      "range": {
+        "startLine": 227,
+        "startChar": 36,
+        "endLine": 227,
+        "endChar": 52
+      },
+      "revId": "5124427f6bc6d26ac5e0f41b14c061c3cb010031",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "15585996_79589ffa",
+        "filename": "src/sksl/dsl/DSLCore.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 465,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-20T18:32:31Z",
+      "side": 1,
+      "message": "const\u0026",
+      "range": {
+        "startLine": 465,
+        "startChar": 50,
+        "endLine": 465,
+        "endChar": 66
+      },
+      "revId": "5124427f6bc6d26ac5e0f41b14c061c3cb010031",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "810bc4a0_a45b4f96",
+        "filename": "src/sksl/dsl/DSLSymbols.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-20T18:32:31Z",
+      "side": 1,
+      "message": "Curious, are these Type -\u003e SkSL::Type changes still needed?",
+      "range": {
+        "startLine": 31,
+        "startChar": 22,
+        "endLine": 31,
+        "endChar": 32
+      },
+      "revId": "5124427f6bc6d26ac5e0f41b14c061c3cb010031",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3442e15d_bbe1d9ae",
+        "filename": "src/sksl/ir/SkSLForStatement.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-20T18:32:31Z",
+      "side": 1,
+      "message": "SkSLPosition.h",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 33
+      },
+      "revId": "5124427f6bc6d26ac5e0f41b14c061c3cb010031",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
