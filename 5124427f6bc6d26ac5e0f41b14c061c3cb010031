@@ -3,6 +3,52 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b9cc65d9_de652efa",
+        "filename": "src/sksl/SkSLDSLParser.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 1278,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-20T18:35:52Z",
+      "side": 1,
+      "message": "-1 (to avoid capturing the semicolon)",
+      "range": {
+        "startLine": 1278,
+        "startChar": 87,
+        "endLine": 1278,
+        "endChar": 88
+      },
+      "revId": "5124427f6bc6d26ac5e0f41b14c061c3cb010031",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "203dc18c_92f095b2",
+        "filename": "src/sksl/SkSLDSLParser.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 1279,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-20T18:35:52Z",
+      "side": 1,
+      "message": "-1 (to avoid capturing the semicolon)",
+      "range": {
+        "startLine": 1279,
+        "startChar": 96,
+        "endLine": 1279,
+        "endChar": 97
+      },
+      "revId": "5124427f6bc6d26ac5e0f41b14c061c3cb010031",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8f1df7b4_86ea18d5",
         "filename": "src/sksl/SkSLInliner.cpp",
         "patchSetId": 13
