@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2e2cd2ce_41500cd1",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-04-20T15:49:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "103b62a6_cea7cafc",
+      "range": {
+        "startLine": 75,
+        "startChar": 16,
+        "endLine": 75,
+        "endChar": 41
+      },
+      "revId": "b385fb45278318cd8814e74100b0e8ee49893960",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8738a47b_b10cc5c4",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2b6a8107_030416a8",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 498,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-04-20T15:49:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8738a47b_b10cc5c4",
+      "range": {
+        "startLine": 475,
+        "startChar": 4,
+        "endLine": 498,
+        "endChar": 5
+      },
+      "revId": "b385fb45278318cd8814e74100b0e8ee49893960",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "96030c6a_db84be66",
@@ -60,6 +108,30 @@
       "writtenOn": "2022-04-20T14:31:18Z",
       "side": 1,
       "message": "This is fine for now, since we do have to make a new SkPaint anyways to overwrite the SkShader, but once we get to constructing the image paint key directly, I think we should update Device::drawShape() to take the overriding paint key and then this would be updated to:\n\n   this-\u003edrawShape(Shape(tmpDst), paint, \u0026imageShaderKey, kFillStyle, DrawFlags::kIgnorePathEffect);\n   \nWe technically should probably be calling\n\n   this-\u003edrawShape(Shape(tmpDst), paintWithShader, SkStrokeRec(paintWithShader), DrawFlags::kIgnorePathEffect);\n   \nright now, since drawImage et al. don\u0027t use path effects. Alternatively we can modify paintWithShader to have a null path effect for now).\n\nMy end goal for these functions, which may not survive contact with reality, is that all the draw variations that have implied styles or shaders, etc. can pass in overrides or flags separately to drawShape() so that we don\u0027t have to make temporary paints like this.",
+      "range": {
+        "startLine": 508,
+        "startChar": 4,
+        "endLine": 512,
+        "endChar": 44
+      },
+      "revId": "b385fb45278318cd8814e74100b0e8ee49893960",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5c3455f0_629257f4",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 512,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-04-20T15:49:01Z",
+      "side": 1,
+      "message": "For now, I\u0027ve nulled out the path effect field of paintWithShader",
+      "parentUuid": "96030c6a_db84be66",
       "range": {
         "startLine": 508,
         "startChar": 4,
