@@ -5,8 +5,16 @@
  * found in the LICENSE file.
  */
 
+#include "include/core/SkFontStyle.h"
 #include "include/utils/SkOrderedFontMgr.h"
-#include "src/core/SkFontDescriptor.h"
+
+#include <utility>
+
+class SkData;
+class SkStreamAsset;
+class SkString;
+class SkTypeface;
+struct SkFontArguments;
 
 SkOrderedFontMgr::SkOrderedFontMgr() {}
 SkOrderedFontMgr::~SkOrderedFontMgr() {}

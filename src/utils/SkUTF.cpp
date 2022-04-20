@@ -4,8 +4,6 @@
 #include "include/private/SkTFitsIn.h"
 #include "src/utils/SkUTF.h"
 
-#include <climits>
-
 static constexpr inline int32_t left_shift(int32_t value, int32_t shift) {
     return (int32_t) ((uint32_t) value << shift);
 }
