@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "939a9729_509a006c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-04-20T14:56:48Z",
+      "side": 1,
+      "message": "Thanks! I like this optimization and makes the device coordinate system consistent with a few other places that also just derive the inverse from the available component matrices instead of calling SkM44::invert().\n\nThe code looks correct to me, and the skia diffs are negligible and don\u0027t suggest any bugs that we overlooked. However, running the Canary-Chromium bot shows that we have layout test failures that will block rolling into chromium. I have a comment below that outlines how we can move forward.\n\nLooking at the layout test failures, filters-color-01-b.svg, nested-reflection-on-overflow.html, and nested-reflection.html all look imperceptible and what I\u0027d expect from slight changes to matrix calculations. The colrv1-samples-visual.html diffs are more troubling but I am not sure if this is related to your CL or something else that changed in skia or chromium that was included in the canary bot.\n\nI\u0027ve rebased and re-run the try job to see if it reproduces. I would not expect colrv1 text rendering to be dependent on how the device-to-global inverse is calculated, so fingers crossed those failures don\u0027t repeat.",
+      "revId": "c5decf009bdfb223c52dc79b3313cd906e0c3cc3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bcf4a13e_253e2b65",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 1119,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-04-20T14:56:48Z",
+      "side": 1,
+      "message": "This is a slightly different matrix, numerically, compared to computing the inverse of the device to global matrix directly. After running the chromium canary, it looks like that\u0027s enough to cause very imperceptible pixel diffs in some layout tests. This would end up blocking Skia\u0027s roll into chromium.\n\nGenerally, we have two ways of getting past this to rebase the layout tests. We can either first land a change to the TestExpectations file in chromium to suppress the failing tests, land this change and wait for it roll into chromium, and then make a chromium CL that undoes the suppression and includes the rebased images.\n\nAlternatively, we add a #define to `third_party/skia/SkUserConfig.h` in chromium like `SK_COMPUTE_DEV_TO_GLOBAL_INVERSE_DIRECTLY`, and then modify this CL to be something like:\n\n   SkM44 deviceToGlobal \u003d priorDevice-\u003edeviceToGlobal() * SkM44(newLayerMapping.layerToDevice());\n   #if defined(SK_COMPUTE_DEV_TO_GLOBAL_INVERSE_DIRECTLY)\n       deviceToGlobal.normalizePerspective();\n       SkM44 globalToDevice;\n       if (!deviceToGlobal(\u0026globalToDevice)) {\n          newDevice \u003d nullptr;\n          abortLayer();\n          return;\n       }\n   #else\n       SkM44 globalToDevice \u003d SkM44(newLayerMapping.deviceToLayer()) * priorDevice-\u003eglobalToDevice();\n   #endif\n   newDevice-\u003esetDeviceCoordinateSystem(deviceToGlobal, globalToDevice, ...);\n\nThen we land this and roll into chromium, which should then effectively be following the same operations as the old code. Then we delete the define from SkUserConfig.h in chromium and rebase the changed images.\n\nWhen that\u0027s done, I can come back and clean up the code to always do your optimization.",
+      "range": {
+        "startLine": 1119,
+        "startChar": 16,
+        "endLine": 1119,
+        "endChar": 87
+      },
+      "revId": "c5decf009bdfb223c52dc79b3313cd906e0c3cc3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5a93295b_8914b7ad",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 1130,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-04-20T14:56:48Z",
+      "side": 1,
+      "message": "This condition will no longer be hit, so we can just get rid of it (except for dealing with the roll into chromium (see other comment).",
+      "range": {
+        "startLine": 1123,
+        "startChar": 8,
+        "endLine": 1130,
+        "endChar": 15
+      },
+      "revId": "c5decf009bdfb223c52dc79b3313cd906e0c3cc3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0357f5ba_728b5459",
+        "filename": "src/core/SkDevice.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-04-20T14:56:48Z",
+      "side": 1,
+      "message": "Since this no longer has to calculate the inverse of `deviceToGlobal`, it can\u0027t fail anymore and we can update `setDeviceCoordinateSystem` to just return void.",
+      "range": {
+        "startLine": 48,
+        "startChar": 0,
+        "endLine": 48,
+        "endChar": 5
+      },
+      "revId": "c5decf009bdfb223c52dc79b3313cd906e0c3cc3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
