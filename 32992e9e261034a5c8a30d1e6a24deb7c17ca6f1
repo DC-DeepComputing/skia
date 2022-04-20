@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9ede3428_e2e65f87",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-04-20T14:12:49Z",
+      "side": 1,
+      "message": "Is this what you had in mind for the manual roll and build update?",
+      "revId": "32992e9e261034a5c8a30d1e6a24deb7c17ca6f1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
