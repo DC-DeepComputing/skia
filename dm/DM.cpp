@@ -481,6 +481,10 @@ static bool in_shard() {
 }
 
 static void push_src(const char* tag, ImplicitString options, Src* inSrc) {
+    if (strncmp(inSrc->name().c_str(), "drawbitmaprect", 14)) {
+        return;
+    }
+
     std::unique_ptr<Src> src(inSrc);
     if (in_shard() && FLAGS_src.contains(tag) &&
         !CommandLineFlags::ShouldSkip(FLAGS_match, src->name().c_str())) {
@@ -1439,6 +1443,8 @@ static SkTDArray<skiatest::Test>* gParallelTests = new SkTDArray<skiatest::Test>
 static SkTDArray<skiatest::Test>* gSerialTests   = new SkTDArray<skiatest::Test>;
 
 static void gather_tests() {
+    return;
+#if 0
     if (!FLAGS_src.contains("tests")) {
         return;
     }
@@ -1457,6 +1463,7 @@ static void gather_tests() {
             gParallelTests->push_back(test);
         }
     }
+#endif
 }
 
 static void run_test(skiatest::Test test, const GrContextOptions& grCtxOptions) {
