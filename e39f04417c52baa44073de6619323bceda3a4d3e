@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1b6d2ca1_8991086c",
+        "filename": "src/sksl/dsl/DSLCore.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 319,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-04-20T18:59:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fb9f92c9_dc21ea1c",
+      "range": {
+        "startLine": 319,
+        "startChar": 100,
+        "endLine": 319,
+        "endChar": 101
+      },
+      "revId": "e39f04417c52baa44073de6619323bceda3a4d3e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7a209e6d_3e19a8a6",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-04-20T18:19:12Z",
       "side": 1,
       "message": "If we wanted to be extra slick we could start the underline at maskPos+4",
+      "range": {
+        "startLine": 300,
+        "startChar": 31,
+        "endLine": 300,
+        "endChar": 38
+      },
+      "revId": "e39f04417c52baa44073de6619323bceda3a4d3e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "51134d13_1a0daf52",
+        "filename": "src/sksl/ir/SkSLSwizzle.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 300,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-04-20T18:59:54Z",
+      "side": 1,
+      "message": "You knew I wouldn\u0027t be able to resist that.",
+      "parentUuid": "7a209e6d_3e19a8a6",
       "range": {
         "startLine": 300,
         "startChar": 31,
