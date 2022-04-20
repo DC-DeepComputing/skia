@@ -18,6 +18,7 @@
 #include "src/core/SkPaintParamsKey.h"
 #include "src/core/SkPipelineData.h"
 #include "src/core/SkUniform.h"
+#include "src/gpu/graphite/EnumBitMask.h"
 
 // TODO: How to represent the type (e.g., 2D) of texture being sampled?
 class SkTextureAndSampler {
@@ -30,6 +31,12 @@ private:
     const char* fName;
 };
 
+enum class ExtraUniformFlags : uint32_t {
+    kNone = 0x0,
+    kDev2LocalMat = 0x1,
+};
+SKGPU_MAKE_MASK_OPS(ExtraUniformFlags);
+
 struct SkShaderSnippet {
     using GenerateGlueCodeForEntry = std::string (*)(const std::string& resultName,
                                                      int entryIndex, // for uniform name mangling
@@ -41,6 +48,7 @@ struct SkShaderSnippet {
     SkShaderSnippet() = default;
 
     SkShaderSnippet(SkSpan<const SkUniform> uniforms,
+                    ExtraUniformFlags extraUniformFlags,
                     SkSpan<const SkTextureAndSampler> texturesAndSamplers,
                     const char* functionName,
                     const char* code,
@@ -48,6 +56,7 @@ struct SkShaderSnippet {
                     int numChildren,
                     SkSpan<const SkPaintParamsKey::DataPayloadField> dataPayloadExpectations)
             : fUniforms(uniforms)
+            , fExtraUniformFlags(extraUniformFlags)
             , fTexturesAndSamplers(texturesAndSamplers)
             , fStaticFunctionName(functionName)
             , fStaticSkSL(code)
@@ -59,6 +68,7 @@ struct SkShaderSnippet {
     std::string getMangledUniformName(int uniformIndex, int mangleId) const;
 
     SkSpan<const SkUniform> fUniforms;
+    ExtraUniformFlags fExtraUniformFlags;
     SkSpan<const SkTextureAndSampler> fTexturesAndSamplers;
     const char* fStaticFunctionName = nullptr;
     const char* fStaticSkSL = nullptr;
@@ -71,9 +81,19 @@ struct SkShaderSnippet {
 // for program creation and its invocation.
 class SkShaderInfo {
 public:
+    SkShaderInfo() : fExtraUniformFlags(ExtraUniformFlags::kNone) {}
+
     void add(const SkPaintParamsKey::BlockReader& reader) {
         fBlockReaders.push_back(reader);
     }
+    void addFlags(skgpu::graphite::Mask<ExtraUniformFlags> flags) {
+        fExtraUniformFlags |= flags;
+    }
+    bool needsDev2Local() const {
+        return fExtraUniformFlags & ExtraUniformFlags::kDev2LocalMat;
+    }
+
+
 #ifdef SK_GRAPHITE_ENABLED
     void setBlendInfo(const SkPipelineDataGatherer::BlendInfo& blendInfo) {
         fBlendInfo = blendInfo;
@@ -92,6 +112,7 @@ private:
                                      int indent) const;
 
     std::vector<SkPaintParamsKey::BlockReader> fBlockReaders;
+    skgpu::graphite::Mask<ExtraUniformFlags> fExtraUniformFlags;
 
 #ifdef SK_GRAPHITE_ENABLED
     // The blendInfo doesn't actually contribute to the program's creation but, it contains the
@@ -153,6 +174,9 @@ public:
     const Entry* lookup(SkUniquePaintParamsID) const SK_EXCLUDES(fSpinLock);
 
     SkSpan<const SkUniform> getUniforms(SkBuiltInCodeSnippetID) const;
+    ExtraUniformFlags getExtraUniformFlags(SkBuiltInCodeSnippetID id) const {
+        return fBuiltInCodeSnippets[(int) id].fExtraUniformFlags;
+    }
 
     SkSpan<const SkPaintParamsKey::DataPayloadField> dataPayloadExpectations(int snippetID) const;
 

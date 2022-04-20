@@ -82,6 +82,8 @@ void add_solid_uniform_data(const SkShaderCodeDictionary* dict,
                             SkPipelineDataGatherer* gatherer) {
     VALIDATE_UNIFORMS(gatherer, dict, kSolidColorShader)
     gatherer->write(premulColor);
+
+    gatherer->addFlags(dict->getExtraUniformFlags(SkBuiltInCodeSnippetID::kSolidColorShader));
 }
 #endif // SK_GRAPHITE_ENABLED
 
@@ -137,6 +139,8 @@ void add_linear_gradient_uniform_data(const SkShaderCodeDictionary* dict,
     gatherer->write(gradData.fRadii[0]);        // unused
     gatherer->write(gradData.fRadii[1]);        // unused
     gatherer->write(SkPoint::Make(0.0f, 0.0f)); // padding
+
+    gatherer->addFlags(dict->getExtraUniformFlags(SkBuiltInCodeSnippetID::kLinearGradientShader));
 };
 
 void add_radial_gradient_uniform_data(const SkShaderCodeDictionary* dict,
@@ -150,6 +154,8 @@ void add_radial_gradient_uniform_data(const SkShaderCodeDictionary* dict,
     gatherer->write(gradData.fRadii[0]);
     gatherer->write(gradData.fRadii[1]);        // unused
     gatherer->write(SkPoint::Make(0.0f, 0.0f)); // padding
+
+    gatherer->addFlags(dict->getExtraUniformFlags(SkBuiltInCodeSnippetID::kRadialGradientShader));
 };
 
 void add_sweep_gradient_uniform_data(const SkShaderCodeDictionary* dict,
@@ -163,6 +169,8 @@ void add_sweep_gradient_uniform_data(const SkShaderCodeDictionary* dict,
     gatherer->write(gradData.fRadii[0]);        // unused
     gatherer->write(gradData.fRadii[1]);        // unused
     gatherer->write(SkPoint::Make(0.0f, 0.0f)); // padding
+
+    gatherer->addFlags(dict->getExtraUniformFlags(SkBuiltInCodeSnippetID::kSweepGradientShader));
 };
 
 void add_conical_gradient_uniform_data(const SkShaderCodeDictionary* dict,
@@ -176,6 +184,8 @@ void add_conical_gradient_uniform_data(const SkShaderCodeDictionary* dict,
     gatherer->write(gradData.fRadii[0]);
     gatherer->write(gradData.fRadii[1]);
     gatherer->write(SkPoint::Make(0.0f, 0.0f)); // padding
+
+    gatherer->addFlags(dict->getExtraUniformFlags(SkBuiltInCodeSnippetID::kConicalGradientShader));
 };
 
 #endif // SK_GRAPHITE_ENABLED
@@ -304,6 +314,8 @@ void add_image_uniform_data(const SkShaderCodeDictionary* dict,
     gatherer->write(static_cast<int>(imgData.fTileModes[1]));
     gatherer->write(0); // manual padding
     gatherer->write(0); // manual padding
+
+    gatherer->addFlags(dict->getExtraUniformFlags(SkBuiltInCodeSnippetID::kImageShader));
 }
 
 #endif // SK_GRAPHITE_ENABLED
@@ -376,6 +388,8 @@ void add_blendshader_uniform_data(const SkShaderCodeDictionary* dict,
     gatherer->write(0); // padding - remove
     gatherer->write(0); // padding - remove
     gatherer->write(0); // padding - remove
+
+    gatherer->addFlags(dict->getExtraUniformFlags(SkBuiltInCodeSnippetID::kBlendShader));
 }
 
 #endif // SK_GRAPHITE_ENABLED
