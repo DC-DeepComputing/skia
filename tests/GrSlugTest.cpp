@@ -11,6 +11,7 @@
 #include "tests/Test.h"
 #include "tools/ToolUtils.h"
 
+
 DEF_GPUTEST_FOR_RENDERING_CONTEXTS(GrSlug_empty, reporter, ctxInfo) {
     auto dContext = ctxInfo.directContext();
     SkImageInfo info = SkImageInfo::MakeN32Premul(256, 256);
