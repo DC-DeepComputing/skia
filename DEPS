@@ -50,6 +50,7 @@ deps = {
   #"third_party/externals/v8"                     : "https://chromium.googlesource.com/v8/v8.git@5f1ae66d5634e43563b2d25ea652dfb94c31a3b4",
   "third_party/externals/wuffs"                  : "https://skia.googlesource.com/external/github.com/google/wuffs-mirror-release-c.git@600cd96cf47788ee3a74b40a6028b035c9fd6a61",
   "third_party/externals/zlib"                   : "https://chromium.googlesource.com/chromium/src/third_party/zlib@c876c8f87101c5a75f6014b0f832499afeb65b73",
+  "third_party/externals/svg-native-viewer" : "https://github.com/adobe/svg-native-viewer.git@33c0071a116a79a8289730c5840c04c8feadd2a8",
 
   'bin': {
     'packages': [
