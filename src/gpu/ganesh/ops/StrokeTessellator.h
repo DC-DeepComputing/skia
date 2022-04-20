@@ -37,14 +37,11 @@ public:
     StrokeTessellator(PatchAttribs attribs) : fAttribs(attribs | PatchAttribs::kJoinControlPoint) {}
 
     // Called before draw(). Prepares GPU buffers containing the geometry to tessellate.
-    //
-    // Returns the fixed number of edges the tessellator will draw per patch, if using fixed-count
-    // rendering, otherwise 0.
-    virtual int prepare(GrMeshDrawTarget*,
-                        const SkMatrix& shaderMatrix,
-                        std::array<float,2> matrixMinMaxScales,
-                        PathStrokeList*,
-                        int totalCombinedStrokeVerbCnt) = 0;
+    virtual void prepare(GrMeshDrawTarget*,
+                         const SkMatrix& shaderMatrix,
+                         std::array<float,2> matrixMinMaxScales,
+                         PathStrokeList*,
+                         int totalCombinedStrokeVerbCnt) = 0;
 
     // Issues draw calls for the tessellated stroke. The caller is responsible for creating and
     // binding a pipeline that uses this class's shader() before calling draw().
@@ -67,11 +64,11 @@ public:
 
     StrokeFixedCountTessellator(PatchAttribs attribs) : StrokeTessellator(attribs) {}
 
-    int prepare(GrMeshDrawTarget*,
-                const SkMatrix& shaderMatrix,
-                std::array<float,2> matrixMinMaxScales,
-                PathStrokeList*,
-                int totalCombinedStrokeVerbCnt) final;
+    void prepare(GrMeshDrawTarget*,
+                 const SkMatrix& shaderMatrix,
+                 std::array<float,2> matrixMinMaxScales,
+                 PathStrokeList*,
+                 int totalCombinedStrokeVerbCnt) final;
 
     void draw(GrOpFlushState*) const final;
 
@@ -90,11 +87,11 @@ public:
     StrokeHardwareTessellator(PatchAttribs attribs, int maxTessellationSegments)
             : StrokeTessellator(attribs), fMaxTessellationSegments(maxTessellationSegments) {}
 
-    int prepare(GrMeshDrawTarget*,
-                const SkMatrix& shaderMatrix,
-                std::array<float,2> matrixMinMaxScales,
-                PathStrokeList*,
-                int totalCombinedStrokeVerbCnt) final;
+    void prepare(GrMeshDrawTarget*,
+                 const SkMatrix& shaderMatrix,
+                 std::array<float,2> matrixMinMaxScales,
+                 PathStrokeList*,
+                 int totalCombinedStrokeVerbCnt) final;
 
     void draw(GrOpFlushState*) const final;
 
