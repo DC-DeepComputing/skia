@@ -16,6 +16,23 @@
       "message": "PTAL.",
       "revId": "645787713a432d0cf1d40dcfe82877d072d56f04",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0a3bad3e_fe8dd44f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-04-20T20:22:45Z",
+      "side": 1,
+      "message": "In the .cpp files have you considered using:\nusing namespace skgpu;\n\nto reduce some of the line noise which is skgpu::.",
+      "revId": "645787713a432d0cf1d40dcfe82877d072d56f04",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
