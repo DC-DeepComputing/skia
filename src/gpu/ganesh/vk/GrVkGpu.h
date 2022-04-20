@@ -35,7 +35,7 @@ class GrVkSecondaryCommandBuffer;
 class GrVkTexture;
 struct GrVkInterface;
 
-class GrVkGpu : public GrGpu {
+aclass GrVkGpu : public GrGpu {
 public:
     static sk_sp<GrGpu> Make(const GrVkBackendContext&, const GrContextOptions&, GrDirectContext*);
 
