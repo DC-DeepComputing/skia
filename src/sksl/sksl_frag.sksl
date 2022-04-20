@@ -7,3 +7,27 @@ layout(builtin=17) in bool sk_Clockwise;  // Similar to gl_FrontFacing, but defi
 layout(location=0,index=0,builtin=10001) out half4 sk_FragColor;
 layout(builtin=10008) half4 sk_LastFragColor;
 layout(builtin=10012) out half4 sk_SecondaryFragColor;
+
+half4 linear_grad_4_shader(float4 colorsParam[4],
+                           float offsetsParam[4],
+                           float2 point0Param,
+                           float2 point1Param,
+                           float radius0Param,
+                           float radius1Param,
+                           float2 padding) {
+    float2 pos = sk_FragCoord.xy;
+    float2 delta = point1Param - point0Param;
+    float2 pt = pos - point0Param;
+    float t = dot(pt, delta) / dot(delta, delta);
+    float4 result = colorsParam[0];
+    result = mix(result, colorsParam[1],
+                 clamp((t-offsetsParam[0])/(offsetsParam[1]-offsetsParam[0]),
+                       0, 1));
+    result = mix(result, colorsParam[2],
+                 clamp((t-offsetsParam[1])/(offsetsParam[2]-offsetsParam[1]),
+                       0, 1));
+    result = mix(result, colorsParam[3],
+                 clamp((t-offsetsParam[2])/(offsetsParam[3]-offsetsParam[2]),
+                 0, 1));
+    return half4(result);
+}

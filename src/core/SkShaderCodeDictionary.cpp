@@ -286,31 +286,7 @@ static constexpr SkUniform kGradientUniforms[kNumGradientUniforms] = {
 };
 
 static const char *kLinearGradient4Name = "linear_grad_4_shader";
-static const char *kLinearGradient4SkSL =
-        // TODO: This should use local coords
-        "half4 linear_grad_4_shader(float4 colorsParam[4],\n"
-        "                           float offsetsParam[4],\n"
-        "                           float2 point0Param,\n"
-        "                           float2 point1Param,\n"
-        "                           float radius0Param,\n"
-        "                           float radius1Param,\n"
-        "                           float2 padding) {\n"
-        "    float2 pos = sk_FragCoord.xy;\n"
-        "    float2 delta = point1Param - point0Param;\n"
-        "    float2 pt = pos - point0Param;\n"
-        "    float t = dot(pt, delta) / dot(delta, delta);\n"
-        "    float4 result = colorsParam[0];\n"
-        "    result = mix(result, colorsParam[1],\n"
-        "                 clamp((t-offsetsParam[0])/(offsetsParam[1]-offsetsParam[0]),\n"
-        "                       0, 1));\n"
-        "    result = mix(result, colorsParam[2],\n"
-        "                 clamp((t-offsetsParam[1])/(offsetsParam[2]-offsetsParam[1]),\n"
-        "                       0, 1));\n"
-        "    result = mix(result, colorsParam[3],\n"
-        "                 clamp((t-offsetsParam[2])/(offsetsParam[3]-offsetsParam[2]),\n"
-        "                 0, 1));\n"
-        "    return half4(result);\n"
-        "}\n";
+static const char *kLinearGradient4SkSL = ""; // moved to sksl_frag
 
 //--------------------------------------------------------------------------------------------------
 static constexpr int kNumSolidShaderUniforms = 1;
