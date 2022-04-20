@@ -115,10 +115,14 @@ void GrStrokeTessellationShader::InstancedImpl::onEmitCode(EmitArgs& args, GrGPA
     if (w < 0) {
         numParametricSegments = wangs_formula_cubic(PRECISION, p0, p1, p2, p3, AFFINE_MATRIX);
     } else {
-        numParametricSegments = wangs_formula_conic(PRECISION,
-                                                    AFFINE_MATRIX * p0,
-                                                    AFFINE_MATRIX * p1,
-                                                    AFFINE_MATRIX * p2, w);
+        if (p0 == p1 && p2 == p3) {
+            numParametricSegments = 1; // a line
+        } else {
+            numParametricSegments = wangs_formula_conic(PRECISION,
+                                                        AFFINE_MATRIX * p0,
+                                                        AFFINE_MATRIX * p1,
+                                                        AFFINE_MATRIX * p2, w);
+        }
     })");
 
     if (shader.stroke().isHairlineStyle()) {
