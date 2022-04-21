@@ -186,8 +186,8 @@ GrDrawOpAtlas::ErrorCode GrAtlasManager::addGlyphToAtlas(const SkGlyph& skGlyph,
             return GrDrawOpAtlas::ErrorCode::kError;
     }
 
-    const int width = skGlyph.width() + 2*padding;
-    const int height = skGlyph.height() + 2*padding;
+    const int width = skGlyph.width() + (fSupportBilerpAtlas ? padding : 2*padding);
+    const int height = skGlyph.height() + (fSupportBilerpAtlas ? padding : 2*padding);
     int rowBytes = width * bytesPerPixel;
     size_t size = height * rowBytes;
 
@@ -211,7 +211,11 @@ GrDrawOpAtlas::ErrorCode GrAtlasManager::addGlyphToAtlas(const SkGlyph& skGlyph,
                                       &grGlyph->fAtlasLocator);
 
     if (errorCode == GrDrawOpAtlas::ErrorCode::kSucceeded) {
-        grGlyph->fAtlasLocator.insetSrc(srcPadding);
+        if (fSupportBilerpAtlas && srcPadding == 1) {
+            grGlyph->fAtlasLocator.inset1(srcPadding);
+        } else {
+            grGlyph->fAtlasLocator.insetSrc(srcPadding);
+        }
     }
 
     return errorCode;

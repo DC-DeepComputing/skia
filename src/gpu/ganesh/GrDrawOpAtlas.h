@@ -144,6 +144,14 @@ public:
             return fUVs[3] - fUVs[1];
         }
 
+        void inset1(int padding) {
+            SkASSERT(padding <= this->width());
+            SkASSERT(padding <= this->height());
+
+            fUVs[0] += padding;
+            fUVs[1] += padding;
+        }
+
         void insetSrc(int padding) {
             SkASSERT(2 * padding <= this->width());
             SkASSERT(2 * padding <= this->height());
