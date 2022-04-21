@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "679405d4_b9d1cc81",
+        "filename": "src/sksl/analysis/SkSLProgramUsage.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-21T14:41:34Z",
+      "side": 1,
+      "message": "Removing this #include causes breakage:\n\n ../../src/sksl/analysis/SkSLProgramUsage.cpp:121:23: error: member access into incomplete type \u0027std::shared_ptr\u003cSkSL::BuiltinMap\u003e::element_type\u0027 (aka \u0027SkSL::BuiltinMap\u0027)",
+      "range": {
+        "startLine": 14,
+        "startChar": 38,
+        "endLine": 14,
+        "endChar": 58
+      },
+      "revId": "114eb147c145caeac7be7265ecee7b2724cc6b12",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
