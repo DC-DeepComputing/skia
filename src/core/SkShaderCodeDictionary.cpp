@@ -449,13 +449,44 @@ std::string GenerateShaderBasedBlenderGlueCode(const std::string& resultName,
     add_indent(&result, indent);
     result += "half4 dummyDst = half4(1.0, 1.0, 1.0, 1.0);\n";
 
-    add_indent(&result, indent);
-    SkSL::String::appendf(&result, "%s = %s(%d, %s, dummyDst);",
-                          resultName.c_str(),
-                          reader.entry()->fStaticFunctionName,
-                          blendMode[0],
-                          priorStageOutputName.c_str());
+    static constexpr const char *kBlendModes[] = {
+        "blend_clear",
+        "blend_src",
+        "blend_dst",
+        "blend_src_over",
+        "blend_dst_over",
+        "blend_src_in",
+        "blend_dst_in",
+        "blend_src_out",
+        "blend_dst_out",
+        "blend_src_atop",
+        "blend_dst_atop",
+        "blend_xor",
+        "blend_plus",
+        "blend_modulate",
+        "blend_screen",
+        "blend_overlay",
+        "blend_darken",
+        "blend_lighten",
+        "blend_color_dodge",
+        "blend_color_burn",
+        "blend_hard_light",
+        "blend_soft_light",
+        "blend_difference",
+        "blend_exclusion",
+        "blend_multiply",
+        "blend_hue",
+        "blend_saturation",
+        "blend_color",
+        "blend_luminosity",
+    };
+    static_assert((int)SkBlendMode::kLastMode + 1 == SK_ARRAY_COUNT(kBlendModes));
 
+    add_indent(&result, indent);
+    SkSL::String::appendf(&result, "%s = %s(%s, dummyDst);",
+                          resultName.c_str(),
+                          kBlendModes[blendMode[0]],
+                          priorStageOutputName.c_str());
     return result;
 }
 
