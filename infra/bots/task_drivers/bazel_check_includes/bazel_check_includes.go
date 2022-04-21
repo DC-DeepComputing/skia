@@ -54,7 +54,9 @@ func main() {
 	}
 
 	targets := []string{"//example:hello_world_gl", "//example:hello_world_vulkan",
-		"//example:hello_world_dawn", "//example:vulkan_basic", "//:skia_core", "//src/svg/..."}
+		"//example:hello_world_dawn", "//example:vulkan_basic", "//:skia_core", "//src/svg/...",
+		"//src/utils/...",
+	}
 	for _, t := range targets {
 		if err := bazelCheckIncludes(ctx, skiaDir, t); err != nil {
 			td.Fatal(ctx, err)
@@ -69,6 +71,10 @@ func main() {
 	}
 
 	if err := bazelCheckIncludes(ctx, skiaDir, "//tools/debugger", "--gpu_backend=gl_backend"); err != nil {
+		td.Fatal(ctx, err)
+	}
+
+	if err := bazelCheckIncludes(ctx, skiaDir, "//src/utils", "--gpu_backend=gl_backend"); err != nil {
 		td.Fatal(ctx, err)
 	}
 }
