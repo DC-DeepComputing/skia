@@ -190,7 +190,10 @@ generated_cc_atom(
     name = "SkSLBlend_hdr",
     hdrs = ["SkSLBlend.h"],
     visibility = ["//:__subpackages__"],
-    deps = ["//include/core:SkBlendMode_hdr"],
+    deps = [
+        "//include/core:SkBlendMode_hdr",
+        "//include/core:SkSpan_hdr",
+    ],
 )
 
 generated_cc_atom(
