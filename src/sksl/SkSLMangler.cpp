@@ -10,8 +10,10 @@
 #include "include/core/SkTypes.h"
 #include "include/private/SkSLString.h"
 #include "include/private/SkStringView.h"
+#include "include/private/SkStringView.h"
 #include "src/sksl/ir/SkSLSymbolTable.h"
 
+#include <ctype.h>
 #include <ctype.h>
 
 namespace SkSL {
