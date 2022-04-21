@@ -16,6 +16,41 @@
       "message": "Being in the SkSL namespace and such, do you think this files should live in src/sksl instead of src/gpu?",
       "revId": "e62fc2839df894614dd4c79cb618ea81875a0e2e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a7b5578e_1c30a9a7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-21T22:52:20Z",
+      "side": 1,
+      "message": "\u0027",
+      "revId": "e62fc2839df894614dd4c79cb618ea81875a0e2e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "61b30b99_eeaa1363",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-21T22:52:20Z",
+      "side": 1,
+      "message": "Not really--`src/sksl/` is for the compiler. This is just some code that uses SkSL built-in functions. I\u0027m happy to change the name if you think it\u0027s confusing. \n\n(It\u0027s just adapting the original name GrGLSLBlend by removing \"Gr\" and modernizing \"GLSL\"... nothing about GrGLSLBlend has been GLSL-specific in a very long time.)\n\nbrianosman@ what do you think a good name should be?",
+      "parentUuid": "779a4e35_c64e563a",
+      "revId": "e62fc2839df894614dd4c79cb618ea81875a0e2e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
