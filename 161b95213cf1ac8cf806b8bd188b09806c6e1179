@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1ea7a4bf_59b0dbeb",
+        "filename": "src/sksl/ir/SkSLVariable.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-21T18:31:15Z",
+      "side": 1,
+      "message": "This is never used (it\u0027s just for error reporting in Convert). We probably don\u0027t need it.",
+      "range": {
+        "startLine": 51,
+        "startChar": 81,
+        "endLine": 51,
+        "endChar": 97
+      },
+      "revId": "161b95213cf1ac8cf806b8bd188b09806c6e1179",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
