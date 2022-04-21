@@ -9,6 +9,7 @@ cc_library(
         ":RectanizerSkyline_src",
         ":ResourceKey_src",
         ":ShaderErrorHandler_src",
+        ":SkSLBlend_src",
         ":Swizzle_src",
         "//src/gpu/tessellate:FixedCountBufferUtils_src",
         "//src/gpu/tessellate:Tessellation_src",
@@ -183,4 +184,18 @@ generated_cc_atom(
     hdrs = ["Rectanizer.h"],
     visibility = ["//:__subpackages__"],
     deps = ["//include/gpu:GrTypes_hdr"],
+)
+
+generated_cc_atom(
+    name = "SkSLBlend_hdr",
+    hdrs = ["SkSLBlend.h"],
+    visibility = ["//:__subpackages__"],
+    deps = ["//include/core:SkBlendMode_hdr"],
+)
+
+generated_cc_atom(
+    name = "SkSLBlend_src",
+    srcs = ["SkSLBlend.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [":SkSLBlend_hdr"],
 )
