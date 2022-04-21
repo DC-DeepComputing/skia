@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2c866bb6_c525debc",
+        "filename": "src/core/SkKeyContext.h",
+        "patchSetId": 28
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-04-21T18:42:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3a74f25a_75af8f24",
+      "range": {
+        "startLine": 35,
+        "startChar": 17,
+        "endLine": 35,
+        "endChar": 26
+      },
+      "revId": "f9e6f9288d40582ef71fb39347c379e0864e7bc4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fcf4b909_7f55a35d",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-04-21T16:16:58Z",
       "side": 1,
       "message": "I\u0027ve wanted to use this version of enum bit masks in ganesh as well now, to have nicer operators compared to Ganesh\u0027s GrTFlagsMask in include/gpu/GrTypes.h.\n\nIf we moved EnumBitMask to src/core, we could use this anywhere and then the ExtraUniformFlags (or features/requirements) can be defined backend-agnostic.",
+      "range": {
+        "startLine": 23,
+        "startChar": 27,
+        "endLine": 23,
+        "endChar": 38
+      },
+      "revId": "f9e6f9288d40582ef71fb39347c379e0864e7bc4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "442db22c_75452992",
+        "filename": "src/core/SkShaderCodeDictionary.h",
+        "patchSetId": 28
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-04-21T18:42:32Z",
+      "side": 1,
+      "message": "sgtm but I\u0027ll do that in a follow up CL",
+      "parentUuid": "fcf4b909_7f55a35d",
       "range": {
         "startLine": 23,
         "startChar": 27,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2b7819a5_be6f5dcc",
+        "filename": "src/core/SkShaderCodeDictionary.h",
+        "patchSetId": 28
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-04-21T18:42:32Z",
+      "side": 1,
+      "message": "I went with SnippetRequirementFlags",
+      "parentUuid": "f2892328_b2d567c4",
+      "range": {
+        "startLine": 37,
+        "startChar": 11,
+        "endLine": 37,
+        "endChar": 29
+      },
+      "revId": "f9e6f9288d40582ef71fb39347c379e0864e7bc4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4dac7222_a1da95c4",
@@ -83,6 +155,30 @@
       "writtenOn": "2022-04-21T16:16:58Z",
       "side": 1,
       "message": "If we get EnumBitMask defined in src/core, these functions seem generally useful outside of graphite too.",
+      "range": {
+        "startLine": 93,
+        "startChar": 4,
+        "endLine": 98,
+        "endChar": 5
+      },
+      "revId": "f9e6f9288d40582ef71fb39347c379e0864e7bc4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cdfe044e_1666ade1",
+        "filename": "src/core/SkShaderCodeDictionary.h",
+        "patchSetId": 28
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-04-21T18:42:32Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "4dac7222_a1da95c4",
       "range": {
         "startLine": 93,
         "startChar": 4,
