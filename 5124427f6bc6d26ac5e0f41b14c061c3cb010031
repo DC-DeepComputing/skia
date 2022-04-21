@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bb0b20cc_61787b09",
+        "filename": "src/sksl/SkSLDSLParser.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 1278,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-04-21T13:27:25Z",
+      "side": 1,
+      "message": "The end offset is exclusive. It was + 1 previously to include the semicolon, so I have already subtracted one from it.",
+      "parentUuid": "b9cc65d9_de652efa",
+      "range": {
+        "startLine": 1278,
+        "startChar": 87,
+        "endLine": 1278,
+        "endChar": 88
+      },
+      "revId": "5124427f6bc6d26ac5e0f41b14c061c3cb010031",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "203dc18c_92f095b2",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-04-20T18:35:52Z",
       "side": 1,
       "message": "-1 (to avoid capturing the semicolon)",
+      "range": {
+        "startLine": 1279,
+        "startChar": 96,
+        "endLine": 1279,
+        "endChar": 97
+      },
+      "revId": "5124427f6bc6d26ac5e0f41b14c061c3cb010031",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fff50b45_f26f1530",
+        "filename": "src/sksl/SkSLDSLParser.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 1279,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-04-21T13:27:25Z",
+      "side": 1,
+      "message": "As above.",
+      "parentUuid": "203dc18c_92f095b2",
       "range": {
         "startLine": 1279,
         "startChar": 96,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6d787dae_1d4a71b7",
+        "filename": "src/sksl/SkSLInliner.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-04-21T13:27:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8f1df7b4_86ea18d5",
+      "range": {
+        "startLine": 17,
+        "startChar": 0,
+        "endLine": 17,
+        "endChar": 33
+      },
+      "revId": "5124427f6bc6d26ac5e0f41b14c061c3cb010031",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "55916c0b_e2f459d7",
@@ -83,6 +155,30 @@
       "writtenOn": "2022-04-20T18:32:31Z",
       "side": 1,
       "message": "Can be removed? (might be caught by iwyu)",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 33
+      },
+      "revId": "5124427f6bc6d26ac5e0f41b14c061c3cb010031",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a2a9fb4d_70f45ac9",
+        "filename": "src/sksl/analysis/SkSLGetLoopUnrollInfo.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-04-21T13:27:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "55916c0b_e2f459d7",
       "range": {
         "startLine": 11,
         "startChar": 0,
@@ -116,6 +212,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cf959299_72704567",
+        "filename": "src/sksl/analysis/SkSLGetLoopUnrollInfo.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-04-21T13:27:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "818689d2_ec8968fb",
+      "range": {
+        "startLine": 57,
+        "startChar": 60,
+        "endLine": 57,
+        "endChar": 76
+      },
+      "revId": "5124427f6bc6d26ac5e0f41b14c061c3cb010031",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "024d66f8_5f4f6606",
@@ -129,6 +249,30 @@
       "writtenOn": "2022-04-20T18:32:31Z",
       "side": 1,
       "message": "const\u0026",
+      "range": {
+        "startLine": 227,
+        "startChar": 36,
+        "endLine": 227,
+        "endChar": 52
+      },
+      "revId": "5124427f6bc6d26ac5e0f41b14c061c3cb010031",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8278ce1b_31bded85",
+        "filename": "src/sksl/dsl/DSLCore.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 227,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-04-21T13:27:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "024d66f8_5f4f6606",
       "range": {
         "startLine": 227,
         "startChar": 36,
@@ -162,6 +306,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "91a632f8_383480c7",
+        "filename": "src/sksl/dsl/DSLCore.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 465,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-04-21T13:27:25Z",
+      "side": 1,
+      "message": "This is a default parameter, so I can\u0027t do that here.",
+      "parentUuid": "15585996_79589ffa",
+      "range": {
+        "startLine": 465,
+        "startChar": 50,
+        "endLine": 465,
+        "endChar": 66
+      },
+      "revId": "5124427f6bc6d26ac5e0f41b14c061c3cb010031",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "810bc4a0_a45b4f96",
@@ -185,6 +353,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "21d955c8_1164db20",
+        "filename": "src/sksl/dsl/DSLSymbols.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-04-21T13:27:25Z",
+      "side": 1,
+      "message": "Turns out not anymore. Reverted.",
+      "parentUuid": "810bc4a0_a45b4f96",
+      "range": {
+        "startLine": 31,
+        "startChar": 22,
+        "endLine": 31,
+        "endChar": 32
+      },
+      "revId": "5124427f6bc6d26ac5e0f41b14c061c3cb010031",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3442e15d_bbe1d9ae",
@@ -198,6 +390,30 @@
       "writtenOn": "2022-04-20T18:32:31Z",
       "side": 1,
       "message": "SkSLPosition.h",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 33
+      },
+      "revId": "5124427f6bc6d26ac5e0f41b14c061c3cb010031",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a6131369_e8d407f6",
+        "filename": "src/sksl/ir/SkSLForStatement.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-04-21T13:27:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3442e15d_bbe1d9ae",
       "range": {
         "startLine": 12,
         "startChar": 0,
