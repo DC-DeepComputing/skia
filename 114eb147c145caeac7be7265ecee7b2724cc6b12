@@ -46,6 +46,30 @@
       },
       "revId": "114eb147c145caeac7be7265ecee7b2724cc6b12",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8c0c5e94_c7d7467b",
+        "filename": "src/sksl/analysis/SkSLProgramUsage.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-21T21:07:01Z",
+      "side": 1,
+      "message": "I asked Kevin and he says...\n\n  I think that\u0027s because IWYU isn\u0027t \"complete\" yet and sometimes misses stuff. I\u0027ve had to do that before [...]\n  It might be fixed in a later version of IWYU, but we can\u0027t update that until we update clang to 14 (or 15)",
+      "parentUuid": "6ed1526f_a7c70f9a",
+      "range": {
+        "startLine": 14,
+        "startChar": 38,
+        "endLine": 14,
+        "endChar": 58
+      },
+      "revId": "114eb147c145caeac7be7265ecee7b2724cc6b12",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
