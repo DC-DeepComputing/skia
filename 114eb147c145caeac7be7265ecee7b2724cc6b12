@@ -22,6 +22,30 @@
       },
       "revId": "114eb147c145caeac7be7265ecee7b2724cc6b12",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6ed1526f_a7c70f9a",
+        "filename": "src/sksl/analysis/SkSLProgramUsage.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-04-21T21:04:14Z",
+      "side": 1,
+      "message": "Is IWYU trying to remove this? Seems like a bug - that usage is really clear.",
+      "parentUuid": "679405d4_b9d1cc81",
+      "range": {
+        "startLine": 14,
+        "startChar": 38,
+        "endLine": 14,
+        "endChar": 58
+      },
+      "revId": "114eb147c145caeac7be7265ecee7b2724cc6b12",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
