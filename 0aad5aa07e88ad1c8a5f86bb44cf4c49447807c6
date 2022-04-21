@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "625c04a2_e599f9a7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-04-21T14:55:41Z",
+      "side": 1,
+      "message": "Simplifying the code a bit per the previous CL.",
+      "revId": "0aad5aa07e88ad1c8a5f86bb44cf4c49447807c6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
