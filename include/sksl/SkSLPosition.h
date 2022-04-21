@@ -38,12 +38,12 @@ public:
     int line(std::string_view source) const;
 
     int startOffset() const {
-        SkASSERT(this->valid());
+//        SkASSERT(this->valid());
         return fStartOffset;
     }
 
     int endOffset() const {
-        SkASSERT(this->valid());
+  //      SkASSERT(this->valid());
         return fEndOffset;
     }
 
