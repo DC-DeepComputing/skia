@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ce3dd8ed_51659335",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-04-21T22:08:49Z",
+      "side": 1,
+      "message": "Here are slugs working with out any -D flags etc. It\u0027s great to compare the results of the TextBlobs and the Slugs.",
+      "revId": "6b441cb0abc8649a80e636d957f942b62ce775e3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
