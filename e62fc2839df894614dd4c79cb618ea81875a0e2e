@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "779a4e35_c64e563a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-04-21T22:26:23Z",
+      "side": 1,
+      "message": "Being in the SkSL namespace and such, do you think this files should live in src/sksl instead of src/gpu?",
+      "revId": "e62fc2839df894614dd4c79cb618ea81875a0e2e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
