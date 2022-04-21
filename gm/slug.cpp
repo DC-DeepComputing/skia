@@ -25,7 +25,7 @@
 #include "include/private/chromium/GrSlug.h"
 #include "tools/ToolUtils.h"
 
-#if SK_SUPPORT_GPU && defined(SK_EXPERIMENTAL_SIMULATE_DRAWGLYPHRUNLIST_WITH_SLUG)
+#if SK_SUPPORT_GPU
 class SlugGM : public skiagm::GM {
 public:
     SlugGM(const char* txt)

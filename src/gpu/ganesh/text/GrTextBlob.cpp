@@ -2889,7 +2889,7 @@ void Device::drawSlug(SkCanvas* canvas, const GrSlug* grSlug) {
         SkMatrix slugMatrix = slug->initialPositionMatrix();
         SkMatrix positionMatrix = matrixProvider.localToDevice();
         positionMatrix.preTranslate(slug->origin().x(), slug->origin().y());
-        SkASSERT(slugMatrix == positionMatrix);
+        //SkASSERT(slugMatrix == positionMatrix);
     }
 #endif
     slug->surfaceDraw(canvas, this->clip(), matrixProvider, fSurfaceDrawContext.get());
