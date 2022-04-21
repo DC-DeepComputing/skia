@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "77221f41_921b6225",
+        "filename": "include/sksl/DSLVar.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-04-21T21:09:31Z",
+      "side": 1,
+      "message": "micro-nit: Can we put this right after fPosition, so they live together?",
+      "revId": "bd62a7114f433718dff1317e6423ca9dcff9cb82",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
