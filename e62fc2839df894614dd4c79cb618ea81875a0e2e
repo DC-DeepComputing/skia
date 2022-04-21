@@ -51,6 +51,24 @@
       "parentUuid": "779a4e35_c64e563a",
       "revId": "e62fc2839df894614dd4c79cb618ea81875a0e2e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "44915c55_8bcabb57",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-04-21T23:47:21Z",
+      "side": 1,
+      "message": "For one I would say if we\u0027re keeping this in src/gpu that I would prefer just using the skgpu namespace. However, could this just live in src/gpu/Blend.h?",
+      "parentUuid": "61b30b99_eeaa1363",
+      "revId": "e62fc2839df894614dd4c79cb618ea81875a0e2e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
