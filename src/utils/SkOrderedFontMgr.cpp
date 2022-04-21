@@ -6,7 +6,16 @@
  */
 
 #include "include/utils/SkOrderedFontMgr.h"
-#include "src/core/SkFontDescriptor.h"
+
+#include "include/core/SkFontStyle.h"
+#include "include/core/SkTypeface.h" // IWYU pragma: keep
+
+#include <utility>
+
+class SkData;
+class SkStreamAsset;
+class SkString;
+struct SkFontArguments;
 
 SkOrderedFontMgr::SkOrderedFontMgr() {}
 SkOrderedFontMgr::~SkOrderedFontMgr() {}
