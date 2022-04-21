@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ae2aa77f_cdc930cb",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 288,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-21T14:51:44Z",
+      "side": 0,
+      "message": "This isn\u0027t truly a constant (`kLinearGradientName` is assignable at runtime to another value). \nSwitched to `constexpr char[]` instead since IMO that reads more easily than `const char* const`.",
+      "range": {
+        "startLine": 288,
+        "startChar": 7,
+        "endLine": 288,
+        "endChar": 39
+      },
+      "revId": "6668af6dcbc866d6ddd85bad31c63aea491bfbde",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
