@@ -725,44 +725,48 @@ bool colrv1_configure_skpaint(FT_Face face,
             };
             startAngle = clampAngleToRange(startAngle);
             endAngle = clampAngleToRange(endAngle);
-#ifdef SK_IGNORE_COLRV1_SWEEP_FIX
-            /* TODO: Spec clarifications on which side of the gradient is to be
-             * painted, repeat modes, how to handle 0 degrees transition, see
-             * https://github.com/googlefonts/colr-gradients-spec/issues/250 */
-            if (startAngle >= endAngle) {
-                endAngle += 360.f;
+
+            // The shader expects stops from 0 to 1, so we need to account for
+            // minimum and maximum stop positions being different from 0 and
+            // 1. We do that by scaling minimum and maximum stop positions to
+            // the 0 to 1 interval and scaling the angles inverse proportionally.
+
+            // Scale angles to align with 0 and 1 of scaled stops.
+            SkScalar sectorAngle = clampAngleToRange(endAngle - startAngle);
+            sectorAngle = sectorAngle <= 0 ? 360 - sectorAngle : sectorAngle;
+
+            SkScalar startAngleScaled = clampAngleToRange(startAngle + sectorAngle * stops.front());
+            SkScalar endAngleScaled = clampAngleToRange(startAngle + sectorAngle * stops.back());
+
+            // Scale stops.
+            SkScalar scaleFactor = 1 / (stops.back() - stops.front());
+            SkScalar startOffset = stops.front();
+
+            for (SkScalar& stop : stops) {
+                stop = (stop - startOffset) * scaleFactor;
             }
 
-            // Skia's angles start from the horizontal x-Axis, rotate left 90
-            // degrees and then mirror horizontally to correct for Skia angles
-            // going clockwise, COLR v1 angles going counterclockwise.
-            SkMatrix angleAdjust = SkMatrix::RotateDeg(-90.f, center);
-            angleAdjust.postScale(-1, 1, center.x(), center.y());
+            /* Convert angles and stops from counter-clockwise to clockwise for the shader. */
+            std::swap(startAngleScaled, endAngleScaled);
+            startAngleScaled = 360.f - startAngleScaled;
+            endAngleScaled = 360.f - endAngleScaled;
+            if (startAngleScaled > endAngleScaled) {
+              // TODO(drott): Spec clarification needed for what should happen
+              // when the start and end angles cross 0/360 degrees and extend
+              // mode pad is selected.
+              startAngleScaled -= 360.0f;
+            }
+            std::reverse(stops.begin(), stops.end());
+            std::reverse(colors.begin(), colors.end());
+            for (auto& stop : stops) {
+              stop = 1.0f - stop;
+            }
 
-            paint->setShader(SkGradientShader::MakeSweep(
-                    center.x(), center.y(), colors.data(), stops.data(), stops.size(),
-                    SkTileMode::kDecal, startAngle, endAngle, 0, &angleAdjust));
-#else
-            SkScalar sectorAngle =
-                    endAngle > startAngle ? endAngle - startAngle : endAngle + 360.0f - startAngle;
-
-            /* https://docs.microsoft.com/en-us/typography/opentype/spec/colr#sweep-gradients
-             * "The angles are expressed in counter-clockwise degrees from the
-             * direction of the positive x-axis on the design grid. [...]  The
-             * color line progresses from the start angle to the end angle in
-             * the counter-clockwise direction;"
-             */
-
-            SkMatrix localMatrix;
-            localMatrix.postRotate(startAngle, center.x(), center.y());
-            /* Mirror along x-axis to change angle direction. */
-            localMatrix.postScale(1, -1, center.x(), center.y());
             SkTileMode tileMode = ToSkTileMode(sweepGradient.colorline.extend);
 
             paint->setShader(SkGradientShader::MakeSweep(
                     center.x(), center.y(), colors.data(), stops.data(), stops.size(),
-                    tileMode, 0, sectorAngle, 0, &localMatrix));
-#endif
+                    tileMode, startAngleScaled, endAngleScaled, 0, nullptr));
             return true;
         }
         default: {
@@ -888,11 +892,7 @@ void colrv1_transform(FT_Face face,
             // COLRv1 angles are counter-clockwise, compare
             // https://docs.microsoft.com/en-us/typography/opentype/spec/colr#formats-24-to-27-paintrotate-paintvarrotate-paintrotatearoundcenter-paintvarrotatearoundcenter
             transform = SkMatrix::RotateDeg(
-#ifdef SK_IGNORE_COLRV1_TRANSFORM_FIX
-                    SkFixedToScalar(colrPaint.u.rotate.angle) * 180.0f,
-#else
                     -SkFixedToScalar(colrPaint.u.rotate.angle) * 180.0f,
-#endif
                     SkPoint::Make( SkFixedToScalar(colrPaint.u.rotate.center_x),
                                   -SkFixedToScalar(colrPaint.u.rotate.center_y)));
             break;
@@ -902,11 +902,7 @@ void colrv1_transform(FT_Face face,
             // snaps to 0 for values very close to 0. Do the same here.
 
             SkScalar xDeg = SkFixedToScalar(colrPaint.u.skew.x_skew_angle) * 180.0f;
-#ifdef SK_IGNORE_COLRV1_TRANSFORM_FIX
-            SkScalar xRad = SkDegreesToRadians(-xDeg);
-#else
             SkScalar xRad = SkDegreesToRadians(xDeg);
-#endif
             SkScalar xTan = SkScalarTan(xRad);
             xTan = SkScalarNearlyZero(xTan) ? 0.0f : xTan;
 
