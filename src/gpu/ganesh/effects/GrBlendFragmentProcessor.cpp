@@ -8,6 +8,7 @@
 #include "src/gpu/ganesh/effects/GrBlendFragmentProcessor.h"
 
 #include "src/gpu/KeyBuilder.h"
+#include "src/gpu/SkSLBlend.h"
 #include "src/gpu/ganesh/GrFragmentProcessor.h"
 #include "src/gpu/ganesh/SkGr.h"
 #include "src/gpu/ganesh/glsl/GrGLSLBlend.h"
@@ -229,7 +230,7 @@ std::unique_ptr<GrFragmentProcessor::ProgramImpl> BlendFragmentProcessor::onMake
             } else {
                 // Blend src and dst colors together using a hardwired built-in blend function.
                 fragBuilder->codeAppendf("return %s(%s, %s);",
-                                         GrGLSLBlend::BlendFuncName(mode),
+                                         SkSLBlend::BlendFuncName(mode),
                                          srcColor.c_str(),
                                          dstColor.c_str());
             }
