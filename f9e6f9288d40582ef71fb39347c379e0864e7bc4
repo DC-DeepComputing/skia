@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3a74f25a_75af8f24",
+        "filename": "src/core/SkKeyContext.h",
+        "patchSetId": 28
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-04-21T16:16:58Z",
+      "side": 1,
+      "message": "I\u0027m torn about having this be part of the key context. For now, I do think it\u0027s the most convenient place to have it, but I\u0027m hopeful that in the long term, the shader code snippets will just be given a variable handle that has the local coords they are meant to access. Graphite will then entirely handle the formulation of the root local coords. \n\nCan we add a note that the dev2Local value is meant to go away?",
+      "range": {
+        "startLine": 35,
+        "startChar": 17,
+        "endLine": 35,
+        "endChar": 26
+      },
+      "revId": "f9e6f9288d40582ef71fb39347c379e0864e7bc4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fcf4b909_7f55a35d",
+        "filename": "src/core/SkShaderCodeDictionary.h",
+        "patchSetId": 28
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-04-21T16:16:58Z",
+      "side": 1,
+      "message": "I\u0027ve wanted to use this version of enum bit masks in ganesh as well now, to have nicer operators compared to Ganesh\u0027s GrTFlagsMask in include/gpu/GrTypes.h.\n\nIf we moved EnumBitMask to src/core, we could use this anywhere and then the ExtraUniformFlags (or features/requirements) can be defined backend-agnostic.",
+      "range": {
+        "startLine": 23,
+        "startChar": 27,
+        "endLine": 23,
+        "endChar": 38
+      },
+      "revId": "f9e6f9288d40582ef71fb39347c379e0864e7bc4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f2892328_b2d567c4",
+        "filename": "src/core/SkShaderCodeDictionary.h",
+        "patchSetId": 28
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-04-21T16:16:58Z",
+      "side": 1,
+      "message": "Wdyt about having this be a features or requirements enum, vs. explicitly defining the uniforms that are needed.\n\nGoing forward, we may not want dev2Local as the actual uniform, but we will still need all the code snippets to report whether or not they require local coordinates.\n\nThese sorts of features would be universal across backends, but it\u0027s graphite\u0027s current choice to provide the local coords by adding an extra dev2Local uniform.",
+      "range": {
+        "startLine": 37,
+        "startChar": 11,
+        "endLine": 37,
+        "endChar": 29
+      },
+      "revId": "f9e6f9288d40582ef71fb39347c379e0864e7bc4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4dac7222_a1da95c4",
+        "filename": "src/core/SkShaderCodeDictionary.h",
+        "patchSetId": 28
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-04-21T16:16:58Z",
+      "side": 1,
+      "message": "If we get EnumBitMask defined in src/core, these functions seem generally useful outside of graphite too.",
+      "range": {
+        "startLine": 93,
+        "startChar": 4,
+        "endLine": 98,
+        "endChar": 5
+      },
+      "revId": "f9e6f9288d40582ef71fb39347c379e0864e7bc4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
