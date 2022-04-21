@@ -65,6 +65,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "57821135_d4c15d80",
+        "filename": "DEPS",
+        "patchSetId": 9
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-04-21T16:49:26Z",
+      "side": 1,
+      "message": "This has been moved to a follow-on CL, since svgnative needs some upstream fixes first.",
+      "parentUuid": "3d57fb1d_1f11789b",
+      "range": {
+        "startLine": 46,
+        "startChar": 47,
+        "endLine": 46,
+        "endChar": 65
+      },
+      "revId": "fc7419aa780d171a9e70d680c0c51a2d7a3a6012",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d6e521d4_871fddc4",
