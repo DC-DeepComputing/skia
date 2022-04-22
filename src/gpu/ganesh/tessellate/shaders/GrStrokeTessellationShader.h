@@ -89,10 +89,17 @@ private:
 // emitTessellationCode and emitFragment code.
 class GrStrokeTessellationShader::Impl : public ProgramImpl {
 protected:
-    // float cosine_between_vectors(float2 a, float2 b) { ...
+    // float2 robust_normalize(float2 a, float b) { ... }
     //
-    // Returns dot(a, b) / (length(a) * length(b)).
-    static const char* kCosineBetweenVectorsFn;
+    // Returns the unit vector pointing from a to b, e.g. normalize(b - a), with care taken for if
+    // b and/or a have large coordinates.
+    static const char* kRobustNormalizeFn;
+
+    // float cosine_between_unit_vectors(float2 a, float2 b) { ...
+    //
+    // Returns the cosine of the angle between a and b, assuming a and b are unit vectors already.
+    // Guaranteed to be between [-1, 1].
+    static const char* kCosineBetweenUnitVectorsFn;
 
     // float miter_extent(float cosTheta, float miterLimit) { ...
     //
@@ -168,6 +175,11 @@ class GrStrokeTessellationShader::HardwareImpl : public GrStrokeTessellationShad
                                          const char* versionAndExtensionDecls,
                                          const GrGLSLUniformHandler&,
                                          const GrShaderCaps&) const override;
+
+    // float2 robust_normalize(float2 a, float b) { ... }
+    //
+    // Returns dot(a, b) / (length(a) * length(b)).
+    static const char* kCosineBetweenVectorsFn;
 };
 
 #endif

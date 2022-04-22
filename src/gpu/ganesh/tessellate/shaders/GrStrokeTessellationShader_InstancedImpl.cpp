@@ -26,7 +26,8 @@ void GrStrokeTessellationShader::InstancedImpl::onEmitCode(EmitArgs& args, GrGPA
     if (shader.hasDynamicStroke()) {
         args.fVertBuilder->insertFunction(kNumRadialSegmentsPerRadianFn);
     }
-    args.fVertBuilder->insertFunction(kCosineBetweenVectorsFn);
+    args.fVertBuilder->insertFunction(kRobustNormalizeFn);
+    args.fVertBuilder->insertFunction(kCosineBetweenUnitVectorsFn);
     args.fVertBuilder->insertFunction(kMiterExtentFn);
     args.fVertBuilder->insertFunction(kUncheckedMixFn);
     args.fVertBuilder->insertFunction(skgpu::wangs_formula::as_sksl().c_str());
@@ -138,8 +139,8 @@ void GrStrokeTessellationShader::InstancedImpl::onEmitCode(EmitArgs& args, GrGPA
 
     args.fVertBuilder->codeAppend(R"(
     // Find the starting and ending tangents.
-    float2 tan0 = ((p0 == p1) ? (p1 == p2) ? p3 : p2 : p1) - p0;
-    float2 tan1 = p3 - ((p3 == p2) ? (p2 == p1) ? p0 : p1 : p2);
+    float2 tan0 = robust_normalize(p0, ((p0 == p1) ? (p1 == p2) ? p3 : p2 : p1));
+    float2 tan1 = robust_normalize(((p3 == p2) ? (p2 == p1) ? p0 : p1 : p2), p3);
     if (tan0 == float2(0)) {
         // The stroke is a point. This special case tells us to draw a stroke-width circle as a
         // 180 degree point stroke instead.
@@ -163,7 +164,8 @@ void GrStrokeTessellationShader::InstancedImpl::onEmitCode(EmitArgs& args, GrGPA
         // of the join twice: once full width and once restricted to half width. This guarantees
         // perfect seaming by matching the vertices from the join as well as from the strokes on
         // either side.
-        float joinRads = acos(cosine_between_vectors(p0 - lastControlPoint, tan0));
+        float2 prevTan = robust_normalize(lastControlPoint, p0);
+        float joinRads = acos(cosine_between_unit_vectors(prevTan, tan0));
         float numRadialSegmentsInJoin = max(ceil(joinRads * NUM_RADIAL_SEGMENTS_PER_RADIAN), 1);
         // +2 because we emit the beginning and ending edges twice (see above comment).
         float numEdgesInJoin = numRadialSegmentsInJoin + 2;
@@ -205,13 +207,13 @@ void GrStrokeTessellationShader::InstancedImpl::onEmitCode(EmitArgs& args, GrGPA
         // means the join is disabled, and to disable it with the existing code we can leave
         // tan0 equal to tan1.
         if (lastControlPoint != p0) {
-            tan0 = p0 - lastControlPoint;
+            tan0 = robust_normalize(lastControlPoint, p0);
         }
         turn = cross_length_2d(tan0, tan1);
     }
 
     // Calculate the curve's starting angle and rotation.
-    float cosTheta = cosine_between_vectors(tan0, tan1);
+    float cosTheta = cosine_between_unit_vectors(tan0, tan1);
     float rotation = acos(cosTheta);
     if (turn < 0) {
         // Adjust sign of rotation to match the direction the curve turns.
