@@ -40,15 +40,14 @@ namespace skiagm {
  */
 class TexelSubset : public GpuGM {
 public:
-    TexelSubset(Filter filter, MipmapMode mm, bool upscale)
-            : fFilter(filter), fMipmapMode(mm), fUpscale(upscale) {
+    TexelSubset(SkSamplingOptions sampling, bool upscale) : fSampling(sampling), fUpscale(upscale) {
         this->setBGColor(0xFFFFFFFF);
     }
 
 protected:
     SkString onShortName() override {
         SkString name("texel_subset");
-        switch (fFilter) {
+        switch (fSampling.filter) {
             case Filter::kNearest:
                 name.append("_nearest");
                 break;
@@ -56,7 +55,7 @@ protected:
                 name.append("_linear");
                 break;
         }
-        switch (fMipmapMode) {
+        switch (fSampling.mipmap) {
             case MipmapMode::kNone:
                 break;
             case MipmapMode::kNearest:
@@ -72,8 +71,9 @@ protected:
 
     SkISize onISize() override {
         static constexpr int kN = GrSamplerState::kWrapModeCount;
-        int w = kTestPad + 2*kN*(kImageSize.width()  + 2*kDrawPad + kTestPad);
-        int h = kTestPad + 2*kN*(kImageSize.height() + 2*kDrawPad + kTestPad);
+        int nx = this->canDoStrict() ? 3 : 1;
+        int w = kTestPad + nx*kN*(kImageSize.width()  + 2*kDrawPad + kTestPad);
+        int h = kTestPad +  2*kN*(kImageSize.height() + 2*kDrawPad + kTestPad);
         return {w, h};
     }
 
@@ -91,8 +91,8 @@ protected:
             return DrawResult::kSkip;
         }
 
-        GrMipmapped mipmapped = (fMipmapMode != MipmapMode::kNone) ? GrMipmapped::kYes
-                                                                   : GrMipmapped::kNo;
+        GrMipmapped mipmapped = (fSampling.mipmap != MipmapMode::kNone) ? GrMipmapped::kYes
+                                                                        : GrMipmapped::kNo;
         if (mipmapped == GrMipmapped::kYes && !rContext->priv().caps()->mipmapSupport()) {
             return DrawResult::kSkip;
         }
@@ -145,48 +145,84 @@ protected:
                     auto wmx = static_cast<Wrap>(mx);
 
                     const auto& caps = *rContext->priv().caps();
+                    if (this->canDoStrict()) {
+                        auto strictFP = GrTextureEffect::MakeStrictSubset(view,
+                                                                          fBitmap.alphaType(),
+                                                                          textureMatrices[tm],
+                                                                          wmx,
+                                                                          wmy,
+                                                                          fSampling.filter,
+                                                                          SkRect::Make(texelSubset),
+                                                                          /*domain=*/nullptr,
+                                                                          caps);
 
-                    GrSamplerState sampler(wmx, wmy, fFilter, fMipmapMode);
+                        if (!strictFP) {
+                            continue;
+                        }
 
-                    drawRect = localRect.makeOffset(x, y);
+                        drawRect = localRect.makeOffset(x, y);
 
-                    std::unique_ptr<GrFragmentProcessor> fp1;
-                    fp1 = GrTextureEffect::MakeSubset(view,
-                                                      fBitmap.alphaType(),
-                                                      textureMatrices[tm],
-                                                      sampler,
-                                                      SkRect::Make(texelSubset),
-                                                      caps);
-                    if (!fp1) {
+                        // Throw a translate in the local matrix just to test having something other
+                        // than identity. Compensate with an offset local rect.
+                        static constexpr SkVector kT = {-100, 300};
+                        if (auto op = sk_gpu_test::test_ops::MakeRect(rContext,
+                                                                      std::move(strictFP),
+                                                                      drawRect,
+                                                                      localRect.makeOffset(kT),
+                                                                      SkMatrix::Translate(-kT))) {
+                            sdc->addDrawOp(std::move(op));
+                        }
+
+                        // Draw a comparison using a an actually subsetted texture for the strict
+                        // cases.
+                        x += localRect.width() + kTestPad;
+
+                        // Now draw with a subsetted proxy using fixed function texture sampling
+                        // rather than a texture subset as a comparison.
+                        drawRect = localRect.makeOffset(x, y);
+                        SkMatrix subsetTextureMatrix = SkMatrix::Concat(
+                                SkMatrix::Translate(-texelSubset.topLeft()), textureMatrices[tm]);
+
+                        GrSamplerState sampler(wmx, wmy, fSampling.filter, fSampling.mipmap);
+                        auto strictRefFP = GrTextureEffect::Make(subsetView,
+                                                                 fBitmap.alphaType(),
+                                                                 subsetTextureMatrix,
+                                                                 sampler,
+                                                                 caps);
+                        if (auto op = sk_gpu_test::test_ops::MakeRect(rContext,
+                                                                      std::move(strictRefFP),
+                                                                      drawRect,
+                                                                      localRect)) {
+                            sdc->addDrawOp(std::move(op));
+                        }
+
+                        x += localRect.width() + kTestPad;
+                    }
+
+                    // Draw non-strict.
+                    GrSamplerState sampler(wmx, wmy, fSampling.filter, fSampling.mipmap);
+                    auto nonstrictFP = GrTextureEffect::MakeNonstrictSubset(
+                            view,
+                            fBitmap.alphaType(),
+                            textureMatrices[tm],
+                            sampler,
+                            SkRect::Make(texelSubset),
+                            /*domain=*/nullptr,
+                            caps);
+                    if (!nonstrictFP) {
                         continue;
                     }
+
+                    drawRect = localRect.makeOffset(x, y);
 
                     // Throw a translate in the local matrix just to test having something other
                     // than identity. Compensate with an offset local rect.
                     static constexpr SkVector kT = {-100, 300};
                     if (auto op = sk_gpu_test::test_ops::MakeRect(rContext,
-                                                                  std::move(fp1),
+                                                                  std::move(nonstrictFP),
                                                                   drawRect,
                                                                   localRect.makeOffset(kT),
                                                                   SkMatrix::Translate(-kT))) {
-                        sdc->addDrawOp(std::move(op));
-                    }
-
-                    x += localRect.width() + kTestPad;
-
-                    // Now draw with a subsetted proxy using fixed function texture sampling
-                    // rather than a texture subset as a comparison.
-                    drawRect = localRect.makeOffset(x, y);
-                    SkMatrix subsetTextureMatrix = SkMatrix::Concat(
-                            SkMatrix::Translate(-texelSubset.topLeft()), textureMatrices[tm]);
-
-                    auto fp2 = GrTextureEffect::Make(subsetView,
-                                                     fBitmap.alphaType(),
-                                                     subsetTextureMatrix,
-                                                     sampler,
-                                                     caps);
-                    if (auto op = sk_gpu_test::test_ops::MakeRect(rContext, std::move(fp2),
-                                                                  drawRect, localRect)) {
                         sdc->addDrawOp(std::move(op));
                     }
 
@@ -214,25 +250,28 @@ protected:
     }
 
 private:
+    bool canDoStrict() const { return fSampling.mipmap == SkMipmapMode::kNone; }
+
     inline static constexpr SkISize kImageSize = {128, 88};
+
     inline static constexpr SkScalar kDrawPad = 10.f;
     inline static constexpr SkScalar kTestPad = 10.f;
-    SkBitmap fBitmap;
-    Filter fFilter;
-    MipmapMode fMipmapMode;
-    bool fUpscale;
+
+    SkBitmap          fBitmap;
+    SkSamplingOptions fSampling;
+    bool              fUpscale;
 
     using INHERITED = GM;
 };
 
-DEF_GM(return new TexelSubset(Filter::kNearest, MipmapMode::kNone   , false);)
-DEF_GM(return new TexelSubset(Filter::kNearest, MipmapMode::kNone   , true );)
-DEF_GM(return new TexelSubset(Filter::kLinear , MipmapMode::kNone   , false);)
-DEF_GM(return new TexelSubset(Filter::kLinear , MipmapMode::kNone   , true );)
+DEF_GM(return new TexelSubset({Filter::kNearest, MipmapMode::kNone   }, false);)
+DEF_GM(return new TexelSubset({Filter::kNearest, MipmapMode::kNone   }, true );)
+DEF_GM(return new TexelSubset({Filter::kLinear , MipmapMode::kNone   }, false);)
+DEF_GM(return new TexelSubset({Filter::kLinear , MipmapMode::kNone   }, true );)
 // It doesn't make sense to have upscaling MIP map.
-DEF_GM(return new TexelSubset(Filter::kNearest, MipmapMode::kNearest, false);)
-DEF_GM(return new TexelSubset(Filter::kLinear , MipmapMode::kNearest, false);)
-DEF_GM(return new TexelSubset(Filter::kNearest, MipmapMode::kLinear , false);)
-DEF_GM(return new TexelSubset(Filter::kLinear , MipmapMode::kLinear , false);)
+DEF_GM(return new TexelSubset({Filter::kNearest, MipmapMode::kNearest}, false);)
+DEF_GM(return new TexelSubset({Filter::kLinear , MipmapMode::kNearest}, false);)
+DEF_GM(return new TexelSubset({Filter::kNearest, MipmapMode::kLinear }, false);)
+DEF_GM(return new TexelSubset({Filter::kLinear , MipmapMode::kLinear }, false);)
 
 }  // namespace skiagm

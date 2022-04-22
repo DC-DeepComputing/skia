@@ -152,10 +152,15 @@ static void draw_texture(const GrCaps* caps,
                          const SkMatrix& mat,
                          GrSamplerState::WrapMode xTileMode,
                          GrSamplerState::WrapMode yTileMode) {
-    GrSamplerState sampler(xTileMode, yTileMode, SkFilterMode::kNearest);
-
-    auto fp = GrTextureEffect::MakeSubset(src, kOpaque_SkAlphaType, mat,
-                                          sampler, SkRect::Make(srcRect), *caps);
+    auto fp = GrTextureEffect::MakeStrictSubset(src,
+                                                kOpaque_SkAlphaType,
+                                                mat,
+                                                xTileMode,
+                                                yTileMode,
+                                                SkFilterMode::kNearest,
+                                                SkRect::Make(srcRect),
+                                                /*domain=*/nullptr,
+                                                *caps);
     GrPaint paint;
     paint.setColorFragmentProcessor(std::move(fp));
 

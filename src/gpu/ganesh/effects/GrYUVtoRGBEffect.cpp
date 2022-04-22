@@ -53,6 +53,10 @@ std::unique_ptr<GrFragmentProcessor> GrYUVtoRGBEffect::Make(const GrYUVATextureP
 
     bool snap[2] = {false, false};
     std::unique_ptr<GrFragmentProcessor> planeFPs[SkYUVAInfo::kMaxPlanes];
+    if (subset && subset->contains(SkRect::Make(yuvaProxies.yuvaInfo().dimensions()))) {
+        subset = nullptr;
+    }
+    bool strictSubset = SkToBool(subset);
     for (int i = 0; i < numPlanes; ++i) {
         bool useSubset = SkToBool(subset);
         GrSurfaceProxyView view = yuvaProxies.makeView(i);
@@ -156,23 +160,27 @@ std::unique_ptr<GrFragmentProcessor> GrYUVtoRGBEffect::Make(const GrYUVATextureP
                                                                            {scaleX/2.f, scaleY/2.f},
                                                                            caps,
                                                                            planeBorders[i]);
-            } else if (domain) {
-                planeFPs[i] = GrTextureEffect::MakeSubset(std::move(view),
+            } else if(strictSubset) {
+                SkASSERT(samplerState.mipmapMode() == SkMipmapMode::kNone);
+                planeFPs[i] = GrTextureEffect::MakeStrictSubset(std::move(view),
                                                           kUnknown_SkAlphaType,
                                                           planeMatrix,
-                                                          samplerState,
+                                                          samplerState.wrapModeX(),
+                                                          samplerState.wrapModeY(),
+                                                          samplerState.filter(),
                                                           planeSubset,
-                                                          planeDomain,
+                                                          domain ? &planeDomain : nullptr,
                                                           caps,
                                                           planeBorders[i]);
             } else {
-                planeFPs[i] = GrTextureEffect::MakeSubset(std::move(view),
-                                                          kUnknown_SkAlphaType,
-                                                          planeMatrix,
-                                                          samplerState,
-                                                          planeSubset,
-                                                          caps,
-                                                          planeBorders[i]);
+                planeFPs[i] = GrTextureEffect::MakeNonstrictSubset(std::move(view),
+                                                                   kUnknown_SkAlphaType,
+                                                                   planeMatrix,
+                                                                   samplerState,
+                                                                   planeSubset,
+                                                                   domain ? &planeDomain : nullptr,
+                                                                   caps,
+                                                                   planeBorders[i]);
             }
         } else {
             GrSamplerState planeSampler = samplerState;
