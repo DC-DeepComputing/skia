@@ -100,6 +100,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "44ed130e_265189c3",
+        "filename": "src/core/SkRuntimeEffect.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-04-22T20:25:44Z",
+      "side": 1,
+      "message": "Yeah, we\u0027d need to add handling to GrSkSLFP (onSetData), and some other code in this file, but that would be straightforward. We\u0027d also have to expand the enum in SkRuntimeEffect::Uniform::Type. Today that would feel strange (here\u0027s a bunch of types you can\u0027t actually use), but as I\u0027m working on adding proper optional ES3 support, it makes sense.",
+      "parentUuid": "795744be_8c081314",
+      "revId": "a9ca7b633978dffdf05b63e5944ef75ed9eb8f43",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7233f0f3_7c547e65",
