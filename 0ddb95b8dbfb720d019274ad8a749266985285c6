@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b790c953_9110fc15",
+        "filename": "src/gpu/ganesh/tessellate/shaders/GrStrokeTessellationShader.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-04-22T14:14:13Z",
+      "side": 1,
+      "message": "Initially, I\u0027d been interpreting it as \"robust normalize\" vector from a to b. But renaming it to \"robust_normalize_diff\" makes it clear the order for the subtraction, and would address the confusion of the argument ordering. I will update it to be like that.",
+      "parentUuid": "c3232518_5f50e6f7",
+      "range": {
+        "startLine": 109,
+        "startChar": 7,
+        "endLine": 109,
+        "endChar": 23
+      },
+      "revId": "0ddb95b8dbfb720d019274ad8a749266985285c6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b9be2109_b05274da",
         "filename": "src/gpu/ganesh/tessellate/shaders/GrStrokeTessellationShader.cpp",
         "patchSetId": 1
