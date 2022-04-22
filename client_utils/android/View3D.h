@@ -11,6 +11,7 @@
 #define View3D_DEFINED
 
 #include "include/core/SkM44.h"
+#include "include/core/SkScalar.h"
 
 class SkCanvas;
 class SkMatrix;
