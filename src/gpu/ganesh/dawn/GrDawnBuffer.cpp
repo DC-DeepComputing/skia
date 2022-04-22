@@ -7,6 +7,7 @@
 
 #include "src/gpu/ganesh/dawn/GrDawnBuffer.h"
 
+#include "src/gpu/ganesh/dawn/GrDawnAsyncWait.h"
 #include "src/gpu/ganesh/dawn/GrDawnGpu.h"
 
 namespace {
@@ -43,11 +44,16 @@ GrDawnBuffer::GrDawnBuffer(GrDawnGpu* gpu, size_t sizeInBytes, GrGpuBufferType t
     }
 
     if (fMappable == Mappable::kNot || fMappable == Mappable::kReadOnly) {
+        // TODO(armansito): Map at creation if ReadOnly?
         fBuffer = this->getDawnGpu()->device().CreateBuffer(&bufferDesc);
     } else {
         bufferDesc.mappedAtCreation = true;
         fBuffer = this->getDawnGpu()->device().CreateBuffer(&bufferDesc);
         fMapPtr = fBuffer.GetMappedRange();
+        if (!fMapPtr) {
+            SkDebugf("GrDawnBuffer: failed to create mapped buffer\n");
+            fUnmapped = true;
+        }
     }
 
     this->registerWithCache(SkBudgeted::kYes);
@@ -59,6 +65,15 @@ GrDawnBuffer::~GrDawnBuffer() {
 void GrDawnBuffer::onMap() {
     if (this->wasDestroyed()) {
         return;
+    }
+
+    if (fUnmapped) {
+        SkDebugf("GrDawnBuffer: falling back to blocking map\n");
+        if (!this->BlockingMap()) {
+            SkDebugf("GrDawnBuffer: failed to map buffer\n");
+            return;
+        }
+        fUnmapped = false;
     }
 
     if (fMappable == Mappable::kNot) {
@@ -86,6 +101,7 @@ void GrDawnBuffer::onUnmap() {
                                                                 fBuffer, 0, this->size());
     } else {
         fBuffer.Unmap();
+        fUnmapped = true;
     }
 }
 
@@ -93,7 +109,12 @@ bool GrDawnBuffer::onUpdateData(const void* src, size_t srcSizeInBytes) {
     if (this->wasDestroyed()) {
         return false;
     }
+
     this->map();
+    if (!this->isMapped()) {
+        return false;
+    }
+
     memcpy(fMapPtr, src, srcSizeInBytes);
     this->unmap();
     return true;
@@ -104,21 +125,59 @@ GrDawnGpu* GrDawnBuffer::getDawnGpu() const {
     return static_cast<GrDawnGpu*>(this->getGpu());
 }
 
-static void callback_read(WGPUBufferMapAsyncStatus status, void* userData) {
-    auto buffer = static_cast<GrDawnBuffer*>(userData);
-    buffer->setMapPtr(const_cast<void*>(buffer->get().GetConstMappedRange()));
+void GrDawnBuffer::mapAsync(MapAsyncCallback callback) {
+    SkASSERT(fMappable != Mappable::kNot);
+    SkASSERT(!fMapAsyncCallback);
+    SkASSERT(!this->isMapped());
+
+    fMapAsyncCallback = std::move(callback);
+    fBuffer.MapAsync(
+            (fMappable == Mappable::kReadOnly) ? wgpu::MapMode::Read : wgpu::MapMode::Write,
+            0, 0,
+            [](WGPUBufferMapAsyncStatus status, void* userData) {
+                static_cast<GrDawnBuffer*>(userData)->onMapAsyncDone(status);
+            },
+            this);
 }
 
-static void callback_write(WGPUBufferMapAsyncStatus status, void* userData) {
-    auto buffer = static_cast<GrDawnBuffer*>(userData);
-    buffer->setMapPtr(buffer->get().GetMappedRange());
+void GrDawnBuffer::onMapAsyncDone(WGPUBufferMapAsyncStatus status) {
+    SkASSERT(fMapAsyncCallback);
+
+    if (fMappable == Mappable::kReadOnly) {
+        fMapPtr = const_cast<void*>(fBuffer.GetConstMappedRange());
+    } else {
+        fMapPtr = fBuffer.GetMappedRange();
+    }
+
+    if (this->isMapped()) {
+        fUnmapped = false;
+    }
+
+    // Run the callback as the last step in this function since the callback can deallocate this
+    // GrDawnBuffer.
+    auto callback = std::move(fMapAsyncCallback);
+    callback(this->isMapped());
 }
 
-void GrDawnBuffer::mapWriteAsync() {
-    SkASSERT(!this->isMapped());
-    fBuffer.MapAsync(wgpu::MapMode::Write, 0, 0, callback_write, this);
-}
-void GrDawnBuffer::mapReadAsync() {
-    SkASSERT(!this->isMapped());
-    fBuffer.MapAsync(wgpu::MapMode::Read, 0, 0, callback_read, this);
+bool GrDawnBuffer::BlockingMap() {
+    SkASSERT(fMappable != Mappable::kNot);
+
+    bool readOnly = (fMappable == Mappable::kReadOnly);
+    GrDawnAsyncWait wait(this->getDawnGpu()->device());
+    fBuffer.MapAsync(
+            readOnly ? wgpu::MapMode::Read : wgpu::MapMode::Write,
+            0, 0,
+            [](WGPUBufferMapAsyncStatus, void* userData) {
+                static_cast<GrDawnAsyncWait*>(userData)->signal();
+            },
+            &wait);
+    wait.busyWait();
+
+    if (readOnly) {
+        fMapPtr = const_cast<void*>(fBuffer.GetConstMappedRange());
+    } else {
+        fMapPtr = fBuffer.GetMappedRange();
+    }
+
+    return this->isMapped();
 }
