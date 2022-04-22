@@ -64,13 +64,16 @@ static GrSurfaceProxyView slow_blur(GrRecordingContext* rContext,
         if (!sfc) {
             return GrSurfaceProxyView{};
         }
-        GrSamplerState sampler(SkTileModeToWrapMode(mode), SkFilterMode::kNearest);
-        auto fp = GrTextureEffect::MakeSubset(src,
-                                              kPremul_SkAlphaType,
-                                              SkMatrix::Translate(-offset.x(), -offset.y()),
-                                              sampler,
-                                              SkRect::Make(srcTileRect),
-                                              *rContext->priv().caps());
+        auto wrap = SkTileModeToWrapMode(mode);
+        auto fp = GrTextureEffect::MakeStrictSubset(src,
+                                                    kPremul_SkAlphaType,
+                                                    SkMatrix::Translate(-offset.x(), -offset.y()),
+                                                    wrap,
+                                                    wrap,
+                                                    SkFilterMode::kNearest,
+                                                    SkRect::Make(srcTileRect),
+                                                    /*domain=*/nullptr,
+                                                    *rContext->priv().caps());
         sfc->fillWithFP(std::move(fp));
         return sfc->readSurfaceView();
     };
@@ -265,14 +268,21 @@ static GM::DrawResult run(GrRecordingContext* rContext, SkCanvas* canvas,  SkStr
     for (const auto& dstRectSet : dstRectSets) {
         for (int t = 0; t < kSkTileModeCount; ++t) {
             auto mode = static_cast<SkTileMode>(t);
-            GrSamplerState sampler(SkTileModeToWrapMode(mode), GrSamplerState::Filter::kNearest);
+            auto wrap = SkTileModeToWrapMode(mode);
             SkMatrix m = SkMatrix::Translate(trans.x() - testArea.x(), trans.y() - testArea.y());
             // Draw the src subset in the tile mode faded as a reference before drawing the blur
             // on top.
             {
                 static constexpr float kAlpha = 0.2f;
-                auto fp = GrTextureEffect::MakeSubset(src, kPremul_SkAlphaType, SkMatrix::I(),
-                                                      sampler, SkRect::Make(srcRect), caps);
+                auto fp = GrTextureEffect::MakeStrictSubset(src,
+                                                            kPremul_SkAlphaType,
+                                                            SkMatrix::I(),
+                                                            wrap,
+                                                            wrap,
+                                                            SkFilterMode::kNearest,
+                                                            SkRect::Make(srcRect),
+                                                            /*domain=*/nullptr,
+                                                            caps);
                 fp = GrFragmentProcessor::ModulateRGBA(std::move(fp),
                                                        {kAlpha, kAlpha, kAlpha, kAlpha});
                 GrPaint paint;
@@ -292,6 +302,7 @@ static GM::DrawResult run(GrRecordingContext* rContext, SkCanvas* canvas,  SkStr
                                            sigmaX,
                                            sigmaY,
                                            mode)) {
+                    GrSamplerState sampler(wrap, wrap, SkFilterMode::kNearest);
                     auto fp = GrTextureEffect::Make(blurView,
                                                     kPremul_SkAlphaType,
                                                     SkMatrix::I(),
