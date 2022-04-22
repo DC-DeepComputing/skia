@@ -41,6 +41,47 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "226a5519_b7fa732d",
+        "filename": "resources/sksl/runtime/GLSLTypeNames.rts",
+        "patchSetId": 1
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-04-22T20:17:32Z",
+      "side": 1,
+      "message": "Agreed. Done.",
+      "parentUuid": "d7e42fba_82fa0f73",
+      "range": {
+        "startLine": 2,
+        "startChar": 0,
+        "endLine": 4,
+        "endChar": 4
+      },
+      "revId": "a9ca7b633978dffdf05b63e5944ef75ed9eb8f43",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c367c1ed_cd8da27b",
+        "filename": "src/core/SkRuntimeEffect.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-04-22T20:17:32Z",
+      "side": 1,
+      "message": "^",
+      "revId": "a9ca7b633978dffdf05b63e5944ef75ed9eb8f43",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7233f0f3_7c547e65",
@@ -54,6 +95,30 @@
       "writtenOn": "2022-04-22T19:57:01Z",
       "side": 1,
       "message": "In ES3 mode we should be able to support unsigned (`SkSLType::kUInt` exists)",
+      "range": {
+        "startLine": 97,
+        "startChar": 58,
+        "endLine": 97,
+        "endChar": 72
+      },
+      "revId": "a9ca7b633978dffdf05b63e5944ef75ed9eb8f43",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a6904621_1a337815",
+        "filename": "src/sksl/ir/SkSLVarDeclarations.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-04-22T20:17:32Z",
+      "side": 1,
+      "message": "Yes, but SkRuntimeEffect doesn\u0027t support it yet. (See SkRuntimeEffect::Uniform::Type, and init_uniform_type).",
+      "parentUuid": "7233f0f3_7c547e65",
       "range": {
         "startLine": 97,
         "startChar": 58,
