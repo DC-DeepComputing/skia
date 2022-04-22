@@ -422,14 +422,15 @@ std::unique_ptr<GrFragmentProcessor> GrDisplacementMapEffect::Make(SkColorChanne
                                                                    GrSurfaceProxyView color,
                                                                    const SkIRect& colorSubset,
                                                                    const GrCaps& caps) {
-    static constexpr GrSamplerState kColorSampler(GrSamplerState::WrapMode::kClampToBorder,
-                                                  GrSamplerState::Filter::kNearest);
-    auto colorEffect = GrTextureEffect::MakeSubset(std::move(color),
-                                                   kPremul_SkAlphaType,
-                                                   SkMatrix::Translate(colorSubset.topLeft()),
-                                                   kColorSampler,
-                                                   SkRect::Make(colorSubset),
-                                                   caps);
+    auto colorEffect = GrTextureEffect::MakeStrictSubset(std::move(color),
+                                                         kPremul_SkAlphaType,
+                                                         SkMatrix::Translate(colorSubset.topLeft()),
+                                                         GrSamplerState::WrapMode::kClampToBorder,
+                                                         GrSamplerState::WrapMode::kClampToBorder,
+                                                         SkFilterMode::kNearest,
+                                                         SkRect::Make(colorSubset),
+                                                         /*domain=*/nullptr,
+                                                         caps);
 
     auto dispM = SkMatrix::Concat(SkMatrix::Translate(displSubset.topLeft()), offsetMatrix);
     auto dispEffect = GrTextureEffect::Make(std::move(displacement),

@@ -392,24 +392,20 @@ std::unique_ptr<GrFragmentProcessor> SkImage_Base::MakeFragmentProcessorFromView
     if (view.proxy()->asTextureProxy()->mipmapped() == GrMipmapped::kNo) {
         sampling = SkSamplingOptions(sampling.filter);
     }
-    GrSamplerState sampler(wmx, wmy, sampling.filter, sampling.mipmap);
     if (subset) {
-        if (domain) {
-            return GrTextureEffect::MakeSubset(std::move(view),
-                                               at,
-                                               m,
-                                               sampler,
-                                               *subset,
-                                               *domain,
-                                               caps);
-        }
-        return GrTextureEffect::MakeSubset(std::move(view),
-                                           at,
-                                           m,
-                                           sampler,
-                                           *subset,
-                                           caps);
+        // Note we drop mipmapping here. We don't support mipmapping with tiling on a subset.
+        SkASSERT(sampling.mipmap == SkMipmapMode::kNone);
+        return GrTextureEffect::MakeStrictSubset(std::move(view),
+                                                 at,
+                                                 m,
+                                                 wmx,
+                                                 wmy,
+                                                 sampling.filter,
+                                                 *subset,
+                                                 domain,
+                                                 caps);
     } else {
+        GrSamplerState sampler(wmx, wmy, sampling.filter, sampling.mipmap);
         return GrTextureEffect::Make(std::move(view), at, m, sampler, caps);
     }
 }

@@ -30,8 +30,10 @@ public:
      * Make from a full GrSamplerState. Caps are required to determine support for kClampToBorder.
      * This will be emulated in the shader if there is no hardware support.
      */
-    static std::unique_ptr<GrFragmentProcessor> Make(GrSurfaceProxyView, SkAlphaType,
-                                                     const SkMatrix&, GrSamplerState,
+    static std::unique_ptr<GrFragmentProcessor> Make(GrSurfaceProxyView,
+                                                     SkAlphaType,
+                                                     const SkMatrix&,
+                                                     GrSamplerState,
                                                      const GrCaps& caps,
                                                      const float border[4] = kDefaultBorder);
 
@@ -47,29 +49,28 @@ public:
      * alwaysUseShaderTileMode is true then MakeSubset won't attempt to use HW wrap modes if the
      * subset contains the entire texture.
      */
-    static std::unique_ptr<GrFragmentProcessor> MakeSubset(GrSurfaceProxyView,
-                                                           SkAlphaType,
-                                                           const SkMatrix&,
-                                                           GrSamplerState,
-                                                           const SkRect& subset,
-                                                           const GrCaps& caps,
-                                                           const float border[4] = kDefaultBorder,
-                                                           bool alwaysUseShaderTileMode = false);
+    static std::unique_ptr<GrFragmentProcessor>
+    MakeStrictSubset(GrSurfaceProxyView,
+                     SkAlphaType,
+                     const SkMatrix&,
+                     GrSamplerState::WrapMode wx,
+                     GrSamplerState::WrapMode wy,
+                     SkFilterMode,
+                     const SkRect& subset,
+                     const SkRect* domain,
+                     const GrCaps& caps,
+                     const float border[4] = kDefaultBorder,
+                     bool alwaysUseShaderTileMode = false);
 
-    /**
-     * The same as above but also takes a 'domain' that specifies any known limit on the post-
-     * matrix texture coords that will be used to sample the texture. Specifying this requires
-     * knowledge of how this effect will be nested into a paint, the local coords used with the
-     * draw, etc. It is only used to attempt to optimize away the shader subset calculations.
-     */
-    static std::unique_ptr<GrFragmentProcessor> MakeSubset(GrSurfaceProxyView,
-                                                           SkAlphaType,
-                                                           const SkMatrix&,
-                                                           GrSamplerState,
-                                                           const SkRect& subset,
-                                                           const SkRect& domain,
-                                                           const GrCaps& caps,
-                                                           const float border[4] = kDefaultBorder);
+    static std::unique_ptr<GrFragmentProcessor>
+    MakeNonStrictSubset(GrSurfaceProxyView,
+                        SkAlphaType,
+                        const SkMatrix&,
+                        GrSamplerState,
+                        const SkRect& subset,
+                        const SkRect* domain,
+                        const GrCaps& caps,
+                        const float border[4] = kDefaultBorder);
 
     /**
      * Like MakeSubset() but always uses kLinear filtering. MakeSubset() uses the subset rect
