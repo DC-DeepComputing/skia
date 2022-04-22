@@ -84,6 +84,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "795744be_8c081314",
+        "filename": "src/core/SkRuntimeEffect.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-22T20:19:45Z",
+      "side": 1,
+      "message": "Not for this CL per se, but couldn\u0027t we just add uint types here and everything would work the way we want? The compiler should already reject their usage if we\u0027re in strict ES2 mode (I hope!)",
+      "parentUuid": "c367c1ed_cd8da27b",
+      "revId": "a9ca7b633978dffdf05b63e5944ef75ed9eb8f43",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7233f0f3_7c547e65",
         "filename": "src/sksl/ir/SkSLVarDeclarations.cpp",
         "patchSetId": 1
