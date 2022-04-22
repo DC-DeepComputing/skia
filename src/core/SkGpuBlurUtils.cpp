@@ -328,9 +328,15 @@ static std::unique_ptr<skgpu::v1::SurfaceDrawContext> reexpand(
     }
 
     GrPaint paint;
-    auto fp = GrTextureEffect::MakeSubset(std::move(srcView), srcAlphaType, SkMatrix::I(),
-                                          GrSamplerState::Filter::kLinear, srcBounds, srcBounds,
-                                          *rContext->priv().caps());
+    auto fp = GrTextureEffect::MakeStrictSubset(std::move(srcView),
+                                                srcAlphaType,
+                                                SkMatrix::I(),
+                                                GrSamplerState::WrapMode::kClamp,
+                                                GrSamplerState::WrapMode::kClamp,
+                                                GrSamplerState::Filter::kLinear,
+                                                srcBounds,
+                                                &srcBounds,
+                                                *rContext->priv().caps());
     paint.setColorFragmentProcessor(std::move(fp));
     paint.setPorterDuffXPFactory(SkBlendMode::kSrc);
 
@@ -535,14 +541,17 @@ std::unique_ptr<skgpu::v1::SurfaceDrawContext> GaussianBlur(GrRecordingContext* 
         if (!result) {
             return nullptr;
         }
-        GrSamplerState sampler(SkTileModeToWrapMode(mode), GrSamplerState::Filter::kNearest);
-        auto fp = GrTextureEffect::MakeSubset(std::move(srcView),
-                                              srcAlphaType,
-                                              SkMatrix::I(),
-                                              sampler,
-                                              SkRect::Make(srcBounds),
-                                              SkRect::Make(dstBounds),
-                                              *rContext->priv().caps());
+        auto wrap = SkTileModeToWrapMode(mode);
+        auto domain = SkRect::Make(dstBounds);
+        auto fp = GrTextureEffect::MakeStrictSubset(std::move(srcView),
+                                                    srcAlphaType,
+                                                    SkMatrix::I(),
+                                                    wrap,
+                                                    wrap,
+                                                    SkFilterMode::kNearest,
+                                                    SkRect::Make(srcBounds),
+                                                    &domain,
+                                                    *rContext->priv().caps());
         result->fillRectToRectWithFP(dstBounds, SkIRect::MakeSize(dstBounds.size()), std::move(fp));
         return result;
     }

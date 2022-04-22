@@ -1632,8 +1632,6 @@ GrFPResult ClipStack::GetSWMaskFP(GrRecordingContext* context, Mask::Stack* mask
     // Wrap the mask in an FP that samples it for coverage
     SkASSERT(maskProxy && maskProxy.origin() == kMaskOrigin);
 
-    GrSamplerState samplerState(GrSamplerState::WrapMode::kClampToBorder,
-                                GrSamplerState::Filter::kNearest);
     // Maps the device coords passed to the texture effect to the top-left corner of the mask, and
     // make sure that the draw bounds are pre-mapped into the mask's space as well.
     auto m = SkMatrix::Translate(-maskBounds.fLeft, -maskBounds.fTop);
@@ -1642,8 +1640,15 @@ GrFPResult ClipStack::GetSWMaskFP(GrRecordingContext* context, Mask::Stack* mask
     // We scissor to bounds. The mask's texel centers are aligned to device space
     // pixel centers. Hence this domain of texture coordinates.
     auto domain = subset.makeInset(0.5, 0.5);
-    auto fp = GrTextureEffect::MakeSubset(std::move(maskProxy), kPremul_SkAlphaType, m,
-                                          samplerState, subset, domain, *context->priv().caps());
+    auto fp = GrTextureEffect::MakeStrictSubset(std::move(maskProxy),
+                                                kPremul_SkAlphaType,
+                                                m,
+                                                GrSamplerState::WrapMode::kClampToBorder,
+                                                GrSamplerState::WrapMode::kClampToBorder,
+                                                SkFilterMode::kNearest,
+                                                subset,
+                                                &domain,
+                                                *context->priv().caps());
     fp = GrFragmentProcessor::DeviceSpace(std::move(fp));
 
     // Must combine the coverage sampled from the texture effect with the previous coverage
