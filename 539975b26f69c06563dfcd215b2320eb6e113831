@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c35dd4ee_4076789d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 17959
+      },
+      "writtenOn": "2022-04-22T02:34:35Z",
+      "side": 1,
+      "message": "Now that ChOps has updated the signing cert on the build machines, this stands a chance of working. At the very least, it shouldn\u0027t make anything worse.",
+      "revId": "539975b26f69c06563dfcd215b2320eb6e113831",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
