@@ -67,7 +67,7 @@ void GrAtlasManager::setMaxPages_TestingOnly(uint32_t maxPages) {
     }
 }
 
-void GrDrawOpAtlas::setMaxPages_TestingOnly(uint32_t maxPages) {
+void skgpu::DrawAtlas::setMaxPages_TestingOnly(uint32_t maxPages) {
     SkASSERT(!fNumActivePages);
 
     fMaxPages = maxPages;
