@@ -69,6 +69,24 @@
       "parentUuid": "61b30b99_eeaa1363",
       "revId": "e62fc2839df894614dd4c79cb618ea81875a0e2e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ee18ac19_5632b05c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-22T13:38:47Z",
+      "side": 1,
+      "message": "SGTM, I\u0027ll make those changes.",
+      "parentUuid": "44915c55_8bcabb57",
+      "revId": "e62fc2839df894614dd4c79cb618ea81875a0e2e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
