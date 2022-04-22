@@ -1,10 +1,6 @@
-4 registers, 8 instructions:
-0	r0 = uniform32 ptr0 0
-1	r1 = splat 0 (0)
-2	r2 = splat 3F800000 (1)
-loop:
-3	    r3 = index
-4	    store32 ptr1 r3
-5	    store32 ptr2 r0
-6	    store32 ptr3 r1
-7	    store32 ptr4 r2
+### Compilation failed:
+
+error: 2: unknown identifier 'sk_FragCoord'
+    return float4(sk_FragCoord);
+                  ^^^^^^^^^^^^
+1 error
