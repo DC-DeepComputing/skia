@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d7e42fba_82fa0f73",
+        "filename": "resources/sksl/runtime/GLSLTypeNames.rts",
+        "patchSetId": 1
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-22T19:57:01Z",
+      "side": 1,
+      "message": "Having `uniform` on some and not others makes it feel like a relevant detail. Probably best to remove `uniform` from all three to reduce confusion.",
+      "range": {
+        "startLine": 2,
+        "startChar": 0,
+        "endLine": 4,
+        "endChar": 4
+      },
+      "revId": "a9ca7b633978dffdf05b63e5944ef75ed9eb8f43",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7233f0f3_7c547e65",
+        "filename": "src/sksl/ir/SkSLVarDeclarations.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-22T19:57:01Z",
+      "side": 1,
+      "message": "In ES3 mode we should be able to support unsigned (`SkSLType::kUInt` exists)",
+      "range": {
+        "startLine": 97,
+        "startChar": 58,
+        "endLine": 97,
+        "endChar": 72
+      },
+      "revId": "a9ca7b633978dffdf05b63e5944ef75ed9eb8f43",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
