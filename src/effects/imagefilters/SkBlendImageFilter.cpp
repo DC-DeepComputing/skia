@@ -276,16 +276,21 @@ sk_sp<SkSpecialImage> SkBlendImageFilter::filterImageGPU(const Context& ctx,
 
     std::unique_ptr<GrFragmentProcessor> fp;
     const auto& caps = *ctx.getContext()->priv().caps();
-    GrSamplerState sampler(GrSamplerState::WrapMode::kClampToBorder,
-                           GrSamplerState::Filter::kNearest);
 
     if (backgroundView.asTextureProxy()) {
         SkRect bgSubset = SkRect::Make(background->subset());
         SkMatrix bgMatrix = SkMatrix::Translate(
                 SkIntToScalar(bgSubset.left() - backgroundOffset.fX),
                 SkIntToScalar(bgSubset.top()  - backgroundOffset.fY));
-        fp = GrTextureEffect::MakeSubset(std::move(backgroundView), background->alphaType(),
-                                         bgMatrix, sampler, bgSubset, caps);
+        fp = GrTextureEffect::MakeStrictSubset(std::move(backgroundView),
+                                               background->alphaType(),
+                                               bgMatrix,
+                                               GrSamplerState::WrapMode::kClampToBorder,
+                                               GrSamplerState::WrapMode::kClampToBorder,
+                                               SkFilterMode::kNearest,
+                                               bgSubset,
+                                               /*domain=*/nullptr,
+                                               caps);
         fp = GrColorSpaceXformEffect::Make(std::move(fp), background->getColorSpace(),
                                            background->alphaType(), ctx.colorSpace(),
                                            kPremul_SkAlphaType);
@@ -300,8 +305,15 @@ sk_sp<SkSpecialImage> SkBlendImageFilter::filterImageGPU(const Context& ctx,
         SkMatrix fgMatrix = SkMatrix::Translate(
                 SkIntToScalar(fgSubset.left() - foregroundOffset.fX),
                 SkIntToScalar(fgSubset.top()  - foregroundOffset.fY));
-        auto fgFP = GrTextureEffect::MakeSubset(std::move(foregroundView), foreground->alphaType(),
-                                                fgMatrix, sampler, fgSubset, caps);
+        auto fgFP = GrTextureEffect::MakeStrictSubset(std::move(foregroundView),
+                                                      foreground->alphaType(),
+                                                      fgMatrix,
+                                                      GrSamplerState::WrapMode::kClampToBorder,
+                                                      GrSamplerState::WrapMode::kClampToBorder,
+                                                      SkFilterMode::kNearest,
+                                                      fgSubset,
+                                                      /*domain=*/nullptr,
+                                                      caps);
         fgFP = GrColorSpaceXformEffect::Make(std::move(fgFP), foreground->getColorSpace(),
                                              foreground->alphaType(), ctx.colorSpace(),
                                              kPremul_SkAlphaType);

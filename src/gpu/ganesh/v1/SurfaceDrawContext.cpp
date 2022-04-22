@@ -582,9 +582,16 @@ void SurfaceDrawContext::drawTexture(const GrClip* clip,
         paint.setColor4f(color);
         std::unique_ptr<GrFragmentProcessor> fp;
         if (constraint == SkCanvas::kStrict_SrcRectConstraint) {
-            fp = GrTextureEffect::MakeSubset(view, srcAlphaType, SkMatrix::I(),
-                                             GrSamplerState(filter, mm), srcRect,
-                                             *this->caps());
+            SkASSERT(mm == SkMipmapMode::kNone);
+            fp = GrTextureEffect::MakeStrictSubset(view,
+                                                   srcAlphaType,
+                                                   SkMatrix::I(),
+                                                   GrSamplerState::WrapMode::kClamp,
+                                                   GrSamplerState::WrapMode::kClamp,
+                                                   filter,
+                                                   srcRect,
+                                                   /*domain=*/nullptr,
+                                                   *this->caps());
         } else {
             fp = GrTextureEffect::Make(view, srcAlphaType, SkMatrix::I(), filter, mm);
         }

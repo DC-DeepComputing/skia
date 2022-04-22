@@ -1639,14 +1639,22 @@ LightingEffect::LightingEffect(ClassID classID,
         , fSurfaceScale(surfaceScale)
         , fFilterMatrix(matrix)
         , fBoundaryMode(boundaryMode) {
-    static constexpr GrSamplerState kSampler(GrSamplerState::WrapMode::kClampToBorder,
-                                             GrSamplerState::Filter::kNearest);
     std::unique_ptr<GrFragmentProcessor> child;
     if (srcBounds) {
-        child = GrTextureEffect::MakeSubset(std::move(view), kPremul_SkAlphaType, SkMatrix::I(),
-                                            kSampler, SkRect::Make(*srcBounds), caps);
+        child = GrTextureEffect::MakeStrictSubset(std::move(view),
+                                                  kPremul_SkAlphaType,
+                                                  SkMatrix::I(),
+                                                  GrSamplerState::WrapMode::kClampToBorder,
+                                                  GrSamplerState::WrapMode::kClampToBorder,
+                                                  SkFilterMode::kNearest,
+                                                  SkRect::Make(*srcBounds),
+                                                  /*domain=*/nullptr,
+                                                  caps);
     } else {
-        child = GrTextureEffect::Make(std::move(view), kPremul_SkAlphaType, SkMatrix::I(), kSampler,
+        child = GrTextureEffect::Make(std::move(view),
+                                      kPremul_SkAlphaType,
+                                      SkMatrix::I(),
+                                      GrSamplerState{SkFilterMode::kNearest},
                                       caps);
     }
     this->registerChild(std::move(child), SkSL::SampleUsage::Explicit());
