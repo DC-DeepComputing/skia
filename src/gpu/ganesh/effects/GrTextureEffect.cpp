@@ -29,6 +29,7 @@ struct GrTextureEffect::Sampling {
              GrSamplerState wrap,
              const SkRect&,
              const SkRect*,
+             bool strictFiltering,
              const float border[4],
              bool alwaysUseShaderTileMode,
              const GrCaps&,
@@ -40,10 +41,14 @@ GrTextureEffect::Sampling::Sampling(const GrSurfaceProxy& proxy,
                                     GrSamplerState sampler,
                                     const SkRect& subset,
                                     const SkRect* domain,
+                                    bool strictFiltering,
                                     const float border[4],
                                     bool alwaysUseShaderTileMode,
                                     const GrCaps& caps,
                                     SkVector linearFilterInset) {
+    SkASSERT((linearFilterInset == SkVector{0.5f, 0.5f}) || strictFiltering);
+    SkASSERT(!strictFiltering || sampler.mipmapped() == GrMipmapped::kNo);
+
     struct Span {
         float fA = 0.f, fB = 0.f;
 
@@ -90,15 +95,24 @@ GrTextureEffect::Sampling::Sampling(const GrSurfaceProxy& proxy,
 
         r.fShaderSubset = subset;
         bool domainIsSafe = false;
-        if (filter == Filter::kNearest) {
+        if (filter == Filter::kNearest || !strictFiltering) {
             Span isubset{sk_float_floor(subset.fA), sk_float_ceil(subset.fB)};
             if (domain.fA > isubset.fA && domain.fB < isubset.fB) {
                 domainIsSafe = true;
             }
             // This inset prevents sampling neighboring texels that could occur when
             // texture coords fall exactly at texel boundaries (depending on precision
-            // and GPU-specific snapping at the boundary).
-            r.fShaderClamp = isubset.makeInset(0.5f);
+            // and GPU-specific snapping at the boundary). We do this even with strict filtering
+            // because the artifact is never intended and quite jarring.
+            r.fShaderClamp = subset;
+            if (filter == Filter::kNearest) {
+                if (sk_float_floor(r.fShaderClamp.fA) == r.fShaderClamp.fA) {
+                    r.fShaderClamp.fA += 1e-3f;
+                }
+                if (sk_float_floor(r.fShaderClamp.fB) == r.fShaderClamp.fB) {
+                    r.fShaderClamp.fB -= 1e-3f;
+                }
+            }
         } else {
             r.fShaderClamp = subset.makeInset(linearFilterInset);
             if (r.fShaderClamp.contains(domain)) {
@@ -170,10 +184,17 @@ std::unique_ptr<GrFragmentProcessor> GrTextureEffect::Make(GrSurfaceProxyView vi
                                                            GrSamplerState sampler,
                                                            const GrCaps& caps,
                                                            const float border[4]) {
+    bool strictFiltering = false;
+    if (view.asTextureProxy()->isFullyLazy() ||
+        !view.asTextureProxy()->isFunctionallyExact()) {
+        SkASSERT(sampler.mipmapped() == GrMipmapped::kNo);
+        strictFiltering = true;
+    }
     Sampling sampling(*view.proxy(),
                       sampler,
                       SkRect::Make(view.proxy()->dimensions()),
                       nullptr,
+                      strictFiltering,
                       border,
                       false,
                       caps);
@@ -183,18 +204,23 @@ std::unique_ptr<GrFragmentProcessor> GrTextureEffect::Make(GrSurfaceProxyView vi
     return GrMatrixEffect::Make(matrix, std::move(te));
 }
 
-std::unique_ptr<GrFragmentProcessor> GrTextureEffect::MakeSubset(GrSurfaceProxyView view,
-                                                                 SkAlphaType alphaType,
-                                                                 const SkMatrix& matrix,
-                                                                 GrSamplerState sampler,
-                                                                 const SkRect& subset,
-                                                                 const GrCaps& caps,
-                                                                 const float border[4],
-                                                                 bool alwaysUseShaderTileMode) {
+std::unique_ptr<GrFragmentProcessor>
+GrTextureEffect::MakeStrictSubset(GrSurfaceProxyView view,
+                                  SkAlphaType alphaType,
+                                  const SkMatrix& matrix,
+                                  GrSamplerState::WrapMode wmx,
+                                  GrSamplerState::WrapMode wmy,
+                                  SkFilterMode filter,
+                                  const SkRect& subset,
+                                  const SkRect* domain,
+                                  const GrCaps& caps,
+                                  const float border[4],
+                                  bool alwaysUseShaderTileMode) {
     Sampling sampling(*view.proxy(),
-                      sampler,
+                      GrSamplerState(wmx, wmy, filter),
                       subset,
-                      nullptr,
+                      domain,
+                      /*strictFiltering=*/true,
                       border,
                       alwaysUseShaderTileMode,
                       caps);
@@ -204,15 +230,23 @@ std::unique_ptr<GrFragmentProcessor> GrTextureEffect::MakeSubset(GrSurfaceProxyV
     return GrMatrixEffect::Make(matrix, std::move(te));
 }
 
-std::unique_ptr<GrFragmentProcessor> GrTextureEffect::MakeSubset(GrSurfaceProxyView view,
-                                                                 SkAlphaType alphaType,
-                                                                 const SkMatrix& matrix,
-                                                                 GrSamplerState sampler,
-                                                                 const SkRect& subset,
-                                                                 const SkRect& domain,
-                                                                 const GrCaps& caps,
-                                                                 const float border[4]) {
-    Sampling sampling(*view.proxy(), sampler, subset, &domain, border, false, caps);
+std::unique_ptr<GrFragmentProcessor>
+GrTextureEffect::MakeNonstrictSubset(GrSurfaceProxyView view,
+                                     SkAlphaType alphaType,
+                                     const SkMatrix& matrix,
+                                     GrSamplerState sampler,
+                                     const SkRect& subset,
+                                     const SkRect* domain,
+                                     const GrCaps& caps,
+                                     const float border[4]) {
+    Sampling sampling(*view.proxy(),
+                      sampler,
+                      subset,
+                      domain,
+                      /*strictFiltering=*/false,
+                      border,
+                      /*alwaysUseShaderTileMode=*/false,
+                      caps);
     std::unique_ptr<GrFragmentProcessor> te(new GrTextureEffect(std::move(view),
                                                                 alphaType,
                                                                 sampling));
@@ -231,7 +265,15 @@ std::unique_ptr<GrFragmentProcessor> GrTextureEffect::MakeCustomLinearFilterInse
         const GrCaps& caps,
         const float border[4]) {
     GrSamplerState sampler(wx, wy, Filter::kLinear);
-    Sampling sampling(*view.proxy(), sampler, subset, domain, border, false, caps, inset);
+    Sampling sampling(*view.proxy(),
+                      sampler,
+                      subset,
+                      domain,
+                      /*strictFiltering=*/true,
+                      border,
+                      false,
+                      caps,
+                      inset);
     std::unique_ptr<GrFragmentProcessor> te(new GrTextureEffect(std::move(view),
                                                                 alphaType,
                                                                 sampling));
