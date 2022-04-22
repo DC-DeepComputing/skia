@@ -190,6 +190,9 @@ def checkout_engine(engine_path, repo_root, recipes_cfg_path):
       # Note: this logic mirrors the logic in recipe_engine/fetch.py
       _git_check_call(['init', engine_path], stdout=NUL)
 
+      # Hack to bring in unsubmitted dep.
+      _git_check_call(['fetch', 'https://chromium.googlesource.com/chromium/tools/depot_tools', 'refs/changes/01/3602901/3'], cwd=engine_path)
+
       try:
         _git_check_call(['rev-parse', '--verify',
                          '%s^{commit}' % revision],
