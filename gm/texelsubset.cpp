@@ -47,23 +47,27 @@ public:
 protected:
     SkString onShortName() override {
         SkString name("texel_subset");
-        switch (fSampling.filter) {
-            case Filter::kNearest:
-                name.append("_nearest");
-                break;
-            case Filter::kLinear:
-                name.append("_linear");
-                break;
-        }
-        switch (fSampling.mipmap) {
-            case MipmapMode::kNone:
-                break;
-            case MipmapMode::kNearest:
-                name.append("_mipmap_nearest");
-                break;
-            case MipmapMode::kLinear:
-                name.append("_mipmap_linear");
-                break;
+        if (fSampling.isAniso()) {
+            name.append("_aniso");
+        } else {
+            switch (fSampling.filter) {
+                case Filter::kNearest:
+                    name.append("_nearest");
+                    break;
+                case Filter::kLinear:
+                    name.append("_linear");
+                    break;
+            }
+            switch (fSampling.mipmap) {
+                case MipmapMode::kNone:
+                    break;
+                case MipmapMode::kNearest:
+                    name.append("_mipmap_nearest");
+                    break;
+                case MipmapMode::kLinear:
+                    name.append("_mipmap_linear");
+                    break;
+            }
         }
         name.append(fUpscale ? "_up" : "_down");
         return name;
@@ -91,9 +95,13 @@ protected:
             return DrawResult::kSkip;
         }
 
-        GrMipmapped mipmapped = (fSampling.mipmap != MipmapMode::kNone) ? GrMipmapped::kYes
-                                                                        : GrMipmapped::kNo;
+        GrMipmapped mipmapped = (fSampling.mipmap != MipmapMode::kNone || fSampling.isAniso())
+                                        ? GrMipmapped::kYes
+                                        : GrMipmapped::kNo;
         if (mipmapped == GrMipmapped::kYes && !rContext->priv().caps()->mipmapSupport()) {
+            return DrawResult::kSkip;
+        }
+        if (fSampling.isAniso() && !rContext->priv().caps()->anisoSupport()) {
             return DrawResult::kSkip;
         }
         auto view = std::get<0>(GrMakeCachedBitmapProxyView(rContext, fBitmap, mipmapped));
@@ -200,7 +208,12 @@ protected:
                     }
 
                     // Draw non-strict.
-                    GrSamplerState sampler(wmx, wmy, fSampling.filter, fSampling.mipmap);
+                    GrSamplerState sampler;
+                    if (fSampling.isAniso()) {
+                        sampler = GrSamplerState::Aniso(wmx, wmy, fSampling.maxAniso, mipmapped);
+                    } else {
+                        sampler = GrSamplerState(wmx, wmy, fSampling.filter, fSampling.mipmap);
+                    }
                     auto nonstrictFP = GrTextureEffect::MakeNonstrictSubset(
                             view,
                             fBitmap.alphaType(),
@@ -250,7 +263,9 @@ protected:
     }
 
 private:
-    bool canDoStrict() const { return fSampling.mipmap == SkMipmapMode::kNone; }
+    bool canDoStrict() const {
+        return !fSampling.isAniso() && fSampling.mipmap == SkMipmapMode::kNone;
+    }
 
     inline static constexpr SkISize kImageSize = {128, 88};
 
@@ -273,5 +288,8 @@ DEF_GM(return new TexelSubset({Filter::kNearest, MipmapMode::kNearest}, false);)
 DEF_GM(return new TexelSubset({Filter::kLinear , MipmapMode::kNearest}, false);)
 DEF_GM(return new TexelSubset({Filter::kNearest, MipmapMode::kLinear }, false);)
 DEF_GM(return new TexelSubset({Filter::kLinear , MipmapMode::kLinear }, false);)
+
+DEF_GM(return new TexelSubset(SkSamplingOptions::Aniso(16), false);)
+DEF_GM(return new TexelSubset(SkSamplingOptions::Aniso(16), true );)
 
 }  // namespace skiagm
