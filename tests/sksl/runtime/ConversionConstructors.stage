@@ -1,9 +1,9 @@
 uniform half f;
 uniform int i;
-uniform bool b;
+bool b_0;
 half4 main(float2 xy)
 {
-	half x = bool(f) ? half(b) : half(i);
-	int y = bool(i) ? int(b) : int(f);
+	half x = bool(f) ? half(b_0) : half(i);
+	int y = bool(i) ? int(b_0) : int(f);
 	return half4(half4(x) * half(y));
 }
