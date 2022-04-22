@@ -149,8 +149,15 @@ std::unique_ptr<GrFragmentProcessor> GrBicubicEffect::MakeSubset(
         const GrCaps& caps) {
     GrSamplerState sampler(wrapX, wrapY, GrSamplerState::Filter::kNearest);
     std::unique_ptr<GrFragmentProcessor> fp;
-    fp = GrTextureEffect::MakeSubset(
-            std::move(view), alphaType, SkMatrix::I(), sampler, subset, caps);
+    fp = GrTextureEffect::MakeStrictSubset(std::move(view),
+                                           alphaType,
+                                           SkMatrix::I(),
+                                           wrapX,
+                                           wrapY,
+                                           SkFilterMode::kNearest,
+                                           subset,
+                                           /*domain=*/nullptr,
+                                           caps);
     auto clamp = kPremul_SkAlphaType == alphaType ? Clamp::kPremul : Clamp::kUnpremul;
     return GrMatrixEffect::Make(matrix, std::unique_ptr<GrFragmentProcessor>(
             new GrBicubicEffect(std::move(fp), kernel, direction, clamp)));
@@ -175,10 +182,16 @@ std::unique_ptr<GrFragmentProcessor> GrBicubicEffect::MakeSubset(
             lowerBound(domain.fTop)   ,
             upperBound(domain.fBottom)
     };
-    GrSamplerState sampler(wrapX, wrapY, GrSamplerState::Filter::kNearest);
     std::unique_ptr<GrFragmentProcessor> fp;
-    fp = GrTextureEffect::MakeSubset(
-            std::move(view), alphaType, SkMatrix::I(), sampler, subset, expandedDomain, caps);
+    fp = GrTextureEffect::MakeStrictSubset(std::move(view),
+                                           alphaType,
+                                           SkMatrix::I(),
+                                           wrapX,
+                                           wrapY,
+                                           SkFilterMode::kNearest,
+                                           subset,
+                                           &expandedDomain,
+                                           caps);
     auto clamp = kPremul_SkAlphaType == alphaType ? Clamp::kPremul : Clamp::kUnpremul;
     return GrMatrixEffect::Make(matrix, std::unique_ptr<GrFragmentProcessor>(
             new GrBicubicEffect(std::move(fp), kernel, direction, clamp)));
