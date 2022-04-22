@@ -41,6 +41,7 @@ public:
                         const Modifiers* modifiers,
                         std::string_view name,
                         std::vector<const Variable*> parameters,
+                        Position returnTypePos,
                         const Type* returnType,
                         bool builtin);
 
@@ -51,6 +52,7 @@ public:
                                               const Modifiers* modifiers,
                                               std::string_view name,
                                               std::vector<std::unique_ptr<Variable>> parameters,
+                                              Position returnTypePos,
                                               const Type* returnType);
 
     const Modifiers& modifiers() const {

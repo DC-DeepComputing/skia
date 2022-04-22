@@ -3769,6 +3769,7 @@ SPIRVCodeGenerator::EntrypointAdapter SPIRVCodeGenerator::writeEntrypointAdapter
                                                   &adapter.fModifiers,
                                                   "_entrypoint",
                                                   /*parameters=*/std::vector<const Variable*>{},
+                                                  Position(),
                                                   /*returnType=*/fContext.fTypes.fVoid.get(),
                                                   /*builtin=*/false);
     // Define it.

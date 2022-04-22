@@ -203,6 +203,7 @@ const Symbol* Rehydrator::symbol() {
                             this->modifiersPool().add(modifiers),
                             name,
                             std::move(parameters),
+                            Position(),
                             returnType,
                             fSymbolTable->isBuiltin()));
             this->addSymbol(id, result);
