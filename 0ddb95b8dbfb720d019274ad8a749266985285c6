@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c3232518_5f50e6f7",
+        "filename": "src/gpu/ganesh/tessellate/shaders/GrStrokeTessellationShader.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-04-22T14:11:50Z",
+      "side": 1,
+      "message": "robust_normalize_difference? Initially it wasn\u0027t clear you\u0027re normalizing b-a.",
+      "range": {
+        "startLine": 109,
+        "startChar": 7,
+        "endLine": 109,
+        "endChar": 23
+      },
+      "revId": "0ddb95b8dbfb720d019274ad8a749266985285c6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b9be2109_b05274da",
+        "filename": "src/gpu/ganesh/tessellate/shaders/GrStrokeTessellationShader.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 325,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-04-22T14:11:50Z",
+      "side": 1,
+      "message": "I\u0027m not sure if the ordering is confusing here or not -- I would have expected it to be (bc*u, ab*v) since you\u0027re normalizing bc*u - ab*v.",
+      "range": {
+        "startLine": 325,
+        "startChar": 50,
+        "endLine": 325,
+        "endChar": 60
+      },
+      "revId": "0ddb95b8dbfb720d019274ad8a749266985285c6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
