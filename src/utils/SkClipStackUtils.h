@@ -8,8 +8,6 @@
 #ifndef SkClipStackUtils_DEFINED
 #define SkClipStackUtils_DEFINED
 
-#include "include/core/SkTypes.h"
-
 class SkClipStack;
 class SkPath;
 
