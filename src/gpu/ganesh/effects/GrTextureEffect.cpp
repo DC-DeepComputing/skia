@@ -47,7 +47,7 @@ GrTextureEffect::Sampling::Sampling(const GrSurfaceProxy& proxy,
                                     const GrCaps& caps,
                                     SkVector linearFilterInset) {
     SkASSERT((linearFilterInset == SkVector{0.5f, 0.5f}) || strictFiltering);
-    SkASSERT(!strictFiltering || sampler.mipmapped() == GrMipmapped::kNo);
+    SkASSERT(!strictFiltering || (!sampler.isAniso() && sampler.mipmapped() == GrMipmapped::kNo));
 
     struct Span {
         float fA = 0.f, fB = 0.f;
@@ -69,9 +69,10 @@ GrTextureEffect::Sampling::Sampling(const GrSurfaceProxy& proxy,
         Wrap fHWWrap;
     };
 
-    auto type = proxy.asTextureProxy()->textureType();
+    auto type   = proxy.asTextureProxy()->textureType();
     auto filter = sampler.filter();
-    auto mm = sampler.mipmapMode();
+    auto mm     = sampler.mipmapMode();
+    bool aniso  = sampler.isAniso();
 
     auto resolve = [&](int size, Wrap wrap, Span subset, Span domain, float linearFilterInset) {
         Result1D r;
@@ -105,7 +106,7 @@ GrTextureEffect::Sampling::Sampling(const GrSurfaceProxy& proxy,
             // and GPU-specific snapping at the boundary). We do this even with strict filtering
             // because the artifact is never intended and quite jarring.
             r.fShaderClamp = subset;
-            if (filter == Filter::kNearest) {
+            if (filter == Filter::kNearest && !aniso) {
                 if (sk_float_floor(r.fShaderClamp.fA) == r.fShaderClamp.fA) {
                     r.fShaderClamp.fA += 1e-3f;
                 }
@@ -145,7 +146,14 @@ GrTextureEffect::Sampling::Sampling(const GrSurfaceProxy& proxy,
                           : Span{SK_FloatNegativeInfinity, SK_FloatInfinity};
     auto y = resolve(dim.height(), sampler.wrapModeY(), subsetY, domainY, linearFilterInset.fY);
 
-    fHWSampler = {x.fHWWrap, y.fHWWrap, filter, mm};
+    if (aniso) {
+        fHWSampler = GrSamplerState::Aniso(x.fHWWrap,
+                                           y.fHWWrap,
+                                           sampler.maxAniso(),
+                                           sampler.mipmapped());
+    } else {
+        fHWSampler = GrSamplerState(x.fHWWrap, y.fHWWrap, filter, mm);
+    }
     fShaderModes[0] = x.fShaderMode;
     fShaderModes[1] = y.fShaderMode;
     fShaderSubset = {x.fShaderSubset.fA, y.fShaderSubset.fA,
