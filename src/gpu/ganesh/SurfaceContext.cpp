@@ -1213,13 +1213,15 @@ bool SurfaceContext::rescaleInto(skgpu::SurfaceFillContext* dst,
             auto filter = rescaleMode == RescaleMode::kNearest ? GrSamplerState::Filter::kNearest
                                                                : GrSamplerState::Filter::kLinear;
             auto srcRectF = SkRect::Make(srcRect);
-            fp = GrTextureEffect::MakeSubset(std::move(texView),
-                                             this->colorInfo().alphaType(),
-                                             SkMatrix::I(),
-                                             {filter, GrSamplerState::MipmapMode::kNone},
-                                             srcRectF,
-                                             srcRectF,
-                                             *this->caps());
+            fp = GrTextureEffect::MakeStrictSubset(std::move(texView),
+                                                   this->colorInfo().alphaType(),
+                                                   SkMatrix::I(),
+                                                   GrSamplerState::WrapMode::kClamp,
+                                                   GrSamplerState::WrapMode::kClamp,
+                                                   filter,
+                                                   srcRectF,
+                                                   &srcRectF,
+                                                   *this->caps());
         }
         if (xform) {
             fp = GrColorSpaceXformEffect::Make(std::move(fp), std::move(xform));

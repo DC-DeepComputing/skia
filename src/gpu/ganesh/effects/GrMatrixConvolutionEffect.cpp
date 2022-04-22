@@ -339,9 +339,14 @@ std::unique_ptr<GrFragmentProcessor> GrMatrixConvolutionEffect::Make(GrRecording
     if (!kernelWrapper.isValid()) {
         return nullptr;
     }
-    GrSamplerState sampler(wm, GrSamplerState::Filter::kNearest);
-    auto child = GrTextureEffect::MakeSubset(std::move(srcView), kPremul_SkAlphaType, SkMatrix::I(),
-                                             sampler, SkRect::Make(srcBounds), caps);
+    auto child = GrTextureEffect::MakeStrictSubset(std::move(srcView),
+                                                   kPremul_SkAlphaType, SkMatrix::I(),
+                                                   wm,
+                                                   wm,
+                                                   SkFilterMode::kNearest,
+                                                   SkRect::Make(srcBounds),
+                                                   /*domain=*/nullptr,
+                                                   caps);
     return std::unique_ptr<GrFragmentProcessor>(
             new GrMatrixConvolutionEffect(std::move(child), kernelWrapper, std::move(kernelFP),
                                           gain, bias, kernelOffset, convolveAlpha));
