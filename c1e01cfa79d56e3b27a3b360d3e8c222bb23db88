@@ -22,6 +22,30 @@
       },
       "revId": "c1e01cfa79d56e3b27a3b360d3e8c222bb23db88",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dacae188_e2659b00",
+        "filename": "src/sksl/ir/SkSLFunctionDeclaration.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 367,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-04-22T17:19:13Z",
+      "side": 1,
+      "message": "Agreed (that should ripple out and remove a bunch of the diffs from this CL, right?). I guess the idea was that after we plumbed it to Convert, we might need it later (but it turns out we don\u0027t because all the error checking happens there).",
+      "parentUuid": "a7f255c3_cad9d0a6",
+      "range": {
+        "startLine": 367,
+        "startChar": 0,
+        "endLine": 367,
+        "endChar": 64
+      },
+      "revId": "c1e01cfa79d56e3b27a3b360d3e8c222bb23db88",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
