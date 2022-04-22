@@ -165,7 +165,10 @@ sk_sp<GrDirectContext> MakeGrContext()
     // setup interface.
     auto interface = GrGLMakeNativeInterface();
     // setup context
-    return GrDirectContext::MakeGL(interface);
+    GrContextOptions opts;
+    // Diagnosing issues on older Adrenos
+    opts.fAllowMultipleGlyphCacheTextures = GrContextOptions::Enable::kNo;
+    return GrDirectContext::MakeGL(interface, opts);
 }
 
 sk_sp<SkSurface> MakeOnScreenGLSurface(sk_sp<GrDirectContext> dContext, int width, int height,
