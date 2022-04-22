@@ -640,7 +640,7 @@ SkShaderCodeDictionary::SkShaderCodeDictionary() {
             kErrorName, kErrorSkSL,
             GenerateDefaultGlueCode,
             kNoChildren,
-            {}
+            { }
     };
     fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kSolidColorShader] = {
             SkMakeSpan(kSolidShaderUniforms, kNumSolidShaderUniforms),
@@ -648,7 +648,7 @@ SkShaderCodeDictionary::SkShaderCodeDictionary() {
             kSolidShaderName, kSolidShaderSkSL,
             GenerateDefaultGlueCode,
             kNoChildren,
-            {}
+            { }
     };
     fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kLinearGradientShader] = {
             SkMakeSpan(kGradientUniforms, kNumGradientUniforms),
@@ -656,7 +656,7 @@ SkShaderCodeDictionary::SkShaderCodeDictionary() {
             kLinearGradient4Name, kLinearGradient4SkSL,
             GenerateDefaultGlueCode,
             kNoChildren,
-            { kLinearGrad4Fields, kNumLinearGrad4Fields }
+            { }
     };
     fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kRadialGradientShader] = {
             SkMakeSpan(kGradientUniforms, kNumGradientUniforms),
@@ -664,7 +664,7 @@ SkShaderCodeDictionary::SkShaderCodeDictionary() {
             kLinearGradient4Name, kLinearGradient4SkSL,
             GenerateDefaultGlueCode,
             kNoChildren,
-            { kLinearGrad4Fields, kNumLinearGrad4Fields }
+            { }
     };
     fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kSweepGradientShader] = {
             SkMakeSpan(kGradientUniforms, kNumGradientUniforms),
@@ -672,7 +672,7 @@ SkShaderCodeDictionary::SkShaderCodeDictionary() {
             kLinearGradient4Name, kLinearGradient4SkSL,
             GenerateDefaultGlueCode,
             kNoChildren,
-            { kLinearGrad4Fields, kNumLinearGrad4Fields }
+            { }
     };
     fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kConicalGradientShader] = {
             SkMakeSpan(kGradientUniforms, kNumGradientUniforms),
@@ -680,7 +680,7 @@ SkShaderCodeDictionary::SkShaderCodeDictionary() {
             kLinearGradient4Name, kLinearGradient4SkSL,
             GenerateDefaultGlueCode,
             kNoChildren,
-            { kLinearGrad4Fields, kNumLinearGrad4Fields }
+            { }
     };
     fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kImageShader] = {
             SkMakeSpan(kImageShaderUniforms, kNumImageShaderUniforms),
@@ -688,7 +688,7 @@ SkShaderCodeDictionary::SkShaderCodeDictionary() {
             kImageShaderName, kImageShaderSkSL,
             GenerateImageShaderGlueCode,
             kNoChildren,
-            { kImageShaderFields, kNumImageShaderFields }
+            { }
     };
     fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kBlendShader] = {
             { kBlendShaderUniforms, kNumBlendShaderUniforms },
@@ -696,7 +696,7 @@ SkShaderCodeDictionary::SkShaderCodeDictionary() {
             kBlendHelperName, kBlendHelperSkSL,
             GenerateBlendShaderGlueCode,
             kNumBlendShaderChildren,
-            {}
+            { }
     };
     fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kFixedFunctionBlender] = {
             { },     // no uniforms
@@ -704,7 +704,7 @@ SkShaderCodeDictionary::SkShaderCodeDictionary() {
             "FF-blending", "",  // fixed function blending doesn't have any static SkSL
             GenerateFixedFunctionBlenderGlueCode,
             kNoChildren,
-            { kFixedFunctionBlenderFields, kNumFixedFunctionBlenderFields }
+            { }
     };
     fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kShaderBasedBlender] = {
             { },     // no uniforms
@@ -712,6 +712,6 @@ SkShaderCodeDictionary::SkShaderCodeDictionary() {
             kBlendHelperName, kBlendHelperSkSL,
             GenerateShaderBasedBlenderGlueCode,
             kNoChildren,
-            { kShaderBasedBlenderFields, kNumShaderBasedBlenderFields }
+            { }
     };
 }
