@@ -157,38 +157,34 @@ std::unique_ptr<GrFragmentProcessor> GrGaussianConvolutionFragmentProcessor::Mak
     // the linear blur requires a linear sample.
     GrSamplerState::Filter filter = is_zero_sigma ?
         GrSamplerState::Filter::kNearest : GrSamplerState::Filter::kLinear;
-    GrSamplerState sampler(wm, filter);
     if (is_zero_sigma) {
         halfWidth = 0;
     }
     // It's pretty common to blur a subset of an input texture. In reduced shader mode we always
     // apply the wrap mode in the shader.
     bool alwaysUseShaderTileMode = caps.reducedShaderMode();
+    const SkRect* domain = nullptr;
+    SkRect tempRect;
     if (pixelDomain && !alwaysUseShaderTileMode) {
         // Inset because we expect to be invoked at pixel centers.
-        SkRect domain = SkRect::Make(*pixelDomain).makeInset(0.5, 0.5f);
+        tempRect = SkRect::Make(*pixelDomain).makeInset(0.5, 0.5f);
+        domain = &tempRect;
         switch (dir) {
-            case Direction::kX: domain.outset(halfWidth, 0); break;
-            case Direction::kY: domain.outset(0, halfWidth); break;
+            case Direction::kX: tempRect.outset(halfWidth, 0); break;
+            case Direction::kY: tempRect.outset(0, halfWidth); break;
         }
-        child = GrTextureEffect::MakeSubset(std::move(view),
-                                            alphaType,
-                                            SkMatrix::I(),
-                                            sampler,
-                                            SkRect::Make(subset),
-                                            domain,
-                                            caps,
-                                            GrTextureEffect::kDefaultBorder);
-    } else {
-        child = GrTextureEffect::MakeSubset(std::move(view),
-                                            alphaType,
-                                            SkMatrix::I(),
-                                            sampler,
-                                            SkRect::Make(subset),
-                                            caps,
-                                            GrTextureEffect::kDefaultBorder,
-                                            alwaysUseShaderTileMode);
     }
+    child = GrTextureEffect::MakeStrictSubset(std::move(view),
+                                              alphaType,
+                                              SkMatrix::I(),
+                                              wm,
+                                              wm,
+                                              filter,
+                                              SkRect::Make(subset),
+                                              domain,
+                                              caps,
+                                              GrTextureEffect::kDefaultBorder,
+                                              alwaysUseShaderTileMode);
 
     if (is_zero_sigma) {
         return child;
