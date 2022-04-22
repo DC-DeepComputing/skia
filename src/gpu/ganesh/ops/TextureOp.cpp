@@ -1168,14 +1168,21 @@ GrOp::Owner TextureOp::Make(GrRecordingContext* context,
         std::unique_ptr<GrFragmentProcessor> fp;
         const auto& caps = *context->priv().caps();
         if (subset) {
+            SkASSERT(mm == SkMipmapMode::kNearest);
             SkRect localRect;
+            SkRect* domain = nullptr;
             if (quad->fLocal.asRect(&localRect)) {
-                fp = GrTextureEffect::MakeSubset(std::move(proxyView), alphaType, SkMatrix::I(),
-                                                 samplerState, *subset, localRect, caps);
-            } else {
-                fp = GrTextureEffect::MakeSubset(std::move(proxyView), alphaType, SkMatrix::I(),
-                                                 samplerState, *subset, caps);
+                domain = &localRect;
             }
+            fp = GrTextureEffect::MakeStrictSubset(std::move(proxyView),
+                                                   alphaType,
+                                                   SkMatrix::I(),
+                                                   GrSamplerState::WrapMode::kClamp,
+                                                   GrSamplerState::WrapMode::kClamp,
+                                                   filter,
+                                                   *subset,
+                                                   domain,
+                                                   caps);
         } else {
             fp = GrTextureEffect::Make(std::move(proxyView), alphaType, SkMatrix::I(), samplerState,
                                        caps);

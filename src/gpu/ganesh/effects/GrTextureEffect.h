@@ -30,8 +30,10 @@ public:
      * Make from a full GrSamplerState. Caps are required to determine support for kClampToBorder.
      * This will be emulated in the shader if there is no hardware support.
      */
-    static std::unique_ptr<GrFragmentProcessor> Make(GrSurfaceProxyView, SkAlphaType,
-                                                     const SkMatrix&, GrSamplerState,
+    static std::unique_ptr<GrFragmentProcessor> Make(GrSurfaceProxyView,
+                                                     SkAlphaType,
+                                                     const SkMatrix&,
+                                                     GrSamplerState,
                                                      const GrCaps& caps,
                                                      const float border[4] = kDefaultBorder);
 
@@ -39,47 +41,49 @@ public:
      * Makes a texture effect that samples a subset of a texture. The wrap modes of the
      * GrSampleState are applied to the subset in the shader rather than using HW samplers.
      * The 'subset' parameter specifies the texels in the base level. The shader code will
-     * avoid allowing linear filtering to read outside the texel window. However, if MIP
-     * filtering is used and a shader invocation reads from a level other than the base
-     * then it may read texel values that were computed from in part from base level texels
-     * outside the window. More specifically, we treat the MIP map case exactly like the
-     * linear case in terms of how the final texture coords are computed. If
-     * alwaysUseShaderTileMode is true then MakeSubset won't attempt to use HW wrap modes if the
-     * subset contains the entire texture.
+     * avoid allowing linear filtering to read outside the texel window. If alwaysUseShaderTileMode
+     * is true then MakeSubset won't attempt to use HW wrap modes if the subset contains the entire
+     * texture. The optional domain parameter specifies a known limit on the post-matrix texture
+     * coords that will be used to sample the texture. It can be used to optimize away shader based
+     * coordiante wrapping. Mipmapping is not supported with strict subsetting.
      */
-    static std::unique_ptr<GrFragmentProcessor> MakeSubset(GrSurfaceProxyView,
-                                                           SkAlphaType,
-                                                           const SkMatrix&,
-                                                           GrSamplerState,
-                                                           const SkRect& subset,
-                                                           const GrCaps& caps,
-                                                           const float border[4] = kDefaultBorder,
-                                                           bool alwaysUseShaderTileMode = false);
+    static std::unique_ptr<GrFragmentProcessor>
+    MakeStrictSubset(GrSurfaceProxyView,
+                     SkAlphaType,
+                     const SkMatrix&,
+                     GrSamplerState::WrapMode wx,
+                     GrSamplerState::WrapMode wy,
+                     SkFilterMode,
+                     const SkRect& subset,
+                     const SkRect* domain,
+                     const GrCaps& caps,
+                     const float border[4] = kDefaultBorder,
+                     bool alwaysUseShaderTileMode = false);
 
     /**
-     * The same as above but also takes a 'domain' that specifies any known limit on the post-
-     * matrix texture coords that will be used to sample the texture. Specifying this requires
-     * knowledge of how this effect will be nested into a paint, the local coords used with the
-     * draw, etc. It is only used to attempt to optimize away the shader subset calculations.
+     * Similar to above but limits the sample coordinates to the subset but not filtering. Depending
+     * on the filtering mode when samples are taken near the edge of the subset texels outside of
+     * the subset may be used to produce the filtered texture color.
      */
-    static std::unique_ptr<GrFragmentProcessor> MakeSubset(GrSurfaceProxyView,
-                                                           SkAlphaType,
-                                                           const SkMatrix&,
-                                                           GrSamplerState,
-                                                           const SkRect& subset,
-                                                           const SkRect& domain,
-                                                           const GrCaps& caps,
-                                                           const float border[4] = kDefaultBorder);
+    static std::unique_ptr<GrFragmentProcessor>
+    MakeNonstrictSubset(GrSurfaceProxyView,
+                        SkAlphaType,
+                        const SkMatrix&,
+                        GrSamplerState,
+                        const SkRect& subset,
+                        const SkRect* domain,
+                        const GrCaps& caps,
+                        const float border[4] = kDefaultBorder);
 
     /**
-     * Like MakeSubset() but always uses kLinear filtering. MakeSubset() uses the subset rect
-     * dimensions to determine the period of the wrap mode (for repeat and mirror). Once it computes
-     * the wrapped texture coordinate inside subset rect it further clamps it to a 0.5 inset rect of
-     * subset. When subset is an integer rectangle this clamping avoids the hw linear filtering from
-     * reading texels just outside the subset rect. This factory allows a custom inset clamping
-     * distance rather than 0.5, allowing those neighboring texels to influence the linear filtering
-     * sample result. If there is a known restriction on the post-matrix texture coords it can be
-     * specified using domain.
+     * Like MakeStrictSubset() but always uses kLinear filtering. MakeStrictSubset() uses the subset
+     * rect dimensions to determine the period of the wrap mode (for repeat and mirror). Once it
+     * computes the wrapped texture coordinate inside subset rect it further clamps it to a 0.5
+     * inset rect of subset. When subset is an integer rectangle this clamping avoids the hw linear
+     * filtering from reading texels just outside the subset rect. This factory allows a custom
+     * inset clamping distance rather than 0.5, allowing those neighboring texels to influence the
+     * linear filtering sample result. If there is a known restriction on the post-matrix texture
+     * coords it can be specified using domain.
      */
     static std::unique_ptr<GrFragmentProcessor> MakeCustomLinearFilterInset(
             GrSurfaceProxyView,
