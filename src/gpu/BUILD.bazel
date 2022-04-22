@@ -191,7 +191,7 @@ generated_cc_atom(
     srcs = ["Blend.cpp"],
     visibility = ["//:__subpackages__"],
     deps = [
-        ":Blend_hdr",
         "//include/core:SkBlendMode_hdr",
+        "//include/core:SkSpan_hdr",
     ],
 )
