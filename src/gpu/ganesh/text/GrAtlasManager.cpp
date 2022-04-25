@@ -165,16 +165,11 @@ GrDrawOpAtlas::ErrorCode GrAtlasManager::addGlyphToAtlas(const SkGlyph& skGlyph,
     switch (srcPadding) {
         case 0:
             // The direct mask/image case.
-            padding = 0;
-            if (fSupportBilerpAtlas) {
-                // Force direct masks (glyph with no padding) to have padding.
-                padding = 1;
-                srcPadding = 1;
-            }
+            padding = fSupportBilerpAtlas ? 1 : 0;
             break;
         case 1:
             // The transformed mask/image case.
-            padding = 1;
+            padding = fSupportBilerpAtlas ? 1 : 2;
             break;
         case SK_DistanceFieldInset:
             // The SDFT case.
@@ -188,8 +183,8 @@ GrDrawOpAtlas::ErrorCode GrAtlasManager::addGlyphToAtlas(const SkGlyph& skGlyph,
             return GrDrawOpAtlas::ErrorCode::kError;
     }
 
-    const int width = skGlyph.width() + 2*padding;
-    const int height = skGlyph.height() + 2*padding;
+    const int width = skGlyph.width() + padding;
+    const int height = skGlyph.height() + padding;
     int rowBytes = width * bytesPerPixel;
     size_t size = height * rowBytes;
 
@@ -203,7 +198,6 @@ GrDrawOpAtlas::ErrorCode GrAtlasManager::addGlyphToAtlas(const SkGlyph& skGlyph,
     }
 
     get_packed_glyph_image(skGlyph, rowBytes, expectedMaskFormat, dataPtr);
-
     auto errorCode = this->addToAtlas(resourceProvider,
                                       uploadTarget,
                                       expectedMaskFormat,
@@ -213,7 +207,13 @@ GrDrawOpAtlas::ErrorCode GrAtlasManager::addGlyphToAtlas(const SkGlyph& skGlyph,
                                       &grGlyph->fAtlasLocator);
 
     if (errorCode == GrDrawOpAtlas::ErrorCode::kSucceeded) {
-        grGlyph->fAtlasLocator.insetSrc(srcPadding);
+        if (srcPadding != SK_DistanceFieldInset && fSupportBilerpAtlas) {
+            grGlyph->fAtlasLocator.insetTopLeftSrc(1);
+            SkASSERT(skGlyph.width() == grGlyph->fAtlasLocator.width() &&
+                     skGlyph.height() == grGlyph->fAtlasLocator.height());
+        } else {
+            grGlyph->fAtlasLocator.insetSrc(srcPadding);
+        }
     }
 
     return errorCode;
