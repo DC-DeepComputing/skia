@@ -52,6 +52,24 @@
       "parentUuid": "9fc466db_27a66d7f",
       "revId": "6c78b8d3aefb4f2759847715f6bb4c898cee3124",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "029718ab_0597a5b3",
+        "filename": "src/utils/SkClipStackUtils.h",
+        "patchSetId": 17
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-04-25T17:37:07Z",
+      "side": 0,
+      "message": "Done",
+      "parentUuid": "aa3c42a0_ce5e3637",
+      "revId": "6c78b8d3aefb4f2759847715f6bb4c898cee3124",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
