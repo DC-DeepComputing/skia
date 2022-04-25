@@ -7,6 +7,7 @@
 
 #include "src/gpu/ganesh/GrCaps.h"
 
+#include "include/core/SkCapabilities.h"
 #include "include/gpu/GrBackendSurface.h"
 #include "include/gpu/GrContextOptions.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
@@ -479,4 +480,10 @@ std::tuple<GrColorType, GrBackendFormat> GrCaps::getFallbackColorTypeAndFormat(
         ct = color_type_fallback(ct);
     } while (ct != GrColorType::kUnknown);
     return {GrColorType::kUnknown, {}};
+}
+
+sk_sp<SkCapabilities> GrCaps::asSkCapabilities() const {
+    sk_sp<SkCapabilities> caps(new SkCapabilities);
+    caps->fSkSLVersion = this->shaderCaps()->supportedSkSLVerion();
+    return caps;
 }
