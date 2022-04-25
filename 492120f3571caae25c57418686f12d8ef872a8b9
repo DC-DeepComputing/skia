@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dd2f3de7_58aaf8af",
+        "filename": "src/gpu/ganesh/dawn/GrDawnBuffer.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-04-25T20:49:42Z",
+      "side": 1,
+      "message": "These TODOs serve more as questions to the reviewers than concrete suggestions. I\u0027m happy to remove them if you feel that they are not actionable.",
+      "range": {
+        "startLine": 39,
+        "startChar": 3,
+        "endLine": 44,
+        "endChar": 7
+      },
+      "revId": "492120f3571caae25c57418686f12d8ef872a8b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
