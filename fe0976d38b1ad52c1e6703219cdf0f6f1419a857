@@ -52,6 +52,24 @@
       "parentUuid": "21bb8ba4_2f5864a6",
       "revId": "fe0976d38b1ad52c1e6703219cdf0f6f1419a857",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2220715c_b35ff65b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-04-25T17:00:10Z",
+      "side": 1,
+      "message": "Using the tessellation shaders is not critical for MotionMark. On some platforms it is worse performance, some neutral, and some slight better. The key thing is to do all the vertex calculations on the GPU instead of the CPU. But this can be done using the vertex shaders and just uploading N vertices (some of which may just get thrown away as degenerate triangles)",
+      "parentUuid": "21bb8ba4_2f5864a6",
+      "revId": "fe0976d38b1ad52c1e6703219cdf0f6f1419a857",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
