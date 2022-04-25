@@ -6,6 +6,7 @@ cc_library(
     name = "core_srcs",
     deps = [
         ":Blend_src",
+        ":DrawAtlas_src",
         ":RectanizerPow2_src",
         ":RectanizerSkyline_src",
         ":ResourceKey_src",
@@ -196,5 +197,31 @@ generated_cc_atom(
     deps = [
         ":Blend_hdr",
         "//include/core:SkBlendMode_hdr",
+    ],
+)
+
+generated_cc_atom(
+    name = "DrawAtlas_hdr",
+    hdrs = ["DrawAtlas.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":AtlasTypes_hdr",
+        ":RectanizerSkyline_hdr",
+        "//include/core:SkRefCnt_hdr",
+        "//include/private:SkTArray_hdr",
+        "//src/core:SkIPoint16_hdr",
+        "//src/core:SkTInternalLList_hdr",
+    ],
+)
+
+generated_cc_atom(
+    name = "DrawAtlas_src",
+    srcs = ["DrawAtlas.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":DrawAtlas_hdr",
+        "//include/private:SkTPin_hdr",
+        "//src/core:SkMathPriv_hdr",
+        "//src/core:SkOpts_hdr",
     ],
 )
