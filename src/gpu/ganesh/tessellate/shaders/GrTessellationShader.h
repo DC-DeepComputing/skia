@@ -70,6 +70,10 @@ public:
                                                 args.fXferBarrierFlags, args.fColorLoadOp);
     }
 
+    // Emits an SkSL function that calculates Wang's formula for the given set of 4 points. The
+    // points represent a cubic if w < 0, or if w >= 0, a conic defined by the first 3 points.
+    static const char* WangsFormulaSkSL();
+
 private:
     const GrPrimitiveType fPrimitiveType;
     const int fTessellationPatchVertexCount;
