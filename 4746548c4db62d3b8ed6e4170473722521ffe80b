@@ -70,6 +70,30 @@
       },
       "revId": "4746548c4db62d3b8ed6e4170473722521ffe80b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "22d02a1a_dc27f053",
+        "filename": "bazel/common_config_settings/BUILD.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2022-04-25T18:48:22Z",
+      "side": 1,
+      "message": "Well my fear is that it\u0027s only intel right now. AFAICT, there is nothing stopping intel from making arm chips and Apple going back to intel in a couple years. I don\u0027t like the idea of including manufacturer in the config name, but I can add a clarifying comment.\n\n// Apple devices with intel processors released before the shift to the M1 chip \n// will use this config setting. Because M1 chips use the arm cpu instruction set,\n// this flag will not be used.\n\nLet me know if that is good\n\ncontext: https://9to5mac.com/2021/03/23/intel-to-build-arm-chips-for-other-companies-as-part-of-its-new-business-strategy/",
+      "parentUuid": "264d3e89_8c1e4ee5",
+      "range": {
+        "startLine": 20,
+        "startChar": 12,
+        "endLine": 20,
+        "endChar": 19
+      },
+      "revId": "4746548c4db62d3b8ed6e4170473722521ffe80b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
