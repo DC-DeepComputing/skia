@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3b82e547_33c99443",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 23
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2022-04-25T14:27:54Z",
+      "side": 1,
+      "message": "api lgtm.  just add some more comments to the public headers.",
+      "revId": "00e5d5b7becf74e99593530d1b73618915831a59",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0473154f_0100e1f6",
+        "filename": "include/core/SkGraphics.h",
+        "patchSetId": 23
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2022-04-25T14:27:54Z",
+      "side": 1,
+      "message": "Can you add a block comment here describing what this is used for?",
+      "revId": "00e5d5b7becf74e99593530d1b73618915831a59",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
