@@ -5,6 +5,8 @@
 
 """Writes a Perf-formated json file with stats about the given web file."""
 
+# Test with syntax error
+asdfasdf
 
 from __future__ import print_function
 import json
