@@ -16,6 +16,24 @@
       "message": "FWIW, the direct inclusion into GLSL is only for the hardware tessellation backdoor. Graphite won\u0027t use HW tessellation, and it\u0027s a little on life support right now in ganesh, with plans to remove it when it becomes worth more to take the time to clean it up compared to keeping it running.\n\nIf this would let us clean up the sksl side of things as well, it may be time to commit to removing that tessellator.",
       "revId": "fe0976d38b1ad52c1e6703219cdf0f6f1419a857",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "21bb8ba4_2f5864a6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-25T16:53:51Z",
+      "side": 1,
+      "message": "Isn\u0027t HW tessellation critical for the MotionMark benchmarks?\n\nI think it\u0027d be safer to move the SkSL chunks into /ganesh/ and put off dismantling it until we have a compelling replacement story. (Tangentially, Ethan plans to investigate compute shaders this quarter.)",
+      "parentUuid": "8037f7aa_cc7b866d",
+      "revId": "fe0976d38b1ad52c1e6703219cdf0f6f1419a857",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
