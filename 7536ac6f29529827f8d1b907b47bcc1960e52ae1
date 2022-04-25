@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "29cbce23_78415200",
+        "filename": "src/gpu/ganesh/effects/GrTextureEffect.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-04-25T19:33:33Z",
+      "side": 1,
+      "message": "derp, yeah code is right comment is wrong. Arguably we should never do this when not strict filtering but I think doing it is the right compromise. It\u0027s pretty bad if the caller put the boundary at an integer pixel rect and then you get a pixel from outside that rect.",
+      "parentUuid": "fc96c0ce_970fa804",
+      "range": {
+        "startLine": 105,
+        "startChar": 74,
+        "endLine": 105,
+        "endChar": 86
+      },
+      "revId": "7536ac6f29529827f8d1b907b47bcc1960e52ae1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "24891105_cff470b7",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3ce40a80_98026786",
+        "filename": "src/gpu/ganesh/effects/GrTextureEffect.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-04-25T19:33:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "24891105_cff470b7",
+      "range": {
+        "startLine": 109,
+        "startChar": 20,
+        "endLine": 109,
+        "endChar": 74
+      },
+      "revId": "7536ac6f29529827f8d1b907b47bcc1960e52ae1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d8cdd11a_b94e201b",
@@ -60,6 +108,30 @@
       "writtenOn": "2022-04-25T15:24:13Z",
       "side": 1,
       "message": "coordinate",
+      "range": {
+        "startLine": 48,
+        "startChar": 7,
+        "endLine": 48,
+        "endChar": 18
+      },
+      "revId": "7536ac6f29529827f8d1b907b47bcc1960e52ae1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "eaf814eb_95f25dc6",
+        "filename": "src/gpu/ganesh/effects/GrTextureEffect.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-04-25T19:33:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d8cdd11a_b94e201b",
       "range": {
         "startLine": 48,
         "startChar": 7,

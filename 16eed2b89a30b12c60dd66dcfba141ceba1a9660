@@ -22,6 +22,30 @@
       },
       "revId": "16eed2b89a30b12c60dd66dcfba141ceba1a9660",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "84909c3d_ef679f54",
+        "filename": "src/gpu/ganesh/effects/GrTextureEffect.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-04-25T19:33:33Z",
+      "side": 0,
+      "message": "The thought was to preserve sampling in upper levels with non-strict, SkFilterMode::kNearest, SkMipmapMode !\u003d kNone. Now that I think about it a little more, it\u0027s fine to use 0.5. A half pixel inset from a border of a pixel in the base level can\u0027t change which texel gets sampled in an upper level when using SkFilterMode::kNearest. Put it back to 0.5",
+      "parentUuid": "9f8b12da_b5ccddce",
+      "range": {
+        "startLine": 101,
+        "startChar": 29,
+        "endLine": 101,
+        "endChar": 53
+      },
+      "revId": "16eed2b89a30b12c60dd66dcfba141ceba1a9660",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
