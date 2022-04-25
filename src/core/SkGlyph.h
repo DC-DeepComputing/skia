@@ -405,6 +405,8 @@ private:
     // access to all the fields. Scalers are assumed to maintain all the SkGlyph invariants. The
     // consumer side has a tighter interface.
     friend class RandomScalerContext;
+    friend class SkottieTypeface;
+    friend class SkottieScalerContext;
     friend class SkScalerContext;
     friend class SkScalerContextProxy;
     friend class SkScalerContext_Empty;
