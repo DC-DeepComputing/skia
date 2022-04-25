@@ -11,11 +11,10 @@
 #include "src/codec/SkMasks.h"
 #include "src/core/SkAutoMalloc.h"
 #include "src/core/SkDistanceFieldGen.h"
+#include "src/gpu/ganesh/GrGlyph.h"
 #include "src/gpu/ganesh/GrImageInfo.h"
 #include "src/gpu/ganesh/text/GrStrikeCache.h"
-#include "src/text/gpu/Glyph.h"
 
-using Glyph = sktext::gpu::Glyph;
 using MaskFormat = skgpu::MaskFormat;
 
 GrAtlasManager::GrAtlasManager(GrProxyProvider* proxyProvider,
@@ -36,7 +35,7 @@ void GrAtlasManager::freeAll() {
     }
 }
 
-bool GrAtlasManager::hasGlyph(MaskFormat format, Glyph* glyph) {
+bool GrAtlasManager::hasGlyph(MaskFormat format, GrGlyph* glyph) {
     SkASSERT(glyph);
     return this->getAtlas(format)->hasID(glyph->fAtlasLocator.plotLocator());
 }
@@ -70,7 +69,7 @@ static void get_packed_glyph_image(
     const void* src = glyph.image();
     SkASSERT(src != nullptr);
 
-    MaskFormat maskFormat = Glyph::FormatFromSkGlyph(glyph.maskFormat());
+    MaskFormat maskFormat = GrGlyph::FormatFromSkGlyph(glyph.maskFormat());
     if (maskFormat == expectedMaskFormat) {
         int srcRB = glyph.rowBytes();
         // Notice this comparison is with the glyphs raw mask format, and not its MaskFormat.
@@ -147,7 +146,7 @@ static void get_packed_glyph_image(
 // TODO we can handle some of these cases if we really want to, but the long term solution is to
 // get the actual glyph image itself when we get the glyph metrics.
 GrDrawOpAtlas::ErrorCode GrAtlasManager::addGlyphToAtlas(const SkGlyph& skGlyph,
-                                                         Glyph* glyph,
+                                                         GrGlyph* grGlyph,
                                                          int srcPadding,
                                                          GrResourceProvider* resourceProvider,
                                                          GrDeferredUploadTarget* uploadTarget) {
@@ -156,9 +155,9 @@ GrDrawOpAtlas::ErrorCode GrAtlasManager::addGlyphToAtlas(const SkGlyph& skGlyph,
     if (skGlyph.image() == nullptr) {
         return GrDrawOpAtlas::ErrorCode::kError;
     }
-    SkASSERT(glyph != nullptr);
+    SkASSERT(grGlyph != nullptr);
 
-    MaskFormat glyphFormat = Glyph::FormatFromSkGlyph(skGlyph.maskFormat());
+    MaskFormat glyphFormat = GrGlyph::FormatFromSkGlyph(skGlyph.maskFormat());
     MaskFormat expectedMaskFormat = this->resolveMaskFormat(glyphFormat);
     int bytesPerPixel = MaskFormatBytesPerPixel(expectedMaskFormat);
 
@@ -166,16 +165,11 @@ GrDrawOpAtlas::ErrorCode GrAtlasManager::addGlyphToAtlas(const SkGlyph& skGlyph,
     switch (srcPadding) {
         case 0:
             // The direct mask/image case.
-            padding = 0;
-            if (fSupportBilerpAtlas) {
-                // Force direct masks (glyph with no padding) to have padding.
-                padding = 1;
-                srcPadding = 1;
-            }
+            padding = fSupportBilerpAtlas ? 1 : 0;
             break;
         case 1:
             // The transformed mask/image case.
-            padding = 1;
+            padding = fSupportBilerpAtlas ? 1 : 2;
             break;
         case SK_DistanceFieldInset:
             // The SDFT case.
@@ -189,12 +183,12 @@ GrDrawOpAtlas::ErrorCode GrAtlasManager::addGlyphToAtlas(const SkGlyph& skGlyph,
             return GrDrawOpAtlas::ErrorCode::kError;
     }
 
-    const int width = skGlyph.width() + 2*padding;
-    const int height = skGlyph.height() + 2*padding;
+    const int width = skGlyph.width() + padding;
+    const int height = skGlyph.height() + padding;
     int rowBytes = width * bytesPerPixel;
     size_t size = height * rowBytes;
 
-    // Temporary storage for normalizing glyph image.
+    // Temporary storage for normalizing grGlyph image.
     SkAutoSMalloc<1024> storage(size);
     void* dataPtr = storage.get();
     if (padding > 0) {
@@ -204,17 +198,22 @@ GrDrawOpAtlas::ErrorCode GrAtlasManager::addGlyphToAtlas(const SkGlyph& skGlyph,
     }
 
     get_packed_glyph_image(skGlyph, rowBytes, expectedMaskFormat, dataPtr);
-
     auto errorCode = this->addToAtlas(resourceProvider,
                                       uploadTarget,
                                       expectedMaskFormat,
                                       width,
                                       height,
                                       storage.get(),
-                                      &glyph->fAtlasLocator);
+                                      &grGlyph->fAtlasLocator);
 
     if (errorCode == GrDrawOpAtlas::ErrorCode::kSucceeded) {
-        glyph->fAtlasLocator.insetSrc(srcPadding);
+        if (srcPadding != SK_DistanceFieldInset && fSupportBilerpAtlas) {
+            grGlyph->fAtlasLocator.insetTopLeftSrc(1);
+            SkASSERT(skGlyph.width() == grGlyph->fAtlasLocator.width() &&
+                     skGlyph.height() == grGlyph->fAtlasLocator.height());
+        } else {
+            grGlyph->fAtlasLocator.insetSrc(srcPadding);
+        }
     }
 
     return errorCode;
@@ -231,7 +230,7 @@ GrDrawOpAtlas::ErrorCode GrAtlasManager::addToAtlas(GrResourceProvider* resource
 }
 
 void GrAtlasManager::addGlyphToBulkAndSetUseToken(GrDrawOpAtlas::BulkUseTokenUpdater* updater,
-                                                  MaskFormat format, Glyph* glyph,
+                                                  MaskFormat format, GrGlyph* glyph,
                                                   GrDeferredUploadToken token) {
     SkASSERT(glyph);
     if (updater->add(glyph->fAtlasLocator)) {
