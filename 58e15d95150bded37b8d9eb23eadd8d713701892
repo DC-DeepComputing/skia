@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eaf7e9a0_223213ae",
+        "filename": "src/gpu/ganesh/dawn/GrDawnBuffer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-04-25T20:48:27Z",
+      "side": 1,
+      "message": "egdaniel@: I\u0027m not entirely sure what should happen in this case. As we chatted offline, it sounds like this is in fact intentional though I\u0027m pretty sure this would trigger assertions before if `onMap` were to be called on a ReadOnly buffer (it might just be that we were getting lucky and never hitting this code path, which is what my experimentation suggests). We now provide a blocking map fallback for this path if necessary.",
+      "range": {
+        "startLine": 47,
+        "startChar": 8,
+        "endLine": 47,
+        "endChar": 56
+      },
+      "revId": "58e15d95150bded37b8d9eb23eadd8d713701892",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f7824546_555fa333",
+        "filename": "src/gpu/ganesh/dawn/GrDawnBuffer.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-04-25T20:48:27Z",
+      "side": 1,
+      "message": "Please let me know if I got something wrong and/or missed anything.",
+      "revId": "58e15d95150bded37b8d9eb23eadd8d713701892",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
