@@ -329,7 +329,7 @@ void GrAtlasManager::setAtlasDimensionsToMinimum_ForTesting() {
     }
 
     // Set all the atlas sizes to 1x1 plot each.
-    new (&fAtlasConfig) GrDrawOpAtlasConfig{};
+    new (&fAtlasConfig) skgpu::DrawAtlasConfig{};
 }
 
 bool GrAtlasManager::initAtlas(MaskFormat format) {
@@ -348,7 +348,7 @@ bool GrAtlasManager::initAtlas(MaskFormat format) {
                                               GrColorTypeBytesPerPixel(grColorType),
                                               atlasDimensions.width(), atlasDimensions.height(),
                                               plotDimensions.width(), plotDimensions.height(),
-                                              this, fAllowMultitexturing, nullptr);
+                                              this, nullptr, fAllowMultitexturing);
         if (!fAtlases[index]) {
             return false;
         }

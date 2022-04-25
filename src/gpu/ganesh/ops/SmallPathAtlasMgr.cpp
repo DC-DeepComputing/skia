@@ -57,14 +57,14 @@ bool SmallPathAtlasMgr::initAtlas(GrProxyProvider* proxyProvider, const GrCaps* 
     const GrBackendFormat format = caps->getDefaultBackendFormat(atlasColorType,
                                                                  GrRenderable::kNo);
 
-    GrDrawOpAtlasConfig atlasConfig(caps->maxTextureSize(), kMaxAtlasTextureBytes);
+    skgpu::DrawAtlasConfig atlasConfig(caps->maxTextureSize(), kMaxAtlasTextureBytes);
     SkISize size = atlasConfig.atlasDimensions(MaskFormat::kA8);
     fAtlas = GrDrawOpAtlas::Make(proxyProvider, format,
                                  GrColorTypeToSkColorType(atlasColorType),
                                  GrColorTypeBytesPerPixel(atlasColorType),
                                  size.width(), size.height(),
-                                 kPlotWidth, kPlotHeight, this,
-                                 GrDrawOpAtlas::AllowMultitexturing::kYes, this);
+                                 kPlotWidth, kPlotHeight, this, this,
+                                 GrDrawOpAtlas::AllowMultitexturing::kYes);
 
     return SkToBool(fAtlas);
 }
