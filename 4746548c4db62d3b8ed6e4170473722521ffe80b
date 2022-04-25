@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5f26f7c0_761c0190",
+        "filename": "bazel/common_config_settings/BUILD.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-04-25T18:01:06Z",
+      "side": 1,
+      "message": "Do we know if this refers to M1 Macs, intel macs, or both?",
+      "range": {
+        "startLine": 20,
+        "startChar": 12,
+        "endLine": 20,
+        "endChar": 19
+      },
+      "revId": "4746548c4db62d3b8ed6e4170473722521ffe80b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
