@@ -70,6 +70,8 @@ public:
                                                 args.fXferBarrierFlags, args.fColorLoadOp);
     }
 
+    static const char* WangsFormulaSkSL();
+
 private:
     const GrPrimitiveType fPrimitiveType;
     const int fTessellationPatchVertexCount;
