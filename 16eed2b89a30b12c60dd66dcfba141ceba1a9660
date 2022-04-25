@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9f8b12da_b5ccddce",
+        "filename": "src/gpu/ganesh/effects/GrTextureEffect.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-04-25T15:24:13Z",
+      "side": 0,
+      "message": "Was 1/2px valid only for nearest, but too much of an inset in the new case where it\u0027s just not strict filtering (and using some other filter mode)? And in reality, we only needed a slight inset to bump it off the texel boundary to avoid the incorrect sampling?",
+      "range": {
+        "startLine": 101,
+        "startChar": 29,
+        "endLine": 101,
+        "endChar": 53
+      },
+      "revId": "16eed2b89a30b12c60dd66dcfba141ceba1a9660",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
