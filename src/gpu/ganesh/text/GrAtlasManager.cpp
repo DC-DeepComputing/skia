@@ -187,7 +187,7 @@ GrDrawOpAtlas::ErrorCode GrAtlasManager::addGlyphToAtlas(const SkGlyph& skGlyph,
             // The padding is not one of the know forms.
             return GrDrawOpAtlas::ErrorCode::kError;
     }
-
+    //SkDebugf("Glyph: %d x %d + %d: ", skGlyph.width(), skGlyph.height(), 2 * padding);
     const int width = skGlyph.width() + 2*padding;
     const int height = skGlyph.height() + 2*padding;
     int rowBytes = width * bytesPerPixel;
@@ -203,17 +203,33 @@ GrDrawOpAtlas::ErrorCode GrAtlasManager::addGlyphToAtlas(const SkGlyph& skGlyph,
     }
 
     get_packed_glyph_image(skGlyph, rowBytes, expectedMaskFormat, dataPtr);
-
+    /*
+    for (auto i = 0; i < skGlyph.height(); ++i) {
+        memset((char*)dataPtr, 64, skGlyph.width()*bytesPerPixel);
+        dataPtr = (char*)(dataPtr) + rowBytes;
+    }
+    */
     auto errorCode = this->addToAtlas(resourceProvider,
                                       uploadTarget,
                                       expectedMaskFormat,
                                       width,
                                       height,
+                                      srcPadding != 2 && fSupportBilerpAtlas
+                                      ? GrDrawOpAtlas::Positioning::kDropBottomRight
+                                      : GrDrawOpAtlas::Positioning::kNone,
                                       storage.get(),
                                       &grGlyph->fAtlasLocator);
 
     if (errorCode == GrDrawOpAtlas::ErrorCode::kSucceeded) {
-        grGlyph->fAtlasLocator.insetSrc(srcPadding);
+        if (fSupportBilerpAtlas) {
+            grGlyph->fAtlasLocator.inset1(padding);
+        } else {
+            grGlyph->fAtlasLocator.insetSrc(srcPadding);
+        }
+        //auto uvs = grGlyph->fAtlasLocator.getUVs();
+        //SkDebugf("[%d:%d, %d:%d)\n", uvs[0], uvs[2], uvs[1], uvs[3]);
+        SkASSERT(skGlyph.width() == grGlyph->fAtlasLocator.width() &&
+                        skGlyph.height() == grGlyph->fAtlasLocator.height());
     }
 
     return errorCode;
@@ -223,10 +239,12 @@ GrDrawOpAtlas::ErrorCode GrAtlasManager::addGlyphToAtlas(const SkGlyph& skGlyph,
 GrDrawOpAtlas::ErrorCode GrAtlasManager::addToAtlas(GrResourceProvider* resourceProvider,
                                                     GrDeferredUploadTarget* target,
                                                     MaskFormat format,
-                                                    int width, int height, const void* image,
+                                                    int width, int height,
+                                                    GrDrawOpAtlas::Positioning positioning,
+                                                    const void* image,
                                                     GrDrawOpAtlas::AtlasLocator* atlasLocator) {
-    return this->getAtlas(format)->addToAtlas(resourceProvider, target, width, height, image,
-                                              atlasLocator);
+    return this->getAtlas(format)->addToAtlas(
+            resourceProvider, target, width, height, positioning, image, atlasLocator);
 }
 
 void GrAtlasManager::addGlyphToBulkAndSetUseToken(GrDrawOpAtlas::BulkUseTokenUpdater* updater,
