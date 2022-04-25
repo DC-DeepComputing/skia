@@ -67,7 +67,7 @@ void GrAtlasManager::setMaxPages_TestingOnly(uint32_t maxPages) {
     }
 }
 
-void GrDrawOpAtlas::setMaxPages_TestingOnly(uint32_t maxPages) {
+void skgpu::DrawAtlas::setMaxPages_TestingOnly(uint32_t maxPages) {
     SkASSERT(!fNumActivePages);
 
     fMaxPages = maxPages;
@@ -157,8 +157,8 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(BasicDrawOpAtlas, reporter, ctxInfo) {
                                                 kAtlasSize, kAtlasSize,
                                                 kAtlasSize/kNumPlots, kAtlasSize/kNumPlots,
                                                 &counter,
-                                                GrDrawOpAtlas::AllowMultitexturing::kYes,
-                                                &evictor);
+                                                &evictor,
+                                                GrDrawOpAtlas::AllowMultitexturing::kYes);
     check(reporter, atlas.get(), 0, 4, 0);
 
     // Fill up the first level
@@ -254,7 +254,7 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(GrAtlasTextOpPreparation, reporter, ctxInfo) 
 void test_atlas_config(skiatest::Reporter* reporter, int maxTextureSize, size_t maxBytes,
                        MaskFormat maskFormat, SkISize expectedDimensions,
                        SkISize expectedPlotDimensions) {
-    GrDrawOpAtlasConfig config(maxTextureSize, maxBytes);
+    skgpu::DrawAtlasConfig config(maxTextureSize, maxBytes);
     REPORTER_ASSERT(reporter, config.atlasDimensions(maskFormat) == expectedDimensions);
     REPORTER_ASSERT(reporter, config.plotDimensions(maskFormat) == expectedPlotDimensions);
 }

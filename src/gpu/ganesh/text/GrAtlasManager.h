@@ -149,7 +149,7 @@ private:
     bool fSupportBilerpAtlas;
     GrProxyProvider* fProxyProvider;
     sk_sp<const GrCaps> fCaps;
-    GrDrawOpAtlasConfig fAtlasConfig;
+    skgpu::DrawAtlasConfig fAtlasConfig;
 
     using INHERITED = GrOnFlushCallbackObject;
 };
