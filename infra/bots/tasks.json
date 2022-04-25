@@ -89227,6 +89227,7 @@
       "location_regexes": [
         "src/sksl/*",
         "src/svg/*",
+        "src/utils/*",
         "tools/debugger/*"
       ]
     },
