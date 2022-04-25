@@ -26,7 +26,11 @@
 namespace skiagm {
 
 namespace {
-const char kColrCpalTestFontPath[] = "fonts/more_samples-glyf_colr_1.ttf";
+//const char kColrCpalTestFontPath[] = "fonts/more_samples-glyf_colr_1.ttf";
+//constexpr uint16_t kTestGlyphs[] = {56, 57};
+
+const char kColrCpalTestFontPath[] = "fonts/SampleSVG.ttf";
+constexpr uint16_t kTestGlyphs[] = {4, 5, 6, 7, 8, 9};
 
 constexpr SkFontArguments::Palette::Override kColorOverridesAll[] = {
         // A gradient of dark to light purple for the circle palette test glyph.
@@ -61,9 +65,6 @@ constexpr SkFontArguments::Palette kOnePaletteOverride{
         0, kColorOverridesOne, SK_ARRAY_COUNT(kColorOverridesOne)};
 constexpr SkFontArguments::Palette kAllPaletteOverride{
         0, kColorOverridesAll, SK_ARRAY_COUNT(kColorOverridesAll)};
-
-constexpr uint16_t kTestGlyphs[] = {56, 57};
-
 }  // namespace
 
 class FontPaletteGM : public GM {
