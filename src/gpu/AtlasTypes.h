@@ -215,12 +215,24 @@ public:
         return {fUVs[0] & 0x1FFF, fUVs[1]};
     }
 
+    SkIPoint bottomRight() const {
+        return {fUVs[2] & 0x1FFF, fUVs[3]};
+    }
+
     uint16_t width() const {
         return fUVs[2] - fUVs[0];
     }
 
     uint16_t height() const {
         return fUVs[3] - fUVs[1];
+    }
+
+    void insetTopLeftSrc(int padding) {
+        SkASSERT(padding <= this->width());
+        SkASSERT(padding <= this->height());
+
+        fUVs[0] += padding;
+        fUVs[1] += padding;
     }
 
     void insetSrc(int padding) {
