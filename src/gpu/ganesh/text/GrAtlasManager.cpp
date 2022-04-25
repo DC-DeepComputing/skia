@@ -207,13 +207,17 @@ GrDrawOpAtlas::ErrorCode GrAtlasManager::addGlyphToAtlas(const SkGlyph& skGlyph,
     auto errorCode = this->addToAtlas(resourceProvider,
                                       uploadTarget,
                                       expectedMaskFormat,
-                                      width,
-                                      height,
+                                      width - (fSupportBilerpAtlas ? padding : 0),
+                                      height - (fSupportBilerpAtlas ? padding : 0),
                                       storage.get(),
                                       &grGlyph->fAtlasLocator);
 
     if (errorCode == GrDrawOpAtlas::ErrorCode::kSucceeded) {
-        grGlyph->fAtlasLocator.insetSrc(srcPadding);
+        if (fSupportBilerpAtlas) {
+            grGlyph->fAtlasLocator.inset1(srcPadding);
+        } else {
+            grGlyph->fAtlasLocator.insetSrc(srcPadding);
+        }
     }
 
     return errorCode;
@@ -348,6 +352,9 @@ bool GrAtlasManager::initAtlas(MaskFormat format) {
                                               GrColorTypeBytesPerPixel(grColorType),
                                               atlasDimensions.width(), atlasDimensions.height(),
                                               plotDimensions.width(), plotDimensions.height(),
+                                              fSupportBilerpAtlas
+                                                ? GrDrawOpAtlas::Positioning::kDropBottomRight
+                                                : GrDrawOpAtlas::Positioning::kNone,
                                               this, fAllowMultitexturing, nullptr);
         if (!fAtlases[index]) {
             return false;
