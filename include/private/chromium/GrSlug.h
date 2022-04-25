@@ -61,7 +61,7 @@ public:
     void draw(SkCanvas* canvas) const;
 
     virtual SkRect sourceBounds() const = 0;
-    virtual const SkPaint& paint() const = 0;
+    virtual const SkPaint& initialPaint() const = 0;
 
     virtual void doFlatten(SkWriteBuffer&) const = 0;
 

@@ -1101,7 +1101,8 @@ void Device::testingOnly_drawGlyphRunListWithSerializedSlugAndStrike(
 
 void Device::onDrawGlyphRunList(SkCanvas* canvas,
                                 const SkGlyphRunList& glyphRunList,
-                                const SkPaint& paint) {
+                                const SkPaint& initialPaint,
+                                const SkPaint& drawingPaint) {
     ASSERT_SINGLE_OWNER
     GR_CREATE_TRACE_MARKER_CONTEXT("skgpu::v1::Device", "drawGlyphRunList", fContext.get());
     SkASSERT(!glyphRunList.hasRSXForm());
@@ -1116,13 +1117,13 @@ void Device::onDrawGlyphRunList(SkCanvas* canvas,
     if (glyphRunList.blob() == nullptr) {
         // If the glyphRunList does not have an associated text blob, then it was created by one of
         // the direct draw APIs (drawGlyphs, etc.). Use a Slug to draw the glyphs.
-        auto slug = this->convertGlyphRunListToSlug(glyphRunList, paint);
+        auto slug = this->convertGlyphRunListToSlug(glyphRunList, initialPaint, drawingPaint);
         if (slug != nullptr) {
-            this->drawSlug(canvas, slug.get());
+            this->drawSlug(canvas, slug.get(), drawingPaint);
         }
     } else {
         fSurfaceDrawContext->drawGlyphRunList(
-                canvas, this->clip(), this->asMatrixProvider(), glyphRunList, paint);
+                canvas, this->clip(), this->asMatrixProvider(), glyphRunList, drawingPaint);
     }
 #endif
 }
