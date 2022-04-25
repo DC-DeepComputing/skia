@@ -194,8 +194,12 @@ inline bool GrDrawOpAtlas::updatePlot(GrDeferredUploadTarget* target,
     return true;
 }
 
-bool GrDrawOpAtlas::uploadToPage(unsigned int pageIdx, GrDeferredUploadTarget* target, int width,
-                                 int height, const void* image, AtlasLocator* atlasLocator) {
+bool GrDrawOpAtlas::uploadToPage(unsigned int pageIdx,
+                                 GrDeferredUploadTarget* target,
+                                 int width,
+                                 int height,
+                                 const void* image,
+                                 AtlasLocator* atlasLocator) {
     SkASSERT(fViews[pageIdx].proxy() && fViews[pageIdx].proxy()->isInstantiated());
 
     // look through all allocated plots for one we can share, in Most Recently Refed order
@@ -225,7 +229,8 @@ static constexpr auto kAtlasRecentlyUsedCount = 128;
 
 GrDrawOpAtlas::ErrorCode GrDrawOpAtlas::addToAtlas(GrResourceProvider* resourceProvider,
                                                    GrDeferredUploadTarget* target,
-                                                   int width, int height, const void* image,
+                                                   int width, int height,
+                                                   const void* image,
                                                    AtlasLocator* atlasLocator) {
     if (width > fPlotWidth || height > fPlotHeight) {
         return ErrorCode::kError;
@@ -253,7 +258,8 @@ GrDrawOpAtlas::ErrorCode GrDrawOpAtlas::addToAtlas(GrResourceProvider* resourceP
                 this->processEvictionAndResetRects(plot);
                 SkASSERT(GrBackendFormatBytesPerPixel(fViews[pageIdx].proxy()->backendFormat()) ==
                          plot->bpp());
-                SkDEBUGCODE(bool verify = )plot->addSubImage(width, height, image, atlasLocator);
+                SkDEBUGCODE(bool verify =)
+                        plot->addSubImage(width, height, image, atlasLocator);
                 SkASSERT(verify);
                 if (!this->updatePlot(target, atlasLocator, plot)) {
                     return ErrorCode::kError;
@@ -267,7 +273,8 @@ GrDrawOpAtlas::ErrorCode GrDrawOpAtlas::addToAtlas(GrResourceProvider* resourceP
             return ErrorCode::kError;
         }
 
-        if (this->uploadToPage(fNumActivePages-1, target, width, height, image, atlasLocator)) {
+        if (this->uploadToPage(
+                    fNumActivePages - 1, target, width, height, image, atlasLocator)) {
             return ErrorCode::kSucceeded;
         } else {
             // If we fail to upload to a newly activated page then something has gone terribly
@@ -309,7 +316,8 @@ GrDrawOpAtlas::ErrorCode GrDrawOpAtlas::addToAtlas(GrResourceProvider* resourceP
     fPages[pageIdx].fPlotList.addToHead(newPlot.get());
     SkASSERT(GrBackendFormatBytesPerPixel(fViews[pageIdx].proxy()->backendFormat()) ==
              newPlot->bpp());
-    SkDEBUGCODE(bool verify = )newPlot->addSubImage(width, height, image, atlasLocator);
+    SkDEBUGCODE(bool verify =)
+            newPlot->addSubImage(width, height, image, atlasLocator);
     SkASSERT(verify);
 
     // Note that this plot will be uploaded inline with the draws whereas the
