@@ -668,6 +668,8 @@ void SkBaseDevice::drawShadow(const SkPath& path, const SkDrawShadowRec& rec) {
     bool tiltZPlane = tilted(rec.fZPlaneParams);
     bool transparent = SkToBool(rec.fFlags & SkShadowFlags::kTransparentOccluder_ShadowFlag);
     bool directional = SkToBool(rec.fFlags & SkShadowFlags::kDirectionalLight_ShadowFlag);
+    bool useBlur = SkToBool(rec.fFlags & SkShadowFlags::kConcaveBlurOnly_ShadowFlag) &&
+                   !path.isConvex();
     bool uncached = tiltZPlane || path.isVolatile();
 
     SkPoint3 zPlaneParams = rec.fZPlaneParams;
@@ -679,7 +681,7 @@ void SkBaseDevice::drawShadow(const SkPath& path, const SkDrawShadowRec& rec) {
 
     if (SkColorGetA(rec.fAmbientColor) > 0) {
         bool success = false;
-        if (uncached) {
+        if (uncached && !useBlur) {
             sk_sp<SkVertices> vertices = SkShadowTessellator::MakeAmbient(path, viewMatrix,
                                                                           zPlaneParams,
                                                                           transparent);
@@ -702,7 +704,7 @@ void SkBaseDevice::drawShadow(const SkPath& path, const SkDrawShadowRec& rec) {
             }
         }
 
-        if (!success) {
+        if (!success && !useBlur) {
             AmbientVerticesFactory factory;
             factory.fOccluderHeight = zPlaneParams.fZ;
             factory.fTransparent = transparent;
@@ -713,59 +715,62 @@ void SkBaseDevice::drawShadow(const SkPath& path, const SkDrawShadowRec& rec) {
                 factory.fOffset.fY = viewMatrix.getTranslateY();
             }
 
-            if (!draw_shadow(factory, drawVertsProc, shadowedPath, rec.fAmbientColor)) {
-                // Pretransform the path to avoid transforming the stroke, below.
-                SkPath devSpacePath;
-                path.transform(viewMatrix, &devSpacePath);
-                devSpacePath.setIsVolatile(true);
+            success = draw_shadow(factory, drawVertsProc, shadowedPath, rec.fAmbientColor);
+        }
 
-                // The tesselator outsets by AmbientBlurRadius (or 'r') to get the outer ring of
-                // the tesselation, and sets the alpha on the path to 1/AmbientRecipAlpha (or 'a').
-                //
-                // We want to emulate this with a blur. The full blur width (2*blurRadius or 'f')
-                // can be calculated by interpolating:
-                //
-                //            original edge        outer edge
-                //         |       |<---------- r ------>|
-                //         |<------|--- f -------------->|
-                //         |       |                     |
-                //    alpha = 1  alpha = a          alpha = 0
-                //
-                // Taking ratios, f/1 = r/a, so f = r/a and blurRadius = f/2.
-                //
-                // We now need to outset the path to place the new edge in the center of the
-                // blur region:
-                //
-                //             original   new
-                //         |       |<------|--- r ------>|
-                //         |<------|--- f -|------------>|
-                //         |       |<- o ->|<--- f/2 --->|
-                //
-                //     r = o + f/2, so o = r - f/2
-                //
-                // We outset by using the stroker, so the strokeWidth is o/2.
-                //
-                SkScalar devSpaceOutset = SkDrawShadowMetrics::AmbientBlurRadius(zPlaneParams.fZ);
-                SkScalar oneOverA = SkDrawShadowMetrics::AmbientRecipAlpha(zPlaneParams.fZ);
-                SkScalar blurRadius = 0.5f*devSpaceOutset*oneOverA;
-                SkScalar strokeWidth = 0.5f*(devSpaceOutset - blurRadius);
+        // All else has failed, draw with blur
+        if (!success) {
+            // Pretransform the path to avoid transforming the stroke, below.
+            SkPath devSpacePath;
+            path.transform(viewMatrix, &devSpacePath);
+            devSpacePath.setIsVolatile(true);
 
-                // Now draw with blur
-                SkPaint paint;
-                paint.setColor(rec.fAmbientColor);
-                paint.setStrokeWidth(strokeWidth);
-                paint.setStyle(SkPaint::kStrokeAndFill_Style);
-                SkScalar sigma = SkBlurMask::ConvertRadiusToSigma(blurRadius);
-                bool respectCTM = false;
-                paint.setMaskFilter(SkMaskFilter::MakeBlur(kNormal_SkBlurStyle, sigma, respectCTM));
-                this->drawPath(devSpacePath, paint);
-            }
+            // The tesselator outsets by AmbientBlurRadius (or 'r') to get the outer ring of
+            // the tesselation, and sets the alpha on the path to 1/AmbientRecipAlpha (or 'a').
+            //
+            // We want to emulate this with a blur. The full blur width (2*blurRadius or 'f')
+            // can be calculated by interpolating:
+            //
+            //            original edge        outer edge
+            //         |       |<---------- r ------>|
+            //         |<------|--- f -------------->|
+            //         |       |                     |
+            //    alpha = 1  alpha = a          alpha = 0
+            //
+            // Taking ratios, f/1 = r/a, so f = r/a and blurRadius = f/2.
+            //
+            // We now need to outset the path to place the new edge in the center of the
+            // blur region:
+            //
+            //             original   new
+            //         |       |<------|--- r ------>|
+            //         |<------|--- f -|------------>|
+            //         |       |<- o ->|<--- f/2 --->|
+            //
+            //     r = o + f/2, so o = r - f/2
+            //
+            // We outset by using the stroker, so the strokeWidth is o/2.
+            //
+            SkScalar devSpaceOutset = SkDrawShadowMetrics::AmbientBlurRadius(zPlaneParams.fZ);
+            SkScalar oneOverA = SkDrawShadowMetrics::AmbientRecipAlpha(zPlaneParams.fZ);
+            SkScalar blurRadius = 0.5f*devSpaceOutset*oneOverA;
+            SkScalar strokeWidth = 0.5f*(devSpaceOutset - blurRadius);
+
+            // Now draw with blur
+            SkPaint paint;
+            paint.setColor(rec.fAmbientColor);
+            paint.setStrokeWidth(strokeWidth);
+            paint.setStyle(SkPaint::kStrokeAndFill_Style);
+            SkScalar sigma = SkBlurMask::ConvertRadiusToSigma(blurRadius);
+            bool respectCTM = false;
+            paint.setMaskFilter(SkMaskFilter::MakeBlur(kNormal_SkBlurStyle, sigma, respectCTM));
+            this->drawPath(devSpacePath, paint);
         }
     }
 
     if (SkColorGetA(rec.fSpotColor) > 0) {
         bool success = false;
-        if (uncached) {
+        if (uncached && !useBlur) {
             sk_sp<SkVertices> vertices = SkShadowTessellator::MakeSpot(path, viewMatrix,
                                                                        zPlaneParams,
                                                                        devLightPos, lightRadius,
@@ -791,73 +796,84 @@ void SkBaseDevice::drawShadow(const SkPath& path, const SkDrawShadowRec& rec) {
         }
 
         if (!success) {
-            SpotVerticesFactory factory;
-            factory.fOccluderHeight = zPlaneParams.fZ;
-            factory.fDevLightPos = devLightPos;
-            factory.fLightRadius = lightRadius;
-
-            SkPoint center = SkPoint::Make(path.getBounds().centerX(), path.getBounds().centerY());
-            factory.fLocalCenter = center;
-            viewMatrix.mapPoints(&center, 1);
             SkScalar radius, scale;
+            SkPoint offset;
+            SkPoint center = SkPoint::Make(path.getBounds().centerX(),
+                                           path.getBounds().centerY());
             if (SkToBool(rec.fFlags & kDirectionalLight_ShadowFlag)) {
                 SkDrawShadowMetrics::GetDirectionalParams(zPlaneParams.fZ, devLightPos.fX,
                                                           devLightPos.fY, devLightPos.fZ,
                                                           lightRadius, &radius, &scale,
-                                                          &factory.fOffset);
+                                                          &offset);
             } else {
                 SkDrawShadowMetrics::GetSpotParams(zPlaneParams.fZ, devLightPos.fX - center.fX,
                                                    devLightPos.fY - center.fY, devLightPos.fZ,
-                                                   lightRadius, &radius, &scale, &factory.fOffset);
+                                                   lightRadius, &radius, &scale, &offset);
             }
 
-            SkRect devBounds;
-            viewMatrix.mapRect(&devBounds, path.getBounds());
-            if (transparent ||
-                SkTAbs(factory.fOffset.fX) > 0.5f*devBounds.width() ||
-                SkTAbs(factory.fOffset.fY) > 0.5f*devBounds.height()) {
-                // if the translation of the shadow is big enough we're going to end up
-                // filling the entire umbra, we can treat these as all the same
-                if (directional) {
+            if (!useBlur) {
+                SpotVerticesFactory factory;
+                factory.fOccluderHeight = zPlaneParams.fZ;
+                factory.fDevLightPos = devLightPos;
+                factory.fLightRadius = lightRadius;
+
+                factory.fLocalCenter = center;
+                factory.fOffset = offset;
+                viewMatrix.mapPoints(&center, 1);
+
+                SkRect devBounds;
+                viewMatrix.mapRect(&devBounds, path.getBounds());
+                if (transparent ||
+                    SkTAbs(factory.fOffset.fX) > 0.5f*devBounds.width() ||
+                    SkTAbs(factory.fOffset.fY) > 0.5f*devBounds.height()) {
+                    // if the translation of the shadow is big enough we're going to end up
+                    // filling the entire umbra, we can treat these as all the same
+                    if (directional) {
+                        factory.fOccluderType =
+                                SpotVerticesFactory::OccluderType::kDirectionalTransparent;
+                    } else {
+                        factory.fOccluderType =
+                                SpotVerticesFactory::OccluderType::kPointTransparent;
+                    }
+                } else if (directional) {
+                    factory.fOccluderType = SpotVerticesFactory::OccluderType::kDirectional;
+                } else if (factory.fOffset.length()*scale + scale < radius) {
+                    // if we don't translate more than the blur distance, can assume umbra is covered
+                    factory.fOccluderType = SpotVerticesFactory::OccluderType::kPointOpaqueNoUmbra;
+                } else if (path.isConvex()) {
                     factory.fOccluderType =
-                            SpotVerticesFactory::OccluderType::kDirectionalTransparent;
+                            SpotVerticesFactory::OccluderType::kPointOpaquePartialUmbra;
                 } else {
-                    factory.fOccluderType = SpotVerticesFactory::OccluderType::kPointTransparent;
+                    factory.fOccluderType =
+                            SpotVerticesFactory::OccluderType::kPointTransparent;
                 }
-            } else if (directional) {
-                factory.fOccluderType = SpotVerticesFactory::OccluderType::kDirectional;
-            } else if (factory.fOffset.length()*scale + scale < radius) {
-                // if we don't translate more than the blur distance, can assume umbra is covered
-                factory.fOccluderType = SpotVerticesFactory::OccluderType::kPointOpaqueNoUmbra;
-            } else if (path.isConvex()) {
-                factory.fOccluderType = SpotVerticesFactory::OccluderType::kPointOpaquePartialUmbra;
-            } else {
-                factory.fOccluderType = SpotVerticesFactory::OccluderType::kPointTransparent;
-            }
-            // need to add this after we classify the shadow
-            factory.fOffset.fX += viewMatrix.getTranslateX();
-            factory.fOffset.fY += viewMatrix.getTranslateY();
+                // need to add this after we classify the shadow
+                factory.fOffset.fX += viewMatrix.getTranslateX();
+                factory.fOffset.fY += viewMatrix.getTranslateY();
 
-            SkColor color = rec.fSpotColor;
-#ifdef DEBUG_SHADOW_CHECKS
-            switch (factory.fOccluderType) {
-                case SpotVerticesFactory::OccluderType::kPointTransparent:
-                    color = 0xFFD2B48C;  // tan for transparent
-                    break;
-                case SpotVerticesFactory::OccluderType::kPointOpaquePartialUmbra:
-                    color = 0xFFFFA500;   // orange for opaque
-                    break;
-                case SpotVerticesFactory::OccluderType::kPointOpaqueNoUmbra:
-                    color = 0xFFE5E500;  // corn yellow for covered
-                    break;
-                case SpotVerticesFactory::OccluderType::kDirectional:
-                case SpotVerticesFactory::OccluderType::kDirectionalTransparent:
-                    color = 0xFF550000;  // dark red for directional
-                    break;
+                SkColor color = rec.fSpotColor;
+    #ifdef DEBUG_SHADOW_CHECKS
+                switch (factory.fOccluderType) {
+                    case SpotVerticesFactory::OccluderType::kPointTransparent:
+                        color = 0xFFD2B48C;  // tan for transparent
+                        break;
+                    case SpotVerticesFactory::OccluderType::kPointOpaquePartialUmbra:
+                        color = 0xFFFFA500;   // orange for opaque
+                        break;
+                    case SpotVerticesFactory::OccluderType::kPointOpaqueNoUmbra:
+                        color = 0xFFE5E500;  // corn yellow for covered
+                        break;
+                    case SpotVerticesFactory::OccluderType::kDirectional:
+                    case SpotVerticesFactory::OccluderType::kDirectionalTransparent:
+                        color = 0xFF550000;  // dark red for directional
+                        break;
+                }
+    #endif
+                success = draw_shadow(factory, drawVertsProc, shadowedPath, color);
             }
-#endif
-            if (!draw_shadow(factory, drawVertsProc, shadowedPath, color)) {
-                // draw with blur
+
+            // All else has failed, draw with blur
+            if (!success) {
                 SkMatrix shadowMatrix;
                 if (!SkDrawShadowMetrics::GetSpotShadowTransform(devLightPos, lightRadius,
                                                                  viewMatrix, zPlaneParams,
