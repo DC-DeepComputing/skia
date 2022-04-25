@@ -187,7 +187,7 @@ GrDrawOpAtlas::ErrorCode GrAtlasManager::addGlyphToAtlas(const SkGlyph& skGlyph,
             // The padding is not one of the know forms.
             return GrDrawOpAtlas::ErrorCode::kError;
     }
-
+    //SkDebugf("Glyph: %d x %d + %d: ", skGlyph.width(), skGlyph.height(), 2 * padding);
     const int width = skGlyph.width() + 2*padding;
     const int height = skGlyph.height() + 2*padding;
     int rowBytes = width * bytesPerPixel;
@@ -209,12 +209,21 @@ GrDrawOpAtlas::ErrorCode GrAtlasManager::addGlyphToAtlas(const SkGlyph& skGlyph,
                                       expectedMaskFormat,
                                       width,
                                       height,
+                                      srcPadding != 2 && fSupportBilerpAtlas
+                                      ? GrDrawOpAtlas::Positioning::kDropBottomRight
+                                      : GrDrawOpAtlas::Positioning::kNone,
                                       storage.get(),
                                       &grGlyph->fAtlasLocator);
 
     if (errorCode == GrDrawOpAtlas::ErrorCode::kSucceeded) {
-        grGlyph->fAtlasLocator.insetSrc(srcPadding);
+        if (fSupportBilerpAtlas && srcPadding == 1) {
+            grGlyph->fAtlasLocator.inset1(srcPadding);
+        } else {
+            grGlyph->fAtlasLocator.insetSrc(srcPadding);
+        }
     }
+    //auto uvs = grGlyph->fAtlasLocator.getUVs();
+    //SkDebugf("[%d:%d, %d:%d)\n", uvs[0], uvs[2], uvs[1], uvs[3]);
 
     return errorCode;
 }
@@ -223,10 +232,12 @@ GrDrawOpAtlas::ErrorCode GrAtlasManager::addGlyphToAtlas(const SkGlyph& skGlyph,
 GrDrawOpAtlas::ErrorCode GrAtlasManager::addToAtlas(GrResourceProvider* resourceProvider,
                                                     GrDeferredUploadTarget* target,
                                                     MaskFormat format,
-                                                    int width, int height, const void* image,
+                                                    int width, int height,
+                                                    GrDrawOpAtlas::Positioning positioning,
+                                                    const void* image,
                                                     GrDrawOpAtlas::AtlasLocator* atlasLocator) {
-    return this->getAtlas(format)->addToAtlas(resourceProvider, target, width, height, image,
-                                              atlasLocator);
+    return this->getAtlas(format)->addToAtlas(
+            resourceProvider, target, width, height, positioning, image, atlasLocator);
 }
 
 void GrAtlasManager::addGlyphToBulkAndSetUseToken(GrDrawOpAtlas::BulkUseTokenUpdater* updater,

@@ -63,8 +63,8 @@ bool SmallPathAtlasMgr::initAtlas(GrProxyProvider* proxyProvider, const GrCaps* 
                                  GrColorTypeToSkColorType(atlasColorType),
                                  GrColorTypeBytesPerPixel(atlasColorType),
                                  size.width(), size.height(),
-                                 kPlotWidth, kPlotHeight, this,
-                                 GrDrawOpAtlas::AllowMultitexturing::kYes, this);
+                                 kPlotWidth, kPlotHeight,
+                                 this, GrDrawOpAtlas::AllowMultitexturing::kYes, this);
 
     return SkToBool(fAtlas);
 }
@@ -112,7 +112,13 @@ GrDrawOpAtlas::ErrorCode SmallPathAtlasMgr::addToAtlas(GrResourceProvider* resou
                                                        GrDeferredUploadTarget* target,
                                                        int width, int height, const void* image,
                                                        GrDrawOpAtlas::AtlasLocator* locator) {
-    return fAtlas->addToAtlas(resourceProvider, target, width, height, image, locator);
+    return fAtlas->addToAtlas(resourceProvider,
+                              target,
+                              width,
+                              height,
+                              GrDrawOpAtlas::Positioning::kNone,
+                              image,
+                              locator);
 }
 
 void SmallPathAtlasMgr::setUseToken(SmallPathShapeData* shapeData,
