@@ -1744,6 +1744,7 @@ generated_cc_atom(
         "//include/gpu:GrDirectContext_hdr",
         "//include/private/gpu/ganesh:GrTypesPriv_hdr",
         "//src/core:SkIPoint16_hdr",
+        "//src/core:SkStrikeCache_hdr",
         "//src/gpu/ganesh:GrCaps_hdr",
         "//src/gpu/ganesh:GrDeferredUpload_hdr",
         "//src/gpu/ganesh:GrDirectContextPriv_hdr",
@@ -1759,6 +1760,7 @@ generated_cc_atom(
         "//src/gpu/ganesh/ops:GrOp_hdr",
         "//src/gpu/ganesh/text:GrAtlasManager_hdr",
         "//src/gpu/ganesh/v1:SurfaceDrawContext_v1_hdr",
+        "//src/text/gpu:Glyph_hdr",
         "//tools/gpu:GrContextFactory_hdr",
     ],
 )

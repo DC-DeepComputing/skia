@@ -39,7 +39,10 @@
 
 #include <memory>
 #include <utility>
+#include "src/core/SkStrikeCache.h"
+#include "src/text/gpu/Glyph.h"
 
+using Glyph = sktext::gpu::Glyph;
 using MaskFormat = skgpu::MaskFormat;
 
 class GrResourceProvider;
@@ -116,15 +119,20 @@ static bool fill_plot(GrDrawOpAtlas* atlas,
                       GrResourceProvider* resourceProvider,
                       GrDeferredUploadTarget* target,
                       skgpu::AtlasLocator* atlasLocator,
-                      int alpha) {
-    SkImageInfo ii = SkImageInfo::MakeA8(kPlotSize, kPlotSize);
+                      int alpha,
+                      int plotSize = kPlotSize,
+                      void** plot = nullptr) {
+    SkImageInfo ii = SkImageInfo::MakeA8(plotSize, plotSize);
 
     SkBitmap data;
     data.allocPixels(ii);
     data.eraseARGB(alpha, 0, 0, 0);
+    if (plot != nullptr) {
+        *plot = data.getAddr(0, 0);
+    }
 
     GrDrawOpAtlas::ErrorCode code;
-    code = atlas->addToAtlas(resourceProvider, target, kPlotSize, kPlotSize,
+    code = atlas->addToAtlas(resourceProvider, target, plotSize, plotSize,
                              data.getAddr(0, 0), atlasLocator);
     return GrDrawOpAtlas::ErrorCode::kSucceeded == code;
 }
@@ -314,3 +322,280 @@ DEF_GPUTEST(GrDrawOpAtlasConfig_Basic, reporter, options) {
     test_atlas_config(reporter, 65536, 0, MaskFormat::kA8,
                       { 512, 512 }, { 256, 256 });
 }
+
+static void use_padding_options(GrContextOptions* options) {
+    options->fSupportBilerpFromGlyphAtlas = true;
+}
+
+static void do_not_use_padding_options(GrContextOptions* options) {
+    options->fSupportBilerpFromGlyphAtlas = false;
+}
+
+// _ A B _
+bool checkHorizontalPlacement(SkGlyph& skGlyph1, Glyph& grGlyph1, SkIRect padding1, int inset1,
+                              SkGlyph& skGlyph2, Glyph& grGlyph2, SkIRect padding2, int inset2) {
+
+    auto loc1 = grGlyph1.fAtlasLocator;
+    auto loc2 = grGlyph2.fAtlasLocator;
+
+    // Check that the glyph size remains the same (or -2 for SDFT)
+    if (skGlyph1.width() != loc1.width() + inset1*2 ||
+        skGlyph2.width() != loc2.width() + inset2*2) {
+        return false;
+    }
+
+
+    // Make sure these two glyphs are placed one on the right from another
+    if (std::max(loc1.topLeft().fY, loc2.topLeft().fY) >=
+        std::min(loc1.bottomRight().fY, loc2.bottomRight().fY)) {
+        return false;
+    }
+
+    // _ A
+    if (loc1.topLeft().fX != padding1.left()) {
+        return false;
+    }
+    // A B
+    if (loc1.bottomRight().fX + padding1.right() != loc2.topLeft().fX - padding2.left()) {
+        return false;
+    }
+    // There are asserts in the glyph placements checking that the glyph with inset fits the plot
+    // There is nothing else we can check here for the B _ case
+
+    return true;
+}
+
+// _
+// A
+// B
+// _
+bool checkVerticalPlacement(SkGlyph& skGlyph1, Glyph& grGlyph1, SkIRect padding1, int inset1,
+                            SkGlyph& skGlyph2, Glyph& grGlyph2, SkIRect padding2, int inset2) {
+
+    auto loc1 = grGlyph1.fAtlasLocator;
+    auto loc2 = grGlyph2.fAtlasLocator;
+
+    // Check that the glyph size remains the same (or -2 for SDFT)
+    if (skGlyph1.height() != loc1.height() + inset1*2 ||
+        skGlyph2.height() != loc2.height() + inset2*2) {
+        return false;
+    }
+
+    // Make sure these two glyphs are placed one right under another
+    if (std::max(loc1.topLeft().fX, loc2.topLeft().fX) >=
+        std::min(loc1.bottomRight().fX, loc2.bottomRight().fX)) {
+        return false;
+    }
+
+    // _
+    // A
+    if (loc1.topLeft().fY != padding1.top()) {
+        return false;
+    }
+    // A
+    // B
+    if (loc1.bottomRight().fY + padding1.bottom() != loc2.topLeft().fY - padding2.top()) {
+        return false;
+    }
+    // There are asserts in the glyph placements checking that the glyph with inset fits the plot
+    // There is nothing else we can check here for the B _ case
+
+    return true;
+}
+
+bool intersected(int x1, int x2, int y1, int y2) {
+    return std::max(x1, x2) <  std::min(y1, y2);
+}
+
+struct GlyphPlacement {
+    uint64_t plotID;
+    SkIRect glyph;
+    SkIRect padding;
+};
+
+void check(skiatest::Reporter* reporter, std::vector<GlyphPlacement> glyphs) {
+    for (size_t i = 0; i < glyphs.size(); ++i) {
+        auto& a = glyphs[i];
+        for (size_t j = i + 1; j < glyphs.size(); ++j) {
+            auto& b = glyphs[j];
+            if (a.plotID != b.plotID) {
+                continue;
+            }
+            // Check if horizontal projections overlap (including paddings!)
+            if (intersected(a.glyph.fLeft + a.padding.fLeft,
+                            b.glyph.fLeft + b.padding.fLeft,
+                            a.glyph.fRight + a.padding.fRight,
+                            b.glyph.fRight + b.padding.fRight)) {
+                if (a.glyph.fBottom <= b.glyph.fTop) {
+                    // a above b, the distance between them is a sum of corresponding paddings
+                    REPORTER_ASSERT(reporter,
+                    std::abs(b.glyph.fTop - a.glyph.fBottom) >= b.padding.fTop + a.padding.fBottom);
+                } else {
+                    // a below b, the distance between them is a sum of corresponding paddings
+                    REPORTER_ASSERT(reporter,
+                    std::abs(a.glyph.fBottom - b.glyph.fTop) >= b.padding.fTop + a.padding.fBottom);
+                }
+                /*
+                SkDebugf("horizontal overlap: [%d:%d,%d:%d) vs [%d:%d,%d:%d)\n",
+                         a.glyph.fLeft + a.padding.fLeft, 
+                         a.glyph.fRight + a.padding.fRight,
+                         a.glyph.fTop + a.padding.fTop,
+                         a.glyph.fBottom + a.padding.fBottom,
+                         b.glyph.fLeft + b.padding.fLeft, 
+                         b.glyph.fRight + b.padding.fRight,
+                         b.glyph.fTop + b.padding.fTop,
+                         b.glyph.fBottom + b.padding.fBottom
+                         );
+                 */
+            }
+            // Check if vertical projections overlap (including paddings!)
+            if (intersected(a.glyph.fTop + a.padding.fTop,
+                            b.glyph.fTop + b.padding.fTop,
+                            a.glyph.fBottom + a.padding.fBottom,
+                            b.glyph.fBottom + b.padding.fBottom)) {
+                if (a.glyph.fRight <= b.glyph.fLeft) {
+                    // a left from b, the distance between them is a sum of corresponding paddings
+                    REPORTER_ASSERT(reporter,
+                                    std::abs(b.glyph.fLeft - a.glyph.fRight) >=
+                                        b.padding.fLeft + a.padding.fRight);
+                } else {
+                    // a right from b, the distance between them is a sum of corresponding paddings
+                    REPORTER_ASSERT(reporter,
+                                    std::abs(a.glyph.fRight - b.glyph.fLeft) >=
+                                    b.padding.fLeft + a.padding.fRight);
+                }
+                /*
+                SkDebugf("vertical overlap: [%d:%d,%d:%d) vs [%d:%d,%d:%d)\n",
+                         a.glyph.fLeft + a.padding.fLeft,
+                         a.glyph.fRight + a.padding.fRight,
+                         a.glyph.fTop + a.padding.fTop,
+                         a.glyph.fBottom + a.padding.fBottom,
+                         b.glyph.fLeft + b.padding.fLeft,
+                         b.glyph.fRight + b.padding.fRight,
+                         b.glyph.fTop + b.padding.fTop,
+                         b.glyph.fBottom + b.padding.fBottom
+                         );
+                 */
+            }
+        }
+    }
+
+}
+
+DEF_GPUTEST_FOR_CONTEXTS(GrAtlasManager_withSlug,
+                         sk_gpu_test::GrContextFactory::IsRenderingContext,
+                         reporter,
+                         ctxInfo,
+                         use_padding_options) {
+    TestingUploadTarget uploadTarget;
+    auto dContext = ctxInfo.directContext();
+    auto atlasManager = dContext->priv().getAtlasManager();
+    auto resourceProvider = dContext->priv().resourceProvider();
+
+    atlasManager->setAtlasDimensionsToMinimum_ForTesting();
+
+    SkFont defaultFont(SkTypeface::MakeFromName("Roboto-Regular", SkFontStyle()), 20);
+    SkStrikeSpec strikeSpec = SkStrikeSpec::MakeWithNoDevice(defaultFont);
+    sk_sp<SkStrike> strike = strikeSpec.findOrCreateStrike();
+    SkArenaAlloc alloc(1 << 12);
+
+    std::vector<GlyphPlacement> glyphs;
+    auto draw = [&](const char* text, int len) {
+        atlasManager->freeAll();
+        glyphs.clear();
+        unsigned int numProxies;
+        atlasManager->getViews(MaskFormat::kA8, &numProxies);
+        //atlasManager->setMaxPages_TestingOnly(1);
+
+        for (int i = 0; i < len; ++i) {
+            char c = text[i];
+            auto srcPadding = i%3;
+            SkPackedGlyphID id(defaultFont.unicharToGlyph(c));
+            SkGlyph skGlyph = strike->getScalerContext()->makeGlyph(id, &alloc);
+            skGlyph.setImage(&alloc, strike->getScalerContext());
+            SkPackedGlyphID glyphID;
+            Glyph grGlyph(glyphID);
+            auto errorCode = atlasManager->addGlyphToAtlas(
+                    skGlyph, &grGlyph, srcPadding, resourceProvider, &uploadTarget);
+            REPORTER_ASSERT(reporter, errorCode == GrDrawOpAtlas::ErrorCode::kSucceeded);
+            REPORTER_ASSERT(reporter,
+                skGlyph.width() == grGlyph.fAtlasLocator.width() + (srcPadding == 2 ? 4 : 0) &&
+                skGlyph.height() == grGlyph.fAtlasLocator.height() + (srcPadding == 2 ? 4 : 0));
+            auto loc = grGlyph.fAtlasLocator;
+            auto rect = SkIRect::MakeXYWH(
+                    loc.topLeft().fX, loc.topLeft().fY, loc.width(), loc.height());
+            auto padding = srcPadding == 2
+                                    ? SkIRect::MakeLTRB(2, 2, 2, 2)
+                                    : SkIRect::MakeLTRB(1, 1, 0, 0);
+            glyphs.push_back({loc.genID(), rect, padding});
+        }
+    };
+
+    SkRandom rand;
+    char text[10000];
+    for (int i = 0; i < 10000; ++i) {
+        auto index = rand.nextULessThan(25);
+        text[i] = "ABCDEFGHJKLMNOPQRSTUVWXYZ"[index];
+    }
+    draw(text, 10000);
+    check(reporter, glyphs);
+}
+
+DEF_GPUTEST_FOR_CONTEXTS(GrAtlasManager_withoutSlug,
+                         sk_gpu_test::GrContextFactory::IsRenderingContext,
+                         reporter,
+                         ctxInfo,
+                         do_not_use_padding_options) {
+    TestingUploadTarget uploadTarget;
+    auto dContext = ctxInfo.directContext();
+    auto atlasManager = dContext->priv().getAtlasManager();
+    auto resourceProvider = dContext->priv().resourceProvider();
+
+    atlasManager->setAtlasDimensionsToMinimum_ForTesting();
+
+    SkFont defaultFont(SkTypeface::MakeFromName("Roboto-Regular", SkFontStyle()), 20);
+    SkStrikeSpec strikeSpec = SkStrikeSpec::MakeWithNoDevice(defaultFont);
+    sk_sp<SkStrike> strike = strikeSpec.findOrCreateStrike();
+    SkArenaAlloc alloc(1 << 12);
+
+    std::vector<GlyphPlacement> glyphs;
+    auto draw = [&](const char* text, int len) {
+        atlasManager->freeAll();
+        glyphs.clear();
+        unsigned int numProxies;
+        atlasManager->getViews(MaskFormat::kA8, &numProxies);
+        //atlasManager->setMaxPages_TestingOnly(1);
+
+        for (int i = 0; i < len; ++i) {
+            char c = text[i];
+            auto srcPadding = i%3;
+            SkPackedGlyphID id(defaultFont.unicharToGlyph(c));
+            SkGlyph skGlyph = strike->getScalerContext()->makeGlyph(id, &alloc);
+            skGlyph.setImage(&alloc, strike->getScalerContext());
+            SkPackedGlyphID glyphID;
+            Glyph grGlyph(glyphID);
+            auto errorCode = atlasManager->addGlyphToAtlas(
+                    skGlyph, &grGlyph, srcPadding, resourceProvider, &uploadTarget);
+            REPORTER_ASSERT(reporter, errorCode == GrDrawOpAtlas::ErrorCode::kSucceeded);
+            REPORTER_ASSERT(reporter,
+                skGlyph.width() == grGlyph.fAtlasLocator.width() + (srcPadding == 2 ? 4 : 0) &&
+                skGlyph.height() == grGlyph.fAtlasLocator.height() + (srcPadding == 2 ? 4 : 0));
+
+            auto loc = grGlyph.fAtlasLocator;
+            auto rect = SkIRect::MakeXYWH(
+                    loc.topLeft().fX, loc.topLeft().fY, loc.width(), loc.height());
+            auto padding = SkIRect::MakeLTRB(srcPadding, srcPadding, srcPadding, srcPadding);
+            glyphs.push_back({loc.genID(), rect, padding});
+        }
+    };
+
+    SkRandom rand;
+    char text[10000];
+    for (int i = 0; i < 10000; ++i) {
+        auto index = rand.nextULessThan(25);
+        text[i] = "ABCDEFGHJKLMNOPQRSTUVWXYZ"[index];
+    }
+    draw(text, 10000);
+    check(reporter, glyphs);
+}
+
