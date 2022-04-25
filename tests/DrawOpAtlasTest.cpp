@@ -39,7 +39,10 @@
 
 #include <memory>
 #include <utility>
+#include "src/core/SkStrikeCache.h"
+#include "src/text/gpu/Glyph.h"
 
+using Glyph = sktext::gpu::Glyph;
 using MaskFormat = skgpu::MaskFormat;
 
 class GrResourceProvider;
@@ -116,15 +119,20 @@ static bool fill_plot(GrDrawOpAtlas* atlas,
                       GrResourceProvider* resourceProvider,
                       GrDeferredUploadTarget* target,
                       skgpu::AtlasLocator* atlasLocator,
-                      int alpha) {
-    SkImageInfo ii = SkImageInfo::MakeA8(kPlotSize, kPlotSize);
+                      int alpha,
+                      int plotSize = kPlotSize,
+                      void** plot = nullptr) {
+    SkImageInfo ii = SkImageInfo::MakeA8(plotSize, plotSize);
 
     SkBitmap data;
     data.allocPixels(ii);
     data.eraseARGB(alpha, 0, 0, 0);
+    if (plot != nullptr) {
+        *plot = data.getAddr(0, 0);
+    }
 
     GrDrawOpAtlas::ErrorCode code;
-    code = atlas->addToAtlas(resourceProvider, target, kPlotSize, kPlotSize,
+    code = atlas->addToAtlas(resourceProvider, target, plotSize, plotSize,
                              data.getAddr(0, 0), atlasLocator);
     return GrDrawOpAtlas::ErrorCode::kSucceeded == code;
 }
@@ -313,4 +321,214 @@ DEF_GPUTEST(GrDrawOpAtlasConfig_Basic, reporter, options) {
                       { 256, 256 }, { 256, 256 });
     test_atlas_config(reporter, 65536, 0, MaskFormat::kA8,
                       { 512, 512 }, { 256, 256 });
+}
+
+static void use_padding_options(GrContextOptions* options) {
+    options->fSupportBilerpFromGlyphAtlas = true;
+}
+
+static void do_not_use_padding_options(GrContextOptions* options) {
+    options->fSupportBilerpFromGlyphAtlas = false;
+}
+
+bool checkPaddingForGlyphs(std::vector<SkGlyph> skGlyphs,
+                           std::vector<Glyph> grGlyphs,
+                           std::vector<int> padding,
+                           int insetPadding) {
+    // grGlyphs should be placed in 2 rows and 2 columns (all 4 of them)
+    // grGlyph size should match skGlyph size
+    // distance between grGlyph1 and grGlyph2 should be paddingExpected1 + paddingExpected2
+    // distance between grGlyph and the plot side should be paddingExpected on that size
+    int i = 0;
+    for (auto& grGlyph : grGlyphs) {
+        // Check all glyph sizes
+        auto& skGlyph = skGlyphs[i++];
+        if (skGlyph.width() != grGlyph.fAtlasLocator.width() + insetPadding * 2 ||
+            skGlyph.height() != grGlyph.fAtlasLocator.height() + insetPadding * 2) {
+            return false;
+        }
+    }
+
+    if (skGlyphs.size() != 4) {
+        return false;
+    }
+    auto& s00 = skGlyphs[0];
+    auto& s01 = skGlyphs[1];
+    auto& s10 = skGlyphs[2];
+    // auto& s11 = skGlyphs[3];
+
+    if (grGlyphs.size() != 4) {
+        return false;
+    }
+    auto& g00 = grGlyphs[0].fAtlasLocator;
+    auto& g01 = grGlyphs[1].fAtlasLocator;
+    auto& g10 = grGlyphs[2].fAtlasLocator;
+    auto& g11 = grGlyphs[3].fAtlasLocator;
+
+    // Check the top left glyph placement
+    if (g00.topLeft().fX != padding[0] || g00.topLeft().fY != padding[1]) {
+        return false;
+    }
+
+    // Check the top right glyph placement
+    if (g01.topLeft().fX != padding[0] * 2 + padding[2] + s00.width() - insetPadding * 2 ||
+        g01.topLeft().fY != padding[1]) {
+        return false;
+    }
+
+    // Check the bottom left glyph placement
+    if (g10.topLeft().fX != padding[0] ||
+        g10.topLeft().fY != padding[1] * 2 + padding[3] + s00.height() - insetPadding * 2) {
+        return false;
+    }
+
+    // Check the bottom left glyph placement
+    if (g11.topLeft().fX != padding[0] * 2 + padding[2] + s10.width() - insetPadding * 2 ||
+        g11.topLeft().fY != padding[1] * 2 + padding[3] + s01.height() - insetPadding * 2) {
+        return false;
+    }
+
+    return true;
+}
+
+DEF_GPUTEST_FOR_CONTEXTS(GrAtlasManager_withoutSlug,
+                         sk_gpu_test::GrContextFactory::IsRenderingContext,
+                         reporter,
+                         ctxInfo,
+                         do_not_use_padding_options) {
+    TestingUploadTarget uploadTarget;
+    auto dContext = ctxInfo.directContext();
+    auto atlasManager = dContext->priv().getAtlasManager();
+    auto resourceProvider = dContext->priv().resourceProvider();
+
+    atlasManager->setAtlasDimensionsToMinimum_ForTesting();
+
+    SkFont defaultFont(SkTypeface::MakeFromName("Roboto-Regular", SkFontStyle()), 152);
+    SkStrikeSpec strikeSpec = SkStrikeSpec::MakeWithNoDevice(defaultFont);
+    sk_sp<SkStrike> strike = strikeSpec.findOrCreateStrike();
+    SkArenaAlloc alloc(1 << 12);
+
+    std::vector<SkGlyph> skGlyphs;
+    std::vector<Glyph> grGlyphs;
+    auto draw2x2 = [&](int srcPadding) {
+        atlasManager->freeAll();
+        skGlyphs.clear();
+        grGlyphs.clear();
+        unsigned int numProxies;
+        atlasManager->getViews(MaskFormat::kA8, &numProxies);
+        atlasManager->setMaxPages_TestingOnly(1);
+
+        skgpu::PlotLocator plotLocator;
+        for (int i = 0; i < 4; ++i) {
+            char c = "ABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890"[i];
+            SkPackedGlyphID id(defaultFont.unicharToGlyph(c));
+            SkGlyph skGlyph = strike->getScalerContext()->makeGlyph(id, &alloc);
+            skGlyph.setImage(&alloc, strike->getScalerContext());
+            SkPackedGlyphID glyphID;
+            Glyph grGlyph(glyphID);
+            auto errorCode = atlasManager->addGlyphToAtlas(
+                    skGlyph, &grGlyph, srcPadding, resourceProvider, &uploadTarget);
+            REPORTER_ASSERT(reporter, errorCode == GrDrawOpAtlas::ErrorCode::kSucceeded);
+            skGlyphs.emplace_back(skGlyph);
+            grGlyphs.emplace_back(grGlyph);
+            if (i == 0) {
+                plotLocator = grGlyph.fAtlasLocator.plotLocator();
+            } else {
+                REPORTER_ASSERT(reporter, plotLocator == grGlyph.fAtlasLocator.plotLocator());
+            }
+        }
+    };
+
+    // Direct mask: no padding at all
+    draw2x2(/*srcPadding=*/0);
+    REPORTER_ASSERT(reporter,
+                    checkPaddingForGlyphs(skGlyphs,
+                                          grGlyphs,
+                                          {0, 0, 0, 0},
+                                          /*insetPadding=*/0));
+    // Transformed: 1 pixel zero-padding paddings between glyphs and on the sides
+    draw2x2(/*srcPadding=*/1);
+    REPORTER_ASSERT(reporter,
+                    checkPaddingForGlyphs(skGlyphs,
+                                          grGlyphs,
+                                          {1, 1, 1, 1},
+                                          /*insetPadding=*/0));
+    // SDFT: 2 pixel zero-paddings between glyphs and on the sides
+    draw2x2(2);
+    REPORTER_ASSERT(reporter,
+                    checkPaddingForGlyphs(skGlyphs,
+                                          grGlyphs,
+                                          {2, 2, 2, 2},
+                                          /*insetPadding=*/2));
+}
+
+DEF_GPUTEST_FOR_CONTEXTS(GrAtlasManager_withSlug,
+                         sk_gpu_test::GrContextFactory::IsRenderingContext,
+                         reporter,
+                         ctxInfo,
+                         use_padding_options) {
+    TestingUploadTarget uploadTarget;
+    auto dContext = ctxInfo.directContext();
+    auto atlasManager = dContext->priv().getAtlasManager();
+    auto resourceProvider = dContext->priv().resourceProvider();
+
+    atlasManager->setAtlasDimensionsToMinimum_ForTesting();
+
+    SkFont defaultFont(SkTypeface::MakeFromName("Roboto-Regular", SkFontStyle()), 152);
+    SkStrikeSpec strikeSpec = SkStrikeSpec::MakeWithNoDevice(defaultFont);
+    sk_sp<SkStrike> strike = strikeSpec.findOrCreateStrike();
+    SkArenaAlloc alloc(1 << 12);
+
+    std::vector<SkGlyph> skGlyphs;
+    std::vector<Glyph> grGlyphs;
+    auto draw2x2 = [&](int srcPadding) {
+        atlasManager->freeAll();
+        skGlyphs.clear();
+        grGlyphs.clear();
+        unsigned int numProxies;
+        atlasManager->getViews(MaskFormat::kA8, &numProxies);
+        atlasManager->setMaxPages_TestingOnly(1);
+
+        skgpu::PlotLocator plotLocator;
+        for (int i = 0; i < 4; ++i) {
+            char c = "ABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890"[i];
+            SkPackedGlyphID id(defaultFont.unicharToGlyph(c));
+            SkGlyph skGlyph = strike->getScalerContext()->makeGlyph(id, &alloc);
+            skGlyph.setImage(&alloc, strike->getScalerContext());
+            SkPackedGlyphID glyphID;
+            Glyph grGlyph(glyphID);
+            auto errorCode = atlasManager->addGlyphToAtlas(
+                    skGlyph, &grGlyph, srcPadding, resourceProvider, &uploadTarget);
+            REPORTER_ASSERT(reporter, errorCode == GrDrawOpAtlas::ErrorCode::kSucceeded);
+            skGlyphs.emplace_back(skGlyph);
+            grGlyphs.emplace_back(grGlyph);
+            if (i == 0) {
+                plotLocator = grGlyph.fAtlasLocator.plotLocator();
+            } else {
+                REPORTER_ASSERT(reporter, plotLocator == grGlyph.fAtlasLocator.plotLocator());
+            }
+        }
+    };
+
+    // Direct mask: left & top padding == 1
+    draw2x2(0);
+    REPORTER_ASSERT(reporter,
+                    checkPaddingForGlyphs(skGlyphs,
+                                          grGlyphs,
+                                          {1, 1, 0, 0},
+                                          /*insetPadding=*/0));
+    // Transformed: left & top padding == 1
+    draw2x2(1);
+    REPORTER_ASSERT(reporter,
+                    checkPaddingForGlyphs(skGlyphs,
+                                          grGlyphs,
+                                          {1, 1, 0, 0},
+                                          /*insetPadding=*/0));
+    // SDFT: 2 pixel zero-paddings between glyphs and on the sides
+    draw2x2(2);
+    REPORTER_ASSERT(reporter,
+                    checkPaddingForGlyphs(skGlyphs,
+                                          grGlyphs,
+                                          {2, 2, 2, 2},
+                                          /*insetPadding=*/2));
 }
