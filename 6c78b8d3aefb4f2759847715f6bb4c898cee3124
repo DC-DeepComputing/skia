@@ -16,6 +16,24 @@
       "message": "Is there a way to tell IWYU to always include SkTypes.h, assuming nothing else is included? This removal is technically safe, but as a rule we\u0027ve always wanted to keep this for headers that have nothing else included. If anyone adds any logic to the header that depends on our preprocessor macros, this becomes a bug - without SkTypes.h, none of the preprocessor logic that deduces and sets those values gets encountered.",
       "revId": "6c78b8d3aefb4f2759847715f6bb4c898cee3124",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9fc466db_27a66d7f",
+        "filename": "src/utils/SkClipStackUtils.h",
+        "patchSetId": 17
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-04-25T15:36:12Z",
+      "side": 0,
+      "message": "There are two options here. \nOne: We add // IWYU pragma: export to our SkTypes include when it\u0027s the only include [1]\nTwo: We add --keep \"include/core/SkType.h\" to our invocation of the IWYU binary and then it never tries to take it away.\n\nWhich do you prefer?\n\n[1] https://github.com/include-what-you-use/include-what-you-use/blob/master/docs/IWYUPragmas.md#iwyu-pragma-keep",
+      "parentUuid": "8a11f833_09ea8ccf",
+      "revId": "6c78b8d3aefb4f2759847715f6bb4c898cee3124",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
