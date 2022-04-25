@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ba597b94_68b9eb57",
+        "filename": "src/gpu/ganesh/tessellate/shaders/GrTessellationShader.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-04-25T17:38:49Z",
+      "side": 1,
+      "message": "This seems out of date from what\u0027s actually returned. Maybe just say \n\n   // SkSL functions that calculate Wang\u0027s formula for cubics or conics.",
+      "range": {
+        "startLine": 73,
+        "startChar": 4,
+        "endLine": 74,
+        "endChar": 94
+      },
+      "revId": "080d68a18eea8b5552daff015a110a0d08f64537",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
