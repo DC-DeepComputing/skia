@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8a11f833_09ea8ccf",
+        "filename": "src/utils/SkClipStackUtils.h",
+        "patchSetId": 17
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-04-25T13:34:53Z",
+      "side": 0,
+      "message": "Is there a way to tell IWYU to always include SkTypes.h, assuming nothing else is included? This removal is technically safe, but as a rule we\u0027ve always wanted to keep this for headers that have nothing else included. If anyone adds any logic to the header that depends on our preprocessor macros, this becomes a bug - without SkTypes.h, none of the preprocessor logic that deduces and sets those values gets encountered.",
+      "revId": "6c78b8d3aefb4f2759847715f6bb4c898cee3124",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

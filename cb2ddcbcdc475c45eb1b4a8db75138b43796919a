@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "27a78039_d0ad7b9e",
+        "filename": "src/utils/SkParse.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-04-25T13:34:53Z",
+      "side": 1,
+      "message": "I assume that IWYU is picking the C headers because we\u0027re using the functions without any scoping? (ie, if we were to fix this to be cstdlib and cstring, and then change the call-sites in this file to be std::is_ws, etc...), it wouldn\u0027t try to revert the header changes?",
+      "range": {
+        "startLine": 10,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 19
+      },
+      "revId": "cb2ddcbcdc475c45eb1b4a8db75138b43796919a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
