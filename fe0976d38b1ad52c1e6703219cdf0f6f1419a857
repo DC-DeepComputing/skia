@@ -106,6 +106,24 @@
       "parentUuid": "2220715c_b35ff65b",
       "revId": "fe0976d38b1ad52c1e6703219cdf0f6f1419a857",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "83129756_c8afc6c3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-25T17:05:39Z",
+      "side": 1,
+      "message": "Given the API complexity around actually using tessellation with the various backends, going straight to compute is probably a win-win.",
+      "parentUuid": "5569c15f_a619064b",
+      "revId": "fe0976d38b1ad52c1e6703219cdf0f6f1419a857",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
