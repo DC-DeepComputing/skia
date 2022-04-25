@@ -13,7 +13,9 @@
 #include "include/core/SkPath.h"
 #include "include/core/SkPoint.h"
 #include "include/core/SkRect.h"
+#include "include/core/SkRefCnt.h"
 #include "include/core/SkScalar.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkString.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkTDArray.h"
@@ -179,20 +181,36 @@ public:
         kICCColor,
     };
 
+    class Vars : public SkNVRefCnt<Vars> {
+    public:
+        Vars(size_t size) : fData(std::unique_ptr<SkString[]>(new SkString[size])), fSize(size) {}
+
+        std::unique_ptr<SkString[]> fData;
+        size_t fSize;
+    };
+
     SkSVGColor() : fType(Type::kColor), fColor(SK_ColorBLACK) {}
     explicit SkSVGColor(Type t) : fType(t), fColor(SK_ColorBLACK) {}
     explicit SkSVGColor(const SkSVGColorType& c) : fType(Type::kColor), fColor(c) {}
+    void setVars(size_t size) { fVars = sk_sp<SkSVGColor::Vars>(new SkSVGColor::Vars(size)); }
+    sk_sp<Vars> getVars() { return fVars; }
+
     bool operator==(const SkSVGColor& other) const {
-        return fType == other.fType && fColor == other.fColor;
+        return fType == other.fType && fColor == other.fColor && fVars == other.fVars;
     }
     bool operator!=(const SkSVGColor& other) const { return !(*this == other); }
 
     Type type() const { return fType; }
     const SkSVGColorType& color() const { SkASSERT(fType == Type::kColor); return fColor; }
+    SkSpan<const SkString> var() const {
+        return fVars ? SkSpan<SkString>(fVars->fData.get(), fVars->fSize)
+                     : SkSpan<SkString>{nullptr, 0};
+    }
 
 private:
     Type fType;
     SkSVGColorType fColor;
+    sk_sp<Vars> fVars;
 };
 
 class SkSVGPaint {
