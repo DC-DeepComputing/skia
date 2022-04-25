@@ -34,6 +34,24 @@
       "parentUuid": "8a11f833_09ea8ccf",
       "revId": "6c78b8d3aefb4f2759847715f6bb4c898cee3124",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aa3c42a0_ce5e3637",
+        "filename": "src/utils/SkClipStackUtils.h",
+        "patchSetId": 17
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-04-25T15:44:21Z",
+      "side": 0,
+      "message": "I think I prefer option two, because it doesn\u0027t require careful review/curation.",
+      "parentUuid": "9fc466db_27a66d7f",
+      "revId": "6c78b8d3aefb4f2759847715f6bb4c898cee3124",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

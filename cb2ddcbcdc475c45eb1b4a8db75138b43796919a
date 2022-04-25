@@ -46,6 +46,30 @@
       },
       "revId": "cb2ddcbcdc475c45eb1b4a8db75138b43796919a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "77464243_991767b0",
+        "filename": "src/utils/SkParse.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-04-25T15:44:21Z",
+      "side": 1,
+      "message": "I\u0027m just lamenting that we still have a mix of the C and C++ names for these headers: string.h vs. cstring, stdlib.h vs. cstdlib, throughout our code. We should prefer the C++ versions, and I was hoping that IWYU would push us in that direction, but from this CL, I see it updating includes to use both forms.\n\nThe main distinction is that the .h versions put things in the global namespace, and the cxxx versions put them in std:: (though some toolchains appear to also put them in global namespace). I was just trying to figure out how we encourage IWYU to favor the cxxx versions.\n\nBut we\u0027re still no worse off than we are today, so not a huge deal.",
+      "parentUuid": "17b3a8a6_440a2edd",
+      "range": {
+        "startLine": 10,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 19
+      },
+      "revId": "cb2ddcbcdc475c45eb1b4a8db75138b43796919a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
