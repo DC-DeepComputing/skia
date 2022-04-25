@@ -16,6 +16,24 @@
       "message": "Let\u0027s hold off on this for now. Graphite hasn\u0027t ported over the stroking implementation (GrStrokeTessellationShader_InstancedImpl), and that will use the non-`log2` versions. I am working on porting that over as we speak, so will need these versions in SkSL still.\n\nNote that _InstancedImpl is the new version that Greg and Brian O talked about that doesn\u0027t actually require hardware tessellation (GrStrokeTessellationShader_HardwareImpl)",
       "revId": "9f41b7091b0a1b1efb8935e8981b75d22e76d454",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8c33602a_9299a480",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-25T19:56:34Z",
+      "side": 1,
+      "message": "Oh, OK, if these functions will be used soon, then let\u0027s keep them!",
+      "parentUuid": "71963330_768f1385",
+      "revId": "9f41b7091b0a1b1efb8935e8981b75d22e76d454",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
