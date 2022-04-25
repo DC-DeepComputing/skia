@@ -182,6 +182,9 @@ GrDrawOpAtlas::ErrorCode GrAtlasManager::addGlyphToAtlas(const SkGlyph& skGlyph,
             // into the image on the glyph; no extra padding needed.
             // TODO: can the SDFT glyph image in the cache be reduced by the padding?
             padding = 0;
+            if (fSupportBilerpAtlas) {
+                srcPadding = 0;
+            }
             break;
         default:
             // The padding is not one of the know forms.
@@ -203,17 +206,25 @@ GrDrawOpAtlas::ErrorCode GrAtlasManager::addGlyphToAtlas(const SkGlyph& skGlyph,
     }
 
     get_packed_glyph_image(skGlyph, rowBytes, expectedMaskFormat, dataPtr);
-
     auto errorCode = this->addToAtlas(resourceProvider,
                                       uploadTarget,
                                       expectedMaskFormat,
                                       width,
                                       height,
+                                      srcPadding != 0 && fSupportBilerpAtlas
+                                      ? GrDrawOpAtlas::Positioning::kDropBottomRight
+                                      : GrDrawOpAtlas::Positioning::kNone,
                                       storage.get(),
                                       &grGlyph->fAtlasLocator);
 
     if (errorCode == GrDrawOpAtlas::ErrorCode::kSucceeded) {
-        grGlyph->fAtlasLocator.insetSrc(srcPadding);
+        if (fSupportBilerpAtlas) {
+            grGlyph->fAtlasLocator.insetTopLeftSrc(srcPadding);
+        } else {
+            grGlyph->fAtlasLocator.insetSrc(srcPadding);
+        }
+        SkASSERT(skGlyph.width() == grGlyph->fAtlasLocator.width() &&
+                        skGlyph.height() == grGlyph->fAtlasLocator.height());
     }
 
     return errorCode;
@@ -223,10 +234,12 @@ GrDrawOpAtlas::ErrorCode GrAtlasManager::addGlyphToAtlas(const SkGlyph& skGlyph,
 GrDrawOpAtlas::ErrorCode GrAtlasManager::addToAtlas(GrResourceProvider* resourceProvider,
                                                     GrDeferredUploadTarget* target,
                                                     MaskFormat format,
-                                                    int width, int height, const void* image,
+                                                    int width, int height,
+                                                    GrDrawOpAtlas::Positioning positioning,
+                                                    const void* image,
                                                     GrDrawOpAtlas::AtlasLocator* atlasLocator) {
-    return this->getAtlas(format)->addToAtlas(resourceProvider, target, width, height, image,
-                                              atlasLocator);
+    return this->getAtlas(format)->addToAtlas(
+            resourceProvider, target, width, height, positioning, image, atlasLocator);
 }
 
 void GrAtlasManager::addGlyphToBulkAndSetUseToken(GrDrawOpAtlas::BulkUseTokenUpdater* updater,
