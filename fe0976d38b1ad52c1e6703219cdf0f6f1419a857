@@ -34,6 +34,24 @@
       "parentUuid": "8037f7aa_cc7b866d",
       "revId": "fe0976d38b1ad52c1e6703219cdf0f6f1419a857",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5fe8421a_62d6416e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-04-25T17:00:02Z",
+      "side": 1,
+      "message": "No, Chris\u0027 2nd (3rd? 4th?) generation didn\u0027t rely on HW tessellation anymore - it uses simpler API techniques, with some very clever pre-built geometry and vertex shading. (It does require some pre-processing steps to bin/sort the paths, which is work that we hope to move to compute shaders).",
+      "parentUuid": "21bb8ba4_2f5864a6",
+      "revId": "fe0976d38b1ad52c1e6703219cdf0f6f1419a857",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
