@@ -88,6 +88,24 @@
       "parentUuid": "2220715c_b35ff65b",
       "revId": "fe0976d38b1ad52c1e6703219cdf0f6f1419a857",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5569c15f_a619064b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-04-25T17:04:20Z",
+      "side": 1,
+      "message": "Yup. In any case, this change lgtm. And my gut feeling is that we can/should get rid of the tess shader experiments.",
+      "parentUuid": "2220715c_b35ff65b",
+      "revId": "fe0976d38b1ad52c1e6703219cdf0f6f1419a857",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
