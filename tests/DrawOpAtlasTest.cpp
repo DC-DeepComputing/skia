@@ -125,6 +125,7 @@ static bool fill_plot(GrDrawOpAtlas* atlas,
 
     GrDrawOpAtlas::ErrorCode code;
     code = atlas->addToAtlas(resourceProvider, target, kPlotSize, kPlotSize,
+                             GrDrawOpAtlas::Positioning::kNone,
                              data.getAddr(0, 0), atlasLocator);
     return GrDrawOpAtlas::ErrorCode::kSucceeded == code;
 }
