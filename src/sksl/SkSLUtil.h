@@ -180,6 +180,14 @@ struct ShaderCaps {
         return fSecondExternalTextureExtensionString;
     }
 
+    /**
+     * SkSL ES3 requires support for derivatives, nonsquare matrices and bitwise integer operations.
+     */
+    bool supportsSkSLES3() const {
+        return fShaderDerivativeSupport && fNonsquareMatrixSupport && fIntegerSupport &&
+               fGLSLGeneration >= SkSL::GLSLGeneration::k330;
+    }
+
     SkSL::GLSLGeneration generation() const { return fGLSLGeneration; }
 
     SkSL::GLSLGeneration fGLSLGeneration = SkSL::GLSLGeneration::k330;

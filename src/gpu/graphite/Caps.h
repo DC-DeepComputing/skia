@@ -15,6 +15,8 @@
 #include "src/gpu/Swizzle.h"
 #include "src/gpu/graphite/ResourceTypes.h"
 
+class SkCapabilities;
+
 namespace SkSL {
 struct ShaderCaps;
 }
@@ -30,6 +32,7 @@ class Caps : public SkRefCnt {
 public:
     ~Caps() override;
 
+    sk_sp<SkCapabilities> asSkCapabilities() const;
     const SkSL::ShaderCaps* shaderCaps() const { return fShaderCaps.get(); }
 
     virtual TextureInfo getDefaultSampledTextureInfo(SkColorType,
