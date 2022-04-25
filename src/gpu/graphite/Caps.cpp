@@ -7,6 +7,7 @@
 
 #include "src/gpu/graphite/Caps.h"
 
+#include "include/core/SkCapabilities.h"
 #include "include/gpu/graphite/TextureInfo.h"
 #include "src/sksl/SkSLUtil.h"
 
@@ -50,6 +51,13 @@ skgpu::Swizzle Caps::getWriteSwizzle(SkColorType ct, const TextureInfo& info) co
     }
 
     return colorTypeInfo->fWriteSwizzle;
+}
+
+sk_sp<SkCapabilities> Caps::asSkCapabilities() const {
+    sk_sp<SkCapabilities> caps(new SkCapabilities);
+    if (this->shaderCaps()->supportsSkSLES3()) {
+        caps->fSkSLVersion = SkCapabilities::SkSLVersion::k300ES;
+    }
 }
 
 } // namespace skgpu::graphite

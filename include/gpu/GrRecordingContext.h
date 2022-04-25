@@ -31,6 +31,7 @@ class GrSurfaceProxy;
 class GrTextBlobRedrawCoordinator;
 class GrThreadSafeCache;
 class SkArenaAlloc;
+class SkCapabilities;
 class SkJSONWriter;
 
 #if GR_TEST_UTILS
@@ -93,6 +94,8 @@ public:
     SK_API int maxSurfaceSampleCountForColorType(SkColorType colorType) const {
         return INHERITED::maxSurfaceSampleCountForColorType(colorType);
     }
+
+    SK_API sk_sp<SkCapabilities> skCapabilities() const;
 
     // Provides access to functions that aren't part of the public API.
     GrRecordingContextPriv priv();

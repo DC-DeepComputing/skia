@@ -28,6 +28,7 @@ class GrProgramDesc;
 class GrProgramInfo;
 class GrRenderTargetProxy;
 class GrSurface;
+class SkCapabilities;
 class SkJSONWriter;
 
 namespace skgpu {
@@ -41,6 +42,7 @@ class GrCaps : public SkRefCnt {
 public:
     GrCaps(const GrContextOptions&);
 
+    sk_sp<SkCapabilities> asSkCapabilities() const;
     void dumpJSON(SkJSONWriter*) const;
 
     const GrShaderCaps* shaderCaps() const { return fShaderCaps.get(); }

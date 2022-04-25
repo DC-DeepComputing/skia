@@ -9,8 +9,10 @@
 
 #include "include/gpu/graphite/Recorder.h"
 #include "include/gpu/graphite/SkStuff.h"
+#include "src/gpu/graphite/Caps.h"
 #include "src/gpu/graphite/Device.h"
 #include "src/gpu/graphite/Image_Graphite.h"
+#include "src/gpu/graphite/RecorderPriv.h"
 
 namespace skgpu::graphite {
 
@@ -54,6 +56,10 @@ bool Surface::onReadPixels(Context* context,
                            int srcX,
                            int srcY) {
     return fDevice->readPixels(context, recorder, dst, srcX, srcY);
+}
+
+sk_sp<SkCapabilities> Surface::onCapabilities() {
+    fDevice->recorder()->priv().caps()->asSkCapabilities();
 }
 
 } // namespace skgpu::graphite
