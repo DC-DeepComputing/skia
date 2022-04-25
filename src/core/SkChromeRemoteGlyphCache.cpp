@@ -848,9 +848,10 @@ protected:
                               ctxOptions.fGlyphsAsPathsFontSize};
 
         // Full matrix for placing glyphs.
-        SkMatrix positionMatrix = this->localToDevice();
-        positionMatrix.preTranslate(glyphRunList.origin().x(), glyphRunList.origin().y());
-
+        SkM44 position4x4 = this->deviceToGlobal() * this->localToDevice44();
+        position4x4.preTranslate(glyphRunList.origin().x(), glyphRunList.origin().y());
+        auto positionMatrix = position4x4.asM33();
+        positionMatrix.dump();
         // TODO these two passes can be converted into one when the SkRemoteGlyphCache's strike
         //  cache is fortified with enough information for supporting slug creation.
 

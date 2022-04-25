@@ -296,6 +296,7 @@ void SkGlyphRunListPainter::processGlyphRun(SkGlyphRunPainterInterface* process,
         msg.appendf("   %7.3g %7.3g %7.3g\n   %7.3g %7.3g %7.3g\n",
                     positionMatrix[0], positionMatrix[1], positionMatrix[2],
                     positionMatrix[3], positionMatrix[4], positionMatrix[5]);
+        positionMatrix.dump();
     #endif
     ScopedBuffers _ = this->ensureBuffers(glyphRun);
     fRejected.setSource(glyphRun.source());
