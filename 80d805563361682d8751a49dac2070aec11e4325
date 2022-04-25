@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "54f21d27_642d00ee",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-04-25T21:59:44Z",
+      "side": 1,
+      "message": "@Peng - I think this will fix the drawing using slugs for OOP-R.",
+      "revId": "80d805563361682d8751a49dac2070aec11e4325",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
