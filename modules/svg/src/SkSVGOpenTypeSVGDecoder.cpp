@@ -18,6 +18,7 @@
 #include "modules/svg/include/SkSVGRenderContext.h"
 #include "modules/svg/include/SkSVGSVG.h"
 #include "modules/svg/include/SkSVGUse.h"
+#include "src/core/SkEnumerate.h"
 
 #include <memory>
 
@@ -111,7 +112,13 @@ bool SkSVGOpenTypeSVGDecoder::render(SkCanvas& canvas, int upem, SkGlyphID glyph
     SkSVGPresentationContext pctx;
     pctx.fInherited.fColor = SkSVGProperty<SkSVGColorType , true>(foregroundColor);
 
-    // TODO: get palette into the presentation context and SkSVG to parse "var".
+    for (auto&& [i, color] : SkMakeEnumerate(palette)) {
+        constexpr const size_t colorStringLen = sizeof("color") - 1;
+        char colorIdString[colorStringLen + kSkStrAppendU32_MaxSize + 1] = "color";
+        *SkStrAppendU32(colorIdString + colorStringLen, i) = 0;
+
+        pctx.fNamedColors.set(SkString(colorIdString), color);
+    }
 
     constexpr const size_t glyphStringLen = sizeof("glyph") - 1;
     char glyphIdString[glyphStringLen + kSkStrAppendU32_MaxSize + 1] = "glyph";

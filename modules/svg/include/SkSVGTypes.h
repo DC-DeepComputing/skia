@@ -14,6 +14,7 @@
 #include "include/core/SkPoint.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkScalar.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkString.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkTDArray.h"
@@ -181,18 +182,22 @@ public:
 
     SkSVGColor() : fType(Type::kColor), fColor(SK_ColorBLACK) {}
     explicit SkSVGColor(Type t) : fType(t), fColor(SK_ColorBLACK) {}
-    explicit SkSVGColor(const SkSVGColorType& c) : fType(Type::kColor), fColor(c) {}
+    explicit SkSVGColor(SkSVGColorType c) : fType(Type::kColor), fColor(c) {}
+    void appendVar(SkString var) { fVar.push_back(std::move(var)); }
+
     bool operator==(const SkSVGColor& other) const {
-        return fType == other.fType && fColor == other.fColor;
+        return fType == other.fType && fColor == other.fColor && fVar == other.fVar;
     }
     bool operator!=(const SkSVGColor& other) const { return !(*this == other); }
 
     Type type() const { return fType; }
     const SkSVGColorType& color() const { SkASSERT(fType == Type::kColor); return fColor; }
+    SkSpan<const SkString> var() const { return SkMakeSpan(fVar); }
 
 private:
     Type fType;
     SkSVGColorType fColor;
+    SkSTArray<2, SkString> fVar;
 };
 
 class SkSVGPaint {
