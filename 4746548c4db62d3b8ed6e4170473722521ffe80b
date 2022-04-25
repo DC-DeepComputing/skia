@@ -46,6 +46,30 @@
       },
       "revId": "4746548c4db62d3b8ed6e4170473722521ffe80b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "264d3e89_8c1e4ee5",
+        "filename": "bazel/common_config_settings/BUILD.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-04-25T18:33:13Z",
+      "side": 1,
+      "message": "Maybe call this mac_intel_x64 just to be super explicit?",
+      "parentUuid": "d84a8e8e_5b27c875",
+      "range": {
+        "startLine": 20,
+        "startChar": 12,
+        "endLine": 20,
+        "endChar": 19
+      },
+      "revId": "4746548c4db62d3b8ed6e4170473722521ffe80b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
