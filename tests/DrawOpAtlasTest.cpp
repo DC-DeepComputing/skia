@@ -39,7 +39,10 @@
 
 #include <memory>
 #include <utility>
+#include "src/core/SkStrikeCache.h"
+#include "src/text/gpu/Glyph.h"
 
+using Glyph = sktext::gpu::Glyph;
 using MaskFormat = skgpu::MaskFormat;
 
 class GrResourceProvider;
@@ -313,4 +316,39 @@ DEF_GPUTEST(GrDrawOpAtlasConfig_Basic, reporter, options) {
                       { 256, 256 }, { 256, 256 });
     test_atlas_config(reporter, 65536, 0, MaskFormat::kA8,
                       { 512, 512 }, { 256, 256 });
+}
+
+DEF_GPUTEST_FOR_RENDERING_CONTEXTS(GrDrawOpAtlas_addGlyphToAtlas, reporter, ctxInfo) {
+    TestingUploadTarget uploadTarget;
+    auto dContext = ctxInfo.directContext();
+    auto resourceProvider = dContext->priv().resourceProvider();
+    auto atlasManager = dContext->priv().getAtlasManager();
+    unsigned int numProxies;
+    atlasManager->getViews(MaskFormat::kA8, &numProxies);
+
+    auto test = [&](bool sdft) {
+        SkFont defaultFont; defaultFont.setSize(sdft ? 175.0 : 10.0);
+        SkStrikeSpec strikeSpec = SkStrikeSpec::MakeWithNoDevice(defaultFont);
+        sk_sp<SkStrike> strike = strikeSpec.findOrCreateStrike();
+        SkArenaAlloc alloc(1 << 12);
+        for (int i = 0; i < 2; ++i) {
+            char c = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"[i];
+            SkPackedGlyphID id(defaultFont.unicharToGlyph(c));
+            SkGlyph skGlyph = strike->getScalerContext()->makeGlyph(id, &alloc);
+            skGlyph.setImage(&alloc, strike->getScalerContext());
+
+            SkPackedGlyphID glyphID;
+            Glyph grGlyph(glyphID);
+            atlasManager->addGlyphToAtlas(
+                    skGlyph, &grGlyph, sdft ? 2 : i % 2, resourceProvider, &uploadTarget);
+            // non-SDFT:
+            // Make sure that the glyph bounding box matches the original glyph mask - padding
+            auto padding = sdft ? 2 * SK_DistanceFieldInset : 0;
+            REPORTER_ASSERT(reporter,
+                            skGlyph.width() == grGlyph.fAtlasLocator.width() + padding &&
+                            skGlyph.height() == grGlyph.fAtlasLocator.height() + padding);
+        }
+    };
+    test(/*sdft=*/false);
+    test(/*sdft=*/true);
 }
