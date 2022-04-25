@@ -154,6 +154,14 @@ public:
             fUVs[3] -= padding;
         }
 
+        void insetTopLeftSrc(int padding) {
+            SkASSERT(padding <= this->width());
+            SkASSERT(padding <= this->height());
+
+            fUVs[0] += padding;
+            fUVs[1] += padding;
+        }
+
         void updatePlotLocator(PlotLocator p) {
             fPlotLocator = p;
             SkASSERT(fPlotLocator.pageIndex() <= 3);
@@ -253,7 +261,8 @@ public:
     };
 
     ErrorCode addToAtlas(GrResourceProvider*, GrDeferredUploadTarget*,
-                         int width, int height, const void* image, AtlasLocator*);
+                         int width, int height,
+                         const void* image, AtlasLocator*);
 
     const GrSurfaceProxyView* getViews() const { return fViews; }
 
@@ -397,7 +406,10 @@ private:
         }
         SkDEBUGCODE(size_t bpp() const { return fBytesPerPixel; })
 
-        bool addSubImage(int width, int height, const void* image, AtlasLocator* atlasLocator);
+                bool addSubImage(int width,
+                                 int height,
+                                 const void* image,
+                                 AtlasLocator* atlasLocator);
 
         /**
          * To manage the lifetime of a plot, we use two tokens. We use the last upload token to
@@ -479,8 +491,12 @@ private:
         // the front and remove from the back there is no need for MRU.
     }
 
-    bool uploadToPage(unsigned int pageIdx, GrDeferredUploadTarget*, int width, int height,
-                      const void* image, AtlasLocator*);
+    bool uploadToPage(unsigned int pageIdx,
+                      GrDeferredUploadTarget*,
+                      int width,
+                      int height,
+                      const void* image,
+                      AtlasLocator*);
 
     bool createPages(GrProxyProvider*, GenerationCounter*);
     bool activateNewPage(GrResourceProvider*);
