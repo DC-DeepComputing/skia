@@ -16,6 +16,144 @@
       "message": "I think this is good to go, PTAL.",
       "revId": "594a45c610d2d59c06545023bca1ee44f8fb290c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ae44083a_83300e0a",
+        "filename": "src/gpu/DrawAtlas.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 207,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-04-25T17:21:58Z",
+      "side": 1,
+      "message": "What does internal mean here? By convention internal* traditionally means that a mutex must be held while calling this routine. Why not just activateNewPage()?\n\nHere and below.",
+      "range": {
+        "startLine": 207,
+        "startChar": 20,
+        "endLine": 207,
+        "endChar": 43
+      },
+      "revId": "594a45c610d2d59c06545023bca1ee44f8fb290c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b588a19b_9fdae714",
+        "filename": "src/gpu/DrawAtlas.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-04-25T17:21:58Z",
+      "side": 1,
+      "message": "Is this an AbstractAtlas that concrete atlases are suppose to sub class and provide\nconcrete methods to implement the atlas in specific instances?",
+      "range": {
+        "startLine": 30,
+        "startChar": 6,
+        "endLine": 30,
+        "endChar": 15
+      },
+      "revId": "594a45c610d2d59c06545023bca1ee44f8fb290c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "05447d9f_fb40eccc",
+        "filename": "src/gpu/DrawAtlas.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 279,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-04-25T17:21:58Z",
+      "side": 1,
+      "message": "This is generally a bad sign. Why does DrawAtlas need to reach into the guts of this class. Can the API of the class be enhanced to avoid this?",
+      "range": {
+        "startLine": 279,
+        "startChar": 8,
+        "endLine": 279,
+        "endChar": 31
+      },
+      "revId": "594a45c610d2d59c06545023bca1ee44f8fb290c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b4b64774_a64982b7",
+        "filename": "src/gpu/DrawAtlas.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 344,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-04-25T17:21:58Z",
+      "side": 1,
+      "message": "Shouldn\u0027t these just be parameters to ConcreteAtlas::Make where:\n\nclass ConcreteAtlas final : public AbastractAtlas?",
+      "range": {
+        "startLine": 344,
+        "startChar": 6,
+        "endLine": 344,
+        "endChar": 21
+      },
+      "revId": "594a45c610d2d59c06545023bca1ee44f8fb290c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ee610aaa_ec1d5f03",
+        "filename": "src/gpu/ganesh/GrDrawOpAtlas.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-04-25T17:21:58Z",
+      "side": 1,
+      "message": "Why is the cast needed. Can you work out the types so that fPlotArray[plotIdx].get() return the right type?",
+      "range": {
+        "startLine": 110,
+        "startChar": 21,
+        "endLine": 110,
+        "endChar": 28
+      },
+      "revId": "594a45c610d2d59c06545023bca1ee44f8fb290c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0607fcac_6e44c666",
+        "filename": "src/gpu/ganesh/GrDrawOpAtlas.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 228,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-04-25T17:21:58Z",
+      "side": 1,
+      "message": "Not needed.",
+      "range": {
+        "startLine": 228,
+        "startChar": 0,
+        "endLine": 228,
+        "endChar": 27
+      },
+      "revId": "594a45c610d2d59c06545023bca1ee44f8fb290c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
