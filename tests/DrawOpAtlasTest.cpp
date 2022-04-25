@@ -156,6 +156,7 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(BasicDrawOpAtlas, reporter, ctxInfo) {
                                                 GrColorTypeBytesPerPixel(atlasColorType),
                                                 kAtlasSize, kAtlasSize,
                                                 kAtlasSize/kNumPlots, kAtlasSize/kNumPlots,
+                                                GrDrawOpAtlas::Positioning::kNone,
                                                 &counter,
                                                 GrDrawOpAtlas::AllowMultitexturing::kYes,
                                                 &evictor);

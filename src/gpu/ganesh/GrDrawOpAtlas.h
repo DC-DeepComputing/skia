@@ -55,6 +55,12 @@ public:
     /** Is the atlas allowed to use more than one texture? */
     enum class AllowMultitexturing : bool { kNo, kYes };
 
+    enum class Positioning : int {
+        kNone = 0,
+        kDropBottomRight = 1,
+        kShiftTopLeft = 2,
+    };
+
     // These are both restricted by the space they occupy in the PlotLocator.
     // maxPages is also limited by being crammed into the glyph uvs.
     // maxPlots is also limited by the fPlotAlreadyUpdated bitfield in BulkUseTokenUpdater
@@ -154,6 +160,14 @@ public:
             fUVs[3] -= padding;
         }
 
+        void inset1(int padding) {
+            SkASSERT(padding <= this->width());
+            SkASSERT(padding <= this->height());
+
+            fUVs[0] += padding;
+            fUVs[1] += padding;
+        }
+
         void updatePlotLocator(PlotLocator p) {
             fPlotLocator = p;
             SkASSERT(fPlotLocator.pageIndex() <= 3);
@@ -226,6 +240,7 @@ public:
                                                SkColorType ct, size_t bpp,
                                                int width, int height,
                                                int plotWidth, int plotHeight,
+                                               Positioning positioning,
                                                GenerationCounter* generationCounter,
                                                AllowMultitexturing allowMultitexturing,
                                                EvictionCallback* evictor);
@@ -368,7 +383,7 @@ public:
 
 private:
     GrDrawOpAtlas(GrProxyProvider*, const GrBackendFormat& format, SkColorType, size_t bpp,
-                  int width, int height, int plotWidth, int plotHeight,
+                  int width, int height, int plotWidth, int plotHeight, Positioning positioning,
                   GenerationCounter* generationCounter, AllowMultitexturing allowMultitexturing);
 
     /**
@@ -397,7 +412,11 @@ private:
         }
         SkDEBUGCODE(size_t bpp() const { return fBytesPerPixel; })
 
-        bool addSubImage(int width, int height, const void* image, AtlasLocator* atlasLocator);
+                bool addSubImage(int width,
+                                 int height,
+                                 Positioning positioning,
+                                 const void* image,
+                                 AtlasLocator* atlasLocator);
 
         /**
          * To manage the lifetime of a plot, we use two tokens. We use the last upload token to
@@ -499,6 +518,7 @@ private:
     int                   fTextureHeight;
     int                   fPlotWidth;
     int                   fPlotHeight;
+    Positioning           fPositioning;
     unsigned int          fNumPlots;
 
     GenerationCounter* const fGenerationCounter;
