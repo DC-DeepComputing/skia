@@ -58,6 +58,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ca95a805_a5bf898b",
+        "filename": "src/gpu/ganesh/dawn/GrDawnFence.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-04-25T20:40:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "960f47a8_4c5f31c1",
+      "range": {
+        "startLine": 2,
+        "startChar": 25,
+        "endLine": 2,
+        "endChar": 28
+      },
+      "revId": "a02737d31f323ea14b9faac02c13e40c4cc00391",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "07b2096f_b1630dd1",
@@ -95,6 +119,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "47b8f75a_025a568a",
+        "filename": "src/gpu/ganesh/dawn/GrDawnFence.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-04-25T20:40:52Z",
+      "side": 1,
+      "message": "For now I kept the ifdefs but I\u0027m happy to change it if you strongly.",
+      "parentUuid": "27d6fc4a_46c552bb",
+      "revId": "a02737d31f323ea14b9faac02c13e40c4cc00391",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ea46b774_a24f7cb4",
         "filename": "src/gpu/ganesh/dawn/GrDawnFence.cpp",
         "patchSetId": 1
@@ -106,6 +148,24 @@
       "writtenOn": "2022-04-19T07:42:17Z",
       "side": 1,
       "message": "nit: Maybe mention that asyncify is  required for this.",
+      "revId": "a02737d31f323ea14b9faac02c13e40c4cc00391",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "51b9664d_5b04e815",
+        "filename": "src/gpu/ganesh/dawn/GrDawnFence.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-04-25T20:40:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ea46b774_a24f7cb4",
       "revId": "a02737d31f323ea14b9faac02c13e40c4cc00391",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -123,6 +183,30 @@
       "writtenOn": "2022-04-18T17:46:47Z",
       "side": 1,
       "message": "our style is to write \u0027this-\u003eyieldAndCheck()\u0027 here.",
+      "range": {
+        "startLine": 47,
+        "startChar": 12,
+        "endLine": 47,
+        "endChar": 13
+      },
+      "revId": "a02737d31f323ea14b9faac02c13e40c4cc00391",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f8f9a916_0a6d3d00",
+        "filename": "src/gpu/ganesh/dawn/GrDawnFence.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-04-25T20:40:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ec71b062_04fefe23",
       "range": {
         "startLine": 47,
         "startChar": 12,
@@ -156,6 +240,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3a1babd7_21370d96",
+        "filename": "src/gpu/ganesh/dawn/GrDawnFence.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-04-25T20:40:52Z",
+      "side": 1,
+      "message": "Oops, done. I renamed things at one point and forgot to update the comments.",
+      "parentUuid": "3a1b5dc3_2c2d79bf",
+      "range": {
+        "startLine": 29,
+        "startChar": 63,
+        "endLine": 29,
+        "endChar": 80
+      },
+      "revId": "a02737d31f323ea14b9faac02c13e40c4cc00391",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "227e342b_037ac6e4",
@@ -173,6 +281,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d0c14e0e_aa4a4b35",
+        "filename": "src/gpu/ganesh/dawn/GrDawnFence.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-04-25T20:40:52Z",
+      "side": 1,
+      "message": "That makes sense and I was a bit on the fence about the naming there too. Though this change is no longer necessary since I removed the GrDawnFence class and moved to handling the OnSubmittedWorkDone event directly in GrDawnGpu.",
+      "parentUuid": "227e342b_037ac6e4",
+      "revId": "a02737d31f323ea14b9faac02c13e40c4cc00391",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "676c103c_a5ca7f46",
@@ -186,6 +312,30 @@
       "writtenOn": "2022-04-18T17:46:47Z",
       "side": 1,
       "message": "what signals the wait here?",
+      "range": {
+        "startLine": 517,
+        "startChar": 8,
+        "endLine": 517,
+        "endChar": 29
+      },
+      "revId": "a02737d31f323ea14b9faac02c13e40c4cc00391",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "02190f01_e8cd2420",
+        "filename": "src/gpu/ganesh/dawn/GrDawnGpu.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 517,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-04-25T20:40:52Z",
+      "side": 1,
+      "message": "In this case nothing, as the `wait` object is simply used to yield to the event loop and we\u0027re not worried about the result of checked, since the loop will exit when `fBusyStagingBuffers` becomes empty.\n\nI refactored this in a follow-up CL (review.skia.org/533758) so that this actually relies on a GrDawnAsyncWait that gets signaled asynchronously when all maps finish, so this logic here is temporary.",
+      "parentUuid": "676c103c_a5ca7f46",
       "range": {
         "startLine": 517,
         "startChar": 8,
