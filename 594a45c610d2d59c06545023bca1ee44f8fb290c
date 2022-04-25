@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e58e2653_b43b087a",
+        "filename": "src/gpu/DrawAtlas.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 207,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-04-25T19:31:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ae44083a_83300e0a",
+      "range": {
+        "startLine": 207,
+        "startChar": 20,
+        "endLine": 207,
+        "endChar": 43
+      },
+      "revId": "594a45c610d2d59c06545023bca1ee44f8fb290c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b588a19b_9fdae714",
@@ -64,6 +88,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "debd0f59_1d92603d",
+        "filename": "src/gpu/DrawAtlas.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-04-25T19:31:54Z",
+      "side": 1,
+      "message": "I\u0027ve updated the comment to provide more information. It\u0027s also no longer abstract.",
+      "parentUuid": "b588a19b_9fdae714",
+      "range": {
+        "startLine": 30,
+        "startChar": 6,
+        "endLine": 30,
+        "endChar": 15
+      },
+      "revId": "594a45c610d2d59c06545023bca1ee44f8fb290c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "05447d9f_fb40eccc",
@@ -77,6 +125,30 @@
       "writtenOn": "2022-04-25T17:21:58Z",
       "side": 1,
       "message": "This is generally a bad sign. Why does DrawAtlas need to reach into the guts of this class. Can the API of the class be enhanced to avoid this?",
+      "range": {
+        "startLine": 279,
+        "startChar": 8,
+        "endLine": 279,
+        "endChar": 31
+      },
+      "revId": "594a45c610d2d59c06545023bca1ee44f8fb290c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6881c28e_7d2f6ff7",
+        "filename": "src/gpu/DrawAtlas.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 279,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-04-25T19:31:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "05447d9f_fb40eccc",
       "range": {
         "startLine": 279,
         "startChar": 8,
@@ -112,6 +184,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e6ee1bbc_29ba00b6",
+        "filename": "src/gpu/DrawAtlas.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 344,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-04-25T19:31:54Z",
+      "side": 1,
+      "message": "As that\u0027s different behavior than we\u0027ve been doing with GrDrawOpAtlas, I\u0027d rather make that change as a separate CL.",
+      "parentUuid": "b4b64774_a64982b7",
+      "range": {
+        "startLine": 344,
+        "startChar": 6,
+        "endLine": 344,
+        "endChar": 21
+      },
+      "revId": "594a45c610d2d59c06545023bca1ee44f8fb290c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ee610aaa_ec1d5f03",
         "filename": "src/gpu/ganesh/GrDrawOpAtlas.h",
         "patchSetId": 3
@@ -135,6 +231,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "75ad2738_f0079bda",
+        "filename": "src/gpu/ganesh/GrDrawOpAtlas.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-04-25T19:31:54Z",
+      "side": 1,
+      "message": "fPlotArray is in the skgpu::DrawAtlas base class, and is an array of skgpu::DrawAtlas::Plot. But setLastUseToken() is only a member of the derived GrDrawOpAtlas::Plot. There are other cases where this happens -- I could add helper methods if you think that would make it clearer.",
+      "parentUuid": "ee610aaa_ec1d5f03",
+      "range": {
+        "startLine": 110,
+        "startChar": 21,
+        "endLine": 110,
+        "endChar": 28
+      },
+      "revId": "594a45c610d2d59c06545023bca1ee44f8fb290c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0607fcac_6e44c666",
         "filename": "src/gpu/ganesh/GrDrawOpAtlas.h",
         "patchSetId": 3
@@ -146,6 +266,30 @@
       "writtenOn": "2022-04-25T17:21:58Z",
       "side": 1,
       "message": "Not needed.",
+      "range": {
+        "startLine": 228,
+        "startChar": 0,
+        "endLine": 228,
+        "endChar": 27
+      },
+      "revId": "594a45c610d2d59c06545023bca1ee44f8fb290c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "042b3f8b_8eb30ba9",
+        "filename": "src/gpu/ganesh/GrDrawOpAtlas.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 228,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-04-25T19:31:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0607fcac_6e44c666",
       "range": {
         "startLine": 228,
         "startChar": 0,
