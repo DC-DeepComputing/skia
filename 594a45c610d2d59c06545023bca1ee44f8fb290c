@@ -206,6 +206,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7c204834_12a54611",
+        "filename": "src/gpu/DrawAtlas.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 344,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-04-25T20:24:03Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "e6ee1bbc_29ba00b6",
+      "range": {
+        "startLine": 344,
+        "startChar": 6,
+        "endLine": 344,
+        "endChar": 21
+      },
+      "revId": "594a45c610d2d59c06545023bca1ee44f8fb290c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ee610aaa_ec1d5f03",
@@ -243,6 +267,30 @@
       "side": 1,
       "message": "fPlotArray is in the skgpu::DrawAtlas base class, and is an array of skgpu::DrawAtlas::Plot. But setLastUseToken() is only a member of the derived GrDrawOpAtlas::Plot. There are other cases where this happens -- I could add helper methods if you think that would make it clearer.",
       "parentUuid": "ee610aaa_ec1d5f03",
+      "range": {
+        "startLine": 110,
+        "startChar": 21,
+        "endLine": 110,
+        "endChar": 28
+      },
+      "revId": "594a45c610d2d59c06545023bca1ee44f8fb290c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7b696035_7ea38af2",
+        "filename": "src/gpu/ganesh/GrDrawOpAtlas.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-04-25T20:24:03Z",
+      "side": 1,
+      "message": "Have the subclasses of DrawAtlas own the arrays, make accessing them purely abstract methods on DrawAtlas. The subclasses will then own the arrays of proper types, and DrawAtlas will only have access to the abstract DrawAtlas::Plot API. I didn\u0027t realize the Plot is a subclass of Plot. So, this cast here is really a down cast.",
+      "parentUuid": "75ad2738_f0079bda",
       "range": {
         "startLine": 110,
         "startChar": 21,
