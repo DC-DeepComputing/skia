@@ -162,20 +162,15 @@ GrDrawOpAtlas::ErrorCode GrAtlasManager::addGlyphToAtlas(const SkGlyph& skGlyph,
     MaskFormat expectedMaskFormat = this->resolveMaskFormat(glyphFormat);
     int bytesPerPixel = MaskFormatBytesPerPixel(expectedMaskFormat);
 
-    int padding;
+    int padding; // This is the sum of left/right or top/bottom paddings
     switch (srcPadding) {
         case 0:
             // The direct mask/image case.
-            padding = 0;
-            if (fSupportBilerpAtlas) {
-                // Force direct masks (glyph with no padding) to have padding.
-                padding = 1;
-                srcPadding = 1;
-            }
+            padding = fSupportBilerpAtlas ? 1 : 0;
             break;
         case 1:
             // The transformed mask/image case.
-            padding = 1;
+            padding = fSupportBilerpAtlas ? 1 : 1 + 1;
             break;
         case SK_DistanceFieldInset:
             // The SDFT case.
@@ -189,8 +184,8 @@ GrDrawOpAtlas::ErrorCode GrAtlasManager::addGlyphToAtlas(const SkGlyph& skGlyph,
             return GrDrawOpAtlas::ErrorCode::kError;
     }
 
-    const int width = skGlyph.width() + 2*padding;
-    const int height = skGlyph.height() + 2*padding;
+    const int width = skGlyph.width() + padding;
+    const int height = skGlyph.height() + padding;
     int rowBytes = width * bytesPerPixel;
     size_t size = height * rowBytes;
 
@@ -204,7 +199,6 @@ GrDrawOpAtlas::ErrorCode GrAtlasManager::addGlyphToAtlas(const SkGlyph& skGlyph,
     }
 
     get_packed_glyph_image(skGlyph, rowBytes, expectedMaskFormat, dataPtr);
-
     auto errorCode = this->addToAtlas(resourceProvider,
                                       uploadTarget,
                                       expectedMaskFormat,
@@ -214,7 +208,13 @@ GrDrawOpAtlas::ErrorCode GrAtlasManager::addGlyphToAtlas(const SkGlyph& skGlyph,
                                       &glyph->fAtlasLocator);
 
     if (errorCode == GrDrawOpAtlas::ErrorCode::kSucceeded) {
-        glyph->fAtlasLocator.insetSrc(srcPadding);
+        if (srcPadding != SK_DistanceFieldInset && fSupportBilerpAtlas) {
+            glyph->fAtlasLocator.insetTopLeftSrc(1);
+            SkASSERT(skGlyph.width() == glyph->fAtlasLocator.width() &&
+                     skGlyph.height() == glyph->fAtlasLocator.height());
+        } else {
+            glyph->fAtlasLocator.insetSrc(srcPadding);
+        }
     }
 
     return errorCode;
