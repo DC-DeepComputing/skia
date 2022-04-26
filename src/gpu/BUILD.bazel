@@ -5,6 +5,7 @@ licenses(["notice"])
 cc_library(
     name = "core_srcs",
     deps = [
+        ":AtlasTypes_src",
         ":Blend_src",
         ":RectanizerPow2_src",
         ":RectanizerSkyline_src",
