@@ -22,6 +22,30 @@
       },
       "revId": "a66143bc22acbb2b2143954a5b559fd79a93910d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "98b0107a_9c5f0475",
+        "filename": "include/sksl/OWNERS",
+        "patchSetId": 1
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-04-26T23:38:54Z",
+      "side": 1,
+      "message": "Yeah, makes it clear if anyone is just looking at the local OWNERS when doing refactoring, etc...",
+      "parentUuid": "1f90af2f_a75ee771",
+      "range": {
+        "startLine": 2,
+        "startChar": 0,
+        "endLine": 2,
+        "endChar": 21
+      },
+      "revId": "a66143bc22acbb2b2143954a5b559fd79a93910d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
