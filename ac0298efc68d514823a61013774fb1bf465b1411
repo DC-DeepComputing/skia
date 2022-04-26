@@ -22,6 +22,30 @@
       },
       "revId": "ac0298efc68d514823a61013774fb1bf465b1411",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "99fb0e63_b0d57ffe",
+        "filename": "bench/SkSLBench.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-04-26T12:51:36Z",
+      "side": 1,
+      "message": "\u003chackerman\u003e\n\nI guess the other option would be to write all of the tests as runtime effects, and then invoke pipeline stage generator (outside the timing) to get backend sksl. But that\u0027s even more machinery, and probably has its own issues. This is definitely the easiest fix.",
+      "parentUuid": "b157b0d2_ef76ccb7",
+      "range": {
+        "startLine": 104,
+        "startChar": 0,
+        "endLine": 111,
+        "endChar": 57
+      },
+      "revId": "ac0298efc68d514823a61013774fb1bf465b1411",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
