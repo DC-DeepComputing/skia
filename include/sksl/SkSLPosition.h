@@ -21,9 +21,10 @@ public:
 
     static Position Range(int startOffset, int endOffset) {
         SkASSERT(startOffset <= endOffset);
+        SkASSERT(startOffset <= 0xFFFFFF);
         Position result;
         result.fStartOffset = startOffset;
-        result.fLength = endOffset - startOffset;
+        result.fLength = std::min(0xFF, endOffset - startOffset);
         return result;
     }
 
@@ -85,8 +86,8 @@ public:
     }
 
 private:
-    int32_t fStartOffset;
-    uint32_t fLength;
+    int32_t fStartOffset : 24;
+    uint32_t fLength : 8;
 };
 
 struct ForLoopPositions {
