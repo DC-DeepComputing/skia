@@ -303,6 +303,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0fb6ae89_bb3278b7",
+        "filename": "src/gpu/ganesh/GrDrawOpAtlas.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-04-26T15:00:28Z",
+      "side": 1,
+      "message": "I\u0027m not sure what the issue is here. We regularly store objects in the GPU backend in containers of base class pointers, and then downcast if we need to access subclass elements.",
+      "parentUuid": "7b696035_7ea38af2",
+      "range": {
+        "startLine": 110,
+        "startChar": 21,
+        "endLine": 110,
+        "endChar": 28
+      },
+      "revId": "594a45c610d2d59c06545023bca1ee44f8fb290c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0607fcac_6e44c666",
         "filename": "src/gpu/ganesh/GrDrawOpAtlas.h",
         "patchSetId": 3
