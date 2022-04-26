@@ -3677,6 +3677,14 @@ void SPIRVCodeGenerator::writeSwitchStatement(const SwitchStatement& s, OutputSt
     }
     labels.push_back(end);
     this->writeInstruction(SpvOpSelectionMerge, end, SpvSelectionControlMaskNone, out);
+
+    // If a switch contains only a `default` case and nothing else, this confuses some drivers and
+    // can lead to a crash. Adding a real case before the default seems to work around the bug,
+    // and doesn't change the meaning of the switch. (skia:12465)
+    bool addCase0 = cases.size() == 1 && cases.front()->as<SwitchCase>().isDefault();
+    if (addCase0) {
+        size += 2;
+    }
     this->writeOpCode(SpvOpSwitch, size, out);
     this->writeWord(value, out);
     this->writeWord(defaultLabel, out);
@@ -3687,6 +3695,10 @@ void SPIRVCodeGenerator::writeSwitchStatement(const SwitchStatement& s, OutputSt
         }
         this->writeWord(c.value(), out);
         this->writeWord(labels[i], out);
+    }
+    if (addCase0) {
+        this->writeWord(0, out);
+        this->writeWord(defaultLabel, out);
     }
     for (size_t i = 0; i < cases.size(); ++i) {
         const SwitchCase& c = cases[i]->as<SwitchCase>();

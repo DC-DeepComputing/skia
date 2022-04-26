@@ -60,7 +60,7 @@ OpFunctionEnd
 %31 = OpCompositeExtract %float %30 1
 %32 = OpConvertFToS %int %31
 OpSelectionMerge %33 None
-OpSwitch %32 %34
+OpSwitch %32 %34 0 %34
 %34 = OpLabel
 %35 = OpAccessChain %_ptr_Uniform_v4float %10 %int_0
 %36 = OpLoad %v4float %35
