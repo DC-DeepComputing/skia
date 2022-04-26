@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9982b962_01b7e2e0",
+        "filename": "src/gpu/ganesh/text/GrTextBlob.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 2523,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-04-26T19:07:06Z",
+      "side": 1,
+      "message": "Are these really not ready yet or should these just return false for now with a TODO?",
+      "revId": "d5f20f3247e4f0cdab78e7562a35358c9c99c004",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
