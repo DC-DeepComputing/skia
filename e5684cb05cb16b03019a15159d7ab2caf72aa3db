@@ -61,6 +61,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "546d8265_60f237ef",
+        "filename": "gn/gn_to_bp.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-04-26T20:09:12Z",
+      "side": 1,
+      "message": "updated commit message with reasoning. But the gist is we\u0027re soon going to delete third_party/vulkanmemorymanager anyways so this will be one less thing depending on that folder.",
+      "parentUuid": "0fa5937a_aa5633bc",
+      "range": {
+        "startLine": 117,
+        "startChar": 10,
+        "endLine": 117,
+        "endChar": 31
+      },
+      "revId": "e5684cb05cb16b03019a15159d7ab2caf72aa3db",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1e8a2ce9_1d2255fb",
         "filename": "gn/gn_to_bp.py",
         "patchSetId": 6
@@ -72,6 +96,30 @@
       "writtenOn": "2022-04-26T19:55:39Z",
       "side": 1,
       "message": "nit: line too long",
+      "range": {
+        "startLine": 699,
+        "startChar": 95,
+        "endLine": 699,
+        "endChar": 104
+      },
+      "revId": "e5684cb05cb16b03019a15159d7ab2caf72aa3db",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "073762bd_d8b84100",
+        "filename": "gn/gn_to_bp.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 699,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-04-26T20:09:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1e8a2ce9_1d2255fb",
       "range": {
         "startLine": 699,
         "startChar": 95,
