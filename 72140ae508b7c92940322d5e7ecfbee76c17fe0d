@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "87148b8b_46f9d0e3",
+        "filename": "src/core/SkDevice.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 450,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-04-26T14:46:45Z",
+      "side": 1,
+      "message": "I think this should still be the drawingPaint.",
+      "range": {
+        "startLine": 450,
+        "startChar": 57,
+        "endLine": 450,
+        "endChar": 69
+      },
+      "revId": "72140ae508b7c92940322d5e7ecfbee76c17fe0d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
