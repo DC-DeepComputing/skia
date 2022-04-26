@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a4e22a9b_40d05aec",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-04-26T20:32:19Z",
+      "side": 1,
+      "message": "Moving the list of Plots into the DrawAtlas subclasses also means that the array of Pages (in which they\u0027re stored) has to be moved as well, along with all the shared Page management code. Once that\u0027s gone, there\u0027s not much point to a DrawAtlas base class. So moving the DrawOpAtlas helper classes into AtlasTypes to be shared by the individual atlas classes.",
+      "revId": "7a96112e9b2d1ccda94ddddda36fb8fd68ae985a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
