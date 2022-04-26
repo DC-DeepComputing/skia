@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "adbc6fa5_50ade8df",
+        "filename": "src/sksl/codegen/SkSLVMCodeGenerator.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 343,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-04-26T15:57:20Z",
+      "side": 1,
+      "message": "I read this as it being the offset of the first character on each line, but it\u0027s actually one less than that, right? (ie, it\u0027s the offset of the newline at the end of the previous line?)",
+      "range": {
+        "startLine": 343,
+        "startChar": 20,
+        "endLine": 343,
+        "endChar": 45
+      },
+      "revId": "a20f60bd4cc247d1b50a683ab7139c180ef27c91",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
