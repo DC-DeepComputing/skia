@@ -2266,6 +2266,9 @@ static SkSamplingOptions clean_sampling_for_constraint(
         sampling.mipmap != SkMipmapMode::kNone) {
         return SkSamplingOptions(sampling.filter);
     }
+    if (sampling.isAniso()) {
+        return SkSamplingOptions(SkFilterMode::kLinear);
+    }
     return sampling;
 }
 
