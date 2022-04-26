@@ -155,6 +155,8 @@ if 'cipd_bin_packages' not in git:
           # always specify patch=True.
           patch=True,
           patch_refs=patch_refs,
+          # Testing
+          download_topics=True,
       )
 
     if checkout_chromium or checkout_flutter:
