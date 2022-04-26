@@ -11,6 +11,7 @@ from __future__ import print_function
 
 import os
 import pprint
+import shutil
 import string
 import subprocess
 import tempfile
@@ -113,6 +114,7 @@ cc_defaults {
         ],
         local_include_dirs: [
           "third_party/vulkanmemoryallocator/",
+          "vma_android/include",
         ],
       },
     },
@@ -692,6 +694,12 @@ mkdir_if_not_exists('mac/include/config/')
 mkdir_if_not_exists('win/include/config/')
 mkdir_if_not_exists('renderengine/include/config/')
 mkdir_if_not_exists('skqp/include/config/')
+mkdir_if_not_exists('vma_android/include')
+
+shutil.copy('third_party/externals/vulkanmemoryallocator/include/vk_mem_alloc.h',
+            'vma_android/include')
+shutil.copy('third_party/externals/vulkanmemoryallocator/LICENSE.txt', 'vma_android/')
+local_includes.add("vma_android/include")
 
 platforms = { 'IOS', 'MAC', 'WIN', 'ANDROID', 'UNIX' }
 
