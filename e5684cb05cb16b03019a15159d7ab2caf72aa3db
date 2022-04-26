@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "077122f4_fa02e308",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-04-26T15:17:21Z",
+      "side": 1,
+      "message": "Adding Leon and Ravi. I updated the gn-to-bp file. It now copies the vulkan stuff into vma_android/ directory. I also updated the include paths to have access to this new directory. PTAL and let me know if there is anything I should change.",
+      "revId": "e5684cb05cb16b03019a15159d7ab2caf72aa3db",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
