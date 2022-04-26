@@ -1029,10 +1029,6 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 		skip(ALL, "tests", ALL, "SkSLOutParamsAreDistinctFromGlobal_GPU") // skia:13115
 	}
 
-	if b.extraConfig("Vulkan") && b.isLinux() && b.matchGpu("Intel") {
-		skip(ALL, "tests", ALL, "SkSLSwitchDefaultOnly_GPU") // skia:12465
-	}
-
 	if b.extraConfig("ANGLE") && b.matchOs("Win") && b.matchGpu("IntelIris(540|655)") {
 		skip(ALL, "tests", ALL, "SkSLSwitchDefaultOnly_GPU") // skia:12465
 		skip(ALL, "tests", ALL, "SkSLVectorScalarMath_GPU")  // skia:11919
