@@ -16,6 +16,24 @@
       "message": "Are these really not ready yet or should these just return false for now with a TODO?",
       "revId": "d5f20f3247e4f0cdab78e7562a35358c9c99c004",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "03ca1d55_665a7359",
+        "filename": "src/gpu/ganesh/text/GrTextBlob.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 2523,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-04-26T19:08:12Z",
+      "side": 1,
+      "message": "I\u0027m removing them in the next CL.",
+      "parentUuid": "9982b962_01b7e2e0",
+      "revId": "d5f20f3247e4f0cdab78e7562a35358c9c99c004",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
