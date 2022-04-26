@@ -327,6 +327,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "34a0261c_e5c4d0e4",
+        "filename": "src/gpu/ganesh/GrDrawOpAtlas.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-04-26T15:16:16Z",
+      "side": 1,
+      "message": "But there is no need to. I have heard several times that the GPU team can\u0027t transform Ganesh to the new system because of the state of the code. Here is one instance where it is clear that the subclass has a specialization of Plot, and my suggestion above allows the type checker to make sure things are correct allowing the compiler to check the organization of the code.",
+      "parentUuid": "0fb6ae89_bb3278b7",
+      "range": {
+        "startLine": 110,
+        "startChar": 21,
+        "endLine": 110,
+        "endChar": 28
+      },
+      "revId": "594a45c610d2d59c06545023bca1ee44f8fb290c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0607fcac_6e44c666",
         "filename": "src/gpu/ganesh/GrDrawOpAtlas.h",
         "patchSetId": 3
