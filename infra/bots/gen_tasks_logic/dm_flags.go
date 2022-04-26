@@ -992,7 +992,7 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 
 	if b.matchGpu("Adreno[3456]") && !b.extraConfig("Vulkan") { // disable broken tests on Adreno 3/4/5/6xx GLSL
 		skip(ALL, "tests", ALL, "SkSLOutParamsAreDistinctFromGlobal_GPU") // skia:13115
-    }
+	}
 
 	if b.matchGpu("Adreno6") && !b.extraConfig("Vulkan") { // disable broken tests on Adreno 6xx GLSL
 		skip(ALL, "tests", ALL, "SkSLIntrinsicIsInf_GPU") // skia:12377
@@ -1024,8 +1024,8 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 	}
 
 	if b.matchGpu("Intel") && b.matchOs("Win") && !b.extraConfig("Vulkan") {
-		skip(ALL, "tests", ALL, "SkSLReturnsValueOnEveryPathES3_GPU") // skia:12465
-		skip(ALL, "tests", ALL, "SkSLReturnsValueOnEveryPathES3_GPU") // skia:12465
+		skip(ALL, "tests", ALL, "SkSLReturnsValueOnEveryPathES3_GPU")     // skia:12465
+		skip(ALL, "tests", ALL, "SkSLReturnsValueOnEveryPathES3_GPU")     // skia:12465
 		skip(ALL, "tests", ALL, "SkSLOutParamsAreDistinctFromGlobal_GPU") // skia:13115
 	}
 
@@ -1072,9 +1072,9 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 	}
 
 	if b.gpu("QuadroP400") && b.matchOs("Win10") && b.matchModel("Golo") {
-	    // Times out with driver 30.0.15.1179
+		// Times out with driver 30.0.15.1179
 		skip("vkmsaa4", "gm", ALL, "shadow_utils")
-    }
+	}
 
 	if b.gpu("PowerVRGE8320") || b.gpu("Tegra3") || b.gpu("Adreno308") {
 		skip(ALL, "tests", ALL, "SkSLVectorScalarMath_GPU") // skia:11919
@@ -1088,6 +1088,10 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 	if !b.extraConfig("Vulkan") && (b.gpu("RadeonR9M470X") || b.gpu("RadeonHD7770")) {
 		// Some AMD GPUs can get the wrong result when assembling non-square matrices (skia:12443)
 		skip(ALL, "tests", ALL, "SkSLMatrixConstructorsES3_GPU")
+	}
+
+	if b.extraConfig("Vulkan") && b.gpu("RadeonVega6") {
+		skip(ALL, "test", ALL, "VkYCbcrSampler_DrawImageWithYcbcrSampler") // skia:13265
 	}
 
 	if b.matchGpu("Intel") { // some Intel GPUs don't return zero for the derivative of a uniform
@@ -1219,7 +1223,7 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 
 	if b.arch("arm64") && b.extraConfig("ASAN") {
 		// skbug.com/13155 the use of longjmp may cause ASAN stack check issues.
-		skip(ALL, "test", ALL, "SkPDF_JpegIdentification");
+		skip(ALL, "test", ALL, "SkPDF_JpegIdentification")
 	}
 
 	if b.matchOs("Mac") && b.gpu("IntelHD6000") {
