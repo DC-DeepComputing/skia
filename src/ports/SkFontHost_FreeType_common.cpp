@@ -731,25 +731,53 @@ bool colrv1_configure_skpaint(FT_Face face,
             };
             startAngle = clampAngleToRange(startAngle);
             endAngle = clampAngleToRange(endAngle);
-            SkScalar sectorAngle =
-                    endAngle > startAngle ? endAngle - startAngle : endAngle + 360.0f - startAngle;
+
+            // The shader expects stops from 0 to 1, so we need to account for
+            // minimum and maximum stop positions being different from 0 and
+            // 1. We do that by scaling minimum and maximum stop positions to
+            // the 0 to 1 interval and scaling the angles inverse proportionally.
+
+            // Scale angles to align with 0 and 1 of scaled stops.
+            SkScalar sectorAngle = clampAngleToRange(endAngle - startAngle);
+            sectorAngle = sectorAngle <= 0 ? 360 - sectorAngle : sectorAngle;
+
+            SkScalar startAngleScaled = clampAngleToRange(startAngle + sectorAngle * stops.front());
+            SkScalar endAngleScaled = clampAngleToRange(startAngle + sectorAngle * stops.back());
+
+            // Scale stops.
+            SkScalar scaleFactor = 1 / (stops.back() - stops.front());
+            SkScalar startOffset = stops.front();
+
+            for (SkScalar& stop : stops) {
+                stop = (stop - startOffset) * scaleFactor;
+            }
 
             /* https://docs.microsoft.com/en-us/typography/opentype/spec/colr#sweep-gradients
              * "The angles are expressed in counter-clockwise degrees from the
              * direction of the positive x-axis on the design grid. [...]  The
              * color line progresses from the start angle to the end angle in
-             * the counter-clockwise direction;"
-             */
+             * the counter-clockwise direction;" - convert angles and stops from
+             * counter-clockwise to clockwise for the shader. */
+            std::swap(startAngleScaled, endAngleScaled);
+            startAngleScaled = 360.f - startAngleScaled;
+            endAngleScaled = 360.f - endAngleScaled;
+            if (startAngleScaled > endAngleScaled) {
+              // TODO(drott): Spec clarification needed for what should happen
+              // when the start and end angles cross 0/360 degrees and extend
+              // mode pad is selected.
+              startAngleScaled -= 360.0f;
+            }
+            std::reverse(stops.begin(), stops.end());
+            std::reverse(colors.begin(), colors.end());
+            for (auto& stop : stops) {
+              stop = 1.0f - stop;
+            }
 
-            SkMatrix localMatrix;
-            localMatrix.postRotate(startAngle, center.x(), center.y());
-            /* Mirror along x-axis to change angle direction. */
-            localMatrix.postScale(1, -1, center.x(), center.y());
             SkTileMode tileMode = ToSkTileMode(sweepGradient.colorline.extend);
 
             paint->setShader(SkGradientShader::MakeSweep(
                     center.x(), center.y(), colors.data(), stops.data(), stops.size(),
-                    tileMode, 0, sectorAngle, 0, &localMatrix));
+                    tileMode, startAngleScaled, endAngleScaled, 0, nullptr));
             return true;
         }
         default: {
