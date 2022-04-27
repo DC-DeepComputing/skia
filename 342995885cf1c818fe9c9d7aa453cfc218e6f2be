@@ -1,0 +1,78 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4077434a_80e004cb",
+        "filename": "src/gpu/ganesh/text/GrTextBlob.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 949,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-04-27T14:48:42Z",
+      "side": 1,
+      "message": "nit: extra space (here and after the `(`).",
+      "range": {
+        "startLine": 949,
+        "startChar": 21,
+        "endLine": 949,
+        "endChar": 22
+      },
+      "revId": "342995885cf1c818fe9c9d7aa453cfc218e6f2be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e093b0fd_355e63fa",
+        "filename": "src/gpu/ganesh/text/GrTextBlob.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 2177,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-04-27T14:48:42Z",
+      "side": 1,
+      "message": "nit: fits on previous line?",
+      "revId": "342995885cf1c818fe9c9d7aa453cfc218e6f2be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5f60cfae_46d71bee",
+        "filename": "src/gpu/ganesh/text/GrTextBlob.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 2491,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-04-27T14:48:42Z",
+      "side": 1,
+      "message": "The whitespace here is... interesting? Maybe put `DirectMaskSubRun::Make(` on the previous line like it was before?",
+      "revId": "342995885cf1c818fe9c9d7aa453cfc218e6f2be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4acec640_4b9c5d83",
+        "filename": "src/gpu/ganesh/text/GrTextBlob.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 2508,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-04-27T14:48:42Z",
+      "side": 1,
+      "message": "nit: looks like this might fit on the previous line now?",
+      "revId": "342995885cf1c818fe9c9d7aa453cfc218e6f2be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
