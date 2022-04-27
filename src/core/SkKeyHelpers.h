@@ -75,7 +75,7 @@ namespace GradientShaderBlocks {
                    fPoints[1] == rhs.fPoints[1] &&
                    fRadii[0] == rhs.fRadii[0] &&
                    fRadii[1] == rhs.fRadii[1] &&
-                   fTM == rhs.fTM &&
+                   fTM1 == rhs.fTM1 &&
                    fNumStops == rhs.fNumStops &&
                    !memcmp(fColor4fs, rhs.fColor4fs, sizeof(fColor4fs)) &&
                    !memcmp(fOffsets, rhs.fOffsets, sizeof(fOffsets));
@@ -85,7 +85,7 @@ namespace GradientShaderBlocks {
         SkShader::GradientType fType;
         SkPoint                fPoints[2];
         float                  fRadii[2];
-        SkTileMode             fTM;
+        SkTileMode             fTM1;
         int                    fNumStops;
         SkColor4f              fColor4fs[kMaxStops];
         float                  fOffsets[kMaxStops];
