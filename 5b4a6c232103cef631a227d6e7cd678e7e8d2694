@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e90a7e14_2761d70c",
+        "filename": "RELEASE_NOTES.txt",
+        "patchSetId": 1
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-27T14:55:21Z",
+      "side": 1,
+      "message": "\"The culmination of the experiment is automatically enabled\" is IMO not going to be meaningful to a non-Skia-team person skimming RELEASE_NOTES. They don\u0027t have enough context to know what the experiment was all about. \n\nCan we say something like \"Optimized path stroking(/filling?/rendering?) originally required GLSL and hardware tessellation, but those limitations no longer apply. Optimized path rendering is automatically enabled on any GPU-accelerated SkSurface created with MSAA, or when fInternalMultisampleCount is set to a non-zero value.\"?",
+      "range": {
+        "startLine": 21,
+        "startChar": 11,
+        "endLine": 22,
+        "endChar": 28
+      },
+      "revId": "5b4a6c232103cef631a227d6e7cd678e7e8d2694",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
