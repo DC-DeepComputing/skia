@@ -535,7 +535,10 @@ bool SkCanvas::readPixels(const SkPixmap& pm, int x, int y) {
     return pm.addr() && this->baseDevice()->readPixels(pm, x, y);
 }
 
-bool SkCanvas::readPixels(const SkImageInfo& dstInfo, void* dstP, size_t rowBytes, int x, int y) {
+bool SkCanvas::readPixels(const SkImageInfo& dstInfo,
+                          void* dstP,
+                          size_t rowBytes,
+                          int x, int y) {
     return this->readPixels({ dstInfo, dstP, rowBytes}, x, y);
 }
 
@@ -2262,9 +2265,13 @@ void SkCanvas::onDrawImage2(const SkImage* image, SkScalar x, SkScalar y,
 static SkSamplingOptions clean_sampling_for_constraint(
         const SkSamplingOptions& sampling,
         SkCanvas::SrcRectConstraint constraint) {
-    if (constraint == SkCanvas::kStrict_SrcRectConstraint &&
-        sampling.mipmap != SkMipmapMode::kNone) {
-        return SkSamplingOptions(sampling.filter);
+    if (constraint == SkCanvas::kStrict_SrcRectConstraint) {
+        if (sampling.mipmap != SkMipmapMode::kNone) {
+            return SkSamplingOptions(sampling.filter);
+        }
+        if (sampling.isAniso()) {
+            return SkSamplingOptions(SkFilterMode::kLinear);
+        }
     }
     return sampling;
 }
