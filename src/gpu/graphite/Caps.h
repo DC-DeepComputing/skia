@@ -38,7 +38,7 @@ public:
 
     virtual TextureInfo getDefaultMSAATextureInfo(const TextureInfo& singleSampledInfo) const = 0;
 
-    virtual TextureInfo getDefaultDepthStencilTextureInfo(Mask<DepthStencilFlags>,
+    virtual TextureInfo getDefaultDepthStencilTextureInfo(SkEnumBitMask<DepthStencilFlags>,
                                                           uint32_t sampleCount,
                                                           Protected) const = 0;
 
