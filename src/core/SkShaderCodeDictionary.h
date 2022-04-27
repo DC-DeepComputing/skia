@@ -36,7 +36,7 @@ private:
 
 enum class SnippetRequirementFlags : uint32_t {
     kNone = 0x0,
-    kDev2LocalMat = 0x1,
+    kLocalCoords = 0x1,
 };
 #ifdef SK_GRAPHITE_ENABLED
 SKGPU_MAKE_MASK_OPS(SnippetRequirementFlags);
@@ -90,8 +90,8 @@ public:
     void addFlags(SnippetRequirementFlags flags) {
         fSnippetRequirementFlags |= flags;
     }
-    bool needsDev2Local() const {
-        return fSnippetRequirementFlags & SnippetRequirementFlags::kDev2LocalMat;
+    bool needsLocalCoords() const {
+        return fSnippetRequirementFlags & SnippetRequirementFlags::kLocalCoords;
     }
 
     void setBlendInfo(const SkPipelineDataGatherer::BlendInfo& blendInfo) {
