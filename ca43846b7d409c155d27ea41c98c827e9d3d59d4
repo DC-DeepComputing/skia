@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0be70f92_d2a9407e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-04-27T20:27:55Z",
+      "side": 1,
+      "message": "I tried to go for a simple pattern of just appending/copying cflags_cc (at the end of large multi-stage configs, or immediately after cflags_cc was set for the tiny/simple ones.",
+      "revId": "ca43846b7d409c155d27ea41c98c827e9d3d59d4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
