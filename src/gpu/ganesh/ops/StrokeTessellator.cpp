@@ -238,8 +238,7 @@ int StrokeTessellator::prepare(GrMeshDrawTarget* target,
                                PathStrokeList* pathStrokeList,
                                int totalCombinedStrokeVerbCnt) {
     int preallocCount = FixedCountStrokes::PreallocCount(totalCombinedStrokeVerbCnt);
-    FixedCountStrokeWriter patchWriter{fAttribs, kMaxParametricSegments,
-                                       target, &fVertexChunkArray, preallocCount};
+    FixedCountStrokeWriter patchWriter{fAttribs, target, &fVertexChunkArray, preallocCount};
 
     fFixedEdgeCount = write_fixed_count_patches(std::move(patchWriter),
                                                 shaderMatrix,
