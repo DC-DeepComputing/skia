@@ -16,6 +16,24 @@
       "message": "I think you need this fallback logic in both doStages and makeProgram, as well.",
       "revId": "b65a9f9c989abc55f5120f7597e8ad38a29b457a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "aec50888_ba05c99b",
+        "filename": "src/shaders/SkImageShader.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 225,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-04-27T14:57:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "aee34ffc_e351cd58",
+      "revId": "b65a9f9c989abc55f5120f7597e8ad38a29b457a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
