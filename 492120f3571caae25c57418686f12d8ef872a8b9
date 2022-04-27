@@ -3,6 +3,167 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "740f2cf5_fd31a330",
+        "filename": "src/gpu/ganesh/dawn/GrDawnBuffer.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-04-27T13:56:51Z",
+      "side": 1,
+      "message": "Do we know if this is a recoverable failure case? Seems pretty bad if we can\u0027t get the mapped ranged from a newly created buffer. Also shouldn\u0027t it be possible for CreateBuffer itself to also fail (e.g. when OOM). Should this whole ctor actually live in an GrDawnBuffer::Make factory where we can return nullptr from in failure cases?",
+      "range": {
+        "startLine": 53,
+        "startChar": 12,
+        "endLine": 53,
+        "endChar": 21
+      },
+      "revId": "492120f3571caae25c57418686f12d8ef872a8b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "484c4c12_ff2e82eb",
+        "filename": "src/gpu/ganesh/dawn/GrDawnBuffer.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-04-27T13:56:51Z",
+      "side": 1,
+      "message": "what happens if the buffer is not mappable? blockingMap asserts the buffer is mappable.",
+      "range": {
+        "startLine": 70,
+        "startChar": 8,
+        "endLine": 70,
+        "endChar": 18
+      },
+      "revId": "492120f3571caae25c57418686f12d8ef872a8b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1f8cb263_964076e3",
+        "filename": "src/gpu/ganesh/dawn/GrDawnBuffer.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-04-27T13:56:51Z",
+      "side": 1,
+      "message": "I don\u0027t think we want debug statements like this that could trigger all the time. It will very quickly fill our logs with lots of noise. Now to be fair Ganesh doesn\u0027t have any good error/warning logging system so there isn\u0027t another good approach to do here besides remove it.",
+      "range": {
+        "startLine": 71,
+        "startChar": 8,
+        "endLine": 71,
+        "endChar": 65
+      },
+      "revId": "492120f3571caae25c57418686f12d8ef872a8b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "89fff3d5_cbdad7f6",
+        "filename": "src/gpu/ganesh/dawn/GrDawnBuffer.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-04-27T13:56:51Z",
+      "side": 1,
+      "message": "The GrDawnGpu doesn\u0027t specifically own all GrDawnBuffers. While the buffer is in use on the gpu the GrDawnGpu holds a ref to it but thats it. I don\u0027t think in general there is any explicitly wrong with directly create a GrDawnBuffer, but you just miss out on possibly reusing a buffer that is in our cache.",
+      "range": {
+        "startLine": 19,
+        "startChar": 21,
+        "endLine": 19,
+        "endChar": 55
+      },
+      "revId": "492120f3571caae25c57418686f12d8ef872a8b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cf02af0a_aaac022c",
+        "filename": "src/gpu/ganesh/dawn/GrDawnBuffer.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-04-27T13:56:51Z",
+      "side": 1,
+      "message": "copied where?",
+      "range": {
+        "startLine": 29,
+        "startChar": 3,
+        "endLine": 29,
+        "endChar": 9
+      },
+      "revId": "492120f3571caae25c57418686f12d8ef872a8b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "48052afb_f0191eb8",
+        "filename": "src/gpu/ganesh/dawn/GrDawnBuffer.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-04-27T13:56:51Z",
+      "side": 1,
+      "message": "Yes you don\u0027t want the buffer to be mapped since the first thing you will do to it is copy a texture into the buffer. And I believe Dawn doesn\u0027t allow a buffer to be mapped while it is being used on the GPU. Though is pointed out later on, there is a bug where we\u0027ll hit an Assert when trying to map after the copy. This is a bug.",
+      "range": {
+        "startLine": 39,
+        "startChar": 19,
+        "endLine": 40,
+        "endChar": 20
+      },
+      "revId": "492120f3571caae25c57418686f12d8ef872a8b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8f63225f_d045e60c",
+        "filename": "src/gpu/ganesh/dawn/GrDawnBuffer.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-04-27T13:56:51Z",
+      "side": 1,
+      "message": "I think in an ideal world (i.e. Graphite) we would not store the fStagingBuffer inside a normal buffer. Instead each GrDawnBuffer will only ever have ownership of one wgpu::Buffer. Then outside code would be responsible for making staging buffers and issuing a copy command to send the data to the main gpu buffers. However, the way Ganesh is setup I think this would be hard to do since we have no way to trigger buffer to buffer copies higher up in the generic api agnostic code.",
+      "range": {
+        "startLine": 41,
+        "startChar": 19,
+        "endLine": 41,
+        "endChar": 62
+      },
+      "revId": "492120f3571caae25c57418686f12d8ef872a8b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "dd2f3de7_58aaf8af",
         "filename": "src/gpu/ganesh/dawn/GrDawnBuffer.h",
         "patchSetId": 3
@@ -19,6 +180,75 @@
         "startChar": 3,
         "endLine": 44,
         "endChar": 7
+      },
+      "revId": "492120f3571caae25c57418686f12d8ef872a8b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "feaf127a_8fb075df",
+        "filename": "src/gpu/ganesh/dawn/GrDawnBuffer.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-04-27T13:56:51Z",
+      "side": 1,
+      "message": "nit: starting lowercase letter for member functions. blockingMap()",
+      "range": {
+        "startLine": 122,
+        "startChar": 9,
+        "endLine": 122,
+        "endChar": 20
+      },
+      "revId": "492120f3571caae25c57418686f12d8ef872a8b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "76bd8e1d_bd4b87be",
+        "filename": "src/gpu/ganesh/dawn/GrDawnGpu.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-04-27T13:56:51Z",
+      "side": 1,
+      "message": "should we assert fCount \u003d\u003d0 after this?",
+      "range": {
+        "startLine": 120,
+        "startChar": 4,
+        "endLine": 120,
+        "endChar": 21
+      },
+      "revId": "492120f3571caae25c57418686f12d8ef872a8b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "13e72675_f906a7ad",
+        "filename": "src/gpu/ganesh/dawn/GrDawnGpu.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 557,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-04-27T13:56:51Z",
+      "side": 1,
+      "message": "this-\u003e",
+      "range": {
+        "startLine": 557,
+        "startChar": 4,
+        "endLine": 557,
+        "endChar": 5
       },
       "revId": "492120f3571caae25c57418686f12d8ef872a8b9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"

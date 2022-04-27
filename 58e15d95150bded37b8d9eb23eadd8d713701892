@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0ee571a4_0eda2034",
+        "filename": "src/gpu/ganesh/dawn/GrDawnBuffer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-04-27T13:56:51Z",
+      "side": 1,
+      "message": "Yeah as discussed offline (and above) this is intentional here. The bug is the map call.",
+      "parentUuid": "eaf7e9a0_223213ae",
+      "range": {
+        "startLine": 47,
+        "startChar": 8,
+        "endLine": 47,
+        "endChar": 56
+      },
+      "revId": "58e15d95150bded37b8d9eb23eadd8d713701892",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f7824546_555fa333",
         "filename": "src/gpu/ganesh/dawn/GrDawnBuffer.h",
         "patchSetId": 1
