@@ -231,6 +231,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8099baa7_39bb08bb",
+        "filename": "tools/skqp/src/skqp.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-27T19:04:19Z",
+      "side": 1,
+      "message": "OK, gotcha. \nMaybe it would help a little to make this lambda its own named thing?\n\n  auto readLine \u003d [\u0026](std::string_view line) { //....\n  };\n  read_lines(dat-\u003edata(), dat-\u003esize(), readLine);\n  \nAt any rate it\u0027s NBD. Thanks for experimenting.",
+      "parentUuid": "3c21927e_60675199",
+      "range": {
+        "startLine": 158,
+        "startChar": 49,
+        "endLine": 158,
+        "endChar": 59
+      },
+      "revId": "525bc1b0887ed8230d145fe79d462bc8cdabee80",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d91f3a5c_59d3f3f5",
         "filename": "tools/skqp/src/skqp.cpp",
         "patchSetId": 1
