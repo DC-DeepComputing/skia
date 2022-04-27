@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "844e7d5b_c9fb23f8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2022-04-27T16:36:12Z",
+      "side": 1,
+      "message": "Need to get this into android/next-release very soon to unblock some partners.",
+      "revId": "525bc1b0887ed8230d145fe79d462bc8cdabee80",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
