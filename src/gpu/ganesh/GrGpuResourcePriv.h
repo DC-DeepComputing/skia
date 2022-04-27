@@ -74,6 +74,8 @@ public:
         return fResource->hasRef() || !fResource->hasNoCommandBufferUsages();
     }
 
+    void setLabel(std::string_view label) { fResource->setLabel(label); }
+
 protected:
     ResourcePriv(GrGpuResource* resource) : fResource(resource) {   }
     ResourcePriv(const ResourcePriv& that) : fResource(that.fResource) {}
