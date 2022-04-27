@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f572f2e2_4636c83e",
+        "filename": "resources/sksl/errors/IllegalRecursionSimple.sksl",
+        "patchSetId": 3
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-04-27T22:29:04Z",
+      "side": 1,
+      "message": "Do we allow mutual recursion (I would guess no, since at least WGSL doesn\u0027t allow cycles in declarations). Should there be a test for that as well?",
+      "range": {
+        "startLine": 3,
+        "startChar": 0,
+        "endLine": 3,
+        "endChar": 34
+      },
+      "revId": "304844fdc891a3c9fb17958515d483566008f0cf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
