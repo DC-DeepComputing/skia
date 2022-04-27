@@ -52,6 +52,24 @@
       "parentUuid": "ff26c379_07c227ff",
       "revId": "8c01db84828c78d661880f0e8ad2eabe6fec25e2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d9fb97bc_22aa3964",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-04-27T19:43:45Z",
+      "side": 1,
+      "message": "I don\u0027t think they are worries. All the things Jim said plus I wonder if a lot of these are caused by when we updated the vulkan drivers on these machines awhile back. There were some weird rendering changes (especially on msaa) when we did that. I wonder if this branch is still configured to run on machines with the old driver?",
+      "parentUuid": "84a7af2b_dac9ae92",
+      "revId": "8c01db84828c78d661880f0e8ad2eabe6fec25e2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
