@@ -342,7 +342,9 @@ template("gcc_like_toolchain") {
       command = "$link -shared {{ldflags}} $_start_group @$rspfile {{frameworks}} {{solibs}} $_end_group {{libs}} $rpath -o {{output}}"
       outputs = [ "{{root_out_dir}}/$soname" ]
       output_prefix = "lib"
-      default_output_extension = ".so"
+      if (is_mac || is_ios) {
+        default_output_extension = ".dylib"
+      }
       description = "link {{output}}"
       if (0 <= link_pool_depth) {
         pool = ":link_pool($default_toolchain)"
