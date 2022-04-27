@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d19be9ba_872adba3",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-04-27T15:29:19Z",
+      "side": 1,
+      "message": "nit:\n\n  Bug: skia:13240\n  Bug: skia:13242",
+      "revId": "f6dfe3f4740fbcb2e4ca76227aaeda5c2bfbdb6f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
