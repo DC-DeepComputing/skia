@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "78a1c24c_bc597db4",
+        "filename": "src/gpu/AtlasTypes.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-04-27T18:12:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8b71a1f9_352877d0",
+      "revId": "dcbc4cdb9cc6b301bfc55d0b808fb6e33ad0c7a6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "efb07acb_95e17872",
@@ -35,6 +53,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a7513c9c_69c219a2",
+        "filename": "src/gpu/AtlasTypes.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 176,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-04-27T18:12:16Z",
+      "side": 1,
+      "message": "Oh, that should have been removed. Moving AtlasGenerationCounter up to use its kInvalid constant.",
+      "parentUuid": "efb07acb_95e17872",
+      "revId": "dcbc4cdb9cc6b301bfc55d0b808fb6e33ad0c7a6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "51cb3a9a_15108971",
@@ -48,6 +84,24 @@
       "writtenOn": "2022-04-27T15:49:46Z",
       "side": 1,
       "message": "Make one line and move above \u0027fPlotAlreadyUpdated\u0027 ?",
+      "revId": "dcbc4cdb9cc6b301bfc55d0b808fb6e33ad0c7a6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "43f87210_b99921b7",
+        "filename": "src/gpu/ganesh/GrDrawOpAtlas.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 190,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-04-27T18:12:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "51cb3a9a_15108971",
       "revId": "dcbc4cdb9cc6b301bfc55d0b808fb6e33ad0c7a6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
