@@ -67,6 +67,121 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "49e5a6ac_5d8b2296",
+        "filename": "platform_tools/android/apps/skqp/src/main/assets/skqp/unittests.txt",
+        "patchSetId": 1
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-04-27T19:06:27Z",
+      "side": 1,
+      "message": "nit: \"excludes\" plus \"unless\" makes for a hard sentence for me to follow. Generally, I think it\u0027s easier to follow a sentence which describes what is happening, rather than what\u0027s not happening. How about something like:\n\n  The optional Android API level allows the test to be run if the level is\n  greater than the device\u0027s first API level.",
+      "range": {
+        "startLine": 4,
+        "startChar": 33,
+        "endLine": 4,
+        "endChar": 77
+      },
+      "revId": "525bc1b0887ed8230d145fe79d462bc8cdabee80",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "feb82045_758958ef",
+        "filename": "platform_tools/android/apps/skqp/src/main/assets/skqp/unittests.txt",
+        "patchSetId": 1
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-04-27T19:06:27Z",
+      "side": 1,
+      "message": "Now I think it\u0027s all tests with \"ES3\" in the name?",
+      "range": {
+        "startLine": 20,
+        "startChar": 30,
+        "endLine": 20,
+        "endChar": 46
+      },
+      "revId": "525bc1b0887ed8230d145fe79d462bc8cdabee80",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7dd79bff_7901aa88",
+        "filename": "platform_tools/android/apps/skqp/src/main/assets/skqp/unittests.txt",
+        "patchSetId": 1
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-04-27T19:06:27Z",
+      "side": 1,
+      "message": "Why this change?",
+      "range": {
+        "startLine": 45,
+        "startChar": 12,
+        "endLine": 45,
+        "endChar": 13
+      },
+      "revId": "525bc1b0887ed8230d145fe79d462bc8cdabee80",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0d5a7022_269640c8",
+        "filename": "tools/skqp/src/skqp.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-04-27T19:06:27Z",
+      "side": 1,
+      "message": "Isn\u0027t SkQP only used for Android? Should this be `SK_BUILD_FOR_ANDROID_FRAMEWORK`?",
+      "range": {
+        "startLine": 30,
+        "startChar": 7,
+        "endLine": 30,
+        "endChar": 27
+      },
+      "revId": "525bc1b0887ed8230d145fe79d462bc8cdabee80",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a8fc0e50_dfd09488",
+        "filename": "tools/skqp/src/skqp.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-04-27T19:06:27Z",
+      "side": 1,
+      "message": "Isn\u0027t this the device\u0027s first API level? And each test has a required API level?",
+      "range": {
+        "startLine": 65,
+        "startChar": 75,
+        "endLine": 65,
+        "endChar": 98
+      },
+      "revId": "525bc1b0887ed8230d145fe79d462bc8cdabee80",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "78c2df66_40b03453",
         "filename": "tools/skqp/src/skqp.cpp",
         "patchSetId": 1
