@@ -22,6 +22,30 @@
       },
       "revId": "a6eaac059509b723b1e0f756f4a6418407727fd6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "779eb107_160481fb",
+        "filename": "RELEASE_NOTES.txt",
+        "patchSetId": 5
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-04-27T14:39:37Z",
+      "side": 1,
+      "message": "I should not write after 9pm apparently. I have https://skia-review.googlesource.com/c/skia/+/534566, but will wait to land it once we know the disabling CL doesn\u0027t cause any critical regressions requiring a revert.",
+      "parentUuid": "6efcb369_25ed1ee9",
+      "range": {
+        "startLine": 21,
+        "startChar": 11,
+        "endLine": 22,
+        "endChar": 80
+      },
+      "revId": "a6eaac059509b723b1e0f756f4a6418407727fd6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
