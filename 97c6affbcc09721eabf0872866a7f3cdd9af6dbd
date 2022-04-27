@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4b926697_232278ee",
+        "filename": "src/sksl/analysis/SkSLCheckProgramStructure.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 184,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-04-27T22:34:48Z",
+      "side": 1,
+      "message": "Was the original short-circuit intentional before? Now `INHERITED::visitExpression(expr)` will get evaluated, which is different from the old behavior.",
+      "range": {
+        "startLine": 184,
+        "startChar": 55,
+        "endLine": 184,
+        "endChar": 64
+      },
+      "revId": "97c6affbcc09721eabf0872866a7f3cdd9af6dbd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
