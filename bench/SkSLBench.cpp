@@ -75,7 +75,8 @@ public:
             // The test programs we compile don't follow Vulkan rules and thus produce invalid
             // SPIR-V. This is harmless, so long as we don't try to validate them.
             fSettings.fValidateSPIRV = false;
-
+            fProgramKind = this->usesRuntimeShader() ? SkSL::ProgramKind::kRuntimeShader
+                                                     : SkSL::ProgramKind::kFragment;
             this->fixUpSource();
         }
 
@@ -100,7 +101,7 @@ protected:
         // Runtime shaders which have slightly different conventions than fragment shaders.
         // Perform a handful of fixups to compensate. These are hand-tuned for our current set of
         // test shaders and will probably need to be updated if we add more.
-        if (this->usesRuntimeShader()) {
+        if (fProgramKind == SkSL::ProgramKind::kRuntimeShader) {
             fixup(R"(void main\(\))",                              "half4 main(float2 xy)");
             fixup(R"(sk_FragColor =)",                             "return");
             fixup(R"(sk_FragCoord)",                               "_FragCoord");
@@ -114,25 +115,20 @@ protected:
 
     void onDraw(int loops, SkCanvas* canvas) override {
         for (int i = 0; i < loops; i++) {
-            const SkSL::ProgramKind kind = this->usesRuntimeShader()
-                                                   ? SkSL::ProgramKind::kRuntimeShader
-                                                   : SkSL::ProgramKind::kFragment;
-            std::unique_ptr<SkSL::Program> program = SkSL::DSLParser(&fCompiler,
-                                                                     fSettings,
-                                                                     kind,
-                                                                     fSrc).program();
+            std::unique_ptr<SkSL::Program> program = fCompiler.convertProgram(fProgramKind, fSrc,
+                                                                              fSettings);
             if (fCompiler.errorCount()) {
                 SK_ABORT("shader compilation failed: %s\n", fCompiler.errorText().c_str());
             }
             std::string result;
             switch (fOutput) {
-                case Output::kNone:  break;
-                case Output::kGLSL:    SkAssertResult(fCompiler.toGLSL(*program,  &result));  break;
-                case Output::kMetal:   SkAssertResult(fCompiler.toMetal(*program, &result));  break;
-                case Output::kSPIRV:   SkAssertResult(fCompiler.toSPIRV(*program, &result));  break;
+                case Output::kNone:    break;
+                case Output::kGLSL:    SkAssertResult(fCompiler.toGLSL(*program,  &result)); break;
+                case Output::kMetal:   SkAssertResult(fCompiler.toMetal(*program, &result)); break;
+                case Output::kSPIRV:   SkAssertResult(fCompiler.toSPIRV(*program, &result)); break;
                 case Output::kSkVM:
                 case Output::kSkVMOpt:
-                case Output::kSkVMJIT: SkAssertResult(CompileToSkVM(*program, fOutput));  break;
+                case Output::kSkVMJIT: SkAssertResult(CompileToSkVM(*program, fOutput)); break;
             }
         }
     }
@@ -156,6 +152,7 @@ private:
     GrMockCaps fCaps;
     SkSL::Compiler fCompiler;
     SkSL::Program::Settings fSettings;
+    SkSL::ProgramKind fProgramKind;
     Output fOutput;
 
     using INHERITED = Benchmark;
