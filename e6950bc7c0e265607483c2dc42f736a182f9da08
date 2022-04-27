@@ -16,6 +16,24 @@
       "message": "I would have expected more places to need fixup, but I suppose most of our use of objcxx isn\u0027t all that interesting and so wasn\u0027t setting a bunch of flags.",
       "revId": "e6950bc7c0e265607483c2dc42f736a182f9da08",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "44d589f8_dd04d227",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-04-27T20:43:56Z",
+      "side": 1,
+      "message": "Yes. Much of it is centralized in the \"default\" config. There are a few other oddball spots, but those tend to be on targets that definitely don\u0027t have obj-c files (public_headers_check), or for things like windows.",
+      "parentUuid": "e4ce2725_2e62269c",
+      "revId": "e6950bc7c0e265607483c2dc42f736a182f9da08",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
