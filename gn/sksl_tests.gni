@@ -63,6 +63,7 @@ sksl_error_tests = [
   "/sksl/errors/FunctionParameterOfVoid.rts",
   "/sksl/errors/GenericArgumentMismatch.rts",
   "/sksl/errors/IfTypeMismatch.rts",
+  "/sksl/errors/IllegalRecursionSimple.sksl",
   "/sksl/errors/IncompleteExpression.rts",
   "/sksl/errors/IncompleteFunctionCall.rts",
   "/sksl/errors/InterfaceBlockMemberReservedName.sksl",
