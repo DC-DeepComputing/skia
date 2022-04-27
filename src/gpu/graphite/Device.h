@@ -9,10 +9,10 @@
 #define skgpu_Device_DEFINED
 
 #include "src/core/SkDevice.h"
+#include "src/core/SkEnumBitMask.h"
 
 #include "src/gpu/graphite/ClipStack_graphite.h"
 #include "src/gpu/graphite/DrawOrder.h"
-#include "src/gpu/graphite/EnumBitMask.h"
 #include "src/gpu/graphite/geom/Rect.h"
 #include "src/gpu/graphite/geom/Transform_graphite.h"
 

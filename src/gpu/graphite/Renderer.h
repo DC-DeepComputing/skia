@@ -8,9 +8,9 @@
 #ifndef skgpu_graphite_Renderer_DEFINED
 #define skgpu_graphite_Renderer_DEFINED
 
+#include "src/core/SkEnumBitMask.h"
 #include "src/gpu/graphite/Attribute.h"
 #include "src/gpu/graphite/DrawTypes.h"
-#include "src/gpu/graphite/EnumBitMask.h"
 #include "src/gpu/graphite/ResourceTypes.h"
 
 #include "include/core/SkSpan.h"
