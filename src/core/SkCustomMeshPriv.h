@@ -80,11 +80,50 @@ struct SkCustomMeshSpecificationPriv {
     }
 };
 
-bool SkValidateCustomMesh(const SkCustomMesh&);
+struct SkCustomMeshPriv {
+    static bool Validate(const SkCustomMesh&);
 
-std::unique_ptr<const char[]> SkCopyCustomMeshVB(const SkCustomMesh& cm);
+    class Buffer {
+    public:
+        virtual ~Buffer() = default;
+        virtual sk_sp<const SkData> asData() const = 0;
+        virtual size_t size() const = 0;
+    };
 
-std::unique_ptr<const uint16_t[]> SkCopyCustomMeshIB(const SkCustomMesh& cm);
+    class IB : public Buffer, public SkCustomMesh::IndexBuffer  {};
+    class VB : public Buffer, public SkCustomMesh::VertexBuffer {};
+
+    class CpuIndexBuffer : public IB {
+    public:
+        CpuIndexBuffer();
+        ~CpuIndexBuffer() override;
+
+        static sk_sp<IndexBuffer> Make(sk_sp<const SkData> data);
+
+        sk_sp<const SkData> asData() const override;
+
+        size_t size() const override;
+
+    private:
+        sk_sp<const SkData> fData;
+    };
+
+    class CpuVertexBuffer : public VB {
+    public:
+        CpuVertexBuffer();
+
+        ~CpuVertexBuffer() override;
+
+        static sk_sp<VertexBuffer> Make(sk_sp<const SkData> data);
+
+        sk_sp<const SkData> asData() const override;
+
+        size_t size() const override;
+
+    private:
+        sk_sp<const SkData> fData;
+    };
+};
 
 #endif  // SK_ENABLE_SKSL
 
