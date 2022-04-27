@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6efcb369_25ed1ee9",
+        "filename": "RELEASE_NOTES.txt",
+        "patchSetId": 5
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-27T13:40:20Z",
+      "side": 1,
+      "message": "This is very hard to understand/may be actually unintelligible",
+      "range": {
+        "startLine": 21,
+        "startChar": 11,
+        "endLine": 22,
+        "endChar": 80
+      },
+      "revId": "a6eaac059509b723b1e0f756f4a6418407727fd6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
