@@ -223,9 +223,7 @@ void StrokeTessellateOp::onPrepare(GrOpFlushState* flushState) {
                                                matrixMinMaxScales,
                                                &fPathStrokeList,
                                                fTotalCombinedVerbCnt);
-    if (!fTessellationShader->willUseTessellationShaders()) {
-        fTessellationShader->setFixedCountNumTotalEdges(fixedEdgeCount);
-    }
+    fTessellationShader->setFixedCountNumTotalEdges(fixedEdgeCount);
 }
 
 void StrokeTessellateOp::onExecute(GrOpFlushState* flushState, const SkRect& chainBounds) {

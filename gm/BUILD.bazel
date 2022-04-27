@@ -8653,32 +8653,6 @@ generated_cc_atom(
 )
 
 generated_cc_atom(
-    name = "tessellation_src",
-    srcs = ["tessellation.cpp"],
-    visibility = ["//:__subpackages__"],
-    deps = [
-        ":gm_hdr",
-        "//src/core:SkCanvasPriv_hdr",
-        "//src/gpu/ganesh:GrCaps_hdr",
-        "//src/gpu/ganesh:GrDirectContextPriv_hdr",
-        "//src/gpu/ganesh:GrGeometryProcessor_hdr",
-        "//src/gpu/ganesh:GrMemoryPool_hdr",
-        "//src/gpu/ganesh:GrOpFlushState_hdr",
-        "//src/gpu/ganesh:GrOpsRenderPass_hdr",
-        "//src/gpu/ganesh:GrPipeline_hdr",
-        "//src/gpu/ganesh:GrProgramInfo_hdr",
-        "//src/gpu/ganesh:GrRecordingContextPriv_hdr",
-        "//src/gpu/ganesh:GrShaderCaps_hdr",
-        "//src/gpu/ganesh:GrShaderVar_hdr",
-        "//src/gpu/ganesh/glsl:GrGLSLFragmentShaderBuilder_hdr",
-        "//src/gpu/ganesh/glsl:GrGLSLVarying_hdr",
-        "//src/gpu/ganesh/glsl:GrGLSLVertexGeoBuilder_hdr",
-        "//src/gpu/ganesh/ops:GrDrawOp_hdr",
-        "//src/gpu/ganesh/v1:SurfaceDrawContext_v1_hdr",
-    ],
-)
-
-generated_cc_atom(
     name = "testgradient_src",
     srcs = ["testgradient.cpp"],
     visibility = ["//:__subpackages__"],
