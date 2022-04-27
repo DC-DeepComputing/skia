@@ -22,6 +22,30 @@
       },
       "revId": "304844fdc891a3c9fb17958515d483566008f0cf",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "224465a4_a8dbc545",
+        "filename": "resources/sksl/errors/IllegalRecursionSimple.sksl",
+        "patchSetId": 3
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-27T22:57:34Z",
+      "side": 1,
+      "message": "We disallow any recursive structure.\n \nWe have tests for different types of recursion here:\nhttp://osscs/skia/skia/+/main:resources/sksl/runtime_errors/IllegalRecursionComplex.rts\nhttp://osscs/skia/skia/+/main:resources/sksl/runtime_errors/IllegalRecursionMutual.rts\nhttp://osscs/skia/skia/+/main:resources/sksl/runtime_errors/IllegalRecursionSimple.rts\n\nThis is just a copy of the existing runtime-effect test. Previously we only ran the recursion checks on runtime-effect code; in the followup CL we will run it everywhere. The logic will be the same; the change is only in where the checks are run.\n\nIf you think it would be clearer I can just move all three tests out of Runtime and into Shared, instead of making a copy. In hindsight I think that might have been better.",
+      "parentUuid": "f572f2e2_4636c83e",
+      "range": {
+        "startLine": 3,
+        "startChar": 0,
+        "endLine": 3,
+        "endChar": 34
+      },
+      "revId": "304844fdc891a3c9fb17958515d483566008f0cf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
