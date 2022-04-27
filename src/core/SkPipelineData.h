@@ -15,10 +15,10 @@
 #include "include/core/SkSpan.h"
 #include "include/core/SkTileMode.h"
 #include "include/private/SkColorData.h"
+#include "src/core/SkEnumBitMask.h"
 
 #ifdef SK_GRAPHITE_ENABLED
 #include "src/gpu/Blend.h"
-#include "src/gpu/graphite/EnumBitMask.h"
 #include "src/gpu/graphite/TextureProxy.h"
 #include "src/gpu/graphite/UniformManager.h"
 #include "src/gpu/graphite/geom/VectorTypes.h"
@@ -186,10 +186,10 @@ private:
     void doneWithExpectedUniforms() { fUniformManager.doneWithExpectedUniforms(); }
 #endif // SK_DEBUG
 
-    SkTextureDataBlock                             fTextureDataBlock;
-    BlendInfo                                      fBlendInfo;
-    skgpu::graphite::UniformManager                fUniformManager;
-    skgpu::graphite::Mask<SnippetRequirementFlags> fSnippetRequirementFlags;
+    SkTextureDataBlock                     fTextureDataBlock;
+    BlendInfo                              fBlendInfo;
+    skgpu::graphite::UniformManager        fUniformManager;
+    SkEnumBitMask<SnippetRequirementFlags> fSnippetRequirementFlags;
 #endif // SK_GRAPHITE_ENABLED
 };
 
