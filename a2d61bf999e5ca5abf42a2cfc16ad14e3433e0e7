@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "46ca0c2b_b2c1c87f",
+        "filename": "src/shaders/SkImageShader.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 479,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-04-27T15:08:37Z",
+      "side": 1,
+      "message": "I think the fallback needs to happen before these checks, or we could accidentally end up with mipmap enabled? (Which will trigger asserts further down).",
+      "revId": "a2d61bf999e5ca5abf42a2cfc16ad14e3433e0e7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "86d89e87_e92dd3de",
+        "filename": "src/shaders/SkImageShader.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 788,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-04-27T15:08:37Z",
+      "side": 1,
+      "message": "I think the fallback needs to happen before this line, or mipmap might be ignored?",
+      "revId": "a2d61bf999e5ca5abf42a2cfc16ad14e3433e0e7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
