@@ -1,0 +1,113 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c854b5e5_316fa3bd",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 2269,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-04-27T17:50:53Z",
+      "side": 1,
+      "message": "Is this supposed to be `constraint \u003d\u003d kStrict \u0026\u0026 sampling.isAniso()`?",
+      "revId": "c79656dd6382000304a55496ede93dda654d4f6f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4c4d8dea_6e0c3429",
+        "filename": "src/core/SkPictureRecord.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 540,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-04-27T17:50:53Z",
+      "side": 1,
+      "message": "nit: line length",
+      "range": {
+        "startLine": 540,
+        "startChar": 0,
+        "endLine": 540,
+        "endChar": 103
+      },
+      "revId": "c79656dd6382000304a55496ede93dda654d4f6f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ada2f0eb_ff494fc0",
+        "filename": "src/gpu/ganesh/effects/GrTextureEffect.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-04-27T17:50:53Z",
+      "side": 1,
+      "message": "Are these swapped? or do we want to turn off MM when it\u0027s mipmapped, and switch to linear between levels when it doesn\u0027t have any levels (which is a no-op?)",
+      "range": {
+        "startLine": 92,
+        "startChar": 38,
+        "endLine": 93,
+        "endChar": 58
+      },
+      "revId": "c79656dd6382000304a55496ede93dda654d4f6f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f23ce5b9_a81c6dcd",
+        "filename": "src/gpu/ganesh/v1/Device_drawTexture.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 330,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-04-27T17:50:53Z",
+      "side": 1,
+      "message": "It looks like every place we call GrSDS::drawTexture, we pass in SkMipmapMode::kNone. Should we just remove that parameter? Or can we support mipmaps with the texture op if the texture has them and we aren\u0027t using the strict constraint (which should already have been corrected for at this point).\n\nSimilarly, we could support anisotropy in texture op, except we don\u0027t have the plumbing for it at the moment right? It\u0027s not at the same level as the tile modes or cubic filtering where we handle it in the shader if HW can\u0027t do it.",
+      "range": {
+        "startLine": 329,
+        "startChar": 61,
+        "endLine": 330,
+        "endChar": 72
+      },
+      "revId": "c79656dd6382000304a55496ede93dda654d4f6f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "86595f3f_22b36114",
+        "filename": "src/image/SkImage_GpuYUVA.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-04-27T17:50:53Z",
+      "side": 1,
+      "message": "unused?",
+      "range": {
+        "startLine": 31,
+        "startChar": 0,
+        "endLine": 33,
+        "endChar": 22
+      },
+      "revId": "c79656dd6382000304a55496ede93dda654d4f6f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
