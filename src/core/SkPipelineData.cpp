@@ -41,8 +41,8 @@ void SkPipelineDataGatherer::addFlags(SnippetRequirementFlags flags) {
     fSnippetRequirementFlags |= flags;
 }
 
-bool SkPipelineDataGatherer::needsDev2Local() const {
-    return fSnippetRequirementFlags & SnippetRequirementFlags::kDev2LocalMat;
+bool SkPipelineDataGatherer::needsLocalCoords() const {
+    return fSnippetRequirementFlags & SnippetRequirementFlags::kLocalCoords;
 }
 #endif // SK_GRAPHITE_ENABLED
 
