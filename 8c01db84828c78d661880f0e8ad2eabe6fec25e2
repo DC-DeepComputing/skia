@@ -70,6 +70,24 @@
       "parentUuid": "84a7af2b_dac9ae92",
       "revId": "8c01db84828c78d661880f0e8ad2eabe6fec25e2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4912182a_ec90c6d6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-04-27T20:45:49Z",
+      "side": 1,
+      "message": "Just to add to this, all the weird images are on windows and linux golo machines. This change only effects Adreno devices. So I\u0027m pretty sure then this is some issue related to the updated drivers on these GOLO devices.",
+      "parentUuid": "d9fb97bc_22aa3964",
+      "revId": "8c01db84828c78d661880f0e8ad2eabe6fec25e2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
