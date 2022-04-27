@@ -1,0 +1,136 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "516ae7f4_3fb98327",
+        "filename": "src/core/SkEnumBitMask.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-04-27T18:01:40Z",
+      "side": 1,
+      "message": "wdyt about just calling SkBitMask? SkMask is already taken, but this would keep the name of a full type a little shorter, and if we\u0027re passing in the enum type name as the template, that helps show it\u0027s a bit mask derived from that enum?",
+      "range": {
+        "startLine": 34,
+        "startChar": 6,
+        "endLine": 34,
+        "endChar": 20
+      },
+      "revId": "31371bf49b42c1a794ea5ae65f69f9d78c7b811e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "15afda73_45e6501c",
+        "filename": "src/core/SkEnumBitMask.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-04-27T18:01:40Z",
+      "side": 1,
+      "message": "Regardless of if we keep the base type as SkEnumBitMask or SkBitMask, I think this should be updated to SK_MAKE_BITMASK_OPS",
+      "range": {
+        "startLine": 67,
+        "startChar": 8,
+        "endLine": 67,
+        "endChar": 24
+      },
+      "revId": "31371bf49b42c1a794ea5ae65f69f9d78c7b811e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c623a1f4_d6cb12e4",
+        "filename": "src/core/SkEnumBitMask.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-04-27T18:01:40Z",
+      "side": 1,
+      "message": "And similarly SK_DECL_BITMASK_OPS_FRIENDS",
+      "range": {
+        "startLine": 81,
+        "startChar": 8,
+        "endLine": 81,
+        "endChar": 32
+      },
+      "revId": "31371bf49b42c1a794ea5ae65f69f9d78c7b811e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "893b55d5_b55143b0",
+        "filename": "tests/MaskTest.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-04-27T18:01:40Z",
+      "side": 1,
+      "message": "Should we rename this to tests/SkEnumBitMaskTest.cpp?",
+      "revId": "31371bf49b42c1a794ea5ae65f69f9d78c7b811e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7c05feb8_e6f875b5",
+        "filename": "tests/MaskTest.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-04-27T18:01:40Z",
+      "side": 1,
+      "message": "can be deleted?",
+      "range": {
+        "startLine": 19,
+        "startChar": 0,
+        "endLine": 19,
+        "endChar": 32
+      },
+      "revId": "31371bf49b42c1a794ea5ae65f69f9d78c7b811e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f1de6585_ff4f800c",
+        "filename": "tests/MaskTest.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-04-27T18:01:40Z",
+      "side": 1,
+      "message": "Probably not a graphite test anymore :)",
+      "range": {
+        "startLine": 21,
+        "startChar": 0,
+        "endLine": 21,
+        "endChar": 17
+      },
+      "revId": "31371bf49b42c1a794ea5ae65f69f9d78c7b811e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
