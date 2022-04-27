@@ -26,7 +26,7 @@
 //
 // (Goldman, Ron. (2003). 5.6.3 Wang's Formula. "Pyramid Algorithms: A Dynamic Programming Approach
 // to Curves and Surfaces for Geometric Modeling". Morgan Kaufmann Publishers.)
-namespace skgpu::wangs_formula {
+namespace skgpu::tess::wangs_formula {
 
 // Returns the value by which to multiply length in Wang's formula. (See above.)
 template<int Degree> constexpr float length_term(float precision) {
@@ -281,7 +281,7 @@ AI int conic_log2(float tolerance,
     return nextlog4(conic_pow2(tolerance, pts, w, vectorXform));
 }
 
-}  // namespace skgpu::wangs_formula
+}  // namespace skgpu::tess::wangs_formula
 
 #undef AI
 

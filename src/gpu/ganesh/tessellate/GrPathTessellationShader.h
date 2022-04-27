@@ -38,7 +38,7 @@ public:
                                           SkArenaAlloc*,
                                           const SkMatrix& viewMatrix,
                                           const SkPMColor4f&,
-                                          skgpu::PatchAttribs);
+                                          skgpu::tess::PatchAttribs);
 
     // Returns the stencil settings to use for a standard Redbook "stencil" pass.
     static const GrUserStencilSettings* StencilPathSettings(GrFillRule fillRule) {
@@ -108,7 +108,7 @@ protected:
                              GrPrimitiveType primitiveType,
                              const SkMatrix& viewMatrix,
                              const SkPMColor4f& color,
-                             skgpu::PatchAttribs attribs)
+                             skgpu::tess::PatchAttribs attribs)
             : GrTessellationShader(classID, primitiveType, viewMatrix, color)
             , fAttribs(attribs) {
     }
@@ -141,7 +141,7 @@ protected:
         SkString fVaryingColorName;
     };
 
-    const skgpu::PatchAttribs fAttribs;
+    const skgpu::tess::PatchAttribs fAttribs;
 };
 
 #endif

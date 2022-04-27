@@ -26,6 +26,8 @@ public:
 
 private:
     using PathStrokeList = StrokeTessellator::PathStrokeList;
+    using PatchAttribs = StrokeTessellator::PatchAttribs;
+
     DEFINE_OP_CLASS_ID
 
     SkStrokeRec& headStroke() { return fPathStrokeList.fStroke; }

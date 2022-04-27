@@ -158,10 +158,10 @@ DEF_PATH_TESS_BENCH(GrPathWedgeTessellator, make_cubic_path(8), SkMatrix::I()) {
 
 static void benchmark_wangs_formula_cubic_log2(const SkMatrix& matrix, const SkPath& path) {
     int sum = 0;
-    wangs_formula::VectorXform xform(matrix);
+    tess::wangs_formula::VectorXform xform(matrix);
     for (auto [verb, pts, w] : SkPathPriv::Iterate(path)) {
         if (verb == SkPathVerb::kCubic) {
-            sum += wangs_formula::cubic_log2(4, pts, xform);
+            sum += tess::wangs_formula::cubic_log2(4, pts, xform);
         }
     }
     // Don't let the compiler optimize away wangs_formula::cubic_log2.
@@ -186,10 +186,10 @@ DEF_PATH_TESS_BENCH(wangs_formula_cubic_log2_affine, make_cubic_path(18),
 
 static void benchmark_wangs_formula_conic(const SkMatrix& matrix, const SkPath& path) {
     int sum = 0;
-    wangs_formula::VectorXform xform(matrix);
+    tess::wangs_formula::VectorXform xform(matrix);
     for (auto [verb, pts, w] : SkPathPriv::Iterate(path)) {
         if (verb == SkPathVerb::kConic) {
-            sum += wangs_formula::conic(4, pts, *w, xform);
+            sum += tess::wangs_formula::conic(4, pts, *w, xform);
         }
     }
     // Don't let the compiler optimize away wangs_formula::conic.
@@ -200,10 +200,10 @@ static void benchmark_wangs_formula_conic(const SkMatrix& matrix, const SkPath& 
 
 static void benchmark_wangs_formula_conic_log2(const SkMatrix& matrix, const SkPath& path) {
     int sum = 0;
-    wangs_formula::VectorXform xform(matrix);
+    tess::wangs_formula::VectorXform xform(matrix);
     for (auto [verb, pts, w] : SkPathPriv::Iterate(path)) {
         if (verb == SkPathVerb::kConic) {
-            sum += wangs_formula::conic_log2(4, pts, *w, xform);
+            sum += tess::wangs_formula::conic_log2(4, pts, *w, xform);
         }
     }
     // Don't let the compiler optimize away wangs_formula::conic.
@@ -230,8 +230,8 @@ DEF_PATH_TESS_BENCH(middle_out_triangulation,
     int baseVertex;
     VertexWriter vertexWriter = fTarget->makeVertexWriter(
             sizeof(SkPoint), maxVerts, &buffer, &baseVertex);
-    AffineMatrix m(gAlmostIdentity);
-    for (PathMiddleOutFanIter it(fPath); !it.done();) {
+    tess::AffineMatrix m(gAlmostIdentity);
+    for (tess::PathMiddleOutFanIter it(fPath); !it.done();) {
         for (auto [p0, p1, p2] : it.nextStack()) {
             vertexWriter << m.map2Points(p0, p1) << m.mapPoint(p2);
         }
@@ -305,6 +305,8 @@ static std::vector<PathStrokeList> make_motionmark_paths() {
     }
     return pathStrokes;
 }
+
+using PatchAttribs = tess::PatchAttribs;
 
 class TessPrepareBench : public Benchmark {
 public:

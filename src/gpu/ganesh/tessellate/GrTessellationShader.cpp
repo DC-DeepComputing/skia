@@ -25,8 +25,8 @@ const GrPipeline* GrTessellationShader::MakePipeline(const ProgramArgs& args,
 }
 
 const char* GrTessellationShader::WangsFormulaSkSL() {
-    static_assert(skgpu::wangs_formula::length_term<3>(1) == 0.75);
-    static_assert(skgpu::wangs_formula::length_term_pow2<3>(1) == 0.5625);
+    static_assert(skgpu::tess::wangs_formula::length_term<3>(1) == 0.75);
+    static_assert(skgpu::tess::wangs_formula::length_term_pow2<3>(1) == 0.5625);
 
     return R"(
 // Returns the length squared of the largest forward difference from Wang's cubic formula.
