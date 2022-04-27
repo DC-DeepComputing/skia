@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f89b9d4a_50314e15",
+        "filename": "platform_tools/android/apps/skqp/src/main/assets/skqp/unittests.txt",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2022-04-27T19:00:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d11a5ae9_bf1af4b2",
+      "range": {
+        "startLine": 1,
+        "startChar": 17,
+        "endLine": 1,
+        "endChar": 47
+      },
+      "revId": "525bc1b0887ed8230d145fe79d462bc8cdabee80",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "78c2df66_40b03453",
@@ -54,6 +78,30 @@
       "writtenOn": "2022-04-27T18:37:19Z",
       "side": 1,
       "message": "Prefer to use a struct instead of a pair or a tuple whenever the elements can have meaningful names. (http://go/cstyle#Structs_vs._Tuples )",
+      "range": {
+        "startLine": 78,
+        "startChar": 16,
+        "endLine": 78,
+        "endChar": 25
+      },
+      "revId": "525bc1b0887ed8230d145fe79d462bc8cdabee80",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b0050bdc_642dab3c",
+        "filename": "tools/skqp/src/skqp.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2022-04-27T19:00:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "78c2df66_40b03453",
       "range": {
         "startLine": 78,
         "startChar": 16,
@@ -110,6 +158,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "03adb670_f1071dc4",
+        "filename": "tools/skqp/src/skqp.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2022-04-27T19:00:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1e250847_849d6ae7",
+      "range": {
+        "startLine": 144,
+        "startChar": 53,
+        "endLine": 144,
+        "endChar": 63
+      },
+      "revId": "525bc1b0887ed8230d145fe79d462bc8cdabee80",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "08acf96e_f3fa8cb0",
@@ -123,6 +195,30 @@
       "writtenOn": "2022-04-27T18:37:19Z",
       "side": 1,
       "message": "We are creating a lambda with captures, then capturing that lambda here just to call it one time below on L184. This is a little hard to follow.\n\nI think it would be simpler to either \n(a) migrate the `testExists` code into this lambda\n(b) migrate the `testExists` code into a standalone static `test_exists` helper function, and pass in the lists manually",
+      "range": {
+        "startLine": 158,
+        "startChar": 49,
+        "endLine": 158,
+        "endChar": 59
+      },
+      "revId": "525bc1b0887ed8230d145fe79d462bc8cdabee80",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3c21927e_60675199",
+        "filename": "tools/skqp/src/skqp.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2022-04-27T19:00:43Z",
+      "side": 1,
+      "message": "I initially had it the code inlined in the lambda, but found it easier to read and less complex to have it as a function.  In particular being able to return when a match was found instead of having to break made the code simpler.\n\nI then moved it to a static function, but that got messy because the parameter list had to include unitTestList and skslTestList so that we could reuse them.  So in the end I thought this was the cleanest approach.",
+      "parentUuid": "08acf96e_f3fa8cb0",
       "range": {
         "startLine": 158,
         "startChar": 49,
@@ -156,6 +252,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5c5582e3_fd38813c",
+        "filename": "tools/skqp/src/skqp.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 173,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2022-04-27T19:00:43Z",
+      "side": 1,
+      "message": "good catch.  I had reused that variable later in the file, but dropped the reuse from the final patch so I can delete this.",
+      "parentUuid": "d91f3a5c_59d3f3f5",
+      "range": {
+        "startLine": 173,
+        "startChar": 8,
+        "endLine": 173,
+        "endChar": 62
+      },
+      "revId": "525bc1b0887ed8230d145fe79d462bc8cdabee80",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5a09a93b_db1c9d7d",
@@ -169,6 +289,30 @@
       "writtenOn": "2022-04-27T18:37:19Z",
       "side": 1,
       "message": "This is fine as-is, but you could technically leave out the ternary if you like. atoi promises to returns 0 when passed a blank string.",
+      "range": {
+        "startLine": 295,
+        "startChar": 25,
+        "endLine": 295,
+        "endChar": 47
+      },
+      "revId": "525bc1b0887ed8230d145fe79d462bc8cdabee80",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "30ac867a_b032a09a",
+        "filename": "tools/skqp/src/skqp.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 295,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2022-04-27T19:00:43Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "5a09a93b_db1c9d7d",
       "range": {
         "startLine": 295,
         "startChar": 25,
