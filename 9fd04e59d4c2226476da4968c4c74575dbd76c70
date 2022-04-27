@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2994daa3_d359d4f0",
+        "filename": "gn/toolchain/BUILD.gn",
+        "patchSetId": 1
+      },
+      "lineNbr": 346,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-04-27T14:55:43Z",
+      "side": 1,
+      "message": "Do we still want to set this to `.so` in an `else`? The gn documentation doesn\u0027t say anything about this defaulting to anything, and gn itself just passes this along into the `{output_extension}`. I think this change is removing the `.so` from the other platforms?",
+      "revId": "9fd04e59d4c2226476da4968c4c74575dbd76c70",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
