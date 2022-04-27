@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f05c6c1f_4ed6e066",
+        "filename": "src/gpu/ganesh/dawn/GrDawnBuffer.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-04-27T17:45:45Z",
+      "side": 1,
+      "message": "Unfortunately this is not recoverable and there are legitimate situations when this can happen (e.g. if the wgpu::Buffer is invalid because it got created during shutdown, etc). However there is also a bug here that I filed skbug.com/13266 for, which this prevents a crash from.\n\nAs for your suggestion for a factory method: yes, I think that would be better and we\u0027d handle failures at construction gracefully. I can roll that into this CL.",
+      "parentUuid": "740f2cf5_fd31a330",
+      "range": {
+        "startLine": 53,
+        "startChar": 12,
+        "endLine": 53,
+        "endChar": 21
+      },
+      "revId": "492120f3571caae25c57418686f12d8ef872a8b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "484c4c12_ff2e82eb",
         "filename": "src/gpu/ganesh/dawn/GrDawnBuffer.cpp",
         "patchSetId": 3
@@ -37,6 +61,30 @@
       "writtenOn": "2022-04-27T13:56:51Z",
       "side": 1,
       "message": "what happens if the buffer is not mappable? blockingMap asserts the buffer is mappable.",
+      "range": {
+        "startLine": 70,
+        "startChar": 8,
+        "endLine": 70,
+        "endChar": 18
+      },
+      "revId": "492120f3571caae25c57418686f12d8ef872a8b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "21386db8_5dcc1157",
+        "filename": "src/gpu/ganesh/dawn/GrDawnBuffer.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-04-27T17:45:45Z",
+      "side": 1,
+      "message": "Currently the only way this can get set to true is if the buffer is mappable (see onUnmap below). For non-mappable buffers this should get skipped. It probably makes sense to add an assertion here for this.",
+      "parentUuid": "484c4c12_ff2e82eb",
       "range": {
         "startLine": 70,
         "startChar": 8,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cf1bb6ec_fa7e0d0e",
+        "filename": "src/gpu/ganesh/dawn/GrDawnBuffer.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-04-27T17:45:45Z",
+      "side": 1,
+      "message": "Done. I was sort of half-assuming that this macro only worked on debug builds. I\u0027ll say that it has been useful in debugging this case and IWBN if we had a dynamic log verbosity system of some sort, so I could mark this message at a verbose/spammy level.",
+      "parentUuid": "1f8cb263_964076e3",
+      "range": {
+        "startLine": 71,
+        "startChar": 8,
+        "endLine": 71,
+        "endChar": 65
+      },
+      "revId": "492120f3571caae25c57418686f12d8ef872a8b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "89fff3d5_cbdad7f6",
@@ -93,6 +165,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f17a30a5_743dbf7f",
+        "filename": "src/gpu/ganesh/dawn/GrDawnBuffer.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-04-27T17:45:45Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "89fff3d5_cbdad7f6",
+      "range": {
+        "startLine": 19,
+        "startChar": 21,
+        "endLine": 19,
+        "endChar": 55
+      },
+      "revId": "492120f3571caae25c57418686f12d8ef872a8b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cf02af0a_aaac022c",
@@ -106,6 +202,30 @@
       "writtenOn": "2022-04-27T13:56:51Z",
       "side": 1,
       "message": "copied where?",
+      "range": {
+        "startLine": 29,
+        "startChar": 3,
+        "endLine": 29,
+        "endChar": 9
+      },
+      "revId": "492120f3571caae25c57418686f12d8ef872a8b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "db8e9234_485713e3",
+        "filename": "src/gpu/ganesh/dawn/GrDawnBuffer.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-04-27T17:45:45Z",
+      "side": 1,
+      "message": "Rephrased as \"copied into the buffer\" (referring to the memcpy in onUpdateData).",
+      "parentUuid": "cf02af0a_aaac022c",
       "range": {
         "startLine": 29,
         "startChar": 3,
@@ -164,6 +284,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f3383553_c45f4ba1",
+        "filename": "src/gpu/ganesh/dawn/GrDawnBuffer.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-04-27T17:45:45Z",
+      "side": 1,
+      "message": "That makes sense and also refactoring Ganesh/Dawn code for this purpose is probably not worth the effort. I\u0027ll remove the TODO as it\u0027s not really actionable outside of having a better design for the Graphite version.",
+      "parentUuid": "8f63225f_d045e60c",
+      "range": {
+        "startLine": 41,
+        "startChar": 19,
+        "endLine": 41,
+        "endChar": 62
+      },
+      "revId": "492120f3571caae25c57418686f12d8ef872a8b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "dd2f3de7_58aaf8af",
         "filename": "src/gpu/ganesh/dawn/GrDawnBuffer.h",
         "patchSetId": 3
@@ -208,6 +352,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "dd7cb13e_4525c9f3",
+        "filename": "src/gpu/ganesh/dawn/GrDawnBuffer.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-04-27T17:45:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "feaf127a_8fb075df",
+      "range": {
+        "startLine": 122,
+        "startChar": 9,
+        "endLine": 122,
+        "endChar": 20
+      },
+      "revId": "492120f3571caae25c57418686f12d8ef872a8b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "76bd8e1d_bd4b87be",
@@ -233,6 +401,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ae4852bf_6cdd8cbe",
+        "filename": "src/gpu/ganesh/dawn/GrDawnGpu.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-04-27T17:45:45Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "76bd8e1d_bd4b87be",
+      "range": {
+        "startLine": 120,
+        "startChar": 4,
+        "endLine": 120,
+        "endChar": 21
+      },
+      "revId": "492120f3571caae25c57418686f12d8ef872a8b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "13e72675_f906a7ad",
         "filename": "src/gpu/ganesh/dawn/GrDawnGpu.cpp",
         "patchSetId": 3
@@ -244,6 +436,30 @@
       "writtenOn": "2022-04-27T13:56:51Z",
       "side": 1,
       "message": "this-\u003e",
+      "range": {
+        "startLine": 557,
+        "startChar": 4,
+        "endLine": 557,
+        "endChar": 5
+      },
+      "revId": "492120f3571caae25c57418686f12d8ef872a8b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "502c83fe_b781ecfa",
+        "filename": "src/gpu/ganesh/dawn/GrDawnGpu.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 557,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-04-27T17:45:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "13e72675_f906a7ad",
       "range": {
         "startLine": 557,
         "startChar": 4,
