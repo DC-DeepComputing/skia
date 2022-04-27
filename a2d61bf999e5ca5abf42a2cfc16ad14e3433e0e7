@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "06e32e8f_cd738ca7",
+        "filename": "src/shaders/SkImageShader.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 479,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-04-27T15:15:20Z",
+      "side": 1,
+      "message": "duh, yeah.",
+      "parentUuid": "46ca0c2b_b2c1c87f",
+      "revId": "a2d61bf999e5ca5abf42a2cfc16ad14e3433e0e7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "86d89e87_e92dd3de",
@@ -31,6 +49,24 @@
       "writtenOn": "2022-04-27T15:08:37Z",
       "side": 1,
       "message": "I think the fallback needs to happen before this line, or mipmap might be ignored?",
+      "revId": "a2d61bf999e5ca5abf42a2cfc16ad14e3433e0e7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "270e3934_ced1e40c",
+        "filename": "src/shaders/SkImageShader.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 788,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-04-27T15:15:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "86d89e87_e92dd3de",
       "revId": "a2d61bf999e5ca5abf42a2cfc16ad14e3433e0e7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
