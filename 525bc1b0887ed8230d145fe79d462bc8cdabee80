@@ -183,6 +183,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4a58d453_61b473d2",
+        "filename": "platform_tools/android/apps/skqp/src/main/assets/skqp/unittests.txt",
+        "patchSetId": 1
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2022-04-27T20:20:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ec70ddd1_142aa05f",
+      "range": {
+        "startLine": 20,
+        "startChar": 30,
+        "endLine": 20,
+        "endChar": 46
+      },
+      "revId": "525bc1b0887ed8230d145fe79d462bc8cdabee80",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7dd79bff_7901aa88",
@@ -410,6 +434,30 @@
       "side": 1,
       "message": "renamed to enforcedAndroidAPILevel",
       "parentUuid": "a8fc0e50_dfd09488",
+      "range": {
+        "startLine": 65,
+        "startChar": 75,
+        "endLine": 65,
+        "endChar": 98
+      },
+      "revId": "525bc1b0887ed8230d145fe79d462bc8cdabee80",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "06801671_a61ff41b",
+        "filename": "tools/skqp/src/skqp.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2022-04-27T20:20:50Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "f0147430_c2ab4dcf",
       "range": {
         "startLine": 65,
         "startChar": 75,
