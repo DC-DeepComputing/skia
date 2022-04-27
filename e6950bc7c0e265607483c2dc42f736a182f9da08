@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e4ce2725_2e62269c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-04-27T20:39:38Z",
+      "side": 1,
+      "message": "I would have expected more places to need fixup, but I suppose most of our use of objcxx isn\u0027t all that interesting and so wasn\u0027t setting a bunch of flags.",
+      "revId": "e6950bc7c0e265607483c2dc42f736a182f9da08",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
