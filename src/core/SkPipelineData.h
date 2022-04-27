@@ -158,7 +158,7 @@ public:
     bool hasTextures() const { return !fTextureDataBlock.empty(); }
 
     void addFlags(SnippetRequirementFlags flags);
-    bool needsDev2Local() const;
+    bool needsLocalCoords() const;
 
     const SkTextureDataBlock& textureDataBlock() { return fTextureDataBlock; }
 
