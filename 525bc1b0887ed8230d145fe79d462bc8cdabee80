@@ -16,6 +16,167 @@
       "message": "Need to get this into android/next-release very soon to unblock some partners.",
       "revId": "525bc1b0887ed8230d145fe79d462bc8cdabee80",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d11a5ae9_bf1af4b2",
+        "filename": "platform_tools/android/apps/skqp/src/main/assets/skqp/unittests.txt",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-27T18:37:19Z",
+      "side": 1,
+      "message": "nit: This is not quite right. Tests are separated by newlines (commas are for appending an API level) and it leaves out the regex part.\n\nSince we explain the format on L3, IMO we can just say \"This file is a list of tests to be excluded...\" and avoid describing it here at all.",
+      "range": {
+        "startLine": 1,
+        "startChar": 17,
+        "endLine": 1,
+        "endChar": 47
+      },
+      "revId": "525bc1b0887ed8230d145fe79d462bc8cdabee80",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "78c2df66_40b03453",
+        "filename": "tools/skqp/src/skqp.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-27T18:37:19Z",
+      "side": 1,
+      "message": "Prefer to use a struct instead of a pair or a tuple whenever the elements can have meaningful names. (http://go/cstyle#Structs_vs._Tuples )",
+      "range": {
+        "startLine": 78,
+        "startChar": 16,
+        "endLine": 78,
+        "endChar": 25
+      },
+      "revId": "525bc1b0887ed8230d145fe79d462bc8cdabee80",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8a617863_084c84c5",
+        "filename": "tools/skqp/src/skqp.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-27T18:37:19Z",
+      "side": 1,
+      "message": "Use type deduction only if it makes the code clearer to readers who aren\u0027t familiar with the project, or if it makes the code safer. Do not use it merely to avoid the inconvenience of writing an explicit type. (http://go/cstyle#Type_deduction )",
+      "range": {
+        "startLine": 140,
+        "startChar": 10,
+        "endLine": 140,
+        "endChar": 14
+      },
+      "revId": "525bc1b0887ed8230d145fe79d462bc8cdabee80",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1e250847_849d6ae7",
+        "filename": "tools/skqp/src/skqp.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-27T18:37:19Z",
+      "side": 1,
+      "message": "const std::regex\u0026",
+      "range": {
+        "startLine": 144,
+        "startChar": 53,
+        "endLine": 144,
+        "endChar": 63
+      },
+      "revId": "525bc1b0887ed8230d145fe79d462bc8cdabee80",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "08acf96e_f3fa8cb0",
+        "filename": "tools/skqp/src/skqp.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-27T18:37:19Z",
+      "side": 1,
+      "message": "We are creating a lambda with captures, then capturing that lambda here just to call it one time below on L184. This is a little hard to follow.\n\nI think it would be simpler to either \n(a) migrate the `testExists` code into this lambda\n(b) migrate the `testExists` code into a standalone static `test_exists` helper function, and pass in the lists manually",
+      "range": {
+        "startLine": 158,
+        "startChar": 49,
+        "endLine": 158,
+        "endChar": 59
+      },
+      "revId": "525bc1b0887ed8230d145fe79d462bc8cdabee80",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d91f3a5c_59d3f3f5",
+        "filename": "tools/skqp/src/skqp.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 173,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-27T18:37:19Z",
+      "side": 1,
+      "message": "The variable doesn\u0027t really seem necessary; we can use comments to explain the meaning if you think the L171 comment isn\u0027t sufficient\n\n  if (commaLocation !\u003d line.npos) {\n    // We found an API string",
+      "range": {
+        "startLine": 173,
+        "startChar": 8,
+        "endLine": 173,
+        "endChar": 62
+      },
+      "revId": "525bc1b0887ed8230d145fe79d462bc8cdabee80",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5a09a93b_db1c9d7d",
+        "filename": "tools/skqp/src/skqp.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 295,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-27T18:37:19Z",
+      "side": 1,
+      "message": "This is fine as-is, but you could technically leave out the ternary if you like. atoi promises to returns 0 when passed a blank string.",
+      "range": {
+        "startLine": 295,
+        "startChar": 25,
+        "endLine": 295,
+        "endChar": 47
+      },
+      "revId": "525bc1b0887ed8230d145fe79d462bc8cdabee80",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
