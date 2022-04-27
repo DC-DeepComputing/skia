@@ -98,7 +98,7 @@ std::string SkShaderInfo::emitGlueCodeForEntry(int* entryIndex,
 std::string SkShaderInfo::toSkSL() const {
     // The uniforms are mangled by having their index in 'fEntries' as a suffix (i.e., "_%d")
     std::string result = skgpu::graphite::GetMtlUniforms(2, "FS", fBlockReaders,
-                                                         this->needsDev2Local());
+                                                         this->needsLocalCoords());
 
     int binding = 0;
     result += skgpu::graphite::GetMtlTexturesAndSamplers(fBlockReaders, &binding);
