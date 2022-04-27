@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8bfc4f84_4f60db59",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 31
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-04-27T14:49:10Z",
+      "side": 1,
+      "message": "I\u0027m okay with landing this as-is, but I think the kDev2LocalMat SnippetRequirement would be more generalized if it were something like kRequiresLocalCoords. Then Graphite\u0027s glue code handles that by using a dev-to-local matrix for now. That can be a separate CL or maybe is moot as things evolve.",
+      "revId": "cc4da1df973fff67a7c2339441e699628fb2e2e3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
