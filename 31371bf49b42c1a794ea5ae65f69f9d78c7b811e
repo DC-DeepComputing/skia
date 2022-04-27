@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "71524856_5c4ab04f",
+        "filename": "src/core/SkEnumBitMask.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-04-27T19:39:18Z",
+      "side": 1,
+      "message": "As discussed offline, I\u0027m going to stick with SkEnumBitMask. I didn\u0027t find the longer name to be an issue.",
+      "parentUuid": "516ae7f4_3fb98327",
+      "range": {
+        "startLine": 34,
+        "startChar": 6,
+        "endLine": 34,
+        "endChar": 20
+      },
+      "revId": "31371bf49b42c1a794ea5ae65f69f9d78c7b811e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "15afda73_45e6501c",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-04-27T18:01:40Z",
       "side": 1,
       "message": "Regardless of if we keep the base type as SkEnumBitMask or SkBitMask, I think this should be updated to SK_MAKE_BITMASK_OPS",
+      "range": {
+        "startLine": 67,
+        "startChar": 8,
+        "endLine": 67,
+        "endChar": 24
+      },
+      "revId": "31371bf49b42c1a794ea5ae65f69f9d78c7b811e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5bbc0e96_7ef425aa",
+        "filename": "src/core/SkEnumBitMask.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-04-27T19:39:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "15afda73_45e6501c",
       "range": {
         "startLine": 67,
         "startChar": 8,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0c2a996b_93caabc7",
+        "filename": "src/core/SkEnumBitMask.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-04-27T19:39:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c623a1f4_d6cb12e4",
+      "range": {
+        "startLine": 81,
+        "startChar": 8,
+        "endLine": 81,
+        "endChar": 32
+      },
+      "revId": "31371bf49b42c1a794ea5ae65f69f9d78c7b811e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "893b55d5_b55143b0",
@@ -83,6 +155,24 @@
       "writtenOn": "2022-04-27T18:01:40Z",
       "side": 1,
       "message": "Should we rename this to tests/SkEnumBitMaskTest.cpp?",
+      "revId": "31371bf49b42c1a794ea5ae65f69f9d78c7b811e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "271d781c_86ed2994",
+        "filename": "tests/MaskTest.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-04-27T19:39:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "893b55d5_b55143b0",
       "revId": "31371bf49b42c1a794ea5ae65f69f9d78c7b811e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -110,6 +200,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d52d28eb_34ae87a2",
+        "filename": "tests/MaskTest.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-04-27T19:39:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7c05feb8_e6f875b5",
+      "range": {
+        "startLine": 19,
+        "startChar": 0,
+        "endLine": 19,
+        "endChar": 32
+      },
+      "revId": "31371bf49b42c1a794ea5ae65f69f9d78c7b811e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f1de6585_ff4f800c",
@@ -123,6 +237,30 @@
       "writtenOn": "2022-04-27T18:01:40Z",
       "side": 1,
       "message": "Probably not a graphite test anymore :)",
+      "range": {
+        "startLine": 21,
+        "startChar": 0,
+        "endLine": 21,
+        "endChar": 17
+      },
+      "revId": "31371bf49b42c1a794ea5ae65f69f9d78c7b811e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "82772616_d7594c38",
+        "filename": "tests/MaskTest.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-04-27T19:39:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f1de6585_ff4f800c",
       "range": {
         "startLine": 21,
         "startChar": 0,
