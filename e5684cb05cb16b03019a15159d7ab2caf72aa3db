@@ -36,6 +36,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "101c8bf8_8dd3753e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5145
+      },
+      "writtenOn": "2022-04-27T15:54:16Z",
+      "side": 1,
+      "message": "This change has been deployed to the roller so feel free to submit now.",
+      "parentUuid": "b5313658_329f720d",
+      "revId": "e5684cb05cb16b03019a15159d7ab2caf72aa3db",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0fa5937a_aa5633bc",
