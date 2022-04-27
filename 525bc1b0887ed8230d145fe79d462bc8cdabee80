@@ -88,6 +88,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c64baa60_662c8868",
+        "filename": "platform_tools/android/apps/skqp/src/main/assets/skqp/unittests.txt",
+        "patchSetId": 1
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2022-04-27T19:45:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "49e5a6ac_5d8b2296",
+      "range": {
+        "startLine": 4,
+        "startChar": 33,
+        "endLine": 4,
+        "endChar": 77
+      },
+      "revId": "525bc1b0887ed8230d145fe79d462bc8cdabee80",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "feb82045_758958ef",
@@ -101,6 +125,30 @@
       "writtenOn": "2022-04-27T19:06:27Z",
       "side": 1,
       "message": "Now I think it\u0027s all tests with \"ES3\" in the name?",
+      "range": {
+        "startLine": 20,
+        "startChar": 30,
+        "endLine": 20,
+        "endChar": 46
+      },
+      "revId": "525bc1b0887ed8230d145fe79d462bc8cdabee80",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9d8bee54_f6723999",
+        "filename": "platform_tools/android/apps/skqp/src/main/assets/skqp/unittests.txt",
+        "patchSetId": 1
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2022-04-27T19:45:27Z",
+      "side": 1,
+      "message": "Yes, I\u0027ll update the comment.  When I added the check to see if any tests were excluded it didn\u0027t have any matches.  Looking through the original list of exclusions it was intended to catch the ES3 tests and didn\u0027t.",
+      "parentUuid": "feb82045_758958ef",
       "range": {
         "startLine": 20,
         "startChar": 30,
@@ -182,6 +230,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d88b864a_9072497b",
+        "filename": "platform_tools/android/apps/skqp/src/main/assets/skqp/unittests.txt",
+        "patchSetId": 1
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2022-04-27T19:45:27Z",
+      "side": 1,
+      "message": "When I added the check to see if any tests were excluded it didn\u0027t have any matches.  The test is was supposed to exclude has additional characters after \"PromiseImage\".",
+      "parentUuid": "7dd79bff_7901aa88",
+      "range": {
+        "startLine": 45,
+        "startChar": 12,
+        "endLine": 45,
+        "endChar": 13
+      },
+      "revId": "525bc1b0887ed8230d145fe79d462bc8cdabee80",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0d5a7022_269640c8",
@@ -207,6 +279,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "608e342c_6201f7a6",
+        "filename": "tools/skqp/src/skqp.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2022-04-27T19:45:27Z",
+      "side": 1,
+      "message": "No, we build it for linux too. Fuschia also runs a copy of it as well to help verify their GPU drivers.",
+      "parentUuid": "0d5a7022_269640c8",
+      "range": {
+        "startLine": 30,
+        "startChar": 7,
+        "endLine": 30,
+        "endChar": 27
+      },
+      "revId": "525bc1b0887ed8230d145fe79d462bc8cdabee80",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a8fc0e50_dfd09488",
         "filename": "tools/skqp/src/skqp.cpp",
         "patchSetId": 1
@@ -218,6 +314,30 @@
       "writtenOn": "2022-04-27T19:06:27Z",
       "side": 1,
       "message": "Isn\u0027t this the device\u0027s first API level? And each test has a required API level?",
+      "range": {
+        "startLine": 65,
+        "startChar": 75,
+        "endLine": 65,
+        "endChar": 98
+      },
+      "revId": "525bc1b0887ed8230d145fe79d462bc8cdabee80",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f0147430_c2ab4dcf",
+        "filename": "tools/skqp/src/skqp.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2022-04-27T19:45:27Z",
+      "side": 1,
+      "message": "renamed to enforcedAndroidAPILevel",
+      "parentUuid": "a8fc0e50_dfd09488",
       "range": {
         "startLine": 65,
         "startChar": 75,
@@ -309,6 +429,30 @@
         "id": 11059
       },
       "writtenOn": "2022-04-27T19:04:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8a617863_084c84c5",
+      "range": {
+        "startLine": 140,
+        "startChar": 10,
+        "endLine": 140,
+        "endChar": 14
+      },
+      "revId": "525bc1b0887ed8230d145fe79d462bc8cdabee80",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6a135384_b8aa6b74",
+        "filename": "tools/skqp/src/skqp.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2022-04-27T19:45:27Z",
       "side": 1,
       "message": "Done",
       "parentUuid": "8a617863_084c84c5",
@@ -430,6 +574,30 @@
       "side": 1,
       "message": "OK, gotcha. \nMaybe it would help a little to make this lambda its own named thing?\n\n  auto readLine \u003d [\u0026](std::string_view line) { //....\n  };\n  read_lines(dat-\u003edata(), dat-\u003esize(), readLine);\n  \nAt any rate it\u0027s NBD. Thanks for experimenting.",
       "parentUuid": "3c21927e_60675199",
+      "range": {
+        "startLine": 158,
+        "startChar": 49,
+        "endLine": 158,
+        "endChar": 59
+      },
+      "revId": "525bc1b0887ed8230d145fe79d462bc8cdabee80",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d95c3c02_1ef52630",
+        "filename": "tools/skqp/src/skqp.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2022-04-27T19:45:27Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "8099baa7_39bb08bb",
       "range": {
         "startLine": 158,
         "startChar": 49,
