@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "96dc1223_d13c90b1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-04-27T21:22:50Z",
+      "side": 1,
+      "message": "This won\u0027t work until my last ANGLE CL rolls in (but won\u0027t do any harm before then, I think).",
+      "revId": "7487d27e9eca72ecf5889b6c35503e17b3813b68",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
