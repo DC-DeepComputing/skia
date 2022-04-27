@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f7038e4e_bbe5e300",
+        "filename": "platform_tools/android/apps/skqp/src/main/assets/skqp/unittests.txt",
+        "patchSetId": 3
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-04-27T20:08:21Z",
+      "side": 1,
+      "message": "Oops, I think I had this backwards - I think it should say\n\n  The optional Android API level allows the test to be run if the device\u0027s first\n  API level is greater than or equal to the API level.",
+      "range": {
+        "startLine": 4,
+        "startChar": 75,
+        "endLine": 5,
+        "endChar": 6
+      },
+      "revId": "ad582114a11cde8f5d6f0416ff2866377192c28f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

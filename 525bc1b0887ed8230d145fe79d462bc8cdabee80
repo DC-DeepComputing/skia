@@ -161,6 +161,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ec70ddd1_142aa05f",
+        "filename": "platform_tools/android/apps/skqp/src/main/assets/skqp/unittests.txt",
+        "patchSetId": 1
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-04-27T20:08:21Z",
+      "side": 1,
+      "message": "Comment is still out of date.",
+      "parentUuid": "9d8bee54_f6723999",
+      "range": {
+        "startLine": 20,
+        "startChar": 30,
+        "endLine": 20,
+        "endChar": 46
+      },
+      "revId": "525bc1b0887ed8230d145fe79d462bc8cdabee80",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7dd79bff_7901aa88",
         "filename": "platform_tools/android/apps/skqp/src/main/assets/skqp/unittests.txt",
         "patchSetId": 1
@@ -254,6 +278,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "570f7952_8582a821",
+        "filename": "platform_tools/android/apps/skqp/src/main/assets/skqp/unittests.txt",
+        "patchSetId": 1
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-04-27T20:08:21Z",
+      "side": 1,
+      "message": "Haha, good that you added that check!",
+      "parentUuid": "d88b864a_9072497b",
+      "range": {
+        "startLine": 45,
+        "startChar": 12,
+        "endLine": 45,
+        "endChar": 13
+      },
+      "revId": "525bc1b0887ed8230d145fe79d462bc8cdabee80",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0d5a7022_269640c8",
@@ -291,6 +339,30 @@
       "side": 1,
       "message": "No, we build it for linux too. Fuschia also runs a copy of it as well to help verify their GPU drivers.",
       "parentUuid": "0d5a7022_269640c8",
+      "range": {
+        "startLine": 30,
+        "startChar": 7,
+        "endLine": 30,
+        "endChar": 27
+      },
+      "revId": "525bc1b0887ed8230d145fe79d462bc8cdabee80",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7488d1a2_cf4c4e75",
+        "filename": "tools/skqp/src/skqp.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-04-27T20:08:21Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "608e342c_6201f7a6",
       "range": {
         "startLine": 30,
         "startChar": 7,
