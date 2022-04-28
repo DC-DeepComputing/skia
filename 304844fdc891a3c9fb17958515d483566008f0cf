@@ -46,6 +46,30 @@
       },
       "revId": "304844fdc891a3c9fb17958515d483566008f0cf",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7691784f_955ef4d2",
+        "filename": "resources/sksl/errors/IllegalRecursionSimple.sksl",
+        "patchSetId": 3
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-04-28T16:59:20Z",
+      "side": 1,
+      "message": "Yeah, if we can run all the recursion variants all the time, that sounds better.",
+      "parentUuid": "224465a4_a8dbc545",
+      "range": {
+        "startLine": 3,
+        "startChar": 0,
+        "endLine": 3,
+        "endChar": 34
+      },
+      "revId": "304844fdc891a3c9fb17958515d483566008f0cf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
