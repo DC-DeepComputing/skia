@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "de57a261_3e18e85d",
+        "filename": "src/gpu/ganesh/ops/StrokeTessellator.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 234,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-04-28T18:45:06Z",
+      "side": 1,
+      "message": "line up ?",
+      "revId": "573fcd6891b2fcfeed643021fbfc6a05fc573eb1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
