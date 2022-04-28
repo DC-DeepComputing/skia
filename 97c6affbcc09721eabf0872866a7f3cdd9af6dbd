@@ -22,6 +22,30 @@
       },
       "revId": "97c6affbcc09721eabf0872866a7f3cdd9af6dbd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1b8fdcf5_9d6af861",
+        "filename": "src/sksl/analysis/SkSLCheckProgramStructure.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 184,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-28T19:10:16Z",
+      "side": 1,
+      "message": "This was intentional when I did it, but after I was done writing the CL, it turns out to be fine the way it was originally. Undid this change.",
+      "parentUuid": "4b926697_232278ee",
+      "range": {
+        "startLine": 184,
+        "startChar": 55,
+        "endLine": 184,
+        "endChar": 64
+      },
+      "revId": "97c6affbcc09721eabf0872866a7f3cdd9af6dbd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
