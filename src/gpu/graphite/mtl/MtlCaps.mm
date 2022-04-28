@@ -283,6 +283,7 @@ static constexpr MTLPixelFormat kMtlFormats[] = {
     MTLPixelFormatR8Unorm,
     MTLPixelFormatA8Unorm,
     MTLPixelFormatBGRA8Unorm,
+    MTLPixelFormatB5G6R5Unorm,
 
     MTLPixelFormatStencil8,
     MTLPixelFormatDepth32Float,
@@ -417,6 +418,23 @@ void MtlCaps::initFormatTable() {
         }
     }
 
+#if defined(SK_BUILD_FOR_MAC)
+    // Format: B5G6R5Unorm
+    {
+        info = &fFormatTable[GetFormatIndex(MTLPixelFormatB5G6R5Unorm)];
+        info->fFlags = FormatInfo::kAllFlags;
+        info->fColorTypeInfoCount = 1;
+        info->fColorTypeInfos.reset(new ColorTypeInfo[info->fColorTypeInfoCount]());
+        int ctIdx = 0;
+        // Format: B5G6R5Unorm, Surface: kBGR_565
+        {
+            auto& ctInfo = info->fColorTypeInfos[ctIdx++];
+            ctInfo.fColorType = kRGB_565_SkColorType;
+            ctInfo.fFlags = ColorTypeInfo::kUploadData_Flag | ColorTypeInfo::kRenderable_Flag;
+        }
+    }
+#endif
+
     /*
      * Non-color formats
      */
@@ -457,6 +475,9 @@ void MtlCaps::initFormatTable() {
 
     this->setColorType(kAlpha_8_SkColorType,          { MTLPixelFormatR8Unorm,
                                                         MTLPixelFormatA8Unorm });
+#if defined(SK_BUILD_FOR_MAC)
+    this->setColorType(kRGB_565_SkColorType,          { MTLPixelFormatB5G6R5Unorm });
+#endif
     this->setColorType(kRGBA_8888_SkColorType,        { MTLPixelFormatRGBA8Unorm });
     this->setColorType(kRGB_888x_SkColorType,         { MTLPixelFormatRGBA8Unorm });
     this->setColorType(kBGRA_8888_SkColorType,        { MTLPixelFormatBGRA8Unorm });
