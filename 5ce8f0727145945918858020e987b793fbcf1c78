@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "44a69dad_142ae8de",
+        "filename": "src/gpu/ganesh/tessellate/shaders/GrStrokeTessellationShader.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-28T19:39:00Z",
+      "side": 1,
+      "message": "I think you could get the same effect with less code:\n\n        if (mag \u003e 16777216.0) { // 2^24, when f32 loses 1px precision\n            // This brings the components of a and b to be within [-1, 1] before the vector\u0027s length\n            // is calculated inside the normalize() call.\n            float invMag \u003d 1.0 / mag;\n            a *\u003d invMag;\n            b *\u003d invMag;\n        }\n        return normalize(a - b);\n        \nIt might also be faster (and, if we\u0027re lucky, accurate enough) to just always scale down. Branches are expensive; reciprocals are cheap; multiplies are very very cheap. WDYT about this version?\n\n        float invMag \u003d 1.0 / mag;\n        a *\u003d invMag;\n        b *\u003d invMag;\n        return normalize(a - b);",
+      "range": {
+        "startLine": 115,
+        "startChar": 0,
+        "endLine": 124,
+        "endChar": 0
+      },
+      "revId": "5ce8f0727145945918858020e987b793fbcf1c78",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
