@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0719efaf_3cc15d0c",
+        "filename": "gn/gn_to_bp.py",
+        "patchSetId": 10
+      },
+      "lineNbr": 660,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-04-28T19:38:28Z",
+      "side": 1,
+      "message": "As Greg pointed out to me in chat, this is adding `third_party/externals/vulkanmemoryallocator/include` to the output `Android.bp`. Note the last parameter, the list with `//:gif` in it. This means we want to pull in all transitive dependencies, but exclude gif. My first thought would be that we should exclude whatever is pulling in that include. But it\u0027s being pulled in by `//:gpu`. I would think we want those dependencies. That said, I removed it, and all it removed from `Android.bp` was\n\n-        \"third_party/externals/vulkanmemoryallocator/include/\",\n-        \"third_party/vulkanmemoryallocator/\",\n\nSo, the one we want, plus another one. I don\u0027t know whether skqp needs to access the second one directly. (My local build of SkQP is failing without these changes, so maybe I need to re-sync.)\n\nIf we *do* need the second one, I could imagine splitting `config(\"vulkanmemoryallocator_public\")` into something else that would be its own dependency in the json so we could exclude it here.",
+      "range": {
+        "startLine": 659,
+        "startChar": 0,
+        "endLine": 660,
+        "endChar": 61
+      },
+      "revId": "a4127004be7a19f80096ce5db2e5661395067f82",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
