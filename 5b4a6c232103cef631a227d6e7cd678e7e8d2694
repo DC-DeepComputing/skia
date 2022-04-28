@@ -46,6 +46,30 @@
       },
       "revId": "5b4a6c232103cef631a227d6e7cd678e7e8d2694",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "073e19fb_d02d4c27",
+        "filename": "RELEASE_NOTES.txt",
+        "patchSetId": 1
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-28T19:20:14Z",
+      "side": 1,
+      "message": "Oh, that\u0027s perfect! Thank you :)",
+      "parentUuid": "378acacc_6a0ea587",
+      "range": {
+        "startLine": 21,
+        "startChar": 11,
+        "endLine": 22,
+        "endChar": 28
+      },
+      "revId": "5b4a6c232103cef631a227d6e7cd678e7e8d2694",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
