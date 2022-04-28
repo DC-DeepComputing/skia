@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "92905707_2b943428",
+        "filename": "samplecode/SamplePathTessellators.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-04-28T14:18:38Z",
+      "side": 1,
+      "message": "Moving this later fixes a bug I introduced from a prior refactor, where tessShader needed the tessellator but the tessellator needed to know if the shader used HW tessellation. The ops broke this cycle by having extra info, but I goofed it up in the sample. Now the tessellator does not depend on the shader, so creating it at the end cleans that up.",
+      "range": {
+        "startLine": 108,
+        "startChar": 8,
+        "endLine": 122,
+        "endChar": 86
+      },
+      "revId": "edd209397044f2d72ec9114a534659b56af967b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
