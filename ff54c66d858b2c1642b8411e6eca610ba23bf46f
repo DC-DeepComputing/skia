@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cbe8317f_d223c389",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-04-28T14:05:47Z",
+      "side": 1,
+      "message": "Disabling has rolled everywhere and I\u0027ve seen no perf regressions on our tree, nor bad GMs, so getting this stack of deletions/cleanups rolling",
+      "revId": "ff54c66d858b2c1642b8411e6eca610ba23bf46f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
