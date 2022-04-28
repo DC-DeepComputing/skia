@@ -16,6 +16,24 @@
       "message": "As long as we\u0027re optimizing this... what about putting the original identifier first? eg: _baseName_%d ?\n\nThen we can do the whole first part once, and not need to keep memcpy\u0027ing it?",
       "revId": "5c0a389dbfb5fc405d885a846c40c5e51a80dddd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2c4bb636_40a20df0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-28T20:35:08Z",
+      "side": 1,
+      "message": "I considered this but I am pretty sure in the 99.9% case we don\u0027t ever loop. Conflicts only happen if we name a variable in the input SkSL with the intent to clash, like `_10_x` (we have a test for this). It might be possible to guarantee zero conflict if we are clever enough, and dodge the symbol table lookup entirely.",
+      "parentUuid": "c06a205f_a3663aba",
+      "revId": "5c0a389dbfb5fc405d885a846c40c5e51a80dddd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
