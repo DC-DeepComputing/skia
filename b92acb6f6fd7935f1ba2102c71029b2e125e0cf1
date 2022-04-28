@@ -51,6 +51,93 @@
       "parentUuid": "20c7b2f0_aae941ee",
       "revId": "b92acb6f6fd7935f1ba2102c71029b2e125e0cf1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dcd9fbcd_de0b7c64",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-04-28T19:04:30Z",
+      "side": 1,
+      "message": "So on this CL you can select \"CQ Dry Run\" which will at least trigger a subset of all our tests bot to see if they pass (this is the same set of bots that have to pass once you try to submit so no harm in kicking them off early with the dry run)",
+      "parentUuid": "8930796e_c4802890",
+      "revId": "b92acb6f6fd7935f1ba2102c71029b2e125e0cf1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "326cdc86_89a493ee",
+        "filename": "src/gpu/graphite/UploadBufferManager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-04-28T19:04:30Z",
+      "side": 1,
+      "message": "Nit: Wwe aren\u0027t really using the term slice anymore with this change. Any reason not to use the same variable:\nbufferMapPtr \u003d SkTAddOffset....\nOr if we want a new variable maybe offsetMapPtr",
+      "range": {
+        "startLine": 63,
+        "startChar": 10,
+        "endLine": 63,
+        "endChar": 15
+      },
+      "revId": "b92acb6f6fd7935f1ba2102c71029b2e125e0cf1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "697cfa0a_b0f88aef",
+        "filename": "src/gpu/graphite/UploadTask.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-04-28T19:04:30Z",
+      "side": 1,
+      "message": "I don\u0027t think we need to take a ref to the buffer anymore here right? The buffer should be kept alive by the UploadBufferManager which then passes the refs to the command buffer itself.",
+      "range": {
+        "startLine": 138,
+        "startChar": 12,
+        "endLine": 138,
+        "endChar": 22
+      },
+      "revId": "b92acb6f6fd7935f1ba2102c71029b2e125e0cf1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8a200636_88c1ad3f",
+        "filename": "src/gpu/graphite/UploadTask.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-04-28T19:04:30Z",
+      "side": 1,
+      "message": "this can just be a pointer now. Add a comment above this to describe why we don\u0027t need to ref the buffer from this call.",
+      "range": {
+        "startLine": 152,
+        "startChar": 39,
+        "endLine": 152,
+        "endChar": 57
+      },
+      "revId": "b92acb6f6fd7935f1ba2102c71029b2e125e0cf1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
