@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f5867dd3_10654c8f",
+        "filename": "src/core/SkString.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-28T14:20:50Z",
+      "side": 1,
+      "message": "^",
+      "range": {
+        "startLine": 142,
+        "startChar": 0,
+        "endLine": 144,
+        "endChar": 21
+      },
+      "revId": "827b54c6d091e65a236c659b4b13320bdd807d23",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
