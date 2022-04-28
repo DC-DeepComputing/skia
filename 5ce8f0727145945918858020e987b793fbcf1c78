@@ -22,6 +22,30 @@
       },
       "revId": "5ce8f0727145945918858020e987b793fbcf1c78",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "10577585_a2091928",
+        "filename": "src/gpu/ganesh/tessellate/shaders/GrStrokeTessellationShader.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-04-28T19:52:00Z",
+      "side": 1,
+      "message": "I considered always scaling down to avoid the branch, but I intentionally chose not to first compute `invMag` and then treat it as a multiply to avoid (1/really big number) losing precision when (coord / really big number) could be more accurate. Since that meant more divisions, I figured the branch might help.\n\nBut in reality, we are probably always taking the branch and then picking what result to use, so it might be better to just always divide by mag. And if others think my concern of (1/mag)*num vs. num/mag are unnecessary, then we can make it more efficient.",
+      "parentUuid": "44a69dad_142ae8de",
+      "range": {
+        "startLine": 115,
+        "startChar": 0,
+        "endLine": 124,
+        "endChar": 0
+      },
+      "revId": "5ce8f0727145945918858020e987b793fbcf1c78",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
