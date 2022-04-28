@@ -156,7 +156,8 @@ sk_sp<GrTexture> GrGpu::createTexture(SkISize dimensions,
                                       int renderTargetSampleCnt,
                                       GrMipmapped mipmapped,
                                       SkBudgeted budgeted,
-                                      GrProtected isProtected) {
+                                      GrProtected isProtected,
+                                      std::string_view label) {
     int mipLevelCount = 1;
     if (mipmapped == GrMipmapped::kYes) {
         mipLevelCount =
@@ -176,6 +177,10 @@ sk_sp<GrTexture> GrGpu::createTexture(SkISize dimensions,
     if (tex && mipmapped == GrMipmapped::kYes && levelClearMask) {
         tex->markMipmapsClean();
     }
+    if (tex) {
+        tex->setLabel(label);
+    }
+
     return tex;
 }
 
@@ -189,7 +194,8 @@ sk_sp<GrTexture> GrGpu::createTexture(SkISize dimensions,
                                       GrColorType textureColorType,
                                       GrColorType srcColorType,
                                       const GrMipLevel texels[],
-                                      int texelLevelCount) {
+                                      int texelLevelCount,
+                                      std::string_view label) {
     TRACE_EVENT0("skia.gpu", TRACE_FUNC);
     if (texelLevelCount) {
         if (!validate_texel_levels(dimensions, srcColorType, texels, texelLevelCount,
@@ -244,6 +250,7 @@ sk_sp<GrTexture> GrGpu::createTexture(SkISize dimensions,
         if (markMipLevelsClean) {
             tex->markMipmapsClean();
         }
+        tex->setLabel(label);
     }
     return tex;
 }
