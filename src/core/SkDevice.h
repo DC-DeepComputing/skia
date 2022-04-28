@@ -558,6 +558,8 @@ protected:
     void drawFilteredImage(const skif::Mapping&, SkSpecialImage* src, const SkImageFilter*,
                            const SkSamplingOptions&, const SkPaint&) override {}
 
+    void drawSlug(SkCanvas*, const GrSlug*, const SkPaint&) override {}
+
     void onDrawGlyphRunList(
             SkCanvas*, const SkGlyphRunList&, const SkPaint&, const SkPaint&) override {}
 
