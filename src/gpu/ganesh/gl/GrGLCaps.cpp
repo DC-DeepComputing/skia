@@ -770,6 +770,7 @@ void GrGLCaps::init(const GrContextOptions& contextOptions,
             fProgramBinarySupport = false;
         }
     }
+    fProgramBinarySupport = false;
     if (GR_IS_GR_GL(standard)) {
         fSamplerObjectSupport =
                 version >= GR_GL_VER(3,3) || ctxInfo.hasExtension("GL_ARB_sampler_objects");
