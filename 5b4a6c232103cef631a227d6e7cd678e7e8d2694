@@ -22,6 +22,30 @@
       },
       "revId": "5b4a6c232103cef631a227d6e7cd678e7e8d2694",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "378acacc_6a0ea587",
+        "filename": "RELEASE_NOTES.txt",
+        "patchSetId": 1
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-04-28T15:48:44Z",
+      "side": 1,
+      "message": "wdyt about the new version?",
+      "parentUuid": "e90a7e14_2761d70c",
+      "range": {
+        "startLine": 21,
+        "startChar": 11,
+        "endLine": 22,
+        "endChar": 28
+      },
+      "revId": "5b4a6c232103cef631a227d6e7cd678e7e8d2694",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
