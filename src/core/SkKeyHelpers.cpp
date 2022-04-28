@@ -316,8 +316,33 @@ void add_image_uniform_data(const SkShaderCodeDictionary* dict,
     gatherer->write(imgData.fSubset);
     gatherer->write(static_cast<int>(imgData.fTileModes[0]));
     gatherer->write(static_cast<int>(imgData.fTileModes[1]));
-    gatherer->write(0); // manual padding
-    gatherer->write(0); // manual padding
+    gatherer->write(imgData.fTextureProxy->dimensions().fWidth);
+    gatherer->write(imgData.fTextureProxy->dimensions().fHeight);
+
+    SkDebugf("tmx %d tmy %d w %d h %d\n",
+             static_cast<int>(imgData.fTileModes[0]),
+             static_cast<int>(imgData.fTileModes[1]),
+             imgData.fTextureProxy->dimensions().fWidth,
+             imgData.fTextureProxy->dimensions().fHeight);
+
+    SkMatrix lmInverse;
+    bool wasInverted = imgData.fLocalMatrix.invert(&lmInverse);  // TODO: handle failure up stack
+    if (!wasInverted) {
+        lmInverse.setIdentity();
+    }
+
+    SkM44 bull(lmInverse);
+    gatherer->write(bull);
+
+    SkDebugf("lmInverse\n");
+    bull.dump();
+
+    SkV4 foo0 = bull.map(0, 0, 0, 1);
+    SkV4 foo32 = bull.map(32, 32, 0, 1);
+    SkV4 foo64 = bull.map(64, 64, 0, 1);
+    SkDebugf("{0, 0} -> %f %f %f %f\n", foo0.x, foo0.y, foo0.z, foo0.w);
+    SkDebugf("{32, 32} -> %f %f %f %f\n", foo32.x, foo32.y, foo32.z, foo32.w);
+    SkDebugf("{64, 64} -> %f %f %f %f\n", foo64.x, foo64.y, foo64.z, foo64.w);
 
     gatherer->addFlags(dict->getSnippetRequirementFlags(SkBuiltInCodeSnippetID::kImageShader));
 }
@@ -329,10 +354,12 @@ void add_image_uniform_data(const SkShaderCodeDictionary* dict,
 ImageData::ImageData(const SkSamplingOptions& sampling,
                      SkTileMode tileModeX,
                      SkTileMode tileModeY,
-                     SkRect subset)
+                     SkRect subset,
+                     const SkMatrix& localMatrix)
     : fSampling(sampling)
     , fTileModes{tileModeX, tileModeY}
-    , fSubset(subset) {
+    , fSubset(subset)
+    , fLocalMatrix(localMatrix) {
 }
 
 void AddToKey(const SkKeyContext& keyContext,
@@ -360,7 +387,7 @@ void AddToKey(const SkKeyContext& keyContext,
         if (gatherer) {
             gatherer->add(imgData.fSampling,
                           imgData.fTileModes,
-                          std::move(imgData.fTextureProxy));
+                          imgData.fTextureProxy);
 
             add_image_uniform_data(dict, imgData, gatherer);
         }
