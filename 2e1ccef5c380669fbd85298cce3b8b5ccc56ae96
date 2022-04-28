@@ -16,6 +16,52 @@
       "message": "@Greg, this CL is ready for a review. Can you PTAL.",
       "revId": "2e1ccef5c380669fbd85298cce3b8b5ccc56ae96",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "69d238c2_29f6f2d2",
+        "filename": "src/gpu/ganesh/GrGpuResourcePriv.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-04-28T16:23:40Z",
+      "side": 1,
+      "message": "Isn\u0027t setLabel public on GrGPUResource? To be honest this Priv class here is not really needed anymore. At one point in time GrGpuResource did live in the public skia include headers. So this Priv class was a way to give us access to fields we didn\u0027t want Skia clients to have. However, that is no longer the case so it would be best to just directly use the GrGpuResource function.",
+      "range": {
+        "startLine": 77,
+        "startChar": 9,
+        "endLine": 77,
+        "endChar": 17
+      },
+      "revId": "2e1ccef5c380669fbd85298cce3b8b5ccc56ae96",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3fcf51f8_2d1c646e",
+        "filename": "src/gpu/ganesh/GrProxyProvider.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 365,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-04-28T16:23:40Z",
+      "side": 1,
+      "message": "So if you look in createLazyProxy we are also setting a label on the proxy, but there is nothing to enforce that the proxies label and textures label is the same.\n\nI wonder if the better approach here would be to add a label field to the LazySurfaceDesc that is passed into the callback here. Then we pull off the label from there to pass into createTexture here. The value of the label for LazySurfaceDesc we be set from the proxys label. LazySurfaceDescs are created here, https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/gpu/ganesh/GrSurfaceProxy.h;l\u003d453",
+      "range": {
+        "startLine": 365,
+        "startChar": 74,
+        "endLine": 365,
+        "endChar": 84
+      },
+      "revId": "2e1ccef5c380669fbd85298cce3b8b5ccc56ae96",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
