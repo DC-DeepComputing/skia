@@ -54,6 +54,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "079950fd_fb17db8d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5145
+      },
+      "writtenOn": "2022-04-28T12:54:04Z",
+      "side": 1,
+      "message": "\u003e \u003e CL to update the autoroller: https://skia-review.googlesource.com/c/buildbot/+/533811\n\u003e This change has been deployed to the roller so feel free to submit now.\n\nor you could test via Canary-Android after resolving the merge conflict in this CL",
+      "parentUuid": "101c8bf8_8dd3753e",
+      "revId": "e5684cb05cb16b03019a15159d7ab2caf72aa3db",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0fa5937a_aa5633bc",
