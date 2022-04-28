@@ -151,7 +151,6 @@ bool Analysis::CheckProgramStructure(const Program& program, bool enforceSizeLim
                     // be double-dipping to count it here too.
                     break;
 
-                case Statement::Kind::kInlineMarker:
                 case Statement::Kind::kNop:
                 case Statement::Kind::kVarDeclaration:
                     // These statements don't directly consume any space in a compiled program.
