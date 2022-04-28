@@ -24,6 +24,7 @@ def GetGNArgs(api_level, debug, arch=None, ndk=None, is_android_bp=False):
         'skia_use_libheif':                 'false',
         'skia_use_lua':                     'false',
         'skia_use_piex':                    'false',
+        'skia_use_vma':                     'false' if is_android_bp else 'true',
         'skia_use_vulkan':                  'true',
         'skia_use_wuffs':                   'true',
     }
