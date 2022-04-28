@@ -688,7 +688,9 @@ bool GrDawnGpu::onReadPixels(GrSurface* surface,
 
     GrDawnAsyncWait wait(fDevice);
     buf.MapAsync(
-            wgpu::MapMode::Read, 0, 0,
+            wgpu::MapMode::Read,
+            0,
+            wgpu::kWholeMapSize,
             [](WGPUBufferMapAsyncStatus, void* userData) {
                 // TODO(armansito): Check and take action on the operation status instead of
                 // assuming success.
