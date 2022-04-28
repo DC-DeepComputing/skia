@@ -43,6 +43,11 @@ sk_sp<SkBlender> PaintParams::refBlender() const { return fBlender; }
 
 sk_sp<SkShader> PaintParams::refShader() const { return fShader; }
 
+void print_mat(const char* label, const SkM44& m) {
+    SkDebugf("%s\n", label);
+    m.dump();
+}
+
 void PaintParams::toKey(const SkKeyContext& keyContext,
                         SkPaintParamsKeyBuilder* builder,
                         SkPipelineDataGatherer* gatherer) const {
@@ -67,6 +72,7 @@ void PaintParams::toKey(const SkKeyContext& keyContext,
                                              SkSpan<const SkUniform>(kDev2LocalUniform, 1));
 #endif
 
+            print_mat("dev2Local", keyContext.dev2Local());
             gatherer->write(keyContext.dev2Local());
         }
     }
