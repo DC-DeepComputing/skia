@@ -16,6 +16,24 @@
       "message": "line up ?",
       "revId": "573fcd6891b2fcfeed643021fbfc6a05fc573eb1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "28c61127_a4b6f1cf",
+        "filename": "src/gpu/ganesh/ops/StrokeTessellator.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 234,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-04-28T19:13:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "de57a261_3e18e85d",
+      "revId": "573fcd6891b2fcfeed643021fbfc6a05fc573eb1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
