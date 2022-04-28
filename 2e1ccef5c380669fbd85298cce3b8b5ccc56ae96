@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ead1cac6_bddf7714",
+        "filename": "src/gpu/ganesh/GrGpuResourcePriv.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 18274
+      },
+      "writtenOn": "2022-04-28T22:42:13Z",
+      "side": 1,
+      "message": "Thank you for the information. Initially, I was not sure how would I create and instantiate GrGpuResoruce object so I looked up and found GrGpuResourcePriv. But now that I see, tex is an object of GrTexture which inherits from GrSurface which ultimately inherits from GrGpuResource. If I missed something here, please let me know :).",
+      "parentUuid": "69d238c2_29f6f2d2",
+      "range": {
+        "startLine": 77,
+        "startChar": 9,
+        "endLine": 77,
+        "endChar": 17
+      },
+      "revId": "2e1ccef5c380669fbd85298cce3b8b5ccc56ae96",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3fcf51f8_2d1c646e",
@@ -54,6 +78,30 @@
       "writtenOn": "2022-04-28T16:23:40Z",
       "side": 1,
       "message": "So if you look in createLazyProxy we are also setting a label on the proxy, but there is nothing to enforce that the proxies label and textures label is the same.\n\nI wonder if the better approach here would be to add a label field to the LazySurfaceDesc that is passed into the callback here. Then we pull off the label from there to pass into createTexture here. The value of the label for LazySurfaceDesc we be set from the proxys label. LazySurfaceDescs are created here, https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/gpu/ganesh/GrSurfaceProxy.h;l\u003d453",
+      "range": {
+        "startLine": 365,
+        "startChar": 74,
+        "endLine": 365,
+        "endChar": 84
+      },
+      "revId": "2e1ccef5c380669fbd85298cce3b8b5ccc56ae96",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "283767a6_18bb411c",
+        "filename": "src/gpu/ganesh/GrProxyProvider.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 365,
+      "author": {
+        "id": 18274
+      },
+      "writtenOn": "2022-04-28T22:42:13Z",
+      "side": 1,
+      "message": "Great point.",
+      "parentUuid": "3fcf51f8_2d1c646e",
       "range": {
         "startLine": 365,
         "startChar": 74,
