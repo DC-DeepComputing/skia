@@ -11,6 +11,10 @@
  * To run the test suite, open `resources/sksl/es2_conformance/import_conformance_tests.py` and
  * follow the instructions at the top to download and import the test suite.
  */
+#include "include/core/SkTypes.h"
+
+#if SK_SUPPORT_GPU
+#include "tests/Test.h"
 
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
@@ -23,12 +27,10 @@
 #include "include/core/SkShader.h"
 #include "include/core/SkString.h"
 #include "include/core/SkSurface.h"
-#include "include/core/SkTypes.h"
 #include "include/effects/SkRuntimeEffect.h"
 #include "include/gpu/GrDirectContext.h"
 #include "src/core/SkOSFile.h"
 #include "src/utils/SkOSPath.h"
-#include "tests/Test.h"
 #include "tools/Resources.h"
 #include "tools/gpu/GrContextFactory.h"
 
@@ -126,3 +128,5 @@ DEF_TEST(SkSL_ES2Conformance_Fail, r) {
         test_expect_fail(r, path);
     });
 }
+
+#endif // SK_SUPPORT_GPU

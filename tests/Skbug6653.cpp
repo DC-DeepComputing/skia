@@ -4,6 +4,10 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+#include "include/core/SkTypes.h"
+
+#if SK_SUPPORT_GPU
+#include "tests/Test.h"
 
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
@@ -11,7 +15,6 @@
 #include "include/core/SkTypes.h"
 #include "include/gpu/GrDirectContext.h"
 #include "src/gpu/ganesh/GrDirectContextPriv.h"
-#include "tests/Test.h"
 
 static SkBitmap read_pixels(sk_sp<SkSurface> surface, SkColor initColor) {
     SkBitmap bmp;
@@ -101,3 +104,4 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(skbug6653, reporter, ctxInfo) {
     test_bug_6653(ctx, reporter, "Default");
 }
 
+#endif // SK_SUPPORT_GPU

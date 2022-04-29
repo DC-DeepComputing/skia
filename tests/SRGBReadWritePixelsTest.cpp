@@ -4,6 +4,10 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+#include "include/core/SkTypes.h"
+
+#if SK_SUPPORT_GPU
+#include "tests/Test.h"
 
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColorSpace.h"
@@ -14,7 +18,6 @@
 #include "src/gpu/ganesh/GrImageInfo.h"
 #include "src/gpu/ganesh/SkGr.h"
 #include "src/gpu/ganesh/SurfaceContext.h"
-#include "tests/Test.h"
 #include "tests/TestUtils.h"
 
 // using anonymous namespace because these functions are used as template params.
@@ -324,3 +327,5 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(SRGBReadWritePixels, reporter, ctxInfo) {
     test_write_read(Encoding::kLinear, Encoding::kLinear, Encoding::kLinear, error,
                     check_no_conversion, context, reporter);
 }
+
+#endif // SK_SUPPORT_GPU

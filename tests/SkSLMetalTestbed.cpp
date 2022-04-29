@@ -4,13 +4,15 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
-
 #include "include/core/SkTypes.h"
+
+#if SK_ENABLE_SKSL
+#include "tests/Test.h"
+
 #include "include/private/SkSLProgramKind.h"
 #include "src/sksl/SkSLCompiler.h"
 #include "src/sksl/SkSLUtil.h"
 #include "src/sksl/ir/SkSLProgram.h"
-#include "tests/Test.h"
 
 #include <memory>
 #include <string>
@@ -44,3 +46,5 @@ DEF_TEST(SkSLMetalTestbed, r) {
              }
          )__SkSL__");
 }
+
+#endif // SK_ENABLE_SKSL

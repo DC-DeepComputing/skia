@@ -4,13 +4,16 @@
 * Use of this source code is governed by a BSD-style license that can be
 * found in the LICENSE file.
 */
+#include "include/core/SkTypes.h"
+
+#if SK_SUPPORT_GPU
+#include "tests/Test.h"
 
 #include "include/core/SkSize.h"
 #include "include/private/SkTDArray.h"
 #include "include/utils/SkRandom.h"
 #include "src/gpu/RectanizerPow2.h"
 #include "src/gpu/RectanizerSkyline.h"
-#include "tests/Test.h"
 
 using namespace skgpu;
 
@@ -70,3 +73,5 @@ DEF_GPUTEST(GpuRectanizer, reporter, factory) {
     test_skyline(reporter, rects);
     test_pow2(reporter, rects);
 }
+
+#endif // SK_SUPPORT_GPU

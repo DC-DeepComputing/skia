@@ -5,15 +5,19 @@
  * found in the LICENSE file.
  */
 
+#include "tests/Test.h"
+
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkSurface.h"
-#include "include/gpu/GrDirectContext.h"
 #include "src/core/SkConvertPixels.h"
+#include "tools/ToolUtils.h"
+
+#if SK_SUPPORT_GPU
+#include "include/gpu/GrDirectContext.h"
 #include "src/gpu/ganesh/GrDataUtils.h"
 #include "src/gpu/ganesh/GrPixmap.h"
-#include "tests/Test.h"
-#include "tools/ToolUtils.h"
+#endif
 
 static uint32_t pack_unpremul_rgba(SkColor c) {
     uint32_t packed;
@@ -101,6 +105,9 @@ DEF_TEST(PremulAlphaRoundTrip, reporter) {
 
     test_premul_alpha_roundtrip(reporter, surf.get());
 }
+
+#if SK_SUPPORT_GPU
+
 DEF_GPUTEST_FOR_RENDERING_CONTEXTS(PremulAlphaRoundTrip_Gpu, reporter, ctxInfo) {
     const SkImageInfo info = SkImageInfo::MakeN32Premul(256, 256);
 
@@ -166,6 +173,8 @@ DEF_TEST(PremulAlphaRoundTripGrConvertPixels, reporter) {
         }
     }
 }
+
+#endif // SK_SUPPORT_GPU
 
 DEF_TEST(PremulAlphaRoundTripSkConvertPixels, reporter) {
     // ... and now using SkConvertPixels, just for completeness

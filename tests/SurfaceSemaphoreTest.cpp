@@ -4,6 +4,10 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+#include "include/core/SkTypes.h"
+
+#if SK_SUPPORT_GPU
+#include "tests/Test.h"
 
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
@@ -14,7 +18,6 @@
 #include "include/gpu/GrDirectContext.h"
 #include "src/gpu/ganesh/GrCaps.h"
 #include "src/gpu/ganesh/GrDirectContextPriv.h"
-#include "tests/Test.h"
 #include "tools/gpu/GrContextFactory.h"
 
 #ifdef SK_GL
@@ -336,3 +339,5 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(EmptySurfaceSemaphoreTest, reporter, ctxInfo)
     }
 #endif
 }
+
+#endif // SK_SUPPORT_GPU

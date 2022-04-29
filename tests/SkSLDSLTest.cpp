@@ -4,6 +4,10 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+#include "include/core/SkTypes.h"
+
+#if SK_SUPPORT_GPU
+#include "tests/Test.h"
 
 #include "include/gpu/GrDirectContext.h"
 #include "include/private/SkSLDefines.h"
@@ -37,7 +41,6 @@
 #include "src/sksl/ir/SkSLExpression.h"
 #include "src/sksl/ir/SkSLProgram.h"
 #include "src/sksl/ir/SkSLVariable.h"
-#include "tests/Test.h"
 #include "tools/gpu/GrContextFactory.h"
 
 #include <ctype.h>
@@ -2218,3 +2221,5 @@ DEF_GPUTEST_FOR_MOCK_CONTEXT(DSLES3Types, r, ctxInfo) {
     );
     EndRuntimeShader();
 }
+
+#endif // SK_SUPPORT_GPU

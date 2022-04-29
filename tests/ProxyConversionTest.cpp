@@ -4,9 +4,10 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
-
 // This is a GPU-backend specific test.
+#include "include/core/SkTypes.h"
 
+#if SK_SUPPORT_GPU
 #include "tests/Test.h"
 
 #include "include/gpu/GrBackendSurface.h"
@@ -170,3 +171,5 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(DefferredProxyConversionTest, reporter, ctxIn
         REPORTER_ASSERT(reporter, !tProxy->asRenderTargetProxy());
     }
 }
+
+#endif // SK_SUPPORT_GPU

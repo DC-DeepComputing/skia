@@ -4,6 +4,10 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+#include "include/core/SkTypes.h"
+
+#if SK_SUPPORT_GPU
+#include "tests/Test.h"
 
 #include "include/core/SkColorSpace.h"
 #include "include/gpu/GrDirectContext.h"
@@ -15,7 +19,6 @@
 #include "src/gpu/ganesh/ops/FillRectOp.h"
 #include "src/gpu/ganesh/ops/TextureOp.h"
 #include "src/gpu/ganesh/v1/SurfaceDrawContext_v1.h"
-#include "tests/Test.h"
 
 static std::unique_ptr<skgpu::v1::SurfaceDrawContext> new_SDC(GrRecordingContext* rContext) {
     return skgpu::v1::SurfaceDrawContext::Make(
@@ -319,3 +322,5 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(BulkFillRectTest, reporter, ctxInfo) {
 DEF_GPUTEST_FOR_RENDERING_CONTEXTS(BulkTextureRectTest, reporter, ctxInfo) {
     run_test(ctxInfo.directContext(), reporter, textureop_creation_test);
 }
+
+#endif // SK_SUPPORT_GPU

@@ -4,12 +4,15 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+#include "include/core/SkTypes.h"
+
+#if SK_SUPPORT_GPU
+#include "tests/Test.h"
 
 #include "include/core/SkBitmap.h"
 #include "include/core/SkImage.h"
 #include "include/core/SkSurface.h"
 #include "include/core/SkSurfaceCharacterization.h"
-#include "tests/Test.h"
 
 DEF_GPUTEST(GrDDLImage_MakeSubset, reporter, options) {
     sk_gpu_test::GrContextFactory factory(options);
@@ -63,3 +66,5 @@ DEF_GPUTEST(GrDDLImage_MakeSubset, reporter, options) {
         dContext->deleteBackendTexture(tex);
     }
 }
+
+#endif // SK_SUPPORT_GPU

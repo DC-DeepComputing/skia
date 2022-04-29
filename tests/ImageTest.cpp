@@ -4,10 +4,10 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+#include "include/core/SkTypes.h"
 
-#include <functional>
-#include <initializer_list>
-#include <vector>
+#if SK_SUPPORT_GPU
+#include "tests/Test.h"
 
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
@@ -35,11 +35,14 @@
 #include "src/gpu/ganesh/SkGr.h"
 #include "src/image/SkImage_Base.h"
 #include "src/image/SkImage_GpuYUVA.h"
-#include "tests/Test.h"
 #include "tools/Resources.h"
 #include "tools/ToolUtils.h"
 #include "tools/gpu/ManagedBackendTexture.h"
 #include "tools/gpu/ProxyUtils.h"
+
+#include <functional>
+#include <initializer_list>
+#include <vector>
 
 using namespace sk_gpu_test;
 
@@ -1546,3 +1549,5 @@ DEF_TEST(image_subset_encode_skbug_7752, reporter) {
     check_roundtrip(image->makeSubset({W/2, H/2, W, H}));
     check_roundtrip(image->makeColorSpace(SkColorSpace::MakeSRGBLinear()));
 }
+
+#endif // SK_SUPPORT_GPU

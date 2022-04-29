@@ -4,6 +4,10 @@
 * Use of this source code is governed by a BSD-style license that can be
 * found in the LICENSE file
 */
+#include "include/core/SkTypes.h"
+
+#if SK_SUPPORT_GPU
+#include "tests/Test.h"
 
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
@@ -13,7 +17,6 @@
 #include "src/gpu/ganesh/GrCaps.h"
 #include "src/gpu/ganesh/GrDirectContextPriv.h"
 #include "src/gpu/ganesh/SkGr.h"
-#include "tests/Test.h"
 
 class TestingSpecialSurfaceAccess {
 public:
@@ -92,3 +95,5 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(SpecialSurface_Gpu1, reporter, ctxInfo) {
         test_surface(surf, reporter, 0);
     }
 }
+
+#endif // SK_SUPPORT_GPU

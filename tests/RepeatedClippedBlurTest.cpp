@@ -4,6 +4,10 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+#include "include/core/SkTypes.h"
+
+#if SK_SUPPORT_GPU
+#include "tests/Test.h"
 
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
@@ -12,7 +16,6 @@
 #include "include/gpu/GrDirectContext.h"
 #include "src/gpu/ganesh/GrDirectContextPriv.h"
 #include "src/gpu/ganesh/GrResourceCache.h"
-#include "tests/Test.h"
 
 // This is the repro of a CastOS memory regression bug (b/138674523).
 // The test simply keeps calling SkImage::makeWithFilter (with a blur image filter) while
@@ -114,3 +117,5 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(RepeatedClippedBlurTest, reporter, ctxInfo) {
     // is working as expected the cache size will level off at ~20MB.
     REPORTER_ASSERT(reporter, afterBytes < beforeBytes + 20000000);
 }
+
+#endif // SK_SUPPORT_GPU

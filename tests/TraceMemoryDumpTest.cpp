@@ -4,21 +4,20 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+#include "include/core/SkTypes.h"
+
+#if defined(SK_GL)
+#include "tests/Test.h"
 
 #include "include/core/SkTraceMemoryDump.h"
 #include "include/gpu/GrDirectContext.h"
-
-#include "tests/Test.h"
-
 #include "src/gpu/ganesh/GrDirectContextPriv.h"
 #include "src/gpu/ganesh/GrRenderTarget.h"
 #include "src/gpu/ganesh/GrTexture.h"
-#ifdef SK_GL
 #include "src/gpu/ganesh/gl/GrGLBuffer.h"
 #include "src/gpu/ganesh/gl/GrGLDefines_impl.h"
 #include "src/gpu/ganesh/gl/GrGLGpu.h"
 #include "src/gpu/ganesh/gl/GrGLTextureRenderTarget.h"
-#endif
 
 /*
  * Build test for SkTraceMemoryDump.
@@ -75,7 +74,6 @@ void ValidateMemoryDumps(skiatest::Reporter* reporter, GrDirectContext* dContext
     }
 }
 
-#ifdef SK_GL
 DEF_GPUTEST_FOR_GL_RENDERING_CONTEXTS(SkTraceMemoryDump_ownedGLBuffer, reporter, ctxInfo) {
     auto dContext = ctxInfo.directContext();
     GrGLGpu* gpu = static_cast<GrGLGpu*>(dContext->priv().getGpu());

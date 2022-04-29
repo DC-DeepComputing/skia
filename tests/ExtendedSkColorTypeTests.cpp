@@ -4,6 +4,10 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+#include "include/core/SkTypes.h"
+
+#if SK_SUPPORT_GPU
+#include "tests/Test.h"
 
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColorSpace.h"
@@ -12,8 +16,6 @@
 #include "include/gpu/GrDirectContext.h"
 #include "src/core/SkAutoPixmapStorage.h"
 #include "src/gpu/ganesh/GrPixmap.h"
-
-#include "tests/Test.h"
 #include "tests/TestUtils.h"
 #include "tools/ToolUtils.h"
 
@@ -311,3 +313,5 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(ExtendedSkColorTypeTests_gpu, reporter, ctxIn
         gpu_tests(context, reporter, gTests[i]);
     }
 }
+
+#endif // SK_SUPPORT_GPU

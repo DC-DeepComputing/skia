@@ -4,6 +4,10 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+#include "include/core/SkTypes.h"
+
+#if SK_SUPPORT_GPU
+#include "tests/Test.h"
 
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
@@ -16,7 +20,6 @@
 #include "src/gpu/ganesh/GrDirectContextPriv.h"
 #include "src/gpu/ganesh/GrGpu.h"
 #include "src/gpu/ganesh/GrProxyProvider.h"
-#include "tests/Test.h"
 #include "tools/gpu/BackendSurfaceFactory.h"
 
 #include <initializer_list>
@@ -593,3 +596,5 @@ DEF_TEST(WritePixels_InvalidRowBytes, reporter) {
                         !surf->getCanvas()->writePixels(srcII, storage.get(), badRowBytes, 0, 0));
     }
 }
+
+#endif // SK_SUPPORT_GPU

@@ -4,6 +4,10 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+#include "include/core/SkTypes.h"
+
+#if SK_ENABLE_SKSL
+#include "tests/Test.h"
 
 #include "include/core/SkAlphaType.h"
 #include "include/core/SkBlendMode.h"
@@ -33,7 +37,6 @@
 #include "src/gpu/ganesh/GrColor.h"
 #include "src/sksl/SkSLCompiler.h"
 #include "src/sksl/SkSLUtil.h"
-#include "tests/Test.h"
 #include "tools/gpu/GrContextFactory.h"
 
 #include <array>
@@ -304,3 +307,5 @@ DEF_TEST(DSLRuntimeEffectSimple, r) {
 DEF_GPUTEST_FOR_RENDERING_CONTEXTS(DSLRuntimeEffectSimple_GPU, r, ctxInfo) {
     test_RuntimeEffect_Shaders(r, ctxInfo.directContext());
 }
+
+#endif // SK_ENABLE_SKSL

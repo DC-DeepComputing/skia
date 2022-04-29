@@ -4,6 +4,10 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+#include "include/core/SkTypes.h"
+
+#if SK_ENABLE_SKSL
+#include "tests/Test.h"
 
 #include "include/sksl/SkSLErrorReporter.h"
 #include "src/gpu/ganesh/GrShaderCaps.h"
@@ -11,7 +15,6 @@
 #include "src/sksl/SkSLContext.h"
 #include "src/sksl/SkSLMangler.h"
 #include "src/sksl/ir/SkSLType.h"
-#include "tests/Test.h"
 
 #include <cstdint>
 #include <limits>
@@ -39,3 +42,5 @@ DEF_TEST(SkSLTypeLimits, r) {
     REPORTER_ASSERT(r, context.fTypes.fUShort->minimumValue() == ushort_limits::min());
     REPORTER_ASSERT(r, context.fTypes.fUShort->maximumValue() == ushort_limits::max());
 }
+
+#endif // SK_ENABLE_SKSL

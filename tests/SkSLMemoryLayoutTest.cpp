@@ -4,6 +4,10 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+#include "include/core/SkTypes.h"
+
+#if SK_ENABLE_SKSL
+#include "tests/Test.h"
 
 #include "include/private/SkSLModifiers.h"
 #include "include/sksl/SkSLErrorReporter.h"
@@ -14,7 +18,6 @@
 #include "src/sksl/SkSLMemoryLayout.h"
 #include "src/sksl/SkSLUtil.h"
 #include "src/sksl/ir/SkSLType.h"
-#include "tests/Test.h"
 
 #include <memory>
 #include <string>
@@ -212,3 +215,5 @@ DEF_TEST(SkSLMemoryLayout430Test, r) {
     REPORTER_ASSERT(r, 16 == layout.alignment(*array2));
     REPORTER_ASSERT(r, 16 == layout.stride(*array2));
 }
+
+#endif // SK_ENABLE_SKSL

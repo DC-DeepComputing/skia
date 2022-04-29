@@ -30,8 +30,8 @@ cc_library(
         ":TestOps_src",
         ":YUVUtils_hdr",
         ":YUVUtils_src",
-        "//src/gpu/mock:GrMockRenderTask_hdr",
-        "//src/gpu/mock:GrMockSurfaceProxy_hdr",
+        "//src/gpu/ganesh/mock:GrMockRenderTask_hdr",
+        "//src/gpu/ganesh/mock:GrMockSurfaceProxy_hdr",
         "//tools/gpu/mock:MockTestContext_src",
     ],
 )

@@ -5,19 +5,22 @@
  * found in the LICENSE file.
  */
 
-#include "gm/gm.h"
+#include "tests/Test.h"
+
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkPaint.h"
 #include "include/core/SkSize.h"
 #include "include/core/SkSurface.h"
 #include "include/effects/SkRuntimeEffect.h"
-#include "src/gpu/ganesh/GrCaps.h"
-#include "src/gpu/ganesh/GrDirectContextPriv.h"
-#include "tests/Test.h"
 #include "tools/Resources.h"
 #include "tools/RuntimeBlendUtils.h"
 #include "tools/ToolUtils.h"
+
+#if SK_SUPPORT_GPU
+#include "src/gpu/ganesh/GrCaps.h"
+#include "src/gpu/ganesh/GrDirectContextPriv.h"
+#endif
 
 static bool nearly_equal(const SkColor& x, const SkColor& y) {
     const int kTolerance = 1;
@@ -81,9 +84,13 @@ DEF_TEST(SkRuntimeBlender_CPU, r) {
     test_blend(r, surface.get());
 }
 
+#if SK_SUPPORT_GPU
+
 DEF_GPUTEST_FOR_RENDERING_CONTEXTS(SkRuntimeBlender_GPU, r, ctxInfo) {
     const SkImageInfo info = SkImageInfo::MakeN32Premul(/*width=*/1, /*height=*/1);
     sk_sp<SkSurface> surface(SkSurface::MakeRenderTarget(ctxInfo.directContext(),
                                                          SkBudgeted::kNo, info));
     test_blend(r, surface.get());
 }
+
+#endif // SK_SUPPORT_GPU

@@ -5,15 +5,19 @@
  * found in the LICENSE file.
  */
 
+#include "tests/Test.h"
+
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkShader.h"
 #include "include/core/SkSurface.h"
 #include "include/effects/SkGradientShader.h"
 #include "include/effects/SkImageFilters.h"
+
+#if SK_ENABLE_SKSL
 #include "include/effects/SkRuntimeEffect.h"
 #include "src/effects/imagefilters/SkRuntimeImageFilter.h"
-#include "tests/Test.h"
+#endif
 
 static void test_unscaled(skiatest::Reporter* reporter) {
     static const int kWidth = 10;
@@ -118,6 +122,8 @@ DEF_TEST(PaintImageFilter, reporter) {
     test_scaled(reporter);
 }
 
+#if SK_ENABLE_SKSL
+
 static void test_runtime_shader(skiatest::Reporter* r, SkSurface* surface) {
     sk_sp<SkRuntimeEffect> effect = SkRuntimeEffect::MakeForShader(SkString(R"(
         uniform shader child;
@@ -186,9 +192,15 @@ DEF_TEST(SkRuntimeShaderImageFilter_CPU, r) {
     test_runtime_shader(r, surface.get());
 }
 
+#if SK_SUPPORT_GPU
+
 DEF_GPUTEST_FOR_RENDERING_CONTEXTS(SkRuntimeShaderImageFilter_GPU, r, ctxInfo) {
     const SkImageInfo info = SkImageInfo::MakeN32Premul(/*width=*/1, /*height=*/1);
     sk_sp<SkSurface> surface(
             SkSurface::MakeRenderTarget(ctxInfo.directContext(), SkBudgeted::kNo, info));
     test_runtime_shader(r, surface.get());
 }
+
+#endif // SK_SUPPORT_GPU
+
+#endif // SK_ENABLE_SKSL

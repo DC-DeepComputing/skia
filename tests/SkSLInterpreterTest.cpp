@@ -4,6 +4,10 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+#include "include/core/SkTypes.h"
+
+#if SK_ENABLE_SKSL
+#include "tests/Test.h"
 
 #include "include/core/SkColor.h"
 #include "include/core/SkData.h"
@@ -14,7 +18,6 @@
 #include "include/core/SkScalar.h"
 #include "include/core/SkSpan.h"
 #include "include/core/SkStream.h"
-#include "include/core/SkTypes.h"
 #include "include/private/SkFloatingPoint.h"
 #include "include/private/SkSLProgramKind.h"
 #include "include/private/SkTemplates.h"
@@ -27,7 +30,6 @@
 #include "src/sksl/ir/SkSLExternalFunction.h"
 #include "src/sksl/ir/SkSLProgram.h"
 #include "src/sksl/tracing/SkVMDebugTrace.h"
-#include "tests/Test.h"
 
 #include <math.h>
 #include <stdio.h>
@@ -1192,3 +1194,5 @@ enter int main()
 exit int main()
 )", "Trace output does not match expectation:\n%.*s\n", (int)trace.size(), trace.data());
 }
+
+#endif // SK_ENABLE_SKSL

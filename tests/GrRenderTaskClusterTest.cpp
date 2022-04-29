@@ -4,11 +4,14 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+#include "include/core/SkTypes.h"
+
+#if SK_SUPPORT_GPU
+#include "tests/Test.h"
 
 #include "src/gpu/ganesh/GrRenderTaskCluster.h"
 #include "src/gpu/ganesh/mock/GrMockRenderTask.h"
 #include "src/gpu/ganesh/mock/GrMockSurfaceProxy.h"
-#include "tests/Test.h"
 
 typedef void (*CreateGraphPF)(SkTArray<sk_sp<GrMockRenderTask>>* graph,
                               SkTArray<sk_sp<GrMockRenderTask>>* expected);
@@ -160,3 +163,5 @@ DEF_TEST(GrRenderTaskCluster, reporter) {
         //SkDEBUGCODE(print(graph);)
     }
 }
+
+#endif // SK_SUPPORT_GPU

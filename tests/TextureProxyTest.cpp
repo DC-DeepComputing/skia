@@ -4,9 +4,10 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
-
 // This is a GPU-backend specific test.
+#include "include/core/SkTypes.h"
 
+#if SK_SUPPORT_GPU
 #include "tests/Test.h"
 
 #include "include/core/SkBitmap.h"
@@ -360,3 +361,5 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(TextureProxyTest, reporter, ctxInfo) {
     invalidation_test(direct, reporter, cacheEntriesPerProxy);
     invalidation_and_instantiation_test(direct, reporter, cacheEntriesPerProxy);
 }
+
+#endif // SK_SUPPORT_GPU

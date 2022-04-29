@@ -4,6 +4,10 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+#include "include/core/SkTypes.h"
+
+#if SK_ENABLE_SKSL
+#include "tests/Test.h"
 
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
@@ -20,24 +24,26 @@
 #include "include/core/SkSurface.h"
 #include "include/core/SkTypes.h"
 #include "include/effects/SkRuntimeEffect.h"
-#include "include/gpu/GrDirectContext.h"
 #include "include/private/SkSLProgramElement.h"
 #include "include/private/SkSLProgramKind.h"
 #include "include/sksl/DSLCore.h"
 #include "src/core/SkRuntimeEffectPriv.h"
-#include "src/gpu/ganesh/GrCaps.h"
-#include "src/gpu/ganesh/GrDirectContextPriv.h"
-#include "src/gpu/ganesh/GrShaderCaps.h"
 #include "src/sksl/SkSLCompiler.h"
 #include "src/sksl/SkSLDehydrator.h"
 #include "src/sksl/SkSLRehydrator.h"
 #include "src/sksl/SkSLStringStream.h"
 #include "src/sksl/SkSLUtil.h"
 #include "src/sksl/ir/SkSLProgram.h"
-#include "tests/Test.h"
 #include "tests/TestHarness.h"
 #include "tools/Resources.h"
+
+#if SK_SUPPORT_GPU
+#include "include/gpu/GrDirectContext.h"
+#include "src/gpu/ganesh/GrCaps.h"
+#include "src/gpu/ganesh/GrDirectContextPriv.h"
+#include "src/gpu/ganesh/GrShaderCaps.h"
 #include "tools/gpu/GrContextFactory.h"
+#endif
 
 #include <array>
 #include <memory>
@@ -229,6 +235,7 @@ static void test_cpu(skiatest::Reporter* r, const char* testFile, int flags) {
     }
 }
 
+#if SK_SUPPORT_GPU
 static void test_gpu(skiatest::Reporter* r, GrDirectContext* ctx, const char* testFile, int flags) {
     // If this is an ES3-only test on a GPU which doesn't support SkSL ES3, return immediately.
     bool shouldRunGPU = (flags & SkSLTestFlags::GPU);
@@ -248,6 +255,7 @@ static void test_gpu(skiatest::Reporter* r, GrDirectContext* ctx, const char* te
         test_permutations(r, surface.get(), testFile, /*strictES2=*/false);
     }
 }
+#endif // SK_SUPPORT_GPU
 
 static void test_clone(skiatest::Reporter* r, const char* testFile, int flags) {
     SkString shaderString = load_source(r, testFile, "");
@@ -525,3 +533,5 @@ SKSL_TEST(CPU + GPU + SkQP, VectorConstructors,              "shared/VectorConst
 SKSL_TEST(CPU + GPU + SkQP, VectorToMatrixCast,              "shared/VectorToMatrixCast.sksl")
 SKSL_TEST(CPU + GPU + SkQP, VectorScalarMath,                "shared/VectorScalarMath.sksl")
 SKSL_TEST(GPU_ES3,          WhileLoopControlFlow,            "shared/WhileLoopControlFlow.sksl")
+
+#endif // SK_ENABLE_SKSL

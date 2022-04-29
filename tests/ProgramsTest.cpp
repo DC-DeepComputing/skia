@@ -4,10 +4,11 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
-
 // This is a GPU-backend specific test.
-
 #include "include/core/SkTypes.h"
+
+#if SK_SUPPORT_GPU
+#include "tests/Test.h"
 
 #include "include/core/SkColorSpace.h"
 #include "include/gpu/GrDirectContext.h"
@@ -28,7 +29,6 @@
 #include "src/gpu/ganesh/glsl/GrGLSLProgramBuilder.h"
 #include "src/gpu/ganesh/ops/GrDrawOp.h"
 #include "src/gpu/ganesh/v1/SurfaceDrawContext_v1.h"
-#include "tests/Test.h"
 #include "tools/gpu/GrContextFactory.h"
 
 #ifdef SK_GL
@@ -417,3 +417,5 @@ DEF_GPUTEST(Programs, reporter, options) {
     skiatest::RunWithGPUTestContexts(
             test_programs, &sk_gpu_test::GrContextFactory::IsRenderingContext, reporter, opts);
 }
+
+#endif // SK_SUPPORT_GPU

@@ -4,7 +4,9 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+#include "include/core/SkTypes.h"
 
+#if SK_SUPPORT_GPU
 #include "tests/Test.h"
 
 #include "include/core/SkColorSpace.h"
@@ -1312,3 +1314,5 @@ static void test_crbug_1262444(skiatest::Reporter* r) {
 DEF_TEST(TriangulatorBugs, r) {
     test_crbug_1262444(r);
 }
+
+#endif // SK_SUPPORT_GPU
