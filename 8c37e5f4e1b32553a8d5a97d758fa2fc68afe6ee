@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f0a9b5f8_bcbfd06b",
+        "filename": "src/core/SkCubicClipper.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-04-29T11:26:14Z",
+      "side": 0,
+      "message": "I think this might just have been copy-pasta that has lingered for 13 years: https://github.com/google/skia/commit/4896f9e017db7ebc232a1b19c3abfb69f1ca465a",
+      "range": {
+        "startLine": 85,
+        "startChar": 8,
+        "endLine": 85,
+        "endChar": 13
+      },
+      "revId": "8c37e5f4e1b32553a8d5a97d758fa2fc68afe6ee",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0d720002_4eaae50e",
+        "filename": "src/core/SkRTree.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-04-29T11:26:14Z",
+      "side": 0,
+      "message": "I believe the uses for this was removed in https://github.com/google/skia/commit/945d1e538c620914bf7cae5ad9eba0f1937559cf but I don\u0027t know this code very well. We should find someone else to vouch for it, assuming this is still used.",
+      "range": {
+        "startLine": 64,
+        "startChar": 8,
+        "endLine": 64,
+        "endChar": 19
+      },
+      "revId": "8c37e5f4e1b32553a8d5a97d758fa2fc68afe6ee",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
