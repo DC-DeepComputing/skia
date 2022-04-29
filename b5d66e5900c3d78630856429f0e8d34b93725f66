@@ -39,6 +39,30 @@
       },
       "revId": "b5d66e5900c3d78630856429f0e8d34b93725f66",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "aa375b40_6ec90898",
+        "filename": "infra/bots/assets/clang_win/create.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-04-29T15:40:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "96eb304b_4a252ab8",
+      "range": {
+        "startLine": 28,
+        "startChar": 0,
+        "endLine": 28,
+        "endChar": 26
+      },
+      "revId": "b5d66e5900c3d78630856429f0e8d34b93725f66",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
