@@ -1,0 +1,113 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "35b8e096_99bdee8f",
+        "filename": "modules/svg/include/SkSVGAttributeParser.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2022-04-29T16:57:47Z",
+      "side": 1,
+      "message": "We can get this from self, right?",
+      "range": {
+        "startLine": 76,
+        "startChar": 50,
+        "endLine": 76,
+        "endChar": 68
+      },
+      "revId": "230222399afeef0811143e4f4116397bbf819202",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "44ea6227_a1067257",
+        "filename": "modules/svg/include/SkSVGTypes.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 225,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2022-04-29T16:57:47Z",
+      "side": 1,
+      "message": "Would\n\n  std::vector\u003cSkString\u003e fVars;\n\nwork instead?",
+      "range": {
+        "startLine": 215,
+        "startChar": 0,
+        "endLine": 225,
+        "endChar": 22
+      },
+      "revId": "230222399afeef0811143e4f4116397bbf819202",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a87c4fa4_064e3e33",
+        "filename": "modules/svg/src/SkSVGAttributeParser.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 387,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2022-04-29T16:57:47Z",
+      "side": 1,
+      "message": "Can you link to the spec or add a comment with the pattern we\u0027re trying to match here?",
+      "revId": "230222399afeef0811143e4f4116397bbf819202",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1c061646_bdaaf280",
+        "filename": "modules/svg/src/SkSVGAttributeParser.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 396,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2022-04-29T16:57:47Z",
+      "side": 1,
+      "message": "I don\u0027t follow the recursion: we\u0027re inside the parseParenthesized callback, so it seems it would attempt to match stuff like\n\n  var(--foo, var(--bar, var(--baz, currentColor)))\n  \nwhich looks odd.  Is this form of nesting allowed by the spec?",
+      "range": {
+        "startLine": 396,
+        "startChar": 27,
+        "endLine": 396,
+        "endChar": 40
+      },
+      "revId": "230222399afeef0811143e4f4116397bbf819202",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3075c2ad_e1812ac3",
+        "filename": "modules/svg/src/SkSVGAttributeParser.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 397,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2022-04-29T16:57:47Z",
+      "side": 1,
+      "message": "Per https://www.w3.org/TR/css-variables-1/#using-variables,\n\n  va(--foo,)\n\nis supposed to be valid?",
+      "range": {
+        "startLine": 397,
+        "startChar": 27,
+        "endLine": 397,
+        "endChar": 32
+      },
+      "revId": "230222399afeef0811143e4f4116397bbf819202",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
