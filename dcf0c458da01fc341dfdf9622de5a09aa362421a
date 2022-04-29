@@ -16,6 +16,24 @@
       "message": "Are we compiling C code with pre-C99 flags?",
       "revId": "dcf0c458da01fc341dfdf9622de5a09aa362421a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b13ee365_bbf61f5f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-04-29T15:21:09Z",
+      "side": 1,
+      "message": "We don\u0027t specify the C standard so we get the default, gnu17. When explicitly specifying -std\u003dc17 we still get this warning.",
+      "parentUuid": "6b97dc16_c4fc79ce",
+      "revId": "dcf0c458da01fc341dfdf9622de5a09aa362421a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
