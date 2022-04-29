@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e581bc7b_8bdb62a1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-04-29T14:43:57Z",
+      "side": 1,
+      "message": "I pulled out the -Wunused-but-set-variable fixes (along with a few more instances) into a new CL because this is also blocking a clang upgrade for Windows (which is in turn blocking the Dawn roller). So I\u0027d like to have those in an isolated CL.\nhttps://skia-review.googlesource.com/c/skia/+/535436",
+      "revId": "35a81cc62b841476c68d63b4be263a426fde9ad1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
