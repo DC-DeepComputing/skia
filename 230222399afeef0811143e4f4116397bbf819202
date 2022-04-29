@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fb49c3d5_7271ac10",
+        "filename": "modules/svg/include/SkSVGAttributeParser.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-04-29T19:16:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "35b8e096_99bdee8f",
+      "range": {
+        "startLine": 76,
+        "startChar": 50,
+        "endLine": 76,
+        "endChar": 68
+      },
+      "revId": "230222399afeef0811143e4f4116397bbf819202",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "44ea6227_a1067257",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-04-29T16:57:47Z",
       "side": 1,
       "message": "Would\n\n  std::vector\u003cSkString\u003e fVars;\n\nwork instead?",
+      "range": {
+        "startLine": 215,
+        "startChar": 0,
+        "endLine": 225,
+        "endChar": 22
+      },
+      "revId": "230222399afeef0811143e4f4116397bbf819202",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a5fef0b5_5e7bbd80",
+        "filename": "modules/svg/include/SkSVGTypes.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 225,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-04-29T19:16:35Z",
+      "side": 1,
+      "message": "I suppose it could, but it\u0027s bigger (needs three pointers) and supports resize, which I was trying to avoid. The fact that C++ doesn\u0027t have a vocabulary type for a runtime owning fixed size container with an associated size is silly.\n\nOriginally this was important while I was developing this because I had Vars inside SkSVGColor directly. In the common case there aren\u0027t any vars and I wanted to keep the overhead on SkSVGColor minimal. Unfortunately, one must store at least a pointer and a length (or resort to linked lists which should be avoided). So to keep the overhead to a minimum of one pointer I created Vars. But now the extra overhead of another pointer is fairly minimal, so one could use std::vector here. It\u0027s just so inelegant. Also SkSVGColor needs to be copyable so I would still want the std::vector in a reference counted thing so it doesn\u0027t keep getting copied. But that means dragging in std::shared_ptr it\u0027s pain, which would also be nice to avoid.\n\nEven with this setup I end up default constructing a bunch of SkString (fortunately fairly fast) just so I can initialize this from last to first without moving everything around. Maybe I\u0027ll think about this for a minute.",
+      "parentUuid": "44ea6227_a1067257",
       "range": {
         "startLine": 215,
         "startChar": 0,
@@ -66,6 +114,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7b3ace77_28c4d54b",
+        "filename": "modules/svg/src/SkSVGAttributeParser.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 387,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-04-29T19:16:35Z",
+      "side": 1,
+      "message": "Adding a link [0]. Note that I believe the justification for this is that Chapter 6 of the SVG spec says that `Except for any additional SVG-specific rules explicitly mentioned in this specification, the normative definition of properties that are shared with CSS and XSL is the definition of the property from the CSS2 specification [CSS2].` So browsers generally parse the svg properties with a css parser, which will have support for `var`.\n\n\n[0] https://drafts.csswg.org/css-variables/#using-variables\n\n[1] https://www.w3.org/TR/SVG11/styling.html",
+      "parentUuid": "a87c4fa4_064e3e33",
+      "revId": "230222399afeef0811143e4f4116397bbf819202",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1c061646_bdaaf280",
         "filename": "modules/svg/src/SkSVGAttributeParser.cpp",
         "patchSetId": 8
@@ -89,6 +155,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3879933b_2e5837f4",
+        "filename": "modules/svg/src/SkSVGAttributeParser.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 396,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-04-29T19:16:35Z",
+      "side": 1,
+      "message": "Yes. The spec actually calls this out `If there are any var() references in the fallback, substitute them as well.` [0] Even went and tested this in Chrome to see if it works in general and it does. Though it isn\u0027t really nesting in the spec. In the specification `var` expansion happens after tokenization but before the parse (at least logically, the terms used in the spec are somewhat misleading). It can be seen as a \"pre-parse parse\" which happens at the token level. If the initial --identifier in the `var` exists then the tokens it is defined to have replaces the `var` and any tokens after the `,` in the `var` are discarded. If the --identifier does not exist then the tokens after the `,` in the `var` replace the `var` and the process continues from there. `var` is way more like macro expansion than a function. There are weird side effects because of this, like long form css properties having potentially strange behavior that one would not expect. And yes, this means that if new vars are introduced, removed, or modified a full re-parse is necessary (though not re-tokenization).\n\nIn this particular case this is only attempting to support `var` for colors as specified in OT-SVG and SVGNative. So instead of supporting the general case (we don\u0027t even do tokenization) I\u0027m just storing off the var identifiers so we can look them up later. It\u0027s all a bit squidgy because there is no real specification for this and since this parser doesn\u0027t follow the css rules for tokenization anyway I can\u0027t really implement the real thing without re-writing everything.\n\n\nChecking, I see that svg-native-viewer seems to have punted on supporting this with a TODO [1].\n\n[0] https://drafts.csswg.org/css-variables-1/#using-variables\n\n[1] https://github.com/adobe/svg-native-viewer/blob/f5c2ab195c6f3eaa76c2037817fd0d21b505bbc1/svgnative/src/SVGStringParser.cpp#L1097",
+      "parentUuid": "1c061646_bdaaf280",
+      "range": {
+        "startLine": 396,
+        "startChar": 27,
+        "endLine": 396,
+        "endChar": 40
+      },
+      "revId": "230222399afeef0811143e4f4116397bbf819202",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3075c2ad_e1812ac3",
         "filename": "modules/svg/src/SkSVGAttributeParser.cpp",
         "patchSetId": 8
@@ -100,6 +190,30 @@
       "writtenOn": "2022-04-29T16:57:47Z",
       "side": 1,
       "message": "Per https://www.w3.org/TR/css-variables-1/#using-variables,\n\n  va(--foo,)\n\nis supposed to be valid?",
+      "range": {
+        "startLine": 397,
+        "startChar": 27,
+        "endLine": 397,
+        "endChar": 32
+      },
+      "revId": "230222399afeef0811143e4f4116397bbf819202",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "374b5c9f_f9ffbe01",
+        "filename": "modules/svg/src/SkSVGAttributeParser.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 397,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-04-29T19:16:35Z",
+      "side": 1,
+      "message": "Hmmm... yes. This is one of those places where the lack of tokenization makes things difficult. In the spec this would mean that if `--foo` doesn\u0027t exist then the `var` should be replaced by no tokens. Which means that the method would not have recognized any colors if `--foo` wan\u0027t defined. I think the equivalent might be a color with type `kNone`?  If this color were encountered (the user doesn\u0027t specify this color) then I think the resolver should fail? Maybe? You are correct that we don\u0027t want to hard fail here though, because we do want to allow `--foo` a chance. For the time being it may just be better to let it be the default black (I think that\u0027s what you get for specifying an color with an empty string).",
+      "parentUuid": "3075c2ad_e1812ac3",
       "range": {
         "startLine": 397,
         "startChar": 27,
