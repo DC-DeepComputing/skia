@@ -22,6 +22,30 @@
       },
       "revId": "1746d95ddb30dcb73170c89ba8963aa235f3f1db",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d427de2d_ddd3452a",
+        "filename": "tests/sksl/inliner/ExponentialGrowth.glsl",
+        "patchSetId": 7
+      },
+      "lineNbr": 1464,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-04-29T16:34:03Z",
+      "side": 1,
+      "message": "This test demonstrates that we cap inlining once we have reached the kInlinedStatementLimit : https://osscs.corp.google.com/skia/skia/+/main:src/sksl/SkSLInliner.cpp;l\u003d70\nThe InlineMarkers were being counted as statements and running down this limit (even though they\u0027re nops at the end of the day).\n\nThat\u0027s what I meant by \"The removal of one IRNode per inlined function actually allows for\nslightly more aggressive inlining, since we restrict inlining based on\nIRNode consumption.\"",
+      "parentUuid": "c093c641_701b5abd",
+      "range": {
+        "startLine": 1464,
+        "startChar": 4,
+        "endLine": 1464,
+        "endChar": 12
+      },
+      "revId": "1746d95ddb30dcb73170c89ba8963aa235f3f1db",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
