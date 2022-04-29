@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3416f00c_18338848",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-04-29T14:03:05Z",
+      "side": 1,
+      "message": "Chrome canary went green with https://chromium-review.googlesource.com/c/3616345 so once that lands we should be good to reland this (other clients seemed fine).",
+      "revId": "86bd7a550494d47ff5faf067f58a3493d2f76c1d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
