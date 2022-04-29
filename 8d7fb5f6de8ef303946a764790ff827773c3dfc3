@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "324f7a7f_f7de1543",
+        "filename": "platform_tools/android/apps/skqp/src/main/assets/skqp/unittests.txt",
+        "patchSetId": 1
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2022-04-29T19:40:00Z",
+      "side": 0,
+      "message": "removes 2 duplicates from previous lines",
+      "revId": "8d7fb5f6de8ef303946a764790ff827773c3dfc3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
