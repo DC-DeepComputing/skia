@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c093c641_701b5abd",
+        "filename": "tests/sksl/inliner/ExponentialGrowth.glsl",
+        "patchSetId": 7
+      },
+      "lineNbr": 1464,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-04-29T16:30:45Z",
+      "side": 1,
+      "message": "Why does the first fn7_v() call get inlined but the next two don\u0027t?",
+      "range": {
+        "startLine": 1464,
+        "startChar": 4,
+        "endLine": 1464,
+        "endChar": 12
+      },
+      "revId": "1746d95ddb30dcb73170c89ba8963aa235f3f1db",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
