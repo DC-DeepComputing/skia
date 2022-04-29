@@ -4,7 +4,9 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+#include "include/core/SkTypes.h"
 
+#if defined(SK_GRAPHITE_ENABLED)
 #include "tests/Test.h"
 
 #include "src/gpu/graphite/geom/Shape.h"
@@ -14,3 +16,5 @@ DEF_GRAPHITE_TEST(ShapeTest, reporter) {
     skgpu::graphite::Shape s;
     REPORTER_ASSERT(reporter, s.type() == skgpu::graphite::Shape::Type::kEmpty);
 }
+
+#endif // defined(SK_GRAPHITE_ENABLED)

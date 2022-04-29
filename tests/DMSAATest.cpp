@@ -4,7 +4,9 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+#include "include/core/SkTypes.h"
 
+#if SK_SUPPORT_GPU
 #include "tests/Test.h"
 
 #include "include/core/SkBitmap.h"
@@ -324,3 +326,4 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(DMSAA_dual_source_blend_disable, reporter, ct
     context->deleteBackendTexture(texture2);
 }
 
+#endif // SK_SUPPORT_GPU

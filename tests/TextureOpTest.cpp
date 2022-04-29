@@ -4,6 +4,10 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+#include "include/core/SkTypes.h"
+
+#if SK_SUPPORT_GPU
+#include "tests/Test.h"
 
 #include "include/gpu/GrDirectContext.h"
 #include "include/gpu/GrRecordingContext.h"
@@ -14,7 +18,6 @@
 #include "src/gpu/ganesh/geometry/GrQuad.h"
 #include "src/gpu/ganesh/ops/OpsTask.h"
 #include "src/gpu/ganesh/ops/TextureOp.h"
-#include "tests/Test.h"
 
 class OpsTaskTestingAccess {
 public:
@@ -133,3 +136,5 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(TextureOpTest, reporter, ctxInfo) {
 
     chain1.deleteOps();
 }
+
+#endif // SK_SUPPORT_GPU

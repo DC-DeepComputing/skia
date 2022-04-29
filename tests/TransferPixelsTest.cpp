@@ -4,10 +4,11 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
-
 // This is a GPU-backend specific test. It relies on static initializers to work
-
 #include "include/core/SkTypes.h"
+
+#if SK_SUPPORT_GPU
+#include "tests/Test.h"
 
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkSurface.h"
@@ -19,7 +20,6 @@
 #include "src/gpu/ganesh/GrSurfaceProxy.h"
 #include "src/gpu/ganesh/GrTexture.h"
 #include "src/gpu/ganesh/SkGr.h"
-#include "tests/Test.h"
 #include "tests/TestUtils.h"
 #include "tools/gpu/GrContextFactory.h"
 
@@ -517,3 +517,5 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(TransferPixelsFromTextureTest, reporter, ctxI
         }
     }
 }
+
+#endif // SK_SUPPORT_GPU

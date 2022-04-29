@@ -4,6 +4,10 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+#include "include/core/SkTypes.h"
+
+#if SK_SUPPORT_GPU
+#include "tests/Test.h"
 
 #include "include/core/SkBitmap.h"
 #include "include/core/SkColor.h"
@@ -34,7 +38,6 @@
 #include "src/gpu/ganesh/ops/GrDrawOp.h"
 #include "src/gpu/ganesh/ops/GrOp.h"
 #include "src/gpu/ganesh/text/GrAtlasManager.h"
-#include "tests/Test.h"
 #include "tools/gpu/GrContextFactory.h"
 
 #include <memory>
@@ -314,3 +317,5 @@ DEF_GPUTEST(GrDrawOpAtlasConfig_Basic, reporter, options) {
     test_atlas_config(reporter, 65536, 0, MaskFormat::kA8,
                       { 512, 512 }, { 256, 256 });
 }
+
+#endif // SK_SUPPORT_GPU

@@ -7,6 +7,7 @@
 
 #include "tests/TestUtils.h"
 
+#if SK_SUPPORT_GPU
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkStream.h"
 #include "include/encode/SkPngEncoder.h"
@@ -326,3 +327,5 @@ DEF_TEST(chartoglyph_cache, reporter) {
         }
     }
 }
+
+#endif // SK_SUPPORT_GPU

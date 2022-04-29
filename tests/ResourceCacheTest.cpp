@@ -4,6 +4,10 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+#include "include/core/SkTypes.h"
+
+#if SK_SUPPORT_GPU
+#include "tests/Test.h"
 
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
@@ -22,7 +26,6 @@
 #include "src/gpu/ganesh/GrResourceProvider.h"
 #include "src/gpu/ganesh/GrTexture.h"
 #include "src/gpu/ganesh/SkGr.h"
-#include "tests/Test.h"
 #include "tools/gpu/GrContextFactory.h"
 #include "tools/gpu/ManagedBackendTexture.h"
 
@@ -1864,4 +1867,6 @@ DEF_GPUTEST_FOR_MOCK_CONTEXT(OverbudgetFlush, reporter, ctxInfo) {
     REPORTER_ASSERT(reporter, getFlushCountDelta());
     REPORTER_ASSERT(reporter, overbudget());
 }
-#endif
+#endif // GR_GPU_STATS
+
+#endif // SK_SUPPORT_GPU

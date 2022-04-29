@@ -4,6 +4,10 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+#include "include/core/SkTypes.h"
+
+#if SK_SUPPORT_GPU
+#include "tests/Test.h"
 
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
@@ -11,7 +15,6 @@
 #include "include/gpu/GrDirectContext.h"
 #include "src/gpu/ganesh/GrDirectContextPriv.h"
 #include "src/gpu/ganesh/GrGpu.h"
-#include "tests/Test.h"
 
 static bool check_read(skiatest::Reporter* reporter, const SkBitmap& bitmap) {
     bool result = true;
@@ -83,3 +86,5 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(OpsTaskFlushCount, reporter, ctxInfo) {
     REPORTER_ASSERT(reporter, surface2->readPixels(readbackBitmap, 0, 0));
     REPORTER_ASSERT(reporter, check_read(reporter, readbackBitmap));
 }
+
+#endif // SK_SUPPORT_GPU

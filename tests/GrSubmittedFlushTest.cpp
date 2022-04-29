@@ -5,6 +5,9 @@
  * found in the LICENSE file.
  */
 
+#include "include/core/SkTypes.h"
+
+#if SK_SUPPORT_GPU
 #include "tests/Test.h"
 
 #include "include/core/SkCanvas.h"
@@ -86,3 +89,5 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(FlushSubmittedProcTest, reporter, ctxInfo) {
     REPORTER_ASSERT(reporter, submittedCount == 7);
     REPORTER_ASSERT(reporter, !submittedSuccess);
 }
+
+#endif // SK_SUPPORT_GPU

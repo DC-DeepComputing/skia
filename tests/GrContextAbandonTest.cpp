@@ -7,8 +7,10 @@
 
 #include "include/core/SkTypes.h"
 
-#include "include/gpu/GrDirectContext.h"
+#if SK_SUPPORT_GPU
 #include "tests/Test.h"
+
+#include "include/gpu/GrDirectContext.h"
 #include "tools/gpu/GrContextFactory.h"
 
 using namespace sk_gpu_test;
@@ -48,3 +50,5 @@ DEF_GPUTEST(GrContext_abandonContext, reporter, options) {
         }
     }
 }
+
+#endif // SK_SUPPORT_GPU

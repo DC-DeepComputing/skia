@@ -8,7 +8,6 @@ cc_library(
     visibility = ["//:__subpackages__"],
     deps = [
         ":Test_src",
-        ":TestUtils_src",
         ":TestHarness_src",
 
         # These are the deps of the tests
@@ -17,14 +16,19 @@ cc_library(
         "//src/lazy:SkDiscardableMemoryPool_src",
         "//src/svg:SkSVGCanvas_src",
         "//tools/fonts:TestEmptyTypeface_hdr",
-        "//tools/gpu/gl/command_buffer:GLTestContext_command_buffer_src",
-        "//tools/gpu/gl:GLTestContext_src",
-        "//tools/gpu:gpu_tool_utils",
-        "//tools:RuntimeBlendUtils_src",
         "//tools:SkSharingProc_src",
         "//tools:ToolUtils_src",
-        "//tools/debugger",
-    ],
+    ] + select({
+        "//bazel/common_config_settings:has_gpu_backend": [
+            "//tools/gpu/gl/command_buffer:GLTestContext_command_buffer_src",
+            "//tools/gpu/gl:GLTestContext_src",
+            "//tools/gpu:gpu_tool_utils",
+            "//tools/debugger",
+            "//tools:RuntimeBlendUtils_src",
+            ":TestUtils_src",
+        ],
+        "//conditions:default": [],
+    }),
 )
 
 CORE_TESTS = [
@@ -370,7 +374,6 @@ GPU_TESTS = [
     "GrTextureMipMapInvalidationTest.cpp",
     "GrVxTest.cpp",
     "ReadWritePixelsGpuTest.cpp",
-    "SkSLDSLErrorLineNumbers.cpp",
     "SkSLDSLOnlyTest.cpp",
     "SkSLDSLTest.cpp",
     "SkSLES2ConformanceTest.cpp",

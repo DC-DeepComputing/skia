@@ -4,7 +4,9 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+#include "include/core/SkTypes.h"
 
+#if defined(SK_GRAPHITE_ENABLED)
 #include "tests/Test.h"
 
 #include "include/core/SkM44.h"
@@ -119,3 +121,5 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(UniformTest, reporter, context) {
         }
     }
 }
+
+#endif // defined(SK_GRAPHITE_ENABLED)

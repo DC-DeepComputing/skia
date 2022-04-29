@@ -4,6 +4,10 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+#include "include/core/SkTypes.h"
+
+#if SK_SUPPORT_GPU
+#include "tests/Test.h"
 
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
@@ -38,7 +42,6 @@
 #include "src/gpu/ganesh/gl/GrGLDefines_impl.h"
 #include "src/image/SkImage_GpuBase.h"
 #include "src/image/SkSurface_Gpu.h"
-#include "tests/Test.h"
 #include "tests/TestUtils.h"
 #include "tools/gpu/BackendSurfaceFactory.h"
 #include "tools/gpu/GrContextFactory.h"
@@ -1239,3 +1242,5 @@ DEF_GPUTEST_FOR_GL_RENDERING_CONTEXTS(DDLCompatibilityTest, reporter, ctxInfo) {
     }
 
 }
+
+#endif // SK_SUPPORT_GPU

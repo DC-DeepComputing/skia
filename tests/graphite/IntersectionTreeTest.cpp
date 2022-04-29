@@ -4,10 +4,13 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+#include "include/core/SkTypes.h"
+
+#if defined(SK_GRAPHITE_ENABLED)
+#include "tests/Test.h"
 
 #include "include/utils/SkRandom.h"
 #include "src/gpu/graphite/geom/IntersectionTree.h"
-#include "tests/Test.h"
 
 namespace skgpu::graphite {
 
@@ -73,3 +76,5 @@ DEF_GRAPHITE_TEST(skgpu_IntersectionTree, reporter) {
 }
 
 }  // namespace skgpu::graphite
+
+#endif // defined(SK_GRAPHITE_ENABLED)

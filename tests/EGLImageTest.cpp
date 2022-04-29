@@ -4,6 +4,10 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+#include "include/core/SkTypes.h"
+
+#if defined(SK_GL)
+#include "tests/Test.h"
 
 #include "include/core/SkColorSpace.h"
 #include "include/gpu/GrDirectContext.h"
@@ -15,13 +19,10 @@
 #include "src/gpu/ganesh/SurfaceFillContext.h"
 #include "src/gpu/ganesh/gl/GrGLGpu.h"
 #include "src/gpu/ganesh/gl/GrGLUtil.h"
-#include "tests/Test.h"
 #include "tests/TestUtils.h"
 #include "tools/gpu/GrContextFactory.h"
 #include "tools/gpu/ManagedBackendTexture.h"
 #include "tools/gpu/gl/GLTestContext.h"
-
-#ifdef SK_GL
 
 using sk_gpu_test::GLTestContext;
 
