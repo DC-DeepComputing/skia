@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6b97dc16_c4fc79ce",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-04-29T15:11:04Z",
+      "side": 1,
+      "message": "Are we compiling C code with pre-C99 flags?",
+      "revId": "dcf0c458da01fc341dfdf9622de5a09aa362421a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
