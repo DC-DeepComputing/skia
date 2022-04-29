@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "72dddd0e_8b522c4b",
+        "filename": "src/gpu/ganesh/dawn/GrDawnBuffer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-04-29T11:19:07Z",
+      "side": 1,
+      "message": "Should we link the bug in a comment here?",
+      "range": {
+        "startLine": 151,
+        "startChar": 18,
+        "endLine": 151,
+        "endChar": 31
+      },
+      "revId": "daf5005500a73bb2999934eba24b0f185ee8ce42",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
