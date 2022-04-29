@@ -16,6 +16,29 @@
       "message": "I think this will unblock the Dawn roller, unless something else has crept in since it started failing...",
       "revId": "b5d66e5900c3d78630856429f0e8d34b93725f66",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "96eb304b_4a252ab8",
+        "filename": "infra/bots/assets/clang_win/create.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2022-04-29T15:34:26Z",
+      "side": 1,
+      "message": "Nit: Looks like this isn\u0027t being used",
+      "range": {
+        "startLine": 28,
+        "startChar": 0,
+        "endLine": 28,
+        "endChar": 26
+      },
+      "revId": "b5d66e5900c3d78630856429f0e8d34b93725f66",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
