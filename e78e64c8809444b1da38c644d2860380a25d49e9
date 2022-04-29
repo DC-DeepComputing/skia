@@ -16,6 +16,24 @@
       "message": "So, we need a way to pass in a FontMgr when we deserialize the SkPicture here?",
       "revId": "e78e64c8809444b1da38c644d2860380a25d49e9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4709bcf6_e033207d",
+        "filename": "modules/canvaskit/tests/paragraph.spec.js",
+        "patchSetId": 3
+      },
+      "lineNbr": 1066,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-04-29T16:26:11Z",
+      "side": 1,
+      "message": "Typeface serialization is a mess, and I wish I had time to work on it and someone to actually review the changes I\u0027ve made in the past to start working on it. The issue isn\u0027t so much at serialization time but deserialization. However, passing a fontmgr to the deserializer would be incorrect in the same way our current system is incorrect, in that it assumes that deserialized typefaces should be created with some default fontmgr (and there shouldn\u0027t even be a default fontmgr).\n\nIn the original issue, when the paragraph was created a custom fontmgr was passed to it for use. These typefaces were serialized with the intent that at deserialization the fontmgr that created them would be the default one. Deserialization knows nothing of this custom fontmgr which created these typefaces and attempts to use the default one. There is no failure mode, so the default fontmgr returns the one default font it has, which is obviously unrelated to the original fonts used.\n\nThe way one is supposed to handle this is to pass SkPicture::serialize a SkSerialProcs with an fTypefaceProc which can properly encode typefaces and then decode with SkPicture::Make with a SkDeserialProcs with an fTypefaceProc which can decode whatever was written. This is how Chromium now handles any non-toy serialization, like with oopr and printing (both of which require sending the serialized picture across process). The default serializer just writes out the font name (if system) or data (if process local) and the default deserializer uses this data to try to recreated the typeface with the default fontmgr.\n\nIn theory one way to handle this would be to have the user pass an fontmgr to the picture deserialization part (in the example, as another parameter to K.MakePicture). Then set the deserialization proc to call into a new SkTypeface::MakeDeserialize that takes an SkFontMgr and uses that instead of the default. This is still strictly incorrect as it assumes that this one fontmgr can deserialize any typeface (there may be many fontmgr with different kinds of support) but at least it would allow this obvious case.",
+      "parentUuid": "1f1fb825_259a81f5",
+      "revId": "e78e64c8809444b1da38c644d2860380a25d49e9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
