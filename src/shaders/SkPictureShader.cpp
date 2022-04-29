@@ -374,7 +374,7 @@ std::unique_ptr<GrFragmentProcessor> SkPictureShader::asFragmentProcessor(
         const GrFPArgs& args) const {
 
     auto ctx = args.fContext;
-    auto lm = this->totalLocalMatrix(args.fPreLocalMatrix);
+    auto lm = this->totalLocalMatrix(args.fPreLocalMatrix1);
     SkColorType dstColorType = GrColorTypeToSkColorType(args.fDstColorInfo->colorType());
     if (dstColorType == kUnknown_SkColorType) {
         dstColorType = kRGBA_8888_SkColorType;

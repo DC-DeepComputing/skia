@@ -1167,7 +1167,7 @@ public:
 #if SK_SUPPORT_GPU
     std::unique_ptr<GrFragmentProcessor> asFragmentProcessor(const GrFPArgs& args) const override {
         SkMatrix matrix;
-        if (!this->totalLocalMatrix(args.fPreLocalMatrix)->invert(&matrix)) {
+        if (!this->totalLocalMatrix(args.fPreLocalMatrix1)->invert(&matrix)) {
             return nullptr;
         }
 

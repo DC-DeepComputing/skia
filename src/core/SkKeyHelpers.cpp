@@ -124,6 +124,7 @@ void add_linear_gradient_uniform_data(const SkShaderCodeDictionary* dict,
                                       const GradientData& gradData,
                                       SkPipelineDataGatherer* gatherer) {
     VALIDATE_UNIFORMS(gatherer, dict, kLinearGradientShader)
+    gatherer->write(gradData.fLocalMatrix);
     gatherer->write(gradData.fColor4fs, GradientData::kMaxStops);
     gatherer->write(gradData.fOffsets, GradientData::kMaxStops);
     gatherer->write(gradData.fPoints[0]);
@@ -140,6 +141,7 @@ void add_radial_gradient_uniform_data(const SkShaderCodeDictionary* dict,
                                       const GradientData& gradData,
                                       SkPipelineDataGatherer* gatherer) {
     VALIDATE_UNIFORMS(gatherer, dict, kRadialGradientShader)
+    gatherer->write(gradData.fLocalMatrix);
     gatherer->write(gradData.fColor4fs, GradientData::kMaxStops);
     gatherer->write(gradData.fOffsets, GradientData::kMaxStops);
     gatherer->write(gradData.fPoints[0]);
@@ -156,6 +158,7 @@ void add_sweep_gradient_uniform_data(const SkShaderCodeDictionary* dict,
                                      const GradientData& gradData,
                                      SkPipelineDataGatherer* gatherer) {
     VALIDATE_UNIFORMS(gatherer, dict, kSweepGradientShader)
+    gatherer->write(gradData.fLocalMatrix);
     gatherer->write(gradData.fColor4fs, GradientData::kMaxStops);
     gatherer->write(gradData.fOffsets, GradientData::kMaxStops);
     gatherer->write(gradData.fPoints[0]);
@@ -172,6 +175,7 @@ void add_conical_gradient_uniform_data(const SkShaderCodeDictionary* dict,
                                        const GradientData& gradData,
                                        SkPipelineDataGatherer* gatherer) {
     VALIDATE_UNIFORMS(gatherer, dict, kConicalGradientShader)
+    gatherer->write(gradData.fLocalMatrix);
     gatherer->write(gradData.fColor4fs, GradientData::kMaxStops);
     gatherer->write(gradData.fOffsets, GradientData::kMaxStops);
     gatherer->write(gradData.fPoints[0]);
@@ -201,6 +205,7 @@ GradientData::GradientData(SkShader::GradientType type,
 }
 
 GradientData::GradientData(SkShader::GradientType type,
+                           SkM44 localMatrix,
                            SkPoint point0, SkPoint point1,
                            float radius0, float radius1,
                            SkTileMode tm,
@@ -208,6 +213,7 @@ GradientData::GradientData(SkShader::GradientType type,
                            SkColor4f* color4fs,
                            float* offsets)
         : fType(type)
+        , fLocalMatrix(localMatrix)
         , fTM(tm)
         , fNumStops(std::min(numStops, kMaxStops)) {
     SkASSERT(fNumStops >= 1);
@@ -291,6 +297,78 @@ void AddToKey(const SkKeyContext& keyContext,
 } // namespace GradientShaderBlocks
 
 //--------------------------------------------------------------------------------------------------
+namespace LocalMatrixShaderBlock {
+
+namespace {
+
+#ifdef SK_GRAPHITE_ENABLED
+
+void add_localmatrixshader_uniform_data(const SkShaderCodeDictionary* dict,
+                                        const SkM44& localMatrix,
+                                        SkPipelineDataGatherer* gatherer) {
+    VALIDATE_UNIFORMS(gatherer, dict, kLocalMatrixShader)
+
+    SkM44 lmInverse;
+    bool wasInverted = localMatrix.invert(&lmInverse);  // TODO: handle failure up stack
+    if (!wasInverted) {
+        lmInverse.setIdentity();
+    }
+
+    SkDebugf("localmatrixshader\n");
+    lmInverse.dump();
+
+    gatherer->write(lmInverse);
+
+    gatherer->addFlags(
+            dict->getSnippetRequirementFlags(SkBuiltInCodeSnippetID::kLocalMatrixShader));
+}
+
+#endif // SK_GRAPHITE_ENABLED
+
+} // anonymous namespace
+
+void AddToKey(const SkKeyContext& keyContext,
+              SkPaintParamsKeyBuilder* builder,
+              SkPipelineDataGatherer* gatherer,
+              const LMShaderData& lmShaderData) {
+
+#ifdef SK_GRAPHITE_ENABLED
+    if (builder->backend() == SkBackend::kGraphite) {
+        auto dict = keyContext.dict();
+        // When extracted into SkShaderInfo::SnippetEntries the children will appear after their
+        // parent. Thus, the parent's uniform data must appear in the uniform block before the
+        // uniform data of the children.
+        if (gatherer) {
+            add_localmatrixshader_uniform_data(dict, lmShaderData.fLocalMatrix, gatherer);
+        }
+
+        builder->beginBlock(SkBuiltInCodeSnippetID::kLocalMatrixShader);
+
+        // Child blocks always go right after the parent block's header
+        // TODO: add startChild/endChild entry points to SkPaintParamsKeyBuilder. They could be
+        // used to compute and store the number of children w/in a block's header.
+        int start = builder->sizeInBytes();
+        as_SB(lmShaderData.fProxyShader)->addToKey(keyContext, builder, gatherer);
+        int childShaderSize = builder->sizeInBytes() - start;
+
+        builder->endBlock();
+
+        validate_block_header(builder,
+                              SkBuiltInCodeSnippetID::kLocalMatrixShader,
+                              childShaderSize);
+        return;
+    }
+#endif // SK_GRAPHITE_ENABLED
+
+    if (builder->backend() == SkBackend::kSkVM || builder->backend() == SkBackend::kGanesh) {
+        // TODO: add implementation for other backends
+        SolidColorShaderBlock::AddToKey(keyContext, builder, gatherer, kErrorColor);
+    }
+}
+
+} // namespace LocalMatrixShaderBlock
+
+//--------------------------------------------------------------------------------------------------
 namespace ImageShaderBlock {
 
 namespace {
@@ -301,11 +379,6 @@ void add_image_uniform_data(const SkShaderCodeDictionary* dict,
                             const ImageData& imgData,
                             SkPipelineDataGatherer* gatherer) {
     VALIDATE_UNIFORMS(gatherer, dict, kImageShader)
-    gatherer->write(imgData.fSubset);
-    gatherer->write(static_cast<int>(imgData.fTileModes[0]));
-    gatherer->write(static_cast<int>(imgData.fTileModes[1]));
-    gatherer->write(imgData.fTextureProxy->dimensions().fWidth);
-    gatherer->write(imgData.fTextureProxy->dimensions().fHeight);
 
     SkMatrix lmInverse;
     bool wasInverted = imgData.fLocalMatrix.invert(&lmInverse);  // TODO: handle failure up stack
@@ -313,7 +386,15 @@ void add_image_uniform_data(const SkShaderCodeDictionary* dict,
         lmInverse.setIdentity();
     }
 
+    SkDebugf("imageshader\n");
+    SkM44(lmInverse).dump();
+
     gatherer->write(SkM44(lmInverse));
+    gatherer->write(imgData.fSubset);
+    gatherer->write(static_cast<int>(imgData.fTileModes[0]));
+    gatherer->write(static_cast<int>(imgData.fTileModes[1]));
+    gatherer->write(imgData.fTextureProxy->dimensions().fWidth);
+    gatherer->write(imgData.fTextureProxy->dimensions().fHeight);
 
     gatherer->addFlags(dict->getSnippetRequirementFlags(SkBuiltInCodeSnippetID::kImageShader));
 }
@@ -400,7 +481,7 @@ void add_blendshader_uniform_data(const SkShaderCodeDictionary* dict,
 void AddToKey(const SkKeyContext& keyContext,
               SkPaintParamsKeyBuilder *builder,
               SkPipelineDataGatherer* gatherer,
-              const BlendData& blendData) {
+              const BlendShaderData& blendData) {
 
 #ifdef SK_GRAPHITE_ENABLED
     if (builder->backend() == SkBackend::kGraphite) {

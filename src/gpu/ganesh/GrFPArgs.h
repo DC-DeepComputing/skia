@@ -28,14 +28,14 @@ struct GrFPArgs {
 
     GrFPArgs withNewMatrixProvider(const SkMatrixProvider& provider) const {
         GrFPArgs newArgs(fContext, provider, fDstColorInfo);
-        newArgs.fPreLocalMatrix = fPreLocalMatrix;
+        newArgs.fPreLocalMatrix1 = fPreLocalMatrix1;
         return newArgs;
     }
 
     GrRecordingContext* fContext;
     const SkMatrixProvider& fMatrixProvider;
 
-    const SkMatrix* fPreLocalMatrix  = nullptr;
+    const SkMatrix* fPreLocalMatrix1  = nullptr;
 
     const GrColorInfo* fDstColorInfo;
 };
@@ -44,11 +44,11 @@ class GrFPArgs::WithPreLocalMatrix final : public GrFPArgs {
 public:
     WithPreLocalMatrix(const GrFPArgs& args, const SkMatrix& lm) : INHERITED(args) {
         if (!lm.isIdentity()) {
-            if (fPreLocalMatrix) {
-                fStorage.setConcat(lm, *fPreLocalMatrix);
-                fPreLocalMatrix = fStorage.isIdentity() ? nullptr : &fStorage;
+            if (fPreLocalMatrix1) {
+                fStorage.setConcat(lm, *fPreLocalMatrix1);
+                fPreLocalMatrix1 = fStorage.isIdentity() ? nullptr : &fStorage;
             } else {
-                fPreLocalMatrix = &lm;
+                fPreLocalMatrix1 = &lm;
             }
         }
     }

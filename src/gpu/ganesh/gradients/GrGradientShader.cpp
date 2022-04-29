@@ -682,7 +682,7 @@ static std::unique_ptr<GrFragmentProcessor> make_gradient(
 
     // Wrap the layout in a matrix effect to apply the gradient's matrix:
     SkMatrix matrix;
-    if (!shader.totalLocalMatrix(args.fPreLocalMatrix)->invert(&matrix)) {
+    if (!shader.totalLocalMatrix(args.fPreLocalMatrix1)->invert(&matrix)) {
         return nullptr;
     }
     // Some two-point conical gradients use a custom matrix here
