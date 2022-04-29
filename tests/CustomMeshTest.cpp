@@ -4,10 +4,13 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+#include "include/core/SkTypes.h"
+
+#if defined(SK_ENABLE_SKSL)
+#include "tests/Test.h"
 
 #include "include/core/SkCanvas.h"
 #include "include/core/SkCustomMesh.h"
-#include "tests/Test.h"
 
 using Attribute = SkCustomMeshSpecification::Attribute;
 using Varying   = SkCustomMeshSpecification::Varying;
@@ -536,3 +539,5 @@ DEF_TEST(CustomMeshSpec, reporter) {
     test_empty_attribute_name(reporter);
     test_empty_varying_name(reporter);
 }
+
+#endif // defined(SK_ENABLE_SKSL)

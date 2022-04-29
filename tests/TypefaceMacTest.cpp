@@ -4,13 +4,16 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+#include "include/core/SkTypes.h"
+
+#if defined(SK_BUILD_FOR_MAC) || defined(SK_BUILD_FOR_IOS)
+#include "tests/Test.h"
 
 #include "include/core/SkFontMgr.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkTypeface.h"
 #include "include/ports/SkTypeface_mac.h"
 #include "src/core/SkZip.h"
-#include "tests/Test.h"
 
 #include <stdarg.h>
 #include <string>
@@ -181,3 +184,4 @@ DEF_TEST(TypefaceMacVariation, reporter) {
     }
     }
 }
+#endif // defined(SK_BUILD_FOR_MAC) || defined(SK_BUILD_FOR_IOS)

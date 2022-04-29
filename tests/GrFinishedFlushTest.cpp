@@ -4,7 +4,9 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+#include "include/core/SkTypes.h"
 
+#if SK_SUPPORT_GPU
 #include "tests/Test.h"
 
 #include <chrono>
@@ -139,4 +141,4 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(FlushFinishedProcTest, reporter, ctxInfo) {
     REPORTER_ASSERT(reporter, count == 1);
     REPORTER_ASSERT(reporter, count == count2);
 }
-
+#endif // SK_SUPPORT_GPU

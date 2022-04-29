@@ -105,5 +105,7 @@
   "libswscale/swscale.h": "SK_GAZELLE_IGNORE",
 
   "skia.h": "SK_GAZELLE_IGNORE TODO this is a generated file for fiddles",
-  "SkFlattenableSerialization.h": "SK_GAZELLE_IGNORE something in Chrome?"
+  "SkFlattenableSerialization.h": "SK_GAZELLE_IGNORE something in Chrome?",
+
+  "FrontBufferedStream.h": "//client_utils/android:FrontBufferedStream_hdr"
 }

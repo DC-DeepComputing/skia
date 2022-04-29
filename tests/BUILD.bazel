@@ -370,7 +370,6 @@ GPU_TESTS = [
     "GrTextureMipMapInvalidationTest.cpp",
     "GrVxTest.cpp",
     "ReadWritePixelsGpuTest.cpp",
-    "SkSLDSLErrorLineNumbers.cpp",
     "SkSLDSLOnlyTest.cpp",
     "SkSLDSLTest.cpp",
     "SkSLES2ConformanceTest.cpp",

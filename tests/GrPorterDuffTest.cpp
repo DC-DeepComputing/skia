@@ -4,7 +4,9 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+#include "include/core/SkTypes.h"
 
+#if SK_SUPPORT_GPU
 #include "tests/Test.h"
 
 #include "include/gpu/GrBackendSurface.h"
@@ -1112,3 +1114,5 @@ DEF_GPUTEST(PorterDuffNoDualSourceBlending, reporter, options) {
         }
     }
 }
+
+#endif // SK_SUPPORT_GPU

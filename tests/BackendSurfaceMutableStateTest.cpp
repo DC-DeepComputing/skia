@@ -4,6 +4,10 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+#include "include/core/SkTypes.h"
+
+#ifdef SK_VULKAN
+#include "tests/Test.h"
 
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkImage.h"
@@ -13,13 +17,10 @@
 #include "src/gpu/ganesh/GrDirectContextPriv.h"
 #include "src/gpu/ganesh/GrTexture.h"
 #include "src/gpu/ganesh/GrTextureProxy.h"
-#include "src/image/SkImage_Base.h"
-#include "tests/Test.h"
-#include "tools/gpu/ProxyUtils.h"
-
-#ifdef SK_VULKAN
 #include "src/gpu/ganesh/vk/GrVkGpu.h"
 #include "src/gpu/ganesh/vk/GrVkTexture.h"
+#include "src/image/SkImage_Base.h"
+#include "tools/gpu/ProxyUtils.h"
 
 DEF_GPUTEST_FOR_VULKAN_CONTEXT(VkBackendSurfaceMutableStateTest, reporter, ctxInfo) {
     auto dContext = ctxInfo.directContext();
@@ -177,4 +178,4 @@ DEF_GPUTEST_FOR_VULKAN_CONTEXT(VkBackendSurfaceMutableStateTest, reporter, ctxIn
     dContext->deleteBackendTexture(backendTex);
 }
 
-#endif
+#endif // SK_VULKAN

@@ -4,7 +4,9 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+#include "include/core/SkTypes.h"
 
+#if defined(SK_GRAPHITE_ENABLED)
 #include "tests/Test.h"
 
 #include "include/gpu/graphite/Context.h"
@@ -57,3 +59,5 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(RecorderDevicePtrTest, reporter, context) {
     device1.reset();
     device3.reset();
 }
+
+#endif // defined(SK_GRAPHITE_ENABLED)
