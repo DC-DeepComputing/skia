@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "86ea00ab_67e5628d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-04-29T14:49:37Z",
+      "side": 1,
+      "message": "Oh John\u0027s on chat but OOO. ",
+      "revId": "7bbb9af7f597526f8f66a45c2d38f764cfb33aa5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
