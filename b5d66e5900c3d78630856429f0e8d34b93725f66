@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6345e7bc_3d8d5a58",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-04-29T15:24:02Z",
+      "side": 1,
+      "message": "I think this will unblock the Dawn roller, unless something else has crept in since it started failing...",
+      "revId": "b5d66e5900c3d78630856429f0e8d34b93725f66",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
