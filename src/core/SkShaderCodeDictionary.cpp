@@ -12,8 +12,39 @@
 
 namespace {
 
+std::string get_mangled_local_var_name(const char* baseName, int manglingSuffix) {
+    return std::string(baseName) + "_" + std::to_string(manglingSuffix);
+}
+
 void add_indent(std::string* result, int indent) {
     result->append(4*indent, ' ');
+}
+
+std::string generate_default_before_kids_glue_code(int entryIndex,
+                                                   const SkPaintParamsKey::BlockReader& reader,
+                                                   const std::string& parentPreLocalName,
+                                                   int indent) {
+    std::string result;
+
+    if (reader.entry()->needsLocalCoords()) {
+        // Every snippet that requests local coordinates must have a preLocalMatrix as its first
+        // uniform
+        SkASSERT(reader.entry()->fUniforms.size() >= 1);
+        SkASSERT(reader.entry()->fUniforms[0].type() == SkSLType::kFloat4x4);
+
+        std::string localMatrixUniformName = reader.entry()->getMangledUniformName(0, entryIndex);
+
+        std::string preLocalMatrixVarName = get_mangled_local_var_name("preLocal", entryIndex);
+
+        add_indent(&result, indent);
+        SkSL::String::appendf(&result,
+                              "float4x4 %s = %s * %s;\n",
+                              preLocalMatrixVarName.c_str(),
+                              parentPreLocalName.c_str(),
+                              localMatrixUniformName.c_str());
+    }
+
+    return result;
 }
 
 } // anonymous namespace
@@ -56,30 +87,48 @@ std::string GetMtlTexturesAndSamplers(const std::vector<SkPaintParamsKey::BlockR
 // Where the %d is filled in with 'entryIndex'.
 std::string SkShaderInfo::emitGlueCodeForEntry(int* entryIndex,
                                                const std::string& priorStageOutputName,
+                                               const std::string& parentPreLocalName,
                                                std::string* result,
                                                int indent) const {
     const SkPaintParamsKey::BlockReader& reader = fBlockReaders[*entryIndex];
     int curEntryIndex = *entryIndex;
 
-    std::string scopeOutputVar(std::string("outColor") + std::to_string(curEntryIndex));
+    std::string scopeOutputVar = get_mangled_local_var_name("outColor", curEntryIndex);
 
     add_indent(result, indent);
-    SkSL::String::appendf(result, "half4 %s;\n", scopeOutputVar.c_str());
+    SkSL::String::appendf(result,
+                          "half4 %s; // output of %s\n",
+                          scopeOutputVar.c_str(),
+                          reader.entry()->fName);
     add_indent(result, indent);
     *result += "{\n";
 
+    *result += generate_default_before_kids_glue_code(curEntryIndex, reader,
+                                                      parentPreLocalName, indent+1);
+
+    std::string currentPreLocalName;
+    if (reader.entry()->needsLocalCoords()) {
+        currentPreLocalName = get_mangled_local_var_name("preLocal", curEntryIndex);
+    } else {
+        currentPreLocalName = parentPreLocalName;
+    }
+
+
     // Although the children appear after the parent in the shader info they are emitted
     // before the parent
-    std::vector<std::string> childNames;
+    std::vector<std::string> childOutputVarNames;
     for (int j = 0; j < reader.numChildren(); ++j) {
         *entryIndex += 1;
-        std::string childOutputVar = this->emitGlueCodeForEntry(entryIndex, priorStageOutputName,
+        std::string childOutputVar = this->emitGlueCodeForEntry(entryIndex,
+                                                                priorStageOutputName,
+                                                                currentPreLocalName,
                                                                 result, indent+1);
-        childNames.push_back(childOutputVar);
+        childOutputVarNames.push_back(childOutputVar);
     }
 
     *result += (reader.entry()->fGlueCodeGenerator)(scopeOutputVar, curEntryIndex, reader,
-                                                    priorStageOutputName, childNames, indent+1);
+                                                    priorStageOutputName,
+                                                    childOutputVarNames, indent+1);
     add_indent(result, indent);
     *result += "}\n";
 
@@ -105,6 +154,14 @@ std::string SkShaderInfo::toSkSL() const {
     result += "layout(location = 0, index = 0) out half4 sk_FragColor;\n";
     result += "void main() {\n";
 
+    if (this->needsLocalCoords()) {
+        result += "float4x4 initialPreLocal = float4x4(1, 0, 0, 0, "
+                                                      "0, 1, 0, 0, "
+                                                      "0, 0, 1, 0, "
+                                                      "0, 0, 0, 1);\n";
+    }
+
+    std::string parentPreLocal = "initialPreLocal";
     std::string lastOutputVar = "initialColor";
 
     // TODO: what is the correct initial color to feed in?
@@ -112,7 +169,8 @@ std::string SkShaderInfo::toSkSL() const {
     SkSL::String::appendf(&result, "    half4 %s = half4(0.0);", lastOutputVar.c_str());
 
     for (int entryIndex = 0; entryIndex < (int) fBlockReaders.size(); ++entryIndex) {
-        lastOutputVar = this->emitGlueCodeForEntry(&entryIndex, lastOutputVar, &result, 1);
+        lastOutputVar = this->emitGlueCodeForEntry(&entryIndex, lastOutputVar, parentPreLocal,
+                                                   &result, 1);
     }
 
     SkSL::String::appendf(&result, "    sk_FragColor = %s;\n", lastOutputVar.c_str());
@@ -242,18 +300,25 @@ std::string GenerateDefaultGlueCode(const std::string& resultName,
     SkSL::String::appendf(&result,
                           "%s = %s(", resultName.c_str(),
                           entry->fStaticFunctionName);
+
     for (size_t i = 0; i < entry->fUniforms.size(); ++i) {
-        // The uniform names are mangled w/ the entry's index as a suffix
-        result += entry->getMangledUniformName(i, entryIndex);
+        if (i == 0 && reader.entry()->needsLocalCoords()) {
+            // Every snippet that requests local coordinates must have a preLocalMatrix as its first
+            // uniform
+            SkASSERT(reader.entry()->fUniforms.size() >= 1);
+            SkASSERT(reader.entry()->fUniforms[0].type() == SkSLType::kFloat4x4);
+
+            std::string preLocalMatrixVarName = get_mangled_local_var_name("preLocal",
+                                                                           entryIndex);
+            result += preLocalMatrixVarName;
+            result += " * dev2LocalUni";
+        } else {
+            result += entry->getMangledUniformName(i, entryIndex);
+        }
         if (i+1 < entry->fUniforms.size()) {
             result += ", ";
         }
     }
-#ifdef SK_GRAPHITE_ENABLED
-    if (entry->fSnippetRequirementFlags & SnippetRequirementFlags::kLocalCoords) {
-        result += ", dev2LocalUni";
-    }
-#endif
     result += ");\n";
 
     return result;
@@ -267,15 +332,16 @@ static constexpr int kFourStopGradient = 4;
 //   kMaxStops offsets
 //   2 points
 //   2 radii
-static constexpr int kNumGradientUniforms = 7;
+static constexpr int kNumGradientUniforms = 8;
 static constexpr SkUniform kGradientUniforms[kNumGradientUniforms] = {
-        { "colors",  SkSLType::kFloat4, kFourStopGradient },
-        { "offsets", SkSLType::kFloat,  kFourStopGradient },
-        { "point0",  SkSLType::kFloat2 },
-        { "point1",  SkSLType::kFloat2 },
-        { "radius0", SkSLType::kFloat },
-        { "radius1", SkSLType::kFloat },
-        { "padding", SkSLType::kFloat2 } // TODO: add automatic uniform padding
+        { "localMatrix", SkSLType::kFloat4x4 },
+        { "colors",      SkSLType::kFloat4, kFourStopGradient },
+        { "offsets",     SkSLType::kFloat,  kFourStopGradient },
+        { "point0",      SkSLType::kFloat2 },
+        { "point1",      SkSLType::kFloat2 },
+        { "radius0",     SkSLType::kFloat },
+        { "radius1",     SkSLType::kFloat },
+        { "padding",     SkSLType::kFloat2 } // TODO: add automatic uniform padding
 };
 
 static constexpr char kLinearGradient4Name[] = "sk_linear_grad_4_shader";
@@ -289,14 +355,44 @@ static constexpr SkUniform kSolidShaderUniforms[kNumSolidShaderUniforms] = {
 static constexpr char kSolidShaderName[] = "sk_solid_shader";
 
 //--------------------------------------------------------------------------------------------------
+static constexpr int kNumLocalMatrixShaderUniforms = 1;
+static constexpr SkUniform kLocalMatrixShaderUniforms[kNumLocalMatrixShaderUniforms] = {
+        { "localMatrix", SkSLType::kFloat4x4 },
+};
+
+static constexpr int kNumLocalMatrixShaderChildren = 1;
+
+static constexpr char kLocalMatrixShaderName[] = "foo";
+
+// This exists as custom glue code to handle passing the result of the children into the
+// static function. If this were handled in the default glue code, we could remove this.
+std::string GenerateLocalMatrixShaderGlueCode(const std::string& resultName,
+                                              int entryIndex,
+                                              const SkPaintParamsKey::BlockReader& reader,
+                                              const std::string& priorStageOutputName,
+                                              const std::vector<std::string>& childNames,
+                                              int indent) {
+    SkASSERT(childNames.size() == kNumLocalMatrixShaderChildren);
+
+    std::string result;
+
+    add_indent(&result, indent);
+    SkSL::String::appendf(&result,
+                          "%s = %s;\n",
+                          resultName.c_str(),
+                          childNames[0].c_str());
+    return result;
+}
+
+//--------------------------------------------------------------------------------------------------
 static constexpr int kNumImageShaderUniforms = 6;
 static constexpr SkUniform kImageShaderUniforms[kNumImageShaderUniforms] = {
+        { "localMatrix", SkSLType::kFloat4x4 },
         { "subset",      SkSLType::kFloat4 },
         { "tilemodeX",   SkSLType::kInt },
         { "tilemodeY",   SkSLType::kInt },
         { "imgWidth",    SkSLType::kInt },
         { "imgHeight",   SkSLType::kInt },
-        { "localMatrix", SkSLType::kFloat4x4 },
 };
 
 static constexpr int kNumImageShaderTexturesAndSamplers = 1;
@@ -323,33 +419,33 @@ std::string GenerateImageShaderGlueCode(const std::string& resultName,
                                         int indent) {
     SkASSERT(childNames.empty());
 
-    std::string samplerName = std::string("sampler_") + std::to_string(entryIndex) + "_0";
+    std::string samplerVarName = std::string("sampler_") + std::to_string(entryIndex) + "_0";
+    std::string preLocalMatrixVarName = get_mangled_local_var_name("preLocal", entryIndex);
 
-    std::string subsetName = reader.entry()->getMangledUniformName(0, entryIndex);
-    std::string tmXName = reader.entry()->getMangledUniformName(1, entryIndex);
-    std::string tmYName = reader.entry()->getMangledUniformName(2, entryIndex);
-    std::string imgWidthName = reader.entry()->getMangledUniformName(3, entryIndex);
-    std::string imgHeightName = reader.entry()->getMangledUniformName(4, entryIndex);
-    std::string localMatrixName = reader.entry()->getMangledUniformName(5, entryIndex);
+    std::string subsetName = reader.entry()->getMangledUniformName(1, entryIndex);
+    std::string tmXName = reader.entry()->getMangledUniformName(2, entryIndex);
+    std::string tmYName = reader.entry()->getMangledUniformName(3, entryIndex);
+    std::string imgWidthName = reader.entry()->getMangledUniformName(4, entryIndex);
+    std::string imgHeightName = reader.entry()->getMangledUniformName(5, entryIndex);
 
     std::string result;
 
     add_indent(&result, indent);
     SkSL::String::appendf(&result,
-                          "float2 coords = %s(%s, %s, %s, %s, %s, dev2LocalUni, %s);",
+                          "float2 coords = %s(%s * dev2LocalUni, %s, %s, %s, %s, %s);",
                           reader.entry()->fStaticFunctionName,
+                          preLocalMatrixVarName.c_str(),
                           subsetName.c_str(),
                           tmXName.c_str(),
                           tmYName.c_str(),
                           imgWidthName.c_str(),
-                          imgHeightName.c_str(),
-                          localMatrixName.c_str());
+                          imgHeightName.c_str());
 
     add_indent(&result, indent);
     SkSL::String::appendf(&result,
                           "%s = sample(%s, coords);\n",
                           resultName.c_str(),
-                          samplerName.c_str());
+                          samplerVarName.c_str());
 
 
     return result;
@@ -379,7 +475,7 @@ std::string GenerateBlendShaderGlueCode(const std::string& resultName,
     SkASSERT(childNames.size() == kNumBlendShaderChildren);
     SkASSERT(reader.entry()->fUniforms.size() == 4); // actual blend uniform + 3 padding int
 
-    std::string uniformName = reader.entry()->getMangledUniformName(0, entryIndex);
+    std::string blendModeUniformName = reader.entry()->getMangledUniformName(0, entryIndex);
 
     std::string result;
 
@@ -387,7 +483,7 @@ std::string GenerateBlendShaderGlueCode(const std::string& resultName,
     SkSL::String::appendf(&result, "%s = %s(%s, %s, %s);\n",
                           resultName.c_str(),
                           reader.entry()->fStaticFunctionName,
-                          uniformName.c_str(),
+                          blendModeUniformName.c_str(),
                           childNames[1].c_str(),
                           childNames[0].c_str());
 
@@ -476,7 +572,8 @@ int SkShaderCodeDictionary::addUserDefinedSnippet(
         const char* name,
         SkSpan<const SkPaintParamsKey::DataPayloadField> dataPayloadExpectations) {
 
-    std::unique_ptr<SkShaderSnippet> entry(new SkShaderSnippet({}, // no uniforms
+    std::unique_ptr<SkShaderSnippet> entry(new SkShaderSnippet("userDefined",
+                                                               {}, // no uniforms
                                                                SnippetRequirementFlags::kNone,
                                                                {}, // no samplers
                                                                name,
@@ -497,6 +594,7 @@ SkShaderCodeDictionary::SkShaderCodeDictionary() {
     fEntryVector.push_back(nullptr);
 
     fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kDepthStencilOnlyDraw] = {
+            "DepthStencil",
             { },     // no uniforms
             SnippetRequirementFlags::kNone,
             { },     // no samplers
@@ -506,6 +604,7 @@ SkShaderCodeDictionary::SkShaderCodeDictionary() {
             {}
     };
     fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kError] = {
+            "Error",
             { },     // no uniforms
             SnippetRequirementFlags::kNone,
             { },     // no samplers
@@ -515,6 +614,7 @@ SkShaderCodeDictionary::SkShaderCodeDictionary() {
             { }
     };
     fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kSolidColorShader] = {
+            "SolidColor",
             SkMakeSpan(kSolidShaderUniforms, kNumSolidShaderUniforms),
             SnippetRequirementFlags::kNone,
             { },     // no samplers
@@ -524,6 +624,7 @@ SkShaderCodeDictionary::SkShaderCodeDictionary() {
             { }
     };
     fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kLinearGradientShader] = {
+            "LinearGradient4",
             SkMakeSpan(kGradientUniforms, kNumGradientUniforms),
             SnippetRequirementFlags::kLocalCoords,
             { },     // no samplers
@@ -533,6 +634,7 @@ SkShaderCodeDictionary::SkShaderCodeDictionary() {
             { }
     };
     fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kRadialGradientShader] = {
+            "RadialGradient4",
             SkMakeSpan(kGradientUniforms, kNumGradientUniforms),
             SnippetRequirementFlags::kLocalCoords,
             { },     // no samplers
@@ -542,6 +644,7 @@ SkShaderCodeDictionary::SkShaderCodeDictionary() {
             { }
     };
     fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kSweepGradientShader] = {
+            "SweepGradient4",
             SkMakeSpan(kGradientUniforms, kNumGradientUniforms),
             SnippetRequirementFlags::kLocalCoords,
             { },     // no samplers
@@ -551,6 +654,7 @@ SkShaderCodeDictionary::SkShaderCodeDictionary() {
             { }
     };
     fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kConicalGradientShader] = {
+            "ConicalGradient4",
             SkMakeSpan(kGradientUniforms, kNumGradientUniforms),
             SnippetRequirementFlags::kLocalCoords,
             { },     // no samplers
@@ -559,7 +663,18 @@ SkShaderCodeDictionary::SkShaderCodeDictionary() {
             kNoChildren,
             { }
     };
+    fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kLocalMatrixShader] = {
+            "LocalMatrixShader",
+            SkMakeSpan(kLocalMatrixShaderUniforms, kNumLocalMatrixShaderUniforms),
+            SnippetRequirementFlags::kLocalCoords,
+            { },     // no samplers
+            kLocalMatrixShaderName,
+            GenerateLocalMatrixShaderGlueCode,
+            kNumLocalMatrixShaderChildren,
+            { }
+    };
     fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kImageShader] = {
+            "ImageShader",
             SkMakeSpan(kImageShaderUniforms, kNumImageShaderUniforms),
             SnippetRequirementFlags::kLocalCoords,
             SkMakeSpan(kISTexturesAndSamplers, kNumImageShaderTexturesAndSamplers),
@@ -569,6 +684,7 @@ SkShaderCodeDictionary::SkShaderCodeDictionary() {
             { }
     };
     fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kBlendShader] = {
+            "BlendShader",
             { kBlendShaderUniforms, kNumBlendShaderUniforms },
             SnippetRequirementFlags::kNone,
             { },     // no samplers
@@ -578,6 +694,7 @@ SkShaderCodeDictionary::SkShaderCodeDictionary() {
             { }
     };
     fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kFixedFunctionBlender] = {
+            "FixedFunctionBlender",
             { },     // no uniforms
             SnippetRequirementFlags::kNone,
             { },     // no samplers
@@ -587,6 +704,7 @@ SkShaderCodeDictionary::SkShaderCodeDictionary() {
             { }
     };
     fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kShaderBasedBlender] = {
+            "ShaderBasedBlender",
             { kShaderBasedBlenderUniforms, kNumShaderBasedBlenderUniforms },
             SnippetRequirementFlags::kNone,
             { },     // no samplers

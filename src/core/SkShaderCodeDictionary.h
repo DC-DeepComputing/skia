@@ -38,23 +38,25 @@ enum class SnippetRequirementFlags : uint32_t {
 SK_MAKE_BITMASK_OPS(SnippetRequirementFlags);
 
 struct SkShaderSnippet {
-    using GenerateGlueCodeForEntry = std::string (*)(const std::string& resultName,
-                                                     int entryIndex, // for uniform name mangling
-                                                     const SkPaintParamsKey::BlockReader&,
-                                                     const std::string& priorStageOutputName,
-                                                     const std::vector<std::string>& childNames,
-                                                     int indent);
+    using GenerateAfterKidsGlueCode = std::string (*)(const std::string& resultName,
+                                                      int entryIndex, // for uniform name mangling
+                                                      const SkPaintParamsKey::BlockReader&,
+                                                      const std::string& priorStageOutputName,
+                                                      const std::vector<std::string>& childNames,
+                                                      int indent);
 
     SkShaderSnippet() = default;
 
-    SkShaderSnippet(SkSpan<const SkUniform> uniforms,
+    SkShaderSnippet(const char* name,
+                    SkSpan<const SkUniform> uniforms,
                     SnippetRequirementFlags snippetRequirementFlags,
                     SkSpan<const SkTextureAndSampler> texturesAndSamplers,
                     const char* functionName,
-                    GenerateGlueCodeForEntry glueCodeGenerator,
+                    GenerateAfterKidsGlueCode glueCodeGenerator,
                     int numChildren,
                     SkSpan<const SkPaintParamsKey::DataPayloadField> dataPayloadExpectations)
-            : fUniforms(uniforms)
+            : fName(name)
+            , fUniforms(uniforms)
             , fSnippetRequirementFlags(snippetRequirementFlags)
             , fTexturesAndSamplers(texturesAndSamplers)
             , fStaticFunctionName(functionName)
@@ -65,11 +67,16 @@ struct SkShaderSnippet {
 
     std::string getMangledUniformName(int uniformIndex, int mangleId) const;
 
+    bool needsLocalCoords() const {
+        return fSnippetRequirementFlags & SnippetRequirementFlags::kLocalCoords;
+    }
+
+    const char* fName = nullptr;
     SkSpan<const SkUniform> fUniforms;
     SnippetRequirementFlags fSnippetRequirementFlags;
     SkSpan<const SkTextureAndSampler> fTexturesAndSamplers;
     const char* fStaticFunctionName = nullptr;
-    GenerateGlueCodeForEntry fGlueCodeGenerator = nullptr;
+    GenerateAfterKidsGlueCode fGlueCodeGenerator = nullptr;
     int fNumChildren = 0;
     SkSpan<const SkPaintParamsKey::DataPayloadField> fDataPayloadExpectations;
 };
@@ -102,6 +109,7 @@ public:
 private:
     std::string emitGlueCodeForEntry(int* entryIndex,
                                      const std::string& priorStageOutputName,
+                                     const std::string& parentPreLocalName,
                                      std::string* result,
                                      int indent) const;
 
