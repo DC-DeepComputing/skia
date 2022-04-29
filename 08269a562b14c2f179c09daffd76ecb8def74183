@@ -16,6 +16,23 @@
       "message": "Actually, would you mind updating the roll to include https://dawn-review.googlesource.com/c/dawn/+/88080? That was surfaced as part of skbug.com/13266 and landed a couple hours ago, so it should be ~15 patches ahead of this roll.",
       "revId": "08269a562b14c2f179c09daffd76ecb8def74183",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3af7ed97_a6589956",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-04-29T20:12:09Z",
+      "side": 1,
+      "message": "LGTM either way, the other fix can wait to be rolled via the autoroller.",
+      "revId": "08269a562b14c2f179c09daffd76ecb8def74183",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
