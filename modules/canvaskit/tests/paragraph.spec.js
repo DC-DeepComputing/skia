@@ -1029,4 +1029,44 @@ describe('Paragraph Behavior', function() {
         fontMgr.delete();
         builder.delete();
     });
+
+    // This helped find and resolve skbug.com/13247
+    gm('paragraph saved to skpicture', (canvas) => {
+        canvas.clear(CanvasKit.WHITE);
+        const fontMgr = CanvasKit.FontMgr.FromData(notoSerifFontBuffer, notoSerifBoldItalicFontBuffer);
+
+        const wrapTo = 250;
+
+        const paraStyle = new CanvasKit.ParagraphStyle({
+            textStyle: {
+                fontSize: 20,
+            },
+        });
+
+        const builder = CanvasKit.ParagraphBuilder.Make(paraStyle, fontMgr);
+        builder.addText('This was saved to an SkPicture\n');
+
+        const boldItalic = new CanvasKit.TextStyle({
+            fontStyle: {
+                weight: CanvasKit.FontWeight.Bold,
+                slant: CanvasKit.FontSlant.Italic,
+            }
+        });
+        builder.pushStyle(boldItalic);
+        builder.addText(`Bold, Italic\n`);
+        builder.pop();
+        const paragraph = builder.build();
+        paragraph.layout(wrapTo);
+
+        const recorder = new CanvasKit.PictureRecorder();
+        const skpCanvas = recorder.beginRecording(CanvasKit.LTRBRect(0, 0, 200, 200));
+        skpCanvas.drawParagraph(paragraph, 10, 10);
+        const skPicture = recorder.finishRecordingAsPicture();
+
+        canvas.drawPicture(CanvasKit.MakePicture(skPicture.serialize()));
+
+        paragraph.delete();
+        fontMgr.delete();
+        builder.delete();
+    });
 });

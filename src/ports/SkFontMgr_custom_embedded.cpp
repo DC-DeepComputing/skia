@@ -103,7 +103,7 @@ static void load_font_from_data(const SkTypeface_FreeType::Scanner& scanner,
                                                  nullptr, 0, nullptr, 0);
         addTo->appendTypeface(sk_make_sp<SkTypeface_Stream>(std::move(data),
                                                             style, isFixedPitch,
-                                                            true, realname));
+                                                            false, realname));
     }
 }
 
