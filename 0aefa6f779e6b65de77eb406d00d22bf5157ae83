@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dd4cd176_9f8e1029",
+        "filename": "tools/fiddle/fiddle_main.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-04-29T19:11:12Z",
+      "side": 1,
+      "message": "It seems like these should be named something like \"gBackEndTexture\" but all this stuff is like this. 😞",
+      "range": {
+        "startLine": 31,
+        "startChar": 24,
+        "endLine": 31,
+        "endChar": 38
+      },
+      "revId": "0aefa6f779e6b65de77eb406d00d22bf5157ae83",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
