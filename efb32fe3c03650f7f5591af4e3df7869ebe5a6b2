@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c65a3e10_a87dec6d",
+        "filename": "src/ports/SkFontMgr_custom_embedded.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-04-29T15:54:11Z",
+      "side": 0,
+      "message": "All this is doing is forcing the typeface data to always be embedded in any picture. I don\u0027t think that was ever the intent. If one wants a picture to work either the exact same default SkFontMgr must be used at playback or one needs to carefully set up the serialization and deserialization procs to provide the correct typefaces on playback. I see no reason to always embed the data here.",
+      "revId": "efb32fe3c03650f7f5591af4e3df7869ebe5a6b2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
