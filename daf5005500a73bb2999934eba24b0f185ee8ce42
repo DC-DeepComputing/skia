@@ -22,6 +22,30 @@
       },
       "revId": "daf5005500a73bb2999934eba24b0f185ee8ce42",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b43c915b_723d7f34",
+        "filename": "src/gpu/ganesh/dawn/GrDawnBuffer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 12954
+      },
+      "writtenOn": "2022-04-29T18:09:17Z",
+      "side": 1,
+      "message": "You can link to crbug.com/dawn/1400 if looking for a relevant Dawn bug.",
+      "parentUuid": "72dddd0e_8b522c4b",
+      "range": {
+        "startLine": 151,
+        "startChar": 18,
+        "endLine": 151,
+        "endChar": 31
+      },
+      "revId": "daf5005500a73bb2999934eba24b0f185ee8ce42",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
