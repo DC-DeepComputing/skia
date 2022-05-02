@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4bdc15b2_300464a5",
+        "filename": "public.bzl",
+        "patchSetId": 1
+      },
+      "lineNbr": 1634,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-05-02T19:29:47Z",
+      "side": 1,
+      "message": "Is this just suppose to be Glyph.h instead of GrGlyph.h?\nLooking at CL: 535965, this file was renamed.",
+      "range": {
+        "startLine": 1634,
+        "startChar": 18,
+        "endLine": 1634,
+        "endChar": 25
+      },
+      "revId": "ea426c9c9325b90471285518dea137e630dc1430",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
