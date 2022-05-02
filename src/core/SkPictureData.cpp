@@ -8,21 +8,15 @@
 #include "src/core/SkPictureData.h"
 
 #include "include/core/SkImageGenerator.h"
-#include "include/core/SkTypeface.h"
 #include "include/private/SkTo.h"
 #include "src/core/SkAutoMalloc.h"
 #include "src/core/SkPicturePriv.h"
 #include "src/core/SkPictureRecord.h"
 #include "src/core/SkReadBuffer.h"
-#include "src/core/SkTextBlobPriv.h"
 #include "src/core/SkVerticesPriv.h"
 #include "src/core/SkWriteBuffer.h"
 
 #include <new>
-
-#if SK_SUPPORT_GPU
-#include "include/private/chromium/GrSlug.h"
-#endif
 
 template <typename T> int SafeCount(const T* obj) {
     return obj ? obj->count() : 0;
@@ -42,12 +36,8 @@ SkPictureData::SkPictureData(const SkPictureRecord& record,
                              const SkPictInfo& info)
     : fPictures(record.getPictures())
     , fDrawables(record.getDrawables())
-    , fTextBlobs(record.getTextBlobs())
     , fVertices(record.getVertices())
     , fImages(record.getImages())
-#if SK_SUPPORT_GPU
-    , fSlugs(record.getSlugs())
-#endif
     , fInfo(info) {
 
     fOpData = record.opData();
@@ -124,31 +114,8 @@ void SkPictureData::WriteFactories(SkWStream* stream, const SkFactorySet& rec) {
     SkASSERT(size == (stream->bytesWritten() - start));
 }
 
-void SkPictureData::WriteTypefaces(SkWStream* stream, const SkRefCntSet& rec,
-                                   const SkSerialProcs& procs) {
-    int count = rec.count();
-
-    write_tag_size(stream, SK_PICT_TYPEFACE_TAG, count);
-
-    SkAutoSTMalloc<16, SkTypeface*> storage(count);
-    SkTypeface** array = (SkTypeface**)storage.get();
-    rec.copyToArray((SkRefCnt**)array);
-
-    for (int i = 0; i < count; i++) {
-        SkTypeface* tf = array[i];
-        if (procs.fTypefaceProc) {
-            auto data = procs.fTypefaceProc(tf, procs.fTypefaceCtx);
-            if (data) {
-                stream->write(data->data(), data->size());
-                continue;
-            }
-        }
-        array[i]->serialize(stream);
-    }
-}
-
-void SkPictureData::flattenToBuffer(SkWriteBuffer& buffer, bool textBlobsOnly) const {
-    if (!textBlobsOnly) {
+void SkPictureData::flattenToBuffer(SkWriteBuffer& buffer) const {
+    if ((true)) {
         int numPaints = fPaints.count();
         if (numPaints > 0) {
             write_tag_size(buffer, SK_PICT_PAINT_BUFFER_TAG, numPaints);
@@ -167,23 +134,7 @@ void SkPictureData::flattenToBuffer(SkWriteBuffer& buffer, bool textBlobsOnly) c
         }
     }
 
-    if (!fTextBlobs.empty()) {
-        write_tag_size(buffer, SK_PICT_TEXTBLOB_BUFFER_TAG, fTextBlobs.count());
-        for (const auto& blob : fTextBlobs) {
-            SkTextBlobPriv::Flatten(*blob, buffer);
-        }
-    }
-
-#if SK_SUPPORT_GPU
-    if (!textBlobsOnly) {
-        write_tag_size(buffer, SK_PICT_SLUG_BUFFER_TAG, fSlugs.count());
-        for (const auto& slug : fSlugs) {
-            slug->doFlatten(buffer);
-        }
-    }
-#endif
-
-    if (!textBlobsOnly) {
+    if ((true)) {
         if (!fVertices.empty()) {
             write_tag_size(buffer, SK_PICT_VERTICES_BUFFER_TAG, fVertices.count());
             for (const auto& vert : fVertices) {
@@ -207,8 +158,6 @@ void SkPictureData::flattenToBuffer(SkWriteBuffer& buffer, bool textBlobsOnly) c
 // we serialize the typefaces.
 static SkSerialProcs skip_typeface_proc(const SkSerialProcs& procs) {
     SkSerialProcs newProcs = procs;
-    newProcs.fTypefaceProc = nullptr;
-    newProcs.fTypefaceCtx = nullptr;
     return newProcs;
 }
 
@@ -217,15 +166,10 @@ static SkSerialProcs skip_typeface_proc(const SkSerialProcs& procs) {
 // textBlobsOnly serves to indicate that we are on the first pass and skip as much work as
 // possible that is not relevant to collecting text blobs in topLevelTypeFaceSet
 // TODO(nifong): dedupe typefaces and all other shared resources in a faster and more readable way.
-void SkPictureData::serialize(SkWStream* stream, const SkSerialProcs& procs,
-                              SkRefCntSet* topLevelTypeFaceSet, bool textBlobsOnly) const {
+void SkPictureData::serialize(SkWStream* stream, const SkSerialProcs& procs) const {
     // This can happen at pretty much any time, so might as well do it first.
     write_tag_size(stream, SK_PICT_READER_TAG, fOpData->size());
     stream->write(fOpData->bytes(), fOpData->size());
-
-    // We serialize all typefaces into the typeface section of the top-level picture.
-    SkRefCntSet localTypefaceSet;
-    SkRefCntSet* typefaceSet = topLevelTypeFaceSet ? topLevelTypeFaceSet : &localTypefaceSet;
 
     // We delay serializing the bulk of our data until after we've serialized
     // factories and typefaces by first serializing to an in-memory write buffer.
@@ -233,8 +177,7 @@ void SkPictureData::serialize(SkWStream* stream, const SkSerialProcs& procs,
     SkBinaryWriteBuffer buffer;
     buffer.setFactoryRecorder(sk_ref_sp(&factSet));
     buffer.setSerialProcs(skip_typeface_proc(procs));
-    buffer.setTypefaceRecorder(sk_ref_sp(typefaceSet));
-    this->flattenToBuffer(buffer, textBlobsOnly);
+    this->flattenToBuffer(buffer);
 
     // Pretend to serialize our sub-pictures for the side effect of filling typefaceSet
     // with typefaces from sub-pictures.
@@ -245,17 +188,12 @@ void SkPictureData::serialize(SkWStream* stream, const SkSerialProcs& procs,
         size_t bytesWritten() const override { return fBytesWritten; }
     } devnull;
     for (const auto& pic : fPictures) {
-        pic->serialize(&devnull, nullptr, typefaceSet, /*textBlobsOnly=*/ true);
+        pic->serialize(&devnull, nullptr);
     }
-    if (textBlobsOnly) { return; } // return early from fake serialize
 
     // We need to write factories before we write the buffer.
     // We need to write typefaces before we write the buffer or any sub-picture.
     WriteFactories(stream, factSet);
-    // Pass the original typefaceproc (if any) now that we're ready to actually serialize the
-    // typefaces. We skipped this proc before, when we were serializing paints, so that the
-    // paints would just write indices into our typeface set.
-    WriteTypefaces(stream, *typefaceSet, procs);
 
     // Write the buffer.
     write_tag_size(stream, SK_PICT_BUFFER_SIZE_TAG, buffer.bytesWritten());
@@ -265,7 +203,7 @@ void SkPictureData::serialize(SkWStream* stream, const SkSerialProcs& procs,
     if (!fPictures.empty()) {
         write_tag_size(stream, SK_PICT_PICTURE_TAG, fPictures.count());
         for (const auto& pic : fPictures) {
-            pic->serialize(stream, &procs, typefaceSet, /*textBlobsOnly=*/ false);
+            pic->serialize(stream, &procs);
         }
     }
 
@@ -291,7 +229,7 @@ void SkPictureData::flatten(SkWriteBuffer& buffer) const {
     }
 
     // Write this picture playback's data into a writebuffer
-    this->flattenToBuffer(buffer, false);
+    this->flattenToBuffer(buffer);
     buffer.write32(SK_PICT_EOF_TAG);
 }
 
@@ -300,8 +238,7 @@ void SkPictureData::flatten(SkWriteBuffer& buffer) const {
 bool SkPictureData::parseStreamTag(SkStream* stream,
                                    uint32_t tag,
                                    uint32_t size,
-                                   const SkDeserialProcs& procs,
-                                   SkTypefacePlayback* topLevelTFPlayback) {
+                                   const SkDeserialProcs& procs) {
     switch (tag) {
         case SK_PICT_READER_TAG:
             SkASSERT(nullptr == fOpData);
@@ -325,28 +262,13 @@ bool SkPictureData::parseStreamTag(SkStream* stream,
             }
         } break;
         case SK_PICT_TYPEFACE_TAG: {
-            fTFPlayback.setCount(size);
-            for (uint32_t i = 0; i < size; ++i) {
-                sk_sp<SkTypeface> tf;
-                if (procs.fTypefaceProc) {
-                    tf = procs.fTypefaceProc(&stream, sizeof(stream), procs.fTypefaceCtx);
-                } else {
-                    tf = SkTypeface::MakeDeserialize(stream);
-                }
-                if (!tf) {    // failed to deserialize
-                    // fTFPlayback asserts it never has a null, so we plop in
-                    // the default here.
-                    tf = SkTypeface::MakeDefault();
-                }
-                fTFPlayback[i] = std::move(tf);
-            }
         } break;
         case SK_PICT_PICTURE_TAG: {
             SkASSERT(fPictures.empty());
             fPictures.reserve_back(SkToInt(size));
 
             for (uint32_t i = 0; i < size; i++) {
-                auto pic = SkPicture::MakeFromStream(stream, &procs, topLevelTFPlayback);
+                auto pic = SkPicture::MakeFromStream(stream, &procs);
                 if (!pic) {
                     return false;
                 }
@@ -367,14 +289,6 @@ bool SkPictureData::parseStreamTag(SkStream* stream,
             }
             fFactoryPlayback->setupBuffer(buffer);
             buffer.setDeserialProcs(procs);
-
-            if (fTFPlayback.count() > 0) {
-                // .skp files <= v43 have typefaces serialized with each sub picture.
-                fTFPlayback.setupBuffer(buffer);
-            } else {
-                // Newer .skp files serialize all typefaces with the top picture.
-                topLevelTFPlayback->setupBuffer(buffer);
-            }
 
             while (!buffer.eof() && buffer.isValid()) {
                 tag = buffer.readUInt();
@@ -451,12 +365,8 @@ void SkPictureData::parseBufferTag(SkReadBuffer& buffer, uint32_t tag, uint32_t 
                 }
             } break;
         case SK_PICT_TEXTBLOB_BUFFER_TAG:
-            new_array_from_buffer(buffer, size, fTextBlobs, SkTextBlobPriv::MakeFromBuffer);
             break;
         case SK_PICT_SLUG_BUFFER_TAG:
-#if SK_SUPPORT_GPU
-            new_array_from_buffer(buffer, size, fSlugs, GrSlug::MakeFromBuffer);
-#endif
             break;
         case SK_PICT_VERTICES_BUFFER_TAG:
             new_array_from_buffer(buffer, size, fVertices, SkVerticesPriv::Decode);
@@ -492,14 +402,10 @@ void SkPictureData::parseBufferTag(SkReadBuffer& buffer, uint32_t tag, uint32_t 
 
 SkPictureData* SkPictureData::CreateFromStream(SkStream* stream,
                                                const SkPictInfo& info,
-                                               const SkDeserialProcs& procs,
-                                               SkTypefacePlayback* topLevelTFPlayback) {
+                                               const SkDeserialProcs& procs) {
     std::unique_ptr<SkPictureData> data(new SkPictureData(info));
-    if (!topLevelTFPlayback) {
-        topLevelTFPlayback = &data->fTFPlayback;
-    }
 
-    if (!data->parseStream(stream, procs, topLevelTFPlayback)) {
+    if (!data->parseStream(stream, procs)) {
         return nullptr;
     }
     return data.release();
@@ -517,8 +423,7 @@ SkPictureData* SkPictureData::CreateFromBuffer(SkReadBuffer& buffer,
 }
 
 bool SkPictureData::parseStream(SkStream* stream,
-                                const SkDeserialProcs& procs,
-                                SkTypefacePlayback* topLevelTFPlayback) {
+                                const SkDeserialProcs& procs) {
     for (;;) {
         uint32_t tag;
         if (!stream->readU32(&tag)) { return false; }
@@ -528,7 +433,7 @@ bool SkPictureData::parseStream(SkStream* stream,
 
         uint32_t size;
         if (!stream->readU32(&size)) { return false; }
-        if (!this->parseStreamTag(stream, tag, size, procs, topLevelTFPlayback)) {
+        if (!this->parseStreamTag(stream, tag, size, procs)) {
             return false; // we're invalid
         }
     }

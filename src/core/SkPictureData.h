@@ -80,11 +80,10 @@ public:
     // Does not affect ownership of SkStream.
     static SkPictureData* CreateFromStream(SkStream*,
                                            const SkPictInfo&,
-                                           const SkDeserialProcs&,
-                                           SkTypefacePlayback*);
+                                           const SkDeserialProcs&);
     static SkPictureData* CreateFromBuffer(SkReadBuffer&, const SkPictInfo&);
 
-    void serialize(SkWStream*, const SkSerialProcs&, SkRefCntSet*, bool textBlobsOnly=false) const;
+    void serialize(SkWStream*, const SkSerialProcs&) const;
     void flatten(SkWriteBuffer&) const;
 
     const SkPictInfo& info() const { return fInfo; }
@@ -95,7 +94,7 @@ protected:
     explicit SkPictureData(const SkPictInfo& info);
 
     // Does not affect ownership of SkStream.
-    bool parseStream(SkStream*, const SkDeserialProcs&, SkTypefacePlayback*);
+    bool parseStream(SkStream*, const SkDeserialProcs&);
     bool parseBuffer(SkReadBuffer& buffer);
 
 public:
@@ -126,16 +125,6 @@ public:
     // The returned paint is always safe to use.
     const SkPaint& requiredPaint(SkReadBuffer* reader) const;
 
-    const SkTextBlob* getTextBlob(SkReadBuffer* reader) const {
-        return read_index_base_1_or_null(reader, fTextBlobs);
-    }
-
-#if SK_SUPPORT_GPU
-    const GrSlug* getSlug(SkReadBuffer* reader) const {
-        return read_index_base_1_or_null(reader, fSlugs);
-    }
-#endif
-
     const SkVertices* getVertices(SkReadBuffer* reader) const {
         return read_index_base_1_or_null(reader, fVertices);
     }
@@ -144,9 +133,9 @@ private:
     // these help us with reading/writing
     // Does not affect ownership of SkStream.
     bool parseStreamTag(SkStream*, uint32_t tag, uint32_t size,
-                        const SkDeserialProcs&, SkTypefacePlayback*);
+                        const SkDeserialProcs&);
     void parseBufferTag(SkReadBuffer&, uint32_t tag, uint32_t size);
-    void flattenToBuffer(SkWriteBuffer&, bool textBlobsOnly) const;
+    void flattenToBuffer(SkWriteBuffer&) const;
 
     SkTArray<SkPaint>  fPaints;
     SkTArray<SkPath>   fPaths;
@@ -158,21 +147,14 @@ private:
 
     SkTArray<sk_sp<const SkPicture>>   fPictures;
     SkTArray<sk_sp<SkDrawable>>        fDrawables;
-    SkTArray<sk_sp<const SkTextBlob>>  fTextBlobs;
     SkTArray<sk_sp<const SkVertices>>  fVertices;
     SkTArray<sk_sp<const SkImage>>     fImages;
-#if SK_SUPPORT_GPU
-    SkTArray<sk_sp<const GrSlug>>      fSlugs;
-#endif
 
-
-    SkTypefacePlayback                 fTFPlayback;
     std::unique_ptr<SkFactoryPlayback> fFactoryPlayback;
 
     const SkPictInfo fInfo;
 
     static void WriteFactories(SkWStream* stream, const SkFactorySet& rec);
-    static void WriteTypefaces(SkWStream* stream, const SkRefCntSet& rec, const SkSerialProcs&);
 
     void initForPlayback() const;
 };

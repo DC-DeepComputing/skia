@@ -41,7 +41,6 @@ GrContextThreadSafeProxy::~GrContextThreadSafeProxy() = default;
 void GrContextThreadSafeProxy::init(sk_sp<const GrCaps> caps,
                                     sk_sp<GrThreadSafePipelineBuilder> pipelineBuilder) {
     fCaps = std::move(caps);
-    fTextBlobRedrawCoordinator = std::make_unique<GrTextBlobRedrawCoordinator>(fContextID);
     fThreadSafeCache = std::make_unique<GrThreadSafeCache>();
     fPipelineBuilder = std::move(pipelineBuilder);
 }
@@ -171,9 +170,6 @@ int GrContextThreadSafeProxy::maxSurfaceSampleCountForColorType(SkColorType colo
 }
 
 void GrContextThreadSafeProxy::abandonContext() {
-    if (!fAbandoned.exchange(true)) {
-        fTextBlobRedrawCoordinator->freeAll();
-    }
 }
 
 bool GrContextThreadSafeProxy::abandoned() const {

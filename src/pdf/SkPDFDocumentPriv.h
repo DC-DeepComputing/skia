@@ -21,7 +21,6 @@
 
 class SkExecutor;
 class SkPDFDevice;
-class SkPDFFont;
 struct SkAdvancedTypefaceMetrics;
 struct SkBitmapKey;
 struct SkPDFFillGraphicState;
@@ -150,7 +149,6 @@ public:
     SkTHashMap<uint32_t, std::vector<SkUnichar>> fToUnicodeMap;
     SkTHashMap<uint32_t, SkPDFIndirectReference> fFontDescriptors;
     SkTHashMap<uint32_t, SkPDFIndirectReference> fType3FontDescriptors;
-    SkTHashMap<uint64_t, SkPDFFont> fFontMap;
     SkTHashMap<SkPDFStrokeGraphicState, SkPDFIndirectReference> fStrokeGSMap;
     SkTHashMap<SkPDFFillGraphicState, SkPDFIndirectReference> fFillGSMap;
     SkPDFIndirectReference fInvertFunction;

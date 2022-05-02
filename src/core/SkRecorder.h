@@ -69,14 +69,6 @@ public:
 
     void onDrawDRRect(const SkRRect&, const SkRRect&, const SkPaint&) override;
     void onDrawDrawable(SkDrawable*, const SkMatrix*) override;
-    void onDrawTextBlob(const SkTextBlob* blob,
-                        SkScalar x,
-                        SkScalar y,
-                        const SkPaint& paint) override;
-#if SK_SUPPORT_GPU
-    void onDrawSlug(const GrSlug* slug) override;
-#endif
-    void onDrawGlyphRunList(const SkGlyphRunList& glyphRunList, const SkPaint& paint) override;
     void onDrawPatch(const SkPoint cubics[12], const SkColor colors[4],
                      const SkPoint texCoords[4], SkBlendMode,
                      const SkPaint& paint) override;

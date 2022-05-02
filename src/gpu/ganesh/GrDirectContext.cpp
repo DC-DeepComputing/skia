@@ -20,14 +20,13 @@
 #include "src/gpu/ganesh/GrDirectContextPriv.h"
 #include "src/gpu/ganesh/GrDrawingManager.h"
 #include "src/gpu/ganesh/GrGpu.h"
+#include "src/gpu/ganesh/GrProxyProvider.h"
 #include "src/gpu/ganesh/GrResourceProvider.h"
 #include "src/gpu/ganesh/GrSemaphore.h"
 #include "src/gpu/ganesh/GrThreadSafePipelineBuilder.h"
 #include "src/gpu/ganesh/SurfaceContext.h"
 #include "src/gpu/ganesh/effects/GrSkSLFP.h"
 #include "src/gpu/ganesh/mock/GrMockGpu.h"
-#include "src/gpu/ganesh/text/GrAtlasManager.h"
-#include "src/gpu/ganesh/text/GrStrikeCache.h"
 #include "src/image/SkImage_GpuBase.h"
 #include "src/utils/SkShaderUtils.h"
 #if SK_GPU_V1
@@ -131,8 +130,6 @@ void GrDirectContext::abandonContext() {
     // We need to make sure all work is finished on the gpu before we start releasing resources.
     this->syncAllOutstandingGpuWork(this->caps()->mustSyncGpuDuringAbandon());
 
-    fStrikeCache->freeAll();
-
     fMappedBufferManager->abandon();
 
     fResourceProvider->abandon();
@@ -148,7 +145,6 @@ void GrDirectContext::abandonContext() {
     if (fSmallPathAtlasMgr) {
         fSmallPathAtlasMgr->reset();
     }
-    fAtlasManager->freeAll();
 }
 
 bool GrDirectContext::abandoned() {
@@ -187,7 +183,6 @@ void GrDirectContext::releaseResourcesAndAbandonContext() {
     if (fSmallPathAtlasMgr) {
         fSmallPathAtlasMgr->reset();
     }
-    fAtlasManager->freeAll();
 }
 
 void GrDirectContext::freeGpuResources() {
@@ -201,11 +196,6 @@ void GrDirectContext::freeGpuResources() {
     if (fSmallPathAtlasMgr) {
         fSmallPathAtlasMgr->reset();
     }
-    fAtlasManager->freeAll();
-
-    // TODO: the glyph cache doesn't hold any GpuResources so this call should not be needed here.
-    // Some slack in the GrTextBlob's implementation requires it though. That could be fixed.
-    fStrikeCache->freeAll();
 
     this->drawingManager()->freeGpuResources();
 
@@ -226,7 +216,6 @@ bool GrDirectContext::init() {
     SkASSERT(this->getTextBlobRedrawCoordinator());
     SkASSERT(this->threadSafeCache());
 
-    fStrikeCache = std::make_unique<GrStrikeCache>();
     fResourceCache = std::make_unique<GrResourceCache>(this->singleOwner(),
                                                        this->directContextID(),
                                                        this->contextID());
@@ -250,24 +239,6 @@ bool GrDirectContext::init() {
     }
 
     fPersistentCache = this->options().fPersistentCache;
-
-    GrDrawOpAtlas::AllowMultitexturing allowMultitexturing;
-    if (GrContextOptions::Enable::kNo == this->options().fAllowMultipleGlyphCacheTextures ||
-        // multitexturing supported only if range can represent the index + texcoords fully
-        !(this->caps()->shaderCaps()->floatIs32Bits() ||
-        this->caps()->shaderCaps()->integerSupport())) {
-        allowMultitexturing = GrDrawOpAtlas::AllowMultitexturing::kNo;
-    } else {
-        allowMultitexturing = GrDrawOpAtlas::AllowMultitexturing::kYes;
-    }
-
-    GrProxyProvider* proxyProvider = this->priv().proxyProvider();
-
-    fAtlasManager = std::make_unique<GrAtlasManager>(proxyProvider,
-                                                     this->options().fGlyphCacheTextureMaximumBytes,
-                                                     allowMultitexturing,
-                                                     this->options().fSupportBilerpFromGlyphAtlas);
-    this->priv().addOnFlushCallbackObject(fAtlasManager.get());
 
     return true;
 }
@@ -323,10 +294,6 @@ void GrDirectContext::purgeUnlockedResources(bool scratchResourcesOnly) {
     fResourceCache->purgeUnlockedResources(scratchResourcesOnly);
     fResourceCache->purgeAsNeeded();
 
-    // The textBlob Cache doesn't actually hold any GPU resource but this is a convenient
-    // place to purge stale blobs
-    this->getTextBlobRedrawCoordinator()->purgeStaleBlobs();
-
     fGpu->releaseUnlockedBackendObjects();
 }
 
@@ -346,10 +313,6 @@ void GrDirectContext::performDeferredCleanup(std::chrono::milliseconds msNotUsed
 
     fResourceCache->purgeAsNeeded();
     fResourceCache->purgeResourcesNotUsedSince(purgeTime, scratchResourcesOnly);
-
-    // The textBlob Cache doesn't actually hold any GPU resource but this is a convenient
-    // place to purge stale blobs
-    this->getTextBlobRedrawCoordinator()->purgeStaleBlobs();
 }
 
 void GrDirectContext::purgeUnlockedResources(size_t bytesToPurge, bool preferScratchResources) {
@@ -463,8 +426,6 @@ bool GrDirectContext::supportsDistanceFieldText() const {
 void GrDirectContext::dumpMemoryStatistics(SkTraceMemoryDump* traceMemoryDump) const {
     ASSERT_SINGLE_OWNER
     fResourceCache->dumpMemoryStatistics(traceMemoryDump);
-    traceMemoryDump->dumpNumericValue("skia/gr_text_blob_cache", "size", "bytes",
-                                      this->getTextBlobRedrawCoordinator()->usedBytes());
 }
 
 GrBackendTexture GrDirectContext::createBackendTexture(int width, int height,

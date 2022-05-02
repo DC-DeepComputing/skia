@@ -180,29 +180,6 @@ static inline bool ClipParams_unpackDoAA(uint32_t packed) {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-class SkTypefacePlayback {
-public:
-    SkTypefacePlayback() : fCount(0), fArray(nullptr) {}
-    ~SkTypefacePlayback() = default;
-
-    void setCount(size_t count);
-
-    size_t count() const { return fCount; }
-
-    sk_sp<SkTypeface>& operator[](size_t index) {
-        SkASSERT(index < fCount);
-        return fArray[index];
-    }
-
-    void setupBuffer(SkReadBuffer& buffer) const {
-        buffer.setTypefaceArray(fArray.get(), fCount);
-    }
-
-protected:
-    size_t fCount;
-    std::unique_ptr<sk_sp<SkTypeface>[]> fArray;
-};
-
 class SkFactoryPlayback {
 public:
     SkFactoryPlayback(int count) : fCount(count) { fArray = new SkFlattenable::Factory[count]; }

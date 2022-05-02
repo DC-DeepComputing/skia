@@ -16,7 +16,6 @@
 #include "include/core/SkScalar.h"
 #include "include/core/SkSize.h"
 #include "src/core/SkDevice.h"
-#include "src/core/SkGlyphRunPainter.h"
 #include "src/core/SkRasterClip.h"
 #include "src/core/SkRasterClipStack.h"
 
@@ -107,10 +106,6 @@ protected:
 
     ///////////////////////////////////////////////////////////////////////////
 
-    void onDrawGlyphRunList(SkCanvas*,
-                            const SkGlyphRunList&,
-                            const SkPaint& initialPaint,
-                            const SkPaint& drawingPaint) override;
     bool onReadPixels(const SkPixmap&, int x, int y) override;
     bool onWritePixels(const SkPixmap&, int, int) override;
     bool onPeekPixels(SkPixmap*) override;
@@ -156,7 +151,6 @@ private:
     SkBitmap    fBitmap;
     void*       fRasterHandle = nullptr;
     SkRasterClipStack  fRCStack;
-    SkGlyphRunListPainter fGlyphPainter;
 
 
     using INHERITED = SkBaseDevice;

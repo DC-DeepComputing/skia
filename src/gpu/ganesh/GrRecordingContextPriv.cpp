@@ -59,14 +59,6 @@ void GrRecordingContextPriv::moveRenderTasksToDDL(SkDeferredDisplayList* ddl) {
     this->context()->drawingManager()->moveRenderTasksToDDL(ddl);
 }
 
-GrSDFTControl GrRecordingContextPriv::getSDFTControl(bool useSDFTForSmallText) const {
-    return GrSDFTControl{
-            this->caps()->shaderCaps()->supportsDistanceFieldText(),
-            useSDFTForSmallText,
-            this->options().fMinDistanceFieldFontSize,
-            this->options().fGlyphsAsPathsFontSize};
-}
-
 std::unique_ptr<skgpu::SurfaceContext> GrRecordingContextPriv::makeSC(GrSurfaceProxyView readView,
                                                                       const GrColorInfo& info) {
 #if SK_GPU_V1

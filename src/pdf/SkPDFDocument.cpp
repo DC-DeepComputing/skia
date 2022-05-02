@@ -11,8 +11,8 @@
 #include "include/core/SkStream.h"
 #include "include/docs/SkPDFDocument.h"
 #include "include/private/SkTo.h"
+#include "src/core/SkAdvancedTypefaceMetrics.h"
 #include "src/pdf/SkPDFDevice.h"
-#include "src/pdf/SkPDFFont.h"
 #include "src/pdf/SkPDFGradientShader.h"
 #include "src/pdf/SkPDFGraphicState.h"
 #include "src/pdf/SkPDFShader.h"
@@ -534,36 +534,6 @@ int SkPDFDocument::createStructParentKeyForNodeId(int nodeId) {
     return fTagTree.createStructParentKeyForNodeId(nodeId, SkToUInt(this->currentPageIndex()));
 }
 
-static std::vector<const SkPDFFont*> get_fonts(const SkPDFDocument& canon) {
-    std::vector<const SkPDFFont*> fonts;
-    fonts.reserve(canon.fFontMap.count());
-    // Sort so the output PDF is reproducible.
-    for (const auto& [unused, font] : canon.fFontMap) {
-        fonts.push_back(&font);
-    }
-    std::sort(fonts.begin(), fonts.end(), [](const SkPDFFont* u, const SkPDFFont* v) {
-        return u->indirectReference().fValue < v->indirectReference().fValue;
-    });
-    return fonts;
-}
-
-SkString SkPDFDocument::nextFontSubsetTag() {
-    // PDF 32000-1:2008 Section 9.6.4 FontSubsets "The tag shall consist of six uppercase letters"
-    // "followed by a plus sign" "different subsets in the same PDF file shall have different tags."
-    // There are 26^6 or 308,915,776 possible values. So start in range then increment and mod.
-    uint32_t thisFontSubsetTag = fNextFontSubsetTag;
-    fNextFontSubsetTag = (fNextFontSubsetTag + 1u) % 308915776u;
-
-    SkString subsetTag(7);
-    char* subsetTagData = subsetTag.writable_str();
-    for (size_t i = 0; i < 6; ++i) {
-        subsetTagData[i] = 'A' + (thisFontSubsetTag % 26);
-        thisFontSubsetTag /= 26;
-    }
-    subsetTagData[6] = '+';
-    return subsetTag;
-}
-
 void SkPDFDocument::onClose(SkWStream* stream) {
     SkASSERT(fCanvas.imageInfo().dimensions().isZero());
     if (fPages.empty()) {
@@ -596,10 +566,6 @@ void SkPDFDocument::onClose(SkWStream* stream) {
     }
 
     auto docCatalogRef = this->emit(*docCatalog);
-
-    for (const SkPDFFont* f : get_fonts(*this)) {
-        f->emitSubset(this);
-    }
 
     this->waitForJobs();
     {

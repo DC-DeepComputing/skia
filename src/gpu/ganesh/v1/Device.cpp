@@ -18,7 +18,6 @@
 #include "include/gpu/GrRecordingContext.h"
 #include "include/private/SkShadowFlags.h"
 #include "include/private/SkTo.h"
-#include "include/private/chromium/GrSlug.h"
 #include "src/core/SkCanvasPriv.h"
 #include "src/core/SkClipStack.h"
 #include "src/core/SkCustomMeshPriv.h"
@@ -1106,37 +1105,6 @@ void Device::testingOnly_drawGlyphRunListWithSerializedSlugAndStrike(
     this->drawSlug(canvas, dstSlug.get(), drawingPaint);
 }
 #endif
-
-void Device::onDrawGlyphRunList(SkCanvas* canvas,
-                                const SkGlyphRunList& glyphRunList,
-                                const SkPaint& initialPaint,
-                                const SkPaint& drawingPaint) {
-    ASSERT_SINGLE_OWNER
-    GR_CREATE_TRACE_MARKER_CONTEXT("skgpu::v1::Device", "drawGlyphRunList", fContext.get());
-    SkASSERT(!glyphRunList.hasRSXForm());
-
-#if defined(SK_EXPERIMENTAL_SIMULATE_DRAWGLYPHRUNLIST_WITH_SLUG)
-    this->testingOnly_drawGlyphRunListWithSlug(canvas, glyphRunList, initialPaint, drawingPaint);
-#elif defined(SK_EXPERIMENTAL_SIMULATE_DRAWGLYPHRUNLIST_WITH_SLUG_SERIALIZE)
-    this->testingOnly_drawGlyphRunListWithSerializedSlug(
-            canvas, glyphRunList, initialPaint, drawingPaint);
-#elif defined(SK_EXPERIMENTAL_SIMULATE_DRAWGLYPHRUNLIST_WITH_SLUG_STRIKE_SERIALIZE)
-    this->testingOnly_drawGlyphRunListWithSerializedSlugAndStrike(
-            canvas, glyphRunList, initialPaint, drawingPaint);
-#else
-    if (glyphRunList.blob() == nullptr) {
-        // If the glyphRunList does not have an associated text blob, then it was created by one of
-        // the direct draw APIs (drawGlyphs, etc.). Use a Slug to draw the glyphs.
-        auto slug = this->convertGlyphRunListToSlug(glyphRunList, initialPaint, drawingPaint);
-        if (slug != nullptr) {
-            this->drawSlug(canvas, slug.get(), drawingPaint);
-        }
-    } else {
-        fSurfaceDrawContext->drawGlyphRunList(
-                canvas, this->clip(), this->asMatrixProvider(), glyphRunList, drawingPaint);
-    }
-#endif
-}
 
 ///////////////////////////////////////////////////////////////////////////////
 

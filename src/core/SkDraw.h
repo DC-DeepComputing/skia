@@ -14,7 +14,7 @@
 #include "include/core/SkPaint.h"
 #include "include/core/SkPixmap.h"
 #include "include/core/SkStrokeRec.h"
-#include "src/core/SkGlyphRunPainter.h"
+#include "src/core/SkArenaAlloc.h"
 #include "src/core/SkMask.h"
 
 class SkBitmap;
@@ -30,7 +30,7 @@ struct SkRect;
 class SkRRect;
 class SkVertices;
 
-class SkDraw : public SkGlyphRunListPainter::BitmapDevicePainter {
+class SkDraw {
 public:
     SkDraw();
 
@@ -59,12 +59,9 @@ public:
 
     /* If dstOrNull is null, computes a dst by mapping the bitmap's bounds through the matrix. */
     void    drawBitmap(const SkBitmap&, const SkMatrix&, const SkRect* dstOrNull,
-                       const SkSamplingOptions&, const SkPaint&) const override;
+                       const SkSamplingOptions&, const SkPaint&) const;
     void    drawSprite(const SkBitmap&, int x, int y, const SkPaint&) const;
-    void    drawGlyphRunList(SkCanvas* canvas,
-                             SkGlyphRunListPainter* glyphPainter,
-                             const SkGlyphRunList& glyphRunList,
-                             const SkPaint& paint) const;
+
     /* If skipColorXform, skips color conversion when assigning per-vertex colors */
     void drawVertices(const SkVertices*,
                       sk_sp<SkBlender>,
@@ -85,8 +82,6 @@ public:
                           paint.getStrokeWidth() > 0;
         this->drawPath(src, paint, nullptr, false, !isHairline, customBlitter);
     }
-
-    void paintMasks(SkDrawableGlyphBuffer* accepted, const SkPaint& paint) const override;
 
     static bool ComputeMaskBounds(const SkRect& devPathBounds, const SkIRect& clipBounds,
                                   const SkMaskFilter* filter, const SkMatrix* filterMatrix,

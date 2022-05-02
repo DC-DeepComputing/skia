@@ -29,7 +29,6 @@ struct GrMockOptions;
 class GrPath;
 class GrResourceCache;
 class GrResourceProvider;
-class GrStrikeCache;
 class GrSurfaceProxy;
 class GrTextureProxy;
 struct GrVkBackendContext;
@@ -832,7 +831,6 @@ protected:
 
     bool init() override;
 
-    GrAtlasManager* onGetAtlasManager() { return fAtlasManager.get(); }
     skgpu::v1::SmallPathAtlasMgr* onGetSmallPathAtlasMgr();
 
     GrDirectContext* asDirectContext() override { return this; }
@@ -857,7 +855,6 @@ private:
     // wait() on it as they are being destroyed, to avoid the possibility of pending tasks being
     // invoked after objects they depend upon have already been destroyed.
     std::unique_ptr<SkTaskGroup>            fTaskGroup;
-    std::unique_ptr<GrStrikeCache>          fStrikeCache;
     sk_sp<GrGpu>                            fGpu;
     std::unique_ptr<GrResourceCache>        fResourceCache;
     std::unique_ptr<GrResourceProvider>     fResourceProvider;
@@ -869,7 +866,6 @@ private:
     GrContextOptions::PersistentCache*      fPersistentCache;
 
     std::unique_ptr<GrClientMappedBufferManager> fMappedBufferManager;
-    std::unique_ptr<GrAtlasManager> fAtlasManager;
 
     std::unique_ptr<skgpu::v1::SmallPathAtlasMgr> fSmallPathAtlasMgr;
 

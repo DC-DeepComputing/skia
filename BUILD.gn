@@ -1136,13 +1136,13 @@ optional("pdf") {
   public = skia_pdf_public
   sources = skia_pdf_sources
   sources_when_disabled = [ "src/pdf/SkDocument_PDF_None.cpp" ]
-  if (skia_use_icu && skia_use_harfbuzz && skia_pdf_subset_harfbuzz) {
-    deps += [ "//third_party/harfbuzz" ]
-    defines = [ "SK_PDF_USE_HARFBUZZ_SUBSET" ]
-  } else if (skia_use_icu && skia_use_sfntly) {
-    deps += [ "//third_party/sfntly" ]
-    defines = [ "SK_PDF_USE_SFNTLY" ]
-  }
+  #if (skia_use_icu && skia_use_harfbuzz && skia_pdf_subset_harfbuzz) {
+  #  deps += [ "//third_party/harfbuzz" ]
+  #  defines = [ "SK_PDF_USE_HARFBUZZ_SUBSET" ]
+  #} else if (skia_use_icu && skia_use_sfntly) {
+  #  deps += [ "//third_party/sfntly" ]
+  #  defines = [ "SK_PDF_USE_SFNTLY" ]
+  #}
 }
 
 optional("xps") {
@@ -1290,16 +1290,16 @@ skia_component("skia") {
   configs = skia_library_configs
 
   public_deps = [
-    ":fontmgr_FontConfigInterface",
-    ":fontmgr_android",
-    ":fontmgr_custom_directory",
-    ":fontmgr_custom_embedded",
-    ":fontmgr_custom_empty",
-    ":fontmgr_fontconfig",
-    ":fontmgr_fuchsia",
-    ":fontmgr_mac_ct",
-    ":fontmgr_win",
-    ":fontmgr_win_gdi",
+    #":fontmgr_FontConfigInterface",
+    #":fontmgr_android",
+    #":fontmgr_custom_directory",
+    #":fontmgr_custom_embedded",
+    #":fontmgr_custom_empty",
+    #":fontmgr_fontconfig",
+    #":fontmgr_fuchsia",
+    #":fontmgr_mac_ct",
+    #":fontmgr_win",
+    #":fontmgr_win_gdi",
     ":gpu",
     ":graphite",
     ":pdf",
@@ -1313,7 +1313,7 @@ skia_component("skia") {
     ":armv7",
     ":avx",
     ":crc32",
-    ":fontmgr_factory",
+    #":fontmgr_factory",
     ":gif",
     ":heif",
     ":hsw",
@@ -1375,8 +1375,8 @@ skia_component("skia") {
     "src/ports/SkImageGenerator_skia.cpp",
     "src/ports/SkMemory_malloc.cpp",
     "src/ports/SkOSFile_stdio.cpp",
-    "src/sfnt/SkOTTable_name.cpp",
-    "src/sfnt/SkOTUtils.cpp",
+    #"src/sfnt/SkOTTable_name.cpp",
+    #"src/sfnt/SkOTUtils.cpp",
   ]
 
   defines = [ "SK_HAS_ANDROID_CODEC" ]
@@ -2454,7 +2454,7 @@ if (skia_enable_tools) {
       "fuzz/oss_fuzz/FuzzSkDescriptorDeserialize.cpp",
       "fuzz/oss_fuzz/FuzzSkParagraph.cpp",
       "fuzz/oss_fuzz/FuzzSkRuntimeEffect.cpp",
-      "fuzz/oss_fuzz/FuzzTextBlobDeserialize.cpp",
+      #"fuzz/oss_fuzz/FuzzTextBlobDeserialize.cpp",
       "tools/UrlDataManager.cpp",
       "tools/debugger/DebugCanvas.cpp",
       "tools/debugger/DebugLayerManager.cpp",
@@ -2994,20 +2994,20 @@ if (skia_enable_tools) {
       deps = []
     }
 
-    libfuzzer_app("textblob_deserialize") {
-      include_dirs = [
-        "tools",
-        "tools/fonts",
-      ]
-      sources = [
-        "fuzz/oss_fuzz/FuzzTextBlobDeserialize.cpp",
-        "tools/Resources.cpp",
-        "tools/fonts/TestFontMgr.cpp",
-        "tools/fonts/TestSVGTypeface.cpp",
-        "tools/fonts/TestTypeface.cpp",
-      ]
-      deps = [ "modules/svg" ]
-    }
+#    libfuzzer_app("textblob_deserialize") {
+#      include_dirs = [
+#        "tools",
+#        "tools/fonts",
+#      ]
+#      sources = [
+#        "fuzz/oss_fuzz/FuzzTextBlobDeserialize.cpp",
+#        "tools/Resources.cpp",
+#        "tools/fonts/TestFontMgr.cpp",
+#        "tools/fonts/TestSVGTypeface.cpp",
+#        "tools/fonts/TestTypeface.cpp",
+#      ]
+#      deps = [ "modules/svg" ]
+#    }
 
     libfuzzer_app("path_deserialize") {
       sources = [ "fuzz/oss_fuzz/FuzzPathDeserialize.cpp" ]

@@ -181,9 +181,6 @@ public:
 
     GrStrikeCache* strikeCache() const final;
 
-    // At this point we know we're flushing so full access to the GrAtlasManager and
-    // SmallPathAtlasMgr is required (and permissible).
-    GrAtlasManager* atlasManager() const final;
     skgpu::v1::SmallPathAtlasMgr* smallPathAtlasManager() const final;
 
     /** GrMeshDrawTarget override. */
