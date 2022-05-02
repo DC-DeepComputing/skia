@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "27d295a7_393b8df3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-05-02T15:17:26Z",
+      "side": 1,
+      "message": "lgtm, assuming the new bot succeeds",
+      "revId": "f8b5b88ad8bc751ba7f4158a794771a96c29ada3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
