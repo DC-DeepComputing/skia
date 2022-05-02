@@ -97,6 +97,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "146f4bfc_e9e7d703",
+        "filename": "modules/svg/include/SkSVGTypes.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 225,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2022-05-02T15:19:50Z",
+      "side": 1,
+      "message": "Since var colors are rare (I presume), another option would be\n\n  std::unique_ptr\u003cstd::vector\u003cSkString\u003e\u003e fVars;\n  \nThen we\u0027re just paying for a single pointer in the common case.",
+      "parentUuid": "a5fef0b5_5e7bbd80",
+      "range": {
+        "startLine": 215,
+        "startChar": 0,
+        "endLine": 225,
+        "endChar": 22
+      },
+      "revId": "230222399afeef0811143e4f4116397bbf819202",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a87c4fa4_064e3e33",
         "filename": "modules/svg/src/SkSVGAttributeParser.cpp",
         "patchSetId": 8
@@ -167,6 +191,30 @@
       "side": 1,
       "message": "Yes. The spec actually calls this out `If there are any var() references in the fallback, substitute them as well.` [0] Even went and tested this in Chrome to see if it works in general and it does. Though it isn\u0027t really nesting in the spec. In the specification `var` expansion happens after tokenization but before the parse (at least logically, the terms used in the spec are somewhat misleading). It can be seen as a \"pre-parse parse\" which happens at the token level. If the initial --identifier in the `var` exists then the tokens it is defined to have replaces the `var` and any tokens after the `,` in the `var` are discarded. If the --identifier does not exist then the tokens after the `,` in the `var` replace the `var` and the process continues from there. `var` is way more like macro expansion than a function. There are weird side effects because of this, like long form css properties having potentially strange behavior that one would not expect. And yes, this means that if new vars are introduced, removed, or modified a full re-parse is necessary (though not re-tokenization).\n\nIn this particular case this is only attempting to support `var` for colors as specified in OT-SVG and SVGNative. So instead of supporting the general case (we don\u0027t even do tokenization) I\u0027m just storing off the var identifiers so we can look them up later. It\u0027s all a bit squidgy because there is no real specification for this and since this parser doesn\u0027t follow the css rules for tokenization anyway I can\u0027t really implement the real thing without re-writing everything.\n\n\nChecking, I see that svg-native-viewer seems to have punted on supporting this with a TODO [1].\n\n[0] https://drafts.csswg.org/css-variables-1/#using-variables\n\n[1] https://github.com/adobe/svg-native-viewer/blob/f5c2ab195c6f3eaa76c2037817fd0d21b505bbc1/svgnative/src/SVGStringParser.cpp#L1097",
       "parentUuid": "1c061646_bdaaf280",
+      "range": {
+        "startLine": 396,
+        "startChar": 27,
+        "endLine": 396,
+        "endChar": 40
+      },
+      "revId": "230222399afeef0811143e4f4116397bbf819202",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "962fb87e_e0f8f5de",
+        "filename": "modules/svg/src/SkSVGAttributeParser.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 396,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2022-05-02T15:19:50Z",
+      "side": 1,
+      "message": "A couple of thoughts.\n\nI suspect this would be all much simpler if we decided to ignore recursive vars, like svg-native-viewer.  Do you think they are being used in the wild, and in SVG fonts in particular?\n\nAnother thing that would make things easier is to resolve vars are parse time, instead of render time.  Now I can see good reasons to defer to render time (change colors on the fly without re-loading the svg dom), just making sure we\u0027re actually planning to use that feature.",
+      "parentUuid": "3879933b_2e5837f4",
       "range": {
         "startLine": 396,
         "startChar": 27,
