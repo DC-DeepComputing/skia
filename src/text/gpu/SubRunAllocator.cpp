@@ -6,14 +6,16 @@
  */
 
 #include "include/core/SkMath.h"
-#include "src/gpu/ganesh/GrSubRunAllocator.h"
+#include "src/text/gpu/SubRunAllocator.h"
 
 #include <cstddef>
 #include <memory>
 #include <new>
 
-// -- GrBagOfBytes ---------------------------------------------------------------------------------
-GrBagOfBytes::GrBagOfBytes(char* bytes, size_t size, size_t firstHeapAllocation)
+namespace sktext::gpu {
+
+// -- BagOfBytes ---------------------------------------------------------------------------------
+BagOfBytes::BagOfBytes(char* bytes, size_t size, size_t firstHeapAllocation)
         : fFibProgression(size, firstHeapAllocation) {
     SkASSERT_RELEASE(size < kMaxByteSize);
     SkASSERT_RELEASE(firstHeapAllocation < kMaxByteSize);
@@ -26,10 +28,10 @@ GrBagOfBytes::GrBagOfBytes(char* bytes, size_t size, size_t firstHeapAllocation)
     }
 }
 
-GrBagOfBytes::GrBagOfBytes(size_t firstHeapAllocation)
-        : GrBagOfBytes(nullptr, 0, firstHeapAllocation) {}
+BagOfBytes::BagOfBytes(size_t firstHeapAllocation)
+        : BagOfBytes(nullptr, 0, firstHeapAllocation) {}
 
-GrBagOfBytes::~GrBagOfBytes() {
+BagOfBytes::~BagOfBytes() {
     Block* cursor = reinterpret_cast<Block*>(fEndByte);
     while (cursor != nullptr) {
         char* toDelete = cursor->fBlockStart;
@@ -38,11 +40,11 @@ GrBagOfBytes::~GrBagOfBytes() {
     }
 }
 
-GrBagOfBytes::Block::Block(char* previous, char* startOfBlock)
+BagOfBytes::Block::Block(char* previous, char* startOfBlock)
         : fBlockStart{startOfBlock}
         , fPrevious{reinterpret_cast<Block*>(previous)} {}
 
-void* GrBagOfBytes::alignedBytes(int size, int alignment) {
+void* BagOfBytes::alignedBytes(int size, int alignment) {
     SkASSERT_RELEASE(0 < size && size < kMaxByteSize);
     SkASSERT_RELEASE(0 < alignment && alignment <= kMaxAlignment);
     SkASSERT_RELEASE(SkIsPow2(alignment));
@@ -50,7 +52,7 @@ void* GrBagOfBytes::alignedBytes(int size, int alignment) {
     return this->allocateBytes(size, alignment);
 }
 
-void GrBagOfBytes::setupBytesAndCapacity(char* bytes, int size) {
+void BagOfBytes::setupBytesAndCapacity(char* bytes, int size) {
     // endByte must be aligned to the maximum alignment to allow tracking alignment using capacity;
     // capacity and endByte are both aligned to max alignment.
     intptr_t endByte = reinterpret_cast<intptr_t>(bytes + size - sizeof(Block)) & -kMaxAlignment;
@@ -58,7 +60,7 @@ void GrBagOfBytes::setupBytesAndCapacity(char* bytes, int size) {
     fCapacity = fEndByte - bytes;
 }
 
-void GrBagOfBytes::needMoreBytes(int requestedSize, int alignment) {
+void BagOfBytes::needMoreBytes(int requestedSize, int alignment) {
     int nextBlockSize = fFibProgression.nextBlockSize();
     const int size = PlatformMinimumSizeWithOverhead(
             std::max(requestedSize, nextBlockSize), kAllocationAlignment);
@@ -75,16 +77,18 @@ void GrBagOfBytes::needMoreBytes(int requestedSize, int alignment) {
     SkASSERT(fCapacity >= requestedSize);
 }
 
-// -- GrSubRunAllocator ----------------------------------------------------------------------------
-GrSubRunAllocator::GrSubRunAllocator(char* bytes, int size, int firstHeapAllocation)
+// -- SubRunAllocator ----------------------------------------------------------------------------
+SubRunAllocator::SubRunAllocator(char* bytes, int size, int firstHeapAllocation)
         : fAlloc{bytes, SkTo<size_t>(size), SkTo<size_t>(firstHeapAllocation)} {
-                  SkASSERT_RELEASE(SkTFitsIn<size_t>(size));
-                  SkASSERT_RELEASE(SkTFitsIn<size_t>(firstHeapAllocation));
+    SkASSERT_RELEASE(SkTFitsIn<size_t>(size));
+    SkASSERT_RELEASE(SkTFitsIn<size_t>(firstHeapAllocation));
 }
 
-GrSubRunAllocator::GrSubRunAllocator(int firstHeapAllocation)
-        : GrSubRunAllocator(nullptr, 0, firstHeapAllocation) { }
+SubRunAllocator::SubRunAllocator(int firstHeapAllocation)
+        :  SubRunAllocator(nullptr, 0, firstHeapAllocation) { }
 
-void* GrSubRunAllocator::alignedBytes(int unsafeSize, int unsafeAlignment) {
+void* SubRunAllocator::alignedBytes(int unsafeSize, int unsafeAlignment) {
     return fAlloc.alignedBytes(unsafeSize, unsafeAlignment);
 }
+
+}  // namespace sktext::gpu
