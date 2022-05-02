@@ -592,8 +592,13 @@ void GrGLCaps::init(const GrContextOptions& contextOptions,
         fAnisoSupport = ctxInfo.hasExtension("GL_EXT_texture_filter_anisotropic") ||
                         ctxInfo.hasExtension("EXT_texture_filter_anisotropic");
     }
+    static bool first = true;
     if (fAnisoSupport) {
         GR_GL_GetFloatv(gli, GR_GL_MAX_TEXTURE_MAX_ANISOTROPY, &fMaxTextureMaxAnisotropy);
+        if (first) {
+            SkDebugf("Max aniso: %f\n", fMaxTextureMaxAnisotropy);
+            first = false;
+        }
     }
 
     GR_GL_GetIntegerv(gli, GR_GL_MAX_TEXTURE_SIZE, &fMaxTextureSize);

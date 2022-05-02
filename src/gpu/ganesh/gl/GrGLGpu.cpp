@@ -261,11 +261,11 @@ public:
             GR_GL_CALL(fGpu->glInterface(), SamplerParameteri(s, GR_GL_TEXTURE_WRAP_T, wrapY));
             SkASSERT(fGpu->glCaps().anisoSupport() || !state.isAniso());
             if (fGpu->glCaps().anisoSupport()) {
-                float maxAniso = std::min(static_cast<GrGLfloat>(state.maxAniso()),
-                                          fGpu->glCaps().maxTextureMaxAnisotropy());
-                GR_GL_CALL(fGpu->glInterface(), SamplerParameterf(s,
-                                                                  GR_GL_TEXTURE_MAX_ANISOTROPY,
-                                                                  maxAniso));
+//                float maxAniso = std::min(static_cast<GrGLfloat>(state.maxAniso()),
+//                                          fGpu->glCaps().maxTextureMaxAnisotropy());
+                //GR_GL_CALL(fGpu->glInterface(), SamplerParameterf(s,
+                //                                                  GR_GL_TEXTURE_MAX_ANISOTROPY,
+                //                                                  maxAniso));
             }
         }
         SkASSERT(sampler && sampler->id());
@@ -2731,6 +2731,11 @@ void GrGLGpu::bindTexture(int unitIdx, GrSamplerState samplerState, const skgpu:
                 newSamplerState.fMinFilter = minFilter;
                 samplerStateToRecord = &newSamplerState;
             }
+        }
+        if (this->caps()->anisoSupport()) {
+            GL_CALL(TexParameterf(target,
+                                  GR_GL_TEXTURE_MAX_ANISOTROPY,
+                                  newSamplerState.fMaxAniso));
         }
     } else {
         if (fSamplerObjectCache) {

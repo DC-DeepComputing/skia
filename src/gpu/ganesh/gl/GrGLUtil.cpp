@@ -399,6 +399,11 @@ static std::tuple<GrGLDriver, GrGLDriverVersion> get_driver_and_version(GrGLStan
                                                                         const char* vendorString,
                                                                         const char* rendererString,
                                                                         const char* versionString) {
+    static bool first = true;
+    if (first) {
+        SkDebugf("VEN: %s\nREN: %s\nVER: %s\n", vendorString, rendererString, versionString);
+        first = false;
+    }
     SkASSERT(rendererString);
     SkASSERT(versionString);
 
