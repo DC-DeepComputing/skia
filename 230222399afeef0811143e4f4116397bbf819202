@@ -121,6 +121,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0da8d42c_4b1e4ab7",
+        "filename": "modules/svg/include/SkSVGTypes.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 225,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-05-02T16:09:00Z",
+      "side": 1,
+      "message": "Can\u0027t use `unique_ptr` because this class is currently required to be copyable. At PS11 I\u0027m using a `SkSTArray\u003c1, SkString\u003e` for the actual list since the common case is that there is just one name when there is a name (and this is fairly compact anyway at 32bytes). Using an `sk_sp` wrapper around that since the even more common case is that there is no variable name and `sk_sp` still allows copying.",
+      "parentUuid": "146f4bfc_e9e7d703",
+      "range": {
+        "startLine": 215,
+        "startChar": 0,
+        "endLine": 225,
+        "endChar": 22
+      },
+      "revId": "230222399afeef0811143e4f4116397bbf819202",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a87c4fa4_064e3e33",
         "filename": "modules/svg/src/SkSVGAttributeParser.cpp",
         "patchSetId": 8
@@ -215,6 +239,30 @@
       "side": 1,
       "message": "A couple of thoughts.\n\nI suspect this would be all much simpler if we decided to ignore recursive vars, like svg-native-viewer.  Do you think they are being used in the wild, and in SVG fonts in particular?\n\nAnother thing that would make things easier is to resolve vars are parse time, instead of render time.  Now I can see good reasons to defer to render time (change colors on the fly without re-loading the svg dom), just making sure we\u0027re actually planning to use that feature.",
       "parentUuid": "3879933b_2e5837f4",
+      "range": {
+        "startLine": 396,
+        "startChar": 27,
+        "endLine": 396,
+        "endChar": 40
+      },
+      "revId": "230222399afeef0811143e4f4116397bbf819202",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fdf955ce_3c198e56",
+        "filename": "modules/svg/src/SkSVGAttributeParser.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 396,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-05-02T16:09:00Z",
+      "side": 1,
+      "message": "Ignoring them is super iffy, but then again most of what this parser parses is custom anyway (like this super specialized `var`). However, I think this now works fairly well at PS11.\n\nTrying to resolve these at parse time is only going further off the rails. For SVG glyphs I would like to eventually cache these per glyph so that they would be used with multiple different palettes.",
+      "parentUuid": "962fb87e_e0f8f5de",
       "range": {
         "startLine": 396,
         "startChar": 27,
