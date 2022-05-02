@@ -16,6 +16,24 @@
       "message": "Looks like this is still failing?",
       "revId": "9ef23c2f11748eabfae4b29849ac31202838a4b5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5c33e2bc_3177e170",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-05-02T21:25:10Z",
+      "side": 1,
+      "message": "Most recent failure looks like a \"not us\" issue",
+      "parentUuid": "e6439959_7f67137b",
+      "revId": "9ef23c2f11748eabfae4b29849ac31202838a4b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
