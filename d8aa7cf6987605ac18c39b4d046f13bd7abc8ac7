@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2c8df7b1_7ca74a3e",
+        "filename": "src/gpu/ganesh/dawn/GrDawnBuffer.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-05-02T16:26:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "36040ef2_ff8fefec",
+      "range": {
+        "startLine": 64,
+        "startChar": 0,
+        "endLine": 67,
+        "endChar": 48
+      },
+      "revId": "d8aa7cf6987605ac18c39b4d046f13bd7abc8ac7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3719e9e5_3b06f884",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-05-02T13:45:43Z",
       "side": 1,
       "message": "nit: just call this mapAsyncDone. We use the \u0027on\u0027 prefix when dealing with virtual calls. I.e. the base class ass a foo() and inside foo() it calls onFoo() virtual.",
+      "range": {
+        "startLine": 115,
+        "startChar": 9,
+        "endLine": 115,
+        "endChar": 23
+      },
+      "revId": "d8aa7cf6987605ac18c39b4d046f13bd7abc8ac7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "48f56a6d_965f0217",
+        "filename": "src/gpu/ganesh/dawn/GrDawnBuffer.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-05-02T16:26:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3719e9e5_3b06f884",
       "range": {
         "startLine": 115,
         "startChar": 9,

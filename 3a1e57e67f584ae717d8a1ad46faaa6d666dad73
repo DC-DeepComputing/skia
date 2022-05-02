@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3d32bf31_62d14c07",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-05-02T16:26:18Z",
+      "side": 1,
+      "message": "PTAL. I also updated GrDawnGpu to use a read-only GrDawnBuffer in onReadPixels and fixed the mapping bug for read-only buffers so that they can immediately use the blocking map.\n\nNOTE: the new behavior for a read-only buffer is as follows:\n1. They are not mapped at creation.\n2. GrGpuBuffer::map() will use a blocking map and return the mapped pointer as it does on other platforms if the buffer is not mapped when it gets called.\n3. GrDawnBuffer::mapAsync handles read-only buffers correctly, so a caller can still use mapAsync and then call `GrGpuBuffer::map()` to get the mapped pointer in the callback if they want to avoid spinning.",
+      "revId": "3a1e57e67f584ae717d8a1ad46faaa6d666dad73",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
