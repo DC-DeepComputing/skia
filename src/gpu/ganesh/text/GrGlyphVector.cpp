@@ -14,6 +14,7 @@
 #include "src/core/SkWriteBuffer.h"
 #include "src/gpu/ganesh/text/GrAtlasManager.h"
 
+using Glyph = sktext::gpu::Glyph;
 using MaskFormat = skgpu::MaskFormat;
 
 GrGlyphVector::GrGlyphVector(sk_sp<SkStrike>&& strike, SkSpan<Variant> glyphs)
@@ -81,13 +82,13 @@ void GrGlyphVector::flatten(SkWriteBuffer& buffer) {
     }
 }
 
-SkSpan<const GrGlyph*> GrGlyphVector::glyphs() const {
-    return SkMakeSpan(reinterpret_cast<const GrGlyph**>(fGlyphs.data()), fGlyphs.size());
+SkSpan<const Glyph*> GrGlyphVector::glyphs() const {
+    return SkMakeSpan(reinterpret_cast<const Glyph**>(fGlyphs.data()), fGlyphs.size());
 }
 
 // packedGlyphIDToGrGlyph must be run in single-threaded mode.
 // If fStrike != nullptr then the conversion to GrGlyph* has not happened.
-void GrGlyphVector::packedGlyphIDToGrGlyph(GrStrikeCache* cache) {
+void GrGlyphVector::packedGlyphIDToGlyph(GrStrikeCache* cache) {
     if (fStrike != nullptr) {
         fGrStrike = cache->findOrCreateStrike(fStrike->strikeSpec());
 
@@ -113,7 +114,7 @@ std::tuple<bool, int> GrGlyphVector::regenerateAtlas(int begin, int end,
 
     uint64_t currentAtlasGen = atlasManager->atlasGeneration(maskFormat);
 
-    this->packedGlyphIDToGrGlyph(target->strikeCache());
+    this->packedGlyphIDToGlyph(target->strikeCache());
 
     if (fAtlasGeneration != currentAtlasGen) {
         // Calculate the texture coordinates for the vertexes during first use (fAtlasGeneration
@@ -128,7 +129,7 @@ std::tuple<bool, int> GrGlyphVector::regenerateAtlas(int begin, int end,
         int glyphsPlacedInAtlas = 0;
         bool success = true;
         for (const Variant& variant : glyphs) {
-            GrGlyph* grGlyph = variant.grGlyph;
+            sktext::gpu::Glyph* grGlyph = variant.grGlyph;
             SkASSERT(grGlyph != nullptr);
 
             if (!atlasManager->hasGlyph(maskFormat, grGlyph)) {
