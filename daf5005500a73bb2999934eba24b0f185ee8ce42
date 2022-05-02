@@ -46,6 +46,30 @@
       },
       "revId": "daf5005500a73bb2999934eba24b0f185ee8ce42",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "427aaad0_eb3a3a13",
+        "filename": "src/gpu/ganesh/dawn/GrDawnBuffer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-05-02T16:39:26Z",
+      "side": 1,
+      "message": "I\u0027m guessing the main TODO here would be that the default arguments will be used correctly but since we\u0027re providing a callback in the next argument we can\u0027t rely on default arguments here anyway and I think wgpu::kWholeMapSize is actually what we should always pass here and not 0, correct? And getMappedRange will use the right default arguments under the hood so those calls can stay as they are too?",
+      "parentUuid": "b43c915b_723d7f34",
+      "range": {
+        "startLine": 151,
+        "startChar": 18,
+        "endLine": 151,
+        "endChar": 31
+      },
+      "revId": "daf5005500a73bb2999934eba24b0f185ee8ce42",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
