@@ -178,6 +178,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1727167c_be1ac6dc",
+        "filename": "modules/svg/src/SkSVGAttributeParser.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 387,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-05-02T19:30:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7b3ace77_28c4d54b",
+      "revId": "230222399afeef0811143e4f4116397bbf819202",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1c061646_bdaaf280",
@@ -310,6 +328,30 @@
       "side": 1,
       "message": "Hmmm... yes. This is one of those places where the lack of tokenization makes things difficult. In the spec this would mean that if `--foo` doesn\u0027t exist then the `var` should be replaced by no tokens. Which means that the method would not have recognized any colors if `--foo` wan\u0027t defined. I think the equivalent might be a color with type `kNone`?  If this color were encountered (the user doesn\u0027t specify this color) then I think the resolver should fail? Maybe? You are correct that we don\u0027t want to hard fail here though, because we do want to allow `--foo` a chance. For the time being it may just be better to let it be the default black (I think that\u0027s what you get for specifying an color with an empty string).",
       "parentUuid": "3075c2ad_e1812ac3",
+      "range": {
+        "startLine": 397,
+        "startChar": 27,
+        "endLine": 397,
+        "endChar": 32
+      },
+      "revId": "230222399afeef0811143e4f4116397bbf819202",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "07abb09d_a4fe49b3",
+        "filename": "modules/svg/src/SkSVGAttributeParser.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 397,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-05-02T19:30:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "374b5c9f_f9ffbe01",
       "range": {
         "startLine": 397,
         "startChar": 27,

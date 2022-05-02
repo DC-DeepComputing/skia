@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "254f9f6f_b8a7eba2",
+        "filename": "modules/svg/include/SkSVGAttributeParser.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-05-02T19:30:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4666afd0_f9329454",
+      "revId": "85e29772b43a5c860a299799d4299bdf427f2ebb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "02b06e5b_cccbf2e9",
@@ -31,6 +49,30 @@
       "writtenOn": "2022-05-02T16:55:42Z",
       "side": 1,
       "message": "When this succeeds, it looks like we\u0027re taking the else branch below and overwriting colorResult to black.  I presume the intent is to preserve the parsed value?",
+      "range": {
+        "startLine": 401,
+        "startChar": 28,
+        "endLine": 401,
+        "endChar": 76
+      },
+      "revId": "85e29772b43a5c860a299799d4299bdf427f2ebb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7cd86963_c55b0eb5",
+        "filename": "modules/svg/src/SkSVGAttributeParser.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 401,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-05-02T19:30:42Z",
+      "side": 1,
+      "message": "There is no `else` branch here? The next `else` is for when there is no `,`. However, the nesting here is making things unclear. Shaking this a bit makes it way easier to follow.",
+      "parentUuid": "02b06e5b_cccbf2e9",
       "range": {
         "startLine": 401,
         "startChar": 28,
