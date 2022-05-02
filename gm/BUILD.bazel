@@ -1,8 +1,8 @@
 load("//bazel:macros.bzl", "cc_library", "exports_files_legacy", "generated_cc_atom")
 
-exports_files_legacy()
-
 licenses(["notice"])
+
+exports_files_legacy()
 
 cc_library(
     name = "gm",
@@ -2491,6 +2491,7 @@ generated_cc_atom(
         "//include/effects:SkGradientShader_hdr",
         "//include/private:SkTDArray_hdr",
         "//src/core:SkTLazy_hdr",
+        "//tools:ToolUtils_hdr",
     ],
 )
 
