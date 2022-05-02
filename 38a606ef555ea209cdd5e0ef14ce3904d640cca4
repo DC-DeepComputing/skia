@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "77a092c4_49d91853",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-05-02T20:28:29Z",
+      "side": 1,
+      "message": "Make it so that the calculation of size can never splinch the types again.",
+      "revId": "38a606ef555ea209cdd5e0ef14ce3904d640cca4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
