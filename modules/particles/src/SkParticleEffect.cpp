@@ -419,7 +419,6 @@ void SkParticleEffect::advanceTime(double now) {
     numToSpawn = SkTPin(numToSpawn, 0, fParams->fMaxCount - fCount);
     if (numToSpawn) {
         const int spawnBase = fCount;
-
         for (int i = 0; i < numToSpawn; ++i) {
             // Mutate our random seed so each particle definitely gets a different generator
             fState.fRandom = advance_seed(fState.fRandom);
@@ -441,10 +440,8 @@ void SkParticleEffect::advanceTime(double now) {
             fParticles.fData[SkParticles::kRandom         ][fCount] = fState.fRandom;
             fCount++;
         }
-
         // Run the spawn script
         this->runParticleScript(EntryPoint::kSpawn, spawnBase, numToSpawn);
-
         // Now stash copies of the random seeds and compute inverse particle lifetimes
         // (so that subsequent updates are faster)
         for (int i = spawnBase; i < fCount; ++i) {
