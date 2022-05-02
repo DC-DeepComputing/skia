@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c4b97ee7_1a99ed9e",
+        "filename": "gn/gpu.gni",
+        "patchSetId": 4
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-05-02T17:57:05Z",
+      "side": 0,
+      "message": "https://github.com/google/skia/blob/c908c3a898895e5d0afa785e60c6867092766a79/public.bzl#L888 needs to be updated with this rename",
+      "range": {
+        "startLine": 103,
+        "startChar": 20,
+        "endLine": 103,
+        "endChar": 27
+      },
+      "revId": "7d9f07c108172bf6c5c86818dbaf1a0794093f59",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
