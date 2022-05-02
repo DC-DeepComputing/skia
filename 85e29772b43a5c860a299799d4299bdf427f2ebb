@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4666afd0_f9329454",
+        "filename": "modules/svg/include/SkSVGAttributeParser.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2022-05-02T16:55:42Z",
+      "side": 1,
+      "message": "nit: explicit",
+      "revId": "85e29772b43a5c860a299799d4299bdf427f2ebb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "02b06e5b_cccbf2e9",
+        "filename": "modules/svg/src/SkSVGAttributeParser.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 401,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2022-05-02T16:55:42Z",
+      "side": 1,
+      "message": "When this succeeds, it looks like we\u0027re taking the else branch below and overwriting colorResult to black.  I presume the intent is to preserve the parsed value?",
+      "range": {
+        "startLine": 401,
+        "startChar": 28,
+        "endLine": 401,
+        "endChar": 76
+      },
+      "revId": "85e29772b43a5c860a299799d4299bdf427f2ebb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
