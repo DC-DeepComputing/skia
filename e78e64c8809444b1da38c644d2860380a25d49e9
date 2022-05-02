@@ -88,6 +88,24 @@
       "parentUuid": "907f8e5f_510dc328",
       "revId": "e78e64c8809444b1da38c644d2860380a25d49e9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5f6f5f73_fa164059",
+        "filename": "modules/canvaskit/tests/paragraph.spec.js",
+        "patchSetId": 3
+      },
+      "lineNbr": 1066,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-05-02T16:14:26Z",
+      "side": 1,
+      "message": "Just CanvasKits\u0027s version of the Paragraph API. And I\u0027m not really saying that you should change it, just that that is what would be needed for consistency if multiple SkFontMgr must not be used. Skia itself allows multiple SkFontMgr and the solution for serialization is as I outlined, implement the procs (of course we still have a lot of work to do to make it sane to implement those procs, but that\u0027s the idea).",
+      "parentUuid": "193eff43_f6f18db6",
+      "revId": "e78e64c8809444b1da38c644d2860380a25d49e9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
