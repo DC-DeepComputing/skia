@@ -8,12 +8,9 @@
 #include "fuzz/Fuzz.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
-#include "include/core/SkFont.h"
 #include "include/core/SkImage.h"
 #include "include/core/SkPath.h"
 #include "include/core/SkSurface.h"
-#include "include/core/SkTextBlob.h"
-#include "include/core/SkTypeface.h"
 #include "src/core/SkPaintPriv.h"
 
 static const int kBmpSize = 24;
@@ -104,52 +101,6 @@ static void init_surface(Fuzz* fuzz, sk_sp<SkSurface>* s) {
         // Was possibly too big for the memory constrained fuzzing environments
         *s = SkSurface::MakeNull(x, y);
     }
-}
-
-
-static void fuzz_drawText(Fuzz* fuzz, sk_sp<SkTypeface> typeface) {
-    SkFont font(typeface);
-    SkPaint p;
-    init_paint(fuzz, &p);
-    sk_sp<SkSurface> surface;
-    init_surface(fuzz, &surface);
-
-    char text[kTxtLen];
-    init_string(fuzz, text, kTxtLen);
-
-    SkScalar x, y;
-    fuzz->next(&x, &y);
-    // populate pts array
-    SkPoint pts[kPtsLen];
-    for (uint8_t i = 0; i < kPtsLen; ++i) {
-        pts[i].set(x, y);
-        x += font.getSize();
-    }
-
-    bool b;
-    fuzz->next(&b);
-    font.setForceAutoHinting(b);
-    fuzz->next(&b);
-    font.setEmbeddedBitmaps(b);
-    fuzz->next(&b);
-    font.setEmbolden(b);
-    fuzz->next(&b);
-    font.setEdging(b ? SkFont::Edging::kAntiAlias : SkFont::Edging::kSubpixelAntiAlias);
-    fuzz->next(&b);
-    font.setLinearMetrics(b);
-    fuzz->next(&b);
-    font.setSubpixel(b);
-    fuzz->next(&x);
-    font.setScaleX(x);
-    fuzz->next(&x);
-    font.setSkewX(x);
-    fuzz->next(&x);
-    font.setSize(x);
-
-    SkCanvas* cnv = surface->getCanvas();
-    fuzz->next(&x);
-    fuzz->next(&y);
-    cnv->drawTextBlob(SkTextBlob::MakeFromPosText(text, kTxtLen-1, pts, font), x, y, p);
 }
 
 static void fuzz_drawCircle(Fuzz* fuzz) {
@@ -289,13 +240,6 @@ DEF_FUZZ(DrawFunctions, fuzz) {
 
     switch(i) {
         case 0: {
-            sk_sp<SkTypeface> f = SkTypeface::MakeDefault();
-            if (f == nullptr) {
-              SkDebugf("Could not initialize font.\n");
-              fuzz->signalBug();
-            }
-            SkDEBUGF("Fuzz DrawText\n");
-            fuzz_drawText(fuzz, f);
             return;
         }
         case 1:

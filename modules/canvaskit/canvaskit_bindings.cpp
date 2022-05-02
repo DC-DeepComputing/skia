@@ -35,8 +35,6 @@
 #include "include/core/SkString.h"
 #include "include/core/SkStrokeRec.h"
 #include "include/core/SkSurface.h"
-#include "include/core/SkTextBlob.h"
-#include "include/core/SkTypeface.h"
 #include "include/core/SkTypes.h"
 #include "include/core/SkVertices.h"
 #include "include/effects/Sk1DPathEffect.h"
@@ -996,18 +994,6 @@ EMSCRIPTEN_BINDINGS(Skia) {
         .function("_drawDRRect", optional_override([](SkCanvas& self, WASMPointerF32 outerPtr,
                                                      WASMPointerF32 innerPtr, const SkPaint& paint) {
             self.drawDRRect(ptrToSkRRect(outerPtr), ptrToSkRRect(innerPtr), paint);
-        }))
-        .function("_drawGlyphs", optional_override([](SkCanvas& self,
-                                                      int count,
-                                                      WASMPointerU16 glyphs,
-                                                      WASMPointerF32 positions,
-                                                      float x, float y,
-                                                      const SkFont& font,
-                                                      const SkPaint& paint)->void {
-            self.drawGlyphs(count,
-                            reinterpret_cast<const uint16_t*>(glyphs),
-                            reinterpret_cast<const SkPoint*>(positions),
-                            {x, y}, font, paint);
         }))
         // TODO: deprecate this version, and require sampling
         .function("_drawImage", optional_override([](SkCanvas& self, const sk_sp<SkImage>& image,

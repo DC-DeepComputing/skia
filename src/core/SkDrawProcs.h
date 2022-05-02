@@ -9,7 +9,6 @@
 #define SkDrawProcs_DEFINED
 
 #include "src/core/SkDraw.h"
-#include "src/core/SkGlyph.h"
 
 bool SkDrawTreatAAStrokeAsHairline(SkScalar strokeWidth, const SkMatrix&,
                                    SkScalar* coverage);

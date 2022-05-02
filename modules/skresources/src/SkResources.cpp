@@ -224,12 +224,6 @@ sk_sp<ImageAsset> ResourceProviderProxyBase::loadImageAsset(const char rpath[],
                   : nullptr;
 }
 
-sk_sp<SkTypeface> ResourceProviderProxyBase::loadTypeface(const char name[],
-                                                          const char url[]) const {
-    return fProxy ? fProxy->loadTypeface(name, url)
-                  : nullptr;
-}
-
 sk_sp<SkData> ResourceProviderProxyBase::loadFont(const char name[], const char url[]) const {
     return fProxy ? fProxy->loadFont(name, url)
                   : nullptr;
@@ -311,15 +305,6 @@ sk_sp<ImageAsset> DataURIResourceProviderProxy::loadImageAsset(const char rpath[
     }
 
     return this->INHERITED::loadImageAsset(rpath, rname, rid);
-}
-
-sk_sp<SkTypeface> DataURIResourceProviderProxy::loadTypeface(const char name[],
-                                                             const char url[]) const {
-    if (auto data = decode_datauri("data:font/", url)) {
-        return SkTypeface::MakeFromData(std::move(data));
-    }
-
-    return this->INHERITED::loadTypeface(name, url);
 }
 
 } // namespace skresources

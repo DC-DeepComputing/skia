@@ -21,10 +21,6 @@
 #include "src/core/SkResourceCache.h"
 #include <atomic>
 
-#if SK_SUPPORT_GPU
-#include "include/private/chromium/GrSlug.h"
-#endif
-
 // When we read/write the SkPictInfo via a stream, we have a sentinel byte right after the info.
 // Note: in the read/write buffer versions, we have a slightly different convention:
 //      We have a sentinel int32_t:
@@ -139,17 +135,13 @@ sk_sp<SkPicture> SkPicture::Forwardport(const SkPictInfo& info,
     return r.finishRecordingAsPicture();
 }
 
-sk_sp<SkPicture> SkPicture::MakeFromStream(SkStream* stream, const SkDeserialProcs* procs) {
-    return MakeFromStream(stream, procs, nullptr);
-}
-
 sk_sp<SkPicture> SkPicture::MakeFromData(const void* data, size_t size,
                                          const SkDeserialProcs* procs) {
     if (!data) {
         return nullptr;
     }
     SkMemoryStream stream(data, size);
-    return MakeFromStream(&stream, procs, nullptr);
+    return MakeFromStream(&stream, procs);
 }
 
 sk_sp<SkPicture> SkPicture::MakeFromData(const SkData* data, const SkDeserialProcs* procs) {
@@ -157,11 +149,10 @@ sk_sp<SkPicture> SkPicture::MakeFromData(const SkData* data, const SkDeserialPro
         return nullptr;
     }
     SkMemoryStream stream(data->data(), data->size());
-    return MakeFromStream(&stream, procs, nullptr);
+    return MakeFromStream(&stream, procs);
 }
 
-sk_sp<SkPicture> SkPicture::MakeFromStream(SkStream* stream, const SkDeserialProcs* procsPtr,
-                                           SkTypefacePlayback* typefaces) {
+sk_sp<SkPicture> SkPicture::MakeFromStream(SkStream* stream, const SkDeserialProcs* procsPtr) {
     SkPictInfo info;
     if (!StreamIsSKP(stream, &info)) {
         return nullptr;
@@ -177,7 +168,7 @@ sk_sp<SkPicture> SkPicture::MakeFromStream(SkStream* stream, const SkDeserialPro
     switch (trailingStreamByteAfterPictInfo) {
         case kPictureData_TrailingStreamByteAfterPictInfo: {
             std::unique_ptr<SkPictureData> data(
-                    SkPictureData::CreateFromStream(stream, info, procs, typefaces));
+                    SkPictureData::CreateFromStream(stream, info, procs));
             return Forwardport(info, data.get(), nullptr);
         }
         case kCustom_TrailingStreamByteAfterPictInfo: {
@@ -230,13 +221,9 @@ SkPictureData* SkPicture::backport() const {
     return new SkPictureData(rec, info);
 }
 
-void SkPicture::serialize(SkWStream* stream, const SkSerialProcs* procs) const {
-    this->serialize(stream, procs, nullptr);
-}
-
 sk_sp<SkData> SkPicture::serialize(const SkSerialProcs* procs) const {
     SkDynamicMemoryWStream stream;
-    this->serialize(&stream, procs, nullptr);
+    this->serialize(&stream, procs);
     return stream.detachAsData();
 }
 
@@ -268,8 +255,7 @@ static bool write_pad32(SkWStream* stream, const void* data, size_t size) {
 // Private serialize.
 // SkPictureData::serialize makes a first pass on all subpictures, indicatewd by textBlobsOnly=true,
 // to fill typefaceSet.
-void SkPicture::serialize(SkWStream* stream, const SkSerialProcs* procsPtr,
-                          SkRefCntSet* typefaceSet, bool textBlobsOnly) const {
+void SkPicture::serialize(SkWStream* stream, const SkSerialProcs* procsPtr) const {
     SkSerialProcs procs;
     if (procsPtr) {
         procs = *procsPtr;
@@ -293,7 +279,7 @@ void SkPicture::serialize(SkWStream* stream, const SkSerialProcs* procsPtr,
     std::unique_ptr<SkPictureData> data(this->backport());
     if (data) {
         stream->write8(kPictureData_TrailingStreamByteAfterPictInfo);
-        data->serialize(stream, procs, typefaceSet, textBlobsOnly);
+        data->serialize(stream, procs);
     } else {
         stream->write8(kFailure_TrailingStreamByteAfterPictInfo);
     }

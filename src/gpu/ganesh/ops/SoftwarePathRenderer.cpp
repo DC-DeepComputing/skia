@@ -8,6 +8,7 @@
 #include "src/gpu/ganesh/ops/SoftwarePathRenderer.h"
 
 #include "include/gpu/GrDirectContext.h"
+#include "include/private/SkFixed.h"
 #include "include/private/SkSemaphore.h"
 #include "src/core/SkTaskGroup.h"
 #include "src/core/SkTraceEvent.h"

@@ -14,7 +14,6 @@
 #include "include/core/SkColorFilter.h"
 #include "include/core/SkData.h"
 #include "include/core/SkEncodedImageFormat.h"
-#include "include/core/SkFont.h"
 #include "include/core/SkFontStyle.h"
 #include "include/core/SkImage.h"
 #include "include/core/SkImageEncoder.h"
@@ -36,7 +35,6 @@
 #include "include/core/SkString.h"
 #include "include/core/SkSurfaceProps.h"
 #include "include/core/SkTileMode.h"
-#include "include/core/SkTypeface.h"
 #include "include/private/SkNoncopyable.h"
 #include "include/private/SkTHash.h"
 #include "include/private/SkTPin.h"
@@ -47,8 +45,6 @@
 #include "src/core/SkAnnotationKeys.h"
 #include "src/core/SkClipStack.h"
 #include "src/core/SkDevice.h"
-#include "src/core/SkFontPriv.h"
-#include "src/core/SkGlyphRun.h"
 #include "src/core/SkTLazy.h"
 #include "src/image/SkImage_Base.h"
 #include "src/shaders/SkShaderBase.h"
@@ -208,28 +204,6 @@ bool RequiresViewportReset(const SkPaint& paint) {
   return false;
 }
 
-void AddPath(const SkGlyphRun& glyphRun, const SkPoint& offset, SkPath* path) {
-    struct Rec {
-        SkPath*        fPath;
-        const SkPoint  fOffset;
-        const SkPoint* fPos;
-    } rec = { path, offset, glyphRun.positions().data() };
-
-    glyphRun.font().getPaths(glyphRun.glyphsIDs().data(), SkToInt(glyphRun.glyphsIDs().size()),
-            [](const SkPath* path, const SkMatrix& mx, void* ctx) {
-                Rec* rec = reinterpret_cast<Rec*>(ctx);
-                if (path) {
-                    SkMatrix total = mx;
-                    total.postTranslate(rec->fPos->fX + rec->fOffset.fX,
-                                        rec->fPos->fY + rec->fOffset.fY);
-                    rec->fPath->addPath(*path, total);
-                } else {
-                    // TODO: this is going to drop color emojis.
-                }
-                rec->fPos += 1; // move to the next glyph's position
-            }, &rec);
-}
-
 }  // namespace
 
 // For now all this does is serve unique serial IDs, but it will eventually evolve to track
@@ -331,7 +305,6 @@ public:
 
     void addRectAttributes(const SkRect&);
     void addPathAttributes(const SkPath&, SkParsePath::PathEncoding);
-    void addTextAttributes(const SkFont&);
 
 private:
     Resources addResources(const MxCp&, const SkPaint& paint);
@@ -668,53 +641,6 @@ void SkSVGDevice::AutoElement::addPathAttributes(const SkPath& path,
     this->addAttribute("d", pathData);
 }
 
-void SkSVGDevice::AutoElement::addTextAttributes(const SkFont& font) {
-    this->addAttribute("font-size", font.getSize());
-
-    SkString familyName;
-    SkTHashSet<SkString> familySet;
-    sk_sp<SkTypeface> tface = font.refTypefaceOrDefault();
-
-    SkASSERT(tface);
-    SkFontStyle style = tface->fontStyle();
-    if (style.slant() == SkFontStyle::kItalic_Slant) {
-        this->addAttribute("font-style", "italic");
-    } else if (style.slant() == SkFontStyle::kOblique_Slant) {
-        this->addAttribute("font-style", "oblique");
-    }
-    int weightIndex = (SkTPin(style.weight(), 100, 900) - 50) / 100;
-    if (weightIndex != 3) {
-        static constexpr const char* weights[] = {
-            "100", "200", "300", "normal", "400", "500", "600", "bold", "800", "900"
-        };
-        this->addAttribute("font-weight", weights[weightIndex]);
-    }
-    int stretchIndex = style.width() - 1;
-    if (stretchIndex != 4) {
-        static constexpr const char* stretches[] = {
-            "ultra-condensed", "extra-condensed", "condensed", "semi-condensed",
-            "normal",
-            "semi-expanded", "expanded", "extra-expanded", "ultra-expanded"
-        };
-        this->addAttribute("font-stretch", stretches[stretchIndex]);
-    }
-
-    sk_sp<SkTypeface::LocalizedStrings> familyNameIter(tface->createFamilyNameIterator());
-    SkTypeface::LocalizedString familyString;
-    if (familyNameIter) {
-        while (familyNameIter->next(&familyString)) {
-            if (familySet.contains(familyString.fString)) {
-                continue;
-            }
-            familySet.add(familyString.fString);
-            familyName.appendf((familyName.isEmpty() ? "%s" : ", %s"), familyString.fString.c_str());
-        }
-    }
-    if (!familyName.isEmpty()) {
-        this->addAttribute("font-family", familyName);
-    }
-}
-
 sk_sp<SkBaseDevice> SkSVGDevice::Make(const SkISize& size, std::unique_ptr<SkXMLWriter> writer,
                                       uint32_t flags) {
     return writer ? sk_sp<SkBaseDevice>(new SkSVGDevice(size, std::move(writer), flags))
@@ -1013,127 +939,6 @@ void SkSVGDevice::drawImageRect(const SkImage* image, const SkRect* src, const S
                             * SkMatrix::RectToRect(src ? *src : SkRect::Make(bm.bounds()), dst);
 
     drawBitmapCommon(MxCp(&adjustedMatrix, cs), bm, paint);
-}
-
-class SVGTextBuilder : SkNoncopyable {
-public:
-    SVGTextBuilder(SkPoint origin, const SkGlyphRun& glyphRun)
-            : fOrigin(origin) {
-        auto runSize = glyphRun.runSize();
-        SkAutoSTArray<64, SkUnichar> unichars(runSize);
-        SkFontPriv::GlyphsToUnichars(glyphRun.font(), glyphRun.glyphsIDs().data(),
-                                     runSize, unichars.get());
-        auto positions = glyphRun.positions();
-        for (size_t i = 0; i < runSize; ++i) {
-            this->appendUnichar(unichars[i], positions[i]);
-        }
-    }
-
-    const SkString& text() const { return fText; }
-    const SkString& posX() const { return fPosXStr; }
-    const SkString& posY() const { return fHasConstY ? fConstYStr : fPosYStr; }
-
-private:
-    void appendUnichar(SkUnichar c, SkPoint position) {
-        bool discardPos = false;
-        bool isWhitespace = false;
-
-        switch(c) {
-            case ' ':
-            case '\t':
-                // consolidate whitespace to match SVG's xml:space=default munging
-                // (http://www.w3.org/TR/SVG/text.html#WhiteSpace)
-                if (fLastCharWasWhitespace) {
-                    discardPos = true;
-                } else {
-                    fText.appendUnichar(c);
-                }
-                isWhitespace = true;
-                break;
-            case '\0':
-                // SkPaint::glyphsToUnichars() returns \0 for inconvertible glyphs, but these
-                // are not legal XML characters (http://www.w3.org/TR/REC-xml/#charsets)
-                discardPos = true;
-                isWhitespace = fLastCharWasWhitespace; // preserve whitespace consolidation
-                break;
-            case '&':
-                fText.append("&amp;");
-                break;
-            case '"':
-                fText.append("&quot;");
-                break;
-            case '\'':
-                fText.append("&apos;");
-                break;
-            case '<':
-                fText.append("&lt;");
-                break;
-            case '>':
-                fText.append("&gt;");
-                break;
-            default:
-                fText.appendUnichar(c);
-                break;
-        }
-
-        fLastCharWasWhitespace = isWhitespace;
-
-        if (discardPos) {
-            return;
-        }
-
-        position += fOrigin;
-        fPosXStr.appendf("%.8g, ", position.fX);
-        fPosYStr.appendf("%.8g, ", position.fY);
-
-        if (fConstYStr.isEmpty()) {
-            fConstYStr = fPosYStr;
-            fConstY    = position.fY;
-        } else {
-            fHasConstY &= SkScalarNearlyEqual(fConstY, position.fY);
-        }
-    }
-
-    const SkPoint   fOrigin;
-
-    SkString fText,
-             fPosXStr, fPosYStr,
-             fConstYStr;
-    SkScalar fConstY;
-    bool     fLastCharWasWhitespace = true, // start off in whitespace mode to strip leading space
-             fHasConstY             = true;
-};
-
-void SkSVGDevice::onDrawGlyphRunList(SkCanvas* canvas,
-                                     const SkGlyphRunList& glyphRunList,
-                                     const SkPaint& initialPaint,
-                                     const SkPaint& drawingPaint)  {
-    SkASSERT(!glyphRunList.hasRSXForm());
-    const auto draw_as_path = (fFlags & SkSVGCanvas::kConvertTextToPaths_Flag) ||
-                              drawingPaint.getPathEffect();
-
-    if (draw_as_path) {
-        // Emit a single <path> element.
-        SkPath path;
-        for (auto& glyphRun : glyphRunList) {
-            AddPath(glyphRun, glyphRunList.origin(), &path);
-        }
-
-        this->drawPath(path, drawingPaint);
-
-        return;
-    }
-
-    // Emit one <text> element for each run.
-    for (auto& glyphRun : glyphRunList) {
-        AutoElement elem("text", this, fResourceBucket.get(), MxCp(this), drawingPaint);
-        elem.addTextAttributes(glyphRun.font());
-
-        SVGTextBuilder builder(glyphRunList.origin(), glyphRun);
-        elem.addAttribute("x", builder.posX());
-        elem.addAttribute("y", builder.posY());
-        elem.addText(builder.text());
-    }
 }
 
 void SkSVGDevice::drawVertices(const SkVertices*, sk_sp<SkBlender>, const SkPaint&, bool) {

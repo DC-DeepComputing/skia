@@ -155,18 +155,6 @@ protected:
     void onSave() override { fClip.save(); }
     void onRestore() override { fClip.restore(); }
 
-    void onDrawGlyphRunList(SkCanvas*,
-                            const SkGlyphRunList&,
-                            const SkPaint& initialPaint,
-                            const SkPaint& drawingPaint) override;
-
-    sk_sp<GrSlug> convertGlyphRunListToSlug(
-            const SkGlyphRunList& glyphRunList,
-            const SkPaint& initialPaint,
-            const SkPaint& drawingPaint) override;
-
-    void drawSlug(SkCanvas*, const GrSlug* slug, const SkPaint& drawingPaint) override;
-
     void onClipRect(const SkRect& rect, SkClipOp op, bool aa) override {
         SkASSERT(op == SkClipOp::kIntersect || op == SkClipOp::kDifference);
         fClip.clipRect(this->localToDevice(), rect, GrAA(aa), op);

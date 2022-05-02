@@ -9,7 +9,6 @@
 
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
-#include "include/core/SkFont.h"
 #include "include/core/SkFontTypes.h"
 #include "include/core/SkGraphics.h"
 #include "include/core/SkPaint.h"
@@ -114,9 +113,6 @@ void HelloWorld::onPaint(SkSurface* surface) {
     }
 
     // Draw a message with a nice black paint
-    SkFont font;
-    font.setSubpixel(true);
-    font.setSize(20);
     paint.setColor(SK_ColorBLACK);
 
     canvas->save();
@@ -129,9 +125,6 @@ void HelloWorld::onPaint(SkSurface* surface) {
         fRotationAngle -= 360;
     }
     canvas->rotate(fRotationAngle);
-
-    // Draw the text
-    canvas->drawSimpleText(message, strlen(message), SkTextEncoding::kUTF8, 0, 0, font, paint);
 
     canvas->restore();
 }

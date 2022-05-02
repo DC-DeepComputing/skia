@@ -62,7 +62,6 @@ public:
     void   writeSampling(const SkSamplingOptions&) override;
     size_t writeStream(SkStream* stream, size_t length) override;
     void   writeImage(const SkImage*) override;
-    void   writeTypeface(SkTypeface* typeface) override;
     void   writePaint(const SkPaint& paint) override;
 
 private:

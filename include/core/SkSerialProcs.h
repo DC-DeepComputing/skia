@@ -10,7 +10,6 @@
 
 #include "include/core/SkImage.h"
 #include "include/core/SkPicture.h"
-#include "include/core/SkTypeface.h"
 
 /**
  *  A serial-proc is asked to serialize the specified object (e.g. picture or image).
@@ -24,7 +23,6 @@
 
 typedef sk_sp<SkData> (*SkSerialPictureProc)(SkPicture*, void* ctx);
 typedef sk_sp<SkData> (*SkSerialImageProc)(SkImage*, void* ctx);
-typedef sk_sp<SkData> (*SkSerialTypefaceProc)(SkTypeface*, void* ctx);
 
 /**
  *  Called with the encoded form of a picture (previously written with a custom
@@ -41,21 +39,12 @@ typedef sk_sp<SkPicture> (*SkDeserialPictureProc)(const void* data, size_t lengt
  */
 typedef sk_sp<SkImage> (*SkDeserialImageProc)(const void* data, size_t length, void* ctx);
 
-/**
- *  Called with the encoded form of a typeface (previously written with a custom
- *  SkSerialTypefaceProc proc). Return a typeface object, or nullptr indicating failure.
- */
-typedef sk_sp<SkTypeface> (*SkDeserialTypefaceProc)(const void* data, size_t length, void* ctx);
-
 struct SK_API SkSerialProcs {
     SkSerialPictureProc fPictureProc = nullptr;
     void*               fPictureCtx = nullptr;
 
     SkSerialImageProc   fImageProc = nullptr;
     void*               fImageCtx = nullptr;
-
-    SkSerialTypefaceProc fTypefaceProc = nullptr;
-    void*                fTypefaceCtx = nullptr;
 };
 
 struct SK_API SkDeserialProcs {
@@ -64,9 +53,6 @@ struct SK_API SkDeserialProcs {
 
     SkDeserialImageProc     fImageProc = nullptr;
     void*                   fImageCtx = nullptr;
-
-    SkDeserialTypefaceProc  fTypefaceProc = nullptr;
-    void*                   fTypefaceCtx = nullptr;
 };
 
 #endif

@@ -8,7 +8,6 @@
 #ifndef SkReadBuffer_DEFINED
 #define SkReadBuffer_DEFINED
 
-#include "include/core/SkFont.h"
 #include "include/core/SkImageFilter.h"
 #include "include/core/SkPath.h"
 #include "include/core/SkPathEffect.h"
@@ -149,12 +148,6 @@ public:
     // be created (e.g. it was not originally encoded) then this returns an image that doesn't
     // draw.
     sk_sp<SkImage> readImage();
-    sk_sp<SkTypeface> readTypeface();
-
-    void setTypefaceArray(sk_sp<SkTypeface> array[], int count) {
-        fTFArray = array;
-        fTFCount = count;
-    }
 
     /**
      *  Call this with a pre-loaded array of Factories, in the same order as
@@ -225,9 +218,6 @@ private:
     SkTHashMap<uint32_t, SkFlattenable::Factory> fFlattenableDict;
 
     int fVersion = 0;
-
-    sk_sp<SkTypeface>* fTFArray = nullptr;
-    int                fTFCount = 0;
 
     SkFlattenable::Factory* fFactoryArray = nullptr;
     int                     fFactoryCount = 0;

@@ -18,7 +18,6 @@
 #include "include/private/SkTHash.h"
 #include "src/core/SkClipStack.h"
 #include "src/core/SkClipStackDevice.h"
-#include "src/core/SkTextBlobPriv.h"
 #include "src/pdf/SkKeyedImage.h"
 #include "src/pdf/SkPDFGraphicStackState.h"
 #include "src/pdf/SkPDFTypes.h"
@@ -84,10 +83,6 @@ public:
                        const SkSamplingOptions&,
                        const SkPaint&,
                        SkCanvas::SrcRectConstraint) override;
-    void onDrawGlyphRunList(SkCanvas*,
-                            const SkGlyphRunList&,
-                            const SkPaint& initialPaint,
-                            const SkPaint& drawingPaint) override;
     void drawVertices(const SkVertices*, sk_sp<SkBlender>, const SkPaint&, bool) override;
     void drawCustomMesh(SkCustomMesh, sk_sp<SkBlender>, const SkPaint&) override;
 

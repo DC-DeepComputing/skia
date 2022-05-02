@@ -212,12 +212,6 @@ void JsonWriteBuffer::writeImage(const SkImage* image) {
     fWriter->endObject();
 }
 
-void JsonWriteBuffer::writeTypeface(SkTypeface* typeface) {
-    // Unsupported
-    this->append("typeface");
-    fWriter->appendPointer(typeface);
-}
-
 void JsonWriteBuffer::writePaint(const SkPaint& paint) {
     this->append("paint");
     DrawCommand::MakeJsonPaint(*fWriter, paint, *fUrlDataManager);

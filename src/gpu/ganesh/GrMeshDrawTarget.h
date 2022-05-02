@@ -11,8 +11,6 @@
 #include "src/gpu/ganesh/GrDrawIndirectCommand.h"
 #include "src/gpu/ganesh/GrSimpleMesh.h"
 
-class GrAtlasManager;
-class GrStrikeCache;
 class GrThreadSafeCache;
 
 namespace skgpu {
@@ -139,8 +137,6 @@ public:
     virtual GrResourceProvider* resourceProvider() const = 0;
     uint32_t contextUniqueID() const;
 
-    virtual GrStrikeCache* strikeCache() const = 0;
-    virtual GrAtlasManager* atlasManager() const = 0;
     virtual skgpu::v1::SmallPathAtlasMgr* smallPathAtlasManager() const = 0;
 
     // This should be called during onPrepare of a GrOp. The caller should add any proxies to the

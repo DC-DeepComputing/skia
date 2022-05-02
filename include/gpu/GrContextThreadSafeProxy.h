@@ -153,7 +153,6 @@ private:
     const GrContextOptions                       fOptions;
     const uint32_t                               fContextID;
     sk_sp<const GrCaps>                          fCaps;
-    std::unique_ptr<GrTextBlobRedrawCoordinator> fTextBlobRedrawCoordinator;
     std::unique_ptr<GrThreadSafeCache>           fThreadSafeCache;
     sk_sp<GrThreadSafePipelineBuilder>           fPipelineBuilder;
     std::atomic<bool>                            fAbandoned{false};

@@ -21,8 +21,6 @@ public:
     /* Does not take ownership of canvas */
     SkOverdrawCanvas(SkCanvas*);
 
-    void onDrawTextBlob(const SkTextBlob*, SkScalar, SkScalar, const SkPaint&) override;
-    void onDrawGlyphRunList(const SkGlyphRunList& glyphRunList, const SkPaint& paint) override;
     void onDrawPatch(const SkPoint[12], const SkColor[4], const SkPoint[4], SkBlendMode,
                      const SkPaint&) override;
     void onDrawPaint(const SkPaint&) override;

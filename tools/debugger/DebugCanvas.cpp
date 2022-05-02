@@ -16,7 +16,6 @@
 #include "include/core/SkRSXform.h"
 #include "include/core/SkShader.h"
 #include "include/core/SkString.h"
-#include "include/core/SkTextBlob.h"
 #include "include/core/SkVertices.h"
 #include "include/gpu/GrDirectContext.h"
 #include "include/gpu/GrRecordingContext.h"
@@ -540,14 +539,6 @@ void DebugCanvas::onDrawRRect(const SkRRect& rrect, const SkPaint& paint) {
 
 void DebugCanvas::onDrawDRRect(const SkRRect& outer, const SkRRect& inner, const SkPaint& paint) {
     this->addDrawCommand(new DrawDRRectCommand(outer, inner, paint));
-}
-
-void DebugCanvas::onDrawTextBlob(const SkTextBlob* blob,
-                                 SkScalar          x,
-                                 SkScalar          y,
-                                 const SkPaint&    paint) {
-    this->addDrawCommand(
-            new DrawTextBlobCommand(sk_ref_sp(const_cast<SkTextBlob*>(blob)), x, y, paint));
 }
 
 void DebugCanvas::onDrawPatch(const SkPoint  cubics[12],

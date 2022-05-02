@@ -9,12 +9,10 @@
 
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkContourMeasure.h"
-#include "include/core/SkFont.h"
 #include "include/core/SkImage.h"
 #include "include/core/SkPath.h"
 #include "include/private/SkTPin.h"
 #include "include/utils/SkParsePath.h"
-#include "include/utils/SkTextUtils.h"
 #include "modules/particles/include/SkReflected.h"
 #include "modules/skresources/include/SkResources.h"
 #include "src/core/SkMatrixProvider.h"
@@ -122,47 +120,6 @@ private:
     LinearizedPath fData;
 };
 
-class SkTextBinding : public SkParticleBinding {
-public:
-    SkTextBinding(const char* name = "", const char* text = "", SkScalar fontSize = 96)
-            : SkParticleBinding(name)
-            , fText(text)
-            , fFontSize(fontSize) {}
-
-    REFLECTED(SkTextBinding, SkParticleBinding)
-
-    void visitFields(SkFieldVisitor* v) override {
-        SkParticleBinding::visitFields(v);
-        v->visit("Text", fText);
-        v->visit("FontSize", fFontSize);
-    }
-
-    std::unique_ptr<SkParticleExternalFunction> toFunction(SkSL::Compiler& compiler,
-                                                           skvm::Uniforms* uniforms,
-                                                           SkArenaAlloc* alloc) override {
-        return std::make_unique<SkPathExternalFunction>(fName.c_str(), compiler, fData, uniforms,
-                                                        alloc);
-    }
-
-    void prepare(const skresources::ResourceProvider*) override {
-        if (fText.isEmpty()) {
-            return;
-        }
-
-        SkFont font(nullptr, fFontSize);
-        SkPath path;
-        SkTextUtils::GetPath(fText.c_str(), fText.size(), SkTextEncoding::kUTF8, 0, 0, font, &path);
-        fData = linearize_path(path);
-    }
-
-private:
-    SkString fText;
-    SkScalar fFontSize;
-
-    // Cached
-    LinearizedPath fData;
-};
-
 // Exposes an SkShader as an external, callable function. p(xy) returns a float4
 class SkShaderExternalFunction : public SkParticleExternalFunction {
 public:
@@ -263,5 +220,4 @@ void SkParticleBinding::RegisterBindingTypes() {
     REGISTER_REFLECTED(SkParticleBinding);
     REGISTER_REFLECTED(SkImageBinding);
     REGISTER_REFLECTED(SkPathBinding);
-    REGISTER_REFLECTED(SkTextBinding);
 }

@@ -41,15 +41,11 @@
 class AutoLayerForImageFilter;
 class GrBackendRenderTarget;
 class GrRecordingContext;
-class GrSlug;
 class SkBaseDevice;
 class SkBitmap;
 class SkData;
 class SkDrawable;
 struct SkDrawShadowRec;
-class SkFont;
-class SkGlyphRunBuilder;
-class SkGlyphRunList;
 class SkImage;
 class SkImageFilter;
 class SkPaintFilterCanvas;
@@ -63,7 +59,6 @@ struct SkCustomMesh;
 class SkSpecialImage;
 class SkSurface;
 class SkSurface_Base;
-class SkTextBlob;
 class SkVertices;
 
 namespace skgpu::graphite { class Recorder; }
@@ -1655,210 +1650,6 @@ public:
                                          const SkSamplingOptions&, const SkPaint* paint = nullptr,
                                          SrcRectConstraint constraint = kStrict_SrcRectConstraint);
 
-    /** Draws text, with origin at (x, y), using clip, SkMatrix, SkFont font,
-        and SkPaint paint.
-
-        When encoding is SkTextEncoding::kUTF8, SkTextEncoding::kUTF16, or
-        SkTextEncoding::kUTF32, this function uses the default
-        character-to-glyph mapping from the SkTypeface in font.  It does not
-        perform typeface fallback for characters not found in the SkTypeface.
-        It does not perform kerning or other complex shaping; glyphs are
-        positioned based on their default advances.
-
-        Text meaning depends on SkTextEncoding.
-
-        Text size is affected by SkMatrix and SkFont text size. Default text
-        size is 12 point.
-
-        All elements of paint: SkPathEffect, SkMaskFilter, SkShader,
-        SkColorFilter, and SkImageFilter; apply to text. By
-        default, draws filled black glyphs.
-
-        @param text        character code points or glyphs drawn
-        @param byteLength  byte length of text array
-        @param encoding    text encoding used in the text array
-        @param x           start of text on x-axis
-        @param y           start of text on y-axis
-        @param font        typeface, text size and so, used to describe the text
-        @param paint       blend, color, and so on, used to draw
-    */
-    void drawSimpleText(const void* text, size_t byteLength, SkTextEncoding encoding,
-                        SkScalar x, SkScalar y, const SkFont& font, const SkPaint& paint);
-
-    /** Draws null terminated string, with origin at (x, y), using clip, SkMatrix,
-        SkFont font, and SkPaint paint.
-
-        This function uses the default character-to-glyph mapping from the
-        SkTypeface in font.  It does not perform typeface fallback for
-        characters not found in the SkTypeface.  It does not perform kerning;
-        glyphs are positioned based on their default advances.
-
-        String str is encoded as UTF-8.
-
-        Text size is affected by SkMatrix and font text size. Default text
-        size is 12 point.
-
-        All elements of paint: SkPathEffect, SkMaskFilter, SkShader,
-        SkColorFilter, and SkImageFilter; apply to text. By
-        default, draws filled black glyphs.
-
-        @param str     character code points drawn,
-                       ending with a char value of zero
-        @param x       start of string on x-axis
-        @param y       start of string on y-axis
-        @param font    typeface, text size and so, used to describe the text
-        @param paint   blend, color, and so on, used to draw
-    */
-    void drawString(const char str[], SkScalar x, SkScalar y, const SkFont& font,
-                    const SkPaint& paint) {
-        this->drawSimpleText(str, strlen(str), SkTextEncoding::kUTF8, x, y, font, paint);
-    }
-
-    /** Draws SkString, with origin at (x, y), using clip, SkMatrix, SkFont font,
-        and SkPaint paint.
-
-        This function uses the default character-to-glyph mapping from the
-        SkTypeface in font.  It does not perform typeface fallback for
-        characters not found in the SkTypeface.  It does not perform kerning;
-        glyphs are positioned based on their default advances.
-
-        SkString str is encoded as UTF-8.
-
-        Text size is affected by SkMatrix and SkFont text size. Default text
-        size is 12 point.
-
-        All elements of paint: SkPathEffect, SkMaskFilter, SkShader,
-        SkColorFilter, and SkImageFilter; apply to text. By
-        default, draws filled black glyphs.
-
-        @param str     character code points drawn,
-                       ending with a char value of zero
-        @param x       start of string on x-axis
-        @param y       start of string on y-axis
-        @param font    typeface, text size and so, used to describe the text
-        @param paint   blend, color, and so on, used to draw
-    */
-    void drawString(const SkString& str, SkScalar x, SkScalar y, const SkFont& font,
-                    const SkPaint& paint) {
-        this->drawSimpleText(str.c_str(), str.size(), SkTextEncoding::kUTF8, x, y, font, paint);
-    }
-
-    /** Draws count glyphs, at positions relative to origin styled with font and paint with
-        supporting utf8 and cluster information.
-
-       This function draw glyphs at the given positions relative to the given origin.
-       It does not perform typeface fallback for glyphs not found in the SkTypeface in font.
-
-       The drawing obeys the current transform matrix and clipping.
-
-       All elements of paint: SkPathEffect, SkMaskFilter, SkShader,
-       SkColorFilter, and SkImageFilter; apply to text. By
-       default, draws filled black glyphs.
-
-       @param count           number of glyphs to draw
-       @param glyphs          the array of glyphIDs to draw
-       @param positions       where to draw each glyph relative to origin
-       @param clusters        array of size count of cluster information
-       @param textByteCount   size of the utf8text
-       @param utf8text        utf8text supporting information for the glyphs
-       @param origin          the origin of all the positions
-       @param font            typeface, text size and so, used to describe the text
-       @param paint           blend, color, and so on, used to draw
-    */
-    void drawGlyphs(int count, const SkGlyphID glyphs[], const SkPoint positions[],
-                    const uint32_t clusters[], int textByteCount, const char utf8text[],
-                    SkPoint origin, const SkFont& font, const SkPaint& paint);
-
-    /** Draws count glyphs, at positions relative to origin styled with font and paint.
-
-        This function draw glyphs at the given positions relative to the given origin.
-        It does not perform typeface fallback for glyphs not found in the SkTypeface in font.
-
-        The drawing obeys the current transform matrix and clipping.
-
-        All elements of paint: SkPathEffect, SkMaskFilter, SkShader,
-        SkColorFilter, and SkImageFilter; apply to text. By
-        default, draws filled black glyphs.
-
-        @param count       number of glyphs to draw
-        @param glyphs      the array of glyphIDs to draw
-        @param positions   where to draw each glyph relative to origin
-        @param origin      the origin of all the positions
-        @param font        typeface, text size and so, used to describe the text
-        @param paint       blend, color, and so on, used to draw
-    */
-    void drawGlyphs(int count, const SkGlyphID glyphs[], const SkPoint positions[],
-                    SkPoint origin, const SkFont& font, const SkPaint& paint);
-
-    /** Draws count glyphs, at positions relative to origin styled with font and paint.
-
-        This function draw glyphs using the given scaling and rotations. They are positioned
-        relative to the given origin. It does not perform typeface fallback for glyphs not found
-        in the SkTypeface in font.
-
-        The drawing obeys the current transform matrix and clipping.
-
-        All elements of paint: SkPathEffect, SkMaskFilter, SkShader,
-        SkColorFilter, and SkImageFilter; apply to text. By
-        default, draws filled black glyphs.
-
-        @param count    number of glyphs to draw
-        @param glyphs   the array of glyphIDs to draw
-        @param xforms   where to draw and orient each glyph
-        @param origin   the origin of all the positions
-        @param font     typeface, text size and so, used to describe the text
-        @param paint    blend, color, and so on, used to draw
-    */
-    void drawGlyphs(int count, const SkGlyphID glyphs[], const SkRSXform xforms[],
-                    SkPoint origin, const SkFont& font, const SkPaint& paint);
-
-    /** Draws SkTextBlob blob at (x, y), using clip, SkMatrix, and SkPaint paint.
-
-        blob contains glyphs, their positions, and paint attributes specific to text:
-        SkTypeface, SkPaint text size, SkPaint text scale x,
-        SkPaint text skew x, SkPaint::Align, SkPaint::Hinting, anti-alias, SkPaint fake bold,
-        SkPaint font embedded bitmaps, SkPaint full hinting spacing, LCD text, SkPaint linear text,
-        and SkPaint subpixel text.
-
-        SkTextEncoding must be set to SkTextEncoding::kGlyphID.
-
-        Elements of paint: anti-alias, SkBlendMode, color including alpha,
-        SkColorFilter, SkPaint dither, SkMaskFilter, SkPathEffect, SkShader, and
-        SkPaint::Style; apply to blob. If SkPaint contains SkPaint::kStroke_Style:
-        SkPaint miter limit, SkPaint::Cap, SkPaint::Join, and SkPaint stroke width;
-        apply to SkPath created from blob.
-
-        @param blob   glyphs, positions, and their paints' text size, typeface, and so on
-        @param x      horizontal offset applied to blob
-        @param y      vertical offset applied to blob
-        @param paint  blend, color, stroking, and so on, used to draw
-
-        example: https://fiddle.skia.org/c/@Canvas_drawTextBlob
-    */
-    void drawTextBlob(const SkTextBlob* blob, SkScalar x, SkScalar y, const SkPaint& paint);
-
-    /** Draws SkTextBlob blob at (x, y), using clip, SkMatrix, and SkPaint paint.
-
-        blob contains glyphs, their positions, and paint attributes specific to text:
-        SkTypeface, SkPaint text size, SkPaint text scale x,
-        SkPaint text skew x, SkPaint::Align, SkPaint::Hinting, anti-alias, SkPaint fake bold,
-        SkPaint font embedded bitmaps, SkPaint full hinting spacing, LCD text, SkPaint linear text,
-        and SkPaint subpixel text.
-
-        SkTextEncoding must be set to SkTextEncoding::kGlyphID.
-
-        Elements of paint: SkPathEffect, SkMaskFilter, SkShader, SkColorFilter,
-        and SkImageFilter; apply to blob.
-
-        @param blob   glyphs, positions, and their paints' text size, typeface, and so on
-        @param x      horizontal offset applied to blob
-        @param y      vertical offset applied to blob
-        @param paint  blend, color, stroking, and so on, used to draw
-    */
-    void drawTextBlob(const sk_sp<SkTextBlob>& blob, SkScalar x, SkScalar y, const SkPaint& paint) {
-        this->drawTextBlob(blob.get(), x, y, paint);
-    }
-
     /** Draws SkPicture picture, using clip and SkMatrix.
         Clip and SkMatrix are unchanged by picture contents, as if
         save() was called before and restore() was called after drawPicture().
@@ -2217,11 +2008,6 @@ protected:
     virtual void onDrawPath(const SkPath& path, const SkPaint& paint);
     virtual void onDrawRegion(const SkRegion& region, const SkPaint& paint);
 
-    virtual void onDrawTextBlob(const SkTextBlob* blob, SkScalar x, SkScalar y,
-                                const SkPaint& paint);
-
-    virtual void onDrawGlyphRunList(const SkGlyphRunList& glyphRunList, const SkPaint& paint);
-
     virtual void onDrawPatch(const SkPoint cubics[12], const SkColor colors[4],
                            const SkPoint texCoords[4], SkBlendMode mode, const SkPaint& paint);
     virtual void onDrawPoints(PointMode mode, size_t count, const SkPoint pts[],
@@ -2269,17 +2055,6 @@ protected:
     virtual void onResetClip();
 
     virtual void onDiscard();
-
-#if SK_SUPPORT_GPU
-    /** Experimental
-     */
-    virtual sk_sp<GrSlug> onConvertGlyphRunListToSlug(
-            const SkGlyphRunList& glyphRunList, const SkPaint& paint);
-
-    /** Experimental
-     */
-    virtual void onDrawSlug(const GrSlug* slug);
-#endif
 
 private:
 
@@ -2420,19 +2195,6 @@ private:
     SkCanvas& operator=(SkCanvas&&) = delete;
     SkCanvas& operator=(const SkCanvas&) = delete;
 
-#if SK_SUPPORT_GPU
-    friend class GrSlug;
-    /** Experimental
-     * Convert a SkTextBlob to a GrSlug using the current canvas state.
-     */
-    sk_sp<GrSlug> convertBlobToSlug(const SkTextBlob& blob, SkPoint origin, const SkPaint& paint);
-
-    /** Experimental
-     * Draw an GrSlug given the current canvas state.
-     */
-    void drawSlug(const GrSlug* slug);
-#endif
-
     /** Experimental
      *  Saves the specified subset of the current pixels in the current layer,
      *  and then clears those pixels to transparent black.
@@ -2533,8 +2295,6 @@ private:
 
     class AutoUpdateQRBounds;
     void validateClip() const;
-
-    std::unique_ptr<SkGlyphRunBuilder> fScratchGlyphRunBuilder;
 
     using INHERITED = SkRefCnt;
 };

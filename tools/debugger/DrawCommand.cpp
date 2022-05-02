@@ -14,7 +14,6 @@
 #include "include/core/SkColorType.h"
 #include "include/core/SkDrawable.h"
 #include "include/core/SkFlattenable.h"
-#include "include/core/SkFont.h"
 #include "include/core/SkFontTypes.h"
 #include "include/core/SkImageFilter.h"
 #include "include/core/SkImageInfo.h"
@@ -28,7 +27,6 @@
 #include "include/core/SkSamplingOptions.h"
 #include "include/core/SkSize.h"
 #include "include/core/SkStream.h"
-#include "include/core/SkTypeface.h"
 #include "include/encode/SkPngEncoder.h"
 #include "include/private/SkMalloc.h"
 #include "include/private/SkShadowFlags.h"
@@ -38,7 +36,6 @@
 #include "src/core/SkMaskFilterBase.h"
 #include "src/core/SkPaintDefaults.h"
 #include "src/core/SkRectPriv.h"
-#include "src/core/SkTextBlobPriv.h"
 #include "src/core/SkWriteBuffer.h"
 #include "src/image/SkImage_Base.h"
 #include "src/utils/SkJSONWriter.h"
@@ -734,40 +731,6 @@ bool DrawCommand::flatten(const SkBitmap& bitmap,
     return success;
 }
 
-static void apply_font_hinting(const SkFont& font, SkJSONWriter& writer) {
-    SkFontHinting hinting = font.getHinting();
-    if (hinting != SkPaintDefaults_Hinting) {
-        switch (hinting) {
-            case SkFontHinting::kNone:
-                writer.appendString(DEBUGCANVAS_ATTRIBUTE_HINTING, DEBUGCANVAS_HINTING_NONE);
-                break;
-            case SkFontHinting::kSlight:
-                writer.appendString(DEBUGCANVAS_ATTRIBUTE_HINTING, DEBUGCANVAS_HINTING_SLIGHT);
-                break;
-            case SkFontHinting::kNormal:
-                writer.appendString(DEBUGCANVAS_ATTRIBUTE_HINTING, DEBUGCANVAS_HINTING_NORMAL);
-                break;
-            case SkFontHinting::kFull:
-                writer.appendString(DEBUGCANVAS_ATTRIBUTE_HINTING, DEBUGCANVAS_HINTING_FULL);
-                break;
-        }
-    }
-}
-
-static void apply_font_edging(const SkFont& font, SkJSONWriter& writer) {
-    switch (font.getEdging()) {
-        case SkFont::Edging::kAlias:
-            writer.appendString(DEBUGCANVAS_ATTRIBUTE_EDGING, DEBUGCANVAS_EDGING_ALIAS);
-            break;
-        case SkFont::Edging::kAntiAlias:
-            writer.appendString(DEBUGCANVAS_ATTRIBUTE_EDGING, DEBUGCANVAS_EDGING_ANTIALIAS);
-            break;
-        case SkFont::Edging::kSubpixelAntiAlias:
-            writer.appendString(DEBUGCANVAS_ATTRIBUTE_EDGING, DEBUGCANVAS_EDGING_SUBPIXELANTIALIAS);
-            break;
-    }
-}
-
 static void apply_paint_color(const SkPaint& paint, SkJSONWriter& writer) {
     SkColor color = paint.getColor();
     if (color != SK_ColorBLACK) {
@@ -889,24 +852,6 @@ static void apply_paint_patheffect(const SkPaint&  paint,
     }
 }
 
-static void apply_font_typeface(const SkFont&   font,
-                                SkJSONWriter&   writer,
-                                UrlDataManager& urlDataManager) {
-    SkTypeface* typeface = font.getTypefaceOrDefault();
-    if (typeface != nullptr) {
-        writer.beginObject(DEBUGCANVAS_ATTRIBUTE_TYPEFACE);
-        SkDynamicMemoryWStream buffer;
-        typeface->serialize(&buffer);
-        void* data = sk_malloc_throw(buffer.bytesWritten());
-        buffer.copyTo(data);
-        SkString url = encode_data(
-                data, buffer.bytesWritten(), "application/octet-stream", urlDataManager);
-        writer.appendString(DEBUGCANVAS_ATTRIBUTE_DATA, url.c_str());
-        sk_free(data);
-        writer.endObject();
-    }
-}
-
 static void apply_flattenable(const char*     key,
                               SkFlattenable*  flattenable,
                               SkJSONWriter&   writer,
@@ -943,23 +888,6 @@ void DrawCommand::MakeJsonPaint(SkJSONWriter&   writer,
     apply_flattenable(
             DEBUGCANVAS_ATTRIBUTE_COLORFILTER, paint.getColorFilter(), writer, urlDataManager);
     writer.endObject();  // paint
-}
-
-static void MakeJsonFont(const SkFont& font, SkJSONWriter& writer, UrlDataManager& urlDataManager) {
-    writer.beginObject();
-    store_bool(writer, DEBUGCANVAS_ATTRIBUTE_FAKEBOLDTEXT, font.isEmbolden(), false);
-    store_bool(writer, DEBUGCANVAS_ATTRIBUTE_LINEARTEXT, font.isLinearMetrics(), false);
-    store_bool(writer, DEBUGCANVAS_ATTRIBUTE_SUBPIXELTEXT, font.isSubpixel(), false);
-    store_bool(writer, DEBUGCANVAS_ATTRIBUTE_EMBEDDEDBITMAPTEXT, font.isEmbeddedBitmaps(), false);
-    store_bool(writer, DEBUGCANVAS_ATTRIBUTE_AUTOHINTING, font.isForceAutoHinting(), false);
-
-    store_scalar(writer, DEBUGCANVAS_ATTRIBUTE_TEXTSIZE, font.getSize(), SkPaintDefaults_TextSize);
-    store_scalar(writer, DEBUGCANVAS_ATTRIBUTE_TEXTSCALEX, font.getScaleX(), SK_Scalar1);
-    store_scalar(writer, DEBUGCANVAS_ATTRIBUTE_TEXTSCALEX, font.getSkewX(), 0.0f);
-    apply_font_edging(font, writer);
-    apply_font_hinting(font, writer);
-    apply_font_typeface(font, writer, urlDataManager);
-    writer.endObject();  // font
 }
 
 void DrawCommand::MakeJsonLattice(SkJSONWriter& writer, const SkCanvas::Lattice& lattice) {
@@ -1654,87 +1582,6 @@ void DrawPointsCommand::toJSON(SkJSONWriter& writer, UrlDataManager& urlDataMana
     writer.endArray();  // points
     writer.appendName(DEBUGCANVAS_ATTRIBUTE_PAINT);
     MakeJsonPaint(writer, fPaint, urlDataManager);
-}
-
-DrawTextBlobCommand::DrawTextBlobCommand(sk_sp<SkTextBlob> blob,
-                                         SkScalar          x,
-                                         SkScalar          y,
-                                         const SkPaint&    paint)
-        : INHERITED(kDrawTextBlob_OpType)
-        , fBlob(std::move(blob))
-        , fXPos(x)
-        , fYPos(y)
-        , fPaint(paint) {}
-
-void DrawTextBlobCommand::execute(SkCanvas* canvas) const {
-    canvas->drawTextBlob(fBlob, fXPos, fYPos, fPaint);
-}
-
-bool DrawTextBlobCommand::render(SkCanvas* canvas) const {
-    canvas->clear(SK_ColorWHITE);
-    canvas->save();
-
-    SkRect bounds = fBlob->bounds().makeOffset(fXPos, fYPos);
-    xlate_and_scale_to_bounds(canvas, bounds);
-
-    canvas->drawTextBlob(fBlob, fXPos, fYPos, fPaint);
-
-    canvas->restore();
-
-    return true;
-}
-
-void DrawTextBlobCommand::toJSON(SkJSONWriter& writer, UrlDataManager& urlDataManager) const {
-    INHERITED::toJSON(writer, urlDataManager);
-    writer.beginArray(DEBUGCANVAS_ATTRIBUTE_RUNS);
-    SkTextBlobRunIterator iter(fBlob.get());
-    while (!iter.done()) {
-        writer.beginObject();  // run
-        writer.beginArray(DEBUGCANVAS_ATTRIBUTE_GLYPHS);
-        for (uint32_t i = 0; i < iter.glyphCount(); i++) {
-            writer.appendU32(iter.glyphs()[i]);
-        }
-        writer.endArray();  // glyphs
-        if (iter.positioning() != SkTextBlobRunIterator::kDefault_Positioning) {
-            writer.beginArray(DEBUGCANVAS_ATTRIBUTE_POSITIONS);
-            const SkScalar* iterPositions = iter.pos();
-            for (uint32_t i = 0; i < iter.glyphCount(); i++) {
-                switch (iter.positioning()) {
-                    case SkTextBlobRunIterator::kFull_Positioning:
-                        MakeJsonPoint(writer, iterPositions[i * 2], iterPositions[i * 2 + 1]);
-                        break;
-                    case SkTextBlobRunIterator::kHorizontal_Positioning:
-                        writer.appendFloat(iterPositions[i]);
-                        break;
-                    case SkTextBlobRunIterator::kDefault_Positioning: break;
-                    case SkTextBlobRunIterator::kRSXform_Positioning:
-                        // TODO_RSXFORM_BLOB
-                        break;
-                }
-            }
-            writer.endArray();  // positions
-        }
-        writer.appendName(DEBUGCANVAS_ATTRIBUTE_FONT);
-        MakeJsonFont(iter.font(), writer, urlDataManager);
-        writer.appendName(DEBUGCANVAS_ATTRIBUTE_COORDS);
-        MakeJsonPoint(writer, iter.offset());
-
-        writer.endObject();  // run
-        iter.next();
-    }
-    writer.endArray();  // runs
-    writer.appendFloat(DEBUGCANVAS_ATTRIBUTE_X, fXPos);
-    writer.appendFloat(DEBUGCANVAS_ATTRIBUTE_Y, fYPos);
-    SkRect bounds = fBlob->bounds();
-    writer.appendName(DEBUGCANVAS_ATTRIBUTE_COORDS);
-    MakeJsonRect(writer, bounds);
-    writer.appendName(DEBUGCANVAS_ATTRIBUTE_PAINT);
-    MakeJsonPaint(writer, fPaint, urlDataManager);
-
-    SkString desc;
-    // make the bounds local by applying the x,y
-    bounds.offset(fXPos, fYPos);
-    writer.appendString(DEBUGCANVAS_ATTRIBUTE_SHORTDESC, str_append(&desc, bounds)->c_str());
 }
 
 DrawPatchCommand::DrawPatchCommand(const SkPoint  cubics[12],

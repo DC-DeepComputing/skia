@@ -7,13 +7,10 @@
 
 #include "include/core/SkCanvas.h"
 #include "include/core/SkRSXform.h"
-#include "include/core/SkTextBlob.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkTDArray.h"
-#include "include/private/chromium/GrSlug.h"
 #include "src/core/SkCanvasPriv.h"
 #include "src/core/SkDrawShadowInfo.h"
-#include "src/core/SkFontPriv.h"
 #include "src/core/SkPaintPriv.h"
 #include "src/core/SkPictureData.h"
 #include "src/core/SkPictureFlat.h"
@@ -596,21 +593,8 @@ void SkPicturePlayback::handleOp(SkReadBuffer* reader,
             canvas->private_draw_shadow_rec(path, rec);
         } break;
         case DRAW_TEXT_BLOB: {
-            const SkPaint& paint = fPictureData->requiredPaint(reader);
-            const SkTextBlob* blob = fPictureData->getTextBlob(reader);
-            SkScalar x = reader->readScalar();
-            SkScalar y = reader->readScalar();
-            BREAK_ON_READ_ERROR(reader);
-
-            canvas->drawTextBlob(blob, x, y, paint);
         } break;
         case DRAW_SLUG: {
-#if SK_SUPPORT_GPU
-            const GrSlug* slug = fPictureData->getSlug(reader);
-            BREAK_ON_READ_ERROR(reader);
-
-            slug->draw(canvas);
-#endif
         } break;
         case DRAW_VERTICES_OBJECT: {
             const SkPaint& paint = fPictureData->requiredPaint(reader);

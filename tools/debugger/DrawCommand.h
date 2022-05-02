@@ -30,7 +30,6 @@
 #include "include/core/SkScalar.h"
 #include "include/core/SkShader.h"
 #include "include/core/SkString.h"
-#include "include/core/SkTextBlob.h"
 #include "include/core/SkTypes.h"
 #include "include/core/SkVertices.h"
 #include "include/private/SkTDArray.h"
@@ -508,23 +507,6 @@ public:
 private:
     SkRegion fRegion;
     SkPaint  fPaint;
-
-    using INHERITED = DrawCommand;
-};
-
-class DrawTextBlobCommand : public DrawCommand {
-public:
-    DrawTextBlobCommand(sk_sp<SkTextBlob> blob, SkScalar x, SkScalar y, const SkPaint& paint);
-
-    void execute(SkCanvas* canvas) const override;
-    bool render(SkCanvas* canvas) const override;
-    void toJSON(SkJSONWriter& writer, UrlDataManager& urlDataManager) const override;
-
-private:
-    sk_sp<SkTextBlob> fBlob;
-    SkScalar          fXPos;
-    SkScalar          fYPos;
-    SkPaint           fPaint;
 
     using INHERITED = DrawCommand;
 };

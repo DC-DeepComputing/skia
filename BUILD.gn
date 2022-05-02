@@ -368,216 +368,6 @@ optional("android_utils") {
   ]
 }
 
-group("fontmgr_factory") {
-  public_deps = [ skia_fontmgr_factory ]
-}
-
-optional("fontmgr_empty_factory") {
-  enabled = true
-  sources = [ "src/ports/SkFontMgr_empty_factory.cpp" ]
-}
-
-optional("fontmgr_android") {
-  enabled = skia_enable_fontmgr_android
-
-  deps = [
-    ":typeface_freetype",
-    "//third_party/expat",
-  ]
-  public = [ "include/ports/SkFontMgr_android.h" ]
-  sources = [
-    "src/ports/SkFontMgr_android.cpp",
-    "src/ports/SkFontMgr_android_parser.cpp",
-    "src/ports/SkFontMgr_android_parser.h",
-  ]
-  sources_for_tests = [ "tests/FontMgrAndroidParserTest.cpp" ]
-}
-optional("fontmgr_android_factory") {
-  enabled = skia_enable_fontmgr_android
-  deps = [ ":fontmgr_android" ]
-  sources = [ "src/ports/SkFontMgr_android_factory.cpp" ]
-}
-
-optional("fontmgr_custom") {
-  enabled =
-      skia_enable_fontmgr_custom_directory ||
-      skia_enable_fontmgr_custom_embedded || skia_enable_fontmgr_custom_empty
-
-  deps = [ ":typeface_freetype" ]
-  public = [ "src/ports/SkFontMgr_custom.h" ]
-  sources = [ "src/ports/SkFontMgr_custom.cpp" ]
-}
-
-optional("fontmgr_custom_directory") {
-  enabled = skia_enable_fontmgr_custom_directory
-
-  deps = [
-    ":fontmgr_custom",
-    ":typeface_freetype",
-  ]
-  public = [ "include/ports/SkFontMgr_directory.h" ]
-  sources = [ "src/ports/SkFontMgr_custom_directory.cpp" ]
-}
-optional("fontmgr_custom_directory_factory") {
-  enabled = skia_enable_fontmgr_custom_directory
-  deps = [ ":fontmgr_custom_directory" ]
-  sources = [ "src/ports/SkFontMgr_custom_directory_factory.cpp" ]
-}
-
-optional("fontmgr_custom_embedded") {
-  enabled = skia_enable_fontmgr_custom_embedded
-
-  deps = [
-    ":fontmgr_custom",
-    ":typeface_freetype",
-  ]
-  sources = [ "src/ports/SkFontMgr_custom_embedded.cpp" ]
-}
-optional("fontmgr_custom_embedded_factory") {
-  enabled = skia_enable_fontmgr_custom_embedded
-  deps = [ ":fontmgr_custom_embedded" ]
-  sources = [ "src/ports/SkFontMgr_custom_embedded_factory.cpp" ]
-}
-
-optional("fontmgr_custom_empty") {
-  enabled = skia_enable_fontmgr_custom_empty
-
-  deps = [
-    ":fontmgr_custom",
-    ":typeface_freetype",
-  ]
-  public = [ "include/ports/SkFontMgr_empty.h" ]
-  sources = [ "src/ports/SkFontMgr_custom_empty.cpp" ]
-}
-optional("fontmgr_custom_empty_factory") {
-  enabled = skia_enable_fontmgr_custom_empty
-  deps = [ ":fontmgr_custom_empty" ]
-  sources = [ "src/ports/SkFontMgr_custom_empty_factory.cpp" ]
-}
-
-optional("fontmgr_fontconfig") {
-  enabled = skia_enable_fontmgr_fontconfig
-
-  # The public header includes fontconfig.h and uses FcConfig*
-  public_deps = [ "//third_party:fontconfig" ]
-  public = [ "include/ports/SkFontMgr_fontconfig.h" ]
-  deps = [ ":typeface_freetype" ]
-  sources = [ "src/ports/SkFontMgr_fontconfig.cpp" ]
-  sources_for_tests = [ "tests/FontMgrFontConfigTest.cpp" ]
-}
-optional("fontmgr_fontconfig_factory") {
-  enabled = skia_enable_fontmgr_fontconfig
-  deps = [ ":fontmgr_fontconfig" ]
-  sources = [ "src/ports/SkFontMgr_fontconfig_factory.cpp" ]
-}
-
-optional("fontmgr_FontConfigInterface") {
-  enabled = skia_enable_fontmgr_FontConfigInterface
-
-  deps = [
-    ":typeface_freetype",
-    "//third_party:fontconfig",
-  ]
-  public = [
-    "include/ports/SkFontConfigInterface.h",
-    "include/ports/SkFontMgr_FontConfigInterface.h",
-  ]
-  sources = [
-    "src/ports/SkFontConfigInterface.cpp",
-    "src/ports/SkFontConfigInterface_direct.cpp",
-    "src/ports/SkFontConfigInterface_direct_factory.cpp",
-    "src/ports/SkFontConfigTypeface.h",
-    "src/ports/SkFontMgr_FontConfigInterface.cpp",
-  ]
-}
-optional("fontmgr_FontConfigInterface_factory") {
-  enabled = skia_enable_fontmgr_FontConfigInterface
-  deps = [ ":fontmgr_FontConfigInterface" ]
-  sources = [ "src/ports/SkFontMgr_FontConfigInterface_factory.cpp" ]
-}
-
-optional("fontmgr_fuchsia") {
-  enabled = skia_enable_fontmgr_fuchsia
-
-  deps = []
-
-  if (is_fuchsia && using_fuchsia_sdk) {
-    deps += [ "//build/fuchsia/fidl:fuchsia.fonts" ]
-  } else {
-    deps = [ "//sdk/fidl/fuchsia.fonts" ]
-  }
-  public = [ "src/ports/SkFontMgr_fuchsia.h" ]
-  sources = [ "src/ports/SkFontMgr_fuchsia.cpp" ]
-}
-
-optional("fontmgr_mac_ct") {
-  enabled = skia_use_fonthost_mac
-
-  public = [
-    "include/ports/SkFontMgr_mac_ct.h",
-    "include/ports/SkTypeface_mac.h",
-  ]
-  sources = [
-    "src/ports/SkFontMgr_mac_ct.cpp",
-    "src/ports/SkScalerContext_mac_ct.cpp",
-    "src/ports/SkScalerContext_mac_ct.h",
-    "src/ports/SkTypeface_mac_ct.cpp",
-    "src/ports/SkTypeface_mac_ct.h",
-  ]
-  sources_for_tests = [ "tests/TypefaceMacTest.cpp" ]
-
-  if (is_mac) {
-    frameworks = [
-      # AppKit symbols NSFontWeightXXX may be dlsym'ed.
-      "AppKit.framework",
-      "ApplicationServices.framework",
-    ]
-  }
-
-  if (is_ios) {
-    frameworks = [
-      "CoreFoundation.framework",
-      "CoreGraphics.framework",
-      "CoreText.framework",
-
-      # UIKit symbols UIFontWeightXXX may be dlsym'ed.
-      "UIKit.framework",
-    ]
-  }
-}
-optional("fontmgr_mac_ct_factory") {
-  enabled = skia_use_fonthost_mac
-  deps = [ ":fontmgr_mac_ct" ]
-  sources = [ "src/ports/SkFontMgr_mac_ct_factory.cpp" ]
-}
-
-optional("fontmgr_win") {
-  enabled = skia_enable_fontmgr_win
-
-  public = [ "include/ports/SkTypeface_win.h" ]
-  sources = [
-    "src/fonts/SkFontMgr_indirect.cpp",
-    "src/ports/SkFontMgr_win_dw.cpp",
-    "src/ports/SkScalerContext_win_dw.cpp",
-    "src/ports/SkScalerContext_win_dw.h",
-    "src/ports/SkTypeface_win_dw.cpp",
-    "src/ports/SkTypeface_win_dw.h",
-  ]
-}
-optional("fontmgr_win_factory") {
-  enabled = skia_enable_fontmgr_win
-  deps = [ ":fontmgr_win" ]
-  sources = [ "src/ports/SkFontMgr_win_dw_factory.cpp" ]
-}
-
-optional("fontmgr_win_gdi") {
-  enabled = skia_enable_fontmgr_win_gdi
-
-  public = [ "include/ports/SkTypeface_win.h" ]
-  sources = [ "src/ports/SkFontHost_win.cpp" ]
-  libs = [ "Gdi32.lib" ]
-}
-
 if (skia_lex) {
   skia_executable("sksllex") {
     sources = [
@@ -1136,13 +926,13 @@ optional("pdf") {
   public = skia_pdf_public
   sources = skia_pdf_sources
   sources_when_disabled = [ "src/pdf/SkDocument_PDF_None.cpp" ]
-  if (skia_use_icu && skia_use_harfbuzz && skia_pdf_subset_harfbuzz) {
-    deps += [ "//third_party/harfbuzz" ]
-    defines = [ "SK_PDF_USE_HARFBUZZ_SUBSET" ]
-  } else if (skia_use_icu && skia_use_sfntly) {
-    deps += [ "//third_party/sfntly" ]
-    defines = [ "SK_PDF_USE_SFNTLY" ]
-  }
+  #if (skia_use_icu && skia_use_harfbuzz && skia_pdf_subset_harfbuzz) {
+  #  deps += [ "//third_party/harfbuzz" ]
+  #  defines = [ "SK_PDF_USE_HARFBUZZ_SUBSET" ]
+  #} else if (skia_use_icu && skia_use_sfntly) {
+  #  deps += [ "//third_party/sfntly" ]
+  #  defines = [ "SK_PDF_USE_SFNTLY" ]
+  #}
 }
 
 optional("xps") {
@@ -1290,16 +1080,16 @@ skia_component("skia") {
   configs = skia_library_configs
 
   public_deps = [
-    ":fontmgr_FontConfigInterface",
-    ":fontmgr_android",
-    ":fontmgr_custom_directory",
-    ":fontmgr_custom_embedded",
-    ":fontmgr_custom_empty",
-    ":fontmgr_fontconfig",
-    ":fontmgr_fuchsia",
-    ":fontmgr_mac_ct",
-    ":fontmgr_win",
-    ":fontmgr_win_gdi",
+    #":fontmgr_FontConfigInterface",
+    #":fontmgr_android",
+    #":fontmgr_custom_directory",
+    #":fontmgr_custom_embedded",
+    #":fontmgr_custom_empty",
+    #":fontmgr_fontconfig",
+    #":fontmgr_fuchsia",
+    #":fontmgr_mac_ct",
+    #":fontmgr_win",
+    #":fontmgr_win_gdi",
     ":gpu",
     ":graphite",
     ":pdf",
@@ -1313,7 +1103,7 @@ skia_component("skia") {
     ":armv7",
     ":avx",
     ":crc32",
-    ":fontmgr_factory",
+    #":fontmgr_factory",
     ":gif",
     ":heif",
     ":hsw",
@@ -1375,8 +1165,8 @@ skia_component("skia") {
     "src/ports/SkImageGenerator_skia.cpp",
     "src/ports/SkMemory_malloc.cpp",
     "src/ports/SkOSFile_stdio.cpp",
-    "src/sfnt/SkOTTable_name.cpp",
-    "src/sfnt/SkOTUtils.cpp",
+    #"src/sfnt/SkOTTable_name.cpp",
+    #"src/sfnt/SkOTUtils.cpp",
   ]
 
   defines = [ "SK_HAS_ANDROID_CODEC" ]
@@ -1926,10 +1716,10 @@ if (skia_enable_tools) {
     sources = [ "tools/flags/CommonFlagsImages.cpp" ]
     deps = [ ":flags" ]
   }
-  test_lib("common_flags_fontmgr") {
-    sources = [ "tools/flags/CommonFlagsFontMgr.cpp" ]
-    deps = [ ":flags" ]
-  }
+#  test_lib("common_flags_fontmgr") {
+#    sources = [ "tools/flags/CommonFlagsFontMgr.cpp" ]
+#    deps = [ ":flags" ]
+#  }
   test_lib("common_flags_aa") {
     sources = [ "tools/flags/CommonFlagsAA.cpp" ]
     deps = [ ":flags" ]
@@ -2108,9 +1898,9 @@ if (skia_enable_tools) {
     }
     deps = [
       ":flags",
-      ":fontmgr_android_tests",
-      ":fontmgr_fontconfig_tests",
-      ":fontmgr_mac_ct_tests",
+      #":fontmgr_android_tests",
+      #":fontmgr_fontconfig_tests",
+      #":fontmgr_mac_ct_tests",
       ":skia",
       ":test",
       ":tool_utils",
@@ -2206,7 +1996,7 @@ if (skia_enable_tools) {
       ]
       deps = [
         ":common_flags_aa",
-        ":common_flags_fontmgr",
+        #":common_flags_fontmgr",
         ":common_flags_gpu",
         ":flags",
         ":gm",
@@ -2233,7 +2023,7 @@ if (skia_enable_tools) {
       deps = [
         ":common_flags_aa",
         ":common_flags_config",
-        ":common_flags_fontmgr",
+        #":common_flags_fontmgr",
         ":common_flags_gpu",
         ":common_flags_images",
         ":flags",
@@ -2454,7 +2244,7 @@ if (skia_enable_tools) {
       "fuzz/oss_fuzz/FuzzSkDescriptorDeserialize.cpp",
       "fuzz/oss_fuzz/FuzzSkParagraph.cpp",
       "fuzz/oss_fuzz/FuzzSkRuntimeEffect.cpp",
-      "fuzz/oss_fuzz/FuzzTextBlobDeserialize.cpp",
+      #"fuzz/oss_fuzz/FuzzTextBlobDeserialize.cpp",
       "tools/UrlDataManager.cpp",
       "tools/debugger/DebugCanvas.cpp",
       "tools/debugger/DebugLayerManager.cpp",
@@ -2844,7 +2634,7 @@ if (skia_enable_tools) {
       libs = []
 
       deps = [
-        ":common_flags_fontmgr",
+        #":common_flags_fontmgr",
         ":common_flags_gpu",
         ":flags",
         ":gm",
@@ -2994,20 +2784,20 @@ if (skia_enable_tools) {
       deps = []
     }
 
-    libfuzzer_app("textblob_deserialize") {
-      include_dirs = [
-        "tools",
-        "tools/fonts",
-      ]
-      sources = [
-        "fuzz/oss_fuzz/FuzzTextBlobDeserialize.cpp",
-        "tools/Resources.cpp",
-        "tools/fonts/TestFontMgr.cpp",
-        "tools/fonts/TestSVGTypeface.cpp",
-        "tools/fonts/TestTypeface.cpp",
-      ]
-      deps = [ "modules/svg" ]
-    }
+#    libfuzzer_app("textblob_deserialize") {
+#      include_dirs = [
+#        "tools",
+#        "tools/fonts",
+#      ]
+#      sources = [
+#        "fuzz/oss_fuzz/FuzzTextBlobDeserialize.cpp",
+#        "tools/Resources.cpp",
+#        "tools/fonts/TestFontMgr.cpp",
+#        "tools/fonts/TestSVGTypeface.cpp",
+#        "tools/fonts/TestTypeface.cpp",
+#      ]
+#      deps = [ "modules/svg" ]
+#    }
 
     libfuzzer_app("path_deserialize") {
       sources = [ "fuzz/oss_fuzz/FuzzPathDeserialize.cpp" ]
