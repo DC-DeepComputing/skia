@@ -15,6 +15,12 @@
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "src/core/SkSLTypeShared.h"
 
+#if SK_SUPPORT_GPU
+#include "include/gpu/GrDirectContext.h"
+#include "src/gpu/ganesh/GrClientBufferManager.h"
+#include "src/gpu/ganesh/GrGpuBuffer.h"
+#endif
+
 struct SkCustomMeshSpecificationPriv {
     using Varying   = SkCustomMeshSpecification::Varying;
     using Attribute = SkCustomMeshSpecification::Attribute;
@@ -85,16 +91,17 @@ struct SkCustomMeshPriv {
     class Buffer {
     public:
         virtual ~Buffer() = default;
-        virtual sk_sp<const SkData> asData() const = 0;
+        virtual sk_sp<const SkData> asData() const { return nullptr; }
+        virtual sk_sp<const GrGpuBuffer> asGpuBuffer() const { return nullptr; }
         virtual size_t size() const = 0;
     };
 
-    class IB : public Buffer, public SkCustomMesh::IndexBuffer  {};
+    class IB : public Buffer, public SkCustomMesh::IndexBuffer {};
     class VB : public Buffer, public SkCustomMesh::VertexBuffer {};
 
     template <typename Base> class CpuBuffer : public Base {
     public:
-        CpuBuffer()           = default;
+        CpuBuffer() = default;
         ~CpuBuffer() override = default;
 
         static sk_sp<Base> Make(sk_sp<const SkData> data);
@@ -109,6 +116,27 @@ struct SkCustomMeshPriv {
 
     using CpuIndexBuffer  = CpuBuffer<IB>;
     using CpuVertexBuffer = CpuBuffer<VB>;
+
+#if SK_SUPPORT_GPU
+    template <typename Base> class GpuBuffer : public Base {
+    public:
+        GpuBuffer() = default;
+        ~GpuBuffer() override;
+
+        static sk_sp<Base> Make(sk_sp<GrGpuBuffer>, GrDirectContext::DirectContextID);
+
+        sk_sp<const GrGpuBuffer> asGpuBuffer() const override { return fBuffer; }
+
+        size_t size() const override { return fBuffer->size(); }
+
+    private:
+        sk_sp<GrGpuBuffer> fBuffer;
+        GrDirectContext::DirectContextID fContextID;
+    };
+
+    using GpuIndexBuffer  = GpuBuffer<IB>;
+    using GpuVertexBuffer = GpuBuffer<VB>;
+#endif  // SK_SUPPORT_GPU
 };
 
 template <typename Base>
@@ -117,6 +145,27 @@ sk_sp<Base> SkCustomMeshPriv::CpuBuffer<Base>::Make(sk_sp<const SkData> data) {
     result->fData = std::move(data);
     return sk_sp<Base>(result);
 }
+#if SK_SUPPORT_GPU
+
+template <typename Base>
+SkCustomMeshPriv::GpuBuffer<Base>::~GpuBuffer()  {
+    GrClientBufferManager::BufferFinishedMessage message(std::move(fBuffer), fContextID);
+}
+
+template <typename Base>
+sk_sp<Base> SkCustomMeshPriv::GpuBuffer<Base>::Make(
+        sk_sp<GrGpuBuffer> buffer,
+        GrDirectContext::DirectContextID contextID) {
+    if (!buffer) {
+        return nullptr;
+    }
+    auto result = new GpuBuffer<Base>;
+    result->fBuffer    = std::move(buffer);
+    result->fContextID = contextID;
+    return sk_sp<Base>(result);
+}
+
+#endif  // SK_SUPPORT_GPU
 
 #endif  // SK_ENABLE_SKSL
 

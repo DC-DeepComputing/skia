@@ -15,7 +15,7 @@
 #include "src/core/SkTaskGroup.h"
 #include "src/core/SkTraceEvent.h"
 #include "src/gpu/ganesh/GrBackendUtils.h"
-#include "src/gpu/ganesh/GrClientMappedBufferManager.h"
+#include "src/gpu/ganesh/GrClientBufferManager.h"
 #include "src/gpu/ganesh/GrContextThreadSafeProxyPriv.h"
 #include "src/gpu/ganesh/GrDirectContextPriv.h"
 #include "src/gpu/ganesh/GrDrawingManager.h"
@@ -102,7 +102,7 @@ GrDirectContext::~GrDirectContext() {
     }
     // This has to be after GrResourceCache::releaseAll so that other threads that are holding
     // async pixel result don't try to destroy buffers off thread.
-    fMappedBufferManager.reset();
+    fClientBufferManager.reset();
 }
 
 sk_sp<GrContextThreadSafeProxy> GrDirectContext::threadSafeProxy() {
@@ -133,7 +133,7 @@ void GrDirectContext::abandonContext() {
 
     fStrikeCache->freeAll();
 
-    fMappedBufferManager->abandon();
+    fClientBufferManager->abandon();
 
     fResourceProvider->abandon();
 
@@ -143,7 +143,7 @@ void GrDirectContext::abandonContext() {
     fGpu->disconnect(GrGpu::DisconnectType::kAbandon);
 
     // Must be after GrResourceCache::abandonAll().
-    fMappedBufferManager.reset();
+    fClientBufferManager.reset();
 
     if (fSmallPathAtlasMgr) {
         fSmallPathAtlasMgr->reset();
@@ -181,7 +181,7 @@ void GrDirectContext::releaseResourcesAndAbandonContext() {
     fResourceCache->releaseAll();
 
     // Must be after GrResourceCache::releaseAll().
-    fMappedBufferManager.reset();
+    fClientBufferManager.reset();
 
     fGpu->disconnect(GrGpu::DisconnectType::kCleanup);
     if (fSmallPathAtlasMgr) {
@@ -239,7 +239,7 @@ bool GrDirectContext::init() {
 #endif
     fResourceProvider = std::make_unique<GrResourceProvider>(fGpu.get(), fResourceCache.get(),
                                                              this->singleOwner());
-    fMappedBufferManager = std::make_unique<GrClientMappedBufferManager>(this->directContextID());
+    fClientBufferManager = std::make_unique<GrClientBufferManager>(this->directContextID());
 
     fDidTestPMConversions = false;
 
@@ -341,7 +341,7 @@ void GrDirectContext::performDeferredCleanup(std::chrono::milliseconds msNotUsed
     }
 
     this->checkAsyncWorkCompletion();
-    fMappedBufferManager->process();
+    fClientBufferManager->process();
     auto purgeTime = GrStdSteadyClock::now() - msNotUsed;
 
     fResourceCache->purgeAsNeeded();

@@ -17,7 +17,7 @@
 
 class GrAtlasManager;
 class GrBackendSemaphore;
-class GrClientMappedBufferManager;
+class GrClientBufferManager;
 class GrDirectContextPriv;
 class GrContextThreadSafeProxy;
 struct GrD3DBackendContext;
@@ -868,7 +868,7 @@ private:
 
     GrContextOptions::PersistentCache*      fPersistentCache;
 
-    std::unique_ptr<GrClientMappedBufferManager> fMappedBufferManager;
+    std::unique_ptr<GrClientBufferManager> fClientBufferManager;
     std::unique_ptr<GrAtlasManager> fAtlasManager;
 
     std::unique_ptr<skgpu::v1::SmallPathAtlasMgr> fSmallPathAtlasMgr;

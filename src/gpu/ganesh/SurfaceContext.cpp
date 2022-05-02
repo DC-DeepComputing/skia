@@ -13,7 +13,7 @@
 #include "src/core/SkAutoPixmapStorage.h"
 #include "src/core/SkMipmap.h"
 #include "src/core/SkYUVMath.h"
-#include "src/gpu/ganesh/GrClientMappedBufferManager.h"
+#include "src/gpu/ganesh/GrClientBufferManager.h"
 #include "src/gpu/ganesh/GrColorSpaceXform.h"
 #include "src/gpu/ganesh/GrDataUtils.h"
 #include "src/gpu/ganesh/GrDirectContextPriv.h"
@@ -635,7 +635,7 @@ public:
     bool addTransferResult(const PixelTransferResult& result,
                            SkISize dimensions,
                            size_t rowBytes,
-                           GrClientMappedBufferManager* manager) {
+                           GrClientBufferManager* manager) {
         SkASSERT(!result.fTransferBuffer->isMapped());
         const void* mappedData = result.fTransferBuffer->map();
         if (!mappedData) {
@@ -685,7 +685,7 @@ private:
 
         void releaseMappedBuffer(GrDirectContext::DirectContextID intendedRecipient) {
             if (fMappedBuffer) {
-                GrClientMappedBufferManager::BufferFinishedMessageBus::Post(
+                GrClientBufferManager::BufferFinishedMessageBus::Post(
                         {std::move(fMappedBuffer), intendedRecipient});
             }
         }
@@ -724,7 +724,7 @@ void SurfaceContext::asyncReadPixels(GrDirectContext* dContext,
         return;
     }
 
-    auto mappedBufferManager = dContext->priv().clientMappedBufferManager();
+    auto bufferManager = dContext->priv().clientBufferManager();
 
     auto transferResult = this->transferPixels(SkColorTypeToGrColorType(colorType), rect);
 
@@ -751,7 +751,7 @@ void SurfaceContext::asyncReadPixels(GrDirectContext* dContext,
         SkISize fSize;
         SkColorType fColorType;
         size_t fBufferAlignment;
-        GrClientMappedBufferManager* fMappedBufferManager;
+        GrClientBufferManager* fBufferManager;
         PixelTransferResult fTransferResult;
     };
     // Assumption is that the caller would like to flush. We could take a parameter or require an
@@ -762,11 +762,11 @@ void SurfaceContext::asyncReadPixels(GrDirectContext* dContext,
                                             rect.size(),
                                             colorType,
                                             this->caps()->transferBufferAlignment(),
-                                            mappedBufferManager,
+                                            bufferManager,
                                             std::move(transferResult)};
     auto finishCallback = [](GrGpuFinishedContext c) {
         const auto* context = reinterpret_cast<const FinishContext*>(c);
-        auto manager = context->fMappedBufferManager;
+        auto manager = context->fBufferManager;
         auto result = std::make_unique<AsyncReadResult>(manager->owningDirectContext());
         size_t rowBytes =
                 SkAlignTo(context->fSize.width() * SkColorTypeBytesPerPixel(context->fColorType),
@@ -980,7 +980,7 @@ void SurfaceContext::asyncRescaleAndReadPixelsYUV420(GrDirectContext* dContext,
     struct FinishContext {
         ReadPixelsCallback* fClientCallback;
         ReadPixelsContext fClientContext;
-        GrClientMappedBufferManager* fMappedBufferManager;
+        GrClientBufferManager* fClientBufferManager;
         SkISize fSize;
         size_t fBufferAlignment;
         PixelTransferResult fYTransfer;
@@ -992,7 +992,7 @@ void SurfaceContext::asyncRescaleAndReadPixelsYUV420(GrDirectContext* dContext,
     // callback to GrGpu until after the next flush that flushes our op list, though.
     auto* finishContext = new FinishContext{callback,
                                             callbackContext,
-                                            dContext->priv().clientMappedBufferManager(),
+                                            dContext->priv().clientBufferManager(),
                                             dstSize,
                                             this->caps()->transferBufferAlignment(),
                                             std::move(yTransfer),
@@ -1000,7 +1000,7 @@ void SurfaceContext::asyncRescaleAndReadPixelsYUV420(GrDirectContext* dContext,
                                             std::move(vTransfer)};
     auto finishCallback = [](GrGpuFinishedContext c) {
         const auto* context = reinterpret_cast<const FinishContext*>(c);
-        auto manager = context->fMappedBufferManager;
+        auto manager = context->fClientBufferManager;
         auto result = std::make_unique<AsyncReadResult>(manager->owningDirectContext());
         size_t rowBytes = SkToSizeT(context->fSize.width());
         rowBytes = SkAlignTo(rowBytes, context->fBufferAlignment);
