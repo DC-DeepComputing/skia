@@ -34,6 +34,24 @@
       "parentUuid": "1f1fb825_259a81f5",
       "revId": "e78e64c8809444b1da38c644d2860380a25d49e9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "26b4a4eb_3e616872",
+        "filename": "modules/canvaskit/tests/paragraph.spec.js",
+        "patchSetId": 3
+      },
+      "lineNbr": 1066,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-05-02T12:16:28Z",
+      "side": 1,
+      "message": "I agree for the general case that we do not want to always embed the typeface data, because of the point you made about wanting to support multiple SkFontMgrs.\n\nFor CanvasKit in specific, we know there is only one type of SkFontMgr ever in use. I would like the users to not have to worry about SkFontMgrs - presently, there is only one API that takes in a SkFontMgr, which is the Paragraph API. [1]\n\nWhile we could add the fTypefaceProcs to canvaskit_binding.cpp (and thus hide them from the user), I do think we want to not treat any of the font data coming into DataFontLoader [2] as system fonts - we always want to serialize the font data so the user doesn\u0027t have to keep it around or re-download it or whatever when deserializing the SkPicture.\n\nWhat do you think about that?\n\n[1] https://github.com/google/skia/blob/8a48c396c4b93d099126ef0ec17117dd2d27b0bc/modules/canvaskit/npm_build/types/index.d.ts#L3128\n[2] https://github.com/google/skia/blob/8a48c396c4b93d099126ef0ec17117dd2d27b0bc/src/ports/SkFontMgr_custom_embedded.cpp#L42",
+      "parentUuid": "4709bcf6_e033207d",
+      "revId": "e78e64c8809444b1da38c644d2860380a25d49e9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
