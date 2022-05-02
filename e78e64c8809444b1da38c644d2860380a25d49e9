@@ -70,6 +70,24 @@
       "parentUuid": "26b4a4eb_3e616872",
       "revId": "e78e64c8809444b1da38c644d2860380a25d49e9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "193eff43_f6f18db6",
+        "filename": "modules/canvaskit/tests/paragraph.spec.js",
+        "patchSetId": 3
+      },
+      "lineNbr": 1066,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-05-02T14:58:11Z",
+      "side": 1,
+      "message": "Are you saying to change CanvasKit\u0027s version of the Paragraph API or the entire Paragraph API?",
+      "parentUuid": "907f8e5f_510dc328",
+      "revId": "e78e64c8809444b1da38c644d2860380a25d49e9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
