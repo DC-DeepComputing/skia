@@ -5,8 +5,8 @@
  * found in the LICENSE file.
  */
 
-#ifndef GrSubRunAllocator_DEFINED
-#define GrSubRunAllocator_DEFINED
+#ifndef sktext_gpu_SubRunAllocator_DEFINED
+#define sktext_gpu_SubRunAllocator_DEFINED
 
 #include "include/core/SkMath.h"
 #include "include/core/SkSpan.h"
@@ -15,12 +15,14 @@
 #include <algorithm>
 #include <memory>
 
-// GrBagOfBytes parcels out bytes with a given size and alignment.
-class GrBagOfBytes {
+namespace sktext::gpu {
+
+// BagOfBytes parcels out bytes with a given size and alignment.
+class BagOfBytes {
 public:
-    GrBagOfBytes(char* block, size_t blockSize, size_t firstHeapAllocation);
-    explicit GrBagOfBytes(size_t firstHeapAllocation = 0);
-    ~GrBagOfBytes();
+    BagOfBytes(char* block, size_t blockSize, size_t firstHeapAllocation);
+    explicit BagOfBytes(size_t firstHeapAllocation = 0);
+    ~BagOfBytes();
 
     // Given a requestedSize round up to the smallest size that accounts for all the per block
     // overhead and alignment. It crashes if requestedSize is negative or too big.
@@ -149,12 +151,12 @@ private:
     SkFibBlockSizes<kMaxByteSize> fFibProgression;
 };
 
-// GrSubRunAllocator provides fast allocation where the user takes care of calling the destructors
-// of the returned pointers, and GrSubRunAllocator takes care of deleting the storage. The
+// SubRunAllocator provides fast allocation where the user takes care of calling the destructors
+// of the returned pointers, and SubRunAllocator takes care of deleting the storage. The
 // unique_ptrs returned, are to assist in assuring the object's destructor is called.
 // A note on zero length arrays: according to the standard a pointer must be returned, and it
 // can't be a nullptr. In such a case, SkArena allocates one byte, but does not initialize it.
-class GrSubRunAllocator {
+class SubRunAllocator {
 public:
     struct Destroyer {
         template <typename T>
@@ -172,8 +174,8 @@ public:
     template<class T>
     inline static constexpr bool HasNoDestructor = std::is_trivially_destructible<T>::value;
 
-    GrSubRunAllocator(char* block, int blockSize, int firstHeapAllocation);
-    explicit GrSubRunAllocator(int firstHeapAllocation = 0);
+    SubRunAllocator(char* block, int blockSize, int firstHeapAllocation);
+    explicit SubRunAllocator(int firstHeapAllocation = 0);
 
     template <typename T, typename... Args> T* makePOD(Args&&... args) {
         static_assert(HasNoDestructor<T>, "This is not POD. Use makeUnique.");
@@ -227,6 +229,9 @@ public:
     void* alignedBytes(int size, int alignment);
 
 private:
-    GrBagOfBytes fAlloc;
+    BagOfBytes fAlloc;
 };
-#endif // GrSubRunAllocator_DEFINED
+
+}  // namespace sktext::gpu
+
+#endif // sktext_gpu_SubRunAllocator_DEFINED
