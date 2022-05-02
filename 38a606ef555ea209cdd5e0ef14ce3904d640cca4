@@ -16,6 +16,23 @@
       "message": "Make it so that the calculation of size can never splinch the types again.",
       "revId": "38a606ef555ea209cdd5e0ef14ce3904d640cca4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b4d32ea2_f948d9b1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-05-02T21:03:10Z",
+      "side": 1,
+      "message": "What\u0027s the failure mode if you mis-match types now? (Between the call to AllocateClassMemory and the subsequent placement new)",
+      "revId": "38a606ef555ea209cdd5e0ef14ce3904d640cca4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
