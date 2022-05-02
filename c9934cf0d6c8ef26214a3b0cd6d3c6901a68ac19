@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "be209a8b_b91a3bc3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-05-02T18:56:20Z",
+      "side": 1,
+      "message": "Fix to public.bzl is in PS1 -\u003e PS2. g3 canary green.",
+      "revId": "c9934cf0d6c8ef26214a3b0cd6d3c6901a68ac19",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
