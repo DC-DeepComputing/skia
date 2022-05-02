@@ -52,6 +52,24 @@
       "parentUuid": "4709bcf6_e033207d",
       "revId": "e78e64c8809444b1da38c644d2860380a25d49e9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "907f8e5f_510dc328",
+        "filename": "modules/canvaskit/tests/paragraph.spec.js",
+        "patchSetId": 3
+      },
+      "lineNbr": 1066,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-05-02T14:52:09Z",
+      "side": 1,
+      "message": "Then you have a very simple solution to this problem, remove the API to pass an SkFontMgr to the Paragraph API.\n\nYou either support multiple SkFontMgr or you don\u0027t. If you don\u0027t want to support multiple SkFontMgr then the Paragraph API must be altered (and the ability for the user to create one and hand on to it must be removed as well). If you do support multiple SkFontMgr then this CL at PS3 is just a broken stop gap that only \"fixes\" things for this one SkFontMgr.",
+      "parentUuid": "26b4a4eb_3e616872",
+      "revId": "e78e64c8809444b1da38c644d2860380a25d49e9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
