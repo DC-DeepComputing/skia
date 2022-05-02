@@ -594,6 +594,7 @@ void GrGLCaps::init(const GrContextOptions& contextOptions,
     }
     if (fAnisoSupport) {
         GR_GL_GetFloatv(gli, GR_GL_MAX_TEXTURE_MAX_ANISOTROPY, &fMaxTextureMaxAnisotropy);
+        SkDebugf("Max aniso: %f\n", fMaxTextureMaxAnisotropy);
     }
 
     GR_GL_GetIntegerv(gli, GR_GL_MAX_TEXTURE_SIZE, &fMaxTextureSize);
