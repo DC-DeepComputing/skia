@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "79cf6b4f_50f19f98",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-05-02T19:36:27Z",
+      "side": 1,
+      "message": "Maybe `children` instead of `kids` for consistency?",
+      "range": {
+        "startLine": 24,
+        "startChar": 36,
+        "endLine": 24,
+        "endChar": 40
+      },
+      "revId": "27d8b8082cc8fadf714dc2a29bc24cdffaefbf28",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
