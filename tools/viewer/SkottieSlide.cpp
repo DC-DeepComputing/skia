@@ -15,11 +15,14 @@
 #include "include/private/SkNoncopyable.h"
 #include "include/private/SkTPin.h"
 #include "modules/audioplayer/SkAudioPlayer.h"
+#include "modules/particles/include/SkParticleEffect.h"
+#include "modules/particles/include/SkParticleSerialization.h"
 #include "modules/skottie/include/Skottie.h"
 #include "modules/skottie/include/SkottieProperty.h"
 #include "modules/skottie/utils/SkottieUtils.h"
 #include "modules/skresources/include/SkResources.h"
 #include "src/utils/SkOSPath.h"
+#include "tools/Resources.h"
 #include "tools/timer/TimeUtils.h"
 
 #include <cmath>
@@ -81,7 +84,9 @@ class Decorator : public SkNoncopyable {
 public:
     virtual ~Decorator() = default;
 
-    virtual void render(SkCanvas*) = 0;
+    // We pass in the Matrix and have the Decorator handle using it independently
+    // This was decorators like particle effects can keep position on screen after moving.
+    virtual void render(SkCanvas*, double, const SkMatrix) = 0;
 };
 
 class SimpleMarker final : public Decorator {
@@ -90,7 +95,8 @@ public:
 
     static std::unique_ptr<Decorator> Make() { return std::make_unique<SimpleMarker>(); }
 
-    void render(SkCanvas* canvas) override {
+    void render(SkCanvas* canvas, double t, const SkMatrix transform) override {
+        canvas->concat(transform);
         SkPaint p;
         p.setAntiAlias(true);
 
@@ -104,11 +110,63 @@ public:
     }
 };
 
+class ParticleMarker final : public Decorator {
+public:
+    ~ParticleMarker() override = default;
+
+    static std::unique_ptr<Decorator> Make() { return std::make_unique<ParticleMarker>(); }
+
+    ParticleMarker() {
+        SkParticleEffect::RegisterParticleTypes();
+        auto params = sk_sp<SkParticleEffectParams>();
+        params.reset(new SkParticleEffectParams());
+        auto effectJsonPath = SkOSPath::Join(GetResourcePath("particles").c_str(), "confetti.json");
+        if (auto fileData = SkData::MakeFromFileName(effectJsonPath.c_str())) {
+            skjson::DOM dom(static_cast<const char*>(fileData->data()), fileData->size());
+            SkFromJsonVisitor fromJson(dom.root());
+            params->visitFields(&fromJson);
+            // We can pass in a null pointer because the SkCircleDrawable used in confetti.json
+            // doesn't use the resource provider
+            params->prepare(nullptr);
+        } else {
+            SkDebugf("no particle effect file found at: %s\n", effectJsonPath.c_str());
+        }
+        fEffect.reset(new SkParticleEffect(params));
+    }
+
+    void render(SkCanvas* canvas, double t, SkMatrix transform) override {
+        if (!fStarted || t < 0.01) {
+            fStarted = true;
+            fEffect->start(t, true, { 0, 0 }, { 0, -1 }, 1, { 0, 0 }, 0,
+                              { 1, 1, 1, 1 }, 0, 0);
+            fEffect->setPosition({0,0});
+        }
+        fEffect->setPosition({transform.getTranslateX(), transform.getTranslateY()});
+        SkPaint p;
+        p.setAntiAlias(true);
+
+        p.setColor(SK_ColorBLUE);
+        canvas->drawCircle(0, 0, 5, p);
+
+        p.setColor(SK_ColorYELLOW);
+        p.setStrokeWidth(1.5f);
+        canvas->drawLine(-10, 0, 10, 0, p);
+        canvas->drawLine(0, -10, 0, 10, p);
+
+        fEffect->update(t);
+        fEffect->draw(canvas);
+    }
+private:
+    sk_sp<SkParticleEffect> fEffect;
+    bool fStarted = false;
+};
+
 static const struct DecoratorRec {
     const char* fName;
     std::unique_ptr<Decorator>(*fFactory)();
 } kDecorators[] = {
-    { "Simple marker", SimpleMarker::Make }
+    { "Simple marker",   SimpleMarker::Make },
+    { "Particle marker", ParticleMarker::Make }
 };
 
 } // namespace
@@ -152,7 +210,7 @@ public:
         ImGui::End();
     }
 
-    void renderTracker(SkCanvas* canvas, const SkSize& win_size, const SkSize& anim_size) const {
+    void renderTracker(SkCanvas* canvas, double time, const SkSize& win_size, const SkSize& anim_size) const {
         if (!fTransformSelect) {
             return;
         }
@@ -170,10 +228,9 @@ public:
 
         SkAutoCanvasRestore acr(canvas, true);
         canvas->concat(viewer_matrix);
-        canvas->concat(m);
 
         SkASSERT(fDecorator);
-        fDecorator->render(canvas);
+        fDecorator->render(canvas, time, m);
     }
 
 private:
@@ -336,7 +393,7 @@ void SkottieSlide::draw(SkCanvas* canvas) {
             fFrameTimes[frame_index] = static_cast<float>((SkTime::GetNSecs() - t0) * 1e-6);
         }
 
-        fTransformTracker->renderTracker(canvas, fWinSize, fAnimation->size());
+        fTransformTracker->renderTracker(canvas, fCurrentFrame/60, fWinSize, fAnimation->size());
 
         if (fShowAnimationStats) {
             draw_stats_box(canvas, fAnimationStats);
