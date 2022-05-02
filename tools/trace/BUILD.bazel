@@ -47,6 +47,7 @@ generated_cc_atom(
         ":SkDebugfTracer_hdr",
         "//include/utils:SkEventTracer_hdr",
         "//src/core:SkATrace_hdr",
+        "//src/core:SkPerfTrace_hdr",
         "//src/core:SkTraceEvent_hdr",
         "//tools/flags:CommandLineFlags_hdr",
     ],

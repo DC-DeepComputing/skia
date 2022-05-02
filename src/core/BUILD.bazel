@@ -3,6 +3,16 @@ load("//bazel:macros.bzl", "generated_cc_atom")
 licenses(["notice"])
 
 cc_library(
+    name = "perfetto",
+    srcs = [
+        "perfetto/sdk/perfetto.cc",
+    ],
+    hdrs = ["perfetto/sdk/perfetto.h"],
+    visibility = ["//visibility:public"],
+    # linkstatic=True,
+)
+
+cc_library(
     name = "core_srcs",
     deps = [
         ":SkAAClip_src",
@@ -125,6 +135,7 @@ cc_library(
         ":SkPathRef_src",
         ":SkPath_serial_src",
         ":SkPath_src",
+        ":SkPerfTrace_src",
         ":SkPictureData_src",
         ":SkPictureFlat_src",
         ":SkPictureImageGenerator_src",
@@ -296,6 +307,27 @@ generated_cc_atom(
         ":SkATrace_hdr",
         ":SkTraceEventCommon_hdr",
         ":SkTraceEvent_hdr",
+    ],
+)
+
+generated_cc_atom(
+    name = "SkPerfTrace_hdr",
+    hdrs = ["SkPerfTrace.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+      "//include/utils:SkEventTracer_hdr",
+      ],
+)
+
+generated_cc_atom(
+    name = "SkPerfTrace_src",
+    srcs = ["SkPerfTrace.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkPerfTrace_hdr",
+        ":SkTraceEventCommon_hdr",
+        ":SkTraceEvent_hdr",
+        ":perfetto",
     ],
 )
 
