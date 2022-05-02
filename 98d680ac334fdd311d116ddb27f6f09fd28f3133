@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e6e9bd1c_bd2de74d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 7515
+      },
+      "writtenOn": "2022-05-02T20:49:47Z",
+      "side": 1,
+      "message": "Nit: \"Changed the return valu...\" -\u003e \"Remove the return valu...\"",
+      "revId": "98d680ac334fdd311d116ddb27f6f09fd28f3133",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
