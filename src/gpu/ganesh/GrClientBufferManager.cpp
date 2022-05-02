@@ -5,16 +5,16 @@
  * found in the LICENSE file.
  */
 
-#include "src/gpu/ganesh/GrClientMappedBufferManager.h"
+#include "src/gpu/ganesh/GrClientBufferManager.h"
 
 #include <algorithm>
 
-GrClientMappedBufferManager::GrClientMappedBufferManager(
+GrClientBufferManager::GrClientBufferManager(
             GrDirectContext::DirectContextID owningDirectContext)
         : fFinishedBufferInbox(owningDirectContext) {
 }
 
-GrClientMappedBufferManager::~GrClientMappedBufferManager() {
+GrClientBufferManager::~GrClientBufferManager() {
     this->process();
     if (!fAbandoned) {
         // If we're going down before we got the messages we go ahead and unmap all the buffers.
@@ -26,29 +26,31 @@ GrClientMappedBufferManager::~GrClientMappedBufferManager() {
     }
 }
 
-void GrClientMappedBufferManager::insert(sk_sp<GrGpuBuffer> b) {
+void GrClientBufferManager::insert(sk_sp<GrGpuBuffer> b) {
     SkDEBUGCODE(auto end = fClientHeldBuffers.end());
     SkASSERT(std::find(fClientHeldBuffers.begin(), end, b) == end);
     fClientHeldBuffers.emplace_front(std::move(b));
 }
 
-void GrClientMappedBufferManager::process() {
+void GrClientBufferManager::process() {
     SkSTArray<4, BufferFinishedMessage> messages;
     fFinishedBufferInbox.poll(&messages);
     if (!fAbandoned) {
         for (auto& m : messages) {
             this->remove(m.fBuffer);
-            m.fBuffer->unmap();
+            if (m.fBuffer->isMapped()) {
+                m.fBuffer->unmap();
+            }
         }
     }
 }
 
-void GrClientMappedBufferManager::abandon() {
+void GrClientBufferManager::abandon() {
     fAbandoned = true;
     fClientHeldBuffers.clear();
 }
 
-void GrClientMappedBufferManager::remove(const sk_sp<GrGpuBuffer>& b) {
+void GrClientBufferManager::remove(const sk_sp<GrGpuBuffer>& b) {
     // There is no convenient remove only the first element that equals a value functionality in
     // std::forward_list.
     auto prev = fClientHeldBuffers.before_begin();
@@ -65,11 +67,11 @@ void GrClientMappedBufferManager::remove(const sk_sp<GrGpuBuffer>& b) {
 
 //////////////////////////////////////////////////////////////////////////////
 
-DECLARE_SKMESSAGEBUS_MESSAGE(GrClientMappedBufferManager::BufferFinishedMessage,
+DECLARE_SKMESSAGEBUS_MESSAGE(GrClientBufferManager::BufferFinishedMessage,
                              GrDirectContext::DirectContextID,
                              false)
 
-bool SkShouldPostMessageToBus(const GrClientMappedBufferManager::BufferFinishedMessage& m,
+bool SkShouldPostMessageToBus(const GrClientBufferManager::BufferFinishedMessage& m,
                               GrDirectContext::DirectContextID potentialRecipient) {
     return m.fIntendedRecipient == potentialRecipient;
 }

@@ -11,8 +11,11 @@
 #include "include/core/SkCustomMesh.h"
 
 #ifdef SK_ENABLE_SKSL
+#include "include/gpu/GrDirectContext.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "src/core/SkSLTypeShared.h"
+
+class GrGpuBuffer;
 
 struct SkCustomMeshSpecificationPriv {
     using Varying   = SkCustomMeshSpecification::Varying;
@@ -86,7 +89,8 @@ struct SkCustomMeshPriv {
     class Buffer {
     public:
         virtual ~Buffer() = default;
-        virtual sk_sp<const SkData> asData() const = 0;
+        virtual sk_sp<const SkData> asData() const { return nullptr; }
+        virtual sk_sp<const GrGpuBuffer> asGpuBuffer() const { return nullptr; }
         virtual size_t size() const = 0;
     };
 
@@ -123,6 +127,40 @@ struct SkCustomMeshPriv {
     private:
         sk_sp<const SkData> fData;
     };
+
+#if SK_SUPPORT_GPU
+    class GpuIndexBuffer : public IB {
+    public:
+        GpuIndexBuffer();
+        ~GpuIndexBuffer() override;
+
+        static sk_sp<IndexBuffer> Make(sk_sp<GrGpuBuffer>, GrDirectContext::DirectContextID);
+
+        sk_sp<const GrGpuBuffer> asGpuBuffer() const override;
+
+        size_t size() const override;
+
+    private:
+        sk_sp<GrGpuBuffer>               fBuffer;
+        GrDirectContext::DirectContextID fContextID;;
+    };
+
+    class GpuVertexBuffer : public VB {
+    public:
+        GpuVertexBuffer();
+        ~GpuVertexBuffer() override;
+
+        static sk_sp<VertexBuffer> Make(sk_sp<GrGpuBuffer>, GrDirectContext::DirectContextID);
+
+        sk_sp<const GrGpuBuffer> asGpuBuffer() const override;
+
+        size_t size() const override;
+
+    private:
+        sk_sp<GrGpuBuffer>               fBuffer;
+        GrDirectContext::DirectContextID fContextID;;
+    };
+#endif
 };
 
 #endif  // SK_ENABLE_SKSL

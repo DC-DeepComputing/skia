@@ -16,7 +16,7 @@
 #include "include/gpu/GrRecordingContext.h"
 #include "src/core/SkDeferredDisplayListPriv.h"
 #include "src/core/SkTInternalLList.h"
-#include "src/gpu/ganesh/GrClientMappedBufferManager.h"
+#include "src/gpu/ganesh/GrClientBufferManager.h"
 #include "src/gpu/ganesh/GrCopyRenderTask.h"
 #include "src/gpu/ganesh/GrDDLTask.h"
 #include "src/gpu/ganesh/GrDirectContextPriv.h"
@@ -132,7 +132,7 @@ bool GrDrawingManager::flush(
 
     auto dContext = fContext->asDirectContext();
     SkASSERT(dContext);
-    dContext->priv().clientMappedBufferManager()->process();
+    dContext->priv().clientBufferManager()->process();
 
     GrGpu* gpu = dContext->priv().getGpu();
     // We have a non abandoned and direct GrContext. It must have a GrGpu.

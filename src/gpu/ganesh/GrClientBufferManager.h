@@ -5,8 +5,8 @@
  * found in the LICENSE file.
  */
 
-#ifndef GrClientMappedBufferManager_DEFINED
-#define GrClientMappedBufferManager_DEFINED
+#ifndef GrClientBufferManager_DEFINED
+#define GrClientBufferManager_DEFINED
 
 #include "include/gpu/GrDirectContext.h"
 #include "include/private/SkTArray.h"
@@ -15,15 +15,17 @@
 #include <forward_list>
 
 /**
- * We sometimes hand clients objects that contain mapped GrGpuBuffers. The client may consume
- * the mapped buffer on another thread. This object manages receiving messages that buffers are
- * ready to be unmapped (on the GrDirectContext's thread). It also handles cleaning up mapped
- * buffers if the GrDirectContext is destroyed before the client has finished with the buffer.
+ * We sometimes hand clients objects that contain GrGpuBuffers. The client may consume a mapped
+ * the buffer on another thread or release an object on another thread that contains the last
+ * reference to a GrGpuBuffer that may or may not be mapped. This object manages receiving messages
+ * that buffers are ready to be unmapped and possible returned to the cache (on the
+ * GrDirectContext's thread). It also handles cleaning up buffers if the GrDirectContext is
+ * destroyed before the client has finished with the buffer.
  *
  * Buffers are first registered using insert() before being passed the client. process() should be
  * called periodically on the GrDirectContext thread to poll for messages and process them.
  */
-class GrClientMappedBufferManager final {
+class GrClientBufferManager final {
 public:
     /**
      * The message type that internal users of this should post to unmap the buffer.
@@ -45,14 +47,14 @@ public:
                                                   GrDirectContext::DirectContextID,
                                                   false>;
 
-    GrClientMappedBufferManager(GrDirectContext::DirectContextID owningDirectContext);
-    GrClientMappedBufferManager(const GrClientMappedBufferManager&) = delete;
-    GrClientMappedBufferManager(GrClientMappedBufferManager&&) = delete;
+    GrClientBufferManager(GrDirectContext::DirectContextID owningDirectContext);
+    GrClientBufferManager(const GrClientBufferManager&) = delete;
+    GrClientBufferManager(GrClientBufferManager&&) = delete;
 
-    ~GrClientMappedBufferManager();
+    ~GrClientBufferManager();
 
-    GrClientMappedBufferManager& operator=(const GrClientMappedBufferManager&) = delete;
-    GrClientMappedBufferManager& operator=(GrClientMappedBufferManager&&) = delete;
+    GrClientBufferManager& operator=(const GrClientBufferManager&) = delete;
+    GrClientBufferManager& operator=(GrClientBufferManager&&) = delete;
 
     /** Initialize BufferFinishedMessage::fIntendedRecipient to this value. It is the
      *  unique ID of the GrDirectContext that owns this buffer manager.
@@ -81,7 +83,7 @@ private:
     void remove(const sk_sp<GrGpuBuffer>& b);
 };
 
-bool SkShouldPostMessageToBus(const GrClientMappedBufferManager::BufferFinishedMessage&,
+bool SkShouldPostMessageToBus(const GrClientBufferManager::BufferFinishedMessage&,
                               GrDirectContext::DirectContextID potentialRecipient);
 
 #endif

@@ -108,8 +108,8 @@ public:
         return this->context()->fPersistentCache;
     }
 
-    GrClientMappedBufferManager* clientMappedBufferManager() {
-        return this->context()->fMappedBufferManager.get();
+    GrClientBufferManager* clientBufferManager() {
+        return this->context()->fClientBufferManager.get();
     }
 
 #if GR_TEST_UTILS
