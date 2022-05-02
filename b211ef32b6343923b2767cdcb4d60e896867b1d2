@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2f34e403_0524bbec",
+        "filename": "src/gpu/ganesh/GrDynamicAtlas.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 18274
+      },
+      "writtenOn": "2022-05-02T20:52:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "12af4685_f1493328",
+      "range": {
+        "startLine": 107,
+        "startChar": 60,
+        "endLine": 107,
+        "endChar": 72
+      },
+      "revId": "b211ef32b6343923b2767cdcb4d60e896867b1d2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fdfb1262_07239ade",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-05-02T15:36:31Z",
       "side": 1,
       "message": "You previously setup the Gr*Texture constructors to all take a label. Thus I think the label here should be plumbed through createTextureCommon, into onCreateTexture, and then passed to the various constructors.\n\nGiven that is a lot of plumbing, feel free to do that in a follow up CL or if you want to add it to this CL. If you wait to a follow up CL and a TODO here stating that",
+      "range": {
+        "startLine": 181,
+        "startChar": 8,
+        "endLine": 181,
+        "endChar": 29
+      },
+      "revId": "b211ef32b6343923b2767cdcb4d60e896867b1d2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f9a2e59c_054b0ea3",
+        "filename": "src/gpu/ganesh/GrGpu.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 18274
+      },
+      "writtenOn": "2022-05-02T20:52:39Z",
+      "side": 1,
+      "message": "While plumbing, I made changes to 21 files already and thought I was done but saw more plumbing down the line. 😊\nI guess it is a better idea to make a follow-up CL so that it is more modular, and changes goes in into smaller CLs. For now, I will write a TODO and the next CL will have this change.",
+      "parentUuid": "fdfb1262_07239ade",
       "range": {
         "startLine": 181,
         "startChar": 8,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "50c7d3b0_5405f752",
+        "filename": "src/gpu/ganesh/GrGpu.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 253,
+      "author": {
+        "id": 18274
+      },
+      "writtenOn": "2022-05-02T20:52:39Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "2c3390a7_fcc11a46",
+      "range": {
+        "startLine": 253,
+        "startChar": 8,
+        "endLine": 253,
+        "endChar": 29
+      },
+      "revId": "b211ef32b6343923b2767cdcb4d60e896867b1d2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f3105fd8_88681a45",
@@ -93,6 +165,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f940cfc3_71b2685c",
+        "filename": "src/gpu/ganesh/GrProxyProvider.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 365,
+      "author": {
+        "id": 18274
+      },
+      "writtenOn": "2022-05-02T20:52:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f3105fd8_88681a45",
+      "range": {
+        "startLine": 365,
+        "startChar": 74,
+        "endLine": 365,
+        "endChar": 86
+      },
+      "revId": "b211ef32b6343923b2767cdcb4d60e896867b1d2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3933eeef_b122fbf0",
@@ -106,6 +202,30 @@
       "writtenOn": "2022-05-02T15:36:31Z",
       "side": 1,
       "message": "desc.fLabel",
+      "range": {
+        "startLine": 539,
+        "startChar": 66,
+        "endLine": 539,
+        "endChar": 78
+      },
+      "revId": "b211ef32b6343923b2767cdcb4d60e896867b1d2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9b246c72_f53b1946",
+        "filename": "src/gpu/ganesh/GrProxyProvider.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 539,
+      "author": {
+        "id": 18274
+      },
+      "writtenOn": "2022-05-02T20:52:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3933eeef_b122fbf0",
       "range": {
         "startLine": 539,
         "startChar": 66,
