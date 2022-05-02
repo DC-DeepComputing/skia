@@ -260,6 +260,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "abad8d31_421c3135",
+        "filename": "src/gpu/ganesh/dawn/GrDawnBuffer.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-05-02T13:45:43Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "db8e9234_485713e3",
+      "range": {
+        "startLine": 29,
+        "startChar": 3,
+        "endLine": 29,
+        "endChar": 9
+      },
+      "revId": "492120f3571caae25c57418686f12d8ef872a8b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "48052afb_f0191eb8",
@@ -354,6 +378,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "54458078_424038db",
+        "filename": "src/gpu/ganesh/dawn/GrDawnBuffer.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-05-02T13:45:43Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "f3383553_c45f4ba1",
+      "range": {
+        "startLine": 41,
+        "startChar": 19,
+        "endLine": 41,
+        "endChar": 62
+      },
+      "revId": "492120f3571caae25c57418686f12d8ef872a8b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dd2f3de7_58aaf8af",
@@ -367,6 +415,30 @@
       "writtenOn": "2022-04-25T20:49:42Z",
       "side": 1,
       "message": "These TODOs serve more as questions to the reviewers than concrete suggestions. I\u0027m happy to remove them if you feel that they are not actionable.",
+      "range": {
+        "startLine": 39,
+        "startChar": 3,
+        "endLine": 44,
+        "endChar": 7
+      },
+      "revId": "492120f3571caae25c57418686f12d8ef872a8b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "43f04361_02288df5",
+        "filename": "src/gpu/ganesh/dawn/GrDawnBuffer.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-05-02T13:45:43Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "dd2f3de7_58aaf8af",
       "range": {
         "startLine": 39,
         "startChar": 3,
