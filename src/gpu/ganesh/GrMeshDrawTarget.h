@@ -140,7 +140,6 @@ public:
     uint32_t contextUniqueID() const;
 
     virtual GrStrikeCache* strikeCache() const = 0;
-    virtual GrAtlasManager* atlasManager() const = 0;
     virtual skgpu::v1::SmallPathAtlasMgr* smallPathAtlasManager() const = 0;
 
     // This should be called during onPrepare of a GrOp. The caller should add any proxies to the

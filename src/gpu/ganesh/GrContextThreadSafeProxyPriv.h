@@ -12,7 +12,6 @@
 #include "include/private/gpu/ganesh/GrContext_Base.h"
 
 #include "src/gpu/ganesh/GrCaps.h"
-#include "src/gpu/ganesh/text/GrTextBlobRedrawCoordinator.h"
 
 /**
  * Class that adds methods to GrContextThreadSafeProxy that are only intended for use internal to
@@ -33,13 +32,6 @@ public:
 
     const GrCaps* caps() const { return fProxy->fCaps.get(); }
     sk_sp<const GrCaps> refCaps() const { return fProxy->fCaps; }
-
-    GrTextBlobRedrawCoordinator* getTextBlobRedrawCoordinator() {
-        return fProxy->fTextBlobRedrawCoordinator.get();
-    }
-    const GrTextBlobRedrawCoordinator* getTextBlobRedrawCoordinator() const {
-        return fProxy->fTextBlobRedrawCoordinator.get();
-    }
 
     GrThreadSafeCache* threadSafeCache() { return fProxy->fThreadSafeCache.get(); }
     const GrThreadSafeCache* threadSafeCache() const { return fProxy->fThreadSafeCache.get(); }

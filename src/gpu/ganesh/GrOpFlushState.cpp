@@ -214,14 +214,6 @@ GrAppliedClip GrOpFlushState::detachAppliedClip() {
     return fOpArgs->appliedClip() ? std::move(*fOpArgs->appliedClip()) : GrAppliedClip::Disabled();
 }
 
-GrStrikeCache* GrOpFlushState::strikeCache() const {
-    return fGpu->getContext()->priv().getGrStrikeCache();
-}
-
-GrAtlasManager* GrOpFlushState::atlasManager() const {
-    return fGpu->getContext()->priv().getAtlasManager();
-}
-
 skgpu::v1::SmallPathAtlasMgr* GrOpFlushState::smallPathAtlasManager() const {
     return fGpu->getContext()->priv().getSmallPathAtlasMgr();
 }

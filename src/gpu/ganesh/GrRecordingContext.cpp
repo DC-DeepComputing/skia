@@ -20,12 +20,6 @@
 #include "src/gpu/ganesh/SkGr.h"
 #include "src/gpu/ganesh/SurfaceContext.h"
 #include "src/gpu/ganesh/effects/GrSkSLFP.h"
-#include "src/gpu/ganesh/text/GrTextBlob.h"
-#include "src/gpu/ganesh/text/GrTextBlobRedrawCoordinator.h"
-
-#if SK_GPU_V1
-#include "src/gpu/ganesh/ops/AtlasTextOp.h"
-#endif
 
 GrRecordingContext::ProgramData::ProgramData(std::unique_ptr<const GrProgramDesc> desc,
                                              const GrProgramInfo* info)
@@ -48,9 +42,6 @@ GrRecordingContext::GrRecordingContext(sk_sp<GrContextThreadSafeProxy> proxy, bo
 }
 
 GrRecordingContext::~GrRecordingContext() {
-#if SK_GPU_V1
-    skgpu::v1::AtlasTextOp::ClearCache();
-#endif
 }
 
 bool GrRecordingContext::init() {
@@ -135,14 +126,6 @@ GrRecordingContext::Arenas GrRecordingContext::OwnedArenas::get() {
 
 GrRecordingContext::OwnedArenas&& GrRecordingContext::detachArenas() {
     return std::move(fArenas);
-}
-
-GrTextBlobRedrawCoordinator* GrRecordingContext::getTextBlobRedrawCoordinator() {
-    return fThreadSafeProxy->priv().getTextBlobRedrawCoordinator();
-}
-
-const GrTextBlobRedrawCoordinator* GrRecordingContext::getTextBlobRedrawCoordinator() const {
-    return fThreadSafeProxy->priv().getTextBlobRedrawCoordinator();
 }
 
 GrThreadSafeCache* GrRecordingContext::threadSafeCache() {

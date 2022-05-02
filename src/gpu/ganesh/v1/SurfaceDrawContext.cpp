@@ -22,7 +22,6 @@
 #include "src/core/SkCustomMeshPriv.h"
 #include "src/core/SkDrawProcs.h"
 #include "src/core/SkDrawShadowInfo.h"
-#include "src/core/SkGlyphRunPainter.h"
 #include "src/core/SkLatticeIter.h"
 #include "src/core/SkMatrixPriv.h"
 #include "src/core/SkMatrixProvider.h"
@@ -70,8 +69,6 @@
 #include "src/gpu/ganesh/ops/ShadowRRectOp.h"
 #include "src/gpu/ganesh/ops/StrokeRectOp.h"
 #include "src/gpu/ganesh/ops/TextureOp.h"
-#include "src/gpu/ganesh/text/GrSDFTControl.h"
-#include "src/gpu/ganesh/text/GrTextBlobRedrawCoordinator.h"
 #include "src/gpu/ganesh/v1/PathRenderer.h"
 
 #define ASSERT_OWNED_RESOURCE(R) SkASSERT(!(R) || (R)->getContext() == this->drawingManager()->getContext())
@@ -303,7 +300,7 @@ SurfaceDrawContext::SurfaceDrawContext(GrRecordingContext* rContext,
         , fCanUseDynamicMSAA(
                 (fSurfaceProps.flags() & SkSurfaceProps::kDynamicMSAA_Flag) &&
                 rContext->priv().caps()->supportsDynamicMSAA(this->asRenderTargetProxy()))
-        , fGlyphPainter(*this) {
+{
     SkDEBUGCODE(this->validate();)
 }
 
@@ -325,27 +322,6 @@ void SurfaceDrawContext::willReplaceOpsTask(OpsTask* prevTask, OpsTask* nextTask
         fContext->priv().dmsaaStats().fNumRenderPasses++;
     }
 #endif
-}
-
-void SurfaceDrawContext::drawGlyphRunList(SkCanvas* canvas,
-                                          const GrClip* clip,
-                                          const SkMatrixProvider& viewMatrix,
-                                          const SkGlyphRunList& glyphRunList,
-                                          const SkPaint& paint) {
-    ASSERT_SINGLE_OWNER
-    RETURN_IF_ABANDONED
-    SkDEBUGCODE(this->validate();)
-    GR_CREATE_TRACE_MARKER_CONTEXT("SurfaceDrawContext", "drawGlyphRunList", fContext);
-
-    // Drawing text can cause us to do inline uploads. This is not supported for wrapped vulkan
-    // secondary command buffers because it would require stopping and starting a render pass which
-    // we don't have access to.
-    if (this->wrapsVkSecondaryCB()) {
-        return;
-    }
-
-    GrTextBlobRedrawCoordinator* textBlobCache = fContext->priv().getTextBlobCache();
-    textBlobCache->drawGlyphRunList(canvas, clip, viewMatrix, glyphRunList, paint, this);
 }
 
 void SurfaceDrawContext::drawPaint(const GrClip* clip,

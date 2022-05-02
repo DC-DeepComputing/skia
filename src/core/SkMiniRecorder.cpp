@@ -7,7 +7,6 @@
 
 #include "include/core/SkCanvas.h"
 #include "include/core/SkPicture.h"
-#include "include/core/SkTextBlob.h"
 #include "include/private/SkOnce.h"
 #include "src/core/SkMiniRecorder.h"
 #include "src/core/SkPictureCommon.h"
@@ -39,9 +38,6 @@ static SkRect bounds(const DrawRect& op) {
 static SkRect bounds(const DrawPath& op) {
     return op.path.isInverseFillType() ? SkRectPriv::MakeLargest()
                                        : adjust_for_paint(op.path.getBounds(), op.paint);
-}
-static SkRect bounds(const DrawTextBlob& op) {
-    return adjust_for_paint(op.blob->bounds().makeOffset(op.x, op.y), op.paint);
 }
 
 template <typename T>
@@ -89,9 +85,6 @@ bool SkMiniRecorder::drawPath(const SkPath& path, const SkPaint& paint) {
     TRY_TO_STORE(DrawPath, paint, path);
 }
 
-bool SkMiniRecorder::drawTextBlob(const SkTextBlob* b, SkScalar x, SkScalar y, const SkPaint& p) {
-    TRY_TO_STORE(DrawTextBlob, p, sk_ref_sp(b), x, y);
-}
 #undef TRY_TO_STORE
 
 
@@ -114,7 +107,6 @@ sk_sp<SkPicture> SkMiniRecorder::detachAsPicture(const SkRect* cull) {
             return sk_ref_sp(empty);
         CASE(DrawPath)
         CASE(DrawRect)
-        CASE(DrawTextBlob)
     }
     SkASSERT(false);
     return nullptr;
@@ -134,7 +126,6 @@ void SkMiniRecorder::flushAndReset(SkCanvas* canvas) {
         case State::kEmpty: return;
         CASE(DrawPath);
         CASE(DrawRect);
-        CASE(DrawTextBlob);
     }
     SkASSERT(false);
 #undef CASE

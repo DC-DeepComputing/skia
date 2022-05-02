@@ -14,7 +14,6 @@
 #include "include/core/SkSurface.h"
 #include "include/core/SkSurfaceProps.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
-#include "src/core/SkGlyphRunPainter.h"
 #include "src/gpu/ganesh/GrPaint.h"
 #include "src/gpu/ganesh/GrRenderTargetProxy.h"
 #include "src/gpu/ganesh/GrSurfaceProxyView.h"
@@ -481,18 +480,6 @@ public:
                           const SkRect& dst);
 
     /**
-     * Draw the text specified by the SkGlyphRunList.
-     *
-     * @param viewMatrix      transformationMatrix
-     * @param glyphRunList    text, text positions, and paint.
-     */
-    void drawGlyphRunList(SkCanvas*,
-                          const GrClip*,
-                          const SkMatrixProvider& viewMatrix,
-                          const SkGlyphRunList& glyphRunList,
-                          const SkPaint& paint);
-
-    /**
      * Adds the necessary signal and wait semaphores and adds the passed in SkDrawable to the
      * command stream.
      */
@@ -555,8 +542,6 @@ public:
     SkBudgeted isBudgeted() const;
 
     int maxWindowRectangles() const;
-
-    SkGlyphRunListPainter* glyphRunPainter() { return &fGlyphPainter; }
 
     /*
      * This unique ID will not change for a given SurfaceDrawContext. However, it is _NOT_
@@ -694,7 +679,6 @@ private:
 #if GR_TEST_UTILS
     bool fPreserveOpsOnFullClear_TestingOnly = false;
 #endif
-    SkGlyphRunListPainter fGlyphPainter;
 };
 
 } // namespace skgpu::v1

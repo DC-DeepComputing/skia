@@ -22,13 +22,8 @@
 #include "include/core/SkRect.h"
 #include "include/core/SkRegion.h"
 #include "include/core/SkString.h"
-#include "include/core/SkTextBlob.h"
 #include "include/core/SkVertices.h"
 #include "src/core/SkDrawShadowInfo.h"
-
-#if SK_SUPPORT_GPU
-#include "include/private/chromium/GrSlug.h"
-#endif
 
 namespace SkRecords {
 
@@ -77,8 +72,6 @@ namespace SkRecords {
     M(DrawRRect)                                                    \
     M(DrawRect)                                                     \
     M(DrawRegion)                                                   \
-    M(DrawTextBlob)                                                 \
-    M(DrawSlug)                                                     \
     M(DrawAtlas)                                                    \
     M(DrawVertices)                                                 \
     M(DrawShadowRec)                                                \
@@ -293,17 +286,6 @@ RECORD(DrawRect, kDraw_Tag|kHasPaint_Tag,
 RECORD(DrawRegion, kDraw_Tag|kHasPaint_Tag,
         SkPaint paint;
         SkRegion region);
-RECORD(DrawTextBlob, kDraw_Tag|kHasText_Tag|kHasPaint_Tag,
-        SkPaint paint;
-        sk_sp<const SkTextBlob> blob;
-        SkScalar x;
-        SkScalar y);
-#if SK_SUPPORT_GPU
-RECORD(DrawSlug, kDraw_Tag|kHasText_Tag,
-       sk_sp<const GrSlug> slug);
-#else
-RECORD(DrawSlug, 0)
-#endif
 RECORD(DrawPatch, kDraw_Tag|kHasPaint_Tag,
         SkPaint paint;
         PODArray<SkPoint> cubics;

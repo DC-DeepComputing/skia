@@ -15,7 +15,6 @@
 #include "include/core/SkScalar.h"
 #include "include/core/SkShader.h"
 #include "include/core/SkStrokeRec.h"
-#include "include/core/SkTypeface.h"
 #include "include/private/SkMutex.h"
 #include "include/private/SkTo.h"
 #include "src/core/SkBlenderBase.h"

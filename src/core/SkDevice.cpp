@@ -17,7 +17,6 @@
 #include "include/core/SkVertices.h"
 #include "include/private/SkTo.h"
 #include "src/core/SkDraw.h"
-#include "src/core/SkGlyphRun.h"
 #include "src/core/SkImageFilterCache.h"
 #include "src/core/SkImageFilter_Base.h"
 #include "src/core/SkImagePriv.h"
@@ -29,13 +28,9 @@
 #include "src/core/SkRectPriv.h"
 #include "src/core/SkSpecialImage.h"
 #include "src/core/SkTLazy.h"
-#include "src/core/SkTextBlobPriv.h"
 #include "src/image/SkImage_Base.h"
 #include "src/shaders/SkLocalMatrixShader.h"
 #include "src/utils/SkPatchUtils.h"
-#if SK_SUPPORT_GPU
-#include "include/private/chromium/GrSlug.h"
-#endif
 
 SkBaseDevice::SkBaseDevice(const SkImageInfo& info, const SkSurfaceProps& surfaceProps)
         : SkMatrixProvider(/* localToDevice = */ SkMatrix::I())
@@ -384,119 +379,6 @@ bool SkBaseDevice::peekPixels(SkPixmap* pmap) {
     }
     return this->onPeekPixels(pmap);
 }
-
-//////////////////////////////////////////////////////////////////////////////////////////
-
-#include "src/core/SkUtils.h"
-
-
-// TODO: This does not work for arbitrary shader DAGs (when there is no single leaf local matrix).
-// What we really need is proper post-LM plumbing for shaders.
-static sk_sp<SkShader> make_post_inverse_lm(const SkShader* shader, const SkMatrix& m) {
-    SkMatrix inverse;
-    if (!shader || !m.invert(&inverse)) {
-        return nullptr;
-    }
-
-    // Normal LMs pre-compose.  In order to push a post local matrix, we shoot for
-    // something along these lines (where all new components are pre-composed):
-    //
-    //   new_lm X current_lm == current_lm X inv(current_lm) X new_lm X current_lm
-    //
-    // We also have two sources of local matrices:
-    //   - the actual shader lm
-    //   - outer lms applied via SkLocalMatrixShader
-
-    SkMatrix outer_lm;
-    const auto nested_shader = as_SB(shader)->makeAsALocalMatrixShader(&outer_lm);
-    if (nested_shader) {
-        // unfurl the shader
-        shader = nested_shader.get();
-    } else {
-        outer_lm.reset();
-    }
-
-    const auto lm = *as_SB(shader)->totalLocalMatrix(nullptr);
-    SkMatrix lm_inv;
-    if (!lm.invert(&lm_inv)) {
-        return nullptr;
-    }
-
-    // Note: since we unfurled the shader above, we don't need to apply an outer_lm inverse
-    return shader->makeWithLocalMatrix(lm_inv * inverse * lm * outer_lm);
-}
-
-void SkBaseDevice::drawGlyphRunList(SkCanvas* canvas,
-                                    const SkGlyphRunList& glyphRunList,
-                                    const SkPaint& initialPaint,
-                                    const SkPaint& drawingPaint) {
-    if (!this->localToDevice().isFinite()) {
-        return;
-    }
-
-    if (!glyphRunList.hasRSXForm()) {
-        this->onDrawGlyphRunList(canvas, glyphRunList, initialPaint, drawingPaint);
-    } else {
-        this->simplifyGlyphRunRSXFormAndRedraw(canvas, glyphRunList, initialPaint, drawingPaint);
-    }
-}
-
-void SkBaseDevice::simplifyGlyphRunRSXFormAndRedraw(SkCanvas* canvas,
-                                                    const SkGlyphRunList& glyphRunList,
-                                                    const SkPaint& initialPaint,
-                                                    const SkPaint& drawingPaint) {
-    for (const SkGlyphRun& run : glyphRunList) {
-        if (run.scaledRotations().empty()) {
-            SkGlyphRunList subList{run, run.sourceBounds(drawingPaint), {0, 0}};
-            this->drawGlyphRunList(canvas, subList, initialPaint, drawingPaint);
-        } else {
-            SkPoint origin = glyphRunList.origin();
-            SkPoint sharedPos{0, 0};    // we're at the origin
-            SkGlyphID sharedGlyphID;
-            SkGlyphRun glyphRun {
-                    run.font(),
-                    SkSpan<const SkPoint>{&sharedPos, 1},
-                    SkSpan<const SkGlyphID>{&sharedGlyphID, 1},
-                    SkSpan<const char>{},
-                    SkSpan<const uint32_t>{},
-                    SkSpan<const SkVector>{}
-            };
-
-            for (auto [i, glyphID, pos] : SkMakeEnumerate(run.source())) {
-                sharedGlyphID = glyphID;
-                auto [scos, ssin] = run.scaledRotations()[i];
-                SkRSXform rsxForm = SkRSXform::Make(scos, ssin, pos.x(), pos.y());
-                SkMatrix glyphToLocal;
-                glyphToLocal.setRSXform(rsxForm).postTranslate(origin.x(), origin.y());
-
-                // We want to rotate each glyph by the rsxform, but we don't want to rotate "space"
-                // (i.e. the shader that cares about the ctm) so we have to undo our little ctm
-                // trick with a localmatrixshader so that the shader draws as if there was no
-                // change to the ctm.
-                SkPaint invertingPaint{drawingPaint};
-                invertingPaint.setShader(
-                        make_post_inverse_lm(drawingPaint.getShader(), glyphToLocal));
-                SkAutoCanvasRestore acr(canvas, true);
-                canvas->concat(SkM44(glyphToLocal));
-                SkGlyphRunList subList{glyphRun, glyphRun.sourceBounds(drawingPaint), {0, 0}};
-                this->drawGlyphRunList(canvas, subList, initialPaint, invertingPaint);
-            }
-        }
-    }
-}
-
-#if SK_SUPPORT_GPU
-sk_sp<GrSlug> SkBaseDevice::convertGlyphRunListToSlug(
-        const SkGlyphRunList& glyphRunList,
-        const SkPaint& initialPaint,
-        const SkPaint& drawingPaint) {
-    return nullptr;
-}
-
-void SkBaseDevice::drawSlug(SkCanvas*, const GrSlug*, const SkPaint&) {
-    SK_ABORT("GrSlug drawing not supported.");
-}
-#endif
 
 //////////////////////////////////////////////////////////////////////////////////////////
 

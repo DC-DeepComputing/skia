@@ -10,7 +10,6 @@
 #include "include/core/SkCanvas.h"
 #include "include/core/SkMath.h"
 #include "include/core/SkMatrix.h"
-#include "include/core/SkOpenTypeSVGDecoder.h"
 #include "include/core/SkPath.h"
 #include "include/core/SkPathEffect.h"
 #include "include/core/SkRefCnt.h"
@@ -23,10 +22,6 @@
 #include "src/core/SkImageFilter_Base.h"
 #include "src/core/SkOpts.h"
 #include "src/core/SkResourceCache.h"
-#include "src/core/SkScalerContext.h"
-#include "src/core/SkStrikeCache.h"
-#include "src/core/SkTSearch.h"
-#include "src/core/SkTypefaceCache.h"
 
 #include <stdlib.h>
 
@@ -40,11 +35,9 @@ void SkGraphics::Init() {
 
 void SkGraphics::DumpMemoryStatistics(SkTraceMemoryDump* dump) {
   SkResourceCache::DumpMemoryStatistics(dump);
-  SkStrikeCache::DumpMemoryStatistics(dump);
 }
 
 void SkGraphics::PurgeAllCaches() {
-    SkGraphics::PurgeFontCache();
     SkGraphics::PurgeResourceCache();
     SkImageFilter_Base::PurgeCache();
 }
@@ -59,7 +52,7 @@ static const struct {
     size_t fLen;
     size_t (*fFunc)(size_t);
 } gFlags[] = {
-    { kFontCacheLimitStr, kFontCacheLimitLen, SkGraphics::SetFontCacheLimit }
+    { kFontCacheLimitStr, kFontCacheLimitLen, nullptr }
 };
 
 /* flags are of the form param; or param=value; */
@@ -95,48 +88,6 @@ void SkGraphics::SetFlags(const char* flags) {
         }
         flags = nextSemi + 1;
     } while (nextSemi);
-}
-
-size_t SkGraphics::GetFontCacheLimit() {
-    return SkStrikeCache::GlobalStrikeCache()->getCacheSizeLimit();
-}
-
-size_t SkGraphics::SetFontCacheLimit(size_t bytes) {
-    return SkStrikeCache::GlobalStrikeCache()->setCacheSizeLimit(bytes);
-}
-
-size_t SkGraphics::GetFontCacheUsed() {
-    return SkStrikeCache::GlobalStrikeCache()->getTotalMemoryUsed();
-}
-
-int SkGraphics::GetFontCacheCountLimit() {
-    return SkStrikeCache::GlobalStrikeCache()->getCacheCountLimit();
-}
-
-int SkGraphics::SetFontCacheCountLimit(int count) {
-    return SkStrikeCache::GlobalStrikeCache()->setCacheCountLimit(count);
-}
-
-int SkGraphics::GetFontCacheCountUsed() {
-    return SkStrikeCache::GlobalStrikeCache()->getCacheCountUsed();
-}
-
-void SkGraphics::PurgeFontCache() {
-    SkStrikeCache::GlobalStrikeCache()->purgeAll();
-    SkTypefaceCache::PurgeAll();
-}
-
-static SkGraphics::OpenTypeSVGDecoderFactory gSVGDecoderFactory = nullptr;
-
-SkGraphics::OpenTypeSVGDecoderFactory
-SkGraphics::SetOpenTypeSVGDecoderFactory(OpenTypeSVGDecoderFactory svgDecoderFactory) {
-    OpenTypeSVGDecoderFactory old(gSVGDecoderFactory);
-    gSVGDecoderFactory = svgDecoderFactory;
-    return old;
-}
-
-SkGraphics::OpenTypeSVGDecoderFactory SkGraphics::GetOpenTypeSVGDecoderFactory() {
-    return gSVGDecoderFactory;
 }
 
 extern bool gSkVMAllowJIT;

@@ -6,6 +6,7 @@
  */
 
 #include "include/core/SkColorSpace.h"
+#include "include/core/SkPoint3.h"
 #include "include/core/SkString.h"
 #include "include/private/SkNx.h"
 #include "src/core/SkArenaAlloc.h"

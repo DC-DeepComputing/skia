@@ -24,8 +24,6 @@
 #include "src/gpu/ganesh/SurfaceFillContext.h"
 #include "src/gpu/ganesh/effects/GrSkSLFP.h"
 #include "src/gpu/ganesh/effects/GrTextureEffect.h"
-#include "src/gpu/ganesh/text/GrAtlasManager.h"
-#include "src/gpu/ganesh/text/GrTextBlobRedrawCoordinator.h"
 #include "src/image/SkImage_Base.h"
 #include "src/image/SkImage_Gpu.h"
 
@@ -160,27 +158,6 @@ void GrDirectContextPriv::printContextStats() const {
 }
 
 /////////////////////////////////////////////////
-sk_sp<SkImage> GrDirectContextPriv::testingOnly_getFontAtlasImage(MaskFormat format,
-                                                                  unsigned int index) {
-    auto atlasManager = this->getAtlasManager();
-    if (!atlasManager) {
-        return nullptr;
-    }
-
-    unsigned int numActiveProxies;
-    const GrSurfaceProxyView* views = atlasManager->getViews(format, &numActiveProxies);
-    if (index >= numActiveProxies || !views || !views[index].proxy()) {
-        return nullptr;
-    }
-
-    SkColorType colorType = skgpu::MaskFormatToColorType(format);
-    SkASSERT(views[index].proxy()->priv().isExact());
-    return sk_make_sp<SkImage_Gpu>(sk_ref_sp(this->context()),
-                                   kNeedNewImageUniqueID,
-                                   views[index],
-                                   SkColorInfo(colorType, kPremul_SkAlphaType, nullptr));
-}
-
 void GrDirectContextPriv::testingOnly_flushAndRemoveOnFlushCallbackObject(
         GrOnFlushCallbackObject* cb) {
     this->context()->flushAndSubmit();

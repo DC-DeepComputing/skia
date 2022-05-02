@@ -36,8 +36,6 @@ public:
     GrDirectContext* context() { return static_cast<GrDirectContext*>(fContext); }
     const GrDirectContext* context() const { return static_cast<const GrDirectContext*>(fContext); }
 
-    GrStrikeCache* getGrStrikeCache() { return this->context()->fStrikeCache.get(); }
-
     /**
      * Finalizes all pending reads and writes to the surfaces and also performs an MSAA resolves
      * if necessary. The GrSurfaceProxy array is treated as a hint. If it is supplied the context
@@ -87,11 +85,6 @@ public:
 
     GrGpu* getGpu() { return this->context()->fGpu.get(); }
     const GrGpu* getGpu() const { return this->context()->fGpu.get(); }
-
-    // This accessor should only ever be called by the GrOpFlushState.
-    GrAtlasManager* getAtlasManager() {
-        return this->context()->onGetAtlasManager();
-    }
 
     // This accessor should only ever be called by the GrOpFlushState.
     skgpu::v1::SmallPathAtlasMgr* getSmallPathAtlasMgr() {

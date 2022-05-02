@@ -313,21 +313,6 @@ protected:
 
     virtual void drawDrawable(SkCanvas*, SkDrawable*, const SkMatrix*);
 
-    // Only called with glyphRunLists that do not contain RSXForm.
-    virtual void onDrawGlyphRunList(SkCanvas*,
-                                    const SkGlyphRunList&,
-                                    const SkPaint& initialPaint,
-                                    const SkPaint& drawingPaint) = 0;
-
-    // GrSlug handling routines.
-#if SK_SUPPORT_GPU
-    virtual sk_sp<GrSlug> convertGlyphRunListToSlug(
-            const SkGlyphRunList& glyphRunList,
-            const SkPaint& initialPaint,
-            const SkPaint& drawingPaint);
-    virtual void drawSlug(SkCanvas*, const GrSlug* slug, const SkPaint& drawingPaint);
-#endif
-
     /**
      * The SkDevice passed will be an SkDevice which was returned by a call to
      * onCreateDevice on this device with kNeverTile_TileExpectation.
@@ -557,12 +542,6 @@ protected:
 
     void drawFilteredImage(const skif::Mapping&, SkSpecialImage* src, const SkImageFilter*,
                            const SkSamplingOptions&, const SkPaint&) override {}
-#if SK_SUPPORT_GPU
-    void drawSlug(SkCanvas*, const GrSlug*, const SkPaint&) override {}
-#endif
-
-    void onDrawGlyphRunList(
-            SkCanvas*, const SkGlyphRunList&, const SkPaint&, const SkPaint&) override {}
 
     bool isNoPixelsDevice() const override { return true; }
 

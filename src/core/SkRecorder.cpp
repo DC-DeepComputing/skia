@@ -11,10 +11,8 @@
 #include "include/core/SkPicture.h"
 #include "include/core/SkSurface.h"
 #include "include/private/SkTo.h"
-#include "include/private/chromium/GrSlug.h"
 #include "src/core/SkBigPicture.h"
 #include "src/core/SkCanvasPriv.h"
-#include "src/core/SkGlyphRun.h"
 #include "src/utils/SkPatchUtils.h"
 
 #include <memory>
@@ -227,27 +225,6 @@ void SkRecorder::onDrawImageLattice2(const SkImage* image, const Lattice& lattic
            lattice.fYCount, this->copy(lattice.fYDivs, lattice.fYCount),
            flagCount, this->copy(lattice.fRectTypes, flagCount),
            this->copy(lattice.fColors, flagCount), *lattice.fBounds, dst, filter);
-}
-
-void SkRecorder::onDrawTextBlob(const SkTextBlob* blob, SkScalar x, SkScalar y,
-                                const SkPaint& paint) {
-    TRY_MINIRECORDER(drawTextBlob, blob, x, y, paint);
-    this->append<SkRecords::DrawTextBlob>(paint, sk_ref_sp(blob), x, y);
-}
-
-#if SK_SUPPORT_GPU
-void SkRecorder::onDrawSlug(const GrSlug* slug) {
-    this->append<SkRecords::DrawSlug>(sk_ref_sp(slug));
-}
-#endif
-
-void SkRecorder::onDrawGlyphRunList(const SkGlyphRunList& glyphRunList, const SkPaint& paint) {
-    sk_sp<SkTextBlob> blob = sk_ref_sp(glyphRunList.blob());
-    if (glyphRunList.blob() == nullptr) {
-        blob = glyphRunList.makeBlob();
-    }
-
-    this->onDrawTextBlob(blob.get(), glyphRunList.origin().x(), glyphRunList.origin().y(), paint);
 }
 
 void SkRecorder::onDrawPicture(const SkPicture* pic, const SkMatrix* matrix, const SkPaint* paint) {
