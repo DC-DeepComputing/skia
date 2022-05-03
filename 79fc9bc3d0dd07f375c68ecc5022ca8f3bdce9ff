@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "28f54f2b_df2ba6e8",
+        "filename": "toolchain/clang_trampolines/clang_trampoline_linux.sh",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-05-03T19:40:10Z",
+      "side": 1,
+      "message": "I probably would have made a subfolder for each toolchain and not each trampoline. WDYT?",
+      "revId": "79fc9bc3d0dd07f375c68ecc5022ca8f3bdce9ff",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
