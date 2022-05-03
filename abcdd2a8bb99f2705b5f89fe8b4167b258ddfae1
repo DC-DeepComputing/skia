@@ -54,6 +54,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a59754d5_dd55bcf3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2022-05-03T15:46:38Z",
+      "side": 1,
+      "message": "Inline gifs are too expensive to check in, we can hold demos locally.",
+      "parentUuid": "3b2357a9_666986de",
+      "revId": "abcdd2a8bb99f2705b5f89fe8b4167b258ddfae1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2c890d14_5099d00c",
