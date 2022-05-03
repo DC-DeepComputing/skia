@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8b18de80_da8b894e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-05-03T21:53:43Z",
+      "side": 1,
+      "message": "For now, we\u0027re only testing on two x64 machines (one at 10.15, one at 12), and the M1 mini (also at 12). I initially intended to use all of the same machines that we use for CommandBuffer, but the 10.13 bots had egregious errors. This set of bots requires a few workarounds, but nothing too severe.\n\nWe can look at expanding (or changing) coverage, but this will get some bots on the tree, and then we can turn down all the CommandBuffer stuff.",
+      "revId": "c24bbea2cf9e8a3339572d5b8579a802612eedf4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
