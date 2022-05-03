@@ -34,6 +34,24 @@
       "parentUuid": "5d0511fa_23fbd1ae",
       "revId": "5115d81bd11cebfe6d476c530b8f1af80c12c465",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8ea5ddec_53c2fd9f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-05-03T16:10:47Z",
+      "side": 1,
+      "message": "We really need to cover all cases. If you want to create an SDFT atlas entry make a slug/blob with a font that has the 150 \u003c font size \u003c 200.",
+      "parentUuid": "f65ee86a_86f32b57",
+      "revId": "5115d81bd11cebfe6d476c530b8f1af80c12c465",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
