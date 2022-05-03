@@ -56,7 +56,7 @@ public:
     void appendInstanceAttribs(SkTArray<GrGeometryProcessor::Attribute>* instanceAttribs) const;
 
     struct Instance {
-        Instance(SkIPoint16 locationInAtlas, const SkIRect& pathDevIBounds, bool transposedInAtlas)
+        Instance(SkIPoint16 locationInAtlas, const SkIRect& pathDevIBounds, bool transposedInAtlas, bool foo)
                 : fLocationInAtlas(locationInAtlas)
                 , fPathDevIBounds(pathDevIBounds)
                 , fTransposedInAtlas(transposedInAtlas) {
