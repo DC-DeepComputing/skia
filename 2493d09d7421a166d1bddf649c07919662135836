@@ -80,6 +80,30 @@
       },
       "revId": "2493d09d7421a166d1bddf649c07919662135836",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f36e8a15_60141c2a",
+        "filename": "src/gpu/tessellate/StrokeTessellator.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-05-03T19:30:19Z",
+      "side": 1,
+      "message": "Ugh, I just realized I made a mistake here in interpreting the shader code. The SkSL accepted stroke radius, and the CPU code accepted stroke width, so the CPU code having the factor of 2 was converting strokeWidth to radius...  This will get resolved in a follow-up CL.",
+      "parentUuid": "f720f8e1_2329998b",
+      "range": {
+        "startLine": 97,
+        "startChar": 33,
+        "endLine": 97,
+        "endChar": 36
+      },
+      "revId": "2493d09d7421a166d1bddf649c07919662135836",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": []
