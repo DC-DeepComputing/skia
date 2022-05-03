@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7553ab0d_ff552057",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-05-03T14:02:19Z",
+      "side": 1,
+      "message": "I\u0027m not planning to land this. It\u0027s a very old CL I had laying around that added a new drawable type. Just got it rebased so you could see it - this is all of the code you\u0027d need for something like a skottie drawable.",
+      "revId": "bd974c1635582fbaf486e41c6e660e4ccfd04d10",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
