@@ -22,6 +22,30 @@
       },
       "revId": "42a4a7dbb96c01970bb4b412625bc1b21f8e1b31",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5d292ca0_805ec12c",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 290,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-05-03T13:34:00Z",
+      "side": 1,
+      "message": "Went with \"child output variable names\" and renamed the parameter from \"childNames\" to \"childOutputVarNames\"",
+      "parentUuid": "c781458c_33ce2f2d",
+      "range": {
+        "startLine": 290,
+        "startChar": 39,
+        "endLine": 290,
+        "endChar": 48
+      },
+      "revId": "42a4a7dbb96c01970bb4b412625bc1b21f8e1b31",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
