@@ -37,8 +37,8 @@ GrBackendTextureImageGenerator::RefHelper::~RefHelper() {
 
     // Generator has been freed, and no one is borrowing the texture. Notify the original cache
     // that it can free the last ref, so it happens on the correct thread.
-    GrTextureFreedMessage msg { fOriginalTexture, fOwningContextID };
-    SkMessageBus<GrTextureFreedMessage, GrDirectContext::DirectContextID>::Post(msg);
+    GrUnrefResourceMessage msg { fOriginalTexture, fOwningContextID };
+    SkMessageBus<GrUnrefResourceMessage, GrDirectContext::DirectContextID>::Post(msg);
 }
 
 std::unique_ptr<SkImageGenerator>
@@ -50,7 +50,7 @@ GrBackendTextureImageGenerator::Make(sk_sp<GrTexture> texture, GrSurfaceOrigin o
     // Attach our texture to this context's resource cache. This ensures that deletion will happen
     // in the correct thread/context. This adds the only ref to the texture that will persist from
     // this point. That ref will be released when the generator's RefHelper is freed.
-    dContext->priv().getResourceCache()->insertDelayedTextureUnref(texture.get());
+    dContext->priv().getResourceCache()->insertDelayedResourceUnref(texture.get());
 
     GrBackendTexture backendTexture = texture->getBackendTexture();
 
