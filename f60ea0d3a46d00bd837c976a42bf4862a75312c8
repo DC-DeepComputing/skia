@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bb362883_3a075b76",
+        "filename": "tests/graphite/UploadBufferManagerTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-05-03T13:27:26Z",
+      "side": 1,
+      "message": "Do we need any sanity check to confirm the \"shared\" buffer is large enough to hold our test data?",
+      "range": {
+        "startLine": 32,
+        "startChar": 33,
+        "endLine": 32,
+        "endChar": 39
+      },
+      "revId": "f60ea0d3a46d00bd837c976a42bf4862a75312c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e3deda22_e5634a71",
+        "filename": "tests/graphite/UploadBufferManagerTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-05-03T13:27:26Z",
+      "side": 1,
+      "message": "Should this be tested before we call transferToCommandBuffer above? In theory this should be a new buffer regardless since we transferredToCommandBuffer. Maybe do one large buffer before the transfer and then one small buffer after (which could have merged if it was still around) and assert non of those buffers match the first? Maybe even add in another small after the large before transfer to make sure we still continue to suballocate from the one buffer even if we got one large in between.",
+      "range": {
+        "startLine": 65,
+        "startChar": 4,
+        "endLine": 65,
+        "endChar": 74
+      },
+      "revId": "f60ea0d3a46d00bd837c976a42bf4862a75312c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a3f020e5_7aa980a3",
+        "filename": "tests/graphite/UploadBufferManagerTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-05-03T13:27:26Z",
+      "side": 1,
+      "message": "What is guaranteeing that 0 was written in the unused alignment bits?",
+      "range": {
+        "startLine": 95,
+        "startChar": 12,
+        "endLine": 95,
+        "endChar": 17
+      },
+      "revId": "f60ea0d3a46d00bd837c976a42bf4862a75312c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
