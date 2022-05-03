@@ -50,7 +50,6 @@ cc_library(
         ":SkCpu_src",
         ":SkCubicClipper_src",
         ":SkCubicMap_src",
-        ":SkCustomMeshPriv_src",
         ":SkCustomMesh_src",
         ":SkDataTable_src",
         ":SkData_src",
@@ -5567,15 +5566,9 @@ generated_cc_atom(
     deps = [
         ":SkSLTypeShared_hdr",
         "//include/core:SkCustomMesh_hdr",
+        "//include/core:SkData_hdr",
         "//include/private/gpu/ganesh:GrTypesPriv_hdr",
     ],
-)
-
-generated_cc_atom(
-    name = "SkCustomMeshPriv_src",
-    srcs = ["SkCustomMeshPriv.cpp"],
-    visibility = ["//:__subpackages__"],
-    deps = [":SkCustomMeshPriv_hdr"],
 )
 
 generated_cc_atom(
@@ -5585,6 +5578,7 @@ generated_cc_atom(
     visibility = ["//:__subpackages__"],
     deps = [
         ":SkCustomMeshPriv_hdr",
+        ":SkSafeMath_hdr",
         "//include/core:SkColorSpace_hdr",
         "//include/core:SkCustomMesh_hdr",
         "//include/core:SkMath_hdr",
