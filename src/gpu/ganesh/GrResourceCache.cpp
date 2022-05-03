@@ -28,7 +28,7 @@
 
 DECLARE_SKMESSAGEBUS_MESSAGE(skgpu::UniqueKeyInvalidatedMessage, uint32_t, true);
 
-DECLARE_SKMESSAGEBUS_MESSAGE(GrTextureFreedMessage, GrDirectContext::DirectContextID, true);
+DECLARE_SKMESSAGEBUS_MESSAGE(GrUnrefResourceMessage, GrDirectContext::DirectContextID, true);
 
 #define ASSERT_SINGLE_OWNER SKGPU_ASSERT_SINGLE_OWNER(fSingleOwner)
 
@@ -44,40 +44,40 @@ private:
 
 //////////////////////////////////////////////////////////////////////////////
 
-inline GrResourceCache::TextureAwaitingUnref::TextureAwaitingUnref() = default;
+inline GrResourceCache::ResourceAwaitingUnref::ResourceAwaitingUnref() = default;
 
-inline GrResourceCache::TextureAwaitingUnref::TextureAwaitingUnref(GrTexture* texture)
-        : fTexture(texture), fNumUnrefs(1) {}
+inline GrResourceCache::ResourceAwaitingUnref::ResourceAwaitingUnref(GrGpuResource* resource)
+        : fResource(resource), fNumUnrefs(1) {}
 
-inline GrResourceCache::TextureAwaitingUnref::TextureAwaitingUnref(TextureAwaitingUnref&& that) {
-    fTexture = std::exchange(that.fTexture, nullptr);
+inline GrResourceCache::ResourceAwaitingUnref::ResourceAwaitingUnref(ResourceAwaitingUnref&& that) {
+    fResource = std::exchange(that.fResource, nullptr);
     fNumUnrefs = std::exchange(that.fNumUnrefs, 0);
 }
 
-inline GrResourceCache::TextureAwaitingUnref& GrResourceCache::TextureAwaitingUnref::operator=(
-        TextureAwaitingUnref&& that) {
-    fTexture = std::exchange(that.fTexture, nullptr);
+inline GrResourceCache::ResourceAwaitingUnref& GrResourceCache::ResourceAwaitingUnref::operator=(
+        ResourceAwaitingUnref&& that) {
+    fResource = std::exchange(that.fResource, nullptr);
     fNumUnrefs = std::exchange(that.fNumUnrefs, 0);
     return *this;
 }
 
-inline GrResourceCache::TextureAwaitingUnref::~TextureAwaitingUnref() {
-    if (fTexture) {
+inline GrResourceCache::ResourceAwaitingUnref::~ResourceAwaitingUnref() {
+    if (fResource) {
         for (int i = 0; i < fNumUnrefs; ++i) {
-            fTexture->unref();
+            fResource->unref();
         }
     }
 }
 
-inline void GrResourceCache::TextureAwaitingUnref::TextureAwaitingUnref::addRef() { ++fNumUnrefs; }
+inline void GrResourceCache::ResourceAwaitingUnref::addRef() { ++fNumUnrefs; }
 
-inline void GrResourceCache::TextureAwaitingUnref::unref() {
+inline void GrResourceCache::ResourceAwaitingUnref::unref() {
     SkASSERT(fNumUnrefs > 0);
-    fTexture->unref();
+    fResource->unref();
     --fNumUnrefs;
 }
 
-inline bool GrResourceCache::TextureAwaitingUnref::finished() { return !fNumUnrefs; }
+inline bool GrResourceCache::ResourceAwaitingUnref::finished() { return !fNumUnrefs; }
 
 //////////////////////////////////////////////////////////////////////////////
 
@@ -85,7 +85,7 @@ GrResourceCache::GrResourceCache(skgpu::SingleOwner* singleOwner,
                                  GrDirectContext::DirectContextID owningContextID,
                                  uint32_t familyID)
         : fInvalidUniqueKeyInbox(familyID)
-        , fFreedTextureInbox(owningContextID)
+        , fUnrefResourceInbox(owningContextID)
         , fOwningContextID(owningContextID)
         , fContextUniqueID(familyID)
         , fSingleOwner(singleOwner) {
@@ -172,7 +172,7 @@ void GrResourceCache::abandonAll() {
 
     // We need to make sure to free any resources that were waiting on a free message but never
     // received one.
-    fTexturesAwaitingUnref.reset();
+    fResourcesAwaitingUnref.reset();
 
     while (fNonpurgeableResources.count()) {
         GrGpuResource* back = *(fNonpurgeableResources.end() - 1);
@@ -196,7 +196,7 @@ void GrResourceCache::abandonAll() {
     SkASSERT(!fBudgetedCount);
     SkASSERT(!fBudgetedBytes);
     SkASSERT(!fPurgeableBytes);
-    SkASSERT(!fTexturesAwaitingUnref.count());
+    SkASSERT(!fResourcesAwaitingUnref.count());
 }
 
 void GrResourceCache::releaseAll() {
@@ -208,7 +208,7 @@ void GrResourceCache::releaseAll() {
 
     // We need to make sure to free any resources that were waiting on a free message but never
     // received one.
-    fTexturesAwaitingUnref.reset();
+    fResourcesAwaitingUnref.reset();
 
     SkASSERT(fProxyProvider); // better have called setProxyProvider
     SkASSERT(fThreadSafeCache); // better have called setThreadSafeCache too
@@ -237,7 +237,7 @@ void GrResourceCache::releaseAll() {
     SkASSERT(!fBudgetedCount);
     SkASSERT(!fBudgetedBytes);
     SkASSERT(!fPurgeableBytes);
-    SkASSERT(!fTexturesAwaitingUnref.count());
+    SkASSERT(!fResourcesAwaitingUnref.count());
 }
 
 void GrResourceCache::refResource(GrGpuResource* resource) {
@@ -678,34 +678,34 @@ bool GrResourceCache::requestsFlush() const {
            fNumBudgetedResourcesFlushWillMakePurgeable > 0;
 }
 
-void GrResourceCache::insertDelayedTextureUnref(GrTexture* texture) {
-    texture->ref();
-    uint32_t id = texture->uniqueID().asUInt();
-    if (auto* data = fTexturesAwaitingUnref.find(id)) {
+void GrResourceCache::insertDelayedResourceUnref(GrGpuResource* resource) {
+    resource->ref();
+    uint32_t id = resource->uniqueID().asUInt();
+    if (auto* data = fResourcesAwaitingUnref.find(id)) {
         data->addRef();
     } else {
-        fTexturesAwaitingUnref.set(id, {texture});
+        fResourcesAwaitingUnref.set(id, {resource});
     }
 }
 
 void GrResourceCache::processFreedGpuResources() {
-    if (!fTexturesAwaitingUnref.count()) {
+    if (!fResourcesAwaitingUnref.count()) {
         return;
     }
 
-    SkTArray<GrTextureFreedMessage> msgs;
-    fFreedTextureInbox.poll(&msgs);
+    SkTArray<GrUnrefResourceMessage> msgs;
+    fUnrefResourceInbox.poll(&msgs);
     for (int i = 0; i < msgs.count(); ++i) {
-        SkASSERT(msgs[i].fIntendedRecipient == fOwningContextID);
-        uint32_t id = msgs[i].fTexture->uniqueID().asUInt();
-        TextureAwaitingUnref* info = fTexturesAwaitingUnref.find(id);
-        // If the GrContext was released or abandoned then fTexturesAwaitingUnref should have been
-        // empty and we would have returned early above. Thus, any texture from a message should be
-        // in the list of fTexturesAwaitingUnref.
+        SkASSERT(msgs[i].recipient == fOwningContextID);
+        uint32_t id = msgs[i].resource->uniqueID().asUInt();
+        ResourceAwaitingUnref* info = fResourcesAwaitingUnref.find(id);
+        // If the GrContext was released or abandoned then fResourcesAwaitingUnref should have been
+        // empty and we would have returned early above. Thus, any resource from a message should be
+        // in the list of fResourcesAwaitingUnref.
         SkASSERT(info);
         info->unref();
         if (info->finished()) {
-            fTexturesAwaitingUnref.remove(id);
+            fResourcesAwaitingUnref.remove(id);
         }
     }
 }

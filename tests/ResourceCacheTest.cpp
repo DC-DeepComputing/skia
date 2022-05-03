@@ -1580,13 +1580,13 @@ static void test_free_texture_messages(skiatest::Reporter* reporter) {
         wrapped[i]->setRelease(releaseProc, &freed[i]);
     }
 
-    cache->insertDelayedTextureUnref(wrapped[0]);
-    cache->insertDelayedTextureUnref(wrapped[1]);
+    cache->insertDelayedResourceUnref(wrapped[0]);
+    cache->insertDelayedResourceUnref(wrapped[1]);
 
     // An uncacheable cross-context should not be purged as soon as we drop our ref. This
     // is because inserting it as a cross-context resource actually holds a ref until the
     // message is received.
-    cache->insertDelayedTextureUnref(wrapped[2]);
+    cache->insertDelayedResourceUnref(wrapped[2]);
 
     REPORTER_ASSERT(reporter, 0 == (freed[0] + freed[1] + freed[2]));
 
@@ -1603,15 +1603,15 @@ static void test_free_texture_messages(skiatest::Reporter* reporter) {
     REPORTER_ASSERT(reporter, 0 == (freed[0] + freed[1] + freed[2]));
 
     // Send message to free the first resource
-    GrTextureFreedMessage msg1{wrapped[0], dContext->directContextID()};
-    SkMessageBus<GrTextureFreedMessage, GrDirectContext::DirectContextID>::Post(msg1);
+    GrUnrefResourceMessage msg1{wrapped[0], dContext->directContextID()};
+    SkMessageBus<GrUnrefResourceMessage, GrDirectContext::DirectContextID>::Post(msg1);
     cache->purgeAsNeeded();
 
     REPORTER_ASSERT(reporter, 1 == (freed[0] + freed[1] + freed[2]));
     REPORTER_ASSERT(reporter, 1 == freed[0]);
 
-    GrTextureFreedMessage msg2{wrapped[2], dContext->directContextID()};
-    SkMessageBus<GrTextureFreedMessage, GrDirectContext::DirectContextID>::Post(msg2);
+    GrUnrefResourceMessage msg2{wrapped[2], dContext->directContextID()};
+    SkMessageBus<GrUnrefResourceMessage, GrDirectContext::DirectContextID>::Post(msg2);
     cache->purgeAsNeeded();
 
     REPORTER_ASSERT(reporter, 2 == (freed[0] + freed[1] + freed[2]));
@@ -1670,7 +1670,7 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(ResourceMessagesAfterAbandon, reporter, ctxIn
 
     tex->setRelease(releaseProc, &freed);
 
-    cache->insertDelayedTextureUnref(tex);
+    cache->insertDelayedResourceUnref(tex);
 
     // Now only the cache is holding a ref to this texture
     tex->unref();
@@ -1686,8 +1686,8 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(ResourceMessagesAfterAbandon, reporter, ctxIn
 
     // In the past, creating this message could cause an exception due to
     // an un-safe downcast from GrTexture to GrGpuResource
-    GrTextureFreedMessage msg{tex, dContext->directContextID()};
-    SkMessageBus<GrTextureFreedMessage, GrDirectContext::DirectContextID>::Post(msg);
+    GrUnrefResourceMessage msg{tex, dContext->directContextID()};
+    SkMessageBus<GrUnrefResourceMessage, GrDirectContext::DirectContextID>::Post(msg);
 
     // This doesn't actually do anything but it does trigger us to read messages
     dContext->purgeUnlockedResources(false);
