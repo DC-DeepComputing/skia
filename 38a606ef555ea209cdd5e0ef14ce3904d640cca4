@@ -69,6 +69,24 @@
       "parentUuid": "c355d1c2_dcaf8f03",
       "revId": "38a606ef555ea209cdd5e0ef14ce3904d640cca4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "453b8d8f_eea48a17",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-05-03T13:30:15Z",
+      "side": 1,
+      "message": "There is actually another reason for this change. I want to get hold of the alloc before the Slug or TextBlob is created. I need to do this to unify SubRun creation with the Slug, TextBlob and the Remote Strike cache. We need to end up with a function of the form:\n(GrSubRunAlloc*, SkGlyphRunList, ...) -\u003e GrSubRunList without taking the SkGlyphRunPainterInterface. This will force all the SkGlyphRunPainterInterface implementations to be the same.",
+      "parentUuid": "d1a430ab_efe8a848",
+      "revId": "38a606ef555ea209cdd5e0ef14ce3904d640cca4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
