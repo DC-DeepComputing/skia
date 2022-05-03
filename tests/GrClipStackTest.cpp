@@ -5,8 +5,9 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+#include "include/core/SkTypes.h"
 
-#include "src/gpu/ganesh/v1/ClipStack.h"
+#if SK_SUPPORT_GPU
 #include "tests/Test.h"
 
 #include "include/core/SkColorSpace.h"
@@ -22,6 +23,7 @@
 #include "src/gpu/ganesh/GrDirectContextPriv.h"
 #include "src/gpu/ganesh/GrProxyProvider.h"
 #include "src/gpu/ganesh/ops/GrDrawOp.h"
+#include "src/gpu/ganesh/v1/ClipStack.h"
 #include "src/gpu/ganesh/v1/SurfaceDrawContext_v1.h"
 
 namespace {
@@ -2157,3 +2159,5 @@ DEF_GPUTEST_FOR_CONTEXTS(ClipStack_SWMask,
     cs = nullptr;
     verifyKeys({}, {keyADepth1, keyBDepth1});
 }
+
+#endif // SK_SUPPORT_GPU

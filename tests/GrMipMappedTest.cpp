@@ -4,17 +4,17 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
-
 #include "include/core/SkTypes.h"
+
+#if SK_SUPPORT_GPU
+#include "tests/Test.h"
 
 #include "include/core/SkCanvas.h"
 #include "include/core/SkPoint.h"
 #include "include/core/SkSurface.h"
+#include "include/core/SkTypes.h"
 #include "include/gpu/GrBackendSurface.h"
 #include "include/gpu/GrDirectContext.h"
-#ifdef SK_DIRECT3D
-#include "include/gpu/d3d/GrD3DTypes.h"
-#endif
 #include "src/gpu/ganesh/BaseDevice.h"
 #include "src/gpu/ganesh/GrBackendTextureImageGenerator.h"
 #include "src/gpu/ganesh/GrDirectContextPriv.h"
@@ -29,12 +29,15 @@
 #include "src/gpu/ganesh/v1/SurfaceDrawContext_v1.h"
 #include "src/image/SkImage_Base.h"
 #include "src/image/SkSurface_Gpu.h"
-#include "tests/Test.h"
 #include "tests/TestUtils.h"
 #include "tools/gpu/BackendSurfaceFactory.h"
 #include "tools/gpu/BackendTextureImageFactory.h"
 #include "tools/gpu/ManagedBackendTexture.h"
 #include "tools/gpu/ProxyUtils.h"
+
+#ifdef SK_DIRECT3D
+#include "include/gpu/d3d/GrD3DTypes.h"
+#endif
 
 static constexpr int kSize = 8;
 
@@ -537,3 +540,5 @@ DEF_GPUTEST(GrManyDependentsMipMappedTest, reporter, /* options */) {
         REPORTER_ASSERT(reporter, sdc2Task->dependsOn(mipRegenTask2));
     }
 }
+
+#endif // SK_SUPPORT_GPU

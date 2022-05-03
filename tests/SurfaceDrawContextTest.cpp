@@ -4,9 +4,10 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
-
 // This is a GPU-backend specific test.
+#include "include/core/SkTypes.h"
 
+#if SK_SUPPORT_GPU
 #include "tests/Test.h"
 
 #include "include/core/SkColorSpace.h"
@@ -72,3 +73,5 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(SurfaceDrawContextTest, reporter, ctxInfo) {
     // SurfaceDrawContext calls do not force the instantiation of a deferred
     // SurfaceDrawContext
 }
+
+#endif // SK_SUPPORT_GPU

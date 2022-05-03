@@ -4,8 +4,10 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
-
 #include "include/core/SkTypes.h"
+
+#if SK_SUPPORT_GPU
+#include "tests/Test.h"
 
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
@@ -18,7 +20,6 @@
 #include "include/effects/SkDashPathEffect.h"
 #include "include/gpu/GrDirectContext.h"
 #include "src/gpu/ganesh/geometry/GrStyledShape.h"
-#include "tests/Test.h"
 
 #include <initializer_list>
 
@@ -130,3 +131,5 @@ DEF_GPUTEST_FOR_ALL_CONTEXTS(PathTest_CrBug1232834, reporter, ctxInfo) {
     surface->getCanvas()->drawPath(path, paint);
     surface->flushAndSubmit();
 }
+
+#endif // SK_SUPPORT_GPU

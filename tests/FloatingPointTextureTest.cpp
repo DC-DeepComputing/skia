@@ -11,7 +11,9 @@
  * 32 bit floating point textures, and indeed floating point test values
  * have been selected to require 32 bits of precision and full IEEE conformance
  */
+#include "include/core/SkTypes.h"
 
+#if SK_SUPPORT_GPU
 #include "tests/Test.h"
 
 #include "include/core/SkColorSpace.h"
@@ -92,3 +94,5 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(HalfFloatRGBATextureTest, reporter, ctxInfo) 
                       kMaxIntegerRepresentableInHalfFloatingPoint, HALF_RGBA_CONTROL_ARRAY_SIZE,
                       GrColorType::kRGBA_F16);
 }
+
+#endif // SK_SUPPORT_GPU

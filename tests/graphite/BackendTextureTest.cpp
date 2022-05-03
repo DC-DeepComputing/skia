@@ -4,7 +4,9 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+#include "include/core/SkTypes.h"
 
+#if defined(SK_GRAPHITE_ENABLED)
 #include "tests/Test.h"
 
 #include "include/gpu/graphite/BackendTexture.h"
@@ -122,3 +124,4 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(SurfaceBackendTextureTest, reporter, context) {
     context->deleteBackendTexture(texture);
 }
 
+#endif // defined(SK_GRAPHITE_ENABLED)

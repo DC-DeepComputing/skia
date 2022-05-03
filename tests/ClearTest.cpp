@@ -4,6 +4,10 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+#include "include/core/SkTypes.h"
+
+#if SK_SUPPORT_GPU
+#include "tests/Test.h"
 
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
@@ -25,7 +29,6 @@
 #include "src/gpu/ganesh/GrImageInfo.h"
 #include "src/gpu/ganesh/ops/ClearOp.h"
 #include "src/gpu/ganesh/v1/SurfaceDrawContext_v1.h"
-#include "tests/Test.h"
 #include "tools/gpu/GrContextFactory.h"
 
 #include <cstdint>
@@ -368,3 +371,5 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(FullScreenClearWithLayers, reporter, ctxInfo)
     sk_gpu_test::GrContextFactory workaroundFactory(options);
     fullscreen_clear_with_layer_test(reporter, workaroundFactory.get(ctxInfo.type()));
 }
+
+#endif // SK_SUPPORT_GPU

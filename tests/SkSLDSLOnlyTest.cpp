@@ -4,11 +4,13 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+#include "include/core/SkTypes.h"
+
+#if SK_SUPPORT_GPU
+#include "tests/Test.h"
 
 #include "include/sksl/DSL.h"
 #include "include/sksl/DSLBlock.h"
-
-#include "tests/Test.h"
 
 #include <utility>
 
@@ -32,3 +34,5 @@ DEF_GPUTEST_FOR_MOCK_CONTEXT(DSLImportOnly, r, ctxInfo) {
     );
     End();
 }
+
+#endif // SK_SUPPORT_GPU

@@ -4,6 +4,10 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+#include "include/core/SkTypes.h"
+
+#if SK_SUPPORT_GPU
+#include "tests/Test.h"
 
 #include "include/core/SkCanvas.h"
 #include "include/core/SkSpan.h"
@@ -17,7 +21,6 @@
 #include "src/gpu/ganesh/GrSurfaceProxyPriv.h"
 #include "src/gpu/ganesh/GrTexture.h"
 #include "src/gpu/ganesh/GrTextureProxy.h"
-#include "tests/Test.h"
 #include "tools/gpu/ManagedBackendTexture.h"
 
 namespace {
@@ -501,3 +504,4 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(ResourceAllocatorMemoryBudgetTest, reporter, 
     }
 }
 
+#endif // SK_SUPPORT_GPU

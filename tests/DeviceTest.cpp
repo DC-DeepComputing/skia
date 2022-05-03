@@ -4,6 +4,10 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+#include "include/core/SkTypes.h"
+
+#if SK_SUPPORT_GPU
+#include "tests/Test.h"
 
 #include "include/core/SkBitmap.h"
 #include "include/core/SkImage.h"
@@ -16,7 +20,6 @@
 #include "src/core/SkDevice.h"
 #include "src/core/SkSpecialImage.h"
 #include "src/gpu/ganesh/GrDirectContextPriv.h"
-#include "tests/Test.h"
 #include "tools/gpu/GrContextFactory.h"
 
 class SkColorSpace;
@@ -126,3 +129,5 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(SpecialImage_GPUDevice, reporter, ctxInfo) {
     SkASSERT(2*kHeight == special->height());
     SkASSERT(SkIRect::MakeWH(2*kWidth, 2*kHeight) == special->subset());
 }
+
+#endif // SK_SUPPORT_GPU

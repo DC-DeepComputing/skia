@@ -4,11 +4,14 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+#include "include/core/SkTypes.h"
+
+#if SK_SUPPORT_GPU
+#include "tests/Test.h"
 
 #include "include/core/SkScalar.h"
 #include "src/gpu/ganesh/geometry/GrQuad.h"
 #include "src/gpu/ganesh/geometry/GrQuadUtils.h"
-#include "tests/Test.h"
 
 #define ASSERT(cond) REPORTER_ASSERT(r, cond)
 #define ASSERTF(cond, ...) REPORTER_ASSERT(r, cond, __VA_ARGS__)
@@ -269,3 +272,5 @@ TEST(FullyCovered) {
     perspective.setSkewY(8.f / 25.f);
     test_crop_fully_covered(r, perspective);
 }
+
+#endif // SK_SUPPORT_GPU
