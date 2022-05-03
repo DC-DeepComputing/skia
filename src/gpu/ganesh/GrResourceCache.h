@@ -32,14 +32,14 @@ namespace skgpu {
 class SingleOwner;
 }
 
-struct GrTextureFreedMessage {
-    GrTexture* fTexture;
-    GrDirectContext::DirectContextID fIntendedRecipient;
+struct GrUnrefResourceMessage {
+    GrGpuResource*                   resource;
+    GrDirectContext::DirectContextID recipient;
 };
 
-static inline bool SkShouldPostMessageToBus(
-        const GrTextureFreedMessage& msg, GrDirectContext::DirectContextID potentialRecipient) {
-    return potentialRecipient == msg.fIntendedRecipient;
+static inline bool SkShouldPostMessageToBus(const GrUnrefResourceMessage& msg,
+                                            GrDirectContext::DirectContextID potentialRecipient) {
+    return potentialRecipient == msg.recipient;
 }
 
 /**
@@ -195,8 +195,8 @@ public:
         purgeable. */
     bool requestsFlush() const;
 
-    /** Maintain a ref to this texture until we receive a GrTextureFreedMessage. */
-    void insertDelayedTextureUnref(GrTexture*);
+    /** Maintain a ref to this resource until we receive a GrUnrefResourceMessage. */
+    void insertDelayedResourceUnref(GrGpuResource*);
 
 #if GR_CACHE_STATS
     struct Stats {
@@ -308,24 +308,24 @@ private:
     };
     typedef SkTDynamicHash<GrGpuResource, skgpu::UniqueKey, UniqueHashTraits> UniqueHash;
 
-    class TextureAwaitingUnref {
+    class ResourceAwaitingUnref {
     public:
-        TextureAwaitingUnref();
-        TextureAwaitingUnref(GrTexture* texture);
-        TextureAwaitingUnref(const TextureAwaitingUnref&) = delete;
-        TextureAwaitingUnref& operator=(const TextureAwaitingUnref&) = delete;
-        TextureAwaitingUnref(TextureAwaitingUnref&&);
-        TextureAwaitingUnref& operator=(TextureAwaitingUnref&&);
-        ~TextureAwaitingUnref();
+        ResourceAwaitingUnref();
+        ResourceAwaitingUnref(GrGpuResource*);
+        ResourceAwaitingUnref(const ResourceAwaitingUnref&) = delete;
+        ResourceAwaitingUnref& operator=(const ResourceAwaitingUnref&) = delete;
+        ResourceAwaitingUnref(ResourceAwaitingUnref&&);
+        ResourceAwaitingUnref& operator=(ResourceAwaitingUnref&&);
+        ~ResourceAwaitingUnref();
         void addRef();
         void unref();
         bool finished();
 
     private:
-        GrTexture* fTexture = nullptr;
+        GrGpuResource* fResource = nullptr;
         int fNumUnrefs = 0;
     };
-    using TexturesAwaitingUnref = SkTHashMap<uint32_t, TextureAwaitingUnref>;
+    using ResourcesAwaitingUnref = SkTHashMap<uint32_t, ResourceAwaitingUnref>;
 
     static bool CompareTimestamp(GrGpuResource* const& a, GrGpuResource* const& b) {
         return a->cacheAccess().timestamp() < b->cacheAccess().timestamp();
@@ -335,8 +335,8 @@ private:
         return res->cacheAccess().accessCacheIndex();
     }
 
-    using TextureFreedMessageBus = SkMessageBus<GrTextureFreedMessage,
-                                                GrDirectContext::DirectContextID>;
+    using UnrefResourceMessageBus = SkMessageBus<GrUnrefResourceMessage,
+                                                 GrDirectContext::DirectContextID>;
 
     typedef SkMessageBus<skgpu::UniqueKeyInvalidatedMessage, uint32_t>::Inbox InvalidUniqueKeyInbox;
     typedef SkTDPQueue<GrGpuResource*, CompareTimestamp, AccessResourceIndex> PurgeableQueue;
@@ -378,8 +378,8 @@ private:
     int                                 fNumBudgetedResourcesFlushWillMakePurgeable = 0;
 
     InvalidUniqueKeyInbox               fInvalidUniqueKeyInbox;
-    TextureFreedMessageBus::Inbox       fFreedTextureInbox;
-    TexturesAwaitingUnref               fTexturesAwaitingUnref;
+    UnrefResourceMessageBus::Inbox      fUnrefResourceInbox;
+    ResourcesAwaitingUnref              fResourcesAwaitingUnref;
 
     GrDirectContext::DirectContextID    fOwningContextID;
     uint32_t                            fContextUniqueID = SK_InvalidUniqueID;
