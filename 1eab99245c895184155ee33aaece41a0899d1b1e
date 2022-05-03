@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ab3708a8_e8a82f85",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18274
+      },
+      "writtenOn": "2022-05-03T20:59:47Z",
+      "side": 1,
+      "message": "Greg, I created this CL as a dependent change to the previous, currently active, CL.",
+      "revId": "1eab99245c895184155ee33aaece41a0899d1b1e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
