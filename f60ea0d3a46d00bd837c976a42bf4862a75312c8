@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "941f197c_3a75572e",
+        "filename": "tests/graphite/UploadBufferManagerTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-05-03T15:17:47Z",
+      "side": 1,
+      "message": "I think the writers should assert that they\u0027re not writing beyond the end of the buffer: https://crsrc.org/c/third_party/skia/src/gpu/BufferWriter.h;l\u003d454.",
+      "parentUuid": "bb362883_3a075b76",
+      "range": {
+        "startLine": 32,
+        "startChar": 33,
+        "endLine": 32,
+        "endChar": 39
+      },
+      "revId": "f60ea0d3a46d00bd837c976a42bf4862a75312c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e3deda22_e5634a71",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b6b6a23e_8580ad01",
+        "filename": "tests/graphite/UploadBufferManagerTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-05-03T15:17:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e3deda22_e5634a71",
+      "range": {
+        "startLine": 65,
+        "startChar": 4,
+        "endLine": 65,
+        "endChar": 74
+      },
+      "revId": "f60ea0d3a46d00bd837c976a42bf4862a75312c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a3f020e5_7aa980a3",
@@ -60,6 +108,30 @@
       "writtenOn": "2022-05-03T13:27:26Z",
       "side": 1,
       "message": "What is guaranteeing that 0 was written in the unused alignment bits?",
+      "range": {
+        "startLine": 95,
+        "startChar": 12,
+        "endLine": 95,
+        "endChar": 17
+      },
+      "revId": "f60ea0d3a46d00bd837c976a42bf4862a75312c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e7bcece9_a8419984",
+        "filename": "tests/graphite/UploadBufferManagerTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-05-03T15:17:47Z",
+      "side": 1,
+      "message": "Good catch; I originally was going to use a bunch of mock objects for these tests, and the mock buffers initialized zero-filled. I do think Metal does this as well (https://developer.apple.com/documentation/metal/mtldevice/1433375-newbufferwithlength) but maybe not something we should depend on?",
+      "parentUuid": "a3f020e5_7aa980a3",
       "range": {
         "startLine": 95,
         "startChar": 12,
