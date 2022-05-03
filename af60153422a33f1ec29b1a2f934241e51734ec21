@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "60349b6c_d06f0101",
+        "filename": "gn/gpu.gni",
+        "patchSetId": 3
+      },
+      "lineNbr": 831,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-05-03T17:17:12Z",
+      "side": 1,
+      "message": "Moved into skia_shared_gpu_sources",
+      "range": {
+        "startLine": 831,
+        "startChar": 4,
+        "endLine": 831,
+        "endChar": 8
+      },
+      "revId": "af60153422a33f1ec29b1a2f934241e51734ec21",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
