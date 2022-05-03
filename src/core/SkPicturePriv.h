@@ -117,6 +117,19 @@ public:
         kAnisotropicFilter                  = 92,
 
         // Only SKPs within the min/current picture version range (inclusive) can be read.
+        //
+        // When updating kMin_Version also update oldestSupportedSkpVersion in
+        // infra/bots/gen_tasks_logic/gen_tasks_logic.go
+        //
+        // Steps on how to find which oldestSupportedSkpVersion to use:
+        // * Find the git hash when the desired kMin_Version was the kCurrent_Version from the logs:
+        //   https://skia.googlesource.com/skia/+log/main/src/core/SkPicturePriv.h
+        //   Eg: https://skia.googlesource.com/skia/+/bfd330d081952424a93d51715653e4d1314d4822%5E%21/#F1
+        // * Use that git hash to find the SKP asset number at that time here:
+        //   https://skia.googlesource.com/skia/+/bfd330d081952424a93d51715653e4d1314d4822/infra/bots/assets/skp/VERSION
+        //
+        // Contact the Infra Gardener (or directly ping rmistry@) if the above steps do not work
+        // for you.
         kMin_Version     = kPictureShaderFilterParam_Version,
         kCurrent_Version = kAnisotropicFilter
     };
