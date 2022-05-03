@@ -1,0 +1,349 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "66144255_1314d0a3",
+        "filename": "toolchain/BUILD.bazel",
+        "patchSetId": 5
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-05-03T19:38:27Z",
+      "side": 1,
+      "message": "linux to extract ar archives will...",
+      "range": {
+        "startLine": 14,
+        "startChar": 24,
+        "endLine": 14,
+        "endChar": 53
+      },
+      "revId": "d36b12163c968ccf17d42cf9de39d1920915612d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d2218623_5516605a",
+        "filename": "toolchain/BUILD.bazel",
+        "patchSetId": 5
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-05-03T19:38:27Z",
+      "side": 1,
+      "message": "probably don\u0027t need duplicate comments so close to each other.",
+      "range": {
+        "startLine": 30,
+        "startChar": 32,
+        "endLine": 30,
+        "endChar": 40
+      },
+      "revId": "d36b12163c968ccf17d42cf9de39d1920915612d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4161fcea_5d3d9a2a",
+        "filename": "toolchain/download_mac_m1_toolchain.bzl",
+        "patchSetId": 5
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-05-03T19:38:27Z",
+      "side": 1,
+      "message": "need to fill in?",
+      "range": {
+        "startLine": 9,
+        "startChar": 29,
+        "endLine": 9,
+        "endChar": 48
+      },
+      "revId": "d36b12163c968ccf17d42cf9de39d1920915612d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3ad73049_9920184c",
+        "filename": "toolchain/download_mac_m1_toolchain.bzl",
+        "patchSetId": 5
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-05-03T19:38:27Z",
+      "side": 1,
+      "message": "nit: wrap comments to 100 columns",
+      "range": {
+        "startLine": 31,
+        "startChar": 95,
+        "endLine": 31,
+        "endChar": 115
+      },
+      "revId": "d36b12163c968ccf17d42cf9de39d1920915612d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "332ed0ea_eb8f810b",
+        "filename": "toolchain/download_mac_m1_toolchain.bzl",
+        "patchSetId": 5
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-05-03T19:38:27Z",
+      "side": 1,
+      "message": "We don\u0027t ask the user to set up anything special, right? We just need them to install XCode and make sure xcode-select is on the path, right?",
+      "range": {
+        "startLine": 33,
+        "startChar": 15,
+        "endLine": 33,
+        "endChar": 61
+      },
+      "revId": "d36b12163c968ccf17d42cf9de39d1920915612d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "daf4c20f_bbba7899",
+        "filename": "toolchain/download_mac_m1_toolchain.bzl",
+        "patchSetId": 5
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-05-03T19:38:27Z",
+      "side": 1,
+      "message": "Link to the most up to date version of Bazel docs, e.g. https://bazel.build/rules/lib/actions#symlink\n\nAlso, move this right above the symlink command",
+      "range": {
+        "startLine": 35,
+        "startChar": 40,
+        "endLine": 35,
+        "endChar": 45
+      },
+      "revId": "d36b12163c968ccf17d42cf9de39d1920915612d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "935e7b0e_d037cee9",
+        "filename": "toolchain/download_mac_m1_toolchain.bzl",
+        "patchSetId": 5
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-05-03T19:38:27Z",
+      "side": 1,
+      "message": "Add documentation about this xcode-select executable, linking to official docs if possible.",
+      "range": {
+        "startLine": 36,
+        "startChar": 24,
+        "endLine": 36,
+        "endChar": 35
+      },
+      "revId": "d36b12163c968ccf17d42cf9de39d1920915612d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7c7b94a0_b7e35592",
+        "filename": "toolchain/download_mac_m1_toolchain.bzl",
+        "patchSetId": 5
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-05-03T19:38:27Z",
+      "side": 1,
+      "message": "Is there anything special or required about this name? Could we make it shorter, like ./symlinks/xcode?",
+      "range": {
+        "startLine": 41,
+        "startChar": 20,
+        "endLine": 41,
+        "endChar": 36
+      },
+      "revId": "d36b12163c968ccf17d42cf9de39d1920915612d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "64652866_601bfb8d",
+        "filename": "toolchain/download_mac_m1_toolchain.bzl",
+        "patchSetId": 5
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-05-03T19:38:27Z",
+      "side": 1,
+      "message": "all the files except... because....\n\nIt would be nice to know why that exclude is there.",
+      "range": {
+        "startLine": 44,
+        "startChar": 51,
+        "endLine": 44,
+        "endChar": 56
+      },
+      "revId": "d36b12163c968ccf17d42cf9de39d1920915612d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5dd8c224_f733c907",
+        "filename": "toolchain/download_mac_m1_toolchain.bzl",
+        "patchSetId": 5
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-05-03T19:38:27Z",
+      "side": 1,
+      "message": "Nice :)",
+      "range": {
+        "startLine": 51,
+        "startChar": 36,
+        "endLine": 51,
+        "endChar": 61
+      },
+      "revId": "d36b12163c968ccf17d42cf9de39d1920915612d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "58d0cab7_a3bb2a24",
+        "filename": "toolchain/download_mac_m1_toolchain.bzl",
+        "patchSetId": 5
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-05-03T19:38:27Z",
+      "side": 1,
+      "message": "typo",
+      "range": {
+        "startLine": 71,
+        "startChar": 34,
+        "endLine": 71,
+        "endChar": 41
+      },
+      "revId": "d36b12163c968ccf17d42cf9de39d1920915612d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eb3c4129_a73efc81",
+        "filename": "toolchain/download_mac_m1_toolchain.bzl",
+        "patchSetId": 5
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-05-03T19:38:27Z",
+      "side": 1,
+      "message": "nit: $PATH",
+      "range": {
+        "startLine": 72,
+        "startChar": 32,
+        "endLine": 72,
+        "endChar": 36
+      },
+      "revId": "d36b12163c968ccf17d42cf9de39d1920915612d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4772194a_e0078f6a",
+        "filename": "toolchain/mac_M1_toolchain_config.bzl",
+        "patchSetId": 5
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-05-03T19:38:27Z",
+      "side": 1,
+      "message": "Not quite, it depends on XCode, right?",
+      "range": {
+        "startLine": 2,
+        "startChar": 64,
+        "endLine": 3,
+        "endChar": 41
+      },
+      "revId": "d36b12163c968ccf17d42cf9de39d1920915612d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f165f3b6_4b3ccee5",
+        "filename": "toolchain/mac_M1_toolchain_config.bzl",
+        "patchSetId": 5
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-05-03T19:38:27Z",
+      "side": 1,
+      "message": "Maybe we should just add the EXTERNAL_TOOLCHAIN to this variable so we don\u0027t forget when we use this?",
+      "range": {
+        "startLine": 28,
+        "startChar": 28,
+        "endLine": 28,
+        "endChar": 62
+      },
+      "revId": "d36b12163c968ccf17d42cf9de39d1920915612d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "edb51f7c_b58e4dec",
+        "filename": "toolchain/mac_M1_toolchain_config.bzl",
+        "patchSetId": 5
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-05-03T19:38:27Z",
+      "side": 1,
+      "message": "This probably needs to be made mac-specific.",
+      "range": {
+        "startLine": 50,
+        "startChar": 64,
+        "endLine": 50,
+        "endChar": 97
+      },
+      "revId": "d36b12163c968ccf17d42cf9de39d1920915612d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
