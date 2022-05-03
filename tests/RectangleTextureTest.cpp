@@ -4,9 +4,10 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+#include "include/core/SkTypes.h"
 
+#if defined(SK_GL)
 #include "tests/Test.h"
-#include "tests/TestUtils.h"
 
 #include "include/core/SkColorSpace.h"
 #include "include/gpu/GrDirectContext.h"
@@ -16,10 +17,9 @@
 #include "src/gpu/ganesh/SkGr.h"
 #include "src/gpu/ganesh/SurfaceFillContext.h"
 #include "src/gpu/ganesh/effects/GrTextureEffect.h"
-#ifdef SK_GL
 #include "src/gpu/ganesh/gl/GrGLGpu.h"
 #include "src/gpu/ganesh/gl/GrGLUtil.h"
-#endif
+#include "tests/TestUtils.h"
 #include "tools/gpu/ProxyUtils.h"
 
 // skbug.com/5932
@@ -116,7 +116,6 @@ static void test_copy_to_surface(skiatest::Reporter* reporter,
     }
 }
 
-#ifdef SK_GL
 DEF_GPUTEST_FOR_GL_RENDERING_CONTEXTS(RectangleTexture, reporter, ctxInfo) {
     auto dContext = ctxInfo.directContext();
 
@@ -198,4 +197,5 @@ DEF_GPUTEST_FOR_GL_RENDERING_CONTEXTS(RectangleTexture, reporter, ctxInfo) {
         dContext->deleteBackendTexture(rectangleTex);
     }
 }
-#endif
+
+#endif // SK_GL

@@ -4,6 +4,10 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+#include "include/core/SkTypes.h"
+
+#if SK_SUPPORT_GPU
+#include "tests/Test.h"
 
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
@@ -27,7 +31,6 @@
 #include "src/gpu/ganesh/GrCaps.h"
 #include "src/gpu/ganesh/GrRecordingContextPriv.h"
 #include "src/image/SkImage_Base.h"
-#include "tests/Test.h"
 #include "tools/Resources.h"
 #include "tools/ToolUtils.h"
 
@@ -2081,3 +2084,5 @@ DEF_TEST(DropShadowImageFilter_Huge, reporter) {
     surf->getCanvas()->saveLayer(nullptr, &paint);
     surf->getCanvas()->restore();
 }
+
+#endif // SK_SUPPORT_GPU

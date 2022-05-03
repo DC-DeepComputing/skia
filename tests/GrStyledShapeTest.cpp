@@ -5,6 +5,11 @@
  * found in the LICENSE file.
  */
 
+#include "include/core/SkTypes.h"
+
+#if SK_SUPPORT_GPU
+#include "tests/Test.h"
+
 #include "include/core/SkCanvas.h"
 #include "include/core/SkPath.h"
 #include "include/core/SkSurface.h"
@@ -13,7 +18,6 @@
 #include "src/core/SkPathEffectBase.h"
 #include "src/core/SkRectPriv.h"
 #include "src/gpu/ganesh/geometry/GrStyledShape.h"
-#include "tests/Test.h"
 
 #include <initializer_list>
 #include <functional>
@@ -2385,3 +2389,5 @@ DEF_TEST(GrShapeInversion, r) {
     inverseRRect.reset();
     REPORTER_ASSERT(r, !inverseRRect.inverted() && inverseRRect.isEmpty());
 }
+
+#endif // SK_SUPPORT_GPU

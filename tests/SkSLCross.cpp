@@ -4,6 +4,10 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+#include "include/core/SkTypes.h"
+
+#if SK_SUPPORT_GPU
+#include "tests/Test.h"
 
 #include "include/core/SkAlphaType.h"
 #include "include/core/SkBlendMode.h"
@@ -29,7 +33,6 @@
 #include "src/gpu/ganesh/glsl/GrGLSLProgramDataManager.h"
 #include "src/gpu/ganesh/glsl/GrGLSLUniformHandler.h"
 #include "src/gpu/ganesh/v1/SurfaceDrawContext_v1.h"
-#include "tests/Test.h"
 #include "tools/gpu/GrContextFactory.h"
 
 #include <memory>
@@ -146,3 +149,5 @@ static void run_test(skiatest::Reporter* reporter, GrDirectContext* directContex
         REPORTER_ASSERT(reporter, result == GrColorPackRGBA(0, 0, 0, 255));  // Black.
     }
 }
+
+#endif // SK_SUPPORT_GPU

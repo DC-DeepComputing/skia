@@ -4,10 +4,10 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+#include "include/core/SkTypes.h"
 
-#include "tools/ToolUtils.h"
-
-#include <string>
+#if SK_SUPPORT_GPU
+#include "tests/Test.h"
 
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
@@ -21,17 +21,17 @@
 #include "include/gpu/GrDirectContext.h"
 #include "src/core/SkGlyphRun.h"
 #include "src/gpu/ganesh/GrDirectContextPriv.h"
-#include "tools/fonts/RandomScalerContext.h"
-
-#ifdef SK_BUILD_FOR_WIN
-    #include "include/ports/SkTypeface_win.h"
-#endif
-
-#include "tests/Test.h"
-
 #include "src/gpu/ganesh/GrDirectContextPriv.h"
 #include "src/gpu/ganesh/text/GrAtlasManager.h"
 #include "src/gpu/ganesh/text/GrTextBlobRedrawCoordinator.h"
+#include "tools/ToolUtils.h"
+#include "tools/fonts/RandomScalerContext.h"
+
+#ifdef SK_BUILD_FOR_WIN
+#include "include/ports/SkTypeface_win.h"
+#endif
+
+#include <string>
 
 static void draw(SkCanvas* canvas, int redraw, const SkTArray<sk_sp<SkTextBlob>>& blobs) {
     int yOffset = 0;
@@ -383,3 +383,5 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(TextBlobSmoothScroll, reporter, ctxInfo) {
         }
     }
 }
+
+#endif // SK_SUPPORT_GPU

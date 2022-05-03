@@ -4,6 +4,10 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+#include "include/core/SkTypes.h"
+
+#if SK_SUPPORT_GPU
+#include "tests/Test.h"
 
 #include "include/core/SkCanvas.h"
 #include "include/core/SkSurface.h"
@@ -12,7 +16,6 @@
 #include "src/gpu/ganesh/GrTexture.h"
 #include "src/image/SkImage_Base.h"
 #include "src/image/SkImage_GpuBase.h"
-#include "tests/Test.h"
 #include "tools/gpu/ProxyUtils.h"
 
 // Tests that MIP maps are created and invalidated as expected when drawing to and from GrTextures.
@@ -115,3 +118,5 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(ReimportImageTextureWithMipLevels, reporter, 
     img.reset();
     texRelease(btex);
 }
+
+#endif // SK_SUPPORT_GPU

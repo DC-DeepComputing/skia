@@ -4,6 +4,10 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+#include "include/core/SkTypes.h"
+
+#if SK_SUPPORT_GPU
+#include "tests/Test.h"
 
 #include "include/gpu/GrDirectContext.h"
 #include "src/gpu/ganesh/GrDirectContextPriv.h"
@@ -13,7 +17,7 @@
 #include "src/gpu/ganesh/GrRecordingContextPriv.h"
 #include "src/gpu/ganesh/ops/GrOp.h"
 #include "src/gpu/ganesh/ops/OpsTask.h"
-#include "tests/Test.h"
+
 #include <iterator>
 
 // We create Ops that write a value into a range of a buffer. We create ranges from
@@ -258,3 +262,5 @@ DEF_GPUTEST(OpChainTest, reporter, /*ctxInfo*/) {
         }
     }
 }
+
+#endif // SK_SUPPORT_GPU

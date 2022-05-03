@@ -4,6 +4,10 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+#include "include/core/SkTypes.h"
+
+#if SK_SUPPORT_GPU
+#include "tests/Test.h"
 
 #include "include/core/SkBitmap.h"
 #include "include/core/SkColor.h"
@@ -29,7 +33,6 @@
 #include "src/gpu/ganesh/GrPaint.h"
 #include "src/gpu/ganesh/GrStyle.h"
 #include "src/gpu/ganesh/v1/SurfaceDrawContext_v1.h"
-#include "tests/Test.h"
 #include "tools/gpu/GrContextFactory.h"
 
 #include <utility>
@@ -137,3 +140,5 @@ DEF_GPUTEST_FOR_CONTEXTS(DefaultPathRendererTest,
 
     run_test(ctx, reporter);
 }
+
+#endif // SK_SUPPORT_GPU

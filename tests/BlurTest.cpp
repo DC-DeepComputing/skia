@@ -27,18 +27,21 @@
 #include "include/core/SkSurface.h"
 #include "include/core/SkTypes.h"
 #include "include/effects/SkPerlinNoiseShader.h"
-#include "include/gpu/GrDirectContext.h"
 #include "include/private/SkFloatBits.h"
 #include "include/private/SkTPin.h"
 #include "src/core/SkBlurMask.h"
-#include "src/core/SkGpuBlurUtils.h"
 #include "src/core/SkMask.h"
 #include "src/core/SkMaskFilterBase.h"
 #include "src/core/SkMathPriv.h"
 #include "src/effects/SkEmbossMaskFilter.h"
 #include "tests/Test.h"
 #include "tools/ToolUtils.h"
+
+#if SK_SUPPORT_GPU
+#include "include/gpu/GrDirectContext.h"
+#include "src/core/SkGpuBlurUtils.h"
 #include "tools/gpu/GrContextFactory.h"
+#endif
 
 #include <math.h>
 #include <string.h>
@@ -433,6 +436,7 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(SmallBoxBlurBug, reporter, ctxInfo) {
     canvas->drawRRect(rr, p);
 }
 
+#if SK_SUPPORT_GPU
 DEF_TEST(BlurredRRectNinePatchComputation, reporter) {
     const SkRect r = SkRect::MakeXYWH(10, 10, 100, 100);
     static const SkScalar kBlurRad = 3.0f;
@@ -493,6 +497,7 @@ DEF_TEST(BlurredRRectNinePatchComputation, reporter) {
         REPORTER_ASSERT(reporter, SkScalarNearlyEqual(SkIntToScalar(size.fHeight), kYAns));
     }
 }
+#endif // SK_SUPPORT_GPU
 
 // https://crbugs.com/787712
 DEF_TEST(EmbossPerlinCrash, reporter) {

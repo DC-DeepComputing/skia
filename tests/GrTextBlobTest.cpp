@@ -4,6 +4,10 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+#include "include/core/SkTypes.h"
+
+#if SK_SUPPORT_GPU
+#include "tests/Test.h"
 
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
@@ -11,7 +15,6 @@
 #include "include/core/SkTextBlob.h"
 #include "src/core/SkSurfacePriv.h"
 #include "src/gpu/ganesh/text/GrTextBlob.h"
-#include "tests/Test.h"
 #include "tools/ToolUtils.h"
 
 SkBitmap rasterize_blob(SkTextBlob* blob,
@@ -320,3 +323,5 @@ DEF_TEST(GrSubRunAllocator, r) {
         REPORTER_ASSERT(r, ((intptr_t)ptr & 7) == 0);
     }
 }
+
+#endif // SK_SUPPORT_GPU
