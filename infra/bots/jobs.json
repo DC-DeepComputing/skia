@@ -118,6 +118,7 @@
   {"name": "Build-Mac-Clang-x64-Release-iOS"},
   {"name": "Build-Mac-Clang-x86_64-Debug"},
   {"name": "Build-Mac-Clang-x86_64-Debug-ANGLE"},
+  {"name": "Build-Mac-Clang-x86_64-Debug-Dawn"},
   {"name": "Build-Mac-Clang-x86_64-Debug-ASAN"},
   {"name": "Build-Mac-Clang-x86_64-Debug-ASAN_Metal"},
   {"name": "Build-Mac-Clang-x86_64-Debug-CommandBuffer"},
@@ -138,6 +139,7 @@
   {"name": "Build-Mac-Clang-x86_64-Release-TSAN_Metal"},
   {"name": "Build-Win-Clang-arm64-Debug"},
   {"name": "Build-Win-Clang-arm64-Debug-ANGLE"},
+  {"name": "Build-Mac-Clang-arm64-Debug-Dawn"},
   {"name": "Build-Mac-Clang-arm64-Debug-Graphite",
    "cq_config": {}
    },
@@ -623,6 +625,7 @@
   {"name": "Test-Mac12-Clang-MacMini9.1-GPU-AppleM1-arm64-Debug-All-NativeFonts"},
   {"name": "Test-Mac12-Clang-MacMini9.1-GPU-AppleM1-arm64-Debug-All-Metal"},
   {"name": "Test-Mac12-Clang-MacMini9.1-GPU-AppleM1-arm64-Debug-All-Slug"},
+  {"name": "Test-Mac12-Clang-MacMini9.1-GPU-AppleM1-arm64-Debug-All-Dawn"},
   {"name": "Test-Mac12-Clang-MacMini9.1-GPU-AppleM1-arm64-Release-All-Metal"},
   {"name": "Test-Ubuntu18-Clang-Golo-GPU-QuadroP400-x86_64-Debug-All-DDL1"},
   {"name": "Test-Ubuntu18-Clang-Golo-GPU-QuadroP400-x86_64-Debug-All-DDL1_Vulkan"},
