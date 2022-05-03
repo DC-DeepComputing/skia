@@ -174,6 +174,8 @@ bool AtlasPathRenderer::addPathToAtlas(GrRecordingContext* rContext,
                                        SkIPoint16* locationInAtlas,
                                        bool* transposedInAtlas,
                                        const DrawRefsAtlasCallback& drawRefsAtlasCallback) {
+    SkDebugf("addPathToAtlas\n");
+
     SkASSERT(!viewMatrix.hasPerspective());  // See onCanDrawPath().
 
     pathDevBounds.roundOut(devIBounds);
@@ -316,7 +318,8 @@ bool AtlasPathRenderer::onDrawPath(const DrawPathArgs& args) {
                                           std::move(args.fPaint), locationInAtlas,
                                           devIBounds, transposedInAtlas,
                                           fAtlasRenderTasks.back()->readView(caps),
-                                          args.fShape->inverseFilled());
+                                          args.fShape->inverseFilled(),
+                                          true); //$$
     args.fSurfaceDrawContext->addDrawOp(args.fClip, std::move(op));
     return true;
 }
