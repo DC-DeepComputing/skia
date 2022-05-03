@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3acb226c_5115d8e1",
+        "filename": "src/gpu/ganesh/tessellate/shaders/GrStrokeTessellationShader.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-05-03T17:36:25Z",
+      "side": 1,
+      "message": "Maybe \u0027b\u0027 and \u0027a\u0027 ?",
+      "range": {
+        "startLine": 22,
+        "startChar": 6,
+        "endLine": 22,
+        "endChar": 7
+      },
+      "revId": "04889b622a907815cb902ecba08b1445ee763aaa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f2e0448e_011c7491",
+        "filename": "src/gpu/ganesh/tessellate/shaders/GrStrokeTessellationShader.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-05-03T17:36:25Z",
+      "side": 1,
+      "message": "Why are the next 3 static ?",
+      "range": {
+        "startLine": 58,
+        "startChar": 0,
+        "endLine": 58,
+        "endChar": 6
+      },
+      "revId": "04889b622a907815cb902ecba08b1445ee763aaa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d871b9e8_9b988e11",
+        "filename": "src/gpu/ganesh/tessellate/shaders/GrStrokeTessellationShader.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 331,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-05-03T17:36:25Z",
+      "side": 1,
+      "message": "Missing indent ?",
+      "revId": "04889b622a907815cb902ecba08b1445ee763aaa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
