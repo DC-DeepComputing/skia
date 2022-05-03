@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "80b97a37_ef504f11",
+        "filename": "src/gpu/ganesh/tessellate/shaders/GrStrokeTessellationShader.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-05-03T17:44:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3acb226c_5115d8e1",
+      "range": {
+        "startLine": 22,
+        "startChar": 6,
+        "endLine": 22,
+        "endChar": 7
+      },
+      "revId": "04889b622a907815cb902ecba08b1445ee763aaa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f2e0448e_011c7491",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4972ad90_5a79bf77",
+        "filename": "src/gpu/ganesh/tessellate/shaders/GrStrokeTessellationShader.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-05-03T17:44:11Z",
+      "side": 1,
+      "message": "Oops, they were all supposed to be static, but messed up a manual merge. Originally they\u0027d been static members of GrStrokeTessellationShader so the static was part of the header, now we just need them to be static in the cpp.",
+      "parentUuid": "f2e0448e_011c7491",
+      "range": {
+        "startLine": 58,
+        "startChar": 0,
+        "endLine": 58,
+        "endChar": 6
+      },
+      "revId": "04889b622a907815cb902ecba08b1445ee763aaa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d871b9e8_9b988e11",
@@ -60,6 +108,24 @@
       "writtenOn": "2022-05-03T17:36:25Z",
       "side": 1,
       "message": "Missing indent ?",
+      "revId": "04889b622a907815cb902ecba08b1445ee763aaa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "590f2d47_f14691ff",
+        "filename": "src/gpu/ganesh/tessellate/shaders/GrStrokeTessellationShader.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 331,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-05-03T17:44:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d871b9e8_9b988e11",
       "revId": "04889b622a907815cb902ecba08b1445ee763aaa",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
