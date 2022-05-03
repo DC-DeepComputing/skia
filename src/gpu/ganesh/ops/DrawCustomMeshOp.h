@@ -22,7 +22,7 @@ class SkMatrixProvider;
 namespace skgpu::v1::DrawCustomMeshOp {
 GrOp::Owner Make(GrRecordingContext*,
                  GrPaint&&,
-                 SkCustomMesh,
+                 const SkCustomMesh&,
                  const SkMatrixProvider&,
                  GrAAType,
                  sk_sp<GrColorSpaceXform>);
