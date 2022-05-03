@@ -548,7 +548,8 @@ sk_sp<GrTexture> GrMtlGpu::onCreateTexture(SkISize dimensions,
                                            SkBudgeted budgeted,
                                            GrProtected isProtected,
                                            int mipLevelCount,
-                                           uint32_t levelClearMask) {
+                                           uint32_t levelClearMask,
+                                           std::string_view label) {
     // We don't support protected textures in Metal.
     if (isProtected == GrProtected::kYes) {
         return nullptr;
@@ -565,10 +566,10 @@ sk_sp<GrTexture> GrMtlGpu::onCreateTexture(SkISize dimensions,
     if (renderable == GrRenderable::kYes) {
         tex = GrMtlTextureRenderTarget::MakeNewTextureRenderTarget(
                 this, budgeted, dimensions, renderTargetSampleCnt, mtlPixelFormat, mipLevelCount,
-                mipmapStatus);
+                mipmapStatus, label);
     } else {
         tex = GrMtlTexture::MakeNewTexture(this, budgeted, dimensions, mtlPixelFormat,
-                                           mipLevelCount, mipmapStatus);
+                                           mipLevelCount, mipmapStatus, label);
     }
 
     if (!tex) {
@@ -613,7 +614,7 @@ sk_sp<GrTexture> GrMtlGpu::onCreateCompressedTexture(SkISize dimensions,
                                                                 : GrMipmapStatus::kNotAllocated;
 
     auto tex = GrMtlTexture::MakeNewTexture(this, budgeted, dimensions, mtlPixelFormat,
-                                            numMipLevels, mipmapStatus);
+                                            numMipLevels, mipmapStatus, /*label=*/{});
     if (!tex) {
         return nullptr;
     }
