@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8be55b63_fb3be10b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-05-03T13:39:05Z",
+      "side": 1,
+      "message": "This is just a small cleanup I spotted while rebasing an old CL I wanted to show you.",
+      "revId": "41c5b09e25819004905857e3f190ff0ce359f7c7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
