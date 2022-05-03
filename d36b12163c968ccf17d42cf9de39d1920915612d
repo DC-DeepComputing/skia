@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2238d7f2_d8cec155",
+        "filename": "toolchain/BUILD.bazel",
+        "patchSetId": 5
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2022-05-03T20:45:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "66144255_1314d0a3",
+      "range": {
+        "startLine": 14,
+        "startChar": 24,
+        "endLine": 14,
+        "endChar": 53
+      },
+      "revId": "d36b12163c968ccf17d42cf9de39d1920915612d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d2218623_5516605a",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-05-03T19:38:27Z",
       "side": 1,
       "message": "probably don\u0027t need duplicate comments so close to each other.",
+      "range": {
+        "startLine": 30,
+        "startChar": 32,
+        "endLine": 30,
+        "endChar": 40
+      },
+      "revId": "d36b12163c968ccf17d42cf9de39d1920915612d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0ffa8327_a7c602b1",
+        "filename": "toolchain/BUILD.bazel",
+        "patchSetId": 5
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2022-05-03T20:45:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d2218623_5516605a",
       "range": {
         "startLine": 30,
         "startChar": 32,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8b6467c6_abcc01f2",
+        "filename": "toolchain/download_mac_m1_toolchain.bzl",
+        "patchSetId": 5
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2022-05-03T20:45:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4161fcea_5d3d9a2a",
+      "range": {
+        "startLine": 9,
+        "startChar": 29,
+        "endLine": 9,
+        "endChar": 48
+      },
+      "revId": "d36b12163c968ccf17d42cf9de39d1920915612d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3ad73049_9920184c",
@@ -83,6 +155,30 @@
       "writtenOn": "2022-05-03T19:38:27Z",
       "side": 1,
       "message": "nit: wrap comments to 100 columns",
+      "range": {
+        "startLine": 31,
+        "startChar": 95,
+        "endLine": 31,
+        "endChar": 115
+      },
+      "revId": "d36b12163c968ccf17d42cf9de39d1920915612d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0baf735b_6dbc53dc",
+        "filename": "toolchain/download_mac_m1_toolchain.bzl",
+        "patchSetId": 5
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2022-05-03T20:45:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3ad73049_9920184c",
       "range": {
         "startLine": 31,
         "startChar": 95,
@@ -116,6 +212,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "937f7751_4fa82bfb",
+        "filename": "toolchain/download_mac_m1_toolchain.bzl",
+        "patchSetId": 5
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2022-05-03T20:45:22Z",
+      "side": 1,
+      "message": "Yup, that\u0027s from an old impl. Updated the comment.",
+      "parentUuid": "332ed0ea_eb8f810b",
+      "range": {
+        "startLine": 33,
+        "startChar": 15,
+        "endLine": 33,
+        "endChar": 61
+      },
+      "revId": "d36b12163c968ccf17d42cf9de39d1920915612d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "daf4c20f_bbba7899",
@@ -139,6 +259,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "de714516_56fa15b9",
+        "filename": "toolchain/download_mac_m1_toolchain.bzl",
+        "patchSetId": 5
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2022-05-03T20:45:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "daf4c20f_bbba7899",
+      "range": {
+        "startLine": 35,
+        "startChar": 40,
+        "endLine": 35,
+        "endChar": 45
+      },
+      "revId": "d36b12163c968ccf17d42cf9de39d1920915612d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "935e7b0e_d037cee9",
@@ -152,6 +296,30 @@
       "writtenOn": "2022-05-03T19:38:27Z",
       "side": 1,
       "message": "Add documentation about this xcode-select executable, linking to official docs if possible.",
+      "range": {
+        "startLine": 36,
+        "startChar": 24,
+        "endLine": 36,
+        "endChar": 35
+      },
+      "revId": "d36b12163c968ccf17d42cf9de39d1920915612d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "321847e3_10c42320",
+        "filename": "toolchain/download_mac_m1_toolchain.bzl",
+        "patchSetId": 5
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2022-05-03T20:45:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "935e7b0e_d037cee9",
       "range": {
         "startLine": 36,
         "startChar": 24,
@@ -187,6 +355,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0c5a096f_9a37c433",
+        "filename": "toolchain/download_mac_m1_toolchain.bzl",
+        "patchSetId": 5
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2022-05-03T20:45:22Z",
+      "side": 1,
+      "message": "Within Xcode there are SDKs for any Apple platform you\u0027d want to build for.\n\n`xcode` is the main identifier\n`MacSDK` specifies this is for Macs, (I think we might need iPhone headers for building for mobile)\n`usr` mirrors the directory we\u0027re in\n\nIt could be shorter, but I think there is value in this format.",
+      "parentUuid": "7c7b94a0_b7e35592",
+      "range": {
+        "startLine": 41,
+        "startChar": 20,
+        "endLine": 41,
+        "endChar": 36
+      },
+      "revId": "d36b12163c968ccf17d42cf9de39d1920915612d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "64652866_601bfb8d",
         "filename": "toolchain/download_mac_m1_toolchain.bzl",
         "patchSetId": 5
@@ -198,6 +390,30 @@
       "writtenOn": "2022-05-03T19:38:27Z",
       "side": 1,
       "message": "all the files except... because....\n\nIt would be nice to know why that exclude is there.",
+      "range": {
+        "startLine": 44,
+        "startChar": 51,
+        "endLine": 44,
+        "endChar": 56
+      },
+      "revId": "d36b12163c968ccf17d42cf9de39d1920915612d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2ed93e80_b3d5e2d2",
+        "filename": "toolchain/download_mac_m1_toolchain.bzl",
+        "patchSetId": 5
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2022-05-03T20:45:22Z",
+      "side": 1,
+      "message": "Good point. Done.",
+      "parentUuid": "64652866_601bfb8d",
       "range": {
         "startLine": 44,
         "startChar": 51,
@@ -254,6 +470,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f558f2d1_77d82578",
+        "filename": "toolchain/download_mac_m1_toolchain.bzl",
+        "patchSetId": 5
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2022-05-03T20:45:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "58d0cab7_a3bb2a24",
+      "range": {
+        "startLine": 71,
+        "startChar": 34,
+        "endLine": 71,
+        "endChar": 41
+      },
+      "revId": "d36b12163c968ccf17d42cf9de39d1920915612d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "eb3c4129_a73efc81",
@@ -267,6 +507,30 @@
       "writtenOn": "2022-05-03T19:38:27Z",
       "side": 1,
       "message": "nit: $PATH",
+      "range": {
+        "startLine": 72,
+        "startChar": 32,
+        "endLine": 72,
+        "endChar": 36
+      },
+      "revId": "d36b12163c968ccf17d42cf9de39d1920915612d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6ec8239f_975b5435",
+        "filename": "toolchain/download_mac_m1_toolchain.bzl",
+        "patchSetId": 5
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2022-05-03T20:45:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "eb3c4129_a73efc81",
       "range": {
         "startLine": 72,
         "startChar": 32,
@@ -300,6 +564,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2b5c7b89_5e74f39f",
+        "filename": "toolchain/mac_M1_toolchain_config.bzl",
+        "patchSetId": 5
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2022-05-03T20:45:22Z",
+      "side": 1,
+      "message": "Yup, this was an ambitious first-pass comment that I forgot to update. Done.",
+      "parentUuid": "4772194a_e0078f6a",
+      "range": {
+        "startLine": 2,
+        "startChar": 64,
+        "endLine": 3,
+        "endChar": 41
+      },
+      "revId": "d36b12163c968ccf17d42cf9de39d1920915612d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f165f3b6_4b3ccee5",
@@ -323,6 +611,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "dca2d09a_834fe122",
+        "filename": "toolchain/mac_M1_toolchain_config.bzl",
+        "patchSetId": 5
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2022-05-03T20:45:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f165f3b6_4b3ccee5",
+      "range": {
+        "startLine": 28,
+        "startChar": 28,
+        "endLine": 28,
+        "endChar": 62
+      },
+      "revId": "d36b12163c968ccf17d42cf9de39d1920915612d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "edb51f7c_b58e4dec",
@@ -336,6 +648,30 @@
       "writtenOn": "2022-05-03T19:38:27Z",
       "side": 1,
       "message": "This probably needs to be made mac-specific.",
+      "range": {
+        "startLine": 50,
+        "startChar": 64,
+        "endLine": 50,
+        "endChar": 97
+      },
+      "revId": "d36b12163c968ccf17d42cf9de39d1920915612d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "da517562_214a5303",
+        "filename": "toolchain/mac_M1_toolchain_config.bzl",
+        "patchSetId": 5
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2022-05-03T20:45:22Z",
+      "side": 1,
+      "message": "Funny enough, turns out the mac build doesn\u0027t need this. I deleted the comment as it seems to be unimportant when building for Mac. I did keep in `builtin_sysroot \u003d ...` because it\u0027s technically correct.",
+      "parentUuid": "edb51f7c_b58e4dec",
       "range": {
         "startLine": 50,
         "startChar": 64,
