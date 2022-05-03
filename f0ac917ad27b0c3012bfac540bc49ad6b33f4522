@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8d27d933_d7800664",
+        "filename": "src/gpu/ganesh/GrGeometryProcessor.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 198,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-05-03T17:14:55Z",
+      "side": 0,
+      "message": "Can these flag values go away yet?",
+      "range": {
+        "startLine": 198,
+        "startChar": 27,
+        "endLine": 198,
+        "endChar": 52
+      },
+      "revId": "f0ac917ad27b0c3012bfac540bc49ad6b33f4522",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
