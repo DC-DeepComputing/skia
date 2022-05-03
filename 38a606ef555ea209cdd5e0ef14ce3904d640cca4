@@ -51,6 +51,24 @@
       "parentUuid": "b4d32ea2_f948d9b1",
       "revId": "38a606ef555ea209cdd5e0ef14ce3904d640cca4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d1a430ab_efe8a848",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-05-03T13:12:46Z",
+      "side": 1,
+      "message": "Hmm. This is motivated by https://skia-review.googlesource.com/c/skia/+/532256, right? It doesn\u0027t seem like it really protects us any more than what we had? Could we at least store the sizeof T in the GrSubRunAllocator (only in debug builds?), and then assert that it matches sizeof(*this) in the Slug and TextBlob constructors? Or (even better) - can we template GrSubRunAllocator on T, so that it\u0027s compile-time impossible to pass the wrong \"type\" of allocator to the containing class?",
+      "parentUuid": "c355d1c2_dcaf8f03",
+      "revId": "38a606ef555ea209cdd5e0ef14ce3904d640cca4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
