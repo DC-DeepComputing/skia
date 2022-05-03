@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3b2357a9_666986de",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2022-05-03T15:12:03Z",
+      "side": 1,
+      "message": "Removed. Didn\u0027t we have another gif with the cartoon dog? Can we use that?",
+      "parentUuid": "f85e1271_b2158a08",
+      "revId": "abcdd2a8bb99f2705b5f89fe8b4167b258ddfae1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2c890d14_5099d00c",
         "filename": "tools/viewer/SkottieSlide.cpp",
         "patchSetId": 4
@@ -49,6 +67,30 @@
       "writtenOn": "2022-05-03T13:29:44Z",
       "side": 1,
       "message": "Let\u0027s set this one up so that we can easily add more particle effects:\n\n  MakeConfetti() { return std::make_unique\u003cParticleMarker(\"confetti.json\"); }",
+      "range": {
+        "startLine": 117,
+        "startChar": 38,
+        "endLine": 117,
+        "endChar": 42
+      },
+      "revId": "abcdd2a8bb99f2705b5f89fe8b4167b258ddfae1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a1df11ef_66d180e7",
+        "filename": "tools/viewer/SkottieSlide.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2022-05-03T15:12:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2c890d14_5099d00c",
       "range": {
         "startLine": 117,
         "startChar": 38,
@@ -76,6 +118,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e6e89280_7a6b8ddb",
+        "filename": "tools/viewer/SkottieSlide.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2022-05-03T15:12:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "82513ab1_bc159cbe",
+      "revId": "abcdd2a8bb99f2705b5f89fe8b4167b258ddfae1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4189cefa_4b8dacc1",
@@ -89,6 +149,30 @@
       "writtenOn": "2022-05-03T13:29:44Z",
       "side": 1,
       "message": "effect_file",
+      "range": {
+        "startLine": 123,
+        "startChar": 83,
+        "endLine": 123,
+        "endChar": 98
+      },
+      "revId": "abcdd2a8bb99f2705b5f89fe8b4167b258ddfae1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "17046700_e9dda4a6",
+        "filename": "tools/viewer/SkottieSlide.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2022-05-03T15:12:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4189cefa_4b8dacc1",
       "range": {
         "startLine": 123,
         "startChar": 83,
@@ -116,6 +200,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "85c69eb1_601c7958",
+        "filename": "tools/viewer/SkottieSlide.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2022-05-03T15:12:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "88e9e25a_ac73af03",
+      "revId": "abcdd2a8bb99f2705b5f89fe8b4167b258ddfae1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8cba6cdd_9918ce8c",
@@ -129,6 +231,24 @@
       "writtenOn": "2022-05-03T13:29:44Z",
       "side": 1,
       "message": "This works when the transform is translate-only (ignores scale etc), and maybe we can settle on that convention.\n\nIt\u0027s fairly simple to future-proof though: just map the origin through the matrix\n\n  SkPoint p \u003d {0,0};\n  transform-\u003emapPoints(\u0026p, 1);\n  fEffect-\u003esetPosition(p.fX, p.fY);",
+      "revId": "abcdd2a8bb99f2705b5f89fe8b4167b258ddfae1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2bce7e53_3ad271db",
+        "filename": "tools/viewer/SkottieSlide.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2022-05-03T15:12:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8cba6cdd_9918ce8c",
       "revId": "abcdd2a8bb99f2705b5f89fe8b4167b258ddfae1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -156,6 +276,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e94158bb_5fdb065a",
+        "filename": "tools/viewer/SkottieSlide.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 154,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2022-05-03T15:12:03Z",
+      "side": 1,
+      "message": "Yup, done.",
+      "parentUuid": "5bcc419c_f1f22172",
+      "range": {
+        "startLine": 145,
+        "startChar": 0,
+        "endLine": 154,
+        "endChar": 43
+      },
+      "revId": "abcdd2a8bb99f2705b5f89fe8b4167b258ddfae1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "97f691bc_b9ad67d9",
@@ -169,6 +313,30 @@
       "writtenOn": "2022-05-03T13:29:44Z",
       "side": 1,
       "message": "Let\u0027s make this more specific: \"Confetti\"?",
+      "range": {
+        "startLine": 169,
+        "startChar": 6,
+        "endLine": 169,
+        "endChar": 23
+      },
+      "revId": "abcdd2a8bb99f2705b5f89fe8b4167b258ddfae1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "719ccded_a9cc70f8",
+        "filename": "tools/viewer/SkottieSlide.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2022-05-03T15:12:03Z",
+      "side": 1,
+      "message": "Done. Went ahead and added another effect while we\u0027re at it.",
+      "parentUuid": "97f691bc_b9ad67d9",
       "range": {
         "startLine": 169,
         "startChar": 6,
