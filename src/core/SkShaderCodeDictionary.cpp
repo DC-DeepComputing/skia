@@ -213,6 +213,9 @@ void SkShaderCodeDictionary::getShaderInfo(SkUniquePaintParamsID uniqueID, SkSha
 
     entry->paintParamsKey().toShaderInfo(this, info);
 
+    // getShaderInfo is only called on an entry when it is about to be converted to SkSL
+    ++entry->fNumTimesConvertedtoSkSL;
+
 #ifdef SK_GRAPHITE_ENABLED
     info->setBlendInfo(entry->blendInfo());
 #endif
