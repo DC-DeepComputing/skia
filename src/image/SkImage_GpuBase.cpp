@@ -223,10 +223,6 @@ sk_sp<GrTextureProxy> SkImage_GpuBase::MakePromiseImageLazyProxy(
      * multiple SkImages. The created GrTexture is given a key based on a unique ID associated with
      * the SkPromiseImageTexture.
      *
-     * The GrTexutre idle proc mechanism is used to call the Release and Done procs. We use this
-     * instead of the GrSurface release proc because the GrTexture is cached and therefore may
-     * outlive the proxy into which this callback is installed.
-     *
      * A key invalidation message is installed on the SkPromiseImageTexture so that the GrTexture
      * is deleted once it can no longer be used to instantiate a proxy.
      */
@@ -257,8 +253,8 @@ sk_sp<GrTextureProxy> SkImage_GpuBase::MakePromiseImageLazyProxy(
             // In the future the GrSurface class hierarchy refactoring should eliminate this
             // difficulty by removing the virtual inheritance.
             if (fTexture) {
-                GrTextureFreedMessage msg { fTexture, fTextureContextID };
-                SkMessageBus<GrTextureFreedMessage, GrDirectContext::DirectContextID>::Post(msg);
+                GrUnrefResourceMessage msg { fTexture, fTextureContextID };
+                SkMessageBus<GrUnrefResourceMessage, GrDirectContext::DirectContextID>::Post(msg);
             }
         }
 
@@ -311,7 +307,7 @@ sk_sp<GrTextureProxy> SkImage_GpuBase::MakePromiseImageLazyProxy(
             // let the cache know it is waiting on an unref message. We will send that message from
             // our destructor.
             auto dContext = fTexture->getContext();
-            dContext->priv().getResourceCache()->insertDelayedTextureUnref(fTexture);
+            dContext->priv().getResourceCache()->insertDelayedResourceUnref(fTexture);
             fTextureContextID = dContext->directContextID();
             return {std::move(tex), kReleaseCallbackOnInstantiation, kKeySyncMode};
         }
