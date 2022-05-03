@@ -4,12 +4,15 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+#include "include/core/SkTypes.h"
+
+#if SK_SUPPORT_GPU
+#include "tests/Test.h"
 
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkSurface.h"
 #include "include/gpu/GrDirectContext.h"
-#include "tests/Test.h"
 #include "tests/TestUtils.h"
 
 static void check_pixels(skiatest::Reporter* reporter, const SkBitmap& bitmap,
@@ -100,3 +103,5 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(SaveLayerOrigin, reporter, context_info) {
     run_test(reporter, context, kBottomLeft_GrSurfaceOrigin);
     run_test(reporter, context, kTopLeft_GrSurfaceOrigin);
 }
+
+#endif // SK_SUPPORT_GPU

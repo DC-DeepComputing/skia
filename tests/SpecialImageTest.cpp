@@ -4,6 +4,10 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file
  */
+#include "include/core/SkTypes.h"
+
+#if SK_SUPPORT_GPU
+#include "tests/Test.h"
 
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
@@ -21,7 +25,6 @@
 #include "src/gpu/ganesh/GrSurfaceProxy.h"
 #include "src/gpu/ganesh/GrTextureProxy.h"
 #include "src/gpu/ganesh/SkGr.h"
-#include "tests/Test.h"
 
 // This test creates backing resources exactly sized to [kFullSize x kFullSize].
 // It then wraps them in an SkSpecialImage with only the center (red) region being active.
@@ -222,3 +225,5 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(SpecialImage_Gpu, reporter, ctxInfo) {
         test_image(subSImg2, reporter, context, true);
     }
 }
+
+#endif // SK_SUPPORT_GPU

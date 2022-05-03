@@ -4,7 +4,9 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+#include "include/core/SkTypes.h"
 
+#if SK_SUPPORT_GPU
 #include "tests/Test.h"
 
 #include "include/core/SkColorFilter.h"
@@ -392,3 +394,5 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(PromiseImageNullFulfill, reporter, ctxInfo) {
     REPORTER_ASSERT(reporter, counts.fFulfillCount == 1);
     REPORTER_ASSERT(reporter, counts.fReleaseCount == 1);
 }
+
+#endif // SK_SUPPORT_GPU

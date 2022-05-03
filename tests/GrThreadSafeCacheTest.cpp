@@ -4,6 +4,10 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+#include "include/core/SkTypes.h"
+
+#if SK_SUPPORT_GPU
+#include "tests/Test.h"
 
 #include "include/core/SkCanvas.h"
 #include "include/core/SkDeferredDisplayListRecorder.h"
@@ -24,7 +28,6 @@
 #include "src/gpu/ganesh/GrThreadSafeCache.h"
 #include "src/gpu/ganesh/ops/GrDrawOp.h"
 #include "src/gpu/ganesh/v1/SurfaceDrawContext_v1.h"
-#include "tests/Test.h"
 #include "tests/TestUtils.h"
 #include "tools/gpu/ProxyUtils.h"
 
@@ -1511,3 +1514,5 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(GrThreadSafeCache16Verts, reporter, ctxInfo) 
     helper.checkImage(reporter, std::move(ddl1));
     helper.checkImage(reporter, std::move(ddl2));
 }
+
+#endif // SK_SUPPORT_GPU

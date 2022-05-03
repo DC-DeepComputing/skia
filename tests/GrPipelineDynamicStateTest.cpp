@@ -4,11 +4,13 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
-
 #include "include/core/SkTypes.h"
+
+#if SK_SUPPORT_GPU
 #include "tests/Test.h"
 
 #include "include/core/SkColorSpace.h"
+#include "include/core/SkTypes.h"
 #include "include/gpu/GrDirectContext.h"
 #include "include/gpu/GrRecordingContext.h"
 #include "src/gpu/ganesh/GrColor.h"
@@ -258,3 +260,5 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(GrPipelineDynamicStateTest, reporter, ctxInfo
         }
     }
 }
+
+#endif // SK_SUPPORT_GPU

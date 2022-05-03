@@ -4,7 +4,9 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+#include "include/core/SkTypes.h"
 
+#if SK_SUPPORT_GPU
 #include "tests/Test.h"
 
 #include "src/gpu/ganesh/geometry/GrQuadBuffer.h"
@@ -235,3 +237,5 @@ TEST(Metadata) {
     }
     ASSERTF(i == kQuadCount, "Expected %d iterations, got: %d", kQuadCount, i);
 }
+
+#endif // SK_SUPPORT_GPU

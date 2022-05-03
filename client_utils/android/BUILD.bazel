@@ -1,0 +1,60 @@
+load("//bazel:macros.bzl", "generated_cc_atom")
+
+generated_cc_atom(
+    name = "BRDAllocator_hdr",
+    hdrs = ["BRDAllocator.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/codec:SkCodec_hdr",
+        "//include/core:SkBitmap_hdr",
+    ],
+)
+
+generated_cc_atom(
+    name = "BitmapRegionDecoderPriv_hdr",
+    hdrs = ["BitmapRegionDecoderPriv.h"],
+    visibility = ["//:__subpackages__"],
+    deps = ["//include/core:SkRect_hdr"],
+)
+
+generated_cc_atom(
+    name = "BitmapRegionDecoder_hdr",
+    hdrs = ["BitmapRegionDecoder.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":BRDAllocator_hdr",
+        "//include/codec:SkAndroidCodec_hdr",
+        "//include/core:SkBitmap_hdr",
+        "//include/core:SkData_hdr",
+    ],
+)
+
+generated_cc_atom(
+    name = "BitmapRegionDecoder_src",
+    srcs = ["BitmapRegionDecoder.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":BitmapRegionDecoderPriv_hdr",
+        ":BitmapRegionDecoder_hdr",
+        "//include/codec:SkAndroidCodec_hdr",
+        "//src/codec:SkCodecPriv_hdr",
+    ],
+)
+
+generated_cc_atom(
+    name = "FrontBufferedStream_hdr",
+    hdrs = ["FrontBufferedStream.h"],
+    visibility = ["//:__subpackages__"],
+    deps = ["//include/core:SkStream_hdr"],
+)
+
+generated_cc_atom(
+    name = "FrontBufferedStream_src",
+    srcs = ["FrontBufferedStream.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//client_utils/android:FrontBufferedStream_hdr",
+        "//include/codec:SkCodec_hdr",
+        "//include/core:SkStream_hdr",
+    ],
+)

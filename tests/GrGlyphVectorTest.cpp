@@ -4,18 +4,20 @@
 * Use of this source code is governed by a BSD-style license that can be
 * found in the LICENSE file.
  */
+#include "include/core/SkTypes.h"
+
+#if SK_SUPPORT_GPU
+#include "tests/Test.h"
 
 #include "src/core/SkGlyph.h"
-#include "src/gpu/ganesh/GrResourceProvider.h"
-#include "src/gpu/ganesh/text/GrGlyphVector.h"
-
 #include "src/core/SkGlyphBuffer.h"
 #include "src/core/SkReadBuffer.h"
 #include "src/core/SkStrikeCache.h"
 #include "src/core/SkStrikeSpec.h"
 #include "src/core/SkWriteBuffer.h"
+#include "src/gpu/ganesh/GrResourceProvider.h"
 #include "src/gpu/ganesh/GrSubRunAllocator.h"
-#include "tests/Test.h"
+#include "src/gpu/ganesh/text/GrGlyphVector.h"
 
 class TestingPeer {
 public:
@@ -111,3 +113,5 @@ DEF_TEST(GrGlyphVector_BadLengths, r) {
         REPORTER_ASSERT(r, !dst.has_value());
     }
 }
+
+#endif // SK_SUPPORT_GPU
