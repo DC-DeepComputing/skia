@@ -89377,7 +89377,8 @@
     "Housekeeper-PerCommit-CheckGeneratedFiles": {
       "location_regexes": [
         "src/gpu/effects/generated/.*",
-        "src/sksl/.*"
+        "src/sksl/.*",
+        "src/gpu/gpu_workaround_list.txt"
       ]
     },
     "Housekeeper-PerCommit-InfraTests_Linux": {},
