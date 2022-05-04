@@ -16,6 +16,29 @@
       "message": "For now, we\u0027re only testing on two x64 machines (one at 10.15, one at 12), and the M1 mini (also at 12). I initially intended to use all of the same machines that we use for CommandBuffer, but the 10.13 bots had egregious errors. This set of bots requires a few workarounds, but nothing too severe.\n\nWe can look at expanding (or changing) coverage, but this will get some bots on the tree, and then we can turn down all the CommandBuffer stuff.",
       "revId": "c24bbea2cf9e8a3339572d5b8579a802612eedf4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b274a686_c32c31be",
+        "filename": "infra/bots/gen_tasks_logic/dm_flags.go",
+        "patchSetId": 5
+      },
+      "lineNbr": 394,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-05-04T13:00:16Z",
+      "side": 1,
+      "message": "no prob with testing both but maybe we should ask what context type Chrome will be using on the Mac.",
+      "range": {
+        "startLine": 394,
+        "startChar": 4,
+        "endLine": 394,
+        "endChar": 56
+      },
+      "revId": "c24bbea2cf9e8a3339572d5b8579a802612eedf4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
