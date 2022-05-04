@@ -1261,6 +1261,8 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 		args = append(args, "--skip")
 		args = append(args, skipped...)
 	}
+	//match = nil
+	//match = append(match, "gradients_2pt_conical_outside")
 
 	if len(match) > 0 {
 		args = append(args, "--match")
