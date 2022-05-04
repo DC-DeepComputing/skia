@@ -43,12 +43,13 @@ public:
         REPORTER_ASSERT(fReporter, fHasClipTexture);
     }
 
-    void preFlush(GrOnFlushResourceProvider*, SkSpan<const uint32_t>) override {
+    bool preFlush1(GrOnFlushResourceProvider*, SkSpan<const uint32_t>) override {
         REPORTER_ASSERT(fReporter, !fHasOpTexture);
         REPORTER_ASSERT(fReporter, !fHasClipTexture);
+        return true;
     }
 
-    void postFlush(GrDeferredUploadToken, SkSpan<const uint32_t>) override {
+    void postFlush1(GrDeferredUploadToken, SkSpan<const uint32_t>) override {
         REPORTER_ASSERT(fReporter, fHasOpTexture);
         REPORTER_ASSERT(fReporter, fHasClipTexture);
     }

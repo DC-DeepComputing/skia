@@ -104,7 +104,7 @@ public:
     /**
      * Binds all geometry processor and fragment processor textures.
      */
-    void bindTextures(const GrGeometryProcessor&,
+    void bindTextures1(const GrGeometryProcessor&,
                       const GrSurfaceProxy* const geomProcTextures[],
                       const GrPipeline&);
 

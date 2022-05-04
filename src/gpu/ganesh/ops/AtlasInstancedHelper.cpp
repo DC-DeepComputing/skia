@@ -102,7 +102,7 @@ void AtlasInstancedHelper::injectShaderCode(
 void AtlasInstancedHelper::setUniformData(
         const GrGLSLProgramDataManager& pdman,
         const GrGLSLUniformHandler::UniformHandle& atlasAdjustUniformHandle) const {
-    SkASSERT(fAtlasProxy->isInstantiated());
+//    SkASSERT(fAtlasProxy->isInstantiated());
     SkISize dimensions = fAtlasProxy->backingStoreDimensions();
     pdman.set2f(atlasAdjustUniformHandle, 1.f / dimensions.width(), 1.f / dimensions.height());
 }

@@ -79,6 +79,8 @@ GrDynamicAtlas::GrDynamicAtlas(GrColorType colorType, InternalMultisample intern
         , fInternalMultisample(internalMultisample)
         , fMaxAtlasSize(maxAtlasSize)
         , fRectanizerAlgorithm(algorithm) {
+    SkDebugf("initial size %d,%d max size %d\n", initialSize.fWidth, initialSize.fHeight, maxAtlasSize);
+
     SkASSERT(fMaxAtlasSize <= caps.maxTextureSize());
     this->reset(initialSize, caps);
 }
@@ -94,8 +96,8 @@ void GrDynamicAtlas::reset(SkISize initialSize, const GrCaps& caps) {
     fDrawBounds.setEmpty();
     fTextureProxy = MakeLazyAtlasProxy(
             [this](GrResourceProvider* resourceProvider, const LazyAtlasDesc& desc) {
-                if (!fBackingTexture) {
-                    fBackingTexture =
+                if (!fBackingTexture2) {
+                    fBackingTexture2 =
                             resourceProvider->createTexture(fTextureProxy->backingStoreDimensions(),
                                                             desc.fFormat,
                                                             desc.fTextureType,
@@ -106,10 +108,10 @@ void GrDynamicAtlas::reset(SkISize initialSize, const GrCaps& caps) {
                                                             desc.fProtected,
                                                             desc.fLabel);
                 }
-                return GrSurfaceProxy::LazyCallbackResult(fBackingTexture);
+                return GrSurfaceProxy::LazyCallbackResult(fBackingTexture2);
             },
             fColorType, fInternalMultisample, caps, GrSurfaceProxy::UseAllocator::kNo);
-    fBackingTexture = nullptr;
+    fBackingTexture2 = nullptr;
 }
 
 GrDynamicAtlas::Node* GrDynamicAtlas::makeNode(Node* previous, int l, int t, int r, int b) {
@@ -171,6 +173,8 @@ bool GrDynamicAtlas::internalPlaceRect(int w, int h, SkIPoint16* loc) {
 
     // The rect didn't fit. Grow the atlas and try again.
     do {
+        int origW = fWidth, origH = fHeight;
+
         if (fWidth >= fMaxAtlasSize && fHeight >= fMaxAtlasSize) {
             return false;
         }
@@ -183,12 +187,14 @@ bool GrDynamicAtlas::internalPlaceRect(int w, int h, SkIPoint16* loc) {
             fWidth = std::min(fWidth * 2, fMaxAtlasSize);
             fTopNode = this->makeNode(fTopNode, left, 0, fWidth, fHeight);
         }
+
+        SkDebugf("------- growing from %d,%d to %d,%d\n", origW, origH, fWidth, fHeight);
     } while (!fTopNode->addRect(w, h, loc));
 
     return true;
 }
 
-void GrDynamicAtlas::instantiate(GrOnFlushResourceProvider* onFlushRP,
+bool GrDynamicAtlas::instantiate1(GrOnFlushResourceProvider* onFlushRP,
                                  sk_sp<GrTexture> backingTexture) {
     SkASSERT(!this->isInstantiated());  // This method should only be called once.
     // Caller should have cropped any paths to the destination render target instead of asking for
@@ -211,7 +217,7 @@ void GrDynamicAtlas::instantiate(GrOnFlushResourceProvider* onFlushRP,
         SkASSERT(backingRT->numSamples() == fTextureProxy->asRenderTargetProxy()->numSamples());
         SkASSERT(backingRT->dimensions() == fTextureProxy->backingStoreDimensions());
 #endif
-        fBackingTexture = std::move(backingTexture);
+        fBackingTexture2 = std::move(backingTexture);
     }
-    onFlushRP->instatiateProxy(fTextureProxy.get());
+    return onFlushRP->instatiateProxy(fTextureProxy.get());
 }

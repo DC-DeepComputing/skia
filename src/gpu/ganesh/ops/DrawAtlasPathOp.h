@@ -21,11 +21,11 @@ public:
 
     DrawAtlasPathOp(SkArenaAlloc* arena, const SkIRect& fillBounds, const SkMatrix& localToDevice,
                     GrPaint&& paint, SkIPoint16 locationInAtlas, const SkIRect& pathDevIBounds,
-                    bool transposedInAtlas, GrSurfaceProxyView atlasView, bool isInverseFill)
+                    bool transposedInAtlas, GrSurfaceProxyView atlasView, bool isInverseFill, bool foo)
             : GrDrawOp(ClassID())
             , fHeadInstance(arena->make<Instance>(fillBounds, localToDevice, paint.getColor4f(),
                                                   locationInAtlas, pathDevIBounds,
-                                                  transposedInAtlas))
+                                                  transposedInAtlas, foo))
             , fTailInstance(&fHeadInstance->fNext)
             , fAtlasHelper(std::move(atlasView),
                            isInverseFill ? AtlasInstancedHelper::ShaderFlags::kCheckBounds |
@@ -38,7 +38,7 @@ public:
     const char* name() const override { return "DrawAtlasPathOp"; }
     FixedFunctionFlags fixedFunctionFlags() const override { return FixedFunctionFlags::kNone; }
     void visitProxies(const GrVisitProxyFunc& func) const override {
-        func(fAtlasHelper.proxy(), GrMipmapped::kNo);
+        func(fAtlasHelper.proxy1(), GrMipmapped::kNo);
         fProcessors.visitProxies(func);
     }
     GrProcessorSet::Analysis finalize(const GrCaps&, const GrAppliedClip*, GrClampType) override;
@@ -57,13 +57,13 @@ private:
     struct Instance {
         Instance(const SkIRect& fillIBounds, const SkMatrix& m,
                  const SkPMColor4f& color, SkIPoint16 locationInAtlas,
-                 const SkIRect& pathDevIBounds, bool transposedInAtlas)
+                 const SkIRect& pathDevIBounds, bool transposedInAtlas, bool foo)
                 : fFillBounds(fillIBounds)
                 , fLocalToDeviceIfUsingLocalCoords{m.getScaleX(), m.getSkewY(),
                                                    m.getSkewX(), m.getScaleY(),
                                                    m.getTranslateX(), m.getTranslateY()}
                 , fColor(color)
-                , fAtlasInstance(locationInAtlas, pathDevIBounds, transposedInAtlas) {
+                , fAtlasInstance(locationInAtlas, pathDevIBounds, transposedInAtlas, foo) {
         }
         SkIRect fFillBounds;
         std::array<float, 6> fLocalToDeviceIfUsingLocalCoords;
