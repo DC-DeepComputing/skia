@@ -69,6 +69,8 @@ public:
 
 #define ASSERT_SINGLE_OWNER SKGPU_ASSERT_SINGLE_OWNER(this->singleOwner())
 
+using StrikeCache = sktext::gpu::StrikeCache;
+
 GrDirectContext::DirectContextID GrDirectContext::DirectContextID::Next() {
     static std::atomic<uint32_t> nextID{1};
     uint32_t id;
@@ -226,7 +228,7 @@ bool GrDirectContext::init() {
     SkASSERT(this->getTextBlobRedrawCoordinator());
     SkASSERT(this->threadSafeCache());
 
-    fStrikeCache = std::make_unique<GrStrikeCache>();
+    fStrikeCache = std::make_unique<StrikeCache>();
     fResourceCache = std::make_unique<GrResourceCache>(this->singleOwner(),
                                                        this->directContextID(),
                                                        this->contextID());
