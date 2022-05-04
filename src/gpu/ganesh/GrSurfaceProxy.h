@@ -29,6 +29,9 @@ class GrSurfaceProxy : public SkNVRefCnt<GrSurfaceProxy> {
 public:
     virtual ~GrSurfaceProxy();
 
+    bool fFailAlloc = false;
+    void setFailAlloc() { fFailAlloc = true; }
+
     /**
      * Indicates "resolutions" that need to be done on a surface before its pixels can be accessed.
      * If both types of resolve are requested, the MSAA resolve will happen first.
