@@ -508,4 +508,3 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(ResourceAllocatorMemoryBudgetTest, reporter, 
         }
     }
 }
-
