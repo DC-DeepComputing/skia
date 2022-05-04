@@ -10,40 +10,40 @@
 #include "src/gpu/ganesh/text/GrStrikeCache.h"
 #include "src/text/gpu/Glyph.h"
 
-using Glyph = sktext::gpu::Glyph;
+namespace sktext::gpu {
 
-GrStrikeCache::~GrStrikeCache() {
+StrikeCache::~StrikeCache() {
     this->freeAll();
 }
 
-void GrStrikeCache::freeAll() {
+void StrikeCache::freeAll() {
     fCache.reset();
 }
 
-sk_sp<GrTextStrike> GrStrikeCache::findOrCreateStrike(const SkStrikeSpec& strikeSpec) {
-    if (sk_sp<GrTextStrike>* cached = fCache.find(strikeSpec.descriptor())) {
+sk_sp<TextStrike> StrikeCache::findOrCreateStrike(const SkStrikeSpec& strikeSpec) {
+    if (sk_sp<TextStrike>* cached = fCache.find(strikeSpec.descriptor())) {
         return *cached;
     }
     return this->generateStrike(strikeSpec);
 }
 
-sk_sp<GrTextStrike> GrStrikeCache::generateStrike(const SkStrikeSpec& strikeSpec) {
-    sk_sp<GrTextStrike> strike = sk_make_sp<GrTextStrike>(strikeSpec);
+sk_sp<TextStrike> StrikeCache::generateStrike(const SkStrikeSpec& strikeSpec) {
+    sk_sp<TextStrike> strike = sk_make_sp<TextStrike>(strikeSpec);
     fCache.set(strike);
     return strike;
 }
 
-const SkDescriptor& GrStrikeCache::HashTraits::GetKey(const sk_sp<GrTextStrike>& strike) {
+const SkDescriptor& StrikeCache::HashTraits::GetKey(const sk_sp<TextStrike>& strike) {
     return strike->fStrikeSpec.descriptor();
 }
 
-uint32_t GrStrikeCache::HashTraits::Hash(const SkDescriptor& descriptor) {
+uint32_t StrikeCache::HashTraits::Hash(const SkDescriptor& descriptor) {
     return descriptor.getChecksum();
 }
 
-GrTextStrike::GrTextStrike(const SkStrikeSpec& strikeSpec) : fStrikeSpec{strikeSpec} {}
+TextStrike::TextStrike(const SkStrikeSpec& strikeSpec) : fStrikeSpec{strikeSpec} {}
 
-Glyph* GrTextStrike::getGlyph(SkPackedGlyphID packedGlyphID) {
+Glyph* TextStrike::getGlyph(SkPackedGlyphID packedGlyphID) {
     Glyph* glyph = fCache.findOrNull(packedGlyphID);
     if (glyph == nullptr) {
         glyph = fAlloc.make<Glyph>(packedGlyphID);
@@ -52,11 +52,12 @@ Glyph* GrTextStrike::getGlyph(SkPackedGlyphID packedGlyphID) {
     return glyph;
 }
 
-const SkPackedGlyphID& GrTextStrike::HashTraits::GetKey(const Glyph* glyph) {
+const SkPackedGlyphID& TextStrike::HashTraits::GetKey(const Glyph* glyph) {
     return glyph->fPackedID;
 }
 
-uint32_t GrTextStrike::HashTraits::Hash(SkPackedGlyphID key) {
+uint32_t TextStrike::HashTraits::Hash(SkPackedGlyphID key) {
     return key.hash();
 }
 
+}  // namespace sktext::gpu
