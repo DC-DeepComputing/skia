@@ -15,10 +15,10 @@
 
 namespace sktext::gpu {
 class Glyph;
+class TextStrike;
 }
 class GrResourceProvider;
 class SkGlyph;
-class GrTextStrike;
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 /** The GrAtlasManager manages the lifetime of and access to GrDrawOpAtlases.

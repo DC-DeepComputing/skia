@@ -5,29 +5,27 @@
  * found in the LICENSE file.
  */
 
-#ifndef GrStrikeCache_DEFINED
-#define GrStrikeCache_DEFINED
+#ifndef sktext_gpu_StrikeCache_DEFINED
+#define sktext_gpu_StrikeCache_DEFINED
 
 #include "include/private/SkTHash.h"
 #include "src/core/SkArenaAlloc.h"
 #include "src/core/SkStrikeSpec.h"
 
-class GrStrikeCache;
-
 namespace sktext::gpu {
+
 class Glyph;
-}
+class StrikeCache;
 
-
-// The GrTextStrike manages an SkArenaAlloc for Glyphs. The SkStrike is what actually creates
-// the mask. The GrTextStrike may outlive the generating SkStrike. However, it retains a copy
-// of it's SkDescriptor as a key to access (or regenerate) the SkStrike. GrTextStrikes are
-// created by and owned by a GrStrikeCache.
-class GrTextStrike : public SkNVRefCnt<GrTextStrike> {
+// The TextStrike manages an SkArenaAlloc for Glyphs. The SkStrike is what actually creates
+// the mask. The TextStrike may outlive the generating SkStrike. However, it retains a copy
+// of it's SkDescriptor as a key to access (or regenerate) the SkStrike. TextStrikes are
+// created by and owned by a StrikeCache.
+class TextStrike : public SkNVRefCnt<TextStrike> {
 public:
-    GrTextStrike(const SkStrikeSpec& strikeSpec);
+    TextStrike(const SkStrikeSpec& strikeSpec);
 
-    sktext::gpu::Glyph* getGlyph(SkPackedGlyphID);
+    Glyph* getGlyph(SkPackedGlyphID);
     const SkStrikeSpec& strikeSpec() const { return fStrikeSpec; }
 
 private:
@@ -39,36 +37,38 @@ private:
         static uint32_t Hash(SkPackedGlyphID key);
     };
     // Map SkPackedGlyphID -> Glyph*.
-    SkTHashTable<sktext::gpu::Glyph*, SkPackedGlyphID, HashTraits> fCache;
+    SkTHashTable<Glyph*, SkPackedGlyphID, HashTraits> fCache;
 
     // Store for the glyph information.
     SkArenaAlloc fAlloc{512};
 
-    friend class GrStrikeCache;
+    friend class StrikeCache;
 };
 
-// GrStrikeCache manages strikes which are indexed by a SkStrike. These strikes can then be
+// StrikeCache manages strikes which are indexed by a SkStrike. These strikes can then be
 // used to generate individual Glyph Masks.
-class GrStrikeCache {
+class StrikeCache {
 public:
-    ~GrStrikeCache();
+    ~StrikeCache();
 
     // The user of the cache may hold a long-lived ref to the returned strike.
-    sk_sp<GrTextStrike> findOrCreateStrike(const SkStrikeSpec& strikeSpec);
+    sk_sp<TextStrike> findOrCreateStrike(const SkStrikeSpec& strikeSpec);
 
     void freeAll();
 
 private:
-    sk_sp<GrTextStrike> generateStrike(const SkStrikeSpec& strikeSpec);
+    sk_sp<TextStrike> generateStrike(const SkStrikeSpec& strikeSpec);
 
     struct HashTraits {
-        static const SkDescriptor& GetKey(const sk_sp<GrTextStrike>& strike);
+        static const SkDescriptor& GetKey(const sk_sp<TextStrike>& strike);
         static uint32_t Hash(const SkDescriptor& strikeSpec);
     };
 
-    using StrikeHash = SkTHashTable<sk_sp<GrTextStrike>, const SkDescriptor&, HashTraits>;
+    using StrikeHash = SkTHashTable<sk_sp<TextStrike>, const SkDescriptor&, HashTraits>;
 
     StrikeHash fCache;
 };
 
-#endif  // GrStrikeCache_DEFINED
+}  // namespace sktext::gpu
+
+#endif  // sktext_gpu_StrikeCache_DEFINED
