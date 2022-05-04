@@ -104,7 +104,6 @@ PLATFORM_DEFINES = select({
         "SK_FORCE_8_BYTE_ALIGNMENT",
         "SK_DISABLE_LEGACY_SHADERCONTEXT",
         "SK_DISABLE_AAA",  # This saves about 57KB of code size, uncompressed
-        "SK_NO_COMMAND_BUFFER",  # not a feature CK needs.
     ],
     "//conditions:default": [],
 })
