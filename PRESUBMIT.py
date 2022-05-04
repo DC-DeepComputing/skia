@@ -256,6 +256,34 @@ def _RegenerateAllExamplesCPP(input_api, output_api):
     )]
   return results
 
+def _CheckBazelBUILDFiles(input_api, output_api):
+  """Makes sure our BUILD.bazel files are compatible with G3."""
+  results = []
+  for affected_file in input_api.AffectedFiles(None):
+    affected_file_path = affected_file.LocalPath()
+    is_bazel = affected_file_path.endswith('BUILD.bazel')
+    if is_bazel:
+      with open(affected_file_path, 'r') as file:
+        contents = file.read()
+        if 'exports_files_legacy()' not in contents:
+          results.append(output_api.PresubmitError(
+            '%s needs to call exports_files_legacy() to support legacy G3 ' +
+            'rules. Put this near the top of the file, beneath '+
+            'licenses(["notice"]).' % affected_file_path
+          ))
+        if 'licenses(["notice"])' not in contents:
+          results.append(output_api.PresubmitError(
+            '%s needs to have\nlicenses(["notice"])\n immediately after ' +
+            'the load() calls to comply with G3 policies.' % affected_file_path
+          ))
+        if 'cc_library(' in contents and '"cc_library"' not in contents:
+          results.append(output_api.PresubmitError(
+            '%s needs load cc_library from macros.bzl instead of using the ' +
+            'native one. This allows us to build differently for G3.'
+            % affected_file_path
+          ))
+  return results
+
 def _CommonChecks(input_api, output_api):
   """Presubmit checks common to upload and commit."""
   results = []
