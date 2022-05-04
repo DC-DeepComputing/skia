@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8c664636_91f3e27e",
+        "filename": "include/core/SkCustomMesh.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 194,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-05-04T14:31:37Z",
+      "side": 1,
+      "message": "Could be interesting. For the current known use cases once the VS unpacks the positions from the attributes they\u0027re just passthrough so it\u0027d be an identity function",
+      "parentUuid": "e580a740_e202f380",
+      "range": {
+        "startLine": 194,
+        "startChar": 3,
+        "endLine": 194,
+        "endChar": 23
+      },
+      "revId": "4d6db1be9d4e33a29540cf097b73e0ed1c4b581d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4579be45_e2726290",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "92c6e751_0e0653c0",
+        "filename": "include/core/SkCustomMesh.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 195,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-05-04T14:31:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4579be45_e2726290",
+      "range": {
+        "startLine": 195,
+        "startChar": 45,
+        "endLine": 195,
+        "endChar": 47
+      },
+      "revId": "4d6db1be9d4e33a29540cf097b73e0ed1c4b581d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "09ed5e44_cd74f7ef",
@@ -60,6 +108,30 @@
       "writtenOn": "2022-05-04T14:12:59Z",
       "side": 1,
       "message": "nit: The object is named \u0027m\u0027 here",
+      "range": {
+        "startLine": 474,
+        "startChar": 12,
+        "endLine": 474,
+        "endChar": 16
+      },
+      "revId": "4d6db1be9d4e33a29540cf097b73e0ed1c4b581d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4f3c9394_d42b8350",
+        "filename": "src/gpu/ganesh/ops/DrawCustomMeshOp.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 474,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-05-04T14:31:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "09ed5e44_cd74f7ef",
       "range": {
         "startLine": 474,
         "startChar": 12,
