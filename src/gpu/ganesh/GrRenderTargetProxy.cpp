@@ -79,6 +79,9 @@ int GrRenderTargetProxy::maxWindowRectangles(const GrCaps& caps) const {
 }
 
 bool GrRenderTargetProxy::instantiate(GrResourceProvider* resourceProvider) {
+    if (fFailAlloc) {
+        SkDebugf("here\n");
+    }
     if (this->isLazy()) {
         return false;
     }

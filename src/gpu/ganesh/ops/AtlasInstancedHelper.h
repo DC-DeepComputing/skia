@@ -35,9 +35,10 @@ public:
             , fShaderFlags(shaderFlags) {
         // Bottom left origin is not supported.
         SkASSERT(atlasView.origin() == kTopLeft_GrSurfaceOrigin);
+        fAtlasProxy->setFailAlloc();
     }
 
-    GrSurfaceProxy* proxy() const { return fAtlasProxy.get(); }
+    GrSurfaceProxy* proxy1() const { return fAtlasProxy.get(); }
     const skgpu::Swizzle& atlasSwizzle() const { return fAtlasSwizzle; }
 
     // Returns whether the two helpers can be batched together in a single draw.
@@ -56,7 +57,7 @@ public:
     void appendInstanceAttribs(SkTArray<GrGeometryProcessor::Attribute>* instanceAttribs) const;
 
     struct Instance {
-        Instance(SkIPoint16 locationInAtlas, const SkIRect& pathDevIBounds, bool transposedInAtlas)
+        Instance(SkIPoint16 locationInAtlas, const SkIRect& pathDevIBounds, bool transposedInAtlas, bool foo)
                 : fLocationInAtlas(locationInAtlas)
                 , fPathDevIBounds(pathDevIBounds)
                 , fTransposedInAtlas(transposedInAtlas) {

@@ -29,7 +29,7 @@ public:
             , fUsesLocalCoords(usesLocalCoords)
             , fAtlasHelper(atlasHelper)
             , fAtlasAccess(GrSamplerState::Filter::kNearest,
-                           fAtlasHelper->proxy()->backendFormat(),
+                           fAtlasHelper->proxy1()->backendFormat(),
                            fAtlasHelper->atlasSwizzle()) {
         if (!shaderCaps.vertexIDSupport()) {
             constexpr static Attribute kUnitCoordAttrib(
@@ -219,7 +219,7 @@ void DrawAtlasPathOp::onExecute(GrOpFlushState* flushState, const SkRect& chainB
         return;
     }
     flushState->bindPipelineAndScissorClip(*fProgram, this->bounds());
-    flushState->bindTextures(fProgram->geomProc(), *fAtlasHelper.proxy(), fProgram->pipeline());
+    flushState->bindTextures(fProgram->geomProc(), *fAtlasHelper.proxy1(), fProgram->pipeline());
     flushState->bindBuffers(nullptr, std::move(fInstanceBuffer), fVertexBufferIfNoIDSupport);
     flushState->drawInstanced(fInstanceCount, fBaseInstance, 4, 0);
 }

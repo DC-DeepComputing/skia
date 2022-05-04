@@ -92,7 +92,7 @@ bool GrGLOpsRenderPass::onBindTextures(const GrGeometryProcessor& geomProc,
                                        const GrPipeline& pipeline) {
     GrGLProgram* program = fGpu->currentProgram();
     SkASSERT(program);
-    program->bindTextures(geomProc, geomProcTextures, pipeline);
+    program->bindTextures1(geomProc, geomProcTextures, pipeline);
     return true;
 }
 

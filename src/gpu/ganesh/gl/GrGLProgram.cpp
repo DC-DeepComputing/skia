@@ -120,7 +120,7 @@ void GrGLProgram::updateUniforms(const GrRenderTarget* renderTarget,
     fXPImpl->setData(fProgramDataManager, programInfo.pipeline().getXferProcessor());
 }
 
-void GrGLProgram::bindTextures(const GrGeometryProcessor& geomProc,
+void GrGLProgram::bindTextures1(const GrGeometryProcessor& geomProc,
                                const GrSurfaceProxy* const geomProcTextures[],
                                const GrPipeline& pipeline) {
     // Bind textures from the geometry processor.

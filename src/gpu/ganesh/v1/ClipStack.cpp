@@ -1356,7 +1356,7 @@ GrClip::Effect ClipStack::apply(GrRecordingContext* rContext,
     SkSTArray<kNumStackMasks, const Element*> elementsForMask;
 
     bool maskRequiresAA = false;
-    auto atlasPathRenderer = rContext->priv().drawingManager()->getAtlasPathRenderer();
+    auto atlasPathRenderer = rContext->priv().drawingManager()->getAtlasPathRenderer(); //$$
 
     int i = fElements.count();
     for (const RawElement& e : fElements.ritems()) {

@@ -174,6 +174,8 @@ bool AtlasPathRenderer::addPathToAtlas(GrRecordingContext* rContext,
                                        SkIPoint16* locationInAtlas,
                                        bool* transposedInAtlas,
                                        const DrawRefsAtlasCallback& drawRefsAtlasCallback) {
+    SkDebugf("addPathToAtlas\n");
+
     SkASSERT(!viewMatrix.hasPerspective());  // See onCanDrawPath().
 
     pathDevBounds.roundOut(devIBounds);
@@ -217,7 +219,7 @@ bool AtlasPathRenderer::addPathToAtlas(GrRecordingContext* rContext,
     }
 
     if (fAtlasRenderTasks.empty() ||
-        !fAtlasRenderTasks.back()->addPath(viewMatrix, path, devIBounds->topLeft(), widthInAtlas,
+        !fAtlasRenderTasks.back()->addPath(viewMatrix, path, devIBounds->topLeft(), widthInAtlas, //$$
                                            heightInAtlas, *transposedInAtlas, locationInAtlas)) {
         // We either don't have an atlas yet or the current one is full. Try to replace it.
         auto currentAtlasTask = (!fAtlasRenderTasks.empty()) ? fAtlasRenderTasks.back().get()
@@ -253,7 +255,7 @@ bool AtlasPathRenderer::addPathToAtlas(GrRecordingContext* rContext,
 
 PathRenderer::CanDrawPath AtlasPathRenderer::onCanDrawPath(const CanDrawPathArgs& args) const {
 #ifdef SK_DEBUG
-    if (!fAtlasRenderTasks.empty()) {
+    if (!fAtlasRenderTasks.empty()) { //$$
         // args.fPaint should NEVER reference our current atlas. If it does, it means somebody
         // intercepted a clip FP meant for a different op and will cause rendering artifacts.
         const GrSurfaceProxy* atlasProxy = fAtlasRenderTasks.back()->atlasProxy();
@@ -278,6 +280,7 @@ PathRenderer::CanDrawPath AtlasPathRenderer::onCanDrawPath(const CanDrawPathArgs
                        !args.fViewMatrix->hasPerspective() &&
                        this->pathFitsInAtlas(args.fViewMatrix->mapRect(args.fShape->bounds()),
                                              args.fAAType);
+//    SkDebugf("%s\n", canDrawPath ? "good" : "bad");
     return canDrawPath ? CanDrawPath::kYes : CanDrawPath::kNo;
 }
 
@@ -316,7 +319,8 @@ bool AtlasPathRenderer::onDrawPath(const DrawPathArgs& args) {
                                           std::move(args.fPaint), locationInAtlas,
                                           devIBounds, transposedInAtlas,
                                           fAtlasRenderTasks.back()->readView(caps),
-                                          args.fShape->inverseFilled());
+                                          args.fShape->inverseFilled(),
+                                          true, false); //$$
     args.fSurfaceDrawContext->addDrawOp(args.fClip, std::move(op));
     return true;
 }
@@ -398,22 +402,22 @@ void AtlasPathRenderer::preFlush(GrOnFlushResourceProvider* onFlushRP,
     SkDEBUGCODE(validate_atlas_dependencies(fAtlasRenderTasks);)
 
     // Instantiate the first atlas.
-    fAtlasRenderTasks[0]->instantiate(onFlushRP);
+    fAtlasRenderTasks[0]->instantiate2(onFlushRP);
 
     // Instantiate the remaining atlases.
     GrTexture* firstAtlasTexture = fAtlasRenderTasks[0]->atlasProxy()->peekTexture();
-    SkASSERT(firstAtlasTexture);
+//    SkASSERT(firstAtlasTexture);
     for (int i = 1; i < fAtlasRenderTasks.count(); ++i) {
         auto atlasTask = fAtlasRenderTasks[i].get();
         if (atlasTask->atlasProxy()->backingStoreDimensions() == firstAtlasTexture->dimensions()) {
-            atlasTask->instantiate(onFlushRP, sk_ref_sp(firstAtlasTexture));
+            atlasTask->instantiate2(onFlushRP, sk_ref_sp(firstAtlasTexture));
         } else {
             // The atlases are expected to all be full size except possibly the final one.
             SkASSERT(i == fAtlasRenderTasks.count() - 1);
-            SkASSERT(atlasTask->atlasProxy()->backingStoreDimensions().area() <
-                     firstAtlasTexture->dimensions().area());
+//            SkASSERT(atlasTask->atlasProxy()->backingStoreDimensions().area() <
+//                     firstAtlasTexture->dimensions().area());
             // TODO: Recycle the larger atlas texture anyway?
-            atlasTask->instantiate(onFlushRP);
+            atlasTask->instantiate2(onFlushRP);
         }
     }
 
