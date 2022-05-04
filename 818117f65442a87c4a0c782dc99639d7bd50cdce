@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0a6f3dbd_137abea9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-05-04T15:38:46Z",
+      "side": 1,
+      "message": "Building on Linux without this change like\n\n```\nis_debug \u003d false\nis_component_build \u003d true\nwerror \u003d true\n\nskia_use_harfbuzz \u003d true\nskia_use_system_harfbuzz \u003d true\nskia_pdf_subset_harfbuzz \u003d false\n\nskia_use_sfntly \u003d false\n\nskia_use_freetype \u003d true\nskia_use_system_freetype2 \u003d true\n\nskia_use_icu \u003d true\nskia_use_system_icu \u003d true\n\nskia_use_vulkan\u003dtrue\n```\n\n```\nninja -C out/shared skia\nbloaty out/shared/libskia.so -n 1000 -d compileunits -s vm\n```\nShows that this produces a binary with VM size of 8.34Mi. This is contains the FreeType port, the FontConfig, Android, and Custom SkFontMgr. This does not include FreeType, HarfBuzz, or ICU.\n\n\nBuilding again on Linux without this change like\n```\nis_debug \u003d false\nis_component_build \u003d true\nwerror \u003d true\n\nskia_use_harfbuzz \u003d false\nskia_use_sfntly \u003d false\nskia_use_freetype \u003d false\nskia_use_icu \u003d false\nskia_use_vulkan\u003dtrue\n```\nProduces a binary with VM size of 8.01Mi. This still includes SkCustomTypeface, SkTextBlob, all the generic glyph caching and drawing code. This is what one gets when building a normal current Skia build \"without font support\".\n\n\nBuilding again with this change on Linux (with either of the above set of gn args) produces a binary with VM size of 7.68Mi. This removes all the text code. There are probably still a few blitters which might be removed since nothing can now create lcd16 masks, but these are not very large.\n\nBloaty reports that these last two have a VM difference of 339Ki. This is how much is removed from the final binary in addition to the current \"without font support\" build.",
+      "revId": "818117f65442a87c4a0c782dc99639d7bd50cdce",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
