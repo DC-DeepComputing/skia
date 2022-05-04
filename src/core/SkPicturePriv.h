@@ -129,7 +129,7 @@ public:
         // 2) Use that git hash to find the SKP asset version number at that time here:
         //    https://skia.googlesource.com/skia/+/bfd330d081952424a93d51715653e4d1314d4822/infra/bots/assets/skp/VERSION
         //
-        // 3) Use the SKP asset version number from step 3 to be the oldestSupportedSkpVersion in
+        // 3) Increment the SKP asset version number from step 3, and use it as the oldestSupportedSkpVersion in
         //    infra/bots/gen_tasks_logic/gen_tasks_logic.go
         //
         // 4) Run `make -C infra/bots train`
