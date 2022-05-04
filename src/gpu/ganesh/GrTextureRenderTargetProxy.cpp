@@ -143,6 +143,9 @@ size_t GrTextureRenderTargetProxy::onUninstantiatedGpuMemorySize() const {
 }
 
 bool GrTextureRenderTargetProxy::instantiate(GrResourceProvider* resourceProvider) {
+    if (fFailAlloc) {
+        SkDebugf("here\n");
+    }
     if (this->isLazy()) {
         return false;
     }
@@ -231,4 +234,3 @@ void GrTextureRenderTargetProxy::onValidateSurface(const GrSurface* surface) {
     }
 }
 #endif
-
