@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "933ae6a0_a2af28ff",
+        "filename": "gn/gpu.gni",
+        "patchSetId": 10
+      },
+      "lineNbr": 320,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-05-04T11:10:13Z",
+      "side": 0,
+      "message": "When you delete files, you need to also update public.bzl\n\nhttp://g/skia-staff/pFBydyFWoIU",
+      "range": {
+        "startLine": 320,
+        "startChar": 39,
+        "endLine": 320,
+        "endChar": 78
+      },
+      "revId": "2622e033275170feacbe67b62f43e134dc733854",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
