@@ -120,29 +120,6 @@ generated_cc_atom(
 )
 
 generated_cc_atom(
-    name = "GrStrikeCache_hdr",
-    hdrs = ["GrStrikeCache.h"],
-    visibility = ["//:__subpackages__"],
-    deps = [
-        "//include/private:SkTHash_hdr",
-        "//src/core:SkArenaAlloc_hdr",
-        "//src/core:SkStrikeSpec_hdr",
-    ],
-)
-
-generated_cc_atom(
-    name = "GrStrikeCache_src",
-    srcs = ["GrStrikeCache.cpp"],
-    visibility = ["//:__subpackages__"],
-    deps = [
-        ":GrStrikeCache_hdr",
-        "//src/core:SkArenaAlloc_hdr",
-        "//src/core:SkStrikeSpec_hdr",
-        "//src/text/gpu:Glyph_hdr",
-    ],
-)
-
-generated_cc_atom(
     name = "GrTextBlob_hdr",
     hdrs = ["GrTextBlob.h"],
     visibility = ["//:__subpackages__"],

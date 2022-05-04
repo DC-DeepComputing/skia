@@ -194,7 +194,6 @@ cc_library(
         "//src/gpu/ganesh/text:GrSDFMaskFilter_src",
         "//src/gpu/ganesh/text:GrSDFTControl_src",
         "//src/gpu/ganesh/text:GrSlug_src",
-        "//src/gpu/ganesh/text:GrStrikeCache_src",
         "//src/gpu/ganesh/text:GrTextBlobRedrawCoordinator_src",
         "//src/gpu/ganesh/text:GrTextBlob_src",
     ],
