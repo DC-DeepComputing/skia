@@ -231,4 +231,3 @@ void GrTextureProxy::onValidateSurface(const GrSurface* surface) {
 }
 
 #endif
-

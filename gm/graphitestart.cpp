@@ -19,138 +19,37 @@
 
 namespace {
 
-sk_sp<SkShader> create_gradient_shader(SkRect r) {
-    SkPoint pts[2] = { {r.fLeft, r.fTop}, {r.fRight, r.fTop} };
-    SkColor colors[] = { SK_ColorRED, SK_ColorGREEN, SK_ColorBLUE };
-    float offsets[] = { 0.0f, 0.75f, 1.0f };
+static const int kWidth = 256;
+static const int kHeight = 256;
 
-    return SkGradientShader::MakeLinear(pts, colors, offsets, SK_ARRAY_COUNT(colors),
-                                        SkTileMode::kClamp);
+SkPoint create_center(SkRandom* rand) {
+    SkPoint c = { rand->nextRangeF(0.0f, kWidth), rand->nextRangeF(0.0f, kHeight) };
+    return c;
 }
 
-sk_sp<SkShader> create_image_shader(SkCanvas* destCanvas, SkTileMode tmX, SkTileMode tmY) {
-    SkBitmap bitmap;
+SkPath create_concave_path(SkRandom* rand, const SkPoint& c) {
+    SkPath p;
+    int numLines = rand->nextRangeU(4, 8);
+    float angleStep = 2.0 * SK_FloatPI / numLines;
 
-    {
-        SkImageInfo ii = SkImageInfo::Make(64, 64, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
-        bitmap.allocPixels(ii);
-        bitmap.eraseColor(SK_ColorWHITE);
+    float length = rand->nextRangeF(4.0f, 32);
 
-        SkCanvas tmpCanvas(bitmap);
+    p.moveTo(c.fX-1.0f, c.fY);
 
-        SkColor colors[3][3] = {
-                { SK_ColorRED,    SK_ColorDKGRAY, SK_ColorBLUE },
-                { SK_ColorLTGRAY, SK_ColorCYAN,   SK_ColorYELLOW },
-                { SK_ColorGREEN,  SK_ColorWHITE,  SK_ColorMAGENTA }
-        };
+    float angle = angleStep;
+    for (int i = 1; i < numLines; ++i) {
+        length += rand->nextRangeF(-4.0f, 4.0f);
+        float x = length * SkScalarCos(angle);
+        float y = length * SkScalarSin(angle);
 
-        for (int y = 0; y < 3; ++y) {
-            for (int x = 0; x < 3; ++x) {
-                SkPaint paint;
-                paint.setColor(colors[y][x]);
-                tmpCanvas.drawRect(SkRect::MakeXYWH(x*21, y*21, 22, 22), paint);
-            }
-        }
+        p.lineTo(c.fX + x, c.fY + y);
 
-        bitmap.setAlphaType(kOpaque_SkAlphaType);
-        bitmap.setImmutable();
+        angle += angleStep;
     }
+    p.close();
 
-    sk_sp<SkImage> img = SkImage::MakeFromBitmap(bitmap);
-    img = ToolUtils::MakeTextureImage(destCanvas, std::move(img));
-
-    return img->makeShader(tmX, tmY, SkSamplingOptions());
-}
-
-sk_sp<SkShader> create_blend_shader(SkCanvas* destCanvas, SkBlendMode bm) {
-    constexpr SkColor4f kTransYellow = {1.0f, 1.0f, 0.0f, 0.5f};
-
-    sk_sp<SkShader> dst = SkShaders::Color(kTransYellow, nullptr);
-    return SkShaders::Blend(bm,
-                            std::move(dst),
-                            create_image_shader(destCanvas,
-                                                SkTileMode::kRepeat, SkTileMode::kRepeat));
-}
-
-void draw_image_shader_tile(SkCanvas* canvas) {
-    SkPaint p;
-    p.setShader(create_image_shader(canvas, SkTileMode::kClamp, SkTileMode::kRepeat));
-
-    SkPath path;
-    path.moveTo(1,   1);
-    path.lineTo(32,  127);
-    path.lineTo(96,  127);
-    path.lineTo(127, 1);
-    path.lineTo(63,  32);
-    path.close();
-
-    canvas->save();
-        canvas->scale(0.5f, 0.5f);
-        canvas->drawPath(path, p);
-
-        canvas->save();
-            canvas->concat(SkMatrix::RotateDeg(90, {64, 64}));
-            canvas->translate(128, 0);
-            canvas->drawPath(path, p);
-        canvas->restore();
-    canvas->restore();
-}
-
-void draw_gradient_tile(SkCanvas* canvas) {
-    SkRect r{1, 1, 127, 127};
-    SkPaint p;
-    p.setShader(create_gradient_shader(r));
-
-    canvas->save();
-        canvas->translate(128, 0);
-        canvas->scale(0.5f, 0.5f);
-        canvas->drawRect(r, p);
-
-        canvas->save();
-            canvas->concat(SkMatrix::RotateDeg(90, {64, 64}));
-            canvas->translate(128, 0);
-            canvas->drawRect(r, p);
-        canvas->restore();
-    canvas->restore();
-}
-
-void draw_blend_mode_swatches(SkCanvas* canvas, SkRect clipRect) {
-    static const int kTileHeight = 16;
-    static const int kTileWidth = 16;
-    static const SkColor4f kOpaqueWhite { 1.0f, 1.0f, 1.0f, 1.0f };
-    static const SkColor4f kTransBluish { 0.0f, 0.5f, 1.0f, 0.5f };
-    static const SkColor4f kTransWhite { 1.0f, 1.0f, 1.0f, 0.75f };
-
-    SkPaint dstPaint;
-    dstPaint.setColor(kOpaqueWhite);
-    dstPaint.setBlendMode(SkBlendMode::kSrc);
-    dstPaint.setAntiAlias(false);
-
-    SkPaint srcPaint;
-    srcPaint.setColor(kTransBluish);
-    srcPaint.setAntiAlias(false);
-
-    SkRect r = SkRect::MakeXYWH(clipRect.fLeft, clipRect.fTop, kTileWidth, kTileHeight);
-
-    // For the first pass we draw: transparent bluish on top of opaque white
-    // For the second pass we draw: transparent white on top of transparent bluish
-    for (int passes = 0; passes < 2; ++passes) {
-        for (int i = 0; i <= (int)SkBlendMode::kLastCoeffMode; ++i) {
-            if (r.fLeft+kTileWidth > clipRect.fRight) {
-                r.offsetTo(clipRect.fLeft, r.fTop+kTileHeight);
-            }
-
-            canvas->drawRect(r.makeInset(1.0f, 1.0f), dstPaint);
-            srcPaint.setBlendMode(static_cast<SkBlendMode>(i));
-            canvas->drawRect(r.makeInset(2.0f, 2.0f), srcPaint);
-
-            r.offset(kTileWidth, 0.0f);
-        }
-
-        r.offsetTo(clipRect.fLeft, r.fTop+kTileHeight);
-        srcPaint.setColor(kTransWhite);
-        dstPaint.setColor(kTransBluish);
-    }
+//    SkASSERT(!p.isConvex());
+    return p;
 }
 
 } // anonymous namespace
@@ -162,12 +61,10 @@ class GraphiteStartGM : public GM {
 public:
     GraphiteStartGM() {
         this->setBGColor(SK_ColorBLACK);
-        GetResourceAsBitmap("images/color_wheel.gif", &fBitmap);
     }
 
 protected:
-    static const int kWidth = 256;
-    static const int kHeight = 384;
+
 
     SkString onShortName() override {
         return SkString("graphitestart");
@@ -179,41 +76,35 @@ protected:
 
     void onDraw(SkCanvas* canvas) override {
 
-        canvas->save();
-        canvas->clipRRect(SkRRect::MakeRectXY({16.f, 16.f, 240.f, 366.f}, 32.f, 32.f), true);
+        for (int i = 0; i < 5; ++i) {
+            SkPoint c = create_center(&fRand);
 
-        // UL corner
-        draw_image_shader_tile(canvas);
+            SkPath p1 = create_concave_path(&fRand, c);
+            SkRect r1 = p1.getBounds();
+            r1.makeOutset(0.1f*r1.width(), 0.1f*r1.height());
 
-        // UR corner
-        draw_gradient_tile(canvas);
+            SkPath p2 = create_concave_path(&fRand, c);
+            SkRect r2 = p2.getBounds();
+            r2.makeOutset(0.1f*r2.width(), 0.1f*r2.height());
 
-        // LL corner
-        {
-            SkPaint p;
-            p.setColor(SK_ColorRED);
-            canvas->drawRect({2, 129, 127, 255}, p);
+            r1.join(r2);
+
+            SkPaint paint;
+            paint.setColor(ToolUtils::color_to_565(fRand.nextU() | (0xFF << 24)));
+            paint.setAntiAlias(true);
+
+            canvas->save();
+//            canvas->clipPath(p1);
+//            canvas->clipPath(p2, SkClipOp::kIntersect, true);
+//            canvas->drawRect(r1, paint);
+            canvas->drawPath(p1, paint);
+            canvas->restore();
         }
 
-        // LR corner
-        {
-            SkPaint p;
-            p.setShader(create_blend_shader(canvas, SkBlendMode::kModulate));
-            canvas->drawRect({129, 129, 255, 255}, p);
-        }
-
-        canvas->restore();
-
-#ifdef SK_GRAPHITE_ENABLED
-        // TODO: failing serialize test on Linux, not sure what's going on
-        canvas->writePixels(fBitmap, 0, 256);
-#endif
-
-        draw_blend_mode_swatches(canvas, SkRect::MakeXYWH(128, 256, 128, 128));
     }
 
 private:
-    SkBitmap fBitmap;
+    SkRandom fRand;
 };
 
 //////////////////////////////////////////////////////////////////////////////
