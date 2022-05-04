@@ -16,6 +16,24 @@
       "message": "A vector of length 0 continues to have length 0 after normalization? Seems reasonable to me.\n\nCan we add a unit test for this?",
       "revId": "f12f1af166b9a0a6fee5c6c42ff00793cf14d0b0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6c7ecc54_0a3dce45",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2022-05-04T14:26:39Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "2c4fcd14_54c3e5a7",
+      "revId": "f12f1af166b9a0a6fee5c6c42ff00793cf14d0b0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
