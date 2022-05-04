@@ -72,7 +72,8 @@ public:
     // 'backingTexture', if provided, is a renderable texture with which to instantiate our proxy.
     // If null then we will create a texture using the resource provider. The purpose of this param
     // is to provide a guaranteed way to recycle textures from previous atlases.
-    void instantiate(GrOnFlushResourceProvider*, sk_sp<GrTexture> backingTexture = nullptr);
+    bool SK_WARN_UNUSED_RESULT instantiate1(GrOnFlushResourceProvider*,
+                                           sk_sp<GrTexture> backingTexture = nullptr);
 
 private:
     class Node;
@@ -92,7 +93,7 @@ private:
     Node* fTopNode = nullptr;
 
     sk_sp<GrTextureProxy> fTextureProxy;
-    sk_sp<GrTexture> fBackingTexture;
+    sk_sp<GrTexture> fBackingTexture2;
 };
 
 #endif
