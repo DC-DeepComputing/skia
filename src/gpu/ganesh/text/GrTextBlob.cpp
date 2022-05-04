@@ -32,9 +32,9 @@
 #include "src/gpu/ganesh/text/GrAtlasManager.h"
 #include "src/gpu/ganesh/text/GrGlyphVector.h"
 #include "src/gpu/ganesh/text/GrSDFTControl.h"
-#include "src/gpu/ganesh/text/GrStrikeCache.h"
 #include "src/gpu/ganesh/text/GrTextBlob.h"
 #include "src/text/gpu/Glyph.h"
+#include "src/text/gpu/StrikeCache.h"
 
 #include "src/gpu/ganesh/GrBlurUtils.h"
 #include "src/gpu/ganesh/ops/AtlasTextOp.h"
@@ -42,8 +42,11 @@
 #include "src/gpu/ganesh/v1/SurfaceDrawContext_v1.h"
 
 using AtlasTextOp = skgpu::v1::AtlasTextOp;
-using Glyph = sktext::gpu::Glyph;
 using MaskFormat = skgpu::MaskFormat;
+
+using Glyph = sktext::gpu::Glyph;
+using GlyphVector = sktext::gpu::GlyphVector;
+using StrikeCache = sktext::gpu::StrikeCache;
 
 // -- GPU Text -------------------------------------------------------------------------------------
 // There are three broad types of SubRun implementations for drawing text using the GPU.
@@ -1076,7 +1079,7 @@ public:
                          MaskFormat format,
                          SkGlyphRect deviceBounds,
                          SkSpan<const DevicePosition> devicePositions,
-                         GrGlyphVector&& glyphs,
+                         GlyphVector&& glyphs,
                          bool glyphsOutOfBounds);
 
     static GrSubRunOwner Make(const GrTextReferenceFrame* referenceFrame,
@@ -1110,7 +1113,7 @@ public:
                     const SkPaint&,
                     skgpu::v1::SurfaceDrawContext*) const override;
 
-    void testingOnly_packedGlyphIDToGlyph(GrStrikeCache *cache) const override;
+    void testingOnly_packedGlyphIDToGlyph(StrikeCache *cache) const override;
 
     std::tuple<bool, int>
     regenerateAtlas(int begin, int end, GrMeshDrawTarget*) const override;
@@ -1144,14 +1147,14 @@ private:
 
     // The regenerateAtlas method mutates fGlyphs. It should be called from onPrepare which must
     // be single threaded.
-    mutable GrGlyphVector fGlyphs;
+    mutable GlyphVector fGlyphs;
 };
 
 DirectMaskSubRun::DirectMaskSubRun(const GrTextReferenceFrame* referenceFrame,
                                            MaskFormat format,
                                            SkGlyphRect deviceBounds,
                                            SkSpan<const DevicePosition> devicePositions,
-                                           GrGlyphVector&& glyphs,
+                                           GlyphVector&& glyphs,
                                            bool glyphsOutOfBounds)
         : fReferenceFrame{referenceFrame}
         , fMaskFormat{format}
@@ -1166,7 +1169,7 @@ GrSubRunOwner DirectMaskSubRun::Make(const GrTextReferenceFrame* referenceFrame,
                                          MaskFormat format,
                                          GrSubRunAllocator* alloc) {
     auto glyphLeftTop = alloc->makePODArray<DevicePosition>(accepted.size());
-    auto glyphIDs = alloc->makePODArray<GrGlyphVector::Variant>(accepted.size());
+    auto glyphIDs = alloc->makePODArray<GlyphVector::Variant>(accepted.size());
 
     // Because this is the direct case, the maximum width or height is the size that fits in the
     // atlas. This boundary is checked below to ensure that the call to SkGlyphRect below will
@@ -1202,7 +1205,7 @@ GrSubRunOwner DirectMaskSubRun::Make(const GrTextReferenceFrame* referenceFrame,
     SkSpan<const DevicePosition> leftTop{glyphLeftTop, goodPosCount};
     return alloc->makeUnique<DirectMaskSubRun>(
             referenceFrame, format, runBounds, leftTop,
-            GrGlyphVector{std::move(strike), {glyphIDs, goodPosCount}},
+            GlyphVector{std::move(strike), {glyphIDs, goodPosCount}},
             glyphsExcluded);
 }
 
@@ -1236,7 +1239,7 @@ GrSubRunOwner DirectMaskSubRun::MakeFromBuffer(const GrTextReferenceFrame* refer
     }
     SkSpan<DevicePosition> positions(positionsData, glyphCount);
 
-    auto glyphVector = GrGlyphVector::MakeFromBuffer(buffer, client, alloc);
+    auto glyphVector = GlyphVector::MakeFromBuffer(buffer, client, alloc);
     if (!buffer.validate(glyphVector.has_value())) { return nullptr; }
     if (!buffer.validate(SkCount(glyphVector->glyphs()) == glyphCount)) { return nullptr; }
     SkASSERT(buffer.isValid());
@@ -1360,7 +1363,7 @@ std::tuple<const GrClip*, GrOp::Owner> DirectMaskSubRun::makeAtlasTextOp(const G
     return {clip, std::move(op)};
 }
 
-void DirectMaskSubRun::testingOnly_packedGlyphIDToGlyph(GrStrikeCache *cache) const {
+void DirectMaskSubRun::testingOnly_packedGlyphIDToGlyph(StrikeCache *cache) const {
     fGlyphs.packedGlyphIDToGlyph(cache);
 }
 
@@ -1513,7 +1516,7 @@ class TransformedMaskSubRun final : public GrSubRun, public GrAtlasSubRun {
 public:
     TransformedMaskSubRun(const GrTextReferenceFrame* referenceFrame,
                           TransformedMaskVertexFiller&& vertexFiller,
-                          GrGlyphVector&& glyphs);
+                          GlyphVector&& glyphs);
 
     static GrSubRunOwner Make(const GrTextReferenceFrame* referenceFrame,
                               const SkZip<SkGlyphVariant, SkPoint>& accepted,
@@ -1547,7 +1550,7 @@ public:
 
     const GrAtlasSubRun* testingOnly_atlasSubRun() const override;
 
-    void testingOnly_packedGlyphIDToGlyph(GrStrikeCache *cache) const override;
+    void testingOnly_packedGlyphIDToGlyph(StrikeCache *cache) const override;
 
     std::tuple<bool, int> regenerateAtlas(int begin, int end, GrMeshDrawTarget*) const override;
 
@@ -1574,12 +1577,12 @@ private:
 
     // The regenerateAtlas method mutates fGlyphs. It should be called from onPrepare which must
     // be single threaded.
-    mutable GrGlyphVector fGlyphs;
+    mutable GlyphVector fGlyphs;
 };
 
 TransformedMaskSubRun::TransformedMaskSubRun(const GrTextReferenceFrame* referenceFrame,
                                              TransformedMaskVertexFiller&& vertexFiller,
-                                             GrGlyphVector&& glyphs)
+                                             GlyphVector&& glyphs)
         : fReferenceFrame{referenceFrame}
         , fVertexFiller{std::move(vertexFiller)}
         , fGlyphs{std::move(glyphs)} { }
@@ -1593,7 +1596,7 @@ GrSubRunOwner TransformedMaskSubRun::Make(const GrTextReferenceFrame* referenceF
     auto vertexFiller = TransformedMaskVertexFiller::Make(
             maskType, 0, strikeToSourceScale, accepted, alloc);
 
-    auto glyphVector = GrGlyphVector::Make(std::move(strike), accepted.get<0>(), alloc);
+    auto glyphVector = GlyphVector::Make(std::move(strike), accepted.get<0>(), alloc);
 
     return alloc->makeUnique<TransformedMaskSubRun>(
             referenceFrame, std::move(vertexFiller), std::move(glyphVector));
@@ -1606,7 +1609,7 @@ GrSubRunOwner TransformedMaskSubRun::MakeFromBuffer(const GrTextReferenceFrame* 
     auto vertexFiller = TransformedMaskVertexFiller::MakeFromBuffer(buffer, alloc);
     if (!buffer.validate(vertexFiller.has_value())) { return {}; }
 
-    auto glyphVector = GrGlyphVector::MakeFromBuffer(buffer, client, alloc);
+    auto glyphVector = GlyphVector::MakeFromBuffer(buffer, client, alloc);
     if (!buffer.validate(glyphVector.has_value())) { return {}; }
     if (!buffer.validate(SkCount(glyphVector->glyphs()) == vertexFiller->count())) { return {}; }
     return alloc->makeUnique<TransformedMaskSubRun>(
@@ -1676,7 +1679,7 @@ bool TransformedMaskSubRun::canReuse(const SkPaint& paint, const SkMatrix& posit
     return true;
 }
 
-void TransformedMaskSubRun::testingOnly_packedGlyphIDToGlyph(GrStrikeCache *cache) const {
+void TransformedMaskSubRun::testingOnly_packedGlyphIDToGlyph(StrikeCache *cache) const {
     fGlyphs.packedGlyphIDToGlyph(cache);
 }
 
@@ -1722,7 +1725,7 @@ public:
                bool antiAliased,
                const GrSDFTMatrixRange& matrixRange,
                TransformedMaskVertexFiller&& vertexFiller,
-               GrGlyphVector&& glyphs);
+               GlyphVector&& glyphs);
 
     static GrSubRunOwner Make(const GrTextReferenceFrame* referenceFrame,
                               const SkZip<SkGlyphVariant, SkPoint>& accepted,
@@ -1757,7 +1760,7 @@ public:
 
     const GrAtlasSubRun* testingOnly_atlasSubRun() const override;
 
-    void testingOnly_packedGlyphIDToGlyph(GrStrikeCache *cache) const override;
+    void testingOnly_packedGlyphIDToGlyph(StrikeCache *cache) const override;
 
     std::tuple<bool, int> regenerateAtlas(int begin, int end, GrMeshDrawTarget*) const override;
 
@@ -1787,7 +1790,7 @@ private:
 
     // The regenerateAtlas method mutates fGlyphs. It should be called from onPrepare which must
     // be single threaded.
-    mutable GrGlyphVector fGlyphs;
+    mutable GlyphVector fGlyphs;
 };
 
 SDFTSubRun::SDFTSubRun(const GrTextReferenceFrame* referenceFrame,
@@ -1795,7 +1798,7 @@ SDFTSubRun::SDFTSubRun(const GrTextReferenceFrame* referenceFrame,
                        bool antiAliased,
                        const GrSDFTMatrixRange& matrixRange,
                        TransformedMaskVertexFiller&& vertexFiller,
-                       GrGlyphVector&& glyphs)
+                       GlyphVector&& glyphs)
         : fReferenceFrame{referenceFrame}
         , fUseLCDText{useLCDText}
         , fAntiAliased{antiAliased}
@@ -1823,7 +1826,7 @@ GrSubRunOwner SDFTSubRun::Make(const GrTextReferenceFrame* referenceFrame,
             accepted,
             alloc);
 
-    auto glyphVector = GrGlyphVector::Make(std::move(strike), accepted.get<0>(), alloc);
+    auto glyphVector = GlyphVector::Make(std::move(strike), accepted.get<0>(), alloc);
 
     return alloc->makeUnique<SDFTSubRun>(
             referenceFrame,
@@ -1843,7 +1846,7 @@ GrSubRunOwner SDFTSubRun::MakeFromBuffer(const GrTextReferenceFrame* referenceFr
     GrSDFTMatrixRange matrixRange = GrSDFTMatrixRange::MakeFromBuffer(buffer);
     auto vertexFiller = TransformedMaskVertexFiller::MakeFromBuffer(buffer, alloc);
     if (!buffer.validate(vertexFiller.has_value())) { return {}; }
-    auto glyphVector = GrGlyphVector::MakeFromBuffer(buffer, client, alloc);
+    auto glyphVector = GlyphVector::MakeFromBuffer(buffer, client, alloc);
     if (!buffer.validate(glyphVector.has_value())) { return {}; }
     if (!buffer.validate(SkCount(glyphVector->glyphs()) == vertexFiller->count())) { return {}; }
     return alloc->makeUnique<SDFTSubRun>(referenceFrame,
@@ -1950,7 +1953,7 @@ bool SDFTSubRun::canReuse(const SkPaint& paint, const SkMatrix& positionMatrix) 
     return fMatrixRange.matrixInRange(positionMatrix);
 }
 
-void SDFTSubRun::testingOnly_packedGlyphIDToGlyph(GrStrikeCache *cache) const {
+void SDFTSubRun::testingOnly_packedGlyphIDToGlyph(StrikeCache *cache) const {
     fGlyphs.packedGlyphIDToGlyph(cache);
 }
 
@@ -2175,7 +2178,7 @@ sk_sp<GrTextBlob> GrTextBlob::Make(const SkGlyphRunList& glyphRunList,
     // The neededForSubRun is optimized for DirectMaskSubRun which is by far the most common case.
     size_t subRunSizeHint =
             totalGlyphCount * sizeof(DevicePosition)
-            + GrGlyphVector::GlyphVectorSize(totalGlyphCount)
+            + GlyphVector::GlyphVectorSize(totalGlyphCount)
             + glyphRunList.runCount() * (sizeof(DirectMaskSubRun) + vertexDataToSubRunPadding);
 
     auto [initializer, totalMemoryAllocated, alloc] =
@@ -2499,7 +2502,7 @@ sk_sp<Slug> Slug::Make(const SkMatrixProvider& viewMatrix,
     // common case.
     size_t subRunSizeHint =
             totalGlyphCount * sizeof(DevicePosition)
-            + GrGlyphVector::GlyphVectorSize(totalGlyphCount)
+            + GlyphVector::GlyphVectorSize(totalGlyphCount)
             + glyphRunList.runCount() * (sizeof(DirectMaskSubRun) + vertexDataToSubRunPadding);
 
     auto [initializer, _, alloc] =

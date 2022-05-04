@@ -16,6 +16,7 @@ cc_library(
         ":Swizzle_src",
         "//src/gpu/tessellate:FixedCountBufferUtils_src",
         "//src/gpu/tessellate:Tessellation_src",
+        "//src/text/gpu:StrikeCache_src",
     ],
 )
 

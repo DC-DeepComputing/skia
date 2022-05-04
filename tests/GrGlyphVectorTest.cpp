@@ -17,17 +17,22 @@
 #include "src/gpu/ganesh/GrSubRunAllocator.h"
 #include "tests/Test.h"
 
+namespace sktext::gpu {
 class TestingPeer {
 public:
-    static const SkDescriptor& GetDescriptor(const GrGlyphVector& v) {
+    static const SkDescriptor& GetDescriptor(const GlyphVector& v) {
         return v.fStrike->getDescriptor();
     }
-    static SkSpan<GrGlyphVector::Variant> GetGlyphs(const GrGlyphVector& v) {
+    static SkSpan<GlyphVector::Variant> GetGlyphs(const GlyphVector& v) {
         return v.fGlyphs;
     }
 };
+}
 
-DEF_TEST(GrGlyphVector_Serialization, r) {
+using GlyphVector = sktext::gpu::GlyphVector;
+using TestingPeer = sktext::gpu::TestingPeer;
+
+DEF_TEST(GlyphVector_Serialization, r) {
     SkFont font;
     auto [strikeSpec, _] = SkStrikeSpec::MakeCanonicalized(font);
 
@@ -40,7 +45,7 @@ DEF_TEST(GrGlyphVector_Serialization, r) {
         glyphs[i] = glyphFinder.glyph(SkPackedGlyphID(SkTo<SkGlyphID>(i + 1)));
     }
 
-    GrGlyphVector src = GrGlyphVector::Make(
+    GlyphVector src = GlyphVector::Make(
             strikeSpec.findOrCreateStrike(), SkMakeSpan(glyphs, N), &alloc);
 
     SkBinaryWriteBuffer wBuffer;
@@ -48,7 +53,7 @@ DEF_TEST(GrGlyphVector_Serialization, r) {
 
     auto data = wBuffer.snapshotAsData();
     SkReadBuffer rBuffer{data->data(), data->size()};
-    auto dst = GrGlyphVector::MakeFromBuffer(rBuffer, nullptr, &alloc);
+    auto dst = GlyphVector::MakeFromBuffer(rBuffer, nullptr, &alloc);
     REPORTER_ASSERT(r, dst.has_value());
     REPORTER_ASSERT(r, TestingPeer::GetDescriptor(src) == TestingPeer::GetDescriptor(*dst));
 
@@ -59,7 +64,7 @@ DEF_TEST(GrGlyphVector_Serialization, r) {
     }
 }
 
-DEF_TEST(GrGlyphVector_BadLengths, r) {
+DEF_TEST(GlyphVector_BadLengths, r) {
     {
         SkFont font;
         auto [strikeSpec, _] = SkStrikeSpec::MakeCanonicalized(font);
@@ -71,7 +76,7 @@ DEF_TEST(GrGlyphVector_BadLengths, r) {
         auto data = wBuffer.snapshotAsData();
         SkReadBuffer rBuffer{data->data(), data->size()};
         GrSubRunAllocator alloc;
-        auto dst = GrGlyphVector::MakeFromBuffer(rBuffer, nullptr, &alloc);
+        auto dst = GlyphVector::MakeFromBuffer(rBuffer, nullptr, &alloc);
         REPORTER_ASSERT(r, !dst.has_value());
     }
 
@@ -89,7 +94,7 @@ DEF_TEST(GrGlyphVector_BadLengths, r) {
         auto data = wBuffer.snapshotAsData();
         SkReadBuffer rBuffer{data->data(), data->size()};
         GrSubRunAllocator alloc;
-        auto dst = GrGlyphVector::MakeFromBuffer(rBuffer, nullptr, &alloc);
+        auto dst = GlyphVector::MakeFromBuffer(rBuffer, nullptr, &alloc);
         REPORTER_ASSERT(r, !dst.has_value());
     }
 
@@ -107,7 +112,7 @@ DEF_TEST(GrGlyphVector_BadLengths, r) {
         auto data = wBuffer.snapshotAsData();
         SkReadBuffer rBuffer{data->data(), data->size()};
         GrSubRunAllocator alloc;
-        auto dst = GrGlyphVector::MakeFromBuffer(rBuffer, nullptr, &alloc);
+        auto dst = GlyphVector::MakeFromBuffer(rBuffer, nullptr, &alloc);
         REPORTER_ASSERT(r, !dst.has_value());
     }
 }
