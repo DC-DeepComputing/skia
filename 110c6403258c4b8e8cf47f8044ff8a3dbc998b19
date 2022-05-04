@@ -1,0 +1,113 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "07ba2f4d_c56e64da",
+        "filename": "toolchain/BUILD.bazel",
+        "patchSetId": 11
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-05-04T11:28:03Z",
+      "side": 1,
+      "message": "Don\u0027t need this twice",
+      "range": {
+        "startLine": 6,
+        "startChar": 0,
+        "endLine": 6,
+        "endChar": 20
+      },
+      "revId": "110c6403258c4b8e8cf47f8044ff8a3dbc998b19",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fb3e2f6f_79e6881a",
+        "filename": "toolchain/BUILD.bazel",
+        "patchSetId": 11
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-05-04T11:28:03Z",
+      "side": 1,
+      "message": "lunx -\u003e linux",
+      "range": {
+        "startLine": 45,
+        "startChar": 27,
+        "endLine": 45,
+        "endChar": 45
+      },
+      "revId": "110c6403258c4b8e8cf47f8044ff8a3dbc998b19",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8906bb07_86a253e9",
+        "filename": "toolchain/mac_M1_toolchain_config.bzl",
+        "patchSetId": 11
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-05-04T11:28:03Z",
+      "side": 1,
+      "message": "This file should have a lowercase m in its name. Some platforms care about that, and I think it might be the cause of the tryjob failures.",
+      "revId": "110c6403258c4b8e8cf47f8044ff8a3dbc998b19",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4924daa1_56519433",
+        "filename": "toolchain/mac_M1_toolchain_config.bzl",
+        "patchSetId": 11
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-05-04T11:28:03Z",
+      "side": 1,
+      "message": "Just drop all the words after host.",
+      "range": {
+        "startLine": 2,
+        "startChar": 65,
+        "endLine": 3,
+        "endChar": 28
+      },
+      "revId": "110c6403258c4b8e8cf47f8044ff8a3dbc998b19",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d7ac9734_589968f5",
+        "filename": "toolchain/mac_M1_toolchain_config.bzl",
+        "patchSetId": 11
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-05-04T11:28:03Z",
+      "side": 1,
+      "message": "This filename is out of date",
+      "range": {
+        "startLine": 7,
+        "startChar": 4,
+        "endLine": 7,
+        "endChar": 19
+      },
+      "revId": "110c6403258c4b8e8cf47f8044ff8a3dbc998b19",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
