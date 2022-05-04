@@ -226,7 +226,7 @@ bool GrDirectContext::init() {
     SkASSERT(this->getTextBlobRedrawCoordinator());
     SkASSERT(this->threadSafeCache());
 
-    fStrikeCache = std::make_unique<GrStrikeCache>();
+    fStrikeCache = std::make_unique<sktext::gpu::StrikeCache>();
     fResourceCache = std::make_unique<GrResourceCache>(this->singleOwner(),
                                                        this->directContextID(),
                                                        this->contextID());

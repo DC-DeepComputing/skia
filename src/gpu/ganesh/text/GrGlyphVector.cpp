@@ -88,12 +88,12 @@ SkSpan<const Glyph*> GrGlyphVector::glyphs() const {
 
 // packedGlyphIDToGlyph must be run in single-threaded mode.
 // If fStrike != nullptr then the conversion to Glyph* has not happened.
-void GrGlyphVector::packedGlyphIDToGlyph(GrStrikeCache* cache) {
+void GrGlyphVector::packedGlyphIDToGlyph(sktext::gpu::StrikeCache* cache) {
     if (fStrike != nullptr) {
-        fGrStrike = cache->findOrCreateStrike(fStrike->strikeSpec());
+        fTextStrike = cache->findOrCreateStrike(fStrike->strikeSpec());
 
         for (auto& variant : fGlyphs) {
-            variant.glyph = fGrStrike->getGlyph(variant.packedGlyphID);
+            variant.glyph = fTextStrike->getGlyph(variant.packedGlyphID);
         }
 
         // This must be pinned for the Atlas filling to work.
@@ -121,7 +121,7 @@ std::tuple<bool, int> GrGlyphVector::regenerateAtlas(int begin, int end,
         // is set to kInvalidAtlasGeneration) or the atlas has changed in subsequent calls..
         fBulkUseToken.reset();
 
-        SkBulkGlyphMetricsAndImages metricsAndImages{fGrStrike->strikeSpec()};
+        SkBulkGlyphMetricsAndImages metricsAndImages{fTextStrike->strikeSpec()};
 
         // Update the atlas information in the GrStrike.
         auto tokenTracker = uploadTarget->tokenTracker();

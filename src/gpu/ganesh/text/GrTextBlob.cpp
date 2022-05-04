@@ -42,8 +42,10 @@
 #include "src/gpu/ganesh/v1/SurfaceDrawContext_v1.h"
 
 using AtlasTextOp = skgpu::v1::AtlasTextOp;
-using Glyph = sktext::gpu::Glyph;
 using MaskFormat = skgpu::MaskFormat;
+
+using Glyph = sktext::gpu::Glyph;
+using StrikeCache = sktext::gpu::StrikeCache;
 
 // -- GPU Text -------------------------------------------------------------------------------------
 // There are three broad types of SubRun implementations for drawing text using the GPU.
@@ -1110,7 +1112,7 @@ public:
                     const SkPaint&,
                     skgpu::v1::SurfaceDrawContext*) const override;
 
-    void testingOnly_packedGlyphIDToGlyph(GrStrikeCache *cache) const override;
+    void testingOnly_packedGlyphIDToGlyph(StrikeCache *cache) const override;
 
     std::tuple<bool, int>
     regenerateAtlas(int begin, int end, GrMeshDrawTarget*) const override;
@@ -1360,7 +1362,7 @@ std::tuple<const GrClip*, GrOp::Owner> DirectMaskSubRun::makeAtlasTextOp(const G
     return {clip, std::move(op)};
 }
 
-void DirectMaskSubRun::testingOnly_packedGlyphIDToGlyph(GrStrikeCache *cache) const {
+void DirectMaskSubRun::testingOnly_packedGlyphIDToGlyph(StrikeCache *cache) const {
     fGlyphs.packedGlyphIDToGlyph(cache);
 }
 
@@ -1547,7 +1549,7 @@ public:
 
     const GrAtlasSubRun* testingOnly_atlasSubRun() const override;
 
-    void testingOnly_packedGlyphIDToGlyph(GrStrikeCache *cache) const override;
+    void testingOnly_packedGlyphIDToGlyph(StrikeCache *cache) const override;
 
     std::tuple<bool, int> regenerateAtlas(int begin, int end, GrMeshDrawTarget*) const override;
 
@@ -1676,7 +1678,7 @@ bool TransformedMaskSubRun::canReuse(const SkPaint& paint, const SkMatrix& posit
     return true;
 }
 
-void TransformedMaskSubRun::testingOnly_packedGlyphIDToGlyph(GrStrikeCache *cache) const {
+void TransformedMaskSubRun::testingOnly_packedGlyphIDToGlyph(StrikeCache *cache) const {
     fGlyphs.packedGlyphIDToGlyph(cache);
 }
 
@@ -1757,7 +1759,7 @@ public:
 
     const GrAtlasSubRun* testingOnly_atlasSubRun() const override;
 
-    void testingOnly_packedGlyphIDToGlyph(GrStrikeCache *cache) const override;
+    void testingOnly_packedGlyphIDToGlyph(StrikeCache *cache) const override;
 
     std::tuple<bool, int> regenerateAtlas(int begin, int end, GrMeshDrawTarget*) const override;
 
@@ -1950,7 +1952,7 @@ bool SDFTSubRun::canReuse(const SkPaint& paint, const SkMatrix& positionMatrix) 
     return fMatrixRange.matrixInRange(positionMatrix);
 }
 
-void SDFTSubRun::testingOnly_packedGlyphIDToGlyph(GrStrikeCache *cache) const {
+void SDFTSubRun::testingOnly_packedGlyphIDToGlyph(StrikeCache *cache) const {
     fGlyphs.packedGlyphIDToGlyph(cache);
 }
 

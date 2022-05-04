@@ -49,7 +49,7 @@ public:
     // the sub runs.
     int unflattenSize() const { return GlyphVectorSize(fGlyphs.size()); }
 
-    void packedGlyphIDToGlyph(GrStrikeCache* cache);
+    void packedGlyphIDToGlyph(sktext::gpu::StrikeCache* cache);
 
     std::tuple<bool, int> regenerateAtlas(
             int begin, int end,
@@ -65,7 +65,7 @@ private:
     friend class TestingPeer;
     sk_sp<SkStrike> fStrike;
     SkSpan<Variant> fGlyphs;
-    sk_sp<GrTextStrike> fGrStrike{nullptr};
+    sk_sp<sktext::gpu::TextStrike> fTextStrike{nullptr};
     uint64_t fAtlasGeneration{skgpu::AtlasGenerationCounter::kInvalidGeneration};
     GrDrawOpAtlas::BulkUseTokenUpdater fBulkUseToken;
 };

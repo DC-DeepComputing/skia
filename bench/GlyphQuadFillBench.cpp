@@ -77,7 +77,7 @@ class DirectMaskGlyphVertexFillBenchmark : public Benchmark {
 
 private:
     sk_sp<GrTextBlob> fBlob;
-    GrStrikeCache fCache;
+    sktext::gpu::StrikeCache fCache;
     std::unique_ptr<char[]> fVertices;
 };
 
