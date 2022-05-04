@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6b22022f_99ca66e1",
+        "filename": "toolchain/BUILD.bazel",
+        "patchSetId": 11
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2022-05-04T14:07:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "07ba2f4d_c56e64da",
+      "range": {
+        "startLine": 6,
+        "startChar": 0,
+        "endLine": 6,
+        "endChar": 20
+      },
+      "revId": "110c6403258c4b8e8cf47f8044ff8a3dbc998b19",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fb3e2f6f_79e6881a",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-05-04T11:28:03Z",
       "side": 1,
       "message": "lunx -\u003e linux",
+      "range": {
+        "startLine": 45,
+        "startChar": 27,
+        "endLine": 45,
+        "endChar": 45
+      },
+      "revId": "110c6403258c4b8e8cf47f8044ff8a3dbc998b19",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5e409a6d_8d95afa9",
+        "filename": "toolchain/BUILD.bazel",
+        "patchSetId": 11
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2022-05-04T14:07:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fb3e2f6f_79e6881a",
       "range": {
         "startLine": 45,
         "startChar": 27,
@@ -64,6 +112,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4a8b9c43_58300808",
+        "filename": "toolchain/mac_M1_toolchain_config.bzl",
+        "patchSetId": 11
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2022-05-04T14:07:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8906bb07_86a253e9",
+      "revId": "110c6403258c4b8e8cf47f8044ff8a3dbc998b19",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4924daa1_56519433",
@@ -87,6 +153,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ff27243f_0af8db92",
+        "filename": "toolchain/mac_M1_toolchain_config.bzl",
+        "patchSetId": 11
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2022-05-04T14:07:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4924daa1_56519433",
+      "range": {
+        "startLine": 2,
+        "startChar": 65,
+        "endLine": 3,
+        "endChar": 28
+      },
+      "revId": "110c6403258c4b8e8cf47f8044ff8a3dbc998b19",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d7ac9734_589968f5",
@@ -100,6 +190,30 @@
       "writtenOn": "2022-05-04T11:28:03Z",
       "side": 1,
       "message": "This filename is out of date",
+      "range": {
+        "startLine": 7,
+        "startChar": 4,
+        "endLine": 7,
+        "endChar": 19
+      },
+      "revId": "110c6403258c4b8e8cf47f8044ff8a3dbc998b19",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "864ac4b1_b4262e39",
+        "filename": "toolchain/mac_M1_toolchain_config.bzl",
+        "patchSetId": 11
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2022-05-04T14:07:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d7ac9734_589968f5",
       "range": {
         "startLine": 7,
         "startChar": 4,
