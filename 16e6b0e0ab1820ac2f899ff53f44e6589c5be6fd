@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "79f415b6_c4b4a0b0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-05-04T17:05:25Z",
+      "side": 1,
+      "message": "At Patchset 3 it is possible to build canvaskit. Building without this change\n```\ntarget_cpu \u003d \"wasm\"\nskia_enable_skottie \u003d false\nskia_canvaskit_enable_paragraph \u003d false\nskia_canvaskit_enable_skottie \u003d false\nskia_canvaskit_include_viewer \u003d false\nskia_canvaskit_enable_debugger \u003d true\nskia_canvaskit_enable_embedded_font \u003d false\nskia_canvaskit_enable_font \u003d false\nskia_canvaskit_enable_alias_font \u003d false\n\nis_debug \u003d false\nis_component_build \u003d false\nwerror \u003d true\n\nskia_use_harfbuzz \u003d false\nskia_pdf_subset_harfbuzz \u003d false\nskia_use_sfntly \u003d false\nskia_use_freetype \u003d false\n\nskia_use_icu \u003d false\n```\n(this is the current \"no font support\" configuration) and then building CanvasKit\n```\nninja -C out/ck canvaskit\n```\nproduces a 4462727 byte out/ck/canvaskit.wasm.\n\nWith this change and the same build rules above produces a 4297789 byte out/ck/canvaskit.wasm. This is a difference of 164938 bytes. Note that unlike Linux, this does not include vulkan so there was slightly less text code to begin with, resulting in a smaller reduction.\n",
+      "revId": "16e6b0e0ab1820ac2f899ff53f44e6589c5be6fd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
