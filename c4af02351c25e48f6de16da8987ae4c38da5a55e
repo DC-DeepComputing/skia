@@ -16,6 +16,24 @@
       "message": "To fix G3, you need to\n1) add a licenses([\"notice\"]) on line 3\n2) import \"exports_files_legacy\" on line 1 and call it on line 5\n\nSee the top of https://github.com/google/skia/blob/main/src/core/BUILD.bazel#L5\n\nWe only need to do this when we create new BUILD.bazel files (i.e. create new subfolders/Bazel packages)\n\nI plan to add a presubmit check for these soon (today?)",
       "revId": "c4af02351c25e48f6de16da8987ae4c38da5a55e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ccdd824c_7e56b5fc",
+        "filename": "src/text/gpu/BUILD.bazel",
+        "patchSetId": 9
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-05-04T11:43:19Z",
+      "side": 1,
+      "message": "I added the missing lines here, since it was something I forgot to do:\nhttps://skia-review.googlesource.com/c/skia/+/536881/",
+      "parentUuid": "1feda760_c079c259",
+      "revId": "c4af02351c25e48f6de16da8987ae4c38da5a55e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
