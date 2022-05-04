@@ -45,6 +45,7 @@ generated_cc_atom(
         ":MiddleOutPolygonTriangulator_hdr",
         ":Tessellation_hdr",
         ":WangsFormula_hdr",
+        ":WorstCaseTolerances_hdr",
         "//include/private:SkColorData_hdr",
         "//src/gpu:BufferWriter_hdr",
     ],
@@ -130,5 +131,15 @@ generated_cc_atom(
         "//include/private:SkTArray_hdr",
         "//src/core:SkMathPriv_hdr",
         "//src/gpu:BufferWriter_hdr",
+    ],
+)
+
+generated_cc_atom(
+    name = "WorstCaseTolerances_hdr",
+    hdrs = ["WorstCaseTolerances.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":Tessellation_hdr",
+        ":WangsFormula_hdr",
     ],
 )

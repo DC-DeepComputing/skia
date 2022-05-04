@@ -662,17 +662,15 @@ void GrStrokeTessellationShader::Impl::setData(const GrGLSLProgramDataManager& p
     if (!shader.hasDynamicStroke()) {
         // Set up the tessellation control uniforms. In the hairline case we transform prior to
         // tessellation, so it uses an identity viewMatrix and a strokeWidth of 1.
-        const float effectiveMaxScale    = stroke.isHairlineStyle() ? 1.f : maxScale;
-        const float effectiveStrokeWidth = stroke.isHairlineStyle() ? 1.f : stroke.getWidth();
+        const float effectiveStrokeRadius = 0.5f * (stroke.isHairlineStyle() ? 1.f : maxScale * stroke.getWidth());
         float numRadialSegmentsPerRadian =
-                skgpu::tess::StrokeTolerances::CalcNumRadialSegmentsPerRadian(effectiveMaxScale,
-                                                                              effectiveStrokeWidth);
+                skgpu::tess::CalcNumRadialSegmentsPerRadian(effectiveStrokeRadius);
 
         pdman.set4f(fTessControlArgsUniform,
                     maxScale,  // MAX_SCALE
                     numRadialSegmentsPerRadian,  // NUM_RADIAL_SEGMENTS_PER_RADIAN
                     skgpu::tess::GetJoinType(stroke),  // JOIN_TYPE
-                    0.5f * effectiveStrokeWidth);  // STROKE_RADIUS
+                    effectiveStrokeRadius);  // STROKE_RADIUS
     } else {
         SkASSERT(!stroke.isHairlineStyle());
         pdman.set1f(fTessControlArgsUniform, maxScale);
