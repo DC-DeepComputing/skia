@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f9df9e40_906aca67",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-05-04T15:27:21Z",
+      "side": 1,
+      "message": "Yes. Doing this in chunks. Going to do a follow-up that removes all of the non-infra pieces (eg, anything that an individual developer might have touched). That includes the test-context support code, the configs from DM/FM, and the python script.",
+      "parentUuid": "1d72df98_c22a1b65",
+      "revId": "335ef42499b67ba90ba73d8e6ca95821f02c8559",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c4359a5b_ad395e98",
