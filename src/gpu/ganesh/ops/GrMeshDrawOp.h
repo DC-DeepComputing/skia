@@ -19,7 +19,10 @@ class GrCaps;
 class GrMeshDrawTarget;
 class GrOpFlushState;
 struct GrSimpleMesh;
-class GrStrikeCache;
+
+namespace sktext::gpu {
+class StrikeCache;
+}
 
 /**
  * Base class for mesh-drawing GrDrawOps.

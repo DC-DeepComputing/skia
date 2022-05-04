@@ -5,7 +5,7 @@
  * found in the LICENSE file.
  */
 
-#include "src/gpu/ganesh/text/GrGlyphVector.h"
+#include "src/text/gpu/GlyphVector.h"
 
 #include "include/private/chromium/SkChromeRemoteGlyphCache.h"
 #include "src/core/SkReadBuffer.h"
@@ -14,17 +14,18 @@
 #include "src/core/SkWriteBuffer.h"
 #include "src/gpu/ganesh/text/GrAtlasManager.h"
 
-using Glyph = sktext::gpu::Glyph;
 using MaskFormat = skgpu::MaskFormat;
 
-GrGlyphVector::GrGlyphVector(sk_sp<SkStrike>&& strike, SkSpan<Variant> glyphs)
+namespace sktext::gpu {
+
+GlyphVector::GlyphVector(sk_sp<SkStrike>&& strike, SkSpan<Variant> glyphs)
         : fStrike{std::move(strike)}
         , fGlyphs{glyphs} {
     SkASSERT(fStrike != nullptr);
     SkASSERT(fGlyphs.size() > 0);
 }
 
-GrGlyphVector GrGlyphVector::Make(
+GlyphVector GlyphVector::Make(
         sk_sp<SkStrike>&& strike, SkSpan<SkGlyphVariant> glyphs, GrSubRunAllocator* alloc) {
     SkASSERT(strike != nullptr);
     SkASSERT(glyphs.size() > 0);
@@ -33,12 +34,12 @@ GrGlyphVector GrGlyphVector::Make(
         variants[i] = gv.glyph()->getPackedID();
     }
 
-    return GrGlyphVector{std::move(strike), SkMakeSpan(variants, glyphs.size())};
+    return GlyphVector{std::move(strike), SkMakeSpan(variants, glyphs.size())};
 }
 
-std::optional<GrGlyphVector> GrGlyphVector::MakeFromBuffer(SkReadBuffer& buffer,
-                                                           const SkStrikeClient* client,
-                                                           GrSubRunAllocator* alloc) {
+std::optional<GlyphVector> GlyphVector::MakeFromBuffer(SkReadBuffer& buffer,
+                                                       const SkStrikeClient* client,
+                                                       GrSubRunAllocator* alloc) {
     auto descriptor = SkAutoDescriptor::MakeFromBuffer(buffer);
     if (!buffer.validate(descriptor.has_value())) { return {}; }
 
@@ -65,10 +66,10 @@ std::optional<GrGlyphVector> GrGlyphVector::MakeFromBuffer(SkReadBuffer& buffer,
     for (int i = 0; i < glyphCount; i++) {
         variants[i].packedGlyphID = SkPackedGlyphID(buffer.readUInt());
     }
-    return {GrGlyphVector{std::move(strike), SkMakeSpan(variants, glyphCount)}};
+    return {GlyphVector{std::move(strike), SkMakeSpan(variants, glyphCount)}};
 }
 
-void GrGlyphVector::flatten(SkWriteBuffer& buffer) {
+void GlyphVector::flatten(SkWriteBuffer& buffer) {
     // There should never be a glyph vector with zero glyphs.
     SkASSERT(fGlyphs.size() != 0);
     if (!fStrike) { SK_ABORT("Can't flatten with already drawn."); }
@@ -82,18 +83,18 @@ void GrGlyphVector::flatten(SkWriteBuffer& buffer) {
     }
 }
 
-SkSpan<const Glyph*> GrGlyphVector::glyphs() const {
+SkSpan<const Glyph*> GlyphVector::glyphs() const {
     return SkMakeSpan(reinterpret_cast<const Glyph**>(fGlyphs.data()), fGlyphs.size());
 }
 
 // packedGlyphIDToGlyph must be run in single-threaded mode.
 // If fStrike != nullptr then the conversion to Glyph* has not happened.
-void GrGlyphVector::packedGlyphIDToGlyph(GrStrikeCache* cache) {
+void GlyphVector::packedGlyphIDToGlyph(StrikeCache* cache) {
     if (fStrike != nullptr) {
-        fGrStrike = cache->findOrCreateStrike(fStrike->strikeSpec());
+        fTextStrike = cache->findOrCreateStrike(fStrike->strikeSpec());
 
         for (auto& variant : fGlyphs) {
-            variant.glyph = fGrStrike->getGlyph(variant.packedGlyphID);
+            variant.glyph = fTextStrike->getGlyph(variant.packedGlyphID);
         }
 
         // This must be pinned for the Atlas filling to work.
@@ -105,10 +106,10 @@ void GrGlyphVector::packedGlyphIDToGlyph(GrStrikeCache* cache) {
     }
 }
 
-std::tuple<bool, int> GrGlyphVector::regenerateAtlas(int begin, int end,
-                                                     MaskFormat maskFormat,
-                                                     int srcPadding,
-                                                     GrMeshDrawTarget* target) {
+std::tuple<bool, int> GlyphVector::regenerateAtlas(int begin, int end,
+                                                   MaskFormat maskFormat,
+                                                   int srcPadding,
+                                                   GrMeshDrawTarget* target) {
     GrAtlasManager* atlasManager = target->atlasManager();
     GrDeferredUploadTarget* uploadTarget = target->deferredUploadTarget();
 
@@ -121,7 +122,7 @@ std::tuple<bool, int> GrGlyphVector::regenerateAtlas(int begin, int end,
         // is set to kInvalidAtlasGeneration) or the atlas has changed in subsequent calls..
         fBulkUseToken.reset();
 
-        SkBulkGlyphMetricsAndImages metricsAndImages{fGrStrike->strikeSpec()};
+        SkBulkGlyphMetricsAndImages metricsAndImages{fTextStrike->strikeSpec()};
 
         // Update the atlas information in the GrStrike.
         auto tokenTracker = uploadTarget->tokenTracker();
@@ -168,3 +169,4 @@ std::tuple<bool, int> GrGlyphVector::regenerateAtlas(int begin, int end,
     }
 }
 
+}  // namespace sktext::gpu

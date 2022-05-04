@@ -7203,7 +7203,7 @@ generated_cc_atom(
         "//src/core:SkWriteBuffer_hdr",
         "//src/gpu/ganesh:GrResourceProvider_hdr",
         "//src/gpu/ganesh:GrSubRunAllocator_hdr",
-        "//src/gpu/ganesh/text:GrGlyphVector_hdr",
+        "//src/text/gpu:GlyphVector_hdr",
     ],
 )
 
