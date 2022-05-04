@@ -38,7 +38,7 @@ public:
     const char* name() const override { return "DrawAtlasPathOp"; }
     FixedFunctionFlags fixedFunctionFlags() const override { return FixedFunctionFlags::kNone; }
     void visitProxies(const GrVisitProxyFunc& func) const override {
-        func(fAtlasHelper.proxy(), GrMipmapped::kNo);
+        func(fAtlasHelper.proxy1(), GrMipmapped::kNo);
         fProcessors.visitProxies(func);
     }
     GrProcessorSet::Analysis finalize(const GrCaps&, const GrAppliedClip*, GrClampType) override;
