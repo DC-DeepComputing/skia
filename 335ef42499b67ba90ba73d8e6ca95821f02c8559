@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c4359a5b_ad395e98",
+        "filename": "infra/bots/recipes/sync_and_compile.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2022-05-04T15:23:46Z",
+      "side": 1,
+      "message": "Can we also remove the checkout_chromium plumbing here and in the checkout module?",
+      "range": {
+        "startLine": 48,
+        "startChar": 0,
+        "endLine": 85,
+        "endChar": 0
+      },
+      "revId": "335ef42499b67ba90ba73d8e6ca95821f02c8559",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
