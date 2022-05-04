@@ -29,7 +29,6 @@
 class GrAtlasManager;
 class GrDeferredUploadTarget;
 class GrMeshDrawTarget;
-class GrStrikeCache;
 class GrSubRun;
 
 class SkMatrixProvider;
@@ -40,6 +39,7 @@ class SkTextBlobRunIterator;
 
 namespace sktext::gpu {
 class Glyph;
+class StrikeCache;
 }
 
 namespace skgpu::v1 { class SurfaceDrawContext; }
@@ -82,7 +82,7 @@ public:
             SkPoint drawOrigin,
             SkIRect clip) const = 0;
 
-    virtual void testingOnly_packedGlyphIDToGlyph(GrStrikeCache* cache) const = 0;
+    virtual void testingOnly_packedGlyphIDToGlyph(sktext::gpu::StrikeCache* cache) const = 0;
 
     // This call is not thread safe. It should only be called from GrDrawOp::onPrepare which
     // is single threaded.
