@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f3984f25_34465cde",
+        "filename": "toolchain/linux_trampolines/clang_trampoline_linux.sh",
+        "patchSetId": 13
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-05-04T15:00:24Z",
+      "side": 1,
+      "message": "This expects the mapping file to be adjacent to the trampoline script",
+      "revId": "fbe58ce1f3dad155e7b30014a4007aea17eac80b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
