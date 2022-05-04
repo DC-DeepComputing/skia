@@ -13,6 +13,7 @@
 #include "src/gpu/tessellate/MiddleOutPolygonTriangulator.h"
 #include "src/gpu/tessellate/Tessellation.h"
 #include "src/gpu/tessellate/WangsFormula.h"
+#include "src/gpu/tessellate/WorstCaseTolerances.h"
 
 #include <type_traits>
 #include <variant>
@@ -240,7 +241,6 @@ public:
     PatchWriter(PatchAttribs attribs,
                 Args&&... allocArgs)
             : fAttribs(attribs)
-            , fCurrMinSegments_pow4(1.f)
             , fPatchAllocator(PatchStride(attribs), std::forward<Args>(allocArgs)...)
             , fJoin(attribs)
             , fFanPoint(attribs)
@@ -267,14 +267,8 @@ public:
 
     PatchAttribs attribs() const { return fAttribs; }
 
-    // Fast log2 of minimum required # of segments per tracked Wang's formula calculations.
-    int requiredResolveLevel() const {
-        return wangs_formula::nextlog16(fCurrMinSegments_pow4); // log16(n^4) == log2(n)
-    }
-    // Fast minimum required # of segments from tracked Wang's formula calculations.
-    int requiredFixedSegments() const {
-        return SkScalarCeilToInt(wangs_formula::root4(fCurrMinSegments_pow4));
-    }
+    WorstCaseTolerances& tolerances() { return fTolerances; }
+    const WorstCaseTolerances& tolerances() const { return fTolerances; }
 
     // Completes a closed contour of a stroke by rewriting a deferred patch with now-available
     // join control point information. Automatically resets the join control point attribute.
@@ -316,6 +310,7 @@ public:
     ENABLE_IF(StrokeAttrib::kEnabled) updateStrokeParamsAttrib(StrokeParams strokeParams) {
         SkASSERT(fAttribs & PatchAttribs::kStrokeParams);
         fStrokeParams = strokeParams;
+        fTolerances.accountForStroke(strokeParams);
     }
 
     // Updates the color that will be written out with each patch.
@@ -346,85 +341,72 @@ public:
      */
 
     // Write a cubic curve with its four control points.
-    AI void writeCubic(float2 p0, float2 p1, float2 p2, float2 p3,
-                       const VectorXform& shaderXform) {
-        float n4 = wangs_formula::cubic_pow4(kPrecision, p0, p1, p2, p3, shaderXform);
+    AI void writeCubic(float2 p0, float2 p1, float2 p2, float2 p3) {
+        int numPatches = fTolerances.accountForCubic(p0, p1, p2, p3);
         if constexpr (kDiscardFlatCurves) {
-            if (n4 <= 1.f) {
+            if (numPatches < 1) {
                 // This cubic only needs one segment (e.g. a line) but we're not filling space with
                 // fans or stroking, so nothing actually needs to be drawn.
                 return;
             }
         }
-        if (this->curveFitsInMaxSegments(n4)) {
+        if (numPatches <= 1) {
             this->writeCubicPatch(p0, p1, p2, p3);
         } else {
-            int numPatches = SkScalarCeilToInt(wangs_formula::root4(
-                    std::min(n4, pow4(kMaxSegmentsPerCurve)) / pow4(kMaxParametricSegments)));
             this->chopAndWriteCubics(p0, p1, p2, p3, numPatches);
         }
     }
-    AI void writeCubic(const SkPoint pts[4],
-                       const VectorXform& shaderXform) {
+    AI void writeCubic(const SkPoint pts[4]) {
         float4 p0p1 = float4::Load(pts);
         float4 p2p3 = float4::Load(pts + 2);
-        this->writeCubic(p0p1.lo, p0p1.hi, p2p3.lo, p2p3.hi, shaderXform);
+        this->writeCubic(p0p1.lo, p0p1.hi, p2p3.lo, p2p3.hi);
     }
 
     // Write a conic curve with three control points and 'w', with the last coord of the last
     // control point signaling a conic by being set to infinity.
-    AI void writeConic(float2 p0, float2 p1, float2 p2, float w,
-                       const VectorXform& shaderXform) {
-        float n2 = wangs_formula::conic_pow2(kPrecision, p0, p1, p2, w, shaderXform);
+    AI void writeConic(float2 p0, float2 p1, float2 p2, float w) {
+        int numPatches = fTolerances.accountForConic(p0, p1, p2, w);
         if constexpr (kDiscardFlatCurves) {
-            if (n2 <= 1.f) {
+            if (numPatches < 1) {
                 // This conic only needs one segment (e.g. a line) but we're not filling space with
                 // fans or stroking, so nothing actually needs to be drawn.
                 return;
             }
         }
-        if (this->curveFitsInMaxSegments(n2*n2)) {
+        if (numPatches <= 1) {
             this->writeConicPatch(p0, p1, p2, w);
         } else {
-            int numPatches = SkScalarCeilToInt(sqrtf(
-                    std::min(n2, pow2(kMaxSegmentsPerCurve)) / pow2(kMaxParametricSegments)));
             this->chopAndWriteConics(p0, p1, p2, w, numPatches);
         }
     }
-    AI void writeConic(const SkPoint pts[3], float w,
-                       const VectorXform& shaderXform) {
+    AI void writeConic(const SkPoint pts[3], float w) {
         this->writeConic(skvx::bit_pun<float2>(pts[0]),
                          skvx::bit_pun<float2>(pts[1]),
                          skvx::bit_pun<float2>(pts[2]),
-                         w, shaderXform);
+                         w);
     }
 
     // Write a quadratic curve that automatically converts its three control points into an
     // equivalent cubic.
-    AI void writeQuadratic(float2 p0, float2 p1, float2 p2,
-                           const VectorXform& shaderXform) {
-        float n4 = wangs_formula::quadratic_pow4(kPrecision, p0, p1, p2, shaderXform);
+    AI void writeQuadratic(float2 p0, float2 p1, float2 p2) {
+        int numPatches = fTolerances.accountForQuadratic(p0, p1, p2);
         if constexpr (kDiscardFlatCurves) {
-            if (n4 <= 1.f) {
+            if (numPatches < 1) {
                 // This quad only needs one segment (e.g. a line) but we're not filling space with
                 // fans or stroking, so nothing actually needs to be drawn.
                 return;
             }
         }
-        if (this->curveFitsInMaxSegments(n4)) {
+        if (numPatches <= 1) {
             this->writeQuadPatch(p0, p1, p2);
         } else {
-            int numPatches = SkScalarCeilToInt(wangs_formula::root4(
-                    std::min(n4, pow4(kMaxSegmentsPerCurve)) / pow4(kMaxParametricSegments)));
             this->chopAndWriteQuads(p0, p1, p2, numPatches);
         }
     }
-    AI void writeQuadratic(const SkPoint pts[3],
-                           const VectorXform& shaderXform) {
+    AI void writeQuadratic(const SkPoint pts[3]) {
         this->writeQuadratic(skvx::bit_pun<float2>(pts[0]),
                              skvx::bit_pun<float2>(pts[1]),
-                             skvx::bit_pun<float2>(pts[2]),
-                             shaderXform);
+                             skvx::bit_pun<float2>(pts[2]));
     }
 
     // Write a line that is automatically converted into an equivalent cubic.
@@ -452,7 +434,7 @@ public:
     AI void writeTriangle(float2 p0, float2 p1, float2 p2) {
         // No chopping needed, the max supported segment count should always support 2 lines
         // (which form a triangle when implicitly closed).
-        SkAssertResult(this->curveFitsInMaxSegments(2.f * 2.f * 2.f * 2.f));
+        // SkAssertResult(this->curveFitsInMaxSegments(2.f * 2.f * 2.f * 2.f));
         this->writePatch(p0, p1, p2, {SK_FloatInfinity, SK_FloatInfinity},
                          kTriangularConicCurveType);
     }
@@ -531,17 +513,6 @@ private:
     }
     AI void writeConicPatch(float2 p0, float2 p1, float2 p2, float w) {
         this->writePatch(p0, p1, p2, {w, SK_FloatInfinity}, kConicCurveType);
-    }
-
-    // Returns true if curve can be written w/o needing to chop (e.g. represented by one instance)
-    bool curveFitsInMaxSegments(float n4) {
-        if (n4 <= pow4(kMaxParametricSegments)) {
-            fCurrMinSegments_pow4 = std::max(n4, fCurrMinSegments_pow4);
-            return true;
-        } else {
-            fCurrMinSegments_pow4 = pow4(kMaxParametricSegments);
-            return false;
-        }
     }
 
     // Helpers that chop the curve type into 'numPatches' parametrically uniform curves. It is
@@ -683,7 +654,7 @@ private:
     // attribs enabled (e.g. depending on caps or batching).
     const PatchAttribs fAttribs;
 
-    float fCurrMinSegments_pow4;
+    WorstCaseTolerances fTolerances;
 
     PatchAllocator fPatchAllocator;
     DeferredPatch  fDeferredPatch; // only usable if kTrackJoinControlPoints is true
