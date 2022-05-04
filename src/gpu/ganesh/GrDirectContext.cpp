@@ -27,8 +27,8 @@
 #include "src/gpu/ganesh/effects/GrSkSLFP.h"
 #include "src/gpu/ganesh/mock/GrMockGpu.h"
 #include "src/gpu/ganesh/text/GrAtlasManager.h"
-#include "src/gpu/ganesh/text/GrStrikeCache.h"
 #include "src/image/SkImage_GpuBase.h"
+#include "src/text/gpu/StrikeCache.h"
 #include "src/utils/SkShaderUtils.h"
 #if SK_GPU_V1
 #include "src/gpu/ganesh/ops/SmallPathAtlasMgr.h"
@@ -226,7 +226,7 @@ bool GrDirectContext::init() {
     SkASSERT(this->getTextBlobRedrawCoordinator());
     SkASSERT(this->threadSafeCache());
 
-    fStrikeCache = std::make_unique<GrStrikeCache>();
+    fStrikeCache = std::make_unique<sktext::gpu::StrikeCache>();
     fResourceCache = std::make_unique<GrResourceCache>(this->singleOwner(),
                                                        this->directContextID(),
                                                        this->contextID());

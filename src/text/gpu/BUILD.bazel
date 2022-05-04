@@ -14,3 +14,57 @@ generated_cc_atom(
         "//src/gpu:AtlasTypes_hdr",
     ],
 )
+
+generated_cc_atom(
+    name = "GlyphVector_hdr",
+    hdrs = ["GlyphVector.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":Glyph_hdr",
+        "//include/core:SkSpan_hdr",
+        "//src/core:SkGlyphBuffer_hdr",
+        "//src/core:SkGlyph_hdr",
+        "//src/gpu/ganesh:GrDrawOpAtlas_hdr",
+        "//src/gpu/ganesh:GrMeshDrawTarget_hdr",
+        "//src/gpu/ganesh:GrSubRunAllocator_hdr",
+        "//src/gpu/ganesh/text:GrStrikeCache_hdr",
+    ],
+)
+
+generated_cc_atom(
+    name = "GlyphVector_src",
+    srcs = ["GlyphVector.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/private/chromium:SkChromeRemoteGlyphCache_hdr",
+        "//src/core:SkReadBuffer_hdr",
+        "//src/core:SkStrikeCache_hdr",
+        "//src/core:SkStrikeSpec_hdr",
+        "//src/core:SkWriteBuffer_hdr",
+        "//src/gpu/ganesh/text:GrAtlasManager_hdr",
+        "//src/gpu/ganesh/text:GrGlyphVector_hdr",
+    ],
+)
+
+generated_cc_atom(
+    name = "StrikeCache_hdr",
+    hdrs = ["StrikeCache.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//include/private:SkTHash_hdr",
+        "//src/core:SkArenaAlloc_hdr",
+        "//src/core:SkStrikeSpec_hdr",
+    ],
+)
+
+generated_cc_atom(
+    name = "StrikeCache_src",
+    srcs = ["StrikeCache.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":Glyph_hdr",
+        "//src/core:SkArenaAlloc_hdr",
+        "//src/core:SkStrikeSpec_hdr",
+        "//src/gpu/ganesh/text:GrStrikeCache_hdr",
+    ],
+)
