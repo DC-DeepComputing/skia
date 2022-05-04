@@ -90,15 +90,11 @@ static sk_sp<GrSurfaceProxy> make_fully_lazy(GrProxyProvider* proxyProvider, con
                                              const ProxyParams& p) {
     const GrBackendFormat format = caps->getDefaultBackendFormat(p.fColorType, p.fRenderable);
     auto cb = [p](GrResourceProvider* provider, const GrSurfaceProxy::LazySurfaceDesc& desc) {
-        auto tex = provider->createTexture({p.fSize, p.fSize},
-                                           desc.fFormat,
+        auto tex = provider->createTexture({p.fSize, p.fSize}, desc.fFormat,
                                            desc.fTextureType,
-                                           desc.fRenderable,
-                                           desc.fSampleCnt,
-                                           desc.fMipmapped,
-                                           desc.fBudgeted,
-                                           desc.fProtected,
-                                           /*label=*/{});
+                                           desc.fRenderable, desc.fSampleCnt,
+                                           desc.fMipmapped, desc.fBudgeted,
+                                           desc.fProtected);
         return GrSurfaceProxy::LazyCallbackResult(std::move(tex));
     };
     return GrProxyProvider::MakeFullyLazyProxy(std::move(cb), format, p.fRenderable, p.fSampleCnt,
@@ -110,15 +106,11 @@ static sk_sp<GrSurfaceProxy> make_lazy(GrProxyProvider* proxyProvider, const GrC
                                        const ProxyParams& p) {
     const GrBackendFormat format = caps->getDefaultBackendFormat(p.fColorType, p.fRenderable);
     auto cb = [](GrResourceProvider* provider, const GrSurfaceProxy::LazySurfaceDesc& desc) {
-        auto tex = provider->createTexture(desc.fDimensions,
-                                           desc.fFormat,
+        auto tex = provider->createTexture(desc.fDimensions, desc.fFormat,
                                            desc.fTextureType,
-                                           desc.fRenderable,
-                                           desc.fSampleCnt,
-                                           desc.fMipmapped,
-                                           desc.fBudgeted,
-                                           desc.fProtected,
-                                           /*label=*/{});
+                                           desc.fRenderable, desc.fSampleCnt,
+                                           desc.fMipmapped, desc.fBudgeted,
+                                           desc.fProtected);
         return GrSurfaceProxy::LazyCallbackResult(std::move(tex));
     };
     return proxyProvider->createLazyProxy(std::move(cb), format, {p.fSize, p.fSize},
