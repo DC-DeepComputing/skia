@@ -196,7 +196,6 @@ GrSurfaceProxy::LazySurfaceDesc GrTextureRenderTargetProxy::callbackDesc() const
             this->textureType(),
             this->isProtected(),
             this->isBudgeted(),
-            this->getLabel(),
     };
 }
 
