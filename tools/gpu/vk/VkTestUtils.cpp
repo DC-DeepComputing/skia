@@ -590,10 +590,11 @@ bool CreateVkBackendContext(PFN_vkGetInstanceProcAddr getInstProc,
     uint32_t gpuCount;
     err = grVkEnumeratePhysicalDevices(inst, &gpuCount, nullptr);
     if (err) {
-        SkDebugf("vkEnumeratePhysicalDevices failed: %d\n", err);
+        SkDebugf("vkEnumeratePhysicalDevices first failed: %d\n", err);
         destroy_instance(getInstProc, inst, debugCallback, hasDebugExtension);
         return false;
     }
+    SkDebugf("gpuCount is: %d\n", gpuCount);
     if (!gpuCount) {
         SkDebugf("vkEnumeratePhysicalDevices returned no supported devices.\n");
         destroy_instance(getInstProc, inst, debugCallback, hasDebugExtension);
@@ -601,14 +602,28 @@ bool CreateVkBackendContext(PFN_vkGetInstanceProcAddr getInstProc,
     }
     // Just returning the first physical device instead of getting the whole array.
     // TODO: find best match for our needs
-    gpuCount = 1;
-    err = grVkEnumeratePhysicalDevices(inst, &gpuCount, &physDev);
+    //gpuCount = 1;
+    VkPhysicalDevice* pDevs = new VkPhysicalDevice[gpuCount];
+    err = grVkEnumeratePhysicalDevices(inst, &gpuCount, pDevs);
     // VK_INCOMPLETE is returned when the count we provide is less than the total device count.
     if (err && VK_INCOMPLETE != err) {
-        SkDebugf("vkEnumeratePhysicalDevices failed: %d\n", err);
+        SkDebugf("vkEnumeratePhysicalDevices second failed: %d\n", err);
         destroy_instance(getInstProc, inst, debugCallback, hasDebugExtension);
         return false;
     }
+    if (VK_INCOMPLETE != err) {
+        SkDebugf("enumerate err is INCOMPLETE\n");
+    }
+
+    for (int i = 0; i < gpuCount; ++i) {
+        VkPhysicalDeviceProperties pdp;
+        grVkGetPhysicalDeviceProperties(pDevs[i], &pdp);
+        SkDebugf("PhysicalDev %d. apiVersion: %d, driverVersion: %d, vendorID: %d, deviceID: %d, deviceType: %d, name: %s\n",
+                 i, pdp.apiVersion, pdp.driverVersion, pdp.vendorID, pdp.deviceID, (int)pdp.deviceType, pdp.deviceName);
+    }
+
+    physDev = pDevs[0];
+    delete[] pDevs;
 
     VkPhysicalDeviceProperties physDeviceProperties;
     grVkGetPhysicalDeviceProperties(physDev, &physDeviceProperties);
