@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c57516f9_b386efba",
+        "filename": "infra/bots/recipe_modules/checkout/examples/full.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-05-04T15:42:05Z",
+      "side": 1,
+      "message": "Needed to satisfy code coverage testing...",
+      "revId": "00df908dcb648f97a4e2450d46ec42a3f7fe4560",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
