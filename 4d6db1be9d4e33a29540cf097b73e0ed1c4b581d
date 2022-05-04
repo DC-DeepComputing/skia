@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e580a740_e202f380",
+        "filename": "include/core/SkCustomMesh.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 194,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-05-04T14:12:59Z",
+      "side": 1,
+      "message": "Interesting idea for the future: The specification could include a bounds-transform? Could be entirely native (eg, std::function\u003cSkRect(SkRect)\u003e, or an SkSL snippet, if the vertex shader ever supports uniforms).",
+      "range": {
+        "startLine": 194,
+        "startChar": 3,
+        "endLine": 194,
+        "endChar": 23
+      },
+      "revId": "4d6db1be9d4e33a29540cf097b73e0ed1c4b581d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4579be45_e2726290",
+        "filename": "include/core/SkCustomMesh.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 195,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-05-04T14:12:59Z",
+      "side": 1,
+      "message": "nit: extra space",
+      "range": {
+        "startLine": 195,
+        "startChar": 45,
+        "endLine": 195,
+        "endChar": 47
+      },
+      "revId": "4d6db1be9d4e33a29540cf097b73e0ed1c4b581d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "09ed5e44_cd74f7ef",
+        "filename": "src/gpu/ganesh/ops/DrawCustomMeshOp.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 474,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-05-04T14:12:59Z",
+      "side": 1,
+      "message": "nit: The object is named \u0027m\u0027 here",
+      "range": {
+        "startLine": 474,
+        "startChar": 12,
+        "endLine": 474,
+        "endChar": 16
+      },
+      "revId": "4d6db1be9d4e33a29540cf097b73e0ed1c4b581d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
