@@ -28,15 +28,16 @@ public:
      * The preFlush callback allows subsystems (e.g., text, path renderers) to create atlases
      * for a specific flush. All the GrRenderTask IDs required for the flush are passed into the
      * callback.
+     * Returns true on success; false on memory allocation failure
      */
-    virtual void preFlush(GrOnFlushResourceProvider*, SkSpan<const uint32_t> renderTaskIDs) = 0;
+    virtual bool preFlush1(GrOnFlushResourceProvider*, SkSpan<const uint32_t> renderTaskIDs) = 0;
 
     /**
      * Called once flushing is complete and all renderTasks indicated by preFlush have been executed
      * and released. startTokenForNextFlush can be used to track resources used in the current
      * flush.
      */
-    virtual void postFlush(GrDeferredUploadToken startTokenForNextFlush,
+    virtual void postFlush1(GrDeferredUploadToken startTokenForNextFlush,
                            SkSpan<const uint32_t> renderTaskIDs) {}
 
     /**
@@ -54,7 +55,7 @@ class GrOnFlushResourceProvider {
 public:
     explicit GrOnFlushResourceProvider(GrDrawingManager* drawingMgr) : fDrawingMgr(drawingMgr) {}
 
-    bool instatiateProxy(GrSurfaceProxy*);
+    bool SK_WARN_UNUSED_RESULT instatiateProxy(GrSurfaceProxy*);
 
     const GrCaps* caps() const;
 

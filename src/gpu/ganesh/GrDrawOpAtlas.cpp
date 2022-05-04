@@ -55,7 +55,7 @@ void GrDrawOpAtlas::validate(const AtlasLocator& atlasLocator) const {
 // (which calls this method).
 void GrDrawOpAtlas::instantiate(GrOnFlushResourceProvider* onFlushResourceProvider) {
     for (uint32_t i = 0; i < fNumActivePages; ++i) {
-        // All the atlas pages are now instantiated at flush time in the activeNewPage method.
+        // All the atlas pages are now instantiated at flush time in the activeNewPage method. -- well, that sounds dangerous
         SkASSERT(fViews[i].proxy() && fViews[i].proxy()->isInstantiated());
     }
 }

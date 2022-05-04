@@ -50,14 +50,15 @@ public:
     void setUseToken(SmallPathShapeData*, GrDeferredUploadToken);
 
     // GrOnFlushCallbackObject overrides
-    void preFlush(GrOnFlushResourceProvider* onFlushRP,
+    bool preFlush1(GrOnFlushResourceProvider* onFlushRP,
                   SkSpan<const uint32_t> /* taskIDs */) override {
         if (fAtlas) {
             fAtlas->instantiate(onFlushRP);
         }
+        return true;
     }
 
-    void postFlush(GrDeferredUploadToken startTokenForNextFlush,
+    void postFlush1(GrDeferredUploadToken startTokenForNextFlush,
                    SkSpan<const uint32_t> /* taskIDs */) override {
         if (fAtlas) {
             fAtlas->compact(startTokenForNextFlush);

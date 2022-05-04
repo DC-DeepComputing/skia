@@ -77,8 +77,11 @@ class GrDirectContext;
  */
 class GrResourceAllocator {
 public:
-    GrResourceAllocator(GrDirectContext* dContext)
-            : fDContext(dContext) {}
+    GrResourceAllocator(GrDirectContext* dContext, bool failedInstantiation)
+            : fDContext(dContext)
+            , fFailedInstantiation(failedInstantiation) {
+
+    }
 
     ~GrResourceAllocator();
 

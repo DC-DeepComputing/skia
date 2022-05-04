@@ -105,6 +105,9 @@ GrTextureProxy::~GrTextureProxy() {
 }
 
 bool GrTextureProxy::instantiate(GrResourceProvider* resourceProvider) {
+    if (fFailAlloc) {
+        SkDebugf("here\n");
+    }
     if (this->isLazy()) {
         return false;
     }
@@ -230,4 +233,3 @@ void GrTextureProxy::onValidateSurface(const GrSurface* surface) {
 }
 
 #endif
-
