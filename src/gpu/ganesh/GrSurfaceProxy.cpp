@@ -436,6 +436,11 @@ bool GrSurfaceProxyPriv::doLazyInstantiation(GrResourceProvider* resourceProvide
         syncKey = result.fKeyMode == GrSurfaceProxy::LazyInstantiationKeyMode::kSynced;
         releaseCallback = surface && result.fReleaseCallback;
     }
+
+    if (fProxy->fFailAlloc) {
+        surface = nullptr;
+    }
+
     if (!surface) {
         fProxy->fDimensions.setEmpty();
         return false;

@@ -35,6 +35,7 @@ public:
             , fShaderFlags(shaderFlags) {
         // Bottom left origin is not supported.
         SkASSERT(atlasView.origin() == kTopLeft_GrSurfaceOrigin);
+        fAtlasProxy->setFailAlloc();
     }
 
     GrSurfaceProxy* proxy() const { return fAtlasProxy.get(); }
