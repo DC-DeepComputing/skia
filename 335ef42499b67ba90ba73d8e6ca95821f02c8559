@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1d72df98_c22a1b65",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-05-04T15:25:49Z",
+      "side": 1,
+      "message": "Should we also remove tools/build_command_buffer.py?",
+      "revId": "335ef42499b67ba90ba73d8e6ca95821f02c8559",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c4359a5b_ad395e98",
