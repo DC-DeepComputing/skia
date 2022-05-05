@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "abf1c786_47d3cb1a",
+        "filename": "src/gpu/ganesh/ops/AtlasPathRenderer.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 404,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-05-05T19:12:01Z",
+      "side": 1,
+      "message": "An alternative to adding this to each preFlush would be to do it in the base class GrOnFlushResourceProvider and make the virtuals be onPreFlush",
+      "range": {
+        "startLine": 402,
+        "startChar": 0,
+        "endLine": 404,
+        "endChar": 27
+      },
+      "revId": "d42c505c9bd43df505071f5a670515a7254ff5cb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
