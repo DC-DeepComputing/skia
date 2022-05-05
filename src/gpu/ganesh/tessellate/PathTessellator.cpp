@@ -72,7 +72,7 @@ int write_curve_patches(CurveWriter&& patchWriter,
         }
     }
 
-    return patchWriter.tolerances().requiredResolveLevel();
+    return FixedCountCurves::VertexCount(patchWriter.tolerances());
 }
 
 using WedgeWriter = PatchWriter<GrVertexChunkBuilder,
@@ -150,7 +150,7 @@ int write_wedge_patches(WedgeWriter&& patchWriter,
         }
     }
 
-    return patchWriter.tolerances().requiredResolveLevel();
+    return FixedCountWedges::VertexCount(patchWriter.tolerances());
 }
 
 }  // namespace
@@ -191,8 +191,7 @@ void PathCurveTessellator::prepareWithTriangles(
             SkASSERT(breadcrumbCount == extraTriangles->count());
         }
 
-        int resolveLevel = write_curve_patches(std::move(writer), shaderMatrix, pathDrawList);
-        this->updateResolveLevel(resolveLevel);
+        fIndexCount = write_curve_patches(std::move(writer), shaderMatrix, pathDrawList);
     }
 
     GrResourceProvider* rp = target->resourceProvider();
@@ -216,10 +215,9 @@ void PathCurveTessellator::draw(GrOpFlushState* flushState) const {
     if (!fFixedVertexBuffer || !fFixedIndexBuffer) {
         return;
     }
-    int fixedIndexCount = NumCurveTrianglesAtResolveLevel(fFixedResolveLevel) * 3;
     for (const GrVertexChunk& chunk : fVertexChunkArray) {
         flushState->bindBuffers(fFixedIndexBuffer, chunk.fBuffer, fFixedVertexBuffer);
-        flushState->drawIndexedInstanced(fixedIndexCount, 0, chunk.fCount, chunk.fBase, 0);
+        flushState->drawIndexedInstanced(fIndexCount, 0, chunk.fCount, chunk.fBase, 0);
     }
 }
 
@@ -241,8 +239,7 @@ void PathWedgeTessellator::prepare(GrMeshDrawTarget* target,
                                    int totalCombinedPathVerbCnt) {
     if (int patchPreallocCount = FixedCountWedges::PreallocCount(totalCombinedPathVerbCnt)) {
         WedgeWriter writer{fAttribs, target, &fVertexChunkArray, patchPreallocCount};
-        int resolveLevel = write_wedge_patches(std::move(writer), shaderMatrix, pathDrawList);
-        this->updateResolveLevel(resolveLevel);
+        fIndexCount = write_wedge_patches(std::move(writer), shaderMatrix, pathDrawList);
     }
 
     GrResourceProvider* rp = target->resourceProvider();
@@ -266,11 +263,9 @@ void PathWedgeTessellator::draw(GrOpFlushState* flushState) const {
     if (!fFixedVertexBuffer || !fFixedIndexBuffer) {
         return;
     }
-    // Emit 3 vertices per curve triangle, plus 3 more for the fan triangle.
-    int fixedIndexCount = (NumCurveTrianglesAtResolveLevel(fFixedResolveLevel) + 1) * 3;
     for (const GrVertexChunk& chunk : fVertexChunkArray) {
         flushState->bindBuffers(fFixedIndexBuffer, chunk.fBuffer, fFixedVertexBuffer);
-        flushState->drawIndexedInstanced(fixedIndexCount, 0, chunk.fCount, chunk.fBase, 0);
+        flushState->drawIndexedInstanced(fIndexCount, 0, chunk.fCount, chunk.fBase, 0);
     }
 }
 

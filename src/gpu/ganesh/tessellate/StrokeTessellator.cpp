@@ -141,7 +141,7 @@ int write_fixed_count_patches(FixedCountStrokeWriter&& patchWriter,
         }
     }
 
-    return patchWriter.tolerances().requiredStrokeEdges();
+    return FixedCountStrokes::VertexCount(patchWriter.tolerances());
 }
 
 }  // namespace
@@ -156,16 +156,14 @@ void StrokeTessellator::prepare(GrMeshDrawTarget* target,
     int preallocCount = FixedCountStrokes::PreallocCount(totalCombinedStrokeVerbCnt);
     FixedCountStrokeWriter patchWriter{fAttribs, target, &fVertexChunkArray, preallocCount};
 
-    fFixedEdgeCount = write_fixed_count_patches(std::move(patchWriter),
-                                                shaderMatrix,
-                                                pathStrokeList);
-
-    fFixedEdgeCount = std::min(fFixedEdgeCount, FixedCountStrokes::kMaxEdges);
+    fVertexCount = write_fixed_count_patches(std::move(patchWriter),
+                                             shaderMatrix,
+                                             pathStrokeList);
 
     if (!target->caps().shaderCaps()->vertexIDSupport()) {
         // Our shader won't be able to use sk_VertexID. Bind a fallback vertex buffer with the IDs
         // in it instead.
-        fFixedEdgeCount = std::min(fFixedEdgeCount, FixedCountStrokes::kMaxEdgesNoVertexIDs);
+        fVertexCount = std::min(fVertexCount, 2 * FixedCountStrokes::kMaxEdgesNoVertexIDs);
 
         SKGPU_DEFINE_STATIC_UNIQUE_KEY(gVertexIDFallbackBufferKey);
 
@@ -178,7 +176,7 @@ void StrokeTessellator::prepare(GrMeshDrawTarget* target,
 }
 
 void StrokeTessellator::draw(GrOpFlushState* flushState) const {
-    if (fVertexChunkArray.empty() || fFixedEdgeCount <= 0) {
+    if (fVertexChunkArray.empty() || fVertexCount <= 0) {
         return;
     }
     if (!flushState->caps().shaderCaps()->vertexIDSupport() &&
@@ -189,7 +187,7 @@ void StrokeTessellator::draw(GrOpFlushState* flushState) const {
         flushState->bindBuffers(nullptr, instanceChunk.fBuffer, fVertexBufferIfNoIDSupport);
         flushState->drawInstanced(instanceChunk.fCount,
                                   instanceChunk.fBase,
-                                  fFixedEdgeCount * 2,
+                                  fVertexCount,
                                   0);
     }
 }
