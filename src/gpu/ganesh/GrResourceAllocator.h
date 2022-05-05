@@ -77,8 +77,9 @@ class GrDirectContext;
  */
 class GrResourceAllocator {
 public:
-    GrResourceAllocator(GrDirectContext* dContext)
-            : fDContext(dContext) {}
+    // The resource allocator can start off in a failed instantiation state if some allocation
+    // before the allocation-phase failed
+    GrResourceAllocator(GrDirectContext* dContext) : fDContext(dContext) { }
 
     ~GrResourceAllocator();
 
