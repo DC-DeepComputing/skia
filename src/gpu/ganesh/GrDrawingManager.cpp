@@ -167,16 +167,10 @@ bool GrDrawingManager::flush(
     // Prepare any onFlush op lists (e.g. atlases).
     bool preFlushSuccessful = true;
     if (!fOnFlushCBObjects.empty()) {
-        fFlushingRenderTaskIDs.reserve_back(fDAG.count());
-        for (const auto& task : fDAG) {
-            if (task) {
-                task->gatherIDs(&fFlushingRenderTaskIDs);
-            }
-        }
+//                task->gatherIDs(&fFlushingRenderTaskIDs);
 
         for (GrOnFlushCallbackObject* onFlushCBObject : fOnFlushCBObjects) {
-            preFlushSuccessful &= onFlushCBObject->preFlush(&onFlushProvider,
-                                                            SkMakeSpan(fFlushingRenderTaskIDs));
+            preFlushSuccessful &= onFlushCBObject->preFlush(&onFlushProvider);
         }
 
         for (const auto& onFlushRenderTask : fOnFlushRenderTasks) {
@@ -245,14 +239,12 @@ bool GrDrawingManager::flush(
         flushed = false;
     }
     for (GrOnFlushCallbackObject* onFlushCBObject : fOnFlushCBObjects) {
-        onFlushCBObject->postFlush(fTokenTracker.nextTokenToFlush(),
-                                   SkMakeSpan(fFlushingRenderTaskIDs));
+        onFlushCBObject->postFlush(fTokenTracker.nextTokenToFlush());
         flushed = true;
     }
     if (flushed) {
         resourceCache->purgeAsNeeded();
     }
-    fFlushingRenderTaskIDs.reset();
     fFlushing = false;
 
     return true;
