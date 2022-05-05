@@ -2075,3 +2075,9 @@ func (b *jobBuilder) runWasmGMTests() {
 		)
 	})
 }
+
+func (b *jobBuilder) bazelbuild() {
+	fmt.Println("builder %#v", *b)
+	panic("woops")
+
+}
