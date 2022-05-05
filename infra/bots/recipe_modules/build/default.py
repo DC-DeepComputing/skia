@@ -271,7 +271,7 @@ def compile_fn(api, checkout_root, out_dir):
     if 'TSAN' in extra_tokens:
       args['skia_use_gl'] = 'true'
     else:
-      args['skia_use_gl'] = 'false'
+      args['skia_use_gl'] = 'true'
   if 'Direct3D' in extra_tokens:
     args['skia_use_direct3d'] = 'true'
     args['skia_use_gl'] = 'false'
