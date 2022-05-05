@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f49383be_02a9cdaa",
+        "filename": "dm/DM.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1558,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-05-05T18:20:00Z",
+      "side": 0,
+      "message": "I\u0027m not sure why msvc seems to take issue with this, or why this change actually fixes it, but this does make things work.",
+      "revId": "35e1ca4b3b4171a209d3c7a312873a826af643d5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
