@@ -77,8 +77,11 @@ class GrDirectContext;
  */
 class GrResourceAllocator {
 public:
-    GrResourceAllocator(GrDirectContext* dContext)
-            : fDContext(dContext) {}
+    GrResourceAllocator(GrDirectContext* dContext, bool failedInstantiation = false)
+            : fDContext(dContext)
+            , fFailedInstantiation(failedInstantiation) {
+
+    }
 
     ~GrResourceAllocator();
 
@@ -287,7 +290,7 @@ private:
     SkDEBUGCODE(bool             fAssigned = false;)
 
     SkSTArenaAllocWithReset<kInitialArenaSize>   fInternalAllocator; // intervals & registers
-    bool                                         fFailedInstantiation = false;
+    bool                                         fFailedInstantiation;
 };
 
 #endif // GrResourceAllocator_DEFINED

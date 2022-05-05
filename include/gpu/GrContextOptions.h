@@ -279,6 +279,11 @@ struct SK_API GrContextOptions {
      */
 
     /**
+     * Testing-only mode to exercise allocation failures in the flush-time callback objects
+     */
+    bool fFailFlushTimeCallbacks = false;
+
+    /**
      * Prevents use of dual source blending, to test that all xfer modes work correctly without it.
      */
     bool fSuppressDualSourceBlending = false;
