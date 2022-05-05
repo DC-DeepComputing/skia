@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bd70e26d_b8ff94ce",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-05-05T15:37:40Z",
+      "side": 1,
+      "message": "This looks fine, modulo the potential to avoid duplicating a bit of code.",
+      "revId": "20ae2c7c001bfd6026d96998104a87ee67590acd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0845d5b7_d02a3a5e",
+        "filename": "modules/canvaskit/canvaskit_bindings.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 686,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-05-05T15:37:40Z",
+      "side": 1,
+      "message": "There is also `sk_sp\u003cSkData\u003e SkTypeface::serialize(SerializeBehavior)` which is exactly this code. I think this method body can be just\n\n```\nreturn face-\u003eserialize(SkTypeface::SerializeBehavior::kDoIncludeData);\n```",
+      "revId": "20ae2c7c001bfd6026d96998104a87ee67590acd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
