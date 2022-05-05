@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d6533047_91895f3c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 25
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-05-05T15:24:30Z",
+      "side": 1,
+      "message": "I follow up this CL with one that adds a bot similar to the preAbandonContext bot",
+      "revId": "88fc4f1193c28daa8c2ef0a7737140a720cd94ad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
