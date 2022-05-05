@@ -77,8 +77,13 @@ class GrDirectContext;
  */
 class GrResourceAllocator {
 public:
-    GrResourceAllocator(GrDirectContext* dContext)
-            : fDContext(dContext) {}
+    // The resource allocator can start off in a failed instantiation state if some allocation
+    // before the allocation-phase failed
+    GrResourceAllocator(GrDirectContext* dContext, bool failedInstantiation = false)
+            : fDContext(dContext)
+            , fFailedInstantiation(failedInstantiation) {
+
+    }
 
     ~GrResourceAllocator();
 
@@ -287,7 +292,7 @@ private:
     SkDEBUGCODE(bool             fAssigned = false;)
 
     SkSTArenaAllocWithReset<kInitialArenaSize>   fInternalAllocator; // intervals & registers
-    bool                                         fFailedInstantiation = false;
+    bool                                         fFailedInstantiation;
 };
 
 #endif // GrResourceAllocator_DEFINED
