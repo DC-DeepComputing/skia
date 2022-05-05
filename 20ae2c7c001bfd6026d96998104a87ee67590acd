@@ -33,6 +33,24 @@
       "message": "There is also `sk_sp\u003cSkData\u003e SkTypeface::serialize(SerializeBehavior)` which is exactly this code. I think this method body can be just\n\n```\nreturn face-\u003eserialize(SkTypeface::SerializeBehavior::kDoIncludeData);\n```",
       "revId": "20ae2c7c001bfd6026d96998104a87ee67590acd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "53081e63_cdfd1d3f",
+        "filename": "modules/canvaskit/canvaskit_bindings.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 686,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-05-05T15:43:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0845d5b7_d02a3a5e",
+      "revId": "20ae2c7c001bfd6026d96998104a87ee67590acd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
