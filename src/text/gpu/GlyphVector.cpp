@@ -13,6 +13,7 @@
 #include "src/core/SkStrikeSpec.h"
 #include "src/core/SkWriteBuffer.h"
 #if SK_SUPPORT_GPU
+#include "src/gpu/ganesh/GrMeshDrawTarget.h"
 #include "src/gpu/ganesh/text/GrAtlasManager.h"
 #endif
 
@@ -123,7 +124,7 @@ std::tuple<bool, int> GlyphVector::regenerateAtlas(int begin, int end,
     if (fAtlasGeneration != currentAtlasGen) {
         // Calculate the texture coordinates for the vertexes during first use (fAtlasGeneration
         // is set to kInvalidAtlasGeneration) or the atlas has changed in subsequent calls..
-        fBulkUseToken.reset();
+        fBulkUseUpdater.reset();
 
         SkBulkGlyphMetricsAndImages metricsAndImages{fTextStrike->strikeSpec()};
 
@@ -146,7 +147,7 @@ std::tuple<bool, int> GlyphVector::regenerateAtlas(int begin, int end,
                 }
             }
             atlasManager->addGlyphToBulkAndSetUseToken(
-                    &fBulkUseToken, maskFormat, gpuGlyph,
+                    &fBulkUseUpdater, maskFormat, gpuGlyph,
                     tokenTracker->nextDrawToken());
             glyphsPlacedInAtlas++;
         }
@@ -164,7 +165,7 @@ std::tuple<bool, int> GlyphVector::regenerateAtlas(int begin, int end,
         if (end == SkCount(fGlyphs)) {
             // The atlas hasn't changed and the texture coordinates are all still valid. Update
             // all the plots used to the new use token.
-            atlasManager->setUseTokenBulk(fBulkUseToken,
+            atlasManager->setUseTokenBulk(fBulkUseUpdater,
                                           uploadTarget->tokenTracker()->nextDrawToken(),
                                           maskFormat);
         }

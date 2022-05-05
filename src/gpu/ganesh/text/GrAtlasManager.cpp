@@ -231,7 +231,7 @@ GrDrawOpAtlas::ErrorCode GrAtlasManager::addToAtlas(GrResourceProvider* resource
                                               atlasLocator);
 }
 
-void GrAtlasManager::addGlyphToBulkAndSetUseToken(GrDrawOpAtlas::BulkUseTokenUpdater* updater,
+void GrAtlasManager::addGlyphToBulkAndSetUseToken(skgpu::BulkUsePlotUpdater* updater,
                                                   MaskFormat format, Glyph* glyph,
                                                   GrDeferredUploadToken token) {
     SkASSERT(glyph);
