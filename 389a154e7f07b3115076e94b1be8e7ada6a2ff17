@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3061850c_d0d2a7eb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-05-05T23:50:54Z",
+      "side": 1,
+      "message": "bclayton@: Please comment on whether the use of these Tint data structures and functions (tint::Source::File, tint::reader::wgsl::Parse, tint::Program, tint::diag::Formatter) in this context outside the Dawn repo is OK.",
+      "revId": "389a154e7f07b3115076e94b1be8e7ada6a2ff17",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ff0c156d_4e1c8852",
