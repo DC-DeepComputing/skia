@@ -23,7 +23,7 @@ def test(cmd, cwd):
   try:
     subprocess.check_output(cmd, cwd=cwd, stderr=subprocess.STDOUT)
   except subprocess.CalledProcessError as e:
-    return e.output
+    return str(e.output)
 
 
 def python_unit_tests(train):
