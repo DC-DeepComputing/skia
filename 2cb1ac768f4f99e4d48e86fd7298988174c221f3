@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a6872b82_3105aa01",
+        "filename": "src/gpu/ganesh/text/GrAtlasManager.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 173,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-05-05T19:34:22Z",
+      "side": 1,
+      "message": "This is a sum padding left+right or top+bottom.",
+      "parentUuid": "1636ca17_b0720b20",
+      "range": {
+        "startLine": 173,
+        "startChar": 48,
+        "endLine": 173,
+        "endChar": 49
+      },
+      "revId": "2cb1ac768f4f99e4d48e86fd7298988174c221f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1fb813e7_127acbd6",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-05-04T14:57:10Z",
       "side": 1,
       "message": "Ok. Having two separate runs for mask and SDFT doesn\u0027t reflect the actual operating environment.\n\nI think there needs to be two tests one for when fSupportBilerpFromGlyphAtlas is true and one when it is false.\n\nWhen fSupportBilerpFromGlyphAtlas is false, then there are three padding situations:\n* If the glyph added is for a direct mask, then there is no padding needed around this atlas entry. \n* If the glyph added needs to be transformed, then 1 pixel of padding is needed around the glyph. You can create a transformed glyph by rotating the draw by a couple of degrees.\n* If the glyph is SDFT, then 2 pixels of padding are needed.\n\nThe test for when fSupportBilerpFromGlyphAtlas is false needs to test all combinations of these cases.\n\nWhen fSupportBilerpFromGlyphAtlas is true, then the situations is simpler.\n* If the glyph added is for a direct mask or a transformed mask then 1 pixel of padding is needed.\n* If the glyph added is for a SDFT, then 2 pixels of padding are needed.\n\nThe test for when fSupportBilerpFromGlyphAtlas is true needs to test all combinations of these cases.\n\nI think you will need to compare the boundaries of the GrGlyphs to make sure any two glyphs have the right spacing.\n\nFor example, A SDFT glyph next on the left of a transformed glyph should have a spacing of 2 between the SDFT\u0027s right side, and the transformed glyph left side. Same for comparing tops and bottoms. For all pairs.",
+      "range": {
+        "startLine": 352,
+        "startChar": 4,
+        "endLine": 353,
+        "endChar": 24
+      },
+      "revId": "2cb1ac768f4f99e4d48e86fd7298988174c221f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2aa33964_23a9ecc5",
+        "filename": "tests/DrawOpAtlasTest.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 353,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-05-05T19:34:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1fb813e7_127acbd6",
       "range": {
         "startLine": 352,
         "startChar": 4,
