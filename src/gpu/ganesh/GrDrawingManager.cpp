@@ -165,6 +165,7 @@ bool GrDrawingManager::flush(
     GrOnFlushResourceProvider onFlushProvider(this);
 
     // Prepare any onFlush op lists (e.g. atlases).
+    bool preFlushSuccessful = true;
     if (!fOnFlushCBObjects.empty()) {
         fFlushingRenderTaskIDs.reserve_back(fDAG.count());
         for (const auto& task : fDAG) {
@@ -174,8 +175,10 @@ bool GrDrawingManager::flush(
         }
 
         for (GrOnFlushCallbackObject* onFlushCBObject : fOnFlushCBObjects) {
-            onFlushCBObject->preFlush(&onFlushProvider, SkMakeSpan(fFlushingRenderTaskIDs));
+            preFlushSuccessful &= onFlushCBObject->preFlush(&onFlushProvider,
+                                                            SkMakeSpan(fFlushingRenderTaskIDs));
         }
+
         for (const auto& onFlushRenderTask : fOnFlushRenderTasks) {
             onFlushRenderTask->makeClosed(fContext);
 #ifdef SK_DEBUG
@@ -200,7 +203,7 @@ bool GrDrawingManager::flush(
     }
 
     bool usingReorderedDAG = false;
-    GrResourceAllocator resourceAllocator(dContext);
+    GrResourceAllocator resourceAllocator(dContext, !preFlushSuccessful);
     if (fReduceOpsTaskSplitting) {
         usingReorderedDAG = this->reorderTasks(&resourceAllocator);
         if (!usingReorderedDAG) {

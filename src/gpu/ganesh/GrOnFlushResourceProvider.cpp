@@ -39,3 +39,7 @@ bool GrOnFlushResourceProvider::instatiateProxy(GrSurfaceProxy* proxy) {
 const GrCaps* GrOnFlushResourceProvider::caps() const {
     return fDrawingMgr->getContext()->priv().caps();
 }
+
+bool GrOnFlushResourceProvider::failFlushTimeCallbacks() const {
+    return fDrawingMgr->getContext()->priv().options().fFailFlushTimeCallbacks;
+}
