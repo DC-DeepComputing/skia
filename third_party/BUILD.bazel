@@ -3489,7 +3489,7 @@ cc_library(
         "externals/dawn/",
         "externals/dawn/include",
     ],
-    visibility = ["//visibility:private"],  # only used by :dawn
+    visibility = ["//:__subpackages__"],  # Used by dawn and skslc
     deps = [
         # Tint specifically depends on externals/spirv-tools/BUILD.gn:spirv_opt
         "@spirv_tools//:spirv_tools_opt",
