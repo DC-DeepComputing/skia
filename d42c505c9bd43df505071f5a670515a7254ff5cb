@@ -22,6 +22,30 @@
       },
       "revId": "d42c505c9bd43df505071f5a670515a7254ff5cb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "65fbc122_28e816f0",
+        "filename": "src/gpu/ganesh/ops/AtlasPathRenderer.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 404,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-05-05T19:44:48Z",
+      "side": 1,
+      "message": "As discussed off-line the reset calls at the bottom of this function have to be called or we get different errors.\n\nWe also can\u0027t call the preFlush callbacks and then pretend they failed since we wouldn\u0027t actually be testing out the fix (i.e., avoiding the nullptr bindTextures call further down the call stack).",
+      "parentUuid": "abf1c786_47d3cb1a",
+      "range": {
+        "startLine": 402,
+        "startChar": 0,
+        "endLine": 404,
+        "endChar": 27
+      },
+      "revId": "d42c505c9bd43df505071f5a670515a7254ff5cb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
