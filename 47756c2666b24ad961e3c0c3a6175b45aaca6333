@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "707c143a_11142f2d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2022-05-05T17:32:09Z",
+      "side": 1,
+      "message": "went ahead and landed as this is needed for a P1 CTS fix.",
+      "revId": "47756c2666b24ad961e3c0c3a6175b45aaca6333",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
