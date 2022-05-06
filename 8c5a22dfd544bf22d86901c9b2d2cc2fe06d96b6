@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8a49674c_f7056ed1",
+        "filename": "tools/viewer/SkottieSlide.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2022-05-06T17:27:18Z",
+      "side": 1,
+      "message": "Not sure where we should put this ResourceProvider, or if there is a vanilla version somewhere in our code base, but I ended up using the same one from ParticleSlides. Ideally we don\u0027t dupe this.",
+      "revId": "8c5a22dfd544bf22d86901c9b2d2cc2fe06d96b6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
