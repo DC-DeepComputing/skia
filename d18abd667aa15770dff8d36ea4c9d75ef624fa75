@@ -221,6 +221,24 @@
       "message": "Didn\u0027t know it was automatically read it. I thought we needed a specific line in the project-level bazelrc.\nhttps://docs.bazel.build/versions/main/best-practices.html#using-the-bazelrc-file\n\nMight be worth linking to this anyway. It contains a link to the bazelrc format and best practices.",
       "revId": "d18abd667aa15770dff8d36ea4c9d75ef624fa75",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "494d70a4_2e5981a0",
+        "filename": "site/docs/dev/contrib/bazel.md",
+        "patchSetId": 10
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2022-05-06T17:14:57Z",
+      "side": 1,
+      "message": "Nevermind, I now see the try-import line. We can still add a link to this either here or where we call try-import.",
+      "parentUuid": "98f1783f_0c15ce2e",
+      "revId": "d18abd667aa15770dff8d36ea4c9d75ef624fa75",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
