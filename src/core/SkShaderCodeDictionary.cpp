@@ -367,8 +367,21 @@ static constexpr SkUniform kRadialGradientUniforms[kNumRadialGradientUniforms] =
         { "padding",     SkSLType::kFloat } // TODO: add automatic uniform padding
 };
 
+static constexpr int kNumSweepGradientUniforms = 8;
+static constexpr SkUniform kSweepGradientUniforms[kNumSweepGradientUniforms] = {
+        { "localMatrix",       SkSLType::kFloat4x4 },
+        { "colors",            SkSLType::kFloat4, kFourStopGradient },
+        { "offsets",           SkSLType::kFloat,  kFourStopGradient },
+        { "center",            SkSLType::kFloat2 },
+        { "bias",              SkSLType::kFloat },
+        { "scale",             SkSLType::kFloat },
+        { "useAtanWorkaround", SkSLType::kInt },
+        { "padding",           SkSLType::kFloat, 3 } // TODO: add automatic uniform padding
+};
+
 static constexpr char kLinearGradient4Name[] = "sk_linear_grad_4_shader";
 static constexpr char kRadialGradient4Name[] = "sk_radial_grad_4_shader";
+static constexpr char kSweepGradient4Name[] = "sk_sweep_grad_4_shader";
 
 //--------------------------------------------------------------------------------------------------
 static constexpr int kNumSolidShaderUniforms = 1;
@@ -626,10 +639,10 @@ SkShaderCodeDictionary::SkShaderCodeDictionary() {
     };
     fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kSweepGradientShader] = {
             "SweepGradient4",
-            SkMakeSpan(kGradientUniforms, kNumGradientUniforms),
+            SkMakeSpan(kSweepGradientUniforms, kNumSweepGradientUniforms),
             SnippetRequirementFlags::kLocalCoords,
             { },     // no samplers
-            kLinearGradient4Name,
+            kSweepGradient4Name,
             GenerateDefaultGlueCode,
             kNoChildren,
             { }

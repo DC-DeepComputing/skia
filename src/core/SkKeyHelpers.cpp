@@ -16,10 +16,14 @@
 #include "src/shaders/SkShaderBase.h"
 
 #ifdef SK_GRAPHITE_ENABLED
+#include "include/gpu/graphite/Recorder.h"
 #include "src/gpu/Blend.h"
+#include "src/gpu/graphite/Caps.h"
+#include "src/gpu/graphite/RecorderPriv.h"
 #include "src/gpu/graphite/Texture.h"
 #include "src/gpu/graphite/TextureProxy.h"
 #include "src/gpu/graphite/UniformManager.h"
+#include "src/sksl/SkSLUtil.h"
 #endif
 
 #define VALIDATE_UNIFORMS(gatherer, dict, codeSnippetID) \
@@ -168,7 +172,8 @@ void add_radial_gradient_uniform_data(const SkShaderCodeDictionary* dict,
 
 void add_sweep_gradient_uniform_data(const SkShaderCodeDictionary* dict,
                                      const GradientData& gradData,
-                                     SkPipelineDataGatherer* gatherer) {
+                                     SkPipelineDataGatherer* gatherer,
+                                     bool useAtanWorkaround) {
     VALIDATE_UNIFORMS(gatherer, dict, kSweepGradientShader)
 
     SkM44 lmInverse;
@@ -181,10 +186,11 @@ void add_sweep_gradient_uniform_data(const SkShaderCodeDictionary* dict,
     gatherer->write(gradData.fColor4fs, GradientData::kMaxStops);
     gatherer->write(gradData.fOffsets, GradientData::kMaxStops);
     gatherer->write(gradData.fPoints[0]);
-    gatherer->write(gradData.fPoints[1]);       // unused
-    gatherer->write(gradData.fRadii[0]);        // unused
-    gatherer->write(gradData.fRadii[1]);        // unused
-    gatherer->write(SkPoint::Make(0.0f, 0.0f)); // padding
+    gatherer->write(gradData.fBias);
+    gatherer->write(gradData.fScale);
+    gatherer->write(useAtanWorkaround);
+    float padding[3] = {0.0f, 0.0f, 0.0f};
+    gatherer->write(padding, 3);
 
     gatherer->addFlags(
             dict->getSnippetRequirementFlags(SkBuiltInCodeSnippetID::kSweepGradientShader));
@@ -224,6 +230,8 @@ GradientData::GradientData(SkShader::GradientType type,
         : fType(type)
         , fPoints{{0.0f, 0.0f}, {0.0f, 0.0f}}
         , fRadii{0.0f, 0.0f}
+        , fBias(0.0f)
+        , fScale(0.0f)
         , fTM(tm)
         , fNumStops(numStops) {
     sk_bzero(fColor4fs, sizeof(fColor4fs));
@@ -234,12 +242,15 @@ GradientData::GradientData(SkShader::GradientType type,
                            SkM44 localMatrix,
                            SkPoint point0, SkPoint point1,
                            float radius0, float radius1,
+                           float bias, float scale,
                            SkTileMode tm,
                            int numStops,
                            SkColor4f* color4fs,
                            float* offsets)
         : fType(type)
         , fLocalMatrix(localMatrix)
+        , fBias(bias)
+        , fScale(scale)
         , fTM(tm)
         , fNumStops(std::min(numStops, kMaxStops)) {
     SkASSERT(fNumStops >= 1);
@@ -290,7 +301,14 @@ void AddToKey(const SkKeyContext& keyContext,
             case SkShader::kSweep_GradientType:
                 codeSnippetID = SkBuiltInCodeSnippetID::kSweepGradientShader;
                 if (gatherer) {
-                    add_sweep_gradient_uniform_data(dict, gradData, gatherer);
+                    add_sweep_gradient_uniform_data(dict,
+                                                    gradData,
+                                                    gatherer,
+                                                    keyContext.recorder()
+                                                            ->priv()
+                                                            .caps()
+                                                            ->shaderCaps()
+                                                            ->atan2ImplementedAsAtanYOverX());
                 }
                 break;
             case SkShader::GradientType::kConical_GradientType:
