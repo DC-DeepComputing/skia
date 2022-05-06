@@ -562,6 +562,7 @@
   {"name": "Test-Mac10.13-Clang-MacBookPro11.5-CPU-AVX2-x86_64-Debug-All-NativeFonts"},
   {"name": "Test-Mac10.13-Clang-MacBookPro11.5-CPU-AVX2-x86_64-Debug-All-PDF"},
   {"name": "Test-Mac10.13-Clang-MacBookPro11.5-CPU-AVX2-x86_64-Release-All"},
+  {"name": "Test-Mac10.13-Clang-MacBookPro11.5-GPU-RadeonHD8870M-x86_64-Debug-All-Metal"},
   {"name": "Test-Mac10.13-Clang-MacBookPro11.5-GPU-RadeonHD8870M-x86_64-Debug-All-ASAN"},
   {"name": "Test-Mac10.13-Clang-MacBookPro11.5-GPU-RadeonHD8870M-x86_64-Release-All"},
   {"name": "Test-Mac10.13-Clang-MacBookPro11.5-GPU-RadeonHD8870M-x86_64-Release-All-TSAN"},
