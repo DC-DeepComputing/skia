@@ -31,6 +31,7 @@ class Context;
 class ConstructorCompound;
 class Expression;
 class ExpressionStatement;
+class FunctionCall;
 class FunctionDeclaration;
 class FunctionDefinition;
 class Literal;
@@ -42,6 +43,7 @@ class Type;
 class VarDeclaration;
 struct Modifiers;
 struct Program;
+struct Swizzle;
 
 /**
  * Convert a Program into WGSL code.
@@ -136,7 +138,7 @@ private:
                                       Delimiter delimiter);
     void writeBuiltinVariableDecl(const Type& type,
                                   std::string_view name,
-                                  Builtin kind,
+                                  Builtin builtin,
                                   Delimiter delimiter);
 
     // Write a function definition.
@@ -158,6 +160,8 @@ private:
     void writeExpression(const Expression& e, Precedence parentPrecedence);
     void writeBinaryExpression(const BinaryExpression& b, Precedence parentPrecedence);
     void writeLiteral(const Literal& l);
+    void writeSwizzle(const Swizzle& swizzle);
+    void writeVariableReference(const VariableReference& r);
 
     // Constructor expressions
     void writeAnyConstructor(const AnyConstructor& c, Precedence parentPrecedence);
