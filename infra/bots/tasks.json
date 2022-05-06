@@ -1,5 +1,10 @@
 {
   "jobs": {
+    "BazelBuild-modules canvaskit canvaskit_wasm-debug-linux_x64": {
+      "tasks": [
+        "BazelBuild-modules canvaskit canvaskit_wasm-debug-linux_x64"
+      ]
+    },
     "Build-Debian10-BazelClang-x86_64-Release-IWYU": {
       "tasks": [
         "Build-Debian10-BazelClang-x86_64-Release-IWYU"
@@ -3195,6 +3200,45 @@
     }
   },
   "tasks": {
+    "BazelBuild-modules canvaskit canvaskit_wasm-debug-linux_x64": {
+      "casSpec": "compile",
+      "cipd_packages": [
+        {
+          "name": "skia/bots/bazelisk",
+          "path": "bazelisk",
+          "version": "version:0"
+        }
+      ],
+      "command": [
+        "./bazel_build",
+        "--project_id=skia-swarming-bots",
+        "--task_id=<(TASK_ID)",
+        "--task_name=BazelBuild-modules canvaskit canvaskit_wasm-debug-linux_x64",
+        "--target=//modules/canvaskit:canvaskit_wasm",
+        "--config=debug",
+        "--bazel_arg=--config=linux_rbe",
+        "--bazel_arg=--jobs=100",
+        "--bazel_arg=--remote_download_minimal"
+      ],
+      "dependencies": [
+        "Housekeeper-PerCommit-BuildTaskDrivers_linux_amd64"
+      ],
+      "dimensions": [
+        "cpu:x86-64-Haswell_GCE",
+        "gpu:none",
+        "machine_type:n1-standard-16",
+        "os:Debian-10.3",
+        "pool:Skia"
+      ],
+      "env_prefixes": {
+        "PATH": [
+          "bazelisk"
+        ]
+      },
+      "idempotent": true,
+      "max_attempts": 1,
+      "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
+    },
     "Build-Debian10-BazelClang-x86_64-Release-IWYU": {
       "casSpec": "compile",
       "cipd_packages": [
