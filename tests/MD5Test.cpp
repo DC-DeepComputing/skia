@@ -4,9 +4,11 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+#include "tests/Test.h"
 
 #include "src/core/SkMD5.h"
-#include "tests/Test.h"
+
+#include <string.h>
 
 static bool digests_equal(const SkMD5::Digest& expectedDigest, const SkMD5::Digest& computedDigest) {
     for (size_t i = 0; i < SK_ARRAY_COUNT(expectedDigest.data); ++i) {

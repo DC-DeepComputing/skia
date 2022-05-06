@@ -4,11 +4,19 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+#include "tests/Test.h"
 
+#include "include/core/SkBlurTypes.h"
+#include "include/core/SkRRect.h"
+#include "include/core/SkRect.h"
+#include "include/core/SkScalar.h"
+#include "include/private/SkMalloc.h"
 #include "src/core/SkCachedData.h"
+#include "src/core/SkMask.h"
 #include "src/core/SkMaskCache.h"
 #include "src/core/SkResourceCache.h"
-#include "tests/Test.h"
+
+#include <string.h>
 
 enum LockedState {
     kUnlocked,

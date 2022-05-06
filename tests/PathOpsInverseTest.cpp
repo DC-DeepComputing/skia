@@ -4,6 +4,12 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+#include "tests/Test.h"
+
+#include "include/core/SkPath.h"
+#include "include/core/SkPathTypes.h"
+#include "include/core/SkString.h"
+#include "include/pathops/SkPathOps.h"
 #include "tests/PathOpsExtendedTest.h"
 
 DEF_TEST(PathOpsInverse, reporter) {

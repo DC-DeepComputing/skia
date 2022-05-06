@@ -4,10 +4,14 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+#include "tests/Test.h"
 
+#include "include/core/SkAlphaType.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkColor.h"
+#include "include/core/SkColorPriv.h"
 #include "include/core/SkColorSpace.h"
+#include "include/core/SkColorType.h"
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkPoint.h"
 #include "include/core/SkRect.h"
@@ -15,7 +19,6 @@
 #include "include/core/SkSize.h"
 #include "include/core/SkTypes.h"
 #include "src/core/SkOpts.h"
-#include "tests/Test.h"
 #include "tools/ToolUtils.h"
 
 static void init_src(const SkBitmap& bitmap) {

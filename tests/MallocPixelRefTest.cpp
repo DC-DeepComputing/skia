@@ -4,12 +4,16 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+#include "tests/Test.h"
 
 #include "include/core/SkData.h"
+#include "include/core/SkImageInfo.h"
 #include "include/core/SkMallocPixelRef.h"
+#include "include/core/SkPixelRef.h"
+#include "include/core/SkRefCnt.h"
+#include "include/core/SkTypes.h"
 #include "src/core/SkAutoMalloc.h"
 #include "src/core/SkPixelRefPriv.h"
-#include "tests/Test.h"
 
 static void delete_uint8_proc(void* ptr, void*) {
     delete[] static_cast<uint8_t*>(ptr);

@@ -5,11 +5,16 @@
  * found in the LICENSE file.
  */
 
+#include "tests/Test.h"
+
+#include "include/core/SkString.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkChecksum.h"
 #include "include/utils/SkRandom.h"
 #include "src/core/SkOpts.h"
-#include "tests/Test.h"
+
+#include <string>
+#include <string_view>
 
 DEF_TEST(Checksum, r) {
     // Put 128 random bytes into two identical buffers.  Any multiple of 4 will do.

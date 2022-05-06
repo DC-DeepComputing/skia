@@ -5,15 +5,15 @@
  * found in the LICENSE file.
  */
 
+#include "tests/Test.h"
+
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
 #include "include/core/SkColorFilter.h"
 #include "include/core/SkPaint.h"
 #include "include/core/SkRefCnt.h"
-#include "tests/Test.h"
 
-#include <cmath>
 #include <cstdlib>
 
 static inline void assert_color(skiatest::Reporter* reporter,

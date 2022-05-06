@@ -4,14 +4,24 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+#include "tests/Test.h"
 
 #include "include/codec/SkCodec.h"
+#include "include/codec/SkEncodedOrigin.h"
+#include "include/core/SkColorType.h"
+#include "include/core/SkImageInfo.h"
 #include "include/core/SkPixmap.h"
+#include "include/core/SkScalar.h"
+#include "include/core/SkSize.h"
 #include "include/core/SkStream.h"
-#include "include/private/SkTemplates.h"
-#include "src/core/SkAutoMalloc.h"
-#include "tests/Test.h"
+#include "include/core/SkTypes.h"
+#include "include/core/SkYUVAInfo.h"
+#include "include/core/SkYUVAPixmaps.h"
+#include "include/effects/SkColorMatrix.h"
 #include "tools/Resources.h"
+
+#include <memory>
+#include <utility>
 
 static void codec_yuv(skiatest::Reporter* reporter,
                       const char path[],

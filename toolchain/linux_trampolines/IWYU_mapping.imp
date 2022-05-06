@@ -10,6 +10,13 @@
   { include: ["<__algorithm/stable_sort.h>", "private", "<algorithm>", "public"] },
   { include: ["<__algorithm/upper_bound.h>", "private", "<algorithm>", "public"] },
 
+  { symbol: ["floor", "public", "<cmath>", "public"] },
+  { symbol: ["floorf", "public", "<cmath>", "public"] },
+
+  { symbol: ["size_t", "public", "<cstddef>", "public"] },
+
+  { symbol: ["uint8_t", "public", "<cstdint>", "public"] },
+
   { include: ["<__functional/function.h>", "private", "<functional>", "public"] },
 
   { include: ["<__iterator/access.h>", "private", "<iterator>", "public"] },

@@ -9,9 +9,14 @@
 
 #include "include/core/SkString.h"
 #include "include/core/SkTypes.h"
+#include "include/private/SkNoncopyable.h"
+#include "include/private/SkTArray.h"
 #include "src/core/SkTraceEvent.h"
 #include "tools/Registry.h"
 #include "tools/gpu/GrContextFactory.h"
+
+#include <atomic>
+#include <cstdint>
 
 namespace skgpu::graphite { class Context; }
 

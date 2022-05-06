@@ -4,10 +4,12 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
-
-#include "include/core/SkTime.h"
-#include "include/private/SkTo.h"
 #include "tests/Test.h"
+
+#include "include/core/SkString.h"
+#include "include/core/SkTime.h"
+#include "include/core/SkTypes.h"
+#include "include/private/SkTo.h"
 
 DEF_TEST(Time_GetDateTime, r) {
     SkTime::DateTime dateTime;

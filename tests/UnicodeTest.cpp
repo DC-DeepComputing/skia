@@ -5,10 +5,15 @@
  * found in the LICENSE file.
  */
 
-#include "include/core/SkFont.h"
-#include "include/core/SkPaint.h"
-#include "src/utils/SkUTF.h"
 #include "tests/Test.h"
+
+#include "include/core/SkFont.h"
+#include "include/core/SkFontTypes.h"
+#include "include/core/SkTypes.h"
+#include "src/core/SkFontPriv.h"
+#include "src/utils/SkUTF.h"
+
+#include <string.h>
 
 // Simple test to ensure that when we call textToGlyphs, we get the same
 // result (for the same text) when using UTF8, UTF16, UTF32.
