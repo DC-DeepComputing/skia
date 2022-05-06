@@ -39,6 +39,30 @@
       },
       "revId": "d3cf7e9cbe3970773de19e44af5d749c4f6e8568",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9f89c1f5_5a31c2a8",
+        "filename": "infra/bots/gen_tasks_logic/gen_tasks_logic.go",
+        "patchSetId": 12
+      },
+      "lineNbr": 2082,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-05-06T17:34:09Z",
+      "side": 1,
+      "message": "I\u0027m not a fan of that. I anticipate us wanting to build the same label with multiple different configurations and having to *always* add to this list anytime we make a new job is not appealing.",
+      "parentUuid": "2c149dae_88c2a52c",
+      "range": {
+        "startLine": 2082,
+        "startChar": 4,
+        "endLine": 2082,
+        "endChar": 20
+      },
+      "revId": "d3cf7e9cbe3970773de19e44af5d749c4f6e8568",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
