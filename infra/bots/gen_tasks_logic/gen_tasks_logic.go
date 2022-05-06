@@ -2075,3 +2075,56 @@ func (b *jobBuilder) runWasmGMTests() {
 		)
 	})
 }
+
+func makeBazelLabel(labelWithSpaces string) string {
+	// Because Swarming Build names cannot have / or :, we use spaces to stand in for these
+	// in our target names.
+	labelWithSpaces = "//" + labelWithSpaces
+	labelWithSpaces = strings.ReplaceAll(labelWithSpaces, " ", "/")
+	if strings.Contains(labelWithSpaces, "...") {
+		// No need to add a colon for an individual target
+		return labelWithSpaces
+	}
+	lastSlash := strings.LastIndex(labelWithSpaces, "/")
+	pkg, label := labelWithSpaces[:lastSlash], labelWithSpaces[lastSlash+1:]
+	return pkg + ":" + label
+}
+
+func (b *jobBuilder) bazelBuild() {
+	target, config, host, cross := b.parts.bazelBuildParts()
+	target = makeBazelLabel(target)
+	b.addTask(b.Name, func(b *taskBuilder) {
+		cmd := []string{"./bazel_build",
+			"--project_id=skia-swarming-bots",
+			"--task_id=" + specs.PLACEHOLDER_TASK_ID,
+			"--task_name=" + b.Name,
+			"--target=" + target,
+			"--config=" + config,
+		}
+		if cross != "" {
+			// The cross (and host) platform is expected to be defined in
+			// //bazel/common_config_settings/BUILD.bazel
+			cross = "//bazel/common_config_settings:" + cross
+			cmd = append(cmd, "--cross="+cross)
+		}
+		if host == "linux_x64" {
+			b.linuxGceDimensions(MACHINE_TYPE_MEDIUM)
+			b.dep(b.buildTaskDrivers("linux", "amd64"))
+
+			// We want all Linux Bazel Builds to use RBE
+			cmd = append(cmd, "--bazel_arg=--config=linux_rbe")
+			cmd = append(cmd, "--bazel_arg=--jobs=100")
+			cmd = append(cmd, "--bazel_arg=--remote_download_minimal")
+		} else {
+			panic("unsupported Bazel host " + host)
+		}
+		b.cmd(cmd...)
+
+		b.cipd(b.MustGetCipdPackageFromAsset("bazelisk"))
+		b.addToPATH("bazelisk")
+		b.idempotent()
+		b.cas(CAS_COMPILE)
+		b.attempts(1)
+		b.serviceAccount(b.cfg.ServiceAccountCompile)
+	})
+}
