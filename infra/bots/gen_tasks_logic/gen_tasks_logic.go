@@ -2075,3 +2075,38 @@ func (b *jobBuilder) runWasmGMTests() {
 		)
 	})
 }
+
+func (b *jobBuilder) bazelBuild() {
+	target, config, host, cross := b.parts.bazelBuildParts()
+	b.addTask(b.Name, func(b *taskBuilder) {
+		cmd := []string{"./bazel_build",
+			"--project_id=skia-swarming-bots",
+			"--task_id=" + specs.PLACEHOLDER_TASK_ID,
+			"--task_name=" + b.Name,
+			"--target=" + target,
+			"--config=" + config,
+		}
+		if cross != "" {
+			cmd = append(cmd, "--cross="+cross)
+		}
+		if host == "linux|x86_64" {
+			b.linuxGceDimensions(MACHINE_TYPE_MEDIUM)
+			b.dep(b.buildTaskDrivers("linux", "amd64"))
+
+			// We want all Linux Bazel Builds to use RBE
+			cmd = append(cmd, "--bazel_arg=--config=linux_rbe")
+			cmd = append(cmd, "--bazel_arg=--jobs=100")
+			cmd = append(cmd, "--bazel_arg=--remote_download_minimal")
+		} else {
+			panic("unsupported Bazel host")
+		}
+		b.cmd(cmd...)
+
+		b.cipd(b.MustGetCipdPackageFromAsset("bazelisk"))
+		b.addToPATH("bazelisk")
+		b.idempotent()
+		b.cas(CAS_COMPILE)
+		b.attempts(1)
+		b.serviceAccount(b.cfg.ServiceAccountCompile)
+	})
+}
