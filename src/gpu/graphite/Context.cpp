@@ -18,6 +18,7 @@
 #include "src/gpu/RefCntedCallback.h"
 #include "src/gpu/graphite/Caps.h"
 #include "src/gpu/graphite/CommandBuffer.h"
+#include "src/gpu/graphite/ContextPriv.h"
 #include "src/gpu/graphite/GlobalCache.h"
 #include "src/gpu/graphite/Gpu.h"
 #include "src/gpu/graphite/GraphicsPipelineDesc.h"
@@ -85,6 +86,17 @@ void Context::submit(SyncToCpu syncToCpu) {
 
 void Context::checkAsyncWorkCompletion() {
     fGpu->checkForFinishedWork(SyncToCpu::kNo);
+}
+
+uint32_t Context::addUserDefinedSnippet(const char* name) {
+    auto dict = this->priv().shaderCodeDictionary();
+
+    static constexpr int kNumFields1 = 1;
+    static constexpr SkPaintParamsKey::DataPayloadField kDataFields1[kNumFields1] = {
+            { "data", SkPaintParamsKey::DataPayloadType::kByte, 1 },
+    };
+
+    return dict->addUserDefinedSnippet(name, SkMakeSpan(kDataFields1, kNumFields1));
 }
 
 void Context::preCompile(const PaintCombo& paintCombo) {
