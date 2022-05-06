@@ -80,6 +80,30 @@
       },
       "revId": "389a154e7f07b3115076e94b1be8e7ada6a2ff17",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "734a6060_4e0f102b",
+        "filename": "src/sksl/SkSLCompiler.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 793,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-05-06T12:52:06Z",
+      "side": 1,
+      "message": "Skia has an exciting coding standard that includes:\n- camelCase for non-static class methods\n- PascalCase for static class methods\n- snake_case for non-class static functions\n\n;)",
+      "parentUuid": "f0fe5e74_698ab655",
+      "range": {
+        "startLine": 793,
+        "startChar": 12,
+        "endLine": 793,
+        "endChar": 25
+      },
+      "revId": "389a154e7f07b3115076e94b1be8e7ada6a2ff17",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
