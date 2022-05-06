@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9974a56d_e2816e8d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 17840
+      },
+      "writtenOn": "2022-05-06T08:46:02Z",
+      "side": 1,
+      "message": "Yup, LGTM. The only think you need to be careful of here is that the lifetime of the `tint::Source::File` is at least as long as the `tint::Program`. With your current usage, they live side-by-side, so that\u0027s all good.",
+      "parentUuid": "3061850c_d0d2a7eb",
+      "revId": "389a154e7f07b3115076e94b1be8e7ada6a2ff17",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ff0c156d_4e1c8852",
@@ -36,6 +54,29 @@
         "startChar": 8,
         "endLine": 328,
         "endChar": 26
+      },
+      "revId": "389a154e7f07b3115076e94b1be8e7ada6a2ff17",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f0fe5e74_698ab655",
+        "filename": "src/sksl/SkSLCompiler.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 793,
+      "author": {
+        "id": 17840
+      },
+      "writtenOn": "2022-05-06T08:46:02Z",
+      "side": 1,
+      "message": "nit: Not sure what your coding style is, but it seems a little odd that this is `snake_case` and the surrounding methods are `camelCase`",
+      "range": {
+        "startLine": 793,
+        "startChar": 12,
+        "endLine": 793,
+        "endChar": 25
       },
       "revId": "389a154e7f07b3115076e94b1be8e7ada6a2ff17",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
