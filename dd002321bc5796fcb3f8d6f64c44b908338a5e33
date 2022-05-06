@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f3214d09_4fca091f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-05-06T19:12:57Z",
+      "side": 1,
+      "message": "LGTM % suggestion",
+      "revId": "dd002321bc5796fcb3f8d6f64c44b908338a5e33",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "620ab6d1_6fde4b31",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 523,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-05-06T19:12:57Z",
+      "side": 1,
+      "message": "This probably doesn\u0027t even need to be an instance method and can be a static in the source file since AFAICT it doesn\u0027t reference any class members.",
+      "revId": "dd002321bc5796fcb3f8d6f64c44b908338a5e33",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
