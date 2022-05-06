@@ -326,6 +326,7 @@ void SkGlyphRunListPainter::processGlyphRun(SkGlyphRunPainterInterface* process,
                 strike->prepareForSDFTDrawing(&fAccepted, &fRejected);
                 fRejected.flipRejectsToSource();
 
+<<<<<<< HEAD   (b627d3 [infra] Manual cherrypick to remove Win7 fyi jobs)
                 if (process && !fAccepted.empty()) {
                     // processSourceSDFT must be called even if there are no glyphs to make sure
                     // runs are set correctly.
@@ -334,6 +335,15 @@ void SkGlyphRunListPainter::processGlyphRun(SkGlyphRunPainterInterface* process,
                                                strikeToSourceScale,
                                                runFont,
                                                matrixRange);
+=======
+                if (process && !accepted->empty()) {
+                    // processSourceDrawables must be called even if there are no glyphs to make
+                    // sure runs are set correctly.
+                    process->processSourceDrawables(accepted->accepted(),
+                                                    strike->getUnderlyingStrike(),
+                                                    strikeSpec.descriptor(),
+                                                    strikeToSourceScale);
+>>>>>>> CHANGE (638fca Keep SkStrike alive for its SkDrawables.)
                 }
             }
         }
