@@ -590,6 +590,8 @@ sk_sp<MtlGraphicsPipeline> MtlGraphicsPipeline::Make(
     sk_cfp<id<MTLDepthStencilState>> dss =
             resourceProvider->findOrCreateCompatibleDepthStencilState(depthStencilSettings);
 
+    SkDebugf("new graphics pipeline\n");
+
     return sk_sp<MtlGraphicsPipeline>(
             new MtlGraphicsPipeline(gpu,
                                     std::move(pso),

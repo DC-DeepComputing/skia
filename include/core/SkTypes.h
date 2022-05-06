@@ -622,4 +622,18 @@ enum class SkBackingFit {
     kExact
 };
 
+class SkSnippetID {
+public:
+    constexpr SkSnippetID() : fID(0) {}  // 0 is an invalid snippet ID
+    constexpr SkSnippetID(uint32_t id) : fID(id) {
+//        SkASSERT(SkTFitsIn<uint8_t>(id));
+    }
+
+private:
+    friend class SkShaderCodeDictionary;
+    uint32_t asUInt() const { return fID; }
+
+    const uint32_t fID;
+};
+
 #endif

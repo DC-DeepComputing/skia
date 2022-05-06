@@ -178,30 +178,31 @@ public:
 
     const Entry* lookup(SkUniquePaintParamsID) const SK_EXCLUDES(fSpinLock);
 
-    SkSpan<const SkUniform> getUniforms(SkBuiltInCodeSnippetID) const;
-    SnippetRequirementFlags getSnippetRequirementFlags(SkBuiltInCodeSnippetID id) const {
-        return fBuiltInCodeSnippets[(int) id].fSnippetRequirementFlags;
+    SkSpan<const SkUniform> getUniforms(SkSnippetID) const;
+    SnippetRequirementFlags getSnippetRequirementFlags(SkSnippetID id) const {
+        return fBuiltInCodeSnippets[id.asUInt()].fSnippetRequirementFlags;
     }
 
     SkSpan<const SkPaintParamsKey::DataPayloadField> dataPayloadExpectations(int snippetID) const;
 
     // This method can return nullptr
-    const SkShaderSnippet* getEntry(int codeSnippetID) const;
-    const SkShaderSnippet* getEntry(SkBuiltInCodeSnippetID codeSnippetID) const {
-        return this->getEntry(SkTo<int>(codeSnippetID));
-    }
+    const SkShaderSnippet* getEntry(SkSnippetID codeSnippetID) const;
 
     void getShaderInfo(SkUniquePaintParamsID, SkShaderInfo*);
 
+    bool validID(SkSnippetID id) const {
+        return id.asUInt() > 0 && id.asUInt() <= (uint32_t) this->maxCodeSnippetID();
+    }
+
     int maxCodeSnippetID() const {
-        return static_cast<int>(SkBuiltInCodeSnippetID::kLast) + fUserDefinedCodeSnippets.size();
+        return kBuiltInCodeSnippetIDCount2 + fUserDefinedCodeSnippets.size() - 1;
     }
 
     // TODO: this is still experimental but, most likely, it will need to be made thread-safe
     // It returns the code snippet ID to use to identify the supplied user-defined code
     // TODO: add hooks for user to actually provide code.
-    int addUserDefinedSnippet(const char* name,
-                              SkSpan<const SkPaintParamsKey::DataPayloadField> expectations);
+    SkSnippetID addUserDefinedSnippet(const char* name,
+                                      SkSpan<const SkPaintParamsKey::DataPayloadField> expectations);
 
 private:
 #ifdef SK_GRAPHITE_ENABLED
@@ -220,7 +221,7 @@ private:
         }
     };
 
-    std::array<SkShaderSnippet, kBuiltInCodeSnippetIDCount> fBuiltInCodeSnippets;
+    std::array<SkShaderSnippet, kBuiltInCodeSnippetIDCount2> fBuiltInCodeSnippets;
 
     // The value returned from 'getEntry' must be stable so, hold the user-defined code snippet
     // entries as pointers.

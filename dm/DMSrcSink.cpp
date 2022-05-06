@@ -2133,10 +2133,134 @@ Result RasterSink::draw(const Src& src, SkBitmap* dst, SkWStream*, SkString*) co
 
 namespace {
 
+template<class T>
+struct foo {
+    static constexpr bool fIsInstance = false;
+};
+
+template<class T>
+struct default_foo {
+    static constexpr bool fIsInstance = true;
+};
+
+template<>
+struct foo<int> : public default_foo<int> {};
+
+template<class T,
+         class = typename std::enable_if<foo<T>::is_instance>::type>
+T gen_combos(const std::vector<T>& in)
+{
+    T out;
+#if 0
+    T out{monoid<T>::empty()};
+
+    for (const T& t : in)
+        out = monoid<T>::append(out,t);
+#endif
+
+    return out;
+}
+
+namespace CombinationComponents {
+
+#define SK_COMBO_TYPES(M)                                           \
+    M(Shader)                                                       \
+    M(BlendMode)
+
+#define ENUM(T) k##T,
+enum class Type { SK_COMBO_TYPES(ENUM) };
+#undef ENUM
+
+#define COMBO(T, ...)                     \
+struct T {                                \
+    static const Type kType = Type::k##T; \
+    __VA_ARGS__;                          \
+};
+
+COMBO(BlendMode);
+
+} // namespace CombinationComponents
+
+class Combination {
+public:
+    int foo() const { return fFoo; }
+private:
+    int fFoo = 0;
+};
+
+/*
+ *
+ */
+class Builderator {
+public:
+    void createSet() {}
+
+    const Combination& snap() { return fCombo; }
+
+
+
+
+    enum class BlendModeGroups {
+        kPorterDuff,         // [ kClear .. kScreen ]
+        kAdvanced,           // [ kOverlay .. kMultiply ]
+        kTrouble,            // [ kHue .. kLuminosity ]
+        kAll
+    };
+
+    // Blend Mode
+    void add(SkBlendMode) {
+        this->append<CombinationComponents::BlendMode>();
+    }
+    // inclusive
+    void add(SkBlendMode rangeStart, SkBlendMode rangeEnd);
+    void add(BlendModeGroups);
+
+    void add(SkSnippetID);
+
+private:
+    // To make appending to fRecord a little less verbose.
+    template<typename T, typename... Args>
+    void append(Args&&... args) {
+        new (fRecord->append<T>()) T{std::forward<Args>(args)...};
+    }
+
+    Combination fCombo;
+    SkArenaAlloc fAlloc{256};
+};
+
 // For the sprint Graphite only handles:
 //    solid colors with src or srcOver
 //    repeated or clamped linear gradients with src or srcOver
 void precompile(skgpu::graphite::Context* context) {
+//    gen_combos(std::vector<int>{1, 2, 3});
+
+    SkSnippetID id = context->addUserDefinedSnippet("foo");
+
+
+    Builderator b;
+
+    b.add(SkBlendMode::kColorBurn);
+    b.add(SkBlendMode::kSrc, SkBlendMode::kDst);
+    b.add(Builderator::BlendModeGroups::kPorterDuff);
+    b.add(id);
+
+    const Combination& combo = b.snap();
+    SkDebugf("foo %d\n", combo.foo());
+
+#if 0
+    // We want the combinations to only reflect pertinent variations!
+
+    std::vector<foo> blendModes1 = { kSrcOver, kDstOver }
+    std::vector<foo> blendModes2 = kPorterDuff;
+    std::vector<foo> blendModes3 = kAdvanced;
+    std::vector<foo> blendModes4 = kAll;
+
+    // Not differentiating on the repeat modes for the image shader
+
+    std::vector<bar> shaders1 = { kSolid, kImage, kCompose(set1, set2), kLocalMatrix, kGrad(kLin, kRad, kSweep, kConical, kAll, kRange[2-256]) };
+    std::vector<bar> shaders2 = {
+#endif
+
     using ShaderType = skgpu::graphite::ShaderCombo::ShaderType;
 
     skgpu::graphite::PaintCombo c1 { { skgpu::graphite::ShaderCombo({ ShaderType::kSolidColor },

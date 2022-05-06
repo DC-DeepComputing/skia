@@ -88,8 +88,8 @@ public:
                     SkSpan<const uint8_t> parentSpan,
                     int offsetInParent);
 
-        SkBuiltInCodeSnippetID codeSnippetId() const {
-            return static_cast<SkBuiltInCodeSnippetID>(fBlock[0]);
+        SkSnippetID codeSnippetId() const {
+            return SkSnippetID(fBlock[0]);
         }
 
         // The data payload appears after any children and occupies the remainder of the
@@ -168,8 +168,7 @@ public:
 
     SkBackend backend() const { return fBackend; }
 
-    void beginBlock(int codeSnippetID);
-    void beginBlock(SkBuiltInCodeSnippetID id) { this->beginBlock(static_cast<int>(id)); }
+    void beginBlock(SkSnippetID codeSnippetID);
     void endBlock();
 
     void addBytes(uint32_t numBytes, const uint8_t* data);
@@ -213,7 +212,7 @@ private:
 
     // Information about the current block being written
     struct StackFrame {
-        int fCodeSnippetID;
+        SkSnippetID fCodeSnippetID;
         int fHeaderOffset;
 #ifdef SK_DEBUG
         SkSpan<const SkPaintParamsKey::DataPayloadField> fDataPayloadExpectations;

@@ -14,14 +14,14 @@
 
 namespace {
 
-SkPaintParamsKey create_key(SkPaintParamsKeyBuilder* builder, int dummySnippetID, int size) {
+SkPaintParamsKey create_key(SkPaintParamsKeyBuilder* builder, SkSnippetID snippetID, int size) {
 
     SkASSERT(size <= 1024);
     static const uint8_t kDummyData[1024] = { 0 };
 
     SkDEBUGCODE(builder->checkReset());
 
-    builder->beginBlock(dummySnippetID);
+    builder->beginBlock(snippetID);
 
     builder->addBytes(size, kDummyData);
 
@@ -40,9 +40,13 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(KeyTest, reporter, context) {
 
     // invalid code snippet ID
     {
-        SkPaintParamsKey key = create_key(&builder, kBuiltInCodeSnippetIDCount, 32);
+        SkPaintParamsKey key1 = create_key(&builder, SkSnippetID(), 32);
         // key creation fails
-        REPORTER_ASSERT(reporter, key.isErrorKey());
+        REPORTER_ASSERT(reporter, key1.isErrorKey());
+
+        SkPaintParamsKey key2 = create_key(&builder, SkSnippetID(kBuiltInCodeSnippetIDCount2), 32);
+        // key creation fails
+        REPORTER_ASSERT(reporter, key2.isErrorKey());
     }
 
     // _Just_ on the edge of being too big
@@ -55,10 +59,10 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(KeyTest, reporter, context) {
             { "data", SkPaintParamsKey::DataPayloadType::kByte, kMaxBlockDataSize },
         };
 
-        int dummySnippetID1 = dict->addUserDefinedSnippet("keyAlmostTooBig",
-                                                          SkMakeSpan(kDataFields1, kNumFields1));
+        SkSnippetID snippetID1 = dict->addUserDefinedSnippet("keyAlmostTooBig",
+                                                             SkMakeSpan(kDataFields1, kNumFields1));
 
-        SkPaintParamsKey key = create_key(&builder, dummySnippetID1, kMaxBlockDataSize);
+        SkPaintParamsKey key = create_key(&builder, snippetID1, kMaxBlockDataSize);
         REPORTER_ASSERT(reporter, key.sizeInBytes() == SkPaintParamsKey::kMaxBlockSize);
     }
 
@@ -69,10 +73,10 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(KeyTest, reporter, context) {
                 { "data", SkPaintParamsKey::DataPayloadType::kByte, 1024 },
         };
 
-        int dummySnippetID2 = dict->addUserDefinedSnippet("keyTooBig",
-                                                          SkMakeSpan(kDataFields2, kNumFields2));
+        SkSnippetID snippetID2 = dict->addUserDefinedSnippet("keyTooBig",
+                                                             SkMakeSpan(kDataFields2, kNumFields2));
 
-        SkPaintParamsKey key = create_key(&builder, dummySnippetID2, 1024);
+        SkPaintParamsKey key = create_key(&builder, snippetID2, 1024);
         // key creation fails
         REPORTER_ASSERT(reporter, key.isErrorKey());
     }

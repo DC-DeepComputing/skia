@@ -31,12 +31,12 @@ void SkPaintParamsKeyBuilder::checkReset() {
 //  1st byte: codeSnippetID
 //  2nd byte: total blockSize in bytes
 // This call stores the header's offset in the key on the stack to be used in 'endBlock'
-void SkPaintParamsKeyBuilder::beginBlock(int codeSnippetID) {
+void SkPaintParamsKeyBuilder::beginBlock(SkSnippetID codeSnippetID) {
     if (!this->isValid()) {
         return;
     }
 
-    if (codeSnippetID < 0 || codeSnippetID > fDict->maxCodeSnippetID()) {
+    if (!fDict->validID(codeSnippetID)) { // codeSnippetID < 0 || codeSnippetID > fDict->maxCodeSnippetID()) {
         // SKGPU_LOG_W("Unknown code snippet ID.");
         this->makeInvalid();
         return;
@@ -61,7 +61,7 @@ void SkPaintParamsKeyBuilder::beginBlock(int codeSnippetID) {
     fStack.push_back({ codeSnippetID, this->sizeInBytes(),
                        SkDEBUGCODE(kHeaderExpectations, 0) });
 
-    this->addByte(SkTo<uint8_t>(codeSnippetID));
+    this->addByte(SkTo<uint8_t>(codeSnippetID.asUInt()));
     this->addByte(0);  // this needs to be patched up with a call to endBlock
 
 #ifdef SK_DEBUG
@@ -284,12 +284,11 @@ void output_indent(int indent) {
 }
 #endif
 
-std::pair<SkBuiltInCodeSnippetID, uint8_t> read_header(SkSpan<const uint8_t> parentSpan,
-                                                       int headerOffset) {
+std::pair<SkSnippetID, uint8_t> read_header(SkSpan<const uint8_t> parentSpan, int headerOffset) {
     SkASSERT(headerOffset + SkPaintParamsKey::kBlockHeaderSizeInBytes <=
              SkTo<int>(parentSpan.size()));
 
-    SkBuiltInCodeSnippetID id = static_cast<SkBuiltInCodeSnippetID>(parentSpan[headerOffset]);
+    SkSnippetID id = SkSnippetID(parentSpan[headerOffset]);
     uint8_t blockSize = parentSpan[headerOffset+SkPaintParamsKey::kBlockSizeOffsetInBytes];
     SkASSERT(blockSize >= SkPaintParamsKey::kBlockHeaderSizeInBytes);
     SkASSERT(headerOffset + blockSize <= static_cast<int>(parentSpan.size()));
