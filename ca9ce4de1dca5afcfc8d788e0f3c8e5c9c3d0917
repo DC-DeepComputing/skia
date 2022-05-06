@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1a6b2b0a_03f44eda",
+        "filename": "src/core/SkKeyHelpers.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-05-06T18:34:32Z",
+      "side": 0,
+      "message": "I would just leave linear alone (and sweep and conical) until sweep and conical are also separated",
+      "revId": "ca9ce4de1dca5afcfc8d788e0f3c8e5c9c3d0917",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
