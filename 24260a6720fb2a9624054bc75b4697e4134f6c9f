@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "018f9de6_43948821",
+        "filename": "src/gpu/ganesh/ops/TessellationPathRenderer.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-05-06T19:43:47Z",
+      "side": 1,
+      "message": "I think it\u0027s fine as is -- I wasn\u0027t sure if there were other cases.",
+      "parentUuid": "73c94cbf_67f26d69",
+      "range": {
+        "startLine": 28,
+        "startChar": 16,
+        "endLine": 28,
+        "endChar": 27
+      },
+      "revId": "24260a6720fb2a9624054bc75b4697e4134f6c9f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "edc1dce9_918577b5",
