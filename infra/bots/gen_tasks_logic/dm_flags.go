@@ -1309,6 +1309,10 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 		args = append(args, "--releaseAndAbandonGpuContext")
 	}
 
+	if b.extraConfig("FailFlushTimeCallbacks") {
+		args = append(args, "--failFlushTimeCallbacks")
+	}
+
 	// Finalize the DM flags and properties.
 	b.recipeProp("dm_flags", marshalJson(args))
 	b.recipeProp("dm_properties", marshalJson(properties))
