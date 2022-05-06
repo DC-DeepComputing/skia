@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e0fa8713_2a07c719",
+        "filename": "tests/DrawOpAtlasTest.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 418,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-05-06T18:52:27Z",
+      "side": 1,
+      "message": "It looks like you are using a large font size to just put a few glyphs in the Plot.",
+      "range": {
+        "startLine": 418,
+        "startChar": 4,
+        "endLine": 418,
+        "endChar": 87
+      },
+      "revId": "5c47a45c09f4bce8d760b1a0448e76fe3bfe0321",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "73877578_cb0febbd",
+        "filename": "tests/DrawOpAtlasTest.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 482,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-05-06T18:52:27Z",
+      "side": 1,
+      "message": "We need to test this like it will be have in the wild. I think you need to get between 64 and 128 glyphs of varying padding to really see how this will interact with the skyline allocation.\n\nWhen this lands it will be run on 1000\u0027s of machine instantly ramping to billions. This really should be tested hard.",
+      "range": {
+        "startLine": 482,
+        "startChar": 16,
+        "endLine": 482,
+        "endChar": 18
+      },
+      "revId": "5c47a45c09f4bce8d760b1a0448e76fe3bfe0321",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
