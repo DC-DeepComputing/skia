@@ -146,7 +146,7 @@ private:
     SkSTArenaAllocWithReset<4 * sizeof(IntersectionTree)> fTreeStore;
 };
 
-sk_sp<Device> Device::Make(Recorder* recorder, const SkImageInfo& ii) {
+sk_sp<Device> Device::Make(Recorder* recorder, const SkImageInfo& ii, SkBudgeted budgeted) {
     if (!recorder) {
         return nullptr;
     }
@@ -154,7 +154,7 @@ sk_sp<Device> Device::Make(Recorder* recorder, const SkImageInfo& ii) {
                                                                              /*levelCount=*/1,
                                                                              Protected::kNo,
                                                                              Renderable::kYes);
-    sk_sp<TextureProxy> target(new TextureProxy(ii.dimensions(), textureInfo));
+    sk_sp<TextureProxy> target(new TextureProxy(ii.dimensions(), textureInfo, budgeted));
     return Make(recorder,
                 std::move(target),
                 ii.refColorSpace(),
@@ -218,7 +218,7 @@ SkBaseDevice* Device::onCreateDevice(const CreateInfo& info, const SkPaint*) {
     // TODO: Inspect the paint and create info to determine if there's anything that has to be
     // modified to support inline subpasses.
     // TODO: onCreateDevice really should return sk_sp<SkBaseDevice>...
-    return Make(fRecorder, info.fInfo).release();
+    return Make(fRecorder, info.fInfo, SkBudgeted::kYes).release();
 }
 
 sk_sp<SkSurface> Device::makeSurface(const SkImageInfo& ii, const SkSurfaceProps& /* props */) {

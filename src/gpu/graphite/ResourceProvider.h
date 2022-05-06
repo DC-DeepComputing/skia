@@ -46,7 +46,7 @@ public:
     sk_sp<GraphicsPipeline> findOrCreateGraphicsPipeline(const GraphicsPipelineDesc&,
                                                          const RenderPassDesc&);
 
-    sk_sp<Texture> findOrCreateScratchTexture(SkISize, const TextureInfo&);
+    sk_sp<Texture> findOrCreateScratchTexture(SkISize, const TextureInfo&, SkBudgeted);
     virtual sk_sp<Texture> createWrappedTexture(const BackendTexture&) = 0;
 
     sk_sp<Texture> findOrCreateDepthStencilAttachment(SkISize dimensions,
@@ -71,7 +71,7 @@ protected:
 private:
     virtual sk_sp<GraphicsPipeline> onCreateGraphicsPipeline(const GraphicsPipelineDesc&,
                                                              const RenderPassDesc&) = 0;
-    virtual sk_sp<Texture> createTexture(SkISize, const TextureInfo&) = 0;
+    virtual sk_sp<Texture> createTexture(SkISize, const TextureInfo&, SkBudgeted) = 0;
     virtual sk_sp<Buffer> createBuffer(size_t size, BufferType type, PrioritizeGpuReads) = 0;
 
     virtual sk_sp<Sampler> createSampler(const SkSamplingOptions&,
@@ -80,7 +80,8 @@ private:
 
     sk_sp<Texture> findOrCreateTextureWithKey(SkISize dimensions,
                                               const TextureInfo& info,
-                                              const GraphiteResourceKey& key);
+                                              const GraphiteResourceKey& key,
+                                              SkBudgeted);
 
     class GraphicsPipelineCache {
     public:

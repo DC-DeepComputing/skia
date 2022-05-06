@@ -81,6 +81,8 @@ public:
 
     Ownership ownership() const { return fOwnership; }
 
+    SkBudgeted budgeted() const { return fBudgeted; }
+
     // Tests whether a object has been abandoned or released. All objects will be in this state
     // after their creating Context is destroyed or abandoned.
     //
@@ -97,7 +99,7 @@ public:
     void setKey(const GraphiteResourceKey& key) { fKey = key; }
 
 protected:
-    Resource(const Gpu*, Ownership);
+    Resource(const Gpu*, Ownership, SkBudgeted);
     virtual ~Resource();
 
     // Overridden to free GPU resources in the backend API.
@@ -109,6 +111,9 @@ private:
     // want them public general users of a Resource, but they also aren't purely internal calls.
     ////////////////////////////////////////////////////////////////////////////
     friend ResourceCache;
+
+    void makeBudgeted() { fBudgeted = SkBudgeted::kYes; }
+    void makeUnbudgeted() { fBudgeted = SkBudgeted::kNo; }
 
     // This version of ref allows adding a ref when the usage count is 0. This should only be called
     // from the ResourceCache.
@@ -225,6 +230,12 @@ private:
     mutable int fReturnIndex = -1;
 
     Ownership fOwnership;
+
+    // All resource created internally by Graphite and held in the ResourceCache as a shared
+    // shared resource or available scratch resource are considered budgeted. Resources that back
+    // client owned objects (e.g. SkSurface or SkImage) are not budgeted and do not count against
+    // cache limits.
+    SkBudgeted fBudgeted;
 
     // An index into a heap when this resource is purgeable or an array when not. This is maintained
     // by the cache.

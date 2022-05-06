@@ -34,7 +34,7 @@ class Device final : public SkBaseDevice  {
 public:
     ~Device() override;
 
-    static sk_sp<Device> Make(Recorder*, const SkImageInfo&);
+    static sk_sp<Device> Make(Recorder*, const SkImageInfo&, SkBudgeted);
     static sk_sp<Device> Make(Recorder*,
                               sk_sp<TextureProxy>,
                               sk_sp<SkColorSpace>,

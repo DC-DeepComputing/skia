@@ -1136,7 +1136,9 @@ public:
         @param GrDirectContext the GrDirectContext in play, if it exists
         @param GrMipmapped     whether created SkImage texture must allocate mip map levels
         @param SkBudgeted      whether to count a newly created texture for the returned image
-                               counts against the context's budget.
+                               counts against the context's budget. In Graphite this value is
+                               ignored as all textures wrapped in SkImages do not count against the
+                               contexts budget.
         @return                created SkImage, or nullptr
     */
     sk_sp<SkImage> makeTextureImage(GrDirectContext*,
