@@ -2148,6 +2148,10 @@ void MetalCodeGenerator::writeName(std::string_view name) {
 }
 
 void MetalCodeGenerator::writeVarDeclaration(const VarDeclaration& varDecl) {
+    if ((varDecl.var().modifiers().fFlags & Modifiers::kConst_Flag) &&
+        varDecl.var().type().matches(*fContext.fTypes.fInt)) {
+        this->write("[[maybe_unused]] ");
+    }
     this->writeModifiers(varDecl.var().modifiers());
     this->writeType(varDecl.var().type());
     this->write(" ");
