@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "90763646_0eb24b69",
+        "filename": "tests/DrawOpAtlasTest.cpp",
+        "patchSetId": 25
+      },
+      "lineNbr": 461,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-05-06T13:34:28Z",
+      "side": 1,
+      "message": "I don\u0027t think I explained this well. In the normal operating environment a plot will be filled with glyphs all jumbled up. Ones with zero padding will be next to ones that need 2 padding. Ones with 1 padding will be next to ones that need no padding.\n\nIt looks like this create a plot where all the glyphs have zero padding, and a plot where all the glyphs have 1 padding, and then all the glyphs have 2 padding. All the different types of padding need to be jumbled up.",
+      "range": {
+        "startLine": 442,
+        "startChar": 3,
+        "endLine": 461,
+        "endChar": 55
+      },
+      "revId": "581a95d30f939bc2d5aeea24e07f759ee2397009",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
