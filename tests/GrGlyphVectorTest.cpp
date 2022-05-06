@@ -4,18 +4,20 @@
 * Use of this source code is governed by a BSD-style license that can be
 * found in the LICENSE file.
  */
+#include "include/core/SkTypes.h"
+
+#if SK_SUPPORT_GPU
+#include "tests/Test.h"
 
 #include "src/core/SkGlyph.h"
-#include "src/gpu/ganesh/GrResourceProvider.h"
-
 #include "src/core/SkGlyphBuffer.h"
 #include "src/core/SkReadBuffer.h"
 #include "src/core/SkStrikeCache.h"
 #include "src/core/SkStrikeSpec.h"
 #include "src/core/SkWriteBuffer.h"
+#include "src/gpu/ganesh/GrResourceProvider.h"
 #include "src/text/gpu/GlyphVector.h"
 #include "src/text/gpu/SubRunAllocator.h"
-#include "tests/Test.h"
 
 using GlyphVector = sktext::gpu::GlyphVector;
 using SubRunAllocator = sktext::gpu::SubRunAllocator;
@@ -118,3 +120,5 @@ DEF_TEST(GlyphVector_BadLengths, r) {
 }
 
 }  // namespace sktext::gpu
+
+#endif // SK_SUPPORT_GPU

@@ -4,6 +4,10 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+#include "include/core/SkTypes.h"
+
+#if SK_SUPPORT_GPU
+#include "tests/Test.h"
 
 #include "include/core/SkCanvas.h"
 #include "include/core/SkImageInfo.h"
@@ -11,7 +15,6 @@
 #include "include/core/SkRect.h"
 #include "include/core/SkSurface.h"
 #include "include/gpu/GrDirectContext.h"
-#include "tests/Test.h"
 
 DEF_GPUTEST(GrContext_oomed, reporter, originalOptions) {
     GrContextOptions options = originalOptions;
@@ -51,3 +54,5 @@ DEF_GPUTEST(GrContext_oomed, reporter, originalOptions) {
         }
     }
 }
+
+#endif // SK_SUPPORT_GPU

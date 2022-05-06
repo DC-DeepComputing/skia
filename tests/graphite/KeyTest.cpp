@@ -4,12 +4,13 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+#include "include/core/SkTypes.h"
 
+#if defined(SK_GRAPHITE_ENABLED)
 #include "tests/Test.h"
 
 #include "src/core/SkPaintParamsKey.h"
 #include "src/core/SkShaderCodeDictionary.h"
-
 #include "src/gpu/graphite/ContextPriv.h"
 
 namespace {
@@ -77,3 +78,4 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(KeyTest, reporter, context) {
         REPORTER_ASSERT(reporter, key.isErrorKey());
     }
 }
+#endif // defined(SK_GRAPHITE_ENABLED)

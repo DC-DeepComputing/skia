@@ -4,7 +4,9 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+#include "include/core/SkTypes.h"
 
+#if defined(SK_GRAPHITE_ENABLED)
 #include "tests/Test.h"
 
 #include "src/gpu/graphite/geom/Transform_graphite.h"
@@ -14,3 +16,5 @@ DEF_GRAPHITE_TEST(TransformTest, reporter) {
     skgpu::graphite::Transform t{SkM44()};
     REPORTER_ASSERT(reporter, t.type() == skgpu::graphite::Transform::Type::kIdentity);
 }
+
+#endif // defined(SK_GRAPHITE_ENABLED)

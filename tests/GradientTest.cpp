@@ -5,6 +5,8 @@
  * found in the LICENSE file.
  */
 
+#include "tests/Test.h"
+
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColorPriv.h"
@@ -15,9 +17,11 @@
 #include "include/private/SkTemplates.h"
 #include "src/core/SkMatrixProvider.h"
 #include "src/core/SkTLazy.h"
-#include "src/gpu/ganesh/GrColorInfo.h"
 #include "src/shaders/SkColorShader.h"
-#include "tests/Test.h"
+
+#if SK_SUPPORT_GPU
+#include "src/gpu/ganesh/GrColorInfo.h"
+#endif
 
 // https://code.google.com/p/chromium/issues/detail?id=448299
 // Giant (inverse) matrix causes overflow when converting/computing using 32.32
@@ -372,6 +376,7 @@ static void test_degenerate_linear(skiatest::Reporter*) {
     // Passes if we don't trigger asserts.
 }
 
+#if SK_SUPPORT_GPU
 // http://crbug.com/1149216
 static void test_unsorted_degenerate(skiatest::Reporter* r) {
     // Passes if a valid solid color is computed for the degenerate gradient
@@ -401,6 +406,7 @@ static void test_unsorted_degenerate(skiatest::Reporter* r) {
     GrFPArgs args(context.get(), provider, &dstColorInfo);
     as_SB(gradient)->asFragmentProcessor(args);
 }
+#endif
 
 // "Interesting" fuzzer values.
 static void test_linear_fuzzer(skiatest::Reporter*) {
@@ -584,5 +590,8 @@ DEF_TEST(Gradient, reporter) {
     test_degenerate_linear(reporter);
     test_linear_fuzzer(reporter);
     test_sweep_fuzzer(reporter);
+
+#if SK_SUPPORT_GPU
     test_unsorted_degenerate(reporter);
+#endif
 }
