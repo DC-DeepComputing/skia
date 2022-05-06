@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "96bfaaad_18f26a78",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-05-06T20:50:14Z",
+      "side": 1,
+      "message": "Yeah I don\u0027t recall the context of the guards, but if everything is happy and chrome doesn\u0027t yell at you we can give it a shot.",
+      "revId": "a26473e7cbd628181b8e3bbb243f68278d36e123",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
