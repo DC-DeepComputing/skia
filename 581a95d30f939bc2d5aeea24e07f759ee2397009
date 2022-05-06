@@ -46,6 +46,30 @@
       },
       "revId": "581a95d30f939bc2d5aeea24e07f759ee2397009",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "06167cd4_61f317e1",
+        "filename": "tests/DrawOpAtlasTest.cpp",
+        "patchSetId": 25
+      },
+      "lineNbr": 461,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-05-06T14:46:39Z",
+      "side": 1,
+      "message": "I think we want to be as thorough as possible here. And check all pairs of rectangles. So, I doing more than 4 is needed.",
+      "parentUuid": "1684f571_77ae1d89",
+      "range": {
+        "startLine": 442,
+        "startChar": 3,
+        "endLine": 461,
+        "endChar": 55
+      },
+      "revId": "581a95d30f939bc2d5aeea24e07f759ee2397009",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
