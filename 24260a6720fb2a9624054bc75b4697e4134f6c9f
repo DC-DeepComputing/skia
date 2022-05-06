@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "73c94cbf_67f26d69",
+        "filename": "src/gpu/ganesh/ops/TessellationPathRenderer.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-05-06T19:23:16Z",
+      "side": 1,
+      "message": "that would work for the contents that are now tess::kFoo, but there are several function calls that would need to be updated. These had been in skgpu:: and are now also in skgpu::tess (for instance PreChopPathCurves), and were always being referenced from something in skgpu::v1 so were found automatically.\n\nI struggled with deciding what was more readable, and thought tess:: added value for the constants, but maybe didn\u0027t add value for the function calls. wdyt?",
+      "parentUuid": "36c4a044_3545716c",
+      "range": {
+        "startLine": 28,
+        "startChar": 16,
+        "endLine": 28,
+        "endChar": 27
+      },
+      "revId": "24260a6720fb2a9624054bc75b4697e4134f6c9f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "edc1dce9_918577b5",
         "filename": "src/gpu/ganesh/tessellate/GrPathTessellationShader.h",
         "patchSetId": 7
@@ -37,6 +61,30 @@
       "writtenOn": "2022-05-06T14:16:34Z",
       "side": 1,
       "message": "I suppose this is safe since it\u0027s in the class, though I\u0027m always a little squirrely about usings in header files.",
+      "range": {
+        "startLine": 17,
+        "startChar": 4,
+        "endLine": 17,
+        "endChar": 50
+      },
+      "revId": "24260a6720fb2a9624054bc75b4697e4134f6c9f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0856a458_011c4a0d",
+        "filename": "src/gpu/ganesh/tessellate/GrPathTessellationShader.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-05-06T19:23:16Z",
+      "side": 1,
+      "message": "and for what it\u0027s worth, it\u0027s protected access only, and makes GrPathTessellationShader\u0027s using declarations consistent with the already aliased PatchAttribs that was in GrStrokeTessellationShader.",
+      "parentUuid": "edc1dce9_918577b5",
       "range": {
         "startLine": 17,
         "startChar": 4,
