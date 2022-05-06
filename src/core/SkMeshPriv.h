@@ -5,44 +5,42 @@
  * found in the LICENSE file.
  */
 
-#ifndef SkCustomMeshPriv_DEFINED
-#define SkCustomMeshPriv_DEFINED
+#ifndef SkMeshPriv_DEFINED
+#define SkMeshPriv_DEFINED
 
-#include "include/core/SkCustomMesh.h"
+#include "include/core/SkMesh.h"
 
 #ifdef SK_ENABLE_SKSL
 #include "include/core/SkData.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "src/core/SkSLTypeShared.h"
 
-struct SkCustomMeshSpecificationPriv {
-    using Varying   = SkCustomMeshSpecification::Varying;
-    using Attribute = SkCustomMeshSpecification::Attribute;
-    using ColorType = SkCustomMeshSpecification::ColorType;
+struct SkMeshSpecificationPriv {
+    using Varying   = SkMeshSpecification::Varying;
+    using Attribute = SkMeshSpecification::Attribute;
+    using ColorType = SkMeshSpecification::ColorType;
 
-    static SkSpan<const Varying> Varyings(const SkCustomMeshSpecification& spec) {
+    static SkSpan<const Varying> Varyings(const SkMeshSpecification& spec) {
         return SkMakeSpan(spec.fVaryings);
     }
 
-    static const SkSL::Program* VS(const SkCustomMeshSpecification& spec) { return spec.fVS.get(); }
-    static const SkSL::Program* FS(const SkCustomMeshSpecification& spec) { return spec.fFS.get(); }
+    static const SkSL::Program* VS(const SkMeshSpecification& spec) { return spec.fVS.get(); }
+    static const SkSL::Program* FS(const SkMeshSpecification& spec) { return spec.fFS.get(); }
 
-    static int Hash(const SkCustomMeshSpecification& spec) { return spec.fHash; }
+    static int Hash(const SkMeshSpecification& spec) { return spec.fHash; }
 
-    static ColorType GetColorType(const SkCustomMeshSpecification& spec) { return spec.fColorType; }
-    static bool HasColors(const SkCustomMeshSpecification& spec) {
+    static ColorType GetColorType(const SkMeshSpecification& spec) { return spec.fColorType; }
+    static bool HasColors(const SkMeshSpecification& spec) {
         return GetColorType(spec) != ColorType::kNone;
     }
 
-    static SkColorSpace* ColorSpace(const SkCustomMeshSpecification& spec) {
+    static SkColorSpace* ColorSpace(const SkMeshSpecification& spec) {
         return spec.fColorSpace.get();
     }
 
-    static SkAlphaType AlphaType(const SkCustomMeshSpecification& spec) { return spec.fAlphaType; }
+    static SkAlphaType AlphaType(const SkMeshSpecification& spec) { return spec.fAlphaType; }
 
-    static bool HasLocalCoords(const SkCustomMeshSpecification& spec) {
-        return spec.fHasLocalCoords;
-    }
+    static bool HasLocalCoords(const SkMeshSpecification& spec) { return spec.fHasLocalCoords; }
 
     static SkSLType VaryingTypeAsSLType(Varying::Type type) {
         switch (type) {
@@ -81,7 +79,7 @@ struct SkCustomMeshSpecificationPriv {
     }
 };
 
-struct SkCustomMeshPriv {
+struct SkMeshPriv {
     class Buffer {
     public:
         virtual ~Buffer() = 0;
@@ -96,8 +94,8 @@ struct SkCustomMeshPriv {
         virtual size_t size() const = 0;
     };
 
-    class IB : public Buffer, public SkCustomMesh::IndexBuffer  {};
-    class VB : public Buffer, public SkCustomMesh::VertexBuffer {};
+    class IB : public Buffer, public SkMesh::IndexBuffer  {};
+    class VB : public Buffer, public SkMesh::VertexBuffer {};
 
     template <typename Base> class CpuBuffer final : public Base {
     public:
@@ -118,10 +116,9 @@ struct SkCustomMeshPriv {
     using CpuVertexBuffer = CpuBuffer<VB>;
 };
 
-inline SkCustomMeshPriv::Buffer::~Buffer() = default;
+inline SkMeshPriv::Buffer::~Buffer() = default;
 
-template <typename Base>
-sk_sp<Base> SkCustomMeshPriv::CpuBuffer<Base>::Make(sk_sp<const SkData> data) {
+template <typename Base> sk_sp<Base> SkMeshPriv::CpuBuffer<Base>::Make(sk_sp<const SkData> data) {
     auto result = new CpuBuffer<Base>;
     result->fData = std::move(data);
     return sk_sp<Base>(result);
