@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "342a938b_be48b499",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-05-06T20:19:13Z",
+      "side": 1,
+      "message": "This will need some layout test suppression in chrome before it can land, unfortunately. But I also wouldn\u0027t mind your thoughts on the gold diffs. \n\nWhile this nominally fixed a bug around conflating stroke width as stroke radius (so was actually acting like a circle with 2x the radius, so more segments were being assigned than used), I am struggling to decide if the visual changes are problematic. Theoretically, even with the extra vertices provided in the draw call invocation, since the GPU\u0027s equivalent formula would use stroke radius, it would then still calculate the correct lower amount.\n\nMaybe the diffs are all just slight vertex churn and we\u0027re getting unlucky, but on some of them, I\u0027ve nearly convinced myself that the circles are actually looking a little flat-sided. If that\u0027s the case, then maybe we need to consider a different heuristic, or an increase in precision.",
+      "revId": "790a1e18beaf7612397b426fb8a3263033a964b0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
