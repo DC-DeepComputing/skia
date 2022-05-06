@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "53f3a0c7_9b337d26",
+        "filename": "bazel/user/README.md",
+        "patchSetId": 10
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-05-06T17:20:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ecb9ac18_3237ca42",
+      "range": {
+        "startLine": 2,
+        "startChar": 43,
+        "endLine": 2,
+        "endChar": 44
+      },
+      "revId": "d18abd667aa15770dff8d36ea4c9d75ef624fa75",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "96a755a5_8198b3dc",
@@ -236,6 +260,24 @@
       "writtenOn": "2022-05-06T17:14:57Z",
       "side": 1,
       "message": "Nevermind, I now see the try-import line. We can still add a link to this either here or where we call try-import.",
+      "parentUuid": "98f1783f_0c15ce2e",
+      "revId": "d18abd667aa15770dff8d36ea4c9d75ef624fa75",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "89748723_5aba2a5f",
+        "filename": "site/docs/dev/contrib/bazel.md",
+        "patchSetId": 10
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-05-06T17:20:23Z",
+      "side": 1,
+      "message": "Done",
       "parentUuid": "98f1783f_0c15ce2e",
       "revId": "d18abd667aa15770dff8d36ea4c9d75ef624fa75",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
