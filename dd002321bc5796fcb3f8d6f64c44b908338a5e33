@@ -51,6 +51,24 @@
       "parentUuid": "620ab6d1_6fde4b31",
       "revId": "dd002321bc5796fcb3f8d6f64c44b908338a5e33",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1c426ec1_cdf0e1dc",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 523,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-05-06T19:26:55Z",
+      "side": 1,
+      "message": "Ack, nope. Some of the initializers also need to reference the SpecialIntrinsic enum, which is also used as an argument type for another member function. Hmm. Probably simpler to leave it as-is.",
+      "parentUuid": "72897b28_371a8d80",
+      "revId": "dd002321bc5796fcb3f8d6f64c44b908338a5e33",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
