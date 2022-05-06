@@ -84,7 +84,7 @@ build:clang --sandbox_base=/dev/shm
 
 ### Authenticate to RBE on a Linux VM
 We are in the process of setting up Remote Build Execution (RBE) for Bazel. Some users have reported
-errors when trying to use RBE (via `--config=linux-rbe`) on Linux VMs such as:
+errors when trying to use RBE (via `--config=linux_rbe`) on Linux VMs such as:
 ```
 ERROR: Failed to query remote execution capabilities: 
 Error code 404 trying to get security access token from Compute Engine metadata for the default
