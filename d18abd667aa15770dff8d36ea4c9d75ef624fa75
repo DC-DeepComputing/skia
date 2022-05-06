@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "936be8d1_c504f694",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2022-05-06T16:27:47Z",
+      "side": 1,
+      "message": "My comments so far basically mirror what we\u0027ve discussed in chat",
+      "revId": "d18abd667aa15770dff8d36ea4c9d75ef624fa75",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "96a755a5_8198b3dc",
+        "filename": "infra/bots/gen_tasks_logic/gen_tasks_logic.go",
+        "patchSetId": 10
+      },
+      "lineNbr": 2083,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2022-05-06T16:27:47Z",
+      "side": 1,
+      "message": "I think an explicit map of task name to build target will be much easier to understand, and it\u0027ll allow us to use a simpler task name.",
+      "range": {
+        "startLine": 2083,
+        "startChar": 5,
+        "endLine": 2083,
+        "endChar": 21
+      },
+      "revId": "d18abd667aa15770dff8d36ea4c9d75ef624fa75",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fa8cfc49_80aee4ef",
+        "filename": "infra/bots/jobs.json",
+        "patchSetId": 10
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2022-05-06T16:27:47Z",
+      "side": 1,
+      "message": "I\u0027m concerned about spaces for the same reason as the slashes and colons: we\u0027ll need escaping or quoting to use the task name in a URL or in a command line",
+      "range": {
+        "startLine": 2,
+        "startChar": 30,
+        "endLine": 2,
+        "endChar": 31
+      },
+      "revId": "d18abd667aa15770dff8d36ea4c9d75ef624fa75",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2c7e47e9_c525acb6",
+        "filename": "infra/bots/task_drivers/bazel_build/bazel_build.go",
+        "patchSetId": 10
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2022-05-06T16:27:47Z",
+      "side": 1,
+      "message": "Just curious, is this Bazel terminology?  It seems to me that \"target\" is the more obvious name for this.",
+      "range": {
+        "startLine": 31,
+        "startChar": 26,
+        "endLine": 31,
+        "endChar": 31
+      },
+      "revId": "d18abd667aa15770dff8d36ea4c9d75ef624fa75",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
