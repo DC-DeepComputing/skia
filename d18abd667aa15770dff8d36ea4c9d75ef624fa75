@@ -20,6 +20,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ecb9ac18_3237ca42",
+        "filename": "bazel/user/README.md",
+        "patchSetId": 10
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2022-05-06T17:10:14Z",
+      "side": 1,
+      "message": "nit: trailing space",
+      "range": {
+        "startLine": 2,
+        "startChar": 43,
+        "endLine": 2,
+        "endChar": 44
+      },
+      "revId": "d18abd667aa15770dff8d36ea4c9d75ef624fa75",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "96a755a5_8198b3dc",
         "filename": "infra/bots/gen_tasks_logic/gen_tasks_logic.go",
         "patchSetId": 10
@@ -155,6 +178,47 @@
         "endLine": 31,
         "endChar": 31
       },
+      "revId": "d18abd667aa15770dff8d36ea4c9d75ef624fa75",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "29106b6e_803716bb",
+        "filename": "infra/bots/task_drivers/bazel_build/bazel_build.go",
+        "patchSetId": 10
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2022-05-06T17:10:14Z",
+      "side": 1,
+      "message": "Labels tell you where the target lives.\nFrom the bazel site: The name of a target is called its label. Every label uniquely identifies a target. It acts like a path.",
+      "parentUuid": "2c7e47e9_c525acb6",
+      "range": {
+        "startLine": 31,
+        "startChar": 26,
+        "endLine": 31,
+        "endChar": 31
+      },
+      "revId": "d18abd667aa15770dff8d36ea4c9d75ef624fa75",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "98f1783f_0c15ce2e",
+        "filename": "site/docs/dev/contrib/bazel.md",
+        "patchSetId": 10
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2022-05-06T17:10:14Z",
+      "side": 1,
+      "message": "Didn\u0027t know it was automatically read it. I thought we needed a specific line in the project-level bazelrc.\nhttps://docs.bazel.build/versions/main/best-practices.html#using-the-bazelrc-file\n\nMight be worth linking to this anyway. It contains a link to the bazelrc format and best practices.",
       "revId": "d18abd667aa15770dff8d36ea4c9d75ef624fa75",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
