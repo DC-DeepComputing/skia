@@ -398,7 +398,7 @@ void SkGlyphRunListPainter::categorizeGlyphRunList(SkGlyphRunPainterInterface* p
                     // processSourceDrawables must be called even if there are no glyphs to make
                     // sure runs are set correctly.
                     process->processSourceDrawables(fAccepted.accepted(),
-                                                    runFont,
+                                                    strike->getUnderlyingStrike(),
                                                     strikeSpec.descriptor(),
                                                     strikeToSourceScale);
                 }
