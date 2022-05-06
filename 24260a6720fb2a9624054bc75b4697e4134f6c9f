@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "36c4a044_3545716c",
+        "filename": "src/gpu/ganesh/ops/TessellationPathRenderer.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-05-06T14:16:34Z",
+      "side": 1,
+      "message": "Just skgpu?",
+      "range": {
+        "startLine": 28,
+        "startChar": 16,
+        "endLine": 28,
+        "endChar": 27
+      },
+      "revId": "24260a6720fb2a9624054bc75b4697e4134f6c9f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "edc1dce9_918577b5",
+        "filename": "src/gpu/ganesh/tessellate/GrPathTessellationShader.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-05-06T14:16:34Z",
+      "side": 1,
+      "message": "I suppose this is safe since it\u0027s in the class, though I\u0027m always a little squirrely about usings in header files.",
+      "range": {
+        "startLine": 17,
+        "startChar": 4,
+        "endLine": 17,
+        "endChar": 50
+      },
+      "revId": "24260a6720fb2a9624054bc75b4697e4134f6c9f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
