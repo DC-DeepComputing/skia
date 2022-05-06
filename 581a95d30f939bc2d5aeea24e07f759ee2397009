@@ -70,6 +70,30 @@
       },
       "revId": "581a95d30f939bc2d5aeea24e07f759ee2397009",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b2981ad7_eff0ba03",
+        "filename": "tests/DrawOpAtlasTest.cpp",
+        "patchSetId": 25
+      },
+      "lineNbr": 461,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-05-06T17:15:01Z",
+      "side": 1,
+      "message": "OK. I ended up with LOTs of cases but it does make sense.\nHowever, just to simplify my life and the life of another person who is going to look at that tested all the cases in pairs (making sure we have all combinations checked).",
+      "parentUuid": "06167cd4_61f317e1",
+      "range": {
+        "startLine": 442,
+        "startChar": 3,
+        "endLine": 461,
+        "endChar": 55
+      },
+      "revId": "581a95d30f939bc2d5aeea24e07f759ee2397009",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
