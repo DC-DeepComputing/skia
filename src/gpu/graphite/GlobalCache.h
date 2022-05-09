@@ -14,11 +14,13 @@ class SkShaderCodeDictionary;
 
 namespace skgpu::graphite {
 
+class Gpu;
+
 // TODO: This class needs to be thread safe. In the current version there is no thread safety and
 // we need to go back and add protection around access to any of its memebers.
 class GlobalCache : public SkRefCnt {
 public:
-    GlobalCache();
+    GlobalCache(const Gpu* gpu);
     ~GlobalCache() override;
 
     SkShaderCodeDictionary* shaderCodeDictionary() const { return fShaderCodeDictionary.get(); }
