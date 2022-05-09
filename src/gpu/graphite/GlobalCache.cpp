@@ -11,7 +11,7 @@
 
 namespace skgpu::graphite {
 
-GlobalCache::GlobalCache() : fShaderCodeDictionary(std::make_unique<SkShaderCodeDictionary>()) {}
+GlobalCache::GlobalCache(bool foo) : fShaderCodeDictionary(std::make_unique<SkShaderCodeDictionary>(foo)) {}
 
 GlobalCache::~GlobalCache() {};
 

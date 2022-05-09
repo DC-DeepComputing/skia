@@ -31,12 +31,12 @@ void SkPaintParamsKeyBuilder::checkReset() {
 //  1st byte: codeSnippetID
 //  2nd byte: total blockSize in bytes
 // This call stores the header's offset in the key on the stack to be used in 'endBlock'
-void SkPaintParamsKeyBuilder::beginBlock(int codeSnippetID) {
+void SkPaintParamsKeyBuilder::beginBlock(SkSnippetID codeSnippetID) {
     if (!this->isValid()) {
         return;
     }
 
-    if (codeSnippetID < 0 || codeSnippetID > fDict->maxCodeSnippetID()) {
+    if (!fDict->validID(codeSnippetID)) { // codeSnippetID < 0 || codeSnippetID > fDict->maxCodeSnippetID()) {
         // SKGPU_LOG_W("Unknown code snippet ID.");
         this->makeInvalid();
         return;
@@ -61,7 +61,7 @@ void SkPaintParamsKeyBuilder::beginBlock(int codeSnippetID) {
     fStack.push_back({ codeSnippetID, this->sizeInBytes(),
                        SkDEBUGCODE(kHeaderExpectations, 0) });
 
-    this->addByte(SkTo<uint8_t>(codeSnippetID));
+    this->add(codeSnippetID); //SkTo<uint8_t>(codeSnippetID.asUInt()));
     this->addByte(0);  // this needs to be patched up with a call to endBlock
 
 #ifdef SK_DEBUG
@@ -89,7 +89,7 @@ void SkPaintParamsKeyBuilder::endBlock() {
 
     int headerOffset = fStack.back().fHeaderOffset;
 
-    SkASSERT(fData[headerOffset] == fStack.back().fCodeSnippetID);
+    SkASSERT(fData[headerOffset] == fStack.back().fCodeSnippetID.asUInt());
     SkASSERT(fData[headerOffset+SkPaintParamsKey::kBlockSizeOffsetInBytes] == 0);
 
     int blockSize = this->sizeInBytes() - headerOffset;
@@ -162,6 +162,11 @@ void SkPaintParamsKeyBuilder::add(const SkColor4f& color) {
     fData.append(16, reinterpret_cast<const uint8_t*>(&color));
 }
 
+void SkPaintParamsKeyBuilder::add(SkSnippetID snippetID) {
+    this->addByte(SkTo<uint8_t>(snippetID.asUInt()));
+}
+
+
 SkPaintParamsKey SkPaintParamsKeyBuilder::lockAsKey() {
     if (!fStack.empty()) {
         // SKGPU_LOG_W("Mismatched beginBlock/endBlocks.");
@@ -184,7 +189,7 @@ void SkPaintParamsKeyBuilder::makeInvalid() {
 
     fStack.rewind();
     fData.rewind();
-    this->beginBlock(SkBuiltInCodeSnippetID::kError);
+    this->beginBlock(SkSnippetID());
     this->endBlock();
 
     SkASSERT(fIsValid);
@@ -267,7 +272,7 @@ void SkPaintParamsKey::toShaderInfo(SkShaderCodeDictionary* dict, SkShaderInfo* 
 #if GR_TEST_UTILS
 bool SkPaintParamsKey::isErrorKey() const {
     return this->sizeInBytes() == SkPaintParamsKey::kBlockHeaderSizeInBytes &&
-           fData[0] == static_cast<int>(SkBuiltInCodeSnippetID::kError) &&
+           fData[0] == static_cast<int>(SkBuiltInCodeSnippetID2::kError) &&
            fData[1] == SkPaintParamsKey::kBlockHeaderSizeInBytes;
 }
 #endif
@@ -284,12 +289,11 @@ void output_indent(int indent) {
 }
 #endif
 
-std::pair<SkBuiltInCodeSnippetID, uint8_t> read_header(SkSpan<const uint8_t> parentSpan,
-                                                       int headerOffset) {
+std::pair<SkSnippetID, uint8_t> read_header(SkSpan<const uint8_t> parentSpan, int headerOffset) {
     SkASSERT(headerOffset + SkPaintParamsKey::kBlockHeaderSizeInBytes <=
              SkTo<int>(parentSpan.size()));
 
-    SkBuiltInCodeSnippetID id = static_cast<SkBuiltInCodeSnippetID>(parentSpan[headerOffset]);
+    SkSnippetID id = SkSnippetID(parentSpan[headerOffset]);
     uint8_t blockSize = parentSpan[headerOffset+SkPaintParamsKey::kBlockSizeOffsetInBytes];
     SkASSERT(blockSize >= SkPaintParamsKey::kBlockHeaderSizeInBytes);
     SkASSERT(headerOffset + blockSize <= static_cast<int>(parentSpan.size()));
@@ -357,10 +361,9 @@ int SkPaintParamsKey::BlockReader::numDataPayloadFields() const {
 }
 
 void SkPaintParamsKey::BlockReader::dump(const SkShaderCodeDictionary* dict, int indent) const {
-    uint8_t id = static_cast<uint8_t>(this->codeSnippetId());
     uint8_t blockSize = this->blockSize();
 
-    auto entry = dict->getEntry(id);
+    auto entry = dict->getEntry(this->codeSnippetId());
     if (!entry) {
         output_indent(indent);
         SkDebugf("unknown block! (%dB)\n", blockSize);

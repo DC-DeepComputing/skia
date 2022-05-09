@@ -17,6 +17,8 @@
 
 #include "include/gpu/graphite/GraphiteTypes.h"
 
+class SkShaderCodeDictionary;
+
 namespace skgpu::graphite {
 
 class BackendTexture;
@@ -78,6 +80,8 @@ public:
      * Checks whether any asynchronous work is complete and if so calls related callbacks.
      */
     void checkAsyncWorkCompletion();
+
+    SkSnippetID addUserDefinedSnippet(const char* name);
 
     void preCompile(const PaintCombo&);
 
