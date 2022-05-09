@@ -136,6 +136,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e38cfab0_835ea54e",
+        "filename": "modules/particles/src/SkParticleDrawable.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 235,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-05-09T14:48:41Z",
+      "side": 1,
+      "message": "These are mutated in visitFields -- it\u0027s not obvious, but they\u0027re passed by reference to the field visitor. (That\u0027s actually how the de-serialization works).",
+      "parentUuid": "48897704_843e6174",
+      "range": {
+        "startLine": 234,
+        "startChar": 0,
+        "endLine": 235,
+        "endChar": 19
+      },
+      "revId": "8c5a22dfd544bf22d86901c9b2d2cc2fe06d96b6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8a49674c_f7056ed1",
         "filename": "tools/viewer/SkottieSlide.cpp",
         "patchSetId": 1
