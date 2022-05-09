@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "43d372b3_edb06445",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-05-09T19:08:48Z",
+      "side": 1,
+      "message": "@Brian, I need the stamp of rubber for renaming the friend in SkFont.h.",
+      "revId": "fdcec336619d16a25ec527aaac6ea7430ebd62ad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
