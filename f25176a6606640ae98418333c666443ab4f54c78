@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5a48a13e_cba7bc2f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 9757
+      },
+      "writtenOn": "2022-05-09T14:41:29Z",
+      "side": 1,
+      "message": "Hello, did this as part of WebGPU gardening duties (I work on Tint/Dawn).",
+      "revId": "f25176a6606640ae98418333c666443ab4f54c78",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
