@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d0c9a214_83520e3f",
+        "filename": "src/core/SkBitmapDevice.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 218,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-05-09T20:05:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "722feb3b_79931033",
+      "revId": "824e57d876cbc0a3b4bf4f561963cbaa9f76886d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e956dc42_5f9671c1",
@@ -31,6 +49,24 @@
       "writtenOn": "2022-05-09T20:01:19Z",
       "side": 1,
       "message": "same here ?",
+      "revId": "824e57d876cbc0a3b4bf4f561963cbaa9f76886d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "44015369_f8f79791",
+        "filename": "src/core/SkBitmapDevice.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 234,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-05-09T20:05:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e956dc42_5f9671c1",
       "revId": "824e57d876cbc0a3b4bf4f561963cbaa9f76886d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
