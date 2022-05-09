@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b505416f_341d8261",
+        "filename": "src/core/SkShaderCodeDictionary.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-05-09T16:19:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d6d65edf_38f0e5d4",
+      "range": {
+        "startLine": 131,
+        "startChar": 27,
+        "endLine": 131,
+        "endChar": 49
+      },
+      "revId": "4134f8329e2486fd12eb974729ad50a0c20ac243",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2e31d4cf_6af6abc3",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-05-09T15:57:18Z",
       "side": 1,
       "message": "Probably only pass the caps into the global cache.",
+      "range": {
+        "startLine": 35,
+        "startChar": 47,
+        "endLine": 35,
+        "endChar": 57
+      },
+      "revId": "4134f8329e2486fd12eb974729ad50a0c20ac243",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e5895033_ab5e58ef",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-05-09T16:19:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2e31d4cf_6af6abc3",
       "range": {
         "startLine": 35,
         "startChar": 47,
