@@ -40,6 +40,14 @@ public:
         return fAreaSoFar / ((float)this->width() * this->height());
     }
 
+    std::vector<std::tuple<int, int, int>> getSegments_TestingOnly() const {
+        std::vector<std::tuple<int, int, int>> result;
+        for (auto& seg : fSkyline) {
+            result.emplace_back(seg.fX, seg.fY, seg.fWidth);
+        }
+        return result;
+    }
+
 private:
     struct SkylineSegment {
         int  fX;

@@ -216,6 +216,11 @@ public:
 
     int numAllocated_TestingOnly() const;
     void setMaxPages_TestingOnly(uint32_t maxPages);
+    const skgpu::Plot* plot_TestingOnly(skgpu::PlotLocator plotLocator) {
+        uint32_t plot = plotLocator.plotIndex();
+        uint32_t page = plotLocator.pageIndex();
+        return fPages[page].fPlotArray[plot].get();
+    }
 
 private:
     GrDrawOpAtlas(GrProxyProvider*, const GrBackendFormat& format, SkColorType, size_t bpp,

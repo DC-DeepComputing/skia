@@ -309,6 +309,21 @@ public:
 
     void resetRects();
 
+    const skgpu::RectanizerSkyline* getRectanizer() const { return &fRectanizer; }
+    bool isZeros_TestingOnly(int x, int y) const {
+        auto start = fData + y * fWidth * fBytesPerPixel + x * fBytesPerPixel;
+        for (size_t p = 0; p < fBytesPerPixel; ++p) {
+            if (start[p]) {
+                return false;
+            }
+        }
+        return true;
+    }
+    bool isInside_TestingOnly(int x, int y) const {
+        return (x >= 0 && x < fWidth && y >= 0 && y < fHeight);
+    }
+
+
 protected:
     ~Plot() override;
 

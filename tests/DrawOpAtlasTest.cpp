@@ -39,6 +39,7 @@
 
 #include <memory>
 #include <utility>
+#include <algorithm>
 #include "src/core/SkStrikeCache.h"
 #include "src/text/gpu/Glyph.h"
 
@@ -552,6 +553,114 @@ DEF_GPUTEST_FOR_CONTEXTS(GrAtlasManager_withoutSlug,
                                        skGlyphs[3], grGlyphs[3], SkIRect::MakeLTRB(2,2,2,2), 2));
 }
 
+void check(skiatest::Reporter* reporter,
+           const char* text128,
+           int len,
+           std::vector<SkGlyph>& skGlyphs,
+           std::vector<Glyph>& grGlyphs) {
+    // Horizontal check: each glyph should be placed next to each another or to the plot side
+    // Sort all glyphs in LTR writing order
+    std::vector<size_t> reindexing;
+    for (auto i = 0ul; i < grGlyphs.size(); ++i) reindexing.emplace_back(i);
+
+    std::sort(reindexing.begin(), reindexing.end(),
+                [&](const size_t& ia, const size_t& ib) {
+                    auto& a = grGlyphs[ia].fAtlasLocator;
+                    auto& b = grGlyphs[ib].fAtlasLocator;
+                    SkDebugf("%zu %zu %zu\n", ia, ib, reindexing.back());
+                    if (a.plotIndex() < b.plotIndex()) {
+                        return true;
+                    } else if (a.topLeft().fY < b.topLeft().fY) {
+                        return true;
+                    } else if (a.topLeft().fX < b.topLeft().fX) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+              });
+
+    auto glyph = [&](int i) -> Glyph& { return grGlyphs[reindexing[i]]; };
+    auto iter = reindexing.begin();
+    while (iter != reindexing.end()) {
+        uint32_t currentPlot = glyph(*iter).fAtlasLocator.plotIndex();
+        int line = 0;
+        SkDebugf("plot #%d\n", currentPlot);
+        while (iter != reindexing.end() && glyph(*iter).fAtlasLocator.plotIndex() == currentPlot) {
+            SkIPoint currentLine = glyph(*iter).fAtlasLocator.topLeft();
+            SkDebugf("line #%d\n", line);
+            while (iter != reindexing.end() && glyph(*iter).fAtlasLocator.topLeft() == currentLine) {
+                auto uvs = glyph(*iter).fAtlasLocator.getUVs();
+                SkDebugf("[%d:%d x %d:%d)\n", uvs[0], uvs[2], uvs[1], uvs[3]);
+                ++iter;
+            }
+            ++line;
+        }
+    }
+}
+
+struct GlyphInfo {
+    char grapheme; // Good for English only
+    int srcPadding;
+    SkGlyph skGlyph;
+    std::unique_ptr<Glyph> grGlyph;
+};
+
+// Test that each glyph has at least 1 non-zero pixel
+void checkMaxZeroPixels(skiatest::Reporter* reporter,
+                        const skgpu::Plot* plot,
+                        SkIRect rect,
+                        int padding) {
+    SkIRect outer = rect;
+    outer.outset(padding, padding);
+    if (rect.fTop >= padding) {
+        bool horizontal = false;
+        for (int x = outer.fLeft; x < outer.fRight; ++x) {
+            for (int y = 0; y < padding; ++y) {
+                if (plot->isInside_TestingOnly(x, y + outer.fTop) &&
+                    !plot->isZeros_TestingOnly(x, y + outer.fTop)) {
+                    horizontal = true;
+                    break;
+                }
+            }
+        }
+        REPORTER_ASSERT(reporter, horizontal);
+    }
+
+    if (rect.fLeft >= padding) {
+        bool vertical = false;
+        for (int y = outer.fTop; y < outer.fBottom; ++y) {
+            for (int x = 0; x < padding; ++x) {
+                if (!plot->isInside_TestingOnly(x + outer.fLeft, y) ||
+                    !plot->isZeros_TestingOnly(x + outer.fLeft, y)) {
+                    vertical = true;
+                    break;
+                }
+            }
+        }
+        REPORTER_ASSERT(reporter, vertical);
+    }
+}
+
+// Test that each glyph is surrounded zero pixel border (of padding width)
+void checkMinZeroPixels(skiatest::Reporter* reporter,
+                        const skgpu::Plot* plot,
+                        SkIRect rect,
+                        int padding) {
+    if (padding == 0) {
+        return;
+    }
+    SkIRect padded = rect;
+    padded.outset(padding, padding);
+    for (int x = padded.fLeft; x < padded.fRight; ++x) {
+        for (int y = padded.fTop; y < rect.fTop; ++y) {
+            if (plot->isInside_TestingOnly(x, y) && !plot->isZeros_TestingOnly(x, y)) {
+                REPORTER_ASSERT(reporter, false);
+                return;
+            }
+        }
+    }
+}
+
 DEF_GPUTEST_FOR_CONTEXTS(GrAtlasManager_withSlug,
                          sk_gpu_test::GrContextFactory::IsRenderingContext,
                          reporter,
@@ -564,131 +673,111 @@ DEF_GPUTEST_FOR_CONTEXTS(GrAtlasManager_withSlug,
 
     atlasManager->setAtlasDimensionsToMinimum_ForTesting();
 
-    SkFont defaultFont(SkTypeface::MakeFromName("Roboto-Regular", SkFontStyle()), 152);
+    SkFont defaultFont(SkTypeface::MakeFromName("Roboto-Regular", SkFontStyle()), 10);
     SkStrikeSpec strikeSpec = SkStrikeSpec::MakeWithNoDevice(defaultFont);
     sk_sp<SkStrike> strike = strikeSpec.findOrCreateStrike();
     SkArenaAlloc alloc(1 << 12);
 
-    std::vector<SkGlyph> skGlyphs;
-    std::vector<Glyph> grGlyphs;
-    auto draw = [&](
-                           const char* text, int len,
-                           std::vector<int> srcPaddings) {
+    const char* text128 =
+            "0001101112202122000110111220212200011011122021220001101112202122"
+            "0001101112202122000110111220212200011011122021220001101112202122";
+
+    std::unordered_map<uint32_t, std::vector<GlyphInfo>> glyphs;
+    auto draw = [&](const char* text, int len) {
         atlasManager->freeAll();
-        skGlyphs.clear();
-        grGlyphs.clear();
         unsigned int numProxies;
         atlasManager->getViews(MaskFormat::kA8, &numProxies);
-        atlasManager->setMaxPages_TestingOnly(1);
+        //atlasManager->setMaxPages_TestingOnly(1);
+        auto atlas = atlasManager->getAtlas_TestingOnly(MaskFormat::kA8);
 
-        skgpu::PlotLocator plotLocator;
         for (int i = 0; i < len; ++i) {
             char c = text[i];
             SkPackedGlyphID id(defaultFont.unicharToGlyph(c));
             SkGlyph skGlyph = strike->getScalerContext()->makeGlyph(id, &alloc);
             skGlyph.setImage(&alloc, strike->getScalerContext());
+            auto data = reinterpret_cast<unsigned char*>(
+                            sk_calloc_throw(skGlyph.imageSize()));
             SkPackedGlyphID glyphID;
-            Glyph grGlyph(glyphID);
-            auto errorCode = atlasManager->addGlyphToAtlas(
-                    skGlyph, &grGlyph, srcPaddings[i], resourceProvider, &uploadTarget);
-            REPORTER_ASSERT(reporter, errorCode == GrDrawOpAtlas::ErrorCode::kSucceeded);
-            skGlyphs.emplace_back(skGlyph);
-            grGlyphs.emplace_back(grGlyph);
-            if (i == 0) {
-                plotLocator = grGlyph.fAtlasLocator.plotLocator();
+            auto grGlyph = std::make_unique<Glyph>(glyphID);
+            int srcPadding = std::abs(c) - std::abs('0');
+
+            if (srcPadding == 2) {
+                auto data = reinterpret_cast<unsigned char*>(
+                                sk_calloc_throw(skGlyph.imageSize()));
+                data += skGlyph.width() * 2 + 2;
+                memset(data, -1, skGlyph.imageSize()
+                                - skGlyph.width() * 2 * 2 - skGlyph.height() * 2 * 2 + 2 * 2 * 4 );
+                skGlyph.setImage(data);
             } else {
-                REPORTER_ASSERT(reporter, plotLocator == grGlyph.fAtlasLocator.plotLocator());
+                memset(data, -1, skGlyph.imageSize());
+                skGlyph.setImage(data);
+            }
+            auto errorCode = atlasManager->addGlyphToAtlas(
+                    skGlyph, grGlyph.get(), srcPadding, resourceProvider, &uploadTarget);
+            REPORTER_ASSERT(reporter, errorCode == GrDrawOpAtlas::ErrorCode::kSucceeded);
+            auto& info = glyphs[grGlyph->fAtlasLocator.plotIndex()];
+            info.emplace_back(GlyphInfo{c, srcPadding, skGlyph, std::move(grGlyph)});
+        }
+    };
+    draw(text128, 128);
+
+    REPORTER_ASSERT(reporter, glyphs.size() == 1);
+
+    for (auto& pair : glyphs) {
+        auto plotLocator = pair.second.front().grGlyph->fAtlasLocator.plotLocator();
+        SkDebugf("plot %d,%d\n", plotLocator.pageIndex(), plotLocator.plotIndex());
+
+        auto& infos = pair.second;
+        std::sort(infos.begin(), infos.end(),
+        [&](const GlyphInfo& a, const GlyphInfo& b) {
+
+            auto locA = a.grGlyph->fAtlasLocator;
+            auto locB = b.grGlyph->fAtlasLocator;
+            if (locA.topLeft().fY < locB.topLeft().fY) {
+                return true;
+            } else if (locA.topLeft().fY > locB.topLeft().fY) {
+                return false;
+            } else {
+                return locA.topLeft().fX < locB.topLeft().fX;
+            }
+        });
+        SkIPoint point = SkIPoint::Make(-1, -1);
+        for (auto& info : infos) {
+            auto loc  = info.grGlyph->fAtlasLocator;
+            if (point.fY != loc.topLeft().fY) {
+                SkDebugf("\n%d: ", loc.topLeft().fY);
+                point.fY = loc.topLeft().fY;
+            }
+            if (point.fX == loc.bottomRight().fY) {
+                SkDebugf("%d:%d ",
+                         loc.topLeft().fX, loc.bottomRight().fX);
+            } else {
+                SkDebugf("%d:%d x %d:%d ",
+                         loc.topLeft().fY, loc.bottomRight().fY,
+                         loc.topLeft().fX, loc.bottomRight().fX);
+                point.fX = loc.bottomRight().fY;
+            }
+        }
+    }
+
+    auto checkPlots = [&]() {
+        auto atlas = atlasManager->getAtlas_TestingOnly(MaskFormat::kA8);
+        for (auto& pair : glyphs) {
+            auto plot = atlas->plot_TestingOnly(
+                    glyphs.begin()->second.begin()->grGlyph->fAtlasLocator.plotLocator());
+            auto& infos = pair.second;
+            for (auto& info : infos) {
+                auto loc = info.grGlyph->fAtlasLocator;
+                auto glyphRect = SkIRect::MakeXYWH(
+                        loc.topLeft().fX, loc.topLeft().fY,
+                        loc.width(), loc.height());
+                auto plot = atlas->plot_TestingOnly(loc.plotLocator());
+                checkMinZeroPixels(reporter, plot, glyphRect, info.srcPadding == 2 ? 2 : 1);
+                checkMaxZeroPixels(reporter, plot, glyphRect, (info.srcPadding == 2 ? 2 : 1) + 1);
             }
         }
     };
 
-/*
-  _: Plot edge
-  0: Direct mask: left & top padding == 1
-  1: Transformed: left & top padding == 1
-  2: SDFT: 2 pixel zero-paddings between glyphs and on the sides
-
- All possible cases.
- They must be doubled to test horizontal and vertical cases, so we test 3 glyphs:
- 0,1 for horizontal placement and 0,2 for vertical placement.
- We also check top left glyph for side padding.
- We do not check bottom right glyph for side padding because we know it fits and
- we do not need to check that again
- 000, 011, 022
- 100, 111, 122
- 200, 211, 222
- */
-
-    draw("ABC", 3, {0, 0, 0});
-    REPORTER_ASSERT(reporter,
-                checkHorizontalPlacement(skGlyphs[0], grGlyphs[0], SkIRect::MakeLTRB(1,1,0,0), 0,
-                                         skGlyphs[1], grGlyphs[1], SkIRect::MakeLTRB(1,1,0,0), 0));
-    REPORTER_ASSERT(reporter,
-                checkVerticalPlacement(skGlyphs[0], grGlyphs[0], SkIRect::MakeLTRB(1,1,0,0), 0,
-                                       skGlyphs[2], grGlyphs[2], SkIRect::MakeLTRB(1,1,0,0), 0));
-
-    draw("ABC", 3, {0, 1, 1});
-    REPORTER_ASSERT(reporter,
-                checkHorizontalPlacement(skGlyphs[0], grGlyphs[0], SkIRect::MakeLTRB(1,1,0,0), 0,
-                                         skGlyphs[1], grGlyphs[1], SkIRect::MakeLTRB(1,1,0,0), 0));
-    REPORTER_ASSERT(reporter,
-                checkVerticalPlacement(skGlyphs[0], grGlyphs[0], SkIRect::MakeLTRB(1,1,0,0), 0,
-                                       skGlyphs[2], grGlyphs[2], SkIRect::MakeLTRB(1,1,0,0), 0));
-
-    draw("ABCD", 4, {0, 2, 2, 2});
-    REPORTER_ASSERT(reporter,
-                checkHorizontalPlacement(skGlyphs[0], grGlyphs[0], SkIRect::MakeLTRB(1,1,0,0), 0,
-                                         skGlyphs[1], grGlyphs[1], SkIRect::MakeLTRB(2,2,2,2), 2));
-    REPORTER_ASSERT(reporter,
-                checkVerticalPlacement(skGlyphs[0], grGlyphs[0], SkIRect::MakeLTRB(1,1,0,0), 0,
-                                       skGlyphs[3], grGlyphs[3], SkIRect::MakeLTRB(2,2,2,2), 2));
-
-    draw("ABC", 3, {1, 0, 0});
-    REPORTER_ASSERT(reporter,
-                checkHorizontalPlacement(skGlyphs[0], grGlyphs[0], SkIRect::MakeLTRB(1,1,0,0), 0,
-                                         skGlyphs[1], grGlyphs[1], SkIRect::MakeLTRB(1,1,0,0), 0));
-    REPORTER_ASSERT(reporter,
-                checkVerticalPlacement(skGlyphs[0], grGlyphs[0], SkIRect::MakeLTRB(1,1,0,0), 0,
-                                       skGlyphs[2], grGlyphs[2], SkIRect::MakeLTRB(1,1,0,0), 0));
-
-    draw("ABC", 3, {1, 1, 1});
-    REPORTER_ASSERT(reporter,
-                checkHorizontalPlacement(skGlyphs[0], grGlyphs[0], SkIRect::MakeLTRB(1,1,0,0), 0,
-                                         skGlyphs[1], grGlyphs[1], SkIRect::MakeLTRB(1,1,0,0), 0));
-    REPORTER_ASSERT(reporter,
-                checkVerticalPlacement(skGlyphs[0], grGlyphs[0], SkIRect::MakeLTRB(1,1,0,0), 0,
-                                       skGlyphs[2], grGlyphs[2], SkIRect::MakeLTRB(1,1,0,0), 0));
-
-    draw("ABCD", 4, {1, 2, 2, 2});
-    REPORTER_ASSERT(reporter,
-                checkHorizontalPlacement(skGlyphs[0], grGlyphs[0], SkIRect::MakeLTRB(1,1,0,0), 0,
-                                         skGlyphs[1], grGlyphs[1], SkIRect::MakeLTRB(2,2,2,2), 2));
-    REPORTER_ASSERT(reporter,
-                checkVerticalPlacement(skGlyphs[0], grGlyphs[0], SkIRect::MakeLTRB(1,1,0,0), 0,
-                                       skGlyphs[3], grGlyphs[3], SkIRect::MakeLTRB(2,2,2,2), 2));
-
-    draw("ABC", 3, {2, 0, 0});
-    REPORTER_ASSERT(reporter,
-                checkHorizontalPlacement(skGlyphs[0], grGlyphs[0], SkIRect::MakeLTRB(2,2,2,2), 2,
-                                         skGlyphs[1], grGlyphs[1], SkIRect::MakeLTRB(1,1,0,0), 0));
-    REPORTER_ASSERT(reporter,
-                checkVerticalPlacement(skGlyphs[0], grGlyphs[0], SkIRect::MakeLTRB(2,2,2,2), 2,
-                                       skGlyphs[2], grGlyphs[2], SkIRect::MakeLTRB(1,1,0,0), 0));
-
-    draw("ABC", 3, {2, 1, 1});
-    REPORTER_ASSERT(reporter,
-                checkHorizontalPlacement(skGlyphs[0], grGlyphs[0], SkIRect::MakeLTRB(2,2,2,2), 2,
-                                         skGlyphs[1], grGlyphs[1], SkIRect::MakeLTRB(1,1,0,0), 0));
-    REPORTER_ASSERT(reporter,
-                checkVerticalPlacement(skGlyphs[0], grGlyphs[0], SkIRect::MakeLTRB(2,2,2,2), 2,
-                                       skGlyphs[2], grGlyphs[2], SkIRect::MakeLTRB(1,1,0,0), 0));
-
-    draw("ABCD", 4, {2, 2, 2, 2});
-    REPORTER_ASSERT(reporter,
-                checkHorizontalPlacement(skGlyphs[0], grGlyphs[0], SkIRect::MakeLTRB(2,2,2,2), 2,
-                                         skGlyphs[1], grGlyphs[1], SkIRect::MakeLTRB(2,2,2,2), 2));
-    REPORTER_ASSERT(reporter,
-                checkVerticalPlacement(skGlyphs[0], grGlyphs[0], SkIRect::MakeLTRB(2,2,2,2), 2,
-                                       skGlyphs[3], grGlyphs[3], SkIRect::MakeLTRB(2,2,2,2), 2));
+    checkPlots();
 }
 
