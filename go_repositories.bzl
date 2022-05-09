@@ -2688,6 +2688,13 @@ def go_repositories():
         version = "v0.10.1-0.20200109184256-16c3d6f408b2",
     )
     go_repository(
+        name = "com_github_skia_dev_protoc_gen_twirp_typescript",
+        importpath = "github.com/skia-dev/protoc-gen-twirp_typescript",
+        sum = "h1:NDEFg8RXMMmc3j5fE+M7fJ2vqoCRRBu1excmvrhmA6Y=",
+        version = "v0.0.0-20220429132620-ad26708b7787",
+    )
+
+    go_repository(
         name = "com_github_smartystreets_assertions",
         importpath = "github.com/smartystreets/assertions",
         sum = "h1:42S6lae5dvLc7BrLu/0ugRtcFVjoJNMC/N3yZFZkDFs=",
@@ -3076,8 +3083,8 @@ def go_repositories():
     go_repository(
         name = "com_google_cloud_go_iam",
         importpath = "cloud.google.com/go/iam",
-        sum = "h1:W2vbGCrE3Z7J/x3WXLxxGl9LMSB2uhsAA7Ss/6u/qRY=",
-        version = "v0.1.0",
+        sum = "h1:exkAomrVUuzx9kWFI1wm3KI0uoDeUFPB4kKGzx6x+Gc=",
+        version = "v0.3.0",
     )
     go_repository(
         name = "com_google_cloud_go_kms",
@@ -3105,6 +3112,13 @@ def go_repositories():
         sum = "h1:kl5QdIn98mYhX+G7OzdQ9W3SQ0XXdhHlTw0GHa723pI=",
         version = "v1.8.3",
     )
+    go_repository(
+        name = "com_google_cloud_go_secretmanager",
+        importpath = "cloud.google.com/go/secretmanager",
+        sum = "h1:Cl+kDYvKHjPQ1l2DZDr2FG/cXUzNGCZkh05BARgddo8=",
+        version = "v1.4.0",
+    )
+
     go_repository(
         name = "com_google_cloud_go_spanner",
         importpath = "cloud.google.com/go/spanner",
@@ -3529,8 +3543,8 @@ def go_repositories():
     go_repository(
         name = "org_golang_google_genproto",
         importpath = "google.golang.org/genproto",
-        sum = "h1:XGQ6tc+EnM35IAazg4y6AHmUg4oK8NXsXaILte1vRlk=",
-        version = "v0.0.0-20220413183235-5e96e2839df9",
+        sum = "h1:G1IeWbjrqEq9ChWxEuRPJu6laA67+XgTFHVSAvepr38=",
+        version = "v0.0.0-20220426171045-31bebdecfb46",
     )
     go_repository(
         name = "org_golang_google_grpc",
@@ -3734,8 +3748,8 @@ def go_repositories():
     go_repository(
         name = "org_skia_go_infra",
         importpath = "go.skia.org/infra",
-        sum = "h1:8E3vxyREPLQj+cDxOx0cE10LZr7Q+vmsbRzMPvuN79o=",
-        version = "v0.0.0-20220426210209-9d8975cd9401",
+        sum = "h1:rLE3NJRJTt4tYwcaQCePHDCzx0xh/Me5WWiqGFG3Rkg=",
+        version = "v0.0.0-20220506191647-3cd767f7c947",
     )
     go_repository(
         name = "org_uber_go_atomic",
