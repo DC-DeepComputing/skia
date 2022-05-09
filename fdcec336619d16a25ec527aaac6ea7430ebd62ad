@@ -16,6 +16,46 @@
       "message": "@Brian, I need the stamp of rubber for renaming the friend in SkFont.h.",
       "revId": "fdcec336619d16a25ec527aaac6ea7430ebd62ad",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bceef344_c62400fb",
+        "filename": "src/core/SkGlyphRunPainter.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-05-09T19:40:01Z",
+      "side": 1,
+      "message": "These traditionally go on the line above",
+      "range": {
+        "startLine": 102,
+        "startChar": 39,
+        "endLine": 102,
+        "endChar": 41
+      },
+      "revId": "fdcec336619d16a25ec527aaac6ea7430ebd62ad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b4796925_e3e3bacc",
+        "filename": "src/core/SkGlyphRunPainter.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 230,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-05-09T19:40:01Z",
+      "side": 1,
+      "message": "\u0027\\n\u0027 ?",
+      "revId": "fdcec336619d16a25ec527aaac6ea7430ebd62ad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
