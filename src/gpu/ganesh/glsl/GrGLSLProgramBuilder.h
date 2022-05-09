@@ -38,13 +38,13 @@ public:
     virtual const GrCaps* caps() const = 0;
     const GrShaderCaps* shaderCaps() const { return this->caps()->shaderCaps(); }
 
-    GrSurfaceOrigin origin() const { return fProgramInfo.origin(); }
-    const GrPipeline& pipeline() const { return fProgramInfo.pipeline(); }
-    const GrGeometryProcessor& geometryProcessor() const { return fProgramInfo.geomProc(); }
+    GrSurfaceOrigin origin() const { return fProgramInfo->origin(); }
+    const GrPipeline& pipeline() const { return fProgramInfo->pipeline(); }
+    const GrGeometryProcessor& geometryProcessor() const { return fProgramInfo->geomProc(); }
     bool snapVerticesToPixelCenters() const {
-        return fProgramInfo.pipeline().snapVerticesToPixelCenters();
+        return fProgramInfo->pipeline().snapVerticesToPixelCenters();
     }
-    bool hasPointSize() const { return fProgramInfo.primitiveType() == GrPrimitiveType::kPoints; }
+    bool hasPointSize() const { return fProgramInfo->primitiveType() == GrPrimitiveType::kPoints; }
     virtual SkSL::Compiler* shaderCompiler() const = 0;
 
     const GrProgramDesc& desc() const { return fDesc; }
@@ -99,7 +99,7 @@ public:
     GrGLSLFragmentShaderBuilder  fFS;
 
     const GrProgramDesc&         fDesc;
-    const GrProgramInfo&         fProgramInfo;
+    const GrProgramInfo*         fProgramInfo;
 
     GrGLSLBuiltinUniformHandles  fUniformHandles;
 
@@ -113,9 +113,11 @@ public:
 protected:
     explicit GrGLSLProgramBuilder(const GrProgramDesc&, const GrProgramInfo&);
 
+    explicit GrGLSLProgramBuilder(const GrProgramDesc&);
+
     void addFeature(GrShaderFlags shaders, uint32_t featureBit, const char* extensionName);
 
-    bool emitAndInstallProcs();
+    bool emitAndInstallRenderProcs();
 
     void finalizeShaders();
 

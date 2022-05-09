@@ -25,6 +25,8 @@
 #include "src/gpu/ganesh/ops/QuadPerEdgeAA.h"
 #include "src/gpu/ganesh/v1/SurfaceDrawContext_v1.h"
 
+void testComputeShader(GrGpu* gpu);
+
 namespace {
 
 using VertexSpec = skgpu::v1::QuadPerEdgeAA::VertexSpec;
@@ -320,6 +322,7 @@ private:
         skgpu::v1::QuadPerEdgeAA::IssueDraw(flushState->caps(), flushState->opsRenderPass(),
                                             vertexSpec, 0, fQuads.count(), totalNumVertices,
                                             fBaseVertex);
+        testComputeShader(flushState->gpu());
     }
 
     CombineResult onCombineIfPossible(GrOp* t, SkArenaAlloc*, const GrCaps& caps) override {

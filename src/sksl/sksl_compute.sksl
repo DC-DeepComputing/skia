@@ -1,0 +1,3 @@
+// defines built-in interfaces supported by SkSL compute shaders
+
+layout(builtin=10013) in uint sk_ThreadIndex;

@@ -940,16 +940,15 @@ std::optional<DSLType> DSLParser::type(DSLModifiers* modifiers) {
     }
     DSLType result(this->text(type), modifiers, this->position(type));
     while (this->checkNext(Token::Kind::TK_LBRACKET)) {
-        if (this->peek().fKind != Token::Kind::TK_RBRACKET) {
+        if (this->checkNext(Token::Kind::TK_RBRACKET)) {
+            result = Array(result, SkSL::Type::kUnsizedArray, this->rangeFrom(type));
+        } else {
             SKSL_INT size;
             if (!this->arraySize(&size)) {
                 return std::nullopt;
             }
             this->expect(Token::Kind::TK_RBRACKET, "']'");
             result = Array(result, size, this->rangeFrom(type));
-        } else {
-            this->error(this->peek(), "expected array dimension");
-            this->expect(Token::Kind::TK_RBRACKET, "']'");
         }
     }
     return result;
