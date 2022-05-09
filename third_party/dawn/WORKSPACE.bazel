@@ -1,0 +1,77 @@
+# This WORKSPACE.bazel file contains only the dependencies needed to build Dawn
+load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+
+# These commands are based on https://github.com/bazelbuild/rules_python
+http_archive(
+    name = "rules_python",
+    sha256 = "9fcf91dbcc31fde6d1edb15f117246d912c33c36f44cf681976bd886538deba6",
+    strip_prefix = "rules_python-0.8.0",
+    urls = [
+        "https://github.com/bazelbuild/rules_python/archive/refs/tags/0.8.0.tar.gz",
+        "https://storage.googleapis.com/skia-world-readable/bazel/9fcf91dbcc31fde6d1edb15f117246d912c33c36f44cf681976bd886538deba6.tar.gz",
+    ],
+)
+
+# This sets up a hermetic python3, rather than depending on what is installed.
+load("@rules_python//python:repositories.bzl", "python_register_toolchains")
+
+python_register_toolchains(
+    name = "python3_9",
+    # https://github.com/bazelbuild/rules_python/blob/main/python/versions.bzl
+    python_version = "3.9",
+)
+
+load("@python3_9//:defs.bzl", "interpreter")
+load("@rules_python//python:pip.bzl", "pip_install")
+
+pip_install(
+    name = "py_deps",
+    # See https://github.com/bazelbuild/rules_python/blob/main/docs/pip_repository.md#pip_repository
+    # Pip checks downloaded package archives against local hashes to protect against remote tampering
+    # Read https://pip.pypa.io/en/stable/cli/pip_install/#hash-checking-mode for more information
+    # Multiple hash entries are required for platform dependent distributions.
+    extra_pip_args = [
+        "jinja2==2.11.3",  # https://github.com/pallets/markupsafe/issues/286
+        "--hash=sha256:03e47ad063331dd6a3f04a43eddca8a966a26ba0c5b7207a9a9e4e08f1b29419",
+        #
+        "MarkupSafe==2.0.1",
+        # Currently supported hashes by platform in order are: Linux, MacOS
+        "--hash=sha256:1f2ade76b9903f39aa442b4aadd2177decb66525062db244b35d71d0ee8599b6",
+        "--hash=sha256:3c112550557578c26af18a1ccc9e090bfe03832ae994343cfdacd287db6a6ae7",
+    ],
+    python_interpreter_target = interpreter,
+)
+
+###################################################
+# External Deps
+# Note: All of these paths are relative to the Bazel Cache
+# directory because all of these are *first* defined in
+# Skia's WORKSPACE.bazel with local_repository or
+# new_local_repository. Those rules copy the folders in
+# as siblings to this dawn folder
+###################################################
+# https://bazel.build/reference/be/workspace#local_repository
+local_repository(
+    name = "abseil_cpp",
+    path = "../abseil_cpp",
+)
+
+local_repository(
+    name = "spirv_tools",
+    path = "../spirv_tools",
+)
+
+local_repository(
+    name = "spirv_headers",
+    path = "../spirv_headers",
+)
+
+local_repository(
+    name = "vulkan_headers",
+    path = "../vulkan_headers",
+)
+
+local_repository(
+    name = "vulkan_tools",
+    path = "../vulkan_tools",
+)
