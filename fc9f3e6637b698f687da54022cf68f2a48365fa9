@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e4b5b8cd_85e9e71f",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-05-09T16:43:49Z",
+      "side": 1,
+      "message": "We should probably pass the caps rather than the shaderCaps here",
+      "range": {
+        "startLine": 35,
+        "startChar": 47,
+        "endLine": 35,
+        "endChar": 59
+      },
+      "revId": "fc9f3e6637b698f687da54022cf68f2a48365fa9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
