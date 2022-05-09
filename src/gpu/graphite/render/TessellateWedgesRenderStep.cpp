@@ -38,7 +38,8 @@ struct DrawWriterAllocator {
 
     VertexWriter append() {
         // TODO (skbug.com/13056): Actually compute optimal minimum required index count based on
-        // PatchWriter's tracked segment count^4.
+        // PatchWriter's tracked segment count^4. This will be trivial if PatchWriter can provide
+        // its WorstCaseTolerances object to PatchAllocator::append().
         // Wedges use one extra triangle to connect to the fan point compared to the curve version.
         static constexpr unsigned int kMaxIndexCount =
                 3 * (1 + NumCurveTrianglesAtResolveLevel(tess::kMaxResolveLevel));
