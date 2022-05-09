@@ -22,6 +22,30 @@
       },
       "revId": "fc9f3e6637b698f687da54022cf68f2a48365fa9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2c39db7f_cf7ab86d",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-05-09T19:22:21Z",
+      "side": 1,
+      "message": "As discussed offline, keeping this as ShaderCaps for now.",
+      "parentUuid": "e4b5b8cd_85e9e71f",
+      "range": {
+        "startLine": 35,
+        "startChar": 47,
+        "endLine": 35,
+        "endChar": 59
+      },
+      "revId": "fc9f3e6637b698f687da54022cf68f2a48365fa9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
