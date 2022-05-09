@@ -492,7 +492,7 @@ bool DSLParser::parseArrayDimensions(Position pos, DSLType* type) {
     Token next;
     while (this->checkNext(Token::Kind::TK_LBRACKET, &next)) {
         if (this->checkNext(Token::Kind::TK_RBRACKET)) {
-            this->error(this->rangeFrom(next), "expected array dimension");
+            *type = Array(*type, SkSL::Type::kUnsizedArray, this->rangeFrom(pos));
         } else {
             SKSL_INT size;
             if (!this->arraySize(&size)) {

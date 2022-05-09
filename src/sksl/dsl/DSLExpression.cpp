@@ -26,6 +26,7 @@
 #include "src/sksl/ir/SkSLPoison.h"
 #include "src/sksl/ir/SkSLPostfixExpression.h"
 #include "src/sksl/ir/SkSLPrefixExpression.h"
+#include "src/sksl/ir/SkSLTypeReference.h"
 #include "src/sksl/ir/SkSLVariableReference.h"
 
 #include <math.h>
