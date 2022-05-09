@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0c0b6acb_728e63bc",
+        "filename": "src/core/SkKeyHelpers.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 191,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-05-09T15:51:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7c462007_e25ba122",
+      "revId": "cd4c04e8c2b11333bf9a7015d3f37044a19802e2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "22fd881b_139cdbb5",
@@ -43,6 +61,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "909d0eb7_1e7b48ff",
+        "filename": "src/core/SkKeyHelpers.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 309,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-05-09T15:51:04Z",
+      "side": 1,
+      "message": "Since we\u0027re no longer accessing the caps through KeyContext, I haven\u0027t added this here.",
+      "parentUuid": "22fd881b_139cdbb5",
+      "range": {
+        "startLine": 307,
+        "startChar": 0,
+        "endLine": 309,
+        "endChar": 67
+      },
+      "revId": "cd4c04e8c2b11333bf9a7015d3f37044a19802e2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b9a3f962_069c83d4",
         "filename": "src/core/SkShaderCodeDictionary.cpp",
         "patchSetId": 3
@@ -54,6 +96,24 @@
       "writtenOn": "2022-05-09T14:16:25Z",
       "side": 1,
       "message": "I think this is the only thing that would have to change if we go with serving up different SkSL (and, obviously, having two SkSL fragments sk_sweep_grad_4_shader_normal/sk_sweep_grad_4_shader_atan_workaround)",
+      "revId": "cd4c04e8c2b11333bf9a7015d3f37044a19802e2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "88ba4868_32fc5331",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 645,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-05-09T15:51:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b9a3f962_069c83d4",
       "revId": "cd4c04e8c2b11333bf9a7015d3f37044a19802e2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
