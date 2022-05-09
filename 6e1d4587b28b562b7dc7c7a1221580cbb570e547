@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1c61bebc_d59a8fec",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-05-09T19:49:43Z",
+      "side": 1,
+      "message": "needs a newer version of gsutil, see https://skia-review.googlesource.com/c/buildbot/+/538818",
+      "revId": "6e1d4587b28b562b7dc7c7a1221580cbb570e547",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
