@@ -5631,11 +5631,15 @@ generated_cc_atom(
         ":SkPipelineData_hdr",
         ":SkShaderCodeDictionary_hdr",
         ":SkUniform_hdr",
+        "//include/gpu/graphite:Recorder_hdr",
         "//src/gpu:Blend_hdr",
+        "//src/gpu/graphite:Caps_hdr",
+        "//src/gpu/graphite:RecorderPriv_hdr",
         "//src/gpu/graphite:TextureProxy_hdr",
         "//src/gpu/graphite:Texture_hdr",
         "//src/gpu/graphite:UniformManager_hdr",
         "//src/shaders:SkShaderBase_hdr",
+        "//src/sksl:SkSLUtil_hdr",
     ],
 )
 
