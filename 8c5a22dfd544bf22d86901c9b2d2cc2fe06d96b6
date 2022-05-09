@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "483ad4a3_fa0252b8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2022-05-09T14:37:25Z",
+      "side": 1,
+      "message": "neat!",
+      "revId": "8c5a22dfd544bf22d86901c9b2d2cc2fe06d96b6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "04666601_7b294bc6",
@@ -26,6 +43,53 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "84645ff1_73762eb2",
+        "filename": "modules/particles/src/SkParticleDrawable.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 209,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2022-05-09T14:37:25Z",
+      "side": 1,
+      "message": "+1, observing rotation would be cool!",
+      "parentUuid": "04666601_7b294bc6",
+      "range": {
+        "startLine": 204,
+        "startChar": 0,
+        "endLine": 209,
+        "endChar": 32
+      },
+      "revId": "8c5a22dfd544bf22d86901c9b2d2cc2fe06d96b6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4e064bf4_062c1d99",
+        "filename": "modules/particles/src/SkParticleDrawable.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 218,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2022-05-09T14:37:25Z",
+      "side": 1,
+      "message": "nit: you can omit the flag param when zero.",
+      "range": {
+        "startLine": 218,
+        "startChar": 44,
+        "endLine": 218,
+        "endChar": 45
+      },
+      "revId": "8c5a22dfd544bf22d86901c9b2d2cc2fe06d96b6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "75f3b13a_5d9aa5b1",
         "filename": "modules/particles/src/SkParticleDrawable.cpp",
         "patchSetId": 1
@@ -42,6 +106,29 @@
         "startChar": 0,
         "endLine": 224,
         "endChar": 101
+      },
+      "revId": "8c5a22dfd544bf22d86901c9b2d2cc2fe06d96b6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "48897704_843e6174",
+        "filename": "modules/particles/src/SkParticleDrawable.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 235,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2022-05-09T14:37:25Z",
+      "side": 1,
+      "message": "nit: const SkString",
+      "range": {
+        "startLine": 234,
+        "startChar": 0,
+        "endLine": 235,
+        "endChar": 19
       },
       "revId": "8c5a22dfd544bf22d86901c9b2d2cc2fe06d96b6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
@@ -78,6 +165,29 @@
       "side": 1,
       "message": "We could just put it in tools/Resources.h and tools/Resources.cpp ?",
       "parentUuid": "8a49674c_f7056ed1",
+      "revId": "8c5a22dfd544bf22d86901c9b2d2cc2fe06d96b6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b705c360_1aaea16c",
+        "filename": "tools/viewer/SkottieSlide.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2022-05-09T14:37:25Z",
+      "side": 1,
+      "message": "This doesn\u0027t seem to be used, so prolly not needed?",
+      "range": {
+        "startLine": 134,
+        "startChar": 0,
+        "endLine": 136,
+        "endChar": 5
+      },
       "revId": "8c5a22dfd544bf22d86901c9b2d2cc2fe06d96b6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
