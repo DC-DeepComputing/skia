@@ -32,7 +32,7 @@ namespace skgpu::graphite {
 
 Context::Context(sk_sp<Gpu> gpu, BackendApi backend)
         : fGpu(std::move(gpu))
-        , fGlobalCache(sk_make_sp<GlobalCache>())
+        , fGlobalCache(sk_make_sp<GlobalCache>(gpu.get()))
         , fBackend(backend) {
 }
 Context::~Context() {}
