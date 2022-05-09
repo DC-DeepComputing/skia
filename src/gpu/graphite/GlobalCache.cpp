@@ -8,10 +8,14 @@
 #include "src/gpu/graphite/GlobalCache.h"
 
 #include "src/core/SkShaderCodeDictionary.h"
+#include "src/gpu/graphite/Caps.h"
+#include "src/gpu/graphite/Gpu.h"
+#include "src/sksl/SkSLUtil.h"
 
 namespace skgpu::graphite {
-
-GlobalCache::GlobalCache() : fShaderCodeDictionary(std::make_unique<SkShaderCodeDictionary>()) {}
+GlobalCache::GlobalCache(const Gpu* gpu)
+        : fShaderCodeDictionary(std::make_unique<SkShaderCodeDictionary>(
+                  gpu->caps()->shaderCaps()->atan2ImplementedAsAtanYOverX())) {}
 
 GlobalCache::~GlobalCache() {};
 

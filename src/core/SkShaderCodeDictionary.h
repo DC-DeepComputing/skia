@@ -128,7 +128,7 @@ private:
 
 class SkShaderCodeDictionary {
 public:
-    SkShaderCodeDictionary();
+    SkShaderCodeDictionary(bool useAtanWorkaround);
 
     struct Entry {
     public:
