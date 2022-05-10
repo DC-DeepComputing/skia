@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "75c5ca1f_101b659d",
+        "filename": "gn/skia.gni",
+        "patchSetId": 2
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-05-10T14:01:07Z",
+      "side": 1,
+      "message": "Not 100% sure about this. Don\u0027t we need to force-include gles if skia_gl_standard is set to \"webgl\"? Would it be safest to do `skia_gl_standard !\u003d \"gles\"`?",
+      "range": {
+        "startLine": 107,
+        "startChar": 0,
+        "endLine": 107,
+        "endChar": 46
+      },
+      "revId": "503b4a5cb867344ed7369436c1fdf28c51416281",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
