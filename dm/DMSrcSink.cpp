@@ -61,6 +61,10 @@
 #include "tools/gpu/BackendSurfaceFactory.h"
 #include "tools/gpu/MemoryCache.h"
 
+
+#include "include/private/SkSLSampleUsage.h"
+#include "include/effects/SkRuntimeEffect.h"
+
 #if defined(SK_BUILD_FOR_WIN)
     #include "include/docs/SkXPSDocument.h"
     #include "src/utils/win/SkAutoCoInitialize.h"
@@ -99,6 +103,7 @@
 
 #include <cmath>
 #include <functional>
+#include <set>
 
 static DEFINE_bool(multiPage, false,
                    "For document-type backends, render the source into multiple pages");
@@ -2133,10 +2138,237 @@ Result RasterSink::draw(const Src& src, SkBitmap* dst, SkWStream*, SkString*) co
 
 namespace {
 
+template<class T>
+struct foo {
+    static constexpr bool fIsInstance = false;
+};
+
+template<class T>
+struct default_foo {
+    static constexpr bool fIsInstance = true;
+};
+
+template<>
+struct foo<int> : public default_foo<int> {};
+
+template<class T,
+         class = typename std::enable_if<foo<T>::is_instance>::type>
+T gen_combos(const std::vector<T>& in)
+{
+    T out;
+#if 0
+    T out{monoid<T>::empty()};
+
+    for (const T& t : in)
+        out = monoid<T>::append(out,t);
+#endif
+
+    return out;
+}
+
+namespace CombinationComponents {
+
+#define SK_COMBO_TYPES(M)                                           \
+    M(Shader)                                                       \
+    M(BlendMode)
+
+#define ENUM(T) k##T,
+enum class Type { SK_COMBO_TYPES(ENUM) };
+#undef ENUM
+
+#define COMBO(T, ...)                     \
+struct T {                                \
+    static const Type kType = Type::k##T; \
+    __VA_ARGS__;                          \
+};
+
+COMBO(BlendMode);
+
+} // namespace CombinationComponents
+
+class Combination {
+public:
+    Combination() {
+        this->reset();
+    }
+
+    void reset() {
+        fBlendModes = 0;
+    }
+
+#ifdef SK_DEBUG
+    bool isReset() const {
+        return fBlendModes == 0;
+    }
+#endif
+
+private:
+    friend class Builderator;
+
+    void add(SkBlendMode bm) { fBlendModes |= 0x1 << (int) bm; }
+    void add(skgpu::graphite::SkBlenderID id) {
+        for (auto b : fRTBlenders) {
+            if (b == id) {
+                return;
+            }
+        }
+        fRTBlenders.push_back(id);
+    }
+
+    uint32_t fBlendModes = 0;
+    SkTArray<skgpu::graphite::SkBlenderID> fRTBlenders;
+};
+
+/*
+ *
+ */
+class Builderator {
+public:
+    void createSet() {}
+
+    const Combination& snap() { return fCombo; }
+
+
+
+
+    enum class BlendModeGroups {
+        kPorterDuff,         // [ kClear .. kScreen ]
+        kAdvanced,           // [ kOverlay .. kMultiply ]
+        kTrouble,            // [ kHue .. kLuminosity ]
+        kAll
+    };
+
+    // Blend Mode
+    void add(SkBlendMode bm) { fCombo.add(bm); }
+    void add(SkBlendMode rangeStart, SkBlendMode rangeEnd) {  // inclusive
+        for (int i = (int)rangeStart; i <= (int) rangeEnd; ++i) {
+            this->add((SkBlendMode) i);
+        }
+    }
+    void add(BlendModeGroups group) {
+        switch (group) {
+            case BlendModeGroups::kPorterDuff:
+                this->add(SkBlendMode::kClear, SkBlendMode::kScreen);
+                break;
+            case BlendModeGroups::kAdvanced:
+                this->add(SkBlendMode::kOverlay, SkBlendMode::kMultiply);
+                break;
+            case BlendModeGroups::kTrouble:
+                this->add(SkBlendMode::kHue, SkBlendMode::kLuminosity);
+                break;
+            case BlendModeGroups::kAll:
+                this->add(SkBlendMode::kClear, SkBlendMode::kLastMode);
+                break;
+        }
+    }
+    void add(skgpu::graphite::SkBlenderID id) {
+        fCombo.add(id);
+    }
+
+private:
+    enum Type {
+        kBlendMode
+    };
+
+    struct Record {
+        Type fType;
+        void* fPtr;
+    };
+
+    Combination fCombo;
+
+    //SkAutoTMalloc<Record> fRecords;
+    std::vector<Record> fRecords;
+    SkArenaAlloc fAlloc{256};
+};
+
+static sk_sp<SkBlender> gimme_blender() {
+    sk_sp<SkBlender> redBlender;
+
+    {
+        static SkRuntimeEffect::Result red = SkRuntimeEffect::MakeForBlender(SkString(R"(
+            uniform float redColor;
+            half4 main(half4 src, half4 dst) {
+                return half4(redColor, 0, 0, 1);
+            }
+        )"));
+
+        SkRuntimeBlendBuilder builder(red.effect);
+        builder.uniform("redColor") = 1.0f;
+        redBlender = builder.makeBlender();
+    }
+
+    sk_sp<SkBlender> blueBlender;
+
+    {
+        static SkRuntimeEffect::Result blue = SkRuntimeEffect::MakeForBlender(SkString(R"(
+            uniform float blueColor;
+            half4 main(half4 src, half4 dst) {
+                return half4(0, 0, blueColor, 1);
+            }
+        )"));
+
+        SkRuntimeBlendBuilder builder(blue.effect);
+        builder.uniform("blueColor") = 1.0f;
+        blueBlender = builder.makeBlender();
+    }
+
+    sk_sp<SkBlender> linearBlender;
+
+    {
+        static SkRuntimeEffect::Result comboBlender = SkRuntimeEffect::MakeForBlender(SkString(R"(
+            uniform float blendFrac;
+            uniform blender a;
+            uniform blender b;
+            half4 main(half4 src, half4 dst) {
+                return (blendFrac * a.eval(src, dst)) + ((1 - blendFrac) * b.eval(src, dst));
+            }
+        )"));
+
+        SkRuntimeBlendBuilder builder(comboBlender.effect);
+        builder.uniform("blendFrac") = 0.5f;
+        builder.child("a") = redBlender;
+        builder.child("b") = blueBlender;
+        linearBlender = builder.makeBlender();
+    }
+
+    return linearBlender;
+}
+
 // For the sprint Graphite only handles:
 //    solid colors with src or srcOver
 //    repeated or clamped linear gradients with src or srcOver
 void precompile(skgpu::graphite::Context* context) {
+//    gen_combos(std::vector<int>{1, 2, 3});
+
+    sk_sp<SkBlender> blender = gimme_blender();
+
+    skgpu::graphite::SkBlenderID id = context->addUserDefinedSnippet(blender.get());
+
+
+    Builderator b;
+
+    b.add(SkBlendMode::kColorBurn);
+    b.add(SkBlendMode::kSrc, SkBlendMode::kDst);
+    b.add(Builderator::BlendModeGroups::kPorterDuff);
+    b.add(id);
+
+    const Combination& combo = b.snap();
+
+#if 0
+    // We want the combinations to only reflect pertinent variations!
+
+    std::vector<foo> blendModes1 = { kSrcOver, kDstOver }
+    std::vector<foo> blendModes2 = kPorterDuff;
+    std::vector<foo> blendModes3 = kAdvanced;
+    std::vector<foo> blendModes4 = kAll;
+
+    // Not differentiating on the repeat modes for the image shader
+
+    std::vector<bar> shaders1 = { kSolid, kImage, kCompose(set1, set2), kLocalMatrix, kGrad(kLin, kRad, kSweep, kConical, kAll, kRange[2-256]) };
+    std::vector<bar> shaders2 = {
+#endif
+
     using ShaderType = skgpu::graphite::ShaderCombo::ShaderType;
 
     skgpu::graphite::PaintCombo c1 { { skgpu::graphite::ShaderCombo({ ShaderType::kSolidColor },
