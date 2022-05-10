@@ -22,6 +22,30 @@
       },
       "revId": "029d8c9d3dbeae8200b083782993d56b4f6c4b00",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5e8427c2_bead3b56",
+        "filename": "resources/sksl/shared/Optimizations.sksl",
+        "patchSetId": 1
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-05-10T22:26:11Z",
+      "side": 1,
+      "message": "Fixed in followup: http://review.skia.org/539199",
+      "parentUuid": "ce304cbe_8af7bb30",
+      "range": {
+        "startLine": 40,
+        "startChar": 0,
+        "endLine": 40,
+        "endChar": 10
+      },
+      "revId": "029d8c9d3dbeae8200b083782993d56b4f6c4b00",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
