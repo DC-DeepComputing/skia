@@ -30,21 +30,22 @@ class GrPipeline;
  * Wraps a MTLRenderPipelineState object and also contains more info about the pipeline as needed
  * by Ganesh
  */
-class GrMtlPipelineState {
+class GrMtlRenderPipelineState {
 public:
     using UniformInfoArray = GrMtlPipelineStateDataManager::UniformInfoArray;
     using UniformHandle = GrGLSLProgramDataManager::UniformHandle;
 
-    GrMtlPipelineState(GrMtlGpu*,
-                       sk_sp<GrMtlRenderPipeline> pipeline,
-                       MTLPixelFormat,
-                       const GrGLSLBuiltinUniformHandles& builtinUniformHandles,
-                       const UniformInfoArray& uniforms,
-                       uint32_t uniformBufferSize,
-                       uint32_t numSamplers,
-                       std::unique_ptr<GrGeometryProcessor::ProgramImpl>,
-                       std::unique_ptr<GrXferProcessor::ProgramImpl>,
-                       std::vector<std::unique_ptr<GrFragmentProcessor::ProgramImpl>> fpImpls);
+    GrMtlRenderPipelineState(
+            GrMtlGpu*,
+            sk_sp<GrMtlRenderPipeline> pipeline,
+            MTLPixelFormat,
+            const GrGLSLBuiltinUniformHandles& builtinUniformHandles,
+            const UniformInfoArray& uniforms,
+            uint32_t uniformBufferSize,
+            uint32_t numSamplers,
+            std::unique_ptr<GrGeometryProcessor::ProgramImpl>,
+            std::unique_ptr<GrXferProcessor::ProgramImpl>,
+            std::vector<std::unique_ptr<GrFragmentProcessor::ProgramImpl>> fpImpls);
 
     const sk_sp<GrMtlRenderPipeline>& pipeline() const { return fPipeline; }
 
@@ -116,6 +117,49 @@ private:
     std::unique_ptr<GrGeometryProcessor::ProgramImpl>              fGPImpl;
     std::unique_ptr<GrXferProcessor::ProgramImpl>                  fXPImpl;
     std::vector<std::unique_ptr<GrFragmentProcessor::ProgramImpl>> fFPImpls;
+
+    GrMtlPipelineStateDataManager fDataManager;
+};
+
+/**
+ * Wraps a MTLComputePipelineState object and also contains more info about the pipeline as needed
+ * by Ganesh
+ */
+class GrMtlComputePipelineState {
+public:
+    using UniformInfoArray = GrMtlPipelineStateDataManager::UniformInfoArray;
+    using UniformHandle = GrGLSLProgramDataManager::UniformHandle;
+
+    GrMtlComputePipelineState(
+            GrMtlGpu*,
+            sk_sp<GrMtlComputePipeline> pipeline,
+            const GrGLSLBuiltinUniformHandles& builtinUniformHandles,
+            const UniformInfoArray& uniforms,
+            uint32_t uniformBufferSize,
+            uint32_t numSamplers);
+
+    const sk_sp<GrMtlComputePipeline>& pipeline() const { return fPipeline; }
+
+    void setData(GrMtlFramebuffer*, const GrProgramInfo&);
+
+    void setTextures(const GrGeometryProcessor&,
+                     const GrPipeline&,
+                     const GrSurfaceProxy* const geomProcTextures[]);
+
+private:
+    void bindUniforms(GrMtlRenderCommandEncoder*);
+
+    struct SamplerBindings {
+        GrMtlSampler*  fSampler;
+        id<MTLTexture> fTexture;
+
+        SamplerBindings(GrSamplerState state, GrTexture* texture, GrMtlGpu*);
+    };
+
+    GrMtlGpu* fGpu;
+    sk_sp<GrMtlComputePipeline> fPipeline;
+
+    GrGLSLBuiltinUniformHandles fBuiltinUniformHandles;
 
     GrMtlPipelineStateDataManager fDataManager;
 };

@@ -1148,7 +1148,7 @@ GrCaps::SupportedRead GrMtlCaps::onSupportedReadPixelsColorType(
  * pipeline. This includes blending information and primitive type. The pipeline is immutable
  * so any remaining dynamic state is set via the MtlRenderCmdEncoder.
  */
-GrProgramDesc GrMtlCaps::makeDesc(GrRenderTarget*, const GrProgramInfo& programInfo,
+GrProgramDesc GrMtlCaps::makeDesc(GrRenderTarget*, const GrProgramInfo* programInfo,
                                   ProgramDescOverrideFlags overrideFlags) const {
     SkASSERT(overrideFlags == ProgramDescOverrideFlags::kNone);
     GrProgramDesc desc;
@@ -1156,19 +1156,21 @@ GrProgramDesc GrMtlCaps::makeDesc(GrRenderTarget*, const GrProgramInfo& programI
 
     skgpu::KeyBuilder b(desc.key());
 
-    // If ordering here is changed, update getStencilPixelFormat() below
-    b.add32(programInfo.backendFormat().asMtlFormat());
+    if (programInfo) {
+        // If ordering here is changed, update getStencilPixelFormat() below
+        b.add32(programInfo->backendFormat().asMtlFormat());
 
-    b.add32(programInfo.numSamples());
+        b.add32(programInfo->numSamples());
 
-    b.add32(programInfo.needsStencil() ? this->preferredStencilFormat() : MTLPixelFormatInvalid);
-    b.add32((uint32_t)programInfo.isStencilEnabled());
-    // Stencil samples don't seem to be tracked in the MTLRenderPipeline
+        b.add32(programInfo->needsStencil() ? this->preferredStencilFormat()
+                                            : MTLPixelFormatInvalid);
+        b.add32((uint32_t)programInfo->isStencilEnabled());
+        // Stencil samples don't seem to be tracked in the MTLRenderPipeline
 
-    programInfo.pipeline().genKey(&b, *this);
+        programInfo->pipeline().genKey(&b, *this);
 
-    b.add32(programInfo.primitiveTypeKey());
-
+        b.add32(programInfo->primitiveTypeKey());
+    }
     b.flush();
     return desc;
 }
