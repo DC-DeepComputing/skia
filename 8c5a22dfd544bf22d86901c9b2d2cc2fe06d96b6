@@ -65,6 +65,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9dea7076_e4a40c65",
+        "filename": "modules/particles/src/SkParticleDrawable.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 209,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2022-05-10T18:38:22Z",
+      "side": 1,
+      "message": "Rotation has been added.",
+      "parentUuid": "84645ff1_73762eb2",
+      "range": {
+        "startLine": 204,
+        "startChar": 0,
+        "endLine": 209,
+        "endChar": 32
+      },
+      "revId": "8c5a22dfd544bf22d86901c9b2d2cc2fe06d96b6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4e064bf4_062c1d99",
@@ -88,6 +112,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7e2a419f_b3d6e1b9",
+        "filename": "modules/particles/src/SkParticleDrawable.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 218,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2022-05-10T18:38:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4e064bf4_062c1d99",
+      "range": {
+        "startLine": 218,
+        "startChar": 44,
+        "endLine": 218,
+        "endChar": 45
+      },
+      "revId": "8c5a22dfd544bf22d86901c9b2d2cc2fe06d96b6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "75f3b13a_5d9aa5b1",
@@ -101,6 +149,30 @@
       "writtenOn": "2022-05-06T19:18:30Z",
       "side": 1,
       "message": "nit: line length",
+      "range": {
+        "startLine": 224,
+        "startChar": 0,
+        "endLine": 224,
+        "endChar": 101
+      },
+      "revId": "8c5a22dfd544bf22d86901c9b2d2cc2fe06d96b6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "df5af8aa_7336f241",
+        "filename": "modules/particles/src/SkParticleDrawable.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 224,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2022-05-10T18:38:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "75f3b13a_5d9aa5b1",
       "range": {
         "startLine": 224,
         "startChar": 0,
@@ -217,6 +289,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5008beb4_cb67c19f",
+        "filename": "tools/viewer/SkottieSlide.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2022-05-10T18:38:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1249c366_784e8ef2",
+      "revId": "8c5a22dfd544bf22d86901c9b2d2cc2fe06d96b6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b705c360_1aaea16c",
@@ -230,6 +320,30 @@
       "writtenOn": "2022-05-09T14:37:25Z",
       "side": 1,
       "message": "This doesn\u0027t seem to be used, so prolly not needed?",
+      "range": {
+        "startLine": 134,
+        "startChar": 0,
+        "endLine": 136,
+        "endChar": 5
+      },
+      "revId": "8c5a22dfd544bf22d86901c9b2d2cc2fe06d96b6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7b38a624_ba51eeaa",
+        "filename": "tools/viewer/SkottieSlide.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2022-05-10T18:38:22Z",
+      "side": 1,
+      "message": "Moved the shared ResourceProvider to tools/Resources.cpp.",
+      "parentUuid": "b705c360_1aaea16c",
       "range": {
         "startLine": 134,
         "startChar": 0,
