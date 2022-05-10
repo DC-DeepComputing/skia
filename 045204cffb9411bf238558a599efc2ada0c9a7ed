@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d1175a73_51f0e1ea",
+        "filename": "third_party/vulkanmemoryallocator/GrVulkanMemoryAllocator.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2022-05-10T15:02:37Z",
+      "side": 1,
+      "message": "what uses this define?  Looks like other call sites in Ganesh just use VK_MAKE_VERSION(1, 1, 0)",
+      "revId": "045204cffb9411bf238558a599efc2ada0c9a7ed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
