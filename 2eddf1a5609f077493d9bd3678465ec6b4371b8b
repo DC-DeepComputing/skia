@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0eabafcb_7c449922",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2022-05-10T18:39:55Z",
+      "side": 1,
+      "message": "looks like this doesn\u0027t cherry-pick cleanly to android/next-release.",
+      "revId": "2eddf1a5609f077493d9bd3678465ec6b4371b8b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
