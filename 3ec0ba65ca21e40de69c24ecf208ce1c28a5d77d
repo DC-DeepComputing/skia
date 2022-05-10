@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8785f284_f0a61f0f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-05-10T14:47:03Z",
+      "side": 1,
+      "message": "Just a little thing I noticed while poking around config/settings.",
+      "revId": "3ec0ba65ca21e40de69c24ecf208ce1c28a5d77d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
