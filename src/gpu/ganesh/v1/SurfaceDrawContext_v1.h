@@ -67,7 +67,7 @@ public:
                                                     sk_sp<SkColorSpace>,
                                                     GrSurfaceOrigin,
                                                     const SkSurfaceProps&,
-                                                    bool flushTimeOpsTask = false);
+                                                    bool flushTimeOpsTask, bool foo);
 
     /* Uses the default texture format for the color type */
     static std::unique_ptr<SurfaceDrawContext> Make(GrRecordingContext*,
@@ -134,7 +134,8 @@ public:
                        GrColorType,
                        sk_sp<SkColorSpace>,
                        const SkSurfaceProps&,
-                       bool flushTimeOpsTask = false);
+                       bool flushTimeOpsTask,
+                       bool foo);
 
     ~SurfaceDrawContext() override;
 

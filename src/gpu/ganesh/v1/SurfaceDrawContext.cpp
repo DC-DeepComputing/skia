@@ -132,7 +132,7 @@ std::unique_ptr<SurfaceDrawContext> SurfaceDrawContext::Make(GrRecordingContext*
                                                              sk_sp<SkColorSpace> colorSpace,
                                                              GrSurfaceOrigin origin,
                                                              const SkSurfaceProps& surfaceProps,
-                                                             bool flushTimeOpsTask) {
+                                                             bool flushTimeOpsTask, bool foo) {
     if (!rContext || !proxy || colorType == GrColorType::kUnknown) {
         return nullptr;
     }
@@ -150,7 +150,7 @@ std::unique_ptr<SurfaceDrawContext> SurfaceDrawContext::Make(GrRecordingContext*
                                                 colorType,
                                                 std::move(colorSpace),
                                                 surfaceProps,
-                                                flushTimeOpsTask);
+                                                flushTimeOpsTask, foo);
 }
 
 std::unique_ptr<SurfaceDrawContext> SurfaceDrawContext::Make(
@@ -196,7 +196,7 @@ std::unique_ptr<SurfaceDrawContext> SurfaceDrawContext::Make(
                                                     std::move(writeView),
                                                     GrColorType::kUnknown,
                                                     std::move(colorSpace),
-                                                    surfaceProps);
+                                                    surfaceProps, false, false);
     sdc->discard();
     return sdc;
 }
@@ -238,7 +238,7 @@ std::unique_ptr<SurfaceDrawContext> SurfaceDrawContext::Make(
                                     std::move(proxy),
                                     std::move(colorSpace),
                                     origin,
-                                    surfaceProps);
+                                    surfaceProps, false, false);
 }
 
 std::unique_ptr<SurfaceDrawContext> SurfaceDrawContext::MakeWithFallback(
@@ -280,7 +280,7 @@ std::unique_ptr<SurfaceDrawContext> SurfaceDrawContext::MakeFromBackendTexture(
     }
 
     return SurfaceDrawContext::Make(rContext, colorType, std::move(proxy), std::move(colorSpace),
-                                    origin, surfaceProps);
+                                    origin, surfaceProps, false, false);
 }
 
 // In MDB mode the reffing of the 'getLastOpsTask' call's result allows in-progress
@@ -293,12 +293,12 @@ SurfaceDrawContext::SurfaceDrawContext(GrRecordingContext* rContext,
                                        GrColorType colorType,
                                        sk_sp<SkColorSpace> colorSpace,
                                        const SkSurfaceProps& surfaceProps,
-                                       bool flushTimeOpsTask)
+                                       bool flushTimeOpsTask, bool foo)
         : SurfaceFillContext(rContext,
                              std::move(readView),
                              std::move(writeView),
                              {colorType, kPremul_SkAlphaType, std::move(colorSpace)},
-                             flushTimeOpsTask)
+                             flushTimeOpsTask, foo)
         , fSurfaceProps(surfaceProps)
         , fCanUseDynamicMSAA(
                 (fSurfaceProps.flags() & SkSurfaceProps::kDynamicMSAA_Flag) &&
