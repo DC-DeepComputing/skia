@@ -434,6 +434,7 @@ generated_cc_atom(
         "//src/sksl/dsl/priv:DSL_priv_hdr",
         "//src/sksl/ir:SkSLExpression_hdr",
         "//src/sksl/ir:SkSLProgram_hdr",
+        "//src/sksl/ir:SkSLType_hdr",
     ],
 )
 
