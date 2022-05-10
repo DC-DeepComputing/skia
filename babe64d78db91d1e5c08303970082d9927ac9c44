@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e3f101ea_46999d90",
+        "filename": "bazel/Makefile",
+        "patchSetId": 6
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-05-10T01:48:28Z",
+      "side": 1,
+      "message": "I\u0027m sure `clang_linux` is fine, but I don\u0027t see anything else directly referring to or introducing `clang_linux` here? Is this needed for this change or should it be its own change?",
+      "revId": "babe64d78db91d1e5c08303970082d9927ac9c44",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
