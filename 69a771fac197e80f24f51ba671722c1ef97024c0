@@ -16,6 +16,23 @@
       "message": "Greg, this CL is ready for a review. PTAL.",
       "revId": "69a771fac197e80f24f51ba671722c1ef97024c0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "081c9cd1_b40f5ff6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-05-10T18:05:39Z",
+      "side": 1,
+      "message": "Is there any reason not to be the labels in at this point for those two uses? Like \"SmallPathAtlas\" and \"TextAtlas\"",
+      "revId": "69a771fac197e80f24f51ba671722c1ef97024c0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
