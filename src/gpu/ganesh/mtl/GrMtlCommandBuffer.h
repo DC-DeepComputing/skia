@@ -16,14 +16,15 @@
 #include "src/gpu/ganesh/GrManagedResource.h"
 #include "src/gpu/ganesh/GrRefCnt.h"
 #include "src/gpu/ganesh/GrSurface.h"
+#include "src/gpu/ganesh/mtl/GrMtlComputeCommandEncoder.h"
 #include "src/gpu/ganesh/mtl/GrMtlRenderCommandEncoder.h"
 #include "src/gpu/ganesh/mtl/GrMtlUtil.h"
 
 class GrMtlEvent;
 class GrMtlGpu;
-class GrMtlPipelineState;
+class GrMtlComputePipelineState;
+class GrMtlRenderPipelineState;
 class GrMtlOpsRenderPass;
-class GrMtlRenderCommandEncoder;
 
 GR_NORETAIN_BEGIN
 
@@ -44,11 +45,17 @@ public:
     id<MTLBlitCommandEncoder> getBlitCommandEncoder();
     // Tries to reuse current renderCommandEncoder if possible
     GrMtlRenderCommandEncoder* getRenderCommandEncoder(MTLRenderPassDescriptor*,
-                                                       const GrMtlPipelineState*,
+                                                       const GrMtlRenderPipelineState*,
                                                        GrMtlOpsRenderPass* opsRenderPass);
     // Replaces current renderCommandEncoder with new one
     GrMtlRenderCommandEncoder* getRenderCommandEncoder(MTLRenderPassDescriptor*,
                                                        GrMtlOpsRenderPass*);
+
+    // Tries to reuse current computeCommandEncoder if possible
+    GrMtlComputeCommandEncoder* getComputeCommandEncoder(MTLComputePassDescriptor*,
+                                                         const GrMtlComputePipelineState*);
+    // Replaces current computeCommandEncoder with new one
+    GrMtlComputeCommandEncoder* getComputeCommandEncoder(MTLComputePassDescriptor*);
 
     void addCompletedHandler(MTLCommandBufferHandler block) {
         [fCmdBuffer addCompletedHandler:block];
@@ -112,6 +119,8 @@ private:
     id<MTLBlitCommandEncoder>   fActiveBlitCommandEncoder;
     std::unique_ptr<GrMtlRenderCommandEncoder> fActiveRenderCommandEncoder;
     MTLRenderPassDescriptor*    fPreviousRenderPassDescriptor;
+    std::unique_ptr<GrMtlComputeCommandEncoder> fActiveComputeCommandEncoder;
+    MTLComputePassDescriptor*    fPreviousComputePassDescriptor;
     bool                        fHasWork;
 
     SkTArray<sk_sp<skgpu::RefCntedCallback>> fFinishedCallbacks;

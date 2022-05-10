@@ -99,7 +99,7 @@ public:
                             const GrBackendFormat&) const override;
 
     GrProgramDesc makeDesc(GrRenderTarget*,
-                           const GrProgramInfo&,
+                           const GrProgramInfo*,
                            ProgramDescOverrideFlags) const override;
 
     bool resolveSubresourceRegionSupport() const { return fResolveSubresourceRegionSupport; }

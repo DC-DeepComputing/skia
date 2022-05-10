@@ -33,6 +33,8 @@ class GrMtlTexture;
 class GrSemaphore;
 class GrMtlCommandBuffer;
 
+void testComputeShader(GrGpu* gpu);
+
 class GrMtlGpu : public GrGpu {
 public:
     static sk_sp<GrGpu> Make(const GrMtlBackendContext&, const GrContextOptions&, GrDirectContext*);
@@ -42,6 +44,8 @@ public:
 
     GrThreadSafePipelineBuilder* pipelineBuilder() override;
     sk_sp<GrThreadSafePipelineBuilder> refPipelineBuilder() override;
+
+    void runComputeShader(GrMtlComputePipelineState pipeline);
 
     const GrMtlCaps& mtlCaps() const { return *fMtlCaps.get(); }
 
