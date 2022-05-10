@@ -94,6 +94,30 @@
       },
       "revId": "523d4868bd7484ec5b4c50e746622d78ae95ffcd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6bac8fdf_6279e8c6",
+        "filename": "modules/particles/src/SkParticleDrawable.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 203,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-05-10T20:39:20Z",
+      "side": 1,
+      "message": "Right. Even with normalized size, we could still apply the scale factor per-particle. But I agree - we can add this later (as an option on the drawable itself, most likely). The CircleDrawable (used by most of my example effects) works like this - it takes a radius parameter that specifies how big a \"scale \u003d 1\" particle circle is, but then everything is still relative to that with the per-particle scale.",
+      "parentUuid": "c955b5db_7886393f",
+      "range": {
+        "startLine": 202,
+        "startChar": 0,
+        "endLine": 203,
+        "endChar": 51
+      },
+      "revId": "523d4868bd7484ec5b4c50e746622d78ae95ffcd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
