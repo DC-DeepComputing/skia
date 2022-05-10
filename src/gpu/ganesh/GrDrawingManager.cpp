@@ -698,8 +698,7 @@ void GrDrawingManager::closeActiveOpsTask() {
 
 #if SK_GPU_V1
 sk_sp<skgpu::v1::OpsTask> GrDrawingManager::newOpsTask(GrSurfaceProxyView surfaceView,
-                                                       sk_sp<GrArenas> arenas,
-                                                       bool flushTimeOpsTask) {
+                                                       sk_sp<GrArenas> arenas) {
     SkDEBUGCODE(this->validate());
     SkASSERT(fContext);
 
@@ -712,13 +711,10 @@ sk_sp<skgpu::v1::OpsTask> GrDrawingManager::newOpsTask(GrSurfaceProxyView surfac
 
     SkASSERT(this->getLastRenderTask(opsTask->target(0)) == opsTask.get());
 
-    if (flushTimeOpsTask) {
-        fOnFlushRenderTasks.push_back(opsTask);
-    } else {
-        this->appendTask(opsTask);
+//        fOnFlushRenderTasks.push_back(opsTask);
+    this->appendTask(opsTask);
 
-        fActiveOpsTask = opsTask.get();
-    }
+    fActiveOpsTask = opsTask.get();
 
     SkDEBUGCODE(this->validate());
     return opsTask;

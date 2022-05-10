@@ -52,8 +52,7 @@ public:
 #if SK_GPU_V1
     // OpsTasks created at flush time are stored and handled different from the others.
     sk_sp<skgpu::v1::OpsTask> newOpsTask(GrSurfaceProxyView,
-                                         sk_sp<GrArenas> arenas,
-                                         bool flushTimeOpsTask);
+                                         sk_sp<GrArenas> arenas);
 
     // Adds 'atlasTask' to the DAG and leaves it open.
     //
