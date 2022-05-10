@@ -70,6 +70,30 @@
       },
       "revId": "523d4868bd7484ec5b4c50e746622d78ae95ffcd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c955b5db_7886393f",
+        "filename": "modules/particles/src/SkParticleDrawable.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 203,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2022-05-10T20:31:14Z",
+      "side": 1,
+      "message": "We could, but if the video gets smaller in size, the drawable get relatively larger. Also, there are some cool things to do with scale (like make them smaller closer to end-of-life) that might make normalizing size limiting. Let\u0027s leave it as is and see what use cases different users have.",
+      "parentUuid": "af23ce99_62491b43",
+      "range": {
+        "startLine": 202,
+        "startChar": 0,
+        "endLine": 203,
+        "endChar": 51
+      },
+      "revId": "523d4868bd7484ec5b4c50e746622d78ae95ffcd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
