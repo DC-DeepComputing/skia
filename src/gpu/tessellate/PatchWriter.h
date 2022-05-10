@@ -164,11 +164,19 @@ VertexWriter& operator<<(VertexWriter& w, const AttribValue<A, T, Required, Opti
 // Stores state and deferred patch data when TrackJoinControlPoints is used for a PatchWriter.
 template <size_t Stride>
 struct PatchStorage {
-    bool fHasPending = false; // True means the deferred patch in fData needs to be written out
-    bool fMustDefer  = true;  // True means next patch must be deferred
+    float fN_pow4    = -1.f; // The parametric segment value to restore on LinearTolerances
+    bool  fMustDefer = true;  // True means next patch must be deferred
 
     // Holds an entire patch, except with an undefined join control point.
     char fData[Stride];
+
+    bool hasPending() const {
+        return fN_pow4 >= 0.f;
+    }
+    void reset() {
+        fN_pow4 = -1.f;
+        fMustDefer = true;
+    }
 };
 
 // An empty object that has the same constructor signature as MiddleOutPolygonTriangulator, used
@@ -268,9 +276,6 @@ public:
 
     PatchAttribs attribs() const { return fAttribs; }
 
-    LinearTolerances& tolerances() { return fTolerances; }
-    const LinearTolerances& tolerances() const { return fTolerances; }
-
     // The max scale factor should be derived from the same matrix that 'xform' was. It's only used
     // in stroking calculations, so can be ignored for path filling.
     void setShaderTransform(const wangs_formula::VectorXform& xform,
@@ -282,19 +287,22 @@ public:
     // Completes a closed contour of a stroke by rewriting a deferred patch with now-available
     // join control point information. Automatically resets the join control point attribute.
     ENABLE_IF(kTrackJoinControlPoints) writeDeferredStrokePatch() {
-        if (fDeferredPatch.fHasPending) {
+        if (fDeferredPatch.hasPending()) {
             SkASSERT(!fDeferredPatch.fMustDefer);
             // Overwrite join control point with updated value, which is the first attribute
             // after the 4 control points.
             memcpy(SkTAddOffset<void>(fDeferredPatch.fData, 4 * sizeof(SkPoint)),
                    &fJoin, sizeof(SkPoint));
-            if (VertexWriter vw = fPatchAllocator.append()) {
+            // Assuming that the stroke parameters aren't changing within a contour, we only have
+            // to set the parametric segments in order to recover the LinearTolerances state at the
+            // time the deferred patch was recorded.
+            fTolerances.setParametricSegments(fDeferredPatch.fN_pow4);
+            if (VertexWriter vw = fPatchAllocator.append(fTolerances)) {
                 vw << VertexWriter::Array<char>(fDeferredPatch.fData, fPatchAllocator.stride());
             }
         }
 
-        fDeferredPatch.fHasPending = false;
-        fDeferredPatch.fMustDefer = true;
+        fDeferredPatch.reset();
     }
 
     // Updates the stroke's join control point that will be written out with each patch. This is
@@ -319,7 +327,13 @@ public:
     ENABLE_IF(StrokeAttrib::kEnabled) updateStrokeParamsAttrib(StrokeParams strokeParams) {
         SkASSERT(fAttribs & PatchAttribs::kStrokeParams);
         fStrokeParams = strokeParams;
-        fTolerances.accumulateStroke(strokeParams, fMaxScale);
+        fTolerances.setStroke(strokeParams, fMaxScale);
+    }
+    // Updates tolerances to account for stroke params that are stored as uniforms instead of
+    // dynamic instance attributes.
+    ENABLE_IF(StrokeAttrib::kEnabled) updateUniformStrokeParams(StrokeParams strokeParams) {
+        SkASSERT(!(fAttribs & PatchAttribs::kStrokeParams));
+        fTolerances.setStroke(strokeParams, fMaxScale);
     }
 
     // Updates the color that will be written out with each patch.
@@ -421,7 +435,7 @@ public:
     // Write a line that is automatically converted into an equivalent cubic.
     AI void writeLine(float4 p0p1) {
         // No chopping needed, a line only ever requires one segment (the minimum required already).
-        fTolerances.accumulateParametricSegments(1.f);
+        fTolerances.setParametricSegments(1.f);
         if constexpr (kReplicateLineEndPoints) {
             // Visually this cubic is still a line, but 't' does not move linearly over the line,
             // so Wang's formula is more pessimistic. Shaders should avoid evaluating Wang's
@@ -445,7 +459,7 @@ public:
         // No chopping needed, the max supported segment count should always support 2 lines
         // (which form a triangle when implicitly closed).
         static constexpr float kTriangleSegments_pow4 = 2.f * 2.f * 2.f * 2.f;
-        fTolerances.accumulateParametricSegments(kTriangleSegments_pow4);
+        fTolerances.setParametricSegments(kTriangleSegments_pow4);
         this->writePatch(p0, p1, p2, {SK_FloatInfinity, SK_FloatInfinity},
                          kTriangularConicCurveType);
     }
@@ -460,7 +474,8 @@ public:
     AI void writeCircle(SkPoint p) {
         // This does not use writePatch() because it uses its own location as the join attribute
         // value instead of fJoin and never defers.
-        if (VertexWriter vw = fPatchAllocator.append()) {
+        fTolerances.setParametricSegments(1.f); // set to minimum for circles
+        if (VertexWriter vw = fPatchAllocator.append(fTolerances)) {
             vw << VertexWriter::Repeat<4>(p); // p0,p1,p2,p3 = p -> 4 copies
             this->emitPatchAttribs(std::move(vw), {fAttribs, p}, kCubicCurveType);
         }
@@ -478,13 +493,15 @@ private:
     AI VertexWriter appendPatch() {
         if constexpr (kTrackJoinControlPoints) {
             if (fDeferredPatch.fMustDefer) {
-                SkASSERT(!fDeferredPatch.fHasPending);
+                SkASSERT(!fDeferredPatch.hasPending());
                 SkASSERT(fPatchAllocator.stride() <= kMaxStride);
-                fDeferredPatch.fHasPending = true;
+                // Save the computed parametric segment tolerance value so that we can pass that to
+                // the PatchAllocator when flushing the deferred patch.
+                fDeferredPatch.fN_pow4 = fTolerances.numParametricSegments_pow4();
                 return {fDeferredPatch.fData, fPatchAllocator.stride()};
             }
         }
-        return fPatchAllocator.append();
+        return fPatchAllocator.append(fTolerances);
     }
 
     AI void writePatch(float2 p0, float2 p1, float2 p2, float2 p3, float explicitCurveType) {
@@ -529,12 +546,12 @@ private:
     int accountForCurve(float n4) {
         if (n4 <= pow4(kMaxParametricSegments)) {
             // Record n^4 and return 0 to signal no chopping
-            fTolerances.accumulateParametricSegments(n4);
+            fTolerances.setParametricSegments(n4);
             return 0;
         } else {
             // Clamp to max allowed segmentation for a patch and return required number of chops
             // to achieve visual correctness.
-            fTolerances.accumulateParametricSegments(pow4(kMaxParametricSegments));
+            fTolerances.setParametricSegments(pow4(kMaxParametricSegments));
             return SkScalarCeilToInt(wangs_formula::root4(std::min(n4, pow4(kMaxSegmentsPerCurve)) /
                                                           pow4(kMaxParametricSegments)));
         }
@@ -684,9 +701,7 @@ private:
     wangs_formula::VectorXform fApproxTransform = {};
     // A maximum scale factor extracted from the current approximate transform.
     float fMaxScale = 1.0f;
-    // Tracks the linear tolerances for the worst-case written patches.
-    // TODO: This will change to be just the most-recent patch when accumulation is moved outside
-    // of PatchWriter.
+    // Tracks the linear tolerances for the most recently written patches.
     LinearTolerances fTolerances;
 
     PatchAllocator fPatchAllocator;
