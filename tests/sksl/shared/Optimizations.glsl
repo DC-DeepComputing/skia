@@ -40,6 +40,12 @@ bool flatten_expr_without_side_effects_b() {
     check;
     return check;
 }
+bool eliminate_no_op_arithmetic_b() {
+    int x = 1;
+    x = x + 0;
+    x *= 1;
+    return x == 1;
+}
 bool flatten_switch_b() {
     switch (1) {
         case 0:
@@ -52,5 +58,5 @@ bool flatten_switch_b() {
     return false;
 }
 vec4 main() {
-    return (((((flatten_compound_constructor_b() && flatten_known_if_b()) && eliminate_empty_if_else_b()) && eliminate_empty_else_b()) && flatten_matching_ternary_b()) && flatten_expr_without_side_effects_b()) && flatten_switch_b() ? colorGreen : colorRed;
+    return ((((((flatten_compound_constructor_b() && flatten_known_if_b()) && eliminate_empty_if_else_b()) && eliminate_empty_else_b()) && flatten_matching_ternary_b()) && flatten_expr_without_side_effects_b()) && eliminate_no_op_arithmetic_b()) && flatten_switch_b() ? colorGreen : colorRed;
 }
