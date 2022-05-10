@@ -42,7 +42,7 @@ SurfaceFillContext::SurfaceFillContext(GrRecordingContext* rContext,
                                        GrSurfaceProxyView readView,
                                        GrSurfaceProxyView writeView,
                                        const GrColorInfo& colorInfo,
-                                       bool flushTimeOpsTask)
+                                       bool flushTimeOpsTask, bool foo)
         : skgpu::SurfaceFillContext(rContext,
                                     std::move(readView),
                                     std::move(writeView),
