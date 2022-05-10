@@ -155,5 +155,6 @@ generated_cc_atom(
     deps = [
         "//src/gpu:BufferWriter_hdr",
         "//src/gpu/ganesh:GrVertexChunkArray_hdr",
+        "//src/gpu/tessellate:LinearTolerances_hdr",
     ],
 )
