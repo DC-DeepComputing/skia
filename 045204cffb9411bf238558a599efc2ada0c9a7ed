@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2250adc7_8ca266a0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2022-05-10T15:09:31Z",
+      "side": 1,
+      "message": "we\u0027ll want to cherry-pick this to android/next-release after it lands.",
+      "revId": "045204cffb9411bf238558a599efc2ada0c9a7ed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d1175a73_51f0e1ea",
@@ -32,6 +49,24 @@
       "side": 1,
       "message": "vk_mem_alloc.h uses it (included below). It is their own define.",
       "parentUuid": "d1175a73_51f0e1ea",
+      "revId": "045204cffb9411bf238558a599efc2ada0c9a7ed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a8aac178_cc5ce46c",
+        "filename": "third_party/vulkanmemoryallocator/GrVulkanMemoryAllocator.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2022-05-10T15:09:31Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "5718abcc_fead7df5",
       "revId": "045204cffb9411bf238558a599efc2ada0c9a7ed",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
