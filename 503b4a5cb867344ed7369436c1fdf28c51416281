@@ -22,6 +22,30 @@
       },
       "revId": "503b4a5cb867344ed7369436c1fdf28c51416281",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3f09422c_4eb0c511",
+        "filename": "gn/skia.gni",
+        "patchSetId": 2
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-05-10T14:04:15Z",
+      "side": 1,
+      "message": "Yeah - I figured that it\u0027s impossible to have ANGLE + webgl, but makes sense to just be as defensive as possible.",
+      "parentUuid": "75c5ca1f_101b659d",
+      "range": {
+        "startLine": 107,
+        "startChar": 0,
+        "endLine": 107,
+        "endChar": 46
+      },
+      "revId": "503b4a5cb867344ed7369436c1fdf28c51416281",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
