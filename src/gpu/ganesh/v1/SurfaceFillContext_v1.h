@@ -34,7 +34,7 @@ public:
                        GrSurfaceProxyView readView,
                        GrSurfaceProxyView writeView,
                        const GrColorInfo&,
-                       bool flushTimeOpsTask = false);
+                       bool flushTimeOpsTask, bool foo);
 
     void discard() override;
 
