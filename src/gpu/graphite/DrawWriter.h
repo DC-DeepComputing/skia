@@ -143,6 +143,7 @@ public:
     // index/vertex count. If the available vertex data from the DrawBufferManager forced a flush
     // after the first, then the second would use minIndexCount2 unless a subsequent compatible
     // DynamicInstances template appended more contiguous data.
+    template <typename T>
     class DynamicInstances;
 
     // Issues a draws with fully specified data. This can be used when all instance data has already
@@ -252,7 +253,7 @@ public:
         SkDEBUGCODE(w.fAppender = this;)
     }
 
-    ~Appender() {
+    virtual ~Appender() {
         if (fReservedCount > 0) {
             fDrawer.fManager->returnVertexBytes(fReservedCount * fStride);
         }
@@ -267,6 +268,8 @@ protected:
 
     unsigned int fReservedCount; // in target stride units
     VertexWriter fNextWriter;    // writing to the target buffer binding
+
+    virtual void onFlush() {}
 
     void reserve(unsigned int count) {
         if (fReservedCount >= count) {
@@ -285,6 +288,7 @@ protected:
             reservedChunk.fOffset !=
                     (fTarget.fOffset + (fDrawer.fPendingBase + fDrawer.fPendingCount) * fStride)) {
             // Not contiguous, so flush and update binding to 'reservedChunk'
+            this->onFlush();
             fDrawer.flush();
 
             fTarget = reservedChunk;
@@ -329,6 +333,7 @@ public:
     using Appender::append;
 };
 
+template <typename T>
 class DrawWriter::DynamicInstances : private DrawWriter::Appender {
 public:
     DynamicInstances(DrawWriter& w,
@@ -338,17 +343,40 @@ public:
         w.setTemplate(vertices, indices, w.fInstances, -1);
     }
 
+    ~DynamicInstances() override {
+        // Persist the template count since the DrawWriter could continue batching if a new
+        // compatible DynamicInstances object is created for the next draw.
+        this->updateTemplateCount();
+    }
+
     using Appender::reserve;
 
-    VertexWriter append(unsigned int indexCount, unsigned int instanceCount) {
-        SkASSERT(indexCount > 0);
+    VertexWriter append(const T& vertexCountProxy, unsigned int instanceCount) {
         VertexWriter w = this->Appender::append(instanceCount);
         // Record index count after appending instance data in case the append triggered a flush
-        // or earlier dynamic instances and the max index count is reset. This ensures that the
-        // just appended instances will be flushed with a template count at least 'indexCount'.
-        fDrawer.fTemplateCount = std::min(fDrawer.fTemplateCount, -SkTo<int>(indexCount) - 1);
+        // and the max index count is reset. However, the contents of 'w' will not have been flushed
+        // so 'fProxy' will include 'vertexCountProxy' by the time it is drawn.
+        fProxy.record(vertexCountProxy);
         return w;
     }
+
+private:
+    void updateTemplateCount() {
+        unsigned int count = fProxy.vertexCount();
+        SkASSERT(count > 0);
+        fDrawer.fTemplateCount = std::min(fDrawer.fTemplateCount, -SkTo<int>(count) - 1);
+    }
+
+    void onFlush() override {
+        // Update the DrawWriter's template count before its flush() is invoked and the appender
+        // starts recording to a new buffer.
+        this->updateTemplateCount();
+        // By resetting the proxy after updating the template count, the next batch will start over
+        // with the minimum required vertex count and grow from there.
+        fProxy.reset();
+    }
+
+    T fProxy;
 };
 
 } // namespace skgpu::graphite
