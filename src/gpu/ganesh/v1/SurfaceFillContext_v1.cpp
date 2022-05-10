@@ -41,13 +41,12 @@ namespace skgpu::v1 {
 SurfaceFillContext::SurfaceFillContext(GrRecordingContext* rContext,
                                        GrSurfaceProxyView readView,
                                        GrSurfaceProxyView writeView,
-                                       const GrColorInfo& colorInfo,
-                                       bool flushTimeOpsTask)
+                                       const GrColorInfo& colorInfo)
         : skgpu::SurfaceFillContext(rContext,
                                     std::move(readView),
                                     std::move(writeView),
                                     std::move(colorInfo))
-        , fFlushTimeOpsTask(flushTimeOpsTask) {
+        , fFlushTimeOpsTask(false) {
     fOpsTask = sk_ref_sp(rContext->priv().drawingManager()->getLastOpsTask(this->asSurfaceProxy()));
 
     SkDEBUGCODE(this->validate();)
