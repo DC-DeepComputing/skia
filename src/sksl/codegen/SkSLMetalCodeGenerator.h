@@ -143,6 +143,8 @@ protected:
 
     bool writeFunctionDeclaration(const FunctionDeclaration& f);
 
+    void writeComputeShaderMainArgs();
+
     void writeFunction(const FunctionDefinition& f);
 
     void writeFunctionPrototype(const FunctionPrototype& f);
@@ -275,6 +277,9 @@ protected:
     Requirements requirements(const Expression* e);
 
     Requirements requirements(const Statement* s);
+
+    // For compute shader main functions, writes and initializes the _in and _out structs
+    void writeComputeMainInputsAndOutputs();
 
     int getUniformBinding(const Modifiers& m);
 
