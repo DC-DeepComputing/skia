@@ -39,9 +39,7 @@ struct DrawWriterAllocator {
     VertexWriter append(const LinearTolerances& tolerances) {
         // TODO (skbug.com/13056): Converting tolerances into an index count for every instance is
         // wasteful; it only has to be computed when we flush.
-        // Wedges use one extra triangle to connect to the fan point compared to the curve version.
-        const unsigned int indexCount =
-                3 * (1 + NumCurveTrianglesAtResolveLevel(tolerances.requiredResolveLevel()));
+        const unsigned int indexCount = FixedCountWedges::VertexCount(tolerances);
         return fInstances.append(indexCount, 1);
     }
 
