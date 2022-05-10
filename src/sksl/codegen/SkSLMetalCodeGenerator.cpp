@@ -118,6 +118,9 @@ void MetalCodeGenerator::writeExtension(const Extension& ext) {
 std::string MetalCodeGenerator::typeName(const Type& type) {
     switch (type.typeKind()) {
         case Type::TypeKind::kArray:
+            if (type.columns() == Type::kUnsizedArray) {
+                return this->typeName(type.componentType()) + "*";
+            }
             SkASSERTF(type.columns() > 0, "invalid array size: %s", type.description().c_str());
             return String::printf("array<%s, %d>",
                                   this->typeName(type.componentType()).c_str(), type.columns());

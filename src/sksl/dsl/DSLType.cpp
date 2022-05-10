@@ -24,6 +24,7 @@
 #include "src/sksl/ir/SkSLStructDefinition.h"
 #include "src/sksl/ir/SkSLSymbolTable.h"
 #include "src/sksl/ir/SkSLType.h"
+#include "src/sksl/ir/SkSLTypeReference.h"
 
 #include <memory>
 #include <string>
@@ -274,6 +275,10 @@ DSLPossibleExpression DSLType::Construct(DSLType type, SkSpan<DSLExpression> arg
 }
 
 DSLType Array(const DSLType& base, int count, Position pos) {
+    if (count == SkSL::Type::kUnsizedArray) {
+        return ThreadContext::SymbolTable()->addArrayDimension(&base.skslType(),
+                SkSL::Type::kUnsizedArray);
+    }
     count = base.skslType().convertArraySize(ThreadContext::Context(), pos,
             DSLExpression(count, pos).release());
     ThreadContext::ReportErrors(pos);
