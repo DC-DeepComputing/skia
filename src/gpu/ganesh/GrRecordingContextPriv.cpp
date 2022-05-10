@@ -102,7 +102,7 @@ std::unique_ptr<skgpu::SurfaceContext> GrRecordingContextPriv::makeSC(GrSurfaceP
             sc = std::make_unique<skgpu::v1::SurfaceFillContext>(this->context(),
                                                                  std::move(readView),
                                                                  std::move(writeView),
-                                                                 info);
+                                                                 info, false, false);
         }
     } else {
         sc = std::make_unique<skgpu::SurfaceContext>(this->context(),
@@ -194,7 +194,7 @@ std::unique_ptr<skgpu::SurfaceFillContext> GrRecordingContextPriv::makeSFC(GrIma
     sfc = std::make_unique<skgpu::v1::SurfaceFillContext>(this->context(),
                                                           std::move(readView),
                                                           std::move(writeView),
-                                                          info.colorInfo());
+                                                          info.colorInfo(), false, false);
     sfc->discard();
     return sfc;
 #endif
@@ -254,7 +254,7 @@ std::unique_ptr<skgpu::SurfaceFillContext> GrRecordingContextPriv::makeSFC(
     sfc = std::make_unique<skgpu::v1::SurfaceFillContext>(this->context(),
                                                           std::move(readView),
                                                           std::move(writeView),
-                                                          info.colorInfo());
+                                                          info.colorInfo(), false, false);
     sfc->discard();
     return sfc;
 #endif
@@ -349,7 +349,7 @@ std::unique_ptr<skgpu::SurfaceFillContext> GrRecordingContextPriv::makeSFCFromBa
     return std::make_unique<skgpu::v1::SurfaceFillContext>(this->context(),
                                                            std::move(readView),
                                                            std::move(writeView),
-                                                           std::move(info));
+                                                           std::move(info), false, false);
 #endif
 
     return nullptr;
