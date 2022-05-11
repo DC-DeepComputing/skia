@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0fe62284_e735f266",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-05-11T12:47:23Z",
+      "side": 1,
+      "message": "I\u0027m curious - did you try disabling optimizations for ALL of our unit test shaders, to make sure we don\u0027t end up with any non-const values where we\u0027re expecting folded literals (eg, loop bounds, array indexing, etc.)?",
+      "revId": "e3b69affb336ce85a43523e01635e3da74b48d1d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
