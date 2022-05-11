@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6ad33ca6_e34f0994",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 822,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-05-11T22:56:36Z",
+      "side": 1,
+      "message": "Can we check the layout built-in ID rather than hardcoding names?",
+      "range": {
+        "startLine": 822,
+        "startChar": 66,
+        "endLine": 822,
+        "endChar": 96
+      },
+      "revId": "64b4e51afe78e28b9f2e898fc7d63321b4a25083",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "87cee3b9_c02b7a88",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1051,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-05-11T22:56:36Z",
+      "side": 1,
+      "message": "(same as above)",
+      "range": {
+        "startLine": 1051,
+        "startChar": 42,
+        "endLine": 1051,
+        "endChar": 56
+      },
+      "revId": "64b4e51afe78e28b9f2e898fc7d63321b4a25083",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
