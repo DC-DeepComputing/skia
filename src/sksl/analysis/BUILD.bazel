@@ -84,6 +84,7 @@ generated_cc_atom(
         "//include/core:SkTypes_hdr",
         "//include/private:SkSLModifiers_hdr",
         "//src/sksl:SkSLAnalysis_hdr",
+        "//src/sksl/ir:SkSLBinaryExpression_hdr",
         "//src/sksl/ir:SkSLExpression_hdr",
         "//src/sksl/ir:SkSLVariableReference_hdr",
         "//src/sksl/ir:SkSLVariable_hdr",
