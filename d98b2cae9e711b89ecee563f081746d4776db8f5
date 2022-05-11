@@ -22,6 +22,30 @@
       },
       "revId": "d98b2cae9e711b89ecee563f081746d4776db8f5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "057e9bd0_6ae83013",
+        "filename": "tests/DrawOpAtlasTest.cpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 432,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-05-11T14:31:16Z",
+      "side": 1,
+      "message": "In my change I have padding (1, 1, 0, 0) for transformed and direct and (2,2,2,2) for SDFT.\nFor the old case it\u0027s (0,0,0,0), (1,1,1,1) and (2,2,2,2),\nIn either case the distance between 2 glyphs must be the sum of padding (bottom+top or right+left), or bigger if these glyphs are not placed exactly side to side.\nYou suggestion is a little more relaxed in case SDFT glyph + non-SDFT glyph.\nYou will check for distance \u003e\u003d 2. In reality it should be distance \u003e\u003d 3 (2 + 1). \nOr non-SDFT glyph + SDFT glyph: distance \u003e\u003d 2 (0 + 2). It\u0027s not symmetrical with my change.",
+      "parentUuid": "1599a14b_f224dfca",
+      "range": {
+        "startLine": 432,
+        "startChar": 64,
+        "endLine": 432,
+        "endChar": 98
+      },
+      "revId": "d98b2cae9e711b89ecee563f081746d4776db8f5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
