@@ -22,7 +22,8 @@ bool eliminate_empty_else_b() {
     return false;
 }
 bool flatten_matching_ternary_b() {
-    return true;
+    bool check = true;
+    return (check, true);
 }
 bool flatten_expr_without_side_effects_b() {
     bool check = true;
