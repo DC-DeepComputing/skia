@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cd91adf2_4f121925",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2022-05-11T19:49:15Z",
+      "side": 1,
+      "message": "Current/broken rendering: https://skottie.skia.org/16fdceb6f0bb1dad581fcd9f555af471?h\u003d500\u0026w\u003d500\n\nUpdated/correct result: https://imgur.com/a/p3uLbnc",
+      "revId": "dffce28a080c154c9aa1445a0e259cad00aa1f3c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
