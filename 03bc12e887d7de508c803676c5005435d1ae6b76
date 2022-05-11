@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f2daefcb_4a768893",
+        "filename": "src/image/SkImage_Raster.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 500,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-05-11T21:55:16Z",
+      "side": 1,
+      "message": "Just curious: why don\u0027t we add these to the budget?",
+      "range": {
+        "startLine": 500,
+        "startChar": 61,
+        "endLine": 500,
+        "endChar": 76
+      },
+      "revId": "03bc12e887d7de508c803676c5005435d1ae6b76",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
