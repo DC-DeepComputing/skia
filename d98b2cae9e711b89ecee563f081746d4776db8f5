@@ -46,6 +46,30 @@
       },
       "revId": "d98b2cae9e711b89ecee563f081746d4776db8f5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a65b5337_831286dc",
+        "filename": "tests/DrawOpAtlasTest.cpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 432,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-05-11T18:13:11Z",
+      "side": 1,
+      "message": "Let me see if I understand, given the glyph types Direct, Transformed, Sdft, and the commutative relation P:\nP(D, D) \u003d 0\nP(D, T) \u003d 1\nP(D, S) \u003d 2\nP(T, T) \u003d 1\nP(T, S) \u003d 3\nP(S, S) \u003d 4\n\nIs this correct?",
+      "parentUuid": "057e9bd0_6ae83013",
+      "range": {
+        "startLine": 432,
+        "startChar": 64,
+        "endLine": 432,
+        "endChar": 98
+      },
+      "revId": "d98b2cae9e711b89ecee563f081746d4776db8f5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
