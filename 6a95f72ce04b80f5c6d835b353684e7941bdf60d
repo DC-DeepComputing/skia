@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "270660d3_2db4880e",
+        "filename": "modules/particles/src/SkParticleDrawable.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 213,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-05-11T14:47:55Z",
+      "side": 1,
+      "message": "It should be possible to construct the matrix directly, without the atan2 call (and then the corrsponding sin/cos call that are going to happen in RotateRad), but this is fine for now.",
+      "range": {
+        "startLine": 213,
+        "startChar": 12,
+        "endLine": 213,
+        "endChar": 54
+      },
+      "revId": "6a95f72ce04b80f5c6d835b353684e7941bdf60d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
