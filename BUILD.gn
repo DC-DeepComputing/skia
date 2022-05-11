@@ -2024,6 +2024,7 @@ if (skia_enable_tools) {
     }
     deps = [
       ":flags",
+      "modules/skresources",
       "modules/svg",
     ]
     public_deps = [ ":gpu_tool_utils" ]
