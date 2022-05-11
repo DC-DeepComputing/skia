@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1599a14b_f224dfca",
+        "filename": "tests/DrawOpAtlasTest.cpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 432,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-05-11T14:09:44Z",
+      "side": 1,
+      "message": "This padding doesn\u0027t seem right. There should be a single padding amount for the glyph. A transformed glyph has a padding of 1, a direct glyph has a padding of 0, and an SDFT glyph has a padding of 2. So, this should be abs(b.top - a.bottom) \u003e\u003d max(a.padding, b.padding).",
+      "range": {
+        "startLine": 432,
+        "startChar": 64,
+        "endLine": 432,
+        "endChar": 98
+      },
+      "revId": "d98b2cae9e711b89ecee563f081746d4776db8f5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
