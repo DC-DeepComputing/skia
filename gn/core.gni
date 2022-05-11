@@ -515,6 +515,15 @@ skia_core_sources = [
   "$_include/private/chromium/SkChromeRemoteGlyphCache.h",
 ]
 
+if (is_linux || is_mac || is_android) {
+  skia_core_sources += [
+    "$_src/core/SkPerfTrace.cpp",
+    "$_src/core/SkPerfTrace.h",
+    "$_src/core/SkPerfettoTraceCategories.cpp",
+    "$_src/core/SkPerfettoTraceCategories.h",
+  ]
+}
+
 skia_pathops_public = [ "$_include/pathops/SkPathOps.h" ]
 
 skia_pathops_sources = [

@@ -3549,3 +3549,12 @@ cc_library(
     defines = ["SPIRV_CROSS_EXCEPTIONS_TO_ASSERTIONS"],
     visibility = ["//:__subpackages__"],
 )
+
+cc_library(
+    name = "perfetto",
+    srcs = [
+        "externals/perfetto/sdk/perfetto.cc",
+    ],
+    hdrs = ["externals/perfetto/sdk/perfetto.h"],
+    visibility = ["//:__subpackages__"],
+)
