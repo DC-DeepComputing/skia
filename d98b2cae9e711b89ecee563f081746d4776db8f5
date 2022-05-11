@@ -118,6 +118,30 @@
       },
       "revId": "d98b2cae9e711b89ecee563f081746d4776db8f5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4d63ce12_169ec6f0",
+        "filename": "tests/DrawOpAtlasTest.cpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 432,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-05-11T18:31:09Z",
+      "side": 1,
+      "message": "So, P(S,D) \u003d 3 is not optimal and takes more memory than today.\n\nThere are two cases with fSupportBilerpFromGlyphAtlas. When this is false the system has Direct glyphs. When fSupportBilerpFromGlyphAtlas is true then all Direct glyphs become Transformed glyphs.",
+      "parentUuid": "643c9f53_ab8bc2e6",
+      "range": {
+        "startLine": 432,
+        "startChar": 64,
+        "endLine": 432,
+        "endChar": 98
+      },
+      "revId": "d98b2cae9e711b89ecee563f081746d4776db8f5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
