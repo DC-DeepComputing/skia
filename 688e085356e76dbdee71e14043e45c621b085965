@@ -33,6 +33,24 @@
       "message": "We don\u0027t DEPS this in - is there a broken bot? Just curious if this is currently breaking something (for a client that\u0027s updated, or is trying to?)",
       "revId": "688e085356e76dbdee71e14043e45c621b085965",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6a648570_e940c147",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2022-05-11T12:57:22Z",
+      "side": 1,
+      "message": "Right, this is not in any official builds or bots -- but it can be enabled optionally for skottie_tool, to render as mp4.\n\nAFAIK I\u0027m the only user, and it does tend to break a lot.  Most recently due to my Linux distro bumping ffmpeg 😊\n\nI\u0027ve been fixing it on the fly, at some point we should probably add a bot and commit to an ffmpeg version.",
+      "parentUuid": "cc0873a8_dcdfec0e",
+      "revId": "688e085356e76dbdee71e14043e45c621b085965",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
