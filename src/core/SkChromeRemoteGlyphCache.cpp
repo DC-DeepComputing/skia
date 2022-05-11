@@ -791,6 +791,7 @@ RemoteStrike* SkStrikeServerImpl::getOrCreateCache(const SkStrikeSpec& strikeSpe
 
 // -- GlyphTrackingDevice --------------------------------------------------------------------------
 class GlyphTrackingDevice final : public SkNoPixelsDevice {
+#if SK_SUPPORT_GPU
 public:
     GlyphTrackingDevice(
             const SkISize& dimensions, const SkSurfaceProps& props, SkStrikeServerImpl* server,
@@ -810,7 +811,6 @@ public:
     }
 
 protected:
-    #if SK_SUPPORT_GPU
     void onDrawGlyphRunList(SkCanvas*,
                             const SkGlyphRunList& glyphRunList,
                             const SkPaint& initialPaint,
@@ -858,13 +858,13 @@ protected:
                                    control,
                                    &fConvertPainter);
     }
-    #endif  // SK_SUPPORT_GPU
 
 private:
     SkStrikeServerImpl* const fStrikeServerImpl;
     const bool fDFTSupport{false};
     SkGlyphRunListPainter fPainter;
     SkGlyphRunListPainter fConvertPainter;
+#endif  // SK_SUPPORT_GPU
 };
 
 // -- SkStrikeServer -------------------------------------------------------------------------------
@@ -877,10 +877,15 @@ std::unique_ptr<SkCanvas> SkStrikeServer::makeAnalysisCanvas(int width, int heig
                                                              const SkSurfaceProps& props,
                                                              sk_sp<SkColorSpace> colorSpace,
                                                              bool DFTSupport) {
+#if SK_SUPPORT_GPU
     sk_sp<SkBaseDevice> trackingDevice(new GlyphTrackingDevice(SkISize::Make(width, height),
                                                                props, this->impl(),
                                                                std::move(colorSpace),
                                                                DFTSupport));
+#else
+    sk_sp<SkBaseDevice> trackingDevice(new SkNoPixelsDevice(
+            SkIRect::MakeWH(width, height), props, std::move(colorSpace)));
+#endif
     return std::make_unique<SkCanvas>(std::move(trackingDevice));
 }
 
