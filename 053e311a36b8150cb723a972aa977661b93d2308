@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e0e9f158_c2bbd098",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-05-11T19:17:17Z",
+      "side": 1,
+      "message": "man if I saw this syntax I would have assumed it filled the entire matrix with 1\u0027s. But I see reading the glsl spec this is spec\u0027d to just be the diagonal.",
+      "range": {
+        "startLine": 162,
+        "startChar": 46,
+        "endLine": 162,
+        "endChar": 57
+      },
+      "revId": "053e311a36b8150cb723a972aa977661b93d2308",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
