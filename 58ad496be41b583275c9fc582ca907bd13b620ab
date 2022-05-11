@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "92a53f00_cb888ceb",
+        "filename": "src/gpu/ganesh/tessellate/VertexChunkPatchAllocator.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-05-11T20:48:01Z",
+      "side": 1,
+      "message": "Shouldn\u0027t this be VertexChunkPatchAllocator_DEFINED ? Or maybe\nVertexChunkPatchAllocator_v1_DEFINED ?",
+      "range": {
+        "startLine": 8,
+        "startChar": 8,
+        "endLine": 8,
+        "endChar": 44
+      },
+      "revId": "58ad496be41b583275c9fc582ca907bd13b620ab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2b85bdcf_18a3a24d",
+        "filename": "src/gpu/ganesh/tessellate/VertexChunkPatchAllocator.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-05-11T20:48:01Z",
+      "side": 1,
+      "message": "Do we need this include ?",
+      "revId": "58ad496be41b583275c9fc582ca907bd13b620ab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
