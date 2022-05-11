@@ -142,6 +142,30 @@
       },
       "revId": "d98b2cae9e711b89ecee563f081746d4776db8f5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1295872e_bd48e20d",
+        "filename": "tests/DrawOpAtlasTest.cpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 432,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-05-11T18:34:53Z",
+      "side": 1,
+      "message": "Until this moment it was my understanding that fSupportBilerpFromGlyphAtlas required 1 pixel padding in Direct case, too (it\u0027s in the code in the main branch).\nThere is a comment:\n // Force direct masks (glyph with no padding) to have padding.\nIs it not true?",
+      "parentUuid": "4d63ce12_169ec6f0",
+      "range": {
+        "startLine": 432,
+        "startChar": 64,
+        "endLine": 432,
+        "endChar": 98
+      },
+      "revId": "d98b2cae9e711b89ecee563f081746d4776db8f5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
