@@ -2024,6 +2024,7 @@ if (skia_enable_tools) {
     }
     deps = [
       ":flags",
+      "modules/skresources",
       "modules/svg",
     ]
     public_deps = [ ":gpu_tool_utils" ]
@@ -3205,7 +3206,10 @@ if (skia_enable_tools) {
         "fuzz/oss_fuzz/FuzzSkParagraph.cpp",
         "tools/Resources.cpp",
       ]
-      deps = [ "modules/skparagraph" ]
+      deps = [
+        "modules/skparagraph",
+        "modules/skresources",
+      ]
     }
 
     libfuzzer_app("api_svg_canvas") {
