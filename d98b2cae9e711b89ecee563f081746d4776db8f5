@@ -166,6 +166,30 @@
       },
       "revId": "d98b2cae9e711b89ecee563f081746d4776db8f5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4073b430_509d2c5a",
+        "filename": "tests/DrawOpAtlasTest.cpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 432,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-05-12T13:58:44Z",
+      "side": 1,
+      "message": "That is true. It is the same as saying that all Direct glyph become Transformed glyphs when fSupportBilerpFromGlyphAtlas is true. So, there are no Direct glyphs in the plot when fSupportBilerpFromGlyphAtlas is true. This is because all non-SDFT glyphs will use bi-lerp sampling to draw which requires the padding. When fSupportBilerpFromGlyphAtlas is false, then the Direct glyphs are draw using nearest-neighbor sampling, which does not require the padding.",
+      "parentUuid": "1295872e_bd48e20d",
+      "range": {
+        "startLine": 432,
+        "startChar": 64,
+        "endLine": 432,
+        "endChar": 98
+      },
+      "revId": "d98b2cae9e711b89ecee563f081746d4776db8f5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
