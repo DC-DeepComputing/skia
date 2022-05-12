@@ -1,0 +1,142 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6ca03934_8f54f2f9",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 3
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-05-12T17:59:38Z",
+      "side": 1,
+      "message": "const float",
+      "range": {
+        "startLine": 149,
+        "startChar": 4,
+        "endLine": 149,
+        "endChar": 9
+      },
+      "revId": "161a462353de4abc28886221f826634e3502cbdd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f411348e_7ac9913f",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 3
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-05-12T17:59:38Z",
+      "side": 1,
+      "message": "This feels like a pretty magic number... why 1\u003c\u003c12 and not 4096? (And, why 1/4096 at all?)",
+      "range": {
+        "startLine": 149,
+        "startChar": 28,
+        "endLine": 149,
+        "endChar": 37
+      },
+      "revId": "161a462353de4abc28886221f826634e3502cbdd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c9909065_a8cc454e",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 3
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-05-12T17:59:38Z",
+      "side": 1,
+      "message": "here and below: `half4(0)`",
+      "range": {
+        "startLine": 163,
+        "startChar": 19,
+        "endLine": 163,
+        "endChar": 36
+      },
+      "revId": "161a462353de4abc28886221f826634e3502cbdd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7e13e368_0ec8fd4c",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 3
+      },
+      "lineNbr": 167,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-05-12T17:59:38Z",
+      "side": 1,
+      "message": "Unless you care about the `dRadius \u003d\u003d 0` case, this is `sign(dRadius)`",
+      "range": {
+        "startLine": 167,
+        "startChar": 26,
+        "endLine": 167,
+        "endChar": 47
+      },
+      "revId": "161a462353de4abc28886221f826634e3502cbdd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d23687ce_7bac89cd",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 3
+      },
+      "lineNbr": 178,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-05-12T17:59:38Z",
+      "side": 1,
+      "message": "Up to you: in SkSL you can say `pos.xy1` here. Both forms are equivalent at the end of the day, so just use the one you prefer. (here and below)",
+      "range": {
+        "startLine": 178,
+        "startChar": 33,
+        "endLine": 178,
+        "endChar": 47
+      },
+      "revId": "161a462353de4abc28886221f826634e3502cbdd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "08ca45ce_34cbfcc5",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 3
+      },
+      "lineNbr": 215,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-05-12T17:59:38Z",
+      "side": 1,
+      "message": "/\u003d",
+      "range": {
+        "startLine": 215,
+        "startChar": 19,
+        "endLine": 215,
+        "endChar": 26
+      },
+      "revId": "161a462353de4abc28886221f826634e3502cbdd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
