@@ -190,6 +190,30 @@
       },
       "revId": "d98b2cae9e711b89ecee563f081746d4776db8f5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1eefaf66_3384af64",
+        "filename": "tests/DrawOpAtlasTest.cpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 432,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-05-12T14:55:19Z",
+      "side": 1,
+      "message": "So, I just should take out the case of P(D,*) or P(*,D), right?",
+      "parentUuid": "4073b430_509d2c5a",
+      "range": {
+        "startLine": 432,
+        "startChar": 64,
+        "endLine": 432,
+        "endChar": 98
+      },
+      "revId": "d98b2cae9e711b89ecee563f081746d4776db8f5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
