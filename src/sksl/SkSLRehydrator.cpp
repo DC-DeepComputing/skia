@@ -283,9 +283,12 @@ std::unique_ptr<Program> Rehydrator::program() {
     // Initialize the temporary config used to generate the complete program. We explicitly avoid
     // enforcing ES2 restrictions when rehydrating a program, which we assume to be already
     // well-formed when dehydrated.
+    // TODO(skia:11209) Remove version hack? Or at least add a Version::kMaximum value to use here?
+    // Version::kUnenforced?
     auto config = std::make_unique<ProgramConfig>();
     config->fKind = (ProgramKind)this->readU8();
     config->fSettings.fEnforceES2Restrictions = false;
+    config->fSettings.fRequiredVersion = SkSL::Version::k300;
 
     Context& context = this->context();
     ProgramConfig* oldConfig = context.fConfig;

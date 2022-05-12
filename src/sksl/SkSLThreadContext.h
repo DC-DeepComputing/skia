@@ -51,8 +51,11 @@ class DSLWriter;
  */
 class ThreadContext {
 public:
-    ThreadContext(SkSL::Compiler* compiler,  SkSL::ProgramKind kind,
-              const SkSL::ProgramSettings& settings, SkSL::ParsedModule module, bool isModule);
+    ThreadContext(SkSL::Compiler* compiler,
+                  SkSL::ProgramKind kind,
+                  const SkSL::ProgramSettings& settings,
+                  SkSL::ParsedModule module,
+                  bool isModule);
 
     ~ThreadContext();
 
@@ -75,6 +78,11 @@ public:
      * Returns the Settings used by DSL operations in the current thread.
      */
     static const SkSL::ProgramSettings& Settings();
+
+    /**
+     * Returns the Settings used by DSL operations in the current thread.
+     */
+    static SkSL::ProgramSettings& MutableSettings();
 
     /**
      * Returns the Program::Inputs used by the current thread.
