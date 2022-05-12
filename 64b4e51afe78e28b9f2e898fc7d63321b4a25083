@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c4739b6b_0ff081aa",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 816,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-05-12T16:23:20Z",
+      "side": 1,
+      "message": "\u0027placeholder\u0027 (inclusiveness)",
+      "range": {
+        "startLine": 816,
+        "startChar": 71,
+        "endLine": 816,
+        "endChar": 76
+      },
+      "revId": "64b4e51afe78e28b9f2e898fc7d63321b4a25083",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6ad33ca6_e34f0994",
         "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
         "patchSetId": 1
