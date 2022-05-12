@@ -140,7 +140,7 @@ private:
      */
     bool arraySize(SKSL_INT* outResult);
 
-    void directive();
+    void directive(bool allowVersion);
 
     bool declaration();
 

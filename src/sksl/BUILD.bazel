@@ -718,6 +718,7 @@ generated_cc_atom(
     deps = [
         "//include/private:SkSLDefines_hdr",
         "//include/private:SkSLProgramKind_hdr",
+        "//include/sksl:SkSLVersion_hdr",
     ],
 )
 
