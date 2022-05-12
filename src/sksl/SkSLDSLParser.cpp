@@ -11,6 +11,7 @@
 #include "include/private/SkSLModifiers.h"
 #include "include/private/SkSLProgramElement.h"
 #include "include/private/SkSLString.h"
+#include "include/private/SkTHash.h"
 #include "include/sksl/DSL.h"
 #include "include/sksl/DSLBlock.h"
 #include "include/sksl/DSLCase.h"
@@ -99,25 +100,6 @@ public:
     }
 };
 
-SkTHashMap<std::string_view, DSLParser::LayoutToken>* DSLParser::sLayoutTokens;
-
-void DSLParser::InitLayoutMap() {
-    sLayoutTokens = new SkTHashMap<std::string_view, LayoutToken>;
-    #define TOKEN(name, text) sLayoutTokens->set(text, LayoutToken::name)
-    TOKEN(LOCATION,                     "location");
-    TOKEN(OFFSET,                       "offset");
-    TOKEN(BINDING,                      "binding");
-    TOKEN(INDEX,                        "index");
-    TOKEN(SET,                          "set");
-    TOKEN(BUILTIN,                      "builtin");
-    TOKEN(INPUT_ATTACHMENT_INDEX,       "input_attachment_index");
-    TOKEN(ORIGIN_UPPER_LEFT,            "origin_upper_left");
-    TOKEN(BLEND_SUPPORT_ALL_EQUATIONS,  "blend_support_all_equations");
-    TOKEN(PUSH_CONSTANT,                "push_constant");
-    TOKEN(COLOR,                        "color");
-    #undef TOKEN
-}
-
 DSLParser::DSLParser(Compiler* compiler, const ProgramSettings& settings, ProgramKind kind,
                      std::string text)
     : fCompiler(*compiler)
@@ -131,8 +113,6 @@ DSLParser::DSLParser(Compiler* compiler, const ProgramSettings& settings, Progra
     // We manage our symbol tables manually, so no need for name mangling
     fSettings.fDSLMangling = false;
     fLexer.start(*fText);
-    static const bool layoutMapInitialized = []{ InitLayoutMap(); return true; }();
-    (void) layoutMapInitialized;
 }
 
 Token DSLParser::nextRawToken() {
@@ -796,6 +776,34 @@ std::string_view DSLParser::layoutIdentifier() {
 
 /* LAYOUT LPAREN IDENTIFIER (EQ INT_LITERAL)? (COMMA IDENTIFIER (EQ INT_LITERAL)?)* RPAREN */
 DSLLayout DSLParser::layout() {
+    enum class LayoutToken {
+        LOCATION,
+        OFFSET,
+        BINDING,
+        INDEX,
+        SET,
+        BUILTIN,
+        INPUT_ATTACHMENT_INDEX,
+        ORIGIN_UPPER_LEFT,
+        BLEND_SUPPORT_ALL_EQUATIONS,
+        PUSH_CONSTANT,
+        COLOR,
+    };
+
+    static SkTHashMap<std::string_view, LayoutToken> sLayoutTokens{
+            {"location",                    LayoutToken::LOCATION},
+            {"offset",                      LayoutToken::OFFSET},
+            {"binding",                     LayoutToken::BINDING},
+            {"index",                       LayoutToken::INDEX},
+            {"set",                         LayoutToken::SET},
+            {"builtin",                     LayoutToken::BUILTIN},
+            {"input_attachment_index",      LayoutToken::INPUT_ATTACHMENT_INDEX},
+            {"origin_upper_left",           LayoutToken::ORIGIN_UPPER_LEFT},
+            {"blend_support_all_equations", LayoutToken::BLEND_SUPPORT_ALL_EQUATIONS},
+            {"push_constant",               LayoutToken::PUSH_CONSTANT},
+            {"color",                       LayoutToken::COLOR},
+    };
+
     DSLLayout result;
     if (this->checkNext(Token::Kind::TK_LAYOUT)) {
         if (!this->expect(Token::Kind::TK_LPAREN, "'('")) {
@@ -804,7 +812,7 @@ DSLLayout DSLParser::layout() {
         for (;;) {
             Token t = this->nextToken();
             std::string text(this->text(t));
-            LayoutToken* found = sLayoutTokens->find(text);
+            LayoutToken* found = sLayoutTokens.find(text);
             if (found != nullptr) {
                 switch (*found) {
                     case LayoutToken::ORIGIN_UPPER_LEFT:
