@@ -431,6 +431,7 @@ generated_cc_atom(
         "//include/sksl:DSLWrapper_hdr",
         "//include/sksl:DSL_hdr",
         "//include/sksl:SkSLOperator_hdr",
+        "//include/sksl:SkSLVersion_hdr",
         "//src/sksl/dsl/priv:DSLWriter_hdr",
         "//src/sksl/dsl/priv:DSL_priv_hdr",
         "//src/sksl/ir:SkSLExpression_hdr",
@@ -718,6 +719,7 @@ generated_cc_atom(
     deps = [
         "//include/private:SkSLDefines_hdr",
         "//include/private:SkSLProgramKind_hdr",
+        "//include/sksl:SkSLVersion_hdr",
     ],
 )
 
@@ -757,6 +759,7 @@ generated_cc_atom(
         "//include/sksl:DSLCore_hdr",
         "//include/sksl:SkSLOperator_hdr",
         "//include/sksl:SkSLPosition_hdr",
+        "//include/sksl:SkSLVersion_hdr",
         "//src/sksl/ir:SkSLBinaryExpression_hdr",
         "//src/sksl/ir:SkSLBlock_hdr",
         "//src/sksl/ir:SkSLBreakStatement_hdr",
