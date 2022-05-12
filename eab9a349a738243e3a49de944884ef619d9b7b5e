@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "02df9818_140ee981",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-05-12T16:31:53Z",
+      "side": 1,
+      "message": "That\u0027s [this one](https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/gpu/ganesh/ops/AtlasTextOp.cpp;l\u003d311?q\u003dATRACE_ANDROID_FRAMEWORK_ALWAYS\u0026ss\u003dchromium), in `AtlasTextOp`. Maybe we should convert that one to `TRACE_EVENT0_ALWAYS`, so it\u0027s respected by Chrome/Flutter and skips the copy? @herb (One of my take-aways from go/skia-tracing-2022 was that we shouldn\u0027t generally have Android-only traces.)\n\nWe also might want to rename `ATRACE_ANDROID_FRAMEWORK_ALWAYS` to something with `FORMAT` in the name?",
+      "range": {
+        "startLine": 17,
+        "startChar": 0,
+        "endLine": 17,
+        "endChar": 43
+      },
+      "revId": "eab9a349a738243e3a49de944884ef619d9b7b5e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
