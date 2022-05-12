@@ -52,20 +52,6 @@ class AutoDSLDepth;
  */
 class DSLParser {
 public:
-    enum class LayoutToken {
-        LOCATION,
-        OFFSET,
-        BINDING,
-        INDEX,
-        SET,
-        BUILTIN,
-        INPUT_ATTACHMENT_INDEX,
-        ORIGIN_UPPER_LEFT,
-        BLEND_SUPPORT_ALL_EQUATIONS,
-        PUSH_CONSTANT,
-        COLOR,
-    };
-
     DSLParser(Compiler* compiler, const ProgramSettings& settings, ProgramKind kind,
               std::string text);
 
@@ -78,8 +64,6 @@ public:
     Position position(Token token);
 
 private:
-    static void InitLayoutMap();
-
     /**
      * Return the next token, including whitespace tokens, from the parse stream.
      */
@@ -354,8 +338,6 @@ private:
         ErrorReporter* fOldErrorReporter;
         bool fOldEncounteredFatalError;
     };
-
-    static SkTHashMap<std::string_view, LayoutToken>* sLayoutTokens;
 
     Compiler& fCompiler;
     ProgramSettings fSettings;
