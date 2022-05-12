@@ -136,6 +136,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5f1c5492_252b6638",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 3
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-05-12T19:57:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "af3877fc_80554a35",
+      "range": {
+        "startLine": 149,
+        "startChar": 28,
+        "endLine": 149,
+        "endChar": 37
+      },
+      "revId": "161a462353de4abc28886221f826634e3502cbdd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c9909065_a8cc454e",
@@ -503,6 +527,30 @@
       "side": 1,
       "message": "Oh, this boils down to\n\n  if (f \u003e\u003d kVeryTinyValue) { t +\u003d f; }\n  \n? By all means, remove the if. Way better off getting rid of it IMO.",
       "parentUuid": "6b2aeddb_a2d55c36",
+      "range": {
+        "startLine": 251,
+        "startChar": 12,
+        "endLine": 251,
+        "endChar": 30
+      },
+      "revId": "161a462353de4abc28886221f826634e3502cbdd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3888b82e_233d410f",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 3
+      },
+      "lineNbr": 251,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-05-12T19:57:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "87e5bf4f_ff9f6849",
       "range": {
         "startLine": 251,
         "startChar": 12,
