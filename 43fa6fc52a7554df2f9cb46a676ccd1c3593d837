@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f27af961_0a18b28a",
+        "filename": "src/sksl/SkSLDSLParser.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 794,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-05-12T17:50:37Z",
+      "side": 1,
+      "message": "This will run a dtor at shutdown. You\u0027re better off using a pointer to avoid that:\n\n static auto* sLayoutTokens \u003d new SkTHashMap\u003cstd::string_view, LayoutToken\u003e{...};\n \n(See a bunch of discussion at http://go/cstyle#Static_and_Global_Variables , although the decisions don\u0027t apply directly to us because they use wrapper classes like `gtl::NoDestructor` which we don\u0027t have.)",
+      "range": {
+        "startLine": 794,
+        "startChar": 4,
+        "endLine": 794,
+        "endChar": 66
+      },
+      "revId": "43fa6fc52a7554df2f9cb46a676ccd1c3593d837",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
