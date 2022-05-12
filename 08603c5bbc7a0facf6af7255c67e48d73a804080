@@ -33,6 +33,24 @@
       "message": "This is a pretty hacky approach, and permits certain things that aren\u0027t allowed in GLSL - specifically splitting the directive line. (Technically that\u0027s true for how we handle extension directives as well). It\u0027s not terrible - we accept a strict superset of legal GLSL in that regard (eg, you can still put comments before the #version, just no other directives or declarations).",
       "revId": "08603c5bbc7a0facf6af7255c67e48d73a804080",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "052379c1_ea0e7b50",
+        "filename": "src/sksl/SkSLDSLParser.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 298,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-05-12T21:40:20Z",
+      "side": 1,
+      "message": "glslang permits comments before #version: http://screen/6wZvbnMTHzn7B3w\n\nWebGL does as well.\n\nThey are probably removed by the preprocessor.",
+      "parentUuid": "b9aed692_b4965090",
+      "revId": "08603c5bbc7a0facf6af7255c67e48d73a804080",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
