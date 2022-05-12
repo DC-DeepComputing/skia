@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3ba3a204_4d3678f2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-05-12T21:44:16Z",
+      "side": 1,
+      "message": "Yeah, settings are from the caller to us, they shouldn\u0027t ever come back in the other direction.\n\nIt could be a brand new field in the Program or ProgramConfig, maybe. That would give us enough information to reproduce it on `program.description()` and give us an easy way to read it back in places that need to know it. I\u0027m still not decided on whether it belongs in the root Program or the Config.",
+      "parentUuid": "612b7b43_abc7883b",
+      "revId": "08603c5bbc7a0facf6af7255c67e48d73a804080",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b9aed692_b4965090",
         "filename": "src/sksl/SkSLDSLParser.cpp",
         "patchSetId": 2
