@@ -114,6 +114,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "af3877fc_80554a35",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 3
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-05-12T19:38:50Z",
+      "side": 1,
+      "message": "IMO, name this `SK_ScalarNearlyZero` as a clue to the reader? I would never have guessed that\u0027s where you got this from.",
+      "parentUuid": "7720e72f_a905dc75",
+      "range": {
+        "startLine": 149,
+        "startChar": 28,
+        "endLine": 149,
+        "endChar": 37
+      },
+      "revId": "161a462353de4abc28886221f826634e3502cbdd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c9909065_a8cc454e",
         "filename": "src/sksl/sksl_graphite_frag.sksl",
         "patchSetId": 3
@@ -347,6 +371,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1e7fe89f_9c212904",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 3
+      },
+      "lineNbr": 208,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-05-12T19:38:50Z",
+      "side": 1,
+      "message": "Honestly I don\u0027t have a strong opinion either way. I\u0027m OK with whatever you prefer.",
+      "parentUuid": "854057a7_6394dbb2",
+      "range": {
+        "startLine": 208,
+        "startChar": 14,
+        "endLine": 208,
+        "endChar": 25
+      },
+      "revId": "161a462353de4abc28886221f826634e3502cbdd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "08ca45ce_34cbfcc5",
@@ -431,6 +479,30 @@
       "side": 1,
       "message": "The radius delta can\u0027t be 0 here so I think this makes a lot of sense. It\u0027s actually how the article describes this calculation. But here\u0027s a follow-up question -- do you have an idea whether it makes sense to just always add `f` here rather than defining isNativelyFocal (which is only used here and holds whether f \u003d\u003d 0)? Particularly if we\u0027d be passing isNativelyFocal in as a uniform, as we do in Ganesh?",
       "parentUuid": "f77abb19_c5cd7311",
+      "range": {
+        "startLine": 251,
+        "startChar": 12,
+        "endLine": 251,
+        "endChar": 30
+      },
+      "revId": "161a462353de4abc28886221f826634e3502cbdd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "87e5bf4f_ff9f6849",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 3
+      },
+      "lineNbr": 251,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-05-12T19:38:50Z",
+      "side": 1,
+      "message": "Oh, this boils down to\n\n  if (f \u003e\u003d kVeryTinyValue) { t +\u003d f; }\n  \n? By all means, remove the if. Way better off getting rid of it IMO.",
+      "parentUuid": "6b2aeddb_a2d55c36",
       "range": {
         "startLine": 251,
         "startChar": 12,
