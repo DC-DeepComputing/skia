@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "81e45d77_9acbd67d",
+        "filename": "include/core/SkSurface.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 604,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-05-12T21:58:48Z",
+      "side": 1,
+      "message": "nit: \"Surfaces\" don\u0027t have capabilities, right? Surfaces are a reference to a bag of pixels. This reports the capabilities of the device (CPU/GPU) that backs that bag of pixels.",
+      "range": {
+        "startLine": 604,
+        "startChar": 50,
+        "endLine": 604,
+        "endChar": 79
+      },
+      "revId": "7413411a3cad07d81cb254d9bf3412ac2e9a661a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "af01529f_314c0836",
+        "filename": "src/gpu/ganesh/GrCaps.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 486,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-05-12T21:58:48Z",
+      "side": 1,
+      "message": "Consider (here and below)\n auto caps \u003d sk_make_sp\u003cSkCapabilities\u003e();",
+      "range": {
+        "startLine": 486,
+        "startChar": 0,
+        "endLine": 486,
+        "endChar": 51
+      },
+      "revId": "7413411a3cad07d81cb254d9bf3412ac2e9a661a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
