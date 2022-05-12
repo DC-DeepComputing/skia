@@ -137,6 +137,29 @@
       },
       "revId": "161a462353de4abc28886221f826634e3502cbdd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f77abb19_c5cd7311",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 3
+      },
+      "lineNbr": 251,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-05-12T18:04:39Z",
+      "side": 1,
+      "message": "If `isRadiusIncreasing` were a float holding `sign(1 - f)` instead of a bool holding `(1 - f) \u003e 0`, then this code could be:\n\n            t \u003d (isRadiusIncreasing * x_t);\n            if (isNativelyFocal) {\n                t +\u003d f;\n            }\n            \n(Assuming the radius \u003d\u003d 0 case isn\u0027t an issue)",
+      "range": {
+        "startLine": 251,
+        "startChar": 12,
+        "endLine": 251,
+        "endChar": 30
+      },
+      "revId": "161a462353de4abc28886221f826634e3502cbdd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
