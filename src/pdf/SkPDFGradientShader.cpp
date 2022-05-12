@@ -116,25 +116,69 @@ static void interpolate_color_code(SkScalar range, const ColorTuple& curColor,
 }
 
 /* Generate Type 4 function code to map t=[0,1) to the passed gradient,
-   clamping at the edges of the range.  The generated code will be of the form:
-       if (t < 0) {
-           return colorData[0][r,g,b];
-       } else {
-           if (t < info.fColorOffsets[1]) {
-               return linearinterpolation(colorData[0][r,g,b],
-                                          colorData[1][r,g,b]);
-           } else {
-               if (t < info.fColorOffsets[2]) {
-                   return linearinterpolation(colorData[1][r,g,b],
-                                              colorData[2][r,g,b]);
-               } else {
-
-                ...    } else {
-                           return colorData[info.fColorCount - 1][r,g,b];
-                       }
-                ...
+   clamping at the edges of the range. The generated code will be of the
+   following form (for 10 stops and maxDepth = 2):
+       if (t <= offsets[2**maxDepth - 1]) {// <3
+           if (t <= offsets[2**(maxDepth - 1) - 1]){// <1
+               if (t <= offsets[2**(maxDepth - 2) - 1]){// <0
+                   return beforeColors[0];
+               } else {// >0
+                   return linearinterpolation(afterColors[0], beforeColors[1]);
+               }
+           } else {// >1
+               if (t <= offsets[2**(maxDepth - 1) + 2**(maxDepth - 2) - 1]){// <2
+                   return linearinterpolation(afterColors[1], beforeColors[2]);
+               } else {// >2
+                   return linearinterpolation(afterColors[2], beforeColors[3]);
+               }
            }
        }
+       if (offsets[2**maxDepth - 1] < t <= offsets[2**(2*maxDepth) - 1]) {// <7
+           if (t <= offsets[2**maxDepth + 2**(maxDepth - 1) - 1]){// <5
+               if (t <= offsets[2**maxDepth + 2**(maxDepth - 2) - 1]){// <4
+                   return linearinterpolation(afterColors[3], beforeColors[4]);
+               } else {// >4
+                   return linearinterpolation(afterColors[4], beforeColors[5]);
+               }
+           } else {// >5
+               if (t <= offsets[2**maxDepth + 2**(maxDepth - 1) + 2**(maxDepth - 2) - 1]){// <6
+                   return linearinterpolation(afterColors[5], beforeColors[6]);
+               } else {// >6
+                   return linearinterpolation(afterColors[6], beforeColors[7]);
+               }
+           }
+       }
+       if (offsets[2**(2*maxDepth) - 1] < t) {// >7
+           if (t <= offsets[2**(2*maxDepth) + 2**(maxDepth - 1) - 1]) {// <9
+               if (t <= offsets[2**(2*maxDepth) + 2**(maxDepth - 2) - 1]) {// <8
+                   return linearinterpolation(afterColors[7], beforeColors[8]);
+               } else {// >8
+                   return linearinterpolation(afterColors[8], beforeColors[9]);
+               }
+           } else {// >9
+               return afterColors[9];
+           }
+       }
+
+   This is equivalent with the following flattened form (maxDepth = 0), which
+   is however executed much slower:
+       if (t <= colorOffsets[0]) {
+           return beforeColors[0];
+       }
+       if (colorOffsets[0] < t <= colorOffsets[1]) {
+           return linearinterpolation(afterColors[0], beforeColors[1]);
+       }
+       ...
+       if (colorOffsets[colorOffsets.size() - 2] < t <= colorOffsets[colorOffsets.size() - 1]) {
+           return linearinterpolation(afterColors[colorOffsets.size() - 2], beforeColors[colorOffsets.size() - 1]);
+       }
+       if (colorOffsets[colorOffsets.size() - 1] < t) {
+           return afterColors[colorOffsets.size() - 1];
+       }
+
+   In practice the maxDepth is set to 4 to speed up the computations.
+   Higher values lead to stack and/or memory issues in certain pdf
+   readers (see issue 1316377).
  */
 static void gradient_function_code(const SkShader::GradientInfo& info,
                                  SkDynamicMemoryWStream* result) {
@@ -144,54 +188,152 @@ static void gradient_function_code(const SkShader::GradientInfo& info,
        C{r,g,b}(t, section) = t - offset_(section-1) + t * Multiplier{r,g,b}.
      */
 
-    SkAutoSTMalloc<4, ColorTuple> colorDataAlloc(info.fColorCount);
-    ColorTuple *colorData = colorDataAlloc.get();
+    SkAutoSTMalloc<4, ColorTuple> beforeColorsAlloc(info.fColorCount);
+    SkAutoSTMalloc<4, ColorTuple> afterColorsAlloc(info.fColorCount);
+    std::vector<SkScalar> colorOffsets;
+    ColorTuple *beforeColors = beforeColorsAlloc.get();
+    ColorTuple *afterColors = afterColorsAlloc.get();
+    colorOffsets.reserve(info.fColorCount);
     for (int i = 0; i < info.fColorCount; i++) {
-        colorData[i][0] = SkColorGetR(info.fColors[i]);
-        colorData[i][1] = SkColorGetG(info.fColors[i]);
-        colorData[i][2] = SkColorGetB(info.fColors[i]);
+        if (i > 0 && info.fColorOffsets[i-1] == info.fColorOffsets[i]) {
+            // Duplicate offset, so update last afterColor
+            afterColors[colorOffsets.size()-1][0] = SkColorGetR(info.fColors[i]);
+            afterColors[colorOffsets.size()-1][1] = SkColorGetG(info.fColors[i]);
+            afterColors[colorOffsets.size()-1][2] = SkColorGetB(info.fColors[i]);
+        } else {
+            colorOffsets.push_back(info.fColorOffsets[i]);
+            beforeColors[i][0] = SkColorGetR(info.fColors[i]);
+            beforeColors[i][1] = SkColorGetG(info.fColors[i]);
+            beforeColors[i][2] = SkColorGetB(info.fColors[i]);
+            afterColors[i][0] = SkColorGetR(info.fColors[i]);
+            afterColors[i][1] = SkColorGetG(info.fColors[i]);
+            afterColors[i][2] = SkColorGetB(info.fColors[i]);
+        }
     }
 
-    // Clamp the initial color.
-    result->writeText("dup 0 le {pop ");
-    SkPDFUtils::AppendColorComponent(colorData[0][0], result);
-    result->writeText(" ");
-    SkPDFUtils::AppendColorComponent(colorData[0][1], result);
-    result->writeText(" ");
-    SkPDFUtils::AppendColorComponent(colorData[0][2], result);
-    result->writeText(" }\n");
-
-    // The gradient colors.
-    int gradients = 0;
-    for (int i = 1 ; i < info.fColorCount; i++) {
-        if (info.fColorOffsets[i] == info.fColorOffsets[i - 1]) {
-            continue;
+    const unsigned int stops = colorOffsets.size();
+    // Higher performance for higher values, but stack and/or memory
+    // issues in certain pdf readers when set too high (see issue 1316377).
+    const unsigned int maxDepth = 4;
+    const bool multiple = stops + 1 > (1 << maxDepth);
+    unsigned int pos = 0, from, to, treeDepth, branchDepth, depth;
+    auto calcDepth = [](unsigned int count) {
+        // Calculates the lowest value for depth satisfying
+        // count - 1 < 2**depth, which can be calculated as
+        // depth = 32 - clz(count - 1), where clz returns
+        // the number of leading zero bits.
+        // In C++20, std::countl_zero can be used instead instead.
+        int i = 0;
+        for (; i<32; i++) {
+            if ((count - 1) & (1 << (31 - i))) {
+                // Break on leftmost one bit
+                break;
+            }
         }
-        gradients++;
+        return 32 - i;
+    };
+    auto writeColor = [beforeColors, afterColors, &colorOffsets, result](unsigned int pos) {
+        if (pos == 0) {
+            result->writeText("pop ");
+            SkPDFUtils::AppendColorComponent(beforeColors[pos][0], result);
+            result->writeText(" ");
+            SkPDFUtils::AppendColorComponent(beforeColors[pos][1], result);
+            result->writeText(" ");
+            SkPDFUtils::AppendColorComponent(beforeColors[pos][2], result);
+            result->writeText("\n");
+        } else if (pos == colorOffsets.size()) {
+            result->writeText("pop ");
+            SkPDFUtils::AppendColorComponent(afterColors[pos - 1][0], result);
+            result->writeText(" ");
+            SkPDFUtils::AppendColorComponent(afterColors[pos - 1][1], result);
+            result->writeText(" ");
+            SkPDFUtils::AppendColorComponent(afterColors[pos - 1][2], result);
+            result->writeText("\n");
+        } else {
+            if (colorOffsets[pos - 1] != 0) {
+                SkPDFUtils::AppendScalar(colorOffsets[pos - 1], result);
+                result->writeText(" sub\n");
+            }
+            interpolate_color_code(colorOffsets[pos] - colorOffsets[pos - 1],
+                                    beforeColors[pos], afterColors[pos - 1], result);
+            result->writeText("\n");
+        }
+    };
 
-        result->writeText("{dup ");
-        SkPDFUtils::AppendScalar(info.fColorOffsets[i], result);
-        result->writeText(" le {");
-        if (info.fColorOffsets[i - 1] != 0) {
-            SkPDFUtils::AppendScalar(info.fColorOffsets[i - 1], result);
-            result->writeText(" sub\n");
+    while (pos < stops + 1) {
+        if (multiple) {
+            // Write outer if condition
+            if (pos == 0) {
+                // First condition: t <= colorOffsets[pos + 2**maxDepth - 1]
+                result->writeText("dup ");
+                SkPDFUtils::AppendScalar(colorOffsets[pos + (1 << maxDepth) - 1], result);
+                result->writeText(" le {\n");
+            } else if (pos + (1 << maxDepth) >= stops+1) {
+                // Last condition: colorOffsets[pos - 1] < t
+                result->writeText("dup ");
+                SkPDFUtils::AppendScalar(colorOffsets[pos - 1], result);
+                result->writeText(" gt {\n");
+            } else {
+                // Middle conditions: colorOffsets[pos - 1] < t <= colorOffsets[pos + 2**maxDepth - 1]
+                result->writeText("dup dup ");
+                SkPDFUtils::AppendScalar(colorOffsets[pos - 1], result);
+                result->writeText(" gt exch ");
+                SkPDFUtils::AppendScalar(colorOffsets[pos + (1 << maxDepth) - 1], result);
+                result->writeText(" le and {\n");
+            }
         }
 
-        interpolate_color_code(info.fColorOffsets[i] - info.fColorOffsets[i - 1],
-                             colorData[i], colorData[i - 1], result);
-        result->writeText("}\n");
+        // Write balanced inner if-else trees
+        from = pos;
+        to = std::min(stops + 1, pos + (1 << maxDepth));
+        // Maximum depth of entire if-else tree
+        treeDepth = calcDepth(to - from);
+        // Maximum depth within current branch of the if-else tree
+        branchDepth = treeDepth;
+        // Current depth within the if-else tree
+        depth = 0;
+        while (pos < to) {
+            // Create new if-branches until reaching the branchDepth
+            for (; depth < branchDepth; depth++) {
+                result->writeText("dup ");
+                SkPDFUtils::AppendScalar(colorOffsets[pos + (1 << (branchDepth - depth - 1)) - 1], result);
+                result->writeText(" le {\n");
+            }
+            // Write color
+            writeColor(pos);
+            pos += 1;
+            // Write else-branch color if necessary
+            if (pos < to) {
+                result->writeText("}{\n");
+                writeColor(pos);
+                pos += 1;
+            }
+            // If all colors are processed, make sure all opened if-else branches get closed and exit
+            if (pos == to) {
+                pos = from + (1 << treeDepth);
+            }
+            // Close if-else branches until reaching a depth with binary 1 (in pos)
+            for (; ~((pos - from) >> (treeDepth - depth)) & 1; depth--) {
+                result->writeText("} ifelse\n");
+            }
+            // Create new else-branch if not yet finished (depth != 0 and pos < to)
+            if (depth != 0) {
+                result->writeText("}{\n");
+                branchDepth = std::min(treeDepth, depth + calcDepth(to - pos));
+            }
+        }
+
+        if (multiple) {
+            // Push dummy t value to stack such that any following
+            // outer if conditions fail.
+            result->writeText("-1\n");
+            // Close outer if
+            result->writeText("} if\n");
+        }
     }
-
-    // Clamp the final color.
-    result->writeText("{pop ");
-    SkPDFUtils::AppendColorComponent(colorData[info.fColorCount - 1][0], result);
-    result->writeText(" ");
-    SkPDFUtils::AppendColorComponent(colorData[info.fColorCount - 1][1], result);
-    result->writeText(" ");
-    SkPDFUtils::AppendColorComponent(colorData[info.fColorCount - 1][2], result);
-
-    for (int i = 0 ; i < gradients + 1; i++) {
-        result->writeText("} ifelse\n");
+    if (multiple) {
+        // Remove dummy t value at end
+        result->writeText("pop\n");
     }
 }
 
