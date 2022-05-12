@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0b3e6f1a_badf166c",
+        "filename": "src/sksl/generated/sksl_graphite_frag.dehydrated.sksl",
+        "patchSetId": 2
+      },
+      "lineNbr": 1654,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-05-12T22:15:28Z",
+      "side": 1,
+      "message": "These are actually Nops, which we should probably also try to eliminate in dehydrated code (although they\u0027re harmless in program IR, since they should never affect the generated code).",
+      "range": {
+        "startLine": 1654,
+        "startChar": 0,
+        "endLine": 1654,
+        "endChar": 2
+      },
+      "revId": "d9e6d98b72c8d64df215aafe09f906b971c224ed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
