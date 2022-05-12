@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d587c4f2_9c5ae2ad",
+        "filename": "src/sksl/SkSLInliner.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 420,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-05-12T00:06:12Z",
+      "side": 1,
+      "message": "This is a weird one! I am 99% sure I encountered a Clang bug. `v.clone()` here causes an error:\n\n ../../src/sksl/SkSLInliner.cpp:420:22: error: too few arguments to function call, expected 1, have 0; did you mean \u0027MultiArgumentConstructor::clone\u0027?\n            return v.clone();\n                     ^~~~~\n                     MultiArgumentConstructor::clone\n\nBizarrely, `v.MultiArgumentConstructor::clone()` works here (although it _really_ shouldn\u0027t?!) and `v.Expression::clone()` also works fine. But `expression.clone()` is the least weird replacement and it also works without issue.",
+      "range": {
+        "startLine": 420,
+        "startChar": 19,
+        "endLine": 420,
+        "endChar": 37
+      },
+      "revId": "bb3336acc99d3749411869461fec344c7e49b5ae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
