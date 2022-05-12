@@ -10,6 +10,7 @@
 
 #include "include/private/SkSLDefines.h"
 #include "include/private/SkSLProgramKind.h"
+#include "include/sksl/SkSLVersion.h"
 
 #include <vector>
 
@@ -65,9 +66,14 @@ struct ProgramSettings {
     bool fValidateSPIRV = true;
     // If true, any synthetic uniforms must use push constant syntax
     bool fUsePushConstants = false;
+    // TODO(skia:11209) - Replace this with a "promised" capabilities?
     // If true, configurations which demand strict ES2 conformance (runtime effects, generic
     // programs, and SkVM rendering) will fail during compilation if ES2 restrictions are violated.
     bool fEnforceES2Restrictions = true;
+    // For any runtime effect or generic interpreter program (anything but an actual GPU shader),
+    // this determines the available feature set that will be enforced. This is set automatically
+    // when the `#version` directive is parsed. For GPU shaders (fragment, vertex), this is ignored.
+    SkSL::Version fRequiredVersion = SkSL::Version::k100;
     // If true, SkVM debug traces will contain the `trace_var` opcode. This opcode can cause the
     // generated code to contain a lot of extra computations, because we need to explicitly compute
     // every temporary value, even ones that would otherwise be optimized away entirely. The other
@@ -100,8 +106,21 @@ struct ProgramConfig {
     ProgramSettings fSettings;
 
     bool strictES2Mode() const {
+        // TODO(skia:11209): Remove the first condition - so this is just based on #version.
+        //                   Make it more generic (eg, isVersionLT) checking.
         return fSettings.fEnforceES2Restrictions &&
+               fSettings.fRequiredVersion == Version::k100 &&
                (IsRuntimeEffect(fKind) || fKind == ProgramKind::kGeneric);
+    }
+
+    const char* versionDescription() const {
+        if (IsRuntimeEffect(fKind) || fKind == ProgramKind::kGeneric) {
+            switch (fSettings.fRequiredVersion) {
+                case Version::k100: return "#version 100\n";
+                case Version::k300: return "#version 300\n";
+            }
+        }
+        return "";
     }
 
     static bool IsFragment(ProgramKind kind) {
