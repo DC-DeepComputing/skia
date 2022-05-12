@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9fabc395_35d1c784",
+        "filename": "src/sksl/transform/SkSLTransform.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-05-12T22:43:46Z",
+      "side": 0,
+      "message": "When this code was written, apparently supporting a null `usage` was important, but this never happens anymore.",
+      "range": {
+        "startLine": 38,
+        "startChar": 70,
+        "endLine": 38,
+        "endChar": 77
+      },
+      "revId": "19380c3b8845c695f43b3696b45dad26cdec4d9e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
