@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "612b7b43_abc7883b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-05-12T21:08:23Z",
+      "side": 1,
+      "message": "Among the issues with this approach (maybe someone has an idea): This is the only thing I know of that mutates the Settings as part of the parse + compile. That\u0027s bizarre - it\u0027s a setting that\u0027s designed to be generated, not consumed. (But it\u0027s also then referenced later during the compile ... so it\u0027s both).\n\nIn theory, this should emit a ProgramElement for the version directive, but we need to keep referring to it, so having (at least) a copy of the version in the Settings seems like it makes sense?\n\nAs it stands, it will be lost when you call description() on the Program - I can go back and add code to re-emit the directive based on the settings, but again - if there were a ProgramElement, that would happen naturally. 😕",
+      "revId": "08603c5bbc7a0facf6af7255c67e48d73a804080",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b9aed692_b4965090",
