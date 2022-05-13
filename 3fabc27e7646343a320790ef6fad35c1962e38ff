@@ -22,6 +22,30 @@
       },
       "revId": "3fabc27e7646343a320790ef6fad35c1962e38ff",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d784db41_7d231c37",
+        "filename": "src/sksl/transform/SkSLEliminateEmptyStatements.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-05-13T17:31:54Z",
+      "side": 1,
+      "message": "Yes, this will descend into all the child IR nodes that we didn\u0027t eliminate, which is important. For instance, a function\u0027s outer Block can contain a ForStatement, which contains an inner Block statement, which contains a Nop inside of it; we want to find and eliminate that. This way we find and inspect all Blocks at every level.",
+      "parentUuid": "7a560fd5_2c474935",
+      "range": {
+        "startLine": 44,
+        "startChar": 12,
+        "endLine": 44,
+        "endChar": 54
+      },
+      "revId": "3fabc27e7646343a320790ef6fad35c1962e38ff",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
