@@ -16,6 +16,24 @@
       "message": "The underlying implementation seems to force a delete if unlocked. I suppose that\u0027s fine as in that case this call should not return (should crash). However, I\u0027m not sure that the underlying implementation is actually correct anyway (on the Chrome side it isn\u0027t actually checking that that underlying resource is locked). I suppose this code is fine, though I\u0027m not sure if it will actually catch anything at the moment.",
       "revId": "a6f41ffa7ff1b8ecf23c9e8582047d26832f1690",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e69ae96a_b5a228e6",
+        "filename": "src/core/SkChromeRemoteGlyphCache.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1056,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-05-13T18:32:07Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "146f7de3_24acdebc",
+      "revId": "a6f41ffa7ff1b8ecf23c9e8582047d26832f1690",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
