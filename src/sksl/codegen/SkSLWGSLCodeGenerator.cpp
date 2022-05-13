@@ -47,6 +47,7 @@
 #include "src/sksl/ir/SkSLLiteral.h"
 #include "src/sksl/ir/SkSLProgram.h"
 #include "src/sksl/ir/SkSLReturnStatement.h"
+#include "src/sksl/ir/SkSLStructDefinition.h"
 #include "src/sksl/ir/SkSLSwizzle.h"
 #include "src/sksl/ir/SkSLSymbolTable.h"
 #include "src/sksl/ir/SkSLType.h"
@@ -935,8 +936,7 @@ void WGSLCodeGenerator::writeProgramElement(const ProgramElement& e) {
             // generateCode().
             break;
         case ProgramElement::Kind::kStructDefinition:
-            // All struct type declarations are handled explicitly as the "program header" in
-            // generateCode().
+            this->writeStructDefinition(e.as<StructDefinition>());
             break;
         case ProgramElement::Kind::kFunctionPrototype:
             // A WGSL function declaration must contain its body and the function name is in scope
@@ -952,6 +952,15 @@ void WGSLCodeGenerator::writeProgramElement(const ProgramElement& e) {
             SkDEBUGFAILF("unsupported program element: %s\n", e.description().c_str());
             break;
     }
+}
+
+void WGSLCodeGenerator::writeStructDefinition(const StructDefinition& s) {
+    const Type& type = s.type();
+    this->writeLine("struct " + type.displayName() + " {");
+    fIndentation++;
+    this->writeFields(type.fields(), type.fPosition);
+    fIndentation--;
+    this->writeLine("};");
 }
 
 void WGSLCodeGenerator::writeStageInputStruct() {

@@ -40,6 +40,7 @@ class OutputStream;
 class ProgramElement;
 class ReturnStatement;
 class Statement;
+class StructDefinition;
 class Type;
 class VarDeclaration;
 struct Modifiers;
@@ -172,6 +173,8 @@ private:
 
     // Generic recursive ProgramElement visitor.
     void writeProgramElement(const ProgramElement& e);
+    void writeStructDefinition(const StructDefinition& s);
+    void writeFields(const std::vector<Type::Field>& fields, Position parentPos);
 
     // We bundle all varying pipeline stage inputs and outputs in a struct.
     void writeStageInputStruct();

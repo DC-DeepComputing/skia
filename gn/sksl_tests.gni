@@ -306,6 +306,7 @@ sksl_spirv_tests = [
 sksl_wgsl_tests = [
   "/sksl/wgsl/BuiltinFragmentStageIO.sksl",
   "/sksl/wgsl/BuiltinVertexStageIO.vert",
+  #"/sksl/wgsl/IOParameterDependencies.sksl",
   "/sksl/wgsl/MainHasFragCoordParameter.sksl",
   "/sksl/wgsl/MainHasVoidReturn.sksl",
   "/sksl/wgsl/MainDoesNotHaveFragCoordParameter.sksl",
@@ -315,6 +316,17 @@ sksl_wgsl_tests = [
   # Shared tests that are supported so far:
   "/sksl/shared/HelloWorld.sksl",
   "/sksl/shared/InstanceID.vert",
+#  "/sksl/shared/FragCoords.sksl",
+#  "/sksl/shared/Functions.sksl",
+#  "/sksl/shared/InoutParameter.sksl",
+#  "/sksl/shared/OutParamsAreDistinct.sksl",
+#  "/sksl/shared/OutParamsAreDistinctFromGlobal.sksl",
+#  "/sksl/shared/OutParamsTricky.sksl",
+#  "/sksl/shared/OutParams.sksl",
+  "/sksl/shared/Structs.sksl",
+#  "/sksl/shared/UniformArray.sksl",
+#  "/sksl/shared/UniformBuffers.sksl",
+#  "/sksl/shared/Uniforms.sksl",
   "/sksl/shared/VertexID.vert",
 ]
 
