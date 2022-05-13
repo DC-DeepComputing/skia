@@ -39,6 +39,30 @@
       },
       "revId": "89fc1870a94ac37883ecc99b2b5f72ac03f6d29a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bbe8d12e_9825bdea",
+        "filename": "tests/DrawOpAtlasTest.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 449,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-05-13T17:57:11Z",
+      "side": 1,
+      "message": "Why 3 is needed?\nS requires padding 2 around, and it\u0027s there.\nT requires padding 1 around, it has left and top and it borrows bottom and right (from S in this case, but could be from another T).\nIsn\u0027t it what we wanted in the first place? Reduce unnecessary padding?\nUnless, of course, I am mistaken, and padding \u003d\u003d 2 for SDFT does not consist of zeroes...",
+      "parentUuid": "4ca16905_b5f94518",
+      "range": {
+        "startLine": 449,
+        "startChar": 40,
+        "endLine": 449,
+        "endChar": 74
+      },
+      "revId": "89fc1870a94ac37883ecc99b2b5f72ac03f6d29a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
