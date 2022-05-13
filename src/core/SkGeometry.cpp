@@ -7,7 +7,6 @@
 
 #include "include/core/SkMatrix.h"
 #include "include/core/SkPoint3.h"
-#include "include/private/SkNx.h"
 #include "include/private/SkTPin.h"
 #include "include/private/SkVx.h"
 #include "src/core/SkGeometry.h"
@@ -17,7 +16,7 @@
 #include <tuple>
 #include <utility>
 
-static SkVector to_vector(const Sk2s& x) {
+static SkVector to_vector(const Sk2f& x) {
     SkVector vector;
     x.store(&vector);
     return vector;
@@ -138,31 +137,31 @@ SkVector SkEvalQuadTangentAt(const SkPoint src[3], SkScalar t) {
     SkASSERT(src);
     SkASSERT(t >= 0 && t <= SK_Scalar1);
 
-    Sk2s P0 = from_point(src[0]);
-    Sk2s P1 = from_point(src[1]);
-    Sk2s P2 = from_point(src[2]);
+    Sk2f P0 = from_point(src[0]);
+    Sk2f P1 = from_point(src[1]);
+    Sk2f P2 = from_point(src[2]);
 
-    Sk2s B = P1 - P0;
-    Sk2s A = P2 - P1 - B;
-    Sk2s T = A * Sk2s(t) + B;
+    Sk2f B = P1 - P0;
+    Sk2f A = P2 - P1 - B;
+    Sk2f T = A * Sk2f(t) + B;
 
     return to_vector(T + T);
 }
 
-static inline Sk2s interp(const Sk2s& v0, const Sk2s& v1, const Sk2s& t) {
+static inline Sk2f interp(const Sk2f& v0, const Sk2f& v1, const Sk2f& t) {
     return v0 + (v1 - v0) * t;
 }
 
 void SkChopQuadAt(const SkPoint src[3], SkPoint dst[5], SkScalar t) {
     SkASSERT(t > 0 && t < SK_Scalar1);
 
-    Sk2s p0 = from_point(src[0]);
-    Sk2s p1 = from_point(src[1]);
-    Sk2s p2 = from_point(src[2]);
-    Sk2s tt(t);
+    Sk2f p0 = from_point(src[0]);
+    Sk2f p1 = from_point(src[1]);
+    Sk2f p2 = from_point(src[2]);
+    Sk2f tt(t);
 
-    Sk2s p01 = interp(p0, p1, tt);
-    Sk2s p12 = interp(p1, p2, tt);
+    Sk2f p01 = interp(p0, p1, tt);
+    Sk2f p12 = interp(p1, p2, tt);
 
     dst[0] = to_point(p0);
     dst[1] = to_point(p01);
@@ -201,9 +200,10 @@ SkVector SkFindBisector(SkVector a, SkVector b) {
         v[1].set(-b.fY, +b.fX);
     }
     // Return "normalize(v[0]) + normalize(v[1])".
-    Sk2f x0_x1, y0_y1;
-    Sk2f::Load2(v.data(), &x0_x1, &y0_y1);
-    Sk2f invLengths = 1.0f / (x0_x1 * x0_x1 + y0_y1 * y0_y1).sqrt();
+    Sk2f x0_x1 = {v[0].fX, v[1].fX};
+    Sk2f y0_y1 = {v[0].fY, v[1].fY};
+
+    Sk2f invLengths = 1.0f / sqrt(x0_x1 * x0_x1 + y0_y1 * y0_y1);
     x0_x1 *= invLengths;
     y0_y1 *= invLengths;
     return SkPoint{x0_x1[0] + x0_x1[1], y0_y1[0] + y0_y1[1]};
@@ -357,10 +357,10 @@ int SkChopQuadAtMaxCurvature(const SkPoint src[3], SkPoint dst[5]) {
 }
 
 void SkConvertQuadToCubic(const SkPoint src[3], SkPoint dst[4]) {
-    Sk2s scale(SkDoubleToScalar(2.0 / 3.0));
-    Sk2s s0 = from_point(src[0]);
-    Sk2s s1 = from_point(src[1]);
-    Sk2s s2 = from_point(src[2]);
+    Sk2f scale(SkDoubleToScalar(2.0 / 3.0));
+    Sk2f s0 = from_point(src[0]);
+    Sk2f s1 = from_point(src[1]);
+    Sk2f s2 = from_point(src[2]);
 
     dst[0] = to_point(s0);
     dst[1] = to_point(s0 + (s1 - s0) * scale);
@@ -374,26 +374,26 @@ void SkConvertQuadToCubic(const SkPoint src[3], SkPoint dst[4]) {
 
 static SkVector eval_cubic_derivative(const SkPoint src[4], SkScalar t) {
     SkQuadCoeff coeff;
-    Sk2s P0 = from_point(src[0]);
-    Sk2s P1 = from_point(src[1]);
-    Sk2s P2 = from_point(src[2]);
-    Sk2s P3 = from_point(src[3]);
+    Sk2f P0 = from_point(src[0]);
+    Sk2f P1 = from_point(src[1]);
+    Sk2f P2 = from_point(src[2]);
+    Sk2f P3 = from_point(src[3]);
 
-    coeff.fA = P3 + Sk2s(3) * (P1 - P2) - P0;
+    coeff.fA = P3 + Sk2f(3) * (P1 - P2) - P0;
     coeff.fB = times_2(P2 - times_2(P1) + P0);
     coeff.fC = P1 - P0;
     return to_vector(coeff.eval(t));
 }
 
 static SkVector eval_cubic_2ndDerivative(const SkPoint src[4], SkScalar t) {
-    Sk2s P0 = from_point(src[0]);
-    Sk2s P1 = from_point(src[1]);
-    Sk2s P2 = from_point(src[2]);
-    Sk2s P3 = from_point(src[3]);
-    Sk2s A = P3 + Sk2s(3) * (P1 - P2) - P0;
-    Sk2s B = P2 - times_2(P1) + P0;
+    Sk2f P0 = from_point(src[0]);
+    Sk2f P1 = from_point(src[1]);
+    Sk2f P2 = from_point(src[2]);
+    Sk2f P3 = from_point(src[3]);
+    Sk2f A = P3 + Sk2f(3) * (P1 - P2) - P0;
+    Sk2f B = P2 - times_2(P1) + P0;
 
-    return to_vector(A * Sk2s(t) + B);
+    return to_vector(A * Sk2f(t) + B);
 }
 
 void SkEvalCubicAt(const SkPoint src[4], SkScalar t, SkPoint* loc,
@@ -580,9 +580,7 @@ float SkMeasureNonInflectCubicRotation(const SkPoint pts[4]) {
     return 2*SK_ScalarPI - SkMeasureAngleBetweenVectors(a,-b) - SkMeasureAngleBetweenVectors(b,-c);
 }
 
-static Sk4f fma(const Sk4f& f, float m, const Sk4f& a) {
-    return SkNx_fma(f, Sk4f(m), a);
-}
+static Sk4f fma(const Sk4f& f, float m, const Sk4f& a) { return f * m + a; }
 
 // Finds the root nearest 0.5. Returns 0.5 if the roots are undefined or outside 0..1.
 static float solve_quadratic_equation_for_midtangent(float a, float b, float c, float discr) {
@@ -1284,21 +1282,21 @@ void SkConic::chopAt(SkScalar t1, SkScalar t2, SkConic* dst) const {
         }
     }
     SkConicCoeff coeff(*this);
-    Sk2s tt1(t1);
-    Sk2s aXY = coeff.fNumer.eval(tt1);
-    Sk2s aZZ = coeff.fDenom.eval(tt1);
-    Sk2s midTT((t1 + t2) / 2);
-    Sk2s dXY = coeff.fNumer.eval(midTT);
-    Sk2s dZZ = coeff.fDenom.eval(midTT);
-    Sk2s tt2(t2);
-    Sk2s cXY = coeff.fNumer.eval(tt2);
-    Sk2s cZZ = coeff.fDenom.eval(tt2);
-    Sk2s bXY = times_2(dXY) - (aXY + cXY) * Sk2s(0.5f);
-    Sk2s bZZ = times_2(dZZ) - (aZZ + cZZ) * Sk2s(0.5f);
+    Sk2f tt1(t1);
+    Sk2f aXY = coeff.fNumer.eval(tt1);
+    Sk2f aZZ = coeff.fDenom.eval(tt1);
+    Sk2f midTT((t1 + t2) / 2);
+    Sk2f dXY = coeff.fNumer.eval(midTT);
+    Sk2f dZZ = coeff.fDenom.eval(midTT);
+    Sk2f tt2(t2);
+    Sk2f cXY = coeff.fNumer.eval(tt2);
+    Sk2f cZZ = coeff.fDenom.eval(tt2);
+    Sk2f bXY = times_2(dXY) - (aXY + cXY) * Sk2f(0.5f);
+    Sk2f bZZ = times_2(dZZ) - (aZZ + cZZ) * Sk2f(0.5f);
     dst->fPts[0] = to_point(aXY / aZZ);
     dst->fPts[1] = to_point(bXY / bZZ);
     dst->fPts[2] = to_point(cXY / cZZ);
-    Sk2s ww = bZZ / (aZZ * cZZ).sqrt();
+    Sk2f ww = bZZ / sqrt(aZZ * cZZ);
     dst->fW = ww[0];
 }
 
@@ -1313,17 +1311,17 @@ SkVector SkConic::evalTangentAt(SkScalar t) const {
     if ((t == 0 && fPts[0] == fPts[1]) || (t == 1 && fPts[1] == fPts[2])) {
         return fPts[2] - fPts[0];
     }
-    Sk2s p0 = from_point(fPts[0]);
-    Sk2s p1 = from_point(fPts[1]);
-    Sk2s p2 = from_point(fPts[2]);
-    Sk2s ww(fW);
+    Sk2f p0 = from_point(fPts[0]);
+    Sk2f p1 = from_point(fPts[1]);
+    Sk2f p2 = from_point(fPts[2]);
+    Sk2f ww(fW);
 
-    Sk2s p20 = p2 - p0;
-    Sk2s p10 = p1 - p0;
+    Sk2f p20 = p2 - p0;
+    Sk2f p10 = p1 - p0;
 
-    Sk2s C = ww * p10;
-    Sk2s A = ww * p20 - p20;
-    Sk2s B = p20 - C - C;
+    Sk2f C = ww * p10;
+    Sk2f A = ww * p20 - p20;
+    Sk2f B = p20 - C - C;
 
     return to_vector(SkQuadCoeff(A, B, C).eval(t));
 }
@@ -1344,16 +1342,16 @@ static SkScalar subdivide_w_value(SkScalar w) {
 }
 
 void SkConic::chop(SkConic * SK_RESTRICT dst) const {
-    Sk2s scale = Sk2s(SkScalarInvert(SK_Scalar1 + fW));
+    Sk2f scale = Sk2f(SkScalarInvert(SK_Scalar1 + fW));
     SkScalar newW = subdivide_w_value(fW);
 
-    Sk2s p0 = from_point(fPts[0]);
-    Sk2s p1 = from_point(fPts[1]);
-    Sk2s p2 = from_point(fPts[2]);
-    Sk2s ww(fW);
+    Sk2f p0 = from_point(fPts[0]);
+    Sk2f p1 = from_point(fPts[1]);
+    Sk2f p2 = from_point(fPts[2]);
+    Sk2f ww(fW);
 
-    Sk2s wp1 = ww * p1;
-    Sk2s m = (p0 + times_2(wp1) + p2) * scale * Sk2s(0.5f);
+    Sk2f wp1 = ww * p1;
+    Sk2f m = (p0 + times_2(wp1) + p2) * scale * Sk2f(0.5f);
     SkPoint mPt = to_point(m);
     if (!mPt.isFinite()) {
         double w_d = fW;

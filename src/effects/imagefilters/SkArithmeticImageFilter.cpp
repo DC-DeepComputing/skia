@@ -8,7 +8,7 @@
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
 #include "include/effects/SkImageFilters.h"
-#include "include/private/SkNx.h"
+#include "include/private/SkVx.h"
 #include "src/core/SkImageFilter_Base.h"
 #include "src/core/SkReadBuffer.h"
 #include "src/core/SkSpecialImage.h"
@@ -131,7 +131,7 @@ void SkArithmeticImageFilter::flatten(SkWriteBuffer& buffer) const {
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 static Sk4f pin(float min, const Sk4f& val, float max) {
-    return Sk4f::Max(min, Sk4f::Min(val, max));
+    return skvx::max(min, skvx::min(val, max));
 }
 
 template <bool EnforcePMColor>
@@ -142,14 +142,14 @@ void arith_span(const SkV4& k, SkPMColor dst[], const SkPMColor src[], int count
                k4 = k[3] * 255.0f + 0.5f;
 
     for (int i = 0; i < count; i++) {
-        Sk4f s = SkNx_cast<float>(Sk4b::Load(src+i)),
-             d = SkNx_cast<float>(Sk4b::Load(dst+i)),
+        Sk4f s = skvx::cast<float>(Sk4b::Load(src+i)),
+             d = skvx::cast<float>(Sk4b::Load(dst+i)),
              r = pin(0, k1*s*d + k2*s + k3*d + k4, 255);
         if (EnforcePMColor) {
-            Sk4f a = SkNx_shuffle<3,3,3,3>(r);
-            r = Sk4f::Min(a, r);
+            Sk4f a = skvx::shuffle<3,3,3,3>(r);
+            r = min(a, r);
         }
-        SkNx_cast<uint8_t>(r).store(dst+i);
+        skvx::cast<uint8_t>(r).store(dst+i);
     }
 }
 
@@ -159,13 +159,13 @@ template<bool EnforcePMColor> void arith_transparent(const SkV4& k, SkPMColor ds
                k4 = k[3] * 255.0f + 0.5f;
 
     for (int i = 0; i < count; i++) {
-        Sk4f d = SkNx_cast<float>(Sk4b::Load(dst+i)),
+        Sk4f d = skvx::cast<float>(Sk4b::Load(dst+i)),
              r = pin(0, k3*d + k4, 255);
         if (EnforcePMColor) {
-            Sk4f a = SkNx_shuffle<3,3,3,3>(r);
-            r = Sk4f::Min(a, r);
+            Sk4f a = skvx::shuffle<3,3,3,3>(r);
+            r = min(a, r);
         }
-        SkNx_cast<uint8_t>(r).store(dst+i);
+        skvx::cast<uint8_t>(r).store(dst+i);
     }
 }
 

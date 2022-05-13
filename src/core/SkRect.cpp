@@ -52,7 +52,7 @@ void SkRect::toQuad(SkPoint quad[4]) const {
     quad[3].set(fLeft, fBottom);
 }
 
-#include "include/private/SkNx.h"
+#include "include/private/SkVx.h"
 
 bool SkRect::setBoundsCheck(const SkPoint pts[], int count) {
     SkASSERT((pts && count > 0) || count == 0);
@@ -62,29 +62,29 @@ bool SkRect::setBoundsCheck(const SkPoint pts[], int count) {
         return true;
     }
 
-    Sk4s min, max;
+    Sk4f min, max;
     if (count & 1) {
-        min = max = Sk4s(pts->fX, pts->fY,
+        min = max = Sk4f(pts->fX, pts->fY,
                          pts->fX, pts->fY);
         pts   += 1;
         count -= 1;
     } else {
-        min = max = Sk4s::Load(pts);
+        min = max = Sk4f::Load(pts);
         pts   += 2;
         count -= 2;
     }
 
-    Sk4s accum = min * 0;
+    Sk4f accum = min * 0;
     while (count) {
-        Sk4s xy = Sk4s::Load(pts);
+        Sk4f xy = Sk4f::Load(pts);
         accum = accum * xy;
-        min = Sk4s::Min(min, xy);
-        max = Sk4s::Max(max, xy);
+        min = skvx::min(min, xy);
+        max = skvx::max(max, xy);
         pts   += 2;
         count -= 2;
     }
 
-    bool all_finite = (accum * 0 == 0).allTrue();
+    bool all_finite = all(accum * 0 == 0);
     if (all_finite) {
         this->setLTRB(std::min(min[0], min[2]), std::min(min[1], min[3]),
                       std::max(max[0], max[2]), std::max(max[1], max[3]));

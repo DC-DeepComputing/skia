@@ -12,8 +12,8 @@
 #include "include/core/SkRSXform.h"
 #include "include/core/SkString.h"
 #include "include/private/SkFloatBits.h"
-#include "include/private/SkNx.h"
 #include "include/private/SkTo.h"
+#include "include/private/SkVx.h"
 #include "src/core/SkMathPriv.h"
 #include "src/core/SkMatrixPriv.h"
 #include "src/core/SkPathPriv.h"
@@ -912,17 +912,17 @@ void SkMatrix::Trans_pts(const SkMatrix& m, SkPoint dst[], const SkPoint src[], 
             src += 1;
             dst += 1;
         }
-        Sk4s trans4(tx, ty, tx, ty);
+        Sk4f trans4(tx, ty, tx, ty);
         count >>= 1;
         if (count & 1) {
-            (Sk4s::Load(src) + trans4).store(dst);
+            (Sk4f::Load(src) + trans4).store(dst);
             src += 2;
             dst += 2;
         }
         count >>= 1;
         for (int i = 0; i < count; ++i) {
-            (Sk4s::Load(src+0) + trans4).store(dst+0);
-            (Sk4s::Load(src+2) + trans4).store(dst+2);
+            (Sk4f::Load(src+0) + trans4).store(dst+0);
+            (Sk4f::Load(src+2) + trans4).store(dst+2);
             src += 4;
             dst += 4;
         }
@@ -936,10 +936,10 @@ void SkMatrix::Scale_pts(const SkMatrix& m, SkPoint dst[], const SkPoint src[], 
         SkScalar ty = m.getTranslateY();
         SkScalar sx = m.getScaleX();
         SkScalar sy = m.getScaleY();
-        Sk4s trans4(tx, ty, tx, ty);
-        Sk4s scale4(sx, sy, sx, sy);
+        Sk4f trans4(tx, ty, tx, ty);
+        Sk4f scale4(sx, sy, sx, sy);
         if (count & 1) {
-            Sk4s p(src->fX, src->fY, 0, 0);
+            Sk4f p(src->fX, src->fY, 0, 0);
             p = p * scale4 + trans4;
             dst->fX = p[0];
             dst->fY = p[1];
@@ -948,14 +948,14 @@ void SkMatrix::Scale_pts(const SkMatrix& m, SkPoint dst[], const SkPoint src[], 
         }
         count >>= 1;
         if (count & 1) {
-            (Sk4s::Load(src) * scale4 + trans4).store(dst);
+            (Sk4f::Load(src) * scale4 + trans4).store(dst);
             src += 2;
             dst += 2;
         }
         count >>= 1;
         for (int i = 0; i < count; ++i) {
-            (Sk4s::Load(src+0) * scale4 + trans4).store(dst+0);
-            (Sk4s::Load(src+2) * scale4 + trans4).store(dst+2);
+            (Sk4f::Load(src+0) * scale4 + trans4).store(dst+0);
+            (Sk4f::Load(src+2) * scale4 + trans4).store(dst+2);
             src += 4;
             dst += 4;
         }
@@ -1005,13 +1005,13 @@ void SkMatrix::Affine_vpts(const SkMatrix& m, SkPoint dst[], const SkPoint src[]
             src += 1;
             dst += 1;
         }
-        Sk4s trans4(tx, ty, tx, ty);
-        Sk4s scale4(sx, sy, sx, sy);
-        Sk4s  skew4(kx, ky, kx, ky);    // applied to swizzle of src4
+        Sk4f trans4(tx, ty, tx, ty);
+        Sk4f scale4(sx, sy, sx, sy);
+        Sk4f  skew4(kx, ky, kx, ky);    // applied to swizzle of src4
         count >>= 1;
         for (int i = 0; i < count; ++i) {
-            Sk4s src4 = Sk4s::Load(src);
-            Sk4s swz4 = SkNx_shuffle<1,0,3,2>(src4);  // y0 x0, y1 x1
+            Sk4f src4 = Sk4f::Load(src);
+            Sk4f swz4 = skvx::shuffle<1,0,3,2>(src4);  // y0 x0, y1 x1
             (src4 * scale4 + swz4 * skew4 + trans4).store(dst);
             src += 2;
             dst += 2;
@@ -1128,8 +1128,8 @@ void SkMatrix::mapVectors(SkPoint dst[], const SkPoint src[], int count) const {
 
 static Sk4f sort_as_rect(const Sk4f& ltrb) {
     Sk4f rblt(ltrb[2], ltrb[3], ltrb[0], ltrb[1]);
-    Sk4f min = Sk4f::Min(ltrb, rblt);
-    Sk4f max = Sk4f::Max(ltrb, rblt);
+    Sk4f min = skvx::min(ltrb, rblt);
+    Sk4f max = skvx::max(ltrb, rblt);
     // We can extract either pair [0,1] or [2,3] from min and max and be correct, but on
     // ARM this sequence generates the fastest (a single instruction).
     return Sk4f(min[2], min[3], max[0], max[1]);

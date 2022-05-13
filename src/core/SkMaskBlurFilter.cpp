@@ -9,10 +9,10 @@
 
 #include "include/core/SkColorPriv.h"
 #include "include/private/SkMalloc.h"
-#include "include/private/SkNx.h"
 #include "include/private/SkTPin.h"
 #include "include/private/SkTemplates.h"
 #include "include/private/SkTo.h"
+#include "include/private/SkVx.h"
 #include "src/core/SkArenaAlloc.h"
 #include "src/core/SkGaussFilter.h"
 
@@ -21,6 +21,9 @@
 
 namespace {
 static const double kPi = 3.14159265358979323846264338327950288;
+
+using Sk8h = skvx::Vec<8, uint16_t>;
+using Sk8b = skvx::Vec<8, uint8_t>;
 
 class PlanGauss final {
 public:
@@ -311,11 +314,11 @@ static Sk8h load(const uint8_t* from, int width, ToA8* toA8) {
     }
 
     // Load A8 and convert to 8.8 fixed-point.
-    return SkNx_cast<uint16_t>(Sk8b::Load(from)) << 8;
+    return skvx::cast<uint16_t>(Sk8b::Load(from)) << 8;
 }
 
 static void store(uint8_t* to, const Sk8h& v, int width) {
-    Sk8b b = SkNx_cast<uint8_t>(v >> 8);
+    Sk8b b = skvx::cast<uint8_t>(v >> 8);
     if (width == 8) {
         b.store(to);
     } else {

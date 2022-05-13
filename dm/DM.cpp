@@ -1258,7 +1258,7 @@ struct Task {
                     for (int x = 0; x < pm.width() && !unclamped; ++x) {
                         Sk4f rgba = SkHalfToFloat_finite_ftz(*pm.addr64(x, y));
                         float a = rgba[3];
-                        if (a > 1.0f || (rgba < 0.0f).anyTrue() || (rgba > a).anyTrue()) {
+                        if (a > 1.0f || any(rgba < 0.0f) || any(rgba > a)) {
                             SkDebugf("[%s] F16Norm pixel [%d, %d] unclamped: (%g, %g, %g, %g)\n",
                                      name.c_str(), x, y, rgba[0], rgba[1], rgba[2], rgba[3]);
                             unclamped = true;

@@ -10,7 +10,7 @@
 
 #include "include/core/SkColor.h"
 #include "include/private/SkColorData.h"
-#include "include/private/SkNx.h"
+#include "include/private/SkVx.h"
 
 // This file may be included multiple times by .cpp files with different flags, leading
 // to different definitions.  Usually that doesn't matter because it's all inlined, but
@@ -20,12 +20,15 @@
 namespace {  // NOLINT(google-build-namespaces)
 
 // 1, 2 or 4 SkPMColors, generally vectorized.
-class Sk4px : public Sk16b {
+class Sk4px : private skvx::Vec<16, uint8_t> {
+    using Sk16b = skvx::Vec<16, uint8_t>;
+    using Sk16h = skvx::Vec<16, uint16_t>;
+
 public:
-    Sk4px(const Sk16b& v) : INHERITED(v) {}
+    Sk4px(const Sk16b& v) : skvx::Vec<16, uint8_t>(v) {}
 
     static Sk4px DupPMColor(SkPMColor c) {
-        Sk4u splat(c);
+        skvx::Vec<4, uint32_t> splat(c);
 
         Sk4px v;
         memcpy((void*)&v, &splat, 16);
@@ -62,7 +65,7 @@ public:
 
     // 1, 2, or 4 SkPMColors with 16-bit components.
     // This is most useful as the result of a multiply, e.g. from mulWiden().
-    class Wide : public Sk16h {
+    class Wide : private Sk16h {
     public:
         Wide(const Sk16h& v) : Sk16h(v) {}
 
@@ -73,14 +76,21 @@ public:
         Sk4px div255() const;
 
         // These just keep the types as Wide so the user doesn't have to keep casting.
-        Wide operator * (const Wide& o) const { return INHERITED::operator*(o); }
-        Wide operator + (const Wide& o) const { return INHERITED::operator+(o); }
-        Wide operator - (const Wide& o) const { return INHERITED::operator-(o); }
-        Wide operator >> (int bits) const { return INHERITED::operator>>(bits); }
-        Wide operator << (int bits) const { return INHERITED::operator<<(bits); }
-
-    private:
-        using INHERITED = Sk16h;
+        Wide operator * (const Wide& o) const {
+            return (Wide)((const Sk16h&)*this * (const Sk16h&)o);
+        }
+        Wide operator + (const Wide& o) const {
+            return (Wide)((const Sk16h&)*this + (const Sk16h&)o);
+        }
+        Wide operator - (const Wide& o) const {
+            return (Wide)((const Sk16h&)*this - (const Sk16h&)o);
+        }
+        Wide operator >> (int bits) const {
+            return (Wide)((const Sk16h&)*this >> bits);
+        }
+        Wide operator << (int bits) const {
+            return (Wide)((const Sk16h&)*this << bits);
+        }
     };
 
     Wide widen() const;               // Widen 8-bit values to low 8-bits of 16-bit lanes.
@@ -90,17 +100,23 @@ public:
     Wide operator * (const Sk4px& o) const { return this->mulWiden(o); }
 
     // These just keep the types as Sk4px so the user doesn't have to keep casting.
-    Sk4px operator + (const Sk4px& o) const { return INHERITED::operator+(o); }
-    Sk4px operator - (const Sk4px& o) const { return INHERITED::operator-(o); }
-    Sk4px operator < (const Sk4px& o) const { return INHERITED::operator<(o); }
-    Sk4px thenElse(const Sk4px& t, const Sk4px& e) const { return INHERITED::thenElse(t,e); }
+    Sk4px operator + (const Sk4px& o) const {
+        return (Sk4px) ((const Sk16b&)*this + (const Sk16b&)o);
+    }
+    Sk4px operator - (const Sk4px& o) const {
+        return (Sk4px) ((const Sk16b&)*this - (const Sk16b&)o);
+    }
+    Sk4px operator < (const Sk4px& o) const {
+        return (Sk4px) ((const Sk16b&)*this < (const Sk16b&)o);
+    }
+    Sk4px thenElse(const Sk4px& t, const Sk4px& e) const {
+        return (Sk4px) if_then_else((const Sk16b&)*this, (const Sk16b&) t, (const Sk16b&) e);
+    }
 
     // Generally faster than (*this * o).div255().
     // May be incorrect by +-1, but is always exactly correct when *this or o is 0 or 255.
     Sk4px approxMulDiv255(const Sk16b& o) const {
-        // (x*y + x) / 256 meets these criteria.  (As of course does (x*y + y) / 256 by symmetry.)
-        // FYI: (x*y + 255) / 256 also meets these criteria.  In my brief testing, it was slower.
-        return this->widen().addNarrowHi(*this * o);
+        return (Sk4px) approx_scale((const Sk16b&)*this, o);
     }
 
     // A generic driver that maps fn over a src array into a dst array.
@@ -232,11 +248,8 @@ public:
 
 private:
     Sk4px() = default;
-
-    using INHERITED = Sk16b;
 };
 
-static_assert(sizeof(Sk4px) == sizeof(Sk16b));
 static_assert(sizeof(Sk4px) == 16);
 
 }  // namespace
