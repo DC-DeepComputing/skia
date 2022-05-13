@@ -89,15 +89,6 @@ void GrGLSLShaderBuilder::emitFunctionPrototype(const char* declaration) {
     this->functions().appendf("%s;\n", declaration);
 }
 
-void GrGLSLShaderBuilder::codeAppend(std::unique_ptr<SkSL::Statement> stmt) {
-    SkASSERT(SkSL::ThreadContext::CurrentProcessor());
-    SkASSERT(stmt);
-    this->codeAppend(stmt->description().c_str());
-    if (stmt->is<SkSL::VarDeclaration>()) {
-        fDeclarations.push_back(std::move(stmt));
-    }
-}
-
 static inline void append_texture_swizzle(SkString* out, skgpu::Swizzle swizzle) {
     if (swizzle != skgpu::Swizzle::RGBA()) {
         out->appendf(".%s", swizzle.asString().c_str());

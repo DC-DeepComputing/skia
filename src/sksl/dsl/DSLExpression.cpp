@@ -117,13 +117,6 @@ DSLExpression DSLExpression::Poison(Position pos) {
 }
 
 DSLExpression::~DSLExpression() {
-#if !defined(SKSL_STANDALONE) && SK_SUPPORT_GPU
-    if (fExpression && ThreadContext::InFragmentProcessor()) {
-        ThreadContext::CurrentEmitArgs()->fFragBuilder->codeAppend(
-                DSLStatement(this->release()).release());
-        return;
-    }
-#endif
     SkASSERTF(!fExpression || !ThreadContext::Settings().fAssertDSLObjectsReleased,
               "Expression destroyed without being incorporated into program (see "
               "ProgramSettings::fAssertDSLObjectsReleased)");

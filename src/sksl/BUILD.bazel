@@ -71,7 +71,6 @@ cc_library(
         "//src/sksl/dsl:DSLSymbols_src",
         "//src/sksl/dsl:DSLType_src",
         "//src/sksl/dsl:DSLVar_src",
-        "//src/sksl/dsl/priv:DSLFPs_src",
         "//src/sksl/dsl/priv:DSLWriter_src",
         "//src/sksl/ir:SkSLBinaryExpression_src",
         "//src/sksl/ir:SkSLBlock_src",
