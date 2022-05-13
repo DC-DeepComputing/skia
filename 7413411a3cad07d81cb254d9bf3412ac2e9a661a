@@ -45,6 +45,53 @@
       },
       "revId": "7413411a3cad07d81cb254d9bf3412ac2e9a661a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4519dd25_47c31c96",
+        "filename": "src/gpu/ganesh/GrCaps.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 486,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-05-13T13:41:50Z",
+      "side": 1,
+      "message": "It\u0027s cons is private so you can\u0027t.",
+      "parentUuid": "af01529f_314c0836",
+      "range": {
+        "startLine": 486,
+        "startChar": 0,
+        "endLine": 486,
+        "endChar": 51
+      },
+      "revId": "7413411a3cad07d81cb254d9bf3412ac2e9a661a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ca8810c9_e7171daa",
+        "filename": "src/sksl/SkSLUtil.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-05-13T13:41:50Z",
+      "side": 1,
+      "message": "Really minor. I get that we\u0027re starting off with version numbers that align with GLSL ES. But do we want to call it SkSLES3 internally? SkSL300?",
+      "range": {
+        "startLine": 186,
+        "startChar": 19,
+        "endLine": 186,
+        "endChar": 24
+      },
+      "revId": "7413411a3cad07d81cb254d9bf3412ac2e9a661a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
