@@ -54,6 +54,31 @@ struct PaintCombo {
     std::vector<SkBlendMode> fBlendModes;
 };
 
+class SkBlenderID {
+public:
+    constexpr SkBlenderID() : fID(0) {}  // 0 is an invalid blender ID
+    constexpr SkBlenderID(uint32_t id) : fID(id) {}
+    SkBlenderID(const SkBlenderID& src) : fID(src.fID) {}
+
+    bool isValid() const { return fID > 0; }
+
+    bool operator==(const SkBlenderID& other) const { return fID == other.fID; }
+    bool operator<(const SkBlenderID& other) const { return fID < other.fID; }
+
+    SkBlenderID& operator=(const SkBlenderID& src) {
+        fID = src.fID;
+        return *this;
+    }
+
+private:
+    friend class SkShaderCodeDictionary;
+    friend class SkPaintParamsKeyBuilder;
+
+    uint32_t asUInt() const { return fID; }
+
+    uint32_t fID;
+};
+
 class Context final {
 public:
     Context(const Context&) = delete;
@@ -78,6 +103,8 @@ public:
      * Checks whether any asynchronous work is complete and if so calls related callbacks.
      */
     void checkAsyncWorkCompletion();
+
+    SkBlenderID addUserDefinedSnippet(SkBlender*);
 
     void preCompile(const PaintCombo&);
 
