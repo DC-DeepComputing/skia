@@ -116,6 +116,7 @@ skia_graphite_sources = [
   "$_src/geom/VectorTypes.h",
   "$_src/render/CoverBoundsRenderStep.cpp",
   "$_src/render/CoverBoundsRenderStep.h",
+  "$_src/render/DynamicInstancesPatchAllocator.h",
   "$_src/render/MiddleOutFanRenderStep.cpp",
   "$_src/render/MiddleOutFanRenderStep.h",
   "$_src/render/StencilAndCoverDSS.h",
