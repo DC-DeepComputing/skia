@@ -39,6 +39,30 @@
       },
       "revId": "5b0b73fe1bc606f8dddbc8384e171ed426b537d5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9c930cff_a3721c69",
+        "filename": "modules/skparagraph/src/TextStyle.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 159,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-05-13T14:09:28Z",
+      "side": 1,
+      "message": "Features should not break runs. The way features are specified in OpenType is specifically so they don\u0027t break runs. Logically, on the input side features are specified as a property applied to each codepoint which is then applied to the default glyph it maps to and a feature is active at a given location if the current glyph has that feature set. (Indeed, in the implementation in HarfBuzz, the set of active features is a bitset associated with each codepoint/glyph in the buffer.) From the API side we express this as ranges because that\u0027s generally more compact than specifying the features explicitly for each codepoint. However, just because one codepoint has a different set of features than the previous codepoint should not break shaping (indeed, that would be counter to the idea of features).",
+      "parentUuid": "9f3914de_2f55680a",
+      "range": {
+        "startLine": 159,
+        "startChar": 0,
+        "endLine": 159,
+        "endChar": 19
+      },
+      "revId": "5b0b73fe1bc606f8dddbc8384e171ed426b537d5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
