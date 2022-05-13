@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7a560fd5_2c474935",
+        "filename": "src/sksl/transform/SkSLEliminateEmptyStatements.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-05-13T17:26:17Z",
+      "side": 1,
+      "message": "Is my understanding correct, in that for a given Block statement this will end up going through this branch in the parent (https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/sksl/SkSLAnalysis.cpp;l\u003d596;drc\u003db772e1991d8d03a455905b6ec524981ce5c7ac66) which will visit all the blocks remaining children and terminate?",
+      "range": {
+        "startLine": 44,
+        "startChar": 12,
+        "endLine": 44,
+        "endChar": 54
+      },
+      "revId": "3fabc27e7646343a320790ef6fad35c1962e38ff",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

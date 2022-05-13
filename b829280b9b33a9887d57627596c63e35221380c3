@@ -22,6 +22,30 @@
       },
       "revId": "b829280b9b33a9887d57627596c63e35221380c3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6f3e2e4d_7e14f3af",
+        "filename": "src/sksl/transform/SkSLEliminateEmptyStatements.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-05-13T17:26:17Z",
+      "side": 1,
+      "message": "You could introduce an `erase` which will probably look similar to the current `resize`.",
+      "parentUuid": "17d4e7b5_2fa0bb07",
+      "range": {
+        "startLine": 37,
+        "startChar": 25,
+        "endLine": 37,
+        "endChar": 31
+      },
+      "revId": "b829280b9b33a9887d57627596c63e35221380c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
