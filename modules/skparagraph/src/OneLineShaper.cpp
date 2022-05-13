@@ -425,23 +425,6 @@ void OneLineShaper::iterateThroughFontStyles(TextRange textRange,
                                              SkSpan<Block> styleSpan,
                                              const ShapeSingleFontVisitor& visitor) {
     Block combinedBlock;
-    SkTArray<SkShaper::Feature> features;
-
-    auto addFeatures = [&features](const Block& block) {
-        for (auto& ff : block.fStyle.getFontFeatures()) {
-            if (ff.fName.size() != 4) {
-                SkDEBUGF("Incorrect font feature: %s=%d\n", ff.fName.c_str(), ff.fValue);
-                continue;
-            }
-            SkShaper::Feature feature = {
-                SkSetFourByteTag(ff.fName[0], ff.fName[1], ff.fName[2], ff.fName[3]),
-                SkToU32(ff.fValue),
-                block.fRange.start,
-                block.fRange.end
-            };
-            features.emplace_back(feature);
-        }
-    };
 
     for (auto& block : styleSpan) {
         BlockRange blockRange(std::max(block.fRange.start, textRange.start), std::min(block.fRange.end, textRange.end));
@@ -453,20 +436,17 @@ void OneLineShaper::iterateThroughFontStyles(TextRange textRange,
         if (!combinedBlock.fRange.empty()) {
             if (block.fStyle.matchOneAttribute(StyleType::kFont, combinedBlock.fStyle)) {
                 combinedBlock.add(blockRange);
-                addFeatures(block);
                 continue;
             }
             // Resolve all characters in the block for this style
-            visitor(combinedBlock, features);
+            visitor(combinedBlock);
         }
 
         combinedBlock.fRange = blockRange;
         combinedBlock.fStyle = block.fStyle;
-        features.reset();
-        addFeatures(block);
     }
 
-    visitor(combinedBlock, features);
+    visitor(combinedBlock);
 #ifdef SK_DEBUG
     //printState();
 #endif
@@ -637,7 +617,7 @@ bool OneLineShaper::shape() {
 
         iterateThroughFontStyles(textRange, styleSpan,
                 [this, &shaper, defaultBidiLevel, limitlessWidth, &advanceX]
-                (Block block, SkTArray<SkShaper::Feature> features) {
+                (Block block) {
             auto blockSpan = SkSpan<Block>(&block, 1);
 
             // Start from the beginning (hoping that it's a simple case one block - one run)
@@ -647,6 +627,18 @@ bool OneLineShaper::shape() {
             fAdvance = SkVector::Make(advanceX, 0);
             fCurrentText = block.fRange;
             fUnresolvedBlocks.emplace_back(RunBlock(block.fRange));
+
+            SkTArray<SkShaper::Feature> features;
+            for (auto& ff : block.fStyle.getFontFeatures()) {
+              if (ff.fName.size() != 4) {
+                SkDEBUGF("Incorrect font feature: %s=%d\n", ff.fName.c_str(), ff.fValue);
+                continue;
+              }
+              features.push_back({
+                  SkSetFourByteTag(ff.fName[0], ff.fName[1], ff.fName[2], ff.fName[3]),
+                  SkToU32(ff.fValue), 0, 0
+              });
+            }
 
             this->matchResolvedFonts(block.fStyle, [&](sk_sp<SkTypeface> typeface) {
 
@@ -687,7 +679,13 @@ bool OneLineShaper::shape() {
                     SkShaper::TrivialBiDiRunIterator bidiIter(defaultBidiLevel, unresolvedText.size());
                     auto scriptIter = SkShaper::MakeSkUnicodeHbScriptRunIterator
                                      (fParagraph->getUnicode(), unresolvedText.begin(), unresolvedText.size());
+
+                    for (auto& feature : features) {
+                      feature.end = unresolvedText.size();
+                    }
+
                     fCurrentText = unresolvedRange;
+
                     shaper->shape(unresolvedText.begin(), unresolvedText.size(),
                             fontIter, bidiIter,*scriptIter, langIter,
                             features.data(), features.size(),

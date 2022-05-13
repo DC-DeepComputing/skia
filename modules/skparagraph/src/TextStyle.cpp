@@ -156,6 +156,7 @@ bool TextStyle::matchOneAttribute(StyleType styleType, const TextStyle& other) c
                    fHeight == other.fHeight &&
                    fHalfLeading == other.fHalfLeading &&
                    fBaselineShift == other.fBaselineShift &&
+                   fFontFeatures == other.fFontFeatures &&
                    fFontArguments == other.fFontArguments;
         default:
             SkASSERT(false);
