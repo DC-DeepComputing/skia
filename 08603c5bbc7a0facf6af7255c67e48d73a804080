@@ -72,6 +72,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6aade76f_19e24ce8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-05-13T19:31:26Z",
+      "side": 1,
+      "message": "Done (moved to ProgramConfig).",
+      "parentUuid": "35b5863f_094c7ed0",
+      "revId": "08603c5bbc7a0facf6af7255c67e48d73a804080",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b9aed692_b4965090",
@@ -103,6 +121,24 @@
       "side": 1,
       "message": "glslang permits comments before #version: http://screen/6wZvbnMTHzn7B3w\n\nWebGL does as well.\n\nThey are probably removed by the preprocessor.",
       "parentUuid": "b9aed692_b4965090",
+      "revId": "08603c5bbc7a0facf6af7255c67e48d73a804080",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cc16336b_04197418",
+        "filename": "src/sksl/SkSLDSLParser.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 298,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-05-13T19:31:26Z",
+      "side": 1,
+      "message": "Right (and this approach permits that as well). The language to support this in the GLSL spec is fairly explicit, but also seems to suggest that maybe it *shouldn\u0027t* work. Given that we don\u0027t have a preprocessor (or line continuation), I\u0027m not real worried yet - but it also creates issues if our approach to preprocessor support is to have our clients do it (#version is *not* considered a preprocessor directive, and actually happens first).",
+      "parentUuid": "052379c1_ea0e7b50",
       "revId": "08603c5bbc7a0facf6af7255c67e48d73a804080",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
