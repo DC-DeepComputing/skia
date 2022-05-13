@@ -16,6 +16,24 @@
       "message": "How important is it for the SkCapabilities objects to be alive after the producer of those caps goes away?\n\nIn Graphite, the Caps object is owned by the Gpu (and can likely be changed to not be ref counted at all), which should be more than enough life time for callers. The raster backend\u0027s SkCapabilities could be statically initialized. In Ganesh, GrCaps is ref-counted but kept alive by the GrGpu.\n\nI\u0027m wondering if it makes sense for GrCaps and skgpu::graphite::Caps to just have fields that are `SkCapabilities` and then `asSkCapabilities()` returns a pointer to that field. Then we don\u0027t need to ref-count these caps at all, and we aren\u0027t doing a malloc everytime someone queries the capabilities.\n\nIf we want to keep SkCapabilities ref-counted, I think then things would be simpler to have GrCaps and Caps have `sk_sp\u003cSkCapabilities\u003e` objects that are initialized and then `asSkCapabilities()` just returns the existing object. As we add more features to SkCaps, it\u0027ll mean the internal caps types can just rely on SkCaps for the storage vs. having mirrored or coupled data dependencies.",
       "revId": "1ad4d3b9ec64fe124db534cc27b0f89574785aa7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "803a6611_9a419dbd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-05-13T15:18:25Z",
+      "side": 1,
+      "message": "I got a little nervous about multi-threaded use cases (as discussed in chat). Regardless, creating a new object for each call was definitely wasteful, so I\u0027ve made GrCaps and Caps just own an sk_sp\u003cSkCapabilities\u003e, and return that.",
+      "parentUuid": "574c0646_8711968a",
+      "revId": "1ad4d3b9ec64fe124db534cc27b0f89574785aa7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
