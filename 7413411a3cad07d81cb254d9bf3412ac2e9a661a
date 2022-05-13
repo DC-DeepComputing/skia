@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8ef9d802_00b12141",
+        "filename": "include/core/SkSurface.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 604,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-05-13T13:56:37Z",
+      "side": 1,
+      "message": "Yes, good point. Done.",
+      "parentUuid": "81e45d77_9acbd67d",
+      "range": {
+        "startLine": 604,
+        "startChar": 50,
+        "endLine": 604,
+        "endChar": 79
+      },
+      "revId": "7413411a3cad07d81cb254d9bf3412ac2e9a661a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "af01529f_314c0836",
@@ -95,6 +119,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "efc06240_d4215c48",
+        "filename": "src/gpu/ganesh/GrCaps.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 486,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-05-13T13:56:37Z",
+      "side": 1,
+      "message": "Brian beat me to it.",
+      "parentUuid": "af01529f_314c0836",
+      "range": {
+        "startLine": 486,
+        "startChar": 0,
+        "endLine": 486,
+        "endChar": 51
+      },
+      "revId": "7413411a3cad07d81cb254d9bf3412ac2e9a661a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ca8810c9_e7171daa",
@@ -131,6 +179,30 @@
       "writtenOn": "2022-05-13T13:46:28Z",
       "side": 1,
       "message": "We\u0027ve been using \"strict-ES2\" and \"ES3\" internally for a long time, but I agree, now that we have actual SkSL versions, it is about time to reconsider those names. I know the \"ES3\" suffix on things threw Arman for a loop when he joined.\n\nIn this case we\u0027re just moving an existing function from point A to point B so I\u0027m not sure that it needs to be fixed in this CL per se though.",
+      "parentUuid": "ca8810c9_e7171daa",
+      "range": {
+        "startLine": 186,
+        "startChar": 19,
+        "endLine": 186,
+        "endChar": 24
+      },
+      "revId": "7413411a3cad07d81cb254d9bf3412ac2e9a661a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "01addc2c_a0ade79a",
+        "filename": "src/sksl/SkSLUtil.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-05-13T13:56:37Z",
+      "side": 1,
+      "message": "Right. This particular function already existed (I just had to move it in this CL). It is strangely named. Better would be to just have a function that returns the SkSL::Version that\u0027s supported (so this would return either k300 or k100). I\u0027ll do that...",
       "parentUuid": "ca8810c9_e7171daa",
       "range": {
         "startLine": 186,
