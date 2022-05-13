@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "29c3ee04_711d25c4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-05-13T12:54:26Z",
+      "side": 1,
+      "message": "I want Ben\u0027s opinion on this change. ",
+      "revId": "5b0b73fe1bc606f8dddbc8384e171ed426b537d5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9f3914de_2f55680a",
+        "filename": "modules/skparagraph/src/TextStyle.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 159,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-05-13T12:54:26Z",
+      "side": 1,
+      "message": "So, now font features break runs, too. It\u0027s probably not a big deal but it\u0027s not necessary...",
+      "range": {
+        "startLine": 159,
+        "startChar": 0,
+        "endLine": 159,
+        "endChar": 19
+      },
+      "revId": "5b0b73fe1bc606f8dddbc8384e171ed426b537d5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
