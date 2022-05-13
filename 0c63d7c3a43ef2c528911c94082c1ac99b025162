@@ -16,6 +16,23 @@
       "message": "The plan is to cherry-pick this into T.",
       "revId": "0c63d7c3a43ef2c528911c94082c1ac99b025162",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e18a4479_128bf25c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-05-13T12:39:01Z",
+      "side": 1,
+      "message": "Along with the related CLs, this [fixes the regression](https://buganizer.corp.google.com/issues/224677119#comment22)",
+      "revId": "0c63d7c3a43ef2c528911c94082c1ac99b025162",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
