@@ -92,6 +92,30 @@
       },
       "revId": "7413411a3cad07d81cb254d9bf3412ac2e9a661a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a45c5abb_60f16e8d",
+        "filename": "src/sksl/SkSLUtil.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-05-13T13:46:28Z",
+      "side": 1,
+      "message": "We\u0027ve been using \"strict-ES2\" and \"ES3\" internally for a long time, but I agree, now that we have actual SkSL versions, it is about time to reconsider those names. I know the \"ES3\" suffix on things threw Arman for a loop when he joined.\n\nIn this case we\u0027re just moving an existing function from point A to point B so I\u0027m not sure that it needs to be fixed in this CL per se though.",
+      "parentUuid": "ca8810c9_e7171daa",
+      "range": {
+        "startLine": 186,
+        "startChar": 19,
+        "endLine": 186,
+        "endChar": 24
+      },
+      "revId": "7413411a3cad07d81cb254d9bf3412ac2e9a661a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
