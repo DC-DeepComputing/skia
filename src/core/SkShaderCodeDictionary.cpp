@@ -583,6 +583,19 @@ int SkShaderCodeDictionary::addUserDefinedSnippet(
     return kBuiltInCodeSnippetIDCount + fUserDefinedCodeSnippets.size() - 1;
 }
 
+static const int kMinUserDefinedSnippetID = std::max(kBuiltInCodeSnippetIDCount, kSkBlendModeCount);
+
+skgpu::graphite::SkBlenderID SkShaderCodeDictionary::addUserDefinedSnippet(SkBlender* blender) {
+    SkBlenderBase* bb = as_BB(blender);
+
+    SkRuntimeEffect* rtEffect = bb->asRuntimeEffect();
+    if (!rtEffect) {
+        return {}; // not really user-defined
+    }
+
+
+}
+
 SkShaderCodeDictionary::SkShaderCodeDictionary() {
     // The 0th index is reserved as invalid
     fEntryVector.push_back(nullptr);
