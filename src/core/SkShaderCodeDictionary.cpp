@@ -583,6 +583,12 @@ int SkShaderCodeDictionary::addUserDefinedSnippet(
     return kBuiltInCodeSnippetIDCount + fUserDefinedCodeSnippets.size() - 1;
 }
 
+static const int kMinUserDefinedSnippetID = std::max(kBuiltInCodeSnippetIDCount, kBlenderMode
+
+skgpu::graphite::SkBlenderID SkShaderCodeDictionary::addUserDefinedSnippet(SkBlender* blender) {
+    return {};
+}
+
 SkShaderCodeDictionary::SkShaderCodeDictionary() {
     // The 0th index is reserved as invalid
     fEntryVector.push_back(nullptr);

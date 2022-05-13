@@ -12,12 +12,14 @@
 #include "include/gpu/graphite/Recorder.h"
 #include "include/gpu/graphite/Recording.h"
 #include "include/gpu/graphite/TextureInfo.h"
+#include "src/core/SkBlenderBase.h"
 #include "src/core/SkKeyContext.h"
 #include "src/core/SkKeyHelpers.h"
 #include "src/core/SkShaderCodeDictionary.h"
 #include "src/gpu/RefCntedCallback.h"
 #include "src/gpu/graphite/Caps.h"
 #include "src/gpu/graphite/CommandBuffer.h"
+#include "src/gpu/graphite/ContextPriv.h"
 #include "src/gpu/graphite/GlobalCache.h"
 #include "src/gpu/graphite/Gpu.h"
 #include "src/gpu/graphite/GraphicsPipelineDesc.h"
@@ -85,6 +87,19 @@ void Context::submit(SyncToCpu syncToCpu) {
 
 void Context::checkAsyncWorkCompletion() {
     fGpu->checkForFinishedWork(SyncToCpu::kNo);
+}
+
+SkBlenderID Context::addUserDefinedSnippet(SkBlender* blender) {
+    auto dict = this->priv().shaderCodeDictionary();
+
+    SkBlenderBase* bb = as_BB(blender);
+
+    SkRuntimeEffect* rtEffect = bb->asRuntimeEffect();
+    if (!rtEffect) {
+        return {};
+    }
+
+    return dict->addUserDefinedSnippet(blender);
 }
 
 void Context::preCompile(const PaintCombo& paintCombo) {
