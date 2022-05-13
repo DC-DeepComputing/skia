@@ -34,6 +34,24 @@
       "parentUuid": "574c0646_8711968a",
       "revId": "1ad4d3b9ec64fe124db534cc27b0f89574785aa7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9752dcec_ac020291",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-05-13T15:22:34Z",
+      "side": 1,
+      "message": "This seems like an improvement. It\u0027s a good point about avoiding duplicate data if we start reporting things like max texture size via sk_caps (esp with all the complicated driver workaround logic that can modify values).",
+      "parentUuid": "803a6611_9a419dbd",
+      "revId": "1ad4d3b9ec64fe124db534cc27b0f89574785aa7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
