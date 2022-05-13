@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "61d8d850_c97e4087",
+        "filename": "src/gpu/ganesh/effects/GrConvexPolyEffect.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-05-13T22:01:18Z",
+      "side": 1,
+      "message": "This is technically a slight optimization compared to the original code and changes a few gold images in non-interesting ways (slightly different unantialiased clip edges)",
+      "range": {
+        "startLine": 119,
+        "startChar": 54,
+        "endLine": 119,
+        "endChar": 70
+      },
+      "revId": "ec8e31fde7e53821fa024a47e6bf7f1ab31e39bf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
