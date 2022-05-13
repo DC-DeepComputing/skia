@@ -283,7 +283,7 @@ private:
                 domain *= scales;
                 if (fView.origin() == kBottomLeft_GrSurfaceOrigin) {
                     coords = kFlipMuls * coords + kFlipOffsets;
-                    domain = SkNx_shuffle<0, 3, 2, 1>(kFlipMuls * domain + kFlipOffsets);
+                    domain = skvx::shuffle<0, 3, 2, 1>(kFlipMuls * domain + kFlipOffsets);
                 }
                 SkRect texDomain;
                 SkRect texCoords;

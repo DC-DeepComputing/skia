@@ -10,7 +10,7 @@
 
 #include "include/core/SkM44.h"
 #include "include/core/SkMatrix.h"
-#include "include/private/SkNx.h"
+#include "include/private/SkVx.h"
 #include "src/core/SkPointPriv.h"
 
 class SkMatrixPriv {
@@ -94,9 +94,9 @@ public:
         if (SkMatrix::kTranslate_Mask == tm) {
             const SkScalar tx = mx.getTranslateX();
             const SkScalar ty = mx.getTranslateY();
-            Sk2s trans(tx, ty);
+            Sk2f trans(tx, ty);
             for (int i = 0; i < count; ++i) {
-                (Sk2s::Load(&pts->fX) + trans).store(&pts->fX);
+                (Sk2f::Load(&pts->fX) + trans).store(&pts->fX);
                 pts = (SkPoint*)((intptr_t)pts + stride);
             }
             return;

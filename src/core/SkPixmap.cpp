@@ -15,7 +15,6 @@
 #include "include/private/SkColorData.h"
 #include "include/private/SkHalf.h"
 #include "include/private/SkImageInfoPriv.h"
-#include "include/private/SkNx.h"
 #include "include/private/SkTPin.h"
 #include "include/private/SkTemplates.h"
 #include "include/private/SkTo.h"
@@ -425,7 +424,7 @@ SkColor SkPixmap::getColor(int x, int y) const {
                 p4 = p4 * Sk4f(inva, inva, inva, 1);
             }
             SkColor c;
-            SkNx_cast<uint8_t>(p4 * Sk4f(255) + Sk4f(0.5f)).store(&c);
+            skvx::cast<uint8_t>(p4 * Sk4f(255) + Sk4f(0.5f)).store(&c);
             // p4 is RGBA, but we want BGRA, so we need to swap next
             return SkSwizzle_RB(c);
         }
@@ -439,7 +438,7 @@ SkColor SkPixmap::getColor(int x, int y) const {
                 p4 = p4 * Sk4f(inva, inva, inva, 1);
             }
             SkColor c;
-            SkNx_cast<uint8_t>(p4 * Sk4f(255) + Sk4f(0.5f)).store(&c);
+            skvx::cast<uint8_t>(p4 * Sk4f(255) + Sk4f(0.5f)).store(&c);
             // p4 is RGBA, but we want BGRA, so we need to swap next
             return SkSwizzle_RB(c);
         }
