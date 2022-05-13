@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "59ae08ac_d03d1a0a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-05-13T12:52:24Z",
+      "side": 1,
+      "message": "Are you sure this would address the previous issue? I figured that we\u0027d need to inline first, for the switch to be collapsible.",
+      "revId": "19380c3b8845c695f43b3696b45dad26cdec4d9e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
