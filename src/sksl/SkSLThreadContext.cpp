@@ -109,24 +109,6 @@ ThreadContext::RTAdjustData& ThreadContext::RTAdjustState() {
     return Instance().fRTAdjust;
 }
 
-#if !defined(SKSL_STANDALONE) && SK_SUPPORT_GPU
-void ThreadContext::StartFragmentProcessor(GrFragmentProcessor::ProgramImpl* processor,
-        GrFragmentProcessor::ProgramImpl::EmitArgs* emitArgs) {
-    ThreadContext& instance = ThreadContext::Instance();
-    instance.fStack.push({processor, emitArgs, StatementArray{}});
-    CurrentEmitArgs()->fFragBuilder->fDeclarations.swap(instance.fStack.top().fSavedDeclarations);
-    dsl::PushSymbolTable();
-}
-
-void ThreadContext::EndFragmentProcessor() {
-    ThreadContext& instance = Instance();
-    SkASSERT(!instance.fStack.empty());
-    CurrentEmitArgs()->fFragBuilder->fDeclarations.swap(instance.fStack.top().fSavedDeclarations);
-    instance.fStack.pop();
-    dsl::PopSymbolTable();
-}
-#endif // !defined(SKSL_STANDALONE) && SK_SUPPORT_GPU
-
 void ThreadContext::SetErrorReporter(ErrorReporter* errorReporter) {
     SkASSERT(errorReporter);
     Context().fErrors = errorReporter;

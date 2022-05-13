@@ -65,12 +65,6 @@ DSLStatement::DSLStatement(DSLPossibleStatement stmt, Position pos) {
 }
 
 DSLStatement::~DSLStatement() {
-#if !defined(SKSL_STANDALONE) && SK_SUPPORT_GPU
-    if (fStatement && ThreadContext::InFragmentProcessor()) {
-        ThreadContext::CurrentEmitArgs()->fFragBuilder->codeAppend(this->release());
-        return;
-    }
-#endif
     SkASSERTF(!fStatement || !ThreadContext::Settings().fAssertDSLObjectsReleased,
               "Statement destroyed without being incorporated into program (see "
               "ProgramSettings::fAssertDSLObjectsReleased)");
