@@ -19,9 +19,9 @@
 #include "include/core/SkVertices.h"
 #include "include/private/SkColorData.h"
 #include "include/private/SkFloatingPoint.h"
-#include "include/private/SkNx.h"
 #include "include/private/SkTPin.h"
 #include "include/private/SkTo.h"
+#include "include/private/SkVx.h"
 #include "src/core/SkArenaAlloc.h"
 #include "src/core/SkColorSpacePriv.h"
 #include "src/core/SkConvertPixels.h"
@@ -101,10 +101,10 @@ public:
         fDivisions = divisions;
         fCurrent    = 0;
         fMax        = fDivisions + 1;
-        Sk2s h  = Sk2s(1.f / fDivisions);
-        Sk2s h2 = h * h;
-        Sk2s h3 = h2 * h;
-        Sk2s fwDiff3 = Sk2s(6) * fCoefs.fA * h3;
+        Sk2f h  = Sk2f(1.f / fDivisions);
+        Sk2f h2 = h * h;
+        Sk2f h3 = h2 * h;
+        Sk2f fwDiff3 = Sk2f(6) * fCoefs.fA * h3;
         fFwDiff[3] = to_point(fwDiff3);
         fFwDiff[2] = to_point(fwDiff3 + times_2(fCoefs.fB) * h2);
         fFwDiff[1] = to_point(fCoefs.fA * h3 + fCoefs.fB * h2 + fCoefs.fC * h);

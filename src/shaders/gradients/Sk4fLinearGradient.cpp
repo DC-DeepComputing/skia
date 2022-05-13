@@ -323,7 +323,7 @@ private:
         const Sk4f dc = DstTraits<premul>::load(fInterval->fCg);
                   fCc = DstTraits<premul>::load(fInterval->fCb) + dc * Sk4f(t);
                 fDcDx = dc * fDx;
-            fZeroRamp = fIsVertical || (dc == 0).allTrue();
+            fZeroRamp = fIsVertical || all(dc == 0);
     }
 
     void init_average_props() {

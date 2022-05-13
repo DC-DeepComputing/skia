@@ -842,7 +842,7 @@ void FillRRectOpImpl::onExecute(GrOpFlushState* flushState, const SkRect& chainB
 bool can_use_hw_derivatives_with_coverage(const Sk2f& devScale, const Sk2f& cornerRadii) {
     Sk2f devRadii = devScale * cornerRadii;
     if (devRadii[1] < devRadii[0]) {
-        devRadii = SkNx_shuffle<1,0>(devRadii);
+        devRadii = skvx::shuffle<1,0>(devRadii);
     }
     float minDevRadius = std::max(devRadii[0], 1.f);  // Shader clamps radius at a minimum of 1.
     // Is the gradient smooth enough for this corner look ok if we use hardware derivatives?
@@ -864,7 +864,7 @@ bool can_use_hw_derivatives_with_coverage(const GrShaderCaps& shaderCaps,
 
     Sk2f x = Sk2f(viewMatrix.getScaleX(), viewMatrix.getSkewX());
     Sk2f y = Sk2f(viewMatrix.getSkewY(), viewMatrix.getScaleY());
-    Sk2f devScale = (x*x + y*y).sqrt();
+    Sk2f devScale = sqrt(x*x + y*y);
     switch (rrect.getType()) {
         case SkRRect::kEmpty_Type:
         case SkRRect::kRect_Type:
@@ -877,8 +877,8 @@ bool can_use_hw_derivatives_with_coverage(const GrShaderCaps& shaderCaps,
         case SkRRect::kNinePatch_Type: {
             Sk2f r0 = Sk2f::Load(SkRRectPriv::GetRadiiArray(rrect));
             Sk2f r1 = Sk2f::Load(SkRRectPriv::GetRadiiArray(rrect) + 2);
-            Sk2f minRadii = Sk2f::Min(r0, r1);
-            Sk2f maxRadii = Sk2f::Max(r0, r1);
+            Sk2f minRadii = min(r0, r1);
+            Sk2f maxRadii = max(r0, r1);
             return can_use_hw_derivatives_with_coverage(devScale, Sk2f(minRadii[0], maxRadii[1])) &&
                    can_use_hw_derivatives_with_coverage(devScale, Sk2f(maxRadii[0], minRadii[1]));
         }
