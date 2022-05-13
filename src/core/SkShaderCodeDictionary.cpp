@@ -7,7 +7,10 @@
 
 #include "src/core/SkShaderCodeDictionary.h"
 
+#include "include/core/SkBlender.h"
+#include "include/gpu/graphite/Context.h"
 #include "include/private/SkSLString.h"
+#include "src/core/SkBlenderBase.h"
 #include "src/core/SkOpts.h"
 #include "src/sksl/SkSLUtil.h"
 
@@ -242,24 +245,24 @@ const SkShaderCodeDictionary::Entry* SkShaderCodeDictionary::lookup(
     return fEntryVector[codeID.asUInt()];
 }
 
-SkSpan<const SkUniform> SkShaderCodeDictionary::getUniforms(SkBuiltInCodeSnippetID id) const {
-    return fBuiltInCodeSnippets[(int) id].fUniforms;
+SkSpan<const SkUniform> SkShaderCodeDictionary::getUniforms(SkSnippetID id) const {
+    return fBuiltInCodeSnippets[id.asUInt()].fUniforms;
 }
 
 SkSpan<const SkPaintParamsKey::DataPayloadField> SkShaderCodeDictionary::dataPayloadExpectations(
-        int codeSnippetID) const {
-    // All callers of this entry point should already have ensured that 'codeSnippetID' is valid
-    return this->getEntry(codeSnippetID)->fDataPayloadExpectations;
+        SkSnippetID id) const {
+    // All callers of this entry point should already` have ensured that 'codeSnippetID' is valid
+    return this->getEntry(id)->fDataPayloadExpectations;
 }
 
-const SkShaderSnippet* SkShaderCodeDictionary::getEntry(int codeSnippetID) const {
-    SkASSERT(codeSnippetID >= 0 && codeSnippetID <= this->maxCodeSnippetID());
+const SkShaderSnippet* SkShaderCodeDictionary::getEntry(SkSnippetID codeSnippetID) const {
+    SkASSERT(this->validID(codeSnippetID));
 
-    if (codeSnippetID < kBuiltInCodeSnippetIDCount) {
-        return &fBuiltInCodeSnippets[codeSnippetID];
+    if (codeSnippetID.asUInt() < kBuiltInCodeSnippetIDCount2) {
+        return &fBuiltInCodeSnippets[codeSnippetID.asUInt()];
     }
 
-    int userDefinedCodeSnippetID = codeSnippetID - kBuiltInCodeSnippetIDCount;
+    int userDefinedCodeSnippetID = codeSnippetID.asUInt() - kBuiltInCodeSnippetIDCount2;
     if (userDefinedCodeSnippetID < SkTo<int>(fUserDefinedCodeSnippets.size())) {
         return fUserDefinedCodeSnippets[userDefinedCodeSnippetID].get();
     }
@@ -271,6 +274,9 @@ void SkShaderCodeDictionary::getShaderInfo(SkUniquePaintParamsID uniqueID, SkSha
     auto entry = this->lookup(uniqueID);
 
     entry->paintParamsKey().toShaderInfo(this, info);
+
+    // getShaderInfo is only called on an entry when it is about to be converted to SkSL
+//    ++entry->fNumTimesConvertedtoSkSL;
 
 #ifdef SK_GRAPHITE_ENABLED
     info->setBlendInfo(entry->blendInfo());
@@ -562,7 +568,7 @@ std::string GenerateShaderBasedBlenderGlueCode(const std::string& resultName,
 
 static constexpr int kNoChildren = 0;
 
-int SkShaderCodeDictionary::addUserDefinedSnippet(
+SkSnippetID SkShaderCodeDictionary::addUserDefinedSnippet(
         const char* name,
         SkSpan<const SkPaintParamsKey::DataPayloadField> dataPayloadExpectations) {
 
@@ -580,14 +586,18 @@ int SkShaderCodeDictionary::addUserDefinedSnippet(
     // 'fHash' and 'fEntryVector'
     fUserDefinedCodeSnippets.push_back(std::move(entry));
 
-    return kBuiltInCodeSnippetIDCount + fUserDefinedCodeSnippets.size() - 1;
+    return SkSnippetID(kBuiltInCodeSnippetIDCount2 + fUserDefinedCodeSnippets.size() - 1);
 }
 
-SkShaderCodeDictionary::SkShaderCodeDictionary() {
-    // The 0th index is reserved as invalid
-    fEntryVector.push_back(nullptr);
+skgpu::graphite::SkBlenderID SkShaderCodeDictionary::addUserDefinedSnippet(SkBlender* blender) {
+    return {};
+}
 
-    fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kDepthStencilOnlyDraw] = {
+SkShaderCodeDictionary::SkShaderCodeDictionary(bool foo) {
+    // The 0th index is reserved as invalid
+    fEntryVector.push_back(nullptr);             // SkBuiltInCodeSnippetID2::kInvalid
+
+    fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID2::kDepthStencilOnlyDraw] = {
             "DepthStencil",
             { },     // no uniforms
             SnippetRequirementFlags::kNone,
@@ -597,7 +607,7 @@ SkShaderCodeDictionary::SkShaderCodeDictionary() {
             kNoChildren,
             {}
     };
-    fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kError] = {
+    fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID2::kError] = {
             "Error",
             { },     // no uniforms
             SnippetRequirementFlags::kNone,
@@ -607,7 +617,7 @@ SkShaderCodeDictionary::SkShaderCodeDictionary() {
             kNoChildren,
             { }
     };
-    fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kSolidColorShader] = {
+    fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID2::kSolidColorShader] = {
             "SolidColor",
             SkMakeSpan(kSolidShaderUniforms, kNumSolidShaderUniforms),
             SnippetRequirementFlags::kNone,
@@ -617,7 +627,7 @@ SkShaderCodeDictionary::SkShaderCodeDictionary() {
             kNoChildren,
             { }
     };
-    fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kLinearGradientShader] = {
+    fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID2::kLinearGradientShader] = {
             "LinearGradient4",
             SkMakeSpan(kLinearGradientUniforms, kNumLinearGradientUniforms),
             SnippetRequirementFlags::kLocalCoords,
@@ -627,7 +637,7 @@ SkShaderCodeDictionary::SkShaderCodeDictionary() {
             kNoChildren,
             { }
     };
-    fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kRadialGradientShader] = {
+    fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID2::kRadialGradientShader] = {
             "RadialGradient4",
             SkMakeSpan(kRadialGradientUniforms, kNumRadialGradientUniforms),
             SnippetRequirementFlags::kLocalCoords,
@@ -637,7 +647,7 @@ SkShaderCodeDictionary::SkShaderCodeDictionary() {
             kNoChildren,
             { }
     };
-    fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kSweepGradientShader] = {
+    fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID2::kSweepGradientShader] = {
             "SweepGradient4",
             SkMakeSpan(kSweepGradientUniforms, kNumSweepGradientUniforms),
             SnippetRequirementFlags::kLocalCoords,
@@ -647,7 +657,7 @@ SkShaderCodeDictionary::SkShaderCodeDictionary() {
             kNoChildren,
             { }
     };
-    fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kConicalGradientShader] = {
+    fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID2::kConicalGradientShader] = {
             "ConicalGradient4",
             SkMakeSpan(kConicalGradientUniforms, kNumConicalGradientUniforms),
             SnippetRequirementFlags::kLocalCoords,
@@ -657,7 +667,7 @@ SkShaderCodeDictionary::SkShaderCodeDictionary() {
             kNoChildren,
             { }
     };
-    fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kLocalMatrixShader] = {
+    fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID2::kLocalMatrixShader] = {
             "LocalMatrixShader",
             SkMakeSpan(kLocalMatrixShaderUniforms, kNumLocalMatrixShaderUniforms),
             SnippetRequirementFlags::kLocalCoords,
@@ -667,7 +677,7 @@ SkShaderCodeDictionary::SkShaderCodeDictionary() {
             kNumLocalMatrixShaderChildren,
             { }
     };
-    fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kImageShader] = {
+    fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID2::kImageShader] = {
             "ImageShader",
             SkMakeSpan(kImageShaderUniforms, kNumImageShaderUniforms),
             SnippetRequirementFlags::kLocalCoords,
@@ -677,7 +687,7 @@ SkShaderCodeDictionary::SkShaderCodeDictionary() {
             kNoChildren,
             { }
     };
-    fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kBlendShader] = {
+    fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID2::kBlendShader] = {
             "BlendShader",
             { kBlendShaderUniforms, kNumBlendShaderUniforms },
             SnippetRequirementFlags::kNone,
@@ -687,7 +697,7 @@ SkShaderCodeDictionary::SkShaderCodeDictionary() {
             kNumBlendShaderChildren,
             { }
     };
-    fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kFixedFunctionBlender] = {
+    fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID2::kFixedFunctionBlender] = {
             "FixedFunctionBlender",
             { },     // no uniforms
             SnippetRequirementFlags::kNone,
@@ -697,7 +707,7 @@ SkShaderCodeDictionary::SkShaderCodeDictionary() {
             kNoChildren,
             { }
     };
-    fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kShaderBasedBlender] = {
+    fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID2::kShaderBasedBlender] = {
             "ShaderBasedBlender",
             { kShaderBasedBlenderUniforms, kNumShaderBasedBlenderUniforms },
             SnippetRequirementFlags::kNone,
