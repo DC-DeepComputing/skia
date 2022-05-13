@@ -16,6 +16,29 @@
       "message": "Removed an impossible case from testing for this CL.\nI still left the same combination for the old source since it\u0027s technically possible.",
       "revId": "89fc1870a94ac37883ecc99b2b5f72ac03f6d29a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4ca16905_b5f94518",
+        "filename": "tests/DrawOpAtlasTest.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 449,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-05-13T15:32:55Z",
+      "side": 1,
+      "message": "If I have a is a T and b is an S, a.padding.fRight(0) + b.padding.fLeft(2) \u003d\u003d 2 where P(T, S) \u003d 3. So, I think this is wrong because it would allow a distance of 2 when a distance of 3 is needed.",
+      "range": {
+        "startLine": 449,
+        "startChar": 40,
+        "endLine": 449,
+        "endChar": 74
+      },
+      "revId": "89fc1870a94ac37883ecc99b2b5f72ac03f6d29a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
