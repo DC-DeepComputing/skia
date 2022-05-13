@@ -395,6 +395,7 @@ static std::unique_ptr<GrFragmentProcessor> make_dither_effect(
     auto te = GrTextureEffect::Make(
             std::move(tex), kPremul_SkAlphaType, SkMatrix::I(), sampler, *caps);
     static auto effect = SkMakeRuntimeEffect(SkRuntimeEffect::MakeForShader, R"(
+        #version 300
         uniform half range;
         uniform shader table;
         half4 main(float2 xy, half4 color) {
@@ -403,7 +404,7 @@ static std::unique_ptr<GrFragmentProcessor> make_dither_effect(
             // between 0 and alpha to keep the color premultiplied.
             return half4(clamp(color.rgb + value * range, 0.0, color.a), color.a);
         }
-    )", SkRuntimeEffectPriv::ES3Options());
+    )");
     return GrSkSLFP::Make(effect,
                           "Dither",
                           std::move(inputFP),

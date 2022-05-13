@@ -90,14 +90,14 @@ DEF_TEST(SkRuntimeEffect_DeadCodeEliminationStackOverflow, r) {
 }
 
 DEF_TEST(SkRuntimeEffectCanDisableES2Restrictions, r) {
-    auto test_valid_es3 = [](skiatest::Reporter* r, const char* sksl) {
-        SkRuntimeEffect::Options opt = SkRuntimeEffectPriv::ES3Options();
-        auto [effect, errorText] = SkRuntimeEffect::MakeForShader(SkString(sksl), opt);
+    auto test_valid = [](skiatest::Reporter* r, const char* sksl) {
+        auto [effect, errorText] = SkRuntimeEffect::MakeForShader(SkString(sksl));
         REPORTER_ASSERT(r, effect, "%s", errorText.c_str());
     };
 
-    test_invalid_effect(r, "float f[2] = float[2](0, 1);" EMPTY_MAIN, "construction of array type");
-    test_valid_es3     (r, "float f[2] = float[2](0, 1);" EMPTY_MAIN);
+    test_invalid_effect(r, "#version 100\nfloat f[2] = float[2](0, 1);" EMPTY_MAIN,
+                           "construction of array type");
+    test_valid         (r, "#version 300\nfloat f[2] = float[2](0, 1);" EMPTY_MAIN);
 }
 
 DEF_TEST(SkRuntimeEffectForColorFilter, r) {
