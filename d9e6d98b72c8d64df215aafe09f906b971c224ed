@@ -22,6 +22,30 @@
       },
       "revId": "d9e6d98b72c8d64df215aafe09f906b971c224ed",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "81e069a3_707c9523",
+        "filename": "src/sksl/generated/sksl_graphite_frag.dehydrated.sksl",
+        "patchSetId": 2
+      },
+      "lineNbr": 1654,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-05-13T13:12:09Z",
+      "side": 1,
+      "message": "Fixed at http://review.skia.org/540040",
+      "parentUuid": "0b3e6f1a_badf166c",
+      "range": {
+        "startLine": 1654,
+        "startChar": 0,
+        "endLine": 1654,
+        "endChar": 2
+      },
+      "revId": "d9e6d98b72c8d64df215aafe09f906b971c224ed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
