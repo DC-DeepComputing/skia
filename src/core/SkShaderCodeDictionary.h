@@ -207,6 +207,8 @@ public:
     int addUserDefinedSnippet(const char* name,
                               SkSpan<const SkPaintParamsKey::DataPayloadField> expectations);
 
+    skgpu::graphite::SkBlenderID addUserDefinedSnippet(SkBlender*);
+
 private:
 #ifdef SK_GRAPHITE_ENABLED
     Entry* makeEntry(const SkPaintParamsKey&, const SkPipelineDataGatherer::BlendInfo&);
