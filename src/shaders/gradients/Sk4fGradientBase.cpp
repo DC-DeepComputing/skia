@@ -20,7 +20,7 @@ Sk4f pack_color(const SkColor4f& c4f, bool premul, const Sk4f& component_scale) 
         // If the stops are premul, we clamp them to gamut now.
         // If the stops are unpremul, the colors will eventually go through Sk4f_toL32(),
         // which ends up clamping to gamut then.
-        pm4f = Sk4f::Max(0, Sk4f::Min(pm4f, pm4f[3]));
+        pm4f = max(0, min(pm4f, pm4f[3]));
     }
 
     return pm4f * component_scale;
@@ -128,8 +128,8 @@ Sk4fGradientInterval::Sk4fGradientInterval(const Sk4f& c0, SkScalar t0,
     const auto dt = t1 - t0;
 
     // Clamp edge intervals are always zero-ramp.
-    SkASSERT(SkScalarIsFinite(dt) || (c0 == c1).allTrue());
-    SkASSERT(SkScalarIsFinite(t0) || (c0 == c1).allTrue());
+    SkASSERT(SkScalarIsFinite(dt) || all(c0 == c1));
+    SkASSERT(SkScalarIsFinite(t0) || all(c0 == c1));
     const Sk4f   dc = SkScalarIsFinite(dt) ? (c1 - c0) / dt : 0;
     const Sk4f bias = c0 - (SkScalarIsFinite(t0) ? t0 * dc : 0);
 

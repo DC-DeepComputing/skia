@@ -932,6 +932,15 @@ IMPL_LOAD2_TRANSPOSED(4, float, vld2q_f32)
 
 }  // namespace skvx
 
+// Legacy aliases that used to be for the older SkNx vector templates
+using Sk2f = skvx::Vec<2, float>;
+using Sk4f = skvx::Vec<4, float>;
+
+using Sk4h = skvx::Vec<4, uint16_t>;
+
+using Sk4b = skvx::Vec<4, uint8_t>;
+using Sk4i = skvx::Vec<4, int32_t>;
+
 #undef SINTU
 #undef SINT
 #undef SIN

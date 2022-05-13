@@ -12,7 +12,7 @@
 #include "include/core/SkImageInfo.h"
 #include "include/private/SkColorData.h"
 #include "include/private/SkHalf.h"
-#include "include/private/SkNx.h"
+#include "include/private/SkVx.h"
 #include "src/core/SkOpts.h"
 
 // Templates shared by various 4f gradient flavors.
@@ -66,7 +66,7 @@ struct DstTraits {
     static void store(const Sk4f& c, SkPMColor* dst, const Sk4f& bias) {
         if (premul == ApplyPremul::False) {
             // c is pre-scaled by 255 and pre-biased, just store.
-            SkNx_cast<uint8_t>(c).store(dst);
+            skvx::cast<uint8_t>(c).store(dst);
         } else {
             *dst = Sk4f_toL32(PM::apply(c) + bias);
         }
@@ -85,7 +85,7 @@ struct DstTraits {
                         const Sk4f& bias1) {
         if (premul == ApplyPremul::False) {
             // colors are pre-scaled and pre-biased.
-            Sk4f_ToBytes((uint8_t*)dst, c0, c1, c2, c3);
+            skvx::cast<uint8_t>(join(join(c0, c1), join(c2, c3))).store((uint8_t*)dst);
         } else {
             store(c0, dst + 0, bias0);
             store(c1, dst + 1, bias1);

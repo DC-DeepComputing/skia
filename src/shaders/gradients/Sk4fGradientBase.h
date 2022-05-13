@@ -9,8 +9,8 @@
 #define Sk4fGradientBase_DEFINED
 
 #include "include/core/SkColor.h"
-#include "include/private/SkNx.h"
 #include "include/private/SkTArray.h"
+#include "include/private/SkVx.h"
 #include "src/core/SkMatrixPriv.h"
 #include "src/shaders/SkShaderBase.h"
 #include "src/shaders/gradients/Sk4fGradientPriv.h"

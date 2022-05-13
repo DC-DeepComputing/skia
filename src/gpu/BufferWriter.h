@@ -11,7 +11,6 @@
 #include <type_traits>
 #include "include/core/SkRect.h"
 #include "include/private/SkColorData.h"
-#include "include/private/SkNx.h"
 #include "include/private/SkTemplates.h"
 #include "src/core/SkConvertPixels.h"
 

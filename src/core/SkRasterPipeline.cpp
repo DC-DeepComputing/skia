@@ -6,8 +6,8 @@
  */
 
 #include "include/private/SkImageInfoPriv.h"
-#include "include/private/SkNx.h"
 #include "include/private/SkTemplates.h"
+#include "include/private/SkVx.h"
 #include "include/third_party/skcms/skcms.h"
 #include "src/core/SkColorSpacePriv.h"
 #include "src/core/SkOpts.h"
