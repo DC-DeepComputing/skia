@@ -45,7 +45,6 @@ generated_cc_atom(
         ":LinearTolerances_hdr",
         ":MiddleOutPolygonTriangulator_hdr",
         ":Tessellation_hdr",
-        ":WangsFormula_hdr",
         "//include/private:SkColorData_hdr",
         "//src/gpu:BufferWriter_hdr",
     ],
