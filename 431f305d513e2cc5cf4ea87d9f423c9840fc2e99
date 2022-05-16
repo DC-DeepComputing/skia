@@ -22,6 +22,30 @@
       },
       "revId": "431f305d513e2cc5cf4ea87d9f423c9840fc2e99",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "422b676a_a4ae9005",
+        "filename": "gn/sksl.gni",
+        "patchSetId": 7
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-05-16T17:40:54Z",
+      "side": 0,
+      "message": "PTAL http://review.skia.org/540921",
+      "parentUuid": "8af3a92d_cc3b1262",
+      "range": {
+        "startLine": 111,
+        "startChar": 23,
+        "endLine": 111,
+        "endChar": 29
+      },
+      "revId": "431f305d513e2cc5cf4ea87d9f423c9840fc2e99",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
