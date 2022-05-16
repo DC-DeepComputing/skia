@@ -20,9 +20,17 @@
 #include "src/core/SkPipelineData.h"
 #include "src/core/SkUniform.h"
 
+#ifdef SK_GRAPHITE_ENABLED
+namespace skgpu::graphite {
+class SkBlenderID;
+}
+#endif
+
 namespace SkSL {
 struct ShaderCaps;
 }
+
+class SkBlender;
 
 // TODO: How to represent the type (e.g., 2D) of texture being sampled?
 class SkTextureAndSampler {
@@ -194,6 +202,7 @@ public:
     const SkShaderSnippet* getEntry(SkBuiltInCodeSnippetID codeSnippetID) const {
         return this->getEntry(SkTo<int>(codeSnippetID));
     }
+    const SkShaderSnippet* getEntry(skgpu::graphite::SkBlenderID) const;
 
     void getShaderInfo(SkUniquePaintParamsID, SkShaderInfo*);
 
@@ -206,6 +215,10 @@ public:
     // TODO: add hooks for user to actually provide code.
     int addUserDefinedSnippet(const char* name,
                               SkSpan<const SkPaintParamsKey::DataPayloadField> expectations);
+
+#ifdef SK_GRAPHITE_ENABLED
+    skgpu::graphite::SkBlenderID addUserDefinedSnippet(SkBlender*);
+#endif
 
 private:
 #ifdef SK_GRAPHITE_ENABLED

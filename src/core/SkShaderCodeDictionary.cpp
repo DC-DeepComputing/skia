@@ -8,8 +8,13 @@
 #include "src/core/SkShaderCodeDictionary.h"
 
 #include "include/private/SkSLString.h"
+#include "src/core/SkBlenderBase.h"
 #include "src/core/SkOpts.h"
 #include "src/sksl/SkSLUtil.h"
+
+#ifdef SK_GRAPHITE_ENABLED
+#include "include/gpu/graphite/Context.h"
+#endif
 
 namespace {
 
@@ -265,6 +270,10 @@ const SkShaderSnippet* SkShaderCodeDictionary::getEntry(int codeSnippetID) const
     }
 
     return nullptr;
+}
+
+const SkShaderSnippet* SkShaderCodeDictionary::getEntry(skgpu::graphite::SkBlenderID id) const {
+    return this->getEntry(id.asUInt());
 }
 
 void SkShaderCodeDictionary::getShaderInfo(SkUniquePaintParamsID uniqueID, SkShaderInfo* info) {
@@ -562,6 +571,7 @@ std::string GenerateShaderBasedBlenderGlueCode(const std::string& resultName,
 
 static constexpr int kNoChildren = 0;
 
+// TODO: this version needs to be removed
 int SkShaderCodeDictionary::addUserDefinedSnippet(
         const char* name,
         SkSpan<const SkPaintParamsKey::DataPayloadField> dataPayloadExpectations) {
@@ -582,6 +592,45 @@ int SkShaderCodeDictionary::addUserDefinedSnippet(
 
     return kBuiltInCodeSnippetIDCount + fUserDefinedCodeSnippets.size() - 1;
 }
+
+#ifdef SK_GRAPHITE_ENABLED
+// We need to ensure that the user-defined snippet ID can't conflict with the SkBlendMode
+// values (since they are used "raw" in the combination system).
+static const int kMinUserDefinedSnippetID = std::max(kBuiltInCodeSnippetIDCount, kSkBlendModeCount);
+
+skgpu::graphite::SkBlenderID SkShaderCodeDictionary::addUserDefinedSnippet(SkBlender* blender) {
+    SkBlenderBase* bb = as_BB(blender);
+
+    SkRuntimeEffect* rtEffect = bb->asRuntimeEffect();
+    if (!rtEffect) {
+        return {}; // not really user-defined
+    }
+
+    // TODO: at this point we need to extract the uniform definitions, children and helper functions
+    // from the runtime effect in order to create a real SkShaderSnippet
+    // Additionally, we need to hash the provided code to deduplicate the runtime effects in case
+    // the client keeps giving the same rtEffect to us multiple times.
+    // Finally, we need to find any "specializing" uniforms values, and place the extracted value
+    // into the data payload.
+
+    std::unique_ptr<SkShaderSnippet> entry(new SkShaderSnippet("UserDefined",
+                                                               {}, // missing uniforms
+                                                               SnippetRequirementFlags::kNone,
+                                                               {}, // missing samplers
+                                                               "foo",
+                                                               GenerateDefaultGlueCode,
+                                                               kNoChildren,
+                                                               {}));  // missing data payload
+
+    // TODO: the memory for user-defined entries could go in the dictionary's arena but that
+    // would have to be a thread safe allocation since the arena also stores entries for
+    // 'fHash' and 'fEntryVector'
+    fUserDefinedCodeSnippets.push_back(std::move(entry));
+
+    return skgpu::graphite::SkBlenderID(kMinUserDefinedSnippetID +
+                                        fUserDefinedCodeSnippets.size() - 1);
+}
+#endif
 
 SkShaderCodeDictionary::SkShaderCodeDictionary() {
     // The 0th index is reserved as invalid
