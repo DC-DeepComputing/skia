@@ -2140,13 +2140,16 @@ void precompile(skgpu::graphite::Context* context) {
     using ShaderType = skgpu::graphite::ShaderCombo::ShaderType;
 
     skgpu::graphite::PaintCombo c1 { { skgpu::graphite::ShaderCombo({ ShaderType::kSolidColor },
-                                                                    { SkTileMode::kRepeat }) },
-                                     { SkBlendMode::kSrcOver, SkBlendMode::kSrc } };
+                                                                    { SkTileMode::kRepeat }) } };
+    c1.add(SkBlendMode::kSrcOver);
+    c1.add(SkBlendMode::kSrc);
     context->preCompile(c1);
 
     skgpu::graphite::PaintCombo c2 { { skgpu::graphite::ShaderCombo({ ShaderType::kLinearGradient },
-                                                     { SkTileMode::kRepeat, SkTileMode::kClamp }) },
-                                     { SkBlendMode::kSrcOver, SkBlendMode::kSrc } };
+                                                     { SkTileMode::kRepeat, SkTileMode::kClamp }) } };
+    c2.add(SkBlendMode::kSrcOver);
+    c2.add(SkBlendMode::kSrc);
+
     context->preCompile(c2);
 }
 
