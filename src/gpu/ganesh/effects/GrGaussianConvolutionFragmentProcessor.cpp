@@ -19,20 +19,10 @@
 // For brevity
 using Direction = GrGaussianConvolutionFragmentProcessor::Direction;
 
-enum class LoopType {
-    kUnrolled,
-    kFixedLength,
-    kVariableLength,
-};
-
-static LoopType loop_type(const GrShaderCaps& caps) {
-    // TODO(johnstiles): determine whether "unrolled" is faster on old hardware; if not, remove it.
-    if (caps.generation() < SkSL::GLSLGeneration::k130) {
-        return LoopType::kUnrolled;
-    }
-    // If we're in reduced shader mode and we can have a loop then use a uniform to limit the
-    // number of iterations so we don't need a code variation for each width.
-    return caps.reducedShaderMode() ? LoopType::kVariableLength : LoopType::kFixedLength;
+static bool shouldUseVariableLengthLoop(const GrShaderCaps& caps) {
+    // If we're in reduced-shader mode, and we can use variable length loops, then use a uniform to
+    // limit the number of iterations, so we don't need a code variation for each width.
+    return (caps.generation() >= SkSL::GLSLGeneration::k300es && caps.reducedShaderMode());
 }
 
 std::unique_ptr<GrFragmentProcessor> GrGaussianConvolutionFragmentProcessor::Make(
@@ -97,15 +87,11 @@ std::unique_ptr<GrFragmentProcessor> GrGaussianConvolutionFragmentProcessor::Mak
     float offsets[kMaxKernelWidth];
     SkGpuBlurUtils::Compute1DLinearGaussianKernel(kernel, offsets, gaussianSigma, halfWidth);
 
-    LoopType loopType = loop_type(*caps.shaderCaps());
-    int arrayCount;
-    if (loopType == LoopType::kVariableLength) {
-        // For variable-length loops, size the kernel uniform for the maximum width.
-        arrayCount = SkGpuBlurUtils::LinearKernelWidth(kMaxKernelRadius);
-    } else {
-        // For fixed-length loops, size the kernel uniform based on the amount we need.
-        arrayCount = width;
-    }
+    // For variable-length loops, size the kernel uniform for the maximum width so we can reuse the
+    // same code for any kernel width.
+    bool variableLengthLoop = shouldUseVariableLengthLoop(*caps.shaderCaps());
+    int arrayCount = variableLengthLoop ? SkGpuBlurUtils::LinearKernelWidth(kMaxKernelRadius)
+                                        : width;
 
     // Interleave the kernel and offsets into an array of SkV2s ("OffsetsAndKernel").
     SkV2 offsetsAndKernel[kMaxKernelWidth] = {};
@@ -117,8 +103,23 @@ std::unique_ptr<GrFragmentProcessor> GrGaussianConvolutionFragmentProcessor::Mak
                                             : SkV2{0, 1};
 
     // Generate shader code based on our loop type.
-    SkString shaderText = SkStringPrintf(R"(
-      const int ArrayWidth = %d;
+    SkString shaderText;
+    SkRuntimeEffect::Options options;
+    if (variableLengthLoop) {
+        // Variable-length looping sends kernel width via a uniform. This requires ES3
+        // support because the loop bounds are no longer known at compile time.
+        shaderText = SkStringPrintf("const int ArrayWidth = %d;"
+                                    "uniform int KernelWidth;",
+                                    arrayCount);
+        options = SkRuntimeEffectPriv::ES3Options();
+    } else {
+        // Fixed-length looping bakes the kernel width directly into the code.
+        shaderText = SkStringPrintf("const int ArrayWidth = %d;"
+                                    "const int KernelWidth = ArrayWidth;",
+                                    arrayCount);
+    }
+
+    shaderText += R"(
       uniform shader child;
       uniform half2 Increment;
       uniform half2 OffsetsAndKernel[ArrayWidth];
@@ -126,47 +127,14 @@ std::unique_ptr<GrFragmentProcessor> GrGaussianConvolutionFragmentProcessor::Mak
       half4 Smooth(float2 coord, half2 offsetsAndKernel) {
           return child.eval(coord + offsetsAndKernel.x * Increment) * offsetsAndKernel.y;
       }
-    )", arrayCount);
-
-    SkRuntimeEffect::Options options;
-
-    if (loopType == LoopType::kUnrolled) {
-        // In the unrolled case, we emit a separate call to eval() for each kernel entry.
-        shaderText += R"(
-          half4 main(float2 coord) {
-              half4 color = half4(0);
-        )";
-
-        for (int i = 0; i < width; ++i) {
-            shaderText.appendf("color += Smooth(coord, OffsetsAndKernel[%d]);\n", i);
-        }
-
-        shaderText += R"(
-              return color;
+      half4 main(float2 coord) {
+          half4 color = half4(0);
+          for (int i = 0; i < KernelWidth; ++i) {
+              color += Smooth(coord, OffsetsAndKernel[i]);
           }
-        )";
-    } else {
-        // In the fixed-length and variable-length cases, we emit a SkSL loop.
-        if (loopType == LoopType::kFixedLength) {
-            // The "fixed length" loop bakes the kernel width directly into the code.
-            shaderText += "const int KernelWidth = ArrayWidth;\n";
-        } else {
-            // The "variable length" loop sends kernel width via a uniform. This requires ES3
-            // support because the loop bounds are no longer known at compile time.
-            shaderText += "uniform int KernelWidth;\n";
-            options = SkRuntimeEffectPriv::ES3Options();
-        }
-
-        shaderText += R"(
-          half4 main(float2 coord) {
-              half4 color = half4(0);
-              for (int i = 0; i < KernelWidth; ++i) {
-                  color += Smooth(coord, OffsetsAndKernel[i]);
-              }
-              return color;
-          }
-        )";
-    }
+          return color;
+      }
+    )";
 
     sk_sp<SkRuntimeEffect> effect = SkMakeRuntimeEffect(SkRuntimeEffect::MakeForShader,
                                                         shaderText.c_str(), options);
@@ -177,6 +145,5 @@ std::unique_ptr<GrFragmentProcessor> GrGaussianConvolutionFragmentProcessor::Mak
                           "child", std::move(child),
                           "Increment", increment,
                           "OffsetsAndKernel", SkMakeSpan(offsetsAndKernel, arrayCount),
-                          "KernelWidth", GrSkSLFP::When(loopType == LoopType::kVariableLength,
-                                                        width));
+                          "KernelWidth", GrSkSLFP::When(variableLengthLoop, width));
 }
