@@ -2120,6 +2120,7 @@ generated_cc_atom(
     hdrs = ["SkGlyphRunPainter.h"],
     visibility = ["//:__subpackages__"],
     deps = [
+        ":SkDevice_hdr",
         ":SkDistanceFieldGen_hdr",
         ":SkGlyphRun_hdr",
         ":SkScalerContext_hdr",
@@ -2143,6 +2144,7 @@ generated_cc_atom(
         ":SkGlyphRunPainter_hdr",
         ":SkRasterClip_hdr",
         ":SkScalerCache_hdr",
+        ":SkScalerContext_hdr",
         ":SkStrikeCache_hdr",
         ":SkStrikeForGPU_hdr",
         ":SkStrikeSpec_hdr",
