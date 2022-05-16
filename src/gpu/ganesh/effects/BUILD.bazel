@@ -281,14 +281,14 @@ generated_cc_atom(
     visibility = ["//:__subpackages__"],
     deps = [
         ":GrGaussianConvolutionFragmentProcessor_hdr",
+        ":GrSkSLFP_hdr",
         ":GrTextureEffect_hdr",
+        "//include/effects:SkRuntimeEffect_hdr",
         "//src/core:SkGpuBlurUtils_hdr",
+        "//src/core:SkRuntimeEffectPriv_hdr",
         "//src/gpu:KeyBuilder_hdr",
         "//src/gpu/ganesh:GrTextureProxy_hdr",
         "//src/gpu/ganesh:GrTexture_hdr",
-        "//src/gpu/ganesh/glsl:GrGLSLFragmentShaderBuilder_hdr",
-        "//src/gpu/ganesh/glsl:GrGLSLProgramDataManager_hdr",
-        "//src/gpu/ganesh/glsl:GrGLSLUniformHandler_hdr",
     ],
 )
 
