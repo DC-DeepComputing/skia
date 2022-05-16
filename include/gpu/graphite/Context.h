@@ -8,6 +8,7 @@
 #ifndef skgpu_graphite_Context_DEFINED
 #define skgpu_graphite_Context_DEFINED
 
+#include <set>
 #include <vector>
 #include "include/core/SkBlendMode.h"
 #include "include/core/SkRefCnt.h"
@@ -51,11 +52,6 @@ struct ShaderCombo {
     std::vector<SkTileMode> fTileModes;
 };
 
-struct PaintCombo {
-    std::vector<ShaderCombo> fShaders;
-    std::vector<SkBlendMode> fBlendModes;
-};
-
 // TODO: add SkShaderID and SkColorFilterID too
 class SkBlenderID {
 public:
@@ -73,12 +69,27 @@ public:
 
 private:
     friend class ::SkShaderCodeDictionary;   // for ctor and asUInt access
+    friend class PaintCombo;                 // for asUInt access
 
     SkBlenderID(uint32_t id) : fID(id) {}
 
     uint32_t asUInt() const { return fID; }
 
     uint32_t fID;
+};
+
+class PaintCombo {
+public:
+    PaintCombo(std::vector<ShaderCombo> shaders) : fShaders(shaders) {}
+
+    void add(SkBlendMode bm) { fBlendModes.insert((uint32_t) bm); }
+    void add(SkBlenderID id) { fBlendModes.insert(id.asUInt()); }
+
+private:
+    friend class Context; // for iterators
+
+    std::vector<ShaderCombo> fShaders;
+    std::set<uint32_t> fBlendModes;
 };
 
 class Context final {
