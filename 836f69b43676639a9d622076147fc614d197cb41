@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c66e8fc5_258ad1c8",
+        "filename": "src/gpu/ganesh/tessellate/PathTessellator.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 191,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-05-16T17:48:54Z",
+      "side": 1,
+      "message": "It is a bit odd to be pouring VertexCount into fIndexCount",
+      "revId": "836f69b43676639a9d622076147fc614d197cb41",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "27942a43_74ac2611",
+        "filename": "src/gpu/ganesh/tessellate/PathTessellator.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-05-16T17:48:54Z",
+      "side": 1,
+      "message": "Should this be \u0027fMaxIndexCount\u0027 then ?",
+      "range": {
+        "startLine": 79,
+        "startChar": 8,
+        "endLine": 79,
+        "endChar": 19
+      },
+      "revId": "836f69b43676639a9d622076147fc614d197cb41",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
