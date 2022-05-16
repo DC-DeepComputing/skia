@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "02c604d4_957dd04b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18984
+      },
+      "writtenOn": "2022-05-16T15:56:40Z",
+      "side": 1,
+      "message": "Any trick to updating the commit message using git cl upload?",
+      "revId": "087bb5ad574b6580900477bef6a950de995811eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
