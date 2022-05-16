@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "23c42f7b_abccfa0c",
+        "filename": "src/image/SkSurface_Base.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-05-16T14:41:31Z",
+      "side": 1,
+      "message": "This is breaking the Android roll. [`ProjectionLayer`](https://source.corp.google.com/android-internal/frameworks/base/libs/hwui/tests/unit/RenderNodeDrawableTests.cpp;l\u003d458?q\u003dProjectionLayer\u0026ct\u003dos\u0026sq\u003dpackage:%5Eandroid-internal$%20-file:external%2Fskqp%20-file:external%2Fqt) inherits from `SkSurface_Base`, and it doesn\u0027t implement this method.",
+      "range": {
+        "startLine": 140,
+        "startChar": 4,
+        "endLine": 140,
+        "endChar": 55
+      },
+      "revId": "69fecd6c2d852abeaebf8e6b479b45d2eaf47c46",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
