@@ -103,6 +103,9 @@ id<MTLLibrary> GrMtlNewLibraryWithSource(id<MTLDevice>, NSString* mslCode,
 id<MTLRenderPipelineState> GrMtlNewRenderPipelineStateWithDescriptor(
         id<MTLDevice>, MTLRenderPipelineDescriptor*, NSError**);
 
+id<MTLComputePipelineState> GrMtlNewComputePipelineStateWithDescriptor(
+        id<MTLDevice>, MTLComputePipelineDescriptor*, NSError**);
+
 /**
  * Returns a MTLTexture corresponding to the GrSurface.
  */

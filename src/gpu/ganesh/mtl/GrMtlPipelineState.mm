@@ -26,9 +26,9 @@
 
 GR_NORETAIN_BEGIN
 
-GrMtlPipelineState::SamplerBindings::SamplerBindings(GrSamplerState state,
-                                                     GrTexture* texture,
-                                                     GrMtlGpu* gpu)
+GrMtlRenderPipelineState::SamplerBindings::SamplerBindings(GrSamplerState state,
+                                                           GrTexture* texture,
+                                                           GrMtlGpu* gpu)
         : fTexture(static_cast<GrMtlTexture*>(texture)->mtlTexture()) {
     fSampler = gpu->resourceProvider().findOrCreateCompatibleSampler(state);
     gpu->commandBuffer()->addResource(sk_ref_sp<GrManagedResource>(fSampler));
@@ -36,7 +36,7 @@ GrMtlPipelineState::SamplerBindings::SamplerBindings(GrSamplerState state,
             sk_ref_sp<GrSurface>(static_cast<GrMtlTexture*>(texture)->attachment()));
 }
 
-GrMtlPipelineState::GrMtlPipelineState(
+GrMtlRenderPipelineState::GrMtlRenderPipelineState(
         GrMtlGpu* gpu,
         sk_sp<GrMtlRenderPipeline> pipeline,
         MTLPixelFormat pixelFormat,
@@ -59,8 +59,8 @@ GrMtlPipelineState::GrMtlPipelineState(
     (void) fPixelFormat; // Suppress unused-var warning.
 }
 
-void GrMtlPipelineState::setData(GrMtlFramebuffer* framebuffer,
-                                 const GrProgramInfo& programInfo) {
+void GrMtlRenderPipelineState::setData(GrMtlFramebuffer* framebuffer,
+                                       const GrProgramInfo& programInfo) {
     SkISize colorAttachmentDimensions = framebuffer->colorAttachment()->dimensions();
 
     this->setRenderTargetState(colorAttachmentDimensions, programInfo.origin());
@@ -91,9 +91,9 @@ void GrMtlPipelineState::setData(GrMtlFramebuffer* framebuffer,
     fGpu->commandBuffer()->addResource(fPipeline);
 }
 
-void GrMtlPipelineState::setTextures(const GrGeometryProcessor& geomProc,
-                                     const GrPipeline& pipeline,
-                                     const GrSurfaceProxy* const geomProcTextures[]) {
+void GrMtlRenderPipelineState::setTextures(const GrGeometryProcessor& geomProc,
+                                           const GrPipeline& pipeline,
+                                           const GrSurfaceProxy* const geomProcTextures[]) {
     fSamplerBindings.reset();
     for (int i = 0; i < geomProc.numTextureSamplers(); ++i) {
         SkASSERT(geomProcTextures[i]->asTextureProxy());
@@ -114,19 +114,19 @@ void GrMtlPipelineState::setTextures(const GrGeometryProcessor& geomProc,
     SkASSERT(fNumSamplers == fSamplerBindings.count());
 }
 
-void GrMtlPipelineState::setDrawState(GrMtlRenderCommandEncoder* renderCmdEncoder,
-                                      const skgpu::Swizzle& writeSwizzle,
-                                      const GrXferProcessor& xferProcessor) {
+void GrMtlRenderPipelineState::setDrawState(GrMtlRenderCommandEncoder* renderCmdEncoder,
+                                            const skgpu::Swizzle& writeSwizzle,
+                                           const GrXferProcessor& xferProcessor) {
     this->bindUniforms(renderCmdEncoder);
     this->setBlendConstants(renderCmdEncoder, writeSwizzle, xferProcessor);
     this->setDepthStencilState(renderCmdEncoder);
 }
 
-void GrMtlPipelineState::bindUniforms(GrMtlRenderCommandEncoder* renderCmdEncoder) {
+void GrMtlRenderPipelineState::bindUniforms(GrMtlRenderCommandEncoder* renderCmdEncoder) {
     fDataManager.uploadAndBindUniformBuffers(fGpu, renderCmdEncoder);
 }
 
-void GrMtlPipelineState::bindTextures(GrMtlRenderCommandEncoder* renderCmdEncoder) {
+void GrMtlRenderPipelineState::bindTextures(GrMtlRenderCommandEncoder* renderCmdEncoder) {
     SkASSERT(fNumSamplers == fSamplerBindings.count());
     for (int index = 0; index < fNumSamplers; ++index) {
         renderCmdEncoder->setFragmentTexture(fSamplerBindings[index].fTexture, index);
@@ -134,8 +134,8 @@ void GrMtlPipelineState::bindTextures(GrMtlRenderCommandEncoder* renderCmdEncode
     }
 }
 
-void GrMtlPipelineState::setRenderTargetState(SkISize colorAttachmentDimensions,
-                                              GrSurfaceOrigin origin) {
+void GrMtlRenderPipelineState::setRenderTargetState(SkISize colorAttachmentDimensions,
+                                                    GrSurfaceOrigin origin) {
     SkASSERT(fBuiltinUniformHandles.fRTAdjustmentUni.isValid());
     if (fRenderTargetState.fRenderTargetOrigin != origin ||
         fRenderTargetState.fRenderTargetSize != colorAttachmentDimensions) {
@@ -157,9 +157,9 @@ void GrMtlPipelineState::setRenderTargetState(SkISize colorAttachmentDimensions,
     }
 }
 
-void GrMtlPipelineState::setBlendConstants(GrMtlRenderCommandEncoder* renderCmdEncoder,
-                                           const skgpu::Swizzle& swizzle,
-                                           const GrXferProcessor& xferProcessor) {
+void GrMtlRenderPipelineState::setBlendConstants(GrMtlRenderCommandEncoder* renderCmdEncoder,
+                                                 const skgpu::Swizzle& swizzle,
+                                                 const GrXferProcessor& xferProcessor) {
     if (!renderCmdEncoder) {
         return;
     }
@@ -175,7 +175,7 @@ void GrMtlPipelineState::setBlendConstants(GrMtlRenderCommandEncoder* renderCmdE
     }
 }
 
-void GrMtlPipelineState::setDepthStencilState(GrMtlRenderCommandEncoder* renderCmdEncoder) {
+void GrMtlRenderPipelineState::setDepthStencilState(GrMtlRenderCommandEncoder* renderCmdEncoder) {
     const GrSurfaceOrigin& origin = fRenderTargetState.fRenderTargetOrigin;
     GrMtlDepthStencil* state =
             fGpu->resourceProvider().findOrCreateCompatibleDepthStencilState(fStencil, origin);
@@ -198,10 +198,11 @@ void GrMtlPipelineState::setDepthStencilState(GrMtlRenderCommandEncoder* renderC
     fGpu->commandBuffer()->addResource(sk_ref_sp<GrManagedResource>(state));
 }
 
-void GrMtlPipelineState::SetDynamicScissorRectState(GrMtlRenderCommandEncoder* renderCmdEncoder,
-                                                    SkISize colorAttachmentDimensions,
-                                                    GrSurfaceOrigin rtOrigin,
-                                                    SkIRect scissorRect) {
+void GrMtlRenderPipelineState::SetDynamicScissorRectState(
+        GrMtlRenderCommandEncoder* renderCmdEncoder,
+        SkISize colorAttachmentDimensions,
+        GrSurfaceOrigin rtOrigin,
+        SkIRect scissorRect) {
     if (!scissorRect.intersect(SkIRect::MakeWH(colorAttachmentDimensions.width(),
                                                colorAttachmentDimensions.height()))) {
         scissorRect.setEmpty();
@@ -224,7 +225,7 @@ void GrMtlPipelineState::SetDynamicScissorRectState(GrMtlRenderCommandEncoder* r
     renderCmdEncoder->setScissorRect(scissor);
 }
 
-bool GrMtlPipelineState::doesntSampleAttachment(
+bool GrMtlRenderPipelineState::doesntSampleAttachment(
         const MTLRenderPassAttachmentDescriptor* attachment) const {
     for (int i = 0; i < fSamplerBindings.count(); ++i) {
         if (attachment.texture == fSamplerBindings[i].fTexture ||
@@ -234,5 +235,17 @@ bool GrMtlPipelineState::doesntSampleAttachment(
     }
     return true;
 }
+
+GrMtlComputePipelineState::GrMtlComputePipelineState(
+        GrMtlGpu* gpu,
+        sk_sp<GrMtlComputePipeline> pipeline,
+        const GrGLSLBuiltinUniformHandles& builtinUniformHandles,
+        const UniformInfoArray& uniforms,
+        uint32_t uniformBufferSize,
+        uint32_t numSamplers)
+        : fGpu(gpu)
+        , fPipeline(std::move(pipeline))
+        , fBuiltinUniformHandles(builtinUniformHandles)
+        , fDataManager(uniforms, uniformBufferSize) {}
 
 GR_NORETAIN_END

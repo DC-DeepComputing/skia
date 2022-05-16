@@ -23,6 +23,7 @@
 #include "src/gpu/ganesh/mtl/GrMtlBuffer.h"
 #include "src/gpu/ganesh/mtl/GrMtlCommandBuffer.h"
 #include "src/gpu/ganesh/mtl/GrMtlOpsRenderPass.h"
+#include "src/gpu/ganesh/mtl/GrMtlPipelineState.h"
 #include "src/gpu/ganesh/mtl/GrMtlPipelineStateBuilder.h"
 #include "src/gpu/ganesh/mtl/GrMtlRenderCommandEncoder.h"
 #include "src/gpu/ganesh/mtl/GrMtlSemaphore.h"
@@ -42,6 +43,77 @@ GR_NORETAIN_BEGIN
 // set to 1 if you want to do GPU capture of each commandBuffer
 #define GR_METAL_CAPTURE_COMMANDBUFFER 0
 #endif
+
+void testComputeShader(GrGpu* rawGpu) {
+    GrMtlGpu* gpu = (GrMtlGpu*)rawGpu;
+    GrMtlResourceProvider& provider = ((GrMtlGpu*)gpu)->resourceProvider();
+    const GrMtlCaps& caps = gpu->mtlCaps();
+    GrProgramDesc programDesc = caps.makeDesc(nullptr, nullptr,
+                                              GrCaps::ProgramDescOverrideFlags::kNone);
+    if (!programDesc.isValid()) {
+        abort();
+    }
+
+    GrMtlComputePipelineState* pipelineState =
+            gpu->resourceProvider().findOrCreateCompatibleComputePipelineState(programDesc,
+                // Silly test; just playing around with various types of parameters, and being sure
+                // to specify out-of-order locations. I don't actually have the textures wired up to
+                // anything here yet; hopefully the code is doing the right thing.
+                "layout(location=0) in int[] x;\n"
+                "layout(location=2) out int[] y;\n"
+                "layout(location=1) in int scaleFactor;"
+                "layout(location=3) in struct Flags { bool applyScale; bool reverse; } flags;"
+                "layout(binding=0) in texture2D readTexture;"
+                "layout(binding=1) out texture2D writeTexture;"
+                "noinline void scale(uint index) {"
+                "    y[flags.reverse ? 99 - index : index] = "
+                "            x[index] * (flags.applyScale ? scaleFactor : 1);"
+                "}"
+                "void main() {"
+                "    scale(sk_ThreadPosition.x);"
+                "    write(writeTexture, sk_ThreadPosition.xy, "
+                "           read(readTexture, sk_ThreadPosition.xy) * half(scaleFactor));"
+                "}");
+    if (!pipelineState) {
+        abort();
+    }
+    auto computePassDesc = [[MTLComputePassDescriptor alloc] init];
+    id<MTLComputePipelineState> pipeline = pipelineState->pipeline()->mtlPipelineState();
+    GrMtlComputeCommandEncoder* encoder =
+            gpu->commandBuffer()->getComputeCommandEncoder(computePassDesc);
+    encoder->setComputePipelineState(pipeline);
+
+    static constexpr int COUNT = 100;
+    auto buffer1 = [gpu->device() newBufferWithLength:sizeof(int) * COUNT
+            options:MTLResourceStorageModeShared];
+    for (int i = 0; i < COUNT; ++i) {
+        ((int*)buffer1.contents)[i] = i;
+    }
+    encoder->setBuffer(buffer1, 0, 0);
+
+    auto buffer2 = [gpu->device() newBufferWithLength:sizeof(int) * COUNT
+            options:MTLResourceStorageModeShared];
+    encoder->setBuffer(buffer2, 0, 2);
+
+    auto buffer3 = [gpu->device() newBufferWithLength:sizeof(int)
+            options:MTLResourceStorageModeShared];
+    (*(int*)buffer3.contents) = 2;
+    encoder->setBuffer(buffer3, 0, 1);
+
+    auto buffer4 = [gpu->device() newBufferWithLength:sizeof(bool) * 2
+                options:MTLResourceStorageModeShared];
+    ((bool*)buffer4.contents)[0] = true;
+    ((bool*)buffer4.contents)[1] = false;
+    encoder->setBuffer(buffer4, 0, 3);
+
+    encoder->execute(10, 1, 1, 10, 1, 1);
+    gpu->commandBuffer()->commit(true);
+    printf("#####################\n");
+    for (int i = 0; i < COUNT; ++i) {
+        printf("%d\n", ((int*)buffer2.contents)[i]);
+    }
+    printf("#####################\n");
+}
 
 sk_sp<GrGpu> GrMtlGpu::Make(const GrMtlBackendContext& context, const GrContextOptions& options,
                             GrDirectContext* direct) {
@@ -1121,8 +1193,7 @@ void GrMtlGpu::deleteBackendTexture(const GrBackendTexture& tex) {
 bool GrMtlGpu::compile(const GrProgramDesc& desc, const GrProgramInfo& programInfo) {
 
     GrThreadSafePipelineBuilder::Stats::ProgramCacheResult stat;
-
-    auto pipelineState = this->resourceProvider().findOrCreateCompatiblePipelineState(
+    auto pipelineState = this->resourceProvider().findOrCreateCompatibleRenderPipelineState(
                                  desc, programInfo, &stat);
     if (!pipelineState) {
         return false;
