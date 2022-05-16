@@ -1,3 +1,5 @@
+#version 300
+
 uniform half4 colorRed, colorGreen;
 
 bool test() {

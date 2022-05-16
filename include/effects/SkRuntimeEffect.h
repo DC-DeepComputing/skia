@@ -18,6 +18,7 @@
 #include "include/core/SkString.h"
 #include "include/private/SkOnce.h"
 #include "include/private/SkSLSampleUsage.h"
+#include "include/sksl/SkSLVersion.h"
 
 #include <string>
 #include <optional>
@@ -232,6 +233,9 @@ public:
 
     // Returns the SkSL source of the runtime effect shader.
     const std::string& source() const;
+
+    // What SkSL::Version does this effect require for a device to render it?
+    SkSL::Version requiredVersion() const;
 
     // Combined size of all 'uniform' variables. When calling makeColorFilter or makeShader,
     // provide an SkData of this size, containing values for all of those variables.

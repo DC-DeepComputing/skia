@@ -541,6 +541,10 @@ const std::string& SkRuntimeEffect::source() const {
     return *fBaseProgram->fSource;
 }
 
+SkSL::Version SkRuntimeEffect::requiredVersion() const {
+    return fBaseProgram->fConfig->fRequiredVersion;
+}
+
 size_t SkRuntimeEffect::uniformSize() const {
     return fUniforms.empty() ? 0
                              : SkAlign4(fUniforms.back().offset + fUniforms.back().sizeInBytes());
