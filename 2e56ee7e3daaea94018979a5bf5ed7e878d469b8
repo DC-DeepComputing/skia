@@ -16,6 +16,23 @@
       "message": "Seems it\u0027s pulling it from the google account from gerrit? Anyway I just changed AUTHORS to match.",
       "revId": "2e56ee7e3daaea94018979a5bf5ed7e878d469b8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e1474dbb_dd076302",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-05-16T16:02:27Z",
+      "side": 1,
+      "message": "Callum, are you Ok with the change to AUTHORS, or do you want to re-upload?",
+      "revId": "2e56ee7e3daaea94018979a5bf5ed7e878d469b8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
