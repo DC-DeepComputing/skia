@@ -25,7 +25,7 @@ int GrMockCaps::getRenderTargetSampleCount(int requestCount, GrColorType ct) con
 }
 
 GrProgramDesc GrMockCaps::makeDesc(GrRenderTarget* /* rt */,
-                                   const GrProgramInfo& programInfo,
+                                   const GrProgramInfo* programInfo,
                                    ProgramDescOverrideFlags overrideFlags) const {
     SkASSERT(overrideFlags == ProgramDescOverrideFlags::kNone);
     GrProgramDesc desc;

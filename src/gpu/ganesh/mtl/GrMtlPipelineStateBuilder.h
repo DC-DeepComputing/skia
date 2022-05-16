@@ -21,38 +21,58 @@ class GrProgramDesc;
 class GrProgramInfo;
 class GrMtlCaps;
 class GrMtlGpu;
-class GrMtlPipelineState;
+class GrMtlComputePipelineState;
+class GrMtlRenderPipelineState;
 class SkReadBuffer;
 
 struct GrMtlPrecompiledLibraries {
     // TODO: wrap these in sk_cfp<> or unique_ptr<> when we remove ARC
     id<MTLLibrary> fVertexLibrary;
     id<MTLLibrary> fFragmentLibrary;
+    id<MTLLibrary> fComputeLibrary;
     bool fRTFlip = false;
 };
 
 class GrMtlPipelineStateBuilder : public GrGLSLProgramBuilder {
 public:
-    /** Generates a pipeline state.
+    /** Generates a render pipeline state.
      *
      * The returned GrMtlPipelineState implements the supplied GrProgramInfo.
      *
      * @return the created pipeline if generation was successful; nullptr otherwise
      */
-    static GrMtlPipelineState* CreatePipelineState(
+    static GrMtlRenderPipelineState* CreateRenderPipelineState(
                                        GrMtlGpu*,
                                        const GrProgramDesc&,
                                        const GrProgramInfo&,
+                                       const GrMtlPrecompiledLibraries* precompiledLibs = nullptr);
+
+    /** Generates a compute pipeline state.
+     *
+     * The returned GrMtlPipelineState implements the supplied GrProgramInfo.
+     *
+     * @return the created pipeline if generation was successful; nullptr otherwise
+     */
+    static GrMtlComputePipelineState* CreateComputePipelineState(
+                                       GrMtlGpu*,
+                                       const GrProgramDesc&,
+                                       const std::string& src,
                                        const GrMtlPrecompiledLibraries* precompiledLibs = nullptr);
 
     static bool PrecompileShaders(GrMtlGpu*, const SkData&,
                                   GrMtlPrecompiledLibraries* precompiledLibs);
 
 private:
+    GrMtlPipelineStateBuilder(GrMtlGpu*, const GrProgramDesc&);
+
     GrMtlPipelineStateBuilder(GrMtlGpu*, const GrProgramDesc&, const GrProgramInfo&);
 
-    GrMtlPipelineState* finalize(const GrProgramDesc&, const GrProgramInfo&,
-                                 const GrMtlPrecompiledLibraries* precompiledLibraries);
+    GrMtlRenderPipelineState* finalizeRender(const GrProgramDesc&, const GrProgramInfo&,
+            const GrMtlPrecompiledLibraries* precompiledLibraries);
+
+    GrMtlComputePipelineState* finalizeCompute(const GrProgramDesc&, const std::string& skslCode,
+            const GrMtlPrecompiledLibraries* precompiledLibraries);
+
 
     const GrCaps* caps() const override;
 
