@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1026c493_7ad6e48a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 9300
+      },
+      "writtenOn": "2022-05-16T14:25:56Z",
+      "side": 1,
+      "message": "Naive post-submit drive-by.",
+      "revId": "ed2e8ab44a10e0251f1b72fd6a9724246e4547d0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dd7bd2c0_c9a129c0",
+        "filename": "src/sksl/SkSLCompiler.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 398,
+      "author": {
+        "id": 9300
+      },
+      "writtenOn": "2022-05-16T14:25:56Z",
+      "side": 1,
+      "message": "Here we\u0027re doing a std::move() of \u0027baseModule\u0027...",
+      "revId": "ed2e8ab44a10e0251f1b72fd6a9724246e4547d0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "83123c9d_bf3233c4",
+        "filename": "src/sksl/SkSLCompiler.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 403,
+      "author": {
+        "id": 9300
+      },
+      "writtenOn": "2022-05-16T14:25:56Z",
+      "side": 1,
+      "message": "...but then here we\u0027re using \u0027baseModule\u0027 and haven\u0027t reassigned it.\n\nNaively, this looks like a use after std::move().",
+      "revId": "ed2e8ab44a10e0251f1b72fd6a9724246e4547d0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
