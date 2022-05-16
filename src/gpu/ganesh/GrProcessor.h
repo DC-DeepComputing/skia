@@ -72,7 +72,6 @@ public:
         kGrDSLFPTest_Ternary_ClassID,
         kGrDSLFPTest_WhileStatement_ClassID,
         kGrFillRRectOp_Processor_ClassID,
-        kGrGaussianConvolutionFragmentProcessor_ClassID,
         kGrMatrixConvolutionEffect_ClassID,
         kGrMatrixEffect_ClassID,
         kGrMeshTestProcessor_ClassID,
