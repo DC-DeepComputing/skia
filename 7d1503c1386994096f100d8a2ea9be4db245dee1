@@ -16,6 +16,74 @@
       "message": "This is mainly a plumbing CL. The best place to start is SkGlyphRunPainter which has the API changes.",
       "revId": "7d1503c1386994096f100d8a2ea9be4db245dee1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e6c5f6ec_7c35b442",
+        "filename": "bench/GlyphQuadFillBench.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-05-16T20:15:50Z",
+      "side": 1,
+      "message": "Can this go away ?",
+      "revId": "7d1503c1386994096f100d8a2ea9be4db245dee1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eb336b39_4cc647db",
+        "filename": "bench/GlyphQuadFillBench.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-05-16T20:15:50Z",
+      "side": 1,
+      "message": "Unused ?",
+      "revId": "7d1503c1386994096f100d8a2ea9be4db245dee1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4e99ea4e_78389e7f",
+        "filename": "bench/GlyphQuadFillBench.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-05-16T20:15:50Z",
+      "side": 1,
+      "message": "Can this go away then ?",
+      "revId": "7d1503c1386994096f100d8a2ea9be4db245dee1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a2817255_44155aae",
+        "filename": "src/gpu/ganesh/text/GrTextBlobRedrawCoordinator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-05-16T20:15:50Z",
+      "side": 1,
+      "message": "There\u0027s some weird duplication here since the props are now in the \u0027strikeDeviceInfo\u0027.\n\nI guess, can this \u0027Make\u0027 method just also take the \u0027strikeDeviceInfo\u0027 ?",
+      "revId": "7d1503c1386994096f100d8a2ea9be4db245dee1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
