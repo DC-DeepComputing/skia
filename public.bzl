@@ -391,6 +391,7 @@ BASE_SRCS_ALL = [
     "src/core/SkCanvas.cpp",
     "src/core/SkCanvasPriv.cpp",
     "src/core/SkCanvasPriv.h",
+    "src/core/SkCapabilities.cpp",
     "src/core/SkChromeRemoteGlyphCache.cpp",
     "src/core/SkClipStack.cpp",
     "src/core/SkClipStack.h",
