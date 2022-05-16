@@ -18,6 +18,7 @@
 #include "src/gpu/RefCntedCallback.h"
 #include "src/gpu/graphite/Caps.h"
 #include "src/gpu/graphite/CommandBuffer.h"
+#include "src/gpu/graphite/ContextPriv.h"
 #include "src/gpu/graphite/GlobalCache.h"
 #include "src/gpu/graphite/Gpu.h"
 #include "src/gpu/graphite/GraphicsPipelineDesc.h"
@@ -85,6 +86,12 @@ void Context::submit(SyncToCpu syncToCpu) {
 
 void Context::checkAsyncWorkCompletion() {
     fGpu->checkForFinishedWork(SyncToCpu::kNo);
+}
+
+SkBlenderID Context::addUserDefinedSnippet(SkBlender* blender) {
+    auto dict = this->priv().shaderCodeDictionary();
+
+    return dict->addUserDefinedSnippet(blender);
 }
 
 void Context::preCompile(const PaintCombo& paintCombo) {
