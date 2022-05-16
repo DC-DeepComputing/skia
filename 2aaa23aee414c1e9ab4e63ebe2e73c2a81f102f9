@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "88e19788_afd9efe5",
+        "filename": "bazel/Makefile",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-05-16T13:50:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d2203a72_4d498a35",
+      "range": {
+        "startLine": 9,
+        "startChar": 3,
+        "endLine": 9,
+        "endChar": 20
+      },
+      "revId": "2aaa23aee414c1e9ab4e63ebe2e73c2a81f102f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ab32daa8_5e25d3d5",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-05-16T13:45:24Z",
       "side": 1,
       "message": "do we want `bench/` in here too? Are we still opting into this for directories, or can we rely on `git diff` respecting our ignore rules and then finding all the meaningful files for us?",
+      "range": {
+        "startLine": 10,
+        "startChar": 77,
+        "endLine": 10,
+        "endChar": 78
+      },
+      "revId": "2aaa23aee414c1e9ab4e63ebe2e73c2a81f102f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f2a5ad2d_a1a746ae",
+        "filename": "bazel/Makefile",
+        "patchSetId": 2
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-05-16T13:50:47Z",
+      "side": 1,
+      "message": "We are opting directories in slowly and bench/ hasn\u0027t been necessary yet. I\u0027m not sure what you mean by \"respecting our ignore rules\". What ingore rules?",
+      "parentUuid": "ab32daa8_5e25d3d5",
       "range": {
         "startLine": 10,
         "startChar": 77,
