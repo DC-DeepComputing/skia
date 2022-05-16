@@ -16,6 +16,24 @@
       "message": "FYI: SkCQ is failing to submit this because of:\n```\nError when submitting: Post \"https://skia-review.googlesource.com/a/changes/540301/submit\": Got error response status code 409 from the HTTP POST request to https://skia-review.googlesource.com/a/changes/540301/submit\nResponse: \"Failed to submit 2 changes due to the following problems:\\nChange 540301: Depends on change that was not submitted. Commit 8af96db1f723d8d49aa27959b5029351b54d60e9 depends on commit aade8a411cdcd72ec8e02cccf97501dd280f2100, which is outdated patch set 2 of change 540300. The latest patch set is 3.\\n\"\n\n```\nSolution is likely to rebase 540302 and 540303.\n",
       "revId": "4ac7e35b4dd2071dd8a0f889156d7ba82681c173",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5b74127b_67b67d4d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-05-16T15:23:06Z",
+      "side": 1,
+      "message": "I think SkCQ got this one right. Parent CLs still need to be submitted before this can land.",
+      "parentUuid": "0821eefa_56d30b7e",
+      "revId": "4ac7e35b4dd2071dd8a0f889156d7ba82681c173",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
