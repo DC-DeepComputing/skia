@@ -46,6 +46,30 @@
       },
       "revId": "ec8e31fde7e53821fa024a47e6bf7f1ab31e39bf",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a723dde3_3f999003",
+        "filename": "src/gpu/ganesh/effects/GrConvexPolyEffect.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-05-16T13:58:11Z",
+      "side": 1,
+      "message": "I\u0027ll change it back to a ternary if this breaks Chrome. It\u0027s not a big deal. On Gold it only affects output from Mali in Vulkan.",
+      "parentUuid": "c1d51915_97f6a7c1",
+      "range": {
+        "startLine": 119,
+        "startChar": 54,
+        "endLine": 119,
+        "endChar": 70
+      },
+      "revId": "ec8e31fde7e53821fa024a47e6bf7f1ab31e39bf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
