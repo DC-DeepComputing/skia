@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8af3a92d_cc3b1262",
+        "filename": "gn/sksl.gni",
+        "patchSetId": 7
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-05-16T17:26:24Z",
+      "side": 0,
+      "message": "Deleted files need to also be deleted from public.bzl",
+      "range": {
+        "startLine": 111,
+        "startChar": 23,
+        "endLine": 111,
+        "endChar": 29
+      },
+      "revId": "431f305d513e2cc5cf4ea87d9f423c9840fc2e99",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
