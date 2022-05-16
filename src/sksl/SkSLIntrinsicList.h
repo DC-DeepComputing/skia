@@ -104,6 +104,8 @@
     SKSL_INTRINSIC(unpackUnorm2x16)  \
     SKSL_INTRINSIC(unpackUnorm4x8)   \
     SKSL_INTRINSIC(toLinearSrgb)     \
-    SKSL_INTRINSIC(fromLinearSrgb)
+    SKSL_INTRINSIC(fromLinearSrgb)   \
+    SKSL_INTRINSIC(read)             \
+    SKSL_INTRINSIC(write)
 
 #endif

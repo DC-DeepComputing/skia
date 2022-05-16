@@ -128,9 +128,13 @@ protected:
 
     std::string typeName(const Type& type);
 
+    std::string typeName(const Type& type, const Modifiers& modifiers);
+
     void writeStructDefinition(const StructDefinition& s);
 
     void writeType(const Type& type);
+
+    void writeType(const Type& type, const Modifiers& modifiers);
 
     void writeExtension(const Extension& ext);
 
@@ -142,6 +146,8 @@ protected:
     void writeFunctionRequirementArgs(const FunctionDeclaration& f, const char*& separator);
 
     bool writeFunctionDeclaration(const FunctionDeclaration& f);
+
+    void writeComputeShaderMainArgs();
 
     void writeFunction(const FunctionDefinition& f);
 
@@ -275,6 +281,9 @@ protected:
     Requirements requirements(const Expression* e);
 
     Requirements requirements(const Statement* s);
+
+    // For compute shader main functions, writes and initializes the _in and _out structs
+    void writeComputeMainInputsAndOutputs();
 
     int getUniformBinding(const Modifiers& m);
 
