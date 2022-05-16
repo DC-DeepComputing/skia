@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "61402bf7_61cb55dd",
+        "filename": "src/core/SkChromeRemoteGlyphCache.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 711,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-05-16T14:00:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7fd34b40_0d11fbfd",
+      "revId": "40779dd233d20841403396c3ba4e74b225cffcc2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "aa201319_26f6d0cc",
@@ -41,6 +59,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c0cb0705_86f6a00f",
+        "filename": "src/core/SkChromeRemoteGlyphCache.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 736,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-05-16T14:00:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "aa201319_26f6d0cc",
+      "range": {
+        "startLine": 736,
+        "startChar": 41,
+        "endLine": 736,
+        "endChar": 42
+      },
+      "revId": "40779dd233d20841403396c3ba4e74b225cffcc2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3d3da78a_3a619c13",
@@ -54,6 +96,30 @@
       "writtenOn": "2022-05-13T20:34:18Z",
       "side": 1,
       "message": "nit: typeface as one word?",
+      "range": {
+        "startLine": 1032,
+        "startChar": 39,
+        "endLine": 1032,
+        "endChar": 48
+      },
+      "revId": "40779dd233d20841403396c3ba4e74b225cffcc2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "73d95d35_fec1831f",
+        "filename": "src/core/SkChromeRemoteGlyphCache.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1032,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-05-16T14:00:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3d3da78a_3a619c13",
       "range": {
         "startLine": 1032,
         "startChar": 39,
