@@ -16,6 +16,24 @@
       "message": "Any trick to updating the commit message using git cl upload?",
       "revId": "087bb5ad574b6580900477bef6a950de995811eb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1acbf4b5_df5a1e50",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5145
+      },
+      "writtenOn": "2022-05-16T16:00:58Z",
+      "side": 1,
+      "message": "You may have to re-upload the change with the desired auth account.\nYou can check which credentials it is using with `git cl creds-check`.\n\nEven after you re-upload I am not sure if the owner gets changed or a new author field just re-appears. So might have to create a branch new change unfortunately.",
+      "parentUuid": "02c604d4_957dd04b",
+      "revId": "087bb5ad574b6580900477bef6a950de995811eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
