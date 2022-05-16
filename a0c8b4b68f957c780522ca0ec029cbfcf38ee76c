@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9fda865b_66614d70",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-05-16T16:32:26Z",
+      "side": 1,
+      "message": "This was intentionally reverted in https://skia-review.googlesource.com/c/skia/+/537876",
+      "revId": "a0c8b4b68f957c780522ca0ec029cbfcf38ee76c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
