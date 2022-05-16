@@ -44,6 +44,10 @@ namespace SkSL { struct Program; }
  * return type is void then the interpolated position from vertex shader return is used as the local
  * coordinate. If the color variant is used it will be blended with SkShader (or SkPaint color in
  * absence of a shader) using the SkBlender provided to the SkCanvas draw call.
+ *
+ * The vertex and fragment programs may both contain uniforms. Uniforms with the same name are
+ * assumed to be shared between programs. That is, they contain the same values. It is an error
+ * to specify uniforms in the vertex and fragment program with the same name but different types.
  */
 class SkMeshSpecification : public SkNVRefCnt<SkMeshSpecification> {
 public:
@@ -199,6 +203,10 @@ private:
  *
  * If Make() is used the implicit index sequence is 0, 1, 2, 3, ... and vertexCount must be at least
  * 3.
+ *
+ * Both Make() and MakeIndexed() take a SkData with the uniform values. The uniforms from the vertex
+ * shader are packed at the beginning of the data followed by those from the fragment program,
+ * skipping uniforms in the fragment program that are aliased in the vertex program.
  */
 class SkMesh {
 public:
@@ -247,6 +255,7 @@ public:
                        sk_sp<VertexBuffer>,
                        size_t vertexCount,
                        size_t vertexOffset,
+                       sk_sp<const SkData> uniforms,
                        const SkRect& bounds);
 
     static SkMesh MakeIndexed(sk_sp<SkMeshSpecification>,
@@ -257,6 +266,7 @@ public:
                               sk_sp<IndexBuffer>,
                               size_t indexCount,
                               size_t indexOffset,
+                              sk_sp<const SkData> uniforms,
                               const SkRect& bounds);
 
     sk_sp<SkMeshSpecification> spec() const { return fSpec; }
@@ -286,6 +296,8 @@ private:
 
     sk_sp<VertexBuffer> fVB;
     sk_sp<IndexBuffer>  fIB;
+
+    sk_sp<const SkData> fUniforms;
 
     size_t fVOffset = 0;  // Must be a multiple of spec->stride()
     size_t fVCount  = 0;
