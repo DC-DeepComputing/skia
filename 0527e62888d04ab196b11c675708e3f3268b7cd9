@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "af9087be_8e6dbcc9",
+        "filename": "tests/GrTextBlobTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-05-16T15:15:08Z",
+      "side": 1,
+      "message": "I didn\u0027t notice that you have added includes to this CL. There is an extra step you need to perform to make the build files correct.\n\nYou need to install bazelisk.\n\nThen run make -C bazel generate from the top-level skia directory.\n\nThis will update the bazel files.\n\nSorry for missing this first time around.",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 39
+      },
+      "revId": "0527e62888d04ab196b11c675708e3f3268b7cd9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
