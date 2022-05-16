@@ -73,14 +73,20 @@ private:
     bool isColorGlyph(const SkGlyph&);
     bool getColorGlyphRun(const SkGlyph&, IDWriteColorGlyphRunEnumerator**);
     bool generateColorMetrics(SkGlyph*);
-    void generateColorGlyphImage(const SkGlyph&);
-    void drawColorGlyphImage(const SkGlyph&, SkCanvas&);
+    bool generateColorGlyphImage(const SkGlyph&);
+    bool drawColorGlyphImage(const SkGlyph&, SkCanvas&);
+
+    bool isSVGGlyph(const SkGlyph&);
+    bool generateSVGMetrics(SkGlyph*);
+    bool generateSVGGlyphImage(const SkGlyph&);
+    bool drawSVGGlyphImage(const SkGlyph&, SkCanvas&);
 
     bool isPngGlyph(const SkGlyph&);
     bool generatePngMetrics(SkGlyph*);
-    void generatePngGlyphImage(const SkGlyph&);
-    void drawPngGlyphImage(const SkGlyph&, SkCanvas&);
+    bool generatePngGlyphImage(const SkGlyph&);
+    bool drawPngGlyphImage(const SkGlyph&, SkCanvas&);
 
+    static void SetGlyphBounds(SkGlyph* glyph, const SkRect& bounds);
 
     SkTDArray<uint8_t> fBits;
     /** The total matrix without the text height scale. */
