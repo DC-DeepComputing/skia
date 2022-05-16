@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ef68dba9_b24912ef",
+        "filename": "src/sksl/SkSLProgramSettings.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-05-16T13:34:27Z",
+      "side": 1,
+      "message": "Up to you: consider naming it `fRequiredSkSLVersion`? This might help to distinguish between an actual GPU caps bit and something we\u0027re enforcing on our own, at places where it\u0027s used in the code.",
+      "range": {
+        "startLine": 107,
+        "startChar": 18,
+        "endLine": 107,
+        "endChar": 34
+      },
+      "revId": "f0bc45fffb452ddc41a33248bf06dd2d868f22cc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "df92822d_7806421d",
+        "filename": "src/sksl/SkSLProgramSettings.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-05-16T13:34:27Z",
+      "side": 1,
+      "message": "nit, up to you: it kind of seems to me that the check of \"is this a ProgramKind where versions are enforced\" could be factored out to its own check?\n\n bool enforcesSkSLVersion() const {\n     return IsRuntimeEffect(fKind) || fKind \u003d\u003d ProgramKind::kGeneric;\n }\n \nWe already have this check twice (here and in `strictES2Mode`) and we describe it in English on L104.",
+      "range": {
+        "startLine": 118,
+        "startChar": 12,
+        "endLine": 118,
+        "endChar": 68
+      },
+      "revId": "f0bc45fffb452ddc41a33248bf06dd2d868f22cc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bf8712d7_8907a4f6",
+        "filename": "src/sksl/SkSLProgramSettings.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-05-16T13:34:27Z",
+      "side": 1,
+      "message": "nit, nothing to fix: This doesn\u0027t really feel like it belongs in a header. Too much logic, strings, etc. Unfortunately, there\u0027s no cpp for ProgramConfig and this doesn\u0027t quite justify adding one.",
+      "range": {
+        "startLine": 118,
+        "startChar": 0,
+        "endLine": 124,
+        "endChar": 18
+      },
+      "revId": "f0bc45fffb452ddc41a33248bf06dd2d868f22cc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
