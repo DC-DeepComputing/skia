@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "56b2b8ae_2fa12417",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-05-16T18:01:11Z",
+      "side": 1,
+      "message": "Re-landing this with two fixes applies:\n\n1) Adding an impl of onCapabilities to SkSurface_Base, so Android is happy\n2) Updating public.bzl, so Google3 is happy",
+      "revId": "2af1e2b4a602f53fc474ff4ec164639d1e909329",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
