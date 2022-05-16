@@ -50,6 +50,24 @@
       "message": "...but then here we\u0027re using \u0027baseModule\u0027 and haven\u0027t reassigned it.\n\nNaively, this looks like a use after std::move().",
       "revId": "ed2e8ab44a10e0251f1b72fd6a9724246e4547d0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0c296a20_38611190",
+        "filename": "src/sksl/SkSLCompiler.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 403,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-05-16T14:33:58Z",
+      "side": 1,
+      "message": "Aye. Turns out it\u0027s not a use-after-move, because `moduleInheritingFrom` is strictly pass-by-value (?), but we should remove the std::move above. Thanks!",
+      "parentUuid": "83123c9d_bf3233c4",
+      "revId": "ed2e8ab44a10e0251f1b72fd6a9724246e4547d0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
