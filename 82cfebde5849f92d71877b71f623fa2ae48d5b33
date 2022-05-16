@@ -34,6 +34,24 @@
       "parentUuid": "0da9017b_0ac070f9",
       "revId": "82cfebde5849f92d71877b71f623fa2ae48d5b33",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "82ff7a7c_fe03c620",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-05-16T14:18:10Z",
+      "side": 1,
+      "message": "I can follow up with profiling of our extension (go has some nice tooling for this).",
+      "parentUuid": "0128aafa_dc09fa8b",
+      "revId": "82cfebde5849f92d71877b71f623fa2ae48d5b33",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
