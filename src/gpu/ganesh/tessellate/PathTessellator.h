@@ -72,19 +72,11 @@ protected:
         }
     }
 
-    void updateResolveLevel(int resolveLevel) {
-        // We should already chopped curves to make sure none needed a higher resolveLevel than
-        // kMaxFixedResolveLevel.
-        fFixedResolveLevel = SkTPin(resolveLevel, fFixedResolveLevel, tess::kMaxResolveLevel);
-    }
-
     PatchAttribs fAttribs;
 
-    // Calculated during prepare(). If using fixed count, this is the resolveLevel to use on our
-    // instanced draws. 2^resolveLevel == numSegments.
-    int fFixedResolveLevel = 0;
-
     GrVertexChunkArray fVertexChunkArray;
+    // The max index count passed into drawIndexedInstanced() using the accumulated vertex chunks
+    int fIndexCount = 0;
 
     sk_sp<const GrGpuBuffer> fFixedVertexBuffer;
     sk_sp<const GrGpuBuffer> fFixedIndexBuffer;
