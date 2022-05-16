@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7c7b5486_0636f760",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-05-16T19:44:39Z",
+      "side": 1,
+      "message": "This is mainly a plumbing CL. The best place to start is SkGlyphRunPainter which has the API changes.",
+      "revId": "7d1503c1386994096f100d8a2ea9be4db245dee1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
