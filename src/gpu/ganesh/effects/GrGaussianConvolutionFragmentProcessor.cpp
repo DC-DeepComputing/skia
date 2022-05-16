@@ -26,7 +26,7 @@ enum class LoopType {
 };
 
 static LoopType loop_type(const GrShaderCaps& caps) {
-    // This checks that bitwise integer operations and array indexing by non-consts are allowed.
+    // TODO(johnstiles): determine whether "unrolled" is faster on old hardware; if not, remove it.
     if (caps.generation() < SkSL::GLSLGeneration::k130) {
         return LoopType::kUnrolled;
     }
@@ -92,21 +92,25 @@ std::unique_ptr<GrFragmentProcessor> GrGaussianConvolutionFragmentProcessor::Mak
     SkASSERT(halfWidth <= kMaxKernelRadius);
     int width = SkGpuBlurUtils::LinearKernelWidth(halfWidth);
 
-    // The array sizes must be a multiple of 4 because we pass it as an array of float4 uniform
-    // values.
-    float kernel[SkAlign4(kMaxKernelWidth)];
-    float offsets[SkAlign4(kMaxKernelWidth)];
+    // Assemble a gaussian kernel and offset list.
+    float kernel[kMaxKernelWidth];
+    float offsets[kMaxKernelWidth];
     SkGpuBlurUtils::Compute1DLinearGaussianKernel(kernel, offsets, gaussianSigma, halfWidth);
 
     LoopType loopType = loop_type(*caps.shaderCaps());
     int arrayCount;
     if (loopType == LoopType::kVariableLength) {
         // For variable-length loops, size the kernel uniform for the maximum width.
-        arrayCount = (SkGpuBlurUtils::LinearKernelWidth(kMaxKernelRadius) + 3) / 4;
+        arrayCount = SkGpuBlurUtils::LinearKernelWidth(kMaxKernelRadius);
     } else {
         // For fixed-length loops, size the kernel uniform based on the amount we need.
-        arrayCount = (width + 3) / 4;
-        SkASSERT(4 * arrayCount >= width);
+        arrayCount = width;
+    }
+
+    // Interleave the kernel and offsets into an array of SkV2s ("OffsetsAndKernel").
+    SkV2 offsetsAndKernel[kMaxKernelWidth] = {};
+    for (int index = 0; index < arrayCount; ++index) {
+        offsetsAndKernel[index] = {offsets[index], kernel[index]};
     }
 
     SkV2 increment = (dir == Direction::kX) ? SkV2{1, 0}
@@ -117,66 +121,62 @@ std::unique_ptr<GrFragmentProcessor> GrGaussianConvolutionFragmentProcessor::Mak
       const int ArrayWidth = %d;
       uniform shader child;
       uniform half2 Increment;
-      uniform half4 Kernel[ArrayWidth];
-      uniform half4 Offsets[ArrayWidth];
+      uniform half2 OffsetsAndKernel[ArrayWidth];
+
+      half4 Smooth(float2 coord, half2 offsetsAndKernel) {
+          return child.eval(coord + offsetsAndKernel.x * Increment) * offsetsAndKernel.y;
+      }
     )", arrayCount);
+
+    SkRuntimeEffect::Options options;
 
     if (loopType == LoopType::kUnrolled) {
         // In the unrolled case, we emit a separate call to eval() for each kernel entry.
-        // This path also has the advantage of being ES2 compatible (no integer bit-and).
         shaderText += R"(
           half4 main(float2 coord) {
               half4 color = half4(0);
         )";
 
         for (int i = 0; i < width; ++i) {
-            shaderText.appendf(
-                    "color += child.eval(coord + Offsets[%d][%d] * Increment) * Kernel[%d][%d];\n",
-                    i / 4, i & 3, i / 4, i & 3);
+            shaderText.appendf("color += Smooth(coord, OffsetsAndKernel[%d]);\n", i);
         }
 
         shaderText += R"(
               return color;
           }
         )";
+    } else {
+        // In the fixed-length and variable-length cases, we emit a SkSL loop.
+        if (loopType == LoopType::kFixedLength) {
+            // The "fixed length" loop bakes the kernel width directly into the code.
+            shaderText += "const int KernelWidth = ArrayWidth;\n";
+        } else {
+            // The "variable length" loop sends kernel width via a uniform. This requires ES3
+            // support because the loop bounds are no longer known at compile time.
+            shaderText += "uniform int KernelWidth;\n";
+            options = SkRuntimeEffectPriv::ES3Options();
+        }
 
-        sk_sp<SkRuntimeEffect> effect = SkMakeRuntimeEffect(SkRuntimeEffect::MakeForShader,
-                                                            shaderText.c_str());
-
-        return GrSkSLFP::Make(effect, "GaussianConvolution", /*inputFP=*/nullptr,
-                              GrSkSLFP::OptFlags::kPreservesOpaqueInput |
-                              GrSkSLFP::OptFlags::kCompatibleWithCoverageAsAlpha,
-                              "child", std::move(child),
-                              "Increment", increment,
-                              "Kernel", SkMakeSpan<SkV4>((SkV4*)kernel, arrayCount),
-                              "Offsets", SkMakeSpan<SkV4>((SkV4*)offsets, arrayCount));
+        shaderText += R"(
+          half4 main(float2 coord) {
+              half4 color = half4(0);
+              for (int i = 0; i < KernelWidth; ++i) {
+                  color += Smooth(coord, OffsetsAndKernel[i]);
+              }
+              return color;
+          }
+        )";
     }
 
-    // For the other cases, we emit a SkSL loop. The "fixed length" loop bakes in the kernel width
-    // with a specialization variable; the "variable length" loop sends kernel width via a uniform.
-    shaderText += R"(
-      uniform int KernelWidth;
-
-      half4 main(float2 coord) {
-          half4 color = half4(0);
-          for (int i = 0; i < KernelWidth; ++i) {
-              color += child.eval(coord + Offsets[i / 4][i & 3] * Increment) * Kernel[i / 4][i & 3];
-          }
-          return color;
-      }
-    )";
-
     sk_sp<SkRuntimeEffect> effect = SkMakeRuntimeEffect(SkRuntimeEffect::MakeForShader,
-                                                        shaderText.c_str(),
-                                                        SkRuntimeEffectPriv::ES3Options());
+                                                        shaderText.c_str(), options);
 
     return GrSkSLFP::Make(effect, "GaussianConvolution", /*inputFP=*/nullptr,
                           GrSkSLFP::OptFlags::kPreservesOpaqueInput |
                           GrSkSLFP::OptFlags::kCompatibleWithCoverageAsAlpha,
                           "child", std::move(child),
                           "Increment", increment,
-                          "Kernel", SkMakeSpan((SkV4*)kernel, arrayCount),
-                          "Offsets", SkMakeSpan((SkV4*)offsets, arrayCount),
-                          "KernelWidth", GrSkSLFP::SpecializeIf(loopType == LoopType::kFixedLength,
-                                                                width));
+                          "OffsetsAndKernel", SkMakeSpan(offsetsAndKernel, arrayCount),
+                          "KernelWidth", GrSkSLFP::When(loopType == LoopType::kVariableLength,
+                                                        width));
 }
