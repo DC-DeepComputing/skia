@@ -93,6 +93,30 @@
       },
       "revId": "2aaa23aee414c1e9ab4e63ebe2e73c2a81f102f9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a84ad911_5bbfdbd9",
+        "filename": "bazel/Makefile",
+        "patchSetId": 2
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-05-16T14:00:45Z",
+      "side": 1,
+      "message": "We wouldn\u0027t want gazelle to scan `out/`, but since it\u0027s being fed from `git diff`, that would respect our `.gitignore` rules automatically.\n\nBut if it\u0027s intentional to be moving slowly and not cover everything, then this is fine with me.",
+      "parentUuid": "f2a5ad2d_a1a746ae",
+      "range": {
+        "startLine": 10,
+        "startChar": 77,
+        "endLine": 10,
+        "endChar": 78
+      },
+      "revId": "2aaa23aee414c1e9ab4e63ebe2e73c2a81f102f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

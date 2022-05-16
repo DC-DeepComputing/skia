@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0da9017b_0ac070f9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-05-16T14:00:45Z",
+      "side": 1,
+      "message": "A 4x improvement is very nice, but 1.8s still seems a lot when it\u0027s only a few files. I took a scan through the gazelle cpp extension, and while I think there\u0027s no way around scanning every line for includes, do you think we should just use a very simple state machine instead of removing comments and then a separate regex per line?",
+      "revId": "82cfebde5849f92d71877b71f623fa2ae48d5b33",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
