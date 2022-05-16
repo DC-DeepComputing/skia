@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4ea65f46_0b487261",
+        "filename": "src/gpu/ganesh/effects/GrGaussianConvolutionFragmentProcessor.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-05-16T13:54:08Z",
+      "side": 1,
+      "message": "Unnecessary?",
+      "revId": "b1b7dc46100a6c868efd0da4f06902cdc1b043c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
