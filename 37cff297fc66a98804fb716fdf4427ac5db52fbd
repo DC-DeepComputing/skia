@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c09a9c03_074a4a41",
+        "filename": "include/sksl/DSLVar.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-05-16T21:25:25Z",
+      "side": 1,
+      "message": "Interestingly, the `using INHERITED::assign` line required INHERITED to be declared up here, even though the constructors did not care.",
+      "range": {
+        "startLine": 161,
+        "startChar": 10,
+        "endLine": 161,
+        "endChar": 19
+      },
+      "revId": "37cff297fc66a98804fb716fdf4427ac5db52fbd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3bb89852_ac7f95fe",
+        "filename": "src/sksl/ir/SkSLFunctionDefinition.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-05-16T21:25:25Z",
+      "side": 1,
+      "message": "Outside of DSLTest, this was the one remaining use of `operator\u003d`-based assignment in DSL. Other code was already using `assign` or `binary`.",
+      "range": {
+        "startLine": 63,
+        "startChar": 17,
+        "endLine": 63,
+        "endChar": 25
+      },
+      "revId": "37cff297fc66a98804fb716fdf4427ac5db52fbd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
