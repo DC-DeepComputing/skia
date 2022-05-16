@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d66b35ad_1f47ff55",
+        "filename": "src/gpu/ganesh/text/GrTextBlob.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 2156,
+      "author": {
+        "id": 18984
+      },
+      "writtenOn": "2022-05-16T14:00:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "02672a62_ed9d8faa",
+      "range": {
+        "startLine": 2156,
+        "startChar": 12,
+        "endLine": 2156,
+        "endChar": 24
+      },
+      "revId": "52131e51224aa73db80e85d6ef7be001b4dbd6b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1c89fe53_20267a17",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-05-16T13:45:11Z",
       "side": 1,
       "message": "Wrap over long lines.",
+      "range": {
+        "startLine": 344,
+        "startChar": 28,
+        "endLine": 344,
+        "endChar": 108
+      },
+      "revId": "52131e51224aa73db80e85d6ef7be001b4dbd6b1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2e2470cf_f2b41701",
+        "filename": "tests/GrTextBlobTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 344,
+      "author": {
+        "id": 18984
+      },
+      "writtenOn": "2022-05-16T14:00:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1c89fe53_20267a17",
       "range": {
         "startLine": 344,
         "startChar": 28,
