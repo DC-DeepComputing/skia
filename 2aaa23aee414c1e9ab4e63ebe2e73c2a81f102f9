@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d2203a72_4d498a35",
+        "filename": "bazel/Makefile",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-05-16T13:45:24Z",
+      "side": 1,
+      "message": "remove?",
+      "range": {
+        "startLine": 9,
+        "startChar": 3,
+        "endLine": 9,
+        "endChar": 20
+      },
+      "revId": "2aaa23aee414c1e9ab4e63ebe2e73c2a81f102f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ab32daa8_5e25d3d5",
+        "filename": "bazel/Makefile",
+        "patchSetId": 2
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-05-16T13:45:24Z",
+      "side": 1,
+      "message": "do we want `bench/` in here too? Are we still opting into this for directories, or can we rely on `git diff` respecting our ignore rules and then finding all the meaningful files for us?",
+      "range": {
+        "startLine": 10,
+        "startChar": 77,
+        "endLine": 10,
+        "endChar": 78
+      },
+      "revId": "2aaa23aee414c1e9ab4e63ebe2e73c2a81f102f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
