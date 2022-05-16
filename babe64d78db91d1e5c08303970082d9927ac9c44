@@ -16,6 +16,24 @@
       "message": "I\u0027m sure `clang_linux` is fine, but I don\u0027t see anything else directly referring to or introducing `clang_linux` here? Is this needed for this change or should it be its own change?",
       "revId": "babe64d78db91d1e5c08303970082d9927ac9c44",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ef066a48_0a6eefa5",
+        "filename": "bazel/Makefile",
+        "patchSetId": 6
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-05-16T13:03:29Z",
+      "side": 1,
+      "message": "This should have been done with https://github.com/google/skia/commit/b894c69abba556f596d75033aa60fa7a9404a26a but it was missed.",
+      "parentUuid": "e3f101ea_46999d90",
+      "revId": "babe64d78db91d1e5c08303970082d9927ac9c44",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
