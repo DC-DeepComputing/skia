@@ -122,3 +122,21 @@ generated_cc_atom(
         "//src/gpu/tessellate:LinearTolerances_hdr",
     ],
 )
+
+generated_cc_atom(
+    name = "TessellateStrokeRenderStep_src",
+    srcs = ["TessellateStrokeRenderStep.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":TessellateStrokeRenderStep_hdr",
+        "//src/gpu/graphite:DrawGeometry_hdr",
+        "//src/gpu/graphite:DrawWriter_hdr",
+    ],
+)
+
+generated_cc_atom(
+    name = "TessellateStrokesRenderStep_hdr",
+    hdrs = ["TessellateStrokesRenderStep.h"],
+    visibility = ["//:__subpackages__"],
+    deps = ["//src/gpu/graphite:Renderer_hdr"],
+)
