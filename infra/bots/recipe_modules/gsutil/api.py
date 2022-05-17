@@ -11,7 +11,8 @@ class GSUtilApi(recipe_api.RecipeApi):
   def __call__(self, step_name, *args):
     """Run gsutil with the given args."""
     if 'Win' in self.m.vars.builder_cfg.get('os', ''):
-      return self.m.run(self.m.python, step_name, script=str(self.m.vars.workdir.join('cipd_bin_packages').join('gsutil')), args=args)
+      # one gsutil for the cipd package name, one for the folder in the zip, and one for the name of the script.
+      return self.m.run(self.m.python, step_name, script=str(self.m.vars.workdir.join('gsutil', 'gsutil', 'gsutil')), args=args)
     return self.m.step(step_name, cmd=['gsutil'] + list(args))
 
   def cp(self, name, src, dst, extra_args=None, multithread=False):
