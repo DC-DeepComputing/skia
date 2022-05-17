@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e4dd13e3_9ce70593",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-05-17T19:25:34Z",
+      "side": 1,
+      "message": "This will fix the red graphite bots, since the prior change exposed the issue with the Rect::Infinite factories.",
+      "revId": "e69760c13844ec21ef1b1f2d195ae027f96f98cb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
