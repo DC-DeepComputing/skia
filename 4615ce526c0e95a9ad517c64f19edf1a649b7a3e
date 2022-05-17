@@ -96,6 +96,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9aed00a2_2b8d799c",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 2
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-05-17T20:57:16Z",
+      "side": 1,
+      "message": "Oh, so the current colorizer actually gets this case wrong?\n\nI wonder if Chrome works around it somehow? I know they have tests where the gradient stops are all mixed up, which is something that we don\u0027t support directly (Chrome sorts everything before handing it off to us).",
+      "parentUuid": "b0a52aeb_048e40a9",
+      "revId": "4615ce526c0e95a9ad517c64f19edf1a649b7a3e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6f063ea4_2ed4845b",
         "filename": "src/sksl/sksl_graphite_frag.sksl",
         "patchSetId": 2
