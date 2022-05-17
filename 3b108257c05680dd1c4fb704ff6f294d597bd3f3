@@ -16,6 +16,52 @@
       "message": "Playing a little fast and loose with ES3Options is needed for this one.",
       "revId": "3b108257c05680dd1c4fb704ff6f294d597bd3f3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "781fad1a_5324e15d",
+        "filename": "src/gpu/ganesh/effects/GrConvexPolyEffect.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-05-17T14:08:45Z",
+      "side": 1,
+      "message": "I know we talked about this, but I don\u0027t love that once we have #version controlling access to these features, we\u0027re going to need a back-door here. This may just make me think harder about some kind of first-class hack for specializations.\n\nAlternatively (in this case): we could just eliminate the specialization for EdgeCount? That would reduce shader combinations, too...\n\nI think all we need to do is fill all the unused edges with [0,0,1]? It makes polygons with few sides slower, but probably isn\u0027t that bad - we already have special cases for rectangles, and how many people are clipping against triangles?",
+      "range": {
+        "startLine": 64,
+        "startChar": 4,
+        "endLine": 64,
+        "endChar": 99
+      },
+      "revId": "3b108257c05680dd1c4fb704ff6f294d597bd3f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d34b87d0_41196f2e",
+        "filename": "src/gpu/ganesh/effects/GrConvexPolyEffect.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-05-17T14:08:45Z",
+      "side": 1,
+      "message": "to not be ...",
+      "range": {
+        "startLine": 65,
+        "startChar": 73,
+        "endLine": 65,
+        "endChar": 89
+      },
+      "revId": "3b108257c05680dd1c4fb704ff6f294d597bd3f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
