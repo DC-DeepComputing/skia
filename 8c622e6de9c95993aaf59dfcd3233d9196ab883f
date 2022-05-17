@@ -16,6 +16,52 @@
       "message": "+Brian O. for API review",
       "revId": "8c622e6de9c95993aaf59dfcd3233d9196ab883f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9933f794_fc35e1df",
+        "filename": "include/gpu/graphite/Context.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-05-17T13:30:38Z",
+      "side": 1,
+      "message": "\u0027set\u0027 is really heavyweight (code-size, surplus heap usage, etc...). It doesn\u0027t seem like we need these ordered, so maybe just use SkTHashSet? More aggressively - can we just say that you\u0027re not allowed to add the same blend-mode or blenderID more than once, and store these in an unsorted vector? (We could assert that they\u0027re not already present in debug builds...)",
+      "range": {
+        "startLine": 93,
+        "startChar": 9,
+        "endLine": 93,
+        "endChar": 12
+      },
+      "revId": "8c622e6de9c95993aaf59dfcd3233d9196ab883f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0940b010_c5752529",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-05-17T13:30:38Z",
+      "side": 1,
+      "message": "If we\u0027re going to alias these two things and distinguish them like this, can we add an assert to add(SkBlenderID) that `id \u003c kSkBlendModeCount`?",
+      "range": {
+        "startLine": 116,
+        "startChar": 0,
+        "endLine": 116,
+        "endChar": 40
+      },
+      "revId": "8c622e6de9c95993aaf59dfcd3233d9196ab883f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
