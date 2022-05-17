@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "efee4757_be9f8864",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-05-17T19:48:41Z",
+      "side": 1,
+      "message": "gsutil replacement has landed, so that should make the Mac jobs happy again.",
+      "revId": "9f493abd998f7bf86e69e957c85c417629ad4cc4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
