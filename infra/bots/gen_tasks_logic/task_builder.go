@@ -247,6 +247,12 @@ func (b *taskBuilder) usesDocker() {
 	b.dimension("docker_installed:true")
 }
 
+// usesDocker adds attributes to tasks which use docker.
+func (b *taskBuilder) usesGSUtil() {
+	b.asset("gsutil")
+	b.addToPATH("gsutil")
+}
+
 // recipeProp adds the given recipe property key/value pair. Panics if
 // getRecipeProps() was already called.
 func (b *taskBuilder) recipeProp(key, value string) {
