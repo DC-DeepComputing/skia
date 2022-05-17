@@ -1,0 +1,95 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "41c4f24d_a7f424b3",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-05-17T17:04:11Z",
+      "side": 1,
+      "message": "This information should go in the git-trailers (down with the `Change-Id:`) as `Bug: chromium:1316377`. This will allow for the automated systems to properly associate this change with that issue. (Gerrit will also make it into a link here in the description.)",
+      "revId": "6aa3a739056a60de0d8f4514acf829355c10f99c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ea90c269_50d6c649",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-05-17T17:04:11Z",
+      "side": 1,
+      "message": "Thanks for creating this change! Planning to get a better look at this today.",
+      "revId": "6aa3a739056a60de0d8f4514acf829355c10f99c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d0bc1acf_ce6b1ab6",
+        "filename": "src/pdf/SkPDFGradientShader.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-05-17T17:04:11Z",
+      "side": 1,
+      "message": "Which viewers had issue with the maxDepth set to 5 or above? I\u0027m curious because going by just depth it seems the issue this is fixing started at a depth of 255 or so. I haven\u0027t taken a look at the actual output yet, so maybe there is an issue with over `dup`ing? Or maybe the implementations are reserving for all the `dup` even if they aren\u0027t actually executed?",
+      "revId": "6aa3a739056a60de0d8f4514acf829355c10f99c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c750bd54_f882d8f9",
+        "filename": "src/pdf/SkPDFGradientShader.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 210,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-05-17T17:04:11Z",
+      "side": 1,
+      "message": "Instead of `i` shouldn\u0027t this be `colorOffsets.size()-1`? In which case there is no need for both `beforeColors` and `afterColors`?\n\nThe intent of all this copying seems to be to skip the zero sized transitions by essentially removing them from the `info`. I don\u0027t believe any copies need to be made at all, just one pass ahead of time to calculate the count up front (in the old code this count was called `gradients`) to calculate the nesting correctly and then just skip the zero sized transitions below.",
+      "range": {
+        "startLine": 210,
+        "startChar": 24,
+        "endLine": 210,
+        "endChar": 25
+      },
+      "revId": "6aa3a739056a60de0d8f4514acf829355c10f99c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "126e8166_f0916644",
+        "filename": "src/pdf/SkPDFGradientShader.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 258,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-05-17T17:04:11Z",
+      "side": 1,
+      "message": "This is the wrong offset into `beforeColors` (and sometimes `afterColors`?). `beforeColors` was constructed above to match the `info` colors but not the `colorOffsets`.",
+      "revId": "6aa3a739056a60de0d8f4514acf829355c10f99c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
