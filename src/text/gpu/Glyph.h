@@ -19,8 +19,10 @@ public:
     static skgpu::MaskFormat FormatFromSkGlyph(SkMask::Format format) {
         switch (format) {
             case SkMask::kBW_Format:
+                // fall through to kA8 -- we store BW in our 8-bit cache
+                return skgpu::MaskFormat::kA8;
             case SkMask::kSDF_Format:
-                // fall through to kA8 -- we store BW and SDF glyphs in our 8-bit cache
+                return skgpu::MaskFormat::kA8Extended;
             case SkMask::kA8_Format:
                 return skgpu::MaskFormat::kA8;
             case SkMask::k3D_Format:

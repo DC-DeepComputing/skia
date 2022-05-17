@@ -91,7 +91,8 @@ static void get_packed_glyph_image(
             // Handle 8-bit format by expanding the mask to the expected format.
             const uint8_t* bits = reinterpret_cast<const uint8_t*>(src);
             switch (expectedMaskFormat) {
-                case MaskFormat::kA8: {
+                case MaskFormat::kA8:
+                case MaskFormat::kA8Extended: {
                     uint8_t* bytes = reinterpret_cast<uint8_t*>(dst);
                     expand_bits(bytes, bits, width, height, dstRB, srcRB);
                     break;
@@ -348,6 +349,7 @@ bool GrAtlasManager::initAtlas(MaskFormat format) {
             case MaskFormat::kA8: label   = "TextAtlas kA8"; break;
             case MaskFormat::kA565: label = "TextAtlas kA565"; break;
             case MaskFormat::kARGB: label = "TextAtlas kARGB"; break;
+            case MaskFormat::kA8Extended: label = "TextAtlas kA8Extended"; break;
         }
 
         const GrBackendFormat backendFormat =
@@ -414,6 +416,8 @@ std::tuple<bool, int> GlyphVector::regenerateAtlas(int begin, int end,
                     tokenTracker->nextDrawToken());
             glyphsPlacedInAtlas++;
         }
+
+        success = success && glyphsPlacedInAtlas > 0;
 
         // Update atlas generation if there are no more glyphs to put in the atlas.
         if (success && begin + glyphsPlacedInAtlas == SkCount(fGlyphs)) {
