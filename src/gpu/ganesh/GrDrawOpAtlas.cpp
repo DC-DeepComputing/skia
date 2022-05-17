@@ -638,7 +638,7 @@ GrDrawOpAtlasConfig::GrDrawOpAtlasConfig(int maxTextureSize, size_t maxBytes) {
 }
 
 SkISize GrDrawOpAtlasConfig::atlasDimensions(MaskFormat type) const {
-    if (MaskFormat::kA8 == type) {
+    if (MaskFormat::kA8 == type || MaskFormat::kA8Extended == type) {
         // A8 is always 2x the ARGB dimensions, clamped to the max allowed texture size
         return { std::min<int>(2 * fARGBDimensions.width(), fMaxTextureSize),
                  std::min<int>(2 * fARGBDimensions.height(), fMaxTextureSize) };
@@ -648,9 +648,9 @@ SkISize GrDrawOpAtlasConfig::atlasDimensions(MaskFormat type) const {
 }
 
 SkISize GrDrawOpAtlasConfig::plotDimensions(MaskFormat type) const {
-    if (MaskFormat::kA8 == type) {
+    if (MaskFormat::kA8 == type || MaskFormat::kA8Extended == type) {
         SkISize atlasDimensions = this->atlasDimensions(type);
-        // For A8 we want to grow the plots at larger texture sizes to accept more of the
+        // For A8Extended we want to grow the plots at larger texture sizes to accept more of the
         // larger SDF glyphs. Since the largest SDF glyph can be 170x170 with padding, this
         // allows us to pack 3 in a 512x256 plot, or 9 in a 512x512 plot.
 

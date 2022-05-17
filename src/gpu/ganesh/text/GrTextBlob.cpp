@@ -376,6 +376,8 @@ AtlasTextOp::MaskType TransformedMaskVertexFiller::opMaskType() const {
         case MaskFormat::kA8:   return AtlasTextOp::MaskType::kGrayscaleCoverage;
         case MaskFormat::kA565: return AtlasTextOp::MaskType::kLCDCoverage;
         case MaskFormat::kARGB: return AtlasTextOp::MaskType::kColorBitmap;
+        case MaskFormat::kA8Extended:
+                                return AtlasTextOp::MaskType::kGrayscaleDistanceField;
     }
     SkUNREACHABLE;
 }
@@ -418,6 +420,7 @@ AtlasTextOp::MaskType op_mask_type(MaskFormat maskFormat) {
         case MaskFormat::kA8:   return AtlasTextOp::MaskType::kGrayscaleCoverage;
         case MaskFormat::kA565: return AtlasTextOp::MaskType::kLCDCoverage;
         case MaskFormat::kARGB: return AtlasTextOp::MaskType::kColorBitmap;
+        case MaskFormat::kA8Extended:   return AtlasTextOp::MaskType::kGrayscaleCoverage;
     }
     SkUNREACHABLE;
 }
@@ -1828,7 +1831,7 @@ GrSubRunOwner SDFTSubRun::Make(const GrTextReferenceFrame* referenceFrame,
                                const GrSDFTMatrixRange& matrixRange,
                                SubRunAllocator* alloc) {
     auto vertexFiller = TransformedMaskVertexFiller::Make(
-            MaskFormat::kA8,
+            MaskFormat::kA8Extended,
             SK_DistanceFieldInset,
             strikeToSourceScale,
             accepted,
@@ -1967,7 +1970,7 @@ void SDFTSubRun::testingOnly_packedGlyphIDToGlyph(StrikeCache *cache) const {
 
 std::tuple<bool, int>
 SDFTSubRun::regenerateAtlas(int begin, int end, GrMeshDrawTarget *target) const {
-    return fGlyphs.regenerateAtlas(begin, end, MaskFormat::kA8, SK_DistanceFieldInset,
+    return fGlyphs.regenerateAtlas(begin, end, MaskFormat::kA8Extended, SK_DistanceFieldInset,
                                    target);
 }
 
