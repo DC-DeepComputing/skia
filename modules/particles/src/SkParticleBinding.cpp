@@ -7,6 +7,7 @@
 
 #include "modules/particles/include/SkParticleBinding.h"
 
+#include "include/core/SkCanvas.h"
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkContourMeasure.h"
 #include "include/core/SkFont.h"
@@ -249,19 +250,75 @@ private:
     sk_sp<SkShader> fShader;
 };
 
-sk_sp<SkParticleBinding> SkParticleBinding::MakeImage(const char* name, const char* imagePath,
-                                                      const char* imageName) {
-    return sk_sp<SkParticleBinding>(new SkImageBinding(name, imagePath, imageName));
-}
+class SkMultiFrameBinding : public SkParticleBinding {
+public:
+    SkMultiFrameBinding(const char* name = "", const char* filePath = "", const char* fileName = "")
+            : SkParticleBinding(name)
+            , fFilePath(filePath)
+            , fFileName(fileName) {}
 
-sk_sp<SkParticleBinding> SkParticleBinding::MakePath(const char* name, const char* pathPath,
-                                                     const char* pathName) {
-    return sk_sp<SkParticleBinding>(new SkPathBinding(name, pathPath, pathName));
-}
+    REFLECTED(SkMultiFrameBinding, SkParticleBinding)
+
+    void visitFields(SkFieldVisitor* v) override {
+        SkParticleBinding::visitFields(v);
+        v->visit("FilePath", fFilePath);
+        v->visit("FileName", fFileName);
+    }
+
+    std::unique_ptr<SkParticleExternalFunction> toFunction(SkSL::Compiler& compiler,
+                                                           skvm::Uniforms* uniforms,
+                                                           SkArenaAlloc* alloc) override {
+        return std::make_unique<SkShaderExternalFunction>(fName.c_str(), compiler, fShader,
+                                                                        uniforms, alloc);
+    }
+
+    void prepare(const skresources::ResourceProvider* resourceProvider) override {
+        SkASSERT(resourceProvider);
+        if (auto asset = resourceProvider->load(fFilePath.c_str(), fFileName.c_str())) {
+            SkASSERT(asset);
+            auto data = SkData::MakeWithCopy(asset->data(), asset->size());
+            fMultiFrameImage = skresources::MultiFrameImageAsset::Make(std::move(data),
+                                                                       /* predecode = */ true);
+            if (fMultiFrameImage) {
+                auto info = SkImageInfo::MakeN32Premul(fMultiFrameImage->getFrame(0)->width(),
+                                                       fMultiFrameImage->getFrame(0)->height());
+                auto storage = SkData::MakeUninitialized(info.computeMinByteSize());
+                fImageCanvas = SkCanvas::MakeRasterDirect(info, storage->writable_data(),
+                                                               info.minRowBytes());
+                fImageCanvas->drawColor(SK_ColorWHITE);
+                auto image = SkImage::MakeRasterData(info, storage, info.minRowBytes());
+                SkMatrix normalize = SkMatrix::Scale(1.0f / image->width(), 1.0f / image->height());
+                fShader = image->makeShader(SkSamplingOptions(SkFilterMode::kLinear), &normalize);
+
+                return;
+            }
+        }
+        SkDebugf("failed to load asset \"%s:%s\"\n", fFilePath.c_str(), fFileName.c_str());
+        fShader = SkShaders::Color(SK_ColorWHITE);
+    }
+
+    void update(double dt) override {
+        fTime += dt;
+        auto image = fMultiFrameImage->getFrame(fTime);
+        fImageCanvas->drawImage(image, 0, 0);
+    }
+
+private:
+    SkString fFilePath;
+    SkString fFileName;
+    float fTime = 0;
+
+    // Cached
+    sk_sp<SkShader> fShader;
+    sk_sp<skresources::MultiFrameImageAsset> fMultiFrameImage;
+    std::unique_ptr<SkCanvas> fImageCanvas;
+
+};
 
 void SkParticleBinding::RegisterBindingTypes() {
     REGISTER_REFLECTED(SkParticleBinding);
     REGISTER_REFLECTED(SkImageBinding);
+    REGISTER_REFLECTED(SkMultiFrameBinding);
     REGISTER_REFLECTED(SkPathBinding);
     REGISTER_REFLECTED(SkTextBinding);
 }

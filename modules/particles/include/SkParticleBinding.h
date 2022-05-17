@@ -56,28 +56,17 @@ public:
 
     void visitFields(SkFieldVisitor* v) override;
 
+    /*
+     * All SkParticleBinding objects expose a particular native object to an effect's SkSL code.
+     * In all cases, the 'name' is the symbol that will be used to access the object from the SkSL.
+     * Each binding is a callable object, so the SkSL name behaves like a function.
+     */
     virtual std::unique_ptr<SkParticleExternalFunction> toFunction(SkSL::Compiler&,
                                                                    skvm::Uniforms*,
                                                                    SkArenaAlloc*) = 0;
     virtual void prepare(const skresources::ResourceProvider*) = 0;
-
+    virtual void update(double t) {}
     static void RegisterBindingTypes();
-
-    /*
-     * All SkParticleBinding objects expose a particular native object to an effect's SkSL code.
-     * In all cases, the 'name' is the symbol that will be used to access the object from the SkSL.
-     * Each binding is a callable object, so the SkSL name behaves like a function. The behavior of
-     * each kind of binding is described below.
-     */
-
-    // float4 name(xy) -- Fetches RGBA data from an image. 'xy' are normalized image coordinates.
-    static sk_sp<SkParticleBinding> MakeImage(const char* name,
-                                              const char* imagePath, const char* imageName);
-
-    // float4 name(t) -- Fetches position and normal from an SkPath. 't' is the normalized distance
-    // along the path. The return value contains position in .xy and normal in .zw.
-    static sk_sp<SkParticleBinding> MakePath(const char* name,
-                                             const char* pathPath, const char* pathName);
 
 protected:
     SkString fName;
