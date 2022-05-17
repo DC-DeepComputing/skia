@@ -88,8 +88,8 @@ enum class MaskFormat : int {
     kA8,    //!< 1-byte per pixel
     kA565,  //!< 2-bytes per pixel, RGB represent 3-channel LCD coverage
     kARGB,  //!< 4-bytes per pixel, color format
-
-    kLast = kARGB
+    kA8Extended,
+    kLast = kA8Extended
 };
 static const int kMaskFormatCount = static_cast<int>(MaskFormat::kLast) + 1;
 
@@ -101,10 +101,15 @@ inline constexpr int MaskFormatBytesPerPixel(MaskFormat format) {
     // kA8   (0) -> 1
     // kA565 (1) -> 2
     // kARGB (2) -> 4
+    // kA8Extended (3) -> 1
     static_assert(static_cast<int>(MaskFormat::kA8) == 0, "enum_order_dependency");
     static_assert(static_cast<int>(MaskFormat::kA565) == 1, "enum_order_dependency");
     static_assert(static_cast<int>(MaskFormat::kARGB) == 2, "enum_order_dependency");
+    static_assert(static_cast<int>(MaskFormat::kA8Extended) == 3, "enum_order_dependency");
 
+    if (format == MaskFormat::kA8Extended) {
+        return SkTo<int>(1u << static_cast<int>(MaskFormat::kA8));
+    }
     return SkTo<int>(1u << static_cast<int>(format));
 }
 
@@ -116,6 +121,8 @@ static constexpr SkColorType MaskFormatToColorType(MaskFormat format) {
             return kRGB_565_SkColorType;
         case MaskFormat::kARGB:
             return kRGBA_8888_SkColorType;
+        case MaskFormat::kA8Extended:
+            return kAlpha_8_SkColorType;
     }
     SkUNREACHABLE;
 }

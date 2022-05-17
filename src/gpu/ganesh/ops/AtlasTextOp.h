@@ -188,11 +188,12 @@ private:
             case MaskType::kColorBitmap:
                 return skgpu::MaskFormat::kARGB;
             case MaskType::kGrayscaleCoverage:
+                return skgpu::MaskFormat::kA8;
             case MaskType::kAliasedDistanceField:
             case MaskType::kGrayscaleDistanceField:
             case MaskType::kLCDDistanceField:
             case MaskType::kLCDBGRDistanceField:
-                return skgpu::MaskFormat::kA8;
+                return skgpu::MaskFormat::kA8Extended;
         }
         // SkUNREACHABLE;
         return skgpu::MaskFormat::kA8;
