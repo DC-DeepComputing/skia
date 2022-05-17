@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "713e56cc_02749d12",
+        "filename": "include/gpu/graphite/Context.h",
+        "patchSetId": 26
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-05-17T20:27:54Z",
+      "side": 1,
+      "message": "Unless I misunderstand how this code is supposed to work, I think this is not what you intended.\n\n`sk_sp\u003cSkRuntimeEffect\u003e` is an intermediate object, the result of calling `SkRuntimeEffect::MakeForBlender` (or `MakeForShader`/`MakeForColorFilter`). This contains a compiled version of your SkSL but is not associated with any uniforms or children yet. Users are supposed to take that object and call `myRuntimeEffect-\u003emakeBlender(myUniforms, myChildren)` on it to create a fully formed `sk_sp\u003cSkBlender\u003e` object that can be attached to a SkPaint. (This allows compiled code to be re-bound to different uniforms and children more efficiently)\n\nInternally that blender object will always be a `sk_sp\u003cSkRuntimeBlender\u003e` but that class isn\u0027t exposed anywhere outside of `SkRuntimeEffect`. (We can make it visible to Graphite if necessary, but I don\u0027t know if that will help; virtual functions should be sufficient AFAICS.) You can also use the Flattenable system to identify runtime shaders/blenders via `getTypeName()`.",
+      "range": {
+        "startLine": 112,
+        "startChar": 38,
+        "endLine": 112,
+        "endChar": 60
+      },
+      "revId": "cb3009126d93f4af07445a7d033bdc498b09b387",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
