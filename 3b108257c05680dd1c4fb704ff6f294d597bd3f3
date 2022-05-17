@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8b34c4f8_d86e5e5f",
+        "filename": "src/gpu/ganesh/effects/GrConvexPolyEffect.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-05-17T14:24:48Z",
+      "side": 1,
+      "message": "Eliminating the EdgeCount specialization makes this shader _actually_ not-ES2-compliant (for loop can\u0027t be unrolled), so that\u0027s a bit of a non-starter.\n\nI think if we\u0027re going to pessimize the algorithm to always do 8 loops, we\u0027re probably better off just leaving it as a non-runtime effect. It\u0027s hard for me to justify making a change if it\u0027s going to lead to actual worse drawing performance. \n\nHaving run into this twice in a row now I do agree that it\u0027s very limiting that specializations are treated differently in the initial parse vs in the final output. I think it\u0027d be worth adding a little extra syntactic sugar to allow specializations to be treated as constant values.\n\nShould I abandon this for now? It\u0027s NBD, I didn\u0027t spend long on it.",
+      "parentUuid": "781fad1a_5324e15d",
+      "range": {
+        "startLine": 64,
+        "startChar": 4,
+        "endLine": 64,
+        "endChar": 99
+      },
+      "revId": "3b108257c05680dd1c4fb704ff6f294d597bd3f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d34b87d0_41196f2e",
         "filename": "src/gpu/ganesh/effects/GrConvexPolyEffect.cpp",
         "patchSetId": 2
