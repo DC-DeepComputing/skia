@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1125dcf0_3e608f45",
+        "filename": "PRESUBMIT.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 292,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-05-17T17:44:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "723982a3_574f2c52",
+      "revId": "917107109621997b78f0057bedd683ae20d855b8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ce20e209_887a9213",
@@ -31,6 +49,24 @@
       "writtenOn": "2022-05-17T17:36:23Z",
       "side": 1,
       "message": "This is not in common checks because we are worried about false positives?",
+      "revId": "917107109621997b78f0057bedd683ae20d855b8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c4f222a4_015ff9e0",
+        "filename": "PRESUBMIT.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 354,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-05-17T17:44:54Z",
+      "side": 1,
+      "message": "Yes, mostly from adding new files. We don\u0027t want every file in the public.bzl",
+      "parentUuid": "ce20e209_887a9213",
       "revId": "917107109621997b78f0057bedd683ae20d855b8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
