@@ -31,6 +31,118 @@
 
 namespace skgpu::graphite {
 
+//--------------------------------------------------------------------------------------------------
+class PaintCombo {
+public:
+    PaintCombo() {
+        this->reset();
+    }
+
+    // SkBlenders
+    void add(SkBlendMode bm) { fBlendModes.insert((uint32_t) bm); }
+    void add(SkBlenderID id) { fBlendModes.insert(id.asUInt()); }
+    int numBlendModes() const { return fBlendModes.size(); }
+
+    // SkShaders
+    void add(const ShaderCombo& shaderCombo) { fShaders.push_back(shaderCombo); }
+
+    void reset() {
+        fShaders.clear();
+        fBlendModes.clear();
+    }
+
+private:
+    friend class Context; // for iterators
+
+    std::vector<ShaderCombo> fShaders;
+    std::set<uint32_t> fBlendModes;
+};
+
+//--------------------------------------------------------------------------------------------------
+CombinationBuilder::CombinationBuilder(Context* context)
+        : fDictionary(context->priv().shaderCodeDictionary())
+        , fLocked(true) {
+    this->resetAndUnlock();
+}
+
+bool CombinationBuilder::add(ShaderCombo shaderCombo) {
+    if (fLocked) {
+        return false;
+    }
+    fCombinations->add(shaderCombo);
+    return true;
+}
+
+bool CombinationBuilder::add(SkBlendMode bm) {
+    if (fLocked) {
+        return false;
+    }
+    fCombinations->add(bm);
+    return true;
+}
+
+bool CombinationBuilder::add(SkBlendMode rangeStart, SkBlendMode rangeEnd) {
+    for (int i = (int)rangeStart; i <= (int) rangeEnd; ++i) {
+        if (!this->add((SkBlendMode) i)) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+bool CombinationBuilder::add(SkBlenderID id) {
+    SkASSERT(fDictionary->isValidID(id.asUInt()));
+
+    if (fLocked) {
+        return false;
+    }
+    fCombinations->add(id);
+    return true;
+}
+
+
+bool CombinationBuilder::add(BlendModeGroup group) {
+    bool result = false;
+
+    switch (group) {
+        case BlendModeGroup::kPorterDuff:
+            result = this->add(SkBlendMode::kClear, SkBlendMode::kScreen);
+            break;
+        case BlendModeGroup::kAdvanced:
+            result = this->add(SkBlendMode::kOverlay, SkBlendMode::kMultiply);
+            break;
+        case BlendModeGroup::kTrouble:
+            result = this->add(SkBlendMode::kHue, SkBlendMode::kLuminosity);
+            break;
+        case BlendModeGroup::kAll:
+            result = this->add(SkBlendMode::kClear, SkBlendMode::kLastMode);
+            break;
+    }
+
+    return result;
+}
+
+const PaintCombo* CombinationBuilder::snapAndLock() {
+    if (fLocked) {
+        return nullptr;
+    }
+
+    if (!fCombinations->numBlendModes()) {
+        fCombinations->add(SkBlendMode::kSrcOver);
+    }
+    fLocked = true;
+    return fCombinations;
+}
+
+void CombinationBuilder::resetAndUnlock() {
+    SkASSERT(fLocked);
+    fArena.reset();
+    fCombinations = fArena.make<PaintCombo>();
+    fLocked = false;
+}
+
+//--------------------------------------------------------------------------------------------------
 Context::Context(sk_sp<Gpu> gpu, BackendApi backend)
         : fGpu(std::move(gpu))
         , fGlobalCache(sk_make_sp<GlobalCache>())
@@ -116,7 +228,6 @@ void Context::preCompile(const PaintCombo& paintCombo) {
         if (bmVal < kSkBlendModeCount) {
             bm = (SkBlendMode) bmVal;
         } else {
-            // TODO: add creation of PaintParamKey fragments from runtime effect SkBlenders
             continue;
         }
 

@@ -8,15 +8,15 @@
 #ifndef skgpu_graphite_Context_DEFINED
 #define skgpu_graphite_Context_DEFINED
 
+#include <set>
 #include <vector>
 #include "include/core/SkBlendMode.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkShader.h"
 #include "include/core/SkTileMode.h"
-#include "include/private/SkNoncopyable.h"
-#include "include/private/SkTHash.h"
-
 #include "include/gpu/graphite/GraphiteTypes.h"
+#include "include/private/SkNoncopyable.h"
+#include "src/core/SkArenaAlloc.h"
 
 class SkShaderCodeDictionary;
 
@@ -69,6 +69,7 @@ public:
 
 private:
     friend class ::SkShaderCodeDictionary;   // for ctor and asUInt access
+    friend class CombinationBuilder;         // for asUInt access
     friend class PaintCombo;                 // for asUInt access
 
     SkBlenderID(uint32_t id) : fID(id) {}
@@ -78,20 +79,37 @@ private:
     uint32_t fID;
 };
 
-class PaintCombo {
-public:
-    PaintCombo() {}
+class Context;
+class PaintCombo;
 
-    void add(const ShaderCombo& shaderCombo) { fShaders.push_back(shaderCombo); }
-    void add(SkBlendMode bm) { fBlendModes.add((uint32_t) bm); }
-    void add(SkBlenderID id) { fBlendModes.add(id.asUInt()); }
+class CombinationBuilder {
+public:
+    enum class BlendModeGroup {
+        kPorterDuff,         // [ kClear .. kScreen ]
+        kAdvanced,           // [ kOverlay .. kMultiply ]
+        kTrouble,            // [ kHue .. kLuminosity ]
+        kAll
+    };
+
+    CombinationBuilder(Context*);
+
+    // Blend Mode
+    bool add(SkBlendMode);
+    bool add(SkBlendMode rangeStart, SkBlendMode rangeEnd); // inclusive
+    bool add(BlendModeGroup);
+    bool add(SkBlenderID);
+
+    // Shaders
+    bool add(ShaderCombo);
+
+    const PaintCombo* snapAndLock();
+    void resetAndUnlock();
 
 private:
-    friend class Context; // for iterators
-
-    // TODO: the pattern here will be we will check for duplicates in debug but not in release
-    std::vector<ShaderCombo> fShaders;
-    SkTHashSet<uint32_t> fBlendModes;
+    SkShaderCodeDictionary* fDictionary;
+    SkArenaAllocWithReset fArena{1024};
+    PaintCombo* fCombinations;
+    bool fLocked;
 };
 
 class Context final {
