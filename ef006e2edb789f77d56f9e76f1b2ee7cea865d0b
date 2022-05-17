@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "90d146dd_b7f581b3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2022-05-17T17:11:03Z",
+      "side": 1,
+      "message": "LGTM % actually green tasks",
+      "revId": "ef006e2edb789f77d56f9e76f1b2ee7cea865d0b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "120187b8_5c7151fa",
