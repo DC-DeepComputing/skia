@@ -343,6 +343,13 @@ bool GrAtlasManager::initAtlas(MaskFormat format) {
         SkISize atlasDimensions = fAtlasConfig.atlasDimensions(format);
         SkISize plotDimensions = fAtlasConfig.plotDimensions(format);
 
+        const char* label;
+        switch (format) {
+            case MaskFormat::kA8: label   = "TextAtlas kA8"; break;
+            case MaskFormat::kA565: label = "TextAtlas kA565"; break;
+            case MaskFormat::kARGB: label = "TextAtlas kARGB"; break;
+        }
+
         const GrBackendFormat backendFormat =
                 fCaps->getDefaultBackendFormat(grColorType, GrRenderable::kNo);
 
@@ -354,7 +361,7 @@ bool GrAtlasManager::initAtlas(MaskFormat format) {
                                               this,
                                               fAllowMultitexturing,
                                               nullptr,
-                                              /*label=*/"TextAtlas");
+                                              /*label=*/label);
         if (!fAtlases[index]) {
             return false;
         }

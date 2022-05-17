@@ -27,8 +27,10 @@ using GenerationCounter = skgpu::AtlasGenerationCounter;
 using MaskFormat = skgpu::MaskFormat;
 using PlotLocator = skgpu::PlotLocator;
 
+#define DUMP_ATLAS_DATA
 #ifdef DUMP_ATLAS_DATA
 static bool gDumpAtlasData = false;
+static bool gDumpAtlasPagesData = true;
 #endif
 
 #ifdef SK_DEBUG
@@ -155,6 +157,10 @@ GrDrawOpAtlas::GrDrawOpAtlas(GrProxyProvider* proxyProvider, const GrBackendForm
     SkASSERT(fPlotWidth * numPlotsX == fTextureWidth);
     SkASSERT(fPlotHeight * numPlotsY == fTextureHeight);
 
+    fTotalSAPUploads = 0;
+    fTotalInlineUploads = 0;
+    fDirtyAreasPercentage = 0.0f;
+
     fNumPlots = numPlotsX * numPlotsY;
 
     this->createPages(proxyProvider, generationCounter);
@@ -179,12 +185,22 @@ inline bool GrDrawOpAtlas::updatePlot(GrDeferredUploadTarget* target,
     if (plot->lastUploadToken() < target->tokenTracker()->nextTokenToFlush()) {
         // With c+14 we could move sk_sp into lamba to only ref once.
         sk_sp<Plot> plotsp(SkRef(plot));
+        uint64_t dirtyRectSize = plot->dirtyRect().width()*plot->dirtyRect().height();
+        auto dirtyPercents = dirtyRectSize*100.0f/(plot->width()*plot->height());
 
         GrTextureProxy* proxy = fViews[pageIdx].asTextureProxy();
         SkASSERT(proxy && proxy->isInstantiated());  // This is occurring at flush time
 
         GrDeferredUploadToken lastUploadToken = target->addASAPUpload(
-                [plotsp, proxy](GrDeferredTextureUploadWritePixelsFn& writePixels) {
+                [plotsp, proxy, this, dirtyPercents]
+                (GrDeferredTextureUploadWritePixelsFn& writePixels) {
+#ifdef DUMP_ATLAS_DATA
+                    if (gDumpAtlasPagesData) {
+                        ++fTotalSAPUploads;
+                        ++fNumFlushUploads;
+                        fDirtyAreasPercentage += dirtyPercents;
+                    }
+#endif
                     plotsp->uploadToTexture(writePixels, proxy);
                 });
         plot->setLastUploadToken(lastUploadToken);
@@ -316,12 +332,22 @@ GrDrawOpAtlas::ErrorCode GrDrawOpAtlas::addToAtlas(GrResourceProvider* resourceP
     // one it displaced most likely was uploaded ASAP.
     // With c++14 we could move sk_sp into lambda to only ref once.
     sk_sp<Plot> plotsp(SkRef(newPlot.get()));
+    uint64_t dirtyRectSize = plot->dirtyRect().width()*plot->dirtyRect().height();
+    auto dirtyPercents = dirtyRectSize*100.0f/(plot->width()*plot->height());
 
     GrTextureProxy* proxy = fViews[pageIdx].asTextureProxy();
     SkASSERT(proxy && proxy->isInstantiated());
 
     GrDeferredUploadToken lastUploadToken = target->addInlineUpload(
-            [plotsp, proxy](GrDeferredTextureUploadWritePixelsFn& writePixels) {
+            [plotsp, proxy, this, dirtyPercents]
+            (GrDeferredTextureUploadWritePixelsFn& writePixels) {
+#ifdef DUMP_ATLAS_DATA
+                    if (gDumpAtlasPagesData) {
+                        ++fTotalInlineUploads;
+                        ++fNumFlushUploads;
+                        fDirtyAreasPercentage += dirtyPercents;
+                    }
+#endif
                 plotsp->uploadToTexture(writePixels, proxy);
             });
     newPlot->setLastUploadToken(lastUploadToken);
@@ -338,18 +364,21 @@ void GrDrawOpAtlas::compact(GrDeferredUploadToken startTokenForNextFlush) {
         return;
     }
 
+    std::vector<std::vector<int>> numSubImages;
+
     // For all plots, reset number of flushes since used if used this frame.
     PlotList::Iter plotIter;
     bool atlasUsedThisFlush = false;
     for (uint32_t pageIndex = 0; pageIndex < fNumActivePages; ++pageIndex) {
         plotIter.init(fPages[pageIndex].fPlotList, PlotList::Iter::kHead_IterStart);
+        numSubImages.emplace_back(std::vector<int>());
         while (Plot* plot = plotIter.get()) {
             // Reset number of flushes since used
             if (plot->lastUseToken().inInterval(fPrevFlushToken, startTokenForNextFlush)) {
                 plot->resetFlushesSinceLastUsed();
                 atlasUsedThisFlush = true;
             }
-
+            numSubImages.back().emplace_back(plot->numImages());
             plotIter.next();
         }
     }
@@ -479,6 +508,27 @@ void GrDrawOpAtlas::compact(GrDeferredUploadToken startTokenForNextFlush) {
             fFlushesSinceLastUse = 0;
         }
     }
+
+#ifdef DUMP_ATLAS_DATA
+        if (gDumpAtlasPagesData) {
+            if (fNumFlushUploads > 0) {
+                SkDebugf("%s: %dx%d %dx%d SAPUploads=%u InlineUploads=%u DirtyAreas%%=%.2f\n",
+                         fLabel.data(),
+                         fTextureWidth, fTextureHeight,
+                         fPlotWidth, fPlotHeight,
+                         fTotalSAPUploads,
+                         fTotalInlineUploads,
+                         fDirtyAreasPercentage/(fTotalSAPUploads + fTotalInlineUploads));
+                for (auto& nums : numSubImages) {
+                    for (auto num : nums) {
+                        SkDebugf("%d ", num);
+                    }
+                    SkDebugf("\n");
+                }
+                fNumFlushUploads = 0;
+            }
+        }
+#endif
 
     fPrevFlushToken = startTokenForNextFlush;
 }
