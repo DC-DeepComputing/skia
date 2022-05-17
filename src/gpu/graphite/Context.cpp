@@ -32,6 +32,22 @@
 
 namespace skgpu::graphite {
 
+//--------------------------------------------------------------------------------------------------
+PaintCombo::PaintCombo(Context* context)
+        : fDictionary(context->priv().shaderCodeDictionary()) {
+}
+
+void PaintCombo::add(SkBlendMode bm) {
+    SkASSERT(fDictionary->isValidID((uint32_t) bm));
+    fBlendModes.add((uint32_t) bm);
+}
+
+void PaintCombo::add(SkBlenderID id) {
+    SkASSERT(fDictionary->isValidID(id.asUInt()));
+    fBlendModes.add(id.asUInt());
+}
+
+//--------------------------------------------------------------------------------------------------
 Context::Context(sk_sp<Gpu> gpu, BackendApi backend)
         : fGpu(std::move(gpu))
         , fGlobalCache(sk_make_sp<GlobalCache>())
@@ -112,10 +128,19 @@ void Context::preCompile(const PaintCombo& paintCombo) {
 
     SkPaintParamsKeyBuilder builder(dict, SkBackend::kGraphite);
 
-    for (auto bm: paintCombo.fBlendModes) {
-        for (auto& shaderCombo: paintCombo.fShaders) {
+    for (uint32_t bmVal : paintCombo.fBlendModes) {
+        SkBlendMode bm;
+        if (bmVal < kSkBlendModeCount) {
+            bm = (SkBlendMode) bmVal;
+        } else {
+            // TODO: add creation of PaintParamKey fragments from runtime effect SkBlenders
+            continue;
+        }
+
+        for (const ShaderCombo& shaderCombo : paintCombo.fShaders) {
             for (auto shaderType: shaderCombo.fTypes) {
                 for (auto tm: shaderCombo.fTileModes) {
+                    // TODO: expand CreateKey to take either an SkBlendMode or an SkBlendID
                     auto uniqueID = CreateKey(keyContext, &builder, shaderType, tm, bm);
 
                     GraphicsPipelineDesc desc;
