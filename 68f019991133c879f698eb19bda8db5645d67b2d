@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a34f4af0_0d57c8dd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-05-17T14:00:42Z",
+      "side": 1,
+      "message": "This shouldn\u0027t be functional changes, since these modifications were all existing skvx usages",
+      "revId": "68f019991133c879f698eb19bda8db5645d67b2d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
