@@ -33,6 +33,24 @@
       "message": "This actually breaks the current colorizer when there\u0027s a hard stop at 1, since the t passed into colorize_grad_4 is never \u003e1.\n\nThe most straightforward fix for that might be to just take this clamp out and assume the current behavior of the colorizer. But, I have reservations about the colorizer implementation anyways since it does some divide-by-zeros on hard stops, which I guess is undefined behavior. I do like that the colorizer avoids branching but I\u0027m not sure if there\u0027s any way around introducing some conditional logic to avoid dividing by zero there?",
       "revId": "4615ce526c0e95a9ad517c64f19edf1a649b7a3e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ce2a54d7_601da959",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 2
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-05-17T20:48:59Z",
+      "side": 1,
+      "message": "A hard stop at 1 is meaningless, right? `build_intervals` in GrGradientShader.cpp already has code which eliminates empty intervals; Graphite probably needs to do something similar if it doesn\u0027t already:\n\nhttps://osscs.corp.google.com/chromium/chromium/src/+/main:third_party/skia/src/gpu/ganesh/gradients/GrGradientShader.cpp;l\u003d357-363?q\u003dbuild_intervals",
+      "parentUuid": "e21352f8_2f8b8cbe",
+      "revId": "4615ce526c0e95a9ad517c64f19edf1a649b7a3e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
