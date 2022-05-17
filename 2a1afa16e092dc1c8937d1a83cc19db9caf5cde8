@@ -16,6 +16,24 @@
       "message": "kjlu",
       "revId": "2a1afa16e092dc1c8937d1a83cc19db9caf5cde8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "471db8d3_9e379715",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-05-17T17:38:36Z",
+      "side": 1,
+      "message": "Oops, leftover draft text from before.",
+      "parentUuid": "f688224a_b783d3c6",
+      "revId": "2a1afa16e092dc1c8937d1a83cc19db9caf5cde8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
