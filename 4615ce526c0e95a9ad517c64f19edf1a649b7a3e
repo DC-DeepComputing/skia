@@ -268,6 +268,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "979c7c9a_cbe30e96",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 2
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-05-17T21:55:11Z",
+      "side": 1,
+      "message": "Sorry, I wasn\u0027t very clear about my original concern here. This code as written doesn\u0027t handle clamping correctly with a hard stop at t\u003d1. Two potential ways to fix this would be\n\na) don\u0027t clamp t before passing it to the colorizer\n(implemented here: https://crsrc.org/c/third_party/skia/src/sksl/sksl_graphite_frag.sksl;l\u003d51; note that it already effectively clamps t)\n\nb) change the colorizer to conditionally use the last stop color when t\u003d1.\n\nAdditionally, I\u0027m concerned because the colorizer will divide by zero on hard stops. Not a huge deal I guess since this will only affect whether pixels right on the stop will go one way or the other. But I\u0027m leaning towards b) since we might want to change the colorizer anyways to avoid dividing by zero. Also, if all we have to do is add a few ternary statements, do you have a general idea how much that can impact performance across various devices?",
+      "parentUuid": "7d4e73f0_343c3a62",
+      "revId": "4615ce526c0e95a9ad517c64f19edf1a649b7a3e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6f063ea4_2ed4845b",
         "filename": "src/sksl/sksl_graphite_frag.sksl",
         "patchSetId": 2
