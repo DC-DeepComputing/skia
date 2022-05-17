@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "120187b8_5c7151fa",
+        "filename": "infra/bots/gen_tasks_logic/task_builder.go",
+        "patchSetId": 4
+      },
+      "lineNbr": 250,
+      "author": {
+        "id": 5145
+      },
+      "writtenOn": "2022-05-17T16:59:42Z",
+      "side": 1,
+      "message": "nit",
+      "range": {
+        "startLine": 250,
+        "startChar": 3,
+        "endLine": 250,
+        "endChar": 13
+      },
+      "revId": "ef006e2edb789f77d56f9e76f1b2ee7cea865d0b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
