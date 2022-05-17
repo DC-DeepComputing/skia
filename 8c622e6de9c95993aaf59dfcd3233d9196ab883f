@@ -134,6 +134,30 @@
       },
       "revId": "8c622e6de9c95993aaf59dfcd3233d9196ab883f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0b039860_12d24130",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-05-17T18:51:51Z",
+      "side": 1,
+      "message": "Ah, ok. I guess that the SkBlenderIDs are handed out by our code, so we just trust that they\u0027re never going to collide with the blend modes? (In other words, it seems like we could add a stricter assert to the add() methods, based on where in the int range we expect a value to be, whether it\u0027s a blend mode or a blender id)?",
+      "parentUuid": "ff282934_ba4771a1",
+      "range": {
+        "startLine": 116,
+        "startChar": 0,
+        "endLine": 116,
+        "endChar": 40
+      },
+      "revId": "8c622e6de9c95993aaf59dfcd3233d9196ab883f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
