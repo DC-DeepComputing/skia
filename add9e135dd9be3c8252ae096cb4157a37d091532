@@ -16,6 +16,24 @@
       "message": "I deleted these Make functions because they were not used in the current model. Let me know if that was intentional and I can put them back.",
       "revId": "add9e135dd9be3c8252ae096cb4157a37d091532",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5a0252bb_f04b58f8",
+        "filename": "modules/particles/src/SkParticleBinding.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 252,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-05-17T20:10:39Z",
+      "side": 0,
+      "message": "Eh, if we decide to remove them, I\u0027d rather do it in a separate CL (and remove a bunch of others, too). I had these so that someone could use the API programmatically (rather than via the json serialization). It turns out that no one has done that, and probably no one ever will.",
+      "parentUuid": "981beecb_f7437158",
+      "revId": "add9e135dd9be3c8252ae096cb4157a37d091532",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

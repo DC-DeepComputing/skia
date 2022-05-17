@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "97bb41f6_5c411136",
+        "filename": "modules/particles/src/SkParticleBinding.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 305,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-05-17T20:10:39Z",
+      "side": 1,
+      "message": "I suspect this is going to work on CPU, but not on GPU (due to caching of SkImage content). (And per Skia\u0027s API, it *shouldn\u0027t* work, but the CPU backend will cooperate with what\u0027s happening).",
+      "range": {
+        "startLine": 275,
+        "startChar": 0,
+        "endLine": 305,
+        "endChar": 0
+      },
+      "revId": "11af67e1b291a6a6b5a98267248abb142ec8660f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
