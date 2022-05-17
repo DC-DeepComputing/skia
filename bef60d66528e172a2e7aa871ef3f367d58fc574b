@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bd49bb4c_549dd957",
+        "filename": "src/core/SkShaderCodeDictionary.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 220,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-05-17T17:46:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "69cbce14_c1b6ee17",
+      "range": {
+        "startLine": 220,
+        "startChar": 55,
+        "endLine": 220,
+        "endChar": 64
+      },
+      "revId": "bef60d66528e172a2e7aa871ef3f367d58fc574b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f9fb405d_5293810b",
@@ -61,6 +85,30 @@
       "writtenOn": "2022-05-17T13:39:13Z",
       "side": 1,
       "message": "get_blender()?",
+      "range": {
+        "startLine": 25,
+        "startChar": 24,
+        "endLine": 25,
+        "endChar": 37
+      },
+      "revId": "bef60d66528e172a2e7aa871ef3f367d58fc574b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a4423063_a919c4bf",
+        "filename": "tests/graphite/RTEffectTest.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-05-17T17:46:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f9fb405d_5293810b",
       "range": {
         "startLine": 25,
         "startChar": 24,
