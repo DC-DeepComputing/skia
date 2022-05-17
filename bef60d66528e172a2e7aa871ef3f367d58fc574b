@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a904b25b_e01e240d",
+        "filename": "src/core/SkShaderCodeDictionary.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 220,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-05-17T13:39:13Z",
+      "side": 1,
+      "message": "Should this be SkRuntimeEffect, so that uniforms don\u0027t have to be specified?",
+      "range": {
+        "startLine": 220,
+        "startChar": 55,
+        "endLine": 220,
+        "endChar": 64
+      },
+      "revId": "bef60d66528e172a2e7aa871ef3f367d58fc574b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f9fb405d_5293810b",
+        "filename": "tests/graphite/RTEffectTest.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-05-17T13:39:13Z",
+      "side": 1,
+      "message": "get_blender()?",
+      "range": {
+        "startLine": 25,
+        "startChar": 24,
+        "endLine": 25,
+        "endChar": 37
+      },
+      "revId": "bef60d66528e172a2e7aa871ef3f367d58fc574b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
