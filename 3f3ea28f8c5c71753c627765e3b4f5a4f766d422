@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "39be1859_99e57b47",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-05-17T02:18:52Z",
+      "side": 1,
+      "message": "`Canary-Flutter` not working. https://bugs.chromium.org/p/skia/issues/detail?id\u003d13323 .",
+      "revId": "3f3ea28f8c5c71753c627765e3b4f5a4f766d422",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
