@@ -41,6 +41,12 @@ public:
     // (i.e., none instantiated).
     const GrSurfaceProxyView* getViews(skgpu::MaskFormat format, unsigned int* numActiveProxies) {
         format = this->resolveMaskFormat(format);
+        if (format == skgpu::MaskFormat::kA8) {
+            if (!this->initAtlas(skgpu::MaskFormat::kA8Extended)) {
+                *numActiveProxies = 0;
+                return nullptr;
+            }
+        }
         if (this->initAtlas(format)) {
             *numActiveProxies = this->getAtlas(format)->numActivePages();
             return this->getAtlas(format)->getViews();
@@ -154,7 +160,7 @@ private:
 
     GrDrawOpAtlas::AllowMultitexturing fAllowMultitexturing;
     std::unique_ptr<GrDrawOpAtlas> fAtlases[skgpu::kMaskFormatCount];
-    static_assert(skgpu::kMaskFormatCount == 3);
+    static_assert(skgpu::kMaskFormatCount == 4);
     bool fSupportBilerpAtlas;
     GrProxyProvider* fProxyProvider;
     sk_sp<const GrCaps> fCaps;

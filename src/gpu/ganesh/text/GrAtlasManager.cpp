@@ -91,7 +91,8 @@ static void get_packed_glyph_image(
             // Handle 8-bit format by expanding the mask to the expected format.
             const uint8_t* bits = reinterpret_cast<const uint8_t*>(src);
             switch (expectedMaskFormat) {
-                case MaskFormat::kA8: {
+                case MaskFormat::kA8:
+                case MaskFormat::kA8Extended: {
                     uint8_t* bytes = reinterpret_cast<uint8_t*>(dst);
                     expand_bits(bytes, bits, width, height, dstRB, srcRB);
                     break;
