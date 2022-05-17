@@ -20,6 +20,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d9b098f6_9977f4f5",
+        "filename": "src/core/SkKeyHelpers.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-05-17T21:05:11Z",
+      "side": 1,
+      "message": "nit: not for this CL, but `fTM` is not a good field name. We don\u0027t need to abbreviate an eight letter word to a two letter acronym; it barely saves space but it makes it harder for a reader to follow the code. `fTileMode` is still succinct.",
+      "range": {
+        "startLine": 164,
+        "startChar": 46,
+        "endLine": 164,
+        "endChar": 49
+      },
+      "revId": "4615ce526c0e95a9ad517c64f19edf1a649b7a3e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "37efbccd_a0284977",
         "filename": "src/sksl/sksl_graphite_frag.sksl",
         "patchSetId": 2
@@ -36,6 +59,29 @@
         "startChar": 4,
         "endLine": 57,
         "endChar": 37
+      },
+      "revId": "4615ce526c0e95a9ad517c64f19edf1a649b7a3e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1078060e_2d2465a5",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 2
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-05-17T21:05:11Z",
+      "side": 1,
+      "message": "tiny nit: there doesn\u0027t seem to be a reason to introduce a new variable here? Just use `t.x` here and on L67/L69.",
+      "range": {
+        "startLine": 62,
+        "startChar": 14,
+        "endLine": 62,
+        "endChar": 21
       },
       "revId": "4615ce526c0e95a9ad517c64f19edf1a649b7a3e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
