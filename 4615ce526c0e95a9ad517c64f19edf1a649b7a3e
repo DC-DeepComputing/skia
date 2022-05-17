@@ -20,6 +20,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "37efbccd_a0284977",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 2
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-05-17T20:53:49Z",
+      "side": 1,
+      "message": "Up to you: SkSL supports `switch` even on old devices (we will expand it to chained-ifs if we need to). So you could do `switch (tileMode) {` if you prefer.",
+      "range": {
+        "startLine": 57,
+        "startChar": 4,
+        "endLine": 57,
+        "endChar": 37
+      },
+      "revId": "4615ce526c0e95a9ad517c64f19edf1a649b7a3e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e21352f8_2f8b8cbe",
         "filename": "src/sksl/sksl_graphite_frag.sksl",
         "patchSetId": 2
@@ -67,6 +90,29 @@
       "side": 1,
       "message": "As far as I understand, hard stops at 0 or 1 are only meaningful when you\u0027re clamping. In that case any point before or after the gradient \"bounds\" will have the color from the hard stop. So the issue here is that when we have a hard stop at 1 and we\u0027re coloring pixels at t \u003e 1, the hard stop at 1 isn\u0027t taken into effect.",
       "parentUuid": "ce2a54d7_601da959",
+      "revId": "4615ce526c0e95a9ad517c64f19edf1a649b7a3e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6f063ea4_2ed4845b",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 2
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-05-17T20:53:49Z",
+      "side": 1,
+      "message": "up to you: could also simplified to `t.x1`. Generated code will be the same either way.",
+      "range": {
+        "startLine": 103,
+        "startChar": 11,
+        "endLine": 103,
+        "endChar": 23
+      },
       "revId": "4615ce526c0e95a9ad517c64f19edf1a649b7a3e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
