@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a91c391b_f76bd420",
+        "filename": "include/gpu/graphite/Context.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-05-17T13:45:14Z",
+      "side": 1,
+      "message": "I know we used PaintCombo during all our whiteboard talks, but I\u0027m not loving it as the name we\u0027d expose to the user/clients (same with ShaderCombo, :/)\n\nTo me the name reads as if it\u0027s supposed to be a specific combination of effects that represents a paint template, and not what it actually is: the cross-product of effects, representing all of those combinations.\n\nPaintCombinations, PaintTemplates, PrecompilePaintSet?\n\nI don\u0027t have a good answer, so I don\u0027t think we should block this CL, but let\u0027s mull on it.",
+      "range": {
+        "startLine": 81,
+        "startChar": 6,
+        "endLine": 81,
+        "endChar": 16
+      },
+      "revId": "b75974019c342425119d0120d756ac7a6417de7f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
