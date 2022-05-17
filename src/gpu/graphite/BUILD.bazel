@@ -145,6 +145,7 @@ generated_cc_atom(
     deps = [
         ":Caps_hdr",
         ":CommandBuffer_hdr",
+        ":ContextPriv_hdr",
         ":GlobalCache_hdr",
         ":Gpu_hdr",
         ":GraphicsPipelineDesc_hdr",
