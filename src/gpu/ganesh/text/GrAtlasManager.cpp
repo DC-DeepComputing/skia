@@ -91,7 +91,8 @@ static void get_packed_glyph_image(
             // Handle 8-bit format by expanding the mask to the expected format.
             const uint8_t* bits = reinterpret_cast<const uint8_t*>(src);
             switch (expectedMaskFormat) {
-                case MaskFormat::kA8: {
+                case MaskFormat::kA8:
+                case MaskFormat::kA8Extended: {
                     uint8_t* bytes = reinterpret_cast<uint8_t*>(dst);
                     expand_bits(bytes, bits, width, height, dstRB, srcRB);
                     break;
@@ -407,6 +408,7 @@ std::tuple<bool, int> GlyphVector::regenerateAtlas(int begin, int end,
                     tokenTracker->nextDrawToken());
             glyphsPlacedInAtlas++;
         }
+        SkASSERT(!success || glyphsPlacedInAtlas > 0);
 
         // Update atlas generation if there are no more glyphs to put in the atlas.
         if (success && begin + glyphsPlacedInAtlas == SkCount(fGlyphs)) {

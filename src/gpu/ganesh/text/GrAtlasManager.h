@@ -154,7 +154,7 @@ private:
 
     GrDrawOpAtlas::AllowMultitexturing fAllowMultitexturing;
     std::unique_ptr<GrDrawOpAtlas> fAtlases[skgpu::kMaskFormatCount];
-    static_assert(skgpu::kMaskFormatCount == 3);
+    static_assert(skgpu::kMaskFormatCount == 4);
     bool fSupportBilerpAtlas;
     GrProxyProvider* fProxyProvider;
     sk_sp<const GrCaps> fCaps;
