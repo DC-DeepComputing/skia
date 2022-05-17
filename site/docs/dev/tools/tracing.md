@@ -87,6 +87,32 @@ For simple situations, all tracing events can be directed to the console with `-
 ...
 ~~~
 
+Tracing with Perfetto
+--------------
+Running any tool with `--trace perfetto` will cause the application to forward
+tracing information to [Perfetto](https://perfetto.dev/docs/instrumentation/track-events).
+Perfetto only supports Linux, Mac, and Android and will not run on other platforms.
+
+Perfetto allows configuration of some parameters that can be tweaked to optimize tracing performance
+for different scenarios. By default, Perfetto tracing within Skia has been configured to handle
+relatively short trace events and sessions (ie, a subset of tests).
+
+The trace output can be found at `skia/third_party/externals/perfetto/[benchmark_name].perfetto-trace`, where `[benchmarkName]` is the name of each tested benchmark.
+If the `splitPerfettoTracesByBenchmark` runtime argument is set to false, the trace output goes to one file: `skia/third_party/externals/perfetto/trace.perfetto-trace`.
+
+These trace files can be visualized using [Perfetto's web visualization tool](https://ui.perfetto.dev/).
+To visualize large trace files (anything greater than around 2 GB), see [these instructions](https://perfetto.dev/docs/visualization/large-traces).
+
+When performing longer traces containing longer events, you may need to tweak some of Perfetto's customizable parameters
+to accomodate this use case (such as running the entire nanobench suite at once).
+Note that for some parameters, there is a difference between defaults *defined by Perfetto* and the default values that *Skia assigns to Perfetto*.
+
+You can identify potential issues by checking out the "Info and stats" page on the web visualization tool, or by running SQL queries on the trace file
+(online, or by using [the trace processor application](https://perfetto.dev/docs/analysis/trace-processor)).
+To diagnose these issues, see [this page on debugging memory usage](https://perfetto.dev/docs/case-studies/memory).
+Skia provides the ability to alter some key Perfetto configuration values at runtime. Try running a tool with `--help` for details.
+
+
 Adding More Trace Events
 ------------------------
 
