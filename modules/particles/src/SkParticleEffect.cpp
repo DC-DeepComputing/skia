@@ -363,6 +363,10 @@ void SkParticleEffect::advanceTime(double now) {
         fUniforms[0] = deltaTime;
     }
 
+    for (auto& binding : fParams->fBindings) {
+        binding->update(deltaTime);
+    }
+
     // Is this the first update after calling start()?
     // Run 'effectSpawn' to set initial emitter properties.
     if (fState.fAge == 0.0f && fState.fLoopCount == 0) {
