@@ -352,6 +352,10 @@ public:
     }
     SkDEBUGCODE(size_t bpp() const { return fBytesPerPixel; })
 
+    SkIRect dirtyRect() const { return fDirtyRect; }
+    int width() const { return fWidth; }
+    int height() const { return fHeight; }
+
     bool addSubImage(int width, int height, const void* image, AtlasLocator* atlasLocator);
 
     void resetRects();
