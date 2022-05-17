@@ -33,18 +33,114 @@
 namespace skgpu::graphite {
 
 //--------------------------------------------------------------------------------------------------
-PaintCombinations::PaintCombinations(Context* context)
-        : fDictionary(context->priv().shaderCodeDictionary()) {
+class PaintCombinations {
+public:
+    PaintCombinations() {
+        this->reset();
+    }
+
+    // SkBlenders
+    void add(SkBlendMode bm) { fBlendModes.add((uint32_t) bm); }
+    void add(SkBlenderID id) { fBlendModes.add(id.asUInt()); }
+    int numBlendModes() const { return fBlendModes.count(); }
+
+    // SkShaders
+    void add(const ShaderCombo& shaderCombo) { fShaders.push_back(shaderCombo); }
+
+    void reset() {
+        fShaders.clear();
+        fBlendModes.reset();
+    }
+
+private:
+    friend class Context; // for iterators
+
+    std::vector<ShaderCombo> fShaders;
+    SkTHashSet<uint32_t> fBlendModes;
+};
+
+//--------------------------------------------------------------------------------------------------
+CombinationBuilder::CombinationBuilder(Context* context)
+        : fDictionary(context->priv().shaderCodeDictionary())
+        , fLocked(true) {
+    this->resetAndUnlock();
 }
 
-void PaintCombinations::add(SkBlendMode bm) {
-    SkASSERT(fDictionary->isValidID((uint32_t) bm));
-    fBlendModes.add((uint32_t) bm);
+bool CombinationBuilder::add(ShaderCombo shaderCombo) {
+    if (fLocked) {
+        return false;
+    }
+    fCombinations->add(shaderCombo);
+    return true;
 }
 
-void PaintCombinations::add(SkBlenderID id) {
+bool CombinationBuilder::add(SkBlendMode bm) {
+    if (fLocked) {
+        return false;
+    }
+    fCombinations->add(bm);
+    return true;
+}
+
+bool CombinationBuilder::add(SkBlendMode rangeStart, SkBlendMode rangeEnd) {
+    for (int i = (int)rangeStart; i <= (int) rangeEnd; ++i) {
+        if (!this->add((SkBlendMode) i)) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+bool CombinationBuilder::add(SkBlenderID id) {
     SkASSERT(fDictionary->isValidID(id.asUInt()));
-    fBlendModes.add(id.asUInt());
+
+    if (fLocked) {
+        return false;
+    }
+    fCombinations->add(id);
+    return true;
+}
+
+
+bool CombinationBuilder::add(BlendModeGroup group) {
+    bool result = false;
+
+    switch (group) {
+        case BlendModeGroup::kPorterDuff:
+            result = this->add(SkBlendMode::kClear, SkBlendMode::kScreen);
+            break;
+        case BlendModeGroup::kAdvanced:
+            result = this->add(SkBlendMode::kOverlay, SkBlendMode::kMultiply);
+            break;
+        case BlendModeGroup::kTrouble:
+            result = this->add(SkBlendMode::kHue, SkBlendMode::kLuminosity);
+            break;
+        case BlendModeGroup::kAll:
+            result = this->add(SkBlendMode::kClear, SkBlendMode::kLastMode);
+            break;
+    }
+
+    return result;
+}
+
+const PaintCombinations* CombinationBuilder::snapAndLock() {
+    if (fLocked) {
+        return nullptr;
+    }
+
+    if (!fCombinations->numBlendModes()) {
+        fCombinations->add(SkBlendMode::kSrcOver);
+    }
+    fLocked = true;
+    return fCombinations;
+}
+
+void CombinationBuilder::resetAndUnlock() {
+    SkASSERT(fLocked);
+    fArena.reset();
+    fCombinations = fArena.make<PaintCombinations>();
+    fLocked = false;
 }
 
 //--------------------------------------------------------------------------------------------------
