@@ -16,6 +16,46 @@
       "message": "kjlubick@: PTAL at the Bazel changes",
       "revId": "5bc2255ad1a41d12148a68ff43c7ec7d2e5dba03",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e69992cf_9c94ee72",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-05-17T15:25:38Z",
+      "side": 1,
+      "message": "You probably need to add an entry to https://github.com/google/skia/blob/main/third_party/file_map_for_bazel.json for the \"tint/tint.h\"",
+      "revId": "5bc2255ad1a41d12148a68ff43c7ec7d2e5dba03",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fc01a1e1_da6b3d1d",
+        "filename": "bazel/external/dawn/BUILD.bazel",
+        "patchSetId": 5
+      },
+      "lineNbr": 1082,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-05-17T15:25:38Z",
+      "side": 1,
+      "message": "I prefer our rules be at most visible to Skia subpackages (but not anyone who depends on us).\nvisibility \u003d [\"//:__subpackages__\"],",
+      "range": {
+        "startLine": 1082,
+        "startChar": 4,
+        "endLine": 1082,
+        "endChar": 14
+      },
+      "revId": "5bc2255ad1a41d12148a68ff43c7ec7d2e5dba03",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
