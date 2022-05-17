@@ -7,6 +7,7 @@
 
 #include "src/core/SkGlyphRun.h"
 
+#include "include/core/SkCanvas.h"
 #include "include/core/SkFont.h"
 #include "include/core/SkPaint.h"
 #include "include/core/SkRSXform.h"
@@ -287,6 +288,13 @@ SkGlyphRunBuilder::convertRSXForm(SkSpan<const SkRSXform> xforms) {
         sr = {scos, ssin};
     }
     return {positions, scaledRotations};
+}
+
+void SkGlyphRunBuilder::categorizeGlyphRunList(
+        SkGlyphRunPainterInterface* process, const SkGlyphRunList& glyphRunList,
+        const SkMatrix& positionMatrix, const SkPaint& drawPaint,
+        SkStrikeDeviceInfo strikeDeviceInfo, const char* tag) {
+
 }
 
 void SkGlyphRunBuilder::initialize(const SkTextBlob& blob) {

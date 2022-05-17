@@ -20,6 +20,7 @@
 #include "include/core/SkTypes.h"
 #include "include/private/SkTemplates.h"
 #include "src/core/SkGlyphBuffer.h"
+#include "src/core/SkGlyphRunPainter.h"
 #include "src/core/SkZip.h"
 
 class SkBaseDevice;
@@ -161,6 +162,13 @@ public:
             convertRSXForm(SkSpan<const SkRSXform> xforms);
 
     bool empty() const { return fGlyphRunListStorage.empty(); }
+    void categorizeGlyphRunList(SkGlyphRunPainterInterface* process,
+                                const SkGlyphRunList& glyphRunList,
+                                const SkMatrix& positionMatrix,
+                                const SkPaint& drawPaint,
+                                SkStrikeDeviceInfo strikeDeviceInfo,
+                                const char* tag = nullptr);
+
     SkSubRunBuffers* buffers() { return &fSubRunBuffers; }
 
 private:
@@ -194,6 +202,7 @@ private:
     std::vector<SkGlyphID> fScratchGlyphIDs;
 
     SkSubRunBuffers fSubRunBuffers;
+    SkGlyphRunListPainter fPainter;
 };
 
 inline SkSubRunBuffers* SkGlyphRunList::buffers() const { return fBuilder->buffers(); }
