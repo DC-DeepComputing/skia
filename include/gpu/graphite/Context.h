@@ -13,10 +13,10 @@
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkShader.h"
 #include "include/core/SkTileMode.h"
+#include "include/gpu/graphite/GraphiteTypes.h"
 #include "include/private/SkNoncopyable.h"
 #include "include/private/SkTHash.h"
-
-#include "include/gpu/graphite/GraphiteTypes.h"
+#include "src/core/SkArenaAlloc.h"
 
 class SkRuntimeEffect;
 class SkShaderCodeDictionary;
@@ -25,10 +25,12 @@ namespace skgpu::graphite {
 
 class BackendTexture;
 class CommandBuffer;
+class Context;
 class ContextPriv;
 class GlobalCache;
 class Gpu;
 struct MtlBackendContext;
+class PaintCombinations;
 class Recorder;
 class Recording;
 class TextureInfo;
@@ -70,6 +72,7 @@ public:
 
 private:
     friend class ::SkShaderCodeDictionary;   // for ctor and asUInt access
+    friend class CombinationBuilder;         // for asUInt access
     friend class PaintCombinations;          // for asUInt access
 
     SkBlenderID(uint32_t id) : fID(id) {}
@@ -79,24 +82,34 @@ private:
     uint32_t fID;
 };
 
-class Context;
-
-class PaintCombinations {
+class CombinationBuilder {
 public:
-    PaintCombinations(Context*);
+    enum class BlendModeGroup {
+        kPorterDuff,         // [ kClear .. kScreen ]
+        kAdvanced,           // [ kOverlay .. kMultiply ]
+        kTrouble,            // [ kHue .. kLuminosity ]
+        kAll
+    };
 
-    void add(const ShaderCombo& shaderCombo) { fShaders.push_back(shaderCombo); }
+    CombinationBuilder(Context*);
 
-    void add(SkBlendMode);
-    void add(SkBlenderID);
+    // Blend Mode
+    bool add(SkBlendMode);
+    bool add(SkBlendMode rangeStart, SkBlendMode rangeEnd); // inclusive
+    bool add(BlendModeGroup);
+    bool add(SkBlenderID);
+
+    // Shaders
+    bool add(ShaderCombo);
+
+    const PaintCombinations* snapAndLock();
+    void resetAndUnlock();
 
 private:
-    friend class Context; // for iterators
-
     SkShaderCodeDictionary* fDictionary;
-    // TODO: the pattern here will be we will check for duplicates in debug but not in release
-    std::vector<ShaderCombo> fShaders;
-    SkTHashSet<uint32_t> fBlendModes;
+    SkArenaAllocWithReset fArena{64};
+    PaintCombinations* fCombinations;
+    bool fLocked;
 };
 
 class Context final {
