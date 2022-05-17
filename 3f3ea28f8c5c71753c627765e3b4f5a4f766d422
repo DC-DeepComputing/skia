@@ -16,6 +16,23 @@
       "message": "`Canary-Flutter` not working. https://bugs.chromium.org/p/skia/issues/detail?id\u003d13323 .",
       "revId": "3f3ea28f8c5c71753c627765e3b4f5a4f766d422",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6a121e33_58941f12",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-05-17T17:12:09Z",
+      "side": 1,
+      "message": "One thing does need to be added to the test font before landing, which is that we need at least one glyph in gzip format. FreeType will inflate gzip compressed SVG documents itself, but it is not clear if DirectWrite does so.",
+      "revId": "3f3ea28f8c5c71753c627765e3b4f5a4f766d422",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
