@@ -80,6 +80,30 @@
       },
       "revId": "5bc2255ad1a41d12148a68ff43c7ec7d2e5dba03",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2a88996a_2445bb3d",
+        "filename": "bazel/external/dawn/BUILD.bazel",
+        "patchSetId": 5
+      },
+      "lineNbr": 1082,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-05-17T15:32:54Z",
+      "side": 1,
+      "message": "Actually I got a \"target is not visible\" error when I changed this to `//:__subpackages__`.",
+      "parentUuid": "ad8a6f0d_38cf322d",
+      "range": {
+        "startLine": 1082,
+        "startChar": 4,
+        "endLine": 1082,
+        "endChar": 14
+      },
+      "revId": "5bc2255ad1a41d12148a68ff43c7ec7d2e5dba03",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
