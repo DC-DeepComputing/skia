@@ -58,7 +58,6 @@ public:
         kGrBitmapTextGeoProc_ClassID,
         kGrColorSpaceXformEffect_ClassID,
         kGrConicEffect_ClassID,
-        kGrConvexPolyEffect_ClassID,
         kGrDiffuseLightingEffect_ClassID,
         kGrDisplacementMapEffect_ClassID,
         kGrDistanceFieldA8TextGeoProc_ClassID,
