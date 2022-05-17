@@ -209,7 +209,7 @@ PYTHON_VERSION_COMPATIBILITY: PY3
 
 Run gsutil with the given args.
 
-&mdash; **def [cp](/infra/bots/recipe_modules/gsutil/api.py#17)(self, name, src, dst, extra_args=None, multithread=False):**
+&mdash; **def [cp](/infra/bots/recipe_modules/gsutil/api.py#18)(self, name, src, dst, extra_args=None, multithread=False):**
 
 Attempt to upload or download files to/from Google Cloud Storage (GCS).
 
