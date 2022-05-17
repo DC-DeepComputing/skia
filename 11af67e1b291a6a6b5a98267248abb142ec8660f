@@ -46,6 +46,30 @@
       },
       "revId": "11af67e1b291a6a6b5a98267248abb142ec8660f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3fd150aa_639c0e8f",
+        "filename": "modules/particles/src/SkParticleBinding.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 305,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2022-05-17T21:01:17Z",
+      "side": 1,
+      "message": "Yeah this happens to work because we\u0027re not really drawing the image on GPU, but sampling explicitly from particles/SkSL (which IIUC always runs on CPU/skvm).\n\nAs long as this is only accessed from particles sksl code it should be fine I think.\n\nI was hoping we can keep this this code in the samples realm, as it surely bends the image mutability rules.  Not sure if that\u0027s achievable with the current registration scheme though...\n\nMaybe one way to avoid polluting core Particles is to have a generic ImageMap binding which takes client provided SkImages (name/id based?) instead of loading resources based on path/name.  Then we could keep all the mutable SkImage trickery in sample code.",
+      "parentUuid": "1df85ba6_0017e7af",
+      "range": {
+        "startLine": 275,
+        "startChar": 0,
+        "endLine": 305,
+        "endChar": 0
+      },
+      "revId": "11af67e1b291a6a6b5a98267248abb142ec8660f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
