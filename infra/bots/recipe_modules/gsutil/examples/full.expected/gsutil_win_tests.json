@@ -3,7 +3,7 @@
     "cmd": [
       "python",
       "-u",
-      "[START_DIR]/cipd_bin_packages/gsutil",
+      "[START_DIR]/gsutil/gsutil/gsutil",
       "-m",
       "cp",
       "-Z",
