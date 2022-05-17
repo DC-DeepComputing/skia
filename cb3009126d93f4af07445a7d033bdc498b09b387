@@ -22,6 +22,30 @@
       },
       "revId": "cb3009126d93f4af07445a7d033bdc498b09b387",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4e69ebd1_a99eb458",
+        "filename": "include/gpu/graphite/Context.h",
+        "patchSetId": 26
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-05-17T20:34:46Z",
+      "side": 1,
+      "message": "I talked to Brian and he explained that this is the design as intended. If there is any design doc which explains how these pieces are supposed to fit together, I\u0027d appreciate a link--if not, I think it might be worth writing something up! My mental model is out of sync with the actual model.",
+      "parentUuid": "713e56cc_02749d12",
+      "range": {
+        "startLine": 112,
+        "startChar": 38,
+        "endLine": 112,
+        "endChar": 60
+      },
+      "revId": "cb3009126d93f4af07445a7d033bdc498b09b387",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
