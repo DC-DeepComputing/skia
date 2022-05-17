@@ -31,6 +31,10 @@ const Caps* RecorderPriv::caps() const {
     return fRecorder->fGpu->caps();
 }
 
+sk_sp<const Caps> RecorderPriv::refCaps() const {
+    return fRecorder->fGpu->refCaps();
+}
+
 DrawBufferManager* RecorderPriv::drawBufferManager() const {
     return fRecorder->fDrawBufferManager.get();
 }

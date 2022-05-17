@@ -27,11 +27,10 @@ class GraphiteResourceKey;
 struct RenderPassDesc;
 class TextureInfo;
 
-class Caps : public SkRefCnt {
+class Caps : public SkCapabilities {
 public:
     ~Caps() override;
 
-    sk_sp<SkCapabilities> asSkCapabilities() const;
     const SkSL::ShaderCaps* shaderCaps() const { return fShaderCaps.get(); }
 
     virtual TextureInfo getDefaultSampledTextureInfo(SkColorType,
@@ -105,7 +104,6 @@ protected:
     size_t fRequiredUniformBufferAlignment = 0;
 
     std::unique_ptr<SkSL::ShaderCaps> fShaderCaps;
-    mutable sk_sp<SkCapabilities> fSkCaps;
 
     bool fClampToBorderSupport = true;
 
