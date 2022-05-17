@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "723982a3_574f2c52",
+        "filename": "PRESUBMIT.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 292,
+      "author": {
+        "id": 5145
+      },
+      "writtenOn": "2022-05-17T17:36:23Z",
+      "side": 1,
+      "message": "nit: 2 blank lines between top-level definitions. Same at end of function.",
+      "revId": "917107109621997b78f0057bedd683ae20d855b8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ce20e209_887a9213",
+        "filename": "PRESUBMIT.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 354,
+      "author": {
+        "id": 5145
+      },
+      "writtenOn": "2022-05-17T17:36:23Z",
+      "side": 1,
+      "message": "This is not in common checks because we are worried about false positives?",
+      "revId": "917107109621997b78f0057bedd683ae20d855b8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
