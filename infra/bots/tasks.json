@@ -19922,7 +19922,7 @@
         "pool:Skia"
       ],
       "max_attempts": 1,
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "FM-Debian10-Clang-GCE-CPU-AVX2-x86_64-Debug-All-ASAN": {
       "casSpec": "test",
@@ -19986,7 +19986,7 @@
         ]
       },
       "max_attempts": 1,
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "FM-Debian10-Clang-GCE-CPU-AVX2-x86_64-Release-All-MSAN": {
       "casSpec": "test",
@@ -20050,7 +20050,7 @@
         ]
       },
       "max_attempts": 1,
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "FM-Debian10-Clang-GCE-CPU-AVX2-x86_64-Release-All-TSAN": {
       "casSpec": "test",
@@ -20114,7 +20114,7 @@
         ]
       },
       "max_attempts": 1,
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "FM-Mac-Clang-VMware7.1-CPU-AVX-x86_64-Debug-All": {
       "casSpec": "test",
@@ -20164,7 +20164,7 @@
         "pool:Skia"
       ],
       "max_attempts": 1,
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "FM-Mac-Clang-VMware7.1-CPU-AVX-x86_64-Debug-All-ASAN": {
       "casSpec": "test",
@@ -20214,7 +20214,7 @@
         "pool:Skia"
       ],
       "max_attempts": 1,
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "FM-Mac-Clang-VMware7.1-CPU-AVX-x86_64-Release-All-TSAN": {
       "casSpec": "test",
@@ -20264,7 +20264,7 @@
         "pool:Skia"
       ],
       "max_attempts": 1,
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "FM-Win-Clang-GCE-CPU-AVX2-x86_64-Debug-All": {
       "casSpec": "test",
@@ -20315,7 +20315,7 @@
         "pool:Skia"
       ],
       "max_attempts": 1,
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "FM-Win-Clang-GCE-CPU-AVX2-x86_64-Debug-All-ASAN": {
       "casSpec": "test",
@@ -20366,7 +20366,7 @@
         "pool:Skia"
       ],
       "max_attempts": 1,
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "FM-Win-MSVC-GCE-CPU-AVX2-x86_64-Debug-All": {
       "casSpec": "test",
@@ -20417,7 +20417,7 @@
         "pool:Skia"
       ],
       "max_attempts": 1,
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Housekeeper-Nightly-RecreateSKPs_DryRun": {
       "caches": [
@@ -35089,7 +35089,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Android-Clang-AndroidOne-GPU-Mali400MP2-arm-Release-All-Android": {
       "caches": [
@@ -35188,7 +35188,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Android-Clang-GalaxyS20-GPU-MaliG77-arm64-Debug-All-Android": {
       "caches": [
@@ -35287,7 +35287,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Android-Clang-GalaxyS20-GPU-MaliG77-arm64-Debug-All-Android_Vulkan": {
       "caches": [
@@ -35386,7 +35386,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Android-Clang-GalaxyS20-GPU-MaliG77-arm64-Release-All-Android": {
       "caches": [
@@ -35485,7 +35485,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Android-Clang-GalaxyS20-GPU-MaliG77-arm64-Release-All-Android_NativeFonts": {
       "caches": [
@@ -35584,7 +35584,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Android-Clang-GalaxyS20-GPU-MaliG77-arm64-Release-All-Android_Vulkan": {
       "caches": [
@@ -35683,7 +35683,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Android-Clang-GalaxyS7_G930FD-GPU-MaliT880-arm64-Debug-All-Android": {
       "caches": [
@@ -35782,7 +35782,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Android-Clang-GalaxyS7_G930FD-GPU-MaliT880-arm64-Debug-All-Android_Vulkan": {
       "caches": [
@@ -35881,7 +35881,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Android-Clang-GalaxyS7_G930FD-GPU-MaliT880-arm64-Release-All-Android": {
       "caches": [
@@ -35980,7 +35980,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Android-Clang-GalaxyS7_G930FD-GPU-MaliT880-arm64-Release-All-Android_Vulkan": {
       "caches": [
@@ -36079,7 +36079,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Android-Clang-GalaxyS9-GPU-MaliG72-arm64-Debug-All-Android": {
       "caches": [
@@ -36178,7 +36178,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Android-Clang-GalaxyS9-GPU-MaliG72-arm64-Debug-All-Android_Vulkan": {
       "caches": [
@@ -36277,7 +36277,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Android-Clang-GalaxyS9-GPU-MaliG72-arm64-Release-All-Android": {
       "caches": [
@@ -36376,7 +36376,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Android-Clang-GalaxyS9-GPU-MaliG72-arm64-Release-All-Android_Vulkan": {
       "caches": [
@@ -36475,7 +36475,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Android-Clang-JioNext-GPU-Adreno308-arm-Debug-All-Android": {
       "caches": [
@@ -36574,7 +36574,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Android-Clang-JioNext-GPU-Adreno308-arm-Release-All-Android": {
       "caches": [
@@ -36673,7 +36673,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Android-Clang-Nexus7-GPU-Tegra3-arm-Debug-All-Android": {
       "caches": [
@@ -36772,7 +36772,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Android-Clang-Nexus7-GPU-Tegra3-arm-Release-All-Android": {
       "caches": [
@@ -36871,7 +36871,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Android-Clang-P30-GPU-MaliG76-arm64-Debug-All-Android": {
       "caches": [
@@ -36970,7 +36970,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Android-Clang-P30-GPU-MaliG76-arm64-Debug-All-Android_DDL1_Vulkan": {
       "caches": [
@@ -37069,7 +37069,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Android-Clang-P30-GPU-MaliG76-arm64-Debug-All-Android_DDL3_Vulkan": {
       "caches": [
@@ -37168,7 +37168,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Android-Clang-P30-GPU-MaliG76-arm64-Debug-All-Android_OOPRDDL_Vulkan": {
       "caches": [
@@ -37267,7 +37267,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Android-Clang-P30-GPU-MaliG76-arm64-Debug-All-Android_Vulkan": {
       "caches": [
@@ -37366,7 +37366,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Android-Clang-P30-GPU-MaliG76-arm64-Release-All-Android": {
       "caches": [
@@ -37465,7 +37465,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Android-Clang-P30-GPU-MaliG76-arm64-Release-All-Android_Vulkan": {
       "caches": [
@@ -37564,7 +37564,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Android-Clang-Pixel2XL-GPU-Adreno540-arm64-Debug-All-Android": {
       "caches": [
@@ -37663,7 +37663,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Android-Clang-Pixel2XL-GPU-Adreno540-arm64-Debug-All-Android_Vulkan": {
       "caches": [
@@ -37762,7 +37762,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Android-Clang-Pixel2XL-GPU-Adreno540-arm64-Release-All-Android": {
       "caches": [
@@ -37861,7 +37861,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Android-Clang-Pixel2XL-GPU-Adreno540-arm64-Release-All-Android_Vulkan": {
       "caches": [
@@ -37960,7 +37960,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Android-Clang-Pixel3-GPU-Adreno630-arm64-Debug-All-Android": {
       "caches": [
@@ -38059,7 +38059,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Android-Clang-Pixel3-GPU-Adreno630-arm64-Debug-All-Android_DDL1_Vulkan": {
       "caches": [
@@ -38158,7 +38158,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Android-Clang-Pixel3-GPU-Adreno630-arm64-Debug-All-Android_DDL3_Vulkan": {
       "caches": [
@@ -38257,7 +38257,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Android-Clang-Pixel3-GPU-Adreno630-arm64-Debug-All-Android_OOPRDDL_Vulkan": {
       "caches": [
@@ -38356,7 +38356,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Android-Clang-Pixel3-GPU-Adreno630-arm64-Debug-All-Android_Vulkan": {
       "caches": [
@@ -38455,7 +38455,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Android-Clang-Pixel3-GPU-Adreno630-arm64-Release-All-Android": {
       "caches": [
@@ -38554,7 +38554,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Android-Clang-Pixel3-GPU-Adreno630-arm64-Release-All-Android_Vulkan": {
       "caches": [
@@ -38653,7 +38653,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Android-Clang-Pixel3a-GPU-Adreno615-arm64-Debug-All-Android": {
       "caches": [
@@ -38752,7 +38752,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Android-Clang-Pixel3a-GPU-Adreno615-arm64-Debug-All-Android_Vulkan": {
       "caches": [
@@ -38851,7 +38851,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Android-Clang-Pixel3a-GPU-Adreno615-arm64-Release-All-Android": {
       "caches": [
@@ -38950,7 +38950,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Android-Clang-Pixel3a-GPU-Adreno615-arm64-Release-All-Android_Vulkan": {
       "caches": [
@@ -39049,7 +39049,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Android-Clang-Pixel4-GPU-Adreno640-arm64-Debug-All-Android_API30": {
       "caches": [
@@ -39148,7 +39148,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Android-Clang-Pixel4-GPU-Adreno640-arm64-Debug-All-Android_Vulkan": {
       "caches": [
@@ -39247,7 +39247,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Android-Clang-Pixel4-GPU-Adreno640-arm64-Release-All-Android_API30": {
       "caches": [
@@ -39346,7 +39346,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Android-Clang-Pixel4-GPU-Adreno640-arm64-Release-All-Android_Vulkan": {
       "caches": [
@@ -39445,7 +39445,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Android-Clang-Pixel4XL-GPU-Adreno640-arm64-Debug-All-Android": {
       "caches": [
@@ -39544,7 +39544,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Android-Clang-Pixel4XL-GPU-Adreno640-arm64-Debug-All-Android_Vulkan": {
       "caches": [
@@ -39643,7 +39643,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Android-Clang-Pixel4XL-GPU-Adreno640-arm64-Release-All-Android": {
       "caches": [
@@ -39742,7 +39742,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Android-Clang-Pixel4XL-GPU-Adreno640-arm64-Release-All-Android_Vulkan": {
       "caches": [
@@ -39841,7 +39841,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Android-Clang-Pixel4a-CPU-Snapdragon730G-arm64-Debug-All-Android_HWASAN": {
       "caches": [
@@ -40128,7 +40128,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Android-Clang-Pixel5-GPU-Adreno620-arm64-Release-All-Android": {
       "caches": [
@@ -40227,7 +40227,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Android-Clang-Pixel5-GPU-Adreno620-arm64-Release-All-Android_Vulkan": {
       "caches": [
@@ -40326,7 +40326,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Android-Clang-Pixel6-GPU-MaliG78-arm64-Debug-All-Android": {
       "caches": [
@@ -40425,7 +40425,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Android-Clang-Pixel6-GPU-MaliG78-arm64-Release-All-Android": {
       "caches": [
@@ -40524,7 +40524,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Android-Clang-Pixel6-GPU-MaliG78-arm64-Release-All-Android_Vulkan": {
       "caches": [
@@ -40623,7 +40623,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Android-Clang-Wembley-GPU-PowerVRGE8320-arm-Debug-All-Android": {
       "caches": [
@@ -40722,7 +40722,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Android-Clang-Wembley-GPU-PowerVRGE8320-arm-Release-All-Android": {
       "caches": [
@@ -40821,7 +40821,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-ChromeOS-Clang-Kevin-GPU-MaliT860-arm-Debug-All": {
       "caches": [
@@ -40920,7 +40920,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-ChromeOS-Clang-Kevin-GPU-MaliT860-arm-Release-All": {
       "caches": [
@@ -41019,7 +41019,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-ChromeOS-Clang-Sparky360-GPU-IntelUHDGraphics605-x86_64-Debug-All": {
       "caches": [
@@ -41118,7 +41118,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-ChromeOS-Clang-Sparky360-GPU-IntelUHDGraphics605-x86_64-Release-All": {
       "caches": [
@@ -41217,7 +41217,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-ChromeOS-Clang-Spin513-GPU-Adreno618-arm-Release-All": {
       "caches": [
@@ -41316,7 +41316,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-ChromeOS-Clang-Spin514-GPU-RadeonVega3-x86_64-Debug-All": {
       "caches": [
@@ -41415,7 +41415,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-ChromeOS-Clang-Spin514-GPU-RadeonVega3-x86_64-Release-All": {
       "caches": [
@@ -41514,7 +41514,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Debian10-Clang-GCE-CPU-AVX2-x86-Debug-All": {
       "caches": [
@@ -41625,7 +41625,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Debian10-Clang-GCE-CPU-AVX2-x86_64-Debug-All": {
       "caches": [
@@ -41736,7 +41736,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Debian10-Clang-GCE-CPU-AVX2-x86_64-Debug-All-ASAN": {
       "caches": [
@@ -41957,7 +41957,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Debian10-Clang-GCE-CPU-AVX2-x86_64-Debug-All-BonusConfigs_ASAN": {
       "caches": [
@@ -42178,7 +42178,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Debian10-Clang-GCE-CPU-AVX2-x86_64-Debug-All-OldestSupportedSkpVersion": {
       "caches": [
@@ -42279,7 +42279,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Debian10-Clang-GCE-CPU-AVX2-x86_64-Debug-All-SK_USE_DISCARDABLE_SCALEDIMAGECACHE": {
       "caches": [
@@ -42390,7 +42390,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Debian10-Clang-GCE-CPU-AVX2-x86_64-Debug-All-SafeStack": {
       "caches": [
@@ -42501,7 +42501,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Debian10-Clang-GCE-CPU-AVX2-x86_64-Debug-All-SkVM": {
       "caches": [
@@ -42612,7 +42612,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Debian10-Clang-GCE-CPU-AVX2-x86_64-Debug-All-Wuffs": {
       "caches": [
@@ -42723,7 +42723,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Debian10-Clang-GCE-CPU-AVX2-x86_64-Release-All": {
       "caches": [
@@ -42834,7 +42834,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Debian10-Clang-GCE-CPU-AVX2-x86_64-Release-All-BonusConfigs": {
       "caches": [
@@ -42945,7 +42945,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Debian10-Clang-GCE-CPU-AVX2-x86_64-Release-All-Fast": {
       "caches": [
@@ -43056,7 +43056,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Debian10-Clang-GCE-CPU-AVX2-x86_64-Release-All-SKNX_NO_SIMD": {
       "caches": [
@@ -43167,7 +43167,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Debian10-Clang-GCE-CPU-AVX2-x86_64-Release-All-SK_CPU_LIMIT_SSE2": {
       "caches": [
@@ -43278,7 +43278,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Debian10-Clang-GCE-CPU-AVX2-x86_64-Release-All-SK_CPU_LIMIT_SSE41": {
       "caches": [
@@ -43389,7 +43389,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Debian10-Clang-GCE-CPU-AVX2-x86_64-Release-All-SK_FORCE_RASTER_PIPELINE_BLITTER": {
       "caches": [
@@ -43500,7 +43500,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Debian10-Clang-GCE-CPU-AVX2-x86_64-Release-All-SkVM": {
       "caches": [
@@ -43611,7 +43611,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Debian10-Clang-GCE-CPU-AVX512-x86_64-Debug-All": {
       "caches": [
@@ -43721,7 +43721,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Debian10-Clang-GCE-CPU-AVX512-x86_64-Release-All": {
       "caches": [
@@ -43831,7 +43831,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Debian10-Clang-GCE-CPU-Rome-x86_64-Debug-All": {
       "caches": [
@@ -43941,7 +43941,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Debian10-Clang-GCE-CPU-Rome-x86_64-Release-All": {
       "caches": [
@@ -44051,7 +44051,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Debian10-Clang-GCE-GPU-SwiftShader-x86_64-Debug-All-SwiftShader": {
       "caches": [
@@ -44162,7 +44162,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Debian10-Clang-GCE-GPU-SwiftShader-x86_64-Debug-All-SwiftShader_MSAN": {
       "caches": [
@@ -44383,7 +44383,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Debian10-Clang-NUC5PPYH-GPU-IntelHD405-x86_64-Debug-All": {
       "caches": [
@@ -44498,7 +44498,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Debian10-Clang-NUC5PPYH-GPU-IntelHD405-x86_64-Debug-All-Vulkan": {
       "caches": [
@@ -44618,7 +44618,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Debian10-Clang-NUC5PPYH-GPU-IntelHD405-x86_64-Release-All": {
       "caches": [
@@ -44733,7 +44733,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Debian10-Clang-NUC5PPYH-GPU-IntelHD405-x86_64-Release-All-Vulkan": {
       "caches": [
@@ -44853,7 +44853,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Debian10-Clang-NUC7i5BNK-GPU-IntelIris640-x86_64-Debug-All": {
       "caches": [
@@ -44968,7 +44968,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Debian10-Clang-NUC7i5BNK-GPU-IntelIris640-x86_64-Debug-All-ASAN_Vulkan": {
       "caches": [
@@ -45202,7 +45202,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Debian10-Clang-NUC7i5BNK-GPU-IntelIris640-x86_64-Debug-All-DDL1_Vulkan": {
       "caches": [
@@ -45322,7 +45322,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Debian10-Clang-NUC7i5BNK-GPU-IntelIris640-x86_64-Debug-All-DDL3_ASAN": {
       "caches": [
@@ -46017,7 +46017,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Debian10-Clang-NUC7i5BNK-GPU-IntelIris640-x86_64-Release-All-DDL3_TSAN": {
       "caches": [
@@ -46836,7 +46836,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Debian10-Clang-NUCDE3815TYKHE-GPU-IntelBayTrail-x86_64-Debug-All": {
       "caches": [
@@ -46951,7 +46951,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Debian10-Clang-NUCDE3815TYKHE-GPU-IntelBayTrail-x86_64-Release-All": {
       "caches": [
@@ -47066,7 +47066,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Debian10-Clang-ShuttleA-GPU-IntelHD2000-x86_64-Debug-All": {
       "caches": [
@@ -47181,7 +47181,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Debian10-Clang-ShuttleA-GPU-IntelHD2000-x86_64-Release-All": {
       "caches": [
@@ -47296,7 +47296,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Debian10-EMCC-GCE-CPU-AVX2-asmjs-Release-All-PathKit": {
       "caches": [
@@ -47393,7 +47393,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Debian10-EMCC-GCE-CPU-AVX2-wasm-Release-All-CanvasKit": {
       "caches": [
@@ -47490,7 +47490,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Debian10-EMCC-GCE-CPU-AVX2-wasm-Release-All-PathKit": {
       "caches": [
@@ -47587,7 +47587,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Debian10-EMCC-GCE-GPU-AVX2-wasm-Release-All-CanvasKit": {
       "caches": [
@@ -47684,7 +47684,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Debian10-GCC-GCE-CPU-AVX2-x86-Debug-All-Docker": {
       "caches": [
@@ -47796,7 +47796,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Debian10-GCC-GCE-CPU-AVX2-x86-Release-All-Docker": {
       "caches": [
@@ -47908,7 +47908,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Debian10-GCC-GCE-CPU-AVX2-x86_64-Debug-All-Docker": {
       "caches": [
@@ -48020,7 +48020,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Debian10-GCC-GCE-CPU-AVX2-x86_64-Release-All-Docker": {
       "caches": [
@@ -48132,7 +48132,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Debian11-Clang-NUC9i7QN-GPU-RTX3060-x86_64-Debug-All": {
       "caches": [
@@ -48242,7 +48242,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Debian11-Clang-NUC9i7QN-GPU-RTX3060-x86_64-Debug-All-ASAN": {
       "caches": [
@@ -48679,7 +48679,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Mac10.12-Clang-MacMini7.1-CPU-AVX2-x86_64-Debug-All-NativeFonts": {
       "caches": [
@@ -48789,7 +48789,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Mac10.13-Clang-MacBook10.1-GPU-IntelHD615-x86_64-Debug-All": {
       "caches": [
@@ -48899,7 +48899,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Mac10.13-Clang-MacBook10.1-GPU-IntelHD615-x86_64-Release-All": {
       "caches": [
@@ -49009,7 +49009,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Mac10.13-Clang-MacBook10.1-GPU-IntelHD615-x86_64-Release-All-NativeFonts": {
       "caches": [
@@ -49119,7 +49119,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Mac10.13-Clang-MacBookPro11.5-CPU-AVX2-x86_64-Debug-All-NativeFonts": {
       "caches": [
@@ -49229,7 +49229,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Mac10.13-Clang-MacBookPro11.5-CPU-AVX2-x86_64-Debug-All-PDF": {
       "caches": [
@@ -49339,7 +49339,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Mac10.13-Clang-MacBookPro11.5-CPU-AVX2-x86_64-Release-All": {
       "caches": [
@@ -49449,7 +49449,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Mac10.13-Clang-MacBookPro11.5-GPU-RadeonHD8870M-x86_64-Debug-All-ASAN": {
       "caches": [
@@ -49663,7 +49663,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Mac10.13-Clang-MacBookPro11.5-GPU-RadeonHD8870M-x86_64-Release-All-TSAN": {
       "caches": [
@@ -49877,7 +49877,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Mac10.13-Clang-MacMini7.1-GPU-IntelIris5100-x86_64-Debug-All": {
       "caches": [
@@ -49988,7 +49988,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Mac10.13-Clang-MacMini7.1-GPU-IntelIris5100-x86_64-Release-All": {
       "caches": [
@@ -50099,7 +50099,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Mac10.13-Clang-VMware7.1-CPU-AVX-x86_64-Debug-All-NativeFonts": {
       "caches": [
@@ -50209,7 +50209,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Mac10.14-Clang-MacMini7.1-CPU-AVX2-x86_64-Debug-All-NativeFonts": {
       "caches": [
@@ -50319,7 +50319,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Mac10.14-Clang-VMware7.1-CPU-AVX-x86_64-Debug-All-NativeFonts": {
       "caches": [
@@ -50429,7 +50429,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Mac10.15.1-Clang-MacBookAir7.2-GPU-IntelHD6000-x86_64-Debug-All": {
       "caches": [
@@ -50539,7 +50539,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Mac10.15.1-Clang-MacBookAir7.2-GPU-IntelHD6000-x86_64-Debug-All-ANGLE": {
       "caches": [
@@ -50649,7 +50649,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Mac10.15.1-Clang-MacBookAir7.2-GPU-IntelHD6000-x86_64-Debug-All-ASAN_Metal": {
       "caches": [
@@ -50863,7 +50863,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Mac10.15.1-Clang-MacBookAir7.2-GPU-IntelHD6000-x86_64-Debug-All-DDL3_Metal": {
       "caches": [
@@ -50973,7 +50973,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Mac10.15.1-Clang-MacBookAir7.2-GPU-IntelHD6000-x86_64-Debug-All-Metal": {
       "caches": [
@@ -51083,7 +51083,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Mac10.15.1-Clang-MacBookAir7.2-GPU-IntelHD6000-x86_64-Debug-All-NativeFonts": {
       "caches": [
@@ -51193,7 +51193,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Mac10.15.1-Clang-MacBookAir7.2-GPU-IntelHD6000-x86_64-Debug-All-OOPRDDL_Metal": {
       "caches": [
@@ -51303,7 +51303,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Mac10.15.1-Clang-MacBookAir7.2-GPU-IntelHD6000-x86_64-Release-All": {
       "caches": [
@@ -51413,7 +51413,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Mac10.15.1-Clang-MacBookAir7.2-GPU-IntelHD6000-x86_64-Release-All-DDL1_Metal": {
       "caches": [
@@ -51523,7 +51523,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Mac10.15.1-Clang-MacBookAir7.2-GPU-IntelHD6000-x86_64-Release-All-DDL3_Metal": {
       "caches": [
@@ -51633,7 +51633,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Mac10.15.1-Clang-MacBookAir7.2-GPU-IntelHD6000-x86_64-Release-All-Metal": {
       "caches": [
@@ -51743,7 +51743,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Mac10.15.1-Clang-MacBookAir7.2-GPU-IntelHD6000-x86_64-Release-All-OOPRDDL_Metal": {
       "caches": [
@@ -51853,7 +51853,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Mac10.15.1-Clang-MacBookAir7.2-GPU-IntelHD6000-x86_64-Release-All-TSAN_Metal": {
       "caches": [
@@ -52067,7 +52067,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Mac10.15.7-Clang-MacBookPro11.5-GPU-RadeonHD8870M-x86_64-Debug-All-Metal": {
       "caches": [
@@ -52177,7 +52177,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Mac10.15.7-Clang-MacBookPro11.5-GPU-RadeonHD8870M-x86_64-Release-All-Metal": {
       "caches": [
@@ -52287,7 +52287,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Mac10.15.7-Clang-MacMini7.1-CPU-AVX2-x86_64-Debug-All-NativeFonts": {
       "caches": [
@@ -52397,7 +52397,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Mac10.15.7-Clang-MacMini7.1-GPU-IntelIris5100-x86_64-Debug-All-NativeFonts_i5": {
       "caches": [
@@ -52508,7 +52508,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Mac10.15.7-Clang-VMware7.1-CPU-AVX-x86_64-Debug-All-NativeFonts": {
       "caches": [
@@ -52618,7 +52618,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Mac11-Clang-MacMini9.1-CPU-AppleM1-arm64-Debug-All": {
       "caches": [
@@ -52728,7 +52728,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Mac11-Clang-MacMini9.1-CPU-AppleM1-arm64-Debug-All-NativeFonts": {
       "caches": [
@@ -52838,7 +52838,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Mac11-Clang-MacMini9.1-GPU-AppleM1-arm64-Debug-All": {
       "caches": [
@@ -52948,7 +52948,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Mac11-Clang-MacMini9.1-GPU-AppleM1-arm64-Debug-All-ASAN_Graphite": {
       "caches": [
@@ -53162,7 +53162,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Mac11-Clang-MacMini9.1-GPU-AppleM1-arm64-Release-All-Graphite": {
       "caches": [
@@ -53272,7 +53272,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Mac11-Clang-MacMini9.1-GPU-AppleM1-arm64-Release-All-Metal": {
       "caches": [
@@ -53382,7 +53382,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Mac12-Clang-MacBookPro16.2-GPU-IntelIrisPlus-x86_64-Debug-All": {
       "caches": [
@@ -53492,7 +53492,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Mac12-Clang-MacBookPro16.2-GPU-IntelIrisPlus-x86_64-Debug-All-ANGLE": {
       "caches": [
@@ -53602,7 +53602,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Mac12-Clang-MacBookPro16.2-GPU-IntelIrisPlus-x86_64-Debug-All-Graphite": {
       "caches": [
@@ -53712,7 +53712,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Mac12-Clang-MacBookPro16.2-GPU-IntelIrisPlus-x86_64-Debug-All-Metal": {
       "caches": [
@@ -53822,7 +53822,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Mac12-Clang-MacBookPro16.2-GPU-IntelIrisPlus-x86_64-Release-All": {
       "caches": [
@@ -53932,7 +53932,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Mac12-Clang-MacBookPro16.2-GPU-IntelIrisPlus-x86_64-Release-All-Metal": {
       "caches": [
@@ -54042,7 +54042,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Mac12-Clang-MacMini9.1-CPU-AppleM1-arm64-Debug-All-NativeFonts_ASAN": {
       "caches": [
@@ -54256,7 +54256,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Mac12-Clang-MacMini9.1-GPU-AppleM1-arm64-Debug-All-Metal": {
       "caches": [
@@ -54366,7 +54366,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Mac12-Clang-MacMini9.1-GPU-AppleM1-arm64-Debug-All-NativeFonts": {
       "caches": [
@@ -54476,7 +54476,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Mac12-Clang-MacMini9.1-GPU-AppleM1-arm64-Debug-All-Slug": {
       "caches": [
@@ -54586,7 +54586,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Mac12-Clang-MacMini9.1-GPU-AppleM1-arm64-Release-All-ANGLE": {
       "caches": [
@@ -54696,7 +54696,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Mac12-Clang-MacMini9.1-GPU-AppleM1-arm64-Release-All-Metal": {
       "caches": [
@@ -54806,7 +54806,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Ubuntu18-Clang-Golo-GPU-QuadroP400-x86_64-Debug-All-DDL1": {
       "caches": [
@@ -54916,7 +54916,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Ubuntu18-Clang-Golo-GPU-QuadroP400-x86_64-Debug-All-DDL1_Vulkan": {
       "caches": [
@@ -55031,7 +55031,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Ubuntu18-Clang-Golo-GPU-QuadroP400-x86_64-Debug-All-DDL3_Vulkan": {
       "caches": [
@@ -55146,7 +55146,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Ubuntu18-Clang-Golo-GPU-QuadroP400-x86_64-Debug-All-Dawn": {
       "caches": [
@@ -55256,7 +55256,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Ubuntu18-Clang-Golo-GPU-QuadroP400-x86_64-Debug-All-OOPRDDL_Vulkan": {
       "caches": [
@@ -55371,7 +55371,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Ubuntu18-Clang-Golo-GPU-QuadroP400-x86_64-Debug-All-PreAbandonGpuContext": {
       "caches": [
@@ -55590,7 +55590,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Ubuntu18-Clang-Golo-GPU-QuadroP400-x86_64-Release-All": {
       "caches": [
@@ -55700,7 +55700,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Ubuntu18-Clang-Golo-GPU-QuadroP400-x86_64-Release-All-DDL3_TSAN": {
       "caches": [
@@ -56467,7 +56467,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Ubuntu18-EMCC-Golo-GPU-QuadroP400-wasm-Release-All-WasmGMTests_WebGL2": {
       "casSpec": "wasm-gm",
@@ -56556,7 +56556,7 @@
       "execution_timeout_ns": 3600000000000,
       "io_timeout_ns": 3600000000000,
       "max_attempts": 1,
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-Win10-Clang-AlphaR2-GPU-RadeonR9M470X-x86_64-Debug-All": {
       "caches": [
@@ -66136,7 +66136,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-iOS-Clang-iPadPro-GPU-PowerVRGT7800-arm64-Debug-All-Metal": {
       "caches": [
@@ -66239,7 +66239,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-iOS-Clang-iPadPro-GPU-PowerVRGT7800-arm64-Release-All": {
       "caches": [
@@ -66342,7 +66342,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-iOS-Clang-iPadPro-GPU-PowerVRGT7800-arm64-Release-All-Metal": {
       "caches": [
@@ -66445,7 +66445,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-iOS-Clang-iPhone7-GPU-PowerVRGT7600-arm64-Debug-All": {
       "caches": [
@@ -66548,7 +66548,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-iOS-Clang-iPhone7-GPU-PowerVRGT7600-arm64-Debug-All-Metal": {
       "caches": [
@@ -66651,7 +66651,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-iOS-Clang-iPhone7-GPU-PowerVRGT7600-arm64-Release-All": {
       "caches": [
@@ -66754,7 +66754,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-iOS-Clang-iPhone7-GPU-PowerVRGT7600-arm64-Release-All-Metal": {
       "caches": [
@@ -66857,7 +66857,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-iOS-Clang-iPhone8-GPU-AppleA11-arm64-Debug-All": {
       "caches": [
@@ -66960,7 +66960,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-iOS-Clang-iPhone8-GPU-AppleA11-arm64-Debug-All-Metal": {
       "caches": [
@@ -67063,7 +67063,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-iOS-Clang-iPhone8-GPU-AppleA11-arm64-Release-All": {
       "caches": [
@@ -67166,7 +67166,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-iOS-Clang-iPhone8-GPU-AppleA11-arm64-Release-All-Metal": {
       "caches": [
@@ -67269,7 +67269,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-iOS-Xcode11.4.1-iPhone11-GPU-AppleA13-arm64-Debug-All": {
       "caches": [
@@ -67372,7 +67372,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-iOS-Xcode11.4.1-iPhone11-GPU-AppleA13-arm64-Debug-All-Metal": {
       "caches": [
@@ -67475,7 +67475,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-iOS-Xcode11.4.1-iPhone11-GPU-AppleA13-arm64-Release-All": {
       "caches": [
@@ -67578,7 +67578,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Test-iOS-Xcode11.4.1-iPhone11-GPU-AppleA13-arm64-Release-All-Metal": {
       "caches": [
@@ -67681,7 +67681,7 @@
       "outputs": [
         "test"
       ],
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Upload-BuildStats-Debian10-EMCC-asmjs-Release-PathKit": {
       "caches": [
@@ -80329,7 +80329,7 @@
       },
       "io_timeout_ns": 3600000000000,
       "max_attempts": 2,
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Upload-Test-Win10-Clang-AlphaR2-GPU-RadeonR9M470X-x86_64-Debug-All-ANGLE": {
       "caches": [
@@ -80422,7 +80422,7 @@
       },
       "io_timeout_ns": 3600000000000,
       "max_attempts": 2,
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Upload-Test-Win10-Clang-AlphaR2-GPU-RadeonR9M470X-x86_64-Debug-All-Vulkan": {
       "caches": [
@@ -80515,7 +80515,7 @@
       },
       "io_timeout_ns": 3600000000000,
       "max_attempts": 2,
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Upload-Test-Win10-Clang-AlphaR2-GPU-RadeonR9M470X-x86_64-Release-All": {
       "caches": [
@@ -80608,7 +80608,7 @@
       },
       "io_timeout_ns": 3600000000000,
       "max_attempts": 2,
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Upload-Test-Win10-Clang-AlphaR2-GPU-RadeonR9M470X-x86_64-Release-All-ANGLE": {
       "caches": [
@@ -80701,7 +80701,7 @@
       },
       "io_timeout_ns": 3600000000000,
       "max_attempts": 2,
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Upload-Test-Win10-Clang-AlphaR2-GPU-RadeonR9M470X-x86_64-Release-All-Vulkan": {
       "caches": [
@@ -80794,7 +80794,7 @@
       },
       "io_timeout_ns": 3600000000000,
       "max_attempts": 2,
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Upload-Test-Win10-Clang-Golo-GPU-QuadroP400-x86_64-Debug-All": {
       "caches": [
@@ -80887,7 +80887,7 @@
       },
       "io_timeout_ns": 3600000000000,
       "max_attempts": 2,
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Upload-Test-Win10-Clang-Golo-GPU-QuadroP400-x86_64-Debug-All-ANGLE": {
       "caches": [
@@ -80980,7 +80980,7 @@
       },
       "io_timeout_ns": 3600000000000,
       "max_attempts": 2,
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Upload-Test-Win10-Clang-Golo-GPU-QuadroP400-x86_64-Debug-All-BonusConfigs": {
       "caches": [
@@ -81073,7 +81073,7 @@
       },
       "io_timeout_ns": 3600000000000,
       "max_attempts": 2,
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Upload-Test-Win10-Clang-Golo-GPU-QuadroP400-x86_64-Debug-All-Dawn": {
       "caches": [
@@ -81166,7 +81166,7 @@
       },
       "io_timeout_ns": 3600000000000,
       "max_attempts": 2,
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Upload-Test-Win10-Clang-Golo-GPU-QuadroP400-x86_64-Debug-All-GpuTess": {
       "caches": [
@@ -81259,7 +81259,7 @@
       },
       "io_timeout_ns": 3600000000000,
       "max_attempts": 2,
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Upload-Test-Win10-Clang-Golo-GPU-QuadroP400-x86_64-Debug-All-Vulkan": {
       "caches": [
@@ -81352,7 +81352,7 @@
       },
       "io_timeout_ns": 3600000000000,
       "max_attempts": 2,
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Upload-Test-Win10-Clang-Golo-GPU-QuadroP400-x86_64-Release-All": {
       "caches": [
@@ -81445,7 +81445,7 @@
       },
       "io_timeout_ns": 3600000000000,
       "max_attempts": 2,
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Upload-Test-Win10-Clang-Golo-GPU-QuadroP400-x86_64-Release-All-ANGLE": {
       "caches": [
@@ -81538,7 +81538,7 @@
       },
       "io_timeout_ns": 3600000000000,
       "max_attempts": 2,
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Upload-Test-Win10-Clang-Golo-GPU-QuadroP400-x86_64-Release-All-BonusConfigs": {
       "caches": [
@@ -81631,7 +81631,7 @@
       },
       "io_timeout_ns": 3600000000000,
       "max_attempts": 2,
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Upload-Test-Win10-Clang-Golo-GPU-QuadroP400-x86_64-Release-All-Vulkan": {
       "caches": [
@@ -81724,7 +81724,7 @@
       },
       "io_timeout_ns": 3600000000000,
       "max_attempts": 2,
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Upload-Test-Win10-Clang-NUC5i7RYH-CPU-AVX2-x86_64-Debug-All-NativeFonts": {
       "caches": [
@@ -81817,7 +81817,7 @@
       },
       "io_timeout_ns": 3600000000000,
       "max_attempts": 2,
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Upload-Test-Win10-Clang-NUC5i7RYH-GPU-IntelIris6100-x86_64-Debug-All": {
       "caches": [
@@ -81910,7 +81910,7 @@
       },
       "io_timeout_ns": 3600000000000,
       "max_attempts": 2,
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Upload-Test-Win10-Clang-NUC5i7RYH-GPU-IntelIris6100-x86_64-Debug-All-ANGLE": {
       "caches": [
@@ -82003,7 +82003,7 @@
       },
       "io_timeout_ns": 3600000000000,
       "max_attempts": 2,
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Upload-Test-Win10-Clang-NUC5i7RYH-GPU-IntelIris6100-x86_64-Release-All": {
       "caches": [
@@ -82096,7 +82096,7 @@
       },
       "io_timeout_ns": 3600000000000,
       "max_attempts": 2,
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Upload-Test-Win10-Clang-NUC5i7RYH-GPU-IntelIris6100-x86_64-Release-All-ANGLE": {
       "caches": [
@@ -82189,7 +82189,7 @@
       },
       "io_timeout_ns": 3600000000000,
       "max_attempts": 2,
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Upload-Test-Win10-Clang-NUC6i5SYK-GPU-IntelIris540-x86_64-Debug-All": {
       "caches": [
@@ -82282,7 +82282,7 @@
       },
       "io_timeout_ns": 3600000000000,
       "max_attempts": 2,
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Upload-Test-Win10-Clang-NUC6i5SYK-GPU-IntelIris540-x86_64-Debug-All-ANGLE": {
       "caches": [
@@ -82375,7 +82375,7 @@
       },
       "io_timeout_ns": 3600000000000,
       "max_attempts": 2,
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Upload-Test-Win10-Clang-NUC6i5SYK-GPU-IntelIris540-x86_64-Debug-All-Vulkan": {
       "caches": [
@@ -82468,7 +82468,7 @@
       },
       "io_timeout_ns": 3600000000000,
       "max_attempts": 2,
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Upload-Test-Win10-Clang-NUC6i5SYK-GPU-IntelIris540-x86_64-Release-All": {
       "caches": [
@@ -82561,7 +82561,7 @@
       },
       "io_timeout_ns": 3600000000000,
       "max_attempts": 2,
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Upload-Test-Win10-Clang-NUC6i5SYK-GPU-IntelIris540-x86_64-Release-All-ANGLE": {
       "caches": [
@@ -82654,7 +82654,7 @@
       },
       "io_timeout_ns": 3600000000000,
       "max_attempts": 2,
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Upload-Test-Win10-Clang-NUC6i5SYK-GPU-IntelIris540-x86_64-Release-All-NativeFonts": {
       "caches": [
@@ -82747,7 +82747,7 @@
       },
       "io_timeout_ns": 3600000000000,
       "max_attempts": 2,
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Upload-Test-Win10-Clang-NUC6i5SYK-GPU-IntelIris540-x86_64-Release-All-Vulkan": {
       "caches": [
@@ -82840,7 +82840,7 @@
       },
       "io_timeout_ns": 3600000000000,
       "max_attempts": 2,
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Upload-Test-Win10-Clang-NUC8i5BEK-GPU-IntelIris655-x86_64-Debug-All": {
       "caches": [
@@ -82933,7 +82933,7 @@
       },
       "io_timeout_ns": 3600000000000,
       "max_attempts": 2,
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Upload-Test-Win10-Clang-NUC8i5BEK-GPU-IntelIris655-x86_64-Debug-All-ANGLE": {
       "caches": [
@@ -83026,7 +83026,7 @@
       },
       "io_timeout_ns": 3600000000000,
       "max_attempts": 2,
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Upload-Test-Win10-Clang-NUC8i5BEK-GPU-IntelIris655-x86_64-Debug-All-Direct3D": {
       "caches": [
@@ -83119,7 +83119,7 @@
       },
       "io_timeout_ns": 3600000000000,
       "max_attempts": 2,
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Upload-Test-Win10-Clang-NUC8i5BEK-GPU-IntelIris655-x86_64-Debug-All-Vulkan": {
       "caches": [
@@ -83212,7 +83212,7 @@
       },
       "io_timeout_ns": 3600000000000,
       "max_attempts": 2,
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Upload-Test-Win10-Clang-NUC8i5BEK-GPU-IntelIris655-x86_64-Release-All": {
       "caches": [
@@ -83305,7 +83305,7 @@
       },
       "io_timeout_ns": 3600000000000,
       "max_attempts": 2,
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Upload-Test-Win10-Clang-NUC8i5BEK-GPU-IntelIris655-x86_64-Release-All-ANGLE": {
       "caches": [
@@ -83398,7 +83398,7 @@
       },
       "io_timeout_ns": 3600000000000,
       "max_attempts": 2,
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Upload-Test-Win10-Clang-NUC8i5BEK-GPU-IntelIris655-x86_64-Release-All-Direct3D": {
       "caches": [
@@ -83491,7 +83491,7 @@
       },
       "io_timeout_ns": 3600000000000,
       "max_attempts": 2,
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Upload-Test-Win10-Clang-NUC8i5BEK-GPU-IntelIris655-x86_64-Release-All-Vulkan": {
       "caches": [
@@ -83584,7 +83584,7 @@
       },
       "io_timeout_ns": 3600000000000,
       "max_attempts": 2,
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Upload-Test-Win10-Clang-NUC9i7QN-GPU-RTX3060-x86_64-Debug-All": {
       "caches": [
@@ -83677,7 +83677,7 @@
       },
       "io_timeout_ns": 3600000000000,
       "max_attempts": 2,
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Upload-Test-Win10-Clang-NUC9i7QN-GPU-RTX3060-x86_64-Debug-All-Vulkan": {
       "caches": [
@@ -83770,7 +83770,7 @@
       },
       "io_timeout_ns": 3600000000000,
       "max_attempts": 2,
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Upload-Test-Win10-Clang-NUC9i7QN-GPU-RTX3060-x86_64-Release-All": {
       "caches": [
@@ -83863,7 +83863,7 @@
       },
       "io_timeout_ns": 3600000000000,
       "max_attempts": 2,
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Upload-Test-Win10-Clang-NUC9i7QN-GPU-RTX3060-x86_64-Release-All-Vulkan": {
       "caches": [
@@ -83956,7 +83956,7 @@
       },
       "io_timeout_ns": 3600000000000,
       "max_attempts": 2,
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Upload-Test-Win10-Clang-NUCD34010WYKH-GPU-IntelHD4400-x86_64-Debug-All": {
       "caches": [
@@ -84049,7 +84049,7 @@
       },
       "io_timeout_ns": 3600000000000,
       "max_attempts": 2,
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Upload-Test-Win10-Clang-NUCD34010WYKH-GPU-IntelHD4400-x86_64-Debug-All-ANGLE": {
       "caches": [
@@ -84142,7 +84142,7 @@
       },
       "io_timeout_ns": 3600000000000,
       "max_attempts": 2,
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Upload-Test-Win10-Clang-NUCD34010WYKH-GPU-IntelHD4400-x86_64-Release-All": {
       "caches": [
@@ -84235,7 +84235,7 @@
       },
       "io_timeout_ns": 3600000000000,
       "max_attempts": 2,
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Upload-Test-Win10-Clang-NUCD34010WYKH-GPU-IntelHD4400-x86_64-Release-All-ANGLE": {
       "caches": [
@@ -84328,7 +84328,7 @@
       },
       "io_timeout_ns": 3600000000000,
       "max_attempts": 2,
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Upload-Test-Win10-Clang-RUBYR5-GPU-RadeonVega6-x86_64-Debug-All-Vulkan": {
       "caches": [
@@ -84421,7 +84421,7 @@
       },
       "io_timeout_ns": 3600000000000,
       "max_attempts": 2,
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Upload-Test-Win10-Clang-RUBYR5-GPU-RadeonVega6-x86_64-Release-All-Vulkan": {
       "caches": [
@@ -84514,7 +84514,7 @@
       },
       "io_timeout_ns": 3600000000000,
       "max_attempts": 2,
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Upload-Test-Win10-Clang-ShuttleA-GPU-GTX660-x86_64-Debug-All": {
       "caches": [
@@ -84607,7 +84607,7 @@
       },
       "io_timeout_ns": 3600000000000,
       "max_attempts": 2,
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Upload-Test-Win10-Clang-ShuttleA-GPU-GTX660-x86_64-Debug-All-ANGLE": {
       "caches": [
@@ -84700,7 +84700,7 @@
       },
       "io_timeout_ns": 3600000000000,
       "max_attempts": 2,
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Upload-Test-Win10-Clang-ShuttleA-GPU-GTX660-x86_64-Debug-All-Vulkan": {
       "caches": [
@@ -84793,7 +84793,7 @@
       },
       "io_timeout_ns": 3600000000000,
       "max_attempts": 2,
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Upload-Test-Win10-Clang-ShuttleA-GPU-GTX660-x86_64-Release-All": {
       "caches": [
@@ -84886,7 +84886,7 @@
       },
       "io_timeout_ns": 3600000000000,
       "max_attempts": 2,
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Upload-Test-Win10-Clang-ShuttleA-GPU-GTX660-x86_64-Release-All-ANGLE": {
       "caches": [
@@ -84979,7 +84979,7 @@
       },
       "io_timeout_ns": 3600000000000,
       "max_attempts": 2,
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Upload-Test-Win10-Clang-ShuttleA-GPU-GTX660-x86_64-Release-All-Vulkan": {
       "caches": [
@@ -85072,7 +85072,7 @@
       },
       "io_timeout_ns": 3600000000000,
       "max_attempts": 2,
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Upload-Test-Win10-Clang-ShuttleA-GPU-RadeonHD7770-x86_64-Debug-All": {
       "caches": [
@@ -85165,7 +85165,7 @@
       },
       "io_timeout_ns": 3600000000000,
       "max_attempts": 2,
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Upload-Test-Win10-Clang-ShuttleA-GPU-RadeonHD7770-x86_64-Debug-All-ANGLE": {
       "caches": [
@@ -85258,7 +85258,7 @@
       },
       "io_timeout_ns": 3600000000000,
       "max_attempts": 2,
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Upload-Test-Win10-Clang-ShuttleA-GPU-RadeonHD7770-x86_64-Debug-All-Direct3D": {
       "caches": [
@@ -85351,7 +85351,7 @@
       },
       "io_timeout_ns": 3600000000000,
       "max_attempts": 2,
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Upload-Test-Win10-Clang-ShuttleA-GPU-RadeonHD7770-x86_64-Debug-All-Vulkan": {
       "caches": [
@@ -85444,7 +85444,7 @@
       },
       "io_timeout_ns": 3600000000000,
       "max_attempts": 2,
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Upload-Test-Win10-Clang-ShuttleA-GPU-RadeonHD7770-x86_64-Release-All": {
       "caches": [
@@ -85537,7 +85537,7 @@
       },
       "io_timeout_ns": 3600000000000,
       "max_attempts": 2,
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Upload-Test-Win10-Clang-ShuttleA-GPU-RadeonHD7770-x86_64-Release-All-ANGLE": {
       "caches": [
@@ -85630,7 +85630,7 @@
       },
       "io_timeout_ns": 3600000000000,
       "max_attempts": 2,
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Upload-Test-Win10-Clang-ShuttleA-GPU-RadeonHD7770-x86_64-Release-All-Direct3D": {
       "caches": [
@@ -85723,7 +85723,7 @@
       },
       "io_timeout_ns": 3600000000000,
       "max_attempts": 2,
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Upload-Test-Win10-Clang-ShuttleA-GPU-RadeonHD7770-x86_64-Release-All-Vulkan": {
       "caches": [
@@ -85816,7 +85816,7 @@
       },
       "io_timeout_ns": 3600000000000,
       "max_attempts": 2,
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Upload-Test-Win10-Clang-ShuttleC-GPU-GTX960-x86_64-Debug-All": {
       "caches": [
@@ -85909,7 +85909,7 @@
       },
       "io_timeout_ns": 3600000000000,
       "max_attempts": 2,
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Upload-Test-Win10-Clang-ShuttleC-GPU-GTX960-x86_64-Debug-All-ANGLE": {
       "caches": [
@@ -86002,7 +86002,7 @@
       },
       "io_timeout_ns": 3600000000000,
       "max_attempts": 2,
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Upload-Test-Win10-Clang-ShuttleC-GPU-GTX960-x86_64-Debug-All-Vulkan": {
       "caches": [
@@ -86095,7 +86095,7 @@
       },
       "io_timeout_ns": 3600000000000,
       "max_attempts": 2,
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Upload-Test-Win10-Clang-ShuttleC-GPU-GTX960-x86_64-Release-All": {
       "caches": [
@@ -86188,7 +86188,7 @@
       },
       "io_timeout_ns": 3600000000000,
       "max_attempts": 2,
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Upload-Test-Win10-Clang-ShuttleC-GPU-GTX960-x86_64-Release-All-ANGLE": {
       "caches": [
@@ -86281,7 +86281,7 @@
       },
       "io_timeout_ns": 3600000000000,
       "max_attempts": 2,
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Upload-Test-Win10-Clang-ShuttleC-GPU-GTX960-x86_64-Release-All-Vulkan": {
       "caches": [
@@ -86374,7 +86374,7 @@
       },
       "io_timeout_ns": 3600000000000,
       "max_attempts": 2,
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Upload-Test-Win10-MSVC-Golo-GPU-QuadroP400-x86_64-Debug-All": {
       "caches": [
@@ -86467,7 +86467,7 @@
       },
       "io_timeout_ns": 3600000000000,
       "max_attempts": 2,
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Upload-Test-Win10-MSVC-Golo-GPU-QuadroP400-x86_64-Debug-All-Direct3D": {
       "caches": [
@@ -86560,7 +86560,7 @@
       },
       "io_timeout_ns": 3600000000000,
       "max_attempts": 2,
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Upload-Test-Win10-MSVC-Golo-GPU-QuadroP400-x86_64-Debug-All-Vulkan": {
       "caches": [
@@ -86653,7 +86653,7 @@
       },
       "io_timeout_ns": 3600000000000,
       "max_attempts": 2,
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Upload-Test-Win10-MSVC-Golo-GPU-QuadroP400-x86_64-Release-All": {
       "caches": [
@@ -86746,7 +86746,7 @@
       },
       "io_timeout_ns": 3600000000000,
       "max_attempts": 2,
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Upload-Test-Win10-MSVC-Golo-GPU-QuadroP400-x86_64-Release-All-Direct3D": {
       "caches": [
@@ -86839,7 +86839,7 @@
       },
       "io_timeout_ns": 3600000000000,
       "max_attempts": 2,
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Upload-Test-Win10-MSVC-Golo-GPU-QuadroP400-x86_64-Release-All-Vulkan": {
       "caches": [
@@ -86932,7 +86932,7 @@
       },
       "io_timeout_ns": 3600000000000,
       "max_attempts": 2,
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Upload-Test-Win2019-Clang-GCE-CPU-AVX2-x86-Debug-All": {
       "caches": [
@@ -87025,7 +87025,7 @@
       },
       "io_timeout_ns": 3600000000000,
       "max_attempts": 2,
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Upload-Test-Win2019-Clang-GCE-CPU-AVX2-x86-Release-All": {
       "caches": [
@@ -87118,7 +87118,7 @@
       },
       "io_timeout_ns": 3600000000000,
       "max_attempts": 2,
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Upload-Test-Win2019-Clang-GCE-CPU-AVX2-x86_64-Debug-All-SkVM": {
       "caches": [
@@ -87211,7 +87211,7 @@
       },
       "io_timeout_ns": 3600000000000,
       "max_attempts": 2,
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Upload-Test-Win2019-Clang-GCE-CPU-AVX2-x86_64-Release-All": {
       "caches": [
@@ -87304,7 +87304,7 @@
       },
       "io_timeout_ns": 3600000000000,
       "max_attempts": 2,
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Upload-Test-Win2019-Clang-GCE-CPU-AVX2-x86_64-Release-All-SkVM": {
       "caches": [
@@ -87397,7 +87397,7 @@
       },
       "io_timeout_ns": 3600000000000,
       "max_attempts": 2,
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Upload-Test-Win2019-MSVC-GCE-CPU-AVX2-x86-Debug-All": {
       "caches": [
@@ -87490,7 +87490,7 @@
       },
       "io_timeout_ns": 3600000000000,
       "max_attempts": 2,
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Upload-Test-Win2019-MSVC-GCE-CPU-AVX2-x86-Release-All": {
       "caches": [
@@ -87583,7 +87583,7 @@
       },
       "io_timeout_ns": 3600000000000,
       "max_attempts": 2,
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Upload-Test-Win2019-MSVC-GCE-CPU-AVX2-x86_64-Debug-All": {
       "caches": [
@@ -87676,7 +87676,7 @@
       },
       "io_timeout_ns": 3600000000000,
       "max_attempts": 2,
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Upload-Test-Win2019-MSVC-GCE-CPU-AVX2-x86_64-Debug-All-SkVM": {
       "caches": [
@@ -87769,7 +87769,7 @@
       },
       "io_timeout_ns": 3600000000000,
       "max_attempts": 2,
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Upload-Test-Win2019-MSVC-GCE-CPU-AVX2-x86_64-Release-All": {
       "caches": [
@@ -87862,7 +87862,7 @@
       },
       "io_timeout_ns": 3600000000000,
       "max_attempts": 2,
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Upload-Test-Win2019-MSVC-GCE-CPU-AVX2-x86_64-Release-All-SkVM": {
       "caches": [
@@ -87955,7 +87955,7 @@
       },
       "io_timeout_ns": 3600000000000,
       "max_attempts": 2,
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Upload-Test-Win8-Clang-Golo-CPU-AVX512-x86-Debug-All": {
       "caches": [
@@ -88048,7 +88048,7 @@
       },
       "io_timeout_ns": 3600000000000,
       "max_attempts": 2,
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Upload-Test-Win8-Clang-Golo-CPU-AVX512-x86-Release-All": {
       "caches": [
@@ -88141,7 +88141,7 @@
       },
       "io_timeout_ns": 3600000000000,
       "max_attempts": 2,
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Upload-Test-Win8-Clang-Golo-CPU-AVX512-x86_64-Debug-All": {
       "caches": [
@@ -88234,7 +88234,7 @@
       },
       "io_timeout_ns": 3600000000000,
       "max_attempts": 2,
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     },
     "Upload-Test-Win8-Clang-Golo-CPU-AVX512-x86_64-Release-All": {
       "caches": [
@@ -88327,7 +88327,7 @@
       },
       "io_timeout_ns": 3600000000000,
       "max_attempts": 2,
-      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+      "service_account": "skia-bookmaker@skia-swarming-bots.iam.gserviceaccount.com"
     }
   },
   "casSpecs": {
