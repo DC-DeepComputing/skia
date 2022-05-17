@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "18fb8172_a16ba533",
+        "filename": "src/core/SkKeyHelpers.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-05-17T21:28:35Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "d9b098f6_9977f4f5",
+      "range": {
+        "startLine": 164,
+        "startChar": 46,
+        "endLine": 164,
+        "endChar": 49
+      },
+      "revId": "4615ce526c0e95a9ad517c64f19edf1a649b7a3e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "37efbccd_a0284977",
@@ -64,6 +88,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0a9a1800_98d82613",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 2
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-05-17T21:28:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "37efbccd_a0284977",
+      "range": {
+        "startLine": 57,
+        "startChar": 4,
+        "endLine": 57,
+        "endChar": 37
+      },
+      "revId": "4615ce526c0e95a9ad517c64f19edf1a649b7a3e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1078060e_2d2465a5",
@@ -77,6 +125,30 @@
       "writtenOn": "2022-05-17T21:05:11Z",
       "side": 1,
       "message": "tiny nit: there doesn\u0027t seem to be a reason to introduce a new variable here? Just use `t.x` here and on L67/L69.",
+      "range": {
+        "startLine": 62,
+        "startChar": 14,
+        "endLine": 62,
+        "endChar": 21
+      },
+      "revId": "4615ce526c0e95a9ad517c64f19edf1a649b7a3e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "97e99a54_e600e8eb",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 2
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-05-17T21:28:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1078060e_2d2465a5",
       "range": {
         "startLine": 62,
         "startChar": 14,
@@ -160,6 +232,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "24313e27_8d120191",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 2
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-05-17T21:28:35Z",
+      "side": 1,
+      "message": "I think ganesh works around this by special-casing t \u003c 0 and t \u003e 1 when clamping:\nhttps://crsrc.org/c/third_party/skia/src/gpu/ganesh/gradients/GrGradientShader.cpp;l\u003d563-566.",
+      "parentUuid": "9aed00a2_2b8d799c",
+      "revId": "4615ce526c0e95a9ad517c64f19edf1a649b7a3e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6f063ea4_2ed4845b",
         "filename": "src/sksl/sksl_graphite_frag.sksl",
         "patchSetId": 2
@@ -171,6 +261,30 @@
       "writtenOn": "2022-05-17T20:53:49Z",
       "side": 1,
       "message": "up to you: could also simplified to `t.x1`. Generated code will be the same either way.",
+      "range": {
+        "startLine": 103,
+        "startChar": 11,
+        "endLine": 103,
+        "endChar": 23
+      },
+      "revId": "4615ce526c0e95a9ad517c64f19edf1a649b7a3e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3ebd7b0e_9973f458",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 2
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-05-17T21:28:35Z",
+      "side": 1,
+      "message": "I think in this case I\u0027d rather emphasize that these are essentially two separate values that we happen to be passing around as a float2.",
+      "parentUuid": "6f063ea4_2ed4845b",
       "range": {
         "startLine": 103,
         "startChar": 11,
