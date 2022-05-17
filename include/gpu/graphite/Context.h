@@ -78,19 +78,30 @@ private:
     uint32_t fID;
 };
 
-class PaintCombo {
-public:
-    PaintCombo() {}
+class PaintCombo;
 
-    void add(const ShaderCombo& shaderCombo) { fShaders.push_back(shaderCombo); }
-    void add(SkBlendMode bm) { fBlendModes.insert((uint32_t) bm); }
-    void add(SkBlenderID id) { fBlendModes.insert(id.asUInt()); }
+class CombinationBuilder {
+public:
+    enum class BlendModeGroups {
+        kPorterDuff,         // [ kClear .. kScreen ]
+        kAdvanced,           // [ kOverlay .. kMultiply ]
+        kTrouble,            // [ kHue .. kLuminosity ]
+        kAll
+    };
+
+    // Blend Mode
+    void add(SkBlendMode);
+    void add(SkBlendMode rangeStart, SkBlendMode rangeEnd); // inclusive
+    void add(BlendModeGroups group);
+
+    // Shaders
+    void add(ShaderCombo);
+
+    const PaintCombo* snap();
+    void reset();
 
 private:
-    friend class Context; // for iterators
-
-    std::vector<ShaderCombo> fShaders;
-    std::set<uint32_t> fBlendModes;
+    PaintCombo fCombination;
 };
 
 class Context final {

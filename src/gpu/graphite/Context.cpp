@@ -31,6 +31,71 @@
 
 namespace skgpu::graphite {
 
+//--------------------------------------------------------------------------------------------------
+class PaintCombo {
+public:
+    PaintCombo() {
+        this->reset();
+    }
+
+private:
+    friend class Context; // for iterators
+
+    // SkBlenders
+    void add(SkBlendMode bm) { fBlendModes.insert((uint32_t) bm); }
+    void add(SkBlenderID id) { fBlendModes.insert(id.asUInt()); }
+
+    // SkShaders
+    void add(const ShaderCombo& shaderCombo) { fShaders.push_back(shaderCombo); }
+
+    void reset() {
+        fShaders.clear();
+        fBlendModes.clear();
+    }
+
+    std::vector<ShaderCombo> fShaders;
+    std::set<uint32_t> fBlendModes;
+};
+
+//--------------------------------------------------------------------------------------------------
+void CombinationBuilder::add(ShaderCombo shaderCombo) {
+    fCombination.add(shaderCombo);
+}
+
+void CombinationBuilder::add(SkBlendMode bm) { fCombination.add(bm); }
+void CombinationBuilder::add(SkBlendMode rangeStart, SkBlendMode rangeEnd) {  // inclusive
+    for (int i = (int)rangeStart; i <= (int) rangeEnd; ++i) {
+        this->add((SkBlendMode) i);
+    }
+}
+void CombinationBuilder::add(BlendModeGroups group) {
+    switch (group) {
+        case BlendModeGroups::kPorterDuff:
+            this->add(SkBlendMode::kClear, SkBlendMode::kScreen);
+            break;
+        case BlendModeGroups::kAdvanced:
+            this->add(SkBlendMode::kOverlay, SkBlendMode::kMultiply);
+            break;
+        case BlendModeGroups::kTrouble:
+            this->add(SkBlendMode::kHue, SkBlendMode::kLuminosity);
+            break;
+        case BlendModeGroups::kAll:
+            this->add(SkBlendMode::kClear, SkBlendMode::kLastMode);
+            break;
+    }
+}
+
+const PaintCombo* CombinationBuilder::snap() {
+    if (!fCombination.fBlendModes) {
+        fCombination.add(SkBlendMode::kSrcOver);
+    }
+    return &fCombination;
+}
+void CombinationBuilder::reset() {
+    fCombination.reset();
+}
+
+//--------------------------------------------------------------------------------------------------
 Context::Context(sk_sp<Gpu> gpu, BackendApi backend)
         : fGpu(std::move(gpu))
         , fGlobalCache(sk_make_sp<GlobalCache>())
