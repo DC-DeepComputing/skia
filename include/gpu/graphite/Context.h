@@ -14,6 +14,7 @@
 #include "include/core/SkShader.h"
 #include "include/core/SkTileMode.h"
 #include "include/private/SkNoncopyable.h"
+#include "include/private/SkTArray.h"
 
 #include "include/gpu/graphite/GraphiteTypes.h"
 
@@ -52,9 +53,127 @@ struct ShaderCombo {
     std::vector<SkTileMode> fTileModes;
 };
 
+static constexpr int kSkBlendModeCnt = static_cast<int>(SkBlendMode::kLastMode) + 1;
+
+// If no blendmodes are specified as part of the combination, kSrcOver will be used.
 struct PaintCombo {
+public:
+    PaintCombo() {
+        this->reset();
+    }
+
+private:
+    friend class CombinationBuilder;
+    friend class Context;
+
+    void reset() {
+        fShaders.clear();
+        fBlendModes = 0;
+    }
+
+    void add(ShaderCombo shaderCombo) { fShaders.push_back(shaderCombo); }
+
+    void add(SkBlendMode bm) { fBlendModes |= 0x1 << (int) bm; }
+
     std::vector<ShaderCombo> fShaders;
-    std::vector<SkBlendMode> fBlendModes;
+    uint32_t fBlendModes;
+
+    struct BlendModeIterator {
+        using iterator_category = std::forward_iterator_tag;
+        using difference_type   = std::ptrdiff_t;
+        using value_type        = int;
+        using pointer           = int*;  // or also value_type*
+        using reference         = int&;  // or also value_type&
+
+        BlendModeIterator(uint32_t blendModes, int index)
+                : fBlendModes(blendModes)
+                , fIndex(index) {}
+
+//        reference operator*() const { return *fPtr; }
+//        pointer operator->() { return fPtr; }
+
+        // Prefix increment
+        BlendModeIterator& operator++() {
+            for (; fIndex < kSkBlendModeCnt; ++fIndex) {
+                if (fBlendModes & (0x1 << fIndex)) {
+                    break;
+                }
+            }
+            return *this;
+        }
+
+        // Postfix increment
+        BlendModeIterator operator++(int) { BlendModeIterator tmp = *this; ++(*this); return tmp; }
+
+        friend bool operator== (const BlendModeIterator& a, const BlendModeIterator& b) {
+            return a.fBlendModes == b.fBlendModes &&  a.fIndex == b.fIndex;
+        }
+        friend bool operator!= (const BlendModeIterator& a, const BlendModeIterator& b) {
+            return !(a == b);
+        }
+
+    private:
+        uint32_t fBlendModes;
+        int fIndex;
+    };
+
+    BlendModeIterator begin() { return BlendModeIterator(fBlendModes, 0); }
+    BlendModeIterator end()   { return BlendModeIterator(fBlendModes, kSkBlendModeCnt); }
+    BlendModeIterator cbegin() const { return BlendModeIterator(fBlendModes, 0); }
+    BlendModeIterator cend()   const { return BlendModeIterator(fBlendModes, kSkBlendModeCnt); }
+};
+
+class CombinationBuilder {
+public:
+
+    void add(ShaderCombo shaderCombo) {
+        fCombination.add(shaderCombo);
+    }
+
+    enum class BlendModeGroups {
+        kPorterDuff,         // [ kClear .. kScreen ]
+        kAdvanced,           // [ kOverlay .. kMultiply ]
+        kTrouble,            // [ kHue .. kLuminosity ]
+        kAll
+    };
+
+    // Blend Mode
+    void add(SkBlendMode bm) { fCombination.add(bm); }
+    void add(SkBlendMode rangeStart, SkBlendMode rangeEnd) {  // inclusive
+        for (int i = (int)rangeStart; i <= (int) rangeEnd; ++i) {
+            this->add((SkBlendMode) i);
+        }
+    }
+    void add(BlendModeGroups group) {
+        switch (group) {
+            case BlendModeGroups::kPorterDuff:
+                this->add(SkBlendMode::kClear, SkBlendMode::kScreen);
+                break;
+            case BlendModeGroups::kAdvanced:
+                this->add(SkBlendMode::kOverlay, SkBlendMode::kMultiply);
+                break;
+            case BlendModeGroups::kTrouble:
+                this->add(SkBlendMode::kHue, SkBlendMode::kLuminosity);
+                break;
+            case BlendModeGroups::kAll:
+                this->add(SkBlendMode::kClear, SkBlendMode::kLastMode);
+                break;
+        }
+    }
+
+    const PaintCombo* snap() {
+        if (!fCombination.fBlendModes) {
+            fCombination.add(SkBlendMode::kSrcOver);
+        }
+        return &fCombination;
+    }
+    void reset() {
+        fCombination.reset();
+    }
+
+private:
+    PaintCombo fCombination;
+
 };
 
 // TODO: add SkShaderID and SkColorFilterID too

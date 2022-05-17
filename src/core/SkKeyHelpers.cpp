@@ -661,7 +661,7 @@ void AddToKey(const SkKeyContext& keyContext,
 
 //--------------------------------------------------------------------------------------------------
 #ifdef SK_GRAPHITE_ENABLED
-SkUniquePaintParamsID CreateKey(const SkKeyContext& keyContext,
+SkUniquePaintParamsID CreateKey1(const SkKeyContext& keyContext,
                                 SkPaintParamsKeyBuilder* builder,
                                 skgpu::graphite::ShaderCombo::ShaderType s,
                                 SkTileMode tm,

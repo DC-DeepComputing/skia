@@ -112,11 +112,12 @@ void Context::preCompile(const PaintCombo& paintCombo) {
 
     SkPaintParamsKeyBuilder builder(dict, SkBackend::kGraphite);
 
-    for (auto bm: paintCombo.fBlendModes) {
+    for (auto iter = paintCombo.cbegin(); iter != paintCombo.cend(); ++iter) {
+//    for (auto bm: paintCombo.fBlendModes) {
         for (auto& shaderCombo: paintCombo.fShaders) {
             for (auto shaderType: shaderCombo.fTypes) {
                 for (auto tm: shaderCombo.fTileModes) {
-                    auto uniqueID = CreateKey(keyContext, &builder, shaderType, tm, bm);
+                    auto uniqueID = CreateKey1(keyContext, &builder, shaderType, tm, SkBlendMode::kSrc);
 
                     GraphicsPipelineDesc desc;
 
