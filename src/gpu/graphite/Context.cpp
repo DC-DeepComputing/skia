@@ -111,10 +111,19 @@ void Context::preCompile(const PaintCombo& paintCombo) {
 
     SkPaintParamsKeyBuilder builder(dict, SkBackend::kGraphite);
 
-    for (auto bm: paintCombo.fBlendModes) {
-        for (auto& shaderCombo: paintCombo.fShaders) {
+    for (uint32_t bmVal : paintCombo.fBlendModes) {
+        SkBlendMode bm;
+        if (bmVal < kSkBlendModeCount) {
+            bm = (SkBlendMode) bmVal;
+        } else {
+            // TODO: add creation of PaintParamKey fragments from runtime effect SkBlenders
+            continue;
+        }
+
+        for (const ShaderCombo& shaderCombo : paintCombo.fShaders) {
             for (auto shaderType: shaderCombo.fTypes) {
                 for (auto tm: shaderCombo.fTileModes) {
+                    // TODO: expand CreateKey to take either an SkBlendMode or an SkBlendID
                     auto uniqueID = CreateKey(keyContext, &builder, shaderType, tm, bm);
 
                     GraphicsPipelineDesc desc;
