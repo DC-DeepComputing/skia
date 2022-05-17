@@ -340,6 +340,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "cf3dd23c_b69a084b",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 2
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-05-17T23:22:04Z",
+      "side": 1,
+      "message": "I am pretty sure this would be safe against zero divisions and less heavyweight.  It would also scale up to a binary search approach like Ganesh uses. http://review.skia.org/541074",
+      "parentUuid": "d53d5416_7c6e3354",
+      "revId": "4615ce526c0e95a9ad517c64f19edf1a649b7a3e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6f063ea4_2ed4845b",
         "filename": "src/sksl/sksl_graphite_frag.sksl",
         "patchSetId": 2
