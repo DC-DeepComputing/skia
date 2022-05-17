@@ -288,6 +288,11 @@ private:
     uint32_t fNumActivePages;
 
     SkDEBUGCODE(void validate(const skgpu::AtlasLocator& atlasLocator) const;)
+
+    uint32_t fTotalSAPUploads;
+    uint32_t fTotalInlineUploads;
+    uint32_t fNumFlushUploads;
+    float fDirtyAreasPercentage;
 };
 
 // There are three atlases (A8, 565, ARGB) that are kept in relation with one another. In
