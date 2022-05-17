@@ -764,7 +764,7 @@ private:
 SI Vec<8,uint16_t> mull(const Vec<8,uint8_t>& x,
                         const Vec<8,uint8_t>& y) {
     return to_vec<8,uint16_t>(vmull_u8(to_vext(x),
-                                        to_vext(y)));
+                                       to_vext(y)));
 }
 
 SIN std::enable_if_t<(N < 8), Vec<N,uint16_t>> mull(const Vec<N,uint8_t>& x,
@@ -785,9 +785,24 @@ SIN std::enable_if_t<(N > 8), Vec<N,uint16_t>> mull(const Vec<N,uint8_t>& x,
 
 // Nothing special when we don't have NEON... just cast up to 16-bit and multiply.
 SIN Vec<N,uint16_t> mull(const Vec<N,uint8_t>& x,
-                            const Vec<N,uint8_t>& y) {
-    return cast<uint16_t>(x)
-            * cast<uint16_t>(y);
+                         const Vec<N,uint8_t>& y) {
+    return cast<uint16_t>(x) * cast<uint16_t>(y);
+}
+#endif
+
+// mulhi is like mull except that it returns only the high bits of the multiply.
+#if SKVX_USE_SIMD && defined(__ARM_NEON)
+uint32x4_t hi = vmull_u16(vget_high_u16(fVec), vget_high_u16(m.fVec));
+        uint32x4_t lo = vmull_u16( vget_low_u16(fVec),  vget_low_u16(m.fVec));
+
+        return { vcombine_u16(vshrn_n_u32(lo,16), vshrn_n_u32(hi,16)) };
+#elif SKVX_USE_SIMD && defined(__SSE__)
+_mm_mulhi_epu16
+#else
+// Nothing special so cast up to 32-bit and then cast down after the multiply.
+SINT Vec<N,uint16_t> mulhi(const Vec<N,uint16_t>& x,
+                           const Vec<N,uint16_t>& y) {
+    return cast<uint16_t>((cast<uint32_t>(x) * cast<uint32_t>(y)) >> 16);
 }
 #endif
 
