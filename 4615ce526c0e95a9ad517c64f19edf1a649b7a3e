@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e21352f8_2f8b8cbe",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 2
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-05-17T20:27:37Z",
+      "side": 1,
+      "message": "This actually breaks the current colorizer when there\u0027s a hard stop at 1, since the t passed into colorize_grad_4 is never \u003e1.\n\nThe most straightforward fix for that might be to just take this clamp out and assume the current behavior of the colorizer. But, I have reservations about the colorizer implementation anyways since it does some divide-by-zeros on hard stops, which I guess is undefined behavior. I do like that the colorizer avoids branching but I\u0027m not sure if there\u0027s any way around introducing some conditional logic to avoid dividing by zero there?",
+      "revId": "4615ce526c0e95a9ad517c64f19edf1a649b7a3e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
