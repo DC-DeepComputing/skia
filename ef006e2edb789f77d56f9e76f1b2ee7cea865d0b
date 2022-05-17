@@ -39,6 +39,30 @@
       },
       "revId": "ef006e2edb789f77d56f9e76f1b2ee7cea865d0b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "76b34349_3b9ec85f",
+        "filename": "infra/bots/gen_tasks_logic/task_builder.go",
+        "patchSetId": 4
+      },
+      "lineNbr": 250,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-05-17T17:42:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "120187b8_5c7151fa",
+      "range": {
+        "startLine": 250,
+        "startChar": 3,
+        "endLine": 250,
+        "endChar": 13
+      },
+      "revId": "ef006e2edb789f77d56f9e76f1b2ee7cea865d0b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
