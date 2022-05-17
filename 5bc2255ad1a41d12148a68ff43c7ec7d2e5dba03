@@ -104,6 +104,30 @@
       },
       "revId": "5bc2255ad1a41d12148a68ff43c7ec7d2e5dba03",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9d37c9ac_0b4c33d7",
+        "filename": "bazel/external/dawn/BUILD.bazel",
+        "patchSetId": 5
+      },
+      "lineNbr": 1082,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-05-17T15:34:26Z",
+      "side": 1,
+      "message": "You are right. I forgot that because this BUILD.bazel is copied into our dawn repo it needs to be public.",
+      "parentUuid": "2a88996a_2445bb3d",
+      "range": {
+        "startLine": 1082,
+        "startChar": 4,
+        "endLine": 1082,
+        "endChar": 14
+      },
+      "revId": "5bc2255ad1a41d12148a68ff43c7ec7d2e5dba03",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
