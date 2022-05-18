@@ -1,0 +1,13 @@
+filegroup(
+    name = "srcs_nogazelle",
+    srcs = [
+        "//src/core:srcs_nogazelle",
+    ],
+    visibility = ["//:__subpackages__"],
+)
+
+cc_library(
+    name = "deps_nogazelle",
+    visibility = ["//:__subpackages__"],
+    deps = [],
+)
