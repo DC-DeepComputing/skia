@@ -39,6 +39,30 @@
       },
       "revId": "92f16b1089cae3abdb0edece9caf5ba6be6ca7f7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ac6dd4e9_a5b8d997",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 2
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-05-18T21:24:57Z",
+      "side": 1,
+      "message": "I did try that, but the problem is there are also the `\u003c offsets[4]` and `\u003c offsets[2]` checks above, and theoretically stops 0 .. 4 could all be 0 (in which case I think we\u0027d still want to use the first stop for clamped t \u003c 0, at least to match existing non-graphite behavior). And if we make every check `\u003c\u003d` then we\u0027d just have to special-case the last stop instead of the first.",
+      "parentUuid": "59ff5020_a94979ba",
+      "range": {
+        "startLine": 122,
+        "startChar": 20,
+        "endLine": 122,
+        "endChar": 21
+      },
+      "revId": "92f16b1089cae3abdb0edece9caf5ba6be6ca7f7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
