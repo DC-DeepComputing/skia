@@ -34,6 +34,24 @@
       "parentUuid": "508332e7_c495100e",
       "revId": "7f063a9d2f4b0b960eb7b448c629d37dabb1df41",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a403feec_4287614d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-05-18T17:46:31Z",
+      "side": 1,
+      "message": "Rob correctly notes that we can\u0027t make a single SkSL function that takes either a `float[4]` or a `float[8]`. so we\u0027d need to paper over this in the glue code somehow. It\u0027s not quite as straightforward as I was hoping it could be.",
+      "parentUuid": "93261a21_5999940c",
+      "revId": "7f063a9d2f4b0b960eb7b448c629d37dabb1df41",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
