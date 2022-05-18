@@ -1417,7 +1417,7 @@ void MetalCodeGenerator::writeFieldAccess(const FieldAccess& f) {
             this->write("_out.sk_Position");
             break;
         default:
-            if (field->fName == "sk_PointSize") {
+            if (field->fModifiers.fLayout.fBuiltin == SK_POINTSIZE_BUILTIN) {
                 this->write("_out.sk_PointSize");
             } else {
                 if (FieldAccess::OwnerKind::kAnonymousInterfaceBlock == f.ownerKind()) {
