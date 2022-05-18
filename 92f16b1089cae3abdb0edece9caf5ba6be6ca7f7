@@ -87,6 +87,30 @@
       },
       "revId": "92f16b1089cae3abdb0edece9caf5ba6be6ca7f7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ccb8be92_b393c36b",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 2
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-05-18T21:45:26Z",
+      "side": 1,
+      "message": "Alright fair enough, I\u0027ll assume we do that here and if we need to add that filtering in graphite we can do that separately.",
+      "parentUuid": "e83f70c8_68690973",
+      "range": {
+        "startLine": 122,
+        "startChar": 20,
+        "endLine": 122,
+        "endChar": 21
+      },
+      "revId": "92f16b1089cae3abdb0edece9caf5ba6be6ca7f7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
