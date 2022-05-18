@@ -39,6 +39,24 @@
       "message": "Any reason that we gracefully handle extra snapAndLock calls, but assert about extra resetAndUnlock calls? Seems like we ought to handle both cases in the same way (I think either one is probably justifiable).",
       "revId": "9bdf392d67cbd3bce7c9a8bd3fa70ff96694b710",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8caa0be3_600f3456",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-05-18T17:04:21Z",
+      "side": 1,
+      "message": "No reason - I\u0027ve switched to handling extra resetAndUnlocks better.",
+      "parentUuid": "7bbbb8e0_c239bc55",
+      "revId": "9bdf392d67cbd3bce7c9a8bd3fa70ff96694b710",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
