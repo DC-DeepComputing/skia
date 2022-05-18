@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3a76300c_c4cc8f9d",
+        "filename": "include/private/SkColorData.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 416,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-05-18T17:09:22Z",
+      "side": 1,
+      "message": "I confirmed locally, but all the gold diffs are due to this change here. Sk4f_round() is a call to `lrint`, which rounds based on the floating environment settings (i.e. round half to nearest even in some devices). This new version is always round half up across all devices, which we deemed better.\n\nWe can revisit this for performance or behavior reasons, skvx does have an lrint function we could use as well.",
+      "range": {
+        "startLine": 416,
+        "startChar": 4,
+        "endLine": 416,
+        "endChar": 100
+      },
+      "revId": "adfda962b3ad77bcc8535f9891b439914bd979fd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
