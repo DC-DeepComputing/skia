@@ -95,6 +95,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "209639d7_d30625e0",
+        "filename": "src/sksl/codegen/SkSLWGSLCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 822,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-05-18T14:51:17Z",
+      "side": 1,
+      "message": "LGTM",
+      "parentUuid": "64fc3e04_ecc475ce",
+      "range": {
+        "startLine": 822,
+        "startChar": 66,
+        "endLine": 822,
+        "endChar": 96
+      },
+      "revId": "64b4e51afe78e28b9f2e898fc7d63321b4a25083",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "87cee3b9_c02b7a88",
