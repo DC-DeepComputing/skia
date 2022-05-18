@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f702c8d6_58022ed0",
+        "filename": "dm/DMSrcSink.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 2150,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-05-18T14:10:36Z",
+      "side": 1,
+      "message": "The snapAndLock/resetAndUnlock APIs feel fiddly (and the names are intimidating). Are we ever going to have a usage pattern that doesn\u0027t involve all three things happening back-to-back:\n  snapAndLock\n  preCompile\n  resetAndUnlock\n  \nIf not, seems like we could just hide the fiddly parts by having either:\n\n  void CombinationBuilder::preCompile(Context* context)\n-or-  \n  void Context::preCompile(CombinationBuilder* builder)",
+      "range": {
+        "startLine": 2149,
+        "startChar": 0,
+        "endLine": 2150,
+        "endChar": 33
+      },
+      "revId": "9bdf392d67cbd3bce7c9a8bd3fa70ff96694b710",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7bbbb8e0_c239bc55",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-05-18T14:10:36Z",
+      "side": 1,
+      "message": "Any reason that we gracefully handle extra snapAndLock calls, but assert about extra resetAndUnlock calls? Seems like we ought to handle both cases in the same way (I think either one is probably justifiable).",
+      "revId": "9bdf392d67cbd3bce7c9a8bd3fa70ff96694b710",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
