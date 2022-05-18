@@ -2173,7 +2173,7 @@ sk_sp<GrTextBlob> GrTextBlob::Make(const SkGlyphRunList& glyphRunList,
                                    const SkPaint& paint,
                                    const SkMatrix& positionMatrix,
                                    SkStrikeDeviceInfo strikeDeviceInfo,
-                                   SkGlyphRunListPainter* painter) {
+                                   SkStrikeForGPUCacheInterface* strikeCache) {
     // The difference in alignment from the per-glyph data to the SubRun;
     constexpr size_t alignDiff = alignof(DirectMaskSubRun) - alignof(DevicePosition);
     constexpr size_t vertexDataToSubRunPadding = alignDiff > 0 ? alignDiff : 0;
@@ -2191,8 +2191,9 @@ sk_sp<GrTextBlob> GrTextBlob::Make(const SkGlyphRunList& glyphRunList,
     sk_sp<GrTextBlob> blob = sk_sp<GrTextBlob>(initializer.initialize(
             std::move(alloc), totalMemoryAllocated, positionMatrix, initialLuminance));
 
-    painter->categorizeGlyphRunList(
-            blob.get(), glyphRunList, positionMatrix, paint, strikeDeviceInfo, "GrTextBlob");
+    SkGlyphRunListPainter::CategorizeGlyphRunList(
+            blob.get(), glyphRunList, positionMatrix, paint,
+            strikeDeviceInfo, strikeCache, "GrTextBlob");
 
     return blob;
 }
@@ -2335,7 +2336,7 @@ public:
                             const SkPaint& initialPaint,
                             const SkPaint& drawingPaint,
                             SkStrikeDeviceInfo strikeDeviceInfo,
-                            SkGlyphRunListPainter* painter);
+                            SkStrikeForGPUCacheInterface* strikeCache);
     static sk_sp<GrSlug> MakeFromBuffer(SkReadBuffer& buffer,
                                         const SkStrikeClient* client);
 
@@ -2489,7 +2490,7 @@ sk_sp<Slug> Slug::Make(const SkMatrixProvider& viewMatrix,
                        const SkPaint& initialPaint,
                        const SkPaint& drawingPaint,
                        SkStrikeDeviceInfo strikeDeviceInfo,
-                       SkGlyphRunListPainter* painter) {
+                       SkStrikeForGPUCacheInterface* strikeCache) {
     // The difference in alignment from the per-glyph data to the SubRun;
     constexpr size_t alignDiff = alignof(DirectMaskSubRun) - alignof(DevicePosition);
     constexpr size_t vertexDataToSubRunPadding = alignDiff > 0 ? alignDiff : 0;
@@ -2511,8 +2512,9 @@ sk_sp<Slug> Slug::Make(const SkMatrixProvider& viewMatrix,
             std::move(alloc), glyphRunList.sourceBounds(), initialPaint, positionMatrix,
             glyphRunList.origin()));
 
-    painter->categorizeGlyphRunList(
-            slug.get(), glyphRunList, positionMatrix, drawingPaint, strikeDeviceInfo, "Make Slug");
+    SkGlyphRunListPainter::CategorizeGlyphRunList(
+        slug.get(), glyphRunList, positionMatrix, drawingPaint,
+            strikeDeviceInfo, strikeCache, "Make Slug");
 
     // There is nothing to draw here. This is particularly a problem with RSX form blobs where a
     // single space becomes a run with no glyphs.
@@ -2578,7 +2580,7 @@ Device::convertGlyphRunListToSlug(const SkGlyphRunList& glyphRunList,
                       initialPaint,
                       drawingPaint,
                       this->strikeDeviceInfo(),
-                      fSurfaceDrawContext->glyphRunPainter());
+                      SkStrikeCache::GlobalStrikeCache());
 }
 
 void Device::drawSlug(SkCanvas* canvas, const GrSlug* grSlug, const SkPaint& drawingPaint) {
@@ -2604,9 +2606,9 @@ sk_sp<GrSlug> MakeSlug(const SkMatrixProvider& drawMatrix,
                        const SkPaint& initialPaint,
                        const SkPaint& drawingPaint,
                        SkStrikeDeviceInfo strikeDeviceInfo,
-                       SkGlyphRunListPainter* painter) {
+                       SkStrikeForGPUCacheInterface* strikeCache) {
     return Slug::Make(
-            drawMatrix, glyphRunList, initialPaint, drawingPaint, strikeDeviceInfo, painter);
+            drawMatrix, glyphRunList, initialPaint, drawingPaint, strikeDeviceInfo, strikeCache);
 }
 }  // namespace skgpu::v1
 
