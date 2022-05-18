@@ -35,6 +35,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fef6c4db_0ccf32ef",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-05-18T17:32:03Z",
+      "side": 1,
+      "message": "After a bit of testing, it appears that the `gradients_2pt_conical_*` set of GMs shows the issues with the index tracking most visibly. Unfortunately, we have never put together a way to test pdfs in Skia\u0027s Gold system, so it isn\u0027t easy to just have the bots point out where there may be rendering differences.\n\nHowever, the basic idea seems sound. I think this implementation is a bit complex for what we want in the PDF code. I\u0027ve written something I find a little more straight forward and perhaps more flexible if it needs to be tweaked. See https://skia-review.googlesource.com/c/skia/+/541639 . That one unfortunately does produce slightly larger code due to needing to maintain a status boolean on the top of the stack though. That CL could also be modified to do ifelse and use the t sentinel value, but I was trying to see if the overhead of something more obvious could be brought down. I\u0027m most interested in flexibility and tweak-ability here since it\u0027s quite possible that there are all kinds of arbitrary limits in various implementations.",
+      "revId": "6aa3a739056a60de0d8f4514acf829355c10f99c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d0bc1acf_ce6b1ab6",
