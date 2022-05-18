@@ -44,24 +44,6 @@ void validate_block_header(const SkPaintParamsKeyBuilder* builder,
 } // anonymous namespace
 
 //--------------------------------------------------------------------------------------------------
-namespace DepthStencilOnlyBlock {
-
-static const int kBlockDataSize = 0;
-
-void AddToKey(const SkKeyContext& /* keyContext */,
-              SkPaintParamsKeyBuilder* builder,
-              SkPipelineDataGatherer* /* gatherer */) {
-    builder->beginBlock(SkBuiltInCodeSnippetID::kDepthStencilOnlyDraw);
-    builder->endBlock();
-
-    validate_block_header(builder,
-                          SkBuiltInCodeSnippetID::kDepthStencilOnlyDraw,
-                          kBlockDataSize);
-}
-
-} // namespace DepthStencilOnlyBlock
-
-//--------------------------------------------------------------------------------------------------
 namespace SolidColorShaderBlock {
 
 namespace {
@@ -678,9 +660,6 @@ SkUniquePaintParamsID CreateKey(const SkKeyContext& keyContext,
     SkDEBUGCODE(builder->checkReset());
 
     switch (s) {
-        case skgpu::graphite::ShaderCombo::ShaderType::kNone:
-            DepthStencilOnlyBlock::AddToKey(keyContext, builder, nullptr);
-            break;
         case skgpu::graphite::ShaderCombo::ShaderType::kSolidColor:
             SolidColorShaderBlock::AddToKey(keyContext, builder, nullptr, kErrorColor);
             break;
