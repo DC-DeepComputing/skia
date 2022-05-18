@@ -53,6 +53,89 @@ struct ShaderCombo {
     std::vector<SkTileMode> fTileModes;
 };
 
+class Context;
+class SkBlenderID;
+
+// If no blendmodes are specified as part of the combination, kSrcOver will be used.
+class PaintCombinations {
+public:
+    PaintCombinations(Context*);
+
+    void add(const ShaderCombo& shaderCombo) { fShaders.push_back(shaderCombo); }
+
+    void add(SkBlendMode);
+    void add(SkBlenderID);
+    int numBlendModes() const { return fBlendModes.count(); }
+
+    void reset() {
+        fShaders.clear();
+        fBlendModes.reset();
+    }
+
+private:
+    friend class Context; // for iterators
+
+    SkShaderCodeDictionary* fDictionary;
+    // TODO: the pattern here will be we will check for duplicates in debug but not in release
+    std::vector<ShaderCombo> fShaders;
+    SkTHashSet<uint32_t> fBlendModes;
+};
+
+class Context;
+
+class CombinationBuilder {
+public:
+    CombinationBuilder(Context* context) : fCombination(context) {}
+
+    void add(ShaderCombo shaderCombo) {
+        fCombination.add(shaderCombo);
+    }
+
+    enum class BlendModeGroups {
+        kPorterDuff,         // [ kClear .. kScreen ]
+        kAdvanced,           // [ kOverlay .. kMultiply ]
+        kTrouble,            // [ kHue .. kLuminosity ]
+        kAll
+    };
+
+    // Blend Mode
+    void add(SkBlendMode bm) { fCombination.add(bm); }
+    void add(SkBlendMode rangeStart, SkBlendMode rangeEnd) {  // inclusive
+        for (int i = (int)rangeStart; i <= (int) rangeEnd; ++i) {
+            this->add((SkBlendMode) i);
+        }
+    }
+    void add(BlendModeGroups group) {
+        switch (group) {
+            case BlendModeGroups::kPorterDuff:
+                this->add(SkBlendMode::kClear, SkBlendMode::kScreen);
+                break;
+            case BlendModeGroups::kAdvanced:
+                this->add(SkBlendMode::kOverlay, SkBlendMode::kMultiply);
+                break;
+            case BlendModeGroups::kTrouble:
+                this->add(SkBlendMode::kHue, SkBlendMode::kLuminosity);
+                break;
+            case BlendModeGroups::kAll:
+                this->add(SkBlendMode::kClear, SkBlendMode::kLastMode);
+                break;
+        }
+    }
+
+    const PaintCombinations* snap() {
+        if (!fCombination.numBlendModes()) {
+            fCombination.add(SkBlendMode::kSrcOver);
+        }
+        return &fCombination;
+    }
+    void reset() {
+        fCombination.reset();
+    }
+
+private:
+    PaintCombinations fCombination;
+};
+
 // TODO: add SkShaderID and SkColorFilterID too
 class SkBlenderID {
 public:
@@ -77,26 +160,6 @@ private:
     uint32_t asUInt() const { return fID; }
 
     uint32_t fID;
-};
-
-class Context;
-
-class PaintCombinations {
-public:
-    PaintCombinations(Context*);
-
-    void add(const ShaderCombo& shaderCombo) { fShaders.push_back(shaderCombo); }
-
-    void add(SkBlendMode);
-    void add(SkBlenderID);
-
-private:
-    friend class Context; // for iterators
-
-    SkShaderCodeDictionary* fDictionary;
-    // TODO: the pattern here will be we will check for duplicates in debug but not in release
-    std::vector<ShaderCombo> fShaders;
-    SkTHashSet<uint32_t> fBlendModes;
 };
 
 class Context final {

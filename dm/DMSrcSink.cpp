@@ -2139,21 +2139,28 @@ namespace {
 void precompile(skgpu::graphite::Context* context) {
     using ShaderType = skgpu::graphite::ShaderCombo::ShaderType;
 
+    skgpu::graphite::CombinationBuilder builder(context);
+
     {
-        skgpu::graphite::PaintCombinations c1(context);
-        c1.add(skgpu::graphite::ShaderCombo({ShaderType::kSolidColor}, {SkTileMode::kRepeat}));
-        c1.add(SkBlendMode::kSrcOver);
-        c1.add(SkBlendMode::kSrc);
-        context->preCompile(c1);
+        builder.add({ skgpu::graphite::ShaderCombo({ ShaderType::kSolidColor },
+                                                   { SkTileMode::kRepeat }) });
+        builder.add(SkBlendMode::kSrcOver);
+        builder.add(SkBlendMode::kSrc);
+        const skgpu::graphite::PaintCombinations* combo = builder.snap();
+
+        context->preCompile(*combo);
+
+        builder.reset();
     }
 
     {
-        skgpu::graphite::PaintCombinations c2(context);
-        c2.add(skgpu::graphite::ShaderCombo({ShaderType::kLinearGradient},
-                                            {SkTileMode::kRepeat, SkTileMode::kClamp}));
-        c2.add(SkBlendMode::kSrcOver);
-        c2.add(SkBlendMode::kSrc);
-        context->preCompile(c2);
+        builder.add({ skgpu::graphite::ShaderCombo({ ShaderType::kLinearGradient },
+                                                   { SkTileMode::kRepeat, SkTileMode::kClamp }) });
+        builder.add(SkBlendMode::kSrcOver);
+        builder.add(SkBlendMode::kSrc);
+        const skgpu::graphite::PaintCombinations* combo = builder.snap();
+
+        context->preCompile(*combo);
     }
 }
 

@@ -141,8 +141,7 @@ void Context::preCompile(const PaintCombinations& combinations) {
             for (auto shaderType: shaderCombo.fTypes) {
                 for (auto tm: shaderCombo.fTileModes) {
                     // TODO: expand CreateKey to take either an SkBlendMode or an SkBlendID
-                    auto uniqueID = CreateKey(keyContext, &builder, shaderType, tm, bm);
-
+                    auto uniqueID = CreateKey1(keyContext, &builder, shaderType, tm, bm);
                     GraphicsPipelineDesc desc;
 
                     for (const Renderer* r : kRenderers) {
