@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a5a1b944_ad0e8215",
+        "filename": "include/gpu/graphite/Context.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-05-18T17:28:48Z",
+      "side": 1,
+      "message": "are these blend modes requiring dst read back? Or does that also apply to the kAdvanced blend modes?\n\nMaybe kExpensive or kColorAware?",
+      "revId": "956d2fa97d5e7bd16b0a42e837315789aada240e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9cd882f7_aa8a86fb",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-05-18T17:28:48Z",
+      "side": 1,
+      "message": "How much value are we getting down the road from keeping this as a separate type, vs. just having it\u0027s fields be part of ComboBuilder and represent its \"current\" combination?\n\nResetting the builder would just be rewinding its arrays, and maybe wouldn\u0027t need the arena at all then? (hmm, will the ShaderCombo be arena allocated at some point?) The downside is we then privately expose the fields we\u0027re accumulating for a combination, but that\u0027s not so different from the user reading our source code; I don\u0027t think it would force additional headers to be in include/private but maybe it would?",
+      "range": {
+        "startLine": 36,
+        "startChar": 0,
+        "endLine": 53,
+        "endChar": 2
+      },
+      "revId": "956d2fa97d5e7bd16b0a42e837315789aada240e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bfc7a96e_28ddc7b8",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-05-18T17:28:48Z",
+      "side": 1,
+      "message": "fwiw, I believe this is a full reset and frees any extra heap allocations that it made. I don\u0027t think this is too problematic since precompiling won\u0027t be in tight loop. There\u0027s no rewind on arena unfortunately 😞",
+      "range": {
+        "startLine": 138,
+        "startChar": 11,
+        "endLine": 138,
+        "endChar": 16
+      },
+      "revId": "956d2fa97d5e7bd16b0a42e837315789aada240e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

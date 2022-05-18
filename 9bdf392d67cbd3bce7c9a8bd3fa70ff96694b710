@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5657a3de_f469f472",
+        "filename": "dm/DMSrcSink.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 2150,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-05-18T17:28:48Z",
+      "side": 1,
+      "message": "I like that the PaintCombinations is opaque to the caller now, but would agree with what Brian said. If you can\u0027t do anything with the combo, there\u0027s not much reason to return it from the builder.\n\nMaybe we\u0027d need the combination\u0027s pointer in order to save it to disk, but I\u0027d think that would likely be going through Context after all the combos have been precompiled.\n\nSince the builder would be reset automatically as part of the void preCompile() aggregate operation, I think I\u0027d vote for it being defined on CombinationBuilder. Could even call it precompileAndReset()?",
+      "parentUuid": "f702c8d6_58022ed0",
+      "range": {
+        "startLine": 2149,
+        "startChar": 0,
+        "endLine": 2150,
+        "endChar": 33
+      },
+      "revId": "9bdf392d67cbd3bce7c9a8bd3fa70ff96694b710",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7bbbb8e0_c239bc55",
         "filename": "src/gpu/graphite/Context.cpp",
         "patchSetId": 10
