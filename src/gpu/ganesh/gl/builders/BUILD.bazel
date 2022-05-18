@@ -29,7 +29,6 @@ generated_cc_atom(
         ":GrGLProgramBuilder_hdr",
         ":GrGLShaderStringBuilder_hdr",
         "//include/gpu:GrDirectContext_hdr",
-        "//src/core:SkATrace_hdr",
         "//src/core:SkAutoMalloc_hdr",
         "//src/core:SkReadBuffer_hdr",
         "//src/core:SkTraceEvent_hdr",
