@@ -26,7 +26,7 @@
 namespace {
 using namespace skgpu::graphite;
 
-std::tuple<SkPaint, int> create_paint(ShaderCombo::ShaderType shaderType,
+std::tuple<SkPaint, int> create_paint(ShaderType shaderType,
                                       SkTileMode tm,
                                       SkBlendMode bm) {
     SkPoint pts[2] = {{-100, -100},
@@ -37,25 +37,31 @@ std::tuple<SkPaint, int> create_paint(ShaderCombo::ShaderType shaderType,
     sk_sp<SkShader> s;
     int numTextures = 0;
     switch (shaderType) {
-        case ShaderCombo::ShaderType::kNone:
+        case ShaderType::kNone:
             SkDEBUGFAIL("kNone cannot be represented as an SkPaint");
             break;
-        case ShaderCombo::ShaderType::kSolidColor:
+        case ShaderType::kSolidColor:
             break;
-        case ShaderCombo::ShaderType::kLinearGradient:
+        case ShaderType::kLinearGradient:
             s = SkGradientShader::MakeLinear(pts, colors, offsets, 2, tm);
             break;
-        case ShaderCombo::ShaderType::kRadialGradient:
+        case ShaderType::kRadialGradient:
             s = SkGradientShader::MakeRadial({0, 0}, 100, colors, offsets, 2, tm);
             break;
-        case ShaderCombo::ShaderType::kSweepGradient:
+        case ShaderType::kSweepGradient:
             s = SkGradientShader::MakeSweep(0, 0, colors, offsets, 2, tm,
                                             0, 359, 0, nullptr);
             break;
-        case ShaderCombo::ShaderType::kConicalGradient:
+        case ShaderType::kConicalGradient:
             s = SkGradientShader::MakeTwoPointConical({100, 100}, 100,
                                                       {-100, -100}, 100,
                                                       colors, offsets, 2, tm);
+            break;
+        case ShaderType::kLocalMatrix:
+            break;
+        case ShaderType::kImage:
+            break;
+        case ShaderType::kBlendShader:
             break;
     }
     SkPaint p;
@@ -80,7 +86,7 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(UniformTest, reporter, context) {
 
     // Intentionally does not include ShaderType::kNone, which represents no fragment shading stage
     // and is thus not relevant to uniform extraction/caching.
-    for (auto s : { ShaderCombo::ShaderType::kSolidColor,
+    for (auto s : { ShaderType::kSolidColor,
                     ShaderCombo::ShaderType::kLinearGradient,
                     ShaderCombo::ShaderType::kRadialGradient,
                     ShaderCombo::ShaderType::kSweepGradient,
