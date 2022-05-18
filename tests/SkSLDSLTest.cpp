@@ -54,7 +54,6 @@ using namespace SkSL::dsl;
 SkSL::ProgramSettings default_settings() {
     SkSL::ProgramSettings result;
     result.fDSLMarkVarsDeclared = true;
-    result.fDSLMangling = false;
     return result;
 }
 
@@ -65,11 +64,10 @@ SkSL::ProgramSettings no_mark_vars_declared() {
 }
 
 /**
- * In addition to issuing an automatic Start() and End(), disables mangling and optionally
- * auto-declares variables during its lifetime. Variable auto-declaration simplifies testing so we
- * don't have to sprinkle all the tests with a bunch of Declare(foo).release() calls just to avoid
- * errors, especially given that some of the variables have options that make them an error to
- * actually declare.
+ * Issues an automatic Start() and End(), and optionally auto-declares variables during its
+ * lifetime. Variable auto-declaration simplifies testing so we don't have to sprinkle all the tests
+ * with a bunch of Declare(foo).release() calls just to avoid errors, especially given that some of
+ * the variables have options that make them an error to actually declare.
  */
 class AutoDSLContext {
 public:
@@ -201,12 +199,6 @@ DEF_GPUTEST_FOR_MOCK_CONTEXT(DSLFlags, r, ctxInfo) {
         Var x(kHalf_Type, "x");
         Var y(kFloat_Type, "y");
         EXPECT_EQUAL(x.assign(y), "(x = half(y))");
-    }
-
-    {
-        AutoDSLContext context(ctxInfo.directContext()->priv().getGpu(), SkSL::ProgramSettings());
-        Var x(kInt_Type, "x");
-        EXPECT_EQUAL(Declare(x), "int _0_x;");
     }
 }
 
