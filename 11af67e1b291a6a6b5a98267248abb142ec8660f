@@ -70,6 +70,30 @@
       },
       "revId": "11af67e1b291a6a6b5a98267248abb142ec8660f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "531d4dcc_ea751ba4",
+        "filename": "modules/particles/src/SkParticleBinding.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 305,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-05-18T14:27:41Z",
+      "side": 1,
+      "message": "Right - I should have thought about this. This will work (thanks to the bindings only running on the CPU). If we tried to do the same trick with the drawable (for example), it would fail - but that already handles multi-frame images as sprite-sheets.\n\nAre there potential uses for this yet? How big/long are the images we\u0027d expect? If we unpacked them into an atlas/sprite-sheet, rather than playing them sequentially, we get two benefits:\n\n1) No need to break the image mutability rules - we basically just turn the multi-frame image into a big static image.\n2) Particles can choose what time value to use when sampling the image. (We\u0027d set it up so that they pass in three floats, rather than two, and do the math to compute the coordinates where the third value is a normalized frame counter, I guess?). Makes it harder to get the animation to run at \"proper\" speed, but it also lets each particle sample from a different frame in the image.",
+      "parentUuid": "3fd150aa_639c0e8f",
+      "range": {
+        "startLine": 275,
+        "startChar": 0,
+        "endLine": 305,
+        "endChar": 0
+      },
+      "revId": "11af67e1b291a6a6b5a98267248abb142ec8660f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
