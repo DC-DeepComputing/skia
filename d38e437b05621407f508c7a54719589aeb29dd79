@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "52114680_8bd46acd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-05-18T15:49:12Z",
+      "side": 1,
+      "message": "This rolls up to the last change before the GN build break. There is a fix out for that on the Dawn side so we\u0027ll see what happens with the autoroller once that fix and this land.",
+      "revId": "d38e437b05621407f508c7a54719589aeb29dd79",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
