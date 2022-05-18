@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3628c02b_1d90960d",
+        "filename": "include/gpu/graphite/Context.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-05-18T18:53:48Z",
+      "side": 1,
+      "message": "I\u0027ve gone w/ kColorAware. Unfortunately the names aren\u0027t exactly correlated with dest readback since it depends on the availability advanced blend modes.",
+      "parentUuid": "a5a1b944_ad0e8215",
+      "revId": "956d2fa97d5e7bd16b0a42e837315789aada240e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9cd882f7_aa8a86fb",
@@ -43,6 +61,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "edc1ff77_55dcd9e4",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-05-18T18:53:48Z",
+      "side": 1,
+      "message": "Where I believe we\u0027ll wind up is that there will be some SkTArrays in the builder that point to objects allocated in the arena.\n\nShaderCombo will probably go away, replaced with a more generic object that allows the addition of children and data payloads.",
+      "parentUuid": "9cd882f7_aa8a86fb",
+      "range": {
+        "startLine": 36,
+        "startChar": 0,
+        "endLine": 53,
+        "endChar": 2
+      },
+      "revId": "956d2fa97d5e7bd16b0a42e837315789aada240e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "bfc7a96e_28ddc7b8",
         "filename": "src/gpu/graphite/Context.cpp",
         "patchSetId": 12
@@ -54,6 +96,30 @@
       "writtenOn": "2022-05-18T17:28:48Z",
       "side": 1,
       "message": "fwiw, I believe this is a full reset and frees any extra heap allocations that it made. I don\u0027t think this is too problematic since precompiling won\u0027t be in tight loop. There\u0027s no rewind on arena unfortunately 😞",
+      "range": {
+        "startLine": 138,
+        "startChar": 11,
+        "endLine": 138,
+        "endChar": 16
+      },
+      "revId": "956d2fa97d5e7bd16b0a42e837315789aada240e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2f76eec9_2690b6bd",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-05-18T18:53:48Z",
+      "side": 1,
+      "message": "Yep - the trick is going to be selecting the arena\u0027s initial block size so that it can handle most of the cases.",
+      "parentUuid": "bfc7a96e_28ddc7b8",
       "range": {
         "startLine": 138,
         "startChar": 11,
