@@ -18,6 +18,7 @@
 #include "include/sksl/DSLFunction.h"
 #include "include/sksl/DSLSymbols.h"
 #include "include/sksl/DSLVar.h"
+#include "include/sksl/DSLWrapper.h"
 #include "include/sksl/SkSLOperator.h"
 #include "src/sksl/SkSLCompiler.h"
 #include "src/sksl/SkSLConstantFolder.h"
@@ -396,7 +397,7 @@ bool DSLParser::functionDeclarationEnd(Position start,
                                        const DSLModifiers& modifiers,
                                        DSLType type,
                                        const Token& name) {
-    SkTArray<DSLParameter> parameters;
+    SkTArray<DSLWrapper<DSLParameter>> parameters;
     Token lookahead = this->peek();
     if (lookahead.fKind == Token::Kind::TK_RPAREN) {
         // `()` means no parameters at all.
@@ -406,7 +407,7 @@ bool DSLParser::functionDeclarationEnd(Position start,
     } else {
         for (;;) {
             size_t paramIndex = parameters.size();
-            std::optional<DSLParameter> parameter = this->parameter(paramIndex);
+            std::optional<DSLWrapper<DSLParameter>> parameter = this->parameter(paramIndex);
             if (!parameter) {
                 return false;
             }
@@ -420,8 +421,8 @@ bool DSLParser::functionDeclarationEnd(Position start,
         return false;
     }
     SkTArray<DSLParameter*> parameterPointers;
-    for (DSLParameter& param : parameters) {
-        parameterPointers.push_back(&param);
+    for (DSLWrapper<DSLParameter>& param : parameters) {
+        parameterPointers.push_back(&param.get());
     }
     DSLFunction result(modifiers, type, this->text(name), parameterPointers,
             this->rangeFrom(start));
@@ -720,7 +721,7 @@ SkTArray<dsl::DSLGlobalVar> DSLParser::structVarDeclaration(Position start,
 }
 
 /* modifiers type IDENTIFIER (LBRACKET INT_LITERAL RBRACKET)? */
-std::optional<DSLParameter> DSLParser::parameter(size_t paramIndex) {
+std::optional<DSLWrapper<DSLParameter>> DSLParser::parameter(size_t paramIndex) {
     Position pos = this->position(this->peek());
     DSLModifiers modifiers = this->modifiers();
     std::optional<DSLType> type = this->type(&modifiers);
@@ -741,7 +742,7 @@ std::optional<DSLParameter> DSLParser::parameter(size_t paramIndex) {
     if (!this->parseArrayDimensions(pos, &type.value())) {
         return std::nullopt;
     }
-    return DSLParameter(modifiers, *type, paramText, this->rangeFrom(pos), paramPos);
+    return {{DSLParameter(modifiers, *type, paramText, this->rangeFrom(pos), paramPos)}};
 }
 
 /** EQ INT_LITERAL */
