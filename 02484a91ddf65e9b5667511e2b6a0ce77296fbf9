@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b50c8e9b_409b4288",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 5
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-05-18T15:04:06Z",
+      "side": 1,
+      "message": "nit: SkSL will generate slightly better output if you use `} else if (` here. It is happiest when functions only have a `return` in the very last statement (regardless of that statement\u0027s complexity or scope depth).",
+      "range": {
+        "startLine": 92,
+        "startChar": 4,
+        "endLine": 94,
+        "endChar": 6
+      },
+      "revId": "02484a91ddf65e9b5667511e2b6a0ce77296fbf9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
