@@ -47,8 +47,7 @@ DSLVarBase::DSLVarBase(const DSLModifiers& modifiers, DSLType type, std::string_
     : fModifiers(std::move(modifiers))
     , fType(std::move(type))
     , fNamePosition(namePos)
-    , fRawName(name)
-    , fName(fType.skslType().isOpaque() ? name : DSLWriter::Name(name))
+    , fName(name)
     , fInitialValue(std::move(initialValue))
     , fDeclared(DSLWriter::MarkVarsDeclared())
     , fPosition(pos) {}
@@ -57,8 +56,8 @@ DSLVarBase::~DSLVarBase() {
     if (fDeclaration && !fDeclared) {
         ThreadContext::ReportError(String::printf("variable '%.*s' was destroyed without being "
                                                   "declared",
-                                                  (int)fRawName.length(),
-                                                  fRawName.data()).c_str());
+                                                  (int)fName.length(),
+                                                  fName.data()).c_str());
     }
 }
 
@@ -70,7 +69,6 @@ void DSLVarBase::swap(DSLVarBase& other) {
     std::swap(fDeclaration, other.fDeclaration);
     std::swap(fVar, other.fVar);
     std::swap(fNamePosition, other.fNamePosition);
-    std::swap(fRawName, other.fRawName);
     std::swap(fName, other.fName);
     std::swap(fInitialValue.fExpression, other.fInitialValue.fExpression);
     std::swap(fDeclared, other.fDeclared);

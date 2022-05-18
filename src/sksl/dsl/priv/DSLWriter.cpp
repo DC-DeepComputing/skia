@@ -39,20 +39,6 @@ namespace SkSL {
 
 namespace dsl {
 
-bool DSLWriter::ManglingEnabled() {
-    return ThreadContext::Instance().fSettings.fDSLMangling;
-}
-
-std::string_view DSLWriter::Name(std::string_view name) {
-    if (ManglingEnabled()) {
-        const std::string* s = ThreadContext::SymbolTable()->takeOwnershipOfString(
-                ThreadContext::Instance().fMangler.uniqueName(name,
-                    ThreadContext::SymbolTable().get()));
-        return s->c_str();
-    }
-    return name;
-}
-
 const SkSL::Variable* DSLWriter::Var(DSLVarBase& var) {
     // fInitialized is true if we have attempted to create a var, whether or not we actually
     // succeeded. If it's true, we don't want to try again, to avoid reporting the same error
