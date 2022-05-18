@@ -16,6 +16,24 @@
       "message": "Can\u0027t we do something that scales up without code duplication, like http://osscs/skia/skia/+/main:src/gpu/ganesh/gradients/GrGradientShader.cpp;l\u003d267?q\u003dmake_looping_colorizer ?",
       "revId": "7f063a9d2f4b0b960eb7b448c629d37dabb1df41",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "93261a21_5999940c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-05-18T17:30:01Z",
+      "side": 1,
+      "message": "In Graphite\u0027s case, I think implementation will actually be much simpler, because Graphite uses plain arrays instead of packing four stops into a float4.",
+      "parentUuid": "508332e7_c495100e",
+      "revId": "7f063a9d2f4b0b960eb7b448c629d37dabb1df41",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
