@@ -4,6 +4,29 @@ licenses(["notice"])
 
 exports_files_legacy()
 
+filegroup(
+    name = "hdrs_nogazelle",
+    srcs = [
+        "GpuTypes.h",
+        "GrBackendDrawableInfo.h",
+        "GrBackendSemaphore.h",
+        "GrBackendSurface.h",
+        "GrBackendSurfaceMutableState.h",
+        "GrConfig.h",
+        "GrContextOptions.h",
+        "GrContextThreadSafeProxy.h",
+        "GrDirectContext.h",
+        "GrDriverBugWorkarounds.h",
+        "GrDriverBugWorkaroundsAutogen.h",
+        "GrRecordingContext.h",
+        "GrSurfaceInfo.h",
+        "GrTypes.h",
+        "GrYUVABackendTextures.h",
+        "ShaderErrorHandler.h",
+    ],  # TODO(kjlubick) + select_multi on gpu subfolders
+    visibility = ["//include:__subpackages__"],
+)
+
 generated_cc_atom(
     name = "GrBackendDrawableInfo_hdr",
     hdrs = ["GrBackendDrawableInfo.h"],
