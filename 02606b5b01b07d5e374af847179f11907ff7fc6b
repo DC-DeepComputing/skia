@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8722186d_c9b4ce2e",
+        "filename": "src/sksl/codegen/SkSLMetalCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1420,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-05-18T14:46:35Z",
+      "side": 1,
+      "message": "This should be a switch-case (see L1415)",
+      "range": {
+        "startLine": 1420,
+        "startChar": 0,
+        "endLine": 1420,
+        "endChar": 77
+      },
+      "revId": "02606b5b01b07d5e374af847179f11907ff7fc6b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
