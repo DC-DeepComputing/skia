@@ -63,10 +63,6 @@ void AddToSymbolTable(DSLVarBase& var, Position pos) {
     ThreadContext::ReportErrors(pos);
 }
 
-const std::string* Retain(std::string string) {
-    return CurrentSymbolTable()->takeOwnershipOfString(std::move(string));
-}
-
 } // namespace dsl
 
 } // namespace SkSL
