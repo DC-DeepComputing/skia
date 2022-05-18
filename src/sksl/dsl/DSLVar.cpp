@@ -48,17 +48,7 @@ DSLVarBase::DSLVarBase(const DSLModifiers& modifiers, DSLType type, std::string_
     , fNamePosition(namePos)
     , fName(name)
     , fInitialValue(std::move(initialValue))
-    , fDeclared(DSLWriter::MarkVarsDeclared())
     , fPosition(pos) {}
-
-DSLVarBase::~DSLVarBase() {
-    if (fDeclaration && !fDeclared) {
-        ThreadContext::ReportError(String::printf("variable '%.*s' was destroyed without being "
-                                                  "declared",
-                                                  (int)fName.length(),
-                                                  fName.data()).c_str());
-    }
-}
 
 void DSLVarBase::swap(DSLVarBase& other) {
     SkASSERT(this->storage() == other.storage());
@@ -70,7 +60,6 @@ void DSLVarBase::swap(DSLVarBase& other) {
     std::swap(fNamePosition, other.fNamePosition);
     std::swap(fName, other.fName);
     std::swap(fInitialValue.fExpression, other.fInitialValue.fExpression);
-    std::swap(fDeclared, other.fDeclared);
     std::swap(fInitialized, other.fInitialized);
     std::swap(fPosition, other.fPosition);
 }
@@ -86,7 +75,6 @@ VariableStorage DSLVar::storage() const {
 DSLGlobalVar::DSLGlobalVar(const char* name)
     : INHERITED(kVoid_Type, name, DSLExpression(), Position(), Position()) {
     fName = name;
-    DSLWriter::MarkDeclared(*this);
     const SkSL::Symbol* result = (*ThreadContext::SymbolTable())[fName];
     SkASSERTF(result, "could not find '%.*s' in symbol table", (int)fName.length(), fName.data());
     fVar = &result->as<SkSL::Variable>();

@@ -88,15 +88,6 @@ std::unique_ptr<SkSL::Statement> DSLWriter::Declaration(DSLVarBase& var) {
     return std::move(var.fDeclaration);
 }
 
-void DSLWriter::MarkDeclared(DSLVarBase& var) {
-    SkASSERT(!var.fDeclared);
-    var.fDeclared = true;
-}
-
-bool DSLWriter::MarkVarsDeclared() {
-    return ThreadContext::Instance().fSettings.fDSLMarkVarsDeclared;
-}
-
 void DSLWriter::AddVarDeclaration(DSLStatement& existing, DSLVar& additional) {
     if (existing.fStatement->is<Block>()) {
         SkSL::Block& block = existing.fStatement->as<Block>();
