@@ -2137,9 +2137,68 @@ namespace {
 //    solid colors with src or srcOver
 //    repeated or clamped linear gradients with src or srcOver
 void precompile(skgpu::graphite::Context* context) {
-    using ShaderType = skgpu::graphite::ShaderCombo::ShaderType;
+    using ShaderType = skgpu::graphite::ShaderType;
 
     skgpu::graphite::CombinationBuilder builder(context);
+
+#if 0
+    //  Paint
+    //    |- blendShader0
+    //    |     |- linearGrad4 | solid
+    //    |     |- blendShader1 | linearGrad4
+    //    |        |- radialGrad4 | solid
+    //    |        |- imageShader0
+    //    |- porterDuff | rt-effect blender (w/ one shader-based child)
+    //                       |- imageShader1
+    {
+        // first shaders
+        auto blendShader0 = builder.add(ShaderType::kBlendShader);
+        // first child slot
+        {
+            // first option
+            auto linGrad = blendShader0->addChild(0, ShaderType::kLinearGradientShader);
+            linGrad->setNumStops(4);
+            // second option
+            blendShader0->addChild(0, ShaderType::kSolidColorShader);
+        }
+
+        // second child slot
+        {
+            // first option
+            {
+                auto blendShader1 = blendShader0->addChild(1, ShaderType::kBlendShader);
+
+                // nested first child slot
+                {
+                    auto radGrad = blendShader1->addChild(0, ShaderType::kRadialGradientShader);
+                    radGrad->setNumStops(4);
+                    blendShader1->addChild(0, ShaderType::kSolidColorShader);
+                }
+
+                // nested second child slot
+                {
+                    auto imgShader0 = blendShader1->addChild(1, ShaderType::kImageShader);
+                    imgShader0->addTileMode(SkTileMode::kClamp, SkTileMode::kClamp);
+                }
+            }
+
+            // second option
+            {
+                auto linGrad = blendShader0->addChild(1, ShaderType::kLinearGradientShader);
+                linGrad->setNumStops(4);
+            }
+        }
+
+        // now, blend modes
+        builder.add(skgpu::graphite::CombinationBuilder::BlendModeGroup::kPorterDuff);
+        {
+            auto rtBlender = builder.add(kUserDefBlenderID);
+            auto imgShader1 = rtBlender->addChild(0, ShaderType::kImageShader);
+            imgShader1->addTileMode(SkTileMode::kRepeat, SkTileMode::kRepeat);
+            imgShader1->addTileMode(SkTileMode::kClamp, SkTileMode::kClamp);
+        }
+    }
+#endif
 
     {
         builder.add(skgpu::graphite::ShaderCombo({ShaderType::kSolidColor}, {SkTileMode::kRepeat}));
