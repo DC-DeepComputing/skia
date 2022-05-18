@@ -94,6 +94,30 @@
       },
       "revId": "11af67e1b291a6a6b5a98267248abb142ec8660f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3917268e_ae2e8162",
+        "filename": "modules/particles/src/SkParticleBinding.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 305,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2022-05-18T14:43:49Z",
+      "side": 1,
+      "message": "At this stage we\u0027re mostly targeting demos/samples to lure people into using SkParticles.  Longer term it would be nice to have a clean solution for something like an image (or shader) uniform.\n\nUnpacking to an atlas sounds like a neat optimization, but some of the assets might be fairly large.  Think generic video, or even something like a camera feed which cannot be pre-rendered.\n\nIt just occurred to be that all image loading is already routed through a ResourceProvider, so I we could move the image setup hack to a custom provider/image asset, and just use the existing SkImageBinding (we just need a way to hijack the SkImage creation).",
+      "parentUuid": "531d4dcc_ea751ba4",
+      "range": {
+        "startLine": 275,
+        "startChar": 0,
+        "endLine": 305,
+        "endChar": 0
+      },
+      "revId": "11af67e1b291a6a6b5a98267248abb142ec8660f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
