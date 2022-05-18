@@ -6,6 +6,30 @@ exports_files_legacy()
 
 enforce_iwyu_on_package()
 
+filegroup(
+    name = "hdrs_nogazelle",
+    srcs = [
+        "DSL.h",
+        "DSLBlock.h",
+        "DSLCase.h",
+        "DSLCore.h",
+        "DSLExpression.h",
+        "DSLFunction.h",
+        "DSLLayout.h",
+        "DSLModifiers.h",
+        "DSLStatement.h",
+        "DSLSymbols.h",
+        "DSLType.h",
+        "DSLVar.h",
+        "SkSLDebugTrace.h",
+        "SkSLErrorReporter.h",
+        "SkSLOperator.h",
+        "SkSLPosition.h",
+        "SkSLVersion.h",
+    ],
+    visibility = ["//include:__subpackages__"],
+)
+
 generated_cc_atom(
     name = "DSLBlock_hdr",
     hdrs = ["DSLBlock.h"],

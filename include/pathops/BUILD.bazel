@@ -4,6 +4,14 @@ licenses(["notice"])
 
 exports_files_legacy()
 
+filegroup(
+    name = "hdrs_nogazelle",
+    srcs = [
+        "SkPathOps.h",
+    ],
+    visibility = ["//include:__subpackages__"],
+)
+
 generated_cc_atom(
     name = "SkPathOps_hdr",
     hdrs = ["SkPathOps.h"],

@@ -4,6 +4,96 @@ licenses(["notice"])
 
 exports_files_legacy()
 
+filegroup(
+    name = "todo_srcs_nogazelle",
+    srcs = [
+        # TODO(kjlubick) break this up
+        "SkAndroidCodec.cpp",
+        "SkAndroidCodecAdapter.cpp",
+        "SkAndroidCodecAdapter.h",
+        "SkEncodedInfo.cpp",
+        "SkFrameHolder.h",
+        "SkHeifCodec.cpp",
+        "SkHeifCodec.h",
+        "SkIcoCodec.cpp",
+        "SkIcoCodec.h",
+        "SkJpegCodec.cpp",
+        "SkJpegCodec.h",
+        "SkJpegDecoderMgr.cpp",
+        "SkJpegDecoderMgr.h",
+        "SkJpegPriv.h",
+        "SkJpegUtility.cpp",
+        "SkJpegUtility.h",
+        "SkJpegxlCodec.cpp",
+        "SkJpegxlCodec.h",
+        "SkParseEncodedOrigin.cpp",
+        "SkParseEncodedOrigin.h",
+        "SkPngCodec.cpp",
+        "SkPngCodec.h",
+        "SkPngPriv.h",
+        "SkRawCodec.cpp",
+        "SkRawCodec.h",
+        "SkSampledCodec.cpp",
+        "SkSampledCodec.h",
+        "SkScalingCodec.h",
+        "SkStreamBuffer.cpp",
+        "SkStreamBuffer.h",
+        "SkStubHeifDecoderAPI.h",
+        "SkWebpCodec.cpp",
+        "SkWebpCodec.h",
+        "SkWuffsCodec.cpp",
+        "SkWuffsCodec.h",
+    ],
+)
+
+filegroup(
+    name = "bmp_srcs_nogazelle",
+    srcs = [
+        "SkBmpBaseCodec.cpp",
+        "SkBmpBaseCodec.h",
+        "SkBmpCodec.cpp",
+        "SkBmpCodec.h",
+        "SkBmpMaskCodec.cpp",
+        "SkBmpMaskCodec.h",
+        "SkBmpRLECodec.cpp",
+        "SkBmpRLECodec.h",
+        "SkBmpStandardCodec.cpp",
+        "SkBmpStandardCodec.h",
+        "SkWbmpCodec.cpp",
+        "SkWbmpCodec.h",
+    ],
+)
+
+filegroup(
+    name = "core_srcs_nogazelle",
+    srcs = [
+        "SkCodec.cpp",
+        "SkCodecImageGenerator.cpp",
+        "SkCodecImageGenerator.h",
+        "SkCodecPriv.h",
+        "SkColorTable.cpp",
+        "SkColorTable.h",
+        "SkFrameHolder.h",
+        "SkMaskSwizzler.cpp",
+        "SkMaskSwizzler.h",
+        "SkMasks.cpp",
+        "SkMasks.h",
+        "SkSampler.cpp",
+        "SkSampler.h",
+        "SkSwizzler.cpp",
+        "SkSwizzler.h",
+    ],
+)
+
+filegroup(
+    name = "srcs_nogazelle",
+    srcs = [
+        ":bmp_srcs_nogazelle",
+        ":core_srcs_nogazelle",
+    ],
+    visibility = ["//src:__pkg__"],
+)
+
 cc_library(
     name = "androidcodec_srcs",
     deps = [
