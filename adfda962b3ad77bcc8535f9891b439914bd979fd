@@ -69,6 +69,30 @@
       },
       "revId": "adfda962b3ad77bcc8535f9891b439914bd979fd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "589a1ee2_2162a6e6",
+        "filename": "include/private/SkVx.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 669,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-05-18T19:38:59Z",
+      "side": 1,
+      "message": "I noticed this when I was hunting down other behavior in a later change, and mis-remembered that the Sk4f_to_L32 rounding is entirely around float rounding. There\u0027s less pressure then to update this, since it\u0027s float-\u003ehalf and not float-\u003euint8 code that is affected.\n\nOn the other hand, it is still a point of consistency, progressing towards all color values round half up (which seemed to best fit FROUND_TO_NEAREST_INT).",
+      "parentUuid": "af924212_06e19d82",
+      "range": {
+        "startLine": 669,
+        "startChar": 66,
+        "endLine": 669,
+        "endChar": 90
+      },
+      "revId": "adfda962b3ad77bcc8535f9891b439914bd979fd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
