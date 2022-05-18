@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "20b9551b_141a3635",
+        "filename": "src/gpu/ganesh/SkGr.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 406,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-05-18T19:30:42Z",
+      "side": 1,
+      "message": "Note: This use of ES3Options was unnecessary (it was copy-pasted from the old integer-math dither code that lived in this file).",
+      "revId": "b07948735a6d7e009ae4961c2dee91fc9875f14b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
