@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3728d845_e93d2da2",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-05-18T13:52:36Z",
+      "side": 1,
+      "message": "nit: Maybe rephrase this as \"Now that we support C++17...\"",
+      "range": {
+        "startLine": 9,
+        "startChar": 1,
+        "endLine": 9,
+        "endChar": 39
+      },
+      "revId": "aed03f1090f4b209bb5a82d89c8ee9c06843a5e0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
