@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b7670296_602be4f0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-05-18T22:22:59Z",
+      "side": 1,
+      "message": "At PS3 this worked well with Pdfium, Acrobat, Ocular, and Preview. At PS4 fro some reason Preview draws wonky but the rest are fine.",
+      "revId": "f924a3f083774458a25d3135cd784007ce354ffb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
