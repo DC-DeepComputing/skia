@@ -151,6 +151,7 @@ generated_cc_atom(
         "//include/private:SkTArray_hdr",
         "//include/private:SkTo_hdr",
         "//src/core:SkIPoint16_hdr",
+        "//src/core:SkTInternalLList_hdr",
     ],
 )
 
