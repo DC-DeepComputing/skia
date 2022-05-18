@@ -45,6 +45,30 @@
       },
       "revId": "adfda962b3ad77bcc8535f9891b439914bd979fd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "af924212_06e19d82",
+        "filename": "include/private/SkVx.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 669,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-05-18T19:16:37Z",
+      "side": 1,
+      "message": "Just for consistency with other code?",
+      "parentUuid": "a04ae211_d16b0402",
+      "range": {
+        "startLine": 669,
+        "startChar": 66,
+        "endLine": 669,
+        "endChar": 90
+      },
+      "revId": "adfda962b3ad77bcc8535f9891b439914bd979fd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
