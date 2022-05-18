@@ -704,8 +704,13 @@ bool colrv1_configure_skpaint(FT_Face face,
             const FT_PaintSweepGradient& sweepGradient = colrPaint.u.sweep_gradient;
             SkPoint center = SkPoint::Make( SkFixedToScalar(sweepGradient.center.x),
                                            -SkFixedToScalar(sweepGradient.center.y));
-            SkScalar startAngle = SkFixedToScalar(sweepGradient.start_angle * 180.0f);
-            SkScalar endAngle = SkFixedToScalar(sweepGradient.end_angle * 180.0f);
+            // Shift by 360 to align -360 with 0 degrees, on the "spiral".
+            SkScalar startAngle = SkFixedToScalar(sweepGradient.start_angle * 180.0f) + 180.0f;
+            SkScalar endAngle = SkFixedToScalar(sweepGradient.end_angle * 180.0f) + 180.0f;
+
+            if (startAngle >= endAngle) {
+                return false;
+            }
 
             std::vector<SkScalar> stops;
             std::vector<SkColor> colors;
@@ -721,35 +726,49 @@ bool colrv1_configure_skpaint(FT_Face face,
             // An opaque color is needed to ensure the gradient is not modulated by alpha.
             paint->setColor(SK_ColorBLACK);
 
-            // Prepare angles to be within range for the shader.
-            auto clampAngleToRange = [](SkScalar angle) {
-                SkScalar clampedAngle = SkScalarMod(angle, 360.f);
-                if (clampedAngle < 0) {
-                    return clampedAngle + 360.f;
-                }
-                return clampedAngle;
-            };
-            startAngle = clampAngleToRange(startAngle);
-            endAngle = clampAngleToRange(endAngle);
-            SkScalar sectorAngle =
-                    endAngle > startAngle ? endAngle - startAngle : endAngle + 360.0f - startAngle;
+            // The shader expects stops from 0 to 1, so we need to account for
+            // minimum and maximum stop positions being different from 0 and
+            // 1. We do that by scaling minimum and maximum stop positions to
+            // the 0 to 1 interval and scaling the angles inverse proportionally.
+
+            // Scale angles to align with 0 and 1 of scaled stops.
+            SkScalar sectorAngle = endAngle - startAngle;
+            SkASSERT(sectorAngle > 0);
+
+            SkScalar startAngleScaled = startAngle + sectorAngle * stops.front();
+            SkScalar endAngleScaled = startAngle + sectorAngle * stops.back();
+
+            // Scale stops.
+            SkScalar scaleFactor = 1 / (stops.back() - stops.front());
+            SkScalar startOffset = stops.front();
+
+            for (SkScalar& stop : stops) {
+                stop = (stop - startOffset) * scaleFactor;
+            }
 
             /* https://docs.microsoft.com/en-us/typography/opentype/spec/colr#sweep-gradients
              * "The angles are expressed in counter-clockwise degrees from the
              * direction of the positive x-axis on the design grid. [...]  The
              * color line progresses from the start angle to the end angle in
-             * the counter-clockwise direction;"
-             */
+             * the counter-clockwise direction;" - convert angles and stops from
+             * counter-clockwise to clockwise for the shader. */
+            std::swap(startAngleScaled, endAngleScaled);
+            startAngleScaled = 360.f - startAngleScaled;
+            endAngleScaled = 360.f - endAngleScaled;
+            std::reverse(stops.begin(), stops.end());
+            std::reverse(colors.begin(), colors.end());
+            for (auto& stop : stops) {
+              stop = 1.0f - stop;
+            }
 
-            SkMatrix localMatrix;
-            localMatrix.postRotate(startAngle, center.x(), center.y());
-            /* Mirror along x-axis to change angle direction. */
-            localMatrix.postScale(1, -1, center.x(), center.y());
             SkTileMode tileMode = ToSkTileMode(sweepGradient.colorline.extend);
 
+            printf("shader args: start %f, end %f, tileMode: %d, startAngleScaled %f, endAngleScaled %f\n",
+                   startAngle, endAngle, tileMode, startAngleScaled,
+                   endAngleScaled);
             paint->setShader(SkGradientShader::MakeSweep(
                     center.x(), center.y(), colors.data(), stops.data(), stops.size(),
-                    tileMode, 0, sectorAngle, 0, &localMatrix));
+                    tileMode, startAngleScaled, endAngleScaled, 0, nullptr));
             return true;
         }
         default: {

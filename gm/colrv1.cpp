@@ -39,9 +39,6 @@ public:
     kColorFontsRepoClipBox,
     kColorFontsRepoComposite,
     kColorFontsRepoForeground,
-    kColorFontsRepoSweepPad,
-    kColorFontsRepoSweepReflect,
-    kColorFontsRepoSweepRepeat,
   };
 
   ColrV1GM(ColrV1TestType testType, SkScalar skewX, SkScalar rotateDeg)
@@ -70,12 +67,6 @@ protected:
                 return SkString("composite");
             case kColorFontsRepoForeground:
                 return SkString("foreground");
-            case kColorFontsRepoSweepPad:
-                return SkString("sweep_pad");
-            case kColorFontsRepoSweepReflect:
-                return SkString("sweep_reflect");
-            case kColorFontsRepoSweepRepeat:
-                return SkString("sweep_repeat");
         }
         SkASSERT(false); /* not reached */
         return SkString();
@@ -101,7 +92,7 @@ protected:
                 SkASSERT(false);
                 break;
             case kColorFontsRepoGradients:
-                fEmojiFont.fGlyphs = {2, 5, 6, 7, 8, 55};
+                fEmojiFont.fGlyphs = {3 /* 22 */};  // , 5, 6, 7, 8, 55};
                 break;
             case kColorFontsRepoScaling:
                 fEmojiFont.fGlyphs = {9, 10, 11, 12, 13, 14};
@@ -126,15 +117,6 @@ protected:
                 break;
             case kColorFontsRepoForeground:
                 fEmojiFont.fGlyphs = {47, 48, 49, 50, 51, 52, 53, 54};
-                break;
-            case kColorFontsRepoSweepPad:
-                fEmojiFont.fGlyphs = {2, 58, 59, 60, 61, 62, 63, 64};
-                break;
-            case kColorFontsRepoSweepReflect:
-                fEmojiFont.fGlyphs = {65, 66, 67, 68, 69, 70, 71, 72};
-                break;
-            case kColorFontsRepoSweepRepeat:
-                fEmojiFont.fGlyphs = {73, 74, 75, 76, 77, 78, 79, 80};
                 break;
         }
     }
@@ -175,7 +157,7 @@ protected:
         std::vector<SkColor> paint_colors = {
                 SK_ColorBLACK, SK_ColorGREEN, SK_ColorRED, SK_ColorBLUE};
         auto paint_color_iterator = paint_colors.begin();
-        for (SkScalar textSize : { 12, 18, 30, 120 }) {
+        for (SkScalar textSize : { /* 12, 18, 30, */ 120 }) {
             font.setSize(textSize);
             font.getMetrics(&metrics);
             y += -metrics.fAscent;
@@ -183,7 +165,27 @@ protected:
             canvas->drawSimpleText(fEmojiFont.fGlyphs.data(),
                                    fEmojiFont.bytesize(),
                                    SkTextEncoding::kGlyphID,
-                                   10, y, font, paint);
+                                   10,
+                                   y,
+                                   font,
+                                   paint);
+            for (SkScalar swepAngle : { 0, 15, 45, 90 }) {
+              SkFontArguments::VariationPosition::Coordinate coords = { SkSetFourByteTag('s', 'w', 'e', 'p'), swepAngle };
+              SkFontArguments::VariationPosition varPos = { &coords, 1 };
+              SkFontArguments args;
+              args.setVariationDesignPosition(varPos);
+              sk_sp<SkTypeface> axisAppliedTypeface = fEmojiFont.fTypeface->makeClone(args);
+              SkASSERT(axisAppliedTypeface);
+              SkFont axisAppliedFont(axisAppliedTypeface);
+              axisAppliedFont.setSize(textSize);
+              canvas->drawSimpleText(fEmojiFont.fGlyphs.data(),
+                                     fEmojiFont.bytesize(),
+                                     SkTextEncoding::kGlyphID,
+                                     10 + swepAngle / 10 * (textSize * 1.2f),
+                                     y,
+                                     axisAppliedFont,
+                                     paint);
+            }
             y += metrics.fDescent + metrics.fLeading;
             paint_color_iterator++;
         }
@@ -211,8 +213,5 @@ DEF_GM(return new ColrV1GM(ColrV1GM::kColorFontsRepoClipBox, 0.f, 0.f);)
 DEF_GM(return new ColrV1GM(ColrV1GM::kColorFontsRepoClipBox, -0.5f, 20.f);)
 DEF_GM(return new ColrV1GM(ColrV1GM::kColorFontsRepoComposite, 0.f, 0.f);)
 DEF_GM(return new ColrV1GM(ColrV1GM::kColorFontsRepoForeground, 0.f, 0.f);)
-DEF_GM(return new ColrV1GM(ColrV1GM::kColorFontsRepoSweepPad, 0.f, 0.f);)
-DEF_GM(return new ColrV1GM(ColrV1GM::kColorFontsRepoSweepReflect, 0.f, 0.f);)
-DEF_GM(return new ColrV1GM(ColrV1GM::kColorFontsRepoSweepRepeat, 0.f, 0.f);)
 
 }  // namespace skiagm
