@@ -3,8 +3,8 @@
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
 
-from _hardware import HardwareException, Expectation
-from _hardware_android import HardwareAndroid
+from ._hardware import HardwareException, Expectation
+from ._hardware_android import HardwareAndroid
 
 CPU_CLOCK_RATE = 1326000
 # If you run adb cat /sys/devices/57000000.gpu/pstate it shows all

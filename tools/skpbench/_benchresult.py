@@ -5,7 +5,7 @@
 
 """Parses an skpbench result from a line of output text."""
 
-from __future__ import print_function
+
 import re
 import sys
 

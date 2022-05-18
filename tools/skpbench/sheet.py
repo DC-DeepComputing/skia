@@ -5,8 +5,8 @@
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
 
-from __future__ import print_function
-from _benchresult import BenchResult
+
+from ._benchresult import BenchResult
 from argparse import ArgumentParser
 from collections import defaultdict, namedtuple
 from datetime import datetime
@@ -14,9 +14,10 @@ import operator
 import os
 import sys
 import tempfile
-import urllib
-import urlparse
+import urllib.request, urllib.parse, urllib.error
+import urllib.parse
 import webbrowser
+from functools import reduce
 
 __argparse = ArgumentParser(description="""
 
@@ -60,7 +61,7 @@ def get_qualified_name(name, qualifiers):
   if not qualifiers:
     return name
   else:
-    args = ('%s=%s' % (k,v) for k,v in qualifiers.iteritems())
+    args = ('%s=%s' % (k,v) for k,v in qualifiers.items())
     return '%s (%s)' % (name, ' '.join(args))
 
 class Parser:
@@ -82,7 +83,7 @@ class Parser:
       if not fullconfig in self.fullconfigs:
         self.fullconfigs.append(fullconfig)
 
-      for qualifier, value in self.sheet_qualifiers.items():
+      for qualifier, value in list(self.sheet_qualifiers.items()):
         if value is None:
           self.sheet_qualifiers[qualifier] = match.get_string(qualifier)
         elif value != match.get_string(qualifier):
@@ -103,7 +104,7 @@ class Parser:
     outfile.write('\n')
 
     # Write the rows.
-    for bench, row in self.rows.iteritems():
+    for bench, row in self.rows.items():
       outfile.write('%s,' % bench)
       for fullconfig in self.fullconfigs:
         if fullconfig in row:
@@ -120,10 +121,10 @@ class Parser:
     if len(self.rows) > 1:
       outfile.write('\n')
       self._print_computed_row('MEAN',
-        lambda col: reduce(operator.add, col.values()) / len(col),
+        lambda col: reduce(operator.add, list(col.values())) / len(col),
         outfile=outfile)
       self._print_computed_row('GEOMEAN',
-        lambda col: reduce(operator.mul, col.values()) ** (1.0 / len(col)),
+        lambda col: reduce(operator.mul, list(col.values())) ** (1.0 / len(col)),
         outfile=outfile)
 
   def _print_computed_row(self, name, func, outfile=sys.stdout):
@@ -157,7 +158,7 @@ def main():
     pathname = os.path.join(dirname, basename)
     with open(pathname, mode='w') as tmpfile:
       parser.print_csv(outfile=tmpfile)
-    fileuri = urlparse.urljoin('file:', urllib.pathname2url(pathname))
+    fileuri = urllib.parse.urljoin('file:', urllib.request.pathname2url(pathname))
     print('opening %s' % fileuri)
     webbrowser.open(fileuri)
 

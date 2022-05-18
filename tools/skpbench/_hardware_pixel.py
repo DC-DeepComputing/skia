@@ -3,8 +3,8 @@
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
 
-from _hardware import Expectation
-from _hardware_android import HardwareAndroid
+from ._hardware import Expectation
+from ._hardware_android import HardwareAndroid
 
 CPU_CLOCK_RATE = 1670400
 GPU_CLOCK_RATE = 315000000
@@ -82,7 +82,7 @@ class HardwarePixel(HardwareAndroid):
        Expectation(str, exact_value='2-3', name='online cpus')] + \
       [Expectation(int, exact_value=CPU_CLOCK_RATE, name='cpu_%i clock rate' %i)
        for i in range(2, 4)] + \
-       [Expectation(long, min_value=902390000, max_value=902409999,
+       [Expectation(int, min_value=902390000, max_value=902409999,
                    name='measured ddr clock', sleeptime=10),
        Expectation(int, max_value=41000, name='pm8994_tz temperature'),
        Expectation(int, max_value=40, name='msm_therm temperature')]

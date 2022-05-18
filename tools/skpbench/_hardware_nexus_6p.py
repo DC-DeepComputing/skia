@@ -3,8 +3,8 @@
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
 
-from _hardware import HardwareException, Expectation
-from _hardware_android import HardwareAndroid
+from ._hardware import HardwareException, Expectation
+from ._hardware_android import HardwareAndroid
 
 CPU_CLOCK_RATE = 1728000
 GPU_CLOCK_RATE = 510000000
@@ -82,9 +82,9 @@ class HardwareNexus6P(HardwareAndroid):
        Expectation(str, exact_value='4-6', name='online cpus'),
        Expectation(int, max_value=88, name='tsens_tz_sensor13'),
        Expectation(int, max_value=88, name='tsens_tz_sensor14'),
-       Expectation(long, min_value=(GPU_CLOCK_RATE - 5000),
+       Expectation(int, min_value=(GPU_CLOCK_RATE - 5000),
                    max_value=(GPU_CLOCK_RATE + 5000), name='gpu clock rate'),
-       Expectation(long, min_value=647995000, max_value=648007500,
+       Expectation(int, min_value=647995000, max_value=648007500,
                    name='ddr clock rate', sleeptime=10)] + \
       [Expectation(int, exact_value=CPU_CLOCK_RATE, name='cpu_%i clock rate' %i)
        for i in range(4, 7)]

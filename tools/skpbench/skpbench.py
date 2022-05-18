@@ -5,10 +5,10 @@
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
 
-from __future__ import print_function
-from _adb import Adb
-from _benchresult import BenchResult
-from _hardware import HardwareException, Hardware
+
+from ._adb import Adb
+from ._benchresult import BenchResult
+from ._hardware import HardwareException, Hardware
 from argparse import ArgumentParser
 from multiprocessing import Queue
 from threading import Thread, Timer
@@ -101,10 +101,10 @@ __argparse.add_argument('--gpuResourceCacheLimit',
 
 FLAGS = __argparse.parse_args()
 if FLAGS.adb:
-  import _adb_path as _path
+  from . import _adb_path as _path
   _path.init(FLAGS.device_serial, FLAGS.adb_binary)
 else:
-  import _os_path as _path
+  from . import _os_path as _path
 
 def dump_commandline_if_verbose(commandline):
   if FLAGS.verbosity >= 5:
@@ -355,20 +355,20 @@ def main():
   if FLAGS.adb:
     adb = Adb(FLAGS.device_serial, FLAGS.adb_binary,
               echo=(FLAGS.verbosity >= 5))
-    from _hardware_android import HardwareAndroid
+    from ._hardware_android import HardwareAndroid
 
     model = adb.check('getprop ro.product.model').strip()
     if model == 'Pixel C':
-      from _hardware_pixel_c import HardwarePixelC
+      from ._hardware_pixel_c import HardwarePixelC
       hardware = HardwarePixelC(adb)
     elif model == 'Pixel' or model == "Pixel XL":
-      from _hardware_pixel import HardwarePixel
+      from ._hardware_pixel import HardwarePixel
       hardware = HardwarePixel(adb)
     elif model == 'Pixel 2':
-      from _hardware_pixel2 import HardwarePixel2
+      from ._hardware_pixel2 import HardwarePixel2
       hardware = HardwarePixel2(adb)
     elif model == 'Nexus 6P':
-      from _hardware_nexus_6p import HardwareNexus6P
+      from ._hardware_nexus_6p import HardwareNexus6P
       hardware = HardwareNexus6P(adb)
     else:
       print("WARNING: %s: don't know how to monitor this hardware; results "
