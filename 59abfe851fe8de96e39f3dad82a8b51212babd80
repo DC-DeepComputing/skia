@@ -16,6 +16,24 @@
       "message": "So you skip placeholders for every paint operation including background paint, shadows and decoration?\nI think that decorations are not useful for placehodlers, shadows should not be allowed at all but what about backgrounds?\n\n",
       "revId": "59abfe851fe8de96e39f3dad82a8b51212babd80",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "be59d3b9_6faf3253",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 7708
+      },
+      "writtenOn": "2022-05-19T19:14:50Z",
+      "side": 1,
+      "message": "Confirmed that the WidgetSpan API specifies that backgrounds and decorations should be applied to placeholders (https://api.flutter.dev/flutter/widgets/WidgetSpan/WidgetSpan.html)",
+      "parentUuid": "4105d34d_49cdda1a",
+      "revId": "59abfe851fe8de96e39f3dad82a8b51212babd80",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

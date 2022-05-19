@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "68d99729_bf303801",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 7708
+      },
+      "writtenOn": "2022-05-19T19:14:50Z",
+      "side": 1,
+      "message": "Changed this to make iterateThroughSingleRunByStyles count the width of text ranges (including placeholders) even if the range has no height.\n\nDoes that look safe?",
+      "revId": "a1c7cc8370be04342c0edbc603e35db9f858f42d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
