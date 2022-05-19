@@ -33,6 +33,23 @@
       "message": "re-run try-bots?",
       "revId": "bad583e947debd5a327379ae6488c74c8874cb36",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f5a4c5e4_2daf7ffd",
+        "filename": "third_party/rive/BUILD.gn",
+        "patchSetId": 6
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 5145
+      },
+      "writtenOn": "2022-05-19T15:56:25Z",
+      "side": 1,
+      "message": "The flutter autoroller might fail because it will likely be expecting a LICENSE file in this directory. I kicked off Canary-Flutter to verify.",
+      "revId": "bad583e947debd5a327379ae6488c74c8874cb36",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
