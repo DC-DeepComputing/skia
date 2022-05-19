@@ -1,6 +1,29 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "21095b9a_33ec6080",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-05-19T16:16:42Z",
+      "side": 1,
+      "message": "nit: remove the space netween skia: and the bug number so this is recognized properly (and will update the linked bug)",
+      "range": {
+        "startLine": 9,
+        "startChar": 5,
+        "endLine": 9,
+        "endChar": 16
+      },
+      "revId": "a3f44ed69e424ff76c4509cdcaa6f49d727fe536",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "419115e4_2ddc296f",
@@ -31,6 +54,24 @@
       "writtenOn": "2022-05-19T16:13:30Z",
       "side": 1,
       "message": "It does. Though, I wonder whether we should be taking an (optional) sk_sp\u003cSkColorSpace\u003e a la SkPaint::setColor().",
+      "revId": "a3f44ed69e424ff76c4509cdcaa6f49d727fe536",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6dde5b6c_800eac58",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-05-19T16:16:42Z",
+      "side": 1,
+      "message": "That would be my preference. We use that pattern with gradients, as well.",
+      "parentUuid": "dfd3236c_77e8cd58",
       "revId": "a3f44ed69e424ff76c4509cdcaa6f49d727fe536",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
