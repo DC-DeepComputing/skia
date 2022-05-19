@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3edffa31_e9a97f3a",
+        "filename": "src/gpu/ganesh/text/GrTextBlob.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 2327,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-05-19T20:28:53Z",
+      "side": 1,
+      "message": "I think there are two choices here:\n1) sktext::gpu::Slug becomes sktext::gpu::SlugInterface\n2) Slug becomes SlugImpl\n\nI would like to be able to tell the apart textually.",
+      "range": {
+        "startLine": 2327,
+        "startChar": 0,
+        "endLine": 2327,
+        "endChar": 43
+      },
+      "revId": "42e294a909bebe180e4d5d52808d8c4db8297ac8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
