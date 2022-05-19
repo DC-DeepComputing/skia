@@ -683,33 +683,49 @@ void AddToKey(const SkKeyContext& keyContext,
 #ifdef SK_GRAPHITE_ENABLED
 SkUniquePaintParamsID CreateKey(const SkKeyContext& keyContext,
                                 SkPaintParamsKeyBuilder* builder,
-                                skgpu::graphite::ShaderCombo::ShaderType s,
+                                skgpu::graphite::ShaderType s,
                                 SkTileMode tm,
                                 SkBlendMode bm) {
     SkDEBUGCODE(builder->checkReset());
 
+    using ShaderType = skgpu::graphite::ShaderType;
+
     switch (s) {
-        case skgpu::graphite::ShaderCombo::ShaderType::kNone:
+        case ShaderType::kNone:
             DepthStencilOnlyBlock::AddToKey(keyContext, builder, nullptr);
             break;
-        case skgpu::graphite::ShaderCombo::ShaderType::kSolidColor:
+        case ShaderType::kSolidColor:
             SolidColorShaderBlock::AddToKey(keyContext, builder, nullptr, kErrorColor);
             break;
-        case skgpu::graphite::ShaderCombo::ShaderType::kLinearGradient:
+        case ShaderType::kLinearGradient:
             GradientShaderBlocks::AddToKey(keyContext, builder, nullptr,
                                            { SkShader::kLinear_GradientType, tm, 0 });
             break;
-        case skgpu::graphite::ShaderCombo::ShaderType::kRadialGradient:
+        case ShaderType::kRadialGradient:
             GradientShaderBlocks::AddToKey(keyContext, builder, nullptr,
                                            { SkShader::kRadial_GradientType, tm, 0 });
             break;
-        case skgpu::graphite::ShaderCombo::ShaderType::kSweepGradient:
+        case ShaderType::kSweepGradient:
             GradientShaderBlocks::AddToKey(keyContext, builder, nullptr,
                                            { SkShader::kSweep_GradientType, tm, 0 });
             break;
-        case skgpu::graphite::ShaderCombo::ShaderType::kConicalGradient:
+        case ShaderType::kConicalGradient:
             GradientShaderBlocks::AddToKey(keyContext, builder, nullptr,
                                            { SkShader::kConical_GradientType, tm, 0 });
+            break;
+        case ShaderType::kLocalMatrix:
+            LocalMatrixShaderBlock::AddToKey(keyContext, builder, nullptr,
+                                             { nullptr, SkMatrix::I() });
+            break;
+        case ShaderType::kImage:
+            ImageShaderBlock::AddToKey(keyContext, builder, nullptr,
+                                       { SkSamplingOptions(),
+                                         SkTileMode::kClamp, SkTileMode::kClamp,
+                                         SkRect::MakeEmpty(), SkMatrix::I() });
+            break;
+        case ShaderType::kBlendShader:
+            BlendShaderBlock::AddToKey(keyContext, builder, nullptr,
+                                       { nullptr, nullptr, SkBlendMode::kSrc });
             break;
     }
 
