@@ -35,18 +35,21 @@ class Recorder;
 class Recording;
 class TextureInfo;
 
-enum class ShaderType {
-    kSolidColor,
+#define SHADER_TYPES(M)             \
+    M(SolidColor)                   \
+                                    \
+    M(LinearGradient)               \
+    M(RadialGradient)               \
+    M(SweepGradient)                \
+    M(ConicalGradient)              \
+                                    \
+    M(LocalMatrix)                  \
+    M(Image)                        \
+    M(BlendShader)
 
-    kLinearGradient,
-    kRadialGradient,
-    kSweepGradient,
-    kConicalGradient,
-
-    kLocalMatrix,
-    kImage,
-    kBlendShader
-};
+#define ENUM(T) k##T,
+enum class ShaderType { SHADER_TYPES(ENUM) };
+#undef ENUM
 
 struct ShaderCombo {
     ShaderCombo() {}
@@ -86,6 +89,24 @@ private:
     uint32_t fID;
 };
 
+class ArenaData_Base {
+public:
+    ShaderType fType;
+    int        fNumChildren;
+};
+
+class API_LevelClass {
+public:
+    API_LevelClass(ArenaData_Base* dataInArena) : fDataInArena(dataInArena) {}
+
+    API_LevelClass* addChildOption(int childIndex, ShaderType);
+
+    ShaderType type() const { return fDataInArena->fType; }
+
+private:
+    ArenaData_Base* fDataInArena;
+};
+
 class CombinationBuilder {
 public:
     enum class BlendModeGroup {
@@ -98,13 +119,13 @@ public:
     CombinationBuilder(Context*);
 
     // Blend Modes
-    void add(SkBlendMode);
-    void add(SkBlendMode rangeStart, SkBlendMode rangeEnd); // inclusive
-    void add(BlendModeGroup);
-    void add(SkBlenderID);
+    void addOption(SkBlendMode);
+    void addOption(SkBlendMode rangeStart, SkBlendMode rangeEnd); // inclusive
+    void addOption(BlendModeGroup);
+    void addOption(SkBlenderID);
 
     // Shaders
-    void add(ShaderCombo);
+    API_LevelClass* addOption(ShaderType);
 
     void reset();
 
@@ -114,6 +135,7 @@ private:
     SkShaderCodeDictionary* fDictionary;
     SkArenaAllocWithReset fArena{64};
     PaintCombinations* fCombinations;
+    SkTArray<API_LevelClass> fShaders;
 };
 
 class Context final {

@@ -65,7 +65,7 @@ public:
     // Add a new command of type T to the end of this SkRecord.
     // You are expected to placement new an object of type T onto this pointer.
     template <typename T>
-    T* append() {
+    T* append1() {
         if (fCount == fReserved) {
             this->grow();
         }
@@ -134,9 +134,9 @@ private:
         // Point this record to its data in fAlloc.  Returns ptr for convenience.
         template <typename T>
         T* set(T* ptr) {
-            fType = T::kType;
+            fType = T::kType1;
             fPtr  = ptr;
-            SkASSERT(this->ptr() == ptr && this->type() == T::kType);
+            SkASSERT(this->ptr() == ptr && this->type() == T::kType1);
             return ptr;
         }
 

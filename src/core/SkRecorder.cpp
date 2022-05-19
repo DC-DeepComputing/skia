@@ -92,7 +92,7 @@ void SkRecorder::append(Args&&... args) {
     if (fMiniRecorder) {
         this->flushMiniRecorder();
     }
-    new (fRecord->append<T>()) T{std::forward<Args>(args)...};
+    new (fRecord->append1<T>()) T{std::forward<Args>(args)...};
 }
 
 #define TRY_MINIRECORDER(method, ...) \

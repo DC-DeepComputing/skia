@@ -58,40 +58,62 @@ CombinationBuilder::CombinationBuilder(Context* context)
     this->reset();
 }
 
-void CombinationBuilder::add(ShaderCombo shaderCombo) {
-    fCombinations->add(shaderCombo);
+#define FOO(T, ...) \
+struct foo_##T : public ArenaData_Base {          \
+    __VA_ARGS__     \
+};
+
+FOO(SolidColor);
+FOO(LinearGradient);
+FOO(RadialGradient);
+FOO(SweepGradient);
+FOO(ConicalGradient);
+FOO(LocalMatrix);
+FOO(Image);
+FOO(BlendShader);
+
+API_LevelClass* CombinationBuilder::addOption(ShaderType type) {
+
+    ArenaData_Base* dataInArena;
+
+#define CASE(T) case ShaderType::k##T: dataInArena = new foo_##T();
+    switch(type) { SHADER_TYPES(CASE) }
+#undef CASE
+
+    fShaders.push_back(API_LevelClass(dataInArena));
+    return &fShaders.back();
 }
 
-void CombinationBuilder::add(SkBlendMode bm) {
+void CombinationBuilder::addOption(SkBlendMode bm) {
     SkASSERT(fDictionary->isValidID((int) bm));
 
     fCombinations->add(bm);
 }
 
-void CombinationBuilder::add(SkBlendMode rangeStart, SkBlendMode rangeEnd) {
+void CombinationBuilder::addOption(SkBlendMode rangeStart, SkBlendMode rangeEnd) {
     for (int i = (int)rangeStart; i <= (int) rangeEnd; ++i) {
-        this->add((SkBlendMode) i);
+        this->addOption((SkBlendMode) i);
     }
 }
 
-void CombinationBuilder::add(BlendModeGroup group) {
+void CombinationBuilder::addOption(BlendModeGroup group) {
     switch (group) {
         case BlendModeGroup::kPorterDuff:
-            this->add(SkBlendMode::kClear, SkBlendMode::kScreen);
+            this->addOption(SkBlendMode::kClear, SkBlendMode::kScreen);
             break;
         case BlendModeGroup::kAdvanced:
-            this->add(SkBlendMode::kOverlay, SkBlendMode::kMultiply);
+            this->addOption(SkBlendMode::kOverlay, SkBlendMode::kMultiply);
             break;
         case BlendModeGroup::kColorAware:
-            this->add(SkBlendMode::kHue, SkBlendMode::kLuminosity);
+            this->addOption(SkBlendMode::kHue, SkBlendMode::kLuminosity);
             break;
         case BlendModeGroup::kAll:
-            this->add(SkBlendMode::kClear, SkBlendMode::kLastMode);
+            this->addOption(SkBlendMode::kClear, SkBlendMode::kLastMode);
             break;
     }
 }
 
-void CombinationBuilder::add(SkBlenderID id) {
+void CombinationBuilder::addOption(SkBlenderID id) {
     SkASSERT(fDictionary->isValidID(id.asUInt()));
 
     fCombinations->add(id);

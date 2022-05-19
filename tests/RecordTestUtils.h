@@ -20,10 +20,10 @@ struct ReadAs {
     const U* ptr;
     SkRecords::Type type;
 
-    void operator()(const U& r) { ptr = &r; type = U::kType; }
+    void operator()(const U& r) { ptr = &r; type = U::kType1; }
 
     template <typename T>
-    void operator()(const T&) { type = U::kType; }
+    void operator()(const T&) { type = U::kType1; }
 };
 
 // Assert that the ith command in record is of type T, and return it.
@@ -31,7 +31,7 @@ template <typename T>
 static const T* assert_type(skiatest::Reporter* r, const SkRecord& record, int index) {
     ReadAs<T> reader;
     record.visit(index, reader);
-    REPORTER_ASSERT(r, T::kType == reader.type);
+    REPORTER_ASSERT(r, T::kType1 == reader.type);
     REPORTER_ASSERT(r, SkToBool(reader.ptr));
     return reader.ptr;
 }
