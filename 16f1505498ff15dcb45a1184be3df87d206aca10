@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "01d3e846_b8ba5dc0",
+        "filename": "src/gpu/ganesh/v1/SurfaceDrawContext.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 303,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-05-19T16:54:54Z",
+      "side": 0,
+      "message": "Shouldn\u0027t there be a corresponding header change to remove this field from the SDC?",
+      "range": {
+        "startLine": 303,
+        "startChar": 10,
+        "endLine": 303,
+        "endChar": 23
+      },
+      "revId": "16f1505498ff15dcb45a1184be3df87d206aca10",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
