@@ -6,6 +6,43 @@ exports_files_legacy()
 
 enforce_iwyu_on_package()
 
+filegroup(
+    name = "core_srcs_nogazelle",
+    srcs = [
+        "SkSLVMCodeGenerator.cpp",
+        "SkSLVMCodeGenerator.h",
+    ],
+)
+
+filegroup(
+    name = "gpu_srcs_nogazelle",
+    srcs = [
+        "SkSLCodeGenerator.h",
+        "SkSLGLSLCodeGenerator.cpp",
+        "SkSLGLSLCodeGenerator.h",
+        "SkSLMetalCodeGenerator.cpp",
+        "SkSLMetalCodeGenerator.h",
+        "SkSLPipelineStageCodeGenerator.cpp",
+        "SkSLPipelineStageCodeGenerator.h",
+        "SkSLSPIRVCodeGenerator.cpp",
+        "SkSLSPIRVCodeGenerator.h",
+        "SkSLSPIRVtoHLSL.cpp",
+        "SkSLSPIRVtoHLSL.h",
+        "SkSLWGSLCodeGenerator.cpp",
+        "SkSLWGSLCodeGenerator.h",
+    ],
+)
+
+filegroup(
+    name = "srcs_nogazelle",
+    srcs = [
+        ":core_srcs_nogazelle",
+    ] + select({
+        "//bazel/common_config_settings:has_gpu_backend": [":gpu_srcs_nogazelle"],
+        "//conditions:default": [],
+    }),
+)
+
 generated_cc_atom(
     name = "SkSLCodeGenerator_hdr",
     hdrs = ["SkSLCodeGenerator.h"],

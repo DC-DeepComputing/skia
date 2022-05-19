@@ -4,6 +4,42 @@ licenses(["notice"])
 
 exports_files_legacy()
 
+filegroup(
+    name = "core_srcs_nogazelle",
+    srcs = [
+        "AtlasTypes.cpp",
+        "AtlasTypes.h",
+        "Blend.cpp",
+        "Blend.h",
+        "BufferWriter.h",
+        "GrAHardwareBufferUtils.h",
+        "GrRectanizer.h",
+        "KeyBuilder.h",
+        "Rectanizer.h",
+        "RectanizerPow2.cpp",
+        "RectanizerPow2.h",
+        "RectanizerSkyline.cpp",
+        "RectanizerSkyline.h",
+        "RefCntedCallback.h",
+        "ResourceKey.cpp",
+        "ResourceKey.h",
+        "ShaderErrorHandler.cpp",
+        "Swizzle.cpp",
+        "Swizzle.h",
+    ],
+)
+
+filegroup(
+    name = "srcs_nogazelle",
+    srcs = [
+        ":core_srcs_nogazelle",
+        "//src/gpu/ganesh:srcs_nogazelle",
+        "//src/gpu/tessellate:srcs_nogazelle",
+    ],
+    visibility = ["//:__pkg__"],
+)
+
+
 cc_library(
     name = "core_srcs",
     deps = [

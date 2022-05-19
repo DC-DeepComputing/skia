@@ -6,6 +6,23 @@ exports_files_legacy()
 
 enforce_iwyu_on_package()
 
+filegroup(
+    name = "srcs_nogazelle",
+    srcs = [
+        "DSLBlock.cpp",
+        "DSLCase.cpp",
+        "DSLCore.cpp",
+        "DSLExpression.cpp",
+        "DSLFunction.cpp",
+        "DSLLayout.cpp",
+        "DSLStatement.cpp",
+        "DSLSymbols.cpp",
+        "DSLType.cpp",
+        "DSLVar.cpp",
+        "//src/sksl/dsl/priv:srcs_nogazelle",
+    ],
+)
+
 generated_cc_atom(
     name = "DSLBlock_src",
     srcs = ["DSLBlock.cpp"],

@@ -4,6 +4,20 @@ licenses(["notice"])
 
 exports_files_legacy()
 
+filegroup(
+    name = "srcs_nogazelle",
+    srcs = [
+        "Glyph.h",
+        "GlyphVector.cpp",
+        "GlyphVector.h",
+        "StrikeCache.cpp",
+        "StrikeCache.h",
+        "SubRunAllocator.cpp",
+        "SubRunAllocator.h",
+    ],
+    visibility = ["//:__pkg__"],
+)
+
 generated_cc_atom(
     name = "GlyphVector_hdr",
     hdrs = ["GlyphVector.h"],
