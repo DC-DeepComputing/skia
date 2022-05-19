@@ -118,6 +118,30 @@
       },
       "revId": "11af67e1b291a6a6b5a98267248abb142ec8660f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "da31370b_cdb136cd",
+        "filename": "modules/particles/src/SkParticleBinding.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 305,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2022-05-19T13:54:36Z",
+      "side": 1,
+      "message": "Given that we are targeting demos for now, I went ahead and moved all of the multiframe SkImage code to viewer. I liked Florin\u0027s idea of having the ResourceProvider hijack the Image creation, so I wrapped the multiframe asset in a WrapperAsset to pass along the direct SkImage.\n\nI like the idea of sampling from different parts of the timeline, but for longer form content, the atlas might be too big. We can consider supporting smaller multiframe assets through an atlas in a followup.",
+      "parentUuid": "3917268e_ae2e8162",
+      "range": {
+        "startLine": 275,
+        "startChar": 0,
+        "endLine": 305,
+        "endChar": 0
+      },
+      "revId": "11af67e1b291a6a6b5a98267248abb142ec8660f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
