@@ -403,7 +403,7 @@ void* SkBitmap::getAddr(int x, int y) const {
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 
-void SkBitmap::erase(SkColor c, const SkIRect& area) const {
+void SkBitmap::erase(SkColor4f c, const SkIRect& area, SkColorSpace* colorSpace) const {
     SkDEBUGCODE(this->validate();)
 
     if (kUnknown_SkColorType == this->colorType()) {
@@ -416,9 +416,15 @@ void SkBitmap::erase(SkColor c, const SkIRect& area) const {
         return;
     }
 
-    if (result.erase(c, area)) {
+    if (result.erase(c, colorSpace, &area)) {
         this->notifyPixelsChanged();
     }
+}
+
+void SkBitmap::erase(SkColor c, const SkIRect& area) const { erase(SkColor4f::FromColor(c), area); }
+
+void SkBitmap::eraseColor(SkColor4f c, SkColorSpace* colorSpace) const {
+    this->erase(c, SkIRect::MakeWH(this->width(), this->height()), colorSpace);
 }
 
 void SkBitmap::eraseColor(SkColor c) const {
