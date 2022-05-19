@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c159810c_97f7bc89",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-05-19T05:58:05Z",
+      "side": 1,
+      "message": "At patch set 7 the output is almost the same as https://skia-review.googlesource.com/c/skia/+/540136/1 but without the indexing issue (in particular hardstop_gradients works correclty). However, I think this code is a bit easier to understand and easier to modify if needed.",
+      "revId": "4bdf7f373af7595332adc1bf4f95e0c05fe77cdc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
