@@ -542,7 +542,7 @@ const std::string& SkRuntimeEffect::source() const {
 }
 
 SkSL::Version SkRuntimeEffect::requiredVersion() const {
-    return fBaseProgram->fConfig->fRequiredVersion;
+    return fBaseProgram->fConfig->fRequiredSkSLVersion;
 }
 
 size_t SkRuntimeEffect::uniformSize() const {

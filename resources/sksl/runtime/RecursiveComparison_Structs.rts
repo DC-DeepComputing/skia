@@ -1,3 +1,5 @@
+#version 300
+
 uniform half4 colorGreen, colorRed;
 
 struct S {float f1; float f2; float f3; };

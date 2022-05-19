@@ -130,6 +130,19 @@ static void test_one_permutation(skiatest::Reporter* r,
         return;
     }
 
+    SkSL::Version requiredVersion = result.effect->requiredVersion();
+    SkSL::Version deviceVersion = surface->capabilities()->skslVersion();
+
+    if (requiredVersion > deviceVersion) {
+        if (surface->peekPixels(nullptr)) {
+            // Special case - the only CPU tests we run that require ES3 are known to use features
+            // available in skvm, even though we don't have full ES3 support. So let it slide...
+        } else {
+            // We're on a GPU device that can't run this particular test
+            return;
+        }
+    }
+
     static constexpr float kArray[5] = {1, 2, 3, 4, 5};
 
     SkRuntimeShaderBuilder builder(result.effect);
@@ -204,8 +217,9 @@ static void test_permutations(skiatest::Reporter* r,
                               SkSurface* surface,
                               const char* testFile,
                               bool strictES2) {
-    SkRuntimeEffect::Options options =
-            strictES2 ? SkRuntimeEffect::Options{} : SkRuntimeEffectPriv::ES3Options();
+    // TODO(skia:11209): Remove this once all tests that require ES3 have #version 300
+    SkRuntimeEffect::Options options = SkRuntimeEffectPriv::ES3Options();
+
     options.forceUnoptimized = false;
     test_one_permutation(r, surface, testFile, "", options);
 
