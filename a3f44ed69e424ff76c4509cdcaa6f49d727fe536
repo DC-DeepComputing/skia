@@ -16,6 +16,23 @@
       "message": "Hey Brian! This all make sense to you?",
       "revId": "a3f44ed69e424ff76c4509cdcaa6f49d727fe536",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dfd3236c_77e8cd58",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-05-19T16:13:30Z",
+      "side": 1,
+      "message": "It does. Though, I wonder whether we should be taking an (optional) sk_sp\u003cSkColorSpace\u003e a la SkPaint::setColor().",
+      "revId": "a3f44ed69e424ff76c4509cdcaa6f49d727fe536",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
