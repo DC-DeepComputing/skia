@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3ef208bb_6ed757a3",
+        "filename": "src/core/SkBitmap.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 424,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-05-19T20:49:52Z",
+      "side": 1,
+      "message": "last nit: line length (\u003e100)",
+      "range": {
+        "startLine": 424,
+        "startChar": 0,
+        "endLine": 424,
+        "endChar": 115
+      },
+      "revId": "a1534aa8490e1d43f6a5e8800173df820b585ede",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
