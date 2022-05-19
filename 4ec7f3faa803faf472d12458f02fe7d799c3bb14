@@ -16,6 +16,24 @@
       "message": "This version looks better to me. I\u0027ll wait to see how the rest of the blend stuff shakes out, but we could also avoid any risk of collision (and make the common case smaller/faster) by storing them separately:\n\n  uint32_t fBlendModeMask;\n  SkTHash\u003cuint32_t\u003e fBlenderIDs;\n  \nJust a thought...",
       "revId": "4ec7f3faa803faf472d12458f02fe7d799c3bb14",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "273c3ddc_082ddeab",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 16
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-05-19T13:24:19Z",
+      "side": 1,
+      "message": "lol - yep - that was actually my first implementation.",
+      "parentUuid": "92523f58_f2ca99f4",
+      "revId": "4ec7f3faa803faf472d12458f02fe7d799c3bb14",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
