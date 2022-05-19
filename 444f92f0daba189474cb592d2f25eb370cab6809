@@ -16,6 +16,23 @@
       "message": "Hi Leandro, could you help to submit it to CQ?\n\nThanks!",
       "revId": "444f92f0daba189474cb592d2f25eb370cab6809",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bf4f68a9_eac6fd5b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 12064
+      },
+      "writtenOn": "2022-05-19T13:40:51Z",
+      "side": 1,
+      "message": "Friendly ping.\nThanks!",
+      "revId": "444f92f0daba189474cb592d2f25eb370cab6809",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
