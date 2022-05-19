@@ -16,6 +16,24 @@
       "message": "Changed this to make iterateThroughSingleRunByStyles count the width of text ranges (including placeholders) even if the range has no height.\n\nDoes that look safe?",
       "revId": "a1c7cc8370be04342c0edbc603e35db9f858f42d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1f7c6dde_38f7a03b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-05-19T19:25:44Z",
+      "side": 1,
+      "message": "From the history of this code I found the following: we have clipContext.clip.height() \u003d\u003d 0 when the run is a placeholder with infinite font metric ascent (I assume, font size is infinite).\nThe change was introduced as a fix for one of these 2 bugs:\nPlaceholders should not be taken in MinIntrinsicWidth. \nPlaceholders should allow Inf in some style values (as weird as it sounds) \nBugs: skia:10138, skia:10159\nI have trouble reproducing the situation but I think it\u0027s still possible to come up with infinite size and non-zero width for a placeholder. That would be the case when your change will produce different (undesired) results.\nIf you ask me, infinite sizes should not be allowed in the first place.",
+      "parentUuid": "68d99729_bf303801",
+      "revId": "a1c7cc8370be04342c0edbc603e35db9f858f42d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
