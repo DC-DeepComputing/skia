@@ -52,6 +52,24 @@
       "parentUuid": "1f7c6dde_38f7a03b",
       "revId": "a1c7cc8370be04342c0edbc603e35db9f858f42d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ce244f3d_84280e2c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-05-19T19:42:44Z",
+      "side": 1,
+      "message": "run-\u003eadvance().fX will be Inf if the placeholder has infinite width, too.\nThat is the only situation that concerns me. It\u0027s weird and unclear anyway, and I think we will catch it with Google3 testing - so, yes, it\u0027s pretty safe. Just keep an eye on Google3 tests.",
+      "parentUuid": "cc6e66f2_5bd3369f",
+      "revId": "a1c7cc8370be04342c0edbc603e35db9f858f42d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
