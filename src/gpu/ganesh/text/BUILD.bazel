@@ -4,6 +4,26 @@ licenses(["notice"])
 
 exports_files_legacy()
 
+filegroup(
+    name = "srcs_nogazelle",
+    srcs = [
+        "GrAtlasManager.cpp",
+        "GrAtlasManager.h",
+        "GrDistanceFieldAdjustTable.cpp",
+        "GrDistanceFieldAdjustTable.h",
+        "GrSDFMaskFilter.cpp",
+        "GrSDFMaskFilter.h",
+        "GrSDFTControl.cpp",
+        "GrSDFTControl.h",
+        "GrSlug.cpp",
+        "GrTextBlob.cpp",
+        "GrTextBlob.h",
+        "GrTextBlobRedrawCoordinator.cpp",
+        "GrTextBlobRedrawCoordinator.h",
+    ],
+    visibility = ["//src/gpu/ganesh:__pkg__"],
+)
+
 generated_cc_atom(
     name = "GrAtlasManager_hdr",
     hdrs = ["GrAtlasManager.h"],

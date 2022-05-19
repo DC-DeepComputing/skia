@@ -4,6 +4,23 @@ licenses(["notice"])
 
 exports_files_legacy()
 
+filegroup(
+    name = "srcs_nogazelle",
+    srcs = [
+        "GrPathTessellationShader.cpp",
+        "GrPathTessellationShader.h",
+        "GrStrokeTessellationShader.cpp",
+        "GrStrokeTessellationShader.h",
+        "GrTessellationShader.cpp",
+        "GrTessellationShader.h",
+        "PathTessellator.cpp",
+        "PathTessellator.h",
+        "StrokeTessellator.cpp",
+        "StrokeTessellator.h",
+    ],
+    visibility = ["//src/gpu/ganesh:__pkg__"],
+)
+
 generated_cc_atom(
     name = "GrPathTessellationShader_hdr",
     hdrs = ["GrPathTessellationShader.h"],
