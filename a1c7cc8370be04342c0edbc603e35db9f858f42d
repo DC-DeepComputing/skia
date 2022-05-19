@@ -34,6 +34,24 @@
       "parentUuid": "68d99729_bf303801",
       "revId": "a1c7cc8370be04342c0edbc603e35db9f858f42d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cc6e66f2_5bd3369f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 7708
+      },
+      "writtenOn": "2022-05-19T19:34:33Z",
+      "side": 1,
+      "message": "The code path in TextLine::measureTextInsideOneRun that checks SkScalarIsFinite(run-\u003efFontMetrics.fAscent) for placeholders will always use run-\u003eadvance().fX for the clip width even if it returns zero for the clip height.\n\nSo it looks like it should be safe to add the clip width to textOffsetInRun even if the placeholder has infinite font metric ascent.",
+      "parentUuid": "1f7c6dde_38f7a03b",
+      "revId": "a1c7cc8370be04342c0edbc603e35db9f858f42d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
