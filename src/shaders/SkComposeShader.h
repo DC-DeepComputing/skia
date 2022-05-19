@@ -17,7 +17,7 @@ class SkShaderCodeDictionary;
 
 class SkShader_Blend final : public SkShaderBase {
 public:
-    SkShader_Blend(SkBlendMode mode, sk_sp<SkShader> dst, sk_sp<SkShader> src)
+    SkShader_Blend(SkBlendMode mode, sk_sp<SkShader> dst, sk_sp<SkShader> src, bool)
         : fDst(std::move(dst))
         , fSrc(std::move(src))
         , fBlender(nullptr)

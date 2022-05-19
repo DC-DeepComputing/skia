@@ -56,7 +56,7 @@ sk_sp<SkShader> SkShaders::Blend(SkBlendMode mode, sk_sp<SkShader> dst, sk_sp<Sk
         case SkBlendMode::kSrc:   return src;
         default: break;
     }
-    return sk_sp<SkShader>(new SkShader_Blend(mode, std::move(dst), std::move(src)));
+    return sk_sp<SkShader>(new SkShader_Blend(mode, std::move(dst), std::move(src), true));
 }
 
 sk_sp<SkShader> SkShaders::Blend(sk_sp<SkBlender> blender, sk_sp<SkShader> dst, sk_sp<SkShader> src) {
