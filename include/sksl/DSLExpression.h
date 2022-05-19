@@ -103,9 +103,9 @@ public:
     void setPosition(Position pos);
 
     /**
-     * Overloads the '=' operator to create an SkSL assignment statement.
+     * Performs assignment, like the '=' operator.
      */
-    DSLPossibleExpression assign(DSLExpression other);
+    DSLExpression assign(DSLExpression other);
 
     DSLExpression x(Position pos = {});
 
@@ -131,7 +131,7 @@ public:
     /**
      * Creates an SkSL array index expression.
      */
-    DSLPossibleExpression operator[](DSLExpression index);
+    DSLExpression operator[](DSLExpression index);
 
     DSLPossibleExpression operator()(SkTArray<DSLExpression> args, Position pos = {});
 
@@ -288,16 +288,6 @@ public:
     DSLExpression a(Position pos = {});
 
     DSLExpression field(std::string_view name, Position pos = {});
-
-    DSLPossibleExpression assign(DSLExpression expr);
-
-    DSLPossibleExpression assign(int expr);
-
-    DSLPossibleExpression assign(float expr);
-
-    DSLPossibleExpression assign(double expr);
-
-    DSLPossibleExpression operator[](DSLExpression index);
 
     DSLPossibleExpression operator()(SkTArray<DSLExpression> args, Position pos = {});
 
