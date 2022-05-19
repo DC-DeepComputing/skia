@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "09638136_58bb6cbc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-05-19T14:18:13Z",
+      "side": 1,
+      "message": "Yeah, I like this approach!",
+      "revId": "7547096825ad37062ae1ba42ea5a48bfbb9210d3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3b5c980d_85353c5c",
+        "filename": "modules/particles/src/SkParticleBinding.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 244,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-05-19T14:18:13Z",
+      "side": 1,
+      "message": "Probably don\u0027t need any changes to this file, now? (And therefore, no changes to BUILD.bazel)?",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 244,
+        "endChar": 8
+      },
+      "revId": "7547096825ad37062ae1ba42ea5a48bfbb9210d3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8a299430_767a0202",
+        "filename": "tools/viewer/ParticlesSlide.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-05-19T14:18:13Z",
+      "side": 1,
+      "message": "Leftover debug code, want to remove this?",
+      "range": {
+        "startLine": 82,
+        "startChar": 12,
+        "endLine": 82,
+        "endChar": 68
+      },
+      "revId": "7547096825ad37062ae1ba42ea5a48bfbb9210d3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
