@@ -19,13 +19,8 @@
 
 #include <list>
 #include <memory>
-#include <stack>
 #include <string_view>
 #include <vector>
-
-#if !defined(SKSL_STANDALONE) && SK_SUPPORT_GPU
-#include "src/gpu/ganesh/GrFragmentProcessor.h"
-#endif
 
 namespace SkSL {
 
@@ -190,15 +185,6 @@ private:
     Program::Inputs fInputs;
     // for DSL error reporting purposes
     const char* fFilename = "";
-
-#if !defined(SKSL_STANDALONE) && SK_SUPPORT_GPU
-    struct StackFrame {
-        GrFragmentProcessor::ProgramImpl* fProcessor;
-        GrFragmentProcessor::ProgramImpl::EmitArgs* fEmitArgs;
-        SkSL::StatementArray fSavedDeclarations;
-    };
-    std::stack<StackFrame, std::list<StackFrame>> fStack;
-#endif // !defined(SKSL_STANDALONE) && SK_SUPPORT_GPU
 
     friend class dsl::DSLCore;
     friend class dsl::DSLWriter;
