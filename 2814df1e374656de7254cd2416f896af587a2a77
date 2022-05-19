@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d30ed065_01eb9d28",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-05-19T15:27:24Z",
+      "side": 1,
+      "message": "sparkle.gif isn\u0027t referenced by the new effect you added? Did you intend to add that? Should we add that? Looks like something created internally?",
+      "revId": "2814df1e374656de7254cd2416f896af587a2a77",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
