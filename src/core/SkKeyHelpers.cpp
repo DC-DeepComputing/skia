@@ -30,6 +30,7 @@ constexpr SkPMColor4f kErrorColor = { 1, 0, 0, 1 };
 
 namespace {
 
+#ifdef SK_GRAPHITE_ENABLED
 // This can be used to catch errors in blocks that have a fixed, known block data size
 void validate_block_header(const SkPaintParamsKeyBuilder* builder,
                            SkBuiltInCodeSnippetID codeSnippetID,
@@ -40,26 +41,10 @@ void validate_block_header(const SkPaintParamsKeyBuilder* builder,
     SkASSERT(builder->byte(headerOffset+SkPaintParamsKey::kBlockSizeOffsetInBytes) ==
              fullBlockSize);
 }
+#endif
 
 } // anonymous namespace
 
-//--------------------------------------------------------------------------------------------------
-namespace DepthStencilOnlyBlock {
-
-static const int kBlockDataSize = 0;
-
-void AddToKey(const SkKeyContext& /* keyContext */,
-              SkPaintParamsKeyBuilder* builder,
-              SkPipelineDataGatherer* /* gatherer */) {
-    builder->beginBlock(SkBuiltInCodeSnippetID::kDepthStencilOnlyDraw);
-    builder->endBlock();
-
-    validate_block_header(builder,
-                          SkBuiltInCodeSnippetID::kDepthStencilOnlyDraw,
-                          kBlockDataSize);
-}
-
-} // namespace DepthStencilOnlyBlock
 
 //--------------------------------------------------------------------------------------------------
 namespace SolidColorShaderBlock {
@@ -678,9 +663,6 @@ SkUniquePaintParamsID CreateKey(const SkKeyContext& keyContext,
     SkDEBUGCODE(builder->checkReset());
 
     switch (s) {
-        case skgpu::graphite::ShaderCombo::ShaderType::kNone:
-            DepthStencilOnlyBlock::AddToKey(keyContext, builder, nullptr);
-            break;
         case skgpu::graphite::ShaderCombo::ShaderType::kSolidColor:
             SolidColorShaderBlock::AddToKey(keyContext, builder, nullptr, kErrorColor);
             break;
