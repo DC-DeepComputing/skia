@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "52a6e398_fdf3642d",
+        "filename": "include/private/SkColorData.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 416,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-05-19T19:45:17Z",
+      "side": 1,
+      "message": "I switched this back to `lrint` for now so that this change doesn\u0027t break chromium and g3 tests. I still think doing a round half up is the right approach, so have made a tracking bug to update SkColorData and to_half to use that rounding mode: https://bugs.chromium.org/p/skia/issues/detail?id\u003d13341",
+      "parentUuid": "3a76300c_c4cc8f9d",
+      "range": {
+        "startLine": 416,
+        "startChar": 4,
+        "endLine": 416,
+        "endChar": 100
+      },
+      "revId": "adfda962b3ad77bcc8535f9891b439914bd979fd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a04ae211_d16b0402",
@@ -85,6 +109,30 @@
       "side": 1,
       "message": "I noticed this when I was hunting down other behavior in a later change, and mis-remembered that the Sk4f_to_L32 rounding is entirely around float rounding. There\u0027s less pressure then to update this, since it\u0027s float-\u003ehalf and not float-\u003euint8 code that is affected.\n\nOn the other hand, it is still a point of consistency, progressing towards all color values round half up (which seemed to best fit FROUND_TO_NEAREST_INT).",
       "parentUuid": "af924212_06e19d82",
+      "range": {
+        "startLine": 669,
+        "startChar": 66,
+        "endLine": 669,
+        "endChar": 90
+      },
+      "revId": "adfda962b3ad77bcc8535f9891b439914bd979fd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0c1ee116_fb0f3258",
+        "filename": "include/private/SkVx.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 669,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-05-19T19:45:17Z",
+      "side": 1,
+      "message": "Holding off on this for now, since Sk4f_to_L32 had to go back to `lrint` as well.",
+      "parentUuid": "589a1ee2_2162a6e6",
       "range": {
         "startLine": 669,
         "startChar": 66,

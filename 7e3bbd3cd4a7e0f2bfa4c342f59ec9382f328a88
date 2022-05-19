@@ -34,6 +34,23 @@
       "parentUuid": "e594130c_a4b1dc6a",
       "revId": "7e3bbd3cd4a7e0f2bfa4c342f59ec9382f328a88",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "de3cc29c_a4143284",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-05-19T19:45:17Z",
+      "side": 1,
+      "message": "After switching Sk4f_to_L32 back to lrint, chromium is happy and the original g3 failure that this CL caused is gone (the red appears unrelated). Landing this and will follow up with a guarded change to handle the rounding.",
+      "revId": "7e3bbd3cd4a7e0f2bfa4c342f59ec9382f328a88",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
