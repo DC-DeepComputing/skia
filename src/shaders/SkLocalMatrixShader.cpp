@@ -123,7 +123,7 @@ sk_sp<SkShader> SkShader::makeWithLocalMatrix(const SkMatrix& localMatrix) const
         baseShader = sk_ref_sp(const_cast<SkShader*>(this));
     }
 
-    return sk_make_sp<SkLocalMatrixShader>(std::move(baseShader), *lm);
+    return sk_make_sp<SkLocalMatrixShader>(std::move(baseShader), *lm, true);
 }
 
 ////////////////////////////////////////////////////////////////////
