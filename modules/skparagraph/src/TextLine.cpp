@@ -254,10 +254,6 @@ void TextLine::ensureTextBlobCachePopulated() {
                   SkScalar runOffsetInLine,
                   TextRange textRange,
                   SkScalar* runWidthInLine) {
-               if (run->placeholderStyle() != nullptr) {
-                   *runWidthInLine = run->advance().fX;
-                   return true;
-               }
                *runWidthInLine = this->iterateThroughSingleRunByStyles(
                    run,
                    runOffsetInLine,
@@ -835,6 +831,9 @@ SkScalar TextLine::iterateThroughSingleRunByStyles(const Run* run,
                                                    TextRange textRange,
                                                    StyleType styleType,
                                                    const RunStyleVisitor& visitor) const {
+    if (run->isPlaceholder()) {
+        return run->advance().fX;
+    }
 
     if (run->fEllipsis) {
         // Extra efforts to get the ellipsis text style
@@ -1015,10 +1014,6 @@ LineMetrics TextLine::getMetrics() const {
     this->iterateThroughVisualRuns(false,
         [this, &result]
         (const Run* run, SkScalar runOffsetInLine, TextRange textRange, SkScalar* runWidthInLine) {
-        if (run->placeholderStyle() != nullptr) {
-            *runWidthInLine = run->advance().fX;
-            return true;
-        }
         *runWidthInLine = this->iterateThroughSingleRunByStyles(
         run, runOffsetInLine, textRange, StyleType::kForeground,
         [&result, &run](TextRange textRange, const TextStyle& style, const ClipContext& context) {
