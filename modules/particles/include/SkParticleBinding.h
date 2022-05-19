@@ -60,7 +60,6 @@ public:
                                                                    skvm::Uniforms*,
                                                                    SkArenaAlloc*) = 0;
     virtual void prepare(const skresources::ResourceProvider*) = 0;
-
     static void RegisterBindingTypes();
 
     /*
