@@ -134,6 +134,24 @@
       "parentUuid": "b8d4f254_da18a31f",
       "revId": "a3f44ed69e424ff76c4509cdcaa6f49d727fe536",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "aa496c4d_a85100a7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-05-19T19:13:26Z",
+      "side": 1,
+      "message": "Not the end of the world, but it would be nice to mimic what pixmap did (and also to keep the color + colorspace bound tighter. eg: Have both versions, so the colorspace is \"optional\" as the second argument:\n\n  (color, colorspace, area)\n  (color, area)",
+      "parentUuid": "12dee509_a214d8a0",
+      "revId": "a3f44ed69e424ff76c4509cdcaa6f49d727fe536",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
