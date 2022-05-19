@@ -86,6 +86,14 @@ private:
     uint32_t fID;
 };
 
+class foo {
+public:
+    foo* addChild(int childIndex, ShaderType);
+
+private:
+    int fNumChildren;
+};
+
 class CombinationBuilder {
 public:
     enum class BlendModeGroup {
@@ -105,6 +113,7 @@ public:
 
     // Shaders
     void add(ShaderCombo);
+    foo* add(ShaderType);
 
     void reset();
 
