@@ -16,6 +16,24 @@
       "message": "FYI: Canary-G3 borg job sems to be timing out. Going to try restarting it.",
       "revId": "7e3bbd3cd4a7e0f2bfa4c342f59ec9382f328a88",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6d7823ed_22f08b16",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5145
+      },
+      "writtenOn": "2022-05-19T17:53:42Z",
+      "side": 1,
+      "message": "The Canary-G3 job did run after restarting it: https://critique.corp.google.com/cl/449746814/analysis",
+      "parentUuid": "e594130c_a4b1dc6a",
+      "revId": "7e3bbd3cd4a7e0f2bfa4c342f59ec9382f328a88",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
