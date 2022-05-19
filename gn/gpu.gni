@@ -23,6 +23,7 @@ skia_gpu_sources = [
 
   # Private includes
   "$_include/private/chromium/GrSlug.h",
+  "$_include/private/chromium/Slug.h",
   "$_include/private/gpu/ganesh/GrContext_Base.h",
   "$_include/private/gpu/ganesh/GrGLTypesPriv.h",
   "$_include/private/gpu/ganesh/GrImageContext.h",
