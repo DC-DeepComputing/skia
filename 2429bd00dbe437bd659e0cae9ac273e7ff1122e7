@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1d5ff927_7954e80e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2022-05-19T21:37:31Z",
+      "side": 1,
+      "message": "rolled forward rive hash to f617db377391e27362939e3fe2fe6af7fd056a2b",
+      "revId": "2429bd00dbe437bd659e0cae9ac273e7ff1122e7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
