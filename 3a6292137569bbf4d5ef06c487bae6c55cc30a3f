@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eeb40cbc_c2d143c3",
+        "filename": "infra/bots/gen_tasks_logic/dm_flags.go",
+        "patchSetId": 2
+      },
+      "lineNbr": 1092,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-05-19T19:18:39Z",
+      "side": 1,
+      "message": "`gm`, not `tests`",
+      "range": {
+        "startLine": 1092,
+        "startChar": 13,
+        "endLine": 1092,
+        "endChar": 18
+      },
+      "revId": "3a6292137569bbf4d5ef06c487bae6c55cc30a3f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
