@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1e4c84ed_1d825fdb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-05-19T14:33:33Z",
+      "side": 1,
+      "message": "I believe that\u0027s right; the depth-only draws now just have a SkUniquePaintParamsID equal to SK_InvalidUniqueID",
+      "revId": "4f1f349e6ce18ff02a0080157410d88130b1fb63",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
