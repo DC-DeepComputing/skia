@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "035cda22_4bc4621f",
+        "filename": "include/private/SkVx.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 509,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-05-19T20:20:45Z",
+      "side": 1,
+      "message": "Should this be N*sizeof(T)?",
+      "range": {
+        "startLine": 509,
+        "startChar": 18,
+        "endLine": 509,
+        "endChar": 27
+      },
+      "revId": "c77d17a14395f272ec8425e0a558e8ae8e44cdef",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
