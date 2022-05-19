@@ -107,6 +107,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0d42a3b0_db8aff25",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18974
+      },
+      "writtenOn": "2022-05-19T18:59:47Z",
+      "side": 1,
+      "message": "I checked out your changes and ran my test code and everything seems to work just fine, even without the maxDepth constraint (2000 stops render correctly and fast). I\u0027m super glad it works correctly, but I\u0027m totally confused as to why it is no longer needed now. Have you changed anything else, just out of curiosity?",
+      "parentUuid": "ceda825f_a6e14fe8",
+      "revId": "6aa3a739056a60de0d8f4514acf829355c10f99c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d0bc1acf_ce6b1ab6",
         "filename": "src/pdf/SkPDFGradientShader.cpp",
         "patchSetId": 1
