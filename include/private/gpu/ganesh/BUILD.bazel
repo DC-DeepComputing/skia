@@ -4,6 +4,22 @@ licenses(["notice"])
 
 exports_files_legacy()
 
+filegroup(
+    name = "hdrs_nogazelle",
+    srcs = [
+        "GrContext_Base.h",
+        "GrD3DTypesMinimal.h",
+        "GrDawnTypesPriv.h",
+        "GrGLTypesPriv.h",
+        "GrImageContext.h",
+        "GrMockTypesPriv.h",
+        "GrMtlTypesPriv.h",
+        "GrTypesPriv.h",
+        "GrVkTypesPriv.h",
+    ],
+    visibility = ["//include/private/gpu:__pkg__"],
+)
+
 generated_cc_atom(
     name = "GrContext_Base_hdr",
     hdrs = ["GrContext_Base.h"],

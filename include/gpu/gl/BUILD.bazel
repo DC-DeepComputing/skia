@@ -4,6 +4,20 @@ licenses(["notice"])
 
 exports_files_legacy()
 
+filegroup(
+    name = "hdrs_nogazelle",
+    srcs = [
+        "GrGLAssembleHelpers.h",
+        "GrGLAssembleInterface.h",
+        "GrGLConfig.h",
+        "GrGLExtensions.h",
+        "GrGLFunctions.h",
+        "GrGLInterface.h",
+        "GrGLTypes.h",
+    ],
+    visibility = ["//include/gpu:__pkg__"],
+)
+
 generated_cc_atom(
     name = "GrGLAssembleHelpers_hdr",
     hdrs = ["GrGLAssembleHelpers.h"],

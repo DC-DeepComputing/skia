@@ -6,6 +6,21 @@ exports_files_legacy()
 
 enforce_iwyu_on_package()
 
+filegroup(
+    name = "srcs_nogazelle",
+    srcs = [
+        "SkSLBuiltinVariableScanner.cpp",
+        "SkSLEliminateDeadFunctions.cpp",
+        "SkSLEliminateDeadGlobalVariables.cpp",
+        "SkSLEliminateDeadLocalVariables.cpp",
+        "SkSLEliminateEmptyStatements.cpp",
+        "SkSLEliminateUnreachableCode.cpp",
+        "SkSLProgramWriter.h",
+        "SkSLTransform.h",
+    ],
+    visibility = ["//src/sksl:__pkg__"],
+)
+
 generated_cc_atom(
     name = "SkSLBuiltinVariableScanner_src",
     srcs = ["SkSLBuiltinVariableScanner.cpp"],

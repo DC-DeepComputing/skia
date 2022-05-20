@@ -9,6 +9,14 @@ exports_files(
     ["//third_party/skcms:__pkg__"],
 )
 
+filegroup(
+    name = "hdrs_nogazelle",
+    srcs = [
+        "skcms.h",
+    ],
+    visibility = ["//include:__pkg__"],
+)
+
 generated_cc_atom(
     name = "skcms_hdr",
     hdrs = ["skcms.h"],
