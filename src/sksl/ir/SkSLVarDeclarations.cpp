@@ -15,7 +15,48 @@
 #include "src/sksl/SkSLThreadContext.h"
 
 namespace SkSL {
+namespace {
 
+static bool check_valid_uniform_type(const Type& t,
+                                     const Context& context,
+                                     std::string* detailedErrorMsg) {
+    const Type& ct = t.componentType();
+
+    // In RuntimeEffects we only allow a restricted set of types, namely shader/blender/colorFilter,
+    // 32-bit signed integers, 16-bit and 32-bit floats, and their composites.
+    if (ProgramConfig::IsRuntimeEffect(context.fConfig->fKind)) {
+        if (t.isEffectChild() ||
+            ((t.isScalar() || t.isVector()) && t.isSigned() && ct.bitWidth() == 32) ||
+            ((t.isScalar() || t.isVector() || t.isMatrix()) && ct.isFloat())) {
+            return true;
+        }
+
+        // Everything else is an error.
+        return false;
+    }
+
+    // We disallow boolean uniforms in SkSL since they are not well supported by backend platforms
+    // and drivers.
+    if ((t.isScalar() || t.isVector()) && ct.isBoolean()) {
+        return false;
+    }
+
+    // In non-RTE SkSL we allow structs and interface blocks to be uniforms but we must make sure
+    // their fields are allowed.
+    if (t.isInterfaceBlock() || t.isStruct()) {
+        for (const Type::Field& field : t.fields()) {
+            if (!check_valid_uniform_type(*field.fType, context, detailedErrorMsg)) {
+                *detailedErrorMsg = "\n    type '" + t.displayName() + "' contains member '" +
+                                    field.fType->displayName() + " " + std::string(field.fName) +
+                                    "' that is disallowed in a uniform" + *detailedErrorMsg;
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
+}  // namespace
 
 std::unique_ptr<Statement> VarDeclaration::clone() const {
     // Cloning a VarDeclaration is inherently problematic, as we normally expect a one-to-one
@@ -85,22 +126,17 @@ void VarDeclaration::ErrorCheck(const Context& context,
     if ((modifiers.fFlags & Modifiers::kIn_Flag) && (modifiers.fFlags & Modifiers::kUniform_Flag)) {
         context.fErrors->error(pos, "'in uniform' variables not permitted");
     }
+    if ((modifiers.fFlags & Modifiers::kUniform_Flag)) {
+        std::string detailedErrorMsg;
+        if (!check_valid_uniform_type(*baseType, context, &detailedErrorMsg)) {
+            context.fErrors->error(pos,
+                                   "variables of type '" + baseType->displayName() +
+                                           "' may not be uniform" + detailedErrorMsg);
+        }
+    }
     if (ProgramConfig::IsRuntimeEffect(context.fConfig->fKind)) {
         if (modifiers.fFlags & Modifiers::kIn_Flag) {
             context.fErrors->error(pos, "'in' variables not permitted in runtime effects");
-        }
-        if (modifiers.fFlags & Modifiers::kUniform_Flag) {
-            auto validUniformType = [](const Type& t) {
-                const Type& ct = t.componentType();
-                return t.isEffectChild() ||
-                       ((t.isScalar() || t.isVector()) && ct.isSigned() && ct.bitWidth() == 32) ||
-                       ((t.isScalar() || t.isVector() || t.isMatrix()) && ct.isFloat());
-            };
-            if (!validUniformType(*baseType)) {
-                context.fErrors->error(
-                        pos,
-                        "variables of type '" + baseType->displayName() + "' may not be uniform");
-            }
         }
     }
     if (baseType->isEffectChild() && !(modifiers.fFlags & Modifiers::kUniform_Flag)) {
