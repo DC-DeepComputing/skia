@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d51c53f4_ebf7eef9",
+        "filename": "src/gpu/AtlasTypes.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 196,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-05-20T14:08:05Z",
+      "side": 1,
+      "message": "I defined it a little better, let me know what you think.",
+      "parentUuid": "8fbe5018_a18629c3",
+      "range": {
+        "startLine": 196,
+        "startChar": 63,
+        "endLine": 196,
+        "endChar": 70
+      },
+      "revId": "b433adacc99808825e55776ae4d274db905e1081",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "37f5cfd6_8d571f02",
         "filename": "src/gpu/AtlasTypes.h",
         "patchSetId": 3
@@ -37,6 +61,30 @@
       "writtenOn": "2022-05-19T19:33:36Z",
       "side": 1,
       "message": "this still seems ganesh specific",
+      "range": {
+        "startLine": 199,
+        "startChar": 8,
+        "endLine": 201,
+        "endChar": 21
+      },
+      "revId": "b433adacc99808825e55776ae4d274db905e1081",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3031c1fc_357f2302",
+        "filename": "src/gpu/AtlasTypes.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 201,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-05-20T14:08:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "37f5cfd6_8d571f02",
       "range": {
         "startLine": 199,
         "startChar": 8,
@@ -60,6 +108,30 @@
       "writtenOn": "2022-05-19T19:33:36Z",
       "side": 1,
       "message": "It looks like ownership is passed to the caller here. Should we return an sk_sp\u003cPlot\u003e instead?",
+      "range": {
+        "startLine": 464,
+        "startChar": 4,
+        "endLine": 464,
+        "endChar": 8
+      },
+      "revId": "b433adacc99808825e55776ae4d274db905e1081",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8e68850b_53d8493f",
+        "filename": "src/gpu/AtlasTypes.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 464,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-05-20T14:08:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "82b49b31_ae2fa8b9",
       "range": {
         "startLine": 464,
         "startChar": 4,
