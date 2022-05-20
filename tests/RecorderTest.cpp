@@ -24,10 +24,10 @@ public:
     Tally() { sk_bzero(&fHistogram, sizeof(fHistogram)); }
 
     template <typename T>
-    void operator()(const T&) { ++fHistogram[T::kType]; }
+    void operator()(const T&) { ++fHistogram[T::kType1]; }
 
     template <typename T>
-    int count() const { return fHistogram[T::kType]; }
+    int count() const { return fHistogram[T::kType1]; }
 
     void apply(const SkRecord& record) {
         for (int i = 0; i < record.count(); i++) {

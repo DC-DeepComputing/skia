@@ -156,7 +156,7 @@ enum Tags {
 // A macro to make it a little easier to define a struct that can be stored in SkRecord.
 #define RECORD(T, tags, ...)            \
 struct T {                              \
-    static const Type kType = T##_Type; \
+    static const Type kType1 = T##_Type; \
     static const int kTags = tags;      \
     __VA_ARGS__;                        \
 };
