@@ -53,7 +53,7 @@ struct Stretch {
     }
 };
 
-#define APPEND(record, type, ...) new (record.append<type>()) type{__VA_ARGS__}
+#define APPEND1(record, type, ...) new (record.append1<type>()) type{__VA_ARGS__}
 
 // Basic tests for the low-level SkRecord code.
 DEF_TEST(Record, r) {
@@ -62,7 +62,7 @@ DEF_TEST(Record, r) {
     // Add a simple DrawRect command.
     SkRect rect = SkRect::MakeWH(10, 10);
     SkPaint paint;
-    APPEND(record, SkRecords::DrawRect, paint, rect);
+    APPEND1(record, SkRecords::DrawRect, paint, rect);
 
     // Its area should be 100.
     AreaSummer summer;
@@ -80,13 +80,13 @@ DEF_TEST(Record, r) {
 
 DEF_TEST(Record_defrag, r) {
     SkRecord record;
-    APPEND(record, SkRecords::Save);
-    APPEND(record, SkRecords::ClipRect);
-    APPEND(record, SkRecords::NoOp);
-    APPEND(record, SkRecords::DrawRect);
-    APPEND(record, SkRecords::NoOp);
-    APPEND(record, SkRecords::NoOp);
-    APPEND(record, SkRecords::Restore);
+    APPEND1(record, SkRecords::Save);
+    APPEND1(record, SkRecords::ClipRect);
+    APPEND1(record, SkRecords::NoOp);
+    APPEND1(record, SkRecords::DrawRect);
+    APPEND1(record, SkRecords::NoOp);
+    APPEND1(record, SkRecords::NoOp);
+    APPEND1(record, SkRecords::Restore);
     REPORTER_ASSERT(r, record.count() == 7);
 
     record.defrag();
