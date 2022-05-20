@@ -1,0 +1,35 @@
+load("//bazel:macros.bzl", "exports_files_legacy")
+
+licenses(["notice"])
+
+exports_files_legacy()
+
+filegroup(
+    name = "public_hdrs_nogazelle",
+    srcs = [
+        "//include/android:hdrs_nogazelle",
+        "//include/c:hdrs_nogazelle",
+        "//include/codec:hdrs_nogazelle",
+        "//include/config:hdrs_nogazelle",
+        "//include/core:hdrs_nogazelle",
+        "//include/docs:hdrs_nogazelle",
+        "//include/effects:hdrs_nogazelle",
+        "//include/encode:hdrs_nogazelle",
+        "//include/gpu:hdrs_nogazelle",
+        "//include/pathops:hdrs_nogazelle",
+        "//include/ports:hdrs_nogazelle",
+        "//include/sksl:hdrs_nogazelle",
+        "//include/svg:hdrs_nogazelle",
+        "//include/third_party/skcms:hdrs_nogazelle",
+        "//include/utils:hdrs_nogazelle",
+    ],
+    visibility = ["//:__subpackages__"],
+)
+
+filegroup(
+    name = "private_hdrs_nogazelle",
+    srcs = [
+        "//include/private:hdrs_nogazelle",
+    ],
+    visibility = ["//:__subpackages__"],
+)

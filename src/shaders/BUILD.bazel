@@ -4,6 +4,34 @@ licenses(["notice"])
 
 exports_files_legacy()
 
+filegroup(
+    name = "srcs_nogazelle",
+    srcs = [
+        "SkBitmapProcShader.cpp",
+        "SkBitmapProcShader.h",
+        "SkColorFilterShader.cpp",
+        "SkColorFilterShader.h",
+        "SkColorShader.cpp",
+        "SkColorShader.h",
+        "SkComposeShader.cpp",
+        "SkComposeShader.h",
+        "SkEmptyShader.h",
+        "SkImageShader.cpp",
+        "SkImageShader.h",
+        "SkLocalMatrixShader.cpp",
+        "SkLocalMatrixShader.h",
+        "SkPerlinNoiseShader.cpp",
+        "SkPictureShader.cpp",
+        "SkPictureShader.h",
+        "SkShader.cpp",
+        "SkShaderBase.h",
+        "SkTransformShader.cpp",
+        "SkTransformShader.h",
+        "//src/shaders/gradients:srcs_nogazelle",
+    ],
+    visibility = ["//src:__pkg__"],
+)
+
 cc_library(
     name = "srcs",
     visibility = ["//:__subpackages__"],

@@ -75,6 +75,25 @@ cc_library(
     }),
 )
 
+cc_library(
+    name = "sk_app_nogazelle",
+    srcs = [
+        "Window.cpp",
+        "WindowContext.cpp",
+    ],
+    hdrs = [
+        "Application.h",
+        "DisplayParams.h",
+        "Window.h",
+        "WindowContext.h",
+    ],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//:skia_core_nogazelle",
+        "//tools/skui:skui_nogazelle",
+    ],
+)
+
 generated_cc_atom(
     name = "Application_hdr",
     hdrs = ["Application.h"],
