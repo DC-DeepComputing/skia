@@ -149,6 +149,7 @@ protected:
                                             fColorVB,
                                             /*vertexCount= */ 4,
                                             /*vertexOffset=*/ 0,
+                                            /*uniforms=    */nullptr,
                                             kRect);
                     } else {
                         mesh = SkMesh::Make(fSpecWithNoColor,
@@ -156,6 +157,7 @@ protected:
                                             fNoColorVB,
                                             /*vertexCount=*/4,
                                             kNoColorOffset,
+                                            /*uniforms=*/nullptr,
                                             kRect);
                     }
                 } else {
@@ -170,6 +172,7 @@ protected:
                                                    std::move(ib),
                                                    /*indexCount=*/6,
                                                    kIndexOffset,
+                                                   /*uniforms=*/nullptr,
                                                    kRect);
                     } else {
                         mesh = SkMesh::MakeIndexed(fSpecWithNoColor,
@@ -180,6 +183,7 @@ protected:
                                                    std::move(ib),
                                                    /*indexCount=*/6,
                                                    kIndexOffset,
+                                                   /*uniforms=*/nullptr,
                                                    kRect);
                     }
                 }
@@ -348,19 +352,24 @@ protected:
                 {Varying::Type::kHalf4,  SkString{"color"}},
         };
         static constexpr char kPremulVS[] = R"(
+                uniform float uf;
                 float2 main(in Attributes attributes, out Varyings varyings) {
                     varyings.color = half4(attributes.color.a*attributes.color.rgb,
                                            attributes.color.a);
+                    varyings.color.r += uf;
                     return attributes.pos;
                 }
         )";
         static constexpr char kUnpremulVS[] = R"(
+               uniform half4 f2;
                 float2 main(in Attributes attributes, out Varyings varyings) {
                     varyings.color = attributes.color;
+                    varyings.color.r += f2.r;
                     return attributes.pos;
                 }
         )";
         static constexpr char kFS[] = R"(
+                uniform half4 f2;
                 void main(in Varyings varyings, out half4 color) {
                     color = varyings.color;
                 }
@@ -418,8 +427,9 @@ protected:
                 SkMesh mesh = SkMesh::Make(fSpecs[SpecIndex(unpremul, spin)],
                                            SkMesh::Mode::kTriangleStrip,
                                            fVB,
-                                           /*vertexCount=*/ 4,
+                                           /*vertexCount= */ 4,
                                            /*vertexOffset=*/0,
+                                           /*uniforms=    */nullptr,
                                            kRect);
 
                 SkPaint paint;
