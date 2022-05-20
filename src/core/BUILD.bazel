@@ -208,7 +208,12 @@ cc_library(
         ":SkYUVAPixmaps_src",
         ":SkYUVMath_src",
         ":SkYUVPlanesCache_src",
-    ],
+    ] + select({
+        "@platforms//os:linux": [":SkPerfTrace_src"],
+        "@platforms//os:android": [":SkPerfTrace_src"],
+        "@platforms//os:macos": [":SkPerfTrace_src"],
+        "//conditions:default": [],  # Perfetto only supports Mac, Linux, & Android.
+    }),
 )
 
 # These are sources that are only needed if SkSL is enabled (GPU backend or SkVM).

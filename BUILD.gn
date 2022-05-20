@@ -1943,6 +1943,9 @@ if (skia_enable_tools) {
 
   test_lib("trace") {
     deps = [ ":flags" ]
+    if (is_linux || is_mac || is_android) {
+      deps += [ "//third_party/perfetto" ]
+    }
     sources = [
       "tools/trace/ChromeTracingTracer.cpp",
       "tools/trace/ChromeTracingTracer.h",
@@ -1951,6 +1954,12 @@ if (skia_enable_tools) {
       "tools/trace/SkDebugfTracer.cpp",
       "tools/trace/SkDebugfTracer.h",
     ]
+    if (is_linux || is_mac || is_android) {
+      sources += [
+        "tools/trace/SkPerfTrace.h",
+        "tools/trace/SkPerfTrace.cpp",
+      ]
+    }
   }
 
   test_lib("tool_utils") {
