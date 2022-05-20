@@ -38,7 +38,7 @@ public:
                  const SkMatrix& drawMatrix,
                  SkPoint drawOrigin,
                  SkIRect clipRect,
-                 sk_sp<SkRefCnt> supportData,
+                 sk_sp<SkRefCnt>&& supportData,
                  const SkPMColor4f& color)
             : fSubRun{subRun}
             , fSupportDataKeepAlive{std::move(supportData)}
@@ -49,13 +49,13 @@ public:
                 SkASSERT(fSupportDataKeepAlive != nullptr);
         }
 
-        static Geometry* MakeForBlob(const GrAtlasSubRun& subRun,
-                                     const SkMatrix& drawMatrix,
-                                     SkPoint drawOrigin,
-                                     SkIRect clipRect,
-                                     sk_sp<SkRefCnt> supportData,
-                                     const SkPMColor4f& color,
-                                     SkArenaAlloc* alloc);
+        static Geometry* Make(const GrAtlasSubRun& subRun,
+                              const SkMatrix& drawMatrix,
+                              SkPoint drawOrigin,
+                              SkIRect clipRect,
+                              sk_sp<SkRefCnt>&& supportData,
+                              const SkPMColor4f& color,
+                              SkArenaAlloc* alloc);
 
         void fillVertexData(void* dst, int offset, int count) const;
 

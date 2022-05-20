@@ -690,6 +690,7 @@ public:
               const SkMatrixProvider& viewMatrix,
               SkPoint drawOrigin,
               const SkPaint& paint,
+              sk_sp<SkRefCnt> subRunStorage,
               skgpu::v1::SurfaceDrawContext* sdc) const override {
         fPathDrawing.submitOps(canvas, clip, viewMatrix, drawOrigin, paint, sdc);
     }
@@ -927,6 +928,7 @@ public:
               const SkMatrixProvider& viewMatrix,
               SkPoint drawOrigin,
               const SkPaint& paint,
+              sk_sp<SkRefCnt> subRunStorage,
               skgpu::v1::SurfaceDrawContext* sdc) const override {
         fDrawingDrawing.submitOps(canvas, clip, viewMatrix, drawOrigin, paint, sdc);
     }
@@ -1109,6 +1111,7 @@ public:
               const SkMatrixProvider& viewMatrix,
               SkPoint drawOrigin,
               const SkPaint& paint,
+              sk_sp<SkRefCnt> subRunOwner,
               skgpu::v1::SurfaceDrawContext* sdc) const override;
 
     int unflattenSize() const override;
@@ -1122,6 +1125,7 @@ public:
                     const SkMatrixProvider& viewMatrix,
                     SkPoint,
                     const SkPaint&,
+                    sk_sp<SkRefCnt>&& subRunStorage,
                     skgpu::v1::SurfaceDrawContext*) const override;
 
     void testingOnly_packedGlyphIDToGlyph(StrikeCache *cache) const override;
@@ -1304,18 +1308,22 @@ void DirectMaskSubRun::draw(SkCanvas*,
                                 const SkMatrixProvider& viewMatrix,
                                 SkPoint drawOrigin,
                                 const SkPaint& paint,
+                                sk_sp<SkRefCnt> subRunStorage,
                                 skgpu::v1::SurfaceDrawContext* sdc) const {
-    auto[drawingClip, op] = this->makeAtlasTextOp(clip, viewMatrix, drawOrigin, paint, sdc);
+    auto[drawingClip, op] = this->makeAtlasTextOp(
+            clip, viewMatrix, drawOrigin, paint, std::move(subRunStorage), sdc);
     if (op != nullptr) {
         sdc->addDrawOp(drawingClip, std::move(op));
     }
 }
 
-std::tuple<const GrClip*, GrOp::Owner> DirectMaskSubRun::makeAtlasTextOp(const GrClip* clip,
-                                      const SkMatrixProvider& viewMatrix,
-                                      SkPoint drawOrigin,
-                                      const SkPaint& paint,
-                                      skgpu::v1::SurfaceDrawContext* sdc) const {
+std::tuple<const GrClip*, GrOp::Owner> DirectMaskSubRun::makeAtlasTextOp(
+        const GrClip* clip,
+        const SkMatrixProvider& viewMatrix,
+        SkPoint drawOrigin,
+        const SkPaint& paint,
+        sk_sp<SkRefCnt>&& subRunStorage,
+        skgpu::v1::SurfaceDrawContext* sdc) const {
     SkASSERT(this->glyphCount() != 0);
     const SkMatrix& drawMatrix = viewMatrix.localToDevice();
     const SkMatrix& positionMatrix = position_matrix(drawMatrix, drawOrigin);
@@ -1355,13 +1363,13 @@ std::tuple<const GrClip*, GrOp::Owner> DirectMaskSubRun::makeAtlasTextOp(const G
     const SkPMColor4f drawingColor =
             calculate_colors(sdc, paint, viewMatrix, fMaskFormat, &grPaint);
 
-    auto geometry = AtlasTextOp::Geometry::MakeForBlob(*this,
-                                                       drawMatrix,
-                                                       drawOrigin,
-                                                       geometricClipRect,
-                                                       sk_ref_sp(fReferenceFrame),
-                                                       drawingColor,
-                                                       sdc->arenaAlloc());
+    auto geometry = AtlasTextOp::Geometry::Make(*this,
+                                                drawMatrix,
+                                                drawOrigin,
+                                                geometricClipRect,
+                                                std::move(subRunStorage),
+                                                drawingColor,
+                                                sdc->arenaAlloc());
 
     GrRecordingContext* const rContext = sdc->recordingContext();
     GrOp::Owner op = GrOp::Make<AtlasTextOp>(rContext,
@@ -1546,6 +1554,7 @@ public:
               const SkMatrixProvider& viewMatrix,
               SkPoint drawOrigin,
               const SkPaint& paint,
+              sk_sp<SkRefCnt> subRunStorage,
               skgpu::v1::SurfaceDrawContext*) const override;
 
     std::tuple<const GrClip*, GrOp::Owner>
@@ -1553,6 +1562,7 @@ public:
                     const SkMatrixProvider& viewMatrix,
                     SkPoint drawOrigin,
                     const SkPaint&,
+                    sk_sp<SkRefCnt>&& subRunStorage,
                     skgpu::v1::SurfaceDrawContext*) const override;
 
     int unflattenSize() const override;
@@ -1641,8 +1651,10 @@ void TransformedMaskSubRun::draw(SkCanvas*,
                                  const SkMatrixProvider& viewMatrix,
                                  SkPoint drawOrigin,
                                  const SkPaint& paint,
+                                 sk_sp<SkRefCnt> subRunStorage,
                                  skgpu::v1::SurfaceDrawContext* sdc) const {
-    auto[drawingClip, op] = this->makeAtlasTextOp(clip, viewMatrix, drawOrigin, paint, sdc);
+    auto[drawingClip, op] = this->makeAtlasTextOp(
+            clip, viewMatrix, drawOrigin, paint, std::move(subRunStorage), sdc);
     if (op != nullptr) {
         sdc->addDrawOp(drawingClip, std::move(op));
     }
@@ -1653,6 +1665,7 @@ TransformedMaskSubRun::makeAtlasTextOp(const GrClip* clip,
                                        const SkMatrixProvider& viewMatrix,
                                        SkPoint drawOrigin,
                                        const SkPaint& paint,
+                                       sk_sp<SkRefCnt>&& subRunStorage,
                                        skgpu::v1::SurfaceDrawContext* sdc) const {
     SkASSERT(this->glyphCount() != 0);
 
@@ -1662,13 +1675,13 @@ TransformedMaskSubRun::makeAtlasTextOp(const GrClip* clip,
     SkPMColor4f drawingColor = calculate_colors(
             sdc, paint, viewMatrix, fVertexFiller.grMaskType(), &grPaint);
 
-    auto geometry = AtlasTextOp::Geometry::MakeForBlob(*this,
-                                                       drawMatrix,
-                                                       drawOrigin,
-                                                       SkIRect::MakeEmpty(),
-                                                       sk_ref_sp(fReferenceFrame),
-                                                       drawingColor,
-                                                       sdc->arenaAlloc());
+    auto geometry = AtlasTextOp::Geometry::Make(*this,
+                                                drawMatrix,
+                                                drawOrigin,
+                                                SkIRect::MakeEmpty(),
+                                                std::move(subRunStorage),
+                                                drawingColor,
+                                                sdc->arenaAlloc());
 
     GrRecordingContext* const rContext = sdc->recordingContext();
     GrOp::Owner op = GrOp::Make<AtlasTextOp>(rContext,
@@ -1756,6 +1769,7 @@ public:
               const SkMatrixProvider& viewMatrix,
               SkPoint drawOrigin,
               const SkPaint&,
+              sk_sp<SkRefCnt> subRunStorage,
               skgpu::v1::SurfaceDrawContext*) const override;
 
     std::tuple<const GrClip*, GrOp::Owner>
@@ -1763,6 +1777,7 @@ public:
                     const SkMatrixProvider& viewMatrix,
                     SkPoint drawOrigin,
                     const SkPaint&,
+                    sk_sp<SkRefCnt>&& subRunStorage,
                     skgpu::v1::SurfaceDrawContext*) const override;
 
     int unflattenSize() const override;
@@ -1885,8 +1900,10 @@ void SDFTSubRun::draw(SkCanvas*,
                       const SkMatrixProvider& viewMatrix,
                       SkPoint drawOrigin,
                       const SkPaint& paint,
+                      sk_sp<SkRefCnt> subRunStorage,
                       skgpu::v1::SurfaceDrawContext* sdc) const {
-    auto[drawingClip, op] = this->makeAtlasTextOp(clip, viewMatrix, drawOrigin, paint, sdc);
+    auto[drawingClip, op] = this->makeAtlasTextOp(
+            clip, viewMatrix, drawOrigin, paint, std::move(subRunStorage), sdc);
     if (op != nullptr) {
         sdc->addDrawOp(drawingClip, std::move(op));
     }
@@ -1925,6 +1942,7 @@ SDFTSubRun::makeAtlasTextOp(const GrClip* clip,
                             const SkMatrixProvider& viewMatrix,
                             SkPoint drawOrigin,
                             const SkPaint& paint,
+                            sk_sp<SkRefCnt>&& subRunStorage,
                             skgpu::v1::SurfaceDrawContext* sdc) const {
     SkASSERT(this->glyphCount() != 0);
 
@@ -1937,13 +1955,13 @@ SDFTSubRun::makeAtlasTextOp(const GrClip* clip,
     auto [maskType, DFGPFlags, useGammaCorrectDistanceTable] =
         calculate_sdf_parameters(*sdc, drawMatrix, fUseLCDText, fAntiAliased);
 
-    auto geometry = AtlasTextOp::Geometry::MakeForBlob(*this,
-                                                       drawMatrix,
-                                                       drawOrigin,
-                                                       SkIRect::MakeEmpty(),
-                                                       sk_ref_sp(fReferenceFrame),
-                                                       drawingColor,
-                                                       sdc->arenaAlloc());
+    auto geometry = AtlasTextOp::Geometry::Make(*this,
+                                                drawMatrix,
+                                                drawOrigin,
+                                                SkIRect::MakeEmpty(),
+                                                std::move(subRunStorage),
+                                                drawingColor,
+                                                sdc->arenaAlloc());
 
     GrRecordingContext* const rContext = sdc->recordingContext();
     GrOp::Owner op = GrOp::Make<AtlasTextOp>(rContext,
@@ -2243,7 +2261,7 @@ void GrTextBlob::draw(SkCanvas* canvas,
                       const SkPaint& paint,
                       skgpu::v1::SurfaceDrawContext* sdc) {
     for (const GrSubRun& subRun : fSubRunList) {
-        subRun.draw(canvas, clip, viewMatrix, drawOrigin, paint, sdc);
+        subRun.draw(canvas, clip, viewMatrix, drawOrigin, paint, sk_ref_sp(this), sdc);
     }
 }
 
@@ -2415,7 +2433,7 @@ SlugImpl::SlugImpl(SubRunAllocator&& alloc,
 void SlugImpl::surfaceDraw(SkCanvas* canvas, const GrClip* clip, const SkMatrixProvider& viewMatrix,
                            const SkPaint& drawingPaint, skgpu::v1::SurfaceDrawContext* sdc) const {
     for (const GrSubRun& subRun : fSubRuns) {
-        subRun.draw(canvas, clip, viewMatrix, fOrigin, drawingPaint, sdc);
+        subRun.draw(canvas, clip, viewMatrix, fOrigin, drawingPaint, sk_ref_sp(this), sdc);
     }
 }
 
