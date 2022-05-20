@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7555ba5a_e1812634",
+        "filename": "src/gpu/AtlasTypes.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 196,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-05-20T14:18:37Z",
+      "side": 1,
+      "message": "I wonder if for Graphite if it should be something other than recorder. Technically these all live on a Recorder before they\u0027re \"flushed\". Like when is it that we go on to the next token in graphite? Like all this happens when we are making a Recording, but an individual plot/token can get flushed after N DrawPasses are created in a Recording even if there are still more DrawPasses to make.\n\nMaybe the only way to really describe this is to just be more verbose, or give a specific definition of what it means for a token to be \"flushed\". Like a \"flushed token means that .....\". I guess I\u0027m just thinking of someone who doesn\u0027t know what this code/token stuff does and trying to read the headers to understand the mechanisms. Sorry the best wordsmith here to help guide...",
+      "parentUuid": "d51c53f4_ebf7eef9",
+      "range": {
+        "startLine": 196,
+        "startChar": 63,
+        "endLine": 196,
+        "endChar": 70
+      },
+      "revId": "b433adacc99808825e55776ae4d274db905e1081",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "37f5cfd6_8d571f02",
         "filename": "src/gpu/AtlasTypes.h",
         "patchSetId": 3

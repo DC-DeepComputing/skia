@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "aad55a1b_9cbea7c9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-05-20T14:18:37Z",
+      "side": 1,
+      "message": "LGTM, only nit is if you can come up with some better description of what the token flushing system is meant to be doing.",
+      "revId": "a462469c12d387ff2d9791d5caa8fe31decd4716",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
