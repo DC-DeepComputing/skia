@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ca4f8b3e_89bbefa5",
+        "filename": "tests/sksl/errors/InvalidUniformTypes.glsl",
+        "patchSetId": 2
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-05-20T20:13:16Z",
+      "side": 1,
+      "message": "We now have some messages like this which get repeated for different variable instances (`st1` and `st2` are both invalid due to this field). This is probably OK though maybe the error formatting could use some indentation to delineate the recursion boundaries.",
+      "range": {
+        "startLine": 21,
+        "startChar": 0,
+        "endLine": 23,
+        "endChar": 10
+      },
+      "revId": "879e640c9fc3f8c66622667de9b8464d94c9294d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

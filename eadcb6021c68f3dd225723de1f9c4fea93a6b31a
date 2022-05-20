@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fff4598b_65880a3f",
+        "filename": "src/sksl/ir/SkSLVarDeclarations.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-05-20T20:13:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "07c22468_2045159b",
+      "range": {
+        "startLine": 134,
+        "startChar": 32,
+        "endLine": 134,
+        "endChar": 86
+      },
+      "revId": "eadcb6021c68f3dd225723de1f9c4fea93a6b31a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "71830ebe_1a6b2820",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-05-20T18:01:13Z",
       "side": 1,
       "message": "If we passed in the context it might make more sense to just report the error inside the helper function directly?",
+      "range": {
+        "startLine": 136,
+        "startChar": 0,
+        "endLine": 138,
+        "endChar": 94
+      },
+      "revId": "eadcb6021c68f3dd225723de1f9c4fea93a6b31a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "372dfced_b589761a",
+        "filename": "src/sksl/ir/SkSLVarDeclarations.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-05-20T20:13:16Z",
+      "side": 1,
+      "message": "Initially I was wary of too many redundant error messages for nested structs so I tried to keep logging out of `check_valid_uniform_type`. I revised it now so that the function does some logging for structs and interface blocks but the variable-level log remains at this level.\n\nPTAL at tests/sksl/errors/InvalidUniformTypes.glsl and let me know what you think.",
+      "parentUuid": "71830ebe_1a6b2820",
       "range": {
         "startLine": 136,
         "startChar": 0,
