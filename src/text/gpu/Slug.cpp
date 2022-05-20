@@ -61,7 +61,7 @@ uint32_t Slug::NextUniqueID() {
     return nextUnique++;
 }
 
-// Most of Slug's implementation is in GrTextBlob.cpp to share common code.
+// Most of Slug's implementation is in TextBlob.cpp to share common code.
 
 }  // namespace sktext::gpu
 
