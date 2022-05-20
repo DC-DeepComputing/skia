@@ -38,6 +38,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "2de54391_caad72a0",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 18974
+      },
+      "writtenOn": "2022-05-20T16:16:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "268966cb_3f7fe729",
+      "revId": "6aa3a739056a60de0d8f4514acf829355c10f99c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "ea90c269_50d6c649",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 1
@@ -123,6 +141,42 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "28c7900d_04342a0e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18974
+      },
+      "writtenOn": "2022-05-20T16:16:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0d42a3b0_db8aff25",
+      "revId": "6aa3a739056a60de0d8f4514acf829355c10f99c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4dacd0b1_723bea18",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18974
+      },
+      "writtenOn": "2022-05-20T16:16:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2f717154_5bff07dd",
+      "revId": "6aa3a739056a60de0d8f4514acf829355c10f99c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d0bc1acf_ce6b1ab6",
@@ -154,6 +208,24 @@
       "side": 1,
       "message": "I mainly used Adobe Reader to view the pdfs but also google chrome\u0027s pdf reader has issues when using too many stops. I also noticed there\u0027s a difference when using gradients with or without varying opacity (only half the amount of stops could be used when opacity was also changing).",
       "parentUuid": "d0bc1acf_ce6b1ab6",
+      "revId": "6aa3a739056a60de0d8f4514acf829355c10f99c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "212bfca0_b9c9f373",
+        "filename": "src/pdf/SkPDFGradientShader.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 18974
+      },
+      "writtenOn": "2022-05-20T16:16:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "40549202_67597e02",
       "revId": "6aa3a739056a60de0d8f4514acf829355c10f99c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -205,6 +277,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f4fab87f_cc449062",
+        "filename": "src/pdf/SkPDFGradientShader.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 210,
+      "author": {
+        "id": 18974
+      },
+      "writtenOn": "2022-05-20T16:16:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e760b957_e81f245b",
+      "range": {
+        "startLine": 210,
+        "startChar": 24,
+        "endLine": 210,
+        "endChar": 25
+      },
+      "revId": "6aa3a739056a60de0d8f4514acf829355c10f99c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "126e8166_f0916644",
@@ -236,6 +332,24 @@
       "side": 1,
       "message": "I\u0027m not sure if I\u0027m following you here? Could you give an example when a wrong offset would be used? `colorOffsets` contains the offsets of each stop (with duplicates skipped). `beforeColors` and `afterColors` contain the colors to be used right before and right after each stop (with duplicates skipped).",
       "parentUuid": "126e8166_f0916644",
+      "revId": "6aa3a739056a60de0d8f4514acf829355c10f99c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "53acef40_2f9b4572",
+        "filename": "src/pdf/SkPDFGradientShader.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 258,
+      "author": {
+        "id": 18974
+      },
+      "writtenOn": "2022-05-20T16:16:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "68ffef38_81567069",
       "revId": "6aa3a739056a60de0d8f4514acf829355c10f99c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
