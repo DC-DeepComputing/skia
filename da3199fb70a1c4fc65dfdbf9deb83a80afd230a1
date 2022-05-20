@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9732261b_72790ccc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-05-20T19:52:24Z",
+      "side": 1,
+      "message": "I\u0027m curios as to how this works for std::vector so I took a look and... I still have no idea. libcxx std::vector uses `auto __allocation \u003d std::__allocate_at_least(__alloc(), __n)` and then assigns `__allocation.ptr` to `__begin`. However, I see no magic in setting the `__allocation.ptr` that would prevent cfi from having the same issue. The value actually comes from the allocator itself, which appears to by default go through `__libcpp_allocate(size, align)`. This in turn bottoms out in `::operator new` or `__builtin_operator_new`. This is defined in Sema::SemaBuiltInOperatorNewDeleteOverloaded but I don\u0027t see anything here either. Will probably need to go look at how CFI works and see if std::vector is excluded or not.",
+      "revId": "da3199fb70a1c4fc65dfdbf9deb83a80afd230a1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f755e24e_f13a5c89",
