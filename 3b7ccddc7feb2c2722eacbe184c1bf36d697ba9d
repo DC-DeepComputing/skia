@@ -34,6 +34,46 @@
       "parentUuid": "0a9ad870_3bbd04c4",
       "revId": "3b7ccddc7feb2c2722eacbe184c1bf36d697ba9d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0531201c_9a6d9b96",
+        "filename": "src/gpu/ganesh/text/GrTextBlob.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 2524,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-05-20T15:20:26Z",
+      "side": 1,
+      "message": "missing \u0027 \u0027 ?",
+      "revId": "3b7ccddc7feb2c2722eacbe184c1bf36d697ba9d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1fe72cbd_c5f4ee0e",
+        "filename": "src/gpu/ganesh/text/GrTextBlob.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 2536,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-05-20T15:20:26Z",
+      "side": 1,
+      "message": "someExcludedGlyphs ?",
+      "range": {
+        "startLine": 2536,
+        "startChar": 11,
+        "endLine": 2536,
+        "endChar": 15
+      },
+      "revId": "3b7ccddc7feb2c2722eacbe184c1bf36d697ba9d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
