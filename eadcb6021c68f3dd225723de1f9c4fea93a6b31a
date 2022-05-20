@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "07c22468_2045159b",
+        "filename": "src/sksl/ir/SkSLVarDeclarations.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-05-20T18:01:13Z",
+      "side": 1,
+      "message": "Generally I think we pass a `const Context\u0026 context` argument as the first argument to a function which needs the context (which is lots of them); then this can just move inside the method.",
+      "range": {
+        "startLine": 134,
+        "startChar": 32,
+        "endLine": 134,
+        "endChar": 86
+      },
+      "revId": "eadcb6021c68f3dd225723de1f9c4fea93a6b31a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "71830ebe_1a6b2820",
+        "filename": "src/sksl/ir/SkSLVarDeclarations.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-05-20T18:01:13Z",
+      "side": 1,
+      "message": "If we passed in the context it might make more sense to just report the error inside the helper function directly?",
+      "range": {
+        "startLine": 136,
+        "startChar": 0,
+        "endLine": 138,
+        "endChar": 94
+      },
+      "revId": "eadcb6021c68f3dd225723de1f9c4fea93a6b31a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
