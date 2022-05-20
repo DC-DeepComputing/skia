@@ -4,6 +4,32 @@ licenses(["notice"])
 
 exports_files_legacy()
 
+filegroup(
+    name = "srcs_nogazelle",
+    srcs = [
+        "GrAAConvexTessellator.cpp",
+        "GrAAConvexTessellator.h",
+        "GrAATriangulator.cpp",
+        "GrAATriangulator.h",
+        "GrInnerFanTriangulator.h",
+        "GrPathUtils.cpp",
+        "GrPathUtils.h",
+        "GrQuad.cpp",
+        "GrQuad.h",
+        "GrQuadBuffer.h",
+        "GrQuadUtils.cpp",
+        "GrQuadUtils.h",
+        "GrRect.h",
+        "GrShape.cpp",
+        "GrShape.h",
+        "GrStyledShape.cpp",
+        "GrStyledShape.h",
+        "GrTriangulator.cpp",
+        "GrTriangulator.h",
+    ],
+    visibility = ["//src/gpu/ganesh:__pkg__"],
+)
+
 generated_cc_atom(
     name = "GrAAConvexTessellator_hdr",
     hdrs = ["GrAAConvexTessellator.h"],

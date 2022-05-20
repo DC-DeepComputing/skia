@@ -6,6 +6,15 @@ exports_files_legacy()
 
 enforce_iwyu_on_package()
 
+filegroup(
+    name = "srcs_nogazelle",
+    srcs = [
+        "DSLWriter.cpp",
+        "DSLWriter.h",
+    ],
+    visibility = ["//src/sksl/dsl:__pkg__"],
+)
+
 generated_cc_atom(
     name = "DSLWriter_hdr",
     hdrs = ["DSLWriter.h"],

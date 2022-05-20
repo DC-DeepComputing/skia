@@ -6,6 +6,85 @@ exports_files_legacy()
 
 enforce_iwyu_on_package()
 
+filegroup(
+    name = "core_srcs_nogazelle",
+    srcs = [
+        "SkAnimCodecPlayer.cpp",
+        "SkBase64.cpp",
+        "SkBitSet.h",
+        "SkBlitterTrace.h",
+        "SkBlitterTraceCommon.h",
+        "SkCallableTraits.h",
+        "SkCamera.cpp",
+        "SkCanvasStack.cpp",
+        "SkCanvasStack.h",
+        "SkCanvasStateUtils.cpp",
+        "SkCharToGlyphCache.cpp",
+        "SkCharToGlyphCache.h",
+        "SkClipStackUtils.cpp",
+        "SkClipStackUtils.h",
+        "SkCustomTypeface.cpp",
+        "SkCycles.h",
+        "SkDashPath.cpp",
+        "SkDashPathPriv.h",
+        "SkEventTracer.cpp",
+        "SkFloatToDecimal.cpp",
+        "SkFloatToDecimal.h",
+        "SkFloatUtils.h",
+        "SkJSON.h",
+        "SkJSONWriter.h",
+        "SkMatrix22.cpp",
+        "SkMatrix22.h",
+        "SkMultiPictureDocument.cpp",
+        "SkMultiPictureDocument.h",
+        "SkMultiPictureDocumentPriv.h",
+        "SkNWayCanvas.cpp",
+        "SkNullCanvas.cpp",
+        "SkOSPath.cpp",
+        "SkOSPath.h",
+        "SkOrderedFontMgr.cpp",
+        "SkPaintFilterCanvas.cpp",
+        "SkParse.cpp",
+        "SkParseColor.cpp",
+        "SkParsePath.cpp",
+        "SkPatchUtils.cpp",
+        "SkPatchUtils.h",
+        "SkPolyUtils.cpp",
+        "SkPolyUtils.h",
+        "SkShadowTessellator.cpp",
+        "SkShadowTessellator.h",
+        "SkShadowUtils.cpp",
+        "SkShaperJSONWriter.h",
+        "SkTestCanvas.h",
+        "SkTextUtils.cpp",
+        "SkUTF.cpp",
+        "SkUTF.h",
+        "SkVMVisualizer.cpp",
+        "SkVMVisualizer.h",
+    ],
+)
+
+filegroup(
+    name = "json_srcs_nogazelle",
+    srcs = [
+        "SkJSON.cpp",
+        "SkJSON.h",
+        "SkJSONWriter.cpp",
+        "SkJSONWriter.h",
+        "SkShaperJSONWriter.cpp",
+        "SkShaperJSONWriter.h",
+    ],
+)
+
+# TODO(kjlubick) add selects here to allow opting in or out of things like JSON
+filegroup(
+    name = "srcs_nogazelle",
+    srcs = [
+        ":core_srcs_nogazelle",
+    ],
+    visibility = ["//src:__pkg__"],
+)
+
 cc_library(
     name = "core_srcs",
     visibility = ["//:__subpackages__"],

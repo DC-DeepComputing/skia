@@ -4,6 +4,64 @@ licenses(["notice"])
 
 exports_files_legacy()
 
+filegroup(
+    name = "core_srcs_nogazelle",
+    srcs = [
+        "GrGLAssembleGLESInterfaceAutogen.cpp",
+        "GrGLAssembleGLInterfaceAutogen.cpp",
+        "GrGLAssembleHelpers.cpp",
+        "GrGLAssembleInterface.cpp",
+        "GrGLAssembleWebGLInterfaceAutogen.cpp",
+        "GrGLAttachment.cpp",
+        "GrGLAttachment.h",
+        "GrGLBuffer.cpp",
+        "GrGLBuffer.h",
+        "GrGLCaps.cpp",
+        "GrGLCaps.h",
+        "GrGLContext.cpp",
+        "GrGLContext.h",
+        "GrGLDefines_impl.h",
+        "GrGLExtensions.cpp",
+        "GrGLGLSL.cpp",
+        "GrGLGLSL.h",
+        "GrGLGpu.cpp",
+        "GrGLGpu.h",
+        "GrGLGpuProgramCache.cpp",
+        "GrGLInterfaceAutogen.cpp",
+        "GrGLOpsRenderPass.cpp",
+        "GrGLOpsRenderPass.h",
+        "GrGLProgram.cpp",
+        "GrGLProgram.h",
+        "GrGLProgramDataManager.cpp",
+        "GrGLProgramDataManager.h",
+        "GrGLRenderTarget.cpp",
+        "GrGLRenderTarget.h",
+        "GrGLSemaphore.cpp",
+        "GrGLSemaphore.h",
+        "GrGLTexture.cpp",
+        "GrGLTexture.h",
+        "GrGLTextureRenderTarget.cpp",
+        "GrGLTextureRenderTarget.h",
+        "GrGLTypesPriv.cpp",
+        "GrGLUniformHandler.cpp",
+        "GrGLUniformHandler.h",
+        "GrGLUtil.cpp",
+        "GrGLUtil.h",
+        "GrGLVaryingHandler.h",
+        "GrGLVertexArray.cpp",
+        "GrGLVertexArray.h",
+    ],
+)
+
+filegroup(
+    name = "srcs_nogazelle",
+    srcs = [
+        ":core_srcs_nogazelle",
+        # TODO(kjlubick) native (i.e. host-specific) gl srcs
+    ],
+    visibility = ["//src/gpu/ganesh:__pkg__"],
+)
+
 generated_cc_atom(
     name = "GrGLAssembleGLESInterfaceAutogen_src",
     srcs = ["GrGLAssembleGLESInterfaceAutogen.cpp"],

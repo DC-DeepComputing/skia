@@ -4,6 +4,24 @@ licenses(["notice"])
 
 exports_files_legacy()
 
+filegroup(
+    name = "srcs_nogazelle",
+    srcs = [
+        "GrMockAttachment.h",
+        "GrMockBuffer.h",
+        "GrMockCaps.cpp",
+        "GrMockCaps.h",
+        "GrMockGpu.cpp",
+        "GrMockGpu.h",
+        "GrMockOpsRenderPass.h",
+        "GrMockRenderTask.h",
+        "GrMockSurfaceProxy.h",
+        "GrMockTexture.h",
+        "GrMockTypes.cpp",
+    ],
+    visibility = ["//src/gpu/ganesh:__pkg__"],
+)
+
 generated_cc_atom(
     name = "GrMockAttachment_hdr",
     hdrs = ["GrMockAttachment.h"],

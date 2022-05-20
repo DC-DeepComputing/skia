@@ -6,6 +6,23 @@ exports_files_legacy()
 
 enforce_iwyu_on_package()
 
+filegroup(
+    name = "srcs_nogazelle",
+    srcs = [
+        "SkSLCanExitWithoutReturningValue.cpp",
+        "SkSLCheckProgramStructure.cpp",
+        "SkSLFinalizationChecks.cpp",
+        "SkSLGetLoopUnrollInfo.cpp",
+        "SkSLIsConstantExpression.cpp",
+        "SkSLIsSameExpressionTree.cpp",
+        "SkSLNoOpErrorReporter.h",
+        "SkSLProgramUsage.cpp",
+        "SkSLProgramVisitor.h",
+        "SkSLSwitchCaseContainsExit.cpp",
+    ],
+    visibility = ["//src/sksl:__pkg__"],
+)
+
 generated_cc_atom(
     name = "SkSLCanExitWithoutReturningValue_src",
     srcs = ["SkSLCanExitWithoutReturningValue.cpp"],

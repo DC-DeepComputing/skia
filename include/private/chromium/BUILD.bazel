@@ -4,6 +4,15 @@ licenses(["notice"])
 
 exports_files_legacy()
 
+filegroup(
+    name = "hdrs_nogazelle",
+    srcs = [
+        "GrSlug.h",
+        "SkChromeRemoteGlyphCache.h",
+    ],
+    visibility = ["//include/private:__pkg__"],
+)
+
 generated_cc_atom(
     name = "GrSlug_hdr",
     hdrs = ["GrSlug.h"],
