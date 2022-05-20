@@ -1,0 +1,16 @@
+# Copyright 2016 Google Inc.
+#
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+import("../third_party.gni")
+
+
+third_party("perfetto") {
+  public_include_dirs = [
+    ".",
+    "//third_party/externals/perfetto/sdk",
+  ]
+  #deps = [ "//tools/trace" ]
+  sources = [ "../externals/perfetto/sdk/perfetto.cc" ]
+}
