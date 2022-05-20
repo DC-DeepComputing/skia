@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1d095758_e79f5f7a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18974
+      },
+      "writtenOn": "2022-05-20T16:28:56Z",
+      "side": 1,
+      "message": "I just closed the CR I opened and linked to this newer one, thanks for extending it! Especially the preamble bugs and odd behaviour of `mod` + `ne`/`eq` would have been hard for me to find \u0026 solve 😊\nFor completeness, we should also modify the commit message here and link back to the old CR according to the contribution guidelines, but unfortunately I wasn\u0027t able to do this myself (no permission), could you do so?",
+      "revId": "aa838c90b3711ad299f9236fd7735d7a616fbe7f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
