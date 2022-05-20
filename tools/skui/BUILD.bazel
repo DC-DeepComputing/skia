@@ -4,6 +4,17 @@ licenses(["notice"])
 
 exports_files_legacy()
 
+cc_library(
+    name = "skui_nogazelle",
+    srcs = ["//include/private:SkBitmaskEnum.h"],
+    hdrs = [
+        "InputState.h",
+        "Key.h",
+        "ModifierKey.h",
+    ],
+    visibility = ["//:__subpackages__"],
+)
+
 generated_cc_atom(
     name = "InputState_hdr",
     hdrs = ["InputState.h"],

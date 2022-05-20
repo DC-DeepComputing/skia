@@ -4,6 +4,125 @@ licenses(["notice"])
 
 exports_files_legacy()
 
+filegroup(
+    name = "todo_srcs_nogazelle",
+    srcs = [
+        # TODO(kjlubick) break this up
+        "SkFrameHolder.h",
+        "SkHeifCodec.cpp",
+        "SkHeifCodec.h",
+        "SkIcoCodec.cpp",
+        "SkIcoCodec.h",
+        "SkJpegxlCodec.cpp",
+        "SkJpegxlCodec.h",
+        "SkPngCodec.cpp",
+        "SkPngCodec.h",
+        "SkPngPriv.h",
+        "SkRawCodec.cpp",
+        "SkRawCodec.h",
+        "SkScalingCodec.h",
+        "SkStreamBuffer.cpp",
+        "SkStreamBuffer.h",
+        "SkStubHeifDecoderAPI.h",
+        "SkWebpCodec.cpp",
+        "SkWebpCodec.h",
+        "SkWuffsCodec.cpp",
+        "SkWuffsCodec.h",
+    ],
+)
+
+filegroup(
+    name = "android_srcs_nogazelle",
+    srcs = [
+        "SkAndroidCodec.cpp",
+        "SkAndroidCodecAdapter.cpp",
+        "SkAndroidCodecAdapter.h",
+        "SkSampledCodec.cpp",
+        "SkSampledCodec.h",
+    ],
+)
+
+filegroup(
+    name = "bmp_srcs_nogazelle",
+    srcs = [
+        "SkBmpBaseCodec.cpp",
+        "SkBmpBaseCodec.h",
+        "SkBmpCodec.cpp",
+        "SkBmpCodec.h",
+        "SkBmpMaskCodec.cpp",
+        "SkBmpMaskCodec.h",
+        "SkBmpRLECodec.cpp",
+        "SkBmpRLECodec.h",
+        "SkBmpStandardCodec.cpp",
+        "SkBmpStandardCodec.h",
+        "SkWbmpCodec.cpp",
+        "SkWbmpCodec.h",
+    ],
+)
+
+filegroup(
+    name = "core_srcs_nogazelle",
+    srcs = [
+        "SkCodec.cpp",
+        "SkCodecImageGenerator.cpp",
+        "SkCodecImageGenerator.h",
+        "SkCodecPriv.h",
+        "SkColorTable.cpp",
+        "SkColorTable.h",
+        "SkFrameHolder.h",
+        "SkMaskSwizzler.cpp",
+        "SkMaskSwizzler.h",
+        "SkMasks.cpp",
+        "SkMasks.h",
+        "SkSampler.cpp",
+        "SkSampler.h",
+        "SkSwizzler.cpp",
+        "SkSwizzler.h",
+    ],
+)
+
+filegroup(
+    name = "jpeg_srcs_nogazelle",
+    srcs = [
+        "SkEncodedInfo.cpp",
+        "SkJpegCodec.cpp",
+        "SkJpegCodec.h",
+        "SkJpegDecoderMgr.cpp",
+        "SkJpegDecoderMgr.h",
+        "SkJpegPriv.h",
+        "SkJpegUtility.cpp",
+        "SkJpegUtility.h",
+        "SkParseEncodedOrigin.cpp",
+        "SkParseEncodedOrigin.h",
+    ],
+)
+
+filegroup(
+    name = "srcs_nogazelle",
+    srcs = [
+        ":android_srcs_nogazelle",
+        ":bmp_srcs_nogazelle",
+        ":core_srcs_nogazelle",
+    ] + select_multi(
+        {
+            ":needs_jpeg": [":jpeg_srcs_nogazelle"],
+        },
+        default = [],
+    ),
+    visibility = ["//src:__pkg__"],
+)
+
+cc_library(
+    name = "deps_nogazelle",
+    visibility = ["//src:__pkg__"],
+    deps = select_multi(
+        {
+            ":needs_jpeg": ["//third_party:libjpeg-turbo"],
+        },
+        default = [],
+    ),
+)
+
 cc_library(
     name = "androidcodec_srcs",
     deps = [

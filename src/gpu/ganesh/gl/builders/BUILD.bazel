@@ -4,6 +4,17 @@ licenses(["notice"])
 
 exports_files_legacy()
 
+filegroup(
+    name = "srcs_nogazelle",
+    srcs = [
+        "GrGLProgramBuilder.cpp",
+        "GrGLProgramBuilder.h",
+        "GrGLShaderStringBuilder.cpp",
+        "GrGLShaderStringBuilder.h",
+    ],
+    visibility = ["//src/gpu/ganesh/gl:__pkg__"],
+)
+
 generated_cc_atom(
     name = "GrGLProgramBuilder_hdr",
     hdrs = ["GrGLProgramBuilder.h"],

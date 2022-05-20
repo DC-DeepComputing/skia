@@ -4,6 +4,32 @@ licenses(["notice"])
 
 exports_files_legacy()
 
+filegroup(
+    name = "srcs_nogazelle",
+    srcs = [
+        "GrGLSL.cpp",
+        "GrGLSL.h",
+        "GrGLSLBlend.cpp",
+        "GrGLSLBlend.h",
+        "GrGLSLColorSpaceXformHelper.h",
+        "GrGLSLFragmentShaderBuilder.cpp",
+        "GrGLSLFragmentShaderBuilder.h",
+        "GrGLSLProgramBuilder.cpp",
+        "GrGLSLProgramBuilder.h",
+        "GrGLSLProgramDataManager.cpp",
+        "GrGLSLProgramDataManager.h",
+        "GrGLSLShaderBuilder.cpp",
+        "GrGLSLShaderBuilder.h",
+        "GrGLSLUniformHandler.cpp",
+        "GrGLSLUniformHandler.h",
+        "GrGLSLVarying.cpp",
+        "GrGLSLVarying.h",
+        "GrGLSLVertexGeoBuilder.cpp",
+        "GrGLSLVertexGeoBuilder.h",
+    ],
+    visibility = ["//src/gpu/ganesh:__pkg__"],
+)
+
 generated_cc_atom(
     name = "GrGLSLBlend_hdr",
     hdrs = ["GrGLSLBlend.h"],
