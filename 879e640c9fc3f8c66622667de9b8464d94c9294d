@@ -22,6 +22,30 @@
       },
       "revId": "879e640c9fc3f8c66622667de9b8464d94c9294d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "77f55e62_c67c0ba2",
+        "filename": "tests/sksl/errors/InvalidUniformTypes.glsl",
+        "patchSetId": 2
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-05-20T21:55:17Z",
+      "side": 1,
+      "message": "Move the error reporting to L33/L39 to avoid these redundant errors.",
+      "parentUuid": "ca4f8b3e_89bbefa5",
+      "range": {
+        "startLine": 21,
+        "startChar": 0,
+        "endLine": 23,
+        "endChar": 10
+      },
+      "revId": "879e640c9fc3f8c66622667de9b8464d94c9294d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
