@@ -22,6 +22,30 @@
       },
       "revId": "32f023b36a0ae174ad8366fc797952b3f8870792",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6da4cc65_ed1f46b7",
+        "filename": "src/pdf/SkPDFGradientShader.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 208,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-05-20T20:41:20Z",
+      "side": 1,
+      "message": "Example added. I wanted it to be actually accurate, so I applied this patch to Chromium, made an svg with a gradient with the right number of stops, printed it to PDF, and copied out of the generate function. I added some indentation for clarity.",
+      "parentUuid": "a1e99c99_a263bd59",
+      "range": {
+        "startLine": 207,
+        "startChar": 3,
+        "endLine": 208,
+        "endChar": 3
+      },
+      "revId": "32f023b36a0ae174ad8366fc797952b3f8870792",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
