@@ -208,7 +208,7 @@ cc_library(
         ":SkYUVAPixmaps_src",
         ":SkYUVMath_src",
         ":SkYUVPlanesCache_src",
-    ],
+    ]
 )
 
 # These are sources that are only needed if SkSL is enabled (GPU backend or SkVM).
