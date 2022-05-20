@@ -1,0 +1,27 @@
+# Copyright 2016 Google Inc.
+#
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+# declare_args() {
+# }
+
+import("../third_party.gni")
+
+#if (skia_use_system_libpng) {
+#  system("libpng") {
+#    libs = [ "png" ]
+#  }
+#} else {
+third_party("perfetto") {
+  public_include_dirs = [
+    ".",
+    "//third_party/externals/perfetto/sdk",
+  ]
+
+  #    defines = [ "PNG_SET_OPTION_SUPPORTED" ]
+  #    deps = [ "//third_party/zlib" ]
+  #deps = [ "//tools/trace" ]
+  sources = [ "../externals/perfetto/sdk/perfetto.cc" ]
+}
+#}
