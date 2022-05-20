@@ -122,6 +122,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "23dd025e_7d8ae49a",
+        "filename": "src/gpu/AtlasTypes.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 196,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-05-20T14:31:31Z",
+      "side": 1,
+      "message": "It\u0027s mainly used to check if the plot is used in the current set of draws. If not we can evict it and add an upload to it. It\u0027s also used to piggyback on an upload -- I\u0027m not 100% sure how to make that work in Graphite but I have some ideas.",
+      "parentUuid": "c4410ccc_6ed69003",
+      "range": {
+        "startLine": 196,
+        "startChar": 63,
+        "endLine": 196,
+        "endChar": 70
+      },
+      "revId": "b433adacc99808825e55776ae4d274db905e1081",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "37f5cfd6_8d571f02",
         "filename": "src/gpu/AtlasTypes.h",
         "patchSetId": 3
