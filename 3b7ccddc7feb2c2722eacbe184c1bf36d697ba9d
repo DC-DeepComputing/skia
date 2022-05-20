@@ -16,6 +16,24 @@
       "message": "This is not quite right. Let me fix it before you review it.",
       "revId": "3b7ccddc7feb2c2722eacbe184c1bf36d697ba9d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9e7ab646_dc40478b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-05-20T15:15:52Z",
+      "side": 1,
+      "message": "Ok. This looks correct as is. Please review.",
+      "parentUuid": "0a9ad870_3bbd04c4",
+      "revId": "3b7ccddc7feb2c2722eacbe184c1bf36d697ba9d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
