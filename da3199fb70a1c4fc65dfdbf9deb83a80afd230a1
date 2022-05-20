@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f755e24e_f13a5c89",
+        "filename": "include/private/SkTArray.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 472,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-05-20T19:22:47Z",
+      "side": 1,
+      "message": "SK_ATTRIBUTE?",
+      "revId": "da3199fb70a1c4fc65dfdbf9deb83a80afd230a1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
