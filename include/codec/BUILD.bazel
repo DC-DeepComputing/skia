@@ -4,6 +4,17 @@ licenses(["notice"])
 
 exports_files_legacy()
 
+filegroup(
+    name = "hdrs_nogazelle",
+    srcs = [
+        "SkAndroidCodec.h",
+        "SkCodec.h",
+        "SkCodecAnimation.h",
+        "SkEncodedOrigin.h",
+    ],
+    visibility = ["//include:__pkg__"],
+)
+
 generated_cc_atom(
     name = "SkAndroidCodec_hdr",
     hdrs = ["SkAndroidCodec.h"],

@@ -4,6 +4,17 @@ licenses(["notice"])
 
 exports_files_legacy()
 
+cc_library(
+    name = "timer_nogazelle",
+    srcs = [
+        "TimeUtils.h",
+        "Timer.cpp",
+    ],
+    hdrs = ["Timer.h"],
+    visibility = ["//:__subpackages__"],
+    deps = ["//:skia_core_nogazelle"],
+)
+
 generated_cc_atom(
     name = "TimeUtils_hdr",
     hdrs = ["TimeUtils.h"],

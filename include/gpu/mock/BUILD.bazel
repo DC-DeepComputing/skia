@@ -4,6 +4,14 @@ licenses(["notice"])
 
 exports_files_legacy()
 
+filegroup(
+    name = "hdrs_nogazelle",
+    srcs = [
+        "GrMockTypes.h",
+    ],
+    visibility = ["//include/gpu:__pkg__"],
+)
+
 generated_cc_atom(
     name = "GrMockTypes_hdr",
     hdrs = ["GrMockTypes.h"],

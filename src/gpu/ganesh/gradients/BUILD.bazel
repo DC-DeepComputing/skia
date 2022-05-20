@@ -4,6 +4,17 @@ licenses(["notice"])
 
 exports_files_legacy()
 
+filegroup(
+    name = "srcs_nogazelle",
+    srcs = [
+        "GrGradientBitmapCache.cpp",
+        "GrGradientBitmapCache.h",
+        "GrGradientShader.cpp",
+        "GrGradientShader.h",
+    ],
+    visibility = ["//src/gpu/ganesh:__pkg__"],
+)
+
 generated_cc_atom(
     name = "GrGradientBitmapCache_hdr",
     hdrs = ["GrGradientBitmapCache.h"],

@@ -4,6 +4,30 @@ licenses(["notice"])
 
 exports_files_legacy()
 
+filegroup(
+    name = "hdrs_nogazelle",
+    srcs = [
+        "SkAnimCodecPlayer.h",
+        "SkBase64.h",
+        "SkCamera.h",
+        "SkCanvasStateUtils.h",
+        "SkCustomTypeface.h",
+        "SkEventTracer.h",
+        "SkNWayCanvas.h",
+        "SkNoDrawCanvas.h",
+        "SkNullCanvas.h",
+        "SkOrderedFontMgr.h",
+        "SkPaintFilterCanvas.h",
+        "SkParse.h",
+        "SkParsePath.h",
+        "SkRandom.h",
+        "SkShadowUtils.h",
+        "SkTextUtils.h",
+        "SkTraceEventPhase.h",
+    ],  # TODO(kjlubick) add select for mac
+    visibility = ["//include:__pkg__"],
+)
+
 generated_cc_atom(
     name = "SkAnimCodecPlayer_hdr",
     hdrs = ["SkAnimCodecPlayer.h"],

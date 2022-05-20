@@ -4,6 +4,20 @@ licenses(["notice"])
 
 exports_files_legacy()
 
+filegroup(
+    name = "srcs_nogazelle",
+    srcs = [
+        "SkDashImpl.h",
+        "SkDashPathEffect.cpp",
+        "SkEmbossMask.h",
+        "SkEmbossMaskFilter.h",
+        "SkOpPE.h",
+        "SkTrimPE.h",
+        "SkTrimPathEffect.cpp",
+    ],  # TODO(kjlubick) this feels incomplete
+    visibility = ["//src:__pkg__"],
+)
+
 cc_library(
     name = "srcs",
     visibility = ["//:__subpackages__"],

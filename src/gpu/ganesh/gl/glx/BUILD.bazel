@@ -4,6 +4,15 @@ licenses(["notice"])
 
 exports_files_legacy()
 
+filegroup(
+    name = "srcs_nogazelle",
+    srcs = [
+        "GrGLMakeGLXInterface.cpp",
+        "GrGLMakeNativeInterface_glx.cpp",
+    ],
+    visibility = ["//src/gpu/ganesh/gl:__pkg__"],
+)
+
 generated_cc_atom(
     name = "GrGLMakeGLXInterface_src",
     srcs = ["GrGLMakeGLXInterface.cpp"],

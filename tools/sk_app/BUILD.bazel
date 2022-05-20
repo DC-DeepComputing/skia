@@ -75,6 +75,56 @@ cc_library(
     }),
 )
 
+cc_library(
+    name = "sk_app_nogazelle",
+    srcs = [
+        "Window.cpp",
+        "WindowContext.cpp",
+        "RasterWindowContext.h",
+    ] + select({
+        "@platforms//os:linux": ["//tools/sk_app/unix:srcs_nogazelle"],
+        # TODO(kjlubick) add Windows/Mac support
+    }) + select({
+        "//bazel/common_config_settings:dawn_backend": [
+            "DawnWindowContext.h",
+            "DawnWindowContext.cpp",
+        ],
+        "//bazel/common_config_settings:gl_backend": [
+            "GLWindowContext.cpp",
+            "GLWindowContext.h",
+        ],
+        "//bazel/common_config_settings:vulkan_backend": [
+            "VulkanWindowContext.h",
+            "VulkanWindowContext.cpp",
+            "//tools/gpu/vk:testutils_nogazelle",
+        ],
+    }),
+    hdrs = [
+        "Application.h",
+        "DisplayParams.h",
+        "Window.h",
+        "WindowContext.h",
+    ],
+    linkopts = select({
+        "@platforms//os:linux": [
+            "-lX11",
+            "-lxcb",  # dep of X11
+            "-lXau",  # dep of xcb
+            "-lXdmcp",  # dep of xcb
+        ],
+        "//conditions:default": [],
+    }) + selects.with_or({
+        (":dawn_unix", ":vulkan_unix"): ["-lX11-xcb"],
+        "//conditions:default": [],
+    }),
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//:skia_core_nogazelle",
+        "//tools/skui:skui_nogazelle",
+        "//tools/timer:timer_nogazelle",
+    ],
+)
+
 generated_cc_atom(
     name = "Application_hdr",
     hdrs = ["Application.h"],

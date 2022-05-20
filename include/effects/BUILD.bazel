@@ -4,6 +4,37 @@ licenses(["notice"])
 
 exports_files_legacy()
 
+filegroup(
+    name = "hdrs_nogazelle",
+    srcs = [
+        "Sk1DPathEffect.h",
+        "Sk2DPathEffect.h",
+        "SkBlenders.h",
+        "SkBlurDrawLooper.h",
+        "SkBlurMaskFilter.h",
+        "SkColorMatrix.h",
+        "SkColorMatrixFilter.h",
+        "SkCornerPathEffect.h",
+        "SkDashPathEffect.h",
+        "SkDiscretePathEffect.h",
+        "SkGradientShader.h",
+        "SkHighContrastFilter.h",
+        "SkImageFilters.h",
+        "SkLayerDrawLooper.h",
+        "SkLumaColorFilter.h",
+        "SkOpPathEffect.h",
+        "SkOverdrawColorFilter.h",
+        "SkPerlinNoiseShader.h",
+        "SkRuntimeEffect.h",
+        "SkShaderMaskFilter.h",
+        "SkStrokeAndFillPathEffect.h",
+        "SkTableColorFilter.h",
+        "SkTableMaskFilter.h",
+        "SkTrimPathEffect.h",
+    ],
+    visibility = ["//include:__pkg__"],
+)
+
 generated_cc_atom(
     name = "Sk1DPathEffect_hdr",
     hdrs = ["Sk1DPathEffect.h"],

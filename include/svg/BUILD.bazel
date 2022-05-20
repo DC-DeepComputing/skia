@@ -4,6 +4,14 @@ licenses(["notice"])
 
 exports_files_legacy()
 
+filegroup(
+    name = "hdrs_nogazelle",
+    srcs = [
+        "SkSVGCanvas.h",
+    ],
+    visibility = ["//include:__pkg__"],
+)
+
 generated_cc_atom(
     name = "SkSVGCanvas_hdr",
     hdrs = ["SkSVGCanvas.h"],

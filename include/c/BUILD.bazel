@@ -4,6 +4,26 @@ licenses(["notice"])
 
 exports_files_legacy()
 
+filegroup(
+    name = "hdrs_nogazelle",
+    srcs = [
+        "sk_canvas.h",
+        "sk_colorspace.h",
+        "sk_data.h",
+        "sk_image.h",
+        "sk_imageinfo.h",
+        "sk_maskfilter.h",
+        "sk_matrix.h",
+        "sk_paint.h",
+        "sk_path.h",
+        "sk_picture.h",
+        "sk_shader.h",
+        "sk_surface.h",
+        "sk_types.h",
+    ],
+    visibility = ["//include:__pkg__"],
+)
+
 generated_cc_atom(
     name = "sk_canvas_hdr",
     hdrs = ["sk_canvas.h"],
