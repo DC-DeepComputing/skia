@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a1e99c99_a263bd59",
+        "filename": "src/pdf/SkPDFGradientShader.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 208,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-05-20T17:59:36Z",
+      "side": 1,
+      "message": "Possibly, add example PDF code output to match the pseudo code above.",
+      "range": {
+        "startLine": 207,
+        "startChar": 3,
+        "endLine": 208,
+        "endChar": 3
+      },
+      "revId": "32f023b36a0ae174ad8366fc797952b3f8870792",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
