@@ -74,6 +74,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "72ca50bc_e12e8c7e",
+        "filename": "src/gpu/AtlasTypes.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 196,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-05-20T14:23:12Z",
+      "side": 1,
+      "message": "I\u0027ll see what I can come up with -- maybe it\u0027ll be clearer once I implement it. For now, I was just going by Device::flushPendingWorkToRecorder().",
+      "parentUuid": "7555ba5a_e1812634",
+      "range": {
+        "startLine": 196,
+        "startChar": 63,
+        "endLine": 196,
+        "endChar": 70
+      },
+      "revId": "b433adacc99808825e55776ae4d274db905e1081",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "37f5cfd6_8d571f02",
         "filename": "src/gpu/AtlasTypes.h",
         "patchSetId": 3
