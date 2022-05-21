@@ -107,11 +107,6 @@ void VarDeclaration::ErrorCheck(const Context& context,
         context.fErrors->error(pos,
                 "variables of type '" + baseType->displayName() + "' must be uniform");
     }
-    if (modifiers.fFlags & Modifiers::kUniform_Flag &&
-        (context.fConfig->fKind == ProgramKind::kMeshVertex ||
-         context.fConfig->fKind == ProgramKind::kMeshFragment)) {
-        context.fErrors->error(pos, "uniforms are not permitted in custom mesh shaders");
-    }
     if (modifiers.fLayout.fFlags & Layout::kColor_Flag) {
         if (!ProgramConfig::IsRuntimeEffect(context.fConfig->fKind)) {
             context.fErrors->error(pos, "'layout(color)' is only permitted in runtime effects");

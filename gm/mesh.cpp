@@ -16,6 +16,7 @@
 #include "include/gpu/GrDirectContext.h"
 #include "src/core/SkCanvasPriv.h"
 #include "src/core/SkMeshPriv.h"
+#include "tools/timer/TimeUtils.h"
 
 #include <memory>
 
@@ -149,6 +150,7 @@ protected:
                                             fColorVB,
                                             /*vertexCount= */ 4,
                                             /*vertexOffset=*/ 0,
+                                            /*uniforms=    */nullptr,
                                             kRect);
                     } else {
                         mesh = SkMesh::Make(fSpecWithNoColor,
@@ -156,6 +158,7 @@ protected:
                                             fNoColorVB,
                                             /*vertexCount=*/4,
                                             kNoColorOffset,
+                                            /*uniforms=*/nullptr,
                                             kRect);
                     }
                 } else {
@@ -170,6 +173,7 @@ protected:
                                                    std::move(ib),
                                                    /*indexCount=*/6,
                                                    kIndexOffset,
+                                                   /*uniforms=*/nullptr,
                                                    kRect);
                     } else {
                         mesh = SkMesh::MakeIndexed(fSpecWithNoColor,
@@ -180,6 +184,7 @@ protected:
                                                    std::move(ib),
                                                    /*indexCount=*/6,
                                                    kIndexOffset,
+                                                   /*uniforms=*/nullptr,
                                                    kRect);
                     }
                 }
@@ -348,19 +353,24 @@ protected:
                 {Varying::Type::kHalf4,  SkString{"color"}},
         };
         static constexpr char kPremulVS[] = R"(
+                uniform float uf;
                 float2 main(in Attributes attributes, out Varyings varyings) {
                     varyings.color = half4(attributes.color.a*attributes.color.rgb,
                                            attributes.color.a);
+                    varyings.color.r += uf;
                     return attributes.pos;
                 }
         )";
         static constexpr char kUnpremulVS[] = R"(
+               uniform half4 f2;
                 float2 main(in Attributes attributes, out Varyings varyings) {
                     varyings.color = attributes.color;
+                    varyings.color.r += f2.r;
                     return attributes.pos;
                 }
         )";
         static constexpr char kFS[] = R"(
+                uniform half4 f2;
                 void main(in Varyings varyings, out half4 color) {
                     color = varyings.color;
                 }
@@ -411,6 +421,8 @@ protected:
             c = surface->getCanvas();
             c->clear(SK_ColorWHITE);
         }
+        float t[5] {fT, fT, fT, fT, fT};
+        auto u = SkData::MakeWithCopy(t, sizeof(t));
         for (bool useShader : {false, true})
         for (bool unpremul  : {false, true}) {
             c->save();
@@ -418,8 +430,9 @@ protected:
                 SkMesh mesh = SkMesh::Make(fSpecs[SpecIndex(unpremul, spin)],
                                            SkMesh::Mode::kTriangleStrip,
                                            fVB,
-                                           /*vertexCount=*/ 4,
+                                           /*vertexCount= */ 4,
                                            /*vertexOffset=*/0,
+                                           /*uniforms=    */u,
                                            kRect);
 
                 SkPaint paint;
@@ -437,6 +450,11 @@ protected:
             surface->draw(canvas, 0, 0);
         }
         return DrawResult::kOk;
+    }
+
+    bool onAnimate(double nanos) override {
+        fT = TimeUtils::SineWave(nanos, 5.f, 0.f, 0.f, 1.f);
+        return true;
     }
 
 private:
@@ -459,6 +477,7 @@ private:
     };
 
     sk_sp<SkMesh::VertexBuffer> fVB;
+    float fT = 0;
 
     sk_sp<SkMeshSpecification> fSpecs[4];
 
