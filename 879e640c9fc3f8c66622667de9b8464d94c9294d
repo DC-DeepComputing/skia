@@ -118,6 +118,30 @@
       },
       "revId": "879e640c9fc3f8c66622667de9b8464d94c9294d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "59205123_574cda08",
+        "filename": "tests/sksl/errors/InvalidUniformTypes.glsl",
+        "patchSetId": 2
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-05-21T02:02:52Z",
+      "side": 1,
+      "message": "I meant pointing at the inner bool (where the error lies), not at the outer uniform.\n\nI believe this is what you would get if you put the error report on the L37/L43 (as mentioned at the earlier comment), or am I misunderstanding it?",
+      "parentUuid": "9990cb6d_7efa8e5f",
+      "range": {
+        "startLine": 21,
+        "startChar": 0,
+        "endLine": 23,
+        "endChar": 10
+      },
+      "revId": "879e640c9fc3f8c66622667de9b8464d94c9294d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
