@@ -46,6 +46,30 @@
       },
       "revId": "879e640c9fc3f8c66622667de9b8464d94c9294d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4920a271_341ac1f7",
+        "filename": "tests/sksl/errors/InvalidUniformTypes.glsl",
+        "patchSetId": 2
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-05-21T00:11:27Z",
+      "side": 1,
+      "message": "The reason the `InvalidStruct1` error gets printed twice is because an instance of InvalidStruct1 is seen twice in separate calls to `check_valid_uniform_types` from `ErrorCheck`: once for `st1` and once for `st2`. So this message will get printed twice even if I moved it elsewhere in the function.\n\nThis currently WAI. Every time it encounters a struct that transitively contains a disallowed member, an error is printed to explain the reason for the entire tree, which is what I wanted but I think I could improve the formatting. Ideally the result I wanted to achieve was something like this:\n\n    error: 21: variables of type \u0027InvalidStruct1\u0027 may not be uniform\n    uniform InvalidStruct1 st1;\n    ^^^^^^^^^^^^^^^^^^^^^^^^^^\n        type \u0027InvalidStruct1\u0027 contains a member that is disallowed in a uniform\n            bool b; // invalid\n            ^^^^^^\n\n    error: 22: variables of type \u0027InvalidStruct2\u0027 may not be uniform\n    uniform InvalidStruct2 st2;\n    ^^^^^^^^^^^^^^^^^^^^^^^^^^\n        type \u0027InvalidStruct2\u0027 contains a member that is disallowed in a uniform\n            InvalidStruct1 s;\n            ^^^^^^^^^^^^^^^^\n        type \u0027InvalidStruct1\u0027 contains a member that is disallowed in a uniform\n            bool b; // invalid\n            ^^^^^^\n\nin which `type \u0027InvalidStruct1\u0027 contains a member that is disallowed in a uniform` is repeated in the two separate instances as part of each struct type tree. I don\u0027t think I can easily achieve this exact formatting without providing some structured data about indentations to `ErrorReporter`.\n\nI uploaded PS4 to demonstrate the type of output I wanted to generate.",
+      "parentUuid": "77f55e62_c67c0ba2",
+      "range": {
+        "startLine": 21,
+        "startChar": 0,
+        "endLine": 23,
+        "endChar": 10
+      },
+      "revId": "879e640c9fc3f8c66622667de9b8464d94c9294d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
