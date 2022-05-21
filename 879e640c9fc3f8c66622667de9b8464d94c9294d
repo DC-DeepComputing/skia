@@ -70,6 +70,30 @@
       },
       "revId": "879e640c9fc3f8c66622667de9b8464d94c9294d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a1474902_62f1d3e3",
+        "filename": "tests/sksl/errors/InvalidUniformTypes.glsl",
+        "patchSetId": 2
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-05-21T01:13:50Z",
+      "side": 1,
+      "message": "Honestly I think the errors are too verbose this way. The struct hierarchy leading up to the invalid type isn\u0027t really all that relevant to the error and just adds chaff, giving the reader more to scan. We can show the line of code containing the bogus type, underline it, and say \"variables of type \u0027bool\u0027 may not be uniform\", and that\u0027s perfectly clear. We don\u0027t need to hand-hold the reader to explain \"this bool is a uniform because it\u0027s in this struct, and this struct is in that struct, and that struct is a uniform;\" the reader hopefully already knows this, or will very quickly figure it out.",
+      "parentUuid": "4920a271_341ac1f7",
+      "range": {
+        "startLine": 21,
+        "startChar": 0,
+        "endLine": 23,
+        "endChar": 10
+      },
+      "revId": "879e640c9fc3f8c66622667de9b8464d94c9294d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
