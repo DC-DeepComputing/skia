@@ -42,7 +42,6 @@ DSLStatement::DSLStatement(std::unique_ptr<SkSL::Expression> expr)
 DSLStatement::DSLStatement(std::unique_ptr<SkSL::Statement> stmt)
     : fStatement(std::move(stmt)) {
     SkASSERT(this->hasValue());
-    ThreadContext::ReportErrors(this->position());
 }
 
 DSLStatement::~DSLStatement() {}

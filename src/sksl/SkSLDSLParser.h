@@ -309,7 +309,7 @@ private:
 
             void forwardErrors() {
                 for (Error& error : fErrors) {
-                    dsl::GetErrorReporter().error(error.fMsg.c_str(), error.fPos);
+                    dsl::GetErrorReporter().error(error.fPos, error.fMsg);
                 }
             }
 
@@ -324,7 +324,6 @@ private:
 
         void restoreErrorReporter() {
             SkASSERT(fOldErrorReporter);
-            fErrorReporter.reportPendingErrors(Position());
             dsl::SetErrorReporter(fOldErrorReporter);
             fOldErrorReporter = nullptr;
         }

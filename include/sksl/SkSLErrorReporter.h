@@ -25,23 +25,13 @@ class ErrorReporter {
 public:
     ErrorReporter() {}
 
-    virtual ~ErrorReporter() {
-        SkASSERT(fPendingErrors.empty());
-    }
+    virtual ~ErrorReporter() {}
 
-    void error(std::string_view msg, Position position);
-
-    /**
-     * Reports an error message at the given line of the source text. Errors reported
-     * with a line of -1 will be queued until line number information can be determined.
-     */
-    void error(Position pos, std::string_view msg);
+    void error(Position position, std::string_view msg);
 
     std::string_view source() const { return fSource; }
 
     void setSource(std::string_view source) { fSource = source; }
-
-    void reportPendingErrors(Position pos);
 
     int errorCount() const {
         return fErrorCount;
@@ -61,7 +51,6 @@ private:
     Position position(int offset) const;
 
     std::string_view fSource;
-    std::vector<std::string> fPendingErrors;
     int fErrorCount = 0;
 };
 
