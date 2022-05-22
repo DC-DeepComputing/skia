@@ -57,7 +57,7 @@ const SkSL::Variable* DSLWriter::Var(DSLVarBase& var) {
         if (var.storage() != SkSL::VariableStorage::kParameter) {
             var.fDeclaration = VarDeclaration::Convert(ThreadContext::Context(), std::move(skslvar),
                     var.fInitialValue.releaseIfPossible(), /*addToSymbolTable=*/false);
-            if (var.fDeclaration) {
+            if (!var.fDeclaration->isEmpty()) {
                 var.fVar = varPtr;
                 var.fInitialized = true;
             }

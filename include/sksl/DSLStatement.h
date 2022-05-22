@@ -36,8 +36,6 @@ public:
 
     DSLStatement(std::unique_ptr<SkSL::Expression> expr);
 
-    DSLStatement(std::unique_ptr<SkSL::Statement> stmt, Position pos);
-
     DSLStatement(std::unique_ptr<SkSL::Statement> stmt);
 
     ~DSLStatement();

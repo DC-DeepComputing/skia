@@ -17,7 +17,7 @@ std::unique_ptr<Statement> ExpressionStatement::Convert(const Context& context,
     // Expression-statements need to represent a complete expression.
     // Report an error on intermediate expressions, like FunctionReference or TypeReference.
     if (expr->isIncomplete(context)) {
-        return nullptr;
+        return Nop::Make(expr->fPosition);
     }
     return ExpressionStatement::Make(context, std::move(expr));
 }

@@ -42,14 +42,7 @@ DSLStatement::DSLStatement(std::unique_ptr<SkSL::Expression> expr)
 DSLStatement::DSLStatement(std::unique_ptr<SkSL::Statement> stmt)
     : fStatement(std::move(stmt)) {
     SkASSERT(this->hasValue());
-}
-
-DSLStatement::DSLStatement(std::unique_ptr<SkSL::Statement> stmt, Position pos)
-        : fStatement(stmt ? std::move(stmt) : SkSL::Nop::Make()) {
-    ThreadContext::ReportErrors(pos);
-    if (pos.valid() && !fStatement->fPosition.valid()) {
-        fStatement->fPosition = pos;
-    }
+    ThreadContext::ReportErrors(this->position());
 }
 
 DSLStatement::~DSLStatement() {}

@@ -205,7 +205,7 @@ public:
 
     static DSLStatement Do(DSLStatement stmt, DSLExpression test, Position pos) {
         return DSLStatement(DoStatement::Convert(ThreadContext::Context(), pos, stmt.release(),
-                test.release()), pos);
+                                                 test.release()));
     }
 
     static DSLStatement For(DSLStatement initializer, DSLExpression test,
@@ -216,13 +216,15 @@ public:
                                                   test.releaseIfPossible(),
                                                   next.releaseIfPossible(),
                                                   stmt.release(),
-                                                  ThreadContext::SymbolTable()), pos);
+                                                  ThreadContext::SymbolTable()));
     }
 
     static DSLStatement If(DSLExpression test, DSLStatement ifTrue, DSLStatement ifFalse,
             bool isStatic, Position pos) {
         return DSLStatement(IfStatement::Convert(ThreadContext::Context(), pos, isStatic,
-                test.release(), ifTrue.release(), ifFalse.releaseIfPossible()), pos);
+                                                 test.release(),
+                                                 ifTrue.release(),
+                                                 ifFalse.releaseIfPossible()));
     }
 
     static void FindRTAdjust(SkSL::InterfaceBlock& intf, Position pos) {
@@ -361,14 +363,14 @@ public:
                                                      value.release(),
                                                      std::move(values),
                                                      std::move(caseBlocks),
-                                                     ThreadContext::SymbolTable()), pos);
+                                                     ThreadContext::SymbolTable()));
     }
 
     static DSLStatement While(DSLExpression test, DSLStatement stmt, Position pos) {
         return DSLStatement(ForStatement::ConvertWhile(ThreadContext::Context(), pos,
                                                        test.release(),
                                                        stmt.release(),
-                                                       ThreadContext::SymbolTable()), pos);
+                                                       ThreadContext::SymbolTable()));
     }
 };
 
