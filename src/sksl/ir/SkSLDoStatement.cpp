@@ -11,6 +11,7 @@
 #include "src/sksl/SkSLAnalysis.h"
 #include "src/sksl/SkSLContext.h"
 #include "src/sksl/SkSLProgramSettings.h"
+#include "src/sksl/ir/SkSLNop.h"
 
 namespace SkSL {
 
@@ -20,14 +21,14 @@ std::unique_ptr<Statement> DoStatement::Convert(const Context& context,
                                                 std::unique_ptr<Expression> test) {
     if (context.fConfig->strictES2Mode()) {
         context.fErrors->error(pos, "do-while loops are not supported");
-        return nullptr;
+        return Nop::Make(pos);
     }
     test = context.fTypes.fBool->coerceExpression(std::move(test), context);
     if (!test) {
-        return nullptr;
+        return Nop::Make(pos);
     }
     if (Analysis::DetectVarDeclarationWithoutScope(*stmt, context.fErrors)) {
-        return nullptr;
+        return Nop::Make(pos);
     }
     return DoStatement::Make(context, pos, std::move(stmt), std::move(test));
 }
