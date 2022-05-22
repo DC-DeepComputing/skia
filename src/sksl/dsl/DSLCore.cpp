@@ -115,9 +115,6 @@ public:
             // We have a successful program!
             success = true;
         }
-        if (!success) {
-            ThreadContext::ReportErrors(Position());
-        }
         if (pool) {
             pool->detachFromThread();
         }
@@ -260,7 +257,6 @@ public:
             SkSL::VarDeclaration::ErrorCheck(ThreadContext::Context(), field.fPosition,
                     field.fModifiers.fPosition, field.fModifiers.fModifiers, baseType,
                     Variable::Storage::kInterfaceBlock);
-            GetErrorReporter().reportPendingErrors(field.fPosition);
             skslFields.push_back(SkSL::Type::Field(field.fPosition, field.fModifiers.fModifiers,
                     field.fName, &field.fType.skslType()));
         }
@@ -286,7 +282,6 @@ public:
                 AddToSymbolTable(var);
             }
         }
-        GetErrorReporter().reportPendingErrors(pos);
         return var;
     }
 
@@ -390,7 +385,6 @@ DSLExpression sk_Position() {
 
 void AddExtension(std::string_view name, Position pos) {
     ThreadContext::ProgramElements().push_back(std::make_unique<SkSL::Extension>(pos, name));
-    ThreadContext::ReportErrors(pos);
 }
 
 DSLStatement Break(Position pos) {
