@@ -169,7 +169,7 @@ std::unique_ptr<Statement> SwitchStatement::Convert(const Context& context,
 
     value = context.fTypes.fInt->coerceExpression(std::move(value), context);
     if (!value) {
-        return nullptr;
+        return Nop::Make(pos);
     }
 
     StatementArray cases;
@@ -180,12 +180,12 @@ std::unique_ptr<Statement> SwitchStatement::Convert(const Context& context,
             std::unique_ptr<Expression> caseValue = value->type().coerceExpression(
                     std::move(caseValues[i]), context);
             if (!caseValue) {
-                return nullptr;
+                return Nop::Make(pos);
             }
             SKSL_INT intValue;
             if (!ConstantFolder::GetConstantInt(*caseValue, &intValue)) {
                 context.fErrors->error(casePos, "case value must be a constant integer");
-                return nullptr;
+                return Nop::Make(pos);
             }
             cases.push_back(SwitchCase::Make(casePos, intValue, std::move(caseStatements[i])));
         } else {
@@ -203,10 +203,10 @@ std::unique_ptr<Statement> SwitchStatement::Convert(const Context& context,
                 context.fErrors->error(sc->fPosition, "duplicate default case");
             } else {
                 context.fErrors->error(sc->fPosition, "duplicate case value '" +
-                                                  std::to_string(sc->value()) + "'");
+                                                      std::to_string(sc->value()) + "'");
             }
         }
-        return nullptr;
+        return Nop::Make(pos);
     }
 
     return SwitchStatement::Make(context, pos, isStatic, std::move(value), std::move(cases),
@@ -251,7 +251,7 @@ std::unique_ptr<Statement> SwitchStatement::Make(const Context& context,
                 if (!defaultCase) {
                     // No default switch-case exists; the switch had no effect.
                     // We can eliminate the entire switch!
-                    return Nop::Make();
+                    return Nop::Make(pos);
                 }
                 // We had a default case; that's what we matched with.
                 matchingCase = defaultCase;
@@ -266,7 +266,7 @@ std::unique_ptr<Statement> SwitchStatement::Make(const Context& context,
             // Report an error if this was a static switch and BlockForCase failed us.
             if (isStatic) {
                 context.fErrors->error(pos, "static switch contains non-static conditional exit");
-                return nullptr;
+                return Nop::Make(pos);
             }
         }
     }
