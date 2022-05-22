@@ -430,7 +430,7 @@ std::unique_ptr<Statement> Rehydrator::statement() {
                                      std::move(ifTrue), std::move(ifFalse));
         }
         case Rehydrator::kNop_Command:
-            return std::make_unique<SkSL::Nop>();
+            return Nop::Make();
         case Rehydrator::kReturn_Command: {
             std::unique_ptr<Expression> expr = this->expression();
             return ReturnStatement::Make(Position(), std::move(expr));

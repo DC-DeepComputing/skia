@@ -40,14 +40,14 @@ std::unique_ptr<Statement> IfStatement::Convert(const Context& context, Position
         std::unique_ptr<Statement> ifFalse) {
     test = context.fTypes.fBool->coerceExpression(std::move(test), context);
     if (!test) {
-        return nullptr;
+        return Nop::Make(pos);
     }
     SkASSERT(ifTrue);
     if (Analysis::DetectVarDeclarationWithoutScope(*ifTrue, context.fErrors)) {
-        return nullptr;
+        return Nop::Make(pos);
     }
     if (ifFalse && Analysis::DetectVarDeclarationWithoutScope(*ifFalse, context.fErrors)) {
-        return nullptr;
+        return Nop::Make(pos);
     }
     return IfStatement::Make(context, pos, isStatic, std::move(test),
                              std::move(ifTrue), std::move(ifFalse));
