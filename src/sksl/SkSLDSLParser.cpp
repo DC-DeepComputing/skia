@@ -245,7 +245,7 @@ void DSLParser::error(Token token, std::string msg) {
 }
 
 void DSLParser::error(Position position, std::string msg) {
-    GetErrorReporter().error(msg.c_str(), position);
+    GetErrorReporter().error(position, msg);
 }
 
 Position DSLParser::rangeFrom(Position start) {
