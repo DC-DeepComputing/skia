@@ -362,6 +362,7 @@ generated_cc_atom(
     visibility = ["//:__subpackages__"],
     deps = [
         ":SkSLDoStatement_hdr",
+        ":SkSLNop_hdr",
         "//include/sksl:SkSLErrorReporter_hdr",
         "//src/sksl:SkSLAnalysis_hdr",
         "//src/sksl:SkSLContext_hdr",
@@ -753,6 +754,7 @@ generated_cc_atom(
     deps = [
         ":SkSLSymbolTable_hdr",
         "//include/private:SkSLStatement_hdr",
+        "//include/sksl:SkSLPosition_hdr",
     ],
 )
 
@@ -1075,6 +1077,7 @@ generated_cc_atom(
     srcs = ["SkSLVarDeclarations.cpp"],
     visibility = ["//:__subpackages__"],
     deps = [
+        ":SkSLNop_hdr",
         ":SkSLVarDeclarations_hdr",
         "//include/sksl:SkSLErrorReporter_hdr",
         "//src/sksl:SkSLAnalysis_hdr",

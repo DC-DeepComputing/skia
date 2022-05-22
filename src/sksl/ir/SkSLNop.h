@@ -9,6 +9,7 @@
 #define SKSL_NOP
 
 #include "include/private/SkSLStatement.h"
+#include "include/sksl/SkSLPosition.h"
 #include "src/sksl/ir/SkSLSymbolTable.h"
 
 namespace SkSL {
@@ -20,11 +21,10 @@ class Nop final : public Statement {
 public:
     inline static constexpr Kind kStatementKind = Kind::kNop;
 
-    Nop()
-    : INHERITED(Position(), kStatementKind) {}
+    Nop(Position pos) : INHERITED(pos, kStatementKind) {}
 
-    static std::unique_ptr<Statement> Make() {
-        return std::make_unique<Nop>();
+    static std::unique_ptr<Statement> Make(Position pos = {}) {
+        return std::make_unique<Nop>(pos);
     }
 
     bool isEmpty() const override {
@@ -36,7 +36,7 @@ public:
     }
 
     std::unique_ptr<Statement> clone() const override {
-        return std::make_unique<Nop>();
+        return std::make_unique<Nop>(this->fPosition);
     }
 
 private:
