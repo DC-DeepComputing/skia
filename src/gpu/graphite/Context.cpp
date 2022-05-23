@@ -29,6 +29,9 @@
 #include "src/gpu/graphite/mtl/MtlTrampoline.h"
 #endif
 
+#include <cstdlib>
+#include <stdarg.h>
+
 namespace skgpu::graphite {
 
 //--------------------------------------------------------------------------------------------------

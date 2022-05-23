@@ -10,11 +10,14 @@
 
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkShader.h"
+#include "include/core/SkSpan.h"
 #include "include/gpu/graphite/GraphiteTypes.h"
 
 class SkBlenderID;
 class SkCombinationBuilder;
 class SkRuntimeEffect;
+
+#include <stdarg.h>
 
 namespace skgpu::graphite {
 
