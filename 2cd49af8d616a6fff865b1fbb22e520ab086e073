@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cf1314fc_ffb81116",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-05-23T21:30:05Z",
+      "side": 1,
+      "message": "Having the anonymous namespace be at top level simplifies the coding in the .cpp. ",
+      "revId": "2cd49af8d616a6fff865b1fbb22e520ab086e073",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
