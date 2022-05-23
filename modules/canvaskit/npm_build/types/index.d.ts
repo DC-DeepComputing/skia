@@ -1431,6 +1431,12 @@ export interface Canvas extends EmbindObject<Canvas> {
     drawVertices(verts: Vertices, mode: BlendMode, paint: Paint): void;
 
     /**
+     * Returns the bounds of clip, unaffected by the canvas's matrix.
+     * If the clip is empty, all four integers in the returned rectangle will equal zero.
+     */
+    getDeviceClipBounds(): IRect;
+
+    /**
      * Returns the current transform from local coordinates to the 'device', which for most
      * purposes means pixels.
      */

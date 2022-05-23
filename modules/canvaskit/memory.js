@@ -378,6 +378,17 @@ function copyIRectToWasm(fourInts, ptr) {
   return copy1dArray(fourInts, 'HEAP32', ptr || _scratchIRectPtr);
 }
 
+// copies the four ints at the given pointer into a JS Int32Array
+function copyIRectFromWasm(rectPtr, outputArray) {
+  if (!outputArray) {
+    outputArray = new Int32Array(4);
+  }
+  for (var i = 0; i < 4; i++) {
+    outputArray[i] = CanvasKit.HEAP32[rectPtr/4 + i]; // divide by 4 to cast to 32bit int.
+  }
+  return outputArray;
+}
+
 // copies the given floats into the wasm heap as an SkRRect. Unless a non-scratch pointer is
 // passed into ptr, callers do NOT need to free the returned pointer.
 function copyRRectToWasm(twelveFloats, ptr) {
