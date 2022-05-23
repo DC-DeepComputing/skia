@@ -165,6 +165,7 @@ enum class GrGLRenderer {
     kAdreno6xx_other,
 
     kGoogleSwiftShader,
+    kGoogleSwiftShaderVulkan,
 
     /** Intel GPU families, ordered by generation **/
     // 6th gen
@@ -230,7 +231,8 @@ enum class GrGLANGLEBackend {
     kUnknown,
     kD3D9,
     kD3D11,
-    kOpenGL
+    kOpenGL,
+    kVulkan
 };
 
 ////////////////////////////////////////////////////////////////////////////////
