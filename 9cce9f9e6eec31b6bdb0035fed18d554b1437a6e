@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f28b7ec5_c33f2ffc",
+        "filename": "src/text/gpu/TextBlob.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 720,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-05-23T20:38:46Z",
+      "side": 1,
+      "message": "Add \u0027initialPositionMatrix\u0027 param name here ?",
+      "revId": "9cce9f9e6eec31b6bdb0035fed18d554b1437a6e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d0ced808_c2e04233",
+        "filename": "src/text/gpu/TextBlob.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 741,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-05-23T20:38:46Z",
+      "side": 1,
+      "message": "Add \u0027initialPositionMatrix\u0027 param name here and below ?",
+      "revId": "9cce9f9e6eec31b6bdb0035fed18d554b1437a6e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "58c527d3_28b1c7c9",
+        "filename": "src/text/gpu/TextBlob.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1798,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-05-23T20:38:46Z",
+      "side": 1,
+      "message": "Here too ?",
+      "revId": "9cce9f9e6eec31b6bdb0035fed18d554b1437a6e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
