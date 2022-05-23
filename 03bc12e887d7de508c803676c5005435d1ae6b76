@@ -22,6 +22,30 @@
       },
       "revId": "03bc12e887d7de508c803676c5005435d1ae6b76",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "83be5fc6_6f302a03",
+        "filename": "src/image/SkImage_Raster.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 500,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-05-23T16:58:30Z",
+      "side": 1,
+      "message": "Because we are getting a proxy to wrap in an SkImage. Things wrapped in an SkImage don\u0027t count towards the budget.",
+      "parentUuid": "f2daefcb_4a768893",
+      "range": {
+        "startLine": 500,
+        "startChar": 61,
+        "endLine": 500,
+        "endChar": 76
+      },
+      "revId": "03bc12e887d7de508c803676c5005435d1ae6b76",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
