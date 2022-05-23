@@ -297,6 +297,7 @@ DAWN_SRCS = [
     "src/dawn/native/QuerySet.h",
     "src/dawn/native/Queue.cpp",
     "src/dawn/native/Queue.h",
+    "src/dawn/native/RefCountedWithExternalCount.h",
     "src/dawn/native/RenderBundle.cpp",
     "src/dawn/native/RenderBundle.h",
     "src/dawn/native/RenderBundleEncoder.cpp",
