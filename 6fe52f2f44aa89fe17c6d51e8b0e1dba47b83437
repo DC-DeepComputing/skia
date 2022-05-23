@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8d6dc500_29d533b5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-05-23T21:01:06Z",
+      "side": 1,
+      "message": "This should be the last bit of files to be moved, on to Graphite-specific code next.",
+      "revId": "6fe52f2f44aa89fe17c6d51e8b0e1dba47b83437",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
