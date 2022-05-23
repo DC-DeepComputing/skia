@@ -41,13 +41,13 @@ static SkString pdf_date(const SkTime::DateTime& dt) {
             static_cast<unsigned>(dt.fSecond), timezoneSign, timeZoneHours,
             timeZoneMinutes);
 }
-
+/*
 static bool utf8_is_pdfdocencoding(const char* src, size_t len) {
     const uint8_t* end = (const uint8_t*)src + len;
     for (const uint8_t* ptr = (const uint8_t*)src; ptr < end; ++ptr) {
         uint8_t v = *ptr;
         // See Table D.2 (PDFDocEncoding Character Set) in the PDF3200_2008 spec.
-        if ((v > 23 && v < 32) || v > 126) {
+        if ((0x15 < v && v < 0x20) || 0x7E < v) {
             return false;
         }
     }
@@ -101,9 +101,10 @@ static SkString to_utf16be(const char* src, size_t len) {
 // See sections 14.3.3 (Document Information Dictionary) and 7.9.2.2 (Text String Type)
 // of the PDF32000_2008 spec.
 static SkString convert(const SkString& s) {
+    // Could convert from UTF-8 to PDFDocEncoding and, if successful, use that.
     return utf8_is_pdfdocencoding(s.c_str(), s.size()) ? s : to_utf16be(s.c_str(), s.size());
 }
-
+*/
 namespace {
 static const struct {
     const char* const key;
@@ -124,14 +125,14 @@ std::unique_ptr<SkPDFObject> SkPDFMetadata::MakeDocumentInformationDict(
     for (const auto keyValuePtr : gMetadataKeys) {
         const SkString& value = metadata.*(keyValuePtr.valuePtr);
         if (value.size() > 0) {
-            dict->insertString(keyValuePtr.key, convert(value));
+            dict->insertTextString(keyValuePtr.key, value);
         }
     }
     if (metadata.fCreation != kZeroTime) {
-        dict->insertString("CreationDate", pdf_date(metadata.fCreation));
+        dict->insertTextString("CreationDate", pdf_date(metadata.fCreation));
     }
     if (metadata.fModified != kZeroTime) {
-        dict->insertString("ModDate", pdf_date(metadata.fModified));
+        dict->insertTextString("ModDate", pdf_date(metadata.fModified));
     }
     return std::move(dict);
 }
@@ -167,16 +168,13 @@ SkUUID SkPDFMetadata::CreateUUID(const SkPDF::Metadata& metadata) {
     return uuid;
 }
 
-std::unique_ptr<SkPDFObject> SkPDFMetadata::MakePdfId(const SkUUID& doc,
-                                            const SkUUID& instance) {
+std::unique_ptr<SkPDFObject> SkPDFMetadata::MakePdfId(const SkUUID& doc, const SkUUID& instance) {
     // /ID [ <81b14aafa313db63dbd6f981e49f94f4>
     //       <81b14aafa313db63dbd6f981e49f94f4> ]
     auto array = SkPDFMakeArray();
     static_assert(sizeof(SkUUID) == 16, "uuid_size");
-    array->appendString(
-            SkString(reinterpret_cast<const char*>(&doc), sizeof(SkUUID)));
-    array->appendString(
-            SkString(reinterpret_cast<const char*>(&instance), sizeof(SkUUID)));
+    array->appendByteString(SkString(reinterpret_cast<const char*>(&doc     ), sizeof(SkUUID)));
+    array->appendByteString(SkString(reinterpret_cast<const char*>(&instance), sizeof(SkUUID)));
     return std::move(array);
 }
 
