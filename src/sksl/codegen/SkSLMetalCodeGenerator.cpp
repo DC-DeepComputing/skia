@@ -2238,9 +2238,18 @@ void MetalCodeGenerator::writeFunction(const FunctionDefinition& f) {
 }
 
 void MetalCodeGenerator::writeModifiers(const Modifiers& modifiers) {
-    if (modifiers.fFlags & (Modifiers::kIn_Flag | Modifiers::kOut_Flag)) {
+    if (modifiers.fFlags & Modifiers::kDevice) {
+        this->write("device ");
+    } else if (modifiers.fFlags & Modifiers::kThreadGroup) {
+        this->write("threadgroup ");
+    } else if (modifiers.fFlags & Modifiers::kConstant) {
+        this->write("constant ");
+    } else if (modifiers.fFlags & Modifiers::kThread) {
+        this->write("thread ");
+    } else if (modifiers.fFlags & (Modifiers::kIn_Flag | Modifiers::kOut_Flag)) {
         this->write(ProgramConfig::IsCompute(fProgram.fConfig->fKind) ? "device " : "thread ");
     }
+
     if (modifiers.fFlags & Modifiers::kConst_Flag) {
         this->write("const ");
     }
@@ -2577,6 +2586,19 @@ void MetalCodeGenerator::writeUniformStruct() {
     }
 }
 
+void MetalCodeGenerator::writeAddressSpace(const Modifiers& modifiers) {
+    int flags = modifiers.fFlags;
+    if (flags & Modifiers::kThreadGroup) {
+        this->write("threadgroup ");
+    } else if (flags & Modifiers::kConstant) {
+        this->write("constant ");
+    } else if (flags & Modifiers::kThread) {
+        this->write("thread ");
+    } else {
+        this->write("device ");
+    }
+}
+
 void MetalCodeGenerator::writeInputStruct() {
     this->write("struct Inputs {\n");
     for (const ProgramElement* e : fProgram.elements()) {
@@ -2587,7 +2609,7 @@ void MetalCodeGenerator::writeInputStruct() {
                 this->write("    ");
                 if (ProgramConfig::IsCompute(fProgram.fConfig->fKind) &&
                         needs_address_space(var.modifiers(), var.type())) {
-                    this->write("device ");
+                    this->writeAddressSpace(var.modifiers());
                 }
                 this->writeType(var.type());
                 if (use_reference(var.modifiers(), var.type())) {
@@ -2626,7 +2648,7 @@ void MetalCodeGenerator::writeOutputStruct() {
                 this->write("    ");
                 if (ProgramConfig::IsCompute(fProgram.fConfig->fKind) &&
                         needs_address_space(var.modifiers(), var.type())) {
-                    this->write("device ");
+                    this->writeAddressSpace(var.modifiers());
                 }
                 this->writeType(var.type());
                 if (ProgramConfig::IsCompute(fProgram.fConfig->fKind) &&

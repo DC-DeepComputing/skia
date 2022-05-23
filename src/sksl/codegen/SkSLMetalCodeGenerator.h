@@ -105,6 +105,8 @@ protected:
 
     void writeUniformStruct();
 
+    void writeAddressSpace(const Modifiers& modifiers);
+
     void writeInputStruct();
 
     void writeOutputStruct();
