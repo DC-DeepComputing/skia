@@ -12,11 +12,14 @@
 #include "include/core/SkBlendMode.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkShader.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkTileMode.h"
 #include "include/gpu/graphite/GraphiteTypes.h"
 #include "include/private/SkNoncopyable.h"
 #include "include/private/SkTHash.h"
 #include "src/core/SkArenaAlloc.h"
+
+#include <stdarg.h>
 
 class SkRuntimeEffect;
 class SkShaderCodeDictionary;
@@ -35,18 +38,21 @@ class Recorder;
 class Recording;
 class TextureInfo;
 
-enum class ShaderType {
-    kSolidColor,
+#define SHADER_TYPES(M)             \
+    M(SolidColor)                   \
+                                    \
+    M(LinearGradient)               \
+    M(RadialGradient)               \
+    M(SweepGradient)                \
+    M(ConicalGradient)              \
+                                    \
+    M(LocalMatrix)                  \
+    M(Image)                        \
+    M(BlendShader)
 
-    kLinearGradient,
-    kRadialGradient,
-    kSweepGradient,
-    kConicalGradient,
-
-    kLocalMatrix,
-    kImage,
-    kBlendShader
-};
+#define ENUM(T) k##T,
+enum class ShaderType { SHADER_TYPES(ENUM) };
+#undef ENUM
 
 struct ShaderCombo {
     ShaderCombo() {}
@@ -86,6 +92,43 @@ private:
     uint32_t fID;
 };
 
+class ArenaData_Base {
+public:
+    ArenaData_Base(ShaderType type, int numChildSlots)
+            : fType(type)
+            , fNumChildSlots(numChildSlots) {}
+
+    void addOption(int childIndex, ArenaData_Base* newOption);
+
+    const ShaderType fType;
+    const int        fNumChildSlots;
+};
+
+class CombinationBuilder;
+
+class API_LevelClass {
+public:
+    API_LevelClass(CombinationBuilder* builder, ArenaData_Base* dataInArena)
+            : fBuilder(builder)
+            , fDataInArena(dataInArena) {}
+
+    API_LevelClass addChildOption(int childIndex, ShaderType);
+
+    API_LevelClass addChildOption(int childIndex, ShaderType,
+                                  int minNumStops, int maxNumStops);
+
+    API_LevelClass addChildOption(int childIndex, ShaderType,
+                                  const SkSpan<SkTileMode>&);
+
+    bool isValid() const { return fDataInArena; }
+    ShaderType type() const { return fDataInArena->fType; }
+    int numChildSlots() const { return fDataInArena->fNumChildSlots; }
+
+private:
+    CombinationBuilder* fBuilder;
+    ArenaData_Base* fDataInArena;
+};
+
 class CombinationBuilder {
 public:
     enum class BlendModeGroup {
@@ -98,22 +141,30 @@ public:
     CombinationBuilder(Context*);
 
     // Blend Modes
-    void add(SkBlendMode);
-    void add(SkBlendMode rangeStart, SkBlendMode rangeEnd); // inclusive
-    void add(BlendModeGroup);
-    void add(SkBlenderID);
+    void addOption(SkBlendMode);
+    void addOption(SkBlendMode rangeStart, SkBlendMode rangeEnd); // inclusive
+    void addOption(BlendModeGroup);
+    void addOption(SkBlenderID);
 
     // Shaders
-    void add(ShaderCombo);
+    API_LevelClass addOption(ShaderType shaderType);
+
+    API_LevelClass addOption(ShaderType shaderType, int minNumStops, int maxNumStops);
+
+    API_LevelClass addOption(ShaderType shaderType, const SkSpan<SkTileMode>& tileModes);
 
     void reset();
 
 private:
     friend class Context; // for access to fCombinations
 
+    template<typename T, typename... Args>
+    API_LevelClass allocInArena(Args&&... args);
+
     SkShaderCodeDictionary* fDictionary;
     SkArenaAllocWithReset fArena{64};
     PaintCombinations* fCombinations;
+    SkTArray<ArenaData_Base*> fShaders;
 };
 
 class Context final {

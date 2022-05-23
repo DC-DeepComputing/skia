@@ -65,11 +65,11 @@ public:
     // Add a new command of type T to the end of this SkRecord.
     // You are expected to placement new an object of type T onto this pointer.
     template <typename T>
-    T* append() {
+    T* append1() {
         if (fCount == fReserved) {
             this->grow();
         }
-        return fRecords[fCount++].set(this->allocCommand<T>());
+        return fRecords[fCount++].set1(this->allocCommand<T>());
     }
 
     // Replace the i-th command with a new command of type T.
@@ -82,7 +82,7 @@ public:
         Destroyer destroyer;
         this->mutate(i, destroyer);
 
-        return fRecords[i].set(this->allocCommand<T>());
+        return fRecords[i].set1(this->allocCommand<T>());
     }
 
     // Does not return the bytes in any pointers embedded in the Records; callers
@@ -133,20 +133,20 @@ private:
 
         // Point this record to its data in fAlloc.  Returns ptr for convenience.
         template <typename T>
-        T* set(T* ptr) {
-            fType = T::kType;
+        T* set1(T* ptr) {
+            fType = T::kType1;
             fPtr  = ptr;
-            SkASSERT(this->ptr() == ptr && this->type() == T::kType);
+            SkASSERT(this->ptr1() == ptr && this->type() == T::kType1);
             return ptr;
         }
 
         SkRecords::Type type() const { return fType; }
-        void* ptr() const { return fPtr; }
+        void* ptr1() const { return fPtr; }
 
         // Visit this record with functor F (see public API above).
         template <typename F>
         auto visit(F&& f) const -> decltype(f(SkRecords::NoOp())) {
-        #define CASE(T) case SkRecords::T##_Type: return f(*(const SkRecords::T*)this->ptr());
+        #define CASE(T) case SkRecords::T##_Type: return f(*(const SkRecords::T*)this->ptr1());
             switch(this->type()) { SK_RECORD_TYPES(CASE) }
         #undef CASE
             SkDEBUGFAIL("Unreachable");
@@ -157,7 +157,7 @@ private:
         // Mutate this record with functor F (see public API above).
         template <typename F>
         auto mutate(F&& f) -> decltype(f((SkRecords::NoOp*)nullptr)) {
-        #define CASE(T) case SkRecords::T##_Type: return f((SkRecords::T*)this->ptr());
+        #define CASE(T) case SkRecords::T##_Type: return f((SkRecords::T*)this->ptr1());
             switch(this->type()) { SK_RECORD_TYPES(CASE) }
         #undef CASE
             SkDEBUGFAIL("Unreachable");
