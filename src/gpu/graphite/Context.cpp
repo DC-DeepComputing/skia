@@ -29,7 +29,209 @@
 #include "src/gpu/graphite/mtl/MtlTrampoline.h"
 #endif
 
+#include <cstdlib>
+#include <stdarg.h>
+
 namespace skgpu::graphite {
+
+#if 0
+//--------------------------------------------------------------------------------------------------
+class PaintCombinations {
+public:
+    PaintCombinations() {}
+
+    // SkBlenders
+    void add(SkBlendMode bm) { fBlendModes.add((uint32_t) bm); }
+    void add(SkBlenderID id) { fBlendModes.add(id.asUInt()); }
+    int numBlendModes() const { return fBlendModes.count(); }
+
+    // SkShaders
+    void add(const ShaderCombo& shaderCombo) { fShaders.push_back(shaderCombo); }
+
+private:
+    friend class Context; // for iterators
+
+    std::vector<ShaderCombo> fShaders;
+    SkTHashSet<uint32_t> fBlendModes;
+};
+
+//--------------------------------------------------------------------------------------------------
+// Objects stored in the arena
+
+
+void ArenaData_Base::addOption(int childIndex, ArenaData_Base* newOption) {
+    if (childIndex >= fNumChildSlots) {
+        return;
+    }
+
+}
+
+#define CREATE_ARENA_OBJECT_NOKIDS(T, ...)                                 \
+struct ArenaData_##T : public ArenaData_Base {                             \
+    static const ShaderType kType = ShaderType::k##T;                      \
+    static const int kNumChildSlots = 0;                                   \
+    __VA_ARGS__                                                            \
+};
+
+#define CREATE_ARENA_OBJECT_WITH_KIDS(T, numChildSlots, ...)               \
+struct ArenaData_##T : public ArenaData_Base {                             \
+    static const ShaderType kType = ShaderType::k##T;                      \
+    static const int kNumChildSlots = numChildSlots;                       \
+    __VA_ARGS__                                                            \
+    int fCurNumOptions[numChildSlots] = {};                                \
+    ArenaData_Base* fChildSlots[numChildSlots][4] = {};                    \
+};
+
+CREATE_ARENA_OBJECT_NOKIDS(SolidColor)
+CREATE_ARENA_OBJECT_NOKIDS(LinearGradient,
+                           int fMinNumStops;
+                           int fMaxNumStops;)
+CREATE_ARENA_OBJECT_NOKIDS(RadialGradient,
+                           int fMinNumStops;
+                           int fMaxNumStops;)
+CREATE_ARENA_OBJECT_NOKIDS(SweepGradient,
+                           int fMinNumStops;
+                           int fMaxNumStops;)
+CREATE_ARENA_OBJECT_NOKIDS(ConicalGradient,
+                           int fMinNumStops;
+                           int fMaxNumStops;)
+CREATE_ARENA_OBJECT_WITH_KIDS(LocalMatrix,     /* numChildSlots */ 1)
+CREATE_ARENA_OBJECT_NOKIDS(Image,
+                           int32_t fTileModeCombos;)
+CREATE_ARENA_OBJECT_WITH_KIDS(BlendShader,     /* numChildSlots */ 2)
+
+//--------------------------------------------------------------------------------------------------
+// API-level wrapper around objects stored in the arena
+
+API_LevelClass API_LevelClass::addChildOption(int childIndex, ShaderType type) {
+    if (childIndex >= this->numChildSlots()) {
+        return API_LevelClass(fBuilder, nullptr);
+    }
+
+    API_LevelClass child = fBuilder->addOption(type);
+    if (!child.isValid()) {
+        return API_LevelClass(fBuilder, nullptr);
+    }
+
+    fDataInArena->addOption(childIndex, child.fDataInArena);
+
+    return child;
+}
+
+API_LevelClass API_LevelClass::addChildOption(int childIndex, ShaderType type,
+                                              int minNumStops, int maxNumStops) {
+    return API_LevelClass(fBuilder, nullptr);
+}
+
+API_LevelClass API_LevelClass::addChildOption(int childIndex, ShaderType type,
+                                              const SkSpan<SkTileMode>& tileModes) {
+    return API_LevelClass(fBuilder, nullptr);
+}
+
+//--------------------------------------------------------------------------------------------------
+CombinationBuilder::CombinationBuilder(Context* context)
+        : fDictionary(context->priv().shaderCodeDictionary()) {
+    this->reset();
+}
+
+template<typename T, typename... Args>
+API_LevelClass  CombinationBuilder::allocInArena(Args&&... args) {
+    // In Arena!!
+    ArenaData_Base* arenaObject = new T{ { T::kType, T::kNumChildSlots }, std::forward<Args>(args)...};
+    if (!arenaObject) {
+        return API_LevelClass(this, nullptr);
+    }
+
+    fShaders.push_back(arenaObject);
+    return API_LevelClass(this, arenaObject);
+}
+
+void CombinationBuilder::addOption(SkBlendMode bm) {
+    SkASSERT(fDictionary->isValidID((int) bm));
+
+    fCombinations->add(bm);
+}
+
+void CombinationBuilder::addOption(SkBlendMode rangeStart, SkBlendMode rangeEnd) {
+    for (int i = (int)rangeStart; i <= (int) rangeEnd; ++i) {
+        this->addOption((SkBlendMode) i);
+    }
+}
+
+void CombinationBuilder::addOption(BlendModeGroup group) {
+    switch (group) {
+        case BlendModeGroup::kPorterDuff:
+            this->addOption(SkBlendMode::kClear, SkBlendMode::kScreen);
+            break;
+        case BlendModeGroup::kAdvanced:
+            this->addOption(SkBlendMode::kOverlay, SkBlendMode::kMultiply);
+            break;
+        case BlendModeGroup::kColorAware:
+            this->addOption(SkBlendMode::kHue, SkBlendMode::kLuminosity);
+            break;
+        case BlendModeGroup::kAll:
+            this->addOption(SkBlendMode::kClear, SkBlendMode::kLastMode);
+            break;
+    }
+}
+
+void CombinationBuilder::addOption(SkBlenderID id) {
+    SkASSERT(fDictionary->isValidID(id.asUInt()));
+
+    fCombinations->add(id);
+}
+
+API_LevelClass CombinationBuilder::addOption(ShaderType shaderType) {
+    switch (shaderType) {
+        case ShaderType::kSolidColor:
+            return this->allocInArena<ArenaData_SolidColor>();
+        case ShaderType::kLocalMatrix:
+            return this->allocInArena<ArenaData_LocalMatrix>();
+        case ShaderType::kBlendShader:
+            return this->allocInArena<ArenaData_BlendShader>();
+        default:
+            return API_LevelClass(this, nullptr);
+    }
+
+    SkUNREACHABLE;
+}
+
+API_LevelClass CombinationBuilder::addOption(ShaderType shaderType,
+                                             int minNumStops, int maxNumStops) {
+    switch (shaderType) {
+        case ShaderType::kLinearGradient:
+            return this->allocInArena<ArenaData_LinearGradient>(minNumStops, maxNumStops);
+        case ShaderType::kRadialGradient:
+            return this->allocInArena<ArenaData_RadialGradient>(minNumStops, maxNumStops);
+        case ShaderType::kSweepGradient:
+            return this->allocInArena<ArenaData_SweepGradient>(minNumStops, maxNumStops);
+        case ShaderType::kConicalGradient:
+            return this->allocInArena<ArenaData_ConicalGradient>(minNumStops, maxNumStops);
+        default:
+            return API_LevelClass(this, nullptr);
+    }
+
+    SkUNREACHABLE;
+}
+
+API_LevelClass CombinationBuilder::addOption(ShaderType shaderType,
+                                             const SkSpan<SkTileMode>& tileModes) {
+    switch (shaderType) {
+//        case ShaderType::kImage:
+//            return this->allocInArena<ArenaData_Image>(tileModes);
+        default:
+            return API_LevelClass(this, nullptr);
+    }
+
+    SkUNREACHABLE;
+}
+
+
+void CombinationBuilder::reset() {
+    fArena.reset();
+    fCombinations = fArena.make<PaintCombinations>();
+}
+#endif
 
 //--------------------------------------------------------------------------------------------------
 Context::Context(sk_sp<Gpu> gpu, BackendApi backend)
