@@ -20,6 +20,7 @@
 #include "include/private/SkColorData.h"
 
 enum class SkBackend : uint8_t;
+enum class SkShaderType : uint32_t;
 class SkPaintParamsKeyBuilder;
 class SkPipelineDataGatherer;
 class SkUniquePaintParamsID;
@@ -187,7 +188,7 @@ namespace BlendModeBlock {
 // Bridge between the combinations system and the SkPaintParamsKey
 SkUniquePaintParamsID CreateKey(const SkKeyContext&,
                                 SkPaintParamsKeyBuilder*,
-                                skgpu::graphite::ShaderType,
+                                SkShaderType,
                                 SkTileMode,
                                 SkBlendMode);
 #endif

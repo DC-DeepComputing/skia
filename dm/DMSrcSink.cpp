@@ -10,6 +10,7 @@
 #include "include/codec/SkAndroidCodec.h"
 #include "include/codec/SkCodec.h"
 #include "include/core/SkColorSpace.h"
+#include "include/core/SkCombinationBuilder.h"
 #include "include/core/SkData.h"
 #include "include/core/SkDeferredDisplayListRecorder.h"
 #include "include/core/SkDocument.h"
@@ -2134,12 +2135,10 @@ Result RasterSink::draw(const Src& src, SkBitmap* dst, SkWStream*, SkString*) co
 namespace {
 
 void precompile(skgpu::graphite::Context* context) {
-    using ShaderType = skgpu::graphite::ShaderType;
-
-    skgpu::graphite::CombinationBuilder builder(context);
+    SkCombinationBuilder builder(context);
 
     {
-        builder.add(skgpu::graphite::ShaderCombo({ShaderType::kSolidColor}, {SkTileMode::kRepeat}));
+        builder.add(skgpu::graphite::ShaderCombo({SkShaderType::kSolidColor}, {SkTileMode::kRepeat}));
         builder.add(SkBlendMode::kSrcOver);
         builder.add(SkBlendMode::kSrc);
 
@@ -2149,7 +2148,7 @@ void precompile(skgpu::graphite::Context* context) {
     builder.reset();
 
     {
-        builder.add(skgpu::graphite::ShaderCombo({ShaderType::kLinearGradient},
+        builder.add(skgpu::graphite::ShaderCombo({SkShaderType::kLinearGradient},
                                                  {SkTileMode::kRepeat, SkTileMode::kClamp}));
         builder.add(SkBlendMode::kSrcOver);
         builder.add(SkBlendMode::kSrc);
