@@ -16,6 +16,23 @@
       "message": "Almost through all this, PTAL.",
       "revId": "8aaf76d81aa846054b1859119d30624ed6f3ac0d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "41adaa62_877c85f9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-05-23T15:58:52Z",
+      "side": 1,
+      "message": "This is an exciting one.",
+      "revId": "8aaf76d81aa846054b1859119d30624ed6f3ac0d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
