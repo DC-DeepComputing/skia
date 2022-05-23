@@ -10,11 +10,14 @@
 
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkShader.h"
+#include "include/core/SkSpan.h"
 #include "include/gpu/graphite/GraphiteTypes.h"
 
 class SkBlenderID;
 class SkCombinationBuilder;
 class SkRuntimeEffect;
+
+#include <stdarg.h>
 
 namespace skgpu::graphite {
 
@@ -28,6 +31,47 @@ struct MtlBackendContext;
 class Recorder;
 class Recording;
 class TextureInfo;
+
+#if 0
+
+class CombinationBuilder {
+public:
+    enum class BlendModeGroup {
+        kPorterDuff,         // [ kClear .. kScreen ]
+        kAdvanced,           // [ kOverlay .. kMultiply ]
+        kColorAware,         // [ kHue .. kLuminosity ]
+        kAll
+    };
+
+    CombinationBuilder(Context*);
+
+    // Blend Modes
+    void addOption(SkBlendMode);
+    void addOption(SkBlendMode rangeStart, SkBlendMode rangeEnd); // inclusive
+    void addOption(BlendModeGroup);
+    void addOption(SkBlenderID);
+
+    // Shaders
+    API_LevelClass addOption(ShaderType shaderType);
+
+    API_LevelClass addOption(ShaderType shaderType, int minNumStops, int maxNumStops);
+
+    API_LevelClass addOption(ShaderType shaderType, const SkSpan<SkTileMode>& tileModes);
+
+    void reset();
+
+private:
+    friend class Context; // for access to fCombinations
+
+    template<typename T, typename... Args>
+    API_LevelClass allocInArena(Args&&... args);
+
+    SkShaderCodeDictionary* fDictionary;
+    SkArenaAllocWithReset fArena{64};
+    PaintCombinations* fCombinations;
+    SkTArray<ArenaData_Base*> fShaders;
+};
+#endif
 
 class Context final {
 public:
