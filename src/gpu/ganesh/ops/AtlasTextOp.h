@@ -34,7 +34,7 @@ public:
     static void ClearCache();
 
     struct Geometry {
-        Geometry(const GrAtlasSubRun& subRun,
+        Geometry(const sktext::gpu::AtlasSubRun& subRun,
                  const SkMatrix& drawMatrix,
                  SkPoint drawOrigin,
                  SkIRect clipRect,
@@ -49,7 +49,7 @@ public:
                 SkASSERT(fSupportDataKeepAlive != nullptr);
         }
 
-        static Geometry* MakeForBlob(const GrAtlasSubRun& subRun,
+        static Geometry* MakeForBlob(const sktext::gpu::AtlasSubRun& subRun,
                                      const SkMatrix& drawMatrix,
                                      SkPoint drawOrigin,
                                      SkIRect clipRect,
@@ -59,9 +59,9 @@ public:
 
         void fillVertexData(void* dst, int offset, int count) const;
 
-        const GrAtlasSubRun& fSubRun;
+        const sktext::gpu::AtlasSubRun& fSubRun;
 
-        // Keep the GrTextBlob or Slug alive until the op is deleted.
+        // Keep the TextBlob or Slug alive until the op is deleted.
         sk_sp<SkRefCnt> fSupportDataKeepAlive;
 
         const SkMatrix fDrawMatrix;
