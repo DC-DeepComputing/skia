@@ -2137,6 +2137,98 @@ namespace {
 void precompile(skgpu::graphite::Context* context) {
     SkCombinationBuilder builder(context);
 
+    //  Paint
+    //    |- blendShader_0                            |      sweepGrad_0
+    //    |     |- linearGrad_0 | solid_0
+    //    |     |- blendShader_1 | linearGrad_1
+    //    |        |- radialGrad_0 | solid_1
+    //    |        |- imageShader_0
+    //    |
+    //    |- porterDuff | rt-effect blender (w/ one shader-based child)
+    //                       |- imageShader1
+    {
+        static constexpr int kMinNumStops = 3;
+        static constexpr int kMaxNumStops = 17;
+
+        // first shaders
+        auto blendShader_0 = builder.addOption(SkShaderType::kBlendShader);
+        SkASSERT(blendShader_0.type() == SkShaderType::kBlendShader);
+
+        // first child slot
+        {
+            // first option (linearGrad_0)
+            auto linearGrad_0 = blendShader_0.addChildOption(0, SkShaderType::kLinearGradient,
+                                                             kMinNumStops, kMaxNumStops);
+            SkASSERT(linearGrad_0.type() == SkShaderType::kLinearGradient);
+
+            // second option (solid_0)
+            auto solid_0 = blendShader_0.addChildOption(0, SkShaderType::kSolidColor);
+            SkASSERT(solid_0.type() == SkShaderType::kSolidColor);
+        }
+
+        // second child slot
+        {
+            // first option (blendShader_1)
+            {
+                auto blendShader_1 = blendShader_0.addChildOption(1, SkShaderType::kBlendShader);
+                SkASSERT(blendShader_1.type() == SkShaderType::kBlendShader);
+
+                // nested first child slot
+                {
+                    // first option (radialGrad_0)
+                    auto radialGrad_0 = blendShader_1.addChildOption(0,
+                                                                     SkShaderType::kRadialGradient,
+                                                                     kMinNumStops, kMaxNumStops);
+                    SkASSERT(radialGrad_0.type() == SkShaderType::kRadialGradient);
+
+                    // second option (solid_1)
+                    auto solid_1 = blendShader_1.addChildOption(0, SkShaderType::kSolidColor);
+                    SkASSERT(solid_1.type() == SkShaderType::kSolidColor);
+                }
+
+                // nested second child slot
+                {
+                    SkTileMode tilingOptions[] = {
+                         SkTileMode::kClamp, SkTileMode::kClamp,
+                         SkTileMode::kRepeat, SkTileMode::kRepeat
+                    };
+
+                    // only option (imageShader_0)
+                    auto imageShader_0 = blendShader_1.addChildOption(1, SkShaderType::kImage,
+                                                                      SkMakeSpan(tilingOptions));
+                    SkASSERT(imageShader_0.type() == SkShaderType::kImage);
+
+                    //imageShader_0->addTileMode(SkTileMode::kClamp, SkTileMode::kClamp);
+                }
+            }
+
+            // second option (linearGrad_1)
+            {
+                auto linearGrad_1 = blendShader_0.addChildOption(1, SkShaderType::kLinearGradient,
+                                                                 kMinNumStops, kMaxNumStops);
+                SkASSERT(linearGrad_1.type() == SkShaderType::kLinearGradient);
+            }
+        }
+
+        auto sweepGrad_0 = builder.addOption(SkShaderType::kSweepGradient,
+                                             kMinNumStops, kMaxNumStops);
+        SkASSERT(sweepGrad_0.type() == SkShaderType::kSweepGradient);
+
+        // now, blend modes
+        builder.addOption(SkCombinationBuilder::BlendModeGroup::kPorterDuff);
+#if 0
+        {
+            auto rtBlender = builder.addOption(kUserDefBlenderID);
+            auto imgShader1 = rtBlender->addChild(0, ShaderType::kImage);
+            imgShader1->addTileMode(SkTileMode::kRepeat, SkTileMode::kRepeat);
+            imgShader1->addTileMode(SkTileMode::kClamp, SkTileMode::kClamp);
+        }
+#endif
+
+        context->preCompile(builder);
+    }
+
+#if 0
     {
         builder.add(SkShaderCombo({SkShaderType::kSolidColor}, {SkTileMode::kRepeat}));
         builder.add(SkBlendMode::kSrcOver);
@@ -2155,6 +2247,7 @@ void precompile(skgpu::graphite::Context* context) {
 
         context->preCompile(builder);
     }
+#endif
 }
 
 } // anonymous namespace
