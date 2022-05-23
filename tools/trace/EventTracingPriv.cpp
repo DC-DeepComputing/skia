@@ -9,6 +9,9 @@
 
 #include "include/utils/SkEventTracer.h"
 #include "src/core/SkATrace.h"
+#if defined(SK_BUILD_FOR_ANDROID) || defined(SK_BUILD_FOR_MAC) || defined(SK_BUILD_FOR_UNIX)
+  #include "tools/trace/SkPerfTrace.h"
+#endif
 #include "src/core/SkTraceEvent.h"
 #include "tools/flags/CommandLineFlags.h"
 #include "tools/trace/ChromeTracingTracer.h"
@@ -19,6 +22,7 @@ static DEFINE_string(trace,
               "Log trace events in one of several modes:\n"
               "  debugf     : Show events using SkDebugf\n"
               "  atrace     : Send events to Android ATrace\n"
+              "  perfetto   : Send events to Perfetto (Linux, Android, and Mac only)\n"
               "  <filename> : Any other string is interpreted as a filename. Writes\n"
               "               trace events to specified file as JSON, for viewing\n"
               "               with chrome://tracing");
@@ -41,7 +45,13 @@ void initializeEventTracingForTools(const char* traceFlag) {
         eventTracer = new SkATrace();
     } else if (0 == strcmp(traceFlag, "debugf")) {
         eventTracer = new SkDebugfTracer();
-    } else {
+    }
+    #if defined(SK_BUILD_FOR_ANDROID) || defined(SK_BUILD_FOR_MAC) || defined(SK_BUILD_FOR_UNIX)
+    else if (0 == strcmp(traceFlag, "perfetto")) {
+        eventTracer = new SkPerfTrace();
+    }
+    #endif
+    else {
         eventTracer = new ChromeTracingTracer(traceFlag);
     }
 
