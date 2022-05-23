@@ -16,6 +16,29 @@
       "message": "The current slate of uniforms just follows the transform strategy used in Ganesh for the HW stroke tessellator (upper 2x2 matrix and a float2 translation).\n\nThis is the first render step outside the command buffer tests to actually use uniforms, since the others transform on the CPU, but rely on uploading the inverse matrix if local coords are required for the shader.\n\nGoing forward, I think the other render steps will converge to this strategy where we upload untransformed local coords and have a full local-to-device matrix.\n\nSince a lot of draw calls would then be split based on transform change, maybe render steps would give us a good way to investigate ssbos since we can control their data binding separately from the uniforms needed for paint params, and there\u0027s no dynamic composition, etc.",
       "revId": "68188e70e139f5e20ce910c1934fd5cd7fefd049",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3c829787_e79dfb55",
+        "filename": "src/gpu/graphite/render/TessellateStrokesRenderStep.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 205,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-05-23T20:29:44Z",
+      "side": 1,
+      "message": "name \u0027gatherer\u0027 ?",
+      "range": {
+        "startLine": 205,
+        "startChar": 72,
+        "endLine": 205,
+        "endChar": 76
+      },
+      "revId": "68188e70e139f5e20ce910c1934fd5cd7fefd049",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
