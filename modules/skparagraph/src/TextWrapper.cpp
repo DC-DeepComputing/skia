@@ -151,10 +151,9 @@ void TextWrapper::lookAhead(SkScalar maxWidth, Cluster* endOfClusters) {
             fWords.extend(cluster);
         } else {
             fClusters.extend(cluster);
-
             // Keep adding clusters/words
             if (fClusters.endOfWord()) {
-                fMinIntrinsicWidth = std::max(fMinIntrinsicWidth, getClustersTrimmedWidth());
+                fMinIntrinsicWidth = std::max(fMinIntrinsicWidth, this->getClustersTrimmedWidth());
                 fWords.extend(fClusters);
             }
         }
@@ -179,6 +178,7 @@ void TextWrapper::moveForward(bool hasEllipsis) {
         }
     }
     if (!fClusters.empty()) {
+        fMinIntrinsicWidth = std::max(fMinIntrinsicWidth, fClusters.width());
         fEndLine.extend(fClusters);
         if (!fTooLongCluster) {
             return;

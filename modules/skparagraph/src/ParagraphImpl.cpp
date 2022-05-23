@@ -479,12 +479,15 @@ void ParagraphImpl::buildClusterTable() {
             fCodeUnitProperties[run.textRange().end] |= CodeUnitFlags::kSoftLineBreakBefore;
         } else {
             // Walk through the glyph in the direction of input text
-            run.iterateThroughClustersInTextOrder([runIndex, this](size_t glyphStart,
-                                                                   size_t glyphEnd,
-                                                                   size_t charStart,
-                                                                   size_t charEnd,
-                                                                   SkScalar width,
-                                                                   SkScalar height) {
+            SkScalar lastGlyphEnd = 0.0f;
+            SkScalar maxWidth = 0.0f;
+            run.iterateThroughClustersInTextOrder([runIndex, &lastGlyphEnd, &maxWidth, this]
+                                                  (size_t glyphStart,
+                                                   size_t glyphEnd,
+                                                   size_t charStart,
+                                                   size_t charEnd,
+                                                   SkScalar width,
+                                                   SkScalar height) {
                 SkASSERT(charEnd >= charStart);
                 // Add info to cluster indexes table (text -> cluster)
                 for (auto i = charStart; i < charEnd; ++i) {
@@ -492,6 +495,8 @@ void ParagraphImpl::buildClusterTable() {
                 }
                 SkSpan<const char> text(fText.c_str() + charStart, charEnd - charStart);
                 fClusters.emplace_back(this, runIndex, glyphStart, glyphEnd, text, width, height);
+                lastGlyphEnd += width;
+                maxWidth = std::max(maxWidth, lastGlyphEnd);
             });
         }
 
@@ -513,7 +518,7 @@ bool ParagraphImpl::shapeTextIntoEndlessLine() {
         return true;
     }
 
-    if (!computeCodeUnitProperties()) {
+    if (!this->computeCodeUnitProperties()) {
         return false;
     }
 

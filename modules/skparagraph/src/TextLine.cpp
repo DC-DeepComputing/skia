@@ -695,6 +695,7 @@ TextLine::ClipContext TextLine::measureTextInsideOneRun(TextRange textRange,
         }
         return result;
     }
+
     // Find [start:end] clusters for the text
     Cluster* start = nullptr;
     Cluster* end = nullptr;

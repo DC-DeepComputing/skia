@@ -216,6 +216,16 @@ void Run::iterateThroughClustersInTextOrder(Visitor visitor) {
             if (nextCluster <= cluster) {
                 continue;
             }
+            size_t negativeWidth = glyph;
+            while (negativeWidth < this->size() - 1 &&
+                   fPositions[glyph].fX > fPositions[negativeWidth + 1].fX) {
+                // Merge clusters that are place on top of each other into one cluster
+                ++negativeWidth;
+            }
+            if (negativeWidth > glyph) {
+                glyph = negativeWidth;
+                nextCluster = this->clusterIndex(glyph);
+            }
 
             visitor(start,
                     glyph,
@@ -235,6 +245,16 @@ void Run::iterateThroughClustersInTextOrder(Visitor visitor) {
                     start == 0 ? this->fUtf8Range.end() : this->clusterIndex(start - 1);
             if (nextCluster <= cluster) {
                 continue;
+            }
+            size_t negativeWidth = start;
+            while (negativeWidth > 0 && fPositions[start].fX < fPositions[negativeWidth - 1].fX) {
+                // Merge clusters that are place on top of each other into one cluster
+                --negativeWidth;
+            }
+            if ((int32_t)negativeWidth < start) {
+                start = negativeWidth;
+                nextCluster =
+                    start == 0 ? this->fUtf8Range.end() : this->clusterIndex(start - 1);
             }
 
             visitor(start,
