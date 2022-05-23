@@ -488,7 +488,8 @@ void ParagraphImpl::buildClusterTable() {
                 SkASSERT(charEnd >= charStart);
                 // Add info to cluster indexes table (text -> cluster)
                 for (auto i = charStart; i < charEnd; ++i) {
-                  fClustersIndexFromCodeUnit[i] = fClusters.size();
+                    SkDebugf("[%d]=%f\n", fClusters.size(), width);
+                    fClustersIndexFromCodeUnit[i] = fClusters.size();
                 }
                 SkSpan<const char> text(fText.c_str() + charStart, charEnd - charStart);
                 fClusters.emplace_back(this, runIndex, glyphStart, glyphEnd, text, width, height);

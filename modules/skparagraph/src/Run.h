@@ -209,39 +209,86 @@ void Run::iterateThroughClustersInTextOrder(Visitor visitor) {
     // Can't figure out how to do it with one code for both cases without 100 ifs
     // Can't go through clusters because there are no cluster table yet
     if (leftToRight()) {
-        size_t start = 0;
+        // Let's find all clusters with text clusterIndexes[start:glyph) and positions[left:right)
+        GlyphIndex start = 0;
         size_t cluster = this->clusterIndex(start);
-        for (size_t glyph = 1; glyph <= this->size(); ++glyph) {
+        for (GlyphIndex glyph = start; glyph <= this->size(); ++glyph) {
             auto nextCluster = this->clusterIndex(glyph);
             if (nextCluster <= cluster) {
                 continue;
             }
 
+            GlyphIndex left = start;
+            // Skip all left non-monotonic glyphs
+            // (the ones that are placed left to the cluster start)
+            while (glyph < this->size() && fPositions[glyph+1].fX <= fPositions[start].fX) {
+                ++glyph;
+                if (fPositions[glyph].fX < fPositions[left].fX) {
+                    left = glyph;
+                }
+            }
+            // We found the monotonic glyph (or there are no monotonic glyphs at all?)
+            GlyphIndex right = glyph;
+
+            // Skip all right non-monotonic glyphs
+            // (the ones that are placed left to the cluster end)
+            while (glyph < this->size() && fPositions[glyph+1].fX <= fPositions[right].fX) {
+                ++glyph;
+                if (fPositions[glyph].fX < fPositions[left].fX) {
+                    left = glyph;
+                }
+            }
+
+            nextCluster = this->clusterIndex(glyph);
             visitor(start,
                     glyph,
                     fClusterStart + cluster,
                     fClusterStart + nextCluster,
-                    this->calculateWidth(start, glyph, glyph == size()),
+                    this->calculateWidth(left, right, right == size()),
                     this->calculateHeight(LineMetricStyle::CSS, LineMetricStyle::CSS));
 
             start = glyph;
             cluster = nextCluster;
         }
     } else {
-        size_t glyph = this->size();
-        size_t cluster = this->fUtf8Range.begin();
-        for (int32_t start = this->size() - 1; start >= 0; --start) {
-            size_t nextCluster =
-                    start == 0 ? this->fUtf8Range.end() : this->clusterIndex(start - 1);
+        // Let's find all clusters with text clusterIndexes[start:glyph) and positions[left:right)
+        GlyphIndex glyph = this->size();
+        size_t cluster = this->clusterIndex(glyph-1);
+        for (GlyphIndex start = glyph; start > 0; ) {
+            --start;
+            auto nextCluster =
+                    start == 0 ? this->fUtf8Range.end() : this->clusterIndex(start);
             if (nextCluster <= cluster) {
                 continue;
             }
 
+            GlyphIndex right = glyph;
+            // Skip all right non-monotonic glyphs
+            // (the ones that are placed right to the cluster end)
+            while (start > 0 && fPositions[start-1].fX >= fPositions[glyph].fX) {
+                --start;
+                if (fPositions[start].fX > fPositions[right].fX) {
+                    right = start;
+                }
+            }
+            // We found the monotonic glyph (or there are no monotonic glyphs at all?)
+            GlyphIndex left = start;
+
+            // Skip all left non-monotonic glyphs
+            // (the ones that are placed right to the cluster start)
+            while (start > 0 && fPositions[start-1].fX >= fPositions[left].fX) {
+                --start;
+                if (fPositions[start].fX > fPositions[right].fX) {
+                    right = start;
+                }
+            }
+
+            nextCluster = start == 0 ? this->fUtf8Range.end() : this->clusterIndex(start);
             visitor(start,
                     glyph,
                     fClusterStart + cluster,
                     fClusterStart + nextCluster,
-                    this->calculateWidth(start, glyph, glyph == 0),
+                    this->calculateWidth(left, right, left == 0),
                     this->calculateHeight(LineMetricStyle::CSS, LineMetricStyle::CSS));
 
             glyph = start;
