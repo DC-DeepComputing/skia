@@ -44,11 +44,16 @@ struct Modifiers {
         kHighp_Flag          = 1 <<  6,
         kMediump_Flag        = 1 <<  7,
         kLowp_Flag           = 1 <<  8,
+        // Address spaces
+        kDevice              = 1 <<  9,
+        kThreadGroup         = 1 << 10,
+        kConstant            = 1 << 11,
+        kThread              = 1 << 12,
         // SkSL extensions, not present in GLSL
-        kES3_Flag            = 1 <<  9,
-        kHasSideEffects_Flag = 1 <<  10,
-        kInline_Flag         = 1 <<  11,
-        kNoInline_Flag       = 1 <<  12,
+        kES3_Flag            = 1 << 13,
+        kHasSideEffects_Flag = 1 << 14,
+        kInline_Flag         = 1 << 15,
+        kNoInline_Flag       = 1 << 16,
     };
 
     Modifiers()

@@ -266,6 +266,7 @@ sksl_glsl_tests = [
 ]
 
 sksl_metal_tests = [
+  "/sksl/compute/AddressSpaces.compute",
   "/sksl/compute/ArrayAdd.compute",
   "/sksl/compute/Desaturate.compute",
   "/sksl/compute/DesaturateReadWrite.compute",
