@@ -1,0 +1,4 @@
+layout(location=10000000) in int x;
+
+void main() {
+}

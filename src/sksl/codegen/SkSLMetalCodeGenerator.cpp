@@ -81,7 +81,8 @@ class MetalCodeGenerator::GlobalStructVisitor {
 public:
     virtual ~GlobalStructVisitor() = default;
     virtual void visitInterfaceBlock(const InterfaceBlock& block, std::string_view blockName) = 0;
-    virtual void visitTexture(const Type& type, std::string_view name) = 0;
+    virtual void visitTexture(const Type& type, const Modifiers& modifiers,
+                              std::string_view name) = 0;
     virtual void visitSampler(const Type& type, std::string_view name) = 0;
     virtual void visitVariable(const Variable& var, const Expression* value) = 0;
 };
@@ -116,8 +117,16 @@ void MetalCodeGenerator::writeExtension(const Extension& ext) {
 }
 
 std::string MetalCodeGenerator::typeName(const Type& type) {
+    Modifiers modifiers;
+    return typeName(type, modifiers);
+}
+
+std::string MetalCodeGenerator::typeName(const Type& type, const Modifiers& modifiers) {
     switch (type.typeKind()) {
         case Type::TypeKind::kArray:
+            if (type.columns() == Type::kUnsizedArray) {
+                return this->typeName(type.componentType()) + "*";
+            }
             SkASSERTF(type.columns() > 0, "invalid array size: %s", type.description().c_str());
             return String::printf("array<%s, %d>",
                                   this->typeName(type.componentType()).c_str(), type.columns());
@@ -131,6 +140,21 @@ std::string MetalCodeGenerator::typeName(const Type& type) {
 
         case Type::TypeKind::kSampler:
             return "texture2d<half>"; // FIXME - support other texture types
+
+        case Type::TypeKind::kTexture: {
+            std::string result = "texture2d<half, access::"; // FIXME - support other texture types
+            int flags = modifiers.fFlags;
+            if ((flags & Modifiers::kIn_Flag) || !(flags & Modifiers::kOut_Flag)) {
+                result += "read";
+                if (flags & Modifiers::kOut_Flag) {
+                    result += "_write";
+                }
+            } else if (flags & Modifiers::kOut_Flag) {
+                result += "write";
+            }
+            result += ">";
+            return result;
+        }
 
         default:
             return std::string(type.name());
@@ -148,6 +172,10 @@ void MetalCodeGenerator::writeStructDefinition(const StructDefinition& s) {
 
 void MetalCodeGenerator::writeType(const Type& type) {
     this->write(this->typeName(type));
+}
+
+void MetalCodeGenerator::writeType(const Type& type, const Modifiers& modifiers) {
+    this->write(this->typeName(type, modifiers));
 }
 
 void MetalCodeGenerator::writeExpression(const Expression& expr, Precedence parentPrecedence) {
@@ -213,6 +241,16 @@ void MetalCodeGenerator::writeExpression(const Expression& expr, Precedence pare
     }
 }
 
+static bool use_reference(const Modifiers& modifiers, const Type& type) {
+    return (modifiers.fFlags & Modifiers::kOut_Flag) && (!type.isArray() ||
+            type.columns() != Type::kUnsizedArray) && (type.typeKind() != Type::TypeKind::kTexture);
+}
+
+static bool needs_address_space(const Modifiers& modifiers, const Type& type) {
+    return use_reference(modifiers, type) || (type.isArray() &&
+            type.columns() == Type::kUnsizedArray);
+}
+
 std::string MetalCodeGenerator::getOutParamHelper(const FunctionCall& call,
                                              const ExpressionArray& arguments,
                                              const SkTArray<VariableReference*>& outVars) {
@@ -257,7 +295,7 @@ std::string MetalCodeGenerator::getOutParamHelper(const FunctionCall& call,
         const Type* type = outVars[index] ? &outVars[index]->type() : &arguments[index]->type();
         this->writeType(*type);
 
-        if (param->modifiers().fFlags & Modifiers::kOut_Flag) {
+        if (use_reference(param->modifiers(), param->type())) {
             this->write("&");
         }
         if (outVars[index]) {
@@ -578,6 +616,32 @@ bool MetalCodeGenerator::writeIntrinsicCall(const FunctionCall& c, IntrinsicKind
                 this->writeExpression(*arguments[1], Precedence::kSequence);
                 this->write(")");
             }
+            return true;
+        }
+        case k_read_IntrinsicKind: {
+            this->writeExpression(*arguments[0], Precedence::kTopLevel);
+            this->write(".read(");
+            this->writeExpression(*arguments[1], Precedence::kSequence);
+            this->write(")");
+            return true;
+        }
+        case k_write_IntrinsicKind: {
+            this->writeExpression(*arguments[0], Precedence::kTopLevel);
+            this->write(".write(");
+            this->writeExpression(*arguments[2], Precedence::kSequence);
+            this->write(", ");
+            this->writeExpression(*arguments[1], Precedence::kSequence);
+            this->write(")");
+            return true;
+        }
+        case k_width_IntrinsicKind: {
+            this->writeExpression(*arguments[0], Precedence::kTopLevel);
+            this->write(".get_width()");
+            return true;
+        }
+        case k_height_IntrinsicKind: {
+            this->writeExpression(*arguments[0], Precedence::kTopLevel);
+            this->write(".get_height()");
             return true;
         }
         case k_mod_IntrinsicKind: {
@@ -1350,6 +1414,20 @@ void MetalCodeGenerator::writeFragCoord() {
     }
 }
 
+static bool is_input(const Variable& var) {
+    return var.modifiers().fFlags & Modifiers::kIn_Flag &&
+            (var.modifiers().fLayout.fBuiltin == -1 ||
+             var.modifiers().fLayout.fBuiltin == SK_THREADPOSITION) &&
+            var.type().typeKind() != Type::TypeKind::kTexture;
+}
+
+static bool is_output(const Variable& var) {
+    return (var.modifiers().fFlags & Modifiers::kOut_Flag) &&
+            !(var.modifiers().fFlags & Modifiers::kIn_Flag) &&
+              var.modifiers().fLayout.fBuiltin == -1 &&
+            var.type().typeKind() != Type::TypeKind::kTexture;
+}
+
 void MetalCodeGenerator::writeVariableReference(const VariableReference& ref) {
     // When assembling out-param helper functions, we copy variables into local clones with matching
     // names. We never want to prepend "_in." or "_globals." when writing these variables since
@@ -1384,9 +1462,9 @@ void MetalCodeGenerator::writeVariableReference(const VariableReference& ref) {
         default:
             const Variable& var = *ref.variable();
             if (var.storage() == Variable::Storage::kGlobal) {
-                if (var.modifiers().fFlags & Modifiers::kIn_Flag) {
+                if (is_input(var)) {
                     this->write("_in.");
-                } else if (var.modifiers().fFlags & Modifiers::kOut_Flag) {
+                } else if (is_output(var)) {
                     this->write("_out.");
                 } else if (var.modifiers().fFlags & Modifiers::kUniform_Flag &&
                            var.type().typeKind() != Type::TypeKind::kSampler) {
@@ -1880,6 +1958,75 @@ int MetalCodeGenerator::getUniformSet(const Modifiers& m) {
                                  : fProgram.fConfig->fSettings.fDefaultUniformSet;
 }
 
+void MetalCodeGenerator::writeComputeShaderMainArgs() {
+    // Since we're going to fill a vector mapping locations to vars, we impose a limit on the number
+    // of locations to prevent us from trying to allocate gigabytes in the face of something like
+    // layout(location=1000000000)
+    static const int MAX_LOCATION = 100;
+    SkTArray<const SkSL::Variable*> args;
+    for (const ProgramElement* e : fProgram.elements()) {
+        if (e->is<GlobalVarDeclaration>()) {
+            const Variable& var =
+                    e->as<GlobalVarDeclaration>().declaration()->as<VarDeclaration>().var();
+            if (var.modifiers().fFlags & Modifiers::kUniform_Flag) {
+                fContext.fErrors->error(var.fPosition,
+                        "'uniform' variables are not permitted in compute shaders");
+            }
+            if (var.modifiers().fFlags & (Modifiers::kIn_Flag | Modifiers::kOut_Flag)) {
+                int location = var.modifiers().fLayout.fLocation;
+                if (location == -1) {
+                    if (var.modifiers().fLayout.fBuiltin == -1 &&
+                            var.type().typeKind() != Type::TypeKind::kTexture) {
+                        fContext.fErrors->error(var.fPosition,
+                                "'in'/'out' variables must have a layout(location)");
+                    }
+                } else if (location > MAX_LOCATION) {
+                    fContext.fErrors->error(var.fPosition,
+                            "layout(location) must be less than or equal to " +
+                            std::to_string(MAX_LOCATION));
+                } else {
+                    SkASSERT(location >= 0);
+                    while ((int)args.count() <= location) {
+                        args.push_back(nullptr);
+                    }
+                    if (args[location]) {
+                        fContext.fErrors->error(var.fPosition,
+                                "both '" + std::string(args[location]->name()) + "' and '" +
+                                std::string(var.name()) + "' have layout(location=" +
+                                std::to_string(location) + ")");
+                    }
+                    args[location] = &var;
+                }
+            }
+        }
+    }
+    const char* separator = "";
+    for (int i = 0; i < args.count(); ++i) {
+        const SkSL::Variable* var = args[i];
+        if (!var) {
+            int next = i + 1;
+            while (!args[next]) {
+                ++next;
+            }
+            fContext.fErrors->error(args[next]->fPosition, "found layout(location=" +
+                    std::to_string(next) + "), but no layout(location=" + std::to_string(i) + ")");
+            // We only report the first missing location, because a single location definition could
+            // result in tons of missing location slots
+            break;
+        }
+        this->write(separator);
+        separator = ", ";
+        this->writeModifiers(var->modifiers());
+        const Type* type = &var->type();
+        this->writeType(*type);
+        if (!var->type().isArray()) {
+            this->write("&");
+        }
+        this->write(" ");
+        this->writeName(var->name());
+    }
+}
+
 bool MetalCodeGenerator::writeFunctionDeclaration(const FunctionDeclaration& f) {
     fRTFlipName = fProgram.fInputs.fUseFlipRTUniform
                           ? "_globals._anonInterface0->" SKSL_RTFLIP_NAME
@@ -1890,37 +2037,53 @@ bool MetalCodeGenerator::writeFunctionDeclaration(const FunctionDeclaration& f) 
             this->write("fragment Outputs fragmentMain");
         } else if (ProgramConfig::IsVertex(fProgram.fConfig->fKind)) {
             this->write("vertex Outputs vertexMain");
+        } else if (ProgramConfig::IsCompute(fProgram.fConfig->fKind)) {
+            this->write("kernel void computeMain");
         } else {
             fContext.fErrors->error(Position(), "unsupported kind of program");
             return false;
         }
-        this->write("(Inputs _in [[stage_in]]");
+        this->write("(");
+        if (ProgramConfig::IsCompute(fProgram.fConfig->fKind)) {
+            this->writeComputeShaderMainArgs();
+        } else {
+            this->write("Inputs _in [[stage_in]]");
+        }
+        separator = ", ";
         if (-1 != fUniformBuffer) {
-            this->write(", constant Uniforms& _uniforms [[buffer(" +
+            this->write(separator);
+            this->write("constant Uniforms& _uniforms [[buffer(" +
                         std::to_string(fUniformBuffer) + ")]]");
+            separator = ", ";
         }
         for (const ProgramElement* e : fProgram.elements()) {
             if (e->is<GlobalVarDeclaration>()) {
                 const GlobalVarDeclaration& decls = e->as<GlobalVarDeclaration>();
                 const VarDeclaration& var = decls.declaration()->as<VarDeclaration>();
-                if (var.var().type().typeKind() == Type::TypeKind::kSampler) {
+                if (var.var().type().typeKind() == Type::TypeKind::kSampler ||
+                    var.var().type().typeKind() == Type::TypeKind::kTexture) {
                     if (var.var().type().dimensions() != SpvDim2D) {
                         // Not yet implemented--Skia currently only uses 2D textures.
                         fContext.fErrors->error(decls.fPosition, "Unsupported texture dimensions");
                         return false;
                     }
                     int binding = getUniformBinding(var.var().modifiers());
-                    this->write(", texture2d<half> ");
+                    this->write(", ");
+                    this->writeType(var.var().type(), var.var().modifiers());
+                    this->write(" ");
                     this->writeName(var.var().name());
                     this->write("[[texture(");
                     this->write(std::to_string(binding));
                     this->write(")]]");
-                    this->write(", sampler ");
-                    this->writeName(var.var().name());
-                    this->write(SAMPLER_SUFFIX);
-                    this->write("[[sampler(");
-                    this->write(std::to_string(binding));
-                    this->write(")]]");
+                    if (var.var().type().typeKind() == Type::TypeKind::kSampler) {
+                        this->write(", sampler ");
+                        this->writeName(var.var().name());
+                        this->write(SAMPLER_SUFFIX);
+                        this->write("[[sampler(");
+                        this->write(std::to_string(binding));
+                        this->write(")]]");
+                    }
+                    separator = ", ";
                 }
             } else if (e->is<InterfaceBlock>()) {
                 const InterfaceBlock& intf = e->as<InterfaceBlock>();
@@ -1934,6 +2097,7 @@ bool MetalCodeGenerator::writeFunctionDeclaration(const FunctionDeclaration& f) 
                 this->write(" [[buffer(");
                 this->write(std::to_string(this->getUniformBinding(intf.variable().modifiers())));
                 this->write(")]]");
+                separator = ", ";
             }
         }
         if (ProgramConfig::IsFragment(fProgram.fConfig->fKind)) {
@@ -1943,10 +2107,14 @@ bool MetalCodeGenerator::writeFunctionDeclaration(const FunctionDeclaration& f) 
             }
             this->write(", bool _frontFacing [[front_facing]]");
             this->write(", float4 _fragCoord [[position]]");
+            separator = ", ";
         } else if (ProgramConfig::IsVertex(fProgram.fConfig->fKind)) {
             this->write(", uint sk_VertexID [[vertex_id]], uint sk_InstanceID [[instance_id]]");
+            separator = ", ";
+        } else if (ProgramConfig::IsCompute(fProgram.fConfig->fKind)) {
+            this->write(", uint3 sk_ThreadPosition [[thread_position_in_grid]]");
+            separator = ", ";
         }
-        separator = ", ";
     } else {
         this->writeType(f.returnType());
         this->write(" ");
@@ -1963,7 +2131,7 @@ bool MetalCodeGenerator::writeFunctionDeclaration(const FunctionDeclaration& f) 
         this->writeModifiers(param->modifiers());
         const Type* type = &param->type();
         this->writeType(*type);
-        if (param->modifiers().fFlags & Modifiers::kOut_Flag) {
+        if (use_reference(param->modifiers(), param->type())) {
             this->write("&");
         }
         this->write(" ");
@@ -1999,6 +2167,38 @@ static bool is_block_ending_with_return(const Statement* stmt) {
     return false;
 }
 
+void MetalCodeGenerator::writeComputeMainInputsAndOutputs() {
+    this->write("    Inputs _in = { ");
+    const char* separator = "";
+    for (const ProgramElement* e : fProgram.elements()) {
+        if (e->is<GlobalVarDeclaration>()) {
+            const GlobalVarDeclaration& decls = e->as<GlobalVarDeclaration>();
+            const Variable& var = decls.declaration()->as<VarDeclaration>().var();
+            if (is_input(var)) {
+                this->write(separator);
+                separator = ", ";
+                this->writeName(var.name());
+            }
+        }
+    }
+    this->write(" };\n");
+
+    separator = "";
+    this->write("    Outputs _out = { ");
+    for (const ProgramElement* e : fProgram.elements()) {
+        if (e->is<GlobalVarDeclaration>()) {
+            const GlobalVarDeclaration& decls = e->as<GlobalVarDeclaration>();
+            const Variable& var = decls.declaration()->as<VarDeclaration>().var();
+            if (is_output(var)) {
+                this->write(separator);
+                separator = ", ";
+                this->writeName(var.name());
+            }
+        }
+    }
+    this->write(" };\n");
+}
+
 void MetalCodeGenerator::writeFunction(const FunctionDefinition& f) {
     SkASSERT(!fProgram.fConfig->fSettings.fFragColorIsInOut);
 
@@ -2013,8 +2213,13 @@ void MetalCodeGenerator::writeFunction(const FunctionDefinition& f) {
 
     if (f.declaration().isMain()) {
         this->writeGlobalInit();
-        this->writeLine("    Outputs _out;");
-        this->writeLine("    (void)_out;");
+        if (ProgramConfig::IsCompute(fProgram.fConfig->fKind)) {
+            this->writeComputeMainInputsAndOutputs();
+        }
+        else {
+            this->writeLine("    Outputs _out;");
+            this->writeLine("    (void)_out;");
+        }
     }
 
     fFunctionHeader.clear();
@@ -2043,8 +2248,8 @@ void MetalCodeGenerator::writeFunction(const FunctionDefinition& f) {
 }
 
 void MetalCodeGenerator::writeModifiers(const Modifiers& modifiers) {
-    if (modifiers.fFlags & Modifiers::kOut_Flag) {
-        this->write("thread ");
+    if (modifiers.fFlags & (Modifiers::kIn_Flag | Modifiers::kOut_Flag)) {
+        this->write(ProgramConfig::IsCompute(fProgram.fConfig->fKind) ? "device " : "thread ");
     }
     if (modifiers.fFlags & Modifiers::kConst_Flag) {
         this->write("const ");
@@ -2316,7 +2521,7 @@ void MetalCodeGenerator::writeReturnStatementFromMain() {
     if (ProgramConfig::IsVertex(fProgram.fConfig->fKind) ||
         ProgramConfig::IsFragment(fProgram.fConfig->fKind)) {
         this->write("return _out;");
-    } else {
+    } else if (!ProgramConfig::IsCompute(fProgram.fConfig->fKind)) {
         SkDEBUGFAIL("unsupported kind of program");
     }
 }
@@ -2388,10 +2593,16 @@ void MetalCodeGenerator::writeInputStruct() {
         if (e->is<GlobalVarDeclaration>()) {
             const GlobalVarDeclaration& decls = e->as<GlobalVarDeclaration>();
             const Variable& var = decls.declaration()->as<VarDeclaration>().var();
-            if (var.modifiers().fFlags & Modifiers::kIn_Flag &&
-                -1 == var.modifiers().fLayout.fBuiltin) {
+            if (is_input(var)) {
                 this->write("    ");
+                if (ProgramConfig::IsCompute(fProgram.fConfig->fKind) &&
+                        needs_address_space(var.modifiers(), var.type())) {
+                    this->write("device ");
+                }
                 this->writeType(var.type());
+                if (use_reference(var.modifiers(), var.type())) {
+                    this->write("&");
+                }
                 this->write(" ");
                 this->writeName(var.name());
                 if (-1 != var.modifiers().fLayout.fLocation) {
@@ -2421,15 +2632,22 @@ void MetalCodeGenerator::writeOutputStruct() {
         if (e->is<GlobalVarDeclaration>()) {
             const GlobalVarDeclaration& decls = e->as<GlobalVarDeclaration>();
             const Variable& var = decls.declaration()->as<VarDeclaration>().var();
-            if (var.modifiers().fFlags & Modifiers::kOut_Flag &&
-                -1 == var.modifiers().fLayout.fBuiltin) {
+            if (is_output(var)) {
                 this->write("    ");
+                if (ProgramConfig::IsCompute(fProgram.fConfig->fKind) &&
+                        needs_address_space(var.modifiers(), var.type())) {
+                    this->write("device ");
+                }
                 this->writeType(var.type());
+                if (ProgramConfig::IsCompute(fProgram.fConfig->fKind) &&
+                        use_reference(var.modifiers(), var.type())) {
+                    this->write("&");
+                }
                 this->write(" ");
                 this->writeName(var.name());
 
                 int location = var.modifiers().fLayout.fLocation;
-                if (location < 0) {
+                if (location < 0 && var.type().typeKind() != Type::TypeKind::kTexture) {
                     fContext.fErrors->error(var.fPosition,
                             "Metal out variables must have 'layout(location=...)'");
                 } else if (ProgramConfig::IsVertex(fProgram.fConfig->fKind)) {
@@ -2489,11 +2707,14 @@ void MetalCodeGenerator::visitGlobalStruct(GlobalStructVisitor* visitor) {
         const Variable& var = decl.var();
         if (var.type().typeKind() == Type::TypeKind::kSampler) {
             // Samplers are represented as a "texture/sampler" duo in the global struct.
-            visitor->visitTexture(var.type(), var.name());
+            visitor->visitTexture(var.type(), var.modifiers(), var.name());
             visitor->visitSampler(var.type(), std::string(var.name()) + SAMPLER_SUFFIX);
             continue;
         }
-
+        if (var.type().typeKind() == Type::TypeKind::kTexture) {
+            visitor->visitTexture(var.type(), var.modifiers(), var.name());
+            continue;
+        }
         if (!(var.modifiers().fFlags & ~Modifiers::kConst_Flag) &&
             -1 == var.modifiers().fLayout.fBuiltin) {
             // Visit a regular variable.
@@ -2514,10 +2735,11 @@ void MetalCodeGenerator::writeGlobalStruct() {
             fCodeGen->writeName(blockName);
             fCodeGen->write(";\n");
         }
-        void visitTexture(const Type& type, std::string_view name) override {
+        void visitTexture(const Type& type, const Modifiers& modifiers,
+                          std::string_view name) override {
             this->addElement();
             fCodeGen->write("    ");
-            fCodeGen->writeType(type);
+            fCodeGen->writeType(type, modifiers);
             fCodeGen->write(" ");
             fCodeGen->writeName(name);
             fCodeGen->write(";\n");
@@ -2568,7 +2790,7 @@ void MetalCodeGenerator::writeGlobalInit() {
             fCodeGen->write("&");
             fCodeGen->writeName(blockName);
         }
-        void visitTexture(const Type&, std::string_view name) override {
+        void visitTexture(const Type&, const Modifiers& modifiers, std::string_view name) override {
             this->addElement();
             fCodeGen->writeName(name);
         }

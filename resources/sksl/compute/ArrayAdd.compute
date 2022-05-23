@@ -1,0 +1,7 @@
+layout(location=0) in int[] src1;
+layout(location=1) in int[] src2;
+layout(location=2) out int[] dest;
+
+void main() {
+    dest[sk_ThreadPosition.x] = src1[sk_ThreadPosition.x] + src2[sk_ThreadPosition.x];
+}

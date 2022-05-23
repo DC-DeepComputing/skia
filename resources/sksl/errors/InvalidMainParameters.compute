@@ -1,0 +1,3 @@
+void main(in int x, out int y) {
+    y = x;
+}
