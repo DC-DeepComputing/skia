@@ -139,7 +139,7 @@ static GrGLVendor get_vendor(const char* vendorString) {
     if (0 == strcmp(vendorString, "ARM")) {
         return GrGLVendor::kARM;
     }
-    if (0 == strcmp(vendorString, "Google Inc.")) {
+    if (0 == strncmp(vendorString, "Google Inc.", 11) || 0 == strcmp(vendorString, "Google")) {
         return GrGLVendor::kGoogle;
     }
     if (0 == strcmp(vendorString, "Imagination Technologies")) {
@@ -226,6 +226,9 @@ static GrGLRenderer get_renderer(const char* rendererString, const GrGLExtension
                 return GrGLRenderer::kAdreno6xx_other;
             }
         }
+    }
+    if (0 == strncmp(rendererString, "Vulkan ", 7) && strstr(rendererString, "SwiftShader")) {
+        return GrGLRenderer::kGoogleSwiftShaderVulkan;
     }
     if (0 == strcmp("Google SwiftShader", rendererString)) {
         return GrGLRenderer::kGoogleSwiftShader;
@@ -488,18 +491,32 @@ static std::tuple<GrGLDriver, GrGLDriverVersion> get_driver_and_version(GrGLStan
             // Swiftshader is the only Google vendor at the moment
             driver = GrGLDriver::kSwiftShader;
 
-            // Swiftshader has a strange version string: w.x.y.z  Going to arbitrarily ignore
-            // y and assume w,x and z are major, minor, point.
-            // As of writing, version is 4.0.0.6
-            int n = sscanf(versionString,
-                           "OpenGL ES %d.%d SwiftShader %d.%d.0.%d",
-                           &major,
-                           &minor,
-                           &driverMajor,
-                           &driverMinor,
-                           &driverPoint);
-            if (n == 5) {
-                driverVersion = GR_GL_DRIVER_VER(driverMajor, driverMinor, driverPoint);
+            if (strncmp(rendererString, "Vulkan ", 7)) {
+                // For Vulkan Swiftshader the version string is written like:
+                // "SwiftShader driver-x.y.z". We assume the x, y, and z are the major, minor, and
+                // point versions. As of writing, version is 5.0.0.
+                int n = sscanf(versionString,
+                               "SwiftShader driver-%d.%d.%d",
+                               &driverMajor,
+                               &driverMinor,
+                               &driverPoint);
+                if (n == 3) {
+                    driverVersion = GR_GL_DRIVER_VER(driverMajor, driverMinor, driverPoint);
+                }
+            } else {
+                // Swiftshader has a strange version string: w.x.y.z  Going to arbitrarily ignore
+                // y and assume w,x and z are major, minor, point.
+                // As of writing, version is 4.0.0.6
+                int n = sscanf(versionString,
+                               "OpenGL ES %d.%d SwiftShader %d.%d.0.%d",
+                               &major,
+                               &minor,
+                               &driverMajor,
+                               &driverMinor,
+                               &driverPoint);
+                if (n == 5) {
+                    driverVersion = GR_GL_DRIVER_VER(driverMajor, driverMinor, driverPoint);
+                }
             }
         } else if (vendor == GrGLVendor::kIntel) {
             // We presume we're on the Intel driver since it hasn't identified itself as Mesa.
@@ -590,13 +607,15 @@ static std::tuple<GrGLANGLEBackend, SkString> get_angle_backend(const char* rend
             return {GrGLANGLEBackend::kD3D9, std::move(innerString)};
         } else if (strstr(rendererString, "OpenGL")) {
             return {GrGLANGLEBackend::kOpenGL, std::move(innerString)};
+        } else if (strstr(rendererString, "Vulkan")) {
+            return {GrGLANGLEBackend::kVulkan, std::move(innerString)};
         }
     }
     return {GrGLANGLEBackend::kUnknown, {}};
 }
 
 static std::tuple<GrGLVendor, GrGLRenderer, GrGLDriver, GrGLDriverVersion>
-get_angle_gl_vendor_and_renderer(
+get_angle_gl_vk_vendor_and_renderer(
         const char* innerString,
         const GrGLExtensions& extensions) {
     SkTArray<SkString> parts;
@@ -719,13 +738,14 @@ GrGLDriverInfo GrGLGetDriverInfo(const GrGLInterface* interface) {
                  info.fANGLEDriver,
                  info.fANGLEDriverVersion) =
                 get_angle_d3d_vendor_and_renderer(innerAngleRendererString.c_str());
-    } else if (info.fANGLEBackend == GrGLANGLEBackend::kOpenGL) {
+    } else if (info.fANGLEBackend == GrGLANGLEBackend::kOpenGL ||
+               info.fANGLEBackend == GrGLANGLEBackend::kVulkan) {
         std::tie(info.fANGLEVendor,
                  info.fANGLERenderer,
                  info.fANGLEDriver,
                  info.fANGLEDriverVersion) =
-                get_angle_gl_vendor_and_renderer(innerAngleRendererString.c_str(),
-                                                 interface->fExtensions);
+                get_angle_gl_vk_vendor_and_renderer(innerAngleRendererString.c_str(),
+                                                    interface->fExtensions);
     }
 
     info.fIsOverCommandBuffer = is_commamd_buffer(renderer, version);
