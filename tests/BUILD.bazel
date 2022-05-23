@@ -2675,6 +2675,7 @@ generated_cc_atom(
         "//include/core:SkSurface_hdr",
         "//include/core:SkTextBlob_hdr",
         "//src/core:SkDevice_hdr",
+        "//src/core:SkGlyphRun_hdr",
         "//src/core:SkSurfacePriv_hdr",
         "//src/gpu/ganesh:GrColorInfo_hdr",
         "//src/text/gpu:TextBlob_hdr",
