@@ -88,7 +88,7 @@ DEF_TEST(canvas_unsorted_clip, r) {
         const SkRecord* record = bp->record();
 
         REPORTER_ASSERT(r, record->count() == 1);
-        REPORTER_ASSERT(r, record->visit(0, ClipRectVisitor{r})
+        REPORTER_ASSERT(r, record->visit2(0, ClipRectVisitor{r})
                                 .isSorted());
     }
 }

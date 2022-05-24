@@ -2134,13 +2134,255 @@ Result RasterSink::draw(const Src& src, SkBitmap* dst, SkWStream*, SkString*) co
 
 namespace {
 
+
+class Node {
+public:
+    class Slot {
+    public:
+        void addOption(Node* o) { fOptions.push_back(o); }
+
+        bool empty() const { return fOptions.empty(); }
+
+        int numCombinations() const {
+            if (fNumSlotCombos < 0) {
+                fNumSlotCombos = 0;
+                for (auto o : fOptions) {
+                    fNumSlotCombos += o->numCombinations();
+                }
+            }
+
+            return fNumSlotCombos;
+        }
+
+        void updateTo(int curState) const {
+            SkASSERT(curState < this->numCombinations());
+
+            for (auto o : fOptions) {
+                if (curState < o->numCombinations()) {
+                    o->updateTo(curState);
+                    return;
+                }
+
+                curState -= o->numCombinations();
+            }
+        }
+
+    private:
+        mutable int fNumSlotCombos = -1;
+        std::vector<Node*> fOptions;
+    };
+
+    Node(char name) : fName(name) {}
+
+    char fName;
+    int fNumCombos = -1;
+    std::vector<char>  fIntrinsic;
+    Slot fSlot0;
+    Slot fSlot1;
+
+    bool hasChildSlots() const { return !fSlot0.empty() || !fSlot1.empty(); }
+    int numIntrinsic() const { return fIntrinsic.empty() ? 1 : fIntrinsic.size(); }
+    int numChildCombos() const { return fSlot0.numCombinations() * fSlot1.numCombinations(); }
+
+    int numCombinations() {
+        if (fNumCombos < 0) {
+            if (!this->numChildCombos()) {
+                fNumCombos = this->numIntrinsic();
+            } else {
+                fNumCombos = this->numIntrinsic() * this->numChildCombos();
+            }
+        }
+
+        return fNumCombos;
+    }
+
+    void updateTo(int curState) {
+        SkASSERT(curState < this->numCombinations());
+
+        SkDebugf("%c", fName);
+        if (!fIntrinsic.empty()) {
+            int index = curState / (this->numChildCombos() ? this->numChildCombos() : 1);
+            curState %= this->numChildCombos();
+            SkDebugf("%c ", fIntrinsic[index]);
+        } else {
+            SkDebugf(" ");
+        }
+
+        if (this->hasChildSlots()) {
+            SkASSERT(curState < this->numChildCombos());
+
+            {
+                int slot0State = curState / fSlot1.numCombinations();
+
+                fSlot0.updateTo(slot0State);
+            }
+
+            {
+                int slot1State = curState % fSlot1.numCombinations();
+
+                fSlot1.updateTo(slot1State);
+            }
+        }
+    }
+};
+
+
 void precompile(skgpu::graphite::Context* context) {
-    SkCombinationBuilder builder(context);
 
     {
-        builder.add(SkShaderCombo({SkShaderType::kSolidColor}, {SkTileMode::kRepeat}));
-        builder.add(SkBlendMode::kSrcOver);
-        builder.add(SkBlendMode::kSrc);
+        // A(xyz)
+        //   0: B | C
+        //   1: D | E | F(rst)
+        //
+        // 0:  Ax B D
+        // 1:  Ax B E
+        // 2:  Ax B Fr
+        // 3:  Ax B Fs
+        // 4:  Ax B Ft
+        // 5:  Ax C D
+        // 6:  Ax C E
+        // 7:  Ax C Fr
+        // 8:  Ax C Fs
+        // 9:  Ax C Ft
+        //
+        //        A
+        // 30    %3  /10
+        //
+        // 0:    0 -> 0      0 -> 0     0
+        // 1:    1 -> 1      0 -> 1     1
+        // 2:    2 -> 2      0 -> 2     2
+        // 3:    0 -> 3      0 -> 3     0
+        // 4:    1 -> 4      0 -> 4     1
+        // 5:    2 -> 5      1 -> 0     2
+        // 6:    0 -> 6      1 -> 1     2
+        // 7:    1 -> 7      1 -> 2     2
+        // 8:    2 -> 8      1 -> 3     2
+        // 9:    0 -> 9      1 -> 4     2
+
+
+        Node* pA = new Node('A');
+        pA->fIntrinsic.push_back('x');
+        pA->fIntrinsic.push_back('y');
+        pA->fIntrinsic.push_back('z');
+        Node* pB = new Node('B');
+        Node* pC = new Node('C');
+        Node* pD = new Node('D');
+        Node* pE = new Node('E');
+        Node* pF = new Node('F');
+        pF->fIntrinsic.push_back('r');
+        pF->fIntrinsic.push_back('s');
+        pF->fIntrinsic.push_back('t');
+        pA->fSlot0.addOption(pB);
+        pA->fSlot0.addOption(pC);
+        pA->fSlot1.addOption(pD);
+        pA->fSlot1.addOption(pE);
+        pA->fSlot1.addOption(pF);
+
+        int numCombos = pA->numCombinations();
+
+        SkDebugf("%d combos:\n", numCombos);
+        for (int i = 0; i < numCombos; ++i) {
+            SkDebugf("%d: ", i);
+            pA->updateTo(i);
+            SkDebugf("\n");
+        }
+
+    }
+
+    SkCombinationBuilder builder(context);
+
+    static constexpr int kMinNumStops = 3;
+    static constexpr int kMaxNumStops = 9;
+
+    //  The resulting, attempted, combinations are in parentheses
+    //
+    //  Paint (5049 == 297*17)
+    //    |- blendShader_0 (290)                 |      sweepGrad_0 (7)             --> 297
+    //    |     |- linearGrad_0 (9) | solid_0 (1)                             --> 10
+    //    |     |- blendShader_1 (20) | linearGrad_1 (9)                      --> 29
+    //    |        |- radialGrad_0 (9) | solid_1 (1)                    --> 10
+    //    |        |- imageShader_0 (2)
+    //    |
+    //    |- porterDuff (15) | rt-effect blender (w/ one shader-based child) (2)    --> 17
+    //                            |- imageShader1 (2)
+    {
+        // first, shaders. First top-level option (blendShader_0)
+        auto blendShader_0 = builder.addOption(SkShaderType::kBlendShader);
+        SkASSERT(blendShader_0.type() == SkShaderType::kBlendShader);
+
+        // first child slot of blendShader_0
+        {
+            // first option (linearGrad_0)
+            auto linearGrad_0 = blendShader_0.addChildOption(0, SkShaderType::kLinearGradient,
+                                                             kMinNumStops, kMaxNumStops);
+            SkASSERT(linearGrad_0.type() == SkShaderType::kLinearGradient);
+
+            // second option (solid_0)
+            auto solid_0 = blendShader_0.addChildOption(0, SkShaderType::kSolidColor);
+            SkASSERT(solid_0.type() == SkShaderType::kSolidColor);
+        }
+
+        // second child slot of blendShader_0
+        {
+            // first option (blendShader_1)
+            {
+                auto blendShader_1 = blendShader_0.addChildOption(1, SkShaderType::kBlendShader);
+                SkASSERT(blendShader_1.type() == SkShaderType::kBlendShader);
+
+                // nested: first child slot of blendShader_1
+                {
+                    // first option (radialGrad_0)
+                    auto radialGrad_0 = blendShader_1.addChildOption(0,
+                                                                     SkShaderType::kRadialGradient,
+                                                                     kMinNumStops, kMaxNumStops);
+                    SkASSERT(radialGrad_0.type() == SkShaderType::kRadialGradient);
+
+                    // second option (solid_1)
+                    auto solid_1 = blendShader_1.addChildOption(0, SkShaderType::kSolidColor);
+                    SkASSERT(solid_1.type() == SkShaderType::kSolidColor);
+                }
+
+                // nested: second child slot of blendShader_1
+                {
+                    SkTileMode tilingOptions[] = {
+                        SkTileMode::kRepeat, SkTileMode::kRepeat,
+                        SkTileMode::kClamp, SkTileMode::kClamp,
+                    };
+
+                    // only option (imageShader_0)
+                    auto imageShader_0 = blendShader_1.addChildOption(1, SkShaderType::kImage,
+                                                                      SkMakeSpan(tilingOptions));
+                    SkASSERT(imageShader_0.type() == SkShaderType::kImage);
+                }
+            }
+
+            // second option (linearGrad_1)
+            {
+                auto linearGrad_1 = blendShader_0.addChildOption(1, SkShaderType::kLinearGradient,
+                                                                 kMinNumStops, kMaxNumStops);
+                SkASSERT(linearGrad_1.type() == SkShaderType::kLinearGradient);
+            }
+        }
+
+        // Second top-level option (sweepGrad_0)
+        auto sweepGrad_0 = builder.addOption(SkShaderType::kSweepGradient,
+                                             kMinNumStops, kMaxNumStops);
+        SkASSERT(sweepGrad_0.type() == SkShaderType::kSweepGradient);
+
+        // now, blend modes
+        builder.addOption(SkCombinationBuilder::BlendModeGroup::kPorterDuff);
+#if 0
+        {
+            SkTileMode tilingOptions[] = {
+                SkTileMode::kRepeat, SkTileMode::kRepeat,
+                SkTileMode::kClamp, SkTileMode::kClamp,
+            };
+
+            auto rtBlender = builder.addOption(kUserDefBlenderID);
+            auto imgShader1 = rtBlender->addChild(0, ShaderType::kImage,
+                                                  SkMakeSpan(tilingOptions));
+        }
+#endif
 
         context->preCompile(builder);
     }
@@ -2148,10 +2390,19 @@ void precompile(skgpu::graphite::Context* context) {
     builder.reset();
 
     {
-        builder.add(SkShaderCombo({SkShaderType::kLinearGradient},
-                                  {SkTileMode::kRepeat, SkTileMode::kClamp}));
-        builder.add(SkBlendMode::kSrcOver);
-        builder.add(SkBlendMode::kSrc);
+        builder.addOption(SkShaderType::kSolidColor);
+        builder.addOption(SkBlendMode::kSrcOver);
+        builder.addOption(SkBlendMode::kSrc);
+
+        context->preCompile(builder);
+    }
+
+    builder.reset();
+
+    {
+        builder.addOption(SkShaderType::kLinearGradient, kMinNumStops, kMaxNumStops);
+        builder.addOption(SkBlendMode::kSrcOver);
+        builder.addOption(SkBlendMode::kSrc);
 
         context->preCompile(builder);
     }
