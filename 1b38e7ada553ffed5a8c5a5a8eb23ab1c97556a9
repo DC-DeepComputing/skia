@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "458b7e7e_c9500917",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-05-24T15:31:44Z",
+      "side": 1,
+      "message": "I added the mac12.0-blink-rel bot to check.",
+      "revId": "1b38e7ada553ffed5a8c5a5a8eb23ab1c97556a9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
