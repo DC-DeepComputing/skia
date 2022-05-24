@@ -17,6 +17,7 @@
 #include "include/core/SkString.h"
 #include "include/core/SkTypeface.h"
 #include "tools/Resources.h"
+#include "tools/SkMetaData.h"
 #include "tools/ToolUtils.h"
 
 #include <string.h>
@@ -39,9 +40,6 @@ public:
     kColorFontsRepoClipBox,
     kColorFontsRepoComposite,
     kColorFontsRepoForeground,
-    kColorFontsRepoSweepPad,
-    kColorFontsRepoSweepReflect,
-    kColorFontsRepoSweepRepeat,
   };
 
   ColrV1GM(ColrV1TestType testType, SkScalar skewX, SkScalar rotateDeg)
@@ -70,12 +68,6 @@ protected:
                 return SkString("composite");
             case kColorFontsRepoForeground:
                 return SkString("foreground");
-            case kColorFontsRepoSweepPad:
-                return SkString("sweep_pad");
-            case kColorFontsRepoSweepReflect:
-                return SkString("sweep_reflect");
-            case kColorFontsRepoSweepRepeat:
-                return SkString("sweep_repeat");
         }
         SkASSERT(false); /* not reached */
         return SkString();
@@ -101,7 +93,8 @@ protected:
                 SkASSERT(false);
                 break;
             case kColorFontsRepoGradients:
-                fEmojiFont.fGlyphs = {2, 5, 6, 7, 8, 55};
+              //              fEmojiFont.fGlyphs = {3, 21, 22, 23, 24 /* 22 */};  // , 5, 6, 7, 8, 55};
+              fEmojiFont.fGlyphs = {15, 16, 17, 18, 19, 20};
                 break;
             case kColorFontsRepoScaling:
                 fEmojiFont.fGlyphs = {9, 10, 11, 12, 13, 14};
@@ -127,15 +120,6 @@ protected:
             case kColorFontsRepoForeground:
                 fEmojiFont.fGlyphs = {47, 48, 49, 50, 51, 52, 53, 54};
                 break;
-            case kColorFontsRepoSweepPad:
-                fEmojiFont.fGlyphs = {2, 58, 59, 60, 61, 62, 63, 64};
-                break;
-            case kColorFontsRepoSweepReflect:
-                fEmojiFont.fGlyphs = {65, 66, 67, 68, 69, 70, 71, 72};
-                break;
-            case kColorFontsRepoSweepRepeat:
-                fEmojiFont.fGlyphs = {73, 74, 75, 76, 77, 78, 79, 80};
-                break;
         }
     }
 
@@ -150,6 +134,30 @@ protected:
             gm_name.append("_rotate");
         }
         return gm_name;
+    }
+
+    bool onGetControls(SkMetaData* controls) override {
+        SkScalar rotaVars[] = {fRota, 0, 360};
+        SkScalar swepVars[] = {fSwep, 0, 90};
+        SkScalar col1Vars[] = {fCol1, -2, 2};
+        int count = 3;
+        controls->setScalars("ROTA", count, rotaVars);
+        controls->setScalars("SWEP", count, swepVars);
+        controls->setScalars("COL1", count, col1Vars);
+        return true;
+    }
+
+    void onSetControls(const SkMetaData& controls) override {
+        SkScalar rotaVars[3];
+        SkScalar swepVars[3];
+        SkScalar col1Vars[3];
+        int count = 3;
+        controls.findScalars("ROTA", &count, rotaVars);
+        controls.findScalars("SWEP", &count, swepVars);
+        controls.findScalars("COL1", &count, col1Vars);
+        fRota = rotaVars[0];
+        fSwep = swepVars[0];
+        fCol1 = col1Vars[0];
     }
 
     SkISize onISize() override { return SkISize::Make(1400, 600); }
@@ -175,15 +183,38 @@ protected:
         std::vector<SkColor> paint_colors = {
                 SK_ColorBLACK, SK_ColorGREEN, SK_ColorRED, SK_ColorBLUE};
         auto paint_color_iterator = paint_colors.begin();
-        for (SkScalar textSize : { 12, 18, 30, 120 }) {
+        for (SkScalar textSize : { /* 12, 18, 30, */ 120 }) {
             font.setSize(textSize);
             font.getMetrics(&metrics);
             y += -metrics.fAscent;
             paint.setColor(*paint_color_iterator);
+            // canvas->drawSimpleText(fEmojiFont.fGlyphs.data(),
+            //                        fEmojiFont.bytesize(),
+            //                        SkTextEncoding::kGlyphID,
+            //                        10,
+            //                        y,
+            //                        font,
+            //                        paint);
+            printf("setting fcol1: %f\n", fCol1);
+            SkFontArguments::VariationPosition::Coordinate coords[] = {
+                    {SkSetFourByteTag('R', 'O', 'T', 'A'), fRota},
+                    {SkSetFourByteTag('S', 'W', 'E', 'P'), fSwep},
+                    {SkSetFourByteTag('C', 'O', 'L', '1'), fCol1}};
+
+            SkFontArguments::VariationPosition varPos = {coords, 2};
+            SkFontArguments args;
+            args.setVariationDesignPosition(varPos);
+            sk_sp<SkTypeface> axisAppliedTypeface = fEmojiFont.fTypeface->makeClone(args);
+            SkASSERT(axisAppliedTypeface);
+            SkFont axisAppliedFont(axisAppliedTypeface);
+            axisAppliedFont.setSize(textSize);
             canvas->drawSimpleText(fEmojiFont.fGlyphs.data(),
                                    fEmojiFont.bytesize(),
                                    SkTextEncoding::kGlyphID,
-                                   10, y, font, paint);
+                                   300,
+                                   y,
+                                   axisAppliedFont,
+                                   paint);
             y += metrics.fDescent + metrics.fLeading;
             paint_color_iterator++;
         }
@@ -194,6 +225,9 @@ private:
     using INHERITED = GM;
     SkScalar fSkewX;
     SkScalar fRotateDeg;
+    SkScalar fRota = 0;
+    SkScalar fSwep = 0;
+    SkScalar fCol1 = 0;
     ColrV1TestType fTestType;
 };
 
@@ -211,8 +245,5 @@ DEF_GM(return new ColrV1GM(ColrV1GM::kColorFontsRepoClipBox, 0.f, 0.f);)
 DEF_GM(return new ColrV1GM(ColrV1GM::kColorFontsRepoClipBox, -0.5f, 20.f);)
 DEF_GM(return new ColrV1GM(ColrV1GM::kColorFontsRepoComposite, 0.f, 0.f);)
 DEF_GM(return new ColrV1GM(ColrV1GM::kColorFontsRepoForeground, 0.f, 0.f);)
-DEF_GM(return new ColrV1GM(ColrV1GM::kColorFontsRepoSweepPad, 0.f, 0.f);)
-DEF_GM(return new ColrV1GM(ColrV1GM::kColorFontsRepoSweepReflect, 0.f, 0.f);)
-DEF_GM(return new ColrV1GM(ColrV1GM::kColorFontsRepoSweepRepeat, 0.f, 0.f);)
 
 }  // namespace skiagm
