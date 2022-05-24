@@ -298,8 +298,14 @@ JPEGTURBO_DEFINES = [
     "//conditions:default": ["USE_CLZ_INTRINSIC"],  # Cuts a 64K table.
 })
 
-cc_library(
+# TODO(kjlubick) remove all references to the one with the dash in the name (non-idiomatic).
+alias(
     name = "libjpeg-turbo",
+    actual = ":libjpeg_turbo",
+)
+
+cc_library(
+    name = "libjpeg_turbo",
     srcs = JPEGTURBO_SRCS,
     hdrs = [
         "externals/libjpeg-turbo/jconfig.h",

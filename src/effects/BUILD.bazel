@@ -4,6 +4,38 @@ licenses(["notice"])
 
 exports_files_legacy()
 
+filegroup(
+    name = "srcs_nogazelle",
+    srcs = [
+        "Sk1DPathEffect.cpp",
+        "Sk2DPathEffect.cpp",
+        "SkBlenders.cpp",
+        "SkColorMatrix.cpp",
+        "SkColorMatrixFilter.cpp",
+        "SkCornerPathEffect.cpp",
+        "SkDashImpl.h",
+        "SkDashPathEffect.cpp",
+        "SkDiscretePathEffect.cpp",
+        "SkEmbossMask.cpp",
+        "SkEmbossMask.h",
+        "SkEmbossMaskFilter.cpp",
+        "SkEmbossMaskFilter.h",
+        "SkHighContrastFilter.cpp",
+        "SkLayerDrawLooper.cpp",
+        "SkLumaColorFilter.cpp",
+        "SkOpPE.h",
+        "SkOpPathEffect.cpp",
+        "SkOverdrawColorFilter.cpp",
+        "SkShaderMaskFilter.cpp",
+        "SkTableColorFilter.cpp",
+        "SkTableMaskFilter.cpp",
+        "SkTrimPE.h",
+        "SkTrimPathEffect.cpp",
+        "//src/effects/imagefilters:srcs_nogazelle",
+    ],
+    visibility = ["//src:__pkg__"],
+)
+
 cc_library(
     name = "srcs",
     visibility = ["//:__subpackages__"],

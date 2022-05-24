@@ -4,6 +4,15 @@ licenses(["notice"])
 
 exports_files_legacy()
 
+filegroup(
+    name = "hdrs_nogazelle",
+    srcs = [
+        "SkPDFDocument.h",
+        "SkXPSDocument.h",
+    ],
+    visibility = ["//include:__pkg__"],
+)
+
 generated_cc_atom(
     name = "SkPDFDocument_hdr",
     hdrs = ["SkPDFDocument.h"],

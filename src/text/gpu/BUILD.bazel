@@ -4,6 +4,29 @@ licenses(["notice"])
 
 exports_files_legacy()
 
+filegroup(
+    name = "srcs_nogazelle",
+    srcs = [
+        "DistanceFieldAdjustTable.cpp",
+        "DistanceFieldAdjustTable.h",
+        "Glyph.h",
+        "GlyphVector.cpp",
+        "GlyphVector.h",
+        "SDFMaskFilter.cpp",
+        "SDFMaskFilter.h",
+        "SDFTControl.cpp",
+        "SDFTControl.h",
+        "Slug.cpp",
+        "StrikeCache.cpp",
+        "StrikeCache.h",
+        "SubRunAllocator.cpp",
+        "SubRunAllocator.h",
+        "TextBlob.cpp",
+        "TextBlob.h",
+    ],
+    visibility = ["//src:__pkg__"],
+)
+
 generated_cc_atom(
     name = "GlyphVector_hdr",
     hdrs = ["GlyphVector.h"],
