@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "14f85736_5c3141ad",
+        "filename": "modules/canvaskit/canvaskit_bindings.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1855,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2022-05-24T13:30:12Z",
+      "side": 1,
+      "message": "Is passing in a boolean best here? Would it be more clear to ck users to have separate functions for \"makeShader()\" and \"makeShaderMallocUniforms()\".My initial thought is that \"shouldOwnUniforms\" doesn\u0027t tell me what is happening in the background without looking at it and I probably wouldn\u0027t know what to set it to.",
+      "revId": "f9983886c74adf93f987c6803803c9c2e78c6193",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
