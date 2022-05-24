@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "655f5180_50bf4d3e",
+        "filename": "BUILD.gn",
+        "patchSetId": 5
+      },
+      "lineNbr": 1946,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-05-24T18:08:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "662824ed_3420f048",
+      "range": {
+        "startLine": 1946,
+        "startChar": 8,
+        "endLine": 1946,
+        "endChar": 40
+      },
+      "revId": "a5548394eea1605c077a9545e4ef3b5222051cb7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7f688173_efe51b37",
@@ -54,6 +78,30 @@
       "writtenOn": "2022-05-24T13:30:17Z",
       "side": 1,
       "message": "2022 Google LLC",
+      "range": {
+        "startLine": 1,
+        "startChar": 12,
+        "endLine": 1,
+        "endChar": 28
+      },
+      "revId": "a5548394eea1605c077a9545e4ef3b5222051cb7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6535181f_a936d0ff",
+        "filename": "third_party/perfetto/BUILD.gn",
+        "patchSetId": 5
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-05-24T18:08:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7f688173_efe51b37",
       "range": {
         "startLine": 1,
         "startChar": 12,
@@ -87,6 +135,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "03b807ad_0642ff3b",
+        "filename": "third_party/perfetto/BUILD.gn",
+        "patchSetId": 5
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-05-24T18:08:54Z",
+      "side": 1,
+      "message": "Removed",
+      "parentUuid": "8461bcb1_5a2d9651",
+      "range": {
+        "startLine": 13,
+        "startChar": 2,
+        "endLine": 13,
+        "endChar": 29
+      },
+      "revId": "a5548394eea1605c077a9545e4ef3b5222051cb7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d5c8be90_9d362dc3",
@@ -100,6 +172,30 @@
       "writtenOn": "2022-05-24T13:30:17Z",
       "side": 1,
       "message": "if we do the gn arg change, I think it also makes sense to set a define in our gn to enable SK_USE_PERFETTO instead of having this long check here.",
+      "range": {
+        "startLine": 49,
+        "startChar": 8,
+        "endLine": 49,
+        "endChar": 96
+      },
+      "revId": "a5548394eea1605c077a9545e4ef3b5222051cb7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "aa9a41b0_1012e091",
+        "filename": "tools/trace/EventTracingPriv.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-05-24T18:08:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d5c8be90_9d362dc3",
       "range": {
         "startLine": 49,
         "startChar": 8,
@@ -133,6 +229,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "531ffbd4_249a0d1f",
+        "filename": "tools/trace/SkPerfTrace.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-05-24T18:08:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "37a97903_48bf5f9b",
+      "range": {
+        "startLine": 2,
+        "startChar": 25,
+        "endLine": 2,
+        "endChar": 29
+      },
+      "revId": "a5548394eea1605c077a9545e4ef3b5222051cb7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a227f7d3_25992e82",
@@ -146,6 +266,30 @@
       "writtenOn": "2022-05-24T13:30:17Z",
       "side": 1,
       "message": "Is this better that SkPerfettoTrace? I don\u0027t think I would have known SkPerfTrace means perfetto, but maybe that\u0027s what other tools all refer to perfetto as?",
+      "range": {
+        "startLine": 20,
+        "startChar": 6,
+        "endLine": 20,
+        "endChar": 17
+      },
+      "revId": "a5548394eea1605c077a9545e4ef3b5222051cb7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c1e22ab2_363df198",
+        "filename": "tools/trace/SkPerfTrace.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-05-24T18:08:54Z",
+      "side": 1,
+      "message": "Renamed for clarity",
+      "parentUuid": "a227f7d3_25992e82",
       "range": {
         "startLine": 20,
         "startChar": 6,
