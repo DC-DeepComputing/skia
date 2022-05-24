@@ -34,6 +34,24 @@
       "parentUuid": "14f85736_5c3141ad",
       "revId": "f9983886c74adf93f987c6803803c9c2e78c6193",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aeb8d9af_d1a9a266",
+        "filename": "modules/canvaskit/canvaskit_bindings.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1855,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2022-05-24T16:21:22Z",
+      "side": 1,
+      "message": "Makes sense, lgtm then.",
+      "parentUuid": "ee13d6de_b580260c",
+      "revId": "f9983886c74adf93f987c6803803c9c2e78c6193",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
