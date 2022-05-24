@@ -87,5 +87,18 @@ cc_library(
     deps = CORE_DEPS,
 )
 
+cc_library(
+    name = "skia_core_nogazelle",
+    srcs = [
+        "//include:private_hdrs_nogazelle",
+        "//src:srcs_nogazelle",
+    ],
+    hdrs = ["//include:public_hdrs_nogazelle"],
+    deps = [
+        "//bazel:defines_from_flags",
+        "//src:deps_nogazelle",
+    ],
+)
+
 # gazelle:prefix go.skia.org/skia
 gazelle(name = "gazelle")
