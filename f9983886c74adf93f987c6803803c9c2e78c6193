@@ -16,6 +16,24 @@
       "message": "Is passing in a boolean best here? Would it be more clear to ck users to have separate functions for \"makeShader()\" and \"makeShaderMallocUniforms()\".My initial thought is that \"shouldOwnUniforms\" doesn\u0027t tell me what is happening in the background without looking at it and I probably wouldn\u0027t know what to set it to.",
       "revId": "f9983886c74adf93f987c6803803c9c2e78c6193",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ee13d6de_b580260c",
+        "filename": "modules/canvaskit/canvaskit_bindings.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1855,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-05-24T14:02:12Z",
+      "side": 1,
+      "message": "CK users do not call _makeShader or _makeShaderWithChildren directly. The underscore indicates this is a private call that we (CK authors) call from our interface code.\n\nThus the only callers are in rt_shader.js, which is code we own and operate.\n\nThe ownership of the uniform data is not something CK clients need to handle",
+      "parentUuid": "14f85736_5c3141ad",
+      "revId": "f9983886c74adf93f987c6803803c9c2e78c6193",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
