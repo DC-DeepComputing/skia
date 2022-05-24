@@ -33,6 +33,23 @@
       "message": "egdaniel@: I may need help landing this CL, as I am not a Skia committer.",
       "revId": "eefe924c9a3ad836e7462cfbf2b8fb47a3c9b8bb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ad4acba9_3619de4c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6605
+      },
+      "writtenOn": "2022-05-24T20:28:02Z",
+      "side": 1,
+      "message": "Thanks for sheparding this CL, but coincidentally, it collided with https://skia-review.googlesource.com/c/skia/+/543084",
+      "revId": "eefe924c9a3ad836e7462cfbf2b8fb47a3c9b8bb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
