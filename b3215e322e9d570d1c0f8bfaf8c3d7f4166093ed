@@ -1,6 +1,29 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "2fbfcab0_3d613c95",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2022-05-24T18:40:07Z",
+      "side": 1,
+      "message": "nit: different",
+      "range": {
+        "startLine": 9,
+        "startChar": 21,
+        "endLine": 9,
+        "endChar": 29
+      },
+      "revId": "b3215e322e9d570d1c0f8bfaf8c3d7f4166093ed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "1060a8db_bac36804",
@@ -14,6 +37,23 @@
       "writtenOn": "2022-05-24T18:27:51Z",
       "side": 1,
       "message": "Need a reviewer for changes to public includes. This is removing some unused PDF public API and adding a comment about the expected format of URLs (which by direct experiment it appears that Chromium is currently abiding by anyway).",
+      "revId": "b3215e322e9d570d1c0f8bfaf8c3d7f4166093ed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d6f02af5_ceb9514a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2022-05-24T18:40:07Z",
+      "side": 1,
+      "message": "api lgtm",
       "revId": "b3215e322e9d570d1c0f8bfaf8c3d7f4166093ed",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
