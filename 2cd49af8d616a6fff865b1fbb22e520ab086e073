@@ -39,6 +39,30 @@
       },
       "revId": "2cd49af8d616a6fff865b1fbb22e520ab086e073",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3d713071_afa7b313",
+        "filename": "src/text/gpu/TextBlob.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 2650,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-05-24T18:25:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e72f9a10_29b276da",
+      "range": {
+        "startLine": 2650,
+        "startChar": 0,
+        "endLine": 2650,
+        "endChar": 31
+      },
+      "revId": "2cd49af8d616a6fff865b1fbb22e520ab086e073",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
