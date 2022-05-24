@@ -12,9 +12,14 @@
 #include <memory>
 #include <vector>
 #include "include/core/SkBlendMode.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkTileMode.h"
+#include "include/private/SkTArray.h"
+#include "include/private/SkTHash.h"
 
 class SkArenaAllocWithReset;
+class SkCombinationBuilder;
+class SkOption;
 class SkPaintCombinations;
 class SkPaintParamsKeyBuilder;
 class SkShaderCodeDictionary;
@@ -35,18 +40,6 @@ enum class SkShaderType : uint32_t {
     kLocalMatrix,
     kImage,
     kBlendShader
-};
-
-// TODO: remove this class
-struct SkShaderCombo {
-    SkShaderCombo() {}
-    SkShaderCombo(std::vector<SkShaderType> types,
-                  std::vector<SkTileMode> tileModes)
-            : fTypes(std::move(types))
-            , fTileModes(std::move(tileModes)) {
-    }
-    std::vector<SkShaderType> fTypes;
-    std::vector<SkTileMode> fTileModes;
 };
 
 // TODO: add SkShaderID and SkColorFilterID too
@@ -76,6 +69,29 @@ private:
     uint32_t fID;
 };
 
+class SkCombinationOption {
+public:
+    SkCombinationOption(SkCombinationBuilder* builder, SkOption* dataInArena)
+            : fBuilder(builder)
+            , fDataInArena(dataInArena) {}
+
+    SkCombinationOption addChildOption(int childIndex, SkShaderType);
+
+    SkCombinationOption addChildOption(int childIndex, SkShaderType,
+                                       int minNumStops, int maxNumStops);
+
+    SkCombinationOption addChildOption(int childIndex, SkShaderType,
+                                       const SkSpan<SkTileMode>&);
+
+    bool isValid() const { return fDataInArena; }
+    SkShaderType type() const;
+    int numChildSlots() const;
+
+private:
+    SkCombinationBuilder* fBuilder;
+    SkOption* fDataInArena;
+};
+
 class SkCombinationBuilder {
 public:
     enum class BlendModeGroup {
@@ -92,25 +108,38 @@ public:
 #endif
 
     // Blend Modes
-    void add(SkBlendMode);
-    void add(SkBlendMode rangeStart, SkBlendMode rangeEnd); // inclusive
-    void add(BlendModeGroup);
-    void add(SkBlenderID);
+    void addOption(SkBlendMode);
+    void addOption(SkBlendMode rangeStart, SkBlendMode rangeEnd); // inclusive
+    void addOption(BlendModeGroup);
+
+    // TODO: have this variant return an SkCombinationOption object
+    void addOption(SkBlenderID);
 
     // Shaders
-    void add(SkShaderCombo);
+    SkCombinationOption addOption(SkShaderType shaderType);
+
+    // inclusive
+    SkCombinationOption addOption(SkShaderType shaderType, int minNumStops, int maxNumStops);
+
+    SkCombinationOption addOption(SkShaderType shaderType, const SkSpan<SkTileMode>& tileModes);
 
     void reset();
 
 private:
     friend class skgpu::graphite::Context; // for access to buildCombinations
 
+    template<typename T, typename... Args>
+    SkCombinationOption allocInArena(Args&&... args);
+
     void buildCombinations(SkShaderCodeDictionary*,
                            const std::function<void(SkUniquePaintParamsID)>&) const;
 
     SkShaderCodeDictionary* fDictionary;
     std::unique_ptr<SkArenaAllocWithReset> fArena;
-    SkPaintCombinations* fCombinations;
+    SkTArray<SkOption*> fShaders;
+
+    // TODO: store the SkBlender-based blenders in the arena
+    SkTHashSet<uint32_t> fBlendModes;
 };
 
 #endif // SkCombinationBuilder_DEFINED
