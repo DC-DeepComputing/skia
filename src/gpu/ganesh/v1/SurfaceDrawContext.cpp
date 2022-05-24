@@ -70,9 +70,9 @@
 #include "src/gpu/ganesh/ops/ShadowRRectOp.h"
 #include "src/gpu/ganesh/ops/StrokeRectOp.h"
 #include "src/gpu/ganesh/ops/TextureOp.h"
-#include "src/gpu/ganesh/text/GrTextBlobRedrawCoordinator.h"
 #include "src/gpu/ganesh/v1/PathRenderer.h"
 #include "src/text/gpu/SDFTControl.h"
+#include "src/text/gpu/TextBlobRedrawCoordinator.h"
 
 #define ASSERT_OWNED_RESOURCE(R) SkASSERT(!(R) || (R)->getContext() == this->drawingManager()->getContext())
 #define ASSERT_SINGLE_OWNER        SKGPU_ASSERT_SINGLE_OWNER(this->singleOwner())
@@ -340,7 +340,7 @@ void SurfaceDrawContext::drawGlyphRunList(SkCanvas* canvas,
         return;
     }
 
-    GrTextBlobRedrawCoordinator* textBlobCache = fContext->priv().getTextBlobCache();
+    sktext::gpu::TextBlobRedrawCoordinator* textBlobCache = fContext->priv().getTextBlobCache();
     textBlobCache->drawGlyphRunList(
             canvas, clip, viewMatrix, glyphRunList, paint, strikeDeviceInfo, this);
 }
@@ -2101,3 +2101,21 @@ OpsTask* SurfaceDrawContext::replaceOpsTaskIfModifiesColor() {
 }
 
 } // namespace skgpu::v1
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Ganesh code for TextBlobRedrawCoordinator
+namespace sktext::gpu {
+void TextBlobRedrawCoordinator::drawGlyphRunList(SkCanvas* canvas,
+                                                 const GrClip* clip,
+                                                 const SkMatrixProvider& viewMatrix,
+                                                 const SkGlyphRunList& glyphRunList,
+                                                 const SkPaint& paint,
+                                                 SkStrikeDeviceInfo strikeDeviceInfo,
+                                                 skgpu::v1::SurfaceDrawContext* sdc) {
+    sk_sp<TextBlob> blob = this->findOrCreateBlob(viewMatrix, glyphRunList, paint,
+                                                  strikeDeviceInfo);
+
+    blob->draw(canvas, clip, viewMatrix, glyphRunList.origin(), paint, sdc);
+}
+}
