@@ -16,6 +16,121 @@
       "message": "Take a look at the changes and let me know what you think.",
       "revId": "acc7426ee9cd9ace81d17ec4cab08f9b68ceb109",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7985e67a_cb7c52e3",
+        "filename": "BUILD.gn",
+        "patchSetId": 6
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-05-24T18:27:50Z",
+      "side": 1,
+      "message": "I think we can set this down in the tools target where we have the deps since nothing else uses this define",
+      "range": {
+        "startLine": 67,
+        "startChar": 2,
+        "endLine": 69,
+        "endChar": 3
+      },
+      "revId": "acc7426ee9cd9ace81d17ec4cab08f9b68ceb109",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4c44ef78_ac0c9384",
+        "filename": "BUILD.gn",
+        "patchSetId": 6
+      },
+      "lineNbr": 1949,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-05-24T18:27:50Z",
+      "side": 1,
+      "message": "shouldn\u0027t we be using skia_use_perfetto here?",
+      "range": {
+        "startLine": 1949,
+        "startChar": 8,
+        "endLine": 1949,
+        "endChar": 41
+      },
+      "revId": "acc7426ee9cd9ace81d17ec4cab08f9b68ceb109",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3eb86f62_18a0a670",
+        "filename": "tools/trace/SkPerfettoTrace.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-05-24T18:27:50Z",
+      "side": 1,
+      "message": "nit: remove space",
+      "range": {
+        "startLine": 12,
+        "startChar": 11,
+        "endLine": 12,
+        "endChar": 12
+      },
+      "revId": "acc7426ee9cd9ace81d17ec4cab08f9b68ceb109",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a5525b02_3b8fa9c0",
+        "filename": "tools/trace/SkPerfettoTrace.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-05-24T18:27:50Z",
+      "side": 1,
+      "message": "nit: over 100 chars (that is the general skia style limit)",
+      "range": {
+        "startLine": 48,
+        "startChar": 101,
+        "endLine": 48,
+        "endChar": 106
+      },
+      "revId": "acc7426ee9cd9ace81d17ec4cab08f9b68ceb109",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1c2cffbf_6d061b6f",
+        "filename": "tools/trace/SkPerfettoTrace.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-05-24T18:27:50Z",
+      "side": 1,
+      "message": "same",
+      "range": {
+        "startLine": 49,
+        "startChar": 101,
+        "endLine": 49,
+        "endChar": 140
+      },
+      "revId": "acc7426ee9cd9ace81d17ec4cab08f9b68ceb109",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
