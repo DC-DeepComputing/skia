@@ -48,6 +48,7 @@ generated_cc_atom(
     hdrs = ["SkCustomTypeface.h"],
     visibility = ["//:__subpackages__"],
     deps = [
+        "//include/core:SkDrawable_hdr",
         "//include/core:SkFontMetrics_hdr",
         "//include/core:SkFontStyle_hdr",
         "//include/core:SkPath_hdr",

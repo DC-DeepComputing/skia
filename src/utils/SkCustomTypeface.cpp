@@ -8,6 +8,7 @@
 #include "include/utils/SkCustomTypeface.h"
 
 #include "include/core/SkData.h"
+#include "include/core/SkDrawable.h"
 #include "include/core/SkFontArguments.h"
 #include "include/core/SkFontMetrics.h"
 #include "include/core/SkFontParameters.h"
@@ -76,11 +77,21 @@ private:
     friend class SkCustomTypefaceBuilder;
     friend class SkUserScalerContext;
 
-    explicit SkUserTypeface(SkFontStyle style) : SkTypeface(style) {}
+    explicit SkUserTypeface(SkFontStyle style, std::vector<SkPath>&& paths,
+                            std::vector<SkCustomTypefaceBuilder::DrawableRec>&& drawables,
+                            std::vector<float>&& advances,
+                            const SkFontMetrics& metrics)
+        : SkTypeface(style)
+        , fPaths(std::move(paths))
+        , fDrawables(std::move(drawables))
+        , fAdvances(std::move(advances))
+        , fMetrics(metrics)
+    {}
 
-    std::vector<SkPath> fPaths;
-    std::vector<float>  fAdvances;
-    SkFontMetrics       fMetrics;
+    const std::vector<SkPath>                               fPaths;
+    const std::vector<SkCustomTypefaceBuilder::DrawableRec> fDrawables;
+    const std::vector<float>                                fAdvances;
+    const SkFontMetrics                                     fMetrics;
 
     std::unique_ptr<SkScalerContext> onCreateScalerContext(const SkScalerContextEffects&,
                                                            const SkDescriptor* desc) const override;
@@ -123,6 +134,7 @@ private:
 
     int glyphCount() const {
         SkASSERT(fPaths.size() == fAdvances.size());
+        SkASSERT(fDrawables.size() == fAdvances.size());
         return SkToInt(fPaths.size());
     }
 };
@@ -139,39 +151,64 @@ void SkCustomTypefaceBuilder::setFontStyle(SkFontStyle style) {
     fStyle = style;
 }
 
-void SkCustomTypefaceBuilder::setGlyph(SkGlyphID index, float advance, const SkPath& path) {
+void SkCustomTypefaceBuilder::ensureStorage(SkGlyphID index) {
     SkASSERT(fPaths.size() == fAdvances.size());
+    SkASSERT(fPaths.size() == fDrawables.size());
     if (index >= fPaths.size()) {
            fPaths.resize(SkToSizeT(index) + 1);
+       fDrawables.resize(SkToSizeT(index) + 1);
         fAdvances.resize(SkToSizeT(index) + 1);
     }
-    fAdvances[index] = advance;
-    fPaths[index]    = path;
+}
+
+void SkCustomTypefaceBuilder::setGlyph(SkGlyphID index, float advance, const SkPath& path) {
+    this->ensureStorage(index);
+
+    fAdvances [index] = advance;
+    fPaths    [index] = path;
+    fDrawables[index].fDraw = nullptr;
+}
+
+void SkCustomTypefaceBuilder::setGlyph(SkGlyphID index, float advance,
+                                       DrawableRec drawable) {
+                                           printf("!!\n");
+    this->ensureStorage(index);
+
+    fAdvances [index] = advance;
+    fDrawables[index] = std::move(drawable);
+    fPaths    [index].reset();
 }
 
 sk_sp<SkTypeface> SkCustomTypefaceBuilder::detach() {
     SkASSERT(fPaths.size() == fAdvances.size());
+    SkASSERT(fPaths.size() == fDrawables.size());
     if (fPaths.empty()) return nullptr;
-
-    sk_sp<SkUserTypeface> tf(new SkUserTypeface(fStyle));
-    tf->fAdvances = std::move(fAdvances);
-    tf->fPaths    = std::move(fPaths);
-    tf->fMetrics  = fMetrics;
 
     // initially inverted, so that any "union" will overwrite the first time
     SkRect bounds = {SK_ScalarMax, SK_ScalarMax, -SK_ScalarMax, -SK_ScalarMax};
 
-    for (const auto& path : tf->fPaths) {
+    for (const auto& path : fPaths) {
         if (!path.isEmpty()) {
             bounds.join(path.getBounds());
         }
     }
-    tf->fMetrics.fTop    = bounds.top();
-    tf->fMetrics.fBottom = bounds.bottom();
-    tf->fMetrics.fXMin   = bounds.left();
-    tf->fMetrics.fXMax   = bounds.right();
 
-    return std::move(tf);
+    for (const auto& drawable : fDrawables) {
+        if (drawable.fDraw) {
+            bounds.join(drawable.fBounds);
+        }
+    }
+
+    fMetrics.fTop    = bounds.top();
+    fMetrics.fBottom = bounds.bottom();
+    fMetrics.fXMin   = bounds.left();
+    fMetrics.fXMax   = bounds.right();
+
+    return sk_sp<SkUserTypeface>(new SkUserTypeface(fStyle,
+                                                    std::move(fPaths),
+                                                    std::move(fDrawables),
+                                                    std::move(fAdvances),
+                                                    fMetrics));
 }
 
 /////////////
@@ -238,17 +275,58 @@ protected:
         return true;
     }
 
-    void generateMetrics(SkGlyph* glyph, SkArenaAlloc*) override {
+    void generateMetrics(SkGlyph* glyph, SkArenaAlloc* alloc) override {
         glyph->zeroMetrics();
         this->generateAdvance(glyph);
-        // Always generates from paths, so SkScalerContext::makeGlyph will figure the bounds.
+        
+        printf("*** generateMetrics: %p\n", this->userTF());
+        const auto& drec = this->userTF()->fDrawables[glyph->getGlyphID()];
+        if (drec.fDraw) {
+            glyph->fMaskFormat = SkMask::kARGB32_Format;
+
+            SkRect bounds = drec.fBounds;
+            fMatrix.mapRect(bounds);
+            bounds.offset(SkFixedToScalar(glyph->getSubXFixed()),
+                          SkFixedToScalar(glyph->getSubYFixed()));
+
+            SkIRect ibounds;
+            bounds.roundOut(&ibounds);
+            glyph->fLeft   = ibounds.fLeft;
+            glyph->fTop    = ibounds.fTop;
+            glyph->fWidth  = ibounds.width();
+            glyph->fHeight = ibounds.height();
+
+            glyph->setDrawable(alloc, drec.fDraw);
+        }
     }
 
-    void generateImage(const SkGlyph&) override { SK_ABORT("Should have generated from path."); }
+    void generateImage(const SkGlyph&) override {
+        printf("*** generateImage\n");
+        SK_ABORT("Should have generated from path.");
+    }
 
     bool generatePath(const SkGlyph& glyph, SkPath* path) override {
-        this->userTF()->fPaths[glyph.getGlyphID()].transform(fMatrix, path);
+        printf("*** generatePath\n");
+        const auto& glyph_path = this->userTF()->fPaths[glyph.getGlyphID()];
+
+        if (glyph_path.isEmpty()) {
+            return false;
+        }
+
+        glyph_path.transform(fMatrix, path);
+
         return true;
+    }
+
+    sk_sp<SkDrawable> generateDrawable(const SkGlyph& glyph) override {
+        printf("*** generateDrawable\n");
+        const auto& glyph_drawable = this->userTF()->fDrawables[glyph.getGlyphID()].fDraw;
+        if (!glyph_drawable) {
+            return nullptr;
+        }
+
+        // TODO: transform wrapper
+        return glyph_drawable;
     }
 
     void generateFontMetrics(SkFontMetrics* metrics) override {

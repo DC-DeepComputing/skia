@@ -9220,6 +9220,7 @@ generated_cc_atom(
         "//include/core:SkFont_hdr",
         "//include/core:SkPaint_hdr",
         "//include/core:SkPath_hdr",
+        "//include/core:SkPictureRecorder_hdr",
         "//include/core:SkSize_hdr",
         "//include/core:SkStream_hdr",
         "//include/core:SkString_hdr",
