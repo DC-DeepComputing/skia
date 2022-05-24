@@ -39,6 +39,30 @@
       },
       "revId": "68188e70e139f5e20ce910c1934fd5cd7fefd049",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7d94477f_e90dbea4",
+        "filename": "src/gpu/graphite/render/TessellateStrokesRenderStep.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 205,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-05-24T13:13:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3c829787_e79dfb55",
+      "range": {
+        "startLine": 205,
+        "startChar": 72,
+        "endLine": 205,
+        "endChar": 76
+      },
+      "revId": "68188e70e139f5e20ce910c1934fd5cd7fefd049",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
