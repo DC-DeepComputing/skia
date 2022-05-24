@@ -38,8 +38,8 @@ public:
     //   R operator()(const T& record) { ... }
     // This operator() must be defined for at least all SkRecords::*.
     template <typename F>
-    auto visit(int i, F&& f) const -> decltype(f(SkRecords::NoOp())) {
-        return fRecords[i].visit(f);
+    auto visit2(int i, F&& f) const -> decltype(f(SkRecords::NoOp())) {
+        return fRecords[i].visit1(f);
     }
 
     // Mutate the i-th canvas command with a functor matching this interface:
@@ -145,7 +145,7 @@ private:
 
         // Visit this record with functor F (see public API above).
         template <typename F>
-        auto visit(F&& f) const -> decltype(f(SkRecords::NoOp())) {
+        auto visit1(F&& f) const -> decltype(f(SkRecords::NoOp())) {
         #define CASE(T) case SkRecords::T##_Type: return f(*(const SkRecords::T*)this->ptr());
             switch(this->type()) { SK_RECORD_TYPES(CASE) }
         #undef CASE
