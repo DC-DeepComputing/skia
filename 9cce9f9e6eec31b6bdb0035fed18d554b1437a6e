@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "44a103a5_e601afb0",
+        "filename": "src/text/gpu/TextBlob.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 720,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-05-24T13:59:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f28b7ec5_c33f2ffc",
+      "revId": "9cce9f9e6eec31b6bdb0035fed18d554b1437a6e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d0ced808_c2e04233",
@@ -35,6 +53,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b221481f_39394605",
+        "filename": "src/text/gpu/TextBlob.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 741,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-05-24T13:59:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d0ced808_c2e04233",
+      "revId": "9cce9f9e6eec31b6bdb0035fed18d554b1437a6e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "58c527d3_28b1c7c9",
@@ -48,6 +84,24 @@
       "writtenOn": "2022-05-23T20:38:46Z",
       "side": 1,
       "message": "Here too ?",
+      "revId": "9cce9f9e6eec31b6bdb0035fed18d554b1437a6e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9d4e4578_d5322d23",
+        "filename": "src/text/gpu/TextBlob.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1798,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-05-24T13:59:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "58c527d3_28b1c7c9",
       "revId": "9cce9f9e6eec31b6bdb0035fed18d554b1437a6e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
