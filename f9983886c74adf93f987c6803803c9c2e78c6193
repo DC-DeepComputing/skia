@@ -52,6 +52,24 @@
       "parentUuid": "ee13d6de_b580260c",
       "revId": "f9983886c74adf93f987c6803803c9c2e78c6193",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8814f225_f40c324b",
+        "filename": "modules/canvaskit/canvaskit_bindings.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1855,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-05-24T16:33:11Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "aeb8d9af_d1a9a266",
+      "revId": "f9983886c74adf93f987c6803803c9c2e78c6193",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
