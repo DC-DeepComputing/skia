@@ -16,6 +16,138 @@
       "message": "Take a look and see if anything else needs to change.",
       "revId": "73f863735d25a3ed8e1fc642aad18cdb8729d165",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "731c445a_8fa378fc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-05-24T21:02:09Z",
+      "side": 1,
+      "message": "A bunch of little style nits, but otherwise lgtm once they\u0027re fixed.",
+      "revId": "73f863735d25a3ed8e1fc642aad18cdb8729d165",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "96912b3b_0bb282f6",
+        "filename": "tools/trace/EventTracingPriv.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-05-24T21:02:09Z",
+      "side": 1,
+      "message": "you can leave this up where it was. Typically in cpp files we\u0027ll but its direct header above this others by itself",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 13,
+        "endChar": 41
+      },
+      "revId": "73f863735d25a3ed8e1fc642aad18cdb8729d165",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e5c51911_aba46e1f",
+        "filename": "tools/trace/EventTracingPriv.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-05-24T21:02:09Z",
+      "side": 1,
+      "message": "I would return after this or else we\u0027ll end up doing chrome tracing which may confuse folks",
+      "range": {
+        "startLine": 54,
+        "startChar": 78,
+        "endLine": 54,
+        "endChar": 80
+      },
+      "revId": "73f863735d25a3ed8e1fc642aad18cdb8729d165",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4e4de73c_e0d4f1a5",
+        "filename": "tools/trace/SkPerfettoTrace.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-05-24T21:02:09Z",
+      "side": 1,
+      "message": "nit: align",
+      "range": {
+        "startLine": 21,
+        "startChar": 46,
+        "endLine": 28,
+        "endChar": 62
+      },
+      "revId": "73f863735d25a3ed8e1fc642aad18cdb8729d165",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fb91b291_05fa2b32",
+        "filename": "tools/trace/SkPerfettoTrace.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-05-24T21:02:09Z",
+      "side": 1,
+      "message": "do these fit on the line above? If not our general style is to just tab over 8 spaces from the left edge",
+      "range": {
+        "startLine": 33,
+        "startChar": 40,
+        "endLine": 35,
+        "endChar": 71
+      },
+      "revId": "73f863735d25a3ed8e1fc642aad18cdb8729d165",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "99d162b2_dae6240f",
+        "filename": "tools/trace/SkPerfettoTrace.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-05-24T21:02:09Z",
+      "side": 1,
+      "message": "same as above",
+      "range": {
+        "startLine": 43,
+        "startChar": 40,
+        "endLine": 43,
+        "endChar": 45
+      },
+      "revId": "73f863735d25a3ed8e1fc642aad18cdb8729d165",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
