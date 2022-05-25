@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "28789d58_878a6180",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-05-25T16:01:39Z",
+      "side": 1,
+      "message": "Mike K. is no longer w/ the company btw",
+      "revId": "7dcd9e253a63f76ec3c48a552b4b35e9b9c0d6ff",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
