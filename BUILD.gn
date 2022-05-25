@@ -1336,6 +1336,9 @@ skia_component("skia") {
     ":wuffs",
     ":xml",
   ]
+  if (is_linux || is_mac || is_android) {
+    deps += [ "//third_party/perfetto" ]
+  }
 
   public = skia_core_public
   public += skia_utils_public
