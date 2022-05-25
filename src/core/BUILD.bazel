@@ -208,7 +208,12 @@ cc_library(
         ":SkYUVAPixmaps_src",
         ":SkYUVMath_src",
         ":SkYUVPlanesCache_src",
-    ],
+    ] + select({
+        "@platforms//os:linux": [":SkPerfTrace_src"],
+        "@platforms//os:android": [":SkPerfTrace_src"],
+        "@platforms//os:macos": [":SkPerfTrace_src"],
+        "//conditions:default": [], # Perfetto only supports Mac, Linux, & Android.
+    }),
 )
 
 # These are sources that are only needed if SkSL is enabled (GPU backend or SkVM).
@@ -296,6 +301,28 @@ generated_cc_atom(
         ":SkTraceEventCommon_hdr",
         ":SkTraceEvent_hdr",
     ],
+)
+
+generated_cc_atom(
+    name = "SkPerfTrace_hdr",
+    hdrs = ["SkPerfTrace.h"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+      "//include/utils:SkEventTracer_hdr",
+      ],
+)
+
+generated_cc_atom(
+    name = "SkPerfTrace_src",
+    srcs = ["SkPerfTrace.cpp"],
+    visibility = ["//:__subpackages__"],
+    deps = [
+        ":SkPerfTrace_hdr",
+        ":SkTraceEventCommon_hdr",
+        ":SkTraceEvent_hdr",
+        "//third_party/perfetto",
+        "//tools/flags:CommandLineFlags_hdr",
+    ]
 )
 
 generated_cc_atom(

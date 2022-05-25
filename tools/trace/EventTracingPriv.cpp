@@ -9,6 +9,9 @@
 
 #include "include/utils/SkEventTracer.h"
 #include "src/core/SkATrace.h"
+#if defined(SK_BUILD_FOR_ANDROID) || defined(SK_BUILD_FOR_MAC) || defined(SK_BUILD_FOR_UNIX)
+  #include "src/core/SkPerfTrace.h"
+#endif
 #include "src/core/SkTraceEvent.h"
 #include "tools/flags/CommandLineFlags.h"
 #include "tools/trace/ChromeTracingTracer.h"
