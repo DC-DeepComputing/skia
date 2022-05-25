@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "353521ad_3f15c0ed",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-05-25T17:01:35Z",
+      "side": 1,
+      "message": "Unfortunately, this didn\u0027t actually fix the issue because hb_subset_or_fail returns an empty hb_face (and not nullptr or do a subset) when the hb_face it is passed was created with hb_face_create_for_tables. Opened https://github.com/harfbuzz/harfbuzz/issues/3609 about that.",
+      "revId": "ceec898692b3618a570f274f695a852d95396f31",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
