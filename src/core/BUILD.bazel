@@ -5579,6 +5579,7 @@ generated_cc_atom(
     visibility = ["//:__subpackages__"],
     deps = [
         ":SkMeshPriv_hdr",
+        ":SkRuntimeEffectPriv_hdr",
         ":SkSafeMath_hdr",
         "//include/core:SkColorSpace_hdr",
         "//include/core:SkData_hdr",
@@ -5595,6 +5596,7 @@ generated_cc_atom(
         "//src/sksl/ir:SkSLFunctionDefinition_hdr",
         "//src/sksl/ir:SkSLProgram_hdr",
         "//src/sksl/ir:SkSLType_hdr",
+        "//src/sksl/ir:SkSLVarDeclarations_hdr",
         "//src/sksl/ir:SkSLVariable_hdr",
     ],
 )

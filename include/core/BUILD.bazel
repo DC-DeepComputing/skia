@@ -968,6 +968,7 @@ generated_cc_atom(
         ":SkSpan_hdr",
         ":SkString_hdr",
         ":SkTypes_hdr",
+        "//include/effects:SkRuntimeEffect_hdr",
     ],
 )
 

@@ -7189,5 +7189,6 @@ generated_cc_atom(
         ":Test_hdr",
         "//include/core:SkCanvas_hdr",
         "//include/core:SkMesh_hdr",
+        "//src/core:SkZip_hdr",
     ],
 )
