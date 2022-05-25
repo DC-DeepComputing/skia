@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "192795b9_70f08289",
+        "filename": "src/gpu/ganesh/gl/GrGLGpu.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 518,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-05-25T14:45:52Z",
+      "side": 1,
+      "message": "You can see on status.skia.org the failing bots that caused the revert (e.g. https://logs.chromium.org/logs/skia/5b1462a4d3fb1e11/+/steps/dm/0/stdout), but I think the issue is this call just needs to be protected with:\nif (gpu-\u003eglCaps().debugSupport()) { ... }",
+      "range": {
+        "startLine": 516,
+        "startChar": 2,
+        "endLine": 518,
+        "endChar": 87
+      },
+      "revId": "605f92c7d7f97d6edf152f6e9d0fc88f8cd8c700",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
