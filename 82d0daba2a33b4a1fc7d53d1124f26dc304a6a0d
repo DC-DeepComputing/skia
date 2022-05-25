@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "742c3641_6d0f27bd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-05-25T20:21:10Z",
+      "side": 1,
+      "message": "Worked with Kevin to isolate the cause of the following task failure: https://task-driver.skia.org/td/RigePeT0Gr2l6JzYXAnq\n\nPerfetto comes with a broken symlink. This CL manually removes it until it gets removed from the Perfetto checkout / repository itself.",
+      "revId": "82d0daba2a33b4a1fc7d53d1124f26dc304a6a0d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
