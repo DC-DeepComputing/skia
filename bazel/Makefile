@@ -1,15 +1,8 @@
-# This target should be run when new files are added or includes changed.
 generate:
-	bazelisk build @org_skia_go_infra//bazel/gazelle:gazelle_cpp
-	cd .. && bazel-bin/external/org_skia_go_infra/bazel/gazelle/gazelle_cpp_/gazelle_cpp update \
-		--third_party_file_map="third_party/file_map_for_bazel.json" \
-		include src tools gm tests \
-		modules/skshaper modules/svg modules/skresources modules/skparagraph modules/skunicode \
-		modules/skottie modules/skresources modules/sksg experimental/ffmpeg \
-		modules/particles \
-		experimental/bazel_test example \
-		modules/canvaskit/go \
-		infra/bots/task_drivers
+	echo "You do not need to run this any more for C++ code, only if you modify go code"
+
+generate_go:
+	cd .. && bazelisk run //:gazelle -- update infra/bots/task_drivers
 
 # This target should be run after the go.mod file is updated (e.g. version rolls or new updates)
 gazelle_update_repo:
@@ -25,19 +18,19 @@ known_good_builds:
 	bazelisk build //tools/skslc --config=clang_linux
 	bazelisk build //modules/canvaskit:canvaskit_wasm --compilation_mode opt --sandbox_base=/dev/shm
 
-	# Test the enforcement of include what you use
-	bazelisk build //example:hello_world_gl --config=clang_linux --features skia_enforce_iwyu
- 	# Both with and without a GPU backend should be error free (i.e. IWYU should let us
- 	# conditionally import things.
-	bazelisk build //src/svg/... --config=clang_linux --features skia_enforce_iwyu \
-		--gpu_backend=gl_backend --include_decoder=jpeg_decode_codec
-	bazelisk build //src/svg/... --config=clang_linux --features skia_enforce_iwyu
-	bazelisk build //tools/debugger --config=clang_linux --gpu_backend=gl_backend \
-		--features skia_enforce_iwyu
-	bazelisk build //:skia_core --config=clang_linux --features skia_enforce_iwyu
-	bazelisk build //src/utils/... --config=clang_linux --features skia_enforce_iwyu
-	bazelisk build //src/utils/... --config=clang_linux --gpu_backend=gl_backend \
-		--features skia_enforce_iwyu
+	# Test the enforcement of include what you use (TODO(kjlubick) re-enable
+#	bazelisk build //example:hello_world_gl --config=clang_linux --features skia_enforce_iwyu
+# 	# Both with and without a GPU backend should be error free (i.e. IWYU should let us
+# 	# conditionally import things.
+#	bazelisk build //src/svg/... --config=clang_linux --features skia_enforce_iwyu \
+#		--gpu_backend=gl_backend --include_decoder=jpeg_decode_codec
+#	bazelisk build //src/svg/... --config=clang_linux --features skia_enforce_iwyu
+#	bazelisk build //tools/debugger --config=clang_linux --gpu_backend=gl_backend \
+#		--features skia_enforce_iwyu
+#	bazelisk build //:skia_core --config=clang_linux --features skia_enforce_iwyu
+#	bazelisk build //src/utils/... --config=clang_linux --features skia_enforce_iwyu
+#	bazelisk build //src/utils/... --config=clang_linux --gpu_backend=gl_backend \
+#		--features skia_enforce_iwyu
 
 rbe_known_good_builds:
 	bazelisk build //experimental/bazel_test/... --config=linux_rbe
@@ -51,13 +44,13 @@ rbe_known_good_builds:
 	bazelisk build //modules/canvaskit:canvaskit_wasm --compilation_mode dbg --config=linux_rbe \
 		--jobs 100
 
-	# Test the enforcement of include what you use
-	bazelisk build //example:hello_world_gl --config=linux_rbe --features skia_enforce_iwyu
- 	# Both with and without a GPU backend should be error free (i.e. IWYU should let us
- 	# conditionally import things.
-	bazelisk build //src/svg/... --config=linux_rbe --features skia_enforce_iwyu \
-		--gpu_backend=gl_backend --include_decoder=jpeg_decode_codec
-	bazelisk build //src/svg/... --config=linux_rbe --features skia_enforce_iwyu
-	bazelisk build //tools/debugger --config=linux_rbe --gpu_backend=gl_backend \
-		--features skia_enforce_iwyu
-	bazelisk build //:skia_core --config=linux_rbe --features skia_enforce_iwyu
+	# Test the enforcement of include what you use (TODO(kjlubick) re-enable
+#	bazelisk build //example:hello_world_gl --config=linux_rbe --features skia_enforce_iwyu
+# 	# Both with and without a GPU backend should be error free (i.e. IWYU should let us
+# 	# conditionally import things.
+#	bazelisk build //src/svg/... --config=linux_rbe --features skia_enforce_iwyu \
+#		--gpu_backend=gl_backend --include_decoder=jpeg_decode_codec
+#	bazelisk build //src/svg/... --config=linux_rbe --features skia_enforce_iwyu
+#	bazelisk build //tools/debugger --config=linux_rbe --gpu_backend=gl_backend \
+#		--features skia_enforce_iwyu
+#	bazelisk build //:skia_core --config=linux_rbe --features skia_enforce_iwyu
