@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "08727c2d_96abe432",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-05-25T19:55:09Z",
+      "side": 1,
+      "message": "All this stems from reducing the number of includes, and forward declarations in SkGlyphRunPainter.h.",
+      "revId": "ed8340731c2e0d67c3949aa47f7cde89ca3f2a31",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
