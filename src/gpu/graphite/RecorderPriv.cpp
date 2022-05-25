@@ -44,6 +44,10 @@ UploadBufferManager* RecorderPriv::uploadBufferManager() const {
     return fRecorder->fUploadBufferManager.get();
 }
 
+TokenTracker* RecorderPriv::tokenTracker() {
+    return fRecorder->fTokenTracker.get();
+}
+
 void RecorderPriv::add(sk_sp<Task> task) {
     ASSERT_SINGLE_OWNER
     fRecorder->fGraph->add(std::move(task));
