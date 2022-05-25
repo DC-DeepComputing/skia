@@ -9,6 +9,7 @@
 
 #include "include/gpu/graphite/Recording.h"
 #include "src/core/SkPipelineData.h"
+#include "src/gpu/AtlasTypes.h"
 #include "src/gpu/graphite/Caps.h"
 #include "src/gpu/graphite/CommandBuffer.h"
 #include "src/gpu/graphite/ContextPriv.h"
@@ -29,7 +30,8 @@ Recorder::Recorder(sk_sp<Gpu> gpu, sk_sp<GlobalCache> globalCache)
         : fGpu(std::move(gpu))
         , fGraph(new TaskGraph)
         , fUniformDataCache(new UniformDataCache)
-        , fTextureDataCache(new TextureDataCache) {
+        , fTextureDataCache(new TextureDataCache)
+        , fTokenTracker(new TokenTracker) {
 
     fResourceProvider = fGpu->makeResourceProvider(std::move(globalCache), this->singleOwner());
     fDrawBufferManager.reset(new DrawBufferManager(fResourceProvider.get(),
