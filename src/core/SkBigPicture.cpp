@@ -69,7 +69,7 @@ int SkBigPicture::approximateOpCount(bool nested) const {
     if (nested) {
         NestedApproxOpCounter visitor;
         for (int i = 0; i < fRecord->count(); i++) {
-            fRecord->visit(i, visitor);
+            fRecord->visit2(i, visitor);
         }
         return visitor.fCount;
     } else {
@@ -89,4 +89,3 @@ int SkBigPicture::drawableCount() const {
 SkPicture const* const* SkBigPicture::drawablePicts() const {
     return fDrawablePicts ? fDrawablePicts->begin() : nullptr;
 }
-
