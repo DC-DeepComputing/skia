@@ -5,6 +5,9 @@
 
 #if defined(SK_PDF_USE_HARFBUZZ_SUBSET)
 
+#include "include/core/SkData.h"
+#include "include/core/SkStream.h"
+#include "include/core/SkTypeface.h"
 #include "include/private/SkTemplates.h"
 #include "include/private/SkTo.h"
 #include "src/utils/SkCallableTraits.h"
@@ -19,16 +22,37 @@ using HBFace = resource<hb_face_t, &hb_face_destroy>;
 using HBSubsetInput = resource<hb_subset_input_t, &hb_subset_input_destroy>;
 using HBSet = resource<hb_set_t, &hb_set_destroy>;
 
-static HBBlob to_blob(sk_sp<SkData> data) {
-    using blob_size_t = SkCallableTraits<decltype(hb_blob_create)>::argument<1>::type;
-    if (!SkTFitsIn<blob_size_t>(data->size())) {
+hb_blob_t* skhb_get_table(hb_face_t* face, hb_tag_t tag, void* user_data) {
+    SkTypeface& typeface = *reinterpret_cast<SkTypeface*>(user_data);
+
+    auto data = typeface.copyTableData(tag);
+    if (!data) {
         return nullptr;
     }
-    const char* blobData = static_cast<const char*>(data->data());
-    blob_size_t blobSize = SkTo<blob_size_t>(data->size());
-    return HBBlob(hb_blob_create(blobData, blobSize,
-                                 HB_MEMORY_MODE_READONLY,
-                                 data.release(), [](void* p){ ((SkData*)p)->unref(); }));
+    SkData* rawData = data.release();
+    return hb_blob_create(reinterpret_cast<char*>(rawData->writable_data()), rawData->size(),
+                          HB_MEMORY_MODE_READONLY, rawData, [](void* ctx) {
+                              SkSafeUnref(((SkData*)ctx));
+                          });
+}
+
+HBBlob stream_to_blob(std::unique_ptr<SkStreamAsset> asset) {
+    size_t size = asset->getLength();
+    HBBlob blob;
+    if (const void* base = asset->getMemoryBase()) {
+        blob.reset(hb_blob_create((char*)base, SkToUInt(size),
+                                  HB_MEMORY_MODE_READONLY, asset.release(),
+                                  [](void* p) { delete (SkStreamAsset*)p; }));
+    } else {
+        // SkDebugf("Extra SkStreamAsset copy\n");
+        void* ptr = size ? sk_malloc_throw(size) : nullptr;
+        asset->read(ptr, size);
+        blob.reset(hb_blob_create((char*)ptr, SkToUInt(size),
+                                  HB_MEMORY_MODE_READONLY, ptr, sk_free));
+    }
+    SkASSERT(blob);
+    hb_blob_make_immutable(blob.get());
+    return blob;
 }
 
 static sk_sp<SkData> to_data(HBBlob blob) {
@@ -76,13 +100,32 @@ struct SkPDFHarfBuzzSubset<T, void_t<
     }
 };
 
-static sk_sp<SkData> subset_harfbuzz(sk_sp<SkData> fontData,
-                                     const SkPDFGlyphUse& glyphUsage,
-                                     int ttcIndex) {
-    if (!fontData) {
-        return nullptr;
+static sk_sp<SkData> subset_harfbuzz(const SkTypeface& typeface,
+                                     const SkPDFGlyphUse& glyphUsage) {
+    int index = 0;
+    std::unique_ptr<SkStreamAsset> typefaceAsset = typeface.openExistingStream(&index);
+    HBFace face;
+    if (typefaceAsset && typefaceAsset->getMemoryBase()) {
+        HBBlob blob(stream_to_blob(std::move(typefaceAsset)));
+        // hb_face_create always succeeds. Check that the format is minimally recognized first.
+        // hb_face_create_for_tables may still create a working hb_face.
+        // See https://github.com/harfbuzz/harfbuzz/issues/248 .
+        unsigned int num_hb_faces = hb_face_count(blob.get());
+        if (0 < num_hb_faces && (unsigned)index < num_hb_faces) {
+            face.reset(hb_face_create(blob.get(), (unsigned)index));
+            // Check the number of glyphs as a basic sanitization step.
+            if (face && hb_face_get_glyph_count(face.get()) == 0) {
+                face.reset();
+            }
+        }
     }
-    HBFace face(hb_face_create(to_blob(std::move(fontData)).get(), ttcIndex));
+    if (!face) {
+        face.reset(hb_face_create_for_tables(
+            skhb_get_table,
+            const_cast<SkTypeface*>(SkRef(&typeface)),
+            [](void* user_data){ SkSafeUnref(reinterpret_cast<SkTypeface*>(user_data)); }));
+        hb_face_set_index(face.get(), (unsigned)index);
+    }
     SkASSERT(face);
 
     HBSubsetInput input(hb_subset_input_create_or_fail());
@@ -107,18 +150,36 @@ static sk_sp<SkData> subset_harfbuzz(sk_sp<SkData> fontData,
 
 #if defined(SK_PDF_USE_SFNTLY)
 
+#include "include/core/SkData.h"
 #include "sample/chromium/font_subsetter.h"
 #include <vector>
 
-static sk_sp<SkData> subset_sfntly(sk_sp<SkData> fontData,
+// if possible, make no copy.
+static sk_sp<SkData> stream_to_data(std::unique_ptr<SkStreamAsset> stream) {
+    SkASSERT(stream);
+    (void)stream->rewind();
+    SkASSERT(stream->hasLength());
+    size_t size = stream->getLength();
+    if (const void* base = stream->getMemoryBase()) {
+        SkData::ReleaseProc proc = [](const void*, void* ctx) { delete (SkStreamAsset*)ctx; };
+        return SkData::MakeWithProc(base, size, proc, stream.release());
+    }
+    return SkData::MakeFromStream(stream.get(), size);
+}
+
+static sk_sp<SkData> subset_sfntly(const SkTypeface& typeface,
                                    const SkPDFGlyphUse& glyphUsage,
-                                   const char* fontName,
-                                   int ttcIndex) {
+                                   const char* fontName) {
 #if defined(SK_USING_THIRD_PARTY_ICU)
     if (!SkLoadICU()) {
         return nullptr;
     }
 #endif
+
+    int ttcIndex;
+    std::unique_ptr<SkStreamAsset> fontAsset = typeface.openStream(&ttcIndex);
+    sk_sp<SkData> fontData = stream_to_data(std::move(fontAsset));
+
     // Generate glyph id array in format needed by sfntly.
     // TODO(halcanary): sfntly should take a more compact format.
     std::vector<unsigned> subset;
@@ -158,44 +219,43 @@ static sk_sp<SkData> subset_sfntly(sk_sp<SkData> fontData,
 
 #if defined(SK_PDF_USE_SFNTLY) && defined(SK_PDF_USE_HARFBUZZ_SUBSET)
 
-sk_sp<SkData> SkPDFSubsetFont(sk_sp<SkData> fontData,
+sk_sp<SkData> SkPDFSubsetFont(const SkTypeface& typeface,
                               const SkPDFGlyphUse& glyphUsage,
                               SkPDF::Metadata::Subsetter subsetter,
-                              const char* fontName,
-                              int ttcIndex) {
+                              const char* fontName) {
     switch (subsetter) {
         case SkPDF::Metadata::kHarfbuzz_Subsetter:
-            return subset_harfbuzz(std::move(fontData), glyphUsage, ttcIndex);
+            return subset_harfbuzz(typeface, glyphUsage);
         case SkPDF::Metadata::kSfntly_Subsetter:
-            return subset_sfntly(std::move(fontData), glyphUsage, fontName, ttcIndex);
+            return subset_sfntly(typeface, glyphUsage, fontName);
     }
     return nullptr;
 }
 
 #elif defined(SK_PDF_USE_SFNTLY)
 
-sk_sp<SkData> SkPDFSubsetFont(sk_sp<SkData> fontData,
+sk_sp<SkData> SkPDFSubsetFont(const SkTypeface& typeface,
                               const SkPDFGlyphUse& glyphUsage,
                               SkPDF::Metadata::Subsetter,
-                              const char* fontName,
-                              int ttcIndex) {
-    return subset_sfntly(std::move(fontData), glyphUsage, fontName, ttcIndex);
+                              const char* fontName) {
+    return subset_sfntly(typeface, glyphUsage, fontName);
 }
 
 #elif defined(SK_PDF_USE_HARFBUZZ_SUBSET)
 
-sk_sp<SkData> SkPDFSubsetFont(sk_sp<SkData> fontData,
+sk_sp<SkData> SkPDFSubsetFont(const SkTypeface& typeface,
                               const SkPDFGlyphUse& glyphUsage,
                               SkPDF::Metadata::Subsetter,
-                              const char*,
-                              int ttcIndex) {
-    return subset_harfbuzz(std::move(fontData), glyphUsage, ttcIndex);
+                              const char*) {
+    return subset_harfbuzz(typeface, glyphUsage);
 }
 
 #else
 
-sk_sp<SkData> SkPDFSubsetFont(sk_sp<SkData>, const SkPDFGlyphUse&, SkPDF::Metadata::Subsetter,
-                              const char*, int) {
+sk_sp<SkData> SkPDFSubsetFont(const SkTypeface&,
+                              const SkPDFGlyphUse&,
+                              SkPDF::Metadata::Subsetter,
+                              const char*) {
     return nullptr;
 }
 #endif  // defined(SK_PDF_USE_SFNTLY)
