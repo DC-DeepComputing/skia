@@ -54,6 +54,7 @@ extra_ldflags = [  \n\
 ] ' > /tmp/skia/skia/out/Static/args.gn
 
 # Build Skia.
+RUN rm -f /tmp/skia/skia/third_party/externals/perfetto/ui/src/gen
 RUN cd /tmp/skia/skia \
   && ./bin/gn gen out/Static \
   && git rev-parse HEAD > VERSION \
