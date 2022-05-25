@@ -69,6 +69,24 @@
       "parentUuid": "c615efe8_8dc3c113",
       "revId": "ec7bdefb47bc65672efa0f8b81e7784dd4dd54a4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e5f5d61f_1fe6e56c",
+        "filename": "site/docs/dev/tools/tracing.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-05-25T16:21:14Z",
+      "side": 1,
+      "message": "Adding the option to specify the output location would be nice. But additionally I think the default should just be \u0027.\u0027 i.e. the current working directory. That\u0027s how most of the other skia tools that output a file work",
+      "parentUuid": "06e02f73_a7772e47",
+      "revId": "ec7bdefb47bc65672efa0f8b81e7784dd4dd54a4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
