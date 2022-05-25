@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e0de80b4_8b4ae249",
+        "filename": "src/text/gpu/TextBlob.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 2582,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-05-25T16:42:00Z",
+      "side": 1,
+      "message": "Should this be renamed \u0027fSubRunList\u0027 ?",
+      "range": {
+        "startLine": 2582,
+        "startChar": 50,
+        "endLine": 2582,
+        "endChar": 58
+      },
+      "revId": "ba25ffd72861361f8461b04d254b7a56e8f412b2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
