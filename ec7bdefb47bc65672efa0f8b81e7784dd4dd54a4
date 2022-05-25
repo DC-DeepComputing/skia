@@ -33,6 +33,24 @@
       "message": "Drive by comment: Is the output file controllable via flags to nanobench?",
       "revId": "ec7bdefb47bc65672efa0f8b81e7784dd4dd54a4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c615efe8_8dc3c113",
+        "filename": "site/docs/dev/tools/tracing.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-05-25T15:55:40Z",
+      "side": 1,
+      "message": "Not at the moment, but it would be easy to add that functionality. Right now the base file name is either set to simply trace or the name of the nanobench benchmark. Do you think the ability to customize it would be useful to people?",
+      "parentUuid": "df5427e9_4788e6da",
+      "revId": "ec7bdefb47bc65672efa0f8b81e7784dd4dd54a4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
