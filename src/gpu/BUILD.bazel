@@ -1,0 +1,70 @@
+load("//bazel:macros.bzl", "cc_library", "exports_files_legacy")
+
+licenses(["notice"])
+
+exports_files_legacy()
+
+filegroup(
+    name = "core_srcs_nogazelle",
+    srcs = [
+        "AtlasTypes.cpp",
+        "AtlasTypes.h",
+        "Blend.cpp",
+        "Blend.h",
+        "BufferWriter.h",
+        "GrAHardwareBufferUtils.h",
+        "GrRectanizer.h",
+        "KeyBuilder.h",
+        "Rectanizer.h",
+        "RectanizerPow2.cpp",
+        "RectanizerPow2.h",
+        "RectanizerSkyline.cpp",
+        "RectanizerSkyline.h",
+        "RefCntedCallback.h",
+        "ResourceKey.cpp",
+        "ResourceKey.h",
+        "ShaderErrorHandler.cpp",
+        "Swizzle.cpp",
+        "Swizzle.h",
+    ],
+)
+
+filegroup(
+    name = "srcs_nogazelle",
+    srcs = [
+        ":core_srcs_nogazelle",
+        "//src/gpu/ganesh:srcs_nogazelle",
+        "//src/gpu/tessellate:srcs_nogazelle",
+    ],
+    visibility = ["//src:__pkg__"],
+)
+
+cc_library(
+    name = "core_srcs",
+    deps = [
+        ":AtlasTypes_src",
+        ":Blend_src",
+        ":RectanizerPow2_src",
+        ":RectanizerSkyline_src",
+        ":ResourceKey_src",
+        ":ShaderErrorHandler_src",
+        ":Swizzle_src",
+        "//src/gpu/tessellate:FixedCountBufferUtils_src",
+        "//src/gpu/tessellate:Tessellation_src",
+        "//src/text/gpu:DistanceFieldAdjustTable_src",
+        "//src/text/gpu:GlyphVector_src",
+        "//src/text/gpu:SDFMaskFilter_src",
+        "//src/text/gpu:SDFTControl_src",
+        "//src/text/gpu:Slug_src",
+        "//src/text/gpu:StrikeCache_src",
+        "//src/text/gpu:SubRunAllocator_src",
+        "//src/text/gpu:TextBlobRedrawCoordinator_src",
+        "//src/text/gpu:TextBlob_src",
+    ],
+)
+
+cc_library(
+    name = "srcs",
+    visibility = ["//:__subpackages__"],
+    deps = [":core_srcs"],
+)
