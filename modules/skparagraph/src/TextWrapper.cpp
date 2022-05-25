@@ -179,6 +179,7 @@ void TextWrapper::moveForward(bool hasEllipsis) {
         }
     }
     if (!fClusters.empty()) {
+        fMinIntrinsicWidth = std::max(fMinIntrinsicWidth, fClusters.width());
         fEndLine.extend(fClusters);
         if (!fTooLongCluster) {
             return;
