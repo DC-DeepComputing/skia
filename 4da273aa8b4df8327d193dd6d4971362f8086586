@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7f76f023_52490f44",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-05-25T22:32:13Z",
+      "side": 1,
+      "message": "This needs a lot more explanation and also isn\u0027t quite accurate.\n\nThe clusters are monotonic. What seems to be the issue here is when glyphs placements are not monotonically increasing. So a more appropriate title would be \"Fix MinIntrinsicWidth calculation for non-monotonic glyph placement\" or something like that.\n\nAlso an explanation for how this is being fixed in this change should be added, because it isn\u0027t easy to follow the side effects of this change.",
+      "revId": "4da273aa8b4df8327d193dd6d4971362f8086586",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9ff382bf_4884106b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-05-25T22:32:13Z",
+      "side": 1,
+      "message": "The actual issue here is that Run::newRunBuffer is providing nullptr for offsets so is getting the advances and the offsets mixed. This should be trivial if these were handled separately, and it would also possibly fix issues with \"spacing\". I don\u0027t believe HarfBuzz has even provided negative advance widths (though I would be interested to know if it is) but probably providing a few zero advance widths with large negative offsets to place the glyphs where they need to go. As things are this code only has access to the glyph placements and not the actual advance point, so it isn\u0027t really possible to figure out where the advance point is.\n\nI\u0027ll have to take another look later to reason about what this proposed change actually does.",
+      "revId": "4da273aa8b4df8327d193dd6d4971362f8086586",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
