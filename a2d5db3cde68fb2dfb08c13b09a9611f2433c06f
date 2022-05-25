@@ -22,6 +22,30 @@
       },
       "revId": "a2d5db3cde68fb2dfb08c13b09a9611f2433c06f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ee040bb5_829fc017",
+        "filename": "src/core/SkGlyph.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 447,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-05-25T17:57:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9485de99_7911b031",
+      "range": {
+        "startLine": 447,
+        "startChar": 23,
+        "endLine": 447,
+        "endChar": 24
+      },
+      "revId": "a2d5db3cde68fb2dfb08c13b09a9611f2433c06f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
