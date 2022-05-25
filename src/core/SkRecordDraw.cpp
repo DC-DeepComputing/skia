@@ -42,7 +42,7 @@ void SkRecordDraw(const SkRecord& record,
             // This visit call uses the SkRecords::Draw::operator() to call
             // methods on the |canvas|, wrapped by methods defined with the
             // DRAW() macro.
-            record.visit(ops[i], draw);
+            record.visit2(ops[i], draw);
         }
     } else {
         // Draw all ops.
@@ -54,7 +54,7 @@ void SkRecordDraw(const SkRecord& record,
             // This visit call uses the SkRecords::Draw::operator() to call
             // methods on the |canvas|, wrapped by methods defined with the
             // DRAW() macro.
-            record.visit(i, draw);
+            record.visit2(i, draw);
         }
     }
 }
@@ -68,7 +68,7 @@ void SkRecordPartialDraw(const SkRecord& record, SkCanvas* canvas,
     stop = std::min(stop, record.count());
     SkRecords::Draw draw(canvas, drawablePicts, nullptr, drawableCount, &initialCTM);
     for (int i = start; i < stop; i++) {
-        record.visit(i, draw);
+        record.visit2(i, draw);
     }
 }
 
@@ -573,7 +573,7 @@ void SkRecordFillBounds(const SkRect& cullRect, const SkRecord& record,
         SkRecords::FillBounds visitor(cullRect, record, bounds, meta);
         for (int i = 0; i < record.count(); i++) {
             visitor.setCurrentOp(i);
-            record.visit(i, visitor);
+            record.visit2(i, visitor);
         }
     }
 }
