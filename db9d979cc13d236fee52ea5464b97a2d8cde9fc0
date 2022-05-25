@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cb67ddaf_89d3fe50",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-05-25T18:40:36Z",
+      "side": 1,
+      "message": "I was just thinking that BufferTextureCopyData didn\u0027t belong in there.",
+      "revId": "db9d979cc13d236fee52ea5464b97a2d8cde9fc0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
