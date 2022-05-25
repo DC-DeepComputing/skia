@@ -50,9 +50,10 @@ void TextWrapper::lookAhead(SkScalar maxWidth, Cluster* endOfClusters) {
     for (auto cluster = fEndLine.endCluster(); cluster < endOfClusters; ++cluster) {
         if (cluster->isHardBreak()) {
         } else if (
-                // TODO: Trying to deal with flutter rounding problem. Must be removed...
-                SkScalar width = fWords.width() + fClusters.width() + cluster->width();
-                breaker.breakLine(width)) {
+            // TODO: Trying to deal with flutter rounding problem. Must be removed...
+            SkScalar width = fWords.width() + fClusters.width() + cluster->width();
+            breaker.breakLine(width)) {
+
             if (cluster->isWhitespaceBreak()) {
                 // It's the end of the word
                 fClusters.extend(cluster);
@@ -76,6 +77,27 @@ void TextWrapper::lookAhead(SkScalar maxWidth, Cluster* endOfClusters) {
                     // Placeholder does not fit the line; it will be considered again on the next line
                 }
                 break;
+            }
+
+            // Even if we are over the limit the next clusters could move us back
+            // Let's check if there are any negative width clusters
+            TextStretch negatives;
+            Cluster* negative = cluster;
+            while (++negative < endOfClusters && negative->width() < 0) {
+                negatives.extend(negative);
+                width += negative->width();
+            }
+            if (!breaker.breakLine(width)) {
+                // We can add more clusters to the line without break it
+                fClusters.extend(cluster);
+                fClusters.extend(negatives);
+                cluster = negative;
+                if (cluster == endOfClusters) {
+                    fMinIntrinsicWidth = std::max(fMinIntrinsicWidth, width);
+                    return;
+                }
+            } else {
+                // Even with all the negative width clusters we have to break the line
             }
 
             // Walk further to see if there is a too long word, cluster or glyph
@@ -179,6 +201,7 @@ void TextWrapper::moveForward(bool hasEllipsis) {
         }
     }
     if (!fClusters.empty()) {
+        fMinIntrinsicWidth = std::max(fMinIntrinsicWidth, fClusters.width());
         fEndLine.extend(fClusters);
         if (!fTooLongCluster) {
             return;
