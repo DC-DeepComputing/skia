@@ -2231,7 +2231,13 @@ void precompile(skgpu::graphite::Context* context) {
         }
 #endif
 
+        int numCombos = builder.numCombinations();
+
         SkASSERT(builder.numCombinations() == 428);
+
+        for (int i = 0; i < numCombos; ++i) {
+            builder.updateTo(i);
+        }
 
         // TODO: re-enable - right now blocked on BlendShader children
         // context->preCompile(builder);
