@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fa192907_853c571a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-05-26T13:46:10Z",
+      "side": 1,
+      "message": "Ben, I think you are right and using offsets with positions could give me the information I need.\nI will be looking into that, too, so until then I am not going to submit this CL (or ever).",
+      "revId": "90e92d23a4da153b32220a1e8f1fbd066220dfc5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
