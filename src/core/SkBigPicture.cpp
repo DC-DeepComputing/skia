@@ -89,4 +89,3 @@ int SkBigPicture::drawableCount() const {
 SkPicture const* const* SkBigPicture::drawablePicts() const {
     return fDrawablePicts ? fDrawablePicts->begin() : nullptr;
 }
-
