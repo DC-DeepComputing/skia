@@ -987,6 +987,9 @@ generated_cc_atom(
     visibility = ["//:__subpackages__"],
     deps = [
         ":SkBlendMode_hdr",
+        ":SkSpan_hdr",
         ":SkTileMode_hdr",
+        "//include/private:SkTArray_hdr",
+        "//include/private:SkTHash_hdr",
     ],
 )
