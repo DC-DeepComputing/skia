@@ -5793,7 +5793,6 @@ generated_cc_atom(
         ":SkKeyHelpers_hdr",
         ":SkShaderCodeDictionary_hdr",
         "//include/core:SkCombinationBuilder_hdr",
-        "//include/private:SkTHash_hdr",
         "//src/gpu/graphite:ContextPriv_hdr",
     ],
 )
