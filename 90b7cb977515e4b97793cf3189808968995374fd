@@ -20,6 +20,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "657842b0_bf404406",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-05-26T18:06:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4c6bae18_4a91fdd0",
+      "revId": "90b7cb977515e4b97793cf3189808968995374fd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "93aedb6c_330c96d2",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 2
@@ -31,6 +49,24 @@
       "writtenOn": "2022-05-26T16:19:20Z",
       "side": 1,
       "message": "This seems fine as far as it goes.\n\nThis so far avoids actually going through and separating the `point` into `position` and `offset`, opting instead to keep `point` `position + offset` to avoid code churn but maintaining `offset` so that the `position` can still be recovered. I assume the next change will actually use this information when calculating where the actual advance position is when calculating the total advance widths.",
+      "revId": "90b7cb977515e4b97793cf3189808968995374fd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "26615165_92161d3b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-05-26T18:06:00Z",
+      "side": 1,
+      "message": "Yes, I plan to do that but in a separate CL.",
+      "parentUuid": "93aedb6c_330c96d2",
       "revId": "90b7cb977515e4b97793cf3189808968995374fd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -52,6 +88,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "65ec86f9_8acb787f",
+        "filename": "modules/skparagraph/samples/SampleParagraph.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 3685,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-05-26T18:06:00Z",
+      "side": 1,
+      "message": "Actually - the issue is solved. For non-monotonically placed glyphs the width \u003d\u003d 0 so MinIntrinsicWidth is calculated correctly.",
+      "parentUuid": "29544511_be343f7c",
+      "revId": "90b7cb977515e4b97793cf3189808968995374fd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5730160b_63fd3311",
@@ -65,6 +119,24 @@
       "writtenOn": "2022-05-26T16:19:20Z",
       "side": 1,
       "message": "So is the idea to eventually the subtract off the offsets later to figure out where the actual position is?",
+      "revId": "90b7cb977515e4b97793cf3189808968995374fd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3d98f22b_9ee85248",
+        "filename": "modules/skparagraph/src/Run.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-05-26T18:06:00Z",
+      "side": 1,
+      "message": "When I need the actual positions - yes, I will do it later. Drawing is done correctly by making point \u003d position + offset.\nIt\u0027s needed for querying and styling. Right now it will be not done accurate, yes (but it was not done accurate before anyway). Plus, we only allow querying/styling by graphemes and I think these non-monotonic glyphs belong to a bigger grapheme so it\u0027s nearly impossible to see the difference (if at all).",
+      "parentUuid": "5730160b_63fd3311",
       "revId": "90b7cb977515e4b97793cf3189808968995374fd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
