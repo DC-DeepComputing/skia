@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ead40428_f4a933ee",
+        "filename": "include/utils/SkEventTracer.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 9346
+      },
+      "writtenOn": "2022-05-26T17:49:10Z",
+      "side": 1,
+      "message": "Document the new argument. Skia seems to follow this style to document arguments: https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/include/core/SkCanvas.h;l\u003d149-153;drc\u003d791f4bcf3e388985d4bc90098a0df1242ba447ac",
+      "revId": "f5768e38b183643009806061afef38288eb25d14",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "250cc802_0a8a9d16",
+        "filename": "include/utils/SkEventTracer.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 9346
+      },
+      "writtenOn": "2022-05-26T17:49:10Z",
+      "side": 1,
+      "message": "The mechanism to delete the tracer (atexit) is an implementation detail. I suggest renaming to `leak_tracer` and documenting that setting this to `true` will result in never deleting the `SkEventTracer`, which can improve performance.",
+      "revId": "f5768e38b183643009806061afef38288eb25d14",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
