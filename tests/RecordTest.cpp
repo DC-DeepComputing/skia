@@ -53,7 +53,7 @@ struct Stretch {
     }
 };
 
-#define APPEND(record, type, ...) new (record.append<type>()) type{__VA_ARGS__}
+#define APPEND(record, type, ...) new (record.append1<type>()) type{__VA_ARGS__}
 
 // Basic tests for the low-level SkRecord code.
 DEF_TEST(Record, r) {
