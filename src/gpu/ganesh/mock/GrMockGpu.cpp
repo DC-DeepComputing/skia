@@ -220,7 +220,7 @@ sk_sp<GrRenderTarget> GrMockGpu::onWrapBackendRenderTarget(const GrBackendRender
 }
 
 sk_sp<GrGpuBuffer> GrMockGpu::onCreateBuffer(size_t sizeInBytes, GrGpuBufferType type,
-                                             GrAccessPattern accessPattern, const void*) {
+                                             GrAccessPattern accessPattern) {
     return sk_sp<GrGpuBuffer>(
             new GrMockBuffer(this, sizeInBytes, type, accessPattern, /*label=*/{}));
 }
