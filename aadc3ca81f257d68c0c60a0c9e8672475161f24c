@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "acc84fbe_7ae1b8c7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-05-26T18:47:43Z",
+      "side": 1,
+      "message": "This is logically the first half of https://skia-review.googlesource.com/c/skia/+/543485 which also needs to be split (calling hb_face_count and then table based subsetting). The issue with HarfBuzz https://github.com/harfbuzz/harfbuzz/issues/3609 complicates all of this as we can\u0027t rely on harfbuzz supporting table based subsetting itself.\n\nAll that complication aside, the PDF code wants a bit to know if the data stream is vanilla uncompressed OpenType data or if it can only get OpenType data through the table accessors one way or the other. For now, just give it the information it needs and let it be inefficient with it, but not incorrect.",
+      "revId": "aadc3ca81f257d68c0c60a0c9e8672475161f24c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
