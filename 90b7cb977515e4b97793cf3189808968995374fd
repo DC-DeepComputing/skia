@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4c6bae18_4a91fdd0",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-05-26T16:19:20Z",
+      "side": 1,
+      "message": "You\u0027ll want at least a blank line here so the title of the commit is separated from the first paragraph.",
+      "revId": "90b7cb977515e4b97793cf3189808968995374fd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "93aedb6c_330c96d2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-05-26T16:19:20Z",
+      "side": 1,
+      "message": "This seems fine as far as it goes.\n\nThis so far avoids actually going through and separating the `point` into `position` and `offset`, opting instead to keep `point` `position + offset` to avoid code churn but maintaining `offset` so that the `position` can still be recovered. I assume the next change will actually use this information when calculating where the actual advance position is when calculating the total advance widths.",
+      "revId": "90b7cb977515e4b97793cf3189808968995374fd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "29544511_be343f7c",
+        "filename": "modules/skparagraph/samples/SampleParagraph.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 3685,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-05-26T16:19:20Z",
+      "side": 1,
+      "message": "I suppose it\u0027s fine to add this here, but the behavior with this change is still the old behavior since the actual positions haven\u0027t been applied, right?",
+      "revId": "90b7cb977515e4b97793cf3189808968995374fd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5730160b_63fd3311",
+        "filename": "modules/skparagraph/src/Run.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-05-26T16:19:20Z",
+      "side": 1,
+      "message": "So is the idea to eventually the subtract off the offsets later to figure out where the actual position is?",
+      "revId": "90b7cb977515e4b97793cf3189808968995374fd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
