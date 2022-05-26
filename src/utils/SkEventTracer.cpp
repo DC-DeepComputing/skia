@@ -43,13 +43,15 @@ class SkDefaultEventTracer : public SkEventTracer {
 // We prefer gUserTracer if it's been set, otherwise we fall back on a default tracer;
 static std::atomic<SkEventTracer*> gUserTracer{nullptr};
 
-bool SkEventTracer::SetInstance(SkEventTracer* tracer) {
+bool SkEventTracer::SetInstance(SkEventTracer* tracer, bool install_atexit) {
     SkEventTracer* expected = nullptr;
     if (!gUserTracer.compare_exchange_strong(expected, tracer)) {
         delete tracer;
         return false;
     }
-    atexit([]() { delete gUserTracer.load(); });
+    if (install_atexit) {
+        atexit([]() { delete gUserTracer.load(); });
+    }
     return true;
 }
 

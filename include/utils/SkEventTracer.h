@@ -28,7 +28,7 @@ public:
      * installed and true is returned. Otherwise, false is returned. In either case ownership of the
      * tracer is transferred and it will be deleted when no longer needed.
      */
-    static bool SetInstance(SkEventTracer*);
+    static bool SetInstance(SkEventTracer*, bool install_atexit = true);
 
     /**
      * Gets the event tracer. If this is the first call to SetInstance or GetIntance then a default
