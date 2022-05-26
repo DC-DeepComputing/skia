@@ -159,8 +159,9 @@ private:
     std::unique_ptr<SkArenaAllocWithReset> fArena;
     SkTArray<SkOption*> fShaders;
 
+    uint32_t fBlendModes1;
     // TODO: store the SkBlender-based blenders in the arena
-    SkTHashSet<uint32_t> fBlendModes;
+    SkTHashSet<SkBlenderID> fBlenders;
 };
 
 #endif // SkCombinationBuilder_DEFINED
