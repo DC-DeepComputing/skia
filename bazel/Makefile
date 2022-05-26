@@ -13,6 +13,8 @@ known_good_builds:
 	bazelisk build //:skia_core --config=clang_linux
 	bazelisk build //experimental/bazel_test/... --config=clang_linux
 	bazelisk run //experimental/bazel_test:bazel_test_exe --config=clang_linux
+	bazelisk build //example:hello_world_gl --config=clang_linux
+	bazelisk build //example:hello_world_vulkan --config=clang_linux
 	#bazelisk build //src/sksl/lex:sksllex --config=clang_linux
 	#bazelisk build //tools/skdiff --config=clang_linux
 	#bazelisk build //tools/skslc --config=clang_linux

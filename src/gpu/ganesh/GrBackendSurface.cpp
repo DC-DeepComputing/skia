@@ -9,7 +9,6 @@
 
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "src/gpu/ganesh/GrBackendSurfaceMutableStateImpl.h"
-#include "src/gpu/ganesh/gl/GrGLUtil.h"
 
 #ifdef SK_DAWN
 #include "include/gpu/dawn/GrDawnTypes.h"
