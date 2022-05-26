@@ -1412,6 +1412,81 @@ std::tuple<const GrClip*, GrOp::Owner> DirectMaskSubRun::makeAtlasTextOp(
     return {clip, std::move(op)};
 }
 #endif
+#if SK_GRAPHITE_ENABLED
+void DirectMaskSubRun::draw(SkCanvas*,
+                            const SkMatrixProvider& viewMatrix,
+                            SkPoint drawOrigin,
+                            const SkPaint& paint,
+                            sk_sp<SkRefCnt> subRunStorage,
+                            Device* device) const {
+    device->drawSubRun(this, viewMatrix, drawOrigin, paint, std::move(subRunStorage));
+}
+#endif
+
+std::tuple<const GrClip*, GrOp::Owner> DirectMaskSubRun::makeAtlasTextOp(
+        const GrClip* clip,
+        const SkMatrixProvider& viewMatrix,
+        SkPoint drawOrigin,
+        const SkPaint& paint,
+        sk_sp<SkRefCnt>&& subRunStorage,
+        skgpu::v1::SurfaceDrawContext* sdc) const {
+    SkASSERT(this->glyphCount() != 0);
+    const SkMatrix& drawMatrix = viewMatrix.localToDevice();
+    const SkMatrix& positionMatrix = position_matrix(drawMatrix, drawOrigin);
+
+    auto [integerTranslate, subRunDeviceBounds] = this->deviceRectAndCheckTransform(positionMatrix);
+    if (subRunDeviceBounds.isEmpty()) {
+        return {nullptr, nullptr};
+    }
+    // Rect for optimized bounds clipping when doing an integer translate.
+    SkIRect geometricClipRect = SkIRect::MakeEmpty();
+    if (integerTranslate) {
+        // We can clip geometrically using clipRect and ignore clip when an axis-aligned rectangular
+        // non-AA clip is used. If clipRect is empty, and clip is nullptr, then there is no clipping
+        // needed.
+        const SkRect deviceBounds = SkRect::MakeWH(sdc->width(), sdc->height());
+        auto [clipMethod, clipRect] = calculate_clip(clip, deviceBounds, subRunDeviceBounds);
+
+        switch (clipMethod) {
+            case kClippedOut:
+                // Returning nullptr as op means skip this op.
+                return {nullptr, nullptr};
+            case kUnclipped:
+            case kGeometryClipped:
+                // GPU clip is not needed.
+                clip = nullptr;
+                break;
+            case kGPUClipped:
+                // Use th GPU clip; clipRect is ignored.
+                break;
+        }
+        geometricClipRect = clipRect;
+
+        if (!geometricClipRect.isEmpty()) { SkASSERT(clip == nullptr); }
+    }
+
+    GrPaint grPaint;
+    const SkPMColor4f drawingColor =
+            calculate_colors(sdc, paint, viewMatrix, fMaskFormat, &grPaint);
+
+    auto geometry = AtlasTextOp::Geometry::Make(*this,
+                                                drawMatrix,
+                                                drawOrigin,
+                                                geometricClipRect,
+                                                std::move(subRunStorage),
+                                                drawingColor,
+                                                sdc->arenaAlloc());
+
+    GrRecordingContext* const rContext = sdc->recordingContext();
+    GrOp::Owner op = GrOp::Make<AtlasTextOp>(rContext,
+                                             op_mask_type(fMaskFormat),
+                                             !integerTranslate,
+                                             this->glyphCount(),
+                                             subRunDeviceBounds,
+                                             geometry,
+                                             std::move(grPaint));
+    return {clip, std::move(op)};
+}
 
 void DirectMaskSubRun::testingOnly_packedGlyphIDToGlyph(StrikeCache *cache) const {
     fGlyphs.packedGlyphIDToGlyph(cache);
@@ -2305,6 +2380,17 @@ void TextBlob::draw(SkCanvas* canvas,
                       skgpu::v1::SurfaceDrawContext* sdc) {
     for (const SubRun& subRun : fSubRunList) {
         subRun.draw(canvas, clip, viewMatrix, drawOrigin, paint, sk_ref_sp(this), sdc);
+    }
+}
+#endif
+#if SK_GRAPHITE_ENABLED
+void TextBlob::draw(SkCanvas* canvas,
+                    const SkMatrixProvider& viewMatrix,
+                    SkPoint drawOrigin,
+                    const SkPaint& paint,
+                    skgpu::graphite::Device* device) {
+    for (const SubRun& subRun : fSubRunList) {
+        subRun.draw(canvas, viewMatrix, drawOrigin, paint, sk_ref_sp(this), device);
     }
 }
 #endif

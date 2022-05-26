@@ -18,6 +18,10 @@
 
 class SkStrokeRec;
 
+namespace sktext::gpu {
+class TextBlobRedrawCoordinator;
+}
+
 namespace skgpu::graphite {
 
 class BoundsManager;
@@ -133,8 +137,8 @@ private:
     void drawVertices(const SkVertices*, sk_sp<SkBlender>, const SkPaint&, bool) override {}
     void drawMesh(const SkMesh&, sk_sp<SkBlender>, const SkPaint&) override {}
     void drawShadow(const SkPath&, const SkDrawShadowRec&) override {}
-    void onDrawGlyphRunList(
-            SkCanvas*, const SkGlyphRunList&, const SkPaint&, const SkPaint&) override {}
+    void onDrawGlyphRunList(SkCanvas*, const SkGlyphRunList&,
+                            const SkPaint&, const SkPaint&) override;
 
     void drawDevice(SkBaseDevice*, const SkSamplingOptions&, const SkPaint&) override {}
     void drawSpecial(SkSpecialImage*, const SkMatrix& localToDevice,
@@ -168,6 +172,13 @@ private:
                    const SkPaint&,
                    const SkStrokeRec&,
                    SkEnumBitMask<DrawFlags> = DrawFlags::kNone);
+    // Handles text primitive processing
+    void drawSubRun(const sktext::gpu::SubRun*,
+                    const SkMatrixProvider& viewMatrix,
+                    SkPoint drawOrigin,
+                    const SkPaint& paint,
+                    sk_sp<SkRefCnt> subRunStorage);
+
     // Lowest level draw recording where everything but Renderer has been decided.
     void recordDraw(const Transform& localToDevice,
                     const Shape& shape,
@@ -194,6 +205,8 @@ private:
 
     // The max depth value sent to the DrawContext, incremented so each draw has a unique value.
     PaintersDepth fCurrentDepth;
+
+    std::unique_ptr<sktext::gpu::TextBlobRedrawCoordinator> fTextBlobCache;
 
     bool fDrawsOverlap;
 
