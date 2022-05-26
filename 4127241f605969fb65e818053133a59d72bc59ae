@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "90609a44_420d30bc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2022-05-26T16:40:04Z",
+      "side": 1,
+      "message": "The Android failures seem unrelated.  I kicked another run -- assuming that turns green, LGTM!",
+      "revId": "4127241f605969fb65e818053133a59d72bc59ae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
