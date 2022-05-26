@@ -117,6 +117,16 @@ public:
                       sk_sp<SkRefCnt> subRunStorage,
                       skgpu::v1::SurfaceDrawContext*) const = 0;
 #endif
+#if SK_SUPPORT_GPU
+    // TODO: make this pure virtual once all are defined
+    // Produce GPU tasks for this subRun or just draw them.
+    virtual void draw(SkCanvas*,
+                      const SkMatrixProvider& viewMatrix,
+                      SkPoint drawOrigin,
+                      const SkPaint&,
+                      sk_sp<SkRefCnt> subRunStorage,
+                      skgpu::graphite::Device*) const {}
+#endif
 
     virtual const BlobSubRun* blobCast() const;
     void flatten(SkWriteBuffer& buffer) const;
@@ -269,6 +279,13 @@ public:
               SkPoint drawOrigin,
               const SkPaint& paint,
               skgpu::v1::SurfaceDrawContext* sdc);
+#endif
+#if SK_SUPPORT_GPU
+    void draw(SkCanvas*,
+              const SkMatrixProvider& viewMatrix,
+              SkPoint drawOrigin,
+              const SkPaint& paint,
+              skgpu::graphite::Device* device);
 #endif
     const AtlasSubRun* testingOnlyFirstSubRun() const;
 

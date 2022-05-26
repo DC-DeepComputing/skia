@@ -39,6 +39,7 @@
 #include "src/core/SkSpecialImage.h"
 #include "src/core/SkStroke.h"
 #include "src/shaders/SkImageShader.h"
+#include "src/text/gpu/TextBlobRedrawCoordinator.h"
 
 #include <unordered_map>
 #include <vector>
@@ -192,6 +193,8 @@ Device::Device(Recorder* recorder, sk_sp<DrawContext> dc)
         , fDisjointStencilSet(std::make_unique<IntersectionTreeSet>())
         , fCachedLocalToDevice(SkM44())
         , fCurrentDepth(DrawOrder::kClearDepth)
+        // TODO: does this belong here? Do we have the concept of a context ID?
+        , fTextBlobCache(std::make_unique<sktext::gpu::TextBlobRedrawCoordinator>(1))
         , fDrawsOverlap(false) {
     SkASSERT(SkToBool(fDC) && SkToBool(fRecorder));
     fRecorder->registerDevice(this);
@@ -514,6 +517,14 @@ void Device::drawImageRect(const SkImage* image, const SkRect* src, const SkRect
     paintWithShader.setPathEffect(nullptr);  // drawImageRect doesn't support path effects
 
     this->drawRect(tmpDst, paintWithShader);
+}
+
+void Device::onDrawGlyphRunList(SkCanvas* canvas,
+                                const SkGlyphRunList& glyphRunList,
+                                const SkPaint& initialPaint,
+                                const SkPaint& drawingPaint) {
+    fTextBlobCache->drawGlyphRunList(canvas, this->asMatrixProvider(), glyphRunList,
+                                     drawingPaint, this->strikeDeviceInfo(), this);
 }
 
 void Device::drawShape(const Shape& shape,

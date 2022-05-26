@@ -2308,6 +2308,17 @@ void TextBlob::draw(SkCanvas* canvas,
     }
 }
 #endif
+#if SK_GRAPHITE_ENABLED
+void TextBlob::draw(SkCanvas* canvas,
+                    const SkMatrixProvider& viewMatrix,
+                    SkPoint drawOrigin,
+                    const SkPaint& paint,
+                    skgpu::graphite::Device* device) {
+    for (const SubRun& subRun : fSubRunList) {
+        subRun.draw(canvas, viewMatrix, drawOrigin, paint, sk_ref_sp(this), device);
+    }
+}
+#endif
 
 const AtlasSubRun* TextBlob::testingOnlyFirstSubRun() const {
     if (fSubRunList.isEmpty()) {
