@@ -249,7 +249,7 @@ public:
                             const GrBackendFormat&) const override;
 
     GrProgramDesc makeDesc(GrRenderTarget*,
-                           const GrProgramInfo&,
+                           const GrProgramInfo*,
                            ProgramDescOverrideFlags) const override;
 
     GrInternalSurfaceFlags getExtraSurfaceFlagsForDeferredRT() const override;
