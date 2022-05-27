@@ -54,6 +54,7 @@ public:
         kConstructorCompoundCast_Command,
         kConstructorDiagonalMatrix_Command,
         kConstructorMatrixResize_Command,
+        kConstructorPointerCast_Command,
         kConstructorScalarCast_Command,
         kConstructorSplat_Command,
         kConstructorStruct_Command,

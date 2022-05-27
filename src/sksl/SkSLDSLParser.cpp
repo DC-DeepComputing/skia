@@ -940,6 +940,9 @@ std::optional<DSLType> DSLParser::type(DSLModifiers* modifiers) {
         return std::nullopt;
     }
     DSLType result(this->text(type), modifiers, this->position(type));
+    while (this->checkNext(Token::Kind::TK_STAR)) {
+        result = PointerTo(result);
+    }
     while (this->checkNext(Token::Kind::TK_LBRACKET)) {
         if (this->checkNext(Token::Kind::TK_RBRACKET)) {
             result = Array(result, SkSL::Type::kUnsizedArray, this->rangeFrom(type));
@@ -1800,7 +1803,9 @@ DSLExpression DSLParser::unaryExpression() {
         case Token::Kind::TK_LOGICALNOT:
         case Token::Kind::TK_BITWISENOT:
         case Token::Kind::TK_PLUSPLUS:
-        case Token::Kind::TK_MINUSMINUS: {
+        case Token::Kind::TK_MINUSMINUS:
+        case Token::Kind::TK_STAR:
+        case Token::Kind::TK_BITWISEAND: {
             this->nextToken();
             if (!depth.increase()) {
                 return {};
@@ -1817,6 +1822,8 @@ DSLExpression DSLParser::unaryExpression() {
                 case Token::Kind::TK_BITWISENOT: return expr.prefix(Operator::Kind::BITWISENOT, p);
                 case Token::Kind::TK_PLUSPLUS:   return expr.prefix(Operator::Kind::PLUSPLUS, p);
                 case Token::Kind::TK_MINUSMINUS: return expr.prefix(Operator::Kind::MINUSMINUS, p);
+                case Token::Kind::TK_STAR:       return expr.prefix(Operator::Kind::STAR, p);
+                case Token::Kind::TK_BITWISEAND: return expr.prefix(Operator::Kind::BITWISEAND, p);
                 default: SkUNREACHABLE;
             }
         }

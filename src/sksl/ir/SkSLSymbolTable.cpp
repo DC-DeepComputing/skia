@@ -123,4 +123,15 @@ const Type* SymbolTable::addArrayDimension(const Type* type, int arraySize) {
     return type;
 }
 
+const Type* SymbolTable::pointerTo(const Type* type) {
+    std::string name(type->name());
+    name += "*";
+    const Symbol* ptr = (*this)[name];
+    if (!ptr) {
+        ptr = this->takeOwnershipOfSymbol(Type::MakePointerType(*this->takeOwnershipOfString(name),
+                *type));
+    }
+    return &ptr->as<Type>();
+}
+
 }  // namespace SkSL

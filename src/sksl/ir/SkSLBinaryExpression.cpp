@@ -12,6 +12,7 @@
 #include "src/sksl/ir/SkSLBinaryExpression.h"
 #include "src/sksl/ir/SkSLIndexExpression.h"
 #include "src/sksl/ir/SkSLLiteral.h"
+#include "src/sksl/ir/SkSLPrefixExpression.h"
 #include "src/sksl/ir/SkSLSetting.h"
 #include "src/sksl/ir/SkSLSwizzle.h"
 #include "src/sksl/ir/SkSLTernaryExpression.h"
@@ -229,11 +230,19 @@ bool BinaryExpression::CheckRef(const Expression& expr) {
             const TernaryExpression& t = expr.as<TernaryExpression>();
             return CheckRef(*t.ifTrue()) && CheckRef(*t.ifFalse());
         }
+
         case Expression::Kind::kVariableReference: {
             const VariableReference& ref = expr.as<VariableReference>();
             return ref.refKind() == VariableRefKind::kWrite ||
                    ref.refKind() == VariableRefKind::kReadWrite;
         }
+
+        case Expression::Kind::kPrefix:
+            return expr.as<PrefixExpression>().getOperator().kind() == Operator::Kind::STAR;
+
+        case Expression::Kind::kPoison:
+            return true;
+
         default:
             return false;
     }

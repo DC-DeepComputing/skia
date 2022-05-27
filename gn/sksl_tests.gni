@@ -270,6 +270,7 @@ sksl_metal_tests = [
   "/sksl/compute/Desaturate.compute",
   "/sksl/compute/DesaturateReadWrite.compute",
   "/sksl/compute/MatrixMultiply.compute",
+  "/sksl/compute/Pointers.compute",
   "/sksl/compute/Raytrace.compute",
   "/sksl/errors/DuplicateLocation.compute",
   "/sksl/errors/ComputeUniform.compute",

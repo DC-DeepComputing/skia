@@ -107,6 +107,11 @@ public:
      */
     const Type* addArrayDimension(const Type* type, int arraySize);
 
+    /**
+     * Returns a pointer type pointing to `type`, creating it if needed.
+     */
+    const Type* pointerTo(const Type* type);
+
     // Call fn for every symbol in the table.  You may not mutate anything.
     template <typename Fn>
     void foreach(Fn&& fn) const {

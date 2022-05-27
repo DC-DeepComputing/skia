@@ -84,6 +84,7 @@ public:
         kLiteral,
         kMatrix,
         kOther,
+        kPointer,
         kSampler,
         kSeparateSampler,
         kScalar,
@@ -134,6 +135,9 @@ public:
     static std::unique_ptr<Type> MakeMatrixType(std::string_view name, const char* abbrev,
                                                 const Type& componentType, int columns,
                                                 int8_t rows);
+
+    /** Create a pointer type. */
+    static std::unique_ptr<Type> MakePointerType(std::string_view name, const Type& componentType);
 
     /** Create a sampler type. */
     static std::unique_ptr<Type> MakeSamplerType(const char* name, const Type& textureType);
@@ -451,6 +455,10 @@ public:
     }
 
     virtual bool isArray() const {
+        return false;
+    }
+
+    virtual bool isPointer() const {
         return false;
     }
 

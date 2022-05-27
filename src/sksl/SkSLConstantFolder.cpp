@@ -286,7 +286,7 @@ static std::unique_ptr<Expression> negate_expression(const Context& context,
                                                      const Expression& expr,
                                                      const Type& type) {
     std::unique_ptr<Expression> ctor = cast_expression(context, pos, expr, type);
-    return ctor ? PrefixExpression::Make(context, pos, Operator::Kind::MINUS, std::move(ctor))
+    return ctor ? PrefixExpression::Make(context, pos, type, Operator::Kind::MINUS, std::move(ctor))
                 : nullptr;
 }
 

@@ -14,6 +14,7 @@
 #include "src/sksl/ir/SkSLConstructor.h"
 #include "src/sksl/ir/SkSLConstructorArrayCast.h"
 #include "src/sksl/ir/SkSLConstructorCompoundCast.h"
+#include "src/sksl/ir/SkSLConstructorPointerCast.h"
 #include "src/sksl/ir/SkSLConstructorScalarCast.h"
 #include "src/sksl/ir/SkSLProgram.h"
 #include "src/sksl/ir/SkSLSymbolTable.h"
@@ -346,6 +347,28 @@ private:
     int8_t fRows;
 };
 
+class PointerType final : public Type {
+public:
+    inline static constexpr TypeKind kTypeKind = TypeKind::kPointer;
+
+    PointerType(std::string_view name, const Type& componentType)
+        : INHERITED(name, "P", kTypeKind)
+        , fComponentType(componentType) {}
+
+    const Type& componentType() const override {
+        return fComponentType;
+    }
+
+    bool isPointer() const override {
+        return true;
+    }
+
+private:
+    using INHERITED = Type;
+
+    const Type& fComponentType;
+};
+
 class TextureType final : public Type {
 public:
     inline static constexpr TypeKind kTypeKind = TypeKind::kTexture;
@@ -554,6 +577,10 @@ std::unique_ptr<Type> Type::MakeMatrixType(std::string_view name, const char* ab
     return std::make_unique<MatrixType>(name, abbrev, componentType, columns, rows);
 }
 
+std::unique_ptr<Type> Type::MakePointerType(std::string_view name, const Type& componentType) {
+    return std::make_unique<PointerType>(name, componentType);
+}
+
 std::unique_ptr<Type> Type::MakeSamplerType(const char* name, const Type& textureType) {
     return std::make_unique<SamplerType>(name, textureType);
 }
@@ -621,6 +648,10 @@ CoercionCost Type::coercionCost(const Type& other) const {
             }
         }
     }
+    if (this->isArray() && other.isPointer() &&
+            this->componentType().matches(other.componentType())) {
+        return CoercionCost::Normal(1);
+}
     return CoercionCost::Impossible();
 }
 
@@ -884,6 +915,9 @@ std::unique_ptr<Expression> Type::coerceExpression(std::unique_ptr<Expression> e
     }
     if (this->isArray()) {
         return ConstructorArrayCast::Make(context, pos, *this, std::move(expr));
+    }
+    if (this->isPointer()) {
+        return ConstructorPointerCast::Make(context, pos, *this, std::move(expr));
     }
     context.fErrors->error(pos, "cannot construct '" + this->displayName() + "'");
     return nullptr;
