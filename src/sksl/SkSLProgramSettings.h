@@ -115,8 +115,7 @@ struct ProgramConfig {
     }
 
     static bool IsCompute(ProgramKind kind) {
-        // Not supported yet
-        return false;
+        return kind == ProgramKind::kCompute;
     }
 
     static bool IsRuntimeEffect(ProgramKind kind) {

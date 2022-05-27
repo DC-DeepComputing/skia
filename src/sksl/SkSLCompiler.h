@@ -35,6 +35,7 @@
 #define SK_INPUT_COLOR_BUILTIN         10010
 #define SK_DEST_COLOR_BUILTIN          10011
 #define SK_SECONDARYFRAGCOLOR_BUILTIN  10012
+#define SK_THREADPOSITION              10013
 #define SK_FRAGCOORD_BUILTIN              15
 #define SK_CLOCKWISE_BUILTIN              17
 #define SK_VERTEXID_BUILTIN               42
@@ -232,6 +233,7 @@ private:
         Compiler& fCompiler;
     };
 
+    const ParsedModule& loadComputeModule();
     const ParsedModule& loadGPUModule();
     const ParsedModule& loadFragmentModule();
     const ParsedModule& loadVertexModule();
@@ -267,6 +269,7 @@ private:
     ParsedModule fGPUModule;                 // [Private] + GPU intrinsics, helper functions
     ParsedModule fVertexModule;              // [GPU] + Vertex stage decls
     ParsedModule fFragmentModule;            // [GPU] + Fragment stage decls
+    ParsedModule fComputeModule;             // [GPU] + Compute stage decls
     ParsedModule fGraphiteVertexModule;      // [Vert] + Graphite vertex helpers
     ParsedModule fGraphiteFragmentModule;    // [Frag] + Graphite fragment helpers
 
