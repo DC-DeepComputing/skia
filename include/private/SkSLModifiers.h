@@ -44,6 +44,11 @@ struct Modifiers {
         kHighp_Flag          = 1 <<  6,
         kMediump_Flag        = 1 <<  7,
         kLowp_Flag           = 1 <<  8,
+        // Address spaces
+        kDevice_Flag         = 1 <<  9,
+        kThreadGroup_Flag    = 1 << 10,
+        kConstant_Flag       = 1 << 11,
+        kThread_Flag         = 1 << 12,
         // SkSL extensions, not present in GLSL
         kES3_Flag            = 1 <<  9,
         kHasSideEffects_Flag = 1 <<  10,
@@ -101,6 +106,20 @@ struct Modifiers {
         }
         if (fFlags & kLowp_Flag) {
             result += "lowp ";
+        }
+
+        // Access modifiers
+        if (fFlags & kDevice_Flag) {
+            result += "device ";
+        }
+        if (fFlags & kThreadGroup_Flag) {
+            result += "threadgroup ";
+        }
+        if (fFlags & kConstant_Flag) {
+            result += "constant ";
+        }
+        if (fFlags & kThread_Flag) {
+            result += "thread ";
         }
 
         return result;

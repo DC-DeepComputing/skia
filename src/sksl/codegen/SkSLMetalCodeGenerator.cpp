@@ -256,7 +256,7 @@ static bool use_reference(const Modifiers& modifiers, const Type& type) {
 
 static bool needs_address_space(const Modifiers& modifiers, const Type& type) {
     return use_reference(modifiers, type) || (type.isArray() &&
-            type.columns() == Type::kUnsizedArray);
+            type.columns() == Type::kUnsizedArray) || type.isPointer();
 }
 
 std::string MetalCodeGenerator::getOutParamHelper(const FunctionCall& call,
@@ -2264,7 +2264,15 @@ void MetalCodeGenerator::writeFunction(const FunctionDefinition& f) {
 }
 
 void MetalCodeGenerator::writeModifiers(const Modifiers& modifiers) {
-    if (modifiers.fFlags & (Modifiers::kIn_Flag | Modifiers::kOut_Flag)) {
+    if (modifiers.fFlags & Modifiers::kDevice_Flag) {
+        this->write("device ");
+    } else if (modifiers.fFlags & Modifiers::kThreadGroup_Flag) {
+        this->write("threadgroup ");
+    } else if (modifiers.fFlags & Modifiers::kConstant_Flag) {
+        this->write("constant ");
+    } else if (modifiers.fFlags & Modifiers::kThread_Flag) {
+        this->write("thread ");
+    } else if (modifiers.fFlags & (Modifiers::kIn_Flag | Modifiers::kOut_Flag)) {
         this->write(ProgramConfig::IsCompute(fProgram.fConfig->fKind) ? "device " : "thread ");
     }
     if (modifiers.fFlags & Modifiers::kConst_Flag) {
@@ -2600,6 +2608,19 @@ void MetalCodeGenerator::writeUniformStruct() {
     }
     if (-1 != fUniformBuffer) {
         this->write("};\n");
+    }
+}
+
+void MetalCodeGenerator::writeAddressSpace(const Modifiers& modifiers) {
+    int flags = modifiers.fFlags;
+    if (flags & Modifiers::kThreadGroup_Flag) {
+        this->write("threadgroup ");
+    } else if (flags & Modifiers::kConstant_Flag) {
+        this->write("constant ");
+    } else if (flags & Modifiers::kThread_Flag) {
+        this->write("thread ");
+    } else {
+        this->write("device ");
     }
 }
 

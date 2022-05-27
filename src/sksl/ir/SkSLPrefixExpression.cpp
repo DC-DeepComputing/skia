@@ -159,13 +159,11 @@ static std::unique_ptr<Expression> logical_not_operand(const Context& context,
 }
 
 static const Type& determine_type(SymbolTable& symbolTable, Operator op, const Type& type) {
-    printf("DETERMINE TYPE OF: %s\n", std::string(op.operatorName()).c_str());
     switch (op.kind()) {
         case Operator::Kind::STAR:
             SkASSERT(type.isPointer());
             return type.componentType();
         case Operator::Kind::BITWISEAND:
-            printf("is pointer!\n");
             return *symbolTable.pointerTo(&type);
         default:
             return type;

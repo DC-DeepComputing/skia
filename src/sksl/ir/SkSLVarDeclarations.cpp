@@ -132,7 +132,14 @@ void VarDeclaration::ErrorCheck(const Context& context,
     }
     int permitted = Modifiers::kConst_Flag | Modifiers::kHighp_Flag | Modifiers::kMediump_Flag |
                     Modifiers::kLowp_Flag;
-    if (storage == Variable::Storage::kGlobal) {
+    if (ProgramConfig::IsCompute(context.fConfig->fKind)) {
+        permitted |= Modifiers::kIn_Flag | Modifiers::kOut_Flag;
+        if (baseType->isPointer() || (modifiers.fFlags & (Modifiers::kIn_Flag |
+                                                          Modifiers::kOut_Flag))) {
+            permitted |= Modifiers::kDevice_Flag | Modifiers::kThreadGroup_Flag |
+                    Modifiers::kConstant_Flag | Modifiers::kThread_Flag;
+        }
+    } else if (storage == Variable::Storage::kGlobal) {
         permitted |= Modifiers::kIn_Flag | Modifiers::kOut_Flag | Modifiers::kUniform_Flag |
                      Modifiers::kFlat_Flag | Modifiers::kNoPerspective_Flag;
     }
