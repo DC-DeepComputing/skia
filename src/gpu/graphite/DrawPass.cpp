@@ -195,30 +195,25 @@ public:
             , fUniformDataCache(uniformDataCache) {
     }
 
-    UniformDataCache::Index addUniforms(UniformDataCache::Index uIndex) {
-        if (!uIndex.isValid()) {
-            return {};
-        }
+    BindBufferInfo addUniforms(UniformDataCache::Index uIndex) {
+        SkASSERT(uIndex.isValid());
 
         const SkUniformDataBlock* udb = fUniformDataCache->lookup(uIndex);
         SkASSERT(udb);
 
-        if (fBindings.find(uIndex.asUInt()) == fBindings.end()) {
+        auto bindingsEntry = fBindings.find(uIndex.asUInt());
+        if (bindingsEntry != fBindings.end()) {
+            return bindingsEntry->second;
+
+        } else {
             // First time encountering this data, so upload to the GPU
             SkASSERT(udb->size());
             auto[writer, bufferInfo] = fBufferMgr->getUniformWriter(udb->size());
             writer.write(udb->data(), udb->size());
 
             fBindings.insert({uIndex.asUInt(), bufferInfo});
+            return bufferInfo;
         }
-
-        return uIndex;
-    }
-
-    BindBufferInfo getBinding(UniformDataCache::Index uniformDataIndex) {
-        auto lookup = fBindings.find(uniformDataIndex.asUInt());
-        SkASSERT(lookup != fBindings.end());
-        return lookup->second;
     }
 
 private:
@@ -321,12 +316,10 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
         UniformDataCache::Index shadingUniformIndex;
         TextureDataCache::Index textureBindingIndex;
         if (draw.fPaintParams.has_value()) {
-            UniformDataCache::Index uniformDataIndex;
-            std::tie(shaderID, uniformDataIndex, textureBindingIndex) =
+            std::tie(shaderID, shadingUniformIndex, textureBindingIndex) =
                     ExtractPaintData(recorder, &gatherer, &builder,
                                      draw.fGeometry.transform().inverse(),
                                      draw.fPaintParams.value());
-            shadingUniformIndex = shadingUniformBindings.addUniforms(uniformDataIndex);
         } // else depth-only
 
         for (int stepIndex = 0; stepIndex < draw.fRenderer.numRenderSteps(); ++stepIndex) {
@@ -344,12 +337,10 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
 
             UniformDataCache::Index geometryUniformIndex;
             if (step->numUniforms() > 0) {
-                UniformDataCache::Index uniformDataIndex;
-                uniformDataIndex = ExtractRenderStepData(&geometryUniformDataCache,
-                                                         &gatherer,
-                                                         step,
-                                                         draw.fGeometry);
-                geometryUniformIndex = geometryUniformBindings.addUniforms(uniformDataIndex);
+                geometryUniformIndex = ExtractRenderStepData(&geometryUniformDataCache,
+                                                             &gatherer,
+                                                             step,
+                                                             draw.fGeometry);
             }
 
             GraphicsPipelineDesc desc;
@@ -432,13 +423,14 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
         }
         if (stateChange) {
             if (geometryUniformChange) {
-                auto binding = geometryUniformBindings.getBinding(key.geometryUniforms());
+                BindBufferInfo binding =
+                        geometryUniformBindings.addUniforms(key.geometryUniforms());
                 drawPass->fCommands.emplace_back(
                         BindUniformBuffer{binding, UniformSlot::kRenderStep});
                 lastGeometryUniforms = key.geometryUniforms();
             }
             if (shadingUniformChange) {
-                auto binding = shadingUniformBindings.getBinding(key.shadingUniforms());
+                BindBufferInfo binding = shadingUniformBindings.addUniforms(key.shadingUniforms());
                 drawPass->fCommands.emplace_back(
                         BindUniformBuffer{binding, UniformSlot::kPaint});
                 lastShadingUniforms = key.shadingUniforms();
