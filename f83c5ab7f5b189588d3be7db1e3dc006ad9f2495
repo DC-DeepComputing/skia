@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6df32876_b36ee4c2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5639
+      },
+      "writtenOn": "2022-05-27T01:54:27Z",
+      "side": 1,
+      "message": "For what it\u0027s worth, I applied this patch locally and it works like a charm.",
+      "revId": "f83c5ab7f5b189588d3be7db1e3dc006ad9f2495",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
