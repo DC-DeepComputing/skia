@@ -7,6 +7,7 @@ load("@bazel_skylib//lib:selects.bzl", _selects = "selects")
 load("@rules_python//python:defs.bzl", _py_binary = "py_binary")
 load("@py_deps//:requirements.bzl", _requirement = "requirement")
 load("@bazel_gazelle//:def.bzl", _gazelle = "gazelle")
+load("@emsdk//emscripten_toolchain:wasm_rules.bzl", _wasm_cc_binary = "wasm_cc_binary")
 
 # re-export symbols that are commonly used or that are not supported in G3
 # (and thus we need to stub out)
@@ -14,8 +15,9 @@ selects = _selects
 py_binary = _py_binary
 requirement = _requirement
 gazelle = _gazelle
+wasm_cc_binary = _wasm_cc_binary
 
-def select_multi(values_map, default, name = ""):
+def select_multi(values_map, default):
     """select() but allowing multiple matches of the keys.
 
     select_multi works around a restriction in native select() that prevents multiple
@@ -48,7 +50,6 @@ def select_multi(values_map, default, name = ""):
         values_map: dictionary of labels to a list of labels, just like select()
         default: list of labels, the value that should be used if any of the options do not match.
             This is typically an empty list
-        name: string unused, https://github.com/bazelbuild/buildtools/blob/master/WARNINGS.md#unnamed-macro
 
     Returns:
         A list of values that is filled in by the generated select statements.
