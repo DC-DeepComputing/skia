@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ef2ea34b_98d9752b",
+        "filename": "src/core/SkCombinationBuilder.cpp",
+        "patchSetId": 47
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-05-31T20:28:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "80d9e599_6480e5dd",
+      "range": {
+        "startLine": 65,
+        "startChar": 0,
+        "endLine": 67,
+        "endChar": 5
+      },
+      "revId": "bbc48e3fa72f1dc4416c68acfb2ff6c49996c256",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cc080d90_6035a3d8",
@@ -65,6 +89,30 @@
         "startChar": 0,
         "endLine": 118,
         "endChar": 45
+      },
+      "revId": "bbc48e3fa72f1dc4416c68acfb2ff6c49996c256",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "72206db2_4a4e0071",
+        "filename": "src/core/SkCombinationBuilder.cpp",
+        "patchSetId": 47
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-05-31T20:28:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cc080d90_6035a3d8",
+      "range": {
+        "startLine": 118,
+        "startChar": 11,
+        "endLine": 118,
+        "endChar": 16
       },
       "revId": "bbc48e3fa72f1dc4416c68acfb2ff6c49996c256",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"

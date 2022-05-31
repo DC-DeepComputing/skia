@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f6da797d_db40e42e",
+        "filename": "dm/DMSrcSink.cpp",
+        "patchSetId": 46
+      },
+      "lineNbr": 2146,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-05-31T20:28:44Z",
+      "side": 1,
+      "message": "This is split out into a separate test in a follow up CL (https://skia-review.googlesource.com/c/skia/+/545367). In this instance this block serves as an example of how the combination builder interface can be used.",
+      "parentUuid": "af4758ce_03a04b05",
+      "range": {
+        "startLine": 2146,
+        "startChar": 17,
+        "endLine": 2146,
+        "endChar": 28
+      },
+      "revId": "4191e7bb5f028119ec319832ee91594603f0ca12",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "71807e9a_e2c49a6d",
         "filename": "dm/DMSrcSink.cpp",
         "patchSetId": 46
@@ -37,6 +61,30 @@
       "writtenOn": "2022-05-31T19:55:47Z",
       "side": 1,
       "message": "Please take the commented part out; it added confusion for me. I think the commented-out TODO section on L2221 is sufficient, but if you want to call it out here, use freeform text below this chart.",
+      "range": {
+        "startLine": 2152,
+        "startChar": 29,
+        "endLine": 2153,
+        "endChar": 85
+      },
+      "revId": "4191e7bb5f028119ec319832ee91594603f0ca12",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5bd327a7_2ac525e9",
+        "filename": "dm/DMSrcSink.cpp",
+        "patchSetId": 46
+      },
+      "lineNbr": 2153,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-05-31T20:28:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "71807e9a_e2c49a6d",
       "range": {
         "startLine": 2152,
         "startChar": 29,
