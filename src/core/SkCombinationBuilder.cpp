@@ -423,6 +423,9 @@ SkCombinationBuilder::SkCombinationBuilder(SkShaderCodeDictionary* dict)
 }
 #endif
 
+SkCombinationBuilder::~SkCombinationBuilder() = default;
+
+
 template<typename T, typename... Args>
 SkOption* SkCombinationBuilder::allocInArena(Args&&... args) {
     SkOption* arenaObject = fArena->make<T>(T{{ T::kType, T::kNumChildSlots },

@@ -122,6 +122,7 @@ public:
 #else
     SkCombinationBuilder(SkShaderCodeDictionary*);
 #endif
+    ~SkCombinationBuilder();
 
     // Blend Modes
     void addOption(SkBlendMode);
