@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "67e3ee15_476603e1",
+        "filename": "src/text/gpu/TextBlob.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 2291,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-05-31T14:46:35Z",
+      "side": 1,
+      "message": "This is different from original",
+      "range": {
+        "startLine": 2291,
+        "startChar": 63,
+        "endLine": 2291,
+        "endChar": 91
+      },
+      "revId": "ea6968219a772c870193a063966da8725de36938",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "16bf53c2_8922782f",
+        "filename": "src/text/gpu/TextBlob.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 2405,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-05-31T14:46:35Z",
+      "side": 1,
+      "message": "This is different from original",
+      "range": {
+        "startLine": 2405,
+        "startChar": 68,
+        "endLine": 2405,
+        "endChar": 96
+      },
+      "revId": "ea6968219a772c870193a063966da8725de36938",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
