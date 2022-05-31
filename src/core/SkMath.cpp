@@ -39,6 +39,21 @@ int32_t SkSqrtBits(int32_t x, int count) {
     return root;
 }
 
+int SkCountSetBits(uint32_t n) {
+#if defined(__GNUC__) || defined(__clang__)
+    return __builtin_popcount(n);
+#else
+    // Kernighan's method
+    int count = 0;
+
+    while (n) {
+        n &= (n - 1);
+        count++;
+    }
+    return count;
+#endif
+}
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 size_t SkSafeMath::Add(size_t x, size_t y) {
