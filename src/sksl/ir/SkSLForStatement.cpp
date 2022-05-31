@@ -92,20 +92,20 @@ std::unique_ptr<Statement> ForStatement::Convert(const Context& context,
 
     if (!isSimpleInitializer && !isVardeclBlockInitializer) {
         context.fErrors->error(initializer->fPosition, "invalid for loop initializer");
-        return nullptr;
+        return Nop::Make(pos);
     }
 
     if (test) {
         test = context.fTypes.fBool->coerceExpression(std::move(test), context);
         if (!test) {
-            return nullptr;
+            return Nop::Make(pos);
         }
     }
 
     // The type of the next-expression doesn't matter, but it needs to be a complete expression.
     // Report an error on intermediate expressions like FunctionReference or TypeReference.
     if (next && next->isIncomplete(context)) {
-        return nullptr;
+        return Nop::Make(pos);
     }
 
     std::unique_ptr<LoopUnrollInfo> unrollInfo;
@@ -114,7 +114,7 @@ std::unique_ptr<Statement> ForStatement::Convert(const Context& context,
         unrollInfo = Analysis::GetLoopUnrollInfo(pos, positions, initializer.get(), test.get(),
                                                  next.get(), statement.get(), context.fErrors);
         if (!unrollInfo) {
-            return nullptr;
+            return Nop::Make(pos);
         }
     } else {
         // In ES3, loops don't have to be unrollable, but we can use the unroll information for
@@ -124,7 +124,7 @@ std::unique_ptr<Statement> ForStatement::Convert(const Context& context,
     }
 
     if (Analysis::DetectVarDeclarationWithoutScope(*statement, context.fErrors)) {
-        return nullptr;
+        return Nop::Make(pos);
     }
 
     if (isVardeclBlockInitializer) {
@@ -154,7 +154,7 @@ std::unique_ptr<Statement> ForStatement::ConvertWhile(const Context& context, Po
                                                       std::shared_ptr<SymbolTable> symbolTable) {
     if (context.fConfig->strictES2Mode()) {
         context.fErrors->error(pos, "while loops are not supported");
-        return nullptr;
+        return Nop::Make(pos);
     }
     return ForStatement::Convert(context, pos, ForLoopPositions(), /*initializer=*/nullptr,
             std::move(test), /*next=*/nullptr, std::move(statement), std::move(symbolTable));
