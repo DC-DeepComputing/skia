@@ -20,6 +20,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "5db1a29a_687f45cd",
+        "filename": "src/core/SkChromeRemoteGlyphCache.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 815,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-05-31T18:56:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "75e24296_9456f246",
+      "revId": "ea6968219a772c870193a063966da8725de36938",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "67e3ee15_476603e1",
         "filename": "src/text/gpu/TextBlob.cpp",
         "patchSetId": 4
@@ -81,6 +99,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0ed30adc_afa36f3e",
+        "filename": "src/text/gpu/TextBlob.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 2530,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-05-31T18:56:26Z",
+      "side": 1,
+      "message": "No. Subruns are not a durable format.",
+      "parentUuid": "1be0286f_441d6452",
+      "revId": "ea6968219a772c870193a063966da8725de36938",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d680fdcb_8197f6c5",
@@ -94,6 +130,24 @@
       "writtenOn": "2022-05-31T18:03:52Z",
       "side": 1,
       "message": "missing \u0027 \u0027 ?",
+      "revId": "ea6968219a772c870193a063966da8725de36938",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a47040fe_c80b4fc9",
+        "filename": "src/text/gpu/TextBlob.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 2582,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-05-31T18:56:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d680fdcb_8197f6c5",
       "revId": "ea6968219a772c870193a063966da8725de36938",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -121,6 +175,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b2f0c712_a9393bd9",
+        "filename": "src/text/gpu/TextBlob.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 2767,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-05-31T18:56:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "95a534f9_403aabf3",
+      "range": {
+        "startLine": 2767,
+        "startChar": 4,
+        "endLine": 2767,
+        "endChar": 5
+      },
+      "revId": "ea6968219a772c870193a063966da8725de36938",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7a41a43d_63a5141e",
@@ -138,6 +216,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ff91640f_2c8679c7",
+        "filename": "src/text/gpu/TextBlob.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 2795,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-05-31T18:56:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7a41a43d_63a5141e",
+      "revId": "ea6968219a772c870193a063966da8725de36938",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "101f7717_be182a03",
@@ -151,6 +247,24 @@
       "writtenOn": "2022-05-31T18:03:52Z",
       "side": 1,
       "message": "??",
+      "revId": "ea6968219a772c870193a063966da8725de36938",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c98599a8_93527cbd",
+        "filename": "src/text/gpu/TextBlob.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-05-31T18:56:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "101f7717_be182a03",
       "revId": "ea6968219a772c870193a063966da8725de36938",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
