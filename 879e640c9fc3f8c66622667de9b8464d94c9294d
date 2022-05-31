@@ -142,6 +142,30 @@
       },
       "revId": "879e640c9fc3f8c66622667de9b8464d94c9294d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1c1c6b93_f2c6202b",
+        "filename": "tests/sksl/errors/InvalidUniformTypes.glsl",
+        "patchSetId": 2
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-05-31T21:26:07Z",
+      "side": 1,
+      "message": "PTAL. The latest is the \"caused by\" version as we discussed over chat.",
+      "parentUuid": "59205123_574cda08",
+      "range": {
+        "startLine": 21,
+        "startChar": 0,
+        "endLine": 23,
+        "endChar": 10
+      },
+      "revId": "879e640c9fc3f8c66622667de9b8464d94c9294d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
