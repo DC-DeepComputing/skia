@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "825c642c_6ab8658b",
+        "filename": "dm/DMSrcSink.cpp",
+        "patchSetId": 43
+      },
+      "lineNbr": 2143,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-05-31T15:17:18Z",
+      "side": 1,
+      "message": "brackets are `[]`\nbraces are `{}`",
+      "range": {
+        "startLine": 2143,
+        "startChar": 51,
+        "endLine": 2143,
+        "endChar": 59
+      },
+      "revId": "df65376df4b8f44ae0589e7efb33a5cbd9a17f42",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
