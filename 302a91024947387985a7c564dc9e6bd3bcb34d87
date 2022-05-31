@@ -3,6 +3,46 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6c623823_71e0070d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-05-31T14:14:49Z",
+      "side": 1,
+      "message": "still reading through but I saw Brian commented so I figured I\u0027d leave what I\u0027ve got so far",
+      "revId": "302a91024947387985a7c564dc9e6bd3bcb34d87",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "04fd4af5_1adb857e",
+        "filename": "src/sksl/ir/SkSLIndexExpression.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-05-31T14:14:49Z",
+      "side": 1,
+      "message": "Tiny nit: IMO the logic would be easier to read if we split this into two checks (index \u003c 0, index \u003e numCols)\n\n    if (index \u003c 0) {\n        return false;\n    }\n    if (base.type().columns() !\u003d Type::kUnsizedArray \u0026\u0026 index \u003e\u003d base.type().columns()) {\n        return false;\n    }",
+      "range": {
+        "startLine": 23,
+        "startChar": 0,
+        "endLine": 26,
+        "endChar": 5
+      },
+      "revId": "302a91024947387985a7c564dc9e6bd3bcb34d87",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a9bf2305_08e2d80f",
         "filename": "src/sksl/ir/SkSLType.cpp",
         "patchSetId": 5
@@ -42,6 +82,29 @@
         "startChar": 87,
         "endLine": 62,
         "endChar": 19
+      },
+      "revId": "302a91024947387985a7c564dc9e6bd3bcb34d87",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "09dde8ba_1a1af31c",
+        "filename": "src/sksl/ir/SkSLType.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-05-31T14:14:49Z",
+      "side": 1,
+      "message": "Why...? This feels VERY weird to me. We used to use -1 and I don\u0027t recall it being an issue.",
+      "range": {
+        "startLine": 63,
+        "startChar": 48,
+        "endLine": 63,
+        "endChar": 54
       },
       "revId": "302a91024947387985a7c564dc9e6bd3bcb34d87",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
