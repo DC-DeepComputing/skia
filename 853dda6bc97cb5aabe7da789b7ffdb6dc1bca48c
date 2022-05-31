@@ -33,6 +33,92 @@
       "message": "+brianosman for OWNERS review of public-facing API changes.  Feel free to reassign if necessary.",
       "revId": "853dda6bc97cb5aabe7da789b7ffdb6dc1bca48c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d5aade43_aa5ec747",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-05-31T21:54:53Z",
+      "side": 1,
+      "message": "Aside from the minor formatting issues, this also breaks serialization. There is a version number that\u0027s incremented in src/core/SkPicturePriv.h.\n\nBest practice is to add a new value to the enum. The writing code can blindly write the current version. The reading code should attempt to handle older serialized data, by checking the stream\u0027s version. An example of that logic, from the most recent version tick: https://skia-review.googlesource.com/c/skia/+/535437/3/src/core/SkReadBuffer.cpp",
+      "revId": "853dda6bc97cb5aabe7da789b7ffdb6dc1bca48c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8ce47235_cf427ad2",
+        "filename": "include/core/SkImageGenerator.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 173,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-05-31T21:54:53Z",
+      "side": 1,
+      "message": "Need to add the SkSurfaceProps #include to this file. (It\u0027s included transitively, but lately we\u0027ve been trying hard to enforce Include-What-You-Use in our headers).",
+      "range": {
+        "startLine": 173,
+        "startChar": 61,
+        "endLine": 173,
+        "endChar": 75
+      },
+      "revId": "853dda6bc97cb5aabe7da789b7ffdb6dc1bca48c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7566ab4d_f4a7287d",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 2887,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-05-31T21:54:53Z",
+      "side": 1,
+      "message": "nit: line length exceeds 100 columns",
+      "range": {
+        "startLine": 2887,
+        "startChar": 0,
+        "endLine": 2887,
+        "endChar": 103
+      },
+      "revId": "853dda6bc97cb5aabe7da789b7ffdb6dc1bca48c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c7f80218_a1380ae9",
+        "filename": "src/shaders/SkPictureShader.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-05-31T21:54:53Z",
+      "side": 1,
+      "message": "Two more long lines here (one is pre-existing, but wrapping them would be nice)",
+      "range": {
+        "startLine": 112,
+        "startChar": 0,
+        "endLine": 128,
+        "endChar": 103
+      },
+      "revId": "853dda6bc97cb5aabe7da789b7ffdb6dc1bca48c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
