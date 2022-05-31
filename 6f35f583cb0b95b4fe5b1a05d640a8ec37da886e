@@ -52,6 +52,24 @@
       "parentUuid": "40a40128_ba0b77ab",
       "revId": "6f35f583cb0b95b4fe5b1a05d640a8ec37da886e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5f46759d_0b296f34",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-05-31T20:15:30Z",
+      "side": 1,
+      "message": "OK, I did some tests locally and on my machine, with `is_debug\u003dfalse`, I get the exact same binary size if I leave the code as-is but annotate the three suspicious functions with a no-sanitize attribute. Hopefully this will do the trick.",
+      "parentUuid": "a5c6a3e8_ce4b7ce3",
+      "revId": "6f35f583cb0b95b4fe5b1a05d640a8ec37da886e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
