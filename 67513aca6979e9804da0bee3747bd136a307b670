@@ -22,6 +22,30 @@
       },
       "revId": "67513aca6979e9804da0bee3747bd136a307b670",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "34575925_c0a02042",
+        "filename": "src/sksl/ir/SkSLVarDeclarations.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-05-31T21:11:11Z",
+      "side": 1,
+      "message": "This is probably why tests are failing.\n FAILURE: ../../../../../../skia/tests/SkRuntimeEffectTest.cpp:400\tEffect didn\u0027t compile: error: 1: variables of type \u0027int4\u0027 may not be uniform",
+      "parentUuid": "2c9e46f5_18e8ac3b",
+      "range": {
+        "startLine": 31,
+        "startChar": 48,
+        "endLine": 31,
+        "endChar": 52
+      },
+      "revId": "67513aca6979e9804da0bee3747bd136a307b670",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
