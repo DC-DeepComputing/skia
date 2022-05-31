@@ -52,6 +52,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8713aeda_2bb07043",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 10586
+      },
+      "writtenOn": "2022-05-31T23:00:39Z",
+      "side": 1,
+      "message": "Done.  Good catch... I didn\u0027t realize these were persisted long term.\n\nHowever!  Maybe we *shouldn\u0027t* serialize the props.  It seems wrong to store information about the target surface in a persistent format.\n\nOptions:\n1. Persist the props.  (Seems wrong?)\n\n2. Don\u0027t persist the props; if you are rendering a serialized SkPictureShader, you can\u0027t specify the props; you\u0027ll always get the defaults.  (Also seems wrong?)\n\n3. The SkPictureShader will presumably always be used to render to another existing surface (??), which will have its own props.  Use those.\n-- This seems the most \"correct\" approach, but it\u0027s complicated by the way that SkPictureShaders are turned into SkImageShaders (and cached), rather than being used directly.\n\nI\u0027ll see if I can whip up a reasonable solution along the lines of #3... but please let me know your thoughts.\n\nThanks!",
+      "parentUuid": "d5aade43_aa5ec747",
+      "revId": "853dda6bc97cb5aabe7da789b7ffdb6dc1bca48c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8ce47235_cf427ad2",
@@ -65,6 +83,30 @@
       "writtenOn": "2022-05-31T21:54:53Z",
       "side": 1,
       "message": "Need to add the SkSurfaceProps #include to this file. (It\u0027s included transitively, but lately we\u0027ve been trying hard to enforce Include-What-You-Use in our headers).",
+      "range": {
+        "startLine": 173,
+        "startChar": 61,
+        "endLine": 173,
+        "endChar": 75
+      },
+      "revId": "853dda6bc97cb5aabe7da789b7ffdb6dc1bca48c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "67a8c3d2_50a97b1e",
+        "filename": "include/core/SkImageGenerator.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 173,
+      "author": {
+        "id": 10586
+      },
+      "writtenOn": "2022-05-31T23:00:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8ce47235_cf427ad2",
       "range": {
         "startLine": 173,
         "startChar": 61,
@@ -98,6 +140,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bf65507f_72aeb95c",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 2887,
+      "author": {
+        "id": 10586
+      },
+      "writtenOn": "2022-05-31T23:00:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7566ab4d_f4a7287d",
+      "range": {
+        "startLine": 2887,
+        "startChar": 0,
+        "endLine": 2887,
+        "endChar": 103
+      },
+      "revId": "853dda6bc97cb5aabe7da789b7ffdb6dc1bca48c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c7f80218_a1380ae9",
@@ -111,6 +177,30 @@
       "writtenOn": "2022-05-31T21:54:53Z",
       "side": 1,
       "message": "Two more long lines here (one is pre-existing, but wrapping them would be nice)",
+      "range": {
+        "startLine": 112,
+        "startChar": 0,
+        "endLine": 128,
+        "endChar": 103
+      },
+      "revId": "853dda6bc97cb5aabe7da789b7ffdb6dc1bca48c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7334a4e6_7594cf56",
+        "filename": "src/shaders/SkPictureShader.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 10586
+      },
+      "writtenOn": "2022-05-31T23:00:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c7f80218_a1380ae9",
       "range": {
         "startLine": 112,
         "startChar": 0,
