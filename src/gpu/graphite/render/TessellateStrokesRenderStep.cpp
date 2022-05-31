@@ -75,8 +75,11 @@ TessellateStrokesRenderStep::TessellateStrokesRenderStep()
 TessellateStrokesRenderStep::~TessellateStrokesRenderStep() {}
 
 const char* TessellateStrokesRenderStep::vertexSkSL() const {
-    SkASSERT(false);
-    return ""; // TODO: implement this
+    // TODO: Assumes vertex ID support for now, max edges must equal
+    // skgpu::tess::FixedCountStrokes::kMaxEdges (2^14 - 1)
+    return "float4 devPosition = float4("
+                "tessellate_stroked_curve(sk_VertexID, 16383, float2x2(affineMatrix), translate, "
+                                         "maxScale, p01, p23, prevPoint, stroke), depth, 1.0);";
 }
 
 void TessellateStrokesRenderStep::writeVertices(DrawWriter* dw, const DrawGeometry& geom) const {
