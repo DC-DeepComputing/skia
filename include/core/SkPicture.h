@@ -23,6 +23,7 @@ class SkMatrix;
 struct SkSerialProcs;
 class SkStream;
 class SkWStream;
+class SkSurfaceProps;
 
 /** \class SkPicture
     SkPicture records drawing commands made to SkCanvas. The command stream may be
@@ -225,13 +226,15 @@ public:
      *              affected by localMatrix and does not imply scaling (only translation
      *              and cropping). If null, the tile rect is considered equal to the picture
      *              bounds.
+     *  @param props Surface props to be used when drawing the picture.
      *  @return     Returns a new shader object. Note: this function never returns null.
      */
     sk_sp<SkShader> makeShader(SkTileMode tmx, SkTileMode tmy, SkFilterMode mode,
-                               const SkMatrix* localMatrix, const SkRect* tileRect) const;
+                               const SkMatrix* localMatrix, const SkRect* tileRect,
+                               const SkSurfaceProps* props = nullptr) const;
 
     sk_sp<SkShader> makeShader(SkTileMode tmx, SkTileMode tmy, SkFilterMode mode) const {
-        return this->makeShader(tmx, tmy, mode, nullptr, nullptr);
+        return this->makeShader(tmx, tmy, mode, nullptr, nullptr, nullptr);
     }
 
 private:

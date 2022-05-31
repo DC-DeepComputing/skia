@@ -19,6 +19,7 @@ class SkImage;
 class SkM44;
 class SkPath;
 class SkRefCntSet;
+class SkSurfaceProps;
 
 class SkWriteBuffer {
 public:
@@ -66,6 +67,7 @@ public:
     virtual void writeImage(const SkImage*) = 0;
     virtual void writeTypeface(SkTypeface* typeface) = 0;
     virtual void writePaint(const SkPaint& paint) = 0;
+    virtual void writeSurfaceProps(const SkSurfaceProps& props) = 0;
 
     void setSerialProcs(const SkSerialProcs& procs) { fProcs = procs; }
 
@@ -129,6 +131,7 @@ public:
     void writeImage(const SkImage*) override;
     void writeTypeface(SkTypeface* typeface) override;
     void writePaint(const SkPaint& paint) override;
+    void writeSurfaceProps(const SkSurfaceProps& props) override;
 
     bool writeToStream(SkWStream*) const;
     void writeToMemory(void* dst) const { fWriter.flatten(dst); }

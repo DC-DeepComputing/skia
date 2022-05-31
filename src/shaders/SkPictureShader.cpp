@@ -37,11 +37,12 @@
 #endif
 
 sk_sp<SkShader> SkPicture::makeShader(SkTileMode tmx, SkTileMode tmy, SkFilterMode filter,
-                                      const SkMatrix* localMatrix, const SkRect* tile) const {
+                                      const SkMatrix* localMatrix, const SkRect* tile,
+                                      const SkSurfaceProps* props) const {
     if (localMatrix && !localMatrix->invert(nullptr)) {
         return nullptr;
     }
-    return SkPictureShader::Make(sk_ref_sp(this), tmx, tmy, filter, localMatrix, tile);
+    return SkPictureShader::Make(sk_ref_sp(this), tmx, tmy, filter, localMatrix, tile, props);
 }
 
 namespace {
@@ -108,20 +109,24 @@ struct ImageFromPictureRec : public SkResourceCache::Rec {
 } // namespace
 
 SkPictureShader::SkPictureShader(sk_sp<SkPicture> picture, SkTileMode tmx, SkTileMode tmy,
-                                 SkFilterMode filter, const SkMatrix* localMatrix, const SkRect* tile)
+                                 SkFilterMode filter, const SkMatrix* localMatrix,
+                                 const SkRect* tile, const SkSurfaceProps* props)
     : INHERITED(localMatrix)
     , fPicture(std::move(picture))
     , fTile(tile ? *tile : fPicture->cullRect())
     , fTmx(tmx)
     , fTmy(tmy)
-    , fFilter(filter) {}
+    , fFilter(filter)
+    , fProps(SkSurfacePropsCopyOrDefault(props)) {}
 
 sk_sp<SkShader> SkPictureShader::Make(sk_sp<SkPicture> picture, SkTileMode tmx, SkTileMode tmy,
-                                      SkFilterMode filter, const SkMatrix* lm, const SkRect* tile) {
+                                      SkFilterMode filter, const SkMatrix* lm, const SkRect* tile,
+                                      const SkSurfaceProps* props) {
     if (!picture || picture->cullRect().isEmpty() || (tile && tile->isEmpty())) {
         return SkShaders::Empty();
     }
-    return sk_sp<SkShader>(new SkPictureShader(std::move(picture), tmx, tmy, filter, lm, tile));
+    return sk_sp<SkShader>(new SkPictureShader(std::move(picture), tmx, tmy, filter, lm, tile,
+                                               props));
 }
 
 sk_sp<SkFlattenable> SkPictureShader::CreateProc(SkReadBuffer& buffer) {
@@ -130,6 +135,10 @@ sk_sp<SkFlattenable> SkPictureShader::CreateProc(SkReadBuffer& buffer) {
     auto tmx = buffer.read32LE(SkTileMode::kLastTileMode);
     auto tmy = buffer.read32LE(SkTileMode::kLastTileMode);
     SkRect tile = buffer.readRect();
+    SkSurfaceProps props;
+    if (!buffer.isVersionLT(SkPicturePriv::kPictureShaderSurfaceProps)) {
+        buffer.readSurfaceProps(&props);
+    }
 
     sk_sp<SkPicture> picture;
 
@@ -151,7 +160,7 @@ sk_sp<SkFlattenable> SkPictureShader::CreateProc(SkReadBuffer& buffer) {
         filter = buffer.read32LE(SkFilterMode::kLast);
         picture = SkPicturePriv::MakeFromBuffer(buffer);
     }
-    return SkPictureShader::Make(picture, tmx, tmy, filter, &lm, &tile);
+    return SkPictureShader::Make(picture, tmx, tmy, filter, &lm, &tile, &props);
 }
 
 void SkPictureShader::flatten(SkWriteBuffer& buffer) const {
@@ -159,6 +168,7 @@ void SkPictureShader::flatten(SkWriteBuffer& buffer) const {
     buffer.write32((unsigned)fTmx);
     buffer.write32((unsigned)fTmy);
     buffer.writeRect(fTile);
+    buffer.writeSurfaceProps(fProps);
     buffer.write32((unsigned)fFilter);
     SkPicturePriv::Flatten(fPicture, buffer);
 }
@@ -273,7 +283,7 @@ sk_sp<SkShader> SkPictureShader::rasterShader(const SkMatrix& viewMatrix,
 
     sk_sp<SkImage> image;
     if (!SkResourceCache::Find(key, ImageFromPictureRec::Visitor, &image)) {
-        image = info.makeImage(SkSurface::MakeRaster(info.imageInfo), fPicture.get());
+        image = info.makeImage(SkSurface::MakeRaster(info.imageInfo, &fProps), fPicture.get());
         if (!image) {
             return nullptr;
         }
@@ -411,14 +421,13 @@ std::unique_ptr<GrFragmentProcessor> SkPictureShader::asFragmentProcessor(
         view = GrSurfaceProxyView(proxy, kTopLeft_GrSurfaceOrigin, skgpu::Swizzle());
     } else {
         const int msaaSampleCount = 0;
-        const SkSurfaceProps* props = nullptr;
         const bool createWithMips = false;
         auto image = info.makeImage(SkSurface::MakeRenderTarget(ctx,
                                                                 SkBudgeted::kYes,
                                                                 info.imageInfo,
                                                                 msaaSampleCount,
                                                                 kTopLeft_GrSurfaceOrigin,
-                                                                props,
+                                                                &fProps,
                                                                 createWithMips),
                                     fPicture.get());
         if (!image) {
