@@ -68,6 +68,30 @@
       },
       "revId": "d9d1d7cfffea873700dffd64abf1af47d6327ac7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6ffe8c28_dac360d0",
+        "filename": "src/sksl/ir/SkSLVarDeclarations.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-05-31T21:35:14Z",
+      "side": 1,
+      "message": "Just noticed: all interface blocks are structs in SkSL. `isStruct` is always sufficient.",
+      "parentUuid": "1c5f7fce_a19068b1",
+      "range": {
+        "startLine": 138,
+        "startChar": 8,
+        "endLine": 138,
+        "endChar": 57
+      },
+      "revId": "d9d1d7cfffea873700dffd64abf1af47d6327ac7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
