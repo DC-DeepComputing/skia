@@ -16,6 +16,24 @@
       "message": "Just as a more general note (and not to change anything here right now, more of a musing) `enable_fonts_true` is used four times here in four different selects. It is interesting how Bazel\u0027s setup really pushes toward slicing based on type of thing being set. `gn` was fine with this way if it was wanted, but also made it simple to slice based on predicate. For example in gn this would be more natural like `if (enable_fonts_true) { srcs+\u003d defines+\u003d flags+\u003d deps+\u003d }`. With Bazel the predicate is repeated and the logic of a given configuration dispersed. This is somewhat offset with forcing the predicate to be simple (just a name) so it can be easily searched for, but it is still spread around. On the other hand, gn spread the assignment to things around, sometimes making it difficult to determine for a given build configuration what the actual values would end up being and why. On the other hand, both systems have introspection to show for a given configuration what everything was set to in the end, and while editing build files I\u0027m generally more concerned about the effect of a particular predicate than the end value of, say, all defines.\n\nI suppose what I\u0027m really saying is that if one wants to be entirely declarative, this is a table of things on one axis and predicates on the other axis, with each table cell being the values to append to the things when the given predicate is true. (This is of course very messy when one wants to remove a value if present, but this is still logically possible by further massaging of the predicates.) As such I wish there were a visual table format for this instead of trying to shove it into an arbitrary hierarchy just because we\u0027re stuck with a linear text only format.",
       "revId": "b7738d6f64b3c511a449e6bef1dbe31bca6b8254",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7e6b5751_273efcf5",
+        "filename": "modules/canvaskit/BUILD.bazel",
+        "patchSetId": 6
+      },
+      "lineNbr": 240,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-05-31T14:11:46Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "a6b06665_a6af3f61",
+      "revId": "b7738d6f64b3c511a449e6bef1dbe31bca6b8254",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
