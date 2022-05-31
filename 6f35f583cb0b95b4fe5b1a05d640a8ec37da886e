@@ -16,6 +16,24 @@
       "message": "That performance drop looks like it might be noise? It\u0027s a return-to-baseline for traces that improved on an unrelated CL about 20 commits earlier?",
       "revId": "6f35f583cb0b95b4fe5b1a05d640a8ec37da886e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "40a40128_ba0b77ab",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-05-31T19:20:03Z",
+      "side": 1,
+      "message": "Maybe. Pinpoint also triggered though, in a semi-suspicious way (Javascript/V8 tests which really shouldn\u0027t touch Skia). My earlier change did affect codegen; I\u0027m hoping that this SK_ALWAYS_INLINE approach gives us identical codegen.",
+      "parentUuid": "214b2de8_c94888df",
+      "revId": "6f35f583cb0b95b4fe5b1a05d640a8ec37da886e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
