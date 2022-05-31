@@ -133,6 +133,7 @@ public:
     void reset();
 
     int numCombinations() const;
+    void updateTo(int state) const;
 
 #ifdef SK_DEBUG
     void dump() const;

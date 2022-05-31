@@ -117,6 +117,8 @@ public:
 
     int numCombinations() const;
 
+    void updateTo(int curState) const;
+
 #ifdef SK_DEBUG
     void dump(int indent) const;
 #endif
@@ -217,6 +219,37 @@ public:
         return fNumCombinations;
     }
 
+    void updateTo(int curState) {
+        SkASSERT(curState < this->numCombinations());
+
+        int numIntrinsicCombinations = this->numIntrinsicCombinations();
+        if (numIntrinsicCombinations) {
+            curState %= this->numChildCombinations();
+        }
+
+        if (fNumSlots) {
+            SkASSERT(curState < this->numChildCombinations());
+
+            int numCombosSeen = 0;
+            for (int slotIndex = 0; slotIndex < fNumSlots; ++slotIndex) {
+                const SkSlot& slot = fSlots[slotIndex];
+
+                numCombosSeen += slot.numCombinations();
+                int numCombosLeft = this->numChildCombinations() / numCombosSeen;
+
+                int slotState;
+                if (slotIndex+1 < fNumSlots) {
+                    slotState = curState / (numCombosLeft ? numCombosLeft : 1);
+                    curState %= numCombosLeft;
+                } else {
+                    slotState = curState;
+                }
+
+                slot.updateTo(slotState);
+            }
+        }
+    }
+
 #ifdef SK_DEBUG
     void dump(int indent = 0) const {
         SkDebugf("%s", type_to_str(fType));
@@ -264,6 +297,30 @@ int SkSlot::numCombinations() const {
     }
 
     return fNumCombinations;
+}
+
+// Here bc needs SkOption::updateTo
+void SkSlot::updateTo(int curState) const {
+    SkASSERT(curState < this->numCombinations());
+
+    const SkOptionsBlock* block = &fBlock;
+    while (block) {
+        for (int i = 0; i < kNumOptionsPerBlock; ++i) {
+            SkOption* option = block->fOptions[i];
+            if (!option) {
+                return;
+            }
+
+            if (curState < option->numCombinations()) {
+                option->updateTo(curState);
+                return;
+            }
+
+            curState -= option->numCombinations();
+        }
+
+        block = block->fNext;
+    }
 }
 
 #ifdef SK_DEBUG
@@ -580,6 +637,8 @@ int SkCombinationBuilder::numCombinations() const {
 
     return numShaderCombinations * (count_set_bits(fBlendModes) + fBlenders.count());
 }
+
+void SkCombinationBuidupdateTo(int state) const;
 
 #ifdef SK_DEBUG
 void SkCombinationBuilder::dump() const {
