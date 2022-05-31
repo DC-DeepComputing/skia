@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "177cabe9_51dd9670",
+        "filename": "src/core/SkMath.cpp",
+        "patchSetId": 46
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-05-31T17:23:20Z",
+      "side": 1,
+      "message": "Sorry to do this to you, but please add tests to `tests/MathTest.cpp` and break this addition out into a separate leading CL. It\u0027s easily separable and non-Graphite-specific.",
+      "range": {
+        "startLine": 42,
+        "startChar": 0,
+        "endLine": 53,
+        "endChar": 0
+      },
+      "revId": "4191e7bb5f028119ec319832ee91594603f0ca12",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
