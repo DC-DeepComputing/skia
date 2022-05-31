@@ -45,6 +45,52 @@
       },
       "revId": "df65376df4b8f44ae0589e7efb33a5cbd9a17f42",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9b7ba519_6151c8ae",
+        "filename": "src/core/SkCombinationBuilder.cpp",
+        "patchSetId": 43
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-05-31T15:28:42Z",
+      "side": 1,
+      "message": "It looks like this is `mutable` because `numCombinations` is `const`. Is it important that it\u0027s structured this way? Can `numCombinations` be non-const? We should avoid `mutable` unless we have a really good reason.",
+      "range": {
+        "startLine": 162,
+        "startChar": 4,
+        "endLine": 162,
+        "endChar": 11
+      },
+      "revId": "df65376df4b8f44ae0589e7efb33a5cbd9a17f42",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0e15672b_71063f90",
+        "filename": "src/core/SkCombinationBuilder.cpp",
+        "patchSetId": 43
+      },
+      "lineNbr": 610,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-05-31T15:28:42Z",
+      "side": 1,
+      "message": "`constexpr`",
+      "range": {
+        "startLine": 610,
+        "startChar": 14,
+        "endLine": 610,
+        "endChar": 24
+      },
+      "revId": "df65376df4b8f44ae0589e7efb33a5cbd9a17f42",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
