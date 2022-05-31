@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "478a36b6_8cd14caf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-05-31T20:39:57Z",
+      "side": 1,
+      "message": "If we do the same thing with FreeType, HarfBuzz, etc, might make things more shareable with other projects / google3 as well.",
+      "revId": "cd5874341801052b8a3014495037b56237b49edf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
