@@ -46,6 +46,30 @@
       },
       "revId": "b635e8fc8b547604228192fb6bce317c4b454bba",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "37302090_5d0f63ec",
+        "filename": "tests/MathTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 451,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-05-31T19:34:15Z",
+      "side": 1,
+      "message": "There\u0027s MSVC intrinsics too; we should follow __libcpp_popcount\u0027s lead here.\nhttps://osscs.corp.google.com/chromium/chromium/src/+/main:buildtools/third_party/libc++/trunk/include/__bits;l\u003d49?q\u003d__libcpp_popcount",
+      "parentUuid": "76dc7d4b_e156e171",
+      "range": {
+        "startLine": 443,
+        "startChar": 0,
+        "endLine": 451,
+        "endChar": 0
+      },
+      "revId": "b635e8fc8b547604228192fb6bce317c4b454bba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
