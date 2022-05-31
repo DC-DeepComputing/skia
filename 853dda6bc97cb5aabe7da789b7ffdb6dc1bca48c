@@ -16,6 +16,23 @@
       "message": "+bungeman for review, since you\u0027re familiar with the `SkFontLCDConfig` removal change that precedes and necessitates this one.  But feel free to hand off to someone else if you\u0027re swamped.",
       "revId": "853dda6bc97cb5aabe7da789b7ffdb6dc1bca48c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "17097add_caada72f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 10586
+      },
+      "writtenOn": "2022-05-31T21:35:50Z",
+      "side": 1,
+      "message": "+brianosman for OWNERS review of public-facing API changes.  Feel free to reassign if necessary.",
+      "revId": "853dda6bc97cb5aabe7da789b7ffdb6dc1bca48c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
