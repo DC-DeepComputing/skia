@@ -385,30 +385,81 @@ SkMesh::SkMesh(SkMesh&&)      = default;
 SkMesh& SkMesh::operator=(const SkMesh&) = default;
 SkMesh& SkMesh::operator=(SkMesh&&)      = default;
 
-sk_sp<IndexBuffer> SkMesh::MakeIndexBuffer(GrDirectContext* dc, sk_sp<const SkData> data) {
-    if (!data) {
+template <typename Base> sk_sp<Base> SkMeshPriv::CpuBuffer<Base>::Make(size_t size) {
+    SkASSERT(size > 0);
+    auto result = new CpuBuffer<Base>;
+    result->fData = std::move(data);
+    return sk_sp<Base>(result);
+}
+
+bool update(GrDirectContext* dc, size_t offset, sk_sp<const SkData>) override {
+
+}
+
+
+#if SK_SUPPORT_GPU
+
+template <typename Base, GrGpuBufferType Type> SkMeshPriv::GpuBuffer<Base, Type>::~GpuBuffer() {
+    GrResourceCache::ReturnResourceFromThread(std::move(fBuffer), fContextID);
+}
+
+template <typename Base, GrGpuBufferType Type>
+sk_sp<Base> SkMeshPriv::GpuBuffer<Base, Type>::Make(GrDirectContext* dc, size_t size) {
+    SkASSERT(dc);
+    SkASSERT(size > 0);
+
+    sk_sp<GrGpuBuffer> buffer = dc->priv().resourceProvider()->createBuffer(
+            size,
+            Type,
+            kStatic_GrAccessPattern);
+    if (!buffer) {
+        return nullptr;
+    }
+
+    auto result = new GpuBuffer;
+    result->fBuffer    = std::move(buffer);
+    result->fContextID = dc->directContextID();
+    return sk_sp<Base>(result);
+}
+
+#endif  // SK_SUPPORT_GPU
+
+sk_sp<IndexBuffer> SkMesh::MakeIndexBuffer(GrDirectContext* dc, size_t size) {
+    if (size == 0) {
         return nullptr;
     }
     if (!dc) {
-        return SkMeshPriv::CpuIndexBuffer::Make(std::move(data));
+        return SkMeshPriv::CpuIndexBuffer::Make(size);
     }
 #if SK_SUPPORT_GPU
-    return SkMeshPriv::GpuIndexBuffer::Make(dc, std::move(data));
+    return SkMeshPriv::GpuIndexBuffer::Make(dc, size);
 #endif
     return nullptr;
 }
 
-sk_sp<VertexBuffer> SkMesh::MakeVertexBuffer(GrDirectContext* dc, sk_sp<const SkData> data) {
-    if (!data) {
+sk_sp<IndexBuffer> SkMesh::MakeIndexBuffer(GrDirectContext* dc, sk_sp<const SkData> data) {
+    SkASSERT(data);
+    auto buffer = MakeIndexBuffer(dc, data->size());
+    return buffer && buffer->update(dc, 0, std::move(data)) ? buffer : nullptr;
+}
+
+sk_sp<VertexBuffer> SkMesh::MakeVertexBuffer(GrDirectContext* dc, size_t size) {
+    if (size == 0) {
         return nullptr;
     }
     if (!dc) {
-        return SkMeshPriv::CpuVertexBuffer::Make(std::move(data));
+        return SkMeshPriv::CpuVertexBuffer::Make(size);
     }
 #if SK_SUPPORT_GPU
-    return SkMeshPriv::GpuVertexBuffer::Make(dc, std::move(data));
+    return SkMeshPriv::GpuVertexBuffer::Make(dc, size);
 #endif
     return nullptr;
+}
+
+sk_sp<IndexBuffer> SkMesh::MakeVertexBuffer(GrDirectContext* dc, sk_sp<const SkData> data) {
+    SkASSERT(data);
+    auto buffer = MakeVertexBuffer(dc, data->size());
+    return buffer && buffer->update(dc, 0, std::move(data)) ? buffer : nullptr;
 }
 
 SkMesh SkMesh::Make(sk_sp<SkMeshSpecification> spec,

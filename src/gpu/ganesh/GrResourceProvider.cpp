@@ -591,15 +591,18 @@ sk_sp<GrGpuBuffer> GrResourceProvider::createBuffer(size_t size,
     if (kDynamic_GrAccessPattern != accessPattern) {
         return this->gpu()->createBuffer(size, intendedType, accessPattern);
     }
+    size_t allocSize = size;
     // bin by pow2+midpoint with a reasonable min
-    static const size_t MIN_SIZE = 1 << 12;
-    static const size_t MIN_UNIFORM_SIZE = 1 << 7;
-    size_t allocSize = intendedType == GrGpuBufferType::kUniform ? std::max(size, MIN_UNIFORM_SIZE)
-                                                                 : std::max(size, MIN_SIZE);
-    size_t ceilPow2 = GrNextSizePow2(allocSize);
-    size_t floorPow2 = ceilPow2 >> 1;
-    size_t mid = floorPow2 + (floorPow2 >> 1);
-    allocSize = (allocSize <= mid) ? mid : ceilPow2;
+    if (accessPattern != kStatic_GrAccessPattern || true) {
+        static const size_t MIN_SIZE = 1 << 12;
+        static const size_t MIN_UNIFORM_SIZE = 1 << 7;
+        allocSize = intendedType == GrGpuBufferType::kUniform ? std::max(size, MIN_UNIFORM_SIZE)
+                                                              : std::max(size, MIN_SIZE);
+        size_t ceilPow2 = GrNextSizePow2(allocSize);
+        size_t floorPow2 = ceilPow2 >> 1;
+        size_t mid = floorPow2 + (floorPow2 >> 1);
+        allocSize = (allocSize <= mid) ? mid : ceilPow2;
+    }
 
     skgpu::ScratchKey key;
     GrGpuBuffer::ComputeScratchKeyForDynamicBuffer(allocSize, intendedType, &key);
