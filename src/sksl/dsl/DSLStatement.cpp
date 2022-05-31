@@ -15,7 +15,6 @@
 #include "src/sksl/ir/SkSLBlock.h"
 #include "src/sksl/ir/SkSLExpression.h"
 #include "src/sksl/ir/SkSLExpressionStatement.h"
-#include "src/sksl/ir/SkSLNop.h"
 
 namespace SkSL {
 
@@ -42,13 +41,6 @@ DSLStatement::DSLStatement(std::unique_ptr<SkSL::Expression> expr)
 DSLStatement::DSLStatement(std::unique_ptr<SkSL::Statement> stmt)
     : fStatement(std::move(stmt)) {
     SkASSERT(this->hasValue());
-}
-
-DSLStatement::DSLStatement(std::unique_ptr<SkSL::Statement> stmt, Position pos)
-        : fStatement(stmt ? std::move(stmt) : SkSL::Nop::Make()) {
-    if (pos.valid() && !fStatement->fPosition.valid()) {
-        fStatement->fPosition = pos;
-    }
 }
 
 DSLStatement::~DSLStatement() {}

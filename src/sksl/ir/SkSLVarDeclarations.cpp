@@ -13,6 +13,7 @@
 #include "src/sksl/SkSLContext.h"
 #include "src/sksl/SkSLProgramSettings.h"
 #include "src/sksl/SkSLThreadContext.h"
+#include "src/sksl/ir/SkSLNop.h"
 
 namespace SkSL {
 
@@ -219,7 +220,7 @@ bool VarDeclaration::ErrorCheckAndCoerce(const Context& context, const Variable&
 std::unique_ptr<Statement> VarDeclaration::Convert(const Context& context,
         std::unique_ptr<Variable> var, std::unique_ptr<Expression> value, bool addToSymbolTable) {
     if (!ErrorCheckAndCoerce(context, *var, value)) {
-        return nullptr;
+        return Nop::Make(var->fPosition);
     }
     const Type* baseType = &var->type();
     int arraySize = 0;
@@ -230,7 +231,7 @@ std::unique_ptr<Statement> VarDeclaration::Convert(const Context& context,
     std::unique_ptr<Statement> varDecl = VarDeclaration::Make(context, var.get(), baseType,
             arraySize, std::move(value));
     if (!varDecl) {
-        return nullptr;
+        return Nop::Make(var->fPosition);
     }
 
     // Detect the declaration of magical variables.
@@ -238,7 +239,7 @@ std::unique_ptr<Statement> VarDeclaration::Convert(const Context& context,
         // Silently ignore duplicate definitions of `sk_FragColor`.
         const Symbol* symbol = (*ThreadContext::SymbolTable())[var->name()];
         if (symbol) {
-            return nullptr;
+            return Nop::Make(var->fPosition);
         }
     } else if ((var->storage() == Variable::Storage::kGlobal ||
                 var->storage() == Variable::Storage::kInterfaceBlock) &&
@@ -246,11 +247,11 @@ std::unique_ptr<Statement> VarDeclaration::Convert(const Context& context,
         // `sk_RTAdjust` is special, and makes the IR generator emit position-fixup expressions.
         if (ThreadContext::RTAdjustState().fVar || ThreadContext::RTAdjustState().fInterfaceBlock) {
             context.fErrors->error(var->fPosition, "duplicate definition of 'sk_RTAdjust'");
-            return nullptr;
+            return Nop::Make(var->fPosition);
         }
         if (!var->type().matches(*context.fTypes.fFloat4)) {
             context.fErrors->error(var->fPosition, "sk_RTAdjust must have type 'float4'");
-            return nullptr;
+            return Nop::Make(var->fPosition);
         }
         ThreadContext::RTAdjustState().fVar = var.get();
     }
