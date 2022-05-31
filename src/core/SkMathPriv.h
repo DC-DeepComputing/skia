@@ -131,6 +131,8 @@ static inline unsigned SkDiv255Round(unsigned prod) {
     static inline uint32_t SkBSwap32(uint32_t v) { return __builtin_bswap32(v); }
 #endif
 
+int SkCountSetBits(uint32_t n);
+
 //! Returns the number of leading zero bits (0...32)
 // From Hacker's Delight 2nd Edition
 constexpr int SkCLZ_portable(uint32_t x) {
