@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "46b464b7_d9d58fe2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-05-31T13:08:21Z",
+      "side": 1,
+      "message": "Not really a big deal but I made the upcoming SkData on SkMesh be const and then it started conflicting with these non-consts. SkData does have a non-const writeable_data() method.",
+      "revId": "12aa6e797f9f6ad0eb70cf4e7c15534d759477fd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
