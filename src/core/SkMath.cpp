@@ -39,6 +39,17 @@ int32_t SkSqrtBits(int32_t x, int count) {
     return root;
 }
 
+// Kernighan's method
+int SkCountSetBits(uint32_t n) {
+    int count = 0;
+
+    while (n) {
+        n &= (n - 1);
+        count++;
+    }
+    return count;
+}
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 size_t SkSafeMath::Add(size_t x, size_t y) {
