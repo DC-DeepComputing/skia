@@ -22,6 +22,30 @@
       },
       "revId": "b635e8fc8b547604228192fb6bce317c4b454bba",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "76dc7d4b_e156e171",
+        "filename": "tests/MathTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 451,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-05-31T19:24:09Z",
+      "side": 1,
+      "message": "It is definitely not the same:\nhttps://osscs.corp.google.com/chromium/chromium/src/+/main:buildtools/third_party/libc++/trunk/include/__bit_reference;l\u003d264?q\u003d__count_bool_true\n\nIt looks like they use `__builtin_popcount` which is probably what we should do as well, on platforms which support it (GCC and Clang). It\u0027s basically an intrinsic for CountSetBits.",
+      "parentUuid": "955abc08_2eb9485f",
+      "range": {
+        "startLine": 443,
+        "startChar": 0,
+        "endLine": 451,
+        "endChar": 0
+      },
+      "revId": "b635e8fc8b547604228192fb6bce317c4b454bba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
