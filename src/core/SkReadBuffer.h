@@ -32,6 +32,7 @@
 
 class SkData;
 class SkImage;
+class SkSurfaceProps;
 
 class SkReadBuffer {
 public:
@@ -105,6 +106,7 @@ public:
     SkRect readRect();
     void readRRect(SkRRect* rrect);
     void readRegion(SkRegion* region);
+    void readSurfaceProps(SkSurfaceProps* props);
 
     void readPath(SkPath* path);
 
