@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4f272d9f_8b32d854",
+        "filename": "dm/DMSrcSink.cpp",
+        "patchSetId": 43
+      },
+      "lineNbr": 2143,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-05-31T16:39:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "825c642c_6ab8658b",
+      "range": {
+        "startLine": 2143,
+        "startChar": 51,
+        "endLine": 2143,
+        "endChar": 59
+      },
+      "revId": "df65376df4b8f44ae0589e7efb33a5cbd9a17f42",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6d9c42e5_a710f2b1",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-05-31T15:24:31Z",
       "side": 1,
       "message": "nit: It\u0027s spelled `preCompile` in `context` versus `precompile` here.\n\"Precompile\" is one unhyphenated word so I\u0027d lean towards `precompile`.",
+      "range": {
+        "startLine": 2249,
+        "startChar": 17,
+        "endLine": 2249,
+        "endChar": 27
+      },
+      "revId": "df65376df4b8f44ae0589e7efb33a5cbd9a17f42",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c2fd675d_d99c7080",
+        "filename": "dm/DMSrcSink.cpp",
+        "patchSetId": 43
+      },
+      "lineNbr": 2249,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-05-31T16:39:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6d9c42e5_a710f2b1",
       "range": {
         "startLine": 2249,
         "startChar": 17,
@@ -72,6 +120,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f776e8c5_de5f629f",
+        "filename": "include/core/SkCombinationBuilder.h",
+        "patchSetId": 43
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-05-31T16:39:26Z",
+      "side": 1,
+      "message": "Let me do this is a follow up CL since I think it will read clearer stand alone.",
+      "parentUuid": "3ea7a9ac_f54e5db6",
+      "range": {
+        "startLine": 77,
+        "startChar": 0,
+        "endLine": 78,
+        "endChar": 47
+      },
+      "revId": "df65376df4b8f44ae0589e7efb33a5cbd9a17f42",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "04525078_79fb0ef5",
         "filename": "include/core/SkCombinationBuilder.h",
         "patchSetId": 43
@@ -83,6 +155,30 @@
       "writtenOn": "2022-05-31T15:40:56Z",
       "side": 1,
       "message": "Seems a little weird that the name and the type disagree on what it is. `fShaderOptions`?",
+      "range": {
+        "startLine": 160,
+        "startChar": 24,
+        "endLine": 160,
+        "endChar": 32
+      },
+      "revId": "df65376df4b8f44ae0589e7efb33a5cbd9a17f42",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1a764257_0fafd1d6",
+        "filename": "include/core/SkCombinationBuilder.h",
+        "patchSetId": 43
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-05-31T16:39:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "04525078_79fb0ef5",
       "range": {
         "startLine": 160,
         "startChar": 24,
@@ -116,6 +212,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "622858c1_2af1e1d8",
+        "filename": "src/core/SkCombinationBuilder.cpp",
+        "patchSetId": 43
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-05-31T16:39:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d340aa7a_f1dc54f2",
+      "range": {
+        "startLine": 52,
+        "startChar": 0,
+        "endLine": 52,
+        "endChar": 34
+      },
+      "revId": "df65376df4b8f44ae0589e7efb33a5cbd9a17f42",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "62380520_4802d3d6",
@@ -129,6 +249,30 @@
       "writtenOn": "2022-05-31T15:40:56Z",
       "side": 1,
       "message": "Consider\n\n static_assert(kSkTileModeCount \u003c\u003d 4);\n int tm0 \u003d index \u003e\u003e 2;\n int tm1 \u003d index \u0026 3;\n\n(And fix up `tm_pair_to_index` to match)",
+      "range": {
+        "startLine": 55,
+        "startChar": 0,
+        "endLine": 58,
+        "endChar": 0
+      },
+      "revId": "df65376df4b8f44ae0589e7efb33a5cbd9a17f42",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f70c2750_f4e94dd9",
+        "filename": "src/core/SkCombinationBuilder.cpp",
+        "patchSetId": 43
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-05-31T16:39:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "62380520_4802d3d6",
       "range": {
         "startLine": 55,
         "startChar": 0,
@@ -186,6 +330,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8f21fb53_5777cdf2",
+        "filename": "src/core/SkCombinationBuilder.cpp",
+        "patchSetId": 43
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-05-31T16:39:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2023f7e3_ee3a56a3",
+      "range": {
+        "startLine": 79,
+        "startChar": 0,
+        "endLine": 89,
+        "endChar": 1
+      },
+      "revId": "df65376df4b8f44ae0589e7efb33a5cbd9a17f42",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9b7ba519_6151c8ae",
@@ -199,6 +367,30 @@
       "writtenOn": "2022-05-31T15:28:42Z",
       "side": 1,
       "message": "It looks like this is `mutable` because `numCombinations` is `const`. Is it important that it\u0027s structured this way? Can `numCombinations` be non-const? We should avoid `mutable` unless we have a really good reason.",
+      "range": {
+        "startLine": 162,
+        "startChar": 4,
+        "endLine": 162,
+        "endChar": 11
+      },
+      "revId": "df65376df4b8f44ae0589e7efb33a5cbd9a17f42",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b70c3b68_038f6f67",
+        "filename": "src/core/SkCombinationBuilder.cpp",
+        "patchSetId": 43
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-05-31T16:39:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9b7ba519_6151c8ae",
       "range": {
         "startLine": 162,
         "startChar": 4,
@@ -232,6 +424,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "aab2b4ca_96203d9e",
+        "filename": "src/core/SkCombinationBuilder.cpp",
+        "patchSetId": 43
+      },
+      "lineNbr": 485,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-05-31T16:39:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "239978fc_8a39ccc1",
+      "range": {
+        "startLine": 485,
+        "startChar": 24,
+        "endLine": 485,
+        "endChar": 48
+      },
+      "revId": "df65376df4b8f44ae0589e7efb33a5cbd9a17f42",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "083c6510_62c2395d",
@@ -245,6 +461,30 @@
       "writtenOn": "2022-05-31T15:40:56Z",
       "side": 1,
       "message": "`SkOption*`",
+      "range": {
+        "startLine": 576,
+        "startChar": 9,
+        "endLine": 576,
+        "endChar": 13
+      },
+      "revId": "df65376df4b8f44ae0589e7efb33a5cbd9a17f42",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7bf43879_1a243e65",
+        "filename": "src/core/SkCombinationBuilder.cpp",
+        "patchSetId": 43
+      },
+      "lineNbr": 576,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-05-31T16:39:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "083c6510_62c2395d",
       "range": {
         "startLine": 576,
         "startChar": 9,
@@ -278,6 +518,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "423adf30_95a9d238",
+        "filename": "src/core/SkCombinationBuilder.cpp",
+        "patchSetId": 43
+      },
+      "lineNbr": 585,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-05-31T16:39:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dd4c87c2_a29aa843",
+      "range": {
+        "startLine": 585,
+        "startChar": 9,
+        "endLine": 585,
+        "endChar": 13
+      },
+      "revId": "df65376df4b8f44ae0589e7efb33a5cbd9a17f42",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0e15672b_71063f90",
@@ -301,6 +565,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6a0f1410_52112bf2",
+        "filename": "src/core/SkCombinationBuilder.cpp",
+        "patchSetId": 43
+      },
+      "lineNbr": 610,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-05-31T16:39:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0e15672b_71063f90",
+      "range": {
+        "startLine": 610,
+        "startChar": 14,
+        "endLine": 610,
+        "endChar": 24
+      },
+      "revId": "df65376df4b8f44ae0589e7efb33a5cbd9a17f42",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "72efc6d0_59305825",
@@ -314,6 +602,30 @@
       "writtenOn": "2022-05-31T15:40:56Z",
       "side": 1,
       "message": "`SkUniquePaintParamsID` \n\n\"Use type deduction only if it makes the code clearer to readers who aren\u0027t familiar with the project, or if it makes the code safer. Do not use it merely to avoid the inconvenience of writing an explicit type.\" (http://go/cstyle#Type_deduction)",
+      "range": {
+        "startLine": 612,
+        "startChar": 14,
+        "endLine": 612,
+        "endChar": 18
+      },
+      "revId": "df65376df4b8f44ae0589e7efb33a5cbd9a17f42",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ab088d02_2d74464d",
+        "filename": "src/core/SkCombinationBuilder.cpp",
+        "patchSetId": 43
+      },
+      "lineNbr": 612,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-05-31T16:39:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "72efc6d0_59305825",
       "range": {
         "startLine": 612,
         "startChar": 14,
