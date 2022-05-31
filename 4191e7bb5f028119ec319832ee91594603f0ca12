@@ -3,6 +3,52 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "af4758ce_03a04b05",
+        "filename": "dm/DMSrcSink.cpp",
+        "patchSetId": 46
+      },
+      "lineNbr": 2146,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-05-31T19:55:47Z",
+      "side": 1,
+      "message": "Why are sweep-gradients treated differently than all the others? Linear and radial gradients can be blended together (or against an image) but sweeps don\u0027t get that support. Is this from real-world usage data? If there\u0027s a justification for this particular set of combinations we should probably reference it in the comment above (and if there\u0027s real-world data, we could link to it)",
+      "range": {
+        "startLine": 2146,
+        "startChar": 17,
+        "endLine": 2146,
+        "endChar": 28
+      },
+      "revId": "4191e7bb5f028119ec319832ee91594603f0ca12",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "71807e9a_e2c49a6d",
+        "filename": "dm/DMSrcSink.cpp",
+        "patchSetId": 46
+      },
+      "lineNbr": 2153,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-05-31T19:55:47Z",
+      "side": 1,
+      "message": "Please take the commented part out; it added confusion for me. I think the commented-out TODO section on L2221 is sufficient, but if you want to call it out here, use freeform text below this chart.",
+      "range": {
+        "startLine": 2152,
+        "startChar": 29,
+        "endLine": 2153,
+        "endChar": 85
+      },
+      "revId": "4191e7bb5f028119ec319832ee91594603f0ca12",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "177cabe9_51dd9670",
         "filename": "src/core/SkMath.cpp",
         "patchSetId": 46

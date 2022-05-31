@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "80d9e599_6480e5dd",
+        "filename": "src/core/SkCombinationBuilder.cpp",
+        "patchSetId": 47
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-05-31T19:55:47Z",
+      "side": 1,
+      "message": "You can do this without a loop. IIRC this will do it:\n\n SkDebugf(\"%*s\", indent, \"\");\n \nI think you can also use `\"%*c\", indent, \u0027 \u0027` and the end result is the same.",
+      "range": {
+        "startLine": 65,
+        "startChar": 0,
+        "endLine": 67,
+        "endChar": 5
+      },
+      "revId": "bbc48e3fa72f1dc4416c68acfb2ff6c49996c256",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cc080d90_6035a3d8",
+        "filename": "src/core/SkCombinationBuilder.cpp",
+        "patchSetId": 47
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-05-31T19:55:47Z",
+      "side": 1,
+      "message": "constexpr",
+      "range": {
+        "startLine": 118,
+        "startChar": 11,
+        "endLine": 118,
+        "endChar": 16
+      },
+      "revId": "bbc48e3fa72f1dc4416c68acfb2ff6c49996c256",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "683cb20e_86ae965c",
+        "filename": "src/core/SkCombinationBuilder.cpp",
+        "patchSetId": 47
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-05-31T19:55:47Z",
+      "side": 1,
+      "message": "Q: if we\u0027re pulling memory out of an arena, it should be roughly sequential in memory and alloc/free times should be close to zero. Do we benefit from putting 4 options in a block? Could we just do one in a block and avoid a lot of bookkeeping? Linked lists are slow when you\u0027re jumping around in RAM and allocating blocks with malloc and free, but they might be fine when we\u0027re allocing and freeing semi-adjacent blocks of memory in constant time.",
+      "range": {
+        "startLine": 116,
+        "startChar": 0,
+        "endLine": 118,
+        "endChar": 45
+      },
+      "revId": "bbc48e3fa72f1dc4416c68acfb2ff6c49996c256",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
