@@ -40,7 +40,6 @@ generated_cc_atom(
         "//include/sksl:DSLSymbols_hdr",
         "//include/sksl:DSLType_hdr",
         "//include/sksl:DSLVar_hdr",
-        "//include/sksl:SkSLErrorReporter_hdr",
         "//include/sksl:SkSLPosition_hdr",
         "//src/sksl:SkSLBuiltinTypes_hdr",
         "//src/sksl:SkSLCompiler_hdr",
