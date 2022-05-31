@@ -16,6 +16,24 @@
       "message": "It looks like you need to `#include \u003cintrin.h\u003e`",
       "revId": "a708d9d75b2127984641d66af79cb356a50e50a3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9276b05f_6a6045a6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-05-31T20:24:31Z",
+      "side": 1,
+      "message": "Nvm, you already are, weird. Maybe MSVC ARM just doesn\u0027t support this.",
+      "parentUuid": "460d9dcb_125a3eef",
+      "revId": "a708d9d75b2127984641d66af79cb356a50e50a3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
