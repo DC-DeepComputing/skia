@@ -20,6 +20,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d9ab466c_a7e167e2",
+        "filename": "src/sksl/SkSLProgramSettings.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-05-31T14:29:51Z",
+      "side": 1,
+      "message": "Please move to a separate CL",
+      "range": {
+        "startLine": 134,
+        "startChar": 3,
+        "endLine": 138,
+        "endChar": 0
+      },
+      "revId": "302a91024947387985a7c564dc9e6bd3bcb34d87",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "04fd4af5_1adb857e",
         "filename": "src/sksl/ir/SkSLIndexExpression.cpp",
         "patchSetId": 5
@@ -54,6 +77,30 @@
       "writtenOn": "2022-05-31T14:14:00Z",
       "side": 1,
       "message": "This seems questionable. I tried to look at the places where slotCount is used. Most of them are totally incompatible with unsized arrays (eg, they\u0027re only reachable from runtime effects). The others seems to all be unreachable as well (constant folding code for vector math, etc...).\n\nI\u0027m wondering if we can just add an assert that (fCount !\u003d kUnsizedArray) here, instead?",
+      "range": {
+        "startLine": 159,
+        "startChar": 0,
+        "endLine": 161,
+        "endChar": 9
+      },
+      "revId": "302a91024947387985a7c564dc9e6bd3bcb34d87",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "17f1c9d4_7df5dec0",
+        "filename": "src/sksl/ir/SkSLType.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-05-31T14:29:51Z",
+      "side": 1,
+      "message": "+1",
+      "parentUuid": "a9bf2305_08e2d80f",
       "range": {
         "startLine": 159,
         "startChar": 0,
@@ -105,6 +152,98 @@
         "startChar": 48,
         "endLine": 63,
         "endChar": 54
+      },
+      "revId": "302a91024947387985a7c564dc9e6bd3bcb34d87",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a84eeb17_0263aada",
+        "filename": "src/sksl/ir/SkSLType.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-05-31T14:29:51Z",
+      "side": 1,
+      "message": "Idea, not necessarily for this CL at all.\n- First thought: maybe we should have an `MakeUnsizedArrayType` function so we don\u0027t need the comment about setting `column`.\n- Second thought: maybe the unsized array Type should actually BE its own class? `SizedArrayType` and `UnsizedArrayType` could coexist as Types. `isArray` could return true for both types. I don\u0027t know if this would actually make things easier or not, but it seems like we have a lot of places where we treat them differently and they might be happier if we actually encoded this info in the type system.\n\nI haven\u0027t thought it through to the end-state but it might be worth a thought. Unsized arrays were a pain point before but maybe that was because they were just a special case on top of sized arrays.",
+      "range": {
+        "startLine": 111,
+        "startChar": 0,
+        "endLine": 113,
+        "endChar": 60
+      },
+      "revId": "302a91024947387985a7c564dc9e6bd3bcb34d87",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6cf3476d_c0be18fd",
+        "filename": "src/sksl/ir/SkSLType.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 534,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-05-31T14:29:51Z",
+      "side": 1,
+      "message": "Name doesn\u0027t follow from the description. Maybe... `canBeUsedInArray`?",
+      "range": {
+        "startLine": 534,
+        "startChar": 9,
+        "endLine": 534,
+        "endChar": 23
+      },
+      "revId": "302a91024947387985a7c564dc9e6bd3bcb34d87",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8647f467_41fe5edd",
+        "filename": "src/sksl/ir/SkSLVariable.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-05-31T14:29:51Z",
+      "side": 1,
+      "message": "This always returns false so we can\u0027t test it in this CL.\nPlease move to a followup CL where it can be tested.",
+      "range": {
+        "startLine": 46,
+        "startChar": 0,
+        "endLine": 46,
+        "endChar": 80
+      },
+      "revId": "302a91024947387985a7c564dc9e6bd3bcb34d87",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "af2339a2_e80810ef",
+        "filename": "src/sksl/ir/SkSLVariable.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-05-31T14:29:51Z",
+      "side": 1,
+      "message": "nit: Could get the same results with flatter control flow:\n\n            if (storage !\u003d Variable::Storage::kGlobal) {\n                context.fErrors-\u003eerror(pos, \"unsized arrays must be global\");\n            } else if (!(modifiers.fFlags \u0026 (Modifiers::kIn_Flag | Modifiers::kOut_Flag))) {\n                context.fErrors-\u003eerror(pos,\n                        \"unsized arrays must be declared \u0027in\u0027 and/or \u0027out\u0027\");\n            }",
+      "range": {
+        "startLine": 47,
+        "startChar": 12,
+        "endLine": 54,
+        "endChar": 13
       },
       "revId": "302a91024947387985a7c564dc9e6bd3bcb34d87",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
