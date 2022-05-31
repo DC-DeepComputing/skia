@@ -72,6 +72,98 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "04525078_79fb0ef5",
+        "filename": "include/core/SkCombinationBuilder.h",
+        "patchSetId": 43
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-05-31T15:40:56Z",
+      "side": 1,
+      "message": "Seems a little weird that the name and the type disagree on what it is. `fShaderOptions`?",
+      "range": {
+        "startLine": 160,
+        "startChar": 24,
+        "endLine": 160,
+        "endChar": 32
+      },
+      "revId": "df65376df4b8f44ae0589e7efb33a5cbd9a17f42",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d340aa7a_f1dc54f2",
+        "filename": "src/core/SkCombinationBuilder.cpp",
+        "patchSetId": 43
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-05-31T15:40:56Z",
+      "side": 1,
+      "message": "We have `pair\u003cSkTileMode, SkTileMode\u003e` in several other places, and `tuple\u003cSkTileMode, SkTileMode\u003e` here. Please consider a dedicated struct with a name, like `struct TileModePair { SkTileMode tileMode[2]; }`. This will make code easier to read, as `const TileModePair\u0026 p` is easier to read than `const std::pair\u003cTileMode, TileMode\u003e\u0026 p`. It\u0027s also lighter-weight on the compiler.",
+      "range": {
+        "startLine": 52,
+        "startChar": 0,
+        "endLine": 52,
+        "endChar": 34
+      },
+      "revId": "df65376df4b8f44ae0589e7efb33a5cbd9a17f42",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "62380520_4802d3d6",
+        "filename": "src/core/SkCombinationBuilder.cpp",
+        "patchSetId": 43
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-05-31T15:40:56Z",
+      "side": 1,
+      "message": "Consider\n\n static_assert(kSkTileModeCount \u003c\u003d 4);\n int tm0 \u003d index \u003e\u003e 2;\n int tm1 \u003d index \u0026 3;\n\n(And fix up `tm_pair_to_index` to match)",
+      "range": {
+        "startLine": 55,
+        "startChar": 0,
+        "endLine": 58,
+        "endChar": 0
+      },
+      "revId": "df65376df4b8f44ae0589e7efb33a5cbd9a17f42",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "06bbbbcb_60b0d932",
+        "filename": "src/core/SkCombinationBuilder.cpp",
+        "patchSetId": 43
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-05-31T15:40:56Z",
+      "side": 1,
+      "message": "IMO this should live in SkMathPriv.h (I\u0027m very surprised it isn\u0027t already there)",
+      "range": {
+        "startLine": 79,
+        "startChar": 0,
+        "endLine": 89,
+        "endChar": 1
+      },
+      "revId": "df65376df4b8f44ae0589e7efb33a5cbd9a17f42",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9b7ba519_6151c8ae",
         "filename": "src/core/SkCombinationBuilder.cpp",
         "patchSetId": 43
@@ -95,6 +187,75 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "239978fc_8a39ccc1",
+        "filename": "src/core/SkCombinationBuilder.cpp",
+        "patchSetId": 43
+      },
+      "lineNbr": 485,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-05-31T15:40:56Z",
+      "side": 1,
+      "message": "These are typically called \"X macros\"\n\nhttps://en.wikipedia.org/wiki/X_Macro",
+      "range": {
+        "startLine": 485,
+        "startChar": 24,
+        "endLine": 485,
+        "endChar": 48
+      },
+      "revId": "df65376df4b8f44ae0589e7efb33a5cbd9a17f42",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "083c6510_62c2395d",
+        "filename": "src/core/SkCombinationBuilder.cpp",
+        "patchSetId": 43
+      },
+      "lineNbr": 576,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-05-31T15:40:56Z",
+      "side": 1,
+      "message": "`SkOption*`",
+      "range": {
+        "startLine": 576,
+        "startChar": 9,
+        "endLine": 576,
+        "endChar": 13
+      },
+      "revId": "df65376df4b8f44ae0589e7efb33a5cbd9a17f42",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dd4c87c2_a29aa843",
+        "filename": "src/core/SkCombinationBuilder.cpp",
+        "patchSetId": 43
+      },
+      "lineNbr": 585,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-05-31T15:40:56Z",
+      "side": 1,
+      "message": "`SkOption*`",
+      "range": {
+        "startLine": 585,
+        "startChar": 9,
+        "endLine": 585,
+        "endChar": 13
+      },
+      "revId": "df65376df4b8f44ae0589e7efb33a5cbd9a17f42",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0e15672b_71063f90",
         "filename": "src/core/SkCombinationBuilder.cpp",
         "patchSetId": 43
@@ -111,6 +272,29 @@
         "startChar": 14,
         "endLine": 610,
         "endChar": 24
+      },
+      "revId": "df65376df4b8f44ae0589e7efb33a5cbd9a17f42",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "72efc6d0_59305825",
+        "filename": "src/core/SkCombinationBuilder.cpp",
+        "patchSetId": 43
+      },
+      "lineNbr": 612,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-05-31T15:40:56Z",
+      "side": 1,
+      "message": "`SkUniquePaintParamsID` \n\n\"Use type deduction only if it makes the code clearer to readers who aren\u0027t familiar with the project, or if it makes the code safer. Do not use it merely to avoid the inconvenience of writing an explicit type.\" (http://go/cstyle#Type_deduction)",
+      "range": {
+        "startLine": 612,
+        "startChar": 14,
+        "endLine": 612,
+        "endChar": 18
       },
       "revId": "df65376df4b8f44ae0589e7efb33a5cbd9a17f42",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
