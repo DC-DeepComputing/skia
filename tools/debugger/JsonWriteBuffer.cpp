@@ -222,3 +222,11 @@ void JsonWriteBuffer::writePaint(const SkPaint& paint) {
     this->append("paint");
     DrawCommand::MakeJsonPaint(*fWriter, paint, *fUrlDataManager);
 }
+
+void JsonWriteBuffer::writeSurfaceProps(const SkSurfaceProps& props) {
+    this->append("surfaceProps");
+    fWriter->beginObject();
+    this->writeUInt(props.flags());
+    this->writeUInt(props.pixelGeometry());
+    fWriter->endObject();
+}

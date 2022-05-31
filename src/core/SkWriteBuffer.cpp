@@ -11,6 +11,7 @@
 #include "include/core/SkData.h"
 #include "include/core/SkM44.h"
 #include "include/core/SkStream.h"
+#include "include/core/SkSurfaceProps.h"
 #include "include/core/SkTypeface.h"
 #include "include/private/SkTo.h"
 #include "src/core/SkImagePriv.h"
@@ -208,6 +209,11 @@ void SkBinaryWriteBuffer::writeTypeface(SkTypeface* obj) {
 
 void SkBinaryWriteBuffer::writePaint(const SkPaint& paint) {
     SkPaintPriv::Flatten(paint, *this);
+}
+
+void SkBinaryWriteBuffer::writeSurfaceProps(const SkSurfaceProps& props) {
+    this->writeUInt(props.flags());
+    this->writeUInt(props.pixelGeometry());
 }
 
 void SkBinaryWriteBuffer::setFactoryRecorder(sk_sp<SkFactorySet> rec) {
