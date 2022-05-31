@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a9bf2305_08e2d80f",
+        "filename": "src/sksl/ir/SkSLType.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-05-31T14:14:00Z",
+      "side": 1,
+      "message": "This seems questionable. I tried to look at the places where slotCount is used. Most of them are totally incompatible with unsized arrays (eg, they\u0027re only reachable from runtime effects). The others seems to all be unreachable as well (constant folding code for vector math, etc...).\n\nI\u0027m wondering if we can just add an assert that (fCount !\u003d kUnsizedArray) here, instead?",
+      "range": {
+        "startLine": 159,
+        "startChar": 0,
+        "endLine": 161,
+        "endChar": 9
+      },
+      "revId": "302a91024947387985a7c564dc9e6bd3bcb34d87",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b29e31df_1e3ace00",
+        "filename": "src/sksl/ir/SkSLType.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-05-31T14:14:00Z",
+      "side": 1,
+      "message": "I think I\u0027d prefer -1, regardless. We have to trust our fuzzers and testing.",
+      "range": {
+        "startLine": 61,
+        "startChar": 87,
+        "endLine": 62,
+        "endChar": 19
+      },
+      "revId": "302a91024947387985a7c564dc9e6bd3bcb34d87",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
