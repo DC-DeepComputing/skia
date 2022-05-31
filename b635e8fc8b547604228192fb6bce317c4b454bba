@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "955abc08_2eb9485f",
+        "filename": "tests/MathTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 451,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-05-31T19:13:02Z",
+      "side": 1,
+      "message": "I\u0027m not entirely sure but this looks like it always makes a number of the form `0b111111` (an arbitrary number of set bits, but the set-bits are always consecutive from the right side).\n\nIf you\u0027re looking to make a random number and check how many of its bits are set, this would probably be OK:\n\n   int testVal \u003d rand.nextULessThan(UINT_MAX);\n   int expectedNumSetBits \u003d std::bitset\u003c32\u003e(testVal).count();\n\nI am not sure if `std::bitset\u003c32\u003e(testVal).count()` is a better or worse implementation than Kernighan\u0027s method. It would not surprise me if it were the exact same :)",
+      "range": {
+        "startLine": 443,
+        "startChar": 0,
+        "endLine": 451,
+        "endChar": 0
+      },
+      "revId": "b635e8fc8b547604228192fb6bce317c4b454bba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
