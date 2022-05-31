@@ -27,6 +27,9 @@
 #include <android/hardware_buffer.h>
 #endif
 
+// Edge-only includes
+#include "include/core/SkSurfaceProps.h"
+
 class GrBackendFormat;
 class GrBackendTexture;
 class GrContextThreadSafeProxy;
@@ -253,12 +256,13 @@ public:
         @param paint       SkPaint to apply transparency, filtering, and so on; may be nullptr
         @param bitDepth    8-bit integer or 16-bit float: per component
         @param colorSpace  range of colors; may be nullptr
+        @param props       props to use when rasterizing the picture
         @return            created SkImage, or nullptr
     */
     static sk_sp<SkImage> MakeFromPicture(sk_sp<SkPicture> picture, const SkISize& dimensions,
                                           const SkMatrix* matrix, const SkPaint* paint,
-                                          BitDepth bitDepth,
-                                          sk_sp<SkColorSpace> colorSpace);
+                                          BitDepth bitDepth, sk_sp<SkColorSpace> colorSpace,
+                                          SkSurfaceProps props = {});
 
 #if SK_SUPPORT_GPU
         /** Creates a GPU-backed SkImage from compressed data.

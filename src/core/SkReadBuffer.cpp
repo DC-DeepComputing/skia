@@ -249,6 +249,14 @@ void SkReadBuffer::readRegion(SkRegion* region) {
     (void)this->skip(size);
 }
 
+void SkReadBuffer::readSurfaceProps(SkSurfaceProps* props) {
+    uint32_t flags = this->readUInt();
+    SkPixelGeometry pixelGeometry = static_cast<SkPixelGeometry>(this->readUInt());
+    SkScalar textContrast = this->readScalar();
+    SkScalar textGamma = this->readScalar();
+    *props = SkSurfaceProps(flags, pixelGeometry);
+}
+
 void SkReadBuffer::readPath(SkPath* path) {
     size_t size = 0;
     if (!fError) {

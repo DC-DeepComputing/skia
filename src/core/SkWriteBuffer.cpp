@@ -18,6 +18,9 @@
 #include "src/core/SkPaintPriv.h"
 #include "src/core/SkPtrRecorder.h"
 
+// Edge-only includes
+#include "include/core/SkSurfaceProps.h"
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 SkBinaryWriteBuffer::SkBinaryWriteBuffer()
@@ -208,6 +211,11 @@ void SkBinaryWriteBuffer::writeTypeface(SkTypeface* obj) {
 
 void SkBinaryWriteBuffer::writePaint(const SkPaint& paint) {
     SkPaintPriv::Flatten(paint, *this);
+}
+
+void SkBinaryWriteBuffer::writeSurfaceProps(const SkSurfaceProps& props) {
+    this->writeUInt(props.flags());
+    this->writeUInt(props.pixelGeometry());
 }
 
 void SkBinaryWriteBuffer::setFactoryRecorder(sk_sp<SkFactorySet> rec) {

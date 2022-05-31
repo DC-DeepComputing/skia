@@ -64,6 +64,7 @@ public:
     void   writeImage(const SkImage*) override;
     void   writeTypeface(SkTypeface* typeface) override;
     void   writePaint(const SkPaint& paint) override;
+    void   writeSurfaceProps(const SkSurfaceProps& props) override;
 
 private:
     void append(const char* type);

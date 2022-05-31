@@ -12,6 +12,9 @@
 #include "src/shaders/SkShaderBase.h"
 #include <atomic>
 
+// Edge-only includes
+#include "include/core/SkSurfaceProps.h"
+
 class SkArenaAlloc;
 class SkBitmap;
 class SkPicture;
@@ -25,7 +28,7 @@ class SkPicture;
 class SkPictureShader : public SkShaderBase {
 public:
     static sk_sp<SkShader> Make(sk_sp<SkPicture>, SkTileMode, SkTileMode, SkFilterMode,
-                                const SkMatrix*, const SkRect*);
+                                const SkMatrix*, const SkRect*, const SkSurfaceProps* props);
 
 #if SK_SUPPORT_GPU
     std::unique_ptr<GrFragmentProcessor> asFragmentProcessor(const GrFPArgs&) const override;
@@ -47,7 +50,7 @@ private:
     SK_FLATTENABLE_HOOKS(SkPictureShader)
 
     SkPictureShader(sk_sp<SkPicture>, SkTileMode, SkTileMode, SkFilterMode,
-                    const SkMatrix*, const SkRect*);
+                    const SkMatrix*, const SkRect*, const SkSurfaceProps* props);
 
     sk_sp<SkShader> rasterShader(const SkMatrix&, SkTCopyOnFirstWrite<SkMatrix>* localMatrix,
                                  SkColorType dstColorType, SkColorSpace* dstColorSpace) const;
@@ -72,6 +75,7 @@ private:
     SkRect              fTile;
     SkTileMode          fTmx, fTmy;
     SkFilterMode        fFilter;
+    SkSurfaceProps      fProps;
 
     using INHERITED = SkShaderBase;
 };
