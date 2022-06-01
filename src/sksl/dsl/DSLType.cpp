@@ -75,9 +75,8 @@ static const SkSL::Type* find_type(const Context& context,
                                    Position modifiersPos,
                                    Modifiers* modifiers) {
     const Type* type = find_type(context, overallPos, name);
-    type = type->applyPrecisionQualifiers(context, modifiers, ThreadContext::SymbolTable().get(),
-            modifiersPos);
-    return type;
+    return type->applyPrecisionQualifiers(context, modifiers, ThreadContext::SymbolTable().get(),
+                                          modifiersPos);
 }
 
 static const SkSL::Type* get_type_from_type_constant(const Context& context, TypeConstant tc) {
@@ -185,6 +184,10 @@ static const SkSL::Type* get_type_from_type_constant(const Context& context, Typ
     }
 }
 
+DSLType::DSLType(TypeConstant tc, Position pos)
+    : fSkSLType(get_type_from_type_constant(ThreadContext::Context(), tc))
+    , fPosition(pos) {}
+
 DSLType::DSLType(std::string_view name, Position pos)
     : fSkSLType(find_type(ThreadContext::Context(), pos, name))
     , fPosition(pos) {}
@@ -244,17 +247,6 @@ bool DSLType::isStruct() const {
 
 bool DSLType::isEffectChild() const {
     return this->skslType().isEffectChild();
-}
-
-const SkSL::Type& DSLType::skslType() const {
-    if (fSkSLType) {
-        return *fSkSLType;
-    }
-    const Context& context = ThreadContext::Context();
-    return *verify_type(context,
-                        get_type_from_type_constant(context, fTypeConstant),
-                        /*allowPrivateTypes=*/true,
-                        Position());
 }
 
 DSLExpression DSLType::Construct(DSLType type, SkSpan<DSLExpression> argArray) {
