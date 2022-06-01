@@ -203,6 +203,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8dd57818_59cb2d53",
+        "filename": "src/sksl/ir/SkSLType.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-06-01T18:18:11Z",
+      "side": 1,
+      "message": "Oof, that\u0027s so dicey. Where exactly are unsized arrays going to be allowed? I think this issue could go anywhere from \"not really that big a deal\" to \"we have to get this right\" depending on where unsized-array types are allowed to exist.\n\nI found at least two more potential problem areas:\n\nhttps://osscs.corp.google.com/android/platform/superproject/+/master:external/skia/src/sksl/ir/SkSLConstructorCompound.cpp;l\u003d36-40;drc\u003dffba524ff800628fb550ba555157f3b2cde1d37e\n\nhttps://osscs.corp.google.com/skia/skia/+/main:src/sksl/codegen/SkSLVMCodeGenerator.cpp;l\u003d2174-2175;drc\u003d59c906795c50b54d7cdeebc167cfa377af28c7aa\n\nI don\u0027t have a good answer for what you should do instead but I don\u0027t think just returning 1 is a good idea. For a second I considered returning zero but that\u0027s even worse (this would let constant-folding checks pass that should fail).",
+      "parentUuid": "5a0121fb_4d9c2620",
+      "range": {
+        "startLine": 159,
+        "startChar": 0,
+        "endLine": 161,
+        "endChar": 9
+      },
+      "revId": "302a91024947387985a7c564dc9e6bd3bcb34d87",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b29e31df_1e3ace00",
         "filename": "src/sksl/ir/SkSLType.h",
         "patchSetId": 5
@@ -379,6 +403,30 @@
       "side": 1,
       "message": "\"canBeUsedInArray\" doesn\u0027t sound to me like something that would report errors. How about we compromise on \"checkIfCanBeUsedInArray\"?",
       "parentUuid": "6cf3476d_c0be18fd",
+      "range": {
+        "startLine": 534,
+        "startChar": 9,
+        "endLine": 534,
+        "endChar": 23
+      },
+      "revId": "302a91024947387985a7c564dc9e6bd3bcb34d87",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2b987a84_f1575eec",
+        "filename": "src/sksl/ir/SkSLType.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 534,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-06-01T18:18:11Z",
+      "side": 1,
+      "message": "`checkIfUsableInArray` for brevity?",
+      "parentUuid": "a0819a63_44cdf010",
       "range": {
         "startLine": 534,
         "startChar": 9,
