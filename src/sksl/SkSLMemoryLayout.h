@@ -118,7 +118,10 @@ public:
                 return type.columns() * this->size(type.componentType());
             case Type::TypeKind::kMatrix: // fall through
             case Type::TypeKind::kArray:
-                return type.columns() * this->stride(type);
+                return type.columns() == Type::kUnsizedArray ? 4
+                                                             : type.columns() * this->stride(type);
+            case Type::TypeKind::kPointer:
+                return 4;
             case Type::TypeKind::kStruct: {
                 size_t total = 0;
                 for (const auto& f : type.fields()) {
@@ -147,6 +150,7 @@ public:
             case Type::TypeKind::kScalar:
             case Type::TypeKind::kVector:
             case Type::TypeKind::kMatrix:
+            case Type::TypeKind::kPointer:
                 return true;
 
             case Type::TypeKind::kArray:

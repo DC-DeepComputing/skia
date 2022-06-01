@@ -1,0 +1,8 @@
+layout(location=0) constant in int[] src1;
+layout(location=1) thread in int[] src2;
+layout(location=2) threadgroup out int[] dest;
+layout(location=3) device out int[] deviceVar;
+
+void main() {
+    dest[sk_ThreadPosition.x] = src1[sk_ThreadPosition.x] + src2[sk_ThreadPosition.x];
+}

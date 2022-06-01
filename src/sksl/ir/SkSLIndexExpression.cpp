@@ -68,7 +68,8 @@ std::unique_ptr<Expression> IndexExpression::Convert(const Context& context,
     }
     // Convert an index expression with an expression inside of it: `arr[a * 3]`.
     const Type& baseType = base->type();
-    if (!baseType.isArray() && !baseType.isMatrix() && !baseType.isVector()) {
+    if (!baseType.isArray() && !baseType.isMatrix() && !baseType.isVector() &&
+            !baseType.isPointer()) {
         context.fErrors->error(base->fPosition,
                                "expected array, but found '" + baseType.displayName() + "'");
         return nullptr;
@@ -95,7 +96,8 @@ std::unique_ptr<Expression> IndexExpression::Make(const Context& context,
                                                   std::unique_ptr<Expression> base,
                                                   std::unique_ptr<Expression> index) {
     const Type& baseType = base->type();
-    SkASSERT(baseType.isArray() || baseType.isMatrix() || baseType.isVector());
+    SkASSERT(baseType.isArray() || baseType.isMatrix() || baseType.isVector() ||
+            baseType.isPointer());
     SkASSERT(index->type().isInteger());
 
     const Expression* indexExpr = ConstantFolder::GetConstantValueForVariable(*index);

@@ -37,6 +37,7 @@ public:
         kConstructorCompoundCast,
         kConstructorDiagonalMatrix,
         kConstructorMatrixResize,
+        kConstructorPointerCast,
         kConstructorScalarCast,
         kConstructorSplat,
         kConstructorStruct,
