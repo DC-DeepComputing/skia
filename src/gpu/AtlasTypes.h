@@ -19,6 +19,7 @@
 #include "src/core/SkIPoint16.h"
 #include "src/core/SkTInternalLList.h"
 #include "src/gpu/RectanizerSkyline.h"
+#include "src/gpu/RectanizerOptimized.h"
 
 class GrOpFlushState;
 class TestingUploadTarget;
@@ -298,6 +299,10 @@ public:
         return {fUVs[0] & 0x1FFF, fUVs[1]};
     }
 
+    SkIPoint bottomRight() const {
+        return {fUVs[2] & 0x1FFF, fUVs[3]};
+    }
+
     uint16_t width() const {
         return fUVs[2] - fUVs[0];
     }
@@ -436,7 +441,11 @@ public:
     }
     SkDEBUGCODE(size_t bpp() const { return fBytesPerPixel; })
 
-    bool addSubImage(int width, int height, const void* image, AtlasLocator* atlasLocator);
+            bool addSubImage(int width,
+                             int height,
+                             int zeroPadding,
+                             const void* image,
+                             AtlasLocator* atlasLocator);
 
     /**
      * To manage the lifetime of a plot, we use two tokens. We use the last upload token to
@@ -468,6 +477,25 @@ public:
             fBytesPerPixel));
     }
 
+    SkIRect getRect_testingOnly() {
+        return SkIRect::MakeXYWH(fOffset.fX, fOffset.fY, fWidth, fHeight);
+    }
+
+    unsigned char* data_testingOnly() {
+        return fData;
+    }
+
+    void testBytes_testingOnly() {
+        for (auto y = 0; y < fHeight; ++y) {
+            for (auto x = 0; x < fWidth; ++x) {
+                auto byte = fData + y * fWidth + x;
+                if (*byte != 0 && *byte != 0xff) {
+                    SkDebugf("Wrong: [%d, %d] = %d\n", y, x, *byte);
+                }
+            }
+        }
+    }
+
 #ifdef SK_DEBUG
     void resetListPtrs() {
         fPrev = fNext = nullptr;
@@ -494,7 +522,8 @@ private:
     const int fHeight;
     const int fX;
     const int fY;
-    skgpu::RectanizerSkyline fRectanizer;
+    //skgpu::RectanizerSkyline fRectanizer;
+    skgpu::RectanizerOptimized fRectanizer;
     const SkIPoint16 fOffset;  // the offset of the plot in the backing texture
     const SkColorType fColorType;
     const size_t fBytesPerPixel;

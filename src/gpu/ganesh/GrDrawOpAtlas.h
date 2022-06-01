@@ -106,8 +106,12 @@ public:
         kTryAgain
     };
 
-    ErrorCode addToAtlas(GrResourceProvider*, GrDeferredUploadTarget*,
-                         int width, int height, const void* image, skgpu::AtlasLocator*);
+    ErrorCode addToAtlas(GrResourceProvider*,
+                         GrDeferredUploadTarget*,
+                         int width,
+                         int height,
+                         const void* image,
+                         skgpu::AtlasLocator*);
 
     const GrSurfaceProxyView* getViews() const { return fViews; }
 
@@ -164,6 +168,12 @@ public:
 
     int numAllocated_TestingOnly() const;
     void setMaxPages_TestingOnly(uint32_t maxPages);
+    skgpu::Plot* getPlot_testingOnly(int pageIdx, int plotIdx) {
+        return fPages[pageIdx].fPlotArray[plotIdx].get();
+    }
+    void checkEvictedPlot_testingOnly(skgpu::PlotEvictionCallback* checker) {
+        this->fEvictionCallbacks.emplace_back(checker);
+    }
 
 private:
     GrDrawOpAtlas(GrProxyProvider*, const GrBackendFormat& format, SkColorType, size_t bpp,
@@ -185,8 +195,13 @@ private:
         // the front and remove from the back there is no need for MRU.
     }
 
-    bool uploadToPage(unsigned int pageIdx, GrDeferredUploadTarget*, int width, int height,
-                      const void* image, skgpu::AtlasLocator*);
+    bool uploadToPage(unsigned int pageIdx,
+                      GrDeferredUploadTarget*,
+                      int width,
+                      int height,
+                      int zeroPadding,
+                      const void* image,
+                      skgpu::AtlasLocator*);
 
     void uploadPlotToTexture(GrDeferredTextureUploadWritePixelsFn& writePixels,
                              GrTextureProxy* proxy,
@@ -229,7 +244,7 @@ private:
     std::vector<skgpu::PlotEvictionCallback*> fEvictionCallbacks;
 
     struct Page {
-        // allocated array of Plots
+        // allocated array of PlotsfEvictionCallbacks
         std::unique_ptr<sk_sp<skgpu::Plot>[]> fPlotArray;
         // LRU list of Plots (MRU at head - LRU at tail)
         skgpu::PlotList fPlotList;
