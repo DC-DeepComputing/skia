@@ -16,6 +16,46 @@
       "message": "Thanks!",
       "revId": "aac6af63e678d53414c4f294e86d96dab7949808",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9047039a_fc72b1cc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-06-01T20:56:28Z",
+      "side": 1,
+      "message": "Also recording my thought process here: The results of onGetPixels and onGenerateTexture are cached, and the surface-props aren\u0027t factored into the cache key(s). However, I think that\u0027s okay, because the image\u0027s unique ID is the primary element of the key. The way that this is written, there\u0027s no way to reuse an image with a different surface-props but the same ID (so it\u0027s functionally the same as the color space and bit-depth arguments).",
+      "revId": "aac6af63e678d53414c4f294e86d96dab7949808",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "96963d23_26b4b96f",
+        "filename": "src/core/SkPictureImageGenerator.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-06-01T20:56:28Z",
+      "side": 1,
+      "message": "Need to update this as well to use fProps.",
+      "range": {
+        "startLine": 108,
+        "startChar": 0,
+        "endLine": 108,
+        "endChar": 54
+      },
+      "revId": "aac6af63e678d53414c4f294e86d96dab7949808",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
