@@ -166,6 +166,8 @@ private:
 
     // TODO: store the SkBlender-based blenders in the arena
     SkTHashSet<uint32_t> fBlendModes;
+
+    SkDEBUGCODE(int fEpoch = 0;)
 };
 
 #endif // SkCombinationBuilder_DEFINED

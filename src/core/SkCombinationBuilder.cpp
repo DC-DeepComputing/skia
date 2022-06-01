@@ -114,6 +114,13 @@ public:
     SkShaderType type() const { return fType; }
     int numSlots() const { return fNumSlots; }
 
+#ifdef SK_DEBUG
+    void setEpoch(int epoch) {
+        SkASSERT(fEpoch == kInvalidEpoch && epoch != kInvalidEpoch);
+        fEpoch = epoch;
+    }
+#endif
+
     void setSlotsArray(SkSlot* slots) {
         SkASSERT(!fSlots);
         fSlots = slots;
@@ -177,9 +184,12 @@ public:
 private:
     int numIntrinsicCombinations() const;
 
+    SkDEBUGCODE(static constexpr int kInvalidEpoch = -1;)
+
     const SkShaderType fType;
     int                fNumCombinations = -1;
     int                fNumChildCombinations = -1;
+    SkDEBUGCODE(int    fEpoch = kInvalidEpoch;)
     const int          fNumSlots;
     SkOption*          fNext = nullptr;
     SkSlot*            fSlots = nullptr;  // an array of 'fNumSlots' SkSlots
@@ -378,6 +388,8 @@ SkOption* SkCombinationBuilder::allocInArena(Args&&... args) {
         return nullptr;
     }
 
+    SkDEBUGCODE(arenaObject->setEpoch(fEpoch));
+
     if (T::kNumChildSlots) {
         arenaObject->setSlotsArray(fArena->makeArrayDefault<SkOption::SkSlot>(T::kNumChildSlots));
     }
@@ -507,6 +519,7 @@ void SkCombinationBuilder::reset() {
     fShaderOptions.reset();
     fBlendModes.reset();
     fArena->reset();
+    SkDEBUGCODE(++fEpoch;)
 }
 
 int SkCombinationBuilder::numCombinations() {
