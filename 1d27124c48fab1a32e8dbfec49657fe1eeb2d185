@@ -46,6 +46,30 @@
       },
       "revId": "1d27124c48fab1a32e8dbfec49657fe1eeb2d185",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "696abb10_6718d801",
+        "filename": "src/core/SkMath.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-06-01T19:47:39Z",
+      "side": 1,
+      "message": "We could use `#if SK_CPU_SSE_LEVEL \u003e\u003d SK_CPU_SSE_LEVEL_SSE42` instead of a runtime check?",
+      "parentUuid": "e4520d99_65538570",
+      "range": {
+        "startLine": 57,
+        "startChar": 0,
+        "endLine": 66,
+        "endChar": 0
+      },
+      "revId": "1d27124c48fab1a32e8dbfec49657fe1eeb2d185",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
