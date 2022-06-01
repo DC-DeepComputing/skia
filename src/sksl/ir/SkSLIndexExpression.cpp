@@ -20,7 +20,8 @@ namespace SkSL {
 
 static bool index_out_of_range(const Context& context, Position pos, SKSL_INT index,
         const Expression& base) {
-    if (index >= 0 && index < base.type().columns()) {
+    if (index >= 0 && (base.type().columns() == Type::kUnsizedArray ||
+            index < base.type().columns())) {
         return false;
     }
 
