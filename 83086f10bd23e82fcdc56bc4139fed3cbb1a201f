@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1108b575_be55cc17",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18274
+      },
+      "writtenOn": "2022-06-01T17:24:48Z",
+      "side": 1,
+      "message": "Greg, this CL is ready for the review. Can you PTAL.\n\nI have used following texture IDs when passing label from backend texture classes:\nGrGlAttachment -\u003e fRenderbufferID\nGrGLRenderTarget -\u003e fMSColorRenderbufferID\nGrGlBuffer -\u003e fBufferID\nGrGlTextureRenderTarget -\u003e textureID()\nGrGlTexture -\u003e fID\n\nAnd all these ids are wrapped i skASSERT to check if they are valid before using it in the GR_GL_CALL.",
+      "revId": "83086f10bd23e82fcdc56bc4139fed3cbb1a201f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
