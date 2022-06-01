@@ -33,6 +33,24 @@
       "message": "Just realized we should probably add various tests in our \"Too Many Dimensions\" error tests:\n\nArrayTooManyDimensions*.rts\nArrayTypeTooManyDimensions*.rts\n",
       "revId": "4b41fb604501abf75fd8663ca5ce3bc4ddf85b35",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "489cd7cf_d3c2a845",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-06-01T18:36:19Z",
+      "side": 1,
+      "message": "Active",
+      "parentUuid": "21ab3655_1a5ca3a7",
+      "revId": "4b41fb604501abf75fd8663ca5ce3bc4ddf85b35",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
