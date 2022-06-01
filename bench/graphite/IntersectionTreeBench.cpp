@@ -13,6 +13,9 @@
 #include "tools/ToolUtils.h"
 #include "tools/flags/CommandLineFlags.h"
 
+#include "src/gpu/graphite/geom/BoundsManager.h"
+#include "src/gpu/graphite/geom/QuadTreeBoundsManager.h"
+
 static DEFINE_string(intersectionTreeFile, "",
                      "svg or skp for the IntersectionTree bench to sniff paths from.");
 
@@ -157,6 +160,72 @@ private:
     }
 };
 
+class BoundsManagerBench : public Benchmark {
+public:
+    BoundsManagerBench(std::unique_ptr<BoundsManager> manager, const char* managerName, int numRandomRects)
+            : fManager(std::move(manager))
+            , fRectCount(numRandomRects) {
+        fName.printf("BoundsManager_%i_%s", numRandomRects, managerName);
+    }
+
+private:
+
+    const char* onGetName() final { return fName.c_str(); }
+
+    bool isSuitableFor(Backend backend) override {
+        return backend == kNonRendering_Backend;
+    }
+
+    void onDelayedSetup() final {
+        SkRandom rand;
+        SkTArray<SkRect> rects;
+        for (int i = 0; i < fRectCount; ++i) {
+            rects.push_back(SkRect::MakeXYWH(rand.nextRangeF(0, 2000),
+                                              rand.nextRangeF(0, 2000),
+                                              rand.nextRangeF(0, 70),
+                                              rand.nextRangeF(0, 70)));
+        }
+
+        fRects = fAlignedAllocator.makeArray<Rect>(fRectCount);
+        for (int i = 0; i < fRectCount; ++i) {
+            fRects[i] = rects[i];
+        }
+    }
+
+    void onDraw(int loops, SkCanvas*) final {
+        for (int i = 0; i < loops; ++i) {
+            this->doBench();
+        }
+    }
+
+    void doBench() {
+        SkRandom r;
+        CompressedPaintersOrder order = CompressedPaintersOrder::First();
+        CompressedPaintersOrder maxRead = CompressedPaintersOrder::First();
+        for (int i = 0; i < fRectCount; ++i) {
+            bool insert = r.nextBool();
+            if (insert) {
+                order = order.next();
+                fManager->recordDraw(fRects[i], order, PaintersDepth::First(), false);
+            } else {
+                maxRead = std::max(maxRead,
+                    fManager->getMostRecentDraw(fRects[i]));
+            }
+        }
+
+        fMaxRead = maxRead;
+        fManager->reset();
+    }
+
+    std::unique_ptr<BoundsManager> fManager;
+    SkString fName;
+    SkArenaAlloc fAlignedAllocator{0};
+    int fRectCount;
+    Rect* fRects;
+
+    CompressedPaintersOrder fMaxRead;
+};
+
 }  // namespace skgpu::graphite
 
 DEF_BENCH( return new skgpu::graphite::RandomIntersectionBench(100); )
@@ -165,3 +234,26 @@ DEF_BENCH( return new skgpu::graphite::RandomIntersectionBench(1000); )
 DEF_BENCH( return new skgpu::graphite::RandomIntersectionBench(5000); )
 DEF_BENCH( return new skgpu::graphite::RandomIntersectionBench(10000); )
 DEF_BENCH( return new skgpu::graphite::FileIntersectionBench(); )  // Sniffs --intersectionTreeFile
+
+
+DEF_BENCH( return new skgpu::graphite::BoundsManagerBench(std::make_unique<skgpu::graphite::NaiveBoundsManager>(), "naive", 100); )
+DEF_BENCH( return new skgpu::graphite::BoundsManagerBench(std::make_unique<skgpu::graphite::NaiveBoundsManager>(), "naive", 1000); )
+DEF_BENCH( return new skgpu::graphite::BoundsManagerBench(std::make_unique<skgpu::graphite::NaiveBoundsManager>(), "naive", 10000); )
+
+DEF_BENCH( return new skgpu::graphite::BoundsManagerBench(std::make_unique<skgpu::graphite::BruteForceBoundsManager>(), "bruteForce", 100); )
+DEF_BENCH( return new skgpu::graphite::BoundsManagerBench(std::make_unique<skgpu::graphite::BruteForceBoundsManager>(), "bruteForce", 1000); )
+DEF_BENCH( return new skgpu::graphite::BoundsManagerBench(std::make_unique<skgpu::graphite::BruteForceBoundsManager>(), "bruteForce", 10000); )
+
+DEF_BENCH( return new skgpu::graphite::BoundsManagerBench(skgpu::graphite::QuadTreeBoundsManager::MakeDepth({1800, 1800}, 5), "quad5", 100); )
+DEF_BENCH( return new skgpu::graphite::BoundsManagerBench(skgpu::graphite::QuadTreeBoundsManager::MakeDepth({1800, 1800}, 5), "quad5", 1000); )
+DEF_BENCH( return new skgpu::graphite::BoundsManagerBench(skgpu::graphite::QuadTreeBoundsManager::MakeDepth({1800, 1800}, 5), "quad5", 10000); )
+
+
+DEF_BENCH( return new skgpu::graphite::BoundsManagerBench(skgpu::graphite::QuadTreeBoundsManager::MakeDepth({1800, 1800}, 10), "quad10", 100); )
+DEF_BENCH( return new skgpu::graphite::BoundsManagerBench(skgpu::graphite::QuadTreeBoundsManager::MakeDepth({1800, 1800}, 10), "quad10", 1000); )
+DEF_BENCH( return new skgpu::graphite::BoundsManagerBench(skgpu::graphite::QuadTreeBoundsManager::MakeDepth({1800, 1800}, 10), "quad10", 10000); )
+
+// D = 17 leads to 4^16 leaf nodes, which overflows int (and is 4gb)... so probably need to cut off much soonr
+// DEF_BENCH( return new skgpu::graphite::BoundsManagerBench(skgpu::graphite::QuadTreeBoundsManager::MakeDepth({1800, 1800}, 17), "quad17", 100); )
+// DEF_BENCH( return new skgpu::graphite::BoundsManagerBench(skgpu::graphite::QuadTreeBoundsManager::MakeDepth({1800, 1800}, 17), "quad17", 1000); )
+// DEF_BENCH( return new skgpu::graphite::BoundsManagerBench(skgpu::graphite::QuadTreeBoundsManager::MakeDepth({1800, 1800}, 17), "quad17", 10000); )
