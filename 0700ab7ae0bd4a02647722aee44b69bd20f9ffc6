@@ -22,6 +22,30 @@
       },
       "revId": "0700ab7ae0bd4a02647722aee44b69bd20f9ffc6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c7d54732_25d231b7",
+        "filename": "src/core/SkMesh.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 460,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-06-01T18:47:06Z",
+      "side": 1,
+      "message": "I tried that previously but you have to deal with the fact that this is operating on a const vector with const_iterators while the static func needs to return a non-const iterator. I\u0027m sure there is some solution involving templates or something but it seems like more complexity than is warranted.",
+      "parentUuid": "bbe6a919_cc7267ef",
+      "range": {
+        "startLine": 453,
+        "startChar": 0,
+        "endLine": 460,
+        "endChar": 1
+      },
+      "revId": "0700ab7ae0bd4a02647722aee44b69bd20f9ffc6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
