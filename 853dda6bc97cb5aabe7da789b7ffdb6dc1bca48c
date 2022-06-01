@@ -88,6 +88,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b929db92_45aeb62d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 10586
+      },
+      "writtenOn": "2022-06-01T20:46:02Z",
+      "side": 1,
+      "message": "Ben seems to agree, per his comment in another thread.\n\nI took a stab at passing through the surface-props to the shader at the point where it is rasterized, but it is going to be a larger \u0026 more-intrusive change.\n\nWith that in mind, I\u0027ve removed the \u0027shader\u0027 parts of the change (what\u0027s left should be fairly uncontroversial), and I\u0027ll try to address the shader in a subsequent CL.",
+      "parentUuid": "f64b8ba7_83c1cf20",
+      "revId": "853dda6bc97cb5aabe7da789b7ffdb6dc1bca48c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8ce47235_cf427ad2",
