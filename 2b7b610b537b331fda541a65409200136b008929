@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d1928bea_faadb92a",
+        "filename": "include/core/SkPicture.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 232,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-06-01T14:46:26Z",
+      "side": 1,
+      "message": "This seems backwards to me. No shader should contain state about any surface properties as a shader isn\u0027t tied to a specific surface. A single shader may be drawn into many canvases backed by different sorts of surfaces. If a shader needs the surface props (to decide on subpixel antialiasing) then the props would need to be passed to the shader when actually generating the colors.",
+      "revId": "2b7b610b537b331fda541a65409200136b008929",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
