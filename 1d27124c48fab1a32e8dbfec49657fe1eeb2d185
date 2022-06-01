@@ -22,6 +22,30 @@
       },
       "revId": "1d27124c48fab1a32e8dbfec49657fe1eeb2d185",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e4520d99_65538570",
+        "filename": "src/core/SkMath.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-06-01T19:33:59Z",
+      "side": 1,
+      "message": "Yeah - I considered just dropping intrinsic support for MSVC when I figured out I had to do this. Their docs say calling __popcnt on a platform that doesn\u0027t support it yields \"unpredictable\" results.",
+      "parentUuid": "97fa527e_2796209a",
+      "range": {
+        "startLine": 57,
+        "startChar": 0,
+        "endLine": 66,
+        "endChar": 0
+      },
+      "revId": "1d27124c48fab1a32e8dbfec49657fe1eeb2d185",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
