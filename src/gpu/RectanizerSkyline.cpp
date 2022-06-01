@@ -43,6 +43,17 @@ bool RectanizerSkyline::addRect(int width, int height, SkIPoint16* loc) {
         loc->fY = bestY;
 
         fAreaSoFar += width*height;
+        static uint64_t gAreaSoFar = 0;
+        gAreaSoFar += width*height;
+        SkDebugf("Add #%lu %d * %d : [%d:%d * %d:%d) %d %lu\n",
+                 fGenId,
+                 width,
+                 height,
+                 bestX,
+                 bestY,
+                 bestX + width,
+                 bestY + height,
+                 fAreaSoFar, gAreaSoFar);
         return true;
     }
 
@@ -116,12 +127,23 @@ void RectanizerSkyline::addSkylineLevel(int skylineIndex, int x, int y, int widt
             --i;
         }
     }
+    /*
+    // Print profile
+    SkDebugf("addSkylineLevel(%d, %d, %d, %d, %d): %d ",
+             skylineIndex, x, y, width, height, fAreaSoFar);
+    for (auto i = 0; i < fSkyline.size(); ++i) {
+        auto& skyline = fSkyline[i];
+        auto opt = " ";
+        SkDebugf("[0:%d)x[%d:%d)%s ", skyline.fY, skyline.fX, skyline.fX+skyline.fWidth, opt);
+    }
+    SkDebugf("\n");
+    */
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
-Rectanizer* Rectanizer::Factory(int width, int height) {
-    return new RectanizerSkyline(width, height);
-}
+//Rectanizer* Rectanizer::Factory(int width, int height) {
+//    return new RectanizerSkyline(width, height);//
+//}
 
 } // End of namespace skgpu
