@@ -37,8 +37,15 @@
 #include "tests/Test.h"
 #include "tools/gpu/GrContextFactory.h"
 
+#include <functional>
 #include <memory>
 #include <utility>
+#include "include/core/SkTextBlob.h"
+
+#include "src/core/SkStrikeCache.h"
+#include "src/text/gpu/Glyph.h"
+
+using Glyph = sktext::gpu::Glyph;
 
 using MaskFormat = skgpu::MaskFormat;
 
@@ -116,15 +123,20 @@ static bool fill_plot(GrDrawOpAtlas* atlas,
                       GrResourceProvider* resourceProvider,
                       GrDeferredUploadTarget* target,
                       skgpu::AtlasLocator* atlasLocator,
-                      int alpha) {
-    SkImageInfo ii = SkImageInfo::MakeA8(kPlotSize, kPlotSize);
+                      int alpha,
+                      int plotSize = kPlotSize,
+                      void** plot = nullptr) {
+    SkImageInfo ii = SkImageInfo::MakeA8(plotSize, plotSize);
 
     SkBitmap data;
     data.allocPixels(ii);
     data.eraseARGB(alpha, 0, 0, 0);
+    if (plot != nullptr) {
+        *plot = data.getAddr(0, 0);
+    }
 
     GrDrawOpAtlas::ErrorCode code;
-    code = atlas->addToAtlas(resourceProvider, target, kPlotSize, kPlotSize,
+    code = atlas->addToAtlas(resourceProvider, target, plotSize, plotSize,
                              data.getAddr(0, 0), atlasLocator);
     return GrDrawOpAtlas::ErrorCode::kSucceeded == code;
 }
@@ -314,4 +326,207 @@ DEF_GPUTEST(GrDrawOpAtlasConfig_Basic, reporter, options) {
                       { 256, 256 }, { 256, 256 });
     test_atlas_config(reporter, 65536, 0, MaskFormat::kA8,
                       { 512, 512 }, { 256, 256 });
+}
+
+static void supportBilerpFromGlyphAtlas(GrContextOptions* options) {
+    options->fSupportBilerpFromGlyphAtlas = true;
+}
+static void doNotSupportBilerpFromGlyphAtlas(GrContextOptions* options) {
+    options->fSupportBilerpFromGlyphAtlas = false;
+}
+
+class Data : public skgpu::PlotEvictionCallback {
+public:
+    SkArenaAlloc alloc;
+    TestingUploadTarget uploadTarget;
+    GrResourceProvider* resourceProvider;
+    std::vector<SkGlyph> skGlyphs;
+    std::vector<Glyph> grGlyphs;
+    std::vector<int> srcPaddings;
+    std::vector<bool> checked;      // To avoid double checked glyphs from evicted plots
+    GrAtlasManager* atlasManager;
+    skiatest::Reporter* reporter;
+    sk_sp<SkTypeface> typeface;
+    SkString text;
+
+    int allocatedBytes = 0;
+    int optimizedBytes = 0;
+    int allBytes = 0;
+    int evicted = 0;
+
+    Data(const sk_gpu_test::ContextInfo& ctxInfo,
+         skiatest::Reporter* reporter,
+         const SkString& text)
+            : alloc(1 << 12)
+            , reporter(reporter)
+            , text(text) {
+        auto dContext = ctxInfo.directContext();
+        resourceProvider = dContext->priv().resourceProvider();
+        atlasManager = dContext->priv().getAtlasManager();
+        atlasManager->setAtlasDimensionsToMinimum_ForTesting();
+        atlasManager->freeAll();
+        unsigned int numProxies;
+        atlasManager->getViews(MaskFormat::kA8, &numProxies);
+        atlasManager->setMaxPages_TestingOnly(1);
+        GrDrawOpAtlas* atlas = atlasManager->getAtlas_TestingOnly(MaskFormat::kA8);
+        atlas->checkEvictedPlot_testingOnly(this);
+
+        typeface = SkTypeface::MakeFromName("Segoe UI", SkFontStyle());
+        this->reset();
+
+    }
+    void evict(skgpu::PlotLocator plotLocator) override {
+        ++evicted;
+        auto genID = plotLocator.genID();
+        bool once = true;
+        for (auto i = 0ul; i < skGlyphs.size(); ++i) {
+            auto& grGlyph = grGlyphs[i];
+            auto pageIndex = grGlyph.fAtlasLocator.pageIndex();
+            auto plotIndex = grGlyph.fAtlasLocator.plotIndex();
+            skgpu::Plot* plot = atlasManager->getAtlas_TestingOnly(MaskFormat::kA8)->
+                                            getPlot_testingOnly(pageIndex, plotIndex);
+            if (genID == plot->genID()) {
+                checkPadding(i);
+                if (once) {
+                    once = false;
+                    int allocatedBytes1 = plot->allocatedBytes_testingOnly();
+                    int optimizedBytes1 = plot->optimizedBytes_testingOnly();
+                    int allBytes1 = plot->allBytes_testingOnly();
+                    SkDebugf(
+                            "Plot #%d: optimized=%d (%.2f/%.2f), allocated=%d (%.2f), "
+                            "all=256x256\n",
+                            plotIndex,
+                            optimizedBytes1,
+                            optimizedBytes1 * 100.0f / allocatedBytes1,
+                            optimizedBytes1 * 100.0f / allBytes1,
+                            allocatedBytes1,
+                            allocatedBytes1 * 100.0f / allBytes1);
+                    allBytes += allBytes1;
+                    allocatedBytes += allocatedBytes1;
+                    optimizedBytes += optimizedBytes1;
+                }
+            }
+        }
+    }
+
+    void reset() {
+        skGlyphs.clear();
+        grGlyphs.clear();
+        srcPaddings.clear();
+        checked.clear();
+    }
+
+    void add(SkGlyph skGlyph, Glyph grGlyph, int srcPadding) {
+        skGlyphs.emplace_back(skGlyph);
+        grGlyphs.emplace_back(grGlyph);
+        srcPaddings.emplace_back(srcPadding);
+        checked.emplace_back(false);
+    }
+
+    void checkPadding(int i) {
+        if (checked[i]) {
+            return;
+        }
+        auto& skGlyph = skGlyphs[i];
+        auto& grGlyph = grGlyphs[i];
+        // Check sizes
+        // Check if grGlyph is surrounded with zero padding
+        auto pageIndex = grGlyph.fAtlasLocator.pageIndex();
+        auto plotIndex = grGlyph.fAtlasLocator.plotIndex();
+        skgpu::Plot* plot = atlasManager->getAtlas_TestingOnly(MaskFormat::kA8)->
+                                        getPlot_testingOnly(pageIndex, plotIndex);
+        auto plotRect = plot->getRect_testingOnly();
+        auto loc = grGlyph.fAtlasLocator.getUVs();
+        SkRect glyphRect = SkRect::MakeLTRB(loc[0], loc[1], loc[2], loc[3]);
+        if (srcPaddings[i] == 1) {
+            REPORTER_ASSERT(reporter, skGlyph.width() == glyphRect.width());
+            REPORTER_ASSERT(reporter, skGlyph.height() == glyphRect.height());
+            glyphRect.offset(-plotRect.fLeft, -plotRect.fTop);
+            auto data = plot->data_testingOnly();
+            // Check if there is a zero padding around each glyph
+            REPORTER_ASSERT(reporter, glyphRect.fTop > 0);
+            REPORTER_ASSERT(reporter, glyphRect.fBottom + 1 <= plotRect.height());
+            int y0 = glyphRect.fTop - 1;
+            int y1 = glyphRect.fBottom;
+            for (int x = glyphRect.fLeft; x < glyphRect.fRight; ++x) {
+                auto byte0 = data + y0 * plotRect.width() + x;
+                REPORTER_ASSERT(reporter, *byte0 == 0);
+                auto byte1 = data + y1 * plotRect.width() + x;
+                REPORTER_ASSERT(reporter, *byte1 == 0);
+            }
+            for (int x = glyphRect.fLeft; x < glyphRect.fRight; ++x) {
+            }
+        } else if (srcPaddings[i] == 0) {
+            REPORTER_ASSERT(reporter, skGlyph.width() == glyphRect.width());
+            REPORTER_ASSERT(reporter, skGlyph.height() == glyphRect.height());
+        } else {
+            REPORTER_ASSERT(reporter, skGlyph.width() - 4 == glyphRect.width());
+            REPORTER_ASSERT(reporter, skGlyph.height() - 4 == glyphRect.height());
+            // TODO: Check that there are no zeros at all?
+        }
+        checked[i] = true;
+    }
+
+    void drawText(int srcPadding, SkScalar fontSize) {
+
+        SkFont defaultFont(typeface, fontSize);
+        SkStrikeSpec strikeSpec = SkStrikeSpec::MakeWithNoDevice(defaultFont);
+        sk_sp<SkStrike> strike = strikeSpec.findOrCreateStrike();
+
+        for (auto i = 0ul; i < text.size(); ++i) {
+            char c = text[i];
+            SkPackedGlyphID id(defaultFont.unicharToGlyph(c));
+            SkGlyph skGlyph = strike->getScalerContext()->makeGlyph(id, &alloc);
+            SkTArray<unsigned char> ones;
+            ones.push_back_n(skGlyph.imageSize(), 0xff);
+            skGlyph.setImage(&alloc, ones.data());
+            SkPackedGlyphID glyphID;
+            Glyph grGlyph(glyphID);
+            auto errorCode = atlasManager->addGlyphToAtlas(
+                    skGlyph, &grGlyph, srcPadding, resourceProvider, &uploadTarget);
+            REPORTER_ASSERT(reporter, errorCode == GrDrawOpAtlas::ErrorCode::kSucceeded);
+            add(std::move(skGlyph), std::move(grGlyph), std::move(srcPadding));
+        }
+    }
+};
+
+void slugTest(skiatest::Reporter* reporter,
+              const sk_gpu_test::ContextInfo& ctxInfo,
+              SkString text) {
+    Data data(ctxInfo, reporter, text);
+    // Draw
+    for (int i = 0; i < 100; ++i) {
+        auto srcPadding = i == 50 ? 2 : i%2;
+        auto fontSize = i == 50 ? 180.f : (i%20 + 10.0f);
+        data.drawText(srcPadding, fontSize);
+    }
+    // Test all the glyphs that are not evicted
+    for (auto i = 0ul; i < data.skGlyphs.size(); ++i) {
+        data.checkPadding(i);
+    }
+
+    SkDebugf("Summary: optimized=%.2f%% / %.2f%%, allocated=%.2f%% sum=%d evicted=%d\n",
+             data.optimizedBytes*100.0f/data.allocatedBytes,
+             data.optimizedBytes*100.0f/data.allBytes,
+             data.allocatedBytes*100.0f/data.allBytes,
+             data.optimizedBytes + data.allocatedBytes,
+             data.evicted);
+}
+
+static const char* TEXT = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+DEF_GPUTEST_FOR_CONTEXTS(GrAtlasManager_withOpt,
+                         sk_gpu_test::GrContextFactory::IsRenderingContext,
+                         reporter,
+                         ctxInfo,
+                         supportBilerpFromGlyphAtlas) {
+    slugTest(reporter, ctxInfo, SkString(TEXT));
+}
+
+DEF_GPUTEST_FOR_CONTEXTS(GrAtlasManager_withoutOpt,
+                         sk_gpu_test::GrContextFactory::IsRenderingContext,
+                         reporter,
+                         ctxInfo,
+                         doNotSupportBilerpFromGlyphAtlas) {
+    slugTest(reporter, ctxInfo, SkString(TEXT));
 }
