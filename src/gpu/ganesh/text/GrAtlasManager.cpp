@@ -207,11 +207,23 @@ GrDrawOpAtlas::ErrorCode GrAtlasManager::addGlyphToAtlas(const SkGlyph& skGlyph,
 
     get_packed_glyph_image(skGlyph, rowBytes, expectedMaskFormat, dataPtr);
 
+    // Detect zero padding
+    int zeroPadding = padding;
+    if (padding == 0) {
+        for (int c = 0; c < rowBytes; ++c) {
+            if (*((char*)dataPtr + c) != '\0') {
+                zeroPadding = 0;
+                break;
+            }
+        }
+    }
+
     auto errorCode = this->addToAtlas(resourceProvider,
                                       uploadTarget,
                                       expectedMaskFormat,
                                       width,
                                       height,
+                                      zeroPadding,//padding,
                                       storage.get(),
                                       &glyph->fAtlasLocator);
 
@@ -226,10 +238,13 @@ GrDrawOpAtlas::ErrorCode GrAtlasManager::addGlyphToAtlas(const SkGlyph& skGlyph,
 GrDrawOpAtlas::ErrorCode GrAtlasManager::addToAtlas(GrResourceProvider* resourceProvider,
                                                     GrDeferredUploadTarget* target,
                                                     MaskFormat format,
-                                                    int width, int height, const void* image,
+                                                    int width,
+                                                    int height,
+                                                    int zeroPadding,
+                                                    const void* image,
                                                     skgpu::AtlasLocator* atlasLocator) {
-    return this->getAtlas(format)->addToAtlas(resourceProvider, target, width, height, image,
-                                              atlasLocator);
+    return this->getAtlas(format)->addToAtlas(
+            resourceProvider, target, width, height, zeroPadding, image, atlasLocator);
 }
 
 void GrAtlasManager::addGlyphToBulkAndSetUseToken(skgpu::BulkUsePlotUpdater* updater,

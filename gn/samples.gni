@@ -19,6 +19,7 @@ samples_sources = [
   "$_samplecode/SampleAnimatedText.cpp",
   "$_samplecode/SampleArc.cpp",
   "$_samplecode/SampleAtlas.cpp",
+  "$_samplecode/SampleAtlasMemoryUsage.cpp",
   "$_samplecode/SampleAudio.cpp",
   "$_samplecode/SampleCamera.cpp",
   "$_samplecode/SampleChart.cpp",

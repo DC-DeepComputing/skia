@@ -1,0 +1,137 @@
+/*
+ * Copyright 2022 Google Inc.
+ *
+ * Use of this source code is governed by a BSD-style license that can be
+ * found in the LICENSE file.
+ */
+
+#include "src/core/SkIPoint16.h"
+#include "src/gpu/RectanizerOptimized.h"
+
+#include <algorithm>
+#include "include/core/SkString.h"
+#include "include/core/SkRect.h"
+
+namespace skgpu {
+
+bool RectanizerOptimized::addRectOptimized(int width, int height, int zeroPadding, SkIPoint16* loc){
+
+    if ((unsigned)width > (unsigned)this->width() ||
+        (unsigned)height > (unsigned)this->height()) {
+        return false;
+    }
+
+    SkIPoint16 bestLoc = SkIPoint16::Make(this->width(), this->height());
+    SkIPoint16 currLoc = SkIPoint16::Make(-1, -1);
+    bool bestOptimized = false;
+    bool locOptimized = true;
+    bool found = false;
+    for (auto x = 0; x < this->width(); ++x) {
+        int16_t y = fProfile[x];
+        if (currLoc.fY == -1) {
+            if (x + width > this->width()) {
+                // We could not find an area of the given size
+                break;
+            }
+            currLoc.fY = y;
+            currLoc.fX = x;
+            locOptimized = zeroPadding > 0 && !fTopPadding[x]; // Keep track if needed
+            continue;
+        }
+
+        if (currLoc.fX + width == x) {
+            // We found the area: [x0:x) * [y0: y)
+            // Let's see if it's better (we do not take in account optimized flag)
+            if (bestLoc.fY > currLoc.fY) {
+                bestLoc = currLoc;
+                bestOptimized = locOptimized;
+            } else if (bestLoc.fY == currLoc.fY && bestLoc.fX > currLoc.fX) {
+                bestLoc = currLoc;
+                bestOptimized = locOptimized;
+            } else {
+                // It's not the best
+            }
+            // We found one; let's see if we can find better y (starting over from the next x)
+            found = true;
+            currLoc.fY = -1;
+            x = currLoc.fX;
+        } else {
+            // Keep looking
+            locOptimized &= !fTopPadding[x];
+            // Shift down if needed
+            currLoc.fY = std::max(currLoc.fY, y);
+            if (locOptimized && currLoc.fY + height - 1 > this->height()) {
+                // We start over from the next position (could not vertically even with optimization)
+                currLoc.fY = -1;
+                x = currLoc.fX;
+            } else if (currLoc.fY + height > this->height()) {
+                // We start over from the next position
+                currLoc.fY = -1;
+                x = currLoc.fX;
+            }
+        }
+    }
+
+    if (found) {
+        // Mark the area as allocated
+        fBusyArea += bestOptimized ? width*(height-1) : width*height;
+        this->markAreaOccupied(zeroPadding, bestLoc, width, height);
+        static int saved = 0;
+        if (bestOptimized) {
+            saved += width;
+        }
+        *loc = bestLoc;
+        //SkDebugf("addRect(%d, %d, %d): %d %d %s\n",
+        //         width, height, zeroPadding, fBusyArea, saved, bestOptimized ? "+" : "");
+        return true;
+    }
+
+    loc->fX = 0;
+    loc->fY = 0;
+    return false;
+
+}
+
+void RectanizerOptimized::markAreaOccupied(bool zeroPadding,
+                                           SkIPoint16 loc,
+                                           int width,
+                                           int height) {
+    auto y = loc.fY + height;
+    for (auto x = loc.fX; x < loc.fX + width; ++x) {
+        fTopPadding[x] = !zeroPadding;
+        fProfile[x] = y;
+    }
+}
+
+void RectanizerOptimized::printProfile() const {
+    auto prevY = -1;
+    auto prevX = -1;
+    auto prevZero = false;
+    for (auto x = 0; x < this->width(); ++x) {
+        auto y = fProfile[x];
+        auto zero = !fTopPadding[x];
+        if (x == 0) {
+            prevX = x;
+            prevY = y;
+            prevZero = zero;
+        } else if (y == prevY && prevZero == zero) {
+            // Keep looking
+        } else {
+            SkDebugf("%d%s%d ",
+                     prevY, prevZero ? "+" : "-", prevX);
+            prevX = x;
+            prevY = y;
+            prevZero = zero;
+        }
+    }
+    SkDebugf("%d%s%d ", prevY, prevZero ? "+" : "-", prevX);
+    SkDebugf("\n");
+}
+
+///////////////////////////////////////////////////////////////////////////////
+
+Rectanizer* Rectanizer::Factory(int width, int height) {
+    return new RectanizerOptimized(width, height);
+}
+
+} // End of namespace skgpu
