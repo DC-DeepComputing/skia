@@ -70,6 +70,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f64b8ba7_83c1cf20",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-06-01T13:58:52Z",
+      "side": 1,
+      "message": "Good point, yes. In some cases it really is better to use default props, particularly if you don\u0027t know how the resulting image is going to be used (will it be transformed at all before being dropped on the \"real\" surface). For situations where we do have access to the destination surface\u0027s props, it makes sense to use them. Otherwise, I think default props is the better choice? (Ben can double-check my thinking here).\n\nAnd yes, serializing the props probably never makes sense - even in a single-application multi-process situation like chromium, we should be injecting the props after we deserialize and play back to a real surface.",
+      "parentUuid": "8713aeda_2bb07043",
+      "revId": "853dda6bc97cb5aabe7da789b7ffdb6dc1bca48c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8ce47235_cf427ad2",
