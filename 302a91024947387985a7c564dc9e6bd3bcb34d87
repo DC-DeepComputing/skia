@@ -275,6 +275,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c28f7f83_167baed1",
+        "filename": "src/sksl/ir/SkSLType.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-06-01T19:08:58Z",
+      "side": 1,
+      "message": "OK, I marinated on this a bit. Here are my thoughts.\n\n`slotCount()` asserting when an unsized array is found is the right thing to do. Returning an arbitrary value is the wrong thing to do.\n\nI assume we don\u0027t want SkVM to support compute, so SkVM never needs to support unsized arrays. The code in `FunctionDefinition::Convert` is sizing up data to ensure that we don\u0027t blow out SkVM limits. We don\u0027t need to do this at all in a compute shader. We can explicitly disable function-size checking in compute mode entirely, dodging this assertion entirely.\n\n(If we do want unsized arrays in SkVM, we will need to defer sizing checks until after array sizes are known, and basically restructure a lot of error checking to happen later. This would probably mean we just silently fail to paint.)\n\nThis won\u0027t be the only case where an assertion in `slotCount()` bites us, most likely. So callers will want a way to check if `slotCount()` is safe to call or not. We should add a method to `Type` which tells us if this type is, or contains, an unsized array--say, `Type::hasUnsizedArray`. In places where we run into `slotCount()` blowing up, we can add early checks for \"is this compute mode\" or \"does this have an unsized array\" to work around the problem. \n\nI considered more complex APIs (e.g. return an optional from `slotCount`, or split `slotCount` into separate permissive and strict APIs) but in the end, I think they added more complexity/friction and don\u0027t add enough value to justify the additional friction.\n\nWDYT?",
+      "parentUuid": "953e2d66_0929037a",
+      "range": {
+        "startLine": 159,
+        "startChar": 0,
+        "endLine": 161,
+        "endChar": 9
+      },
+      "revId": "302a91024947387985a7c564dc9e6bd3bcb34d87",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b29e31df_1e3ace00",
         "filename": "src/sksl/ir/SkSLType.h",
         "patchSetId": 5
