@@ -59,6 +59,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7c2fa151_731ab6b6",
+        "filename": "src/sksl/SkSLProgramSettings.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-06-01T17:42:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d9ab466c_a7e167e2",
+      "range": {
+        "startLine": 134,
+        "startChar": 3,
+        "endLine": 138,
+        "endChar": 0
+      },
+      "revId": "302a91024947387985a7c564dc9e6bd3bcb34d87",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "04fd4af5_1adb857e",
@@ -72,6 +96,30 @@
       "writtenOn": "2022-05-31T14:14:49Z",
       "side": 1,
       "message": "Tiny nit: IMO the logic would be easier to read if we split this into two checks (index \u003c 0, index \u003e numCols)\n\n    if (index \u003c 0) {\n        return false;\n    }\n    if (base.type().columns() !\u003d Type::kUnsizedArray \u0026\u0026 index \u003e\u003d base.type().columns()) {\n        return false;\n    }",
+      "range": {
+        "startLine": 23,
+        "startChar": 0,
+        "endLine": 26,
+        "endChar": 5
+      },
+      "revId": "302a91024947387985a7c564dc9e6bd3bcb34d87",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2b242368_a51f27f1",
+        "filename": "src/sksl/ir/SkSLIndexExpression.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-06-01T17:42:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "04fd4af5_1adb857e",
       "range": {
         "startLine": 23,
         "startChar": 0,
@@ -131,6 +179,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5a0121fb_4d9c2620",
+        "filename": "src/sksl/ir/SkSLType.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-06-01T17:42:16Z",
+      "side": 1,
+      "message": "This code path is actually being hit, via FunctionDefinition::Convert calling into the analyzer, so as things stand the hypothetical assert would trip.",
+      "parentUuid": "17f1c9d4_7df5dec0",
+      "range": {
+        "startLine": 159,
+        "startChar": 0,
+        "endLine": 161,
+        "endChar": 9
+      },
+      "revId": "302a91024947387985a7c564dc9e6bd3bcb34d87",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b29e31df_1e3ace00",
         "filename": "src/sksl/ir/SkSLType.h",
         "patchSetId": 5
@@ -142,6 +214,30 @@
       "writtenOn": "2022-05-31T14:14:00Z",
       "side": 1,
       "message": "I think I\u0027d prefer -1, regardless. We have to trust our fuzzers and testing.",
+      "range": {
+        "startLine": 61,
+        "startChar": 87,
+        "endLine": 62,
+        "endChar": 19
+      },
+      "revId": "302a91024947387985a7c564dc9e6bd3bcb34d87",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "27ab2660_c1e532c9",
+        "filename": "src/sksl/ir/SkSLType.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-06-01T17:42:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b29e31df_1e3ace00",
       "range": {
         "startLine": 61,
         "startChar": 87,
@@ -222,6 +318,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1bf378ab_758f0ac8",
+        "filename": "src/sksl/ir/SkSLType.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-06-01T17:42:16Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "a84eeb17_0263aada",
+      "range": {
+        "startLine": 111,
+        "startChar": 0,
+        "endLine": 113,
+        "endChar": 60
+      },
+      "revId": "302a91024947387985a7c564dc9e6bd3bcb34d87",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6cf3476d_c0be18fd",
@@ -235,6 +355,30 @@
       "writtenOn": "2022-05-31T14:29:51Z",
       "side": 1,
       "message": "Name doesn\u0027t follow from the description. Maybe... `canBeUsedInArray`?",
+      "range": {
+        "startLine": 534,
+        "startChar": 9,
+        "endLine": 534,
+        "endChar": 23
+      },
+      "revId": "302a91024947387985a7c564dc9e6bd3bcb34d87",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a0819a63_44cdf010",
+        "filename": "src/sksl/ir/SkSLType.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 534,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-06-01T17:42:16Z",
+      "side": 1,
+      "message": "\"canBeUsedInArray\" doesn\u0027t sound to me like something that would report errors. How about we compromise on \"checkIfCanBeUsedInArray\"?",
+      "parentUuid": "6cf3476d_c0be18fd",
       "range": {
         "startLine": 534,
         "startChar": 9,
@@ -268,6 +412,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3dd197bc_d39ab72f",
+        "filename": "src/sksl/ir/SkSLVariable.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-06-01T17:42:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8647f467_41fe5edd",
+      "range": {
+        "startLine": 46,
+        "startChar": 0,
+        "endLine": 46,
+        "endChar": 80
+      },
+      "revId": "302a91024947387985a7c564dc9e6bd3bcb34d87",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "af2339a2_e80810ef",
@@ -281,6 +449,30 @@
       "writtenOn": "2022-05-31T14:29:51Z",
       "side": 1,
       "message": "nit: Could get the same results with flatter control flow:\n\n            if (storage !\u003d Variable::Storage::kGlobal) {\n                context.fErrors-\u003eerror(pos, \"unsized arrays must be global\");\n            } else if (!(modifiers.fFlags \u0026 (Modifiers::kIn_Flag | Modifiers::kOut_Flag))) {\n                context.fErrors-\u003eerror(pos,\n                        \"unsized arrays must be declared \u0027in\u0027 and/or \u0027out\u0027\");\n            }",
+      "range": {
+        "startLine": 47,
+        "startChar": 12,
+        "endLine": 54,
+        "endChar": 13
+      },
+      "revId": "302a91024947387985a7c564dc9e6bd3bcb34d87",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ab206df7_7fb852ae",
+        "filename": "src/sksl/ir/SkSLVariable.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-06-01T17:42:16Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "af2339a2_e80810ef",
       "range": {
         "startLine": 47,
         "startChar": 12,
