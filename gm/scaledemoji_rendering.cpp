@@ -43,7 +43,7 @@ protected:
         { Test::Source::Resource, "fonts/sbix.ttf"     , sampleText  },
         { Test::Source::Resource, "fonts/cbdt.ttf"     , sampleText  },
         { Test::Source::Portable, "Emoji"              , sampleText  },
-        { Test::Source::Resource, "fonts/SampleSVG.ttf", "abcdefghi" },
+        { Test::Source::Resource, "fonts/SampleSVG.ttf", "abcdefghij" },
     };
     sk_sp<SkTypeface> typefaces[SK_ARRAY_COUNT(tests)];
     void onOnceBeforeDraw() override {
