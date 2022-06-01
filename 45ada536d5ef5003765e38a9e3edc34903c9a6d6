@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6b9eeaa9_781b12c3",
+        "filename": "src/sksl/ir/SkSLVarDeclarations.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-06-01T15:11:00Z",
+      "side": 1,
+      "message": "Just `t-\u003eisStruct()` should be enough",
+      "range": {
+        "startLine": 52,
+        "startChar": 8,
+        "endLine": 52,
+        "endChar": 46
+      },
+      "revId": "45ada536d5ef5003765e38a9e3edc34903c9a6d6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
