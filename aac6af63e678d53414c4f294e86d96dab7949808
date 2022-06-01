@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "dd737aae_c9d7eb73",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 10586
+      },
+      "writtenOn": "2022-06-01T21:10:16Z",
+      "side": 1,
+      "message": "+1.  I was worried about the caching until I started looking at the cache-key stuff.  I don\u0027t think it\u0027ll present a problem.  Worst-case we just add the props to the cache key (it\u0027s all local to `SkPictureShader`).\n\nThe most annoying bits are going to be getting the props through several layers of function calls.",
+      "parentUuid": "9047039a_fc72b1cc",
+      "revId": "aac6af63e678d53414c4f294e86d96dab7949808",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "96963d23_26b4b96f",
@@ -48,6 +66,30 @@
       "writtenOn": "2022-06-01T20:56:28Z",
       "side": 1,
       "message": "Need to update this as well to use fProps.",
+      "range": {
+        "startLine": 108,
+        "startChar": 0,
+        "endLine": 108,
+        "endChar": 54
+      },
+      "revId": "aac6af63e678d53414c4f294e86d96dab7949808",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9c880a13_929deb0e",
+        "filename": "src/core/SkPictureImageGenerator.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 10586
+      },
+      "writtenOn": "2022-06-01T21:10:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "96963d23_26b4b96f",
       "range": {
         "startLine": 108,
         "startChar": 0,
