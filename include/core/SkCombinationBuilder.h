@@ -138,7 +138,9 @@ public:
 
     void reset();
 
+    int numBlendModeCombos();
     int numCombinations();
+    void updateTo(int state, SkPaintParamsKeyBuilder*) const;
 
 #ifdef SK_DEBUG
     void dump() const;
