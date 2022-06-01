@@ -70,6 +70,30 @@
       },
       "revId": "1d27124c48fab1a32e8dbfec49657fe1eeb2d185",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b1638b24_e6daeae4",
+        "filename": "src/core/SkMath.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-06-01T19:50:54Z",
+      "side": 1,
+      "message": "So, MSVC is a fringe Skia environment. I don\u0027t think the miniscule performance gain for MSVC is worth much any additional complexity.",
+      "parentUuid": "696abb10_6718d801",
+      "range": {
+        "startLine": 57,
+        "startChar": 0,
+        "endLine": 66,
+        "endChar": 0
+      },
+      "revId": "1d27124c48fab1a32e8dbfec49657fe1eeb2d185",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
