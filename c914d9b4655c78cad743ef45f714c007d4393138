@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3155bffe_b44e7555",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-06-01T17:59:12Z",
+      "side": 1,
+      "message": "Consider referencing the related dawn change (https://dawn-review.googlesource.com/c/dawn/+/90962 or https://source.chromium.org/chromium/_/dawn/dawn.git/+/8cb8c7add770b92bf889bef6aedf017c0be7c477) here.",
+      "revId": "c914d9b4655c78cad743ef45f714c007d4393138",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7759d799_2dc57b79",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-06-01T17:59:12Z",
+      "side": 1,
+      "message": "I haven\u0027t verified the generated output but looking at the related Dawn change, this lgtm.",
+      "revId": "c914d9b4655c78cad743ef45f714c007d4393138",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "31d0426b_47a3d08c",
+        "filename": "bazel/external/dawn/BUILD.bazel",
+        "patchSetId": 1
+      },
+      "lineNbr": 408,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-06-01T17:59:12Z",
+      "side": 1,
+      "message": "nit: .cpp before .h for consistency",
+      "range": {
+        "startLine": 407,
+        "startChar": 36,
+        "endLine": 408,
+        "endChar": 42
+      },
+      "revId": "c914d9b4655c78cad743ef45f714c007d4393138",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
