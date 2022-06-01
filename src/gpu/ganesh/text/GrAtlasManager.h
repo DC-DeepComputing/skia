@@ -74,8 +74,12 @@ public:
     }
 
     // add to texture atlas that matches this format
-    GrDrawOpAtlas::ErrorCode addToAtlas(GrResourceProvider*, GrDeferredUploadTarget*,
-                                        skgpu::MaskFormat, int width, int height, const void* image,
+    GrDrawOpAtlas::ErrorCode addToAtlas(GrResourceProvider*,
+                                        GrDeferredUploadTarget*,
+                                        skgpu::MaskFormat,
+                                        int width,
+                                        int height,
+                                        const void* image,
                                         skgpu::AtlasLocator*);
 
     // Some clients may wish to verify the integrity of the texture backing store of the
@@ -122,6 +126,12 @@ public:
 
     void setAtlasDimensionsToMinimum_ForTesting();
     void setMaxPages_TestingOnly(uint32_t maxPages);
+    GrDrawOpAtlas* getAtlas_TestingOnly(skgpu::MaskFormat format) const {
+        format = this->resolveMaskFormat(format);
+        int atlasIndex = MaskFormatToAtlasIndex(format);
+        SkASSERT(fAtlases[atlasIndex]);
+        return fAtlases[atlasIndex].get();
+    }
 
 private:
     bool initAtlas(skgpu::MaskFormat);

@@ -226,10 +226,12 @@ GrDrawOpAtlas::ErrorCode GrAtlasManager::addGlyphToAtlas(const SkGlyph& skGlyph,
 GrDrawOpAtlas::ErrorCode GrAtlasManager::addToAtlas(GrResourceProvider* resourceProvider,
                                                     GrDeferredUploadTarget* target,
                                                     MaskFormat format,
-                                                    int width, int height, const void* image,
+                                                    int width,
+                                                    int height,
+                                                    const void* image,
                                                     skgpu::AtlasLocator* atlasLocator) {
-    return this->getAtlas(format)->addToAtlas(resourceProvider, target, width, height, image,
-                                              atlasLocator);
+    return this->getAtlas(format)->addToAtlas(
+            resourceProvider, target, width, height, image, atlasLocator);
 }
 
 void GrAtlasManager::addGlyphToBulkAndSetUseToken(skgpu::BulkUsePlotUpdater* updater,
