@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bbe6a919_cc7267ef",
+        "filename": "src/core/SkMesh.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 460,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-06-01T16:45:35Z",
+      "side": 1,
+      "message": "This could construct a string_view from the name, and call the static find_uniform, right?",
+      "range": {
+        "startLine": 453,
+        "startChar": 0,
+        "endLine": 460,
+        "endChar": 1
+      },
+      "revId": "0700ab7ae0bd4a02647722aee44b69bd20f9ffc6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
