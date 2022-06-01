@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "77b8ed4b_4b438591",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-06-01T21:06:50Z",
+      "side": 1,
+      "message": "Unfortunately, this currently crashes FreeType, see https://gitlab.freedesktop.org/freetype/freetype/-/issues/1162 and https://gitlab.freedesktop.org/freetype/freetype/-/merge_requests/166.",
+      "revId": "e3b8e81b933618b9e3b23763dcffcdf22800cc85",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
