@@ -413,7 +413,7 @@ bool DSLParser::declaration() {
 /* (RPAREN | VOID RPAREN | parameter (COMMA parameter)* RPAREN) (block | SEMICOLON) */
 bool DSLParser::functionDeclarationEnd(Position start,
                                        const DSLModifiers& modifiers,
-                                       DSLType type,
+                                       const DSLType& type,
                                        const Token& name) {
     SkSTArray<8, DSLParameter> parameters;
     Token lookahead = this->peek();
@@ -520,8 +520,10 @@ bool DSLParser::parseInitializer(Position pos, DSLExpression* initializer) {
 
 /* (LBRACKET expression? RBRACKET)* (EQ assignmentExpression)? (COMMA IDENTIFER
    (LBRACKET expression? RBRACKET)* (EQ assignmentExpression)?)* SEMICOLON */
-void DSLParser::globalVarDeclarationEnd(Position pos, const dsl::DSLModifiers& mods,
-        dsl::DSLType baseType, Token name) {
+void DSLParser::globalVarDeclarationEnd(Position pos,
+                                        const dsl::DSLModifiers& mods,
+                                        const dsl::DSLType& baseType,
+                                        Token name) {
     using namespace dsl;
     DSLType type = baseType;
     DSLExpression initializer;
@@ -559,8 +561,10 @@ void DSLParser::globalVarDeclarationEnd(Position pos, const dsl::DSLModifiers& m
 
 /* (LBRACKET expression? RBRACKET)* (EQ assignmentExpression)? (COMMA IDENTIFER
    (LBRACKET expression? RBRACKET)* (EQ assignmentExpression)?)* SEMICOLON */
-DSLStatement DSLParser::localVarDeclarationEnd(Position pos, const dsl::DSLModifiers& mods,
-        dsl::DSLType baseType, Token name) {
+DSLStatement DSLParser::localVarDeclarationEnd(Position pos,
+                                               const dsl::DSLModifiers& mods,
+                                               const dsl::DSLType& baseType,
+                                               Token name) {
     using namespace dsl;
     DSLType type = baseType;
     DSLExpression initializer;

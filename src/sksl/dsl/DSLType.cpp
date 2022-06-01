@@ -257,7 +257,7 @@ const SkSL::Type& DSLType::skslType() const {
                         Position());
 }
 
-DSLExpression DSLType::Construct(DSLType type, SkSpan<DSLExpression> argArray) {
+DSLExpression DSLType::Construct(const DSLType& type, SkSpan<DSLExpression> argArray) {
     SkSL::ExpressionArray skslArgs;
     skslArgs.reserve_back(argArray.size());
 

@@ -155,18 +155,18 @@ public:
     bool isEffectChild() const;
 
     template<typename... Args>
-    static DSLExpression Construct(DSLType type, DSLVarBase& var, Args&&... args) {
+    static DSLExpression Construct(const DSLType& type, DSLVarBase& var, Args&&... args) {
         DSLExpression argArray[] = {var, args...};
         return Construct(type, SkMakeSpan(argArray));
     }
 
     template<typename... Args>
-    static DSLExpression Construct(DSLType type, DSLExpression expr, Args&&... args) {
+    static DSLExpression Construct(const DSLType& type, DSLExpression expr, Args&&... args) {
         DSLExpression argArray[] = {std::move(expr), std::move(args)...};
         return Construct(type, SkMakeSpan(argArray));
     }
 
-    static DSLExpression Construct(DSLType type, SkSpan<DSLExpression> argArray);
+    static DSLExpression Construct(const DSLType& type, SkSpan<DSLExpression> argArray);
 
 private:
     const SkSL::Type& skslType() const;
@@ -226,11 +226,10 @@ DSLType Array(const DSLType& base, int count, Position pos = {});
 
 class DSLField {
 public:
-    DSLField(const DSLType type, std::string_view name,
-             Position pos = {})
+    DSLField(const DSLType& type, std::string_view name, Position pos = {})
         : DSLField(DSLModifiers(), type, name, pos) {}
 
-    DSLField(const DSLModifiers& modifiers, const DSLType type, std::string_view name,
+    DSLField(const DSLModifiers& modifiers, const DSLType& type, std::string_view name,
              Position pos = {})
         : fModifiers(modifiers)
         , fType(type)

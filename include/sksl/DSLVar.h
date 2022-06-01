@@ -35,10 +35,10 @@ public:
     /**
      * Constructs a new variable with the specified type and name.
      */
-    DSLVarBase(VariableStorage storage, DSLType type, std::string_view name,
+    DSLVarBase(VariableStorage storage, const DSLType& type, std::string_view name,
                DSLExpression initialValue, Position pos, Position namePos);
 
-    DSLVarBase(VariableStorage storage, const DSLModifiers& modifiers, DSLType type,
+    DSLVarBase(VariableStorage storage, const DSLModifiers& modifiers, const DSLType& type,
                std::string_view name, DSLExpression initialValue, Position pos, Position namePos);
 
     DSLVarBase(DSLVarBase&&) = default;
@@ -153,10 +153,10 @@ class DSLVar : public DSLVarBase {
 public:
     DSLVar();
 
-    DSLVar(DSLType type, std::string_view name, DSLExpression initialValue = DSLExpression(),
+    DSLVar(const DSLType& type, std::string_view name, DSLExpression initialValue = DSLExpression(),
            Position pos = {}, Position namePos = {});
 
-    DSLVar(const DSLModifiers& modifiers, DSLType type, std::string_view name,
+    DSLVar(const DSLModifiers& modifiers, const DSLType& type, std::string_view name,
            DSLExpression initialValue = DSLExpression(), Position pos = {}, Position namePos = {});
 
     DSLVar(DSLVar&&) = default;
@@ -174,10 +174,11 @@ class DSLGlobalVar : public DSLVarBase {
 public:
     DSLGlobalVar();
 
-    DSLGlobalVar(DSLType type, std::string_view name, DSLExpression initialValue = DSLExpression(),
+    DSLGlobalVar(const DSLType& type, std::string_view name,
+                 DSLExpression initialValue = DSLExpression(),
                  Position pos = {}, Position namePos = {});
 
-    DSLGlobalVar(const DSLModifiers& modifiers, DSLType type, std::string_view name,
+    DSLGlobalVar(const DSLModifiers& modifiers, const DSLType& type, std::string_view name,
                  DSLExpression initialValue = DSLExpression(),
                  Position pos = {}, Position namePos = {});
 
@@ -215,9 +216,10 @@ class DSLParameter : public DSLVarBase {
 public:
     DSLParameter();
 
-    DSLParameter(DSLType type, std::string_view name, Position pos = {}, Position namePos = {});
+    DSLParameter(const DSLType& type, std::string_view name,
+                 Position pos = {}, Position namePos = {});
 
-    DSLParameter(const DSLModifiers& modifiers, DSLType type, std::string_view name,
+    DSLParameter(const DSLModifiers& modifiers, const DSLType& type, std::string_view name,
                  Position pos = {}, Position namePos = {});
 
     DSLParameter(DSLParameter&&) = default;

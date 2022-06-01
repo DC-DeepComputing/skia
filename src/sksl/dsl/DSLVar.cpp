@@ -32,16 +32,16 @@ namespace dsl {
  * DSLVarBase
  */
 
-DSLVarBase::DSLVarBase(VariableStorage storage, DSLType type, std::string_view name,
+DSLVarBase::DSLVarBase(VariableStorage storage, const DSLType& type, std::string_view name,
                        DSLExpression initialValue, Position pos, Position namePos)
     : DSLVarBase(storage, DSLModifiers(), std::move(type), name, std::move(initialValue),
                  pos, namePos) {}
 
-DSLVarBase::DSLVarBase(VariableStorage storage, const DSLModifiers& modifiers, DSLType type,
+DSLVarBase::DSLVarBase(VariableStorage storage, const DSLModifiers& modifiers, const DSLType& type,
                        std::string_view name, DSLExpression initialValue, Position pos,
                        Position namePos)
     : fModifiers(std::move(modifiers))
-    , fType(std::move(type))
+    , fType(type)
     , fNamePosition(namePos)
     , fName(name)
     , fInitialValue(std::move(initialValue))
@@ -77,12 +77,12 @@ DSLExpression DSLVarBase::assignExpression(DSLExpression expr) {
 
 DSLVar::DSLVar() : DSLVarBase(SkSL::VariableStorage::kLocal) {}
 
-DSLVar::DSLVar(DSLType type, std::string_view name, DSLExpression initialValue,
+DSLVar::DSLVar(const DSLType& type, std::string_view name, DSLExpression initialValue,
                Position pos, Position namePos)
         : INHERITED(SkSL::VariableStorage::kLocal, type, name, std::move(initialValue),
                     pos, namePos) {}
 
-DSLVar::DSLVar(const DSLModifiers& modifiers, DSLType type, std::string_view name,
+DSLVar::DSLVar(const DSLModifiers& modifiers, const DSLType& type, std::string_view name,
                DSLExpression initialValue, Position pos, Position namePos)
         : INHERITED(SkSL::VariableStorage::kLocal, modifiers, type, name, std::move(initialValue),
                     pos, namePos) {}
@@ -97,13 +97,14 @@ void DSLVar::swap(DSLVar& other) {
 
 DSLGlobalVar::DSLGlobalVar() : DSLVarBase(SkSL::VariableStorage::kGlobal) {}
 
-DSLGlobalVar::DSLGlobalVar(DSLType type, std::string_view name, DSLExpression initialValue,
+DSLGlobalVar::DSLGlobalVar(const DSLType& type, std::string_view name, DSLExpression initialValue,
                            Position pos, Position namePos)
         : INHERITED(SkSL::VariableStorage::kGlobal, type, name, std::move(initialValue),
                     pos, namePos) {}
 
-DSLGlobalVar::DSLGlobalVar(const DSLModifiers& modifiers, DSLType type, std::string_view name,
-                           DSLExpression initialValue, Position pos, Position namePos)
+DSLGlobalVar::DSLGlobalVar(const DSLModifiers& modifiers, const DSLType& type,
+                           std::string_view name, DSLExpression initialValue,
+                           Position pos, Position namePos)
         : INHERITED(SkSL::VariableStorage::kGlobal, modifiers, type, name, std::move(initialValue),
                     pos, namePos) {}
 
@@ -159,11 +160,12 @@ DSLExpression DSLGlobalVar::eval(DSLExpression x, DSLExpression y, Position pos)
 
 DSLParameter::DSLParameter() : DSLVarBase(SkSL::VariableStorage::kParameter) {}
 
-DSLParameter::DSLParameter(DSLType type, std::string_view name, Position pos, Position namePos)
+DSLParameter::DSLParameter(const DSLType& type, std::string_view name,
+                           Position pos, Position namePos)
         : INHERITED(SkSL::VariableStorage::kParameter, type, name, DSLExpression(), pos, namePos) {}
 
-DSLParameter::DSLParameter(const DSLModifiers& modifiers, DSLType type, std::string_view name,
-                           Position pos, Position namePos)
+DSLParameter::DSLParameter(const DSLModifiers& modifiers, const DSLType& type,
+                           std::string_view name, Position pos, Position namePos)
         : INHERITED(SkSL::VariableStorage::kParameter, modifiers, type, name, DSLExpression(),
                     pos, namePos) {}
 

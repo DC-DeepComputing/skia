@@ -145,7 +145,7 @@ private:
 
     bool functionDeclarationEnd(Position start,
                                 const dsl::DSLModifiers& modifiers,
-                                dsl::DSLType type,
+                                const dsl::DSLType& type,
                                 const Token& name);
 
     struct VarDeclarationsPrefix {
@@ -170,11 +170,15 @@ private:
 
     bool parseInitializer(Position pos, dsl::DSLExpression* initializer);
 
-    void globalVarDeclarationEnd(Position position, const dsl::DSLModifiers& mods,
-            dsl::DSLType baseType, Token name);
+    void globalVarDeclarationEnd(Position position,
+                                 const dsl::DSLModifiers& mods,
+                                 const dsl::DSLType& baseType,
+                                 Token name);
 
-    dsl::DSLStatement localVarDeclarationEnd(Position position, const dsl::DSLModifiers& mods,
-            dsl::DSLType baseType, Token name);
+    dsl::DSLStatement localVarDeclarationEnd(Position position,
+                                             const dsl::DSLModifiers& mods,
+                                             const dsl::DSLType& baseType,
+                                             Token name);
 
     std::optional<dsl::DSLParameter> parameter(size_t paramIndex);
 
