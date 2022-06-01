@@ -2245,6 +2245,19 @@ void precompile(skgpu::graphite::Context* context) {
 
         context->precompile(builder);
     }
+
+    // TODO: move this to CombinationBuilderTest
+    builder.reset();
+
+    {
+        [[maybe_unused]] auto solid_0 = builder.addOption(SkShaderType::kSolidColor);
+
+        SkASSERT(solid_0.epoch() == builder.epoch());
+
+        builder.reset();
+
+        SkASSERT(solid_0.epoch() != builder.epoch());
+    }
 }
 
 } // anonymous namespace
