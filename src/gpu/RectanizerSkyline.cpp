@@ -95,6 +95,14 @@ void RectanizerSkyline::addSkylineLevel(int skylineIndex, int x, int y, int widt
             fSkyline[i].fX += shrink;
             fSkyline[i].fWidth -= shrink;
 
+            auto lostY = y - fSkyline[i].fY;
+            static int gLost0 = 0;
+            if (lostY > 0) {
+                gLost0 += shrink * lostY;
+                SkDebugf("lost: %dx%d=%d -> %d/%d\n",
+                         shrink, lostY, shrink * lostY, gLost0, fAreaSoFar);
+            }
+
             if (fSkyline[i].fWidth <= 0) {
                 // fully consumed
                 fSkyline.remove(i);
@@ -116,12 +124,22 @@ void RectanizerSkyline::addSkylineLevel(int skylineIndex, int x, int y, int widt
             --i;
         }
     }
+
+    // Print profile
+    SkDebugf("addSkylineLevel(%d, %d, %d, %d, %d): %d ",
+             skylineIndex, x, y, width, height, fAreaSoFar);
+    for (auto i = 0; i < fSkyline.size(); ++i) {
+        auto& skyline = fSkyline[i];
+        auto opt = " ";
+        SkDebugf("[0:%d)x[%d:%d)%s ", skyline.fY, skyline.fX, skyline.fX+skyline.fWidth, opt);
+    }
+    SkDebugf("\n");
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
-Rectanizer* Rectanizer::Factory(int width, int height) {
-    return new RectanizerSkyline(width, height);
-}
+//Rectanizer* Rectanizer::Factory(int width, int height) {
+//    return new RectanizerSkyline(width, height);//
+//}
 
 } // End of namespace skgpu

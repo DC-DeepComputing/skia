@@ -114,7 +114,7 @@ GrDrawOpAtlas::ErrorCode SmallPathAtlasMgr::addToAtlas(GrResourceProvider* resou
                                                        GrDeferredUploadTarget* target,
                                                        int width, int height, const void* image,
                                                        skgpu::AtlasLocator* locator) {
-    return fAtlas->addToAtlas(resourceProvider, target, width, height, image, locator);
+    return fAtlas->addToAtlas(resourceProvider, target, width, height, 0, image, locator);
 }
 
 void SmallPathAtlasMgr::setUseToken(SmallPathShapeData* shapeData,
