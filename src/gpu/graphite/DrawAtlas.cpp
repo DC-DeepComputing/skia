@@ -117,7 +117,7 @@ bool DrawAtlas::addToPage(unsigned int pageIdx, int width, int height, const voi
     plotIter.init(fPages[pageIdx].fPlotList, PlotList::Iter::kHead_IterStart);
 
     for (Plot* plot = plotIter.get(); plot; plot = plotIter.next()) {
-        if (plot->addSubImage(width, height, image, atlasLocator)) {
+        if (plot->addSubImage(width, height, 0, image, atlasLocator)) {
             return this->updatePlot(atlasLocator, plot);
         }
     }
@@ -187,7 +187,7 @@ DrawAtlas::ErrorCode DrawAtlas::addToAtlas(Recorder* recorder,
             SkASSERT(plot);
             if (plot->lastUseToken() < recorder->priv().tokenTracker()->nextTokenToFlush()) {
                 this->processEvictionAndResetRects(plot);
-                SkDEBUGCODE(bool verify = )plot->addSubImage(width, height, image, atlasLocator);
+                SkDEBUGCODE(bool verify = )plot->addSubImage(width, height, 0, image, atlasLocator);
                 SkASSERT(verify);
                 if (!this->updatePlot(atlasLocator, plot)) {
                     return ErrorCode::kError;
