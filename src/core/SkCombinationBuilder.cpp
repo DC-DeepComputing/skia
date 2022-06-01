@@ -370,6 +370,9 @@ SkCombinationBuilder::SkCombinationBuilder(SkShaderCodeDictionary* dict)
 }
 #endif
 
+SkCombinationBuilder::~SkCombinationBuilder() = default;
+
+
 template<typename T, typename... Args>
 SkOption* SkCombinationBuilder::allocInArena(Args&&... args) {
     SkOption* arenaObject = fArena->make<T>(T{{ T::kType, T::kNumChildSlots },
@@ -510,13 +513,19 @@ void SkCombinationBuilder::reset() {
     fArena->reset();
 }
 
+int SkCombinationBuilder::numBlendModeOptions() const {
+    int numBlendModes = SkPopCount(fBlendModes) + fBlenders.count();
+    // If no blend modes are specified the builder will add kSrcOver
+    return numBlendModes ? numBlendModes : 1;
+}
+
 int SkCombinationBuilder::numCombinations() {
     int numShaderCombinations = 0;
     for (SkOption* s : fShaderOptions) {
         numShaderCombinations += s->numCombinations();
     }
 
-    return numShaderCombinations * (SkCountSetBits(fBlendModes) + fBlenders.count());
+    return numShaderCombinations * this->numBlendModeOptions();
 }
 
 #ifdef SK_DEBUG
@@ -534,8 +543,13 @@ void SkCombinationBuilder::buildCombinations(
     SkKeyContext keyContext(dict);
     SkPaintParamsKeyBuilder builder(dict, SkBackend::kGraphite);
 
+    uint32_t blendModes = fBlendModes;
+    if (blendModes == 0 && fBlenders.empty()) {
+        blendModes |= (0x1 << (int) SkBlendMode::kSrcOver);
+    }
+
     for (int i = 0; i < kSkBlendModeCount; ++i) {
-        if (!(fBlendModes & (0x1 << i))) {
+        if (!(blendModes & (0x1 << i))) {
             continue;
         }
 
