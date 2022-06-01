@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "97fa527e_2796209a",
+        "filename": "src/core/SkMath.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-06-01T19:26:22Z",
+      "side": 1,
+      "message": "Oh no, I didn\u0027t see this :O \nOof, I wonder if it\u0027s actually worth doing the check. I guess if it\u0027s getting heavy-enough traffic the branch predictor will learn it :|",
+      "range": {
+        "startLine": 57,
+        "startChar": 0,
+        "endLine": 66,
+        "endChar": 0
+      },
+      "revId": "1d27124c48fab1a32e8dbfec49657fe1eeb2d185",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
