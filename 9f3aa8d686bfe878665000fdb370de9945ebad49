@@ -16,6 +16,24 @@
       "message": "I suppose what this adds is enforcing regularity of the names of the filegroups and allows the lists of files to not need to change (be manually split). If the effect of this were just inlined (just create a filegroup for headers and one for sources) there would be one less source of non-standard magic to reason about. I suppose that enforcing name regularity might be worth that cost, and this isn\u0027t too difficult to just read.",
       "revId": "9f3aa8d686bfe878665000fdb370de9945ebad49",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "10c811e0_c6b59923",
+        "filename": "bazel/macros.bzl",
+        "patchSetId": 3
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-06-01T18:28:21Z",
+      "side": 1,
+      "message": "Yeah, I\u0027ve been trying to avoid \"magic macros\" creating build targets where possible. Here though, I think it saves enough boilerplate to be worth it. In this CL, split_srcs_and_hdrs was used 72 times.",
+      "parentUuid": "e4a0b7e3_cf5f8a6a",
+      "revId": "9f3aa8d686bfe878665000fdb370de9945ebad49",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
