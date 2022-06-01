@@ -81,6 +81,8 @@ const char* type_to_str(SkShaderType type) {
 
 //--------------------------------------------------------------------------------------------------
 
+//    void updateTo(int curState) const;
+
 // The base class for all the objects stored in the arena
 // The base option object consists of some number of child slots each of which is an array of
 // options. The slots and their associated linked list of options are allocated separately in
@@ -154,6 +156,37 @@ public:
         return fNumCombinations;
     }
 
+    void updateTo(int curState) {
+        SkASSERT(curState < this->numCombinations());
+
+        int numIntrinsicCombinations = this->numIntrinsicCombinations();
+        if (numIntrinsicCombinations) {
+            curState %= this->numChildCombinations();
+        }
+
+        if (fNumSlots) {
+            SkASSERT(curState < this->numChildCombinations());
+
+            int numCombosSeen = 0;
+            for (int slotIndex = 0; slotIndex < fNumSlots; ++slotIndex) {
+                const SkSlot& slot = fSlots[slotIndex];
+
+                numCombosSeen += slot.numCombinations();
+                int numCombosLeft = this->numChildCombinations() / numCombosSeen;
+
+                int slotState;
+                if (slotIndex+1 < fNumSlots) {
+                    slotState = curState / (numCombosLeft ? numCombosLeft : 1);
+                    curState %= numCombosLeft;
+                } else {
+                    slotState = curState;
+                }
+
+                slot.updateTo(slotState);
+            }
+        }
+    }
+
 #ifdef SK_DEBUG
     void dump(int indent = 0) const {
         SkDebugf("%s", type_to_str(fType));
@@ -209,6 +242,30 @@ int SkOption::SkSlot::numCombinations() {
     }
 
     return fNumCombinations;
+}
+
+// Here bc needs SkOption::updateTo
+void SkSlot::updateTo(int curState) const {
+    SkASSERT(curState < this->numCombinations());
+
+    const SkOptionsBlock* block = &fBlock;
+    while (block) {
+        for (int i = 0; i < kNumOptionsPerBlock; ++i) {
+            SkOption* option = block->fOptions[i];
+            if (!option) {
+                return;
+            }
+
+            if (curState < option->numCombinations()) {
+                option->updateTo(curState);
+                return;
+            }
+
+            curState -= option->numCombinations();
+        }
+
+        block = block->fNext;
+    }
 }
 
 #ifdef SK_DEBUG
@@ -299,14 +356,17 @@ int ArenaData_BlendShader::numIntrinsicCombinationsDerived() const { return 1; }
 
 // Here to access the derived ArenaData objects
 int SkOption::numIntrinsicCombinations() const {
+    int numIntrinsicCombinations;
+
     switch (this->type()) {
 #define CASE(T) case SkShaderType::k##T:                                                   \
-                    return ((ArenaData_##T*) this)->numIntrinsicCombinationsDerived();
+                    numIntrinsicCombinations =  ((ArenaData_##T*) this)->numIntrinsicCombinationsDerived();
         SHADER_TYPES(CASE)
 #undef CASE
     }
 
-    SkUNREACHABLE;
+    SkASSERT(numIntrinsicCombinations >= 1); // There is always, at least, the existential combo
+    return numIntrinsicCombinations;
 }
 
 //--------------------------------------------------------------------------------------------------
@@ -510,6 +570,10 @@ void SkCombinationBuilder::reset() {
     fArena->reset();
 }
 
+int SkCombinationBuilder::numBlendModeCombos() {
+    return SkCountSetBits(fBlendModes) + fBlenders.count();
+}
+
 int SkCombinationBuilder::numCombinations() {
     int numShaderCombinations = 0;
     for (SkOption* s : fShaderOptions) {
@@ -528,11 +592,32 @@ void SkCombinationBuilder::dump() const {
 }
 #endif
 
+void SkCombinationBuilder::updateTo(int state, SkPaintParamsKeyBuilder* keyBuilder) const {
+
+    int numBlendModeCombos = this->numBlendModeCombos();
+
+
+    for (int i = 0; i < kSkBlendModeCount; ++i) {
+        if (!(fBlendModes & (0x1 << i))) {
+            continue;
+        }
+
+        SkBlendMode bm = (SkBlendMode) i;
+    }
+
+    // TODO: need to loop over fBlenders here
+}
+
 void SkCombinationBuilder::buildCombinations(
         SkShaderCodeDictionary* dict,
         const std::function<void(SkUniquePaintParamsID)>& func) const {
     SkKeyContext keyContext(dict);
     SkPaintParamsKeyBuilder builder(dict, SkBackend::kGraphite);
+
+    int numCombos = this->numCombinations();
+    for (int i = 0; i < numCombos; ++i) {
+        this->updateTo(i, &builder);
+    }
 
     for (int i = 0; i < kSkBlendModeCount; ++i) {
         if (!(fBlendModes & (0x1 << i))) {
