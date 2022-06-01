@@ -133,6 +133,14 @@ size_t GrGLRenderTarget::onGpuMemorySize() const {
                                   fTotalMemorySamplesPerPixel, GrMipmapped::kNo);
 }
 
+void GrGLRenderTarget::onSetLabel() {
+    GrGLGpu* glGpu = static_cast<GrGLGpu*>(this->getGpu());
+    if (glGpu->glCaps().debugSupport()) {
+        GR_GL_CALL(glGpu->glInterface(),
+                ObjectLabel(GR_GL_TEXTURE, fMSColorRenderbufferID, -1, this->getLabel().c_str()));
+    }
+}
+
 bool GrGLRenderTarget::completeStencilAttachment(GrAttachment* stencil, bool useMultisampleFBO) {
     // We defer attaching the new stencil buffer until the next time our framebuffer is bound.
     if (this->getStencilAttachment(useMultisampleFBO) != stencil) {
