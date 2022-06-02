@@ -93,6 +93,11 @@ public:
             Position pos = {});
 
     /**
+     * Returns true if the SkSL type is non-null.
+     */
+    bool hasValue() const { return fSkSLType != nullptr; }
+
+    /**
      * Returns true if this type is a bool.
      */
     bool isBoolean() const;
