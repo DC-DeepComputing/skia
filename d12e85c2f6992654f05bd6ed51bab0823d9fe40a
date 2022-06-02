@@ -379,6 +379,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8792550f_7ed5d341",
+        "filename": "src/core/SkCombinationBuilder.cpp",
+        "patchSetId": 56
+      },
+      "lineNbr": 315,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-06-02T15:35:12Z",
+      "side": 1,
+      "message": "This is `bugprone-argument-comment` and it\u0027s enabled:\n\nhttp://osscs/skia/skia/+/main:.clang-tidy;l\u003d3?q\u003dbugprone-argument-comment\u0026start\u003d21",
+      "parentUuid": "99e48dad_645ac1ca",
+      "range": {
+        "startLine": 315,
+        "startChar": 45,
+        "endLine": 315,
+        "endChar": 52
+      },
+      "revId": "d12e85c2f6992654f05bd6ed51bab0823d9fe40a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1f63d57c_0d0a52ef",
