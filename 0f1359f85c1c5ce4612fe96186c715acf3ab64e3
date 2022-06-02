@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d991534a_2ebac799",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-06-02T14:00:14Z",
+      "side": 1,
+      "message": "Yeah, small price to pay for another 1.7k of code.",
+      "revId": "0f1359f85c1c5ce4612fe96186c715acf3ab64e3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
