@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d15cd17d_5e13c1c5",
+        "filename": "src/text/gpu/TextBlob.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-06-02T17:04:05Z",
+      "side": 1,
+      "message": "It is kind of odd to have these in a .cpp file",
+      "range": {
+        "startLine": 35,
+        "startChar": 0,
+        "endLine": 36,
+        "endChar": 21
+      },
+      "revId": "2a2ef6667cd68d1ffcff3f2e085278e4a4d9881a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
