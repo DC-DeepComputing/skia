@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1f4032ca_6963dedc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 60
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-06-02T20:21:02Z",
+      "side": 1,
+      "message": "After chatting with Rob earlier, I\u0027m okay with this as-is for now, knowing that we\u0027re going to move to a stricter type-checked system for adding per-shader-type data to the keys.",
+      "revId": "2891c9f7956e3d418537bd50eb984c95e4a430b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
