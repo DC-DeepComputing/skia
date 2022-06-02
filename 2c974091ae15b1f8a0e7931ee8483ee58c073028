@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "20b8e763_e61f6e80",
+        "filename": "include/core/SkMesh.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 221,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-06-02T21:46:39Z",
+      "side": 1,
+      "message": "Oh ok. I didn\u0027t realize the order/packing weren\u0027t guaranteed for runtime effects. We\u0027ll definitely want to make this consistent with that.",
+      "parentUuid": "f93ecad8_a0f972d0",
+      "range": {
+        "startLine": 219,
+        "startChar": 72,
+        "endLine": 221,
+        "endChar": 84
+      },
+      "revId": "2c974091ae15b1f8a0e7931ee8483ee58c073028",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "62d83c4d_ea9aa51a",
         "filename": "src/gpu/ganesh/ops/DrawMeshOp.cpp",
         "patchSetId": 5
