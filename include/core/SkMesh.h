@@ -215,6 +215,10 @@ private:
  *
  * If Make() is used the implicit index sequence is 0, 1, 2, 3, ... and vertexCount must be at least
  * 3.
+ *
+ * Both Make() and MakeIndexed() take a SkData with the uniform values. The uniforms from the vertex
+ * shader are packed at the beginning of the data followed by those from the fragment program,
+ * skipping uniforms in the fragment program that are aliased in the vertex program.
  */
 class SkMesh {
 public:
@@ -263,6 +267,7 @@ public:
                        sk_sp<VertexBuffer>,
                        size_t vertexCount,
                        size_t vertexOffset,
+                       sk_sp<const SkData> uniforms,
                        const SkRect& bounds);
 
     static SkMesh MakeIndexed(sk_sp<SkMeshSpecification>,
@@ -273,6 +278,7 @@ public:
                               sk_sp<IndexBuffer>,
                               size_t indexCount,
                               size_t indexOffset,
+                              sk_sp<const SkData> uniforms,
                               const SkRect& bounds);
 
     sk_sp<SkMeshSpecification> spec() const { return fSpec; }
@@ -289,6 +295,8 @@ public:
     size_t indexOffset() const { return fIOffset; }
     size_t indexCount()  const { return fICount;  }
 
+    sk_sp<const SkData> uniforms() const { return fUniforms; }
+
     SkRect bounds() const { return fBounds; }
 
     bool isValid() const;
@@ -302,6 +310,8 @@ private:
 
     sk_sp<VertexBuffer> fVB;
     sk_sp<IndexBuffer>  fIB;
+
+    sk_sp<const SkData> fUniforms;
 
     size_t fVOffset = 0;  // Must be a multiple of spec->stride()
     size_t fVCount  = 0;
