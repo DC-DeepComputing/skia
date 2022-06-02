@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f7cc59d8_cb522a51",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 12064
+      },
+      "writtenOn": "2022-06-02T07:07:53Z",
+      "side": 1,
+      "message": "Hi Greg, PTAL. In case you might miss this.\nThanks!",
+      "revId": "e51ed5214b9020e82b6ba1aad1657586698f79b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
