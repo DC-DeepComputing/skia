@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f93ecad8_a0f972d0",
+        "filename": "include/core/SkMesh.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 221,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-06-02T20:12:12Z",
+      "side": 1,
+      "message": "I\u0027ve avoided documenting this in SkRuntimeEffect, and really encouraged use of the builder (or just the reflection API) so that clients don\u0027t depend on the packing algorithm. Same in your GM - I think it would be good to at least get the two uniform offsets using the findUniform() API on the mesh spec. (I don\u0027t foresee things changing, just trying to be defensive and also make the GM demonstrate best practice for clients).",
+      "range": {
+        "startLine": 219,
+        "startChar": 72,
+        "endLine": 221,
+        "endChar": 84
+      },
+      "revId": "2c974091ae15b1f8a0e7931ee8483ee58c073028",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "62d83c4d_ea9aa51a",
+        "filename": "src/gpu/ganesh/ops/DrawMeshOp.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-06-02T20:12:12Z",
+      "side": 1,
+      "message": "Not necessary for this CL, but would be nice to share this code with GrSkSLFP\u0027s copy. Seems like a helper function that takes pdman, span\u003cUniform\u003e, and SkData could be used from both? I guess the FP version also has those uniformFlags, which aren\u0027t present here. Hmm.",
+      "range": {
+        "startLine": 91,
+        "startChar": 0,
+        "endLine": 116,
+        "endChar": 17
+      },
+      "revId": "2c974091ae15b1f8a0e7931ee8483ee58c073028",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
