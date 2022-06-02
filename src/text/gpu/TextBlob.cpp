@@ -18,15 +18,12 @@
 
 #include "src/text/gpu/TextBlob.h"
 
-#include "include/core/SkColorFilter.h"
 #include "include/core/SkScalar.h"
 #include "include/private/SkTemplates.h"
-#include "include/private/chromium/SkChromeRemoteGlyphCache.h"
 #include "include/private/chromium/Slug.h"
 #include "src/core/SkDistanceFieldGen.h"
 #include "src/core/SkEnumerate.h"
 #include "src/core/SkFontPriv.h"
-#include "src/core/SkGlyph.h"
 #include "src/core/SkGlyphRun.h"
 #include "src/core/SkMaskFilterBase.h"
 #include "src/core/SkMatrixProvider.h"
@@ -34,22 +31,17 @@
 #include "src/core/SkReadBuffer.h"
 #include "src/core/SkRectPriv.h"
 #include "src/core/SkStrikeCache.h"
-#include "src/core/SkStrikeSpec.h"
-#include "src/text/gpu/Glyph.h"
-#include "src/text/gpu/GlyphVector.h"
-#include "src/text/gpu/SDFTControl.h"
-#include "src/text/gpu/StrikeCache.h"
+#include "src/core/SkWriteBuffer.h"
 #include "src/text/gpu/SubRunAllocator.h"
 #include "src/text/gpu/SubRunContainer.h"
 
+class SkStrikeClient;
+
 #if SK_SUPPORT_GPU  // Ganesh Support
-#include "include/gpu/GrRecordingContext.h"
 #include "src/gpu/ganesh/GrBlurUtils.h"
 #include "src/gpu/ganesh/GrClip.h"
 #include "src/gpu/ganesh/GrMeshDrawTarget.h"
 #include "src/gpu/ganesh/GrStyle.h"
-#include "src/gpu/ganesh/SkGr.h"
-#include "src/gpu/ganesh/effects/GrDistanceFieldGeoProc.h"
 #include "src/gpu/ganesh/geometry/GrStyledShape.h"
 #include "src/gpu/ganesh/ops/AtlasTextOp.h"
 #include "src/gpu/ganesh/text/GrAtlasManager.h"
