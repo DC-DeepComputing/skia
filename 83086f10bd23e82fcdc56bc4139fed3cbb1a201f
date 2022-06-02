@@ -16,6 +16,121 @@
       "message": "Greg, this CL is ready for the review. Can you PTAL.\n\nI have used following texture IDs when passing label from backend texture classes:\nGrGlAttachment -\u003e fRenderbufferID\nGrGLRenderTarget -\u003e fMSColorRenderbufferID\nGrGlBuffer -\u003e fBufferID\nGrGlTextureRenderTarget -\u003e textureID()\nGrGlTexture -\u003e fID\n\nAnd all these ids are wrapped i skASSERT to check if they are valid before using it in the GR_GL_CALL.",
       "revId": "83086f10bd23e82fcdc56bc4139fed3cbb1a201f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b81eafea_7d987abe",
+        "filename": "src/gpu/ganesh/gl/GrGLBuffer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 327,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-06-02T16:25:53Z",
+      "side": 1,
+      "message": "GR_GL_BUFFER",
+      "range": {
+        "startLine": 327,
+        "startChar": 31,
+        "endLine": 327,
+        "endChar": 44
+      },
+      "revId": "83086f10bd23e82fcdc56bc4139fed3cbb1a201f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eec67728_e9467472",
+        "filename": "src/gpu/ganesh/gl/GrGLRenderTarget.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-06-02T16:25:53Z",
+      "side": 1,
+      "message": "So I\u0027ve been trying to figure out what the best ID to use for a pure GrGLRenderTarget (i.e. not a GrGLTextureRenderTarget). One issue is not every instance will have an fMSColorRenderBufferID. The unique thing about this case is that the only way to get a pure GrGLRenderTarget is if the client wraps an FBO in Skia. This made me start thinking that we probably want to make sure we\u0027re not trying to call glObjectLabel on any client wrapped object. My gut tells me we should not be modifying their things. Now, we shouldn\u0027t ever be calling setLabel unless we\u0027re getting a scratch resource from our cache (which we own all of those objects). So at least for the GrSurface subclasses (GrGLTexture/RenderTarget), I think we should assert the ownership is kOwned (GrGLTexture stores this in fTextureIDOwnership and GrGLRenderTarget in fRTFBOOwnership). So this whole call could (if we don\u0027t have to handle the below) just be changed to an SkASSERT and nothing else.\n\nNow there is the whole question of what specifically to do with fMSColorRenderbufferID. This is going to be a Skia created/owned object. And it could be used on a pure GrGLRenderTarget (client wraps a single sample FBO but asks for us to draw with msaa) or a GrGLTextureRenderTarget with msaa. I think I would lean towards in long run setting a generic \"Skia MSAA RenderBuffer\" on all of these fMSColorRenderbuffers when they are original created and then it doesn\u0027t get effected by the setLabel call at all. So if we go that route, I think again this function shouldn\u0027t do anything here and could just be an assert.",
+      "range": {
+        "startLine": 140,
+        "startChar": 43,
+        "endLine": 140,
+        "endChar": 65
+      },
+      "revId": "83086f10bd23e82fcdc56bc4139fed3cbb1a201f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "854bf7ef_f1e5101a",
+        "filename": "src/gpu/ganesh/gl/GrGLRenderTarget.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-06-02T16:25:53Z",
+      "side": 1,
+      "message": "For the RenderBuffers, this should be GR_GL_RENDERBUFFER.",
+      "range": {
+        "startLine": 140,
+        "startChar": 28,
+        "endLine": 140,
+        "endChar": 41
+      },
+      "revId": "83086f10bd23e82fcdc56bc4139fed3cbb1a201f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ccabce8b_ffef4609",
+        "filename": "src/gpu/ganesh/gl/GrGLTexture.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-06-02T16:25:53Z",
+      "side": 1,
+      "message": "add another assert that fTextureIDOwnership \u003d\u003d GrBackedObjectOwnership::kOwned",
+      "range": {
+        "startLine": 168,
+        "startChar": 17,
+        "endLine": 168,
+        "endChar": 18
+      },
+      "revId": "83086f10bd23e82fcdc56bc4139fed3cbb1a201f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "750ec170_d3d6dd33",
+        "filename": "src/gpu/ganesh/gl/GrGLTextureRenderTarget.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-06-02T16:25:53Z",
+      "side": 1,
+      "message": "To make it clear we\u0027re setting the textureID, what if we just do:\n\"GrGLTexture::onSetLabel(...)\"\n\nThat keeps all the logic in one place",
+      "range": {
+        "startLine": 88,
+        "startChar": 0,
+        "endLine": 93,
+        "endChar": 5
+      },
+      "revId": "83086f10bd23e82fcdc56bc4139fed3cbb1a201f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
