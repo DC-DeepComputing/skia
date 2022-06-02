@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "87aa5aae_c2e695fd",
+        "filename": "dm/DMSrcSink.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 2164,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-06-02T18:46:08Z",
+      "side": 1,
+      "message": "Why are we still doing any precompile from DMSrcSink still?",
+      "range": {
+        "startLine": 2164,
+        "startChar": 17,
+        "endLine": 2164,
+        "endChar": 27
+      },
+      "revId": "ecaf0947f45b777acf184361850720c4e7b0a6d1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
