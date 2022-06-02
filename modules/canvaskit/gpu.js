@@ -306,6 +306,29 @@
             glCtx.bindTexture(glCtx.TEXTURE_2D, null);
             return pushTexture(newTex);
           },
+          'readPixels': function() {
+            var ctx = GL.currentContext;
+            var glCtx = ctx.GLctx;
+            var newTex = glCtx.createTexture();
+            glCtx.bindTexture(glCtx.TEXTURE_2D, newTex);
+            if (ctx.version === 2) {
+              glCtx.texImage2D(glCtx.TEXTURE_2D, 0, glCtx.RGBA, info['width'], info['height'], 0, glCtx.RGBA, glCtx.UNSIGNED_BYTE, src);
+            } else {
+              glCtx.texImage2D(glCtx.TEXTURE_2D, 0, glCtx.RGBA, glCtx.RGBA, glCtx.UNSIGNED_BYTE, src);
+            }
+            var pixels = new Uint8Array(info['width'] * info['height'] * 4);
+            var fb = glCtx.createFramebuffer();
+            glCtx.bindFramebuffer(glCtx.FRAMEBUFFER, fb);
+            glCtx.framebufferTexture2D(glCtx.FRAMEBUFFER, glCtx.COLOR_ATTACHMENT0, glCtx.TEXTURE_2D, newTex, 0);
+            if (glCtx.checkFramebufferStatus(glCtx.FRAMEBUFFER) == glCtx.FRAMEBUFFER_COMPLETE) {
+              glCtx.readPixels(0, 0, info['width'], info['height'], glCtx.RGBA, glCtx.UNSIGNED_BYTE, pixels);
+            }
+            glCtx.bindFramebuffer(glCtx.FRAMEBUFFER, null);
+            var result = CanvasKit._malloc(pixels.length);
+            CanvasKit.HEAPU8.set(pixels, result);
+
+            return result;
+          },
           'freeSrc': function() {
             // This callback will be executed whenever the returned image is deleted. This gives
             // us a chance to free up the src (which we now own). Generally, there's nothing

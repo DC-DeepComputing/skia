@@ -1486,6 +1486,32 @@ describe('Core canvas behavior', () => {
         });
     });
 
+    gm('MakeLazyImageFromTextureSource_readPixels', (canvas) => {
+        if (!CanvasKit.gpu) {
+            return;
+        }
+
+        // This makes an offscreen <img> with the provided source.
+        const imageEle = new Image();
+        imageEle.src = '/assets/mandrill_512.png';
+
+        // We need to wait until the image is loaded before the texture can use it. For good
+        // measure, we also wait for it to be decoded.
+        return imageEle.decode().then(() => {
+            const img = CanvasKit.MakeLazyImageFromTextureSource(imageEle);
+            const imgInfo = {
+              'width': 512, 
+              'height': 512,
+              'alphaType': CanvasKit.AlphaType.Unpremul,
+              'colorType': CanvasKit.ColorType.RGBA_8888,
+            };
+            var pixels = img.readPixels(0, 0, imgInfo);
+            expect(pixels).toBeTruthy('null readPixels');
+            
+            img.delete();
+        });
+    })
+
     it('encodes images in three different ways', () => {
         // This creates and draws an Image that is 1 pixel wide, 4 pixels tall with
         // the colors listed below.

@@ -27,6 +27,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
  - SkParagraph objects no longer have their glyphs garbled when stored to an SkPicture.
    (skbug.com/13247)
+ - An image made using `MakeLazyImageFromTextureSource` now correctly reads pixels.
 
 ## [0.33.0] - 2022-02-03
 
