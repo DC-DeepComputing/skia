@@ -629,9 +629,11 @@ void Device::recordDraw(const Transform& localToDevice,
     // TODO: remove after CPU-transform fallbacks are no longer needed
     static const Transform kIdentity{SkM44()};
 
-    // TODO: For now stroked paths are converted to fills on the CPU since the fixed count
-    // stroke path renderer hasn't been ported to Graphite yet.
-    if (stroke) {
+    // TODO: For now inverse-filled stroked paths are stroked on the CPU and then rendered as an
+    // inverse-filled path. The TessellateStrokesRenderStep can be modified to update the stencil
+    // buffer instead of performing shading directly, which can then be used to do inverse stroking
+    // in two steps.
+    if (stroke && shape.inverted()) {
         SkPath strokeAsPath = shape.asPath();
         SkStroke stroker;
         stroker.setCap(stroke->cap());
@@ -653,12 +655,12 @@ void Device::recordDraw(const Transform& localToDevice,
             stroker.strokePath(strokeAsPath, &strokeAsPath);
             transform = &localToDevice;
         }
-        // Strokes as fills shouldn't be inverse filled
-        if (strokeAsPath.isInverseFillType()) {
-            strokeAsPath.toggleInverseFillType();
-        }
-        // Stroked paths with just moveTos may produce an empty path, which shouldn't be sent on
-        if (!strokeAsPath.isEmpty()) {
+        // Stroked paths with just moveTos may produce an empty path, which when inverse-filled
+        // should just be a solid fill.
+        if (strokeAsPath.isEmpty()) {
+            this->recordDraw(*transform, Shape(clip.drawBounds()), clip, ordering, paint, nullptr);
+        } else {
+            SkASSERT(strokeAsPath.isInverseFillType());
             this->recordDraw(*transform, Shape(strokeAsPath), clip, ordering, paint, nullptr);
         }
         return;
@@ -678,7 +680,13 @@ void Device::recordDraw(const Transform& localToDevice,
     // are large enough to exceed the fixed count tessellation limits.
     const Renderer* renderer = nullptr;
 
-    if (shape.convex() && !shape.inverted()) {
+    if (stroke) {
+        SkASSERT(!shape.inverted());
+        // Unlike in Ganesh, the HW stroke tessellator can work with arbitrary paints since the
+        // depth test prevents double-blending when there is transparency, thus we can HW stroke
+        // any path regardless of its paint.
+        renderer = &Renderer::TessellatedStrokes();
+    } else if (shape.convex() && !shape.inverted()) {
         // TODO: Ganesh doesn't have a curve+middle-out triangles option for convex paths, but it
         // would be pretty trivial to spin up.
         renderer = &Renderer::ConvexTessellatedWedges();
