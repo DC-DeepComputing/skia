@@ -91,6 +91,75 @@
       },
       "revId": "d12e85c2f6992654f05bd6ed51bab0823d9fe40a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "344c892b_e7dc479e",
+        "filename": "src/core/SkCombinationBuilder.cpp",
+        "patchSetId": 56
+      },
+      "lineNbr": 285,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-06-02T13:50:13Z",
+      "side": 1,
+      "message": "Consider asserting that index \u003c 32. Right now `tm_pair_to_index` should always return a value \u003c 16, but in a hypothetical future where someone adds one new tile mode, we would overflow here and get UB.",
+      "range": {
+        "startLine": 285,
+        "startChar": 31,
+        "endLine": 285,
+        "endChar": 43
+      },
+      "revId": "d12e85c2f6992654f05bd6ed51bab0823d9fe40a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c259190b_46dce6f4",
+        "filename": "src/core/SkCombinationBuilder.cpp",
+        "patchSetId": 56
+      },
+      "lineNbr": 315,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-06-02T13:50:13Z",
+      "side": 1,
+      "message": "Let\u0027s indicate what the nulls are (here and below)\n\n   /*dataInArena\u003d*/nullptr",
+      "range": {
+        "startLine": 315,
+        "startChar": 45,
+        "endLine": 315,
+        "endChar": 52
+      },
+      "revId": "d12e85c2f6992654f05bd6ed51bab0823d9fe40a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1f63d57c_0d0a52ef",
+        "filename": "src/core/SkCombinationBuilder.cpp",
+        "patchSetId": 56
+      },
+      "lineNbr": 437,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-06-02T13:50:13Z",
+      "side": 1,
+      "message": "Q: after a switch with a default case that returns, this is just dead code, right? I guess it\u0027s intended to be defensive, but if someone removes the default case, the compiler will complain, I think? So I\u0027m not sure if it adds actual defensive value.",
+      "range": {
+        "startLine": 437,
+        "startChar": 0,
+        "endLine": 437,
+        "endChar": 18
+      },
+      "revId": "d12e85c2f6992654f05bd6ed51bab0823d9fe40a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
