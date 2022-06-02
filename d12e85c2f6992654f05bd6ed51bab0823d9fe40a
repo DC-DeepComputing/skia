@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fd0c9c36_ebb09ae9",
+        "filename": "include/core/SkCombinationBuilder.h",
+        "patchSetId": 56
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-06-02T15:10:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a41c9097_2b6b23a7",
+      "range": {
+        "startLine": 73,
+        "startChar": 42,
+        "endLine": 73,
+        "endChar": 45
+      },
+      "revId": "d12e85c2f6992654f05bd6ed51bab0823d9fe40a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6cf349ee_b9164a6e",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-06-02T13:34:16Z",
       "side": 1,
       "message": "Prefer passing spans by value (here and below) \n\nhttp://go/totw/93#as-function-parameters : \"As with string_view, it is usually better to pass Span by value when used as a function parameter - this form is slightly faster, and produces smaller code.\" (This is referencing absl::Span, but the concept is identical.)",
+      "range": {
+        "startLine": 94,
+        "startChar": 69,
+        "endLine": 94,
+        "endChar": 99
+      },
+      "revId": "d12e85c2f6992654f05bd6ed51bab0823d9fe40a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "74a49317_7a48ada9",
+        "filename": "include/core/SkCombinationBuilder.h",
+        "patchSetId": 56
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-06-02T15:10:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6cf349ee_b9164a6e",
       "range": {
         "startLine": 94,
         "startChar": 69,
@@ -83,6 +131,30 @@
       "writtenOn": "2022-06-02T14:20:33Z",
       "side": 1,
       "message": "I agree with Brian that the current API is a little brittle and coupled to our internal decisions. However, I\u0027m leaning the other direction than Brian. Instead of trying to make a shared superset that all shaders use, can we have very explicit functions on the SkCombinationBuilder that map to the built-in effects that we provide?\n\nWe define functions on the builder that correspond to the SkShader factories, but instead they take a \"Range\" object that has ctors for a single value, or an initializer list, or an interval, or pre-defined groups (e.g. all blend modes). Factories that took a child shader or filter instead take a SkCombinationOptions object.\n\nThe test case could be mocked up along the lines of:\n\n  PaintOptions paint;\n  paint.setShader({builder.sweepGradient(/*numStops\u003d*/{kMinNumStops, kMaxNumStops}),\n                   builder.blendShader(/*bm\u003d*/all(),\n                                       /*src\u003d*/{builder.linearGradient(...),\n                                                builder.solidColor()},\n                                       /*dst\u003d*/{builder.linearGradient(...),\n                                                builder.blendShader(/*bm\u003d*/all(),\n                                              /*src\u003d*/{builder.radialGradient(...),\n                                                       builder.solidColor()},\n                                              /*dst\u003dbuilder.image(\n                                                   /*tm\u003d*/{{kRepeat,kRepeat}, \n                                                           {kClamp,kClamp}})})};\n  paint.setBlendMode({kSrcOver, kSrc, kDstOver, kDst});\n  builder.addPaint(paint);\n\n\nFor the various gradient functions, maybe we\u0027d just have gradient() and one of its arguments is a Range\u003cGradientType\u003e since they do have very consistent set of properties. For the most part gradient parameters that are type dependent don\u0027t change the shader we\u0027d compile since they just define the geometry. In the degenerate cases, though, we could have co-located points or nested circles change a gradient type to a simpler type or to a solid color. I think awareness of these fallbacks should not be baked into the API, and if we have 2-pt conical gradient specializations that may turn into radial gradients if the two circles share a center, then we internally make sure to compile equivalent radial gradients given the rest of the shader options.\n\nThe PaintOptions object I added because I think it makes it clearer what is being combined into multiple different configurations, vs. when you\u0027re starting a new options description. It also makes it easier to repeatedly build shader options and blend options off the builder w/o having them directly coupled to the current option being combined.\n\nI think all of this can be window dressing on top of the generic system that you have under the current API, which is how I\u0027d want it to be handled, making it very straight forward to expose new templates to the clients.",
+      "parentUuid": "db420c8a_87d1f179",
+      "range": {
+        "startLine": 135,
+        "startChar": 0,
+        "endLine": 137,
+        "endChar": 89
+      },
+      "revId": "d12e85c2f6992654f05bd6ed51bab0823d9fe40a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8c176493_60180afc",
+        "filename": "include/core/SkCombinationBuilder.h",
+        "patchSetId": 56
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-06-02T15:10:34Z",
+      "side": 1,
+      "message": "Having talked off-line we\u0027re going to go with this approach for now but swap to a descriptor-base system in the near future.",
       "parentUuid": "db420c8a_87d1f179",
       "range": {
         "startLine": 135,
@@ -141,6 +213,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a48fc448_e68a6e08",
+        "filename": "src/core/SkCombinationBuilder.cpp",
+        "patchSetId": 56
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-06-02T15:10:34Z",
+      "side": 1,
+      "message": "For now I\u0027ve removed the caching of the values. These are used a lot during the key generation phase but I\u0027ll re-add the caching in a follow up CL (w/ resetting when some option changes).",
+      "parentUuid": "478a32be_43eaf963",
+      "range": {
+        "startLine": 181,
+        "startChar": 0,
+        "endLine": 182,
+        "endChar": 50
+      },
+      "revId": "d12e85c2f6992654f05bd6ed51bab0823d9fe40a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "344c892b_e7dc479e",
@@ -154,6 +250,30 @@
       "writtenOn": "2022-06-02T13:50:13Z",
       "side": 1,
       "message": "Consider asserting that index \u003c 32. Right now `tm_pair_to_index` should always return a value \u003c 16, but in a hypothetical future where someone adds one new tile mode, we would overflow here and get UB.",
+      "range": {
+        "startLine": 285,
+        "startChar": 31,
+        "endLine": 285,
+        "endChar": 43
+      },
+      "revId": "d12e85c2f6992654f05bd6ed51bab0823d9fe40a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "292034e8_2ebc8351",
+        "filename": "src/core/SkCombinationBuilder.cpp",
+        "patchSetId": 56
+      },
+      "lineNbr": 285,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-06-02T15:10:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "344c892b_e7dc479e",
       "range": {
         "startLine": 285,
         "startChar": 31,
@@ -187,6 +307,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "57453281_1e991dd1",
+        "filename": "src/core/SkCombinationBuilder.cpp",
+        "patchSetId": 56
+      },
+      "lineNbr": 315,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-06-02T15:10:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c259190b_46dce6f4",
+      "range": {
+        "startLine": 315,
+        "startChar": 45,
+        "endLine": 315,
+        "endChar": 52
+      },
+      "revId": "d12e85c2f6992654f05bd6ed51bab0823d9fe40a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1f63d57c_0d0a52ef",
@@ -200,6 +344,30 @@
       "writtenOn": "2022-06-02T13:50:13Z",
       "side": 1,
       "message": "Q: after a switch with a default case that returns, this is just dead code, right? I guess it\u0027s intended to be defensive, but if someone removes the default case, the compiler will complain, I think? So I\u0027m not sure if it adds actual defensive value.",
+      "range": {
+        "startLine": 437,
+        "startChar": 0,
+        "endLine": 437,
+        "endChar": 18
+      },
+      "revId": "d12e85c2f6992654f05bd6ed51bab0823d9fe40a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "82b99eed_bb8ade7b",
+        "filename": "src/core/SkCombinationBuilder.cpp",
+        "patchSetId": 56
+      },
+      "lineNbr": 437,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-06-02T15:10:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1f63d57c_0d0a52ef",
       "range": {
         "startLine": 437,
         "startChar": 0,
