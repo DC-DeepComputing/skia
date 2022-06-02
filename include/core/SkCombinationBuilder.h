@@ -123,6 +123,7 @@ public:
 #else
     SkCombinationBuilder(SkShaderCodeDictionary*);
 #endif
+    ~SkCombinationBuilder();
 
     // Blend Modes
     void addOption(SkBlendMode);
@@ -139,7 +140,11 @@ public:
 
     void reset();
 
-    int numCombinations();
+    int numShaderCombinations() const;
+    int numBlendModeCombinations() const;
+    int numCombinations() {
+        return this->numShaderCombinations() * this->numBlendModeCombinations();
+    }
 
 #ifdef SK_DEBUG
     void dump() const;
@@ -159,7 +164,7 @@ private:
     SkOption* addOptionInternal(SkShaderType, SkSpan<SkTileModePair> tileModes);
 
     void buildCombinations(SkShaderCodeDictionary*,
-                           const std::function<void(SkUniquePaintParamsID)>&) const;
+                           const std::function<void(SkUniquePaintParamsID)>&);
 
     SkShaderCodeDictionary* fDictionary;
     std::unique_ptr<SkArenaAllocWithReset> fArena;
