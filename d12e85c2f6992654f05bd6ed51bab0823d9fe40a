@@ -355,6 +355,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "99e48dad_645ac1ca",
+        "filename": "src/core/SkCombinationBuilder.cpp",
+        "patchSetId": 56
+      },
+      "lineNbr": 315,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-06-02T15:32:51Z",
+      "side": 1,
+      "message": "Done\n\nfwiw, I believe we explicitly disable the readability-inconsistent-declaration-parameter-name clang-tidy check.",
+      "parentUuid": "e3f7e938_1fdef9a1",
+      "range": {
+        "startLine": 315,
+        "startChar": 45,
+        "endLine": 315,
+        "endChar": 52
+      },
+      "revId": "d12e85c2f6992654f05bd6ed51bab0823d9fe40a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1f63d57c_0d0a52ef",
