@@ -18,6 +18,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0fa0ed40_7a85d71a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-06-02T15:53:24Z",
+      "side": 1,
+      "message": "Thanks for the quick review!",
+      "revId": "5f2d78006832326f7836e19b42cb157db56613bf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3c751512_e4e6a7ad",
@@ -31,6 +48,24 @@
       "writtenOn": "2022-06-02T15:50:38Z",
       "side": 1,
       "message": "Does this even exist any more ?",
+      "revId": "5f2d78006832326f7836e19b42cb157db56613bf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "77c2927f_71a9c5d0",
+        "filename": "src/text/gpu/SubRunContainer.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-06-02T15:53:24Z",
+      "side": 1,
+      "message": "I\u0027ll catch this in the includes cleanup I\u0027m about to do.",
+      "parentUuid": "3c751512_e4e6a7ad",
       "revId": "5f2d78006832326f7836e19b42cb157db56613bf",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
