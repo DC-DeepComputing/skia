@@ -297,6 +297,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6eb3d59b_9c88ef22",
+        "filename": "src/sksl/ir/SkSLType.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-06-02T19:22:18Z",
+      "side": 1,
+      "message": "I added the assert and tightened up error detection, so currently it can\u0027t trip.",
+      "parentUuid": "c28f7f83_167baed1",
+      "range": {
+        "startLine": 159,
+        "startChar": 0,
+        "endLine": 161,
+        "endChar": 9
+      },
+      "revId": "302a91024947387985a7c564dc9e6bd3bcb34d87",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b29e31df_1e3ace00",
@@ -499,6 +523,30 @@
       "side": 1,
       "message": "`checkIfUsableInArray` for brevity?",
       "parentUuid": "a0819a63_44cdf010",
+      "range": {
+        "startLine": 534,
+        "startChar": 9,
+        "endLine": 534,
+        "endChar": 23
+      },
+      "revId": "302a91024947387985a7c564dc9e6bd3bcb34d87",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1dd867a5_6e1f72b7",
+        "filename": "src/sksl/ir/SkSLType.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 534,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-06-02T19:22:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2b987a84_f1575eec",
       "range": {
         "startLine": 534,
         "startChar": 9,

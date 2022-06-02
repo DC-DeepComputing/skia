@@ -51,6 +51,24 @@
       "parentUuid": "21ab3655_1a5ca3a7",
       "revId": "4b41fb604501abf75fd8663ca5ce3bc4ddf85b35",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "64a47e83_7baf3d1c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-06-02T19:22:18Z",
+      "side": 1,
+      "message": "I ended up adding these as additional \"Unsized\" variants, since there was no way to tell if the right error messages were coming from the right spots if they were part of the same file.",
+      "parentUuid": "489cd7cf_d3c2a845",
+      "revId": "4b41fb604501abf75fd8663ca5ce3bc4ddf85b35",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
