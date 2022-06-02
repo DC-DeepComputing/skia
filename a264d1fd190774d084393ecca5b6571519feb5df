@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7713a6d0_38671ebf",
+        "filename": "src/sksl/SkSLDSLParser.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 702,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-06-02T19:53:14Z",
+      "side": 1,
+      "message": "It looks like struct errors are different than other types (showing \"multi-dimensional arrays are not supported\") probably because it\u0027s not using `parseArrayDimensions` and other call-sites are.\n\nIt\u0027s not at all important for this CL, but it would be a nice cleanup to make it more consistent with `localVarDeclarationEnd` by using `parseArrayDimensions` in a followup. It would probably shrink the code a bit too.",
+      "range": {
+        "startLine": 697,
+        "startChar": 0,
+        "endLine": 702,
+        "endChar": 17
+      },
+      "revId": "a264d1fd190774d084393ecca5b6571519feb5df",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
