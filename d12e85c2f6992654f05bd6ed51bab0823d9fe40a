@@ -3,6 +3,52 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a41c9097_2b6b23a7",
+        "filename": "include/core/SkCombinationBuilder.h",
+        "patchSetId": 56
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-06-02T13:34:16Z",
+      "side": 1,
+      "message": "tiny nit: comments are misaligned",
+      "range": {
+        "startLine": 73,
+        "startChar": 42,
+        "endLine": 73,
+        "endChar": 45
+      },
+      "revId": "d12e85c2f6992654f05bd6ed51bab0823d9fe40a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6cf349ee_b9164a6e",
+        "filename": "include/core/SkCombinationBuilder.h",
+        "patchSetId": 56
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-06-02T13:34:16Z",
+      "side": 1,
+      "message": "Prefer passing spans by value (here and below) \n\nhttp://go/totw/93#as-function-parameters : \"As with string_view, it is usually better to pass Span by value when used as a function parameter - this form is slightly faster, and produces smaller code.\" (This is referencing absl::Span, but the concept is identical.)",
+      "range": {
+        "startLine": 94,
+        "startChar": 69,
+        "endLine": 94,
+        "endChar": 99
+      },
+      "revId": "d12e85c2f6992654f05bd6ed51bab0823d9fe40a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e1643d3f_7e23ec4f",
         "filename": "src/core/SkCombinationBuilder.cpp",
         "patchSetId": 56
