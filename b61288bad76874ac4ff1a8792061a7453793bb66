@@ -93,6 +93,30 @@
       },
       "revId": "b61288bad76874ac4ff1a8792061a7453793bb66",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1a66dab1_309c1f6e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-06-02T20:33:28Z",
+      "side": 1,
+      "message": "Oh, and to clarify, this test file WILL change meaningfully when `IsTrivialExpression` changes.  Instead of\n\n    var \u003d vec4(testMatrix2x2) * vec4(testMatrix2x2);\n\nWe\u0027ll see a temp variable take the cast:\n\n    vec4 _123_temp \u003d vec4(testMatrix2x2);\n    var \u003d _123_temp * _123_temp;\n    \nIt\u0027s just that this change is more impactful in Metal because each of those `vec4()` casts become function calls in the backend.",
+      "parentUuid": "0b2d3081_f5edf5cf",
+      "range": {
+        "startLine": 10,
+        "startChar": 44,
+        "endLine": 11,
+        "endChar": 3
+      },
+      "revId": "b61288bad76874ac4ff1a8792061a7453793bb66",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
