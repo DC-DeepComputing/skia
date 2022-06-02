@@ -2216,10 +2216,11 @@ void precompile(skgpu::graphite::Context* context) {
         builder.addOption(SkBlendMode::kDstOver);
         builder.addOption(SkBlendMode::kDst);
 
-        SkASSERT(builder.numCombinations() == 428);
+        int numCombos = builder.numCombinations();
+        SkASSERT(numCombos == 428);
 
         // TODO: re-enable - right now blocked on BlendShader children
-        // context->precompile(builder);
+        context->precompile(builder);
     }
 
     builder.reset();
