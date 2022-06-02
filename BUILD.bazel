@@ -13,6 +13,7 @@ cc_library(
         "//src:srcs",
     ],
     hdrs = ["//include:public_hdrs"],
+    #REPLACE_WITH_INCLUDES_WHEN_BUILDING_IN_GOOGLE3
     visibility = ["//visibility:public"],
     deps = [
         "//bazel:defines_from_flags",
@@ -32,6 +33,7 @@ cc_library(
         "//include:public_hdrs",
         "//src:private_hdrs",
     ],
+    #REPLACE_WITH_INCLUDES_WHEN_BUILDING_IN_GOOGLE3
     visibility = [
         "//dm:__subpackages__",
         "//tests:__subpackages__",

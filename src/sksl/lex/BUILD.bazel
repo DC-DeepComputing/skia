@@ -22,6 +22,9 @@ cc_binary(
         "TransitionTable.cpp",
         "TransitionTable.h",
     ],
+    # TODO(kjlubick, johnstiles) Because this executable only depends on sources in this file,
+    #   do we need to have the imported using paths relative to the Skia root?
+    includes = ["../../.."],
 )
 
 # TODO(kjlubick) we'll need to have a gen_rule or similar to replace //gn/run_sksllex.py
