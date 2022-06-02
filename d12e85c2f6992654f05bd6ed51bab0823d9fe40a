@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e1643d3f_7e23ec4f",
+        "filename": "src/core/SkCombinationBuilder.cpp",
+        "patchSetId": 56
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-06-02T13:27:38Z",
+      "side": 1,
+      "message": "I\u0027d really suggest removing the memoization of these values, and just compute them every time they\u0027re requested:\n\n1) They\u0027re currently only used for debug (dump) code, and testing. I suspect that long-term, that\u0027s going to still be true? Clients may want to query once to check how they\u0027re doing, but unless we expect these to be requested many times, the memoization isn\u0027t saving us anything.\n\n2) As it stands now, if you add some options, then ask how many combinations there are, and then add more options... you get incorrect cached results from the builder. Eliminating the cache fixes that, too.",
+      "range": {
+        "startLine": 181,
+        "startChar": 0,
+        "endLine": 182,
+        "endChar": 50
+      },
+      "revId": "d12e85c2f6992654f05bd6ed51bab0823d9fe40a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
