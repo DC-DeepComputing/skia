@@ -49,6 +49,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "db420c8a_87d1f179",
+        "filename": "include/core/SkCombinationBuilder.h",
+        "patchSetId": 56
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-06-02T13:45:58Z",
+      "side": 1,
+      "message": "Sorry to drag this review out, but after looking at this CL again, I figured out what\u0027s bothering me. This API:\n\n1) Requires users to know which variant of addOption/addChildOption to call, based on which *value* of SkShaderType they\u0027re using. That\u0027s not the end of the world by itself, except...\n2) It also encodes our internal decisions about which properties of each shader are important into the various signatures.\n\nWhat happens if we decide that having gradients use different shaders for different tile modes is worth it? Or when we have another shader type that happens to have two integers as the relevant payload? (eg: Perlin noise + min/max octaves?).\n\nI know we don\u0027t have a concrete SkShader instance we can pull from at this point (and I agree with that), but can we require that clients provide a superset of the information we need (at least the information that\u0027s common to all shader types), in all cases? That lets us adjust those decisions internally without changing the API every time. It also allows us to make some of those decisions configurable by the client (without changing the signature of these functions).",
+      "range": {
+        "startLine": 135,
+        "startChar": 0,
+        "endLine": 137,
+        "endChar": 89
+      },
+      "revId": "d12e85c2f6992654f05bd6ed51bab0823d9fe40a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e1643d3f_7e23ec4f",
         "filename": "src/core/SkCombinationBuilder.cpp",
         "patchSetId": 56
