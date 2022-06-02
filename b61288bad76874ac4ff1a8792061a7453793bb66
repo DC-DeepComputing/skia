@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c4494e85_f1af49ad",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-06-02T20:30:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "16ce289d_88aa4c3a",
+      "range": {
+        "startLine": 7,
+        "startChar": 42,
+        "endLine": 7,
+        "endChar": 47
+      },
+      "revId": "b61288bad76874ac4ff1a8792061a7453793bb66",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ac493b92_b2669a44",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-06-02T20:26:33Z",
       "side": 1,
       "message": "Will that CL add a test for MSL too?",
+      "range": {
+        "startLine": 10,
+        "startChar": 44,
+        "endLine": 11,
+        "endChar": 3
+      },
+      "revId": "b61288bad76874ac4ff1a8792061a7453793bb66",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0b2d3081_f5edf5cf",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-06-02T20:30:18Z",
+      "side": 1,
+      "message": "Files in `inliner/` don\u0027t generate Metal output, but you can see a Metal matrix\u003c-\u003evector cast in many existing tests, e.g.:\n\nhttp://osscs/skia/skia/+/main:tests/sksl/shared/MatrixConstructorsES2.metal;l\u003d24?q\u003dfloat4_from_float2x2\n\nIt falls back to a helper function (which we hope the MSL compiler will magic away).",
+      "parentUuid": "ac493b92_b2669a44",
       "range": {
         "startLine": 10,
         "startChar": 44,
