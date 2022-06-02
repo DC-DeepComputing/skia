@@ -72,6 +72,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "95a63843_0906c757",
+        "filename": "include/core/SkCombinationBuilder.h",
+        "patchSetId": 56
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-06-02T14:20:33Z",
+      "side": 1,
+      "message": "I agree with Brian that the current API is a little brittle and coupled to our internal decisions. However, I\u0027m leaning the other direction than Brian. Instead of trying to make a shared superset that all shaders use, can we have very explicit functions on the SkCombinationBuilder that map to the built-in effects that we provide?\n\nWe define functions on the builder that correspond to the SkShader factories, but instead they take a \"Range\" object that has ctors for a single value, or an initializer list, or an interval, or pre-defined groups (e.g. all blend modes). Factories that took a child shader or filter instead take a SkCombinationOptions object.\n\nThe test case could be mocked up along the lines of:\n\n  PaintOptions paint;\n  paint.setShader({builder.sweepGradient(/*numStops\u003d*/{kMinNumStops, kMaxNumStops}),\n                   builder.blendShader(/*bm\u003d*/all(),\n                                       /*src\u003d*/{builder.linearGradient(...),\n                                                builder.solidColor()},\n                                       /*dst\u003d*/{builder.linearGradient(...),\n                                                builder.blendShader(/*bm\u003d*/all(),\n                                              /*src\u003d*/{builder.radialGradient(...),\n                                                       builder.solidColor()},\n                                              /*dst\u003dbuilder.image(\n                                                   /*tm\u003d*/{{kRepeat,kRepeat}, \n                                                           {kClamp,kClamp}})})};\n  paint.setBlendMode({kSrcOver, kSrc, kDstOver, kDst});\n  builder.addPaint(paint);\n\n\nFor the various gradient functions, maybe we\u0027d just have gradient() and one of its arguments is a Range\u003cGradientType\u003e since they do have very consistent set of properties. For the most part gradient parameters that are type dependent don\u0027t change the shader we\u0027d compile since they just define the geometry. In the degenerate cases, though, we could have co-located points or nested circles change a gradient type to a simpler type or to a solid color. I think awareness of these fallbacks should not be baked into the API, and if we have 2-pt conical gradient specializations that may turn into radial gradients if the two circles share a center, then we internally make sure to compile equivalent radial gradients given the rest of the shader options.\n\nThe PaintOptions object I added because I think it makes it clearer what is being combined into multiple different configurations, vs. when you\u0027re starting a new options description. It also makes it easier to repeatedly build shader options and blend options off the builder w/o having them directly coupled to the current option being combined.\n\nI think all of this can be window dressing on top of the generic system that you have under the current API, which is how I\u0027d want it to be handled, making it very straight forward to expose new templates to the clients.",
+      "parentUuid": "db420c8a_87d1f179",
+      "range": {
+        "startLine": 135,
+        "startChar": 0,
+        "endLine": 137,
+        "endChar": 89
+      },
+      "revId": "d12e85c2f6992654f05bd6ed51bab0823d9fe40a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e1643d3f_7e23ec4f",
         "filename": "src/core/SkCombinationBuilder.cpp",
         "patchSetId": 56
@@ -83,6 +107,30 @@
       "writtenOn": "2022-06-02T13:27:38Z",
       "side": 1,
       "message": "I\u0027d really suggest removing the memoization of these values, and just compute them every time they\u0027re requested:\n\n1) They\u0027re currently only used for debug (dump) code, and testing. I suspect that long-term, that\u0027s going to still be true? Clients may want to query once to check how they\u0027re doing, but unless we expect these to be requested many times, the memoization isn\u0027t saving us anything.\n\n2) As it stands now, if you add some options, then ask how many combinations there are, and then add more options... you get incorrect cached results from the builder. Eliminating the cache fixes that, too.",
+      "range": {
+        "startLine": 181,
+        "startChar": 0,
+        "endLine": 182,
+        "endChar": 50
+      },
+      "revId": "d12e85c2f6992654f05bd6ed51bab0823d9fe40a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "478a32be_43eaf963",
+        "filename": "src/core/SkCombinationBuilder.cpp",
+        "patchSetId": 56
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-06-02T14:20:33Z",
+      "side": 1,
+      "message": "+1",
+      "parentUuid": "e1643d3f_7e23ec4f",
       "range": {
         "startLine": 181,
         "startChar": 0,
