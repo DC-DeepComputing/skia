@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "82420372_a03e2ff6",
+        "filename": "tests/graphite/CombinationBuilderTest.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-06-03T17:18:45Z",
+      "side": 1,
+      "message": "Oh, okay. I would not have expected some overloads to return values and others void!",
+      "parentUuid": "df6254c0_6d414051",
+      "range": {
+        "startLine": 39,
+        "startChar": 4,
+        "endLine": 39,
+        "endChar": 34
+      },
+      "revId": "56f72aa2aad0a2150add990cf0dc3884b08e7f1c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9e987851_8ec4318e",
