@@ -330,9 +330,7 @@ void ClipStack::RawElement::drawClip(Device* device) {
         // draw directly.
         SkASSERT((fOp == SkClipOp::kDifference && !fShape.inverted()) ||
                  (fOp == SkClipOp::kIntersect && fShape.inverted()));
-        // A null paint implies depth-only rendering, a null stroke style implies fill.
-        device->recordDraw(fLocalToDevice, fShape, Clip{drawBounds, scissor.asSkIRect()}, order,
-                           /*paint=*/nullptr, /*stroke=*/nullptr);
+        device->drawClipShape(fLocalToDevice, fShape, Clip{drawBounds, scissor.asSkIRect()}, order);
     }
 
     // After the clip shape is drawn, reset its state. If the clip element is being popped off the

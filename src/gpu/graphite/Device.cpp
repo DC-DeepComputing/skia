@@ -519,7 +519,10 @@ void Device::drawShape(const Shape& shape,
                        const SkPaint& paint,
                        const SkStrokeRec& style,
                        SkEnumBitMask<DrawFlags> flags) {
-    const Transform& localToDevice = this->localToDeviceTransform();
+    // TODO: remove after perspective transform fallbacks are no longer needed
+    static const Transform kIdentity{SkM44()};
+    const Transform& localToDevice =
+            flags & DrawFlags::kIgnoreTransform ? kIdentity : this->localToDeviceTransform();
     if (!localToDevice.valid()) {
         // If the transform is not invertible or not finite then drawing isn't well defined.
         SKGPU_LOG_W("Skipping draw with non-invertible/non-finite transform.");
@@ -555,6 +558,15 @@ void Device::drawShape(const Shape& shape,
         return;
     }
 
+    // TODO: The tessellating path renderers haven't implemented perspective yet, so transform to
+    // device space so we draw something approximately correct (barring local coord issues).
+    if (localToDevice.type() == Transform::Type::kProjection) {
+        SkPath devicePath = shape.asPath();
+        devicePath.transform(localToDevice.matrix().asM33());
+        this->drawShape(Shape(devicePath), paint, style, flags | DrawFlags::kIgnoreTransform);
+        return;
+    }
+
     // TODO: Manually snap pixels for rects, rrects, and lines if paint is non-AA (ideally also
     // consider snapping stroke width and/or adjusting geometry for hairlines). This pixel snapping
     // math should be consistent with how non-AA clip [r]rects are handled.
@@ -582,11 +594,21 @@ void Device::drawShape(const Shape& shape,
     // A draw's order always depends on the clips that must be drawn before it
     order.dependsOnPaintersOrder(clipOrder);
 
+    const Renderer* renderer = ChooseRenderer(shape, clip, style);
+    if (!renderer) {
+        SKGPU_LOG_W("Skipping draw with no supported path renderer.");
+        return;
+    } else if (renderer->depthStencilFlags() & DepthStencilFlags::kStencil) {
+        DisjointStencilIndex setIndex = fDisjointStencilSet->add(order.paintOrder(),
+                                                                 clip.drawBounds());
+        order.dependsOnStencil(setIndex);
+    }
+
     // If a draw is not opaque, it must be drawn after the most recent draw it intersects with in
     // order to blend correctly. We always query the most recent draw (even when opaque) because it
     // also lets Device easily track whether or not there are any overlapping draws.
     PaintParams shading{paint};
-    const bool dependsOnDst = paint_depends_on_dst(shading);
+    const bool dependsOnDst = paint_depends_on_dst(shading); // TODO: || renderer->usesCoverageAA();
     CompressedPaintersOrder prevDraw =
             fColorDepthBoundsManager->getMostRecentDraw(clip.drawBounds());
     if (dependsOnDst) {
@@ -596,16 +618,19 @@ void Device::drawShape(const Shape& shape,
     if (styleType == SkStrokeRec::kStroke_Style ||
         styleType == SkStrokeRec::kHairline_Style ||
         styleType == SkStrokeRec::kStrokeAndFill_Style) {
+        // For stroke-and-fill, 'renderer' is used for the fill and we always use the
+        // TessellatedStrokes renderer; for stroke and hairline, 'renderer' is used.
         StrokeStyle stroke(style.getWidth(), style.getMiter(), style.getJoin(), style.getCap());
-        this->recordDraw(localToDevice, shape, clip, order, &shading, &stroke);
+        fDC->recordDraw(styleType == SkStrokeRec::kStrokeAndFill_Style ?
+                                Renderer::TessellatedStrokes() : *renderer,
+                        localToDevice, shape, clip, order, &shading, &stroke);
     }
     if (styleType == SkStrokeRec::kFill_Style ||
         styleType == SkStrokeRec::kStrokeAndFill_Style) {
-        this->recordDraw(localToDevice, shape, clip, order, &shading, nullptr);
+        fDC->recordDraw(*renderer, localToDevice, shape, clip, order, &shading, nullptr);
     }
 
     // Record the painters order and depth used for this draw
-    // TODO: If recordDraw picked a coverage AA renderer, 'dependsOnDst' is out of date.
     const bool fullyOpaque = !dependsOnDst &&
                              clipOrder == DrawOrder::kNoIntersection &&
                              shape.isRect() &&
@@ -619,43 +644,65 @@ void Device::drawShape(const Shape& shape,
     fDrawsOverlap |= (prevDraw != DrawOrder::kNoIntersection);
 }
 
-void Device::recordDraw(const Transform& localToDevice,
-                        const Shape& shape,
-                        const Clip& clip,
-                        DrawOrder ordering,
-                        const PaintParams* paint,
-                        const StrokeStyle* stroke) {
-    // TODO: remove after CPU-transform fallbacks are no longer needed
-    static const Transform kIdentity{SkM44()};
+void Device::drawClipShape(const Transform& localToDevice,
+                           const Shape& shape,
+                           const Clip& clip,
+                           DrawOrder order) {
+    // This call represents one of the deferred clip shapes that's already pessimistically counted
+    // in needsFlushBeforeDraw(), so the DrawContext should have room to add it.
+    SkASSERT(fDC->pendingDrawCount() + 1 < DrawList::kMaxDraws);
 
-    // TODO: The tessellating path renderers haven't implemented perspective yet, so transform to
-    // device space so we draw something approximately correct (barring local coord issues).
-    if (localToDevice.type() == Transform::Type::kProjection) {
-        SkPath devicePath = shape.asPath();
-        devicePath.transform(localToDevice.matrix().asM33());
-        this->recordDraw(kIdentity, Shape(devicePath), clip, ordering, paint, nullptr);
+    // A clip draw's state is almost fully defined by the ClipStack. The only thing we need
+    // to account for is selecting a Renderer and tracking the stencil buffer usage.
+    const Renderer* renderer = ChooseRenderer(shape, clip, kFillStyle);
+    if (!renderer) {
+        SKGPU_LOG_W("Skipping clip with no supported path renderer.");
         return;
+    } else if (renderer->depthStencilFlags() & DepthStencilFlags::kStencil) {
+        DisjointStencilIndex setIndex = fDisjointStencilSet->add(order.paintOrder(),
+                                                                 clip.drawBounds());
+        order.dependsOnStencil(setIndex);
     }
 
-    // TODO: Eventually the Renderer selection logic should be lifted to some external
-    // RendererSelector that can be reused between Device and other wrappers around DrawContext.
-    // TODO: All shapes that select a tessellating path renderer need to be "pre-chopped" if they
-    // are large enough to exceed the fixed count tessellation limits.
-    const Renderer* renderer = nullptr;
+    // Clips draws are depth-only (null PaintParams), and filled (null StrokeStyle).
+    fDC->recordDraw(*renderer, localToDevice, shape, clip, order, nullptr, nullptr);
+}
 
-    if (stroke) {
+const Renderer* Device::ChooseRenderer(const Shape& shape,
+                                       const Clip& clip,
+                                       const SkStrokeRec& style) {
+    // TODO: All shapes that select a tessellating path renderer need to be "pre-chopped" if they
+    // are large enough to exceed the fixed count tessellation limits. Fills are pre-chopped to the
+    // viewport bounds, strokes and stroke-and-fills are pre-chopped to the viewport bounds outset
+    // by the stroke radius (hence taking the whole style and not just its type).
+    SkStrokeRec::Style type = style.getStyle();
+
+    if (type == SkStrokeRec::kStroke_Style ||
+        type == SkStrokeRec::kHairline_Style) {
+        // Unlike in Ganesh, the HW stroke tessellator can work with arbitrary paints since the
+        // depth test prevents double-blending when there is transparency, thus we can HW stroke
+        // any path regardless of its paint.
         // TODO: We treat inverse-filled strokes as regular strokes. We could handle them by
         // stenciling first with the HW stroke tessellator and then covering their bounds, but
         // inverse-filled strokes are not well-specified in our public canvas behavior so we may be
         // able to remove it.
-        // Unlike in Ganesh, the HW stroke tessellator can work with arbitrary paints since the
-        // depth test prevents double-blending when there is transparency, thus we can HW stroke
-        // any path regardless of its paint.
-        renderer = &Renderer::TessellatedStrokes();
-    } else if (shape.convex() && !shape.inverted()) {
+        // TODO: For non-stroke-and-fill strokes, we may add coverage-AA renderers for primitives
+        // that we want to avoid triggering MSAA on.
+        return &Renderer::TessellatedStrokes();
+    }
+
+    // TODO: stroke-and-fill returns the fill renderer, but if there is ever a case where a shape
+    // can't be stroked with the TessellatedStrokes renderer, we should return null even if we have
+    // a fill renderer. Additionally, if we have coverage-AA renderers for filled primitives to
+    // avoid triggering MSAA, we do NOT want to select them for stroke-and-fill or we'll add AA
+    // seams where the separate fill and stroke draws overlap.
+    //
+    // For now, neither of these cases apply so stroke-and-fill and fill are handled the same.
+
+    if (shape.convex() && !shape.inverted()) {
         // TODO: Ganesh doesn't have a curve+middle-out triangles option for convex paths, but it
         // would be pretty trivial to spin up.
-        renderer = &Renderer::ConvexTessellatedWedges();
+        return &Renderer::ConvexTessellatedWedges();
     } else {
         // TODO: Combine this heuristic with what is used in PathStencilCoverOp to choose between
         // wedges curves consistently in Graphite and Ganesh.
@@ -663,26 +710,11 @@ void Device::recordDraw(const Transform& localToDevice,
                                    clip.drawBounds().area() <= (256 * 256);
 
         if (preferWedges) {
-            renderer = &Renderer::StencilTessellatedWedges(shape.fillType());
+            return &Renderer::StencilTessellatedWedges(shape.fillType());
         } else {
-            renderer = &Renderer::StencilTessellatedCurvesAndTris(shape.fillType());
+            return &Renderer::StencilTessellatedCurvesAndTris(shape.fillType());
         }
     }
-
-    if (!renderer) {
-        SKGPU_LOG_W("Skipping draw with no supported path renderer.");
-        return;
-    }
-
-    if (renderer->depthStencilFlags() & DepthStencilFlags::kStencil) {
-        DisjointStencilIndex setIndex = fDisjointStencilSet->add(ordering.paintOrder(),
-                                                                 clip.drawBounds());
-        ordering.dependsOnStencil(setIndex);
-    }
-    // TODO: if the chosen Renderer uses coverage AA, then 'ordering' depends on painter's order,
-    // so we will need to take into account the previous draw. Since no Renderer uses coverage AA
-    // right now, it's not an issue yet.
-    fDC->recordDraw(*renderer, localToDevice, shape, clip, ordering, paint, stroke);
 }
 
 void Device::flushPendingWorkToRecorder() {

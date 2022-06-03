@@ -26,6 +26,7 @@ class Context;
 class DrawContext;
 class PaintParams;
 class Recorder;
+class Renderer;
 class Shape;
 class StrokeStyle;
 class TextureProxy;
@@ -146,17 +147,22 @@ private:
 
     // DrawFlags alters the effects used by drawShape.
     enum class DrawFlags : unsigned {
-        kNone             = 0b00,
+        kNone             = 0b000,
 
         // Any SkMaskFilter on the SkPaint passed into drawShape() is ignored.
         // - drawPaint, drawVertices, drawAtlas
         // - drawShape after it's applied the mask filter.
-        kIgnoreMaskFilter = 0b01,
+        kIgnoreMaskFilter = 0b001,
 
         // Any SkPathEffect on the SkPaint passed into drawShape() is ignored.
         // - drawPaint, drawImageLattice, drawImageRect, drawEdgeAAImageSet, drawVertices, drawAtlas
         // - drawShape after it's applied the path effect.
-        kIgnorePathEffect = 0b10,
+        kIgnorePathEffect = 0b010,
+
+        // Use an identity transform instead of localToDevice().
+        // TODO: This is currently only used to hack in support for perspective, we should remove it
+        // if no additional use cases arise once perspective is handled on the GPU.
+        kIgnoreTransform  = 0b100,
     };
     SK_DECL_BITMASK_OPS_FRIENDS(DrawFlags);
 
@@ -168,13 +174,15 @@ private:
                    const SkPaint&,
                    const SkStrokeRec&,
                    SkEnumBitMask<DrawFlags> = DrawFlags::kNone);
-    // Lowest level draw recording where everything but Renderer has been decided.
-    void recordDraw(const Transform& localToDevice,
-                    const Shape& shape,
-                    const Clip& clip,
-                    DrawOrder ordering,
-                    const PaintParams* paint,
-                    const StrokeStyle* stroke);
+    // Like drawShape() but is depth-only, fill-only, and lets the ClipStack provide the transform,
+    // clip, and DrawOrder (although Device still tracks stencil buffer usage).
+    void drawClipShape(const Transform&, const Shape&, const Clip&, DrawOrder);
+
+    // Returns the Renderer to draw the shape in the given style. If SkStrokeRec is a
+    // stroke-and-fill, this returns the Renderer used for the fill portion and it can be assumed
+    // that Renderer::TessellatedStrokes() will be used for the stroke portion.
+    // TODO: Move this into a RendererSelector object provided by the Context.
+    static const Renderer* ChooseRenderer(const Shape&, const Clip&, const SkStrokeRec&);
 
     bool needsFlushBeforeDraw(int numNewDraws) const;
 
@@ -197,7 +205,7 @@ private:
 
     bool fDrawsOverlap;
 
-    friend class ClipStack; // for recordDraw
+    friend class ClipStack; // for drawClipShape
 };
 
 SK_MAKE_BITMASK_OPS(Device::DrawFlags)
