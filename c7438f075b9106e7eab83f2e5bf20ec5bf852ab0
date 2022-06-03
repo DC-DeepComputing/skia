@@ -87,6 +87,30 @@
       },
       "revId": "c7438f075b9106e7eab83f2e5bf20ec5bf852ab0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7549c4e5_064321cd",
+        "filename": "src/gpu/ganesh/vk/GrVkUniformHandler.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 172,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-06-03T16:50:48Z",
+      "side": 1,
+      "message": "SGTM. In that case maybe add a TODO here that references skia:13380 about sanitizing things. I left a comment on the bug about a potentially good refactor I would like to follow-up with.",
+      "parentUuid": "778c7ccf_08ea901b",
+      "range": {
+        "startLine": 172,
+        "startChar": 54,
+        "endLine": 172,
+        "endChar": 80
+      },
+      "revId": "c7438f075b9106e7eab83f2e5bf20ec5bf852ab0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
