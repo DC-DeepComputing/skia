@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9e987851_8ec4318e",
+        "filename": "tests/graphite/CombinationBuilderTest.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-06-03T17:08:55Z",
+      "side": 1,
+      "message": "Entire function is wrapped in a second set of {braces} which seem to have no effect.",
+      "range": {
+        "startLine": 60,
+        "startChar": 0,
+        "endLine": 60,
+        "endChar": 5
+      },
+      "revId": "56f72aa2aad0a2150add990cf0dc3884b08e7f1c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
