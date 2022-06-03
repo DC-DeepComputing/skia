@@ -96,6 +96,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e9c14229_f17c90ec",
+        "filename": "tests/graphite/CombinationBuilderTest.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-06-03T17:21:36Z",
+      "side": 1,
+      "message": "We may end up having an API like:\n\naddShaderOption\nadd(BlendMode|Blender)Option\naddColorFilterOption\n\nbut that is still TBD",
+      "parentUuid": "9349b158_60c82c3b",
+      "range": {
+        "startLine": 39,
+        "startChar": 4,
+        "endLine": 39,
+        "endChar": 34
+      },
+      "revId": "56f72aa2aad0a2150add990cf0dc3884b08e7f1c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9e987851_8ec4318e",
