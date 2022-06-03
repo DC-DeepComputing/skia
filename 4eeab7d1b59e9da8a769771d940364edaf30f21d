@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "05e1676c_88b70a72",
+        "filename": "src/gpu/ganesh/GrSPIRVUniformHandler.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 167,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-06-03T13:32:18Z",
+      "side": 1,
+      "message": "Band-aid for skia:13380",
+      "range": {
+        "startLine": 167,
+        "startChar": 50,
+        "endLine": 167,
+        "endChar": 79
+      },
+      "revId": "4eeab7d1b59e9da8a769771d940364edaf30f21d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
