@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3d8c0ab4_a0f466cb",
+        "filename": "tests/sksl/inliner/TrivialArgumentsInlineDirectly.glsl",
+        "patchSetId": 1
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-06-03T17:36:06Z",
+      "side": 1,
+      "message": "This part is the same as before other than mangling.",
+      "range": {
+        "startLine": 37,
+        "startChar": 0,
+        "endLine": 45,
+        "endChar": 0
+      },
+      "revId": "31fbba460ec695695a09bd74a4cbed3f3ebce7d5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
