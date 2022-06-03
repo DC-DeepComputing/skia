@@ -2216,10 +2216,13 @@ void precompile(skgpu::graphite::Context* context) {
         builder.addOption(SkBlendMode::kDstOver);
         builder.addOption(SkBlendMode::kDst);
 
-        SkASSERT(builder.numCombinations() == 428);
+        int numCombos = builder.numCombinations();
+        SkASSERT(numCombos == 428);
+
+        builder.dump();
 
         // TODO: re-enable - right now blocked on BlendShader children
-        // context->precompile(builder);
+        context->precompile(builder);
     }
 
     builder.reset();
@@ -2307,7 +2310,7 @@ Result GraphiteSink::draw(const Src& src,
             return result;
         }
 
-        // For now we cast and call directly into Surface. Once we have a been idea of
+        // For now we cast and call directly into Surface. Once we have a better idea of
         // what the public API for synchronous graphite readPixels we can update this call to use
         // that instead.
         SkPixmap pm;
