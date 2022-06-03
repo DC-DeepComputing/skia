@@ -16,6 +16,24 @@
       "message": "Do we think these values are that interesting to a user? Even the total numCombinations don\u0027t necessarily reflect the actually number of shaders we may create (because we may split things up more internally when compiling shaders).\n\nMaybe we wrap all this in TEST_UTILS guard?",
       "revId": "8f5cbf45dc75b209a0b1d99791d66338c994dd99",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e98f7461_3b74ccdb",
+        "filename": "include/core/SkCombinationBuilder.h",
+        "patchSetId": 18
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-06-03T18:41:42Z",
+      "side": 1,
+      "message": "Done - I\u0027ve made these private and added a TestAccess friend.",
+      "parentUuid": "b09fb486_21adde30",
+      "revId": "8f5cbf45dc75b209a0b1d99791d66338c994dd99",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
