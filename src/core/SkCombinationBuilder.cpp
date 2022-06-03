@@ -92,16 +92,16 @@ public:
     class SkSlot {
     public:
         void addOption(SkOption* newOption);
-        int numOptions() const { return fNumOptions; }
 
         int numCombinations() const;
+
+        void createKey(int curState, SkPaintParamsKeyBuilder*);
 
 #ifdef SK_DEBUG
         void dump(int indent) const;
 #endif
 
     private:
-        int fNumOptions = 0;
         SkOption* fHead = nullptr;
         SkOption* fTail = nullptr;
     };
@@ -155,6 +155,32 @@ public:
         return this->numIntrinsicCombinations() * this->numChildCombinations();
     }
 
+    void createKey(int curState, SkPaintParamsKeyBuilder* keyBuilder) {
+        SkASSERT(curState < this->numCombinations());
+
+        curState %= this->numChildCombinations();
+
+        if (fNumSlots) {
+            int numCombosSeen = 0;
+            for (int slotIndex = 0; slotIndex < fNumSlots; ++slotIndex) {
+                SkSlot* slot = this->getSlot(slotIndex);
+
+                numCombosSeen += slot->numCombinations();
+                int numCombosLeft = this->numChildCombinations() / numCombosSeen;
+
+                int slotState;
+                if (slotIndex+1 < fNumSlots) {
+                    slotState = curState / (numCombosLeft ? numCombosLeft : 1);
+                    curState %= numCombosLeft;
+                } else {
+                    slotState = curState;
+                }
+
+                slot->createKey(slotState, keyBuilder);
+            }
+        }
+    }
+
 #ifdef SK_DEBUG
     void dump(int indent = 0) const {
         SkDebugf("%s", type_to_str(fType));
@@ -198,17 +224,33 @@ void SkOption::SkSlot::addOption(SkOption* newOption) {
         fTail->fNext = newOption;
         fTail = newOption;
     }
-    ++fNumOptions;
 }
 
 int SkOption::SkSlot::numCombinations() const {
     int numCombinations = 0;
 
+//    SkDebugf("slot\n");
     for (SkOption* option = fHead; option; option = option->fNext) {
+        int foo = option->numCombinations();
+//        SkDebugf("%d\n", foo);
         numCombinations += option->numCombinations();
     }
 
+//    SkDebugf("total: %d\n", numCombinations);
     return numCombinations;
+}
+
+void SkOption::SkSlot::createKey(int curState, SkPaintParamsKeyBuilder* keyBuilder) {
+    SkASSERT(curState < this->numCombinations());
+
+    for (SkOption* option = fHead; option; option = option->fNext) {
+        if (curState < option->numCombinations()) {
+            option->createKey(curState, keyBuilder);
+            return;
+        }
+
+        curState -= option->numCombinations();
+    }
 }
 
 #ifdef SK_DEBUG
@@ -299,14 +341,18 @@ int ArenaData_BlendShader::numIntrinsicCombinationsDerived() const { return 1; }
 
 // Here to access the derived ArenaData objects
 int SkOption::numIntrinsicCombinations() const {
+    int numIntrinsicCombinations;
+
     switch (this->type()) {
 #define CASE(T) case SkShaderType::k##T:                                                   \
-                    return ((ArenaData_##T*) this)->numIntrinsicCombinationsDerived();
+                    numIntrinsicCombinations =  ((ArenaData_##T*) this)->numIntrinsicCombinationsDerived(); \
+                    break;
         SHADER_TYPES(CASE)
 #undef CASE
     }
 
-    SkUNREACHABLE;
+    SkASSERT(numIntrinsicCombinations >= 1); // There is always, at least, the existential combo
+    return numIntrinsicCombinations;
 }
 
 //--------------------------------------------------------------------------------------------------
@@ -517,13 +563,17 @@ void SkCombinationBuilder::reset() {
     SkDEBUGCODE(++fEpoch;)
 }
 
-int SkCombinationBuilder::numCombinations() {
+int SkCombinationBuilder::numBlendModeCombos() const {
+    return SkPopCount(fBlendModes) + fBlenders.count();
+}
+
+int SkCombinationBuilder::numCombinations() const {
     int numShaderCombinations = 0;
     for (SkOption* s : fShaderOptions) {
         numShaderCombinations += s->numCombinations();
     }
 
-    return numShaderCombinations * (SkPopCount(fBlendModes) + fBlenders.count());
+    return numShaderCombinations * this->numBlendModeCombos();
 }
 
 #ifdef SK_DEBUG
@@ -535,11 +585,62 @@ void SkCombinationBuilder::dump() const {
 }
 #endif
 
+// Here we strip off the unwanted bits and then return the number of trailing zero bits
+static int get_ith_set_bit(uint32_t n, int index) {
+    for (int i = 0; i < index-1; ++i) {
+        n &= (n - 1); // Remove the lowest bit in the integer.
+    }
+
+    return SkCTZ(n);
+}
+
+static void unit_test() {
+    {
+        uint32_t testVal = 0;
+        int result = get_ith_set_bit(testVal, 1);
+        SkDebugf("%d set bit of 0x%x is %d\n", 1, testVal, result);
+    }
+
+
+}
+
+void SkCombinationBuilder::createKey(int state, SkPaintParamsKeyBuilder* keyBuilder) const {
+
+    unit_test();
+
+    int numBlendModeCombos = this->numBlendModeCombos();
+
+    int shaderCombo = state / numBlendModeCombos;
+    int blendCombo = state % numBlendModeCombos;
+
+    for (SkOption* shaderOption : fShaderOptions) {
+        if (shaderCombo < shaderOption->numCombinations()) {
+            shaderOption->createKey(shaderCombo, keyBuilder);
+            break;
+        }
+
+        shaderCombo -= shaderOption->numCombinations();
+    }
+
+    SkASSERT(blendCombo < SkPopCount(fBlendModes));
+    int ith_set_bit = get_ith_set_bit(fBlendModes, blendCombo);
+
+    SkASSERT(ith_set_bit < kSkBlendModeCount);
+    SkBlendMode bm = (SkBlendMode) ith_set_bit;
+
+
+}
+
 void SkCombinationBuilder::buildCombinations(
         SkShaderCodeDictionary* dict,
         const std::function<void(SkUniquePaintParamsID)>& func) const {
     SkKeyContext keyContext(dict);
     SkPaintParamsKeyBuilder builder(dict, SkBackend::kGraphite);
+
+    int numCombos = this->numCombinations();
+    for (int i = 0; i < numCombos; ++i) {
+        this->createKey(i, &builder);
+    }
 
     for (int i = 0; i < kSkBlendModeCount; ++i) {
         if (!(fBlendModes & (0x1 << i))) {
