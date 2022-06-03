@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "511992df_631db04a",
+        "filename": "src/gpu/ganesh/glsl/GrGLSLProgramDataManager.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-06-03T19:57:54Z",
+      "side": 1,
+      "message": "I couldn\u0027t use GrSkSLFP::UniformFlags here without breaking the current #include structure. This file is transitively included in GrSkSLFP.h\n\nI made this boolean-like since there was only one flag ATM.",
+      "range": {
+        "startLine": 62,
+        "startChar": 15,
+        "endLine": 62,
+        "endChar": 26
+      },
+      "revId": "d6f62796e533cab463a4f109064fc9497a21ac91",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
