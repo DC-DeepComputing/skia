@@ -100,6 +100,7 @@ void SkRadialGradient::addToKey(const SkKeyContext& keyContext,
                                             fOrigColors4f,
                                             fOrigPos);
 
-    GradientShaderBlocks::AddToKey(keyContext, builder, gatherer, data);
+    GradientShaderBlocks::AddToKey1(keyContext, builder, gatherer, data);
+    GradientShaderBlocks::AddToKey2(keyContext, builder);
 }
 #endif

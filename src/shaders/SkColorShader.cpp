@@ -144,13 +144,15 @@ std::unique_ptr<GrFragmentProcessor> SkColor4Shader::asFragmentProcessor(
 void SkColorShader::addToKey(const SkKeyContext& keyContext,
                              SkPaintParamsKeyBuilder* builder,
                              SkPipelineDataGatherer* gatherer) const {
-    SolidColorShaderBlock::AddToKey(keyContext, builder, gatherer,
+    SolidColorShaderBlock::AddToKey1(keyContext, builder, gatherer,
                                     SkColor4f::FromColor(fColor).premul());
+    SolidColorShaderBlock::AddToKey2(keyContext, builder);
 }
 
 void SkColor4Shader::addToKey(const SkKeyContext& keyContext,
                               SkPaintParamsKeyBuilder* builder,
                               SkPipelineDataGatherer* gatherer) const {
-    SolidColorShaderBlock::AddToKey(keyContext, builder, gatherer, fColor.premul());
+    SolidColorShaderBlock::AddToKey1(keyContext, builder, gatherer, fColor.premul());
+    SolidColorShaderBlock::AddToKey2(keyContext, builder);
 }
 #endif
