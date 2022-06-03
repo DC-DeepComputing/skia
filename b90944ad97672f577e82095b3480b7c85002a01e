@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6c3f7a8b_bb3e478a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-06-03T19:52:17Z",
+      "side": 1,
+      "message": "Wow, so much smaller. If we ever decide we do want an integer caps field, it would probably be cleaner to do it as a separate IR object entirely (clone this, s/bool/int/).",
+      "revId": "b90944ad97672f577e82095b3480b7c85002a01e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
