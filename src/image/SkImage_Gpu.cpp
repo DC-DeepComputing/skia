@@ -390,6 +390,7 @@ static sk_sp<SkImage> new_wrapped_texture_common(GrRecordingContext* rContext,
                                                  GrWrapOwnership ownership,
                                                  sk_sp<skgpu::RefCntedCallback> releaseHelper) {
     if (!backendTex.isValid() || backendTex.width() <= 0 || backendTex.height() <= 0) {
+        SkDebugf("new_wrapped_texture_common 1\n");
         return nullptr;
     }
 
@@ -397,6 +398,8 @@ static sk_sp<SkImage> new_wrapped_texture_common(GrRecordingContext* rContext,
     sk_sp<GrTextureProxy> proxy = proxyProvider->wrapBackendTexture(
             backendTex, ownership, GrWrapCacheable::kNo, kRead_GrIOType, std::move(releaseHelper));
     if (!proxy) {
+        SkDebugf("new_wrapped_texture_common 2\n");
+
         return nullptr;
     }
 
@@ -460,10 +463,12 @@ sk_sp<SkImage> SkImage::MakeFromTexture(GrRecordingContext* rContext,
 
     GrColorType grColorType = SkColorTypeToGrColorType(ct);
     if (GrColorType::kUnknown == grColorType) {
+        SkDebugf("image 1\n");
         return nullptr;
     }
 
     if (!SkImage_GpuBase::ValidateBackendTexture(caps, tex, grColorType, ct, at, cs)) {
+        SkDebugf("image 2\n");
         return nullptr;
     }
 
