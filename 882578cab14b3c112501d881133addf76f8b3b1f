@@ -1,0 +1,165 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "87d34dfa_03a48564",
+        "filename": "src/gpu/graphite/render/TessellateStrokesRenderStep.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-06-03T15:19:03Z",
+      "side": 1,
+      "message": "This re-ordering is not functional but keeps them ordered the same as the attribute layout in memory.",
+      "range": {
+        "startLine": 47,
+        "startChar": 41,
+        "endLine": 48,
+        "endChar": 70
+      },
+      "revId": "882578cab14b3c112501d881133addf76f8b3b1f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5ca31b4c_9b3f6baf",
+        "filename": "src/gpu/graphite/render/TessellateStrokesRenderStep.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-06-03T15:19:03Z",
+      "side": 1,
+      "message": "This re-ordering is needed for uniform alignment to pack better (and currently also avoid asserts).",
+      "range": {
+        "startLine": 63,
+        "startChar": 34,
+        "endLine": 65,
+        "endChar": 67
+      },
+      "revId": "882578cab14b3c112501d881133addf76f8b3b1f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7b212103_447e446f",
+        "filename": "src/gpu/graphite/render/TessellateStrokesRenderStep.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-06-03T15:19:03Z",
+      "side": 1,
+      "message": "bug fix to prior CL, we\u0027d fail to stroke rects and round rects.",
+      "range": {
+        "startLine": 93,
+        "startChar": 0,
+        "endLine": 93,
+        "endChar": 76
+      },
+      "revId": "882578cab14b3c112501d881133addf76f8b3b1f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0fc698f7_c605ad56",
+        "filename": "src/gpu/graphite/render/TessellateStrokesRenderStep.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 224,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-06-03T15:19:03Z",
+      "side": 1,
+      "message": "Writing one float4 is different than writing 4 floats in the UniformManager\u0027s type checking and alignment logic, so this keeps it matching the uniform declaration.",
+      "range": {
+        "startLine": 222,
+        "startChar": 5,
+        "endLine": 224,
+        "endChar": 27
+      },
+      "revId": "882578cab14b3c112501d881133addf76f8b3b1f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9f0c64e5_d91badee",
+        "filename": "src/gpu/graphite/render/TessellateStrokesRenderStep.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 227,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-06-03T15:19:03Z",
+      "side": 1,
+      "message": "bug fix from prior CL, was not actually grabbing the translation elements!",
+      "range": {
+        "startLine": 226,
+        "startChar": 57,
+        "endLine": 227,
+        "endChar": 61
+      },
+      "revId": "882578cab14b3c112501d881133addf76f8b3b1f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "76ad356e_697a00cb",
+        "filename": "src/sksl/sksl_graphite_vert.sksl",
+        "patchSetId": 4
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-06-03T15:19:03Z",
+      "side": 1,
+      "message": "All of these helper functions are copied verbatim from GrStrokeTessellationShader. If we can share these private modules between Ganesh and Graphite, we\u0027ll be able to delete a lot of duplicate sksl.",
+      "range": {
+        "startLine": 77,
+        "startChar": 0,
+        "endLine": 77,
+        "endChar": 50
+      },
+      "revId": "882578cab14b3c112501d881133addf76f8b3b1f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "298b763b_c72c5111",
+        "filename": "src/sksl/sksl_graphite_vert.sksl",
+        "patchSetId": 4
+      },
+      "lineNbr": 194,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-06-03T15:19:03Z",
+      "side": 1,
+      "message": "This function is nearly verbatim the concatenated SkSL from GrStrokeTessellationShader, with a few exceptions:\n\n- runtime specializations in the Ganesh version are removed, and graphite always uses instance data for stroke parameters (in particular, it handles all join types).\n- hairlines had been a runtime specialization, and that is now handled dynamically by checking for strokeRadius \u003d\u003d 0.0 and then branching on that within SkSL instead of in C++.",
+      "range": {
+        "startLine": 194,
+        "startChar": 7,
+        "endLine": 194,
+        "endChar": 31
+      },
+      "revId": "882578cab14b3c112501d881133addf76f8b3b1f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
