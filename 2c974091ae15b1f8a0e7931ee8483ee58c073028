@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "407329b8_e74ce817",
+        "filename": "include/core/SkMesh.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 221,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-06-03T18:01:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "20b8e763_e61f6e80",
+      "range": {
+        "startLine": 219,
+        "startChar": 72,
+        "endLine": 221,
+        "endChar": 84
+      },
+      "revId": "2c974091ae15b1f8a0e7931ee8483ee58c073028",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "62d83c4d_ea9aa51a",
@@ -61,6 +85,30 @@
       "writtenOn": "2022-06-02T20:12:12Z",
       "side": 1,
       "message": "Not necessary for this CL, but would be nice to share this code with GrSkSLFP\u0027s copy. Seems like a helper function that takes pdman, span\u003cUniform\u003e, and SkData could be used from both? I guess the FP version also has those uniformFlags, which aren\u0027t present here. Hmm.",
+      "range": {
+        "startLine": 91,
+        "startChar": 0,
+        "endLine": 116,
+        "endChar": 17
+      },
+      "revId": "2c974091ae15b1f8a0e7931ee8483ee58c073028",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "28fb7fc3_a000382a",
+        "filename": "src/gpu/ganesh/ops/DrawMeshOp.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-06-03T18:01:12Z",
+      "side": 1,
+      "message": "Working on this but it definitely justifies its own CL.",
+      "parentUuid": "62d83c4d_ea9aa51a",
       "range": {
         "startLine": 91,
         "startChar": 0,
