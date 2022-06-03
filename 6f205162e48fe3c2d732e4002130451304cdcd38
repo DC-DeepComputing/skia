@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "918433e3_d8a4b81c",
+        "filename": "resources/sksl/shared/Caps.sksl",
+        "patchSetId": 1
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-06-03T21:04:53Z",
+      "side": 1,
+      "message": "Are these capabilities here chosen for a particular reason or do they not matter for this purposes of this test?",
+      "range": {
+        "startLine": 5,
+        "startChar": 16,
+        "endLine": 5,
+        "endChar": 29
+      },
+      "revId": "6f205162e48fe3c2d732e4002130451304cdcd38",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
