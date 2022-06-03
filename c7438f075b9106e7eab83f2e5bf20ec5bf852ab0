@@ -111,6 +111,30 @@
       },
       "revId": "c7438f075b9106e7eab83f2e5bf20ec5bf852ab0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "87282e43_9617919c",
+        "filename": "src/gpu/ganesh/vk/GrVkUniformHandler.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 172,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-06-03T17:07:18Z",
+      "side": 1,
+      "message": "Added a TODO. It isn\u0027t actionable unless we add non-square mat support to `SkSLType`, or rewrite the uniform handlers to not use `SkSLType`s at all. (Which would be good improvements!)",
+      "parentUuid": "7549c4e5_064321cd",
+      "range": {
+        "startLine": 172,
+        "startChar": 54,
+        "endLine": 172,
+        "endChar": 80
+      },
+      "revId": "c7438f075b9106e7eab83f2e5bf20ec5bf852ab0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
