@@ -2132,47 +2132,10 @@ Result RasterSink::draw(const Src& src, SkBitmap* dst, SkWStream*, SkString*) co
 
 #ifdef SK_GRAPHITE_ENABLED
 
-namespace {
-
-void precompile(skgpu::graphite::Context* context) {
-    SkCombinationBuilder builder(context);
-
-    builder.reset();
-
-    {
-        builder.addOption(SkShaderType::kSolidColor);
-        builder.addOption(SkBlendMode::kSrcOver);
-        builder.addOption(SkBlendMode::kSrc);
-
-        SkASSERT(builder.numCombinations() == 2);
-
-        context->precompile(&builder);
-    }
-
-    builder.reset();
-
-    {
-        static constexpr int kMinNumStops = 4;
-        static constexpr int kMaxNumStops = 8;
-
-        builder.addOption(SkShaderType::kLinearGradient, kMinNumStops, kMaxNumStops);
-        builder.addOption(SkBlendMode::kSrcOver);
-        builder.addOption(SkBlendMode::kSrc);
-
-        SkASSERT(builder.numCombinations() == 10);
-
-        context->precompile(&builder);
-    }
-
-}
-
-} // anonymous namespace
-
 GraphiteSink::GraphiteSink(const SkCommandLineConfigGraphite* config)
         : fContextType(config->getContextType())
         , fColorType(config->getColorType())
-        , fAlphaType(config->getAlphaType())
-        , fTestPrecompile(config->getTestPrecompile()) {
+        , fAlphaType(config->getAlphaType()) {
 }
 
 Result GraphiteSink::draw(const Src& src,
@@ -2185,10 +2148,6 @@ Result GraphiteSink::draw(const Src& src,
     auto [_, context] = factory.getContextInfo(fContextType);
     if (!context) {
         return Result::Fatal("Could not create a context.");
-    }
-
-    if (fTestPrecompile) {
-        precompile(context);
     }
 
     std::unique_ptr<skgpu::graphite::Recorder> recorder = context->makeRecorder();
