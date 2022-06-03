@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2aa20863_e3451156",
+        "filename": "src/sksl/SkSLAnalysis.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-06-03T18:20:18Z",
+      "side": 0,
+      "message": "Is this example not trivial anymore?\n\nThe half4 constructor is a splat (right?) and then it\u0027s a field access on a variable reference, which all looks like it remains trivial even with the more detailed IsTrivialExpression code.",
+      "range": {
+        "startLine": 127,
+        "startChar": 6,
+        "endLine": 127,
+        "endChar": 21
+      },
+      "revId": "0535a96163754abcd471aa18b2db7d381c41ef08",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

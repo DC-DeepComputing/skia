@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c63fcd36_4b90b6e4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-06-03T18:20:18Z",
+      "side": 1,
+      "message": "The new code is much easier to follow now!",
+      "revId": "37b80529b4d45c540023f689c6de31f5f229921d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b658df1d_930fd508",
+        "filename": "src/sksl/SkSLAnalysis.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-06-03T18:20:18Z",
+      "side": 1,
+      "message": "just to make it more obvious it was a swizzle?",
+      "range": {
+        "startLine": 127,
+        "startChar": 30,
+        "endLine": 127,
+        "endChar": 33
+      },
+      "revId": "37b80529b4d45c540023f689c6de31f5f229921d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
