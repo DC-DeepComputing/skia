@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2eef8cda_69e0724f",
+        "filename": "tests/graphite/CombinationBuilderTest.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-06-03T13:41:29Z",
+      "side": 1,
+      "message": "This is copy-pasted from an older version of the code.\nNot sure if there are other parts that also fell out of sync as well...?",
+      "range": {
+        "startLine": 59,
+        "startChar": 30,
+        "endLine": 60,
+        "endChar": 85
+      },
+      "revId": "890603e3750cc18ee15840496c4a2a0827737aca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
