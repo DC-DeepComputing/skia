@@ -1268,6 +1268,8 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 		// skia:12813
 		match = append(match, "~async_rescale_and_read")
 	}
+        match = nil
+	match = append(match, "ycbcr")
 
 	if len(skipped) > 0 {
 		args = append(args, "--skip")
