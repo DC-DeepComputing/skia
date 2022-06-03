@@ -51,18 +51,24 @@ bool VkYcbcrSamplerHelper::isYCbCrSupported() {
     }
 
     // The createBackendTexture call (which is the point of this helper class) requires linear
-    // support for VK_FORMAT_G8_B8R8_2PLANE_420_UNORM including sampling and cosited chroma.
+    // support for VK_FORMAT_G8_B8R8_2PLANE_420_UNORM including linear sampling and cosited chroma.
     // Verify that the image format is supported.
     VkFormatProperties formatProperties;
     GR_VK_CALL(vkGpu->vkInterface(),
                GetPhysicalDeviceFormatProperties(vkGpu->physicalDevice(),
                                                  VK_FORMAT_G8_B8R8_2PLANE_420_UNORM,
                                                  &formatProperties));
-    if (!(formatProperties.linearTilingFeatures & VK_FORMAT_FEATURE_SAMPLED_IMAGE_BIT) ||
-        !(formatProperties.linearTilingFeatures & VK_FORMAT_FEATURE_COSITED_CHROMA_SAMPLES_BIT)) {
+    auto linFlags = formatProperties.linearTilingFeatures;
+    if (!(linFlags & VK_FORMAT_FEATURE_SAMPLED_IMAGE_BIT) ||
+        !(linFlags & VK_FORMAT_FEATURE_SAMPLED_IMAGE_FILTER_LINEAR_BIT) ||
+        !(linFlags & VK_FORMAT_FEATURE_SAMPLED_IMAGE_YCBCR_CONVERSION_LINEAR_FILTER_BIT) ||
+        !(linFlags & VK_FORMAT_FEATURE_COSITED_CHROMA_SAMPLES_BIT)) {
         // VK_FORMAT_G8_B8R8_2PLANE_420_UNORM is not supported
+        SkDebugf("failed Linear features: 0x%08x\n", formatProperties.linearTilingFeatures);
         return false;
     }
+    SkDebugf("Linear features: 0x%08x\n", formatProperties.linearTilingFeatures);
+    SkDebugf("Optimal features: 0x%08x\n", formatProperties.optimalTilingFeatures);
 
     return true;
 }

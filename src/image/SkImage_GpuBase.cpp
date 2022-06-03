@@ -37,14 +37,19 @@ bool SkImage_GpuBase::ValidateBackendTexture(const GrCaps* caps, const GrBackend
                                              GrColorType grCT, SkColorType ct, SkAlphaType at,
                                              sk_sp<SkColorSpace> cs) {
     if (!tex.isValid()) {
+        SkDebugf("validate bet 1\n");
         return false;
     }
     SkColorInfo info(ct, at, cs);
     if (!SkColorInfoIsValid(info)) {
+        SkDebugf("validate bet 2\n");
+
         return false;
     }
     GrBackendFormat backendFormat = tex.getBackendFormat();
     if (!backendFormat.isValid()) {
+        SkDebugf("validate bet 3\n");
+
         return false;
     }
 
