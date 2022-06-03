@@ -211,14 +211,13 @@ void add_conical_gradient_uniform_data(const SkShaderCodeDictionary* dict,
 } // anonymous namespace
 
 GradientData::GradientData(SkShader::GradientType type,
-                           SkTileMode tm,
                            int numStops)
         : fType(type)
         , fPoints{{0.0f, 0.0f}, {0.0f, 0.0f}}
         , fRadii{0.0f, 0.0f}
         , fBias(0.0f)
         , fScale(0.0f)
-        , fTM(tm)
+        , fTM(SkTileMode::kClamp)
         , fNumStops(numStops) {
     sk_bzero(fColor4fs, sizeof(fColor4fs));
     sk_bzero(fOffsets, sizeof(fOffsets));
@@ -667,10 +666,9 @@ void AddToKey(const SkKeyContext& keyContext,
 //--------------------------------------------------------------------------------------------------
 // TODO: we need to feed the number of stops in the gradients into this method from the
 // combination code
-SkUniquePaintParamsID CreateKey(const SkKeyContext& keyContext,
+SkUniquePaintParamsID CreateKey1(const SkKeyContext& keyContext,
                                 SkPaintParamsKeyBuilder* builder,
                                 SkShaderType s,
-                                SkTileMode tm,
                                 SkBlendMode bm) {
     SkDEBUGCODE(builder->checkReset());
 
@@ -685,22 +683,22 @@ SkUniquePaintParamsID CreateKey(const SkKeyContext& keyContext,
         case SkShaderType::kLinearGradient:
             GradientShaderBlocks::AddToKey(keyContext, builder, nullptr,
                                            // only the type and numStops are used
-                                           { SkShader::kLinear_GradientType, tm, 0 });
+                                           { SkShader::kLinear_GradientType, 0 });
             break;
         case SkShaderType::kRadialGradient:
             GradientShaderBlocks::AddToKey(keyContext, builder, nullptr,
                                            // only the type and numStops are used
-                                           { SkShader::kRadial_GradientType, tm, 0 });
+                                           { SkShader::kRadial_GradientType, 0 });
             break;
         case SkShaderType::kSweepGradient:
             GradientShaderBlocks::AddToKey(keyContext, builder, nullptr,
                                            // only the type and numStops are used
-                                           { SkShader::kSweep_GradientType, tm, 0 });
+                                           { SkShader::kSweep_GradientType, 0 });
             break;
         case SkShaderType::kConicalGradient:
             GradientShaderBlocks::AddToKey(keyContext, builder, nullptr,
                                            // only the type and numStops are used
-                                           { SkShader::kConical_GradientType, tm, 0 });
+                                           { SkShader::kConical_GradientType, 0 });
             break;
         case SkShaderType::kLocalMatrix:
             LocalMatrixShaderBlock::AddToKey(keyContext, builder, nullptr,
