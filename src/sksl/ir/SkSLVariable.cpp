@@ -43,7 +43,16 @@ std::unique_ptr<Variable> Variable::Convert(const Context& context, Position pos
         context.fErrors->error(namePos, "name '" + std::string(name) + "' is reserved");
     }
     if (baseType->isArray() && baseType->columns() == Type::kUnsizedArray) {
-        context.fErrors->error(pos, "unsized arrays are not permitted here");
+        if (ProgramConfig::IsCompute(ThreadContext::Context().fConfig->fKind)) {
+            if (storage != Variable::Storage::kGlobal) {
+                context.fErrors->error(pos, "unsized arrays must be global");
+            } else if (!(modifiers.fFlags & (Modifiers::kIn_Flag | Modifiers::kOut_Flag))) {
+                context.fErrors->error(pos,
+                        "unsized arrays must be declared 'in' and/or 'out'");
+            }
+        } else {
+            context.fErrors->error(pos, "unsized arrays are not permitted here");
+        }
     }
 
     return Make(context, pos, modifiersPos, modifiers, baseType, name, isArray,
