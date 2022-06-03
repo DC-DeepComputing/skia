@@ -6,19 +6,43 @@
 
 export LD_LIBRARY_PATH="external/clang_linux_amd64/usr/lib/x86_64-linux-gnu:external/clang_linux_amd64/usr/lib/llvm-13/lib"
 
-# If compilation fails, we want to exit right away
-set -e
-# We only want to run include-what-you-use if SKIA_ENFORCE_IWYU_FOR_THIS_FILE is in the arguments
-# passed in (i.e. the "skia_opt_file_into_iwyu" feature is enabled) and we are not linking
+# We only want to run include-what-you-use if DSKIA_ENFORCE_IWYU is in the arguments
+# passed in (i.e. the "skia_enforce_iwyu" feature is enabled) and we are not linking
 # (as detected by the presence of -fuse-ld).
-if [[ "$@" != *SKIA_ENFORCE_IWYU_FOR_THIS_FILE* || "$@" == *use-ld* ]]; then
+if [[ "$@" != *DSKIA_ENFORCE_IWYU* || "$@" == *use-ld* ]]; then
+  external/clang_linux_amd64/bin/clang $@
+  exit 0
+fi
+
+supported_files_or_dirs=(
+  "experimental/bazel_test/"
+)
+
+function opted_in_to_IWYU_checks() {
+  # Need [@] for entire list: https://stackoverflow.com/a/46137325
+  for path in ${supported_files_or_dirs[@]}; do
+    if [[ $1 == *"-c $path"* ]]; then
+      echo $path
+      return 0
+    fi
+  done
+  echo ""
+  return 0
+}
+
+# We want to concatenate all args into a string so we can do some
+# string matching in the opted_in_to_IWYU_checks function.
+# https://unix.stackexchange.com/a/197794
+opt_in=$(opted_in_to_IWYU_checks "'$*'")
+if [[ -z $opt_in ]]; then
   external/clang_linux_amd64/bin/clang $@
   exit 0
 else
   # Now try to compile with Clang, and then verify with IWYU
   external/clang_linux_amd64/bin/clang $@
-  # IWYU always returns a non-zero code because it doesn't produce the .o file (that's why
+  # IWYU always [1] returns a non-zero code because it doesn't produce the .o file (that's why
   # we ran Clang first). As such, we do not want bash to fail after running IWYU.
+  # [1] Until v0.18 at least
   set +e
   # Get absolute path to the mapping file because resolving the relative path is tricky, given
   # how Bazel locates the toolchain files.
