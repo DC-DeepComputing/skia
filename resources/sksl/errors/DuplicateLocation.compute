@@ -1,0 +1,5 @@
+layout(location=0) in int x;
+layout(location=0) in int y;
+
+void main() {
+}

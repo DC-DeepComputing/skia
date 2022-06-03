@@ -6,7 +6,7 @@ struct Inputs {
 struct Outputs {
     half4 sk_FragColor [[color(0)]];
 };
-struct T {
+thread struct T {
     int x;
 };
 struct Globals {
