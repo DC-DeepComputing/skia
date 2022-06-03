@@ -14,7 +14,7 @@
 namespace SkSL {
 
 /**
- * Represents a compile-time constant setting, such as sk_Caps.fbFetchSupport. These IRNodes should
+ * Represents a compile-time constant setting, such as sk_Caps.integerSupport. These IRNodes should
  * only exist in a dehydrated module. These nodes are replaced with the value of the setting during
  * rehydration or compilation (i.e., whenever fReplaceSettings is true).
  */
