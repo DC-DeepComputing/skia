@@ -124,8 +124,7 @@ bool UpdateVariableRefKind(Expression* expr, VariableRefKind kind, ErrorReporter
  * - half4(0)
  *
  * Trivial-ness is stackable. Somewhat large expressions can occasionally make the cut:
- * - half4(myColor.a)
- * - myStruct.myArrayField[7].xyz
+ * - myStruct.myArrayField[7].xzy
  */
 bool IsTrivialExpression(const Expression& expr);
 
