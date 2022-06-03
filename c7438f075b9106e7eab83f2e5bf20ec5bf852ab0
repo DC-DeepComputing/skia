@@ -63,6 +63,30 @@
       },
       "revId": "c7438f075b9106e7eab83f2e5bf20ec5bf852ab0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4a977150_48ff6321",
+        "filename": "src/gpu/ganesh/vk/GrVkUniformHandler.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 172,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-06-03T16:43:59Z",
+      "side": 1,
+      "message": "\"... don\u0027t support non-square mats, YET\". 😜",
+      "parentUuid": "778c7ccf_08ea901b",
+      "range": {
+        "startLine": 172,
+        "startChar": 54,
+        "endLine": 172,
+        "endChar": 80
+      },
+      "revId": "c7438f075b9106e7eab83f2e5bf20ec5bf852ab0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
