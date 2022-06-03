@@ -39,6 +39,30 @@
       },
       "revId": "c7438f075b9106e7eab83f2e5bf20ec5bf852ab0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "778c7ccf_08ea901b",
+        "filename": "src/gpu/ganesh/vk/GrVkUniformHandler.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 172,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-06-03T16:09:11Z",
+      "side": 1,
+      "message": "I leave this in your capable hands to investigate :) I know this CL doesn\u0027t fix everything broken in these handlers. I will leave skia:13380 open.\n\nFortunately, Runtime Effects currently don\u0027t support non-square mats so it\u0027s not something that end-users could bump into just yet.",
+      "parentUuid": "09ca9bb3_fd2f4a8b",
+      "range": {
+        "startLine": 172,
+        "startChar": 54,
+        "endLine": 172,
+        "endChar": 80
+      },
+      "revId": "c7438f075b9106e7eab83f2e5bf20ec5bf852ab0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
