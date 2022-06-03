@@ -804,6 +804,13 @@ protected:
         return GrSurfaceProxyView(std::move(proxy), kOrigin, swizzle);
     }
 
+    bool onGetPixels(const SkImageInfo& info, void* pixels, size_t rowBytes,
+                                              const Options& opts) {
+        WASMPointerU8 pixelsPtr = reinterpret_cast<WASMPointerU8>(pixels);
+        fCallback.call<void>("readPixels", pixelsPtr);
+        return true;
+    }
+
 private:
     JSObject fCallback;
 };
