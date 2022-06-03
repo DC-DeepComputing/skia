@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "807b3b8f_a360c6d7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-06-03T19:09:52Z",
+      "side": 1,
+      "message": "Forgot to tag the bug. skbug.com/12720",
+      "revId": "3e08ec878d221037e7c9c50d1f045cc1d35b3b0f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
