@@ -9,6 +9,7 @@
 #define SKSL_DSL_TYPE
 
 #include "include/core/SkSpan.h"
+#include "include/core/SkTypes.h"
 #include "include/sksl/DSLExpression.h"
 #include "include/sksl/DSLModifiers.h"
 #include "include/sksl/SkSLPosition.h"

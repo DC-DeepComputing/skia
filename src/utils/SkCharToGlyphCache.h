@@ -11,6 +11,10 @@
 #include "include/core/SkTypes.h"
 #include "include/private/SkTDArray.h"
 
+#if defined(SK_DEBUG)
+#include "include/private/SkTo.h"
+#endif
+
 class SkCharToGlyphCache {
 public:
     SkCharToGlyphCache();

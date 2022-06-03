@@ -82,27 +82,35 @@ func main() {
 // bazelCheckIncludes builds the given label with the feature enabled that treats improper include
 // declarations as a compilation error.
 func bazelCheckIncludes(ctx context.Context, checkoutDir, label string, opts ...string) error {
-	step := fmt.Sprintf("Build and check includes for %s with %d extra flags", label, len(opts))
-	return td.Do(ctx, td.Props(step), func(ctx context.Context) error {
-		runCmd := &sk_exec.Command{
-			Name: "bazelisk",
-			Args: append([]string{"build",
-				"--config=linux_rbe", // Compile using RBE
-				"--features=skia_enforce_iwyu",
-				"--jobs=" + strconv.Itoa(rbeJobs),
-				"--keep_going",              // Don't stop after first error
-				"--remote_download_minimal", // Don't bother downloading the outputs
-				label,
-			}, opts...),
-			InheritEnv: true, // Makes sure bazelisk is on PATH
-			Dir:        checkoutDir,
-			LogStdout:  true,
-			LogStderr:  true,
-		}
-		_, err := sk_exec.RunCommand(ctx, runCmd)
-		if err != nil {
-			return err
-		}
-		return nil
-	})
+    debugAndRelease = []string{"--compilation_mode=dbg", "--compilation_mode=opt"}
+
+    for _, extraOpt := range debugAndRelease {
+        step := fmt.Sprintf("Build and check includes for %s with %d extra flags", label, len(opts)+1)
+        err := td.Do(ctx, td.Props(step), func(ctx context.Context) error {
+            runCmd := &sk_exec.Command{
+                Name: "bazelisk",
+                Args: append([]string{"build",
+                    "--config=linux_rbe", // Compile using RBE
+                    "--features=skia_enforce_iwyu",
+                    "--jobs=" + strconv.Itoa(rbeJobs),
+                    "--keep_going",              // Don't stop after first error
+                    "--remote_download_minimal", // Don't bother downloading the outputs
+                    label,
+                    extraOpt,
+                }, opts...),
+                InheritEnv: true, // Makes sure bazelisk is on PATH
+                Dir:        checkoutDir,
+                LogStdout:  true,
+                LogStderr:  true,
+            }
+            _, err := sk_exec.RunCommand(ctx, runCmd)
+            if err != nil {
+                return err
+            }
+            return nil
+        })
+        if err != nil {
+            return err
+        }
+	}
 }

@@ -5,12 +5,14 @@
  * found in the LICENSE file.
  */
 
-#include "src/sksl/SkSLConstantFolder.h"
-#include "src/sksl/SkSLProgramSettings.h"
 #include "src/sksl/ir/SkSLConstructorCompound.h"
 
-#include <algorithm>
-#include <numeric>
+#include "include/core/SkTypes.h"
+#include "src/sksl/SkSLConstantFolder.h"
+#include "src/sksl/SkSLContext.h"
+#include "src/sksl/SkSLProgramSettings.h"
+#include "src/sksl/ir/SkSLExpression.h"
+#include "src/sksl/ir/SkSLType.h"
 
 namespace SkSL {
 
