@@ -22,6 +22,30 @@
       },
       "revId": "31fbba460ec695695a09bd74a4cbed3f3ebce7d5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e8f2fad9_83f8b1d4",
+        "filename": "tests/sksl/inliner/TrivialArgumentsInlineDirectly.glsl",
+        "patchSetId": 1
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-06-03T19:55:22Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "3d8c0ab4_a0f466cb",
+      "range": {
+        "startLine": 37,
+        "startChar": 0,
+        "endLine": 45,
+        "endChar": 0
+      },
+      "revId": "31fbba460ec695695a09bd74a4cbed3f3ebce7d5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
