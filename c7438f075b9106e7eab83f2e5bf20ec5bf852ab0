@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2b04726f_f77e2b4b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-06-03T16:05:04Z",
+      "side": 1,
+      "message": "LGTM % one comment about other matrix dimensions.\n\nP.S.: I realized that the Ganesh/Graphite uniform handlers maintain their own hardcoded alignment math that is separate from SkSLMemoryLayout which does much of the same thing. I think it might be a reasonable refactor to have the codegen uniform handlers share code in a way that the special casing here is not needed.",
+      "revId": "c7438f075b9106e7eab83f2e5bf20ec5bf852ab0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "09ca9bb3_fd2f4a8b",
+        "filename": "src/gpu/ganesh/vk/GrVkUniformHandler.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 172,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-06-03T16:05:04Z",
+      "side": 1,
+      "message": "This might need special handling for half3x2 and half2x3 here too.",
+      "range": {
+        "startLine": 172,
+        "startChar": 54,
+        "endLine": 172,
+        "endChar": 80
+      },
+      "revId": "c7438f075b9106e7eab83f2e5bf20ec5bf852ab0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
