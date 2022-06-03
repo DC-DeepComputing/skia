@@ -33,6 +33,24 @@
       "message": "Hi Greg, it seems failed on the building not running the unit tests?",
       "revId": "e51ed5214b9020e82b6ba1aad1657586698f79b9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fbf39b41_cb326120",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-06-03T14:31:26Z",
+      "side": 1,
+      "message": "The labeling of the failures is very unintuitive and deciving. Basically it writes \"Build %s failed.\", \u003cbot name\u003e. So the actual failure was running the tests. You can click on the failures to get to the actual test failure pages. E.g. https://task-scheduler.skia.org/job/3SdaZy5DamBDQjEWENIF, then clicking on a red box leads to https://chromium-swarm.appspot.com/task?id\u003d5b3d6cb1f1a70e10, the click the rich output tab goes to https://ci.chromium.org/raw/build/logs.chromium.org/skia/5b3d6cb1f1a70e11/+/annotations, and finally click stdout under dm gets you to https://logs.chromium.org/logs/skia/5b3d6cb1f1a70e11/+/steps/dm/0/stdout.\n\nSo looks like we\u0027re hitting an assert that we\u0027re not resolving when we have the render to texture extension. In your workaround, I think you also need to be setting the fMSFBOType which is still getting the value of kES_EXT_MsToTexture_MSFBOType.",
+      "parentUuid": "e41cf5a8_67b686e7",
+      "revId": "e51ed5214b9020e82b6ba1aad1657586698f79b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
