@@ -1603,6 +1603,7 @@ bool GrVkCaps::onAreColorTypeAndFormatCompatible(GrColorType ct,
                                                  const GrBackendFormat& format) const {
     VkFormat vkFormat;
     if (!format.asVkFormat(&vkFormat)) {
+        SkDebugf("grvkcaps 1\n");
         return false;
     }
     const GrVkYcbcrConversionInfo* ycbcrInfo = format.getVkYcbcrConversionInfo();
@@ -1613,6 +1614,7 @@ bool GrVkCaps::onAreColorTypeAndFormatCompatible(GrColorType ct,
         if (VK_FORMAT_UNDEFINED == vkFormat && ycbcrInfo->fExternalFormat != 0) {
             return true;
         }
+        SkDebugf("grvkcaps 2\n");
         return false;
     }
 
@@ -1622,6 +1624,8 @@ bool GrVkCaps::onAreColorTypeAndFormatCompatible(GrColorType ct,
             return true;
         }
     }
+    SkDebugf("grvkcaps 3 ct: %d, vkFormat: %d, info.optimal: 0x%08x, info.linear: 0x%08x, info.ctCount: %d\n",
+             ct, vkFormat, info.fOptimalFlags, info.fLinearFlags, info.fColorTypeInfoCount);
     return false;
 }
 

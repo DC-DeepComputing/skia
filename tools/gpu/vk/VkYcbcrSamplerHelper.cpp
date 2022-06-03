@@ -61,8 +61,11 @@ bool VkYcbcrSamplerHelper::isYCbCrSupported() {
     if (!(formatProperties.linearTilingFeatures & VK_FORMAT_FEATURE_SAMPLED_IMAGE_BIT) ||
         !(formatProperties.linearTilingFeatures & VK_FORMAT_FEATURE_COSITED_CHROMA_SAMPLES_BIT)) {
         // VK_FORMAT_G8_B8R8_2PLANE_420_UNORM is not supported
+        SkDebugf("failed Linear features: 0x%08x\n", formatProperties.linearTilingFeatures);
         return false;
     }
+    SkDebugf("Linear features: 0x%08x\n", formatProperties.linearTilingFeatures);
+    SkDebugf("Optimal features: 0x%08x\n", formatProperties.optimalTilingFeatures);
 
     return true;
 }

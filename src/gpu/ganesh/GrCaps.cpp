@@ -401,6 +401,7 @@ GrBackendFormat GrCaps::getDefaultBackendFormat(GrColorType colorType,
 bool GrCaps::areColorTypeAndFormatCompatible(GrColorType grCT,
                                              const GrBackendFormat& format) const {
     if (GrColorType::kUnknown == grCT) {
+        SkDebugf("grcaps 1\n");
         return false;
     }
 
