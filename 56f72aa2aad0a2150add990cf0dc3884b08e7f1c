@@ -72,6 +72,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9349b158_60c82c3b",
+        "filename": "tests/graphite/CombinationBuilderTest.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-06-03T17:19:05Z",
+      "side": 1,
+      "message": "Do you think they should have different names for clarity?",
+      "parentUuid": "82420372_a03e2ff6",
+      "range": {
+        "startLine": 39,
+        "startChar": 4,
+        "endLine": 39,
+        "endChar": 34
+      },
+      "revId": "56f72aa2aad0a2150add990cf0dc3884b08e7f1c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9e987851_8ec4318e",
