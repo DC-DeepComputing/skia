@@ -62,6 +62,54 @@
       },
       "revId": "112bcf10431af222b4cdac9d2b111b861c15865d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c9bdb6b1_15b6da63",
+        "filename": "resources/sksl/inliner/TrivialArgumentsInlineDirectly.sksl",
+        "patchSetId": 3
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-06-04T20:07:42Z",
+      "side": 1,
+      "message": "Rather than add more commented-out test cases, I\u0027ll make a followup which actually tests #version 300 constructs in a separate file.",
+      "parentUuid": "2e4d2ca4_7010195d",
+      "range": {
+        "startLine": 94,
+        "startChar": 4,
+        "endLine": 94,
+        "endChar": 8
+      },
+      "revId": "112bcf10431af222b4cdac9d2b111b861c15865d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "21549bc0_6c0e3abc",
+        "filename": "resources/sksl/inliner/TrivialArgumentsInlineDirectly.sksl",
+        "patchSetId": 3
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-06-04T20:07:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e4a812e5_89ebffba",
+      "range": {
+        "startLine": 94,
+        "startChar": 54,
+        "endLine": 94,
+        "endChar": 73
+      },
+      "revId": "112bcf10431af222b4cdac9d2b111b861c15865d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
