@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "74877abb_893a7275",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-06-04T00:18:05Z",
+      "side": 1,
+      "message": "lgtm % nits",
+      "revId": "112bcf10431af222b4cdac9d2b111b861c15865d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e4a812e5_89ebffba",
+        "filename": "resources/sksl/inliner/TrivialArgumentsInlineDirectly.sksl",
+        "patchSetId": 3
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-06-04T00:18:05Z",
+      "side": 1,
+      "message": "Maybe keep the additional information that was in the comments before, i.e. \"(non-constant array index disallowed in ES2)\".",
+      "range": {
+        "startLine": 94,
+        "startChar": 54,
+        "endLine": 94,
+        "endChar": 73
+      },
+      "revId": "112bcf10431af222b4cdac9d2b111b861c15865d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2e4d2ca4_7010195d",
+        "filename": "resources/sksl/inliner/TrivialArgumentsInlineDirectly.sksl",
+        "patchSetId": 3
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-06-04T00:18:05Z",
+      "side": 1,
+      "message": "Does it make sense to add a case with an array constructor expression that\u0027s similarly commented out?",
+      "range": {
+        "startLine": 94,
+        "startChar": 4,
+        "endLine": 94,
+        "endChar": 8
+      },
+      "revId": "112bcf10431af222b4cdac9d2b111b861c15865d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
