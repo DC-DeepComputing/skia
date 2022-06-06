@@ -105,6 +105,16 @@ public:
                       sk_sp<SkRefCnt> subRunStorage,
                       skgpu::v1::SurfaceDrawContext*) const = 0;
 #endif
+#if SK_GRAPHITE_ENABLED
+    // TODO: make this pure virtual once all are defined
+    // Produce GPU tasks for this subRun or just draw them.
+    virtual void draw(SkCanvas*,
+                      const SkMatrixProvider& viewMatrix,
+                      SkPoint drawOrigin,
+                      const SkPaint&,
+                      sk_sp<SkRefCnt> subRunStorage,
+                      skgpu::graphite::Device*) const {}
+#endif
 
     void flatten(SkWriteBuffer& buffer) const;
     static SubRunOwner MakeFromBuffer(const SkMatrix& initialPositionMatrix,
@@ -213,6 +223,15 @@ public:
               const SkPaint& paint,
               const SkRefCnt* subRunStorage,
               skgpu::v1::SurfaceDrawContext* sdc) const;
+#endif
+#if SK_GRAPHITE_ENABLED
+    // Produce GPU tasks for this subRun or just draw them.
+    void draw(SkCanvas*,
+              const SkMatrixProvider& viewMatrix,
+              SkPoint drawOrigin,
+              const SkPaint&,
+              sk_sp<SkRefCnt> subRunStorage,
+              skgpu::graphite::Device*) const;
 #endif
 
     const SkMatrix& initialPosition() const { return fInitialPositionMatrix; }
