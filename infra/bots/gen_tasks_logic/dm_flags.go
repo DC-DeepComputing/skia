@@ -176,10 +176,6 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 	glPrefix := ""
 	if b.extraConfig("SwiftShader") {
 		configs = append(configs, "vk", "vkdmsaa")
-		// skbug.com/12820
-		skip(ALL, "gm", ALL, "ycbcrimage")
-		// skbug.com/12820
-		skip(ALL, "test", ALL, "VkYCbcrSampler_DrawImageWithYcbcrSampler")
 		// skbug.com/12826
 		skip(ALL, "test", ALL, "GrThreadSafeCache16Verts")
 		// skbug.com/12829
@@ -1011,6 +1007,10 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 		skip(ALL, "tests", ALL, "SkSLMatrixConstructorsES3_GPU")
 	}
 
+<<<<<<< HEAD   (83b328 Remove string copies in Skia tracing macros)
+=======
+
+>>>>>>> CHANGE (3ee928 Fix checks for vk ycbcr helper support in tests.)
 	if b.matchGpu("Intel") { // some Intel GPUs don't return zero for the derivative of a uniform
 		skip(ALL, "tests", ALL, "SkSLIntrinsicDFdy_GPU")
 		skip(ALL, "tests", ALL, "SkSLIntrinsicDFdx_GPU")
