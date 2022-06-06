@@ -199,7 +199,8 @@ void SkShader_Blend::addToKey(const SkKeyContext& keyContext,
     // TODO: add blender support
     SkASSERT(!fBlender);
 
-    BlendShaderBlock::AddToKey(keyContext, builder, gatherer,
+    BlendShaderBlock::AddToKey1(keyContext, builder, gatherer,
                                { fDst.get(), fSrc.get(), fMode });
+    BlendShaderBlock::AddToKey2(keyContext, builder);
 }
 #endif

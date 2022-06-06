@@ -396,7 +396,8 @@ void SkImageShader::addToKey(const SkKeyContext& keyContext,
     }
 #endif
 
-    ImageShaderBlock::AddToKey(keyContext, builder, gatherer, imgData);
+    ImageShaderBlock::AddToKey1(keyContext, builder, gatherer, imgData);
+    ImageShaderBlock::AddToKey2(keyContext, builder);
 }
 #endif
 
