@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e17f3112_ebc49b99",
+        "filename": "modules/canvaskit/CHANGELOG.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 10154
+      },
+      "writtenOn": "2022-06-06T23:04:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4b4fe6cb_4a796ad3",
+      "range": {
+        "startLine": 9,
+        "startChar": 4,
+        "endLine": 9,
+        "endChar": 10
+      },
+      "revId": "af236d6c08471c2730b1f9d1bb31b842f14fcb8f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b52d92c2_48fb68ef",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-06-03T12:38:16Z",
       "side": 1,
       "message": "I don\u0027t think we need to allocate a new buffer for the JS side to work with, right?\n\nI feel like the C++ side should be able to pass the pointer to the pixels buffer and a calculated length into readPixels, the JS side making a TypedArray view into the Wasm memory based on that pointer, the JS side copies the pixels into the buffer, and then the C++ side just needs to return true.\n\nNote from the API contract about scaling -https://github.com/google/skia/blob/6a00ee05ff4a2e0bff3f6bcbc469959d10a80740/include/core/SkImageGenerator.h#L81-L83\nIs that handled?",
+      "range": {
+        "startLine": 809,
+        "startChar": 65,
+        "endLine": 809,
+        "endChar": 75
+      },
+      "revId": "af236d6c08471c2730b1f9d1bb31b842f14fcb8f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7e91da96_9b9a2ca0",
+        "filename": "modules/canvaskit/canvaskit_bindings.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 809,
+      "author": {
+        "id": 10154
+      },
+      "writtenOn": "2022-06-06T23:04:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b52d92c2_48fb68ef",
       "range": {
         "startLine": 809,
         "startChar": 65,
@@ -72,6 +120,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "38563a11_a887524f",
+        "filename": "modules/canvaskit/canvaskit_bindings.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 811,
+      "author": {
+        "id": 10154
+      },
+      "writtenOn": "2022-06-06T23:04:10Z",
+      "side": 1,
+      "message": "In the `MakeLazyImageFromTextureSource` code above this, it assumes RGBA_8888. I also added a check in the code to ensure we only support RGBA_8888 color type.",
+      "parentUuid": "d5cc1751_bdba8de0",
+      "range": {
+        "startLine": 811,
+        "startChar": 32,
+        "endLine": 811,
+        "endChar": 33
+      },
+      "revId": "af236d6c08471c2730b1f9d1bb31b842f14fcb8f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "495301d4_4432ef83",
         "filename": "modules/canvaskit/gpu.js",
         "patchSetId": 3
@@ -83,6 +155,30 @@
       "writtenOn": "2022-06-03T12:38:16Z",
       "side": 1,
       "message": "I don\u0027t understand what this code is doing. Why do we need to make a new WebGL texture in order to read the pixels?",
+      "range": {
+        "startLine": 312,
+        "startChar": 16,
+        "endLine": 312,
+        "endChar": 22
+      },
+      "revId": "af236d6c08471c2730b1f9d1bb31b842f14fcb8f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6254ba8d_50c9766c",
+        "filename": "modules/canvaskit/gpu.js",
+        "patchSetId": 3
+      },
+      "lineNbr": 312,
+      "author": {
+        "id": 10154
+      },
+      "writtenOn": "2022-06-06T23:04:10Z",
+      "side": 1,
+      "message": "So we can bind the texture to a framebuffer and read the pixels out. I used this code for reference: http://cs.boisestate.edu/~scutchin/cs464/textdata.html",
+      "parentUuid": "495301d4_4432ef83",
       "range": {
         "startLine": 312,
         "startChar": 16,
@@ -118,6 +214,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "dd39a8c8_6602e606",
+        "filename": "modules/canvaskit/gpu.js",
+        "patchSetId": 3
+      },
+      "lineNbr": 324,
+      "author": {
+        "id": 10154
+      },
+      "writtenOn": "2022-06-06T23:04:10Z",
+      "side": 1,
+      "message": "The texture is created from `src` which is the texture source which is also used in `makeTexture`",
+      "parentUuid": "02b82113_002c8683",
+      "range": {
+        "startLine": 324,
+        "startChar": 20,
+        "endLine": 324,
+        "endChar": 30
+      },
+      "revId": "af236d6c08471c2730b1f9d1bb31b842f14fcb8f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "238c7f8c_43e9b363",
         "filename": "modules/canvaskit/tests/core.spec.js",
         "patchSetId": 3
@@ -129,6 +249,30 @@
       "writtenOn": "2022-06-03T12:38:16Z",
       "side": 1,
       "message": "This unit test does not actually draw to this Canvas. I think we want to do so to verify the image actually looks correct and it is not empty.",
+      "range": {
+        "startLine": 1489,
+        "startChar": 53,
+        "endLine": 1489,
+        "endChar": 59
+      },
+      "revId": "af236d6c08471c2730b1f9d1bb31b842f14fcb8f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1b1cb2c3_907950dd",
+        "filename": "modules/canvaskit/tests/core.spec.js",
+        "patchSetId": 3
+      },
+      "lineNbr": 1489,
+      "author": {
+        "id": 10154
+      },
+      "writtenOn": "2022-06-06T23:04:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "238c7f8c_43e9b363",
       "range": {
         "startLine": 1489,
         "startChar": 53,
