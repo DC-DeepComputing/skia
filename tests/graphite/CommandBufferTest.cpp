@@ -24,6 +24,7 @@
 #include "src/gpu/graphite/GlobalCache.h"
 #include "src/gpu/graphite/Gpu.h"
 #include "src/gpu/graphite/GraphicsPipeline.h"
+#include "src/gpu/graphite/PaintParams.h"
 #include "src/gpu/graphite/RecorderPriv.h"
 #include "src/gpu/graphite/Renderer.h"
 #include "src/gpu/graphite/ResourceProvider.h"
@@ -254,11 +255,24 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(CommandBufferTest, reporter, context) {
 
         SkPaintParamsKeyBuilder builder(dict, SkBackend::kGraphite);
 
-        uniqueID = CreateKey(keyContext,
-                             &builder,
-                             SkShaderType::kSolidColor,
-                             SkTileMode::kClamp,
-                             SkBlendMode::kSrc);
+        PaintParams pp { {1,0,0,1}, nullptr, nullptr };
+
+        pp.toKey(keyContext, &builder, nullptr);
+
+        SkPaintParamsKey key = builder.lockAsKey();
+
+#ifdef SK_GRAPHITE_ENABLED
+        SkPipelineDataGatherer::BlendInfo blendInfo;
+#endif
+
+        auto entry = dict->findOrCreate(
+                key
+#ifdef SK_GRAPHITE_ENABLED
+                , blendInfo
+#endif
+        );
+
+        uniqueID = entry->uniqueID();
     }
 
     auto target = sk_sp<TextureProxy>(new TextureProxy(textureSize, textureInfo, SkBudgeted::kYes));
