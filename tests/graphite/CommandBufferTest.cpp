@@ -254,11 +254,25 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(CommandBufferTest, reporter, context) {
 
         SkPaintParamsKeyBuilder builder(dict, SkBackend::kGraphite);
 
-        uniqueID = CreateKey(keyContext,
-                             &builder,
-                             SkShaderType::kSolidColor,
-                             SkTileMode::kClamp,
-                             SkBlendMode::kSrc);
+        SolidColorShaderBlock::BeginBlock(keyContext, &builder, nullptr, {1,0,0,1});
+        builder.endBlock();
+        BlendModeBlock::BeginBlock(keyContext, &builder, nullptr, SkBlendMode::kSrcOver);
+        builder.endBlock();
+
+        SkPaintParamsKey key = builder.lockAsKey();
+
+#ifdef SK_GRAPHITE_ENABLED
+        SkPipelineDataGatherer::BlendInfo blendInfo;
+#endif
+
+        auto entry = dict->findOrCreate(
+                key
+#ifdef SK_GRAPHITE_ENABLED
+                , blendInfo
+#endif
+        );
+
+        uniqueID = entry->uniqueID();
     }
 
     auto target = sk_sp<TextureProxy>(new TextureProxy(textureSize, textureInfo, SkBudgeted::kYes));
