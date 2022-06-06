@@ -1,5 +1,40 @@
 {
-  "comments": [],
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5f5ae4c4_d2bb2af9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-06-06T14:40:27Z",
+      "side": 1,
+      "message": "Ads a general organizational thing, the fewer broader iwyu builders the better. If it\u0027s possible to make a single BazelBuild-all-enforce_iwyu-dawn-gl-vulkan-d3d-metal-allfontmgr-allcodecs-allopts kind of one single build that would both make things easier long term (iwyu would see all the things) and fewer jobs overall to keep track of. Note that this build can violate ODR and all kinds of thing that would normally not work since this is only a per-translation unit operation, we don\u0027t need to worry about actually linking anything or even generating code. However this may run into downsides if any code was written assuming that multiple optional settings are mutually exclusive (don\u0027t ever get defined at the same time).",
+      "revId": "6df634a32dc0f086efe6a3867633c26a80b749e1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7e17cdf9_449cdf2d",
+        "filename": "infra/bots/jobs.json",
+        "patchSetId": 7
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-06-06T14:40:27Z",
+      "side": 1,
+      "message": "This one seems new and not iwyu?",
+      "revId": "6df634a32dc0f086efe6a3867633c26a80b749e1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ],
   "submitRequirementResults": [
     {
       "submitRequirement": {
