@@ -157,7 +157,8 @@ SkUpdatableShader* SkShaderBase::onUpdatableShader(SkArenaAlloc* alloc) const {
 void SkShaderBase::addToKey(const SkKeyContext& keyContext,
                             SkPaintParamsKeyBuilder* builder,
                             SkPipelineDataGatherer* gatherer) const {
-    SolidColorShaderBlock::AddToKey(keyContext, builder, gatherer, {1, 0, 0, 1});
+    SolidColorShaderBlock::AddToKey1(keyContext, builder, gatherer, {1, 0, 0, 1});
+    SolidColorShaderBlock::AddToKey2(keyContext, builder);
 }
 #endif
 

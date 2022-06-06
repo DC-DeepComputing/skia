@@ -69,10 +69,11 @@ void SkBlenderBase::addToKey(const SkKeyContext& keyContext,
                              SkPipelineDataGatherer* gatherer) const {
 
     if (std::optional<SkBlendMode> bm = as_BB(this)->asBlendMode(); bm.has_value()) {
-        BlendModeBlock::AddToKey(keyContext, builder, gatherer, bm.value());
+        BlendModeBlock::AddToKey1(keyContext, builder, gatherer, bm.value());
     } else {
-        BlendModeBlock::AddToKey(keyContext, builder, gatherer, SkBlendMode::kSrcOver);
+        BlendModeBlock::AddToKey1(keyContext, builder, gatherer, SkBlendMode::kSrcOver);
     }
+    BlendModeBlock::AddToKey2(keyContext, builder);
 }
 #endif
 

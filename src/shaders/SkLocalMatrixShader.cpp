@@ -33,7 +33,8 @@ void SkLocalMatrixShader::addToKey(const SkKeyContext& keyContext,
                              SkPipelineDataGatherer* gatherer) const {
     LocalMatrixShaderBlock::LMShaderData lmShaderData(fProxyShader.get(), this->getLocalMatrix());
 
-    LocalMatrixShaderBlock::AddToKey(keyContext, builder, gatherer, lmShaderData);
+    LocalMatrixShaderBlock::AddToKey1(keyContext, builder, gatherer, lmShaderData);
+    LocalMatrixShaderBlock::AddToKey2(keyContext, builder);
 }
 #endif
 
