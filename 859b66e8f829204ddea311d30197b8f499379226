@@ -16,6 +16,24 @@
       "message": "I always find that every time I end up trying to use iwyu that I end up turning on everything for this reason, even things that one would normally not really want on at the same time (since we\u0027re not creating a binary or linking anything, it\u0027s possible to build all sorts of incompatible things and violate ODR across multiple TUs and whatnot, since that doesn\u0027t matter).",
       "revId": "859b66e8f829204ddea311d30197b8f499379226",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "42682f99_56c89398",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-06-06T13:47:01Z",
+      "side": 1,
+      "message": "The plan is that we eventually build a few concrete executables with sensible flags/settings and also the //:skia_public library with most of the settings on.",
+      "parentUuid": "c5a2fc1a_c11883ca",
+      "revId": "859b66e8f829204ddea311d30197b8f499379226",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
