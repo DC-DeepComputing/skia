@@ -16,6 +16,41 @@
       "message": "Ben, is this consistent with how we handle other similar settings, if any?",
       "revId": "93477dc998f791836d840421d1cb297aea04b0eb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d6022a96_208bfbdf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-06-06T13:19:31Z",
+      "side": 1,
+      "message": "Build part of this seems fine.",
+      "revId": "93477dc998f791836d840421d1cb297aea04b0eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "12116191_622b191f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-06-06T13:19:31Z",
+      "side": 1,
+      "message": "I see we do already do something like this with skia_vtune_path, skia_libgifcodec_path, and possibly others. Brian should probably look at this and make sure that this makes sense from the GPU side of things.",
+      "parentUuid": "d16afecf_467f2ffb",
+      "revId": "93477dc998f791836d840421d1cb297aea04b0eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
