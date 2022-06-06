@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2744a222_f8571258",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-06-06T14:52:41Z",
+      "side": 1,
+      "message": "Ack. For now, this is what we have, but we should be able to have a \"all the bells and whistles\" build for IWYU purposes.",
+      "parentUuid": "5f5ae4c4_d2bb2af9",
+      "revId": "6df634a32dc0f086efe6a3867633c26a80b749e1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7e17cdf9_449cdf2d",
@@ -31,6 +49,24 @@
       "writtenOn": "2022-06-06T14:40:27Z",
       "side": 1,
       "message": "This one seems new and not iwyu?",
+      "revId": "6df634a32dc0f086efe6a3867633c26a80b749e1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "95828f92_24da3f74",
+        "filename": "infra/bots/jobs.json",
+        "patchSetId": 7
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-06-06T14:52:41Z",
+      "side": 1,
+      "message": "Yes, this is effectively the CPU only build (at least, for now).",
+      "parentUuid": "7e17cdf9_449cdf2d",
       "revId": "6df634a32dc0f086efe6a3867633c26a80b749e1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
