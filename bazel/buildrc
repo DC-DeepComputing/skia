@@ -37,3 +37,4 @@ build:debug --compilation_mode=dbg
 build:ck_release --config=release --spawn_strategy=local
 build:ck_debug --config=debug --spawn_strategy=local
 
+build:enforce_iwyu --features=skia_enforce_iwyu --cc_output_directory_tag=iwyu
