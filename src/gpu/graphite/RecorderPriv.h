@@ -24,7 +24,8 @@ public:
     const Caps* caps() const;
     sk_sp<const Caps> refCaps() const;
 
-    void flushTrackedDevices();
+    TokenTracker* tokenTracker();
+void flushTrackedDevices();
 
 private:
     explicit RecorderPriv(Recorder* recorder) : fRecorder(recorder) {}

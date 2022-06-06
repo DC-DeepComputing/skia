@@ -1382,6 +1382,17 @@ std::tuple<const GrClip*, GrOp::Owner> DirectMaskSubRun::makeAtlasTextOp(
 }
 #endif  // SK_SUPPORT_GPU
 
+#if SK_GRAPHITE_ENABLED
+void DirectMaskSubRun::draw(SkCanvas*,
+                            const SkMatrixProvider& viewMatrix,
+                            SkPoint drawOrigin,
+                            const SkPaint& paint,
+                            sk_sp<SkRefCnt> subRunStorage,
+                            skgpu::graphite::Device* device) const {
+    device->drawSubRun(this, viewMatrix, drawOrigin, paint, std::move(subRunStorage));
+}
+#endif
+
 void DirectMaskSubRun::testingOnly_packedGlyphIDToGlyph(StrikeCache *cache) const {
     fGlyphs.packedGlyphIDToGlyph(cache);
 }
