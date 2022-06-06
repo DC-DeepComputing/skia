@@ -51,6 +51,23 @@
       "parentUuid": "d16afecf_467f2ffb",
       "revId": "93477dc998f791836d840421d1cb297aea04b0eb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6b7798fb_2312108a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-06-06T13:37:35Z",
+      "side": 1,
+      "message": "This lgtm, but Greg is the real expert.",
+      "revId": "93477dc998f791836d840421d1cb297aea04b0eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
