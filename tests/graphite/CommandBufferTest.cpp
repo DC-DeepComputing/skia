@@ -254,10 +254,9 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(CommandBufferTest, reporter, context) {
 
         SkPaintParamsKeyBuilder builder(dict, SkBackend::kGraphite);
 
-        uniqueID = CreateKey(keyContext,
+        uniqueID = CreateKey1(keyContext,
                              &builder,
                              SkShaderType::kSolidColor,
-                             SkTileMode::kClamp,
                              SkBlendMode::kSrc);
     }
 
