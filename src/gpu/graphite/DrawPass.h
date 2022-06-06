@@ -18,6 +18,7 @@
 #include "src/gpu/graphite/ResourceTypes.h"
 
 #include <memory>
+#include <vector>
 
 class SkTextureDataBlock;
 
@@ -26,6 +27,7 @@ namespace skgpu::graphite {
 class BoundsManager;
 class CommandBuffer;
 class DrawList;
+class GraphicsPipeline;
 class Recorder;
 struct RenderPassDesc;
 class ResourceProvider;
@@ -78,10 +80,12 @@ public:
     void samplers() const {}
     void programs() const {}
 
+    bool prepareResources(ResourceProvider*, const RenderPassDesc&);
+
     // Transform this DrawPass into commands issued to the CommandBuffer. Assumes that the buffer
     // has already begun a correctly configured render pass matching this pass's target.
     // Returns true on success; false on failure
-    bool addCommands(ResourceProvider*, CommandBuffer*, const RenderPassDesc&) const;
+    bool addCommands(ResourceProvider*, CommandBuffer*) const;
 
 private:
     class SortKey;
@@ -210,6 +214,10 @@ private:
 
     SkEnumBitMask<DepthStencilFlags> fDepthStencilFlags = DepthStencilFlags::kNone;
     bool                    fRequiresMSAA = false;
+
+    // These resources all get instantiated during prepareResources.
+    // Use a vector instead of SkTBlockList for the full pipelines so that random access is fast.
+    std::vector<sk_sp<GraphicsPipeline>> fFullPipelines;
 };
 
 } // namespace skgpu::graphite
