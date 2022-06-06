@@ -19,6 +19,7 @@
 
 class SkArenaAllocWithReset;
 class SkCombinationBuilder;
+class SkKeyContext;
 class SkOption;
 class SkPaintParamsKeyBuilder;
 class SkShaderCodeDictionary;
@@ -153,6 +154,8 @@ private:
     int numCombinations() {
         return this->numShaderCombinations() * this->numBlendModeCombinations();
     }
+
+    void createKey(const SkKeyContext&, int state, SkPaintParamsKeyBuilder*);
 
 #ifdef SK_DEBUG
     void dump() const;
