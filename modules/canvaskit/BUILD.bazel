@@ -251,7 +251,7 @@ CK_SRCS = [
 })
 
 cc_binary_with_flags(
-    name = "canvaskit.with_flags",
+    name = "canvaskit.webgl",
     srcs = CK_SRCS,
     additional_linker_inputs = JS_INTERFACE_FILES + ["externs.js"],
     # wasm_cc_binary makes the canvaskit.js/canvaskit.wasm based on the actual name
@@ -316,10 +316,10 @@ cc_binary_with_flags(
 )
 
 wasm_cc_binary(
-    name = "canvaskit_wasm",
+    name = "canvaskit_webgl",
     # Whatever is before the dot will be the name of the output js and wasm, aka "the stem".
     # https://github.com/emscripten-core/emsdk/blob/82ad00499a42abde16b363239d2bc83bf5d863ab/bazel/emscripten_toolchain/wasm_cc_binary.bzl#L91
-    cc_target = ":canvaskit.with_flags",
+    cc_target = ":canvaskit.webgl",
 )
 
 bool_flag(
@@ -390,4 +390,5 @@ karma_test(
         ":canvaskit_wasm/canvaskit.wasm",
         "//modules/canvaskit/tests/assets:test_assets",
     ],
+    tags = ["noremote"],
 )
