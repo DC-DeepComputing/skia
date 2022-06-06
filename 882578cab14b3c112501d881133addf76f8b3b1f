@@ -3,6 +3,23 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "eed3e317_34568df6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-06-06T15:30:17Z",
+      "side": 1,
+      "message": "Scanned through -- tessellation code looks pretty similar to what\u0027s in GrStrokeTesselationShader.",
+      "revId": "882578cab14b3c112501d881133addf76f8b3b1f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "87d34dfa_03a48564",
         "filename": "src/gpu/graphite/render/TessellateStrokesRenderStep.cpp",
         "patchSetId": 4
