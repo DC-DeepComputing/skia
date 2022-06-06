@@ -6,6 +6,7 @@
  */
 
 #include "src/sksl/SkSLContext.h"
+#include "src/sksl/ir/SkSLConstructorStruct.h"
 #include "src/sksl/ir/SkSLFieldAccess.h"
 #include "src/sksl/ir/SkSLMethodReference.h"
 #include "src/sksl/ir/SkSLSetting.h"
@@ -62,6 +63,23 @@ std::unique_ptr<Expression> FieldAccess::Convert(const Context& context,
     return nullptr;
 }
 
+static std::unique_ptr<Expression> extract_field(ConstructorStruct& ctor, int fieldIndex) {
+    // Confirm that the fields that are being removed are side-effect free.
+    ExpressionArray& args = ctor.arguments();
+    int numFields = args.count();
+    for (int index = 0; index < numFields; ++index) {
+        if (fieldIndex == index) {
+            continue;
+        }
+        if (args[index]->hasSideEffects()) {
+            return nullptr;
+        }
+    }
+
+    // Return the desired field directly.
+    return std::move(args[fieldIndex]);
+}
+
 std::unique_ptr<Expression> FieldAccess::Make(const Context& context,
                                               Position pos,
                                               std::unique_ptr<Expression> base,
@@ -70,6 +88,15 @@ std::unique_ptr<Expression> FieldAccess::Make(const Context& context,
     SkASSERT(base->type().isStruct());
     SkASSERT(fieldIndex >= 0);
     SkASSERT(fieldIndex < (int) base->type().fields().size());
+
+    // If we are directly accessing a field of a struct-constructor...
+    if (base->is<ConstructorStruct>()) {
+        if (std::unique_ptr<Expression> expr = extract_field(base->as<ConstructorStruct>(),
+                                                             fieldIndex)) {
+            return expr;
+        }
+    }
+
     return std::make_unique<FieldAccess>(pos, std::move(base), fieldIndex, ownerKind);
 }
 
