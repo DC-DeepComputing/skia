@@ -22,6 +22,30 @@
       },
       "revId": "6f205162e48fe3c2d732e4002130451304cdcd38",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "aaa4cb1a_07ba07f7",
+        "filename": "resources/sksl/shared/Caps.sksl",
+        "patchSetId": 1
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-06-06T13:35:00Z",
+      "side": 1,
+      "message": "No, they\u0027re arbitrary - just to make sure that an assortment of them each resolve to some fixed value.",
+      "parentUuid": "918433e3_d8a4b81c",
+      "range": {
+        "startLine": 5,
+        "startChar": 16,
+        "endLine": 5,
+        "endChar": 29
+      },
+      "revId": "6f205162e48fe3c2d732e4002130451304cdcd38",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
