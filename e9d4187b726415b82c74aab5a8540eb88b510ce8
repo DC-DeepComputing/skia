@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9e7d18cb_0c550d91",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-06-06T12:40:12Z",
+      "side": 1,
+      "message": "Can we do the header fixes in a separate (landed-first) CL? Even if we need to revert the IWYU-enforcement part of the CL, we\u0027d probably want to keep the header fixes.",
+      "revId": "e9d4187b726415b82c74aab5a8540eb88b510ce8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
