@@ -804,6 +804,18 @@ protected:
         return GrSurfaceProxyView(std::move(proxy), kOrigin, swizzle);
     }
 
+    bool onGetPixels(const SkImageInfo& info, void* pixels, size_t rowBytes,
+                                              const Options& opts) {
+        const SkColorType colorType = info.colorType();
+        if (colorType != SkColorType::kRGBA_8888_SkColorType) {
+          // Only RGBA_8888 is supported for WebGL texture images for now.
+          return false;
+        }
+        WASMPointerU8 pixelsPtr = reinterpret_cast<WASMPointerU8>(pixels);
+        const bool retval = fCallback.call<bool>("readPixels", pixelsPtr, info.width(), info.height());
+        return retval;
+    }
+
 private:
     JSObject fCallback;
 };
