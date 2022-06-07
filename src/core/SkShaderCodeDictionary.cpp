@@ -283,7 +283,7 @@ void SkShaderCodeDictionary::getShaderInfo(SkUniquePaintParamsID uniqueID, SkSha
     entry->paintParamsKey().toShaderInfo(this, info);
 
 #ifdef SK_GRAPHITE_ENABLED
-    info->setBlendInfo(entry->blendInfo());
+    info->setBlendInfo(entry->blendInfo1());
 #endif
 }
 

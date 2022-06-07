@@ -121,14 +121,14 @@ public:
 #ifdef SK_GRAPHITE_ENABLED
     struct BlendInfo {
         bool operator==(const BlendInfo& other) const {
-            return fEquation == other.fEquation &&
+            return fEquation1 == other.fEquation1 &&
                    fSrcBlend == other.fSrcBlend &&
                    fDstBlend == other.fDstBlend &&
                    fBlendConstant == other.fBlendConstant &&
                    fWritesColor == other.fWritesColor;
         }
 
-        skgpu::BlendEquation fEquation = skgpu::BlendEquation::kAdd;
+        skgpu::BlendEquation fEquation1 = skgpu::BlendEquation::kAdd;
         skgpu::BlendCoeff    fSrcBlend = skgpu::BlendCoeff::kOne;
         skgpu::BlendCoeff    fDstBlend = skgpu::BlendCoeff::kZero;
         SkPMColor4f          fBlendConstant = SK_PMColor4fTRANSPARENT;

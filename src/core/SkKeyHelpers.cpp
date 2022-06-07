@@ -66,7 +66,6 @@ void BeginBlock(const SkKeyContext& keyContext,
     if (builder->backend() == SkBackend::kSkVM || builder->backend() == SkBackend::kGanesh) {
         // TODO: add implementation of other backends
     }
-
 }
 
 } // namespace SolidColorShaderBlock

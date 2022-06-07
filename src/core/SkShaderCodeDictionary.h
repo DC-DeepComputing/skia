@@ -106,9 +106,9 @@ public:
 
 #ifdef SK_GRAPHITE_ENABLED
     void setBlendInfo(const SkPipelineDataGatherer::BlendInfo& blendInfo) {
-        fBlendInfo = blendInfo;
+        fBlendInfo2 = blendInfo;
     }
-    const SkPipelineDataGatherer::BlendInfo& blendInfo() const { return fBlendInfo; }
+    const SkPipelineDataGatherer::BlendInfo& blendInfo2() const { return fBlendInfo2; }
 #endif
 
 #if SK_SUPPORT_GPU && defined(SK_GRAPHITE_ENABLED) && defined(SK_METAL)
@@ -129,7 +129,7 @@ private:
 
     // The blendInfo doesn't actually contribute to the program's creation but, it contains the
     // matching fixed-function settings that the program's caller needs to set up.
-    SkPipelineDataGatherer::BlendInfo fBlendInfo;
+    SkPipelineDataGatherer::BlendInfo fBlendInfo2;
 #endif
 };
 
@@ -145,7 +145,7 @@ public:
         }
         const SkPaintParamsKey& paintParamsKey() const { return fKey; }
 #ifdef SK_GRAPHITE_ENABLED
-        const SkPipelineDataGatherer::BlendInfo& blendInfo() const { return fBlendInfo; }
+        const SkPipelineDataGatherer::BlendInfo& blendInfo1() const { return fBlendInfo1; }
 #endif
 
     private:
@@ -154,7 +154,7 @@ public:
 #ifdef SK_GRAPHITE_ENABLED
         Entry(const SkPaintParamsKey& key, const SkPipelineDataGatherer::BlendInfo& blendInfo)
                 : fKey(key.asSpan())
-                , fBlendInfo(blendInfo) {
+                , fBlendInfo1(blendInfo) {
         }
 #else
         Entry(const SkPaintParamsKey& key) : fKey(key.asSpan()) {}
@@ -172,7 +172,7 @@ public:
         // The BlendInfo isn't used in the hash (that is the key's job) but it does directly vary
         // with the key. It could, theoretically, be recreated from the key but that would add
         // extra complexity.
-        SkPipelineDataGatherer::BlendInfo fBlendInfo;
+        SkPipelineDataGatherer::BlendInfo fBlendInfo1;
 #endif
     };
 
