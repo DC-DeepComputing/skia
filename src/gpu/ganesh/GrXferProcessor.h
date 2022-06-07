@@ -89,6 +89,7 @@ public:
         return kNone_GrXferBarrierType;
     }
 
+#if 0
     struct BlendInfo {
         SkDEBUGCODE(SkString dump() const;)
 
@@ -98,9 +99,10 @@ public:
         SkPMColor4f          fBlendConstant = SK_PMColor4fTRANSPARENT;
         bool                 fWriteColor = true;
     };
+#endif
 
-    inline BlendInfo getBlendInfo() const {
-        BlendInfo blendInfo;
+    inline skgpu::BlendInfo1 getBlendInfo() const {
+        skgpu::BlendInfo1 blendInfo;
         if (!this->willReadDstColor()) {
             this->onGetBlendInfo(&blendInfo);
         }
@@ -161,7 +163,7 @@ private:
      * subclass. When using dst reads, the base class controls the fixed-function blend state and
      * this method will not be called. The BlendInfo struct comes initialized to "no blending".
      */
-    virtual void onGetBlendInfo(BlendInfo*) const {}
+    virtual void onGetBlendInfo(skgpu::BlendInfo1*) const {}
 
     virtual bool onIsEqual(const GrXferProcessor&) const = 0;
 
