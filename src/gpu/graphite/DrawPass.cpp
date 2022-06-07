@@ -257,10 +257,56 @@ DrawPass::DrawPass(sk_sp<TextureProxy> target,
     // TODO: Tune this estimate and the above "itemPerBlock" value for the command buffer sequence
     // After merging, etc. one pipeline per recorded draw+step combo is likely unnecessary.
     fPipelineDescs.reserve(renderStepCount);
+    // TODO: Figure out how to tune the number of different sampler objects we may have. In general
+    // many draws should be using a similar small set of samplers.
+    static constexpr int kReserveSamplerCnt = 8;
+    fSamplerDescs.reserve(kReserveSamplerCnt);
     fCommands.reserve(renderStepCount);
 }
 
 DrawPass::~DrawPass() = default;
+
+struct SamplerDesc {
+    SkSamplingOptions fSamplingOptions;
+    SkTileMode fTileModes[2];
+
+    bool isEqual(const SkTextureDataBlock::TextureInfo& info) {
+        return fSamplingOptions == info.fSamplingOptions &&
+               fTileModes[0] == info.fTileModes[0] &&
+               fTileModes[1] == info.fTileModes[1];
+    }
+};
+
+
+std::pair<int, int> get_unique_texture_sampler_indices(
+        DrawPass* drawPass, const SkTextureDataBlock::TextureInfo& info) {
+    SkASSERT(drawPass);
+    int texIndex = -1;
+    for (int i = 0; i < drawPass->fSampledTextures.size(); ++i) {
+        if (drawPass->fSampledTextures[i].get() == info.fProxy.get()) {
+            texIndex = i;
+            break;
+        }
+    }
+    if (texIndex == -1) {
+        drawPass->fSampledTextures.push_back(info.fProxy);
+        texIndex = drawPass->fSampledTextures.size() - 1;
+    }
+
+    int samplerIndex = -1;
+    for (int i = 0; i < drawPass->fSamplerDescs.size(); ++i) {
+        if (drawPass->fSamplerDescs[i].isEqual(info)) {
+            samplerIndex = i;
+        }
+    }
+    if (samplerIndex == -1) {
+        drawPass->fSamplerDescs.push_back({info.fSamplingOptions,
+                                           {info.fTileModes[0], info.fTileModes[1]}});
+        samplerIndex = drawPass->fSamplerDescs.size() - 1;
+    }
+    SkASSERT(texIndex >=0 && samplerIndex >=0);
+    return std::make_pair(texIndex, samplerIndex);
+}
 
 std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
                                          std::unique_ptr<DrawList> draws,
@@ -446,7 +492,18 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
             }
             if (textureBindingsChange) {
                 auto textureDataBlock = textureDataCache->lookup(key.textureBindings());
-                drawPass->fCommands.emplace_back(BindTexturesAndSamplers{textureDataBlock});
+                BindTexturesAndSamplers bts;
+                bts.fNumTexSamplers = textureDataBlock->numTextures();
+                // TODO: Remove this assert once BindTexturesAndSamplers doesn't have a fixed size
+                // of textures and samplers arrays.
+                SkASSERT(bts.fNumTexSamplers <= 32);
+                for (int i = 0; i < bts.fNumTexSamplers; ++i) {
+                    auto& info = textureDataBlock->texture(i);
+                    std::tie(bts.fTextureIndices[i], bts.fSamplerIndices[i]) =
+                            get_unique_texture_sampler_indices(drawPass, info);
+                }
+
+                drawPass->fCommands.push_back(bts);
                 lastTextureBindings = key.textureBindings();
             }
             if (draw.fGeometry.clip().scissor() != lastScissor) {
@@ -478,6 +535,30 @@ bool DrawPass::prepareResources(ResourceProvider* resourceProvider,
         }
         fFullPipelines.push_back(std::move(pipeline));
     }
+    // The DrawPass may be long lived on a Recording and we no longer need the GraphicPipelineDescs
+    // once we've created pipelines, so we drop the storage for them here.
+    fPipelineDescs.reset();
+
+    for (int i = 0; i < fSampledTextures.size(); ++i) {
+        if (!fSampledTextures[i]->instantiate(resourceProvider)) {
+            SKGPU_LOG_W("Failed to instantiate sampled texture. Will not create renderpass!");
+            return false;
+        }
+    }
+    for (int i = 0; i < fSamplerDescs.size(); ++i) {
+        sk_sp<Sampler> sampler = resourceProvider->findOrCreateCompatibleSampler(
+                fSamplerDescs[i].fSamplingOptions,
+                fSamplerDescs[i].fTileModes[0],
+                fSamplerDescs[i].fTileModes[1]);
+        if (!sampler) {
+            SKGPU_LOG_W("Failed to create sampler. Will not create renderpass!");
+            return false;
+        }
+        fSamplers.push_back(std::move(sampler));
+    }
+    // The DrawPass may be long lived on a Recording and we no longer need the SamplerDescs
+    // once we've created Samplers, so we drop the storage for them here.
+    fSamplerDescs.clear();
 
     return true;
 }
