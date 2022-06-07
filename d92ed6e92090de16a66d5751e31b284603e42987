@@ -16,6 +16,23 @@
       "message": "Could you take a look?",
       "revId": "d92ed6e92090de16a66d5751e31b284603e42987",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "decc4579_7e6b3c04",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-06-07T15:39:44Z",
+      "side": 1,
+      "message": "There is one catch: fUTF16IndexForUTF8Index is saved in cache. So in case we get our precomputed values from cache (harfbuzz and ICU info), you still are going to  recalculate these map.",
+      "revId": "d92ed6e92090de16a66d5751e31b284603e42987",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
