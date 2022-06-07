@@ -118,7 +118,7 @@ private:
 // obviously, vastly complicate uniform accumulation.
 class SkPipelineDataGatherer {
 public:
-#ifdef SK_GRAPHITE_ENABLED
+#if 0
     struct BlendInfo {
         bool operator==(const BlendInfo& other) const {
             return fEquation == other.fEquation &&
@@ -145,10 +145,10 @@ public:
     SkDEBUGCODE(void checkReset();)
 
 #ifdef SK_GRAPHITE_ENABLED
-    void setBlendInfo(const SkPipelineDataGatherer::BlendInfo& blendInfo) {
+    void setBlendInfo(const skgpu::BlendInfo& blendInfo) {
         fBlendInfo = blendInfo;
     }
-    const BlendInfo& blendInfo() const { return fBlendInfo; }
+    const skgpu::BlendInfo& blendInfo() const { return fBlendInfo; }
 
     void add(const SkSamplingOptions& sampling,
              const SkTileMode tileModes[2],
@@ -190,7 +190,7 @@ private:
 #endif // SK_DEBUG
 
     SkTextureDataBlock                     fTextureDataBlock;
-    BlendInfo                              fBlendInfo;
+    skgpu::BlendInfo                      fBlendInfo;
     skgpu::graphite::UniformManager        fUniformManager;
 #endif // SK_GRAPHITE_ENABLED
     SkEnumBitMask<SnippetRequirementFlags> fSnippetRequirementFlags;
