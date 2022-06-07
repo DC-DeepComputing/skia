@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4af69c0d_5ec134e3",
+        "filename": "resources/sksl/errors/ComputeUniform.compute",
+        "patchSetId": 15
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-06-07T18:56:21Z",
+      "side": 1,
+      "message": "Please add error expectations in /*%%* *%%*/ markers.",
+      "range": {
+        "startLine": 4,
+        "startChar": 0,
+        "endLine": 4,
+        "endChar": 1
+      },
+      "revId": "6823448d537e3a58f9e2c740f98ac73cb405f06d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
