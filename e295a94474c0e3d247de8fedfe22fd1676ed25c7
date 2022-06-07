@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "28061e1f_7d35ad2e",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 271,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-06-07T16:13:39Z",
+      "side": 1,
+      "message": "fwiw we do have a SkTileModePair now",
+      "revId": "e295a94474c0e3d247de8fedfe22fd1676ed25c7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "30dc0dad_854acd04",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 281,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-06-07T16:13:39Z",
+      "side": 1,
+      "message": "anonymous namespace ?",
+      "revId": "e295a94474c0e3d247de8fedfe22fd1676ed25c7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "02750b5f_93324301",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 548,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-06-07T16:13:39Z",
+      "side": 1,
+      "message": "made ?",
+      "range": {
+        "startLine": 548,
+        "startChar": 83,
+        "endLine": 548,
+        "endChar": 87
+      },
+      "revId": "e295a94474c0e3d247de8fedfe22fd1676ed25c7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
