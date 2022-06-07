@@ -233,6 +233,8 @@ private:
     // repeated use of the builder will hit a high-water mark and avoid lots of allocations.
     SkTDArray<StackFrame> fStack;
     SkTDArray<uint8_t> fData;
+
+//    SkPipelineDataGatherer::BlendInfo fBlendInfo;
 };
 
 #endif // SkPaintParamsKey_DEFINED
