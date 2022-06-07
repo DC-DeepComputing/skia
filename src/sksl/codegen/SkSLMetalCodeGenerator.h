@@ -126,11 +126,17 @@ protected:
 
     void writePrecisionModifier();
 
+    // This variant is safe to call for everything but textures
     std::string typeName(const Type& type);
+
+    // Modifiers are required when dealing with textures
+    std::string typeName(const Type& type, const Modifiers& modifiers);
 
     void writeStructDefinition(const StructDefinition& s);
 
     void writeType(const Type& type);
+
+    void writeType(const Type& type, const Modifiers& modifiers);
 
     void writeExtension(const Extension& ext);
 
@@ -142,6 +148,9 @@ protected:
     void writeFunctionRequirementArgs(const FunctionDeclaration& f, const char*& separator);
 
     bool writeFunctionDeclaration(const FunctionDeclaration& f);
+
+    // Returns true if it wrote anything
+    bool writeComputeShaderMainParams();
 
     void writeFunction(const FunctionDefinition& f);
 
@@ -275,6 +284,9 @@ protected:
     Requirements requirements(const Expression* e);
 
     Requirements requirements(const Statement* s);
+
+    // For compute shader main functions, writes and initializes the _in and _out structs
+    void writeComputeMainInputsAndOutputs();
 
     int getUniformBinding(const Modifiers& m);
 

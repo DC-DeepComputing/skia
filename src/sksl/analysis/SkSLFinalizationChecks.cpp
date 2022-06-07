@@ -15,6 +15,7 @@
 #include "src/sksl/SkSLAnalysis.h"
 #include "src/sksl/SkSLBuiltinTypes.h"
 #include "src/sksl/SkSLContext.h"
+#include "src/sksl/SkSLProgramSettings.h"
 #include "src/sksl/analysis/SkSLProgramVisitor.h"
 #include "src/sksl/ir/SkSLExpression.h"
 #include "src/sksl/ir/SkSLFunctionCall.h"
@@ -55,6 +56,9 @@ public:
     }
 
     void checkGlobalVariableSizeLimit(const GlobalVarDeclaration& globalDecl) {
+        if (ProgramConfig::IsCompute(fContext.fConfig->fKind)) {
+            return;
+        }
         const VarDeclaration& decl = globalDecl.declaration()->as<VarDeclaration>();
 
         size_t prevSlotsUsed = fGlobalSlotsUsed;
