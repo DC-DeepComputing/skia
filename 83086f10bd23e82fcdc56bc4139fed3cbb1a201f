@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7ed4cebe_7cef8980",
+        "filename": "src/gpu/ganesh/gl/GrGLBuffer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 327,
+      "author": {
+        "id": 18274
+      },
+      "writtenOn": "2022-06-07T23:28:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b81eafea_7d987abe",
+      "range": {
+        "startLine": 327,
+        "startChar": 31,
+        "endLine": 327,
+        "endChar": 44
+      },
+      "revId": "83086f10bd23e82fcdc56bc4139fed3cbb1a201f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "eec67728_e9467472",
@@ -87,6 +111,54 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0d91674a_666b07e4",
+        "filename": "src/gpu/ganesh/gl/GrGLRenderTarget.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 18274
+      },
+      "writtenOn": "2022-06-07T23:28:34Z",
+      "side": 1,
+      "message": "The setLabel is called from refScratchMSAAAttachment and findAndRefScratchTexture, the methods which find resources from the cache. Removing the GR_GL_CALL from GrGLRenderTexture.",
+      "parentUuid": "eec67728_e9467472",
+      "range": {
+        "startLine": 140,
+        "startChar": 43,
+        "endLine": 140,
+        "endChar": 65
+      },
+      "revId": "83086f10bd23e82fcdc56bc4139fed3cbb1a201f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f06798ef_459d91de",
+        "filename": "src/gpu/ganesh/gl/GrGLRenderTarget.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 18274
+      },
+      "writtenOn": "2022-06-07T23:28:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "854bf7ef_f1e5101a",
+      "range": {
+        "startLine": 140,
+        "startChar": 28,
+        "endLine": 140,
+        "endChar": 41
+      },
+      "revId": "83086f10bd23e82fcdc56bc4139fed3cbb1a201f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ccabce8b_ffef4609",
@@ -110,6 +182,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b8d33d26_423c8270",
+        "filename": "src/gpu/ganesh/gl/GrGLTexture.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 18274
+      },
+      "writtenOn": "2022-06-07T23:28:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ccabce8b_ffef4609",
+      "range": {
+        "startLine": 168,
+        "startChar": 17,
+        "endLine": 168,
+        "endChar": 18
+      },
+      "revId": "83086f10bd23e82fcdc56bc4139fed3cbb1a201f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "750ec170_d3d6dd33",
@@ -123,6 +219,30 @@
       "writtenOn": "2022-06-02T16:25:53Z",
       "side": 1,
       "message": "To make it clear we\u0027re setting the textureID, what if we just do:\n\"GrGLTexture::onSetLabel(...)\"\n\nThat keeps all the logic in one place",
+      "range": {
+        "startLine": 88,
+        "startChar": 0,
+        "endLine": 93,
+        "endChar": 5
+      },
+      "revId": "83086f10bd23e82fcdc56bc4139fed3cbb1a201f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dcb70dd2_e2ac61d2",
+        "filename": "src/gpu/ganesh/gl/GrGLTextureRenderTarget.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 18274
+      },
+      "writtenOn": "2022-06-07T23:28:34Z",
+      "side": 1,
+      "message": "GrGlTextureRenderTarget inherits from both GrGlTexture and GrGlRenderTarget which have thier own implementation of onSetLabel. This was implemented here to avoid ambiguous inheritance complier error.",
+      "parentUuid": "750ec170_d3d6dd33",
       "range": {
         "startLine": 88,
         "startChar": 0,
