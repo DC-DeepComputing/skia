@@ -25,30 +25,10 @@ struct GrShaderCaps : SkSL::ShaderCaps {
 
     bool supportsDistanceFieldText() const { return fShaderDerivativeSupport; }
 
-    bool dstReadInShaderSupport() const { return fDstReadInShaderSupport; }
-    bool dualSourceBlendingSupport() const { return fDualSourceBlendingSupport; }
-
     const char* fbFetchExtensionString() const { return fFBFetchExtensionString; }
-
-    bool preferFlatInterpolation() const { return fPreferFlatInterpolation; }
-
-    bool vertexIDSupport() const { return fVertexIDSupport; }
-
-    // isinf() is defined, and floating point infinities are handled according to IEEE standards.
-    bool infinitySupport() const { return fInfinitySupport; }
-
-    // Returns true if `expr` in `myArray[expr]` can be any integer expression. If false, `expr`
-    // must be a constant-index-expression as defined in the OpenGL ES2 specification, Appendix A.5.
-    bool nonconstantArrayIndexSupport() const {
-        return fNonconstantArrayIndexSupport;
-    }
 
     // frexp(), ldexp(), findMSB(), findLSB().
     bool bitManipulationSupport() const { return fBitManipulationSupport; }
-
-    bool halfIs32Bits() const { return fHalfIs32Bits; }
-
-    bool hasLowFragmentPrecision() const { return fHasLowFragmentPrecision; }
 
     // Use a reduced set of rendering algorithms or less optimal effects in order to
     // reduce the number of unique shaders generated.
@@ -97,7 +77,10 @@ struct GrShaderCaps : SkSL::ShaderCaps {
     bool fDualSourceBlendingSupport = false;
     bool fPreferFlatInterpolation = false;
     bool fVertexIDSupport = false;
+    // isinf() is defined, and floating point infinities are handled according to IEEE standards.
     bool fInfinitySupport = false;
+    // Returns true if `expr` in `myArray[expr]` can be any integer expression. If false, `expr`
+    // must be a constant-index-expression as defined in the OpenGL ES2 specification, Appendix A.5.
     bool fNonconstantArrayIndexSupport = false;
     bool fBitManipulationSupport = false;
     bool fHalfIs32Bits = false;

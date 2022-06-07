@@ -169,7 +169,7 @@ GrXPFactory::AnalysisProperties GrXPFactory::GetAnalysisProperties(
     }
     SkASSERT(!(result & AnalysisProperties::kRequiresDstTexture));
     if ((result & AnalysisProperties::kReadsDstInShader) &&
-        !caps.shaderCaps()->dstReadInShaderSupport()) {
+        !caps.shaderCaps()->fDstReadInShaderSupport) {
         result |= AnalysisProperties::kRequiresDstTexture |
                   AnalysisProperties::kRequiresNonOverlappingDraws;
     }

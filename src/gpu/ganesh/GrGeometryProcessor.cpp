@@ -297,7 +297,7 @@ void ProgramImpl::emitTransformCode(GrGLSLVertexBuilder* vb, GrGLSLUniformHandle
 
         vb->codeAppend("{\n");
         if (info.varying.type() == SkSLType::kFloat2) {
-            if (vb->getProgramBuilder()->shaderCaps()->nonsquareMatrixSupport()) {
+            if (vb->getProgramBuilder()->shaderCaps()->fNonsquareMatrixSupport) {
                 vb->codeAppendf("%s = float3x2(%s) * %s",
                                 info.varying.vsOut(),
                                 transformExpression.c_str(),
@@ -433,7 +433,7 @@ static void write_vertex_position(GrGLSLVertexBuilder* vertBuilder,
                                  mangledMatrixName,
                                  inPos.getName().c_str(),
                                  mangledMatrixName);
-    } else if (shaderCaps.nonsquareMatrixSupport()) {
+    } else if (shaderCaps.fNonsquareMatrixSupport) {
         vertBuilder->codeAppendf("float2 %s = float3x2(%s) * %s.xy1;\n",
                                  outName.c_str(),
                                  mangledMatrixName,
