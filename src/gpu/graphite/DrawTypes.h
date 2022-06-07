@@ -77,6 +77,7 @@ struct RenderPassDesc {
 enum class PrimitiveType : uint8_t {
     kTriangles,
     kTriangleStrip,
+    kTriangleFan,
     kPoints,
 };
 

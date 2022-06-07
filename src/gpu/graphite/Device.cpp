@@ -643,19 +643,13 @@ void Device::recordDraw(const Transform& localToDevice,
     // are large enough to exceed the fixed count tessellation limits.
     const Renderer* renderer = nullptr;
 
-    if (stroke) {
-        // TODO: We treat inverse-filled strokes as regular strokes. We could handle them by
-        // stenciling first with the HW stroke tessellator and then covering their bounds, but
-        // inverse-filled strokes are not well-specified in our public canvas behavior so we may be
-        // able to remove it.
-        // Unlike in Ganesh, the HW stroke tessellator can work with arbitrary paints since the
-        // depth test prevents double-blending when there is transparency, thus we can HW stroke
-        // any path regardless of its paint.
-        renderer = &Renderer::TessellatedStrokes();
-    } else if (shape.convex() && !shape.inverted()) {
+    // NP - if shape is vertices, create renderer here
+    if (shape.convex() && !shape.inverted()) {
         // TODO: Ganesh doesn't have a curve+middle-out triangles option for convex paths, but it
         // would be pretty trivial to spin up.
         renderer = &Renderer::ConvexTessellatedWedges();
+    } else if (shape.isVertices()) {
+        renderer = &Renderer::Vertices();
     } else {
         // TODO: Combine this heuristic with what is used in PathStencilCoverOp to choose between
         // wedges curves consistently in Graphite and Ganesh.
@@ -728,6 +722,25 @@ sk_sp<SkSpecialImage> Device::makeSpecial(const SkImage*) {
 sk_sp<SkSpecialImage> Device::snapSpecial(const SkIRect& subset, bool forceCopy) {
     this->flushPendingWorkToRecorder();
     return nullptr;
+}
+
+void Device::drawVertices(const SkVertices* vertices, sk_sp<SkBlender> blender,
+                          const SkPaint& paint, bool skipColorXform) {
+    SkASSERT(vertices);
+    // call draw Shape and record draw
+    this->drawShape(Shape{*vertices}, paint, SkStrokeRec(paint));
+
+    // ML - Assume coordiantes local already
+    // Renderer; add render steps. Only 1 render step needed here.
+    // Record & draw
+    // Where does this union live and how do I attach it?
+    // Add to union of whether something is a path, rect, etc.;
+    // drawVert render step = look for vertices object
+    // Similar to SkPath
+    // Append draws; change to ___ once appending is working for performance
+
+    // Custom mesh considerations to come later.
+
 }
 
 #if GRAPHITE_TEST_UTILS

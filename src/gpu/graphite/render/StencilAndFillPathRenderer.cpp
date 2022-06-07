@@ -8,6 +8,7 @@
 #include "src/gpu/graphite/Renderer.h"
 
 #include "include/core/SkPathTypes.h"
+#include "include/core/SkVertices.h"
 #include "src/gpu/graphite/render/CoverBoundsRenderStep.h"
 #include "src/gpu/graphite/render/MiddleOutFanRenderStep.h"
 #include "src/gpu/graphite/render/StencilAndCoverDSS.h"
@@ -104,6 +105,12 @@ const Renderer& Renderer::ConvexTessellatedWedges() {
     static const TessellateWedgesRenderStep kConvexWedges{"convex", kDirectShadingPass};
     static const Renderer kConvexWedgeRenderer{"ConvexTessellatedWedges", &kConvexWedges};
     return kConvexWedgeRenderer;
+}
+
+const Renderer& Renderer::Vertices(SkVertices vertices) {
+  static const VerticesRenderStep kVertices{vertices};
+  static const Renderer kVerticesRenderer{"Vertices", &kVertices};
+  return kVerticesRenderer;
 }
 
 } // namespace skgpu

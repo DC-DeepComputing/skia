@@ -12,6 +12,10 @@
 #include "include/core/SkPath.h"
 #include "include/core/SkRRect.h"
 #include "include/core/SkRect.h"
+#include "include/core/SkVertices.h"
+// NP TODO - do we need to include this or is there a more elegant way to handle the copying of an
+// Skvertices type?
+#include "src/core/SkVerticesPriv.h"
 
 #include "src/gpu/graphite/geom/Rect.h"
 
@@ -27,21 +31,22 @@ namespace skgpu::graphite {
 class Shape {
 public:
     enum class Type : uint8_t {
-        kEmpty, kLine, kRect, kRRect, kPath
+        kEmpty, kLine, kRect, kRRect, kPath, kVertices
     };
     inline static constexpr int kTypeCount = static_cast<int>(Type::kPath) + 1;
 
     Shape() {}
-    Shape(const Shape& shape)               { *this = shape; }
+    Shape(const Shape& shape)                  { *this = shape; }
     Shape(Shape&&) = delete;
 
-    Shape(SkPoint p0, SkPoint p1)           { this->setLine(p0, p1); }
-    Shape(SkV2 p0, SkV2 p1)                 { this->setLine(p0, p1); }
-    Shape(skvx::float2 p0, skvx::float2 p1) { this->setLine(p0, p1); }
-    explicit Shape(const Rect& rect)        { this->setRect(rect);   }
-    explicit Shape(const SkRect& rect)      { this->setRect(rect);   }
-    explicit Shape(const SkRRect& rrect)    { this->setRRect(rrect); }
-    explicit Shape(const SkPath& path)      { this->setPath(path);   }
+    Shape(SkPoint p0, SkPoint p1)              { this->setLine(p0, p1); }
+    Shape(SkV2 p0, SkV2 p1)                    { this->setLine(p0, p1); }
+    Shape(skvx::float2 p0, skvx::float2 p1)    { this->setLine(p0, p1); }
+    explicit Shape(const Rect& rect)           { this->setRect(rect);   }
+    explicit Shape(const SkRect& rect)         { this->setRect(rect);   }
+    explicit Shape(const SkRRect& rrect)       { this->setRRect(rrect); }
+    explicit Shape(const SkPath& path)         { this->setPath(path);   }
+    explicit Shape(const SkVertices& vertices) { this->setVertices(vertices); }
 
     ~Shape() { this->reset(); }
 
@@ -55,11 +60,12 @@ public:
     // corners is kRRect and not kRect).
     Type type() const { return fType; }
 
-    bool isEmpty() const { return fType == Type::kEmpty; }
-    bool isLine()  const { return fType == Type::kLine;  }
-    bool isRect()  const { return fType == Type::kRect;  }
-    bool isRRect() const { return fType == Type::kRRect; }
-    bool isPath()  const { return fType == Type::kPath;  }
+    bool isEmpty() const    { return fType == Type::kEmpty; }
+    bool isLine()  const    { return fType == Type::kLine;  }
+    bool isRect()  const    { return fType == Type::kRect;  }
+    bool isRRect() const    { return fType == Type::kRRect; }
+    bool isPath()  const    { return fType == Type::kPath;  }
+    bool isVertices() const { return fType == Type::kVertices; }
 
     bool inverted() const {
         SkASSERT(fType != Type::kPath || fInverted == fPath.isInverseFillType());
@@ -102,11 +108,12 @@ public:
 
     // Access the actual geometric description of the shape. May only access the appropriate type
     // based on what was last set.
-    skvx::float2   p0()    const { SkASSERT(this->isLine());  return fRect.topLeft();  }
-    skvx::float2   p1()    const { SkASSERT(this->isLine());  return fRect.botRight(); }
-    const Rect&    rect()  const { SkASSERT(this->isRect());  return fRect;            }
-    const SkRRect& rrect() const { SkASSERT(this->isRRect()); return fRRect;           }
-    const SkPath&  path()  const { SkASSERT(this->isPath());  return fPath;            }
+    skvx::float2   p0()          const { SkASSERT(this->isLine());      return fRect.topLeft();  }
+    skvx::float2   p1()          const { SkASSERT(this->isLine());      return fRect.botRight(); }
+    const Rect&    rect()        const { SkASSERT(this->isRect());      return fRect;            }
+    const SkRRect& rrect()       const { SkASSERT(this->isRRect());     return fRRect;           }
+    const SkPath&  path()        const { SkASSERT(this->isPath());      return fPath;            }
+    const SkVertices& vertices() const { SkASSERT(this->isVertices());  return fVertices;        }
 
     // Update the geometry stored in the Shape and update its associated type to match. This
     // performs no simplification, so calling setRRect() with a round rect that has isRect() return
@@ -146,6 +153,23 @@ public:
         }
         fInverted = path.isInverseFillType();
     }
+    void setVertices(const SkVertices& vertices) {
+        this->setType(Type::kVertices);
+
+    //         SkPaint paint;
+    // SkPoint points[] = { { 0, 0 }, { 250, 0 }, { 100, 100 }, { 0, 250 } };
+    // SkColor colors[] = { SK_ColorRED, SK_ColorBLUE, SK_ColorYELLOW, SK_ColorCYAN };
+    // auto vertices = SkVertices::MakeCopy(SkVertices::kTriangleFan_VertexMode,
+    //         SK_ARRAY_COUNT(points), points, nullptr, colors);
+        // NP - Using method w/ less params for convenience during implementation. TODO, expand.
+        SkVerticesPriv info(vertices.priv());
+        SkVertices::VertexMode vertexMode = info.mode();
+        // fVertices = vertices.MakeCopy(info.mode(), info.vertexCount(), info.positions(),
+        //                            info.texCoords(), info.colors(), info.indexCount(),
+        //                            info.indices());
+        fVertices = vertices.ref();
+        vertices.unref();
+    }
 
     void reset() {
         this->setType(Type::kEmpty);
@@ -164,6 +188,7 @@ private:
         Rect    fRect; // p0 = top-left, p1 = bot-right if type is kLine (may be unsorted)
         SkRRect fRRect;
         SkPath  fPath;
+        SkVertices fVertices;
     };
 
     Type    fType     = Type::kEmpty;

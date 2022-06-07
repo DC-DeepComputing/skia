@@ -15,11 +15,12 @@ namespace skgpu::graphite {
 
 Shape& Shape::operator=(const Shape& shape) {
     switch (shape.type()) {
-        case Type::kEmpty: this->reset();                         break;
-        case Type::kLine:  this->setLine(shape.p0(), shape.p1()); break;
-        case Type::kRect:  this->setRect(shape.rect());           break;
-        case Type::kRRect: this->setRRect(shape.rrect());         break;
-        case Type::kPath:  this->setPath(shape.path());           break;
+        case Type::kEmpty:    this->reset();                         break;
+        case Type::kLine:     this->setLine(shape.p0(), shape.p1()); break;
+        case Type::kRect:     this->setRect(shape.rect());           break;
+        case Type::kRRect:    this->setRRect(shape.rrect());         break;
+        case Type::kPath:     this->setPath(shape.path());           break;
+        case Type::kVertices: this->setVertices(shape.vertices())    break;
     }
 
     fInverted = shape.fInverted;
@@ -28,33 +29,36 @@ Shape& Shape::operator=(const Shape& shape) {
 
 bool Shape::conservativeContains(const Rect& rect) const {
     switch (fType) {
-        case Type::kEmpty: return false;
-        case Type::kLine:  return false;
-        case Type::kRect:  return fRect.contains(rect);
-        case Type::kRRect: return fRRect.contains(rect.asSkRect());
-        case Type::kPath:  return fPath.conservativelyContainsRect(rect.asSkRect());
+        case Type::kEmpty:    return false;
+        case Type::kLine:     return false;
+        case Type::kRect:     return fRect.contains(rect);
+        case Type::kRRect:    return fRRect.contains(rect.asSkRect());
+        case Type::kPath:     return fPath.conservativelyContainsRect(rect.asSkRect());
+        case Type::kVertices: return false;
     }
     SkUNREACHABLE;
 }
 
 bool Shape::conservativeContains(skvx::float2 point) const {
     switch (fType) {
-        case Type::kEmpty: return false;
-        case Type::kLine:  return false;
-        case Type::kRect:  return fRect.contains(Rect::Point(point));
-        case Type::kRRect: return SkRRectPriv::ContainsPoint(fRRect, {point.x(), point.y()});
-        case Type::kPath:  return fPath.contains(point.x(), point.y());
+        case Type::kEmpty:   return false;
+        case Type::kLine:    return false;
+        case Type::kRect:    return fRect.contains(Rect::Point(point));
+        case Type::kRRect:   return SkRRectPriv::ContainsPoint(fRRect, {point.x(), point.y()});
+        case Type::kPath:    return fPath.contains(point.x(), point.y());
+        case Type::kVertices return false;
     }
     SkUNREACHABLE;
 }
 
 bool Shape::closed() const {
     switch (fType) {
-        case Type::kEmpty: return true;
-        case Type::kLine:  return false;
-        case Type::kRect:  return true;
-        case Type::kRRect: return true;
-        case Type::kPath:  return SkPathPriv::IsClosedSingleContour(fPath);
+        case Type::kEmpty:    return true;
+        case Type::kLine:     return false;
+        case Type::kRect:     return true;
+        case Type::kRRect:    return true;
+        case Type::kPath:     return SkPathPriv::IsClosedSingleContour(fPath);
+        case Type::kVertices: return false;
     }
     SkUNREACHABLE;
 }
@@ -71,11 +75,12 @@ bool Shape::convex(bool simpleFill) const {
 
 Rect Shape::bounds() const {
     switch (fType) {
-        case Type::kEmpty: return Rect(0, 0, 0, 0);
-        case Type::kLine:  return fRect.makeSorted(); // sorting corners computes bbox of segment
-        case Type::kRect:  return fRect; // assuming it's sorted
-        case Type::kRRect: return fRRect.getBounds();
-        case Type::kPath:  return fPath.getBounds();
+        case Type::kEmpty:    return Rect(0, 0, 0, 0);
+        case Type::kLine:     return fRect.makeSorted(); // sorting corners computes bbox of segment
+        case Type::kRect:     return fRect; // assuming it's sorted
+        case Type::kRRect:    return fRRect.getBounds();
+        case Type::kPath:     return fPath.getBounds();
+        case Type::kVertices: return Rect(0, 0, 0, 0);
     }
     SkUNREACHABLE;
 }
@@ -93,6 +98,7 @@ SkPath Shape::asPath() const {
         case Type::kRect:  builder.addRect(fRect.asSkRect());          break;
         case Type::kRRect: builder.addRRect(fRRect);                   break;
         case Type::kPath:  SkUNREACHABLE;
+        case Type::kVertices: /* do nothing */                   break;
     }
     return builder.detach();
 }

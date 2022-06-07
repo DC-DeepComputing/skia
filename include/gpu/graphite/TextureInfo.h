@@ -79,11 +79,11 @@ private:
     uint32_t fLevelCount = 0;
     Protected fProtected = Protected::kNo;
 
-    union {
+    // union {
 #ifdef SK_METAL
         MtlTextureSpec fMtlSpec;
 #endif
-    };
+    // };
 };
 
 }  // namespace skgpu::graphite

@@ -342,6 +342,7 @@ void SkDraw::drawFixedVertices(const SkVertices* vertices,
         texCoords = nullptr;
     }
 
+    // NP can get blend mode from blender
     bool blenderIsDst = false;
     // We can simplify things for certain blend modes. This is for speed, and SkShader_Blend
     // itself insists we don't pass kSrc or kDst to it.
@@ -367,6 +368,7 @@ void SkDraw::drawFixedVertices(const SkVertices* vertices,
 
     SkTriColorShader* triColorShader = nullptr;
     SkPMColor4f* dstColors = nullptr;
+    // converts color to color spaces - add TODO if not supported in graphite yet
     if (colors) {
         dstColors =
                 convert_colors(colors, vertexCount, fDst.colorSpace(), outerAlloc, skipColorXform);
