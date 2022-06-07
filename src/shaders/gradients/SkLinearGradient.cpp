@@ -7,7 +7,6 @@
 
 #include "src/shaders/gradients/SkLinearGradient.h"
 
-
 #include "src/core/SkReadBuffer.h"
 #include "src/core/SkWriteBuffer.h"
 #include "src/shaders/gradients/Sk4fLinearGradient.h"
