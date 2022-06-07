@@ -16,6 +16,24 @@
       "message": "Thanks. @Greg Daniel I am wondering what the right way to signal to Skia that the currently bound texture has changed when this callback `onGetPixels` is not passed in a `GrRecordingContext`? Is it necessary to call `resetContext` in this case? Thanks",
       "revId": "3125a82d6fc7c773b5e0d74d776e73f31ec53343",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e12f465e_5679d7d6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 10154
+      },
+      "writtenOn": "2022-06-07T19:53:12Z",
+      "side": 1,
+      "message": "Referring to this review comment: https://skia-review.googlesource.com/c/skia/+/545397/comments/6fd632b8_bea5de46",
+      "parentUuid": "49b80c03_cb47002d",
+      "revId": "3125a82d6fc7c773b5e0d74d776e73f31ec53343",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
