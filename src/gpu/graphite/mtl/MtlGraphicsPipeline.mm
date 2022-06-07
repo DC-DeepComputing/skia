@@ -192,7 +192,7 @@ std::string get_sksl_fs(SkShaderCodeDictionary* dict,
 
     dict->getShaderInfo(desc.paintParamsID(), &shaderInfo);
 
-    *blendInfo = shaderInfo.blendInfo();
+    *blendInfo = shaderInfo.blendInfo_ShaderInfo();
 #if SK_SUPPORT_GPU
     return shaderInfo.toSkSL();
 #else
