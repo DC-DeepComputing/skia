@@ -51,11 +51,12 @@ private:
     SkISize fDimensions;
     TextureInfo fInfo;
 
-    union {
 #ifdef SK_METAL
+    union {
+
         MtlHandle fMtlTexture;
-#endif
     };
+#endif
 };
 
 } // namespace skgpu::graphite
