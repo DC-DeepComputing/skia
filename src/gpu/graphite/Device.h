@@ -18,6 +18,11 @@
 
 class SkStrokeRec;
 
+namespace sktext::gpu {
+class SubRun;
+class TextBlobRedrawCoordinator;
+}
+
 namespace skgpu::graphite {
 
 class BoundsManager;
@@ -55,6 +60,14 @@ public:
     bool readPixels(Context*, Recorder*, const SkPixmap& dst, int x, int y);
 
     const Transform& localToDeviceTransform();
+
+    // Handles text primitive processing
+    // TODO: is there a way to avoid making this public?
+    void drawSubRun(const sktext::gpu::SubRun*,
+                    const SkMatrixProvider& viewMatrix,
+                    SkPoint drawOrigin,
+                    const SkPaint& paint,
+                    sk_sp<SkRefCnt> subRunStorage);
 
 #if GRAPHITE_TEST_UTILS
     TextureProxy* proxy();
@@ -133,8 +146,8 @@ private:
     void drawVertices(const SkVertices*, sk_sp<SkBlender>, const SkPaint&, bool) override {}
     void drawMesh(const SkMesh&, sk_sp<SkBlender>, const SkPaint&) override {}
     void drawShadow(const SkPath&, const SkDrawShadowRec&) override {}
-    void onDrawGlyphRunList(
-            SkCanvas*, const SkGlyphRunList&, const SkPaint&, const SkPaint&) override {}
+    void onDrawGlyphRunList(SkCanvas*, const SkGlyphRunList&,
+                            const SkPaint&, const SkPaint&) override;
 
     void drawDevice(SkBaseDevice*, const SkSamplingOptions&, const SkPaint&) override {}
     void drawSpecial(SkSpecialImage*, const SkMatrix& localToDevice,
@@ -194,6 +207,8 @@ private:
 
     // The max depth value sent to the DrawContext, incremented so each draw has a unique value.
     PaintersDepth fCurrentDepth;
+
+    std::unique_ptr<sktext::gpu::TextBlobRedrawCoordinator> fTextBlobCache;
 
     bool fDrawsOverlap;
 

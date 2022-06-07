@@ -125,6 +125,13 @@ public:
               const SkPaint& paint,
               skgpu::v1::SurfaceDrawContext* sdc);
 #endif
+#if SK_SUPPORT_GPU
+    void draw(SkCanvas*,
+              const SkMatrixProvider& viewMatrix,
+              SkPoint drawOrigin,
+              const SkPaint& paint,
+              skgpu::graphite::Device* device);
+#endif
     const AtlasSubRun* testingOnlyFirstSubRun() const;
 
 private:
