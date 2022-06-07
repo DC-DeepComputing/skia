@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7bea3916_9a522e0c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 15
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-06-07T20:58:11Z",
+      "side": 1,
+      "message": "I\u0027m guessing we\u0027re going to want something to specify workgroup_size, too. Metal is definitely the odd duck there - it seems to specify that via API, where all other backends do it in the shader (SPIR-V, HLSL, GLSL, WGSL). Most likely, we\u0027ll have to have something in the shader, then reflect it out, so that the Metal backend can get the info from the shader and use it to make the right API call. (It looks like this is what WGSL/Dawn do?)",
+      "revId": "6823448d537e3a58f9e2c740f98ac73cb405f06d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4af69c0d_5ec134e3",
@@ -26,6 +43,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "dc0b34ed_b99e21af",
+        "filename": "src/sksl/SkSLDSLParser.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 500,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-06-07T20:58:11Z",
+      "side": 1,
+      "message": "Can we convert this to something that explicitly says we allow unsizedArrays (based on program kind)? We\u0027ve already started talking about adding them to fragment shaders in graphite, so having these checks semantically accurate (even if today it just checks for compute) would simplify future experiments.",
+      "range": {
+        "startLine": 500,
+        "startChar": 16,
+        "endLine": 500,
+        "endChar": 47
+      },
+      "revId": "6823448d537e3a58f9e2c740f98ac73cb405f06d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a497df1c_9de6cf78",
         "filename": "src/sksl/SkSLIntrinsicList.h",
         "patchSetId": 15
@@ -37,6 +77,30 @@
       "writtenOn": "2022-06-07T19:39:53Z",
       "side": 1,
       "message": "Not sure why these are here...? Is this stuff related to compute?",
+      "range": {
+        "startLine": 48,
+        "startChar": 0,
+        "endLine": 48,
+        "endChar": 38
+      },
+      "revId": "6823448d537e3a58f9e2c740f98ac73cb405f06d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "669eda4f_ed0bbd2e",
+        "filename": "src/sksl/SkSLIntrinsicList.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-06-07T20:58:11Z",
+      "side": 1,
+      "message": "I think there are a few new intrinsics (texture read/write/width/height), plus he alphabetized the ones that I had lazily added to the end of the list.",
+      "parentUuid": "a497df1c_9de6cf78",
       "range": {
         "startLine": 48,
         "startChar": 0,
@@ -118,6 +182,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e8ab6c50_75deab2c",
+        "filename": "src/sksl/codegen/SkSLMetalCodeGenerator.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 2006,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-06-07T20:58:11Z",
+      "side": 1,
+      "message": "It would be nice to move this to shared code (eg, IR analysis pass) -- we know we\u0027ll want that as soon as we have a second backend.",
+      "range": {
+        "startLine": 1969,
+        "startChar": 0,
+        "endLine": 2006,
+        "endChar": 5
+      },
+      "revId": "6823448d537e3a58f9e2c740f98ac73cb405f06d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "07557b26_e7a9c0eb",
         "filename": "src/sksl/codegen/SkSLMetalCodeGenerator.cpp",
         "patchSetId": 15
@@ -135,6 +222,23 @@
         "endLine": 2216,
         "endChar": 25
       },
+      "revId": "6823448d537e3a58f9e2c740f98ac73cb405f06d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4b747ae9_50df9381",
+        "filename": "src/sksl/codegen/SkSLMetalCodeGenerator.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 2533,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-06-07T20:58:11Z",
+      "side": 1,
+      "message": "I think this still needs to write(\"return;\"), right?",
       "revId": "6823448d537e3a58f9e2c740f98ac73cb405f06d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -226,6 +330,75 @@
         "startChar": 0,
         "endLine": 62,
         "endChar": 9
+      },
+      "revId": "6823448d537e3a58f9e2c740f98ac73cb405f06d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "54c09e93_6f017bcd",
+        "filename": "src/sksl/sksl_compute.sksl",
+        "patchSetId": 15
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-06-07T20:58:11Z",
+      "side": 1,
+      "message": "I think we\u0027re going to want this to be 28 (ie, GlobalInvocationId in SPIR-V)",
+      "range": {
+        "startLine": 3,
+        "startChar": 15,
+        "endLine": 3,
+        "endChar": 20
+      },
+      "revId": "6823448d537e3a58f9e2c740f98ac73cb405f06d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "33864224_46645ff7",
+        "filename": "src/sksl/sksl_compute.sksl",
+        "patchSetId": 15
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-06-07T20:58:11Z",
+      "side": 1,
+      "message": "Does it? Is there value to triggering a texture read if you don\u0027t use the result?",
+      "range": {
+        "startLine": 5,
+        "startChar": 0,
+        "endLine": 5,
+        "endChar": 20
+      },
+      "revId": "6823448d537e3a58f9e2c740f98ac73cb405f06d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f618138d_8bc652dd",
+        "filename": "tests/sksl/shared/Ossfuzz36770.metal",
+        "patchSetId": 15
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-06-07T20:58:11Z",
+      "side": 1,
+      "message": "Is this intentional/expected?",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 7
       },
       "revId": "6823448d537e3a58f9e2c740f98ac73cb405f06d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
