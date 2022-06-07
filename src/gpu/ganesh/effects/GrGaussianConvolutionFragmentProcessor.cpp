@@ -35,7 +35,8 @@ private:
 static bool should_use_variable_length_loop(const GrShaderCaps& caps) {
     // If we're in reduced-shader mode, and we can use variable length loops, then use a uniform to
     // limit the number of iterations, so we don't need a code variation for each width.
-    return (caps.generation() >= SkSL::GLSLGeneration::k300es && caps.reducedShaderMode());
+    return caps.fAvoidFixedLengthGaussianLoops ||
+           (caps.generation() >= SkSL::GLSLGeneration::k300es && caps.reducedShaderMode());
 }
 
 void GrGaussianConvolutionFragmentProcessor::Impl::emitCode(EmitArgs& args) {
