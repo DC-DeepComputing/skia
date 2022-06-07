@@ -67,6 +67,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ef3b7c2d_a1585f1a",
+        "filename": "modules/canvaskit/canvaskit_bindings.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 778,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-06-07T18:44:50Z",
+      "side": 1,
+      "message": "Yes. Skia might be expecting the previous thing it bound to still be there.",
+      "parentUuid": "62633f01_e04732f3",
+      "range": {
+        "startLine": 778,
+        "startChar": 8,
+        "endLine": 778,
+        "endChar": 79
+      },
+      "revId": "037628c5cb2554b698747bc9fe309125c44553a4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "948c00ff_0a14f17c",
         "filename": "modules/canvaskit/canvaskit_bindings.cpp",
         "patchSetId": 6
@@ -243,6 +267,30 @@
       "side": 1,
       "message": "Yes. And the new framebuffer",
       "parentUuid": "b5412675_242dcbef",
+      "range": {
+        "startLine": 317,
+        "startChar": 16,
+        "endLine": 317,
+        "endChar": 22
+      },
+      "revId": "037628c5cb2554b698747bc9fe309125c44553a4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5bc003fe_b092d80d",
+        "filename": "modules/canvaskit/gpu.js",
+        "patchSetId": 6
+      },
+      "lineNbr": 317,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-06-07T18:44:50Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "3c46d272_b0e8c92a",
       "range": {
         "startLine": 317,
         "startChar": 16,
