@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f1bd0cb0_d394f5a2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 10154
+      },
+      "writtenOn": "2022-06-07T18:18:53Z",
+      "side": 1,
+      "message": "Thanks! PTAL",
+      "revId": "037628c5cb2554b698747bc9fe309125c44553a4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6fd632b8_bea5de46",
@@ -14,6 +31,30 @@
       "writtenOn": "2022-06-07T12:01:55Z",
       "side": 1,
       "message": "You need to call resetContext after reading the pixels to tell Skia the GL context has been altered around it (i.e. new framebuffer bound).",
+      "range": {
+        "startLine": 778,
+        "startChar": 8,
+        "endLine": 778,
+        "endChar": 79
+      },
+      "revId": "037628c5cb2554b698747bc9fe309125c44553a4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "62633f01_e04732f3",
+        "filename": "modules/canvaskit/canvaskit_bindings.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 778,
+      "author": {
+        "id": 10154
+      },
+      "writtenOn": "2022-06-07T18:18:53Z",
+      "side": 1,
+      "message": "Is this still necessary if the temporary framebuffer and texture are unbound and deleted?",
+      "parentUuid": "6fd632b8_bea5de46",
       "range": {
         "startLine": 778,
         "startChar": 8,
@@ -47,6 +88,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4b3f691f_c6f8602b",
+        "filename": "modules/canvaskit/canvaskit_bindings.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 809,
+      "author": {
+        "id": 10154
+      },
+      "writtenOn": "2022-06-07T18:18:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "948c00ff_0a14f17c",
+      "range": {
+        "startLine": 809,
+        "startChar": 8,
+        "endLine": 809,
+        "endChar": 13
+      },
+      "revId": "037628c5cb2554b698747bc9fe309125c44553a4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "72a301aa_6320c62c",
@@ -70,6 +135,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c195567f_b7d64f0c",
+        "filename": "modules/canvaskit/canvaskit_bindings.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 815,
+      "author": {
+        "id": 10154
+      },
+      "writtenOn": "2022-06-07T18:18:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "72a301aa_6320c62c",
+      "range": {
+        "startLine": 815,
+        "startChar": 19,
+        "endLine": 815,
+        "endChar": 25
+      },
+      "revId": "037628c5cb2554b698747bc9fe309125c44553a4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "47ba1dce_a34b24a7",
@@ -83,6 +172,30 @@
       "writtenOn": "2022-06-07T12:01:55Z",
       "side": 1,
       "message": "\"is to be read from the TextureSource (src)\".",
+      "range": {
+        "startLine": 310,
+        "startChar": 55,
+        "endLine": 310,
+        "endChar": 87
+      },
+      "revId": "037628c5cb2554b698747bc9fe309125c44553a4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "53b3dfaf_ed1f08c6",
+        "filename": "modules/canvaskit/gpu.js",
+        "patchSetId": 6
+      },
+      "lineNbr": 310,
+      "author": {
+        "id": 10154
+      },
+      "writtenOn": "2022-06-07T18:18:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "47ba1dce_a34b24a7",
       "range": {
         "startLine": 310,
         "startChar": 55,
@@ -118,6 +231,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3c46d272_b0e8c92a",
+        "filename": "modules/canvaskit/gpu.js",
+        "patchSetId": 6
+      },
+      "lineNbr": 317,
+      "author": {
+        "id": 10154
+      },
+      "writtenOn": "2022-06-07T18:18:53Z",
+      "side": 1,
+      "message": "Yes. And the new framebuffer",
+      "parentUuid": "b5412675_242dcbef",
+      "range": {
+        "startLine": 317,
+        "startChar": 16,
+        "endLine": 317,
+        "endChar": 22
+      },
+      "revId": "037628c5cb2554b698747bc9fe309125c44553a4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0d6ebf3e_76a7ec97",
         "filename": "modules/canvaskit/tests/core.spec.js",
         "patchSetId": 6
@@ -129,6 +266,30 @@
       "writtenOn": "2022-06-07T12:01:55Z",
       "side": 1,
       "message": "This is not what I had in mind for drawing to the canvas.\n\nWe should be able to take the result of the readPixels, make a new Image, and draw *that* to Canvas so we can be sure the read result looks sensible.",
+      "range": {
+        "startLine": 1508,
+        "startChar": 19,
+        "endLine": 1508,
+        "endChar": 28
+      },
+      "revId": "037628c5cb2554b698747bc9fe309125c44553a4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "80ede759_b49b937c",
+        "filename": "modules/canvaskit/tests/core.spec.js",
+        "patchSetId": 6
+      },
+      "lineNbr": 1508,
+      "author": {
+        "id": 10154
+      },
+      "writtenOn": "2022-06-07T18:18:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0d6ebf3e_76a7ec97",
       "range": {
         "startLine": 1508,
         "startChar": 19,
