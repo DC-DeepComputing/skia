@@ -29,6 +29,10 @@
 using AtlasTextOp = skgpu::v1::AtlasTextOp;
 #endif  // SK_SUPPORT_GPU
 
+#ifdef SK_GRAPHITE_ENABLED
+#include "src/gpu/graphite/Device.h"
+#endif
+
 #include <cinttypes>
 
 namespace sktext::gpu {
@@ -1109,6 +1113,15 @@ public:
               skgpu::v1::SurfaceDrawContext* sdc) const override;
 #endif  // SK_SUPPORT_GPU
 
+#ifdef SK_GRAPHITE_ENABLED
+    void draw(SkCanvas*,
+              const SkMatrixProvider& viewMatrix,
+              SkPoint drawOrigin,
+              const SkPaint&,
+              sk_sp<SkRefCnt> subRunStorage,
+              skgpu::graphite::Device*) const override;
+#endif
+
     int unflattenSize() const override;
 
     int glyphCount() const override;
@@ -1381,6 +1394,17 @@ std::tuple<const GrClip*, GrOp::Owner> DirectMaskSubRun::makeAtlasTextOp(
     return {clip, std::move(op)};
 }
 #endif  // SK_SUPPORT_GPU
+
+#ifdef SK_GRAPHITE_ENABLED
+void DirectMaskSubRun::draw(SkCanvas*,
+                            const SkMatrixProvider& viewMatrix,
+                            SkPoint drawOrigin,
+                            const SkPaint& paint,
+                            sk_sp<SkRefCnt> subRunStorage,
+                            skgpu::graphite::Device* device) const {
+    device->drawSubRun(this, viewMatrix, drawOrigin, paint, std::move(subRunStorage));
+}
+#endif
 
 void DirectMaskSubRun::testingOnly_packedGlyphIDToGlyph(StrikeCache *cache) const {
     fGlyphs.packedGlyphIDToGlyph(cache);
@@ -2430,6 +2454,19 @@ void SubRunContainer::draw(SkCanvas* canvas,
     }
 }
 #endif  // SK_SUPPORT_GPU
+
+#if defined(SK_GRAPHITE_ENABLED)
+void SubRunContainer::draw(SkCanvas* canvas,
+                           const SkMatrixProvider& viewMatrix,
+                           SkPoint drawOrigin,
+                           const SkPaint& paint,
+                           const SkRefCnt* subRunStorage,
+                           skgpu::graphite::Device* device) const {
+    for (auto& subRun : fSubRuns) {
+        subRun.draw(canvas, viewMatrix, drawOrigin, paint, sk_ref_sp(subRunStorage), device);
+    }
+}
+#endif
 
 bool SubRunContainer::canReuse(const SkPaint& paint, const SkMatrix& positionMatrix) const {
     for (const SubRun& subRun : fSubRuns) {

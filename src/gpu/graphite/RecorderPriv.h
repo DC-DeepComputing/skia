@@ -24,6 +24,7 @@ public:
     const Caps* caps() const;
     sk_sp<const Caps> refCaps() const;
 
+    TokenTracker* tokenTracker();
     void flushTrackedDevices();
 
 private:
