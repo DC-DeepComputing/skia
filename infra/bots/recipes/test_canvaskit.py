@@ -24,7 +24,7 @@ DEPS = [
 
 
 DOCKER_IMAGE = 'gcr.io/skia-public/gold-karma-chrome-tests:87.0.4280.88_v2'
-INNER_KARMA_SCRIPT = 'skia/infra/canvaskit/test_canvaskit.sh'
+INNER_KARMA_SCRIPT = 'skia/infra/canvaskit/canvaskit_gold.sh'
 
 def RunSteps(api):
   api.vars.setup()
