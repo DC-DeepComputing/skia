@@ -1084,10 +1084,6 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 		}
 	}
 
-	if b.gpu("RTX3060") && b.extraConfig("Vulkan") {
-		skip(ALL, "gm", ALL, "blurcircles2") // skia:13342
-	}
-
 	if b.gpu("Tegra3") && !b.extraConfig("Vulkan") {
 		// Fails on Tegra3 w/ OpenGL ES
 		skip(ALL, "tests", ALL, "SkSLMatrixFoldingES2_GPU") // skia:11919
