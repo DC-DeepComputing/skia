@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cd2e43d4_566afec3",
+        "filename": "modules/canvaskit/tests/core.spec.js",
+        "patchSetId": 7
+      },
+      "lineNbr": 1514,
+      "author": {
+        "id": 10154
+      },
+      "writtenOn": "2022-06-07T19:50:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9883983e_b913bb35",
+      "range": {
+        "startLine": 1514,
+        "startChar": 45,
+        "endLine": 1514,
+        "endChar": 53
+      },
+      "revId": "ee976c9792b468f48c4e198ec3bb54ecf25fb22e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "50f6a172_057ca5f5",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-06-07T18:44:50Z",
       "side": 1,
       "message": "Why do you read the pixels from the image, then draw those pixels to the canvas, then clear the canvas, and then read the pixels from the canvas?\n\nIs the new code exercised by one or both of those reads? I was under the impression it should only be called when reading the pixels from the image. If we are testing two different things, it should probably be two different tests, with a bit more commentary about what we are testing exactly.",
+      "range": {
+        "startLine": 1516,
+        "startChar": 19,
+        "endLine": 1516,
+        "endChar": 24
+      },
+      "revId": "ee976c9792b468f48c4e198ec3bb54ecf25fb22e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1e4db8d3_719fe58a",
+        "filename": "modules/canvaskit/tests/core.spec.js",
+        "patchSetId": 7
+      },
+      "lineNbr": 1516,
+      "author": {
+        "id": 10154
+      },
+      "writtenOn": "2022-06-07T19:50:57Z",
+      "side": 1,
+      "message": "Oops. I shouldn\u0027t have cleared it the second time.",
+      "parentUuid": "50f6a172_057ca5f5",
       "range": {
         "startLine": 1516,
         "startChar": 19,
