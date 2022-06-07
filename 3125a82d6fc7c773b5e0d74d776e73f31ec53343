@@ -34,6 +34,24 @@
       "parentUuid": "49b80c03_cb47002d",
       "revId": "3125a82d6fc7c773b5e0d74d776e73f31ec53343",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b3ca2300_6972239d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-06-07T20:37:00Z",
+      "side": 1,
+      "message": "So yeah we definitely will need to call resetContext in this case, but I see the issues with not having access to the Gr*Context in order to call it. I\u0027m going to have ponder this for a little and consult with others on the team and hopefully can get back to you soon.",
+      "parentUuid": "e12f465e_5679d7d6",
+      "revId": "3125a82d6fc7c773b5e0d74d776e73f31ec53343",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
