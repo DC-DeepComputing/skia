@@ -1,0 +1,20 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library")
+
+go_library(
+    name = "test_canvaskit_lib",
+    srcs = ["canvaskit_gold.go"],
+    importpath = "go.skia.org/skia/infra/bots/task_drivers/canvaskit_gold",
+    visibility = ["//visibility:private"],
+    deps = [
+        "@org_skia_go_infra//go/exec",
+        "@org_skia_go_infra//task_driver/go/lib/bazel",
+        "@org_skia_go_infra//task_driver/go/lib/os_steps",
+        "@org_skia_go_infra//task_driver/go/td",
+    ],
+)
+
+go_binary(
+    name = "test_canvaskit",
+    embed = [":test_canvaskit_lib"],
+    visibility = ["//visibility:public"],
+)

@@ -45,6 +45,11 @@
         "BazelBuild-skia_public-release-linux_x64"
       ]
     },
+    "BazelTest-canvaskit_gold-release-linux_x64": {
+      "tasks": [
+        "BazelTest-canvaskit_gold-release-linux_x64"
+      ]
+    },
     "Build-Debian10-Clang-arm-Debug-Android": {
       "tasks": [
         "Build-Debian10-Clang-arm-Debug-Android"
@@ -3601,6 +3606,45 @@
         "--bazel_arg=--config=linux_rbe",
         "--bazel_arg=--jobs=100",
         "--bazel_arg=--remote_download_minimal"
+      ],
+      "dimensions": [
+        "cpu:x86-64-Haswell_GCE",
+        "gpu:none",
+        "machine_type:n1-standard-16",
+        "os:Debian-10.3",
+        "pool:Skia"
+      ],
+      "env_prefixes": {
+        "PATH": [
+          "bazelisk"
+        ]
+      },
+      "idempotent": true,
+      "max_attempts": 1,
+      "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
+    },
+    "BazelTest-canvaskit_gold-release-linux_x64": {
+      "casSpec": "compile",
+      "cipd_packages": [
+        {
+          "name": "skia/bots/bazelisk",
+          "path": "bazelisk",
+          "version": "version:0"
+        }
+      ],
+      "command": [
+        "./canvaskit_gold",
+        "--project_id=skia-swarming-bots",
+        "--task_id=<(TASK_ID)",
+        "--task_name=BazelTest-canvaskit_gold-release-linux_x64",
+        "--config=release",
+        "--workdir=.",
+        "build_config=release",
+        "--bazel_arg=--config=linux_rbe",
+        "--bazel_arg=--jobs=100"
+      ],
+      "dependencies": [
+        "Housekeeper-PerCommit-BuildTaskDrivers_linux_amd64"
       ],
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
@@ -45465,7 +45509,7 @@
         "-u",
         "skia/infra/bots/run_recipe.py",
         "${ISOLATED_OUTDIR}",
-        "test_canvaskit",
+        "canvaskit_gold",
         "{\"$kitchen\":{\"devshell\":true,\"git_auth\":true},\"buildbucket_build_id\":\"<(BUILDBUCKET_BUILD_ID)\",\"buildername\":\"Test-Debian10-EMCC-GCE-CPU-AVX2-wasm-Release-All-CanvasKit\",\"gold_hashes_url\":\"https://gold.skia.org/json/v1/hashes\",\"gs_bucket\":\"skia-infra-gm\",\"patch_issue\":\"<(ISSUE_INT)\",\"patch_ref\":\"<(PATCH_REF)\",\"patch_repo\":\"<(PATCH_REPO)\",\"patch_set\":\"<(PATCHSET_INT)\",\"patch_storage\":\"<(PATCH_STORAGE)\",\"repository\":\"<(REPO)\",\"revision\":\"<(REVISION)\",\"swarm_out_dir\":\"test\",\"task_id\":\"<(TASK_ID)\"}",
         "skia"
       ],
@@ -45647,7 +45691,7 @@
         "-u",
         "skia/infra/bots/run_recipe.py",
         "${ISOLATED_OUTDIR}",
-        "test_canvaskit",
+        "canvaskit_gold",
         "{\"$kitchen\":{\"devshell\":true,\"git_auth\":true},\"buildbucket_build_id\":\"<(BUILDBUCKET_BUILD_ID)\",\"buildername\":\"Test-Debian10-EMCC-GCE-GPU-AVX2-wasm-Release-All-CanvasKit\",\"gold_hashes_url\":\"https://gold.skia.org/json/v1/hashes\",\"gs_bucket\":\"skia-infra-gm\",\"patch_issue\":\"<(ISSUE_INT)\",\"patch_ref\":\"<(PATCH_REF)\",\"patch_repo\":\"<(PATCH_REPO)\",\"patch_set\":\"<(PATCHSET_INT)\",\"patch_storage\":\"<(PATCH_STORAGE)\",\"repository\":\"<(REPO)\",\"revision\":\"<(REVISION)\",\"swarm_out_dir\":\"test\",\"task_id\":\"<(TASK_ID)\"}",
         "skia"
       ],

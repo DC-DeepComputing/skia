@@ -78,10 +78,10 @@
     "cmd": [
       "chmod",
       "0755",
-      "[START_DIR]/skia/infra/canvaskit/test_canvaskit.sh"
+      "[START_DIR]/skia/infra/canvaskit/canvaskit_gold.sh"
     ],
     "infra_step": true,
-    "name": "Docker setup.chmod 0755 [START_DIR]/skia/infra/canvaskit/test_canvaskit.sh",
+    "name": "Docker setup.chmod 0755 [START_DIR]/skia/infra/canvaskit/canvaskit_gold.sh",
     "~followup_annotations": [
       "@@@STEP_NEST_LEVEL@1@@@"
     ]
@@ -206,7 +206,7 @@
       "--mount",
       "type=bind,source=[START_DIR]/[SWARM_OUT_DIR],target=/OUT",
       "gcr.io/skia-public/gold-karma-chrome-tests:87.0.4280.88_v2",
-      "/SRC/skia/infra/canvaskit/test_canvaskit.sh",
+      "/SRC/skia/infra/canvaskit/canvaskit_gold.sh",
       "--builder",
       "Test-Debian10-EMCC-GCE-GPU-WEBGL1-wasm-Debug-All-CanvasKit",
       "--git_hash",
