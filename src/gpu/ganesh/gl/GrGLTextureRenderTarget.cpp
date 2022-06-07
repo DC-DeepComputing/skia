@@ -83,3 +83,12 @@ size_t GrGLTextureRenderTarget::onGpuMemorySize() const {
     return GrSurface::ComputeSize(this->backendFormat(), this->dimensions(),
                                   this->totalMemorySamplesPerPixel(), this->mipmapped());
 }
+
+void GrGLTextureRenderTarget::onSetLabel() {
+    SkASSERT(textureID());
+    GrGLGpu* glGpu = static_cast<GrGLGpu*>(this->getGpu());
+    if (glGpu->glCaps().debugSupport()) {
+        GR_GL_CALL(glGpu->glInterface(),
+                   ObjectLabel(GR_GL_TEXTURE, textureID(), -1, this->getLabel().c_str()));
+    }
+}

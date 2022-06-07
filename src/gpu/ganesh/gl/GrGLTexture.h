@@ -83,6 +83,8 @@ protected:
     bool onStealBackendTexture(GrBackendTexture*, SkImage::BackendTextureReleaseProc*) override;
 
 private:
+    void onSetLabel() override;
+
     sk_sp<GrGLTextureParameters> fParameters;
     GrGLuint fID;
     GrGLFormat fFormat;
