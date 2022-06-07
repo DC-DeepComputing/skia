@@ -108,7 +108,7 @@ public:
     void setBlendInfo(const skgpu::BlendInfo& blendInfo) {
         fBlendInfo = blendInfo;
     }
-    const skgpu::BlendInfo& blendInfo() const { return fBlendInfo; }
+    const skgpu::BlendInfo& blendInfo_ShaderInfo() const { return fBlendInfo; }
 #endif
 
 #if SK_SUPPORT_GPU && defined(SK_GRAPHITE_ENABLED) && defined(SK_METAL)
@@ -152,7 +152,7 @@ public:
         friend class SkShaderCodeDictionary;
 
 #ifdef SK_GRAPHITE_ENABLED
-        Entry(const SkPaintParamsKey& key, const skgpu::BlendInfo& blendInfo)
+        Entry(const SkPaintParamsKey& key, const skgpu::BlendInfo& blendInfo, bool foo)
                 : fKey(key.asSpan())
                 , fBlendInfo(blendInfo) {
         }

@@ -196,7 +196,7 @@ SkShaderCodeDictionary::Entry* SkShaderCodeDictionary::makeEntry(
 
     SkSpan<const uint8_t> newKeyAsSpan = SkMakeSpan(newKeyData, key.sizeInBytes());
 #ifdef SK_GRAPHITE_ENABLED
-    return fArena.make([&](void *ptr) { return new(ptr) Entry(newKeyAsSpan, blendInfo); });
+    return fArena.make([&](void *ptr) { return new(ptr) Entry(newKeyAsSpan, blendInfo, true); });
 #else
     return fArena.make([&](void *ptr) { return new(ptr) Entry(newKeyAsSpan); });
 #endif

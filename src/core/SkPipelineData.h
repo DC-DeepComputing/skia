@@ -127,11 +127,6 @@ public:
     SkDEBUGCODE(void checkReset();)
 
 #ifdef SK_GRAPHITE_ENABLED
-    void setBlendInfo(const skgpu::BlendInfo& blendInfo) {
-        fBlendInfo = blendInfo;
-    }
-    const skgpu::BlendInfo& blendInfo() const { return fBlendInfo; }
-
     void add(const SkSamplingOptions& sampling,
              const SkTileMode tileModes[2],
              sk_sp<skgpu::graphite::TextureProxy> proxy) {
@@ -172,7 +167,6 @@ private:
 #endif // SK_DEBUG
 
     SkTextureDataBlock                     fTextureDataBlock;
-    skgpu::BlendInfo                       fBlendInfo;
     skgpu::graphite::UniformManager        fUniformManager;
 #endif // SK_GRAPHITE_ENABLED
     SkEnumBitMask<SnippetRequirementFlags> fSnippetRequirementFlags;
