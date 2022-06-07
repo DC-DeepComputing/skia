@@ -22,6 +22,213 @@
       },
       "revId": "6823448d537e3a58f9e2c740f98ac73cb405f06d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a497df1c_9de6cf78",
+        "filename": "src/sksl/SkSLIntrinsicList.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-06-07T19:39:53Z",
+      "side": 1,
+      "message": "Not sure why these are here...? Is this stuff related to compute?",
+      "range": {
+        "startLine": 48,
+        "startChar": 0,
+        "endLine": 48,
+        "endChar": 38
+      },
+      "revId": "6823448d537e3a58f9e2c740f98ac73cb405f06d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fd92ebe6_b6ef8e03",
+        "filename": "src/sksl/codegen/SkSLMetalCodeGenerator.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-06-07T19:39:53Z",
+      "side": 1,
+      "message": "this-\u003etypeName",
+      "range": {
+        "startLine": 161,
+        "startChar": 15,
+        "endLine": 161,
+        "endChar": 23
+      },
+      "revId": "6823448d537e3a58f9e2c740f98ac73cb405f06d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e1db637e_f7612577",
+        "filename": "src/sksl/codegen/SkSLMetalCodeGenerator.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 246,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-06-07T19:39:53Z",
+      "side": 1,
+      "message": "nit: consider `pass_by_reference` or `should_pass_by_reference`",
+      "range": {
+        "startLine": 246,
+        "startChar": 12,
+        "endLine": 246,
+        "endChar": 25
+      },
+      "revId": "6823448d537e3a58f9e2c740f98ac73cb405f06d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "35289f4e_6e572e21",
+        "filename": "src/sksl/codegen/SkSLMetalCodeGenerator.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 248,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-06-07T19:39:53Z",
+      "side": 1,
+      "message": "Reading a negative check like this is difficult; consider a helper function `Type::isUnsizedArray` and make this `!type-\u003eisUnsizedArray()`",
+      "range": {
+        "startLine": 247,
+        "startChar": 57,
+        "endLine": 248,
+        "endChar": 49
+      },
+      "revId": "6823448d537e3a58f9e2c740f98ac73cb405f06d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "07557b26_e7a9c0eb",
+        "filename": "src/sksl/codegen/SkSLMetalCodeGenerator.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 2216,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-06-07T19:39:53Z",
+      "side": 1,
+      "message": "nit: I think some of the indentation is wrong in the output because this isn\u0027t using `writeLine`.",
+      "range": {
+        "startLine": 2216,
+        "startChar": 4,
+        "endLine": 2216,
+        "endChar": 25
+      },
+      "revId": "6823448d537e3a58f9e2c740f98ac73cb405f06d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "419dbef0_1f358fcb",
+        "filename": "src/sksl/codegen/SkSLMetalCodeGenerator.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-06-07T19:39:53Z",
+      "side": 1,
+      "message": "up to you: I wonder if it might be easier to name them `textureTypeName` and `writeTextureType` to make the modifier requirement easier to understand at the call site.",
+      "range": {
+        "startLine": 139,
+        "startChar": 9,
+        "endLine": 139,
+        "endChar": 18
+      },
+      "revId": "6823448d537e3a58f9e2c740f98ac73cb405f06d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e7fdce29_669670fd",
+        "filename": "src/sksl/codegen/SkSLMetalCodeGenerator.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 153,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-06-07T19:39:53Z",
+      "side": 1,
+      "message": "nit: consider moving down next to `writeComputeMainInputsAndOutputs` just to keep similar things together",
+      "range": {
+        "startLine": 153,
+        "startChar": 9,
+        "endLine": 153,
+        "endChar": 37
+      },
+      "revId": "6823448d537e3a58f9e2c740f98ac73cb405f06d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "62202b9c_9e6e82ee",
+        "filename": "src/sksl/ir/SkSLVariable.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-06-07T19:39:53Z",
+      "side": 1,
+      "message": "Could be `baseType-\u003eisUnsizedArray()`",
+      "range": {
+        "startLine": 52,
+        "startChar": 8,
+        "endLine": 52,
+        "endChar": 74
+      },
+      "revId": "6823448d537e3a58f9e2c740f98ac73cb405f06d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3560135d_80cc8769",
+        "filename": "src/sksl/ir/SkSLVariable.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-06-07T19:39:53Z",
+      "side": 1,
+      "message": "Structure could be flattened\n\n        if (!ProgramConfig::IsCompute(ThreadContext::Context().fConfig-\u003efKind)) {\n            context.fErrors-\u003eerror(pos, \"unsized arrays are not permitted here\");\n        } else if (storage !\u003d Variable::Storage::kGlobal) {\n            context.fErrors-\u003eerror(pos, \"unsized arrays must be global\");\n        } else if (!(modifiers.fFlags \u0026 (Modifiers::kIn_Flag | Modifiers::kOut_Flag))) {\n            context.fErrors-\u003eerror(pos, \"unsized arrays must be declared \u0027in\u0027 and/or \u0027out\u0027\");\n        }",
+      "range": {
+        "startLine": 53,
+        "startChar": 0,
+        "endLine": 62,
+        "endChar": 9
+      },
+      "revId": "6823448d537e3a58f9e2c740f98ac73cb405f06d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
