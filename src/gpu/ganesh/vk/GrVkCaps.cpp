@@ -596,6 +596,13 @@ void GrVkCaps::applyDriverCorrectnessWorkarounds(const VkPhysicalDevicePropertie
     if (kImagination_VkVendor == properties.vendorID) {
         fShaderCaps->fAtan2ImplementedAsAtanYOverX = true;
     }
+
+#ifdef SK_BUILD_FOR_WIN
+    if (properties.vendorID == kNvidia_VkVendor) {
+        // On Nvidia RTX3060, the `blurcircles2` gm hangs on fixed-length blur loops. (skia:13342)
+        fShaderCaps->fAvoidFixedLengthGaussianLoops = true;
+    }
+#endif
 }
 
 void GrVkCaps::initGrCaps(const GrVkInterface* vkInterface,

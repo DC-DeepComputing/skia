@@ -104,13 +104,14 @@ struct GrShaderCaps : SkSL::ShaderCaps {
     bool fHasLowFragmentPrecision = false;
     bool fReducedShaderMode = false;
 
-    // Used for specific driver bug work arounds
+    // Used for specific driver bug workarounds
     bool fRequiresLocalOutputColorForFBFetch = false;
     bool fMustObfuscateUniformColor = false;
     bool fMustWriteToFragColor = false;
     bool fColorSpaceMathNeedsFloat = false;
     bool fCanUseFastMath = false;
     bool fAvoidDfDxForGradientsWhenPossible = false;
+    bool fAvoidFixedLengthGaussianLoops = false;  // skia:13342
 
     const char* fSecondaryOutputExtensionString = nullptr;
     const char* fNoPerspectiveInterpolationExtensionString = nullptr;
