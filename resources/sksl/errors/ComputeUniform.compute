@@ -1,0 +1,4 @@
+uniform int x;
+
+void main() {
+}
