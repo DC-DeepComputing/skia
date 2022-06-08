@@ -46,6 +46,7 @@ void SkPaintParamsKeyBuilder::beginBlock(int codeSnippetID) {
     if (!fStack.empty()) {
         // The children of a block should appear before any of the parent's data
         SkASSERT(fStack.back().fCurDataPayloadEntry == 0);
+        fStack.back().fNumActualChildren++;
     }
 
     static const SkPaintParamsKey::DataPayloadField kHeader[2] = {
@@ -67,6 +68,8 @@ void SkPaintParamsKeyBuilder::beginBlock(int codeSnippetID) {
 #ifdef SK_DEBUG
     fStack.back().fDataPayloadExpectations = fDict->dataPayloadExpectations(codeSnippetID);
     fStack.back().fCurDataPayloadEntry = 0;
+    fStack.back().fNumExpectedChildren = fDict->getEntry(codeSnippetID)->fNumChildren;
+    fStack.back().fNumActualChildren = 0;
 #endif
 }
 
@@ -85,6 +88,7 @@ void SkPaintParamsKeyBuilder::endBlock() {
     // All the expected fields should be filled in at this point
     SkASSERT(fStack.back().fCurDataPayloadEntry ==
              SkTo<int>(fStack.back().fDataPayloadExpectations.size()));
+    SkASSERT(fStack.back().fNumActualChildren == fStack.back().fNumExpectedChildren);
     SkASSERT(!this->isLocked());
 
     int headerOffset = fStack.back().fHeaderOffset;

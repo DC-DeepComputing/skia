@@ -218,6 +218,8 @@ private:
 #ifdef SK_DEBUG
         SkSpan<const SkPaintParamsKey::DataPayloadField> fDataPayloadExpectations;
         int fCurDataPayloadEntry = 0;
+        int fNumExpectedChildren = 0;
+        int fNumActualChildren = 0;
 #endif
     };
 
