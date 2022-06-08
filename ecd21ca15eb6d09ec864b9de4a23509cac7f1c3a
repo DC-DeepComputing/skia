@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5844e378_8e09110a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 12064
+      },
+      "writtenOn": "2022-06-08T10:03:40Z",
+      "side": 1,
+      "message": "Hi Greg, besides falling `fMSAAResolvesAutomatically` to false, I change the `fMSFBOType` to `kStandard_MSFBOType` since automatically resolving is not supported any more. Maybe we can retry on those failed test?\nThanks!",
+      "revId": "ecd21ca15eb6d09ec864b9de4a23509cac7f1c3a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
