@@ -189,7 +189,7 @@ static bool setup_backend_objects(GrDirectContext* dContext,
                                                                GrMipmapped::kNo,
                                                                GrProtected::kNo,
                                                                &level0,
-                                                               /*label=*/{});
+                                                               /*label=*/"Fiddle_SetupBackendObjects");
         if (!tmp || !tmp->asRenderTarget()) {
             fputs("GrTexture is invalid.\n", stderr);
             return false;

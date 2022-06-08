@@ -87,7 +87,7 @@ bool BaseDevice::replaceBackingProxy(SkSurface::ContentChangeMode mode) {
                                                              SkBackingFit::kExact,
                                                              oldRTP->isBudgeted(),
                                                              GrProtected::kNo,
-                                                             /*label=*/{});
+                                                             /*label=*/"BaseDevice_ReplaceBackingProxy");
     if (!proxy) {
         return false;
     }

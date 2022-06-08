@@ -311,7 +311,7 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(PromiseImageTextureFullCache, reporter, ctxIn
                                                                                  GrMipmapped::kNo,
                                                                                  SkBudgeted::kYes,
                                                                                  GrProtected::kNo,
-                                                                                 /*label=*/{}));
+                                                                                 /*label=*/"PromiseImageTextureFullCacheTest"));
         REPORTER_ASSERT(reporter, textures[i]);
     }
 
