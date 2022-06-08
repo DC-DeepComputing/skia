@@ -63,4 +63,11 @@ sk_sp<const SkCapabilities> Surface::onCapabilities() {
     return fDevice->recorder()->priv().refCaps();
 }
 
+GrSemaphoresSubmitted Surface::onFlush(BackendSurfaceAccess,
+                                       const GrFlushInfo&,
+                                       const GrBackendSurfaceMutableState*) {
+    fDevice->flushPendingWorkToRecorder();
+    return GrSemaphoresSubmitted::kNo;
+}
+
 } // namespace skgpu::graphite
