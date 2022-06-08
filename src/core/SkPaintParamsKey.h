@@ -195,6 +195,7 @@ public:
     uint8_t byte(int offset) const { return fData[offset]; }
 #endif
 
+    // TODO: we could hide 'lockAsKey' w/ a bit more testing helpers
     SkPaintParamsKey lockAsKey();
 
     int sizeInBytes() const { return fData.count(); }

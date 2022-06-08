@@ -170,10 +170,4 @@ namespace BlendModeBlock {
 
 } // namespace BlendModeBlock
 
-// Bridge between the combinations system and the SkPaintParamsKey
-SkUniquePaintParamsID CreateKey(const SkKeyContext&,
-                                SkPaintParamsKeyBuilder*,
-                                SkShaderType,
-                                SkBlendMode);
-
 #endif // SkKeyHelpers_DEFINED
