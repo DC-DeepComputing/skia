@@ -95,6 +95,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "41555c49_e0830cfa",
+        "filename": "src/core/SkKeyHelpers.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-06-08T14:42:22Z",
+      "side": 1,
+      "message": "Looking down the CL chain, maybe this point isn\u0027t worth it if we actually require every code block to only do the beginning, and the ending is handled in combination builder.\n\nMaybe that means it\u0027s time to declare a function type or template to encode these requirements, to help highlight why leaves are still handled as a Begin() that\u0027s immediately ended externally?",
+      "parentUuid": "e4d1a40b_1eb58bb7",
+      "range": {
+        "startLine": 35,
+        "startChar": 9,
+        "endLine": 35,
+        "endChar": 19
+      },
+      "revId": "2f0ed6caac0aef37eeeb45dbfe6b3c6524eab013",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9c7e1f52_c99d08b2",
         "filename": "src/shaders/SkComposeShader.cpp",
         "patchSetId": 5
