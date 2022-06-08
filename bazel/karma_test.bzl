@@ -62,7 +62,7 @@ def karma_test(name, config_file, srcs, static_files = None, env = None, **kwarg
         config_file = config_file,
         static_files = static_files,
         visibility = ["//visibility:private"],
-        tags = ["manual"],
+        tags = ["manual", "no-remote"],
     )
 
     # See the following link for the options.
@@ -74,6 +74,13 @@ def karma_test(name, config_file, srcs, static_files = None, env = None, **kwarg
             launcher = ":" + karma_test_name,
             browser = "@io_bazel_rules_webtesting//browsers:chromium-local",
             test = karma_test_name,
+            tags = [
+                # https://bazel.build/reference/be/common-definitions#common.tags
+                "no-remote",
+                # native is required to be set by web_test for reasons that are not
+                # abundantly clear.
+                "native",
+            ],
             **kwargs
         )
     else:
@@ -84,6 +91,14 @@ def karma_test(name, config_file, srcs, static_files = None, env = None, **kwarg
             browser = "@io_bazel_rules_webtesting//browsers:chromium-local",
             test = karma_test_name,
             visibility = ["//visibility:private"],
+            tags = [
+                # https://bazel.build/reference/be/common-definitions#common.tags
+                "no-remote",
+                "manual",
+                # native is required to be set by web_test for reasons that are not
+                # abundantly clear.
+                "native",
+            ],
             **kwargs
         )
         test_on_env(
@@ -91,6 +106,7 @@ def karma_test(name, config_file, srcs, static_files = None, env = None, **kwarg
             env = env,
             test = ":" + web_test_name,
             test_on_env_binary = "@org_skia_go_infra//bazel/test_on_env:test_on_env",
+            tags = ["no-remote"],
         )
 
 # This JS code is injected into the the provided karma configuration file. It contains
