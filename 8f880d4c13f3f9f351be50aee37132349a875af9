@@ -22,6 +22,30 @@
       },
       "revId": "8f880d4c13f3f9f351be50aee37132349a875af9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f25b8243_3d694523",
+        "filename": "third_party/perfetto/BUILD.gn",
+        "patchSetId": 11
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-06-08T17:14:33Z",
+      "side": 1,
+      "message": "I don\u0027t believe so - I was emulating how other third-party external BUILD.gn files define an empty declare_args(), but I do not think it is necessary. Removed",
+      "parentUuid": "1c20122a_e035a41a",
+      "range": {
+        "startLine": 6,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 1
+      },
+      "revId": "8f880d4c13f3f9f351be50aee37132349a875af9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
