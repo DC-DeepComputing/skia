@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "22ecb51d_7b8f15cf",
+        "filename": "src/core/SkCombinationBuilder.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 373,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-06-08T21:47:30Z",
+      "side": 1,
+      "message": "This will vary dynamically for different runtime shaders, unfortunately. Not sure how that fits into the Graphite mold.",
+      "range": {
+        "startLine": 373,
+        "startChar": 35,
+        "endLine": 373,
+        "endChar": 56
+      },
+      "revId": "db11125d813dd5cddbca38f57155f107aa224b33",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
