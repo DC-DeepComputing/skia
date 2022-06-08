@@ -26,6 +26,7 @@
 #include "src/gpu/graphite/geom/IntersectionTree.h"
 #include "src/gpu/graphite/geom/Shape.h"
 #include "src/gpu/graphite/geom/Transform_graphite.h"
+#include "src/gpu/graphite/text/AtlasManager.h"
 
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkPath.h"
@@ -38,6 +39,8 @@
 #include "src/core/SkPaintPriv.h"
 #include "src/core/SkSpecialImage.h"
 #include "src/shaders/SkImageShader.h"
+#include "src/text/gpu/SubRunContainer.h"
+#include "src/text/gpu/TextBlobRedrawCoordinator.h"
 
 #include <unordered_map>
 #include <vector>
@@ -191,6 +194,10 @@ Device::Device(Recorder* recorder, sk_sp<DrawContext> dc)
         , fDisjointStencilSet(std::make_unique<IntersectionTreeSet>())
         , fCachedLocalToDevice(SkM44())
         , fCurrentDepth(DrawOrder::kClearDepth)
+        // TODO: set this up based on ContextOptions
+        , fSDFTControl(true, false, 18, 324)
+        // TODO: does this belong here? Do we have the concept of a context ID?
+        , fTextBlobCache(std::make_unique<sktext::gpu::TextBlobRedrawCoordinator>(1))
         , fDrawsOverlap(false) {
     SkASSERT(SkToBool(fDC) && SkToBool(fRecorder));
     fRecorder->registerDevice(this);
@@ -212,6 +219,10 @@ const Transform& Device::localToDeviceTransform() {
         fCachedLocalToDevice = Transform{this->localToDevice44()};
     }
     return fCachedLocalToDevice;
+}
+
+SkStrikeDeviceInfo Device::strikeDeviceInfo() const {
+    return {this->surfaceProps(), this->scalerContextFlags(), &fSDFTControl};
 }
 
 SkBaseDevice* Device::onCreateDevice(const CreateInfo& info, const SkPaint*) {
@@ -515,6 +526,69 @@ void Device::drawImageRect(const SkImage* image, const SkRect* src, const SkRect
     this->drawRect(tmpDst, paintWithShader);
 }
 
+void Device::onDrawGlyphRunList(SkCanvas* canvas,
+                                const SkGlyphRunList& glyphRunList,
+                                const SkPaint& initialPaint,
+                                const SkPaint& drawingPaint) {
+    fTextBlobCache->drawGlyphRunList(canvas, this->asMatrixProvider(), glyphRunList,
+                                     drawingPaint, this->strikeDeviceInfo(), this);
+}
+
+void Device::drawSubRun(const sktext::gpu::AtlasSubRun* subRun,
+                        const SkMatrixProvider& viewMatrix,
+                        SkPoint drawOrigin,
+                        const SkPaint& paint,
+                        sk_sp<SkRefCnt> subRunStorage) {
+    // TODO: make this work in Graphite terms
+    const int subRunEnd = subRun->glyphCount();
+    int allGlyphsCursor = 0;
+    int allGlyphsEnd = subRun->glyphCount();
+    int quadCursor = 0;
+    int quadSize = 4*subRun->vertexStride(viewMatrix.localToDevice());
+    int maxQuadsPerBuffer = 16*1024/quadSize;
+    int quadEnd = std::min(maxQuadsPerBuffer, allGlyphsEnd - allGlyphsCursor);
+    int glyphsToFlush = 0;
+    for (int subRunCursor = 0; subRunCursor < subRunEnd;) {
+        // Regenerate the atlas for the remainder of the glyphs in the run, or the remainder
+        // of the glyphs to fill the vertex buffer.
+        int regenEnd = subRunCursor + std::min(subRunEnd - subRunCursor, quadEnd - quadCursor);
+        auto[ok, glyphsRegenerated] = subRun->regenerateAtlas(subRunCursor, regenEnd,
+                                                              fDC.get(), fRecorder);
+        // There was a problem allocating the glyph in the atlas. Bail.
+        if (!ok) {
+            return;
+        }
+        break;
+#if 0
+        geo->fillVertexData(vertices + quadCursor * quadSize, subRunCursor, glyphsRegenerated);
+#endif
+        subRunCursor += glyphsRegenerated;
+        quadCursor += glyphsRegenerated;
+        allGlyphsCursor += glyphsRegenerated;
+        glyphsToFlush += glyphsRegenerated;
+
+        if (quadCursor == quadEnd || subRunCursor < subRunEnd) {
+            // Flush if not all the glyphs are drawn because either the quad buffer is full or
+            // the atlas is out of space.
+            if (subRunCursor < subRunEnd) {
+                ATRACE_ANDROID_FRAMEWORK_ALWAYS("Atlas full");
+            }
+#if 0
+            this->createDrawForGeneratedGlyphs(target, &flushInfo);
+#endif
+            if (quadCursor == quadEnd && allGlyphsCursor < allGlyphsEnd) {
+                // If the vertex buffer is full and there are still glyphs to draw then
+                // get a new buffer.
+#if 0
+                if(!resetVertexBuffer()) {
+                    return;
+                }
+#endif
+            }
+        }
+    }
+}
+
 void Device::drawShape(const Shape& shape,
                        const SkPaint& paint,
                        const SkStrokeRec& style,
@@ -690,6 +764,11 @@ void Device::flushPendingWorkToRecorder() {
 
     // TODO: we may need to further split this function up since device->device drawList and
     // DrawPass stealing will need to share some of the same logic w/o becoming a Task.
+
+    // push any pending uploads from the atlasmanager
+    auto atlasManager = fRecorder->priv().atlasManager();
+    // TODO: what if this fails?
+    atlasManager->recordUploads(fDC.get(), fRecorder);
 
     auto uploadTask = fDC->snapUploadTask(fRecorder);
     if (uploadTask) {
