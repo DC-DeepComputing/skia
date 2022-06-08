@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4fcb37c6_4c9fa777",
+        "filename": "resources/sksl/compute/ArrayAdd.compute",
+        "patchSetId": 16
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-06-08T22:19:31Z",
+      "side": 1,
+      "message": "Why are we using the `location` qualifier here for an array but the `binding` qualifier for textures2D (e.g. in Desaturate.compute)?\n\nThese unsized buffers and textures are both global shader resources and `binding` would make sense in both situations. Granted, the way GLSL uses `location` to mean different things across varyings and global uniforms is already inconsistent but I would prefer if we were consistent in how we declare global resources.",
+      "range": {
+        "startLine": 1,
+        "startChar": 7,
+        "endLine": 1,
+        "endChar": 15
+      },
+      "revId": "39434936f3ef13ec8665cb3eecee754710b70420",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4c214804_c1d97062",
+        "filename": "resources/sksl/compute/ArrayAdd.compute",
+        "patchSetId": 16
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-06-08T22:19:31Z",
+      "side": 1,
+      "message": "I don\u0027t necessarily want to hold back this CL for this, as it\u0027s a great first pass, but I\u0027m still not a fan of `in` and `out` in this context. When used with global variables and blocks, `in`/`out` in GLSL (and the corresponding `Input`/`Output` storage class decorators in SPIR-V) are used with entry point IO. Someone with a GL background may read this as denoting a different instance of `src1` for each invocation of `main()` but there is really one global `src1` that is shared across invocations. A compute stage doesn\u0027t necessarily have prescribed pipeline input/output and IIUC we are using these keywords really as a way to specify \"read/write access mode\".\n\nEventually we will want to enable uniforms in compute shaders. AFAIK textures/samplers used in compute shaders are already decorated as being in UniformConstant storage class in Vulkan and would be declared as `uniform` in GLSL. Similarly, GLSL storage blocks use the `buffer` keyword and look more or less like uniforms in code.\n\nWhy not start out with allowing `uniform` and `buffer` keywords to specify the address spaces? We could then use interface blocks and global declarations as we do for fragment/vertex shaders and the code would feel familiar.",
+      "range": {
+        "startLine": 2,
+        "startChar": 19,
+        "endLine": 2,
+        "endChar": 21
+      },
+      "revId": "39434936f3ef13ec8665cb3eecee754710b70420",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
