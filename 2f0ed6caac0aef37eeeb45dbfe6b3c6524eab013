@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "394bc1a5_834ecf66",
+        "filename": "src/core/SkKeyHelpers.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 644,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-06-08T14:37:54Z",
+      "side": 1,
+      "message": "LM shader should only have one child right?",
+      "range": {
+        "startLine": 638,
+        "startChar": 16,
+        "endLine": 644,
+        "endChar": 36
+      },
+      "revId": "2f0ed6caac0aef37eeeb45dbfe6b3c6524eab013",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0f8b09eb_893ee330",
+        "filename": "src/core/SkKeyHelpers.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 668,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-06-08T14:37:54Z",
+      "side": 1,
+      "message": "src and dst comments?",
+      "range": {
+        "startLine": 662,
+        "startChar": 16,
+        "endLine": 668,
+        "endChar": 36
+      },
+      "revId": "2f0ed6caac0aef37eeeb45dbfe6b3c6524eab013",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7e0dcb45_b9a76814",
+        "filename": "src/core/SkKeyHelpers.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-06-08T14:37:54Z",
+      "side": 1,
+      "message": "I had a realization while reviewing this code, but I think putting all these functions inside separate namespaces makes their CPP definitions harder to review, because the modified lines are somewhere inside the common name of \"BeginBlock\" and you have to search up or down to find the wrapping namespace if you need to remember which code block you\u0027re looking at.\n\nWDYT about changing (in another CL) these to classes with private ctors and static functions named BeginBlock or AddBlock? Calling code shouldn\u0027t be any different, but in the CPP file you\u0027ll more easily see you\u0027re reviewing or editing `SolidColorShaderBlock::BeginBlock`.",
+      "range": {
+        "startLine": 33,
+        "startChar": 10,
+        "endLine": 33,
+        "endChar": 31
+      },
+      "revId": "2f0ed6caac0aef37eeeb45dbfe6b3c6524eab013",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e4d1a40b_1eb58bb7",
+        "filename": "src/core/SkKeyHelpers.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-06-08T14:37:54Z",
+      "side": 1,
+      "message": "I think for code blocks that don\u0027t have children, we may as well keep it as AddBlock(). Many shaders don\u0027t have children and it is cumbersome to have to remember to call endBlock() right away. Related to that, maybe it\u0027s worth having a variant API on SkPaintParamsKeyBuilder that corresponds to adding a leaf block with a fixed number of bytes, so that even inside these functions we don\u0027t have the repeated lines of code of beginBlock(...); endBlock();",
+      "range": {
+        "startLine": 35,
+        "startChar": 9,
+        "endLine": 35,
+        "endChar": 19
+      },
+      "revId": "2f0ed6caac0aef37eeeb45dbfe6b3c6524eab013",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9c7e1f52_c99d08b2",
+        "filename": "src/shaders/SkComposeShader.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 209,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-06-08T14:37:54Z",
+      "side": 1,
+      "message": "I definitely find this more readable than diving down into BlendShaderBlock.",
+      "range": {
+        "startLine": 203,
+        "startChar": 3,
+        "endLine": 209,
+        "endChar": 24
+      },
+      "revId": "2f0ed6caac0aef37eeeb45dbfe6b3c6524eab013",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
