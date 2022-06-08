@@ -24,6 +24,9 @@ public:
     const Caps* caps() const;
     sk_sp<const Caps> refCaps() const;
 
+    AtlasManager* atlasManager();
+    TokenTracker* tokenTracker();
+    sktext::gpu::StrikeCache* strikeCache();
     void flushTrackedDevices();
 
 private:
