@@ -44,7 +44,7 @@ sk_sp<GrGLBuffer> GrGLBuffer::Make(GrGLGpu* gpu,
         return nullptr;
     }
 
-    sk_sp<GrGLBuffer> buffer(new GrGLBuffer(gpu, size, intendedType, accessPattern, /*label=*/{}));
+    sk_sp<GrGLBuffer> buffer(new GrGLBuffer(gpu, size, intendedType, accessPattern, /*label=*/"MakeGlBuffer"));
     if (0 == buffer->bufferID()) {
         return nullptr;
     }

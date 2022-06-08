@@ -616,7 +616,7 @@ sk_sp<GrTexture> GrMtlGpu::onCreateCompressedTexture(SkISize dimensions,
                                                                 : GrMipmapStatus::kNotAllocated;
 
     auto tex = GrMtlTexture::MakeNewTexture(this, budgeted, dimensions, mtlPixelFormat,
-                                            numMipLevels, mipmapStatus, /*label=*/{});
+                                            numMipLevels, mipmapStatus, /*label=*/"MtlGpu_CreateCompressedTexture");
     if (!tex) {
         return nullptr;
     }

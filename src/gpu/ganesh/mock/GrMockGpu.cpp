@@ -151,7 +151,7 @@ sk_sp<GrTexture> GrMockGpu::onCreateCompressedTexture(SkISize dimensions,
                               NextInternalTextureID());
 
     return sk_sp<GrTexture>(new GrMockTexture(
-            this, budgeted, dimensions, isProtected, mipmapStatus, texInfo, /*label=*/{}));
+            this, budgeted, dimensions, isProtected, mipmapStatus, texInfo, /*label=*/"MockGpu_CreateCompressedTexture"));
 }
 
 sk_sp<GrTexture> GrMockGpu::onWrapBackendTexture(const GrBackendTexture& tex,
@@ -176,7 +176,7 @@ sk_sp<GrTexture> GrMockGpu::onWrapBackendTexture(const GrBackendTexture& tex,
                                               texInfo,
                                               wrapType,
                                               ioType,
-                                              /*label=*/{}));
+                                              /*label=*/"MockGpu_WrapBackendTexture"));
 }
 
 sk_sp<GrTexture> GrMockGpu::onWrapCompressedBackendTexture(const GrBackendTexture& tex,
@@ -204,7 +204,7 @@ sk_sp<GrTexture> GrMockGpu::onWrapRenderableBackendTexture(const GrBackendTextur
                                                           isProtected, mipmapStatus, texInfo,
                                                           rtInfo,
                                                           cacheable,
-                                                          /*label=*/{}));
+                                                          /*label=*/"MockGpu_WrapRenderableBackendTexture"));
 }
 
 sk_sp<GrRenderTarget> GrMockGpu::onWrapBackendRenderTarget(const GrBackendRenderTarget& rt) {
@@ -216,14 +216,14 @@ sk_sp<GrRenderTarget> GrMockGpu::onWrapBackendRenderTarget(const GrBackendRender
                                                         rt.dimensions(), rt.sampleCnt(),
                                                         isProtected,
                                                         info,
-                                                        /*label=*/{}));
+                                                        /*label=*/"MockGpu_WrapBackendRenderTarget"));
 }
 
 sk_sp<GrGpuBuffer> GrMockGpu::onCreateBuffer(size_t sizeInBytes,
                                              GrGpuBufferType type,
                                              GrAccessPattern accessPattern) {
     return sk_sp<GrGpuBuffer>(
-            new GrMockBuffer(this, sizeInBytes, type, accessPattern, /*label=*/{}));
+            new GrMockBuffer(this, sizeInBytes, type, accessPattern, /*label=*/"MockGpu_CreateBuffer"));
 }
 
 sk_sp<GrAttachment> GrMockGpu::makeStencilAttachment(const GrBackendFormat& /*colorFormat*/,
@@ -233,7 +233,7 @@ sk_sp<GrAttachment> GrMockGpu::makeStencilAttachment(const GrBackendFormat& /*co
                                                     dimensions,
                                                     GrAttachment::UsageFlags::kStencilAttachment,
                                                     numStencilSamples,
-                                                    /*label=*/{}));
+                                                    /*label=*/"MockGpu_MakeStencilAttachment"));
 }
 
 GrBackendTexture GrMockGpu::onCreateBackendTexture(SkISize dimensions,

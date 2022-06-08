@@ -76,7 +76,7 @@ sk_sp<GrGLTextureRenderTarget> GrGLTextureRenderTarget::MakeWrapped(
                                                                       rtIDs,
                                                                       cacheable,
                                                                       mipmapStatus,
-                                                                      /*label=*/{}));
+                                                                      /*label=*/"GLTextureRenderTargetMakeWrapped"));
 }
 
 size_t GrGLTextureRenderTarget::onGpuMemorySize() const {

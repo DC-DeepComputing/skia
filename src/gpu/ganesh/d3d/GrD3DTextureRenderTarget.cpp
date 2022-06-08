@@ -217,7 +217,7 @@ sk_sp<GrD3DTextureRenderTarget> GrD3DTextureRenderTarget::MakeWrappedTextureRend
                                                                      renderTargetView,
                                                                      mipmapStatus,
                                                                      cacheable,
-                                                                     /*label=*/{});
+                                                                     /*label=*/"MakeWrappedTextureRenderTargetWithMSAASurface");
         return sk_sp<GrD3DTextureRenderTarget>(trt);
     } else {
         return sk_sp<GrD3DTextureRenderTarget>(new GrD3DTextureRenderTarget(gpu,
@@ -228,7 +228,7 @@ sk_sp<GrD3DTextureRenderTarget> GrD3DTextureRenderTarget::MakeWrappedTextureRend
                                                                             renderTargetView,
                                                                             mipmapStatus,
                                                                             cacheable,
-                                                                            /*label=*/{}));
+                                                                            /*label=*/"MakeWrappedTextureRenderTarget"));
     }
 }
 
