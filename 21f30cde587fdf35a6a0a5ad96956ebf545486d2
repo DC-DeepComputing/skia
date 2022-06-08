@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7b6faeb6_e25b0960",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-06-08T19:29:44Z",
+      "side": 1,
+      "message": "Out of curiosity, why ::operator new and ::operator delete instead of sk_malloc/sk_free? I haven\u0027t seen those in use elsewhere, but I\u0027m sure there\u0027s a good reason for it.",
+      "revId": "21f30cde587fdf35a6a0a5ad96956ebf545486d2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
