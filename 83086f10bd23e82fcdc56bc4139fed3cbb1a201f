@@ -251,6 +251,30 @@
       },
       "revId": "83086f10bd23e82fcdc56bc4139fed3cbb1a201f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "83327a5c_277d9a69",
+        "filename": "src/gpu/ganesh/gl/GrGLTextureRenderTarget.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-06-08T12:59:47Z",
+      "side": 1,
+      "message": "Right I wasn\u0027t suggesting not having GrGLTextureRenderTarget override it, but was suggesting something like:\n\n    void GrGLTextureRenderTarget::onSetLabel() {\n        GrGLTexture::onSetLabel();\n    }\n\nThat will make it explicit to someone reading that for GrGLTexRT we are setting the label on Texture part.",
+      "parentUuid": "dcb70dd2_e2ac61d2",
+      "range": {
+        "startLine": 88,
+        "startChar": 0,
+        "endLine": 93,
+        "endChar": 5
+      },
+      "revId": "83086f10bd23e82fcdc56bc4139fed3cbb1a201f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
