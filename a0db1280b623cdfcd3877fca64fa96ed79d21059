@@ -56,6 +56,30 @@
       },
       "revId": "a0db1280b623cdfcd3877fca64fa96ed79d21059",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4b5062e1_40306488",
+        "filename": "src/gpu/graphite/Surface_Graphite.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-06-08T14:55:49Z",
+      "side": 1,
+      "message": "Yeah, that seems like a good way to keep tabs on this workaround. Have to also add SK_SUPPORT_GPU since that\u0027s the time when onFlush() is defined in SkSurface_Base. Shouldn\u0027t be an issue since our bots aren\u0027t running the NoGPU configs for nanobench, but definitely highlights that this is temporary.",
+      "parentUuid": "1762c258_b0eadc1e",
+      "range": {
+        "startLine": 33,
+        "startChar": 0,
+        "endLine": 43,
+        "endChar": 80
+      },
+      "revId": "a0db1280b623cdfcd3877fca64fa96ed79d21059",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
