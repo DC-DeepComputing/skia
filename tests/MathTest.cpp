@@ -455,6 +455,59 @@ DEF_TEST(PopCount, reporter) {
     }
 }
 
+DEF_TEST(NthSet, reporter) {
+    {
+        uint32_t testVal = 0x1;
+        int result = SkNthSet(testVal, 0);
+        SkASSERT(testVal == (0x1 << result));
+    }
+
+    {
+        uint32_t testVal = 0x80000000;
+        int result = SkNthSet(testVal, 0);
+        SkASSERT(testVal == (0x1 << result));
+    }
+
+    {
+        uint32_t testVal = 0x55555555;
+        uint32_t recreated = 0;
+        for (int i = 0; i < 16; ++i) {
+            int result = SkNthSet(testVal, i);
+            SkASSERT(result == 2*i);
+            recreated |= (0x1 << result);
+        }
+        SkASSERT(testVal == recreated);
+    }
+
+    SkRandom rand;
+    for (int i = 0; i < 100; ++i) {
+        int expectedNumSetBits = 0;
+        uint32_t testVal = 0;
+
+        int numTries = rand.nextULessThan(33);
+        for (int j = 0; j < numTries; ++j) {
+            int bit = rand.nextRangeU(0, 31);
+
+            if (testVal & (0x1 << bit)) {
+                continue;
+            }
+
+            ++expectedNumSetBits;
+            testVal |= 0x1 << bit;
+        }
+
+        SkASSERT(SkPopCount(testVal) == expectedNumSetBits);
+        uint32_t recreated = 0;
+
+        for (int j = 0; j < expectedNumSetBits; ++j) {
+            int index = SkNthSet(testVal, j);
+            recreated |= (0x1 << index);
+        }
+
+        SkASSERT(recreated == testVal);
+    }
+}
+
 DEF_TEST(Math, reporter) {
     int         i;
     SkRandom    rand;
