@@ -16,6 +16,46 @@
       "message": "I am open to other options for flushing work during onFlush(). It seems like it\u0027s just a temporary solution until nanobench and viewer are more graphite-friendly, so I\u0027m okay with it for now.",
       "revId": "a0db1280b623cdfcd3877fca64fa96ed79d21059",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d3a8e81b_7c41b571",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-06-08T14:29:56Z",
+      "side": 1,
+      "message": "Yeah kind of sad to add this onFlush call in here, but I think it is more important for us to be getting accurate bench numbers sooner rather than wait to refactor all the public calls in our tools to handle Recorders like we want. However, we can\u0027t forget to go back and update things how we want them.",
+      "revId": "a0db1280b623cdfcd3877fca64fa96ed79d21059",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1762c258_b0eadc1e",
+        "filename": "src/gpu/graphite/Surface_Graphite.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-06-08T14:29:56Z",
+      "side": 1,
+      "message": "What do you think about putting this inside a GRAPHITE_TEST_UTILS guard?",
+      "range": {
+        "startLine": 33,
+        "startChar": 0,
+        "endLine": 43,
+        "endChar": 80
+      },
+      "revId": "a0db1280b623cdfcd3877fca64fa96ed79d21059",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
