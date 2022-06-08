@@ -590,7 +590,7 @@ void BeginBlock(const SkKeyContext& keyContext,
 //--------------------------------------------------------------------------------------------------
 // TODO: we need to feed the number of stops in the gradients into this method from the
 // combination code
-SkUniquePaintParamsID CreateKey(const SkKeyContext& keyContext,
+SkUniquePaintParamsID CreateKey1(const SkKeyContext& keyContext,
                                 SkPaintParamsKeyBuilder* builder,
                                 SkShaderType s,
                                 SkBlendMode bm) {
