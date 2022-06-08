@@ -69,6 +69,24 @@
       "parentUuid": "adf47f5a_172c3d36",
       "revId": "3430942ba7a06dd7bae0db8e1d6f6157a6b44a1b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "57c3a0cd_fbfd6b71",
+        "filename": "tools/trace/BUILD.bazel",
+        "patchSetId": 12
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-06-08T18:42:28Z",
+      "side": 1,
+      "message": "That is likely the case. Do note that even though you added Bazel rules for perfetto, nothing currently in the Bazel build system *uses* your SkPerfettoTrace because nothing uses EventTracingPriv.cpp.\n\nThat\u0027s not a blocker for this CL, just something to be aware of. (I haven\u0027t looked how EventTracingPriv.cpp normally gets pulled in).",
+      "parentUuid": "5ea24d53_73e4545e",
+      "revId": "3430942ba7a06dd7bae0db8e1d6f6157a6b44a1b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
