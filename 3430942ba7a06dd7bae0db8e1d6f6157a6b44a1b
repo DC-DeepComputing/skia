@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "faee6ada_13f5244f",
+        "filename": "WORKSPACE.bazel",
+        "patchSetId": 12
+      },
+      "lineNbr": 284,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-06-08T18:25:45Z",
+      "side": 1,
+      "message": "Sorted",
+      "parentUuid": "102eb10b_8f1c5abe",
+      "revId": "3430942ba7a06dd7bae0db8e1d6f6157a6b44a1b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "adf47f5a_172c3d36",
@@ -31,6 +49,24 @@
       "writtenOn": "2022-06-08T17:42:01Z",
       "side": 1,
       "message": "These generated_cc_atoms should no longer be here.",
+      "revId": "3430942ba7a06dd7bae0db8e1d6f6157a6b44a1b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5ea24d53_73e4545e",
+        "filename": "tools/trace/BUILD.bazel",
+        "patchSetId": 12
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-06-08T18:25:45Z",
+      "side": 1,
+      "message": "Pretty sure this entire file got blown away IIRC. Removed it (don\u0027t see it on main branch).",
+      "parentUuid": "adf47f5a_172c3d36",
       "revId": "3430942ba7a06dd7bae0db8e1d6f6157a6b44a1b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
