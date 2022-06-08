@@ -373,7 +373,7 @@ sk_sp<GrTexture> GrD3DGpu::onCreateCompressedTexture(SkISize dimensions,
                                                         isProtected,
                                                         mipLevelCount,
                                                         mipmapStatus,
-                                                        /*label=*/{});
+                                                        /*label=*/"D3DGpu_CreateCompressedTexture");
     if (!d3dTex) {
         return nullptr;
     }
@@ -1103,7 +1103,7 @@ bool GrD3DGpu::onRegenerateMipMapLevels(GrTexture * tex) {
                                                   uavDesc,
                                                   grProtected,
                                                   GrMipmapStatus::kDirty,
-                                                  /*label=*/{});
+                                                  /*label=*/"RegenerateMipMapLevels");
         if (!uavTexture) {
             return false;
         }
