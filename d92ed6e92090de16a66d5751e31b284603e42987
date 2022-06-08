@@ -68,6 +68,41 @@
       "message": "Are any additional changes required from me to merge it?",
       "revId": "d92ed6e92090de16a66d5751e31b284603e42987",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f814dc39_749a34ad",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-06-08T15:09:45Z",
+      "side": 1,
+      "message": "No, you don\u0027t even have to change the cache (I will do it eventually). \nPlease, add a TODO for the cache update.\nAssuming the presubmit check will go fine, I will have to submit it for you, right?",
+      "parentUuid": "692aa6c2_1f489e57",
+      "revId": "d92ed6e92090de16a66d5751e31b284603e42987",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6850aa34_b9ee39fd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-06-08T15:09:45Z",
+      "side": 1,
+      "message": "Yegor, as far as I remember you were interested in multithreading SkParagraph. This is the change on the topic... Just for you to know.",
+      "revId": "d92ed6e92090de16a66d5751e31b284603e42987",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
