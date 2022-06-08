@@ -166,7 +166,7 @@ sk_sp<GrVkTextureRenderTarget> GrVkTextureRenderTarget::MakeWrappedTextureRender
                                                                       std::move(resolveAttachment),
                                                                       mipmapStatus,
                                                                       cacheable,
-                                                                      /*label=*/{}));
+                                                                      /*label=*/"Vk_MakeWrappedTextureRenderTarget"));
 }
 
 size_t GrVkTextureRenderTarget::onGpuMemorySize() const {
