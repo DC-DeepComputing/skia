@@ -17,9 +17,11 @@
 #include "src/core/SkColorFilterBase.h"
 #include "src/core/SkColorSpacePriv.h"
 #include "src/core/SkColorSpaceXformSteps.h"
+#include "src/core/SkKeyHelpers.h"
 #include "src/core/SkLRUCache.h"
 #include "src/core/SkMatrixProvider.h"
 #include "src/core/SkOpts.h"
+#include "src/core/SkPaintParamsKey.h"
 #include "src/core/SkRasterPipeline.h"
 #include "src/core/SkReadBuffer.h"
 #include "src/core/SkRuntimeEffectPriv.h"
@@ -1148,6 +1150,18 @@ public:
         }
 
         return GrMatrixEffect::Make(matrix, std::move(fp));
+    }
+#endif
+
+#ifdef SK_ENABLE_SKSL
+    void addToKey(const SkKeyContext& keyContext,
+                  SkPaintParamsKeyBuilder* builder,
+                  SkPipelineDataGatherer* gatherer) const override {
+        // TODO(skia:13405): this is currently displaying solid cyan, not our Runtime Shader
+        constexpr SkPMColor4f kRuntimeShaderColor = {0, 1, 1, 1};
+        SolidColorShaderBlock::BeginBlock(keyContext, builder, gatherer,
+                                          /* unused */ kRuntimeShaderColor);
+        builder->endBlock();
     }
 #endif
 
