@@ -189,6 +189,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8578e260_09b9488c",
+        "filename": "src/core/SkKeyHelpers.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-06-08T17:50:23Z",
+      "side": 1,
+      "message": "Discussing offline, Michael\u0027s idea was to reduce the amount of ArenaData_*::beginBlock boilerplate code in the next CL in this chain by using templates. Right now the ArenaData_*::beginBlock calls iterate through the intrinsic combinations for that data so it wouldn\u0027t be that easy. Depending on how our API design meeting goes, however, using templates might become feasible.\n\nIn short, we\u0027re holding off on this for now.",
+      "parentUuid": "41555c49_e0830cfa",
+      "range": {
+        "startLine": 35,
+        "startChar": 9,
+        "endLine": 35,
+        "endChar": 19
+      },
+      "revId": "2f0ed6caac0aef37eeeb45dbfe6b3c6524eab013",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9c7e1f52_c99d08b2",
