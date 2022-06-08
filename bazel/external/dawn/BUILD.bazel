@@ -190,6 +190,38 @@ genrule(
     tools = [":dawn_gpu_info_generator"],
 )
 
+py_binary(
+    name = "dawn_version_generator",
+    srcs = [
+        "generator/dawn_version_generator.py",
+        "generator/generator_lib.py",
+    ],
+    deps = [
+        requirement("jinja2"),
+        # jinja2 has a dep on MarkupSafe. Declaring MarkupSafe here is not necessary, but it makes
+        # the link easier to find than searching the Bazel cache for generated deps.
+        requirement("MarkupSafe"),
+    ],
+)
+
+genrule(
+    name = "generate_version",
+    srcs = [
+        ".git/HEAD",
+        "generator/templates/BSD_LICENSE",
+        "generator/templates/dawn/common/Version.h",
+    ],
+    outs = [
+        "src/dawn/common/Version_autogen.h",
+    ],
+    cmd = "$(location :dawn_version_generator) " +
+          "--template-dir $$(dirname $(location generator/templates/BSD_LICENSE)) " +
+          "--dawn-dir not_used " +
+          "--override-git-hash $$(cat $(location .git/HEAD)) " +
+          "--output-dir $(RULEDIR)",
+    tools = [":dawn_version_generator"],
+)
+
 DAWN_HDRS = [
     "include/dawn/EnumClassBitmasks.h",
     "include/dawn/dawn_proc.h",
@@ -438,6 +470,7 @@ DAWN_SRCS = [
     "src/dawn/common/TypeTraits.h",
     "src/dawn/common/TypedInteger.h",
     "src/dawn/common/UnderlyingType.h",
+    "src/dawn/common/Version_autogen.h",
     "src/dawn/common/ityp_array.h",
     "src/dawn/common/ityp_bitset.h",
     "src/dawn/common/ityp_span.h",
