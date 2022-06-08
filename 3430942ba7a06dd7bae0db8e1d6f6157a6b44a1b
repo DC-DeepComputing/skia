@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "102eb10b_8f1c5abe",
+        "filename": "WORKSPACE.bazel",
+        "patchSetId": 12
+      },
+      "lineNbr": 284,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-06-08T17:42:01Z",
+      "side": 1,
+      "message": "nit: we sort our local repositories",
+      "revId": "3430942ba7a06dd7bae0db8e1d6f6157a6b44a1b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "adf47f5a_172c3d36",
+        "filename": "tools/trace/BUILD.bazel",
+        "patchSetId": 12
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-06-08T17:42:01Z",
+      "side": 1,
+      "message": "These generated_cc_atoms should no longer be here.",
+      "revId": "3430942ba7a06dd7bae0db8e1d6f6157a6b44a1b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
