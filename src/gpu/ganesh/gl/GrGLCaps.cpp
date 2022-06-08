@@ -3675,7 +3675,8 @@ void GrGLCaps::applyDriverCorrectnessWorkarounds(const GrGLContextInfo& ctxInfo,
     // http://anglebug.com/6030
     if (fMSFBOType == kES_EXT_MsToTexture_MSFBOType &&
         ctxInfo.angleBackend() == GrGLANGLEBackend::kD3D11) {
-        fDisallowDynamicMSAA = true;
+        fMSFBOType = kStandard_MSFBOType;
+        fMSAAResolvesAutomatically = false;
     }
 
     // http://skbug.com/12081
