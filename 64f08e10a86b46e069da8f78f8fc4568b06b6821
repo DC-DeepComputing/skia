@@ -16,6 +16,29 @@
       "message": "I originally had the placeholder color set to cyan, but changed it to magenta because several slides show cyan in Graphite today; it\u0027s the inverse of red, so you can get it \"accidentally\" with various blend modes combining against our placeholder red swatch. This confused me for a bit when looking at some slides that I thought were using runtime effects, but were actually just using blend modes.",
       "revId": "64f08e10a86b46e069da8f78f8fc4568b06b6821",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f4247594_e77412a4",
+        "filename": "src/core/SkRuntimeEffect.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1162,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-06-09T14:06:06Z",
+      "side": 1,
+      "message": "This color should be being collected as a uniform.",
+      "range": {
+        "startLine": 1162,
+        "startChar": 42,
+        "endLine": 1162,
+        "endChar": 54
+      },
+      "revId": "64f08e10a86b46e069da8f78f8fc4568b06b6821",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
