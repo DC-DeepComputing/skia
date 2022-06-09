@@ -24,7 +24,7 @@ namespace skgpu::graphite {
 
 class BoundsManager;
 class Recorder;
-class Shape;
+class Geometry;
 class Transform;
 
 class DrawPass;
@@ -54,7 +54,7 @@ public:
 
     void recordDraw(const Renderer& renderer,
                     const Transform& localToDevice,
-                    const Shape& shape,
+                    const Geometry& geometry,
                     const Clip& clip,
                     DrawOrder ordering,
                     const PaintParams* paint,
