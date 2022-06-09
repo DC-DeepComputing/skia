@@ -7,12 +7,15 @@
 
 #include "src/core/SkScalerCache.h"
 
+#include "SkGlyph.h"
 #include "include/core/SkDrawable.h"
 #include "include/core/SkGraphics.h"
 #include "include/core/SkPath.h"
 #include "include/core/SkTypeface.h"
+#include "src/core/SkDistanceFieldGen.h"
 #include "src/core/SkEnumerate.h"
 #include "src/core/SkGlyphBuffer.h"
+#include "src/core/SkRectPriv.h"
 #include "src/core/SkScalerContext.h"
 
 static SkFontMetrics use_or_generate_metrics(
@@ -321,6 +324,69 @@ size_t SkScalerCache::prepareForDrawableDrawing(
         });
 
     return delta + drawableDelta;
+}
+
+std::tuple<SkRect, SkPackedGlyphsAndPositions, SkPackedGlyphsAndPositions, size_t>
+    SkScalerCache::filterCandidateGlyphs(
+        SkScalar strikeToSourceScale,
+        SkPackedGlyphsAndPositions candidates,
+        SkPackedGlyphsAndPositions rejectBuffer,
+        std::function<bool(SkGlyphDigest)> filter) {
+    SkAutoMutexExclusive lock{fMu};
+    SkPackedGlyphID *candidateGlyphCursor = candidates.get<0>().begin(),
+                    *candidateGlyphEnd = candidates.get<0>().end(),
+                    *acceptedGlyphCursor = candidateGlyphCursor,
+                    *rejectGlyphCursor = rejectBuffer.get<0>().begin();
+    SkPoint *candidatePositionCursor = candidates.get<1>().begin(),
+            *acceptedPositionCursor = candidatePositionCursor,
+            *rejectPositionCursor = rejectBuffer.get<1>().begin();
+
+    static const constexpr SkPoint SDFTPaddingOffset =
+            SkPoint::Make(SK_DistanceFieldInset, SK_DistanceFieldInset);
+
+    SkRect bounds = SkRectPriv::MakeLargestInverted();
+    size_t totalIncrease = 0;
+    while (candidateGlyphCursor < candidateGlyphEnd) {
+        SkPackedGlyphID packedID = *candidateGlyphCursor++;
+        SkPoint position = *candidatePositionCursor++;
+        if (SkScalarsAreFinite(position.x(), position.y())) {
+            auto [digest, increase] = this->digest(packedID);
+            totalIncrease += increase;
+            if (!digest.isEmpty()) {
+                if (filter(digest)) {
+                    SkPoint topLeft = digest.leftTop(),
+                            bottomRight = digest.bottomRight();
+
+                    // If this is an SDFT glyph, then remove the SDFT padding to get the true
+                    // glyph bounds.
+                    if (digest.canDrawAsSDFT()) {
+                        topLeft += SDFTPaddingOffset;
+                        bottomRight -= SDFTPaddingOffset;
+                    }
+
+                    // Get the glyph bounds in source space.
+                    topLeft *= strikeToSourceScale;
+                    bottomRight *= strikeToSourceScale;
+
+                    // Accumulate the source bounds.
+                    bounds.joinPossiblyEmptyRect(SkRect::MakeLTRB(
+                            topLeft.x(), topLeft.y(), bottomRight.x(), bottomRight.y()));
+
+                    *acceptedGlyphCursor++ = packedID;
+                    *acceptedPositionCursor++ = topLeft;
+                } else {
+                    *rejectGlyphCursor++ = packedID;
+                    *rejectPositionCursor++ = position;
+                }
+            }
+        }
+    }
+
+    SkPackedGlyphID* acceptedGlyphsBegin = candidates.get<0>().begin();
+    auto accepted = candidates.first(candidateGlyphCursor - acceptedGlyphsBegin);
+    SkPackedGlyphID* rejectedGlyphsBegin = rejectBuffer.get<0>().begin();
+    auto rejected = rejectBuffer.first(rejectGlyphCursor - rejectedGlyphsBegin);
+    return {bounds, accepted, rejected, totalIncrease};
 }
 
 void SkScalerCache::findIntercepts(const SkScalar bounds[2], SkScalar scale, SkScalar xPos,

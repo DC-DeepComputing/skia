@@ -21,10 +21,12 @@
 #include "include/private/SkChecksum.h"
 #include "include/private/SkTHash.h"
 #include "src/core/SkDevice.h"
+#include "src/core/SkDistanceFieldGen.h"
 #include "src/core/SkDraw.h"
 #include "src/core/SkEnumerate.h"
 #include "src/core/SkGlyph.h"
 #include "src/core/SkReadBuffer.h"
+#include "src/core/SkRectPriv.h"
 #include "src/core/SkScalerCache.h"
 #include "src/core/SkStrikeCache.h"
 #include "src/core/SkTLazy.h"
@@ -192,6 +194,13 @@ public:
 
     SkScalar findMaximumGlyphDimension(SkSpan<const SkGlyphID> glyphs) override;
 
+    std::tuple<SkRect, SkPackedGlyphsAndPositions, SkPackedGlyphsAndPositions>
+    filterCandidateGlyphs(
+            SkScalar strikeToSourceScale,
+            SkPackedGlyphsAndPositions candidates,
+            SkPackedGlyphsAndPositions rejectBuffer,
+            std::function<bool(SkGlyphDigest)> filter) override;
+
     void onAboutToExitScope() override {}
 
     sk_sp<SkStrike> getUnderlyingStrike() const override { return nullptr; }
@@ -203,8 +212,7 @@ public:
     void resetScalerContext();
 
 private:
-    SkGlyphDigest digest(SkPackedGlyphID);
-
+    SkGlyphDigest digest(SkPackedGlyphID packedGlyphID);
     template <typename Rejector>
     void commonMaskLoop(
             SkDrawableGlyphBuffer* accepted, SkSourceGlyphBuffer* rejected, Rejector&& reject);
@@ -520,6 +528,64 @@ void RemoteStrike::prepareForDrawableDrawing(
                     rejected->reject(i);
                 }
             });
+}
+
+std::tuple<SkRect, SkPackedGlyphsAndPositions, SkPackedGlyphsAndPositions>
+        RemoteStrike::filterCandidateGlyphs(SkScalar strikeToSourceScale,
+                                    SkPackedGlyphsAndPositions candidates,
+                                    SkPackedGlyphsAndPositions rejectBuffer,
+                                    std::function<bool(SkGlyphDigest)> filter) {
+    SkPackedGlyphID *candidateGlyphCursor = candidates.get<0>().begin(),
+                    *candidateGlyphEnd = candidates.get<0>().end(),
+                    *acceptedGlyphCursor = candidateGlyphCursor,
+                    *rejectGlyphCursor = rejectBuffer.get<0>().begin();
+    SkPoint *candidatePositionCursor = candidates.get<1>().begin(),
+            *acceptedPositionCursor = candidatePositionCursor,
+            *rejectPositionCursor = rejectBuffer.get<1>().begin();
+
+    static const constexpr SkPoint SDFTPaddingOffset =
+            SkPoint::Make(SK_DistanceFieldInset, SK_DistanceFieldInset);
+
+    SkRect bounds = SkRectPriv::MakeLargestInverted();
+    while (candidateGlyphCursor < candidateGlyphEnd) {
+        SkPackedGlyphID packedID = *candidateGlyphCursor++;
+        SkPoint position = *candidatePositionCursor++;
+        if (SkScalarsAreFinite(position.x(), position.y())) {
+            SkGlyphDigest digest = this->digest(packedID);
+            if (!digest.isEmpty()) {
+                if (filter(digest)) {
+                    SkPoint topLeft = digest.leftTop(),
+                            bottomRight = digest.bottomRight();
+
+                    // If this is an SDFT glyph, then remove the SDFT padding to get the true
+                    // glyph bounds.
+                    if (digest.canDrawAsSDFT()) {
+                        topLeft += SDFTPaddingOffset;
+                        bottomRight -= SDFTPaddingOffset;
+                    }
+
+                    // Get the glyph bounds in source space.
+                    topLeft *= strikeToSourceScale;
+                    bottomRight *= strikeToSourceScale;
+
+                    // Accumulate the source bounds.
+                    bounds.joinPossiblyEmptyRect(SkRect::MakeLTRB(
+                            topLeft.x(), topLeft.y(), bottomRight.x(), bottomRight.y()));
+
+                    *acceptedGlyphCursor++ = packedID;
+                    *acceptedPositionCursor++ = topLeft;
+                } else {
+                    *rejectGlyphCursor++ = packedID;
+                    *rejectPositionCursor++ = position;
+                }
+            }
+        }
+    }
+    SkPackedGlyphID* acceptedGlyphsBegin = candidates.get<0>().begin();
+    auto accepted = candidates.first(candidateGlyphCursor - acceptedGlyphsBegin);
+    SkPackedGlyphID* rejectedGlyphsBegin = rejectBuffer.get<0>().begin();
+    auto rejected = rejectBuffer.first(rejectGlyphCursor - rejectedGlyphsBegin);
+    return {bounds, accepted, rejected};
 }
 
 // -- WireTypeface ---------------------------------------------------------------------------------

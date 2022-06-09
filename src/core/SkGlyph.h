@@ -297,8 +297,14 @@ public:
     bool isColor()       const { return fIsColor;       }
     bool canDrawAsMask() const { return fCanDrawAsMask; }
     bool canDrawAsSDFT() const { return fCanDrawAsSDFT; }
-    uint16_t maxDimension()  const {
+    uint16_t maxDimension() const {
         return std::max(fWidth, fHeight);
+    }
+    SkPoint leftTop() const {
+        return SkPoint::Make(fLeft, fTop);
+    }
+    SkPoint bottomRight() const {
+        return SkPoint::Make(fLeft + fWidth, fTop + fHeight);
     }
 
     // Common categories for glyph types used by GPU.

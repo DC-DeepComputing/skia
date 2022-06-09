@@ -169,6 +169,21 @@ public:
         return maxDimension;
     }
 
+    std::tuple<SkRect, SkPackedGlyphsAndPositions, SkPackedGlyphsAndPositions>
+        filterCandidateGlyphs(
+            SkScalar strikeToSourceScale,
+            SkPackedGlyphsAndPositions candidates,
+            SkPackedGlyphsAndPositions rejectBuffer,
+            std::function<bool(SkGlyphDigest)> filter) override {
+        auto [bounds, accepted, rejected, increase] = fScalerCache.filterCandidateGlyphs(
+                strikeToSourceScale,
+                candidates,
+                rejectBuffer,
+                filter);
+        this->updateDelta(increase);
+        return {bounds, accepted, rejected};
+    }
+
     void onAboutToExitScope() override {
         this->unref();
     }

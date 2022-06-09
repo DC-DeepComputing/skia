@@ -89,6 +89,13 @@ public:
     std::tuple<SkScalar, size_t>
             findMaximumGlyphDimension(SkSpan<const SkGlyphID> glyphs) SK_EXCLUDES(fMu);
 
+    std::tuple<SkRect, SkPackedGlyphsAndPositions, SkPackedGlyphsAndPositions, size_t>
+        filterCandidateGlyphs(
+            SkScalar strikeToSourceScale,
+            SkPackedGlyphsAndPositions candidates,
+            SkPackedGlyphsAndPositions rejectBuffer,
+            std::function<bool(SkGlyphDigest)> filter) SK_EXCLUDES(fMu);
+
     void dump() const SK_EXCLUDES(fMu);
 
     SkScalerContext* getScalerContext() const { return fScalerContext.get(); }
