@@ -36,8 +36,8 @@ generated_cc_atom(
 )
 
 generated_cc_atom(
-    name = "BuldgeEffect_src",
-    srcs = ["BuldgeEffect.cpp"],
+    name = "BulgeEffect_src",
+    srcs = ["BulgeEffect.cpp"],
     visibility = ["//:__subpackages__"],
     deps = [
         ":Effects_hdr",
