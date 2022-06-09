@@ -1286,7 +1286,6 @@ func (b *jobBuilder) compile() string {
 	return name
 }
 
-
 // recreateSKPs generates a RecreateSKPs task.
 func (b *jobBuilder) recreateSKPs() {
 	cmd := []string{
@@ -2100,6 +2099,55 @@ func (b *jobBuilder) bazelBuild() {
 			cmd = append(cmd, "--bazel_arg=--config=linux_rbe")
 			cmd = append(cmd, "--bazel_arg=--jobs=100")
 			cmd = append(cmd, "--bazel_arg=--remote_download_minimal")
+		} else {
+			panic("unsupported Bazel host " + host)
+		}
+		b.cmd(cmd...)
+
+		// TODO(kjlubick) I believe this bazelisk package is just the Linux one. To support
+		//   more hosts, we need to have platform-specific bazelisk binaries.
+		b.cipd(b.MustGetCipdPackageFromAsset("bazelisk"))
+		b.addToPATH("bazelisk")
+		b.idempotent()
+		b.cas(CAS_COMPILE)
+		b.attempts(1)
+		b.serviceAccount(b.cfg.ServiceAccountCompile)
+	})
+}
+
+func (b *jobBuilder) bazelTest() {
+	taskdriverName, config, host, cross := b.parts.bazelTestParts()
+
+	b.addTask(b.Name, func(b *taskBuilder) {
+		cmd := []string{"./" + taskdriverName,
+			"--project_id=skia-swarming-bots",
+			"--task_id=" + specs.PLACEHOLDER_TASK_ID,
+			"--task_name=" + b.Name,
+			"--build_config=" + config,
+			"--workdir=.",
+		}
+
+		switch taskdriverName {
+		case "canvaskit_gold":
+			// TODO(kjlubick) pass in appropriate keys and a path to goldctl
+			cmd = append(cmd, "build_config=release")
+			// TODO(kjlubick) have MustGetCipdPackageFromAsset support ${platform}
+			b.cipd(b.MustGetCipdPackageFromAsset("zip_linux-amd64"))
+			break
+		}
+
+		if cross != "" {
+			// The cross (and host) platform is expected to be defined in
+			// //bazel/common_config_settings/BUILD.bazel
+			cross = "//bazel/common_config_settings:" + cross
+			cmd = append(cmd, "--cross="+cross)
+		}
+		if host == "linux_x64" {
+			b.linuxGceDimensions(MACHINE_TYPE_MEDIUM)
+			b.dep(b.buildTaskDrivers("linux", "amd64"))
+			// We want all Linux Bazel Builds to use RBE
+			cmd = append(cmd, "--bazel_arg=--config=linux_rbe")
+			cmd = append(cmd, "--bazel_arg=--jobs=100")
 		} else {
 			panic("unsupported Bazel host " + host)
 		}
