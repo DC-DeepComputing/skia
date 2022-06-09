@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "529e1152_c0ff2250",
+        "filename": "resources/sksl/compute/ArrayAdd.compute",
+        "patchSetId": 16
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-06-09T18:55:50Z",
+      "side": 1,
+      "message": "When you say \"order\", what do you mean by that? For the two unsized arrays doesn\u0027t this correspond to the binding locations used by the API-side or am I misunderstanding? How is that different from a texture\u0027s binding location?",
+      "parentUuid": "6a5277e8_e18317f3",
+      "range": {
+        "startLine": 1,
+        "startChar": 7,
+        "endLine": 1,
+        "endChar": 15
+      },
+      "revId": "39434936f3ef13ec8665cb3eecee754710b70420",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4c214804_c1d97062",
         "filename": "resources/sksl/compute/ArrayAdd.compute",
         "patchSetId": 16
@@ -85,6 +109,30 @@
       "side": 1,
       "message": "There\u0027s a followup CL coming which will add explicit address space modifiers, following the Metal model (device, thread, threadgroup, constant). Likewise with uniforms, Metal doesn\u0027t even have uniforms, so I\u0027m not necessarily convinced there\u0027s a lot of value in adding support for them in this context.",
       "parentUuid": "4c214804_c1d97062",
+      "range": {
+        "startLine": 2,
+        "startChar": 19,
+        "endLine": 2,
+        "endChar": 21
+      },
+      "revId": "39434936f3ef13ec8665cb3eecee754710b70420",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cae84848_880a67ea",
+        "filename": "resources/sksl/compute/ArrayAdd.compute",
+        "patchSetId": 16
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-06-09T18:55:50Z",
+      "side": 1,
+      "message": "Metal is special, in that there everything is a \"buffer\" but OpenGL, Vulkan, and WebGPU all have uniforms in their compute shaders. In GLSL (OpenGL and Vulkan) the `in` keyword is used only for varyings like gl_GlobalInvocationID and _resources_ are declared as one would declare any good-old SSBO or uniform.\n\nI was under the impression that we wanted to stay close to GLSL. It\u0027s OK if we want to abandon that stance but I think I\u0027d like to see a plan for how all of the language idioms we are introducing now will eventually map to platforms other than Metal, especially if we\u0027re exposing Metal-style address spaces in SkSL.",
+      "parentUuid": "1c6bbb08_22afaabf",
       "range": {
         "startLine": 2,
         "startChar": 19,
