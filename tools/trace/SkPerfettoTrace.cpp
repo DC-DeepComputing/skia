@@ -295,3 +295,11 @@ void SkPerfettoTrace::triggerTraceEvent(const uint8_t* categoryEnabledFlag,
         break;
     }
 }
+
+void SkPerfettoTrace::newTracingSection(const char* name) {
+    if (perfetto::Tracing::IsInitialized()) {
+      closeTracingSession();
+    }
+    std::string baseFileName {name};
+    openNewTracingSession(baseFileName);
+}
