@@ -7,17 +7,16 @@
 
 #include "include/gpu/graphite/Recording.h"
 
-#include "src/gpu/graphite/CommandBuffer.h"
-#include "src/gpu/graphite/PipelineDataCache.h"
+#include "src/gpu/graphite/Resource.h"
+#include "src/gpu/graphite/TaskGraph.h"
 
 namespace skgpu::graphite {
 
-Recording::Recording(sk_sp<CommandBuffer> commandBuffer,
-                     std::unique_ptr<TextureDataCache> textureDataCache)
-        : fCommandBuffer(std::move(commandBuffer))
-        , fTextureDataCache(std::move(textureDataCache)) {
+Recording::Recording(std::unique_ptr<TaskGraph> graph)
+        : fGraph(std::move(graph)) {
 }
 
 Recording::~Recording() {}
+
 
 } // namespace skgpu::graphite
