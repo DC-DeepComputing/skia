@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b1d7229f_00d7b397",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 16
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-06-09T14:20:47Z",
+      "side": 1,
+      "message": "Here is my initial stab at creating a Geometry class to encapsulate Shape. I avoided pivoting from drawShape within Device.cpp per your suggestion. We can get together to decide if we want to change anything else!",
+      "revId": "f747a2d3dce1571af90774ff39c2b1fc59265b75",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
