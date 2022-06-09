@@ -16,6 +16,236 @@
       "message": "PTAL",
       "revId": "ba18f02287c3ca66d031ffa59ca9e7c67219d591",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9c69dfdc_fdf79dd1",
+        "filename": "src/gpu/graphite/DrawAtlas.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-06-09T19:16:53Z",
+      "side": 1,
+      "message": "Consider make_unique?",
+      "range": {
+        "startLine": 50,
+        "startChar": 31,
+        "endLine": 52,
+        "endChar": 80
+      },
+      "revId": "ba18f02287c3ca66d031ffa59ca9e7c67219d591",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e5540c70_79e7eb73",
+        "filename": "src/gpu/graphite/DrawAtlas.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 261,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-06-09T19:16:53Z",
+      "side": 1,
+      "message": "Consider having the following at the top of the file:\n#if defined(DUMP_ATLAS_DATA)\n  static const cosntexpr bool kDumpAtlasData \u003d true;\n#else\n  static const constexpr bool kDumpAtlasData \u003d false;\n#endif\n\nThen use:\n  if constexpr (kDumpAtlasData) {\n     ...\n  }\n  \nThis pattern keeps the dump atlas code from getting stale. It will be checked, but discarded when not used.",
+      "range": {
+        "startLine": 261,
+        "startChar": 0,
+        "endLine": 261,
+        "endChar": 22
+      },
+      "revId": "ba18f02287c3ca66d031ffa59ca9e7c67219d591",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7a62e601_98b62bee",
+        "filename": "src/gpu/graphite/DrawAtlas.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 333,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-06-09T19:16:53Z",
+      "side": 1,
+      "message": "lower index?",
+      "range": {
+        "startLine": 333,
+        "startChar": 55,
+        "endLine": 333,
+        "endChar": 62
+      },
+      "revId": "ba18f02287c3ca66d031ffa59ca9e7c67219d591",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3baa7f3f_b2259d53",
+        "filename": "src/gpu/graphite/DrawAtlas.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 341,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-06-09T19:16:53Z",
+      "side": 1,
+      "message": "lower index?",
+      "range": {
+        "startLine": 341,
+        "startChar": 49,
+        "endLine": 341,
+        "endChar": 56
+      },
+      "revId": "ba18f02287c3ca66d031ffa59ca9e7c67219d591",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "276a1d7e_1d19185b",
+        "filename": "src/gpu/graphite/DrawAtlas.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-06-09T19:16:53Z",
+      "side": 1,
+      "message": "LLC",
+      "range": {
+        "startLine": 2,
+        "startChar": 25,
+        "endLine": 2,
+        "endChar": 29
+      },
+      "revId": "ba18f02287c3ca66d031ffa59ca9e7c67219d591",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "50c67152_84ae257b",
+        "filename": "src/gpu/graphite/DrawAtlas.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-06-09T19:16:53Z",
+      "side": 1,
+      "message": "Is this like the inverse of ref count? This seems subtle. Maybe describe it more? Would an example be helpful?",
+      "range": {
+        "startLine": 44,
+        "startChar": 59,
+        "endLine": 45,
+        "endChar": 91
+      },
+      "revId": "ba18f02287c3ca66d031ffa59ca9e7c67219d591",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4817533c_5cf2ac46",
+        "filename": "src/gpu/graphite/DrawAtlas.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-06-09T19:16:53Z",
+      "side": 1,
+      "message": "Who should call recordUploads()?",
+      "range": {
+        "startLine": 90,
+        "startChar": 28,
+        "endLine": 90,
+        "endChar": 43
+      },
+      "revId": "ba18f02287c3ca66d031ffa59ca9e7c67219d591",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "20c04231_2eaa5843",
+        "filename": "src/gpu/graphite/DrawAtlas.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-06-09T19:16:53Z",
+      "side": 1,
+      "message": "the draw? must immediately...",
+      "range": {
+        "startLine": 93,
+        "startChar": 77,
+        "endLine": 93,
+        "endChar": 79
+      },
+      "revId": "ba18f02287c3ca66d031ffa59ca9e7c67219d591",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f3e76296_3f21377c",
+        "filename": "src/gpu/graphite/DrawAtlas.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 231,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-06-09T19:16:53Z",
+      "side": 1,
+      "message": "... 2x the 565 and ARGB dimensions, because A8 is the most frequently used mask format,",
+      "range": {
+        "startLine": 231,
+        "startChar": 37,
+        "endLine": 231,
+        "endChar": 40
+      },
+      "revId": "ba18f02287c3ca66d031ffa59ca9e7c67219d591",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5849f569_bb8339ba",
+        "filename": "src/gpu/graphite/DrawAtlas.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 249,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-06-09T19:16:53Z",
+      "side": 1,
+      "message": "which has 11 bits of significant limiting dimensions to  2048x2048.",
+      "range": {
+        "startLine": 249,
+        "startChar": 52,
+        "endLine": 249,
+        "endChar": 61
+      },
+      "revId": "ba18f02287c3ca66d031ffa59ca9e7c67219d591",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
