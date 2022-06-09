@@ -1,0 +1,8 @@
+layout(location=10000000) in int x;
+
+void main() {
+}
+
+/*%%*
+layout(location) must be less than or equal to 100
+*%%*/
