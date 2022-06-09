@@ -76,7 +76,7 @@ bool ClipStack::TransformedShape::intersects(const TransformedShape& o) const {
         // complexity (for paths) and limited utility (e.g. two round rects that are disjoint
         // solely from their corner curves).
         return fShape.bounds().intersects(o.fShape.bounds());
-    } else if (fLocalToDevice.type() > Transform::Type::kRectStaysRect ||
+    } /*else if (fLocalToDevice.type() > Transform::Type::kRectStaysRect ||
                o.fLocalToDevice.type() > Transform::Type::kRectStaysRect) {
         // The shapes don't share the same coordinate system, and their approximate 'outer'
         // bounds in device space could have substantial outsetting to contain the transformed
@@ -100,9 +100,10 @@ bool ClipStack::TransformedShape::intersects(const TransformedShape& o) const {
                 return true;
             }
         }
+
         // Else no corners of 'o's bounds are inside our bounds, so no intersection
         return false;
-    }
+    }*/
 
     // Else the two shape's coordinate spaces are different but both rect-stays-rect or simpler.
     // This means, though, that their outer bounds approximations are tight to their transormed
@@ -115,6 +116,8 @@ bool ClipStack::TransformedShape::contains(const TransformedShape& o) const {
     if (fInnerBounds.contains(o.fOuterBounds)) {
         return true;
     }
+
+    // if outer bounds does not contain o.,outer bounds, can we skip testing the more expensive case?
     if (fContainsChecksOnlyBounds) {
         return false; // don't do any more work
     }
@@ -265,7 +268,7 @@ ClipStack::RawElement::RawElement(const Rect& deviceBounds,
     // Apply rect-stays-rect transforms to rects and round rects to reduce the number of unique
     // local coordinate systems that are in play.
     if (!fOuterBounds.isEmptyNegativeOrNaN() &&
-        fLocalToDevice.type() == Transform::Type::kRectStaysRect) {
+        fLocalToDevice.type() <= Transform::Type::kRectStaysRect) {
         if (fShape.isRect()) {
             // The actual geometry can be updated to the device-intersected bounds and we know the
             // inner bounds are equal to the outer.
