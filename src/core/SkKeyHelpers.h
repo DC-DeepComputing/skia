@@ -13,6 +13,7 @@
 #endif
 
 #include "include/core/SkBlendMode.h"
+#include "include/core/SkData.h"
 #include "include/core/SkM44.h"
 #include "include/core/SkSamplingOptions.h"
 #include "include/core/SkShader.h"
@@ -165,7 +166,32 @@ struct BlendModeBlock {
                            SkPaintParamsKeyBuilder*,
                            SkPipelineDataGatherer*,
                            SkBlendMode);
+};
 
+struct RuntimeShaderBlock {
+    struct ShaderData {
+        // This ctor is used during pre-compilation when we don't have enough information to
+        // extract uniform data.
+        ShaderData(sk_sp<const SkRuntimeEffect> effect);
+
+        // This ctor is used when extracting information from PaintParams.
+        ShaderData(sk_sp<const SkRuntimeEffect> effect, sk_sp<const SkData> uniforms);
+
+        bool operator==(const ShaderData& rhs) const {
+            return fEffect == rhs.fEffect &&
+                   fUniforms->equals(rhs.fUniforms.get());
+        }
+        bool operator!=(const ShaderData& rhs) const { return !(*this == rhs); }
+
+        // Runtime shader data.
+        sk_sp<const SkRuntimeEffect> fEffect;
+        sk_sp<const SkData>          fUniforms;
+    };
+
+    static void BeginBlock(const SkKeyContext&,
+                           SkPaintParamsKeyBuilder*,
+                           SkPipelineDataGatherer*,
+                           const ShaderData&);
 };
 
 // Bridge between the combinations system and the SkPaintParamsKey

@@ -549,6 +549,16 @@ static constexpr int kNumBlendShaderChildren = 2;
 static constexpr char kBlendShaderName[] = "sk_blend_shader";
 
 //--------------------------------------------------------------------------------------------------
+static constexpr SkUniform kRuntimeShaderUniforms[] = {
+        {"padding1", SkSLType::kInt},  // TODO(skia:13415): remove me
+        {"padding2", SkSLType::kInt},
+        {"padding3", SkSLType::kInt},
+        {"padding4", SkSLType::kInt},
+};
+
+static constexpr char kRuntimeShaderName[] = "sk_runtime_placeholder";
+
+//--------------------------------------------------------------------------------------------------
 static constexpr char kErrorName[] = "sk_error";
 
 //--------------------------------------------------------------------------------------------------
@@ -822,6 +832,16 @@ SkShaderCodeDictionary::SkShaderCodeDictionary() {
             kBlendShaderName,
             GenerateDefaultGlueCode,
             kNumBlendShaderChildren,
+            { }
+    };
+    fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kRuntimeShader] = {
+            "RuntimeShader",
+            SkMakeSpan(kRuntimeShaderUniforms),
+            SnippetRequirementFlags::kNone,
+            { },     // no samplers
+            kRuntimeShaderName,
+            GenerateDefaultGlueCode,
+            kNoChildren,
             { }
     };
     fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kFixedFunctionBlender] = {
