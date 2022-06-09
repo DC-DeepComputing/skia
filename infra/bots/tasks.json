@@ -45,6 +45,11 @@
         "BazelBuild-skia_public-release-linux_x64"
       ]
     },
+    "BazelTest-canvaskit_gold-release-linux_x64": {
+      "tasks": [
+        "BazelTest-canvaskit_gold-release-linux_x64"
+      ]
+    },
     "Build-Debian10-Clang-arm-Debug-Android": {
       "tasks": [
         "Build-Debian10-Clang-arm-Debug-Android"
@@ -3611,6 +3616,51 @@
       ],
       "env_prefixes": {
         "PATH": [
+          "bazelisk"
+        ]
+      },
+      "idempotent": true,
+      "max_attempts": 1,
+      "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
+    },
+    "BazelTest-canvaskit_gold-release-linux_x64": {
+      "casSpec": "compile",
+      "cipd_packages": [
+        {
+          "name": "skia/bots/bazelisk",
+          "path": "bazelisk",
+          "version": "version:0"
+        },
+        {
+          "name": "skia/bots/zip_linux-amd64",
+          "path": "zip",
+          "version": "version:0"
+        }
+      ],
+      "command": [
+        "./canvaskit_gold",
+        "--project_id=skia-swarming-bots",
+        "--task_id=<(TASK_ID)",
+        "--task_name=BazelTest-canvaskit_gold-release-linux_x64",
+        "--build_config=release",
+        "--workdir=.",
+        "build_config=release",
+        "--bazel_arg=--config=linux_rbe",
+        "--bazel_arg=--jobs=100"
+      ],
+      "dependencies": [
+        "Housekeeper-PerCommit-BuildTaskDrivers_linux_amd64"
+      ],
+      "dimensions": [
+        "cpu:x86-64-Haswell_GCE",
+        "gpu:none",
+        "machine_type:n1-standard-16",
+        "os:Debian-10.3",
+        "pool:Skia"
+      ],
+      "env_prefixes": {
+        "PATH": [
+          "zip",
           "bazelisk"
         ]
       },
@@ -83580,6 +83630,8 @@
         "skia/infra/canvaskit",
         "skia/infra/pathkit",
         "skia/modules",
+        "skia/package-lock.json",
+        "skia/package.json",
         "skia/platform_tools/android/apps/skottie/skottielib/src/main/cpp/native-lib.cpp",
         "skia/platform_tools/android/launcher/skia_launcher.cpp",
         "skia/platform_tools/android/vulkan/Skia_Vulkan_Android.h",
