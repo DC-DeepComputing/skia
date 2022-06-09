@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6a5277e8_e18317f3",
+        "filename": "resources/sksl/compute/ArrayAdd.compute",
+        "patchSetId": 16
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-06-09T15:02:26Z",
+      "side": 1,
+      "message": "The location in this case purely specifies the order in which the parameters appear in the compute shader\u0027s parameters. Textures are a different beast.",
+      "parentUuid": "4fcb37c6_4c9fa777",
+      "range": {
+        "startLine": 1,
+        "startChar": 7,
+        "endLine": 1,
+        "endChar": 15
+      },
+      "revId": "39434936f3ef13ec8665cb3eecee754710b70420",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4c214804_c1d97062",
         "filename": "resources/sksl/compute/ArrayAdd.compute",
         "patchSetId": 16
@@ -37,6 +61,30 @@
       "writtenOn": "2022-06-08T22:19:31Z",
       "side": 1,
       "message": "I don\u0027t necessarily want to hold back this CL for this, as it\u0027s a great first pass, but I\u0027m still not a fan of `in` and `out` in this context. When used with global variables and blocks, `in`/`out` in GLSL (and the corresponding `Input`/`Output` storage class decorators in SPIR-V) are used with entry point IO. Someone with a GL background may read this as denoting a different instance of `src1` for each invocation of `main()` but there is really one global `src1` that is shared across invocations. A compute stage doesn\u0027t necessarily have prescribed pipeline input/output and IIUC we are using these keywords really as a way to specify \"read/write access mode\".\n\nEventually we will want to enable uniforms in compute shaders. AFAIK textures/samplers used in compute shaders are already decorated as being in UniformConstant storage class in Vulkan and would be declared as `uniform` in GLSL. Similarly, GLSL storage blocks use the `buffer` keyword and look more or less like uniforms in code.\n\nWhy not start out with allowing `uniform` and `buffer` keywords to specify the address spaces? We could then use interface blocks and global declarations as we do for fragment/vertex shaders and the code would feel familiar.",
+      "range": {
+        "startLine": 2,
+        "startChar": 19,
+        "endLine": 2,
+        "endChar": 21
+      },
+      "revId": "39434936f3ef13ec8665cb3eecee754710b70420",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1c6bbb08_22afaabf",
+        "filename": "resources/sksl/compute/ArrayAdd.compute",
+        "patchSetId": 16
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-06-09T15:02:26Z",
+      "side": 1,
+      "message": "There\u0027s a followup CL coming which will add explicit address space modifiers, following the Metal model (device, thread, threadgroup, constant). Likewise with uniforms, Metal doesn\u0027t even have uniforms, so I\u0027m not necessarily convinced there\u0027s a lot of value in adding support for them in this context.",
+      "parentUuid": "4c214804_c1d97062",
       "range": {
         "startLine": 2,
         "startChar": 19,

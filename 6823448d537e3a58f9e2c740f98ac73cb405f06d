@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b95687eb_35af4b86",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 15
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-06-09T15:02:26Z",
+      "side": 1,
+      "message": "Good point, I\u0027ll address this in a followup.",
+      "parentUuid": "7bea3916_9a522e0c",
+      "revId": "6823448d537e3a58f9e2c740f98ac73cb405f06d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4af69c0d_5ec134e3",
@@ -41,6 +59,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "548a98f7_f530bf62",
+        "filename": "resources/sksl/errors/ComputeUniform.compute",
+        "patchSetId": 15
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-06-09T15:02:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4af69c0d_5ec134e3",
+      "range": {
+        "startLine": 4,
+        "startChar": 0,
+        "endLine": 4,
+        "endChar": 1
+      },
+      "revId": "6823448d537e3a58f9e2c740f98ac73cb405f06d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dc0b34ed_b99e21af",
@@ -54,6 +96,30 @@
       "writtenOn": "2022-06-07T20:58:11Z",
       "side": 1,
       "message": "Can we convert this to something that explicitly says we allow unsizedArrays (based on program kind)? We\u0027ve already started talking about adding them to fragment shaders in graphite, so having these checks semantically accurate (even if today it just checks for compute) would simplify future experiments.",
+      "range": {
+        "startLine": 500,
+        "startChar": 16,
+        "endLine": 500,
+        "endChar": 47
+      },
+      "revId": "6823448d537e3a58f9e2c740f98ac73cb405f06d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1b76f981_31aea187",
+        "filename": "src/sksl/SkSLDSLParser.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 500,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-06-09T15:02:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dc0b34ed_b99e21af",
       "range": {
         "startLine": 500,
         "startChar": 16,
@@ -111,6 +177,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bf72ac01_aabb7552",
+        "filename": "src/sksl/SkSLIntrinsicList.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-06-09T15:02:26Z",
+      "side": 1,
+      "message": "The file is 99% alphabetized. Since I was already in there adding a line right next to these, I figured I\u0027d fix their alphabetization while I was there.",
+      "parentUuid": "a497df1c_9de6cf78",
+      "range": {
+        "startLine": 48,
+        "startChar": 0,
+        "endLine": 48,
+        "endChar": 38
+      },
+      "revId": "6823448d537e3a58f9e2c740f98ac73cb405f06d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fd92ebe6_b6ef8e03",
@@ -124,6 +214,30 @@
       "writtenOn": "2022-06-07T19:39:53Z",
       "side": 1,
       "message": "this-\u003etypeName",
+      "range": {
+        "startLine": 161,
+        "startChar": 15,
+        "endLine": 161,
+        "endChar": 23
+      },
+      "revId": "6823448d537e3a58f9e2c740f98ac73cb405f06d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0e32b67d_f5a6614c",
+        "filename": "src/sksl/codegen/SkSLMetalCodeGenerator.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-06-09T15:02:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fd92ebe6_b6ef8e03",
       "range": {
         "startLine": 161,
         "startChar": 15,
@@ -157,6 +271,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bde0710c_68d58484",
+        "filename": "src/sksl/codegen/SkSLMetalCodeGenerator.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 246,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-06-09T15:02:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e1db637e_f7612577",
+      "range": {
+        "startLine": 246,
+        "startChar": 12,
+        "endLine": 246,
+        "endChar": 25
+      },
+      "revId": "6823448d537e3a58f9e2c740f98ac73cb405f06d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "35289f4e_6e572e21",
@@ -170,6 +308,30 @@
       "writtenOn": "2022-06-07T19:39:53Z",
       "side": 1,
       "message": "Reading a negative check like this is difficult; consider a helper function `Type::isUnsizedArray` and make this `!type-\u003eisUnsizedArray()`",
+      "range": {
+        "startLine": 247,
+        "startChar": 57,
+        "endLine": 248,
+        "endChar": 49
+      },
+      "revId": "6823448d537e3a58f9e2c740f98ac73cb405f06d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c9eeba38_d7612244",
+        "filename": "src/sksl/codegen/SkSLMetalCodeGenerator.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 248,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-06-09T15:02:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "35289f4e_6e572e21",
       "range": {
         "startLine": 247,
         "startChar": 57,
@@ -203,6 +365,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "62fd8ac0_e343fbf6",
+        "filename": "src/sksl/codegen/SkSLMetalCodeGenerator.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 2006,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-06-09T15:02:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e8ab6c50_75deab2c",
+      "range": {
+        "startLine": 1969,
+        "startChar": 0,
+        "endLine": 2006,
+        "endChar": 5
+      },
+      "revId": "6823448d537e3a58f9e2c740f98ac73cb405f06d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "07557b26_e7a9c0eb",
@@ -216,6 +402,30 @@
       "writtenOn": "2022-06-07T19:39:53Z",
       "side": 1,
       "message": "nit: I think some of the indentation is wrong in the output because this isn\u0027t using `writeLine`.",
+      "range": {
+        "startLine": 2216,
+        "startChar": 4,
+        "endLine": 2216,
+        "endChar": 25
+      },
+      "revId": "6823448d537e3a58f9e2c740f98ac73cb405f06d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6dfe4cab_5945ef6d",
+        "filename": "src/sksl/codegen/SkSLMetalCodeGenerator.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 2216,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-06-09T15:02:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "07557b26_e7a9c0eb",
       "range": {
         "startLine": 2216,
         "startChar": 4,
@@ -243,6 +453,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a467c5db_b068f8b2",
+        "filename": "src/sksl/codegen/SkSLMetalCodeGenerator.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 2533,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-06-09T15:02:26Z",
+      "side": 1,
+      "message": "Derp. For some reason I was thinking this was only called at the end of the main for the implicit return.",
+      "parentUuid": "4b747ae9_50df9381",
+      "revId": "6823448d537e3a58f9e2c740f98ac73cb405f06d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "419dbef0_1f358fcb",
@@ -256,6 +484,30 @@
       "writtenOn": "2022-06-07T19:39:53Z",
       "side": 1,
       "message": "up to you: I wonder if it might be easier to name them `textureTypeName` and `writeTextureType` to make the modifier requirement easier to understand at the call site.",
+      "range": {
+        "startLine": 139,
+        "startChar": 9,
+        "endLine": 139,
+        "endChar": 18
+      },
+      "revId": "6823448d537e3a58f9e2c740f98ac73cb405f06d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f01be76a_4e27dd93",
+        "filename": "src/sksl/codegen/SkSLMetalCodeGenerator.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-06-09T15:02:26Z",
+      "side": 1,
+      "message": "Huh, I guess I did only end up calling these variants for types we already know are textures. Done.",
+      "parentUuid": "419dbef0_1f358fcb",
       "range": {
         "startLine": 139,
         "startChar": 9,
@@ -289,6 +541,54 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c0a2562e_afb1fe6c",
+        "filename": "src/sksl/codegen/SkSLMetalCodeGenerator.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 153,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-06-09T15:02:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e7fdce29_669670fd",
+      "range": {
+        "startLine": 153,
+        "startChar": 9,
+        "endLine": 153,
+        "endChar": 37
+      },
+      "revId": "6823448d537e3a58f9e2c740f98ac73cb405f06d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "54fe5c21_6976b754",
+        "filename": "src/sksl/codegen/SkSLMetalCodeGenerator.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 153,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-06-09T15:02:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e7fdce29_669670fd",
+      "range": {
+        "startLine": 153,
+        "startChar": 9,
+        "endLine": 153,
+        "endChar": 37
+      },
+      "revId": "6823448d537e3a58f9e2c740f98ac73cb405f06d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "62202b9c_9e6e82ee",
@@ -302,6 +602,30 @@
       "writtenOn": "2022-06-07T19:39:53Z",
       "side": 1,
       "message": "Could be `baseType-\u003eisUnsizedArray()`",
+      "range": {
+        "startLine": 52,
+        "startChar": 8,
+        "endLine": 52,
+        "endChar": 74
+      },
+      "revId": "6823448d537e3a58f9e2c740f98ac73cb405f06d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2bc0e592_2c69df50",
+        "filename": "src/sksl/ir/SkSLVariable.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-06-09T15:02:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "62202b9c_9e6e82ee",
       "range": {
         "startLine": 52,
         "startChar": 8,
@@ -335,6 +659,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d164b3a1_ea85a7b9",
+        "filename": "src/sksl/ir/SkSLVariable.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-06-09T15:02:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3560135d_80cc8769",
+      "range": {
+        "startLine": 53,
+        "startChar": 0,
+        "endLine": 62,
+        "endChar": 9
+      },
+      "revId": "6823448d537e3a58f9e2c740f98ac73cb405f06d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "54c09e93_6f017bcd",
@@ -348,6 +696,30 @@
       "writtenOn": "2022-06-07T20:58:11Z",
       "side": 1,
       "message": "I think we\u0027re going to want this to be 28 (ie, GlobalInvocationId in SPIR-V)",
+      "range": {
+        "startLine": 3,
+        "startChar": 15,
+        "endLine": 3,
+        "endChar": 20
+      },
+      "revId": "6823448d537e3a58f9e2c740f98ac73cb405f06d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "71999caa_d92cb451",
+        "filename": "src/sksl/sksl_compute.sksl",
+        "patchSetId": 15
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-06-09T15:02:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "54c09e93_6f017bcd",
       "range": {
         "startLine": 3,
         "startChar": 15,
@@ -381,6 +753,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0d44d1bc_e303ab2f",
+        "filename": "src/sksl/sksl_compute.sksl",
+        "patchSetId": 15
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-06-09T15:02:26Z",
+      "side": 1,
+      "message": "Whoops.",
+      "parentUuid": "33864224_46645ff7",
+      "range": {
+        "startLine": 5,
+        "startChar": 0,
+        "endLine": 5,
+        "endChar": 20
+      },
+      "revId": "6823448d537e3a58f9e2c740f98ac73cb405f06d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f618138d_8bc652dd",
@@ -394,6 +790,30 @@
       "writtenOn": "2022-06-07T20:58:11Z",
       "side": 1,
       "message": "Is this intentional/expected?",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 7
+      },
+      "revId": "6823448d537e3a58f9e2c740f98ac73cb405f06d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e277babe_b6dac92b",
+        "filename": "tests/sksl/shared/Ossfuzz36770.metal",
+        "patchSetId": 15
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-06-09T15:02:26Z",
+      "side": 1,
+      "message": "I believe it\u0027s harmless, but just to be safe I restructured the test to avoid changing this output.",
+      "parentUuid": "f618138d_8bc652dd",
       "range": {
         "startLine": 9,
         "startChar": 0,
