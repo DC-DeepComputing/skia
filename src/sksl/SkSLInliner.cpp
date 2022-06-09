@@ -393,7 +393,8 @@ std::unique_ptr<Expression> Inliner::inlineExpression(Position pos,
             return expression.clone();
         case Expression::Kind::kPrefix: {
             const PrefixExpression& p = expression.as<PrefixExpression>();
-            return PrefixExpression::Make(*fContext, pos, p.getOperator(), expr(p.operand()));
+            return PrefixExpression::Make(*fContext, *symbolTableForExpression, pos,
+                    p.getOperator(), expr(p.operand()));
         }
         case Expression::Kind::kPostfix: {
             const PostfixExpression& p = expression.as<PostfixExpression>();
@@ -954,6 +955,7 @@ public:
             case Expression::Kind::kConstructorCompoundCast:
             case Expression::Kind::kConstructorDiagonalMatrix:
             case Expression::Kind::kConstructorMatrixResize:
+            case Expression::Kind::kConstructorPointerCast:
             case Expression::Kind::kConstructorScalarCast:
             case Expression::Kind::kConstructorSplat:
             case Expression::Kind::kConstructorStruct: {

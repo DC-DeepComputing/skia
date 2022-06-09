@@ -130,6 +130,8 @@ skia_sksl_sources = [
   "$_src/sksl/ir/SkSLConstructorDiagonalMatrix.h",
   "$_src/sksl/ir/SkSLConstructorMatrixResize.cpp",
   "$_src/sksl/ir/SkSLConstructorMatrixResize.h",
+  "$_src/sksl/ir/SkSLConstructorPointerCast.cpp",
+  "$_src/sksl/ir/SkSLConstructorPointerCast.h",
   "$_src/sksl/ir/SkSLConstructorScalarCast.cpp",
   "$_src/sksl/ir/SkSLConstructorScalarCast.h",
   "$_src/sksl/ir/SkSLConstructorSplat.cpp",

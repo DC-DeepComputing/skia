@@ -31,6 +31,7 @@
 #include "src/sksl/ir/SkSLConstructorArrayCast.h"
 #include "src/sksl/ir/SkSLConstructorCompound.h"
 #include "src/sksl/ir/SkSLConstructorMatrixResize.h"
+#include "src/sksl/ir/SkSLConstructorPointerCast.h"
 #include "src/sksl/ir/SkSLDoStatement.h"
 #include "src/sksl/ir/SkSLExpression.h"
 #include "src/sksl/ir/SkSLExpressionStatement.h"
@@ -201,6 +202,13 @@ void MetalCodeGenerator::writeExpression(const Expression& expr, Precedence pare
         case Expression::Kind::kConstructorMatrixResize:
             this->writeConstructorMatrixResize(expr.as<ConstructorMatrixResize>(),
                                                parentPrecedence);
+            break;
+        case Expression::Kind::kConstructorPointerCast:
+            // &arr[0] works whether we're dealing with an unsized array (which is already a
+            // pointer, internally) or an array<...>
+            this->write("&");
+            this->writeExpression(*expr.as<ConstructorPointerCast>().argument(), parentPrecedence);
+            this->write("[0]");
             break;
         case Expression::Kind::kConstructorScalarCast:
         case Expression::Kind::kConstructorCompoundCast:

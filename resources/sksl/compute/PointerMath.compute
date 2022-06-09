@@ -1,0 +1,18 @@
+layout(location=0) in int[] a;
+layout(location=1) out int[] b;
+
+void copy(int* src, int* dest, uint offset) {
+    *(src + offset) = *(dest + offset);
+}
+
+void main() {
+    int* dest = b;
+    dest += 5;
+    dest -= 5;
+    ++dest;
+    --dest;
+    int* test = &b[5];
+    if (test - dest == 5) {
+        copy(a, dest, sk_ThreadPosition.x);
+    }
+}

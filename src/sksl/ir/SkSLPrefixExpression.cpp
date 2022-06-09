@@ -19,6 +19,7 @@
 #include "src/sksl/ir/SkSLConstructorDiagonalMatrix.h"
 #include "src/sksl/ir/SkSLConstructorSplat.h"
 #include "src/sksl/ir/SkSLLiteral.h"
+#include "src/sksl/ir/SkSLSymbolTable.h"
 #include "src/sksl/ir/SkSLType.h"
 #include "src/sksl/ir/SkSLVariableReference.h"
 
@@ -110,8 +111,8 @@ static ExpressionArray negate_operands(const Context& context,
         if (std::unique_ptr<Expression> simplified = simplify_negation(context, pos, *expr)) {
             replacement.push_back(std::move(simplified));
         } else {
-            replacement.push_back(std::make_unique<PrefixExpression>(pos, Operator::Kind::MINUS,
-                    expr->clone()));
+            replacement.push_back(std::make_unique<PrefixExpression>(pos, expr->type(),
+                    Operator::Kind::MINUS, expr->clone()));
         }
     }
     return replacement;
@@ -126,7 +127,8 @@ static std::unique_ptr<Expression> negate_operand(const Context& context,
     }
 
     // No simplified form; convert expression to Prefix(TK_MINUS, expression).
-    return std::make_unique<PrefixExpression>(pos, Operator::Kind::MINUS, std::move(value));
+    const Type& type = value->type();
+    return std::make_unique<PrefixExpression>(pos, type, Operator::Kind::MINUS, std::move(value));
 }
 
 static std::unique_ptr<Expression> logical_not_operand(const Context& context,
@@ -154,11 +156,31 @@ static std::unique_ptr<Expression> logical_not_operand(const Context& context,
     }
 
     // No simplified form; convert expression to Prefix(TK_LOGICALNOT, expression).
-    return std::make_unique<PrefixExpression>(pos, Operator::Kind::LOGICALNOT, std::move(operand));
+    const Type& type = operand->type();
+    return std::make_unique<PrefixExpression>(pos, type, Operator::Kind::LOGICALNOT,
+            std::move(operand));
 }
 
-std::unique_ptr<Expression> PrefixExpression::Convert(const Context& context, Position pos,
-        Operator op, std::unique_ptr<Expression> base) {
+static const Type& determine_type(SymbolTable& symbolTable, Operator op, const Type& type) {
+    switch (op.kind()) {
+        case Operator::Kind::STAR:
+            SkASSERT(type.isPointer());
+            return type.componentType();
+        case Operator::Kind::BITWISEAND:
+            return *symbolTable.pointerTo(&type);
+        default:
+            return type;
+    }
+}
+
+PrefixExpression::PrefixExpression(Position pos, const Type& type, Operator op,
+        std::unique_ptr<Expression> operand)
+        : INHERITED(pos, kExpressionKind, &type)
+        , fOperator(op)
+        , fOperand(std::move(operand)) {}
+
+std::unique_ptr<Expression> PrefixExpression::Convert(const Context& context,
+        SymbolTable& symbolTable, Position pos, Operator op, std::unique_ptr<Expression> base) {
     const Type& baseType = base->type();
     switch (op.kind()) {
         case Operator::Kind::PLUS:
@@ -179,7 +201,7 @@ std::unique_ptr<Expression> PrefixExpression::Convert(const Context& context, Po
 
         case Operator::Kind::PLUSPLUS:
         case Operator::Kind::MINUSMINUS:
-            if (!baseType.isNumber()) {
+            if (!baseType.isNumber() && !baseType.isPointer()) {
                 context.fErrors->error(pos,
                                        "'" + std::string(op.tightOperatorName()) +
                                        "' cannot operate on '" + baseType.displayName() + "'");
@@ -223,17 +245,39 @@ std::unique_ptr<Expression> PrefixExpression::Convert(const Context& context, Po
             }
             break;
 
+        case Operator::Kind::STAR:
+            if (!baseType.isPointer()) {
+                context.fErrors->error(pos, "'" + baseType.displayName() +
+                        "' is not a pointer and cannot be dereferenced");
+                return nullptr;
+            }
+            break;
+
+        case Operator::Kind::BITWISEAND:
+            if (!ProgramConfig::IsCompute(context.fConfig->fKind)) {
+                context.fErrors->error(pos, "pointers are not supported");
+                return nullptr;
+            }
+            break;
+
         default:
             SK_ABORT("unsupported prefix operator");
     }
 
-    std::unique_ptr<Expression> result = PrefixExpression::Make(context, pos, op, std::move(base));
+    std::unique_ptr<Expression> result = PrefixExpression::Make(context, pos,
+            determine_type(symbolTable, op, baseType), op, std::move(base));
     SkASSERT(result->fPosition == pos);
     return result;
 }
 
+std::unique_ptr<Expression> PrefixExpression::Make(const Context& context, SymbolTable& symbolTable,
+        Position pos, Operator op, std::unique_ptr<Expression> base) {
+    return PrefixExpression::Make(context, pos, determine_type(symbolTable, op, base->type()), op,
+            std::move(base));
+ }
+
 std::unique_ptr<Expression> PrefixExpression::Make(const Context& context, Position pos,
-        Operator op, std::unique_ptr<Expression> base) {
+        const Type& type, Operator op, std::unique_ptr<Expression> base) {
     switch (op.kind()) {
         case Operator::Kind::PLUS:
             SkASSERT(!base->type().isArray());
@@ -252,7 +296,7 @@ std::unique_ptr<Expression> PrefixExpression::Make(const Context& context, Posit
 
         case Operator::Kind::PLUSPLUS:
         case Operator::Kind::MINUSMINUS:
-            SkASSERT(base->type().isNumber());
+            SkASSERT(base->type().isNumber() || base->type().isPointer());
             SkASSERT(Analysis::IsAssignable(*base));
             break;
 
@@ -263,11 +307,20 @@ std::unique_ptr<Expression> PrefixExpression::Make(const Context& context, Posit
             SkASSERT(!base->type().isLiteral());
             break;
 
+        case Operator::Kind::STAR:
+            SkASSERT(base->type().isPointer());
+            break;
+
+        case Operator::Kind::BITWISEAND:
+            SkASSERT(ProgramConfig::IsCompute(context.fConfig->fKind));
+            SkASSERT(type.isPointer());
+            break;
+
         default:
             SkDEBUGFAILF("unsupported prefix operator: %s", op.operatorName());
     }
 
-    return std::make_unique<PrefixExpression>(pos, op, std::move(base));
+    return std::make_unique<PrefixExpression>(pos, type, op, std::move(base));
 }
 
 }  // namespace SkSL

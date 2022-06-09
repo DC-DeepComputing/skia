@@ -378,6 +378,37 @@ bool Operator::determineBinaryType(const Context& context,
             *outResultType = context.fTypes.fBool.get();
         }
         return true;
+    } else if (this->removeAssignment().kind() == Operator::Kind::PLUS &&
+            (left.isPointer() || right.isPointer())) {
+        // int + pointer or pointer + int
+        const Type* pointerType;
+        const Type* otherType;
+        if (left.isPointer()) {
+            pointerType = &left;
+            otherType = &right;
+        } else {
+            pointerType = &right;
+            otherType = &left;
+        }
+        SkASSERT(pointerType->isPointer());
+        *outLeftType = &left;
+        *outRightType = &right;
+        *outResultType = pointerType;
+        return otherType->isInteger();
+    } else if (this->removeAssignment().kind() == Operator::Kind::MINUS && left.isPointer()) {
+        if (right.isPointer() && left.matches(right)) {
+            // pointer - pointer
+            *outLeftType = &left;
+            *outRightType = &right;
+            *outResultType = context.fTypes.fInt.get();
+            return true;
+        } else if (right.isInteger()) {
+            // pointer - int
+            *outLeftType = &left;
+            *outRightType = &right;
+            *outResultType = &left;
+            return true;
+        }
     }
     return false;
 }

@@ -205,7 +205,7 @@ DSLExpression DSLExpression::operator()(ExpressionArray args, Position pos) {
 
 DSLExpression DSLExpression::prefix(Operator::Kind op, Position pos) {
     std::unique_ptr<SkSL::Expression> result = PrefixExpression::Convert(ThreadContext::Context(),
-                                                                         pos, op, this->release());
+            *ThreadContext::SymbolTable(), pos, op, this->release());
     return DSLExpression(std::move(result), pos);
 }
 
@@ -230,12 +230,13 @@ DSLExpression operator op(DSLExpression left, DSLExpression right) {         \
                                                    right.release()));        \
 }
 
-#define PREFIXOP(op, token)                                                  \
-DSLExpression operator op(DSLExpression expr) {                              \
-    return DSLExpression(PrefixExpression::Convert(ThreadContext::Context(), \
-                                                   Position(),               \
-                                                   Operator::Kind::token,    \
-                                                   expr.release()));         \
+#define PREFIXOP(op, token)                                                       \
+DSLExpression operator op(DSLExpression expr) {                                   \
+    return DSLExpression(PrefixExpression::Convert(ThreadContext::Context(),      \
+                                                   *ThreadContext::SymbolTable(), \
+                                                   Position(),                    \
+                                                   Operator::Kind::token,         \
+                                                   expr.release()));              \
 }
 
 #define POSTFIXOP(op, token)                                                  \

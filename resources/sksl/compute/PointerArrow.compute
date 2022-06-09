@@ -1,0 +1,14 @@
+layout(location=0) inout struct Data {
+    // using an unsized array for one and a pointer for the other just to ensure they're
+    // equivalent
+    int[] a;
+    int* b;
+} data;
+
+void copy(Data* data, uint offset) {
+    data->a[offset] = data->b[offset];
+}
+
+void main() {
+    copy(&data, sk_ThreadPosition.x);
+}

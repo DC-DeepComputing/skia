@@ -91,6 +91,7 @@ SHREQ          = ">>="
 BITWISEOREQ    = "|="
 BITWISEXOREQ   = "^="
 BITWISEANDEQ   = "&="
+ARROW          = "->"
 SEMICOLON      = ";"
 WHITESPACE     = \s+
 LINE_COMMENT   = //.*

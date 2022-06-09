@@ -601,7 +601,8 @@ std::unique_ptr<Expression> Rehydrator::expression() {
         case Rehydrator::kPrefix_Command: {
             Operator::Kind op = (Operator::Kind)this->readU8();
             std::unique_ptr<Expression> operand = this->expression();
-            return PrefixExpression::Make(this->context(), pos, op, std::move(operand));
+            return PrefixExpression::Make(this->context(), *fSymbolTable, pos, op,
+                    std::move(operand));
         }
         case Rehydrator::kSetting_Command: {
             std::string name(this->readString());
