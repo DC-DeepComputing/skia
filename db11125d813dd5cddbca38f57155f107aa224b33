@@ -22,6 +22,30 @@
       },
       "revId": "db11125d813dd5cddbca38f57155f107aa224b33",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9414d14e_2871b2a8",
+        "filename": "src/core/SkCombinationBuilder.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 373,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-06-09T14:17:41Z",
+      "side": 1,
+      "message": "I\u0027ll think we\u0027ll need a new entry point on the ArenaData_*s to handle this. Since we allocate the slots separately in allocInArena, I don\u0027t think dynamically returning the number of children will be a problem.",
+      "parentUuid": "22ecb51d_7b8f15cf",
+      "range": {
+        "startLine": 373,
+        "startChar": 35,
+        "endLine": 373,
+        "endChar": 56
+      },
+      "revId": "db11125d813dd5cddbca38f57155f107aa224b33",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
