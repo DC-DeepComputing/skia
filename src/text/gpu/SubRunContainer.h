@@ -38,6 +38,13 @@ class GrClip;
 namespace skgpu::v1 { class SurfaceDrawContext; }
 #endif
 
+#if defined(SK_GRAPHITE_ENABLED)
+namespace skgpu::graphite {
+class DrawContext;
+class Recorder;
+}
+#endif
+
 namespace sktext::gpu {
 // -- AtlasSubRun --------------------------------------------------------------------------------
 // AtlasSubRun is the API that AtlasTextOp uses to generate vertex data for drawing.
@@ -84,6 +91,21 @@ public:
             int begin, int end, GrMeshDrawTarget* target) const = 0;
 #endif
 
+#if defined(SK_GRAPHITE_ENABLED)
+//    virtual void fillVertexData(
+//            void* vertexDst, int offset, int count,
+//            SkColor color,
+//            const SkMatrix& drawMatrix,
+//            SkPoint drawOrigin,
+//            SkIRect clip) const {}
+
+    // TODO: make pure virtual when all subclasses implement it
+    virtual std::tuple<bool, int> regenerateAtlas(
+            int begin, int end, skgpu::graphite::DrawContext*, skgpu::graphite::Recorder*) const {
+        return { false, 0 };
+    }
+#endif
+
     virtual void testingOnly_packedGlyphIDToGlyph(StrikeCache* cache) const = 0;
 };
 
@@ -104,6 +126,16 @@ public:
                       const SkPaint&,
                       sk_sp<SkRefCnt> subRunStorage,
                       skgpu::v1::SurfaceDrawContext*) const = 0;
+#endif
+#if defined(SK_GRAPHITE_ENABLED)
+    // TODO: make this pure virtual once all are defined
+    // Produce GPU tasks for this subRun or just draw them.
+    virtual void draw(SkCanvas*,
+                      const SkMatrixProvider& viewMatrix,
+                      SkPoint drawOrigin,
+                      const SkPaint&,
+                      sk_sp<SkRefCnt> subRunStorage,
+                      skgpu::graphite::Device*) const {}
 #endif
 
     void flatten(SkWriteBuffer& buffer) const;
@@ -213,6 +245,14 @@ public:
               const SkPaint& paint,
               const SkRefCnt* subRunStorage,
               skgpu::v1::SurfaceDrawContext* sdc) const;
+#endif
+#ifdef SK_GRAPHITE_ENABLED
+    void draw(SkCanvas*,
+              const SkMatrixProvider& viewMatrix,
+              SkPoint drawOrigin,
+              const SkPaint&,
+              const SkRefCnt* subRunStorage,
+              skgpu::graphite::Device*) const;
 #endif
 
     const SkMatrix& initialPosition() const { return fInitialPositionMatrix; }
