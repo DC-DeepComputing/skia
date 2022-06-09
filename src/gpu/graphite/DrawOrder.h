@@ -42,6 +42,8 @@ public:
     MonotonicValue next() const { return fIndex + 1; }
 
 private:
+    friend class GridBoundsManager;
+
     constexpr MonotonicValue(uint16_t index) : fIndex(index) {}
 
     uint16_t fIndex = 0;

@@ -75,6 +75,8 @@ public:
     AI float bot() const { return -fVals.w(); }
     AI float2 topLeft() const { return fVals.xy(); }
     AI float2 botRight() const { return -fVals.zw(); }
+    AI float2 topRight() const { return skvx::shuffle<2,1>(this->ltrb()); }
+    AI float2 botLeft() const { return skvx::shuffle<0,3>(this->ltrb()); }
     AI float4 ltrb() const { return NegateBotRight(fVals); }
 
     AI void setLeft(float left) { fVals.x() = left; }
