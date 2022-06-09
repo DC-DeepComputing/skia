@@ -1,0 +1,10 @@
+layout(location=0) in int x;
+layout(location=1) in int y;
+layout(location=20) in int z;
+
+void main() {
+}
+
+/*%%*
+found layout(location=20), but no layout(location=2)
+*%%*/

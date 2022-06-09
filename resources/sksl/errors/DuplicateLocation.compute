@@ -1,0 +1,9 @@
+layout(location=0) in int x;
+layout(location=0) in int y;
+
+void main() {
+}
+
+/*%%*
+both 'x' and 'y' have layout(location=0)
+*%%*/

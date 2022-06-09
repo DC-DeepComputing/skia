@@ -1,0 +1,8 @@
+in int x;
+
+void main() {
+}
+
+/*%%*
+'in'/'out' variables must have a layout(location)
+*%%*/

@@ -1,0 +1,8 @@
+layout(location=1) in int x;
+
+void main() {
+}
+
+/*%%*
+found layout(location=1), but no layout(location=0)
+*%%*/
