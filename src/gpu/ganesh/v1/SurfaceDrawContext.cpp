@@ -1993,6 +1993,7 @@ void SurfaceDrawContext::addDrawOp(const GrClip* clip,
 bool SurfaceDrawContext::setupDstProxyView(const SkRect& opBounds,
                                            bool opRequiresMSAA,
                                            GrDstProxyView* dstProxyView) {
+    SkDebugf("start setupDstProxyView\n");
     // If we are wrapping a vulkan secondary command buffer, we can't make a dst copy because we
     // don't actually have a VkImage to make a copy of. Additionally we don't have the power to
     // start and stop the render pass in order to make the copy.
@@ -2029,6 +2030,8 @@ bool SurfaceDrawContext::setupDstProxyView(const SkRect& opBounds,
         dstProxyView->setProxyView(this->readSurfaceView());
         dstProxyView->setOffset(0, 0);
         dstProxyView->setDstSampleFlags(dstSampleFlags);
+        SkDebugf("setupDstProxyView using barrier\n");
+
         return true;
     }
     SkASSERT(dstSampleFlags == GrDstSampleFlags::kNone);
@@ -2077,6 +2080,8 @@ bool SurfaceDrawContext::setupDstProxyView(const SkRect& opBounds,
         dstOffset = {copyRect.fLeft, copyRect.fTop};
         fit = SkBackingFit::kApprox;
     }
+    SkDebugf("setupDstProxyView using copy\n");
+
     auto copy = GrSurfaceProxy::Copy(fContext,
                                      this->asSurfaceProxyRef(),
                                      this->origin(),
