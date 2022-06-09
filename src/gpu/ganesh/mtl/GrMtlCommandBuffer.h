@@ -71,6 +71,8 @@ public:
     void encodeSignalEvent(sk_sp<GrMtlEvent>, uint64_t value);
     void encodeWaitForEvent(sk_sp<GrMtlEvent>, uint64_t value);
 
+    void addTextureBarrier();
+
     void waitUntilCompleted() {
         [fCmdBuffer waitUntilCompleted];
     }

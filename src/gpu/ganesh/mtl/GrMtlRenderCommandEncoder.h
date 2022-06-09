@@ -238,6 +238,12 @@ public:
                           indirectBufferOffset:indirectBufferOffset];
     }
 
+    void addTextureBarrier() {
+        [fCommandEncoder memoryBarrierWithScope:MTLBarrierScopeRenderTargets
+                                    afterStages:MTLRenderStageFragment
+                                   beforeStages:MTLRenderStageFragment];
+    }
+
     void endEncoding() {
         [fCommandEncoder endEncoding];
     }
