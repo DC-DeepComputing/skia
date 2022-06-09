@@ -19,7 +19,10 @@ class SkUniformDataBlockPassThrough;  // TODO: remove
 
 namespace skgpu { class TokenTracker; }
 
-namespace sktext::gpu { class StrikeCache; }
+namespace sktext::gpu {
+class StrikeCache;
+class TextBlobRedrawCoordinator;
+}
 
 namespace skgpu::graphite {
 
@@ -101,6 +104,7 @@ private:
     std::unique_ptr<AtlasManager> fAtlasManager;
     std::unique_ptr<TokenTracker> fTokenTracker;
     std::unique_ptr<sktext::gpu::StrikeCache> fStrikeCache;
+    std::unique_ptr<sktext::gpu::TextBlobRedrawCoordinator> fTextBlobCache;
 
     // In debug builds we guard against improper thread handling
     // This guard is passed to the ResourceCache.
