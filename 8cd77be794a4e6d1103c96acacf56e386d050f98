@@ -16,6 +16,24 @@
       "message": "I have a couple of questions regarding to tests.\nThe first one, as I see `ResourceFontCollection` checks that `Roboto-Italic.ttf` is presented in `resources/fonts`, but it\u0027s not, does it expected to be downloaded by some infra code, or all tests just early returns?\nSecond, Why all paragraph tests marked as `UNIX_ONLY_TEST` should I mark my test `UNIX_ONLY` too?",
       "revId": "8cd77be794a4e6d1103c96acacf56e386d050f98",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "db7131c4_3e0f64e6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-06-09T17:18:06Z",
+      "side": 1,
+      "message": "Text/font tests are really platform-dependent. On different platform fonts from the same font family are slightly different, and all the numbers are off, and all the tests are failing. So we use linux for testing. (The text rendering logic remains the same on all the platforms and that is what we testing)\nCheck for Roboto-Italic.ttf is a (clumsy) way to check if all the fonts we need appear on the testing machine.\nYou need UNIX_ONLY_TEST and Roboto-Italic.ttf check, too.",
+      "parentUuid": "ffa0e157_528ecf26",
+      "revId": "8cd77be794a4e6d1103c96acacf56e386d050f98",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
