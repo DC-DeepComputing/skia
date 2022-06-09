@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "52d4ce96_4e040215",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-06-09T20:22:39Z",
+      "side": 1,
+      "message": "Works great, tested in http://review.skia.org/548837",
+      "revId": "6560131a34d60fe1f3dec9c03e728b6f29b7884c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
