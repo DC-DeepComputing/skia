@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e1046c3f_e3ed5434",
+        "filename": "include/gpu/graphite/ContextOptions.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-06-10T18:28:34Z",
+      "side": 1,
+      "message": "Why is this needed?",
+      "range": {
+        "startLine": 90,
+        "startChar": 0,
+        "endLine": 93,
+        "endChar": 6
+      },
+      "revId": "76b745f9310f3ec41b629b16304af06be0361351",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "58383718_612cd76c",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-06-10T18:28:34Z",
+      "side": 1,
+      "message": "Why do we need to save this, can\u0027t we just set need values on Caps based on it? Plus storing on the Context means Recorders won\u0027t have access to it if there was some value that we used of it (besides setting up caps).",
+      "range": {
+        "startLine": 39,
+        "startChar": 10,
+        "endLine": 39,
+        "endChar": 25
+      },
+      "revId": "76b745f9310f3ec41b629b16304af06be0361351",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
