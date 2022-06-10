@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eb2bf1ba_1dfc4807",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-06-10T15:03:18Z",
+      "side": 1,
+      "message": "For your consideration--I don\u0027t feel strongly about it but I think it\u0027s better to avoid introducing an object where a namespace could do, and I think we can still keep the improvements in review (where the cpp methods are easier to fully qualified).",
+      "revId": "a2d4fcbbc0c95337182fbf875f85298f5359e232",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
