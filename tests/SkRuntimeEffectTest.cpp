@@ -568,6 +568,127 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(SkRuntimeEffectSimple_GPU, r, ctxInfo) {
     test_RuntimeEffect_Shaders(r, ctxInfo.directContext());
 }
 
+static void verify_draw_does_nothing(skiatest::Reporter* r,
+                                     const SkRuntimeEffect* effect,
+                                     SkSurface* surface,
+                                     const SkPaint& paint) {
+    constexpr GrColor kGreen = 0xFF00FF00;
+    surface->getCanvas()->clear(SK_ColorGREEN);
+    surface->getCanvas()->drawPaint(paint);
+    verify_2x2_surface_results(r, effect, surface, {kGreen, kGreen, kGreen, kGreen});
+}
+
+DEF_TEST(SkRuntimeEffectFailsGracefullyOnIncompatibleDevice, r) {
+    // If a user creates & validates an effect against a particular device, and later draws that
+    // effect to a device with insufficient capabilities, we want to fail gracefully, by dropping
+    // the draw entirely. For now, test this with the CPU backend, where we know the capabilities.
+
+    SkImageInfo info = SkImageInfo::Make(2, 2, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
+    sk_sp<SkSurface> surface = SkSurface::MakeRaster(info);
+    REPORTER_ASSERT(r, surface);
+
+    const int kFour = 4;
+    auto uniformFour = SkData::MakeWithoutCopy(&kFour, sizeof(int));
+
+    // The first effect would actually be capable of drawing on the CPU backend, but we expect
+    // it to fail, because it has been declared to REQUIRE version 300. Ensure that it fails:
+    {
+        auto effect = SkRuntimeEffect::MakeForShader(SkString(R"(
+            #version 300
+            half4 main(float2 xy) { return half4(1, 0, 0, 1); }
+        )")).effect;
+        REPORTER_ASSERT(r, effect);
+        SkPaint paint;
+        paint.setShader(effect->makeShader(/*uniforms=*/nullptr, /*children=*/{}));
+        REPORTER_ASSERT(r, paint.getShader());
+        verify_draw_does_nothing(r, effect.get(), surface.get(), paint);
+    }
+
+    // Second effect won't work on the CPU backend at all. This test ensures that we're failing
+    // gracefully, and early enough to avoid asserts, etc.
+    {
+        auto effect = SkRuntimeEffect::MakeForShader(SkString(R"(
+            #version 300
+            uniform int loops;
+            half4 main(float2 xy) {
+                half4 result = half4(1, 0, 0, 1);
+                for (int i = 0; i < loops; i++) {
+                    result = result.argb;
+                }
+                return result;
+            }
+        )")).effect;
+        REPORTER_ASSERT(r, effect);
+        SkPaint paint;
+        paint.setShader(effect->makeShader(uniformFour, /*children=*/{}));
+        REPORTER_ASSERT(r, paint.getShader());
+        verify_draw_does_nothing(r, effect.get(), surface.get(), paint);
+    }
+
+    //
+    // As above, but with a blender
+    //
+
+    {
+        auto effect = SkRuntimeEffect::MakeForBlender(SkString(R"(
+            #version 300
+            half4 main(half4 src, half4 dst) { return half4(1, 0, 0, 1); }
+        )")).effect;
+        REPORTER_ASSERT(r, effect);
+        SkPaint paint;
+        paint.setBlender(effect->makeBlender(/*uniforms=*/nullptr, /*children=*/{}));
+        REPORTER_ASSERT(r, paint.getBlender());
+        verify_draw_does_nothing(r, effect.get(), surface.get(), paint);
+    }
+
+    {
+        auto effect = SkRuntimeEffect::MakeForBlender(SkString(R"(
+            #version 300
+            uniform int loops;
+            half4 main(half4 src, half4 dst) {
+                half4 result = half4(1, 0, 0, 1);
+                for (int i = 0; i < loops; i++) {
+                    result = result.argb;
+                }
+                return result;
+            }
+        )")).effect;
+        REPORTER_ASSERT(r, effect);
+        SkPaint paint;
+        paint.setBlender(effect->makeBlender(uniformFour, /*children=*/{}));
+        REPORTER_ASSERT(r, paint.getBlender());
+        verify_draw_does_nothing(r, effect.get(), surface.get(), paint);
+    }
+}
+
+DEF_TEST(SkRuntimeColorFilterLimitedToES2, r) {
+    // Verify that SkSL requesting #version 300 can't be used to create a color-filter effect.
+    // This restriction is (hopefully) temporary, if we can find a way to implement filterColor
+    // for these color filters.
+    {
+        auto effect = SkRuntimeEffect::MakeForColorFilter(SkString(R"(
+            #version 300
+            half4 main(half4 inColor) { return half4(1, 0, 0, 1); }
+        )")).effect;
+        REPORTER_ASSERT(r, !effect);
+    }
+
+    {
+        auto effect = SkRuntimeEffect::MakeForColorFilter(SkString(R"(
+            #version 300
+            uniform int loops;
+            half4 main(half4 inColor) {
+                half4 result = half4(1, 0, 0, 1);
+                for (int i = 0; i < loops; i++) {
+                    result = result.argb;
+                }
+                return result;
+            }
+        )")).effect;
+        REPORTER_ASSERT(r, !effect);
+    }
+}
+
 DEF_TEST(SkRuntimeEffectTraceShader, r) {
     for (int imageSize : {2, 80}) {
         SkImageInfo info = SkImageInfo::Make(imageSize, imageSize, kRGBA_8888_SkColorType,
