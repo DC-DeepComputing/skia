@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "15d9464b_0401562b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-06-10T16:39:32Z",
+      "side": 1,
+      "message": "Thank you for the patch! I agree this is an improvement (and it may let us run this test on some devices where we currently have it disabled).",
+      "revId": "41ffd8eeff0022fc42060f1c777c0f6fc47d6972",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
