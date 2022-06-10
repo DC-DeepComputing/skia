@@ -46,6 +46,30 @@
       },
       "revId": "2aa5fc700892fe46a0f5ec76c21ef2ec3ad080eb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1a22c1d9_14f0803b",
+        "filename": "modules/skparagraph/tests/SkParagraphTest.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 6932,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-06-10T15:10:29Z",
+      "side": 1,
+      "message": "We have Roboto-Regular font subset for all tests using text (not just SkParagraph). They do not take much space and checked in into Skia code.\nFor SkParagraph we added few more fonts (Roboto-Italic, for instance) that are not subsetted, take lot of space and are not checked in (just copied on all our test machines). You cannot could for Roboto-Italic being always there.",
+      "parentUuid": "5a775ff9_132fb62d",
+      "range": {
+        "startLine": 6932,
+        "startChar": 15,
+        "endLine": 6932,
+        "endChar": 23
+      },
+      "revId": "2aa5fc700892fe46a0f5ec76c21ef2ec3ad080eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
