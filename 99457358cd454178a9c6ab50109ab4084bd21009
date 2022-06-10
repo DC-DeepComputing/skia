@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "47cef0da_514a3761",
+        "filename": "src/gpu/graphite/DrawAtlas.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 224,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-06-10T20:35:26Z",
+      "side": 1,
+      "message": "Reading how compact works, am I right in seeing that we just drop plots on the last page(s) with the hope that glyphs will then end up get re-uploaded to the first page(s)?\n\nHave we considered doing GPU-\u003eGPU copies of the data instead to avoid the subsequent upload?",
+      "range": {
+        "startLine": 224,
+        "startChar": 16,
+        "endLine": 224,
+        "endChar": 23
+      },
+      "revId": "99457358cd454178a9c6ab50109ab4084bd21009",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "21ac59de_a1d9c87f",
+        "filename": "src/gpu/graphite/text/AtlasManager.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-06-10T20:35:26Z",
+      "side": 1,
+      "message": "any opinions on just saving the recorder pointer in the AtlasManager vs passing it into the various functions. A given AtlasManager is tied to one recorder so its no like we\u0027ll ever be passing in different Recorders into the member functions.\n\nIf we don\u0027t want to do this, then we should just pass in the Caps directly to the ctor.",
+      "range": {
+        "startLine": 26,
+        "startChar": 27,
+        "endLine": 27,
+        "endChar": 27
+      },
+      "revId": "99457358cd454178a9c6ab50109ab4084bd21009",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "189bb34f_a5e246d9",
+        "filename": "src/gpu/graphite/text/AtlasManager.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-06-10T20:35:26Z",
+      "side": 1,
+      "message": "This is from a bug from 7 years ago, is this actually still valid. If so can you please explain how getting an image from the cache will change the mask format.",
+      "range": {
+        "startLine": 138,
+        "startChar": 3,
+        "endLine": 145,
+        "endChar": 9
+      },
+      "revId": "99457358cd454178a9c6ab50109ab4084bd21009",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "86937020_7d9f5d66",
+        "filename": "src/gpu/graphite/text/AtlasManager.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-06-10T20:35:26Z",
+      "side": 1,
+      "message": "nit: extra spce",
+      "range": {
+        "startLine": 150,
+        "startChar": 72,
+        "endLine": 150,
+        "endChar": 73
+      },
+      "revId": "99457358cd454178a9c6ab50109ab4084bd21009",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b2081ebc_a0218dc0",
+        "filename": "src/gpu/graphite/text/AtlasManager.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-06-10T20:35:26Z",
+      "side": 1,
+      "message": "Does this need to ref the caps? I imagine since it is owned by the Recorder, the caps should be kept alive by the Recorder so we could just have a pointer here.\n\nSee comment below, if we store a back pointer to the Recorder on the the AtlasManager then we don\u0027t need to store caps as we should be able to get them off the Recorder.",
+      "range": {
+        "startLine": 120,
+        "startChar": 4,
+        "endLine": 120,
+        "endChar": 21
+      },
+      "revId": "99457358cd454178a9c6ab50109ab4084bd21009",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
