@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3af87ad9_c880453d",
+        "filename": "include/gpu/graphite/ContextOptions.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-06-10T20:15:49Z",
+      "side": 1,
+      "message": "Yeah I think that was in Ganesh because we didn\u0027t have compile guards around functions in public Sk* files. So we\u0027d need a type there. But we are now guarding things so this is needed.",
+      "parentUuid": "469f8a0d_a77a8743",
+      "range": {
+        "startLine": 90,
+        "startChar": 0,
+        "endLine": 93,
+        "endChar": 6
+      },
+      "revId": "76b745f9310f3ec41b629b16304af06be0361351",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "58383718_612cd76c",
@@ -85,6 +109,30 @@
       "side": 1,
       "message": "Many of these values don\u0027t feel like adjusting hardware Caps. For example, the user-defined ShaderErrorHandler isn\u0027t related to anything in hardware. Maybe store the struct in the Caps with an options() accessor?\n\nAnd I was planning on passing it down to the Recorder, but that still doesn\u0027t work accessing it to set up the ShaderErrorHandler. So I agree it needs to be someplace more accessible.",
       "parentUuid": "58383718_612cd76c",
+      "range": {
+        "startLine": 39,
+        "startChar": 10,
+        "endLine": 39,
+        "endChar": 25
+      },
+      "revId": "76b745f9310f3ec41b629b16304af06be0361351",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fb584f2b_18cbd43e",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-06-10T20:15:49Z",
+      "side": 1,
+      "message": "Yeah I guess my thoughts were Caps these days isn\u0027t just hardware capabilities, but it also holds a bunch of things like our \"preferences\". So to me I would just have a Caps class where we filled things out based on hardware and ContextOptions. Half of ContextOptions is used in this way so not sure we had to treat the other half differently.\n\nIf you think it is better off staying separate I would say either store them on Caps or the soon to be new GpuInfo class next to caps (Gpu for now). This class will be accessible in all the spots you want.",
+      "parentUuid": "0f72f9a5_4cd731d9",
       "range": {
         "startLine": 39,
         "startChar": 10,
