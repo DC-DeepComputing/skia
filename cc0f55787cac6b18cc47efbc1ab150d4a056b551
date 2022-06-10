@@ -16,6 +16,46 @@
       "message": "More text stuff, PTAL. Hopefully I\u0027ll stop modifying the external interface soon.",
       "revId": "cc0f55787cac6b18cc47efbc1ab150d4a056b551",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "457ec398_49a35fbe",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-06-10T20:33:01Z",
+      "side": 1,
+      "message": "That looks pretty easy.",
+      "revId": "cc0f55787cac6b18cc47efbc1ab150d4a056b551",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8655e2ba_b4c98561",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 198,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-06-10T20:33:01Z",
+      "side": 1,
+      "message": "If you have the SkDevice handy, you can call strikeDeviceInfo() and get it off the SkStrikeDeviceInfo.",
+      "range": {
+        "startLine": 198,
+        "startChar": 9,
+        "endLine": 198,
+        "endChar": 44
+      },
+      "revId": "cc0f55787cac6b18cc47efbc1ab150d4a056b551",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
