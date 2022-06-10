@@ -568,6 +568,63 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(SkRuntimeEffectSimple_GPU, r, ctxInfo) {
     test_RuntimeEffect_Shaders(r, ctxInfo.directContext());
 }
 
+DEF_TEST(SkRuntimeEffectFailsGracefullyOnIncompatibleDevice, r) {
+    // If a user creates & validates an effect against a particular device, and later draws that
+    // effect to a device with insufficient capabilities, we want to fail gracefully, by dropping
+    // the draw entirely. For now, test this with the CPU backend, where we know the capabilities.
+
+    SkImageInfo info = SkImageInfo::Make(2, 2, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
+    sk_sp<SkSurface> surface = SkSurface::MakeRaster(info);
+    REPORTER_ASSERT(r, surface);
+    SkCanvas* canvas = surface->getCanvas();
+
+    SkPaint paint;
+    constexpr GrColor kGreen = 0xFF00FF00;
+
+    // The first effect would actually be capable of drawing on the CPU backend, but we expect
+    // it to fail, because it has been declared to REQUIRE version 300. Ensure that it fails:
+    {
+        canvas->clear(SK_ColorGREEN);
+        auto effect = SkRuntimeEffect::MakeForShader(SkString(R"(
+            #version 300
+            half4 main(float2 xy) { return half4(1, 0, 0, 1); }
+        )")).effect;
+        REPORTER_ASSERT(r, effect);
+        auto shader = effect->makeShader(/*uniforms=*/nullptr, /*children=*/{});
+        REPORTER_ASSERT(r, shader);
+        paint.setShader(shader);
+        canvas->drawPaint(paint);
+        verify_2x2_surface_results(
+                r, effect.get(), surface.get(), {kGreen, kGreen, kGreen, kGreen});
+    }
+
+    // Second effect won't work on the CPU backend at all. This test ensures that we're failing
+    // gracefully, and early enough to avoid asserts, etc.
+    {
+        canvas->clear(SK_ColorGREEN);
+        auto effect = SkRuntimeEffect::MakeForShader(SkString(R"(
+            #version 300
+            uniform int loops;
+            half4 main(float2 xy) {
+                half4 result = half4(1, 0, 0, 1);
+                for (int i = 0; i < loops; i++) {
+                    result = result.argb;
+                }
+                return result;
+            }
+        )")).effect;
+        REPORTER_ASSERT(r, effect);
+        SkRuntimeShaderBuilder builder(effect);
+        builder.uniform("loops") = 4;
+        auto shader = builder.makeShader();
+        REPORTER_ASSERT(r, shader);
+        paint.setShader(shader);
+        canvas->drawPaint(paint);
+        verify_2x2_surface_results(
+                r, effect.get(), surface.get(), {kGreen, kGreen, kGreen, kGreen});
+    }
+}
+
 DEF_TEST(SkRuntimeEffectTraceShader, r) {
     for (int imageSize : {2, 80}) {
         SkImageInfo info = SkImageInfo::Make(imageSize, imageSize, kRGBA_8888_SkColorType,
