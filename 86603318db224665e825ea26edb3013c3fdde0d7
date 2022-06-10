@@ -16,6 +16,24 @@
       "message": "The description for the CL here is confusing me. It says don\u0027t use R16F on Angle instead we want to use L16F. And then angle with emulate L16F with R16F to workaround bugs. Why not just stick to using L16F from the start then?",
       "revId": "86603318db224665e825ea26edb3013c3fdde0d7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "030a4815_5ebf6d84",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 7952
+      },
+      "writtenOn": "2022-06-10T13:17:14Z",
+      "side": 1,
+      "message": "Chrome is using l16f with angle, but l16f is disabled in skia here. so we need to not disable it with angle",
+      "parentUuid": "138bd6f1_cf9b0c31",
+      "revId": "86603318db224665e825ea26edb3013c3fdde0d7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
