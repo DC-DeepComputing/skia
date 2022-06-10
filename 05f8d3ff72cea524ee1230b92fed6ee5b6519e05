@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3562db02_7db13ea4",
+        "filename": "src/core/SkKeyHelpers.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 579,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-06-10T16:41:16Z",
+      "side": 1,
+      "message": "Ah, thank you for pointing that out. I had seen that earlier, and meant to go back and add a comment, but lost track of which CL had it.",
+      "parentUuid": "df67c15a_2de43cb4",
+      "revId": "05f8d3ff72cea524ee1230b92fed6ee5b6519e05",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "91bdba7b_a6d2548d",
         "filename": "src/sksl/sksl_graphite_frag.sksl",
         "patchSetId": 6
