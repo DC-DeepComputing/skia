@@ -173,6 +173,17 @@ sk_sp<const SkData> SkRuntimeEffectPriv::TransformUniforms(
     return data ? data : originalData;
 }
 
+bool SkRuntimeEffectPriv::CanDraw(const SkCapabilities* caps, const SkSL::Program* program) {
+    SkASSERT(caps && program);
+    SkASSERT(program->fConfig->enforcesSkSLVersion());
+    return program->fConfig->fRequiredSkSLVersion <= caps->skslVersion();
+}
+
+bool SkRuntimeEffectPriv::CanDraw(const SkCapabilities* caps, const SkRuntimeEffect* effect) {
+    SkASSERT(effect);
+    return CanDraw(caps, effect->fBaseProgram.get());
+}
+
 //////////////////////////////////////////////////////////////////////////////
 
 static bool flattenable_is_valid_as_child(const SkFlattenable* f) {
