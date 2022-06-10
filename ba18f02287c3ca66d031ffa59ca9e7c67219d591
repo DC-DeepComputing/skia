@@ -18,6 +18,46 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1c7ba764_0e8c4ec3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-06-10T14:37:34Z",
+      "side": 1,
+      "message": "still working my way through, but comments for now as I have step away",
+      "revId": "ba18f02287c3ca66d031ffa59ca9e7c67219d591",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "44397e17_0adf500a",
+        "filename": "src/gpu/graphite/DrawAtlas.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-06-10T14:37:34Z",
+      "side": 1,
+      "message": "is it worth asserting this is a multiple of fPlotWidth?",
+      "range": {
+        "startLine": 38,
+        "startChar": 16,
+        "endLine": 38,
+        "endChar": 27
+      },
+      "revId": "ba18f02287c3ca66d031ffa59ca9e7c67219d591",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9c69dfdc_fdf79dd1",
@@ -302,6 +342,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "54dcfe26_05977d29",
+        "filename": "src/gpu/graphite/DrawAtlas.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-06-10T14:37:34Z",
+      "side": 1,
+      "message": "Does width have to be divisible by numPlotsX or do we allow small plots along the edges? Same for Y",
+      "range": {
+        "startLine": 60,
+        "startChar": 15,
+        "endLine": 60,
+        "endChar": 24
+      },
+      "revId": "ba18f02287c3ca66d031ffa59ca9e7c67219d591",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4817533c_5cf2ac46",
         "filename": "src/gpu/graphite/DrawAtlas.h",
         "patchSetId": 4
@@ -396,6 +459,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0705f826_f5b9dfaf",
+        "filename": "src/gpu/graphite/DrawAtlas.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 202,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-06-10T14:37:34Z",
+      "side": 1,
+      "message": "For someone who doesn\u0027t know the text systems here, can you add a comment to explain what these generations here are?",
+      "range": {
+        "startLine": 201,
+        "startChar": 4,
+        "endLine": 202,
+        "endChar": 51
+      },
+      "revId": "ba18f02287c3ca66d031ffa59ca9e7c67219d591",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f3e76296_3f21377c",
         "filename": "src/gpu/graphite/DrawAtlas.h",
         "patchSetId": 4
@@ -436,6 +522,52 @@
         "startChar": 37,
         "endLine": 231,
         "endChar": 40
+      },
+      "revId": "ba18f02287c3ca66d031ffa59ca9e7c67219d591",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bc7f1384_10326f64",
+        "filename": "src/gpu/graphite/DrawAtlas.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 238,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-06-10T14:37:34Z",
+      "side": 1,
+      "message": "If we have a lot of glyphs constantly being drawn that cause to need N textures, we\u0027ll just essentially ignore the clients maxBytes right, since it only effects the size of one texture? I haven\u0027t thought deeply about this, but is a better API for us to respect maxBytes across all textures?",
+      "range": {
+        "startLine": 237,
+        "startChar": 70,
+        "endLine": 238,
+        "endChar": 29
+      },
+      "revId": "ba18f02287c3ca66d031ffa59ca9e7c67219d591",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a0633c5c_72cb41ab",
+        "filename": "src/gpu/graphite/DrawAtlas.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 241,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-06-10T14:37:34Z",
+      "side": 1,
+      "message": "Should this then be wrapped in a testing define?",
+      "range": {
+        "startLine": 241,
+        "startChar": 4,
+        "endLine": 241,
+        "endChar": 23
       },
       "revId": "ba18f02287c3ca66d031ffa59ca9e7c67219d591",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
