@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "91bdba7b_a6d2548d",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 6
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-06-10T15:41:26Z",
+      "side": 1,
+      "message": "Looks like this and the next CL can be squashed?",
+      "range": {
+        "startLine": 8,
+        "startChar": 17,
+        "endLine": 8,
+        "endChar": 22
+      },
+      "revId": "05f8d3ff72cea524ee1230b92fed6ee5b6519e05",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
