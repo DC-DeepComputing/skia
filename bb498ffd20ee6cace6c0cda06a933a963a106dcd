@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b3bf8d8f_5f6b80b9",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 615,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-06-10T15:21:30Z",
+      "side": 1,
+      "message": "The depth is still being recorded in `fCurrentDepth`",
+      "parentUuid": "0fde604f_7147be63",
+      "range": {
+        "startLine": 615,
+        "startChar": 37,
+        "endLine": 615,
+        "endChar": 42
+      },
+      "revId": "bb498ffd20ee6cace6c0cda06a933a963a106dcd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "37345783_5a1de1a5",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-06-09T20:40:42Z",
       "side": 1,
       "message": "Should this be named something else ?",
+      "range": {
+        "startLine": 616,
+        "startChar": 4,
+        "endLine": 616,
+        "endChar": 28
+      },
+      "revId": "bb498ffd20ee6cace6c0cda06a933a963a106dcd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c5d313e6_04724da4",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 616,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-06-10T15:21:30Z",
+      "side": 1,
+      "message": "If we can come up with a better name, we definitely can, and I get why it\u0027s confusing given the different types of depths running around. In this case, fColorDepthBoundsManager refers to tracking bounds of draws that impact the color and depth attachments, and wasn\u0027t related directly to it taking a PaintersDepth value in recordDraw. This was originally chosen because I\u0027d imagined a separate fStencilBoundsManager for handling that attachment, but it\u0027s currently instead managed with the IntersectionTreeSet class. I am inclined to leave it for now and we can come back to it in another CL.",
+      "parentUuid": "37345783_5a1de1a5",
       "range": {
         "startLine": 616,
         "startChar": 4,
