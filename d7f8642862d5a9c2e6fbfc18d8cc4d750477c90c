@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "86c4a107_ff78376a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-06-10T15:19:27Z",
+      "side": 1,
+      "message": "Yeah, I grabbed ToT",
+      "parentUuid": "fcf0459e_82b03d9d",
+      "revId": "d7f8642862d5a9c2e6fbfc18d8cc4d750477c90c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "40bacf56_fbc4e669",
@@ -31,6 +49,30 @@
       "writtenOn": "2022-06-10T15:16:36Z",
       "side": 1,
       "message": "What\u0027s this for? just cleaning up the build logs?",
+      "range": {
+        "startLine": 224,
+        "startChar": 35,
+        "endLine": 224,
+        "endChar": 47
+      },
+      "revId": "d7f8642862d5a9c2e6fbfc18d8cc4d750477c90c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1817cbc2_8e1d659b",
+        "filename": "bazel/external/dawn/BUILD.bazel",
+        "patchSetId": 1
+      },
+      "lineNbr": 224,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-06-10T15:19:27Z",
+      "side": 1,
+      "message": "Yes, I noticed this spews\nfatal: not a git repository (or any parent up to mount point /dev)\nStopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).\n\nBut that \"fatal\" error doesn\u0027t stop anything. To avoid confusion (when something invariably does break), I decided to hide it.",
+      "parentUuid": "40bacf56_fbc4e669",
       "range": {
         "startLine": 224,
         "startChar": 35,
