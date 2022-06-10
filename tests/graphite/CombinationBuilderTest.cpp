@@ -8,6 +8,7 @@
 #include "tests/Test.h"
 
 #include "include/core/SkCombinationBuilder.h"
+#include "src/core/SkNewCombinationAPI.h"
 
 using namespace::skgpu::graphite;
 
@@ -30,7 +31,7 @@ namespace {
 
 // For an entirely empty combination builder, both solid color shader and kSrcOver options
 // will be added
-void empty_test(Context *context, skiatest::Reporter* reporter) {
+void empty_test(Context *context, skiatest::Reporter *reporter) {
     SkCombinationBuilder builder(context);
 
     REPORTER_ASSERT(reporter, CombinationBuilderTestAccess::NumCombinations(&builder) == 1);
@@ -38,7 +39,7 @@ void empty_test(Context *context, skiatest::Reporter* reporter) {
 
 // It is expected that the builder will supply a default solid color shader if no other shader
 // option is provided
-void no_shader_option_test(Context *context, skiatest::Reporter* reporter) {
+void no_shader_option_test(Context *context, skiatest::Reporter *reporter) {
     SkCombinationBuilder builder(context);
 
     builder.addOption(SkBlendMode::kSrcOver);
@@ -48,12 +49,59 @@ void no_shader_option_test(Context *context, skiatest::Reporter* reporter) {
 
 // It is expected that the builder will supply a default kSrcOver blend mode if no other
 // options are added
-void no_blend_mode_option_test(Context *context, skiatest::Reporter* reporter) {
+void no_blend_mode_option_test(Context *context, skiatest::Reporter *reporter) {
     SkCombinationBuilder builder(context);
 
     builder.addOption(SkShaderType::kSolidColor);
 
     REPORTER_ASSERT(reporter, CombinationBuilderTestAccess::NumCombinations(&builder) == 1);
+}
+
+void big_test_new(Context *context, skiatest::Reporter* reporter) {
+
+    // paintOptions
+    //  |- sweepGrad_0 | blendShader_0
+    //  |                     0: linearGrad_0 | solid_0
+    //  |                     1: linearGrad_1 | blendShader_1
+    //  |                                            0: radGrad_0 | solid_1
+    //  |                                            1: imageShader_0
+    //  |
+    //  |- 4-built-in-blend-modes
+
+    PaintOptions paintOptions;
+
+    // first, shaders. First top-level option (sweepGrad_0)
+    sk_sp<SkPrecompileShader> sweepGrad_0 = SkPrecompileGradientShader::MakeSweep();
+
+    // Second top-level option (blendShader_0)
+    auto blendShader_0 = SkPrecompileShaders::Blend(
+                                { SkBlendMode::kSrc },
+                                {   // dsts
+                                    SkPrecompileGradientShader::MakeLinear(),
+                                    SkPrecompileShaders::Color()
+                                },
+                                {   // srcs
+                                    SkPrecompileGradientShader::MakeLinear(),
+                                    SkPrecompileShaders::Blend(
+                                           { SkBlendMode::kSrc },
+                                           {    // dsts
+                                                SkPrecompileGradientShader::MakeRadial(),
+                                                SkPrecompileShaders::Color()
+                                           },
+                                           {     // srcs
+                                                 SkPrecompileShaders::Image()
+                                           })
+                                });
+
+    paintOptions.setShaders({ sweepGrad_0, blendShader_0 });
+
+    // now, blend modes
+    paintOptions.setBlendModes({ SkBlendMode::kSrcOver,
+                                 SkBlendMode::kSrc,
+                                 SkBlendMode::kDstOver,
+                                 SkBlendMode::kDst });
+
+//    context->precompile({paintOptions});
 }
 
 void big_test(Context *context, skiatest::Reporter* reporter) {
@@ -162,6 +210,8 @@ void epoch_test(Context *context, skiatest::Reporter* reporter) {
 } // anonymous namespace
 
 DEF_GRAPHITE_TEST_FOR_CONTEXTS(CombinationBuilderTest, reporter, context) {
+    big_test_new(context, reporter);
+
     empty_test(context, reporter);
     no_shader_option_test(context, reporter);
     no_blend_mode_option_test(context, reporter);
