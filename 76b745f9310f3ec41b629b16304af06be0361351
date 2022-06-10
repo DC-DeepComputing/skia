@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "469f8a0d_a77a8743",
+        "filename": "include/gpu/graphite/ContextOptions.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-06-10T19:43:50Z",
+      "side": 1,
+      "message": "It was like this in GrContextOptions, removed until we need it.",
+      "parentUuid": "e1046c3f_e3ed5434",
+      "range": {
+        "startLine": 90,
+        "startChar": 0,
+        "endLine": 93,
+        "endChar": 6
+      },
+      "revId": "76b745f9310f3ec41b629b16304af06be0361351",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "58383718_612cd76c",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-06-10T18:28:34Z",
       "side": 1,
       "message": "Why do we need to save this, can\u0027t we just set need values on Caps based on it? Plus storing on the Context means Recorders won\u0027t have access to it if there was some value that we used of it (besides setting up caps).",
+      "range": {
+        "startLine": 39,
+        "startChar": 10,
+        "endLine": 39,
+        "endChar": 25
+      },
+      "revId": "76b745f9310f3ec41b629b16304af06be0361351",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0f72f9a5_4cd731d9",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-06-10T19:43:50Z",
+      "side": 1,
+      "message": "Many of these values don\u0027t feel like adjusting hardware Caps. For example, the user-defined ShaderErrorHandler isn\u0027t related to anything in hardware. Maybe store the struct in the Caps with an options() accessor?\n\nAnd I was planning on passing it down to the Recorder, but that still doesn\u0027t work accessing it to set up the ShaderErrorHandler. So I agree it needs to be someplace more accessible.",
+      "parentUuid": "58383718_612cd76c",
       "range": {
         "startLine": 39,
         "startChar": 10,
