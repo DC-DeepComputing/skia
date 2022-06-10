@@ -589,14 +589,9 @@ void RuntimeShaderBlock::BeginBlock(const SkKeyContext& keyContext,
             // TODO(skia:13405): add support for uniforms
             // TODO(skia:13405): add support for child effects
 
-            // TODO(skia:13415): currently all Blocks must have a nonzero amount of Uniform data
             if (gatherer) {
-                const SkShaderCodeDictionary* dict = keyContext.dict();
+                [[maybe_unused]] const SkShaderCodeDictionary* dict = keyContext.dict();
                 VALIDATE_UNIFORMS(gatherer, dict, SkBuiltInCodeSnippetID::kRuntimeShader)
-                gatherer->write(0);
-                gatherer->write(0);
-                gatherer->write(0);
-                gatherer->write(0);
             }
             // Until we support uniforms here, we don't have much else to do.
             builder->beginBlock(SkBuiltInCodeSnippetID::kRuntimeShader);
