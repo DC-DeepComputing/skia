@@ -75,17 +75,25 @@ OpDecorate %290 RelaxedPrecision
 OpDecorate %291 RelaxedPrecision
 OpDecorate %292 RelaxedPrecision
 OpDecorate %295 RelaxedPrecision
+<<<<<<< HEAD   (83b328 Remove string copies in Skia tracing macros)
 OpDecorate %298 RelaxedPrecision
 OpDecorate %302 RelaxedPrecision
+=======
+>>>>>>> CHANGE (f65a8f Fix UnitTest_SkSLVectorScalarMath_GPU FP16 precision-issue)
 OpDecorate %303 RelaxedPrecision
 OpDecorate %304 RelaxedPrecision
 OpDecorate %305 RelaxedPrecision
 OpDecorate %306 RelaxedPrecision
+<<<<<<< HEAD   (83b328 Remove string copies in Skia tracing macros)
 OpDecorate %307 RelaxedPrecision
 OpDecorate %310 RelaxedPrecision
 OpDecorate %312 RelaxedPrecision
+=======
+OpDecorate %314 RelaxedPrecision
+>>>>>>> CHANGE (f65a8f Fix UnitTest_SkSLVectorScalarMath_GPU FP16 precision-issue)
 OpDecorate %316 RelaxedPrecision
 OpDecorate %317 RelaxedPrecision
+<<<<<<< HEAD   (83b328 Remove string copies in Skia tracing macros)
 OpDecorate %320 RelaxedPrecision
 OpDecorate %321 RelaxedPrecision
 OpDecorate %322 RelaxedPrecision
@@ -96,8 +104,14 @@ OpDecorate %331 RelaxedPrecision
 OpDecorate %332 RelaxedPrecision
 OpDecorate %333 RelaxedPrecision
 OpDecorate %334 RelaxedPrecision
+=======
+OpDecorate %318 RelaxedPrecision
+OpDecorate %327 RelaxedPrecision
+OpDecorate %328 RelaxedPrecision
+>>>>>>> CHANGE (f65a8f Fix UnitTest_SkSLVectorScalarMath_GPU FP16 precision-issue)
 OpDecorate %335 RelaxedPrecision
 OpDecorate %336 RelaxedPrecision
+<<<<<<< HEAD   (83b328 Remove string copies in Skia tracing macros)
 OpDecorate %339 RelaxedPrecision
 OpDecorate %342 RelaxedPrecision
 OpDecorate %346 RelaxedPrecision
@@ -178,6 +192,18 @@ OpDecorate %469 RelaxedPrecision
 OpDecorate %479 RelaxedPrecision
 OpDecorate %481 RelaxedPrecision
 OpDecorate %482 RelaxedPrecision
+=======
+OpDecorate %338 RelaxedPrecision
+OpDecorate %339 RelaxedPrecision
+OpDecorate %340 RelaxedPrecision
+OpDecorate %346 RelaxedPrecision
+OpDecorate %347 RelaxedPrecision
+OpDecorate %348 RelaxedPrecision
+OpDecorate %350 RelaxedPrecision
+OpDecorate %365 RelaxedPrecision
+OpDecorate %367 RelaxedPrecision
+OpDecorate %368 RelaxedPrecision
+>>>>>>> CHANGE (f65a8f Fix UnitTest_SkSLVectorScalarMath_GPU FP16 precision-issue)
 %float = OpTypeFloat 32
 %v4float = OpTypeVector %float 4
 %_ptr_Output_v4float = OpTypePointer Output %v4float
@@ -246,11 +272,26 @@ OpDecorate %482 RelaxedPrecision
 %float_5 = OpConstant %float 5
 %354 = OpConstantComposite %v4float %float_0 %float_5 %float_5 %float_0
 %float_10 = OpConstant %float 10
+<<<<<<< HEAD   (83b328 Remove string copies in Skia tracing macros)
 %377 = OpConstantComposite %v4float %float_9 %float_9 %float_10 %float_10
 %390 = OpConstantComposite %v4float %float_1 %float_2 %float_1 %float_2
 %float_36 = OpConstant %float 36
 %417 = OpConstantComposite %v4float %float_4 %float_18 %float_9 %float_2
 %429 = OpConstantComposite %v4float %float_2 %float_9 %float_18 %float_4
+=======
+%285 = OpConstantComposite %v4float %float_10 %float_10 %float_10 %float_10
+%289 = OpConstantComposite %v4float %float_9 %float_9 %float_10 %float_10
+%298 = OpConstantComposite %v4float %float_1 %float_2 %float_1 %float_2
+%float_8 = OpConstant %float 8
+%309 = OpConstantComposite %v4float %float_8 %float_8 %float_8 %float_2
+%float_32 = OpConstant %float 32
+%315 = OpConstantComposite %v2float %float_32 %float_32
+%float_16 = OpConstant %float 16
+%322 = OpConstantComposite %v4float %float_4 %float_16 %float_8 %float_2
+%326 = OpConstantComposite %v4float %float_32 %float_32 %float_32 %float_32
+%331 = OpConstantComposite %v4float %float_2 %float_8 %float_16 %float_4
+%337 = OpConstantComposite %v4float %float_4 %float_4 %float_4 %float_4
+>>>>>>> CHANGE (f65a8f Fix UnitTest_SkSLVectorScalarMath_GPU FP16 precision-issue)
 %float_0_5 = OpConstant %float 0.5
 %_entrypoint_v = OpFunction %void None %16
 %17 = OpLabel
@@ -473,6 +514,7 @@ OpBranchConditional %202 %203 %204
 %210 = OpAll %bool %209
 OpBranch %204
 %204 = OpLabel
+<<<<<<< HEAD   (83b328 Remove string copies in Skia tracing macros)
 %211 = OpPhi %bool %false %190 %210 %203
 OpStore %ok %211
 %212 = OpLoad %v4int %x
@@ -481,6 +523,22 @@ OpStore %ok %211
 %215 = OpVectorShuffle %v4int %214 %214 1 0 3 2
 OpStore %x %215
 %216 = OpLoad %bool %ok
+=======
+%_0_ok = OpVariable %_ptr_Function_bool Function
+%_1_inputRed = OpVariable %_ptr_Function_v4float Function
+%_2_inputGreen = OpVariable %_ptr_Function_v4float Function
+%_3_x = OpVariable %_ptr_Function_v4float Function
+%360 = OpVariable %_ptr_Function_v4float Function
+OpStore %_0_ok %true
+%208 = OpAccessChain %_ptr_Uniform_v4float %11 %int_0
+%209 = OpLoad %v4float %208
+OpStore %_1_inputRed %209
+%211 = OpAccessChain %_ptr_Uniform_v4float %11 %int_1
+%212 = OpLoad %v4float %211
+OpStore %_2_inputGreen %212
+%216 = OpFAdd %v4float %209 %215
+OpStore %_3_x %216
+>>>>>>> CHANGE (f65a8f Fix UnitTest_SkSLVectorScalarMath_GPU FP16 precision-issue)
 OpSelectionMerge %218 None
 OpBranchConditional %216 %217 %218
 %217 = OpLabel
@@ -594,6 +652,7 @@ OpBranch %294
 %294 = OpLabel
 %301 = OpPhi %bool %false %281 %300 %293
 OpStore %_0_ok %301
+<<<<<<< HEAD   (83b328 Remove string copies in Skia tracing macros)
 %302 = OpLoad %v4float %_1_inputRed
 %303 = OpLoad %v4float %_2_inputGreen
 %304 = OpCompositeExtract %float %303 1
@@ -633,7 +692,51 @@ OpStore %_0_ok %330
 %333 = OpVectorTimesScalar %v2float %332 %float_2
 %334 = OpLoad %v4float %_3_x
 %335 = OpVectorShuffle %v4float %334 %333 4 5 2 3
+=======
+%303 = OpVectorShuffle %v3float %212 %212 3 1 3
+%304 = OpVectorTimesScalar %v3float %303 %float_8
+%305 = OpLoad %v4float %_3_x
+%306 = OpVectorShuffle %v4float %305 %304 4 5 6 3
+OpStore %_3_x %306
+OpSelectionMerge %308 None
+OpBranchConditional %301 %307 %308
+%307 = OpLabel
+%310 = OpFOrdEqual %v4bool %306 %309
+%311 = OpAll %bool %310
+OpBranch %308
+%308 = OpLabel
+%312 = OpPhi %bool %false %297 %311 %307
+OpStore %_0_ok %312
+%314 = OpVectorShuffle %v2float %306 %306 2 3
+%316 = OpFDiv %v2float %315 %314
+%317 = OpLoad %v4float %_3_x
+%318 = OpVectorShuffle %v4float %317 %316 4 5 2 3
+OpStore %_3_x %318
+OpSelectionMerge %320 None
+OpBranchConditional %312 %319 %320
+%319 = OpLabel
+%323 = OpFOrdEqual %v4bool %318 %322
+%324 = OpAll %bool %323
+OpBranch %320
+%320 = OpLabel
+%325 = OpPhi %bool %false %308 %324 %319
+OpStore %_0_ok %325
+%327 = OpFDiv %v4float %326 %318
+%328 = OpVectorShuffle %v4float %327 %327 1 0 3 2
+OpStore %_3_x %328
+OpSelectionMerge %330 None
+OpBranchConditional %325 %329 %330
+%329 = OpLabel
+%332 = OpFOrdEqual %v4bool %328 %331
+%333 = OpAll %bool %332
+OpBranch %330
+%330 = OpLabel
+%334 = OpPhi %bool %false %320 %333 %329
+OpStore %_0_ok %334
+%335 = OpFAdd %v4float %328 %215
+>>>>>>> CHANGE (f65a8f Fix UnitTest_SkSLVectorScalarMath_GPU FP16 precision-issue)
 OpStore %_3_x %335
+<<<<<<< HEAD   (83b328 Remove string copies in Skia tracing macros)
 %336 = OpLoad %bool %_0_ok
 OpSelectionMerge %338 None
 OpBranchConditional %336 %337 %338
@@ -833,4 +936,61 @@ OpBranch %477
 %477 = OpLabel
 %482 = OpLoad %v4float %474
 OpReturnValue %482
+=======
+%336 = OpVectorTimesScalar %v4float %335 %float_2
+OpStore %_3_x %336
+%338 = OpFSub %v4float %336 %337
+OpStore %_3_x %338
+%339 = OpFDiv %float %float_1 %float_2
+%340 = OpVectorTimesScalar %v4float %338 %339
+OpStore %_3_x %340
+OpSelectionMerge %342 None
+OpBranchConditional %334 %341 %342
+%341 = OpLabel
+%343 = OpFOrdEqual %v4bool %340 %331
+%344 = OpAll %bool %343
+OpBranch %342
+%342 = OpLabel
+%345 = OpPhi %bool %false %330 %344 %341
+OpStore %_0_ok %345
+%346 = OpFAdd %v4float %340 %215
+OpStore %_3_x %346
+%347 = OpVectorTimesScalar %v4float %346 %float_2
+OpStore %_3_x %347
+%348 = OpFSub %v4float %347 %337
+OpStore %_3_x %348
+%350 = OpVectorTimesScalar %v4float %348 %float_0_5
+OpStore %_3_x %350
+OpSelectionMerge %352 None
+OpBranchConditional %345 %351 %352
+%351 = OpLabel
+%353 = OpFOrdEqual %v4bool %350 %331
+%354 = OpAll %bool %353
+OpBranch %352
+%352 = OpLabel
+%355 = OpPhi %bool %false %342 %354 %351
+OpStore %_0_ok %355
+OpSelectionMerge %357 None
+OpBranchConditional %355 %356 %357
+%356 = OpLabel
+%358 = OpFunctionCall %bool %test_int_b
+OpBranch %357
+%357 = OpLabel
+%359 = OpPhi %bool %false %352 %358 %356
+OpSelectionMerge %363 None
+OpBranchConditional %359 %361 %362
+%361 = OpLabel
+%364 = OpAccessChain %_ptr_Uniform_v4float %11 %int_1
+%365 = OpLoad %v4float %364
+OpStore %360 %365
+OpBranch %363
+%362 = OpLabel
+%366 = OpAccessChain %_ptr_Uniform_v4float %11 %int_0
+%367 = OpLoad %v4float %366
+OpStore %360 %367
+OpBranch %363
+%363 = OpLabel
+%368 = OpLoad %v4float %360
+OpReturnValue %368
+>>>>>>> CHANGE (f65a8f Fix UnitTest_SkSLVectorScalarMath_GPU FP16 precision-issue)
 OpFunctionEnd
