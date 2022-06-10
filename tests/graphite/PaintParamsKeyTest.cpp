@@ -110,6 +110,54 @@ std::tuple<SkPaint, int> create_paint(Recorder* recorder,
     return { p, numTextures };
 }
 
+SkUniquePaintParamsID create_key(Context* context,
+                                 SkPaintParamsKeyBuilder* keyBuilder,
+                                 SkShaderType shaderType,
+                                 SkTileMode tileMode,
+                                 SkBlendMode blendMode) {
+    SkShaderCodeDictionary* dict = context->priv().shaderCodeDictionary();
+
+    SkCombinationBuilder combinationBuilder(context);
+
+    switch (shaderType) {
+        case SkShaderType::kSolidColor:
+            combinationBuilder.addOption(shaderType);
+            break;
+        case SkShaderType::kLinearGradient:         [[fallthrough]];
+        case SkShaderType::kRadialGradient:         [[fallthrough]];
+        case SkShaderType::kSweepGradient:          [[fallthrough]];
+        case SkShaderType::kConicalGradient:
+            combinationBuilder.addOption(shaderType, 2, 2);
+            break;
+        case SkShaderType::kLocalMatrix: {
+            SkCombinationOption option = combinationBuilder.addOption(shaderType);
+            option.addChildOption(0, SkShaderType::kSolidColor);
+        } break;
+        case SkShaderType::kImage: {
+            SkTileModePair tilingOptions[] = { { tileMode,  tileMode } };
+
+            combinationBuilder.addOption(shaderType, SkMakeSpan(tilingOptions));
+        } break;
+        case SkShaderType::kBlendShader: {
+            SkCombinationOption option = combinationBuilder.addOption(shaderType);
+            option.addChildOption(0, SkShaderType::kSolidColor);
+            option.addChildOption(1, SkShaderType::kSolidColor);
+        } break;
+    }
+
+    combinationBuilder.addOption(blendMode);
+
+    std::vector<SkUniquePaintParamsID> uniqueIDs;
+
+    combinationBuilder.buildCombinations(dict,
+                                         [&](SkUniquePaintParamsID uniqueID) {
+                                             uniqueIDs.push_back(uniqueID);
+                                         });
+
+    SkASSERT(uniqueIDs.size() == 1);
+    return uniqueIDs[0];
+}
+
 } // anonymous namespace
 
 // This is intended to be a smoke test for the agreement between the two ways of creating a
@@ -159,7 +207,7 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(PaintParamsKeyTest, reporter, context) {
                 auto [ uniqueID1, uIndex, tIndex] = ExtractPaintData(recorder.get(), &gatherer,
                                                                      &builder, {}, PaintParams(p));
 
-                SkUniquePaintParamsID uniqueID2 = CreateKey(keyContext, &builder, s, bm);
+                SkUniquePaintParamsID uniqueID2 = create_key(context, &builder, s, tm, bm);
                 // ExtractPaintData and CreateKey agree
                 REPORTER_ASSERT(reporter, uniqueID1 == uniqueID2);
 

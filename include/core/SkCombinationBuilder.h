@@ -19,6 +19,7 @@
 
 class SkArenaAllocWithReset;
 class SkCombinationBuilder;
+class SkKeyContext;
 class SkOption;
 class SkPaintParamsKeyBuilder;
 class SkShaderCodeDictionary;
@@ -155,6 +156,9 @@ private:
         return this->numShaderCombinations() * this->numBlendModeCombinations();
     }
 
+    // 'desiredCombination' must be less than numCombinations
+    void createKey(const SkKeyContext&, int desiredCombination, SkPaintParamsKeyBuilder*);
+
 #ifdef SK_DEBUG
     void dump() const;
     int epoch() const { return fEpoch; }
@@ -169,8 +173,10 @@ private:
     SkOption* addOptionInternal(SkShaderType, int minNumStops, int maxNumStops);
     SkOption* addOptionInternal(SkShaderType, SkSpan<SkTileModePair> tileModes);
 
+public:
     void buildCombinations(SkShaderCodeDictionary*,
                            const std::function<void(SkUniquePaintParamsID)>&);
+private:
 
     SkShaderCodeDictionary* fDictionary;
     std::unique_ptr<SkArenaAllocWithReset> fArena;
