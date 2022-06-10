@@ -34,6 +34,24 @@
       "parentUuid": "e0d3a111_fb0e58ad",
       "revId": "a30fc3a618e5d4a20a8708efbe0ec9eaa982b3af",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ec0ce3a0_28b4d211",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-06-10T15:46:29Z",
+      "side": 1,
+      "message": "To answer your question more directly--yes, what you described is the current thought process (but there definitely may be roadblocks here!)",
+      "parentUuid": "f9a7921e_58984ea0",
+      "revId": "a30fc3a618e5d4a20a8708efbe0ec9eaa982b3af",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
