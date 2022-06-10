@@ -32,21 +32,23 @@
 namespace skgpu::graphite {
 
 //--------------------------------------------------------------------------------------------------
-Context::Context(sk_sp<Gpu> gpu, BackendApi backend)
+Context::Context(sk_sp<Gpu> gpu, BackendApi backend, const ContextOptions& options)
         : fGpu(std::move(gpu))
         , fGlobalCache(sk_make_sp<GlobalCache>())
-        , fBackend(backend) {
+        , fBackend(backend)
+        , fContextOptions(options) {
 }
 Context::~Context() {}
 
 #ifdef SK_METAL
-std::unique_ptr<Context> Context::MakeMetal(const MtlBackendContext& backendContext) {
+std::unique_ptr<Context> Context::MakeMetal(const MtlBackendContext& backendContext,
+                                            const ContextOptions& options) {
     sk_sp<Gpu> gpu = MtlTrampoline::MakeGpu(backendContext);
     if (!gpu) {
         return nullptr;
     }
 
-    return std::unique_ptr<Context>(new Context(std::move(gpu), BackendApi::kMetal));
+    return std::unique_ptr<Context>(new Context(std::move(gpu), BackendApi::kMetal, options));
 }
 #endif
 

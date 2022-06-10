@@ -10,6 +10,7 @@
 
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkShader.h"
+#include "include/gpu/graphite/ContextOptions.h"
 #include "include/gpu/graphite/GraphiteTypes.h"
 
 class SkBlenderID;
@@ -39,7 +40,7 @@ public:
     ~Context();
 
 #ifdef SK_METAL
-    static std::unique_ptr<Context> MakeMetal(const skgpu::graphite::MtlBackendContext&);
+    static std::unique_ptr<Context> MakeMetal(const MtlBackendContext&, const ContextOptions&);
 #endif
 
     BackendApi backend() const { return fBackend; }
@@ -86,7 +87,7 @@ public:
     const ContextPriv priv() const;  // NOLINT(readability-const-return-type)
 
 protected:
-    Context(sk_sp<Gpu>, BackendApi);
+    Context(sk_sp<Gpu>, BackendApi, const ContextOptions&);
 
 private:
     friend class ContextPriv;
@@ -96,6 +97,7 @@ private:
     sk_sp<Gpu> fGpu;
     sk_sp<GlobalCache> fGlobalCache;
     BackendApi fBackend;
+    const ContextOptions fOptions;
 };
 
 } // namespace skgpu::graphite
