@@ -23,6 +23,7 @@
 #include "src/gpu/graphite/UploadBufferManager.h"
 #include "src/gpu/graphite/text/AtlasManager.h"
 #include "src/text/gpu/StrikeCache.h"
+#include "src/text/gpu/TextBlobRedrawCoordinator.h"
 
 namespace skgpu::graphite {
 
@@ -38,7 +39,9 @@ Recorder::Recorder(sk_sp<Gpu> gpu, sk_sp<GlobalCache> globalCache)
                                                        DrawAtlas::AllowMultitexturing::kYes,
                                                        false))
         , fTokenTracker(std::make_unique<TokenTracker>())
-        , fStrikeCache(std::make_unique<sktext::gpu::StrikeCache>()) {
+        , fStrikeCache(std::make_unique<sktext::gpu::StrikeCache>())
+        // TODO: Do we have the notion of a context ID for a graphite::Recorder?
+        , fTextBlobCache(std::make_unique<sktext::gpu::TextBlobRedrawCoordinator>(1)) {
 
     fResourceProvider = fGpu->makeResourceProvider(std::move(globalCache), this->singleOwner());
     fDrawBufferManager.reset(new DrawBufferManager(fResourceProvider.get(),
