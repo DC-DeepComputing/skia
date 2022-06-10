@@ -1554,6 +1554,8 @@ BASE_SRCS_ALL = [
     "src/sksl/ir/SkSLConstructorDiagonalMatrix.h",
     "src/sksl/ir/SkSLConstructorMatrixResize.cpp",
     "src/sksl/ir/SkSLConstructorMatrixResize.h",
+    "src/sksl/ir/SkSLConstructorPointerCast.cpp",
+    "src/sksl/ir/SkSLConstructorPointerCast.h",
     "src/sksl/ir/SkSLConstructorScalarCast.cpp",
     "src/sksl/ir/SkSLConstructorScalarCast.h",
     "src/sksl/ir/SkSLConstructorSplat.cpp",

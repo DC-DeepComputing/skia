@@ -279,8 +279,15 @@ public:
                 this->visitExpression(*swizzle.base());
                 break;
             }
+
             case Expression::Kind::kIndex:
                 this->visitExpression(*expr.as<IndexExpression>().base());
+                break;
+
+            case Expression::Kind::kPrefix:
+                if (expr.as<PrefixExpression>().getOperator().kind() != Operator::Kind::STAR) {
+                    fErrors->error(expr.fPosition, "cannot assign to this expression");
+                }
                 break;
 
             case Expression::Kind::kPoison:
@@ -416,14 +423,9 @@ bool Analysis::UpdateVariableRefKind(Expression* expr,
     if (!Analysis::IsAssignable(*expr, &info, errors)) {
         return false;
     }
-    if (!info.fAssignedVar) {
-        if (errors) {
-            errors->error(expr->fPosition, "can't assign to expression '" + expr->description() +
-                    "'");
-        }
-        return false;
+    if (info.fAssignedVar) {
+        info.fAssignedVar->setRefKind(kind);
     }
-    info.fAssignedVar->setRefKind(kind);
     return true;
 }
 
@@ -513,6 +515,7 @@ template <typename T> bool TProgramVisitor<T>::visitExpression(typename T::Expre
         case Expression::Kind::kConstructorCompoundCast:
         case Expression::Kind::kConstructorDiagonalMatrix:
         case Expression::Kind::kConstructorMatrixResize:
+        case Expression::Kind::kConstructorPointerCast:
         case Expression::Kind::kConstructorScalarCast:
         case Expression::Kind::kConstructorSplat:
         case Expression::Kind::kConstructorStruct: {

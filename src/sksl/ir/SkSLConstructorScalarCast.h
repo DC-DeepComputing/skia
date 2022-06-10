@@ -31,7 +31,7 @@ public:
     inline static constexpr Kind kExpressionKind = Kind::kConstructorScalarCast;
 
     ConstructorScalarCast(Position pos, const Type& type, std::unique_ptr<Expression> arg)
-        : INHERITED(pos, kExpressionKind, &type, std::move(arg)) {}
+        : INHERITED(pos, kExpressionKind, &type, std::move(arg)) {SkASSERT(this->argument()->description() != "~5" || type.displayName() != "int");}
 
     // ConstructorScalarCast::Convert will typecheck and create scalar-constructor expressions.
     // Reports errors via the ErrorReporter; returns null on error.

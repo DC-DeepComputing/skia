@@ -1,0 +1,10 @@
+void main() {
+    int* x;
+    x = &5;
+    int2 y;
+    x = &y.x;
+    x = &y[0];
+
+    int a[5];
+    x = &a[0];
+}

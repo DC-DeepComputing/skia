@@ -954,6 +954,7 @@ public:
             case Expression::Kind::kConstructorCompoundCast:
             case Expression::Kind::kConstructorDiagonalMatrix:
             case Expression::Kind::kConstructorMatrixResize:
+            case Expression::Kind::kConstructorPointerCast:
             case Expression::Kind::kConstructorScalarCast:
             case Expression::Kind::kConstructorSplat:
             case Expression::Kind::kConstructorStruct: {

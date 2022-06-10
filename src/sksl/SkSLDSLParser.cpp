@@ -976,6 +976,9 @@ DSLType DSLParser::type(DSLModifiers* modifiers) {
         return DSLType(nullptr);
     }
     DSLType result(this->text(type), modifiers, this->position(type));
+    while (this->checkNext(Token::Kind::TK_STAR)) {
+        result = PointerTo(result);
+    }
     Token bracket;
     while (this->checkNext(Token::Kind::TK_LBRACKET, &bracket)) {
         if (this->checkNext(Token::Kind::TK_RBRACKET)) {
@@ -1841,7 +1844,9 @@ DSLExpression DSLParser::unaryExpression() {
         case Token::Kind::TK_LOGICALNOT:
         case Token::Kind::TK_BITWISENOT:
         case Token::Kind::TK_PLUSPLUS:
-        case Token::Kind::TK_MINUSMINUS: {
+        case Token::Kind::TK_MINUSMINUS:
+        case Token::Kind::TK_STAR:
+        case Token::Kind::TK_BITWISEAND: {
             this->nextToken();
             if (!depth.increase()) {
                 return {};
@@ -1858,6 +1863,8 @@ DSLExpression DSLParser::unaryExpression() {
                 case Token::Kind::TK_BITWISENOT: return expr.prefix(Operator::Kind::BITWISENOT, p);
                 case Token::Kind::TK_PLUSPLUS:   return expr.prefix(Operator::Kind::PLUSPLUS, p);
                 case Token::Kind::TK_MINUSMINUS: return expr.prefix(Operator::Kind::MINUSMINUS, p);
+                case Token::Kind::TK_STAR:       return expr.prefix(Operator::Kind::STAR, p);
+                case Token::Kind::TK_BITWISEAND: return expr.prefix(Operator::Kind::BITWISEAND, p);
                 default: SkUNREACHABLE;
             }
         }
@@ -1885,7 +1892,8 @@ DSLExpression DSLParser::postfixExpression() {
             case Token::Kind::TK_DOT:
             case Token::Kind::TK_LPAREN:
             case Token::Kind::TK_PLUSPLUS:
-            case Token::Kind::TK_MINUSMINUS: {
+            case Token::Kind::TK_MINUSMINUS:
+            case Token::Kind::TK_ARROW: {
                 if (!depth.increase()) {
                     return {};
                 }
@@ -1961,7 +1969,7 @@ dsl::DSLExpression DSLParser::call(Position pos, dsl::DSLExpression base, Expres
     return base(std::move(args), pos);
 }
 
-/* LBRACKET expression? RBRACKET | DOT IDENTIFIER | LPAREN arguments RPAREN |
+/* LBRACKET expression? RBRACKET | (DOT | ARROW) IDENTIFIER | LPAREN arguments RPAREN |
    PLUSPLUS | MINUSMINUS | COLONCOLON IDENTIFIER | FLOAT_LITERAL [IDENTIFIER] */
 DSLExpression DSLParser::suffix(DSLExpression base) {
     Token next = this->nextToken();
@@ -2016,6 +2024,15 @@ DSLExpression DSLParser::suffix(DSLExpression base) {
             }
             this->pushback(id);
             return this->swizzle(pos, std::move(base), field, maskPos);
+        }
+        case Token::Kind::TK_ARROW: {
+            std::string_view text;
+            if (this->identifier(&text)) {
+                Position pos = this->rangeFrom(base.position());
+                DSLExpression deref = base.prefix(Operator::Kind::STAR, pos);
+                return this->swizzle(pos, std::move(deref), text,
+                        this->rangeFrom(this->position(next).after()));
+            }
         }
         case Token::Kind::TK_LPAREN: {
             ExpressionArray args;

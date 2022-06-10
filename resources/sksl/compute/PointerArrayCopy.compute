@@ -1,0 +1,19 @@
+layout(location=0) in int count;
+layout(location=1) in int[] a;
+layout(location=2) out int[] b;
+
+void arraycopy(int* src, int* dest, int count) {
+    while (count > 0) {
+        *dest = *src;
+        ++dest;
+        ++src;
+        --count;
+    }
+}
+
+void main() {
+    arraycopy(a, b, count);
+
+    int[10] tmp;
+    arraycopy(a, tmp, 10);
+}

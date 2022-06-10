@@ -29,7 +29,11 @@ public:
 
     // Use PrefixExpression::Make to automatically simplify various prefix expression types.
     PrefixExpression(Position pos, Operator op, std::unique_ptr<Expression> operand)
-        : INHERITED(pos, kExpressionKind, &operand->type())
+        : PrefixExpression(pos, operand->type(), op, std::move(operand)) {}
+
+    PrefixExpression(Position pos, const Type& type, Operator op,
+                     std::unique_ptr<Expression> operand)
+        : INHERITED(pos, kExpressionKind, &type)
         , fOperator(op)
         , fOperand(std::move(operand)) {}
 
@@ -37,9 +41,19 @@ public:
     static std::unique_ptr<Expression> Convert(const Context& context, Position pos, Operator op,
                                                std::unique_ptr<Expression> base);
 
+    static std::unique_ptr<Expression> ConvertAddressOf(const Context& context,
+                                                        SymbolTable& symbolTable,
+                                                        Position pos,
+                                                        std::unique_ptr<Expression> base);
+
     // Creates an SkSL prefix expression; reports errors via ASSERT.
     static std::unique_ptr<Expression> Make(const Context& context, Position pos, Operator op,
                                             std::unique_ptr<Expression> base);
+
+    static std::unique_ptr<Expression> MakeAddressOf(const Context& context,
+                                                     SymbolTable& symbolTable,
+                                                     Position pos,
+                                                     std::unique_ptr<Expression> base);
 
     Operator getOperator() const {
         return fOperator;

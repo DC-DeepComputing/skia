@@ -39,7 +39,7 @@ struct Program;
  */
 class Rehydrator {
 public:
-    static constexpr uint16_t kVersion = 11;
+    static constexpr uint16_t kVersion = 12;
 
     // see binary_format.md for a description of the command data
     enum Command {
@@ -55,6 +55,7 @@ public:
         kConstructorCompoundCast_Command,
         kConstructorDiagonalMatrix_Command,
         kConstructorMatrixResize_Command,
+        kConstructorPointerCast_Command,
         kConstructorScalarCast_Command,
         kConstructorSplat_Command,
         kConstructorStruct_Command,

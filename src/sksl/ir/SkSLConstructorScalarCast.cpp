@@ -89,5 +89,4 @@ std::unique_ptr<Expression> ConstructorScalarCast::Make(const Context& context,
     }
     return std::make_unique<ConstructorScalarCast>(pos, type, std::move(arg));
 }
-
 }  // namespace SkSL

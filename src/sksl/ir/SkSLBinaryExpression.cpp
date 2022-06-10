@@ -16,6 +16,7 @@
 #include "src/sksl/ir/SkSLFieldAccess.h"
 #include "src/sksl/ir/SkSLIndexExpression.h"
 #include "src/sksl/ir/SkSLLiteral.h"
+#include "src/sksl/ir/SkSLPrefixExpression.h"
 #include "src/sksl/ir/SkSLSetting.h"
 #include "src/sksl/ir/SkSLSwizzle.h"
 #include "src/sksl/ir/SkSLTernaryExpression.h"
@@ -175,8 +176,8 @@ std::unique_ptr<Expression> BinaryExpression::Make(const Context& context,
     }
 
     // Perform constant-folding on the expression.
-    if (std::unique_ptr<Expression> result = ConstantFolder::Simplify(context, pos, *left,
-                                                                      op, *right, *resultType)) {
+    if (std::unique_ptr<Expression> result = ConstantFolder::Simplify(context, pos, *left, op,
+                                                                      *right, *resultType)) {
         return result;
     }
 
@@ -242,11 +243,19 @@ bool BinaryExpression::CheckRef(const Expression& expr) {
             const TernaryExpression& t = expr.as<TernaryExpression>();
             return CheckRef(*t.ifTrue()) && CheckRef(*t.ifFalse());
         }
+
         case Expression::Kind::kVariableReference: {
             const VariableReference& ref = expr.as<VariableReference>();
             return ref.refKind() == VariableRefKind::kWrite ||
                    ref.refKind() == VariableRefKind::kReadWrite;
         }
+
+        case Expression::Kind::kPrefix:
+            return expr.as<PrefixExpression>().getOperator().kind() == Operator::Kind::STAR;
+
+        case Expression::Kind::kPoison:
+            return true;
+
         default:
             return false;
     }

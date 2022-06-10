@@ -19,6 +19,8 @@
 #include "src/sksl/ir/SkSLConstructorDiagonalMatrix.h"
 #include "src/sksl/ir/SkSLConstructorSplat.h"
 #include "src/sksl/ir/SkSLLiteral.h"
+#include "src/sksl/ir/SkSLSwizzle.h"
+#include "src/sksl/ir/SkSLSymbolTable.h"
 #include "src/sksl/ir/SkSLType.h"
 #include "src/sksl/ir/SkSLVariableReference.h"
 
@@ -179,7 +181,7 @@ std::unique_ptr<Expression> PrefixExpression::Convert(const Context& context, Po
 
         case Operator::Kind::PLUSPLUS:
         case Operator::Kind::MINUSMINUS:
-            if (!baseType.isNumber()) {
+            if (!baseType.isNumber() && !baseType.isPointer()) {
                 context.fErrors->error(pos,
                                        "'" + std::string(op.tightOperatorName()) +
                                        "' cannot operate on '" + baseType.displayName() + "'");
@@ -223,6 +225,14 @@ std::unique_ptr<Expression> PrefixExpression::Convert(const Context& context, Po
             }
             break;
 
+        case Operator::Kind::STAR:
+            if (!baseType.isPointer()) {
+                context.fErrors->error(pos, "'" + baseType.displayName() +
+                        "' is not a pointer and cannot be dereferenced");
+                return nullptr;
+            }
+            break;
+
         default:
             SK_ABORT("unsupported prefix operator");
     }
@@ -252,7 +262,7 @@ std::unique_ptr<Expression> PrefixExpression::Make(const Context& context, Posit
 
         case Operator::Kind::PLUSPLUS:
         case Operator::Kind::MINUSMINUS:
-            SkASSERT(base->type().isNumber());
+            SkASSERT(base->type().isNumber() || base->type().isPointer());
             SkASSERT(Analysis::IsAssignable(*base));
             break;
 
@@ -263,11 +273,32 @@ std::unique_ptr<Expression> PrefixExpression::Make(const Context& context, Posit
             SkASSERT(!base->type().isLiteral());
             break;
 
+        case Operator::Kind::STAR:
+            SkASSERT(base->type().isPointer());
+            return std::make_unique<PrefixExpression>(pos, base->type().componentType(), op,
+                    std::move(base));
+
         default:
             SkDEBUGFAILF("unsupported prefix operator: %s", op.operatorName());
     }
 
     return std::make_unique<PrefixExpression>(pos, op, std::move(base));
+}
+
+std::unique_ptr<Expression> PrefixExpression::ConvertAddressOf(const Context& context,
+        SymbolTable& symbolTable, Position pos, std::unique_ptr<Expression> base) {
+    if (!Analysis::IsAssignable(*base) || base->is<Swizzle>()) {
+        context.fErrors->error(pos, "cannot take the address of this expression");
+        return nullptr;
+    }
+    return PrefixExpression::MakeAddressOf(context, symbolTable, pos, std::move(base));
+}
+
+std::unique_ptr<Expression> PrefixExpression::MakeAddressOf(const Context& context,
+        SymbolTable& symbolTable, Position pos, std::unique_ptr<Expression> base) {
+    SkASSERT(Analysis::IsAssignable(*base) && !base->is<Swizzle>());
+    return std::make_unique<PrefixExpression>(pos, *symbolTable.pointerTo(&base->type()),
+            Operator::Kind::BITWISEAND, std::move(base));
 }
 
 }  // namespace SkSL
