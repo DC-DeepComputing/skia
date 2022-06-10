@@ -9,9 +9,11 @@
 #define SkJSONWriter_DEFINED
 
 #include "include/core/SkStream.h"
+#include "include/core/SkString.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkNoncopyable.h"
 #include "include/private/SkTArray.h"
+#include "src/utils/SkUTF.h"
 
 #include <string.h>
 
@@ -168,12 +170,15 @@ public:
      *  - Between beginArray() and endArray()                                -or-
      *  - Between beginObject() and endObject(), after calling appendName()
      */
-    void appendString(const char* value) {
+    void appendString(const char* value, size_t size) {
         this->beginValue();
         this->write("\"", 1);
         if (value) {
-            while (*value) {
-                switch (*value) {
+            char const * const end = value + size;
+            while (value < end) {
+                char const * next = value;
+                SkUnichar u = SkUTF::NextUTF8(&next, end);
+                switch (u) {
                     case '"': this->write("\\\"", 2); break;
                     case '\\': this->write("\\\\", 2); break;
                     case '\b': this->write("\\b", 2); break;
@@ -181,9 +186,22 @@ public:
                     case '\n': this->write("\\n", 2); break;
                     case '\r': this->write("\\r", 2); break;
                     case '\t': this->write("\\t", 2); break;
-                    default: this->write(value, 1); break;
+                    default: {
+                        if (u < 0) {
+                            next = value + 1;
+                            SkString s("\\u");
+                            s.appendHex((unsigned char)*value, 4);
+                            this->write(s.c_str(), s.size());
+                        } else if (u < 20) {
+                            SkString s("\\u");
+                            s.appendHex(u, 4);
+                            this->write(s.c_str(), s.size());
+                        } else {
+                            this->write(value, next - value);
+                        }
+                    } break;
                 }
-                value++;
+                value = next;
             }
         }
         this->write("\"", 1);
@@ -215,6 +233,18 @@ public:
     void appendHexU32(uint32_t value) { this->beginValue(); this->appendf("\"0x%x\"", value); }
     void appendHexU64(uint64_t value);
 
+    void appendString(const char* name, const char* value, size_t size) {
+        this->appendName(name);
+        this->appendString(value, size);
+    }
+    void appendString(const char* name, const SkString& value) {
+        this->appendName(name);
+        this->appendString(value.c_str(), value.size());
+    }
+    void appendString(const char* name, const char* value) {
+        this->appendName(name);
+        this->appendString(value, strlen(value));
+    }
 #define DEFINE_NAMED_APPEND(function, type) \
     void function(const char* name, type value) { this->appendName(name); this->function(value); }
 
@@ -222,7 +252,6 @@ public:
      *  Functions for adding named values of various types. These add a name field, so must be
      *  called between beginObject() and endObject().
      */
-    DEFINE_NAMED_APPEND(appendString, const char *)
     DEFINE_NAMED_APPEND(appendPointer, const void *)
     DEFINE_NAMED_APPEND(appendBool, bool)
     DEFINE_NAMED_APPEND(appendS32, int32_t)

@@ -489,8 +489,8 @@ void DrawCommand::MakeJsonPath(SkJSONWriter& writer, const SkPath& path) {
     SkDynamicMemoryWStream wstream;
     path.dump(&wstream, false);
     auto data = wstream.detachAsData();
-    SkString dumpString((char*)data->bytes(), data->size());
-    writer.appendString(DEBUGCANVAS_ATTRIBUTE_DUMP, dumpString.c_str());
+    writer.appendString(DEBUGCANVAS_ATTRIBUTE_DUMP,
+                        static_cast<const char*>(data->data()), data->size());
 
     switch (path.getFillType()) {
         case SkPathFillType::kWinding:
@@ -514,7 +514,7 @@ void DrawCommand::MakeJsonPath(SkJSONWriter& writer, const SkPath& path) {
     SkPath::Verb verb;
     while ((verb = iter.next(pts)) != SkPath::kDone_Verb) {
         if (verb == SkPath::kClose_Verb) {
-            writer.appendString(DEBUGCANVAS_VERB_CLOSE);
+            writer.appendString(DEBUGCANVAS_VERB_CLOSE, strlen(DEBUGCANVAS_VERB_CLOSE));
             continue;
         }
         writer.beginObject();  // verb
@@ -631,7 +631,7 @@ void DrawCommand::flatten(const SkFlattenable* flattenable,
     SkString url =
             encode_data(data, buffer.bytesWritten(), "application/octet-stream", urlDataManager);
     writer.appendString(DEBUGCANVAS_ATTRIBUTE_NAME, flattenable->getTypeName());
-    writer.appendString(DEBUGCANVAS_ATTRIBUTE_DATA, url.c_str());
+    writer.appendString(DEBUGCANVAS_ATTRIBUTE_DATA, url);
 
     writer.beginObject(DEBUGCANVAS_ATTRIBUTE_VALUES);
     JsonWriteBuffer jsonBuffer(&writer, &urlDataManager);
@@ -696,8 +696,8 @@ bool DrawCommand::flatten(const SkImage&  image,
       writer.endObject();
       return false;
     }
-    SkString      url = encode_data(encoded->data(), encoded->size(), "image/png", urlDataManager);
-    writer.appendString(DEBUGCANVAS_ATTRIBUTE_DATA, url.c_str());
+    SkString url = encode_data(encoded->data(), encoded->size(), "image/png", urlDataManager);
+    writer.appendString(DEBUGCANVAS_ATTRIBUTE_DATA, url);
     writer.endObject();
     return true;
 }
@@ -901,7 +901,7 @@ static void apply_font_typeface(const SkFont&   font,
         buffer.copyTo(data);
         SkString url = encode_data(
                 data, buffer.bytesWritten(), "application/octet-stream", urlDataManager);
-        writer.appendString(DEBUGCANVAS_ATTRIBUTE_DATA, url.c_str());
+        writer.appendString(DEBUGCANVAS_ATTRIBUTE_DATA, url);
         sk_free(data);
         writer.endObject();
     }
@@ -1059,7 +1059,7 @@ void ClipRectCommand::toJSON(SkJSONWriter& writer, UrlDataManager& urlDataManage
     writer.appendBool(DEBUGCANVAS_ATTRIBUTE_ANTIALIAS, fDoAA);
 
     SkString desc;
-    writer.appendString(DEBUGCANVAS_ATTRIBUTE_SHORTDESC, str_append(&desc, fRect)->c_str());
+    writer.appendString(DEBUGCANVAS_ATTRIBUTE_SHORTDESC, *str_append(&desc, fRect));
 }
 
 ClipRRectCommand::ClipRRectCommand(const SkRRect& rrect, SkClipOp op, bool doAA)
@@ -1171,16 +1171,14 @@ void DrawAnnotationCommand::toJSON(SkJSONWriter& writer, UrlDataManager& urlData
 
     writer.appendName(DEBUGCANVAS_ATTRIBUTE_COORDS);
     MakeJsonRect(writer, fRect);
-    writer.appendString("key", fKey.c_str());
+    writer.appendString("key", fKey);
     if (fValue) {
-        writer.appendString("value", std::string(
-            static_cast<const char*>(fValue->data()), fValue->size()
-            ).c_str());
+        writer.appendString("value", static_cast<const char*>(fValue->data()), fValue->size());
     }
 
     SkString desc;
     str_append(&desc, fRect)->appendf(" %s", fKey.c_str());
-    writer.appendString(DEBUGCANVAS_ATTRIBUTE_SHORTDESC, desc.c_str());
+    writer.appendString(DEBUGCANVAS_ATTRIBUTE_SHORTDESC, desc);
 }
 
 ////
@@ -1291,7 +1289,7 @@ void DrawImageLatticeCommand::toJSON(SkJSONWriter& writer, UrlDataManager& urlDa
     }
 
     SkString desc;
-    writer.appendString(DEBUGCANVAS_ATTRIBUTE_SHORTDESC, str_append(&desc, fDst)->c_str());
+    writer.appendString(DEBUGCANVAS_ATTRIBUTE_SHORTDESC, *str_append(&desc, fDst));
 }
 
 DrawImageRectCommand::DrawImageRectCommand(const SkImage*              image,
@@ -1344,7 +1342,7 @@ void DrawImageRectCommand::toJSON(SkJSONWriter& writer, UrlDataManager& urlDataM
     }
 
     SkString desc;
-    writer.appendString(DEBUGCANVAS_ATTRIBUTE_SHORTDESC, str_append(&desc, fDst)->c_str());
+    writer.appendString(DEBUGCANVAS_ATTRIBUTE_SHORTDESC, *str_append(&desc, fDst));
 }
 
 DrawImageRectLayerCommand::DrawImageRectLayerCommand(DebugLayerManager*    layerManager,
@@ -1405,7 +1403,7 @@ void DrawImageRectLayerCommand::toJSON(SkJSONWriter& writer, UrlDataManager& url
     }
 
     SkString desc;
-    writer.appendString(DEBUGCANVAS_ATTRIBUTE_SHORTDESC, str_append(&desc, fDst)->c_str());
+    writer.appendString(DEBUGCANVAS_ATTRIBUTE_SHORTDESC, *str_append(&desc, fDst));
 }
 
 DrawOvalCommand::DrawOvalCommand(const SkRect& oval, const SkPaint& paint)
@@ -1734,7 +1732,7 @@ void DrawTextBlobCommand::toJSON(SkJSONWriter& writer, UrlDataManager& urlDataMa
     SkString desc;
     // make the bounds local by applying the x,y
     bounds.offset(fXPos, fYPos);
-    writer.appendString(DEBUGCANVAS_ATTRIBUTE_SHORTDESC, str_append(&desc, bounds)->c_str());
+    writer.appendString(DEBUGCANVAS_ATTRIBUTE_SHORTDESC, *str_append(&desc, bounds));
 }
 
 DrawPatchCommand::DrawPatchCommand(const SkPoint  cubics[12],
@@ -1803,7 +1801,7 @@ void DrawRectCommand::toJSON(SkJSONWriter& writer, UrlDataManager& urlDataManage
     MakeJsonPaint(writer, fPaint, urlDataManager);
 
     SkString desc;
-    writer.appendString(DEBUGCANVAS_ATTRIBUTE_SHORTDESC, str_append(&desc, fRect)->c_str());
+    writer.appendString(DEBUGCANVAS_ATTRIBUTE_SHORTDESC, *str_append(&desc, fRect));
 }
 
 DrawRRectCommand::DrawRRectCommand(const SkRRect& rrect, const SkPaint& paint)
