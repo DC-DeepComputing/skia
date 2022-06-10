@@ -81,6 +81,30 @@
       },
       "revId": "d7f8642862d5a9c2e6fbfc18d8cc4d750477c90c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6b1625df_d1511269",
+        "filename": "bazel/external/dawn/BUILD.bazel",
+        "patchSetId": 1
+      },
+      "lineNbr": 224,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-06-10T15:22:22Z",
+      "side": 1,
+      "message": "Sounds good!",
+      "parentUuid": "1817cbc2_8e1d659b",
+      "range": {
+        "startLine": 224,
+        "startChar": 35,
+        "endLine": 224,
+        "endChar": 47
+      },
+      "revId": "d7f8642862d5a9c2e6fbfc18d8cc4d750477c90c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
