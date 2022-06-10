@@ -340,6 +340,14 @@ SkRuntimeEffect::Result SkRuntimeEffect::MakeInternal(std::unique_ptr<SkSL::Prog
                                                       SkSL::ProgramKind kind) {
     SkSL::SharedCompiler compiler;
 
+    // TODO(skia:11209): Figure out a way to run ES3+ color filters on the CPU. This doesn't need
+    // to be fast - it could just be direct IR evaluation. But without it, there's no way for us
+    // to fully implement the SkColorFilter API (eg, `filterColor`)
+    if (kind == SkSL::ProgramKind::kRuntimeColorFilter &&
+        !SkRuntimeEffectPriv::CanDraw(SkCapabilities::RasterBackend().get(), program.get())) {
+        RETURN_FAILURE("SkSL color filters must target #version 100");
+    }
+
     // Find 'main', then locate the sample coords parameter. (It might not be present.)
     const SkSL::FunctionDefinition* main = SkSL::Program_GetFunction(*program, "main");
     if (!main) {
@@ -1017,6 +1025,9 @@ public:
     skvm::Color onProgram(skvm::Builder* p, skvm::Color c,
                           const SkColorInfo& colorInfo,
                           skvm::Uniforms* uniforms, SkArenaAlloc* alloc) const override {
+        SkASSERT(
+                SkRuntimeEffectPriv::CanDraw(SkCapabilities::RasterBackend().get(), fEffect.get()));
+
         sk_sp<const SkData> inputs = SkRuntimeEffectPriv::TransformUniforms(
                 fEffect->uniforms(),
                 fUniforms,
@@ -1142,6 +1153,10 @@ public:
 
 #if SK_SUPPORT_GPU
     std::unique_ptr<GrFragmentProcessor> asFragmentProcessor(const GrFPArgs& args) const override {
+        if (!SkRuntimeEffectPriv::CanDraw(args.fContext->priv().caps(), fEffect.get())) {
+            return nullptr;
+        }
+
         SkMatrix matrix;
         if (!this->totalLocalMatrix(args.fPreLocalMatrix)->invert(&matrix)) {
             return nullptr;
@@ -1185,6 +1200,10 @@ public:
                           const SkMatrixProvider& matrices, const SkMatrix* localM,
                           const SkColorInfo& colorInfo,
                           skvm::Uniforms* uniforms, SkArenaAlloc* alloc) const override {
+        if (!SkRuntimeEffectPriv::CanDraw(SkCapabilities::RasterBackend().get(), fEffect.get())) {
+            return {};
+        }
+
         sk_sp<const SkData> inputs = SkRuntimeEffectPriv::TransformUniforms(fEffect->uniforms(),
                                                                             fUniforms,
                                                                             colorInfo.colorSpace());
@@ -1294,6 +1313,10 @@ public:
     skvm::Color onProgram(skvm::Builder* p, skvm::Color src, skvm::Color dst,
                           const SkColorInfo& colorInfo, skvm::Uniforms* uniforms,
                           SkArenaAlloc* alloc) const override {
+        if (!SkRuntimeEffectPriv::CanDraw(SkCapabilities::RasterBackend().get(), fEffect.get())) {
+            return {};
+        }
+
         sk_sp<const SkData> inputs = SkRuntimeEffectPriv::TransformUniforms(fEffect->uniforms(),
                                                                             fUniforms,
                                                                             colorInfo.colorSpace());
@@ -1315,6 +1338,10 @@ public:
             std::unique_ptr<GrFragmentProcessor> srcFP,
             std::unique_ptr<GrFragmentProcessor> dstFP,
             const GrFPArgs& args) const override {
+        if (!SkRuntimeEffectPriv::CanDraw(args.fContext->priv().caps(), fEffect.get())) {
+            return nullptr;
+        }
+
         sk_sp<const SkData> uniforms = SkRuntimeEffectPriv::TransformUniforms(
                 fEffect->uniforms(),
                 fUniforms,
