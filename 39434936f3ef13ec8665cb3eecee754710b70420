@@ -189,6 +189,30 @@
       },
       "revId": "39434936f3ef13ec8665cb3eecee754710b70420",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "16fe823f_37137dca",
+        "filename": "resources/sksl/compute/ArrayAdd.compute",
+        "patchSetId": 16
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-06-10T14:19:40Z",
+      "side": 1,
+      "message": "I think there are (at least) two orthogonal concepts. One is the address space stuff, which appears to have slightly different names, but similar semantics across all APIs. (I haven\u0027t looked exhaustively, but that\u0027s my first read of things).\n\nThe other is how we expose any kind of resources that have corresponding API for binding on the calling code. I also anticipate that we\u0027re going to need uniform buffers eventually, but from a compute perspective, that\u0027s just a special case of buffer. Ultimately, each API has made some decisions over the years about how to declare resources (buffers, textures, samplers, etc...) - both from a syntactic PoV (are they args to main or globals), and what names and namespaces they use to enumerate the elements of each type.\n\nWe started out with GLSL, so we inherited some of their quirks, but now we have a bit of a hodge-podge. Knowing that we\u0027re targeting a variety of APIs, it would be great to abstract this stuff -- our decision about people indicate the number, type, and layout of resources doesn\u0027t need to be tied to any API -- and having a unified higher-level model should make it easier to map to each specific backend.\n\nTo that point: I think it\u0027s really worth looking at WGPU/WGSL here, because they had to solve this *exact* same problem -- their model of resource binding describes everything using two annotations per variable: \u0027group\u0027 and \u0027binding\u0027 (https://www.w3.org/TR/WGSL/#resource-interface). They put all bindable resources in the same space, and can obviously splat those out to use whatever model makes the most sense in SPIR-V, MSL, HLSL, etc.\n\n(Note that they also have a \u0027location\u0027 annotation, but that\u0027s *only* for varyings between the vertex and fragment stages, and isn\u0027t even allowed in compute).",
+      "parentUuid": "87d587c8_73e0bdec",
+      "range": {
+        "startLine": 2,
+        "startChar": 19,
+        "endLine": 2,
+        "endChar": 21
+      },
+      "revId": "39434936f3ef13ec8665cb3eecee754710b70420",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
