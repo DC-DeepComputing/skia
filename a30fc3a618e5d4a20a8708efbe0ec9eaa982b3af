@@ -16,6 +16,24 @@
       "message": "I read ahead in the chain to try and understand how this is going to look -- at one point I thought we were planning to have a per-effect snippet ID (handed out by the dictionary?) It looks like this is trending towards a single ID, and the user will also supply the SkRuntimeEffect object? (And presumably all of the uniform gathering and key building will use the effect\u0027s metadata to do the right thing?)",
       "revId": "a30fc3a618e5d4a20a8708efbe0ec9eaa982b3af",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f9a7921e_58984ea0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-06-10T15:45:22Z",
+      "side": 1,
+      "message": "Honestly I am still not 100% sure of the end state myself. When I tried to plan it all out in advance, I ended up going in circles and not making progress, and the surrounding code is in constant flux which makes it harder to plan around. I am going to try this approach and see how far I can get. If this ends up being a dead end, I will have at least learned something and I can probably salvage most of it.",
+      "parentUuid": "e0d3a111_fb0e58ad",
+      "revId": "a30fc3a618e5d4a20a8708efbe0ec9eaa982b3af",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
