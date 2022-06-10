@@ -541,6 +541,9 @@ static constexpr int kNumBlendShaderChildren = 2;
 static constexpr char kBlendShaderName[] = "sk_blend_shader";
 
 //--------------------------------------------------------------------------------------------------
+static constexpr char kRuntimeShaderName[] = "sk_runtime_placeholder";
+
+//--------------------------------------------------------------------------------------------------
 static constexpr char kErrorName[] = "sk_error";
 
 //--------------------------------------------------------------------------------------------------
@@ -813,6 +816,16 @@ SkShaderCodeDictionary::SkShaderCodeDictionary() {
             kBlendShaderName,
             GenerateDefaultGlueCode,
             kNumBlendShaderChildren,
+            { }
+    };
+    fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kRuntimeShader] = {
+            "RuntimeShader",
+            { },     // no uniforms
+            SnippetRequirementFlags::kNone,
+            { },     // no samplers
+            kRuntimeShaderName,
+            GenerateDefaultGlueCode,
+            kNoChildren,
             { }
     };
     fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kFixedFunctionBlender] = {
