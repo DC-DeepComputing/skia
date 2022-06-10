@@ -60,6 +60,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "69f2daad_81ad1c73",
+        "filename": "src/gpu/graphite/DrawAtlas.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-06-10T15:42:11Z",
+      "side": 1,
+      "message": "It\u0027s not -- it\u0027s the position of the glyph in the texture. plotX and plotY are the 2D indices into the plot array.",
+      "parentUuid": "44397e17_0adf500a",
+      "range": {
+        "startLine": 38,
+        "startChar": 16,
+        "endLine": 38,
+        "endChar": 27
+      },
+      "revId": "ba18f02287c3ca66d031ffa59ca9e7c67219d591",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9c69dfdc_fdf79dd1",
         "filename": "src/gpu/graphite/DrawAtlas.cpp",
         "patchSetId": 4
@@ -95,6 +119,30 @@
       "side": 1,
       "message": "Doesn\u0027t seem to like that because the constructor is private.",
       "parentUuid": "9c69dfdc_fdf79dd1",
+      "range": {
+        "startLine": 50,
+        "startChar": 31,
+        "endLine": 52,
+        "endChar": 80
+      },
+      "revId": "ba18f02287c3ca66d031ffa59ca9e7c67219d591",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "89c76b19_65329b8e",
+        "filename": "src/gpu/graphite/DrawAtlas.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-06-10T15:42:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b19491e8_09257cce",
       "range": {
         "startLine": 50,
         "startChar": 31,
@@ -340,6 +388,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fee7a3b6_2883d4ff",
+        "filename": "src/gpu/graphite/DrawAtlas.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-06-10T15:42:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7b8d062c_17192654",
+      "range": {
+        "startLine": 44,
+        "startChar": 59,
+        "endLine": 45,
+        "endChar": 91
+      },
+      "revId": "ba18f02287c3ca66d031ffa59ca9e7c67219d591",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "54dcfe26_05977d29",
@@ -353,6 +425,30 @@
       "writtenOn": "2022-06-10T14:37:34Z",
       "side": 1,
       "message": "Does width have to be divisible by numPlotsX or do we allow small plots along the edges? Same for Y",
+      "range": {
+        "startLine": 60,
+        "startChar": 15,
+        "endLine": 60,
+        "endChar": 24
+      },
+      "revId": "ba18f02287c3ca66d031ffa59ca9e7c67219d591",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0386bed1_40e44a77",
+        "filename": "src/gpu/graphite/DrawAtlas.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-06-10T15:42:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "54dcfe26_05977d29",
       "range": {
         "startLine": 60,
         "startChar": 15,
@@ -480,6 +576,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d24d1ba0_c28d55b4",
+        "filename": "src/gpu/graphite/DrawAtlas.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 202,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-06-10T15:42:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0705f826_f5b9dfaf",
+      "range": {
+        "startLine": 201,
+        "startChar": 4,
+        "endLine": 202,
+        "endChar": 51
+      },
+      "revId": "ba18f02287c3ca66d031ffa59ca9e7c67219d591",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f3e76296_3f21377c",
@@ -552,6 +672,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "68156978_cde84d8d",
+        "filename": "src/gpu/graphite/DrawAtlas.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 238,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-06-10T15:42:11Z",
+      "side": 1,
+      "message": "I\u0027m not sure how well that would work. If a client sets a value do we then restrict each atlas size to 1/3 that value, since we have three atlases? What happens if they only use glyphs that require A8 then? Or if we assume that we can use the max value for the A8 atlas to start, do we shrink it once we need RGBA8? Maybe we could have a more granular system where they specify the desired size for each type, but I don\u0027t know that a single byte size covering all three is good.",
+      "parentUuid": "bc7f1384_10326f64",
+      "range": {
+        "startLine": 237,
+        "startChar": 70,
+        "endLine": 238,
+        "endChar": 29
+      },
+      "revId": "ba18f02287c3ca66d031ffa59ca9e7c67219d591",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a0633c5c_72cb41ab",
         "filename": "src/gpu/graphite/DrawAtlas.h",
         "patchSetId": 4
@@ -563,6 +707,30 @@
       "writtenOn": "2022-06-10T14:37:34Z",
       "side": 1,
       "message": "Should this then be wrapped in a testing define?",
+      "range": {
+        "startLine": 241,
+        "startChar": 4,
+        "endLine": 241,
+        "endChar": 23
+      },
+      "revId": "ba18f02287c3ca66d031ffa59ca9e7c67219d591",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fb63f5f0_6117598d",
+        "filename": "src/gpu/graphite/DrawAtlas.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 241,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-06-10T15:42:11Z",
+      "side": 1,
+      "message": "Not needed, removed.",
+      "parentUuid": "a0633c5c_72cb41ab",
       "range": {
         "startLine": 241,
         "startChar": 4,
@@ -634,6 +802,30 @@
       "side": 1,
       "message": "This seems the same.",
       "parentUuid": "29298b12_f9b3ca6e",
+      "range": {
+        "startLine": 249,
+        "startChar": 52,
+        "endLine": 249,
+        "endChar": 61
+      },
+      "revId": "ba18f02287c3ca66d031ffa59ca9e7c67219d591",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a6bac336_9a5a54d9",
+        "filename": "src/gpu/graphite/DrawAtlas.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 249,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-06-10T15:42:11Z",
+      "side": 1,
+      "message": "Oops, really done.",
+      "parentUuid": "6aa1d742_2a1cc04f",
       "range": {
         "startLine": 249,
         "startChar": 52,
