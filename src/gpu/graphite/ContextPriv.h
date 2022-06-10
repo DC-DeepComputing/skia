@@ -28,6 +28,8 @@ public:
 
     SkShaderCodeDictionary* shaderCodeDictionary();
 
+    const ContextOptions& options() const { return fContext->fOptions; }
+
 private:
     friend class Context; // to construct/copy this type.
 
