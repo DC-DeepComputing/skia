@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d4078d85_446dcf55",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-06-10T15:09:53Z",
+      "side": 1,
+      "message": "So `canDrawAsMask` is currently `FitsInAtlas(glyph)` which is just a test against the max dimension. `canDrawAsSDFT` is basically `canDrawAsMask` \u0026\u0026 \"is SDF mask format\". So right now `digest-\u003ecanDrawAsMask() \u0026\u0026 digest-\u003ecanDrawAsSDFT()` is the same as just testing if the glyph mask will fit in the atlas and is SDF format.\n\nThe wording \"and the mask is never SDFT\" should probably be \"and the mask is never SDF when preparing for mask drawing, since SDF masks will be prepared when preparing for SDF drawing\" or something like that. The mask type can (in general) be SDF, but if it is it shouldn\u0027t be getting here (a very fuzzy looking glyph will be drawn if it does).",
+      "revId": "a8eda7c45f66b22f644951c3dce788bd1fcd10ac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
