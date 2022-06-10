@@ -16,6 +16,23 @@
       "message": "... PS2 updates test expectations",
       "revId": "827116cb6c8968be6fe66002737b7ddd2794e0db",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c2e72db6_a11ff059",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-06-10T16:05:56Z",
+      "side": 1,
+      "message": "Thanks for updating the tests. I\u0027m in the process of deduplicating those tests (i.e. in favor of only the Bazel ones), so future fixes won\u0027t have to be done twice.",
+      "revId": "827116cb6c8968be6fe66002737b7ddd2794e0db",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
