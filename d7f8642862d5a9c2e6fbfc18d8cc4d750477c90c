@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fcf0459e_82b03d9d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-06-10T15:16:36Z",
+      "side": 1,
+      "message": "You beat me to the punch by about 30secs: https://skia-review.googlesource.com/c/skia/+/549037 😊\nLooks like you grabbed the latest ToT dawn hash? I just used what was in the autoroller.",
+      "revId": "d7f8642862d5a9c2e6fbfc18d8cc4d750477c90c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "40bacf56_fbc4e669",
+        "filename": "bazel/external/dawn/BUILD.bazel",
+        "patchSetId": 1
+      },
+      "lineNbr": 224,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-06-10T15:16:36Z",
+      "side": 1,
+      "message": "What\u0027s this for? just cleaning up the build logs?",
+      "range": {
+        "startLine": 224,
+        "startChar": 35,
+        "endLine": 224,
+        "endChar": 47
+      },
+      "revId": "d7f8642862d5a9c2e6fbfc18d8cc4d750477c90c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
