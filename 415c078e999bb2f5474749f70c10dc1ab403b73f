@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0d34bb0e_ca7f9cca",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-06-10T21:11:50Z",
+      "side": 1,
+      "message": "Working on #version-related stuff makes me REALLY want to get rid of the CPU ES3 tests. These seemed worth continuing to test, so I found a way to (hopefully) test them reliably on GPUs where they should work, and skip them elsewhere.\n\nDefinitely not landing this until next week, as I assume this will still manage to fail spectacularly on *some* device.",
+      "revId": "415c078e999bb2f5474749f70c10dc1ab403b73f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
