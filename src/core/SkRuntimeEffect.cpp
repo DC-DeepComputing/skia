@@ -169,6 +169,33 @@ sk_sp<const SkData> SkRuntimeEffectPriv::TransformUniforms(
     return data ? data : originalData;
 }
 
+static const char* sksl_version_string(SkSL::Version v) {
+    switch (v) {
+        case SkSL::Version::k100: return "100";
+        case SkSL::Version::k300: return "300";
+    }
+    SkUNREACHABLE;
+}
+
+SkRuntimeEffectPriv::ValidationResult SkRuntimeEffectPriv::ValidateProgram(
+        const SkSL::Program* program, const SkCapabilities* caps) {
+    SkASSERT(program && caps);
+    SkASSERT(program->fConfig->enforcesSkSLVersion());
+    if (program->fConfig->fRequiredSkSLVersion > caps->skslVersion()) {
+        return ValidationResult::Error(
+                SkStringPrintf("program requires version %s, device only supports version %s",
+                               sksl_version_string(program->fConfig->fRequiredSkSLVersion),
+                               sksl_version_string(caps->skslVersion())));
+    }
+    return ValidationResult::OK();
+}
+
+SkRuntimeEffectPriv::ValidationResult SkRuntimeEffectPriv::ValidateEffect(
+        sk_sp<SkRuntimeEffect> effect, const SkCapabilities* caps) {
+    SkASSERT(effect);
+    return ValidateProgram(effect->fBaseProgram.get(), caps);
+}
+
 //////////////////////////////////////////////////////////////////////////////
 
 static bool flattenable_is_valid_as_child(const SkFlattenable* f) {

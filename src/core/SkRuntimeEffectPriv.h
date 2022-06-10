@@ -8,6 +8,7 @@
 #ifndef SkRuntimeEffectPriv_DEFINED
 #define SkRuntimeEffectPriv_DEFINED
 
+#include "include/core/SkString.h"
 #include "include/effects/SkRuntimeEffect.h"
 #include "include/private/SkColorData.h"
 #include "src/core/SkVM.h"
@@ -17,10 +18,12 @@
 #ifdef SK_ENABLE_SKSL
 
 namespace SkSL {
-class Variable;
 class Context;
+class Variable;
+struct Program;
 }
 
+class SkCapabilities;
 struct SkColorSpaceXformSteps;
 
 class SkRuntimeEffectPriv {
@@ -57,6 +60,18 @@ public:
     static sk_sp<const SkData> TransformUniforms(SkSpan<const SkRuntimeEffect::Uniform> uniforms,
                                                  sk_sp<const SkData> originalData,
                                                  const SkColorSpace* dstCS);
+
+    struct ValidationResult {
+        static ValidationResult OK() { return {}; }
+        static ValidationResult Error(SkString msg) { return { std::move(msg) }; }
+
+        operator bool() const { return fError.isEmpty(); }
+
+        SkString fError;
+    };
+
+    static ValidationResult ValidateProgram(const SkSL::Program*, const SkCapabilities*);
+    static ValidationResult ValidateEffect(sk_sp<SkRuntimeEffect>, const SkCapabilities*);
 };
 
 // These internal APIs for creating runtime effects vary from the public API in two ways:
