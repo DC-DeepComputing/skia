@@ -74,6 +74,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3fb018fe_8efee8c7",
+        "filename": "resources/sksl/compute/ArrayAdd.compute",
+        "patchSetId": 16
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-06-10T13:36:16Z",
+      "side": 1,
+      "message": "I mean it in the most literal sense possible - it\u0027s the order of the compute function parameters.\n\nIf you specify:\n\nlayout(location\u003d0) in int x;\nlayout(location\u003d1) out int y;\n\nyou get a compute function with the signature computeMain(int x, int* y). It\u0027s important to recognize that there aren\u0027t even necessarily buffers involved at all, since compute functions can accept scalars just fine.",
+      "parentUuid": "529e1152_c0ff2250",
+      "range": {
+        "startLine": 1,
+        "startChar": 7,
+        "endLine": 1,
+        "endChar": 15
+      },
+      "revId": "39434936f3ef13ec8665cb3eecee754710b70420",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4c214804_c1d97062",
         "filename": "resources/sksl/compute/ArrayAdd.compute",
         "patchSetId": 16
@@ -133,6 +157,30 @@
       "side": 1,
       "message": "Metal is special, in that there everything is a \"buffer\" but OpenGL, Vulkan, and WebGPU all have uniforms in their compute shaders. In GLSL (OpenGL and Vulkan) the `in` keyword is used only for varyings like gl_GlobalInvocationID and _resources_ are declared as one would declare any good-old SSBO or uniform.\n\nI was under the impression that we wanted to stay close to GLSL. It\u0027s OK if we want to abandon that stance but I think I\u0027d like to see a plan for how all of the language idioms we are introducing now will eventually map to platforms other than Metal, especially if we\u0027re exposing Metal-style address spaces in SkSL.",
       "parentUuid": "1c6bbb08_22afaabf",
+      "range": {
+        "startLine": 2,
+        "startChar": 19,
+        "endLine": 2,
+        "endChar": 21
+      },
+      "revId": "39434936f3ef13ec8665cb3eecee754710b70420",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "87d587c8_73e0bdec",
+        "filename": "resources/sksl/compute/ArrayAdd.compute",
+        "patchSetId": 16
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-06-10T13:36:16Z",
+      "side": 1,
+      "message": "I\u0027m not *opposed* to adding uniforms, I\u0027m just saying that I\u0027m not necessarily convinced it\u0027s an important feature in this context. If it turns out to be, great, we add them. It\u0027s not particularly hard, we just follow the existing model of bundling them together into a struct and passing them in as a hidden parameter.\n\nAnd my understanding was that the Metal address spaces map pretty directly to the address spaces used by other APIs; I was only really referring to the naming convention when I said \"the Metal model\". Am I mistaken?",
+      "parentUuid": "cae84848_880a67ea",
       "range": {
         "startLine": 2,
         "startChar": 19,
