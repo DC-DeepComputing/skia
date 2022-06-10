@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2ab37009_78650328",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 12064
+      },
+      "writtenOn": "2022-06-10T09:15:13Z",
+      "side": 1,
+      "message": "Temporarily limit the vendor to `kIntel` for I just tested on some intel gpus like Xe graphics in case leading to some bugs on other vendors.",
+      "revId": "57da581811d59a3b2cd492600b8606752380637a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
