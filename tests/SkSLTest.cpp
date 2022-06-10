@@ -63,6 +63,9 @@ namespace SkSLTestFlags {
 
     /** SkQP tests will be run in Android/Fuchsia conformance tests with no driver workarounds. */
     static constexpr int SkQP    = 1 << 4;
+
+    /** USES_NAN tests are only expected to pass on GPUs that generate NaN values. */
+    static constexpr int USES_NAN = 1 << 5;
 }
 
 static constexpr bool is_cpu(int flags) {
@@ -101,6 +104,45 @@ static void set_uniform_array(SkRuntimeShaderBuilder* builder, const char* name,
     if (uniform.fVar) {
         uniform.set(values.data(), values.size());
     }
+}
+
+static bool gpu_generates_nan(GrDirectContext* ctx) {
+    // If we don't have infinity support, we definitely won't generate NaNs
+    if (!ctx->priv().caps()->shaderCaps()->fInfinitySupport) {
+        return false;
+    }
+
+    auto effect = SkRuntimeEffect::MakeForShader(SkString(R"(
+        #version 300
+        uniform half4 colorGreen, colorRed;
+
+        half4 main(float2 xy) {
+            return isnan(colorGreen.r / colorGreen.b) ? colorGreen : colorRed;
+        }
+    )")).effect;
+    SkASSERT(effect);
+
+    SkRuntimeShaderBuilder builder(effect);
+    builder.uniform("colorGreen") = SkV4{0, 1, 0, 1};
+    builder.uniform("colorRed")   = SkV4{1, 0, 0, 1};
+    auto shader = builder.makeShader();
+    SkASSERT(shader);
+    SkPaint paint;
+    paint.setShader(shader);
+
+    const SkImageInfo info = SkImageInfo::MakeN32Premul(kWidth, kHeight);
+    sk_sp<SkSurface> surface(SkSurface::MakeRenderTarget(ctx, SkBudgeted::kNo, info));
+
+    surface->getCanvas()->clear(SK_ColorBLUE);
+    surface->getCanvas()->drawRect(SkRect::MakeWH(kWidth, kHeight), paint);
+
+    SkBitmap bitmap;
+    bitmap.allocPixels(info);
+    SkAssertResult(surface->readPixels(bitmap, 0, 0));
+
+    SkColor color = bitmap.getColor(0, 0);
+    SkASSERT(color == SK_ColorGREEN || color == SK_ColorRED);
+    return color == SK_ColorGREEN;
 }
 
 static SkString load_source(skiatest::Reporter* r,
@@ -239,6 +281,14 @@ static void test_gpu(skiatest::Reporter* r, GrDirectContext* ctx, const char* te
     if (!shouldRunGPU && !shouldRunGPU_ES3) {
         return;
     }
+
+    // If this is a test that requires the GPU to generate NaN values, check for that first.
+    if (flags & SkSLTestFlags::USES_NAN) {
+        if (!gpu_generates_nan(ctx)) {
+            return;
+        }
+    }
+
     // Create a GPU-backed surface.
     const SkImageInfo info = SkImageInfo::MakeN32Premul(kWidth, kHeight);
     sk_sp<SkSurface> surface(SkSurface::MakeRenderTarget(ctx, SkBudgeted::kNo, info));
@@ -435,14 +485,13 @@ SKSL_TEST(CPU + GPU + SkQP, LoopInt,                         "runtime/LoopInt.rt
 SKSL_TEST(CPU + GPU + SkQP, QualifierOrder,                  "runtime/QualifierOrder.rts")
 SKSL_TEST(CPU + GPU + SkQP, PrecisionQualifiers,             "runtime/PrecisionQualifiers.rts")
 
-// These tests specifically rely the behavior of NaN values, but some older GPUs do not reliably
-// implement full IEEE support (skia:12977). They also rely on equality operators on array types
-// which are not available in GLSL ES 1.00. Therefore these tests are restricted to run on CPU and
-// with "strict ES2 mode" disabled.
-SKSL_TEST(CPU_ES3,          RecursiveComparison_Arrays,      "runtime/RecursiveComparison_Arrays.rts")
-SKSL_TEST(CPU_ES3,          RecursiveComparison_Structs,     "runtime/RecursiveComparison_Structs.rts")
-SKSL_TEST(CPU_ES3,          RecursiveComparison_Types,       "runtime/RecursiveComparison_Types.rts")
-SKSL_TEST(CPU_ES3,          RecursiveComparison_Vectors,     "runtime/RecursiveComparison_Vectors.rts")
+// These tests specifically rely on the behavior of NaN values, so we require the GPU to generate
+// them (which is not a requirement, even with ES3). They also rely on equality operators on array
+// types which are not available in GLSL ES 1.00.
+SKSL_TEST(GPU_ES3 + USES_NAN, RecursiveComparison_Arrays,  "runtime/RecursiveComparison_Arrays.rts")
+SKSL_TEST(GPU_ES3 + USES_NAN, RecursiveComparison_Structs, "runtime/RecursiveComparison_Structs.rts")
+SKSL_TEST(GPU_ES3 + USES_NAN, RecursiveComparison_Types,   "runtime/RecursiveComparison_Types.rts")
+SKSL_TEST(GPU_ES3 + USES_NAN, RecursiveComparison_Vectors, "runtime/RecursiveComparison_Vectors.rts")
 
 SKSL_TEST(GPU_ES3,          ArrayCast,                       "shared/ArrayCast.sksl")
 SKSL_TEST(GPU_ES3,          ArrayComparison,                 "shared/ArrayComparison.sksl")
