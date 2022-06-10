@@ -16,6 +16,75 @@
       "message": "Working on #version-related stuff makes me REALLY want to get rid of the CPU ES3 tests. These seemed worth continuing to test, so I found a way to (hopefully) test them reliably on GPUs where they should work, and skip them elsewhere.\n\nDefinitely not landing this until next week, as I assume this will still manage to fail spectacularly on *some* device.",
       "revId": "415c078e999bb2f5474749f70c10dc1ab403b73f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2467d77b_744714e7",
+        "filename": "tests/SkSLTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-06-10T21:32:13Z",
+      "side": 1,
+      "message": "This feels like a copy of the middle portion of `test_one_permutation`; is there a clean way to factor it out to a helper function?",
+      "range": {
+        "startLine": 115,
+        "startChar": 0,
+        "endLine": 141,
+        "endChar": 54
+      },
+      "revId": "415c078e999bb2f5474749f70c10dc1ab403b73f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "67704279_2849a681",
+        "filename": "tests/SkSLTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 287,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-06-10T21:32:13Z",
+      "side": 1,
+      "message": "The result should be memoized somehow.",
+      "range": {
+        "startLine": 287,
+        "startChar": 13,
+        "endLine": 287,
+        "endChar": 30
+      },
+      "revId": "415c078e999bb2f5474749f70c10dc1ab403b73f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d71ff5de_2dd5f0a2",
+        "filename": "tests/SkSLTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 491,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-06-10T21:32:13Z",
+      "side": 1,
+      "message": "nits: \n- Comment probably belongs with the flag, not amidst the tests.\n- The other flags are only ALL_CAPS because `CPU` and `GPU` and `ES3` are acronyms.  `SkQP` is cased normally. `UsesNaN` ?\n- Please align the file path column with its neighbors",
+      "range": {
+        "startLine": 488,
+        "startChar": 0,
+        "endLine": 491,
+        "endChar": 0
+      },
+      "revId": "415c078e999bb2f5474749f70c10dc1ab403b73f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
