@@ -177,8 +177,7 @@ public:
     };
 
 #ifdef SK_GRAPHITE_ENABLED
-    const Entry* findOrCreate(const SkPaintParamsKey&,
-                              const skgpu::BlendInfo&) SK_EXCLUDES(fSpinLock);
+    const Entry* findOrCreate(SkPaintParamsKeyBuilder*) SK_EXCLUDES(fSpinLock);
 #else
     const Entry* findOrCreate(const SkPaintParamsKey&) SK_EXCLUDES(fSpinLock);
 #endif
