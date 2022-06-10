@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1e23403b_16c905c1",
+        "filename": "src/core/SkNewCombinationAPI.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-06-10T18:15:32Z",
+      "side": 1,
+      "message": "Can you do somethings like this?\ntemplate \u003ctypename... Args\u003e\nvoid setBlenders(Args\u0026\u0026... args) {\n    fBlenders \u003d {{std::forward\u003cArgs\u0026\u0026\u003e(args)...}};\n}",
+      "range": {
+        "startLine": 69,
+        "startChar": 4,
+        "endLine": 71,
+        "endChar": 5
+      },
+      "revId": "42f67210943fce22f50421a2605a1d8e73577f51",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
