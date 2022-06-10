@@ -27,15 +27,13 @@
 build:release --compilation_mode=opt
 build:debug --compilation_mode=dbg
 
-# We use spawn_strategy=local for CanvasKit builds because emscripten assumes there
-# is a cache in the home directory that it needs to fill with compiled versions of libc etc.
-# https://emscripten.org/docs/tools_reference/emcc.html
-# By setting spawn_strategy=local, we can avoid recompiling all of this for every compilation
-# unit, by letting the cache be used (and not dropped from the sandbox), which gets expensive.
-# Local testing showed using the local strategy sped up a clean build from 9.5 minutes
-# to 1 minute. https://bazel.build/docs/user-manual#execution-strategy
-build:ck_release --config=release --spawn_strategy=local
-build:ck_debug --config=debug --spawn_strategy=local
+# Meant to indicate we are building CanvasKit with the WebGL backend.
+# TODO(kjlubick) we need a way to build CanvasKit with just the CPU backend and (eventually)
+#   the WebGPU backend. Optionally, the webgl1 backend if necessary.
+build:webgl2_release --config=release
+build:webgl2_debug --config=debug
+# TODO(kjlubick) We should be able to configure testing on Chrome or Firefox with this.
+build:webgl2_release_chrome --config=webgl2_release
 
 # We only want to enforce IWYU on debug builds because we have some things that are only
 # necessary to include in debug mode (e.g. SkDEBUGCODE), but very rarely something that is
