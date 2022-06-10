@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "55325970_d8fd408a",
+        "filename": "modules/skparagraph/tests/SkParagraphTest.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 6932,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-06-10T14:48:06Z",
+      "side": 1,
+      "message": "I don\u0027t think it\u0027s an error. The test does not run, we should not fail (otherwise, some test machines fail on presubmit). A message would be fine so we know which machines are missing our fonts.",
+      "range": {
+        "startLine": 6932,
+        "startChar": 15,
+        "endLine": 6932,
+        "endChar": 23
+      },
+      "revId": "2aa5fc700892fe46a0f5ec76c21ef2ec3ad080eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
