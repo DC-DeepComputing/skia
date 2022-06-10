@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1077b1ec_2a1ddfa9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-06-10T20:08:55Z",
+      "side": 1,
+      "message": "More text stuff, PTAL. Hopefully I\u0027ll stop modifying the external interface soon.",
+      "revId": "cc0f55787cac6b18cc47efbc1ab150d4a056b551",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
