@@ -92,11 +92,11 @@ public:
 
     bool isOccluded(const Rect& bounds, PaintersDepth z) const override {
         // Iterate in reverse since the records were likely recorded in increasing Z
-        for (const Record& r : fRects.ritems()) {
-            if (r.fOpaque && z < r.fZ && r.fBounds.contains(bounds)) {
-                return true;
-            }
-        }
+        // for (const Record& r : fRects.ritems()) {
+        //     if (r.fOpaque && z < r.fZ && r.fBounds.contains(bounds)) {
+        //         return true;
+        //     }
+        // }
         return false;
     }
 
@@ -118,6 +118,118 @@ private:
     };
 
     SkTBlockList<Record> fRects{16, SkBlockAllocator::GrowthPolicy::kFibonacci};
+};
+
+class GridBoundsManager : public BoundsManager {
+public:
+
+    static std::unique_ptr<GridBoundsManager> Make(const SkISize& deviceBounds,
+                                                   int numSides) {
+        SkASSERT(deviceBounds.width() > 0 && deviceBounds.height() > 0);
+        SkASSERT(numSides > 0);
+        size_t alloc = sizeof(GridBoundsManager) + sizeof(CompressedPaintersOrder) * numSides * numSides;
+        void* quadTree = ::operator new(alloc);
+        return std::unique_ptr<GridBoundsManager>(new (quadTree) GridBoundsManager(deviceBounds, numSides));
+    }
+
+    ~GridBoundsManager() override {
+        // If this isn't true, then relying solely on ::operator delete won't work to clean up
+        // the tree's nodes.
+        static_assert(std::is_trivially_destructible<CompressedPaintersOrder>::value);
+    }
+    void operator delete(void* p) { ::operator delete(p); }
+
+
+    CompressedPaintersOrder getMostRecentDraw(const Rect& bounds) const override {
+        Rect clampedBounds = bounds.makeIntersect(Rect::WH(fWidth, fHeight));
+        if (clampedBounds.isEmptyNegativeOrNaN()) {
+            return CompressedPaintersOrder::First();
+        }
+
+        auto ltrb = this->getRectCells(clampedBounds);
+
+        int w = ltrb[2] - ltrb[0];
+        int h = ltrb[3] - ltrb[1];
+        CompressedPaintersOrder* p = fNodes + fNumSides * ltrb[1] + ltrb[0];
+
+        CompressedPaintersOrder max = CompressedPaintersOrder::First();
+        for (int y = 0; y <= h; ++y) {
+            for (int x = 0; x <= w; ++x) {
+                CompressedPaintersOrder v = *(p + x);
+                if (v > max) {
+                    max = v;
+                }
+            }
+            p += fNumSides;
+        }
+
+        return max;
+    }
+
+    bool isOccluded(const Rect& bounds, PaintersDepth z) const override {
+        return false;
+    }
+
+    void recordDraw(const Rect& bounds, CompressedPaintersOrder order, PaintersDepth z,
+                    bool fullyOpaque=false) override {
+        Rect clampedBounds = bounds.makeIntersect(Rect::WH(fWidth, fHeight));
+        if (clampedBounds.isEmptyNegativeOrNaN()) {
+            return;
+        }
+
+        auto ltrb = this->getRectCells(clampedBounds);
+
+        int w = ltrb[2] - ltrb[0];
+        int h = ltrb[3] - ltrb[1];
+
+        CompressedPaintersOrder* p = fNodes + fNumSides * ltrb[1] + ltrb[0];
+        for (int y = 0; y <= h; ++y) {
+            for (int x = 0; x <= w; ++x) {
+                if (*(p + x) < order) {
+                    *(p + x) = order;
+                }
+            }
+            p += fNumSides;
+        }
+    }
+
+    void reset() override {
+        memset(fNodes, 0, sizeof(CompressedPaintersOrder) * fNumSides * fNumSides);
+    }
+
+private:
+
+    GridBoundsManager(const SkISize& deviceBounds, int numSides)
+            : fWidth(deviceBounds.width())
+            , fHeight(deviceBounds.height())
+            , fScaleX(numSides / fWidth)
+            , fScaleY(numSides / fHeight)
+            , fNumSides(numSides)
+            , fNodes(reinterpret_cast<CompressedPaintersOrder*>(reinterpret_cast<uintptr_t>(this) + sizeof(GridBoundsManager))) {
+        this->reset();
+    }
+
+    skvx::int4 getRectCells(const Rect& bounds) const {
+        // Normalize bounds by 1/wh of device bounds, then scale up to 2^(D-1)-1 and round out.
+        // fScaleXY includes both 1/wh and the 2^(D-1)-1 scale factor. bounds should already have
+        // been intersected with device bounds (and have a non-empty intersection).
+        SkASSERT(!bounds.isEmptyNegativeOrNaN() && Rect::WH(fWidth, fHeight).contains(bounds));
+        // These should fit into uint16_t, but we are immediately interleaving bits into two uint32s
+        // so keep in the wider type with high bits being 0.
+        SkASSERT((bounds.right() * fScaleX) <= fNumSides &&
+                 (bounds.bot() * fScaleY) <= fNumSides);
+
+        return min(skvx::cast<int32_t>(bounds.ltrb() * skvx::float2(fScaleX, fScaleY).xyxy()),
+                   skvx::int4(fNumSides - 1));
+    }
+
+    const float fWidth;
+    const float fHeight;
+    const float fScaleX;
+    const float fScaleY;
+    const int   fNumSides;
+
+    CompressedPaintersOrder* fNodes;
 };
 
 } // namespace skgpu::graphite

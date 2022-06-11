@@ -102,6 +102,8 @@ sk_sp<SkShader> make_img_shader_for_paint(const SkPaint& paint,
  * DisjointStencilIndex that guarantees the bounds are disjoint from all other draws that use the
  * same painters order and stencil index.
  */
+#define GRID_INTERSECTION
+#if !defined(GRID_INTERSECTION)
 class Device::IntersectionTreeSet {
 public:
     IntersectionTreeSet() = default;
@@ -145,6 +147,103 @@ private:
     std::unordered_map<CompressedPaintersOrder, std::vector<IntersectionTree*>, Hash> fTrees;
     SkSTArenaAllocWithReset<4 * sizeof(IntersectionTree)> fTreeStore;
 };
+#else
+
+class Device::IntersectionTreeSet {
+public:
+
+    static std::unique_ptr<IntersectionTreeSet> Make(const SkISize& deviceBounds,
+                                                     int numSides) {
+        SkASSERT(deviceBounds.width() > 0 && deviceBounds.height() > 0);
+        SkASSERT(numSides > 0);
+        size_t alloc = sizeof(IntersectionTreeSet) + sizeof(DisjointStencilIndex) * numSides * numSides;
+        void* quadTree = ::operator new(alloc);
+        return std::unique_ptr<IntersectionTreeSet>(new (quadTree) IntersectionTreeSet(deviceBounds, numSides));
+    }
+
+    ~IntersectionTreeSet() {
+        // If this isn't true, then relying solely on ::operator delete won't work to clean up
+        // the tree's nodes.
+        static_assert(std::is_trivially_destructible<DisjointStencilIndex>::value);
+    }
+    void operator delete(void* p) { ::operator delete(p); }
+
+
+    DisjointStencilIndex add(CompressedPaintersOrder drawOrder, Rect rect) {
+        Rect clampedBounds = rect.makeIntersect(Rect::WH(fWidth, fHeight));
+        if (clampedBounds.isEmptyNegativeOrNaN()) {
+            return DrawOrder::kUnassigned;
+        }
+
+        auto ltrb = this->getRectCells(clampedBounds);
+
+        int w = ltrb[2] - ltrb[0];
+        int h = ltrb[3] - ltrb[1];
+        DisjointStencilIndex* p = fNodes + fNumSides * ltrb[1] + ltrb[0];
+
+        DisjointStencilIndex max = DisjointStencilIndex::First();
+        for (int y = 0; y <= h; ++y) {
+            for (int x = 0; x <= w; ++x) {
+                DisjointStencilIndex v = *(p + x);
+                if (v > max) {
+                    max = v;
+                }
+            }
+            p += fNumSides;
+        }
+
+        max = max.next();
+        p = fNodes + fNumSides * ltrb[1] + ltrb[0];
+        for (int y = 0; y <= h; ++y) {
+            for (int x = 0; x <= w; ++x) {
+                *(p + x) = max;
+            }
+            p += fNumSides;
+        }
+        return max;
+    }
+
+    void reset() {
+        memset(fNodes, 0, sizeof(DisjointStencilIndex) * fNumSides * fNumSides);
+    }
+
+private:
+
+    IntersectionTreeSet(const SkISize& deviceBounds, int numSides)
+            : fWidth(deviceBounds.width())
+            , fHeight(deviceBounds.height())
+            , fScaleX(numSides / fWidth)
+            , fScaleY(numSides / fHeight)
+            , fNumSides(numSides)
+            , fNodes(reinterpret_cast<DisjointStencilIndex*>(reinterpret_cast<uintptr_t>(this) + sizeof(IntersectionTreeSet))) {
+        this->reset();
+    }
+
+    skvx::int4 getRectCells(const Rect& bounds) {
+        // Normalize bounds by 1/wh of device bounds, then scale up to 2^(D-1)-1 and round out.
+        // fScaleXY includes both 1/wh and the 2^(D-1)-1 scale factor. bounds should already have
+        // been intersected with device bounds (and have a non-empty intersection).
+        SkASSERT(!bounds.isEmptyNegativeOrNaN() && Rect::WH(fWidth, fHeight).contains(bounds));
+        // These should fit into uint16_t, but we are immediately interleaving bits into two uint32s
+        // so keep in the wider type with high bits being 0.
+        SkASSERT((bounds.right() * fScaleX) <= fNumSides &&
+                 (bounds.bot() * fScaleY) <= fNumSides);
+
+        return min(skvx::cast<int32_t>(bounds.ltrb() * skvx::float2(fScaleX, fScaleY).xyxy()),
+                   skvx::int4(fNumSides - 1));
+    }
+
+    const float fWidth;
+    const float fHeight;
+    const float fScaleX;
+    const float fScaleY;
+    const int   fNumSides;
+
+    DisjointStencilIndex* fNodes;
+};
+
+#endif
+
 
 sk_sp<Device> Device::Make(Recorder* recorder, const SkImageInfo& ii, SkBudgeted budgeted) {
     if (!recorder) {
@@ -187,8 +286,12 @@ Device::Device(Recorder* recorder, sk_sp<DrawContext> dc)
         , fRecorder(recorder)
         , fDC(std::move(dc))
         , fClip(this)
-        , fColorDepthBoundsManager(std::make_unique<NaiveBoundsManager>())
+        , fColorDepthBoundsManager(GridBoundsManager::Make(fDC->imageInfo().dimensions(), 32))
+#if defined(GRID_INTERSECTION)
+        , fDisjointStencilSet(IntersectionTreeSet::Make(fDC->imageInfo().dimensions(), 32))
+#else
         , fDisjointStencilSet(std::make_unique<IntersectionTreeSet>())
+#endif
         , fCachedLocalToDevice(SkM44())
         , fCurrentDepth(DrawOrder::kClearDepth)
         , fDrawsOverlap(false) {
