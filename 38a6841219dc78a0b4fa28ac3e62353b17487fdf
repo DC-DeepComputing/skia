@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5c4131c2_2aa07da5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-06-11T22:14:22Z",
+      "side": 1,
+      "message": "I think this was the right intent, but instead of swapping the fTop and fBottom the fTop and fBottom should probably be negated. The input `box` seems to come from the SkGlyph\u0027s rectangle which is in Skia\u0027s y-down system. The d1 units here (and the FontBBox) seem to want to be in y-up.",
+      "revId": "38a6841219dc78a0b4fa28ac3e62353b17487fdf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
