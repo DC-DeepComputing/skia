@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "60a1b1cb_2cd9bedd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-06-11T18:03:56Z",
+      "side": 1,
+      "message": "I\u0027m planning to work out the Bazel build in a follow up.",
+      "revId": "1d665eb3ab3266c29ccbf6a8a22837bbe31d930f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
