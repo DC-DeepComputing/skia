@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e05ee472_8f1e8356",
+        "filename": "tools/debugger/DrawCommand.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1176,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-06-11T02:26:13Z",
+      "side": 1,
+      "message": "This right here was the motivation for this change. Chromium can create annotations which are essentially a 32bit counter being passed here as four 8bit bytes. As a result this needs to be able to handle random data.",
+      "revId": "01e1778e7d14342c0dec3299fdb447ce4a5bddf0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
