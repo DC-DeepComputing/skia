@@ -184,13 +184,23 @@ skia_wasm_lib("canvaskit") {
   }
   ldflags += [ "-fno-rtti" ]
 
-  if (skia_enable_gpu) {
+  if (skia_canvaskit_enable_webgpu) {
+    ldflags += [
+      "--pre-js",
+      rebase_path("cpu.js"),
+      "--pre-js",
+      rebase_path("webgpu.js"),
+      "-sUSE_WEBGL2=0",
+      "-sUSE_WEBGPU=1",
+      "--closure=0",
+    ]
+  } else if (skia_canvaskit_enable_webgl) {
     ldflags += [
       "-lGL",
       "--pre-js",
       rebase_path("cpu.js"),
       "--pre-js",
-      rebase_path("gpu.js"),
+      rebase_path("webgl.js"),
       "-sUSE_WEBGL2=1",
       "-sMAX_WEBGL_VERSION=2",
     ]
@@ -330,6 +340,10 @@ skia_wasm_lib("canvaskit") {
     "-sSTRICT=1",
   ]
 
+  if (skia_canvaskit_enable_webgpu) {
+    ldflags += [ "-sASYNCIFY" ]
+  }
+
   defines = []
   if (is_debug) {
     defines += [ "SK_DEBUG" ]
@@ -355,9 +369,20 @@ skia_wasm_lib("canvaskit") {
   if (skia_enable_gpu) {
     defines += [
       "SK_SUPPORT_GPU=1",
-      "SK_GL",
       "SK_DISABLE_LEGACY_SHADERCONTEXT",
     ]
+    if (skia_canvaskit_enable_webgl) {
+      defines += [
+        "SK_GL",
+        "CANVASKIT_ENABLE_WEBGL",
+      ]
+    }
+    if (skia_canvaskit_enable_webgpu) {
+      defines += [
+        "SK_DAWN",
+        "CANVASKIT_ENABLE_WEBGPU",
+      ]
+    }
   } else {
     defines += [
       "SK_SUPPORT_GPU=0",

@@ -32,7 +32,7 @@
 #include <emscripten.h>
 #include <emscripten/bind.h>
 
-#ifdef SK_GL
+#ifdef CANVASKIT_ENABLE_WEBGL
 #include "include/gpu/GrBackendSurface.h"
 #include "include/gpu/GrDirectContext.h"
 #include "include/gpu/gl/GrGLInterface.h"
