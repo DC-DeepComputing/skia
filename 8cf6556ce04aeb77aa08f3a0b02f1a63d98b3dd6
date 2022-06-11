@@ -16,6 +16,29 @@
       "message": "This CL is ready for a review. Greg, can you PTAL.",
       "revId": "8cf6556ce04aeb77aa08f3a0b02f1a63d98b3dd6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "851d5990_c651f4b9",
+        "filename": "src/core/SkGpuBlurUtils.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 18274
+      },
+      "writtenOn": "2022-06-11T05:58:29Z",
+      "side": 1,
+      "message": "Autoformatting shortcut is unpredictable sometimes. This whole file got autoformatted.",
+      "range": {
+        "startLine": 29,
+        "startChar": 1,
+        "endLine": 29,
+        "endChar": 37
+      },
+      "revId": "8cf6556ce04aeb77aa08f3a0b02f1a63d98b3dd6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
