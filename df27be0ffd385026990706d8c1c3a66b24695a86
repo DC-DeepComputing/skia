@@ -16,6 +16,23 @@
       "message": "I think should handle separating axis theorem between two oriented bboxes. Given how it fit well enough with skvx::float4 and determining the axes, I opted to drop worrying about perspective.\n\nBased what you said offline about skew, I think because it calculates the total interval, it is still valid for parallelograms. Instead of the interval being defined by adjacent vertices (for orthogonal transforms), it\u0027ll be defined by the diagonal vertices.\n\nWhile we\u0027d discussed mapping one bbox all the way to the local space of the bbox so it could be rect vs. quad, it didn\u0027t work out to be any simpler code IMO. Instead you still had to handle projecting points onto the arbitrary axes defined by the quad\u0027s normals, and the two cases were no longer symmetric.",
       "revId": "df27be0ffd385026990706d8c1c3a66b24695a86",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a45115e3_243d8268",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-06-13T16:40:00Z",
+      "side": 1,
+      "message": "skvx makes the OBB checks very clean.",
+      "revId": "df27be0ffd385026990706d8c1c3a66b24695a86",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
