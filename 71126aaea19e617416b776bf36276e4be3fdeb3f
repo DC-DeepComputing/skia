@@ -65,6 +65,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "97b4a042_1eb32a3b",
+        "filename": "src/gpu/ganesh/gl/GrGLBuffer.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 214,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-06-13T15:49:05Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "cbb8c3b2_64e23be6",
+      "range": {
+        "startLine": 214,
+        "startChar": 20,
+        "endLine": 214,
+        "endChar": 50
+      },
+      "revId": "71126aaea19e617416b776bf36276e4be3fdeb3f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5bc65512_2918d539",
@@ -102,6 +126,30 @@
       "side": 1,
       "message": "If we\u0027re mapping for write access the driver doesn\u0027t know if we\u0027re going to overwrite the entire buffer or not. So it may synchronize with GPU here if there are still reads or writes in flight on the GPU. By invalidating the driver can make a new allocation for the map and replace the buffer\u0027s storage once previous operations are complete. It\u0027s possible that we should do this invalidation earlier but we don\u0027t currently have an interface on GrGpuBuffer for that.",
       "parentUuid": "5bc65512_2918d539",
+      "range": {
+        "startLine": 220,
+        "startChar": 28,
+        "endLine": 220,
+        "endChar": 45
+      },
+      "revId": "71126aaea19e617416b776bf36276e4be3fdeb3f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "99bea62b_948912c0",
+        "filename": "src/gpu/ganesh/gl/GrGLBuffer.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 220,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-06-13T15:49:05Z",
+      "side": 1,
+      "message": "Oh I guess that makes sense since in GL we may map buffers again even if they\u0027re still in use on the GPU. Was thinking in terms of other backends where we don\u0027t reuse buffers at all till we know they\u0027re done.",
+      "parentUuid": "f3e0b299_abf9393f",
       "range": {
         "startLine": 220,
         "startChar": 28,
