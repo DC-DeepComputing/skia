@@ -86,4 +86,9 @@ inline auto SkMakeSpan(Container& c)
     return {c.data(), c.size()};
 }
 
+template <typename T>
+inline auto SkMakeSpan(std::initializer_list<T> il) -> SkSpan<T> {
+    return {(T*)il.begin(), il.size()};
+}
+
 #endif  // SkSpan_DEFINED
