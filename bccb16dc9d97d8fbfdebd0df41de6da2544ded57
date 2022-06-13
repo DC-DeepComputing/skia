@@ -16,6 +16,23 @@
       "message": "I took a stab at addressing all your comments - I look forward to your next round :D ",
       "revId": "bccb16dc9d97d8fbfdebd0df41de6da2544ded57",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f0a43233_e4423e91",
+        "filename": "src/gpu/graphite/geom/Geometry.h",
+        "patchSetId": 18
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-06-13T17:00:15Z",
+      "side": 1,
+      "message": "@Michael Ludwig, I would like to call your attention to the copy / move operators to get your feedback there. You had mentioned that we might want to benefit from move semantics with this class, but what about copying? Curious as to your thoughts there since you might have more context as to how this fits into the bigger picture.",
+      "revId": "bccb16dc9d97d8fbfdebd0df41de6da2544ded57",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
