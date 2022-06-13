@@ -1,0 +1,21 @@
+/*
+ * Copyright 2022 Google LLC
+ *
+ * Use of this source code is governed by a BSD-style license that can be
+ * found in the LICENSE file.
+ */
+
+#ifndef skgpu_graphite_MtlQueueManager_DEFINED
+#define skgpu_graphite_MtlQueueManager_DEFINED
+
+#include "src/gpu/graphite/QueueManager.h"
+
+namespace skgpu::graphite {
+
+class MtlQueueManager : public QueueManager {
+
+};
+
+} // namespace skgpu::graphite
+
+#endif // skgpu_graphite_MtlQueueManager_DEFINED
