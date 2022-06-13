@@ -83,6 +83,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ba04eb8f_2cedf94a",
+        "filename": "modules/canvaskit/BUILD.gn",
+        "patchSetId": 2
+      },
+      "lineNbr": 197,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-06-13T13:58:38Z",
+      "side": 1,
+      "message": "I think it\u0027s going to be best if we only have our WebGL or our WebGPU backend compiled in at once. The client should be able to do feature detection and get the right version as desired.",
+      "parentUuid": "dae9f68a_3f54be0c",
+      "range": {
+        "startLine": 197,
+        "startChar": 4,
+        "endLine": 197,
+        "endChar": 8
+      },
+      "revId": "1d665eb3ab3266c29ccbf6a8a22837bbe31d930f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8e9883e2_d80ea253",
         "filename": "modules/canvaskit/BUILD.gn",
         "patchSetId": 2
