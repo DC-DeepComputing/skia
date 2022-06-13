@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "13ecc36c_8f2c3dd0",
+        "filename": "include/gpu/graphite/BackendTexture.h",
+        "patchSetId": 17
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-06-13T16:50:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f7220a4d_be6f4b45",
+      "range": {
+        "startLine": 55,
+        "startChar": 0,
+        "endLine": 55,
+        "endChar": 11
+      },
+      "revId": "e40be8d750fcc670fa981318b00a8ee72353f0ab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "51e8afcd_0c018a06",
@@ -54,6 +78,30 @@
       "writtenOn": "2022-06-09T19:31:47Z",
       "side": 1,
       "message": "I think this should just be a Geometry and not a `const Geometry\u0026`, otherwise either the referred to object\u0027s lifetime goes away on us, or we\u0027re relying on the compiler to keep the temporary object around for us (which maybe is what happens in this case, but it doesn\u0027t seem as readable to me).\n\nFrom a performance POV, I think we\u0027ll get to the point where Device is just dealing with Geometry directly so won\u0027t have to wrap an existing Shape in a Geometry.\n\nWe could also inline this into the call to recordDraw as\n\n  recordDraw(*renderer, localToDevice, Geometry{shape}, clip, ordering, paint, stroke);\n  \nI think I prefer that way,",
+      "range": {
+        "startLine": 684,
+        "startChar": 4,
+        "endLine": 684,
+        "endChar": 42
+      },
+      "revId": "e40be8d750fcc670fa981318b00a8ee72353f0ab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "494e927e_d6ba047b",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 684,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-06-13T16:50:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "51e8afcd_0c018a06",
       "range": {
         "startLine": 684,
         "startChar": 4,
@@ -87,6 +135,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a5316790_db5476c3",
+        "filename": "src/gpu/graphite/DrawContext.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-06-13T16:50:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "436199a6_26496763",
+      "range": {
+        "startLine": 30,
+        "startChar": 0,
+        "endLine": 30,
+        "endChar": 40
+      },
+      "revId": "e40be8d750fcc670fa981318b00a8ee72353f0ab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6f5da4a3_f2acba08",
@@ -100,6 +172,30 @@
       "writtenOn": "2022-06-09T19:31:47Z",
       "side": 1,
       "message": "nit: re-order between BoundsManager and Recorder",
+      "range": {
+        "startLine": 27,
+        "startChar": 6,
+        "endLine": 27,
+        "endChar": 14
+      },
+      "revId": "e40be8d750fcc670fa981318b00a8ee72353f0ab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "700efad0_addf441b",
+        "filename": "src/gpu/graphite/DrawContext.h",
+        "patchSetId": 17
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-06-13T16:50:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6f5da4a3_f2acba08",
       "range": {
         "startLine": 27,
         "startChar": 6,
@@ -133,6 +229,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4304e11f_17cb96cc",
+        "filename": "src/gpu/graphite/DrawList.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-06-13T16:50:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9b8f4fcf_37c415b8",
+      "range": {
+        "startLine": 33,
+        "startChar": 4,
+        "endLine": 37,
+        "endChar": 5
+      },
+      "revId": "e40be8d750fcc670fa981318b00a8ee72353f0ab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5d25fec7_4c8d245e",
@@ -146,6 +266,30 @@
       "writtenOn": "2022-06-09T19:31:47Z",
       "side": 1,
       "message": "A common pattern we use if there\u0027s a variable we need to reference only in asserts is using another macro SkDEBUGCODE, so we could write \n\n   SkDEBUGCODE(Shape shape \u003d geometry.getShape();)\n   SkASSERT(!shape.isEmpty());\n\nIn this particular case, I think we should just do `SkASSERT((!geometry.isShape() || !geometry.getShape().isEmpty()) \u0026\u0026 !clip...);` and not extract Shape at all.",
+      "range": {
+        "startLine": 38,
+        "startChar": 4,
+        "endLine": 39,
+        "endChar": 29
+      },
+      "revId": "e40be8d750fcc670fa981318b00a8ee72353f0ab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0e8059a7_c38b6106",
+        "filename": "src/gpu/graphite/DrawList.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-06-13T16:50:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5d25fec7_4c8d245e",
       "range": {
         "startLine": 38,
         "startChar": 4,
@@ -202,6 +346,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "108b6327_bf6cc974",
+        "filename": "src/gpu/graphite/geom/Geometry.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-06-13T16:50:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2d9be5e4_175b8528",
+      "range": {
+        "startLine": 14,
+        "startChar": 101,
+        "endLine": 14,
+        "endChar": 107
+      },
+      "revId": "e40be8d750fcc670fa981318b00a8ee72353f0ab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a1233ec0_af27c880",
@@ -215,6 +383,30 @@
       "writtenOn": "2022-06-09T19:31:47Z",
       "side": 1,
       "message": "nit: comments and code can wrap up to 100 characters.",
+      "range": {
+        "startLine": 19,
+        "startChar": 67,
+        "endLine": 20,
+        "endChar": 3
+      },
+      "revId": "e40be8d750fcc670fa981318b00a8ee72353f0ab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2295b0ca_acd9231f",
+        "filename": "src/gpu/graphite/geom/Geometry.h",
+        "patchSetId": 17
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-06-13T16:50:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a1233ec0_af27c880",
       "range": {
         "startLine": 19,
         "startChar": 67,
@@ -248,6 +440,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5533fb61_3bfd54fa",
+        "filename": "src/gpu/graphite/geom/Geometry.h",
+        "patchSetId": 17
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-06-13T16:50:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6ef8d55e_76f60b0d",
+      "range": {
+        "startLine": 22,
+        "startChar": 6,
+        "endLine": 22,
+        "endChar": 14
+      },
+      "revId": "e40be8d750fcc670fa981318b00a8ee72353f0ab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e07c2db6_6775a970",
@@ -261,6 +477,30 @@
       "writtenOn": "2022-06-09T19:31:47Z",
       "side": 1,
       "message": "This can be shortened to just Type, since all external references will just be Geometry::Type, and referencing Type inside Geometry is pretty clear what\u0027s going on IMO.",
+      "range": {
+        "startLine": 25,
+        "startChar": 11,
+        "endLine": 25,
+        "endChar": 23
+      },
+      "revId": "e40be8d750fcc670fa981318b00a8ee72353f0ab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7c5fc587_daa759f9",
+        "filename": "src/gpu/graphite/geom/Geometry.h",
+        "patchSetId": 17
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-06-13T16:50:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e07c2db6_6775a970",
       "range": {
         "startLine": 25,
         "startChar": 11,
@@ -294,6 +534,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "17f796c6_c03aebf7",
+        "filename": "src/gpu/graphite/geom/Geometry.h",
+        "patchSetId": 17
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-06-13T16:50:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "17771ef4_ed0f74d8",
+      "range": {
+        "startLine": 26,
+        "startChar": 2,
+        "endLine": 26,
+        "endChar": 7
+      },
+      "revId": "e40be8d750fcc670fa981318b00a8ee72353f0ab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8bb53a35_fc02e184",
@@ -307,6 +571,30 @@
       "writtenOn": "2022-06-09T19:31:47Z",
       "side": 1,
       "message": "nit: for member function calls, skia always uses `this-\u003e`",
+      "range": {
+        "startLine": 31,
+        "startChar": 2,
+        "endLine": 31,
+        "endChar": 10
+      },
+      "revId": "e40be8d750fcc670fa981318b00a8ee72353f0ab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4266551e_a85bce94",
+        "filename": "src/gpu/graphite/geom/Geometry.h",
+        "patchSetId": 17
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-06-13T16:50:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8bb53a35_fc02e184",
       "range": {
         "startLine": 31,
         "startChar": 2,
@@ -365,6 +653,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "c5fa8e20_ff7cb72b",
+        "filename": "src/gpu/graphite/geom/Geometry.h",
+        "patchSetId": 17
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-06-13T16:50:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d22ad9fc_a9d2f99c",
+      "range": {
+        "startLine": 39,
+        "startChar": 0,
+        "endLine": 39,
+        "endChar": 2
+      },
+      "revId": "e40be8d750fcc670fa981318b00a8ee72353f0ab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "3a2e90b4_9526d79e",
         "filename": "src/gpu/graphite/geom/Geometry.h",
         "patchSetId": 17
@@ -409,6 +721,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a8d8685f_b0d0427d",
+        "filename": "src/gpu/graphite/geom/Geometry.h",
+        "patchSetId": 17
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-06-13T16:50:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e8c9650e_e10269b2",
+      "range": {
+        "startLine": 48,
+        "startChar": 13,
+        "endLine": 48,
+        "endChar": 21
+      },
+      "revId": "e40be8d750fcc670fa981318b00a8ee72353f0ab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c8765c05_05f9f6b2",
@@ -422,6 +758,30 @@
       "writtenOn": "2022-06-09T19:31:47Z",
       "side": 1,
       "message": "An isEmpty() might be useful here and simplify the assert in DrawContext::recordDraw, it could be:\n\n   return fGeometryType \u003d\u003d GeometryType::kEmpty || (this-\u003eisShape() \u0026\u0026 this-\u003egetShape().isEmpty());",
+      "range": {
+        "startLine": 51,
+        "startChar": 0,
+        "endLine": 51,
+        "endChar": 69
+      },
+      "revId": "e40be8d750fcc670fa981318b00a8ee72353f0ab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cee8db41_ac3ba988",
+        "filename": "src/gpu/graphite/geom/Geometry.h",
+        "patchSetId": 17
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-06-13T16:50:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c8765c05_05f9f6b2",
       "range": {
         "startLine": 51,
         "startChar": 0,
@@ -455,6 +815,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fd022a66_9c00a92e",
+        "filename": "src/gpu/graphite/geom/Geometry.h",
+        "patchSetId": 17
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-06-13T16:50:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4decbace_4415fd39",
+      "range": {
+        "startLine": 61,
+        "startChar": 13,
+        "endLine": 61,
+        "endChar": 28
+      },
+      "revId": "e40be8d750fcc670fa981318b00a8ee72353f0ab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3bce877e_9f9a600c",
@@ -468,6 +852,30 @@
       "writtenOn": "2022-06-09T19:31:47Z",
       "side": 1,
       "message": "nit: move this down to above the union definition so functions and fields aren\u0027t mixed.",
+      "range": {
+        "startLine": 64,
+        "startChar": 0,
+        "endLine": 64,
+        "endChar": 49
+      },
+      "revId": "e40be8d750fcc670fa981318b00a8ee72353f0ab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cea8fff0_e7eb7193",
+        "filename": "src/gpu/graphite/geom/Geometry.h",
+        "patchSetId": 17
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-06-13T16:50:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3bce877e_9f9a600c",
       "range": {
         "startLine": 64,
         "startChar": 0,
