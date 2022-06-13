@@ -16,6 +16,75 @@
       "message": "Some of the logic in here to preserve the buffer resizing (fGLSizeInBytes) logic is a little subtle. However, the next change in the series removes the buffer resizing entirely.",
       "revId": "71126aaea19e617416b776bf36276e4be3fdeb3f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5351baa7_15e2c590",
+        "filename": "src/gpu/ganesh/gl/GrGLBuffer.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 214,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-06-13T15:21:59Z",
+      "side": 1,
+      "message": "in this case, I don\u0027t see use updating fGLSizeInBytes or fSizeInBytes. So we must never be hitting this block or we\u0027d hit the assert after.",
+      "range": {
+        "startLine": 214,
+        "startChar": 20,
+        "endLine": 214,
+        "endChar": 50
+      },
+      "revId": "71126aaea19e617416b776bf36276e4be3fdeb3f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5bc65512_2918d539",
+        "filename": "src/gpu/ganesh/gl/GrGLBuffer.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 220,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-06-13T15:21:59Z",
+      "side": 1,
+      "message": "I\u0027m surprised this has any practical effect here. I would think for buffers the only possible advantage to invalidating would be if you dynamically writing/reading data to them (and then reading) during a set of draws. And then you want to invalidate before the end of the frame so the gpu doesn\u0027t have to move that memory from some cache back to real memory.\n\nI would have thought if we\u0027re at a point of mapping the buffers for our typical usage patterns the memory would have already been written back out from some previous frame.",
+      "range": {
+        "startLine": 220,
+        "startChar": 28,
+        "endLine": 220,
+        "endChar": 45
+      },
+      "revId": "71126aaea19e617416b776bf36276e4be3fdeb3f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "03deba1a_25a1ebde",
+        "filename": "src/gpu/ganesh/gl/GrGLCaps.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 316,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-06-13T15:21:59Z",
+      "side": 1,
+      "message": "I\u0027m a little confused by this check and the comment. Do we not want the command buffer to zero out the data when we invalidate? If so can we add that to the comment that we\u0027re avoid this path because we explicitly don\u0027t want that behavior.",
+      "range": {
+        "startLine": 316,
+        "startChar": 44,
+        "endLine": 316,
+        "endChar": 45
+      },
+      "revId": "71126aaea19e617416b776bf36276e4be3fdeb3f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
