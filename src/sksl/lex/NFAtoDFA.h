@@ -31,7 +31,7 @@
  */
 class NFAtoDFA {
 public:
-    inline static constexpr char START_CHAR = 9;
+    inline static constexpr char START_CHAR = 0;
     inline static constexpr char END_CHAR = 126;
 
     NFAtoDFA(NFA* nfa)

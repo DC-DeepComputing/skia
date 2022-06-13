@@ -86,6 +86,7 @@ RegexNode RegexParser::escapeSequence(char c) {
         case 'n': return RegexNode(RegexNode::kChar_Kind, '\n');
         case 'r': return RegexNode(RegexNode::kChar_Kind, '\r');
         case 't': return RegexNode(RegexNode::kChar_Kind, '\t');
+        case '0': return RegexNode(RegexNode::kChar_Kind, '\0');  // no octal support, just \0
         case 's': return RegexNode(RegexNode::kCharset_Kind, " \t\n\r");
         default:  return RegexNode(RegexNode::kChar_Kind, c);
     }
@@ -119,7 +120,7 @@ void RegexParser::setItem() {
     this->literal();
     if (this->peek() == '-') {
         ++fIndex;
-        if (peek() == ']') {
+        if (this->peek() == ']') {
             fStack.push(RegexNode(RegexNode::kChar_Kind, '-'));
         }
         else {

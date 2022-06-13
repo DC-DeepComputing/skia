@@ -15,6 +15,7 @@ namespace SkSL {
 
 struct Token {
     enum class Kind {
+        TK_PLACEHOLDER,
         TK_END_OF_FILE,
         TK_FLOAT_LITERAL,
         TK_INT_LITERAL,
