@@ -56,6 +56,30 @@
       },
       "revId": "cc0f55787cac6b18cc47efbc1ab150d4a056b551",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "81b89d34_ce50a4d0",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 198,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-06-13T21:28:08Z",
+      "side": 1,
+      "message": "This is the SDFTControl that\u0027s used to initialize the strikeDeviceInfo.",
+      "parentUuid": "8655e2ba_b4c98561",
+      "range": {
+        "startLine": 198,
+        "startChar": 9,
+        "endLine": 198,
+        "endChar": 44
+      },
+      "revId": "cc0f55787cac6b18cc47efbc1ab150d4a056b551",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
