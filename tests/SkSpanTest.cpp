@@ -129,7 +129,7 @@ static bool TestSpanParam(SkSpan<const int> s) {
     return s[0] == 1 && s[1] == 2 && s[2] == 3;
 }
 
-DEF_TEST(SkSpanBasicMakeParam, reporter) {
+DEF_TEST(SkSpanDeduceParam, reporter) {
     {
         std::vector<int> v = {{1, 2, 3}};
         REPORTER_ASSERT(reporter, TestSpanParam(v));

@@ -31,11 +31,12 @@ public:
         SkASSERT(size < kMaxSize);
     }
     template <typename U, typename = typename std::enable_if<std::is_same<const U, T>::value>::type>
-    constexpr SkSpan(const SkSpan<U>& that) : fPtr(that.data()), fSize{that.size()} {}
+    constexpr SkSpan(const SkSpan<U>& that) : fPtr(std::data(that)), fSize{std::size(that)} {}
     constexpr SkSpan(const SkSpan& o) = default;
     template<size_t N> constexpr SkSpan(T(&a)[N]) : SkSpan{a, N} { }
     template<typename Container>
     constexpr SkSpan(Container& c) : SkSpan{std::data(c), std::size(c)} { }
+    SkSpan(std::initializer_list<T> il) : SkSpan(std::data(il), std::size(il)) {}
 
     constexpr SkSpan& operator=(const SkSpan& that) = default;
 
@@ -81,17 +82,28 @@ template <typename T, typename S> inline constexpr SkSpan<T> SkMakeSpan(T* p, S 
 }
 
 template <size_t N, typename T> inline constexpr SkSpan<T> SkMakeSpan(T (&a)[N]) {
-    return SkSpan<T>{a, N};
+    return SkSpan<T>(a, N);
 }
 
 template <typename Container>
-inline auto SkMakeSpan(Container& c)
-        -> SkSpan<typename std::remove_reference<decltype(*(std::data(c))>::type> {
+inline auto SkMakeSpan(Container& c) ->
+        SkSpan<std::remove_pointer_t<decltype(std::data(std::declval<Container&>()))>> {
     return {std::data(c), std::size(c)};
 }
 
-template<typename Container>
+template <typename T>
+inline auto SkMakeSpan(std::initializer_list<T> il) ->
+        SkSpan<std::remove_pointer_t<decltype(std::data(std::declval<std::initializer_list<T>>()))>>
+{
+    return {std::data(il), std::size(il)};
+}
+
+template <typename Container>
 SkSpan(Container&) ->
         SkSpan<std::remove_pointer_t<decltype(std::data(std::declval<Container&>()))>>;
+
+template <typename T>
+SkSpan(std::initializer_list<T>) ->
+    SkSpan<std::remove_pointer_t<decltype(std::data(std::declval<std::initializer_list<T>>()))>>;
 
 #endif  // SkSpan_DEFINED
