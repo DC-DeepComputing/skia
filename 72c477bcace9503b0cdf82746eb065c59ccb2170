@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7fc8c8b3_bf7fcae9",
+        "filename": "include/core/SkCombinationBuilder.h",
+        "patchSetId": 43
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-06-13T21:19:12Z",
+      "side": 1,
+      "message": "tiny nit: whitespace",
+      "range": {
+        "startLine": 179,
+        "startChar": 0,
+        "endLine": 181,
+        "endChar": 3
+      },
+      "revId": "72c477bcace9503b0cdf82746eb065c59ccb2170",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8062cfa3_2fd9e2be",
+        "filename": "tests/graphite/PaintParamsKeyTest.cpp",
+        "patchSetId": 43
+      },
+      "lineNbr": 146,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-06-13T21:19:12Z",
+      "side": 1,
+      "message": "Missing kRuntimeShader",
+      "range": {
+        "startLine": 145,
+        "startChar": 16,
+        "endLine": 146,
+        "endChar": 5
+      },
+      "revId": "72c477bcace9503b0cdf82746eb065c59ccb2170",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
