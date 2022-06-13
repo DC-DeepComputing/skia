@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "87321b5f_5d4fbac0",
+        "filename": "src/gpu/graphite/DrawAtlas.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 224,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-06-13T21:15:17Z",
+      "side": 1,
+      "message": "That might be a possibility, but we\u0027d need to copy glyph-by-glyph to avoid overwriting any existing plots. Could be worth looking into though.",
+      "parentUuid": "47cef0da_514a3761",
+      "range": {
+        "startLine": 224,
+        "startChar": 16,
+        "endLine": 224,
+        "endChar": 23
+      },
+      "revId": "99457358cd454178a9c6ab50109ab4084bd21009",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "21ac59de_a1d9c87f",
         "filename": "src/gpu/graphite/text/AtlasManager.cpp",
         "patchSetId": 6
@@ -37,6 +61,30 @@
       "writtenOn": "2022-06-10T20:35:26Z",
       "side": 1,
       "message": "any opinions on just saving the recorder pointer in the AtlasManager vs passing it into the various functions. A given AtlasManager is tied to one recorder so its no like we\u0027ll ever be passing in different Recorders into the member functions.\n\nIf we don\u0027t want to do this, then we should just pass in the Caps directly to the ctor.",
+      "range": {
+        "startLine": 26,
+        "startChar": 27,
+        "endLine": 27,
+        "endChar": 27
+      },
+      "revId": "99457358cd454178a9c6ab50109ab4084bd21009",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ddc4ca8c_25b88acc",
+        "filename": "src/gpu/graphite/text/AtlasManager.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-06-13T21:15:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "21ac59de_a1d9c87f",
       "range": {
         "startLine": 26,
         "startChar": 27,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b9e2bd35_31544a51",
+        "filename": "src/gpu/graphite/text/AtlasManager.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-06-13T21:15:17Z",
+      "side": 1,
+      "message": "It\u0027s possible the code changed -- doesn\u0027t look valid to me.",
+      "parentUuid": "189bb34f_a5e246d9",
+      "range": {
+        "startLine": 138,
+        "startChar": 3,
+        "endLine": 145,
+        "endChar": 9
+      },
+      "revId": "99457358cd454178a9c6ab50109ab4084bd21009",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "86937020_7d9f5d66",
@@ -93,6 +165,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "25b9e2d6_736924d7",
+        "filename": "src/gpu/graphite/text/AtlasManager.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-06-13T21:15:17Z",
+      "side": 1,
+      "message": "Fixed up comment.",
+      "parentUuid": "86937020_7d9f5d66",
+      "range": {
+        "startLine": 150,
+        "startChar": 72,
+        "endLine": 150,
+        "endChar": 73
+      },
+      "revId": "99457358cd454178a9c6ab50109ab4084bd21009",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b2081ebc_a0218dc0",
@@ -106,6 +202,30 @@
       "writtenOn": "2022-06-10T20:35:26Z",
       "side": 1,
       "message": "Does this need to ref the caps? I imagine since it is owned by the Recorder, the caps should be kept alive by the Recorder so we could just have a pointer here.\n\nSee comment below, if we store a back pointer to the Recorder on the the AtlasManager then we don\u0027t need to store caps as we should be able to get them off the Recorder.",
+      "range": {
+        "startLine": 120,
+        "startChar": 4,
+        "endLine": 120,
+        "endChar": 21
+      },
+      "revId": "99457358cd454178a9c6ab50109ab4084bd21009",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8db703ee_be3351c2",
+        "filename": "src/gpu/graphite/text/AtlasManager.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-06-13T21:15:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b2081ebc_a0218dc0",
       "range": {
         "startLine": 120,
         "startChar": 4,
