@@ -16,6 +16,69 @@
       "message": "I\u0027m planning to work out the Bazel build in a follow up.",
       "revId": "1d665eb3ab3266c29ccbf6a8a22837bbe31d930f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "515841b1_b6fbd6cd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-06-13T11:57:36Z",
+      "side": 1,
+      "message": "Don\u0027t worry about the Bazel rules (in the follow-up). Those are still undergoing evolution from my end on how to turn on and off various knobs.",
+      "revId": "1d665eb3ab3266c29ccbf6a8a22837bbe31d930f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "684216f3_1e23afe2",
+        "filename": "modules/canvaskit/BUILD.gn",
+        "patchSetId": 2
+      },
+      "lineNbr": 195,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-06-13T11:57:36Z",
+      "side": 1,
+      "message": "Is this to work around a bug with emscripten? Can we add the filed bug as a comment?",
+      "range": {
+        "startLine": 195,
+        "startChar": 9,
+        "endLine": 195,
+        "endChar": 16
+      },
+      "revId": "1d665eb3ab3266c29ccbf6a8a22837bbe31d930f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8e9883e2_d80ea253",
+        "filename": "modules/canvaskit/BUILD.gn",
+        "patchSetId": 2
+      },
+      "lineNbr": 377,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-06-13T11:57:36Z",
+      "side": 1,
+      "message": "nit: We tend to do CK_ instead of CANVASKIT_ for defines.",
+      "range": {
+        "startLine": 377,
+        "startChar": 9,
+        "endLine": 377,
+        "endChar": 31
+      },
+      "revId": "1d665eb3ab3266c29ccbf6a8a22837bbe31d930f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
