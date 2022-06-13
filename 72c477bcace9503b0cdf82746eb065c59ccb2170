@@ -45,6 +45,29 @@
       },
       "revId": "72c477bcace9503b0cdf82746eb065c59ccb2170",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4556a908_daf5b2fd",
+        "filename": "tests/graphite/PaintParamsKeyTest.cpp",
+        "patchSetId": 43
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-06-13T21:21:33Z",
+      "side": 1,
+      "message": "You could catch it in the act by asserting inside the lambda.\n\n    std::optional\u003cSkUniquePaintParamsID\u003e uniqueID;\n\n    combinationBuilder.buildCombinations(dict,\n                                         [\u0026](SkUniquePaintParamsID id) {\n                                             SkASSERT(!uniqueID.has_value());\n                                             uniqueID \u003d id;\n                                         });\n\n    return *uniqueID;",
+      "range": {
+        "startLine": 150,
+        "startChar": 0,
+        "endLine": 158,
+        "endChar": 24
+      },
+      "revId": "72c477bcace9503b0cdf82746eb065c59ccb2170",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
