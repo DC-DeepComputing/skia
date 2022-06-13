@@ -117,22 +117,12 @@ static void writeCPP(const DFA& dfa, const char* lexer, const char* token, const
     }
     out << "using State = " << (states <= 256 ? "uint8_t" : "uint16_t") << ";\n";
 
-    // Find the first character mapped in our DFA.
-    size_t startChar = 0;
-    for (; startChar < dfa.fCharMappings.size(); ++startChar) {
-        if (dfa.fCharMappings[startChar] != 0) {
-            break;
-        }
-    }
-
-    // Arbitrarily-chosen character which is greater than startChar, and should not appear in actual
-    // input.
-    SkASSERT(startChar < 18);
+    // 18 is an arbitrarily-chosen nonzero character which should not appear in actual input.
     out << "static constexpr uint8_t kInvalidChar = 18;";
-    out << "static constexpr int8_t kMappings[" << dfa.fCharMappings.size() - startChar << "] = {\n"
+    out << "static constexpr int8_t kMappings[" << dfa.fCharMappings.size() << "] = {\n"
            "    ";
     const char* separator = "";
-    for (size_t index = startChar; index < dfa.fCharMappings.size(); ++index) {
+    for (size_t index = 0; index < dfa.fCharMappings.size(); ++index) {
         out << separator << std::to_string(dfa.fCharMappings[index]);
         separator = ", ";
     }
@@ -161,14 +151,8 @@ static void writeCPP(const DFA& dfa, const char* lexer, const char* token, const
     int32_t startOffset = fOffset;
     State   state = 1;
     for (;;) {
-        if (fOffset >= (int32_t)fText.length()) {
-            if (startOffset == (int32_t)fText.length() || kAccepts[state] == -1) {
-                return )" << token << "(" << token << R"(::Kind::TK_END_OF_FILE, startOffset, 0);
-            }
-            break;
-        }
-        uint8_t c = (uint8_t)(fText[fOffset] - )" << startChar << R"();
-        if (c >= )" << dfa.fCharMappings.size() - startChar << R"() {
+        uint8_t c = (uint8_t)fText[fOffset];
+        if (c >= )" << dfa.fCharMappings.size() << R"() {
             c = kInvalidChar;
         }
         State newState = get_transition(kMappings[c], state);
@@ -179,6 +163,9 @@ static void writeCPP(const DFA& dfa, const char* lexer, const char* token, const
         ++fOffset;
     }
     Token::Kind kind = ()" << token << R"(::Kind) kAccepts[state];
+    if (kind == Token::Kind::TK_END_OF_FILE) {
+        fOffset = startOffset;
+    }
     return )" << token << R"((kind, startOffset, fOffset - startOffset);
 }
 
@@ -190,7 +177,7 @@ static void process(const char* inPath, const char* lexer, const char* token, co
                     const char* cppPath) {
     NFA nfa;
     std::vector<std::string> tokens;
-    tokens.push_back("END_OF_FILE");
+    tokens.push_back("PLACEHOLDER");
     std::string line;
     std::ifstream in(inPath);
     while (std::getline(in, line)) {

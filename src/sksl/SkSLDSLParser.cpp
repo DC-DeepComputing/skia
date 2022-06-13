@@ -108,7 +108,9 @@ DSLParser::DSLParser(Compiler* compiler, const ProgramSettings& settings, Progra
     , fKind(kind)
     , fText(std::make_unique<std::string>(std::move(text)))
     , fPushback(Token::Kind::TK_NONE, /*offset=*/-1, /*length=*/-1) {
-    fLexer.start(*fText);
+    // The lexer relies on the null terminator at the end of the text.
+    std::string_view textView(&fText->front(), fText->length() + 1);
+    fLexer.start(textView);
 }
 
 Token DSLParser::nextRawToken() {
