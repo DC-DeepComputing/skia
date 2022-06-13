@@ -114,6 +114,29 @@
       },
       "revId": "cc44819b55532dd6f7c74f72e5e8edc755f33473",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0e0a6149_bdc272ac",
+        "filename": "src/gpu/graphite/geom/Geometry.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-06-13T17:30:24Z",
+      "side": 1,
+      "message": "Missed this in the first re-go-around, but can we move it to be next to the other isFoo() functions?",
+      "range": {
+        "startLine": 75,
+        "startChar": 9,
+        "endLine": 75,
+        "endChar": 16
+      },
+      "revId": "cc44819b55532dd6f7c74f72e5e8edc755f33473",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

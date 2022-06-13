@@ -33,6 +33,24 @@
       "message": "@Michael Ludwig, I would like to call your attention to the copy / move operators to get your feedback there. You had mentioned that we might want to benefit from move semantics with this class, but what about copying? Curious as to your thoughts there since you might have more context as to how this fits into the bigger picture.",
       "revId": "bccb16dc9d97d8fbfdebd0df41de6da2544ded57",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b2102bbe_c5e136da",
+        "filename": "src/gpu/graphite/geom/Geometry.h",
+        "patchSetId": 18
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-06-13T17:30:24Z",
+      "side": 1,
+      "message": "I would vote to have both copy/move defined in the same spot. I don\u0027t see us getting to a place where only the move operator makes sense, so we\u0027ll need both. I think since the cpp file is only the copy assignment, we should move it here as well, and then get rid of the cpp file and let Geometry be a header-only file.\n\nI think I would implement both of them as a switch on fType, and have the pointer comparison done outside since it\u0027s applicable to all type cases. It probably could be skipped too, since it\u0027s unlikely that callers will be moving or copying into the same object, but I don\u0027t feel strongly either way.",
+      "parentUuid": "f0a43233_e4423e91",
+      "revId": "bccb16dc9d97d8fbfdebd0df41de6da2544ded57",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
