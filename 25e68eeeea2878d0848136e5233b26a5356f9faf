@@ -16,6 +16,24 @@
       "message": "Nice!",
       "revId": "25e68eeeea2878d0848136e5233b26a5356f9faf",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c8b2d302_be54297c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-06-13T13:43:28Z",
+      "side": 1,
+      "message": "I can\u0027t stop thinking about faster bit manipulation, even on weekends. It\u0027s my cross to bear. 😅",
+      "parentUuid": "5b6a5dc9_501ac8aa",
+      "revId": "25e68eeeea2878d0848136e5233b26a5356f9faf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
