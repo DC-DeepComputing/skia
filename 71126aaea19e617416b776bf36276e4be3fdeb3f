@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "cbb8c3b2_64e23be6",
+        "filename": "src/gpu/ganesh/gl/GrGLBuffer.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 214,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-06-13T15:42:35Z",
+      "side": 1,
+      "message": "good point. added the set.",
+      "parentUuid": "5351baa7_15e2c590",
+      "range": {
+        "startLine": 214,
+        "startChar": 20,
+        "endLine": 214,
+        "endChar": 50
+      },
+      "revId": "71126aaea19e617416b776bf36276e4be3fdeb3f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5bc65512_2918d539",
         "filename": "src/gpu/ganesh/gl/GrGLBuffer.cpp",
         "patchSetId": 10
@@ -66,6 +90,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f3e0b299_abf9393f",
+        "filename": "src/gpu/ganesh/gl/GrGLBuffer.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 220,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-06-13T15:42:35Z",
+      "side": 1,
+      "message": "If we\u0027re mapping for write access the driver doesn\u0027t know if we\u0027re going to overwrite the entire buffer or not. So it may synchronize with GPU here if there are still reads or writes in flight on the GPU. By invalidating the driver can make a new allocation for the map and replace the buffer\u0027s storage once previous operations are complete. It\u0027s possible that we should do this invalidation earlier but we don\u0027t currently have an interface on GrGpuBuffer for that.",
+      "parentUuid": "5bc65512_2918d539",
+      "range": {
+        "startLine": 220,
+        "startChar": 28,
+        "endLine": 220,
+        "endChar": 45
+      },
+      "revId": "71126aaea19e617416b776bf36276e4be3fdeb3f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "03deba1a_25a1ebde",
         "filename": "src/gpu/ganesh/gl/GrGLCaps.cpp",
         "patchSetId": 10
@@ -77,6 +125,30 @@
       "writtenOn": "2022-06-13T15:21:59Z",
       "side": 1,
       "message": "I\u0027m a little confused by this check and the comment. Do we not want the command buffer to zero out the data when we invalidate? If so can we add that to the comment that we\u0027re avoid this path because we explicitly don\u0027t want that behavior.",
+      "range": {
+        "startLine": 316,
+        "startChar": 44,
+        "endLine": 316,
+        "endChar": 45
+      },
+      "revId": "71126aaea19e617416b776bf36276e4be3fdeb3f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8b044668_935a977b",
+        "filename": "src/gpu/ganesh/gl/GrGLCaps.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 316,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-06-13T15:42:35Z",
+      "side": 1,
+      "message": "Updated the comment.",
+      "parentUuid": "03deba1a_25a1ebde",
       "range": {
         "startLine": 316,
         "startChar": 44,
