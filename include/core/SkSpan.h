@@ -9,6 +9,7 @@
 #define SkSpan_DEFINED
 
 #include <cstddef>
+#include <initializer_list>
 #include <iterator>
 #include <type_traits>
 #include <utility>
@@ -32,6 +33,9 @@ public:
     template <typename U, typename = typename std::enable_if<std::is_same<const U, T>::value>::type>
     constexpr SkSpan(const SkSpan<U>& that) : fPtr(that.data()), fSize{that.size()} {}
     constexpr SkSpan(const SkSpan& o) = default;
+    template<size_t N> constexpr SkSpan(T(&a)[N]) : SkSpan{a, N} { }
+    template<typename Container>
+    constexpr SkSpan(Container& c) : SkSpan{std::data(c), std::size(c)} { }
 
     constexpr SkSpan& operator=(const SkSpan& that) = default;
 
@@ -82,8 +86,12 @@ template <size_t N, typename T> inline constexpr SkSpan<T> SkMakeSpan(T (&a)[N])
 
 template <typename Container>
 inline auto SkMakeSpan(Container& c)
-        -> SkSpan<typename std::remove_reference<decltype(*(c.data()))>::type> {
-    return {c.data(), c.size()};
+        -> SkSpan<typename std::remove_reference<decltype(*(std::data(c))>::type> {
+    return {std::data(c), std::size(c)};
 }
+
+template<typename Container>
+SkSpan(Container&) ->
+        SkSpan<std::remove_pointer_t<decltype(std::data(std::declval<Container&>()))>>;
 
 #endif  // SkSpan_DEFINED
