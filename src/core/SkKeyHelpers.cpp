@@ -697,15 +697,15 @@ SkUniquePaintParamsID CreateKey(const SkKeyContext& keyContext,
             break;
         case SkShaderType::kRuntimeShader:
             {
-                static sk_sp<SkRuntimeEffect> effect = SkMakeRuntimeEffect(
-                    SkRuntimeEffect::MakeForShader, R"(
-                        half4 main(float2 coords) {
-                            return half4(coords.xy01);
-                        }
-                    )");
-                RuntimeShaderBlock::BeginBlock(keyContext, builder, nullptr,
-                                               {effect, /*uniforms=*/nullptr});
-                builder->endBlock();
+            static const SkRuntimeEffect* effect =
+                    SkMakeRuntimeEffect(SkRuntimeEffect::MakeForShader, R"(
+                half4 main(float2 coords) {
+                    return half4(coords.xy01);
+                }
+            )");
+            RuntimeShaderBlock::BeginBlock(keyContext, builder, nullptr,
+                                           {sk_ref_sp(effect), /*uniforms=*/nullptr});
+            builder->endBlock();
             }
             break;
     }

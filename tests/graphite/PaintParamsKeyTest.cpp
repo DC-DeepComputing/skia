@@ -93,7 +93,8 @@ std::tuple<SkPaint, int> create_paint(Recorder* recorder,
             break;
         }
         case SkShaderType::kRuntimeShader: {
-            auto effect = SkMakeRuntimeEffect(SkRuntimeEffect::MakeForShader, R"(
+            static const SkRuntimeEffect* effect =
+                    SkMakeRuntimeEffect(SkRuntimeEffect::MakeForShader, R"(
                 half4 main(float2 coords) {
                     return half4(coords.xy01);
                 }
