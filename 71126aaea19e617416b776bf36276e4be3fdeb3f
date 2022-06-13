@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b2ebab22_3a247350",
+        "filename": "src/gpu/ganesh/gl/GrGLBuffer.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-06-13T13:57:08Z",
+      "side": 1,
+      "message": "Some of the logic in here to preserve the buffer resizing (fGLSizeInBytes) logic is a little subtle. However, the next change in the series removes the buffer resizing entirely.",
+      "revId": "71126aaea19e617416b776bf36276e4be3fdeb3f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
