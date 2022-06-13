@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "60110eff_f67fef27",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-06-13T18:49:04Z",
+      "side": 1,
+      "message": "This should fix current bot issues. For some reason my revertx2 won\u0027t land:\nhttps://skia-review.googlesource.com/c/skia/+/549656\n\"[SubmittableVerifier]: CL is not submittable\"",
+      "revId": "dc687ccf1830f26bf00296f9409700a4549f6e26",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
