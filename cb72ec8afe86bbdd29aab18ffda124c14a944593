@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bbe3eb65_bae69abb",
+        "filename": "src/core/SkNewCombinationAPI.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-06-13T20:36:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3348e284_c65ac264",
+      "range": {
+        "startLine": 90,
+        "startChar": 42,
+        "endLine": 91,
+        "endChar": 83
+      },
+      "revId": "cb72ec8afe86bbdd29aab18ffda124c14a944593",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4550a28a_156b5e12",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-06-13T19:18:23Z",
       "side": 1,
       "message": "format: \u0027 \u0027",
+      "range": {
+        "startLine": 93,
+        "startChar": 43,
+        "endLine": 94,
+        "endChar": 83
+      },
+      "revId": "cb72ec8afe86bbdd29aab18ffda124c14a944593",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "af011c6e_d6bfb6bc",
+        "filename": "src/core/SkNewCombinationAPI.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-06-13T20:36:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4550a28a_156b5e12",
       "range": {
         "startLine": 93,
         "startChar": 43,
