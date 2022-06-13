@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d7eb1cd4_2da7c2b8",
+        "filename": "src/gpu/graphite/DrawList.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-06-13T17:22:11Z",
+      "side": 1,
+      "message": "I don\u0027t know why I wrote GeomParams in the first place ;) but should be DrawParams now.",
+      "range": {
+        "startLine": 87,
+        "startChar": 37,
+        "endLine": 87,
+        "endChar": 46
+      },
+      "revId": "cc44819b55532dd6f7c74f72e5e8edc755f33473",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "58bcd0a3_d688dafb",
+        "filename": "src/gpu/graphite/DrawParams.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-06-13T17:22:11Z",
+      "side": 1,
+      "message": "nit: keep the function name lined up with the others in the blog.",
+      "range": {
+        "startLine": 101,
+        "startChar": 19,
+        "endLine": 101,
+        "endChar": 24
+      },
+      "revId": "cc44819b55532dd6f7c74f72e5e8edc755f33473",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a95dc53e_2c09b417",
+        "filename": "src/gpu/graphite/geom/Geometry.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-06-13T17:22:11Z",
+      "side": 1,
+      "message": "SkVertices",
+      "range": {
+        "startLine": 18,
+        "startChar": 50,
+        "endLine": 18,
+        "endChar": 58
+      },
+      "revId": "cc44819b55532dd6f7c74f72e5e8edc755f33473",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "af65bb3b_f9740c7d",
+        "filename": "src/gpu/graphite/geom/Geometry.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-06-13T17:22:11Z",
+      "side": 1,
+      "message": "Slight nuance to my earlier comment on line wrapping. It\u0027s preferred to keep TODOs and FIXMes starting on their own line, and then we\u0027d just wrap the comments after TODO - to the 100 char limit in this case.\n\nThe `*/` comment ending should also still be on its own line.",
+      "range": {
+        "startLine": 18,
+        "startChar": 89,
+        "endLine": 18,
+        "endChar": 99
+      },
+      "revId": "cc44819b55532dd6f7c74f72e5e8edc755f33473",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5580539b_91e2e847",
+        "filename": "src/gpu/graphite/geom/Geometry.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-06-13T17:22:11Z",
+      "side": 1,
+      "message": "This will end up looking exactly like the operator\u003d definition, so it\u0027s okay for this constructor to use that operator, e.g.:\n\n   *this \u003d geom;",
+      "range": {
+        "startLine": 45,
+        "startChar": 9,
+        "endLine": 47,
+        "endChar": 9
+      },
+      "revId": "cc44819b55532dd6f7c74f72e5e8edc755f33473",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
