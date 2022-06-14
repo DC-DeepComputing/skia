@@ -175,11 +175,23 @@ void StrokeTessellateOp::prePrepareTessellator(GrTessellationShader::ProgramArgs
             this->headColor());
 
     auto fillStencil = &GrUserStencilSettings::kUnused;
+
+    SkASSERT(args.fDstProxyView);
+    GrDstProxyView dstView;
     if (fNeedsStencil) {
         fStencilProgram = GrTessellationShader::MakeProgram(args, fTessellationShader, pipeline,
                                                             &kMarkStencil);
         fillStencil = &kTestAndResetStencil;
-        args.fXferBarrierFlags = GrXferBarrierFlags::kNone;
+        // If there is a texture barrier on the draw, we don't need to do the barrier both on the
+        // stencil draw and the fill draw. Thus we put the barrier on the stencil draw and
+        // then drop it for the fill. We need to change the barrier on the dstProxy since that is
+        // the per draw barrier. The renderpassXferBarrier directly on the args just says whether
+        // the entire render pass uses barriers or not.
+        dstView = *args.fDstProxyView;
+        dstView.setDstSampleFlags(GrDstSampleFlags::kNone);
+        args.fDstProxyView = &dstView;
+        pipeline = GrTessellationShader::MakePipeline(args, fAAType, std::move(clip),
+                                                      std::move(fProcessors));
     }
 
     fFillProgram = GrTessellationShader::MakeProgram(args, fTessellationShader, pipeline,
