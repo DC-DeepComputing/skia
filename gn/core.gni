@@ -162,6 +162,8 @@ skia_core_sources = [
   "$_src/core/SkColorFilter_Matrix.h",
   "$_src/core/SkColorSpace.cpp",
   "$_src/core/SkColorSpaceXformSteps.cpp",
+  "$_src/core/SkCombinationAPI.cpp",
+  "$_src/core/SkCombinationAPI.h",
   "$_src/core/SkCombinationBuilder.cpp",
   "$_src/core/SkCompressedDataUtils.cpp",
   "$_src/core/SkCompressedDataUtils.h",
