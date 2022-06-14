@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "72b0d797_799863ab",
+        "filename": "src/gpu/ganesh/ops/StrokeTessellateOp.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 185,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-06-14T20:40:34Z",
+      "side": 1,
+      "message": "TBH I\u0027m still undecided whether this optimization that chris tried to add in a while ago is worth it, but this at least should be the correct way for the optimization to work.",
+      "range": {
+        "startLine": 185,
+        "startChar": 11,
+        "endLine": 185,
+        "endChar": 13
+      },
+      "revId": "9129a99a016a6537fe44a01a76a0d61a4b6aa4e1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
