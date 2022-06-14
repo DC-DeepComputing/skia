@@ -33,6 +33,40 @@
       "message": "lgtm to me, too",
       "revId": "52f560c5a647a005e89fc8036a0b8686776daa3d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a7411ee3_a953cde1",
+        "filename": "src/core/SkArenaAlloc.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-06-14T16:16:37Z",
+      "side": 1,
+      "message": "nit, 4 space indent.",
+      "revId": "52f560c5a647a005e89fc8036a0b8686776daa3d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b6decdbf_988fa6d4",
+        "filename": "src/core/SkMalloc.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-06-14T16:16:37Z",
+      "side": 1,
+      "message": "ditto",
+      "revId": "52f560c5a647a005e89fc8036a0b8686776daa3d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
