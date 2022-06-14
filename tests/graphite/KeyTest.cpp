@@ -55,7 +55,7 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(KeyValidBlockSizeTest, reporter, context) {
             {"data", SkPaintParamsKey::DataPayloadType::kByte, kMaxBlockDataSize},
     };
 
-    int dummySnippetID = dict->addUserDefinedSnippet("keyAlmostTooBig", SkMakeSpan(kDataFields));
+    int dummySnippetID = dict->addUserDefinedSnippet("keyAlmostTooBig", kDataFields);
     SkPaintParamsKey key = create_key(&builder, dummySnippetID, kMaxBlockDataSize);
 
     // Key is created successfully.
@@ -74,7 +74,7 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(KeyTooLargeBlockSizeTest, reporter, context) {
             {"data", SkPaintParamsKey::DataPayloadType::kByte, kBlockDataSize},
     };
 
-    int dummySnippetID = dict->addUserDefinedSnippet("keyTooBig", SkMakeSpan(kDataFields));
+    int dummySnippetID = dict->addUserDefinedSnippet("keyTooBig", kDataFields);
     SkPaintParamsKey key = create_key(&builder, dummySnippetID, kBlockDataSize);
 
     // Key creation fails.
