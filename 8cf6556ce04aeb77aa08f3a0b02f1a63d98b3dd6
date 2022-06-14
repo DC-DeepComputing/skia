@@ -18,6 +18,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1aaa520d_96462be4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18274
+      },
+      "writtenOn": "2022-06-14T17:29:11Z",
+      "side": 1,
+      "message": "Greg, looks like the CL passed the dry CQ run. Can we run the final CQ and have it submitted? 😊",
+      "revId": "8cf6556ce04aeb77aa08f3a0b02f1a63d98b3dd6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "851d5990_c651f4b9",
