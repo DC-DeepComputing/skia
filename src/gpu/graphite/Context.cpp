@@ -22,6 +22,7 @@
 #include "src/gpu/graphite/GlobalCache.h"
 #include "src/gpu/graphite/Gpu.h"
 #include "src/gpu/graphite/GraphicsPipelineDesc.h"
+#include "src/gpu/graphite/QueueManager.h"
 #include "src/gpu/graphite/Renderer.h"
 #include "src/gpu/graphite/ResourceProvider.h"
 
@@ -32,8 +33,9 @@
 namespace skgpu::graphite {
 
 //--------------------------------------------------------------------------------------------------
-Context::Context(sk_sp<Gpu> gpu, BackendApi backend)
+Context::Context(sk_sp<Gpu> gpu, std::unique_ptr<QueueManager> queueManager, BackendApi backend)
         : fGpu(std::move(gpu))
+        , fQueueManager(std::move(queueManager))
         , fGlobalCache(sk_make_sp<GlobalCache>())
         , fBackend(backend) {
 }
@@ -46,7 +48,14 @@ std::unique_ptr<Context> Context::MakeMetal(const MtlBackendContext& backendCont
         return nullptr;
     }
 
-    return std::unique_ptr<Context>(new Context(std::move(gpu), BackendApi::kMetal));
+    auto queueManager = MtlTrampoline::MakeQueueManager();
+    if (!queueManager) {
+        return nullptr;
+    }
+
+    return std::unique_ptr<Context>(new Context(std::move(gpu),
+                                                std::move(queueManager),
+                                                BackendApi::kMetal));
 }
 #endif
 

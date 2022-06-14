@@ -8,10 +8,15 @@
 #include "src/gpu/graphite/mtl/MtlTrampoline.h"
 
 #include "src/gpu/graphite/mtl/MtlGpu.h"
+#include "src/gpu/graphite/mtl/MtlQueueManager.h"
 
 namespace skgpu::graphite {
-sk_sp<skgpu::graphite::Gpu> MtlTrampoline::MakeGpu(const MtlBackendContext& backendContext) {
+sk_sp<Gpu> MtlTrampoline::MakeGpu(const MtlBackendContext& backendContext) {
     return MtlGpu::Make(backendContext);
+}
+
+std::unique_ptr<QueueManager> MtlTrampoline::MakeQueueManager() {
+    return std::make_unique<MtlQueueManager>();
 }
 
 }  // namespace skgpu::graphite

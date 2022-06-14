@@ -10,7 +10,6 @@
 
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSize.h"
-#include "include/private/SkDeque.h"
 
 #include "include/gpu/graphite/GraphiteTypes.h"
 
@@ -68,11 +67,7 @@ protected:
     // Subclass must call this to initialize compiler in its constructor.
     void initCompiler();
 
-    using OutstandingSubmission = std::unique_ptr<GpuWorkSubmission>;
-
 private:
-    virtual OutstandingSubmission onSubmit(sk_sp<CommandBuffer>) = 0;
-
     virtual BackendTexture onCreateBackendTexture(SkISize dimensions, const TextureInfo&) = 0;
     virtual void onDeleteBackendTexture(BackendTexture&) = 0;
 
@@ -80,8 +75,6 @@ private:
     // Compiler used for compiling SkSL into backend shader code. We only want to create the
     // compiler once, as there is significant overhead to the first compile.
     std::unique_ptr<SkSL::Compiler> fCompiler;
-
-    SkDeque fOutstandingSubmissions;
 };
 
 } // namespace skgpu::graphite
