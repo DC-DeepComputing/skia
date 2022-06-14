@@ -1,5 +1,5 @@
 // Minimum TypeScript Version: 3.7
-export function CanvasKitInit(opts: CanvasKitInitOptions): Promise<CanvasKit>;
+export default function CanvasKitInit(opts?: CanvasKitInitOptions): Promise<CanvasKit>;
 
 export interface CanvasKitInitOptions {
     /**
@@ -366,7 +366,7 @@ export interface CanvasKit {
      */
     MakeVertices(mode: VertexMode, positions: InputFlattenedPointArray,
                  textureCoordinates?: InputFlattenedPointArray | null,
-                 colors?: Float32Array | ColorIntArray | null, indices?: number[] | null,
+                 colors?: Float32Array[] | ColorIntArray[] | null, indices?: number[] | null,
                  isVolatile?: boolean): Vertices;
 
     /**
@@ -847,7 +847,7 @@ export interface Paragraph extends EmbindObject<Paragraph> {
     getMaxIntrinsicWidth(): number;
     getMaxWidth(): number;
     getMinIntrinsicWidth(): number;
-    getRectsForPlaceholders(): FlattenedRectangleArray;
+    getRectsForPlaceholders(): FlattenedRectangleArray[];
 
     /**
      * Returns bounding boxes that enclose all text in the range of glpyh indexes [start, end).
@@ -857,7 +857,7 @@ export interface Paragraph extends EmbindObject<Paragraph> {
      * @param wStyle
      */
     getRectsForRange(start: number, end: number, hStyle: RectHeightStyle,
-                     wStyle: RectWidthStyle): FlattenedRectangleArray;
+                     wStyle: RectWidthStyle): FlattenedRectangleArray[];
 
     /**
      * Finds the first and last glyphs that define a word containing the glyph at index offset.
@@ -1992,7 +1992,7 @@ export interface Paint extends EmbindObject<Paint> {
      * Sets the current color filter, replacing the existing one if there was one.
      * @param filter
      */
-    setColorFilter(filter: ColorFilter): void;
+    setColorFilter(filter: ColorFilter | null): void;
 
     /**
      * Sets the color used when stroking and filling. The color values are interpreted as being in
@@ -2006,25 +2006,25 @@ export interface Paint extends EmbindObject<Paint> {
      * Sets the current image filter, replacing the existing one if there was one.
      * @param filter
      */
-    setImageFilter(filter: ImageFilter): void;
+    setImageFilter(filter: ImageFilter | null): void;
 
     /**
      * Sets the current mask filter, replacing the existing one if there was one.
      * @param filter
      */
-    setMaskFilter(filter: MaskFilter): void;
+    setMaskFilter(filter: MaskFilter | null): void;
 
     /**
      * Sets the current path effect, replacing the existing one if there was one.
      * @param effect
      */
-    setPathEffect(effect: PathEffect): void;
+    setPathEffect(effect: PathEffect | null): void;
 
     /**
      * Sets the current shader, replacing the existing one if there was one.
      * @param shader
      */
-    setShader(shader: Shader): void;
+    setShader(shader: Shader | null): void;
 
     /**
      * Sets the geometry drawn at the beginning and end of strokes.
@@ -2561,7 +2561,7 @@ export interface RuntimeEffect extends EmbindObject<RuntimeEffect> {
      * @param uniforms
      * @param localMatrix
      */
-    makeShader(uniforms: Float32Array | number[] | MallocObj,
+    makeShader(uniforms: Float32Array | number[],
                localMatrix?: InputMatrix): Shader;
 
     /**
@@ -2570,7 +2570,7 @@ export interface RuntimeEffect extends EmbindObject<RuntimeEffect> {
      * @param children
      * @param localMatrix
      */
-    makeShaderWithChildren(uniforms: Float32Array | number[] | MallocObj,
+    makeShaderWithChildren(uniforms: Float32Array | number[],
                            children?: Shader[], localMatrix?: InputMatrix): Shader;
 
     /**
@@ -3449,7 +3449,7 @@ export interface ShaderFactory {
      * @param color
      * @param space
      */
-    MakeColor(color: InputColor, space: ColorSpace): Shader;
+    MakeColor(color: InputColor, space?: ColorSpace): Shader;
 
     /**
      * Returns a shader with Perlin Fractal Noise.
