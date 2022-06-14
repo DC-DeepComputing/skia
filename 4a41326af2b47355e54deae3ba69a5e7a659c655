@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9c3fe05a_2ee42b46",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-06-14T18:46:26Z",
+      "side": 1,
+      "message": "This all seems fine, but may not be working in the most obvious way. Not sure immediately what the right way to fix this is at the moment though.",
+      "revId": "4a41326af2b47355e54deae3ba69a5e7a659c655",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b917bbbe_945ea797",
@@ -32,6 +49,24 @@
       "side": 1,
       "message": "Nope. This was needed because the code in this file does copies an SkSpan, so the full definition was required.",
       "parentUuid": "b917bbbe_945ea797",
+      "revId": "4a41326af2b47355e54deae3ba69a5e7a659c655",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "89a68eca_47544187",
+        "filename": "src/core/SkPipelineData.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-06-14T18:46:26Z",
+      "side": 1,
+      "message": "I see on PS3 where this failed due to computing the kMaxSize and wondering why this didn\u0027t fail before. It looks like before the SkSpan was being copied through the templated enable_if constructor that takes `const SkSpan\u003cU\u003e\u0026 that` which directly initialized the pointer and length and does not need kMaxSize. Now it looks like these copes are going through the Container\u0026 constructor which delegates to the pointer length constructor which does use kMaxSize.\n\nShould the `const SkSpan\u003cU\u003e\u0026` constructor also be updated to delegate and also check? Ia it needed anymore now that SkSpan can be considered a Container?",
+      "parentUuid": "d35d302c_0793990e",
       "revId": "4a41326af2b47355e54deae3ba69a5e7a659c655",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
