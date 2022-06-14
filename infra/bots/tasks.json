@@ -3496,27 +3496,26 @@
       "casSpec": "compile",
       "cipd_packages": [
         {
-          "name": "skia/bots/bazel_build_task_driver",
-          "path": "bazel_build_task_driver",
-          "version": "version:0"
-        },
-        {
           "name": "skia/bots/bazelisk",
           "path": "bazelisk",
           "version": "version:0"
         }
       ],
       "command": [
-        "bazel_build_task_driver/bazel_build",
+        "./bazel_build",
         "--project_id=skia-swarming-bots",
         "--task_id=<(TASK_ID)",
         "--task_name=BazelBuild-modules_canvaskit_canvaskit_wasm-debug-linux_x64",
         "--label=//modules/canvaskit:canvaskit_wasm",
         "--config=debug",
         "--workdir=.",
+        "--expunge_cache",
         "--bazel_arg=--config=linux_rbe",
         "--bazel_arg=--jobs=100",
         "--bazel_arg=--remote_download_minimal"
+      ],
+      "dependencies": [
+        "Housekeeper-PerCommit-BuildTaskDrivers_linux_amd64"
       ],
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",

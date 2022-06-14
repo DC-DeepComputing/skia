@@ -1286,7 +1286,6 @@ func (b *jobBuilder) compile() string {
 	return name
 }
 
-
 // recreateSKPs generates a RecreateSKPs task.
 func (b *jobBuilder) recreateSKPs() {
 	cmd := []string{
@@ -2088,13 +2087,22 @@ func (b *jobBuilder) bazelBuild() {
 		}
 		if host == "linux_x64" {
 			b.linuxGceDimensions(MACHINE_TYPE_MEDIUM)
-			// Use a built task_driver from CIPD instead of building it from scratch. The
-			// task_driver should not need to change often, so using a CIPD version should reduce
-			// build latency.
-			// TODO(kjlubick) For now, this only has the linux version. We could build the task
-			//   driver for all hosts that we support running Bazel from in this CIPD package
-			//   if/when needed.
-			b.cipd(b.MustGetCipdPackageFromAsset("bazel_build_task_driver"))
+			// When we updated to Bazel 5.2.0, a bug with 5.0.0 with respect to npm install's
+			// handling of packages starting with @ surfaced. Locally, if we expunge the cache
+			// and re-install things, it fixed things.
+			if shorthand == "modules_canvaskit_canvaskit_wasm" {
+				cmd[0] = "./bazel_build"
+				cmd = append(cmd, "--expunge_cache")
+				b.dep(b.buildTaskDrivers("linux", "amd64"))
+			} else {
+				// Use a built task_driver from CIPD instead of building it from scratch. The
+				// task_driver should not need to change often, so using a CIPD version should reduce
+				// build latency.
+				// TODO(kjlubick) For now, this only has the linux version. We could build the task
+				//   driver for all hosts that we support running Bazel from in this CIPD package
+				//   if/when needed.
+				b.cipd(b.MustGetCipdPackageFromAsset("bazel_build_task_driver"))
+			}
 
 			// We want all Linux Bazel Builds to use RBE
 			cmd = append(cmd, "--bazel_arg=--config=linux_rbe")
