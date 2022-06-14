@@ -22,6 +22,30 @@
       },
       "revId": "9e574ba0143e474344a959bbf236ef1e22ef23c3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b5bf7369_a0ffe6e1",
+        "filename": "tests/SkRuntimeEffectTest.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1200,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-06-14T23:43:35Z",
+      "side": 1,
+      "message": "Done at http://review.skia.org/550020. There are ~3 call sites that don\u0027t use `Make` this way (test code, cached gradient effects), but in the common case it\u0027s cleaner this way.",
+      "parentUuid": "3589c118_47e2c1ac",
+      "range": {
+        "startLine": 1200,
+        "startChar": 28,
+        "endLine": 1200,
+        "endChar": 42
+      },
+      "revId": "9e574ba0143e474344a959bbf236ef1e22ef23c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
