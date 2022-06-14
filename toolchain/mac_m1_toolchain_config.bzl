@@ -14,6 +14,8 @@ It follows the example of:
 load(
     "@bazel_tools//tools/cpp:cc_toolchain_config_lib.bzl",
     "action_config",
+    "env_entry",
+    "env_set",
     "feature",
     "flag_group",
     "flag_set",
@@ -94,6 +96,14 @@ def _make_action_configs():
         action_name = ACTION_NAMES.cpp_compile,
         tools = [clang_tool],
     )
+    objc_compile_action = action_config(
+        action_name = ACTION_NAMES.objc_compile,
+        tools = [clang_tool],
+    )
+    objcpp_compile_action = action_config(
+        action_name = ACTION_NAMES.objcpp_compile,
+        tools = [clang_tool],
+    )
     linkstamp_compile_action = action_config(
         action_name = ACTION_NAMES.linkstamp_compile,
         tools = [clang_tool],
@@ -130,10 +140,65 @@ def _make_action_configs():
                 flag_groups = [
                     flag_group(
                         # https://llvm.org/docs/CommandGuide/llvm-ar.html
-                        # replace existing files or insert them if they already exist,
-                        # create the file if it doesn't already exist
-                        # symbol table should be added
-                        # Deterministic timestamps should be used
+                        # [r]eplace existing files or insert them if they already exist,
+                        # [c]reate the file if it doesn't already exist
+                        # [s]ymbol table should be added
+                        # [D]eterministic timestamps should be used
+                        flags = ["rcsD", "%{output_execpath}"],
+                        # Despite the name, output_execpath just refers to linker output,
+                        # e.g. libFoo.a
+                        expand_if_available = "output_execpath",
+                    ),
+                ],
+            ),
+            flag_set(
+                flag_groups = [
+                    flag_group(
+                        iterate_over = "libraries_to_link",
+                        flag_groups = [
+                            flag_group(
+                                flags = ["%{libraries_to_link.name}"],
+                                expand_if_equal = variable_with_value(
+                                    name = "libraries_to_link.type",
+                                    value = "object_file",
+                                ),
+                            ),
+                            flag_group(
+                                flags = ["%{libraries_to_link.object_files}"],
+                                iterate_over = "libraries_to_link.object_files",
+                                expand_if_equal = variable_with_value(
+                                    name = "libraries_to_link.type",
+                                    value = "object_file_group",
+                                ),
+                            ),
+                        ],
+                        expand_if_available = "libraries_to_link",
+                    ),
+                ],
+            ),
+            flag_set(
+                flag_groups = [
+                    flag_group(
+                        flags = ["@%{linker_param_file}"],
+                        expand_if_available = "linker_param_file",
+                    ),
+                ],
+            ),
+        ],
+        tools = [ar_tool],
+    )
+
+    objc_archive_action = action_config(
+        action_name = ACTION_NAMES.objc_archive,
+        flag_sets = [
+            flag_set(
+                flag_groups = [
+                    flag_group(
+                        # https://llvm.org/docs/CommandGuide/llvm-ar.html
+                        # [r]eplace existing files or insert them if they already exist,
+                        # [c]reate the file if it doesn't already exist
+                        # [s]ymbol table should be added
+                        # [D]eterministic timestamps should be used
                         flags = ["rcsD", "%{output_execpath}"],
                         # Despite the name, output_execpath just refers to linker output,
                         # e.g. libFoo.a
@@ -187,16 +252,25 @@ def _make_action_configs():
         cpp_link_nodeps_dynamic_library_action,
         cpp_link_static_library_action,
         linkstamp_compile_action,
+        objc_archive_action,
+        objc_compile_action,
+        objcpp_compile_action,
         preprocess_assemble_action,
     ]
     return action_configs
 
+# In addition to pointing the c and cpp compile actions to our toolchain, we also need to set objc
+# and objcpp action flags as well. We build .m and .mm files with the objc_library rule, which
+# will use the default toolchain if not specified here.
+# https://docs.bazel.build/versions/3.3.0/be/objective-c.html#objc_library
 def _make_default_flags():
     """Here we define the flags for certain actions that are always applied."""
     cxx_compile_includes = flag_set(
         actions = [
             ACTION_NAMES.c_compile,
             ACTION_NAMES.cpp_compile,
+            ACTION_NAMES.objc_compile,
+            ACTION_NAMES.objcpp_compile,
         ],
         flag_groups = [
             flag_group(
@@ -211,9 +285,19 @@ def _make_default_flags():
                     XCODE_SYMLINK + "/include",
                     "-isystem",
                     EXTERNAL_TOOLCHAIN + "/lib/clang/13.0.0/include",
+                    "-isysroot",
+                    "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+                    # Set the framework path to the Mac SDK framework directory. We can't include it
+                    # through XCODE_SYMLINK because of infinite symlink recursion introduced in the
+                    # framework folder.
+                    # TODO(jmbetancourt): feed this path similarly to how we used xcode-select
+                    # idea: set this in the trampoline script
+                    "-F",
+                    "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks",
                     # We do not want clang to search in absolute paths for files. This makes
                     # Bazel think we are using an outside resource and fail the compile.
                     "-no-canonical-prefixes",
+                    "-Wno-deprecated-declarations",
                 ],
             ),
         ],
@@ -222,6 +306,8 @@ def _make_default_flags():
     cpp_compile_includes = flag_set(
         actions = [
             ACTION_NAMES.cpp_compile,
+            ACTION_NAMES.objc_compile,
+            ACTION_NAMES.objcpp_compile,
         ],
         flag_groups = [
             flag_group(
@@ -238,6 +324,10 @@ def _make_default_flags():
         flag_groups = [
             flag_group(
                 flags = [
+                    "-Wl,-syslibroot",
+                    "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/",
+                    "-isysroot",
+                    "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/",
                     "-fuse-ld=lld",
                     # We chose to use the llvm runtime, not the gcc one because it is already
                     # included in the clang binary
@@ -246,6 +336,8 @@ def _make_default_flags():
                     # Tell the linker where to look for libraries.
                     "-L",
                     XCODE_SYMLINK + "/lib",
+                    "-F",
+                    "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks",
                     # We statically include these libc++ libraries so they do not need to be
                     # on a developer's machine (they can be tricky to get).
                     EXTERNAL_TOOLCHAIN + "/lib/libc++.a",
@@ -259,6 +351,12 @@ def _make_default_flags():
             ),
         ],
     )
+
+    link_env = env_set(
+        actions = [ACTION_NAMES.cpp_link_executable],
+        env_entries = [env_entry(key = "DYLD_LIBRARY_PATH", value = "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/")],
+    )
+
     return [feature(
         "default_flags",
         enabled = True,
@@ -267,6 +365,7 @@ def _make_default_flags():
             cpp_compile_includes,
             link_exe_flags,
         ],
+        env_sets = [link_env],
     )]
 
 def _make_diagnostic_flags():
