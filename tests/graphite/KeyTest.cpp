@@ -57,7 +57,7 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(KeyTest, reporter, context) {
         };
 
         int dummySnippetID1 = dict->addUserDefinedSnippet("keyAlmostTooBig",
-                                                          SkMakeSpan(kDataFields1, kNumFields1));
+                                                          SkSpan(kDataFields1, kNumFields1));
 
         SkPaintParamsKey key = create_key(&builder, dummySnippetID1, kMaxBlockDataSize);
         REPORTER_ASSERT(reporter, key.sizeInBytes() == SkPaintParamsKey::kMaxBlockSize);
@@ -71,7 +71,7 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(KeyTest, reporter, context) {
         };
 
         int dummySnippetID2 = dict->addUserDefinedSnippet("keyTooBig",
-                                                          SkMakeSpan(kDataFields2, kNumFields2));
+                                                          SkSpan(kDataFields2, kNumFields2));
 
         SkPaintParamsKey key = create_key(&builder, dummySnippetID2, 1024);
         // key creation fails

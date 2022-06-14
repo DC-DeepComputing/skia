@@ -86,7 +86,7 @@ public:
                 { "translate",  SkSLType::kFloat2 },
         };
 
-        UniformExpectationsValidator uev(gatherer, SkMakeSpan(kRectUniforms, kNumRectUniforms));
+        UniformExpectationsValidator uev(gatherer, SkSpan(kRectUniforms, kNumRectUniforms));
 #endif
 
         // TODO: A << API for uniforms would be nice, particularly if it could take pre-computed
@@ -149,7 +149,7 @@ public:
                 { "scale",      SkSLType::kFloat2 },
                 { "translate",  SkSLType::kFloat2 },
         };
-        UniformExpectationsValidator uev(gatherer, SkMakeSpan(kRectUniforms, kNumRectUniforms));
+        UniformExpectationsValidator uev(gatherer, SkSpan(kRectUniforms, kNumRectUniforms));
 #endif
 
         gatherer->write(SkPoint::Make(2.0f, 2.0f));
