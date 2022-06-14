@@ -237,6 +237,30 @@
       },
       "revId": "39434936f3ef13ec8665cb3eecee754710b70420",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "51b7427a_085f5cd5",
+        "filename": "resources/sksl/compute/ArrayAdd.compute",
+        "patchSetId": 16
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-06-14T16:55:46Z",
+      "side": 1,
+      "message": "Thank you for that change, I think set/binding looks better in this context (and addresses some of the concerns I raised wrt \"location\" in my doc about uniforms). While I think in/inout/out still resemble varyings, I think their meaning is clearer when combined with set/binding, so lgtm.\n\nRE Metal-style address spaces: I\u0027m not opposed to using the device/constant/thread/threadgroup names per se, rather I want to make sure they kewords we choose both map well to Vulkan/WGSL address spaces and that they are intuitive. The main reason I was somewhat arguing for \"uniform\" is because it\u0027s familiar and is already used in SkSL/RTE but I\u0027m not particularly attached to it. I\u0027d be happy to continue this discussion over the follow-up CL that introduces address spaces.",
+      "parentUuid": "c8e3e158_cb6ba970",
+      "range": {
+        "startLine": 2,
+        "startChar": 19,
+        "endLine": 2,
+        "endChar": 21
+      },
+      "revId": "39434936f3ef13ec8665cb3eecee754710b70420",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
