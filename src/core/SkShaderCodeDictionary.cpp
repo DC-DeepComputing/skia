@@ -642,6 +642,7 @@ bool SkShaderCodeDictionary::isValidID(int snippetID) const {
 }
 
 static constexpr int kNoChildren = 0;
+static constexpr int kNoPointers = 0;
 
 // TODO: this version needs to be removed
 int SkShaderCodeDictionary::addUserDefinedSnippet(
@@ -655,6 +656,7 @@ int SkShaderCodeDictionary::addUserDefinedSnippet(
                                                                name,
                                                                GenerateDefaultGlueCode,
                                                                kNoChildren,
+                                                               kNoPointers,
                                                                dataPayloadExpectations));
 
     // TODO: the memory for user-defined entries could go in the dictionary's arena but that
@@ -682,7 +684,8 @@ SkBlenderID SkShaderCodeDictionary::addUserDefinedBlender(sk_sp<SkRuntimeEffect>
                                                                "foo",
                                                                GenerateDefaultGlueCode,
                                                                kNoChildren,
-                                                               {}));  // missing data payload
+                                                               /*numPointers=*/1,
+                                                               /*dataPayloadExpectations=*/{}));
 
     // TODO: the memory for user-defined entries could go in the dictionary's arena but that
     // would have to be a thread safe allocation since the arena also stores entries for
@@ -704,6 +707,7 @@ SkShaderCodeDictionary::SkShaderCodeDictionary() {
             kErrorName,
             GenerateDefaultGlueCode,
             kNoChildren,
+            kNoPointers,
             { }
     };
     fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kSolidColorShader] = {
@@ -714,6 +718,7 @@ SkShaderCodeDictionary::SkShaderCodeDictionary() {
             kSolidShaderName,
             GenerateDefaultGlueCode,
             kNoChildren,
+            kNoPointers,
             { }
     };
     fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kLinearGradientShader4] = {
@@ -724,6 +729,7 @@ SkShaderCodeDictionary::SkShaderCodeDictionary() {
             kLinearGradient4Name,
             GenerateDefaultGlueCode,
             kNoChildren,
+            kNoPointers,
             { }
     };
     fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kLinearGradientShader8] = {
@@ -734,6 +740,7 @@ SkShaderCodeDictionary::SkShaderCodeDictionary() {
             kLinearGradient8Name,
             GenerateDefaultGlueCode,
             kNoChildren,
+            kNoPointers,
             { }
     };
     fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kRadialGradientShader4] = {
@@ -744,6 +751,7 @@ SkShaderCodeDictionary::SkShaderCodeDictionary() {
             kRadialGradient4Name,
             GenerateDefaultGlueCode,
             kNoChildren,
+            kNoPointers,
             { }
     };
     fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kRadialGradientShader8] = {
@@ -754,6 +762,7 @@ SkShaderCodeDictionary::SkShaderCodeDictionary() {
             kRadialGradient8Name,
             GenerateDefaultGlueCode,
             kNoChildren,
+            kNoPointers,
             { }
     };
     fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kSweepGradientShader4] = {
@@ -764,6 +773,7 @@ SkShaderCodeDictionary::SkShaderCodeDictionary() {
             kSweepGradient4Name,
             GenerateDefaultGlueCode,
             kNoChildren,
+            kNoPointers,
             { }
     };
     fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kSweepGradientShader8] = {
@@ -774,6 +784,7 @@ SkShaderCodeDictionary::SkShaderCodeDictionary() {
             kSweepGradient8Name,
             GenerateDefaultGlueCode,
             kNoChildren,
+            kNoPointers,
             { }
     };
     fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kConicalGradientShader4] = {
@@ -784,6 +795,7 @@ SkShaderCodeDictionary::SkShaderCodeDictionary() {
             kConicalGradient4Name,
             GenerateDefaultGlueCode,
             kNoChildren,
+            kNoPointers,
             { }
     };
     fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kConicalGradientShader8] = {
@@ -794,6 +806,7 @@ SkShaderCodeDictionary::SkShaderCodeDictionary() {
             kConicalGradient8Name,
             GenerateDefaultGlueCode,
             kNoChildren,
+            kNoPointers,
             { }
     };
     fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kLocalMatrixShader] = {
@@ -804,6 +817,7 @@ SkShaderCodeDictionary::SkShaderCodeDictionary() {
             kLocalMatrixShaderName,
             GenerateDefaultGlueCode,
             kNumLocalMatrixShaderChildren,
+            kNoPointers,
             { }
     };
     fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kImageShader] = {
@@ -814,6 +828,7 @@ SkShaderCodeDictionary::SkShaderCodeDictionary() {
             kImageShaderName,
             GenerateImageShaderGlueCode,
             kNoChildren,
+            kNoPointers,
             { }
     };
     fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kBlendShader] = {
@@ -824,6 +839,7 @@ SkShaderCodeDictionary::SkShaderCodeDictionary() {
             kBlendShaderName,
             GenerateDefaultGlueCode,
             kNumBlendShaderChildren,
+            kNoPointers,
             { }
     };
     fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kRuntimeShader] = {
@@ -834,6 +850,7 @@ SkShaderCodeDictionary::SkShaderCodeDictionary() {
             kRuntimeShaderName,
             GenerateDefaultGlueCode,
             kNoChildren,
+            kNoPointers,
             SkMakeSpan(kRuntimeShaderDataPayload)
     };
     fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kFixedFunctionBlender] = {
@@ -844,6 +861,7 @@ SkShaderCodeDictionary::SkShaderCodeDictionary() {
             "FF-blending",  // fixed function blending doesn't use static SkSL
             GenerateFixedFunctionBlenderGlueCode,
             kNoChildren,
+            kNoPointers,
             { }
     };
     fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kShaderBasedBlender] = {
@@ -854,6 +872,7 @@ SkShaderCodeDictionary::SkShaderCodeDictionary() {
             kBlendHelperName,
             GenerateShaderBasedBlenderGlueCode,
             kNoChildren,
+            kNoPointers,
             { }
     };
 }
