@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "15d88b9c_971845ec",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-06-14T17:49:46Z",
+      "side": 1,
+      "message": "This uses the same technique that the GPU blending code already uses (as suggested by the bug reporter).",
+      "revId": "316fc3ba98301e473b64d34c8affdf65553876ca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
