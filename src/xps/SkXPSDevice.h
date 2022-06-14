@@ -30,8 +30,9 @@
 #include "src/utils/win/SkAutoCoInitialize.h"
 #include "src/utils/win/SkTScopedComPtr.h"
 
-class SkGlyphRunList;
-
+namespace sktext {
+class GlyphRunList;
+}
 //#define SK_XPS_USE_DETERMINISTIC_IDS
 
 /** \class SkXPSDevice
@@ -85,7 +86,7 @@ protected:
                   const SkPaint& paint) override;
     void drawRRect(const SkRRect& rr,
                    const SkPaint& paint) override;
-    void drawPath(const SkPath& path,
+    void drawPath(const SkPath& path,`
                   const SkPaint& paint,
                   bool pathIsMutable = false) override;
     void drawImageRect(const SkImage*,
@@ -93,7 +94,7 @@ protected:
                        const SkSamplingOptions&, const SkPaint& paint,
                        SkCanvas::SrcRectConstraint) override;
     void onDrawGlyphRunList(
-            SkCanvas*, const SkGlyphRunList&, const SkPaint&, const SkPaint&) override;
+            SkCanvas*, const sktext::GlyphRunList&, const SkPaint&, const SkPaint&) override;
     void drawVertices(const SkVertices*, sk_sp<SkBlender>, const SkPaint&, bool) override;
     void drawMesh(const SkMesh&, sk_sp<SkBlender>, const SkPaint&) override;
     void drawDevice(SkBaseDevice*, const SkSamplingOptions&, const SkPaint&) override;
