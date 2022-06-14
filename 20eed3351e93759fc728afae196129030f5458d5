@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8ab83fae_4f06c93b",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 687,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-06-14T22:34:33Z",
+      "side": 1,
+      "message": "0 (or kNoPointers) for the time being ?",
+      "range": {
+        "startLine": 687,
+        "startChar": 79,
+        "endLine": 687,
+        "endChar": 80
+      },
+      "revId": "20eed3351e93759fc728afae196129030f5458d5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
