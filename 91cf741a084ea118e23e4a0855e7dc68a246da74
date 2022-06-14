@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d9ac08e5_540acb12",
+        "filename": "tests/graphite/KeyTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-06-14T16:12:46Z",
+      "side": 1,
+      "message": "Is this the best way to get three keys at once, for testing purposes? PaintParamsKey objects point to the data inside the builder, so reusing the builder to create a new key would nuke the data inside the previous key (if it didn\u0027t assert).",
+      "range": {
+        "startLine": 101,
+        "startChar": 4,
+        "endLine": 103,
+        "endChar": 65
+      },
+      "revId": "91cf741a084ea118e23e4a0855e7dc68a246da74",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
