@@ -132,14 +132,7 @@ static void get_packed_glyph_image(
             }
         }
     } else {
-        // crbug:510931
-        // Retrieving the image from the cache can actually change the mask format. This case is
-        // very uncommon so for now we just draw a clear box for these glyphs.
-        const int bpp = MaskFormatBytesPerPixel(expectedMaskFormat);
-        for (int y = 0; y < height; y++) {
-            sk_bzero(dst, width * bpp);
-            dst = (char*)dst + dstRB;
-        }
+        SkUNREACHABLE;
     }
 }
 
