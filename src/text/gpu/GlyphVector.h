@@ -21,7 +21,10 @@ class SkStrikeClient;
 class GrMeshDrawTarget;
 #endif
 #if defined(SK_GRAPHITE_ENABLED)
-namespace skgpu::graphite { class Recorder; }
+namespace skgpu::graphite {
+class DrawContext;
+class Recorder;
+}
 #endif
 
 namespace sktext::gpu {
@@ -71,6 +74,7 @@ public:
             int begin, int end,
             skgpu::MaskFormat maskFormat,
             int srcPadding,
+            skgpu::graphite::DrawContext*,
             skgpu::graphite::Recorder*);
 #endif
 

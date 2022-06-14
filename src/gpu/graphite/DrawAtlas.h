@@ -244,6 +244,9 @@ public:
     // may expand temporarily to use more space as needed.
     DrawAtlasConfig(int maxTextureSize, size_t maxBytes);
 
+    // For testing only - make minimum sized atlases -- a single plot for ARGB, four for A8
+    DrawAtlasConfig() : DrawAtlasConfig(kMaxAtlasDim, 0) {}
+
     SkISize atlasDimensions(MaskFormat type) const;
     SkISize plotDimensions(MaskFormat type) const;
 

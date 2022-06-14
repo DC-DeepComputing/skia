@@ -300,6 +300,7 @@ void DrawAtlas::compact(DrawToken startTokenForNextFlush) {
         if constexpr (kDumpAtlasData) {
             SkDebugf("page %d: ", lastPageIndex);
         }
+
         while (Plot* plot = plotIter.get()) {
             // Update number of flushes since plot was last used
             if (!plot->lastUseToken().inInterval(fPrevFlushToken, startTokenForNextFlush)) {

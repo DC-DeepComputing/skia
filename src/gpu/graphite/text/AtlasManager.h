@@ -67,7 +67,6 @@ public:
                          MaskFormat format) {
         this->getAtlas(format)->setLastUseTokenBulk(updater, token);
     }
-
     bool recordUploads(DrawContext* dc);
 
     // Some clients may wish to verify the integrity of the texture backing store of the
@@ -110,6 +109,7 @@ private:
     std::unique_ptr<DrawAtlas> fAtlases[kMaskFormatCount];
     static_assert(kMaskFormatCount == 3);
     bool fSupportBilerpAtlas;
+    sk_sp<const Caps> fCaps;
     DrawAtlasConfig fAtlasConfig;
 };
 
