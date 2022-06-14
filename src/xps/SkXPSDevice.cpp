@@ -39,7 +39,6 @@
 #include "src/core/SkDraw.h"
 #include "src/core/SkEndian.h"
 #include "src/core/SkGeometry.h"
-#include "src/core/SkGlyphRun.h"
 #include "src/core/SkImagePriv.h"
 #include "src/core/SkMaskFilterBase.h"
 #include "src/core/SkRasterClip.h"
@@ -54,6 +53,7 @@
 #include "src/utils/win/SkHRESULT.h"
 #include "src/utils/win/SkIStream.h"
 #include "src/utils/win/SkTScopedComPtr.h"
+#include "src/text/GlyphRun.h"
 #include "src/xps/SkXPSDevice.h"
 
 //Windows defines a FLOAT type,
@@ -1898,7 +1898,7 @@ static bool text_must_be_pathed(const SkPaint& paint, const SkMatrix& matrix) {
 }
 
 void SkXPSDevice::onDrawGlyphRunList(SkCanvas*,
-                                     const SkGlyphRunList& glyphRunList,
+                                     const sktext::GlyphRunList& glyphRunList,
                                      const SkPaint& initailPaint,
                                      const SkPaint& drawingPaint) {
     SkASSERT(!glyphRunList.hasRSXForm());

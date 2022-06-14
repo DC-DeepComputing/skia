@@ -5,7 +5,7 @@
  * found in the LICENSE file.
  */
 
-#include "src/core/SkGlyphRun.h"
+#include "src/text/GlyphRun.h"
 
 #include "include/core/SkTextBlob.h"
 #include "tests/Test.h"
