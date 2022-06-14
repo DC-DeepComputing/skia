@@ -37,6 +37,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "81af7ddc_034d319e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-06-14T18:52:42Z",
+      "side": 1,
+      "message": "I think that one\u0027s okay, because it\u0027s already doing a strict \u003e check before the (only) divide? Are there GMs that show cracking on GPU?",
+      "parentUuid": "46e81963_cbb85d6b",
+      "revId": "316fc3ba98301e473b64d34c8affdf65553876ca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ae10f852_6713e22e",
         "filename": "src/core/SkVM.cpp",
         "patchSetId": 2
