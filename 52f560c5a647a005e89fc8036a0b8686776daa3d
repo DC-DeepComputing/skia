@@ -16,6 +16,23 @@
       "message": "Adding Ben and Brian to get broader buy in, history, and knowledge. For me, this looks LGTM.",
       "revId": "52f560c5a647a005e89fc8036a0b8686776daa3d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e9d7b0bc_ebc2d288",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-06-14T16:15:11Z",
+      "side": 1,
+      "message": "lgtm to me, too",
+      "revId": "52f560c5a647a005e89fc8036a0b8686776daa3d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
