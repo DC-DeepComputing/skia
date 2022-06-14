@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3589c118_47e2c1ac",
+        "filename": "tests/SkRuntimeEffectTest.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1200,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-06-14T22:40:33Z",
+      "side": 1,
+      "message": "This GrSkSLFP factory is used iff we just created the effect with the static effect factory. WDYT about changing it to just take the raw const pointer, and do the sk_ref_sp internally?",
+      "range": {
+        "startLine": 1200,
+        "startChar": 28,
+        "endLine": 1200,
+        "endChar": 42
+      },
+      "revId": "9e574ba0143e474344a959bbf236ef1e22ef23c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
