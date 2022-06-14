@@ -58,6 +58,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c4f4365f_b64b3acb",
+        "filename": "modules/canvaskit/BUILD.gn",
+        "patchSetId": 2
+      },
+      "lineNbr": 195,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-06-14T21:59:15Z",
+      "side": 1,
+      "message": "Indeed. I summarized the issue in skia:13429.",
+      "parentUuid": "684216f3_1e23afe2",
+      "range": {
+        "startLine": 195,
+        "startChar": 9,
+        "endLine": 195,
+        "endChar": 16
+      },
+      "revId": "1d665eb3ab3266c29ccbf6a8a22837bbe31d930f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dae9f68a_3f54be0c",
@@ -107,6 +131,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "40ea5c2e_8fda5d63",
+        "filename": "modules/canvaskit/BUILD.gn",
+        "patchSetId": 2
+      },
+      "lineNbr": 197,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-06-14T21:59:15Z",
+      "side": 1,
+      "message": "Kevin, would you mind explaining why you prefer to have one backend compiled in at once? I can think of some nuances in emscripten flags but I don\u0027t fully understand the ramifications.\n\nOne thing that definitely stood out to me is that the way the WASM C++ bindings are structured right now (the code uses a lot of conditional compilation to export certain symbol names) it will be easier to do a first pass that does only one of the backends. Though, I think we could eventually restructure the bindings code to better modularize WebGL vs WebGPU vs CPU-only functions.",
+      "parentUuid": "ba04eb8f_2cedf94a",
+      "range": {
+        "startLine": 197,
+        "startChar": 4,
+        "endLine": 197,
+        "endChar": 8
+      },
+      "revId": "1d665eb3ab3266c29ccbf6a8a22837bbe31d930f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8e9883e2_d80ea253",
         "filename": "modules/canvaskit/BUILD.gn",
         "patchSetId": 2
@@ -118,6 +166,30 @@
       "writtenOn": "2022-06-13T11:57:36Z",
       "side": 1,
       "message": "nit: We tend to do CK_ instead of CANVASKIT_ for defines.",
+      "range": {
+        "startLine": 377,
+        "startChar": 9,
+        "endLine": 377,
+        "endChar": 31
+      },
+      "revId": "1d665eb3ab3266c29ccbf6a8a22837bbe31d930f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a1c268e5_3c343e85",
+        "filename": "modules/canvaskit/BUILD.gn",
+        "patchSetId": 2
+      },
+      "lineNbr": 377,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-06-14T21:59:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8e9883e2_d80ea253",
       "range": {
         "startLine": 377,
         "startChar": 9,
