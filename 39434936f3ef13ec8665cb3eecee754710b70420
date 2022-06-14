@@ -213,6 +213,30 @@
       },
       "revId": "39434936f3ef13ec8665cb3eecee754710b70420",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c8e3e158_cb6ba970",
+        "filename": "resources/sksl/compute/ArrayAdd.compute",
+        "patchSetId": 16
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-06-14T13:36:23Z",
+      "side": 1,
+      "message": "I changed my model to match WGSL, with set/binding annotations. This look better to everyone?",
+      "parentUuid": "16fe823f_37137dca",
+      "range": {
+        "startLine": 2,
+        "startChar": 19,
+        "endLine": 2,
+        "endChar": 21
+      },
+      "revId": "39434936f3ef13ec8665cb3eecee754710b70420",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
