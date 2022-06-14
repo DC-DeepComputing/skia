@@ -22,6 +22,30 @@
       },
       "revId": "20eed3351e93759fc728afae196129030f5458d5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7034aa46_807ea37e",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 687,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-06-14T22:35:55Z",
+      "side": 1,
+      "message": "OK, it can change to 1 when we actually add pointer support. (I wrote it as kNoPointers with a TODO initially tbh!)",
+      "parentUuid": "8ab83fae_4f06c93b",
+      "range": {
+        "startLine": 687,
+        "startChar": 79,
+        "endLine": 687,
+        "endChar": 80
+      },
+      "revId": "20eed3351e93759fc728afae196129030f5458d5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
