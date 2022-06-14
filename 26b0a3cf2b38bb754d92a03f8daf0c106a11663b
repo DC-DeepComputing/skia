@@ -1,6 +1,29 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "99ab617d_ba93c5e2",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 25
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-06-14T17:17:11Z",
+      "side": 1,
+      "message": "So by default when you upload a CL the first time it will take all your branch names and throw them in here. I would edit the commit message and delete all this and possibly add just general prose description if these is anything valuable worth saying (nothing is required",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 18,
+        "endChar": 98
+      },
+      "revId": "26b0a3cf2b38bb754d92a03f8daf0c106a11663b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "895077eb_1fd040a3",
@@ -14,6 +37,115 @@
       "writtenOn": "2022-06-14T02:16:11Z",
       "side": 1,
       "message": "lgtm now 😊",
+      "revId": "26b0a3cf2b38bb754d92a03f8daf0c106a11663b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "38619dc9_8adca97e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 25
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-06-14T17:17:11Z",
+      "side": 1,
+      "message": "lgtm but with a few nits",
+      "revId": "26b0a3cf2b38bb754d92a03f8daf0c106a11663b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "16b4aa7a_c24a37e9",
+        "filename": "src/gpu/graphite/geom/Geometry.h",
+        "patchSetId": 25
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-06-14T17:17:11Z",
+      "side": 1,
+      "message": "2",
+      "range": {
+        "startLine": 2,
+        "startChar": 16,
+        "endLine": 2,
+        "endChar": 17
+      },
+      "revId": "26b0a3cf2b38bb754d92a03f8daf0c106a11663b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "12539fd0_d1e9705f",
+        "filename": "tests/graphite/CommandBufferTest.cpp",
+        "patchSetId": 25
+      },
+      "lineNbr": 200,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-06-14T17:17:11Z",
+      "side": 1,
+      "message": "over 100 chars",
+      "range": {
+        "startLine": 200,
+        "startChar": 101,
+        "endLine": 200,
+        "endChar": 117
+      },
+      "revId": "26b0a3cf2b38bb754d92a03f8daf0c106a11663b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a06a641f_1a75f6bf",
+        "filename": "tests/graphite/CommandBufferTest.cpp",
+        "patchSetId": 25
+      },
+      "lineNbr": 203,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-06-14T17:17:11Z",
+      "side": 1,
+      "message": "nit: we usually don\u0027t put a space and just write {}",
+      "range": {
+        "startLine": 203,
+        "startChar": 83,
+        "endLine": 203,
+        "endChar": 84
+      },
+      "revId": "26b0a3cf2b38bb754d92a03f8daf0c106a11663b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8acb3513_19c6c1b4",
+        "filename": "tests/graphite/CommandBufferTest.cpp",
+        "patchSetId": 25
+      },
+      "lineNbr": 332,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-06-14T17:17:11Z",
+      "side": 1,
+      "message": "100 chars",
+      "range": {
+        "startLine": 332,
+        "startChar": 100,
+        "endLine": 332,
+        "endChar": 101
+      },
       "revId": "26b0a3cf2b38bb754d92a03f8daf0c106a11663b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
