@@ -644,7 +644,7 @@ void GrVkCaps::initGrCaps(const GrVkInterface* vkInterface,
     fOversizedStencilSupport = true;
 
     if (extensions.hasExtension(VK_EXT_BLEND_OPERATION_ADVANCED_EXTENSION_NAME, 2) &&
-        this->supportsPhysicalDeviceProperties2()) {
+        this->supportsPhysicalDeviceProperties2() && (false)) {
 
         VkPhysicalDeviceBlendOperationAdvancedPropertiesEXT blendProps;
         blendProps.sType =
@@ -671,6 +671,8 @@ void GrVkCaps::initGrCaps(const GrVkInterface* vkInterface,
             }
         }
     }
+
+    fShaderCaps->fMustGuardDivisionEvenAfterExplicitZeroCheck = true;
 
     if (kARM_VkVendor == properties.vendorID) {
         fShouldCollapseSrcOverToSrcWhenAble = true;
