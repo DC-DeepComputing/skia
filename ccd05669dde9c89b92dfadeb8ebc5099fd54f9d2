@@ -16,6 +16,24 @@
       "message": "Is the plan to add back in all the text options to ContextOptions later?",
       "revId": "ccd05669dde9c89b92dfadeb8ebc5099fd54f9d2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "14430c6f_e5cc6d60",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-06-14T14:27:05Z",
+      "side": 1,
+      "message": "Yes, I had some uncertainty about how I wanted to set them up. I might put them in their own struct, similar to the ShaderCaps.",
+      "parentUuid": "4889c7ba_c18de87a",
+      "revId": "ccd05669dde9c89b92dfadeb8ebc5099fd54f9d2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
