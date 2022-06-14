@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f71af23f_c062440f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-06-14T18:40:19Z",
+      "side": 1,
+      "message": "After this lands, I\u0027ll follow up with a hybrid BoundsManager that switches between BruteForce and Grid and update Device to use that instead of the Naive implementation.",
+      "revId": "efd8908cfbf384d8887841a054ee8342b274ab5c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
