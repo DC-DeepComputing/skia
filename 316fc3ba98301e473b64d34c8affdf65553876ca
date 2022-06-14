@@ -16,6 +16,23 @@
       "message": "This uses the same technique that the GPU blending code already uses (as suggested by the bug reporter).",
       "revId": "316fc3ba98301e473b64d34c8affdf65553876ca",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "46e81963_cbb85d6b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-06-14T18:50:07Z",
+      "side": 1,
+      "message": "Would we get reduced cracking on GPU if we add those checks to `$blend_set_color_saturation` as well? ",
+      "revId": "316fc3ba98301e473b64d34c8affdf65553876ca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
