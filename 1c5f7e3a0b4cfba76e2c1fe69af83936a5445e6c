@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5e891c86_619fb236",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 21
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-06-14T01:50:11Z",
+      "side": 1,
+      "message": "Ah, good catch. That would explain why everything built fine even without modifying that file in the first place. And yes, I don\u0027t see references to graphite in bazel files, so that is - as we say in the biz - a later problem.",
+      "parentUuid": "bb0d2da3_bd101966",
+      "revId": "1c5f7e3a0b4cfba76e2c1fe69af83936a5445e6c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7fad3350_c8d35477",
@@ -48,6 +66,30 @@
       "writtenOn": "2022-06-14T00:57:37Z",
       "side": 1,
       "message": "let\u0027s just call geom.setType(Type::kEmpty) here. It\u0027s maybe a bit pedantic, but geom isn\u0027t strictly destroyed at this point, but it should be emptied, which is the meat of what our destructor does anyways.",
+      "range": {
+        "startLine": 36,
+        "startChar": 65,
+        "endLine": 36,
+        "endChar": 81
+      },
+      "revId": "1c5f7e3a0b4cfba76e2c1fe69af83936a5445e6c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2b02b380_763e12aa",
+        "filename": "src/gpu/graphite/geom/Geometry.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-06-14T01:50:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7fad3350_c8d35477",
       "range": {
         "startLine": 36,
         "startChar": 65,
