@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "54257fe9_fb1fca0b",
+        "filename": "src/gpu/ganesh/text/GrAtlasManager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-06-14T22:57:23Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "e8be0bd5_fab4df38",
+      "range": {
+        "startLine": 75,
+        "startChar": 4,
+        "endLine": 75,
+        "endChar": 73
+      },
+      "revId": "8f51f46dc74175c10342388824171d983f3c13c2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4b7e9c86_50659a8d",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "dc58176f_ce9769dc",
+        "filename": "src/gpu/ganesh/text/GrAtlasManager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 157,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-06-14T22:57:23Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "4b7e9c86_50659a8d",
+      "range": {
+        "startLine": 156,
+        "startChar": 4,
+        "endLine": 157,
+        "endChar": 73
+      },
+      "revId": "8f51f46dc74175c10342388824171d983f3c13c2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "90416854_3934f60e",
@@ -60,6 +108,30 @@
       "writtenOn": "2022-06-14T19:02:03Z",
       "side": 1,
       "message": "2) We call get_packed_glyph_image here. There\u0027s been no access of the cache since step 1.",
+      "range": {
+        "startLine": 201,
+        "startChar": 4,
+        "endLine": 201,
+        "endChar": 26
+      },
+      "revId": "8f51f46dc74175c10342388824171d983f3c13c2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d62854bf_46387ed8",
+        "filename": "src/gpu/ganesh/text/GrAtlasManager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 201,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-06-14T22:57:23Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "90416854_3934f60e",
       "range": {
         "startLine": 201,
         "startChar": 4,
