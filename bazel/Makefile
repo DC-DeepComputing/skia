@@ -10,17 +10,17 @@ gazelle_update_repo:
 
 # Run this target to test all known working Bazel builds
 known_good_builds:
-	bazelisk build //:skia_public --config=clang_linux
-	bazelisk build //:skia_internal --config=clang_linux
-	bazelisk build //experimental/bazel_test/... --config=clang_linux
-	bazelisk run //experimental/bazel_test:bazel_test_exe --config=clang_linux
-	bazelisk build //example:hello_world_gl --config=clang_linux
-	bazelisk build //example:hello_world_vulkan --config=clang_linux
-	bazelisk build //example:hello_world_dawn --config=clang_linux
-	bazelisk build //example:vulkan_basic --config=clang_linux
-	bazelisk build //src/sksl/lex:sksllex --config=clang_linux
-	bazelisk build //tools/skdiff --config=clang_linux
-	bazelisk build //tools/skslc --config=clang_linux
+	bazelisk build //:skia_public
+	bazelisk build //:skia_internal
+	bazelisk build //experimental/bazel_test/...
+	bazelisk run //experimental/bazel_test:bazel_test_exe
+	bazelisk build //example:hello_world_gl
+	bazelisk build //example:hello_world_vulkan
+	bazelisk build //example:hello_world_dawn
+	bazelisk build //example:vulkan_basic
+	bazelisk build //src/sksl/lex:sksllex
+	bazelisk build //tools/skdiff
+	bazelisk build //tools/skslc
 	bazelisk build //modules/canvaskit:canvaskit_wasm --config=ck_release
 
 rbe_known_good_builds:
@@ -53,13 +53,13 @@ iwyu_rbe:
 	 	--keep_going --remote_download_minimal
 
 iwyu:
-	bazelisk build //:skia_public --config=clang_linux --config=enforce_iwyu \
+	bazelisk build //:skia_public --config=enforce_iwyu \
 	 	--keep_going
-	bazelisk build //example:hello_world_gl --config=clang_linux --config=enforce_iwyu \
+	bazelisk build //example:hello_world_gl --config=enforce_iwyu \
 	 	--keep_going
-	bazelisk build //example:hello_world_vulkan --config=clang_linux --config=enforce_iwyu \
+	bazelisk build //example:hello_world_vulkan --config=enforce_iwyu \
 	 	--keep_going
-	bazelisk build //example:hello_world_dawn --config=clang_linux --config=enforce_iwyu \
+	bazelisk build //example:hello_world_dawn --config=enforce_iwyu \
 	 	--keep_going
-	bazelisk build //example:vulkan_basic --config=clang_linux --config=enforce_iwyu \
+	bazelisk build //example:vulkan_basic --config=enforce_iwyu \
 	 	--keep_going
