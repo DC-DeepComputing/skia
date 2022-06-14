@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4889c7ba_c18de87a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-06-14T13:15:07Z",
+      "side": 1,
+      "message": "Is the plan to add back in all the text options to ContextOptions later?",
+      "revId": "ccd05669dde9c89b92dfadeb8ebc5099fd54f9d2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
