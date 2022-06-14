@@ -16,6 +16,46 @@
       "message": "Alright, take 3 :) ",
       "revId": "1c5f7e3a0b4cfba76e2c1fe69af83936a5445e6c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bb0d2da3_bd101966",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 21
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-06-14T00:57:37Z",
+      "side": 1,
+      "message": "I had missed this earlier, but since you\u0027re adding Geometry.h and renaming DrawGeometry to DrawParams.h, this CL will need to modify the GN build.\n\nThis would be modifying `gn/graphite.gni` to include these files in the `skia_graphite_sources` list. It appears I forgot to add DrawGeometry.h originally to this, so there\u0027s no need to remove that listing when adding DrawParams.h... oops.\nSince it is a header only, they tend to be found by the compiler anyways.\n\nEventually we\u0027d also need to modify BUILD.bazel files for changes like this, but it doesn\u0027t look like graphite is wired up with the current bazel build iteration.\n\nLastly, for graphite-only or graphite-predominant changes, we\u0027ve been using the convention of starting the CL description with `[graphite]`, which Gerrit detects as a \"graphite\" hashtag. This makes it easier to keep track of all the aggregate work that has gone into graphite.",
+      "revId": "1c5f7e3a0b4cfba76e2c1fe69af83936a5445e6c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7fad3350_c8d35477",
+        "filename": "src/gpu/graphite/geom/Geometry.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-06-14T00:57:37Z",
+      "side": 1,
+      "message": "let\u0027s just call geom.setType(Type::kEmpty) here. It\u0027s maybe a bit pedantic, but geom isn\u0027t strictly destroyed at this point, but it should be emptied, which is the meat of what our destructor does anyways.",
+      "range": {
+        "startLine": 36,
+        "startChar": 65,
+        "endLine": 36,
+        "endChar": 81
+      },
+      "revId": "1c5f7e3a0b4cfba76e2c1fe69af83936a5445e6c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
