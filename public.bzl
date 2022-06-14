@@ -477,8 +477,6 @@ BASE_SRCS_ALL = [
     "src/core/SkGlyph.h",
     "src/core/SkGlyphBuffer.cpp",
     "src/core/SkGlyphBuffer.h",
-    "src/core/SkGlyphRun.cpp",
-    "src/core/SkGlyphRun.h",
     "src/core/SkGlyphRunPainter.cpp",
     "src/core/SkGlyphRunPainter.h",
     "src/core/SkGpuBlurUtils.cpp",
