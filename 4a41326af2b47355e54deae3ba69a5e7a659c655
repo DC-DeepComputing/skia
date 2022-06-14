@@ -16,6 +16,24 @@
       "message": "Seems unrelated?",
       "revId": "4a41326af2b47355e54deae3ba69a5e7a659c655",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d35d302c_0793990e",
+        "filename": "src/core/SkPipelineData.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-06-14T17:18:49Z",
+      "side": 1,
+      "message": "Nope. This was needed because the code in this file does copies an SkSpan, so the full definition was required.",
+      "parentUuid": "b917bbbe_945ea797",
+      "revId": "4a41326af2b47355e54deae3ba69a5e7a659c655",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
