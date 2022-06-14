@@ -1200,7 +1200,7 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(GrSkSLFP_UniformArray, r, ctxInfo) {
         testCtx->fillWithFP(GrSkSLFP::Make(sk_ref_sp(effect), "test_fp",
                                            /*inputFP=*/nullptr,
                                            GrSkSLFP::OptFlags::kNone,
-                                           "color", SkMakeSpan(colorArray)));
+                                           "color", SkSpan(colorArray)));
         // Read our color back and ensure it matches.
         GrColor actual;
         GrPixmap pixmap(info, &actual, sizeof(GrColor));
