@@ -50,6 +50,23 @@
       "message": "+zmo and geofflang. So currently on Angle d3d11 we disable skia\u0027s dynamic msaa (DMSAA) which gives us very fast path rendering because there is a bug in the multisampled_render_to_texture extension. Now iirc we\u0027re only using DMSAA on OPP-C. With this CL instead of disabling DMSAA it switches the Intel Angle D3D11 backend to use normal MSAA with a resolve texture. This would allow for DMSAA to be enabled again.\n\nHowever, this also switches all of our MSAA on intel angle d3d11 to use normal MSAA. My worry is this could cause both performance and memory regressions on non-DMSAA but MSAA draws since we\u0027re allocating an actually MSAA buffer now and needing to do resolves. But I don\u0027t know how Angle has implemented the multisampled_render_to_texture extension under the hood. If its implemented by essentially using normal MSAA then this change may not have any practical effect and is fine. If it is using special things to make it faster then we could see a regression.\n\nAnyways I just wanted to get both of your opinions from the Chrome and Angle point of view.",
       "revId": "57da581811d59a3b2cd492600b8606752380637a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "36792af5_408868f0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 12064
+      },
+      "writtenOn": "2022-06-15T08:06:49Z",
+      "side": 1,
+      "message": "Friendly ping.\nThanks!",
+      "revId": "57da581811d59a3b2cd492600b8606752380637a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
