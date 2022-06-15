@@ -261,6 +261,30 @@
       },
       "revId": "39434936f3ef13ec8665cb3eecee754710b70420",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "aef1b2ca_f3c2928f",
+        "filename": "resources/sksl/compute/ArrayAdd.compute",
+        "patchSetId": 16
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-06-15T16:22:15Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "51b7427a_085f5cd5",
+      "range": {
+        "startLine": 2,
+        "startChar": 19,
+        "endLine": 2,
+        "endChar": 21
+      },
+      "revId": "39434936f3ef13ec8665cb3eecee754710b70420",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

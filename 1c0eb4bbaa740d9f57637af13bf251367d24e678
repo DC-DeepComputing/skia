@@ -22,6 +22,30 @@
       },
       "revId": "1c0eb4bbaa740d9f57637af13bf251367d24e678",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "96055bc5_3fe477a3",
+        "filename": "resources/sksl/errors/InvalidInOutType.compute",
+        "patchSetId": 21
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-06-15T16:22:15Z",
+      "side": 1,
+      "message": "Tests were completely broken. Fixed.",
+      "parentUuid": "a46659dd_34193125",
+      "range": {
+        "startLine": 8,
+        "startChar": 0,
+        "endLine": 8,
+        "endChar": 68
+      },
+      "revId": "1c0eb4bbaa740d9f57637af13bf251367d24e678",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
