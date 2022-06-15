@@ -4,6 +4,21 @@ load("//toolchain:download_toolchains.bzl", "download_toolchains_for_skia")
 
 download_toolchains_for_skia("clang_linux_amd64", "clang_mac_m1")
 
+# https://bazel.build/docs/toolchains#registering-building-toolchains
+register_toolchains(
+    "//toolchain:clang_linux_toolchain",
+    # TODO(kjlubick,jmbetancourt) Mac
+    # On the RBE instances, this Java and C++ toolchain are available
+    "//bazel/rbe/gce_linux/java:all",
+    "//bazel/rbe/gce_linux/config:cc-toolchain",
+)
+
+# We want to run on this RBE platform
+register_execution_platforms(
+    "//bazel/platform:host_with_hermetic_toolchain",
+    "//bazel/rbe:gce_linux_platform",
+)
+
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
 # See https://github.com/emscripten-core/emsdk/tree/85d27a4a2a60d591613a305b14ae438c2bb3ce11/bazel#setup-instructions
