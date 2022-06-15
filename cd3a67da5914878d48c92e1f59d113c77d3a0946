@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c3f2a6a3_ac5689cc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-06-15T15:12:30Z",
+      "side": 1,
+      "message": "I\u0027m guessing that we still need the SkSpan(), because template deduction guides don\u0027t play nicely with implicit conversion/construction?",
+      "revId": "cd3a67da5914878d48c92e1f59d113c77d3a0946",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a8bff175_c4b8b2af",
+        "filename": "gm/mesh.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-06-15T15:12:30Z",
+      "side": 1,
+      "message": "As a follow-up, these shouldn\u0027t need the explicit sizes, right?",
+      "range": {
+        "startLine": 60,
+        "startChar": 46,
+        "endLine": 60,
+        "endChar": 94
+      },
+      "revId": "cd3a67da5914878d48c92e1f59d113c77d3a0946",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
