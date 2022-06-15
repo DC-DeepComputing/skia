@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "16976c33_ce2e7aef",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-06-15T20:24:19Z",
+      "side": 1,
+      "message": "Hmm. Yeah - I think this is going to protect us well, but I know that this key generation stuff isn\u0027t totally free. Maybe we land this for now, but I\u0027m really interested to have a unit test that actually forces the issue - if we can generate hash collisions and then prove (at least to ourselves) that they\u0027re safe without adding quite so much key data, that might be a better (sufficient) v2?",
+      "revId": "5dfc360644ccb506cf66be777243527c79913b86",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
