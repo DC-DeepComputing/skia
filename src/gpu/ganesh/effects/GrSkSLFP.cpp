@@ -382,11 +382,22 @@ std::unique_ptr<GrFragmentProcessor::ProgramImpl> GrSkSLFP::onMakeProgramImpl() 
 }
 
 void GrSkSLFP::onAddToKey(const GrShaderCaps& caps, skgpu::KeyBuilder* b) const {
-    // In the unlikely event of a hash collision, we also include the uniform size in the key.
-    // That ensures that we will (at worst) use the wrong program, but one that expects the same
-    // amount of uniform data.
-    b->add32(fEffect->hash());
-    b->add32(fUniformSize);
+    // In the unlikely event of a hash collision, we also include uniform and child requirements in
+    // the key. That ensures that we will (at worst) use the wrong program, but one that expects
+    // matching uniforms and children.
+    b->add32(fEffect->hash(), "shader text hash");
+    b->addBits(16, (int)fEffect->uniforms().size(), "shader uniform count");
+    b->addBits(16, (int)fEffect->children().size(), "shader child count");
+
+    for (const SkRuntimeEffect::Uniform& uniform : fEffect->uniforms()) {
+        b->addBits(20, uniform.offset, "uniform offset");
+        b->addBits(16, uniform.count, "uniform array count");
+        b->addBits(4, (int)uniform.type, "uniform type");
+    }
+    for (const SkRuntimeEffect::Child& child : fEffect->children()) {
+        b->addBits(8, child.index, "child index");
+        b->addBits(4, (int)child.type, "child type");
+    }
 
     const Specialized* specialized = this->specialized();
     const uint8_t* uniformData = this->uniformData();
