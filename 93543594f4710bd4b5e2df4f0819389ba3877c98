@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "410fc9df_f26f585d",
+        "filename": "src/sksl/analysis/SkSLFinalizationChecks.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-06-15T18:01:38Z",
+      "side": 1,
+      "message": "Weird...!",
+      "parentUuid": "68d84ec7_947fd6f8",
+      "range": {
+        "startLine": 35,
+        "startChar": 0,
+        "endLine": 35,
+        "endChar": 24
+      },
+      "revId": "93543594f4710bd4b5e2df4f0819389ba3877c98",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f33db3f3_1bd1cbe2",
