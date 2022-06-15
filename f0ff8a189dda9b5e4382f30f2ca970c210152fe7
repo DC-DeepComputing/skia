@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9a03efbc_a7d09c8a",
+        "filename": "src/core/SkCombinationAPI.h",
+        "patchSetId": 22
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-06-15T17:31:35Z",
+      "side": 1,
+      "message": "I second the motion to not have a separate SkPrecompileGradientShader namespace.",
+      "parentUuid": "65534eaf_192b4c9b",
+      "range": {
+        "startLine": 103,
+        "startChar": 6,
+        "endLine": 103,
+        "endChar": 32
+      },
+      "revId": "f0ff8a189dda9b5e4382f30f2ca970c210152fe7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "20642349_e4ee1038",
         "filename": "src/core/SkCombinationAPI.h",
         "patchSetId": 22
@@ -54,6 +78,30 @@
       "writtenOn": "2022-06-15T17:24:26Z",
       "side": 1,
       "message": "yes please, but also this is possibly relevant: https://docs.google.com/document/d/1zNc0M2mJ4xDm41CAn-UoNMbjWzcFMICAN73i6LxikCg/edit?usp\u003dsharing\u0026resourcekey\u003d0-wncmLKiknggmryqediyyBw if we end up reducing or eliminating this API front.",
+      "range": {
+        "startLine": 117,
+        "startChar": 20,
+        "endLine": 117,
+        "endChar": 42
+      },
+      "revId": "f0ff8a189dda9b5e4382f30f2ca970c210152fe7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "87fa82df_062efc3f",
+        "filename": "src/core/SkCombinationAPI.h",
+        "patchSetId": 22
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-06-15T17:31:35Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "20642349_e4ee1038",
       "range": {
         "startLine": 117,
         "startChar": 20,
@@ -77,6 +125,30 @@
       "writtenOn": "2022-06-15T17:24:26Z",
       "side": 1,
       "message": "nit: out of date",
+      "range": {
+        "startLine": 148,
+        "startChar": 10,
+        "endLine": 148,
+        "endChar": 37
+      },
+      "revId": "f0ff8a189dda9b5e4382f30f2ca970c210152fe7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c716fbb0_96f2f1c7",
+        "filename": "src/core/SkCombinationAPI.h",
+        "patchSetId": 22
+      },
+      "lineNbr": 148,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-06-15T17:31:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "eaaa6661_d4dfc3d5",
       "range": {
         "startLine": 148,
         "startChar": 10,
