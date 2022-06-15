@@ -405,6 +405,8 @@ BASE_SRCS_ALL = [
     "src/core/SkColorSpacePriv.h",
     "src/core/SkColorSpaceXformSteps.cpp",
     "src/core/SkColorSpaceXformSteps.h",
+    "src/core/SkCombinationAPI.cpp",
+    "src/core/SkCombinationAPI.h",
     "src/core/SkCombinationBuilder.cpp",
     "src/core/SkCompressedDataUtils.cpp",
     "src/core/SkCompressedDataUtils.h",
