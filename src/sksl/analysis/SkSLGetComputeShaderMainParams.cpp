@@ -18,6 +18,7 @@
 
 #include <algorithm>
 #include <memory>
+#include <tuple>
 
 namespace SkSL {
 
