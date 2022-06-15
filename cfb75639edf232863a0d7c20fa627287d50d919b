@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "37243e46_cdb9ebc1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 28
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-06-15T15:50:33Z",
+      "side": 1,
+      "message": "Nit: So the first line will be the title of commit when it lands. I think you could drop this second part as that level of detail is explained in the message below. (but if you don\u0027t want to change this no worries. we usually don\u0027t really review CL titles 😊)",
+      "range": {
+        "startLine": 7,
+        "startChar": 63,
+        "endLine": 7,
+        "endChar": 113
+      },
+      "revId": "cfb75639edf232863a0d7c20fa627287d50d919b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
