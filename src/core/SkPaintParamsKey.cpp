@@ -182,7 +182,9 @@ SkPaintParamsKey SkPaintParamsKeyBuilder::lockAsKey() {
     fIsValid = true;
     fStack.rewind();
 
-    return SkPaintParamsKey(SkMakeSpan(fData.begin(), fData.count()), this);
+    return SkPaintParamsKey(SkMakeSpan(fData.begin(), fData.count()),
+                            SkMakeSpan(fPointerData.begin(), fPointerData.count()),
+                            this);
 }
 
 void SkPaintParamsKeyBuilder::makeInvalid() {
@@ -191,6 +193,7 @@ void SkPaintParamsKeyBuilder::makeInvalid() {
 
     fStack.rewind();
     fData.rewind();
+    fPointerData.rewind();
     this->beginBlock(SkBuiltInCodeSnippetID::kError);
     this->endBlock();
 
@@ -200,8 +203,10 @@ void SkPaintParamsKeyBuilder::makeInvalid() {
 
 //--------------------------------------------------------------------------------------------------
 SkPaintParamsKey::SkPaintParamsKey(SkSpan<const uint8_t> span,
+                                   SkSpan<const void*> pointerSpan,
                                    SkPaintParamsKeyBuilder* originatingBuilder)
         : fData(span)
+        , fPointerData(pointerSpan)
         , fOriginatingBuilder(originatingBuilder) {
     fOriginatingBuilder->lock();
 }
@@ -218,12 +223,14 @@ SkPaintParamsKey::~SkPaintParamsKey() {
 }
 
 bool SkPaintParamsKey::operator==(const SkPaintParamsKey& that) const {
+    // Pointer data is intentionally ignored here; a cached key will not have pointer data.
     return fData.size() == that.fData.size() &&
            !memcmp(fData.data(), that.fData.data(), fData.size());
 }
 
 SkPaintParamsKey::BlockReader SkPaintParamsKey::reader(const SkShaderCodeDictionary* dict,
                                                        int headerOffset) const {
+    // TODO: block reader needs to provide pointer data
     return BlockReader(dict, fData, headerOffset);
 }
 

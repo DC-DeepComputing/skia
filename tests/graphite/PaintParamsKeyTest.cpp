@@ -120,10 +120,10 @@ std::tuple<SkPaint, int> create_paint(Recorder* recorder,
 //           - maybe via a testing only callback on SkShaderCodeDictionary::findOrCreate
 //   draw w/ the SkPaint and, again, somehow, intercept the created SkPaintParamsKey
 DEF_GRAPHITE_TEST_FOR_CONTEXTS(PaintParamsKeyTest, reporter, context) {
-    auto recorder = context->makeRecorder();
+    std::unique_ptr<Recorder> recorder = context->makeRecorder();
     SkKeyContext keyContext(recorder.get(), {});
-    auto dict = keyContext.dict();
-    auto tCache = recorder->priv().textureDataCache();
+    SkShaderCodeDictionary* dict = keyContext.dict();
+    TextureDataCache* tCache = recorder->priv().textureDataCache();
 
     SkPaintParamsKeyBuilder builder(dict, SkBackend::kGraphite);
     SkPipelineDataGatherer gatherer(Layout::kMetal);
