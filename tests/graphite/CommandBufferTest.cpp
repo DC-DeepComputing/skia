@@ -39,7 +39,7 @@
 
 #if GRAPHITE_TEST_UTILS
 // set to 1 if you want to do GPU capture of the commandBuffer
-#define CAPTURE_COMMANDBUFFER 0
+#define CAPTURE_COMMANDBUFFER 1
 #endif
 
 using namespace skgpu::graphite;
