@@ -15,6 +15,8 @@
 #include <optional>
 #include <vector>
 
+class SkRuntimeEffect;
+
 //--------------------------------------------------------------------------------------------------
 class SkPrecompileShader : public SkRefCnt {
 public:
@@ -144,5 +146,17 @@ public:
 private:
     SkPrecompileImageFilters() = delete;
 };
+
+// TODO: move these to be on SkRuntimeEffect to parallel makeShader, makeColorFilter and
+// makeBlender
+sk_sp<SkPrecompileShader> MakeShader(sk_sp<SkRuntimeEffect> effect,
+                                     SkSpan<sk_sp<SkPrecompileShader>> children);
+
+sk_sp<SkPrecompileColorFilter> MakePrecompileColorFilter(
+        sk_sp<SkRuntimeEffect> effect,
+        SkSpan<sk_sp<SkPrecompileColorFilter>> children = {});
+
+sk_sp<SkPrecompileBlender> MakePrecompileBlender(sk_sp<SkRuntimeEffect> effect,
+                                                 SkSpan<sk_sp<SkPrecompileBlender>> children);
 
 #endif // SkCombinationAPI_DEFINED
