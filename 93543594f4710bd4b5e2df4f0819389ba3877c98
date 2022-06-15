@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0175b278_6e5bb726",
+        "filename": "src/sksl/analysis/SkSLFinalizationChecks.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-06-15T17:48:07Z",
+      "side": 1,
+      "message": "Is it used?",
+      "range": {
+        "startLine": 35,
+        "startChar": 0,
+        "endLine": 35,
+        "endChar": 24
+      },
+      "revId": "93543594f4710bd4b5e2df4f0819389ba3877c98",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f33db3f3_1bd1cbe2",
+        "filename": "src/sksl/analysis/SkSLFinalizationChecks.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 178,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-06-15T17:48:07Z",
+      "side": 1,
+      "message": "Please use SkTHashSet, it\u0027s just free performance vs the standard library",
+      "range": {
+        "startLine": 178,
+        "startChar": 4,
+        "endLine": 178,
+        "endChar": 22
+      },
+      "revId": "93543594f4710bd4b5e2df4f0819389ba3877c98",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ebc8261d_ee04b09b",
+        "filename": "src/sksl/analysis/SkSLGetComputeShaderMainParams.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-06-15T17:48:07Z",
+      "side": 1,
+      "message": "consider `std::tie(setA, bindingA) \u003c std::tie(setB, bindingB)`",
+      "range": {
+        "startLine": 31,
+        "startChar": 0,
+        "endLine": 37,
+        "endChar": 31
+      },
+      "revId": "93543594f4710bd4b5e2df4f0819389ba3877c98",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
