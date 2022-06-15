@@ -22,6 +22,30 @@
       },
       "revId": "5eeab2d5d3659d813ec99658d1be7620034c375f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c08215c3_ec7722a3",
+        "filename": "tests/graphite/KeyTest.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 173,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-06-15T20:03:10Z",
+      "side": 1,
+      "message": "Using `create_key_with_data` would create a key where `addPointer` was never called, and the pointer array would be empty. However, this fails, because we assert that it is called the exact number of times that we expect:\n\n  SkASSERT(fStack.back().fNumActualPointers \u003d\u003d fStack.back().fNumExpectedPointers);\n\nThe code as written here creates a key where `addPointer` is called and a null pointer is added into the pointer array.",
+      "parentUuid": "f1b62b9d_7ae714d0",
+      "range": {
+        "startLine": 173,
+        "startChar": 28,
+        "endLine": 173,
+        "endChar": 47
+      },
+      "revId": "5eeab2d5d3659d813ec99658d1be7620034c375f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
