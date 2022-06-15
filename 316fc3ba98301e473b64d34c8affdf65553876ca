@@ -71,6 +71,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "63eaeb2a_60cea63a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-06-15T18:42:51Z",
+      "side": 1,
+      "message": "I did find other broken GMs on these GPUs (coloremoji_blend, and one of the imagefilter xfermode ones). All of my attempts to fix it did nothing. I filed https://bugs.chromium.org/p/skia/issues/detail?id\u003d13434",
+      "parentUuid": "7603d816_67cc3a6c",
+      "revId": "316fc3ba98301e473b64d34c8affdf65553876ca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ae10f852_6713e22e",
