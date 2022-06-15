@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e25fb77d_3fc71792",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-06-15T15:02:57Z",
+      "side": 1,
+      "message": "I think this is a new PB for commit message length (150 lines)\n\nJorge, we\u0027ll want to land your Mac toolchain stuff first and then update this CL to make sure that toolchain is properly registered and compatible.\n\nErik, I\u0027d like your thoughts on the use of platforms here and how they will scale to include the Skolo. WDYT about my configs in .bazelrc like --for_linux_x64?",
+      "revId": "c14fe046b4ec066b4b317dc5d422cdf408afce2b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
