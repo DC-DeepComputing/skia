@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e9a21dd6_44a84497",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 22
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-06-15T17:24:26Z",
+      "side": 1,
+      "message": "overall this looks in line with my expectations from the design meeting, just a few thoughts",
+      "revId": "f0ff8a189dda9b5e4382f30f2ca970c210152fe7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "65534eaf_192b4c9b",
+        "filename": "src/core/SkCombinationAPI.h",
+        "patchSetId": 22
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-06-15T17:24:26Z",
+      "side": 1,
+      "message": "I\u0027ve long wanted to get rid of SkGradientShader (which existed before SkShaders factories were added), and move the gradient factories into SkShaders, and have `SkShaders::LinearGradient` etc.\n\nIf others agree with that direction, maybe we keep it as just SkPrecompileShaders for now?",
+      "range": {
+        "startLine": 103,
+        "startChar": 6,
+        "endLine": 103,
+        "endChar": 32
+      },
+      "revId": "f0ff8a189dda9b5e4382f30f2ca970c210152fe7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "20642349_e4ee1038",
+        "filename": "src/core/SkCombinationAPI.h",
+        "patchSetId": 22
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-06-15T17:24:26Z",
+      "side": 1,
+      "message": "yes please, but also this is possibly relevant: https://docs.google.com/document/d/1zNc0M2mJ4xDm41CAn-UoNMbjWzcFMICAN73i6LxikCg/edit?usp\u003dsharing\u0026resourcekey\u003d0-wncmLKiknggmryqediyyBw if we end up reducing or eliminating this API front.",
+      "range": {
+        "startLine": 117,
+        "startChar": 20,
+        "endLine": 117,
+        "endChar": 42
+      },
+      "revId": "f0ff8a189dda9b5e4382f30f2ca970c210152fe7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eaaa6661_d4dfc3d5",
+        "filename": "src/core/SkCombinationAPI.h",
+        "patchSetId": 22
+      },
+      "lineNbr": 148,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-06-15T17:24:26Z",
+      "side": 1,
+      "message": "nit: out of date",
+      "range": {
+        "startLine": 148,
+        "startChar": 10,
+        "endLine": 148,
+        "endChar": 37
+      },
+      "revId": "f0ff8a189dda9b5e4382f30f2ca970c210152fe7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
