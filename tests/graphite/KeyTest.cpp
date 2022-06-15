@@ -20,9 +20,21 @@ SkPaintParamsKey create_key_with_data(SkPaintParamsKeyBuilder* builder,
     SkDEBUGCODE(builder->checkReset());
 
     builder->beginBlock(snippetID);
-
     builder->addBytes(span.size(), span.data());
+    builder->endBlock();
 
+    return builder->lockAsKey();
+}
+
+SkPaintParamsKey create_key_with_ptr(SkPaintParamsKeyBuilder* builder,
+                                     int snippetID,
+                                     SkSpan<const uint8_t> span,
+                                     void* pointerData) {
+    SkDEBUGCODE(builder->checkReset());
+
+    builder->beginBlock(snippetID);
+    builder->addBytes(span.size(), span.data());
+    builder->addPointer(pointerData);
     builder->endBlock();
 
     return builder->lockAsKey();
@@ -135,6 +147,36 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(KeyEqualityChecksData, reporter, context) {
     REPORTER_ASSERT(reporter, keyA != keyC);
     REPORTER_ASSERT(reporter, !(keyA == keyC));
     REPORTER_ASSERT(reporter, !(keyA != keyB));
+}
+
+DEF_GRAPHITE_TEST_FOR_CONTEXTS(KeyEqualityDoesNotCheckPointers, reporter, context) {
+
+    SkShaderCodeDictionary* dict = context->priv().shaderCodeDictionary();
+    static const int kBlockDataSize = 4;
+    static constexpr SkPaintParamsKey::DataPayloadField kDataFields[] = {
+            {"data", SkPaintParamsKey::DataPayloadType::kByte, kBlockDataSize},
+    };
+
+    int userSnippetID = dict->addUserDefinedSnippet("key", SkMakeSpan(kDataFields),
+                                                    /*numPointers=*/1);
+
+    static constexpr uint8_t kData[kBlockDataSize] = {1, 2, 3, 4};
+    int arbitraryData = 0;
+
+    SkPaintParamsKeyBuilder builderA(dict, SkBackend::kGraphite);
+    SkPaintParamsKeyBuilder builderB(dict, SkBackend::kGraphite);
+    SkPaintParamsKeyBuilder builderC(dict, SkBackend::kGraphite);
+    SkPaintParamsKey keyA = create_key_with_ptr(&builderA, userSnippetID, SkMakeSpan(kData),
+                                                &arbitraryData);
+    SkPaintParamsKey keyB = create_key_with_ptr(&builderB, userSnippetID, SkMakeSpan(kData),
+                                                nullptr);
+    SkPaintParamsKey keyC = create_key_with_data(&builderC, userSnippetID, SkMakeSpan(kData));
+
+    // Verify that keyA, keyB, and keyC all match, even though the pointer data does not.
+    REPORTER_ASSERT(reporter, keyA == keyB);
+    REPORTER_ASSERT(reporter, keyB == keyC);
+    REPORTER_ASSERT(reporter, !(keyA != keyB));
+    REPORTER_ASSERT(reporter, !(keyB != keyC));
 }
 
 DEF_GRAPHITE_TEST_FOR_CONTEXTS(KeyBlockReaderWorks, reporter, context) {
