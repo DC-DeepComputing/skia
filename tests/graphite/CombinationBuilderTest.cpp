@@ -101,6 +101,25 @@ void big_test_new(Context* context, skiatest::Reporter* reporter) {
 //    context->precompile({paintOptions});
 }
 
+void runtime_effects(Context* context, skiatest::Reporter* reporter) {
+
+    // paintOptions
+    //  |- rtShader_0
+    //  |       0: rtShader_1
+    //  |       1: rtShader_2
+    //  |
+    //  |- rtColorFilter_0
+    //  |       0: rtColorFilter_1
+    //  |       1: rtColorFilter_2
+    //  |
+    //  |- rtBlender_0
+    //  |       0: rtBlender_1
+    //  |       1: rtBlender_2
+
+
+
+}
+
 void big_test(Context* context, skiatest::Reporter* reporter) {
     SkCombinationBuilder builder(context);
 
