@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "23d3f8fd_803eeffa",
+        "filename": "modules/canvaskit/npm_build/types/index.d.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-06-15T12:26:25Z",
+      "side": 1,
+      "message": "I would prefer that CanvasKitInitOptions always get passed in; I doubt the default behavior of locateFile is what most users expect.",
+      "range": {
+        "startLine": 2,
+        "startChar": 42,
+        "endLine": 2,
+        "endChar": 43
+      },
+      "revId": "563559215c7f6ca37a3c807f0ffc0a99f06db34c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b20d2729_c99087d7",
+        "filename": "modules/canvaskit/npm_build/types/index.d.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 850,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-06-15T12:26:25Z",
+      "side": 1,
+      "message": "This is more accurately described as Rect[].",
+      "range": {
+        "startLine": 850,
+        "startChar": 31,
+        "endLine": 850,
+        "endChar": 54
+      },
+      "revId": "563559215c7f6ca37a3c807f0ffc0a99f06db34c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "173300d6_03cce325",
+        "filename": "modules/canvaskit/npm_build/types/index.d.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 860,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-06-15T12:26:25Z",
+      "side": 1,
+      "message": "This is more accurately described as Rect[].",
+      "range": {
+        "startLine": 860,
+        "startChar": 46,
+        "endLine": 860,
+        "endChar": 69
+      },
+      "revId": "563559215c7f6ca37a3c807f0ffc0a99f06db34c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ea6ab79f_539726d3",
+        "filename": "modules/canvaskit/npm_build/types/index.d.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 3452,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-06-15T12:26:25Z",
+      "side": 1,
+      "message": "We do not want ColorSpace to be optional for this API.",
+      "range": {
+        "startLine": 3452,
+        "startChar": 38,
+        "endLine": 3452,
+        "endChar": 39
+      },
+      "revId": "563559215c7f6ca37a3c807f0ffc0a99f06db34c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

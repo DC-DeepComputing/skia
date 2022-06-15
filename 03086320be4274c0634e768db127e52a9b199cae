@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3e16e63d_fe78db85",
+        "filename": "modules/canvaskit/npm_build/types/index.d.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 2564,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-06-15T12:26:25Z",
+      "side": 0,
+      "message": "As implemented, this should accept a MallocObj. Did you find otherwise? If so, *that* is the bug, not the types. Same for makeShaderWithChildren",
+      "range": {
+        "startLine": 2564,
+        "startChar": 51,
+        "endLine": 2564,
+        "endChar": 60
+      },
+      "revId": "03086320be4274c0634e768db127e52a9b199cae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
