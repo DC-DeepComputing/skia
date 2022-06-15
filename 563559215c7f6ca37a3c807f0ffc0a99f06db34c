@@ -26,6 +26,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "89631c2b_5e558ae4",
+        "filename": "modules/canvaskit/npm_build/types/index.d.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 369,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-06-15T12:30:05Z",
+      "side": 1,
+      "message": "Making these array types is not accurate. We want to only accept a *flat* Float32Array of float colors or a flat array of colors represented as integers.\n\nYes, as the code is currently implemented, there is a fallback for an array of Float32Arrays, but that is deprecated, not an API we want to advertise or commit to supporting.",
+      "range": {
+        "startLine": 369,
+        "startChar": 26,
+        "endLine": 369,
+        "endChar": 58
+      },
+      "revId": "563559215c7f6ca37a3c807f0ffc0a99f06db34c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b20d2729_c99087d7",
         "filename": "modules/canvaskit/npm_build/types/index.d.ts",
         "patchSetId": 1
