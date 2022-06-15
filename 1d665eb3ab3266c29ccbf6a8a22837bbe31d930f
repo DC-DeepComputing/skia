@@ -155,6 +155,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6942304e_baefbdb1",
+        "filename": "modules/canvaskit/BUILD.gn",
+        "patchSetId": 2
+      },
+      "lineNbr": 197,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-06-15T12:02:43Z",
+      "side": 1,
+      "message": "The primary concern is codesize - adding more GPU backends to a single build means a larger .wasm blob, which is one of the largest complaints with CK.",
+      "parentUuid": "40ea5c2e_8fda5d63",
+      "range": {
+        "startLine": 197,
+        "startChar": 4,
+        "endLine": 197,
+        "endChar": 8
+      },
+      "revId": "1d665eb3ab3266c29ccbf6a8a22837bbe31d930f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8e9883e2_d80ea253",
         "filename": "modules/canvaskit/BUILD.gn",
         "patchSetId": 2
