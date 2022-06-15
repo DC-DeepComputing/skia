@@ -2103,7 +2103,12 @@ func (b *jobBuilder) bazelBuild() {
 			b.cipd(b.MustGetCipdPackageFromAsset("bazel_build_task_driver"))
 
 			// We want all Linux Bazel Builds to use RBE
-			cmd = append(cmd, "--bazel_arg=--config=linux_rbe")
+			if shorthand == "modules_canvaskit_canvaskit_wasm" {
+				// Work around https://github.com/emscripten-core/emsdk/issues/984
+				cmd = append(cmd, "--bazel_arg=--config=linux_rbe")
+			} else {
+				cmd = append(cmd, "--bazel_arg=--config=for_linux_x64_with_rbe")
+			}
 			cmd = append(cmd, "--bazel_arg=--jobs=100")
 			cmd = append(cmd, "--bazel_arg=--remote_download_minimal")
 		} else {
