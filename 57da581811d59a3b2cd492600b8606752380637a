@@ -67,6 +67,24 @@
       "message": "Friendly ping.\nThanks!",
       "revId": "57da581811d59a3b2cd492600b8606752380637a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ed7000f5_11c027a9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 7712
+      },
+      "writtenOn": "2022-06-15T14:34:08Z",
+      "side": 1,
+      "message": "ANGLE\u0027s D3D11 backend implements multisampled_render_to_texture by allocating a full MSAA buffer and doing the resolve and discard when a buffer read is needed. I suspect that not using multisampled_render_to_texture and doing it yourself will always be better using ANGLE D3D11 because you get explicit control over when the resolve happens.\n\nUsing multisampled_render_to_texture is likely only going to be a performance improvement on tilers. We support it in D3D11 for compatibility between desktop and mobile on WebGL.",
+      "parentUuid": "db34b954_84c0ffc5",
+      "revId": "57da581811d59a3b2cd492600b8606752380637a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
