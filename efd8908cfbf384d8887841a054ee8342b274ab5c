@@ -16,6 +16,75 @@
       "message": "After this lands, I\u0027ll follow up with a hybrid BoundsManager that switches between BruteForce and Grid and update Device to use that instead of the Naive implementation.",
       "revId": "efd8908cfbf384d8887841a054ee8342b274ab5c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5f503435_735a4c6c",
+        "filename": "src/gpu/graphite/geom/BoundsManager.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-06-15T21:06:58Z",
+      "side": 1,
+      "message": "Not a big deal, but it\u0027s a little ambiguous whether this is the count of cells in each dimension, or the size of each cell. It\u0027s clearer in MakeRes, below.",
+      "range": {
+        "startLine": 115,
+        "startChar": 66,
+        "endLine": 115,
+        "endChar": 74
+      },
+      "revId": "efd8908cfbf384d8887841a054ee8342b274ab5c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "741653d1_11fca8ba",
+        "filename": "src/gpu/graphite/geom/BoundsManager.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-06-15T21:06:58Z",
+      "side": 1,
+      "message": "Assert that deviceSize is a multiple of gridSize?",
+      "range": {
+        "startLine": 116,
+        "startChar": 17,
+        "endLine": 116,
+        "endChar": 27
+      },
+      "revId": "efd8908cfbf384d8887841a054ee8342b274ab5c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "101f4881_4f95b04f",
+        "filename": "src/gpu/graphite/geom/BoundsManager.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-06-15T21:06:58Z",
+      "side": 1,
+      "message": "Why not just allocate an array member? Overriding delete() to save an additional allocation doesn\u0027t seem necessary since I\u0027d expect we\u0027d only have one BoundsManager active at a time.",
+      "range": {
+        "startLine": 119,
+        "startChar": 8,
+        "endLine": 123,
+        "endChar": 72
+      },
+      "revId": "efd8908cfbf384d8887841a054ee8342b274ab5c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
