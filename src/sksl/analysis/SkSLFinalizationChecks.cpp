@@ -15,6 +15,7 @@
 #include "src/sksl/SkSLAnalysis.h"
 #include "src/sksl/SkSLBuiltinTypes.h"
 #include "src/sksl/SkSLContext.h"
+#include "src/sksl/SkSLProgramSettings.h"
 #include "src/sksl/analysis/SkSLProgramVisitor.h"
 #include "src/sksl/ir/SkSLExpression.h"
 #include "src/sksl/ir/SkSLFunctionCall.h"
@@ -42,6 +43,7 @@ public:
         switch (pe.kind()) {
             case ProgramElement::Kind::kGlobalVar: {
                 this->checkGlobalVariableSizeLimit(pe.as<GlobalVarDeclaration>());
+                this->checkBindUniqueness(pe.as<GlobalVarDeclaration>());
                 break;
             }
             case ProgramElement::Kind::kFunction: {
@@ -55,6 +57,9 @@ public:
     }
 
     void checkGlobalVariableSizeLimit(const GlobalVarDeclaration& globalDecl) {
+        if (ProgramConfig::IsCompute(fContext.fConfig->fKind)) {
+            return;
+        }
         const VarDeclaration& decl = globalDecl.declaration()->as<VarDeclaration>();
 
         size_t prevSlotsUsed = fGlobalSlotsUsed;
@@ -65,6 +70,28 @@ public:
             fContext.fErrors->error(decl.fPosition,
                                     "global variable '" + std::string(decl.var().name()) +
                                     "' exceeds the size limit");
+        }
+    }
+
+    void checkBindUniqueness(const GlobalVarDeclaration& globalDecl) {
+        const Variable& var = globalDecl.declaration()->as<VarDeclaration>().var();
+        int32_t set = var.modifiers().fLayout.fSet;
+        int32_t binding = var.modifiers().fLayout.fBinding;
+        if (binding != -1) {
+            uint64_t key = ((uint64_t)set << 32) + binding;
+            if (fBindings.find(key) == fBindings.end()) {
+                fBindings.insert(key);
+            } else {
+                if (set != -1) {
+                    fContext.fErrors->error(globalDecl.fPosition,
+                            "layout(set=" + std::to_string(set) + ", binding=" +
+                            std::to_string(binding) + ") has already been defined");
+                } else {
+                    fContext.fErrors->error(globalDecl.fPosition,
+                            "layout(binding=" + std::to_string(binding) +
+                            ") has already been defined");
+                }
+            }
         }
     }
 
@@ -143,6 +170,8 @@ private:
     size_t fGlobalSlotsUsed = 0;
     const Context& fContext;
     const ProgramUsage& fUsage;
+    // we pack the set/binding pair into a single 64 bit int
+    std::unordered_set<uint64_t> fBindings;
 };
 
 }  // namespace
