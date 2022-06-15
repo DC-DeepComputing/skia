@@ -647,7 +647,8 @@ static constexpr int kNoPointers = 0;
 // TODO: this version needs to be removed
 int SkShaderCodeDictionary::addUserDefinedSnippet(
         const char* name,
-        SkSpan<const DataPayloadField> dataPayloadExpectations) {
+        SkSpan<const DataPayloadField> dataPayloadExpectations,
+        int numPointers) {
 
     std::unique_ptr<SkShaderSnippet> entry(new SkShaderSnippet("UserDefined",
                                                                {}, // no uniforms
@@ -656,7 +657,7 @@ int SkShaderCodeDictionary::addUserDefinedSnippet(
                                                                name,
                                                                GenerateDefaultGlueCode,
                                                                kNoChildren,
-                                                               kNoPointers,
+                                                               numPointers,
                                                                dataPayloadExpectations));
 
     // TODO: the memory for user-defined entries could go in the dictionary's arena but that
