@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f1b62b9d_7ae714d0",
+        "filename": "tests/graphite/KeyTest.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 173,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-06-15T19:45:20Z",
+      "side": 1,
+      "message": "We can\u0027t use create_key_with_data ?",
+      "range": {
+        "startLine": 173,
+        "startChar": 28,
+        "endLine": 173,
+        "endChar": 47
+      },
+      "revId": "5eeab2d5d3659d813ec99658d1be7620034c375f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
