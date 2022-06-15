@@ -1,0 +1,153 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3dd000d4_52f7f3cc",
+        "filename": "src/core/SkPaintParamsKey.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-06-15T16:52:27Z",
+      "side": 1,
+      "message": "Shouldn\u0027t this be \"\u003d\u003d\" ?",
+      "range": {
+        "startLine": 100,
+        "startChar": 46,
+        "endLine": 100,
+        "endChar": 48
+      },
+      "revId": "60de24e462246fce42dc4a89f39c359f9917af4a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "052bc126_c9c560fa",
+        "filename": "src/core/SkPaintParamsKey.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 154,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-06-15T16:52:27Z",
+      "side": 1,
+      "message": "\u0027fData\u0027 memory",
+      "range": {
+        "startLine": 154,
+        "startChar": 75,
+        "endLine": 154,
+        "endChar": 81
+      },
+      "revId": "60de24e462246fce42dc4a89f39c359f9917af4a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3aaad13e_0d76db7f",
+        "filename": "src/core/SkPaintParamsKey.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-06-15T16:52:27Z",
+      "side": 1,
+      "message": "\u0027fData\u0027 memory",
+      "range": {
+        "startLine": 156,
+        "startChar": 53,
+        "endLine": 156,
+        "endChar": 59
+      },
+      "revId": "60de24e462246fce42dc4a89f39c359f9917af4a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6a76b911_b4814354",
+        "filename": "src/core/SkPaintParamsKey.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 157,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-06-15T16:52:27Z",
+      "side": 1,
+      "message": "// The \u0027fPointerData\u0027 memory is always managed external to this class.\n\n?",
+      "revId": "60de24e462246fce42dc4a89f39c359f9917af4a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a3313097_9db98d79",
+        "filename": "tests/graphite/KeyTest.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-06-15T16:52:27Z",
+      "side": 1,
+      "message": "dataPayload ? blockData ?",
+      "range": {
+        "startLine": 19,
+        "startChar": 60,
+        "endLine": 19,
+        "endChar": 64
+      },
+      "revId": "60de24e462246fce42dc4a89f39c359f9917af4a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0701fe2b_50d465e8",
+        "filename": "tests/graphite/KeyTest.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-06-15T16:52:27Z",
+      "side": 1,
+      "message": "dataPayload ?",
+      "range": {
+        "startLine": 31,
+        "startChar": 59,
+        "endLine": 31,
+        "endChar": 62
+      },
+      "revId": "60de24e462246fce42dc4a89f39c359f9917af4a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f18f1c04_3aa7a678",
+        "filename": "tests/graphite/KeyTest.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 173,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-06-15T16:52:27Z",
+      "side": 1,
+      "message": "I guess in this instance I would use the rawData ctor to create a key w/o any pointers.",
+      "revId": "60de24e462246fce42dc4a89f39c359f9917af4a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
