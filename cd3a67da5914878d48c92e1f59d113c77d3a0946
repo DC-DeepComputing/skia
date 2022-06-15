@@ -39,6 +39,30 @@
       },
       "revId": "cd3a67da5914878d48c92e1f59d113c77d3a0946",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9762f197_6869aada",
+        "filename": "gm/mesh.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-06-15T15:14:19Z",
+      "side": 1,
+      "message": "Right. I only changed a few to the no SkSpan form to see if they work before resulting to using global search and replace.",
+      "parentUuid": "a8bff175_c4b8b2af",
+      "range": {
+        "startLine": 60,
+        "startChar": 46,
+        "endLine": 60,
+        "endChar": 94
+      },
+      "revId": "cd3a67da5914878d48c92e1f59d113c77d3a0946",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
