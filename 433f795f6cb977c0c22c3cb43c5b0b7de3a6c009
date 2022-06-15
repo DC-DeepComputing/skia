@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8de56f2e_a845d22c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 45
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-06-15T17:17:03Z",
+      "side": 1,
+      "message": "I am fine landing this as it consolidates the key/combo building API front (removing CreateKey static function), but I am also fine waiting to see how it shakes out with the newer API approach.",
+      "revId": "433f795f6cb977c0c22c3cb43c5b0b7de3a6c009",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
