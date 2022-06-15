@@ -179,6 +179,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7fc18dc6_25cb4d36",
+        "filename": "modules/canvaskit/BUILD.gn",
+        "patchSetId": 2
+      },
+      "lineNbr": 197,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-06-15T13:27:41Z",
+      "side": 1,
+      "message": "Right. I think that it should probably be the default that we only build one or the other, but that should be a decision made when building. This particular chunk of code seems to make it a *requirement* that only one is present?",
+      "parentUuid": "6942304e_baefbdb1",
+      "range": {
+        "startLine": 197,
+        "startChar": 4,
+        "endLine": 197,
+        "endChar": 8
+      },
+      "revId": "1d665eb3ab3266c29ccbf6a8a22837bbe31d930f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8e9883e2_d80ea253",
         "filename": "modules/canvaskit/BUILD.gn",
         "patchSetId": 2
