@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "68d84ec7_947fd6f8",
+        "filename": "src/sksl/analysis/SkSLFinalizationChecks.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-06-15T18:00:29Z",
+      "side": 1,
+      "message": "IWYU insisted I include it, claiming the set iterator\u0027s \u003d\u003d operator came from here. Moot point if I\u0027m using SkTHashSet, though.",
+      "parentUuid": "0175b278_6e5bb726",
+      "range": {
+        "startLine": 35,
+        "startChar": 0,
+        "endLine": 35,
+        "endChar": 24
+      },
+      "revId": "93543594f4710bd4b5e2df4f0819389ba3877c98",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f33db3f3_1bd1cbe2",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c15c7526_5ffdefad",
+        "filename": "src/sksl/analysis/SkSLFinalizationChecks.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 178,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-06-15T18:00:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f33db3f3_1bd1cbe2",
+      "range": {
+        "startLine": 178,
+        "startChar": 4,
+        "endLine": 178,
+        "endChar": 22
+      },
+      "revId": "93543594f4710bd4b5e2df4f0819389ba3877c98",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ebc8261d_ee04b09b",
@@ -60,6 +108,30 @@
       "writtenOn": "2022-06-15T17:48:07Z",
       "side": 1,
       "message": "consider `std::tie(setA, bindingA) \u003c std::tie(setB, bindingB)`",
+      "range": {
+        "startLine": 31,
+        "startChar": 0,
+        "endLine": 37,
+        "endChar": 31
+      },
+      "revId": "93543594f4710bd4b5e2df4f0819389ba3877c98",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1da26d68_c10f8fac",
+        "filename": "src/sksl/analysis/SkSLGetComputeShaderMainParams.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-06-15T18:00:29Z",
+      "side": 1,
+      "message": "Nice, done.",
+      "parentUuid": "ebc8261d_ee04b09b",
       "range": {
         "startLine": 31,
         "startChar": 0,
