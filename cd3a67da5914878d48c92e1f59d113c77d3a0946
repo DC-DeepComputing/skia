@@ -35,6 +35,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d490c2cf_1d23dac6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-06-15T17:26:19Z",
+      "side": 1,
+      "message": "Thanks for the quick review!",
+      "revId": "cd3a67da5914878d48c92e1f59d113c77d3a0946",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a8bff175_c4b8b2af",
@@ -105,6 +122,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "22ddaf2d_4b0a7e61",
+        "filename": "modules/svg/include/SkSVGTypes.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 207,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-06-15T17:26:19Z",
+      "side": 1,
+      "message": "Since this CL is so large it rots quickly. I\u0027m going to check it in, and have a follow up CL.",
+      "parentUuid": "ea2b31bb_4b326f1b",
+      "range": {
+        "startLine": 207,
+        "startChar": 84,
+        "endLine": 207,
+        "endChar": 96
+      },
+      "revId": "cd3a67da5914878d48c92e1f59d113c77d3a0946",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "04028d41_12074b97",
@@ -118,6 +159,30 @@
       "writtenOn": "2022-06-15T17:11:07Z",
       "side": 1,
       "message": "nit: either the space to the left should be kept (to align this with the line above) of this extra space should be removed (since it existed to align with the line above, but no longer does).",
+      "range": {
+        "startLine": 210,
+        "startChar": 63,
+        "endLine": 210,
+        "endChar": 69
+      },
+      "revId": "cd3a67da5914878d48c92e1f59d113c77d3a0946",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "342dbcbf_0ba4b61b",
+        "filename": "modules/svg/include/SkSVGTypes.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 210,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-06-15T17:26:19Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "04028d41_12074b97",
       "range": {
         "startLine": 210,
         "startChar": 63,
