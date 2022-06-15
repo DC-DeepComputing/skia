@@ -16,5 +16,4 @@ platform(
         os_family = "Linux",
         pool = "gce_linux",
     ),
-    parents = ["@local_config_platform//:host"],
 )
