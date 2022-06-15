@@ -18,6 +18,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "68a27c50_b68f65dd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-06-15T17:11:07Z",
+      "side": 1,
+      "message": "Aside from the need to `s/SkSpan\\(([^,]+), SK_ARRAY_COUNT(([^)]+)\\)/SkSpan(\\1)/g` and the below nits, this seems fine.",
+      "revId": "cd3a67da5914878d48c92e1f59d113c77d3a0946",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a8bff175_c4b8b2af",
@@ -60,6 +77,52 @@
         "startChar": 46,
         "endLine": 60,
         "endChar": 94
+      },
+      "revId": "cd3a67da5914878d48c92e1f59d113c77d3a0946",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ea2b31bb_4b326f1b",
+        "filename": "modules/svg/include/SkSVGTypes.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 207,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-06-15T17:11:07Z",
+      "side": 1,
+      "message": "Also, not sure why this isn\u0027t just `()` since that\u0027s more obvious? Who wrote this code!? (Answer: I did.)",
+      "range": {
+        "startLine": 207,
+        "startChar": 84,
+        "endLine": 207,
+        "endChar": 96
+      },
+      "revId": "cd3a67da5914878d48c92e1f59d113c77d3a0946",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "04028d41_12074b97",
+        "filename": "modules/svg/include/SkSVGTypes.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 210,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-06-15T17:11:07Z",
+      "side": 1,
+      "message": "nit: either the space to the left should be kept (to align this with the line above) of this extra space should be removed (since it existed to align with the line above, but no longer does).",
+      "range": {
+        "startLine": 210,
+        "startChar": 63,
+        "endLine": 210,
+        "endChar": 69
       },
       "revId": "cd3a67da5914878d48c92e1f59d113c77d3a0946",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
