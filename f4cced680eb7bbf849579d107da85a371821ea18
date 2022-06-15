@@ -16,6 +16,24 @@
       "message": "I think you can clean up the commit message a bit.\n\nWhen linking to an issue, use the b/234001590 notation so we know which bug tracker it is in. (as opposed to skbug.com/... or\ncrbug.com/...)",
       "revId": "f4cced680eb7bbf849579d107da85a371821ea18",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "303c6f06_e757a64c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-06-15T16:55:49Z",
+      "side": 1,
+      "message": "Let me know what you think of the change now. Thanks for the feedback :D",
+      "parentUuid": "0e897a21_f38b6969",
+      "revId": "f4cced680eb7bbf849579d107da85a371821ea18",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
