@@ -203,6 +203,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ddfa30c7_6865c017",
+        "filename": "modules/canvaskit/BUILD.gn",
+        "patchSetId": 2
+      },
+      "lineNbr": 197,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-06-16T22:38:16Z",
+      "side": 1,
+      "message": "Kevin and I had a discussion about this and decided that while it definitely makes sense to allow this in the future, the current design of how the CanvasKit module is loaded and structured makes it difficult for WebGL and WebGPU to coexist. For example, CanvasKit objects, such as CanvasKit.Surface, get initialized with certain methods that only makes sense with WebGL and shouldn\u0027t exist with WebGPU. Until we figure out how to better modularize these objects, I think it makes sense to disallow building with both WebGL and WebGPU.\n\nThat said I plan to at least structure the WASM bindings in a way that will allow WebGL and WebGPU-specific functions to coexist if we choose to enable that in the future.",
+      "parentUuid": "7fc18dc6_25cb4d36",
+      "range": {
+        "startLine": 197,
+        "startChar": 4,
+        "endLine": 197,
+        "endChar": 8
+      },
+      "revId": "1d665eb3ab3266c29ccbf6a8a22837bbe31d930f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8e9883e2_d80ea253",
         "filename": "modules/canvaskit/BUILD.gn",
         "patchSetId": 2
