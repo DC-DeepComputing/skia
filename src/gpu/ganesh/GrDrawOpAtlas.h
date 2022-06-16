@@ -54,6 +54,7 @@ class GrDrawOpAtlas {
 public:
     /** Is the atlas allowed to use more than one texture? */
     enum class AllowMultitexturing : bool { kNo, kYes };
+    enum class SupportBilerpAtlas : bool { kNo, kYes };
 
     /**
      * Returns a GrDrawOpAtlas. This function can be called anywhere, but the returned atlas
@@ -82,7 +83,8 @@ public:
                                                skgpu::AtlasGenerationCounter* generationCounter,
                                                AllowMultitexturing allowMultitexturing,
                                                skgpu::PlotEvictionCallback* evictor,
-                                               std::string_view label);
+                                               std::string_view label,
+                                               SupportBilerpAtlas supportBilerpAtlas);
 
     /**
      * Adds a width x height subimage to the atlas. Upon success it returns 'kSucceeded' and returns
@@ -164,12 +166,19 @@ public:
 
     int numAllocated_TestingOnly() const;
     void setMaxPages_TestingOnly(uint32_t maxPages);
+    skgpu::Plot* getPlot_testingOnly(int pageIdx, int plotIdx) {
+        return fPages[pageIdx].fPlotArray[plotIdx].get();
+    }
+    void checkEvictedPlot_testingOnly(skgpu::PlotEvictionCallback* checker) {
+        this->fEvictionCallbacks.emplace_back(checker);
+    }
 
 private:
     GrDrawOpAtlas(GrProxyProvider*, const GrBackendFormat& format, SkColorType, size_t bpp,
                   int width, int height, int plotWidth, int plotHeight,
                   skgpu::AtlasGenerationCounter* generationCounter,
-                  AllowMultitexturing allowMultitexturing, std::string_view label);
+                  AllowMultitexturing allowMultitexturing, std::string_view label,
+                  SupportBilerpAtlas supportBilerpAtlas);
 
     inline bool updatePlot(GrDeferredUploadTarget*, skgpu::AtlasLocator*, skgpu::Plot*);
 
@@ -240,6 +249,8 @@ private:
     uint32_t fMaxPages;
 
     uint32_t fNumActivePages;
+
+    SupportBilerpAtlas fSupportBilerpAtlas;
 
     SkDEBUGCODE(void validate(const skgpu::AtlasLocator& atlasLocator) const;)
 };
