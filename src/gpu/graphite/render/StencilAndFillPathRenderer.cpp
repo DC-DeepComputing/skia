@@ -8,11 +8,15 @@
 #include "src/gpu/graphite/Renderer.h"
 
 #include "include/core/SkPathTypes.h"
+#include "include/core/SkVertices.h"
 #include "src/gpu/graphite/render/CoverBoundsRenderStep.h"
 #include "src/gpu/graphite/render/MiddleOutFanRenderStep.h"
 #include "src/gpu/graphite/render/StencilAndCoverDSS.h"
 #include "src/gpu/graphite/render/TessellateCurvesRenderStep.h"
 #include "src/gpu/graphite/render/TessellateWedgesRenderStep.h"
+#include "src/gpu/graphite/render/VerticesRenderStep.h"
+// TODO NP - is this the best place to handle this logic?
+#include "src/core/SkVerticesPriv.h"
 
 namespace skgpu::graphite {
 
@@ -104,6 +108,27 @@ const Renderer& Renderer::ConvexTessellatedWedges() {
     static const TessellateWedgesRenderStep kConvexWedges{"convex", kDirectShadingPass};
     static const Renderer kConvexWedgeRenderer{"ConvexTessellatedWedges", &kConvexWedges};
     return kConvexWedgeRenderer;
+}
+
+const Renderer& Renderer::Vertices(const SkVertices* vertices) {
+    // Map between SkVertices::VertexMode and DrawTypes::PrimaryType
+    PrimitiveType primitiveType;
+    switch (vertices->priv().mode()) {
+        case SkVertices::VertexMode::kTriangles_VertexMode:
+            primitiveType = PrimitiveType::kTriangles;
+            break;
+        case SkVertices::VertexMode::kTriangleStrip_VertexMode:
+            primitiveType = PrimitiveType::kTriangleStrip;
+            break;
+        case SkVertices::VertexMode::kTriangleFan_VertexMode:
+            primitiveType = PrimitiveType::kTriangleFan;
+            break;
+    }
+    // TODO NP - Assert that primitive type was set. Maybe add SKUNREACHABLE in default?
+
+    static const VerticesRenderStep kVertices{vertices, primitiveType};
+    static const Renderer kVerticesRenderer{"Vertices", &kVertices};
+    return kVerticesRenderer;
 }
 
 } // namespace skgpu

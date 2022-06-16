@@ -705,7 +705,6 @@ void Device::recordDraw(const Transform& localToDevice,
     // so we will need to take into account the previous draw. Since no Renderer uses coverage AA
     // right now, it's not an issue yet.
     fDC->recordDraw(*renderer, localToDevice, Geometry{shape}, clip, ordering, paint, stroke);
-
     fRecorder->priv().tokenTracker()->issueDrawToken();
 }
 
@@ -749,6 +748,24 @@ bool Device::needsFlushBeforeDraw(int numNewDraws) const {
     return (DrawList::kMaxDraws - fDC->pendingDrawCount()) < numNewDraws;
 }
 
+void Device::drawVertices(const SkVertices* vertices, sk_sp<SkBlender> blender,
+                          const SkPaint& paint, bool skipColorXform) {
+    SkASSERT(vertices);
+    const Renderer* renderer = &Renderer::Vertices(vertices);
+    // Call draw Shape and record draw
+    // this->drawShape(Shape{*vertices}, paint, SkStrokeRec(paint));
+
+    // ML - Assume coordiantes local already
+    // Renderer; add render steps. Only 1 render step needed here.
+    // Record & draw
+    // drawVert render step = look for vertices object
+    // Similar to SkPath
+    // Append draws; change to ___ once appending is working for performance
+
+    // Custom mesh considerations to come later.
+
+}
+
 sk_sp<SkSpecialImage> Device::makeSpecial(const SkBitmap&) {
     return nullptr;
 }
@@ -760,6 +777,10 @@ sk_sp<SkSpecialImage> Device::makeSpecial(const SkImage*) {
 sk_sp<SkSpecialImage> Device::snapSpecial(const SkIRect& subset, bool forceCopy) {
     this->flushPendingWorkToRecorder();
     return nullptr;
+}
+
+void Device::drawShape(Geometry&& geom, const SkPaint& paint, const SkStrokeRec& style,
+               SkEnumBitMask<DrawFlags> flags) {
 }
 
 #if GRAPHITE_TEST_UTILS
