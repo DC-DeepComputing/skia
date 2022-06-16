@@ -16,6 +16,24 @@
       "message": "Still plan on enabling it for GPU but dm_flags-disabling it?",
       "revId": "ce7452fb8c0651a75c10989dce070996b9ad8e60",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5d221b79_e8a40d8e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-06-16T16:38:04Z",
+      "side": 1,
+      "message": "I\u0027m unsure - unless we also push it to SkQP, I\u0027m not sure that does anything except mildly inconvenience Skia folks. Given the state of the world, I\u0027d be more tempted to *always* poly-fill this feature like we do for Metal, even on GLSL. Then we could test it unconditionally, but it would really be an SkSL feature that\u0027s guaranteed to work, rather than a GLSL pass-through feature that works ~nowhere.",
+      "parentUuid": "07c1e08f_c25b1bb3",
+      "revId": "ce7452fb8c0651a75c10989dce070996b9ad8e60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
