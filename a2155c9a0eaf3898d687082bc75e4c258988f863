@@ -16,6 +16,24 @@
       "message": "Looks like we have existing test code which triggers this assert, and will need to be fixed as well.",
       "revId": "a2155c9a0eaf3898d687082bc75e4c258988f863",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "79c9e5d4_1c88cd40",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-06-16T14:45:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d2ea3e95_418f309d",
+      "revId": "a2155c9a0eaf3898d687082bc75e4c258988f863",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
