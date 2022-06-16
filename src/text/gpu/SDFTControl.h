@@ -35,7 +35,8 @@ private:
 
 class SDFTControl {
 public:
-    SDFTControl(bool ableToUseSDFT, bool useSDFTForSmallText, SkScalar min, SkScalar max);
+    SDFTControl(bool ableToUseSDFT, bool useSDFTForSmallText, SkScalar min, SkScalar max,
+                bool forcePaths = false);
 
     // Produce a font, a scale factor from the nominal size to the source space size, and matrix
     // range where this font can be reused.
@@ -56,6 +57,7 @@ private:
     const SkScalar fMaxDistanceFieldFontSize;
 
     const bool fAbleToUseSDFT;
+    const bool fForcePaths;
 };
 
 }  // namespace sktext::gpu
