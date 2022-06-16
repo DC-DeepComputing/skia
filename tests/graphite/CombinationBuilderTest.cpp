@@ -8,6 +8,7 @@
 #include "tests/Test.h"
 
 #include "include/core/SkCombinationBuilder.h"
+#include "include/effects/SkRuntimeEffect.h"
 #include "src/core/SkFactoryFunctions.h"
 #include "src/core/SkPrecompile.h"
 #include "tests/graphite/CombinationBuilderTestAccess.h"
@@ -99,6 +100,125 @@ void big_test_new(Context* context, skiatest::Reporter* reporter) {
     paintOptions.setBlendModes(evenMoreBlendModes);                             // c array
 
 //    context->precompile({paintOptions});
+}
+
+template <typename T>
+std::vector<sk_sp<T>> create_runtime_combinations(
+        skiatest::Reporter* reporter,
+        SkRuntimeEffect::Result effectFactory(SkString),
+        sk_sp<T> precompileFactory(sk_sp<SkRuntimeEffect>, SkSpan<const sk_sp<T>> children),
+        const char* redCode,
+        const char* greenCode,
+        const char* combineCode) {
+    auto [redEffect, error1] = effectFactory(SkString(redCode));
+    REPORTER_ASSERT(reporter, redEffect, "%s", error1.c_str());
+    auto [greenEffect, error2] = effectFactory(SkString(greenCode));
+    REPORTER_ASSERT(reporter, greenEffect, "%s", error2.c_str());
+    auto [combineEffect, error3] = effectFactory(SkString(combineCode));
+    REPORTER_ASSERT(reporter, combineEffect, "%s", error3.c_str());
+
+    sk_sp<T> red = precompileFactory(redEffect, {});
+    sk_sp<T> green = precompileFactory(greenEffect, {});
+
+    sk_sp<T> combineRG = precompileFactory(combineEffect, { red, green });
+    sk_sp<T> combineGR = precompileFactory(combineEffect, { green, red });
+
+    return { combineRG, combineGR };
+}
+
+void runtime_effects(Context* context, skiatest::Reporter* reporter) {
+    // paintOptions
+    //  |- combineS
+    //  |       0: redS   | greenS
+    //  |       1: greenS | redS
+    //  |
+    //  |- combineCF
+    //  |       0: redCF   | greenCF
+    //  |       1: greenCF | redCF
+    //  |
+    //  |- combineB
+    //  |       0: redB   | greenB
+    //  |       1: greenB | redB
+
+    SkPaintOptions paintOptions;
+
+    // shaders
+    {
+        static const char* kRedS = R"(
+            half4 main(vec2 fragcoord) { return half4(1, 0, 0, 1); }
+        )";
+        static const char* kGreenS = R"(
+            half4 main(vec2 fragcoord) { return half4(0, 1, 0, 1); }
+        )";
+
+        static const char* kCombineS = R"(
+            uniform shader first;
+            uniform shader second;
+            half4 main(vec2 fragcoords) {
+                return first.eval(fragcoords) + second.eval(fragcoords);
+            }
+        )";
+
+        std::vector<sk_sp<SkPrecompileShader>> combinations =
+            create_runtime_combinations<SkPrecompileShader>(reporter,
+                                                            SkRuntimeEffect::MakeForShader,
+                                                            MakePrecompileShader,
+                                                            kRedS,
+                                                            kGreenS,
+                                                            kCombineS);
+        paintOptions.setShaders(combinations);
+    }
+
+    // color filters
+    {
+        static const char* kRedCF = R"(
+            half4 main(half4 color) { return half4(1, 0, 0, 1); }
+        )";
+        static const char* kGreenCF = R"(
+            half4 main(half4 color) { return half4(0, 1, 0, 1); }
+        )";
+
+        static const char* kCombineCF = R"(
+            uniform colorFilter first;
+            uniform colorFilter second;
+            half4 main(half4 color) { return first.eval(color) + second.eval(color); }
+        )";
+
+        std::vector<sk_sp<SkPrecompileColorFilter>> combinations =
+            create_runtime_combinations<SkPrecompileColorFilter>(reporter,
+                                                                 SkRuntimeEffect::MakeForColorFilter,
+                                                                 MakePrecompileColorFilter,
+                                                                 kRedCF,
+                                                                 kGreenCF,
+                                                                 kCombineCF);
+        paintOptions.setColorFilters(combinations);
+    }
+
+    // blenders
+    {
+        static const char* kRedB = R"(
+            half4 main(half4 src, half4 dst) { return half4(1, 0, 0, 1); }
+        )";
+        static const char* kGreenB = R"(
+            half4 main(half4 src, half4 dst) { return half4(0, 1, 0, 1); }
+        )";
+
+        static const char* kCombineB = R"(
+            uniform blender first;
+            uniform blender second;
+            half4 main(half4 src, half4 dst) { return first.eval(src, dst) + second.eval(src, dst); }
+        )";
+
+        std::vector<sk_sp<SkPrecompileBlender>> combinations =
+                create_runtime_combinations<SkPrecompileBlender>(reporter,
+                                                                 SkRuntimeEffect::MakeForBlender,
+                                                                 MakePrecompileBlender,
+                                                                 kRedB,
+                                                                 kGreenB,
+                                                                 kCombineB);
+        paintOptions.setBlenders(combinations);
+    }
+
 }
 
 void big_test(Context* context, skiatest::Reporter* reporter) {
@@ -207,6 +327,7 @@ void epoch_test(Context* context, skiatest::Reporter* reporter) {
 
 DEF_GRAPHITE_TEST_FOR_CONTEXTS(CombinationBuilderTest, reporter, context) {
     big_test_new(context, reporter);
+    runtime_effects(context, reporter);
 
     empty_test(context, reporter);
     no_shader_option_test(context, reporter);
