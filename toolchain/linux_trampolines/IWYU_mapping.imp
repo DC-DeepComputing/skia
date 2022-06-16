@@ -21,6 +21,7 @@
 
   { include: ["<__iterator/access.h>", "private", "<iterator>", "public"] },
   { include: ["<__iterator/distance.h>", "private", "<iterator>", "public"] },
+  { include: ["<__iterator/size.h>", "private", "<iterator>", "public"] },
 
   { include: ["<__locale>", "private", "<locale>", "public"] },
 
