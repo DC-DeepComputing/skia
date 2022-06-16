@@ -65,6 +65,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5d19fcf1_748fd86c",
+        "filename": "src/core/SkCombinationAPI.h",
+        "patchSetId": 22
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-06-16T15:07:11Z",
+      "side": 1,
+      "message": "I have updated the API and filed skbug.com/13438",
+      "parentUuid": "9a03efbc_a7d09c8a",
+      "range": {
+        "startLine": 103,
+        "startChar": 6,
+        "endLine": 103,
+        "endChar": 32
+      },
+      "revId": "f0ff8a189dda9b5e4382f30f2ca970c210152fe7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "20642349_e4ee1038",
