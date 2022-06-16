@@ -18,11 +18,10 @@
 #include "include/private/SkTo.h"
 #include "src/core/SkIPoint16.h"
 #include "src/core/SkTInternalLList.h"
-#include "src/gpu/RectanizerSkyline.h"
+#include "src/gpu/RectanizerOptimized.h"
 
 class GrOpFlushState;
 class TestingUploadTarget;
-namespace skgpu::graphite { class Device; }
 
 /**
  * This file includes internal types that are used by all of our gpu backends for atlases.
@@ -206,7 +205,6 @@ private:
     // Only these classes get to increment the token counters
     friend class ::GrOpFlushState;
     friend class ::TestingUploadTarget;
-    friend class skgpu::graphite::Device;
 
     /** Issues the next token for a draw. */
     DrawToken issueDrawToken() { return ++fLastIssuedToken; }
@@ -298,6 +296,10 @@ public:
 
     SkIPoint topLeft() const {
         return {fUVs[0] & 0x1FFF, fUVs[1]};
+    }
+
+    SkIPoint bottomRight() const {
+        return {fUVs[2] & 0x1FFF, fUVs[3]};
     }
 
     uint16_t width() const {
@@ -438,7 +440,10 @@ public:
     }
     SkDEBUGCODE(size_t bpp() const { return fBytesPerPixel; })
 
-    bool addSubImage(int width, int height, const void* image, AtlasLocator* atlasLocator);
+    bool addSubImage(int width,
+                     int height,
+                     const void* image,
+                     AtlasLocator* atlasLocator);
 
     /**
      * To manage the lifetime of a plot, we use two tokens. We use the last upload token to
@@ -470,6 +475,22 @@ public:
             fBytesPerPixel));
     }
 
+    SkIRect getRect_testingOnly() {
+        return SkIRect::MakeXYWH(fOffset.fX, fOffset.fY, fWidth, fHeight);
+    }
+
+    unsigned char* data_testingOnly() {
+        return fData;
+    }
+
+    int allocatedBytes_testingOnly() const {
+        return fRectanizer.allocatedBytes_testingOnly();
+    }
+
+    int allBytes_testingOnly() const {
+        return fRectanizer.allBytes_testingOnly();
+    }
+
 #ifdef SK_DEBUG
     void resetListPtrs() {
         fPrev = fNext = nullptr;
@@ -496,7 +517,7 @@ private:
     const int fHeight;
     const int fX;
     const int fY;
-    skgpu::RectanizerSkyline fRectanizer;
+    skgpu::RectanizerOptimized fRectanizer;
     const SkIPoint16 fOffset;  // the offset of the plot in the backing texture
     const SkColorType fColorType;
     const size_t fBytesPerPixel;
