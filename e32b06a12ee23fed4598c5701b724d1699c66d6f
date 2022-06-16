@@ -20,6 +20,52 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "99f6f955_9fb8c524",
+        "filename": "modules/canvaskit/npm_build/types/index.d.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 227,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-06-16T19:25:51Z",
+      "side": 1,
+      "message": "Do you think it\u0027d be good to make the context/surface distinction clearer to the user in the API by not having this method at all?",
+      "range": {
+        "startLine": 225,
+        "startChar": 0,
+        "endLine": 227,
+        "endChar": 65
+      },
+      "revId": "e32b06a12ee23fed4598c5701b724d1699c66d6f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1176262f_f623d7d5",
+        "filename": "modules/canvaskit/npm_build/types/index.d.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 269,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-06-16T19:25:51Z",
+      "side": 1,
+      "message": "I\u0027m a little sad that we let \"Gr\" get into the CK API instead of, say, \"Gpu\", but I guess that ship has sailed.",
+      "range": {
+        "startLine": 269,
+        "startChar": 4,
+        "endLine": 269,
+        "endChar": 17
+      },
+      "revId": "e32b06a12ee23fed4598c5701b724d1699c66d6f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "850a0cda_3c1ea31f",
         "filename": "modules/canvaskit/npm_build/types/tsconfig.json",
         "patchSetId": 1
