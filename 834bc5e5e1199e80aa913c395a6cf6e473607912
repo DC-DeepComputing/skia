@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1bccd8d4_88174a63",
+        "filename": ".bazelrc",
+        "patchSetId": 15
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 17959
+      },
+      "writtenOn": "2022-06-16T20:35:25Z",
+      "side": 1,
+      "message": "I certainly appreciate all these block comments!",
+      "revId": "834bc5e5e1199e80aa913c395a6cf6e473607912",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "91c43994_c1eacb69",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 15
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 17959
+      },
+      "writtenOn": "2022-06-16T20:35:25Z",
+      "side": 1,
+      "message": "Looks good (and works) to me! It\u0027ll be nice to have this flexibility.",
+      "revId": "834bc5e5e1199e80aa913c395a6cf6e473607912",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
