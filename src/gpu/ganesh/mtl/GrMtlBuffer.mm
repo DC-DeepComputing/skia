@@ -90,6 +90,7 @@ bool GrMtlBuffer::onUpdateData(const void* src, size_t sizeInBytes) {
         }
         memcpy(fMapPtr, src, sizeInBytes);
         this->internalUnmap(sizeInBytes);
+        return true;
     } else {
         // copy data to gpu buffer
         GrStagingBufferManager::Slice slice;
