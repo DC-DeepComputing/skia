@@ -22,6 +22,30 @@
       },
       "revId": "39fe4360fdb12c18ecf850cc6a15b804deedddc0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e0477c4f_d8fb66aa",
+        "filename": "gm/rasterhandleallocator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 258,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-06-16T16:15:55Z",
+      "side": 0,
+      "message": "Done",
+      "parentUuid": "1324c184_b81ed121",
+      "range": {
+        "startLine": 258,
+        "startChar": 8,
+        "endLine": 258,
+        "endChar": 23
+      },
+      "revId": "39fe4360fdb12c18ecf850cc6a15b804deedddc0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
