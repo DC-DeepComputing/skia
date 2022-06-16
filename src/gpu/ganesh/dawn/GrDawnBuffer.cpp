@@ -120,8 +120,6 @@ void GrDawnBuffer::onUnmap() {
     }
 
     if (fMappable == Mappable::kNot) {
-        this->getDawnGpu()->getCopyEncoder().CopyBufferToBuffer(fStagingBuffer, fStagingOffset,
-                                                                fBuffer, 0, this->size());
     } else {
         fBuffer.Unmap();
         fUnmapped = true;
