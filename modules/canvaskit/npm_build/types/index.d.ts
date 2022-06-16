@@ -251,6 +251,46 @@ export interface CanvasKit {
                           colorSpace: ColorSpace): Surface | null;
 
     /**
+     * Creates a context that operates over the given WebGPU Device.
+     * @param device
+     */
+    MakeGPUDeviceContext(device: GPUDevice): GPUDeviceContext | null;
+
+    /**
+     * Creates a Surface that draws to the given GPU texture.
+     * @param ctx
+     * @param texture - A texture that was created on the GPU device associated with `ctx`.
+     * @param width - Width of the visible region in pixels.
+     * @param height - Height of the visible region in pixels.
+     * @param colorSpace
+     */
+    MakeGPUTextureSurface(ctx: GPUDeviceContext, texture: GPUTexture, width: number, height: number,
+                          colorSpace: ColorSpace): Surface | null;
+
+    /**
+     * Creates and configures a WebGPU context for the given canvas.
+     * @param ctx
+     * @param canvas
+     * @param opts
+     */
+    MakeGPUCanvasContext(ctx: GPUDeviceContext, canvas: HTMLCanvasElement,
+                         opts?: WebGPUCanvasOptions): GPUCanvasContext | null;
+
+    /**
+     * Creates a Surface backed by the next available texture in the swapchain associated with the
+     * given WebGPU canvas context. The context must have been already successfully configured using
+     * the same GPUDevice associated with `ctx`.
+     * @param ctx
+     * @param canvasContext - WebGPU context associated with the canvas. The canvas can either be an
+     *                        on-screen HTMLCanvasElement or an OffscreenCanvas.
+     * @param colorSpace
+     * @param dimensions - The width and height of the visible region. If not present, the canvas
+     *                     dimensions from `canvasContext` are used.
+     */
+    MakeGPUCanvasSurface(ctx: GPUDeviceContext, canvasContext: GPUCanvasContext,
+                         colorSpace: ColorSpace, dimensions?: [number, number]): Surface | null;
+
+    /**
      * Returns a (non-visible) Surface on the GPU. It has the given dimensions and uses 8888
      * color depth and premultiplied alpha. See Surface.h for more details.
      * @param ctx
@@ -614,6 +654,11 @@ export interface GrDirectContext extends EmbindObject<GrDirectContext> {
     releaseResourcesAndAbandonContext(): void;
     setResourceCacheLimitBytes(bytes: number): void;
 }
+
+/**
+ * Represents the context backed by a WebGPU device instance.
+ */
+export type GPUDeviceContext = EmbindObject<GrDirectContext>;
 
 /**
  * See Metrics.h for more on this struct.
@@ -2911,6 +2956,15 @@ export interface WebGLOptions {
     preserveDrawingBuffer?: number;
     renderViaOffscreenBackBuffer?: number;
     stencil?: number;
+}
+
+/**
+ * Options for configuring a canvas WebGPU context. If an option is omitted, a default specified by
+ * the WebGPU standard will be used.
+ */
+export interface WebGPUCanvasOptions {
+    format: GPUTextureFormat;
+    alphaMode?: GPUCanvasAlphaMode;
 }
 
 export interface DefaultConstructor<T> {
