@@ -218,6 +218,18 @@ export interface CanvasKit {
                            opts?: WebGLOptions): Surface | null;
 
     /**
+     * A helper for creating a WebGPU backed surface from a HTML canvas element. The Surface will be
+     * backed by the next available texture in the swapchain associated with this canvas. Falls back
+     * to a CPU surface if the GPU one cannot be created.
+     *
+     * NOTE: Avoid using this function for frequent draws as it creates a new GrDirectContext on
+     *       each call. Instead prefer using the same context to create a new swapchain surface
+     *       using MakeGPUCanvasSurface or MakeGPUTextureSurface.
+     */
+    MakeWebGPUCanvasSurface(canvas: HTMLCanvasElement | string,
+                            colorSpace?: ColorSpace): Surface | null;
+
+    /**
      * Returns a CPU backed surface with the given dimensions, an SRGB colorspace, Unpremul
      * alphaType and 8888 color type. The pixels belonging to this surface  will be in memory and
      * not visible.
@@ -235,10 +247,26 @@ export interface CanvasKit {
     GetWebGLContext(canvas: HTMLCanvasElement, opts?: WebGLOptions): WebGLContextHandle;
 
     /**
+     * Creates and configures a WebGPU context for the given canvas.
+     * @param ctx
+     * @param canvas
+     * @param opts
+     */
+    CreateCanvasGPUContext(ctx: GrDirectContext, canvas: HTMLCanvasElement,
+                           opts?: WebGPUCanvasOptions): GPUCanvasContext | null;
+
+    /**
      * Creates a GrDirectContext from the given WebGL Context.
      * @param ctx
      */
     MakeGrContext(ctx: WebGLContextHandle): GrDirectContext | null;
+
+    /**
+     * Creates a GrDirectContext that operates over the given WebGPU Device. If a device is not
+     * explicitly provided, then a default device is selected.
+     * @param device
+     */
+    MakeGrContext(device?: GPUDevice): GrDirectContext | null;
 
     /**
      * Creates a Surface that will be drawn to the given GrDirectContext (and show up on screen).
@@ -249,6 +277,31 @@ export interface CanvasKit {
      */
     MakeOnScreenGLSurface(ctx: GrDirectContext, width: number, height: number,
                           colorSpace: ColorSpace): Surface | null;
+
+    /**
+     * Creates a Surface that will be drawn to the given GPU texture.
+     * @param ctx
+     * @param texture - A texture that was created on the GPU device associated with `ctx`.
+     * @param width - Width of the visible area in pixels.
+     * @param height - Height of the visible area in pixels.
+     * @param colorSpace
+     */
+    MakeGPUTextureSurface(ctx: GrDirectContext, texture: GPUTexture, width: number, height: number,
+                          colorSpace: ColorSpace): Surface | null;
+
+    /**
+     * Creates a Surface backed by the next available texture in the swapchain associated with the
+     * given canvas WebGPU context. The context must have already been successfully configured using
+     * the same GPUDevice associated with `ctx`.
+     * @param ctx
+     * @param canvasContext - WebGPU context associated with this canvas. The canvas can either be
+     *                        an on-screen HTMLCanvasElement or an OffscreenCanvas.
+     * @param colorSpace
+     * @param dimensions - The width and height of the visible area. If not present, the canvas
+     *                     dimensions from `canvasContext` will be used.
+     */
+    MakeGPUCanvasSurface(ctx: GrDirectContext, canvasContext: GPUCanvasContext,
+                         colorSpace: ColorSpace, dimensions?: number[]): Surface | null;
 
     /**
      * Returns a (non-visible) Surface on the GPU. It has the given dimensions and uses 8888
@@ -2911,6 +2964,15 @@ export interface WebGLOptions {
     preserveDrawingBuffer?: number;
     renderViaOffscreenBackBuffer?: number;
     stencil?: number;
+}
+
+/**
+ * Options for configuring a canvas WebGPU context. If an option is omitted, a default specified by
+ * the WebGPU standard will be used.
+ */
+export interface WebGPUCanvasOptions {
+    format: GPUTextureFormat;
+    alphaMode?: GPUCanvasAlphaMode;
 }
 
 export interface DefaultConstructor<T> {
