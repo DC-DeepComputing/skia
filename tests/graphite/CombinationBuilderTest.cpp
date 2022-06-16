@@ -8,6 +8,7 @@
 #include "tests/Test.h"
 
 #include "include/core/SkCombinationBuilder.h"
+#include "include/effects/SkRuntimeEffect.h"
 #include "src/core/SkFactoryFunctions.h"
 #include "src/core/SkPrecompile.h"
 #include "tests/graphite/CombinationBuilderTestAccess.h"
@@ -99,6 +100,86 @@ void big_test_new(Context* context, skiatest::Reporter* reporter) {
     paintOptions.setBlendModes(evenMoreBlendModes);                             // c array
 
 //    context->precompile({paintOptions});
+}
+
+void runtime_effects(Context* context, skiatest::Reporter* reporter) {
+
+
+
+    // paintOptions
+    //  |- combineS
+    //  |       0: redS   | greenS
+    //  |       1: greenS | redS
+    //  |
+    //  |- combineCF
+    //  |       0: redCF   | greenCF
+    //  |       1: greenCF | redCF
+    //  |
+    //  |- rtBlender_0
+    //  |       0: rtBlender_1
+    //  |       1: rtBlender_2
+
+    SkPaintOptions paintOptions;
+
+    // shaders
+    {
+        static const char* kRedS = R"(half4 main(vec2 fragcoord) { return { 1, 0, 0, 1 };)";
+        static const char* kGreenS = R"(half4 main(vec2 fragcoord) { return { 0, 1, 0, 1 };)";
+
+        static const char* kCombineS = R"("
+            uniform shader first;
+            uniform shader second;
+            half4 main(vec2 fragcoords) {
+                return first.eval(fragcoords) + second.eval(fragcoords);
+            }
+        )";
+
+        auto [redEffect, error] = SkRuntimeEffect::MakeForShader(SkString(kRedS));
+        auto [greenEffect, error2] = SkRuntimeEffect::MakeForShader(SkString(kGreenS));
+
+        sk_sp<SkPrecompileShader> redS = MakePrecompileShader(redEffect);
+        sk_sp<SkPrecompileShader> greenS = MakePrecompileShader(greenEffect);
+
+        auto [combineEffect, error3] = SkRuntimeEffect::MakeForColorFilter(SkString(kCombineS));
+        REPORTER_ASSERT(reporter, combineEffect);
+        sk_sp<SkPrecompileShader> combineS_RG = MakePrecompileShader(combineEffect,
+                                                                     { redS, greenS });
+        sk_sp<SkPrecompileShader> combineS_GR = MakePrecompileShader(combineEffect,
+                                                                     { greenS, redS });
+
+        paintOptions.setShaders({ combineS_RG, combineS_GR });
+    }
+
+    // color filters
+    {
+        static const char* kRedCF = R"(half4 main(half4 color) { return { 1, 0, 0, 1 }; })";
+        static const char* kGreenCF = R"(half4 main(half4 color) { return { 0, 1, 0, 1 }; })";
+
+        static const char* kCombineCF = R"("
+            uniform colorFilter inner;
+            uniform colorFilter outer;
+            half4 main(half4 c) { return outer.eval(inner.eval(c)); }
+        )";
+
+        auto [redEffect, error] = SkRuntimeEffect::MakeForColorFilter(SkString(kRedCF));
+        REPORTER_ASSERT(reporter, redEffect);
+        auto [greenEffect, error2] = SkRuntimeEffect::MakeForColorFilter(SkString(kGreenCF));
+        REPORTER_ASSERT(reporter, greenEffect);
+
+        sk_sp<SkPrecompileColorFilter> redCF = MakePrecompileColorFilter(redEffect);
+        sk_sp<SkPrecompileColorFilter> greenCF = MakePrecompileColorFilter(greenEffect);
+
+        auto [combineEffect, error3] = SkRuntimeEffect::MakeForColorFilter(SkString(kCombineCF));
+        REPORTER_ASSERT(reporter, combineEffect);
+        sk_sp<SkPrecompileColorFilter> combineRG = MakePrecompileColorFilter(combineEffect,
+                                                                             { redCF, greenCF });
+        sk_sp<SkPrecompileColorFilter> combineGR = MakePrecompileColorFilter(combineEffect,
+                                                                             { greenCF, redCF });
+
+        paintOptions.setColorFilters({ combineRG, combineGR });
+    }
+
+
 }
 
 void big_test(Context* context, skiatest::Reporter* reporter) {
@@ -207,6 +288,7 @@ void epoch_test(Context* context, skiatest::Reporter* reporter) {
 
 DEF_GRAPHITE_TEST_FOR_CONTEXTS(CombinationBuilderTest, reporter, context) {
     big_test_new(context, reporter);
+    runtime_effects(context, reporter);
 
     empty_test(context, reporter);
     no_shader_option_test(context, reporter);
