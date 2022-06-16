@@ -10,5 +10,8 @@
 
         "baseUrl": ".",
         "paths": { "canvaskit-wasm": ["."] }
-    }
+    },
+    "include": [
+        "node_modules/@webgpu/types/**/*"
+    ]
 }
