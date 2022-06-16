@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5b96c881_ac5983ad",
+        "filename": "toolchain/mac_m1_toolchain_config.bzl",
+        "patchSetId": 4
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-06-16T16:47:30Z",
+      "side": 1,
+      "message": "I realize you\u0027re just moving this and didn\u0027t write this, but `ar` is the devil and the enemy of reproducible builds (since it likes to append things). In particular see https://skia-review.googlesource.com/c/skia/+/295569 and the related issues. It is generally necessary to first delete any existing `ar` file before calling `ar` to not run into very unexpected behavior.\n\nAlso, in our existing gn build, we make sure not to use `ar` and use `libtool` instead (since it is quite a bit saner).",
+      "revId": "b6e872974b82d7575887889994d2c67684b3e232",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "63faa553_3d664a22",
+        "filename": "toolchain/mac_m1_toolchain_config.bzl",
+        "patchSetId": 4
+      },
+      "lineNbr": 246,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-06-16T16:47:30Z",
+      "side": 1,
+      "message": "It looks like `download_mac_m1_toolchain.bzl` is using `xcode-select` to get the right directory here. Should this (here and below) be doing the same? Otherwise it may be possible for the headers and the tools to come from different places? More to the point, it looks like `download_mac_m1_toolchain.bzl` creates a symlink for to `usr`, should there just be a symlink for this based on `xcode-select` for `/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk` which would be the \"sdk symlink\"?\n\nI see that this is already the user\u0027s Xcode and not a hermetic one, but this should be set up so that it would \"just work\" if we switched to a hermetic one.",
+      "revId": "b6e872974b82d7575887889994d2c67684b3e232",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
