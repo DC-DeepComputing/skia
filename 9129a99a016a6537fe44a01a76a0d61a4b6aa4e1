@@ -69,6 +69,30 @@
       },
       "revId": "9129a99a016a6537fe44a01a76a0d61a4b6aa4e1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "74d60102_68cd3cf3",
+        "filename": "src/gpu/ganesh/ops/StrokeTessellateOp.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 193,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-06-16T20:50:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "daf3736c_95b9d72e",
+      "range": {
+        "startLine": 193,
+        "startChar": 69,
+        "endLine": 193,
+        "endChar": 84
+      },
+      "revId": "9129a99a016a6537fe44a01a76a0d61a4b6aa4e1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
