@@ -10,9 +10,12 @@
 
 #include "include/core/SkRefCnt.h"
 
+#include <memory>
+
 namespace skgpu::graphite {
 class Gpu;
 struct MtlBackendContext;
+class QueueManager;
 
 /*
  * This class is used to hold functions which trampoline from the Graphite cpp code
@@ -20,7 +23,8 @@ struct MtlBackendContext;
  */
 class MtlTrampoline {
 public:
-    static sk_sp<skgpu::graphite::Gpu> MakeGpu(const MtlBackendContext&);
+    static sk_sp<Gpu> MakeGpu(const MtlBackendContext&);
+    static std::unique_ptr<QueueManager> MakeQueueManager();
 };
 
 } // namespace skgpu::graphite
