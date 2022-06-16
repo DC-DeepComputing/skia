@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "434f4fc1_ea265aa9",
+        "filename": "modules/canvaskit/npm_build/types/index.d.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 227,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-06-16T22:51:14Z",
+      "side": 1,
+      "message": "That\u0027s what I initially had in mind and not having this method probably makes the most sense. Currently the generic CanvasKit.MakeCanvasSurface entry point gets assigned the WebGL method under the hood if WebGL is enabled, so my initial plan was to mimic that with WebGPU, so that if WebGPU is supported then the function will run that and fall back to CPU otherwise. It really depends on whether the generic MakeCanvasSurface should also support WebGPU.\n\nGranted, I don\u0027t know how widely that API gets used and whether we should just discourage it altogether in favor of clients calling to the explicit SW|WebGL|WebGPU variants. FWIW, at least this function shouldn\u0027t be any more suboptimal than MakeWebGLCanvasSurface, which also creates a per-surface GrDirectContext) and it\u0027s probably OK for one-off draws.",
+      "parentUuid": "99f6f955_9fb8c524",
+      "range": {
+        "startLine": 225,
+        "startChar": 0,
+        "endLine": 227,
+        "endChar": 65
+      },
+      "revId": "e32b06a12ee23fed4598c5701b724d1699c66d6f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1176262f_f623d7d5",
         "filename": "modules/canvaskit/npm_build/types/index.d.ts",
         "patchSetId": 1
@@ -54,6 +78,30 @@
       "writtenOn": "2022-06-16T19:25:51Z",
       "side": 1,
       "message": "I\u0027m a little sad that we let \"Gr\" get into the CK API instead of, say, \"Gpu\", but I guess that ship has sailed.",
+      "range": {
+        "startLine": 269,
+        "startChar": 4,
+        "endLine": 269,
+        "endChar": 17
+      },
+      "revId": "e32b06a12ee23fed4598c5701b724d1699c66d6f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aa4eec8a_582d57dc",
+        "filename": "modules/canvaskit/npm_build/types/index.d.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 269,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-06-16T22:51:14Z",
+      "side": 1,
+      "message": "I was a bit surprised to see this too. It probably doesn\u0027t make sense for the JS objects to mirror the Skia classes 1:1, e.g. there\u0027s no benefit to exposing a separate graphite variant of this instead of just switching the backend under the hood.\n\nWe could certainly deprecate this typename. We can rename this type to GpuDirectContext/GpuBackendContext or some such that still supports the same interface functions defined below, and maintain aliases for GrDirectContext/MakeGrContext until clients have been migrated.",
+      "parentUuid": "1176262f_f623d7d5",
       "range": {
         "startLine": 269,
         "startChar": 4,
