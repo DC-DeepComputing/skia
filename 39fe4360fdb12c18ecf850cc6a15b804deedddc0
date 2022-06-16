@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1324c184_b81ed121",
+        "filename": "gm/rasterhandleallocator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 258,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-06-16T16:15:07Z",
+      "side": 0,
+      "message": "Oops--I removed this one because clearly, it\u0027s being used on L260, right? But Clang is smarter than me.",
+      "range": {
+        "startLine": 258,
+        "startChar": 8,
+        "endLine": 258,
+        "endChar": 23
+      },
+      "revId": "39fe4360fdb12c18ecf850cc6a15b804deedddc0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
