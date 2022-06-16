@@ -527,13 +527,6 @@ static inline constexpr int64_t SkLeftShift(int64_t value, int32_t shift) {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-/** @return the number of entries in an array (not a pointer)
-*/
-template <typename T, size_t N> char (&SkArrayCountHelper(T (&array)[N]))[N];
-#define SK_ARRAY_COUNT(array) (sizeof(SkArrayCountHelper(array)))
-
-////////////////////////////////////////////////////////////////////////////////
-
 template <typename T> static constexpr T SkAlign2(T x) { return (x + 1) >> 1 << 1; }
 template <typename T> static constexpr T SkAlign4(T x) { return (x + 3) >> 2 << 2; }
 template <typename T> static constexpr T SkAlign8(T x) { return (x + 7) >> 3 << 3; }
