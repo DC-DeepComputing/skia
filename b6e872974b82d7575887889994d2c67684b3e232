@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8b378e0f_b2bc15ea",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-06-16T19:47:28Z",
+      "side": 1,
+      "message": "Yeah, there are lots of limitations at the moment, not the least of which is that we don\u0027t have a mac bazel builder on the CQ to test this out with. However, since this is all about getting things to work I\u0027m all for it so long as we can keep track of what still needs to be worked on.",
+      "revId": "b6e872974b82d7575887889994d2c67684b3e232",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5b96c881_ac5983ad",
@@ -32,6 +49,24 @@
       "side": 1,
       "message": "Interesting. I can add switching over to the list of improvements. Is this the best place to grab libtools hermetically? https://ftp.gnu.org/gnu/libtool",
       "parentUuid": "5b96c881_ac5983ad",
+      "revId": "b6e872974b82d7575887889994d2c67684b3e232",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4979076b_4d65a537",
+        "filename": "toolchain/mac_m1_toolchain_config.bzl",
+        "patchSetId": 4
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-06-16T19:47:28Z",
+      "side": 1,
+      "message": "I\u0027m pretty sure on Mac the one to use is from `/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/libtool`. It should come from the hermetic Xcode we don\u0027t have at the moment. I\u0027m not sure if the Xcode libtool is still related to the GNU libtool.",
+      "parentUuid": "9f4a1d6f_8f4ddede",
       "revId": "b6e872974b82d7575887889994d2c67684b3e232",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
