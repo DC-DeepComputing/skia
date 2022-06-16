@@ -34,6 +34,24 @@
       "parentUuid": "07c1e08f_c25b1bb3",
       "revId": "ce7452fb8c0651a75c10989dce070996b9ad8e60",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f9e2a4d7_a00a46ac",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-06-16T16:39:45Z",
+      "side": 1,
+      "message": "OK. I\u0027d like to see this reach SkQP in some form, but it doesn\u0027t need to be this way. We could add a dedicated test for it or something.",
+      "parentUuid": "5d221b79_e8a40d8e",
+      "revId": "ce7452fb8c0651a75c10989dce070996b9ad8e60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
