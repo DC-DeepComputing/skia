@@ -13,7 +13,8 @@
 namespace skgpu {
 
 Plot::Plot(int pageIndex, int plotIndex, AtlasGenerationCounter* generationCounter,
-           int offX, int offY, int width, int height, SkColorType colorType, size_t bpp)
+           int offX, int offY, int width, int height, SkColorType colorType, size_t bpp,
+           PadAllGlyphs padAllGLyphs)
         : fLastUpload(DrawToken::AlreadyFlushedToken())
         , fLastUse(DrawToken::AlreadyFlushedToken())
         , fFlushesSinceLastUse(0)
@@ -27,7 +28,6 @@ Plot::Plot(int pageIndex, int plotIndex, AtlasGenerationCounter* generationCount
         , fHeight(height)
         , fX(offX)
         , fY(offY)
-        , fRectanizer(width, height)
         , fOffset(SkIPoint16::Make(fX * fWidth, fY * fHeight))
         , fColorType(colorType)
         , fBytesPerPixel(bpp)
@@ -35,6 +35,11 @@ Plot::Plot(int pageIndex, int plotIndex, AtlasGenerationCounter* generationCount
         , fDirty(false)
 #endif
 {
+    if (padAllGLyphs == PadAllGlyphs::kYes) {
+        fRectanizer = std::make_unique<RectanizerOptimized>(width, height);
+    } else {
+        fRectanizer = std::make_unique<RectanizerSkyline>(width, height);
+    }
     // We expect the allocated dimensions to be a multiple of 4 bytes
     SkASSERT(((width*fBytesPerPixel) & 0x3) == 0);
     // The padding for faster uploads only works for 1, 2 and 4 byte texels
@@ -46,11 +51,12 @@ Plot::~Plot() {
     sk_free(fData);
 }
 
-bool Plot::addSubImage(int width, int height, const void* image, AtlasLocator* atlasLocator) {
+bool Plot::addSubImage(
+        int width, int height, const void* image, AtlasLocator* atlasLocator) {
     SkASSERT(width <= fWidth && height <= fHeight);
 
     SkIPoint16 loc;
-    if (!fRectanizer.addRect(width, height, &loc)) {
+    if (!fRectanizer->addRect(width, height, &loc)) {
         return false;
     }
 
@@ -114,7 +120,7 @@ std::pair<const void*, SkIRect> Plot::prepareForUpload() {
 }
 
 void Plot::resetRects() {
-    fRectanizer.reset();
+    fRectanizer->reset();
 
     fGenID = fGenerationCounter->next();
     fPlotLocator = PlotLocator(fPageIndex, fPlotIndex, fGenID);
