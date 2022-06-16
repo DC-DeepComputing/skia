@@ -143,7 +143,7 @@ private:
 
     // Buffers that are of the "not mappable" type are backed by another GrDawnBuffer that is
     // managed by a GrStagingBufferManager.
-    wgpu::Buffer fStagingBuffer;
+    sk_sp<GrGpuBuffer> fStagingBuffer;
     size_t fStagingOffset = 0;
 
     using INHERITED = GrGpuBuffer;
