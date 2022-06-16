@@ -164,6 +164,12 @@ public:
 
     int numAllocated_TestingOnly() const;
     void setMaxPages_TestingOnly(uint32_t maxPages);
+    skgpu::Plot* getPlot_testingOnly(int pageIdx, int plotIdx) {
+        return fPages[pageIdx].fPlotArray[plotIdx].get();
+    }
+    void checkEvictedPlot_testingOnly(skgpu::PlotEvictionCallback* checker) {
+        this->fEvictionCallbacks.emplace_back(checker);
+    }
 
 private:
     GrDrawOpAtlas(GrProxyProvider*, const GrBackendFormat& format, SkColorType, size_t bpp,

@@ -122,6 +122,12 @@ public:
 
     void setAtlasDimensionsToMinimum_ForTesting();
     void setMaxPages_TestingOnly(uint32_t maxPages);
+    GrDrawOpAtlas* getAtlas_TestingOnly(skgpu::MaskFormat format) {
+        format = this->resolveMaskFormat(format);
+        int atlasIndex = MaskFormatToAtlasIndex(format);
+        SkASSERT(fAtlases[atlasIndex]);
+        return fAtlases[atlasIndex].get();
+    }
 
 private:
     bool initAtlas(skgpu::MaskFormat);
