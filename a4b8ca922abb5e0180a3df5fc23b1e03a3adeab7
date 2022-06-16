@@ -16,6 +16,29 @@
       "message": "PTAL",
       "revId": "a4b8ca922abb5e0180a3df5fc23b1e03a3adeab7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "84667f72_50826ab5",
+        "filename": "src/text/gpu/SubRunContainer.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 656,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-06-16T18:21:38Z",
+      "side": 1,
+      "message": "I know this would be a lot of work, but what do you think of putting all the parameters common to Ganesh and Graphite as the first parameters, and the GPU-system specific parameters as the last parameters?\n\nProbably not in this CL.",
+      "range": {
+        "startLine": 648,
+        "startChar": 0,
+        "endLine": 656,
+        "endChar": 5
+      },
+      "revId": "a4b8ca922abb5e0180a3df5fc23b1e03a3adeab7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
