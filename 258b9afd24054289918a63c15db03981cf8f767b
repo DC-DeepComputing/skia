@@ -16,6 +16,24 @@
       "message": "I\u0027m not opposed to this but usually we just call \u0027begin\u0027",
       "revId": "258b9afd24054289918a63c15db03981cf8f767b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "97fad5dc_9db6531f",
+        "filename": "include/private/SkTDArray.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-06-16T16:48:03Z",
+      "side": 1,
+      "message": "SkSpan requires it: https://osscs.corp.google.com/skia/skia/+/main:include/core/SkSpan.h;l\u003d36;drc\u003d8ccbeeebc34d80ac9525dfcca122d196bbbb0630\n\n`std::data(x)` will call `x.data()`.",
+      "parentUuid": "22de3a61_94313101",
+      "revId": "258b9afd24054289918a63c15db03981cf8f767b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
