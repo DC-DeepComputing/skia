@@ -336,7 +336,15 @@ void GrMtlCaps::initGrCaps(id<MTLDevice> device) {
     fMaxTextureSize = fMaxRenderTargetSize;
 
     fMaxPushConstantsSize = 4*1024;
-    fTransferBufferAlignment = 1;
+    fTransferBufferRowBytesAlignment = 1;
+
+#ifdef SK_BUILD_FOR_MAC
+    // This is documented to be 4 for all Macs but it appears to actually only be 4 on non-Apple
+    // Macs.
+    if (fFamilyGroup < 7) {
+        fTransferFromBufferToBufferAlignment = 4;
+    }
+#endif
 
     // Init sample counts. All devices support 1 (i.e. 0 in skia).
     fSampleCounts.push_back(1);
@@ -372,6 +380,7 @@ void GrMtlCaps::initGrCaps(id<MTLDevice> device) {
 
     fTransferFromBufferToTextureSupport = true;
     fTransferFromSurfaceToBufferSupport = true;
+    fTransferFromBufferToBufferSupport  = true;
 
     fTextureBarrierSupport = false; // Need to figure out if we can do this
 
