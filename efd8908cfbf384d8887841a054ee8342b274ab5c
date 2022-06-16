@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cd510022_3937725d",
+        "filename": "src/gpu/graphite/geom/BoundsManager.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-06-16T14:39:22Z",
+      "side": 1,
+      "message": "Talking offline, kept it as gridSize, but added a comment clarifying what the size refers to.",
+      "parentUuid": "5f503435_735a4c6c",
+      "range": {
+        "startLine": 115,
+        "startChar": 66,
+        "endLine": 115,
+        "endChar": 74
+      },
+      "revId": "efd8908cfbf384d8887841a054ee8342b274ab5c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "741653d1_11fca8ba",
@@ -66,6 +90,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e17eee05_74945794",
+        "filename": "src/gpu/graphite/geom/BoundsManager.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-06-16T14:39:22Z",
+      "side": 1,
+      "message": "I don\u0027t think the implementation requires it, it just means that if you\u0027re not a multiple of your grid dimensions, then the grid cell size maps to partial pixels. That\u0027s maybe a little weird, but not problematic, and seems friendlier if someone just wants to always use a 128x128 grid for instance.\n\nIn MakeRes() I opted to round up the device bounds to be a multiple just so that the grid cell size matched what was requested, vs. shrinking slightly if it weren\u0027t a multiple.\n\nwhat do others think?",
+      "parentUuid": "741653d1_11fca8ba",
+      "range": {
+        "startLine": 116,
+        "startChar": 17,
+        "endLine": 116,
+        "endChar": 27
+      },
+      "revId": "efd8908cfbf384d8887841a054ee8342b274ab5c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "101f4881_4f95b04f",
         "filename": "src/gpu/graphite/geom/BoundsManager.h",
         "patchSetId": 6
@@ -77,6 +125,30 @@
       "writtenOn": "2022-06-15T21:06:58Z",
       "side": 1,
       "message": "Why not just allocate an array member? Overriding delete() to save an additional allocation doesn\u0027t seem necessary since I\u0027d expect we\u0027d only have one BoundsManager active at a time.",
+      "range": {
+        "startLine": 119,
+        "startChar": 8,
+        "endLine": 123,
+        "endChar": 72
+      },
+      "revId": "efd8908cfbf384d8887841a054ee8342b274ab5c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8d9f3c57_77b35998",
+        "filename": "src/gpu/graphite/geom/BoundsManager.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-06-16T14:39:22Z",
+      "side": 1,
+      "message": "Greg also asked about this offline, so I\u0027ve switched out to using SkAutoTMalloc.\n\nI had done it this way to avoid the extra indirection when using the BoundsManager, since that\u0027s also pointed-to. In practice, the benchmarks show no difference, so I\u0027ll remove my preemptive optimization.",
+      "parentUuid": "101f4881_4f95b04f",
       "range": {
         "startLine": 119,
         "startChar": 8,

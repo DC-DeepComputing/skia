@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "47a6f696_2ec67244",
+        "filename": "src/gpu/graphite/DrawOrder.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-06-16T14:39:22Z",
+      "side": 0,
+      "message": "SkAutoTMalloc statically asserts/template-requires that T be trivially default constructible, which ` \u003d 0` was preventing. GridBoundsManager already had code to 0 out its grid values in reset(), and other places that use the order values explicitly initialize with `::First()` anyways.",
+      "range": {
+        "startLine": 47,
+        "startChar": 19,
+        "endLine": 47,
+        "endChar": 23
+      },
+      "revId": "f3e875b263bcf8194f9db258808def2e86d68fc5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
