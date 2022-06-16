@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9376e3ed_233ceff1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-06-16T18:01:59Z",
+      "side": 1,
+      "message": "This is an initial round of API additions to support WebGPU. These functions are all related to initial setup. The programming model I have in mind is as follows: \n\n* A client will create a single GrDirectContext that is bound to a WebGPU GPUDevice and use that to create a Surface per-canvas.\n* A client that wants to draw multiple frames to a given canvas will need to create a new surface bound to the next available swapchain texture from that canvas.\n\nThere will be some follow-up API changes (e.g. around texture creation and making the requestAnimationFrame helpers work correctly with the swapchain model). I\u0027m currently focused on an initial milestone in which Skia loads with WebGPU and draws at all.\n\nP.S.: I know I\u0027m missing some mechanical changes around npm and Typescript validation. Please point me at the correct incantations.",
+      "revId": "e32b06a12ee23fed4598c5701b724d1699c66d6f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "850a0cda_3c1ea31f",
+        "filename": "modules/canvaskit/npm_build/types/tsconfig.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-06-16T18:01:59Z",
+      "side": 1,
+      "message": "I\u0027m wondering if there is a better way to only include the types from the module that are used?",
+      "range": {
+        "startLine": 15,
+        "startChar": 8,
+        "endLine": 15,
+        "endChar": 41
+      },
+      "revId": "e32b06a12ee23fed4598c5701b724d1699c66d6f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
