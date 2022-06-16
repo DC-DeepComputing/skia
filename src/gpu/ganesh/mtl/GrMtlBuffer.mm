@@ -90,31 +90,22 @@ bool GrMtlBuffer::onUpdateData(const void* src, size_t sizeInBytes) {
         }
         memcpy(fMapPtr, src, sizeInBytes);
         this->internalUnmap(sizeInBytes);
-    } else {
-        // copy data to gpu buffer
-        GrStagingBufferManager::Slice slice;
-        slice = this->mtlGpu()->stagingBufferManager()->allocateStagingBufferSlice(
-                sizeInBytes, this->mtlGpu()->mtlCaps().getMinBufferAlignment());
-        if (!slice.fBuffer) {
-            return false;
-        }
-        memcpy(slice.fOffsetMapPtr, src, sizeInBytes);
-
-        GrMtlCommandBuffer* cmdBuffer = this->mtlGpu()->commandBuffer();
-        id<MTLBlitCommandEncoder> GR_NORETAIN blitCmdEncoder = cmdBuffer->getBlitCommandEncoder();
-        if (!blitCmdEncoder) {
-            return false;
-        }
-        GrMtlBuffer* mtlBuffer = static_cast<GrMtlBuffer*>(slice.fBuffer);
-        id<MTLBuffer> transferBuffer = mtlBuffer->mtlBuffer();
-        [blitCmdEncoder copyFromBuffer: transferBuffer
-                          sourceOffset: slice.fOffset
-                              toBuffer: fMtlBuffer
-                     destinationOffset: 0
-                                  size: sizeInBytes];
+        return true;
     }
 
-    return true;
+    // transfer data to gpu buffer using a staging buffer
+    GrStagingBufferManager::Slice slice;
+    slice = this->mtlGpu()->stagingBufferManager()->allocateStagingBufferSlice(
+            sizeInBytes, this->mtlGpu()->mtlCaps().getMinBufferAlignment());
+    if (!slice.fBuffer) {
+        return false;
+    }
+    memcpy(slice.fOffsetMapPtr, src, sizeInBytes);
+    return this->getGpu()->transferFromBufferToBuffer(sk_ref_sp(slice.fBuffer),
+                                                      slice.fOffset,
+                                                      sk_ref_sp<GrGpuBuffer>(this),
+                                                      0,
+                                                      sizeInBytes);
 }
 
 inline GrMtlGpu* GrMtlBuffer::mtlGpu() const {

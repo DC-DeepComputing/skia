@@ -80,13 +80,17 @@ public:
      */
     bool updateData(const void* src, size_t srcSizeInBytes);
 
+    GrGpuBufferType intendedType() const { return fIntendedType; }
+
+    /** Used in debug to check that only dynamic buffers are written multiple times */
+    void wroteToBuffer();
+
 protected:
     GrGpuBuffer(GrGpu*,
                 size_t sizeInBytes,
                 GrGpuBufferType,
                 GrAccessPattern,
                 std::string_view label);
-    GrGpuBufferType intendedType() const { return fIntendedType; }
 
     void* fMapPtr;
 
@@ -110,5 +114,9 @@ private:
     bool              fHasWrittenToBuffer = false;
 #endif
 };
+
+#ifndef SK_DEBUG
+inline void GrGpuBuffer::wroteToBuffer() {}
+#endif
 
 #endif
