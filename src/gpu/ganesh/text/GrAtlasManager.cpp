@@ -343,7 +343,8 @@ bool GrAtlasManager::initAtlas(MaskFormat format) {
                                               this,
                                               fAllowMultitexturing,
                                               nullptr,
-                                              /*label=*/"TextAtlas");
+                                              /*label=*/"TextAtlas",
+                                              fSupportBilerpAtlas);
         if (!fAtlases[index]) {
             return false;
         }
