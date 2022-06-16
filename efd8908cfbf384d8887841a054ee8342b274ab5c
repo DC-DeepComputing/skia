@@ -114,6 +114,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "fe7c29a4_7f914ff8",
+        "filename": "src/gpu/graphite/geom/BoundsManager.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-06-16T14:48:06Z",
+      "side": 1,
+      "message": "I don\u0027t think it\u0027s required -- I mainly made the comment because that code in MakeRes made it seem like it was expected.",
+      "parentUuid": "e17eee05_74945794",
+      "range": {
+        "startLine": 116,
+        "startChar": 17,
+        "endLine": 116,
+        "endChar": 27
+      },
+      "revId": "efd8908cfbf384d8887841a054ee8342b274ab5c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "101f4881_4f95b04f",
         "filename": "src/gpu/graphite/geom/BoundsManager.h",
         "patchSetId": 6
