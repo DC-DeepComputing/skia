@@ -13,6 +13,7 @@
 
 #include "src/gpu/graphite/ClipStack_graphite.h"
 #include "src/gpu/graphite/DrawOrder.h"
+#include "src/gpu/graphite/geom/Geometry.h"
 #include "src/gpu/graphite/geom/Rect.h"
 #include "src/gpu/graphite/geom/Transform_graphite.h"
 #include "src/text/gpu/SDFTControl.h"
@@ -136,7 +137,7 @@ private:
                    const SkPaint&) override {}
 
     void drawDrawable(SkCanvas*, SkDrawable*, const SkMatrix*) override {}
-    void drawVertices(const SkVertices*, sk_sp<SkBlender>, const SkPaint&, bool) override {}
+    void drawVertices(const SkVertices*, sk_sp<SkBlender>, const SkPaint&, bool) override;
     void drawMesh(const SkMesh&, sk_sp<SkBlender>, const SkPaint&) override {}
     void drawShadow(const SkPath&, const SkDrawShadowRec&) override {}
 
@@ -169,6 +170,10 @@ private:
     // Handles applying path effects, mask filters, stroke-and-fill styles, and hairlines.
     // Ignores geometric style on the paint in favor of explicitly provided SkStrokeRec and flags.
     void drawShape(const Shape&,
+                   const SkPaint&,
+                   const SkStrokeRec&,
+                   SkEnumBitMask<DrawFlags> = DrawFlags::kNone);
+    void drawShape(Geometry&&,
                    const SkPaint&,
                    const SkStrokeRec&,
                    SkEnumBitMask<DrawFlags> = DrawFlags::kNone);
