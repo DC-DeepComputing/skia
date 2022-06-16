@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9f4a1d6f_8f4ddede",
+        "filename": "toolchain/mac_m1_toolchain_config.bzl",
+        "patchSetId": 4
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2022-06-16T19:10:50Z",
+      "side": 1,
+      "message": "Interesting. I can add switching over to the list of improvements. Is this the best place to grab libtools hermetically? https://ftp.gnu.org/gnu/libtool",
+      "parentUuid": "5b96c881_ac5983ad",
+      "revId": "b6e872974b82d7575887889994d2c67684b3e232",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "63faa553_3d664a22",
         "filename": "toolchain/mac_m1_toolchain_config.bzl",
         "patchSetId": 4
@@ -31,6 +49,24 @@
       "writtenOn": "2022-06-16T16:47:30Z",
       "side": 1,
       "message": "It looks like `download_mac_m1_toolchain.bzl` is using `xcode-select` to get the right directory here. Should this (here and below) be doing the same? Otherwise it may be possible for the headers and the tools to come from different places? More to the point, it looks like `download_mac_m1_toolchain.bzl` creates a symlink for to `usr`, should there just be a symlink for this based on `xcode-select` for `/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk` which would be the \"sdk symlink\"?\n\nI see that this is already the user\u0027s Xcode and not a hermetic one, but this should be set up so that it would \"just work\" if we switched to a hermetic one.",
+      "revId": "b6e872974b82d7575887889994d2c67684b3e232",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4eb6f2ab_9a61c211",
+        "filename": "toolchain/mac_m1_toolchain_config.bzl",
+        "patchSetId": 4
+      },
+      "lineNbr": 246,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2022-06-16T19:10:50Z",
+      "side": 1,
+      "message": "Agreed, it should come from the same place.\nThe problem is that if wanted to include these frameworks through a symlink (same as we do for `usr`) Bazel would break. There are lots of existing symlinks in the Frameworks subdir in the sdk and Bazel does not handle the introduced symlink recursion well.\nAlso, grabbing the xcode path with `xcode-select` doesn\u0027t work here, as we lose the ability to run command line commands here. Kevin and I were brainstorming some other ideas for how to grab the path and thought of a couple. We\u0027ll be switching over early next week.",
+      "parentUuid": "63faa553_3d664a22",
       "revId": "b6e872974b82d7575887889994d2c67684b3e232",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
