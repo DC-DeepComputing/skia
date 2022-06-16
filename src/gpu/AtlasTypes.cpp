@@ -46,7 +46,8 @@ Plot::~Plot() {
     sk_free(fData);
 }
 
-bool Plot::addSubImage(int width, int height, const void* image, AtlasLocator* atlasLocator) {
+bool Plot::addSubImage(
+        int width, int height, const void* image, AtlasLocator* atlasLocator) {
     SkASSERT(width <= fWidth && height <= fHeight);
 
     SkIPoint16 loc;
