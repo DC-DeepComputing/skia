@@ -45,6 +45,29 @@ private:
     SkPerfettoTrace(const SkPerfettoTrace&) = delete;
     SkPerfettoTrace& operator=(const SkPerfettoTrace&) = delete;
     SkEventTracingCategories fCategories;
+    std::unique_ptr<perfetto::TracingSession> tracingSession;
+    int fd {-1};
+
+    /** One can optionally elect to have different trace output files created for each testing
+     * benchmark. Initialized to a default file name.
+     */
+    std::string outputPath {"./"};
+    const std::string defaultOutputFileName {"trace"};
+    const std::string outputFileSuffix {".perfetto-trace"};
+
+    void closeTracingSession();
+    void openNewTracingSession(const std::string& baseFileName);
+
+    /** Overloaded private methods to initiate a trace event with 0-2 arguments. Perfetto supports
+     * adding an arbitrary number of debug annotations or arguments, but the existing Skia trace
+     * structure only supports 0-2 so that is all we accommodate.
+     */
+    void triggerTraceEvent(const uint8_t* categoryEnabledFlag, const char* eventName);
+    void triggerTraceEvent(const uint8_t* categoryEnabledFlag, const char* eventName,
+                           const char* arg1Name, const uint8_t& arg1Type, const uint64_t& arg1Val);
+    void triggerTraceEvent(const uint8_t* categoryEnabledFlag, const char* eventName,
+                           const char* arg1Name, const uint8_t& arg1Type, const uint64_t& arg1Val,
+                           const char* arg2Name, const uint8_t& arg2Type, const uint64_t& arg2Val);
 };
 
 #endif
