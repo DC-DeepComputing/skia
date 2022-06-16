@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "166ac450_6d18b261",
+        "filename": "src/core/SkPaintParamsKey.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 191,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-06-16T20:10:16Z",
+      "side": 1,
+      "message": "To nobody\u0027s surprise, adding tests revealed a subtle bug :)",
+      "range": {
+        "startLine": 191,
+        "startChar": 10,
+        "endLine": 191,
+        "endChar": 19
+      },
+      "revId": "301aebdcbba534e84b157ecc6d5951c1e9cb10b2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
