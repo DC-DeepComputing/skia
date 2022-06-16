@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "07c1e08f_c25b1bb3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-06-16T16:20:12Z",
+      "side": 1,
+      "message": "Still plan on enabling it for GPU but dm_flags-disabling it?",
+      "revId": "ce7452fb8c0651a75c10989dce070996b9ad8e60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
