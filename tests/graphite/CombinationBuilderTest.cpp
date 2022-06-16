@@ -8,6 +8,7 @@
 #include "tests/Test.h"
 
 #include "include/core/SkCombinationBuilder.h"
+#include "include/effects/SkRuntimeEffect.h"
 #include "src/core/SkFactoryFunctions.h"
 #include "src/core/SkPrecompile.h"
 #include "tests/graphite/CombinationBuilderTestAccess.h"
@@ -99,6 +100,48 @@ void big_test_new(Context* context, skiatest::Reporter* reporter) {
     paintOptions.setBlendModes(evenMoreBlendModes);                             // c array
 
 //    context->precompile({paintOptions});
+}
+
+void runtime_effects(Context* context, skiatest::Reporter* reporter) {
+
+    const char* gNoop = R"(
+        half4 main(half4 color) {
+            return color;
+        }
+    )";
+
+    const char* gCompose = R"("
+        uniform colorFilter inner;
+        uniform colorFilter outer;
+        half4 main(half4 c) { return outer.eval(inner.eval(c)); }
+    )";
+
+    // paintOptions
+    //  |- rtShader_0
+    //  |       0: rtShader_1 | rtShader_2
+    //  |       1: rtShader_2
+    //  |
+    //  |- rtColorFilter_0
+    //  |       0: rtColorFilter_1
+    //  |       1: rtColorFilter_2
+    //  |
+    //  |- rtBlender_0
+    //  |       0: rtBlender_1
+    //  |       1: rtBlender_2
+
+    auto [effect1, error] = SkRuntimeEffect::MakeForColorFilter(SkString(gNoop));
+    sk_sp<SkPrecompileColorFilter> rtColorFilter_1 = MakePrecompileColorFilter(effect1);
+
+    auto [effect2, error2] = SkRuntimeEffect::MakeForColorFilter(SkString(gNoop));
+    sk_sp<SkPrecompileColorFilter> rtColorFilter_2 = MakePrecompileColorFilter(effect2);
+
+    auto [cf0, error3] = SkRuntimeEffect::MakeForColorFilter(SkString(gCompose));
+    sk_sp<SkPrecompileColorFilter> f = MakePrecompileColorFilter(cf0, { rtColorFilter_1,
+                                                                        rtColorFilter_2 });
+
+
+
+
 }
 
 void big_test(Context* context, skiatest::Reporter* reporter) {
