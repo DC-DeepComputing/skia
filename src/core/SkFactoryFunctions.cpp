@@ -11,6 +11,8 @@
 
 // TODO: wrap this in an  SK_PRECOMPILE check
 
+#include "include/effects/SkRuntimeEffect.h"
+
 //--------------------------------------------------------------------------------------------------
 class SkPrecompileBlendModeBlender : public SkPrecompileBlender {
 public:
@@ -106,6 +108,37 @@ sk_sp<SkPrecompileImageFilter> SkPrecompileImageFilters::Blur() {
 
 sk_sp<SkPrecompileImageFilter> SkPrecompileImageFilters::Image() {
     return sk_make_sp<SkPrecompileImageFilter>();
+}
+
+//--------------------------------------------------------------------------------------------------
+template<typename T>
+class SkPrecompileRTEffect : public T {
+public:
+    SkPrecompileRTEffect(sk_sp<SkRuntimeEffect> effect,
+                         SkSpan<sk_sp<T>> children)
+            : fEffect(std::move(effect))
+            , fChildren(children.begin(), children.end()) {
+    }
+
+private:
+    sk_sp<SkRuntimeEffect> fEffect;
+    std::vector<sk_sp<T>> fChildren;
+};
+
+sk_sp<SkPrecompileShader> MakeShader(sk_sp<SkRuntimeEffect> effect,
+                                     SkSpan<sk_sp<SkPrecompileShader>> children) {
+    return sk_make_sp<SkPrecompileRTEffect<SkPrecompileShader>>(std::move(effect), children);
+}
+
+sk_sp<SkPrecompileColorFilter> MakePrecompileColorFilter(
+        sk_sp<SkRuntimeEffect> effect,
+        SkSpan<sk_sp<SkPrecompileColorFilter>> children) {
+    return sk_make_sp<SkPrecompileRTEffect<SkPrecompileColorFilter>>(std::move(effect), children);
+}
+
+sk_sp<SkPrecompileBlender> MakePrecompileBlender(sk_sp<SkRuntimeEffect> effect,
+                                                 SkSpan<sk_sp<SkPrecompileBlender>> children) {
+    return sk_make_sp<SkPrecompileRTEffect<SkPrecompileBlender>>(std::move(effect), children);
 }
 
 //--------------------------------------------------------------------------------------------------
