@@ -85,6 +85,23 @@
       "parentUuid": "db34b954_84c0ffc5",
       "revId": "57da581811d59a3b2cd492600b8606752380637a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c61c357c_03fdb67b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 12064
+      },
+      "writtenOn": "2022-06-17T07:37:58Z",
+      "side": 1,
+      "message": "Hi Greg, it seems there is little impact when falling back to the default msaa path as Geoff mentioned. How do you think from Skia side? \nThanks!",
+      "revId": "57da581811d59a3b2cd492600b8606752380637a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
