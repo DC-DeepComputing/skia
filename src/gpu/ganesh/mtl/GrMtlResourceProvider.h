@@ -28,8 +28,11 @@ class GrMtlResourceProvider {
 public:
     GrMtlResourceProvider(GrMtlGpu* gpu);
 
-    GrMtlPipelineState* findOrCreateCompatiblePipelineState(
+    GrMtlRenderPipelineState* findOrCreateCompatibleRenderPipelineState(
             const GrProgramDesc&,const GrProgramInfo&,
+            GrThreadSafePipelineBuilder::Stats::ProgramCacheResult* stat = nullptr);
+    GrMtlComputePipelineState* findOrCreateCompatibleComputePipelineState(
+            const GrProgramDesc&, const std::string& src,
             GrThreadSafePipelineBuilder::Stats::ProgramCacheResult* stat = nullptr);
     bool precompileShader(const SkData& key, const SkData& data);
 
@@ -48,7 +51,10 @@ public:
     void destroyResources();
 
 #if GR_TEST_UTILS
-    void resetShaderCacheForTesting() const { fPipelineStateCache->release(); }
+    void resetShaderCacheForTesting() const {
+        fRenderPipelineStateCache->release();
+        fComputePipelineStateCache->release();
+    }
 #endif
 
 private:
@@ -56,19 +62,46 @@ private:
 #define GR_PIPELINE_STATE_CACHE_STATS
 #endif
 
-    class PipelineStateCache : public GrThreadSafePipelineBuilder {
+    class RenderPipelineStateCache : public GrThreadSafePipelineBuilder {
     public:
-        PipelineStateCache(GrMtlGpu* gpu);
-        ~PipelineStateCache() override;
+        RenderPipelineStateCache(GrMtlGpu* gpu);
+        ~RenderPipelineStateCache() override;
 
         void release();
-        GrMtlPipelineState* refPipelineState(const GrProgramDesc&, const GrProgramInfo&,
-                                             Stats::ProgramCacheResult*);
+        GrMtlRenderPipelineState* refPipelineState(const GrProgramDesc&, const GrProgramInfo&,
+                                                   Stats::ProgramCacheResult*);
         bool precompileShader(const SkData& key, const SkData& data);
 
     private:
-        GrMtlPipelineState* onRefPipelineState(const GrProgramDesc&, const GrProgramInfo&,
-                                               Stats::ProgramCacheResult*);
+        GrMtlRenderPipelineState* onRefPipelineState(const GrProgramDesc&, const GrProgramInfo&,
+                                                     Stats::ProgramCacheResult*);
+
+        struct Entry;
+
+        struct DescHash {
+            uint32_t operator()(const GrProgramDesc& desc) const {
+                return SkOpts::hash_fn(desc.asKey(), desc.keyLength(), 0);
+            }
+        };
+
+        SkLRUCache<const GrProgramDesc, std::unique_ptr<Entry>, DescHash> fMap;
+
+        GrMtlGpu*                   fGpu;
+    };
+
+    class ComputePipelineStateCache : public GrThreadSafePipelineBuilder {
+    public:
+        ComputePipelineStateCache(GrMtlGpu* gpu);
+        ~ComputePipelineStateCache() override;
+
+        void release();
+        GrMtlComputePipelineState* refPipelineState(const GrProgramDesc&, const std::string& src,
+                                                    Stats::ProgramCacheResult*);
+        bool precompileShader(const SkData& key, const SkData& data);
+
+    private:
+        GrMtlComputePipelineState* onRefPipelineState(const GrProgramDesc&, const std::string& src,
+                                                      Stats::ProgramCacheResult*);
 
         struct Entry;
 
@@ -86,7 +119,8 @@ private:
     GrMtlGpu* fGpu;
 
     // Cache of GrMtlPipelineStates
-    std::unique_ptr<PipelineStateCache> fPipelineStateCache;
+    std::unique_ptr<RenderPipelineStateCache> fRenderPipelineStateCache;
+    std::unique_ptr<ComputePipelineStateCache> fComputePipelineStateCache;
 
     SkTDynamicHash<GrMtlSampler, GrMtlSampler::Key> fSamplers;
     SkTDynamicHash<GrMtlDepthStencil, GrMtlDepthStencil::Key> fDepthStencilStates;
