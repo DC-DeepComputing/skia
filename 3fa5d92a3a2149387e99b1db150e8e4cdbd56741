@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c85ae632_d161808b",
+        "filename": "src/core/SkFactoryFunctions.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-06-17T15:22:59Z",
+      "side": 1,
+      "message": "nit: these double-SkSpan types are hard to reason about. Consider using type aliases for the interior span type to make things easier (throughout).\n\n`using ColorFilterGroup_or_whatever_makes_sense \u003d SkSpan\u003cconst sk_sp\u003cSkPrecompileColorFilter\u003e;`",
+      "range": {
+        "startLine": 139,
+        "startChar": 8,
+        "endLine": 139,
+        "endChar": 67
+      },
+      "revId": "3fa5d92a3a2149387e99b1db150e8e4cdbd56741",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9f3eb51a_318fcff7",
+        "filename": "src/core/SkFactoryFunctions.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-06-17T15:22:59Z",
+      "side": 1,
+      "message": "nit: line too long",
+      "range": {
+        "startLine": 141,
+        "startChar": 88,
+        "endLine": 141,
+        "endChar": 100
+      },
+      "revId": "3fa5d92a3a2149387e99b1db150e8e4cdbd56741",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "81a80969_976a7b42",
+        "filename": "tests/graphite/CombinationBuilderTest.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 193,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-06-17T15:22:59Z",
+      "side": 1,
+      "message": "nit: too long",
+      "range": {
+        "startLine": 193,
+        "startChar": 82,
+        "endLine": 193,
+        "endChar": 100
+      },
+      "revId": "3fa5d92a3a2149387e99b1db150e8e4cdbd56741",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "85d96b28_66351ecd",
+        "filename": "tests/graphite/CombinationBuilderTest.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 337,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-06-17T15:22:59Z",
+      "side": 1,
+      "message": "nit: maybe `runtime_effect_test`?",
+      "range": {
+        "startLine": 337,
+        "startChar": 4,
+        "endLine": 337,
+        "endChar": 19
+      },
+      "revId": "3fa5d92a3a2149387e99b1db150e8e4cdbd56741",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
