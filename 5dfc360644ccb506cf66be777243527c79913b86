@@ -16,6 +16,24 @@
       "message": "Hmm. Yeah - I think this is going to protect us well, but I know that this key generation stuff isn\u0027t totally free. Maybe we land this for now, but I\u0027m really interested to have a unit test that actually forces the issue - if we can generate hash collisions and then prove (at least to ourselves) that they\u0027re safe without adding quite so much key data, that might be a better (sufficient) v2?",
       "revId": "5dfc360644ccb506cf66be777243527c79913b86",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "086c12a0_8cb91a60",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-06-17T21:37:13Z",
+      "side": 1,
+      "message": "I\u0027ve redone it to use 2 bits per child (what is the ChildType?) and one bit per uniform scalar (is it float or int?). I feel like this should be pretty space efficient but still gets us a tight key. We could do more for uniforms if you think one bit per scalar is still too big (think RLE), but for your average shader I think this should be plenty efficient. WDYT?",
+      "parentUuid": "16976c33_ce2e7aef",
+      "revId": "5dfc360644ccb506cf66be777243527c79913b86",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
