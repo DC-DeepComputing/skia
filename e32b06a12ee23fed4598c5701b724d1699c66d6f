@@ -91,6 +91,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "92e22fbf_000e6b4a",
+        "filename": "modules/canvaskit/npm_build/types/index.d.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 227,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-06-17T13:04:12Z",
+      "side": 1,
+      "message": "That seems like an ok compromise. My understanding is the existing Surface/GrContext linkage for WebGL was just reflecting the (unfortunate) fact that creating a webgl backed canvas element creates a new webgl context and thus a new GrContext was required.",
+      "parentUuid": "863c7f24_589a5db8",
+      "range": {
+        "startLine": 225,
+        "startChar": 0,
+        "endLine": 227,
+        "endChar": 65
+      },
+      "revId": "e32b06a12ee23fed4598c5701b724d1699c66d6f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1176262f_f623d7d5",
         "filename": "modules/canvaskit/npm_build/types/index.d.ts",
         "patchSetId": 1
@@ -150,6 +174,30 @@
       "side": 1,
       "message": "I renamed this to MakeGPUDeviceContext (it deviates from the existing MakeGrContext for WebGL but I think that\u0027s fine). I renamed the other functions to match this pattern (coming in the next patch set):\n\n* MakeGPUDeviceContext: Creates a GrDirectContext associated with a WebGPU device.\n* MakeGPUCanvasContext: Creates a WebGPU canvas context (i.e. swapchain) associated with a canvas.\n* MakeGPUTextureSurface: Creates a Surface for which the render target is a WebGPU texture.\n* MakeGPUCanvasSurface: Equivalent to  MakeGPUTextureSurface where the texture is the next swapchain texture in a GPUCanvasContext.\n* MakeWebGPUCanvasSurface: A helper that is equivalent to calling all of the above where the input is a HTMLCanvasElement and an optional GrDirectContext argument.",
       "parentUuid": "aa4eec8a_582d57dc",
+      "range": {
+        "startLine": 269,
+        "startChar": 4,
+        "endLine": 269,
+        "endChar": 17
+      },
+      "revId": "e32b06a12ee23fed4598c5701b724d1699c66d6f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c037a511_6fedb1d2",
+        "filename": "modules/canvaskit/npm_build/types/index.d.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 269,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-06-17T13:04:12Z",
+      "side": 1,
+      "message": "I like that. We could consider an effort later to replace \"MakeGrContext\" with \"MakeGLContext\" or similar.",
+      "parentUuid": "2424f6c6_a609654e",
       "range": {
         "startLine": 269,
         "startChar": 4,
