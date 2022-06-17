@@ -204,6 +204,18 @@ bool GrDawnGpu::onWritePixels(GrSurface* surface,
     return true;
 }
 
+bool GrDawnGpu::onTransferFromBufferToBuffer(sk_sp<GrGpuBuffer> src,
+                                             size_t srcOffset,
+                                             sk_sp<GrGpuBuffer> dst,
+                                             size_t dstOffset,
+                                             size_t size) {
+    wgpu::Buffer srcBuffer = static_cast<GrDawnBuffer*>(src.get())->get();
+    wgpu::Buffer dstBuffer = static_cast<GrDawnBuffer*>(dst.get())->get();
+
+    this->getCopyEncoder().CopyBufferToBuffer(srcBuffer, srcOffset, dstBuffer, dstOffset, size);
+    return true;
+}
+
 bool GrDawnGpu::onTransferPixelsTo(GrTexture* texture,
                                    SkIRect rect,
                                    GrColorType textureColorType,

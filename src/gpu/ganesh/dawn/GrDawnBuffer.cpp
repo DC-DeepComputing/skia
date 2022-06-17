@@ -103,9 +103,9 @@ void GrDawnBuffer::onMap() {
         GrStagingBufferManager::Slice slice =
                 this->getDawnGpu()->stagingBufferManager()->allocateStagingBufferSlice(
                         this->size());
-        fStagingBuffer = static_cast<GrDawnBuffer*>(slice.fBuffer)->get();
+        fStagingBuffer = sk_ref_sp(slice.fBuffer);
         fStagingOffset = slice.fOffset;
-        fMapPtr = slice.fOffsetMapPtr;
+        fMapPtr        = slice.fOffsetMapPtr;
     } else {
         // We always create this buffers mapped or if they've been used on the gpu before we use the
         // async map callback to know when it is safe to reuse them. Thus by the time we get here
@@ -120,8 +120,11 @@ void GrDawnBuffer::onUnmap() {
     }
 
     if (fMappable == Mappable::kNot) {
-        this->getDawnGpu()->getCopyEncoder().CopyBufferToBuffer(fStagingBuffer, fStagingOffset,
-                                                                fBuffer, 0, this->size());
+        this->getGpu()->transferFromBufferToBuffer(fStagingBuffer,
+                                                   fStagingOffset,
+                                                   sk_ref_sp(this),
+                                                   0,
+                                                   this->size());
     } else {
         fBuffer.Unmap();
         fUnmapped = true;
