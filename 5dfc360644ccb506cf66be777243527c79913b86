@@ -34,6 +34,24 @@
       "parentUuid": "16976c33_ce2e7aef",
       "revId": "5dfc360644ccb506cf66be777243527c79913b86",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cfbdbfee_e1fd64b7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-06-17T21:44:40Z",
+      "side": 1,
+      "message": "Fixed to avoid multiplying by the array count twice (!!)",
+      "parentUuid": "086c12a0_8cb91a60",
+      "revId": "5dfc360644ccb506cf66be777243527c79913b86",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
