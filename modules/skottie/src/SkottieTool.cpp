@@ -49,56 +49,59 @@ namespace {
 
 static constexpr SkColor kClearColor = SK_ColorWHITE;
 
-std::unique_ptr<SkFILEWStream> MakeFrameStream(size_t idx, const char* ext) {
-    const auto frame_file = SkStringPrintf("0%06zu.%s", idx, ext);
-    auto stream = std::make_unique<SkFILEWStream>(SkOSPath::Join(FLAGS_writePath[0],
-                                                                   frame_file.c_str()).c_str());
-    if (!stream->isValid()) {
-        return nullptr;
-    }
-
-    return stream;
-}
-
-class Sink {
-public:
-    Sink() = default;
-    virtual ~Sink() = default;
-    Sink(const Sink&) = delete;
-    Sink& operator=(const Sink&) = delete;
-
-    virtual SkCanvas* beginFrame(size_t idx) = 0;
-    virtual bool endFrame(size_t idx) = 0;
+enum class FrameFormat {
+    kImage,
+    kPicture,
 };
 
-class PNGSink final : public Sink {
-public:
-    static std::unique_ptr<Sink> Make(const SkMatrix& scale_matrix) {
-        auto surface = SkSurface::MakeRasterN32Premul(FLAGS_width, FLAGS_height);
-        if (!surface) {
-            SkDebugf("Could not allocate a %d x %d surface.\n", FLAGS_width, FLAGS_height);
-            return nullptr;
-        }
+enum class OutputFormat {
+    kPNG,
+    kSKP,
+    kNull,
+#if defined(HAVE_VIDEO_ENCODER)
+    kMP4,
+#endif
+};
 
-        return std::unique_ptr<Sink>(new PNGSink(std::move(surface), scale_matrix));
+
+auto ms_since(std::chrono::steady_clock::time_point start) {
+    const auto elapsed = std::chrono::steady_clock::now() - start;
+    return std::chrono::duration_cast<std::chrono::milliseconds>(elapsed).count();
+};
+
+class FrameSink {
+public:
+    virtual ~FrameSink() = default;
+
+    static std::unique_ptr<FrameSink> Make(OutputFormat fmt, size_t frame_count);
+
+    virtual void writeImageFrame(sk_sp<SkImage> frame, size_t frame_index) = 0;
+    virtual void writePictureFrame(sk_sp<SkPicture> frame, size_t frame_index) = 0;
+
+    virtual void finalize(double) {}
+
+protected:
+    FrameSink() = default;
+
+private:
+    FrameSink(const FrameSink&)            = delete;
+    FrameSink& operator=(const FrameSink&) = delete;
+};
+
+class FileSink final : public FrameSink {
+public:
+    static std::unique_ptr<FrameSink> Make() {
+        return std::unique_ptr<FrameSink>(new FileSink());
     }
 
 private:
-    PNGSink(sk_sp<SkSurface> surface, const SkMatrix& scale_matrix)
-        : fSurface(std::move(surface)) {
-        fSurface->getCanvas()->concat(scale_matrix);
-    }
+    FileSink() = default;
 
-    SkCanvas* beginFrame(size_t) override {
-        auto* canvas = fSurface->getCanvas();
-        canvas->clear(kClearColor);
-        return canvas;
-    }
+    void writeImageFrame(sk_sp<SkImage> frame, size_t frame_index) override {
+        auto stream = make_stream(frame_index, "png");
 
-    bool endFrame(size_t idx) override {
-        auto stream = MakeFrameStream(idx, "png");
-        if (!stream) {
-            return false;
+        if (!frame || !stream->isValid()) {
+            return;
         }
 
         // Set encoding options to favor speed over size.
@@ -106,100 +109,193 @@ private:
         options.fZLibLevel   = 1;
         options.fFilterFlags = SkPngEncoder::FilterFlag::kNone;
 
-        sk_sp<SkImage> img = fSurface->makeImageSnapshot();
         SkPixmap pixmap;
-        return img->peekPixels(&pixmap)
-            && SkPngEncoder::Encode(stream.get(), pixmap, options);
+        SkAssertResult(frame->peekPixels(&pixmap));
+
+        SkPngEncoder::Encode(stream.get(), pixmap, options);
     }
 
-    const sk_sp<SkSurface> fSurface;
+    void writePictureFrame(sk_sp<SkPicture> frame, size_t frame_index) override {
+        auto stream = make_stream(frame_index, "skp");
+
+        if (frame && stream->isValid()) {
+            frame->serialize(stream.get());
+        }
+    }
+
+    static std::unique_ptr<SkFILEWStream> make_stream(size_t frame_index, const char* extension) {
+        const auto file = SkStringPrintf("0%06zu.%s", frame_index, extension);
+        const auto path = SkOSPath::Join(FLAGS_writePath[0], file.c_str());
+
+        return std::make_unique<SkFILEWStream>(path.c_str());
+    }
 };
 
-class SKPSink final : public Sink {
+class NullSink final : public FrameSink {
 public:
-    static std::unique_ptr<Sink> Make(const SkMatrix& scale_matrix) {
-        return std::unique_ptr<Sink>(new SKPSink(scale_matrix));
+    static std::unique_ptr<FrameSink> Make() {
+        return std::unique_ptr<FrameSink>(new NullSink());
     }
 
 private:
-    explicit SKPSink(const SkMatrix& scale_matrix)
-        : fScaleMatrix(scale_matrix) {}
+    NullSink() = default;
 
-    SkCanvas* beginFrame(size_t) override {
-        auto canvas = fRecorder.beginRecording(FLAGS_width, FLAGS_height);
-        canvas->concat(fScaleMatrix);
-        return canvas;
-    }
-
-    bool endFrame(size_t idx) override {
-        auto stream = MakeFrameStream(idx, "skp");
-        if (!stream) {
-            return false;
-        }
-
-        fRecorder.finishRecordingAsPicture()->serialize(stream.get());
-        return true;
-    }
-
-    const SkMatrix    fScaleMatrix;
-    SkPictureRecorder fRecorder;
+    void writeImageFrame(sk_sp<SkImage>, size_t) override {}
+    void writePictureFrame(sk_sp<SkPicture>, size_t) override {}
 };
 
-class NullSink final : public Sink {
+class MP4Sink final : public FrameSink {
 public:
-    static std::unique_ptr<Sink> Make(const SkMatrix& scale_matrix) {
+    static std::unique_ptr<FrameSink> Make(size_t frame_count) {
+        return std::unique_ptr<FrameSink>(new MP4Sink(frame_count));
+    }
+
+private:
+    explicit MP4Sink(size_t frame_count) {
+        fFrames.resize(frame_count);
+    }
+
+    void writeImageFrame(sk_sp<SkImage> frame, size_t frame_index) override {
+        fFrames[frame_index].set_value(std::move(frame));
+    }
+
+    void writePictureFrame(sk_sp<SkPicture>, size_t) override {
+        SkUNREACHABLE;
+    }
+
+    void finalize(double fps) override {
+        SkVideoEncoder encoder;
+        if (!encoder.beginRecording({FLAGS_width, FLAGS_height}, SkToInt(fps))) {
+            fprintf(stderr, "Invalid video stream configuration.\n");
+        }
+
+        std::vector<double> starved_ms;
+        for (auto& frame_promise : fFrames) {
+            const auto start = std::chrono::steady_clock::now();
+            auto frame = frame_promise.get_future().get();
+            starved_ms.push_back(ms_since(start));
+
+            SkPixmap pixmap;
+            SkAssertResult(frame->peekPixels(&pixmap));
+
+            encoder.addFrame(pixmap);
+        }
+
+        auto mp4 = encoder.endRecording();
+
+        SkFILEWStream{FLAGS_writePath[0]}
+            .write(mp4->data(), mp4->size());
+
+        // If everything's going well, the first frame should account for the most,
+        // and ideally nearly all, starvation.
+        double first = starved_ms[0];
+        std::sort(starved_ms.begin(), starved_ms.end());
+        double sum = std::accumulate(starved_ms.begin(), starved_ms.end(), 0);
+        printf("Encoder starved stats: "
+               "min %gms, med %gms, avg %gms, max %gms, sum %gms, first %gms (%s)\n",
+               starved_ms[0], starved_ms[fFrames.size()/2], sum/fFrames.size(), starved_ms.back(),
+               sum, first, first == starved_ms.back() ? "ok" : "BAD");
+
+    }
+
+    std::vector<std::promise<sk_sp<SkImage>>> fFrames;
+};
+
+std::unique_ptr<FrameSink> FrameSink::Make(OutputFormat fmt, size_t frame_count) {
+    switch (fmt) {
+    case OutputFormat::kPNG:
+    case OutputFormat::kSKP:
+        return FileSink::Make();
+    case OutputFormat::kNull:
+        return NullSink::Make();
+#if defined(HAVE_VIDEO_ENCODER)
+    case OutputFormat::kMP4:
+        return MP4Sink::Make(frame_count);
+#endif
+    }
+
+    SkUNREACHABLE;
+}
+
+class FrameGenerator {
+public:
+    virtual ~FrameGenerator() = default;
+
+    static std::unique_ptr<FrameGenerator> Make(FrameSink*, OutputFormat, const SkMatrix&);
+
+    virtual void generateFrame(const skottie::Animation*, size_t frame_index) = 0;
+
+protected:
+    explicit FrameGenerator(FrameSink* sink) : fSink(sink) {}
+
+    FrameSink* fSink;
+
+private:
+    FrameGenerator(const FrameGenerator&)            = delete;
+    FrameGenerator& operator=(const FrameGenerator&) = delete;
+};
+
+class CPUGenerator final : public FrameGenerator {
+public:
+    static std::unique_ptr<FrameGenerator> Make(FrameSink* sink, const SkMatrix& matrix) {
         auto surface = SkSurface::MakeRasterN32Premul(FLAGS_width, FLAGS_height);
         if (!surface) {
             SkDebugf("Could not allocate a %d x %d surface.\n", FLAGS_width, FLAGS_height);
             return nullptr;
         }
 
-        return std::unique_ptr<Sink>(new NullSink(std::move(surface), scale_matrix));
+        return std::unique_ptr<FrameGenerator>(new CPUGenerator(sink, std::move(surface), matrix));
     }
 
 private:
-    NullSink(sk_sp<SkSurface> surface, const SkMatrix& scale_matrix)
-        : fSurface(std::move(surface)) {
+    CPUGenerator(FrameSink* sink, sk_sp<SkSurface> surface, const SkMatrix& scale_matrix)
+        : FrameGenerator(sink)
+        , fSurface(std::move(surface))
+    {
         fSurface->getCanvas()->concat(scale_matrix);
     }
 
-    SkCanvas* beginFrame(size_t) override {
-        auto* canvas = fSurface->getCanvas();
-        canvas->clear(kClearColor);
-        return canvas;
-    }
+    void generateFrame(const skottie::Animation* anim, size_t frame_index) override {
+        fSurface->getCanvas()->clear(kClearColor);
+        anim->render(fSurface->getCanvas());
 
-    bool endFrame(size_t) override {
-        return true;
+        fSink->writeImageFrame(fSurface->makeImageSnapshot(), frame_index);
     }
 
     const sk_sp<SkSurface> fSurface;
 };
 
-static std::vector<std::promise<sk_sp<SkImage>>> gMP4Frames;
-
-struct MP4Sink final : public Sink {
-    explicit MP4Sink(const SkMatrix& scale_matrix)
-        : fSurface(SkSurface::MakeRasterN32Premul(FLAGS_width, FLAGS_height)) {
-        fSurface->getCanvas()->concat(scale_matrix);
+class PictureGenerator final : public FrameGenerator {
+public:
+    static std::unique_ptr<FrameGenerator> Make(FrameSink* sink, const SkMatrix& scale_matrix) {
+        return std::unique_ptr<FrameGenerator>(new PictureGenerator(sink, scale_matrix));
     }
 
-    SkCanvas* beginFrame(size_t) override {
-        SkCanvas* canvas = fSurface->getCanvas();
-        canvas->clear(kClearColor);
-        return canvas;
+private:
+    explicit PictureGenerator(FrameSink* sink, const SkMatrix& scale_matrix)
+        : FrameGenerator(sink)
+        , fScaleMatrix(scale_matrix)
+    {}
+
+    void generateFrame(const skottie::Animation* anim, size_t frame_index) override {
+        auto* canvas = fRecorder.beginRecording(FLAGS_width, FLAGS_height);
+        canvas->concat(fScaleMatrix);
+        anim->render(canvas);
+
+        fSink->writePictureFrame(fRecorder.finishRecordingAsPicture(), frame_index);
     }
 
-    bool endFrame(size_t i) override {
-        if (sk_sp<SkImage> img = fSurface->makeImageSnapshot()) {
-            gMP4Frames[i].set_value(std::move(img));
-            return true;
-        }
-        return false;
-    }
-
-    const sk_sp<SkSurface> fSurface;
+    const SkMatrix    fScaleMatrix;
+    SkPictureRecorder fRecorder;
 };
+
+std::unique_ptr<FrameGenerator> FrameGenerator::Make(FrameSink* sink,
+                                                     OutputFormat fmt,
+                                                     const SkMatrix& matrix) {
+        return fmt == OutputFormat::kSKP
+            ? PictureGenerator::Make(sink, matrix)
+            :     CPUGenerator::Make(sink, matrix);
+}
 
 class Logger final : public skottie::Logger {
 public:
@@ -234,16 +330,6 @@ private:
                           fWarnings;
 };
 
-std::unique_ptr<Sink> MakeSink(const char* fmt, const SkMatrix& scale_matrix) {
-    if (0 == strcmp(fmt,  "png")) return  PNGSink::Make(scale_matrix);
-    if (0 == strcmp(fmt,  "skp")) return  SKPSink::Make(scale_matrix);
-    if (0 == strcmp(fmt, "null")) return NullSink::Make(scale_matrix);
-    if (0 == strcmp(fmt,  "mp4")) return std::make_unique<MP4Sink>(scale_matrix);
-
-    SkDebugf("Unknown format: %s\n", FLAGS_format[0]);
-    return nullptr;
-}
-
 } // namespace
 
 extern bool gSkUseThreadLocalStrikeCaches_IAcknowledgeThisIsIncrediblyExperimental;
@@ -258,7 +344,21 @@ int main(int argc, char** argv) {
         return 1;
     }
 
-    if (!FLAGS_format.contains("mp4") && !sk_mkdir(FLAGS_writePath[0])) {
+    OutputFormat fmt;
+    if (0 == strcmp(FLAGS_format[0],  "png")) {
+        fmt = OutputFormat::kPNG;
+    } else if (0 == strcmp(FLAGS_format[0],  "skp")) {
+        fmt = OutputFormat::kSKP;
+    }  else if (0 == strcmp(FLAGS_format[0], "null")) {
+        fmt = OutputFormat::kNull;
+    } else if (0 == strcmp(FLAGS_format[0],  "mp4")) {
+        fmt = OutputFormat::kMP4;
+    } else {
+        fprintf(stderr, "Unknown format: %s\n", FLAGS_format[0]);
+        return 1;
+    }
+
+    if (fmt != OutputFormat::kMP4 && !sk_mkdir(FLAGS_writePath[0])) {
         return 1;
     }
 
@@ -314,18 +414,11 @@ int main(int argc, char** argv) {
     }
     const auto fps_scale = native_fps / fps;
 
-    SkDebugf("Rendering %f seconds (%d frames @%f fps).\n", duration, frame_count, fps);
+    printf("Rendering %f seconds (%d frames @%f fps).\n", duration, frame_count, fps);
 
-    if (FLAGS_format.contains("mp4")) {
-        gMP4Frames.resize(frame_count);
-    }
+    const auto sink = FrameSink::Make(fmt, frame_count);
 
     std::vector<double> frames_ms(frame_count);
-
-    auto ms_since = [](auto start) {
-        const auto elapsed = std::chrono::steady_clock::now() - start;
-        return std::chrono::duration_cast<std::chrono::milliseconds>(elapsed).count();
-    };
 
     SkTaskGroup::Enabler enabler(FLAGS_threads - 1);
 
@@ -342,55 +435,25 @@ int main(int argc, char** argv) {
                     .setPrecompInterceptor(precomp_interceptor)
                     .make(static_cast<const char*>(data->data()), data->size())
                     .release();
-        thread_local static auto* sink = MakeSink(FLAGS_format[0], scale_matrix).release();
+        thread_local static auto* gen =
+                FrameGenerator::Make(sink.get(), fmt, scale_matrix).release();
 
-        if (sink && anim) {
+        if (gen && anim) {
             anim->seekFrame(frame0 + i * fps_scale);
-            anim->render(sink->beginFrame(i));
-            sink->endFrame(i);
+            gen->generateFrame(anim, SkToSizeT(i));
         }
 
         frames_ms[i] = ms_since(start);
     });
 
-#if defined(HAVE_VIDEO_ENCODER)
-    if (FLAGS_format.contains("mp4")) {
-        SkVideoEncoder enc;
-        if (!enc.beginRecording({FLAGS_width, FLAGS_height}, fps)) {
-            SkDEBUGF("Invalid video stream configuration.\n");
-            return -1;
-        }
+    sink->finalize(fps);
 
-        std::vector<double> starved_ms;
-        for (std::promise<sk_sp<SkImage>>& frame : gMP4Frames) {
-            const auto start = std::chrono::steady_clock::now();
-            sk_sp<SkImage> img = frame.get_future().get();
-            starved_ms.push_back(ms_since(start));
-
-            SkPixmap pm;
-            SkAssertResult(img->peekPixels(&pm));
-            enc.addFrame(pm);
-        }
-        sk_sp<SkData> mp4 = enc.endRecording();
-
-        SkFILEWStream{FLAGS_writePath[0]}
-            .write(mp4->data(), mp4->size());
-
-        // If everything's going well, the first frame should account for the most,
-        // and ideally nearly all, starvation.
-        double first = starved_ms[0];
-        std::sort(starved_ms.begin(), starved_ms.end());
-        double sum = std::accumulate(starved_ms.begin(), starved_ms.end(), 0);
-        SkDebugf("starved min %gms, med %gms, avg %gms, max %gms, sum %gms, first %gms (%s)\n",
-                 starved_ms[0], starved_ms[frame_count/2], sum/frame_count, starved_ms.back(), sum,
-                 first, first == starved_ms.back() ? "ok" : "BAD");
-    }
-#endif
     tg.wait();
 
     std::sort(frames_ms.begin(), frames_ms.end());
     double sum = std::accumulate(frames_ms.begin(), frames_ms.end(), 0);
-    SkDebugf("frame time min %gms, med %gms, avg %gms, max %gms, sum %gms\n",
-             frames_ms[0], frames_ms[frame_count/2], sum/frame_count, frames_ms.back(), sum);
+    printf("Frame time stats: min %gms, med %gms, avg %gms, max %gms, sum %gms\n",
+           frames_ms[0], frames_ms[frame_count/2], sum/frame_count, frames_ms.back(), sum);
+
     return 0;
 }
