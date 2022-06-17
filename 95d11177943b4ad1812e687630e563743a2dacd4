@@ -46,6 +46,30 @@
       },
       "revId": "95d11177943b4ad1812e687630e563743a2dacd4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "98520812_8d9783e1",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-06-17T15:00:32Z",
+      "side": 1,
+      "message": "OK, so it looks like #including MtlGraphicsPipeline.h is no good because it #imports \u003cMetal/Metal.h\u003e which requires Objective-C++.\n\nWe could move those values out of MtlGraphicsPipeline.h but probably we will eventually need a backend-neutral level of indirection (different backends will want different values). Once that is done, seems like this solves itself?",
+      "parentUuid": "d9719b94_8c94de94",
+      "range": {
+        "startLine": 162,
+        "startChar": 72,
+        "endLine": 162,
+        "endChar": 73
+      },
+      "revId": "95d11177943b4ad1812e687630e563743a2dacd4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
