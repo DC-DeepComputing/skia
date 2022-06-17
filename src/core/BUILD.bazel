@@ -415,6 +415,7 @@ SKSL_FILES = [
     "SkPaintParamsKey.cpp",
     "SkPaintParamsKey.h",
     "SkPrecompile.h",
+    "SkPrecompile.cpp",
     "SkRuntimeEffect.cpp",
     "SkSLTypeShared.h",
     "SkScopeExit.h",

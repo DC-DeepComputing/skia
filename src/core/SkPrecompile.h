@@ -16,6 +16,8 @@
 #include <vector>
 
 class SkRuntimeEffect;
+class SkShaderCodeDictionary;
+class SkUniquePaintParamsID;
 
 // TODO: wrap this in an  SK_PRECOMPILE check
 
@@ -76,6 +78,9 @@ public:
     void setBlenders(SkSpan<const sk_sp<SkPrecompileBlender>> blenders) {
         fBlenders.assign(blenders.begin(), blenders.end());
     }
+
+    void buildCombinations(SkShaderCodeDictionary*,
+                           const std::function<void(SkUniquePaintParamsID)>& func) const;
 
 private:
     std::vector<sk_sp<SkPrecompileShader>> fShaders;
