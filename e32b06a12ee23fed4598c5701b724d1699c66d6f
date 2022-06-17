@@ -353,6 +353,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "579a60bd_95ef86fd",
+        "filename": "modules/canvaskit/npm_build/types/index.d.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 289,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-06-17T22:45:10Z",
+      "side": 1,
+      "message": "After spending a few hours fiddling with Emscripten and help from the WebGPU chat room, I figured out how to pass a GPUTexture from JS to WASM so I think I can make this work.",
+      "parentUuid": "5a4058a9_c3b4e443",
+      "range": {
+        "startLine": 289,
+        "startChar": 4,
+        "endLine": 289,
+        "endChar": 25
+      },
+      "revId": "e32b06a12ee23fed4598c5701b724d1699c66d6f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "850a0cda_3c1ea31f",
         "filename": "modules/canvaskit/npm_build/types/tsconfig.json",
         "patchSetId": 1
