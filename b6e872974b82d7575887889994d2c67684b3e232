@@ -71,6 +71,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "71311bb9_8a4b03a5",
+        "filename": "toolchain/mac_m1_toolchain_config.bzl",
+        "patchSetId": 4
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2022-06-17T13:18:41Z",
+      "side": 1,
+      "message": "Ack. I\u0027ll track that as a change to make to the toolchain.",
+      "parentUuid": "4979076b_4d65a537",
+      "revId": "b6e872974b82d7575887889994d2c67684b3e232",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "63faa553_3d664a22",
