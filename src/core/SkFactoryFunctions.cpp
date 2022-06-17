@@ -7,6 +7,7 @@
 
 #include "src/core/SkFactoryFunctions.h"
 
+#include "include/effects/SkRuntimeEffect.h"
 #include "src/core/SkPrecompile.h"
 
 // TODO: wrap this in an  SK_PRECOMPILE check
@@ -106,6 +107,46 @@ sk_sp<SkPrecompileImageFilter> SkPrecompileImageFilters::Blur() {
 
 sk_sp<SkPrecompileImageFilter> SkPrecompileImageFilters::Image() {
     return sk_make_sp<SkPrecompileImageFilter>();
+}
+
+//--------------------------------------------------------------------------------------------------
+template<typename T>
+class SkPrecompileRTEffect : public T {
+public:
+    SkPrecompileRTEffect(sk_sp<SkRuntimeEffect> effect,
+                         SkSpan<const SkSpan<const sk_sp<T>>> childOptions)
+            : fEffect(std::move(effect)) {
+        fChildOptions.reserve(childOptions.size());
+        for (SkSpan<const sk_sp<T>> c : childOptions) {
+            fChildOptions.push_back({ c.begin(), c.end() });
+        }
+    }
+
+private:
+    sk_sp<SkRuntimeEffect> fEffect;
+    std::vector<std::vector<sk_sp<T>>> fChildOptions;
+};
+
+sk_sp<SkPrecompileShader> MakePrecompileShader(
+        sk_sp<SkRuntimeEffect> effect,
+        SkSpan<const SkPrecompileShaderOptions> childOptions) {
+    // TODO: check that 'effect' has the kAllowShader_Flag bit set
+    return sk_make_sp<SkPrecompileRTEffect<SkPrecompileShader>>(std::move(effect), childOptions);
+}
+
+sk_sp<SkPrecompileColorFilter> MakePrecompileColorFilter(
+        sk_sp<SkRuntimeEffect> effect,
+        SkSpan<const SkPrecompileColorFilterOptions> childOptions) {
+    // TODO: check that 'effect' has the kAllowColorFilter_Flag bit set
+    return sk_make_sp<SkPrecompileRTEffect<SkPrecompileColorFilter>>(std::move(effect),
+                                                                     childOptions);
+}
+
+sk_sp<SkPrecompileBlender> MakePrecompileBlender(
+        sk_sp<SkRuntimeEffect> effect,
+        SkSpan<const SkPrecompileBlenderOptions> childOptions) {
+    // TODO: check that 'effect' has the kAllowBlender_Flag bit set
+    return sk_make_sp<SkPrecompileRTEffect<SkPrecompileBlender>>(std::move(effect), childOptions);
 }
 
 //--------------------------------------------------------------------------------------------------
