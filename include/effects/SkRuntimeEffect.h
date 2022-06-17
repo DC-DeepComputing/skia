@@ -67,6 +67,8 @@ public:
             kInt4,
         };
 
+        static size_t NumComponents(Type type);
+
         enum Flags {
             // Uniform is declared as an array. 'count' contains array length.
             kArray_Flag = 0x1,

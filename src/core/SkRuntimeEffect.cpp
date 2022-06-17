@@ -540,28 +540,28 @@ sk_sp<SkRuntimeEffect> SkMakeCachedRuntimeEffect(SkRuntimeEffect::Result (*make)
     return effect;
 }
 
-static size_t uniform_element_size(SkRuntimeEffect::Uniform::Type type) {
+size_t SkRuntimeEffect::Uniform::NumComponents(SkRuntimeEffect::Uniform::Type type) {
     switch (type) {
-        case SkRuntimeEffect::Uniform::Type::kFloat:  return sizeof(float);
-        case SkRuntimeEffect::Uniform::Type::kFloat2: return sizeof(float) * 2;
-        case SkRuntimeEffect::Uniform::Type::kFloat3: return sizeof(float) * 3;
-        case SkRuntimeEffect::Uniform::Type::kFloat4: return sizeof(float) * 4;
+        case SkRuntimeEffect::Uniform::Type::kFloat:  return 1;
+        case SkRuntimeEffect::Uniform::Type::kFloat2: return 2;
+        case SkRuntimeEffect::Uniform::Type::kFloat3: return 3;
+        case SkRuntimeEffect::Uniform::Type::kFloat4: return 4;
 
-        case SkRuntimeEffect::Uniform::Type::kFloat2x2: return sizeof(float) * 4;
-        case SkRuntimeEffect::Uniform::Type::kFloat3x3: return sizeof(float) * 9;
-        case SkRuntimeEffect::Uniform::Type::kFloat4x4: return sizeof(float) * 16;
+        case SkRuntimeEffect::Uniform::Type::kFloat2x2: return 4;
+        case SkRuntimeEffect::Uniform::Type::kFloat3x3: return 9;
+        case SkRuntimeEffect::Uniform::Type::kFloat4x4: return 16;
 
-        case SkRuntimeEffect::Uniform::Type::kInt:  return sizeof(int);
-        case SkRuntimeEffect::Uniform::Type::kInt2: return sizeof(int) * 2;
-        case SkRuntimeEffect::Uniform::Type::kInt3: return sizeof(int) * 3;
-        case SkRuntimeEffect::Uniform::Type::kInt4: return sizeof(int) * 4;
+        case SkRuntimeEffect::Uniform::Type::kInt:  return 1;
+        case SkRuntimeEffect::Uniform::Type::kInt2: return 2;
+        case SkRuntimeEffect::Uniform::Type::kInt3: return 3;
+        case SkRuntimeEffect::Uniform::Type::kInt4: return 4;
         default: SkUNREACHABLE;
     }
 }
 
 size_t SkRuntimeEffect::Uniform::sizeInBytes() const {
     static_assert(sizeof(int) == sizeof(float));
-    return uniform_element_size(this->type) * this->count;
+    return NumComponents(this->type) * this->count * sizeof(float);
 }
 
 SkRuntimeEffect::SkRuntimeEffect(std::unique_ptr<SkSL::Program> baseProgram,
