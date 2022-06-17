@@ -67,13 +67,13 @@ static MTLPrimitiveType gr_to_mtl_primitive(GrPrimitiveType primitiveType) {
 bool GrMtlOpsRenderPass::onBindPipeline(const GrProgramInfo& programInfo,
                                         const SkRect& drawBounds) {
     const GrMtlCaps& caps = fGpu->mtlCaps();
-    GrProgramDesc programDesc = caps.makeDesc(fRenderTarget, programInfo,
+    GrProgramDesc programDesc = caps.makeDesc(fRenderTarget, &programInfo,
                                               GrCaps::ProgramDescOverrideFlags::kNone);
     if (!programDesc.isValid()) {
         return false;
     }
 
-    fActivePipelineState = fGpu->resourceProvider().findOrCreateCompatiblePipelineState(
+    fActivePipelineState = fGpu->resourceProvider().findOrCreateCompatibleRenderPipelineState(
             programDesc, programInfo);
     if (!fActivePipelineState) {
         return false;
@@ -113,10 +113,8 @@ bool GrMtlOpsRenderPass::onBindPipeline(const GrProgramInfo& programInfo,
     if (!programInfo.pipeline().isScissorTestEnabled()) {
         // "Disable" scissor by setting it to the full pipeline bounds.
         SkISize dimensions = fFramebuffer->colorAttachment()->dimensions();
-        GrMtlPipelineState::SetDynamicScissorRectState(fActiveRenderCmdEncoder,
-                                                       dimensions, fOrigin,
-                                                       SkIRect::MakeWH(dimensions.width(),
-                                                                       dimensions.height()));
+        GrMtlRenderPipelineState::SetDynamicScissorRectState(fActiveRenderCmdEncoder,
+                dimensions, fOrigin, SkIRect::MakeWH(dimensions.width(), dimensions.height()));
     }
 
     fActivePrimitiveType = gr_to_mtl_primitive(programInfo.primitiveType());
@@ -127,9 +125,8 @@ bool GrMtlOpsRenderPass::onBindPipeline(const GrProgramInfo& programInfo,
 void GrMtlOpsRenderPass::onSetScissorRect(const SkIRect& scissor) {
     SkASSERT(fActivePipelineState);
     SkASSERT(fActiveRenderCmdEncoder);
-    GrMtlPipelineState::SetDynamicScissorRectState(fActiveRenderCmdEncoder,
-                                                   fFramebuffer->colorAttachment()->dimensions(),
-                                                   fOrigin, scissor);
+    GrMtlRenderPipelineState::SetDynamicScissorRectState(fActiveRenderCmdEncoder,
+            fFramebuffer->colorAttachment()->dimensions(), fOrigin, scissor);
 }
 
 bool GrMtlOpsRenderPass::onBindTextures(const GrGeometryProcessor& geomProc,

@@ -17,7 +17,7 @@
 typedef uint32_t GrColor;
 class GrMtlBuffer;
 class GrMtlFramebuffer;
-class GrMtlPipelineState;
+class GrMtlRenderPipelineState;
 class GrMtlRenderCommandEncoder;
 class GrMtlRenderTarget;
 
@@ -72,7 +72,7 @@ private:
 
     sk_sp<GrMtlFramebuffer>     fFramebuffer;
     GrMtlRenderCommandEncoder*  fActiveRenderCmdEncoder;
-    GrMtlPipelineState*         fActivePipelineState = nullptr;
+    GrMtlRenderPipelineState*   fActivePipelineState = nullptr;
     MTLPrimitiveType            fActivePrimitiveType;
     MTLRenderPassDescriptor*    fRenderPassDesc;
     SkRect                      fBounds;

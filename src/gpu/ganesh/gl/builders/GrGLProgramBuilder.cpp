@@ -68,7 +68,7 @@ sk_sp<GrGLProgram> GrGLProgramBuilder::CreateProgram(
         // doing necessary setup in addition to generating the SkSL code. Currently we are only able
         // to skip the SkSL->GLSL step on a cache hit.
     }
-    if (!builder.emitAndInstallProcs()) {
+    if (!builder.emitAndInstallRenderProcs()) {
         return nullptr;
     }
     return builder.finalize(precompiledProgram);
