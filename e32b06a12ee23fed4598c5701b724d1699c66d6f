@@ -163,6 +163,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c8fcb9b2_1c6e9337",
+        "filename": "modules/canvaskit/npm_build/types/index.d.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 227,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-06-17T16:21:33Z",
+      "side": 1,
+      "message": "That is correct, the client has to create a new surface for each frame (and as far as I can tell there is no good way to cache the surfaces based on GPUTexture objects, as the objects don\u0027t have unique IDs). That\u0027s why I added the big disclaimer.\n\nI can remove this function certainly. What should the generic MakeCanvasSurface do in this case? Default to CPU rendering? Should it be set to null so that it\u0027s an error if you call it in a WebGPU build, so that the client that expects this to use WebGPU can detect the situation?",
+      "parentUuid": "92a8c837_73620917",
+      "range": {
+        "startLine": 225,
+        "startChar": 0,
+        "endLine": 227,
+        "endChar": 65
+      },
+      "revId": "e32b06a12ee23fed4598c5701b724d1699c66d6f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1176262f_f623d7d5",
         "filename": "modules/canvaskit/npm_build/types/index.d.ts",
         "patchSetId": 1
@@ -270,6 +294,30 @@
       "side": 1,
       "message": "Merging thoughts from both comment threads: I do wonder if we can get rid of MakeWebGPUCanvasSurface, or at least rename it to be less similar to MakeGPUCanvasSurface.",
       "parentUuid": "c037a511_6fedb1d2",
+      "range": {
+        "startLine": 269,
+        "startChar": 4,
+        "endLine": 269,
+        "endChar": 17
+      },
+      "revId": "e32b06a12ee23fed4598c5701b724d1699c66d6f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c7733dcf_128e307b",
+        "filename": "modules/canvaskit/npm_build/types/index.d.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 269,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-06-17T16:21:33Z",
+      "side": 1,
+      "message": "+1. I can remove it depending on what we decide wrt the generic MakeCanvasSurface. If we keep it around then I would rename it something like `DeprecatedMakeWebGPUDeviceContextWithCanvasSurface`.",
+      "parentUuid": "1461b973_befe4243",
       "range": {
         "startLine": 269,
         "startChar": 4,
