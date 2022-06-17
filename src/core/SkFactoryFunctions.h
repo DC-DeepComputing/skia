@@ -87,4 +87,24 @@ private:
     SkPrecompileImageFilters() = delete;
 };
 
+//--------------------------------------------------------------------------------------------------
+// TODO: maybe use these everywhere in this header
+using SkPrecompileShaderOptions = SkSpan<const sk_sp<SkPrecompileShader>>;
+using SkPrecompileColorFilterOptions = SkSpan<const sk_sp<SkPrecompileColorFilter>>;
+using SkPrecompileBlenderOptions = SkSpan<const sk_sp<SkPrecompileBlender>>;
+
+// These will move to be on SkRuntimeEffect to parallel makeShader, makeColorFilter and
+// makeBlender
+sk_sp<SkPrecompileShader> MakePrecompileShader(
+        sk_sp<SkRuntimeEffect> effect,
+        SkSpan<const SkPrecompileShaderOptions> childOptions = {});
+
+sk_sp<SkPrecompileColorFilter> MakePrecompileColorFilter(
+        sk_sp<SkRuntimeEffect> effect,
+        SkSpan<const SkPrecompileColorFilterOptions> childOptions = {});
+
+sk_sp<SkPrecompileBlender> MakePrecompileBlender(
+        sk_sp<SkRuntimeEffect> effect,
+        SkSpan<const SkPrecompileBlenderOptions> childOptions = {});
+
 #endif // SkFactoryFunctions_DEFINED
