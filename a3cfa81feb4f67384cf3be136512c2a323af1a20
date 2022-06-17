@@ -16,6 +16,24 @@
       "message": "Thinking ahead - it seems like we will probably want some \"addTestingSnippet\" entry point to replace \"addUserDefinedSnippet\". Otherwise it would become difficult to easily make these unit tests.",
       "revId": "a3cfa81feb4f67384cf3be136512c2a323af1a20",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8a8b3af0_51a5371c",
+        "filename": "tests/graphite/KeyTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 240,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-06-17T12:50:48Z",
+      "side": 1,
+      "message": "AFAICS the current mechanism seems fine... are you just suggesting changing the name of the API or did you have a larger redesign in mind?",
+      "parentUuid": "8d4a8537_243b0876",
+      "revId": "a3cfa81feb4f67384cf3be136512c2a323af1a20",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
