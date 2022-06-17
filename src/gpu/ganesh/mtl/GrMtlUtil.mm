@@ -237,6 +237,43 @@ id<MTLRenderPipelineState> GrMtlNewRenderPipelineStateWithDescriptor(
     return pipelineState;
 }
 
+id<MTLComputePipelineState> GrMtlNewComputePipelineStateWithDescriptor(
+        id<MTLDevice> device, MTLComputePipelineDescriptor* pipelineDescriptor, NSError** error) {
+    dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
+    sk_sp<MtlCompileResult> compileResult(new MtlCompileResult);
+    // We have to increment the ref for the Obj-C block manually because it won't do it for us
+    compileResult->ref();
+    MTLNewComputePipelineStateWithReflectionCompletionHandler completionHandler =
+            ^(id<MTLComputePipelineState> state, MTLComputePipelineReflection *reflect,
+                    NSError* compileError) {
+                compileResult->set(state, compileError);
+                dispatch_semaphore_signal(semaphore);
+                compileResult->unref();
+            };
+
+    [device newComputePipelineStateWithDescriptor: pipelineDescriptor
+                                          options: MTLPipelineOption()
+                                completionHandler: completionHandler];
+
+    // Wait 1 second for pipeline creation
+    constexpr auto kTimeoutNS = 1000000000UL;
+    if (dispatch_semaphore_wait(semaphore, dispatch_time(DISPATCH_TIME_NOW, kTimeoutNS))) {
+        if (error) {
+            constexpr auto kTimeoutMS = kTimeoutNS/1000000UL;
+            NSString* description =
+                    [NSString stringWithFormat:@"Pipeline creation took longer than %lu ms",
+                                               kTimeoutMS];
+            *error = GrCreateMtlError(description, GrMtlErrorCode::kTimeout);
+        }
+        return nil;
+    }
+
+    id<MTLComputePipelineState> pipelineState;
+    std::tie(pipelineState, *error) = compileResult->get();
+
+    return pipelineState;
+}
+
 id<MTLTexture> GrGetMTLTextureFromSurface(GrSurface* surface) {
     id<MTLTexture> mtlTexture = nil;
 

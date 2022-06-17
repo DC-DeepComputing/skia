@@ -23,6 +23,7 @@
 #include "src/gpu/ganesh/mtl/GrMtlBuffer.h"
 #include "src/gpu/ganesh/mtl/GrMtlCommandBuffer.h"
 #include "src/gpu/ganesh/mtl/GrMtlOpsRenderPass.h"
+#include "src/gpu/ganesh/mtl/GrMtlPipelineState.h"
 #include "src/gpu/ganesh/mtl/GrMtlPipelineStateBuilder.h"
 #include "src/gpu/ganesh/mtl/GrMtlRenderCommandEncoder.h"
 #include "src/gpu/ganesh/mtl/GrMtlSemaphore.h"
@@ -42,6 +43,56 @@ GR_NORETAIN_BEGIN
 // set to 1 if you want to do GPU capture of each commandBuffer
 #define GR_METAL_CAPTURE_COMMANDBUFFER 0
 #endif
+
+void testComputeShader(GrGpu* rawGpu) {
+    GrMtlGpu* gpu = (GrMtlGpu*)rawGpu;
+    GrMtlResourceProvider& provider = ((GrMtlGpu*)gpu)->resourceProvider();
+    const GrMtlCaps& caps = gpu->mtlCaps();
+    GrProgramDesc programDesc = caps.makeDesc(nullptr, nullptr,
+                                              GrCaps::ProgramDescOverrideFlags::kNone);
+    if (!programDesc.isValid()) {
+        abort();
+    }
+
+    GrMtlComputePipelineState* pipelineState =
+            gpu->resourceProvider().findOrCreateCompatibleComputePipelineState(programDesc,
+                // Silly test; just playing around with various types of parameters, and being sure
+                // to specify out-of-order locations. I don't actually have the textures wired up to
+                // anything here yet; hopefully the code is doing the right thing.
+                "layout(set=0, binding=0) in int[] x;\n"
+                "layout(set=0, binding=1) out int[] y;\n"
+                "void main() {"
+                "    y[sk_ThreadPosition.x] = x[sk_ThreadPosition.x] * 2;"
+                "}");
+    if (!pipelineState) {
+        abort();
+    }
+    auto computePassDesc = [[MTLComputePassDescriptor alloc] init];
+    id<MTLComputePipelineState> pipeline = pipelineState->pipeline()->mtlPipelineState();
+    GrMtlComputeCommandEncoder* encoder =
+            gpu->commandBuffer()->getComputeCommandEncoder(computePassDesc);
+    encoder->setComputePipelineState(pipeline);
+
+    static constexpr int COUNT = 100;
+    auto buffer1 = [gpu->device() newBufferWithLength:sizeof(int) * COUNT
+            options:MTLResourceStorageModeShared];
+    for (int i = 0; i < COUNT; ++i) {
+        ((int*)buffer1.contents)[i] = i;
+    }
+    encoder->setBuffer(buffer1, 0, 0);
+
+    auto buffer2 = [gpu->device() newBufferWithLength:sizeof(int) * COUNT
+            options:MTLResourceStorageModeShared];
+    encoder->setBuffer(buffer2, 0, 1);
+
+    encoder->execute(10, 1, 1, 10, 1, 1);
+    gpu->commandBuffer()->commit(true);
+    printf("#####################\n");
+    for (int i = 0; i < COUNT; ++i) {
+        printf("%d\n", ((int*)buffer2.contents)[i]);
+    }
+    printf("#####################\n");
+}
 
 sk_sp<GrGpu> GrMtlGpu::Make(const GrMtlBackendContext& context, const GrContextOptions& options,
                             GrDirectContext* direct) {
@@ -1123,8 +1174,7 @@ void GrMtlGpu::deleteBackendTexture(const GrBackendTexture& tex) {
 bool GrMtlGpu::compile(const GrProgramDesc& desc, const GrProgramInfo& programInfo) {
 
     GrThreadSafePipelineBuilder::Stats::ProgramCacheResult stat;
-
-    auto pipelineState = this->resourceProvider().findOrCreateCompatiblePipelineState(
+    auto pipelineState = this->resourceProvider().findOrCreateCompatibleRenderPipelineState(
                                  desc, programInfo, &stat);
     if (!pipelineState) {
         return false;
