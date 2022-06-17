@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3b4fcbf5_47f94f25",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-06-17T14:09:11Z",
+      "side": 1,
+      "message": "That\u0027s weird, size is supposed to be constexpr",
+      "range": {
+        "startLine": 10,
+        "startChar": 3,
+        "endLine": 10,
+        "endChar": 57
+      },
+      "revId": "f3ea31694b6efc0ad67da87df66a9fbbc68b9fd4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
