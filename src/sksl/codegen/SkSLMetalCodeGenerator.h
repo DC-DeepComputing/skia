@@ -153,6 +153,8 @@ protected:
 
     void writeLayout(const Layout& layout);
 
+    void writeAddressSpace(const Modifiers& modifiers);
+
     void writeModifiers(const Modifiers& modifiers);
 
     void writeVarInitializer(const Variable& var, const Expression& value);

@@ -80,7 +80,7 @@ public:
     static ScratchVariable MakeScratchVariable(const Context& context,
                                                std::string_view baseName,
                                                const Type* type,
-                                               const Modifiers& modifiers,
+                                               Modifiers modifiers,
                                                SymbolTable* symbolTable,
                                                std::unique_ptr<Expression> initialValue);
     const Modifiers& modifiers() const {

@@ -102,7 +102,7 @@ std::unique_ptr<Variable> Variable::Make(const Context& context, Position pos,
 Variable::ScratchVariable Variable::MakeScratchVariable(const Context& context,
                                                         std::string_view baseName,
                                                         const Type* type,
-                                                        const Modifiers& modifiers,
+                                                        Modifiers modifiers,
                                                         SymbolTable* symbolTable,
                                                         std::unique_ptr<Expression> initialValue) {
     // $floatLiteral or $intLiteral aren't real types that we can use for scratch variables, so
@@ -124,7 +124,7 @@ Variable::ScratchVariable Variable::MakeScratchVariable(const Context& context,
     ScratchVariable result;
     auto var = std::make_unique<Variable>(initialValue ? initialValue->fPosition : Position(),
                                           /*modifiersPosition=*/Position(),
-                                          context.fModifiersPool->add(Modifiers{}),
+                                          context.fModifiersPool->add(Modifiers()),
                                           name->c_str(),
                                           type,
                                           symbolTable->isBuiltin(),

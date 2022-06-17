@@ -127,8 +127,12 @@ void VarDeclaration::ErrorCheck(const Context& context,
                                 Position pos,
                                 Position modifiersPosition,
                                 const Modifiers& modifiers,
-                                const Type* baseType,
+                                const Type* type,
                                 Variable::Storage storage) {
+    const Type* baseType = type;
+    if (baseType->isArray()) {
+        baseType = &baseType->componentType();
+    }
     SkASSERT(!baseType->isArray());
 
     if (baseType->matches(*context.fTypes.fInvalid)) {
@@ -186,7 +190,14 @@ void VarDeclaration::ErrorCheck(const Context& context,
     }
     int permitted = Modifiers::kConst_Flag | Modifiers::kHighp_Flag | Modifiers::kMediump_Flag |
                     Modifiers::kLowp_Flag;
-    if (storage == Variable::Storage::kGlobal) {
+    if (ProgramConfig::IsCompute(context.fConfig->fKind)) {
+        permitted |= Modifiers::kIn_Flag | Modifiers::kOut_Flag;
+        if (type->isArray() && (storage == Variable::Storage::kGlobal ||
+                                storage == Variable::Storage::kParameter)) {
+            permitted |= Modifiers::kDevice_Flag | Modifiers::kThreadGroup_Flag |
+                    Modifiers::kThread_Flag;
+        }
+    } else if (storage == Variable::Storage::kGlobal) {
         permitted |= Modifiers::kIn_Flag | Modifiers::kOut_Flag | Modifiers::kUniform_Flag |
                      Modifiers::kFlat_Flag | Modifiers::kNoPerspective_Flag;
     }
@@ -210,11 +221,7 @@ void VarDeclaration::ErrorCheck(const Context& context,
 
 bool VarDeclaration::ErrorCheckAndCoerce(const Context& context, const Variable& var,
         std::unique_ptr<Expression>& value) {
-    const Type* baseType = &var.type();
-    if (baseType->isArray()) {
-        baseType = &baseType->componentType();
-    }
-    ErrorCheck(context, var.fPosition, var.modifiersPosition(), var.modifiers(), baseType,
+    ErrorCheck(context, var.fPosition, var.modifiersPosition(), var.modifiers(), &var.type(),
             var.storage());
     if (value) {
         if (var.type().isOpaque()) {
