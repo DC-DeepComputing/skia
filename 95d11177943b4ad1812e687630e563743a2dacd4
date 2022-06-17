@@ -22,6 +22,30 @@
       },
       "revId": "95d11177943b4ad1812e687630e563743a2dacd4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d9719b94_8c94de94",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-06-17T14:50:49Z",
+      "side": 1,
+      "message": "No idea honestly! I didn\u0027t write this and didn\u0027t know why it was 2, I just annotated the variable name since a lone \"2\" is mysterious.  I\u0027ll investigate in a followup I guess, but it seems like replacing it with a named constant `kPaintUniformBufferIndex` should be doable!",
+      "parentUuid": "494886bb_f201a31a",
+      "range": {
+        "startLine": 162,
+        "startChar": 72,
+        "endLine": 162,
+        "endChar": 73
+      },
+      "revId": "95d11177943b4ad1812e687630e563743a2dacd4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
