@@ -4840,7 +4840,7 @@ uint64_t GrGLCaps::computeFormatKey(const GrBackendFormat& format) const {
 }
 
 GrProgramDesc GrGLCaps::makeDesc(GrRenderTarget* /* rt */,
-                                 const GrProgramInfo& programInfo,
+                                 const GrProgramInfo* programInfo,
                                  ProgramDescOverrideFlags overrideFlags) const {
     SkASSERT(overrideFlags == ProgramDescOverrideFlags::kNone);
     GrProgramDesc desc;

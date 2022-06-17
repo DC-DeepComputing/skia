@@ -168,19 +168,28 @@ static void gen_key(skgpu::KeyBuilder* b,
 }
 
 void GrProgramDesc::Build(GrProgramDesc* desc,
-                          const GrProgramInfo& programInfo,
+                          const GrProgramInfo* programInfo,
                           const GrCaps& caps) {
     desc->reset();
     skgpu::KeyBuilder b(desc->key());
-    gen_key(&b, programInfo, caps);
+    if (programInfo) {
+        gen_key(&b, *programInfo, caps);
+    } else {
+        b.addBool(false, "programInfo");
+        b.flush();
+    }
     desc->fInitialKeyLength = desc->keyLength();
 }
 
-SkString GrProgramDesc::Describe(const GrProgramInfo& programInfo,
+SkString GrProgramDesc::Describe(const GrProgramInfo* programInfo,
                                  const GrCaps& caps) {
     GrProgramDesc desc;
     skgpu::StringKeyBuilder b(desc.key());
-    gen_key(&b, programInfo, caps);
-    b.flush();
+    if (programInfo) {
+        gen_key(&b, *programInfo, caps);
+    } else {
+        b.addBool(false, "programInfo");
+        b.flush();
+    }
     return b.description();
 }
