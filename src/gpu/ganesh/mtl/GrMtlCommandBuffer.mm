@@ -79,7 +79,7 @@ id<MTLBlitCommandEncoder> GrMtlCommandBuffer::getBlitCommandEncoder() {
 
 static bool compatible(const MTLRenderPassAttachmentDescriptor* first,
                        const MTLRenderPassAttachmentDescriptor* second,
-                       const GrMtlPipelineState* pipelineState) {
+                       const GrMtlRenderPipelineState* pipelineState) {
     // From the Metal Best Practices Guide:
     // Check to see if the previous descriptor is compatible with the new one.
     // They are compatible if:
@@ -145,7 +145,7 @@ static bool compatible(const MTLRenderPassAttachmentDescriptor* first,
 }
 
 GrMtlRenderCommandEncoder* GrMtlCommandBuffer::getRenderCommandEncoder(
-        MTLRenderPassDescriptor* descriptor, const GrMtlPipelineState* pipelineState,
+        MTLRenderPassDescriptor* descriptor, const GrMtlRenderPipelineState* pipelineState,
         GrMtlOpsRenderPass* opsRenderPass) {
     if (nil != fPreviousRenderPassDescriptor) {
         if (compatible(fPreviousRenderPassDescriptor.colorAttachments[0],
@@ -185,6 +185,37 @@ GrMtlRenderCommandEncoder* GrMtlCommandBuffer::getRenderCommandEncoder(
     return fActiveRenderCommandEncoder.get();
 }
 
+GrMtlComputeCommandEncoder* GrMtlCommandBuffer::getComputeCommandEncoder(
+        MTLComputePassDescriptor* descriptor, const GrMtlComputePipelineState* pipelineState) {
+    if (fPreviousComputePassDescriptor) {
+        return fActiveComputeCommandEncoder.get();
+    }
+
+    return this->getComputeCommandEncoder(descriptor);
+}
+
+GrMtlComputeCommandEncoder* GrMtlCommandBuffer::getComputeCommandEncoder(
+        MTLComputePassDescriptor* descriptor) {
+    this->endAllEncoding();
+    if (fCmdBuffer.status != MTLCommandBufferStatusNotEnqueued) {
+        NSLog(@"GrMtlCommandBuffer: tried to create MTLComputeCommandEncoder while in bad state.");
+        return nullptr;
+    }
+#ifdef SK_BUILD_FOR_IOS
+    if (GrMtlIsAppInBackground()) {
+        fActiveComputeCommandEncoder = nullptr;
+        NSLog(@"GrMtlCommandBuffer: tried to create MTLComputeCommandEncoder while in background.");
+        return nullptr;
+    }
+#endif
+    fActiveComputeCommandEncoder = GrMtlComputeCommandEncoder::Make(
+            [fCmdBuffer computeCommandEncoderWithDescriptor:descriptor]);
+    fPreviousComputePassDescriptor = descriptor;
+    fHasWork = true;
+
+    return fActiveComputeCommandEncoder.get();
+}
+
 bool GrMtlCommandBuffer::commit(bool waitUntilCompleted) {
     this->endAllEncoding();
     if (fCmdBuffer.status != MTLCommandBufferStatusNotEnqueued) {
@@ -216,6 +247,11 @@ bool GrMtlCommandBuffer::commit(bool waitUntilCompleted) {
 }
 
 void GrMtlCommandBuffer::endAllEncoding() {
+    if (fActiveComputeCommandEncoder) {
+        fActiveComputeCommandEncoder->endEncoding();
+        fActiveComputeCommandEncoder.reset();
+        fPreviousComputePassDescriptor = nil;
+    }
     if (fActiveRenderCommandEncoder) {
         fActiveRenderCommandEncoder->endEncoding();
         fActiveRenderCommandEncoder.reset();
