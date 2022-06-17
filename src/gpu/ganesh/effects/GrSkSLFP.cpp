@@ -382,11 +382,54 @@ std::unique_ptr<GrFragmentProcessor::ProgramImpl> GrSkSLFP::onMakeProgramImpl() 
 }
 
 void GrSkSLFP::onAddToKey(const GrShaderCaps& caps, skgpu::KeyBuilder* b) const {
-    // In the unlikely event of a hash collision, we also include the uniform size in the key.
-    // That ensures that we will (at worst) use the wrong program, but one that expects the same
-    // amount of uniform data.
-    b->add32(fEffect->hash());
-    b->add32(fUniformSize);
+    // In the unlikely event of a hash collision, we also include uniform and child requirements in
+    // the key. That ensures that we will (at worst) use the wrong program, but one that expects
+    // matching uniforms and children.
+    b->add32(fEffect->hash(), "shader text hash");
+
+    // Store a unique bit pattern for each child type.
+    for (const SkRuntimeEffect::Child& child : fEffect->children()) {
+        switch (child.type) {
+            case SkRuntimeEffect::ChildType::kShader:
+                b->addBits(2, 1, "shader");
+                break;
+
+            case SkRuntimeEffect::ChildType::kColorFilter:
+                b->addBits(2, 2, "color filter");
+                break;
+
+            case SkRuntimeEffect::ChildType::kBlender:
+                b->addBits(2, 3, "blender");
+                break;
+        }
+    }
+    b->addBits(2, 0, "begin uniforms");
+
+    // Store zero bits for float uniforms, and one bits for int uniforms.
+    for (const SkRuntimeEffect::Uniform& uniform : fEffect->uniforms()) {
+        SkASSERT(uniform.count > 0);
+        for (int index = 0; index < uniform.count; ++index) {
+            int numBits = uniform.sizeInBytes() / sizeof(float);
+            switch (uniform.type) {
+                case SkRuntimeEffect::Uniform::Type::kFloat:
+                case SkRuntimeEffect::Uniform::Type::kFloat2:
+                case SkRuntimeEffect::Uniform::Type::kFloat4:
+                case SkRuntimeEffect::Uniform::Type::kFloat3:
+                case SkRuntimeEffect::Uniform::Type::kFloat2x2:
+                case SkRuntimeEffect::Uniform::Type::kFloat3x3:
+                case SkRuntimeEffect::Uniform::Type::kFloat4x4:
+                    b->addBits(numBits, 0, "floats");
+                    break;
+
+                case SkRuntimeEffect::Uniform::Type::kInt:
+                case SkRuntimeEffect::Uniform::Type::kInt2:
+                case SkRuntimeEffect::Uniform::Type::kInt3:
+                case SkRuntimeEffect::Uniform::Type::kInt4:
+                    b->addBits(numBits, (1 << numBits) - 1, "ints");
+                    break;
+            }
+        }
+    }
 
     const Specialized* specialized = this->specialized();
     const uint8_t* uniformData = this->uniformData();
