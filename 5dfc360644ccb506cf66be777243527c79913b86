@@ -52,6 +52,24 @@
       "parentUuid": "086c12a0_8cb91a60",
       "revId": "5dfc360644ccb506cf66be777243527c79913b86",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "20f646a4_30ff8699",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-06-17T22:17:44Z",
+      "side": 1,
+      "message": "Right now, I think I\u0027d prefer PS1. PS3 has some interesting edge-cases with how it encodes the uniforms (eg, a float4 is the same as two float2\u0027s ?). My original point was really:\n\nWe should harden this now, and it may be more expensive (memory and/or CPU) than we\u0027d like, but it\u0027s worth doing in the short term. But... as long as we\u0027re not inducing hash collisions, we don\u0027t even understand the possible failure modes - we\u0027re basically flying blind on how this might bite us, and what we need to guard against. PS1 certainly feels more robust than PS3, and I\u0027d be happy to land it ... but I do want to file a bug to track the idea of forcing collisions so we can see how it breaks.",
+      "parentUuid": "cfbdbfee_e1fd64b7",
+      "revId": "5dfc360644ccb506cf66be777243527c79913b86",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
