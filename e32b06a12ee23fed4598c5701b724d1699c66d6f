@@ -115,6 +115,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a059856b_de9009b9",
+        "filename": "modules/canvaskit/npm_build/types/index.d.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 227,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-06-17T14:05:33Z",
+      "side": 1,
+      "message": "Just to make sure I\u0027m clear - does this also have slightly different semantics than MakeWebGLCanvasSurface, if you want to render to the canvas over multiple frames? If so, you can reuse the surface returned from MakeWebGL (because it handles the FBO -\u003e next buffer mapping), but with MakeWebGPU you would have to call this each frame, so that the surface points at the correct entry in the swap chain?",
+      "parentUuid": "92e22fbf_000e6b4a",
+      "range": {
+        "startLine": 225,
+        "startChar": 0,
+        "endLine": 227,
+        "endChar": 65
+      },
+      "revId": "e32b06a12ee23fed4598c5701b724d1699c66d6f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1176262f_f623d7d5",
         "filename": "modules/canvaskit/npm_build/types/index.d.ts",
         "patchSetId": 1
@@ -198,6 +222,30 @@
       "side": 1,
       "message": "I like that. We could consider an effort later to replace \"MakeGrContext\" with \"MakeGLContext\" or similar.",
       "parentUuid": "2424f6c6_a609654e",
+      "range": {
+        "startLine": 269,
+        "startChar": 4,
+        "endLine": 269,
+        "endChar": 17
+      },
+      "revId": "e32b06a12ee23fed4598c5701b724d1699c66d6f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1461b973_befe4243",
+        "filename": "modules/canvaskit/npm_build/types/index.d.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 269,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-06-17T14:05:33Z",
+      "side": 1,
+      "message": "Merging thoughts from both comment threads: I do wonder if we can get rid of MakeWebGPUCanvasSurface, or at least rename it to be less similar to MakeGPUCanvasSurface.",
+      "parentUuid": "c037a511_6fedb1d2",
       "range": {
         "startLine": 269,
         "startChar": 4,
