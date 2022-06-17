@@ -218,15 +218,9 @@ void GrVkBuffer::copyCpuDataToGpuBuffer(const void* src, size_t size) {
             return;
         }
 
-        gpu->copyBuffer(std::move(transferBuffer), sk_ref_sp(this), /*srcOffset=*/0,
-                        /*dstOffset=*/0, size);
+        gpu->bufferTransfer(std::move(transferBuffer), /*srcOffset=*/0, sk_ref_sp(this),
+                            /*dstOffset=*/0, size);
     }
-
-    this->addMemoryBarrier(VK_ACCESS_TRANSFER_WRITE_BIT,
-                           buffer_type_to_access_flags(this->intendedType()),
-                           VK_PIPELINE_STAGE_TRANSFER_BIT,
-                           VK_PIPELINE_STAGE_VERTEX_INPUT_BIT,
-                           /*byRegion=*/false);
 }
 
 void GrVkBuffer::addMemoryBarrier(VkAccessFlags srcAccessMask,
