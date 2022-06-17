@@ -330,6 +330,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5a4058a9_c3b4e443",
+        "filename": "modules/canvaskit/npm_build/types/index.d.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 289,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-06-17T17:30:44Z",
+      "side": 1,
+      "message": "I also realized that this will be difficult to achieve with WASM. I initially thought I could use `emscripten_webgpu_import_texture` to directly import a GPUTexture into the native code but the utilities to do so seem to be available from EM_ASM only. I\u0027m going to leave this API out initially but we\u0027ll probably eventually want to figure out how to achieve this.\n\nInstead I want to tweak this API such that there is a native SwapChain object that the client holds on to, which can vend Surfaces on demand and change MakeGPUCanvasSurface such that:\n\n    export interface SwapChain : extends EmbindObject\u003cSwapChain\u003e {\n        getNextSurface(colorSpace: ColorSpace): Surface;\n    }\n    ...\n    MakeGPUCanvasSwapChain(ctx: GrDirectContext, canvasContext: GPUCanvasContext,\n                           dimensions?: number[]): SwapChain | null;\n                           \nThis makes the WASM side of things a lot easier since tracking WebGPU API objects between JS\u003c-\u003eWASM is difficult.",
+      "range": {
+        "startLine": 289,
+        "startChar": 4,
+        "endLine": 289,
+        "endChar": 25
+      },
+      "revId": "e32b06a12ee23fed4598c5701b724d1699c66d6f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "850a0cda_3c1ea31f",
         "filename": "modules/canvaskit/npm_build/types/tsconfig.json",
         "patchSetId": 1
