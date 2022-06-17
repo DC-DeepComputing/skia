@@ -70,6 +70,30 @@
       },
       "revId": "95d11177943b4ad1812e687630e563743a2dacd4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cab6bcb0_2551b3da",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-06-17T15:07:18Z",
+      "side": 1,
+      "message": "OK, added a TODO in http://review.skia.org/550709 which also moves uniforms/textures/samplers to the preamble. (Wasn\u0027t reading this code closely enough in this CL.)",
+      "parentUuid": "98520812_8d9783e1",
+      "range": {
+        "startLine": 162,
+        "startChar": 72,
+        "endLine": 162,
+        "endChar": 73
+      },
+      "revId": "95d11177943b4ad1812e687630e563743a2dacd4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
