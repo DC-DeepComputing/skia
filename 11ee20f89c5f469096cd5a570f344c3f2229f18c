@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8093501f_691c7b72",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2022-06-20T14:58:13Z",
+      "side": 1,
+      "message": "bsalomon@ for SkGraphics.h interface change.\n\nFYI, the approach was discussed with Ben in https://crbug.com/skia/13448",
+      "revId": "11ee20f89c5f469096cd5a570f344c3f2229f18c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
