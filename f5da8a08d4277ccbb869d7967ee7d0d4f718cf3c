@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d63e56a2_1d2eecac",
+        "filename": "src/core/SkFactoryFunctions.h",
+        "patchSetId": 23
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-06-21T15:26:24Z",
+      "side": 1,
+      "message": "`childOptions` doesn\u0027t really have the right type here to match the API/functionality of SkRuntimeEffect. Effects of any particular stage (shader/colorFilter/blender) can have children from any other stage, as well. SkRuntimeEffect handles this with a `ChildPtr` class that can hold any of the three.",
+      "range": {
+        "startLine": 100,
+        "startChar": 48,
+        "endLine": 100,
+        "endChar": 60
+      },
+      "revId": "f5da8a08d4277ccbb869d7967ee7d0d4f718cf3c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
