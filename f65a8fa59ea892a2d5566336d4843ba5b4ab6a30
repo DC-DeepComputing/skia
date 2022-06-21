@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9467ccae_f5e98939",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-06-21T18:14:19Z",
+      "side": 1,
+      "message": "Is this something we need for Android 13?",
+      "revId": "f65a8fa59ea892a2d5566336d4843ba5b4ab6a30",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
