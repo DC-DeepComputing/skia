@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a001ae14_06df674f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 9300
+      },
+      "writtenOn": "2022-06-21T13:06:48Z",
+      "side": 1,
+      "message": "Naive postsubmit drive-by.",
+      "revId": "b043dae116f823d83895fd029ff8e7f274432fbf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6fc215bd_46e17132",
+        "filename": "tests/GrGpuBufferTest.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 9300
+      },
+      "writtenOn": "2022-06-21T13:06:48Z",
+      "side": 1,
+      "message": "We are returning here...",
+      "revId": "b043dae116f823d83895fd029ff8e7f274432fbf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1b22d806_5221c9fd",
+        "filename": "tests/GrGpuBufferTest.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 9300
+      },
+      "writtenOn": "2022-06-21T13:06:48Z",
+      "side": 1,
+      "message": "...so it looks like we never get to this SkASSERT here.  I don\u0027t know if we want to temporarily store the result of the finalize() call above so we can assert this prior to returning, or if we want to remove this assert.",
+      "revId": "b043dae116f823d83895fd029ff8e7f274432fbf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
