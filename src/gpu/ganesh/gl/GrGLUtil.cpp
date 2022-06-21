@@ -402,6 +402,7 @@ static std::tuple<GrGLDriver, GrGLDriverVersion> get_driver_and_version(GrGLStan
     SkASSERT(rendererString);
     SkASSERT(versionString);
 
+  SkDebugf("VEN:%s\nREN:%s\nVER:%s\n", vendorString, rendererString, versionString);
     GrGLDriver driver               = GrGLDriver::kUnknown;
     GrGLDriverVersion driverVersion = GR_GL_DRIVER_UNKNOWN_VER;
 
