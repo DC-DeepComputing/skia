@@ -3199,6 +3199,17 @@ export interface ColorFilterFactory {
      * Makes a color filter that converts between sRGB colors and linear colors.
      */
     MakeSRGBToLinearGamma(): ColorFilter;
+
+    /**
+     * Makes a color filter that converts between sRGB colors and linear colors.
+     */
+    MakeSRGBToLinearGamma(): ColorFilter;
+
+    /**
+     * Makes a color filter that multiplies the luma of its input into the alpha channel,
+     * and sets the red, green, and blue channels to zero.
+     */
+    MakeLumaColorFilter(): ColorFilter;
 }
 
 export interface ContourMeasureIterConstructor {
