@@ -120,6 +120,9 @@ struct ParagraphStyle {
     bool hintingIsOn() const { return fHintingIsOn; }
     void turnHintingOff() { fHintingIsOn = false; }
 
+    bool replaceTabCharacters() const { return fReplaceTabCharacters; }
+    void setReplaceTabCharacters(bool value) { fReplaceTabCharacters = value; }
+
 private:
     StrutStyle fStrutStyle;
     TextStyle fDefaultTextStyle;
@@ -131,6 +134,7 @@ private:
     SkScalar fHeight;
     TextHeightBehavior fTextHeightBehavior;
     bool fHintingIsOn;
+    bool fReplaceTabCharacters;
 };
 }  // namespace textlayout
 }  // namespace skia
