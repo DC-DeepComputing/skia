@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "339589ae_f98844df",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-06-21T11:47:34Z",
+      "side": 1,
+      "message": "make typecheck in //modules/canvaskit will run your type assertions over https://github.com/google/skia/blob/main/modules/canvaskit/npm_build/types/canvaskit-wasm-tests.ts\n\nYou should add some \"examples\" to that canvaskit-wasm-tests.ts file so we can make sure your typings are correct and look good. That code won\u0027t actually be run.",
+      "parentUuid": "9376e3ed_233ceff1",
+      "revId": "e32b06a12ee23fed4598c5701b724d1699c66d6f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "99f6f955_9fb8c524",
         "filename": "modules/canvaskit/npm_build/types/index.d.ts",
         "patchSetId": 1
@@ -187,6 +205,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "acbd9d17_7da9bde7",
+        "filename": "modules/canvaskit/npm_build/types/index.d.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 227,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-06-21T11:47:34Z",
+      "side": 1,
+      "message": "How about we just remove the MakeCanvasSurface API? Clients should specify if they want the raster backend, the webgl one, or the gpu one. MakeCanvasSurface is already a little janky in that it adds an attribute to tell you if it had to fallback to CPU, which I\u0027m not a big fan of.",
+      "parentUuid": "c8fcb9b2_1c6e9337",
+      "range": {
+        "startLine": 225,
+        "startChar": 0,
+        "endLine": 227,
+        "endChar": 65
+      },
+      "revId": "e32b06a12ee23fed4598c5701b724d1699c66d6f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1176262f_f623d7d5",
         "filename": "modules/canvaskit/npm_build/types/index.d.ts",
         "patchSetId": 1
@@ -330,6 +372,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "edd770ab_330fc5c0",
+        "filename": "modules/canvaskit/npm_build/types/index.d.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 269,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-06-21T11:47:34Z",
+      "side": 1,
+      "message": "We can rename the MakeGrContext functions to MakeGLContext and add aliases for the old names, add a deprecation notice in the change log and eventually remove the aliases.  We shouldn\u0027t be afraid to make API changes, so long as we reflect those changes with appropriate documentation and semantic versioning.",
+      "parentUuid": "c7733dcf_128e307b",
+      "range": {
+        "startLine": 269,
+        "startChar": 4,
+        "endLine": 269,
+        "endChar": 17
+      },
+      "revId": "e32b06a12ee23fed4598c5701b724d1699c66d6f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5a4058a9_c3b4e443",
         "filename": "modules/canvaskit/npm_build/types/index.d.ts",
         "patchSetId": 1
@@ -377,6 +443,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c1ee757a_f5f37a7a",
+        "filename": "modules/canvaskit/npm_build/types/index.d.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 289,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-06-21T11:47:34Z",
+      "side": 1,
+      "message": "I\u0027m eager to see how it is done.",
+      "parentUuid": "579a60bd_95ef86fd",
+      "range": {
+        "startLine": 289,
+        "startChar": 4,
+        "endLine": 289,
+        "endChar": 25
+      },
+      "revId": "e32b06a12ee23fed4598c5701b724d1699c66d6f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "850a0cda_3c1ea31f",
         "filename": "modules/canvaskit/npm_build/types/tsconfig.json",
         "patchSetId": 1
@@ -388,6 +478,30 @@
       "writtenOn": "2022-06-16T18:01:59Z",
       "side": 1,
       "message": "I\u0027m wondering if there is a better way to only include the types from the module that are used?",
+      "range": {
+        "startLine": 15,
+        "startChar": 8,
+        "endLine": 15,
+        "endChar": 41
+      },
+      "revId": "e32b06a12ee23fed4598c5701b724d1699c66d6f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4d4c37a8_ee13f562",
+        "filename": "modules/canvaskit/npm_build/types/tsconfig.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-06-21T11:47:34Z",
+      "side": 1,
+      "message": "I think this makes the webgpu types available to be included, but you need to use import statements in the index.d.ts to get access to them.",
+      "parentUuid": "850a0cda_3c1ea31f",
       "range": {
         "startLine": 15,
         "startChar": 8,
