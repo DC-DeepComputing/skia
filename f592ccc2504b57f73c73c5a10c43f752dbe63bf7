@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "af316ed9_b71ad0a7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-06-21T12:43:34Z",
+      "side": 1,
+      "message": "Can you add a test like https://github.com/google/skia/blob/main/modules/canvaskit/tests/core.spec.js#L741-L766 for your new API?\n\nCan you also add \"examples\" to https://github.com/google/skia/blob/main/modules/canvaskit/npm_build/types/canvaskit-wasm-tests.ts#L317-L319 so we can make sure the type checking works?",
+      "revId": "f592ccc2504b57f73c73c5a10c43f752dbe63bf7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6b6d043d_f6b5c5a5",
+        "filename": "modules/canvaskit/npm_build/types/index.d.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 3206,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-06-21T12:43:34Z",
+      "side": 1,
+      "message": "This appears duplicated.",
+      "range": {
+        "startLine": 3206,
+        "startChar": 4,
+        "endLine": 3206,
+        "endChar": 25
+      },
+      "revId": "f592ccc2504b57f73c73c5a10c43f752dbe63bf7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
