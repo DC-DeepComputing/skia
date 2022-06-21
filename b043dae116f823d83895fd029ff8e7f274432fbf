@@ -50,6 +50,24 @@
       "message": "...so it looks like we never get to this SkASSERT here.  I don\u0027t know if we want to temporarily store the result of the finalize() call above so we can assert this prior to returning, or if we want to remove this assert.",
       "revId": "b043dae116f823d83895fd029ff8e7f274432fbf",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "67130438_a70af787",
+        "filename": "tests/GrGpuBufferTest.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-06-21T13:11:50Z",
+      "side": 1,
+      "message": "derp. Will fix.",
+      "parentUuid": "1b22d806_5221c9fd",
+      "revId": "b043dae116f823d83895fd029ff8e7f274432fbf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
