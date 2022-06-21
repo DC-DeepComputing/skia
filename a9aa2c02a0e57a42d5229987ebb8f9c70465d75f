@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ffd4975a_c11716e4",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-06-21T17:14:19Z",
+      "side": 1,
+      "message": "Mention the G3 CL that allows this to reland",
+      "revId": "a9aa2c02a0e57a42d5229987ebb8f9c70465d75f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c689215e_a415fd0d",
+        "filename": "bazel/macros.bzl",
+        "patchSetId": 2
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-06-21T17:14:19Z",
+      "side": 1,
+      "message": "This works? We don\u0027t need to import this from @rules_cc//cc:defs.bzl ?",
+      "range": {
+        "startLine": 75,
+        "startChar": 11,
+        "endLine": 75,
+        "endChar": 23
+      },
+      "revId": "a9aa2c02a0e57a42d5229987ebb8f9c70465d75f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e3f45e25_89c809be",
+        "filename": "toolchain/mac_m1_toolchain_config.bzl",
+        "patchSetId": 2
+      },
+      "lineNbr": 250,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-06-21T17:14:19Z",
+      "side": 1,
+      "message": "We should probably fix these issues rather than ignore them. Can you file a tracking bug and put it in a comment here?",
+      "range": {
+        "startLine": 250,
+        "startChar": 26,
+        "endLine": 250,
+        "endChar": 36
+      },
+      "revId": "a9aa2c02a0e57a42d5229987ebb8f9c70465d75f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d2428706_10d3b94c",
+        "filename": "toolchain/mac_m1_toolchain_config.bzl",
+        "patchSetId": 2
+      },
+      "lineNbr": 282,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-06-21T17:14:19Z",
+      "side": 1,
+      "message": "Maybe add a reminder that -Wl tells clang to forward the next flag to the linker, since it took us a while to find out the right set of incantations.",
+      "range": {
+        "startLine": 282,
+        "startChar": 22,
+        "endLine": 282,
+        "endChar": 24
+      },
+      "revId": "a9aa2c02a0e57a42d5229987ebb8f9c70465d75f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
