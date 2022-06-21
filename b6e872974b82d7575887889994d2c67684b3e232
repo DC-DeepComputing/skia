@@ -89,6 +89,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "77feb610_a3977837",
+        "filename": "toolchain/mac_m1_toolchain_config.bzl",
+        "patchSetId": 4
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-06-21T17:11:27Z",
+      "side": 1,
+      "message": "We use https://llvm.org/docs/CommandGuide/llvm-ar.html and not normal ar. Does that still have issues? That is, should we change the linux version to use something other than llvm-ar as well?",
+      "parentUuid": "71311bb9_8a4b03a5",
+      "revId": "b6e872974b82d7575887889994d2c67684b3e232",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "63faa553_3d664a22",
