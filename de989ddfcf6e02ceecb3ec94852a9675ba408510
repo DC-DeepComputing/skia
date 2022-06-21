@@ -18,6 +18,29 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "ea6cb1c9_88b3a4de",
+        "filename": "src/core/SkFactoryFunctions.h",
+        "patchSetId": 24
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-06-21T20:59:47Z",
+      "side": 1,
+      "message": "So I know Rob and I talked about this a little offline, but just wanted to comment here to get other folks general thoughts and feedback. Right now (if I\u0027m reading this right) this is set up so that if a RuntimeEffect has N children we will create an array of size N, where each element is an array of some arbitrary number of children. Then we will make a \"specific\" shader by taking one element from each of the N arrays. Thus we get all the combinations of specific shaders by doing the cross product between each of the N arrays.\n\nThere is a slight risk here that a client can quickly shoot themselves in the foot with asking us to make a crazy amount of shaders. Especially if these things get nested it makes it easier to get a combinatorial explosion of shaders, many of which won\u0027t even get used (and maybe we can\u0027t even fit all into memory).\n\nDoes it make any more sense for this api instead to just a single array. Each element of that array is a specific set of N shaders. That way the client has to be specific about what children make sense going together. If the client really wanted all combinations it wouldn\u0027t be hard for them to right their own for loop to fill in them all.\n\nI think whatever is decided here should also be extended to blend, compose, etc. shaders (anything with multiple children).",
+      "range": {
+        "startLine": 123,
+        "startChar": 8,
+        "endLine": 123,
+        "endChar": 59
+      },
+      "revId": "de989ddfcf6e02ceecb3ec94852a9675ba408510",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "5ca43e52_ed01cb3e",
