@@ -16,6 +16,24 @@
       "message": "I tried your CL locally and got some errors when running `npm run dtslint` in the npm_build subfolder of canvaskit\n\nYou need to update the canvaskit-wasm-tests.ts file in a few places to catch the changes you made.\nFor example: https://github.com/google/skia/blob/main/modules/canvaskit/npm_build/types/canvaskit-wasm-tests.ts#L2-L4\nERROR: 4:5    expect  TypeScript@4.1 compile error: \nModule \u0027\".\"\u0027 has no exported member \u0027CanvasKitInit\u0027. Did you mean to use \u0027import CanvasKitInit from \".\"\u0027 instead?\nERROR: 515:5  expect  TypeScript@4.1 expected type to be:\n  Float32Array\ngot:\n  Float32Array[]\nERROR: 516:5  expect  TypeScript@4.1 expected type to be:\n  Float32Array\ngot:\n  Float32Array[]\n\n\n",
       "revId": "9ba70c502c483463a9534fe83eb6f6a945e17da4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d4f1ad6c_405fb75f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19024
+      },
+      "writtenOn": "2022-06-21T14:47:47Z",
+      "side": 1,
+      "message": "I updated the test suite but there is one type error that I cannot fix:\n\n```\nERROR: 280:5  expect  TypeScript@4.0 expected type to be:\n  Uint8Array | Float32Array | null\ngot:\n  Float32Array | Uint8Array | null\n```\n\nAs you can see, it\u0027s just an issue with the order. If I change the order, it will work on ts@4.0 but then fail on ts@4.1. Not sure how this works.",
+      "parentUuid": "25221d6a_ff08bf51",
+      "revId": "9ba70c502c483463a9534fe83eb6f6a945e17da4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
