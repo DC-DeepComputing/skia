@@ -34,6 +34,24 @@
       "parentUuid": "9467ccae_f5e98939",
       "revId": "f65a8fa59ea892a2d5566336d4843ba5b4ab6a30",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9ea85354_f0959cfe",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-06-21T19:00:14Z",
+      "side": 1,
+      "message": "It already shipped like this in Android 12.\nThe context in the bug is very helpful: https://bugs.chromium.org/p/skia/issues/detail?id\u003d13420\n\nThe test assumed division of 36 over 9 would round cleanly--this is not a safe assumption (particularly in FP16) but it worked in practice on most hardware.",
+      "parentUuid": "e3040302_a450964c",
+      "revId": "f65a8fa59ea892a2d5566336d4843ba5b4ab6a30",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
