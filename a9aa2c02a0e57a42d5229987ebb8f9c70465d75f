@@ -83,6 +83,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "84ce9b86_8aca34ac",
+        "filename": "bazel/macros.bzl",
+        "patchSetId": 2
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-06-21T18:34:29Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "af503643_ff712edf",
+      "range": {
+        "startLine": 75,
+        "startChar": 11,
+        "endLine": 75,
+        "endChar": 23
+      },
+      "revId": "a9aa2c02a0e57a42d5229987ebb8f9c70465d75f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e3f45e25_89c809be",
@@ -120,6 +144,30 @@
       "side": 1,
       "message": "Ack. Interestingly enough, this flag doesn\u0027t work and the deprecated errors are not suppressed. I think this might tie into other issues with the target (like defs not being set properly). I can add the comment, but it\u0027s also worth noting that we can just delete this.",
       "parentUuid": "e3f45e25_89c809be",
+      "range": {
+        "startLine": 250,
+        "startChar": 26,
+        "endLine": 250,
+        "endChar": 36
+      },
+      "revId": "a9aa2c02a0e57a42d5229987ebb8f9c70465d75f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8eb855fe_33ba84a3",
+        "filename": "toolchain/mac_m1_toolchain_config.bzl",
+        "patchSetId": 2
+      },
+      "lineNbr": 250,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-06-21T18:34:29Z",
+      "side": 1,
+      "message": "If it\u0027s not working, delete it :)",
+      "parentUuid": "31b07b19_7a01d086",
       "range": {
         "startLine": 250,
         "startChar": 26,
