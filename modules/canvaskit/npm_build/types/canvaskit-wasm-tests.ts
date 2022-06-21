@@ -1,7 +1,6 @@
 // This file is type-checked by the Typescript definitions. It is not actually executed.
 // Test it by running `npm run dtslint` in the parent directory.
-import {
-    CanvasKitInit,
+import CanvasKitInit, {
     AnimatedImage,
     Canvas,
     CanvasKit,
@@ -512,8 +511,8 @@ function paragraphTests(CK: CanvasKit, p?: Paragraph) {
     const g = p.getMaxIntrinsicWidth(); // $ExpectType number
     const h = p.getMaxWidth(); // $ExpectType number
     const i = p.getMinIntrinsicWidth(); // $ExpectType number
-    const j = p.getRectsForPlaceholders(); // $ExpectType Float32Array
-    const k = p.getRectsForRange(2, 10, CK.RectHeightStyle.Max,  // $ExpectType Float32Array
+    const j = p.getRectsForPlaceholders(); // $ExpectType Float32Array[]
+    const k = p.getRectsForRange(2, 10, CK.RectHeightStyle.Max,  // $ExpectType Float32Array[]
         CK.RectWidthStyle.Tight);
     const l = p.getWordBoundary(10); // $ExpectType URange
     p.layout(300);
