@@ -16,6 +16,29 @@
       "message": "I was going to suggest that we just remove it once the migration is done, but then I did a quick client code search, and ... yikes. Used in chromium, android, etc. This is also the first time I\u0027ve checked for usage of something and even found it in LibreOffice.",
       "revId": "5f80d7e7912bfc6080aeecb65edf43d90610c32f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b0d6b018_2f7d0017",
+        "filename": "include/core/SkTypes.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 532,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-06-21T16:57:40Z",
+      "side": 1,
+      "message": "I don\u0027t know how I feel about this advice. static_asserts are much more powerful than SkASSERT. If we aren\u0027t going to remove SK_ARRAY_COUNT, can we just continue admitting it for this edge case?",
+      "range": {
+        "startLine": 532,
+        "startChar": 48,
+        "endLine": 532,
+        "endChar": 68
+      },
+      "revId": "5f80d7e7912bfc6080aeecb65edf43d90610c32f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
