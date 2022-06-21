@@ -52,6 +52,24 @@
       "parentUuid": "d4f1ad6c_405fb75f",
       "revId": "9ba70c502c483463a9534fe83eb6f6a945e17da4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "371e0356_a3455a88",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19024
+      },
+      "writtenOn": "2022-06-21T15:29:01Z",
+      "side": 1,
+      "message": "I\u0027m not sure what kind of arrangement would help here. Could it be because I\u0027m running node 16? Running npm install with `--package-lock-only`. Running npm install works but the package-lock is quite different. Could that be the issue?",
+      "parentUuid": "dbe46bcf_0b55b426",
+      "revId": "9ba70c502c483463a9534fe83eb6f6a945e17da4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
