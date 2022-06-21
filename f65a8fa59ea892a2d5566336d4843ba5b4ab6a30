@@ -52,6 +52,24 @@
       "parentUuid": "e3040302_a450964c",
       "revId": "f65a8fa59ea892a2d5566336d4843ba5b4ab6a30",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "55768b43_3053c6f3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-06-21T19:21:54Z",
+      "side": 1,
+      "message": "Ah, ok. If OEMs are trying to bring up 13 (or 12, for that matter) on one of these devices we can point them to this CL.",
+      "parentUuid": "9ea85354_f0959cfe",
+      "revId": "f65a8fa59ea892a2d5566336d4843ba5b4ab6a30",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
