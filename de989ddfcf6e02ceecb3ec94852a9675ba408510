@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "04268653_b29fa764",
+        "filename": "src/core/SkFactoryFunctions.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 198,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-06-21T20:45:28Z",
+      "side": 1,
+      "message": "Additionally (and more subtle), I think you\u0027re going to need to do something like:\n\n  for each entry in childOptions:\n    check that each childPtr in the entry has the same type as the corresponding child in effect\n    \neg, when presented with:\n\n  uniform shader child1;\n  uniform colorFilter child2;\n  ...\n  \nWe need childOptions[0] to be a span of child pointers, where each one is actually a ShaderOption, and childOptions[1] to be a span of ColorFilterOption.\n\nThis can happen later, just wanted to augment the TODO here.",
+      "revId": "de989ddfcf6e02ceecb3ec94852a9675ba408510",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5ca43e52_ed01cb3e",
+        "filename": "tests/graphite/CombinationBuilderTest.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-06-21T20:45:28Z",
+      "side": 1,
+      "message": "Doesn\u0027t really matter, because these are just random code snippets for a unit test, but it\u0027s funny that these all return invalid premul (or out-of-gamut) colors.",
+      "revId": "de989ddfcf6e02ceecb3ec94852a9675ba408510",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
