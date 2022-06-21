@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e4e095d9_3f1c1ac6",
+        "filename": "modules/canvaskit/npm_build/types/index.d.ts",
+        "patchSetId": 5
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-06-21T15:31:00Z",
+      "side": 1,
+      "message": "Another option is to update this.",
+      "range": {
+        "startLine": 1,
+        "startChar": 3,
+        "endLine": 1,
+        "endChar": 34
+      },
+      "revId": "8c74c37657b4642bc03ff41ccb831361be185496",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

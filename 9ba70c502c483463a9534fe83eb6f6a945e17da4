@@ -70,6 +70,24 @@
       "parentUuid": "dbe46bcf_0b55b426",
       "revId": "9ba70c502c483463a9534fe83eb6f6a945e17da4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "10ebd109_f5cfb8ef",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-06-21T15:31:00Z",
+      "side": 1,
+      "message": "I tried it locally by re-arranging both canvaskit-wasm-tests.ts and index.d.ts to use alphabetical order (what I suggested above) and that worked for me.\n\nI am on node v14, so a version difference might be to blame, but I would be surprised if it did.",
+      "parentUuid": "371e0356_a3455a88",
+      "revId": "9ba70c502c483463a9534fe83eb6f6a945e17da4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
