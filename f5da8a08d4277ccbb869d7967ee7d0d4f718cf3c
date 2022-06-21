@@ -22,6 +22,30 @@
       },
       "revId": "f5da8a08d4277ccbb869d7967ee7d0d4f718cf3c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dcd2635f_8ea2a017",
+        "filename": "src/core/SkFactoryFunctions.h",
+        "patchSetId": 23
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-06-21T17:19:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d63e56a2_1d2eecac",
+      "range": {
+        "startLine": 100,
+        "startChar": 48,
+        "endLine": 100,
+        "endChar": 60
+      },
+      "revId": "f5da8a08d4277ccbb869d7967ee7d0d4f718cf3c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
