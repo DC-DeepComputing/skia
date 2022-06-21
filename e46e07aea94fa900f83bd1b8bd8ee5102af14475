@@ -16,6 +16,24 @@
       "message": "Optional suggestion: If we put the unpoison calls in allocObject and allocObjectWithFooter, then we only need those two, plus the one in installRaw, right?",
       "revId": "e46e07aea94fa900f83bd1b8bd8ee5102af14475",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "30a7b222_fb4254ac",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-06-21T20:41:30Z",
+      "side": 1,
+      "message": "Logistically yes. But, I don\u0027t have the size I need with the information passed to \nallocObjectWithFooter so, I can\u0027t do it there. I decided to put it where all the\nobjStarts are created to keep it the same.",
+      "parentUuid": "ae81739b_b8c44386",
+      "revId": "e46e07aea94fa900f83bd1b8bd8ee5102af14475",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
