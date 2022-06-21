@@ -88,6 +88,24 @@
       "parentUuid": "371e0356_a3455a88",
       "revId": "9ba70c502c483463a9534fe83eb6f6a945e17da4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5a3c45b1_1dd2042f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19024
+      },
+      "writtenOn": "2022-06-21T15:38:11Z",
+      "side": 1,
+      "message": "If I fix it for TypeScript@4.0, I am getting the error for TypeScript@4.1. Sorry if I\u0027m overlooking something obvious.",
+      "parentUuid": "10ebd109_f5cfb8ef",
+      "revId": "9ba70c502c483463a9534fe83eb6f6a945e17da4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
