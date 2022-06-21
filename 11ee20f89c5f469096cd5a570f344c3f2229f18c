@@ -33,6 +33,24 @@
       "message": "Do we need a callback, or could it be a simple bool argument?",
       "revId": "11ee20f89c5f469096cd5a570f344c3f2229f18c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "066806a4_1e530b0f",
+        "filename": "include/core/SkGraphics.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2022-06-21T13:27:39Z",
+      "side": 1,
+      "message": "My thought process was it\u0027s handy to pass the callback as then there\u0027s no need to sync any Boolean value with RuntimeEnabledFeatures in Chrome and I can pass in the RuntimeEnabledFeatures::IsVariableColrV1Enabled() test function. On the other hand, these are usually anyway only initialised at startup.",
+      "parentUuid": "e97e667d_c80fbba4",
+      "revId": "11ee20f89c5f469096cd5a570f344c3f2229f18c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
