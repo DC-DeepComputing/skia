@@ -16,6 +16,29 @@
       "message": "Failure is http://cl/455679109 which requires a small change internally and to sk_app/BUILD.bazel",
       "revId": "9be648ad648467650ca6261cfd36c25e6a5219a5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dd647674_e71a7a0a",
+        "filename": "tools/sk_app/BUILD.bazel",
+        "patchSetId": 5
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-06-21T12:59:01Z",
+      "side": 1,
+      "message": "Shim is in http://cl/456232861 You need to update macros.bzl in this CL also",
+      "range": {
+        "startLine": 3,
+        "startChar": 1,
+        "endLine": 3,
+        "endChar": 5
+      },
+      "revId": "9be648ad648467650ca6261cfd36c25e6a5219a5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
