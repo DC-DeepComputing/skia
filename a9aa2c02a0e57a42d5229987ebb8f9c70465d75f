@@ -178,6 +178,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d351454d_e1335418",
+        "filename": "toolchain/mac_m1_toolchain_config.bzl",
+        "patchSetId": 2
+      },
+      "lineNbr": 250,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2022-06-21T18:38:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8eb855fe_33ba84a3",
+      "range": {
+        "startLine": 250,
+        "startChar": 26,
+        "endLine": 250,
+        "endChar": 36
+      },
+      "revId": "a9aa2c02a0e57a42d5229987ebb8f9c70465d75f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d2428706_10d3b94c",
