@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7a8af822_906dffa3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2022-06-21T16:24:09Z",
+      "side": 1,
+      "message": "Done. I added to the existing README in the reland.",
+      "parentUuid": "d386c2b7_710a4070",
+      "revId": "9be648ad648467650ca6261cfd36c25e6a5219a5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dd647674_e71a7a0a",
@@ -48,6 +66,30 @@
       "writtenOn": "2022-06-21T12:59:01Z",
       "side": 1,
       "message": "Shim is in http://cl/456232861 You need to update macros.bzl in this CL also",
+      "range": {
+        "startLine": 3,
+        "startChar": 1,
+        "endLine": 3,
+        "endChar": 5
+      },
+      "revId": "9be648ad648467650ca6261cfd36c25e6a5219a5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "284dbca4_d9448763",
+        "filename": "tools/sk_app/BUILD.bazel",
+        "patchSetId": 5
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2022-06-21T16:24:09Z",
+      "side": 1,
+      "message": "Done. Added in the reland.",
+      "parentUuid": "dd647674_e71a7a0a",
       "range": {
         "startLine": 3,
         "startChar": 1,
