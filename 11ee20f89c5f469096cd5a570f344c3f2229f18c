@@ -51,6 +51,41 @@
       "parentUuid": "e97e667d_c80fbba4",
       "revId": "11ee20f89c5f469096cd5a570f344c3f2229f18c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d90307e6_b79553df",
+        "filename": "include/core/SkGraphics.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2022-06-21T13:42:21Z",
+      "side": 1,
+      "message": "Since this is temporary, I don\u0027t think it matters too much, just curious.",
+      "parentUuid": "066806a4_1e530b0f",
+      "revId": "11ee20f89c5f469096cd5a570f344c3f2229f18c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3746c7bd_03f24dd8",
+        "filename": "src/core/SkGraphics.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 154,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2022-06-21T13:42:21Z",
+      "side": 1,
+      "message": "This seems to crash if Set is not called first.  Let\u0027s guard against that (and return whatever the default is).",
+      "revId": "11ee20f89c5f469096cd5a570f344c3f2229f18c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
