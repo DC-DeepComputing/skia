@@ -3708,11 +3708,14 @@ void GrGLCaps::applyDriverCorrectnessWorkarounds(const GrGLContextInfo& ctxInfo,
     // unclear whether this really affects a wide range of devices.
     if (ctxInfo.renderer() == GrGLRenderer::kAdreno3xx &&
         ctxInfo.driverVersion() > GR_GL_DRIVER_VER(127, 0, 0)) {
-        fMapBufferType = kNone_MapBufferType;
-        fMapBufferFlags = kNone_MapFlags;
-        fTransferFromBufferToTextureSupport = false;
-        fTransferFromSurfaceToBufferSupport = false;
-        fTransferBufferType = TransferBufferType::kNone;
+        SkDebugf("Driver 0x%08llx\n", ctxInfo.driverVersion());
+#if 0
+            fMapBufferType = kNone_MapBufferType;
+            fMapBufferFlags = kNone_MapFlags;
+            fTransferFromBufferToTextureSupport = false;
+            fTransferFromSurfaceToBufferSupport = false;
+            fTransferBufferType = TransferBufferType::kNone;
+#endif
     }
 
     // The TransferPixelsToTexture test fails on ANGLE D3D9 and D3D11 if this is enabled.
