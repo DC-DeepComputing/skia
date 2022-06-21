@@ -765,6 +765,22 @@ describe('Core canvas behavior', () => {
         textFont.delete();
     });
 
+    gm('luma_filter', (canvas, fetchedByteBuffers) => {
+        const img = CanvasKit.MakeImageFromEncoded(fetchedByteBuffers[0]);
+        const paint = new CanvasKit.Paint();
+        paint.setAntiAlias(true);
+        const lumaCF = CanvasKit.ColorFilter.MakeLuma();
+        paint.setColorFilter(lumaCF);
+        const src = CanvasKit.XYWHRect(0, 0, img.width(), img.height());
+        const dst = CanvasKit.XYWHRect(0, 0, 512, 512);
+        canvas.drawImageRect(img, src, dst, paint);
+        paint.delete();
+        lumaCF.delete();
+        img.delete();
+        src.delete();
+        dst.delete()
+    }, '/assets/mandrill_512.png');
+
     gm('combined_filters', (canvas, fetchedByteBuffers) => {
         const img = CanvasKit.MakeImageFromEncoded(fetchedByteBuffers[0]);
         expect(img).toBeTruthy();
