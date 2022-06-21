@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9fcb6b06_23705dfb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19024
+      },
+      "writtenOn": "2022-06-21T15:09:42Z",
+      "side": 1,
+      "message": "I added a test. By looking at the example, it is not clear where the result is checked and to which snapshot it is compared. Can I run this test suite locally?\n\n\nI added a typescript test but unfortunately, I\u0027m running into the same failure as mentioned in the other PR.",
+      "parentUuid": "af316ed9_b71ad0a7",
+      "revId": "f592ccc2504b57f73c73c5a10c43f752dbe63bf7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6b6d043d_f6b5c5a5",
         "filename": "modules/canvaskit/npm_build/types/index.d.ts",
         "patchSetId": 1
@@ -31,6 +49,30 @@
       "writtenOn": "2022-06-21T12:43:34Z",
       "side": 1,
       "message": "This appears duplicated.",
+      "range": {
+        "startLine": 3206,
+        "startChar": 4,
+        "endLine": 3206,
+        "endChar": 25
+      },
+      "revId": "f592ccc2504b57f73c73c5a10c43f752dbe63bf7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5cdc9329_4dca976b",
+        "filename": "modules/canvaskit/npm_build/types/index.d.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 3206,
+      "author": {
+        "id": 19024
+      },
+      "writtenOn": "2022-06-21T15:09:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6b6d043d_f6b5c5a5",
       "range": {
         "startLine": 3206,
         "startChar": 4,
