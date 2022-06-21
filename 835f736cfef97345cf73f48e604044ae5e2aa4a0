@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "86d4f0d2_1955e759",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-06-21T11:07:25Z",
+      "side": 1,
+      "message": "This is obsoleted by https://skia-review.googlesource.com/c/skia/+/550496 right?",
+      "revId": "835f736cfef97345cf73f48e604044ae5e2aa4a0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
