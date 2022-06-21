@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7198a48d_d8817033",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2022-06-21T18:28:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ffd4975a_c11716e4",
+      "revId": "a9aa2c02a0e57a42d5229987ebb8f9c70465d75f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c689215e_a415fd0d",
@@ -31,6 +49,30 @@
       "writtenOn": "2022-06-21T17:14:19Z",
       "side": 1,
       "message": "This works? We don\u0027t need to import this from @rules_cc//cc:defs.bzl ?",
+      "range": {
+        "startLine": 75,
+        "startChar": 11,
+        "endLine": 75,
+        "endChar": 23
+      },
+      "revId": "a9aa2c02a0e57a42d5229987ebb8f9c70465d75f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "af503643_ff712edf",
+        "filename": "bazel/macros.bzl",
+        "patchSetId": 2
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2022-06-21T18:28:49Z",
+      "side": 1,
+      "message": "It works. I\u0027m testing it with \n`bazelisk build //example:hello_world_gl --config\u003dclang_mac`",
+      "parentUuid": "c689215e_a415fd0d",
       "range": {
         "startLine": 75,
         "startChar": 11,
@@ -66,6 +108,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "31b07b19_7a01d086",
+        "filename": "toolchain/mac_m1_toolchain_config.bzl",
+        "patchSetId": 2
+      },
+      "lineNbr": 250,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2022-06-21T18:28:49Z",
+      "side": 1,
+      "message": "Ack. Interestingly enough, this flag doesn\u0027t work and the deprecated errors are not suppressed. I think this might tie into other issues with the target (like defs not being set properly). I can add the comment, but it\u0027s also worth noting that we can just delete this.",
+      "parentUuid": "e3f45e25_89c809be",
+      "range": {
+        "startLine": 250,
+        "startChar": 26,
+        "endLine": 250,
+        "endChar": 36
+      },
+      "revId": "a9aa2c02a0e57a42d5229987ebb8f9c70465d75f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d2428706_10d3b94c",
         "filename": "toolchain/mac_m1_toolchain_config.bzl",
         "patchSetId": 2
@@ -77,6 +143,30 @@
       "writtenOn": "2022-06-21T17:14:19Z",
       "side": 1,
       "message": "Maybe add a reminder that -Wl tells clang to forward the next flag to the linker, since it took us a while to find out the right set of incantations.",
+      "range": {
+        "startLine": 282,
+        "startChar": 22,
+        "endLine": 282,
+        "endChar": 24
+      },
+      "revId": "a9aa2c02a0e57a42d5229987ebb8f9c70465d75f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2dbf259f_2bc4b3cf",
+        "filename": "toolchain/mac_m1_toolchain_config.bzl",
+        "patchSetId": 2
+      },
+      "lineNbr": 282,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2022-06-21T18:28:49Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "d2428706_10d3b94c",
       "range": {
         "startLine": 282,
         "startChar": 22,
