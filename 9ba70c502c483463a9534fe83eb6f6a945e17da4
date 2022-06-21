@@ -124,6 +124,24 @@
       "parentUuid": "5a3c45b1_1dd2042f",
       "revId": "9ba70c502c483463a9534fe83eb6f6a945e17da4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "76948326_bc8a5a12",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19024
+      },
+      "writtenOn": "2022-06-21T20:24:09Z",
+      "side": 1,
+      "message": "I tried it but got the same error for @4.1\n\n```\nERROR: 280:5  expect  TypeScript@4.1 expected type to be:\n  Float32Array | Uint8Array | null\ngot:\n  Uint8Array | Float32Array | null\n```",
+      "parentUuid": "6cdda8d0_4460160f",
+      "revId": "9ba70c502c483463a9534fe83eb6f6a945e17da4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
