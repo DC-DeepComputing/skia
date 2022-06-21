@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cafc1c39_fbe30e04",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-06-21T15:22:54Z",
+      "side": 1,
+      "message": "Michael, can you take a look at the unit test added in core.spec.js to make sure it\u0027s a good usage of the Luma filter? I\u0027m not very familiar with it.",
+      "revId": "dd4c30a31e3f41f406daec1e1e9be3cb013cf8fc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "90e79a7b_6602d5c6",
+        "filename": "modules/canvaskit/tests/core.spec.js",
+        "patchSetId": 3
+      },
+      "lineNbr": 768,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-06-21T15:22:54Z",
+      "side": 1,
+      "message": "To run the tests locally, you can build CanvasKit and then run make test-continuous\nhttps://github.com/google/skia/blob/fcedb57c293807e758a94d0d9a90949a840c75ff/modules/canvaskit/Makefile#L116-L119\n\nThis will run all the tests, but it\u0027s hard to see your change. What you should do is (temporarily) chang this gm(\u0027luma_filter\u0027... to pause_gm(\u0027luma_filter\u0027...\n\nWhen you run the tests, it will run only that one test and pause to see you inspect the canvas.",
+      "range": {
+        "startLine": 768,
+        "startChar": 4,
+        "endLine": 768,
+        "endChar": 6
+      },
+      "revId": "dd4c30a31e3f41f406daec1e1e9be3cb013cf8fc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
