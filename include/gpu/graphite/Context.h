@@ -15,6 +15,7 @@
 
 class SkBlenderID;
 class SkCombinationBuilder;
+class SkPaintOptions;
 class SkRuntimeEffect;
 
 namespace skgpu::graphite {
@@ -58,6 +59,8 @@ public:
     // TODO: add "SkShaderID addUserDefinedShader(sk_sp<SkRuntimeEffect>)" here
     // TODO: add "SkColorFilterID addUserDefinedColorFilter(sk_sp<SkRuntimeEffect>)" here
     SkBlenderID addUserDefinedBlender(sk_sp<SkRuntimeEffect>);
+
+    void precompile(const SkPaintOptions&);
 
     void precompile(SkCombinationBuilder*);
 

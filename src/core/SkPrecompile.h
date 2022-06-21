@@ -15,7 +15,11 @@
 #include <optional>
 #include <vector>
 
+class SkKeyContext;
+class SkPaintParamsKeyBuilder;
 class SkRuntimeEffect;
+class SkShaderCodeDictionary;
+class SkUniquePaintParamsID;
 
 // TODO: wrap this in an  SK_PRECOMPILE check
 
@@ -97,12 +101,26 @@ public:
         fBlenders.assign(blenders.begin(), blenders.end());
     }
 
+    void buildCombinations(SkShaderCodeDictionary*,
+                           const std::function<void(SkUniquePaintParamsID)>& func) const;
+
 private:
-    std::vector<sk_sp<SkPrecompileShader>> fShaders;
-    std::vector<sk_sp<SkPrecompileMaskFilter>> fMaskFilters;
-    std::vector<sk_sp<SkPrecompileColorFilter>> fColorFilters;
+    int numShaderCombinations() const;
+    int numMaskFilterCombinations() const;
+    int numColorFilterCombinations() const;
+    // TODO: need to decompose imagefilters into component draws
+    int numBlendModeCombinations() const;
+
+    int numCombinations() const;
+
+    // 'desiredCombination' must be less than the result of the numCombinations call
+    void createKey(const SkKeyContext&, int desiredCombination, SkPaintParamsKeyBuilder*) const;
+
+    std::vector<sk_sp<SkPrecompileShader>> fShaderOptions;
+    std::vector<sk_sp<SkPrecompileMaskFilter>> fMaskFilterOptions;
+    std::vector<sk_sp<SkPrecompileColorFilter>> fColorFilterOptions;
     std::vector<sk_sp<SkPrecompileImageFilter>> fImageFilters;
-    std::vector<sk_sp<SkPrecompileBlender>> fBlenders;
+    std::vector<sk_sp<SkPrecompileBlender>> fBlenderOptions;
 };
 
 #endif // SkPrecompile_DEFINED

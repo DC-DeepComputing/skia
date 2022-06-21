@@ -594,6 +594,7 @@ BASE_SRCS_ALL = [
     "src/core/SkPoint3.cpp",
     "src/core/SkPointPriv.h",
     "src/core/SkPrecompile.h",
+    "src/core/SkPrecompile.cpp",
     "src/core/SkPromiseImageTexture.cpp",
     "src/core/SkPtrRecorder.cpp",
     "src/core/SkPtrRecorder.h",
