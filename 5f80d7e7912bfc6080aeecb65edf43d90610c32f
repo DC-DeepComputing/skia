@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8f27cc41_4bb737cb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-06-21T16:51:32Z",
+      "side": 1,
+      "message": "I was going to suggest that we just remove it once the migration is done, but then I did a quick client code search, and ... yikes. Used in chromium, android, etc. This is also the first time I\u0027ve checked for usage of something and even found it in LibreOffice.",
+      "revId": "5f80d7e7912bfc6080aeecb65edf43d90610c32f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
