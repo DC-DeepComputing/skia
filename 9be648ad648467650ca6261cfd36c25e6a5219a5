@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3038ccd4_a7eed697",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-06-21T11:34:28Z",
+      "side": 1,
+      "message": "Failure is http://cl/455679109 which requires a small change internally and to sk_app/BUILD.bazel",
+      "revId": "9be648ad648467650ca6261cfd36c25e6a5219a5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
