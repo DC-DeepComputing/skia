@@ -18,6 +18,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d386c2b7_710a4070",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-06-21T13:00:44Z",
+      "side": 1,
+      "message": "Didn\u0027t you say you would add some README instructions on how to install or setup Xcode to go along with this?",
+      "revId": "9be648ad648467650ca6261cfd36c25e6a5219a5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dd647674_e71a7a0a",
