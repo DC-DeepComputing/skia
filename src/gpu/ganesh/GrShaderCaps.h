@@ -63,6 +63,7 @@ struct GrShaderCaps : SkSL::ShaderCaps {
     // should avoid using dFdx. We have found some drivers have bugs or lower precision when using
     // dFdx.
     bool fAvoidDfDxForGradientsWhenPossible = false;
+    bool fCanUseLoopingColorizer = false;
 
     // This contains the name of an extension that must be enabled in the shader, if such a thing is
     // required in order to use a secondary output in the shader. This returns a nullptr if no such
