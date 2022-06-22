@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "22c8b444_2b345a34",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-06-22T20:29:30Z",
+      "side": 1,
+      "message": "I using a std::variant to allow this GlyphVector to use either an sk_sp\u003cSkStrike\u003e or a SkStrikeForGPU*. I think I\u0027m using std::variant correctly, but any advice would be appreciated. ",
+      "revId": "0ba4aa4425d3301b2cdc73646432f0d32ef31cf9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
