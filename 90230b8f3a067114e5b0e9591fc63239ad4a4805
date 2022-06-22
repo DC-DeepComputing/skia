@@ -16,6 +16,24 @@
       "message": "John, can you fix the conflicts? When I commented on the commit in main, I hadn\u0027t seen the Android bug. They\u0027ll need to get a waiver and provide the test fix in order to pass CTS.",
       "revId": "90230b8f3a067114e5b0e9591fc63239ad4a4805",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a717d080_a7f83c5b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-06-22T15:40:31Z",
+      "side": 1,
+      "message": "! [remote rejected]       change-551763 -\u003e change-551763 (prohibited by Gerrit: not permitted: create)\nerror: failed to push some refs to \u0027https://skia.googlesource.com/skia.git\u0027",
+      "parentUuid": "eac8dbbe_b413dc3a",
+      "revId": "90230b8f3a067114e5b0e9591fc63239ad4a4805",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
