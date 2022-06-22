@@ -33,6 +33,52 @@
       "message": "Bringing this on top. :)",
       "revId": "346375aa8e6b8f8a2149e782603d97972ed4c3a6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ec726b51_abaca431",
+        "filename": "gm/fp_sample_chaining.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 197,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-06-22T20:57:32Z",
+      "side": 1,
+      "message": "I don\u0027t think it is worth adding any labels to the gm/* classes. Those are basically the same as things in tests/*, but instead of unit tests are rendered image tests. You don\u0027t have to remove, maybe someone would use these labels for debugging tests, but you also don\u0027t have to make sure they all have labels in the future. Your call.",
+      "range": {
+        "startLine": 197,
+        "startChar": 42,
+        "endLine": 197,
+        "endChar": 58
+      },
+      "revId": "346375aa8e6b8f8a2149e782603d97972ed4c3a6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "edd17047_10f5df53",
+        "filename": "src/core/SkSpecialImage.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 244,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-06-22T20:57:32Z",
+      "side": 1,
+      "message": "I don\u0027t think SurfaceProxyView is the most descriptive here. More like SpecialImage_OnView or SpecialImageRaster_OnView is more accurate.",
+      "range": {
+        "startLine": 244,
+        "startChar": 49,
+        "endLine": 244,
+        "endChar": 64
+      },
+      "revId": "346375aa8e6b8f8a2149e782603d97972ed4c3a6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
