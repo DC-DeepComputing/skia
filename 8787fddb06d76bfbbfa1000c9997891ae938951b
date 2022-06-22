@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9775df8e_c06b3f30",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-06-22T14:04:02Z",
+      "side": 1,
+      "message": "John, I believe you are the author of the looping colorizer - is this something you could review?",
+      "revId": "8787fddb06d76bfbbfa1000c9997891ae938951b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
