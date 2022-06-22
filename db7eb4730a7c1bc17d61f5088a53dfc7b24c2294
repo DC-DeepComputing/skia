@@ -16,6 +16,108 @@
       "message": "PTAL",
       "revId": "db7eb4730a7c1bc17d61f5088a53dfc7b24c2294",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6ced565d_f4091003",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 9153
+      },
+      "writtenOn": "2022-06-22T22:08:14Z",
+      "side": 1,
+      "message": "Drive-by, since I\u0027ve been writing a lot of these.",
+      "revId": "db7eb4730a7c1bc17d61f5088a53dfc7b24c2294",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "50083be0_0c6e49a2",
+        "filename": "src/core/SkBlockAllocator.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 406,
+      "author": {
+        "id": 9153
+      },
+      "writtenOn": "2022-06-22T22:08:14Z",
+      "side": 1,
+      "message": "Should these be changed to e.g. uint32_t?",
+      "revId": "db7eb4730a7c1bc17d61f5088a53dfc7b24c2294",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7fdcbd61_c7fdec0a",
+        "filename": "src/gpu/Swizzle.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 9153
+      },
+      "writtenOn": "2022-06-22T22:08:14Z",
+      "side": 1,
+      "message": "Hmm, would removing the \"u\" on 4U also fix the error?  That seems better if so.",
+      "revId": "db7eb4730a7c1bc17d61f5088a53dfc7b24c2294",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b9ec090e_7f6a1634",
+        "filename": "src/gpu/Swizzle.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 9153
+      },
+      "writtenOn": "2022-06-22T22:08:14Z",
+      "side": 1,
+      "message": "What if idx is negative?  Seems like either this function should take a size_t or SkASSERT(idx \u003e\u003d 0)...",
+      "revId": "db7eb4730a7c1bc17d61f5088a53dfc7b24c2294",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0b5483bd_ae1e2a70",
+        "filename": "src/gpu/Swizzle.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 9153
+      },
+      "writtenOn": "2022-06-22T22:08:14Z",
+      "side": 1,
+      "message": "Same question as above re: 4U -\u003e 4 instead, both here and below.",
+      "revId": "db7eb4730a7c1bc17d61f5088a53dfc7b24c2294",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7baf927d_6cf8ed90",
+        "filename": "src/gpu/ganesh/GrCaps.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 349,
+      "author": {
+        "id": 9153
+      },
+      "writtenOn": "2022-06-22T22:08:14Z",
+      "side": 1,
+      "message": "Can this variable be changed to a size_t?",
+      "revId": "db7eb4730a7c1bc17d61f5088a53dfc7b24c2294",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
