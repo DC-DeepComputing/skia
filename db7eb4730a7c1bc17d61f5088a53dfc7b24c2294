@@ -35,6 +35,41 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5b3364c5_1e6ba531",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 9424
+      },
+      "writtenOn": "2022-06-22T22:12:38Z",
+      "side": 1,
+      "message": "Thanks, I\u0027ll happily refer to egdaniel@ here and then do whatever you agree on.",
+      "parentUuid": "6ced565d_f4091003",
+      "revId": "db7eb4730a7c1bc17d61f5088a53dfc7b24c2294",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0a7f755d_462da920",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 9424
+      },
+      "writtenOn": "2022-06-22T22:12:38Z",
+      "side": 1,
+      "message": "I\u0027ll try the U removal once egdaniel@ has taken a pass and we agree on those.",
+      "revId": "db7eb4730a7c1bc17d61f5088a53dfc7b24c2294",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "50083be0_0c6e49a2",
@@ -48,6 +83,24 @@
       "writtenOn": "2022-06-22T22:08:14Z",
       "side": 1,
       "message": "Should these be changed to e.g. uint32_t?",
+      "revId": "db7eb4730a7c1bc17d61f5088a53dfc7b24c2294",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b13fb726_75859544",
+        "filename": "src/core/SkBlockAllocator.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 406,
+      "author": {
+        "id": 9424
+      },
+      "writtenOn": "2022-06-22T22:12:38Z",
+      "side": 1,
+      "message": "dunno, fyi this bleeds into the type of block-\u003efSentinel so if so should fSentinel be uint32_t too?",
+      "parentUuid": "50083be0_0c6e49a2",
       "revId": "db7eb4730a7c1bc17d61f5088a53dfc7b24c2294",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
