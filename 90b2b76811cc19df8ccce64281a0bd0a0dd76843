@@ -94,6 +94,30 @@
       },
       "revId": "90b2b76811cc19df8ccce64281a0bd0a0dd76843",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a5a3206e_c43e2804",
+        "filename": "src/gpu/ganesh/gradients/GrGradientShader.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 311,
+      "author": {
+        "id": 19049
+      },
+      "writtenOn": "2022-06-22T15:24:23Z",
+      "side": 1,
+      "message": "I\u0027ve never done something like this, so I do not know how much time it will take. Could you help with getting SKP from chromium on android? Maybe there is a tutorial you can share?",
+      "parentUuid": "661f2e8f_b77b0b37",
+      "range": {
+        "startLine": 311,
+        "startChar": 12,
+        "endLine": 311,
+        "endChar": 46
+      },
+      "revId": "90b2b76811cc19df8ccce64281a0bd0a0dd76843",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
