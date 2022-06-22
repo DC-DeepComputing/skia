@@ -18,8 +18,7 @@ using DataPayloadField = SkPaintParamsKey::DataPayloadField;
 SkPaintParamsKeyBuilder::SkPaintParamsKeyBuilder(const SkShaderCodeDictionary* dict,
                                                  SkBackend backend)
         : fDict(dict)
-        , fBackend(backend) {
-}
+        , fBackend(backend) {}
 
 #ifdef SK_DEBUG
 void SkPaintParamsKeyBuilder::checkReset() {
@@ -38,7 +37,7 @@ void SkPaintParamsKeyBuilder::checkReset() {
 //  1st byte: codeSnippetID
 //  2nd byte: total blockSize in bytes
 // This call stores the header's offset in the key on the stack to be used in 'endBlock'
-void SkPaintParamsKeyBuilder::beginBlock(int codeSnippetID) {
+void SkPaintParamsKeyBuilder::beginBlock(int32_t codeSnippetID) {
     if (!this->isValid()) {
         return;
     }
@@ -57,7 +56,7 @@ void SkPaintParamsKeyBuilder::beginBlock(int codeSnippetID) {
     }
 
     static constexpr DataPayloadField kHeader[2] = {
-            {"snippetID", DataPayloadType::kByte, 1},
+            {"snippetID", DataPayloadType::kInt, 1},
             {"blockSize", DataPayloadType::kByte, 1},
     };
 
@@ -69,7 +68,7 @@ void SkPaintParamsKeyBuilder::beginBlock(int codeSnippetID) {
     fStack.push_back({ codeSnippetID, this->sizeInBytes(),
                        SkDEBUGCODE(kHeaderExpectations, 0) });
 
-    this->addByte(SkTo<uint8_t>(codeSnippetID));
+    this->addInt(codeSnippetID);
     this->addByte(0);  // this will be filled in when endBlock is called
 
 #ifdef SK_DEBUG
@@ -299,9 +298,12 @@ void SkPaintParamsKey::toShaderInfo(SkShaderCodeDictionary* dict, SkShaderInfo* 
 
 #if GR_TEST_UTILS
 bool SkPaintParamsKey::isErrorKey() const {
-    return this->sizeInBytes() == sizeof(Header) &&
-           fData[0] == static_cast<int>(SkBuiltInCodeSnippetID::kError) &&
-           fData[1] == sizeof(Header);
+    if (this->sizeInBytes() != sizeof(Header)) {
+        return false;
+    }
+    const Header* header = reinterpret_cast<const Header*>(fData.data());
+    return header->codeSnippetID == (int32_t)SkBuiltInCodeSnippetID::kError &&
+           header->blockSize == sizeof(Header);
 }
 #endif
 
