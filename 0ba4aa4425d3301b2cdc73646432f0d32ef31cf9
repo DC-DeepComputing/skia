@@ -16,6 +16,190 @@
       "message": "I using a std::variant to allow this GlyphVector to use either an sk_sp\u003cSkStrike\u003e or a SkStrikeForGPU*. I think I\u0027m using std::variant correctly, but any advice would be appreciated. ",
       "revId": "0ba4aa4425d3301b2cdc73646432f0d32ef31cf9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3c3cefa8_b61e70f5",
+        "filename": "src/text/gpu/GlyphVector.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-06-22T21:17:16Z",
+      "side": 1,
+      "message": "Is the trailing `.get()` necessary? We can usually compare an sk_sp against nullptr.",
+      "range": {
+        "startLine": 22,
+        "startChar": 47,
+        "endLine": 22,
+        "endChar": 53
+      },
+      "revId": "0ba4aa4425d3301b2cdc73646432f0d32ef31cf9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c7b7213f_8e38fec6",
+        "filename": "src/text/gpu/GlyphVector.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-06-22T21:17:16Z",
+      "side": 1,
+      "message": "I\u0027m fine with it personally but I thought Skia-style was to omit implicit `!\u003d nullptr`s. (Here and elsewhere)",
+      "range": {
+        "startLine": 52,
+        "startChar": 19,
+        "endLine": 52,
+        "endChar": 30
+      },
+      "revId": "0ba4aa4425d3301b2cdc73646432f0d32ef31cf9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f7034cd3_518ea522",
+        "filename": "src/text/gpu/GlyphVector.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-06-22T21:17:16Z",
+      "side": 1,
+      "message": "nit: `std::nullopt` instead of `{}` could be better for readability",
+      "range": {
+        "startLine": 63,
+        "startChar": 15,
+        "endLine": 63,
+        "endChar": 17
+      },
+      "revId": "0ba4aa4425d3301b2cdc73646432f0d32ef31cf9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2c7261ca_b4e09c13",
+        "filename": "src/text/gpu/GlyphVector.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-06-22T21:17:16Z",
+      "side": 1,
+      "message": "nit: You can omit the outside `{}`s. optional has an implicit ctor:\n\n`return GlyphVector{...};`",
+      "range": {
+        "startLine": 99,
+        "startChar": 11,
+        "endLine": 99,
+        "endChar": 12
+      },
+      "revId": "0ba4aa4425d3301b2cdc73646432f0d32ef31cf9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cf9ca577_77c64a19",
+        "filename": "src/text/gpu/GlyphVector.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-06-22T21:17:16Z",
+      "side": 1,
+      "message": "nit: missing space. `if (`",
+      "range": {
+        "startLine": 111,
+        "startChar": 10,
+        "endLine": 111,
+        "endChar": 14
+      },
+      "revId": "0ba4aa4425d3301b2cdc73646432f0d32ef31cf9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5af42ce5_fd6421c4",
+        "filename": "src/text/gpu/GlyphVector.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-06-22T21:17:16Z",
+      "side": 1,
+      "message": "Please replace auto with proper types. (This case spooks me a bit since without knowing the type, this could be an expensive copy/ref-bump; maybe this should really be a \u0026 or const\u0026)\n\nhttp://go/cstyle#Type_deduction\n\n\"Use type deduction only if it makes the code clearer to readers who aren\u0027t familiar with the project, or if it makes the code safer. Do not use it merely to avoid the inconvenience of writing an explicit type.\"",
+      "range": {
+        "startLine": 117,
+        "startChar": 9,
+        "endLine": 117,
+        "endChar": 13
+      },
+      "revId": "0ba4aa4425d3301b2cdc73646432f0d32ef31cf9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b85bef0a_21b2dbf9",
+        "filename": "src/text/gpu/GlyphVector.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-06-22T21:17:16Z",
+      "side": 1,
+      "message": "Please replace auto with proper types.",
+      "range": {
+        "startLine": 133,
+        "startChar": 13,
+        "endLine": 133,
+        "endChar": 17
+      },
+      "revId": "0ba4aa4425d3301b2cdc73646432f0d32ef31cf9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dc6b5e75_2d99e025",
+        "filename": "src/text/gpu/GlyphVector.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-06-22T21:17:16Z",
+      "side": 1,
+      "message": "From a memory usage standpoint this is probably identical to just having\n\n    SkStrikeForGPU* fGPUStrike;\n    sk_sp\u003cSkStrike\u003e fStrike;\n\nAnd I wouldn\u0027t be surprised if the code read cleaner this way as well.\nBut I am pretty biased against variant (I like the concept but I think the execution in C++ is awful) and I think you did a good job with the tools you\u0027ve been given.",
+      "range": {
+        "startLine": 95,
+        "startChar": 0,
+        "endLine": 95,
+        "endChar": 75
+      },
+      "revId": "0ba4aa4425d3301b2cdc73646432f0d32ef31cf9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
