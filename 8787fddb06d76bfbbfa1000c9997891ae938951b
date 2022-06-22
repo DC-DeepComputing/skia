@@ -51,6 +51,29 @@
       "parentUuid": "9775df8e_c06b3f30",
       "revId": "8787fddb06d76bfbbfa1000c9997891ae938951b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "01123f48_db969929",
+        "filename": "src/gpu/ganesh/GrShaderCaps.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-06-22T14:13:20Z",
+      "side": 1,
+      "message": "Please add comment with an explanation of why this workaround bit exists.\nPlease rename to `fAvoidLoopingColorizer`. Being able to use the looping colorizer is the common case.",
+      "range": {
+        "startLine": 66,
+        "startChar": 9,
+        "endLine": 66,
+        "endChar": 32
+      },
+      "revId": "8787fddb06d76bfbbfa1000c9997891ae938951b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
