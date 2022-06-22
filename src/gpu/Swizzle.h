@@ -38,7 +38,7 @@ public:
 
     constexpr char operator[](int i) const {
         SkASSERT(i >= 0 && i < 4);
-        int idx = (fKey >> (4U * i)) & 0xfU;
+        int idx = (fKey >> (4U * static_cast<unsigned int>(i))) & 0xfU;
         return IToC(idx);
     }
 
@@ -70,7 +70,7 @@ private:
 };
 
 constexpr Swizzle::Swizzle(const char c[4])
-        : fKey((CToI(c[0]) << 0) | (CToI(c[1]) << 4) | (CToI(c[2]) << 8) | (CToI(c[3]) << 12)) {}
+        : fKey(static_cast<uint16_t>((CToI(c[0]) << 0) | (CToI(c[1]) << 4) | (CToI(c[2]) << 8) | (CToI(c[3]) << 12))) {}
 
 constexpr Swizzle::Swizzle(const Swizzle& that)
         : fKey(that.fKey) {}
@@ -99,7 +99,7 @@ constexpr std::array<float, 4> Swizzle::applyTo(std::array<float, 4> color) cons
 
 constexpr float Swizzle::ComponentIndexToFloat(std::array<float, 4> color, int idx) {
     if (idx <= 3) {
-        return color[idx];
+        return color[static_cast<size_t>(idx)];
     }
     if (idx == CToI('1')) {
         return 1.0f;
@@ -137,12 +137,12 @@ constexpr char Swizzle::IToC(int idx) {
 
 constexpr Swizzle Swizzle::Concat(const Swizzle& a, const Swizzle& b) {
     uint16_t key = 0;
-    for (int i = 0; i < 4; ++i) {
+    for (unsigned int i = 0; i < 4; ++i) {
         int idx = (b.fKey >> (4U * i)) & 0xfU;
         if (idx != CToI('0') && idx != CToI('1')) {
             SkASSERT(idx >= 0 && idx < 4);
             // Get the index value stored in a at location idx.
-            idx = ((a.fKey >> (4U * idx)) & 0xfU);
+            idx = ((a.fKey >> (4U * static_cast<unsigned int>(idx))) & 0xfU);
         }
         key |= (idx << (4U * i));
     }
