@@ -19,6 +19,8 @@
 
 class SkStrokeRec;
 
+namespace sktext::gpu { class AtlasSubRun; }
+
 namespace skgpu::graphite {
 
 class BoundsManager;
@@ -60,6 +62,14 @@ public:
     const Transform& localToDeviceTransform();
 
     SkStrikeDeviceInfo strikeDeviceInfo() const override;
+
+    // Handles text primitive processing
+    // TODO: is there a way to avoid making this public?
+    void drawSubRun(const sktext::gpu::AtlasSubRun*,
+                    const SkMatrixProvider& viewMatrix,
+                    SkPoint drawOrigin,
+                    const SkPaint& paint,
+                    sk_sp<SkRefCnt> subRunStorage);
 
 #if GRAPHITE_TEST_UTILS
     TextureProxy* proxy();

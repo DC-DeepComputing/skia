@@ -40,6 +40,10 @@ class GrClip;
 namespace skgpu::v1 { class SurfaceDrawContext; }
 #endif
 
+#if defined(SK_GRAPHITE_ENABLED)
+namespace skgpu::graphite { class Recorder; }
+#endif
+
 namespace sktext::gpu {
 // -- AtlasSubRun --------------------------------------------------------------------------------
 // AtlasSubRun is the API that AtlasTextOp uses to generate vertex data for drawing.
@@ -84,6 +88,18 @@ public:
     // is single threaded.
     virtual std::tuple<bool, int> regenerateAtlas(
             int begin, int end, GrMeshDrawTarget* target) const = 0;
+#endif
+
+#if defined(SK_GRAPHITE_ENABLED)
+//    virtual void fillVertexData(
+//            void* vertexDst, int offset, int count,
+//            SkColor color,
+//            const SkMatrix& drawMatrix,
+//            SkPoint drawOrigin,
+//            SkIRect clip) const {}
+
+    virtual std::tuple<bool, int> regenerateAtlas(
+        int begin, int end, skgpu::graphite::Recorder*) const = 0;
 #endif
 
     virtual void testingOnly_packedGlyphIDToGlyph(StrikeCache* cache) const = 0;

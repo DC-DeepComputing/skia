@@ -29,6 +29,10 @@
 using AtlasTextOp = skgpu::v1::AtlasTextOp;
 #endif  // SK_SUPPORT_GPU
 
+#ifdef SK_GRAPHITE_ENABLED
+#include "src/gpu/graphite/Device.h"
+#endif
+
 #include <cinttypes>
 
 namespace sktext::gpu {
@@ -47,6 +51,10 @@ enum SubRun::SubRunType : int {
 using MaskFormat = skgpu::MaskFormat;
 
 using namespace sktext::gpu;
+
+#if defined(SK_GRAPHITE_ENABLED)
+using Recorder = skgpu::graphite::Recorder;
+#endif
 
 namespace {
 // Use the following in your args.gn to dump telemetry for diagnosing chrome Renderer/GPU
@@ -1089,6 +1097,15 @@ public:
               skgpu::v1::SurfaceDrawContext* sdc) const override;
 #endif  // SK_SUPPORT_GPU
 
+#ifdef SK_GRAPHITE_ENABLED
+    void draw(SkCanvas*,
+              const SkMatrixProvider& viewMatrix,
+              SkPoint drawOrigin,
+              const SkPaint&,
+              sk_sp<SkRefCnt> subRunStorage,
+              skgpu::graphite::Device*) const override;
+#endif
+
     int unflattenSize() const override;
 
     int glyphCount() const override;
@@ -1114,6 +1131,11 @@ public:
                         const SkMatrix& drawMatrix, SkPoint drawOrigin,
                         SkIRect clip) const override;
 #endif  // SK_SUPPORT_GPU
+
+#if defined(SK_GRAPHITE_ENABLED)
+    std::tuple<bool, int>
+    regenerateAtlas(int begin, int end, Recorder*) const override;
+#endif
 
     bool canReuse(const SkPaint& paint, const SkMatrix& positionMatrix) const override;
 
@@ -1362,6 +1384,17 @@ std::tuple<const GrClip*, GrOp::Owner> DirectMaskSubRun::makeAtlasTextOp(
 }
 #endif  // SK_SUPPORT_GPU
 
+#ifdef SK_GRAPHITE_ENABLED
+void DirectMaskSubRun::draw(SkCanvas*,
+                            const SkMatrixProvider& viewMatrix,
+                            SkPoint drawOrigin,
+                            const SkPaint& paint,
+                            sk_sp<SkRefCnt> subRunStorage,
+                            skgpu::graphite::Device* device) const {
+    device->drawSubRun(this, viewMatrix, drawOrigin, paint, std::move(subRunStorage));
+}
+#endif
+
 void DirectMaskSubRun::testingOnly_packedGlyphIDToGlyph(StrikeCache *cache) const {
     fGlyphs.packedGlyphIDToGlyph(cache);
 }
@@ -1483,6 +1516,13 @@ void DirectMaskSubRun::fillVertexData(void* vertexDst, int offset, int count,
 }
 #endif  // SK_SUPPORT_GPU
 
+#if defined(SK_GRAPHITE_ENABLED)
+std::tuple<bool, int> DirectMaskSubRun::regenerateAtlas(int begin, int end,
+                                                        Recorder* recorder) const {
+    return fGlyphs.regenerateAtlas(begin, end, fMaskFormat, 0, recorder);
+}
+#endif
+
 // true if only need to translate by integer amount, device rect.
 std::tuple<bool, SkRect> DirectMaskSubRun::deviceRectAndCheckTransform(
         const SkMatrix& positionMatrix) const {
@@ -1567,6 +1607,9 @@ public:
 
     size_t vertexStride(const SkMatrix& drawMatrix) const override;
 #endif  // SK_SUPPORT_GPU
+#if defined(SK_GRAPHITE_ENABLED)
+    std::tuple<bool, int> regenerateAtlas(int begin, int end, Recorder*) const override;
+#endif
 
     int glyphCount() const override;
 
@@ -1719,6 +1762,13 @@ size_t TransformedMaskSubRun::vertexStride(const SkMatrix& drawMatrix) const {
 }
 #endif  // SK_SUPPORT_GPU
 
+#if defined(SK_GRAPHITE_ENABLED)
+std::tuple<bool, int> TransformedMaskSubRun::regenerateAtlas(int begin, int end,
+                                                             Recorder* recorder) const {
+    return fGlyphs.regenerateAtlas(begin, end, fVertexFiller.grMaskType(), 1, recorder);
+}
+#endif
+
 int TransformedMaskSubRun::glyphCount() const {
     return SkCount(fGlyphs.glyphs());
 }
@@ -1788,6 +1838,9 @@ public:
 
     size_t vertexStride(const SkMatrix& drawMatrix) const override;
 #endif  // SK_SUPPORT_GPU
+#if defined(SK_GRAPHITE_ENABLED)
+    std::tuple<bool, int> regenerateAtlas(int begin, int end, Recorder*) const override;
+#endif
 
     int glyphCount() const override;
 
@@ -2000,6 +2053,14 @@ void SDFTSubRun::fillVertexData(
                                  vertexDst);
 }
 #endif  // SK_SUPPORT_GPU
+
+#if SK_SUPPORT_GPU
+std::tuple<bool, int>
+SDFTSubRun::regenerateAtlas(int begin, int end, Recorder *recorder) const {
+    return fGlyphs.regenerateAtlas(begin, end, MaskFormat::kA8, SK_DistanceFieldInset,
+                                   recorder);
+}
+#endif
 
 int SDFTSubRun::glyphCount() const {
     return fVertexFiller.count();
