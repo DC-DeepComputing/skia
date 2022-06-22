@@ -46,6 +46,30 @@
       },
       "revId": "90b2b76811cc19df8ccce64281a0bd0a0dd76843",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "91ba09ce_4ce68008",
+        "filename": "src/gpu/ganesh/gradients/GrGradientShader.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 311,
+      "author": {
+        "id": 19049
+      },
+      "writtenOn": "2022-06-22T15:01:52Z",
+      "side": 1,
+      "message": "crash can be reproduced if you visit yandex.ru/games and scroll back and forth. I\u0027ve found the bad commit by bisecting chromium and then skia - https://skia-review.googlesource.com/c/skia/+/458277. this is where looping colorizer was first introduced",
+      "parentUuid": "5ebbfe84_b58350ec",
+      "range": {
+        "startLine": 311,
+        "startChar": 12,
+        "endLine": 311,
+        "endChar": 46
+      },
+      "revId": "90b2b76811cc19df8ccce64281a0bd0a0dd76843",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
