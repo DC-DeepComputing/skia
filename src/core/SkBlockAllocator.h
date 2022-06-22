@@ -403,8 +403,8 @@ public:
     inline BlockIter<false, true> rblocks() const;
 
 #ifdef SK_DEBUG
-    inline static constexpr int kAssignedMarker = 0xBEEFFACE;
-    inline static constexpr int kFreedMarker    = 0xCAFEBABE;
+    inline static constexpr int kAssignedMarker = static_cast<int>(0xBEEFFACE);
+    inline static constexpr int kFreedMarker    = static_cast<int>(0xCAFEBABE);
 
     void validate() const;
 #endif
