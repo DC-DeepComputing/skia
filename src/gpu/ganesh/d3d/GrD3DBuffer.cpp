@@ -149,7 +149,7 @@ void GrD3DBuffer::onUnmap() {
     this->internalUnmap(this->size());
 }
 
-bool GrD3DBuffer::onUpdateData(const void* src, size_t size) {
+bool GrD3DBuffer::onUpdateData(const void* src, size_t size, size_t offset) {
     if (!fD3DResource) {
         return false;
     }
@@ -163,7 +163,7 @@ bool GrD3DBuffer::onUpdateData(const void* src, size_t size) {
         SkASSERT(!this->getD3DGpu()->protectedContext());
         //*** any alignment restrictions?
     }
-    memcpy(fMapPtr, src, size);
+    memcpy(SkTAddOffset<void>(fMapPtr, offset), src, size);
     this->internalUnmap(size);
 
     return true;

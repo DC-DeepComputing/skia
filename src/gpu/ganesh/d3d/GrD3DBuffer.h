@@ -42,10 +42,10 @@ private:
 
     void onMap() override;
     void onUnmap() override;
-    bool onUpdateData(const void* src, size_t srcSizeInBytes) override;
+    bool onUpdateData(const void* src, size_t srcSizeInBytes, size_t offset) override;
 
-    void internalMap(size_t size);
-    void internalUnmap(size_t size);
+    void internalMap(size_t offset, size_t size);
+    void internalUnmap(size_t offset, size_t size);
 
     void validate() const;
 
