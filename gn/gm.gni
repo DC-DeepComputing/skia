@@ -250,6 +250,7 @@ gm_sources = [
   "$_gm/lcdoverlap.cpp",
   "$_gm/lcdtext.cpp",
   "$_gm/lighting.cpp",
+  "$_gm/line_bug.cpp",
   "$_gm/linepaths.cpp",
   "$_gm/localmatriximagefilter.cpp",
   "$_gm/localmatriximageshader.cpp",
