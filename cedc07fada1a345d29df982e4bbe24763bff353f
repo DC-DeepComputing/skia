@@ -3,6 +3,23 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "503c1661_1f6fea72",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-06-22T17:35:32Z",
+      "side": 1,
+      "message": "I think this is fine for now (and somewhat aspirational), but like I mentioned in the meeting, I think we\u0027re going to need to lean on Skia\u0027s GN arguments to really sever the CPU/GPU connection. I guess we\u0027ll see how far we can get by coaxing the linker first.",
+      "revId": "cedc07fada1a345d29df982e4bbe24763bff353f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "0f55f28c_1721a1a1",
         "filename": "modules/skottie/src/SkottieTool.cpp",
         "patchSetId": 7
@@ -20,6 +37,23 @@
         "endLine": 96,
         "endChar": 13
       },
+      "revId": "cedc07fada1a345d29df982e4bbe24763bff353f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "17f95061_d4b38deb",
+        "filename": "modules/skottie/src/SkottieTool.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 180,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-06-22T17:35:32Z",
+      "side": 1,
+      "message": "nit: Add [[fallthrough]] to make it extra-clear that we intend to return the null sink.",
       "revId": "cedc07fada1a345d29df982e4bbe24763bff353f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
