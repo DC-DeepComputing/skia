@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6f14ae04_aa7428fc",
+        "filename": "modules/skottie/src/SkottieTool.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 352,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-06-22T17:21:27Z",
+      "side": 1,
+      "message": "Assuming that writeFrame is going to consume the image immediately, this doesn\u0027t need to make an extra copy, right? You could either do:\n\n  SkImage::MakeFromRaster(pm, nullptr, nullptr)\n  -or-\n  SkImage::MakeRasterData(SkImageInfo::MakeN32Premul(), result-\u003edata(0), result-\u003erowBytes(0)) [skipping the pixmap]",
+      "range": {
+        "startLine": 352,
+        "startChar": 43,
+        "endLine": 352,
+        "endChar": 57
+      },
+      "revId": "cedc07fada1a345d29df982e4bbe24763bff353f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
