@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "034cf3a3_d7630d0d",
+        "filename": "tests/GrGpuBufferTest.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 197,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-06-22T13:16:59Z",
+      "side": 1,
+      "message": "Unrelated to any of these recent transfer changes, GrVkGpu onCreateBuffer asserts that all kXferCpuToGpu type buffers are also kDynamic.",
+      "range": {
+        "startLine": 197,
+        "startChar": 32,
+        "endLine": 197,
+        "endChar": 56
+      },
+      "revId": "bc91f69635bd1e2f0b9d2f91295e8365840b520d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
