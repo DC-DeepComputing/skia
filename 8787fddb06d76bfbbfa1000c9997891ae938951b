@@ -55,6 +55,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "cc078724_8346aa74",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19049
+      },
+      "writtenOn": "2022-06-22T14:25:25Z",
+      "side": 1,
+      "message": "I have searched bugs.chromium.org and did not find anything similar to this issue.\nEmulators crash when run in software mode (using Google Swiftshader: \nGLES: Google (Google Inc.), Android Emulator OpenGL ES Translator (Google SwiftShader), OpenGL ES 3.0 (OpenGL ES 3.0 SwiftShader 4.0.0.1)\n), but I have never tried to run an arm emulator not using gpu (maybe the problem is a bit more generic).",
+      "parentUuid": "0300b387_ca2756c7",
+      "revId": "8787fddb06d76bfbbfa1000c9997891ae938951b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "01123f48_db969929",
         "filename": "src/gpu/ganesh/GrShaderCaps.h",
         "patchSetId": 3
