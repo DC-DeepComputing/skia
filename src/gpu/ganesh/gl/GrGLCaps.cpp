@@ -4255,6 +4255,8 @@ void GrGLCaps::applyDriverCorrectnessWorkarounds(const GrGLContextInfo& ctxInfo,
     // https://github.com/flutter/flutter/issues/38700
     if (ctxInfo.driver() == GrGLDriver::kAndroidEmulator) {
         shaderCaps->fNoDefaultPrecisionForExternalSamplers = true;
+    } else {
+        shaderCaps->fCanUseLoopingColorizer = true;
     }
 
     // http://skbug.com/9491: Nexus5 produces rendering artifacts when we use QCOM_tiled_rendering.

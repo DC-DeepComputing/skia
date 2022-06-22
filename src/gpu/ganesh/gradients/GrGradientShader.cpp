@@ -511,7 +511,7 @@ static std::unique_ptr<GrFragmentProcessor> make_colorizer(const SkPMColor4f* co
             return colorizer;
         }
         // Attempt to create an analytic colorizer that uses a binary-search loop.
-        colorizer = caps->fNonconstantArrayIndexSupport
+        colorizer = caps->fNonconstantArrayIndexSupport && caps->fCanUseLoopingColorizer
                             ? make_looping_binary_colorizer(colors, positions, count)
                             : make_unrolled_binary_colorizer(colors, positions, count);
         if (colorizer) {
