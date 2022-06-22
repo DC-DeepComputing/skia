@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "48e0ec8c_9ba0462d",
+        "filename": "src/core/SkPaintParamsKey.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-06-22T13:59:55Z",
+      "side": 1,
+      "message": "SK_BEGIN_REQUIRE_DENSE unfortunately doesn\u0027t actually make things dense, it just reports an error if they are not. In this case it correctly discovered that this struct was getting rounded up to 8 bytes.\n\n#pragma pack is already used in our font code so it seems like it\u0027s supported on all our compilers.",
+      "range": {
+        "startLine": 45,
+        "startChar": 5,
+        "endLine": 45,
+        "endChar": 25
+      },
+      "revId": "ee45b01ea4ed42eac7bc791cebddfc1009e7cfe0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
