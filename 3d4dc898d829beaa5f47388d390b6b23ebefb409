@@ -34,6 +34,24 @@
       "parentUuid": "877d2b86_39b3be93",
       "revId": "3d4dc898d829beaa5f47388d390b6b23ebefb409",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8a38f084_2fa2f0c9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-06-22T13:17:44Z",
+      "side": 1,
+      "message": "Chiming in here with my opinion as I don\u0027t think we\u0027ve fully decided things yet. IMO I think two options are the best here.\n\n1) Michaels original approach which will reduce the number of bind calls while also keeping the buffer fairly compact since data can be copied into the buffer purely on alignment requirements (UniformData size doesn\u0027t matter).\n\n2) The suggestions Michael threw in at the end where we only ever bind the buffer once at the start with offset 0 (or at least the offset at start of all draws in current pass). The downside of this approach is there is going to be wasted padding in the buffer as all uniform data needs to be copied into the buffer at some integer multiple of the uniform data\u0027s size. With this approach I think we could have the base implementation be Michael\u0027s or James\u0027original ideas since we\u0027ll be passing in calculated offset index for every draw anyways.\n\nWhich is best I am not sure. I guess it really comes down to how much we think the cost of calling bind buffer is. Obviously batching is always going to get broken by pipeline changes.",
+      "parentUuid": "91ae4677_466e518e",
+      "revId": "3d4dc898d829beaa5f47388d390b6b23ebefb409",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
