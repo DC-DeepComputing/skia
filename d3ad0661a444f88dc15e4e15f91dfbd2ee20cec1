@@ -16,6 +16,24 @@
       "message": "Hi Greg, there are four errors in Checks, two of them marked as infra failure. The failure on Canary-Chromium is related to the Canary roll back CL, and it got failed on android_optional_gpu_tests_rel with a \"error: could not apply...\". I have no access to rerun this. Do we need to rebase the chromium branch for the Canary roll back CL?\nThanks.\n",
       "revId": "d3ad0661a444f88dc15e4e15f91dfbd2ee20cec1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b44bd3e4_4797570f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-06-22T12:55:31Z",
+      "side": 1,
+      "message": "Yeah I am not too worried about any of those canary failures, none seem related to this CL. I did forget that our base set of bots we check on CLs doesn\u0027t include windows intel angle at all, so I just manually kicked those off. Assuming things look okay there, I think we should be fine to land this. Thanks for bearing with me.",
+      "parentUuid": "bc77d72b_62667e4a",
+      "revId": "d3ad0661a444f88dc15e4e15f91dfbd2ee20cec1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
