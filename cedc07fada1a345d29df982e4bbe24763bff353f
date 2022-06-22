@@ -1,6 +1,29 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0f55f28c_1721a1a1",
+        "filename": "modules/skottie/src/SkottieTool.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-06-22T17:33:01Z",
+      "side": 1,
+      "message": "+1",
+      "range": {
+        "startLine": 96,
+        "startChar": 6,
+        "endLine": 96,
+        "endChar": 13
+      },
+      "revId": "cedc07fada1a345d29df982e4bbe24763bff353f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6f14ae04_aa7428fc",
@@ -38,6 +61,30 @@
       "side": 1,
       "message": "... oh wait, nevermind. I just saw how MP4Sink works. Hmm. Blech.",
       "parentUuid": "6f14ae04_aa7428fc",
+      "range": {
+        "startLine": 352,
+        "startChar": 43,
+        "endLine": 352,
+        "endChar": 57
+      },
+      "revId": "cedc07fada1a345d29df982e4bbe24763bff353f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "725d8b5d_7c36be15",
+        "filename": "modules/skottie/src/SkottieTool.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 352,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-06-22T17:33:01Z",
+      "side": 1,
+      "message": "You could transfer ownership of the async result into writeFrame, I suppose.",
+      "parentUuid": "c90a17ea_bc0cc0a8",
       "range": {
         "startLine": 352,
         "startChar": 43,
