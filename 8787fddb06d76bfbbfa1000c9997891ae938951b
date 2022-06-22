@@ -73,6 +73,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "30a26b37_36821eb9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-06-22T14:29:39Z",
+      "side": 1,
+      "message": "Can you elaborate at all? We use Swiftshader internally for many things and there haven\u0027t been problems. What sort of crash is it--can you get a stack trace? The ideal change would be to fix the crash in Swiftshader, but there isn\u0027t enough info here to do that.",
+      "parentUuid": "cc078724_8346aa74",
+      "revId": "8787fddb06d76bfbbfa1000c9997891ae938951b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "01123f48_db969929",
         "filename": "src/gpu/ganesh/GrShaderCaps.h",
         "patchSetId": 3
