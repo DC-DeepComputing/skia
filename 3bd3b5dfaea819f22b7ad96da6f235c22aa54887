@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9230bee9_55ba0173",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-06-22T11:47:49Z",
+      "side": 1,
+      "message": "`new char[]` default initializes which generally means do nothing. (`new char[]()` would always zero initialize). Are there particular `new` implementations which are zero initializing for default initialization? If so, that would be interesting information to attach to this so that we know which are the offenders. (`malloc` is also free to zero initialize and it would also be interesting to know if any `malloc`s do that as well. If someone wrote their global `new` to zero, there isn\u0027t anything preventing `malloc` from doing the same.)",
+      "revId": "3bd3b5dfaea819f22b7ad96da6f235c22aa54887",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
