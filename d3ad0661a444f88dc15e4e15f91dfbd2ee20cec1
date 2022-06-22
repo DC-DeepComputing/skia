@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bc77d72b_62667e4a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 12064
+      },
+      "writtenOn": "2022-06-22T07:58:12Z",
+      "side": 1,
+      "message": "Hi Greg, there are four errors in Checks, two of them marked as infra failure. The failure on Canary-Chromium is related to the Canary roll back CL, and it got failed on android_optional_gpu_tests_rel with a \"error: could not apply...\". I have no access to rerun this. Do we need to rebase the chromium branch for the Canary roll back CL?\nThanks.\n",
+      "revId": "d3ad0661a444f88dc15e4e15f91dfbd2ee20cec1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
