@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a44273da_ad484423",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2022-06-22T15:56:52Z",
+      "side": 1,
+      "message": "Also updated to disable SKP support for cpu/gpu only builds.",
+      "revId": "e240aa11fb9cfe6d51945736d64ce34b20cb7388",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "51af57ce_7d291e0d",
@@ -14,6 +31,30 @@
       "writtenOn": "2022-06-22T13:10:46Z",
       "side": 1,
       "message": "I\u0027m wondering if picture should be extracted from the sink/generator paradigm. It seems like the generator/sink are special cases that are only designed to work together while the other sink/generators can be paired in any combination.",
+      "range": {
+        "startLine": 76,
+        "startChar": 17,
+        "endLine": 76,
+        "endChar": 34
+      },
+      "revId": "e240aa11fb9cfe6d51945736d64ce34b20cb7388",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2cc4f7bb_370d8fd7",
+        "filename": "modules/skottie/src/SkottieTool.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2022-06-22T15:56:52Z",
+      "side": 1,
+      "message": "Good point.  I\u0027d rather not duplicate the frame loop though, so maybe a compromise is to keep it as a sinkless generator -- that way it can be driven like all other generators but the Sink abstraction no longer needs to know about SkPictures.\n\nLet me know what you think.",
+      "parentUuid": "51af57ce_7d291e0d",
       "range": {
         "startLine": 76,
         "startChar": 17,
@@ -47,6 +88,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4a58e1ae_e2c98bb1",
+        "filename": "modules/skottie/src/SkottieTool.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2022-06-22T15:56:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cfe57900_492d22cd",
+      "range": {
+        "startLine": 78,
+        "startChar": 26,
+        "endLine": 78,
+        "endChar": 32
+      },
+      "revId": "e240aa11fb9cfe6d51945736d64ce34b20cb7388",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1a4513bc_0eea3cf7",
@@ -60,6 +125,24 @@
       "writtenOn": "2022-06-22T13:10:46Z",
       "side": 1,
       "message": "Shouldn\u0027t this and the writePictureFrame overrides be public?",
+      "revId": "e240aa11fb9cfe6d51945736d64ce34b20cb7388",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "796e1e17_fe4b7101",
+        "filename": "modules/skottie/src/SkottieTool.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2022-06-22T15:56:52Z",
+      "side": 1,
+      "message": "I forget where I picked this up (mtklein?), but it\u0027s just a way to be more explicit about forcing all interface interactions through the interface/base class.\n\nNot super useful in most cases, I kinda got into the habit of using by default, which might be confusing.\n\nMoved to public.",
+      "parentUuid": "1a4513bc_0eea3cf7",
       "revId": "e240aa11fb9cfe6d51945736d64ce34b20cb7388",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -87,6 +170,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4a75533b_03809c6f",
+        "filename": "modules/skottie/src/SkottieTool.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2022-06-22T15:56:52Z",
+      "side": 1,
+      "message": "Ack, moved to outer scope for sharing with other classes.",
+      "parentUuid": "b3f23e78_5a2b29eb",
+      "range": {
+        "startLine": 123,
+        "startChar": 42,
+        "endLine": 123,
+        "endChar": 53
+      },
+      "revId": "e240aa11fb9cfe6d51945736d64ce34b20cb7388",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cbf5bb06_7fb5197f",
@@ -100,6 +207,30 @@
       "writtenOn": "2022-06-22T13:10:46Z",
       "side": 1,
       "message": "reserve # frames?",
+      "range": {
+        "startLine": 170,
+        "startChar": 28,
+        "endLine": 170,
+        "endChar": 38
+      },
+      "revId": "e240aa11fb9cfe6d51945736d64ce34b20cb7388",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "64316719_78b238a5",
+        "filename": "modules/skottie/src/SkottieTool.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2022-06-22T15:56:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cbf5bb06_7fb5197f",
       "range": {
         "startLine": 170,
         "startChar": 28,
