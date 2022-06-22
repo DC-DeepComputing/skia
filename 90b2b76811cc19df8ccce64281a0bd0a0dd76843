@@ -22,6 +22,30 @@
       },
       "revId": "90b2b76811cc19df8ccce64281a0bd0a0dd76843",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5ebbfe84_b58350ec",
+        "filename": "src/gpu/ganesh/gradients/GrGradientShader.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 311,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-06-22T14:45:55Z",
+      "side": 1,
+      "message": "Interesting hypothesis!\nCan you put together a repro case in a gm/viewer slide? I would much rather fix the source of the error instead of a workaround bit.",
+      "parentUuid": "84258477_1168c7d3",
+      "range": {
+        "startLine": 311,
+        "startChar": 12,
+        "endLine": 311,
+        "endChar": 46
+      },
+      "revId": "90b2b76811cc19df8ccce64281a0bd0a0dd76843",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
