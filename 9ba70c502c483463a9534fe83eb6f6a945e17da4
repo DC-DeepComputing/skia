@@ -142,6 +142,24 @@
       "parentUuid": "6cdda8d0_4460160f",
       "revId": "9ba70c502c483463a9534fe83eb6f6a945e17da4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0a7ecf48_9e7e187a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-06-22T11:42:37Z",
+      "side": 1,
+      "message": "Ok, let\u0027s bump the minimum typescript version to 4.1 then",
+      "parentUuid": "76948326_bc8a5a12",
+      "revId": "9ba70c502c483463a9534fe83eb6f6a945e17da4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
