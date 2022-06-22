@@ -1,0 +1,113 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "51af57ce_7d291e0d",
+        "filename": "modules/skottie/src/SkottieTool.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-06-22T13:10:46Z",
+      "side": 1,
+      "message": "I\u0027m wondering if picture should be extracted from the sink/generator paradigm. It seems like the generator/sink are special cases that are only designed to work together while the other sink/generators can be paired in any combination.",
+      "range": {
+        "startLine": 76,
+        "startChar": 17,
+        "endLine": 76,
+        "endChar": 34
+      },
+      "revId": "e240aa11fb9cfe6d51945736d64ce34b20cb7388",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cfe57900_492d22cd",
+        "filename": "modules/skottie/src/SkottieTool.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-06-22T13:10:46Z",
+      "side": 1,
+      "message": "might be helpful to have a name for this param. Not obvious to me from here what it is.",
+      "range": {
+        "startLine": 78,
+        "startChar": 26,
+        "endLine": 78,
+        "endChar": 32
+      },
+      "revId": "e240aa11fb9cfe6d51945736d64ce34b20cb7388",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1a4513bc_0eea3cf7",
+        "filename": "modules/skottie/src/SkottieTool.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-06-22T13:10:46Z",
+      "side": 1,
+      "message": "Shouldn\u0027t this and the writePictureFrame overrides be public?",
+      "revId": "e240aa11fb9cfe6d51945736d64ce34b20cb7388",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b3f23e78_5a2b29eb",
+        "filename": "modules/skottie/src/SkottieTool.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-06-22T13:10:46Z",
+      "side": 1,
+      "message": "Is there a reason why this uses an_underscore while the other methods use camelCase?",
+      "range": {
+        "startLine": 123,
+        "startChar": 42,
+        "endLine": 123,
+        "endChar": 53
+      },
+      "revId": "e240aa11fb9cfe6d51945736d64ce34b20cb7388",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cbf5bb06_7fb5197f",
+        "filename": "modules/skottie/src/SkottieTool.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-06-22T13:10:46Z",
+      "side": 1,
+      "message": "reserve # frames?",
+      "range": {
+        "startLine": 170,
+        "startChar": 28,
+        "endLine": 170,
+        "endChar": 38
+      },
+      "revId": "e240aa11fb9cfe6d51945736d64ce34b20cb7388",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
