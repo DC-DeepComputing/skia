@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "003ef5ac_9c7b0a37",
+        "filename": "src/text/gpu/GlyphVector.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-06-23T12:57:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3c3cefa8_b61e70f5",
+      "range": {
+        "startLine": 22,
+        "startChar": 47,
+        "endLine": 22,
+        "endChar": 53
+      },
+      "revId": "0ba4aa4425d3301b2cdc73646432f0d32ef31cf9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c7b7213f_8e38fec6",
@@ -54,6 +78,30 @@
       "writtenOn": "2022-06-22T21:17:16Z",
       "side": 1,
       "message": "I\u0027m fine with it personally but I thought Skia-style was to omit implicit `!\u003d nullptr`s. (Here and elsewhere)",
+      "range": {
+        "startLine": 52,
+        "startChar": 19,
+        "endLine": 52,
+        "endChar": 30
+      },
+      "revId": "0ba4aa4425d3301b2cdc73646432f0d32ef31cf9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7f05717c_d578047c",
+        "filename": "src/text/gpu/GlyphVector.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-06-23T12:57:23Z",
+      "side": 1,
+      "message": "I understand the Skia likes to take this shortcut, but Google3 coding has show time and again that this can be dangerous.",
+      "parentUuid": "c7b7213f_8e38fec6",
       "range": {
         "startLine": 52,
         "startChar": 19,
@@ -87,6 +135,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9059e7aa_d2fc795b",
+        "filename": "src/text/gpu/GlyphVector.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-06-23T12:57:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f7034cd3_518ea522",
+      "range": {
+        "startLine": 63,
+        "startChar": 15,
+        "endLine": 63,
+        "endChar": 17
+      },
+      "revId": "0ba4aa4425d3301b2cdc73646432f0d32ef31cf9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2c7261ca_b4e09c13",
@@ -100,6 +172,30 @@
       "writtenOn": "2022-06-22T21:17:16Z",
       "side": 1,
       "message": "nit: You can omit the outside `{}`s. optional has an implicit ctor:\n\n`return GlyphVector{...};`",
+      "range": {
+        "startLine": 99,
+        "startChar": 11,
+        "endLine": 99,
+        "endChar": 12
+      },
+      "revId": "0ba4aa4425d3301b2cdc73646432f0d32ef31cf9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4756e974_bd100012",
+        "filename": "src/text/gpu/GlyphVector.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-06-23T12:57:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2c7261ca_b4e09c13",
       "range": {
         "startLine": 99,
         "startChar": 11,
@@ -133,6 +229,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b3e1663c_f5852a5a",
+        "filename": "src/text/gpu/GlyphVector.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-06-23T12:57:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cf9ca577_77c64a19",
+      "range": {
+        "startLine": 111,
+        "startChar": 10,
+        "endLine": 111,
+        "endChar": 14
+      },
+      "revId": "0ba4aa4425d3301b2cdc73646432f0d32ef31cf9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5af42ce5_fd6421c4",
@@ -146,6 +266,30 @@
       "writtenOn": "2022-06-22T21:17:16Z",
       "side": 1,
       "message": "Please replace auto with proper types. (This case spooks me a bit since without knowing the type, this could be an expensive copy/ref-bump; maybe this should really be a \u0026 or const\u0026)\n\nhttp://go/cstyle#Type_deduction\n\n\"Use type deduction only if it makes the code clearer to readers who aren\u0027t familiar with the project, or if it makes the code safer. Do not use it merely to avoid the inconvenience of writing an explicit type.\"",
+      "range": {
+        "startLine": 117,
+        "startChar": 9,
+        "endLine": 117,
+        "endChar": 13
+      },
+      "revId": "0ba4aa4425d3301b2cdc73646432f0d32ef31cf9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3e3f8e23_a3b30233",
+        "filename": "src/text/gpu/GlyphVector.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-06-23T12:57:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5af42ce5_fd6421c4",
       "range": {
         "startLine": 117,
         "startChar": 9,
@@ -179,6 +323,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f7d99d1a_05756f8c",
+        "filename": "src/text/gpu/GlyphVector.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-06-23T12:57:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b85bef0a_21b2dbf9",
+      "range": {
+        "startLine": 133,
+        "startChar": 13,
+        "endLine": 133,
+        "endChar": 17
+      },
+      "revId": "0ba4aa4425d3301b2cdc73646432f0d32ef31cf9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dc6b5e75_2d99e025",
@@ -192,6 +360,30 @@
       "writtenOn": "2022-06-22T21:17:16Z",
       "side": 1,
       "message": "From a memory usage standpoint this is probably identical to just having\n\n    SkStrikeForGPU* fGPUStrike;\n    sk_sp\u003cSkStrike\u003e fStrike;\n\nAnd I wouldn\u0027t be surprised if the code read cleaner this way as well.\nBut I am pretty biased against variant (I like the concept but I think the execution in C++ is awful) and I think you did a good job with the tools you\u0027ve been given.",
+      "range": {
+        "startLine": 95,
+        "startChar": 0,
+        "endLine": 95,
+        "endChar": 75
+      },
+      "revId": "0ba4aa4425d3301b2cdc73646432f0d32ef31cf9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dbf68a50_8af86854",
+        "filename": "src/text/gpu/GlyphVector.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-06-23T12:57:23Z",
+      "side": 1,
+      "message": "I don\u0027t think this is a good way to go. It would be a logical error to have both fGPUStrike and fStrike set to a value. Logically, this can only be one or the other or monostate (the worst name for a type ever).",
+      "parentUuid": "dc6b5e75_2d99e025",
       "range": {
         "startLine": 95,
         "startChar": 0,
