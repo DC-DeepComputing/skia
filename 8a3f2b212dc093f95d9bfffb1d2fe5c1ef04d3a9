@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cbc29fc3_939da21b",
+        "filename": "modules/skparagraph/include/ParagraphStyle.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-06-23T20:31:28Z",
+      "side": 1,
+      "message": "nit: Can we name this `getReplaceTabCharacters`, to match most of the other get/set pairs? It\u0027s a little confusing that `replace` is a verb, otherwise.",
+      "range": {
+        "startLine": 124,
+        "startChar": 9,
+        "endLine": 124,
+        "endChar": 29
+      },
+      "revId": "8a3f2b212dc093f95d9bfffb1d2fe5c1ef04d3a9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
