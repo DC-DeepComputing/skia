@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c47f60f3_af284021",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 20
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-06-23T20:59:29Z",
+      "side": 1,
+      "message": "Revised and updated based on our discussion offline.\n\nI\u0027m not 100% sure the use of SkMatrix will stay the same -- I still need to trace through how the geometry is generated for each SubRun type -- so it\u0027s a placeholder for now. But SkMatrixProvider is gone.",
+      "revId": "928ddd7e58490a7da608721742c1a98af06a088e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
