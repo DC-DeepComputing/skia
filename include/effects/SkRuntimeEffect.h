@@ -29,6 +29,8 @@ class GrRecordingContext;
 class SkFilterColorProgram;
 class SkImage;
 class SkRuntimeImageFilter;
+class SkShaderCodeDictionary;
+class SkUniform;
 
 namespace SkSL {
 class DebugTrace;
@@ -268,6 +270,14 @@ private:
         kAlwaysOpaque_Flag       = 0x40,
     };
 
+    struct GraphiteData {
+        ~GraphiteData();
+
+        int32_t fCodeSnippetID;
+        SkShaderCodeDictionary* fDict;
+        std::vector<SkUniform> fUniforms;
+    };
+
     SkRuntimeEffect(std::unique_ptr<SkSL::Program> baseProgram,
                     const Options& options,
                     const SkSL::FunctionDefinition& main,
@@ -302,6 +312,8 @@ private:
     friend class GrGLSLSkSLFP;         //
 #endif
 
+    friend struct RuntimeShaderBlock;   // SkKeyHelpers
+
     friend class SkRTShader;            // fBaseProgram, fMain
     friend class SkRuntimeBlender;      //
     friend class SkRuntimeColorFilter;  //
@@ -316,6 +328,7 @@ private:
     std::vector<Uniform> fUniforms;
     std::vector<Child> fChildren;
     std::vector<SkSL::SampleUsage> fSampleUsages;
+    std::unique_ptr<GraphiteData> fGraphiteData;
 
     std::unique_ptr<SkFilterColorProgram> fFilterColorProgram;
 

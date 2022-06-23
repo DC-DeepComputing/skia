@@ -22,6 +22,7 @@ class Context;
 }
 
 struct SkColorSpaceXformSteps;
+class SkShaderCodeDictionary;
 
 class SkRuntimeEffectPriv {
 public:
@@ -44,6 +45,9 @@ public:
     static void UsePrivateRTShaderModule(SkRuntimeEffect::Options* options) {
         options->usePrivateRTShaderModule = true;
     }
+
+    static SkRuntimeEffect::GraphiteData* GraphiteData(SkShaderCodeDictionary* dict,
+                                                       SkRuntimeEffect* effect);
 
     static SkRuntimeEffect::Uniform VarAsUniform(const SkSL::Variable&,
                                                  const SkSL::Context&,
