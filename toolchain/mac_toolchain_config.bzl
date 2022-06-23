@@ -31,11 +31,17 @@ EXTERNAL_TOOLCHAIN = "external/clang_mac"
 # Must be the same as where the symlink points to in download_mac_toolchain.bzl
 XCODE_SYMLINK = EXTERNAL_TOOLCHAIN + "/symlinks/xcode/MacSDK/usr"
 
+_platform_constraints_to_import = {
+    "@platforms//cpu:arm64": "_arm64_cpu",
+    "@platforms//cpu:x86_64": "_x86_64_cpu",
+}
+
 def _mac_toolchain_info(ctx):
     action_configs = _make_action_configs()
     features = []
     features += _make_default_flags()
     features += _make_diagnostic_flags()
+    features += _make_target_specific_flags(ctx)
 
     # https://docs.bazel.build/versions/main/skylark/lib/cc_common.html#create_cc_toolchain_config_info
     # Note, this rule is defined in Java code, not Starlark
@@ -56,8 +62,31 @@ def _mac_toolchain_info(ctx):
         toolchain_identifier = "clang-toolchain",
     )
 
+def _import_platform_constraints():
+    # In order to "import" constraint values so they can be passed in as parameters to
+    # ctx.target_platform_has_constraint(), we need to list them as a default value on a
+    # private attributes. It doesn't really matter what we call these private attributes,
+    # but to make it easier to read elsewhere, we create a mapping between the "official"
+    # name of the constraints and the private name. Then, we can refer to the official name
+    # without having to remember the secondary name.
+    # https://bazel.build/rules/rules#private_attributes_and_implicit_dependencies
+    # https://github.com/bazelbuild/proposals/blob/91579f36031f768bcf68b18a86b8df8b43cc590b/designs/2019-11-11-target-platform-constraints.md
+    rule_attributes = {}
+    for constraint in _platform_constraints_to_import:
+        private_attr = _platform_constraints_to_import[constraint]
+        rule_attributes[private_attr] = attr.label(default = constraint)
+    return rule_attributes
+
+def _has_platform_constraint(ctx, official_constraint_name):
+    # ctx is of type https://bazel.build/rules/lib/ctx
+    # This pattern is from
+    # https://github.com/bazelbuild/proposals/blob/91579f36031f768bcf68b18a86b8df8b43cc590b/designs/2019-11-11-target-platform-constraints.md
+    private_attr = _platform_constraints_to_import[official_constraint_name]
+    constraint = getattr(ctx.attr, private_attr)[platform_common.ConstraintValueInfo]
+    return ctx.target_platform_has_constraint(constraint)
+
 provide_mac_toolchain_config = rule(
-    attrs = {},
+    attrs = _import_platform_constraints(),
     provides = [CcToolchainConfigInfo],
     implementation = _mac_toolchain_info,
 )
@@ -373,3 +402,10 @@ def _make_diagnostic_flags():
             ],
         ),
     ]
+
+# The parameter is of type https://bazel.build/rules/lib/ctx
+def _make_target_specific_flags(ctx):
+    print(ctx)
+    print("@platforms//cpu:arm64", _has_platform_constraint(ctx, "@platforms//cpu:arm64"))
+    print("@platforms//cpu:x86_64", _has_platform_constraint(ctx, "@platforms//cpu:x86_64"))
+    return []
