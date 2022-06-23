@@ -1010,7 +1010,7 @@ describe('Core canvas behavior', () => {
         expect(paint.getColor()).toEqual(Float32Array.of(0, 0, 0, 1.0));
     });
 
-    gm('draw shadow', (canvas) => {
+    gm('draw_shadow', (canvas) => {
         const lightRadius = 20;
         const lightPos = [500,500,20];
         const zPlaneParams = [0,0,1];
