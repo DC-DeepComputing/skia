@@ -448,6 +448,11 @@ void Device::drawRect(const SkRect& r, const SkPaint& paint) {
     this->drawGeometry(Geometry(Shape(r)), paint, SkStrokeRec(paint));
 }
 
+void Device::drawVertices(const SkVertices* vertices, sk_sp<SkBlender> blender,
+                          const SkPaint& paint, bool skipColorXform)  {
+  this->drawGeometry(Geometry(vertices), paint, SkStrokeRec(paint));
+}
+
 void Device::drawOval(const SkRect& oval, const SkPaint& paint) {
     // TODO: This has wasted effort from the SkCanvas level since it instead converts rrects that
     // happen to be ovals into this, only for us to go right back to rrect.
@@ -732,7 +737,9 @@ const Renderer* Device::ChooseRenderer(const Geometry& geometry,
                                        const SkStrokeRec& style) {
     SkStrokeRec::Style type = style.getStyle();
 
-    if (!geometry.isShape()) {
+    if (geometry.isVertices()) {
+        return &Renderer::Vertices(geometry.vertices());
+    } else if (!geometry.isShape()) {
         // TODO: Other Geometry types will have pretty specific Renderers
         return nullptr;
     }
