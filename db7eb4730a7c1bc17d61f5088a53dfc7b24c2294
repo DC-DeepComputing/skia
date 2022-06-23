@@ -72,6 +72,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2b4f4a30_8391a480",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-06-23T13:28:38Z",
+      "side": 1,
+      "message": "I still need to take a closer look at the change later, but after quick glance I think I agree with Peter K.s comments. One high level question I have is, I assume this check will start eventually start getting enforced in Chrome builds? If so can you enable the same checks in Skia\u0027s gn files or else I feel like we could end up breaking this and not knowing until we try to land into Chrome.",
+      "revId": "db7eb4730a7c1bc17d61f5088a53dfc7b24c2294",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "50083be0_0c6e49a2",
         "filename": "src/core/SkBlockAllocator.h",
         "patchSetId": 3
