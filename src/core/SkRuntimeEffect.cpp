@@ -25,6 +25,8 @@
 #include "src/core/SkRasterPipeline.h"
 #include "src/core/SkReadBuffer.h"
 #include "src/core/SkRuntimeEffectPriv.h"
+#include "src/core/SkShaderCodeDictionary.h"
+#include "src/core/SkUniform.h"
 #include "src/core/SkUtils.h"
 #include "src/core/SkVM.h"
 #include "src/core/SkWriteBuffer.h"
@@ -167,6 +169,65 @@ sk_sp<const SkData> SkRuntimeEffectPriv::TransformUniforms(
         }
     }
     return data ? data : originalData;
+}
+
+static void generate_runtime_shader_glue_code(const std::string& resultName,
+                                              int entryIndex,
+                                              const SkPaintParamsKey::BlockReader& reader,
+                                              const std::string& priorStageOutputName,
+                                              const std::vector<std::string>& childOutputVarNames,
+                                              std::string* preamble,
+                                              std::string* mainBody,
+                                              int indent) {
+    const SkShaderSnippet* entry = reader.entry();
+
+    SkASSERT(entry->needsLocalCoords());
+    SkASSERT(reader.entry()->fUniforms[0].type() == SkSLType::kFloat4x4);
+
+    SkSL::String::appendf(preamble, "// TODO: Runtime effect code goes here\n");
+
+    SkSL::String::appendf(mainBody,
+                          "%*c%s = sk_runtime_placeholder(preLocal_%d * dev2LocalUni);",
+                          indent * 4, ' ',
+                          resultName.c_str(),
+                          entryIndex);
+}
+
+SkRuntimeEffect::GraphiteData* SkRuntimeEffectPriv::GraphiteData(SkShaderCodeDictionary* dict,
+                                                                 SkRuntimeEffect* effect) {
+    using DataPayloadField = SkPaintParamsKey::DataPayloadField;
+    using DataPayloadType  = SkPaintParamsKey::DataPayloadType;
+
+    if (!effect->fGraphiteData) {
+        // Create a Graphite snippet for this runtime effect.
+        effect->fGraphiteData = std::make_unique<SkRuntimeEffect::GraphiteData>();
+
+        effect->fGraphiteData->fDict = dict;
+        effect->fGraphiteData->fUniforms.push_back({"localMatrix", SkSLType::kFloat4x4});
+        // TODO(skia:13457): add effect uniforms here
+
+        static constexpr DataPayloadField kRuntimeShaderDataPayload[] = {
+                {"runtime effect hash", DataPayloadType::kInt, 1},
+                {"uniform data size (bytes)", DataPayloadType::kInt, 1},
+        };
+
+        // TODO(skia:13405): add support for child effects
+
+        effect->fGraphiteData->fCodeSnippetID =
+                dict->addUserDefinedSnippet("RuntimeEffect",
+                                            SkSpan(effect->fGraphiteData->fUniforms),
+                                            SnippetRequirementFlags::kLocalCoords,
+                                            /*texturesAndSamplers=*/{},
+                                            "sk_runtime_placeholder",
+                                            generate_runtime_shader_glue_code,
+                                            /*numChildren=*/0,
+                                            SkSpan(kRuntimeShaderDataPayload));
+    }
+    return effect->fGraphiteData.get();
+}
+
+SkRuntimeEffect::GraphiteData::~GraphiteData() {
+    fDict->removeUserDefinedSnippet(fCodeSnippetID);
 }
 
 //////////////////////////////////////////////////////////////////////////////
