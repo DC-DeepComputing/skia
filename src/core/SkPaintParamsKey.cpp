@@ -114,7 +114,9 @@ void SkPaintParamsKeyBuilder::endBlock() {
     int headerOffset = fStack.back().fHeaderOffset;
 
 #ifdef SK_DEBUG
-    SkPaintParamsKey::Header header = read_header(fData, headerOffset);
+    // We don't use `read_header` here because the header block size isn't valid yet.
+    SkPaintParamsKey::Header header;
+    memcpy(&header, &fData[headerOffset], sizeof(SkPaintParamsKey::Header));
     SkASSERT(header.codeSnippetID == fStack.back().fCodeSnippetID);
     SkASSERT(header.blockSize == 0);
 #endif
