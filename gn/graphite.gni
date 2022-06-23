@@ -132,11 +132,8 @@ skia_graphite_sources = [
   "$_src/render/TessellateStrokesRenderStep.h",
   "$_src/render/TessellateWedgesRenderStep.cpp",
   "$_src/render/TessellateWedgesRenderStep.h",
-  "$_src/render/TextDirectRenderStep.cpp",
-  "$_src/render/TextDirectRenderStep.h",
-  "$_src/render/TextRenderer.cpp",
-  "$_src/render/TextSDFRenderStep.cpp",
-  "$_src/render/TextSDFRenderStep.h",
+  "$_src/render/VerticesRenderStep.cpp",
+  "$_src/render/VerticesRenderStep.h",
   "$_src/text/AtlasManager.cpp",
   "$_src/text/AtlasManager.h",
 ]

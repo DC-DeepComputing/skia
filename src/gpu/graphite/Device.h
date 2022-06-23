@@ -13,6 +13,7 @@
 
 #include "src/gpu/graphite/ClipStack_graphite.h"
 #include "src/gpu/graphite/DrawOrder.h"
+#include "src/gpu/graphite/geom/Geometry.h"
 #include "src/gpu/graphite/geom/Rect.h"
 #include "src/gpu/graphite/geom/Transform_graphite.h"
 #include "src/text/gpu/SDFTControl.h"
@@ -138,7 +139,7 @@ private:
                    const SkPaint&) override {}
 
     void drawDrawable(SkCanvas*, SkDrawable*, const SkMatrix*) override {}
-    void drawVertices(const SkVertices*, sk_sp<SkBlender>, const SkPaint&, bool) override {}
+    void drawVertices(const SkVertices*, sk_sp<SkBlender>, const SkPaint&, bool) override;
     void drawMesh(const SkMesh&, sk_sp<SkBlender>, const SkPaint&) override {}
     void drawShadow(const SkPath&, const SkDrawShadowRec&) override {}
 
@@ -175,26 +176,21 @@ private:
 
     // Handles applying path effects, mask filters, stroke-and-fill styles, and hairlines.
     // Ignores geometric style on the paint in favor of explicitly provided SkStrokeRec and flags.
-    // All overridden SkDevice::draw() functions should bottom-out with calls to drawGeometry().
-    void drawGeometry(const Geometry&,
-                      const SkPaint&,
-                      const SkStrokeRec&,
-                      SkEnumBitMask<DrawFlags> = DrawFlags::kNone);
-
-    // Like drawGeometry() but is Shape-only, depth-only, fill-only, and lets the ClipStack define
-    // the transform, clip, and DrawOrder (although Device still tracks stencil buffer usage).
-    void drawClipShape(const Transform&, const Shape&, const Clip&, DrawOrder);
-
-    // Returns the Renderer to draw the shape in the given style. If SkStrokeRec is a
-    // stroke-and-fill, this returns the Renderer used for the fill portion and it can be assumed
-    // that Renderer::TessellatedStrokes() will be used for the stroke portion.
-    //
-    // TODO: Renderers may have fallbacks (e.g. pre-chop large paths, or convert stroke to fill).
-    // Are those handled inside ChooseRenderer() where it can modify the shape, stroke? or does it
-    // return a retry error code? or does drawGeometry() handle all the fallbacks, knowing that
-    // a particular shape type needs to be pre-chopped?
-    // TODO: Move this into a RendererSelector object provided by the Context.
-    static const Renderer* ChooseRenderer(const Geometry&, const Clip&, const SkStrokeRec&);
+    void drawShape(const Shape&,
+                   const SkPaint&,
+                   const SkStrokeRec&,
+                   SkEnumBitMask<DrawFlags> = DrawFlags::kNone);
+    void drawShape(Geometry&&,
+                   const SkPaint&,
+                   const SkStrokeRec&,
+                   SkEnumBitMask<DrawFlags> = DrawFlags::kNone);
+    // Lowest level draw recording where everything but Renderer has been decided.
+    void recordDraw(const Transform& localToDevice,
+                    const Shape& shape,
+                    const Clip& clip,
+                    DrawOrder ordering,
+                    const PaintParams* paint,
+                    const StrokeStyle* stroke);
 
     bool needsFlushBeforeDraw(int numNewDraws) const;
 

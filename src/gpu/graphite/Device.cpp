@@ -24,7 +24,6 @@
 #include "src/gpu/graphite/TextureProxy.h"
 #include "src/gpu/graphite/TextureUtils.h"
 #include "src/gpu/graphite/geom/BoundsManager.h"
-#include "src/gpu/graphite/geom/Geometry.h"
 #include "src/gpu/graphite/geom/IntersectionTree.h"
 #include "src/gpu/graphite/geom/Shape.h"
 #include "src/gpu/graphite/geom/Transform_graphite.h"
@@ -715,17 +714,11 @@ void Device::drawClipShape(const Transform& localToDevice,
         order.dependsOnStencil(setIndex);
     }
 
-    // Clips draws are depth-only (null PaintParams), and filled (null StrokeStyle).
-    // TODO: Remove this CPU-transform once perspective is supported for all path renderers
-    if (localToDevice.type() == Transform::Type::kProjection) {
-        SkPath devicePath = geometry.shape().asPath();
-        devicePath.transform(localToDevice.matrix().asM33());
-        fDC->recordDraw(*renderer, Transform({}), Geometry(Shape(devicePath)), clip, order,
-                        nullptr, nullptr);
-    } else {
-        fDC->recordDraw(*renderer, localToDevice, geometry, clip, order, nullptr, nullptr);
-    }
-}
+    // TODO: Eventually the Renderer selection logic should be lifted to some external
+    // RendererSelector that can be reused between Device and other wrappers around DrawContext.
+    // TODO: All shapes that select a tessellating path renderer need to be "pre-chopped" if they
+    // are large enough to exceed the fixed count tessellation limits.
+    const Renderer* renderer = nullptr;
 
 const Renderer* Device::ChooseRenderer(const Geometry& geometry,
                                        const Clip& clip,
@@ -781,6 +774,22 @@ const Renderer* Device::ChooseRenderer(const Geometry& geometry,
             return &Renderer::StencilTessellatedCurvesAndTris(shape.fillType());
         }
     }
+
+    if (!renderer) {
+        SKGPU_LOG_W("Skipping draw with no supported path renderer.");
+        return;
+    }
+
+    if (renderer->depthStencilFlags() & DepthStencilFlags::kStencil) {
+        DisjointStencilIndex setIndex = fDisjointStencilSet->add(ordering.paintOrder(),
+                                                                 clip.drawBounds());
+        ordering.dependsOnStencil(setIndex);
+    }
+
+    // TODO: if the chosen Renderer uses coverage AA, then 'ordering' depends on painter's order,
+    // so we will need to take into account the previous draw. Since no Renderer uses coverage AA
+    // right now, it's not an issue yet.
+    fDC->recordDraw(*renderer, localToDevice, Geometry{shape}, clip, ordering, paint, stroke);
 }
 
 void Device::flushPendingWorkToRecorder() {
@@ -823,6 +832,25 @@ bool Device::needsFlushBeforeDraw(int numNewDraws) const {
     return (DrawList::kMaxDraws - fDC->pendingDrawCount()) < numNewDraws;
 }
 
+void Device::drawVertices(const SkVertices* vertices, sk_sp<SkBlender> blender,
+                          const SkPaint& paint, bool skipColorXform) {
+    SkASSERT(vertices);
+    const Renderer* renderer = &Renderer::Vertices(vertices);
+    // this->recordDraw();
+    // Call draw Shape and record draw
+    // this->drawShape(Shape{*vertices}, paint, SkStrokeRec(paint));
+
+    // ML - Assume coordiantes local already
+    // Renderer; add render steps. Only 1 render step needed here.
+    // Record & draw
+    // drawVert render step = look for vertices object
+    // Similar to SkPath
+    // Append draws; change to ___ once appending is working for performance
+
+    // Custom mesh considerations to come later.
+
+}
+
 sk_sp<SkSpecialImage> Device::makeSpecial(const SkBitmap&) {
     return nullptr;
 }
@@ -834,6 +862,10 @@ sk_sp<SkSpecialImage> Device::makeSpecial(const SkImage*) {
 sk_sp<SkSpecialImage> Device::snapSpecial(const SkIRect& subset, bool forceCopy) {
     this->flushPendingWorkToRecorder();
     return nullptr;
+}
+
+void Device::drawShape(Geometry&& geom, const SkPaint& paint, const SkStrokeRec& style,
+               SkEnumBitMask<DrawFlags> flags) {
 }
 
 #if GRAPHITE_TEST_UTILS

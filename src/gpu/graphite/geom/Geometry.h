@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 Google LLC
+ * Copyright 2021 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
@@ -34,6 +34,10 @@ public:
             switch (geom.type()) {
                 case Type::kEmpty: this->setType(Type::kEmpty); break;
                 case Type::kShape: this->setShape(geom.shape()); geom.setType(Type::kEmpty); break;
+                case Type::kVertices:
+                    this->setVertices(geom.vertices());
+                    geom.setType(Type::kEmpty);
+                    break;
                 default: break;
             }
         }
@@ -43,6 +47,7 @@ public:
         switch (geom.type()) {
             case Type::kEmpty: this->setType(Type::kEmpty); break;
             case Type::kShape: this->setShape(geom.shape()); break;
+            case Type::kVertices: this->setVertices(geom.vertices()); break;
             default: break;
         }
         return *this;
@@ -60,13 +65,19 @@ public:
             new (&fShape) Shape(shape);
         }
     }
-    // void setVertices(const SkVertices&);
+    void setVertices(const sk_sp<SkVertices>& vertices) {
+        this->setType(Type::kVertices);
+        fVertices = vertices;
+    }
 
     const Shape& shape() const { SkASSERT(this->isShape()); return fShape; }
-    // const SkVertices& vertices() const;
+    const sk_sp<SkVertices>& vertices() const { SkASSERT(this->isVertices()); return fVertices; }
+    // todo - have a getter for the skvertices object, not just a pointer to it
+    // const SkVertices& vertices() const { SkASSERT(this->isVertices()); return fVertices; }
     Rect bounds() const {
         switch (fType) {
             case Type::kShape: return fShape.bounds();
+            case Type::kVertices: return fVertices->bounds();
             default: return Rect(0, 0, 0, 0);
         }
     }
@@ -82,6 +93,8 @@ private:
     void setType(Type type) {
         if (this->isShape() && type != Type::kShape) {
             fShape.~Shape();
+        } else if (isVertices() && type != Type::kVertices) {
+            fVertices.~sk_sp<SkVertices>();
         }
         fType = type;
     }
@@ -89,7 +102,7 @@ private:
     Type fType = Type::kEmpty;
     union {
         Shape fShape;
-        // SkVertices fVertices;
+        sk_sp<SkVertices> fVertices;
     };
 
 };

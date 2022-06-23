@@ -16,6 +16,7 @@
 #include "include/core/SkSpan.h"
 #include "include/core/SkString.h"
 #include "include/core/SkTypes.h"
+#include "include/core/SkVertices.h"
 #include "src/core/SkUniform.h"
 
 #include <array>
@@ -207,9 +208,7 @@ public:
 
     static const Renderer& TessellatedStrokes();
 
-    static const Renderer& TextDirect(MaskFormat);
-
-    static const Renderer& TextSDF(MaskFormat);
+    static const Renderer& Vertices(const SkVertices*);
 
     // TODO: Add renderers for primitives (rect, rrect, etc.), special draws (atlas, vertices, text)
     // and support inverse filled strokes.
