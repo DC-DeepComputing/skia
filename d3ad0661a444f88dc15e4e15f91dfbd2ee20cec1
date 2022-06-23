@@ -34,6 +34,24 @@
       "parentUuid": "bc77d72b_62667e4a",
       "revId": "d3ad0661a444f88dc15e4e15f91dfbd2ee20cec1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b892b564_190e4821",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 12064
+      },
+      "writtenOn": "2022-06-23T11:53:52Z",
+      "side": 1,
+      "message": "Thanks, Greg! BTW, if there are something more we could do from our side, just let us know.\nThanks!",
+      "parentUuid": "b44bd3e4_4797570f",
+      "revId": "d3ad0661a444f88dc15e4e15f91dfbd2ee20cec1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
