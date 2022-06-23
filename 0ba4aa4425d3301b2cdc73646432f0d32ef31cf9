@@ -392,6 +392,30 @@
       },
       "revId": "0ba4aa4425d3301b2cdc73646432f0d32ef31cf9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d7e027bd_8ef4353e",
+        "filename": "src/text/gpu/GlyphVector.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-06-23T14:33:28Z",
+      "side": 1,
+      "message": "Right, having the separate variables does mean you can represent an inconsistent state. That\u0027s the one benefit variant provides.",
+      "parentUuid": "dbf68a50_8af86854",
+      "range": {
+        "startLine": 95,
+        "startChar": 0,
+        "endLine": 95,
+        "endChar": 75
+      },
+      "revId": "0ba4aa4425d3301b2cdc73646432f0d32ef31cf9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
