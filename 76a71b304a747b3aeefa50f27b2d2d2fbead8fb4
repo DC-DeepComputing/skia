@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cfe895d6_ed6653d5",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 646,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-06-23T14:11:40Z",
+      "side": 1,
+      "message": "I don\u0027t think runtime effects can use samplers directly, right? They have to use them as a child shader instead, so we could drop this arg.",
+      "range": {
+        "startLine": 646,
+        "startChar": 8,
+        "endLine": 646,
+        "endChar": 62
+      },
+      "revId": "76a71b304a747b3aeefa50f27b2d2d2fbead8fb4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1ad1495b_afbe0258",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 648,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-06-23T14:11:40Z",
+      "side": 1,
+      "message": "Will all runtime effect shader snippets use the same glue code generator?",
+      "range": {
+        "startLine": 648,
+        "startChar": 8,
+        "endLine": 648,
+        "endChar": 68
+      },
+      "revId": "76a71b304a747b3aeefa50f27b2d2d2fbead8fb4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
