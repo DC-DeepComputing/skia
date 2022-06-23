@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b456de62_03fe87cc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-06-23T13:40:48Z",
+      "side": 1,
+      "message": "Oops. Drop an \u0026 when change auto -\u003e Variant.",
+      "revId": "554283e82be9c63fc4d2bf22e2b893a8636039a3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
