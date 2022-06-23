@@ -22,6 +22,30 @@
       },
       "revId": "cae2c7da2a01c22d4a6e03f5fd0a7f38e8da52ac",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e2d89359_42cd5c58",
+        "filename": "modules/skottie/src/effects/Effects.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-06-23T14:40:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "69204085_fce3c3fc",
+      "range": {
+        "startLine": 162,
+        "startChar": 63,
+        "endLine": 162,
+        "endChar": 68
+      },
+      "revId": "cae2c7da2a01c22d4a6e03f5fd0a7f38e8da52ac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
