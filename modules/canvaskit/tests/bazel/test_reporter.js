@@ -1,7 +1,7 @@
 const REPORT_URL = '/gold_rpc/report';
 const pngPrefx = 'data:image/png;base64,'
 
-function reportCanvas(canvas, testname) {
+function reportCanvas(canvas, testname, config) {
     testname = testname.replaceAll(' ', '_');
     // toDataURL returns a base64 encoded string with a data prefix. We only
     // want the PNG data itself, so we strip that off before submitting it.
@@ -16,6 +16,7 @@ function reportCanvas(canvas, testname) {
         body: JSON.stringify({
             'b64_data': b64,
             'name': testname,
+            'config': config,
         })
     }).then((resp) => {
         expect(resp.status).toEqual(201); // StatusCreated
