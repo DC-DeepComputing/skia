@@ -87,6 +87,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ee7c69cc_8a2f78e7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-06-23T17:04:31Z",
+      "side": 1,
+      "message": "So trying to learn more about what exactly prevent_unsafe_narrowing is checking, I stumbled upon this doc, https://docs.google.com/document/d/1CTbQ-5cQjnjU8aCOtLiA7G6P0i5C6HpSDNlSNq6nl5E/edit. I\u0027m trying to get a better understanding about how strict of a philosophical goal it is to not just use static_cast to hide compiler warnings and don\u0027t do things like casting uint32_t\u0027s to ints.\n\nFor example, in this change in the SkMathPriv it is casting the uint32_t to an int and the function returns an int. Now reading that algorithm I know for a fact that the return will fit in an int so the cast is safe. But reading that doc it seems to suggest that instead we should be changing that whole function to return a uint32_t instead of an int so we don\u0027t need to do such a cast. Obviously this can have a very large ripple effect of need to update lots of callers.\n\nHow are you all handing/thinking about these sort of things in practice with these changes?",
+      "revId": "db7eb4730a7c1bc17d61f5088a53dfc7b24c2294",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "50083be0_0c6e49a2",
