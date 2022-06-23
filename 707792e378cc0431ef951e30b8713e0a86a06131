@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "24674c8c_408537a2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-06-23T17:59:12Z",
+      "side": 1,
+      "message": "Jorge, can you try this out on your Intel Mac to make sure I didn\u0027t break anything?",
+      "revId": "707792e378cc0431ef951e30b8713e0a86a06131",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
