@@ -190,6 +190,30 @@
       },
       "revId": "90b2b76811cc19df8ccce64281a0bd0a0dd76843",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7eed903c_6e10a1de",
+        "filename": "src/gpu/ganesh/gradients/GrGradientShader.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 311,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-06-23T14:49:15Z",
+      "side": 1,
+      "message": "hcm@ do we have public-facing docs here?",
+      "parentUuid": "e7449089_85d98f75",
+      "range": {
+        "startLine": 311,
+        "startChar": 12,
+        "endLine": 311,
+        "endChar": 46
+      },
+      "revId": "90b2b76811cc19df8ccce64281a0bd0a0dd76843",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
