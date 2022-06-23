@@ -16,6 +16,24 @@
       "message": "Thanks for introducing me to std::nullopt. Changing over uncovered several typing errors in this file.",
       "revId": "cb33e1ed11ed2f63a6e153471bb848042fbc534c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bcd728c3_257131fb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-06-23T14:26:00Z",
+      "side": 1,
+      "message": "Glad to hear it!",
+      "parentUuid": "a636cb8a_645a6b3e",
+      "revId": "cb33e1ed11ed2f63a6e153471bb848042fbc534c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
