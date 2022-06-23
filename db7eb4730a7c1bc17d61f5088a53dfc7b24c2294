@@ -106,6 +106,42 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "335ba39f_b1c8336b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 9153
+      },
+      "writtenOn": "2022-06-23T17:54:29Z",
+      "side": 1,
+      "message": "We will eventually turn this on, yes, but the problems have to be fixed before enabling the checks, and we\u0027re a long way from having fixed enough things to enable these checks in Skia.\n\n(For reference, over on the Chrome side, after many weeks of work I\u0027m getting close to having this fixed for base/ specifically for Windows builds.)",
+      "parentUuid": "2b4f4a30_8391a480",
+      "revId": "db7eb4730a7c1bc17d61f5088a53dfc7b24c2294",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4b6d0948_aaf57201",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 9153
+      },
+      "writtenOn": "2022-06-23T17:54:29Z",
+      "side": 1,
+      "message": "I think the right answer is \"use the types that best express semantically what the functions are doing and that minimize casts, and if that requires significant API changes, so be it\".  For something like CLZ, I think the right answer is to be compatible with the C++20 STL function to do the same thing, which returns an int: https://en.cppreference.com/w/cpp/numeric/countl_zero .  That makes sense, because this is not \"a count of objects in a container\" or the like (which should be size_t), it\u0027s simply a \"normal countable number\".  For something like NextPow2, we have https://en.cppreference.com/w/cpp/numeric/bit_ceil as a reference, which returns the same type T as it accepts as input, which also makes some sense (and prompts the question of whether Skia\u0027s versions of these functions should be templated).",
+      "parentUuid": "ee7c69cc_8a2f78e7",
+      "revId": "db7eb4730a7c1bc17d61f5088a53dfc7b24c2294",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "50083be0_0c6e49a2",
         "filename": "src/core/SkBlockAllocator.h",
         "patchSetId": 3
