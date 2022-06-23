@@ -46,6 +46,30 @@
       },
       "revId": "ee45b01ea4ed42eac7bc791cebddfc1009e7cfe0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "82191f9b_64878f27",
+        "filename": "src/core/SkPaintParamsKey.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-06-23T14:39:33Z",
+      "side": 1,
+      "message": "Yes, this makes a header five packed bytes. If we run on platforms where loading an int from a misaligned pointer does not work (crash/ignores low bits of pointer?), then this would certainly pose a problem. Is that a real concern? I didn\u0027t consider that case. I can replace the code snippet ID with a `uint8[4]` though.",
+      "parentUuid": "55010038_47e73614",
+      "range": {
+        "startLine": 45,
+        "startChar": 5,
+        "endLine": 45,
+        "endChar": 25
+      },
+      "revId": "ee45b01ea4ed42eac7bc791cebddfc1009e7cfe0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
