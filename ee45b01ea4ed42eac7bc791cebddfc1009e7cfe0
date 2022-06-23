@@ -22,6 +22,30 @@
       },
       "revId": "ee45b01ea4ed42eac7bc791cebddfc1009e7cfe0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "55010038_47e73614",
+        "filename": "src/core/SkPaintParamsKey.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-06-23T14:08:31Z",
+      "side": 1,
+      "message": "None of the key writing logic (e.g. beginBlock() or addBytes()) take into account alignment. This was fine when the header was just bytes, and all the key data is memcopy\u0027ed in and out, so can be unaligned. \n\nDoes #pragma pack change the alignment of Header to be 1? If so, we should be okay, but if not, we could run into issues with our casting of the fData pointer to a Header* and reading the fields. This could come up with consecutive blocks that don\u0027t have any data, the second Header will definitely not start at a 4 byte boundary.\n\nI wonder if it\u0027s worth just switching the key to be based on int32s?",
+      "parentUuid": "48e0ec8c_9ba0462d",
+      "range": {
+        "startLine": 45,
+        "startChar": 5,
+        "endLine": 45,
+        "endChar": 25
+      },
+      "revId": "ee45b01ea4ed42eac7bc791cebddfc1009e7cfe0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
