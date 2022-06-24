@@ -46,14 +46,13 @@ private:
     bool isVkMappable() const { return fAlloc.fFlags & GrVkAlloc::kMappable_Flag; }
 
     bool vkIsMapped() const { return SkToBool(fMapPtr); }
-    void vkMap(size_t size);
-    void vkUnmap(size_t size);
-    void copyCpuDataToGpuBuffer(const void* srcData, size_t size);
-
+    void vkMap(size_t offset, size_t size);
+    void vkUnmap(size_t offset, size_t size);
+    void copyCpuDataToGpuBuffer(const void* srcData, size_t size, size_t offset);
 
     void onMap() override;
     void onUnmap() override;
-    bool onUpdateData(const void* src, size_t srcSizeInBytes) override;
+    bool onUpdateData(size_t offset, const void* src, size_t size) override;
 
     void vkRelease();
 
