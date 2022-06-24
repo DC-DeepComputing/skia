@@ -16,6 +16,69 @@
       "message": "PTAL",
       "revId": "877b6137f225e78cc626f6c07d40eed83b331ed1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cde4a861_4dc7543c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-06-24T19:56:46Z",
+      "side": 1,
+      "message": "Don\u0027t know what\u0027s going on with the non-graphite bots complaining about files we didn\u0027t touch...",
+      "revId": "877b6137f225e78cc626f6c07d40eed83b331ed1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cd01da9b_bccc5fe2",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 583,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-06-24T19:56:46Z",
+      "side": 1,
+      "message": "And this needs to be fRecorder-\u003epriv().flushTrackedDevices() right? Eventually could scope it to flush tracked devices that are marked as using the atlas.",
+      "range": {
+        "startLine": 583,
+        "startChar": 12,
+        "endLine": 583,
+        "endChar": 47
+      },
+      "revId": "877b6137f225e78cc626f6c07d40eed83b331ed1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c83c759b_fc13d6f6",
+        "filename": "src/gpu/graphite/text/AtlasManager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 232,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-06-24T19:56:46Z",
+      "side": 1,
+      "message": "looks like friend relationship needs to change from Device to AtlasManager. I liked the naming of issueDrawToken(), so it could also be issueFlushToken()?",
+      "range": {
+        "startLine": 232,
+        "startChar": 38,
+        "endLine": 232,
+        "endChar": 48
+      },
+      "revId": "877b6137f225e78cc626f6c07d40eed83b331ed1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
