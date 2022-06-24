@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2146af2e_eb0bd090",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 555,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-06-24T20:47:23Z",
+      "side": 1,
+      "message": "Can this be a const Transform\u0026, and can the text blob cache\u0027s Graphite `drawGlyphRunList()` take a const Transform as well? Then we just pass in this-\u003elocalToDeviceTransform() instead of this-\u003elocalToDevice().",
+      "range": {
+        "startLine": 555,
+        "startChar": 29,
+        "endLine": 555,
+        "endChar": 56
+      },
+      "revId": "1639d946a237decabcbed403b93e492e9f0bf6d5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "093bdcc5_9d1c041a",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 583,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-06-24T20:47:23Z",
+      "side": 1,
+      "message": "Given the fix in the follow-up CL we\u0027ll leave this as-is for now, but I had forgot we hadn\u0027t landed this yet when I reviewed that one, so just noting for posterity that a text atlas spill has to flush the whole recorder.",
+      "range": {
+        "startLine": 583,
+        "startChar": 18,
+        "endLine": 583,
+        "endChar": 44
+      },
+      "revId": "1639d946a237decabcbed403b93e492e9f0bf6d5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "59723087_a902e348",
+        "filename": "src/text/gpu/SubRunContainer.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-06-24T20:47:23Z",
+      "side": 1,
+      "message": "I think we just need to include Recorder.h here too. Device.h doesn\u0027t include it transitively.",
+      "range": {
+        "startLine": 33,
+        "startChar": 0,
+        "endLine": 33,
+        "endChar": 36
+      },
+      "revId": "1639d946a237decabcbed403b93e492e9f0bf6d5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
