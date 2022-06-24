@@ -633,12 +633,8 @@ bool SkShaderCodeDictionary::isValidID(int snippetID) const {
         return true;
     }
 
-    int index = snippetID - kBuiltInCodeSnippetIDCount;
-    if (index >= SkTo<int>(fUserDefinedCodeSnippets.size())) {
-        return false;
-    }
-
-    return fUserDefinedCodeSnippets[index] != nullptr;
+    int userDefinedCodeSnippetID = snippetID - kBuiltInCodeSnippetIDCount;
+    return userDefinedCodeSnippetID < SkTo<int>(fUserDefinedCodeSnippets.size());
 }
 
 static constexpr int kNoChildren = 0;
@@ -690,20 +686,6 @@ SkBlenderID SkShaderCodeDictionary::addUserDefinedBlender(sk_sp<SkRuntimeEffect>
     fUserDefinedCodeSnippets.push_back(std::move(entry));
 
     return SkBlenderID(kBuiltInCodeSnippetIDCount + fUserDefinedCodeSnippets.size() - 1);
-}
-
-void SkShaderCodeDictionary::removeUserDefinedSnippet(int codeSnippetID) {
-    SkASSERT(codeSnippetID >= kBuiltInCodeSnippetIDCount);
-    SkASSERT(this->isValidID(codeSnippetID));
-
-    int index = codeSnippetID - kBuiltInCodeSnippetIDCount;
-    fUserDefinedCodeSnippets[index] = nullptr;
-
-    // Reclaim unused code snippet IDs at the end of the snippet list.
-    // (For now, we don't make any attempt to reclaim any gaps in the middle.)
-    while (fUserDefinedCodeSnippets.back() == nullptr) {
-        fUserDefinedCodeSnippets.pop_back();
-    }
 }
 
 SkShaderCodeDictionary::SkShaderCodeDictionary() {
