@@ -12,6 +12,7 @@
 #include "include/core/SkPath.h"
 #include "include/core/SkTypeface.h"
 #include "src/core/SkEnumerate.h"
+#include "src/core/SkGlyph.h"
 #include "src/core/SkGlyphBuffer.h"
 #include "src/core/SkScalerContext.h"
 
