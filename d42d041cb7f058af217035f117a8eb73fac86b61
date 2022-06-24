@@ -16,6 +16,23 @@
       "message": "Hi Ethan:\n\nPTAL. Note this is my first Skia CL :-)",
       "revId": "d42d041cb7f058af217035f117a8eb73fac86b61",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "347fb646_6b4a0c60",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-06-24T15:45:41Z",
+      "side": 1,
+      "message": "Switch reviewer: Ethan \u003d\u003e Kevin.",
+      "revId": "d42d041cb7f058af217035f117a8eb73fac86b61",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
