@@ -44,6 +44,7 @@ wasm_defines = [
   "SKNX_NO_SIMD",
   "SK_DISABLE_AAA",
   "SK_FORCE_8_BYTE_ALIGNMENT",
+  "SK_TRACE_GLYPH_RUN_PROCESS",  # FIXME
 ]
 
 if (!is_debug && !skia_canvaskit_force_tracing) {
