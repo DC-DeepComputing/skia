@@ -722,8 +722,7 @@ void Device::drawGeometry(const Geometry& geometry,
     //                          shape.isRect() &&
     //                          localToDevice.type() <= Transform::Type::kRectStaysRect;
 
-    // Post-draw book keeping (update tokens, bounds manager, depth tracking, etc.)
-    fRecorder->priv().tokenTracker()->issueDrawToken();
+    // Post-draw book keeping (bounds manager, depth tracking, etc.)
     fColorDepthBoundsManager->recordDraw(clip.drawBounds(), order.paintOrder());
     fCurrentDepth = order.depth();
     fDrawsOverlap |= (prevDraw != DrawOrder::kNoIntersection);
@@ -848,8 +847,6 @@ void Device::flushPendingWorkToRecorder() {
     fCurrentDepth = DrawOrder::kClearDepth;
     // NOTE: fDrawsOverlap is not reset here because that is a persistent property of everything
     // drawn into the Device, and not just the currently accumulating pass.
-
-    fRecorder->priv().tokenTracker()->flushToken();
 }
 
 bool Device::needsFlushBeforeDraw(int numNewDraws) const {
