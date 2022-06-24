@@ -7,6 +7,7 @@
 
 #include "src/core/SkScalerCache.h"
 
+#include "SkGlyph.h"
 #include "include/core/SkDrawable.h"
 #include "include/core/SkGraphics.h"
 #include "include/core/SkPath.h"
@@ -201,6 +202,19 @@ std::tuple<SkSpan<const SkGlyph*>, size_t> SkScalerCache::prepareDrawables(
     }
 
     return {{results, glyphIDs.size()}, delta};
+}
+
+std::tuple<SkScalar, size_t> SkScalerCache::findMaximumGlyphDimension(
+        SkSpan<const SkGlyphID> glyphs) {
+    size_t totalIncrease = 0;
+    SkScalar maxDimension = 0;
+    SkAutoMutexExclusive lock{fMu};
+    for (SkGlyphID glyphID : glyphs) {
+        auto [digest, increase] = this->digest(SkPackedGlyphID{glyphID});
+        totalIncrease += increase;
+        maxDimension = std::max(static_cast<SkScalar>(digest.maxDimension()), maxDimension);
+    }
+    return {maxDimension, totalIncrease};
 }
 
 template <typename Fn>
