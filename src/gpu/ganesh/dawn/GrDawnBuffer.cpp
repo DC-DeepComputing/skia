@@ -138,13 +138,13 @@ void GrDawnBuffer::onUnmap() {
     }
 }
 
-bool GrDawnBuffer::onUpdateData(const void* src, size_t srcSizeInBytes) {
+bool GrDawnBuffer::onUpdateData(const void* src, size_t srcSizeInBytes, size_t offset) {
     this->map();
     if (!this->isMapped()) {
         return false;
     }
 
-    memcpy(fMapPtr, src, srcSizeInBytes);
+    memcpy(SkTAddOffset<void>(fMapPtr, offset), src, srcSizeInBytes);
     this->unmap();
     return true;
 }
