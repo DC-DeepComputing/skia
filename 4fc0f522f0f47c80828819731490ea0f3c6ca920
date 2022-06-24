@@ -16,6 +16,23 @@
       "message": "Swapping reviewer Ethan \u003d\u003e Kevin",
       "revId": "4fc0f522f0f47c80828819731490ea0f3c6ca920",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "babc1f2f_7ecacc10",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-06-24T15:30:54Z",
+      "side": 1,
+      "message": "Thanks for the quick review Kevin.",
+      "revId": "4fc0f522f0f47c80828819731490ea0f3c6ca920",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
