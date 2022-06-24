@@ -9,6 +9,7 @@
 #define SkShaderCodeDictionary_DEFINED
 
 #include <array>
+#include <forward_list>
 #include <unordered_map>
 #include <vector>
 #include "include/core/SkSpan.h"
@@ -199,17 +200,7 @@ public:
 
     void getShaderInfo(SkUniquePaintParamsID, SkShaderInfo*);
 
-    // TODO: this is still experimental but, most likely, it will need to be made thread-safe
-    // It returns the code snippet ID to use to identify the supplied user-defined code
-    int addUserDefinedSnippet(
-            const char* name,
-            SkSpan<const SkUniform> uniforms,
-            SnippetRequirementFlags snippetRequirementFlags,
-            SkSpan<const SkTextureAndSampler> texturesAndSamplers,
-            const char* functionName,
-            SkShaderSnippet::GenerateGlueCodeForEntry glueCodeGenerator,
-            int numChildren,
-            SkSpan<const SkPaintParamsKey::DataPayloadField> dataPayloadExpectations);
+    int findOrCreateRuntimeEffectSnippet(sk_sp<SkRuntimeEffect> effect);
 
     int addUserDefinedSnippet(const char* name,
                               SkSpan<const SkPaintParamsKey::DataPayloadField> expectations);
@@ -222,6 +213,18 @@ private:
 #else
     Entry* makeEntry(const SkPaintParamsKey&);
 #endif
+
+    // TODO: this is still experimental but, most likely, it will need to be made thread-safe
+    // It returns the code snippet ID to use to identify the supplied user-defined code
+    int addUserDefinedSnippet(
+            const char* name,
+            SkSpan<const SkUniform> uniforms,
+            SnippetRequirementFlags snippetRequirementFlags,
+            SkSpan<const SkTextureAndSampler> texturesAndSamplers,
+            const char* functionName,
+            SkShaderSnippet::GenerateGlueCodeForEntry glueCodeGenerator,
+            int numChildren,
+            SkSpan<const SkPaintParamsKey::DataPayloadField> dataPayloadExpectations);
 
     std::array<SkShaderSnippet, kBuiltInCodeSnippetIDCount> fBuiltInCodeSnippets;
 
@@ -247,6 +250,25 @@ private:
 
     PaintHashMap fHash SK_GUARDED_BY(fSpinLock);
     std::vector<Entry*> fEntryVector SK_GUARDED_BY(fSpinLock);
+
+    SK_BEGIN_REQUIRE_DENSE
+    struct RuntimeEffectKey {
+        uint32_t fHash;
+        uint32_t fUniformSize;
+
+        bool operator==(RuntimeEffectKey rhs) const {
+            return fHash == rhs.fHash && fUniformSize == rhs.fUniformSize;
+        }
+        struct Hash {
+            size_t operator()(RuntimeEffectKey) const;
+        };
+    };
+    SK_END_REQUIRE_DENSE
+
+    using RuntimeEffectMap = SkTHashMap<RuntimeEffectKey, int32_t>; // <effect, code-snippet ID>
+    RuntimeEffectMap fRuntimeEffectMap SK_GUARDED_BY(fSpinLock);
+
+    std::forward_list<std::vector<SkUniform>> fRuntimeEffectUniforms;
 
     // This arena holds:
     //    the Entries held in 'fHash' and 'fEntryVector' - thus, guarded by 'fSpinLock'
