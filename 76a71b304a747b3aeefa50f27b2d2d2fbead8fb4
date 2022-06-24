@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8cdd9b83_9f3ec8a6",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 646,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-06-24T14:11:24Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "01c7f477_70ca8dd7",
+      "range": {
+        "startLine": 646,
+        "startChar": 8,
+        "endLine": 646,
+        "endChar": 62
+      },
+      "revId": "76a71b304a747b3aeefa50f27b2d2d2fbead8fb4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1ad1495b_afbe0258",
@@ -85,6 +109,30 @@
       "side": 1,
       "message": "Again, not intended to be runtime-effect specific per se, not trying to hard-code any assumptions at all about the snippet info into the function.\n(But actually, color filters probably will use a different callback)",
       "parentUuid": "1ad1495b_afbe0258",
+      "range": {
+        "startLine": 648,
+        "startChar": 8,
+        "endLine": 648,
+        "endChar": 68
+      },
+      "revId": "76a71b304a747b3aeefa50f27b2d2d2fbead8fb4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c9d55db7_2d7e3095",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 648,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-06-24T14:11:24Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "2e41d63a_652a8858",
       "range": {
         "startLine": 648,
         "startChar": 8,
