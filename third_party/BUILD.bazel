@@ -4,18 +4,57 @@ licenses(["notice"])
 
 exports_files_legacy()
 
-FREETYPE_DEFINES = ["FT2_BUILD_LIBRARY"] + select(
+FREETYPE_PUBLIC_DEFINES = [
+    "FT_CONFIG_OPTION_SVG",
+    # FT_CONFIG_OPTION_USE_BROTLI TODO(kjlubick)
+    "SK_FREETYPE_MINIMUM_RUNTIME_VERSION=(((FREETYPE_MAJOR)<<24)|((FREETYPE_MINOR)<<16)|((FREETYPE_PATCH)<<8))",
+] + select(
     {
         "//bazel/common_config_settings:cpu_wasm": [
             # Use a trimmed down set of options to reduce code size.
-            "FT_CONFIG_MODULES_H=<include/freetype-no-type1/ftmodule.h>",
-            "FT_CONFIG_OPTIONS_H=<include/freetype-no-type1/ftoption.h>",
+            "FT_CONFIG_MODULES_H=<freetype-no-type1/ftmodule.h>",
+            "FT_CONFIG_OPTIONS_H=<freetype-no-type1/ftoption.h>",
+            "CANVASKIT_NO_ALIAS_FONT",
         ],
         "//conditions:default": [
-            "FT_CONFIG_MODULES_H=<include/freetype-android/ftmodule.h>",
-            "FT_CONFIG_OPTIONS_H=<include/freetype-android/ftoption.h>",
+            "FT_CONFIG_MODULES_H=<freetype-android/ftmodule.h>",
+            "FT_CONFIG_OPTIONS_H=<freetype-android/ftoption.h>",
         ],
     },
+)
+
+FREETYPE_LOCAL_DEFINES = ["FT2_BUILD_LIBRARY"]
+
+# Copy our freetype include files underneath the freetype/include folder so they can be more
+# easily accessed by how we set FT_CONFIG_MODULES_H.
+# Note: If we put freetype2/include/freetype-android/ftmodule.h et al directly in the
+# hdrs part of the cc_library, that is an error because the headers don't start with the
+# strip_include_prefix of externals/freetype/include/. By copying them into the same
+# subfolder, we don't get that error.
+genrule(
+    name = "copy_android_freetype_config",
+    srcs = [
+        "freetype2/include/freetype-android/ftmodule.h",
+        "freetype2/include/freetype-android/ftoption.h",
+    ],
+    outs = [
+        "externals/freetype/include/freetype-android/ftmodule.h",
+        "externals/freetype/include/freetype-android/ftoption.h",
+    ],
+    cmd = "cp $(SRCS) $(RULEDIR)/externals/freetype/include/freetype-android/",
+)
+
+genrule(
+    name = "copy_no_type1_freetype_config",
+    srcs = [
+        "freetype2/include/freetype-no-type1/ftmodule.h",
+        "freetype2/include/freetype-no-type1/ftoption.h",
+    ],
+    outs = [
+        "externals/freetype/include/freetype-no-type1/ftmodule.h",
+        "externals/freetype/include/freetype-no-type1/ftoption.h",
+    ],
+    cmd = "cp $(SRCS) $(RULEDIR)/externals/freetype/include/freetype-no-type1/",
 )
 
 cc_library(
@@ -212,10 +251,6 @@ cc_library(
         "externals/freetype/src/type1/t1parse.h",
         "externals/freetype/src/type1/t1tokens.h",
         "externals/freetype/src/type1/type1.c",
-        "freetype2/include/freetype-android/ftmodule.h",
-        "freetype2/include/freetype-android/ftoption.h",
-        "freetype2/include/freetype-no-type1/ftmodule.h",
-        "freetype2/include/freetype-no-type1/ftoption.h",
     ],
     hdrs = [
         "externals/freetype/include/freetype/config/ftconfig.h",
@@ -273,16 +308,17 @@ cc_library(
         "externals/freetype/include/freetype/tttables.h",
         "externals/freetype/include/freetype/tttags.h",
         "externals/freetype/include/ft2build.h",
+        # These are copied in by some genrules
+        "externals/freetype/include/freetype-android/ftmodule.h",
+        "externals/freetype/include/freetype-android/ftoption.h",
+        "externals/freetype/include/freetype-no-type1/ftmodule.h",
+        "externals/freetype/include/freetype-no-type1/ftoption.h",
     ],
     copts = [
         "-isystem third_party/externals/freetype/include",
-        "-isystem third_party/freetype2",
     ],
-    defines = [
-        # Make this define available to any client that has freetype2 as a dep.
-        "SK_FREETYPE_MINIMUM_RUNTIME_VERSION=(((FREETYPE_MAJOR)<<24)|((FREETYPE_MINOR)<<16)|((FREETYPE_PATCH)<<8))",
-    ],
-    local_defines = FREETYPE_DEFINES,
+    defines = FREETYPE_PUBLIC_DEFINES,
+    local_defines = FREETYPE_LOCAL_DEFINES,
     strip_include_prefix = "externals/freetype/include/",
     # Freetype includes a lot of .c files. We need to make those available for inclusion explicitly.
     textual_hdrs = [
@@ -371,6 +407,7 @@ cc_library(
         "externals/freetype/src/sfnt/ttpost.c",
         "externals/freetype/src/sfnt/ttsbit.c",
         "externals/freetype/src/sfnt/ttsvg.c",
+        "externals/freetype/src/sfnt/ttsvg.h",
         "externals/freetype/src/sfnt/woff2tags.c",
         "externals/freetype/src/smooth/ftgrays.c",
         "externals/freetype/src/smooth/ftsmooth.c",
@@ -1313,19 +1350,12 @@ cc_library(
         "U_USING_ICU_NAMESPACE=0",
         "U_DISABLE_RENAMING",
         "SK_USING_THIRD_PARTY_ICU",
-    ],
-    includes = [
-        "externals/icu/source/common",
-        "externals/icu/source/i18n",
-        "icu",
-    ],
-    local_defines = [
+
         # http://userguide.icu-project.org/howtouseicu
         "U_COMMON_IMPLEMENTATION",
         "U_STATIC_IMPLEMENTATION",
         "U_ENABLE_DYLOAD=0",
         "U_I18N_IMPLEMENTATION",
-
         # If we don't set this to zero, ICU will set it to 600,
         # which makes Macs set _POSIX_C_SOURCE=200112L,
         # which makes Macs set __DARWIN_C_LEVEL=_POSIX_C_SOURCE instead of =__DARWIN_C_FULL,
@@ -1338,6 +1368,11 @@ cc_library(
         "//bazel/common_config_settings:cpu_wasm": ["__i386__"],
         "//conditions:default": [],
     }),
+    includes = [
+        "externals/icu/source/common",
+        "externals/icu/source/i18n",
+        "icu",
+    ],
     visibility = ["//:__subpackages__"],
 )
 
@@ -1665,15 +1700,15 @@ cc_library(
     name = "harfbuzz",
     srcs = HARFBUZZ_SRCS,
     hdrs = HARFBUZZ_HDRS,
-    includes = [
-        "externals/harfbuzz/src",
-        "harfbuzz",
-    ],
-    local_defines = [
+    defines = [
         "HAVE_OT",
         "HAVE_CONFIG_OVERRIDE_H",
         "HB_NO_FALLBACK_SHAPE",
         "HB_NO_WIN1256",
+    ],
+    includes = [
+        "externals/harfbuzz/src",
+        "harfbuzz",
     ],
     visibility = ["//:__subpackages__"],
 )

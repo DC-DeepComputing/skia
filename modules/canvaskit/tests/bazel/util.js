@@ -3,6 +3,9 @@ const CANVAS_WIDTH = 600;
 const CANVAS_HEIGHT = 600;
 
 const _commonGM = (it, pause, name, callback, assetsToFetchOrPromisesToWaitOn) => {
+    if (name.includes(' ')) {
+        throw name + " cannot contain spaces";
+    }
     const fetchPromises = [];
     for (const assetOrPromise of assetsToFetchOrPromisesToWaitOn) {
         // https://stackoverflow.com/a/9436948
@@ -134,6 +137,9 @@ const pause_gm = (name, callback, ...assetsToFetchOrPromisesToWaitOn) => {
 };
 
 const _commonMultipleCanvasGM = (it, pause, name, callback) => {
+    if (name.includes(' ')) {
+        throw name + " cannot contain spaces";
+    }
     it(`draws gm ${name} on both CanvasKit and using Canvas2D`, (done) => {
         const skcanvas = CanvasKit.MakeCanvas(CANVAS_WIDTH, CANVAS_HEIGHT);
         skcanvas._config = 'software_canvas';
