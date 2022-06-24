@@ -35,14 +35,15 @@ NSString* kBufferTypeNames[kGrGpuBufferTypeCount] = {
 };
 #endif
 
-sk_sp<GrMtlBuffer> GrMtlBuffer::Make(GrMtlGpu* gpu, size_t size, GrGpuBufferType intendedType,
-                                     GrAccessPattern accessPattern, const void* data) {
-    sk_sp<GrMtlBuffer> buffer(new GrMtlBuffer(gpu, size, intendedType, accessPattern,
+sk_sp<GrMtlBuffer> GrMtlBuffer::Make(GrMtlGpu* gpu,
+                                     size_t size,
+                                     GrGpuBufferType intendedType,
+                                     GrAccessPattern accessPattern) {
+    return sk_sp<GrMtlBuffer>(new GrMtlBuffer(gpu,
+                                              size,
+                                              intendedType,
+                                              accessPattern,
                                               /*label=*/"MakeMtlBuffer"));
-    if (data && !buffer->onUpdateData(data, size)) {
-        return nullptr;
-    }
-    return buffer;
 }
 
 GrMtlBuffer::GrMtlBuffer(GrMtlGpu* gpu, size_t size, GrGpuBufferType intendedType,
@@ -82,13 +83,13 @@ GrMtlBuffer::~GrMtlBuffer() {
     SkASSERT(!fMapPtr);
 }
 
-bool GrMtlBuffer::onUpdateData(const void* src, size_t sizeInBytes) {
+bool GrMtlBuffer::onUpdateData(const void* src, size_t sizeInBytes, size_t offset) {
     if (fIsDynamic) {
         this->internalMap(sizeInBytes);
         if (!fMapPtr) {
             return false;
         }
-        memcpy(fMapPtr, src, sizeInBytes);
+        memcpy(SkTAddOffset<void>(fMapPtr, offset), src, sizeInBytes);
         this->internalUnmap(sizeInBytes);
     } else {
         // copy data to gpu buffer
@@ -110,7 +111,7 @@ bool GrMtlBuffer::onUpdateData(const void* src, size_t sizeInBytes) {
         [blitCmdEncoder copyFromBuffer: transferBuffer
                           sourceOffset: slice.fOffset
                               toBuffer: fMtlBuffer
-                     destinationOffset: 0
+                     destinationOffset: offset
                                   size: sizeInBytes];
     }
 

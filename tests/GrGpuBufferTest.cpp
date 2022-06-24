@@ -318,11 +318,13 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(GrGpuBufferUpdateDataTest, reporter, ctxInfo)
         return;
     }
 
-    for (bool oversizedBuffer : {false, true}) {
+    for (size_t offset : {size_t{0}, 4*sizeof(SkPoint), size_t{1}, size_t{27}}) {
         auto pm = GrPixmap::Allocate(sdc->imageInfo().makeColorType(GrColorType::kRGBA_F32));
 
         // Go direct to GrGpu to avoid caching/size adjustments at GrResourceProvider level.
-        auto vb = gpu->createBuffer(sizeof(kUnitQuad) + (oversizedBuffer ? 7 : 0),
+        // We add an extra size(SkPoint) to ensure that everything fits when we align the first
+        // point's location in the vb below.
+        auto vb = gpu->createBuffer(sizeof(kUnitQuad) + offset + sizeof(SkPoint),
                                     GrGpuBufferType::kVertex,
                                     kDynamic_GrAccessPattern);
         if (!vb) {
@@ -330,7 +332,23 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(GrGpuBufferUpdateDataTest, reporter, ctxInfo)
             return;
         }
 
-        if (!vb->updateData(kUnitQuad, sizeof(kUnitQuad))) {
+        const void* src = kUnitQuad;
+        size_t uploadSize = sizeof(kUnitQuad);
+        // The vertices in the VB must be aligned to the size of a vertex (because our draw call
+        // takes a base vertex index rather than a byte offset). So if we want our upload to begin
+        // at a non-aligned byte we shift the data in the src buffer so that it falls at a vertex
+        // alignment in the vb.
+        std::unique_ptr<char[]> tempSrc;
+        size_t baseVertex = offset/sizeof(SkPoint);
+        if (size_t r = offset%sizeof(SkPoint); r != 0) {
+            size_t pad = sizeof(SkPoint) - r;
+            uploadSize += pad;
+            ++baseVertex;
+            tempSrc.reset(new char[uploadSize]);
+            std::memcpy(tempSrc.get() + pad, kUnitQuad, sizeof(kUnitQuad));
+            src = tempSrc.get();
+        }
+        if (!vb->updateData(src, uploadSize, offset)) {
             ERRORF(reporter, "GrGpuBuffer::updateData returned false.");
             return;
         }
@@ -341,7 +359,7 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(GrGpuBufferUpdateDataTest, reporter, ctxInfo)
 
         sdc->clear(kRed);
 
-        sdc->addDrawOp(nullptr, TestVertexOp::Make(dc, vb, 0, std::size(kUnitQuad), kBounds));
+        sdc->addDrawOp(nullptr, TestVertexOp::Make(dc, vb, baseVertex, std::size(kUnitQuad), kBounds));
 
         auto color = static_cast<SkPMColor4f*>(pm.addr());
         *color = kRed.premul();
@@ -352,6 +370,6 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(GrGpuBufferUpdateDataTest, reporter, ctxInfo)
 
         static constexpr SkPMColor4f kGreen{0, 1, 0, 1};
 
-        REPORTER_ASSERT(reporter, *color == kGreen);
+        REPORTER_ASSERT(reporter, *color == kGreen, "offset: %zu", offset);
     }
 }
