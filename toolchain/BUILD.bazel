@@ -67,6 +67,13 @@ toolchain(
     toolchain_type = "@rules_cc//cc:toolchain_type",
 )
 
+cc_toolchain_suite(
+    name = "legacy_mac_toolchain",
+    toolchains = {
+        "darwin_x86_64": ":mac_host",
+        "darwin_arm64": ":mac_host",
+    },
+)
 
 filegroup(name = "not_implemented")
 
