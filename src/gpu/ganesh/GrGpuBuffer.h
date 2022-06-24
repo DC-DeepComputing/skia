@@ -78,7 +78,7 @@ public:
      *
      * @return returns true if the update succeeds, false otherwise.
      */
-    bool updateData(const void* src, size_t srcSizeInBytes);
+    bool updateData(const void* src, size_t srcSizeInBytes, size_t offset = 0);
 
     GrGpuBufferType intendedType() const { return fIntendedType; }
 
@@ -94,7 +94,7 @@ protected:
 private:
     virtual void onMap() = 0;
     virtual void onUnmap() = 0;
-    virtual bool onUpdateData(const void* src, size_t srcSizeInBytes) = 0;
+    virtual bool onUpdateData(const void* src, size_t srcSizeInBytes, size_t offset) = 0;
 
     size_t onGpuMemorySize() const override { return fSizeInBytes; }
     void onSetLabel() override{}

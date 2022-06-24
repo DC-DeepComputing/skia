@@ -121,7 +121,7 @@ void GrD3DBuffer::releaseResource() {
     }
 
     if (fMapPtr) {
-        this->internalUnmap(this->size());
+        this->internalUnmap(0, this->size());
         fMapPtr = nullptr;
     }
 
@@ -142,19 +142,30 @@ void GrD3DBuffer::onAbandon() {
 }
 
 void GrD3DBuffer::onMap() {
-    this->internalMap(this->size());
+    size_t readSize = this->size();
+    // We shouldn't ever read from this buffer type.
+    if (this->intendedType() == GrGpuBufferType::kXferCpuToGpu) {
+        readSize = 0;
+    }
+    this->internalMap(0, readSize);
 }
 
 void GrD3DBuffer::onUnmap() {
-    this->internalUnmap(this->size());
+    // We shouldn't ever write to this buffer type.
+    size_t writtenSize = this->size();
+    if (this->intendedType() == GrGpuBufferType::kXferGpuToCpu)  {
+        writtenSize = 0;
+    }
+    this->internalUnmap(0, writtenSize);
 }
 
-bool GrD3DBuffer::onUpdateData(const void* src, size_t size) {
+bool GrD3DBuffer::onUpdateData(const void* src, size_t size, size_t offset) {
     if (!fD3DResource) {
         return false;
     }
 
-    this->internalMap(size);
+    // We're only going to write to the buffer so no read range.
+    this->internalMap(0, 0);
     if (!fMapPtr) {
         return false;
     }
@@ -164,26 +175,26 @@ bool GrD3DBuffer::onUpdateData(const void* src, size_t size) {
         //*** any alignment restrictions?
     }
     memcpy(fMapPtr, src, size);
-    this->internalUnmap(size);
+    this->internalUnmap(offset, size);
 
     return true;
 }
 
-void GrD3DBuffer::internalMap(size_t size) {
+void GrD3DBuffer::internalMap(size_t readOffset, size_t readSize) {
     // TODO: if UPLOAD heap type, could be persistently mapped (i.e., this would be a no-op)
     if (this->wasDestroyed()) {
         return;
     }
     SkASSERT(fD3DResource);
     SkASSERT(!this->isMapped());
-    SkASSERT(this->size() >= size);
+    SkASSERT(readOffset + readSize <= this->size());
 
     VALIDATE();
 
     if (this->accessPattern() == kStatic_GrAccessPattern) {
         SkASSERT(!fStagingBuffer);
         GrStagingBufferManager::Slice slice =
-                this->getD3DGpu()->stagingBufferManager()->allocateStagingBufferSlice(size);
+                this->getD3DGpu()->stagingBufferManager()->allocateStagingBufferSlice(this->size());
         if (!slice.fBuffer) {
             return;
         }
@@ -192,35 +203,39 @@ void GrD3DBuffer::internalMap(size_t size) {
         fMapPtr = slice.fOffsetMapPtr;
     } else {
         D3D12_RANGE range;
-        range.Begin = 0;
-        range.End = size;
+        range.Begin = readOffset;
+        range.End = readOffset + readSize;
         fD3DResource->Map(0, &range, &fMapPtr);
     }
 
     VALIDATE();
 }
 
-void GrD3DBuffer::internalUnmap(size_t size) {
+void GrD3DBuffer::internalUnmap(size_t writtenOffset, size_t writtenSize) {
     // TODO: if UPLOAD heap type, could be persistently mapped (i.e., this would be a no-op)
     if (this->wasDestroyed()) {
         return;
     }
     SkASSERT(fD3DResource);
     SkASSERT(this->isMapped());
+    SkASSERT(writtenOffset + writtenSize <= this->size());
     VALIDATE();
 
     if (this->accessPattern() == kStatic_GrAccessPattern) {
         SkASSERT(fStagingBuffer);
         this->setResourceState(this->getD3DGpu(), D3D12_RESOURCE_STATE_COPY_DEST);
         this->getD3DGpu()->currentCommandList()->copyBufferToBuffer(
-                sk_ref_sp<GrD3DBuffer>(this), 0, fStagingBuffer, fStagingOffset, size);
+                sk_ref_sp<GrD3DBuffer>(this),
+                writtenOffset,
+                fStagingBuffer,
+                fStagingOffset + writtenOffset,
+                writtenSize);
         fStagingBuffer = nullptr;
     } else {
+        SkASSERT(fResourceState != D3D12_RESOURCE_STATE_COPY_DEST || writtenSize == 0);
         D3D12_RANGE range;
-        range.Begin = 0;
-        // For READBACK heaps, unmap requires an empty range
-        range.End = fResourceState == D3D12_RESOURCE_STATE_COPY_DEST ? 0 : size;
-        SkASSERT(this->size() >= size);
+        range.Begin = writtenOffset;
+        range.End = writtenOffset + writtenSize;
         fD3DResource->Unmap(0, &range);
     }
 
