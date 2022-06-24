@@ -156,7 +156,7 @@ sk_sp<GrVkBuffer> GrVkBuffer::Make(GrVkGpu* gpu,
             /*label=*/"MakeVkBuffer"));
 }
 
-void GrVkBuffer::vkMap(size_t size) {
+void GrVkBuffer::vkMap(size_t offset, size_t size) {
     SkASSERT(!fMapPtr);
     if (this->isVkMappable()) {
         // Not every buffer will use command buffer usage refs and instead the command buffer just
@@ -168,23 +168,23 @@ void GrVkBuffer::vkMap(size_t size) {
         SkASSERT(fAlloc.fSize >= size);
         fMapPtr = GrVkMemory::MapAlloc(this->getVkGpu(), fAlloc);
         if (fMapPtr && this->intendedType() == GrGpuBufferType::kXferGpuToCpu) {
-            GrVkMemory::InvalidateMappedAlloc(this->getVkGpu(), fAlloc, 0, size);
+            GrVkMemory::InvalidateMappedAlloc(this->getVkGpu(), fAlloc, offset, size);
         }
     }
 }
 
-void GrVkBuffer::vkUnmap(size_t size) {
+void GrVkBuffer::vkUnmap(size_t offset, size_t size) {
     SkASSERT(fMapPtr && this->isVkMappable());
 
     SkASSERT(fAlloc.fSize > 0);
     SkASSERT(fAlloc.fSize >= size);
 
     GrVkGpu* gpu = this->getVkGpu();
-    GrVkMemory::FlushMappedAlloc(gpu, fAlloc, 0, size);
+    GrVkMemory::FlushMappedAlloc(gpu, fAlloc, offset, size);
     GrVkMemory::UnmapAlloc(gpu, fAlloc);
 }
 
-void GrVkBuffer::copyCpuDataToGpuBuffer(const void* src, size_t size) {
+void GrVkBuffer::copyCpuDataToGpuBuffer(const void* src, size_t size, size_t offset) {
     SkASSERT(src);
 
     GrVkGpu* gpu = this->getVkGpu();
@@ -193,9 +193,10 @@ void GrVkBuffer::copyCpuDataToGpuBuffer(const void* src, size_t size) {
     SkASSERT(!gpu->protectedContext());
 
     // The vulkan api restricts the use of vkCmdUpdateBuffer to updates that are less than or equal
-    // to 65536 bytes and a size the is 4 byte aligned.
-    if ((size <= 65536) && (0 == (size & 0x3)) && !gpu->vkCaps().avoidUpdateBuffers()) {
-        gpu->updateBuffer(sk_ref_sp(this), src, /*offset=*/0, size);
+    // to 65536 bytes and a size and offset that are both 4 byte aligned.
+    if ((size <= 65536) && SkIsAlign4(size) && SkIsAlign4(offset) &&
+        !gpu->vkCaps().avoidUpdateBuffers()) {
+        gpu->updateBuffer(sk_ref_sp(this), src, offset, size);
     } else {
         GrResourceProvider* resourceProvider = gpu->getContext()->priv().resourceProvider();
         sk_sp<GrGpuBuffer> transferBuffer = resourceProvider->createBuffer(
@@ -210,7 +211,7 @@ void GrVkBuffer::copyCpuDataToGpuBuffer(const void* src, size_t size) {
         gpu->transferFromBufferToBuffer(std::move(transferBuffer),
                                         /*srcOffset=*/0,
                                         sk_ref_sp(this),
-                                        /*dstOffset=*/0,
+                                        offset,
                                         size);
     }
 }
@@ -243,7 +244,7 @@ void GrVkBuffer::vkRelease() {
     }
 
     if (fMapPtr) {
-        this->vkUnmap(this->size());
+        this->vkUnmap(0, this->size());
         fMapPtr = nullptr;
     }
 
@@ -274,27 +275,29 @@ void GrVkBuffer::onAbandon() {
 
 void GrVkBuffer::onMap() {
     if (!this->wasDestroyed()) {
-        this->vkMap(this->size());
+        this->vkMap(0, this->size());
     }
 }
 
 void GrVkBuffer::onUnmap() {
     if (!this->wasDestroyed()) {
-        this->vkUnmap(this->size());
+        this->vkUnmap(0, this->size());
     }
 }
 
-bool GrVkBuffer::onUpdateData(const void* src, size_t srcSizeInBytes) {
+bool GrVkBuffer::onUpdateData(const void* src, size_t srcSizeInBytes, size_t offset) {
     if (this->isVkMappable()) {
-        this->vkMap(srcSizeInBytes);
+        // updateData is defined to invalidate the entire buffer. So we pass 0 as the offset here.
+        this->vkMap(/*offset=*/0, srcSizeInBytes);
         if (!fMapPtr) {
             return false;
         }
-        memcpy(fMapPtr, src, srcSizeInBytes);
-        this->vkUnmap(srcSizeInBytes);
+        memcpy(SkTAddOffset<void>(fMapPtr, offset), src, srcSizeInBytes);
+        // We only want to flush the updated portion so pass the true offset here.
+        this->vkUnmap(offset, srcSizeInBytes);
         fMapPtr = nullptr;
     } else {
-        this->copyCpuDataToGpuBuffer(src, srcSizeInBytes);
+        this->copyCpuDataToGpuBuffer(src, srcSizeInBytes, offset);
     }
     return true;
 }
