@@ -40,12 +40,12 @@ protected:
 private:
     void releaseResource();
 
-    void onMap() override;
-    void onUnmap() override;
-    bool onUpdateData(const void* src, size_t srcSizeInBytes) override;
+    void onMap(MapType) override;
+    void onUnmap(MapType) override;
+    bool onUpdateData(size_t offset, const void* src, size_t size) override;
 
-    void internalMap(size_t size);
-    void internalUnmap(size_t size);
+    void internalMap(size_t readOffset, size_t readSize);
+    void internalUnmap(size_t writtenOffset, size_t writtenSize);
 
     void validate() const;
 

@@ -94,11 +94,7 @@ GrDawnBuffer::GrDawnBuffer(GrDawnGpu* gpu,
     this->registerWithCache(SkBudgeted::kYes);
 }
 
-void GrDawnBuffer::onMap() {
-    if (this->wasDestroyed()) {
-        return;
-    }
-
+void GrDawnBuffer::onMap(MapType type) {
     if (fUnmapped) {
         SkASSERT(fMappable != Mappable::kNot);
         if (!this->blockingMap()) {
@@ -109,6 +105,7 @@ void GrDawnBuffer::onMap() {
     }
 
     if (fMappable == Mappable::kNot) {
+        SkASSERT(type == MapType::kWriteDiscard);
         GrStagingBufferManager::Slice slice =
                 this->getDawnGpu()->stagingBufferManager()->allocateStagingBufferSlice(
                         this->size(), /*requiredAlignment=*/4);
@@ -123,12 +120,9 @@ void GrDawnBuffer::onMap() {
     }
 }
 
-void GrDawnBuffer::onUnmap() {
-    if (this->wasDestroyed()) {
-        return;
-    }
-
+void GrDawnBuffer::onUnmap(MapType type) {
     if (fMappable == Mappable::kNot) {
+        SkASSERT(type == MapType::kWriteDiscard);
         size_t actualSize = SkAlign4(this->size());
         this->getDawnGpu()->getCopyEncoder().CopyBufferToBuffer(fStagingBuffer, fStagingOffset,
                                                                 fBuffer, 0, actualSize);
@@ -138,13 +132,13 @@ void GrDawnBuffer::onUnmap() {
     }
 }
 
-bool GrDawnBuffer::onUpdateData(const void* src, size_t srcSizeInBytes) {
+bool GrDawnBuffer::onUpdateData(size_t offset, const void* src, size_t size) {
     this->map();
     if (!this->isMapped()) {
         return false;
     }
 
-    memcpy(fMapPtr, src, srcSizeInBytes);
+    memcpy(SkTAddOffset<void>(fMapPtr, offset), src, size);
     this->unmap();
     return true;
 }
