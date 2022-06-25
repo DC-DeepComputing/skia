@@ -156,7 +156,7 @@ sk_sp<GrVkBuffer> GrVkBuffer::Make(GrVkGpu* gpu,
             /*label=*/"MakeVkBuffer"));
 }
 
-void GrVkBuffer::vkMap(size_t size) {
+void GrVkBuffer::vkMap(size_t readOffset, size_t readSize) {
     SkASSERT(!fMapPtr);
     if (this->isVkMappable()) {
         // Not every buffer will use command buffer usage refs and instead the command buffer just
@@ -165,26 +165,28 @@ void GrVkBuffer::vkMap(size_t size) {
         // there isn't a buffer with just a command buffer usage that is trying to be mapped.
         SkASSERT(this->internalHasNoCommandBufferUsages());
         SkASSERT(fAlloc.fSize > 0);
-        SkASSERT(fAlloc.fSize >= size);
+        SkASSERT(fAlloc.fSize >= readOffset + readSize);
         fMapPtr = GrVkMemory::MapAlloc(this->getVkGpu(), fAlloc);
-        if (fMapPtr && this->intendedType() == GrGpuBufferType::kXferGpuToCpu) {
-            GrVkMemory::InvalidateMappedAlloc(this->getVkGpu(), fAlloc, 0, size);
+        if (fMapPtr && readSize != 0) {
+            // "Invalidate" here means make device writes visible to the host. That is, it makes
+            // sure any GPU writes are finished in the range we might read from.
+            GrVkMemory::InvalidateMappedAlloc(this->getVkGpu(), fAlloc, readOffset, readSize);
         }
     }
 }
 
-void GrVkBuffer::vkUnmap(size_t size) {
+void GrVkBuffer::vkUnmap(size_t flushOffset, size_t flushSize) {
     SkASSERT(fMapPtr && this->isVkMappable());
 
     SkASSERT(fAlloc.fSize > 0);
-    SkASSERT(fAlloc.fSize >= size);
+    SkASSERT(fAlloc.fSize >= flushOffset + flushSize);
 
     GrVkGpu* gpu = this->getVkGpu();
-    GrVkMemory::FlushMappedAlloc(gpu, fAlloc, 0, size);
+    GrVkMemory::FlushMappedAlloc(gpu, fAlloc, flushOffset, flushSize);
     GrVkMemory::UnmapAlloc(gpu, fAlloc);
 }
 
-void GrVkBuffer::copyCpuDataToGpuBuffer(const void* src, size_t size) {
+void GrVkBuffer::copyCpuDataToGpuBuffer(const void* src, size_t size, size_t offset) {
     SkASSERT(src);
 
     GrVkGpu* gpu = this->getVkGpu();
@@ -193,9 +195,10 @@ void GrVkBuffer::copyCpuDataToGpuBuffer(const void* src, size_t size) {
     SkASSERT(!gpu->protectedContext());
 
     // The vulkan api restricts the use of vkCmdUpdateBuffer to updates that are less than or equal
-    // to 65536 bytes and a size the is 4 byte aligned.
-    if ((size <= 65536) && (0 == (size & 0x3)) && !gpu->vkCaps().avoidUpdateBuffers()) {
-        gpu->updateBuffer(sk_ref_sp(this), src, /*offset=*/0, size);
+    // to 65536 bytes and a size and offset that are both 4 byte aligned.
+    if ((size <= 65536) && SkIsAlign4(size) && SkIsAlign4(offset) &&
+        !gpu->vkCaps().avoidUpdateBuffers()) {
+        gpu->updateBuffer(sk_ref_sp(this), src, offset, size);
     } else {
         GrResourceProvider* resourceProvider = gpu->getContext()->priv().resourceProvider();
         sk_sp<GrGpuBuffer> transferBuffer = resourceProvider->createBuffer(
@@ -210,7 +213,7 @@ void GrVkBuffer::copyCpuDataToGpuBuffer(const void* src, size_t size) {
         gpu->transferFromBufferToBuffer(std::move(transferBuffer),
                                         /*srcOffset=*/0,
                                         sk_ref_sp(this),
-                                        /*dstOffset=*/0,
+                                        offset,
                                         size);
     }
 }
@@ -243,7 +246,7 @@ void GrVkBuffer::vkRelease() {
     }
 
     if (fMapPtr) {
-        this->vkUnmap(this->size());
+        this->vkUnmap(0, this->size());
         fMapPtr = nullptr;
     }
 
@@ -272,29 +275,27 @@ void GrVkBuffer::onAbandon() {
     this->GrGpuBuffer::onAbandon();
 }
 
-void GrVkBuffer::onMap() {
-    if (!this->wasDestroyed()) {
-        this->vkMap(this->size());
-    }
+void GrVkBuffer::onMap(MapType type) {
+    this->vkMap(0, type == MapType::kRead ? this->size() : 0);
 }
 
-void GrVkBuffer::onUnmap() {
-    if (!this->wasDestroyed()) {
-        this->vkUnmap(this->size());
-    }
+void GrVkBuffer::onUnmap(MapType type) {
+    this->vkUnmap(0, type == MapType::kWriteDiscard ? this->size() : 0);
 }
 
-bool GrVkBuffer::onUpdateData(const void* src, size_t srcSizeInBytes) {
+bool GrVkBuffer::onUpdateData(size_t offset, const void* src, size_t size) {
     if (this->isVkMappable()) {
-        this->vkMap(srcSizeInBytes);
+        // We won't be reading the mapped memory so pass an empty range.
+        this->vkMap(0, 0);
         if (!fMapPtr) {
             return false;
         }
-        memcpy(fMapPtr, src, srcSizeInBytes);
-        this->vkUnmap(srcSizeInBytes);
+        memcpy(SkTAddOffset<void>(fMapPtr, offset), src, size);
+        // We only want to flush the updated portion so pass the true range here.
+        this->vkUnmap(offset, size);
         fMapPtr = nullptr;
     } else {
-        this->copyCpuDataToGpuBuffer(src, srcSizeInBytes);
+        this->copyCpuDataToGpuBuffer(src, size, offset);
     }
     return true;
 }
