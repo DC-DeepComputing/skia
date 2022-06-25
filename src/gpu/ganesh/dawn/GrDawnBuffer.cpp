@@ -95,10 +95,6 @@ GrDawnBuffer::GrDawnBuffer(GrDawnGpu* gpu,
 }
 
 void GrDawnBuffer::onMap() {
-    if (this->wasDestroyed()) {
-        return;
-    }
-
     if (fUnmapped) {
         SkASSERT(fMappable != Mappable::kNot);
         if (!this->blockingMap()) {
@@ -124,10 +120,6 @@ void GrDawnBuffer::onMap() {
 }
 
 void GrDawnBuffer::onUnmap() {
-    if (this->wasDestroyed()) {
-        return;
-    }
-
     if (fMappable == Mappable::kNot) {
         size_t actualSize = SkAlign4(this->size());
         this->getDawnGpu()->getCopyEncoder().CopyBufferToBuffer(fStagingBuffer, fStagingOffset,
@@ -138,13 +130,13 @@ void GrDawnBuffer::onUnmap() {
     }
 }
 
-bool GrDawnBuffer::onUpdateData(const void* src, size_t srcSizeInBytes) {
+bool GrDawnBuffer::onUpdateData(size_t offset, const void* src, size_t size) {
     this->map();
     if (!this->isMapped()) {
         return false;
     }
 
-    memcpy(fMapPtr, src, srcSizeInBytes);
+    memcpy(SkTAddOffset<void>(fMapPtr, offset), src, size);
     this->unmap();
     return true;
 }
