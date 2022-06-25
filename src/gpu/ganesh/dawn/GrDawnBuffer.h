@@ -71,9 +71,9 @@ public:
                                     std::string_view label);
     ~GrDawnBuffer() override = default;
 
-    void onMap() override;
-    void onUnmap() override;
-    bool onUpdateData(const void* src, size_t srcSizeInBytes) override;
+    void onMap(MapType) override;
+    void onUnmap(MapType) override;
+    bool onUpdateData(size_t offset, const void* src, size_t size) override;
 
     GrDawnGpu* getDawnGpu() const;
     wgpu::Buffer get() const { return fBuffer; }
