@@ -42,7 +42,7 @@ private:
 
     void onMap(MapType) override;
     void onUnmap(MapType) override;
-    bool onUpdateData(size_t offset, const void* src, size_t size) override;
+    bool onUpdateData(size_t offset, const void* src, size_t size, bool discard) override;
 
     void internalMap();
     void internalUnmap(size_t writtenOffset, size_t writtenSize);

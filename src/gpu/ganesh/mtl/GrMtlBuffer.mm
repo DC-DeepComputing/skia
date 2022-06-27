@@ -83,7 +83,7 @@ GrMtlBuffer::~GrMtlBuffer() {
     SkASSERT(!fMapPtr);
 }
 
-bool GrMtlBuffer::onUpdateData(size_t offset, const void* src, size_t size) {
+bool GrMtlBuffer::onUpdateData(size_t offset, const void* src, size_t size, bool discard) {
     if (fIsDynamic) {
         this->internalMap();
         if (!fMapPtr) {
@@ -106,7 +106,6 @@ bool GrMtlBuffer::onUpdateData(size_t offset, const void* src, size_t size) {
         if (!blitCmdEncoder) {
             return false;
         }
-        SkDebugf("%uz %uz\n", offset, size);
         GrMtlBuffer* mtlBuffer = static_cast<GrMtlBuffer*>(slice.fBuffer);
         id<MTLBuffer> transferBuffer = mtlBuffer->mtlBuffer();
         [blitCmdEncoder copyFromBuffer: transferBuffer

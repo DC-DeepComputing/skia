@@ -28,7 +28,7 @@ private:
         }
     }
     void onUnmap(MapType) override { sk_free(fMapPtr); }
-    bool onUpdateData(size_t offset, const void* src, size_t size) override {
+    bool onUpdateData(size_t offset, const void* src, size_t size, bool discard) override {
         return true;
     }
 

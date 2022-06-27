@@ -39,7 +39,7 @@ void GrGpuBuffer::unmap() {
 
 bool GrGpuBuffer::isMapped() const { return SkToBool(fMapPtr); }
 
-bool GrGpuBuffer::updateData(size_t offset, const void* src, size_t size) {
+bool GrGpuBuffer::updateData(size_t offset, const void* src, size_t size, bool discard) {
     SkASSERT(!this->isMapped());
     SkASSERT(size > 0 && offset + size <= fSizeInBytes);
     SkASSERT(src);
@@ -57,7 +57,7 @@ bool GrGpuBuffer::updateData(size_t offset, const void* src, size_t size) {
         return false;
     }
 
-    return this->onUpdateData(offset, src, size);
+    return this->onUpdateData(offset, src, size, discard);
 }
 
 void GrGpuBuffer::ComputeScratchKeyForDynamicBuffer(size_t size,
