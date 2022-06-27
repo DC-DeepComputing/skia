@@ -221,7 +221,10 @@ public:
     size_t transferBufferRowBytesAlignment() const { return fTransferBufferRowBytesAlignment; }
 
     // Alignment requirement for offsets and size in buffer->buffer transfers.
-    size_t transferFromBufferToBufferAlignment() const {
+    size_t transferFromBufferToBufferAlignment() const { return fBufferUpdateDataAlignment; }
+
+    // Alignment requirement for offset and size passed to in GrGpuBuffer::updateData.
+    size_t bufferUpdateDataAlignment() const {
         return fTransferFromBufferToBufferAlignment;
     }
 
@@ -608,6 +611,7 @@ protected:
     uint32_t fMaxPushConstantsSize = 0;
     size_t fTransferBufferRowBytesAlignment = 1;
     size_t fTransferFromBufferToBufferAlignment = 1;
+    size_t fBufferUpdateDataAlignment = 1;
 
     GrDriverBugWorkarounds fDriverBugWorkarounds;
 
