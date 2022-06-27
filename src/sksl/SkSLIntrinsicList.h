@@ -20,6 +20,7 @@
     SKSL_INTRINSIC(asin)             \
     SKSL_INTRINSIC(atanh)            \
     SKSL_INTRINSIC(atan)             \
+    SKSL_INTRINSIC(barrier)          \
     SKSL_INTRINSIC(bitCount)         \
     SKSL_INTRINSIC(ceil)             \
     SKSL_INTRINSIC(clamp)            \

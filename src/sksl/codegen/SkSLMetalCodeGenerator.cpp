@@ -1026,6 +1026,9 @@ bool MetalCodeGenerator::writeIntrinsicCall(const FunctionCall& c, IntrinsicKind
             this->write(")");
             return true;
         }
+        case k_barrier_IntrinsicKind:
+            this->write("threadgroup_barrier()");
+            return true;
         default:
             return false;
     }
@@ -2213,11 +2216,10 @@ void MetalCodeGenerator::writeFunction(const FunctionDefinition& f) {
 }
 
 void MetalCodeGenerator::writeModifiers(const Modifiers& modifiers) {
-    if (ProgramConfig::IsCompute(fProgram.fConfig->fKind) &&
-            (modifiers.fFlags & (Modifiers::kIn_Flag | Modifiers::kOut_Flag))) {
-        this->write("device ");
-    } else if (modifiers.fFlags & Modifiers::kOut_Flag) {
-        this->write("thread ");
+    if (modifiers.fFlags & Modifiers::kThreadGroup_Flag) {
+        this->write("threadgroup ");
+    } else if (modifiers.fFlags & (Modifiers::kIn_Flag | Modifiers::kOut_Flag)) {
+        this->write(ProgramConfig::IsCompute(fProgram.fConfig->fKind) ? "device " : "thread ");
     }
     if (modifiers.fFlags & Modifiers::kConst_Flag) {
         this->write("const ");
@@ -2680,8 +2682,8 @@ void MetalCodeGenerator::visitGlobalStruct(GlobalStructVisitor* visitor) {
             visitor->visitTexture(var.type(), var.modifiers(), var.name());
             continue;
         }
-        if (!(var.modifiers().fFlags & ~Modifiers::kConst_Flag) &&
-            -1 == var.modifiers().fLayout.fBuiltin) {
+        if (!(var.modifiers().fFlags & ~(Modifiers::kConst_Flag | Modifiers::kThreadGroup_Flag)) &&
+            var.modifiers().fLayout.fBuiltin == -1) {
             // Visit a regular variable.
             visitor->visitVariable(var, decl.value().get());
         }
