@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e0594590_2c75e9bb",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 725,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-06-27T14:25:58Z",
+      "side": 1,
+      "message": "It feels like we probably don\u0027t need them, if we stick with the model of one code snippet ID per runtime effect, since that is sufficient. If we go back to the single runtime effect ID, then we would need these in the key still.\n\nIn terms of reading them back as data, the only possible thing I can think of is if we grab the runtime effect\u0027s code ID from the key in order to track it on the Recorder, instead of going through findOrCreateRuntimeEffectSnippet again.\n\nI\u0027m fine leaving these for now",
+      "range": {
+        "startLine": 725,
+        "startChar": 0,
+        "endLine": 725,
+        "endChar": 65
+      },
+      "revId": "fe3b685e9fcda3d284248044a1056e32af5c55b0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "014e88a3_c9d86a31",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 736,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-06-27T14:25:58Z",
+      "side": 1,
+      "message": "nit: todo for replacing the glue code function?",
+      "range": {
+        "startLine": 736,
+        "startChar": 55,
+        "endLine": 736,
+        "endChar": 78
+      },
+      "revId": "fe3b685e9fcda3d284248044a1056e32af5c55b0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9f94469f_90355353",
+        "filename": "src/core/SkShaderCodeDictionary.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 268,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-06-27T14:25:58Z",
+      "side": 1,
+      "message": "Maybe add a comment here or in findOrCreateRuntimeSnippet() that we hold on to the to the hash+snippet+shader-entry for the lifetime of the code dictionary since it\u0027s decoupled from the lifetime of the heavy-weight SkRuntimeEffect?",
+      "range": {
+        "startLine": 268,
+        "startChar": 4,
+        "endLine": 268,
+        "endChar": 20
+      },
+      "revId": "fe3b685e9fcda3d284248044a1056e32af5c55b0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
