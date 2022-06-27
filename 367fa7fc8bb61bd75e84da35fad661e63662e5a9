@@ -103,6 +103,30 @@
       },
       "revId": "367fa7fc8bb61bd75e84da35fad661e63662e5a9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "26a2701c_a537a5eb",
+        "filename": "src/gpu/graphite/RecorderPriv.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-06-27T20:30:31Z",
+      "side": 1,
+      "message": "The assert on the previous line checks that the code snippet ID is either unregistered, or registered to a matching runtime effect.\n\nIn release we way are better off doing `set` instead of `find` followed by a likely `set`.",
+      "parentUuid": "b544b958_48733e5b",
+      "range": {
+        "startLine": 85,
+        "startChar": 4,
+        "endLine": 85,
+        "endChar": 71
+      },
+      "revId": "367fa7fc8bb61bd75e84da35fad661e63662e5a9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
