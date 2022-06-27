@@ -169,8 +169,12 @@ skia_wasm_lib("canvaskit") {
   } else {
     externs_path = rebase_path("externs.js")
     ldflags += [
-      "-Oz",
+#      "-Oz",
+      "-sASSERTIONS=1",
+      "-O2",
+      "-g3",
       "--closure=1",
+     # "-fsanitize=leak",
       "--pre-js",
       rebase_path("release.js"),
       "--closure-args=--externs=$externs_path",
