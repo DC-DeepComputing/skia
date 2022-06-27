@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f3126170_e33faa75",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-06-27T21:02:09Z",
+      "side": 1,
+      "message": "\u003c\u003cWould it make more sense to have findOrCreateRuntimeEffect handle converting the runtime Uniform type to SkUniforms that it allocates in the shader code dictionary\u0027s arena?\u003e\u003e\n\nWe don\u0027t have a mechanism to free things that we put in the shader code dictionary, so we should try to avoid putting things there. The SkUniform array isn\u0027t large by most standards, but it\u0027s more data than I\u0027d like to allow into the \"never freed\" zone.",
+      "parentUuid": "118c610d_cb1bac51",
+      "revId": "f53ce66e7d9c681b0572cd3c277da57a02e6e09f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d6bb1787_fc9b91c5",
         "filename": "src/core/SkRuntimeEffect.cpp",
         "patchSetId": 6
