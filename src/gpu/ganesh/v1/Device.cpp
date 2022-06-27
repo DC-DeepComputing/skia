@@ -960,7 +960,7 @@ void Device::drawAtlas(const SkRSXform xform[],
 
 #if defined(SK_EXPERIMENTAL_SIMULATE_DRAWGLYPHRUNLIST_WITH_SLUG)
 void Device::testingOnly_drawGlyphRunListWithSlug(SkCanvas* canvas,
-                                                  const SkGlyphRunList& glyphRunList,
+                                                  const sktext::GlyphRunList& glyphRunList,
                                                   const SkPaint& initialPaint,
                                                   const SkPaint& drawingPaint) {
     auto slug = this->convertGlyphRunListToSlug(glyphRunList, initialPaint, drawingPaint);
