@@ -46,11 +46,12 @@ struct Modifiers {
         kHighp_Flag          = 1 <<  6,
         kMediump_Flag        = 1 <<  7,
         kLowp_Flag           = 1 <<  8,
+        kThreadgroup_Flag    = 1 <<  9,
         // SkSL extensions, not present in GLSL
-        kES3_Flag            = 1 <<  9,
-        kHasSideEffects_Flag = 1 <<  10,
-        kInline_Flag         = 1 <<  11,
-        kNoInline_Flag       = 1 <<  12,
+        kES3_Flag            = 1 << 10,
+        kHasSideEffects_Flag = 1 << 11,
+        kInline_Flag         = 1 << 12,
+        kNoInline_Flag       = 1 << 13,
     };
 
     Modifiers()
@@ -103,6 +104,10 @@ struct Modifiers {
         }
         if (fFlags & kLowp_Flag) {
             result += "lowp ";
+        }
+
+        if (fFlags & kThreadgroup_Flag) {
+            result += "threadgroup ";
         }
 
         return result;
