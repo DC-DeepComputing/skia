@@ -11,6 +11,7 @@
 #include "include/effects/SkRuntimeEffect.h"
 #include "include/gpu/graphite/Context.h"
 #include "src/core/SkKeyHelpers.h"
+#include "src/core/SkRuntimeEffectPriv.h"
 #include "src/core/SkShaderCodeDictionary.h"
 #include "src/gpu/graphite/ContextPriv.h"
 
@@ -130,10 +131,14 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(RTEffectTest, reporter, context) {
 DEF_GRAPHITE_TEST_FOR_CONTEXTS(FindOrCreateSnippetForRuntimeEffectWorks, reporter, context) {
     SkShaderCodeDictionary* dict = context->priv().shaderCodeDictionary();
 
-    const SkRuntimeEffect* effect = TestingOnly_GetCommonRuntimeEffect();
+    SkRuntimeEffect* testEffect = SkMakeRuntimeEffect(SkRuntimeEffect::MakeForShader, R"(
+        half4 main(float2 coords) {
+            return half4(coords.xy01);
+        }
+    )");
 
     // Create a new runtime-effect snippet.
-    int snippetID = dict->findOrCreateRuntimeEffectSnippet(effect);
+    int snippetID = dict->findOrCreateRuntimeEffectSnippet(testEffect);
     REPORTER_ASSERT(reporter, snippetID >= kBuiltInCodeSnippetIDCount);
 
     // Verify that it can be looked up and its name is 'RuntimeEffect'. (The name isn't meaningful,
@@ -143,6 +148,6 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(FindOrCreateSnippetForRuntimeEffectWorks, reporte
     REPORTER_ASSERT(reporter, std::string_view(snippet->fName) == "RuntimeEffect");
 
     // If we pass the same effect again, we should get the same snippet ID as before.
-    int foundSnippetID = dict->findOrCreateRuntimeEffectSnippet(effect);
+    int foundSnippetID = dict->findOrCreateRuntimeEffectSnippet(testEffect);
     REPORTER_ASSERT(reporter, foundSnippetID == snippetID);
 }
