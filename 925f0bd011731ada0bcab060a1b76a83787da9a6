@@ -16,6 +16,29 @@
       "message": "PTAL.",
       "revId": "925f0bd011731ada0bcab060a1b76a83787da9a6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "64a8076a_4710931f",
+        "filename": "src/gpu/graphite/ClipStack.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1101,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-06-27T21:08:36Z",
+      "side": 1,
+      "message": "fObj is not set in SkTCopyOnFirstWrite\u003c\u003e so writable() asserts.",
+      "range": {
+        "startLine": 1101,
+        "startChar": 20,
+        "endLine": 1101,
+        "endChar": 28
+      },
+      "revId": "925f0bd011731ada0bcab060a1b76a83787da9a6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
