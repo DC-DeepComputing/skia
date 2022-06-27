@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 #include "include/core/SkPoint.h"
+#include "include/core/SkSpan.h"
 #include "include/private/SkTDArray.h"
 #include "src/utils/SkPolyUtils.h"
 #include "tests/Test.h"
@@ -415,18 +416,10 @@ DEF_TEST(PolyUtils, reporter) {
                                                           &triangleIndices));
 }
 
-struct PtSet {
-    const SkPoint*  fPts;
-    int             fN;
-};
-
 DEF_TEST(IsPolyConvex_experimental, r) {
-    #define PTSET(array)    {array, std::size(array)}
-
     const SkPoint g0[] = { {0, 0}, {10, 0}, {10, 10}, {0, 10} };
-    const PtSet convex[] = { PTSET(g0) };
-    for (auto& set : convex) {
-        REPORTER_ASSERT(r, SkIsPolyConvex_experimental(set.fPts, set.fN));
+    for (const SkSpan<const SkPoint>& set : {SkSpan(g0)}) {
+        REPORTER_ASSERT(r, SkIsPolyConvex_experimental(set.data(), set.size()));
     }
 
     const SkPoint b0[] = { {0, 0}, {10, 0}, {0, 10}, {10, 10} };
@@ -439,12 +432,8 @@ DEF_TEST(IsPolyConvex_experimental, r) {
     const SkPoint b2[] = {
         {20, 20}, {20, 50}, {80, 50}, {20, 50}, {20, 80},
     };
-    const PtSet concave[] = { PTSET(b0), PTSET(b1), PTSET(b2) };
-    for (auto& set : concave) {
-        if (SkIsPolyConvex_experimental(set.fPts, set.fN)) {
-            REPORTER_ASSERT(r, !SkIsPolyConvex_experimental(set.fPts, set.fN));
-        }
+    for (const SkSpan<const SkPoint>& set : {SkSpan(b0), SkSpan(b1), SkSpan(b2)}) {
+        REPORTER_ASSERT(r, !SkIsPolyConvex_experimental(set.data(), set.size()));
     }
-
 }
 
