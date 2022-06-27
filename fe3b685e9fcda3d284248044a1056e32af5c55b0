@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2870502e_40cf7e52",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 725,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-06-27T14:45:53Z",
+      "side": 1,
+      "message": "Updated comment, leaving code for now until we are confident that it can be removed cleanly",
+      "parentUuid": "e0594590_2c75e9bb",
+      "range": {
+        "startLine": 725,
+        "startChar": 0,
+        "endLine": 725,
+        "endChar": 65
+      },
+      "revId": "fe3b685e9fcda3d284248044a1056e32af5c55b0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "014e88a3_c9d86a31",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a5921f3d_a84665f1",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 736,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-06-27T14:45:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "014e88a3_c9d86a31",
+      "range": {
+        "startLine": 736,
+        "startChar": 55,
+        "endLine": 736,
+        "endChar": 78
+      },
+      "revId": "fe3b685e9fcda3d284248044a1056e32af5c55b0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9f94469f_90355353",
@@ -60,6 +108,30 @@
       "writtenOn": "2022-06-27T14:25:58Z",
       "side": 1,
       "message": "Maybe add a comment here or in findOrCreateRuntimeSnippet() that we hold on to the to the hash+snippet+shader-entry for the lifetime of the code dictionary since it\u0027s decoupled from the lifetime of the heavy-weight SkRuntimeEffect?",
+      "range": {
+        "startLine": 268,
+        "startChar": 4,
+        "endLine": 268,
+        "endChar": 20
+      },
+      "revId": "fe3b685e9fcda3d284248044a1056e32af5c55b0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fa28fd38_e617c18d",
+        "filename": "src/core/SkShaderCodeDictionary.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 268,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-06-27T14:45:53Z",
+      "side": 1,
+      "message": "Done, added comments explaining rationale/lifetimes",
+      "parentUuid": "9f94469f_90355353",
       "range": {
         "startLine": 268,
         "startChar": 4,
