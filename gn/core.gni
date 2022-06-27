@@ -319,6 +319,7 @@ skia_core_sources = [
   "$_src/core/SkPixmap.cpp",
   "$_src/core/SkPoint.cpp",
   "$_src/core/SkPoint3.cpp",
+  "$_src/core/SkPrecompile.cpp",
   "$_src/core/SkPrecompile.h",
   "$_src/core/SkPromiseImageTexture.cpp",
   "$_src/core/SkPtrRecorder.cpp",
