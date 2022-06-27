@@ -26,6 +26,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "481fb393_f39d91d7",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 13
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-06-27T19:23:42Z",
+      "side": 1,
+      "message": "I meant Atlas memory usage. Of course, I compared the images (and they are reasonably matching).\nHowever, if I set the flag on I have my version of skyline so there is nothing to compare to.\nI can remove this comment if it looks confusing.",
+      "parentUuid": "e1283638_1d739ee6",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 13,
+        "endChar": 161
+      },
+      "revId": "ba53fa1338138d274777cfd99ccbc5ae911e53de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "d95b40ff_a5516c8a",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 13
@@ -64,6 +88,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "05ab925a_e7ea3131",
+        "filename": "src/gpu/RectanizerOptimized.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-06-27T19:23:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "97c4ae46_21ed95db",
+      "range": {
+        "startLine": 15,
+        "startChar": 5,
+        "endLine": 15,
+        "endChar": 33
+      },
+      "revId": "ba53fa1338138d274777cfd99ccbc5ae911e53de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "16095578_d9b0bedf",
@@ -77,6 +125,30 @@
       "writtenOn": "2022-06-27T14:29:12Z",
       "side": 1,
       "message": "Can you explain how this is different from RectanizerSkyline, and why you think it performs better.",
+      "range": {
+        "startLine": 38,
+        "startChar": 0,
+        "endLine": 38,
+        "endChar": 2
+      },
+      "revId": "ba53fa1338138d274777cfd99ccbc5ae911e53de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f8d36e5c_bee84b33",
+        "filename": "src/gpu/RectanizerOptimized.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-06-27T19:23:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "16095578_d9b0bedf",
       "range": {
         "startLine": 38,
         "startChar": 0,
@@ -110,6 +182,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f8ac060d_5948bcfb",
+        "filename": "src/gpu/RectanizerOptimized.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-06-27T19:23:42Z",
+      "side": 1,
+      "message": "I started from that and I didn\u0027t like the amount of changes...\nI made this fix, so you can see for yourself.",
+      "parentUuid": "43ca8bcb_4537d526",
+      "range": {
+        "startLine": 40,
+        "startChar": 34,
+        "endLine": 40,
+        "endChar": 59
+      },
+      "revId": "ba53fa1338138d274777cfd99ccbc5ae911e53de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a3626e3f_b03c13b3",
@@ -123,6 +219,30 @@
       "writtenOn": "2022-06-27T14:29:12Z",
       "side": 1,
       "message": "Since the class is marked final indicates that all methods are final, I would mark this as override. Here and below.",
+      "range": {
+        "startLine": 46,
+        "startChar": 27,
+        "endLine": 46,
+        "endChar": 32
+      },
+      "revId": "ba53fa1338138d274777cfd99ccbc5ae911e53de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7874c695_7a8eb08f",
+        "filename": "src/gpu/RectanizerOptimized.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-06-27T19:23:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a3626e3f_b03c13b3",
       "range": {
         "startLine": 46,
         "startChar": 27,
@@ -156,6 +276,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "58b07748_3feffc73",
+        "filename": "src/gpu/RectanizerOptimized.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-06-27T19:23:42Z",
+      "side": 1,
+      "message": "Yes, it is. This optimization does look better with the next change (optimizing zero padding).",
+      "parentUuid": "cdecc8b4_9f16cc9b",
+      "range": {
+        "startLine": 65,
+        "startChar": 4,
+        "endLine": 65,
+        "endChar": 33
+      },
+      "revId": "ba53fa1338138d274777cfd99ccbc5ae911e53de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "58140e20_b5c088db",
@@ -169,6 +313,30 @@
       "writtenOn": "2022-06-27T14:29:12Z",
       "side": 1,
       "message": "I would leave this final, and not subclass RectanizerOptimzed from this.",
+      "range": {
+        "startLine": 20,
+        "startChar": 6,
+        "endLine": 20,
+        "endChar": 23
+      },
+      "revId": "ba53fa1338138d274777cfd99ccbc5ae911e53de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "eb230b80_2f60325b",
+        "filename": "src/gpu/RectanizerSkyline.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-06-27T19:23:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "58140e20_b5c088db",
       "range": {
         "startLine": 20,
         "startChar": 6,
@@ -202,6 +370,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "adf9cbd8_31f5317a",
+        "filename": "src/gpu/RectanizerSkyline.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-06-27T19:23:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "769f4539_96791138",
+      "range": {
+        "startLine": 43,
+        "startChar": 4,
+        "endLine": 43,
+        "endChar": 61
+      },
+      "revId": "ba53fa1338138d274777cfd99ccbc5ae911e53de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4b825349_b1715d20",
@@ -215,6 +407,30 @@
       "writtenOn": "2022-06-27T14:29:12Z",
       "side": 1,
       "message": "Instead of adding a bunch of _testingOnly code. I would just add\n\nfriend class RectanglizerSkylineTestingPeer;\n\nThis allows you to build a RectanglizerSkylineTestingPeer class to gain full access to the RectanizerSkyline.",
+      "range": {
+        "startLine": 45,
+        "startChar": 3,
+        "endLine": 51,
+        "endChar": 5
+      },
+      "revId": "ba53fa1338138d274777cfd99ccbc5ae911e53de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ce506759_12be5deb",
+        "filename": "src/gpu/RectanizerSkyline.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-06-27T19:23:42Z",
+      "side": 1,
+      "message": "Thank you, that somehow didn\u0027t occur to me. \nThe name is too long for my taste, but I did it as you suggested anyway.",
+      "parentUuid": "4b825349_b1715d20",
       "range": {
         "startLine": 45,
         "startChar": 3,
@@ -248,6 +464,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "33b291f2_5423b731",
+        "filename": "src/gpu/ganesh/GrDrawOpAtlas.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-06-27T19:23:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a1059502_17561c11",
+      "range": {
+        "startLine": 76,
+        "startChar": 51,
+        "endLine": 76,
+        "endChar": 74
+      },
+      "revId": "ba53fa1338138d274777cfd99ccbc5ae911e53de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5d4fd8fb_66cee77c",
@@ -261,6 +501,30 @@
       "writtenOn": "2022-06-27T14:29:12Z",
       "side": 1,
       "message": "Can you change this to an enum.",
+      "range": {
+        "startLine": 86,
+        "startChar": 47,
+        "endLine": 86,
+        "endChar": 78
+      },
+      "revId": "ba53fa1338138d274777cfd99ccbc5ae911e53de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "905101fb_fa48aa4a",
+        "filename": "src/gpu/ganesh/GrDrawOpAtlas.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-06-27T19:23:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5d4fd8fb_66cee77c",
       "range": {
         "startLine": 86,
         "startChar": 47,
