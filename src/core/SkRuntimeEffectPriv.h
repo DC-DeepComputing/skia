@@ -8,8 +8,10 @@
 #ifndef SkRuntimeEffectPriv_DEFINED
 #define SkRuntimeEffectPriv_DEFINED
 
+#include "include/core/SkSpan.h"
 #include "include/effects/SkRuntimeEffect.h"
 #include "include/private/SkColorData.h"
+#include "src/core/SkUniform.h"
 #include "src/core/SkVM.h"
 
 #include <functional>
@@ -33,6 +35,10 @@ public:
 
     static uint32_t Hash(const SkRuntimeEffect& effect) {
         return effect.hash();
+    }
+
+    static SkSpan<const SkUniform> GetSkUniformSpan(const SkRuntimeEffect& effect) {
+        return SkSpan(effect.fSkUniforms);
     }
 
     static SkRuntimeEffect::Options ES3Options() {
