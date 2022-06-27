@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2d8b0f7f_69d3e50b",
+        "filename": "bazel/cc_library_with_flags.bzl",
+        "patchSetId": 3
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2022-06-27T14:58:44Z",
+      "side": 1,
+      "message": "Is the idea that we manage these targets in our repo or that clients make them and use them as needed? Or both... maybe common flags used across many teams can have targets in our BUILD.",
+      "revId": "1c836226e9f177a5c853e19286c0234b9612d115",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
