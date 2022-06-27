@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5b0e541b_edb6824c",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-06-27T22:11:51Z",
+      "side": 0,
+      "message": "I noticed this change effectively gets rid of this assert, is it worth keeping somehow?",
+      "revId": "b17a4843ecaebfedf6b4180ce97e8acdc2aa7a0d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

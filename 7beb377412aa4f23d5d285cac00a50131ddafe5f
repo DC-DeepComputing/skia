@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f6f97424_f6acd3cf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-06-27T22:11:51Z",
+      "side": 1,
+      "message": "Just nits from me. Also, I don\u0027t have strong feelings about it but I wonder if QueueManager is too generic a name? Do we anticipate it being used for queueing other types of things?",
+      "revId": "7beb377412aa4f23d5d285cac00a50131ddafe5f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0f31aaeb_d3e3bb2d",
+        "filename": "src/gpu/graphite/ContextPriv.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-06-27T22:11:51Z",
+      "side": 1,
+      "message": "Was this accidentally left in?",
+      "revId": "7beb377412aa4f23d5d285cac00a50131ddafe5f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9243bce9_688cb565",
+        "filename": "src/gpu/graphite/QueueManager.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-06-27T22:11:51Z",
+      "side": 1,
+      "message": "This isn\u0027t being used yet, should we still include it here now?",
+      "revId": "7beb377412aa4f23d5d285cac00a50131ddafe5f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
