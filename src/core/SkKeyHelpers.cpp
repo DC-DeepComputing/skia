@@ -597,12 +597,15 @@ void RuntimeShaderBlock::BeginBlock(const SkKeyContext& keyContext,
 #ifdef SK_GRAPHITE_ENABLED
             // TODO(skia:13405): add support for child effects
 
-            static constexpr auto kCodeSnippetID = SkBuiltInCodeSnippetID::kRuntimeShader;
+            SkShaderCodeDictionary* dict = keyContext.dict();
+            int codeSnippetID = dict->findOrCreateRuntimeEffectSnippet(shaderData.fEffect.get());
 
             if (gatherer) {
-                [[maybe_unused]] const SkShaderCodeDictionary* dict = keyContext.dict();
-                VALIDATE_UNIFORMS(gatherer, dict, kCodeSnippetID)
-                gatherer->addFlags(dict->getSnippetRequirementFlags(kCodeSnippetID));
+                const SkShaderSnippet* entry = dict->getEntry(codeSnippetID);
+                SkASSERT(entry);
+
+                UniformExpectationsValidator uev(gatherer, entry->fUniforms);
+                gatherer->addFlags(entry->fSnippetRequirementFlags);
 
                 // Pass the local matrix inverse so we can use local coordinates.
                 SkMatrix inverseLocalMatrix;
@@ -617,9 +620,9 @@ void RuntimeShaderBlock::BeginBlock(const SkKeyContext& keyContext,
             uint32_t hash = SkRuntimeEffectPriv::Hash(*shaderData.fEffect);
             uint32_t uniformSize = shaderData.fEffect->uniformSize();
 
-            builder->beginBlock(kCodeSnippetID);
-            builder->addBytes(sizeof(hash), reinterpret_cast<const uint8_t*>(&hash));
-            builder->addBytes(sizeof(uniformSize), reinterpret_cast<const uint8_t*>(&uniformSize));
+            builder->beginBlock(codeSnippetID);
+            builder->addInt(hash);
+            builder->addInt(uniformSize);
 #endif  // SK_GRAPHITE_ENABLED
             break;
         }
