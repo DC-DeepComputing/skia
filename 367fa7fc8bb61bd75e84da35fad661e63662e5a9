@@ -39,6 +39,70 @@
       },
       "revId": "367fa7fc8bb61bd75e84da35fad661e63662e5a9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d3181650_7bdbbe6b",
+        "filename": "src/gpu/graphite/Recorder.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-06-27T20:26:44Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "395939d5_011ca73b",
+      "range": {
+        "startLine": 10,
+        "startChar": 26,
+        "endLine": 10,
+        "endChar": 41
+      },
+      "revId": "367fa7fc8bb61bd75e84da35fad661e63662e5a9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "91aa476f_fb123c37",
+        "filename": "src/gpu/graphite/Recorder.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-06-27T20:26:44Z",
+      "side": 1,
+      "message": "We should reset the fRuntimeEffectMap() after prepareResources() has succeeded. I don\u0027t think we should reset if it fails since there are potentially ways to re-snap and get a valid Recording, in which case the runtime effects need to remain alive until then.",
+      "revId": "367fa7fc8bb61bd75e84da35fad661e63662e5a9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b544b958_48733e5b",
+        "filename": "src/gpu/graphite/RecorderPriv.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-06-27T20:26:44Z",
+      "side": 1,
+      "message": "Not sure on the underlying details, but could it be worth checking if the code snippet ID is already registered? If so, we don\u0027t need to modify the map at all.",
+      "range": {
+        "startLine": 85,
+        "startChar": 4,
+        "endLine": 85,
+        "endChar": 71
+      },
+      "revId": "367fa7fc8bb61bd75e84da35fad661e63662e5a9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
