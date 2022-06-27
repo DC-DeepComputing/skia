@@ -83,23 +83,23 @@ GrMtlBuffer::~GrMtlBuffer() {
     SkASSERT(!fMapPtr);
 }
 
-bool GrMtlBuffer::onUpdateData(const void* src, size_t sizeInBytes) {
+bool GrMtlBuffer::onUpdateData(size_t offset, const void* src, size_t size) {
     if (fIsDynamic) {
         this->internalMap();
         if (!fMapPtr) {
             return false;
         }
-        memcpy(fMapPtr, src, sizeInBytes);
-        this->internalUnmap(0, sizeInBytes);
+        memcpy(SkTAddOffset<void>(fMapPtr, offset), src, size);
+        this->internalUnmap(offset, size);
     } else {
         // copy data to gpu buffer
         GrStagingBufferManager::Slice slice;
         slice = this->mtlGpu()->stagingBufferManager()->allocateStagingBufferSlice(
-                sizeInBytes, this->mtlGpu()->mtlCaps().getMinBufferAlignment());
+                size, this->mtlGpu()->mtlCaps().getMinBufferAlignment());
         if (!slice.fBuffer) {
             return false;
         }
-        memcpy(slice.fOffsetMapPtr, src, sizeInBytes);
+        memcpy(slice.fOffsetMapPtr, src, size);
 
         GrMtlCommandBuffer* cmdBuffer = this->mtlGpu()->commandBuffer();
         id<MTLBlitCommandEncoder> GR_NORETAIN blitCmdEncoder = cmdBuffer->getBlitCommandEncoder();
@@ -111,8 +111,8 @@ bool GrMtlBuffer::onUpdateData(const void* src, size_t sizeInBytes) {
         [blitCmdEncoder copyFromBuffer: transferBuffer
                           sourceOffset: slice.fOffset
                               toBuffer: fMtlBuffer
-                     destinationOffset: 0
-                                  size: sizeInBytes];
+                     destinationOffset: offset
+                                  size: size];
     }
 
     return true;
