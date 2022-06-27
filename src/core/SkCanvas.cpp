@@ -45,7 +45,7 @@
 #include "src/core/SkVerticesPriv.h"
 #include "src/image/SkImage_Base.h"
 #include "src/image/SkSurface_Base.h"
-#include "src/text/GlyphRun.h"
+#include "src/core/GlyphRun.h"
 #include "src/utils/SkPatchUtils.h"
 
 #include <memory>

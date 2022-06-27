@@ -18,6 +18,7 @@
 #include "include/core/SkSurface.h"
 #include "include/core/SkVertices.h"
 #include "src/core/SkDraw.h"
+#include "src/core/SkGlyphRun.h"
 #include "src/core/SkImageFilterCache.h"
 #include "src/core/SkImageFilter_Base.h"
 #include "src/core/SkRasterClip.h"
@@ -25,7 +26,7 @@
 #include "src/core/SkStrikeCache.h"
 #include "src/core/SkTLazy.h"
 #include "src/image/SkImage_Base.h"
-#include "src/text/GlyphRun.h"
+#include "src/text/SkGlyphRun.h"
 
 struct Bounder {
     SkRect  fBounds;
