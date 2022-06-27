@@ -481,6 +481,7 @@ static void set_texture(GrDawnGpu* gpu, GrSamplerState state, GrTexture* texture
     viewDesc.mipLevelCount = GrSamplerState::MipmapMode::kNone == state.mipmapMode()
                                      ? 1
                                      : WGPU_MIP_LEVEL_COUNT_UNDEFINED;
+    viewDesc.arrayLayerCount = 1;
     wgpu::TextureView textureView = tex->texture().CreateView(&viewDesc);
     bindings->push_back(make_bind_group_entry((*binding)++, textureView));
 }

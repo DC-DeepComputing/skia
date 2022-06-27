@@ -516,7 +516,10 @@ GrBackendRenderTarget GrDawnGpu::createTestingOnlyBackendRenderTarget(SkISize di
     wgpu::Texture tex = this->device().CreateTexture(&desc);
 
     GrDawnRenderTargetInfo info;
-    info.fTextureView = tex.CreateView();
+    wgpu::TextureViewDescriptor viewDesc;
+    viewDesc.mipLevelCount = desc.mipLevelCount;
+    viewDesc.arrayLayerCount = 1;
+    info.fTextureView = tex.CreateView(&viewDesc);
     info.fFormat = desc.format;
     info.fLevelCount = desc.mipLevelCount;
 
@@ -788,6 +791,7 @@ bool GrDawnGpu::onRegenerateMipMapLevels(GrTexture* tex) {
     wgpu::BindGroupLayout bgl = pipeline.GetBindGroupLayout(0);
     wgpu::TextureViewDescriptor srcViewDesc;
     srcViewDesc.mipLevelCount = 1;
+    srcViewDesc.arrayLayerCount = 1;
     wgpu::TextureView srcView = src->texture().CreateView(&srcViewDesc);
     wgpu::SamplerDescriptor samplerDesc;
     samplerDesc.minFilter = wgpu::FilterMode::Linear;
@@ -801,6 +805,7 @@ bool GrDawnGpu::onRegenerateMipMapLevels(GrTexture* tex) {
         dstViewDesc.dimension = wgpu::TextureViewDimension::e2D;
         dstViewDesc.baseMipLevel = mipLevel;
         dstViewDesc.mipLevelCount = 1;
+        dstViewDesc.arrayLayerCount = 1;
         wgpu::TextureView dstView = dstTexture.CreateView(&dstViewDesc);
         wgpu::BindGroupEntry bge[2];
         bge[0].binding = 0;
