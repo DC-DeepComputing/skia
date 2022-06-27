@@ -4,13 +4,83 @@
 (function(CanvasKit){
     CanvasKit._extraInitializations = CanvasKit._extraInitializations || [];
     CanvasKit._extraInitializations.push(function() {
-      function get(obj, attr, defaultValue) {
-        if (obj && obj.hasOwnProperty(attr)) {
-          return obj[attr];
+      CanvasKit.MakeGPUDeviceContext = function(device) {
+        if (!device) {
+          return null;
         }
-        return defaultValue;
-      }
 
-      // TODO(skia:12512): Implement WebGPU functionality.
+        // This allows native code to access this device by calling
+        // `emscripten_webgpu_get_device().`
+        CanvasKit.preinitializedWebGPUDevice = device;
+        var context = this._MakeGrContext();
+        context._device = device;
+
+        return context;
+      };
+
+      CanvasKit.MakeGPUCanvasContext = function(devCtx, canvas, opts) {
+        var canvasCtx = canvas.getContext('webgpu');
+        if (!canvasCtx) {
+          return null;
+        }
+
+        let format = (opts && opts.format) ? opts.format : navigator.gpu.getPreferredCanvasFormat();
+        // GPUCanvasConfiguration
+        canvasCtx.configure({
+            device: devCtx._device,
+            format: format,
+            alphaMode: (opts && opts.alphaMode) ? opts.alphaMode : undefined,
+        });
+
+        var context = {
+          '_deviceContext': devCtx,
+          '_canvasContext': canvasCtx,
+          '_textureFormat': format,
+        };
+        context['requestAnimationFrame'] =  function(callback) {
+          requestAnimationFrame(function() {
+            const surface = CanvasKit.MakeGPUCanvasSurface(context);
+            if (!surface) {
+              console.error('Failed to initialize Surface for current canvas swapchain texture');
+              return;
+            }
+            callback(surface.getCanvas());
+            surface.flush();
+            surface.dispose();
+          });
+        };
+        return context;
+      };
+
+      CanvasKit.MakeGPUCanvasSurface = function(canvasCtx, colorSpace, width, height) {
+        let context = canvasCtx._canvasContext;
+        if (!width) {
+            width = context.canvas.width;
+        }
+        if (!height) {
+            height = context.canvas.height;
+        }
+        return this.MakeGPUTextureSurface(canvasCtx._deviceContext,
+                                          context.getCurrentTexture(),
+                                          canvasCtx._textureFormat,
+                                          width, height, colorSpace);
+      };
+
+      CanvasKit.MakeGPUTextureSurface = function (devCtx, texture, textureFormat, width, height, colorSpace) {
+          colorSpace = colorSpace || null;
+
+          // JsValStore and WebGPU are objects in Emscripten's library_html5_webgpu.js utility
+          // library. JsValStore allows a WebGPU object to be imported by native code by calling the
+          // various `emscripten_webgpu_import_*` functions.
+          //
+          // The CanvasKit WASM module is responsible for removing entries from the value store by calling
+          // `emscripten_webgpu_release_js_handle` after importing the object.
+          return this._MakeGPUTextureSurface(
+              devCtx,
+              this.JsValStore.add(texture),
+              this.WebGPU.TextureFormat.indexOf(textureFormat),
+              width, height,
+              colorSpace);
+      };
     });
 }(Module));  // When this file is loaded in, the high level object is "Module".
