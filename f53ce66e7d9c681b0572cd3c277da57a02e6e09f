@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "daba1516_855d10ce",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-06-27T21:25:44Z",
+      "side": 1,
+      "message": "Thinking it through some more, I guess we don\u0027t have a mechanism to free SkShaderSnippets either, so this limitation just comes with the territory. I\u0027ll give it a shot.",
+      "parentUuid": "f3126170_e33faa75",
+      "revId": "f53ce66e7d9c681b0572cd3c277da57a02e6e09f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d6bb1787_fc9b91c5",
         "filename": "src/core/SkRuntimeEffect.cpp",
         "patchSetId": 6
