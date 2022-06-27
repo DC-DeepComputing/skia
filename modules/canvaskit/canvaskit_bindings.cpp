@@ -63,6 +63,8 @@
 #include <emscripten/bind.h>
 #include <emscripten/html5.h>
 
+#include <sanitizer/lsan_interface.h>
+
 #if defined(CK_ENABLE_WEBGL) || defined(CK_ENABLE_WEBGPU)
 #define ENABLE_GPU
 #endif
@@ -867,6 +869,7 @@ sk_sp<SkImage> MakeImageFromGenerator(SimpleImageInfo ii, JSObject callbackObj) 
 #endif // CK_ENABLE_WEBGL
 
 EMSCRIPTEN_BINDINGS(Skia) {
+    function("doLeakCheck", &__lsan_do_leak_check);
 #ifdef ENABLE_GPU
     constant("gpu", true);
     function("_MakeGrContext", &MakeGrContext);
