@@ -16,6 +16,7 @@ namespace skgpu::graphite {
 
 class Caps;
 class GlobalCache;
+class QueueManager;
 class ResourceProvider;
 
 /** Class that adds methods to Context that are only intended for use internal to Skia.
