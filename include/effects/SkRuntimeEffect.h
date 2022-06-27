@@ -29,6 +29,7 @@ class GrRecordingContext;
 class SkFilterColorProgram;
 class SkImage;
 class SkRuntimeImageFilter;
+class SkUniform;
 
 namespace SkSL {
 class DebugTrace;
@@ -318,6 +319,7 @@ private:
     std::vector<SkSL::SampleUsage> fSampleUsages;
 
     std::unique_ptr<SkFilterColorProgram> fFilterColorProgram;
+    std::vector<SkUniform> fSkUniforms;
 
     uint32_t fFlags;  // Flags
 };
