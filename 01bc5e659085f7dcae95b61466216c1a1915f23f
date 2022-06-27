@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2d228158_c1085bff",
+        "filename": "tests/PaintTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-06-27T20:51:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "600edab4_2b19a110",
+      "range": {
+        "startLine": 99,
+        "startChar": 67,
+        "endLine": 99,
+        "endChar": 72
+      },
+      "revId": "01bc5e659085f7dcae95b61466216c1a1915f23f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fc3aeea5_cdebcd20",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5c071540_b65e3c34",
+        "filename": "tests/PolyUtilsTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 421,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-06-27T20:51:31Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "fc3aeea5_cdebcd20",
+      "range": {
+        "startLine": 417,
+        "startChar": 0,
+        "endLine": 421,
+        "endChar": 2
+      },
+      "revId": "01bc5e659085f7dcae95b61466216c1a1915f23f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5446f27f_25403e87",
@@ -60,6 +108,30 @@
       "writtenOn": "2022-06-27T20:03:19Z",
       "side": 1,
       "message": "...and this is a very bad SkMakeSpan",
+      "range": {
+        "startLine": 424,
+        "startChar": 0,
+        "endLine": 424,
+        "endChar": 53
+      },
+      "revId": "01bc5e659085f7dcae95b61466216c1a1915f23f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e15dba83_9f07b4e7",
+        "filename": "tests/PolyUtilsTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 424,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-06-27T20:51:31Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "5446f27f_25403e87",
       "range": {
         "startLine": 424,
         "startChar": 0,
