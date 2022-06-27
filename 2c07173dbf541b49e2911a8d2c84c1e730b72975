@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "aa46ef33_9b2802d7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2022-06-27T14:23:05Z",
+      "side": 1,
+      "message": "Let\u0027s try a canary run before landing.",
+      "revId": "2c07173dbf541b49e2911a8d2c84c1e730b72975",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
