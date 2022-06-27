@@ -145,6 +145,30 @@
       },
       "revId": "367fa7fc8bb61bd75e84da35fad661e63662e5a9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e6d9b91b_b5138330",
+        "filename": "src/gpu/graphite/RecorderPriv.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-06-27T20:38:09Z",
+      "side": 1,
+      "message": "yeah, it\u0027s definitely a good assert. I was semi-concerned about the cost of doing lots of redundant memory writes, since my expectation is either a given runtime effect is used once (in which case find+set doesn\u0027t amount to much vs. set-only) or we see the effect a lot (in which case many finds + 1 set could be faster than many sets?).\n\nWould be nice if there were an addIfNotExists() or if we had APIs like the new Node-based ones that let find return pointers to the internal data structures so you can do sets after the fact if you\u0027d want.  But I\u0027m pre-emptively optimizing, so lets leave it as this.",
+      "parentUuid": "26a2701c_a537a5eb",
+      "range": {
+        "startLine": 85,
+        "startChar": 4,
+        "endLine": 85,
+        "endChar": 71
+      },
+      "revId": "367fa7fc8bb61bd75e84da35fad661e63662e5a9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
