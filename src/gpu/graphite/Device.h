@@ -196,7 +196,6 @@ private:
 
     // Handles primitive processing for atlas-based text
     void drawAtlasSubRun(const sktext::gpu::AtlasSubRun*,
-                         const SkMatrix& viewMatrix,
                          SkPoint drawOrigin,
                          const SkPaint& paint,
                          sk_sp<SkRefCnt> subRunStorage);
