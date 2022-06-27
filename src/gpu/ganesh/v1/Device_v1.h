@@ -220,7 +220,7 @@ private:
     const GrClip* clip() const { return &fClip; }
 #if defined(SK_EXPERIMENTAL_SIMULATE_DRAWGLYPHRUNLIST_WITH_SLUG)
     void testingOnly_drawGlyphRunListWithSlug(SkCanvas* canvas,
-                                              const SkGlyphRunList& glyphRunList,
+                                              const sktext::GlyphRunList& glyphRunList,
                                               const SkPaint& initialPaint,
                                               const SkPaint& drawingPaint);
 #endif
