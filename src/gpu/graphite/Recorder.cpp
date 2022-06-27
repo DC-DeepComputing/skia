@@ -7,6 +7,7 @@
 
 #include "include/gpu/graphite/Recorder.h"
 
+#include "include/effects/SkRuntimeEffect.h"
 #include "include/gpu/graphite/Recording.h"
 #include "src/core/SkPipelineData.h"
 #include "src/gpu/AtlasTypes.h"
