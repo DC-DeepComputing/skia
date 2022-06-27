@@ -29,6 +29,7 @@ class GrRecordingContext;
 class SkFilterColorProgram;
 class SkImage;
 class SkRuntimeImageFilter;
+class SkUniform;
 
 namespace SkSL {
 class DebugTrace;
@@ -274,6 +275,7 @@ private:
                     std::vector<Uniform>&& uniforms,
                     std::vector<Child>&& children,
                     std::vector<SkSL::SampleUsage>&& sampleUsages,
+                    std::vector<SkUniform>&& skUniforms,
                     uint32_t flags);
 
     sk_sp<SkRuntimeEffect> makeUnoptimizedClone();
@@ -318,6 +320,7 @@ private:
     std::vector<SkSL::SampleUsage> fSampleUsages;
 
     std::unique_ptr<SkFilterColorProgram> fFilterColorProgram;
+    std::vector<SkUniform> fSkUniforms;
 
     uint32_t fFlags;  // Flags
 };

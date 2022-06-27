@@ -25,6 +25,7 @@
 #include "src/core/SkRasterPipeline.h"
 #include "src/core/SkReadBuffer.h"
 #include "src/core/SkRuntimeEffectPriv.h"
+#include "src/core/SkUniform.h"
 #include "src/core/SkUtils.h"
 #include "src/core/SkVM.h"
 #include "src/core/SkWriteBuffer.h"
@@ -320,6 +321,24 @@ SkRuntimeEffect::Result SkRuntimeEffect::MakeFromSource(SkString sksl,
     return MakeInternal(std::move(program), options, kind);
 }
 
+static SkSLType uniform_type_to_sksl_type(SkRuntimeEffect::Uniform::Type type) {
+    using Type = SkRuntimeEffect::Uniform::Type;
+    switch (type) {
+        case Type::kFloat:    return SkSLType::kFloat;
+        case Type::kFloat2:   return SkSLType::kFloat2;
+        case Type::kFloat3:   return SkSLType::kFloat3;
+        case Type::kFloat4:   return SkSLType::kFloat4;
+        case Type::kFloat2x2: return SkSLType::kFloat2x2;
+        case Type::kFloat3x3: return SkSLType::kFloat3x3;
+        case Type::kFloat4x4: return SkSLType::kFloat4x4;
+        case Type::kInt:      return SkSLType::kInt;
+        case Type::kInt2:     return SkSLType::kInt2;
+        case Type::kInt3:     return SkSLType::kInt3;
+        case Type::kInt4:     return SkSLType::kInt4;
+    }
+    SkUNREACHABLE;
+}
+
 SkRuntimeEffect::Result SkRuntimeEffect::MakeInternal(std::unique_ptr<SkSL::Program> program,
                                                       const Options& options,
                                                       SkSL::ProgramKind kind) {
@@ -414,6 +433,16 @@ SkRuntimeEffect::Result SkRuntimeEffect::MakeInternal(std::unique_ptr<SkSL::Prog
         }
     }
 
+    // Convert the Uniform vector to a matching vector of SkUniform (for Graphite support).
+    std::vector<SkUniform> skUniforms;
+    skUniforms.reserve(uniforms.size());
+    for (const Uniform& u : uniforms) {
+        SkSLType type = uniform_type_to_sksl_type(u.type);
+        skUniforms.push_back((u.flags & Uniform::kArray_Flag)
+                                     ? SkUniform(u.name.c_str(), type, u.count)
+                                     : SkUniform(u.name.c_str(), type));
+    }
+
     // If the sample coords are never written to, then we will have converted sample calls that use
     // them unmodified into "passthrough" sampling. If all references to the sample coords were of
     // that form, then we don't actually "use" sample coords. We unset the flag to prevent creating
@@ -430,6 +459,7 @@ SkRuntimeEffect::Result SkRuntimeEffect::MakeInternal(std::unique_ptr<SkSL::Prog
                                                       std::move(uniforms),
                                                       std::move(children),
                                                       std::move(sampleUsages),
+                                                      std::move(skUniforms),
                                                       flags));
     return Result{std::move(effect), SkString()};
 }
@@ -570,6 +600,7 @@ SkRuntimeEffect::SkRuntimeEffect(std::unique_ptr<SkSL::Program> baseProgram,
                                  std::vector<Uniform>&& uniforms,
                                  std::vector<Child>&& children,
                                  std::vector<SkSL::SampleUsage>&& sampleUsages,
+                                 std::vector<SkUniform>&& skUniforms,
                                  uint32_t flags)
         : fHash(SkOpts::hash_fn(baseProgram->fSource->c_str(), baseProgram->fSource->size(), 0))
         , fBaseProgram(std::move(baseProgram))
@@ -577,6 +608,7 @@ SkRuntimeEffect::SkRuntimeEffect(std::unique_ptr<SkSL::Program> baseProgram,
         , fUniforms(std::move(uniforms))
         , fChildren(std::move(children))
         , fSampleUsages(std::move(sampleUsages))
+        , fSkUniforms(std::move(skUniforms))
         , fFlags(flags) {
     SkASSERT(fBaseProgram);
     SkASSERT(fChildren.size() == fSampleUsages.size());
