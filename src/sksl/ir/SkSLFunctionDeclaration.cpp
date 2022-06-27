@@ -95,8 +95,8 @@ static bool check_parameters(const Context& context,
 
     // Check modifiers on each function parameter.
     for (auto& param : parameters) {
-        param->modifiers().checkPermitted(context, param->modifiersPosition(),
-                Modifiers::kConst_Flag | Modifiers::kIn_Flag | Modifiers::kOut_Flag,
+        int permitted = Modifiers::kConst_Flag | Modifiers::kIn_Flag | Modifiers::kOut_Flag;
+        param->modifiers().checkPermitted(context, param->modifiersPosition(), permitted,
                 /*permittedLayoutFlags=*/0);
         const Type& type = param->type();
         // Only the (builtin) declarations of 'sample' are allowed to have shader/colorFilter or FP
