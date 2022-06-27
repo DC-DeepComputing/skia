@@ -47,6 +47,54 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5bda6566_90eec892",
+        "filename": "include/core/SkSpan.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-06-27T20:03:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "331ee1ed_dcde80ac",
+      "range": {
+        "startLine": 36,
+        "startChar": 22,
+        "endLine": 36,
+        "endChar": 30
+      },
+      "revId": "b51ec00f7ed776d18f701e3f4bcab76bd8bd52d7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "de8ad8f1_296dc906",
+        "filename": "include/core/SkSpan.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-06-27T20:03:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e4ef24f2_a6f1cd29",
+      "range": {
+        "startLine": 36,
+        "startChar": 3,
+        "endLine": 36,
+        "endChar": 9
+      },
+      "revId": "b51ec00f7ed776d18f701e3f4bcab76bd8bd52d7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "71729a4e_363628c2",
@@ -60,6 +108,30 @@
       "writtenOn": "2022-06-27T19:53:50Z",
       "side": 1,
       "message": "auto routine \u003d [\u0026](SkSpan\u003cconst int\u003e a) {\n     REPORTER_ASSERT(reporter, a.size() \u003d\u003d 3);\n };\n \n?",
+      "range": {
+        "startLine": 67,
+        "startChar": 4,
+        "endLine": 67,
+        "endChar": 46
+      },
+      "revId": "b51ec00f7ed776d18f701e3f4bcab76bd8bd52d7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6150760b_772778ca",
+        "filename": "tests/SkSpanTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-06-27T20:03:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "71729a4e_363628c2",
       "range": {
         "startLine": 67,
         "startChar": 4,
