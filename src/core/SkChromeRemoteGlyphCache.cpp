@@ -31,7 +31,6 @@
 #include "src/core/SkTLazy.h"
 #include "src/core/SkTraceEvent.h"
 #include "src/core/SkTypeface_remote.h"
-#include "src/text/GlyphRun.h"
 
 #if SK_SUPPORT_GPU
 #include "include/gpu/GrContextOptions.h"
@@ -770,7 +769,7 @@ public:
 
 protected:
     void onDrawGlyphRunList(SkCanvas*,
-                            const sktext::GlyphRunList& glyphRunList,
+                            const SkGlyphRunList& glyphRunList,
                             const SkPaint& initialPaint,
                             const SkPaint& drawingPaint) override {
         SkMatrix drawMatrix = this->localToDevice();
@@ -787,7 +786,7 @@ protected:
                                      "Cache Diff");
     }
 
-    sk_sp<sktext::gpu::Slug> convertGlyphRunListToSlug(const sktext::GlyphRunList& glyphRunList,
+    sk_sp<sktext::gpu::Slug> convertGlyphRunListToSlug(const SkGlyphRunList& glyphRunList,
                                                        const SkPaint& initialPaint,
                                                        const SkPaint& drawingPaint) override {
         // Full matrix for placing glyphs.
