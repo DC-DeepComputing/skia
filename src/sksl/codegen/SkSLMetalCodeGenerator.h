@@ -95,6 +95,9 @@ protected:
     class GlobalStructVisitor;
     void visitGlobalStruct(GlobalStructVisitor* visitor);
 
+    class ThreadgroupStructVisitor;
+    void visitThreadgroupStruct(ThreadgroupStructVisitor* visitor);
+
     void write(std::string_view s);
 
     void writeLine(std::string_view s = std::string_view());
@@ -123,6 +126,10 @@ protected:
     void writeGlobalStruct();
 
     void writeGlobalInit();
+
+    void writeThreadgroupStruct();
+
+    void writeThreadgroupInit();
 
     void writePrecisionModifier();
 
