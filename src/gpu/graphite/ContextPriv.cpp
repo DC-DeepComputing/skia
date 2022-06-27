@@ -20,6 +20,10 @@ const Gpu* ContextPriv::gpu() const {
     return fContext->fGpu.get();
 }
 
+QueueManager* ContextPriv::queueManager() const {
+    return fContext->fQueueManager.get();
+}
+
 SkShaderCodeDictionary* ContextPriv::shaderCodeDictionary() {
     return fContext->fGlobalCache->shaderCodeDictionary();
 }

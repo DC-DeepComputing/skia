@@ -16,6 +16,7 @@ namespace skgpu::graphite {
 
 class GlobalCache;
 class Gpu;
+class QueueManager;
 class ResourceProvider;
 
 /** Class that adds methods to Context that are only intended for use internal to Skia.
@@ -27,6 +28,11 @@ public:
     const Gpu* gpu() const;
 
     SkShaderCodeDictionary* shaderCodeDictionary();
+
+#if GRAPHITE_TEST_UTILS
+    // TODO: Remove this getter when CommandBufferTest goes away.
+    QueueManager* queueManager() const;
+#endif
 
 private:
     friend class Context; // to construct/copy this type.

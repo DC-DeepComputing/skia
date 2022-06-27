@@ -26,6 +26,7 @@
 #include "src/gpu/graphite/Gpu.h"
 #include "src/gpu/graphite/GraphicsPipeline.h"
 #include "src/gpu/graphite/PaintParams.h"
+#include "src/gpu/graphite/QueueManager.h"
 #include "src/gpu/graphite/RecorderPriv.h"
 #include "src/gpu/graphite/Renderer.h"
 #include "src/gpu/graphite/ResourceProvider.h"
@@ -391,10 +392,13 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(CommandBufferTest, reporter, context) {
     SkIRect srcRect = { 0, 0, kTextureWidth, kTextureHeight };
     commandBuffer->copyTextureToBuffer(target->refTexture(), srcRect, copyBuffer, 0, rowBytes);
 
-    bool result = gpu->submit(commandBuffer);
+    auto queueManager = context->priv().queueManager();
+
+    queueManager->setCurrentCommandBuffer(commandBuffer);
+    bool result = queueManager->submitToGpu();
     REPORTER_ASSERT(reporter, result);
 
-    gpu->checkForFinishedWork(SyncToCpu::kYes);
+    queueManager->checkForFinishedWork(SyncToCpu::kYes);
     uint32_t* pixels = (uint32_t*)(copyBuffer->map());
     REPORTER_ASSERT(reporter, pixels[0] == 0xffff0000);
     REPORTER_ASSERT(reporter, pixels[51 + 38*kTextureWidth] == 0xff00ffff);
