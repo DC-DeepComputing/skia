@@ -69,6 +69,7 @@ struct GrDawnRenderTargetInfo {
         wgpu::TextureViewDescriptor desc;
         desc.format = texInfo.fFormat;
         desc.mipLevelCount = 1;
+        desc.arrayLayerCount = 1;
         fTextureView = texInfo.fTexture.CreateView(&desc);
     }
     GrDawnRenderTargetInfo& operator=(const GrDawnRenderTargetInfo& other) {

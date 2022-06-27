@@ -44,7 +44,9 @@ sk_sp<GrDawnAttachment> GrDawnAttachment::MakeStencil(GrDawnGpu* gpu,
     if (!texture) {
         return nullptr;
     }
-    wgpu::TextureView view = texture.CreateView();
+    wgpu::TextureViewDescriptor viewDesc;
+    viewDesc.arrayLayerCount = 1;
+    wgpu::TextureView view = texture.CreateView(&viewDesc);
     if (!view) {
         return nullptr;
     }
