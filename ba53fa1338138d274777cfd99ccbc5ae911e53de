@@ -1,6 +1,29 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "e1283638_1d739ee6",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 13
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-06-27T14:29:12Z",
+      "side": 1,
+      "message": "I don\u0027t understand this. Don\u0027t you compare the current naive version vs your change with the flag set in both?",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 13,
+        "endChar": 161
+      },
+      "revId": "ba53fa1338138d274777cfd99ccbc5ae911e53de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "d95b40ff_a5516c8a",
@@ -14,6 +37,236 @@
       "writtenOn": "2022-06-23T20:46:14Z",
       "side": 1,
       "message": "Adding Jim, who probably ought to review this as well.",
+      "revId": "ba53fa1338138d274777cfd99ccbc5ae911e53de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "97c4ae46_21ed95db",
+        "filename": "src/gpu/RectanizerOptimized.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-06-27T14:29:12Z",
+      "side": 1,
+      "message": "Add an explanation about how this works.",
+      "range": {
+        "startLine": 15,
+        "startChar": 5,
+        "endLine": 15,
+        "endChar": 33
+      },
+      "revId": "ba53fa1338138d274777cfd99ccbc5ae911e53de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "16095578_d9b0bedf",
+        "filename": "src/gpu/RectanizerOptimized.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-06-27T14:29:12Z",
+      "side": 1,
+      "message": "Can you explain how this is different from RectanizerSkyline, and why you think it performs better.",
+      "range": {
+        "startLine": 38,
+        "startChar": 0,
+        "endLine": 38,
+        "endChar": 2
+      },
+      "revId": "ba53fa1338138d274777cfd99ccbc5ae911e53de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "43ca8bcb_4537d526",
+        "filename": "src/gpu/RectanizerOptimized.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-06-27T14:29:12Z",
+      "side": 1,
+      "message": "I would not subclass this from RectanizerSkyline. I would just subclass Rectanizer.",
+      "range": {
+        "startLine": 40,
+        "startChar": 34,
+        "endLine": 40,
+        "endChar": 59
+      },
+      "revId": "ba53fa1338138d274777cfd99ccbc5ae911e53de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a3626e3f_b03c13b3",
+        "filename": "src/gpu/RectanizerOptimized.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-06-27T14:29:12Z",
+      "side": 1,
+      "message": "Since the class is marked final indicates that all methods are final, I would mark this as override. Here and below.",
+      "range": {
+        "startLine": 46,
+        "startChar": 27,
+        "endLine": 46,
+        "endChar": 32
+      },
+      "revId": "ba53fa1338138d274777cfd99ccbc5ae911e53de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cdecc8b4_9f16cc9b",
+        "filename": "src/gpu/RectanizerOptimized.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-06-27T14:29:12Z",
+      "side": 1,
+      "message": "Is there a profile value for every x value in width?",
+      "range": {
+        "startLine": 65,
+        "startChar": 4,
+        "endLine": 65,
+        "endChar": 33
+      },
+      "revId": "ba53fa1338138d274777cfd99ccbc5ae911e53de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "58140e20_b5c088db",
+        "filename": "src/gpu/RectanizerSkyline.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-06-27T14:29:12Z",
+      "side": 1,
+      "message": "I would leave this final, and not subclass RectanizerOptimzed from this.",
+      "range": {
+        "startLine": 20,
+        "startChar": 6,
+        "endLine": 20,
+        "endChar": 23
+      },
+      "revId": "ba53fa1338138d274777cfd99ccbc5ae911e53de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "769f4539_96791138",
+        "filename": "src/gpu/RectanizerSkyline.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-06-27T14:29:12Z",
+      "side": 1,
+      "message": "I would move this to Rectanizer, and make it pure virtual.",
+      "range": {
+        "startLine": 43,
+        "startChar": 4,
+        "endLine": 43,
+        "endChar": 61
+      },
+      "revId": "ba53fa1338138d274777cfd99ccbc5ae911e53de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4b825349_b1715d20",
+        "filename": "src/gpu/RectanizerSkyline.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-06-27T14:29:12Z",
+      "side": 1,
+      "message": "Instead of adding a bunch of _testingOnly code. I would just add\n\nfriend class RectanglizerSkylineTestingPeer;\n\nThis allows you to build a RectanglizerSkylineTestingPeer class to gain full access to the RectanizerSkyline.",
+      "range": {
+        "startLine": 45,
+        "startChar": 3,
+        "endLine": 51,
+        "endChar": 5
+      },
+      "revId": "ba53fa1338138d274777cfd99ccbc5ae911e53de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a1059502_17561c11",
+        "filename": "src/gpu/ganesh/GrDrawOpAtlas.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-06-27T14:29:12Z",
+      "side": 1,
+      "message": "Can you make this an enum?\nHere and below.",
+      "range": {
+        "startLine": 76,
+        "startChar": 51,
+        "endLine": 76,
+        "endChar": 74
+      },
+      "revId": "ba53fa1338138d274777cfd99ccbc5ae911e53de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5d4fd8fb_66cee77c",
+        "filename": "src/gpu/ganesh/GrDrawOpAtlas.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-06-27T14:29:12Z",
+      "side": 1,
+      "message": "Can you change this to an enum.",
+      "range": {
+        "startLine": 86,
+        "startChar": 47,
+        "endLine": 86,
+        "endChar": 78
+      },
       "revId": "ba53fa1338138d274777cfd99ccbc5ae911e53de",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
