@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ff91319a_1e8edb8e",
+        "filename": "src/core/SkFactoryFunctions.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 198,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-06-27T19:06:30Z",
+      "side": 1,
+      "message": "Done - TODOs have been updated.",
+      "parentUuid": "04268653_b29fa764",
+      "revId": "de989ddfcf6e02ceecb3ec94852a9675ba408510",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ea6cb1c9_88b3a4de",
@@ -54,6 +72,24 @@
       "writtenOn": "2022-06-21T20:45:28Z",
       "side": 1,
       "message": "Doesn\u0027t really matter, because these are just random code snippets for a unit test, but it\u0027s funny that these all return invalid premul (or out-of-gamut) colors.",
+      "revId": "de989ddfcf6e02ceecb3ec94852a9675ba408510",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "42b53d37_7172df43",
+        "filename": "tests/graphite/CombinationBuilderTest.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-06-27T19:06:30Z",
+      "side": 1,
+      "message": "Done - made them premul",
+      "parentUuid": "5ca43e52_ed01cb3e",
       "revId": "de989ddfcf6e02ceecb3ec94852a9675ba408510",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
