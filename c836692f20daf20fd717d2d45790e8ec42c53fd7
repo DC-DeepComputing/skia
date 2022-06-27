@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "daa5d6bb_0185cfe1",
+        "filename": "tests/PolyUtilsTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 446,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-06-27T21:39:15Z",
+      "side": 0,
+      "message": "This code was strange.\n\n  if (IsPolyConvex(pts)) {\n     ASSERT(!IsPolyConvex(pts));\n  }\n  \nI took away the outer `if`.",
+      "range": {
+        "startLine": 444,
+        "startChar": 6,
+        "endLine": 446,
+        "endChar": 9
+      },
+      "revId": "c836692f20daf20fd717d2d45790e8ec42c53fd7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
