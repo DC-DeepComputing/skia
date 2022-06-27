@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "118c610d_cb1bac51",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-06-27T20:47:14Z",
+      "side": 1,
+      "message": "I also just realized an issue with the just-landed implementation of findOrCreateRuntimeEffectSnippet(). The shader snippets just remember the span of uniforms, since they have up-to-now assumed that the uniforms were globally declared so their lifetime is always valid. \n\nIf we are relying on the SkRuntimeEffect to keep the SkUniform span alive, and we\u0027re never cleaning up the runtime snippets in the shader code dictionary, we\u0027ll run into issues if the runtime effect goes away and then later comes back.\n\nWould it make more sense to have findOrCreateRuntimeEffect handle converting the runtime Uniform type to SkUniforms that it allocates in the shader code dictionary\u0027s arena?",
+      "revId": "f53ce66e7d9c681b0572cd3c277da57a02e6e09f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d6bb1787_fc9b91c5",
+        "filename": "src/core/SkRuntimeEffect.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 444,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-06-27T20:47:14Z",
+      "side": 1,
+      "message": "should this be done inside the SkRuntimeEffect constructor instead of taking two \"uniform\" args that need to be equivalent?",
+      "range": {
+        "startLine": 437,
+        "startChar": 4,
+        "endLine": 444,
+        "endChar": 5
+      },
+      "revId": "f53ce66e7d9c681b0572cd3c277da57a02e6e09f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
