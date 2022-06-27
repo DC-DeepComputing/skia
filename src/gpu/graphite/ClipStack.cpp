@@ -1097,6 +1097,7 @@ std::pair<Clip, CompressedPaintersOrder> ClipStack::applyClipToDraw(
     } else {
         // The geometry is something special like text or vertices, in which case it's definitely
         // not a shape that could simplify cleanly with the clip stack.
+        // TODO: not sure what to do here -- writable() is asserting
         styledShape.writable()->setRect(geometry.bounds());
     }
 
