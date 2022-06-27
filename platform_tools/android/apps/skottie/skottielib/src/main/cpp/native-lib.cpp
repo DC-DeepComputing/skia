@@ -13,6 +13,7 @@
 #include "include/core/SkStream.h"
 #include "include/core/SkSurface.h"
 #include "include/core/SkTime.h"
+#include "modules/skresources/include/SkResources.h"
 #include <jni.h>
 #include <math.h>
 #include <string>
@@ -150,7 +151,11 @@ Java_org_skia_skottie_SkottieAnimation_nCreateProxy(JNIEnv *env,
     skottieAnimation->mRunner = skottieRunner;
     skottieAnimation->mStream = std::move(stream);
 
-    skottieAnimation->mAnimation = skottie::Animation::Make(skottieAnimation->mStream.get());
+    auto rp = skresources::DataURIResourceProviderProxy::Make(nullptr);
+
+    skottieAnimation->mAnimation = skottie::Animation::Builder()
+        .setResourceProvider(rp)
+        .make(skottieAnimation->mStream.get());
     skottieAnimation->mTimeBase  = 0.0f; // force a time reset
     skottieAnimation->mDuration = 1000 * skottieAnimation->mAnimation->duration();
 
