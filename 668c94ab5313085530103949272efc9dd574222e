@@ -16,6 +16,24 @@
       "message": "Please fix bots",
       "revId": "668c94ab5313085530103949272efc9dd574222e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5f27d3cf_1540db1b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-06-28T14:05:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d74af848_a9e95ab3",
+      "revId": "668c94ab5313085530103949272efc9dd574222e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
