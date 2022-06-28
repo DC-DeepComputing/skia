@@ -36,6 +36,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b78ba587_be6ff9ff",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-06-28T18:05:31Z",
+      "side": 1,
+      "message": "OK that makes sense; QueueManager sgtm in that context.",
+      "parentUuid": "a7fdbeb5_3a29b059",
+      "revId": "7beb377412aa4f23d5d285cac00a50131ddafe5f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0f31aaeb_d3e3bb2d",
@@ -102,6 +120,24 @@
       "side": 1,
       "message": "I mostly wanted to get the whole API/interface for this QueueManager put up in this change to get feedback on it. This function will start getting called in 2 CLs from now (which has already be written). So it won\u0027t stay unused for long.",
       "parentUuid": "9243bce9_688cb565",
+      "revId": "7beb377412aa4f23d5d285cac00a50131ddafe5f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f23804a9_ab3bf6a0",
+        "filename": "src/gpu/graphite/QueueManager.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-06-28T18:05:31Z",
+      "side": 1,
+      "message": "Sounds good",
+      "parentUuid": "69e1d2e9_a79c61eb",
       "revId": "7beb377412aa4f23d5d285cac00a50131ddafe5f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
