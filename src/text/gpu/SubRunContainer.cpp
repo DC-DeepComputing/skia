@@ -32,6 +32,7 @@ using AtlasTextOp = skgpu::v1::AtlasTextOp;
 
 #ifdef SK_GRAPHITE_ENABLED
 #include "src/gpu/graphite/Device.h"
+#include "src/gpu/graphite/Renderer.h"
 #endif
 
 #include <cinttypes>
@@ -56,6 +57,7 @@ using namespace sktext::gpu;
 #if defined(SK_GRAPHITE_ENABLED)
 using Device = skgpu::graphite::Device;
 using Recorder = skgpu::graphite::Recorder;
+using Renderer = skgpu::graphite::Renderer;
 #endif
 
 namespace {
@@ -1148,7 +1150,10 @@ public:
     std::tuple<bool, int>
     regenerateAtlas(int begin, int end, Recorder*) const override;
 
-    SkRect bounds() const override { return fGlyphDeviceBounds.rect(); }
+    std::tuple<SkRect, SkM44> boundsAndDeviceMatrix(const SkMatrix& ctm,
+                                                    SkPoint drawOrigin) const override;
+
+    const Renderer* renderer() const override { return &Renderer::TextDirect(fMaskFormat); }
 #endif
 
     bool canReuse(const SkPaint& paint, const SkMatrix& positionMatrix) const override;
@@ -1535,6 +1540,35 @@ std::tuple<bool, int> DirectMaskSubRun::regenerateAtlas(int begin, int end,
                                                         Recorder* recorder) const {
     return fGlyphs.regenerateAtlas(begin, end, fMaskFormat, 0, recorder);
 }
+
+std::tuple<SkRect, SkM44> DirectMaskSubRun::boundsAndDeviceMatrix(const SkMatrix& ctm,
+                                                                  SkPoint drawOrigin) const {
+    SkMatrix positionMatrix = ctm;
+    positionMatrix.preTranslate(drawOrigin.x(), drawOrigin.y());
+    const SkMatrix& initialMatrix = fInitialPositionMatrix;
+    const SkPoint offset = positionMatrix.mapOrigin() - initialMatrix.mapOrigin();
+
+    const bool compatibleMatrix = positionMatrix[0] == initialMatrix[0] &&
+                                  positionMatrix[1] == initialMatrix[1] &&
+                                  positionMatrix[3] == initialMatrix[3] &&
+                                  positionMatrix[4] == initialMatrix[4] &&
+                                  !positionMatrix.hasPerspective() &&
+                                  !initialMatrix.hasPerspective();
+
+    if (compatibleMatrix && SkScalarIsInt(offset.x()) && SkScalarIsInt(offset.y())) {
+        // Handle the integer offset case.
+        // The offset should be integer, but make sure.
+        SkM44 translate;
+        translate.preTranslate(SkScalarRoundToInt(offset.x()), SkScalarRoundToInt(offset.y()));
+        return {fGlyphDeviceBounds.rect(), translate};
+    } else if (SkMatrix inverse; fInitialPositionMatrix.invert(&inverse)) {
+        SkMatrix viewDifference = SkMatrix::Concat(positionMatrix, inverse);
+        return {fGlyphDeviceBounds.rect(), SkM44(viewDifference)};
+    }
+
+    // initialPositionMatrix is singular. Do nothing.
+    return {SkRect::MakeEmpty(), SkM44()};
+}
 #endif
 
 // true if only need to translate by integer amount, device rect.
@@ -1607,8 +1641,6 @@ public:
               const SkPaint&,
               sk_sp<SkRefCnt> subRunStorage,
               Device*) const override;
-
-    SkRect bounds() const override { return fVertexFiller.localRect(); }
 #endif
 
     int unflattenSize() const override;
@@ -1632,6 +1664,13 @@ public:
 #endif  // SK_SUPPORT_GPU
 #if defined(SK_GRAPHITE_ENABLED)
     std::tuple<bool, int> regenerateAtlas(int begin, int end, Recorder*) const override;
+
+    std::tuple<SkRect, SkM44> boundsAndDeviceMatrix(const SkMatrix& ctm,
+                                                    SkPoint drawOrigin) const override;
+
+    const Renderer* renderer() const override {
+        return &Renderer::TextDirect(fVertexFiller.grMaskType());
+    }
 #endif
 
     int glyphCount() const override;
@@ -1802,6 +1841,13 @@ std::tuple<bool, int> TransformedMaskSubRun::regenerateAtlas(int begin, int end,
                                                              Recorder* recorder) const {
     return fGlyphs.regenerateAtlas(begin, end, fVertexFiller.grMaskType(), 1, recorder);
 }
+
+std::tuple<SkRect, SkM44> TransformedMaskSubRun::boundsAndDeviceMatrix(const SkMatrix& ctm,
+                                                                       SkPoint drawOrigin) const {
+    SkM44 positionMatrix(ctm);
+    positionMatrix.preTranslate(drawOrigin.x(), drawOrigin.y());
+    return {fVertexFiller.localRect(), positionMatrix};
+}
 #endif
 
 int TransformedMaskSubRun::glyphCount() const {
@@ -1859,8 +1905,6 @@ public:
               const SkPaint&,
               sk_sp<SkRefCnt> subRunStorage,
               Device*) const override;
-
-    SkRect bounds() const override { return fVertexFiller.localRect(); }
 #endif
 
     int unflattenSize() const override;
@@ -1884,6 +1928,11 @@ public:
 #endif  // SK_SUPPORT_GPU
 #if defined(SK_GRAPHITE_ENABLED)
     std::tuple<bool, int> regenerateAtlas(int begin, int end, Recorder*) const override;
+
+    std::tuple<SkRect, SkM44> boundsAndDeviceMatrix(const SkMatrix& ctm,
+                                                    SkPoint drawOrigin) const override;
+
+    const Renderer* renderer() const override { return &Renderer::TextSDF(fUseLCDText); }
 #endif
 
     int glyphCount() const override;
@@ -2116,6 +2165,13 @@ std::tuple<bool, int>
 SDFTSubRun::regenerateAtlas(int begin, int end, Recorder *recorder) const {
     return fGlyphs.regenerateAtlas(begin, end, MaskFormat::kA8, SK_DistanceFieldInset,
                                    recorder);
+}
+
+std::tuple<SkRect, SkM44> SDFTSubRun::boundsAndDeviceMatrix(const SkMatrix& ctm,
+                                                            SkPoint drawOrigin) const {
+    SkM44 positionMatrix(ctm);
+    positionMatrix.preTranslate(drawOrigin.x(), drawOrigin.y());
+    return {fVertexFiller.localRect(), positionMatrix};
 }
 #endif
 
