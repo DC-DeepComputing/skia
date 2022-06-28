@@ -39,6 +39,30 @@
       },
       "revId": "efb629c228a1359196bdb6e2d18d60ea080b0a3d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a5e575e0_6854f5b8",
+        "filename": "src/gpu/ganesh/d3d/GrD3DBuffer.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 197,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-06-28T20:35:04Z",
+      "side": 1,
+      "message": "Good point. I had already forgotten myself and had to look it up again. Done.",
+      "parentUuid": "2d97a103_5f0ae11b",
+      "range": {
+        "startLine": 197,
+        "startChar": 57,
+        "endLine": 197,
+        "endChar": 63
+      },
+      "revId": "efb629c228a1359196bdb6e2d18d60ea080b0a3d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
