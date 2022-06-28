@@ -8,6 +8,10 @@
 #ifndef SkCombinationBuilder_DEFINED
 #define SkCombinationBuilder_DEFINED
 
+#include "include/core/SkTypes.h"
+
+#ifdef SK_ENABLE_PRECOMPILE
+
 #include <functional>
 #include <memory>
 #include <vector>
@@ -186,5 +190,7 @@ private:
 
     SkDEBUGCODE(int fEpoch = 0;)
 };
+
+#endif // SK_ENABLE_PRECOMPILE
 
 #endif // SkCombinationBuilder_DEFINED
