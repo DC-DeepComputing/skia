@@ -16,6 +16,29 @@
       "message": "I still need to add a repro test similar to https://jsfiddle.skia.org/canvaskit/11c85ce8ad92b95e20c1246a6a51adce3c6b498cd8400e30a42a7b28b97175b7 but I think this should be setting and unsetting the option correctly.",
       "revId": "2f2f8feca5526495e6868105e2acff79fed0d914",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2f0fe3c9_ae760818",
+        "filename": "modules/canvaskit/webgl.js",
+        "patchSetId": 1
+      },
+      "lineNbr": 203,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-06-28T20:43:14Z",
+      "side": 1,
+      "message": "Do we know that the raw data here is always going to be unpremul? If so then this is fine but we should probably comment here that it is assumed the src data will be unpremul but the client is expected premul so we set this flag to do the premul on upload.\n\nIf the raw src data is not always going to be unpremul then this will break things in the case that it is already premul as it will be done twice.",
+      "range": {
+        "startLine": 203,
+        "startChar": 10,
+        "endLine": 203,
+        "endChar": 68
+      },
+      "revId": "2f2f8feca5526495e6868105e2acff79fed0d914",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
