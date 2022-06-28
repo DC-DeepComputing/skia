@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1709ede2_69c6a298",
+        "filename": "modules/canvaskit/webgpu.js",
+        "patchSetId": 2
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-06-28T17:36:55Z",
+      "side": 1,
+      "message": "nit: s/texture/Surface/",
+      "range": {
+        "startLine": 93,
+        "startChar": 48,
+        "endLine": 93,
+        "endChar": 55
+      },
+      "revId": "41188bbb51c1e6e3e0d617df3f5dee9853027b79",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
