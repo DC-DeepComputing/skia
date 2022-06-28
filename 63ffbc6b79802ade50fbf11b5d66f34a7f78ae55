@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "02edca4e_b6cc5b8a",
+        "filename": "modules/canvaskit/canvaskit_bindings.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 256,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-06-28T03:16:00Z",
+      "side": 1,
+      "message": "kjlubick@: This is the native side for importing a WebGPU object into WASM.",
+      "range": {
+        "startLine": 255,
+        "startChar": 4,
+        "endLine": 256,
+        "endChar": 55
+      },
+      "revId": "63ffbc6b79802ade50fbf11b5d66f34a7f78ae55",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "776d81bc_cbc4cdb5",
+        "filename": "modules/canvaskit/canvaskit_bindings.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 268,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-06-28T03:16:00Z",
+      "side": 1,
+      "message": "Is there a particular advantage to using `MakeFromBackendRenderTarget` here instead of `MakeFromBackendTexture`? Since I structured this API to operate over any texture, perhaps the latter is more suitable but I don\u0027t know if there is a practical difference.\n\nbsalomon@: I experimented with `MakeFromBackendTexture` and `SkSurface::replaceBackendTexture` and the latter provides an approach to avoid creating a new Surface for every frame. I built a working prototype for `Surface.requestAnimationFrame` that is built around this and it can be a familiar alternative for `WebGPUCanvasContext.requestAnimationFrame` that I added.\n\nThis doesn\u0027t free the client from being careful about dealing with swapchain textures but it keeps the API for rendering multiple frames to one canvas similar to WebGL/SW versions.",
+      "range": {
+        "startLine": 268,
+        "startChar": 22,
+        "endLine": 268,
+        "endChar": 49
+      },
+      "revId": "63ffbc6b79802ade50fbf11b5d66f34a7f78ae55",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2144e8eb_2b05b49f",
+        "filename": "modules/canvaskit/webgpu.js",
+        "patchSetId": 1
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-06-28T03:16:00Z",
+      "side": 1,
+      "message": "kjlubick@: This is the JS side for importing a WebGPU object into WASM.",
+      "range": {
+        "startLine": 80,
+        "startChar": 14,
+        "endLine": 80,
+        "endChar": 43
+      },
+      "revId": "63ffbc6b79802ade50fbf11b5d66f34a7f78ae55",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
