@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "09f9df62_efac30b8",
+        "filename": "src/gpu/RectanizerOptimized.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-06-28T20:26:56Z",
+      "side": 1,
+      "message": "If you make currLoc \u003d (0, fProfile[0]), can you simplify the loop so you don\u0027t need the currLoc.fY \u003d\u003d -1 restart logic?",
+      "range": {
+        "startLine": 25,
+        "startChar": 4,
+        "endLine": 25,
+        "endChar": 50
+      },
+      "revId": "90234311356f11687764f515af1f8f27c1559d47",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "18364e1d_ecfe34f8",
+        "filename": "src/gpu/RectanizerOptimized.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-06-28T20:26:56Z",
+      "side": 1,
+      "message": "Should this be for (int16_t x \u003d 0; x \u003c\u003d this-\u003ewidth - width; ++x)?",
+      "range": {
+        "startLine": 27,
+        "startChar": 9,
+        "endLine": 27,
+        "endChar": 49
+      },
+      "revId": "90234311356f11687764f515af1f8f27c1559d47",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

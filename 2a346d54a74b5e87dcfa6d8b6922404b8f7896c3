@@ -142,6 +142,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cefbe5aa_339e8f81",
+        "filename": "src/gpu/RectanglizerSkylineTestingPeer.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-06-28T20:26:56Z",
+      "side": 1,
+      "message": "This looks the same. The file is still here.",
+      "parentUuid": "053ef393_a5281fe8",
+      "range": {
+        "startLine": 18,
+        "startChar": 6,
+        "endLine": 18,
+        "endChar": 34
+      },
+      "revId": "2a346d54a74b5e87dcfa6d8b6922404b8f7896c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3262b05e_29e50d6a",
@@ -189,6 +213,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "12219051_1ba377ab",
+        "filename": "src/gpu/RectanglizerSkylineTestingPeer.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-06-28T20:26:56Z",
+      "side": 1,
+      "message": "This looks the same.",
+      "parentUuid": "cbc82c86_36491761",
+      "range": {
+        "startLine": 20,
+        "startChar": 0,
+        "endLine": 42,
+        "endChar": 5
+      },
+      "revId": "2a346d54a74b5e87dcfa6d8b6922404b8f7896c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c31c1994_b8c4c38b",
@@ -226,6 +274,30 @@
       "side": 1,
       "message": "First y, then x, so it\u0027s going to be (100, 10). In that sense RectanizerSkyline does the same.\nI actually tried few heuristics (min x, min y or just min(x+y)). All of them shows worser results.",
       "parentUuid": "c31c1994_b8c4c38b",
+      "range": {
+        "startLine": 16,
+        "startChar": 28,
+        "endLine": 16,
+        "endChar": 74
+      },
+      "revId": "2a346d54a74b5e87dcfa6d8b6922404b8f7896c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "11007c4e_18b14a1e",
+        "filename": "src/gpu/RectanizerOptimized.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-06-28T20:26:56Z",
+      "side": 1,
+      "message": "Can you change the comment to explain this?",
+      "parentUuid": "5bf0142e_dbcba81a",
       "range": {
         "startLine": 16,
         "startChar": 28,
