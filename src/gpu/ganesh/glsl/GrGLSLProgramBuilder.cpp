@@ -29,7 +29,14 @@ GrGLSLProgramBuilder::GrGLSLProgramBuilder(const GrProgramDesc& desc,
         : fVS(this)
         , fFS(this)
         , fDesc(desc)
-        , fProgramInfo(programInfo)
+        , fProgramInfo(&programInfo)
+        , fNumFragmentSamplers(0) {}
+
+GrGLSLProgramBuilder::GrGLSLProgramBuilder(const GrProgramDesc& desc)
+        : fVS(this)
+        , fFS(this)
+        , fDesc(desc)
+        , fProgramInfo(nullptr)
         , fNumFragmentSamplers(0) {}
 
 GrGLSLProgramBuilder::~GrGLSLProgramBuilder() = default;
@@ -45,7 +52,7 @@ void GrGLSLProgramBuilder::addFeature(GrShaderFlags shaders,
     }
 }
 
-bool GrGLSLProgramBuilder::emitAndInstallProcs() {
+bool GrGLSLProgramBuilder::emitAndInstallRenderProcs() {
     // First we loop over all of the installed processors and collect coord transforms.  These will
     // be sent to the ProgramImpl in its emitCode function
     SkSL::dsl::Start(this->shaderCompiler());

@@ -44,4 +44,36 @@ private:
     mutable id<MTLRenderPipelineState> fPipelineState;
 };
 
+/**
+ * Wraps a MTLComputePipelineState object
+ */
+class GrMtlComputePipeline : public GrManagedResource {
+public:
+    static sk_sp<GrMtlComputePipeline> Make(id<MTLComputePipelineState> pso) {
+        return sk_sp<GrMtlComputePipeline>(new GrMtlComputePipeline(pso));
+    }
+#ifdef SK_TRACE_MANAGED_RESOURCES
+    /** output a human-readable dump of this resource's information
+     */
+    void dumpInfo() const override {
+        SkDebugf("GrMtlComputePipeline: %p (%ld refs)\n", fPipelineState,
+                 CFGetRetainCount((CFTypeRef)fPipelineState));
+    }
+#endif
+
+    void freeGPUData() const override {
+        fPipelineState = nil;
+    }
+
+    id<MTLComputePipelineState> mtlPipelineState() const { return fPipelineState; }
+
+private:
+    GrMtlComputePipeline(id<MTLComputePipelineState> pso)
+        : GrManagedResource()
+        , fPipelineState(pso) {
+    }
+
+    mutable id<MTLComputePipelineState> fPipelineState;
+};
+
 #endif

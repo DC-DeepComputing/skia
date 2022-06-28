@@ -81,7 +81,7 @@ public:
     uint64_t computeFormatKey(const GrBackendFormat&) const override;
 
     GrProgramDesc makeDesc(GrRenderTarget*,
-                           const GrProgramInfo&,
+                           const GrProgramInfo*,
                            ProgramDescOverrideFlags) const override;
     MTLPixelFormat getStencilPixelFormat(const GrProgramDesc& desc);
 

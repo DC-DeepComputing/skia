@@ -270,8 +270,9 @@ enum class GrTextureType {
 enum GrShaderType {
     kVertex_GrShaderType,
     kFragment_GrShaderType,
+    kCompute_GrShaderType,
 
-    kLastkFragment_GrShaderType = kFragment_GrShaderType
+    kLastkFragment_GrShaderType = kCompute_GrShaderType
 };
 static const int kGrShaderTypeCount = kLastkFragment_GrShaderType + 1;
 
