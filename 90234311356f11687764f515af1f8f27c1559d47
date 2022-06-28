@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b8145abb_6c3673e0",
+        "filename": "src/gpu/RectanizerOptimized.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-06-28T20:42:24Z",
+      "side": 1,
+      "message": "I probably can. Let\u0027s see if it\u0027s going to look better...",
+      "parentUuid": "09f9df62_efac30b8",
+      "range": {
+        "startLine": 25,
+        "startChar": 4,
+        "endLine": 25,
+        "endChar": 50
+      },
+      "revId": "90234311356f11687764f515af1f8f27c1559d47",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "18364e1d_ecfe34f8",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-06-28T20:26:56Z",
       "side": 1,
       "message": "Should this be for (int16_t x \u003d 0; x \u003c\u003d this-\u003ewidth - width; ++x)?",
+      "range": {
+        "startLine": 27,
+        "startChar": 9,
+        "endLine": 27,
+        "endChar": 49
+      },
+      "revId": "90234311356f11687764f515af1f8f27c1559d47",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6434ed77_ef4b9502",
+        "filename": "src/gpu/RectanizerOptimized.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-06-28T20:42:24Z",
+      "side": 1,
+      "message": "I am looking for a range [curLoc.fX:x) so the x is actually the right side and can reach this-\u003ewidth().",
+      "parentUuid": "18364e1d_ecfe34f8",
       "range": {
         "startLine": 27,
         "startChar": 9,
