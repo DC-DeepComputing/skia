@@ -16,6 +16,52 @@
       "message": "Replaces http://review.skia.org/553358",
       "revId": "4df3e635b2ecc182db53cbeb3068ca72ab755d2c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7af202ad_f94530b0",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 748,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-06-28T17:58:15Z",
+      "side": 1,
+      "message": "This is actually only needed by the GenerateDefaultGlueCode\u0027s handling of local matrices and the local matrix shader. When we have a GenerateRuntimeGlueCode, we can probably skip that, unless local matrix runtime effects also inline a local matrix (like how gradients and texture shaders do).\n\nCurrently, PaintParams automatically adds a matrix uniform to handle the inverse of the local-to-device transform. It uses that to calculate the local coords for the root effect. That being said, this area is very much in flux and the current solution is mostly a \"get-something-working\" and the eventual plan will be closer to how we can lift local coords to varyings like we do in Ganesh.",
+      "range": {
+        "startLine": 745,
+        "startChar": 9,
+        "endLine": 748,
+        "endChar": 9
+      },
+      "revId": "4df3e635b2ecc182db53cbeb3068ca72ab755d2c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3b394edd_40402340",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 756,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-06-28T17:58:15Z",
+      "side": 1,
+      "message": "That\u0027s slick, I\u0027d not realized we could keep the string copying inline, but since makeInitializedArray creates the block of memory for all items before any initializer, this is nicer than what I\u0027d come up with.",
+      "range": {
+        "startLine": 754,
+        "startChar": 8,
+        "endLine": 756,
+        "endChar": 70
+      },
+      "revId": "4df3e635b2ecc182db53cbeb3068ca72ab755d2c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
