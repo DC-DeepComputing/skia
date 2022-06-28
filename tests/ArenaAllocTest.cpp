@@ -30,6 +30,7 @@ DEF_TEST(ArenaAlloc, r) {
         char buf[10];
     };
 
+    // Check construction/destruction counts from SkArenaAlloc.
     created = 0;
     destroyed = 0;
     {
@@ -50,11 +51,17 @@ DEF_TEST(ArenaAlloc, r) {
         REPORTER_ASSERT(r, fooArray[4].y == -3.0f);
         REPORTER_ASSERT(r, created == 11);
         REPORTER_ASSERT(r, destroyed == 0);
+
+        arena.makeUninitializedArray<Foo>(7);
+        REPORTER_ASSERT(r, created == 11);
+        REPORTER_ASSERT(r, destroyed == 0);
+
         arena.make<OddAlignment>();
     }
     REPORTER_ASSERT(r, created == 11);
-    REPORTER_ASSERT(r, destroyed == 11);
+    REPORTER_ASSERT(r, destroyed == 18);
 
+    // Check construction/destruction counts from SkSTArenaAlloc.
     created = 0;
     destroyed = 0;
     {
@@ -75,11 +82,17 @@ DEF_TEST(ArenaAlloc, r) {
         REPORTER_ASSERT(r, fooArray[4].y == -3.0f);
         REPORTER_ASSERT(r, created == 11);
         REPORTER_ASSERT(r, destroyed == 0);
+
+        arena.makeUninitializedArray<Foo>(7);
+        REPORTER_ASSERT(r, created == 11);
+        REPORTER_ASSERT(r, destroyed == 0);
+
         arena.make<OddAlignment>();
     }
     REPORTER_ASSERT(r, created == 11);
-    REPORTER_ASSERT(r, destroyed == 11);
+    REPORTER_ASSERT(r, destroyed == 18);
 
+    // Check construction/destruction counts from SkArenaAlloc when passed an initial block.
     created = 0;
     destroyed = 0;
     {
@@ -101,21 +114,28 @@ DEF_TEST(ArenaAlloc, r) {
         REPORTER_ASSERT(r, fooArray[4].y == -3.0f);
         REPORTER_ASSERT(r, created == 11);
         REPORTER_ASSERT(r, destroyed == 0);
+
+        arena.makeUninitializedArray<Foo>(7);
+        REPORTER_ASSERT(r, created == 11);
+        REPORTER_ASSERT(r, destroyed == 0);
+
         arena.make<OddAlignment>();
     }
     REPORTER_ASSERT(r, created == 11);
-    REPORTER_ASSERT(r, destroyed == 11);
+    REPORTER_ASSERT(r, destroyed == 18);
+}
 
-    {
-        SkSTArenaAllocWithReset<64> arena;
-        arena.makeArrayDefault<char>(256);
-        arena.reset();
-        arena.reset();
-    }
+DEF_TEST(ArenaAllocReset, r) {
+    SkSTArenaAllocWithReset<64> arena;
+    arena.makeArrayDefault<char>(256);
+    arena.reset();
+    arena.reset();
+}
 
+DEF_TEST(ArenaAllocWithMultipleBlocks, r) {
     // Make sure that multiple blocks are handled correctly.
-    created = 0;
-    destroyed = 0;
+    static int created = 0,
+               destroyed = 0;
     {
         struct Node {
             Node(Node* n) : next(n) { created++; }
@@ -132,11 +152,13 @@ DEF_TEST(ArenaAlloc, r) {
     }
     REPORTER_ASSERT(r, created == 128);
     REPORTER_ASSERT(r, destroyed == 128);
+}
 
+DEF_TEST(ArenaAllocDestructionOrder, r) {
     // Make sure that objects and blocks are destroyed in the correct order. If they are not,
     // then there will be a use after free error in asan.
-    created = 0;
-    destroyed = 0;
+    static int created = 0,
+               destroyed = 0;
     {
         struct Node {
             Node(Node* n) : next(n) { created++; }
@@ -167,15 +189,15 @@ DEF_TEST(ArenaAlloc, r) {
             REPORTER_ASSERT(r, a[i] == (int)i);
         }
     }
+}
 
-    {
-        SkArenaAlloc arena(4096);
-        // Move to a 1 character boundary.
-        arena.make<char>();
-        // Allocate something with interesting alignment.
-        void* ptr = arena.makeBytesAlignedTo(4081, 8);
-        REPORTER_ASSERT(r, ((intptr_t)ptr & 7) == 0);
-    }
+DEF_TEST(ArenaAllocUnusualAlignment, r) {
+    SkArenaAlloc arena(4096);
+    // Move to a 1 character boundary.
+    arena.make<char>();
+    // Allocate something with interesting alignment.
+    void* ptr = arena.makeBytesAlignedTo(4081, 8);
+    REPORTER_ASSERT(r, ((intptr_t)ptr & 7) == 0);
 }
 
 DEF_TEST(SkFibBlockSizes, r) {
