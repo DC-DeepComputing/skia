@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0364cc7b_00c0a899",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-06-28T17:55:30Z",
+      "side": 1,
+      "message": "Greg for the code parts\nEric for the job parts",
+      "revId": "88f573c9e7efdd7f8328df4d882c3fb25592a155",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
