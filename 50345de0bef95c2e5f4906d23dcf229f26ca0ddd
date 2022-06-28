@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c7e696ed_b3e54bd8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 15399
+      },
+      "writtenOn": "2022-06-28T12:01:36Z",
+      "side": 1,
+      "message": "Hey Brian! Lemme know if I\u0027m on the right track here. Also, I didn\u0027t see anywhere where the getColor functions were unitttested, did I miss something obvious?",
+      "revId": "50345de0bef95c2e5f4906d23dcf229f26ca0ddd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

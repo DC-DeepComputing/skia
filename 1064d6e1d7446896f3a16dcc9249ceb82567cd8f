@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d021fe5f_b92cf2d4",
+        "filename": "src/core/SkPixmap.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 490,
+      "author": {
+        "id": 15399
+      },
+      "writtenOn": "2022-06-28T12:01:36Z",
+      "side": 1,
+      "message": "For the premultiplied formats, they all seem to have precision \u003c SkColor4f so I just used the same process as the getColor method above and then cast to a float color. Not sure if this is correct.",
+      "revId": "1064d6e1d7446896f3a16dcc9249ceb82567cd8f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
