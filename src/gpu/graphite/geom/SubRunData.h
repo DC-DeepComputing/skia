@@ -57,7 +57,7 @@ public:
     Rect bounds() const { return fBounds; }
 
     // Access the individual elements of the subrun data.
-    const sktext::gpu::AtlasSubRun* subRun() { return fSubRun; }
+    const sktext::gpu::AtlasSubRun* subRun() const { return fSubRun; }
 
 private:
     const sktext::gpu::AtlasSubRun* fSubRun;
