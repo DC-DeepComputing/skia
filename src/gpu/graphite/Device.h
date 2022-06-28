@@ -172,11 +172,6 @@ private:
         // - drawPaint, drawImageLattice, drawImageRect, drawEdgeAAImageSet, drawVertices, drawAtlas
         // - drawShape after it's applied the path effect.
         kIgnorePathEffect = 0b010,
-
-        // Use an identity transform instead of localToDevice().
-        // TODO: This is currently only used to hack in support for perspective, we should remove it
-        // if no additional use cases arise once perspective is handled on the GPU.
-        kIgnoreTransform  = 0b100,
     };
     SK_DECL_BITMASK_OPS_FRIENDS(DrawFlags);
 
@@ -186,6 +181,7 @@ private:
     // Ignores geometric style on the paint in favor of explicitly provided SkStrokeRec and flags.
     // All overridden SkDevice::draw() functions should bottom-out with calls to drawGeometry().
     void drawGeometry(const Geometry&,
+                      const Transform&,
                       const SkPaint&,
                       const SkStrokeRec&,
                       SkEnumBitMask<DrawFlags> = DrawFlags::kNone);
