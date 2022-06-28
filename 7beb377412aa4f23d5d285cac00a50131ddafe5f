@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a7fdbeb5_3a29b059",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-06-28T17:53:22Z",
+      "side": 1,
+      "message": "So on these modern APIs we typically use Queue to mean the actual linear queue of work that the GPU hardware is executing commands on. In Vulkan and Dawn there are actual Queue objects that we are submitting command buffers to. So Queue has just become the name for referring to this type of thing. I\u0027m happy to go with a different name for this class if we thing something else makes more sense though.",
+      "parentUuid": "f6f97424_f6acd3cf",
+      "revId": "7beb377412aa4f23d5d285cac00a50131ddafe5f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0f31aaeb_d3e3bb2d",
         "filename": "src/gpu/graphite/ContextPriv.h",
         "patchSetId": 7
@@ -31,6 +49,24 @@
       "writtenOn": "2022-06-27T22:11:51Z",
       "side": 1,
       "message": "Was this accidentally left in?",
+      "revId": "7beb377412aa4f23d5d285cac00a50131ddafe5f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3414ed3d_bc558819",
+        "filename": "src/gpu/graphite/ContextPriv.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-06-28T17:53:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0f31aaeb_d3e3bb2d",
       "revId": "7beb377412aa4f23d5d285cac00a50131ddafe5f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -48,6 +84,24 @@
       "writtenOn": "2022-06-27T22:11:51Z",
       "side": 1,
       "message": "This isn\u0027t being used yet, should we still include it here now?",
+      "revId": "7beb377412aa4f23d5d285cac00a50131ddafe5f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "69e1d2e9_a79c61eb",
+        "filename": "src/gpu/graphite/QueueManager.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-06-28T17:53:22Z",
+      "side": 1,
+      "message": "I mostly wanted to get the whole API/interface for this QueueManager put up in this change to get feedback on it. This function will start getting called in 2 CLs from now (which has already be written). So it won\u0027t stay unused for long.",
+      "parentUuid": "9243bce9_688cb565",
       "revId": "7beb377412aa4f23d5d285cac00a50131ddafe5f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
