@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5f97d858_561881b6",
+        "filename": "modules/canvaskit/canvaskit_bindings.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 256,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-06-28T13:00:58Z",
+      "side": 1,
+      "message": "Implemented here in JS\nhttps://github.com/emscripten-core/emscripten/blob/0e63f74f36b06849ef1c777b130783a43316ade0/src/library_html5_webgpu.js#L83",
+      "parentUuid": "02edca4e_b6cc5b8a",
+      "range": {
+        "startLine": 255,
+        "startChar": 4,
+        "endLine": 256,
+        "endChar": 55
+      },
+      "revId": "63ffbc6b79802ade50fbf11b5d66f34a7f78ae55",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "776d81bc_cbc4cdb5",
@@ -60,6 +84,30 @@
       "writtenOn": "2022-06-28T03:16:00Z",
       "side": 1,
       "message": "kjlubick@: This is the JS side for importing a WebGPU object into WASM.",
+      "range": {
+        "startLine": 80,
+        "startChar": 14,
+        "endLine": 80,
+        "endChar": 43
+      },
+      "revId": "63ffbc6b79802ade50fbf11b5d66f34a7f78ae55",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "266c3aa5_94816ac2",
+        "filename": "modules/canvaskit/webgpu.js",
+        "patchSetId": 1
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-06-28T13:00:58Z",
+      "side": 1,
+      "message": "Thanks for pointing that out. It might be handy to link directly to https://github.com/emscripten-core/emscripten/blob/0e63f74f36b06849ef1c777b130783a43316ade0/src/library_html5_webgpu.js#L25 for reference.",
+      "parentUuid": "2144e8eb_2b05b49f",
       "range": {
         "startLine": 80,
         "startChar": 14,
