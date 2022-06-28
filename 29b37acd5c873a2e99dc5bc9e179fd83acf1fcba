@@ -142,6 +142,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d0353d1a_8b3c0e42",
+        "filename": "src/gpu/graphite/geom/Geometry.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-06-28T19:08:00Z",
+      "side": 1,
+      "message": "Resolved offline. The bounds will reflect the data, and a Transform will be generated to transform those bounds to device space.",
+      "parentUuid": "7bbf462f_81ee9fb7",
+      "range": {
+        "startLine": 87,
+        "startChar": 16,
+        "endLine": 88,
+        "endChar": 60
+      },
+      "revId": "29b37acd5c873a2e99dc5bc9e179fd83acf1fcba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "059024c4_362e411a",
