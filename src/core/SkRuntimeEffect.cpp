@@ -65,6 +65,7 @@ static bool init_uniform_type(const SkSL::Context& ctx,
                               const SkSL::Type* type,
                               SkRuntimeEffect::Uniform* v) {
     using Type = SkRuntimeEffect::Uniform::Type;
+
     if (type->matches(*ctx.fTypes.fFloat))    { v->type = Type::kFloat;    return true; }
     if (type->matches(*ctx.fTypes.fHalf))     { v->type = Type::kFloat;    return true; }
     if (type->matches(*ctx.fTypes.fFloat2))   { v->type = Type::kFloat2;   return true; }
@@ -103,6 +104,10 @@ SkRuntimeEffect::Uniform SkRuntimeEffectPriv::VarAsUniform(const SkSL::Variable&
         uni.flags |= Uniform::kArray_Flag;
         uni.count = type->columns();
         type = &type->componentType();
+    }
+
+    if (type->hasPrecision() && !type->highPrecision()) {
+        uni.flags |= Uniform::kHalfPrecision_Flag;
     }
 
     SkAssertResult(init_uniform_type(context, type, &uni));
