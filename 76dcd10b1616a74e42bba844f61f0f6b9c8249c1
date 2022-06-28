@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4e146830_1fcf0239",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2022-06-28T15:09:07Z",
+      "side": 1,
+      "message": "It seems that the main difference between the two is warning suppression. (-I assumes you own the code, -isystem assumes you don\u0027t so it suppresses warnings in there). As long as our builds don\u0027t become too noisy, LGTM.",
+      "revId": "76dcd10b1616a74e42bba844f61f0f6b9c8249c1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
