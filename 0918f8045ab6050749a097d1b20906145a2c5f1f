@@ -34,6 +34,24 @@
       "parentUuid": "17e50185_49824111",
       "revId": "0918f8045ab6050749a097d1b20906145a2c5f1f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d23b12bc_bfe5e9e7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-06-28T15:47:46Z",
+      "side": 1,
+      "message": "In this particular case, we have to also copy the SkString into the arena of the code dictionary, since SkUniform only holds const char*.\n\nI would imagine when we are converting the runtime uniforms to the SkUniforms, we first have a loop along the lines of:\n\n   std::vector\u003cconst char*\u003e savedNames;\n   for (auto u : runtimeEffect-\u003euniforms()) {\n       savedNames.push_back(codeDict-\u003earena.make(u.name()).c_str());\n   }\n   codeDict-\u003earena.makeInitializedArray(runtimeEffect-\u003euniforms().size(), [](int index) {\n      return SkUniform(runtimeEffect-\u003euniforms()[i].type, ..., savedNames[i]);\n   });",
+      "parentUuid": "d758a608_aa955b9a",
+      "revId": "0918f8045ab6050749a097d1b20906145a2c5f1f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
