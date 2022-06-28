@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6ac6e4cd_94584fae",
+        "filename": "src/gpu/graphite/ClipStack.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1100,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-06-28T13:36:39Z",
+      "side": 1,
+      "message": "It turns out init() takes a pointer to the passed in object, so it expects it to be long-lived. In this case, we just want to initialize the writable instance within the SkTCopyOnFirstWrite, and it looks like the way to do that is with the `initIfNeeded` function that lets you pass in args that are forwarded to the Shape constructor to use.\n\nFor this, it\u0027d be `styledShape.initIfNeeded(geometry.bounds())`",
+      "range": {
+        "startLine": 1100,
+        "startChar": 8,
+        "endLine": 1100,
+        "endChar": 51
+      },
+      "revId": "6e9a212962debfb5fa7c66e85d4f691dae449ce0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5d4916b7_88b71baa",
+        "filename": "src/gpu/graphite/render/StencilAndFillPathRenderer.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-06-28T13:36:39Z",
+      "side": 1,
+      "message": "Since these are statically declared in the `Vertices` function, they are only going to be initialized once, with whatever `primitiveType` was set on that first SkVertices object.\n\nWhat we would do instead is have 3 RenderSteps and 3 Renderers:\n\n   static const VerticesRenderStep kTrianglesStep{kTriangles_VertexMode};\n   static const Renderer kTriangleVerticesRenderer{\"Vertices[triangles]\", \u0026kTrianglesStep};\n   // repeat for kTrianglesStrp and kTriangleFan.\n   \nThen inside your switch over `vertices-\u003epriv().mode()`, you just return the appropriate renderer.",
+      "range": {
+        "startLine": 129,
+        "startChar": 4,
+        "endLine": 130,
+        "endChar": 68
+      },
+      "revId": "6e9a212962debfb5fa7c66e85d4f691dae449ce0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "847abd4e_6fad82cb",
+        "filename": "src/gpu/graphite/render/VerticesRenderStep.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-06-28T13:36:39Z",
+      "side": 1,
+      "message": "RenderSteps are meant to be stateless, so we don\u0027t make a new one for each thing we\u0027re drawing. Instead, the specific draw data is passed into `writeVertices` and `writeUniforms` in the DrawParams struct. So in this case, we should be able to get to the SkVertices by calling `drawParams.geom().vertices()` within those functions.",
+      "range": {
+        "startLine": 26,
+        "startChar": 4,
+        "endLine": 26,
+        "endChar": 32
+      },
+      "revId": "6e9a212962debfb5fa7c66e85d4f691dae449ce0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
