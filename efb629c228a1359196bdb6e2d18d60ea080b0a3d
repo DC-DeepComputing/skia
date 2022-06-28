@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5b430028_aa9fc644",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-06-28T15:56:10Z",
+      "side": 1,
+      "message": "End goal here is to make updateData() take an offset and a bool that indicates whether the rest of the buffer is discarded.",
+      "revId": "efb629c228a1359196bdb6e2d18d60ea080b0a3d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
