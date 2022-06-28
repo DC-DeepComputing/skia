@@ -23,6 +23,7 @@
 #include "src/gpu/ganesh/mtl/GrMtlBuffer.h"
 #include "src/gpu/ganesh/mtl/GrMtlCommandBuffer.h"
 #include "src/gpu/ganesh/mtl/GrMtlOpsRenderPass.h"
+#include "src/gpu/ganesh/mtl/GrMtlPipelineState.h"
 #include "src/gpu/ganesh/mtl/GrMtlPipelineStateBuilder.h"
 #include "src/gpu/ganesh/mtl/GrMtlRenderCommandEncoder.h"
 #include "src/gpu/ganesh/mtl/GrMtlSemaphore.h"
@@ -42,6 +43,92 @@ GR_NORETAIN_BEGIN
 // set to 1 if you want to do GPU capture of each commandBuffer
 #define GR_METAL_CAPTURE_COMMANDBUFFER 0
 #endif
+
+void testComputeShader(GrGpu* rawGpu) {
+    GrMtlGpu* gpu = (GrMtlGpu*)rawGpu;
+    GrMtlResourceProvider& provider = ((GrMtlGpu*)gpu)->resourceProvider();
+    const GrMtlCaps& caps = gpu->mtlCaps();
+    GrProgramDesc programDesc = caps.makeDesc(nullptr, nullptr,
+                                              GrCaps::ProgramDescOverrideFlags::kNone);
+    if (!programDesc.isValid()) {
+        abort();
+    }
+
+    GrMtlComputePipelineState* pipelineState =
+            gpu->resourceProvider().findOrCreateCompatibleComputePipelineState(programDesc,
+                "// Implementation of the parallel prefix sum algorithm\n"
+                "\n"
+                "const int SIZE = 512;\n"
+                "\n"
+                "layout(set=0, binding=0) in float[] in_data;\n"
+                "layout(set=0, binding=1) out float[] out_data;\n"
+                "\n"
+                "threadgroup float[SIZE * 2] shared_data;\n"
+                "\n"
+                "// Use a separate function here simply to ensure that we're passing the threadgroups struct\n"
+                "// correctly\n"
+                "noinline void store(uint i, float value) {\n"
+                "    shared_data[i] = value;\n"
+                "}\n"
+                "\n"
+                "void main() {\n"
+                "    uint id = sk_ThreadPosition.x;\n"
+                "    uint rd_id;\n"
+                "    uint wr_id;\n"
+                "    uint mask;\n"
+                "\n"
+                "    // Each thread is responsible for two elements of the output array\n"
+                "    shared_data[id * 2] = in_data[id * 2];\n"
+                "    shared_data[id * 2 + 1] = in_data[id * 2 + 1];\n"
+                "\n"
+                "    threadgroupBarrier();\n"
+                "\n"
+                "    const uint steps = uint(log2(float(SIZE))) + 1;\n"
+                "    for (uint step = 0; step < steps; step++) {\n"
+                "        // Calculate the read and write index in the shared array\n"
+                "        mask = (1 << step) - 1;\n"
+                "        rd_id = ((id >> step) << (step + 1)) + mask;\n"
+                "        wr_id = rd_id + 1 + (id & mask);\n"
+                "\n"
+                "        // Accumulate the read data into our element\n"
+                "        store(wr_id, shared_data[wr_id] + shared_data[rd_id]);\n"
+                "\n"
+                "        threadgroupBarrier();\n"
+                "    }\n"
+                "\n"
+                "    // Write the final result out\n"
+                "    out_data[id * 2] = shared_data[id * 2];\n"
+                "    out_data[id * 2 + 1] = shared_data[id * 2 + 1];\n"
+                "}\n");
+    if (!pipelineState) {
+        abort();
+    }
+    auto computePassDesc = [[MTLComputePassDescriptor alloc] init];
+    id<MTLComputePipelineState> pipeline = pipelineState->pipeline()->mtlPipelineState();
+    GrMtlComputeCommandEncoder* encoder =
+            gpu->commandBuffer()->getComputeCommandEncoder(computePassDesc);
+    encoder->setComputePipelineState(pipeline);
+
+    static constexpr int COUNT = 512;
+    auto buffer1 = [gpu->device() newBufferWithLength:sizeof(float) * COUNT
+            options:MTLResourceStorageModeShared];
+    for (int i = 0; i < COUNT; ++i) {
+        ((float*)buffer1.contents)[i] = i;
+    }
+    encoder->setBuffer(buffer1, 0, 0);
+
+    auto buffer2 = [gpu->device() newBufferWithLength:sizeof(float) * COUNT
+            options:MTLResourceStorageModeShared];
+    encoder->setBuffer(buffer2, 0, 1);
+
+    encoder->execute(1, 1, 1, COUNT, 1, 1);
+    gpu->commandBuffer()->commit(true);
+    printf("#####################\n");
+    for (int i = 0; i < COUNT; ++i) {
+        printf("%g\n", ((float*)buffer2.contents)[i]);
+    }
+    printf("#####################\n");
+}
 
 sk_sp<GrGpu> GrMtlGpu::Make(const GrMtlBackendContext& context, const GrContextOptions& options,
                             GrDirectContext* direct) {
@@ -1123,8 +1210,7 @@ void GrMtlGpu::deleteBackendTexture(const GrBackendTexture& tex) {
 bool GrMtlGpu::compile(const GrProgramDesc& desc, const GrProgramInfo& programInfo) {
 
     GrThreadSafePipelineBuilder::Stats::ProgramCacheResult stat;
-
-    auto pipelineState = this->resourceProvider().findOrCreateCompatiblePipelineState(
+    auto pipelineState = this->resourceProvider().findOrCreateCompatibleRenderPipelineState(
                                  desc, programInfo, &stat);
     if (!pipelineState) {
         return false;
