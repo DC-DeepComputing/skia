@@ -16,6 +16,24 @@
       "message": "I\u0027m uncomfortable with this change. It allows too many sharp edges. If someone allocates this, and does not initialize the entire thing leaving uninitialized elements, the deleter will then call delete on the uninitialized elements.\n\nIs this for an array of POD data? If so, we can use the ideas from SubRunAllocator to have a makePODArray. ",
       "revId": "0918f8045ab6050749a097d1b20906145a2c5f1f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d758a608_aa955b9a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-06-28T15:37:35Z",
+      "side": 1,
+      "message": "In this case the goal is to allocate a bunch of `SkUniform`s into an arena, and these are POD/don\u0027t actually have a destructor. \n\nHowever I don\u0027t personally agree that Skia team can\u0027t be trusted with sharp objects. An arena allocator is already a very specialized tool that we only use in situations that require it. We are all experts. I 100% trust that everyone on this team understands things like placement new, and will read the explicit doc comment (which we can make bigger and bolder if you like).\n\nWhat do you suggest instead?",
+      "parentUuid": "17e50185_49824111",
+      "revId": "0918f8045ab6050749a097d1b20906145a2c5f1f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
