@@ -16,6 +16,46 @@
       "message": "Hey Brian! Lemme know if I\u0027m on the right track here. Also, I didn\u0027t see anywhere where the getColor functions were unitttested, did I miss something obvious?",
       "revId": "50345de0bef95c2e5f4906d23dcf229f26ca0ddd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9aa91194_119c87ae",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-06-28T16:51:13Z",
+      "side": 1,
+      "message": "Yes, this looks like the right idea. Just the one small thing I noticed on one of the RG formats...",
+      "revId": "50345de0bef95c2e5f4906d23dcf229f26ca0ddd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7fb50a70_3df1ba3d",
+        "filename": "src/core/SkPixmap.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 508,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-06-28T16:51:13Z",
+      "side": 1,
+      "message": "I think this (blue) should be zero.",
+      "range": {
+        "startLine": 508,
+        "startChar": 35,
+        "endLine": 508,
+        "endChar": 38
+      },
+      "revId": "50345de0bef95c2e5f4906d23dcf229f26ca0ddd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
