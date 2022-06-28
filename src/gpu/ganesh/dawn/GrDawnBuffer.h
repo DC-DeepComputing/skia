@@ -73,7 +73,7 @@ public:
 
     void onMap(MapType) override;
     void onUnmap(MapType) override;
-    bool onUpdateData(size_t offset, const void* src, size_t size) override;
+    bool onUpdateData(size_t offset, const void* src, size_t size, bool preserve) override;
 
     GrDawnGpu* getDawnGpu() const;
     wgpu::Buffer get() const { return fBuffer; }
@@ -115,7 +115,10 @@ private:
                  wgpu::Buffer buffer,
                  void* mapPtr);
 
-    // Called to handle the asynchronous mapAsync callback.
+    void* internalMap(MapType type, size_t offset, size_t size);
+    void internalUnmap(MapType type, size_t offset, size_t size);
+
+        // Called to handle the asynchronous mapAsync callback.
     void mapAsyncDone(WGPUBufferMapAsyncStatus status);
 
     // Map a buffer and busy-wait until the asynchronous mapping procedure completes. This function
@@ -130,8 +133,8 @@ private:
     // GrStagingBufferManager (and thus not asynchronously mapped by the owning GrDawnGpu) is
     // unmapped and needs to get re-mapped for use.
     //
-    // Returns false if the buffer fails to map.
-    bool blockingMap();
+    // Returns nullptr if the buffer fails to map.
+    void* blockingMap(size_t offset, size_t size);
 
     wgpu::Buffer fBuffer;
     Mappable fMappable = Mappable::kNot;
