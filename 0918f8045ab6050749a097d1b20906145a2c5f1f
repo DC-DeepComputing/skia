@@ -70,6 +70,24 @@
       "parentUuid": "d23b12bc_bfe5e9e7",
       "revId": "0918f8045ab6050749a097d1b20906145a2c5f1f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "87a32399_d820eb42",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-06-28T16:08:35Z",
+      "side": 1,
+      "message": "Sure, but in my proposal, we flipped the order of allocation around so we get all the strings copied first, then we can use the safer makeInitializedArray() (or whatever it\u0027s actual name is) call that\u0027s already public. Your CL uses makeUninitalized() first and then copies the names one at a time afterwards when handling the initialization.",
+      "parentUuid": "f43077c3_9eda5fa9",
+      "revId": "0918f8045ab6050749a097d1b20906145a2c5f1f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
