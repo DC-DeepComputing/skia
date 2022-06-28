@@ -74,7 +74,7 @@ public:
     void onMap(MapType) override;
     void onUnmap(MapType) override;
     void onRelease() override;
-    bool onUpdateData(const void* src, size_t srcSizeInBytes) override;
+    bool onUpdateData(size_t offset, const void* src, size_t size) override;
 
     GrDawnGpu* getDawnGpu() const;
     wgpu::Buffer get() const { return fBuffer; }

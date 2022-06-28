@@ -146,13 +146,13 @@ void GrDawnBuffer::onRelease() {
     this->GrGpuBuffer::onRelease();
 }
 
-bool GrDawnBuffer::onUpdateData(const void* src, size_t srcSizeInBytes) {
+bool GrDawnBuffer::onUpdateData(size_t offset, const void* src, size_t size) {
     this->map();
     if (!this->isMapped()) {
         return false;
     }
 
-    memcpy(fMapPtr, src, srcSizeInBytes);
+    memcpy(SkTAddOffset<void>(fMapPtr, offset), src, size);
     this->unmap();
     return true;
 }
