@@ -9,4 +9,7 @@ layout(set=0, binding=1) out float4 y;
 error: 3: compute shader in / out arrays must be unsized
 layout(set=0, binding=2) in int[5] z;
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-3 errors
+error: 3: compute shader in / out arrays must be unsized
+layout(set=0, binding=2) in int[5] z;
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+4 errors
