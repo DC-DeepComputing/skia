@@ -158,7 +158,7 @@ public:
 
     template <typename T>
     T* makeArrayDefault(size_t count) {
-        T* array = this->allocUninitializedArray<T>(count);
+        T* array = this->makeUninitializedArray<T>(count);
         for (size_t i = 0; i < count; i++) {
             // Default initialization: if T is primitive then the value is left uninitialized.
             new (&array[i]) T;
@@ -168,7 +168,7 @@ public:
 
     template <typename T>
     T* makeArray(size_t count) {
-        T* array = this->allocUninitializedArray<T>(count);
+        T* array = this->makeUninitializedArray<T>(count);
         for (size_t i = 0; i < count; i++) {
             // Value initialization: if T is primitive then the value is zero-initialized.
             new (&array[i]) T();
@@ -178,11 +178,59 @@ public:
 
     template <typename T, typename Initializer>
     T* makeInitializedArray(size_t count, Initializer initializer) {
-        T* array = this->allocUninitializedArray<T>(count);
+        T* array = this->makeUninitializedArray<T>(count);
         for (size_t i = 0; i < count; i++) {
             new (&array[i]) T(initializer(i));
         }
         return array;
+    }
+
+    template <typename T>
+    T* makeUninitializedArray(size_t countZ) {
+        // No initialization: each element of T is left in an unconstructed state. It is the
+        // caller's responsibility to placement-construct a T in each slot. ~T will_be called.
+
+        AssertRelease(SkTFitsIn<uint32_t>(countZ));
+        uint32_t count = SkToU32(countZ);
+
+        char* objStart;
+        AssertRelease(count <= std::numeric_limits<uint32_t>::max() / sizeof(T));
+        uint32_t arraySize = SkToU32(count * sizeof(T));
+        uint32_t alignment = SkToU32(alignof(T));
+
+        if (std::is_trivially_destructible<T>::value) {
+            objStart = this->allocObject(arraySize, alignment);
+            fCursor = objStart + arraySize;
+            sk_asan_unpoison_memory_region(objStart, arraySize);
+        } else {
+            constexpr uint32_t overhead = sizeof(Footer) + sizeof(uint32_t);
+            AssertRelease(arraySize <= std::numeric_limits<uint32_t>::max() - overhead);
+            uint32_t totalSize = arraySize + overhead;
+            objStart = this->allocObjectWithFooter(totalSize, alignment);
+
+            // Can never be UB because max value is alignof(T).
+            uint32_t padding = SkToU32(objStart - fCursor);
+
+            // Advance to end of array to install footer.
+            fCursor = objStart + arraySize;
+            sk_asan_unpoison_memory_region(objStart, arraySize);
+            this->installRaw(SkToU32(count));
+            this->installFooter(
+                [](char* footerEnd) {
+                    char* objEnd = footerEnd - (sizeof(Footer) + sizeof(uint32_t));
+                    uint32_t count;
+                    memmove(&count, objEnd, sizeof(uint32_t));
+                    char* objStart = objEnd - count * sizeof(T);
+                    T* array = (T*) objStart;
+                    for (uint32_t i = 0; i < count; i++) {
+                        array[i].~T();
+                    }
+                    return objStart;
+                },
+                padding);
+        }
+
+        return (T*)objStart;
     }
 
     // Only use makeBytesAlignedTo if none of the typed variants are impractical to use.
@@ -236,51 +284,6 @@ private:
     }
 
     char* allocObjectWithFooter(uint32_t sizeIncludingFooter, uint32_t alignment);
-
-    template <typename T>
-    T* allocUninitializedArray(size_t countZ) {
-        AssertRelease(SkTFitsIn<uint32_t>(countZ));
-        uint32_t count = SkToU32(countZ);
-
-        char* objStart;
-        AssertRelease(count <= std::numeric_limits<uint32_t>::max() / sizeof(T));
-        uint32_t arraySize = SkToU32(count * sizeof(T));
-        uint32_t alignment = SkToU32(alignof(T));
-
-        if (std::is_trivially_destructible<T>::value) {
-            objStart = this->allocObject(arraySize, alignment);
-            fCursor = objStart + arraySize;
-            sk_asan_unpoison_memory_region(objStart, arraySize);
-        } else {
-            constexpr uint32_t overhead = sizeof(Footer) + sizeof(uint32_t);
-            AssertRelease(arraySize <= std::numeric_limits<uint32_t>::max() - overhead);
-            uint32_t totalSize = arraySize + overhead;
-            objStart = this->allocObjectWithFooter(totalSize, alignment);
-
-            // Can never be UB because max value is alignof(T).
-            uint32_t padding = SkToU32(objStart - fCursor);
-
-            // Advance to end of array to install footer.
-            fCursor = objStart + arraySize;
-            sk_asan_unpoison_memory_region(objStart, arraySize);
-            this->installRaw(SkToU32(count));
-            this->installFooter(
-                [](char* footerEnd) {
-                    char* objEnd = footerEnd - (sizeof(Footer) + sizeof(uint32_t));
-                    uint32_t count;
-                    memmove(&count, objEnd, sizeof(uint32_t));
-                    char* objStart = objEnd - count * sizeof(T);
-                    T* array = (T*) objStart;
-                    for (uint32_t i = 0; i < count; i++) {
-                        array[i].~T();
-                    }
-                    return objStart;
-                },
-                padding);
-        }
-
-        return (T*)objStart;
-    }
 
     char*          fDtorCursor;
     char*          fCursor;
