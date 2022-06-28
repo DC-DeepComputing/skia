@@ -87,10 +87,10 @@ private:
 class DrawParams {
 public:
     DrawParams(const Transform& transform,
-               const Geometry& geometry,
-               const Clip& clip,
-               DrawOrder drawOrder,
-               const StrokeStyle* stroke)
+                 const Geometry& geometry,
+                 const Clip& clip,
+                 DrawOrder drawOrder,
+                 const StrokeStyle* stroke)
             : fTransform(transform)
             , fGeometry(geometry)
             , fClip(clip)

@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 Google LLC
+ * Copyright 2021 Google LLC
  *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
@@ -9,6 +9,7 @@
 #define skgpu_graphite_geom_Geometry_DEFINED
 
 #include "include/core/SkVertices.h"
+#include "src/core/SkVerticesPriv.h"
 #include "src/gpu/graphite/geom/Rect.h"
 #include "src/gpu/graphite/geom/Shape.h"
 
@@ -27,27 +28,39 @@ public:
 
     Geometry() {}
     explicit Geometry(const Shape& shape) { this->setShape(shape); }
+    explicit Geometry(sk_sp<SkVertices> vertices) { this->setVertices(vertices); }
     ~Geometry() { this->setType(Type::kEmpty); }
 
+    // Define move assignment operation
     Geometry& operator=(Geometry&& geom) {
         if (this != &geom) {
             switch (geom.type()) {
                 case Type::kEmpty: this->setType(Type::kEmpty); break;
                 case Type::kShape: this->setShape(geom.shape()); geom.setType(Type::kEmpty); break;
+                case Type::kVertices: {
+                    this->setVertices(std::move(geom.fVertices));
+                    geom.setType(Type::kEmpty);
+                    break;
+                }
                 default: break;
             }
         }
-        return *this;
+      return *this;
     }
+    // Define copy assignment operation
     Geometry& operator=(const Geometry& geom) {
         switch (geom.type()) {
             case Type::kEmpty: this->setType(Type::kEmpty); break;
             case Type::kShape: this->setShape(geom.shape()); break;
+            case Type::kVertices: {
+              this->setVertices(geom.refVertices());
+              break;
+            }
             default: break;
         }
         return *this;
     }
-
+    // Define copy construction operation
     Geometry(const Geometry& geom) {
         *this = geom;
     }
@@ -60,13 +73,33 @@ public:
             new (&fShape) Shape(shape);
         }
     }
-    // void setVertices(const SkVertices&);
+    void setVertices(sk_sp<SkVertices> vertices) {
+        this->setType(Type::kVertices);
+        fVertices = std::move(vertices);
+    }
+
+    // void setVertices(const SkVertices* vertices) {
+    //     this->setType(Type::kVertices);
+    //     fVertices = sk_ref_sp(vertices);
+    // }
 
     const Shape& shape() const { SkASSERT(this->isShape()); return fShape; }
-    // const SkVertices& vertices() const;
+
+    const SkVertices* vertices() const {
+        SkASSERT(this->isVertices());
+        return fVertices.get();
+    }
+
+    sk_sp<SkVertices> refVertices() const {
+        SkASSERT(this->isVertices());
+        return fVertices;
+    }
+    // todo - have a getter for the skvertices object, not just a pointer to it
+    // const SkVertices& vertices() const { SkASSERT(this->isVertices()); return fVertices; }
     Rect bounds() const {
         switch (fType) {
             case Type::kShape: return fShape.bounds();
+            case Type::kVertices: return fVertices->bounds();
             default: return Rect(0, 0, 0, 0);
         }
     }
@@ -82,6 +115,8 @@ private:
     void setType(Type type) {
         if (this->isShape() && type != Type::kShape) {
             fShape.~Shape();
+        } else if (isVertices() && type != Type::kVertices) {
+            (void) fVertices.release();
         }
         fType = type;
     }
@@ -89,7 +124,7 @@ private:
     Type fType = Type::kEmpty;
     union {
         Shape fShape;
-        // SkVertices fVertices;
+        sk_sp<SkVertices> fVertices;
     };
 
 };

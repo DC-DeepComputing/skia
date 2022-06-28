@@ -78,6 +78,8 @@ enum class PrimitiveType : uint8_t {
     kTriangles,
     kTriangleStrip,
     kPoints,
+    // NP TODO - See what-all adding a new primitive type entails. Reorder alphabetically.
+    kTriangleFan,
 };
 
 /**
