@@ -143,6 +143,9 @@ public:
         FT_Add_Default_Modules(fLibrary);
         FT_Set_Default_Properties(fLibrary);
 
+        FT_Bool colrv1 = true;
+        FT_Property_Set(fLibrary, "truetype", "TEMPORARY-enable-variable-colrv1", &colrv1);
+
         // Subpixel anti-aliasing may be unfiltered until the LCD filter is set.
         // Newer versions may still need this, so this test with side effects must come first.
         // The default has changed over time, so this doesn't mean the same thing to all users.
