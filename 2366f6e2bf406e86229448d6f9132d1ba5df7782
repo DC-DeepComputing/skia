@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dac3cf99_67ce183d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-06-28T13:13:19Z",
+      "side": 1,
+      "message": "Wow Dawn/WebGPU doesn\u0027t cleanup mapped memory if you drop all the refs?",
+      "revId": "2366f6e2bf406e86229448d6f9132d1ba5df7782",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
