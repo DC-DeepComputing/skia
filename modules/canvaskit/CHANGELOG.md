@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
  - Minor bug fixes in the TypeScript type declaration.
+ - Creating a Premul Image from a TextureSource should upload the texture to WebGL correctly.
 
 ## [0.34.1] - 2022-06-02
 

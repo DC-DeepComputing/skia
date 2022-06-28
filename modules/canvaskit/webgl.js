@@ -194,6 +194,25 @@
         return src['naturalWidth'] || src['videoWidth'] || src['displayWidth'] || src['width'];
       }
 
+      function setupTexture(glCtx, newTex, imageInfo) {
+        var newTex =
+        glCtx.bindTexture(glCtx.TEXTURE_2D, newTex);
+        // See https://github.com/flutter/flutter/issues/106433#issuecomment-1169102945
+        // for an example of what can happen if we do not set this.
+        if (imageInfo['alphaType'] === CanvasKit.AlphaType.Premul) {
+          glCtx.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, true);
+        }
+        return newTex;
+      }
+
+      function resetTexture(glCtx, imageInfo) {
+        // If we set this earlier, we want to unset it now.
+        if (imageInfo['alphaType'] === CanvasKit.AlphaType.Premul) {
+          glCtx.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, false);
+        }
+        glCtx.bindTexture(glCtx.TEXTURE_2D, null);
+      }
+
       CanvasKit.Surface.prototype.makeImageFromTextureSource = function(src, info) {
         if (!info) {
           info = {
@@ -213,14 +232,13 @@
         // We want to be pointing at the context associated with this surface.
         CanvasKit.setCurrentContext(this._context);
         var glCtx = GL.currentContext.GLctx;
-        var newTex = glCtx.createTexture();
-        glCtx.bindTexture(glCtx.TEXTURE_2D, newTex);
+        var newTex = setupTexture(glCtx, glCtx.createTexture(), info);
         if (GL.currentContext.version === 2) {
           glCtx.texImage2D(glCtx.TEXTURE_2D, 0, glCtx.RGBA, info['width'], info['height'], 0, glCtx.RGBA, glCtx.UNSIGNED_BYTE, src);
         } else {
           glCtx.texImage2D(glCtx.TEXTURE_2D, 0, glCtx.RGBA, glCtx.RGBA, glCtx.UNSIGNED_BYTE, src);
         }
-        glCtx.bindTexture(glCtx.TEXTURE_2D, null);
+        resetTexture(glCtx, info);
         return this.makeImageFromTexture(newTex, info);
       };
 
@@ -230,23 +248,22 @@
           return;
         }
         CanvasKit.setCurrentContext(this._context);
+        var ii = img.getImageInfo();
         var glCtx = GL.currentContext.GLctx;
         // Copy the contents of src over the texture associated with this image.
-        var tex = GL.textures[img._tex];
-        glCtx.bindTexture(glCtx.TEXTURE_2D, tex);
+        var tex = setupTexture(glCtx, GL.textures[img._tex], ii);
         if (GL.currentContext.version === 2) {
           glCtx.texImage2D(glCtx.TEXTURE_2D, 0, glCtx.RGBA, getWidth(src), getHeight(src), 0, glCtx.RGBA, glCtx.UNSIGNED_BYTE, src);
         } else {
           glCtx.texImage2D(glCtx.TEXTURE_2D, 0, glCtx.RGBA, glCtx.RGBA, glCtx.UNSIGNED_BYTE, src);
         }
-        glCtx.bindTexture(glCtx.TEXTURE_2D, null);
+        resetTexture(glCtx, ii);
         // Tell Skia we messed with the currently bound texture.
         this._resetContext();
         // Create a new texture entry and put null into the old slot. This keeps our texture alive,
         // otherwise it will be deleted when we delete the old Image.
         GL.textures[img._tex] = null;
         img._tex = pushTexture(tex);
-        var ii = img.getImageInfo();
         ii['colorSpace'] = img.getColorSpace();
         // Skia may cache parts of the image, and some places assume images are immutable. In order
         // to make things work, we create a new SkImage based on the same texture as the old image.
@@ -296,14 +313,13 @@
             // This is a lot easier than needing to pass the surface handle from the C++ side here.
             var ctx = GL.currentContext;
             var glCtx = ctx.GLctx;
-            var newTex = glCtx.createTexture();
-            glCtx.bindTexture(glCtx.TEXTURE_2D, newTex);
+            var newTex = setupTexture(glCtx, glCtx.createTexture(), info);
             if (ctx.version === 2) {
               glCtx.texImage2D(glCtx.TEXTURE_2D, 0, glCtx.RGBA, info['width'], info['height'], 0, glCtx.RGBA, glCtx.UNSIGNED_BYTE, src);
             } else {
               glCtx.texImage2D(glCtx.TEXTURE_2D, 0, glCtx.RGBA, glCtx.RGBA, glCtx.UNSIGNED_BYTE, src);
             }
-            glCtx.bindTexture(glCtx.TEXTURE_2D, null);
+            resetTexture(glCtx, ii);
             return pushTexture(newTex);
           },
           'freeSrc': function() {
