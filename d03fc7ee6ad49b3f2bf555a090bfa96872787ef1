@@ -65,6 +65,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c8de7d31_e3626119",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 436,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-06-28T17:46:13Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "034bd46b_8c812b52",
+      "range": {
+        "startLine": 436,
+        "startChar": 4,
+        "endLine": 436,
+        "endChar": 33
+      },
+      "revId": "d03fc7ee6ad49b3f2bf555a090bfa96872787ef1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fe08e4e8_04342e3f",
@@ -78,6 +102,30 @@
       "writtenOn": "2022-06-28T16:55:57Z",
       "side": 1,
       "message": "nit: historically, we\u0027ve got these ordered (transform, geometry)",
+      "range": {
+        "startLine": 184,
+        "startChar": 22,
+        "endLine": 184,
+        "endChar": 39
+      },
+      "revId": "d03fc7ee6ad49b3f2bf555a090bfa96872787ef1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5cd39e48_e16cdbac",
+        "filename": "src/gpu/graphite/Device.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 184,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-06-28T17:46:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fe08e4e8_04342e3f",
       "range": {
         "startLine": 184,
         "startChar": 22,
