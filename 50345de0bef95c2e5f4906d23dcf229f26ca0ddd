@@ -56,6 +56,30 @@
       },
       "revId": "50345de0bef95c2e5f4906d23dcf229f26ca0ddd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "91fb8b07_a25113a0",
+        "filename": "src/core/SkPixmap.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 508,
+      "author": {
+        "id": 15399
+      },
+      "writtenOn": "2022-06-28T18:40:10Z",
+      "side": 1,
+      "message": "Ah yes, I misread the bitwise operator for the int color function",
+      "parentUuid": "7fb50a70_3df1ba3d",
+      "range": {
+        "startLine": 508,
+        "startChar": 35,
+        "endLine": 508,
+        "endChar": 38
+      },
+      "revId": "50345de0bef95c2e5f4906d23dcf229f26ca0ddd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
