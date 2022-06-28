@@ -39,6 +39,30 @@
       },
       "revId": "925f0bd011731ada0bcab060a1b76a83787da9a6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "57d243fb_0f7a8990",
+        "filename": "src/gpu/graphite/ClipStack.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1101,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-06-28T13:39:14Z",
+      "side": 1,
+      "message": "Nicolette ran into this too around drawVertices, I hadn\u0027t realized writable() didn\u0027t auto-init. init() expects the passed in object to be long-lived, so in this case, we need to change it to:\n\n   styledShape.initIfNeeded(geometry.bounds());",
+      "parentUuid": "64a8076a_4710931f",
+      "range": {
+        "startLine": 1101,
+        "startChar": 20,
+        "endLine": 1101,
+        "endChar": 28
+      },
+      "revId": "925f0bd011731ada0bcab060a1b76a83787da9a6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
