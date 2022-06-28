@@ -85,6 +85,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "3f654297_1a4d27cf",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 748,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-06-28T18:15:28Z",
+      "side": 1,
+      "message": "No, no change right now since we\u0027re using the default code generator. Just pointing out that the source of this uniform is from the default code generator and not particularly fundamental to how things need to change going forward, as the runtime effects get more integrated with everything.",
+      "parentUuid": "69ed1953_7e104d2f",
+      "range": {
+        "startLine": 745,
+        "startChar": 9,
+        "endLine": 748,
+        "endChar": 9
+      },
+      "revId": "4df3e635b2ecc182db53cbeb3068ca72ab755d2c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "3b394edd_40402340",
         "filename": "src/core/SkShaderCodeDictionary.cpp",
         "patchSetId": 6
