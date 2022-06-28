@@ -16,6 +16,24 @@
       "message": "Wow Dawn/WebGPU doesn\u0027t cleanup mapped memory if you drop all the refs?",
       "revId": "2366f6e2bf406e86229448d6f9132d1ba5df7782",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c2fb9140_4b52ee08",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-06-28T17:11:53Z",
+      "side": 1,
+      "message": "Nope, most likely this was an oversight. We may want to look into also destroying the buffer objects that are created by the dawn backend but afaict the staging buffer manager and Dawn\u0027s internal refcounting take care of this (also see my comment here: https://bugs.chromium.org/p/skia/issues/detail?id\u003d13475#c3).",
+      "parentUuid": "dac3cf99_67ce183d",
+      "revId": "2366f6e2bf406e86229448d6f9132d1ba5df7782",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
