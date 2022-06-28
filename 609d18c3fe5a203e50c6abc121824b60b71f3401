@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b5e66efb_07c4a6d1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-06-28T20:50:22Z",
+      "side": 1,
+      "message": "Just to be safe, are you also turning off the autoroller, and marking the existing skcms repo read-only? For that matter - there are GN (and C++) files in the skcms repo that don\u0027t get checked into the existing third_party/skcms folder. We probably want to bring those over, so that modules/skcms is actually a copy of the skcms repo, not just the pieces we were placing in the skia repo. (In particular, there is an skcms unit test executable, and a handy command line utility for analyzing ICC profiles).",
+      "revId": "609d18c3fe5a203e50c6abc121824b60b71f3401",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
