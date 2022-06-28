@@ -283,7 +283,7 @@ void GrVkBuffer::onUnmap(MapType type) {
     this->vkUnmap(0, type == MapType::kWriteDiscard ? this->size() : 0);
 }
 
-bool GrVkBuffer::onUpdateData(size_t offset, const void* src, size_t size) {
+bool GrVkBuffer::onUpdateData(size_t offset, const void* src, size_t size, bool preserve) {
     if (this->isVkMappable()) {
         // We won't be reading the mapped memory so pass an empty range.
         this->vkMap(0, 0);
