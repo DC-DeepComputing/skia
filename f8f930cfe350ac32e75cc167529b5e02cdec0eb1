@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b0bbe5bc_ac48d0cb",
+        "filename": "include/private/SkVx.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 200,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-06-28T18:39:47Z",
+      "side": 1,
+      "message": "nit: In c++17 the text is not needed.",
+      "range": {
+        "startLine": 200,
+        "startChar": 42,
+        "endLine": 200,
+        "endChar": 45
+      },
+      "revId": "f8f930cfe350ac32e75cc167529b5e02cdec0eb1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
