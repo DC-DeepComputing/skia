@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "69ed1953_7e104d2f",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 748,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-06-28T18:03:11Z",
+      "side": 1,
+      "message": "I\u0027m not sure if you are suggesting a change here or not. We need local coords for runtime effects (that\u0027s a given). We can change this later if we have something better, but at this time, this seems to be how all effects operate that use local coords.",
+      "parentUuid": "7af202ad_f94530b0",
+      "range": {
+        "startLine": 745,
+        "startChar": 9,
+        "endLine": 748,
+        "endChar": 9
+      },
+      "revId": "4df3e635b2ecc182db53cbeb3068ca72ab755d2c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "3b394edd_40402340",
