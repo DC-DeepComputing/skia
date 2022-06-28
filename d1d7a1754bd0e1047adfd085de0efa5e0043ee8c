@@ -1,5 +1,23 @@
 {
-  "comments": [],
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "516d4ec9_55af938d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11104
+      },
+      "writtenOn": "2022-06-28T16:35:43Z",
+      "side": 1,
+      "message": "Filed a bug at https://bugs.chromium.org/p/skia/issues/detail?id\u003d13477\n\nFile renaming requires skia to update its dawn/BUILD.bazel",
+      "revId": "d1d7a1754bd0e1047adfd085de0efa5e0043ee8c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ],
   "submitRequirementResults": [
     {
       "submitRequirement": {
