@@ -16,6 +16,23 @@
       "message": "Greg for the code parts\nEric for the job parts",
       "revId": "88f573c9e7efdd7f8328df4d882c3fb25592a155",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "60c7e692_2e491c55",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2022-06-28T18:15:01Z",
+      "side": 1,
+      "message": "infra LGTM",
+      "revId": "88f573c9e7efdd7f8328df4d882c3fb25592a155",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
