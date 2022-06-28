@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8be3b3b1_21ff277b",
+        "filename": "src/gpu/graphite/geom/Geometry.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-06-28T15:40:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ae0921e3_154734df",
+      "range": {
+        "startLine": 17,
+        "startChar": 30,
+        "endLine": 17,
+        "endChar": 41
+      },
+      "revId": "29b37acd5c873a2e99dc5bc9e179fd83acf1fcba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7998204c_961a288e",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-06-28T14:47:23Z",
       "side": 1,
       "message": "Move operator needs updating too. Probably should drop the `default` case so the compiler complains about missing cases if we add to the Type enum.",
+      "range": {
+        "startLine": 43,
+        "startChar": 0,
+        "endLine": 43,
+        "endChar": 31
+      },
+      "revId": "29b37acd5c873a2e99dc5bc9e179fd83acf1fcba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9c6f8be4_f6cd31e1",
+        "filename": "src/gpu/graphite/geom/Geometry.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-06-28T15:40:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7998204c_961a288e",
       "range": {
         "startLine": 43,
         "startChar": 0,
@@ -72,6 +120,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7bbf462f_81ee9fb7",
+        "filename": "src/gpu/graphite/geom/Geometry.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-06-28T15:40:44Z",
+      "side": 1,
+      "message": "It\u0027s still not clear to me how to handle DirectMaskSubRuns. It seems like a super special case so adding general code to handle it may be a bit awkward. It might be simpler to add the delta transform to the SubRunData, set the bounds to the final device bounds, and set the kIgnoreTransform draw flag. Then when we generate the vertices we apply the delta transform.\n\nAlso I think I need to take the drawOrigin into account when setting the bounds, as that adds a pre-translation.\n\nWhich is a long way of saying I think the bounds might need to be the bounds of the SubRun after applying any params in the SubRunData.",
+      "parentUuid": "ad3e56e7_a43af6aa",
+      "range": {
+        "startLine": 87,
+        "startChar": 16,
+        "endLine": 88,
+        "endChar": 60
+      },
+      "revId": "29b37acd5c873a2e99dc5bc9e179fd83acf1fcba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "059024c4_362e411a",
         "filename": "src/gpu/graphite/geom/SubRunData.h",
         "patchSetId": 3
@@ -83,6 +155,30 @@
       "writtenOn": "2022-06-28T14:47:23Z",
       "side": 1,
       "message": "It\u0027s pretty minor, but we could std::move() the fSupportDataKeepAlive field.",
+      "range": {
+        "startLine": 45,
+        "startChar": 13,
+        "endLine": 46,
+        "endChar": 58
+      },
+      "revId": "29b37acd5c873a2e99dc5bc9e179fd83acf1fcba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4c161453_771b6bde",
+        "filename": "src/gpu/graphite/geom/SubRunData.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-06-28T15:40:44Z",
+      "side": 1,
+      "message": "I think I\u0027ll leave it for now until we think we need it.",
+      "parentUuid": "059024c4_362e411a",
       "range": {
         "startLine": 45,
         "startChar": 13,
@@ -116,6 +212,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1bd99e75_e365638b",
+        "filename": "src/gpu/graphite/geom/SubRunData.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-06-28T15:40:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "18bb9713_021d908e",
+      "range": {
+        "startLine": 48,
+        "startChar": 49,
+        "endLine": 57,
+        "endChar": 5
+      },
+      "revId": "29b37acd5c873a2e99dc5bc9e179fd83acf1fcba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8d697d29_92983ecd",
@@ -129,6 +249,30 @@
       "writtenOn": "2022-06-28T14:47:23Z",
       "side": 1,
       "message": "In Shape, conservativeContains() is allowed to give false negatives (doesn\u0027t think something is contained) but it cannot give false positives. The true containment test for text would be something like checking the point or rect against every glyph\u0027s path, but path conservative contains is only implemented for convex paths. Given glyphs are hardly ever convex, I\u0027d been assuming the clipping code that relies on Shape::conservativeContains() would just assume that text and other geometry like SkVertices never contain anything.",
+      "range": {
+        "startLine": 61,
+        "startChar": 0,
+        "endLine": 66,
+        "endChar": 5
+      },
+      "revId": "29b37acd5c873a2e99dc5bc9e179fd83acf1fcba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "80f5e294_5269aa06",
+        "filename": "src/gpu/graphite/geom/SubRunData.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-06-28T15:40:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8d697d29_92983ecd",
       "range": {
         "startLine": 61,
         "startChar": 0,
