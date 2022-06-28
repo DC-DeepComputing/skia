@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b4687979_5d96d877",
+        "filename": "src/gpu/AtlasTypes.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 429,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-06-28T17:31:26Z",
+      "side": 1,
+      "message": "I tried to minimize the code changes... Probably it\u0027s such a good idea.\nMade the change all the way through.",
+      "parentUuid": "976a28a1_a4cbc1e5",
+      "range": {
+        "startLine": 429,
+        "startChar": 9,
+        "endLine": 429,
+        "endChar": 33
+      },
+      "revId": "2a346d54a74b5e87dcfa6d8b6922404b8f7896c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a449680b_8f801b4f",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-06-28T13:25:18Z",
       "side": 1,
       "message": "This should be PlotTestingPeer;",
+      "range": {
+        "startLine": 493,
+        "startChar": 17,
+        "endLine": 493,
+        "endChar": 45
+      },
+      "revId": "2a346d54a74b5e87dcfa6d8b6922404b8f7896c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2258db47_7448d0cc",
+        "filename": "src/gpu/AtlasTypes.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 493,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-06-28T17:31:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a449680b_8f801b4f",
       "range": {
         "startLine": 493,
         "startChar": 17,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "053ef393_a5281fe8",
+        "filename": "src/gpu/RectanglizerSkylineTestingPeer.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-06-28T17:31:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "faa121f8_ec5e3cd9",
+      "range": {
+        "startLine": 18,
+        "startChar": 6,
+        "endLine": 18,
+        "endChar": 34
+      },
+      "revId": "2a346d54a74b5e87dcfa6d8b6922404b8f7896c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3262b05e_29e50d6a",
@@ -83,6 +155,30 @@
       "writtenOn": "2022-06-28T13:25:18Z",
       "side": 1,
       "message": "Shouldn\u0027t these all be static methods?",
+      "range": {
+        "startLine": 20,
+        "startChar": 0,
+        "endLine": 42,
+        "endChar": 5
+      },
+      "revId": "2a346d54a74b5e87dcfa6d8b6922404b8f7896c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cbc82c86_36491761",
+        "filename": "src/gpu/RectanglizerSkylineTestingPeer.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-06-28T17:31:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3262b05e_29e50d6a",
       "range": {
         "startLine": 20,
         "startChar": 0,
@@ -116,6 +212,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5bf0142e_dbcba81a",
+        "filename": "src/gpu/RectanizerOptimized.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-06-28T17:31:26Z",
+      "side": 1,
+      "message": "First y, then x, so it\u0027s going to be (100, 10). In that sense RectanizerSkyline does the same.\nI actually tried few heuristics (min x, min y or just min(x+y)). All of them shows worser results.",
+      "parentUuid": "c31c1994_b8c4c38b",
+      "range": {
+        "startLine": 16,
+        "startChar": 28,
+        "endLine": 16,
+        "endChar": 74
+      },
+      "revId": "2a346d54a74b5e87dcfa6d8b6922404b8f7896c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "058463f0_a950d52c",
@@ -129,6 +249,30 @@
       "writtenOn": "2022-06-28T13:25:18Z",
       "side": 1,
       "message": "SkASSERT(width \u003e 0 \u0026\u0026 height \u003e 0)",
+      "range": {
+        "startLine": 17,
+        "startChar": 5,
+        "endLine": 17,
+        "endChar": 56
+      },
+      "revId": "2a346d54a74b5e87dcfa6d8b6922404b8f7896c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f6b49cd0_b5d65b6d",
+        "filename": "src/gpu/RectanizerOptimized.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-06-28T17:31:26Z",
+      "side": 1,
+      "message": "Actually, I think I saw a test that has width \u003d\u003d 0.\nI will try it and see if it comes up again.",
+      "parentUuid": "058463f0_a950d52c",
       "range": {
         "startLine": 17,
         "startChar": 5,
@@ -162,6 +306,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "84074829_8b347c6d",
+        "filename": "src/gpu/RectanizerOptimized.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-06-28T17:31:26Z",
+      "side": 1,
+      "message": "I was not sure if somebody is using the sign for something else (copied it from RectanizedSkyline).\nI will be happy to remove it.",
+      "parentUuid": "daf746fd_c06466fc",
+      "range": {
+        "startLine": 19,
+        "startChar": 4,
+        "endLine": 20,
+        "endChar": 54
+      },
+      "revId": "2a346d54a74b5e87dcfa6d8b6922404b8f7896c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3f5e260d_2608064e",
@@ -175,6 +343,30 @@
       "writtenOn": "2022-06-28T13:25:18Z",
       "side": 1,
       "message": "What is bestLoc suppose to be? Best fit location?",
+      "range": {
+        "startLine": 24,
+        "startChar": 15,
+        "endLine": 24,
+        "endChar": 23
+      },
+      "revId": "2a346d54a74b5e87dcfa6d8b6922404b8f7896c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "64352219_5fc319c3",
+        "filename": "src/gpu/RectanizerOptimized.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-06-28T17:31:26Z",
+      "side": 1,
+      "message": "Yes. We have to look for all of them in case we find lower (better) y.",
+      "parentUuid": "3f5e260d_2608064e",
       "range": {
         "startLine": 24,
         "startChar": 15,
@@ -208,6 +400,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f1f748bd_9aa18d6c",
+        "filename": "src/gpu/RectanizerOptimized.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-06-28T17:31:26Z",
+      "side": 1,
+      "message": "I think it\u0027s just one extra iteration but with your suggestion I can simplify it a bit which is always good.",
+      "parentUuid": "13a39193_28e57b54",
+      "range": {
+        "startLine": 30,
+        "startChar": 16,
+        "endLine": 30,
+        "endChar": 43
+      },
+      "revId": "2a346d54a74b5e87dcfa6d8b6922404b8f7896c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8b5de3f0_aeaf3d3b",
@@ -221,6 +437,30 @@
       "writtenOn": "2022-06-28T13:25:18Z",
       "side": 1,
       "message": "This does not match the comment above which says starting from currLoc.fX+1",
+      "range": {
+        "startLine": 45,
+        "startChar": 16,
+        "endLine": 45,
+        "endChar": 26
+      },
+      "revId": "2a346d54a74b5e87dcfa6d8b6922404b8f7896c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "04fdd6da_0f3690ba",
+        "filename": "src/gpu/RectanizerOptimized.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-06-28T17:31:26Z",
+      "side": 1,
+      "message": "x will be incremented in the next loop iteration so we start from currLoc.fX+1.\nI updated the comment trying to be as clear as I can.",
+      "parentUuid": "8b5de3f0_aeaf3d3b",
       "range": {
         "startLine": 45,
         "startChar": 16,
@@ -277,6 +517,54 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "df87c78c_2052ce50",
+        "filename": "src/gpu/RectanizerOptimized.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-06-28T17:31:26Z",
+      "side": 1,
+      "message": "It can, if I keep the changed columns in skyline only.\nI started with std::vector\u003cbool\u003e so I didn\u0027t care much about the size.\nAny attempt to save space on this array cause lots of trouble on updating it.\nI would rather postpone optimizing this bit until I add the second step - zero padding optimization.\nOnce I am done with the algorithm I can make it more efficient.\nUntil then I would rather keep it transparent.",
+      "parentUuid": "b322af75_6b2b4950",
+      "range": {
+        "startLine": 70,
+        "startChar": 4,
+        "endLine": 70,
+        "endChar": 33
+      },
+      "revId": "2a346d54a74b5e87dcfa6d8b6922404b8f7896c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c5741d84_053c53e7",
+        "filename": "src/gpu/RectanizerOptimized.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-06-28T17:31:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4faf78aa_992e7bf0",
+      "range": {
+        "startLine": 70,
+        "startChar": 4,
+        "endLine": 70,
+        "endChar": 33
+      },
+      "revId": "2a346d54a74b5e87dcfa6d8b6922404b8f7896c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5bd4ff5a_a381ab66",
@@ -300,6 +588,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5785f969_22e981a6",
+        "filename": "src/gpu/ganesh/GrDrawOpAtlas.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-06-28T17:31:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5bd4ff5a_a381ab66",
+      "range": {
+        "startLine": 57,
+        "startChar": 15,
+        "endLine": 57,
+        "endChar": 33
+      },
+      "revId": "2a346d54a74b5e87dcfa6d8b6922404b8f7896c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b4fb2dd0_38373e52",
@@ -313,6 +625,24 @@
       "writtenOn": "2022-06-28T13:25:18Z",
       "side": 1,
       "message": "Add the class RectanizerSkylineTestingPeer and PlotTestingPeer here. Populate them with the functions that are needed to support the test.",
+      "revId": "2a346d54a74b5e87dcfa6d8b6922404b8f7896c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cbfe5478_4436e842",
+        "filename": "tests/DrawOpAtlasTest.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 343,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-06-28T17:31:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b4fb2dd0_38373e52",
       "revId": "2a346d54a74b5e87dcfa6d8b6922404b8f7896c3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
