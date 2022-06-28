@@ -2478,17 +2478,24 @@ std::tuple<bool, SubRunContainerOwner> SubRunContainer::MakeInAlloc(
             static const constexpr SkScalar maxBilerpAtlasDimension =
                     SkStrikeCommon::kSkSideTooBigForAtlas - 2;
 
-            // The scale factor needed to transform the mask from the cache to source space.
-            SkScalar strikeToSourceScale = maxGlyphDimension / maxBilerpAtlasDimension;
+            SkScalar strikeToSourceScale = 1;
+            const SkFont* workingFont = &runFont;
+            std::optional<SkFont> reducedFont;
+            if (maxGlyphDimension >= maxBilerpAtlasDimension) {
+                // The scale factor needed to transform the mask from the cache to source space.
+                strikeToSourceScale = maxGlyphDimension / maxBilerpAtlasDimension;
 
-            SkScalar reducedFontSize = runFont.getSize() / strikeToSourceScale;
+                SkScalar reducedFontSize =
+                        SkScalarFloorToScalar(runFont.getSize() / strikeToSourceScale);
 
-            SkFont reducedRunFont{runFont};
-            reducedRunFont.setSize(reducedFontSize);
+                reducedFont = runFont;
+                reducedFont->setSize(reducedFontSize);
+                workingFont = &reducedFont.value();
+            }
 
             if (!SkScalarNearlyZero(strikeToSourceScale)) {
                 SkStrikeSpec strikeSpec = SkStrikeSpec::MakeTransformMask(
-                        reducedRunFont, runPaint, deviceProps, scalerContextFlags, *gaugingMatrix);
+                        *workingFont, runPaint, deviceProps, scalerContextFlags, *gaugingMatrix);
                 if constexpr (kTrace) {
                     msg.appendf("Transformed case:\n%s", strikeSpec.dump().c_str());
                 }
