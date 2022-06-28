@@ -1,0 +1,320 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "976a28a1_a4cbc1e5",
+        "filename": "src/gpu/AtlasTypes.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 429,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-06-28T13:25:18Z",
+      "side": 1,
+      "message": "Can this use the same enum?",
+      "range": {
+        "startLine": 429,
+        "startChar": 9,
+        "endLine": 429,
+        "endChar": 33
+      },
+      "revId": "2a346d54a74b5e87dcfa6d8b6922404b8f7896c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a449680b_8f801b4f",
+        "filename": "src/gpu/AtlasTypes.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 493,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-06-28T13:25:18Z",
+      "side": 1,
+      "message": "This should be PlotTestingPeer;",
+      "range": {
+        "startLine": 493,
+        "startChar": 17,
+        "endLine": 493,
+        "endChar": 45
+      },
+      "revId": "2a346d54a74b5e87dcfa6d8b6922404b8f7896c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "faa121f8_ec5e3cd9",
+        "filename": "src/gpu/RectanglizerSkylineTestingPeer.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-06-28T13:25:18Z",
+      "side": 1,
+      "message": "I think I was unclear. I didn\u0027t mean make class at this level to access the fields. Make a RectanizerSkylineTestingPeer in the test file itself, and it should contain static functions the implement all the *_testingOnly methods.\n\nRemove this file.",
+      "range": {
+        "startLine": 18,
+        "startChar": 6,
+        "endLine": 18,
+        "endChar": 34
+      },
+      "revId": "2a346d54a74b5e87dcfa6d8b6922404b8f7896c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3262b05e_29e50d6a",
+        "filename": "src/gpu/RectanglizerSkylineTestingPeer.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-06-28T13:25:18Z",
+      "side": 1,
+      "message": "Shouldn\u0027t these all be static methods?",
+      "range": {
+        "startLine": 20,
+        "startChar": 0,
+        "endLine": 42,
+        "endChar": 5
+      },
+      "revId": "2a346d54a74b5e87dcfa6d8b6922404b8f7896c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c31c1994_b8c4c38b",
+        "filename": "src/gpu/RectanizerOptimized.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-06-28T13:25:18Z",
+      "side": 1,
+      "message": "What happens if you have two minimum areas (100,10) and (10, 100) which do you pick?",
+      "range": {
+        "startLine": 16,
+        "startChar": 28,
+        "endLine": 16,
+        "endChar": 74
+      },
+      "revId": "2a346d54a74b5e87dcfa6d8b6922404b8f7896c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "058463f0_a950d52c",
+        "filename": "src/gpu/RectanizerOptimized.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-06-28T13:25:18Z",
+      "side": 1,
+      "message": "SkASSERT(width \u003e 0 \u0026\u0026 height \u003e 0)",
+      "range": {
+        "startLine": 17,
+        "startChar": 5,
+        "endLine": 17,
+        "endChar": 56
+      },
+      "revId": "2a346d54a74b5e87dcfa6d8b6922404b8f7896c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "daf746fd_c06466fc",
+        "filename": "src/gpu/RectanizerOptimized.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-06-28T13:25:18Z",
+      "side": 1,
+      "message": "I don\u0027t think the casting is needed here.",
+      "range": {
+        "startLine": 19,
+        "startChar": 4,
+        "endLine": 20,
+        "endChar": 54
+      },
+      "revId": "2a346d54a74b5e87dcfa6d8b6922404b8f7896c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3f5e260d_2608064e",
+        "filename": "src/gpu/RectanizerOptimized.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-06-28T13:25:18Z",
+      "side": 1,
+      "message": "What is bestLoc suppose to be? Best fit location?",
+      "range": {
+        "startLine": 24,
+        "startChar": 15,
+        "endLine": 24,
+        "endChar": 23
+      },
+      "revId": "2a346d54a74b5e87dcfa6d8b6922404b8f7896c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "13a39193_28e57b54",
+        "filename": "src/gpu/RectanizerOptimized.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-06-28T13:25:18Z",
+      "side": 1,
+      "message": "Doesn\u0027t mean that we have done too much work if x \u003d\u003d this-\u003ewidth? Isn\u0027t the maximum range of x [0, this-\u003ewidth() - width]?",
+      "range": {
+        "startLine": 30,
+        "startChar": 16,
+        "endLine": 30,
+        "endChar": 43
+      },
+      "revId": "2a346d54a74b5e87dcfa6d8b6922404b8f7896c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8b5de3f0_aeaf3d3b",
+        "filename": "src/gpu/RectanizerOptimized.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-06-28T13:25:18Z",
+      "side": 1,
+      "message": "This does not match the comment above which says starting from currLoc.fX+1",
+      "range": {
+        "startLine": 45,
+        "startChar": 16,
+        "endLine": 45,
+        "endChar": 26
+      },
+      "revId": "2a346d54a74b5e87dcfa6d8b6922404b8f7896c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4faf78aa_992e7bf0",
+        "filename": "src/gpu/RectanizerOptimized.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-06-28T13:25:18Z",
+      "side": 1,
+      "message": "// The distance from the bottom which is already occupied.",
+      "range": {
+        "startLine": 70,
+        "startChar": 4,
+        "endLine": 70,
+        "endChar": 33
+      },
+      "revId": "2a346d54a74b5e87dcfa6d8b6922404b8f7896c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b322af75_6b2b4950",
+        "filename": "src/gpu/RectanizerOptimized.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-06-28T13:25:18Z",
+      "side": 1,
+      "message": "This will occupy 512 bytes for every plot. Can this be reduced?",
+      "range": {
+        "startLine": 70,
+        "startChar": 4,
+        "endLine": 70,
+        "endChar": 33
+      },
+      "revId": "2a346d54a74b5e87dcfa6d8b6922404b8f7896c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5bd4ff5a_a381ab66",
+        "filename": "src/gpu/ganesh/GrDrawOpAtlas.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-06-28T13:25:18Z",
+      "side": 1,
+      "message": "Maybe PadAllGlyphs?",
+      "range": {
+        "startLine": 57,
+        "startChar": 15,
+        "endLine": 57,
+        "endChar": 33
+      },
+      "revId": "2a346d54a74b5e87dcfa6d8b6922404b8f7896c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b4fb2dd0_38373e52",
+        "filename": "tests/DrawOpAtlasTest.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 343,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-06-28T13:25:18Z",
+      "side": 1,
+      "message": "Add the class RectanizerSkylineTestingPeer and PlotTestingPeer here. Populate them with the functions that are needed to support the test.",
+      "revId": "2a346d54a74b5e87dcfa6d8b6922404b8f7896c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
