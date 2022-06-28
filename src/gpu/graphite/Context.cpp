@@ -14,6 +14,7 @@
 #include "include/gpu/graphite/Recorder.h"
 #include "include/gpu/graphite/Recording.h"
 #include "include/gpu/graphite/TextureInfo.h"
+#include "src/core/SkPrecompile.h"
 #include "src/core/SkShaderCodeDictionary.h"
 #include "src/gpu/RefCntedCallback.h"
 #include "src/gpu/graphite/Caps.h"
@@ -95,6 +96,42 @@ SkBlenderID Context::addUserDefinedBlender(sk_sp<SkRuntimeEffect> effect) {
     auto dict = this->priv().shaderCodeDictionary();
 
     return dict->addUserDefinedBlender(std::move(effect));
+}
+
+void Context::precompile(const SkPaintOptions& paintOptions) {
+    static const Renderer* kRenderers[] = {
+            &Renderer::StencilTessellatedCurvesAndTris(SkPathFillType::kWinding),
+            &Renderer::StencilTessellatedCurvesAndTris(SkPathFillType::kEvenOdd),
+            &Renderer::StencilTessellatedCurvesAndTris(SkPathFillType::kInverseWinding),
+            &Renderer::StencilTessellatedCurvesAndTris(SkPathFillType::kInverseEvenOdd),
+            &Renderer::StencilTessellatedWedges(SkPathFillType::kWinding),
+            &Renderer::StencilTessellatedWedges(SkPathFillType::kEvenOdd),
+            &Renderer::StencilTessellatedWedges(SkPathFillType::kInverseWinding),
+            &Renderer::StencilTessellatedWedges(SkPathFillType::kInverseEvenOdd)
+    };
+
+    SkShaderCodeDictionary* dict = fGlobalCache->shaderCodeDictionary();
+
+    paintOptions.buildCombinations(
+            dict,
+            [&](SkUniquePaintParamsID uniqueID) {
+                GraphicsPipelineDesc desc;
+
+                for (const Renderer* r : kRenderers) {
+                    for (auto&& s : r->steps()) {
+                        if (s->performsShading()) {
+                            desc.setProgram(s, uniqueID);
+                        }
+                        // TODO: Combine with renderpass description set to generate full
+                        // GraphicsPipeline and MSL program. Cache that compiled pipeline on
+                        // the resource provider in a map from desc -> pipeline so that any
+                        // later desc created from equivalent RenderStep + Combination get it.
+                    }
+                }
+            });
+
+    // TODO: Iterate over the renderers and make descriptions for the steps that don't perform
+    // shading, and just use ShaderType::kNone.
 }
 
 void Context::precompile(SkCombinationBuilder* combinationBuilder) {
