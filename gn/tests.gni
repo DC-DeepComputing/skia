@@ -335,8 +335,6 @@ metal_tests_sources = [
 graphite_tests_sources = [
   "$_tests/graphite/BackendTextureTest.cpp",
   "$_tests/graphite/BoundsManagerTest.cpp",
-  "$_tests/graphite/CombinationBuilderTest.cpp",
-  "$_tests/graphite/CombinationBuilderTestAccess.h",
   "$_tests/graphite/GraphiteResourceCacheTest.cpp",
   "$_tests/graphite/IntersectionTreeTest.cpp",
   "$_tests/graphite/KeyTest.cpp",
@@ -348,6 +346,11 @@ graphite_tests_sources = [
   "$_tests/graphite/ShapeTest.cpp",
   "$_tests/graphite/TransformTest.cpp",
   "$_tests/graphite/UploadBufferManagerTest.cpp",
+]
+
+precompile_tests_sources = [
+  "$_tests/graphite/CombinationBuilderTest.cpp",
+  "$_tests/graphite/CombinationBuilderTestAccess.h",
 ]
 
 graphite_metal_tests_sources = [ "$_tests/graphite/MtlBackendTextureTest.mm" ]
