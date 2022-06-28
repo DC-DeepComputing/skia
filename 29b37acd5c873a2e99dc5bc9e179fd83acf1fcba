@@ -1,0 +1,142 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ae0921e3_154734df",
+        "filename": "src/gpu/graphite/geom/Geometry.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-06-28T14:47:23Z",
+      "side": 1,
+      "message": "unnecessary now?",
+      "range": {
+        "startLine": 17,
+        "startChar": 30,
+        "endLine": 17,
+        "endChar": 41
+      },
+      "revId": "29b37acd5c873a2e99dc5bc9e179fd83acf1fcba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7998204c_961a288e",
+        "filename": "src/gpu/graphite/geom/Geometry.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-06-28T14:47:23Z",
+      "side": 1,
+      "message": "Move operator needs updating too. Probably should drop the `default` case so the compiler complains about missing cases if we add to the Type enum.",
+      "range": {
+        "startLine": 43,
+        "startChar": 0,
+        "endLine": 43,
+        "endChar": 31
+      },
+      "revId": "29b37acd5c873a2e99dc5bc9e179fd83acf1fcba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ad3e56e7_a43af6aa",
+        "filename": "src/gpu/graphite/geom/Geometry.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-06-28T14:47:23Z",
+      "side": 1,
+      "message": "I think this is correct as-is, it\u0027s the bounds of the text in the text\u0027s coordinate space. There\u0027s the external complication that depending on the type of subrun, the coordinate space differs, but that should be representable entirely with the Transform that\u0027s stored in the DrawParams recording the subrun draw.",
+      "range": {
+        "startLine": 87,
+        "startChar": 16,
+        "endLine": 88,
+        "endChar": 60
+      },
+      "revId": "29b37acd5c873a2e99dc5bc9e179fd83acf1fcba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "059024c4_362e411a",
+        "filename": "src/gpu/graphite/geom/SubRunData.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-06-28T14:47:23Z",
+      "side": 1,
+      "message": "It\u0027s pretty minor, but we could std::move() the fSupportDataKeepAlive field.",
+      "range": {
+        "startLine": 45,
+        "startChar": 13,
+        "endLine": 46,
+        "endChar": 58
+      },
+      "revId": "29b37acd5c873a2e99dc5bc9e179fd83acf1fcba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "18bb9713_021d908e",
+        "filename": "src/gpu/graphite/geom/SubRunData.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-06-28T14:47:23Z",
+      "side": 1,
+      "message": "Can this be `\u003d default`?",
+      "range": {
+        "startLine": 48,
+        "startChar": 49,
+        "endLine": 57,
+        "endChar": 5
+      },
+      "revId": "29b37acd5c873a2e99dc5bc9e179fd83acf1fcba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8d697d29_92983ecd",
+        "filename": "src/gpu/graphite/geom/SubRunData.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-06-28T14:47:23Z",
+      "side": 1,
+      "message": "In Shape, conservativeContains() is allowed to give false negatives (doesn\u0027t think something is contained) but it cannot give false positives. The true containment test for text would be something like checking the point or rect against every glyph\u0027s path, but path conservative contains is only implemented for convex paths. Given glyphs are hardly ever convex, I\u0027d been assuming the clipping code that relies on Shape::conservativeContains() would just assume that text and other geometry like SkVertices never contain anything.",
+      "range": {
+        "startLine": 61,
+        "startChar": 0,
+        "endLine": 66,
+        "endChar": 5
+      },
+      "revId": "29b37acd5c873a2e99dc5bc9e179fd83acf1fcba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
