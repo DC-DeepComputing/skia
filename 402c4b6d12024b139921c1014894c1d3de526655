@@ -16,6 +16,23 @@
       "message": "Sorry for the previous botched solution. It\u0027s hard to understand what what be getMaxScale should do for a perspective matrix.",
       "revId": "402c4b6d12024b139921c1014894c1d3de526655",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "858d4909_ab8c9f1b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-06-28T17:47:44Z",
+      "side": 1,
+      "message": "My bad as well -- I also thought maxScale worked with perspective matrices.",
+      "revId": "402c4b6d12024b139921c1014894c1d3de526655",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
