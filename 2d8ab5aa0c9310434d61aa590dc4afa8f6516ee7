@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7ff2cdd4_24ee5e20",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-06-28T13:40:48Z",
+      "side": 1,
+      "message": "Kevin. I tested the build instructions on Linux, but not macOS.",
+      "revId": "2d8ab5aa0c9310434d61aa590dc4afa8f6516ee7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
