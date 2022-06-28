@@ -16,6 +16,29 @@
       "message": "End goal here is to make updateData() take an offset and a bool that indicates whether the rest of the buffer is discarded.",
       "revId": "efb629c228a1359196bdb6e2d18d60ea080b0a3d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2d97a103_5f0ae11b",
+        "filename": "src/gpu/ganesh/d3d/GrD3DBuffer.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 197,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-06-28T19:19:58Z",
+      "side": 1,
+      "message": "Might want to add a comment here explaining why a zero-sized range is valid.",
+      "range": {
+        "startLine": 197,
+        "startChar": 57,
+        "endLine": 197,
+        "endChar": 63
+      },
+      "revId": "efb629c228a1359196bdb6e2d18d60ea080b0a3d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
