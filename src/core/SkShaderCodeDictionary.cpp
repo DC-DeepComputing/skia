@@ -282,9 +282,11 @@ const SkShaderSnippet* SkShaderCodeDictionary::getEntry(int codeSnippetID) const
     return nullptr;
 }
 
+#ifdef SK_ENABLE_PRECOMPILE
 const SkShaderSnippet* SkShaderCodeDictionary::getEntry(SkBlenderID id) const {
     return this->getEntry(id.asUInt());
 }
+#endif
 
 void SkShaderCodeDictionary::getShaderInfo(SkUniquePaintParamsID uniqueID, SkShaderInfo* info) {
     auto entry = this->lookup(uniqueID);
@@ -681,6 +683,7 @@ int SkShaderCodeDictionary::addUserDefinedSnippet(
                                        dataPayloadExpectations);
 }
 
+#ifdef SK_ENABLE_PRECOMPILE
 SkBlenderID SkShaderCodeDictionary::addUserDefinedBlender(sk_sp<SkRuntimeEffect> effect) {
     if (!effect) {
         return {};
@@ -700,6 +703,7 @@ SkBlenderID SkShaderCodeDictionary::addUserDefinedBlender(sk_sp<SkRuntimeEffect>
                                                     /*dataPayloadExpectations=*/{});
     return SkBlenderID(codeSnippetID);
 }
+#endif // SK_ENABLE_PRECOMPILE
 
 int SkShaderCodeDictionary::findOrCreateRuntimeEffectSnippet(const SkRuntimeEffect* effect) {
     // Use the combination of {SkSL program hash, uniform size} as our key.
