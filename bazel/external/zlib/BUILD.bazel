@@ -158,7 +158,7 @@ ZLIB_COPTS = [
     # it is not in Clang 13, currently used for Skia.
     "-Wno-unknown-warning-option",
     # Make the headers in contrib available, without exposing them in hdrs.
-    "-isystem third_party/",
+    "-Ithird_party/",
 ] + select({
     ":linux_x64": [
         "-mssse3",
