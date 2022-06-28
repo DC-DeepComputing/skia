@@ -106,6 +106,24 @@
       "parentUuid": "87a32399_d820eb42",
       "revId": "0918f8045ab6050749a097d1b20906145a2c5f1f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5fc12b03_e133e896",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-06-28T16:38:04Z",
+      "side": 1,
+      "message": "I would prefer using Michael\u0027s proposal, and not making makeUninitializedArray public. There is no reason to introduce problematic coding styles.",
+      "parentUuid": "7fdd13f9_2fe599f8",
+      "revId": "0918f8045ab6050749a097d1b20906145a2c5f1f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
