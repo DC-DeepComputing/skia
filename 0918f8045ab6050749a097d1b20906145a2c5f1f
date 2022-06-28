@@ -52,6 +52,24 @@
       "parentUuid": "d758a608_aa955b9a",
       "revId": "0918f8045ab6050749a097d1b20906145a2c5f1f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f43077c3_9eda5fa9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-06-28T15:49:45Z",
+      "side": 1,
+      "message": "Yes, that\u0027s covered. PTAL http://review.skia.org/553595 (WIP CL)",
+      "parentUuid": "d23b12bc_bfe5e9e7",
+      "revId": "0918f8045ab6050749a097d1b20906145a2c5f1f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
