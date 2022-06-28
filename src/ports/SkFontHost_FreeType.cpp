@@ -144,7 +144,7 @@ public:
         FT_Set_Default_Properties(fLibrary);
 
 #ifdef TT_SUPPORT_COLRV1
-        if (SkGraphics::GetVariableColrV1Enabled()) {
+        if (true || SkGraphics::GetVariableColrV1Enabled()) {
             FT_Bool variableColrV1Enabled = true;
             FT_Property_Set(
                     fLibrary, "truetype", "TEMPORARY-enable-variable-colrv1", &variableColrV1Enabled);
