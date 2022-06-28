@@ -63,6 +63,30 @@
       },
       "revId": "925f0bd011731ada0bcab060a1b76a83787da9a6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "03359e4c_9e56af2b",
+        "filename": "src/gpu/graphite/ClipStack.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1101,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-06-28T14:26:10Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "57d243fb_0f7a8990",
+      "range": {
+        "startLine": 1101,
+        "startChar": 20,
+        "endLine": 1101,
+        "endChar": 28
+      },
+      "revId": "925f0bd011731ada0bcab060a1b76a83787da9a6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
