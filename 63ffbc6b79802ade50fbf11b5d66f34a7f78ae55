@@ -73,6 +73,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "928eae57_3775824e",
+        "filename": "modules/canvaskit/canvaskit_bindings.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 268,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-06-28T14:40:04Z",
+      "side": 1,
+      "message": "MFBERT is mostly there to support GL FBOs, in particular FBO 0 which has no texture id. I think it\u0027s fine to use MFBET. The replaceBackendTexture idea is interesting. I could see how you could use that build an API that\u0027s more convenient to the client and more similar to WebGL/SW. I wouldn\u0027t directly expose replaceBackendTexture but maybe a higher level API that flushes, initiates the swap, and advances the surface to the next swap chain texture would make sense.",
+      "parentUuid": "776d81bc_cbc4cdb5",
+      "range": {
+        "startLine": 268,
+        "startChar": 22,
+        "endLine": 268,
+        "endChar": 49
+      },
+      "revId": "63ffbc6b79802ade50fbf11b5d66f34a7f78ae55",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2144e8eb_2b05b49f",
         "filename": "modules/canvaskit/webgpu.js",
         "patchSetId": 1
