@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ccb47ac6_b3ee2c7e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-06-28T16:29:52Z",
+      "side": 1,
+      "message": "PTAL",
+      "revId": "d03fc7ee6ad49b3f2bf555a090bfa96872787ef1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9e67f8b4_2d6c70fe",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 436,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-06-28T16:29:52Z",
+      "side": 1,
+      "message": "Not sure if this is necessary since we do this check at the top of drawGeometry().",
+      "range": {
+        "startLine": 436,
+        "startChar": 4,
+        "endLine": 436,
+        "endChar": 33
+      },
+      "revId": "d03fc7ee6ad49b3f2bf555a090bfa96872787ef1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
