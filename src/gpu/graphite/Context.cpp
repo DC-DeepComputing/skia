@@ -91,6 +91,8 @@ void Context::checkAsyncWorkCompletion() {
     fGpu->checkForFinishedWork(SyncToCpu::kNo);
 }
 
+#ifdef SK_ENABLE_PRECOMPILE
+
 SkBlenderID Context::addUserDefinedBlender(sk_sp<SkRuntimeEffect> effect) {
     auto dict = this->priv().shaderCodeDictionary();
 
@@ -132,6 +134,8 @@ void Context::precompile(SkCombinationBuilder* combinationBuilder) {
     // TODO: Iterate over the renderers and make descriptions for the steps that don't perform
     // shading, and just use ShaderType::kNone.
 }
+
+#endif // SK_ENABLE_PRECOMPILE
 
 BackendTexture Context::createBackendTexture(SkISize dimensions, const TextureInfo& info) {
     if (!info.isValid() || info.backend() != this->backend()) {
