@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3385d5d0_3f027b3c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-06-29T18:41:02Z",
+      "side": 1,
+      "message": "In principle it looks okay but I\u0027m wondering if it\u0027s guaranteed to converge or whether it might asymptotically approach the right size without actually getting there.",
+      "revId": "31e192c45a7b66afb86439375d10e69f6c33cb34",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
