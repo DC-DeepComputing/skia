@@ -34,6 +34,24 @@
       "parentUuid": "b5e66efb_07c4a6d1",
       "revId": "609d18c3fe5a203e50c6abc121824b60b71f3401",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "db1d7d85_a2acacdb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-06-29T15:09:40Z",
+      "side": 1,
+      "message": "Aha, ok! Yes, that was another option I had previously considered -- autorolling to somewhere that won\u0027t trigger the bundled dependency checker. That\u0027s going to satisfy the letter of the law (script), but not really the spirit. Though I don\u0027t care, so yes - I approve.",
+      "parentUuid": "a7d69771_23da063e",
+      "revId": "609d18c3fe5a203e50c6abc121824b60b71f3401",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
