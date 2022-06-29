@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "12f80d5f_ee0d47e1",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 578,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-06-29T18:48:43Z",
+      "side": 1,
+      "message": "nit: line length",
+      "range": {
+        "startLine": 578,
+        "startChar": 0,
+        "endLine": 578,
+        "endChar": 104
+      },
+      "revId": "63d59cd152709b4155ef8eb8ea67d6c577f23914",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "69409f94_b5c66550",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 580,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-06-29T18:48:43Z",
+      "side": 1,
+      "message": "Not necessary anymore.",
+      "range": {
+        "startLine": 580,
+        "startChar": 31,
+        "endLine": 580,
+        "endChar": 40
+      },
+      "revId": "63d59cd152709b4155ef8eb8ea67d6c577f23914",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
