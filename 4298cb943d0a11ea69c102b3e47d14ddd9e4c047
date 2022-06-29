@@ -18,6 +18,52 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "31a868e9_674b6c55",
+        "filename": "src/gpu/ganesh/d3d/GrD3DBuffer.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-06-29T16:50:25Z",
+      "side": 1,
+      "message": "optional nit: is it worth writing this as:\n    bool /*preserve*/\nto document that we don\u0027t actually think it will/should be used here?",
+      "range": {
+        "startLine": 151,
+        "startChar": 80,
+        "endLine": 151,
+        "endChar": 89
+      },
+      "revId": "4298cb943d0a11ea69c102b3e47d14ddd9e4c047",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c2a6c7d4_4e71c566",
+        "filename": "src/gpu/ganesh/dawn/GrDawnBuffer.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-06-29T16:50:25Z",
+      "side": 1,
+      "message": "can you comment why we\u0027re doing this for dawn",
+      "range": {
+        "startLine": 110,
+        "startChar": 19,
+        "endLine": 110,
+        "endChar": 32
+      },
+      "revId": "4298cb943d0a11ea69c102b3e47d14ddd9e4c047",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "f74b06ba_29246838",
@@ -31,6 +77,29 @@
       "writtenOn": "2022-06-29T15:24:33Z",
       "side": 1,
       "message": "This now seemed different enough from the non blocking and public asyncMap method above to not try to share code. But open to suggestions.",
+      "revId": "4298cb943d0a11ea69c102b3e47d14ddd9e4c047",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "45f9c798_33a5d686",
+        "filename": "tests/GrGpuBufferTest.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 365,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-06-29T16:50:25Z",
+      "side": 1,
+      "message": "extra \"we\"",
+      "range": {
+        "startLine": 365,
+        "startChar": 43,
+        "endLine": 365,
+        "endChar": 45
+      },
       "revId": "4298cb943d0a11ea69c102b3e47d14ddd9e4c047",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
