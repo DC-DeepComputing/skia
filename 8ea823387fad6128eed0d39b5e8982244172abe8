@@ -22,6 +22,30 @@
       },
       "revId": "8ea823387fad6128eed0d39b5e8982244172abe8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "44ba42e9_8f8066e2",
+        "filename": "modules/canvaskit/npm_build/types/index.d.ts",
+        "patchSetId": 3
+      },
+      "lineNbr": 291,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-06-29T05:54:08Z",
+      "side": 1,
+      "message": "Initially it felt more natural for width and height to be an optional parameter together as opposed to individually (i.e. client either provides both dimensions or neither) but I changed it to separate width/height parameters for consistency with the rest of the API.",
+      "parentUuid": "c32cdd4d_3278fc6d",
+      "range": {
+        "startLine": 291,
+        "startChar": 62,
+        "endLine": 291,
+        "endChar": 78
+      },
+      "revId": "8ea823387fad6128eed0d39b5e8982244172abe8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

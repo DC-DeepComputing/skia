@@ -229,6 +229,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "bc39affe_a1cfe54c",
+        "filename": "modules/canvaskit/npm_build/types/index.d.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 227,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-06-29T05:54:08Z",
+      "side": 1,
+      "message": "Done, I marked it as deprecated. Note that in a WebGL build, MakeCanvasSurface is an alias for MakeWebGLCanvasSurface and that currently has the SW fallback logic in it. Should that behavior change too?",
+      "parentUuid": "acbd9d17_7da9bde7",
+      "range": {
+        "startLine": 225,
+        "startChar": 0,
+        "endLine": 227,
+        "endChar": 65
+      },
+      "revId": "e32b06a12ee23fed4598c5701b724d1699c66d6f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1176262f_f623d7d5",
         "filename": "modules/canvaskit/npm_build/types/index.d.ts",
         "patchSetId": 1
@@ -394,6 +418,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f2230803_c2e080cb",
+        "filename": "modules/canvaskit/npm_build/types/index.d.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 269,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-06-29T05:54:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "edd770ab_330fc5c0",
+      "range": {
+        "startLine": 269,
+        "startChar": 4,
+        "endLine": 269,
+        "endChar": 17
+      },
+      "revId": "e32b06a12ee23fed4598c5701b724d1699c66d6f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5a4058a9_c3b4e443",
@@ -465,6 +513,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d5809960_d8be1a68",
+        "filename": "modules/canvaskit/npm_build/types/index.d.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 289,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-06-29T05:54:08Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "c1ee757a_f5f37a7a",
+      "range": {
+        "startLine": 289,
+        "startChar": 4,
+        "endLine": 289,
+        "endChar": 25
+      },
+      "revId": "e32b06a12ee23fed4598c5701b724d1699c66d6f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "850a0cda_3c1ea31f",
@@ -502,6 +574,30 @@
       "side": 1,
       "message": "I think this makes the webgpu types available to be included, but you need to use import statements in the index.d.ts to get access to them.",
       "parentUuid": "850a0cda_3c1ea31f",
+      "range": {
+        "startLine": 15,
+        "startChar": 8,
+        "endLine": 15,
+        "endChar": 41
+      },
+      "revId": "e32b06a12ee23fed4598c5701b724d1699c66d6f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b6870ab9_b3325033",
+        "filename": "modules/canvaskit/npm_build/types/tsconfig.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-06-29T05:54:08Z",
+      "side": 1,
+      "message": "I change this statement and the include to what is recommended at https://www.npmjs.com/package/@webgpu/types. In particular the inline include looks like this:\n\n    /// \u003creference types\u003d\"@webgpu/types\" /\u003e\n    \nI went with this approach because an `import` statement resulted in error (about the @webgpu/types index.d.ts file not declaring a module) and this snippet is suggested on the npm page.\n\nPTAL.",
+      "parentUuid": "4d4c37a8_ee13f562",
       "range": {
         "startLine": 15,
         "startChar": 8,
