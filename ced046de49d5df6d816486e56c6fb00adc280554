@@ -16,6 +16,29 @@
       "message": "PTAL",
       "revId": "ced046de49d5df6d816486e56c6fb00adc280554",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d07798a8_62432be9",
+        "filename": "src/gpu/graphite/render/TextRenderer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-06-29T14:52:56Z",
+      "side": 1,
+      "message": "any preference on updating this to be `bool useBitmapText` and then we don\u0027t need to pass MaskFormat into the Renderer factories?",
+      "range": {
+        "startLine": 16,
+        "startChar": 37,
+        "endLine": 16,
+        "endChar": 58
+      },
+      "revId": "ced046de49d5df6d816486e56c6fb00adc280554",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

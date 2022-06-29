@@ -16,6 +16,24 @@
       "message": "I added this because TextureInfo was requiring SK_METAL to be set in text/gpu files, and that felt like it was polluting non-backend stuff too much.",
       "revId": "794fae2c65bd4ff42a5494dc36a97f432fc09c2d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d9e0ef8d_63e10d39",
+        "filename": "src/gpu/graphite/AttachmentTypes.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-06-29T14:52:56Z",
+      "side": 1,
+      "message": "Agreed.",
+      "parentUuid": "2297ca15_3725fc75",
+      "revId": "794fae2c65bd4ff42a5494dc36a97f432fc09c2d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
