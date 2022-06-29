@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9ff4ce89_1a6134d7",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 568,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-06-29T13:40:22Z",
+      "side": 1,
+      "message": "Can we add a comment or TODO here that says something along the lines of \"Local coordinates are currently handled by concatenating an chain of local matrices with the device-to-local matrix, and transforming sk_FragCoord. This currently assumes that all local-coord-requiring shaders include a built-in local matrix, which is not actually the case for runtime effects. For now we manually prepend the expected uniform and set it to the identity matrix.\"",
+      "range": {
+        "startLine": 568,
+        "startChar": 4,
+        "endLine": 568,
+        "endChar": 73
+      },
+      "revId": "56f4d59cb40d704649464a6f242f71254fced93d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
