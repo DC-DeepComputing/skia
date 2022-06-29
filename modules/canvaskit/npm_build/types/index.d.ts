@@ -2662,7 +2662,7 @@ export interface Surface extends EmbindObject<Surface> {
      * loaded, see MakeLazyImageFromTextureSource.
      *
      * Not available for software-backed surfaces.
-     * @param src
+     * @param src - assumed to consist of unpremul data.
      * @param info - If provided, will be used to determine the width/height/format of the
      *               source image. If not, sensible defaults will be used.
      */
