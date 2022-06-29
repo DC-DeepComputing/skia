@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "31587b64_afa3ac41",
+        "filename": "src/gpu/graphite/geom/SubRunData.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-06-29T14:16:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f8c047b2_6305ae5b",
+      "range": {
+        "startLine": 24,
+        "startChar": 0,
+        "endLine": 28,
+        "endChar": 44
+      },
+      "revId": "d1bdd103e4c78e186e4e2975df053ab5fe71543b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b2ce78ea_d86f86c8",
@@ -64,6 +88,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "03896a21_73db07c6",
+        "filename": "src/gpu/graphite/geom/SubRunData.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-06-29T14:16:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b2ce78ea_d86f86c8",
+      "range": {
+        "startLine": 32,
+        "startChar": 14,
+        "endLine": 32,
+        "endChar": 38
+      },
+      "revId": "d1bdd103e4c78e186e4e2975df053ab5fe71543b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0a4fd4f5_ab7de8e4",
@@ -77,6 +125,30 @@
       "writtenOn": "2022-06-29T13:45:55Z",
       "side": 1,
       "message": "I\u0027d vote to just delete these for now. ClipStack uses Shape, which already has them, and if the draw\u0027s Geometry isn\u0027t a Shape, it creates a Shape that\u0027s just the bounding rectangle.  The common API for everything within Geometry I think just has to be the bounds().",
+      "range": {
+        "startLine": 47,
+        "startChar": 4,
+        "endLine": 54,
+        "endChar": 5
+      },
+      "revId": "d1bdd103e4c78e186e4e2975df053ab5fe71543b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5325b2e0_a5c32526",
+        "filename": "src/gpu/graphite/geom/SubRunData.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-06-29T14:16:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0a4fd4f5_ab7de8e4",
       "range": {
         "startLine": 47,
         "startChar": 4,
