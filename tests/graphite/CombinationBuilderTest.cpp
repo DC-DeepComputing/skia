@@ -16,6 +16,8 @@
 #include "src/gpu/graphite/ContextPriv.h"
 #include "tests/graphite/CombinationBuilderTestAccess.h"
 
+#include "include/gpu/graphite/Context.h"
+
 #include <array>
 
 using namespace::skgpu::graphite;
@@ -50,7 +52,7 @@ void no_blend_mode_option_test(SkShaderCodeDictionary* dict, skiatest::Reporter*
     REPORTER_ASSERT(reporter, CombinationBuilderTestAccess::NumCombinations(&builder) == 1);
 }
 
-void big_test_new(SkShaderCodeDictionary* dict, skiatest::Reporter* reporter) {
+void big_test_new(Context* context, skiatest::Reporter* reporter) {
 
     // paintOptions
     //  |- sweepGrad_0 | blendShader_0
@@ -102,7 +104,7 @@ void big_test_new(SkShaderCodeDictionary* dict, skiatest::Reporter* reporter) {
     // now, blend modes
     paintOptions.setBlendModes(evenMoreBlendModes);                             // c array
 
-//    context->precompile({paintOptions});
+    context->precompile(paintOptions);
 }
 
 template <typename T>
@@ -133,7 +135,7 @@ std::vector<sk_sp<T>> create_runtime_combos(
     return { combine };
 }
 
-void runtime_effect_test(SkShaderCodeDictionary* dict, skiatest::Reporter* reporter) {
+void runtime_effect_test(Context* context, skiatest::Reporter* reporter) {
     // paintOptions
     //  |- combineShader
     //  |       0: redShader   | greenShader
@@ -228,7 +230,7 @@ void runtime_effect_test(SkShaderCodeDictionary* dict, skiatest::Reporter* repor
         paintOptions.setBlenders(combinations);
     }
 
-    // context->precompile({paintOptions});
+    context->precompile(paintOptions);
 }
 
 void big_test(SkShaderCodeDictionary* dict, skiatest::Reporter* reporter) {
@@ -338,8 +340,8 @@ void epoch_test(SkShaderCodeDictionary* dict, skiatest::Reporter* reporter) {
 DEF_GRAPHITE_TEST_FOR_CONTEXTS(CombinationBuilderTest, reporter, context) {
     SkShaderCodeDictionary* dict = context->priv().shaderCodeDictionary();
 
-    big_test_new(dict, reporter);
-    runtime_effect_test(dict, reporter);
+    big_test_new(context, reporter);
+    runtime_effect_test(context, reporter);
 
     empty_test(dict, reporter);
     no_shader_option_test(dict, reporter);
