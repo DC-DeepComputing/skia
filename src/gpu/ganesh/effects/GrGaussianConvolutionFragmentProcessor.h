@@ -50,7 +50,7 @@ public:
     // samples per fragment program run in DX9SM2 (32). A sigma param of 4.0
     // on a blur filter gives a kernel width of 25 while a sigma of 5.0
     // would exceed a 32 wide kernel.
-    inline static constexpr int kMaxKernelRadius = 12;
+    inline static const constexpr int kMaxKernelRadius = 12;
 
 private:
     class Impl;
@@ -77,7 +77,7 @@ private:
 
     GR_DECLARE_FRAGMENT_PROCESSOR_TEST
 
-    inline static constexpr int kMaxKernelWidth = kMaxKernelRadius + 1;
+    inline static const constexpr int kMaxKernelWidth = kMaxKernelRadius + 1;
 
     SkV2                  fOffsetsAndKernel[kMaxKernelWidth];
     int                   fRadius;
