@@ -46,6 +46,30 @@
       },
       "revId": "aaeffd5e39fd5698ed8deb53c4f802c7462101d8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "73e80675_465e6e83",
+        "filename": "src/gpu/ganesh/d3d/GrD3DBuffer.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-06-29T15:21:35Z",
+      "side": 1,
+      "message": "So I think I\u0027m leaning towards Jims suggestion, but boy do the APIs not give any great guidances but I think the general tread is towards at least the offsets coming after the buffers (and without a src that means next to size). Some examples:\n\nvkCmdUpdateBuffer(DstBuffer, DstOffset, size);\nvkCmdCopyBuffer(SrcBuffer, DstBuffer, CopyRange // includes offsets and size);\n\nmtl::fillBuffer(buffer, range, value);\nmtl::copyFromBuffer(srcBuffer, srcOffset, dstBuffer, dstOffset, size)",
+      "parentUuid": "1bfdc44b_f7227131",
+      "range": {
+        "startLine": 45,
+        "startChar": 22,
+        "endLine": 45,
+        "endChar": 65
+      },
+      "revId": "aaeffd5e39fd5698ed8deb53c4f802c7462101d8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
