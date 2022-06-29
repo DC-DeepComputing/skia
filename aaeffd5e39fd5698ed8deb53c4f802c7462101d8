@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "75430c82_3cd80a6b",
+        "filename": "src/gpu/ganesh/d3d/GrD3DBuffer.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-06-29T15:00:52Z",
+      "side": 1,
+      "message": "I\u0027m not going to hold it up on this, but I think I prefer the ordering (src, offset, size), i.e. bundling the offset with the size.",
+      "range": {
+        "startLine": 45,
+        "startChar": 22,
+        "endLine": 45,
+        "endChar": 65
+      },
+      "revId": "aaeffd5e39fd5698ed8deb53c4f802c7462101d8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

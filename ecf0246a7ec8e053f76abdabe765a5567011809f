@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "654dd298_9cce7e2c",
+        "filename": "src/gpu/ganesh/mtl/GrMtlCaps.mm",
+        "patchSetId": 9
+      },
+      "lineNbr": 344,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-06-29T15:00:52Z",
+      "side": 0,
+      "message": "Ack",
+      "range": {
+        "startLine": 344,
+        "startChar": 22,
+        "endLine": 344,
+        "endChar": 41
+      },
+      "revId": "ecf0246a7ec8e053f76abdabe765a5567011809f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
