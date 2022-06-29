@@ -71,6 +71,9 @@ public:
     void inverseMapPoints(const SkV4* deviceIn, SkV4* localOut, int count) const;
 
 private:
+    Transform(const SkM44& m, const SkM44& invM, Type type, const SkV2 scale)
+            : fM(m), fInvM(invM), fType(type), fScale(scale) {}
+
     SkM44 fM;
     SkM44 fInvM; // M^-1
     Type  fType;
