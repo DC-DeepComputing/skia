@@ -33,6 +33,24 @@
       "message": "What else is needed to to stop forcing paths?",
       "revId": "6308410cc7094509b95228c1dde7f255c2329178",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6eeb6649_a36da06d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-06-29T20:56:18Z",
+      "side": 1,
+      "message": "This is all that\u0027s needed -- when choosing which SubRun type to create it checks the SDFTControl, and this forces it to always be PathSubRun.",
+      "parentUuid": "d52db34d_10e48811",
+      "revId": "6308410cc7094509b95228c1dde7f255c2329178",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
