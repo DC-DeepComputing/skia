@@ -275,6 +275,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8329f62d_01ba391a",
+        "filename": "modules/canvaskit/npm_build/types/index.d.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 227,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-06-29T20:49:12Z",
+      "side": 1,
+      "message": "SGTM. I filed skbug.com/13481 to track this request.",
+      "parentUuid": "062706da_8890203a",
+      "range": {
+        "startLine": 225,
+        "startChar": 0,
+        "endLine": 227,
+        "endChar": 65
+      },
+      "revId": "e32b06a12ee23fed4598c5701b724d1699c66d6f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1176262f_f623d7d5",
