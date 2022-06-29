@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "db5eb9e1_c70f7e42",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 578,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-06-29T19:00:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "12f80d5f_ee0d47e1",
+      "range": {
+        "startLine": 578,
+        "startChar": 0,
+        "endLine": 578,
+        "endChar": 104
+      },
+      "revId": "63d59cd152709b4155ef8eb8ea67d6c577f23914",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "69409f94_b5c66550",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-06-29T18:48:43Z",
       "side": 1,
       "message": "Not necessary anymore.",
+      "range": {
+        "startLine": 580,
+        "startChar": 31,
+        "endLine": 580,
+        "endChar": 40
+      },
+      "revId": "63d59cd152709b4155ef8eb8ea67d6c577f23914",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "826821cf_6a879c37",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 580,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-06-29T19:00:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "69409f94_b5c66550",
       "range": {
         "startLine": 580,
         "startChar": 31,
