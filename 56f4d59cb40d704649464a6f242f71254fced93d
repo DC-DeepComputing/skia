@@ -22,6 +22,30 @@
       },
       "revId": "56f4d59cb40d704649464a6f242f71254fced93d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "09848dc8_e9a676de",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 568,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-06-29T13:47:22Z",
+      "side": 1,
+      "message": "I\u0027m not sure we have a plan to do anything different than this, though. Let\u0027s discuss offline.",
+      "parentUuid": "9ff4ce89_1a6134d7",
+      "range": {
+        "startLine": 568,
+        "startChar": 4,
+        "endLine": 568,
+        "endChar": 73
+      },
+      "revId": "56f4d59cb40d704649464a6f242f71254fced93d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
