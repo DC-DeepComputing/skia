@@ -39,6 +39,30 @@
       },
       "revId": "ced046de49d5df6d816486e56c6fb00adc280554",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8bd61167_bf0cd9a7",
+        "filename": "src/gpu/graphite/render/TextRenderer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-06-29T17:33:16Z",
+      "side": 1,
+      "message": "We\u0027d end up duplicating the code that determines whether we use bitmap or mask for  both DirectMaskSubRun and TransformedMaskSubRun.",
+      "parentUuid": "d07798a8_62432be9",
+      "range": {
+        "startLine": 16,
+        "startChar": 37,
+        "endLine": 16,
+        "endChar": 58
+      },
+      "revId": "ced046de49d5df6d816486e56c6fb00adc280554",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
