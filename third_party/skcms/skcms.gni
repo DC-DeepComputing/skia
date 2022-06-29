@@ -2,5 +2,7 @@
 #
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
+#
+# This file is deprecated - clients should use //modules/skcms/skcms.gni
 
 skcms_sources = [ "skcms.cc" ]
