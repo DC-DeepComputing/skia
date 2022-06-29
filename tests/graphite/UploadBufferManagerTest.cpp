@@ -21,7 +21,6 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(UploadBufferManagerTest, reporter, context) {
     std::unique_ptr<Recorder> recorder = context->makeRecorder();
     ResourceProvider* resourceProvider = recorder->priv().resourceProvider();
     UploadBufferManager* bufferManager = recorder->priv().uploadBufferManager();
-    sk_sp<CommandBuffer> commandBuffer = resourceProvider->createCommandBuffer();
 
     // The test source data.
     char src[8] = {
@@ -83,8 +82,9 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(UploadBufferManagerTest, reporter, context) {
     REPORTER_ASSERT(reporter,
                     memcmp(smBufferMap, expectedSmBufferMap, sizeof(expectedSmBufferMap)) == 0);
 
-    // Transfer resources to the command buffer.
-    bufferManager->transferToCommandBuffer(commandBuffer.get());
+    // Snap a Recording from the Recorder. This will transfer resources from the UploadBufferManager
+    // to the Recording.
+    auto recording = recorder->snap();
 
     // Test writes with a required alignment.
     auto [alWriter0, alBufferInfo0] = bufferManager->getUploadWriter(6, 4);
