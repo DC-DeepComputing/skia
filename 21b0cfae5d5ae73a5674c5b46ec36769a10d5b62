@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b935abee_e3ebddd4",
+        "filename": "src/gpu/ganesh/effects/GrGaussianConvolutionFragmentProcessor.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-06-29T13:29:15Z",
+      "side": 1,
+      "message": "Had to switch this one to using the array size instead of the array itself because Impl does not actually own fOffsetsAndKerel. This is owned by the parent class.",
+      "range": {
+        "startLine": 110,
+        "startChar": 4,
+        "endLine": 110,
+        "endChar": 45
+      },
+      "revId": "21b0cfae5d5ae73a5674c5b46ec36769a10d5b62",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "58377c0c_f93d6348",
+        "filename": "src/gpu/ganesh/gl/GrGLGpu.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 406,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-06-29T13:29:15Z",
+      "side": 1,
+      "message": "Switched to using the array size constant.",
+      "range": {
+        "startLine": 406,
+        "startChar": 4,
+        "endLine": 406,
+        "endChar": 66
+      },
+      "revId": "21b0cfae5d5ae73a5674c5b46ec36769a10d5b62",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
