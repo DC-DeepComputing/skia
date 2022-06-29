@@ -15,7 +15,7 @@
 class CombinationBuilderTestAccess {
 public:
     static int NumCombinations(SkCombinationBuilder* builder) {
-        return builder->numCombinations();
+        return builder->numCombinationsMoved();
     }
     static std::vector<SkUniquePaintParamsID> BuildCombinations(SkShaderCodeDictionary* dict,
                                                                 SkCombinationBuilder* builder) {

@@ -150,10 +150,10 @@ private:
     friend class SkCombinationOption;          // for 'addOptionInternal' and 'arena'
     friend class CombinationBuilderTestAccess; // for 'num*Combinations' and 'epoch'
 
-    int numShaderCombinations() const;
+    int numShaderCombinationsMoved() const;
     int numBlendModeCombinations() const;
-    int numCombinations() {
-        return this->numShaderCombinations() * this->numBlendModeCombinations();
+    int numCombinationsMoved() {
+        return this->numShaderCombinationsMoved() * this->numBlendModeCombinations();
     }
 
     // 'desiredCombination' must be less than numCombinations

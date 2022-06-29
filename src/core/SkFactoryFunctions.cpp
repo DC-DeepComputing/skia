@@ -12,6 +12,7 @@
 #include "src/core/SkFactoryFunctions.h"
 
 #include "src/core/SkPrecompile.h"
+#include "src/core/SkPrecompileBasePriv.h"
 
 // TODO: wrap this in an  SK_PRECOMPILE check
 
@@ -23,6 +24,14 @@ public:
     std::optional<SkBlendMode> asBlendMode() const final { return fBlendMode; }
 
 private:
+    int numIntrinsicCombinations() const override {
+        return 1;
+    }
+
+    int numChildCombinations() const override {
+        return 1;
+    }
+
     SkBlendMode fBlendMode;
 };
 
@@ -30,10 +39,21 @@ sk_sp<SkPrecompileBlender> SkPrecompileBlender::Mode(SkBlendMode blendMode) {
     return sk_make_sp<SkPrecompileBlendModeBlender>(blendMode);
 }
 
+template<class T>
+int num_combinations(const std::vector<sk_sp<T>>& v) {
+    int numCombinations = 0;
+
+    for (const sk_sp<T>& e : v) {
+        numCombinations += e->priv().numCombinations1();
+    }
+
+    return numCombinations;
+}
+
 //--------------------------------------------------------------------------------------------------
-class SkBlendPrecompileShader : public SkPrecompileShader {
+class SkPrecompileBlendShader : public SkPrecompileShader {
 public:
-    SkBlendPrecompileShader(SkSpan<const sk_sp<SkPrecompileBlender>> blenders,
+    SkPrecompileBlendShader(SkSpan<const sk_sp<SkPrecompileBlender>> blenders,
                             SkSpan<const sk_sp<SkPrecompileShader>> dsts,
                             SkSpan<const sk_sp<SkPrecompileShader>> srcs)
             : fBlenders(blenders.begin(), blenders.end())
@@ -42,6 +62,15 @@ public:
     }
 
 private:
+    int numIntrinsicCombinations() const override {
+        return 1;
+    }
+
+    int numChildCombinations() const override {
+        return num_combinations<SkPrecompileShader>(fDsts) *
+               num_combinations<SkPrecompileShader>(fSrcs);
+    }
+
     std::vector<sk_sp<SkPrecompileBlender>> fBlenders;
     std::vector<sk_sp<SkPrecompileShader>> fDsts;
     std::vector<sk_sp<SkPrecompileShader>> fSrcs;
@@ -56,7 +85,7 @@ sk_sp<SkPrecompileShader> SkPrecompileShaders::Blend(
         SkSpan<const sk_sp<SkPrecompileBlender>> blenders,
         SkSpan<const sk_sp<SkPrecompileShader>> dsts,
         SkSpan<const sk_sp<SkPrecompileShader>> srcs) {
-    return sk_make_sp<SkBlendPrecompileShader>(std::move(blenders),
+    return sk_make_sp<SkPrecompileBlendShader>(std::move(blenders),
                                                std::move(dsts), std::move(srcs));
 }
 
@@ -70,7 +99,7 @@ sk_sp<SkPrecompileShader> SkPrecompileShaders::Blend(
         tmp.emplace_back(SkPrecompileBlender::Mode(bm));
     }
 
-    return sk_make_sp<SkBlendPrecompileShader>(tmp, std::move(dsts), std::move(srcs));
+    return sk_make_sp<SkPrecompileBlendShader>(tmp, std::move(dsts), std::move(srcs));
 }
 
 sk_sp<SkPrecompileShader> SkPrecompileShaders::Image() {
@@ -195,6 +224,27 @@ public:
     }
 
 private:
+    int numIntrinsicCombinations() const override {
+        // Externally supplied runtime effects cannot alter/specialize their code
+        return 1;
+    }
+
+    int numChildCombinations() const override {
+        int numChildCombinations = 1;
+
+        for (const std::vector<SkPrecompileChildPtr>& oneChildsOptions : fChildOptions) {
+            int oneChildsCnt = 1;
+
+            for (const SkPrecompileChildPtr& childOption : oneChildsOptions) {
+                oneChildsCnt += childOption.base()->priv().numCombinations1();
+            }
+
+            numChildCombinations *= oneChildsCnt;
+        }
+
+        return numChildCombinations;
+    }
+
     sk_sp<SkRuntimeEffect> fEffect;
     std::vector<std::vector<SkPrecompileChildPtr>> fChildOptions;
 };
