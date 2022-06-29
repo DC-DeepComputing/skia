@@ -46,6 +46,30 @@
       },
       "revId": "ecf0246a7ec8e053f76abdabe765a5567011809f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d77277b5_2599d0e5",
+        "filename": "src/gpu/ganesh/mtl/GrMtlCaps.mm",
+        "patchSetId": 9
+      },
+      "lineNbr": 344,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-06-29T15:14:02Z",
+      "side": 0,
+      "message": "I did it that way to match the terminology in the Metal feature set tables, but if it\u0027s confusing we should change it.",
+      "parentUuid": "7ba040e6_98a0f2f1",
+      "range": {
+        "startLine": 344,
+        "startChar": 22,
+        "endLine": 344,
+        "endChar": 41
+      },
+      "revId": "ecf0246a7ec8e053f76abdabe765a5567011809f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
