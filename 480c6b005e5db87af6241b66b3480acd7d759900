@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dda4c805_5cd364e1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5145
+      },
+      "writtenOn": "2022-06-29T13:00:36Z",
+      "side": 1,
+      "message": "Flutter canary is failing to upload a change because the license script is failing with:\n```\nerror searching for copyright in: ../../../third_party/skia/include/third_party/skcms/BUILD.bazel\nfile has no detectable license and no in-scope default license file\nerror searching for copyright in: ../../../third_party/skia/include/third_party/skcms/skcms.h\"\nfailed to find accompanying \"LICENSE\" in ../../../third_party/skia/include/third_party/skcms\n```",
+      "revId": "480c6b005e5db87af6241b66b3480acd7d759900",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
