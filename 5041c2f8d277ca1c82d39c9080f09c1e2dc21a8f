@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "02c0f0c8_bed4a68e",
+        "filename": "include/private/SkSLModifiers.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-06-29T17:27:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1241b91a_5ca5cd80",
+      "range": {
+        "startLine": 49,
+        "startChar": 8,
+        "endLine": 49,
+        "endChar": 25
+      },
+      "revId": "5041c2f8d277ca1c82d39c9080f09c1e2dc21a8f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5db747be_bbafb7ea",
@@ -61,6 +85,24 @@
       "writtenOn": "2022-06-29T16:06:19Z",
       "side": 1,
       "message": "nit: extra newline",
+      "revId": "5041c2f8d277ca1c82d39c9080f09c1e2dc21a8f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e5716bba_0b0ac496",
+        "filename": "src/sksl/codegen/SkSLMetalCodeGenerator.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 5640
+      },
+      "writtenOn": "2022-06-29T17:27:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5db747be_bbafb7ea",
       "revId": "5041c2f8d277ca1c82d39c9080f09c1e2dc21a8f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
