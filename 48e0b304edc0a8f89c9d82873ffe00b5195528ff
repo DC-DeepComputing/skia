@@ -16,6 +16,24 @@
       "message": "Tag skbug.com/13477 in the commit message",
       "revId": "48e0b304edc0a8f89c9d82873ffe00b5195528ff",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "554caadd_7c7d210e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-06-29T14:12:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "52681f17_4824494a",
+      "revId": "48e0b304edc0a8f89c9d82873ffe00b5195528ff",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
