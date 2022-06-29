@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f973e85c_444153db",
+        "filename": "include/private/SkSLModifiers.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-06-29T15:46:15Z",
+      "side": 1,
+      "message": "nit: is this actually a real GLSL modifier? I couldn\u0027t find it in the 4.6.0 docs anywhere. Not sure where GLSL Compute is actually documented honestly.",
+      "range": {
+        "startLine": 49,
+        "startChar": 8,
+        "endLine": 49,
+        "endChar": 25
+      },
+      "revId": "5041c2f8d277ca1c82d39c9080f09c1e2dc21a8f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
