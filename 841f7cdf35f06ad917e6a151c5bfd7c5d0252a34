@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8cd82433_5e2d3534",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-06-29T18:44:53Z",
+      "side": 1,
+      "message": "Added Brian for the public operator addition to SkV2.",
+      "revId": "841f7cdf35f06ad917e6a151c5bfd7c5d0252a34",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
