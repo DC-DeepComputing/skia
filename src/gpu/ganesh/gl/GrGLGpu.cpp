@@ -3152,7 +3152,7 @@ bool GrGLGpu::createCopyProgram(GrTexture* srcTex) {
                                                    sizeof(vdata),
                                                    GrGpuBufferType::kVertex,
                                                    kStatic_GrAccessPattern);
-        fCopyProgramArrayBuffer->updateData(vdata, /*offset=*/0, sizeof(vdata));
+        fCopyProgramArrayBuffer->updateData(vdata, /*offset=*/0, sizeof(vdata), /*preserve=*/false);
     }
     if (!fCopyProgramArrayBuffer) {
         return false;
@@ -3590,7 +3590,10 @@ bool GrGLGpu::onRegenerateMipMapLevels(GrTexture* texture) {
                                                      sizeof(vdata),
                                                      GrGpuBufferType::kVertex,
                                                      kStatic_GrAccessPattern);
-        fMipmapProgramArrayBuffer->updateData(vdata, /*offset=*/0, sizeof(vdata));
+        fMipmapProgramArrayBuffer->updateData(vdata, /*offset=*/0,
+
+                                              sizeof(vdata),
+                                              /*preserve=*/false);
     }
     if (!fMipmapProgramArrayBuffer) {
         return false;
