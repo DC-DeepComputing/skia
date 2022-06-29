@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bfbdb43d_c2c53e47",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5145
+      },
+      "writtenOn": "2022-06-29T22:05:46Z",
+      "side": 1,
+      "message": "SkCQ is failing to submit this because of:\n```\nFailed to submit 2 changes due to the following problems:\\nChange 554339: Depends on change that was not submitted. Commit 41ab5da9ba00eac54a56b019a9896dda5207640b depends on commit e8eb104bf359cf5243bcfd69a08da0ee634cbabd, which is outdated patch set 1 of change 554338. The latest patch set is 2\n```",
+      "revId": "41ab5da9ba00eac54a56b019a9896dda5207640b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
