@@ -43,7 +43,10 @@ namespace skgpu::v1 { class SurfaceDrawContext; }
 #if defined(SK_GRAPHITE_ENABLED)
 #include "src/gpu/graphite/geom/SubRunData.h"
 
-namespace skgpu::graphite { class Recorder; }
+namespace skgpu::graphite {
+class Recorder;
+class Renderer;
+}
 #endif
 
 namespace sktext::gpu {
@@ -93,8 +96,14 @@ public:
 #endif
 
 #if defined(SK_GRAPHITE_ENABLED)
-    // bounds of the stored data
-    virtual SkRect bounds() const = 0;
+    virtual std::tuple<bool, int> regenerateAtlas(
+            int begin, int end, skgpu::graphite::Recorder*) const = 0;
+
+    // bounds of the stored data and matrix to transform it to device space
+    virtual std::tuple<SkRect, SkM44> boundsAndDeviceMatrix(const SkMatrix& ctm,
+                                                            SkPoint drawOrigin) const = 0;
+
+    virtual const skgpu::graphite::Renderer* renderer() const = 0;
 
 //    virtual void fillVertexData(
 //            void* vertexDst, int offset, int count,
@@ -102,9 +111,6 @@ public:
 //            const SkMatrix& drawMatrix,
 //            SkPoint drawOrigin,
 //            SkIRect clip) const {}
-
-    virtual std::tuple<bool, int> regenerateAtlas(
-        int begin, int end, skgpu::graphite::Recorder*) const = 0;
 #endif
 
     virtual void testingOnly_packedGlyphIDToGlyph(StrikeCache* cache) const = 0;
