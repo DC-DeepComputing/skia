@@ -22,6 +22,47 @@
       },
       "revId": "5041c2f8d277ca1c82d39c9080f09c1e2dc21a8f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1241b91a_5ca5cd80",
+        "filename": "include/private/SkSLModifiers.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-06-29T16:06:19Z",
+      "side": 1,
+      "message": "Ah, I see the comment below says it\u0027s \"shared\". Maybe the comment belongs here too.",
+      "parentUuid": "f973e85c_444153db",
+      "range": {
+        "startLine": 49,
+        "startChar": 8,
+        "endLine": 49,
+        "endChar": 25
+      },
+      "revId": "5041c2f8d277ca1c82d39c9080f09c1e2dc21a8f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5db747be_bbafb7ea",
+        "filename": "src/sksl/codegen/SkSLMetalCodeGenerator.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-06-29T16:06:19Z",
+      "side": 1,
+      "message": "nit: extra newline",
+      "revId": "5041c2f8d277ca1c82d39c9080f09c1e2dc21a8f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
