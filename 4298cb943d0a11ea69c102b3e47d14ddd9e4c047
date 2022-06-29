@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8b3874b7_45d7b286",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-06-29T15:24:33Z",
+      "side": 1,
+      "message": "Mercifully, I believe this will be my last major GrGpuBuffer change.",
+      "revId": "4298cb943d0a11ea69c102b3e47d14ddd9e4c047",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f74b06ba_29246838",
+        "filename": "src/gpu/ganesh/dawn/GrDawnBuffer.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 224,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-06-29T15:24:33Z",
+      "side": 1,
+      "message": "This now seemed different enough from the non blocking and public asyncMap method above to not try to share code. But open to suggestions.",
+      "revId": "4298cb943d0a11ea69c102b3e47d14ddd9e4c047",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
