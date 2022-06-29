@@ -16,6 +16,8 @@
 #include "src/gpu/graphite/ContextPriv.h"
 #include "tests/graphite/CombinationBuilderTestAccess.h"
 
+#include "include/gpu/graphite/Context.h"
+
 #include <array>
 
 using namespace::skgpu::graphite;
@@ -102,7 +104,7 @@ void big_test_new(SkShaderCodeDictionary* dict, skiatest::Reporter* reporter) {
     // now, blend modes
     paintOptions.setBlendModes(evenMoreBlendModes);                             // c array
 
-//    context->precompile({paintOptions});
+    context->precompile(paintOptions);
 }
 
 template <typename T>
@@ -228,7 +230,7 @@ void runtime_effect_test(SkShaderCodeDictionary* dict, skiatest::Reporter* repor
         paintOptions.setBlenders(combinations);
     }
 
-    // context->precompile({paintOptions});
+    context->precompile(paintOptions);
 }
 
 void big_test(SkShaderCodeDictionary* dict, skiatest::Reporter* reporter) {
