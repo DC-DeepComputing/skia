@@ -70,6 +70,30 @@
       },
       "revId": "ecf0246a7ec8e053f76abdabe765a5567011809f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f9509ffa_812d1723",
+        "filename": "src/gpu/ganesh/mtl/GrMtlCaps.mm",
+        "patchSetId": 9
+      },
+      "lineNbr": 344,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-06-29T15:17:37Z",
+      "side": 0,
+      "message": "Ah gotcha. I didn\u0027t realize that\u0027s how they documented it.",
+      "parentUuid": "d77277b5_2599d0e5",
+      "range": {
+        "startLine": 344,
+        "startChar": 22,
+        "endLine": 344,
+        "endChar": 41
+      },
+      "revId": "ecf0246a7ec8e053f76abdabe765a5567011809f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
