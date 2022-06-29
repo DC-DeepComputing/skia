@@ -16,6 +16,75 @@
       "message": "Updated to set the Transform.",
       "revId": "d1bdd103e4c78e186e4e2975df053ab5fe71543b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f8c047b2_6305ae5b",
+        "filename": "src/gpu/graphite/geom/SubRunData.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-06-29T13:45:55Z",
+      "side": 1,
+      "message": "I think this can be `\u003d default` too.",
+      "range": {
+        "startLine": 24,
+        "startChar": 0,
+        "endLine": 28,
+        "endChar": 44
+      },
+      "revId": "d1bdd103e4c78e186e4e2975df053ab5fe71543b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b2ce78ea_d86f86c8",
+        "filename": "src/gpu/graphite/geom/SubRunData.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-06-29T13:45:55Z",
+      "side": 1,
+      "message": "How come this isn\u0027t just sk_sp\u003cSkRefCnt\u003e?",
+      "range": {
+        "startLine": 32,
+        "startChar": 14,
+        "endLine": 32,
+        "endChar": 38
+      },
+      "revId": "d1bdd103e4c78e186e4e2975df053ab5fe71543b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0a4fd4f5_ab7de8e4",
+        "filename": "src/gpu/graphite/geom/SubRunData.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-06-29T13:45:55Z",
+      "side": 1,
+      "message": "I\u0027d vote to just delete these for now. ClipStack uses Shape, which already has them, and if the draw\u0027s Geometry isn\u0027t a Shape, it creates a Shape that\u0027s just the bounding rectangle.  The common API for everything within Geometry I think just has to be the bounds().",
+      "range": {
+        "startLine": 47,
+        "startChar": 4,
+        "endLine": 54,
+        "endChar": 5
+      },
+      "revId": "d1bdd103e4c78e186e4e2975df053ab5fe71543b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
