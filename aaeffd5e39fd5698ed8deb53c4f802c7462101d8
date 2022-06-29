@@ -22,6 +22,30 @@
       },
       "revId": "aaeffd5e39fd5698ed8deb53c4f802c7462101d8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1bfdc44b_f7227131",
+        "filename": "src/gpu/ganesh/d3d/GrD3DBuffer.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-06-29T15:03:26Z",
+      "side": 1,
+      "message": "I went back and forth and am fine with either. We can let Greg decide!",
+      "parentUuid": "75430c82_3cd80a6b",
+      "range": {
+        "startLine": 45,
+        "startChar": 22,
+        "endLine": 45,
+        "endChar": 65
+      },
+      "revId": "aaeffd5e39fd5698ed8deb53c4f802c7462101d8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
