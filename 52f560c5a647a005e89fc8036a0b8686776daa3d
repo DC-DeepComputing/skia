@@ -60,6 +60,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "42b78d0e_251c7849",
+        "filename": "src/core/SkArenaAlloc.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-06-29T13:28:32Z",
+      "side": 1,
+      "message": "I agree that we should not be relying on zero\u0027ing the memory here.",
+      "parentUuid": "1a5bc9ce_3f0b2c99",
+      "range": {
+        "startLine": 92,
+        "startChar": 40,
+        "endLine": 92,
+        "endChar": 55
+      },
+      "revId": "52f560c5a647a005e89fc8036a0b8686776daa3d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a7411ee3_a953cde1",
         "filename": "src/core/SkArenaAlloc.cpp",
         "patchSetId": 1
