@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e973250b_63a92227",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-06-30T13:25:53Z",
+      "side": 1,
+      "message": "Hello Jim,\n\nSorry for the second attempt here. I was going too fast, and tried to cut \ntesting corners. I have test the GMs here, and they look good.\n\nI don\u0027t know why the last CL didn\u0027t show any gold differences in the results from\nthe DRY-RUN. There certainly should have been some.",
+      "revId": "3398b41760ee3ead481c66c6184f8534271645f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
