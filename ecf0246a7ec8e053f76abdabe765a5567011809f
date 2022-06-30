@@ -16,6 +16,24 @@
       "message": "I didn\u0027t change the `GrContext` here to `GrDirectContext` as I think GrContext can be a general idea.\nCorrect me if I\u0027m wrong :)",
       "revId": "ecf0246a7ec8e053f76abdabe765a5567011809f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0734c474_6a42cbc3",
+        "filename": "site/docs/user/api/skcanvas_creation.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-06-30T13:11:23Z",
+      "side": 0,
+      "message": "Yes, there is another subclass called GrRecordingContext. Though it isn\u0027t directly created by the user. This paragraph is probably due for a rewrite but we can save that for another change.",
+      "parentUuid": "77133b3b_36c203e2",
+      "revId": "ecf0246a7ec8e053f76abdabe765a5567011809f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
