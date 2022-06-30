@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "858d81c3_e2f0c274",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11104
+      },
+      "writtenOn": "2022-06-30T16:43:49Z",
+      "side": 1,
+      "message": "LGTM, don\u0027t have permission +1 though. But you have rubber stamp",
+      "revId": "cdef3fbb82471bc00bc69bf7135264309f47cfb2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
