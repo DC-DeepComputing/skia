@@ -22,6 +22,30 @@
       },
       "revId": "3ec5da6d843b39b9c3ee688dfdea84da0ca4f18a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c98d5e0c_c350f06d",
+        "filename": "src/gpu/graphite/UniformManager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-06-30T20:08:04Z",
+      "side": 1,
+      "message": "This was taken from Brian\u0027s original CL. It is likely it doesn\u0027t match what we\u0027re supposed to do in the Metal case.",
+      "parentUuid": "ae198e91_74a4c991",
+      "range": {
+        "startLine": 135,
+        "startChar": 28,
+        "endLine": 135,
+        "endChar": 34
+      },
+      "revId": "3ec5da6d843b39b9c3ee688dfdea84da0ca4f18a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
