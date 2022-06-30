@@ -47,29 +47,6 @@ private:
 
 } // namespace
 
-sk_sp<SkShader> SkShaders::Blend(SkBlendMode mode, sk_sp<SkShader> dst, sk_sp<SkShader> src) {
-    if (!src || !dst) {
-        return nullptr;
-    }
-    switch (mode) {
-        case SkBlendMode::kClear: return Color(0);
-        case SkBlendMode::kDst:   return dst;
-        case SkBlendMode::kSrc:   return src;
-        default: break;
-    }
-    return sk_sp<SkShader>(new SkShader_Blend(mode, std::move(dst), std::move(src)));
-}
-
-sk_sp<SkShader> SkShaders::Blend(sk_sp<SkBlender> blender, sk_sp<SkShader> dst, sk_sp<SkShader> src) {
-    if (!src || !dst) {
-        return nullptr;
-    }
-    if (!blender) {
-        return SkShaders::Blend(SkBlendMode::kSrcOver, std::move(dst), std::move(src));
-    }
-    return sk_sp<SkShader>(new SkShader_Blend(std::move(blender), std::move(dst), std::move(src)));
-}
-
 ///////////////////////////////////////////////////////////////////////////////
 
 SkShader_Blend::SkShader_Blend(sk_sp<SkBlender> blender, sk_sp<SkShader> dst, sk_sp<SkShader> src)

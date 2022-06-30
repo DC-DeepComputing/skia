@@ -73,14 +73,6 @@ void SkColor4Shader::flatten(SkWriteBuffer& buffer) const {
     }
 }
 
-
-sk_sp<SkShader> SkShaders::Color(const SkColor4f& color, sk_sp<SkColorSpace> space) {
-    if (!SkScalarsAreFinite(color.vec(), 4)) {
-        return nullptr;
-    }
-    return sk_make_sp<SkColor4Shader>(color, std::move(space));
-}
-
 bool SkColorShader::onAppendStages(const SkStageRec& rec) const {
     SkColor4f color = SkColor4f::FromColor(fColor);
     SkColorSpaceXformSteps(sk_srgb_singleton(), kUnpremul_SkAlphaType,
