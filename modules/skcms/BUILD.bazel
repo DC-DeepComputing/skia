@@ -2,6 +2,8 @@ load("//bazel:macros.bzl", "cc_library", "exports_files_legacy")
 
 licenses(["notice"])
 
+exports_files(["LICENSE"])
+
 exports_files_legacy()
 
 cc_library(
