@@ -16,6 +16,23 @@
       "message": "Fixed compiler warning for Parse.cpp",
       "revId": "3bc98af4f5543391c6abc240eeaa28e14828be6d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "65044cf0_c718160b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-06-30T14:52:41Z",
+      "side": 1,
+      "message": "John, do you understand the Bazel failure? It wants me to include private headers from stdlib. What?",
+      "revId": "3bc98af4f5543391c6abc240eeaa28e14828be6d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
