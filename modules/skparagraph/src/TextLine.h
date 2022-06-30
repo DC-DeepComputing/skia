@@ -120,6 +120,9 @@ public:
 
     bool endsWithHardLineBreak() const;
 
+    using LineVisitor = std::function<std::vector<uint8_t>(std::vector<uint8_t> logical)>;
+    void correctBidis(ParagraphImpl* owner, const LineVisitor&);
+
 private:
 
     std::unique_ptr<Run> shapeEllipsis(const SkString& ellipsis, const Run& run);

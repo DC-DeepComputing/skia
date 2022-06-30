@@ -133,7 +133,7 @@ void ParagraphImpl::layout(SkScalar rawWidth) {
 
     if (fState < kShaped) {
         this->fCodeUnitProperties.reset();
-        this->fCodeUnitProperties.push_back_n(fText.size() + 1, CodeUnitFlags::kNoCodeUnitFlag);
+        this->fCodeUnitProperties.push_back_n(fText.size() + 1, SkUnicode::CodeUnitFlags::kNoCodeUnitFlag);
         this->fWords.clear();
         this->fBidiRegions.clear();
         this->fUTF8IndexForUTF16Index.reset();
@@ -240,67 +240,46 @@ bool ParagraphImpl::computeCodeUnitProperties() {
         return false;
     }
 
-    // Collect all spaces and some extra information
+    // Collect all Unicode information
     // (and also substitute \t with a space while we are at it)
+    if (!fUnicode->getAllCodepoints(fText.c_str(),
+                                    fText.size(),
+                                    this->paragraphStyle().getReplaceTabCharacters(),
+                                    &fCodeUnitProperties)) {
+        return false;
+    }
+
+    // Get some extra information
     fTrailingSpaces = fText.size();
     TextIndex firstWhitespace = EMPTY_INDEX;
-    fUnicode->forEachCodepoint(fText.c_str(), fText.size(),
-        [this, &firstWhitespace](SkUnichar unichar, int32_t start, int32_t end, int32_t count) {
-            if (unichar == '\t' && end - start == 1) {
-                if (this->paragraphStyle().getReplaceTabCharacters()) {
-                    fText[start] = ' ';
-                    unichar = ' ';
-                }
+    for (auto i = 0ul; i < fCodeUnitProperties.size(); ++i) {
+        auto& flags = fCodeUnitProperties[i];
+        if ((flags & SkUnicode::CodeUnitFlags::kPartOfWhiteSpaceBreak) != 0) {
+            if (fTrailingSpaces == fText.size()) {
+                fTrailingSpaces = i;
             }
-
-            if (fUnicode->isWhitespace(unichar)) {
-                for (auto i = start; i < end; ++i) {
-                    fCodeUnitProperties[i] |=  CodeUnitFlags::kPartOfWhiteSpaceBreak;
-                }
-                if (fTrailingSpaces  == fText.size()) {
-                    fTrailingSpaces = start;
-                }
-                if (firstWhitespace == EMPTY_INDEX) {
-                    firstWhitespace = start;
-                }
-            } else {
-                fTrailingSpaces = fText.size();
+            if (firstWhitespace == EMPTY_INDEX) {
+                firstWhitespace = i;
             }
-            if (fUnicode->isSpace(unichar)) {
-                for (auto i = start; i < end; ++i) {
-                    fCodeUnitProperties[i] |=  CodeUnitFlags::kPartOfIntraWordBreak;
-                }
-            }
-            if (fUnicode->isHardBreak(unichar)) {
-                fHasLineBreaks = true;
-            }
-       });
+        } else {
+            fTrailingSpaces = fText.size();
+        }
+        if ((flags & SkUnicode::CodeUnitFlags::kHardLineBreakBefore) != 0) {
+            fHasLineBreaks = true;
+        }
+    }
 
     if (firstWhitespace < fTrailingSpaces) {
         fHasWhitespacesInside = true;
     }
 
-    // Get line breaks
-    std::vector<SkUnicode::LineBreakBefore> lineBreaks;
-    if (!fUnicode->getLineBreaks(fText.c_str(), fText.size(), &lineBreaks)) {
-        return false;
-    }
-    for (auto& lineBreak : lineBreaks) {
-        fCodeUnitProperties[lineBreak.pos] |= lineBreak.breakType == SkUnicode::LineBreakType::kHardLineBreak
-                                           ? CodeUnitFlags::kHardLineBreakBefore
-                                           : CodeUnitFlags::kSoftLineBreakBefore;
-    }
-
-    // Get graphemes
-    std::vector<SkUnicode::Position> graphemes;
-    if (!fUnicode->getGraphemes(fText.c_str(), fText.size(), &graphemes)) {
-        return false;
-    }
-    for (auto pos : graphemes) {
-        fCodeUnitProperties[pos] |= CodeUnitFlags::kGraphemeStart;
-    }
-
     return true;
+}
+
+void ParagraphImpl::correctLines(const LineVisitor& visitor) {
+    for (auto& line : fLines) {
+        line.correctBidis(this, visitor);
+    }
 }
 
 static bool is_ascii_7bit_space(int c) {
@@ -350,10 +329,10 @@ Cluster::Cluster(ParagraphImpl* owner,
         }
     } else {
         for (auto i = fTextRange.start; i < fTextRange.end; ++i) {
-            if (fOwner->codeUnitHasProperty(i, CodeUnitFlags::kPartOfWhiteSpaceBreak)) {
+            if (fOwner->codeUnitHasProperty(i, SkUnicode::CodeUnitFlags::kPartOfWhiteSpaceBreak)) {
                 ++whiteSpacesBreakLen;
             }
-            if (fOwner->codeUnitHasProperty(i, CodeUnitFlags::kPartOfIntraWordBreak)) {
+            if (fOwner->codeUnitHasProperty(i, SkUnicode::CodeUnitFlags::kPartOfIntraWordBreak)) {
                 ++intraWordBreakLen;
             }
         }
@@ -361,7 +340,7 @@ Cluster::Cluster(ParagraphImpl* owner,
 
     fIsWhiteSpaceBreak = whiteSpacesBreakLen == fTextRange.width();
     fIsIntraWordBreak = intraWordBreakLen == fTextRange.width();
-    fIsHardBreak = fOwner->codeUnitHasProperty(fTextRange.end, CodeUnitFlags::kHardLineBreakBefore);
+    fIsHardBreak = fOwner->codeUnitHasProperty(fTextRange.end, SkUnicode::CodeUnitFlags::kHardLineBreakBefore);
 }
 
 SkScalar Run::calculateWidth(size_t start, size_t end, bool clip) const {
@@ -468,7 +447,7 @@ void ParagraphImpl::buildClusterTable() {
     int cluster_count = 1;
     for (auto& run : fRuns) {
         cluster_count += run.isPlaceholder() ? 1 : run.size();
-        fCodeUnitProperties[run.fTextRange.start] |= CodeUnitFlags::kGraphemeStart;
+        fCodeUnitProperties[run.fTextRange.start] |= SkUnicode::CodeUnitFlags::kGraphemeStart;
     }
     fClusters.reserve_back(cluster_count);
 
@@ -483,8 +462,8 @@ void ParagraphImpl::buildClusterTable() {
             }
             // There are no glyphs but we want to have one cluster
             fClusters.emplace_back(this, runIndex, 0ul, 1ul, this->text(run.textRange()), run.advance().fX, run.advance().fY);
-            fCodeUnitProperties[run.textRange().start] |= CodeUnitFlags::kSoftLineBreakBefore;
-            fCodeUnitProperties[run.textRange().end] |= CodeUnitFlags::kSoftLineBreakBefore;
+            fCodeUnitProperties[run.textRange().start] |= SkUnicode::CodeUnitFlags::kSoftLineBreakBefore;
+            fCodeUnitProperties[run.textRange().end] |= SkUnicode::CodeUnitFlags::kSoftLineBreakBefore;
         } else {
             // Walk through the glyph in the direction of input text
             run.iterateThroughClustersInTextOrder([runIndex, this](size_t glyphStart,
@@ -930,7 +909,7 @@ void ParagraphImpl::setState(InternalState state) {
         case kUnknown:
             fRuns.reset();
             fCodeUnitProperties.reset();
-            fCodeUnitProperties.push_back_n(fText.size() + 1, kNoCodeUnitFlag);
+            fCodeUnitProperties.push_back_n(fText.size() + 1, SkUnicode::kNoCodeUnitFlag);
             fWords.clear();
             fBidiRegions.clear();
             fUTF8IndexForUTF16Index.reset();
@@ -1084,7 +1063,7 @@ void ParagraphImpl::updateBackgroundPaint(size_t from, size_t to, SkPaint paint)
 
 TextIndex ParagraphImpl::findPreviousGraphemeBoundary(TextIndex utf8) {
     while (utf8 > 0 &&
-          (fCodeUnitProperties[utf8] & CodeUnitFlags::kGraphemeStart) == 0) {
+          (fCodeUnitProperties[utf8] & SkUnicode::CodeUnitFlags::kGraphemeStart) == 0) {
         --utf8;
     }
     return utf8;
@@ -1092,7 +1071,7 @@ TextIndex ParagraphImpl::findPreviousGraphemeBoundary(TextIndex utf8) {
 
 TextIndex ParagraphImpl::findNextGraphemeBoundary(TextIndex utf8) {
     while (utf8 < fText.size() &&
-          (fCodeUnitProperties[utf8] & CodeUnitFlags::kGraphemeStart) == 0) {
+          (fCodeUnitProperties[utf8] & SkUnicode::CodeUnitFlags::kGraphemeStart) == 0) {
         ++utf8;
     }
     return utf8;

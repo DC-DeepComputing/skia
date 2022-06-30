@@ -109,11 +109,6 @@ TextLine::TextLine(ParagraphImpl* owner,
         , fAscentStyle(LineMetricStyle::CSS)
         , fDescentStyle(LineMetricStyle::CSS)
         , fTextBlobCachePopulated(false) {
-    // Reorder visual runs
-    auto& start = owner->cluster(fGhostClusterRange.start);
-    auto& end = owner->cluster(fGhostClusterRange.end - 1);
-    size_t numRuns = end.runIndex() - start.runIndex() + 1;
-
     for (BlockIndex index = fBlockRange.start; index < fBlockRange.end; ++index) {
         auto b = fOwner->styles().begin() + index;
         if (b->fStyle.hasBackground()) {
@@ -127,27 +122,12 @@ TextLine::TextLine(ParagraphImpl* owner,
         }
     }
 
-    // Get the logical order
-
-    // This is just chosen to catch the common/fast cases. Feel free to tweak.
-    constexpr int kPreallocCount = 4;
-    SkAutoSTArray<kPreallocCount, SkUnicode::BidiLevel> runLevels(numRuns);
-    size_t runLevelsIndex = 0;
+    auto& start = owner->cluster(fGhostClusterRange.start);
+    auto& end = owner->cluster(fGhostClusterRange.end - 1);
     for (auto runIndex = start.runIndex(); runIndex <= end.runIndex(); ++runIndex) {
         auto& run = fOwner->run(runIndex);
-        runLevels[runLevelsIndex++] = run.fBidiLevel;
         fMaxRunMetrics.add(
             InternalLineMetrics(run.correctAscent(), run.correctDescent(), run.fFontMetrics.fLeading));
-    }
-    SkASSERT(runLevelsIndex == numRuns);
-
-    SkAutoSTArray<kPreallocCount, int32_t> logicalOrder(numRuns);
-
-    // TODO: hide all these logic in SkUnicode?
-  fOwner->getUnicode()->reorderVisual(runLevels.data(), numRuns, logicalOrder.data());
-    auto firstRunIndex = start.runIndex();
-    for (auto index : logicalOrder) {
-        fRunsInVisualOrder.push_back(firstRunIndex + index);
     }
 
     // TODO: This is the fix for flutter. Must be removed...
@@ -156,6 +136,27 @@ TextLine::TextLine(ParagraphImpl* owner,
             fShift += cluster->getHalfLetterSpacing();
             break;
         }
+    }
+}
+
+void TextLine::correctBidis(ParagraphImpl* owner, const LineVisitor& lineVisitor) {
+    // Reorder visual runs
+    auto& start = owner->cluster(fGhostClusterRange.start);
+    auto& end = owner->cluster(fGhostClusterRange.end - 1);
+    size_t numRuns = end.runIndex() - start.runIndex() + 1;
+
+    // Get the logical order
+    std::vector<SkUnicode::BidiLevel> runLevels(numRuns);
+    size_t runLevelsIndex = 0;
+    for (auto runIndex = start.runIndex(); runIndex <= end.runIndex(); ++runIndex) {
+        runLevels[runLevelsIndex++] = fOwner->run(runIndex).fBidiLevel;
+    }
+    SkASSERT(runLevelsIndex == numRuns);
+
+    auto logicalOrder = lineVisitor(runLevels);
+    auto firstRunIndex = start.runIndex();
+    for (auto index : logicalOrder) {
+        fRunsInVisualOrder.push_back(firstRunIndex + index);
     }
 }
 

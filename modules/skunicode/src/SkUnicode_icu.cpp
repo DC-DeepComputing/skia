@@ -142,11 +142,11 @@ class SkBreakIterator_icu : public SkBreakIterator {
       { return fLastResult = sk_ubrk_current(fBreakIterator.get()); }
     Position next() override
       { return fLastResult = sk_ubrk_next(fBreakIterator.get()); }
-    Position preceding(Position offset) override
-        { return fLastResult = sk_ubrk_preceding(fBreakIterator.get(), offset); }
-    Position following(Position offset) override
-        { return fLastResult = sk_ubrk_following(fBreakIterator.get(), offset);}
-    Status status() override { return sk_ubrk_getRuleStatus(fBreakIterator.get()); }
+    //Position preceding(Position offset) override
+    //    { return fLastResult = sk_ubrk_preceding(fBreakIterator.get(), offset); }
+    //Position following(Position offset) override
+    //    { return fLastResult = sk_ubrk_following(fBreakIterator.get(), offset);}
+    //Status status() override { return sk_ubrk_getRuleStatus(fBreakIterator.get()); }
     bool isDone() override { return fLastResult == UBRK_DONE; }
 
     bool setText(const char utftext8[], int utf8Units) override {
@@ -222,7 +222,7 @@ class SkIcuBreakIteratorCache {
         return iterator;
     }
 };
-
+/*
 class SkScriptIterator_icu : public SkScriptIterator {
  public:
    bool getScript(SkUnichar u, ScriptID* script) override {
@@ -236,13 +236,18 @@ class SkScriptIterator_icu : public SkScriptIterator {
         }
         return true;
    }
-
-   static std::unique_ptr<SkScriptIterator> makeScriptIterator() {
-        return std::unique_ptr<SkScriptIterator>(new SkScriptIterator_icu());
-   }
 };
-
+*/
 class SkUnicode_icu : public SkUnicode {
+
+    bool fill(SkSpan<const char> text,
+              std::vector<BidiRegion> bidiRegions,
+              std::vector<Position> grapemes,
+              std::vector<LineBreakBefore> lineBreaks) override {
+        SkASSERT(false);
+        return false;
+    }
+
     static bool extractBidi(const char utf8[],
                             int utf8Units,
                             TextDirection dir,
@@ -390,6 +395,26 @@ class SkUnicode_icu : public SkUnicode {
         return true;
     }
 
+    SkTArray<size_t, true> mergeAllCodePointFlags(const char utf8[], int utf8Units) {
+        SkTArray<size_t, true> result;
+        result.push_back_n(utf8Units + 1, CodeUnitFlags::kNoCodeUnitFlag);
+        std::vector<LineBreakBefore> lineBreaks;
+        this->getLineBreaks(utf8, utf8Units, &lineBreaks);
+        for (auto& lineBreak : lineBreaks) {
+            result[lineBreak.pos] |=
+                lineBreak.breakType == LineBreakType::kHardLineBreak
+                    ? CodeUnitFlags::kHardLineBreakBefore
+                    : CodeUnitFlags::kSoftLineBreakBefore;
+        }
+        std::vector<Position> graphemes;
+        this->getGraphemes(utf8, utf8Units, &graphemes);
+        for (auto& grapheme : graphemes) {
+            result[grapheme] |= CodeUnitFlags::kGraphemeStart;
+        }
+        // TODO: add tabulation, control, whitespaces, intrawhitespaces
+        return result;
+    }
+
 public:
     ~SkUnicode_icu() override { }
     std::unique_ptr<SkBidiIterator> makeBidiIterator(const uint16_t text[], int count,
@@ -416,14 +441,14 @@ public:
         return makeBreakIterator(sk_uloc_getDefault(), breakType);
     }
     std::unique_ptr<SkScriptIterator> makeScriptIterator() override {
-        return SkScriptIterator_icu::makeScriptIterator();
+        return nullptr;
     }
 
     static bool isHardLineBreak(SkUnichar utf8) {
         auto property = sk_u_getIntPropertyValue(utf8, UCHAR_LINE_BREAK);
         return property == U_LB_LINE_FEED || property == U_LB_MANDATORY_BREAK;
     }
-
+    /*
     // TODO: Use ICU data file to detect controls and whitespaces
     bool isControl(SkUnichar utf8) override {
         return sk_u_iscntrl(utf8);
@@ -440,7 +465,7 @@ public:
     bool isHardBreak(SkUnichar utf8) override {
         return SkUnicode_icu::isHardLineBreak(utf8);
     }
-
+    */
     SkString toUpper(const SkString& str) override {
         // Convert to UTF16 since that's what ICU wants.
         auto str16 = convertUtf8ToUtf16(str.c_str(), str.size());
@@ -472,7 +497,7 @@ public:
 
     bool getLineBreaks(const char utf8[],
                        int utf8Units,
-                       std::vector<LineBreakBefore>* results) override {
+                       std::vector<LineBreakBefore>* results) {
 
         return extractPositions(utf8, utf8Units, BreakType::kLines,
             [results](int pos, int status) {
@@ -489,11 +514,27 @@ public:
         return extractWords((uint16_t*)utf16.c_str(), utf16.size(), results);
     }
 
-    bool getGraphemes(const char utf8[], int utf8Units, std::vector<Position>* results) override {
+    bool getGraphemes(const char utf8[], int utf8Units, std::vector<Position>* results) {
 
         return extractPositions(utf8, utf8Units, BreakType::kGraphemes,
             [results](int pos, int status) { results->emplace_back(pos);
         });
+    }
+
+    bool getAllCodepoints(const char utf8[],
+                          int utf8Units,
+                          bool replaceTabs,
+                          SkTArray<SkUnicode::CodeUnitFlags, true>* results) override {
+        SkASSERT(false);
+        return false;
+    }
+
+    bool getAllCodepoints(const char16_t utf16[],
+                          int utf16Units,
+                          bool replaceTabs,
+                          SkTArray<SkUnicode::CodeUnitFlags, true>* results) override {
+        SkASSERT(false);
+        return false;
     }
 
     void reorderVisual(const BidiLevel runLevels[],

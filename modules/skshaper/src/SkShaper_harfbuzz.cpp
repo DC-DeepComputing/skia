@@ -1501,7 +1501,8 @@ std::unique_ptr<SkShaper::ScriptRunIterator>
 SkShaper::MakeSkUnicodeHbScriptRunIterator(SkUnicode* unicode, const char* utf8, size_t utf8Bytes) {
     auto script = unicode->makeScriptIterator();
     if (!script) {
-        return nullptr;
+        //return nullptr;
+        return std::make_unique<SkUnicodeHbScriptRunIterator>(nullptr, utf8, utf8Bytes);
     }
     return std::make_unique<SkUnicodeHbScriptRunIterator>(std::move(script), utf8, utf8Bytes);
 }
