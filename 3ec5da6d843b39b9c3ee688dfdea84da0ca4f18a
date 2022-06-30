@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ae198e91_74a4c991",
+        "filename": "src/gpu/graphite/UniformManager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-06-30T19:28:54Z",
+      "side": 1,
+      "message": "Worth noting that this function appears to be identical to `Rules430::Stride` (both before and after this CL).",
+      "range": {
+        "startLine": 135,
+        "startChar": 28,
+        "endLine": 135,
+        "endChar": 34
+      },
+      "revId": "3ec5da6d843b39b9c3ee688dfdea84da0ca4f18a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
