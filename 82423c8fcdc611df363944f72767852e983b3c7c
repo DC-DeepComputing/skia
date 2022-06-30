@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "34cfebd7_b13295db",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-06-30T17:09:23Z",
+      "side": 1,
+      "message": "This gets us some colored quads on the screen, in the right place. PTAL.",
+      "revId": "82423c8fcdc611df363944f72767852e983b3c7c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
