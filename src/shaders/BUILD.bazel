@@ -13,6 +13,7 @@ SHADER_FILES = [
     "SkColorShader.h",
     "SkComposeShader.cpp",
     "SkComposeShader.h",
+    "SkEmptyShader.cpp",
     "SkEmptyShader.h",
     "SkImageShader.cpp",
     "SkImageShader.h",
@@ -23,6 +24,7 @@ SHADER_FILES = [
     "SkPictureShader.h",
     "SkShader.cpp",
     "SkShaderBase.h",
+    "SkShaders.cpp",
     "SkTransformShader.cpp",
     "SkTransformShader.h",
 ]

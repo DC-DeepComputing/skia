@@ -36,9 +36,7 @@
     #include "src/effects/SkTrimPE.h"
     #include "src/shaders/SkBitmapProcShader.h"
     #include "src/shaders/SkColorFilterShader.h"
-    #include "src/shaders/SkColorShader.h"
     #include "src/shaders/SkComposeShader.h"
-    #include "src/shaders/SkEmptyShader.h"
     #include "src/shaders/SkImageShader.h"
     #include "src/shaders/SkLocalMatrixShader.h"
     #include "src/shaders/SkPictureShader.h"
@@ -56,6 +54,11 @@
     #include "include/effects/SkLayerDrawLooper.h"
 #endif
 
+    void SkRegisterColor4ShaderFlattenable();
+    void SkRegisterColorShaderFlattenable();
+    void SkRegisterComposeShaderFlattenable();
+    void SkRegisterEmptyShaderFlattenable();
+
     /**
      *  Register most effects for deserialization.
      *
@@ -65,11 +68,11 @@
      */
     void SkFlattenable::PrivateInitializer::InitEffects() {
         // Shaders.
-        SK_REGISTER_FLATTENABLE(SkColor4Shader);
+        SkRegisterColor4ShaderFlattenable();
         SK_REGISTER_FLATTENABLE(SkColorFilterShader);
-        SK_REGISTER_FLATTENABLE(SkColorShader);
-        SK_REGISTER_FLATTENABLE(SkShader_Blend);
-        SK_REGISTER_FLATTENABLE(SkEmptyShader);
+        SkRegisterColorShaderFlattenable();
+        SkRegisterComposeShaderFlattenable();
+        SkRegisterEmptyShaderFlattenable();
         SK_REGISTER_FLATTENABLE(SkLocalMatrixShader);
         SK_REGISTER_FLATTENABLE(SkPictureShader);
         SkGradientShader::RegisterFlattenables();
