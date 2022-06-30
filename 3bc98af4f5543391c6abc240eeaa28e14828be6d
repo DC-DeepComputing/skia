@@ -33,6 +33,24 @@
       "message": "John, do you understand the Bazel failure? It wants me to include private headers from stdlib. What?",
       "revId": "3bc98af4f5543391c6abc240eeaa28e14828be6d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fb4bffae_e0056db3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-06-30T15:05:52Z",
+      "side": 1,
+      "message": "I\u0027ve seen this one before actually. IWYU doesn\u0027t know these headers are private. Kevin has a list of private headers that we pass to IWYU to work around this issue. Hopefully he can patch it up to include this case as well and it will be solved automatically.",
+      "parentUuid": "65044cf0_c718160b",
+      "revId": "3bc98af4f5543391c6abc240eeaa28e14828be6d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
