@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1412341c_f07901e2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-06-30T18:34:30Z",
+      "side": 1,
+      "message": "We had this set already in our legacy G3 builds http://google3/third_party/skia/HEAD/BUILD?rcl\u003d457866279\u0026l\u003d481\n\n",
+      "revId": "df44828ad1d50f094141a777f0a8cfd7d8e75bc8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
