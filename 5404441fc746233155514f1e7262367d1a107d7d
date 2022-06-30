@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6fe90276_7db83556",
+        "filename": "src/ports/SkFontHost_win.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 1738,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-06-30T14:12:12Z",
+      "side": 1,
+      "message": "Does this work as expected for quoted strings? (length + 1 for null terminator)",
+      "range": {
+        "startLine": 1738,
+        "startChar": 27,
+        "endLine": 1738,
+        "endChar": 36
+      },
+      "revId": "5404441fc746233155514f1e7262367d1a107d7d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "844ac68f_dfc9d70b",
+        "filename": "src/xps/SkXPSDevice.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 173,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-06-30T14:12:12Z",
+      "side": 1,
+      "message": "Quoted strings again (throughout)",
+      "range": {
+        "startLine": 173,
+        "startChar": 12,
+        "endLine": 173,
+        "endChar": 21
+      },
+      "revId": "5404441fc746233155514f1e7262367d1a107d7d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
