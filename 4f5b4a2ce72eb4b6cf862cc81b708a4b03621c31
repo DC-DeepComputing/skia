@@ -16,6 +16,29 @@
       "message": "This CL is ready for a review.",
       "revId": "4f5b4a2ce72eb4b6cf862cc81b708a4b03621c31",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b52ca2d2_9426fae4",
+        "filename": "include/core/SkImage.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 324,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-06-30T19:28:55Z",
+      "side": 1,
+      "message": "I don\u0027t think this should be a field on SkImage::MakeFromTexture, but instead an optional field on GrBackendTexture since it is a property of the texture itself. All the other fields here (colorType, colorSpace, etc.) are how we interpret or us the texture.",
+      "range": {
+        "startLine": 324,
+        "startChar": 42,
+        "endLine": 324,
+        "endChar": 65
+      },
+      "revId": "4f5b4a2ce72eb4b6cf862cc81b708a4b03621c31",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
