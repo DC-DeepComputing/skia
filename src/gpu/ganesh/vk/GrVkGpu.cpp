@@ -1302,7 +1302,8 @@ static bool check_rt_image_info(const GrVkCaps& caps, const GrVkImageInfo& info,
 sk_sp<GrTexture> GrVkGpu::onWrapBackendTexture(const GrBackendTexture& backendTex,
                                                GrWrapOwnership ownership,
                                                GrWrapCacheable cacheable,
-                                               GrIOType ioType) {
+                                               GrIOType ioType,
+                                               std::string_view label) {
     GrVkImageInfo imageInfo;
     if (!backendTex.getVkImageInfo(&imageInfo)) {
         return nullptr;
@@ -1323,14 +1324,24 @@ sk_sp<GrTexture> GrVkGpu::onWrapBackendTexture(const GrBackendTexture& backendTe
 
     sk_sp<GrBackendSurfaceMutableStateImpl> mutableState = backendTex.getMutableState();
     SkASSERT(mutableState);
-    return GrVkTexture::MakeWrappedTexture(this, backendTex.dimensions(), ownership, cacheable,
-                                           ioType, imageInfo, std::move(mutableState));
+    return GrVkTexture::MakeWrappedTexture(this,
+                                           backendTex.dimensions(),
+                                           ownership,
+                                           cacheable,
+                                           ioType,
+                                           imageInfo,
+                                           std::move(mutableState),
+                                           label);
 }
 
 sk_sp<GrTexture> GrVkGpu::onWrapCompressedBackendTexture(const GrBackendTexture& beTex,
                                                          GrWrapOwnership ownership,
                                                          GrWrapCacheable cacheable) {
-    return this->onWrapBackendTexture(beTex, ownership, cacheable, kRead_GrIOType);
+    return this->onWrapBackendTexture(beTex,
+                                      ownership,
+                                      cacheable,
+                                      kRead_GrIOType,
+                                      /*label=*/"VkGpu_WrapCompressedBackendTexture");
 }
 
 sk_sp<GrTexture> GrVkGpu::onWrapRenderableBackendTexture(const GrBackendTexture& backendTex,
@@ -1651,7 +1662,8 @@ bool GrVkGpu::onClearBackendTexture(const GrBackendTexture& backendTexture,
     sk_sp<GrVkTexture> texture =
                 GrVkTexture::MakeWrappedTexture(this, backendTexture.dimensions(),
                                                 kBorrow_GrWrapOwnership, GrWrapCacheable::kNo,
-                                                kRW_GrIOType, info, std::move(mutableState));
+                                                kRW_GrIOType, info, std::move(mutableState),
+                                                /*label=*/"VkGpu_ClearBackendTexture");
     if (!texture) {
         return false;
     }
@@ -1748,13 +1760,15 @@ bool GrVkGpu::onUpdateCompressedBackendTexture(const GrBackendTexture& backendTe
 
     sk_sp<GrBackendSurfaceMutableStateImpl> mutableState = backendTexture.getMutableState();
     SkASSERT(mutableState);
-    sk_sp<GrVkTexture> texture = GrVkTexture::MakeWrappedTexture(this,
-                                                                 backendTexture.dimensions(),
-                                                                 kBorrow_GrWrapOwnership,
-                                                                 GrWrapCacheable::kNo,
-                                                                 kRW_GrIOType,
-                                                                 info,
-                                                                 std::move(mutableState));
+    sk_sp<GrVkTexture> texture =
+            GrVkTexture::MakeWrappedTexture(this,
+                                            backendTexture.dimensions(),
+                                            kBorrow_GrWrapOwnership,
+                                            GrWrapCacheable::kNo,
+                                            kRW_GrIOType,
+                                            info,
+                                            std::move(mutableState),
+                                            /*label=*/"VkGpu_UpdateCompressedBackendTexture");
     if (!texture) {
         return false;
     }

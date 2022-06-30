@@ -100,7 +100,8 @@ void test_wrapping(GrDirectContext* dContext,
                                                       kTopLeft_GrSurfaceOrigin,
                                                       skColorType,
                                                       kUnpremul_SkAlphaType,
-                                                      nullptr);
+                                                      nullptr,
+                                                      /*label=*/{});
         if (!img) {
             ERRORF(reporter, "Couldn't make SkImage from backendTexture for %s\n",
                    ToolUtils::colortype_name(skColorType));
@@ -272,8 +273,11 @@ static void check_base_readbacks(GrDirectContext* dContext,
             proxy = dContext->priv().proxyProvider()->wrapRenderableBackendTexture(
                     backendTex, 1, kBorrow_GrWrapOwnership, GrWrapCacheable::kNo, nullptr);
         } else {
-            proxy = dContext->priv().proxyProvider()->wrapBackendTexture(
-                    backendTex, kBorrow_GrWrapOwnership, GrWrapCacheable::kNo, kRW_GrIOType);
+            proxy = dContext->priv().proxyProvider()->wrapBackendTexture(backendTex,
+                                                                         kBorrow_GrWrapOwnership,
+                                                                         GrWrapCacheable::kNo,
+                                                                         kRW_GrIOType,
+                                                                         /*label=*/{});
         }
         if (!proxy) {
             ERRORF(reporter, "Could not make proxy from backend texture");
@@ -390,7 +394,8 @@ static void check_mipmaps(GrDirectContext* dContext,
     auto proxy = dContext->priv().proxyProvider()->wrapBackendTexture(backendTex,
                                                                       kBorrow_GrWrapOwnership,
                                                                       GrWrapCacheable::kNo,
-                                                                      kRW_GrIOType);
+                                                                      kRW_GrIOType,
+                                                                      /*label=*/{});
     if (!proxy) {
         ERRORF(reporter, "Could not make proxy from backend texture");
         return;

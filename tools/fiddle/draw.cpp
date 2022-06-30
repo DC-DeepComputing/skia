@@ -35,7 +35,8 @@ void draw(SkCanvas* canvas) {
                                                       kTopLeft_GrSurfaceOrigin,
                                                       kRGBA_8888_SkColorType,
                                                       kOpaque_SkAlphaType,
-                                                      nullptr);
+                                                      nullptr,
+                                                      /*label=*/"Fiddle_Draw");
 
         constexpr int kSampleCnt = 0;
         sk_sp<SkSurface> tmp2 = SkSurface::MakeFromBackendTexture(

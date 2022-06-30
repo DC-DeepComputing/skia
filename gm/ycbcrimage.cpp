@@ -59,7 +59,7 @@ protected:
         SkASSERT(!fYCbCrImage);
         fYCbCrImage = SkImage::MakeFromTexture(dContext, ycbcrHelper->backendTexture(),
                                                kTopLeft_GrSurfaceOrigin, kRGB_888x_SkColorType,
-                                               kPremul_SkAlphaType, nullptr,
+                                               kPremul_SkAlphaType, nullptr, /*label=*/{},
                                                release_ycbcrhelper, ycbcrHelper.get());
         ycbcrHelper.release();
         if (!fYCbCrImage) {

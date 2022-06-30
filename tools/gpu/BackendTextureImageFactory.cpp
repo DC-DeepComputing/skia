@@ -34,6 +34,7 @@ sk_sp<SkImage> MakeBackendTextureImage(GrDirectContext* dContext,
                                     pixmap.colorType(),
                                     pixmap.alphaType(),
                                     pixmap.refColorSpace(),
+                                    /*label=*/"Image_BackendTextureWithPixmapContents",
                                     ManagedBackendTexture::ReleaseProc,
                                     mbet->releaseContext());
 }
@@ -67,6 +68,7 @@ sk_sp<SkImage> MakeBackendTextureImage(GrDirectContext* dContext,
                                     info.colorType(),
                                     info.alphaType(),
                                     info.refColorSpace(),
+                                    /*label=*/"Image_CreateImageWithSolidColor",
                                     ManagedBackendTexture::ReleaseProc,
                                     mbet->releaseContext());
 }

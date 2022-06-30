@@ -210,11 +210,14 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(ResourceCacheWrappedResources, reporter, ctxI
 
     context->resetContext();
 
-    sk_sp<GrTexture> borrowed(resourceProvider->wrapBackendTexture(
-            mbet->texture(), kBorrow_GrWrapOwnership, GrWrapCacheable::kNo, kRead_GrIOType));
+    sk_sp<GrTexture> borrowed(resourceProvider->wrapBackendTexture(mbet->texture(),
+                                                                   kBorrow_GrWrapOwnership,
+                                                                   GrWrapCacheable::kNo,
+                                                                   kRead_GrIOType,
+                                                                   /*label=*/{}));
 
     sk_sp<GrTexture> adopted(resourceProvider->wrapBackendTexture(
-            unmbet, kAdopt_GrWrapOwnership, GrWrapCacheable::kNo, kRead_GrIOType));
+            unmbet, kAdopt_GrWrapOwnership, GrWrapCacheable::kNo, kRead_GrIOType, /*label=*/{}));
 
     REPORTER_ASSERT(reporter, borrowed != nullptr && adopted != nullptr);
     if (!borrowed || !adopted) {
@@ -1582,7 +1585,7 @@ static void test_free_texture_messages(skiatest::Reporter* reporter) {
         wrapped[i] = gpu->wrapBackendTexture(backends[i],
                                              GrWrapOwnership::kBorrow_GrWrapOwnership,
                                              (i < 2) ? GrWrapCacheable::kYes : GrWrapCacheable::kNo,
-                                             GrIOType::kRead_GrIOType);
+                                             GrIOType::kRead_GrIOType, /*label=*/{});
         wrapped[i]->setRelease(releaseProc, &freed[i]);
     }
 
@@ -1648,7 +1651,8 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(ResourceMessagesAfterAbandon, reporter, ctxIn
     sk_sp<GrTexture> tex = gpu->wrapBackendTexture(backend,
                                                    GrWrapOwnership::kBorrow_GrWrapOwnership,
                                                    GrWrapCacheable::kYes,
-                                                   GrIOType::kRead_GrIOType);
+                                                   GrIOType::kRead_GrIOType,
+                                                   /*label=*/{});
 
     auto releaseProc = [](void* ctx) {
         int* index = (int*) ctx;

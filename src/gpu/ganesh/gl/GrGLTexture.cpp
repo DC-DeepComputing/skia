@@ -146,10 +146,11 @@ sk_sp<GrGLTexture> GrGLTexture::MakeWrapped(GrGLGpu* gpu,
                                             const Desc& desc,
                                             sk_sp<GrGLTextureParameters> parameters,
                                             GrWrapCacheable cacheable,
-                                            GrIOType ioType) {
+                                            GrIOType ioType,
+                                            std::string_view label) {
     return sk_sp<GrGLTexture>(new GrGLTexture(
             gpu, desc, mipmapStatus, std::move(parameters), cacheable, ioType,
-            /*label=*/"GLTextureMakeWrapped"));
+            label));
 }
 
 bool GrGLTexture::onStealBackendTexture(GrBackendTexture* backendTexture,

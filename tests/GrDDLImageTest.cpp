@@ -48,7 +48,7 @@ DEF_GPUTEST(GrDDLImage_MakeSubset, reporter, options) {
                                                GrMipmapped(sc.isMipMapped()), GrRenderable::kYes);
         auto gpuImage = SkImage::MakeFromTexture(dContext, tex, kTopLeft_GrSurfaceOrigin,
                                                  ii.colorType(), ii.alphaType(),
-                                                 ii.refColorSpace());
+                                                 ii.refColorSpace(), /*label=*/{});
         REPORTER_ASSERT(reporter, gpuImage->isValid(dContext));
 
         // gpu image + context:

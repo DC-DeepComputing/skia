@@ -158,7 +158,8 @@ sk_sp<GrTexture> GrMockGpu::onCreateCompressedTexture(SkISize dimensions,
 sk_sp<GrTexture> GrMockGpu::onWrapBackendTexture(const GrBackendTexture& tex,
                                                  GrWrapOwnership ownership,
                                                  GrWrapCacheable wrapType,
-                                                 GrIOType ioType) {
+                                                 GrIOType ioType,
+                                                 std::string_view label) {
     GrMockTextureInfo texInfo;
     SkAssertResult(tex.getMockTextureInfo(&texInfo));
 
@@ -177,7 +178,7 @@ sk_sp<GrTexture> GrMockGpu::onWrapBackendTexture(const GrBackendTexture& tex,
                                               texInfo,
                                               wrapType,
                                               ioType,
-                                              /*label=*/"MockGpu_WrapBackendTexture"));
+                                              label));
 }
 
 sk_sp<GrTexture> GrMockGpu::onWrapCompressedBackendTexture(const GrBackendTexture& tex,

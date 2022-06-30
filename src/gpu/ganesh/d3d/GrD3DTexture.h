@@ -29,7 +29,8 @@ public:
                                                   GrWrapCacheable,
                                                   GrIOType,
                                                   const GrD3DTextureResourceInfo&,
-                                                  sk_sp<GrD3DResourceState>);
+                                                  sk_sp<GrD3DResourceState>,
+                                                  std::string_view label);
 
     static sk_sp<GrD3DTexture> MakeAliasingTexture(GrD3DGpu*,
                                                    sk_sp<GrD3DTexture>,

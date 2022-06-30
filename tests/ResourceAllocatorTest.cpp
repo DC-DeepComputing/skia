@@ -84,6 +84,7 @@ static sk_sp<GrSurfaceProxy> make_backend(GrDirectContext* dContext, const Proxy
                                              kBorrow_GrWrapOwnership,
                                              GrWrapCacheable::kNo,
                                              kRead_GrIOType,
+                                             /*label=*/{},
                                              mbet->refCountedCallback());
 }
 

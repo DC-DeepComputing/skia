@@ -264,7 +264,8 @@ private:
     sk_sp<GrTexture> onWrapBackendTexture(const GrBackendTexture&,
                                           GrWrapOwnership,
                                           GrWrapCacheable,
-                                          GrIOType) override;
+                                          GrIOType,
+                                          std::string_view label) override;
     sk_sp<GrTexture> onWrapCompressedBackendTexture(const GrBackendTexture&,
                                                     GrWrapOwnership,
                                                     GrWrapCacheable) override;

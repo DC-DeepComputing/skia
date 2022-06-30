@@ -389,14 +389,20 @@ static sk_sp<SkImage> new_wrapped_texture_common(GrRecordingContext* rContext,
                                                  SkAlphaType at,
                                                  sk_sp<SkColorSpace> colorSpace,
                                                  GrWrapOwnership ownership,
-                                                 sk_sp<skgpu::RefCntedCallback> releaseHelper) {
+                                                 sk_sp<skgpu::RefCntedCallback> releaseHelper,
+                                                 std::string_view label) {
     if (!backendTex.isValid() || backendTex.width() <= 0 || backendTex.height() <= 0) {
         return nullptr;
     }
 
     GrProxyProvider* proxyProvider = rContext->priv().proxyProvider();
-    sk_sp<GrTextureProxy> proxy = proxyProvider->wrapBackendTexture(
-            backendTex, ownership, GrWrapCacheable::kNo, kRead_GrIOType, std::move(releaseHelper));
+    sk_sp<GrTextureProxy> proxy =
+            proxyProvider->wrapBackendTexture(backendTex,
+                                              ownership,
+                                              GrWrapCacheable::kNo,
+                                              kRead_GrIOType,
+                                              /*label=*/"Image_NewWrappedTextureCommon",
+                                              std::move(releaseHelper));
     if (!proxy) {
         return nullptr;
     }
@@ -450,7 +456,8 @@ sk_sp<SkImage> SkImage::MakeFromCompressedTexture(GrRecordingContext* rContext,
 sk_sp<SkImage> SkImage::MakeFromTexture(GrRecordingContext* rContext,
                                         const GrBackendTexture& tex, GrSurfaceOrigin origin,
                                         SkColorType ct, SkAlphaType at, sk_sp<SkColorSpace> cs,
-                                        TextureReleaseProc releaseP, ReleaseContext releaseC) {
+                                        std::string_view label, TextureReleaseProc releaseP,
+                                        ReleaseContext releaseC) {
     auto releaseHelper = skgpu::RefCntedCallback::Make(releaseP, releaseC);
 
     if (!rContext) {
@@ -469,7 +476,7 @@ sk_sp<SkImage> SkImage::MakeFromTexture(GrRecordingContext* rContext,
     }
 
     return new_wrapped_texture_common(rContext, tex, grColorType, origin, at, std::move(cs),
-                                      kBorrow_GrWrapOwnership, std::move(releaseHelper));
+                                      kBorrow_GrWrapOwnership, std::move(releaseHelper), label);
 }
 
 sk_sp<SkImage> SkImage::MakeFromAdoptedTexture(GrRecordingContext* context,
@@ -510,7 +517,8 @@ sk_sp<SkImage> SkImage::MakeFromAdoptedTexture(GrRecordingContext* rContext,
     }
 
     return new_wrapped_texture_common(dContext, tex, grColorType, origin, at, std::move(cs),
-                                      kAdopt_GrWrapOwnership, nullptr);
+                                      kAdopt_GrWrapOwnership, nullptr,
+                                      /*label=*/"Image_MakeFromAdoptedTexture");
 }
 
 sk_sp<SkImage> SkImage::MakeTextureFromCompressed(GrDirectContext* direct, sk_sp<SkData> data,

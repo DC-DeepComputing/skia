@@ -239,11 +239,13 @@ sk_sp<SkImage> SkImage::MakeFromYUVATextures(GrRecordingContext* context,
     int numPlanes = yuvaTextures.yuvaInfo().numPlanes();
     sk_sp<GrSurfaceProxy> proxies[SkYUVAInfo::kMaxPlanes];
     for (int plane = 0; plane < numPlanes; ++plane) {
-        proxies[plane] = proxyProvider->wrapBackendTexture(yuvaTextures.texture(plane),
-                                                           kBorrow_GrWrapOwnership,
-                                                           GrWrapCacheable::kNo,
-                                                           kRead_GrIOType,
-                                                           releaseHelper);
+        proxies[plane] =
+                proxyProvider->wrapBackendTexture(yuvaTextures.texture(plane),
+                                                  kBorrow_GrWrapOwnership,
+                                                  GrWrapCacheable::kNo,
+                                                  kRead_GrIOType,
+                                                  /*label*/ "Image_WrappedTextureFromYUVATexture",
+                                                  releaseHelper);
         if (!proxies[plane]) {
             return {};
         }

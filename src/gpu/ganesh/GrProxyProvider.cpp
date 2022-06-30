@@ -564,6 +564,7 @@ sk_sp<GrTextureProxy> GrProxyProvider::wrapBackendTexture(
         GrWrapOwnership ownership,
         GrWrapCacheable cacheable,
         GrIOType ioType,
+        std::string_view label,
         sk_sp<skgpu::RefCntedCallback> releaseHelper) {
     SkASSERT(ioType != kWrite_GrIOType);
 
@@ -579,8 +580,8 @@ sk_sp<GrTextureProxy> GrProxyProvider::wrapBackendTexture(
 
     GrResourceProvider* resourceProvider = direct->priv().resourceProvider();
 
-    sk_sp<GrTexture> tex =
-            resourceProvider->wrapBackendTexture(backendTex, ownership, cacheable, ioType);
+    sk_sp<GrTexture> tex = resourceProvider->wrapBackendTexture(
+            backendTex, ownership, cacheable, ioType, /*label=*/"ProxyProvider_WrapBackendTexture");
     if (!tex) {
         return nullptr;
     }

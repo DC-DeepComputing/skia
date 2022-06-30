@@ -159,7 +159,8 @@ public:
     sk_sp<GrTexture> wrapBackendTexture(const GrBackendTexture& tex,
                                         GrWrapOwnership,
                                         GrWrapCacheable,
-                                        GrIOType);
+                                        GrIOType,
+                                        std::string_view label);
 
     sk_sp<GrTexture> wrapCompressedBackendTexture(const GrBackendTexture& tex,
                                                   GrWrapOwnership,

@@ -170,7 +170,8 @@ public:
     sk_sp<GrTexture> wrapBackendTexture(const GrBackendTexture&,
                                         GrWrapOwnership,
                                         GrWrapCacheable,
-                                        GrIOType);
+                                        GrIOType,
+                                        std::string_view label);
 
     sk_sp<GrTexture> wrapCompressedBackendTexture(const GrBackendTexture&,
                                                   GrWrapOwnership,
@@ -735,7 +736,8 @@ private:
     virtual sk_sp<GrTexture> onWrapBackendTexture(const GrBackendTexture&,
                                                   GrWrapOwnership,
                                                   GrWrapCacheable,
-                                                  GrIOType) = 0;
+                                                  GrIOType,
+                                                  std::string_view label) = 0;
 
     virtual sk_sp<GrTexture> onWrapCompressedBackendTexture(const GrBackendTexture&,
                                                             GrWrapOwnership,

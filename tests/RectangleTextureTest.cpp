@@ -156,8 +156,11 @@ DEF_GPUTEST_FOR_GL_RENDERING_CONTEXTS(RectangleTexture, reporter, ctxInfo) {
             }
         }
 
-        sk_sp<GrTextureProxy> rectProxy = proxyProvider->wrapBackendTexture(
-                rectangleTex, kBorrow_GrWrapOwnership, GrWrapCacheable::kNo, kRW_GrIOType);
+        sk_sp<GrTextureProxy> rectProxy = proxyProvider->wrapBackendTexture(rectangleTex,
+                                                                            kBorrow_GrWrapOwnership,
+                                                                            GrWrapCacheable::kNo,
+                                                                            kRW_GrIOType,
+                                                                            /*label=*/{});
 
         if (!rectProxy) {
             dContext->deleteBackendTexture(rectangleTex);

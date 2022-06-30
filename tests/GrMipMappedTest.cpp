@@ -87,6 +87,7 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(GrWrappedMipMappedTest, reporter, ctxInfo) {
                                                  kRGBA_8888_SkColorType,
                                                  kPremul_SkAlphaType,
                                                  /* color space */ nullptr,
+                                                 /*label=*/{},
                                                  sk_gpu_test::ManagedBackendTexture::ReleaseProc,
                                                  mbet->releaseContext());
                 REPORTER_ASSERT(reporter, (mipmapped == GrMipmapped::kYes) == image->hasMipmaps());

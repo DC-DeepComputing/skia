@@ -374,12 +374,13 @@ sk_sp<GrTexture> GrResourceProvider::findAndRefScratchTexture(SkISize dimensions
 sk_sp<GrTexture> GrResourceProvider::wrapBackendTexture(const GrBackendTexture& tex,
                                                         GrWrapOwnership ownership,
                                                         GrWrapCacheable cacheable,
-                                                        GrIOType ioType) {
+                                                        GrIOType ioType,
+                                                        std::string_view label) {
     ASSERT_SINGLE_OWNER
     if (this->isAbandoned()) {
         return nullptr;
     }
-    return fGpu->wrapBackendTexture(tex, ownership, cacheable, ioType);
+    return fGpu->wrapBackendTexture(tex, ownership, cacheable, ioType, label);
 }
 
 sk_sp<GrTexture> GrResourceProvider::wrapCompressedBackendTexture(const GrBackendTexture& tex,

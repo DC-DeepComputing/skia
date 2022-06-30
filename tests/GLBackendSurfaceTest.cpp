@@ -68,7 +68,10 @@ DEF_GPUTEST_FOR_ALL_GL_CONTEXTS(GLTextureParameters, reporter, ctxInfo) {
 
     sk_sp<SkImage> wrappedImage =
             SkImage::MakeFromTexture(dContext, backendTex, kTopLeft_GrSurfaceOrigin,
-                                     kRGBA_8888_SkColorType, kPremul_SkAlphaType, nullptr);
+                                                           kRGBA_8888_SkColorType,
+                                                           kPremul_SkAlphaType,
+                                                           nullptr,
+                                                           /*label=*/{});
     REPORTER_ASSERT(reporter, wrappedImage);
 
     GrSurfaceProxy* proxy = sk_gpu_test::GetTextureImageProxy(wrappedImage.get(), dContext);

@@ -98,7 +98,8 @@ sk_sp<GrMtlTexture> GrMtlTexture::MakeWrappedTexture(GrMtlGpu* gpu,
                                                      SkISize dimensions,
                                                      id<MTLTexture> texture,
                                                      GrWrapCacheable cacheable,
-                                                     GrIOType ioType) {
+                                                     GrIOType ioType,
+                                                     std::string_view label) {
     SkASSERT(nil != texture);
     if (@available(macOS 10.11, iOS 9.0, *)) {
         SkASSERT(SkToBool(texture.usage & MTLTextureUsageShaderRead));
@@ -114,7 +115,7 @@ sk_sp<GrMtlTexture> GrMtlTexture::MakeWrappedTexture(GrMtlGpu* gpu,
                                                                : GrMipmapStatus::kNotAllocated;
     return sk_sp<GrMtlTexture>(
             new GrMtlTexture(gpu, kWrapped, dimensions, std::move(attachment), mipmapStatus,
-                             cacheable, ioType, /*label=*/"MtlTextureWrappedTexture"));
+                             cacheable, ioType, label));
 }
 
 GrMtlTexture::~GrMtlTexture() {

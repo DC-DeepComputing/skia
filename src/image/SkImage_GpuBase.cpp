@@ -286,10 +286,12 @@ sk_sp<GrTextureProxy> SkImage_GpuBase::MakePromiseImageLazyProxy(
                 return {};
             }
 
-            fTexture = resourceProvider->wrapBackendTexture(backendTexture,
-                                                            kBorrow_GrWrapOwnership,
-                                                            GrWrapCacheable::kNo,
-                                                            kRead_GrIOType);
+            fTexture = resourceProvider->wrapBackendTexture(
+                    backendTexture,
+                    kBorrow_GrWrapOwnership,
+                    GrWrapCacheable::kNo,
+                    kRead_GrIOType,
+                    /*label=*/"Image_GpuBase_PromiseImageLazyProxy");
             if (!fTexture) {
                 return {};
             }

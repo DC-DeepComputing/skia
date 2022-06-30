@@ -47,8 +47,11 @@ void wrap_tex_test(skiatest::Reporter* reporter, GrDirectContext* dContext) {
     SkAssertResult(origBackendTex.getVkImageInfo(&imageInfo));
 
     {
-        sk_sp<GrTexture> tex = gpu->wrapBackendTexture(origBackendTex, kBorrow_GrWrapOwnership,
-                                                       GrWrapCacheable::kNo, kRead_GrIOType);
+        sk_sp<GrTexture> tex = gpu->wrapBackendTexture(origBackendTex,
+                                                       kBorrow_GrWrapOwnership,
+                                                       GrWrapCacheable::kNo,
+                                                       kRead_GrIOType,
+                                                       /*label=*/{});
         REPORTER_ASSERT(reporter, tex);
     }
 
@@ -57,11 +60,17 @@ void wrap_tex_test(skiatest::Reporter* reporter, GrDirectContext* dContext) {
         GrVkImageInfo backendCopy = imageInfo;
         backendCopy.fImage = VK_NULL_HANDLE;
         GrBackendTexture backendTex = GrBackendTexture(kW, kH, backendCopy);
-        sk_sp<GrTexture> tex = gpu->wrapBackendTexture(
-                backendTex, kBorrow_GrWrapOwnership, GrWrapCacheable::kNo, kRead_GrIOType);
+        sk_sp<GrTexture> tex = gpu->wrapBackendTexture(backendTex,
+                                                       kBorrow_GrWrapOwnership,
+                                                       GrWrapCacheable::kNo,
+                                                       kRead_GrIOType,
+                                                       /*label=*/{});
         REPORTER_ASSERT(reporter, !tex);
-        tex = gpu->wrapBackendTexture(
-                backendTex, kAdopt_GrWrapOwnership, GrWrapCacheable::kNo, kRead_GrIOType);
+        tex = gpu->wrapBackendTexture(backendTex,
+                                      kAdopt_GrWrapOwnership,
+                                      GrWrapCacheable::kNo,
+                                      kRead_GrIOType,
+                                      /*label=*/{});
         REPORTER_ASSERT(reporter, !tex);
     }
 
@@ -70,11 +79,17 @@ void wrap_tex_test(skiatest::Reporter* reporter, GrDirectContext* dContext) {
         GrVkImageInfo backendCopy = imageInfo;
         backendCopy.fAlloc = GrVkAlloc();
         GrBackendTexture backendTex = GrBackendTexture(kW, kH, backendCopy);
-        sk_sp<GrTexture> tex = gpu->wrapBackendTexture(
-                backendTex, kBorrow_GrWrapOwnership, GrWrapCacheable::kNo, kRead_GrIOType);
+        sk_sp<GrTexture> tex = gpu->wrapBackendTexture(backendTex,
+                                                       kBorrow_GrWrapOwnership,
+                                                       GrWrapCacheable::kNo,
+                                                       kRead_GrIOType,
+                                                       /*label=*/{});
         REPORTER_ASSERT(reporter, tex);
-        tex = gpu->wrapBackendTexture(
-                backendTex, kAdopt_GrWrapOwnership, GrWrapCacheable::kNo, kRead_GrIOType);
+        tex = gpu->wrapBackendTexture(backendTex,
+                                      kAdopt_GrWrapOwnership,
+                                      GrWrapCacheable::kNo,
+                                      kRead_GrIOType,
+                                      /*label=*/{});
         REPORTER_ASSERT(reporter, !tex);
     }
 
@@ -82,8 +97,11 @@ void wrap_tex_test(skiatest::Reporter* reporter, GrDirectContext* dContext) {
     {
         GrVkImageInfo backendCopy = imageInfo;
         GrBackendTexture backendTex = GrBackendTexture(kW, kH, backendCopy);
-        sk_sp<GrTexture> tex = gpu->wrapBackendTexture(
-                backendTex, kAdopt_GrWrapOwnership, GrWrapCacheable::kNo, kRead_GrIOType);
+        sk_sp<GrTexture> tex = gpu->wrapBackendTexture(backendTex,
+                                                       kAdopt_GrWrapOwnership,
+                                                       GrWrapCacheable::kNo,
+                                                       kRead_GrIOType,
+                                                       /*label=*/{});
 
         REPORTER_ASSERT(reporter, tex);
         if (tex) {

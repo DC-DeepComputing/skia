@@ -539,6 +539,7 @@ static bool update_texture_with_pixmaps(GrDirectContext* context,
                                                                      kBorrow_GrWrapOwnership,
                                                                      GrWrapCacheable::kNo,
                                                                      kRW_GrIOType,
+                                                                     /*label=*/"TextureWithPixmaps",
                                                                      std::move(finishedCallback));
     if (!proxy) {
         return false;

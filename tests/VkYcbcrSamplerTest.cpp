@@ -50,7 +50,8 @@ DEF_GPUTEST(VkYCbcrSampler_DrawImageWithYcbcrSampler, reporter, options) {
                                                        kTopLeft_GrSurfaceOrigin,
                                                        kRGB_888x_SkColorType,
                                                        kPremul_SkAlphaType,
-                                                       nullptr);
+                                                       nullptr,
+                                                       /*label=*/{});
     if (!srcImage) {
         ERRORF(reporter, "Failed to create I420 image");
         return;

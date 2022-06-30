@@ -128,7 +128,8 @@ DEF_GPUTEST_FOR_GL_RENDERING_CONTEXTS(TextureBindingsResetTest, reporter, ctxInf
         resetBindings();
         dContext->resetContext();
         img = SkImage::MakeFromTexture(dContext, backendTexture, kTopLeft_GrSurfaceOrigin,
-                                       kRGBA_8888_SkColorType, kPremul_SkAlphaType, nullptr);
+                                       kRGBA_8888_SkColorType, kPremul_SkAlphaType, nullptr,
+                                       /*label=*/{});
         REPORTER_ASSERT(reporter, img);
         surf->getCanvas()->drawImage(img, 0, 0);
         img.reset();
@@ -148,7 +149,8 @@ DEF_GPUTEST_FOR_GL_RENDERING_CONTEXTS(TextureBindingsResetTest, reporter, ctxInf
                 dContext->createBackendTexture(10, 10, format, GrMipmapped::kNo, GrRenderable::kNo);
         if (rectangleTexture.isValid()) {
             img = SkImage::MakeFromTexture(dContext, rectangleTexture, kTopLeft_GrSurfaceOrigin,
-                                           kRGBA_8888_SkColorType, kPremul_SkAlphaType, nullptr);
+                                           kRGBA_8888_SkColorType, kPremul_SkAlphaType, nullptr,
+                                           /*label=*/{});
             REPORTER_ASSERT(reporter, img);
             surf->getCanvas()->drawImage(img, 0, 0);
             img.reset();

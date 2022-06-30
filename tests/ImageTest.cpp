@@ -502,7 +502,7 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(GrContext_colorTypeSupportedAsImage, reporter
         sk_sp<SkImage> img;
         if (mbet) {
             img = SkImage::MakeFromTexture(dContext, mbet->texture(), kTopLeft_GrSurfaceOrigin,
-                                           colorType, kOpaque_SkAlphaType, nullptr);
+                                           colorType, kOpaque_SkAlphaType, nullptr, /*label=*/{});
         }
         REPORTER_ASSERT(reporter, can == SkToBool(img),
                         "colorTypeSupportedAsImage:%d, actual:%d, ct:%d", can, SkToBool(img),
@@ -860,6 +860,7 @@ DEF_GPUTEST_FOR_GL_RENDERING_CONTEXTS(SkImage_NewFromTextureRelease, reporter, c
             kRGBA_8888_SkColorType,
             kPremul_SkAlphaType,
             /*color space*/nullptr,
+            /*label=*/{},
             sk_gpu_test::ManagedBackendTexture::ReleaseProc,
             mbet->releaseContext(TextureReleaseChecker::Release, &releaseChecker));
 

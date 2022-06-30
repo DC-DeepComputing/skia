@@ -962,7 +962,8 @@ static bool check_rt_resource_info(const GrD3DCaps& caps, const GrD3DTextureReso
 sk_sp<GrTexture> GrD3DGpu::onWrapBackendTexture(const GrBackendTexture& tex,
                                                 GrWrapOwnership,
                                                 GrWrapCacheable wrapType,
-                                                GrIOType ioType) {
+                                                GrIOType ioType,
+                                                std::string_view label) {
     GrD3DTextureResourceInfo textureInfo;
     if (!tex.getD3DTextureResourceInfo(&textureInfo)) {
         return nullptr;
@@ -984,13 +985,17 @@ sk_sp<GrTexture> GrD3DGpu::onWrapBackendTexture(const GrBackendTexture& tex,
     sk_sp<GrD3DResourceState> state = tex.getGrD3DResourceState();
     SkASSERT(state);
     return GrD3DTexture::MakeWrappedTexture(this, tex.dimensions(), wrapType, ioType, textureInfo,
-                                            std::move(state));
+                                            std::move(state), label);
 }
 
 sk_sp<GrTexture> GrD3DGpu::onWrapCompressedBackendTexture(const GrBackendTexture& tex,
                                                           GrWrapOwnership ownership,
                                                           GrWrapCacheable wrapType) {
-    return this->onWrapBackendTexture(tex, ownership, wrapType, kRead_GrIOType);
+    return this->onWrapBackendTexture(tex,
+                                      ownership,
+                                      wrapType,
+                                      kRead_GrIOType,
+                                      /*label=*/"D3DGpu_WrapCompressedBackendTexture");
 }
 
 sk_sp<GrTexture> GrD3DGpu::onWrapRenderableBackendTexture(const GrBackendTexture& tex,
@@ -1433,7 +1438,8 @@ bool GrD3DGpu::onClearBackendTexture(const GrBackendTexture& backendTexture,
     sk_sp<GrD3DTexture> texture =
             GrD3DTexture::MakeWrappedTexture(this, backendTexture.dimensions(),
                                              GrWrapCacheable::kNo,
-                                             kRW_GrIOType, info, std::move(state));
+                                             kRW_GrIOType, info, std::move(state),
+                                             /*label=*/"D3DGpu_ClearBackendTexture");
     if (!texture) {
         return false;
     }
@@ -1531,12 +1537,14 @@ bool GrD3DGpu::onUpdateCompressedBackendTexture(const GrBackendTexture& backendT
 
     sk_sp<GrD3DResourceState> state = backendTexture.getGrD3DResourceState();
     SkASSERT(state);
-    sk_sp<GrD3DTexture> texture = GrD3DTexture::MakeWrappedTexture(this,
-                                                                   backendTexture.dimensions(),
-                                                                   GrWrapCacheable::kNo,
-                                                                   kRW_GrIOType,
-                                                                   info,
-                                                                   std::move(state));
+    sk_sp<GrD3DTexture> texture =
+            GrD3DTexture::MakeWrappedTexture(this,
+                                             backendTexture.dimensions(),
+                                             GrWrapCacheable::kNo,
+                                             kRW_GrIOType,
+                                             info,
+                                             std::move(state),
+                                             /*label=*/"D3DGpu_UpdateCompressedBackendTexture");
     if (!texture) {
         return false;
     }

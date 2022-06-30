@@ -36,7 +36,8 @@ public:
                                                  GrWrapCacheable,
                                                  GrIOType,
                                                  const GrVkImageInfo&,
-                                                 sk_sp<GrBackendSurfaceMutableStateImpl>);
+                                                 sk_sp<GrBackendSurfaceMutableStateImpl>,
+                                                 std::string_view label);
 
     ~GrVkTexture() override;
 

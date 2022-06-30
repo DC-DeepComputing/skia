@@ -28,7 +28,8 @@ public:
                                                   SkISize,
                                                   id<MTLTexture>,
                                                   GrWrapCacheable,
-                                                  GrIOType);
+                                                  GrIOType,
+                                                  std::string_view label);
 
     ~GrMtlTexture() override;
 

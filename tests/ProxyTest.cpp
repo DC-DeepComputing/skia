@@ -322,9 +322,13 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(WrappedProxyTest, reporter, ctxInfo) {
                            colorType);
                     continue;
                 }
-                sk_sp<GrSurfaceProxy> sProxy = proxyProvider->wrapBackendTexture(
-                        mbet->texture(), kBorrow_GrWrapOwnership, GrWrapCacheable::kNo,
-                        kRead_GrIOType, mbet->refCountedCallback());
+                sk_sp<GrSurfaceProxy> sProxy =
+                        proxyProvider->wrapBackendTexture(mbet->texture(),
+                                                          kBorrow_GrWrapOwnership,
+                                                          GrWrapCacheable::kNo,
+                                                          kRead_GrIOType,
+                                                          /*label=*/{},
+                                                          mbet->refCountedCallback());
                 if (!sProxy) {
                     ERRORF(reporter, "wrapBackendTexture failed");
                     continue;

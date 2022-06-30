@@ -294,7 +294,8 @@ sk_sp<GrTexture> GrGpu::createCompressedTexture(SkISize dimensions,
 sk_sp<GrTexture> GrGpu::wrapBackendTexture(const GrBackendTexture& backendTex,
                                            GrWrapOwnership ownership,
                                            GrWrapCacheable cacheable,
-                                           GrIOType ioType) {
+                                           GrIOType ioType,
+                                           std::string_view label) {
     SkASSERT(ioType != kWrite_GrIOType);
     this->handleDirtyContext();
 
@@ -309,7 +310,7 @@ sk_sp<GrTexture> GrGpu::wrapBackendTexture(const GrBackendTexture& backendTex,
         return nullptr;
     }
 
-    return this->onWrapBackendTexture(backendTex, ownership, cacheable, ioType);
+    return this->onWrapBackendTexture(backendTex, ownership, cacheable, ioType, label);
 }
 
 sk_sp<GrTexture> GrGpu::wrapCompressedBackendTexture(const GrBackendTexture& backendTex,

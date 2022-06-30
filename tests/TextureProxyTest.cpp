@@ -114,6 +114,7 @@ static sk_sp<GrTextureProxy> create_wrapped_backend(GrDirectContext* dContext) {
                                              kBorrow_GrWrapOwnership,
                                              GrWrapCacheable::kYes,
                                              kRead_GrIOType,
+                                             /*label=*/{},
                                              mbet->refCountedCallback());
 }
 

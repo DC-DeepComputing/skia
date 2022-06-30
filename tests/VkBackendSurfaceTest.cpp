@@ -65,7 +65,8 @@ DEF_GPUTEST_FOR_VULKAN_CONTEXT(VkDRMModifierTest, reporter, ctxInfo) {
                                                        kTopLeft_GrSurfaceOrigin,
                                                        kRGBA_8888_SkColorType,
                                                        kPremul_SkAlphaType,
-                                                       nullptr);
+                                                       nullptr,
+                                                       /*label=*/{});
     REPORTER_ASSERT(reporter, drmImage);
 
     REPORTER_ASSERT(reporter,
@@ -117,15 +118,16 @@ DEF_GPUTEST_FOR_VULKAN_CONTEXT(VkImageLayoutTest, reporter, ctxInfo) {
     // Setting back the layout since we didn't actually change it
     backendTex1.setVkImageLayout(initLayout);
 
-    sk_sp<SkImage> wrappedImage = SkImage::MakeFromTexture(
-            dContext,
-            backendTex1,
-            kTopLeft_GrSurfaceOrigin,
-            kRGBA_8888_SkColorType,
-            kPremul_SkAlphaType,
-            /*color space*/ nullptr,
-            sk_gpu_test::ManagedBackendTexture::ReleaseProc,
-            mbet->releaseContext());
+    sk_sp<SkImage> wrappedImage =
+            SkImage::MakeFromTexture(dContext,
+                                     backendTex1,
+                                     kTopLeft_GrSurfaceOrigin,
+                                     kRGBA_8888_SkColorType,
+                                     kPremul_SkAlphaType,
+                                     /*color space*/ nullptr,
+                                     /*label=*/{},
+                                     sk_gpu_test::ManagedBackendTexture::ReleaseProc,
+                                     mbet->releaseContext());
     REPORTER_ASSERT(reporter, wrappedImage.get());
 
     GrSurfaceProxy* proxy = sk_gpu_test::GetTextureImageProxy(wrappedImage.get(), dContext);

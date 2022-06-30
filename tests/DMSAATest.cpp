@@ -213,7 +213,8 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(DMSAA_dual_source_blend_disable, reporter, ct
                                                 kTopLeft_GrSurfaceOrigin,
                                                 kRGBA_8888_SkColorType,
                                                 kPremul_SkAlphaType,
-                                                nullptr);
+                                                nullptr,
+                                                /*label=*/{});
 
     auto texture1 = context->createBackendTexture(surfaceDims.width(),
                                                   surfaceDims.height(),
@@ -289,7 +290,8 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(DMSAA_dual_source_blend_disable, reporter, ct
                                                   kTopLeft_GrSurfaceOrigin,
                                                   kRGBA_8888_SkColorType,
                                                   kPremul_SkAlphaType,
-                                                  nullptr);
+                                                  nullptr,
+                                                  /*label=*/{});
         SkImageInfo dstIInfo = SkImageInfo::Make(texDims.width(),
                                                  texDims.height(),
                                                  kRGBA_8888_SkColorType,

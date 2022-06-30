@@ -61,7 +61,8 @@ DEF_GPUTEST_FOR_VULKAN_CONTEXT(VkBackendSurfaceMutableStateTest, reporter, ctxIn
     sk_sp<SkImage> wrappedImage = SkImage::MakeFromTexture(dContext, backendTex,
                                                            kTopLeft_GrSurfaceOrigin,
                                                            kRGBA_8888_SkColorType,
-                                                           kPremul_SkAlphaType, nullptr);
+                                                           kPremul_SkAlphaType, nullptr,
+                                                           /*label=*/{});
 
     GrSurfaceProxy* proxy = sk_gpu_test::GetTextureImageProxy(wrappedImage.get(), dContext);
 

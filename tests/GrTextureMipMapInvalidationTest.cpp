@@ -100,7 +100,7 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(ReimportImageTextureWithMipLevels, reporter, 
     // Reimport the texture as an image and perform a downsampling draw with medium quality which
     // should use the upper MIP levels.
     img = SkImage::MakeFromTexture(dContext, btex, kTopLeft_GrSurfaceOrigin, kRGBA_8888_SkColorType,
-                                   kPremul_SkAlphaType, nullptr);
+                                   kPremul_SkAlphaType, nullptr, /*label=*/{});
     const auto singlePixelInfo =
             SkImageInfo::Make(1, 1, kRGBA_8888_SkColorType, kPremul_SkAlphaType, nullptr);
     surf = SkSurface::MakeRenderTarget(dContext, SkBudgeted::kYes, singlePixelInfo, 1,

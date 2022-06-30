@@ -273,15 +273,22 @@ sk_sp<GrTexture> GrDawnGpu::onCreateCompressedTexture(SkISize dimensions, const 
 sk_sp<GrTexture> GrDawnGpu::onWrapBackendTexture(const GrBackendTexture& backendTex,
                                                  GrWrapOwnership ownership,
                                                  GrWrapCacheable cacheable,
-                                                 GrIOType ioType) {
+                                                 GrIOType ioType,
+                                                 std::string_view label) {
     GrDawnTextureInfo info;
     if (!backendTex.getDawnTextureInfo(&info)) {
         return nullptr;
     }
 
     SkISize dimensions = { backendTex.width(), backendTex.height() };
-    return GrDawnTexture::MakeWrapped(this, dimensions, GrRenderable::kNo, 1, cacheable, ioType,
-                                      info);
+    return GrDawnTexture::MakeWrapped(this,
+                                      dimensions,
+                                      GrRenderable::kNo,
+                                      1,
+                                      cacheable,
+                                      ioType,
+                                      info,
+                                      /*label=*/"DawnGpu_WrapBackendTexture");
 }
 
 sk_sp<GrTexture> GrDawnGpu::onWrapCompressedBackendTexture(const GrBackendTexture& backendTex,
@@ -305,8 +312,15 @@ sk_sp<GrTexture> GrDawnGpu::onWrapRenderableBackendTexture(const GrBackendTextur
         return nullptr;
     }
 
-    sk_sp<GrTexture> result = GrDawnTexture::MakeWrapped(this, dimensions, GrRenderable::kYes,
-                                                         sampleCnt, cacheable, kRW_GrIOType, info);
+    sk_sp<GrTexture> result =
+            GrDawnTexture::MakeWrapped(this,
+                                       dimensions,
+                                       GrRenderable::kYes,
+                                       sampleCnt,
+                                       cacheable,
+                                       kRW_GrIOType,
+                                       info,
+                                       /*label=*/"DawnGpu_WrapRenderableBackendTexture");
     result->markMipmapsDirty();
     return result;
 }

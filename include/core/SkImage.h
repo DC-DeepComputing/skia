@@ -321,6 +321,7 @@ public:
                                           SkColorType colorType,
                                           SkAlphaType alphaType,
                                           sk_sp<SkColorSpace> colorSpace,
+                                          std::string_view label,
                                           TextureReleaseProc textureReleaseProc = nullptr,
                                           ReleaseContext releaseContext = nullptr);
 

@@ -117,6 +117,7 @@ public:
                                              GrWrapOwnership,
                                              GrWrapCacheable,
                                              GrIOType,
+                                             std::string_view label,
                                              sk_sp<skgpu::RefCntedCallback> = nullptr);
 
     sk_sp<GrTextureProxy> wrapCompressedBackendTexture(const GrBackendTexture&,

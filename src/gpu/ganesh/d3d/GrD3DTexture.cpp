@@ -97,7 +97,8 @@ sk_sp<GrD3DTexture> GrD3DTexture::MakeWrappedTexture(GrD3DGpu* gpu,
                                                      GrWrapCacheable cacheable,
                                                      GrIOType ioType,
                                                      const GrD3DTextureResourceInfo& info,
-                                                     sk_sp<GrD3DResourceState> state) {
+                                                     sk_sp<GrD3DResourceState> state,
+                                                     std::string_view label) {
     // TODO: If a client uses their own heap to allocate, how do we manage that?
     // Adopted textures require both image and allocation because we're responsible for freeing
     //SkASSERT(info.fTexture &&
@@ -112,7 +113,7 @@ sk_sp<GrD3DTexture> GrD3DTexture::MakeWrappedTexture(GrD3DGpu* gpu,
     return sk_sp<GrD3DTexture>(new GrD3DTexture(gpu, dimensions, info, std::move(state),
                                                 shaderResourceView, mipmapStatus, cacheable,
                                                 ioType,
-                                                /*label=*/"D3DWrappedTexture"));
+                                                label));
 }
 
 sk_sp<GrD3DTexture> GrD3DTexture::MakeAliasingTexture(GrD3DGpu* gpu,

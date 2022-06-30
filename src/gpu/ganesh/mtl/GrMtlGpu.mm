@@ -714,7 +714,8 @@ static id<MTLTexture> get_texture_from_backend(const GrBackendRenderTarget& back
 sk_sp<GrTexture> GrMtlGpu::onWrapBackendTexture(const GrBackendTexture& backendTex,
                                                 GrWrapOwnership,
                                                 GrWrapCacheable cacheable,
-                                                GrIOType ioType) {
+                                                GrIOType ioType,
+                                                std::string_view label) {
     id<MTLTexture> mtlTexture = get_texture_from_backend(backendTex);
     if (!mtlTexture) {
         return nullptr;
@@ -725,7 +726,7 @@ sk_sp<GrTexture> GrMtlGpu::onWrapBackendTexture(const GrBackendTexture& backendT
     }
 
     return GrMtlTexture::MakeWrappedTexture(this, backendTex.dimensions(), mtlTexture, cacheable,
-                                            ioType);
+                                            ioType, label);
 }
 
 sk_sp<GrTexture> GrMtlGpu::onWrapCompressedBackendTexture(const GrBackendTexture& backendTex,
@@ -741,7 +742,8 @@ sk_sp<GrTexture> GrMtlGpu::onWrapCompressedBackendTexture(const GrBackendTexture
     }
 
     return GrMtlTexture::MakeWrappedTexture(this, backendTex.dimensions(), mtlTexture, cacheable,
-                                            kRead_GrIOType);
+                                            kRead_GrIOType,
+                                            /*label=*/"MtlGpu_WrapCompressedBackendTexture");
 }
 
 sk_sp<GrTexture> GrMtlGpu::onWrapRenderableBackendTexture(const GrBackendTexture& backendTex,

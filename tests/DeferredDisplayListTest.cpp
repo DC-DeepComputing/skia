@@ -885,6 +885,7 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(DDLWrapBackendTest, reporter, ctxInfo) {
             kRGBA_8888_SkColorType,
             kPremul_SkAlphaType,
             nullptr,
+            /*label=*/{},
             sk_gpu_test::ManagedBackendTexture::ReleaseProc,
             mbet->releaseContext(TextureReleaseChecker::Release, &releaseChecker));
     REPORTER_ASSERT(reporter, !image);

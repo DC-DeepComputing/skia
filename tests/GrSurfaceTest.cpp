@@ -400,7 +400,7 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(ReadOnlyTexture, reporter, context_info) {
             return;
         }
         auto proxy = proxyProvider->wrapBackendTexture(mbet->texture(), kBorrow_GrWrapOwnership,
-                                                       GrWrapCacheable::kNo, ioType,
+                                                       GrWrapCacheable::kNo, ioType, /*label=*/{},
                                                        mbet->refCountedCallback());
         skgpu::Swizzle swizzle = dContext->priv().caps()->getReadSwizzle(proxy->backendFormat(),
                                                                          GrColorType::kRGBA_8888);
@@ -460,7 +460,7 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(ReadOnlyTexture, reporter, context_info) {
                                                                        GrRenderable::kNo,
                                                                        GrProtected::kNo);
             proxy = proxyProvider->wrapBackendTexture(mbet->texture(), kBorrow_GrWrapOwnership,
-                                                      GrWrapCacheable::kNo, ioType,
+                                                      GrWrapCacheable::kNo, ioType, /*label=*/{},
                                                       mbet->refCountedCallback());
             dContext->flushAndSubmit();
             proxy->peekTexture()->markMipmapsDirty();  // avoids assert in GrGpu.

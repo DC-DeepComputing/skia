@@ -219,7 +219,8 @@ static void gpu_tests(GrDirectContext* dContext,
         }
 
         auto img = SkImage::MakeFromTexture(dContext, backendTex, kTopLeft_GrSurfaceOrigin,
-                                            test.fColorType, test.fAlphaType, nullptr);
+                                            test.fColorType, test.fAlphaType, nullptr,
+                                            /*label=*/{});
         REPORTER_ASSERT(reporter, SkToBool(img));
 
         {
