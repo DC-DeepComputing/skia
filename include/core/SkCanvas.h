@@ -260,12 +260,14 @@ public:
     /** Copies SkSurfaceProps, if SkCanvas is associated with raster surface or
         GPU surface, and returns true. Otherwise, returns false and leave props unchanged.
 
-        @param props  storage for writable SkSurfaceProps
-        @return       true if SkSurfaceProps was copied
+        @param props    storage for writable SkSurfaceProps
+        @param current  if true, copies the currently-active SkSurfaceProps, which can vary as
+                        layers are saved and restored
+        @return         true if SkSurfaceProps was copied
 
         example: https://fiddle.skia.org/c/@Canvas_getProps
     */
-    bool getProps(SkSurfaceProps* props) const;
+    bool getProps(SkSurfaceProps* props, bool active = false) const;
 
     /** Triggers the immediate execution of all pending draw operations.
         If SkCanvas is associated with GPU surface, resolves all pending GPU operations.
@@ -2179,7 +2181,7 @@ protected:
     virtual bool onPeekPixels(SkPixmap* pixmap);
     virtual bool onAccessTopLayerPixels(SkPixmap* pixmap);
     virtual SkImageInfo onImageInfo() const;
-    virtual bool onGetProps(SkSurfaceProps* props) const;
+    virtual bool onGetProps(SkSurfaceProps* props, bool active) const;
     virtual void onFlush();
 
     // Subclass save/restore notifiers.

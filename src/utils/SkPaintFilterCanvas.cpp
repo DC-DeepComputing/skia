@@ -292,6 +292,6 @@ SkImageInfo SkPaintFilterCanvas::onImageInfo() const {
     return this->proxy()->imageInfo();
 }
 
-bool SkPaintFilterCanvas::onGetProps(SkSurfaceProps* props) const {
-    return this->proxy()->getProps(props);
+bool SkPaintFilterCanvas::onGetProps(SkSurfaceProps* props, bool active) const {
+    return this->proxy()->getProps(props, active);
 }

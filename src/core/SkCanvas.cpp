@@ -1283,13 +1283,13 @@ SkImageInfo SkCanvas::onImageInfo() const {
     return this->baseDevice()->imageInfo();
 }
 
-bool SkCanvas::getProps(SkSurfaceProps* props) const {
-    return this->onGetProps(props);
+bool SkCanvas::getProps(SkSurfaceProps* props, bool active) const {
+    return this->onGetProps(props, active);
 }
 
-bool SkCanvas::onGetProps(SkSurfaceProps* props) const {
+bool SkCanvas::onGetProps(SkSurfaceProps* props, bool active) const {
     if (props) {
-        *props = fProps;
+        *props = active ? topDevice()->surfaceProps() : fProps;
     }
     return true;
 }
