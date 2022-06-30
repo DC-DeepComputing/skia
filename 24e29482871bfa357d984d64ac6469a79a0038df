@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9991c808_dd6b50ff",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-06-30T16:43:03Z",
+      "side": 1,
+      "message": "As an alternative design consideration, could we not just move the SkShaders factories to each of the specific cpp files? e.g. SkShaders::Color is defined in SkColorShader.cpp.  This is what I did for image filters and it would lead the way to making SkColorShader.h irrelevant, the color shader impl could be defined entirely in the cpp file.",
+      "revId": "24e29482871bfa357d984d64ac6469a79a0038df",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
