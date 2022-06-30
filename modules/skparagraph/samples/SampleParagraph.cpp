@@ -3723,6 +3723,57 @@ private:
     bool substituteTab = false;
 };
 
+// No ICU
+class ParagraphView66 : public ParagraphView_Base {
+protected:
+    SkString name() override { return SkString("ParagraphView66"); }
+    void onDrawContent(SkCanvas* canvas) override {
+        canvas->drawColor(SK_ColorWHITE);
+        auto fontCollection = getFontCollection();
+        fontCollection->setDefaultFontManager(SkFontMgr::RefDefault());
+        fontCollection->enableFontFallback();
+        TextStyle text_style;
+        text_style.setFontFamilies({SkString("Roboto")});
+        text_style.setFontSize(40);
+        text_style.setColor(SK_ColorBLACK);
+        ParagraphStyle paragraph_style;
+        paragraph_style.setTextStyle(text_style);
+        auto unicode = SkUnicode::Make();
+        SkString text("Hello world!");
+        std::vector<SkUnicode::BidiRegion> bidiRegions = {SkUnicode::BidiRegion(0, text.size(), 0)};
+        std::vector<SkUnicode::Position> graphemes;
+        graphemes.resize(text.size());
+        for (auto i = 0; i < text.size(); ++i) { graphemes[i] = i; }
+        std::vector<SkUnicode::LineBreakBefore> lineBreaks;
+        for (auto i = 0; i < text.size(); ++i) {
+            if (text[i] == ' ') {
+                lineBreaks.emplace_back(
+                        SkUnicode::LineBreakBefore(i, SkUnicode::LineBreakType::kSoftLineBreak));
+            } else if (text[i] == '\n') {
+                lineBreaks.emplace_back(
+                        SkUnicode::LineBreakBefore(i, SkUnicode::LineBreakType::kHardLineBreak));
+            }
+        }
+
+        auto filled = unicode->fill(
+                SkSpan<const char>(text.c_str(), text.size()), bidiRegions, graphemes, lineBreaks);
+        SkASSERT(filled);
+
+        ParagraphBuilderImpl builder(paragraph_style, fontCollection, std::move(unicode));
+        builder.pushStyle(text_style);
+        builder.addText("Hello world!");
+        auto paragraph = builder.Build();
+        paragraph->layout(this->width());
+
+        paragraph->correctLines([&](std::vector<SkUnicode::BidiLevel> logical){
+                                return logical;
+                            });
+        paragraph->paint(canvas, 0, 0);
+    }
+private:
+    using INHERITED = Sample;
+};
+
 
 }  // namespace
 
@@ -3790,3 +3841,4 @@ DEF_SAMPLE(return new ParagraphView62();)
 DEF_SAMPLE(return new ParagraphView63();)
 DEF_SAMPLE(return new ParagraphView64();)
 DEF_SAMPLE(return new ParagraphView65();)
+DEF_SAMPLE(return new ParagraphView66();)

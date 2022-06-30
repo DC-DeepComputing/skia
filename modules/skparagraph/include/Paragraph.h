@@ -91,6 +91,9 @@ public:
     using Visitor = std::function<void(int lineNumber, const VisitorInfo*)>;
     virtual void visit(const Visitor&) = 0;
 
+    using LineVisitor = std::function<std::vector<uint8_t>(std::vector<uint8_t> logical)>;
+    virtual void correctLines(const LineVisitor&) = 0;
+
 protected:
     sk_sp<FontCollection> fFontCollection;
     ParagraphStyle fParagraphStyle;
