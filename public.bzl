@@ -2064,8 +2064,6 @@ def base_defines(os_conditions):
         "SK_BUILD_FOR_GOOGLE3",
         # Required for building dm.
         "GR_TEST_UTILS",
-        # Staging flags for API changes
-        "SK_PARAGRAPH_GRAPHEME_EDGES",
         # Should remove after we update golden images
         "SK_WEBP_ENCODER_USE_DEFAULT_METHOD",
         # Experiment to diagnose image diffs in Google3
@@ -2444,6 +2442,12 @@ SKUNICODE_ICU_RUNTIME_SRCS = [
     "modules/skunicode/src/SkUnicode_icu.cpp",
     "modules/skunicode/src/SkUnicode_icu.h",
     "modules/skunicode/src/SkUnicode_icu_runtime.cpp",
+]
+
+SKUNICODE_ICU_CLIENT_SRCS = [
+    "modules/skunicode/src/SkUnicode_icu.cpp",
+    "modules/skunicode/src/SkUnicode_icu.h",
+    "modules/skunicode/src/SkUnicode_icu_client.cpp",
 ]
 
 SKUNICODE_HDRS = [
