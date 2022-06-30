@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8891e215_914b7e5f",
+        "filename": "src/gpu/RectanizerOptimized.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-06-30T14:36:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b831fdbf_8572d3e9",
+      "range": {
+        "startLine": 31,
+        "startChar": 3,
+        "endLine": 31,
+        "endChar": 70
+      },
+      "revId": "cd1a49fa72034e66adeb918fa3742cbd6ef3fd02",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1bbe6b8b_1b08820a",
@@ -54,6 +78,30 @@
       "writtenOn": "2022-06-30T14:20:24Z",
       "side": 1,
       "message": "currLoc.fY \u003c bestLoc.fY - this shows that the smallest y is the better y.",
+      "range": {
+        "startLine": 37,
+        "startChar": 16,
+        "endLine": 37,
+        "endChar": 39
+      },
+      "revId": "cd1a49fa72034e66adeb918fa3742cbd6ef3fd02",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5e323447_7c9cb80c",
+        "filename": "src/gpu/RectanizerOptimized.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-06-30T14:36:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1bbe6b8b_1b08820a",
       "range": {
         "startLine": 37,
         "startChar": 16,
@@ -87,6 +135,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a9c34272_9ec91a7a",
+        "filename": "src/gpu/RectanizerOptimized.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-06-30T14:36:45Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "bfd067b4_faaa9a12",
+      "range": {
+        "startLine": 50,
+        "startChar": 12,
+        "endLine": 50,
+        "endChar": 48
+      },
+      "revId": "cd1a49fa72034e66adeb918fa3742cbd6ef3fd02",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ed57cc77_5af4b1b3",
@@ -100,6 +172,30 @@
       "writtenOn": "2022-06-30T14:20:24Z",
       "side": 1,
       "message": "Delete this code?",
+      "range": {
+        "startLine": 123,
+        "startChar": 0,
+        "endLine": 125,
+        "endChar": 3
+      },
+      "revId": "cd1a49fa72034e66adeb918fa3742cbd6ef3fd02",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8f29d06a_c41581a9",
+        "filename": "src/gpu/RectanizerSkyline.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-06-30T14:36:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ed57cc77_5af4b1b3",
       "range": {
         "startLine": 123,
         "startChar": 0,
