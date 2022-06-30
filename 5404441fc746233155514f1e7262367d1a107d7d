@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "df731485_e6ffc72f",
+        "filename": "src/ports/SkFontHost_win.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 1738,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-06-30T14:29:12Z",
+      "side": 1,
+      "message": "It should. SK_ARRAY_COUNT used sizeof() to calculate the count which would include the null.\n\nCompiler explorer thinks so...\nhttps://godbolt.org/z/EfEMvdesY",
+      "parentUuid": "6fe90276_7db83556",
+      "range": {
+        "startLine": 1738,
+        "startChar": 27,
+        "endLine": 1738,
+        "endChar": 36
+      },
+      "revId": "5404441fc746233155514f1e7262367d1a107d7d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "844ac68f_dfc9d70b",
