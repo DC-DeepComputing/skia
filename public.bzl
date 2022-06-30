@@ -2446,6 +2446,12 @@ SKUNICODE_ICU_RUNTIME_SRCS = [
     "modules/skunicode/src/SkUnicode_icu_runtime.cpp",
 ]
 
+SKUNICODE_ICU_CLIENT_SRCS = [
+    "modules/skunicode/src/SkUnicode_icu.cpp",
+    "modules/skunicode/src/SkUnicode_icu.h",
+    "modules/skunicode/src/SkUnicode_icu_client.cpp",
+]
+
 SKUNICODE_HDRS = [
     "modules/skunicode/include/SkUnicode.h",
 ]
