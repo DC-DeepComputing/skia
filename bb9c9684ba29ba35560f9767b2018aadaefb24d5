@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "147ae16c_f52959ae",
+        "filename": "src/gpu/AtlasTypes.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-07-01T19:51:33Z",
+      "side": 1,
+      "message": "New line break seems unnecessary?",
+      "range": {
+        "startLine": 54,
+        "startChar": 23,
+        "endLine": 55,
+        "endChar": 8
+      },
+      "revId": "bb9c9684ba29ba35560f9767b2018aadaefb24d5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1edf012f_aa7af3ae",
+        "filename": "src/gpu/AtlasTypes.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-07-01T19:51:33Z",
+      "side": 1,
+      "message": "This file used to have an actual instance of RectanizerSkyline. Now it has a unique_ptr to the base class. I think we can remove this include entirely, and replace it with a forward declaration:\n\n  namespace skgpu { class Rectanizer; }",
+      "revId": "bb9c9684ba29ba35560f9767b2018aadaefb24d5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5f8e9b34_69ee7759",
+        "filename": "src/gpu/Rectanizer.h",
+        "patchSetId": 21
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-07-01T19:51:33Z",
+      "side": 1,
+      "message": "This doesn\u0027t need to be virtual, right? (Looks like all derived classes have removed their overrides?)",
+      "range": {
+        "startLine": 34,
+        "startChar": 4,
+        "endLine": 34,
+        "endChar": 11
+      },
+      "revId": "bb9c9684ba29ba35560f9767b2018aadaefb24d5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0672692a_4f170555",
+        "filename": "src/gpu/ganesh/GrDirectContext.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 266,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-07-01T19:51:33Z",
+      "side": 1,
+      "message": "I\u0027d remove the `true \u003d\u003d`, it makes this harder to read than just saying:\n\n  if (this-\u003eoptions().fSupportBilerpFromGlyphAtlas)",
+      "range": {
+        "startLine": 266,
+        "startChar": 8,
+        "endLine": 266,
+        "endChar": 16
+      },
+      "revId": "bb9c9684ba29ba35560f9767b2018aadaefb24d5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
