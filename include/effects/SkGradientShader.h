@@ -249,7 +249,7 @@ public:
                                      const SkColor4f colors[], sk_sp<SkColorSpace> colorSpace,
                                      const SkScalar pos[], int count);
 
-    static void RegisterFlattenables();
+    static void RegisterFlattenables1();
 };
 
 #endif
