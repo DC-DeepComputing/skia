@@ -133,7 +133,7 @@ static const char* cap_map[]  = {
 static_assert(std::size(cap_map) == SkPaint::kCapCount, "missing_cap_map_entry");
 
 static const char* svg_cap(SkPaint::Cap cap) {
-    SkASSERT(cap < std::size(cap_map));
+    SkASSERT(static_cast<size_t>(cap) < std::size(cap_map));
     return cap_map[cap];
 }
 
