@@ -10,6 +10,7 @@
 #include "include/private/SkVx.h"
 #include "src/core/SkArenaAlloc.h"
 #include "src/core/SkAutoBlitterChoose.h"
+#include "src/core/SkBlenderBase.h"
 #include "src/core/SkConvertPixels.h"
 #include "src/core/SkCoreBlitters.h"
 #include "src/core/SkDraw.h"
@@ -21,8 +22,6 @@
 #include "src/core/SkVMBlitter.h"
 #include "src/core/SkVertState.h"
 #include "src/core/SkVerticesPriv.h"
-#include "src/shaders/SkColorShader.h"
-#include "src/shaders/SkComposeShader.h"
 #include "src/shaders/SkShaderBase.h"
 
 struct Matrix43 {
@@ -375,29 +374,31 @@ void SkDraw::drawFixedVertices(const SkVertices* vertices,
     }
 
     // Combines per-vertex colors with 'shader' using 'blender'.
-    auto applyShaderColorBlend = [&](SkShader* shader) -> SkShader* {
+    auto applyShaderColorBlend = [&](SkShader* shader) -> sk_sp<SkShader> {
         if (!colors) {
-            return shader;
+            return sk_ref_sp(shader);
         }
         if (blenderIsDst) {
-            return triColorShader;
+            return sk_ref_sp(triColorShader);
         }
+        sk_sp<SkShader> shader7;
         if (!shader) {
             // When there is no shader then the blender applies to the vertex colors and opaque
             // paint color.
-            shader = outerAlloc->make<SkColor4Shader>(paint.getColor4f().makeOpaque(), nullptr);
+            shader7 = SkShaders::Color(paint.getColor4f().makeOpaque(), nullptr);
+        } else {
+            shader7 = sk_ref_sp(shader);
         }
-        return outerAlloc->make<SkShader_Blend>(
-                blender, sk_ref_sp(triColorShader), sk_ref_sp(shader));
+        return SkShaders::Blend(blender, sk_ref_sp(triColorShader), std::move(shader7));
     };
 
     auto rpblit = [&]() {
         VertState state(vertexCount, indices, indexCount);
         VertState::Proc vertProc = state.chooseProc(info.mode());
-        SkShader* shader = applyShaderColorBlend(paintShader);
+        sk_sp<SkShader> shader3 = applyShaderColorBlend(paintShader);
 
         SkPaint shaderPaint(paint);
-        shaderPaint.setShader(sk_ref_sp(shader));
+        shaderPaint.setShader(shader3);
 
         if (!texCoords) {  // only tricolor shader
             auto blitter = SkCreateRasterPipelineBlitter(
@@ -423,8 +424,8 @@ void SkDraw::drawFixedVertices(const SkVertices* vertices,
                           shaderPaint,
                           nullptr,
                           *fMatrixProvider};
-        if (auto updater = as_SB(shader)->appendUpdatableStages(rec)) {
-            bool isOpaque = shader->isOpaque();
+        if (auto updater = as_SB(shader3)->appendUpdatableStages(rec)) {
+            bool isOpaque = shader3->isOpaque();
             if (triColorShader) {
                 isOpaque = false;  // unless we want to walk all the colors, and see if they are
                                    // all opaque (and the blend mode will keep them that way
@@ -493,16 +494,16 @@ void SkDraw::drawFixedVertices(const SkVertices* vertices,
 
         // No colors are changing and no texture coordinates are changing, so no updates between
         // triangles are needed. Use SkVM to blit the triangles.
-        SkShader* shader = paintShader;
+        SkShader* shader1 = paintShader;
         SkUpdatableShader* texCoordShader = nullptr;
         if (texCoords && texCoords != positions) {
-            texCoordShader = as_SB(shader)->updatableShader(outerAlloc);
-            shader = texCoordShader;
+            texCoordShader = as_SB(shader1)->updatableShader(outerAlloc);
+            shader1 = texCoordShader;
         }
-        shader = applyShaderColorBlend(shader);
+        sk_sp<SkShader> shader2 = applyShaderColorBlend(shader1);
 
         SkPaint shaderPaint{paint};
-        shaderPaint.setShader(sk_ref_sp(shader));
+        shaderPaint.setShader(std::move(shader2));
         auto blitter = SkVMBlitter::Make(
                 fDst, shaderPaint, *fMatrixProvider, outerAlloc, this->fRC->clipShader());
         if (!blitter) {
@@ -545,7 +546,7 @@ void SkDraw::drawVertices(const SkVertices* vertices,
 
     constexpr size_t kDefVertexCount = 16;
     constexpr size_t kOuterSize = sizeof(SkTriColorShader) +
-                                 sizeof(SkShader_Blend) +
+//                                 sizeof(SkShader_Blend) +
                                  (2 * sizeof(SkPoint) + sizeof(SkColor4f)) * kDefVertexCount;
     SkSTArenaAlloc<kOuterSize> outerAlloc;
 
