@@ -20,6 +20,7 @@ filegroup(
 )
 
 CORE_SRCS = [
+    "IWYUTest.cpp",
     "SkSLAnalysis.cpp",
     "SkSLAnalysis.h",
     "SkSLBuiltinMap.cpp",
