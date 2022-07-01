@@ -10,6 +10,7 @@
 #include "include/private/SkVx.h"
 #include "src/core/SkArenaAlloc.h"
 #include "src/core/SkAutoBlitterChoose.h"
+#include "src/core/SkBlenderBase.h"
 #include "src/core/SkConvertPixels.h"
 #include "src/core/SkCoreBlitters.h"
 #include "src/core/SkDraw.h"
@@ -21,9 +22,8 @@
 #include "src/core/SkVMBlitter.h"
 #include "src/core/SkVertState.h"
 #include "src/core/SkVerticesPriv.h"
-#include "src/shaders/SkColorShader.h"
-#include "src/shaders/SkComposeShader.h"
 #include "src/shaders/SkShaderBase.h"
+#include "src/shaders/SkShadersPriv.h"
 
 struct Matrix43 {
     float fMat[12];    // column major
@@ -385,10 +385,10 @@ void SkDraw::drawFixedVertices(const SkVertices* vertices,
         if (!shader) {
             // When there is no shader then the blender applies to the vertex colors and opaque
             // paint color.
-            shader = outerAlloc->make<SkColor4Shader>(paint.getColor4f().makeOpaque(), nullptr);
+            shader = SkShadersPriv::Color(outerAlloc, paint.getColor4f().makeOpaque(), nullptr);
         }
-        return outerAlloc->make<SkShader_Blend>(
-                blender, sk_ref_sp(triColorShader), sk_ref_sp(shader));
+        return SkShadersPriv::Blend(outerAlloc, blender,
+                                    sk_ref_sp(triColorShader), sk_ref_sp(shader));
     };
 
     auto rpblit = [&]() {
@@ -545,7 +545,7 @@ void SkDraw::drawVertices(const SkVertices* vertices,
 
     constexpr size_t kDefVertexCount = 16;
     constexpr size_t kOuterSize = sizeof(SkTriColorShader) +
-                                 sizeof(SkShader_Blend) +
+//                                 sizeof(SkShader_Blend) +
                                  (2 * sizeof(SkPoint) + sizeof(SkColor4f)) * kDefVertexCount;
     SkSTArenaAlloc<kOuterSize> outerAlloc;
 
