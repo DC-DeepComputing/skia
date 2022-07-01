@@ -39,6 +39,8 @@
 #include "tools/trace/EventTracingPriv.h"
 #include "tools/trace/SkDebugfTracer.h"
 
+#include "src/shaders/SkShadersPriv.h"
+
 #include <memory>
 #include <vector>
 
@@ -928,6 +930,9 @@ static bool gather_srcs() {
 
 static void push_sink(const SkCommandLineConfig& config, Sink* s) {
     std::unique_ptr<Sink> sink(s);
+
+    size_t foo = SkShadersPriv::BlendShaderSize();
+    printf("%zu\n", foo);
 
     // Try a simple Src as a canary.  If it fails, skip this sink.
     struct : public Src {
