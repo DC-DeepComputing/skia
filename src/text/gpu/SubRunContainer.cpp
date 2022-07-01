@@ -1157,7 +1157,7 @@ public:
     std::tuple<Rect, Transform> boundsAndDeviceMatrix(const Transform&,
                                                       SkPoint drawOrigin) const override;
 
-    const Renderer* renderer() const override { return &Renderer::TextDirect(fMaskFormat); }
+    const Renderer* renderer() const override { return &Renderer::TextDirect(); }
 
     void fillVertexData(DrawWriter*,
                         int offset, int count,
@@ -1586,9 +1586,9 @@ std::tuple<Rect, Transform> DirectMaskSubRun::boundsAndDeviceMatrix(const Transf
 }
 
 template<typename VertexData>
-void direct_2D_mask_dw(DrawWriter* dw,
-                       SkZip<const Glyph*, const VertexData> quadData,
-                       SkColor color, SkScalar depth) {
+void direct_dw(DrawWriter* dw,
+               SkZip<const Glyph*, const VertexData> quadData,
+               SkScalar depth) {
     DrawWriter::Vertices verts{*dw};
     for (auto [glyph, leftTop]: quadData) {
         auto[al, at, ar, ab] = glyph->fAtlasLocator.getUVs();
@@ -1596,29 +1596,7 @@ void direct_2D_mask_dw(DrawWriter* dw,
                  dt = leftTop[1],
                  dr = dl + (ar - al),
                  db = dt + (ab - at);
-        // TODO: this should be drawn with indices but there doesn't seem to be a way to do that.
-        // TODO: we should really use instances as well.
-        verts.append(6) << SkPoint{dl, dt} << depth << color << AtlasPt{al, at}  // L,T
-                        << SkPoint{dl, db} << depth << color << AtlasPt{al, ab}  // L,B
-                        << SkPoint{dr, dt} << depth << color << AtlasPt{ar, at}  // R,T
-                        << SkPoint{dl, db} << depth << color << AtlasPt{al, ab}  // L,B
-                        << SkPoint{dr, db} << depth << color << AtlasPt{ar, ab}  // R,B
-                        << SkPoint{dr, dt} << depth << color << AtlasPt{ar, at}; // R,T
-    }
-}
-
-template<typename VertexData>
-void direct_2D_rgba_dw(DrawWriter* dw,
-                       SkZip<const Glyph*, const VertexData> quadData,
-                       SkScalar depth) {
-    DrawWriter::Vertices verts{*dw};
-    for (auto [glyph, leftTop]: quadData) {
-        auto[al, at, ar, ab] = glyph->fAtlasLocator.getUVs();
-        SkScalar dl = leftTop[0],
-                 dt = leftTop[1],
-                 dr = dl + (ar - al),
-                 db = dt + (ab - at);
-        // TODO: this should be drawn with indices but there doesn't seem to be a way to do that.
+        // TODO: Ganesh uses indices but that's not available with dynamic vertex data
         // TODO: we should really use instances as well.
         verts.append(6) << SkPoint{dl, dt} << depth << AtlasPt{al, at}  // L,T
                         << SkPoint{dl, db} << depth << AtlasPt{al, ab}  // L,B
@@ -1630,19 +1608,32 @@ void direct_2D_rgba_dw(DrawWriter* dw,
 }
 
 template<typename VertexData>
-void transformed_direct_2D_mask_dw(DrawWriter* dw,
-                                   SkZip<const Glyph*, const VertexData> quadData,
-                                   SkColor color, SkScalar depth,
-                                   const Transform& transform) {
-    // TODO
-}
-
-template<typename VertexData>
-void transformed_direct_2D_rgba_dw(DrawWriter* dw,
-                                   SkZip<const Glyph*, const VertexData> quadData,
-                                   SkScalar depth,
-                                   const Transform& transform) {
-    // TODO
+void transformed_direct_dw(DrawWriter* dw,
+                           SkZip<const Glyph*, const VertexData> quadData,
+                           SkScalar depth, const Transform& transform) {
+    // TODO: Can't handle perspective right now
+    if (transform.type() == Transform::Type::kProjection) {
+        return;
+    }
+    DrawWriter::Vertices verts{*dw};
+    for (auto [glyph, leftTop]: quadData) {
+        auto[al, at, ar, ab] = glyph->fAtlasLocator.getUVs();
+        SkScalar dl = leftTop[0],
+                 dt = leftTop[1],
+                 dr = dl + (ar - al),
+                 db = dt + (ab - at);
+        SkV2 localCorners[4] = {{dl, dt}, {dr, dt}, {dr, db}, {dl, db}};
+        SkV4 devOut[4];
+        transform.mapPoints(localCorners, devOut, 4);
+        // TODO: Ganesh uses indices but that's not available with dynamic vertex data
+        // TODO: we should really use instances as well.
+        verts.append(6) << SkPoint{devOut[0].x, devOut[0].y} << depth << AtlasPt{al, at}  // L,T
+                        << SkPoint{devOut[3].x, devOut[3].y} << depth << AtlasPt{al, ab}  // L,B
+                        << SkPoint{devOut[1].x, devOut[1].y} << depth << AtlasPt{ar, at}  // R,T
+                        << SkPoint{devOut[3].x, devOut[3].y} << depth << AtlasPt{al, ab}  // L,B
+                        << SkPoint{devOut[2].x, devOut[2].y} << depth << AtlasPt{ar, ab}  // R,B
+                        << SkPoint{devOut[1].x, devOut[1].y} << depth << AtlasPt{ar, at}; // R,T
+    }
 }
 
 void DirectMaskSubRun::fillVertexData(DrawWriter* dw,
@@ -1656,21 +1647,9 @@ void DirectMaskSubRun::fillVertexData(DrawWriter* dw,
 
     bool noTransformNeeded = (toDevice.type() == Transform::Type::kIdentity);
     if (noTransformNeeded) {
-        if (fMaskFormat != MaskFormat::kARGB) {
-            direct_2D_mask_dw(dw, quadData(), color, depth);
-        } else {
-            direct_2D_rgba_dw(dw, quadData(), depth);
-        }
+        direct_dw(dw, quadData(), depth);
     } else {
-        if (toDevice.type() == Transform::Type::kProjection) {
-            // TODO: handle float3 position data
-        } else {
-            if (fMaskFormat != MaskFormat::kARGB) {
-                transformed_direct_2D_mask_dw(dw, quadData(), color, depth, toDevice);
-            } else {
-                transformed_direct_2D_rgba_dw(dw, quadData(), depth, toDevice);
-            }
-        }
+        transformed_direct_dw(dw, quadData(), depth, toDevice);
     }
 }
 #endif
@@ -1773,7 +1752,7 @@ public:
                                                       SkPoint drawOrigin) const override;
 
     const Renderer* renderer() const override {
-        return &Renderer::TextDirect(fVertexFiller.grMaskType());
+        return &Renderer::TextDirect();
     }
 
     void fillVertexData(DrawWriter*,
