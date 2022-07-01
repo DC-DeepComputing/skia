@@ -11,6 +11,8 @@
 #include "include/c/sk_colorspace.h"
 #include "include/c/sk_imageinfo.h"
 
+#include <array>  // for std::size
+
 const struct {
     sk_colortype_t  fC;
     SkColorType     fSK;
