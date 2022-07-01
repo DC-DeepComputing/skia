@@ -1605,4 +1605,53 @@ describe('Core canvas behavior', () => {
         effect.delete();
         paint.delete();
     });
+
+    gm('ImageFilter_MakeBlend', (canvas) => {
+        canvas.clear(CanvasKit.WHITE);
+        const redCF = CanvasKit.ColorFilter.MakeBlend(
+                CanvasKit.Color(255, 0, 0, 0.4), CanvasKit.BlendMode.SrcOver);
+        const redIF = CanvasKit.ImageFilter.MakeColorFilter(redCF, null);
+        const blueCF = CanvasKit.ColorFilter.MakeBlend(
+                CanvasKit.Color(0, 0, 255, 0.7), CanvasKit.BlendMode.SrcOver);
+        const blueIF = CanvasKit.ImageFilter.MakeColorFilter(blueCF, null);
+
+        const BOX_SIZE = 100;
+        const SWATCH_SIZE = 80;
+        const MARGIN = (BOX_SIZE - SWATCH_SIZE) / 2;
+        const COLS_PER_ROW = CANVAS_WIDTH / BOX_SIZE;
+        const blends = ["Clear", "Src", "Dst", "SrcOver", "DstOver", "SrcIn", "DstIn", "SrcOut",
+                        "DstOut", "SrcATop", "DstATop", "Xor", "Plus", "Modulate", "Screen",
+                        "Overlay", "Darken", "Lighten", "ColorDodge", "ColorBurn", "HardLight",
+                        "SoftLight", "Difference", "Exclusion", "Multiply", "Hue", "Saturation",
+                        "Color", "Luminosity"];
+        const paint = new CanvasKit.Paint();
+        // Put a dark green on the paint itself.
+        paint.setColor(CanvasKit.Color(0, 255, 0, 0.2));
+
+        const font = new CanvasKit.Font(null, 10);
+        const textPaint = new CanvasKit.Paint();
+        textPaint.setColor(CanvasKit.BLACK);
+
+        for (let i = 0; i < blends.length; i++) {
+            const filter = CanvasKit.ImageFilter.MakeBlend(CanvasKit.BlendMode[blends[i]],
+                                                           redIF, blueIF);
+            const col = i % COLS_PER_ROW, row = Math.floor(i / COLS_PER_ROW);
+
+            paint.setImageFilter(filter);
+            canvas.save();
+
+            canvas.clipRect(CanvasKit.XYWHRect(col * BOX_SIZE + MARGIN, row * BOX_SIZE + MARGIN, SWATCH_SIZE, SWATCH_SIZE),
+                            CanvasKit.ClipOp.Intersect);
+            canvas.drawPaint(paint);
+            canvas.restore();
+
+            canvas.drawText(blends[i], col * BOX_SIZE + 30, row * BOX_SIZE + BOX_SIZE, textPaint, font);
+            filter.delete();
+        }
+        redCF.delete();
+        redIF.delete();
+        blueCF.delete();
+        blueIF.delete();
+        paint.delete();
+    });
 });
