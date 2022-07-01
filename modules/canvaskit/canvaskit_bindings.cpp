@@ -1517,6 +1517,10 @@ EMSCRIPTEN_BINDINGS(Skia) {
 
     class_<SkImageFilter>("ImageFilter")
         .smart_ptr<sk_sp<SkImageFilter>>("sk_sp<ImageFilter>")
+        .class_function("MakeBlend", optional_override([](SkBlendMode mode, sk_sp<SkImageFilter> background,
+                                                          sk_sp<SkImageFilter> foreground)->sk_sp<SkImageFilter> {
+            return SkImageFilters::Blend(mode, background, foreground);
+        }))
         .class_function("MakeBlur", optional_override([](SkScalar sigmaX, SkScalar sigmaY,
                                                          SkTileMode tileMode, sk_sp<SkImageFilter> input)->sk_sp<SkImageFilter> {
             return SkImageFilters::Blur(sigmaX, sigmaY, tileMode, input);
@@ -1526,6 +1530,33 @@ EMSCRIPTEN_BINDINGS(Skia) {
             return SkImageFilters::ColorFilter(cf, input);
         }))
         .class_function("MakeCompose", &SkImageFilters::Compose)
+        .class_function("MakeDilate", optional_override([](SkScalar radiusX, SkScalar radiusY,
+                                                           sk_sp<SkImageFilter> input)->sk_sp<SkImageFilter> {
+            return SkImageFilters::Dilate(radiusX, radiusY, input);
+        }))
+        .class_function("MakeDisplacementMap", optional_override([](SkColorChannel xChannelSelector,
+                                                                    SkColorChannel yChannelSelector,
+                                                                    SkScalar scale, sk_sp<SkImageFilter> displacement,
+                                                                    sk_sp<SkImageFilter> color,)->sk_sp<SkImageFilter> {
+            return SkImageFilters::DisplacementMap(xChannelSelector, yChannelSelector,
+                                                   scale, displacement, color);
+        }))
+        .class_function("MakeDropShadow", optional_override([](SkScalar dx, SkScalar dy,
+                                                               SkScalar sigmaX, SkScalar sigmaY,
+                                                               WASMPointerF32 cPtr, sk_sp<SkImageFilter> input)->sk_sp<SkImageFilter> {
+            SkColor4f c = ptrToSkColor4f(cPtr);
+            return SkImageFilters::MakeDropShadow(dx, dy, sigmaX, sigmaY, c.toSkColor(), input);
+        }))
+        .class_function("MakeDropShadowOnly", optional_override([](SkScalar dx, SkScalar dy,
+                                                                   SkScalar sigmaX, SkScalar sigmaY,
+                                                                   WASMPointerF32 cPtr, sk_sp<SkImageFilter> input)->sk_sp<SkImageFilter> {
+            SkColor4f c = ptrToSkColor4f(cPtr);
+            return SkImageFilters::MakeDropShadowOnly(dx, dy, sigmaX, sigmaY, c.toSkColor(), input);
+        }))
+        .class_function("MakeErode", optional_override([](SkScalar radiusX, SkScalar radiusY,
+                                                           sk_sp<SkImageFilter> input)->sk_sp<SkImageFilter> {
+            return SkImageFilters::Erode(radiusX, radiusY, input);
+        }))
         .class_function("_MakeMatrixTransformCubic",
                         optional_override([](WASMPointerF32 mPtr, float B, float C,
                                              sk_sp<SkImageFilter> input)->sk_sp<SkImageFilter> {
@@ -1537,6 +1568,10 @@ EMSCRIPTEN_BINDINGS(Skia) {
                                              sk_sp<SkImageFilter> input)->sk_sp<SkImageFilter> {
             OptionalMatrix matr(mPtr);
             return SkImageFilters::MatrixTransform(matr, SkSamplingOptions(fm, mm), input);
+        }))
+        .class_function("MakeOffset", optional_override([](SkScalar dx, SkScalar dy,
+                                                           sk_sp<SkImageFilter> input)->sk_sp<SkImageFilter> {
+            return SkImageFilters::Offset(dx, dy, input);
         }));
 
     class_<SkMaskFilter>("MaskFilter")

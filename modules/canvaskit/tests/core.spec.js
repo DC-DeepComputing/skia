@@ -1605,4 +1605,15 @@ describe('Core canvas behavior', () => {
         effect.delete();
         paint.delete();
     });
+
+    gm('ImageFilter_MakeBlend', (canvas) => {
+        canvas.clear(CanvasKit.WHITE);
+        const redCF = CanvasKit.ColorFilter.MakeBlend(
+                CanvasKit.Color(255, 0, 0, 0.5), CanvasKit.BlendMode.SrcOver);
+        const redIF = CanvasKit.ImageFilter.MakeColorFilter(redCF, null);
+        const blueCF = CanvasKit.ColorFilter.MakeBlend(
+                CanvasKit.Color(0, 0, 255, 0.5), CanvasKit.BlendMode.SrcOver);
+        const blueIF = CanvasKit.ImageFilter.MakeColorFilter(blueCF, null);
+
+    });
 });
