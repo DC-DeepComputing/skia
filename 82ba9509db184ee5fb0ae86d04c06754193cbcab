@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8faa67a3_76f31377",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 12064
+      },
+      "writtenOn": "2022-07-01T01:37:51Z",
+      "side": 1,
+      "message": "Hi Greg, I just add some restrictions to the last dmsaa CL in case there might be any unknown performance regression on old Intel gpus. PTAL!\nThanks!",
+      "revId": "82ba9509db184ee5fb0ae86d04c06754193cbcab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
