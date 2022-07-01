@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4decd2be_499b4c08",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-07-01T21:28:07Z",
+      "side": 1,
+      "message": "PTAL. We may want to update infra/wasm-common/docker/emsdk-base and various bots as well but I haven\u0027t looked into how to accomplish that.",
+      "revId": "43e3e1b1e963f6629378978683448e8a62eb0c74",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9653cc0f_b8012a29",
+        "filename": "WORKSPACE.bazel",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-07-01T21:28:07Z",
+      "side": 1,
+      "message": "I\u0027ll need some assistance with uploading this image to Google storage. I lost the instructions for this unfortunately 😞",
+      "range": {
+        "startLine": 16,
+        "startChar": 9,
+        "endLine": 16,
+        "endChar": 137
+      },
+      "revId": "43e3e1b1e963f6629378978683448e8a62eb0c74",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
