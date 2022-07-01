@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cb0ff98c_07b83809",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18274
+      },
+      "writtenOn": "2022-07-01T19:16:56Z",
+      "side": 1,
+      "message": "Greg, I have created this new CL and will abandon the previous one once this looks ok. In this, I have passed an optional parameter to the GrBackendTexture and from there using onWrapBackendTexture, passed it finally to MakeWrapped of GrGLTexture.\n\nNot sure but should we also pass the label to other backends like D3D, Dawn, Mtl, etc as opposed to only GrGLTexture?",
+      "revId": "fd845e0f01759fa8166c298399e33fd8ed355829",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
