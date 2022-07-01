@@ -33,6 +33,24 @@
       "message": "Michael, WDYT? I\u0027d be tempted to make this a separate call (at the public API level) (getProps vs. getTopProps or something?). Alternatively, if we do specify it via argument, I\u0027d rather see an enum, because the bool isn\u0027t real obvious/descriptive at the call-site:\n\n  enum class Props { kBase, kTop };\n  getProps(Props which \u003d Props::kBase) \u003d 0;",
       "revId": "4639becabc3d53dd53935f0c5fc877b6f6188a1d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e60dbecc_f51fc594",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 10586
+      },
+      "writtenOn": "2022-07-01T18:28:48Z",
+      "side": 1,
+      "message": "FWIW, I added it as an argument so that we wouldn\u0027t have to duplicate all the `onGetProps` machinery... but I\u0027m happy to make it a separate call (or change the parameter to an enum), if that is preferred.\n\n(As a middle option, perhaps a separate *public* function call, but an added parameter on the private `onGetProps` functions?)",
+      "parentUuid": "5b437d2d_8cc998d5",
+      "revId": "4639becabc3d53dd53935f0c5fc877b6f6188a1d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
