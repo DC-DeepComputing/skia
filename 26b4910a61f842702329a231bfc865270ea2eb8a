@@ -16,6 +16,92 @@
       "message": "If our impl retains the SkData used to create a buffer, the user of this API has indicated they\u0027d have to make a copy to pass in because the data may subsequently get modified. So this just simplifies things to take a void*/size_t and we ensure we\u0027ve ingested the data before returning from the buffer factories.",
       "revId": "26b4910a61f842702329a231bfc865270ea2eb8a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3b822bee_71b188e5",
+        "filename": "include/core/SkMesh.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 255,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-07-01T18:10:09Z",
+      "side": 1,
+      "message": "remove ?",
+      "range": {
+        "startLine": 254,
+        "startChar": 55,
+        "endLine": 255,
+        "endChar": 38
+      },
+      "revId": "26b4910a61f842702329a231bfc865270ea2eb8a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "399f0247_2cf9fdc3",
+        "filename": "include/core/SkMesh.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 258,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-07-01T18:10:09Z",
+      "side": 1,
+      "message": "update ?",
+      "range": {
+        "startLine": 258,
+        "startChar": 91,
+        "endLine": 258,
+        "endChar": 97
+      },
+      "revId": "26b4910a61f842702329a231bfc865270ea2eb8a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f3a051d8_c153fad0",
+        "filename": "include/core/SkMesh.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 272,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-07-01T18:10:09Z",
+      "side": 1,
+      "message": "update ?",
+      "range": {
+        "startLine": 272,
+        "startChar": 59,
+        "endLine": 272,
+        "endChar": 65
+      },
+      "revId": "26b4910a61f842702329a231bfc865270ea2eb8a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3c843081_045e7511",
+        "filename": "src/core/SkMesh.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 474,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-07-01T18:10:09Z",
+      "side": 1,
+      "message": "Do we want a \"(!data)\" check here too ?",
+      "revId": "26b4910a61f842702329a231bfc865270ea2eb8a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
