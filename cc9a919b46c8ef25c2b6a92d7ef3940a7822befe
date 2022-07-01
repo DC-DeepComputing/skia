@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "eccfe1f8_d3889001",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-07-01T15:44:47Z",
+      "side": 1,
+      "message": "I think the original revert was due to a red herring. Relanding with no changes.",
+      "revId": "cc9a919b46c8ef25c2b6a92d7ef3940a7822befe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
