@@ -69,6 +69,24 @@
       "parentUuid": "e60dbecc_f51fc594",
       "revId": "4639becabc3d53dd53935f0c5fc877b6f6188a1d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9257709e_032cd0b0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 10586
+      },
+      "writtenOn": "2022-07-01T21:55:27Z",
+      "side": 1,
+      "message": "Would you have the new API mirror the old one (for symmetry) or would you rather it *return* an `SkSurfaceProps`.  (IIRC, we were moving towards passing props by value, elsewhere.)",
+      "parentUuid": "370de72a_f14322fe",
+      "revId": "4639becabc3d53dd53935f0c5fc877b6f6188a1d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
