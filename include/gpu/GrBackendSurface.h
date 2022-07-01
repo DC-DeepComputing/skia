@@ -267,38 +267,44 @@ public:
     GrBackendTexture(int width,
                      int height,
                      GrMipmapped,
-                     const GrGLTextureInfo& glInfo);
+                     const GrGLTextureInfo& glInfo,
+                     std::string_view label = {});
 #endif
 
 #ifdef SK_VULKAN
     GrBackendTexture(int width,
                      int height,
-                     const GrVkImageInfo& vkInfo);
+                     const GrVkImageInfo& vkInfo,
+                     std::string_view label = {});
 #endif
 
 #ifdef SK_METAL
     GrBackendTexture(int width,
                      int height,
                      GrMipmapped,
-                     const GrMtlTextureInfo& mtlInfo);
+                     const GrMtlTextureInfo& mtlInfo,
+                     std::string_view label = {});
 #endif
 
 #ifdef SK_DIRECT3D
     GrBackendTexture(int width,
                      int height,
-                     const GrD3DTextureResourceInfo& d3dInfo);
+                     const GrD3DTextureResourceInfo& d3dInfo,
+                     std::string_view label = {});
 #endif
 
 #ifdef SK_DAWN
     GrBackendTexture(int width,
                      int height,
-                     const GrDawnTextureInfo& dawnInfo);
+                     const GrDawnTextureInfo& dawnInfo,
+                     std::string_view label = {});
 #endif
 
     GrBackendTexture(int width,
                      int height,
                      GrMipmapped,
-                     const GrMockTextureInfo& mockInfo);
+                     const GrMockTextureInfo& mockInfo,
+                     std::string_view label = {});
 
     GrBackendTexture(const GrBackendTexture& that);
 
@@ -309,6 +315,7 @@ public:
     SkISize dimensions() const { return {fWidth, fHeight}; }
     int width() const { return fWidth; }
     int height() const { return fHeight; }
+    std::string_view getLabel() const { return fLabel; }
     GrMipmapped mipmapped() const { return fMipmapped; }
     bool hasMipmaps() const { return fMipmapped == GrMipmapped::kYes; }
     /** deprecated alias of hasMipmaps(). */
@@ -398,7 +405,8 @@ private:
                      int height,
                      GrMipmapped,
                      const GrGLTextureInfo,
-                     sk_sp<GrGLTextureParameters>);
+                     sk_sp<GrGLTextureParameters>,
+                     std::string_view label = {});
     sk_sp<GrGLTextureParameters> getGLTextureParams() const;
 #endif
 
@@ -407,7 +415,8 @@ private:
     GrBackendTexture(int width,
                      int height,
                      const GrVkImageInfo& vkInfo,
-                     sk_sp<GrBackendSurfaceMutableStateImpl> mutableState);
+                     sk_sp<GrBackendSurfaceMutableStateImpl> mutableState,
+                     std::string_view label = {});
 #endif
 
 #ifdef SK_DIRECT3D
@@ -416,7 +425,8 @@ private:
     GrBackendTexture(int width,
                      int height,
                      const GrD3DTextureResourceInfo& vkInfo,
-                     sk_sp<GrD3DResourceState> state);
+                     sk_sp<GrD3DResourceState> state,
+                     std::string_view label = {});
     sk_sp<GrD3DResourceState> getGrD3DResourceState() const;
 #endif
 
@@ -426,6 +436,7 @@ private:
     bool fIsValid;
     int fWidth;         //<! width in pixels
     int fHeight;        //<! height in pixels
+    const std::string fLabel;
     GrMipmapped fMipmapped;
     GrBackendApi fBackend;
     GrTextureType fTextureType;
