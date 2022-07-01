@@ -16,6 +16,23 @@
       "message": "Checking the necessary and sufficient conditions of IWYU for multiple mapping entries.\n\nCan you please check that test implies the behavior we want.",
       "revId": "df6ae2775cff4289619a78b1b78086e9c4ed99d7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "959f9111_58d747d3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-07-01T13:36:58Z",
+      "side": 1,
+      "message": "Yes, I think this proves the multiple .IMP entries works",
+      "revId": "df6ae2775cff4289619a78b1b78086e9c4ed99d7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
