@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "51151fc9_f0f9b3d0",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 3664,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-07-01T23:45:49Z",
+      "side": 1,
+      "message": "I don\u0027t fully understand the case that this if statement here handles, however the `next` ID is only ever referenced by the OpBranch written in this condition, so my change should make sense. This fixes the validation errors that were generated for both ReturnsValueOnEveryPathES3 and DeadReturnES3.",
+      "range": {
+        "startLine": 3660,
+        "startChar": 4,
+        "endLine": 3664,
+        "endChar": 5
+      },
+      "revId": "13a9af1878335d27353717c4de9faf598255a057",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
