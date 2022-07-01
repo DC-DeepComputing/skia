@@ -16,6 +16,23 @@
       "message": "+Brian Osman for OWNERS review",
       "revId": "4639becabc3d53dd53935f0c5fc877b6f6188a1d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5b437d2d_8cc998d5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-07-01T12:48:27Z",
+      "side": 1,
+      "message": "Michael, WDYT? I\u0027d be tempted to make this a separate call (at the public API level) (getProps vs. getTopProps or something?). Alternatively, if we do specify it via argument, I\u0027d rather see an enum, because the bool isn\u0027t real obvious/descriptive at the call-site:\n\n  enum class Props { kBase, kTop };\n  getProps(Props which \u003d Props::kBase) \u003d 0;",
+      "revId": "4639becabc3d53dd53935f0c5fc877b6f6188a1d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
