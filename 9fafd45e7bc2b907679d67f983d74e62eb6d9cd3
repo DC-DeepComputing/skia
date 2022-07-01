@@ -140,6 +140,24 @@
       "message": "I added --keep_going back in https://skia-review.googlesource.com/c/skia/+/555416 and it tells me #include \u003citerator\u003e needs to be added in\nSkSLFunctionCall.cpp\nand\nSkSLFunctionDeclaration.cpp\n\n",
       "revId": "9fafd45e7bc2b907679d67f983d74e62eb6d9cd3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b4681304_40634554",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 15
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-07-01T12:34:03Z",
+      "side": 1,
+      "message": "The addition of \n{ include: [\"\u003c__iterator/size.h\u003e\", \"private\", \"\u003citerator\u003e\", \"public\"] },\n\ntells IWYU \"If you see something included from \u003c__iterator/size.h\u003e\", instead make sure \u003citerator\u003e is included. It does not appear possible to tell it that one of \u003citerator\u003e or \u003carray\u003e is fine.\n\nIf you would prefer that \u003carray\u003e be the authoritative include point for std::size, we should make it be that instead of \u003citerator\u003e",
+      "parentUuid": "ffe224a3_6dde5bda",
+      "revId": "9fafd45e7bc2b907679d67f983d74e62eb6d9cd3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
