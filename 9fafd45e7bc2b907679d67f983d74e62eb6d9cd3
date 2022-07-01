@@ -176,6 +176,24 @@
       "parentUuid": "b4681304_40634554",
       "revId": "9fafd45e7bc2b907679d67f983d74e62eb6d9cd3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "703561a8_0183942c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 15
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-07-01T12:58:05Z",
+      "side": 1,
+      "message": "\u003citerator\u003e is better than \u003carray\u003e for `size` as it is a smaller dependency (and also it happens to be where `size` actually lives, a nice perk)",
+      "parentUuid": "a21c4407_3359cce5",
+      "revId": "9fafd45e7bc2b907679d67f983d74e62eb6d9cd3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
