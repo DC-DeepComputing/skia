@@ -22,6 +22,7 @@
 
 #include <algorithm>
 #include <cmath>
+#include <cstdint>
 #include <utility>
 
 static inline int is_even(int x) {

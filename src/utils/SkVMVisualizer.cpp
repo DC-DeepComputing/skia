@@ -15,8 +15,10 @@
 #endif
 
 #include <algorithm>
+#include <cstdarg>
+#include <ios>
+#include <istream>
 #include <sstream>
-#include <stdarg.h>
 #include <string>
 #include <utility>
 

@@ -16,7 +16,8 @@
 #include "include/utils/SkParsePath.h"
 #include "src/core/SkGeometry.h"
 
-#include <stdio.h>
+#include <cstddef>
+#include <cstdio>
 
 static inline bool is_between(int c, int min, int max) {
     return (unsigned)(c - min) <= (unsigned)(max - min);

@@ -7,8 +7,8 @@
 
 #include "include/utils/SkParse.h"
 
-#include <stdlib.h>
-#include <string.h>
+#include <cstdlib>
+#include <string>
 
 static inline bool is_between(int c, int min, int max)
 {
