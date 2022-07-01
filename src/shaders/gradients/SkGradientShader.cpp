@@ -920,39 +920,6 @@ sk_sp<SkShader> SkGradientShader::MakeRadial(const SkPoint& center, SkScalar rad
     return MakeRadial(center, radius, colors, std::move(colorSpace), pos, count, mode, 0, nullptr);
 }
 
-sk_sp<SkShader> SkGradientShader::MakeRadial(const SkPoint& center, SkScalar radius,
-                                             const SkColor4f colors[],
-                                             sk_sp<SkColorSpace> colorSpace,
-                                             const SkScalar pos[], int colorCount,
-                                             SkTileMode mode,
-                                             uint32_t flags,
-                                             const SkMatrix* localMatrix) {
-    if (radius < 0) {
-        return nullptr;
-    }
-    if (!valid_grad(colors, pos, colorCount, mode)) {
-        return nullptr;
-    }
-    if (1 == colorCount) {
-        return SkShaders::Color(colors[0], std::move(colorSpace));
-    }
-    if (localMatrix && !localMatrix->invert(nullptr)) {
-        return nullptr;
-    }
-
-    if (SkScalarNearlyZero(radius, kDegenerateThreshold)) {
-        // Degenerate gradient optimization, and no special logic needed for clamped radial gradient
-        return make_degenerate_gradient(colors, pos, colorCount, std::move(colorSpace), mode);
-    }
-
-    ColorStopOptimizer opt(colors, pos, colorCount, mode);
-
-    SkGradientShaderBase::Descriptor desc;
-    desc_init(&desc, opt.fColors, std::move(colorSpace), opt.fPos, opt.fCount, mode, flags,
-              localMatrix);
-    return sk_make_sp<SkRadialGradient>(center, radius, desc);
-}
-
 sk_sp<SkShader> SkGradientShader::MakeTwoPointConical(const SkPoint& start,
                                                       SkScalar startRadius,
                                                       const SkPoint& end,
@@ -1126,7 +1093,7 @@ sk_sp<SkShader> SkGradientShader::MakeSweep(SkScalar cx, SkScalar cy,
     return sk_make_sp<SkSweepGradient>(SkPoint::Make(cx, cy), t0, t1, desc);
 }
 
-void SkGradientShader::RegisterFlattenables() {
+void SkGradientShader::RegisterFlattenables1() {
     SK_REGISTER_FLATTENABLE(SkLinearGradient);
     SK_REGISTER_FLATTENABLE(SkRadialGradient);
     SK_REGISTER_FLATTENABLE(SkSweepGradient);

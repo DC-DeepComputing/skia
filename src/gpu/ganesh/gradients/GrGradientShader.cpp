@@ -668,13 +668,14 @@ static std::unique_ptr<GrFragmentProcessor> make_tiled_gradient(
                                 GrSkSLFP::Specialize<int>(useFloorAbsWorkaround));
 }
 
+namespace GrGradientShader {
+
 // Combines the colorizer and layout with an appropriately configured top-level effect based on the
 // gradient's tile mode
-static std::unique_ptr<GrFragmentProcessor> make_gradient(
-        const SkGradientShaderBase& shader,
-        const GrFPArgs& args,
-        std::unique_ptr<GrFragmentProcessor> layout,
-        const SkMatrix* overrideMatrix = nullptr) {
+std::unique_ptr<GrFragmentProcessor> MakeGradient(const SkGradientShaderBase& shader,
+                                                  const GrFPArgs& args,
+                                                  std::unique_ptr<GrFragmentProcessor> layout,
+                                                  const SkMatrix* overrideMatrix) {
     // No shader is possible if a layout couldn't be created, e.g. a layout-specific Make() returned
     // null.
     if (layout == nullptr) {
@@ -769,8 +770,6 @@ static std::unique_ptr<GrFragmentProcessor> make_gradient(
     return gradient;
 }
 
-namespace GrGradientShader {
-
 std::unique_ptr<GrFragmentProcessor> MakeLinear(const SkLinearGradient& shader,
                                                 const GrFPArgs& args) {
     // We add a tiny delta to t. When gradient stops are set up so that a hard stop in a vertically
@@ -788,20 +787,7 @@ std::unique_ptr<GrFragmentProcessor> MakeLinear(const SkLinearGradient& shader,
     // The linear gradient never rejects a pixel so it doesn't change opacity
     auto fp = GrSkSLFP::Make(effect, "LinearLayout", /*inputFP=*/nullptr,
                              GrSkSLFP::OptFlags::kPreservesOpaqueInput);
-    return make_gradient(shader, args, std::move(fp));
-}
-
-std::unique_ptr<GrFragmentProcessor> MakeRadial(const SkRadialGradient& shader,
-                                                const GrFPArgs& args) {
-    static const SkRuntimeEffect* effect = SkMakeRuntimeEffect(SkRuntimeEffect::MakeForShader, R"(
-        half4 main(float2 coord) {
-            return half4(half(length(coord)), 1, 0, 0); // y = 1 for always valid
-        }
-    )");
-    // The radial gradient never rejects a pixel so it doesn't change opacity
-    auto fp = GrSkSLFP::Make(effect, "RadialLayout", /*inputFP=*/nullptr,
-                             GrSkSLFP::OptFlags::kPreservesOpaqueInput);
-    return make_gradient(shader, args, std::move(fp));
+    return MakeGradient(shader, args, std::move(fp));
 }
 
 std::unique_ptr<GrFragmentProcessor> MakeSweep(const SkSweepGradient& shader,
@@ -834,7 +820,7 @@ std::unique_ptr<GrFragmentProcessor> MakeSweep(const SkSweepGradient& shader,
                              "bias", shader.getTBias(),
                              "scale", shader.getTScale(),
                              "useAtanWorkaround", GrSkSLFP::Specialize(useAtanWorkaround));
-    return make_gradient(shader, args, std::move(fp));
+    return MakeGradient(shader, args, std::move(fp));
 }
 
 std::unique_ptr<GrFragmentProcessor> MakeConical(const SkTwoPointConicalGradient& shader,
@@ -985,7 +971,7 @@ std::unique_ptr<GrFragmentProcessor> MakeConical(const SkTwoPointConicalGradient
                                 "fx", focalData.fFocalX);
         } break;
     }
-    return make_gradient(shader, args, std::move(fp), matrix.getMaybeNull());
+    return MakeGradient(shader, args, std::move(fp), matrix.getMaybeNull());
 }
 
 #if GR_TEST_UTILS
