@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5814a45f_e2bb4585",
+        "filename": "src/shaders/SkShadersPriv.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-07-01T16:31:22Z",
+      "side": 1,
+      "message": "Given that these are only used for raster drawVerts and drawAtlas, wdyt about landing this modified to not have any arena-allocated SkShaders? It seems unlikely that an extra heap allocation would cause a noticeable regression for these really heavy draw operations in CPU code, and if it is problematic, then we can bring them back.",
+      "range": {
+        "startLine": 17,
+        "startChar": 14,
+        "endLine": 17,
+        "endChar": 19
+      },
+      "revId": "c3645a7a2a824415d645d8dc6877d332b3760787",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
