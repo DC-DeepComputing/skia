@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0ea97408_ea8a67ec",
+        "filename": "src/gpu/graphite/render/TextDirectRenderStep.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-07-01T13:50:00Z",
+      "side": 1,
+      "message": "I have had a few thoughts in this area, that I need to finish documenting, but:\n\n- I\u0027d like solid color optimizations to be handled consistently across RenderSteps in Graphite, and could be handled as part of the SSBO indexing that\u0027s handled in DrawPass. In this case, RenderSteps need some way of storing a uint32 index, so it\u0027s a little silly to use that to point to a 4byte color in the solid color case. I\u0027m thinking we would have that attribute be either uniform index or narrow color. In the event we need a wide color, the PaintParams analysis switches us to \"color shader\" that has a half4 or float4 uniform that goes in the SSBO and the RenderSteps seamlessly just store the index instead.\n\n- I don\u0027t think we need to store float3 positions. My understanding of when we\u0027ve used them in Ganesh has been if we\u0027ve transformed to device space with a perspective transform, and then need to handle the divide on the local coords instead. Since this bypasses the GPU\u0027s perspective interpolation and clipping, it seems vulnerable to dealing with w \u003c 0 (e.g. drawPaint that just draws the 2D bounds of the device, and then uses local coords). My hope for Graphite is we can keep everything 2D and local (direct subruns withstanding, but we\u0027ve already determined their transforms are trivial), and perspective and 3D only need to be handled when transforming on the GPU to get to the final device position, and then let the GPU handle all clipping and interpolation.\n\n- I know less about whether or not we\u0027d need float texture coords, but it seems like that would be dependent on the size of the atlas pages we use here, right? ushort can go up to 16k so it seems unlikely that we\u0027d get there any time soon.",
+      "range": {
+        "startLine": 33,
+        "startChar": 0,
+        "endLine": 33,
+        "endChar": 92
+      },
+      "revId": "487bd7a8aac1049e34efcf1921a8672f9f1d0531",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "47bc898b_f69aaa15",
+        "filename": "src/gpu/graphite/render/TextDirectRenderStep.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-07-01T13:50:00Z",
+      "side": 1,
+      "message": "At this point in the Graphite DrawPass processing pipeline, the SkPaint will unaccessible, unless SubRunData is explicitly holding on to it.\n\nIf the only thing it needs from the paint is whether or not it\u0027s solid color, I\u0027d say we just track that optional color and not the whole paint. That said, I have some thoughts on how we should do the solid color optimizations in graphite, that I put in a previous comment.",
+      "range": {
+        "startLine": 75,
+        "startChar": 4,
+        "endLine": 75,
+        "endChar": 71
+      },
+      "revId": "487bd7a8aac1049e34efcf1921a8672f9f1d0531",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "821733b2_48fae54b",
+        "filename": "src/text/gpu/SubRunContainer.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1596,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-07-01T13:50:00Z",
+      "side": 1,
+      "message": "It wouldn\u0027t take too much work to make this possible, but this use pattern relies on a patterned index buffer having been created. I didn\u0027t have DrawWriter support it initially since almost all cases where we do use that in Ganesh, we\u0027d be better off doing instances, which can be done with DrawWriter::Instances + optional fixed vertex and index buffers for the instance pattern.",
+      "range": {
+        "startLine": 1595,
+        "startChar": 8,
+        "endLine": 1596,
+        "endChar": 56
+      },
+      "revId": "487bd7a8aac1049e34efcf1921a8672f9f1d0531",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
