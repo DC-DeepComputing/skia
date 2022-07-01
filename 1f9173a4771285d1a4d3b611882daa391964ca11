@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "29fb2899_3ff2aa3b",
+        "filename": "src/gpu/graphite/UniformManager.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-07-01T18:58:13Z",
+      "side": 0,
+      "message": "I forget the details but, I thought there was some wacky constraint where the maximum alignment in the uniform buffer actually impacted the final required size.",
+      "range": {
+        "startLine": 76,
+        "startChar": 13,
+        "endLine": 76,
+        "endChar": 32
+      },
+      "revId": "1f9173a4771285d1a4d3b611882daa391964ca11",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
