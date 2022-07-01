@@ -554,4 +554,81 @@ sk_sp<SkImage> MakeTextureImage(SkCanvas* canvas, sk_sp<SkImage> orig) {
 }
 #endif
 
+VariationSliders::VariationSliders(sk_sp<SkTypeface> typeface) {
+    fAxesInitialised = initialiseAxes(typeface);
+}
+
+bool VariationSliders::initialiseAxes(sk_sp<SkTypeface> typeface) {
+    int numAxes = typeface->getVariationDesignParameters(nullptr, 0);
+
+    std::vector<SkFontParameters::Variation::Axis> copiedAxes;
+    copiedAxes.resize(numAxes);
+
+    if (typeface->getVariationDesignParameters(copiedAxes.data(), numAxes) < 0) return false;
+
+    fSliderAxes.resize(numAxes);
+    for (int i = 0; i < numAxes; ++i) {
+        fSliderAxes[i].axis = copiedAxes[i];
+        fSliderAxes[i].current = copiedAxes[i].def;
+        if (fSliderAxes[i].axis.tag == SkSetFourByteTag('T', 'R', 'D', 'X'))
+            fSliderAxes[i].current = -250;
+    }
+    return true;
+}
+
+void VariationSliders::setAxis(SkFourByteTag tag, SkScalar value) {
+    if (!fAxesInitialised) return;
+}
+
+/* static */
+SkString VariationSliders::tagToString(SkFourByteTag tag) {
+    char tagAsString[5];
+    tagAsString[4] = 0;
+    tagAsString[0] = (char)(uint8_t)(tag >> 24);
+    tagAsString[1] = (char)(uint8_t)(tag >> 16);
+    tagAsString[2] = (char)(uint8_t)(tag >> 8);
+    tagAsString[3] = (char)(uint8_t)(tag >> 0);
+    return SkString(tagAsString);
+}
+
+bool VariationSliders::onGetControls(SkMetaData* controls) {
+    if (!fAxesInitialised) {
+        return false;
+    }
+    for (size_t i = 0; i < fSliderAxes.size(); ++i) {
+        const int axisVarsSize = 3;
+        SkScalar axisVars[axisVarsSize];
+
+        axisVars[0] = fSliderAxes[i].current;
+        axisVars[1] = fSliderAxes[i].axis.min;
+        axisVars[2] = fSliderAxes[i].axis.max;
+        controls->setScalars(tagToString(fSliderAxes[i].axis.tag).c_str(), axisVarsSize, axisVars);
+    }
+    return true;
+}
+
+void VariationSliders::onSetControls(const SkMetaData& controls) {
+    if (!fAxesInitialised) {
+        return;
+    }
+    for (size_t i = 0; i < fSliderAxes.size(); ++i) {
+        int axisVarsSize = 3;
+        SkScalar axisVars[axisVarsSize];
+        controls.findScalars(tagToString(fSliderAxes[i].axis.tag).c_str(), &axisVarsSize, axisVars);
+        fSliderAxes[i].current = axisVars[0];
+    }
+}
+
+std::vector<SkFontArguments::VariationPosition::Coordinate> VariationSliders::getCoordinates() {
+    if (!fAxesInitialised) {
+        return {};
+    }
+    std::vector<SkFontArguments::VariationPosition::Coordinate> coords;
+    coords.resize(static_cast<int>(fSliderAxes.size()));
+    for (size_t i = 0; i < fSliderAxes.size(); ++i) {
+        coords[i] = {fSliderAxes[i].axis.tag, fSliderAxes[i].current};
+    }
+    return coords;
+}
+
 }  // namespace ToolUtils
