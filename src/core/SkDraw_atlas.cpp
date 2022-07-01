@@ -21,6 +21,7 @@
 #include "src/core/SkVM.h"
 #include "src/core/SkVMBlitter.h"
 #include "src/shaders/SkShaderBase.h"
+#include "src/shaders/SkShadersPriv.h"
 
 static void fill_rect(const SkMatrix& ctm, const SkRasterClip& rc,
                       const SkRect& r, SkBlitter* blitter, SkPath* scratchPath) {
@@ -183,7 +184,7 @@ void SkDraw::drawAtlas(const SkRSXform xform[],
     };
 
     if (gUseSkVMBlitter || !rpblit()) {
-        auto updateShader = as_SB(atlasShader)->updatableShader(&alloc);
+        SkUpdatableShader* updateShader = as_SB(atlasShader)->updatableShader(&alloc);
         UpdatableColorShader* colorShader = nullptr;
         sk_sp<SkShader> shader;
         if (colors) {
