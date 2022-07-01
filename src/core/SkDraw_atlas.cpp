@@ -9,6 +9,7 @@
 #include "include/core/SkMatrix.h"
 #include "include/core/SkRSXform.h"
 #include "src/core/SkBlendModePriv.h"
+#include "src/core/SkBlenderBase.h"
 #include "src/core/SkColorSpacePriv.h"
 #include "src/core/SkColorSpaceXformSteps.h"
 #include "src/core/SkCoreBlitters.h"
@@ -17,11 +18,10 @@
 #include "src/core/SkRasterClip.h"
 #include "src/core/SkRasterPipeline.h"
 #include "src/core/SkScan.h"
-#include "src/core/SkScan.h"
 #include "src/core/SkVM.h"
 #include "src/core/SkVMBlitter.h"
-#include "src/shaders/SkComposeShader.h"
 #include "src/shaders/SkShaderBase.h"
+#include "src/shaders/SkShadersPriv.h"
 
 static void fill_rect(const SkMatrix& ctm, const SkRasterClip& rc,
                       const SkRect& r, SkBlitter* blitter, SkPath* scratchPath) {
@@ -184,15 +184,17 @@ void SkDraw::drawAtlas(const SkRSXform xform[],
     };
 
     if (gUseSkVMBlitter || !rpblit()) {
-        auto updateShader = as_SB(atlasShader)->updatableShader(&alloc);
+        SkUpdatableShader* updateShader = as_SB(atlasShader)->updatableShader(&alloc);
         UpdatableColorShader* colorShader = nullptr;
-        SkShaderBase* shader = nullptr;
+        SkShader* shader = nullptr;
         if (colors) {
             colorShader = alloc.make<UpdatableColorShader>(fDst.colorSpace());
-            shader = alloc.make<SkShader_Blend>(
-                    std::move(blender), sk_ref_sp(colorShader), sk_ref_sp(updateShader));
+            shader = SkShadersPriv::Blend(&alloc,
+                                          std::move(blender),
+                                          sk_ref_sp(colorShader),
+                                          sk_ref_sp(updateShader));
         } else {
-            shader = as_SB(updateShader);
+            shader = updateShader;
         }
         p.setShader(sk_ref_sp(shader));
         if (auto blitter = SkVMBlitter::Make(fDst, p, *fMatrixProvider, &alloc,
