@@ -570,17 +570,7 @@ void UniformManager::checkExpected(SkSLType type, unsigned int count) {
     SkASSERT(fExpectedUniforms[fExpectedUniformIndex].type() == type);
     SkASSERT((fExpectedUniforms[fExpectedUniformIndex].count() == 0 && count == 1) ||
              fExpectedUniforms[fExpectedUniformIndex].count() == count);
-#ifdef SK_DEBUG
-    fExpectedUniformIndex++;
-
-    SkSLType revisedType = this->getUniformTypeForLayout(type);
-
-    uint32_t debugOffset = get_ubo_aligned_offset(&fCurUBOOffset,
-                                                  &fCurUBOMaxAlignment,
-                                                  revisedType,
-                                                  count);
-    SkASSERT(debugOffset == fOffset);
-#endif
+    SkDEBUGCODE(fExpectedUniformIndex++;)
 }
 
 void UniformManager::doneWithExpectedUniforms() {
@@ -589,9 +579,20 @@ void UniformManager::doneWithExpectedUniforms() {
 }
 
 void UniformManager::write(SkSLType type, unsigned int count, const void* src) {
-    SkDEBUGCODE(this->checkExpected(type, (count == SkUniform::kNonArray) ? 1 : count);)
+    this->checkExpected(type, (count == SkUniform::kNonArray) ? 1 : count);
 
     SkSLType revisedType = this->getUniformTypeForLayout(type);
+
+    // Insert padding as needed to get the correct uniform alignment.
+    uint32_t alignedOffset = get_ubo_aligned_offset(&fCurUBOOffset,
+                                                    &fCurUBOMaxAlignment,
+                                                    revisedType,
+                                                    count);
+    SkASSERT(alignedOffset >= fOffset);
+    if (alignedOffset > fOffset) {
+        fStorage.append(alignedOffset - fOffset);
+        fOffset = alignedOffset;
+    }
 
     uint32_t bytesNeeded = fWriteUniform(revisedType, CType::kDefault,
                                          /*dest=*/nullptr, count, /*src=*/nullptr);
