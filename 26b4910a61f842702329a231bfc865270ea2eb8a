@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ff5ec26c_9f17353b",
+        "filename": "include/core/SkMesh.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 255,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-07-01T19:28:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3b822bee_71b188e5",
+      "range": {
+        "startLine": 254,
+        "startChar": 55,
+        "endLine": 255,
+        "endChar": 38
+      },
+      "revId": "26b4910a61f842702329a231bfc865270ea2eb8a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "399f0247_2cf9fdc3",
@@ -54,6 +78,30 @@
       "writtenOn": "2022-07-01T18:10:09Z",
       "side": 1,
       "message": "update ?",
+      "range": {
+        "startLine": 258,
+        "startChar": 91,
+        "endLine": 258,
+        "endChar": 97
+      },
+      "revId": "26b4910a61f842702329a231bfc865270ea2eb8a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7ba2764b_0e1b9dab",
+        "filename": "include/core/SkMesh.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 258,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-07-01T19:28:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "399f0247_2cf9fdc3",
       "range": {
         "startLine": 258,
         "startChar": 91,
@@ -87,6 +135,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "154a9aff_e5ab6450",
+        "filename": "include/core/SkMesh.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 272,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-07-01T19:28:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f3a051d8_c153fad0",
+      "range": {
+        "startLine": 272,
+        "startChar": 59,
+        "endLine": 272,
+        "endChar": 65
+      },
+      "revId": "26b4910a61f842702329a231bfc865270ea2eb8a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3c843081_045e7511",
@@ -100,6 +172,24 @@
       "writtenOn": "2022-07-01T18:10:09Z",
       "side": 1,
       "message": "Do we want a \"(!data)\" check here too ?",
+      "revId": "26b4910a61f842702329a231bfc865270ea2eb8a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4636767f_27159500",
+        "filename": "src/core/SkMesh.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 474,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-07-01T19:28:15Z",
+      "side": 1,
+      "message": "oops. definitely. done.",
+      "parentUuid": "3c843081_045e7511",
       "revId": "26b4910a61f842702329a231bfc865270ea2eb8a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
