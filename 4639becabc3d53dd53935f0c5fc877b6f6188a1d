@@ -51,6 +51,24 @@
       "parentUuid": "5b437d2d_8cc998d5",
       "revId": "4639becabc3d53dd53935f0c5fc877b6f6188a1d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "370de72a_f14322fe",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-07-01T19:09:02Z",
+      "side": 1,
+      "message": "Yes, I was picturing the middle-ground. Having the virtual onXXX be awkward isn\u0027t as bad, that\u0027s just impl detail.",
+      "parentUuid": "e60dbecc_f51fc594",
+      "revId": "4639becabc3d53dd53935f0c5fc877b6f6188a1d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
