@@ -248,6 +248,24 @@
       "parentUuid": "52407f8a_04acd0fd",
       "revId": "9fafd45e7bc2b907679d67f983d74e62eb6d9cd3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9d890e37_188806a8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 15
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-07-01T13:13:01Z",
+      "side": 1,
+      "message": "I tried that multiple entry thing myself, but I must have done something wrong because it appeared to not work for me. If it does work, LGTM.",
+      "parentUuid": "f98bfc89_9371b179",
+      "revId": "9fafd45e7bc2b907679d67f983d74e62eb6d9cd3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
