@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8ac2ebf4_f7eb2b45",
+        "filename": "src/gpu/graphite/render/TextDirectRenderStep.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-07-01T14:43:04Z",
+      "side": 1,
+      "message": "I would also hope that we can get away from GPUs that don\u0027t support integers, but if we have a gles2 fallback, that may not be possible. \n\nIf we need to, I think this would be addressed by having the RenderSteps created by the Context during initialization, and we can then choose to use the ushort or float texCoord variant based on what the GPU supports.",
+      "parentUuid": "600fea3f_29a8b097",
+      "range": {
+        "startLine": 33,
+        "startChar": 0,
+        "endLine": 33,
+        "endChar": 92
+      },
+      "revId": "487bd7a8aac1049e34efcf1921a8672f9f1d0531",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "47bc898b_f69aaa15",
@@ -85,6 +109,30 @@
       "side": 1,
       "message": "In Ganesh (and I guess raster), color emoji and masks handle the color differently. Color emoji extracts the alpha from the SkPaint and modulates only that with the texture data; masks modulate the full color. I\u0027d prefer if we didn\u0027t special case that -- if they want only alpha to be applied to the mask they should use white with that alpha, but I\u0027m not sure what clients depend on it. In any case, to handle this, the \"drawingColor\" is packed into the AtlasTextOp Geometry, and could be stored in the SubRunData in the same way.",
       "parentUuid": "47bc898b_f69aaa15",
+      "range": {
+        "startLine": 75,
+        "startChar": 4,
+        "endLine": 75,
+        "endChar": 71
+      },
+      "revId": "487bd7a8aac1049e34efcf1921a8672f9f1d0531",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9f850866_4e1647a5",
+        "filename": "src/gpu/graphite/render/TextDirectRenderStep.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-07-01T14:43:04Z",
+      "side": 1,
+      "message": "This behavior sounds equivalent to what we do if there\u0027s an SkShader or paint color combined with a drawImage call. We use just the alpha from the paint color or paint shader and combine it with the texture data. This makes sense if we assume emoji are effectively textures being drawn in glyph locations, whereas the mask being in a texture is just an implementation detail for how we get the glyph coverage, so we treat the rest of the painting/shading as if it were a non-texture draw.",
+      "parentUuid": "1871e902_b8a17b59",
       "range": {
         "startLine": 75,
         "startChar": 4,
