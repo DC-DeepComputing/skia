@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d380d6be_14360194",
+        "filename": "toolchain/linux_trampolines/IWYU_mapping.imp",
+        "patchSetId": 5
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-07-01T18:48:47Z",
+      "side": 1,
+      "message": "This is not correct, and needs to have all the includes listed on:\nhttps://en.cppreference.com/w/cpp/types/size_t\n\nYou may have added some cstddef when you didn\u0027t need to.",
+      "range": {
+        "startLine": 19,
+        "startChar": 1,
+        "endLine": 19,
+        "endChar": 57
+      },
+      "revId": "c87007cf32e7875d3acf5516526ac3945f353b35",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "890c58b5_c7dec284",
+        "filename": "toolchain/linux_trampolines/IWYU_mapping.imp",
+        "patchSetId": 5
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-07-01T18:48:47Z",
+      "side": 1,
+      "message": "This is not the prefered header. \u003citerator\u003e is a strange and little used include, and has become super bloated since c++20. Even though we don\u0027t use c++20, libc++ supports it, therefore bloat. I would suggest \u003carray\u003e. I think this is the smallest.",
+      "range": {
+        "startLine": 36,
+        "startChar": 0,
+        "endLine": 36,
+        "endChar": 74
+      },
+      "revId": "c87007cf32e7875d3acf5516526ac3945f353b35",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
