@@ -188,6 +188,30 @@
       },
       "revId": "487bd7a8aac1049e34efcf1921a8672f9f1d0531",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bd63bad8_751705a5",
+        "filename": "src/text/gpu/SubRunContainer.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1596,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-07-01T14:43:12Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "12be1091_25ad2f72",
+      "range": {
+        "startLine": 1595,
+        "startChar": 8,
+        "endLine": 1596,
+        "endChar": 56
+      },
+      "revId": "487bd7a8aac1049e34efcf1921a8672f9f1d0531",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
