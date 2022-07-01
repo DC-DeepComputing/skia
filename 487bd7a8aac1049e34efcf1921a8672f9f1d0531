@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "600fea3f_29a8b097",
+        "filename": "src/gpu/graphite/render/TextDirectRenderStep.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-07-01T14:09:39Z",
+      "side": 1,
+      "message": "* Sounds reasonable, but see below.\n* I agree.\n* Some GPUs don\u0027t support integers -- again I\u0027m hoping we can avoid those architectures. Also, because we pack the texture index in the the u value, we\u0027re maxed out to 4K textures. Due to precision issues, we\u0027re maxed out to 2K in some cases (Mali 400 *shakes tiny fist*).",
+      "parentUuid": "0ea97408_ea8a67ec",
+      "range": {
+        "startLine": 33,
+        "startChar": 0,
+        "endLine": 33,
+        "endChar": 92
+      },
+      "revId": "487bd7a8aac1049e34efcf1921a8672f9f1d0531",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "47bc898b_f69aaa15",
         "filename": "src/gpu/graphite/render/TextDirectRenderStep.cpp",
         "patchSetId": 4
@@ -49,6 +73,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1871e902_b8a17b59",
+        "filename": "src/gpu/graphite/render/TextDirectRenderStep.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-07-01T14:09:39Z",
+      "side": 1,
+      "message": "In Ganesh (and I guess raster), color emoji and masks handle the color differently. Color emoji extracts the alpha from the SkPaint and modulates only that with the texture data; masks modulate the full color. I\u0027d prefer if we didn\u0027t special case that -- if they want only alpha to be applied to the mask they should use white with that alpha, but I\u0027m not sure what clients depend on it. In any case, to handle this, the \"drawingColor\" is packed into the AtlasTextOp Geometry, and could be stored in the SubRunData in the same way.",
+      "parentUuid": "47bc898b_f69aaa15",
+      "range": {
+        "startLine": 75,
+        "startChar": 4,
+        "endLine": 75,
+        "endChar": 71
+      },
+      "revId": "487bd7a8aac1049e34efcf1921a8672f9f1d0531",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "821733b2_48fae54b",
         "filename": "src/text/gpu/SubRunContainer.cpp",
         "patchSetId": 4
@@ -60,6 +108,30 @@
       "writtenOn": "2022-07-01T13:50:00Z",
       "side": 1,
       "message": "It wouldn\u0027t take too much work to make this possible, but this use pattern relies on a patterned index buffer having been created. I didn\u0027t have DrawWriter support it initially since almost all cases where we do use that in Ganesh, we\u0027d be better off doing instances, which can be done with DrawWriter::Instances + optional fixed vertex and index buffers for the instance pattern.",
+      "range": {
+        "startLine": 1595,
+        "startChar": 8,
+        "endLine": 1596,
+        "endChar": 56
+      },
+      "revId": "487bd7a8aac1049e34efcf1921a8672f9f1d0531",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "12be1091_25ad2f72",
+        "filename": "src/text/gpu/SubRunContainer.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1596,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-07-01T14:09:39Z",
+      "side": 1,
+      "message": "As noted, I\u0027d rather use instances in the long run. I believe we should be able to generate glyph quads from them. So this is just temporary regardless.",
+      "parentUuid": "821733b2_48fae54b",
       "range": {
         "startLine": 1595,
         "startChar": 8,
