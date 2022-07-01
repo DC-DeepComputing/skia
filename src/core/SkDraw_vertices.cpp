@@ -374,12 +374,12 @@ void SkDraw::drawFixedVertices(const SkVertices* vertices,
     }
 
     // Combines per-vertex colors with 'shader' using 'blender'.
-    auto applyShaderColorBlend = [&](SkShader* shader) -> sk_sp<SkShader> {
+    auto applyShaderColorBlend = [&](SkShader* shader) -> SkShader* {
         if (!colors) {
-            return sk_ref_sp(shader);
+            return shader;
         }
         if (blenderIsDst) {
-            return sk_ref_sp(triColorShader);
+            return triColorShader;
         }
         sk_sp<SkShader> shaderWithWhichToBlend;
         if (!shader) {
@@ -548,7 +548,7 @@ void SkDraw::drawVertices(const SkVertices* vertices,
 
     constexpr size_t kDefVertexCount = 16;
     constexpr size_t kOuterSize = sizeof(SkTriColorShader) +
-                                 (2 * sizeof(SkPoint) + sizeof(SkColor4f)) * kDefVertexCount;
+                                  (2 * sizeof(SkPoint) + sizeof(SkColor4f)) * kDefVertexCount;
     SkSTArenaAlloc<kOuterSize> outerAlloc;
 
     SkPoint*  dev2 = nullptr;
