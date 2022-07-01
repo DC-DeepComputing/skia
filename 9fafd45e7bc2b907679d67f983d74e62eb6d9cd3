@@ -230,6 +230,24 @@
       "parentUuid": "703561a8_0183942c",
       "revId": "9fafd45e7bc2b907679d67f983d74e62eb6d9cd3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f98bfc89_9371b179",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 15
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-07-01T13:08:57Z",
+      "side": 1,
+      "message": "Yes. SkSLFunctionCall.cpp did fail, but included \u003carray\u003e so according to the standards is correct. I did some experimentations, and figured out if you add multiple lines for a private, they act as an OR of the constraints. Please review my change to IWYU_mapping.",
+      "parentUuid": "52407f8a_04acd0fd",
+      "revId": "9fafd45e7bc2b907679d67f983d74e62eb6d9cd3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
