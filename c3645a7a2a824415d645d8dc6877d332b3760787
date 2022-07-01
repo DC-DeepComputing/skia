@@ -22,6 +22,30 @@
       },
       "revId": "c3645a7a2a824415d645d8dc6877d332b3760787",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ed70f358_71156158",
+        "filename": "src/shaders/SkShadersPriv.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-07-01T17:54:34Z",
+      "side": 1,
+      "message": "Per offline discussion, we\u0027ll try removing these functions separately to isolate any potential perf regressions.",
+      "parentUuid": "5814a45f_e2bb4585",
+      "range": {
+        "startLine": 17,
+        "startChar": 14,
+        "endLine": 17,
+        "endChar": 19
+      },
+      "revId": "c3645a7a2a824415d645d8dc6877d332b3760787",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
