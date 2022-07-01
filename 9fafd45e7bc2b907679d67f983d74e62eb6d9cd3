@@ -212,6 +212,24 @@
       "parentUuid": "f49eb45b_39c524ee",
       "revId": "9fafd45e7bc2b907679d67f983d74e62eb6d9cd3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "52407f8a_04acd0fd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 15
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-07-01T13:05:58Z",
+      "side": 1,
+      "message": "\u003e Does this log indicate that SkSLFunctionCall.cpp *did* succeed?\n\nReading the tea leaves - I bet SkSLFunctionCall was about to fail but the other one failed first (this was before --keep_going was added back in).",
+      "parentUuid": "703561a8_0183942c",
+      "revId": "9fafd45e7bc2b907679d67f983d74e62eb6d9cd3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
