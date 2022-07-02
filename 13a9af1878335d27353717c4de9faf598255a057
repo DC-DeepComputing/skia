@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "157d877b_d59ea3d9",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 3527,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-07-02T20:11:26Z",
+      "side": 1,
+      "message": "Might be easier to read as `stmt-\u003eis\u003cContinueStatement\u003e() || stmt-\u003eis\u003cBreakStatement\u003e()`? NBD though.\n\nAlso, ideally, we would detect this as unreachable code and eliminate it in the front end DCE pass. This is where it should happen: \nhttps://osscs.corp.google.com/chromium/chromium/src/+/main:third_party/skia/src/sksl/transform/SkSLEliminateUnreachableCode.cpp;l\u003d124;drc\u003d8ccbeeebc34d80ac9525dfcca122d196bbbb0630\n\nWe no longer support `continue` escaping out of a switch (because D3D9 doesn\u0027t!) so it should be pretty easy to handle. Before that change it was a bit hairy.\n\nIt\u0027s totally fine to land this and fix the problem now, to unblock the roller. The front-end fix would just be nice polish (and will make the output from the other backends slightly cleaner).",
+      "range": {
+        "startLine": 3527,
+        "startChar": 0,
+        "endLine": 3527,
+        "endChar": 100
+      },
+      "revId": "13a9af1878335d27353717c4de9faf598255a057",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "51151fc9_f0f9b3d0",
         "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
         "patchSetId": 1
@@ -14,6 +37,30 @@
       "writtenOn": "2022-07-01T23:45:49Z",
       "side": 1,
       "message": "I don\u0027t fully understand the case that this if statement here handles, however the `next` ID is only ever referenced by the OpBranch written in this condition, so my change should make sense. This fixes the validation errors that were generated for both ReturnsValueOnEveryPathES3 and DeadReturnES3.",
+      "range": {
+        "startLine": 3660,
+        "startChar": 4,
+        "endLine": 3664,
+        "endChar": 5
+      },
+      "revId": "13a9af1878335d27353717c4de9faf598255a057",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d34a9ecb_e6daf044",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 3664,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-07-02T20:11:26Z",
+      "side": 1,
+      "message": "I think `fCurrentBlock` is zero when we are emitting code that comes immediately after a branch (rendering it unreachable). In these cases, we insert a dummy label so that the validator won\u0027t complain:\n\nhttps://osscs.corp.google.com/chromium/chromium/src/+/main:third_party/skia/src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp;l\u003d408-410;drc\u003d8ccbeeebc34d80ac9525dfcca122d196bbbb0630\n\nThis can happen if the DCE pass fails to eliminate something unreachable. (This is very possible, especially considering DCE currently ignores switches entirely!)",
+      "parentUuid": "51151fc9_f0f9b3d0",
       "range": {
         "startLine": 3660,
         "startChar": 4,
