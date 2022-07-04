@@ -33,6 +33,24 @@
       "message": "nit: maybe SkASSERT_RELEASE that findScalars result !\u003d nullptr?",
       "revId": "53047d245e3b5dc597cae1056a41583d8230f6b9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3eabed1f_23c7d399",
+        "filename": "tools/ToolUtils.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 617,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2022-07-04T08:32:44Z",
+      "side": 1,
+      "message": "Added assert on return value, and null initialisation of what I pass in as reference parameter.",
+      "parentUuid": "9fd57a84_b0be7566",
+      "revId": "53047d245e3b5dc597cae1056a41583d8230f6b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
