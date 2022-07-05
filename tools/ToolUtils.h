@@ -28,6 +28,7 @@
 #include "include/private/SkTDArray.h"
 #include "include/utils/SkRandom.h"
 #include "src/core/SkTInternalLList.h"
+#include "tools/SkMetaData.h"
 
 class SkBitmap;
 class SkCanvas;
@@ -303,6 +304,35 @@ void sniff_paths(const char filepath[], std::function<PathSniffCallback>);
 #if SK_SUPPORT_GPU
 sk_sp<SkImage> MakeTextureImage(SkCanvas* canvas, sk_sp<SkImage> orig);
 #endif
+
+// Initialised with a font, this class can be called to setup GM UI with sliders for font
+// variations, and returns a set of variation coordinates that matches what the sliders in the UI
+// are set to. Useful for testing variable font properties, see colrv1.cpp.
+class VariationSliders {
+public:
+    VariationSliders() : fAxesInitialised(false) {}
+
+    VariationSliders(sk_sp<SkTypeface>);
+
+    bool onGetControls(SkMetaData* controls);
+
+    void onSetControls(const SkMetaData& controls);
+
+    std::vector<SkFontArguments::VariationPosition::Coordinate> getCoordinates();
+
+private:
+    bool initialiseAxes(sk_sp<SkTypeface>);
+    static SkString tagToString(SkFourByteTag tag);
+
+    struct SliderAxis {
+        SkScalar current;
+        SkFontParameters::Variation::Axis axis;
+    };
+
+    bool fAxesInitialised;
+    std::vector<SliderAxis> fSliderAxes;
+    static constexpr size_t kAxisVarsSize = 3;
+};
 
 }  // namespace ToolUtils
 
