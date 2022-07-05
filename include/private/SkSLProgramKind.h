@@ -18,11 +18,15 @@ namespace SkSL {
 enum class ProgramKind : int8_t {
     kFragment,
     kVertex,
-    kGeometry,
-    kFragmentProcessor,
-    kRuntimeEffect,       // Legacy: Generic runtime effect that can be kColorFilter or kShader
-    kRuntimeColorFilter,  // Runtime effect only suitable as SkColorFilter
-    kRuntimeShader,       //   "       "     "      "     "  SkShader
+    kCompute,
+    kGraphiteFragment,
+    kGraphiteVertex,
+    kRuntimeColorFilter,    // Runtime effect only suitable as SkColorFilter
+    kRuntimeShader,         //   "       "     "      "     "  SkShader
+    kRuntimeBlender,        //   "       "     "      "     "  SkBlender
+    kPrivateRuntimeShader,  // Runtime shader with public restrictions lifted
+    kMeshVertex,            // Vertex   portion of a custom mesh
+    kMeshFragment,          // Fragment  "      "  "  "     "
     kGeneric,
 };
 

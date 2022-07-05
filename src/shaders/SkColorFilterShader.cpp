@@ -16,7 +16,7 @@
 #include "src/shaders/SkColorFilterShader.h"
 
 #if SK_SUPPORT_GPU
-#include "src/gpu/GrFragmentProcessor.h"
+#include "src/gpu/ganesh/GrFragmentProcessor.h"
 #endif
 
 SkColorFilterShader::SkColorFilterShader(sk_sp<SkShader> shader,
@@ -84,7 +84,7 @@ skvm::Color SkColorFilterShader::onProgram(skvm::Builder* p,
     }
 
     // Finally run that through the color filter.
-    return fFilter->program(p,c, dst.colorSpace(), uniforms,alloc);
+    return fFilter->program(p,c, dst, uniforms,alloc);
 }
 
 #if SK_SUPPORT_GPU

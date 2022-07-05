@@ -5,32 +5,28 @@
  * found in the LICENSE file.
  */
 
-#include <cstddef>
-#include <cstring>
-#include <type_traits>
+#include "src/image/SkImage_GpuYUVA.h"
 
+#include "include/core/SkBitmap.h"
 #include "include/core/SkYUVAPixmaps.h"
 #include "include/gpu/GrDirectContext.h"
 #include "include/gpu/GrRecordingContext.h"
 #include "include/gpu/GrYUVABackendTextures.h"
 #include "src/core/SkAutoPixmapStorage.h"
 #include "src/core/SkMipmap.h"
+#include "src/core/SkSamplingPriv.h"
 #include "src/core/SkScopeExit.h"
-#include "src/gpu/GrBitmapTextureMaker.h"
-#include "src/gpu/GrClip.h"
-#include "src/gpu/GrDirectContextPriv.h"
-#include "src/gpu/GrGpu.h"
-#include "src/gpu/GrImageContextPriv.h"
-#include "src/gpu/GrImageTextureMaker.h"
-#include "src/gpu/GrProxyProvider.h"
-#include "src/gpu/GrRecordingContextPriv.h"
-#include "src/gpu/GrSurfaceDrawContext.h"
-#include "src/gpu/GrTexture.h"
-#include "src/gpu/GrTextureProducer.h"
-#include "src/gpu/SkGr.h"
-#include "src/gpu/effects/GrYUVtoRGBEffect.h"
+#include "src/gpu/ganesh/GrClip.h"
+#include "src/gpu/ganesh/GrDirectContextPriv.h"
+#include "src/gpu/ganesh/GrGpu.h"
+#include "src/gpu/ganesh/GrImageContextPriv.h"
+#include "src/gpu/ganesh/GrProxyProvider.h"
+#include "src/gpu/ganesh/GrRecordingContextPriv.h"
+#include "src/gpu/ganesh/SkGr.h"
+#include "src/gpu/ganesh/SurfaceFillContext.h"
+#include "src/gpu/ganesh/effects/GrBicubicEffect.h"
+#include "src/gpu/ganesh/effects/GrYUVtoRGBEffect.h"
 #include "src/image/SkImage_Gpu.h"
-#include "src/image/SkImage_GpuYUVA.h"
 
 static constexpr auto kAssumedColorType = kRGBA_8888_SkColorType;
 
@@ -99,7 +95,8 @@ bool SkImage_GpuYUVA::setupMipmapsForPlanes(GrRecordingContext* context) const {
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-GrSemaphoresSubmitted SkImage_GpuYUVA::onFlush(GrDirectContext* dContext, const GrFlushInfo& info) {
+GrSemaphoresSubmitted SkImage_GpuYUVA::onFlush(GrDirectContext* dContext,
+                                               const GrFlushInfo& info) const {
     if (!fContext->priv().matches(dContext) || dContext->abandoned()) {
         if (info.fSubmittedProc) {
             info.fSubmittedProc(info.fSubmittedContext, false);
@@ -153,25 +150,24 @@ sk_sp<SkImage> SkImage_GpuYUVA::onReinterpretColorSpace(sk_sp<SkColorSpace> newC
 }
 
 std::tuple<GrSurfaceProxyView, GrColorType> SkImage_GpuYUVA::onAsView(
-        GrRecordingContext* context,
+        GrRecordingContext* rContext,
         GrMipmapped mipmapped,
         GrImageTexGenPolicy) const {
-    if (!fContext->priv().matches(context)) {
+    if (!fContext->priv().matches(rContext)) {
         return {};
     }
-    auto sfc = GrSurfaceFillContext::Make(context,
-                                          this->imageInfo(),
-                                          SkBackingFit::kExact,
-                                          /*sample count*/ 1,
-                                          mipmapped,
-                                          GrProtected::kNo,
-                                          kTopLeft_GrSurfaceOrigin,
-                                          SkBudgeted::kYes);
+    auto sfc = rContext->priv().makeSFC(this->imageInfo(),
+                                        SkBackingFit::kExact,
+                                        /*sample count*/ 1,
+                                        mipmapped,
+                                        GrProtected::kNo,
+                                        kTopLeft_GrSurfaceOrigin,
+                                        SkBudgeted::kYes);
     if (!sfc) {
         return {};
     }
 
-    const GrCaps& caps = *context->priv().caps();
+    const GrCaps& caps = *rContext->priv().caps();
     auto fp = GrYUVtoRGBEffect::Make(fYUVAProxies, GrSamplerState::Filter::kNearest, caps);
     if (fFromColorSpace) {
         fp = GrColorSpaceXformEffect::Make(std::move(fp),
@@ -180,7 +176,7 @@ std::tuple<GrSurfaceProxyView, GrColorType> SkImage_GpuYUVA::onAsView(
     }
     sfc->fillWithFP(std::move(fp));
 
-    return {sfc->readSurfaceView(), sfc->imageInfo().colorType()};
+    return {sfc->readSurfaceView(), sfc->colorInfo().colorType()};
 }
 
 std::unique_ptr<GrFragmentProcessor> SkImage_GpuYUVA::onAsFragmentProcessor(
@@ -193,14 +189,41 @@ std::unique_ptr<GrFragmentProcessor> SkImage_GpuYUVA::onAsFragmentProcessor(
     if (!fContext->priv().matches(context)) {
         return {};
     }
-    GrYUVAImageTextureMaker maker(context, this);
+    // At least for now we do not attempt aniso filtering on YUVA images.
+    if (sampling.isAniso()) {
+        sampling = SkSamplingPriv::AnisoFallback(fYUVAProxies.mipmapped() == GrMipmapped::kYes);
+    }
+
     auto wmx = SkTileModeToWrapMode(tileModes[0]);
     auto wmy = SkTileModeToWrapMode(tileModes[1]);
-    if (sampling.useCubic) {
-        return maker.createBicubicFragmentProcessor(m, subset, domain, wmx, wmy, sampling.cubic);
-    }
     GrSamplerState sampler(wmx, wmy, sampling.filter, sampling.mipmap);
-    return maker.createFragmentProcessor(m, subset, domain, sampler);
+    if (sampler.mipmapped() == GrMipmapped::kYes && !this->setupMipmapsForPlanes(context)) {
+        sampler = GrSamplerState(sampler.wrapModeX(),
+                                 sampler.wrapModeY(),
+                                 sampler.filter(),
+                                 GrSamplerState::MipmapMode::kNone);
+    }
+
+    const auto& yuvM = sampling.useCubic ? SkMatrix::I() : m;
+    auto fp = GrYUVtoRGBEffect::Make(fYUVAProxies,
+                                     sampler,
+                                     *context->priv().caps(),
+                                     yuvM,
+                                     subset,
+                                     domain);
+    if (sampling.useCubic) {
+        fp = GrBicubicEffect::Make(std::move(fp),
+                                   this->alphaType(),
+                                   m,
+                                   sampling.cubic,
+                                   GrBicubicEffect::Direction::kXY);
+    }
+    if (fFromColorSpace) {
+        fp = GrColorSpaceXformEffect::Make(std::move(fp),
+                                           fFromColorSpace.get(), this->alphaType(),
+                                           this->colorSpace()   , this->alphaType());
+    }
+    return fp;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -210,7 +233,7 @@ sk_sp<SkImage> SkImage::MakeFromYUVATextures(GrRecordingContext* context,
                                              sk_sp<SkColorSpace> imageColorSpace,
                                              TextureReleaseProc textureReleaseProc,
                                              ReleaseContext releaseContext) {
-    auto releaseHelper = GrRefCntedCallback::Make(textureReleaseProc, releaseContext);
+    auto releaseHelper = skgpu::RefCntedCallback::Make(textureReleaseProc, releaseContext);
 
     GrProxyProvider* proxyProvider = context->priv().proxyProvider();
     int numPlanes = yuvaTextures.yuvaInfo().numPlanes();
@@ -253,7 +276,7 @@ sk_sp<SkImage> SkImage::MakeFromYUVAPixmaps(GrRecordingContext* context,
     }
 
     if (!context->priv().caps()->mipmapSupport()) {
-        buildMips = GrMipMapped::kNo;
+        buildMips = GrMipmapped::kNo;
     }
 
     // Resize the pixmaps if necessary.
@@ -295,8 +318,7 @@ sk_sp<SkImage> SkImage::MakeFromYUVAPixmaps(GrRecordingContext* context,
         // Turn the pixmap into a GrTextureProxy
         SkBitmap bmp;
         bmp.installPixels(pixmapsToUpload->plane(i));
-        GrBitmapTextureMaker bitmapMaker(context, bmp, GrImageTexGenPolicy::kNew_Uncached_Budgeted);
-        views[i] = bitmapMaker.view(buildMips);
+        std::tie(views[i], std::ignore) = GrMakeUncachedBitmapProxyView(context, bmp, buildMips);
         if (!views[i]) {
             return nullptr;
         }
@@ -329,9 +351,9 @@ sk_sp<SkImage> SkImage::MakePromiseYUVATexture(sk_sp<GrContextThreadSafeProxy> t
     // Our contract is that we will always call the release proc even on failure.
     // We use the helper to convey the context, so we need to ensure make doesn't fail.
     textureReleaseProc = textureReleaseProc ? textureReleaseProc : [](void*) {};
-    sk_sp<GrRefCntedCallback> releaseHelpers[4];
+    sk_sp<skgpu::RefCntedCallback> releaseHelpers[4];
     for (int i = 0; i < n; ++i) {
-        releaseHelpers[i] = GrRefCntedCallback::Make(textureReleaseProc, textureContexts[i]);
+        releaseHelpers[i] = skgpu::RefCntedCallback::Make(textureReleaseProc, textureContexts[i]);
     }
 
     if (!threadSafeProxy) {

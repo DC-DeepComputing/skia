@@ -12,17 +12,16 @@
 #include "include/core/SkTypes.h"
 #include "include/gpu/GrDirectContext.h"
 #include "include/gpu/GrTypes.h"
-#include "include/private/GrTypesPriv.h"
 #include "include/private/SkTemplates.h"
-#include "src/core/SkUtils.h"
-#include "src/gpu/GrCaps.h"
-#include "src/gpu/GrDirectContextPriv.h"
-#include "src/gpu/GrImageInfo.h"
-#include "src/gpu/GrSurfaceContext.h"
-#include "src/gpu/GrSurfaceDrawContext.h"
-#include "src/gpu/GrSurfaceProxy.h"
-#include "src/gpu/GrTextureProxy.h"
-#include "src/gpu/SkGr.h"
+#include "include/private/gpu/ganesh/GrTypesPriv.h"
+#include "src/core/SkOpts.h"
+#include "src/gpu/ganesh/GrCaps.h"
+#include "src/gpu/ganesh/GrDirectContextPriv.h"
+#include "src/gpu/ganesh/GrImageInfo.h"
+#include "src/gpu/ganesh/GrSurfaceProxy.h"
+#include "src/gpu/ganesh/GrTextureProxy.h"
+#include "src/gpu/ganesh/SkGr.h"
+#include "src/gpu/ganesh/SurfaceFillContext.h"
 #include "tests/Test.h"
 #include "tools/gpu/GrContextFactory.h"
 #include "tools/gpu/ProxyUtils.h"
@@ -105,9 +104,8 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(CopySurface, reporter, ctxInfo) {
                                     }
                                 }
 
-                                auto dstContext = GrSurfaceContext::Make(dContext,
-                                                                         std::move(dstView),
-                                                                         ii.colorInfo());
+                                auto dstContext = dContext->priv().makeSC(std::move(dstView),
+                                                                          ii.colorInfo());
 
                                 bool result = false;
                                 if (sOrigin == dOrigin) {

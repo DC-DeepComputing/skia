@@ -1,7 +1,6 @@
 // This file is type-checked by the Typescript definitions. It is not actually executed.
 // Test it by running `npm run dtslint` in the parent directory.
-import {
-    CanvasKitInit,
+import CanvasKitInit, {
     AnimatedImage,
     Canvas,
     CanvasKit,
@@ -21,6 +20,7 @@ import {
     TextBlob,
     Typeface,
     Vertices,
+    WebGPUDeviceContext,
 } from "canvaskit-wasm";
 
 CanvasKitInit({locateFile: (file: string) => '/node_modules/canvaskit/bin/' + file}).then((CK: CanvasKit) => {
@@ -51,8 +51,10 @@ CanvasKitInit({locateFile: (file: string) => '/node_modules/canvaskit/bin/' + fi
     shaderTests(CK);
     surfaceTests(CK);
     textBlobTests(CK);
+    typefaceTests(CK);
     vectorTests(CK);
     verticesTests(CK);
+    webGPUTest(CK);
 });
 
 function animatedImageTests(CK: CanvasKit) {
@@ -64,6 +66,7 @@ function animatedImageTests(CK: CanvasKit) {
     const r = img.getRepetitionCount(); // $ExpectType number
     const h = img.height(); // $ExpectType number
     const still = img.makeImageAtCurrentFrame(); // $ExpectType Image | null
+    const ms = img.currentFrameDuration(); // $ExpectType number
     img.reset();
     const w = img.width(); // $ExpectType number
 }
@@ -111,8 +114,6 @@ function canvasTests(CK: CanvasKit, canvas?: Canvas, paint?: Paint, path?: Path,
     canvas.drawDRRect(someRRect, CK.RRectXY(someRect, 10, 20), paint);
     canvas.drawImage(img, 0, -43);
     canvas.drawImage(img, 0, -43, paint);
-    canvas.drawImageAtCurrentFrame(aImg, 0, -43);
-    canvas.drawImageAtCurrentFrame(aImg, 0, -43, paint);
     canvas.drawImageCubic(img, 0, -43, 1 / 3, 1 / 4, null);
     canvas.drawImageOptions(img, 0, -43, CK.FilterMode.Nearest, CK.MipmapMode.Nearest, paint);
     canvas.drawImageNine(img, someRect, someRect, CK.FilterMode.Nearest);
@@ -148,12 +149,12 @@ function canvasTests(CK: CanvasKit, canvas?: Canvas, paint?: Paint, path?: Path,
     canvas.drawText('foo', 1, 2, paint, font);
     canvas.drawTextBlob(textBlob, 10, 20, paint);
     canvas.drawVertices(verts, CK.BlendMode.DstOut, paint);
-    const matrOne = canvas.findMarkedCTM('thing'); // $ExpectType Float32Array | null
+    const irect = canvas.getDeviceClipBounds(); // $ExpectType Int32Array
+    const irect2 = canvas.getDeviceClipBounds(irect); // $ExpectType Int32Array
     const matrTwo = canvas.getLocalToDevice(); // $ExpectType Float32Array
     const sc = canvas.getSaveCount(); // $ExpectType number
     const matrThree = canvas.getTotalMatrix(); // $ExpectType number[]
     const surface = canvas.makeSurface(imageInfo); // $ExpectType Surface | null
-    canvas.markCTM('more ctm');
     const pixels = canvas.readPixels(85, 1000, {// $Uint8Array | Float32Array | null
         width: 79,
         height: 205,
@@ -261,6 +262,19 @@ function imageTests(CK: CanvasKit, imgElement?: HTMLImageElement) {
       colorType: CK.ColorType.RGBA_8888,
       colorSpace: CK.ColorSpace.SRGB
     }, Uint8Array.of(255, 0, 0, 250), 4);
+    const img4 = CK.MakeLazyImageFromTextureSource(imgElement); // $ExpectType Image
+    const img5 = CK.MakeLazyImageFromTextureSource(imgElement, {
+      width: 1,
+      height: 1,
+      alphaType: CK.AlphaType.Premul,
+      colorType: CK.ColorType.RGBA_8888,
+    });
+    const img6 = CK.MakeLazyImageFromTextureSource(imgElement, {
+      width: 1,
+      height: 1,
+      alphaType: CK.AlphaType.Premul,
+      colorType: CK.ColorType.RGBA_8888,
+    }, true);
     if (!img) return;
     const dOne = img.encodeToBytes(); // $ExpectType Uint8Array | null
     const dTwo = img.encodeToBytes(CK.ImageFormat.JPEG, 97);
@@ -303,9 +317,13 @@ function imageFilterTests(CK: CanvasKit, colorFilter?: ColorFilter) {
     const filter5 = imgf.MakeCompose(filter3, null); // $ExpectType ImageFilter
     const filter6 = imgf.MakeCompose(filter4, filter2); // $ExpectType ImageFilter
     const filter7 = imgf.MakeMatrixTransform(CK.Matrix.scaled(2, 3, 10, 10),
-                                             CK.FilterQuality.High, null);
+                                             { B: 0, C: 0.5 }, null);
     const filter8 = imgf.MakeMatrixTransform(CK.M44.identity(),
-                                             CK.FilterQuality.None, filter6);
+                                             { filter: CK.FilterMode.Linear, mipmap: CK.MipmapMode.Nearest },
+                                             filter6);
+    const filter9 = imgf.MakeMatrixTransform(CK.M44.identity(),
+                                             { filter: CK.FilterMode.Nearest },
+                                             filter6);
 }
 
 function fontTests(CK: CanvasKit, face?: Typeface, paint?: Paint) {
@@ -330,6 +348,8 @@ function fontTests(CK: CanvasKit, face?: Typeface, paint?: Paint) {
     const widths = font.getGlyphWidths(glyphMalloc, paint);
     font.getGlyphWidths(someGlyphs, null, widths);
 
+    const sects = font.getGlyphIntercepts(ids, [10, 20], -60, -40);
+
     font.getScaleX();
     font.getSize();
     font.getSkewX();
@@ -347,25 +367,18 @@ function fontTests(CK: CanvasKit, face?: Typeface, paint?: Paint) {
 }
 
 function fontMgrTests(CK: CanvasKit) {
-    const fm = CK.FontMgr.RefDefault(); // $ExpectType FontMgr
-
     const buff1 = new ArrayBuffer(10);
     const buff2 = new ArrayBuffer(20);
 
-    const fm2 = CK.FontMgr.FromData(buff1, buff2);
+    const fm = CK.FontMgr.FromData(buff1, buff2)!;
     fm.countFamilies();
     fm.getFamilyName(0);
-
-    const tf = fm.makeTypefaceFromData(buff1); // $ExpectType Typeface
 }
 
 function globalTests(CK: CanvasKit, path?: Path) {
     if (!path) {
         return;
     }
-    const ctx = CK.currentContext();
-    CK.setCurrentContext(ctx);
-    CK.deleteContext(ctx);
     const n = CK.getDecodeCacheLimitBytes();
     const u = CK.getDecodeCacheUsedBytes();
     CK.setDecodeCacheLimitBytes(1000);
@@ -384,7 +397,6 @@ function paintTests(CK: CanvasKit, colorFilter?: ColorFilter, imageFilter?: Imag
     }
     const paint = new CK.Paint(); // $ExpectType Paint
     const newPaint = paint.copy(); // $ExpectType Paint
-    const bm = paint.getBlendMode();
     const color = paint.getColor(); // $ExpectType Float32Array
     const sc = paint.getStrokeCap();
     const sj = paint.getStrokeJoin();
@@ -392,7 +404,7 @@ function paintTests(CK: CanvasKit, colorFilter?: ColorFilter, imageFilter?: Imag
     const width = paint.getStrokeWidth(); // $ExpectType number
     paint.setAlphaf(0.8);
     paint.setAntiAlias(true);
-    paint.setBlendMode(bm);
+    paint.setBlendMode(CK.BlendMode.DstOut);
     paint.setColor(CK.RED);
     paint.setColor([0, 0, 1.2, 0.5], CK.ColorSpace.DISPLAY_P3);
     paint.setColorComponents(0, 0, 0.9, 1.0);
@@ -415,9 +427,9 @@ function paintTests(CK: CanvasKit, colorFilter?: ColorFilter, imageFilter?: Imag
 function pathTests(CK: CanvasKit) {
     const path = new CK.Path();  // $ExpectType Path
     const p2 = CK.Path.MakeFromCmds([ // $ExpectType Path | null
-        [CK.MOVE_VERB, 0, 10],
-        [CK.LINE_VERB, 30, 40],
-        [CK.QUAD_VERB, 20, 50, 45, 60],
+        CK.MOVE_VERB, 0, 10,
+        CK.LINE_VERB, 30, 40,
+        CK.QUAD_VERB, 20, 50, 45, 60,
     ]);
     const verbs = CK.Malloc(Uint8Array, 10);
     const points = CK.Malloc(Float32Array, 10);
@@ -425,6 +437,7 @@ function pathTests(CK: CanvasKit) {
     const p4 = CK.Path.MakeFromVerbsPointsWeights([CK.CONIC_VERB], points, [2.3]);
     const p5 = CK.Path.MakeFromOp(p4, p2!, CK.PathOp.ReverseDifference); // $ExpectType Path | null
     const p6 = CK.Path.MakeFromSVGString('M 205,5 L 795,5 z'); // $ExpectType Path | null
+    const p7 = p3.makeAsWinding(); // $ExpectType Path | null
 
     const someRect = CK.LTRBRect(10, 20, 30, 40);
     // Making sure arrays are accepted as rrects.
@@ -488,7 +501,7 @@ function pathTests(CK: CanvasKit) {
         cap: CK.StrokeCap.Butt,
         join: CK.StrokeJoin.Miter,
     });
-    const cmds = path.toCmds(); // $ExpectType PathCommand[]
+    const cmds = path.toCmds(); // $ExpectType Float32Array
     const str = path.toSVGString(); // $ExpectType string
     path.transform(CK.Matrix.identity());
     path.transform(1, 0, 0, 0, 1, 0, 0, 0, 1);
@@ -506,13 +519,13 @@ function paragraphTests(CK: CanvasKit, p?: Paragraph) {
     const g = p.getMaxIntrinsicWidth(); // $ExpectType number
     const h = p.getMaxWidth(); // $ExpectType number
     const i = p.getMinIntrinsicWidth(); // $ExpectType number
-    const j = p.getRectsForPlaceholders(); // $ExpectType Float32Array
-    const k = p.getRectsForRange(2, 10, CK.RectHeightStyle.Max,  // $ExpectType Float32Array
+    const j = p.getRectsForPlaceholders(); // $ExpectType Float32Array[]
+    const k = p.getRectsForRange(2, 10, CK.RectHeightStyle.Max,  // $ExpectType Float32Array[]
         CK.RectWidthStyle.Tight);
     const l = p.getWordBoundary(10); // $ExpectType URange
     p.layout(300);
     const m = p.getLineMetrics(); // $ExpectType LineMetrics[]
-    const n = CK.WhiteSpace_GlyphRunFlag === 1;
+    const n = CK.GlyphRunFlags.IsWhiteSpace === 1;
 }
 
 function paragraphBuilderTests(CK: CanvasKit, fontMgr?: FontMgr, paint?: Paint) {
@@ -543,6 +556,7 @@ function paragraphBuilderTests(CK: CanvasKit, fontMgr?: FontMgr, paint?: Paint) 
         color: CK.Color(48, 37, 199),
         fontFamilies: ['Noto Serif'],
         decoration: CK.LineThroughDecoration,
+        decorationStyle: CK.DecorationStyle.Dashed,
         decorationThickness: 1.5, // multiplier based on font size
         fontSize: 24,
         fontFeatures: [{name: 'smcp', value: 1}],
@@ -565,6 +579,7 @@ function paragraphBuilderTests(CK: CanvasKit, fontMgr?: FontMgr, paint?: Paint) 
     builder2.pushPaintStyle(blueText, paint, paint);
     builder2.addPlaceholder();
     builder2.addPlaceholder(10, 20, CK.PlaceholderAlignment.Top, CK.TextBaseline.Ideographic, 3);
+    builder2.reset();
 }
 
 function particlesTests(CK: CanvasKit, canvas?: Canvas) {
@@ -589,11 +604,18 @@ function particlesTests(CK: CanvasKit, canvas?: Canvas) {
     });
 }
 
-function pathEffectTests(CK: CanvasKit) {
+function pathEffectTests(CK: CanvasKit, path?: Path) {
+    if (!path) {
+        return;
+    }
     const pe1 = CK.PathEffect.MakeCorner(2); // $ExpectType PathEffect | null
     const pe2 = CK.PathEffect.MakeDash([2, 4]); // $ExpectType PathEffect
     const pe3 = CK.PathEffect.MakeDash([2, 4, 6, 8], 10); // $ExpectType PathEffect
     const pe4 = CK.PathEffect.MakeDiscrete(10, 2, 0); // $ExpectType PathEffect
+    const pe5 = CK.PathEffect.MakePath1D(path, 3, 4, CK.Path1DEffect.Morph); // $ExpectType PathEffect | null
+    const matr = CK.Matrix.scaled(3, 2);
+    const pe6 = CK.PathEffect.MakePath2D(matr, path); // $ExpectType PathEffect | null
+    const pe7 = CK.PathEffect.MakeLine2D(3.2, matr); // $ExpectType PathEffect | null
 }
 
 function mallocTests(CK: CanvasKit) {
@@ -652,6 +674,11 @@ function pictureTests(CK: CanvasKit) {
     const pic = recorder.finishRecordingAsPicture(); // $ExpectType SkPicture
     const bytes = pic.serialize(); // $ExpectType Uint8Array | null
     const pic2 = CK.MakePicture(bytes!);
+    const shader1 = pic2!.makeShader(CK.TileMode.Clamp, CK.TileMode.Decal, CK.FilterMode.Nearest);
+    const shader2 = pic2!.makeShader(CK.TileMode.Clamp, CK.TileMode.Decal, CK.FilterMode.Nearest,
+        CK.Matrix.rotated(3));
+    const shader3 = pic2!.makeShader(CK.TileMode.Clamp, CK.TileMode.Decal, CK.FilterMode.Nearest,
+        CK.Matrix.skewed(2, 1), CK.LTRBRect(3, 4, 5, 6));
 }
 
 function rectangleTests(CK: CanvasKit) {
@@ -670,9 +697,9 @@ function runtimeEffectTests(CK: CanvasKit) {
     });
     const someMatr = CK.Matrix.translated(2, 60);
     const s1 = rt.makeShader([0, 1]); // $ExpectType Shader
-    const s2 = rt.makeShader([0, 1], true, someMatr); // $ExpectType Shader
-    const s3 = rt.makeShaderWithChildren([4, 5], true, [s1, s2]); // $ExpectType Shader
-    const s4 = rt.makeShaderWithChildren([4, 5], true, [s1, s2], someMatr); // $ExpectType Shader
+    const s2 = rt.makeShader([0, 1], someMatr); // $ExpectType Shader
+    const s3 = rt.makeShaderWithChildren([4, 5], [s1, s2]); // $ExpectType Shader
+    const s4 = rt.makeShaderWithChildren([4, 5], [s1, s2], someMatr); // $ExpectType Shader
     const a = rt.getUniform(1); // $ExpectType SkSLUniform
     const b = rt.getUniformCount(); // $ExpectType number
     const c = rt.getUniformFloatCount(); // $ExpectType number
@@ -701,7 +728,7 @@ function skottieTests(CK: CanvasKit, canvas?: Canvas) {
     });
     mAnim.setColor('slider', CK.WHITE);
     mAnim.setOpacity('slider', 0.8);
-    const e = mAnim.getMarkers();  // $ExpectType object[]
+    const e = mAnim.getMarkers();  // $ExpectType AnimationMarker[]
     const f = mAnim.getColorProps();  // $ExpectType ColorProperty[]
     const g = mAnim.getOpacityProps();  // $ExpectType OpacityProperty[]
     const h = mAnim.getTextProps();  // $ExpectType TextProperty[]
@@ -715,7 +742,6 @@ function shaderTests(CK: CanvasKit) {
     const s1 = CK.Shader.MakeColor([0.8, 0.2, 0.5, 0.9], // $ExpectType Shader
                                  CK.ColorSpace.SRGB);
     const s2 = CK.Shader.MakeBlend(CK.BlendMode.Src, s1, s1); // $ExpectType Shader
-    const s3 = CK.Shader.MakeLerp(0.3, s1, s2); // $ExpectType Shader
     const s4 = CK.Shader.MakeLinearGradient(// $ExpectType Shader
         [0, 0], [50, 100],
         Float32Array.of(
@@ -815,7 +841,10 @@ function shaderTests(CK: CanvasKit) {
     const s13 = CK.Shader.MakeTurbulence(0.1, 0.05, 2, 0, 80, 80); // $ExpectType Shader
 }
 
-function surfaceTests(CK: CanvasKit) {
+function surfaceTests(CK: CanvasKit, gl?: WebGLRenderingContext) {
+    if (!gl) {
+        return;
+    }
     const canvasEl = document.querySelector('canvas') as HTMLCanvasElement;
     const surfaceOne = CK.MakeCanvasSurface(canvasEl)!; // $ExpectType Surface
     const surfaceTwo = CK.MakeCanvasSurface('my_canvas')!;
@@ -849,22 +878,53 @@ function surfaceTests(CK: CanvasKit) {
     const count = surfaceThree.sampleCnt(); // $ExpectType number
     const img = surfaceFour.makeImageSnapshot([0, 3, 2, 5]); // $ExpectType Image
     const img2 = surfaceSix.makeImageSnapshot(); // $ExpectType Image
-
+    const img3 = surfaceFour.makeImageFromTexture(gl.createTexture()!, {
+      height: 40,
+      width: 80,
+      colorType: CK.ColorType.RGBA_8888,
+      alphaType: CK.AlphaType.Unpremul,
+      colorSpace: CK.ColorSpace.SRGB,
+    });
+    const img4 = surfaceFour.makeImageFromTextureSource(new Image()); // $ExpectType Image | null
+    const videoEle = document.createElement('video');
+    const img5 = surfaceFour.makeImageFromTextureSource(videoEle, {
+      height: 40,
+      width: 80,
+      colorType: CK.ColorType.RGBA_8888,
+      alphaType: CK.AlphaType.Unpremul,
+    });
+    const img6 = surfaceFour.makeImageFromTextureSource(new ImageData(40, 80)); // $ExpectType Image | null
+    const img7 = surfaceFour.makeImageFromTextureSource(videoEle, {
+      height: 40,
+      width: 80,
+      colorType: CK.ColorType.RGBA_8888,
+      alphaType: CK.AlphaType.Premul,
+    }, true);
     surfaceSeven.delete();
 
     const ctx = CK.GetWebGLContext(canvasEl); // $ExpectType number
+    CK.deleteContext(ctx);
     const grCtx = CK.MakeGrContext(ctx);
-    const surfaceNine = CK.MakeOnScreenGLSurface(grCtx, 100, 400, // $ExpectType Surface
+    const surfaceNine = CK.MakeOnScreenGLSurface(grCtx!, 100, 400, // $ExpectType Surface
         CK.ColorSpace.ADOBE_RGB)!;
 
-    const rt = CK.MakeRenderTarget(grCtx, 100, 200); // $ExpectType Surface | null
-    const rt2 = CK.MakeRenderTarget(grCtx, { // $ExpectType Surface | null
+    const rt = CK.MakeRenderTarget(grCtx!, 100, 200); // $ExpectType Surface | null
+    const rt2 = CK.MakeRenderTarget(grCtx!, { // $ExpectType Surface | null
         width: 79,
         height: 205,
         colorType: CK.ColorType.RGBA_8888,
         alphaType: CK.AlphaType.Premul,
         colorSpace: CK.ColorSpace.SRGB,
     });
+
+    const drawFrame = (canvas: Canvas) => {
+        canvas.clear([0, 0, 0, 0]);
+    };
+    surfaceFour.requestAnimationFrame(drawFrame);
+    surfaceFour.drawOnce(drawFrame);
+
+    surfaceFour.updateTextureFromSource(img5!, videoEle);
+    surfaceFour.updateTextureFromSource(img5!, videoEle, true);
 }
 
 function textBlobTests(CK: CanvasKit, font?: Font, path?: Path) {
@@ -882,6 +942,13 @@ function textBlobTests(CK: CanvasKit, font?: Font, path?: Path) {
     const blob6 = tb.MakeFromText('xyz', font); // $ExpectType TextBlob
     const blob7 = tb.MakeOnPath('tuv', path, font); // $ExpectType TextBlob
     const blob8 = tb.MakeOnPath('tuv', path, font, 10); // $ExpectType TextBlob
+}
+
+function typefaceTests(CK: CanvasKit) {
+    const face = CK.Typeface.MakeFreeTypeFaceFromData(new ArrayBuffer(10));
+
+    const ids = face!.getGlyphIDs('abcd');
+    face!.getGlyphIDs('efgh', 4, ids);
 }
 
 function vectorTests(CK: CanvasKit) {
@@ -925,4 +992,28 @@ function verticesTests(CK: CanvasKit) {
     const rect = vertices.bounds(); // $ExpectType Float32Array
     vertices.bounds(rect);
     const id = vertices.uniqueID(); // $ExpectType number
+}
+
+function webGPUTest(CK: CanvasKit, device?: GPUDevice, canvas?: HTMLCanvasElement, texture?: GPUTexture) {
+    if (!device || !canvas || !texture) {
+        return;
+    }
+
+    const gpuContext: WebGPUDeviceContext = CK.MakeGPUDeviceContext(device)!; // $ExpectType GrDirectContext
+
+    // Texture surface.
+    const surface1 = CK.MakeGPUTextureSurface(gpuContext, texture, 800, 600, // $ExpectType Surface | null
+                                              CK.ColorSpace.SRGB);
+
+    // Canvas surfaces.
+    const canvasContext = CK.MakeGPUCanvasContext(gpuContext, canvas, { // $ExpectType WebGPUCanvasContext
+        format: "bgra8unorm",
+        alphaMode: "premultiplied",
+    })!;
+    canvasContext.requestAnimationFrame((canvas: Canvas) => {
+        canvas.clear([0, 0, 0, 0]);
+    });
+
+    const surface2 = CK.MakeGPUCanvasSurface(canvasContext, CK.ColorSpace.SRGB); // $ExpectType Surface | null
+    const surface3 = CK.MakeGPUCanvasSurface(canvasContext, CK.ColorSpace.SRGB, 10, 10); // $ExpectType Surface | null
 }

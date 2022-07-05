@@ -5,13 +5,16 @@
 * found in the LICENSE file.
 */
 
+#include "include/core/SkColorSpace.h"
 #include "include/core/SkString.h"
 #include "include/effects/SkHighContrastFilter.h"
 #include "include/effects/SkRuntimeEffect.h"
 #include "include/private/SkTPin.h"
+#include "src/core/SkColorFilterPriv.h"
 #include "src/core/SkRuntimeEffectPriv.h"
 
 sk_sp<SkColorFilter> SkHighContrastFilter::Make(const SkHighContrastConfig& config) {
+#ifdef SK_ENABLE_SKSL
     if (!config.isValid()) {
         return nullptr;
     }
@@ -41,7 +44,8 @@ sk_sp<SkColorFilter> SkHighContrastFilter::Make(const SkHighContrastConfig& conf
         }
     )";
 
-    sk_sp<SkRuntimeEffect> effect = SkMakeCachedRuntimeEffect(std::move(code));
+    sk_sp<SkRuntimeEffect> effect = SkMakeCachedRuntimeEffect(SkRuntimeEffect::MakeForColorFilter,
+                                                              std::move(code));
     SkASSERT(effect);
 
     // A contrast setting of exactly +1 would divide by zero (1+c)/(1-c), so pull in to +1-ε.
@@ -58,8 +62,12 @@ sk_sp<SkColorFilter> SkHighContrastFilter::Make(const SkHighContrastConfig& conf
 
     skcms_TransferFunction linear = SkNamedTransferFn::kLinear;
     SkAlphaType          unpremul = kUnpremul_SkAlphaType;
-    return SkColorFilters::WithWorkingFormat(
+    return SkColorFilterPriv::WithWorkingFormat(
             effect->makeColorFilter(SkData::MakeWithCopy(&uniforms,sizeof(uniforms))),
             &linear, nullptr/*use dst gamut*/, &unpremul);
+#else
+    // TODO(skia:12197)
+    return nullptr;
+#endif
 }
 

@@ -9,7 +9,19 @@
 #define SkOrderedFontMgr_DEFINED
 
 #include "include/core/SkFontMgr.h"
+#include "include/core/SkRefCnt.h"
+#include "include/core/SkTypes.h"
+
+#include <memory>
 #include <vector>
+
+class SkData;
+class SkFontStyle;
+class SkStreamAsset;
+class SkString;
+class SkTypeface;
+struct SkFontArguments;
+
 /**
  *  Collects an order list of other font managers, and visits them in order
  *  when a request to find or match is issued.
@@ -42,7 +54,6 @@ protected:
                                             int ttcIndex) const override;
     sk_sp<SkTypeface> onMakeFromStreamArgs(std::unique_ptr<SkStreamAsset>,
                                            const SkFontArguments&) const override;
-    sk_sp<SkTypeface> onMakeFromFontData(std::unique_ptr<SkFontData>) const override;
     sk_sp<SkTypeface> onMakeFromFile(const char path[], int ttcIndex) const override;
 
     sk_sp<SkTypeface> onLegacyMakeTypeface(const char familyName[], SkFontStyle) const override;

@@ -28,12 +28,8 @@ struct GrMtlBackendContext;
 struct GrMockOptions;
 class GrPath;
 class GrResourceCache;
-class GrSmallPathAtlasMgr;
-class GrSurfaceDrawContext;
 class GrResourceProvider;
-class GrStrikeCache;
 class GrSurfaceProxy;
-class GrSwizzle;
 class GrTextureProxy;
 struct GrVkBackendContext;
 
@@ -43,6 +39,15 @@ class SkSurfaceCharacterization;
 class SkSurfaceProps;
 class SkTaskGroup;
 class SkTraceMemoryDump;
+
+namespace skgpu {
+class Swizzle;
+namespace v1 { class SmallPathAtlasMgr; }
+}
+
+namespace sktext::gpu {
+class StrikeCache;
+}
 
 class SK_API GrDirectContext : public GrRecordingContext {
 public:
@@ -253,8 +258,18 @@ public:
     /**
      * Purge GPU resources that haven't been used in the past 'msNotUsed' milliseconds or are
      * otherwise marked for deletion, regardless of whether the context is under budget.
+     *
+     * If 'scratchResourcesOnly' is true all unlocked scratch resources older than 'msNotUsed' will
+     * be purged but the unlocked resources with persistent data will remain. If
+     * 'scratchResourcesOnly' is false then all unlocked resources older than 'msNotUsed' will be
+     * purged.
+     *
+     * @param msNotUsed              Only unlocked resources not used in these last milliseconds
+     *                               will be cleaned up.
+     * @param scratchResourcesOnly   If true only unlocked scratch resources will be purged.
      */
-    void performDeferredCleanup(std::chrono::milliseconds msNotUsed);
+    void performDeferredCleanup(std::chrono::milliseconds msNotUsed,
+                                bool scratchResourcesOnly=false);
 
     // Temporary compatibility API for Android.
     void purgeResourcesNotUsedInMs(std::chrono::milliseconds msNotUsed) {
@@ -498,7 +513,7 @@ public:
       * pixmap(s). Compatible, in this case, means that the backend format will be the result
       * of calling defaultBackendFormat on the base pixmap's colortype. The src data can be deleted
       * when this call returns.
-      * If numLevels is 1 a non-mipMapped texture will result. If a mipMapped texture is desired
+      * If numLevels is 1 a non-mipmapped texture will result. If a mipmapped texture is desired
       * the data for all the mipmap levels must be provided. In the mipmapped case all the
       * colortypes of the provided pixmaps must be the same. Additionally, all the miplevels
       * must be sized correctly (please see SkMipmap::ComputeLevelSize and ComputeLevelCount). The
@@ -646,6 +661,7 @@ public:
      * Retrieve the GrBackendFormat for a given SkImage::CompressionType. This is
      * guaranteed to match the backend format used by the following
      * createCompressedBackendTexture methods that take a CompressionType.
+     *
      * The caller should check that the returned format is valid.
      */
     using GrRecordingContext::compressedBackendFormat;
@@ -681,7 +697,7 @@ public:
      * finishedProc to be notified when the data has been uploaded by the gpu and the texture can be
      * deleted. The client is required to call `submit` to send the upload work to the gpu.
      * The finishedProc will always get called even if we failed to create the GrBackendTexture
-     * If numLevels is 1 a non-mipMapped texture will result. If a mipMapped texture is desired
+     * If numLevels is 1 a non-mipmapped texture will result. If a mipmapped texture is desired
      * the data for all the mipmap levels must be provided. Additionally, all the miplevels
      * must be sized correctly (please see SkMipmap::ComputeLevelSize and ComputeLevelCount).
      * For the Vulkan backend the layout of the created VkImage will be:
@@ -724,7 +740,7 @@ public:
      * finishedProc to be notified when the data has been uploaded by the gpu and the texture can be
      * deleted. The client is required to call `submit` to send the upload work to the gpu.
      * The finishedProc will always get called even if we failed to create the GrBackendTexture.
-     * If a mipMapped texture is passed in, the data for all the mipmap levels must be provided.
+     * If a mipmapped texture is passed in, the data for all the mipmap levels must be provided.
      * Additionally, all the miplevels must be sized correctly (please see
      * SkMipMap::ComputeLevelSize and ComputeLevelCount).
      * For the Vulkan backend after a successful update the layout of the created VkImage will be:
@@ -820,7 +836,7 @@ protected:
     bool init() override;
 
     GrAtlasManager* onGetAtlasManager() { return fAtlasManager.get(); }
-    GrSmallPathAtlasMgr* onGetSmallPathAtlasMgr();
+    skgpu::v1::SmallPathAtlasMgr* onGetSmallPathAtlasMgr();
 
     GrDirectContext* asDirectContext() override { return this; }
 
@@ -843,23 +859,22 @@ private:
     // after all of its users. Clients of fTaskGroup will generally want to ensure that they call
     // wait() on it as they are being destroyed, to avoid the possibility of pending tasks being
     // invoked after objects they depend upon have already been destroyed.
-    std::unique_ptr<SkTaskGroup>            fTaskGroup;
-    std::unique_ptr<GrStrikeCache>          fStrikeCache;
-    sk_sp<GrGpu>                            fGpu;
-    std::unique_ptr<GrResourceCache>        fResourceCache;
-    std::unique_ptr<GrResourceProvider>     fResourceProvider;
+    std::unique_ptr<SkTaskGroup>              fTaskGroup;
+    std::unique_ptr<sktext::gpu::StrikeCache> fStrikeCache;
+    sk_sp<GrGpu>                              fGpu;
+    std::unique_ptr<GrResourceCache>          fResourceCache;
+    std::unique_ptr<GrResourceProvider>       fResourceProvider;
 
     bool                                    fDidTestPMConversions;
     // true if the PM/UPM conversion succeeded; false otherwise
     bool                                    fPMUPMConversionsRoundTrip;
 
     GrContextOptions::PersistentCache*      fPersistentCache;
-    GrContextOptions::ShaderErrorHandler*   fShaderErrorHandler;
 
     std::unique_ptr<GrClientMappedBufferManager> fMappedBufferManager;
     std::unique_ptr<GrAtlasManager> fAtlasManager;
 
-    std::unique_ptr<GrSmallPathAtlasMgr> fSmallPathAtlasMgr;
+    std::unique_ptr<skgpu::v1::SmallPathAtlasMgr> fSmallPathAtlasMgr;
 
     friend class GrDirectContextPriv;
 

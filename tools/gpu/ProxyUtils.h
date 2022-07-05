@@ -8,10 +8,10 @@
 #ifndef ProxyUtils_DEFINED
 #define ProxyUtils_DEFINED
 
-#include "include/private/GrTypesPriv.h"
-#include "src/gpu/GrImageInfo.h"
-#include "src/gpu/GrPipeline.h"
-#include "src/gpu/GrTextureProxy.h"
+#include "include/private/gpu/ganesh/GrTypesPriv.h"
+#include "src/gpu/ganesh/GrImageInfo.h"
+#include "src/gpu/ganesh/GrPipeline.h"
+#include "src/gpu/ganesh/GrTextureProxy.h"
 
 class GrDirectContext;
 class GrProgramInfo;
@@ -28,11 +28,13 @@ GrSurfaceProxyView MakeTextureProxyViewFromData(GrDirectContext*,
                                                 GrSurfaceOrigin,
                                                 GrCPixmap pixmap);
 
+#if SK_GPU_V1
 GrProgramInfo* CreateProgramInfo(const GrCaps*,
                                  SkArenaAlloc*,
                                  const GrSurfaceProxyView& writeView,
+                                 bool usesMSAASurface,
                                  GrAppliedClip&&,
-                                 const GrXferProcessor::DstProxyView&,
+                                 const GrDstProxyView&,
                                  GrGeometryProcessor*,
                                  SkBlendMode,
                                  GrPrimitiveType,
@@ -41,7 +43,7 @@ GrProgramInfo* CreateProgramInfo(const GrCaps*,
                                  GrPipeline::InputFlags flags = GrPipeline::InputFlags::kNone,
                                  const GrUserStencilSettings* stencil =
                                                                 &GrUserStencilSettings::kUnused);
-
+#endif
 
 }  // namespace sk_gpu_test
 

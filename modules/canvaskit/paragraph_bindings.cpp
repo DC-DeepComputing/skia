@@ -7,6 +7,7 @@
 
 #include "include/core/SkColor.h"
 #include "include/core/SkFontStyle.h"
+#include "include/core/SkPictureRecorder.h"
 #include "include/core/SkString.h"
 
 #include "modules/skparagraph/include/DartTypes.h"
@@ -27,7 +28,7 @@ using namespace emscripten;
 
 namespace para = skia::textlayout;
 
-SkColor4f toSkColor4f(uintptr_t /* float* */ cPtr) {
+SkColor4f toSkColor4f(WASMPointerF32 cPtr) {
     float* fourFloats = reinterpret_cast<float*>(cPtr);
     SkColor4f color = {fourFloats[0], fourFloats[1], fourFloats[2], fourFloats[3]};
     return color;
@@ -40,12 +41,12 @@ struct SimpleFontStyle {
 };
 
 struct SimpleTextStyle {
-    uintptr_t /* float* */ colorPtr;
-    uintptr_t /* float* */ foregroundColorPtr;
-    uintptr_t /* float* */ backgroundColorPtr;
+    WASMPointerF32 colorPtr;
+    WASMPointerF32 foregroundColorPtr;
+    WASMPointerF32 backgroundColorPtr;
     uint8_t decoration;
     SkScalar decorationThickness;
-    uintptr_t /* float* */ decorationColorPtr;
+    WASMPointerF32 decorationColorPtr;
     para::TextDecorationStyle decorationStyle;
     para::TextBaseline textBaseline;
     SkScalar fontSize;
@@ -53,25 +54,25 @@ struct SimpleTextStyle {
     SkScalar wordSpacing;
     SkScalar heightMultiplier;
     bool halfLeading;
-    uintptr_t /* const char* */ localePtr;
+    WASMPointerU8 localePtr;
     int localeLen;
     SimpleFontStyle fontStyle;
 
-    uintptr_t /* const char** */ fontFamiliesPtr;
+    WASMPointerU8 fontFamiliesPtr;
     int fontFamiliesLen;
 
     int shadowLen;
-    uintptr_t /* SkColor4f* */ shadowColorsPtr;
-    uintptr_t /* SkPoint* */ shadowOffsetsPtr;
-    uintptr_t /* float* */ shadowBlurRadiiPtr;
+    WASMPointerF32 shadowColorsPtr;
+    WASMPointerF32 shadowOffsetsPtr;
+    WASMPointerF32 shadowBlurRadiiPtr;
 
     int fontFeatureLen;
-    uintptr_t /* float* */ fontFeatureNamesPtr;
-    uintptr_t /* float* */ fontFeatureValuesPtr;
+    WASMPointerF32 fontFeatureNamesPtr;
+    WASMPointerF32 fontFeatureValuesPtr;
 };
 
 struct SimpleStrutStyle {
-    uintptr_t /* const char** */ fontFamiliesPtr;
+    WASMPointerU32 fontFamiliesPtr;
     int fontFamiliesLen;
     SimpleFontStyle fontStyle;
     SkScalar fontSize;
@@ -208,7 +209,7 @@ para::TextStyle toTextStyle(const SimpleTextStyle& s) {
 
 struct SimpleParagraphStyle {
     bool disableHinting;
-    uintptr_t /* const char* */ ellipsisPtr;
+    WASMPointerU8 ellipsisPtr;
     size_t ellipsisLen;
     SkScalar heightMultiplier;
     size_t maxLines;
@@ -312,38 +313,101 @@ JSArray GetLineMetrics(para::Paragraph& self) {
 }
 
 /*
- *  Returns Runs[K]
- *
- *  Run --> { font: ???, glyphs[N], positions[N*2], offsets[N], flags }
- *
- *  K = number of runs
- *  N = number of glyphs in a given run
+ *  Returns Lines[]
  */
-JSArray GetShapedRuns(para::Paragraph& self) {
-    // where we accumulate our js output
-    JSArray jruns = emscripten::val::array();
+JSArray GetShapedLines(para::Paragraph& self) {
+    struct LineAccumulate {
+        int         lineNumber  = -1;   // deliberately -1 from starting value
+        uint32_t    minOffset   = 0xFFFFFFFF;
+        uint32_t    maxOffset   = 0;
+        float       minAscent   = 0;
+        float       maxDescent  = 0;
+        // not really accumulated, but definitely set
+        float       baseline    = 0;
 
-    self.visit([&](const para::Paragraph::VisitorInfo& info) {
-        const int N = info.count;   // glyphs
+        void reset(int lineNumber) {
+            new (this) LineAccumulate;
+            this->lineNumber = lineNumber;
+        }
+    };
+
+    // where we accumulate our js output
+    JSArray  jlines = emscripten::val::array();
+    JSObject jline = emscripten::val::null();
+    JSArray  jruns = emscripten::val::null();
+    LineAccumulate accum;
+
+    self.visit([&](int lineNumber, const para::Paragraph::VisitorInfo* info) {
+        if (!info) {
+            if (!jline) return; // how???
+            // end of current line
+            JSObject range = emscripten::val::object();
+            range.set("first", accum.minOffset);
+            range.set("last",  accum.maxOffset);
+            jline.set("textRange", range);
+
+            jline.set("top", accum.baseline + accum.minAscent);
+            jline.set("bottom", accum.baseline + accum.maxDescent);
+            jline.set("baseline", accum.baseline);
+            return;
+        }
+
+        if (lineNumber != accum.lineNumber) {
+            SkASSERT(lineNumber == accum.lineNumber + 1);   // assume monotonic
+
+            accum.reset(lineNumber);
+            jruns = emscripten::val::array();
+
+            jline = emscripten::val::object();
+            jline.set("runs", jruns);
+            // will assign textRange and metrics on end-of-line signal
+
+            jlines.call<void>("push", jline);
+        }
+
+        // append the run
+        const int N = info->count;   // glyphs
         const int N1 = N + 1;       // positions, offsets have 1 extra (trailing) slot
 
         JSObject jrun = emscripten::val::object();
 
-        jrun.set("flags",   info.flags);
-        jrun.set("glyphs",  MakeTypedArray(N,  info.glyphs,     "Uint16Array"));
-        jrun.set("offsets", MakeTypedArray(N1, info.utf8Starts, "Uint32Array"));
+        jrun.set("flags",    info->flags);
+
+// TODO: figure out how to set a wrapped sk_sp<SkTypeface>
+//        jrun.set("typeface", info->font.getTypeface());
+        jrun.set("typeface",    emscripten::val::null());
+        jrun.set("size",        info->font.getSize());
+        if (info->font.getScaleX()) {
+            jrun.set("scaleX",  info->font.getScaleX());
+        }
+
+        jrun.set("glyphs",   MakeTypedArray(N,  info->glyphs));
+        jrun.set("offsets",  MakeTypedArray(N1, info->utf8Starts));
 
         // we need to modify the positions, so make a temp copy
         SkAutoSTMalloc<32, SkPoint> positions(N1);
         for (int i = 0; i < N; ++i) {
-            positions.get()[i] = info.positions[i] + info.origin;
+            positions.get()[i] = info->positions[i] + info->origin;
         }
-        positions.get()[N] = { info.advanceX, positions.get()[N - 1].fY };
-        jrun.set("positions", MakeTypedArray(N1*2, (const float*)positions.get(), "Float32Array"));
+        positions.get()[N] = { info->advanceX, positions.get()[N - 1].fY };
+        jrun.set("positions", MakeTypedArray(N1*2, (const float*)positions.get()));
 
         jruns.call<void>("push", jrun);
+
+        // update accum
+        {   SkFontMetrics fm;
+            info->font.getMetrics(&fm);
+
+            accum.minAscent  = std::min(accum.minAscent,  fm.fAscent);
+            accum.maxDescent = std::max(accum.maxDescent, fm.fDescent);
+            accum.baseline   = info->origin.fY;
+
+            accum.minOffset  = std::min(accum.minOffset,  info->utf8Starts[0]);
+            accum.maxOffset  = std::max(accum.maxOffset,  info->utf8Starts[N]);
+        }
+
     });
-    return jruns;
+    return jlines;
 }
 
 EMSCRIPTEN_BINDINGS(Paragraph) {
@@ -361,7 +425,7 @@ EMSCRIPTEN_BINDINGS(Paragraph) {
         .function("getMinIntrinsicWidth", &para::Paragraph::getMinIntrinsicWidth)
         .function("_getRectsForPlaceholders", &GetRectsForPlaceholders)
         .function("_getRectsForRange", &GetRectsForRange)
-        .function("getShapedRuns", &GetShapedRuns)
+        .function("getShapedLines", &GetShapedLines)
         .function("getWordBoundary", &para::Paragraph::getWordBoundary)
         .function("layout", &para::Paragraph::layout);
 
@@ -393,12 +457,72 @@ EMSCRIPTEN_BINDINGS(Paragraph) {
                                 static_cast<para::ParagraphBuilderImpl*>(pb.release()));
                     }),
                     allow_raw_pointers())
+            .class_function(
+                    "_ShapeText",
+                    optional_override([](JSString jtext, JSArray jruns, float width) -> JSArray {
+                std::string textStorage = jtext.as<std::string>();
+                const char* text = textStorage.data();
+                size_t      textCount = textStorage.size();
+
+                auto fc = sk_make_sp<para::FontCollection>();
+                fc->setDefaultFontManager(SkFontMgr::RefDefault());
+                fc->enableFontFallback();
+
+                para::ParagraphStyle pstyle;
+                {
+                    // For the most part this is ignored, since we set an explicit TextStyle
+                    // for all of our text runs, but it is required by SkParagraph.
+                    para::TextStyle style;
+                    style.setFontFamilies({SkString("sans-serif")});
+                    style.setFontSize(32);
+                    pstyle.setTextStyle(style);
+                }
+
+                auto pb = para::ParagraphBuilder::make(pstyle, fc);
+
+                // tease apart the FontBlock runs
+                size_t runCount = jruns["length"].as<size_t>();
+                for (size_t i = 0; i < runCount; ++i) {
+                    emscripten::val r = jruns[i];
+
+                    para::TextStyle style;
+                    style.setTypeface(r["typeface"].as< sk_sp<SkTypeface> >());
+                    style.setFontSize(r["size"].as<float>());
+
+                    const size_t subTextCount = r["length"].as<size_t>();
+                    if (subTextCount > textCount) {
+                        return emscripten::val("block runs exceed text length!");
+                    }
+
+                    pb->pushStyle(style);
+                    pb->addText(text, subTextCount);
+                    pb->pop();
+
+                    text += subTextCount;
+                    textCount -= subTextCount;
+                }
+                if (textCount != 0) {
+                    return emscripten::val("Didn't have enough block runs to cover text");
+                }
+
+                auto pa = pb->Build();
+                pa->layout(width);
+
+                // workaround until this is fixed in SkParagraph
+                {
+                    SkPictureRecorder rec;
+                    pa->paint(rec.beginRecording({0,0,9999,9999}), 0, 0);
+                }
+                return GetShapedLines(*pa);
+            }),
+            allow_raw_pointers())
             .function("addText",
                       optional_override([](para::ParagraphBuilderImpl& self, std::string text) {
                           return self.addText(text.c_str(), text.length());
                       }))
             .function("build", &para::ParagraphBuilderImpl::Build, allow_raw_pointers())
             .function("pop", &para::ParagraphBuilderImpl::pop)
+            .function("reset", &para::ParagraphBuilderImpl::Reset, allow_raw_pointers())
             .function("_pushStyle", optional_override([](para::ParagraphBuilderImpl& self,
                                                          SimpleTextStyle textStyle) {
                           auto ts = toTextStyle(textStyle);
@@ -434,7 +558,7 @@ EMSCRIPTEN_BINDINGS(Paragraph) {
       }))
       .function("_registerFont", optional_override([](para::TypefaceFontProvider& self,
                                                       sk_sp<SkTypeface> typeface,
-                                                      uintptr_t familyPtr) {
+                                                      WASMPointerU8 familyPtr) {
           const char* fPtr = reinterpret_cast<const char*>(familyPtr);
           SkString fStr(fPtr);
           self.registerTypeface(typeface, fStr);

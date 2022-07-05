@@ -34,13 +34,13 @@
 #include <utility>
 
 /*
- * Spits out a dummy gradient to test blur with shader on paint
+ * Spits out an arbitrary gradient to test blur with shader on paint
  */
 static sk_sp<SkShader> MakeLinear() {
     constexpr SkPoint     kPts[] = { { 0, 0 }, { 32, 32 } };
     constexpr SkScalar    kPos[] = { 0, SK_Scalar1/2, SK_Scalar1 };
     constexpr SkColor kColors[] = {0x80F00080, 0xF0F08000, 0x800080F0 };
-    return SkGradientShader::MakeLinear(kPts, kColors, kPos, SK_ARRAY_COUNT(kColors),
+    return SkGradientShader::MakeLinear(kPts, kColors, kPos, std::size(kColors),
                                         SkTileMode::kClamp);
 }
 

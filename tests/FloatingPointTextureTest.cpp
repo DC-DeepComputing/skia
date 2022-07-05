@@ -14,13 +14,14 @@
 
 #include "tests/Test.h"
 
+#include "include/core/SkColorSpace.h"
 #include "include/gpu/GrDirectContext.h"
 #include "include/private/SkHalf.h"
-#include "src/gpu/GrDirectContextPriv.h"
-#include "src/gpu/GrImageInfo.h"
-#include "src/gpu/GrProxyProvider.h"
-#include "src/gpu/GrSurfaceContext.h"
-#include "src/gpu/GrTextureProxy.h"
+#include "src/gpu/ganesh/GrDirectContextPriv.h"
+#include "src/gpu/ganesh/GrImageInfo.h"
+#include "src/gpu/ganesh/GrProxyProvider.h"
+#include "src/gpu/ganesh/GrTextureProxy.h"
+#include "src/gpu/ganesh/SurfaceContext.h"
 #include "tools/gpu/ProxyUtils.h"
 
 #include <float.h>
@@ -60,11 +61,11 @@ void runFPTest(skiatest::Reporter* reporter, GrDirectContext* dContext,
             continue;
         }
 
-        auto sContext = GrSurfaceContext::Make(dContext, std::move(fpView), info.colorInfo());
-        REPORTER_ASSERT(reporter, sContext);
+        auto sc = dContext->priv().makeSC(std::move(fpView), info.colorInfo());
+        REPORTER_ASSERT(reporter, sc);
 
         GrPixmap readPixmap(info, readBuffer.begin(), info.minRowBytes());
-        bool result = sContext->readPixels(dContext, readPixmap, {0, 0});
+        bool result = sc->readPixels(dContext, readPixmap, {0, 0});
         REPORTER_ASSERT(reporter, result);
         REPORTER_ASSERT(reporter,
                         !memcmp(readBuffer.begin(), controlPixelData.begin(), readBuffer.bytes()));

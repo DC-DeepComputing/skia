@@ -17,7 +17,7 @@
 #include "include/core/SkSurface.h"
 #include "include/effects/SkDashPathEffect.h"
 #include "include/gpu/GrDirectContext.h"
-#include "src/gpu/geometry/GrStyledShape.h"
+#include "src/gpu/ganesh/geometry/GrStyledShape.h"
 #include "tests/Test.h"
 
 #include <initializer_list>
@@ -109,6 +109,24 @@ DEF_GPUTEST_FOR_ALL_CONTEXTS(GrDrawCollapsedPath, reporter, ctxInfo) {
              -0.00885376986f , -0.112347461f  , 64.7121124f,
              -8.94321693e-06f, -0.00173384184f, 0.998692870f);
     surface->getCanvas()->setMatrix(m);
+    surface->getCanvas()->drawPath(path, paint);
+    surface->flushAndSubmit();
+}
+
+DEF_GPUTEST_FOR_ALL_CONTEXTS(PathTest_CrBug1232834, reporter, ctxInfo) {
+    // AAHairlinePathRenderer chops this path to quads that include infinities (and then NaNs).
+    // It used to trigger asserts, now the degenerate quad segments should cause it to be rejected.
+    SkImageInfo info = SkImageInfo::MakeN32Premul(256, 256);
+    auto surface(SkSurface::MakeRenderTarget(ctxInfo.directContext(), SkBudgeted::kNo, info));
+
+    SkPaint paint;
+    paint.setAntiAlias(true);
+    paint.setStyle(SkPaint::kStroke_Style);
+
+    SkPath path;
+    path.moveTo(9.0072E15f, 60);
+    path.cubicTo(0, 3.40282e+38f, 0, 3.40282e+38f, 0, 0);
+
     surface->getCanvas()->drawPath(path, paint);
     surface->flushAndSubmit();
 }

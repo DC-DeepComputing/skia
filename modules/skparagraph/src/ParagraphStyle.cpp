@@ -2,7 +2,6 @@
 
 #include "modules/skparagraph/include/DartTypes.h"
 #include "modules/skparagraph/include/ParagraphStyle.h"
-#include "modules/skshaper/src/SkUnicode.h"
 #include "src/core/SkStringUtils.h"
 #include "src/utils/SkUTF.h"
 
@@ -27,6 +26,7 @@ ParagraphStyle::ParagraphStyle() {
     fHeight = 1;
     fTextHeightBehavior = TextHeightBehavior::kAll;
     fHintingIsOn = true;
+    fReplaceTabCharacters = false;
 }
 
 TextAlign ParagraphStyle::effective_align() const {

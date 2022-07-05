@@ -76,12 +76,12 @@ static bool string_is_in(const char* target, const char* set[], size_t len) {
  */
 static bool parse_bool_arg(const char* string, bool* result) {
     static const char* trueValues[] = {"1", "TRUE", "true"};
-    if (string_is_in(string, trueValues, SK_ARRAY_COUNT(trueValues))) {
+    if (string_is_in(string, trueValues, std::size(trueValues))) {
         *result = true;
         return true;
     }
     static const char* falseValues[] = {"0", "FALSE", "false"};
-    if (string_is_in(string, falseValues, SK_ARRAY_COUNT(falseValues))) {
+    if (string_is_in(string, falseValues, std::size(falseValues))) {
         *result = false;
         return true;
     }
@@ -251,11 +251,11 @@ void CommandLineFlags::Parse(int argc, const char* const* argv) {
                     allFlags.push_back(flag);
                 }
                 SkTQSort(allFlags.begin(), allFlags.end(), CompareFlagsByName());
-                for (int i = 0; i < allFlags.count(); ++i) {
-                    print_help_for_flag(allFlags[i]);
-                    if (allFlags[i]->extendedHelp().size() > 0) {
+                for (SkFlagInfo* flag : allFlags) {
+                    print_help_for_flag(flag);
+                    if (flag->extendedHelp().size() > 0) {
                         SkDebugf("        Use '--help %s' for more information.\n",
-                                 allFlags[i]->name().c_str());
+                                 flag->name().c_str());
                     }
                 }
             } else {

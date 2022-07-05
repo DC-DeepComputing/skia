@@ -201,17 +201,17 @@ bool SkOpEdgeBuilder::walk() {
                 break;
             case SkPath::kQuad_Verb:
                 {
-                    SkVector v1 = pointsPtr[1] - pointsPtr[0];
-                    SkVector v2 = pointsPtr[2] - pointsPtr[1];
-                    if (v1.dot(v2) < 0) {
+                    SkVector vec1 = pointsPtr[1] - pointsPtr[0];
+                    SkVector vec2 = pointsPtr[2] - pointsPtr[1];
+                    if (vec1.dot(vec2) < 0) {
                         SkPoint pair[5];
                         if (SkChopQuadAtMaxCurvature(pointsPtr, pair) == 1) {
                             goto addOneQuad;
                         }
-                        if (!SkScalarsAreFinite(&pair[0].fX, SK_ARRAY_COUNT(pair) * 2)) {
+                        if (!SkScalarsAreFinite(&pair[0].fX, std::size(pair) * 2)) {
                             return false;
                         }
-                        for (unsigned index = 0; index < SK_ARRAY_COUNT(pair); ++index) {
+                        for (unsigned index = 0; index < std::size(pair); ++index) {
                             pair[index] = force_small_to_zero(pair[index]);
                         }
                         SkPoint cStorage[2][2];
@@ -230,10 +230,10 @@ bool SkOpEdgeBuilder::walk() {
                 fContourBuilder.addQuad(pointsPtr);
                 break;
             case SkPath::kConic_Verb: {
-                SkVector v1 = pointsPtr[1] - pointsPtr[0];
-                SkVector v2 = pointsPtr[2] - pointsPtr[1];
+                SkVector vec1 = pointsPtr[1] - pointsPtr[0];
+                SkVector vec2 = pointsPtr[2] - pointsPtr[1];
                 SkScalar weight = *weightPtr++;
-                if (v1.dot(v2) < 0) {
+                if (vec1.dot(vec2) < 0) {
                     // FIXME: max curvature for conics hasn't been implemented; use placeholder
                     SkScalar maxCurvature = SkFindQuadMaxCurvature(pointsPtr);
                     if (0 < maxCurvature && maxCurvature < 1) {
@@ -269,7 +269,7 @@ bool SkOpEdgeBuilder::walk() {
                         fContourBuilder.addCubic(pointsPtr);
                         break;
                     }
-                    SkASSERT(breaks <= (int) SK_ARRAY_COUNT(splitT));
+                    SkASSERT(breaks <= (int) std::size(splitT));
                     struct Splitsville {
                         double fT[2];
                         SkPoint fPts[4];
@@ -277,7 +277,7 @@ bool SkOpEdgeBuilder::walk() {
                         SkPath::Verb fVerb;
                         bool fCanAdd;
                     } splits[4];
-                    SkASSERT(SK_ARRAY_COUNT(splits) == SK_ARRAY_COUNT(splitT) + 1);
+                    SkASSERT(std::size(splits) == std::size(splitT) + 1);
                     SkTQSort(splitT, splitT + breaks);
                     for (int index = 0; index <= breaks; ++index) {
                         Splitsville* split = &splits[index];
@@ -306,7 +306,7 @@ bool SkOpEdgeBuilder::walk() {
                             split->fPts[0] = splits[prior].fPts[0];
                         }
                         int next = index;
-                        int breakLimit = std::min(breaks, (int) SK_ARRAY_COUNT(splits) - 1);
+                        int breakLimit = std::min(breaks, (int) std::size(splits) - 1);
                         while (next < breakLimit && !splits[next + 1].fCanAdd) {
                             ++next;
                         }

@@ -7,6 +7,7 @@
 
 #include "modules/skottie/src/effects/Effects.h"
 
+#include "include/core/SkCanvas.h"
 #include "include/core/SkM44.h"
 #include "include/core/SkPictureRecorder.h"
 #include "include/effects/SkRuntimeEffect.h"
@@ -18,6 +19,8 @@
 #include <array>
 
 namespace skottie::internal {
+
+#ifdef SK_ENABLE_SKSL
 
 namespace  {
 
@@ -75,7 +78,7 @@ static constexpr char gSphereSkSL[] = R"(
             0.5 + kRPI * asin(RN.y)
         );
 
-        return apply_light(EYE, N, sample(child, UV*child_scale));
+        return apply_light(EYE, N, child.eval(UV*child_scale));
     }
 )";
 
@@ -118,7 +121,7 @@ static constexpr char gFancyLightSkSL[] = R"(
         d = l_coeff_diffuse  * max(dot(l_vec, N), 0),
         s = l_coeff_specular * saturate(pow(s_base, l_specular_exp));
 
-        c.rgb = (a + d*l_color)*c.rgb + s*l_color;
+        c.rgb = (a + d*l_color)*c.rgb + s*l_color*c.a;
 
         return c;
     }
@@ -218,7 +221,7 @@ private:
         const auto lm = SkMatrix::Translate(fCenter.fX, fCenter.fY) *
                         SkMatrix::Scale(fRadius, fRadius);
 
-        return builder.makeShader(&lm, false);
+        return builder.makeShader(&lm);
     }
 
     SkRect onRevalidate(sksg::InvalidationController* ic, const SkMatrix& ctm) override {
@@ -413,11 +416,18 @@ private:
 
 } // namespace
 
+#endif  // SK_ENABLE_SKSL
+
 sk_sp<sksg::RenderNode> EffectBuilder::attachSphereEffect(
         const skjson::ArrayValue& jprops, sk_sp<sksg::RenderNode> layer) const {
+#ifdef SK_ENABLE_SKSL
     auto sphere = sk_make_sp<SphereNode>(std::move(layer), fLayerSize);
 
     return fBuilder->attachDiscardableAdapter<SphereAdapter>(jprops, fBuilder, std::move(sphere));
+#else
+    // TODO(skia:12197)
+    return layer;
+#endif
 }
 
 } // namespace skottie::internal

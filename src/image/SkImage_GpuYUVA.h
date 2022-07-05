@@ -10,7 +10,7 @@
 
 #include "include/gpu/GrBackendSurface.h"
 #include "src/core/SkCachedData.h"
-#include "src/gpu/GrYUVATextureProxies.h"
+#include "src/gpu/ganesh/GrYUVATextureProxies.h"
 #include "src/image/SkImage_GpuBase.h"
 
 class GrDirectContext;
@@ -23,8 +23,6 @@ class GrTexture;
 // proxy will be stored and used for any future rendering.
 class SkImage_GpuYUVA final : public SkImage_GpuBase {
 public:
-    friend class GrYUVAImageTextureMaker;
-
     SkImage_GpuYUVA(sk_sp<GrImageContext>,
                     uint32_t uniqueID,
                     GrYUVATextureProxies proxies,
@@ -32,9 +30,9 @@ public:
 
     bool onHasMipmaps() const override;
 
-    GrSemaphoresSubmitted onFlush(GrDirectContext*, const GrFlushInfo&) override;
+    GrSemaphoresSubmitted onFlush(GrDirectContext*, const GrFlushInfo&) const override;
 
-    bool onIsTextureBacked() const override { return true; }
+    bool isGaneshBacked() const override { return true; }
 
     size_t onTextureSize() const override;
 

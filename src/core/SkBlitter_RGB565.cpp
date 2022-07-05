@@ -11,8 +11,6 @@
 #include "src/core/SkCoreBlitters.h"
 #include "src/core/SkXfermodePriv.h"
 
-#include "include/private/SkNx.h"
-
 static void D16_S32X_src(uint16_t dst[], const SkPMColor src[], int count, uint8_t coverage) {
     SkASSERT(coverage == 0xFF);
     for (int i = 0; i < count; ++i) {
@@ -70,8 +68,8 @@ bool SkRGB565_Shader_Blitter::Supports(const SkPixmap& device, const SkPaint& pa
     if (device.colorSpace()) {
         return false;
     }
-    if (paint.getBlendMode() != SkBlendMode::kSrcOver &&
-        paint.getBlendMode() != SkBlendMode::kSrc) {
+    const auto bm = paint.asBlendMode();
+    if (bm != SkBlendMode::kSrcOver && bm != SkBlendMode::kSrc) {
         return false;
     }
     if (paint.isDither()) {
@@ -91,7 +89,7 @@ SkRGB565_Shader_Blitter::SkRGB565_Shader_Blitter(const SkPixmap& device,
 
     bool isOpaque = SkToBool(shaderContext->getFlags() & SkShaderBase::kOpaqueAlpha_Flag);
 
-    if (paint.getBlendMode() == SkBlendMode::kSrc || isOpaque) {
+    if (paint.asBlendMode() == SkBlendMode::kSrc || isOpaque) {
         fBlend = D16_S32X_src;
         fBlendCoverage = D16_S32X_src_coverage;
     } else {    // srcover
