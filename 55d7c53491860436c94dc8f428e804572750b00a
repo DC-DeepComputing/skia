@@ -91,6 +91,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a9095cf8_5dbde26b",
+        "filename": "src/sksl/SkSLConstantFolder.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 472,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-07-06T18:42:27Z",
+      "side": 1,
+      "message": "I don\u0027t think we can use the latter version without writing out the Literal::Make call twice, so I\u0027ll do the goofy not thing.",
+      "parentUuid": "6824998e_a6cd5509",
+      "range": {
+        "startLine": 470,
+        "startChar": 0,
+        "endLine": 472,
+        "endChar": 16
+      },
+      "revId": "55d7c53491860436c94dc8f428e804572750b00a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "16f3dbbf_3159e313",
         "filename": "src/sksl/ir/SkSLFunctionCall.cpp",
         "patchSetId": 6
