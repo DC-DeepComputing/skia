@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9575e209_01ddd7ca",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-07-06T17:52:01Z",
+      "side": 1,
+      "message": "FYI: I simplified the code a bit - the handling of tri-fans was unnecessary, so now it\u0027s easier to prove that the new code is checking the same value that will be used for the memory allocation inside init().",
+      "revId": "8c28a74c626b2b813d4686492c2b37ed493f4ca8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2058a94e_5f890409",
+        "filename": "src/core/SkVertices.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 251,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-07-06T17:52:01Z",
+      "side": 1,
+      "message": "^",
+      "revId": "8c28a74c626b2b813d4686492c2b37ed493f4ca8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
