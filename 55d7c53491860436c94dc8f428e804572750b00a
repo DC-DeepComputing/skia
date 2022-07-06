@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "21e08357_e9f55dbd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-07-06T18:16:11Z",
+      "side": 1,
+      "message": "lgtm % minor nit",
+      "revId": "55d7c53491860436c94dc8f428e804572750b00a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d150da33_ac07a1f7",
+        "filename": "src/sksl/SkSLConstantFolder.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 472,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-07-06T18:16:11Z",
+      "side": 1,
+      "message": "nit: I suggest inverting this if condition and eliminating the else (same comment as in SkSLFunctionCall.cpp)",
+      "range": {
+        "startLine": 470,
+        "startChar": 0,
+        "endLine": 472,
+        "endChar": 16
+      },
+      "revId": "55d7c53491860436c94dc8f428e804572750b00a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "16f3dbbf_3159e313",
+        "filename": "src/sksl/ir/SkSLFunctionCall.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-07-06T18:16:11Z",
+      "side": 1,
+      "message": "nit: I find it slightly more readable with this inverted without the else block, so that the if condition describes the early return error condition and the comment in the else block already covers the comment here.",
+      "range": {
+        "startLine": 139,
+        "startChar": 0,
+        "endLine": 141,
+        "endChar": 16
+      },
+      "revId": "55d7c53491860436c94dc8f428e804572750b00a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2cd862ba_5efd2331",
+        "filename": "src/sksl/ir/SkSLFunctionCall.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 262,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-07-06T18:16:11Z",
+      "side": 1,
+      "message": "nit: same comment as above.",
+      "range": {
+        "startLine": 260,
+        "startChar": 8,
+        "endLine": 262,
+        "endChar": 9
+      },
+      "revId": "55d7c53491860436c94dc8f428e804572750b00a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
