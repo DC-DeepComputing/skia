@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "15e70d1b_d789d7ad",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-07-06T21:02:22Z",
+      "side": 1,
+      "message": "This should now be ready for review. Almost more interesting than the partial support for OT-SVG here (no gzip svgDoc support yet) is that this also makes changes to trivially enforce that the format used to determine the metrics is the same format used when drawing.",
+      "revId": "c410904181cc8030b8f8513d9cf46fd0a404ea6b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
