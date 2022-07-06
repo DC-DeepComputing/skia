@@ -135,8 +135,10 @@ static std::unique_ptr<Expression> coalesce_n_way_vector(const Expression* arg0,
 
         value = coalesce(value, *arg0Value, *arg1Value);
 
-        // If coalescing the intrinsic yields a non-finite value, do not optimize.
-        if (!std::isfinite(value)) {
+        if (value >= -FLT_MAX && value <= FLT_MAX) {
+            // This result will fit inside a float Literal.
+        } else {
+            // Evaluation yielded a value that we can't hold in a float Literal; do not optimize.
             return nullptr;
         }
     }
@@ -254,8 +256,10 @@ static std::unique_ptr<Expression> evaluate_n_way_intrinsic(const Context& conte
 
         array[index] = eval(*arg0Value, *arg1Value, *arg2Value);
 
-        // If evaluation of the intrinsic yields a non-finite value, do not optimize.
-        if (!std::isfinite(array[index])) {
+        if (array[index] >= -FLT_MAX && array[index] <= FLT_MAX) {
+            // This result will fit inside a float Literal.
+        } else {
+            // Evaluation yielded a value that we can't hold in a float Literal; do not optimize.
             return nullptr;
         }
     }
