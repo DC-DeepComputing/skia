@@ -289,6 +289,18 @@ sk_sp<SkVertices> SkVerticesPriv::Decode(SkReadBuffer& buffer) {
             return nullptr;
         }
 
+        const size_t isize = (mode == SkVertices::kTriangleFan_VertexMode)
+                                     ? sizes.fBuilderTriFanISize
+                                     : sizes.fISize;
+        SkSafeMath safeMath;
+        // This isn't the same as sizes.fArrays, due to tri-fan handling
+        const size_t arraySizeSum = safeMath.add(sizes.fVSize,
+                                    safeMath.add(sizes.fTSize,
+                                    safeMath.add(sizes.fCSize, isize)));
+        if (!safeMath.ok() || arraySizeSum > buffer.available()) {
+            return nullptr;
+        }
+
         SkVertices::Builder builder(desc);
         if (!builder.isValid()) {
             return nullptr;
@@ -304,8 +316,6 @@ sk_sp<SkVertices> SkVerticesPriv::Decode(SkReadBuffer& buffer) {
         }
         buffer.readByteArray(builder.texCoords(), sizes.fTSize);
         buffer.readByteArray(builder.colors(), sizes.fCSize);
-        size_t isize = (mode == SkVertices::kTriangleFan_VertexMode) ? sizes.fBuilderTriFanISize
-                                                                     : sizes.fISize;
         buffer.readByteArray(builder.indices(), isize);
 
         if (!buffer.isValid()) {
