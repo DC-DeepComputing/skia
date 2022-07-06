@@ -235,6 +235,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5be1144c_b6839f34",
+        "filename": "src/sksl/SkSLConstantFolder.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 472,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-07-06T19:11:29Z",
+      "side": 1,
+      "message": "Ah, this is what I completely missed. The opposite condition works because `NaN \u003e -FLT_MAX` is also false, correct? I think it\u0027s worth documenting this in a comment here, so a future reader knows that this is implicitly catching NaNs.\n\nAlternately you could check for `std::is_nan(result)` explicitly in the if condition which might make the code more self documenting.\n\nUp to you either way and thanks for entertaining my question!",
+      "parentUuid": "12cbac82_b0149f23",
+      "range": {
+        "startLine": 470,
+        "startChar": 0,
+        "endLine": 472,
+        "endChar": 16
+      },
+      "revId": "55d7c53491860436c94dc8f428e804572750b00a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "16f3dbbf_3159e313",
         "filename": "src/sksl/ir/SkSLFunctionCall.cpp",
         "patchSetId": 6
