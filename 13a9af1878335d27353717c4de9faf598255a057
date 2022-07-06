@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "363796e7_c2e9ca5a",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 3527,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-07-06T18:25:30Z",
+      "side": 1,
+      "message": "SGTM! Thanks.",
+      "parentUuid": "fe96c97a_c284c838",
+      "range": {
+        "startLine": 3527,
+        "startChar": 0,
+        "endLine": 3527,
+        "endChar": 100
+      },
+      "revId": "13a9af1878335d27353717c4de9faf598255a057",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "51151fc9_f0f9b3d0",
