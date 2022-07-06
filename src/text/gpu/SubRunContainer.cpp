@@ -11,6 +11,7 @@
 #include "include/private/chromium/SkChromeRemoteGlyphCache.h"
 #include "src/core/SkDescriptor.h"
 #include "src/core/SkDistanceFieldGen.h"
+#include "src/core/SkGlyph.h"
 #include "src/core/SkGlyphBuffer.h"
 #include "src/core/SkReadBuffer.h"
 #include "src/core/SkRectPriv.h"
@@ -2516,7 +2517,13 @@ std::tuple<bool, SubRunContainerOwner> SubRunContainer::MakeInAlloc(
     auto [accepted, rejected] = bufferScope.buffers();
     bool someGlyphExcluded = false;
     for (auto& glyphRun : glyphRunList) {
-        rejected->setSource(glyphRun.source());
+        SkZip<const SkGlyphID, const SkPoint> source;
+        SkZip<const SkPackedGlyphID, const SkPoint> accepted;
+        SkZip<const SkGlyphID, const SkPoint> rejected;
+        SkZip<SkPackedGlyphID, SkPoint> candidatesBuffer;
+        SkZip<SkGlyph, SkPoint> rejectBuffer;
+
+        source = glyphRun.source();
         const SkFont& runFont = glyphRun.font();
 
         // Only consider using direct or SDFT drawing if not drawing hairlines and not perspective.
@@ -2537,26 +2544,28 @@ std::tuple<bool, SubRunContainerOwner> SubRunContainer::MakeInAlloc(
 
                 if (!SkScalarNearlyZero(strikeToSourceScale)) {
                     ScopedStrikeForGPU strike = strikeSpec.findOrCreateScopedStrike(strikeCache);
+                    SkZip<SkPackedGlyphID, SkPoint> candidates =
+                            this->startSourceSpace(source, candidatesBuffer);
+                    auto [rejected, accepted] =
+                            strike->prepareForSDFTDrawing2(candidates, rejectBuffer);
 
-                    accepted->startSource(rejected->source());
                     if constexpr (kTrace) {
                         msg.appendf("    glyphs:(x,y):\n      %s\n", accepted->dumpInput().c_str());
                     }
-                    strike->prepareForSDFTDrawing(accepted, rejected);
-                    rejected->flipRejectsToSource();
 
                     if (creationBehavior == kAddSubRuns && !accepted->empty()) {
                         container->fSubRuns.append(SDFTSubRun::Make(
-                                accepted->accepted(),
+                                accepted,
                                 runFont,
                                 strike->getUnderlyingStrike(),
                                 strikeToSourceScale,
                                 matrixRange, alloc));
                     }
+                    source = rejected;
                 }
             }
 
-            if (!rejected->source().empty() && !SDFTControl.forcePaths()) {
+            if (source.empty() && !SDFTControl.forcePaths()) {
                 // Process masks including ARGB - this should be the 99.99% case.
                 // This will handle medium size emoji that are sharing the run with SDFT drawn text.
                 // If things are too big they will be passed along to the drawing of last resort
