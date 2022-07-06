@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "fe96c97a_c284c838",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 3527,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-07-06T18:08:51Z",
+      "side": 1,
+      "message": "I agree that this would be better to handle in the front end. I\u0027ll land this to unblock the roller now and follow up with a front-end fix.",
+      "parentUuid": "157d877b_d59ea3d9",
+      "range": {
+        "startLine": 3527,
+        "startChar": 0,
+        "endLine": 3527,
+        "endChar": 100
+      },
+      "revId": "13a9af1878335d27353717c4de9faf598255a057",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "51151fc9_f0f9b3d0",
         "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
         "patchSetId": 1
@@ -61,6 +85,30 @@
       "side": 1,
       "message": "I think `fCurrentBlock` is zero when we are emitting code that comes immediately after a branch (rendering it unreachable). In these cases, we insert a dummy label so that the validator won\u0027t complain:\n\nhttps://osscs.corp.google.com/chromium/chromium/src/+/main:third_party/skia/src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp;l\u003d408-410;drc\u003d8ccbeeebc34d80ac9525dfcca122d196bbbb0630\n\nThis can happen if the DCE pass fails to eliminate something unreachable. (This is very possible, especially considering DCE currently ignores switches entirely!)",
       "parentUuid": "51151fc9_f0f9b3d0",
+      "range": {
+        "startLine": 3660,
+        "startChar": 4,
+        "endLine": 3664,
+        "endChar": 5
+      },
+      "revId": "13a9af1878335d27353717c4de9faf598255a057",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "24dc28e8_fd3709d0",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 3664,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-07-06T18:08:51Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "d34a9ecb_e6daf044",
       "range": {
         "startLine": 3660,
         "startChar": 4,
