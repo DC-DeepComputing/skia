@@ -113,6 +113,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1bb161dd_020e1191",
+        "filename": "src/sksl/SkSLConstantFolder.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 472,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-07-06T18:48:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a9095cf8_5dbde26b",
+      "range": {
+        "startLine": 470,
+        "startChar": 0,
+        "endLine": 472,
+        "endChar": 16
+      },
+      "revId": "55d7c53491860436c94dc8f428e804572750b00a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "16f3dbbf_3159e313",
@@ -136,6 +160,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "307dd213_aa83dfd7",
+        "filename": "src/sksl/ir/SkSLFunctionCall.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-07-06T18:48:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "16f3dbbf_3159e313",
+      "range": {
+        "startLine": 139,
+        "startChar": 0,
+        "endLine": 141,
+        "endChar": 16
+      },
+      "revId": "55d7c53491860436c94dc8f428e804572750b00a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2cd862ba_5efd2331",
@@ -149,6 +197,30 @@
       "writtenOn": "2022-07-06T18:16:11Z",
       "side": 1,
       "message": "nit: same comment as above.",
+      "range": {
+        "startLine": 260,
+        "startChar": 8,
+        "endLine": 262,
+        "endChar": 9
+      },
+      "revId": "55d7c53491860436c94dc8f428e804572750b00a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bd83bbb6_1f37f6c3",
+        "filename": "src/sksl/ir/SkSLFunctionCall.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 262,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-07-06T18:48:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2cd862ba_5efd2331",
       "range": {
         "startLine": 260,
         "startChar": 8,
