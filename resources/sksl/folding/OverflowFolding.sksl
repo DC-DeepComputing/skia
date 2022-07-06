@@ -1,0 +1,9 @@
+uniform half4 colorRed, colorGreen;
+uniform float unknownInput;
+
+half4 main(float2 coords) {
+    const float val = cosh(421);
+    float4 y = val.xxxx;
+
+    return (y.x == val) ? colorGreen : colorRed;
+}
