@@ -283,6 +283,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "aa2ecb1a_f93ee588",
+        "filename": "src/sksl/SkSLConstantFolder.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 472,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-07-06T19:28:19Z",
+      "side": 1,
+      "message": "🤦🏻‍♂️... well, if you choose to go back to the original version then still consider adding a note about how NaN is caught since it may not be obvious to future devs (my brain definitely glossed over it):\n\n```\nif (result \u003e\u003d -FLT_MAX \u0026\u0026 result \u003c\u003d FLT_MAX) {\n   // This result will fit inside a float literal.\n} else {\n   // The value is outside the float range or is NaN (as it would have\n   // failed either comparison). Do not constant-fold.\n   return nullptr;\n}\n```",
+      "parentUuid": "5d4b25aa_c7d3edd6",
+      "range": {
+        "startLine": 470,
+        "startChar": 0,
+        "endLine": 472,
+        "endChar": 16
+      },
+      "revId": "55d7c53491860436c94dc8f428e804572750b00a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "16f3dbbf_3159e313",
         "filename": "src/sksl/ir/SkSLFunctionCall.cpp",
         "patchSetId": 6
