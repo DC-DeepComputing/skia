@@ -811,16 +811,19 @@ std::unique_ptr<Expression> FunctionCall::clone(Position pos) const {
                                           this->arguments().clone());
 }
 
-std::string FunctionCall::description() const {
-    std::string result = std::string(this->function().name()) + "(";
-    std::string separator;
-    for (const std::unique_ptr<Expression>& arg : this->arguments()) {
+static std::string build_argument_list(SkSpan<const std::unique_ptr<Expression>> arguments) {
+    std::string result = "(";
+    const char* separator = "";
+    for (const std::unique_ptr<Expression>& arg : arguments) {
         result += separator;
-        result += arg->description();
         separator = ", ";
+        result += arg->type().displayName();
     }
-    result += ")";
-    return result;
+    return result + ")";
+}
+
+std::string FunctionCall::description() const {
+    return std::string(this->function().name()) + build_argument_list(this->arguments());
 }
 
 /**
@@ -903,18 +906,12 @@ std::unique_ptr<Expression> FunctionCall::Convert(const Context& context,
             const FunctionReference& ref = functionValue->as<FunctionReference>();
             const std::vector<const FunctionDeclaration*>& functions = ref.functions();
             const FunctionDeclaration* best = FindBestFunctionForCall(context, functions,
-                    arguments);
+                                                                      arguments);
             if (best) {
                 return FunctionCall::Convert(context, pos, *best, std::move(arguments));
             }
-            std::string msg = "no match for " + std::string(functions[0]->name()) + "(";
-            std::string separator;
-            for (size_t i = 0; i < arguments.size(); i++) {
-                msg += separator;
-                separator = ", ";
-                msg += arguments[i]->type().displayName();
-            }
-            msg += ")";
+            std::string msg = "no match for " + std::string(functions.front()->name()) +
+                              build_argument_list(arguments);
             context.fErrors->error(pos, msg);
             return nullptr;
         }
@@ -924,19 +921,13 @@ std::unique_ptr<Expression> FunctionCall::Convert(const Context& context,
 
             const std::vector<const FunctionDeclaration*>& functions = ref.functions();
             const FunctionDeclaration* best = FindBestFunctionForCall(context, functions,
-                    arguments);
+                                                                      arguments);
             if (best) {
                 return FunctionCall::Convert(context, pos, *best, std::move(arguments));
             }
             std::string msg = "no match for " + arguments.back()->type().displayName() +
-                              "::" + std::string(functions[0]->name().substr(1)) + "(";
-            std::string separator;
-            for (size_t i = 0; i < arguments.size() - 1; i++) {
-                msg += separator;
-                separator = ", ";
-                msg += arguments[i]->type().displayName();
-            }
-            msg += ")";
+                              "::" + std::string(functions.front()->name().substr(1)) +
+                              build_argument_list(SkSpan(arguments).first(arguments.size() - 1));
             context.fErrors->error(pos, msg);
             return nullptr;
         }
@@ -975,14 +966,8 @@ std::unique_ptr<Expression> FunctionCall::Convert(const Context& context,
     FunctionDeclaration::ParamTypes types;
     const Type* returnType;
     if (!function.determineFinalTypes(arguments, &types, &returnType)) {
-        std::string msg = "no match for " + std::string(function.name()) + "(";
-        std::string separator ;
-        for (const std::unique_ptr<Expression>& arg : arguments) {
-            msg += separator;
-            msg += arg->type().displayName();
-            separator = ", ";
-        }
-        msg += ")";
+        std::string msg = "no match for " + std::string(function.name()) +
+                          build_argument_list(arguments);
         context.fErrors->error(pos, msg);
         return nullptr;
     }
