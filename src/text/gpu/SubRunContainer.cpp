@@ -2451,7 +2451,9 @@ std::tuple<bool, SubRunContainerOwner> SubRunContainer::MakeInAlloc(
         SkStrikeDeviceInfo strikeDeviceInfo,
         SkStrikeForGPUCacheInterface* strikeCache,
         SubRunAllocator* alloc,
-        const char* tag) {
+        const char* tag,
+        bool calculateOnly) {
+    SkASSERT(alloc != nullptr);
     [[maybe_unused]] SkString msg;
     if constexpr (kTrace) {
         const uint64_t uniqueID = glyphRunList.uniqueID();
@@ -2468,14 +2470,11 @@ std::tuple<bool, SubRunContainerOwner> SubRunContainer::MakeInAlloc(
                     positionMatrix[3], positionMatrix[4], positionMatrix[5]);
     }
 
+    SubRunContainerOwner container = alloc->makeUnique<SubRunContainer>(positionMatrix);
+
     SkASSERT(strikeDeviceInfo.fSDFTControl != nullptr);
     if (strikeDeviceInfo.fSDFTControl == nullptr) {
-        return {true, nullptr};
-    }
-
-    SubRunContainerOwner container{nullptr};
-    if (alloc != nullptr) {
-        container = alloc->makeUnique<SubRunContainer>(positionMatrix);
+        return {true, std::move(container)};
     }
 
     const SkSurfaceProps deviceProps = strikeDeviceInfo.fSurfaceProps;

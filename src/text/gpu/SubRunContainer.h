@@ -234,14 +234,18 @@ public:
                                                       const SkStrikeClient* client,
                                                       SubRunAllocator* alloc);
 
-    static std::tuple<bool, SubRunContainerOwner> MakeInAlloc(
+    // When calculateOnly is true, then this does all the strike operations needed, but does not
+    // populate the container. This will always return a SubRunContainer, and that container
+    // needs to be properly destroyed.
+    static SK_WARN_UNUSED_RESULT std::tuple<bool, SubRunContainerOwner> MakeInAlloc(
             const GlyphRunList& glyphRunList,
             const SkMatrix& positionMatrix,
             const SkPaint& runPaint,
             SkStrikeDeviceInfo strikeDeviceInfo,
             SkStrikeForGPUCacheInterface* strikeCache,
             sktext::gpu::SubRunAllocator* alloc,
-            const char* tag);
+            const char* tag,
+            bool calculateOnly);
 
     static size_t EstimateAllocSize(const GlyphRunList& glyphRunList);
 
