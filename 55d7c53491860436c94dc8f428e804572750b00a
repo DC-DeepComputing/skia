@@ -67,6 +67,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6824998e_a6cd5509",
+        "filename": "src/sksl/SkSLConstantFolder.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 472,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-07-06T18:36:45Z",
+      "side": 1,
+      "message": "aye, or\n\n```\nif (result \u003c -FLT_MAX || result \u003e FLT_MAX) {\n    // Result does not fit inside a float literal, so do not constant-fold into\n    // a NaN or a value outside the float range.\n    return nullptr;\n}\n```",
+      "parentUuid": "720ec1f8_02065f1f",
+      "range": {
+        "startLine": 470,
+        "startChar": 0,
+        "endLine": 472,
+        "endChar": 16
+      },
+      "revId": "55d7c53491860436c94dc8f428e804572750b00a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "16f3dbbf_3159e313",
         "filename": "src/sksl/ir/SkSLFunctionCall.cpp",
         "patchSetId": 6
