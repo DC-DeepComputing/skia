@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "59b9db18_e4b3cf8b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-07-06T15:16:33Z",
+      "side": 1,
+      "message": "I could not reproduce this, but made changes based on the information from the stack traces.",
+      "revId": "45ba9d0723df6202d864dd32686f762048ac114b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
