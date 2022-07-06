@@ -1031,6 +1031,14 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 
 	if b.gpu("QuadroP400") {
 		skip(ALL, "tests", ALL, "SkSLCommaSideEffects")
+
+		if b.isLinux() && b.extraConfig("Vulkan") {
+			skip(ALL, "tests", ALL, "SkSLSwitchWithLoops_GPU")  // skia:13502
+		}
+
+		if b.matchOs("Win") && b.extraConfig("Dawn") {
+			skip(ALL, "tests", ALL, "SkSLSwitchWithLoops_GPU")  // skia:13502
+		}
 	}
 
 	if b.matchGpu("Mali400") || b.matchGpu("Tegra3") {
