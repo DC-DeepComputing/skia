@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6835831d_83f5fbc3",
+        "filename": "tests/sksl/errors/OverflowFloatIntrinsic.glsl",
+        "patchSetId": 3
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-07-06T15:42:00Z",
+      "side": 1,
+      "message": "!",
+      "range": {
+        "startLine": 7,
+        "startChar": 22,
+        "endLine": 7,
+        "endChar": 25
+      },
+      "revId": "15c0c6ff791dbb03725062a3c1a7f12a31252828",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
