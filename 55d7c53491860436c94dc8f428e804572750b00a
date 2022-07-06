@@ -137,6 +137,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "84a1d99a_e2b99dae",
+        "filename": "src/sksl/SkSLConstantFolder.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 472,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-07-06T18:57:53Z",
+      "side": 1,
+      "message": "Thanks for the change! I\u0027m a bit confused, why is it necessary to write out the Literal::Make call twice if the boolean expression is written differently?",
+      "parentUuid": "1bb161dd_020e1191",
+      "range": {
+        "startLine": 470,
+        "startChar": 0,
+        "endLine": 472,
+        "endChar": 16
+      },
+      "revId": "55d7c53491860436c94dc8f428e804572750b00a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "16f3dbbf_3159e313",
