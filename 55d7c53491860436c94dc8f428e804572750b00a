@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "720ec1f8_02065f1f",
+        "filename": "src/sksl/SkSLConstantFolder.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 472,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-07-06T18:20:24Z",
+      "side": 1,
+      "message": "As in:\n\n`if (!(result \u003e\u003d -FLT_MAX \u0026\u0026 result \u003c\u003d FLT_MAX)) {`\n\n?",
+      "parentUuid": "d150da33_ac07a1f7",
+      "range": {
+        "startLine": 470,
+        "startChar": 0,
+        "endLine": 472,
+        "endChar": 16
+      },
+      "revId": "55d7c53491860436c94dc8f428e804572750b00a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "16f3dbbf_3159e313",
         "filename": "src/sksl/ir/SkSLFunctionCall.cpp",
         "patchSetId": 6
