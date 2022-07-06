@@ -23,6 +23,7 @@
 #include "src/sksl/ir/SkSLVariable.h"
 #include "src/sksl/ir/SkSLVariableReference.h"
 
+#include <cfloat>
 #include <cmath>
 #include <cstdint>
 #include <limits>
@@ -465,9 +466,9 @@ template <typename T>
 static std::unique_ptr<Expression> fold_float_expression(Position pos,
                                                          T result,
                                                          const Type* resultType) {
-    // If constant-folding this expression would generate a NaN/infinite result, leave it as-is.
     if constexpr (!std::is_same<T, bool>::value) {
-        if (!std::isfinite(result)) {
+        if (!(result >= -FLT_MAX && result <= FLT_MAX)) {
+            // Folding yielded a value that we can't hold in a float Literal; do not optimize.
             return nullptr;
         }
     }
