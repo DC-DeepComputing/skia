@@ -211,6 +211,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "12cbac82_b0149f23",
+        "filename": "src/sksl/SkSLConstantFolder.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 472,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-07-06T19:03:38Z",
+      "side": 1,
+      "message": "No, I don\u0027t see it after all.\nThis will not reject NaNs:\n\n    if constexpr (!std::is_same\u003cT, bool\u003e::value) {\n        if (result \u003c -FLT_MAX || result \u003e FLT_MAX) {\n            // Folding yielded a value that we can\u0027t hold in a float Literal; do not optimize.\n            return nullptr;\n        }\n    }\n\n    return Literal::Make(pos, result, resultType);\n\n\nIt will return them as Literals. Because\n\n    NaN \u003c -FLT_MAX  \u003d\u003d false\n    NaN \u003e  FLT_MAX  \u003d\u003d false",
+      "parentUuid": "aee3dcaa_b54fdefa",
+      "range": {
+        "startLine": 470,
+        "startChar": 0,
+        "endLine": 472,
+        "endChar": 16
+      },
+      "revId": "55d7c53491860436c94dc8f428e804572750b00a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "16f3dbbf_3159e313",
         "filename": "src/sksl/ir/SkSLFunctionCall.cpp",
         "patchSetId": 6
