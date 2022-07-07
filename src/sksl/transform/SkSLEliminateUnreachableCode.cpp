@@ -120,11 +120,19 @@ static void eliminate_unreachable_code(SkSpan<std::unique_ptr<ProgramElement>> e
                     return result;
                 }
                 case Statement::Kind::kSwitch:
-                case Statement::Kind::kSwitchCase:
-                    // We skip past switch statements entirely when scanning for dead code. Their
-                    // control flow is quite complex and we already do a good job of flattening out
-                    // switches on constant values.
-                    break;
+                    // In switch statements we consider unreachable code on a per-case statement basis.
+                    return INHERITED::visitStatementPtr(stmt);
+                case Statement::Kind::kSwitchCase: {
+                    // We eliminate unreachable code only within the statements of the individual
+                    // case. Function exits or breaks are not allowed to propagate outside the case
+                    // statement itself.
+                    fFoundFunctionExit.push_back(false);
+                    fFoundLoopExit.push_back(false);
+                    bool result = INHERITED::visitStatementPtr(stmt);
+                    fFoundFunctionExit.pop_back();
+                    fFoundLoopExit.pop_back();
+                    return result;
+                }
             }
 
             return false;
