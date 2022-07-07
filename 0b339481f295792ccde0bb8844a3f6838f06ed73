@@ -3,6 +3,115 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "49288f1b_0e603bbf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-07-07T12:08:43Z",
+      "side": 1,
+      "message": "Looks great!",
+      "revId": "0b339481f295792ccde0bb8844a3f6838f06ed73",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "09ba413a_22e62581",
+        "filename": "src/sksl/transform/SkSLEliminateUnreachableCode.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-07-07T12:08:43Z",
+      "side": 1,
+      "message": "preceding",
+      "range": {
+        "startLine": 62,
+        "startChar": 31,
+        "endLine": 62,
+        "endChar": 40
+      },
+      "revId": "0b339481f295792ccde0bb8844a3f6838f06ed73",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "694416d5_f9780583",
+        "filename": "src/sksl/transform/SkSLEliminateUnreachableCode.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-07-07T12:08:43Z",
+      "side": 1,
+      "message": "`per-case basis`? `case N:` is a label, not a statement. (although `SwitchCase` is implemented as a `SkSL::Statement`, I suppose)",
+      "range": {
+        "startLine": 124,
+        "startChar": 78,
+        "endLine": 125,
+        "endChar": 29
+      },
+      "revId": "0b339481f295792ccde0bb8844a3f6838f06ed73",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7d2384f9_806c5977",
+        "filename": "src/sksl/transform/SkSLEliminateUnreachableCode.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-07-07T12:08:43Z",
+      "side": 1,
+      "message": "nit: add blank line between cases",
+      "range": {
+        "startLine": 127,
+        "startChar": 0,
+        "endLine": 127,
+        "endChar": 1
+      },
+      "revId": "0b339481f295792ccde0bb8844a3f6838f06ed73",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "92a2499f_570cbc66",
+        "filename": "src/sksl/transform/SkSLEliminateUnreachableCode.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-07-07T12:08:43Z",
+      "side": 1,
+      "message": "Not for this CL, and probably not a big deal. If every block has a function-exit, and the switch has a default case, we could propagate the function-exit.",
+      "range": {
+        "startLine": 129,
+        "startChar": 29,
+        "endLine": 129,
+        "endChar": 43
+      },
+      "revId": "0b339481f295792ccde0bb8844a3f6838f06ed73",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "cc908f39_53f2753a",
         "filename": "src/sksl/transform/SkSLEliminateUnreachableCode.cpp",
         "patchSetId": 4
@@ -14,6 +123,30 @@
       "writtenOn": "2022-07-07T04:06:46Z",
       "side": 1,
       "message": "This could now mean a switch-case exit. I should probably rename it if we like this solution.",
+      "range": {
+        "startLine": 145,
+        "startChar": 28,
+        "endLine": 145,
+        "endChar": 42
+      },
+      "revId": "0b339481f295792ccde0bb8844a3f6838f06ed73",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5a71dcf3_2bae828c",
+        "filename": "src/sksl/transform/SkSLEliminateUnreachableCode.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-07-07T12:08:43Z",
+      "side": 1,
+      "message": "Maybe `fFoundBlockExit`?",
+      "parentUuid": "cc908f39_53f2753a",
       "range": {
         "startLine": 145,
         "startChar": 28,
