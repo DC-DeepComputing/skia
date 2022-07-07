@@ -192,6 +192,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "035a8c05_f4aafe30",
+        "filename": "include/core/SkPaint.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 260,
+      "author": {
+        "id": 9153
+      },
+      "writtenOn": "2022-07-07T14:02:43Z",
+      "side": 1,
+      "message": "Hm, I guess Skia uses 4-space indent rather than 2-space like the Google style guide.  Never mind!",
+      "parentUuid": "98eaaaf7_cc940446",
+      "revId": "db7eb4730a7c1bc17d61f5088a53dfc7b24c2294",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "50083be0_0c6e49a2",
