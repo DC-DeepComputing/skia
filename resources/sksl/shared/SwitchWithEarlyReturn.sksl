@@ -1,0 +1,15 @@
+uniform half4 colorGreen, colorRed;
+
+bool switch_with_early_return(int x) {
+    int val = 0;
+    switch (x) {
+        case 1: ++val; return false; ++val;
+        default: ++val;
+    }
+    return val == 1;
+}
+
+half4 main(float2 coords) {
+    int x = int(colorGreen.g);
+    return switch_with_early_return(x) ? colorGreen : colorRed;
+}
