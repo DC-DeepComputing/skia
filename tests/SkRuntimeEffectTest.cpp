@@ -111,6 +111,12 @@ DEF_TEST(SkRuntimeEffectCanEnableVersion300, r) {
     test_valid         (r, "#version 300\nfloat f[2] = float[2](0, 1);" EMPTY_MAIN);
 }
 
+DEF_TEST(SkRuntimeEffectNonsquareMatrixUniforms, r) {
+    // Even with #version 300, we don't (yet) allow uniforms to be nonsquare matrices
+    test_invalid_effect(r, "#version 300\nuniform float3x4 u;" EMPTY_MAIN,
+                           "variables of type 'float3x4' may not be uniform");
+}
+
 DEF_TEST(SkRuntimeEffectUniformFlags, r) {
     auto [effect, errorText] = SkRuntimeEffect::MakeForShader(SkString(R"(
         uniform int simple;                      // should have no flags
