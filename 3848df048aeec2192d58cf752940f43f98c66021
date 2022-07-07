@@ -22,6 +22,30 @@
       },
       "revId": "3848df048aeec2192d58cf752940f43f98c66021",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "65c6d195_df248c0d",
+        "filename": "tests/SkRuntimeEffectTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-07-07T14:17:12Z",
+      "side": 1,
+      "message": "The assert actually happens in SkRuntimeEffect::Make(), so we wouldn\u0027t exercise that code path. (Of course, once the new code is in place, the front-end would trigger an error, so we\u0027d be confident that it\u0027s not going to happen). Felt like a toss-up.",
+      "parentUuid": "0a0930ec_86451da7",
+      "range": {
+        "startLine": 114,
+        "startChar": 0,
+        "endLine": 119,
+        "endChar": 0
+      },
+      "revId": "3848df048aeec2192d58cf752940f43f98c66021",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
