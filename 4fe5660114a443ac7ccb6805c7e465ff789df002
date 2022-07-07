@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2f678e11_5ff47a22",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2022-07-07T17:02:20Z",
+      "side": 1,
+      "message": "Remaining comments address, PTAL and feel free to CQ+ if it LGTY.",
+      "revId": "4fe5660114a443ac7ccb6805c7e465ff789df002",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
