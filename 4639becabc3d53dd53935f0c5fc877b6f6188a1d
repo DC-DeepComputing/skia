@@ -87,6 +87,24 @@
       "parentUuid": "370de72a_f14322fe",
       "revId": "4639becabc3d53dd53935f0c5fc877b6f6188a1d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8b9e08da_e9d2f5b4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-07-07T14:47:36Z",
+      "side": 1,
+      "message": "I\u0027d be inclined to move to return-by-value. But if we do that, I\u0027d suggest adding a return-by-value of the old API, as well. In other words, we can add:\n\n  SkSurfaceProps getBaseProps() const;\n  SkSurfaceProps getTopProps() const;\n  \nThey can still both (along with the existing getProps) be implemented in terms of the new virtual. (Probably throw a deprecation comment on getProps, and we can try to migrate clients at our leisure, too).",
+      "parentUuid": "9257709e_032cd0b0",
+      "revId": "4639becabc3d53dd53935f0c5fc877b6f6188a1d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
