@@ -1,0 +1,112 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3705c528_2f9c4ca3",
+        "filename": "tools/ToolUtils.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 559,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-07-07T16:49:57Z",
+      "side": 1,
+      "message": "nit: Skia wants braces around these (here and several places below)",
+      "revId": "53902d51fd80e079a0c4998d649c47110c242764",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9985fdab_d6d04621",
+        "filename": "tools/ToolUtils.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 606,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-07-07T16:49:57Z",
+      "side": 1,
+      "message": "This is just extra code. If this is zero then the following loop will just not be entered.",
+      "revId": "53902d51fd80e079a0c4998d649c47110c242764",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5aceca41_ac5f9e0a",
+        "filename": "tools/ToolUtils.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 615,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-07-07T16:49:57Z",
+      "side": 1,
+      "message": "nit: four spaces",
+      "revId": "53902d51fd80e079a0c4998d649c47110c242764",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "076c1e0c_80ba5c41",
+        "filename": "tools/ToolUtils.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 623,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-07-07T16:49:57Z",
+      "side": 1,
+      "message": "This is just extra code as well. This is still creating a std::vector and returning it by value. It seems to avoid calling `resize` to size zero, but this should hopefully be a no-op. Of course, this depends on the implementation since this may not allocate anything and the sized constructor or resize may end up with a zero sized allocation.",
+      "revId": "53902d51fd80e079a0c4998d649c47110c242764",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b1e3081a_21e8bdb6",
+        "filename": "tools/ToolUtils.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 625,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-07-07T16:49:57Z",
+      "side": 1,
+      "message": "Maybe something like this to avoid the separate resize?\n\n```\nusing Coordinate \u003d SkFontArguments::VariationPosition::Coordinate;\nstd::vector\u003cCoordinate\u003e coords(fAxisSliders.size());\n```",
+      "revId": "53902d51fd80e079a0c4998d649c47110c242764",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a97be32c_79aaac69",
+        "filename": "tools/ToolUtils.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 626,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-07-07T16:49:57Z",
+      "side": 1,
+      "message": "I assume this `static_cast\u003cint\u003e` is left over from using one of the Skia containers? These should all be `size_t` now, so I think this cast can be removed?",
+      "range": {
+        "startLine": 626,
+        "startChar": 18,
+        "endLine": 626,
+        "endChar": 34
+      },
+      "revId": "53902d51fd80e079a0c4998d649c47110c242764",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
