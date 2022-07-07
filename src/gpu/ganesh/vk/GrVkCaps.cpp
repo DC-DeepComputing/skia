@@ -584,6 +584,11 @@ void GrVkCaps::applyDriverCorrectnessWorkarounds(const VkPhysicalDevicePropertie
         fTextureBarrierSupport = false;
     }
 
+    // Intel devices running on windows has issues using barriers for dst reads.
+    if (kIntel_VkVendor == properties.vendorID) {
+        fTextureBarrierSupport = false;
+    }
+
     // On ARM indirect draws are broken on Android 9 and earlier. This was tested on a P30 and
     // Mate 20x running android 9.
     if (properties.vendorID == kARM_VkVendor && androidAPIVersion <= 28) {
