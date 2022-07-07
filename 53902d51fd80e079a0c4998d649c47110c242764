@@ -3,6 +3,40 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7d497633_6b20b162",
+        "filename": "gm/fontscalerdistortable.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-07-07T17:13:59Z",
+      "side": 1,
+      "message": "Also, `coordinateCount` can be removed, or made a constant, or put into the else block below.",
+      "revId": "53902d51fd80e079a0c4998d649c47110c242764",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9d5a5315_df0acc5a",
+        "filename": "gm/fontscalerdistortable.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-07-07T17:13:59Z",
+      "side": 1,
+      "message": "This isn\u0027t really using `coordinates` anymore. The point of using `std::unique_ptr\u003cCoordinate[]\u003e` was to avoid the overhead of thinking about all the extra state `std::vector` drags into the situation. (There is only one size chosen once with no resizing, etc.)\n\nIn other words, this removed the need to dynamic sizing, so this could be `Coordinate coordinates[2]` and the code below resizing it can be removed.",
+      "revId": "53902d51fd80e079a0c4998d649c47110c242764",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3705c528_2f9c4ca3",
         "filename": "tools/ToolUtils.cpp",
         "patchSetId": 8
@@ -14,6 +48,24 @@
       "writtenOn": "2022-07-07T16:49:57Z",
       "side": 1,
       "message": "nit: Skia wants braces around these (here and several places below)",
+      "revId": "53902d51fd80e079a0c4998d649c47110c242764",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4b72e77c_91d0dffc",
+        "filename": "tools/ToolUtils.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 559,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-07-07T17:13:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3705c528_2f9c4ca3",
       "revId": "53902d51fd80e079a0c4998d649c47110c242764",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -53,6 +105,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "23968501_5e97b7f8",
+        "filename": "tools/ToolUtils.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 606,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-07-07T17:13:59Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "0da3ceb9_14285578",
+      "revId": "53902d51fd80e079a0c4998d649c47110c242764",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5aceca41_ac5f9e0a",
@@ -84,6 +154,23 @@
       "side": 1,
       "message": "Done",
       "parentUuid": "5aceca41_ac5f9e0a",
+      "revId": "53902d51fd80e079a0c4998d649c47110c242764",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e900cb75_8b5ae306",
+        "filename": "tools/ToolUtils.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 621,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-07-07T17:13:59Z",
+      "side": 1,
+      "message": "Also, why should this be creating and returning a `std::vector` at all? It is known how big it is and this class is already mutating state and isn\u0027t cross thread safe anyway. If this class just held onto a `std::unique_ptr\u003cSkFontArguments::VariationPosition::Coordinate[]\u003e coords` and kept that up to date in `readControls` (it really is just a different layout for the data updated there) then this could just return an `SkSpan\u003cconst SkFontArguments::VariationPosition::Coordinate\u003e` pointing at that one internal copy of the data instead of allocating a new place to put the data each time. In fact the user wouldn\u0027t even need to call `getCoordinates` more than once since the underlying data would just be updated each time `readControls` is called. If the user wants a copy they can always make a copy, but I\u0027m guessing no user will want to.",
       "revId": "53902d51fd80e079a0c4998d649c47110c242764",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
