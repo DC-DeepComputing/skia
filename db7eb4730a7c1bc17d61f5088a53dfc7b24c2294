@@ -142,6 +142,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "71d560cf_cc6704d4",
+        "filename": "include/core/SkPaint.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 260,
+      "author": {
+        "id": 9153
+      },
+      "writtenOn": "2022-07-07T06:33:53Z",
+      "side": 1,
+      "message": "Nit: Bad indentation",
+      "revId": "db7eb4730a7c1bc17d61f5088a53dfc7b24c2294",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "50083be0_0c6e49a2",
         "filename": "src/core/SkBlockAllocator.h",
         "patchSetId": 3
