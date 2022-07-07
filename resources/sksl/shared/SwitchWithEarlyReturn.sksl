@@ -44,12 +44,12 @@ bool return_in_every_case_no_default(int x) {
         case 2: return true;
     }
 
-    // reachable:
+    // reachable
     ++val;
     return val == 1;
 }
 
-bool return_in_some_cases(int x) {
+bool no_return_in_default(int x) {
     int val = 0;
     switch (x) {
         case 1: return false;
@@ -57,7 +57,7 @@ bool return_in_some_cases(int x) {
         default: break;
     }
 
-    // reachable:
+    // reachable
     ++val;
     return val == 1;
 }
@@ -67,10 +67,65 @@ bool return_with_fallthrough(int x) {
     switch (x) {
         case 1:
         case 2: return true;
+        default: return false;
+    }
+
+    // unreachable
+    ++val;
+    return val == 1;
+}
+
+bool fallthrough_ends_in_break(int x) {
+    int val = 0;
+    switch (x) {
+        case 1:
+        case 2: break;
+        default: return false;
+    }
+
+    // reachable
+    ++val;
+    return val == 1;
+}
+
+bool fallthrough_to_default_with_break(int x) {
+    int val = 0;
+    switch (x) {
+        case 1:
+        case 2:
         default: break;
     }
 
-    // reachable, since we don't eliminate unreachable code in fallthrough cases
+    // reachable
+    ++val;
+    return val == 1;
+}
+
+bool fallthrough_to_default_with_return(int x) {
+    int val = 0;
+    switch (x) {
+        case 1:
+        case 2:
+        default: return true;
+    }
+
+    // unreachable
+    ++val;
+    return val == 1;
+}
+
+bool fallthrough_with_loop_break(int x) {
+    int val = 0;
+    switch (x) {
+        case 1: for (int i = 0; i < 5; ++i) {
+            ++val;
+            break;  // break only applies to loop, should fallthrough
+        }
+        case 2:
+        default: return true;
+    }
+
+    // unreachable
     ++val;
     return val == 1;
 }
@@ -81,6 +136,10 @@ half4 main(float2 coords) {
             return_in_default(x) &&
             return_in_every_case(x) &&
             return_in_every_case_no_default(x) &&
-            return_in_some_cases(x) &&
-            return_with_fallthrough(x)) ? colorGreen : colorRed;
+            no_return_in_default(x) &&
+            return_with_fallthrough(x) &&
+            fallthrough_ends_in_break(x) &&
+            fallthrough_to_default_with_break(x) &&
+            fallthrough_to_default_with_return(x) &&
+            fallthrough_with_loop_break(x)) ? colorGreen : colorRed;
 }

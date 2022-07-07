@@ -137,15 +137,32 @@ static void eliminate_unreachable_code(SkSpan<std::unique_ptr<ProgramElement>> e
                         // have a return AND one of the cases is default (so that we know at least
                         // one of the branches will be taken). This is similar to how we handle if
                         // statements above.
-                        //
-                        // We disregard fallthrough cases to keep the logic simple.
                         fFoundFunctionExit.push_back(false);
                         fFoundBlockExit.push_back(false);
 
                         SwitchCase& sc = c->as<SwitchCase>();
                         result |= this->visitStatementPtr(sc.statement());
-                        everyCaseHasFunctionExit &= fFoundFunctionExit.back();
-                        hasDefault |= sc.isDefault();
+
+                        // When considering whether a case has a return we can propagate, we
+                        // assume the following:
+                        //     1. The default case is always placed last in a switch statement and
+                        //        it is the last possible label reachable via fallthrough. Thus if
+                        //        it does not contain a return statement, then we don't propagate a
+                        //        function return.
+                        //     2. In all other cases we prevent the return from propagating only if
+                        //        we encounter a break statement. If no return or break is found,
+                        //        we defer the decision to the fallthrough case. We won't propagate
+                        //        a return unless we eventually encounter a default label.
+                        //
+                        // See resources/sksl/shared/SwitchWithEarlyReturn.sksl for test cases that
+                        // exercise this.
+                        if (sc.isDefault()) {
+                            everyCaseHasFunctionExit &= fFoundFunctionExit.back();
+                            hasDefault = true;
+                        } else {
+                            everyCaseHasFunctionExit &=
+                                    (fFoundFunctionExit.back() || !fFoundBlockExit.back());
+                        }
 
                         fFoundFunctionExit.pop_back();
                         fFoundBlockExit.pop_back();
