@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c475366f_1f6b9010",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-07-07T19:51:56Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "49288f1b_0e603bbf",
+      "revId": "0b339481f295792ccde0bb8844a3f6838f06ed73",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "09ba413a_22e62581",
@@ -196,6 +214,30 @@
       "side": 1,
       "message": "Done. We already do this for if statements so I figured it makes sense to do it here now too.\n\nI implemented this while still remaining conservative, i.e. we consider each case as if it\u0027s a separate branch without regarding fallthrough cases, to keep things simple.\n\nPTAL",
       "parentUuid": "92a2499f_570cbc66",
+      "range": {
+        "startLine": 129,
+        "startChar": 29,
+        "endLine": 129,
+        "endChar": 43
+      },
+      "revId": "0b339481f295792ccde0bb8844a3f6838f06ed73",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aa9e39d6_0a8edafa",
+        "filename": "src/sksl/transform/SkSLEliminateUnreachableCode.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-07-07T19:51:56Z",
+      "side": 1,
+      "message": "LGTM; let\u0027s land this. I\u0027d be very curious to see if fallthrough could be achievable in a followup CL, but it\u0027s not important (and if it adds a lot of complexity, not worth it)",
+      "parentUuid": "3ceadf18_175d333b",
       "range": {
         "startLine": 129,
         "startChar": 29,

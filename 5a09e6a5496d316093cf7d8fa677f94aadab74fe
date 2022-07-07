@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "65ef3d00_6953fb85",
+        "filename": "src/sksl/transform/SkSLEliminateUnreachableCode.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-07-07T19:51:56Z",
+      "side": 1,
+      "message": "`std::unique_ptr\u003cStatement\u003e\u0026`\n\nhttp://go/cstyle#Type_deduction\n\nUse type deduction only if it makes the code clearer to readers who aren\u0027t familiar with the project, or if it makes the code safer. Do not use it merely to avoid the inconvenience of writing an explicit type.",
+      "range": {
+        "startLine": 131,
+        "startChar": 25,
+        "endLine": 131,
+        "endChar": 29
+      },
+      "revId": "5a09e6a5496d316093cf7d8fa677f94aadab74fe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
