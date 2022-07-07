@@ -63,6 +63,30 @@
       },
       "revId": "3848df048aeec2192d58cf752940f43f98c66021",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "65b103bd_d4d0bdc2",
+        "filename": "tests/SkRuntimeEffectTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-07-07T14:37:17Z",
+      "side": 1,
+      "message": "Yeah, went ahead and made it a .rts. I also included other ES3-only types (uint, ushort).",
+      "parentUuid": "65c6d195_df248c0d",
+      "range": {
+        "startLine": 114,
+        "startChar": 0,
+        "endLine": 119,
+        "endChar": 0
+      },
+      "revId": "3848df048aeec2192d58cf752940f43f98c66021",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
