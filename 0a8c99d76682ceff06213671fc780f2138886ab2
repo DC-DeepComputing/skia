@@ -1,0 +1,237 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "aae1e4d4_a2840515",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-07-07T14:46:32Z",
+      "side": 1,
+      "message": "Should also update `fontscalerdistortable.cpp` to use this at the same time.",
+      "revId": "0a8c99d76682ceff06213671fc780f2138886ab2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3ca6c2ab_26e01137",
+        "filename": "gm/colrv1.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 167,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-07-07T14:46:32Z",
+      "side": 1,
+      "message": "nit: four spaces",
+      "revId": "0a8c99d76682ceff06213671fc780f2138886ab2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0618e39c_5aba7051",
+        "filename": "gm/colrv1.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 171,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-07-07T14:46:32Z",
+      "side": 1,
+      "message": "nit: four spaces",
+      "revId": "0a8c99d76682ceff06213671fc780f2138886ab2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4215c730_ec56028a",
+        "filename": "gm/colrv1.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 191,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-07-07T14:46:32Z",
+      "side": 1,
+      "message": "nit: line length",
+      "revId": "0a8c99d76682ceff06213671fc780f2138886ab2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "22079685_676efc72",
+        "filename": "tools/ToolUtils.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 561,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-07-07T14:46:32Z",
+      "side": 1,
+      "message": "This isn\u0027t every going to take ownership of `typeface`, so probably better to take `SkTypeface*`.",
+      "range": {
+        "startLine": 561,
+        "startChar": 38,
+        "endLine": 561,
+        "endChar": 64
+      },
+      "revId": "0a8c99d76682ceff06213671fc780f2138886ab2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cf4110cd_cade615e",
+        "filename": "tools/ToolUtils.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 563,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-07-07T14:46:32Z",
+      "side": 1,
+      "message": "This design allows `initialiseAxes` to be called multiple times so this class has a bunch of mutable state. In the event this returns `false` the old state is kept instead of cleared. Is that intentional? If not, it seems like this could all go into the body of the constructor? Just returning early from the constructor would leave the `fSliderAxes` at zero size, which is plenty of signal without setting a separate `bool`?",
+      "revId": "0a8c99d76682ceff06213671fc780f2138886ab2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "37e5924d_ea082858",
+        "filename": "tools/ToolUtils.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 578,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-07-07T14:46:32Z",
+      "side": 1,
+      "message": "This seems very specific, should this be something passed in (pass in a `SkFontArguments::VariationPosition`)?",
+      "range": {
+        "startLine": 577,
+        "startChar": 0,
+        "endLine": 578,
+        "endChar": 42
+      },
+      "revId": "0a8c99d76682ceff06213671fc780f2138886ab2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "af487272_b2cd9424",
+        "filename": "tools/ToolUtils.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 604,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-07-07T14:46:32Z",
+      "side": 1,
+      "message": "I know this is just tool code, but it\u0027s actually hard to follow the creation of a temporary `SkString` (for each axis for each frame) when we know that we\u0027re just going to pass a pointer to 5 bytes. Probably better to store the `SkString` on the `SliderAxis` (it is the name of the slider) so the construction is only done once (and can be something else, like include the name if wanted).\n\nStoring the SkString would also make it easier to add a \"prefix\" which could be passed to the constructor (say, the font name, or typeface id, or some such) so that it would be possible to have sliders for multiple axes.\n\nNote that it is allowed to add multiple controls with the same name. It works but then when one goes to read values only one of them can be read by id (need to iterate to get the others). So this setup only kinda works when a font has multiple axes with the same tag. In the future we may want some special handling for that.",
+      "revId": "0a8c99d76682ceff06213671fc780f2138886ab2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5e2149c0_f8616645",
+        "filename": "tools/ToolUtils.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 612,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-07-07T14:46:32Z",
+      "side": 1,
+      "message": "No need for this block?",
+      "revId": "0a8c99d76682ceff06213671fc780f2138886ab2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7a86f22f_a09f49cd",
+        "filename": "tools/ToolUtils.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 626,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-07-07T14:46:32Z",
+      "side": 1,
+      "message": "No need for this block either? This is still creating an empty std::vector to return.",
+      "revId": "0a8c99d76682ceff06213671fc780f2138886ab2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "405ca784_f802871c",
+        "filename": "tools/ToolUtils.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 319,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-07-07T14:46:32Z",
+      "side": 1,
+      "message": "For naming `onGetControls` here is probably better named `writeControls` and `onSetControls` better named `readControls`. The reason for this being that it should be obvious that the user of these can also add their own controls should they wish to do so. The naming here makes it look like it\u0027s taking over the whole of the controls or something.",
+      "revId": "0a8c99d76682ceff06213671fc780f2138886ab2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b54f0d99_648c2e66",
+        "filename": "tools/ToolUtils.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 327,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-07-07T14:46:32Z",
+      "side": 1,
+      "message": "While reading this I constantly want this to be `AxisSlider` (I\u0027m biased, that\u0027s what I called it in `fontscalerdistortable.cpp`). `SliderAxis` reads to me as the axis of a slider while `AxisSlider` reads more as the slider for an axis.",
+      "revId": "0a8c99d76682ceff06213671fc780f2138886ab2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e3c6cae5_a9834c50",
+        "filename": "tools/ToolUtils.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 332,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-07-07T14:46:32Z",
+      "side": 1,
+      "message": "Not sure what `fAxesInitialised` is really doing? It seems that if it is `false` then the equivalent is just having `fSliderAxes` (or `fAxisSliders`) be empty?",
+      "revId": "0a8c99d76682ceff06213671fc780f2138886ab2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
