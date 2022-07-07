@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bba8ac44_0b626ea0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2022-07-07T17:55:56Z",
+      "side": 1,
+      "message": "Additional suggestions incorporated, makes sense, thank you, I learned something. This is now one well reviewed piece of ToolUtils code. :) \n",
+      "revId": "8d4f4aed44e8bb834edf8346ac0fe392945448af",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
