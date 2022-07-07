@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0a0930ec_86451da7",
+        "filename": "tests/SkRuntimeEffectTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-07-07T14:13:45Z",
+      "side": 1,
+      "message": "nit: this is fine, but why not just add a test file into `runtime_errors`? Is there a difference?",
+      "range": {
+        "startLine": 114,
+        "startChar": 0,
+        "endLine": 119,
+        "endChar": 0
+      },
+      "revId": "3848df048aeec2192d58cf752940f43f98c66021",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
