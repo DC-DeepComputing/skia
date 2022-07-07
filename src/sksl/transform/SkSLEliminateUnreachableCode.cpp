@@ -56,10 +56,11 @@ static void eliminate_unreachable_code(SkSpan<std::unique_ptr<ProgramElement>> e
                     break;
 
                 case Statement::Kind::kBreak:
+                    // A `break` statement can either be breaking out of a loop or terminating an
+                    // individual switch case. We treat both cases the same way: they only apply
+                    // to the statements associated with the parent statement (i.e. enclosing loop
+                    // block / preciding case label).
                 case Statement::Kind::kContinue:
-                    // We found a loop exit on this path. Note that we skip over switch statements
-                    // completely when eliminating code, so any `break` statement would be breaking
-                    // out of a loop, not out of a switch.
                     fFoundLoopExit.back() = true;
                     break;
 
@@ -120,11 +121,20 @@ static void eliminate_unreachable_code(SkSpan<std::unique_ptr<ProgramElement>> e
                     return result;
                 }
                 case Statement::Kind::kSwitch:
-                case Statement::Kind::kSwitchCase:
-                    // We skip past switch statements entirely when scanning for dead code. Their
-                    // control flow is quite complex and we already do a good job of flattening out
-                    // switches on constant values.
-                    break;
+                    // In switch statements we consider unreachable code on a per-case statement
+                    // basis.
+                    return INHERITED::visitStatementPtr(stmt);
+                case Statement::Kind::kSwitchCase: {
+                    // We eliminate unreachable code only within the statements of the individual
+                    // case. Function exits or breaks are not allowed to propagate outside the case
+                    // statement itself.
+                    fFoundFunctionExit.push_back(false);
+                    fFoundLoopExit.push_back(false);
+                    bool result = INHERITED::visitStatementPtr(stmt);
+                    fFoundFunctionExit.pop_back();
+                    fFoundLoopExit.pop_back();
+                    return result;
+                }
             }
 
             return false;
