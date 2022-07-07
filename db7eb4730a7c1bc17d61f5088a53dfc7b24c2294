@@ -140,6 +140,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d57126e1_d1b4cd2b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-07-07T13:13:28Z",
+      "side": 1,
+      "message": "sorry thought I had sent these comments out before but they were sitting here as drafts.",
+      "revId": "db7eb4730a7c1bc17d61f5088a53dfc7b24c2294",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "71d560cf_cc6704d4",
@@ -153,6 +170,24 @@
       "writtenOn": "2022-07-07T06:33:53Z",
       "side": 1,
       "message": "Nit: Bad indentation",
+      "revId": "db7eb4730a7c1bc17d61f5088a53dfc7b24c2294",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "98eaaaf7_cc940446",
+        "filename": "include/core/SkPaint.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 260,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-07-07T13:13:28Z",
+      "side": 1,
+      "message": "this indentation seems correct to me",
+      "parentUuid": "71d560cf_cc6704d4",
       "revId": "db7eb4730a7c1bc17d61f5088a53dfc7b24c2294",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -194,6 +229,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a93eac03_3a9a6cbe",
+        "filename": "src/core/SkBlockAllocator.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 406,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-07-07T13:13:28Z",
+      "side": 1,
+      "message": "yeah I would go ahead and make both of these and fSentinel uint32_t. I don\u0027t think it bleeds anymore after just change those 3 types.",
+      "parentUuid": "b13fb726_75859544",
+      "revId": "db7eb4730a7c1bc17d61f5088a53dfc7b24c2294",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7fdcbd61_c7fdec0a",
         "filename": "src/gpu/Swizzle.h",
         "patchSetId": 3
@@ -211,6 +264,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e4d11e4e_02510c41",
+        "filename": "src/gpu/Swizzle.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-07-07T13:13:28Z",
+      "side": 1,
+      "message": "agreed",
+      "parentUuid": "7fdcbd61_c7fdec0a",
+      "revId": "db7eb4730a7c1bc17d61f5088a53dfc7b24c2294",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b9ec090e_7f6a1634",
         "filename": "src/gpu/Swizzle.h",
         "patchSetId": 3
@@ -222,6 +293,24 @@
       "writtenOn": "2022-06-22T22:08:14Z",
       "side": 1,
       "message": "What if idx is negative?  Seems like either this function should take a size_t or SkASSERT(idx \u003e\u003d 0)...",
+      "revId": "db7eb4730a7c1bc17d61f5088a53dfc7b24c2294",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "346da39d_f106982d",
+        "filename": "src/gpu/Swizzle.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-07-07T13:13:28Z",
+      "side": 1,
+      "message": "I say just have it be a size_t. This function is called by one other function (4 times) with creates an index from a uint32_t. So making this take a size_t should be better and easy enough to do",
+      "parentUuid": "b9ec090e_7f6a1634",
       "revId": "db7eb4730a7c1bc17d61f5088a53dfc7b24c2294",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
