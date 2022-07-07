@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6f684ed8_2bd58ba5",
+        "filename": "tools/ToolUtils.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 563,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-07-07T19:45:29Z",
+      "side": 1,
+      "message": "nit: should probably remove this newline.",
+      "revId": "51179074138d173a1472d3afc827e60cd03f6949",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "94808c57_dc3ef19b",
+        "filename": "tools/ToolUtils.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 564,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-07-07T19:45:29Z",
+      "side": 1,
+      "message": "This test should be `numAxes \u003c 1` since it may be -1 if it couldn\u0027t be determined. (Here and below.)",
+      "revId": "51179074138d173a1472d3afc827e60cd03f6949",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
