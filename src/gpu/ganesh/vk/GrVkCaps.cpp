@@ -583,6 +583,18 @@ void GrVkCaps::applyDriverCorrectnessWorkarounds(const VkPhysicalDevicePropertie
     if (kQualcomm_VkVendor == properties.vendorID) {
         fTextureBarrierSupport = false;
     }
+ //   SkDebugf("properties.deviceID: 0x%4X\n", properties.deviceID);
+  //  GetIntelGPUType(properties.deviceID);
+#ifdef SK_BUILD_FOR_WIN
+    // Gen 11 Intel devices running on windows has issues using barriers for dst reads. This is seen
+    // when running the unit tests SkRuntimeEffect_Blender_GPU and DMSAA_aa_dst_read_after_dmsaa.
+    SkDebugf("properties.deviceID: 0x%4X\n", properties.deviceID);
+    GetIntelGPUType(properties.deviceID));
+    if (kIntel_VkVendor == properties.vendorID &&
+        GetIntelGen(GetIntelGPUType(properties.deviceID)) == 11) {
+        fTextureBarrierSupport = false;
+    }
+#endif
 
     // On ARM indirect draws are broken on Android 9 and earlier. This was tested on a P30 and
     // Mate 20x running android 9.
@@ -1918,6 +1930,10 @@ VkShaderStageFlags GrVkCaps::getPushConstantStageFlags() const {
 
 template <size_t N>
 static bool intel_deviceID_present(const std::array<uint32_t, N>& array, uint32_t deviceID) {
+    SkDebugf("deviceID: 0x%4X\n", deviceID);
+    for (size_t i = 0; i < N; ++i) {
+        SkDebugf("array value: 0x%4X\n", array[i]);
+    }
     return std::find(array.begin(), array.end(), deviceID) != array.end();
 }
 
@@ -1938,18 +1954,27 @@ GrVkCaps::IntelGPUType GrVkCaps::GetIntelGPUType(uint32_t deviceID) {
         {0x4680, 0x4681, 0x4682, 0x4683, 0x4690,
          0x4691, 0x4692, 0x4693, 0x4698, 0x4699}};
 
+    SkDebugf("check icelake\n");
     if (intel_deviceID_present(kIceLakeIDs, deviceID)) {
+        SkDebugf("is icelake\n");
         return IntelGPUType::kIceLake;
     }
+    SkDebugf("check rocketlake\n");
     if (intel_deviceID_present(kRocketLakeIDs, deviceID)) {
+        SkDebugf("is rocketlake\n");
         return IntelGPUType::kRocketLake;
     }
+    SkDebugf("check tigerlake\n");
     if (intel_deviceID_present(kTigerLakeIDs, deviceID)) {
+        SkDebugf("is tigerlake\n");
         return IntelGPUType::kTigerLake;
     }
+    SkDebugf("check alderlake\n");
     if (intel_deviceID_present(kAlderLakeIDs, deviceID)) {
+        SkDebugf("is alderlake\n");
         return IntelGPUType::kAlderLake;
     }
+    SkDebugf("is other\n");
     return IntelGPUType::kOther;
 }
 
