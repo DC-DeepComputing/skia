@@ -2485,6 +2485,7 @@ std::tuple<bool, SubRunContainerOwner> SubRunContainer::MakeInAlloc(
     auto [accepted, rejected] = bufferScope.buffers();
     bool someGlyphExcluded = false;
     for (auto& glyphRun : glyphRunList) {
+    skipSubRun:
         rejected->setSource(glyphRun.source());
         const SkFont& runFont = glyphRun.font();
 
@@ -2659,6 +2660,11 @@ std::tuple<bool, SubRunContainerOwner> SubRunContainer::MakeInAlloc(
             const SkScalar originalMaxGlyphDimension =
                     gaugingStrike->findMaximumGlyphDimension(glyphs);
 
+            if (originalMaxGlyphDimension == 0) {
+                // Nothing to draw here. Skip this SubRun.
+                continue;
+            }
+
             SkScalar strikeToSourceScale = 1;
             SkFont reducedFont = runFont;
             if (originalMaxGlyphDimension > kMaxBilerpAtlasDimension) {
@@ -2684,6 +2690,10 @@ std::tuple<bool, SubRunContainerOwner> SubRunContainer::MakeInAlloc(
 
                     // Remember, this will be an integer.
                     maxGlyphDimension = reducingStrike->findMaximumGlyphDimension(glyphs);
+                    if (maxGlyphDimension == 0) {
+                        // Avoid the divide by zero below.
+                        goto skipSubRun;
+                    }
 
                     // The largest reduction factor allowed for each iteration. Smaller reduction
                     // factors reduce the font size faster.
