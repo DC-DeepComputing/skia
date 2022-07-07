@@ -298,8 +298,8 @@ private:
         switch (type) {
             case IntelGPUType::kIceLake:
                 return 11;
-            case IntelGPUType::kRocketLake:
-            case IntelGPUType::kTigerLake:
+            case IntelGPUType::kRocketLake: // fall through
+            case IntelGPUType::kTigerLake:  // fall through
             case IntelGPUType::kAlderLake:
                 return 12;
             case IntelGPUType::kOther:
