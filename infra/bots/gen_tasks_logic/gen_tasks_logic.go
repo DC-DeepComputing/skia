@@ -1465,6 +1465,7 @@ func (b *jobBuilder) codesize() {
 	b.addTask(b.Name, func(b *taskBuilder) {
 		b.cas(CAS_EMPTY)
 		b.dep(b.buildTaskDrivers("linux", "amd64"), compileTaskName)
+		b.dep(b.buildTaskDrivers("linux", "amd64"), compileTaskName+"_NoPatch")
 		b.cmd("./codesize",
 			"--local=false",
 			"--project_id", "skia-swarming-bots",
