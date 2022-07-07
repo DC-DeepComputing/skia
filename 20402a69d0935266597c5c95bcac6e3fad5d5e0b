@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e71dceb7_507bd52f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-07-07T19:09:25Z",
+      "side": 1,
+      "message": "Seems to have been failing on a `new` on the Mac NativeFonts bots.",
+      "revId": "20402a69d0935266597c5c95bcac6e3fad5d5e0b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
