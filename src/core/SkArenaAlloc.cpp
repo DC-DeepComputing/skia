@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include "include/private/SkMalloc.h"
 #include "src/core/SkArenaAlloc.h"
 
 #include <algorithm>
@@ -93,6 +94,11 @@ void SkArenaAlloc::ensureSpace(uint32_t size, uint32_t alignment) {
     }
 
     char* newBlock = static_cast<char*>(sk_malloc_throw(allocationSize, 1));
+    size_t actualAllocatedSize = sk_malloc_usable_size(newBlock);
+    if (actualAllocatedSize) {
+        AssertRelease(actualAllocatedSize >= allocationSize);
+        allocationSize = actualAllocatedSize;
+    }
 
     auto previousDtor = fDtorCursor;
     fCursor = newBlock;
