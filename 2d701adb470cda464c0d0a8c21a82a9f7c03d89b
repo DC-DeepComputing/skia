@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d6dc938b_19d92b34",
+        "filename": "src/gpu/ganesh/effects/GrBlendFragmentProcessor.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-07-07T18:36:03Z",
+      "side": 1,
+      "message": "Why not kConstantOutputForConstantInput_OptimizationFlag? (constant output for any input, really)",
+      "range": {
+        "startLine": 72,
+        "startChar": 24,
+        "endLine": 72,
+        "endChar": 47
+      },
+      "revId": "2d701adb470cda464c0d0a8c21a82a9f7c03d89b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "637d0186_ec8fae33",
+        "filename": "src/gpu/ganesh/effects/GrBlendFragmentProcessor.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-07-07T18:36:03Z",
+      "side": 1,
+      "message": "I don\u0027t understand why this flag doesn\u0027t apply.",
+      "range": {
+        "startLine": 78,
+        "startChar": 25,
+        "endLine": 78,
+        "endChar": 73
+      },
+      "revId": "2d701adb470cda464c0d0a8c21a82a9f7c03d89b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

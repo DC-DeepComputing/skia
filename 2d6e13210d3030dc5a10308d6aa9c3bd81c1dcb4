@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d39a5b55_009b1581",
+        "filename": "src/gpu/ganesh/effects/GrBlendFragmentProcessor.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 262,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-07-07T18:36:03Z",
+      "side": 0,
+      "message": "Why not keep clear?",
+      "range": {
+        "startLine": 261,
+        "startChar": 7,
+        "endLine": 262,
+        "endChar": 75
+      },
+      "revId": "2d6e13210d3030dc5a10308d6aa9c3bd81c1dcb4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "189d7c27_91b3195f",
+        "filename": "src/gpu/ganesh/effects/GrBlendFragmentProcessor.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 266,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-07-07T18:36:03Z",
+      "side": 0,
+      "message": "Should we disable `shareBlendLogic` for these modes? If `shareBlendLogic` is enabled, we will always evaluate both inputs, and are mixed via a uniform so they definitely won\u0027t optimize away.",
+      "range": {
+        "startLine": 263,
+        "startChar": 0,
+        "endLine": 266,
+        "endChar": 23
+      },
+      "revId": "2d6e13210d3030dc5a10308d6aa9c3bd81c1dcb4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
