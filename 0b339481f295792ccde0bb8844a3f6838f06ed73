@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fec03e7d_b074bfcc",
+        "filename": "src/sksl/transform/SkSLEliminateUnreachableCode.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-07-07T19:36:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "09ba413a_22e62581",
+      "range": {
+        "startLine": 62,
+        "startChar": 31,
+        "endLine": 62,
+        "endChar": 40
+      },
+      "revId": "0b339481f295792ccde0bb8844a3f6838f06ed73",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "694416d5_f9780583",
@@ -54,6 +78,30 @@
       "writtenOn": "2022-07-07T12:08:43Z",
       "side": 1,
       "message": "`per-case basis`? `case N:` is a label, not a statement. (although `SwitchCase` is implemented as a `SkSL::Statement`, I suppose)",
+      "range": {
+        "startLine": 124,
+        "startChar": 78,
+        "endLine": 125,
+        "endChar": 29
+      },
+      "revId": "0b339481f295792ccde0bb8844a3f6838f06ed73",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b63175ba_4db11877",
+        "filename": "src/sksl/transform/SkSLEliminateUnreachableCode.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-07-07T19:36:02Z",
+      "side": 1,
+      "message": "Right, I was referring to the fact that each case label and the following statements are structured in the IR as a single compound statement. I rephrased.",
+      "parentUuid": "694416d5_f9780583",
       "range": {
         "startLine": 124,
         "startChar": 78,
@@ -87,6 +135,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ebf850f2_b1c334fb",
+        "filename": "src/sksl/transform/SkSLEliminateUnreachableCode.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-07-07T19:36:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7d2384f9_806c5977",
+      "range": {
+        "startLine": 127,
+        "startChar": 0,
+        "endLine": 127,
+        "endChar": 1
+      },
+      "revId": "0b339481f295792ccde0bb8844a3f6838f06ed73",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "92a2499f_570cbc66",
@@ -100,6 +172,30 @@
       "writtenOn": "2022-07-07T12:08:43Z",
       "side": 1,
       "message": "Not for this CL, and probably not a big deal. If every block has a function-exit, and the switch has a default case, we could propagate the function-exit.",
+      "range": {
+        "startLine": 129,
+        "startChar": 29,
+        "endLine": 129,
+        "endChar": 43
+      },
+      "revId": "0b339481f295792ccde0bb8844a3f6838f06ed73",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3ceadf18_175d333b",
+        "filename": "src/sksl/transform/SkSLEliminateUnreachableCode.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-07-07T19:36:02Z",
+      "side": 1,
+      "message": "Done. We already do this for if statements so I figured it makes sense to do it here now too.\n\nI implemented this while still remaining conservative, i.e. we consider each case as if it\u0027s a separate branch without regarding fallthrough cases, to keep things simple.\n\nPTAL",
+      "parentUuid": "92a2499f_570cbc66",
       "range": {
         "startLine": 129,
         "startChar": 29,
@@ -147,6 +243,30 @@
       "side": 1,
       "message": "Maybe `fFoundBlockExit`?",
       "parentUuid": "cc908f39_53f2753a",
+      "range": {
+        "startLine": 145,
+        "startChar": 28,
+        "endLine": 145,
+        "endChar": 42
+      },
+      "revId": "0b339481f295792ccde0bb8844a3f6838f06ed73",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "428036ec_94df7446",
+        "filename": "src/sksl/transform/SkSLEliminateUnreachableCode.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-07-07T19:36:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5a71dcf3_2bae828c",
       "range": {
         "startLine": 145,
         "startChar": 28,
