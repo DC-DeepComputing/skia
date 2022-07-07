@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e31e7704_3b13160b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2022-07-07T16:22:00Z",
+      "side": 1,
+      "message": "Thanks, there were a couple of good points in your review. CL updated.",
+      "revId": "8a2c6f125c0e363d56ca1f7ac70199aa0b802dd0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "38b76291_1366930c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2022-07-07T16:22:00Z",
+      "side": 1,
+      "message": "Done, PTAL - hope I did this right. Testing the UI seems to match the previous behaviour.",
+      "parentUuid": "aae1e4d4_a2840515",
+      "revId": "0a8c99d76682ceff06213671fc780f2138886ab2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3ca6c2ab_26e01137",
@@ -31,6 +49,24 @@
       "writtenOn": "2022-07-07T14:46:32Z",
       "side": 1,
       "message": "nit: four spaces",
+      "revId": "0a8c99d76682ceff06213671fc780f2138886ab2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3999dfed_e7f8059b",
+        "filename": "gm/colrv1.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 167,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2022-07-07T16:22:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3ca6c2ab_26e01137",
       "revId": "0a8c99d76682ceff06213671fc780f2138886ab2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -52,6 +88,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "317a22ab_48dadcf2",
+        "filename": "gm/colrv1.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 171,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2022-07-07T16:22:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0618e39c_5aba7051",
+      "revId": "0a8c99d76682ceff06213671fc780f2138886ab2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4215c730_ec56028a",
@@ -65,6 +119,24 @@
       "writtenOn": "2022-07-07T14:46:32Z",
       "side": 1,
       "message": "nit: line length",
+      "revId": "0a8c99d76682ceff06213671fc780f2138886ab2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d413673b_571d8d3f",
+        "filename": "gm/colrv1.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 191,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2022-07-07T16:22:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4215c730_ec56028a",
       "revId": "0a8c99d76682ceff06213671fc780f2138886ab2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -92,6 +164,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2a8cd25d_45945e88",
+        "filename": "tools/ToolUtils.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 561,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2022-07-07T16:22:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "22079685_676efc72",
+      "range": {
+        "startLine": 561,
+        "startChar": 38,
+        "endLine": 561,
+        "endChar": 64
+      },
+      "revId": "0a8c99d76682ceff06213671fc780f2138886ab2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cf4110cd_cade615e",
@@ -105,6 +201,24 @@
       "writtenOn": "2022-07-07T14:46:32Z",
       "side": 1,
       "message": "This design allows `initialiseAxes` to be called multiple times so this class has a bunch of mutable state. In the event this returns `false` the old state is kept instead of cleared. Is that intentional? If not, it seems like this could all go into the body of the constructor? Just returning early from the constructor would leave the `fSliderAxes` at zero size, which is plenty of signal without setting a separate `bool`?",
+      "revId": "0a8c99d76682ceff06213671fc780f2138886ab2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8484563a_e51fd8f3",
+        "filename": "tools/ToolUtils.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 563,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2022-07-07T16:22:00Z",
+      "side": 1,
+      "message": "Sounds good, thanks for the suggestion.",
+      "parentUuid": "cf4110cd_cade615e",
       "revId": "0a8c99d76682ceff06213671fc780f2138886ab2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -132,6 +246,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "38a45b12_1073ddf4",
+        "filename": "tools/ToolUtils.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 578,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2022-07-07T16:22:00Z",
+      "side": 1,
+      "message": "That was a leftover from debugging, oups. Not needed permanently for now, I think.",
+      "parentUuid": "37e5924d_ea082858",
+      "range": {
+        "startLine": 577,
+        "startChar": 0,
+        "endLine": 578,
+        "endChar": 42
+      },
+      "revId": "0a8c99d76682ceff06213671fc780f2138886ab2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "af487272_b2cd9424",
@@ -145,6 +283,24 @@
       "writtenOn": "2022-07-07T14:46:32Z",
       "side": 1,
       "message": "I know this is just tool code, but it\u0027s actually hard to follow the creation of a temporary `SkString` (for each axis for each frame) when we know that we\u0027re just going to pass a pointer to 5 bytes. Probably better to store the `SkString` on the `SliderAxis` (it is the name of the slider) so the construction is only done once (and can be something else, like include the name if wanted).\n\nStoring the SkString would also make it easier to add a \"prefix\" which could be passed to the constructor (say, the font name, or typeface id, or some such) so that it would be possible to have sliders for multiple axes.\n\nNote that it is allowed to add multiple controls with the same name. It works but then when one goes to read values only one of them can be read by id (need to iterate to get the others). So this setup only kinda works when a font has multiple axes with the same tag. In the future we may want some special handling for that.",
+      "revId": "0a8c99d76682ceff06213671fc780f2138886ab2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f2335d0a_c0537a3a",
+        "filename": "tools/ToolUtils.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 604,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2022-07-07T16:22:00Z",
+      "side": 1,
+      "message": "Added an `SkString name` member and using that.",
+      "parentUuid": "af487272_b2cd9424",
       "revId": "0a8c99d76682ceff06213671fc780f2138886ab2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -166,6 +322,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4eb1f791_e23909b3",
+        "filename": "tools/ToolUtils.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 612,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2022-07-07T16:22:00Z",
+      "side": 1,
+      "message": "Removed, removed in VariationSliders::writeControls() as I guess writeControls() from an empty vector does not cause any harm.",
+      "parentUuid": "5e2149c0_f8616645",
+      "revId": "0a8c99d76682ceff06213671fc780f2138886ab2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7a86f22f_a09f49cd",
@@ -179,6 +353,24 @@
       "writtenOn": "2022-07-07T14:46:32Z",
       "side": 1,
       "message": "No need for this block either? This is still creating an empty std::vector to return.",
+      "revId": "0a8c99d76682ceff06213671fc780f2138886ab2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0a942595_6488d746",
+        "filename": "tools/ToolUtils.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 626,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2022-07-07T16:22:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7a86f22f_a09f49cd",
       "revId": "0a8c99d76682ceff06213671fc780f2138886ab2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -200,6 +392,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c671af40_26c81212",
+        "filename": "tools/ToolUtils.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 319,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2022-07-07T16:22:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "405ca784_f802871c",
+      "revId": "0a8c99d76682ceff06213671fc780f2138886ab2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b54f0d99_648c2e66",
@@ -217,6 +427,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1ea37140_01992370",
+        "filename": "tools/ToolUtils.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 327,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2022-07-07T16:22:00Z",
+      "side": 1,
+      "message": "Fine with me :).",
+      "parentUuid": "b54f0d99_648c2e66",
+      "revId": "0a8c99d76682ceff06213671fc780f2138886ab2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e3c6cae5_a9834c50",
@@ -230,6 +458,24 @@
       "writtenOn": "2022-07-07T14:46:32Z",
       "side": 1,
       "message": "Not sure what `fAxesInitialised` is really doing? It seems that if it is `false` then the equivalent is just having `fSliderAxes` (or `fAxisSliders`) be empty?",
+      "revId": "0a8c99d76682ceff06213671fc780f2138886ab2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2f08ffdf_faf02bd1",
+        "filename": "tools/ToolUtils.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 332,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2022-07-07T16:22:00Z",
+      "side": 1,
+      "message": "Ack, shortened to just the vector.",
+      "parentUuid": "e3c6cae5_a9834c50",
       "revId": "0a8c99d76682ceff06213671fc780f2138886ab2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
