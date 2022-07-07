@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c142d7b0_f496e0dc",
+        "filename": "src/gpu/ganesh/effects/GrBlendFragmentProcessor.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 262,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-07-07T18:47:18Z",
+      "side": 0,
+      "message": "Mostly for consistency - GrBlendFragmentProcessor now just means: \"call blend_foo\" in the shader. It also let me remove the loop in TestCreate.",
+      "parentUuid": "d39a5b55_009b1581",
+      "range": {
+        "startLine": 261,
+        "startChar": 7,
+        "endLine": 262,
+        "endChar": 75
+      },
+      "revId": "2d6e13210d3030dc5a10308d6aa9c3bd81c1dcb4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "189d7c27_91b3195f",
         "filename": "src/gpu/ganesh/effects/GrBlendFragmentProcessor.cpp",
         "patchSetId": 1
@@ -37,6 +61,30 @@
       "writtenOn": "2022-07-07T18:36:03Z",
       "side": 0,
       "message": "Should we disable `shareBlendLogic` for these modes? If `shareBlendLogic` is enabled, we will always evaluate both inputs, and are mixed via a uniform so they definitely won\u0027t optimize away.",
+      "range": {
+        "startLine": 263,
+        "startChar": 0,
+        "endLine": 266,
+        "endChar": 23
+      },
+      "revId": "2d6e13210d3030dc5a10308d6aa9c3bd81c1dcb4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5deefa02_c97a79c8",
+        "filename": "src/gpu/ganesh/effects/GrBlendFragmentProcessor.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 266,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-07-07T18:47:18Z",
+      "side": 0,
+      "message": "Yeah, that makes sense - they were already special before, so keeping them that way limits the performance impact.",
+      "parentUuid": "189d7c27_91b3195f",
       "range": {
         "startLine": 263,
         "startChar": 0,

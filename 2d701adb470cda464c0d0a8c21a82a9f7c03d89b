@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8f268bf8_70e4290f",
+        "filename": "src/gpu/ganesh/effects/GrBlendFragmentProcessor.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-07-07T18:47:18Z",
+      "side": 1,
+      "message": "There is logic at the end of this function that adds in constant-output-for-constant-input (after checking that the children support it, and the blend mode has the same answer on CPU and GPU).",
+      "parentUuid": "d6dc938b_19d92b34",
+      "range": {
+        "startLine": 72,
+        "startChar": 24,
+        "endLine": 72,
+        "endChar": 47
+      },
+      "revId": "2d701adb470cda464c0d0a8c21a82a9f7c03d89b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "637d0186_ec8fae33",
