@@ -16,6 +16,23 @@
       "message": "Additional suggestions incorporated, makes sense, thank you, I learned something. This is now one well reviewed piece of ToolUtils code. :) \n",
       "revId": "8d4f4aed44e8bb834edf8346ac0fe392945448af",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "25c3913a_2b15b6e9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-07-07T18:01:48Z",
+      "side": 1,
+      "message": "I\u0027m sure I could find something else to nitpick on, but this lgtm.",
+      "revId": "8d4f4aed44e8bb834edf8346ac0fe392945448af",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
