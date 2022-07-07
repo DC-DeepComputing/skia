@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7411e854_415b6486",
+        "filename": "src/text/gpu/SubRunContainer.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 237,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-07-07T15:06:22Z",
+      "side": 1,
+      "message": "SubRunCreationOperation ? Behavior ?",
+      "range": {
+        "startLine": 237,
+        "startChar": 9,
+        "endLine": 237,
+        "endChar": 23
+      },
+      "revId": "36a6f6f4c54cb1371dcda36174f1e18b0bad9b31",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1cbab40c_14d56350",
+        "filename": "src/text/gpu/SubRunContainer.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 237,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-07-07T15:06:22Z",
+      "side": 1,
+      "message": "class ?",
+      "range": {
+        "startLine": 237,
+        "startChar": 4,
+        "endLine": 237,
+        "endChar": 8
+      },
+      "revId": "36a6f6f4c54cb1371dcda36174f1e18b0bad9b31",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
