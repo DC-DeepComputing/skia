@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cc908f39_53f2753a",
+        "filename": "src/sksl/transform/SkSLEliminateUnreachableCode.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-07-07T04:06:46Z",
+      "side": 1,
+      "message": "This could now mean a switch-case exit. I should probably rename it if we like this solution.",
+      "range": {
+        "startLine": 145,
+        "startChar": 28,
+        "endLine": 145,
+        "endChar": 42
+      },
+      "revId": "0b339481f295792ccde0bb8844a3f6838f06ed73",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
