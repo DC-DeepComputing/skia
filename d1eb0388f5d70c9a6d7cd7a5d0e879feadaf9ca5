@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "20fb0a36_422c7551",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-07-07T19:30:22Z",
+      "side": 1,
+      "message": "LGTM but giving Rob a chance to take a look as well.",
+      "revId": "d1eb0388f5d70c9a6d7cd7a5d0e879feadaf9ca5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
