@@ -22,6 +22,30 @@
       },
       "revId": "a173553cf9b67f700d9bd16dc89f2a9b40a5a3f5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8ed7e542_aa2d6653",
+        "filename": "src/gpu/graphite/mtl/MtlGraphicsPipeline.mm",
+        "patchSetId": 4
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-07-07T22:01:17Z",
+      "side": 1,
+      "message": "Good catch! Done.",
+      "parentUuid": "bc660513_3d0b50b1",
+      "range": {
+        "startLine": 40,
+        "startChar": 28,
+        "endLine": 40,
+        "endChar": 36
+      },
+      "revId": "a173553cf9b67f700d9bd16dc89f2a9b40a5a3f5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
