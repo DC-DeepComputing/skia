@@ -355,20 +355,6 @@ std::unique_ptr<GrFragmentProcessor> GrFragmentProcessor::DisableCoverageAsAlpha
 
 //////////////////////////////////////////////////////////////////////////////
 
-std::unique_ptr<GrFragmentProcessor> GrFragmentProcessor::UseDestColorAsInput(
-        std::unique_ptr<GrFragmentProcessor> fp) {
-    static const SkRuntimeEffect* effect = SkMakeRuntimeEffect(SkRuntimeEffect::MakeForBlender, R"(
-        uniform colorFilter fp;  // Declared as colorFilter so we can pass a color
-        half4 main(half4 src, half4 dst) {
-            return fp.eval(dst);
-        }
-    )");
-    return GrSkSLFP::Make(effect, "UseDestColorAsInput", /*inputFP=*/nullptr,
-                          GrSkSLFP::OptFlags::kNone, "fp", std::move(fp));
-}
-
-//////////////////////////////////////////////////////////////////////////////
-
 std::unique_ptr<GrFragmentProcessor> GrFragmentProcessor::Compose(
         std::unique_ptr<GrFragmentProcessor> f, std::unique_ptr<GrFragmentProcessor> g) {
     class ComposeProcessor : public GrFragmentProcessor {
