@@ -26,6 +26,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "61ef31b4_ab2ca2a4",
+        "filename": "src/text/gpu/GlyphVector.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-07-08T20:18:34Z",
+      "side": 1,
+      "message": "Missing \u0027 \u0027 here",
+      "range": {
+        "startLine": 160,
+        "startChar": 23,
+        "endLine": 160,
+        "endChar": 24
+      },
+      "revId": "33deff4a517568506437c19fac9d1c745a78cb50",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5610721b_cff113f9",
         "filename": "src/text/gpu/GlyphVector.h",
         "patchSetId": 4
