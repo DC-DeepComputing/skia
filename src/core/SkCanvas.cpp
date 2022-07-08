@@ -1284,12 +1284,24 @@ SkImageInfo SkCanvas::onImageInfo() const {
 }
 
 bool SkCanvas::getProps(SkSurfaceProps* props) const {
-    return this->onGetProps(props);
+    return this->onGetProps(props, false/*top*/);
 }
 
-bool SkCanvas::onGetProps(SkSurfaceProps* props) const {
+SkSurfaceProps SkCanvas::getBaseProps() const {
+    SkSurfaceProps props;
+    this->onGetProps(&props, false/*top*/);
+    return props;
+}
+
+SkSurfaceProps SkCanvas::getTopProps() const {
+    SkSurfaceProps props;
+    this->onGetProps(&props, true/*top*/);
+    return props;
+}
+
+bool SkCanvas::onGetProps(SkSurfaceProps* props, bool top) const {
     if (props) {
-        *props = fProps;
+        *props = top ? topDevice()->surfaceProps() : fProps;
     }
     return true;
 }
