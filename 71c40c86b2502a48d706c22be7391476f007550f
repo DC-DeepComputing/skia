@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "71fbcbc0_b8c79fd3",
+        "filename": "resources/sksl/shared/FunctionPrototype.sksl",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-07-08T20:46:08Z",
+      "side": 1,
+      "message": "The prototype is certainly produces valid GLSL and Metal but given that recursion is disallowed and there doesn\u0027t seem to be a good reason to allow any free function to reference main, do you think we should disallow this?",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 60
+      },
+      "revId": "71c40c86b2502a48d706c22be7391476f007550f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
