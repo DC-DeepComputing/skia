@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "337e0695_17bdbd4d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 22
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-07-08T14:42:00Z",
+      "side": 1,
+      "message": "Waiting for Jim now...",
+      "revId": "a1874d9d4a2f3d97f7e290759b4229b3310efedb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
