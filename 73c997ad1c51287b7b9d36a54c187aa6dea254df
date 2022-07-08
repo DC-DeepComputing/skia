@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "04dc0806_c6ae279c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-07-08T17:44:09Z",
+      "side": 1,
+      "message": "Interesting, if you tested the M1 GPU it could be related to how you sync buffers for unified memory vs discrete memory, which have slightly different APIs in Metal.",
+      "range": {
+        "startLine": 21,
+        "startChar": 1,
+        "endLine": 21,
+        "endChar": 45
+      },
+      "revId": "73c997ad1c51287b7b9d36a54c187aa6dea254df",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6f4eb530_c2a3ae87",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-07-08T17:44:09Z",
+      "side": 1,
+      "message": "Thank you for laying the groundwork for much of this plumbing, Ethan!",
+      "revId": "73c997ad1c51287b7b9d36a54c187aa6dea254df",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
