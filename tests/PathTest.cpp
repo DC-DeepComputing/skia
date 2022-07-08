@@ -3977,9 +3977,11 @@ static void test_arcTo(skiatest::Reporter* reporter) {
     }
 #endif
 
+#ifndef SK_OMIT_ARCTO_STARTANGLE_GUARD
     // This test, if improperly handled, can create an infinite loop in angles_to_unit_vectors
     p.reset();
     p.arcTo(SkRect::MakeXYWH(0, 0, 10, 10), -2.61488527e+33f, 359.992157f, false);
+#endif
 }
 
 static void test_addPath(skiatest::Reporter* reporter) {

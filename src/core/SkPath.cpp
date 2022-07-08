@@ -1145,7 +1145,9 @@ SkPath& SkPath::arcTo(const SkRect& oval, SkScalar startAngle, SkScalar sweepAng
         return *this;
     }
 
+#ifndef SK_OMIT_ARCTO_STARTANGLE_GUARD
     startAngle = SkScalarMod(startAngle, 360.0f);
+#endif
 
     if (fPathRef->countVerbs() == 0) {
         forceMoveTo = true;
