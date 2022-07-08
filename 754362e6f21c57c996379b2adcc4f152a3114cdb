@@ -159,6 +159,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7380c515_c93293ed",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 558,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-07-08T19:47:30Z",
+      "side": 1,
+      "message": "I think it just was failing in builds where SkSL is disabled entirely. Now in those builds we pass through the input color. (This much is almost certainly overkill! SkSL doesn\u0027t exist so AFAICS the program could never be compiled.)",
+      "parentUuid": "dc845f31_21d24155",
+      "range": {
+        "startLine": 558,
+        "startChar": 46,
+        "endLine": 558,
+        "endChar": 54
+      },
+      "revId": "754362e6f21c57c996379b2adcc4f152a3114cdb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a640f17a_31deeb26",
