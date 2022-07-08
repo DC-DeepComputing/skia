@@ -11,6 +11,7 @@
 #include "include/core/SkSize.h"
 #include "include/core/SkTileMode.h"
 #include "src/core/SkLRUCache.h"
+#include "src/core/SkRuntimeEffectDictionary.h"
 #include "src/gpu/ResourceKey.h"
 #include "src/gpu/graphite/CommandBuffer.h"
 #include "src/gpu/graphite/GraphicsPipelineDesc.h"
@@ -62,6 +63,8 @@ public:
                                                  SkTileMode yTileMode);
 
     SkShaderCodeDictionary* shaderCodeDictionary() const;
+
+    SkRuntimeEffectDictionary* runtimeEffectDictionary() { return &fRuntimeEffectDictionary; }
 
 #if GRAPHITE_TEST_UTILS
     ResourceCache* resourceCache() { return fResourceCache.get(); }
@@ -116,6 +119,8 @@ private:
     // Cache of GraphicsPipelines
     // TODO: Move this onto GlobalCache
     std::unique_ptr<GraphicsPipelineCache> fGraphicsPipelineCache;
+
+    SkRuntimeEffectDictionary fRuntimeEffectDictionary;
 };
 
 } // namespace skgpu::graphite
