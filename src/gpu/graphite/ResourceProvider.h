@@ -43,6 +43,8 @@ public:
 
     virtual sk_sp<CommandBuffer> createCommandBuffer() = 0;
 
+    sk_sp<ComputePipeline> findOrCreateComputePipeline(const std::string& src /* FIXME: this should presumably be something smarter than just a string */);
+
     sk_sp<GraphicsPipeline> findOrCreateGraphicsPipeline(const GraphicsPipelineDesc&,
                                                          const RenderPassDesc&);
 
@@ -74,6 +76,7 @@ protected:
     const Gpu* fGpu;
 
 private:
+    virtual sk_sp<ComputePipeline> onCreateComputePipeline(const std::string& src) = 0;
     virtual sk_sp<GraphicsPipeline> onCreateGraphicsPipeline(const GraphicsPipelineDesc&,
                                                              const RenderPassDesc&) = 0;
     virtual sk_sp<Texture> createTexture(SkISize, const TextureInfo&, SkBudgeted) = 0;

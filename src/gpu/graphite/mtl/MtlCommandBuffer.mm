@@ -12,6 +12,8 @@
 #include "src/gpu/graphite/mtl/MtlBlitCommandEncoder.h"
 #include "src/gpu/graphite/mtl/MtlBuffer.h"
 #include "src/gpu/graphite/mtl/MtlCaps.h"
+#include "src/gpu/graphite/mtl/MtlComputeCommandEncoder.h"
+#include "src/gpu/graphite/mtl/MtlComputePipeline.h"
 #include "src/gpu/graphite/mtl/MtlGpu.h"
 #include "src/gpu/graphite/mtl/MtlGraphicsPipeline.h"
 #include "src/gpu/graphite/mtl/MtlRenderCommandEncoder.h"
@@ -52,8 +54,11 @@ MtlCommandBuffer::MtlCommandBuffer(sk_cfp<id<MTLCommandBuffer>> cmdBuffer, const
 
 MtlCommandBuffer::~MtlCommandBuffer() {}
 
+float* GLOBAL_DEBUG_BUFFER;
+
 bool MtlCommandBuffer::commit() {
     SkASSERT(!fActiveRenderCommandEncoder);
+    SkASSERT(!fActiveComputeCommandEncoder);
     this->endBlitCommandEncoder();
 #ifdef SK_BUILD_FOR_IOS
     if (MtlIsAppInBackground()) {
@@ -62,11 +67,16 @@ bool MtlCommandBuffer::commit() {
     }
 #endif
     [(*fCommandBuffer) commit];
+    [(*fCommandBuffer) waitUntilCompleted];
 
     if ((*fCommandBuffer).status == MTLCommandBufferStatusError) {
         NSString* description = (*fCommandBuffer).error.localizedDescription;
         const char* errorString = [description UTF8String];
         SKGPU_LOG_E("Failure submitting command buffer: %s", errorString);
+    }
+
+    for (int i = 0; i < 512; ++i) {
+        printf("%d: %g\n", i, GLOBAL_DEBUG_BUFFER[i]);
     }
 
     return ((*fCommandBuffer).status != MTLCommandBufferStatusError);
@@ -77,6 +87,7 @@ bool MtlCommandBuffer::onBeginRenderPass(const RenderPassDesc& renderPassDesc,
                                          const Texture* resolveTexture,
                                          const Texture* depthStencilTexture) {
     SkASSERT(!fActiveRenderCommandEncoder);
+    SkASSERT(!fActiveComputeCommandEncoder);
     this->endBlitCommandEncoder();
 #ifdef SK_BUILD_FOR_IOS
     if (MtlIsAppInBackground()) {
@@ -175,6 +186,31 @@ void MtlCommandBuffer::endRenderPass() {
     fActiveRenderCommandEncoder.reset();
 }
 
+bool MtlCommandBuffer::onBeginComputePass() {
+    printf("BEGIN COMPUTE\n");
+    SkASSERT(!fActiveRenderCommandEncoder);
+    SkASSERT(!fActiveComputeCommandEncoder);
+    fActiveComputeCommandEncoder = MtlComputeCommandEncoder::Make(fGpu,
+                                                                  fCommandBuffer.get());
+    return true;
+}
+
+void MtlCommandBuffer::execute(int threadGroupsX, int threadGroupsY, int threadGroupsZ,
+                               int threadsX, int threadsY, int threadsZ) {
+    printf("running %d!\n", threadsX);
+    fActiveComputeCommandEncoder->execute(threadGroupsX, threadGroupsY, threadGroupsZ, threadsX,
+            threadsY, threadsZ);
+    printf("done!\n");
+}
+
+void MtlCommandBuffer::endComputePass() {
+    printf("END COMPUTE\n");
+    SkASSERT(fActiveComputeCommandEncoder);
+    fActiveComputeCommandEncoder->endEncoding();
+    fActiveComputeCommandEncoder.reset();
+}
+
+
 MtlBlitCommandEncoder* MtlCommandBuffer::getBlitCommandEncoder() {
     if (fActiveBlitCommandEncoder) {
         return fActiveBlitCommandEncoder.get();
@@ -218,6 +254,25 @@ void MtlCommandBuffer::onBindGraphicsPipeline(const GraphicsPipeline* graphicsPi
 
     fCurrentVertexStride = mtlPipeline->vertexStride();
     fCurrentInstanceStride = mtlPipeline->instanceStride();
+}
+
+void MtlCommandBuffer::onBindComputePipeline(const ComputePipeline* computePipeline) {
+    SkASSERT(fActiveComputeCommandEncoder);
+
+    auto mtlPipeline = static_cast<const MtlComputePipeline*>(computePipeline);
+    auto pipelineState = mtlPipeline->mtlPipelineState();
+    fActiveComputeCommandEncoder->setComputePipelineState(pipelineState);
+}
+
+void MtlCommandBuffer::onBindComputeBuffer(const Buffer* buffer,
+                                           size_t offset,
+                                           size_t atIndex) {
+    SkASSERT(fActiveComputeCommandEncoder);
+
+    id<MTLBuffer> mtlBuffer = buffer ?
+            static_cast<const MtlBuffer*>(buffer)->mtlBuffer() : nullptr;
+
+    fActiveComputeCommandEncoder->setBuffer(mtlBuffer, offset, atIndex);
 }
 
 void MtlCommandBuffer::onBindUniformBuffer(UniformSlot slot,

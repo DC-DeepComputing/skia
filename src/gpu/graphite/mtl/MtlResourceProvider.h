@@ -34,6 +34,7 @@ private:
     const MtlGpu* mtlGpu();
 
     sk_sp<CommandBuffer> createCommandBuffer() override;
+    sk_sp<ComputePipeline> onCreateComputePipeline(const std::string&) override;
     sk_sp<GraphicsPipeline> onCreateGraphicsPipeline(const GraphicsPipelineDesc&,
                                                             const RenderPassDesc&) override;
     sk_sp<Texture> createTexture(SkISize, const TextureInfo&, SkBudgeted) override;

@@ -10,6 +10,7 @@
 #include "src/gpu/graphite/Buffer.h"
 #include "src/gpu/graphite/Caps.h"
 #include "src/gpu/graphite/CommandBuffer.h"
+#include "src/gpu/graphite/ComputePipeline.h"
 #include "src/gpu/graphite/ContextPriv.h"
 #include "src/gpu/graphite/GlobalCache.h"
 #include "src/gpu/graphite/Gpu.h"
@@ -40,6 +41,13 @@ sk_sp<GraphicsPipeline> ResourceProvider::findOrCreateGraphicsPipeline(
         const RenderPassDesc& renderPassDesc) {
     return fGraphicsPipelineCache->refPipeline(fGpu->caps(), pipelineDesc, renderPassDesc);
 }
+
+sk_sp<ComputePipeline> ResourceProvider::findOrCreateComputePipeline(const std::string& src) {
+    // TODO: cache
+    printf("FIND OR CREATE\n");
+    return this->onCreateComputePipeline(src);
+}
+
 
 SkShaderCodeDictionary* ResourceProvider::shaderCodeDictionary() const {
     return fGlobalCache->shaderCodeDictionary();
