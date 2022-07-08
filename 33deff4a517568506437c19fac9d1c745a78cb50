@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f63605b4_ffb2a1f3",
+        "filename": "src/text/gpu/GlyphVector.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-07-08T20:36:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e10679e0_fcacbde8",
+      "range": {
+        "startLine": 69,
+        "startChar": 33,
+        "endLine": 69,
+        "endChar": 42
+      },
+      "revId": "33deff4a517568506437c19fac9d1c745a78cb50",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "61ef31b4_ab2ca2a4",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-07-08T20:18:34Z",
       "side": 1,
       "message": "Missing \u0027 \u0027 here",
+      "range": {
+        "startLine": 160,
+        "startChar": 23,
+        "endLine": 160,
+        "endChar": 24
+      },
+      "revId": "33deff4a517568506437c19fac9d1c745a78cb50",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5cbe8054_687fbd14",
+        "filename": "src/text/gpu/GlyphVector.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-07-08T20:36:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "61ef31b4_ab2ca2a4",
       "range": {
         "startLine": 160,
         "startChar": 23,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8c4f2a2c_7ab3443f",
+        "filename": "src/text/gpu/GlyphVector.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-07-08T20:36:51Z",
+      "side": 1,
+      "message": "Yep. I agree, but the pattern for serialization is strong. Here is an example from SkImageShader:\n\nvoid SkImageShader::flatten(SkWriteBuffer\u0026 buffer) const",
+      "parentUuid": "5610721b_cff113f9",
+      "range": {
+        "startLine": 44,
+        "startChar": 30,
+        "endLine": 44,
+        "endChar": 31
+      },
+      "revId": "33deff4a517568506437c19fac9d1c745a78cb50",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d69c3fcd_a9987876",
@@ -83,6 +155,30 @@
       "writtenOn": "2022-07-08T20:10:29Z",
       "side": 1,
       "message": "Can this be a const\u0026 ?",
+      "range": {
+        "startLine": 48,
+        "startChar": 63,
+        "endLine": 48,
+        "endChar": 64
+      },
+      "revId": "33deff4a517568506437c19fac9d1c745a78cb50",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "05c2159d_8495a579",
+        "filename": "src/text/gpu/GlyphVector.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-07-08T20:36:51Z",
+      "side": 1,
+      "message": "No. validate calls are mutating. This is how the other serialization code in skia is written.\n\nThis is the original pattern in the code:\nsk_sp\u003cSkTextBlob\u003e SkTextBlobPriv::MakeFromBuffer(SkReadBuffer\u0026 reader)",
+      "parentUuid": "d69c3fcd_a9987876",
       "range": {
         "startLine": 48,
         "startChar": 63,
