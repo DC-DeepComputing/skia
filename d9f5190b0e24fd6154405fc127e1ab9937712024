@@ -34,6 +34,23 @@
       "parentUuid": "8e35e3b7_016c25e3",
       "revId": "d9f5190b0e24fd6154405fc127e1ab9937712024",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "79f4d70e_70b0305e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-07-08T18:29:36Z",
+      "side": 1,
+      "message": "To close the loop: my CL seems to have fixed the VkDeps roller.",
+      "revId": "d9f5190b0e24fd6154405fc127e1ab9937712024",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
