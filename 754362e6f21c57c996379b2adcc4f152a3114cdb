@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d9230bbd_a514a8b5",
+        "filename": "src/core/SkRuntimeEffectPriv.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-07-08T19:18:58Z",
+      "side": 1,
+      "message": "If we add it to `SkRuntimeEffect.h` as a public method, then we\u0027re exposing it to all our clients (Chrome, Android, Flutter, etc) and endorsing it as \"this is a safe thing to rely on.\" Having clients fish the `SkSL::Program` out of a runtime effect isn\u0027t something we want them to start relying on :) \n\nIn other words, if a function or method is accessible from `include/`, users expect that\u0027s it\u0027s an OK thing to use. The Priv classes are in `src/` (not `include/`), so users cannot rely on anything inside.",
+      "parentUuid": "0f9a4f88_ef5d694b",
+      "range": {
+        "startLine": 34,
+        "startChar": 4,
+        "endLine": 40,
+        "endChar": 5
+      },
+      "revId": "754362e6f21c57c996379b2adcc4f152a3114cdb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d42665c0_0395d18b",
         "filename": "src/core/SkShaderCodeDictionary.cpp",
         "patchSetId": 2
