@@ -16,6 +16,23 @@
       "message": "PTAL at the reland.",
       "revId": "3f12239485ee2e3486774b3478245196a48b2766",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f8ea8b78_fe70bc04",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2022-07-08T08:09:33Z",
+      "side": 1,
+      "message": "Internal presubmit verified in cl/459696035",
+      "revId": "3f12239485ee2e3486774b3478245196a48b2766",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
