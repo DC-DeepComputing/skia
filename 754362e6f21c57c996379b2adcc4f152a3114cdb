@@ -1,0 +1,113 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d6c148f7_251a7f5d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-07-08T18:44:28Z",
+      "side": 1,
+      "message": "Mostly nits but lgtm. Brian should probably sign off as I\u0027m not very familiar with this part of the code.",
+      "revId": "754362e6f21c57c996379b2adcc4f152a3114cdb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0f9a4f88_ef5d694b",
+        "filename": "src/core/SkRuntimeEffectPriv.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-07-08T18:44:28Z",
+      "side": 1,
+      "message": "I have a general Skia style question: do we prefer that clients not use public getters on the object itself? What is the reason for preferring `SkRuntimeEffectPriv::Hash(effect)` instead of `effect.hash()` or `SkRuntimeEffectPriv::Program(effect)` instead of something like `effect.baseProgram()` ?",
+      "range": {
+        "startLine": 34,
+        "startChar": 4,
+        "endLine": 40,
+        "endChar": 5
+      },
+      "revId": "754362e6f21c57c996379b2adcc4f152a3114cdb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d42665c0_0395d18b",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 554,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-07-08T18:44:28Z",
+      "side": 1,
+      "message": "Should this assert that `decl` is not `main` or is it OK to call this with `kRuntimeShaderName` as the name in the declaration?",
+      "range": {
+        "startLine": 554,
+        "startChar": 4,
+        "endLine": 554,
+        "endChar": 53
+      },
+      "revId": "754362e6f21c57c996379b2adcc4f152a3114cdb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dc845f31_21d24155",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 558,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-07-08T18:44:28Z",
+      "side": 1,
+      "message": "The tryjob seems to be complaining about these not overriding any inherited virtual functions. Maybe it didn\u0027t figure out CL deps?",
+      "range": {
+        "startLine": 558,
+        "startChar": 46,
+        "endLine": 558,
+        "endChar": 54
+      },
+      "revId": "754362e6f21c57c996379b2adcc4f152a3114cdb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a640f17a_31deeb26",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 563,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-07-08T18:44:28Z",
+      "side": 1,
+      "message": "Do you expect `declareFunction`, `defineStruct`, and `declareGlobal` to have different logic eventually? If not, consider making them call out to a helper like\n\n```\nvoid addToPreamble(const char* code) {\n    *fPreamble +\u003d std::string(code) + \";\\n\";\n}\n```",
+      "range": {
+        "startLine": 563,
+        "startChar": 8,
+        "endLine": 563,
+        "endChar": 55
+      },
+      "revId": "754362e6f21c57c996379b2adcc4f152a3114cdb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
