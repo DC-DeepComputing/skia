@@ -64,6 +64,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "b8e8a3e3_69f49652",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 554,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-07-08T19:15:03Z",
+      "side": 1,
+      "message": "I never considered prototyping main, I don\u0027t know what would happen in that case. It\u0027s definitely not high on my list of concerns. You couldn\u0027t call it (recursion\u0027s illegal) and the function name would get mangled (e.g. `main_1`) so it would just be a meaningless function prototype that never gets used anywhere. Might be worth a test though.",
+      "parentUuid": "d42665c0_0395d18b",
+      "range": {
+        "startLine": 554,
+        "startChar": 4,
+        "endLine": 554,
+        "endChar": 53
+      },
+      "revId": "754362e6f21c57c996379b2adcc4f152a3114cdb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "dc845f31_21d24155",
@@ -100,6 +124,30 @@
       "writtenOn": "2022-07-08T18:44:28Z",
       "side": 1,
       "message": "Do you expect `declareFunction`, `defineStruct`, and `declareGlobal` to have different logic eventually? If not, consider making them call out to a helper like\n\n```\nvoid addToPreamble(const char* code) {\n    *fPreamble +\u003d std::string(code) + \";\\n\";\n}\n```",
+      "range": {
+        "startLine": 563,
+        "startChar": 8,
+        "endLine": 563,
+        "endChar": 55
+      },
+      "revId": "754362e6f21c57c996379b2adcc4f152a3114cdb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0c22ae0c_81b73317",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 563,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-07-08T19:15:03Z",
+      "side": 1,
+      "message": "TBH for a one-liner this just adds burden to a reader IMO. Understanding `a +\u003d string(b) + \";\";` is trivial. Understanding `add_semicolon_to_text(\u0026a, b);` requires that a reader must check `add_semicolon_to_text` to make sure it actually does what it claims to do and isn\u0027t sneaky in some way.",
+      "parentUuid": "a640f17a_31deeb26",
       "range": {
         "startLine": 563,
         "startChar": 8,
