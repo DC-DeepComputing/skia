@@ -65,13 +65,15 @@ public:
     template <typename U, typename = typename std::enable_if<std::is_same<const U, T>::value>::type>
     constexpr SkSpan(const SkSpan<U>& that) : fPtr(std::data(that)), fSize{std::size(that)} {}
     constexpr SkSpan(const SkSpan& o) = default;
+    constexpr SkSpan& operator=(const SkSpan& that) = default;
+    constexpr SkSpan(SkSpan&&) = default;
+    constexpr SkSpan& operator=(SkSpan&&) = default;
     template<size_t N> constexpr SkSpan(T(&a)[N]) : SkSpan(a, N) { }
     template<typename Container>
     constexpr SkSpan(Container& c) : SkSpan{std::data(c), std::size(c)} { }
     SkSpan(std::initializer_list<T> il SK_CHECK_IL_LIFETIME)
             : SkSpan(std::data(il), std::size(il)) {}
 
-    constexpr SkSpan& operator=(const SkSpan& that) = default;
 
     constexpr T& operator [] (size_t i) const {
         SkASSERT(i < this->size());
