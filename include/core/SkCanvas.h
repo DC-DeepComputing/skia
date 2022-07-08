@@ -263,9 +263,25 @@ public:
         @param props  storage for writable SkSurfaceProps
         @return       true if SkSurfaceProps was copied
 
+        DEPRECATED: Replace usage with getBaseProps() or getTopProps()
+
         example: https://fiddle.skia.org/c/@Canvas_getProps
     */
     bool getProps(SkSurfaceProps* props) const;
+
+    /** Returns the SkSurfaceProps (of the raster or GPU surface associated with the canvas) that
+        were active when the canvas was created (i.e., at the base of the layer stack).
+
+        @return  original/base SkSurfaceProps
+    */
+    SkSurfaceProps getBaseProps() const;
+
+    /** Returns the SkSurfaceProps (of the raster or GPU surface associated with the canvas) that
+        are currently active (i.e., at the top of the layer stack).
+
+        @return  SkSurfaceProps active in the current/top layer
+    */
+    SkSurfaceProps getTopProps() const;
 
     /** Triggers the immediate execution of all pending draw operations.
         If SkCanvas is associated with GPU surface, resolves all pending GPU operations.
@@ -2179,7 +2195,7 @@ protected:
     virtual bool onPeekPixels(SkPixmap* pixmap);
     virtual bool onAccessTopLayerPixels(SkPixmap* pixmap);
     virtual SkImageInfo onImageInfo() const;
-    virtual bool onGetProps(SkSurfaceProps* props) const;
+    virtual bool onGetProps(SkSurfaceProps* props, bool top) const;
     virtual void onFlush();
 
     // Subclass save/restore notifiers.
