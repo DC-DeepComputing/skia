@@ -23,6 +23,7 @@ class RefCntedCallback;
 
 namespace skgpu::graphite {
 class Buffer;
+class ComputePipeline;
 class Gpu;
 class GraphicsPipeline;
 class Resource;
@@ -51,6 +52,17 @@ public:
                          sk_sp<Texture> resolveTexture,
                          sk_sp<Texture> depthStencilTexture);
     virtual void endRenderPass() = 0;
+
+    bool beginComputePass();
+    virtual void endComputePass() = 0;
+
+    //---------------------------------------------------------------
+    // Can only be used within compute passes
+    //---------------------------------------------------------------
+    void bindComputePipeline(sk_sp<ComputePipeline> computePipeline);
+    void bindComputeBuffer(sk_sp<Buffer> buffer, size_t offset, size_t atIndex);
+    virtual void execute(int threadGroupsX, int threadGroupsY, int threadGroupsZ, int threadsX,
+                         int threadsY, int threadsZ) = 0;
 
     //---------------------------------------------------------------
     // Can only be used within renderpasses
@@ -133,8 +145,11 @@ private:
                                    const Texture* colorTexture,
                                    const Texture* resolveTexture,
                                    const Texture* depthStencilTexture) = 0;
+    virtual bool onBeginComputePass() = 0;
 
+    virtual void onBindComputePipeline(const ComputePipeline*) = 0;
     virtual void onBindGraphicsPipeline(const GraphicsPipeline*) = 0;
+    virtual void onBindComputeBuffer(const Buffer*, size_t offset, size_t atIndex) = 0;
     virtual void onBindUniformBuffer(UniformSlot, const Buffer*, size_t bufferOffset) = 0;
     virtual void onBindVertexBuffers(const Buffer* vertexBuffer, size_t vertexOffset,
                                      const Buffer* instanceBuffer, size_t instanceOffset) = 0;

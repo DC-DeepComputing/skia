@@ -9,10 +9,14 @@
 
 #include "include/gpu/graphite/Recording.h"
 #include "src/gpu/RefCntedCallback.h"
+#include "src/gpu/graphite/Buffer.h"
 #include "src/gpu/graphite/CommandBuffer.h"
+#include "src/gpu/graphite/ComputePass.h"
+#include "src/gpu/graphite/ComputePassTask.h"
 #include "src/gpu/graphite/GpuWorkSubmission.h"
 #include "src/gpu/graphite/Log.h"
 #include "src/gpu/graphite/RecordingPriv.h"
+#include "src/gpu/graphite/ResourceProvider.h"
 
 namespace skgpu::graphite {
 
@@ -56,6 +60,23 @@ void QueueManager::addRecording(const InsertRecordingInfo& info,
         }
         return;
     }
+
+    const int SIZE = 512;
+    std::unique_ptr<skgpu::graphite::ComputePass> computePass =
+            skgpu::graphite::ComputePass::Make(
+                "layout(set=0, binding=0) in float in_data[];"
+                "layout(set=0, binding=1) out float out_data[];"
+                "void main() {"
+                "    out_data[sk_ThreadPosition.x] = in_data[sk_ThreadPosition.x] * 2;"
+                "}",
+                1, 1, 1, SIZE, 1, 1);
+    std::vector<std::unique_ptr<skgpu::graphite::ComputePass>> passes;
+    passes.push_back(std::move(computePass));
+    sk_sp<skgpu::graphite::ComputePassTask> computePassTask =
+            skgpu::graphite::ComputePassTask::Make(std::move(passes),
+                { { sizeof(float) * SIZE }, { sizeof(float) * SIZE } });
+    computePassTask->prepareResources(resourceProvider);
+    computePassTask->addCommands(resourceProvider, fCurrentCommandBuffer.get());
 
     if (!info.fRecording->priv().addCommands(resourceProvider, fCurrentCommandBuffer.get())) {
         if (callback) {

@@ -10,6 +10,7 @@
 #include "src/core/SkTraceEvent.h"
 #include "src/gpu/RefCntedCallback.h"
 #include "src/gpu/graphite/Buffer.h"
+#include "src/gpu/graphite/ComputePipeline.h"
 #include "src/gpu/graphite/GraphicsPipeline.h"
 #include "src/gpu/graphite/Sampler.h"
 #include "src/gpu/graphite/Texture.h"
@@ -75,9 +76,25 @@ bool CommandBuffer::beginRenderPass(const RenderPassDesc& renderPassDesc,
     return true;
 }
 
+bool CommandBuffer::beginComputePass() {
+    return this->onBeginComputePass();
+}
+
 void CommandBuffer::bindGraphicsPipeline(sk_sp<GraphicsPipeline> graphicsPipeline) {
     this->onBindGraphicsPipeline(graphicsPipeline.get());
     this->trackResource(std::move(graphicsPipeline));
+}
+
+void CommandBuffer::bindComputePipeline(sk_sp<ComputePipeline> computePipeline) {
+    this->onBindComputePipeline(computePipeline.get());
+    this->trackResource(std::move(computePipeline));
+}
+
+void CommandBuffer::bindComputeBuffer(sk_sp<Buffer> buffer,
+                                      size_t offset,
+                                      size_t atIndex) {
+    this->onBindComputeBuffer(buffer.get(), offset, atIndex);
+    this->trackResource(std::move(buffer));
 }
 
 void CommandBuffer::bindUniformBuffer(UniformSlot slot,
