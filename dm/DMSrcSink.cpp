@@ -2162,6 +2162,7 @@ Result GraphiteSink::draw(const Src& src,
         if (!surface) {
             return Result::Fatal("Could not create a surface.");
         }
+
         Result result = src.draw(/* dContext */ nullptr, surface->getCanvas());
         if (!result.isOk()) {
             return result;

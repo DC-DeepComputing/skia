@@ -21,6 +21,7 @@
 
 namespace skgpu::graphite {
 class MtlBlitCommandEncoder;
+class MtlComputeCommandEncoder;
 class MtlGpu;
 class MtlRenderCommandEncoder;
 
@@ -57,7 +58,14 @@ private:
                            const Texture* depthStencilTexture) override;
     void endRenderPass() override;
 
+    bool onBeginComputePass() override;
+    void execute(int threadGroupsX, int threadGroupsY, int threadGroupsZ, int threadsX,
+                 int threadsY, int threadsZ) override;
+    void endComputePass() override;
+
     void onBindGraphicsPipeline(const GraphicsPipeline*) override;
+    void onBindComputePipeline(const ComputePipeline* computePipeline) override;
+    void onBindComputeBuffer(const Buffer*, size_t offset, size_t atIndex) override;
     void onBindUniformBuffer(UniformSlot, const Buffer*, size_t offset) override;
     void onBindVertexBuffers(const Buffer* vertexBuffer, size_t vertexOffset,
                              const Buffer* instanceBuffer, size_t instanceOffset) override;
@@ -100,6 +108,7 @@ private:
     sk_cfp<id<MTLCommandBuffer>> fCommandBuffer;
     sk_sp<MtlRenderCommandEncoder> fActiveRenderCommandEncoder;
     sk_sp<MtlBlitCommandEncoder> fActiveBlitCommandEncoder;
+    sk_sp<MtlComputeCommandEncoder> fActiveComputeCommandEncoder;
 
     size_t fCurrentVertexStride = 0;
     size_t fCurrentInstanceStride = 0;

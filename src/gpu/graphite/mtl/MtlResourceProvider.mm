@@ -12,6 +12,7 @@
 #include "src/gpu/graphite/GraphicsPipelineDesc.h"
 #include "src/gpu/graphite/mtl/MtlBuffer.h"
 #include "src/gpu/graphite/mtl/MtlCommandBuffer.h"
+#include "src/gpu/graphite/mtl/MtlComputePipeline.h"
 #include "src/gpu/graphite/mtl/MtlGpu.h"
 #include "src/gpu/graphite/mtl/MtlGraphicsPipeline.h"
 #include "src/gpu/graphite/mtl/MtlSampler.h"
@@ -33,6 +34,12 @@ const MtlGpu* MtlResourceProvider::mtlGpu() {
 
 sk_sp<CommandBuffer> MtlResourceProvider::createCommandBuffer() {
     return MtlCommandBuffer::Make(this->mtlGpu());
+}
+
+sk_sp<ComputePipeline> MtlResourceProvider::onCreateComputePipeline(const std::string& src) {
+    return MtlComputePipeline::Make(this,
+                                    this->mtlGpu(),
+                                    src);
 }
 
 sk_sp<GraphicsPipeline> MtlResourceProvider::onCreateGraphicsPipeline(
