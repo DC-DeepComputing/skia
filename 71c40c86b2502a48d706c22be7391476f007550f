@@ -22,6 +22,30 @@
       },
       "revId": "71c40c86b2502a48d706c22be7391476f007550f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eb118e34_a5dda53f",
+        "filename": "resources/sksl/shared/FunctionPrototype.sksl",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-07-08T20:57:29Z",
+      "side": 1,
+      "message": "Well, GLSL allows it. I don\u0027t see any reason to introduce a discrepancy with GLSL here. If it wasn\u0027t working, maybe I would feel differently (depending on how hard it would be to fix), but why add code to guard against something that works, especially when our promise with SkSL is \"mirrors GLSL as closely as possible\"?",
+      "parentUuid": "71fbcbc0_b8c79fd3",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 60
+      },
+      "revId": "71c40c86b2502a48d706c22be7391476f007550f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
