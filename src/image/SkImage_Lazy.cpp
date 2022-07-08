@@ -24,6 +24,7 @@
 #include "src/gpu/ResourceKey.h"
 #include "src/gpu/ganesh/GrCaps.h"
 #include "src/gpu/ganesh/GrColorSpaceXform.h"
+#include "src/gpu/ganesh/GrDirectContextPriv.h"
 #include "src/gpu/ganesh/GrGpuResourcePriv.h"
 #include "src/gpu/ganesh/GrPaint.h"
 #include "src/gpu/ganesh/GrProxyProvider.h"
@@ -175,7 +176,29 @@ bool SkImage_Lazy::onReadPixels(GrDirectContext* dContext,
     if (this->getROPixels(dContext, &bm, chint)) {
         return bm.readPixels(dstInfo, dstPixels, dstRB, srcX, srcY);
     }
+#if SK_SUPPORT_GPU
+    if (!dContext) {
+        return false;
+    }
+    GrSurfaceProxyView view = this->lockTextureProxyView(dContext,
+                                                         GrImageTexGenPolicy::kDraw,
+                                                         GrMipmapped::kNo);
+
+    if (!view) {
+        return false;
+    }
+
+    GrColorType ct = this->colorTypeOfLockTextureProxy(dContext->priv().caps());
+    GrColorInfo colorInfo(ct, this->alphaType(), this->refColorSpace());
+    auto sContext = dContext->priv().makeSC(std::move(view), colorInfo);
+    if (!sContext) {
+        return false;
+    }
+
+    return sContext->readPixels(dContext, {dstInfo, dstPixels, dstRB}, {srcX, srcY});
+#else
     return false;
+#endif // SK_SUPPORT_GPU
 }
 
 sk_sp<SkData> SkImage_Lazy::onRefEncoded() const {
