@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5a17886b_b233b6c2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-07-08T14:33:31Z",
+      "side": 1,
+      "message": "For posterity, the failing roll was cl/459749332 . Looks like just a typo on the name of the file.",
+      "revId": "3b5c2c6ffde0fc06b3bbcbb00e6c064001f3c071",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
