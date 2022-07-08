@@ -46,6 +46,30 @@
       },
       "revId": "71c40c86b2502a48d706c22be7391476f007550f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0e617e2c_9a57187d",
+        "filename": "resources/sksl/shared/FunctionPrototype.sksl",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-07-08T22:04:41Z",
+      "side": 1,
+      "message": "Yeah, from that perspective it doesn\u0027t hurt to allow it. Although interestingly it isn\u0027t useful in either GLSL or Metal and they\u0027ll actually prevent you from referencing main (glslang detects recursion, the Metal compiler outputs an error like \"Call to fragment function fragmentShader\" if an entry point function is invoked directly even with no recursion present).\n\nI think this is OK as long as we are already detecting the disallowed main invocation / recursion cases in the front-end.",
+      "parentUuid": "eb118e34_a5dda53f",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 60
+      },
+      "revId": "71c40c86b2502a48d706c22be7391476f007550f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
