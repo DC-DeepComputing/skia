@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "79e26ad4_538b8b69",
+        "filename": "src/gpu/graphite/mtl/MtlGraphicsPipeline.mm",
+        "patchSetId": 3
+      },
+      "lineNbr": 171,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-07-08T20:22:18Z",
+      "side": 1,
+      "message": "Is there any reason to not just pass the rteDict to the SkShaderInfo\u0027s ctor?",
+      "range": {
+        "startLine": 171,
+        "startChar": 15,
+        "endLine": 171,
+        "endChar": 41
+      },
+      "revId": "470a1f82933152475a95b56e6e02fc41d9df79d5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
