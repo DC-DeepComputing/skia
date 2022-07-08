@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "29a88bd6_972ac46c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-07-08T13:06:23Z",
+      "side": 1,
+      "message": "I just went and read angles_to_unit_vectors, and now I\u0027m sad. I\u0027d really like a non-looping algorithm there.",
+      "revId": "cdf0fc15f2ce83d4d483fc9a82d51eb8ab027d62",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
