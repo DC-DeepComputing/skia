@@ -67,9 +67,7 @@ std::string generate_default_before_children_glue_code(int entryIndex,
 
 
 std::string SkShaderSnippet::getMangledUniformName(int uniformIndex, int mangleId) const {
-    std::string result;
-    result = fUniforms[uniformIndex].name() + std::string("_") + std::to_string(mangleId);
-    return result;
+    return std::string(fUniforms[uniformIndex].name()) + "_" + std::to_string(mangleId);
 }
 
 // TODO: SkShaderInfo::toSkSL needs to work outside of both just graphite and metal. To do
