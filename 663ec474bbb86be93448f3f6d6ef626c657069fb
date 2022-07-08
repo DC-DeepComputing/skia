@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "48a6e5d7_1f06526a",
+        "filename": "tools/BUILD.bazel",
+        "patchSetId": 3
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-07-08T14:32:59Z",
+      "side": 1,
+      "message": "`SkMetaData.cpp` (lower `k` and `.cpp`).",
+      "revId": "663ec474bbb86be93448f3f6d6ef626c657069fb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
