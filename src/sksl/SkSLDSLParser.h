@@ -41,7 +41,6 @@ class DSLBlock;
 class DSLCase;
 class DSLGlobalVar;
 class DSLParameter;
-
 }
 
 class AutoDSLDepth;
