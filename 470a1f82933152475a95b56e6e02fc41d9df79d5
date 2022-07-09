@@ -46,6 +46,30 @@
       },
       "revId": "470a1f82933152475a95b56e6e02fc41d9df79d5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4b0d36a1_bd1728a5",
+        "filename": "src/gpu/graphite/mtl/MtlGraphicsPipeline.mm",
+        "patchSetId": 3
+      },
+      "lineNbr": 171,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-07-09T14:35:57Z",
+      "side": 1,
+      "message": "Done at followup http://review.skia.org/557058. PTAL and see if you prefer it. (I could go either way.) We didn\u0027t have any ctors/dtors so I put in the necessary boilerplate.",
+      "parentUuid": "86760420_cfbc506a",
+      "range": {
+        "startLine": 171,
+        "startChar": 15,
+        "endLine": 171,
+        "endChar": 41
+      },
+      "revId": "470a1f82933152475a95b56e6e02fc41d9df79d5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
