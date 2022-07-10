@@ -320,6 +320,10 @@ SkRuntimeEffect::Result SkRuntimeEffect::MakeFromSource(SkString sksl,
         if (!program) {
             RETURN_FAILURE("%s", compiler->errorText().c_str());
         }
+        if (options.enforceES2Restrictions &&
+            program->fConfig->fRequiredSkSLVersion > SkSL::Version::k100) {
+            RETURN_FAILURE("unsupported version number");
+        }
     }
     return MakeInternal(std::move(program), options, kind);
 }
