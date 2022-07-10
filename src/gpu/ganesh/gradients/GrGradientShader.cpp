@@ -319,7 +319,8 @@ static std::unique_ptr<GrFragmentProcessor> make_looping_colorizer(int intervalC
             /* loopCount: */ loopCount,
             /* @if (loopCount > 0): */ loopCount);
 
-        auto result = SkRuntimeEffect::MakeForShader(std::move(sksl));
+        auto result = SkRuntimeEffect::MakeForShader(std::move(sksl),
+                                                     SkRuntimeEffectPriv::ES3Options());
         SkASSERTF(result.effect, "%s", result.errorText.c_str());
         cacheEntry->effect = result.effect.release();
     });
