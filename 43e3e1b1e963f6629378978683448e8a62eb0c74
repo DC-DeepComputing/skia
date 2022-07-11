@@ -55,6 +55,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "572259a5_3f8ebe1b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-07-11T20:52:20Z",
+      "side": 1,
+      "message": "I\u0027m getting a permission error from docker for this, though I image I\u0027ll need to follow up with a CL like this: https://skia-review.googlesource.com/c/skia/+/492916?",
+      "parentUuid": "c6909af5_4532203a",
+      "revId": "43e3e1b1e963f6629378978683448e8a62eb0c74",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9653cc0f_b8012a29",
         "filename": "WORKSPACE.bazel",
         "patchSetId": 1
@@ -90,6 +108,30 @@
       "side": 1,
       "message": "From the Skia Infra root\ngo run ./bazel/gcs_mirror/gcs_mirror.go --url ... --sha256 ...",
       "parentUuid": "9653cc0f_b8012a29",
+      "range": {
+        "startLine": 16,
+        "startChar": 9,
+        "endLine": 16,
+        "endChar": 137
+      },
+      "revId": "43e3e1b1e963f6629378978683448e8a62eb0c74",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9d780936_59e63cfd",
+        "filename": "WORKSPACE.bazel",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-07-11T20:52:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "04440a6f_f96a4548",
       "range": {
         "startLine": 16,
         "startChar": 9,
