@@ -89,11 +89,11 @@ public:
             kHalfPrecision_Flag = 0x10,
         };
 
-        SkString  name;
-        size_t    offset;
-        Type      type;
-        int       count;
-        uint32_t  flags;
+        std::string_view name;
+        size_t           offset;
+        Type             type;
+        int              count;
+        uint32_t         flags;
 
         bool isArray() const { return SkToBool(this->flags & kArray_Flag); }
         bool isColor() const { return SkToBool(this->flags & kColor_Flag); }

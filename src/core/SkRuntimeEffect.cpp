@@ -95,7 +95,7 @@ SkRuntimeEffect::Uniform SkRuntimeEffectPriv::VarAsUniform(const SkSL::Variable&
     using Uniform = SkRuntimeEffect::Uniform;
     SkASSERT(var.modifiers().fFlags & SkSL::Modifiers::kUniform_Flag);
     Uniform uni;
-    uni.name = SkString(var.name());
+    uni.name = var.name();
     uni.flags = 0;
     uni.count = 1;
 
@@ -630,7 +630,7 @@ const SkRuntimeEffect::Uniform* SkRuntimeEffect::findUniform(const char* name) c
     SkASSERT(name);
     size_t len = strlen(name);
     auto iter = std::find_if(fUniforms.begin(), fUniforms.end(), [name, len](const Uniform& u) {
-        return u.name.equals(name, len);
+        return u.name == std::string_view(name, len);
     });
     return iter == fUniforms.end() ? nullptr : &(*iter);
 }
