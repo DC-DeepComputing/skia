@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2c1168a8_26b486a1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-07-11T17:56:28Z",
+      "side": 1,
+      "message": "Ben, I am trying to simplify SkUnicode (for this ICU project we discussed).\nI removed unused SkUnicode script iterator but didn\u0027t introduced a default script value as a parameter (since we never used it).",
+      "revId": "88b4aa04f5a4ee90f25ba3674d7dd471256ff4e3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
