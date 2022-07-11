@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0bf0b868_163bbdc4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-07-11T21:00:05Z",
+      "side": 1,
+      "message": "I think this is a great idea[^1]. That said, it occurs to me that we discussed gating the behavior on the `__ANDROID_API__` level. I\u0027m not sure how we would handle that on this job.\n\nAnother option would be to make Android keep the old behavior **permanently**. But I\u0027m guessing you don\u0027t want to do that?\n\n\n[^1]: Something in my memory tells me we might have already had this? But I don\u0027t see one currently on Status.",
+      "revId": "1a6a0380b30e72eb74ac96cce446385c5ea06151",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
