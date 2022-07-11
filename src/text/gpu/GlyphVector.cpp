@@ -22,8 +22,8 @@ StrikeRef::StrikeRef(sk_sp<SkStrike>&& strike) : fStrike{std::move(strike)} {
     SkASSERT(std::get<sk_sp<SkStrike>>(fStrike) != nullptr);
 }
 
-StrikeRef::StrikeRef(SkStrikeForGPU* strike) : fStrike {strike} {
-    SkASSERT(std::get<SkStrikeForGPU*>(fStrike) != nullptr);
+StrikeRef::StrikeRef(StrikeForGPU* strike) : fStrike {strike} {
+    SkASSERT(std::get<StrikeForGPU*>(fStrike) != nullptr);
 }
 
 StrikeRef::StrikeRef(StrikeRef&&) = default;
@@ -36,7 +36,7 @@ void StrikeRef::flatten(SkWriteBuffer& buffer) const {
 
     if (const sk_sp<SkStrike>* strikePtr = std::get_if<sk_sp<SkStrike>>(&fStrike)) {
         (*strikePtr)->getDescriptor().flatten(buffer);
-    } else if (SkStrikeForGPU*const* GPUstrikePtr = std::get_if<SkStrikeForGPU*>(&fStrike)) {
+    } else if (StrikeForGPU*const* GPUstrikePtr = std::get_if<StrikeForGPU*>(&fStrike)) {
         (*GPUstrikePtr)->getDescriptor().flatten(buffer);
     }
 }
@@ -98,8 +98,7 @@ GlyphVector GlyphVector::Make(
     return GlyphVector{std::move(strike), SkSpan(variants, glyphs.size())};
 }
 
-GlyphVector GlyphVector::Make(
-        SkStrikeForGPU* strike, SkSpan<SkGlyphVariant> glyphs, SubRunAllocator* alloc) {
+GlyphVector GlyphVector::Make(StrikeForGPU* strike, SkSpan<SkGlyphVariant> glyphs, SubRunAllocator* alloc) {
     SkASSERT(strike != nullptr);
     SkASSERT(glyphs.size() > 0);
     Variant* variants = MakeGlyphs(glyphs, alloc);
