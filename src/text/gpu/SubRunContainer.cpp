@@ -2449,7 +2449,7 @@ std::tuple<bool, SubRunContainerOwner> SubRunContainer::MakeInAlloc(
         const SkMatrix& positionMatrix,
         const SkPaint& runPaint,
         SkStrikeDeviceInfo strikeDeviceInfo,
-        SkStrikeForGPUCacheInterface* strikeCache,
+        StrikeForGPUCacheInterface* strikeCache,
         SubRunAllocator* alloc,
         SubRunCreationBehavior creationBehavior,
         const char* tag) {
@@ -2505,7 +2505,7 @@ std::tuple<bool, SubRunContainerOwner> SubRunContainer::MakeInAlloc(
                 }
 
                 if (!SkScalarNearlyZero(strikeToSourceScale)) {
-                    SkScopedStrikeForGPU strike = strikeSpec.findOrCreateScopedStrike(strikeCache);
+                    ScopedStrikeForGPU strike = strikeSpec.findOrCreateScopedStrike(strikeCache);
 
                     accepted->startSource(rejected->source());
                     if constexpr (kTrace) {
@@ -2537,7 +2537,7 @@ std::tuple<bool, SubRunContainerOwner> SubRunContainer::MakeInAlloc(
                     msg.appendf("  Mask case:\n%s", strikeSpec.dump().c_str());
                 }
 
-                SkScopedStrikeForGPU strike = strikeSpec.findOrCreateScopedStrike(strikeCache);
+                ScopedStrikeForGPU strike = strikeSpec.findOrCreateScopedStrike(strikeCache);
 
                 accepted->startDevicePositioning(
                         rejected->source(), positionMatrix, strike->roundingSpec());
@@ -2581,7 +2581,7 @@ std::tuple<bool, SubRunContainerOwner> SubRunContainer::MakeInAlloc(
             }
 
             if (!SkScalarNearlyZero(strikeToSourceScale)) {
-                SkScopedStrikeForGPU strike = strikeSpec.findOrCreateScopedStrike(strikeCache);
+                ScopedStrikeForGPU strike = strikeSpec.findOrCreateScopedStrike(strikeCache);
 
                 accepted->startSource(rejected->source());
                 if constexpr (kTrace) {
@@ -2610,7 +2610,7 @@ std::tuple<bool, SubRunContainerOwner> SubRunContainer::MakeInAlloc(
             }
 
             if (!SkScalarNearlyZero(strikeToSourceScale)) {
-                SkScopedStrikeForGPU strike = strikeSpec.findOrCreateScopedStrike(strikeCache);
+                ScopedStrikeForGPU strike = strikeSpec.findOrCreateScopedStrike(strikeCache);
 
                 accepted->startSource(rejected->source());
                 if constexpr (kTrace) {
@@ -2652,7 +2652,7 @@ std::tuple<bool, SubRunContainerOwner> SubRunContainer::MakeInAlloc(
             // largest glyph dimension for the glyph run.
             SkStrikeSpec gaugingStrikeSpec = SkStrikeSpec::MakeTransformMask(
                     runFont, runPaint, deviceProps, scalerContextFlags, *gaugingMatrix);
-            SkScopedStrikeForGPU gaugingStrike =
+            ScopedStrikeForGPU gaugingStrike =
                     gaugingStrikeSpec.findOrCreateScopedStrike(strikeCache);
 
             // Remember, this will be an integer.
@@ -2684,7 +2684,7 @@ std::tuple<bool, SubRunContainerOwner> SubRunContainer::MakeInAlloc(
                     // Create a strike to calculate the new reduced maximum glyph dimension.
                     SkStrikeSpec reducingStrikeSpec = SkStrikeSpec::MakeTransformMask(
                             reducedFont, runPaint, deviceProps, scalerContextFlags, *gaugingMatrix);
-                    SkScopedStrikeForGPU reducingStrike =
+                    ScopedStrikeForGPU reducingStrike =
                             reducingStrikeSpec.findOrCreateScopedStrike(strikeCache);
 
                     // Remember, this will be an integer.
@@ -2716,7 +2716,7 @@ std::tuple<bool, SubRunContainerOwner> SubRunContainer::MakeInAlloc(
                 if constexpr (kTrace) {
                     msg.appendf("Transformed case:\n%s", strikeSpec.dump().c_str());
                 }
-                SkScopedStrikeForGPU strike = strikeSpec.findOrCreateScopedStrike(strikeCache);
+                ScopedStrikeForGPU strike = strikeSpec.findOrCreateScopedStrike(strikeCache);
 
                 accepted->startSource(rejected->source());
                 if constexpr (kTrace) {
