@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2b367909_fa062875",
+        "filename": "include/core/SkCanvas.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 273,
+      "author": {
+        "id": 10586
+      },
+      "writtenOn": "2022-07-11T18:33:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "10ed775a_f0e3b860",
+      "range": {
+        "startLine": 272,
+        "startChar": 35,
+        "endLine": 273,
+        "endChar": 47
+      },
+      "revId": "eaaf4ca57bcfc85504f2b7e42a24a93ee6b9d86d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "44fb6f22_47b58ff1",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-07-11T13:28:32Z",
       "side": 1,
       "message": "Do we want to add a note that these could differ from getTopProps() depending on what was passed to previous saveLayer() calls?",
+      "range": {
+        "startLine": 279,
+        "startChar": 8,
+        "endLine": 280,
+        "endChar": 67
+      },
+      "revId": "eaaf4ca57bcfc85504f2b7e42a24a93ee6b9d86d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ba1af301_29a56fba",
+        "filename": "include/core/SkCanvas.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 280,
+      "author": {
+        "id": 10586
+      },
+      "writtenOn": "2022-07-11T18:33:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "44fb6f22_47b58ff1",
       "range": {
         "startLine": 279,
         "startChar": 8,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e608620c_8003ac56",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1287,
+      "author": {
+        "id": 10586
+      },
+      "writtenOn": "2022-07-11T18:33:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7de4bd1c_5588059b",
+      "range": {
+        "startLine": 1287,
+        "startChar": 35,
+        "endLine": 1287,
+        "endChar": 47
+      },
+      "revId": "eaaf4ca57bcfc85504f2b7e42a24a93ee6b9d86d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2442737c_c46412f5",
@@ -93,6 +165,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ad89a653_a39b0f8f",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1292,
+      "author": {
+        "id": 10586
+      },
+      "writtenOn": "2022-07-11T18:33:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2442737c_c46412f5",
+      "range": {
+        "startLine": 1292,
+        "startChar": 29,
+        "endLine": 1292,
+        "endChar": 41
+      },
+      "revId": "eaaf4ca57bcfc85504f2b7e42a24a93ee6b9d86d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0f00589c_83d5971d",
@@ -106,6 +202,30 @@
       "writtenOn": "2022-07-11T13:28:32Z",
       "side": 1,
       "message": "and here",
+      "range": {
+        "startLine": 1298,
+        "startChar": 29,
+        "endLine": 1298,
+        "endChar": 40
+      },
+      "revId": "eaaf4ca57bcfc85504f2b7e42a24a93ee6b9d86d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fa40ab1f_5a26feee",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1298,
+      "author": {
+        "id": 10586
+      },
+      "writtenOn": "2022-07-11T18:33:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0f00589c_83d5971d",
       "range": {
         "startLine": 1298,
         "startChar": 29,
