@@ -8,6 +8,7 @@
 #include <jni.h>
 
 #include <string>
+#include <string_view>
 #include "include/core/SkBlendMode.h"
 #include "include/core/SkSamplingOptions.h"
 #include "include/core/SkTileMode.h"
@@ -28,13 +29,13 @@ public:
         fEnv->ReleaseStringUTFChars(fJString, fCString);
     }
 
-    operator const char*() const { return fCString; }
+    operator const char*() const      { return fCString; }
+    operator std::string_view() const { return fCString; }
 
 private:
     JNIEnv*        fEnv;
     const jstring& fJString;
     const char*    fCString;
-
 
     CString(CString&&) = delete;
     CString(const CString&) = delete;
