@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c50c1611_2e09edf6",
+        "filename": "src/core/SkScalerCache.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-07-11T15:58:28Z",
+      "side": 1,
+      "message": "Can this be omitted from this header?",
+      "revId": "6549c6d3a2e4a317fd4b8fafda534d1e3d4ea975",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1ca0e3a6_6d5eb6c5",
+        "filename": "src/core/SkScalerContext.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-07-11T15:58:28Z",
+      "side": 1,
+      "message": "Same here ?",
+      "revId": "6549c6d3a2e4a317fd4b8fafda534d1e3d4ea975",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
