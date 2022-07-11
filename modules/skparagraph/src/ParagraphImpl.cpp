@@ -99,7 +99,25 @@ ParagraphImpl::ParagraphImpl(const std::u16string& utf16text,
                         std::move(unicode))
 {
     SkASSERT(fUnicode);
-    fText =  fUnicode->convertUtf16ToUtf8(utf16text);
+    fText =  SkUnicode::convertUtf16ToUtf8(utf16text);
+}
+
+ParagraphImpl::ParagraphImpl(const SkString& text,
+                             ParagraphStyle style,
+                             SkTArray<Block, true> blocks,
+                             SkTArray<Placeholder, true> placeholders,
+                             sk_sp<FontCollection> fonts,
+                             std::vector<SkUnicode::BidiRegion> bidis,
+                             SkTArray<CodeUnitFlags> codeUnitFlags,
+                             std::vector<SkUnicode::Position> words)
+        : ParagraphImpl(text,
+                        std::move(style),
+                        std::move(blocks),
+                        std::move(placeholders),
+                        std::move(fonts),
+                        nullptr) {
+    fBidiRegions = std::move(bidis);
+    fCodeUnitProperties = std::move(codeUnitFlags);
 }
 
 ParagraphImpl::~ParagraphImpl() = default;
@@ -229,7 +247,8 @@ void ParagraphImpl::resetContext() {
 bool ParagraphImpl::computeCodeUnitProperties() {
 
     if (nullptr == fUnicode) {
-        return false;
+        // We may have precomputed code unit properties
+        return true;
     }
 
     // Get bidi regions
@@ -246,6 +265,7 @@ bool ParagraphImpl::computeCodeUnitProperties() {
     TextIndex firstWhitespace = EMPTY_INDEX;
     fUnicode->forEachCodepoint(fText.c_str(), fText.size(),
         [this, &firstWhitespace](SkUnichar unichar, int32_t start, int32_t end, int32_t count) {
+            // TODO: use ICU or another Unicode library knowledge to detect tabulation
             if (unichar == '\t' && end - start == 1) {
                 if (this->paragraphStyle().getReplaceTabCharacters()) {
                     fText[start] = ' ';
@@ -273,6 +293,11 @@ bool ParagraphImpl::computeCodeUnitProperties() {
             }
             if (fUnicode->isHardBreak(unichar)) {
                 fHasLineBreaks = true;
+            }
+            if (fUnicode->isControl(unichar)) {
+                for (auto i = start; i < end; ++i) {
+                    fCodeUnitProperties[start] |= CodeUnitFlags::kControl;
+                }
             }
        });
 
@@ -1024,7 +1049,7 @@ SkString ParagraphImpl::getEllipsis() const {
     if (!ellipsis8.isEmpty()) {
         return ellipsis8;
     } else {
-        return fUnicode->convertUtf16ToUtf8(fParagraphStyle.getEllipsisUtf16());
+        return SkUnicode::convertUtf16ToUtf8(fParagraphStyle.getEllipsisUtf16());
     }
 }
 
