@@ -16,6 +16,23 @@
       "message": "I tested the new GM at tip-of-tree (before I added the guard), and it draws nothing. With the defined enabled, it produces the expected result. (The new bot being added in the follow-up CL will ensure that we get ongoing testing of this).",
       "revId": "86eaeaf191057f2bbe09130eed2ed5f169a30d0b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "056b13ac_16ef25e4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-07-11T20:40:38Z",
+      "side": 1,
+      "message": "Code changes look right to me. Let me get the process started to determine whether we have permission to merge.\n\nOne note: you didn\u0027t use `__ANDROID_API__`, but I think this is better - we can define your macro based on it.",
+      "revId": "86eaeaf191057f2bbe09130eed2ed5f169a30d0b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
