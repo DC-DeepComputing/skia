@@ -22,6 +22,30 @@
       },
       "revId": "b83e8e1dfab01ba4677e6aabc062a37d770b3e0b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7b3919c8_a56bb029",
+        "filename": "src/core/SkGlyph.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 290,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-07-11T18:47:20Z",
+      "side": 1,
+      "message": "As of c++17 constexpr implies inline in a class definition. I think it should be \"static constexpr\".",
+      "parentUuid": "7933ec6b_6643918b",
+      "range": {
+        "startLine": 290,
+        "startChar": 4,
+        "endLine": 290,
+        "endChar": 27
+      },
+      "revId": "b83e8e1dfab01ba4677e6aabc062a37d770b3e0b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
