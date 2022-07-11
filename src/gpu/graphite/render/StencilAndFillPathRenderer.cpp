@@ -8,11 +8,15 @@
 #include "src/gpu/graphite/Renderer.h"
 
 #include "include/core/SkPathTypes.h"
+#include "include/core/SkVertices.h"
 #include "src/gpu/graphite/render/CoverBoundsRenderStep.h"
 #include "src/gpu/graphite/render/MiddleOutFanRenderStep.h"
 #include "src/gpu/graphite/render/StencilAndCoverDSS.h"
 #include "src/gpu/graphite/render/TessellateCurvesRenderStep.h"
 #include "src/gpu/graphite/render/TessellateWedgesRenderStep.h"
+#include "src/gpu/graphite/render/VerticesRenderStep.h"
+// TODO NP - is this the best place to handle this logic?
+#include "src/core/SkVerticesPriv.h"
 
 namespace skgpu::graphite {
 
@@ -106,4 +110,57 @@ const Renderer& Renderer::ConvexTessellatedWedges() {
     return kConvexWedgeRenderer;
 }
 
-} // namespace skgpu
+const Renderer& Renderer::Vertices(const SkVertices* vertices, bool hasColor, bool hasTexture) {
+    // Create vertex render steps and renderers for each combination of triangles, triangle fans,
+    // and with/without color and/or with/without texture coordinates.
+    static const VerticesRenderStep kTrianglesStep{PrimitiveType::kTriangles, "Triangles"};
+    static const Renderer kTrianglesVerticesRenderer{"Vertices[Triangles]", &kTrianglesStep};
+
+    static const VerticesRenderStep kTrianglesColorStep{PrimitiveType::kTriangles, "TrianglesColor"};
+    static const Renderer kTrianglesColorVerticesRenderer{"Vertices[TrianglesColor]",
+                                                          &kTrianglesColorStep};
+
+    static const VerticesRenderStep kTrianglesTexStep{PrimitiveType::kTriangles, "TrianglesTex"};
+    static const Renderer kTrianglesTexVerticesRenderer{"Vertices[TrianglesTex]",
+                                                        &kTrianglesTexStep};
+
+    static const VerticesRenderStep kTrianglesColorTexStep{PrimitiveType::kTriangles,
+                                                           "TrianglesColorTex"};
+    static const Renderer kTrianglesColorTexVerticesRenderer{"Vertices[TrianglesColorTex]",
+                                                             &kTrianglesColorTexStep};
+
+    static const VerticesRenderStep kTriangleStripStep{PrimitiveType::kTriangleStrip,
+                                                       "TriangleStrip"};
+    static const Renderer kTriangleStripVerticesRenderer{"Vertices[TriangleStrip]",
+                                                         &kTriangleStripStep};
+
+    static const VerticesRenderStep kTriangleStripColorStep{PrimitiveType::kTriangleStrip,
+                                                            "TriangleColorStrip"};
+    static const Renderer kTriangleStripColorVerticesRenderer{"Vertices[TriangleColorStrip]",
+                                                              &kTriangleStripColorStep};
+
+    static const VerticesRenderStep kTriangleStripTexStep{PrimitiveType::kTriangleStrip,
+                                                          "TriangleStripTex"};
+    static const Renderer kTriangleStripTexVerticesRenderer{"Vertices[TriangleStripTex]",
+                                                            &kTriangleStripTexStep};
+
+    static const VerticesRenderStep kTriangleStripColorTexStep{PrimitiveType::kTriangleStrip,
+                                                               "TriangleStripColorTex"};
+    static const Renderer kTriangleStripColorTexVerticesRenderer{"Vertices[TriangleStripColorTex]",
+                                                                 &kTriangleStripColorTexStep};
+
+    switch (vertices->priv().mode()) {
+        case SkVertices::VertexMode::kTriangles_VertexMode: {
+            return kTrianglesVerticesRenderer;
+        }
+        case SkVertices::VertexMode::kTriangleFan_VertexMode: {
+            // TriangleFan vertices get converted to triangles within SkVertices.
+            return kTrianglesVerticesRenderer;
+        }
+        case SkVertices::VertexMode::kTriangleStrip_VertexMode: {
+            return kTriangleStripVerticesRenderer;
+        }
+    }
+    // TODO NP - Assert that primitive type was set. Maybe add SKUNREACHABLE in default?
+}
+}
