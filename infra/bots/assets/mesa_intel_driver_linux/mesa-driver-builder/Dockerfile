@@ -17,6 +17,7 @@ RUN echo "deb-src http://deb.debian.org/debian buster main" >> /etc/apt/sources.
     apt-get update && apt-get upgrade -y && \
     apt-get install -y wget clang-6.0 && \
     apt-get build-dep -y mesa && \
+    apt-get install meson && \
     rm -rf /var/lib/apt/lists/*
 
 ENV CC="/usr/lib/llvm-6.0/bin/clang" \
@@ -27,3 +28,5 @@ ENV CC="/usr/lib/llvm-6.0/bin/clang" \
     MESA_VERSION=18.3.6
 
 COPY ./build_mesa.sh /opt/build_mesa.sh
+
+ENTRYPOINT ["/opt/build_mesa.sh"]

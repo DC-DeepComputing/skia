@@ -13,18 +13,13 @@ set -ex
 
 pushd /tmp
 
-wget https://mesa.freedesktop.org/archive/mesa-$MESA_VERSION.tar.gz
-tar --gunzip --extract --file mesa-$MESA_VERSION.tar.gz
+curl  https://archive.mesa3d.org//mesa-${MESA_VERSION}.tar.xz -o mesa.tar.xz
+tar --gunzip --extract --file mesa.tar.gz
 cd mesa-$MESA_VERSION/
 
-./configure --with-dri-drivers=i965 --with-gallium-drivers= --with-vulkan-drivers=intel
-make -j 50
-
-cp lib/* /OUT
-cp src/intel/vulkan/intel_icd.x86_64.json /OUT
-
-# Change "library_path": "/usr/local/lib/libvulkan_intel.so"
-# to "library_path": "./libvulkan_intel.so"
-sed -i -e 's/\/usr\/local\/lib/\./g' /OUT/intel_icd.x86_64.json
+meson configure --prefix="${PWD}/build/install" build/
+ninja -C build/
+ninja -C build/ install
+cp build/install/lib/x86_64-linux-gnu/ /OUT
 
 popd

@@ -21,7 +21,7 @@ Finally, use `/tmp/out` as the input directory to the upload script.
 Building it manually
 --------------------
 If Docker is not installed, these steps may be used to build the driver.
-This is known to work on Ubuntu 18.04, but is stale since we use the Docker container
+This is known to work on Debian 10.3, but is stale since we use the Docker container
 for day-to-day builds.
 
 Install all deps
@@ -61,7 +61,7 @@ Finally, use mesa/lib as the input directory to the upload script.
 
 Docker Image Maintanence
 ------------------------
-The docker image `mesa-driver-builder` is an Ubuntu container with many build
+The docker image `mesa-driver-builder` is a Debian container with many build
 tools installed (including Clang 6). It is designed specifically to build the mesa driver.
 
 The image only needs to be re-built when the dependencies change or the build_mesa.sh is updated.

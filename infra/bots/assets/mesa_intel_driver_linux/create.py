@@ -19,15 +19,21 @@ import subprocess
 # accidentally change the Docker image that "v2" points to.
 DOCKER_IMAGE = 'gcr.io/skia-public/mesa-driver-builder:v2'
 BUILD_SCRIPT = '/opt/build_mesa.sh'
-MESA_VERSION = '18.3.3'
+MESA_VERSION = '22.0.5'
 
 
 def create_asset(target_dir):
   """Create the asset."""
   cmd = [
+    'docker', 'build', '-t', 'mesa-driver-builder:latest', './mesa_intel_driver_linux',
+  ]
+  print('Running buildind container', cmd)
+  subprocess.check_output(cmd)
+
+  cmd = [
     'docker', 'run', '--volume', '%s:/OUT' % target_dir,
     '--env', 'MESA_VERSION=%s' % MESA_VERSION,
-    DOCKER_IMAGE, BUILD_SCRIPT
+    'mesa-driver-builder', BUILD_SCRIPT
   ]
   print('Running docker cmd', cmd)
   subprocess.check_output(cmd)
