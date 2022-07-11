@@ -105,6 +105,24 @@
       "parentUuid": "9257709e_032cd0b0",
       "revId": "4639becabc3d53dd53935f0c5fc877b6f6188a1d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "51b9f133_fcbc3e81",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-07-11T13:28:32Z",
+      "side": 1,
+      "message": "I think this sounds reasonable to me, and agree with the current implementation of separate public functions and leaning on the single internal virtual.",
+      "parentUuid": "8b9e08da_e9d2f5b4",
+      "revId": "4639becabc3d53dd53935f0c5fc877b6f6188a1d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
