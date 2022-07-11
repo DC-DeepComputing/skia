@@ -5,7 +5,7 @@
  * found in the LICENSE file.
  */
 
-#include "src/core/SkStrikeForGPU.h"
+#include "src/text/gpu/StrikeForGPU.h"
 
 #include "src/core/SkGlyphRunPainter.h"
 

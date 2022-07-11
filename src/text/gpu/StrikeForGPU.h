@@ -5,8 +5,8 @@
  * found in the LICENSE file.
  */
 
-#ifndef SkStrikeInterface_DEFINED
-#define SkStrikeInterface_DEFINED
+#ifndef sktext_gpu_StrikeForGPU_DEFINED
+#define sktext_gpu_StrikeForGPU_DEFINED
 
 #include "include/core/SkPaint.h"
 #include "include/core/SkPoint.h"
@@ -78,4 +78,4 @@ public:
     virtual ScopedStrikeForGPU findOrCreateScopedStrike(const SkStrikeSpec& strikeSpec) = 0;
 };
 }  // namespace sktext::gpu
-#endif  //SkStrikeInterface_DEFINED
+#endif  // sktext_gpu_StrikeForGPU_DEFINED

@@ -12,10 +12,10 @@
 #include "include/core/SkSpan.h"
 #include "src/core/SkGlyph.h"
 #include "src/core/SkGlyphBuffer.h"
-#include "src/core/SkStrikeForGPU.h"
 #include "src/gpu/AtlasTypes.h"
 #include "src/text/gpu/Glyph.h"
 #include "src/text/gpu/StrikeCache.h"
+#include "src/text/gpu/StrikeForGPU.h"
 #include "src/text/gpu/SubRunAllocator.h"
 
 class SkStrikeClient;
