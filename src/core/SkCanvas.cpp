@@ -2274,9 +2274,11 @@ static SkSamplingOptions clean_sampling_for_constraint(
         const SkSamplingOptions& sampling,
         SkCanvas::SrcRectConstraint constraint) {
     if (constraint == SkCanvas::kStrict_SrcRectConstraint) {
+#if !defined(SK_LEGACY_ALLOW_STRICT_CONSTRAINT_MIPMAPPING)
         if (sampling.mipmap != SkMipmapMode::kNone) {
             return SkSamplingOptions(sampling.filter);
         }
+#endif
         if (sampling.isAniso()) {
             return SkSamplingOptions(SkFilterMode::kLinear);
         }
@@ -2284,10 +2286,23 @@ static SkSamplingOptions clean_sampling_for_constraint(
     return sampling;
 }
 
+static SkCanvas::SrcRectConstraint clean_constraint_for_image_bounds(
+        SkCanvas::SrcRectConstraint constraint,
+        const SkRect& src,
+        const SkImage* image) {
+#if defined(SK_DISABLE_STRICT_CONSTRAINT_FOR_ENTIRE_IMAGE)
+    if (constraint == SkCanvas::kStrict_SrcRectConstraint && src.contains(image->bounds())) {
+        return SkCanvas::kFast_SrcRectConstraint;
+    }
+#endif
+    return constraint;
+}
+
 void SkCanvas::onDrawImageRect2(const SkImage* image, const SkRect& src, const SkRect& dst,
                                 const SkSamplingOptions& sampling, const SkPaint* paint,
                                 SrcRectConstraint constraint) {
     SkPaint realPaint = clean_paint_for_drawImage(paint);
+    constraint = clean_constraint_for_image_bounds(constraint, src, image);
     SkSamplingOptions realSampling = clean_sampling_for_constraint(sampling, constraint);
 
     if (this->internalQuickReject(dst, realPaint)) {
