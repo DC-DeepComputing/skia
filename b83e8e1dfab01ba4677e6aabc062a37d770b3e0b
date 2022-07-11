@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7933ec6b_6643918b",
+        "filename": "src/core/SkGlyph.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 290,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-07-11T18:09:03Z",
+      "side": 1,
+      "message": "Just \"inline constexpr\" now ?",
+      "range": {
+        "startLine": 290,
+        "startChar": 4,
+        "endLine": 290,
+        "endChar": 27
+      },
+      "revId": "b83e8e1dfab01ba4677e6aabc062a37d770b3e0b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
