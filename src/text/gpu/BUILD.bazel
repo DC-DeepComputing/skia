@@ -17,6 +17,7 @@ GPU_FILES = [
     "Slug.cpp",
     "StrikeCache.cpp",
     "StrikeCache.h",
+    "StrikeForGPU.h",
     "SubRunAllocator.cpp",
     "SubRunAllocator.h",
     "SubRunContainer.cpp",
