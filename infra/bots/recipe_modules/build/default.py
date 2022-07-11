@@ -204,6 +204,11 @@ def compile_fn(api, checkout_root, out_dir):
     if 'SK_CPU_LIMIT' in extra_tokens[0]:
       extra_cflags.append('-DSKCMS_PORTABLE')
 
+  # The 'FrameworkWorkarounds' bot is used to test special behavior that's
+  # normally enabled with SK_BUILD_FOR_ANDROID_FRAMEWORK.
+  if 'FrameworkWorkarounds' in extra_tokens:
+    extra_cflags.append('-DSK_SUPPORT_LEGACY_ALPHA_BITMAP_AS_COVERAGE')
+
   if 'MSAN' in extra_tokens:
     extra_ldflags.append('-L' + clang_linux + '/msan')
   elif 'TSAN' in extra_tokens:
