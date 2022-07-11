@@ -130,6 +130,11 @@ def compile_fn(api, checkout_root, out_dir):
     args['skia_compile_sksl_tests'] = 'true'
     args['skia_generate_workarounds'] = 'true'
 
+  # The 'FrameworkWorkarounds' bot is used to test special behavior that's
+  # normally enabled with SK_BUILD_FOR_ANDROID_FRAMEWORK.
+  if 'FrameworkWorkarounds' in extra_tokens:
+    extra_cflags.append('-DSK_SUPPORT_LEGACY_ALPHA_BITMAP_AS_COVERAGE')
+
   # ccache + clang-tidy.sh chokes on the argument list.
   if (api.vars.is_linux or os == 'Mac' or os == 'Mac10.15.5' or os == 'Mac10.15.7') and 'Tidy' not in extra_tokens:
     if api.vars.is_linux:
