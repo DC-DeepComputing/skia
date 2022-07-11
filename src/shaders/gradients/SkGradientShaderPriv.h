@@ -65,6 +65,31 @@ public:
 
     const SkMatrix& getGradientMatrix() const { return fPtsToUnit; }
 
+    static bool ValidGradient(const SkColor4f colors[], const SkScalar pos[], int count,
+                              SkTileMode tileMode);
+
+    static sk_sp<SkShader> MakeDegenerateGradient(const SkColor4f colors[], const SkScalar pos[],
+                                                  int colorCount, sk_sp<SkColorSpace> colorSpace,
+                                                  SkTileMode mode);
+
+    struct ColorStopOptimizer {
+        ColorStopOptimizer(const SkColor4f* colors, const SkScalar* pos, int count,
+                           SkTileMode mode);
+
+        const SkColor4f* fColors;
+        const SkScalar*  fPos;
+        int              fCount;
+    };
+
+    // The default SkScalarNearlyZero threshold of .0024 is too big and causes regressions for svg
+    // gradients defined in the wild.
+    static constexpr SkScalar kDegenerateThreshold = SK_Scalar1 / (1 << 15);
+
+    static void DescInit(Descriptor* desc,
+                         const SkColor4f colors[], sk_sp<SkColorSpace> colorSpace,
+                         const SkScalar pos[], int colorCount,
+                         SkTileMode mode, uint32_t flags, const SkMatrix* localMatrix);
+
 protected:
     class GradientShaderBase4fContext;
 
