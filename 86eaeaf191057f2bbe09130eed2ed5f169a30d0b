@@ -33,6 +33,24 @@
       "message": "Code changes look right to me. Let me get the process started to determine whether we have permission to merge.\n\nOne note: you didn\u0027t use `__ANDROID_API__`, but I think this is better - we can define your macro based on it.",
       "revId": "86eaeaf191057f2bbe09130eed2ed5f169a30d0b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f7de6682_a64ab1f1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-07-11T20:54:52Z",
+      "side": 1,
+      "message": "Actually, wait - this allows us to make the Android framework special, but it does *not* allow us to make a different decision based on the `__ANDROID_API__` level. We\u0027ll need some kind of runtime decision for that. Regardless, I think we can wait to see whether we get permissions to land anything.",
+      "parentUuid": "056b13ac_16ef25e4",
+      "revId": "86eaeaf191057f2bbe09130eed2ed5f169a30d0b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
