@@ -157,7 +157,7 @@ struct StrikeSpec {
 };
 
 // -- RemoteStrike ----------------------------------------------------------------------------
-class RemoteStrike final : public SkStrikeForGPU {
+class RemoteStrike final : public sktext::gpu::SkStrikeForGPU {
 public:
     // N.B. RemoteStrike is not valid until ensureScalerContext is called.
     RemoteStrike(const SkStrikeSpec& strikeSpec,
@@ -542,7 +542,7 @@ struct WireTypeface {
 }  // namespace
 
 // -- SkStrikeServerImpl ---------------------------------------------------------------------------
-class SkStrikeServerImpl final : public SkStrikeForGPUCacheInterface {
+class SkStrikeServerImpl final : public sktext::gpu::SkStrikeForGPUCacheInterface {
 public:
     explicit SkStrikeServerImpl(
             SkStrikeServer::DiscardableHandleManager* discardableHandleManager);
@@ -551,7 +551,8 @@ public:
     sk_sp<SkData> serializeTypeface(SkTypeface*);
     void writeStrikeData(std::vector<uint8_t>* memory);
 
-    SkScopedStrikeForGPU findOrCreateScopedStrike(const SkStrikeSpec& strikeSpec) override;
+    sktext::gpu::SkScopedStrikeForGPU findOrCreateScopedStrike(
+            const SkStrikeSpec& strikeSpec) override;
 
     // Methods for testing
     void setMaxEntriesInDescriptorMapForTesting(size_t count);
@@ -664,8 +665,9 @@ void SkStrikeServerImpl::writeStrikeData(std::vector<uint8_t>* memory) {
     #endif
 }
 
-SkScopedStrikeForGPU SkStrikeServerImpl::findOrCreateScopedStrike(const SkStrikeSpec& strikeSpec) {
-    return SkScopedStrikeForGPU{this->getOrCreateCache(strikeSpec)};
+sktext::gpu::SkScopedStrikeForGPU SkStrikeServerImpl::findOrCreateScopedStrike(
+        const SkStrikeSpec& strikeSpec) {
+    return sktext::gpu::SkScopedStrikeForGPU{this->getOrCreateCache(strikeSpec)};
 }
 
 void SkStrikeServerImpl::checkForDeletedEntries() {
