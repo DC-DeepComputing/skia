@@ -69,7 +69,7 @@
         SkRegisterEmptyShaderFlattenable();
         SK_REGISTER_FLATTENABLE(SkLocalMatrixShader);
         SK_REGISTER_FLATTENABLE(SkPictureShader);
-        SkGradientShader::RegisterFlattenables();
+        SkGradientShader::RegisterFlattenables1();
         SkPerlinNoiseShader::RegisterFlattenables();
         SkShaderBase::RegisterFlattenables();
 
