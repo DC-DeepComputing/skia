@@ -126,7 +126,6 @@ class SKUNICODE_API SkUnicode {
         virtual std::unique_ptr<SkBreakIterator> makeBreakIterator
             (const char locale[], BreakType breakType) = 0;
         virtual std::unique_ptr<SkBreakIterator> makeBreakIterator(BreakType type) = 0;
-        virtual std::unique_ptr<SkScriptIterator> makeScriptIterator() = 0;
 
         // High level methods (that we actually use somewhere=SkParagraph)
         virtual bool getBidiRegions
