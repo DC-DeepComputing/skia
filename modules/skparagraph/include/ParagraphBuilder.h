@@ -10,6 +10,7 @@
 #include "modules/skparagraph/include/Paragraph.h"
 #include "modules/skparagraph/include/ParagraphStyle.h"
 #include "modules/skparagraph/include/TextStyle.h"
+#include "modules/skunicode/include/SkUnicode.h"
 
 namespace skia {
 namespace textlayout {
@@ -52,8 +53,14 @@ public:
     // Internally, this method adds a single object replacement character (0xFFFC)
     virtual void addPlaceholder(const PlaceholderStyle& placeholderStyle) = 0;
 
-    // Constructs a SkParagraph object that can be used to layout and paint the text to a SkCanvas.
+    // Constructs SkParagraph object that can be used to layout and paint the text to a SkCanvas.
     virtual std::unique_ptr<Paragraph> Build() = 0;
+
+    // Constructs SkParagraph object that can be used to layout and paint the text to a SkCanvas.
+    virtual std::unique_ptr<Paragraph> Build(
+            std::vector<SkUnicode::BidiRegion> bidis,
+            SkTArray<CodeUnitFlags> codeUnitFlags,
+            std::vector<SkUnicode::Position> words) = 0;
 
     // Resets this builder to its initial state, discarding any text, styles, placeholders that have
     // been added, but keeping the initial ParagraphStyle.

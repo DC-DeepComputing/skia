@@ -34,20 +34,6 @@
 
 class SkCanvas;
 
-namespace skia {
-namespace textlayout {
-
-enum CodeUnitFlags {
-    kNoCodeUnitFlag = 0x00,
-    kPartOfWhiteSpaceBreak = 0x01,
-    kGraphemeStart = 0x02,
-    kSoftLineBreakBefore = 0x04,
-    kHardLineBreakBefore = 0x08,
-    kPartOfIntraWordBreak = 0x10,
-};
-}  // namespace textlayout
-}  // namespace skia
-
 namespace sknonstd {
 template <> struct is_bitmask_enum<skia::textlayout::CodeUnitFlags> : std::true_type {};
 }  // namespace sknonstd
@@ -86,14 +72,7 @@ struct ResolvedFontDescriptor {
     SkFont fFont;
     TextIndex fTextStart;
 };
-/*
-struct BidiRegion {
-    BidiRegion(size_t start, size_t end, uint8_t dir)
-        : text(start, end), direction(dir) { }
-    TextRange text;
-    uint8_t direction;
-};
-*/
+
 class ParagraphImpl final : public Paragraph {
 
 public:
@@ -111,6 +90,16 @@ public:
                   SkTArray<Placeholder, true> placeholders,
                   sk_sp<FontCollection> fonts,
                   std::shared_ptr<SkUnicode> unicode);
+
+    ParagraphImpl(const SkString& text,
+                  ParagraphStyle style,
+                  SkTArray<Block, true> blocks,
+                  SkTArray<Placeholder, true> placeholders,
+                  sk_sp<FontCollection> fonts,
+                  std::vector<SkUnicode::BidiRegion> bidis,
+                  SkTArray<CodeUnitFlags> codeUnitFlags,
+                  std::vector<SkUnicode::Position> words);
+
     ~ParagraphImpl() override;
 
     void layout(SkScalar width) override;

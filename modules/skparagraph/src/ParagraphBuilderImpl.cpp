@@ -91,7 +91,7 @@ TextStyle ParagraphBuilderImpl::peekStyle() {
 }
 
 void ParagraphBuilderImpl::addText(const std::u16string& text) {
-    auto utf8 = fUnicode->convertUtf16ToUtf8(text);
+    auto utf8 = SkUnicode::convertUtf16ToUtf8(text);
     fUtf8.append(utf8);
 }
 
@@ -155,6 +155,21 @@ std::unique_ptr<Paragraph> ParagraphBuilderImpl::Build() {
     addPlaceholder(PlaceholderStyle(), true);
     return std::make_unique<ParagraphImpl>(
             fUtf8, fParagraphStyle, fStyledBlocks, fPlaceholders, fFontCollection, fUnicode);
+}
+
+std::unique_ptr<Paragraph> ParagraphBuilderImpl::Build(
+        std::vector<SkUnicode::BidiRegion> bidis,
+        SkTArray<CodeUnitFlags> codeUnitFlags,
+        std::vector<SkUnicode::Position> words) {
+    if (!fUtf8.isEmpty()) {
+        this->endRunIfNeeded();
+    }
+
+    // Add one fake placeholder with the rest of the text
+    addPlaceholder(PlaceholderStyle(), true);
+    return std::make_unique<ParagraphImpl>(
+            fUtf8, fParagraphStyle, fStyledBlocks, fPlaceholders, fFontCollection,
+            bidis, codeUnitFlags, words);
 }
 
 void ParagraphBuilderImpl::Reset() {

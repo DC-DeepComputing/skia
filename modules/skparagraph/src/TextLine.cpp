@@ -76,6 +76,99 @@ int compareRound(SkScalar a, SkScalar b) {
     }
 }
 
+#define UBIDI_MAX_EXPLICIT_LEVEL 125
+typedef uint8_t UBiDiLevel;
+
+bool prepareReorder(SkSpan<UBiDiLevel> levels,
+                    SkSpan<int32_t> indexMap,
+                    UBiDiLevel* pMinLevel,
+                    UBiDiLevel* pMaxLevel) {
+    if (levels.empty()) {
+        return false;
+    }
+
+    // Determine minLevel and maxLevel
+    UBiDiLevel minLevel = UBIDI_MAX_EXPLICIT_LEVEL + 1;
+    UBiDiLevel maxLevel = 0;
+    for (auto& level : levels) {
+        if (level > UBIDI_MAX_EXPLICIT_LEVEL + 1) {
+            return false;
+        }
+        if (level < minLevel) {
+            minLevel = level;
+        }
+        if (level > maxLevel) {
+            maxLevel = level;
+        }
+    }
+    *pMinLevel = minLevel;
+    *pMaxLevel = maxLevel;
+
+    // Initialize the index map
+    for (auto start = 0ul; start < indexMap.size() ; ++start) {
+        indexMap[start] = start;
+    }
+
+    return true;
+}
+
+void reorderVisual(SkSpan<UBiDiLevel> levels, SkSpan<int32_t> indexMap) {
+
+    UBiDiLevel minLevel = 0, maxLevel = 0;
+    if (indexMap.empty() || !prepareReorder(levels, indexMap, &minLevel, &maxLevel)) {
+        return;
+    }
+
+    // Nothing to do?
+    if (minLevel == maxLevel && (minLevel & 1) == 0) {
+        return;
+    }
+
+    // Reorder only down to the lowest odd level
+    minLevel |= 1;
+
+    // Loop maxLevel..minLevel
+    do {
+        int32_t start = 0;
+
+        // Loop for all sequences of levels to reorder at the current maxLevel */
+        for(;;) {
+            // Look for a sequence of levels that are all at >=maxLevel
+            // Look for the first index of such a sequence
+            while (start < levels.size() && levels[start] < maxLevel) {
+                ++start;
+            }
+            if (start >= levels.size()) {
+                // No more such runs
+                break;
+            }
+
+            // Look for the limit of such a sequence (the index behind it)
+            int32_t limit = start;
+            while (++limit < levels.size() && levels[limit] >= maxLevel) { }
+
+            /*
+             * Swap the entire interval of indexes from start to limit-1.
+             * We don't need to swap the levels for the purpose of this
+             * algorithm: the sequence of levels that we look at does not
+             * move anyway.
+             */
+            int32_t end = limit - 1;
+            while(start < end) {
+                std::swap(indexMap[start++], indexMap[end--]);
+            }
+
+            if (limit == levels.size()) {
+                // No more such sequences
+                break;
+            } else {
+                // Look for the next sequence
+                start = limit + 1;
+            }
+        }
+    } while(--maxLevel >= minLevel);
+}
+
 }  // namespace
 
 TextLine::TextLine(ParagraphImpl* owner,

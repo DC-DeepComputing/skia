@@ -105,6 +105,17 @@ protected:
     SkScalar fLongestLine;
     bool fExceededMaxLines;
 };
+
+enum CodeUnitFlags {
+    kNoCodeUnitFlag = 0x00,
+    kPartOfWhiteSpaceBreak = 0x01,
+    kGraphemeStart = 0x02,
+    kSoftLineBreakBefore = 0x04,
+    kHardLineBreakBefore = 0x08,
+    kPartOfIntraWordBreak = 0x10,
+    kTabulation = 0x20,
+    kControl = 0x40,
+};
 }  // namespace textlayout
 }  // namespace skia
 
