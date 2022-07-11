@@ -44,9 +44,8 @@ enum class SkShaderType : uint32_t {
     kLocalMatrix,
     kImage,
     kBlendShader,
-    kRuntimeShader,
 
-    kLast          = kRuntimeShader
+    kLast          = kBlendShader
 };
 
 static constexpr int kSkShaderTypeCount = static_cast<int>(SkShaderType::kLast) + 1;
@@ -150,10 +149,10 @@ private:
     friend class SkCombinationOption;          // for 'addOptionInternal' and 'arena'
     friend class CombinationBuilderTestAccess; // for 'num*Combinations' and 'epoch'
 
-    int numShaderCombinations() const;
+    int numShaderCombinationsMoved() const;
     int numBlendModeCombinations() const;
-    int numCombinations() {
-        return this->numShaderCombinations() * this->numBlendModeCombinations();
+    int numCombinationsMoved() {
+        return this->numShaderCombinationsMoved() * this->numBlendModeCombinations();
     }
 
     // 'desiredCombination' must be less than numCombinations

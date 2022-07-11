@@ -82,6 +82,10 @@ static bool angle_backend_is_d3d(GrGLANGLEBackend backend) {
     return backend == GrGLANGLEBackend::kD3D9 || backend == GrGLANGLEBackend::kD3D11;
 }
 
+static bool angle_backend_is_metal(GrGLANGLEBackend backend) {
+    return backend == GrGLANGLEBackend::kMetal;
+}
+
 void GrGLCaps::init(const GrContextOptions& contextOptions,
                     const GrGLContextInfo& ctxInfo,
                     const GrGLInterface* gli) {
@@ -943,9 +947,11 @@ void GrGLCaps::initGLSL(const GrGLContextInfo& ctxInfo, const GrGLInterface* gli
     // Flat interpolation appears to be slow on Qualcomm GPUs (tested Adreno 405 and 530).
     // Avoid on ANGLE too, it inserts a geometry shader into the pipeline to implement flat interp.
     // Is this only true on ANGLE's D3D backends or also on the GL backend?
+    // Flat interpolation is slow with ANGLE's Metal backend.
     shaderCaps->fPreferFlatInterpolation = shaderCaps->fFlatInterpolationSupport &&
                                            ctxInfo.vendor() != GrGLVendor::kQualcomm &&
-                                           !angle_backend_is_d3d(ctxInfo.angleBackend());
+                                           !angle_backend_is_d3d(ctxInfo.angleBackend()) &&
+                                           !angle_backend_is_metal(ctxInfo.angleBackend());
     if (GR_IS_GR_GL(standard)) {
         shaderCaps->fNoPerspectiveInterpolationSupport =
             ctxInfo.glslGeneration() >= SkSL::GLSLGeneration::k130;
@@ -3695,7 +3701,9 @@ void GrGLCaps::applyDriverCorrectnessWorkarounds(const GrGLContextInfo& ctxInfo,
         ctxInfo.angleBackend() == GrGLANGLEBackend::kD3D11) {
         // As GL_EXT_multisampled_render_to_texture supporting issue,
         // fall back to default dmsaa path
-        if (ctxInfo.vendor()  == GrGLVendor::kIntel) {
+        if ((ctxInfo.vendor()  == GrGLVendor::kIntel ||
+             ctxInfo.angleVendor() == GrGLVendor::kIntel) &&
+             ctxInfo.renderer() >= GrGLRenderer::kIntelIceLake) {
             fMSFBOType = kStandard_MSFBOType;
             fMSAAResolvesAutomatically = false;
         }

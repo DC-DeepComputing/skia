@@ -26,16 +26,14 @@
                                     \
     M(LocalMatrix)                  \
     M(Image)                        \
-    M(BlendShader)                  \
-    M(RuntimeShader)
+    M(BlendShader)
 
 // To keep the SHADER_TYPES list and SkShaderType aligned, we create a hidden enum class
 // and check it against SkShaderType
 #define MAKE_ENUM(T) k##T,
 enum class UnusedShaderType { SHADER_TYPES(MAKE_ENUM) };
 #undef MAKE_ENUM
-static constexpr int kUnusedShaderTypeCount =
-        static_cast<int>(UnusedShaderType::kRuntimeShader) + 1;
+static constexpr int kUnusedShaderTypeCount = static_cast<int>(UnusedShaderType::kBlendShader) + 1;
 
 #define STATIC_ASSERT(T) static_assert((int) SkShaderType::k##T == (int) UnusedShaderType::k##T);
    SHADER_TYPES(STATIC_ASSERT)
@@ -153,14 +151,14 @@ public:
         return numChildCombinations;
     }
 
-    int numCombinations() const {
+    int numCombinationsMoved() const {
         return this->numIntrinsicCombinations() * this->numChildCombinations();
     }
 
     void addToKey(const SkKeyContext& keyContext,
                   int desiredCombination,
                   SkPaintParamsKeyBuilder* keyBuilder) {
-        SkASSERT(desiredCombination < this->numCombinations());
+        SkASSERT(desiredCombination < this->numCombinationsMoved());
 
         int intrinsicCombination = desiredCombination / this->numChildCombinations();
         int childCombination = desiredCombination % this->numChildCombinations();
@@ -196,7 +194,7 @@ public:
         if (!this->numIntrinsicCombinations()) {
             SkDebugf("(%d)", this->numIntrinsicCombinations());
         }
-        SkDebugf(" { %d, %d }", this->numCombinations(), this->numChildCombinations());
+        SkDebugf(" { %d, %d }", this->numCombinationsMoved(), this->numChildCombinations());
         if (this->numSlots()) {
             SkDebugf("\n");
         }
@@ -240,7 +238,7 @@ int SkOption::SkSlot::numCombinations() const {
     int numCombinations = 0;
 
     for (SkOption* option = fHead; option; option = option->fNext) {
-        numCombinations += option->numCombinations();
+        numCombinations += option->numCombinationsMoved();
     }
 
     return numCombinations;
@@ -252,12 +250,12 @@ void SkOption::SkSlot::addToKey(const SkKeyContext& keyContext,
     SkASSERT(desiredCombination < this->numCombinations());
 
     for (SkOption* option = fHead; option; option = option->fNext) {
-        if (desiredCombination < option->numCombinations()) {
+        if (desiredCombination < option->numCombinationsMoved()) {
             option->addToKey(keyContext, desiredCombination, keyBuilder);
             return;
         }
 
-        desiredCombination -= option->numCombinations();
+        desiredCombination -= option->numCombinationsMoved();
     }
 }
 
@@ -418,18 +416,6 @@ void ArenaData_BlendShader::beginBlock(const SkKeyContext& keyContext,
 
     BlendShaderBlock::BeginBlock(keyContext, builder, /*gatherer=*/nullptr,
                                  { SkBlendMode::kSrc });  // the blendmode is unused
-}
-
-CREATE_ARENA_OBJECT(RuntimeShader, /* numChildSlots */ 0)
-int ArenaData_RuntimeShader::numIntrinsicCombinationsDerived() const { return 1; }
-void ArenaData_RuntimeShader::beginBlock(const SkKeyContext& keyContext,
-                                         int intrinsicCombination,
-                                         SkPaintParamsKeyBuilder* builder) const {
-    // TODO(skia:13405): replace with RuntimeShader-specific data
-    constexpr SkPMColor4f kUnusedColor = {1, 0, 1, 1};
-
-    SkASSERT(intrinsicCombination == 0);
-    SolidColorShaderBlock::BeginBlock(keyContext, builder, /*gatherer=*/nullptr, kUnusedColor);
 }
 
 // Here to access the derived ArenaData objects
@@ -673,10 +659,10 @@ void SkCombinationBuilder::reset() {
     SkDEBUGCODE(++fEpoch;)
 }
 
-int SkCombinationBuilder::numShaderCombinations() const {
+int SkCombinationBuilder::numShaderCombinationsMoved() const {
     int numShaderCombinations = 0;
     for (SkOption* s : fShaderOptions) {
-        numShaderCombinations += s->numCombinations();
+        numShaderCombinations += s->numCombinationsMoved();
     }
 
     // If no shader option is specified the builder will add a solid color shader option
@@ -703,7 +689,7 @@ void SkCombinationBuilder::createKey(const SkKeyContext& keyContext,
                                      int desiredCombination,
                                      SkPaintParamsKeyBuilder* keyBuilder) {
     SkDEBUGCODE(keyBuilder->checkReset();)
-    SkASSERT(desiredCombination < this->numCombinations());
+    SkASSERT(desiredCombination < this->numCombinationsMoved());
 
     int numBlendModeCombos = this->numBlendModeCombinations();
 
@@ -711,12 +697,12 @@ void SkCombinationBuilder::createKey(const SkKeyContext& keyContext,
     int desiredBlendCombination = desiredCombination % numBlendModeCombos;
 
     for (SkOption* shaderOption : fShaderOptions) {
-        if (desiredShaderCombination < shaderOption->numCombinations()) {
+        if (desiredShaderCombination < shaderOption->numCombinationsMoved()) {
             shaderOption->addToKey(keyContext, desiredShaderCombination, keyBuilder);
             break;
         }
 
-        desiredShaderCombination -= shaderOption->numCombinations();
+        desiredShaderCombination -= shaderOption->numCombinationsMoved();
     }
 
     if (desiredBlendCombination < SkPopCount(fBlendModes)) {
@@ -749,7 +735,7 @@ void SkCombinationBuilder::buildCombinations(
         this->addOption(SkShaderType::kSolidColor);
     }
 
-    int numCombos = this->numCombinations();
+    int numCombos = this->numCombinationsMoved();
     for (int i = 0; i < numCombos; ++i) {
         this->createKey(keyContext, i, &builder);
 

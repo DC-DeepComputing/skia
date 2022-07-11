@@ -7,8 +7,13 @@
 
 #include "src/gpu/graphite/render/TextDirectRenderStep.h"
 
+#include "src/core/SkPipelineData.h"
+
 #include "src/gpu/graphite/DrawParams.h"
 #include "src/gpu/graphite/DrawWriter.h"
+#include "src/text/gpu/SubRunContainer.h"
+
+using AtlasSubRun = sktext::gpu::AtlasSubRun;
 
 namespace skgpu::graphite {
 
@@ -24,32 +29,50 @@ static constexpr DepthStencilSettings kDirectShadingPass = {
 };
 }  // namespace
 
-TextDirectRenderStep::TextDirectRenderStep(bool isMask)
+TextDirectRenderStep::TextDirectRenderStep()
         : RenderStep("TextDirectRenderStep",
-                     isMask ? "mask" : "bitmap",
+                     "",
                      Flags::kPerformsShading,
-                     /*uniforms=*/{},
+                     /*uniforms=*/{{"atlasSizeInv", SkSLType::kFloat2}},
                      PrimitiveType::kTriangles,
                      kDirectShadingPass,
-                     // TODO: set up attributes
-                     /*vertexAttrs=*/  {},
-                     /*instanceAttrs=*/{}) {
-    // TODO: store whether it's a mask?
-}
+                     /*vertexAttrs=*/
+                     {{"position", VertexAttribType::kFloat2, SkSLType::kFloat2},
+                      {"depth", VertexAttribType::kFloat, SkSLType::kFloat},
+                      {"texCoords", VertexAttribType::kUShort2, SkSLType::kUShort2}},
+                     /*instanceAttrs=*/{}) {}
 
 TextDirectRenderStep::~TextDirectRenderStep() {}
 
 const char* TextDirectRenderStep::vertexSkSL() const {
-    // TODO: write vertex shader
-    return "float4 devPosition = float4(0, 0, 0, 1);\n";
+    return R"(
+        int2 coords = int2(texCoords.x, texCoords.y);
+        int texIdx = coords.x >> 13;
+        float2 unormTexCoords = float2(coords.x & 0x1FFF, coords.y);
+
+        // TODO: these should be varyings
+        float2 textureCoords = unormTexCoords * atlasSizeInv;
+        float texIndex = float(texIdx);
+
+        float4 devPosition = float4(position, depth, 1);
+        )";
 }
 
-void TextDirectRenderStep::writeVertices(DrawWriter* dw, const DrawParams& geom) const {
-    // TODO: get this from the SubRun
+void TextDirectRenderStep::writeVertices(DrawWriter* dw, const DrawParams& params) const {
+    const SubRunData& subRunData = params.geometry().subRunData();
+    // TODO: pass through the color from the SkPaint via the SubRunData
+    subRunData.subRun()->fillVertexData(dw, subRunData.startGlyphIndex(), subRunData.glyphCount(),
+                                        params.order().depthAsFloat(),
+                                        params.transform());
 }
 
-void TextDirectRenderStep::writeUniforms(const DrawParams&, SkPipelineDataGatherer*) const {
-    // TODO
+void TextDirectRenderStep::writeUniforms(const DrawParams& params,
+                                         SkPipelineDataGatherer* gatherer) const {
+    SkDEBUGCODE(UniformExpectationsValidator uev(gatherer, this->uniforms());)
+
+    // TODO: get this from the actual texture size via the SubRunData
+    skvx::float2 atlasDimensionsInverse = {1.f/1024, 1.f/1024};
+    gatherer->write(atlasDimensionsInverse);
 }
 
 }  // namespace skgpu::graphite

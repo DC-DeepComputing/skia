@@ -14,7 +14,7 @@ namespace skgpu::graphite {
 
 class TextDirectRenderStep final : public RenderStep {
 public:
-    TextDirectRenderStep(bool isMask);
+    TextDirectRenderStep();
 
     ~TextDirectRenderStep() override;
 

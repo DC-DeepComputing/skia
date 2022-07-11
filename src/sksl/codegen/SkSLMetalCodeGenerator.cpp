@@ -63,6 +63,7 @@
 #include "src/sksl/spirv.h"
 
 #include <algorithm>
+#include <cstddef>
 #include <functional>
 #include <limits>
 #include <memory>
@@ -2553,7 +2554,8 @@ void MetalCodeGenerator::writeUniformStruct() {
             const GlobalVarDeclaration& decls = e->as<GlobalVarDeclaration>();
             const Variable& var = decls.declaration()->as<VarDeclaration>().var();
             if (var.modifiers().fFlags & Modifiers::kUniform_Flag &&
-                var.type().typeKind() != Type::TypeKind::kSampler) {
+                var.type().typeKind() != Type::TypeKind::kSampler &&
+                var.type().typeKind() != Type::TypeKind::kTexture) {
                 int uniformSet = this->getUniformSet(var.modifiers());
                 // Make sure that the program's uniform-set value is consistent throughout.
                 if (-1 == fUniformBuffer) {

@@ -18,7 +18,6 @@ class SkMatrixProvider;
 class SkPaint;
 class SkReadBuffer;
 class SkStrikeClient;
-class SkStrikeForGPUCacheInterface;
 class SkWriteBuffer;
 
 namespace sktext {
@@ -26,6 +25,7 @@ class GlyphRunList;
     namespace gpu {
     class Glyph;
     class StrikeCache;
+    class StrikeForGPUCacheInterface;
     }
 }
 
@@ -46,6 +46,7 @@ namespace skgpu::v1 { class SurfaceDrawContext; }
 #include "src/gpu/graphite/geom/Transform_graphite.h"
 
 namespace skgpu::graphite {
+class DrawWriter;
 class Recorder;
 class Renderer;
 }
@@ -107,12 +108,11 @@ public:
 
     virtual const skgpu::graphite::Renderer* renderer() const = 0;
 
-//    virtual void fillVertexData(
-//            void* vertexDst, int offset, int count,
-//            SkColor color,
-//            const SkMatrix& drawMatrix,
-//            SkPoint drawOrigin,
-//            SkIRect clip) const {}
+    virtual void fillVertexData(
+            skgpu::graphite::DrawWriter*,
+            int offset, int count,
+            SkScalar depth,
+            const skgpu::graphite::Transform& transform) const = 0;
 #endif
 
     virtual void testingOnly_packedGlyphIDToGlyph(StrikeCache* cache) const = 0;
@@ -233,13 +233,17 @@ public:
                                                       const SkStrikeClient* client,
                                                       SubRunAllocator* alloc);
 
-    static std::tuple<bool, SubRunContainerOwner> MakeInAlloc(
+    enum SubRunCreationBehavior {kAddSubRuns, kStrikeCalculationsOnly};
+    // The returned SubRunContainerOwner will never be null. If subRunCreation ==
+    // kStrikeCalculationsOnly, then the returned container will be empty.
+    static SK_WARN_UNUSED_RESULT std::tuple<bool, SubRunContainerOwner> MakeInAlloc(
             const GlyphRunList& glyphRunList,
             const SkMatrix& positionMatrix,
             const SkPaint& runPaint,
             SkStrikeDeviceInfo strikeDeviceInfo,
-            SkStrikeForGPUCacheInterface* strikeCache,
+            StrikeForGPUCacheInterface* strikeCache,
             sktext::gpu::SubRunAllocator* alloc,
+            SubRunCreationBehavior creationBehavior,
             const char* tag);
 
     static size_t EstimateAllocSize(const GlyphRunList& glyphRunList);
