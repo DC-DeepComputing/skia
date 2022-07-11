@@ -22,7 +22,6 @@
 #include "src/core/SkMaskGamma.h"
 #include "src/core/SkSurfacePriv.h"
 #include "src/core/SkWriteBuffer.h"
-#include "src/text/gpu/StrikeForGPU.h"  // needed for IWYU violations in SkFontHost_FreeType.cpp
 
 class SkAutoDescriptor;
 class SkDescriptor;
