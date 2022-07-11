@@ -27,11 +27,11 @@
 #include "src/core/SkReadBuffer.h"
 #include "src/core/SkScalerCache.h"
 #include "src/core/SkStrikeCache.h"
-#include "src/core/SkStrikeForGPU.h"
 #include "src/core/SkTLazy.h"
 #include "src/core/SkTraceEvent.h"
 #include "src/core/SkTypeface_remote.h"
 #include "src/text/GlyphRun.h"
+#include "src/text/gpu/StrikeForGPU.h"
 
 #if SK_SUPPORT_GPU
 #include "include/gpu/GrContextOptions.h"
