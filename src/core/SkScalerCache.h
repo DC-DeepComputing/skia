@@ -7,6 +7,7 @@
 #ifndef SkStrike_DEFINED
 #define SkStrike_DEFINED
 
+#include <memory>
 #include "include/core/SkFontMetrics.h"
 #include "include/core/SkFontTypes.h"
 #include "include/private/SkMutex.h"
@@ -16,8 +17,7 @@
 #include "src/core/SkDescriptor.h"
 #include "src/core/SkGlyph.h"
 #include "src/core/SkGlyphRunPainter.h"
-#include "src/core/SkStrikeForGPU.h"
-#include <memory>
+#include "src/text/gpu/StrikeForGPU.h"
 
 class SkScalerContext;
 
