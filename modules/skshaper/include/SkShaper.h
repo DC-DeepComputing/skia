@@ -149,7 +149,8 @@ public:
     MakeScriptRunIterator(const char* utf8, size_t utf8Bytes, SkFourByteTag script);
     #if defined(SK_SHAPER_HARFBUZZ_AVAILABLE) && defined(SK_UNICODE_AVAILABLE)
     static std::unique_ptr<ScriptRunIterator>
-    MakeSkUnicodeHbScriptRunIterator(SkUnicode* unicode, const char* utf8, size_t utf8Bytes);
+    MakeSkUnicodeHbScriptRunIterator(const char* utf8, size_t utf8Bytes);
+    // Still used in google3/java/com/google/apps/docs/render/skia/jni/TextBlobMaker.cpp
     static std::unique_ptr<ScriptRunIterator>
     MakeHbIcuScriptRunIterator(const char* utf8, size_t utf8Bytes);
     #endif
