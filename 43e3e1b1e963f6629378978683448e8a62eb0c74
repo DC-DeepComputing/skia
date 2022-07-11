@@ -20,6 +20,41 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c6909af5_4532203a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-07-11T11:55:04Z",
+      "side": 1,
+      "message": "https://github.com/google/skia/tree/main/modules/canvaskit#infrastructure-playbook\nwhich points to\nhttps://github.com/google/skia/blob/main/infra/wasm-common/docker/README.md\n\nI\u0027m not sure if you have permissions to upload those images. Try to do so and let me know.",
+      "parentUuid": "4decd2be_499b4c08",
+      "revId": "43e3e1b1e963f6629378978683448e8a62eb0c74",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cbe9fcd3_f2decb9c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-07-11T11:55:04Z",
+      "side": 1,
+      "message": "https://github.com/google/skia/tree/main/modules/canvaskit#infrastructure-playbook",
+      "revId": "43e3e1b1e963f6629378978683448e8a62eb0c74",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9653cc0f_b8012a29",
         "filename": "WORKSPACE.bazel",
         "patchSetId": 1
@@ -31,6 +66,30 @@
       "writtenOn": "2022-07-01T21:28:07Z",
       "side": 1,
       "message": "I\u0027ll need some assistance with uploading this image to Google storage. I lost the instructions for this unfortunately 😞",
+      "range": {
+        "startLine": 16,
+        "startChar": 9,
+        "endLine": 16,
+        "endChar": 137
+      },
+      "revId": "43e3e1b1e963f6629378978683448e8a62eb0c74",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "04440a6f_f96a4548",
+        "filename": "WORKSPACE.bazel",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-07-11T11:55:04Z",
+      "side": 1,
+      "message": "From the Skia Infra root\ngo run ./bazel/gcs_mirror/gcs_mirror.go --url ... --sha256 ...",
+      "parentUuid": "9653cc0f_b8012a29",
       "range": {
         "startLine": 16,
         "startChar": 9,
