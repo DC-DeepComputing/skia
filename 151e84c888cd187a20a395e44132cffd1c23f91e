@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9a046dfb_02a6058a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-07-11T19:15:31Z",
+      "side": 1,
+      "message": "There are just so many persnickety things when moving files. This slot in ahead of the file move of StrikeForGPU.",
+      "revId": "151e84c888cd187a20a395e44132cffd1c23f91e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
