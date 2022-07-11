@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c92ac2cf_a239973f",
+        "filename": "src/gpu/AtlasTypes.cpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-07-11T18:44:26Z",
+      "side": 1,
+      "message": "Nit: is this indent needed? It looks like it would still fit on the line.",
+      "range": {
+        "startLine": 59,
+        "startChar": 0,
+        "endLine": 59,
+        "endChar": 8
+      },
+      "revId": "232cdf77f38d9d96e8036605944605f40b7afff2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "31893b4e_78390dd4",
+        "filename": "src/gpu/ganesh/ops/SmallPathAtlasMgr.cpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-07-11T18:44:26Z",
+      "side": 1,
+      "message": "This is probably fine, though I\u0027m not 100% sure this is the right choice as the truly small paths are uploaded as bitmaps and rendered with Nearest sampling. I\u0027m not sure how many are falling back to SDF at this point, as opposed to using one of Chris\u0027s path renderers.",
+      "range": {
+        "startLine": 70,
+        "startChar": 33,
+        "endLine": 70,
+        "endChar": 58
+      },
+      "revId": "232cdf77f38d9d96e8036605944605f40b7afff2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
