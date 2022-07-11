@@ -581,6 +581,7 @@ skia_precompile_sources = [
   "$_src/core/SkCombinationBuilder.cpp",
   "$_src/core/SkFactoryFunctions.cpp",
   "$_src/core/SkFactoryFunctions.h",
+  "$_src/core/SkPrecompile.cpp",
   "$_src/core/SkPrecompile.h",
 ]
 
