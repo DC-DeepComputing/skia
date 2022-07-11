@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b1d3071d_462d3696",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-07-11T18:33:07Z",
+      "side": 1,
+      "message": "I tested the new GM at tip-of-tree (before I added the guard), and it draws nothing. With the defined enabled, it produces the expected result. (The new bot being added in the follow-up CL will ensure that we get ongoing testing of this).",
+      "revId": "86eaeaf191057f2bbe09130eed2ed5f169a30d0b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
