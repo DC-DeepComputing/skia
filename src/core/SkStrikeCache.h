@@ -16,8 +16,8 @@
 #include "include/private/SkTemplates.h"
 #include "src/core/SkDescriptor.h"
 #include "src/core/SkScalerCache.h"
-#include "src/core/SkStrikeForGPU.h"
 #include "src/core/SkStrikeSpec.h"
+#include "src/text/gpu/StrikeForGPU.h"
 
 class SkTraceMemoryDump;
 class SkStrikeCache;

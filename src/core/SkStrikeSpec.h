@@ -11,7 +11,7 @@
 #include "include/core/SkMaskFilter.h"
 #include "include/core/SkPathEffect.h"
 #include "src/core/SkDescriptor.h"
-#include "src/core/SkStrikeForGPU.h"
+#include "src/text/gpu/StrikeForGPU.h"
 
 #include <tuple>
 
