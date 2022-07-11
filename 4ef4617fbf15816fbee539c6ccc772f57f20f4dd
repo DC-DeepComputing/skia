@@ -34,6 +34,52 @@
       "parentUuid": "f48d660a_163129c4",
       "revId": "4ef4617fbf15816fbee539c6ccc772f57f20f4dd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0a27488c_b9d6e77b",
+        "filename": "tests/SkRuntimeEffectTest.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 621,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-07-11T22:08:13Z",
+      "side": 1,
+      "message": "The inputs are different, but (if I understand correctly) the result is intended to be the same, right? Regardless of the contents of the shader, a `#version 300` directive should cause the shader to become a no-op paint on an ES2 device. Consider phrasing more like:\n\n    // We test two different scenarios here:\n    // 1) An effect flagged as #version 300, but actually compatible with #version 100.\n    // 2) An effect flagged as #version 300, and using features not available in ES2.\n    //\n    // We expect both cases to fail cleanly on ES2-only devices--nothing should be\n    // drawn, and there should be no asserts or driver shader-compilation errors.",
+      "range": {
+        "startLine": 618,
+        "startChar": 0,
+        "endLine": 621,
+        "endChar": 100
+      },
+      "revId": "4ef4617fbf15816fbee539c6ccc772f57f20f4dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fd9ffcea_43e9ec1f",
+        "filename": "tests/SkRuntimeEffectTest.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 710,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-07-11T22:08:13Z",
+      "side": 1,
+      "message": "Let\u0027s not commit to anything here.\n`This restriction could be removed if` ...",
+      "range": {
+        "startLine": 710,
+        "startChar": 7,
+        "endLine": 710,
+        "endChar": 53
+      },
+      "revId": "4ef4617fbf15816fbee539c6ccc772f57f20f4dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
