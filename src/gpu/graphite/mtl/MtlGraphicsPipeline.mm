@@ -119,6 +119,44 @@ std::string emit_SkSL_attributes(SkSpan<const Attribute> vertexAttrs,
     return result;
 }
 
+std::string emit_SkSL_varyings(SkSpan<const Varying> varyings, const char* direction) {
+    std::string result;
+
+    int location = 0;
+    for (auto v : varyings) {
+        // TODO: this is sufficient for the sprint but should be changed to use SkSL's
+        // machinery
+        SkSL::String::appendf(&result, "    layout(location=%d) %s ", location++, direction);
+        switch (v.fType) {
+            case SkSLType::kFloat4:
+                result.append("float4");
+                break;
+            case SkSLType::kFloat2:
+                result.append("float2");
+                break;
+            case SkSLType::kFloat3:
+                result.append("float3");
+                break;
+            case SkSLType::kFloat:
+                result.append("float");
+                break;
+            case SkSLType::kHalf4:
+                result.append("half4");
+                break;
+            case SkSLType::kUShort2:
+                result.append("ushort2");
+                break;
+            default:
+                SkASSERT(0);
+        }
+
+        SkSL::String::appendf(&result, " %s;\n", v.fName);
+    }
+
+    return result;
+}
+
+
 std::string get_sksl_vs(const GraphicsPipelineDesc& desc) {
     const RenderStep* step = desc.renderStep();
     // TODO: To more completely support end-to-end rendering, this will need to be updated so that
@@ -145,6 +183,10 @@ std::string get_sksl_vs(const GraphicsPipelineDesc& desc) {
         sksl += emit_SkSL_uniforms(1, "Step", step->uniforms());
     }
 
+    if (step->numVaryings() > 0) {
+        sksl += emit_SkSL_varyings(step->varyings(), "out");
+    }
+
     // Vertex shader function declaration
     sksl += "void main() {\n";
     // Vertex shader body
@@ -169,7 +211,15 @@ std::string get_sksl_fs(SkShaderCodeDictionary* dict,
     dict->getShaderInfo(desc.paintParamsID(), &shaderInfo);
     *blendInfo = shaderInfo.blendInfo();
 
-    return shaderInfo.toSkSL();
+    std::string sksl;
+    const RenderStep* step = desc.renderStep();
+    if (step->numVaryings() > 0) {
+        sksl += emit_SkSL_varyings(step->varyings(), "in");
+    }
+
+    sksl += shaderInfo.toSkSL();
+
+    return sksl;
 }
 
 inline MTLVertexFormat attribute_type_to_mtlformat(VertexAttribType type) {
