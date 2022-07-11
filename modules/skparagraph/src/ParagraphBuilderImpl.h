@@ -59,6 +59,12 @@ public:
     // Constructs a SkParagraph object that can be used to layout and paint the text to a SkCanvas.
     std::unique_ptr<Paragraph> Build() override;
 
+    // Constructs SkParagraph object that can be used to layout and paint the text to a SkCanvas.
+    std::unique_ptr<Paragraph> Build(
+            std::vector<SkUnicode::BidiRegion> bidis,
+            SkTArray<CodeUnitFlags> codeUnitFlags,
+            std::vector<SkUnicode::Position> words) override;
+
     void Reset() override;
 
     static std::unique_ptr<ParagraphBuilder> make(const ParagraphStyle& style,
