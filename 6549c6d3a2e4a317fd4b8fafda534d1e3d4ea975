@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e4ba6ec0_78f24754",
+        "filename": "src/core/SkScalerCache.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-07-11T19:28:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c50c1611_2e09edf6",
+      "revId": "6549c6d3a2e4a317fd4b8fafda534d1e3d4ea975",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1ca0e3a6_6d5eb6c5",
@@ -31,6 +49,24 @@
       "writtenOn": "2022-07-11T15:58:28Z",
       "side": 1,
       "message": "Same here ?",
+      "revId": "6549c6d3a2e4a317fd4b8fafda534d1e3d4ea975",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "81abbdb6_c05e7b94",
+        "filename": "src/core/SkScalerContext.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-07-11T19:28:51Z",
+      "side": 1,
+      "message": "Had to fix up some IWYU problems. IWYU problems fixed in:\nhttps://skia-review.googlesource.com/c/skia/+/557583",
+      "parentUuid": "1ca0e3a6_6d5eb6c5",
       "revId": "6549c6d3a2e4a317fd4b8fafda534d1e3d4ea975",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
