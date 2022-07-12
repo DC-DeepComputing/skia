@@ -16,6 +16,98 @@
       "message": "PTAL.",
       "revId": "5cf74ec1b43e6e2ca130f42e86bc742c361c2e18",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d6c48a85_d7afe3f5",
+        "filename": "src/gpu/graphite/Renderer.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-07-12T14:41:29Z",
+      "side": 1,
+      "message": "It\u0027s not necessarily worth implementing right now, but should we add a note about handling things like `noperspective` or `flat`?",
+      "range": {
+        "startLine": 37,
+        "startChar": 7,
+        "endLine": 37,
+        "endChar": 15
+      },
+      "revId": "5cf74ec1b43e6e2ca130f42e86bc742c361c2e18",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "50ace260_a90f6af9",
+        "filename": "src/gpu/graphite/Renderer.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-07-12T14:41:29Z",
+      "side": 1,
+      "message": "nit: alignment",
+      "range": {
+        "startLine": 109,
+        "startChar": 24,
+        "endLine": 109,
+        "endChar": 26
+      },
+      "revId": "5cf74ec1b43e6e2ca130f42e86bc742c361c2e18",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4f72dd9f_976f337d",
+        "filename": "src/gpu/graphite/render/TextDirectRenderStep.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-07-12T14:41:29Z",
+      "side": 1,
+      "message": "nit: \u003d",
+      "range": {
+        "startLine": 44,
+        "startChar": 30,
+        "endLine": 44,
+        "endChar": 31
+      },
+      "revId": "5cf74ec1b43e6e2ca130f42e86bc742c361c2e18",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e6c9f17b_19e2dd7c",
+        "filename": "src/gpu/graphite/render/TextSDFRenderStep.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-07-12T14:41:29Z",
+      "side": 1,
+      "message": "nit: \u003d",
+      "range": {
+        "startLine": 43,
+        "startChar": 30,
+        "endLine": 43,
+        "endChar": 31
+      },
+      "revId": "5cf74ec1b43e6e2ca130f42e86bc742c361c2e18",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
