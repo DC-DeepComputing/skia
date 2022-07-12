@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "eb002ff0_51262e39",
+        "filename": "modules/canvaskit/interface.js",
+        "patchSetId": 11
+      },
+      "lineNbr": 874,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-07-12T15:07:47Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "e4c1a264_cb9fcd5a",
+      "range": {
+        "startLine": 865,
+        "startChar": 4,
+        "endLine": 874,
+        "endChar": 5
+      },
+      "revId": "1035a1c0adf9e5a07a2a600033a32452120e9850",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5838c308_85d298e0",
@@ -85,6 +109,30 @@
       "side": 1,
       "message": "Good suggestion. Does this mean the sampler is only needed if the rects are provided? Or do we always need the sampler?",
       "parentUuid": "5838c308_85d298e0",
+      "range": {
+        "startLine": 3461,
+        "startChar": 14,
+        "endLine": 3461,
+        "endChar": 54
+      },
+      "revId": "1035a1c0adf9e5a07a2a600033a32452120e9850",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d3260ad4_24a7ea42",
+        "filename": "modules/canvaskit/npm_build/types/index.d.ts",
+        "patchSetId": 11
+      },
+      "lineNbr": 3461,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-07-12T15:07:47Z",
+      "side": 1,
+      "message": "No the sampling options are always needed.",
+      "parentUuid": "9ddee260_fb4af8bf",
       "range": {
         "startLine": 3461,
         "startChar": 14,
