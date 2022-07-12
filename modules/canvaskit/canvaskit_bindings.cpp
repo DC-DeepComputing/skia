@@ -406,6 +406,20 @@ void ApplyTransform(SkPath& orig,
     orig.transform(m);
 }
 
+
+bool ApplyIsInterpolatable(SkPath& orig, SkPath& path) {
+    return orig.isInterpolatable(path);
+}
+
+SkPathOrNull ApplyInterpolate(SkPath& origin, SkPath& path, SkScalar weight) {
+    SkPath out;
+    auto succeed = origin.interpolate(path, weight, &out);
+    if (succeed) {
+        return emscripten::val(out);
+    }
+    return emscripten::val::null();
+}
+
 #ifdef CK_INCLUDE_PATHOPS
 bool ApplySimplify(SkPath& path) {
     return Simplify(path, &path);
@@ -1708,6 +1722,12 @@ EMSCRIPTEN_BINDINGS(Skia) {
             const SkRect* oval = reinterpret_cast<const SkRect*>(fPtr);
             self.addOval(*oval, ccw ? SkPathDirection::kCCW : SkPathDirection::kCW, start);
         }))
+        .function("_addCircle", optional_override([](SkPath& self,
+                                                   SkScalar x,
+                                                   SkScalar y,
+                                                   SkScalar r)->void {
+            self.addCircle(x, y, r);
+        }))
         // interface.js has 3 overloads of addPath
         .function("_addPath", &ApplyAddPath)
         .function("_addPoly", optional_override([](SkPath& self,
@@ -1766,6 +1786,10 @@ EMSCRIPTEN_BINDINGS(Skia) {
         .function("_dash", &ApplyDash)
         .function("_trim", &ApplyTrim)
         .function("_stroke", &ApplyStroke)
+
+        // Path interpolation
+        .function("isInterpolatable", &ApplyIsInterpolatable)
+        .function("interpolate", &ApplyInterpolate)
 
 #ifdef CK_INCLUDE_PATHOPS
         // PathOps

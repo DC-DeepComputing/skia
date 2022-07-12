@@ -460,7 +460,7 @@ function pathTests(CK: CanvasKit) {
     const p5 = CK.Path.MakeFromOp(p4, p2!, CK.PathOp.ReverseDifference); // $ExpectType Path | null
     const p6 = CK.Path.MakeFromSVGString('M 205,5 L 795,5 z'); // $ExpectType Path | null
     const p7 = p3.makeAsWinding(); // $ExpectType Path | null
-
+    const p8 = p3.copy().addCircle(10, 10, 10);
     const someRect = CK.LTRBRect(10, 20, 30, 40);
     // Making sure arrays are accepted as rrects.
     const someRRect = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
@@ -528,6 +528,10 @@ function pathTests(CK: CanvasKit) {
     path.transform(CK.Matrix.identity());
     path.transform(1, 0, 0, 0, 1, 0, 0, 0, 1);
     path.trim(0.1, 0.7, false);
+
+    if (p3.isInterpolatable(p4)) {
+        p3.interpolate(p4, 0.5);
+    }
 }
 
 function paragraphTests(CK: CanvasKit, p?: Paragraph) {
