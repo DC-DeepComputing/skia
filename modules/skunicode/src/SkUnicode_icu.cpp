@@ -363,12 +363,34 @@ class SkUnicode_icu : public SkUnicode {
             const char* ch = utf8;
             while (ch < end) {
                 auto unichar = utf8_next(&ch, end);
-                if (isHardLineBreak(unichar)) {
+                if (SkUnicode_icu::isHardBreak(unichar)) {
                     setBreak(ch - utf8, UBRK_LINE_HARD);
                 }
             }
         }
         return true;
+    }
+
+    // TODO: Use ICU data file to detect controls and whitespaces
+    static bool isControl(SkUnichar utf8) {
+        return sk_u_iscntrl(utf8);
+    }
+
+    static bool isWhitespace(SkUnichar utf8) {
+        return sk_u_isWhitespace(utf8);
+    }
+
+    static bool isSpace(SkUnichar utf8) {
+        return sk_u_isspace(utf8);
+    }
+
+    static bool isTabulation(SkUnichar utf8) {
+        return utf8 == '\t';
+    }
+
+    static bool isHardBreak(SkUnichar utf8) {
+        auto property = sk_u_getIntPropertyValue(utf8, UCHAR_LINE_BREAK);
+        return property == U_LB_LINE_FEED || property == U_LB_MANDATORY_BREAK;
     }
 
 public:
@@ -395,28 +417,6 @@ public:
     }
     std::unique_ptr<SkBreakIterator> makeBreakIterator(BreakType breakType) override {
         return makeBreakIterator(sk_uloc_getDefault(), breakType);
-    }
-
-    static bool isHardLineBreak(SkUnichar utf8) {
-        auto property = sk_u_getIntPropertyValue(utf8, UCHAR_LINE_BREAK);
-        return property == U_LB_LINE_FEED || property == U_LB_MANDATORY_BREAK;
-    }
-
-    // TODO: Use ICU data file to detect controls and whitespaces
-    bool isControl(SkUnichar utf8) override {
-        return sk_u_iscntrl(utf8);
-    }
-
-    bool isWhitespace(SkUnichar utf8) override {
-        return sk_u_isWhitespace(utf8);
-    }
-
-    bool isSpace(SkUnichar utf8) override {
-        return sk_u_isspace(utf8);
-    }
-
-    bool isHardBreak(SkUnichar utf8) override {
-        return SkUnicode_icu::isHardLineBreak(utf8);
     }
 
     SkString toUpper(const SkString& str) override {
@@ -448,18 +448,6 @@ public:
         return extractBidi(utf8, utf8Units, dir, results);
     }
 
-    bool getLineBreaks(const char utf8[],
-                       int utf8Units,
-                       std::vector<LineBreakBefore>* results) override {
-
-        return extractPositions(utf8, utf8Units, BreakType::kLines,
-            [results](int pos, int status) {
-                    results->emplace_back(pos, status == UBRK_LINE_HARD
-                                                        ? LineBreakType::kHardLineBreak
-                                                        : LineBreakType::kSoftLineBreak);
-        });
-    }
-
     bool getWords(const char utf8[], int utf8Units, std::vector<Position>* results) override {
 
         // Convert to UTF16 since we want the results in utf16
@@ -467,11 +455,49 @@ public:
         return extractWords((uint16_t*)utf16.c_str(), utf16.size(), results);
     }
 
-    bool getGraphemes(const char utf8[], int utf8Units, std::vector<Position>* results) override {
-
-        return extractPositions(utf8, utf8Units, BreakType::kGraphemes,
-            [results](int pos, int status) { results->emplace_back(pos);
+    bool getCodeUnitFlags(bool replaceTabs,
+                          char utf8[],
+                          int utf8Units,
+                          std::vector<SkUnicode::CodeUnitFlags>* results) override {
+        const char* current = utf8;
+        const char* end = utf8 + utf8Units;
+        while (current < end) {
+            auto before = current - utf8;
+            SkUnichar unichar = SkUTF::NextUTF8(&current, end);
+            if (unichar < 0) unichar = 0xFFFD;
+            auto after = current - utf8;
+            if (this->isTabulation(unichar)) {
+                results->at(before) |= SkUnicode::kTabulation;
+                if (replaceTabs) {
+                    unichar = ' ';
+                    utf8[before] = ' ';
+                }
+            }
+            for (auto i = before; i < after; ++i) {
+                if (this->isSpace(unichar)) {
+                    results->at(i) |= SkUnicode::kPartOfIntraWordBreak;
+                }
+                if (this->isWhitespace(unichar)) {
+                    results->at(i) |= SkUnicode::kPartOfWhiteSpaceBreak;
+                }
+                if (this->isControl(unichar)) {
+                    results->at(i) |= SkUnicode::kControl;
+                }
+            }
+        }
+        this->extractPositions(utf8, utf8Units, BreakType::kLines,
+            [results](int pos, int status) {
+               if (status == UBRK_LINE_HARD) {
+                   results->at(pos) |= SkUnicode::kHardLineBreakBefore;
+               } else {
+                   results->at(pos) |= SkUnicode::kSoftLineBreakBefore;
+               }
         });
+        this->extractPositions(utf8, utf8Units, BreakType::kGraphemes,
+            [results](int pos, int status) {
+               results->at(pos) |= SkUnicode::kGraphemeStart;
+        });
+        return true;
     }
 
     void reorderVisual(const BidiLevel runLevels[],
