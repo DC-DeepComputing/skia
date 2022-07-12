@@ -68,6 +68,42 @@
       "message": "code lgtm, do we have another change (in Android?) that defines `SK_SUPPORT_LEGACY_ALPHA_BITMAP_AS_COVERAGE` for the framework?",
       "revId": "86eaeaf191057f2bbe09130eed2ed5f169a30d0b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bb9ace04_0edbca4e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-07-12T13:46:16Z",
+      "side": 1,
+      "message": "I don\u0027t have that CL yet, but yes - we\u0027d add it to Android\u0027s  SkUserConfigManual.h. We\u0027re waiting to ensure that we can land these fixes before proceeding.",
+      "parentUuid": "0b213644_425a2104",
+      "revId": "86eaeaf191057f2bbe09130eed2ed5f169a30d0b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "da87e38d_55c596ec",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-07-12T13:46:16Z",
+      "side": 1,
+      "message": "Right. As discussed in chat: I\u0027d rather NOT guard this with ANDROID_API right now. If we want to alter the behavior, that should be a planned change that happens with the first developer preview of a new release, rather than something that happens accidentally.",
+      "parentUuid": "f7de6682_a64ab1f1",
+      "revId": "86eaeaf191057f2bbe09130eed2ed5f169a30d0b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
