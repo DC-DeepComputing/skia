@@ -35,8 +35,8 @@ void UnicodeText::initialize(SkSpan<uint16_t> utf16) {
     // Get white spaces
     fCodeUnitProperties.push_back_n(utf16.size() + 1, CodeUnitFlags::kNoCodeUnitFlag);
     this->fUnicode->forEachCodepoint((char16_t*)utf16.data(), utf16.size(),
-       [this](SkUnichar unichar, int32_t start, int32_t end) {
-            if (this->fUnicode->isWhitespace(unichar)) {
+       [this](SkUnicode::CodeUnitFlags flags, SkUnichar unichar, int32_t start, int32_t end) {
+            if (SkUnicode::isPartOfWhiteSpaceBreak(flags)) {
                 for (auto i = start; i < end; ++i) {
                     fCodeUnitProperties[i] |=  CodeUnitFlags::kPartOfWhiteSpace;
                 }
@@ -234,7 +234,11 @@ std::unique_ptr<ShapedText> FontResolvedText::shape(UnicodeText* unicodeText,
     UTF16FromUTF8.push_back_n(text8.size() + 1, utf16Index);
     UTF8FromUTF16.push_back_n(text16.size() + 1, utf16Index);
     unicodeText->getUnicode()->forEachCodepoint(text8.c_str(), text8.size(),
-    [&](SkUnichar unichar, int32_t start, int32_t end, int32_t count) {
+                                                [&](SkUnicode::CodeUnitFlags flags,
+                                                    SkUnichar unichar,
+                                                    int32_t start,
+                                                    int32_t end,
+                                                    int32_t count) {
         // utf8 index group of 1, 2 or 3 can be represented with one utf16 index group
         for (auto i = start; i < end; ++i) {
             UTF16FromUTF8[i] = utf16Index;
