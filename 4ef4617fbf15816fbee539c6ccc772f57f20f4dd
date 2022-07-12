@@ -59,6 +59,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "eec35d14_9f9d2fb6",
+        "filename": "tests/SkRuntimeEffectTest.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 621,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-07-12T13:50:35Z",
+      "side": 1,
+      "message": "Yes, that\u0027s much clearer. Done.",
+      "parentUuid": "0a27488c_b9d6e77b",
+      "range": {
+        "startLine": 618,
+        "startChar": 0,
+        "endLine": 621,
+        "endChar": 100
+      },
+      "revId": "4ef4617fbf15816fbee539c6ccc772f57f20f4dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fd9ffcea_43e9ec1f",
@@ -72,6 +96,30 @@
       "writtenOn": "2022-07-11T22:08:13Z",
       "side": 1,
       "message": "Let\u0027s not commit to anything here.\n`This restriction could be removed if` ...",
+      "range": {
+        "startLine": 710,
+        "startChar": 7,
+        "endLine": 710,
+        "endChar": 53
+      },
+      "revId": "4ef4617fbf15816fbee539c6ccc772f57f20f4dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ff711596_2d1aaaee",
+        "filename": "tests/SkRuntimeEffectTest.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 710,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-07-12T13:50:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fd9ffcea_43e9ec1f",
       "range": {
         "startLine": 710,
         "startChar": 7,
