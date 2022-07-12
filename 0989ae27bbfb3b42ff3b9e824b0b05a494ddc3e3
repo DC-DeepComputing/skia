@@ -16,6 +16,23 @@
       "message": "Thanks!",
       "revId": "0989ae27bbfb3b42ff3b9e824b0b05a494ddc3e3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "45c45f10_186d92c9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 15374
+      },
+      "writtenOn": "2022-07-12T09:47:21Z",
+      "side": 1,
+      "message": "Cannot land because of:\n\n[CQAccessListVerifier]: CQ+2 requires a vote from a committer\n\n\nI am not a Skia committed (only Chromium), can you help me with that? Thanks.",
+      "revId": "0989ae27bbfb3b42ff3b9e824b0b05a494ddc3e3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
