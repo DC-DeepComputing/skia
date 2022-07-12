@@ -9,6 +9,7 @@
 #define skgpu_graphite_geom_Geometry_DEFINED
 
 #include "include/core/SkVertices.h"
+#include "src/core/SkVerticesPriv.h"
 #include "src/gpu/graphite/geom/Rect.h"
 #include "src/gpu/graphite/geom/Shape.h"
 #include "src/gpu/graphite/geom/SubRunData.h"
@@ -16,8 +17,7 @@
 namespace skgpu::graphite {
 
 /**
- * Geometry is a container that can house Shapes, SkVertices, and text SubRuns.
- * TODO - Add vertices functionality.
+ * Geometry is a container that can house Shapes, SkVertices, and eventually text subruns.
  */
 class Geometry {
 public:
@@ -27,9 +27,8 @@ public:
 
     Geometry() {}
     explicit Geometry(const Shape& shape) { this->setShape(shape); }
-    explicit Geometry(const SubRunData& subrun) {
-        this->setSubRun(subrun);
-    }
+    explicit Geometry(const SubRunData& subrun) { this->setSubRun(subrun); }
+    explicit Geometry(SkVertices* vertices) { this->setVertices(vertices); }
     ~Geometry() { this->setType(Type::kEmpty); }
 
     Geometry& operator=(Geometry&& geom) {
@@ -37,7 +36,10 @@ public:
             switch (geom.type()) {
                 case Type::kEmpty: this->setType(Type::kEmpty); break;
                 case Type::kShape: this->setShape(geom.shape()); geom.setType(Type::kEmpty); break;
-                case Type::kVertices: /* TODO */ break;
+                case Type::kVertices: { this->setVertices(geom.fVertices);
+                    geom.setType(Type::kEmpty);
+                    break;
+                }
                 case Type::kSubRun: this->setSubRun(geom.subRunData()); geom.setType(Type::kEmpty);
                                     break;
             }
@@ -48,12 +50,12 @@ public:
         switch (geom.type()) {
             case Type::kEmpty: this->setType(Type::kEmpty); break;
             case Type::kShape: this->setShape(geom.shape()); break;
-            case Type::kVertices: /* TODO */ break;
             case Type::kSubRun: this->setSubRun(geom.subRunData()); break;
+            case Type::kVertices: this->setVertices(geom.fVertices); break;
+            default: break;
         }
         return *this;
     }
-
     Geometry(const Geometry& geom) {
         *this = geom;
     }
@@ -66,7 +68,6 @@ public:
             new (&fShape) Shape(shape);
         }
     }
-    // void setVertices(const SkVertices&);
     void setSubRun(const SubRunData& subRun) {
         if (fType == Type::kSubRun) {
             fSubRunData = subRun;
@@ -75,16 +76,27 @@ public:
             new (&fSubRunData) SubRunData(subRun);
         }
     }
+    void setVertices(SkVertices* vertices) {
+        this->setType(Type::kVertices);
+        if (fVertices != vertices) {
+          vertices->ref();
+          if (fVertices) { fVertices->unref(); }
+          fVertices = vertices;
+        }
+    }
 
     const Shape& shape() const { SkASSERT(this->isShape()); return fShape; }
-    // const SkVertices& vertices() const;
     const SubRunData& subRunData() const { SkASSERT(this->isSubRun()); return fSubRunData; }
-
+    const SkVertices* vertices() const { SkASSERT(this->isVertices()); return fVertices; }
+    sk_sp<SkVertices> refVertices() const {
+        SkASSERT(this->isVertices());
+        return sk_ref_sp<SkVertices>(fVertices);
+    }
     Rect bounds() const {
         switch (fType) {
             case Type::kEmpty: return Rect(0, 0, 0, 0);
             case Type::kShape: return fShape.bounds();
-            case Type::kVertices: /* TODO */ return Rect(0, 0, 0, 0);
+            case Type::kVertices: return fVertices->bounds();
             case Type::kSubRun: return fSubRunData.bounds();
         }
         SkUNREACHABLE;
@@ -104,6 +116,10 @@ private:
             fShape.~Shape();
         } else if (this->isSubRun() && type != Type::kSubRun) {
             fSubRunData.~SubRunData();
+        } else if (isVertices() && type != Type::kVertices) {
+            fVertices->unref();
+        } else if (!isVertices() && type == Type::kVertices) {
+            fVertices = nullptr;
         }
         fType = type;
     }
@@ -111,8 +127,8 @@ private:
     Type fType = Type::kEmpty;
     union {
         Shape fShape;
-        // SkVertices fVertices;
         SubRunData fSubRunData;
+        SkVertices* fVertices;
     };
 };
 } // namespace skgpu::graphite

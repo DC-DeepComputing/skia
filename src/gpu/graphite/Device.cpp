@@ -35,6 +35,7 @@
 #include "include/core/SkPathEffect.h"
 #include "include/core/SkStrokeRec.h"
 #include "include/private/SkImageInfoPriv.h"
+#include "src/core/SkVerticesPriv.h"
 
 #include "src/core/SkConvertPixels.h"
 #include "src/core/SkMatrixPriv.h"
@@ -450,6 +451,13 @@ void Device::drawRect(const SkRect& r, const SkPaint& paint) {
                        paint, SkStrokeRec(paint));
 }
 
+void Device::drawVertices(const SkVertices* vertices, sk_sp<SkBlender> blender,
+                          const SkPaint& paint, bool skipColorXform)  {
+  this->drawGeometry(this->localToDeviceTransform(), Geometry(const_cast<SkVertices*>(vertices)),
+                     paint, SkStrokeRec(paint), DrawFlags::kIgnorePathEffect |
+                     DrawFlags::kIgnoreMaskFilter);
+}
+
 void Device::drawOval(const SkRect& oval, const SkPaint& paint) {
     // TODO: This has wasted effort from the SkCanvas level since it instead converts rrects that
     // happen to be ovals into this, only for us to go right back to rrect.
@@ -777,6 +785,24 @@ const Renderer* Device::ChooseRenderer(const Geometry& geometry,
 
     if (geometry.isSubRun()) {
         return geometry.subRunData().subRun()->renderer();
+    } else if (geometry.isVertices()) {
+        SkVerticesPriv info(geometry.vertices()->priv());
+        // Only check to see if the primary type is triangle strips. All other vertex modes use the
+        // triangle primary type.
+        bool triangleStrips {info.mode() == SkVertices::VertexMode::kTriangleStrip_VertexMode};
+        if (info.hasColors() && info.hasTexCoords()) {
+            return triangleStrips ? &Renderer::VertTriStripWithColorAndTex() :
+                                    &Renderer::VertTrisWithColorAndTex();
+        } else if (info.hasColors()) {
+            return triangleStrips ? &Renderer::VertTriStripWithColor() :
+                                    &Renderer::VertTrisWithColor();
+        } else if (info.hasTexCoords()) {
+            return triangleStrips ? &Renderer::VertTriStripWithTex() :
+                                    &Renderer::VertTrisWithTex();
+        } else {
+            return triangleStrips ? &Renderer::VertTriStripPositionOnly() :
+                                    &Renderer::VertTrisPositionOnly();
+        }
     }
 
     if (!geometry.isShape()) {
