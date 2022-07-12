@@ -72,6 +72,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "872f5822_afef0e85",
+        "filename": "include/effects/SkImageFilters.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 353,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-07-12T15:24:55Z",
+      "side": 1,
+      "message": "Hmm. If I\u0027m reading the Android use-case right, it will never be nullptr. We certainly have GMs and unit tests that rely on that behavior, but I\u0027m not sure any of our major clients do. (Chrome never even moved to the new factory name, they\u0027re still using SkMakeRuntimeImageFilter, which bypasses names entirely). So we probably could get away with it. The nullptr behavior is handy, of course - you don\u0027t need to know the name if you\u0027re writing a single-input image filter (the common case), but it\u0027s not that much of a burden to replicate the name that you typed in the SkSL, either.\n\nI\u0027d suggest we land this as-is, and then we can look at adjusting the contract around naming (and this string_view) separately.",
+      "parentUuid": "3b6ed3ba_b9cb5dd9",
+      "revId": "169b17d5dd858c842148692ffcdfd949b8acf8ae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "675114b0_85cf07e0",
