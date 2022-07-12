@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "67b92961_e2360beb",
+        "filename": "include/effects/SkImageFilters.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 353,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-07-12T13:58:48Z",
+      "side": 1,
+      "message": "Update this one, too? This is the only entry point that Android uses, but they\u0027re passing a \u0027const char*\u0027, so taking string_view here will be fine.",
+      "revId": "169b17d5dd858c842148692ffcdfd949b8acf8ae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "675114b0_85cf07e0",
+        "filename": "include/effects/SkImageFilters.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 372,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-07-12T13:58:48Z",
+      "side": 1,
+      "message": "This entry point could actually be a tripping hazard if anyone is using it (no silent conversion from array of char* to array of string_view). I don\u0027t think our internal clients are, but I know that feature was requested by an external client - so this one will definitely warrant a RELEASE_NOTES entry.",
+      "revId": "169b17d5dd858c842148692ffcdfd949b8acf8ae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
