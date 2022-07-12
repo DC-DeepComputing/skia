@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c6c7ff7c_2ebf043e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 15399
+      },
+      "writtenOn": "2022-07-12T11:30:29Z",
+      "side": 1,
+      "message": "Oups! Missed something with this CL: https://skia-review.googlesource.com/c/skia/+/541936",
+      "revId": "029210f0098210f7a45c4c812eac12ea23c0a725",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
