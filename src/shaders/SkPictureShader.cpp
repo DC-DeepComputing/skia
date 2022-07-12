@@ -51,18 +51,20 @@ struct ImageFromPictureKey : public SkResourceCache::Key {
 public:
     ImageFromPictureKey(SkColorSpace* colorSpace, SkColorType colorType,
                         uint32_t pictureID, const SkRect& subset,
-                        SkSize scale)
+                        SkSize scale, const SkSurfaceProps& surfaceProps)
         : fColorSpaceXYZHash(colorSpace->toXYZD50Hash())
         , fColorSpaceTransferFnHash(colorSpace->transferFnHash())
         , fColorType(static_cast<uint32_t>(colorType))
         , fSubset(subset)
         , fScale(scale)
+        , fSurfaceProps(surfaceProps)
     {
         static const size_t keySize = sizeof(fColorSpaceXYZHash) +
                                       sizeof(fColorSpaceTransferFnHash) +
                                       sizeof(fColorType) +
                                       sizeof(fSubset) +
-                                      sizeof(fScale);
+                                      sizeof(fScale) +
+                                      sizeof(fSurfaceProps);
         // This better be packed.
         SkASSERT(sizeof(uint32_t) * (&fEndOfStruct - &fColorSpaceXYZHash) == keySize);
         this->init(&gImageFromPictureKeyNamespaceLabel,
@@ -71,11 +73,12 @@ public:
     }
 
 private:
-    uint32_t    fColorSpaceXYZHash;
-    uint32_t    fColorSpaceTransferFnHash;
-    uint32_t    fColorType;
-    SkRect      fSubset;
-    SkSize      fScale;
+    uint32_t       fColorSpaceXYZHash;
+    uint32_t       fColorSpaceTransferFnHash;
+    uint32_t       fColorType;
+    SkRect         fSubset;
+    SkSize         fScale;
+    SkSurfaceProps fSurfaceProps;
 
     SkDEBUGCODE(uint32_t fEndOfStruct;)
 };
@@ -259,7 +262,14 @@ struct CachedImageInfo {
 sk_sp<SkShader> SkPictureShader::rasterShader(const SkMatrix& viewMatrix,
                                               SkTCopyOnFirstWrite<SkMatrix>* localMatrix,
                                               SkColorType dstColorType,
-                                              SkColorSpace* dstColorSpace) const {
+                                              SkColorSpace* dstColorSpace,
+                                              const SkSurfaceProps& propsIn) const {
+#if defined(SK_ENABLE_PICTURESHADER_PROPS)
+    SkSurfaceProps props = propsIn;
+#else
+    SkSurfaceProps props; // defaults
+#endif
+
     const int maxTextureSize_NotUsedForCPU = 0;
     CachedImageInfo info = CachedImageInfo::Make(fTile, viewMatrix, localMatrix,
                                                  dstColorType, dstColorSpace,
@@ -269,11 +279,11 @@ sk_sp<SkShader> SkPictureShader::rasterShader(const SkMatrix& viewMatrix,
     }
 
     ImageFromPictureKey key(info.imageInfo.colorSpace(), info.imageInfo.colorType(),
-                        fPicture->uniqueID(), fTile, info.tileScale);
+                        fPicture->uniqueID(), fTile, info.tileScale, props);
 
     sk_sp<SkImage> image;
     if (!SkResourceCache::Find(key, ImageFromPictureRec::Visitor, &image)) {
-        image = info.makeImage(SkSurface::MakeRaster(info.imageInfo), fPicture.get());
+        image = info.makeImage(SkSurface::MakeRaster(info.imageInfo, &props), fPicture.get());
         if (!image) {
             return nullptr;
         }
@@ -289,7 +299,7 @@ bool SkPictureShader::onAppendStages(const SkStageRec& rec) const {
     // Keep bitmapShader alive by using alloc instead of stack memory
     auto& bitmapShader = *rec.fAlloc->make<sk_sp<SkShader>>();
     bitmapShader = this->rasterShader(rec.fMatrixProvider.localToDevice(), &lm,
-                                      rec.fDstColorType, rec.fDstCS);
+                                      rec.fDstColorType, rec.fDstCS, rec.fSurfaceProps);
     if (!bitmapShader) {
         return false;
     }
@@ -307,17 +317,21 @@ skvm::Color SkPictureShader::onProgram(skvm::Builder* p,
                                        skvm::Uniforms* uniforms, SkArenaAlloc* alloc) const {
     auto lm = this->totalLocalMatrix(localM);
 
+    // This is called exclusively by the SkVMBlitter, which doesn't have a target surface. We
+    // currently assume default props (i.e., no LCDText).
+    SkSurfaceProps props{};
+
     // Keep bitmapShader alive by using alloc instead of stack memory
     auto& bitmapShader = *alloc->make<sk_sp<SkShader>>();
     bitmapShader = this->rasterShader(matrices.localToDevice(), &lm,
-                                      dst.colorType(), dst.colorSpace());
+                                      dst.colorType(), dst.colorSpace(), props);
     if (!bitmapShader) {
         return {};
     }
 
-    return as_SB(bitmapShader)->program(p, device,local, paint,
-                                        matrices,lm, dst,
-                                        uniforms,alloc);
+    return as_SB(bitmapShader)->program(p, device, local, paint,
+                                        matrices, lm, dst,
+                                        uniforms, alloc);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -327,7 +341,7 @@ SkShaderBase::Context* SkPictureShader::onMakeContext(const ContextRec& rec, SkA
 const {
     auto lm = this->totalLocalMatrix(rec.fLocalMatrix);
     sk_sp<SkShader> bitmapShader = this->rasterShader(*rec.fMatrix, &lm, rec.fDstColorType,
-                                                      rec.fDstColorSpace);
+                                                      rec.fDstColorSpace, rec.fProps);
     if (!bitmapShader) {
         return nullptr;
     }
@@ -411,7 +425,11 @@ std::unique_ptr<GrFragmentProcessor> SkPictureShader::asFragmentProcessor(
         view = GrSurfaceProxyView(proxy, kTopLeft_GrSurfaceOrigin, skgpu::Swizzle());
     } else {
         const int msaaSampleCount = 0;
+#if defined(SK_ENABLE_PICTURESHADER_PROPS)
+        const SkSurfaceProps* props = &args.fSurfaceProps;
+#else
         const SkSurfaceProps* props = nullptr;
+#endif
         const bool createWithMips = false;
         auto image = info.makeImage(SkSurface::MakeRenderTarget(ctx,
                                                                 SkBudgeted::kYes,
