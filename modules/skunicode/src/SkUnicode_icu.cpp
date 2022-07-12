@@ -363,7 +363,7 @@ class SkUnicode_icu : public SkUnicode {
             const char* ch = utf8;
             while (ch < end) {
                 auto unichar = utf8_next(&ch, end);
-                if (isHardLineBreak(unichar)) {
+                if (SkUnicode_icu::isHardBreak(unichar)) {
                     setBreak(ch - utf8, UBRK_LINE_HARD);
                 }
             }
@@ -397,26 +397,26 @@ public:
         return makeBreakIterator(sk_uloc_getDefault(), breakType);
     }
 
-    static bool isHardLineBreak(SkUnichar utf8) {
-        auto property = sk_u_getIntPropertyValue(utf8, UCHAR_LINE_BREAK);
-        return property == U_LB_LINE_FEED || property == U_LB_MANDATORY_BREAK;
-    }
-
     // TODO: Use ICU data file to detect controls and whitespaces
-    bool isControl(SkUnichar utf8) override {
+    static bool isControl(SkUnichar utf8) {
         return sk_u_iscntrl(utf8);
     }
 
-    bool isWhitespace(SkUnichar utf8) override {
+    static bool isWhitespace(SkUnichar utf8) {
         return sk_u_isWhitespace(utf8);
     }
 
-    bool isSpace(SkUnichar utf8) override {
+    static bool isSpace(SkUnichar utf8) {
         return sk_u_isspace(utf8);
     }
 
-    bool isHardBreak(SkUnichar utf8) override {
-        return SkUnicode_icu::isHardLineBreak(utf8);
+    static bool isTabulation(SkUnichar utf8) {
+        return utf8 == '\t';
+    }
+
+    static bool isHardBreak(SkUnichar utf8) {
+        auto property = sk_u_getIntPropertyValue(utf8, UCHAR_LINE_BREAK);
+        return property == U_LB_LINE_FEED || property == U_LB_MANDATORY_BREAK;
     }
 
     SkString toUpper(const SkString& str) override {
@@ -448,6 +448,50 @@ public:
         return extractBidi(utf8, utf8Units, dir, results);
     }
 
+    bool getWords(const char utf8[], int utf8Units, std::vector<Position>* results) override {
+
+        // Convert to UTF16 since we want the results in utf16
+        auto utf16 = convertUtf8ToUtf16(utf8, utf8Units);
+        return extractWords((uint16_t*)utf16.c_str(), utf16.size(), results);
+    }
+
+    bool getCodeUnitFlags(bool replaceTabs,
+                          char utf8[],
+                          int utf8Units,
+                          std::vector<SkUnicode::CodeUnitFlags>* results) override {
+        for (auto i = 0; i < utf8Units; ++i) {
+            auto& c = utf8[i];
+            if (this->isTabulation(c)) {
+                results->at(i) |= SkUnicode::kTabulation;
+                if (replaceTabs) {
+                    c = ' ';
+                }
+            }
+            if (this->isSpace(c)) {
+                results->at(i) |= SkUnicode::kPartOfIntraWordBreak;
+            }
+            if (this->isWhitespace(c)) {
+                results->at(i) |= SkUnicode::kPartOfWhiteSpaceBreak;
+            }
+            if (this->isControl(c)) {
+                results->at(i) |= SkUnicode::kControl;
+            }
+        }
+        this->extractPositions(utf8, utf8Units, BreakType::kLines,
+            [results](int pos, int status) {
+               if (status == UBRK_LINE_HARD) {
+                   results->at(pos) |= SkUnicode::kHardLineBreakBefore;
+               } else {
+                   results->at(pos) |= SkUnicode::kSoftLineBreakBefore;
+               }
+        });
+        this->extractPositions(utf8, utf8Units, BreakType::kGraphemes,
+            [results](int pos, int status) {
+               results->at(pos) |= SkUnicode::kGraphemeStart;
+        });
+        return true;
+    }
+
     bool getLineBreaks(const char utf8[],
                        int utf8Units,
                        std::vector<LineBreakBefore>* results) override {
@@ -458,13 +502,6 @@ public:
                                                         ? LineBreakType::kHardLineBreak
                                                         : LineBreakType::kSoftLineBreak);
         });
-    }
-
-    bool getWords(const char utf8[], int utf8Units, std::vector<Position>* results) override {
-
-        // Convert to UTF16 since we want the results in utf16
-        auto utf16 = convertUtf8ToUtf16(utf8, utf8Units);
-        return extractWords((uint16_t*)utf16.c_str(), utf16.size(), results);
     }
 
     bool getGraphemes(const char utf8[], int utf8Units, std::vector<Position>* results) override {

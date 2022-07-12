@@ -12,7 +12,6 @@
 #include "include/core/SkSpan.h"
 #include "include/core/SkString.h"
 #include "include/core/SkTypes.h"
-#include "include/private/SkBitmaskEnum.h"
 #include "include/private/SkOnce.h"
 #include "include/private/SkTArray.h"
 #include "include/private/SkTHash.h"
@@ -33,24 +32,6 @@
 #include <vector>
 
 class SkCanvas;
-
-namespace skia {
-namespace textlayout {
-
-enum CodeUnitFlags {
-    kNoCodeUnitFlag = 0x00,
-    kPartOfWhiteSpaceBreak = 0x01,
-    kGraphemeStart = 0x02,
-    kSoftLineBreakBefore = 0x04,
-    kHardLineBreakBefore = 0x08,
-    kPartOfIntraWordBreak = 0x10,
-};
-}  // namespace textlayout
-}  // namespace skia
-
-namespace sknonstd {
-template <> struct is_bitmask_enum<skia::textlayout::CodeUnitFlags> : std::true_type {};
-}  // namespace sknonstd
 
 namespace skia {
 namespace textlayout {
@@ -86,14 +67,7 @@ struct ResolvedFontDescriptor {
     SkFont fFont;
     TextIndex fTextStart;
 };
-/*
-struct BidiRegion {
-    BidiRegion(size_t start, size_t end, uint8_t dir)
-        : text(start, end), direction(dir) { }
-    TextRange text;
-    uint8_t direction;
-};
-*/
+
 class ParagraphImpl final : public Paragraph {
 
 public:
@@ -218,9 +192,24 @@ public:
         }
     }
 
-    bool codeUnitHasProperty(size_t index, CodeUnitFlags property) const { return (fCodeUnitProperties[index] & property) == property; }
+    bool codeUnitHasProperty(size_t index, SkUnicode::CodeUnitFlags property) const {
+        return (fCodeUnitProperties[index] & property) == property;
+    }
 
     SkUnicode* getUnicode() { return fUnicode.get(); }
+
+    static bool isTabulation(SkUnicode::CodeUnitFlags flags) {
+        return (flags & SkUnicode::kTabulation) == SkUnicode::kTabulation;
+    }
+    static bool isHardLineBreak(SkUnicode::CodeUnitFlags flags) {
+        return (flags & SkUnicode::kHardLineBreakBefore) == SkUnicode::kHardLineBreakBefore;
+    }
+    static bool isControl(SkUnicode::CodeUnitFlags flags) {
+        return (flags & SkUnicode::kControl) == SkUnicode::kControl;
+    }
+    static bool isPartOfWhiteSpaceBreak(SkUnicode::CodeUnitFlags flags) {
+        return (flags & SkUnicode::kPartOfWhiteSpaceBreak) == SkUnicode::kPartOfWhiteSpaceBreak;
+    }
 
 private:
     friend class ParagraphBuilder;
@@ -248,7 +237,7 @@ private:
     InternalState fState;
     SkTArray<Run, false> fRuns;         // kShaped
     SkTArray<Cluster, true> fClusters;  // kClusterized (cached: text, word spacing, letter spacing, resolved fonts)
-    SkTArray<CodeUnitFlags> fCodeUnitProperties;
+    std::vector<SkUnicode::CodeUnitFlags> fCodeUnitProperties;
     SkTArray<size_t, true> fClustersIndexFromCodeUnit;
     std::vector<size_t> fWords;
     std::vector<SkUnicode::BidiRegion> fBidiRegions;

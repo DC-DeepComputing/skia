@@ -2787,6 +2787,11 @@ UNIX_ONLY_TEST(SkParagraph_GetRectsForRangeIncludeLineSpacingMiddle, reporter) {
 
     RectHeightStyle heightStyle = RectHeightStyle::kIncludeLineSpacingMiddle;
     RectWidthStyle widthStyle = RectWidthStyle::kMax;
+
+    auto result1 = paragraph->getRectsForRange(30, 150, heightStyle, widthStyle);
+    canvas.drawRects(SK_ColorRED, result1);
+
+    return;
     {
         auto result = paragraph->getRectsForRange(0, 0, heightStyle, widthStyle);
         REPORTER_ASSERT(reporter, result.empty());
