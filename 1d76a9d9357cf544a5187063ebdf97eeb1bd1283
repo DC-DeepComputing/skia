@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cdd98c10_b8cc5231",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-07-12T18:51:05Z",
+      "side": 1,
+      "message": "IWYU would like you to guard the includes, too...",
+      "revId": "1d76a9d9357cf544a5187063ebdf97eeb1bd1283",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
