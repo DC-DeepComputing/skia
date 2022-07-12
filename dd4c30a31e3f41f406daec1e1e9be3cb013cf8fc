@@ -18,6 +18,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5dadcd30_adb48a29",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19024
+      },
+      "writtenOn": "2022-07-12T20:24:37Z",
+      "side": 1,
+      "message": "Thanks a lot for your support on this. I\u0027ve made the necessary adjustments.\nOut of curiosity, how do you get the memory leaks reports while running the tests? Is it just because we are using the debug build? I\u0027d be interested to have something similar in our own test suite.",
+      "revId": "dd4c30a31e3f41f406daec1e1e9be3cb013cf8fc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "90e79a7b_6602d5c6",
