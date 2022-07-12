@@ -126,6 +126,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ee42cdb6_9e38d224",
+        "filename": "include/effects/SkImageFilters.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 353,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-07-12T15:42:32Z",
+      "side": 1,
+      "message": "Done at http://review.skia.org/557898/",
+      "parentUuid": "0c26af76_90bfb64d",
+      "revId": "169b17d5dd858c842148692ffcdfd949b8acf8ae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "675114b0_85cf07e0",
