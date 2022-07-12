@@ -77,7 +77,8 @@ public:
 
 #if SK_SUPPORT_GPU
     GrFPResult asFragmentProcessor(std::unique_ptr<GrFragmentProcessor> inputFP,
-                                   GrRecordingContext*, const GrColorInfo&) const override;
+                                   GrRecordingContext*, const GrColorInfo&,
+                                   const SkSurfaceProps&) const override;
 #endif
 
 protected:
@@ -115,7 +116,8 @@ sk_sp<SkFlattenable> SkGaussianColorFilter::CreateProc(SkReadBuffer&) {
 
 GrFPResult SkGaussianColorFilter::asFragmentProcessor(std::unique_ptr<GrFragmentProcessor> inputFP,
                                                       GrRecordingContext*,
-                                                      const GrColorInfo&) const {
+                                                      const GrColorInfo&,
+                                                      const SkSurfaceProps&) const {
     static const SkRuntimeEffect* effect = SkMakeRuntimeEffect(SkRuntimeEffect::MakeForColorFilter,
     R"(
         half4 main(half4 inColor) {

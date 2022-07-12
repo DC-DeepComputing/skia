@@ -395,13 +395,15 @@ void SkDraw::drawFixedVertices(const SkVertices* vertices,
         VertState state(vertexCount, indices, indexCount);
         VertState::Proc vertProc = state.chooseProc(info.mode());
         SkShader* shader = applyShaderColorBlend(paintShader);
+        SkSurfaceProps props = SkSurfacePropsCopyOrDefault(fProps);
 
         SkPaint shaderPaint(paint);
         shaderPaint.setShader(sk_ref_sp(shader));
 
         if (!texCoords) {  // only tricolor shader
-            auto blitter = SkCreateRasterPipelineBlitter(
-                    fDst, shaderPaint, *fMatrixProvider, outerAlloc, this->fRC->clipShader());
+            auto blitter = SkCreateRasterPipelineBlitter(fDst, shaderPaint, *fMatrixProvider,
+                                                         outerAlloc, this->fRC->clipShader(),
+                                                         props);
             if (!blitter) {
                 return false;
             }
@@ -422,7 +424,8 @@ void SkDraw::drawFixedVertices(const SkVertices* vertices,
                           fDst.colorSpace(),
                           shaderPaint,
                           nullptr,
-                          *fMatrixProvider};
+                          *fMatrixProvider,
+                          props};
         if (auto updater = as_SB(shader)->appendUpdatableStages(rec)) {
             bool isOpaque = shader->isOpaque();
             if (triColorShader) {
@@ -476,8 +479,9 @@ void SkDraw::drawFixedVertices(const SkVertices* vertices,
                 }
 
                 // It'd be nice if we could detect this will fail earlier.
-                auto blitter = SkCreateRasterPipelineBlitter(
-                        fDst, shaderPaint, *matrixProvider, &innerAlloc, this->fRC->clipShader());
+                auto blitter = SkCreateRasterPipelineBlitter(fDst, shaderPaint, *matrixProvider,
+                                                             &innerAlloc, this->fRC->clipShader(),
+                                                             props);
                 if (!blitter) {
                     return false;
                 }

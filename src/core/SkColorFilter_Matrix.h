@@ -20,7 +20,8 @@ public:
 
 #if SK_SUPPORT_GPU
     GrFPResult asFragmentProcessor(std::unique_ptr<GrFragmentProcessor> inputFP,
-                                   GrRecordingContext*, const GrColorInfo&) const override;
+                                   GrRecordingContext*, const GrColorInfo&,
+                                   const SkSurfaceProps&) const override;
 #endif
 
     static void RegisterFlattenables();
