@@ -10,6 +10,7 @@
 
 #include "include/core/SkAlphaType.h"
 #include "include/core/SkScalar.h"
+#include "include/core/SkString.h"
 #include "include/core/SkTypes.h"
 
 #include <array>
@@ -299,6 +300,24 @@ struct SkRGBA4f {
         return { fR * scale.fR, fG * scale.fG, fB * scale.fB, fA * scale.fA };
     }
 
+    /** Allows SkColor4fs to be printed trivially.
+
+        @param out    Current output stream
+        @return       out with a string representation of this color appended
+    */
+    std::ostream& operator<<(std::ostream& out) {
+        out << toString();
+        return out;
+    }
+
+    /** Returns SkString representation of SkColor4f.
+
+        @return       SkColor4f as SkString
+    */
+    SkString toString() const {
+        return SkStringPrintf("SkColor4f{r: %.3f, g: %.3f, b: %.3f, a: %.3f}", fR, fG, fB, fA);
+    }
+
     /** Returns a pointer to components of SkRGBA4f, for array access.
 
         @return       pointer to array [fR, fG, fB, fA]
@@ -332,6 +351,18 @@ struct SkRGBA4f {
     float& operator[](int index) {
         SkASSERT(index >= 0 && index < 4);
         return this->vec()[index];
+    }
+
+    /** Compares SkRGBA4f with other, and returns true if all components are
+     * approximately equal.
+
+        @param other    SkRGBA4f to compare
+        @param epsilon  maximum allowable difference for each channel
+        @return         true if SkRGBA4f approximately equals other
+    */
+    bool approximatelyEquals(const SkRGBA4f& other, float epsilon = 1e-9f) const {
+        return (abs(fR - other.fR) <= epsilon) && (abs(fG - other.fG) <= epsilon) &&
+               (abs(fB - other.fB) <= epsilon) && (abs(fA - other.fA) <= epsilon);
     }
 
     /** Returns true if SkRGBA4f is an opaque color. Asserts if fA is out of range and
