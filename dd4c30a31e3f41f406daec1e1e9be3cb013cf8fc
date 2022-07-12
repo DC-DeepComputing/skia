@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "98b6dd6c_d4ced3a8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-07-12T20:26:40Z",
+      "side": 1,
+      "message": "AFAIK, it\u0027s something added \"for free\" in the debug build.",
+      "parentUuid": "5dadcd30_adb48a29",
+      "revId": "dd4c30a31e3f41f406daec1e1e9be3cb013cf8fc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "90e79a7b_6602d5c6",
