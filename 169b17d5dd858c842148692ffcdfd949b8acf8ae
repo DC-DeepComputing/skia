@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "00f1584c_79aa85fe",
+        "filename": "include/effects/SkImageFilters.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 353,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-07-12T15:13:58Z",
+      "side": 1,
+      "message": "I was a little spooked by this one because the API assigned a meaning to null, and string_view(nullptr) --\u003e crash. So we may have existing code that compiles and then blows up. Are you sure?",
+      "parentUuid": "67b92961_e2360beb",
+      "revId": "169b17d5dd858c842148692ffcdfd949b8acf8ae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "675114b0_85cf07e0",
         "filename": "include/effects/SkImageFilters.h",
         "patchSetId": 6
