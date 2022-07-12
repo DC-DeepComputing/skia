@@ -171,7 +171,7 @@ void SkSLSlide::draw(SkCanvas* canvas) {
     fMousePos.z = abs(fMousePos.z) * (ImGui::IsMouseDown(0)    ? 1 : -1);
     fMousePos.w = abs(fMousePos.w) * (ImGui::IsMouseClicked(0) ? 1 : -1);
 
-    for (const auto& v : fEffect->uniforms()) {
+    for (const SkRuntimeEffect::Uniform& v : fEffect->uniforms()) {
         char* data = fInputs.get() + v.offset;
         if (v.name == "iResolution") {
             memcpy(data, &fResolution, sizeof(fResolution));
@@ -237,14 +237,16 @@ void SkSLSlide::draw(SkCanvas* canvas) {
         }
     }
 
-    for (const auto& c : fEffect->children()) {
-        auto curShader =
-                std::find_if(fShaders.begin(), fShaders.end(), [tgt = fChildren[c.index]](auto p) {
+    for (const SkRuntimeEffect::Child& c : fEffect->children()) {
+        auto curShader = std::find_if(
+                fShaders.begin(),
+                fShaders.end(),
+                [tgt = fChildren[c.index]](const std::pair<const char*, sk_sp<SkShader>>& p) {
                     return p.second == tgt;
                 });
         SkASSERT(curShader != fShaders.end());
 
-        if (ImGui::BeginCombo(c.name.c_str(), curShader->first)) {
+        if (ImGui::BeginCombo(std::string(c.name).c_str(), curShader->first)) {
             for (const auto& namedShader : fShaders) {
                 if (ImGui::Selectable(namedShader.first, curShader->second == namedShader.second)) {
                     fChildren[c.index] = namedShader.second;
