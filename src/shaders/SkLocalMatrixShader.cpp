@@ -170,6 +170,7 @@ protected:
             rec.fPaint,
             rec.fLocalM,
             matrixProvider,
+            rec.fSurfaceProps
         };
         return as_SB(fProxyShader)->appendStages(newRec);
     }
