@@ -18,7 +18,7 @@
 #include "src/core/SkVM.h"
 #include "src/core/SkWriteBuffer.h"
 #include "src/shaders/gradients/Sk4fLinearGradient.h"
-#include "src/shaders/gradients/SkGradientShaderPriv.h"
+#include "src/shaders/gradients/SkGradientShaderBase.h"
 #include "src/shaders/gradients/SkLinearGradient.h"
 #include "src/shaders/gradients/SkRadialGradient.h"
 #include "src/shaders/gradients/SkSweepGradient.h"
@@ -793,42 +793,7 @@ sk_sp<SkShader> SkGradientShaderBase::MakeDegenerateGradient(const SkColor4f col
          }                                   \
      } while (0)
 
-SkGradientShaderBase::ColorStopOptimizer::ColorStopOptimizer(const SkColor4f* colors,
-                                                             const SkScalar* pos,
-                                                             int count,
-                                                             SkTileMode mode)
-        : fColors(colors)
-        , fPos(pos)
-        , fCount(count) {
-
-    if (!pos || count != 3) {
-        return;
-    }
-
-    if (SkScalarNearlyEqual(pos[0], 0.0f) &&
-        SkScalarNearlyEqual(pos[1], 0.0f) &&
-        SkScalarNearlyEqual(pos[2], 1.0f)) {
-
-        if (SkTileMode::kRepeat == mode || SkTileMode::kMirror == mode ||
-            colors[0] == colors[1]) {
-
-            // Ignore the leftmost color/pos.
-            fColors += 1;
-            fPos    += 1;
-            fCount   = 2;
-        }
-    } else if (SkScalarNearlyEqual(pos[0], 0.0f) &&
-               SkScalarNearlyEqual(pos[1], 1.0f) &&
-               SkScalarNearlyEqual(pos[2], 1.0f)) {
-
-        if (SkTileMode::kRepeat == mode || SkTileMode::kMirror == mode ||
-            colors[1] == colors[2]) {
-
-            // Ignore the rightmost color/pos.
-            fCount  = 2;
-        }
-    }
-}
+/* ColorStopOptimizer */
 
 struct ColorConverter {
     ColorConverter(const SkColor* colors, int count) {
