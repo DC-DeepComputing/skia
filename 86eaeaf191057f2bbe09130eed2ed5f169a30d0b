@@ -51,6 +51,23 @@
       "parentUuid": "056b13ac_16ef25e4",
       "revId": "86eaeaf191057f2bbe09130eed2ed5f169a30d0b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0b213644_425a2104",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-07-12T13:28:27Z",
+      "side": 1,
+      "message": "code lgtm, do we have another change (in Android?) that defines `SK_SUPPORT_LEGACY_ALPHA_BITMAP_AS_COVERAGE` for the framework?",
+      "revId": "86eaeaf191057f2bbe09130eed2ed5f169a30d0b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
