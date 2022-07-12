@@ -8,11 +8,13 @@
 #include "src/gpu/graphite/Renderer.h"
 
 #include "include/core/SkPathTypes.h"
+#include "include/core/SkVertices.h"
 #include "src/gpu/graphite/render/CoverBoundsRenderStep.h"
 #include "src/gpu/graphite/render/MiddleOutFanRenderStep.h"
 #include "src/gpu/graphite/render/StencilAndCoverDSS.h"
 #include "src/gpu/graphite/render/TessellateCurvesRenderStep.h"
 #include "src/gpu/graphite/render/TessellateWedgesRenderStep.h"
+#include "src/gpu/graphite/render/VerticesRenderStep.h"
 
 namespace skgpu::graphite {
 
@@ -106,4 +108,70 @@ const Renderer& Renderer::ConvexTessellatedWedges() {
     return kConvexWedgeRenderer;
 }
 
-} // namespace skgpu
+const Renderer& Renderer::VertTrisPositionOnly() {
+    static const VerticesRenderStep kTrianglesStep{PrimitiveType::kTriangles, "Triangles"};
+    static const Renderer kTrianglesVerticesRenderer{"Vertices[Triangles]", &kTrianglesStep};
+    return kTrianglesVerticesRenderer;
+}
+
+const Renderer& Renderer::VertTrisWithColor() {
+    static const VerticesRenderStep kTrianglesColorStep{PrimitiveType::kTriangles, "TrianglesColor",
+                                                        /*hasColor=*/true};
+    static const Renderer kTrianglesColorVerticesRenderer{"Vertices[TrianglesColor]",
+                                                          &kTrianglesColorStep};
+    return kTrianglesColorVerticesRenderer;
+}
+
+const Renderer& Renderer::VertTrisWithTex() {
+    static const VerticesRenderStep kTrianglesTexStep{PrimitiveType::kTriangles, "TrianglesTex",
+                                                      /*hasColor=*/false, /*hasTexture=*/true};
+    static const Renderer kTrianglesTexVerticesRenderer{"Vertices[TrianglesTex]",
+                                                        &kTrianglesTexStep};
+    return kTrianglesTexVerticesRenderer;
+}
+
+const Renderer& Renderer::VertTrisWithColorAndTex() {
+    static const VerticesRenderStep kTrianglesColorTexStep{PrimitiveType::kTriangles,
+                                                           "TrianglesColorTex", /*hasColor=*/true,
+                                                           /*hasTexture=*/true};
+    static const Renderer kTrianglesColorTexVerticesRenderer{"Vertices[TrianglesColorTex]",
+                                                             &kTrianglesColorTexStep};
+    return kTrianglesColorTexVerticesRenderer;
+}
+
+const Renderer& Renderer::VertTriStripPositionOnly() {
+    static const VerticesRenderStep kTriangleStripStep{PrimitiveType::kTriangleStrip,
+                                                       "TriangleStrip"};
+    static const Renderer kTriangleStripVerticesRenderer{"Vertices[TriangleStrip]",
+                                                         &kTriangleStripStep};
+    return kTriangleStripVerticesRenderer;
+}
+
+const Renderer& Renderer::VertTriStripWithColor() {
+    static const VerticesRenderStep kTriangleStripColorStep{PrimitiveType::kTriangleStrip,
+                                                            "TriangleColorStrip",
+                                                            /*hasColor=*/true};
+    static const Renderer kTriangleStripColorVerticesRenderer{"Vertices[TriangleColorStrip]",
+                                                              &kTriangleStripColorStep};
+    return kTriangleStripColorVerticesRenderer;
+}
+
+const Renderer& Renderer::VertTriStripWithTex() {
+    static const VerticesRenderStep kTriangleStripTexStep{PrimitiveType::kTriangleStrip,
+                                                          "TriangleStripTex", /*hasColor=*/false,
+                                                          /*hasTexture=*/true};
+    static const Renderer kTriangleStripTexVerticesRenderer{"Vertices[TriangleStripTex]",
+                                                            &kTriangleStripTexStep};
+    return kTriangleStripTexVerticesRenderer;
+}
+
+const Renderer& Renderer::VertTriStripWithColorAndTex() {
+    static const VerticesRenderStep kTriangleStripColorTexStep{PrimitiveType::kTriangleStrip,
+                                                               "TriangleStripColorTex",
+                                                               /*hasColor=*/true,
+                                                               /*hasTexture=*/true};
+    static const Renderer kTriangleStripColorTexVerticesRenderer{"Vertices[TriangleStripColorTex]",
+                                                                 &kTriangleStripColorTexStep};
+    return kTriangleStripColorTexVerticesRenderer;
+}
+}
