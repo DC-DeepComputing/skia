@@ -71,6 +71,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b306d6c8_25a5d7d8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-07-12T12:38:57Z",
+      "side": 1,
+      "message": "I might be wrong. Because we now treat emsdk as DEP, we might not need to update that docker container anymore.\n\nLet\u0027s go ahead and land this and see if we need to follow-up.",
+      "parentUuid": "572259a5_3f8ebe1b",
+      "revId": "43e3e1b1e963f6629378978683448e8a62eb0c74",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9653cc0f_b8012a29",
