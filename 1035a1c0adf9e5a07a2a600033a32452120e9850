@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e4c1a264_cb9fcd5a",
+        "filename": "modules/canvaskit/interface.js",
+        "patchSetId": 11
+      },
+      "lineNbr": 874,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-07-12T15:04:48Z",
+      "side": 1,
+      "message": "There are a couple of things we could try, but I would want to iterate on that as its own CL, because it impacts other places too.",
+      "parentUuid": "f58313ca_3d401318",
+      "range": {
+        "startLine": 865,
+        "startChar": 4,
+        "endLine": 874,
+        "endChar": 5
+      },
+      "revId": "1035a1c0adf9e5a07a2a600033a32452120e9850",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5838c308_85d298e0",
         "filename": "modules/canvaskit/npm_build/types/index.d.ts",
         "patchSetId": 11
@@ -37,6 +61,30 @@
       "writtenOn": "2022-07-12T14:37:34Z",
       "side": 1,
       "message": "This typing, and the language in the doc comment, make it sound like srcRect and dstRect can be independently optional, when the C++ code and the wasm adapter really need both src/dst non-null, or both null.\n\nWe could encode it as a `srcDstRects?: [InputRect, InputRect]` in this signature, or have two overloads?",
+      "range": {
+        "startLine": 3461,
+        "startChar": 14,
+        "endLine": 3461,
+        "endChar": 54
+      },
+      "revId": "1035a1c0adf9e5a07a2a600033a32452120e9850",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9ddee260_fb4af8bf",
+        "filename": "modules/canvaskit/npm_build/types/index.d.ts",
+        "patchSetId": 11
+      },
+      "lineNbr": 3461,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-07-12T15:04:48Z",
+      "side": 1,
+      "message": "Good suggestion. Does this mean the sampler is only needed if the rects are provided? Or do we always need the sampler?",
+      "parentUuid": "5838c308_85d298e0",
       "range": {
         "startLine": 3461,
         "startChar": 14,
