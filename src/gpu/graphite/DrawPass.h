@@ -14,6 +14,7 @@
 #include "src/core/SkEnumBitMask.h"
 #include "src/core/SkTBlockList.h"
 #include "src/gpu/graphite/AttachmentTypes.h"
+#include "src/gpu/graphite/DrawCommands.h"
 #include "src/gpu/graphite/DrawTypes.h"
 #include "src/gpu/graphite/GraphicsPipelineDesc.h"
 #include "src/gpu/graphite/ResourceTypes.h"
@@ -36,6 +37,10 @@ class Sampler;
 struct SamplerDesc;
 class TextureProxy;
 enum class UniformSlot;
+
+//namespace DrawPassCommands {
+//class List;
+//}
 
 /**
  * DrawPass is analogous to a subpass, storing the drawing operations in the order they are stored
@@ -209,10 +214,14 @@ private:
              int renderStepCount);
 
     SkTBlockList<Command, 32> fCommands;
+
+    DrawPassCommands::List fCommandList;
+
     // The pipelines are referenced by index in BindGraphicsPipeline, but that will index into a
     // an array of actual GraphicsPipelines. fPipelineDescs only needs to accumulate encountered
     // GraphicsPipelineDescs and provide stable pointers, hence SkTBlockList.
     SkTBlockList<GraphicsPipelineDesc, 32> fPipelineDescs;
+
 
     std::vector<SamplerDesc> fSamplerDescs;
 
