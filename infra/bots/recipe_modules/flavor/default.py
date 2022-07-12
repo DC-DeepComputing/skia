@@ -134,7 +134,6 @@ class DefaultFlavor(object):
         ld_library_path.append(dri_path)
         env['LIBGL_DRIVERS_PATH'] = str(dri_path)
         env['VK_ICD_FILENAMES'] = str(dri_path.join('intel_icd.x86_64.json'))
-
       if 'Vulkan' in extra_tokens:
         env['VULKAN_SDK'] = str(workdir.join('linux_vulkan_sdk'))
         path.append(workdir.join('linux_vulkan_sdk', 'bin'))
