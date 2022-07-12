@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0c38f407_aceef5fa",
+        "filename": "src/gpu/graphite/ClipStack.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1100,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-07-12T14:46:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6ac6e4cd_94584fae",
+      "range": {
+        "startLine": 1100,
+        "startChar": 8,
+        "endLine": 1100,
+        "endChar": 51
+      },
+      "revId": "6e9a212962debfb5fa7c66e85d4f691dae449ce0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5d4916b7_88b71baa",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ca5b6336_2eafd0bb",
+        "filename": "src/gpu/graphite/render/StencilAndFillPathRenderer.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-07-12T14:46:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5d4916b7_88b71baa",
+      "range": {
+        "startLine": 129,
+        "startChar": 4,
+        "endLine": 130,
+        "endChar": 68
+      },
+      "revId": "6e9a212962debfb5fa7c66e85d4f691dae449ce0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "847abd4e_6fad82cb",
@@ -60,6 +108,30 @@
       "writtenOn": "2022-06-28T13:36:39Z",
       "side": 1,
       "message": "RenderSteps are meant to be stateless, so we don\u0027t make a new one for each thing we\u0027re drawing. Instead, the specific draw data is passed into `writeVertices` and `writeUniforms` in the DrawParams struct. So in this case, we should be able to get to the SkVertices by calling `drawParams.geom().vertices()` within those functions.",
+      "range": {
+        "startLine": 26,
+        "startChar": 4,
+        "endLine": 26,
+        "endChar": 32
+      },
+      "revId": "6e9a212962debfb5fa7c66e85d4f691dae449ce0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8446c078_e48a604b",
+        "filename": "src/gpu/graphite/render/VerticesRenderStep.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-07-12T14:46:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "847abd4e_6fad82cb",
       "range": {
         "startLine": 26,
         "startChar": 4,
