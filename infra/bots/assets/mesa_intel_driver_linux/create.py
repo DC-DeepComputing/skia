@@ -6,30 +6,29 @@
 # found in the LICENSE file.
 
 
-"""Create the mesa driver. This defers to a Docker container
-   with the build_mesa.sh script."""
+"""Create the mesa driver."""
 
 
 import argparse
 import subprocess
 
-# TODO(dogben): In the future, it might be simpler to build the docker image as
-# part of this script so that we don't need to push it to the container repo.
-# Doing so would make this script more repeatable, since someone could
-# accidentally change the Docker image that "v2" points to.
-DOCKER_IMAGE = 'gcr.io/skia-public/mesa-driver-builder:v2'
-BUILD_SCRIPT = '/opt/build_mesa.sh'
-MESA_VERSION = '18.3.3'
-
+MESA_VERSION = '22.1.3'
 
 def create_asset(target_dir):
   """Create the asset."""
   cmd = [
+    'docker', 'build', '-t', 'mesa-driver-builder:latest',
+    './mesa_intel_driver_linux',
+  ]
+  print('Building container', cmd)
+  subprocess.check_output(cmd)
+
+  cmd = [
     'docker', 'run', '--volume', '%s:/OUT' % target_dir,
     '--env', 'MESA_VERSION=%s' % MESA_VERSION,
-    DOCKER_IMAGE, BUILD_SCRIPT
+    'mesa-driver-builder'
   ]
-  print('Running docker cmd', cmd)
+  print('Running container', cmd)
   subprocess.check_output(cmd)
 
 
