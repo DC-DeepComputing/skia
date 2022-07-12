@@ -14,6 +14,7 @@
 #include "src/core/SkEnumBitMask.h"
 #include "src/core/SkTBlockList.h"
 #include "src/gpu/graphite/AttachmentTypes.h"
+#include "src/gpu/graphite/DrawCommands.h"
 #include "src/gpu/graphite/DrawTypes.h"
 #include "src/gpu/graphite/GraphicsPipelineDesc.h"
 #include "src/gpu/graphite/ResourceTypes.h"
@@ -35,7 +36,12 @@ class ResourceProvider;
 class Sampler;
 struct SamplerDesc;
 class TextureProxy;
+class Texture;
 enum class UniformSlot;
+
+//namespace DrawPassCommands {
+//class List;
+//}
 
 /**
  * DrawPass is analogous to a subpass, storing the drawing operations in the order they are stored
@@ -87,10 +93,18 @@ public:
     // etc.
     bool prepareResources(ResourceProvider*, const RenderPassDesc&);
 
-    // Transform this DrawPass into commands issued to the CommandBuffer. Assumes that the buffer
-    // has already begun a correctly configured render pass matching this pass's target.
-    // Returns true on success; false on failure
-    bool addCommands(CommandBuffer*) const;
+    int numCommands() const { return fCommandList.numCommands(); }
+    std::pair<DrawPassCommands::Type, void*> getCommand(int commandIdx) const {
+        return fCommandList.getCommand(commandIdx);
+    }
+
+    const GraphicsPipeline* getPipeline(size_t index) const {
+        return fFullPipelines[index].get();
+    }
+    const Texture* getTexture(size_t index) const;
+    const Sampler* getSampler(size_t index) const;
+
+    void addResourceRefs(CommandBuffer*) const;
 
 private:
     class SortKey;
@@ -209,10 +223,14 @@ private:
              int renderStepCount);
 
     SkTBlockList<Command, 32> fCommands;
+
+    DrawPassCommands::List fCommandList;
+
     // The pipelines are referenced by index in BindGraphicsPipeline, but that will index into a
     // an array of actual GraphicsPipelines. fPipelineDescs only needs to accumulate encountered
     // GraphicsPipelineDescs and provide stable pointers, hence SkTBlockList.
     SkTBlockList<GraphicsPipelineDesc, 32> fPipelineDescs;
+
 
     std::vector<SamplerDesc> fSamplerDescs;
 
