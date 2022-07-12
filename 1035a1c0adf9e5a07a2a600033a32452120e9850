@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f58313ca_3d401318",
+        "filename": "modules/canvaskit/interface.js",
+        "patchSetId": 11
+      },
+      "lineNbr": 874,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-07-12T14:37:34Z",
+      "side": 1,
+      "message": "It seems like this could be simplified if there were a way to turn the JS sampling object into an SkSamplingOptions in wasm. Is that possible?",
+      "range": {
+        "startLine": 865,
+        "startChar": 4,
+        "endLine": 874,
+        "endChar": 5
+      },
+      "revId": "1035a1c0adf9e5a07a2a600033a32452120e9850",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5838c308_85d298e0",
+        "filename": "modules/canvaskit/npm_build/types/index.d.ts",
+        "patchSetId": 11
+      },
+      "lineNbr": 3461,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-07-12T14:37:34Z",
+      "side": 1,
+      "message": "This typing, and the language in the doc comment, make it sound like srcRect and dstRect can be independently optional, when the C++ code and the wasm adapter really need both src/dst non-null, or both null.\n\nWe could encode it as a `srcDstRects?: [InputRect, InputRect]` in this signature, or have two overloads?",
+      "range": {
+        "startLine": 3461,
+        "startChar": 14,
+        "endLine": 3461,
+        "endChar": 54
+      },
+      "revId": "1035a1c0adf9e5a07a2a600033a32452120e9850",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
