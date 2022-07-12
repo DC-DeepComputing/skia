@@ -78,6 +78,19 @@ public:
         }
     }
 
+    static bool isTabulation(SkUnicode::CodeUnitFlags flags) {
+        return (flags & SkUnicode::kTabulation) == SkUnicode::kTabulation;
+    }
+    static bool isHardLineBreak(SkUnicode::CodeUnitFlags flags) {
+        return (flags & SkUnicode::kHardLineBreakBefore) == SkUnicode::kHardLineBreakBefore;
+    }
+    static bool isControl(SkUnicode::CodeUnitFlags flags) {
+        return (flags & SkUnicode::kControl) == SkUnicode::kControl;
+    }
+    static bool isPartOfWhiteSpaceBreak(SkUnicode::CodeUnitFlags flags) {
+        return (flags & SkUnicode::kPartOfWhiteSpaceBreak) == SkUnicode::kPartOfWhiteSpaceBreak;
+    }
+
 private:
     void initialize(SkSpan<uint16_t> utf16);
 
