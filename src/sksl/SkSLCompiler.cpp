@@ -275,21 +275,29 @@ const ParsedModule& Compiler::loadComputeModule() {
 }
 
 const ParsedModule& Compiler::loadGraphiteFragmentModule() {
+#if defined(SK_GRAPHITE_ENABLED)
     if (!fGraphiteFragmentModule.fSymbols) {
         fGraphiteFragmentModule = this->parseModule(ProgramKind::kGraphiteFragment,
                                                     MODULE_DATA(graphite_frag),
                                                     this->loadFragmentModule());
     }
     return fGraphiteFragmentModule;
+#else
+    return this->loadFragmentModule();
+#endif
 }
 
 const ParsedModule& Compiler::loadGraphiteVertexModule() {
+#if defined(SK_GRAPHITE_ENABLED)
     if (!fGraphiteVertexModule.fSymbols) {
         fGraphiteVertexModule = this->parseModule(ProgramKind::kGraphiteVertex,
                                                   MODULE_DATA(graphite_vert),
                                                   this->loadVertexModule());
     }
     return fGraphiteVertexModule;
+#else
+    return this->loadVertexModule();
+#endif
 }
 
 static void add_glsl_type_aliases(SkSL::SymbolTable* symbols, const SkSL::BuiltinTypes& types) {
