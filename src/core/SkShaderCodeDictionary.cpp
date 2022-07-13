@@ -314,6 +314,7 @@ void GenerateDefaultGlueCode(const std::string& resultName,
                              std::string* preamble,
                              std::string* mainBody,
                              int indent) {
+#if defined(SK_GRAPHITE_ENABLED) && defined(SK_ENABLE_SKSL)
     const SkShaderSnippet* entry = reader.entry();
 
     SkASSERT((int)childOutputVarNames.size() == entry->fNumChildren);
@@ -349,6 +350,7 @@ void GenerateDefaultGlueCode(const std::string& resultName,
         *mainBody += childOutputVarNames[i];
     }
     *mainBody += ");\n";
+#endif  // defined(SK_GRAPHITE_ENABLED) && defined(SK_ENABLE_SKSL)
 }
 
 //--------------------------------------------------------------------------------------------------
@@ -489,6 +491,7 @@ void GenerateImageShaderGlueCode(const std::string& resultName,
                                  std::string* preamble,
                                  std::string* mainBody,
                                  int indent) {
+#if defined(SK_GRAPHITE_ENABLED) && defined(SK_ENABLE_SKSL)
     SkASSERT(childNames.empty());
 
     std::string samplerVarName = std::string("sampler_") + std::to_string(entryIndex) + "_0";
@@ -518,6 +521,7 @@ void GenerateImageShaderGlueCode(const std::string& resultName,
                           "%s = sample(%s, coords);\n",
                           resultName.c_str(),
                           samplerVarName.c_str());
+#endif  // defined(SK_GRAPHITE_ENABLED) && defined(SK_ENABLE_SKSL)
 }
 
 //--------------------------------------------------------------------------------------------------
@@ -636,10 +640,7 @@ void GenerateRuntimeShaderGlueCode(const std::string& resultName,
                           entry->fName, entryIndex,
                           preLocalMatrixVarName.c_str(),
                           priorStageOutputName.c_str());
-#else
-    add_indent(mainBody, indent);
-    SkSL::String::appendf(mainBody, "%s = %s;\n", resultName.c_str(), priorStageOutputName.c_str());
-#endif
+#endif  // defined(SK_GRAPHITE_ENABLED) && defined(SK_ENABLE_SKSL)
 }
 
 //--------------------------------------------------------------------------------------------------
@@ -657,6 +658,7 @@ void GenerateFixedFunctionBlenderGlueCode(const std::string& resultName,
                                           std::string* preamble,
                                           std::string* mainBody,
                                           int indent) {
+#if defined(SK_GRAPHITE_ENABLED) && defined(SK_ENABLE_SKSL)
     SkASSERT(childNames.empty());
     SkASSERT(reader.entry()->fUniforms.empty());
     SkASSERT(reader.numDataPayloadFields() == 0);
@@ -668,6 +670,7 @@ void GenerateFixedFunctionBlenderGlueCode(const std::string& resultName,
     *mainBody += "// Fixed-function blending\n";
     add_indent(mainBody, indent);
     SkSL::String::appendf(mainBody, "%s = %s;", resultName.c_str(), priorStageOutputName.c_str());
+#endif  // defined(SK_GRAPHITE_ENABLED) && defined(SK_ENABLE_SKSL)
 }
 
 //--------------------------------------------------------------------------------------------------
@@ -690,6 +693,7 @@ void GenerateShaderBasedBlenderGlueCode(const std::string& resultName,
                                         std::string* preamble,
                                         std::string* mainBody,
                                         int indent) {
+#if defined(SK_GRAPHITE_ENABLED) && defined(SK_ENABLE_SKSL)
     SkASSERT(childNames.empty());
     SkASSERT(reader.entry()->fUniforms.size() == 1);
     SkASSERT(reader.numDataPayloadFields() == 0);
@@ -709,6 +713,7 @@ void GenerateShaderBasedBlenderGlueCode(const std::string& resultName,
                           reader.entry()->fStaticFunctionName,
                           uniformName.c_str(),
                           priorStageOutputName.c_str());
+#endif  // defined(SK_GRAPHITE_ENABLED) && defined(SK_ENABLE_SKSL)
 }
 
 //--------------------------------------------------------------------------------------------------
