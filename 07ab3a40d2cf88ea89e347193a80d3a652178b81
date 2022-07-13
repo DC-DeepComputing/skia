@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c3156c55_2f294c54",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19024
+      },
+      "writtenOn": "2022-07-13T13:25:44Z",
+      "side": 1,
+      "message": "done 🙌🏼",
+      "revId": "07ab3a40d2cf88ea89e347193a80d3a652178b81",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f0ea90f4_7375dfbe",
@@ -14,6 +31,30 @@
       "writtenOn": "2022-07-13T13:13:42Z",
       "side": 1,
       "message": "As per Michael\u0027s earlier comment, please add canvas.clear(CanvasKit.WHITE) as the first command here.",
+      "range": {
+        "startLine": 769,
+        "startChar": 8,
+        "endLine": 769,
+        "endChar": 13
+      },
+      "revId": "07ab3a40d2cf88ea89e347193a80d3a652178b81",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "928ebbd8_eb865246",
+        "filename": "modules/canvaskit/tests/core.spec.js",
+        "patchSetId": 5
+      },
+      "lineNbr": 769,
+      "author": {
+        "id": 19024
+      },
+      "writtenOn": "2022-07-13T13:25:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f0ea90f4_7375dfbe",
       "range": {
         "startLine": 769,
         "startChar": 8,
