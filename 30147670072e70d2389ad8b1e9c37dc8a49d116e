@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8e27ea67_3d64957c",
+        "filename": "third_party/freetype2/BUILD.gn",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2022-07-13T20:05:03Z",
+      "side": 1,
+      "message": "skia_use as a prefix makes it seem like this is a boolean value not something you plan to override.\n\n`skia_system_freetype2_include_path` and `skia_system_freetype2_lib_name`",
+      "range": {
+        "startLine": 11,
+        "startChar": 2,
+        "endLine": 11,
+        "endChar": 40
+      },
+      "revId": "30147670072e70d2389ad8b1e9c37dc8a49d116e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
