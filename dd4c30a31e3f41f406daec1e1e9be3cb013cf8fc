@@ -76,6 +76,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3071833b_7607f44f",
+        "filename": "modules/canvaskit/tests/core.spec.js",
+        "patchSetId": 3
+      },
+      "lineNbr": 768,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-07-13T13:38:36Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "90e79a7b_6602d5c6",
+      "range": {
+        "startLine": 768,
+        "startChar": 4,
+        "endLine": 768,
+        "endChar": 6
+      },
+      "revId": "dd4c30a31e3f41f406daec1e1e9be3cb013cf8fc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8e626b21_c2d0de74",
@@ -89,6 +113,30 @@
       "writtenOn": "2022-06-21T15:30:14Z",
       "side": 1,
       "message": "The luma color filter produces black + alpha, where the alpha is the computed luma. In order for this to be visible when drawing the filtered image, we\u0027d want a background color like white to have been specified first.",
+      "range": {
+        "startLine": 776,
+        "startChar": 0,
+        "endLine": 776,
+        "endChar": 51
+      },
+      "revId": "dd4c30a31e3f41f406daec1e1e9be3cb013cf8fc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "77bcae00_9ef7b33f",
+        "filename": "modules/canvaskit/tests/core.spec.js",
+        "patchSetId": 3
+      },
+      "lineNbr": 776,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-07-13T13:38:36Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "8e626b21_c2d0de74",
       "range": {
         "startLine": 776,
         "startChar": 0,
