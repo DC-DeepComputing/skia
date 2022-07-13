@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ee9a8167_cc7a09be",
+        "filename": "src/core/SkChromeRemoteGlyphCache.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 555,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-07-13T18:13:51Z",
+      "side": 1,
+      "message": "rm the \"virtual\" ?",
+      "range": {
+        "startLine": 555,
+        "startChar": 4,
+        "endLine": 555,
+        "endChar": 11
+      },
+      "revId": "4f80e4056a761196bfb938c5176cf4b26b0c5edc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
