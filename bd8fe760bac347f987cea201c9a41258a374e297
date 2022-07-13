@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "54acf43b_c4db5a86",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-07-13T15:01:12Z",
+      "side": 1,
+      "message": "The sk_FragCoord thing worked. The others lacked plumbing, so they didn\u0027t function correctly. The VM generator has asserts about unsupported builtins, so you could actually trigger those with the sk_Clockwise declaration, for example.",
+      "revId": "bd8fe760bac347f987cea201c9a41258a374e297",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
