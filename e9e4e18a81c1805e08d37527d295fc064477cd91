@@ -22,6 +22,30 @@
       },
       "revId": "e9e4e18a81c1805e08d37527d295fc064477cd91",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d87d2d83_c61b1471",
+        "filename": "src/core/SkShaderCodeDictionary.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-07-13T17:00:39Z",
+      "side": 1,
+      "message": "PTAL http://review.skia.org/558310",
+      "parentUuid": "d293f258_aeeb1ccb",
+      "range": {
+        "startLine": 50,
+        "startChar": 64,
+        "endLine": 50,
+        "endChar": 65
+      },
+      "revId": "e9e4e18a81c1805e08d37527d295fc064477cd91",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
