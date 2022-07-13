@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8357b678_35965a9c",
+        "filename": "src/gpu/graphite/DrawCommands.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-07-13T20:14:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4d6eec3b_077f4da6",
+      "range": {
+        "startLine": 44,
+        "startChar": 0,
+        "endLine": 45,
+        "endChar": 50
+      },
+      "revId": "f69f81ee5973d8140e9ca1eed762cdab22c5834c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5eab8658_b68d33a0",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-07-13T17:50:05Z",
       "side": 1,
       "message": "Are we doing 1 space on purpose to offset from the type name? Maybe 2-4 spaces would be clearer? Or if not, \"nit alignment\" 😊",
+      "range": {
+        "startLine": 75,
+        "startChar": 8,
+        "endLine": 75,
+        "endChar": 9
+      },
+      "revId": "f69f81ee5973d8140e9ca1eed762cdab22c5834c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8fedebfd_217b9649",
+        "filename": "src/gpu/graphite/DrawCommands.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-07-13T20:14:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5eab8658_b68d33a0",
       "range": {
         "startLine": 75,
         "startChar": 8,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e9f66ca3_b895de84",
+        "filename": "src/gpu/graphite/DrawCommands.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-07-13T20:14:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "106cb277_bd3d27c8",
+      "range": {
+        "startLine": 90,
+        "startChar": 9,
+        "endLine": 93,
+        "endChar": 23
+      },
+      "revId": "f69f81ee5973d8140e9ca1eed762cdab22c5834c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fe0ab22b_50e17b95",
@@ -93,6 +165,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f97e72fe_b72494a8",
+        "filename": "src/gpu/graphite/DrawCommands.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-07-13T20:14:45Z",
+      "side": 1,
+      "message": "I took this todo from DrawPass commands. Removed for now.",
+      "parentUuid": "fe0ab22b_50e17b95",
+      "range": {
+        "startLine": 121,
+        "startChar": 0,
+        "endLine": 121,
+        "endChar": 20
+      },
+      "revId": "f69f81ee5973d8140e9ca1eed762cdab22c5834c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "58349e67_36df24b0",
@@ -106,6 +202,30 @@
       "writtenOn": "2022-07-13T17:50:05Z",
       "side": 1,
       "message": "wdyt about requiring all commands to be POD? Since ownership is tracked elsewhere for samplers, it seems reasonable to try.\n\nWe could handle it with a macro like\n\n    #define ASSERT_POD(T) static_assert(std::is_trivial\u003cT\u003e::value);\n    SKGPU_DRAW_PASS_COMMAND_TYPES(ASSERT_POD)\n    #undef ASSERT_POD",
+      "range": {
+        "startLine": 123,
+        "startChar": 0,
+        "endLine": 123,
+        "endChar": 14
+      },
+      "revId": "f69f81ee5973d8140e9ca1eed762cdab22c5834c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1f3ed933_18bd3e64",
+        "filename": "src/gpu/graphite/DrawCommands.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-07-13T20:14:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "58349e67_36df24b0",
       "range": {
         "startLine": 123,
         "startChar": 0,
@@ -141,6 +261,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "12811073_bcff4f48",
+        "filename": "src/gpu/graphite/DrawCommands.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-07-13T20:14:45Z",
+      "side": 1,
+      "message": "I\u0027d rather do that in a follow up",
+      "parentUuid": "8d6c8cef_b9020605",
+      "range": {
+        "startLine": 125,
+        "startChar": 26,
+        "endLine": 125,
+        "endChar": 40
+      },
+      "revId": "f69f81ee5973d8140e9ca1eed762cdab22c5834c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9d9a3c90_8e3748a1",
         "filename": "src/gpu/graphite/DrawCommands.h",
         "patchSetId": 4
@@ -152,6 +296,30 @@
       "writtenOn": "2022-07-13T17:50:05Z",
       "side": 1,
       "message": "If we lean on SkArenaAlloc\u0027s newer API and use SkTBlockList for the commands, this is simply:\n\n    T* cmd \u003d fAlloc.make\u003cT\u003e(std::forward\u003cArgs\u003e(args)...);\n    fCommands.push_back(T::kType, cmd);\n    \nWe can then delete append(), alloc(), allocCommand(), grow(), fCount, and fReserved.",
+      "range": {
+        "startLine": 207,
+        "startChar": 8,
+        "endLine": 207,
+        "endChar": 63
+      },
+      "revId": "f69f81ee5973d8140e9ca1eed762cdab22c5834c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fed81b12_2916a29c",
+        "filename": "src/gpu/graphite/DrawCommands.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 207,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-07-13T20:14:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9d9a3c90_8e3748a1",
       "range": {
         "startLine": 207,
         "startChar": 8,
@@ -175,6 +343,30 @@
       "writtenOn": "2022-07-13T17:50:05Z",
       "side": 1,
       "message": "DrawCommandsList",
+      "range": {
+        "startLine": 210,
+        "startChar": 54,
+        "endLine": 210,
+        "endChar": 62
+      },
+      "revId": "f69f81ee5973d8140e9ca1eed762cdab22c5834c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6bc13fbf_f5bf8c9f",
+        "filename": "src/gpu/graphite/DrawCommands.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 210,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-07-13T20:14:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "779ba542_5fa080ae",
       "range": {
         "startLine": 210,
         "startChar": 54,
@@ -231,6 +423,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6c162331_8b04649f",
+        "filename": "src/gpu/graphite/DrawCommands.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 257,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-07-13T20:14:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fcb81d75_7aab19cf",
+      "range": {
+        "startLine": 253,
+        "startChar": 8,
+        "endLine": 257,
+        "endChar": 19
+      },
+      "revId": "f69f81ee5973d8140e9ca1eed762cdab22c5834c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "22352f0b_2135ae51",
@@ -244,6 +460,30 @@
       "writtenOn": "2022-07-13T17:50:05Z",
       "side": 1,
       "message": "If we go with the add() update I suggested above, Command::set isn\u0027t used and Command is equivalent to `std::pair\u003cType, void*\u003e`, which is what we\u0027d want to expose directly in an iterator.",
+      "range": {
+        "startLine": 260,
+        "startChar": 4,
+        "endLine": 275,
+        "endChar": 6
+      },
+      "revId": "f69f81ee5973d8140e9ca1eed762cdab22c5834c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d912231b_29fa9a00",
+        "filename": "src/gpu/graphite/DrawCommands.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 275,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-07-13T20:14:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "22352f0b_2135ae51",
       "range": {
         "startLine": 260,
         "startChar": 4,
@@ -277,6 +517,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "52e4a988_8ce4f2b8",
+        "filename": "src/gpu/graphite/DrawCommands.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 279,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-07-13T20:14:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "aadd9228_e9fa69c2",
+      "range": {
+        "startLine": 277,
+        "startChar": 4,
+        "endLine": 279,
+        "endChar": 37
+      },
+      "revId": "f69f81ee5973d8140e9ca1eed762cdab22c5834c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bb38d0f5_a60254c0",
@@ -294,6 +558,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a73a84af_6de97f80",
+        "filename": "src/gpu/graphite/DrawCommands.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 284,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-07-13T20:14:45Z",
+      "side": 1,
+      "message": "removed",
+      "parentUuid": "bb38d0f5_a60254c0",
+      "revId": "f69f81ee5973d8140e9ca1eed762cdab22c5834c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "207d0b63_7bbbb3be",
@@ -307,6 +589,30 @@
       "writtenOn": "2022-07-13T17:50:05Z",
       "side": 1,
       "message": "Add asserts that index is less than count?",
+      "range": {
+        "startLine": 554,
+        "startChar": 4,
+        "endLine": 554,
+        "endChar": 12
+      },
+      "revId": "f69f81ee5973d8140e9ca1eed762cdab22c5834c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f50ee1af_4279cfef",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 554,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-07-13T20:14:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "207d0b63_7bbbb3be",
       "range": {
         "startLine": 554,
         "startChar": 4,
@@ -363,6 +669,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0e16b5bd_0c9558ae",
+        "filename": "src/gpu/graphite/DrawPass.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-07-13T20:14:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "12cafbfa_26e5f58f",
+      "range": {
+        "startLine": 88,
+        "startChar": 4,
+        "endLine": 89,
+        "endChar": 28
+      },
+      "revId": "f69f81ee5973d8140e9ca1eed762cdab22c5834c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f0a1f05c_cf3dc831",
@@ -386,6 +716,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7eb6564a_92a51c9e",
+        "filename": "src/gpu/graphite/DrawPass.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-07-13T20:14:45Z",
+      "side": 1,
+      "message": "removed",
+      "parentUuid": "f0a1f05c_cf3dc831",
+      "range": {
+        "startLine": 96,
+        "startChar": 8,
+        "endLine": 96,
+        "endChar": 19
+      },
+      "revId": "f69f81ee5973d8140e9ca1eed762cdab22c5834c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ce378096_363685fb",
@@ -399,6 +753,30 @@
       "writtenOn": "2022-07-13T17:50:05Z",
       "side": 1,
       "message": "Since we only ever iterate the commands in order, should we just expose an iterator? That might make memory management simpler down the line.",
+      "range": {
+        "startLine": 97,
+        "startChar": 45,
+        "endLine": 97,
+        "endChar": 55
+      },
+      "revId": "f69f81ee5973d8140e9ca1eed762cdab22c5834c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e5c3b167_bb30ea48",
+        "filename": "src/gpu/graphite/DrawPass.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-07-13T20:14:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ce378096_363685fb",
       "range": {
         "startLine": 97,
         "startChar": 45,
@@ -434,6 +812,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1d4d7c32_18743b51",
+        "filename": "src/gpu/graphite/DrawPass.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-07-13T20:14:45Z",
+      "side": 1,
+      "message": "I personally like the get since it is taking an index. Its not like the DrawPass has one pipeline",
+      "parentUuid": "6e905562_f32c6f07",
+      "range": {
+        "startLine": 101,
+        "startChar": 28,
+        "endLine": 101,
+        "endChar": 39
+      },
+      "revId": "f69f81ee5973d8140e9ca1eed762cdab22c5834c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "28edbcf6_557c0794",
         "filename": "src/gpu/graphite/mtl/MtlCommandBuffer.h",
         "patchSetId": 4
@@ -445,6 +847,30 @@
       "writtenOn": "2022-07-13T17:50:05Z",
       "side": 1,
       "message": "nit alignment",
+      "range": {
+        "startLine": 77,
+        "startChar": 28,
+        "endLine": 77,
+        "endChar": 29
+      },
+      "revId": "f69f81ee5973d8140e9ca1eed762cdab22c5834c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "630fe07a_2a598850",
+        "filename": "src/gpu/graphite/mtl/MtlCommandBuffer.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-07-13T20:14:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "28edbcf6_557c0794",
       "range": {
         "startLine": 77,
         "startChar": 28,
@@ -468,6 +894,30 @@
       "writtenOn": "2022-07-13T17:50:05Z",
       "side": 1,
       "message": "nit alignment",
+      "range": {
+        "startLine": 85,
+        "startChar": 22,
+        "endLine": 85,
+        "endChar": 23
+      },
+      "revId": "f69f81ee5973d8140e9ca1eed762cdab22c5834c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3fa51247_36ff76d8",
+        "filename": "src/gpu/graphite/mtl/MtlCommandBuffer.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-07-13T20:14:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "41755de2_f4d2c4ee",
       "range": {
         "startLine": 85,
         "startChar": 22,
