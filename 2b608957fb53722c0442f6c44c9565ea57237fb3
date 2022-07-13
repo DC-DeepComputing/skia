@@ -35,6 +35,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "52e25652_4cf7105f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19024
+      },
+      "writtenOn": "2022-07-13T20:14:22Z",
+      "side": 1,
+      "message": "Thanks a lot of the review, all review comments have been implemented.",
+      "revId": "2b608957fb53722c0442f6c44c9565ea57237fb3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "528f3e1e_759741fb",
@@ -48,6 +65,30 @@
       "writtenOn": "2022-07-13T15:01:26Z",
       "side": 1,
       "message": "I prefer auto for more complicated types than \"bool\".",
+      "range": {
+        "startLine": 416,
+        "startChar": 4,
+        "endLine": 416,
+        "endChar": 8
+      },
+      "revId": "2b608957fb53722c0442f6c44c9565ea57237fb3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3e01dfac_d0931270",
+        "filename": "modules/canvaskit/canvaskit_bindings.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 416,
+      "author": {
+        "id": 19024
+      },
+      "writtenOn": "2022-07-13T20:14:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "528f3e1e_759741fb",
       "range": {
         "startLine": 416,
         "startChar": 4,
@@ -81,6 +122,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f263d1f1_085ed552",
+        "filename": "modules/canvaskit/npm_build/types/canvaskit-wasm-tests.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 474,
+      "author": {
+        "id": 19024
+      },
+      "writtenOn": "2022-07-13T20:14:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "90ffb7d9_914d76e8",
+      "range": {
+        "startLine": 474,
+        "startChar": 9,
+        "endLine": 474,
+        "endChar": 16
+      },
+      "revId": "2b608957fb53722c0442f6c44c9565ea57237fb3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "98b3af98_b51e15d8",
@@ -94,6 +159,30 @@
       "writtenOn": "2022-07-13T15:01:26Z",
       "side": 1,
       "message": "Store this to a variable and add an $ExpectType Path | null assertion",
+      "range": {
+        "startLine": 533,
+        "startChar": 11,
+        "endLine": 533,
+        "endChar": 22
+      },
+      "revId": "2b608957fb53722c0442f6c44c9565ea57237fb3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c43c282e_37decadd",
+        "filename": "modules/canvaskit/npm_build/types/canvaskit-wasm-tests.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 533,
+      "author": {
+        "id": 19024
+      },
+      "writtenOn": "2022-07-13T20:14:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "98b3af98_b51e15d8",
       "range": {
         "startLine": 533,
         "startChar": 11,
@@ -127,6 +216,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7fa6ead9_952036c1",
+        "filename": "modules/canvaskit/npm_build/types/index.d.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 2158,
+      "author": {
+        "id": 19024
+      },
+      "writtenOn": "2022-07-13T20:14:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "80be4491_d94139cf",
+      "range": {
+        "startLine": 2157,
+        "startChar": 65,
+        "endLine": 2158,
+        "endChar": 40
+      },
+      "revId": "2b608957fb53722c0442f6c44c9565ea57237fb3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d64f8c24_c6a13ccc",
@@ -140,6 +253,30 @@
       "writtenOn": "2022-07-13T15:01:26Z",
       "side": 1,
       "message": "There is no direction param. Did you mean to add a bool? Elsewhere we call this bool isCCW.",
+      "range": {
+        "startLine": 2158,
+        "startChar": 76,
+        "endLine": 2159,
+        "endChar": 87
+      },
+      "revId": "2b608957fb53722c0442f6c44c9565ea57237fb3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "99a8357c_854508cb",
+        "filename": "modules/canvaskit/npm_build/types/index.d.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 2159,
+      "author": {
+        "id": 19024
+      },
+      "writtenOn": "2022-07-13T20:14:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d64f8c24_c6a13ccc",
       "range": {
         "startLine": 2158,
         "startChar": 76,
@@ -173,6 +310,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4cfa6860_3ac059e3",
+        "filename": "modules/canvaskit/npm_build/types/index.d.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 2165,
+      "author": {
+        "id": 19024
+      },
+      "writtenOn": "2022-07-13T20:14:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e0455d0a_43f84788",
+      "range": {
+        "startLine": 2165,
+        "startChar": 49,
+        "endLine": 2165,
+        "endChar": 55
+      },
+      "revId": "2b608957fb53722c0442f6c44c9565ea57237fb3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "109c14a7_cbed6e90",
@@ -186,6 +347,30 @@
       "writtenOn": "2022-07-13T15:01:26Z",
       "side": 1,
       "message": "nit: trailing space",
+      "range": {
+        "startLine": 2598,
+        "startChar": 0,
+        "endLine": 2598,
+        "endChar": 5
+      },
+      "revId": "2b608957fb53722c0442f6c44c9565ea57237fb3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "196dcb4a_5af6d336",
+        "filename": "modules/canvaskit/npm_build/types/index.d.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 2598,
+      "author": {
+        "id": 19024
+      },
+      "writtenOn": "2022-07-13T20:14:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "109c14a7_cbed6e90",
       "range": {
         "startLine": 2598,
         "startChar": 0,
@@ -219,6 +404,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4a71df40_ed902866",
+        "filename": "modules/canvaskit/npm_build/types/index.d.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 2618,
+      "author": {
+        "id": 19024
+      },
+      "writtenOn": "2022-07-13T20:14:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "61a4ca17_28235124",
+      "range": {
+        "startLine": 2618,
+        "startChar": 4,
+        "endLine": 2618,
+        "endChar": 15
+      },
+      "revId": "2b608957fb53722c0442f6c44c9565ea57237fb3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6a732ac2_f94f1a4b",
@@ -232,6 +441,30 @@
       "writtenOn": "2022-07-13T15:01:26Z",
       "side": 1,
       "message": "We could keep this as a member method, but since we are moving MakeInterpolate to be static, let\u0027s change this to be static as well.\n\nCanvasKit.Path.CanInterpolate(path1, path2);\n\n(isInterpolatable has too many syllables for me).",
+      "range": {
+        "startLine": 2626,
+        "startChar": 4,
+        "endLine": 2626,
+        "endChar": 20
+      },
+      "revId": "2b608957fb53722c0442f6c44c9565ea57237fb3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bb841faf_e08eb264",
+        "filename": "modules/canvaskit/npm_build/types/index.d.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 2626,
+      "author": {
+        "id": 19024
+      },
+      "writtenOn": "2022-07-13T20:14:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6a732ac2_f94f1a4b",
       "range": {
         "startLine": 2626,
         "startChar": 4,
@@ -265,6 +498,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8e7a191e_c600c94c",
+        "filename": "modules/canvaskit/tests/core.spec.js",
+        "patchSetId": 1
+      },
+      "lineNbr": 1562,
+      "author": {
+        "id": 19024
+      },
+      "writtenOn": "2022-07-13T20:14:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1cbd306f_c44905a4",
+      "range": {
+        "startLine": 1562,
+        "startChar": 29,
+        "endLine": 1562,
+        "endChar": 35
+      },
+      "revId": "2b608957fb53722c0442f6c44c9565ea57237fb3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "62502255_9915df5e",
@@ -288,6 +545,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "21f9bb90_6cdb775e",
+        "filename": "modules/canvaskit/tests/core.spec.js",
+        "patchSetId": 1
+      },
+      "lineNbr": 1570,
+      "author": {
+        "id": 19024
+      },
+      "writtenOn": "2022-07-13T20:14:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "62502255_9915df5e",
+      "range": {
+        "startLine": 1570,
+        "startChar": 18,
+        "endLine": 1570,
+        "endChar": 34
+      },
+      "revId": "2b608957fb53722c0442f6c44c9565ea57237fb3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fa5088ab_c646923a",
@@ -301,6 +582,24 @@
       "writtenOn": "2022-07-13T15:01:26Z",
       "side": 1,
       "message": "You\u0027ll need to call delete on p1 and p2. As written, this leaks many path objects every time p3 is written to.",
+      "revId": "2b608957fb53722c0442f6c44c9565ea57237fb3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6a64edec_7ebe5a67",
+        "filename": "modules/canvaskit/tests/core.spec.js",
+        "patchSetId": 1
+      },
+      "lineNbr": 1588,
+      "author": {
+        "id": 19024
+      },
+      "writtenOn": "2022-07-13T20:14:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fa5088ab_c646923a",
       "revId": "2b608957fb53722c0442f6c44c9565ea57237fb3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
