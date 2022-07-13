@@ -346,6 +346,9 @@ function imageFilterTests(CK: CanvasKit, colorFilter?: ColorFilter, img?: Image)
 
     let filter16 = imgf.MakeOffset(5, 3, null); // $ExpectType ImageFilter
     filter16 = imgf.MakeOffset(-100.3, -18, filter16);
+    const rt = CK.RuntimeEffect.Make('not real sksl code')!; // $ExpectType RuntimeEffect | null
+    const shader = rt.makeShader([])!;
+    imgf.MakeShader(shader); // $ExpectType ImageFilter
 }
 
 function fontTests(CK: CanvasKit, face?: Typeface, paint?: Paint) {

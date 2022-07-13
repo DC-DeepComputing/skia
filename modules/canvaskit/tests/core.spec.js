@@ -1773,4 +1773,30 @@ describe('Core canvas behavior', () => {
         paint.delete();
         offset.delete();
     }, '/assets/mandrill_512.png');
+
+
+
+    gm('ImageFilter_MakeShader', (canvas, fetchedByteBuffers) => {
+        canvas.clear(CanvasKit.WHITE);
+
+        const img = CanvasKit.MakeImageFromEncoded(fetchedByteBuffers[0]);
+        expect(img).toBeTruthy();
+
+        const rt = CanvasKit.RuntimeEffect.Make(`
+half4 main(vec2 fragcoord) { 
+    return vec4(0.0, 0.0, 1.0, 0.5);
+}        
+`);
+        const shader = rt.makeShader([]);     
+        const filter = CanvasKit.ImageFilter.MakeShader(shader);
+        const paint = new CanvasKit.Paint();
+        paint.setImageFilter(filter);
+        canvas.drawImage(img, 50, 50, paint);
+        img.delete();
+        paint.delete();
+        filter.delete();
+        shader.delete();
+        rt.delete();
+
+    }, '/assets/mandrill_512.png');
 });
