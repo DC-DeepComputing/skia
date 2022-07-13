@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "db0c678c_6a69e273",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-07-13T13:27:24Z",
+      "side": 1,
+      "message": "I forgot one last thing - can you add an entry to the modules/canvaskit/CHANGELOG.md?",
+      "revId": "8f462ce6c9f77f0a57019384bfff6e04962533aa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
