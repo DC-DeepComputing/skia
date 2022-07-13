@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d293f258_aeeb1ccb",
+        "filename": "src/core/SkShaderCodeDictionary.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-07-13T16:38:10Z",
+      "side": 1,
+      "message": "I guess we could also pass this around const\u0026",
+      "range": {
+        "startLine": 50,
+        "startChar": 64,
+        "endLine": 50,
+        "endChar": 65
+      },
+      "revId": "e9e4e18a81c1805e08d37527d295fc064477cd91",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
