@@ -317,6 +317,38 @@ void SkShaderCodeDictionary::getShaderInfo(SkUniquePaintParamsID uniqueID, SkSha
 //--------------------------------------------------------------------------------------------------
 namespace {
 
+#if defined(SK_GRAPHITE_ENABLED) && defined(SK_ENABLE_SKSL)
+static std::string append_snippet_arguments(const SkShaderSnippet* entry,
+                                            int entryIndex,
+                                            const std::string& currentPreLocalName,
+                                            SkSpan<const std::string> childOutputs) {
+    std::string code = "(";
+
+    // Append uniform names.
+    const char* separator = "";
+    for (size_t i = 0; i < entry->fUniforms.size(); ++i) {
+        code += separator;
+        separator = ", ";
+
+        if (i == 0 && entry->needsLocalCoords()) {
+            code += currentPreLocalName + " * dev2LocalUni";
+        } else {
+            code += entry->getMangledUniformName(i, entryIndex);
+        }
+    }
+
+    // Append child output names.
+    for (const std::string& childOutputVar : childOutputs) {
+        code += separator;
+        separator = ", ";
+        code += childOutputVar;
+    }
+    code.push_back(')');
+
+    return code;
+}
+#endif
+
 // The default glue code just calls a helper function with the signature:
 //    half4 fStaticFunctionName(/* all uniforms as parameters */,
 //                              /* all child output variable names as parameters */);
@@ -333,46 +365,54 @@ void GenerateDefaultGlueCode(const SkShaderInfo& shaderInfo,
 #if defined(SK_GRAPHITE_ENABLED) && defined(SK_ENABLE_SKSL)
     const SkShaderSnippet* entry = reader.entry();
 
-    // Invoke all children ahead of this entry's glue code.
-    std::vector<std::string> childOutputVarNames = emit_child_glue_code(shaderInfo,
-                                                                        entryIndex,
-                                                                        priorStageOutputName,
-                                                                        currentPreLocalName,
-                                                                        preamble,
-                                                                        mainBody,
-                                                                        indent);
-    SkASSERT((int)childOutputVarNames.size() == entry->fNumChildren);
-
     if (entry->needsLocalCoords()) {
         // Every snippet that requests local coordinates must have a localMatrix as its first
         // uniform
-        SkASSERT(reader.entry()->fUniforms.size() >= 1);
-        SkASSERT(reader.entry()->fUniforms[0].type() == SkSLType::kFloat4x4);
+        SkASSERT(entry->fUniforms.size() >= 1);
+        SkASSERT(entry->fUniforms.front().type() == SkSLType::kFloat4x4);
     }
 
-    add_indent(mainBody, indent);
-    SkSL::String::appendf(mainBody,
-                          "%s = %s(",
-                          resultName.c_str(),
-                          entry->fStaticFunctionName);
-    const char* separator = "";
-    for (size_t i = 0; i < entry->fUniforms.size(); ++i) {
-        *mainBody += separator;
-        separator = ", ";
+    if (entry->fNumChildren == 0) {
+        // If there are no children, we can just call the snippet directly, passing the uniforms.
+        add_indent(mainBody, indent);
+        SkSL::String::appendf(mainBody, "%s = %s", resultName.c_str(), entry->fStaticFunctionName);
+        *mainBody += append_snippet_arguments(entry, entryIndex, currentPreLocalName,
+                                              /*childOutputs=*/{});
+        *mainBody += ";\n";
+    } else {
+        // Create a helper function that invokes each of the children, then calls the snippet.
+        std::string helperFnName = get_mangled_name(entry->fStaticFunctionName, entryIndex);
+        std::string helperFn = SkSL::String::printf("half4 %s(half4 %s, float4x4 %s) {",
+                                                    helperFnName.c_str(),
+                                                    priorStageOutputName.c_str(),
+                                                    currentPreLocalName.c_str());
+        // Invoke all children from inside the helper function.
+        std::vector<std::string> childOutputVarNames = emit_child_glue_code(shaderInfo,
+                                                                            entryIndex,
+                                                                            priorStageOutputName,
+                                                                            currentPreLocalName,
+                                                                            preamble,
+                                                                            &helperFn,
+                                                                            /*indent=*/0);
+        SkASSERT((int)childOutputVarNames.size() == entry->fNumChildren);
 
-        if (i == 0 && reader.entry()->needsLocalCoords()) {
-            *mainBody += currentPreLocalName + " * dev2LocalUni";
-        } else {
-            *mainBody += entry->getMangledUniformName(i, entryIndex);
-        }
-    }
-    for (size_t i = 0; i < childOutputVarNames.size(); ++i) {
-        *mainBody += separator;
-        separator = ", ";
+        // Finally, invoke the snippet from the helper function, passing uniforms and child outputs.
+        SkSL::String::appendf(&helperFn, "    return %s", entry->fStaticFunctionName);
+        helperFn += append_snippet_arguments(entry, entryIndex, currentPreLocalName,
+                                             childOutputVarNames);
+        helperFn += ";\n"
+                    "}\n";
+        // Add the helper function to the bottom of the preamble.
+        *preamble += helperFn;
 
-        *mainBody += childOutputVarNames[i];
+        // Invoke the helper function from the main body.
+        add_indent(mainBody, indent);
+        SkSL::String::appendf(mainBody, "%s = %s(%s, %s);",
+                              resultName.c_str(),
+                              helperFnName.c_str(),
+                              priorStageOutputName.c_str(),
+                              currentPreLocalName.c_str());
     }
-    *mainBody += ");\n";
 #endif  // defined(SK_GRAPHITE_ENABLED) && defined(SK_ENABLE_SKSL)
 }
 
