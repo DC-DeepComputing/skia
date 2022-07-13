@@ -39,6 +39,30 @@
       },
       "revId": "bd8fe760bac347f987cea201c9a41258a374e297",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0e9de924_bc92827b",
+        "filename": "src/sksl/ir/SkSLVarDeclarations.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 241,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-07-13T15:15:07Z",
+      "side": 1,
+      "message": "Done. (We actually check for that earlier, but do it explicitly, rather than by updating the permitted flags).",
+      "parentUuid": "0f547b55_f6f8fde7",
+      "range": {
+        "startLine": 241,
+        "startChar": 29,
+        "endLine": 241,
+        "endChar": 30
+      },
+      "revId": "bd8fe760bac347f987cea201c9a41258a374e297",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
