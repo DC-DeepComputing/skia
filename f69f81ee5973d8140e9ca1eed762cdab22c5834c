@@ -3,6 +3,483 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4d6eec3b_077f4da6",
+        "filename": "src/gpu/graphite/DrawCommands.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-07-13T17:50:05Z",
+      "side": 1,
+      "message": "could this still be an `enum class`, where ENUM(T) is `k##T`?",
+      "range": {
+        "startLine": 44,
+        "startChar": 0,
+        "endLine": 45,
+        "endChar": 50
+      },
+      "revId": "f69f81ee5973d8140e9ca1eed762cdab22c5834c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5eab8658_b68d33a0",
+        "filename": "src/gpu/graphite/DrawCommands.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-07-13T17:50:05Z",
+      "side": 1,
+      "message": "Are we doing 1 space on purpose to offset from the type name? Maybe 2-4 spaces would be clearer? Or if not, \"nit alignment\" 😊",
+      "range": {
+        "startLine": 75,
+        "startChar": 8,
+        "endLine": 75,
+        "endChar": 9
+      },
+      "revId": "f69f81ee5973d8140e9ca1eed762cdab22c5834c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "106cb277_bd3d27c8",
+        "filename": "src/gpu/graphite/DrawCommands.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-07-13T17:50:05Z",
+      "side": 1,
+      "message": "Should we have this be SkRect, and let Metal be responsible for converting to XYWH instead of the more typical ltrb that skia is used to?",
+      "range": {
+        "startLine": 90,
+        "startChar": 9,
+        "endLine": 93,
+        "endChar": 23
+      },
+      "revId": "f69f81ee5973d8140e9ca1eed762cdab22c5834c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fe0ab22b_50e17b95",
+        "filename": "src/gpu/graphite/DrawCommands.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-07-13T17:50:05Z",
+      "side": 1,
+      "message": "Is this different than BindTexturesAndSamplers?",
+      "range": {
+        "startLine": 121,
+        "startChar": 0,
+        "endLine": 121,
+        "endChar": 20
+      },
+      "revId": "f69f81ee5973d8140e9ca1eed762cdab22c5834c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "58349e67_36df24b0",
+        "filename": "src/gpu/graphite/DrawCommands.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-07-13T17:50:05Z",
+      "side": 1,
+      "message": "wdyt about requiring all commands to be POD? Since ownership is tracked elsewhere for samplers, it seems reasonable to try.\n\nWe could handle it with a macro like\n\n    #define ASSERT_POD(T) static_assert(std::is_trivial\u003cT\u003e::value);\n    SKGPU_DRAW_PASS_COMMAND_TYPES(ASSERT_POD)\n    #undef ASSERT_POD",
+      "range": {
+        "startLine": 123,
+        "startChar": 0,
+        "endLine": 123,
+        "endChar": 14
+      },
+      "revId": "f69f81ee5973d8140e9ca1eed762cdab22c5834c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8d6c8cef_b9020605",
+        "filename": "src/gpu/graphite/DrawCommands.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-07-13T17:50:05Z",
+      "side": 1,
+      "message": "Now that CommandBuffer doesn\u0027t extend DrawDispatcher, and DrawPass\u0027s dispatcher isn\u0027t a cpp-internal class, we can probably delete DrawDispatcher as a type and have DrawWriter call into DrawCommands::List directly.",
+      "range": {
+        "startLine": 125,
+        "startChar": 26,
+        "endLine": 125,
+        "endChar": 40
+      },
+      "revId": "f69f81ee5973d8140e9ca1eed762cdab22c5834c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9d9a3c90_8e3748a1",
+        "filename": "src/gpu/graphite/DrawCommands.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 207,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-07-13T17:50:05Z",
+      "side": 1,
+      "message": "If we lean on SkArenaAlloc\u0027s newer API and use SkTBlockList for the commands, this is simply:\n\n    T* cmd \u003d fAlloc.make\u003cT\u003e(std::forward\u003cArgs\u003e(args)...);\n    fCommands.push_back(T::kType, cmd);\n    \nWe can then delete append(), alloc(), allocCommand(), grow(), fCount, and fReserved.",
+      "range": {
+        "startLine": 207,
+        "startChar": 8,
+        "endLine": 207,
+        "endChar": 63
+      },
+      "revId": "f69f81ee5973d8140e9ca1eed762cdab22c5834c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "779ba542_5fa080ae",
+        "filename": "src/gpu/graphite/DrawCommands.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 210,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-07-13T17:50:05Z",
+      "side": 1,
+      "message": "DrawCommandsList",
+      "range": {
+        "startLine": 210,
+        "startChar": 54,
+        "endLine": 210,
+        "endChar": 62
+      },
+      "revId": "f69f81ee5973d8140e9ca1eed762cdab22c5834c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5c2cb3e4_a07d7662",
+        "filename": "src/gpu/graphite/DrawCommands.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 235,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-07-13T17:50:05Z",
+      "side": 1,
+      "message": "DrawCommandsList (if we keep it).",
+      "range": {
+        "startLine": 235,
+        "startChar": 68,
+        "endLine": 235,
+        "endChar": 76
+      },
+      "revId": "f69f81ee5973d8140e9ca1eed762cdab22c5834c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fcb81d75_7aab19cf",
+        "filename": "src/gpu/graphite/DrawCommands.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 257,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-07-13T17:50:05Z",
+      "side": 1,
+      "message": "I\u0027d vote that we make a static assertion that T is POD, or at least trivially copy initializable (maybe as an enable_if then).\n\nThen we can replace this with \n\n    static_assert(std::is_trivially_copyable\u003cT\u003e::value);\n    T* dst \u003d fAlloc.makeArrayDefault(count);\n    memcpy(dst, src, count*sizeof(T));\n    return dst;",
+      "range": {
+        "startLine": 253,
+        "startChar": 8,
+        "endLine": 257,
+        "endChar": 19
+      },
+      "revId": "f69f81ee5973d8140e9ca1eed762cdab22c5834c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "22352f0b_2135ae51",
+        "filename": "src/gpu/graphite/DrawCommands.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 275,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-07-13T17:50:05Z",
+      "side": 1,
+      "message": "If we go with the add() update I suggested above, Command::set isn\u0027t used and Command is equivalent to `std::pair\u003cType, void*\u003e`, which is what we\u0027d want to expose directly in an iterator.",
+      "range": {
+        "startLine": 260,
+        "startChar": 4,
+        "endLine": 275,
+        "endChar": 6
+      },
+      "revId": "f69f81ee5973d8140e9ca1eed762cdab22c5834c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aadd9228_e9fa69c2",
+        "filename": "src/gpu/graphite/DrawCommands.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 279,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-07-13T17:50:05Z",
+      "side": 1,
+      "message": "From a performance and readability preference, I\u0027d vote to replace this with SkTBlockList\u003cCommand\u003e and only allow them to be iterated instead of supporting random access.",
+      "range": {
+        "startLine": 277,
+        "startChar": 4,
+        "endLine": 279,
+        "endChar": 37
+      },
+      "revId": "f69f81ee5973d8140e9ca1eed762cdab22c5834c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bb38d0f5_a60254c0",
+        "filename": "src/gpu/graphite/DrawCommands.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 284,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-07-13T17:50:05Z",
+      "side": 1,
+      "message": "debug only?",
+      "revId": "f69f81ee5973d8140e9ca1eed762cdab22c5834c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "207d0b63_7bbbb3be",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 554,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-07-13T17:50:05Z",
+      "side": 1,
+      "message": "Add asserts that index is less than count?",
+      "range": {
+        "startLine": 554,
+        "startChar": 4,
+        "endLine": 554,
+        "endChar": 12
+      },
+      "revId": "f69f81ee5973d8140e9ca1eed762cdab22c5834c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "81e1a9d5_cd582807",
+        "filename": "src/gpu/graphite/DrawPass.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-07-13T17:50:05Z",
+      "side": 1,
+      "message": "remove?",
+      "range": {
+        "startLine": 42,
+        "startChar": 0,
+        "endLine": 45,
+        "endChar": 0
+      },
+      "revId": "f69f81ee5973d8140e9ca1eed762cdab22c5834c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "12cafbfa_26e5f58f",
+        "filename": "src/gpu/graphite/DrawPass.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-07-13T17:50:05Z",
+      "side": 1,
+      "message": "I\u0027d put these in here way back as a rough draft, I think they are superseded by getTexture,getSampler, and getPipeline.",
+      "range": {
+        "startLine": 88,
+        "startChar": 4,
+        "endLine": 89,
+        "endChar": 28
+      },
+      "revId": "f69f81ee5973d8140e9ca1eed762cdab22c5834c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f0a1f05c_cf3dc831",
+        "filename": "src/gpu/graphite/DrawPass.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-07-13T17:50:05Z",
+      "side": 1,
+      "message": "To match DrawContext and DrawList, this would be named `commandCount()`. wdyt?",
+      "range": {
+        "startLine": 96,
+        "startChar": 8,
+        "endLine": 96,
+        "endChar": 19
+      },
+      "revId": "f69f81ee5973d8140e9ca1eed762cdab22c5834c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ce378096_363685fb",
+        "filename": "src/gpu/graphite/DrawPass.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-07-13T17:50:05Z",
+      "side": 1,
+      "message": "Since we only ever iterate the commands in order, should we just expose an iterator? That might make memory management simpler down the line.",
+      "range": {
+        "startLine": 97,
+        "startChar": 45,
+        "endLine": 97,
+        "endChar": 55
+      },
+      "revId": "f69f81ee5973d8140e9ca1eed762cdab22c5834c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6e905562_f32c6f07",
+        "filename": "src/gpu/graphite/DrawPass.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-07-13T17:50:05Z",
+      "side": 1,
+      "message": "just have these be named `pipeline(int)`? The simple getters in these classes don\u0027t use the get prefix, but since these take an index, I could also see keeping it.",
+      "range": {
+        "startLine": 101,
+        "startChar": 28,
+        "endLine": 101,
+        "endChar": 39
+      },
+      "revId": "f69f81ee5973d8140e9ca1eed762cdab22c5834c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "28edbcf6_557c0794",
+        "filename": "src/gpu/graphite/mtl/MtlCommandBuffer.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-07-13T17:50:05Z",
+      "side": 1,
+      "message": "nit alignment",
+      "range": {
+        "startLine": 77,
+        "startChar": 28,
+        "endLine": 77,
+        "endChar": 29
+      },
+      "revId": "f69f81ee5973d8140e9ca1eed762cdab22c5834c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "41755de2_f4d2c4ee",
+        "filename": "src/gpu/graphite/mtl/MtlCommandBuffer.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-07-13T17:50:05Z",
+      "side": 1,
+      "message": "nit alignment",
+      "range": {
+        "startLine": 85,
+        "startChar": 22,
+        "endLine": 85,
+        "endChar": 23
+      },
+      "revId": "f69f81ee5973d8140e9ca1eed762cdab22c5834c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b2e46e01_c55cbb08",
         "filename": "src/gpu/graphite/mtl/MtlCommandBuffer.mm",
         "patchSetId": 4
