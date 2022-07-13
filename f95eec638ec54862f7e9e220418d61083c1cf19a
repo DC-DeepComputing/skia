@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "300425c4_7ac8aaf6",
+        "filename": "modules/canvaskit/npm_build/types/canvaskit-wasm-tests.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 310,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-07-13T17:27:06Z",
+      "side": 1,
+      "message": "In order to provide some fake variable of a given type, add it here as an optional input and then add a check on line 311.\n\nIt is simpler than having to create a runtime effect and shader using the normal methods - you can just \"pass in\" a Shader.",
+      "range": {
+        "startLine": 310,
+        "startChar": 68,
+        "endLine": 310,
+        "endChar": 79
+      },
+      "revId": "f95eec638ec54862f7e9e220418d61083c1cf19a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d99a41a4_4718866e",
+        "filename": "modules/canvaskit/tests/core.spec.js",
+        "patchSetId": 1
+      },
+      "lineNbr": 1788,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-07-13T17:27:06Z",
+      "side": 1,
+      "message": "nit: trailing whitespace. There\u0027s a gear in Gerrit in the upper right where you can make trailing whitespace visible.",
+      "range": {
+        "startLine": 1788,
+        "startChar": 1,
+        "endLine": 1788,
+        "endChar": 9
+      },
+      "revId": "f95eec638ec54862f7e9e220418d61083c1cf19a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c3cb568a_be730d7d",
+        "filename": "modules/canvaskit/tests/core.spec.js",
+        "patchSetId": 1
+      },
+      "lineNbr": 1790,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-07-13T17:27:06Z",
+      "side": 1,
+      "message": "It might be a better test to pass in uniforms here for the 0.0, 0.0, 1.0, 0.5 values.",
+      "range": {
+        "startLine": 1790,
+        "startChar": 37,
+        "endLine": 1790,
+        "endChar": 39
+      },
+      "revId": "f95eec638ec54862f7e9e220418d61083c1cf19a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1300174a_fa07a186",
+        "filename": "modules/canvaskit/tests/core.spec.js",
+        "patchSetId": 1
+      },
+      "lineNbr": 1794,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-07-13T17:27:06Z",
+      "side": 1,
+      "message": "IIUC, the shader provided returns a constant color. Thus you could just do drawPaint or drawRect; you do not need the image.",
+      "range": {
+        "startLine": 1794,
+        "startChar": 15,
+        "endLine": 1794,
+        "endChar": 24
+      },
+      "revId": "f95eec638ec54862f7e9e220418d61083c1cf19a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
