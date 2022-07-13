@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fd1a74ef_be0421c3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-07-13T18:50:07Z",
+      "side": 1,
+      "message": "Saves 9k of compressed size for CanvasKit",
+      "revId": "1dcd118f9d347b66a07ace141d09dfb552d4a374",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
