@@ -16,6 +16,293 @@
       "message": "This PR adds addCircle, isInterpolatable, and interpolate.",
       "revId": "2b608957fb53722c0442f6c44c9565ea57237fb3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4e5f157d_b7909e14",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-07-13T15:01:26Z",
+      "side": 1,
+      "message": "Big change request: Moving interpolate and isInterpolatable to be static (and renaming them).",
+      "revId": "2b608957fb53722c0442f6c44c9565ea57237fb3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "528f3e1e_759741fb",
+        "filename": "modules/canvaskit/canvaskit_bindings.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 416,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-07-13T15:01:26Z",
+      "side": 1,
+      "message": "I prefer auto for more complicated types than \"bool\".",
+      "range": {
+        "startLine": 416,
+        "startChar": 4,
+        "endLine": 416,
+        "endChar": 8
+      },
+      "revId": "2b608957fb53722c0442f6c44c9565ea57237fb3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "90ffb7d9_914d76e8",
+        "filename": "modules/canvaskit/npm_build/types/canvaskit-wasm-tests.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 474,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-07-13T15:01:26Z",
+      "side": 1,
+      "message": "I would just add your \"addCircle() call here.\n\nThe code in this file is never executed, so it is not like you would be changing how some test case actually drew.",
+      "range": {
+        "startLine": 474,
+        "startChar": 9,
+        "endLine": 474,
+        "endChar": 16
+      },
+      "revId": "2b608957fb53722c0442f6c44c9565ea57237fb3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "98b3af98_b51e15d8",
+        "filename": "modules/canvaskit/npm_build/types/canvaskit-wasm-tests.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 533,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-07-13T15:01:26Z",
+      "side": 1,
+      "message": "Store this to a variable and add an $ExpectType Path | null assertion",
+      "range": {
+        "startLine": 533,
+        "startChar": 11,
+        "endLine": 533,
+        "endChar": 22
+      },
+      "revId": "2b608957fb53722c0442f6c44c9565ea57237fb3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "80be4491_d94139cf",
+        "filename": "modules/canvaskit/npm_build/types/index.d.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 2158,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-07-13T15:01:26Z",
+      "side": 1,
+      "message": "nit: kMove_Verb is the C++ name for this. Use the TS name: MOVE_VERB etc.\n\n(I realize we don\u0027t do this in other places [yet], but better to start now).",
+      "range": {
+        "startLine": 2157,
+        "startChar": 65,
+        "endLine": 2158,
+        "endChar": 40
+      },
+      "revId": "2b608957fb53722c0442f6c44c9565ea57237fb3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d64f8c24_c6a13ccc",
+        "filename": "modules/canvaskit/npm_build/types/index.d.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 2159,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-07-13T15:01:26Z",
+      "side": 1,
+      "message": "There is no direction param. Did you mean to add a bool? Elsewhere we call this bool isCCW.",
+      "range": {
+        "startLine": 2158,
+        "startChar": 76,
+        "endLine": 2159,
+        "endChar": 87
+      },
+      "revId": "2b608957fb53722c0442f6c44c9565ea57237fb3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e0455d0a_43f84788",
+        "filename": "modules/canvaskit/npm_build/types/index.d.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 2165,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-07-13T15:01:26Z",
+      "side": 1,
+      "message": "nit: trailing whitespace",
+      "range": {
+        "startLine": 2165,
+        "startChar": 49,
+        "endLine": 2165,
+        "endChar": 55
+      },
+      "revId": "2b608957fb53722c0442f6c44c9565ea57237fb3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "109c14a7_cbed6e90",
+        "filename": "modules/canvaskit/npm_build/types/index.d.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 2598,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-07-13T15:01:26Z",
+      "side": 1,
+      "message": "nit: trailing space",
+      "range": {
+        "startLine": 2598,
+        "startChar": 0,
+        "endLine": 2598,
+        "endChar": 5
+      },
+      "revId": "2b608957fb53722c0442f6c44c9565ea57237fb3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "61a4ca17_28235124",
+        "filename": "modules/canvaskit/npm_build/types/index.d.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 2618,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-07-13T15:01:26Z",
+      "side": 1,
+      "message": "I\u0027m not a fan of this API being a method. I think it makes more sense as a static class function\n\nCanvasKit.Path.MakeInterpolate(path1, path2, weight);\n\nThe Make prefix is a signal that the returned path needs to be cleaned up with .delete().\n\nAn alternative that I considered was to have this method mutate the \"this\" path, but there\u0027s an internal effort to make Paths immutable, and that alternative would not help there.",
+      "range": {
+        "startLine": 2618,
+        "startChar": 4,
+        "endLine": 2618,
+        "endChar": 15
+      },
+      "revId": "2b608957fb53722c0442f6c44c9565ea57237fb3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6a732ac2_f94f1a4b",
+        "filename": "modules/canvaskit/npm_build/types/index.d.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 2626,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-07-13T15:01:26Z",
+      "side": 1,
+      "message": "We could keep this as a member method, but since we are moving MakeInterpolate to be static, let\u0027s change this to be static as well.\n\nCanvasKit.Path.CanInterpolate(path1, path2);\n\n(isInterpolatable has too many syllables for me).",
+      "range": {
+        "startLine": 2626,
+        "startChar": 4,
+        "endLine": 2626,
+        "endChar": 20
+      },
+      "revId": "2b608957fb53722c0442f6c44c9565ea57237fb3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1cbd306f_c44905a4",
+        "filename": "modules/canvaskit/tests/core.spec.js",
+        "patchSetId": 1
+      },
+      "lineNbr": 1562,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-07-13T15:01:26Z",
+      "side": 1,
+      "message": "This test doesn\u0027t draw anything to canvas, and thus does not render anything.\n\nTry to imitate this fiddle https://fiddle.skia.org/c/@Path_interpolate",
+      "range": {
+        "startLine": 1562,
+        "startChar": 29,
+        "endLine": 1562,
+        "endChar": 35
+      },
+      "revId": "2b608957fb53722c0442f6c44c9565ea57237fb3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "62502255_9915df5e",
+        "filename": "modules/canvaskit/tests/core.spec.js",
+        "patchSetId": 1
+      },
+      "lineNbr": 1570,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-07-13T15:01:26Z",
+      "side": 1,
+      "message": "Let\u0027s test isInterpolatable in its own test. That does not need to be visual, so you can just do something like \nhttps://github.com/google/skia/blob/cabb1f65d03812f18436b2f4a2af2cebd4f7d3e8/modules/canvaskit/tests/matrix.spec.js#L17-L23\n\nI would appreciate some comments about why a given path pair cannot be interpolated.",
+      "range": {
+        "startLine": 1570,
+        "startChar": 18,
+        "endLine": 1570,
+        "endChar": 34
+      },
+      "revId": "2b608957fb53722c0442f6c44c9565ea57237fb3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fa5088ab_c646923a",
+        "filename": "modules/canvaskit/tests/core.spec.js",
+        "patchSetId": 1
+      },
+      "lineNbr": 1588,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-07-13T15:01:26Z",
+      "side": 1,
+      "message": "You\u0027ll need to call delete on p1 and p2. As written, this leaks many path objects every time p3 is written to.",
+      "revId": "2b608957fb53722c0442f6c44c9565ea57237fb3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
