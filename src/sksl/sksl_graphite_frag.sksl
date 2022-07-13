@@ -416,6 +416,11 @@ half4 sk_conical_grad_8_shader(float4x4 dev2Local,
     return $colorize_grad_8(colorsParam, offsetsParam, t);
 }
 
+half4 sk_matrix_colorfilter(half4 colorIn,
+                            float colorMatrix[20]) {
+    return half4(1.0, 1.0, 1.0, 1.0);
+}
+
 half4 sk_blend(int blendMode, half4 src, half4 dst) {
     const int kClear      = 0;
     const int kSrc        = 1;

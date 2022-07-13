@@ -644,6 +644,13 @@ void GenerateRuntimeShaderGlueCode(const std::string& resultName,
 }
 
 //--------------------------------------------------------------------------------------------------
+static constexpr SkUniform kMatrixColorFilterUniforms[] = {
+        { "colorMatrix", SkSLType::kFloat, 20 },
+};
+
+static constexpr char kMatrixColorFilterName[] = "sk_matrix_colorfilter";
+
+//--------------------------------------------------------------------------------------------------
 static constexpr char kErrorName[] = "sk_error";
 
 //--------------------------------------------------------------------------------------------------
@@ -1035,6 +1042,19 @@ SkShaderCodeDictionary::SkShaderCodeDictionary() {
             kNumBlendShaderChildren,
             { }
     };
+
+    // SkColorFilter snippets
+    fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kMatrixColorFilter] = {
+            "MatrixColorFilter",
+            SkSpan(kMatrixColorFilterUniforms),
+            SnippetRequirementFlags::kNone,
+            { },     // no samplers
+            kMatrixColorFilterName,
+            GenerateDefaultGlueCode,
+            kNoChildren,
+            { }
+    };
+
     fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kFixedFunctionBlender] = {
             "FixedFunctionBlender",
             { },     // no uniforms
