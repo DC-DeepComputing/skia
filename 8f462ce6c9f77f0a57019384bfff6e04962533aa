@@ -16,6 +16,24 @@
       "message": "I forgot one last thing - can you add an entry to the modules/canvaskit/CHANGELOG.md?",
       "revId": "8f462ce6c9f77f0a57019384bfff6e04962533aa",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "68d60bc8_14390f95",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19024
+      },
+      "writtenOn": "2022-07-13T13:30:51Z",
+      "side": 1,
+      "message": "done",
+      "parentUuid": "db0c678c_6a69e273",
+      "revId": "8f462ce6c9f77f0a57019384bfff6e04962533aa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
