@@ -790,6 +790,7 @@ std::unique_ptr<GrFragmentProcessor> MakeLinear(const SkLinearGradient& shader,
     return MakeGradientFP(shader, args, std::move(fp));
 }
 
+#if 0
 std::unique_ptr<GrFragmentProcessor> MakeRadial(const SkRadialGradient& shader,
                                                 const GrFPArgs& args) {
     static const SkRuntimeEffect* effect = SkMakeRuntimeEffect(SkRuntimeEffect::MakeForShader, R"(
@@ -802,6 +803,7 @@ std::unique_ptr<GrFragmentProcessor> MakeRadial(const SkRadialGradient& shader,
                              GrSkSLFP::OptFlags::kPreservesOpaqueInput);
     return MakeGradientFP(shader, args, std::move(fp));
 }
+#endif
 
 std::unique_ptr<GrFragmentProcessor> MakeSweep(const SkSweepGradient& shader,
                                                const GrFPArgs& args) {

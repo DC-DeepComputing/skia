@@ -29,8 +29,10 @@ namespace GrGradientShader {
     std::unique_ptr<GrFragmentProcessor> MakeLinear(const SkLinearGradient& shader,
                                                     const GrFPArgs& args);
 
-    std::unique_ptr<GrFragmentProcessor> MakeRadial(const SkRadialGradient& shader,
-                                                    const GrFPArgs& args);
+    std::unique_ptr<GrFragmentProcessor> MakeGradient(const SkGradientShaderBase& shader,
+                                                      const GrFPArgs& args,
+                                                      std::unique_ptr<GrFragmentProcessor> layout,
+                                                      const SkMatrix* overrideMatrix = nullptr);
 
     std::unique_ptr<GrFragmentProcessor> MakeSweep(const SkSweepGradient& shader,
                                                    const GrFPArgs& args);

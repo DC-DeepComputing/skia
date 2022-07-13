@@ -118,6 +118,7 @@ sk_sp<SkShader> SkGradientShader::MakeRadial(const SkPoint& center, SkScalar rad
     return MakeRadial(center, radius, colors, std::move(colorSpace), pos, count, mode, 0, nullptr);
 }
 
+#if 0
 sk_sp<SkShader> SkGradientShader::MakeRadial(const SkPoint& center, SkScalar radius,
                                              const SkColor4f colors[],
                                              sk_sp<SkColorSpace> colorSpace,
@@ -150,6 +151,7 @@ sk_sp<SkShader> SkGradientShader::MakeRadial(const SkPoint& center, SkScalar rad
                                           opt.fCount, mode, flags, localMatrix);
     return sk_make_sp<SkRadialGradient>(center, radius, desc);
 }
+#endif
 
 sk_sp<SkShader> SkGradientShader::MakeTwoPointConical(const SkPoint& start,
                                                       SkScalar startRadius,
@@ -325,9 +327,11 @@ sk_sp<SkShader> SkGradientShader::MakeSweep(SkScalar cx, SkScalar cy,
     return sk_make_sp<SkSweepGradient>(SkPoint::Make(cx, cy), t0, t1, desc);
 }
 
+void SkRegisterRadialGradientShaderFlattenable();
+
 void SkGradientShader::RegisterFlattenables() {
     SK_REGISTER_FLATTENABLE(SkLinearGradient);
-    SK_REGISTER_FLATTENABLE(SkRadialGradient);
+    SkRegisterRadialGradientShaderFlattenable();
     SK_REGISTER_FLATTENABLE(SkSweepGradient);
     SK_REGISTER_FLATTENABLE(SkTwoPointConicalGradient);
 }

@@ -5,6 +5,8 @@
  * found in the LICENSE file.
  */
 
+#if 0
+
 #ifndef SkRadialGradient_DEFINED
 #define SkRadialGradient_DEFINED
 
@@ -44,5 +46,7 @@ private:
     friend class SkGradientShader;
     using INHERITED = SkGradientShaderBase;
 };
+
+#endif
 
 #endif
