@@ -1,0 +1,188 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "28ae1d8e_86d6d7f9",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 457,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-07-13T20:52:33Z",
+      "side": 1,
+      "message": "drawVertices always uses a fill style. Technically SkCanvas modifies the SkPaint before calling into Device::drawVertices, so `SkStrokeRec(paint)` would always produce  a fill style, but I think it\u0027s clearer if we use `kFillStyle` to emphasize that we are ignoring that aspect of the paint.",
+      "range": {
+        "startLine": 457,
+        "startChar": 28,
+        "endLine": 457,
+        "endChar": 46
+      },
+      "revId": "87f745964e4790e69ca412a4a7e47deef388984e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "86f20b89_cce7b0df",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 792,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-07-13T20:52:33Z",
+      "side": 1,
+      "message": "For primitives, I think it\u0027s more readable to use \u003d over {} initialization. This can also be a `const bool`",
+      "range": {
+        "startLine": 792,
+        "startChar": 8,
+        "endLine": 792,
+        "endChar": 29
+      },
+      "revId": "87f745964e4790e69ca412a4a7e47deef388984e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "513a60ea_4b62f005",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 805,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-07-13T20:52:33Z",
+      "side": 1,
+      "message": "see comment in Renderer, but this if structure would move to inside the definition of `Renderer::Vertices`.",
+      "range": {
+        "startLine": 793,
+        "startChar": 8,
+        "endLine": 805,
+        "endChar": 9
+      },
+      "revId": "87f745964e4790e69ca412a4a7e47deef388984e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d6065d3e_9908bc44",
+        "filename": "src/gpu/graphite/Renderer.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 223,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-07-13T20:52:33Z",
+      "side": 1,
+      "message": "Let\u0027s consolidate the factory function to just `Vertices(SkVertices::VertexMode, bool hasColor, bool hasTexCoords)`, and the implementation we can select from the 8 Renderer varieties that we need.\n\nThis matches the existing trend of having Renderer factories for the core concept/approach, that take parameters to select the actual instances (e.g. StencilTesselatedWedges takes a fill type, or TextSDF takes a bool). We can assert in the implementation that the kTriangleFan value isn\u0027t encountered (SkVertices should have converted that by the time the Builder is done).",
+      "range": {
+        "startLine": 215,
+        "startChar": 4,
+        "endLine": 223,
+        "endChar": 57
+      },
+      "revId": "87f745964e4790e69ca412a4a7e47deef388984e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "931abd42_d723d187",
+        "filename": "src/gpu/graphite/render/VerticesRenderStep.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-07-13T20:52:33Z",
+      "side": 1,
+      "message": "Skia style is a little different for constructor params. We keep the `:` and the `,` separating fields aligned, so it\u0027d end up more or less:\n\n    VerticesRenderStep::VerticesRenderStep(...)\n            : RenderStep(...)\n            , fHasColor(hasColor)\n            , fHasTexture(hasTexture) {}\n            \nThis makes it pretty convenient to add new fields but takes some getting used to.",
+      "range": {
+        "startLine": 62,
+        "startChar": 0,
+        "endLine": 62,
+        "endChar": 57
+      },
+      "revId": "87f745964e4790e69ca412a4a7e47deef388984e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "26f9989f_ca0ade1e",
+        "filename": "src/gpu/graphite/render/VerticesRenderStep.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-07-13T20:52:33Z",
+      "side": 1,
+      "message": "If we have indices from the SkVertices, we\u0027ll want to reserve indexCount vertices since that\u0027s how many final vertices will be produced by the VertState.\n\nIn subsequent CLs, it might be worth looking at either caching the vertex and index data in GPU buffers based on the SkVertices unique ID, or using memcpy to move them in bulk and then use the DrawWriter::draw() functions. Since we\u0027re transforming the points as we write them currently, there\u0027s not a lot of reason to do that now, but when we switch to having the GPU transform everything that will be important.",
+      "range": {
+        "startLine": 99,
+        "startChar": 18,
+        "endLine": 99,
+        "endChar": 29
+      },
+      "revId": "87f745964e4790e69ca412a4a7e47deef388984e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b3014291_22b2511c",
+        "filename": "src/gpu/graphite/render/VerticesRenderStep.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-07-13T20:52:33Z",
+      "side": 1,
+      "message": "When it\u0027s time to implement this, I was going back and forth between whether or not it makes sense to check `info.hasColors()` or `fHasColors`, but I think `info.hasColors()` is the safer one.\n\nUnder normal circumstances info.hasColors() \u003d\u003d fHasColors, and we should add an SkASSERT to check that. But if somehow on a release build we selected the wrong Renderer and we were using an SkVertices object with colors on a renderstep that didn\u0027t want it, we\u0027d be providing extra data that would just be misinterpreted on the GPU. If we went the other direction, checking fHasColors but had a state mismatch, we\u0027d be trying to read from the colors data array of the SkVertices when that was null, which would lead to a crash or unsafe memory access, which seems worse.",
+      "range": {
+        "startLine": 115,
+        "startChar": 10,
+        "endLine": 115,
+        "endChar": 33
+      },
+      "revId": "87f745964e4790e69ca412a4a7e47deef388984e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d4d4395c_9475e6bc",
+        "filename": "src/gpu/graphite/render/VerticesRenderStep.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-07-13T20:52:33Z",
+      "side": 1,
+      "message": "Every RenderStep needs to have a way of uploading the DrawParams\u0027 PaintDepth value. Current RenderSteps have opted to add an instance or vertex attribute to store the depth value, but that would mean copying the same value into every vertex of SkVertices, which could be significant. Additionally it would mean we couldn\u0027t cache vertex buffers on the GPU since the depth would change with each draw, whereas the colors and local positions would not.\n\nSince it\u0027s unlikely for consecutive drawVertices() calls to be made, I\u0027m not so concerned about having them be super batchable currently. I think it makes sense to upload the paint depth as a uniform that is then readable from the vertex SkSL. (and when we get SSBO batching to work, we\u0027d regain that lost batching anyways).",
+      "range": {
+        "startLine": 124,
+        "startChar": 45,
+        "endLine": 124,
+        "endChar": 55
+      },
+      "revId": "87f745964e4790e69ca412a4a7e47deef388984e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

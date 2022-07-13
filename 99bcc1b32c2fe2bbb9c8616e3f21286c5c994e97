@@ -16,6 +16,24 @@
       "message": "Take a look when you can! I have some commented-out progress for including texture \u0026 color - I may continue that work on a separate branch, but wanted to get some of your preliminary thoughts. Let me know if you want me to delete that in the interim.\n\nAs a note, I am now using a raw SkVertices pointer within Geometry\u0027s union. Gregand I had a conversation about how the sk_sp wrapper is not well-suited to be used within a union data type. Whenever the sk_sp gets assigned (even to a nullptr), it will check if the prior pointer is null. If it is not, then it will unref the prior pointer. The problem with this is that within the union, the sk_sp seems to get initialized as a \"wild pointer\", or may still have a non-null pointer to deleted information. This leads to seg faults.",
       "revId": "99bcc1b32c2fe2bbb9c8616e3f21286c5c994e97",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "55015572_cae54564",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 15
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-07-13T20:52:33Z",
+      "side": 1,
+      "message": "Hmm, I would have thought we could use sk_sp if we called its destructor and in-place initialized it at the right places (following the SubRunData code, but using sk_sp\u003cSkVertices\u003e instead).\n\nI\u0027ve posted a lot of other comments for everything outside of Geometry, and will look through Geometry more carefully tomorrow.",
+      "parentUuid": "b0203720_3463c25c",
+      "revId": "99bcc1b32c2fe2bbb9c8616e3f21286c5c994e97",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
