@@ -162,6 +162,18 @@ struct BlendShaderBlock {
 
 };
 
+struct MatrixColorFilterBlock {
+    struct MatrixColorFilterData {
+        float fMatrix[20];
+    };
+
+    static void BeginBlock(const SkKeyContext&,
+                           SkPaintParamsKeyBuilder*,
+                           SkPipelineDataGatherer*,
+                           const MatrixColorFilterData&);
+};
+
+
 struct BlendModeBlock {
     static void BeginBlock(const SkKeyContext&,
                            SkPaintParamsKeyBuilder*,
