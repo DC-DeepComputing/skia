@@ -467,6 +467,46 @@ void BlendShaderBlock::BeginBlock(const SkKeyContext& keyContext,
 }
 
 //--------------------------------------------------------------------------------------------------
+
+#ifdef SK_GRAPHITE_ENABLED
+
+namespace {
+
+void add_matrix_colorfilter_uniform_data(const SkShaderCodeDictionary* dict,
+                                         const float matrix[20],
+                                         SkPipelineDataGatherer* gatherer) {
+    VALIDATE_UNIFORMS(gatherer, dict, SkBuiltInCodeSnippetID::kMatrixColorFilter)
+    gatherer->write(matrix, 20);
+
+    gatherer->addFlags(dict->getSnippetRequirementFlags(SkBuiltInCodeSnippetID::kBlendShader));
+}
+
+} // anonymous namespace
+
+#endif // SK_GRAPHITE_ENABLED
+
+void MatrixColorFilterBlock::BeginBlock(const SkKeyContext& keyContext,
+                                        SkPaintParamsKeyBuilder* builder,
+                                        SkPipelineDataGatherer* gatherer,
+                                        const MatrixColorFilterData& matrixCFData) {
+#ifdef SK_GRAPHITE_ENABLED
+    if (builder->backend() == SkBackend::kGraphite) {
+        auto dict = keyContext.dict();
+
+        if (gatherer) {
+            add_matrix_colorfilter_uniform_data(dict, matrixCFData.fMatrix, gatherer);
+        }
+
+        builder->beginBlock(SkBuiltInCodeSnippetID::kMatrixColorFilter);
+    }
+#endif // SK_GRAPHITE_ENABLED
+
+    if (builder->backend() == SkBackend::kSkVM || builder->backend() == SkBackend::kGanesh) {
+        // TODO: add implementation for other backends
+    }
+}
+
+//--------------------------------------------------------------------------------------------------
 #ifdef SK_GRAPHITE_ENABLED
 namespace {
 

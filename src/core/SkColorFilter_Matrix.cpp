@@ -19,6 +19,12 @@
 #include "src/core/SkVM.h"
 #include "src/core/SkWriteBuffer.h"
 
+#ifdef SK_ENABLE_SKSL
+#include "src/core/SkKeyHelpers.h"
+#include "src/core/SkPaintParamsKey.h"
+
+#endif // SK_ENABLE_SKSL
+
 static bool is_alpha_unchanged(const float matrix[20]) {
     const float* srcA = matrix + 15;
 
@@ -221,7 +227,18 @@ GrFPResult SkColorFilter_Matrix::asFragmentProcessor(std::unique_ptr<GrFragmentP
     return GrFPSuccess(std::move(fp));
 }
 
-#endif
+#endif // SK_SUPPORT_GPU
+
+#ifdef SK_ENABLE_SKSL
+void SkColorFilter_Matrix::addToKey(const SkKeyContext& keyContext,
+                                   SkPaintParamsKeyBuilder* builder,
+                                   SkPipelineDataGatherer* gatherer) const {
+    MatrixColorFilterBlock::MatrixColorFilterData matrixCFData(fMatrix);
+
+    MatrixColorFilterBlock::BeginBlock(keyContext, builder, gatherer, matrixCFData);
+    builder->endBlock();
+}
+#endif // SK_ENABLE_SKSL
 
 ///////////////////////////////////////////////////////////////////////////////
 
