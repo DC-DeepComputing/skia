@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b2e46e01_c55cbb08",
+        "filename": "src/gpu/graphite/mtl/MtlCommandBuffer.mm",
+        "patchSetId": 4
+      },
+      "lineNbr": 198,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-07-13T17:40:04Z",
+      "side": 1,
+      "message": "So every backend will need to implement this same for loop, switch structure. I chatted with Rob offline about possible using a similar visit system like SkRecord. This would at least mean backends just need to add implementations of all the actual calls made in this loop. The structure of the loop and switch would all be hidden.\n\nHowever, IMO, even though the visit system is very cool and powerful, there is a lot of overhead/complexity in reading the code to fully understand what is going on. It also really starts benefitting if we possibly decide to do multiple different things to the list of commands (e.g. print out all commands in a Recording for debug purposes). But for now with only sending the commands from the DrawPass to a CommandBuffer, I think we\u0027re fine keeping it very simple with the explicit for loop/switch style as written.\n\nFWIW starting this way doesn\u0027t really add much overhead to eventually switching to the visit system if we want to down the road.",
+      "range": {
+        "startLine": 198,
+        "startChar": 4,
+        "endLine": 198,
+        "endChar": 55
+      },
+      "revId": "f69f81ee5973d8140e9ca1eed762cdab22c5834c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
