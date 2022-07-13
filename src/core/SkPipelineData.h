@@ -134,7 +134,8 @@ public:
 #endif // SK_GRAPHITE_ENABLED
 
     void addFlags(SnippetRequirementFlags flags);
-    bool needsLocalCoords() const;
+    bool needsLocalCoords1() const;
+    bool needsPriorStageOutput() const;
 
 #ifdef SK_GRAPHITE_ENABLED
     const SkTextureDataBlock& textureDataBlock() { return fTextureDataBlock; }

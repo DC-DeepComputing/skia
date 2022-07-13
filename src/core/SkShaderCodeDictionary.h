@@ -42,7 +42,8 @@ private:
 
 enum class SnippetRequirementFlags : uint32_t {
     kNone = 0x0,
-    kLocalCoords = 0x1,
+    kLocalCoords1 = 0x1,
+    kPriorStageOutput = 0x2
 };
 SK_MAKE_BITMASK_OPS(SnippetRequirementFlags);
 
@@ -78,8 +79,11 @@ struct SkShaderSnippet {
 
     std::string getMangledUniformName(int uniformIndex, int mangleId) const;
 
-    bool needsLocalCoords() const {
-        return fSnippetRequirementFlags & SnippetRequirementFlags::kLocalCoords;
+    bool needsLocalCoords1() const {
+        return fSnippetRequirementFlags & SnippetRequirementFlags::kLocalCoords1;
+    }
+    bool needsPriorStagesOutput() const {
+        return fSnippetRequirementFlags & SnippetRequirementFlags::kPriorStageOutput;
     }
 
     const char* fName = nullptr;
@@ -110,8 +114,11 @@ public:
     void addFlags(SnippetRequirementFlags flags) {
         fSnippetRequirementFlags |= flags;
     }
-    bool needsLocalCoords() const {
-        return fSnippetRequirementFlags & SnippetRequirementFlags::kLocalCoords;
+    bool needsLocalCoords1() const {
+        return fSnippetRequirementFlags & SnippetRequirementFlags::kLocalCoords1;
+    }
+    bool needsPriorStageOutput() const {
+        return fSnippetRequirementFlags & SnippetRequirementFlags::kPriorStageOutput;
     }
     const SkPaintParamsKey::BlockReader& blockReader(int index) const {
         return fBlockReaders[index];

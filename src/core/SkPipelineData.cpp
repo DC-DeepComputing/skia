@@ -38,8 +38,11 @@ void SkPipelineDataGatherer::addFlags(SnippetRequirementFlags flags) {
     fSnippetRequirementFlags |= flags;
 }
 
-bool SkPipelineDataGatherer::needsLocalCoords() const {
-    return fSnippetRequirementFlags & SnippetRequirementFlags::kLocalCoords;
+bool SkPipelineDataGatherer::needsLocalCoords1() const {
+    return fSnippetRequirementFlags & SnippetRequirementFlags::kLocalCoords1;
+}
+bool SkPipelineDataGatherer::needsPriorStageOutput() const {
+    return fSnippetRequirementFlags & SnippetRequirementFlags::kPriorStageOutput;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
