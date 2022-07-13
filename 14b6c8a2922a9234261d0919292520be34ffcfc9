@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "26b48ac9_1c347d3b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-07-13T17:43:20Z",
+      "side": 1,
+      "message": "I have not been able to reproduce this, but can not because I keep getting out of memory on my linux box. This fuzz should need to allocate a few hundred GBs to proceed. I have tried to diagnose the problem by inspection as if the allocation had succeeded. I found at least one calculation that overflows with this large size.",
+      "revId": "14b6c8a2922a9234261d0919292520be34ffcfc9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
