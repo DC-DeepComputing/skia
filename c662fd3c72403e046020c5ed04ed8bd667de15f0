@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3e75a485_6a19d8f9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-07-13T15:49:30Z",
+      "side": 1,
+      "message": "The G3 Canary seems to be failing on their side",
+      "revId": "c662fd3c72403e046020c5ed04ed8bd667de15f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
