@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "081c6af0_c5cede35",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-07-13T17:41:17Z",
+      "side": 1,
+      "message": "Not as tidy as the previous one. Moving the sk_has_side_effects checking to the parser reorders some errors, and forces us to \"allow\" it on variables to avoid double-reporting.",
+      "revId": "9ffb0f6491873a2447d8dbe5bde7dce97e02719e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
