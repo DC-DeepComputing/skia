@@ -33,6 +33,397 @@
       "message": "Just a reminder to tear this apart when you get the chance.",
       "revId": "ca62f2c05ca2d6d2732c81860cd7565635d73e23",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "da8c8e95_d80c1fc2",
+        "filename": "tools/trace/SkPerfettoTrace.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-07-13T20:53:49Z",
+      "side": 1,
+      "message": "Do you need the X here? Seems like the category here is always going to be a perfetto::DynamicCategory",
+      "range": {
+        "startLine": 21,
+        "startChar": 28,
+        "endLine": 21,
+        "endChar": 29
+      },
+      "revId": "ca62f2c05ca2d6d2732c81860cd7565635d73e23",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5b3cf06c_e71824ea",
+        "filename": "tools/trace/SkPerfettoTrace.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-07-13T20:53:49Z",
+      "side": 1,
+      "message": "This should either be static and in an anonymous namespace. I think we\u0027re slowly trending towards preferring the latter.\n\nalso we tend to name these helper functions like \"begin_event_with_second_arg(...)\"\n\nfinally it only looks to be used by the one function at the end. Lets move it down to right above where it is used.",
+      "range": {
+        "startLine": 22,
+        "startChar": 5,
+        "endLine": 22,
+        "endChar": 28
+      },
+      "revId": "ca62f2c05ca2d6d2732c81860cd7565635d73e23",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "27f56464_b5e0c6ac",
+        "filename": "tools/trace/SkPerfettoTrace.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-07-13T20:53:49Z",
+      "side": 1,
+      "message": "will this also be something the user can pass in to change?",
+      "range": {
+        "startLine": 93,
+        "startChar": 32,
+        "endLine": 93,
+        "endChar": 50
+      },
+      "revId": "ca62f2c05ca2d6d2732c81860cd7565635d73e23",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e4c937ee_250dc33c",
+        "filename": "tools/trace/SkPerfettoTrace.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-07-13T20:53:49Z",
+      "side": 1,
+      "message": "remove space",
+      "range": {
+        "startLine": 109,
+        "startChar": 38,
+        "endLine": 109,
+        "endChar": 39
+      },
+      "revId": "ca62f2c05ca2d6d2732c81860cd7565635d73e23",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b63b9aa1_f9065fb4",
+        "filename": "tools/trace/SkPerfettoTrace.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-07-13T20:53:49Z",
+      "side": 1,
+      "message": "remove space",
+      "range": {
+        "startLine": 142,
+        "startChar": 38,
+        "endLine": 142,
+        "endChar": 39
+      },
+      "revId": "ca62f2c05ca2d6d2732c81860cd7565635d73e23",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "97537264_42d3920a",
+        "filename": "tools/trace/SkPerfettoTrace.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 154,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-07-13T20:53:49Z",
+      "side": 1,
+      "message": "very micro nit: But when reading sources files I personally like seeing the start/begin/open/etc functions come before the end/close/etc functions. Makes it a little more logical if just reading the file top to bottom.",
+      "range": {
+        "startLine": 154,
+        "startChar": 0,
+        "endLine": 154,
+        "endChar": 4
+      },
+      "revId": "ca62f2c05ca2d6d2732c81860cd7565635d73e23",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8f4e40ac_b7cea612",
+        "filename": "tools/trace/SkPerfettoTrace.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 172,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-07-13T20:53:49Z",
+      "side": 1,
+      "message": "why do we do this? We pass in baseOutputFileName to this function then set it to itself. If we\u0027re going to allow the client to set different file names can\u0027t we just set the baseOutputFileName where we get the client input before we call into this function?\n\nAnd where ever the above is happening, wouldn\u0027t we know the whole filepath/name at that point? Could we just save the entire thing instead of 3 separate strings?",
+      "range": {
+        "startLine": 172,
+        "startChar": 4,
+        "endLine": 172,
+        "endChar": 38
+      },
+      "revId": "ca62f2c05ca2d6d2732c81860cd7565635d73e23",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "244a85c6_d962cd0b",
+        "filename": "tools/trace/SkPerfettoTrace.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 211,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-07-13T20:53:49Z",
+      "side": 1,
+      "message": "should we be using baseOutputFileName to keep this line consistent with the close call?",
+      "range": {
+        "startLine": 211,
+        "startChar": 48,
+        "endLine": 211,
+        "endChar": 60
+      },
+      "revId": "ca62f2c05ca2d6d2732c81860cd7565635d73e23",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "52ca69f3_0ec833e1",
+        "filename": "tools/trace/SkPerfettoTrace.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 222,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-07-13T20:53:49Z",
+      "side": 1,
+      "message": "space",
+      "range": {
+        "startLine": 222,
+        "startChar": 38,
+        "endLine": 222,
+        "endChar": 39
+      },
+      "revId": "ca62f2c05ca2d6d2732c81860cd7565635d73e23",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "452a9426_096744a5",
+        "filename": "tools/trace/SkPerfettoTrace.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 231,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-07-13T20:53:49Z",
+      "side": 1,
+      "message": "space",
+      "range": {
+        "startLine": 231,
+        "startChar": 38,
+        "endLine": 231,
+        "endChar": 39
+      },
+      "revId": "ca62f2c05ca2d6d2732c81860cd7565635d73e23",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "242a4c9b_e38e9139",
+        "filename": "tools/trace/SkPerfettoTrace.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 231,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-07-13T20:53:49Z",
+      "side": 1,
+      "message": "this-\u003egetCategoryGroupName",
+      "range": {
+        "startLine": 231,
+        "startChar": 40,
+        "endLine": 231,
+        "endChar": 60
+      },
+      "revId": "ca62f2c05ca2d6d2732c81860cd7565635d73e23",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "35360eac_d8d926a6",
+        "filename": "tools/trace/SkPerfettoTrace.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 282,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-07-13T20:53:49Z",
+      "side": 1,
+      "message": "Is this possible to get to? Like do we think we should have hit one of the types above in the switch?\n\nIf we don\u0027t think we can get here you can do:\n    default:\n        SkUNREACHABLE;",
+      "range": {
+        "startLine": 279,
+        "startChar": 13,
+        "endLine": 282,
+        "endChar": 18
+      },
+      "revId": "ca62f2c05ca2d6d2732c81860cd7565635d73e23",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6f291f70_05c2a240",
+        "filename": "tools/trace/SkPerfettoTrace.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 293,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-07-13T20:53:49Z",
+      "side": 1,
+      "message": "this-\u003egetCategoryGroupName",
+      "range": {
+        "startLine": 293,
+        "startChar": 40,
+        "endLine": 293,
+        "endChar": 60
+      },
+      "revId": "ca62f2c05ca2d6d2732c81860cd7565635d73e23",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "927a1227_bce50b6e",
+        "filename": "tools/trace/SkPerfettoTrace.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 293,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-07-13T20:53:49Z",
+      "side": 1,
+      "message": "space",
+      "range": {
+        "startLine": 293,
+        "startChar": 38,
+        "endLine": 293,
+        "endChar": 39
+      },
+      "revId": "ca62f2c05ca2d6d2732c81860cd7565635d73e23",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6beccd77_536cbe55",
+        "filename": "tools/trace/SkPerfettoTrace.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 336,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-07-13T20:53:49Z",
+      "side": 1,
+      "message": "same as above",
+      "range": {
+        "startLine": 334,
+        "startChar": 12,
+        "endLine": 336,
+        "endChar": 18
+      },
+      "revId": "ca62f2c05ca2d6d2732c81860cd7565635d73e23",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "84e15cb3_516712c3",
+        "filename": "tools/trace/SkPerfettoTrace.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-07-13T20:53:49Z",
+      "side": 1,
+      "message": "remove spaces between names and initializers here.",
+      "range": {
+        "startLine": 54,
+        "startChar": 26,
+        "endLine": 54,
+        "endChar": 27
+      },
+      "revId": "ca62f2c05ca2d6d2732c81860cd7565635d73e23",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4a03b417_c3e9dbf3",
+        "filename": "tools/trace/SkPerfettoTrace.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-07-13T20:53:49Z",
+      "side": 1,
+      "message": "can this be std::string_view?",
+      "range": {
+        "startLine": 59,
+        "startChar": 31,
+        "endLine": 59,
+        "endChar": 49
+      },
+      "revId": "ca62f2c05ca2d6d2732c81860cd7565635d73e23",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
