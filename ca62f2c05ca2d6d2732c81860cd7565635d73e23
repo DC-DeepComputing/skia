@@ -176,6 +176,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "08139fa3_d9fede23",
+        "filename": "tools/trace/SkPerfettoTrace.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-07-14T19:30:10Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "08028a4d_7246fc8c",
+      "range": {
+        "startLine": 93,
+        "startChar": 32,
+        "endLine": 93,
+        "endChar": 50
+      },
+      "revId": "ca62f2c05ca2d6d2732c81860cd7565635d73e23",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e4c937ee_250dc33c",
@@ -354,6 +378,30 @@
       "side": 1,
       "message": "Ah, I can see how this doesn\u0027t make much sense without the context of the subsequent CL. See my reply to your previous comment (#93, https://skia-review.googlesource.com/c/skia/+/548398/7/tools/trace/SkPerfettoTrace.cpp#93) and my new comment within the code that I added above this assignment for an explanation as to why we store the base output file name within the class itself.\n\nTL;DR: I store the different file name components separately (and solicit the components from the user using separate runtime flags) so that if they elect to split the tracing session by benchmark, we can use their desired output path and file extension while selecting a unique base file name for each benchmark / tracing session. I store the base file name as a member variable because we need access to it when closing the current tracing session, which is called from the argument-less destructor of the class.\n\nPlease let me know if you have an idea of a better way to go about this.",
       "parentUuid": "8f4e40ac_b7cea612",
+      "range": {
+        "startLine": 172,
+        "startChar": 4,
+        "endLine": 172,
+        "endChar": 38
+      },
+      "revId": "ca62f2c05ca2d6d2732c81860cd7565635d73e23",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c4167020_01f0ebb1",
+        "filename": "tools/trace/SkPerfettoTrace.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 172,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-07-14T19:30:10Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "265a58a6_725960db",
       "range": {
         "startLine": 172,
         "startChar": 4,
@@ -824,6 +872,30 @@
       "side": 1,
       "message": "Good idea. With the current approach where I store (ie, copy) the string as a member attribute (see above reasoning as to why), then I don\u0027t believe so. But if we pivot to an alternate handling then it\u0027s possible this can be changed to string_view instead.",
       "parentUuid": "4a03b417_c3e9dbf3",
+      "range": {
+        "startLine": 59,
+        "startChar": 31,
+        "endLine": 59,
+        "endChar": 49
+      },
+      "revId": "ca62f2c05ca2d6d2732c81860cd7565635d73e23",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1f4fc43b_7dd915ae",
+        "filename": "tools/trace/SkPerfettoTrace.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-07-14T19:30:10Z",
+      "side": 1,
+      "message": "In theory you should be able to use a string_view for setting the member. Like it valid to do:\n\nstd::string \u003d std::string_view;\n\nIn many ways string_view is similar to passing the ref to a string, but is the \"modern\" way of doing it (with many caveats and what not).",
+      "parentUuid": "a8f098f2_ac2ab06f",
       "range": {
         "startLine": 59,
         "startChar": 31,

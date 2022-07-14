@@ -16,6 +16,29 @@
       "message": "I left 3 responses to your comments as unresolved to get your feedback. Thank you for your help! :)",
       "revId": "1f9518fb1421cb9f4de99588f4ab55f68d60e7fc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fe096191_405a8bf1",
+        "filename": "tools/trace/SkPerfettoTrace.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-07-14T19:30:10Z",
+      "side": 1,
+      "message": "What if instead of fCurrentSessionOutputFileName we have something like \n    fCurrentSessionFullOutputPath \u003d fOutputPath + baseFileName + fOutputFileExtension;\n    \nThen we don\u0027t have to build to full path in two different spots (i.e. this function or in close).",
+      "range": {
+        "startLine": 53,
+        "startChar": 4,
+        "endLine": 53,
+        "endChar": 33
+      },
+      "revId": "1f9518fb1421cb9f4de99588f4ab55f68d60e7fc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
