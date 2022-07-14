@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "097d6206_265da083",
+        "filename": "src/gpu/graphite/DrawCommands.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 214,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-07-14T18:09:05Z",
+      "side": 1,
+      "message": "Weird I was sure I tried this the first time and got errors which I was I went back to the RawPointer. I must have had a typo which I didn\u0027t notice. Anyways, this works now.",
+      "parentUuid": "3daeb790_4bb096e4",
+      "range": {
+        "startLine": 211,
+        "startChar": 8,
+        "endLine": 214,
+        "endChar": 62
+      },
+      "revId": "2202b25f5e15020ec2bec3a0a07452d5b2b30322",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e4babe5a_1147348e",
@@ -54,6 +78,30 @@
       "writtenOn": "2022-07-14T17:14:24Z",
       "side": 1,
       "message": "I\u0027d be okay making this alias public so that the `using Iter` alias could refer to Command too.",
+      "range": {
+        "startLine": 219,
+        "startChar": 3,
+        "endLine": 219,
+        "endChar": 43
+      },
+      "revId": "2202b25f5e15020ec2bec3a0a07452d5b2b30322",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c23396a9_786aed5f",
+        "filename": "src/gpu/graphite/DrawCommands.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 219,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-07-14T18:09:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e4babe5a_1147348e",
       "range": {
         "startLine": 219,
         "startChar": 3,
@@ -87,6 +135,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3981ccce_edec4266",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 458,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-07-14T18:09:05Z",
+      "side": 1,
+      "message": "Yeah this looks to be feasible. Though going to leave it as a follow on change to do.",
+      "parentUuid": "50753342_17dd4879",
+      "range": {
+        "startLine": 456,
+        "startChar": 16,
+        "endLine": 458,
+        "endChar": 61
+      },
+      "revId": "2202b25f5e15020ec2bec3a0a07452d5b2b30322",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9a9d56bf_71cfb8b8",
@@ -100,6 +172,30 @@
       "writtenOn": "2022-07-14T17:14:24Z",
       "side": 1,
       "message": "cleanup?",
+      "range": {
+        "startLine": 199,
+        "startChar": 0,
+        "endLine": 200,
+        "endChar": 55
+      },
+      "revId": "2202b25f5e15020ec2bec3a0a07452d5b2b30322",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f9721d17_2028c8f7",
+        "filename": "src/gpu/graphite/mtl/MtlCommandBuffer.mm",
+        "patchSetId": 8
+      },
+      "lineNbr": 200,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-07-14T18:09:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9a9d56bf_71cfb8b8",
       "range": {
         "startLine": 199,
         "startChar": 0,
