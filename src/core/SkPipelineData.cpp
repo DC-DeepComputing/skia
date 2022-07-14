@@ -41,6 +41,9 @@ void SkPipelineDataGatherer::addFlags(SnippetRequirementFlags flags) {
 bool SkPipelineDataGatherer::needsLocalCoords() const {
     return fSnippetRequirementFlags & SnippetRequirementFlags::kLocalCoords;
 }
+bool SkPipelineDataGatherer::needsPriorStageOutput() const {
+    return fSnippetRequirementFlags & SnippetRequirementFlags::kPriorStageOutput;
+}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 SkUniformDataBlock* SkUniformDataBlock::Make(const SkUniformDataBlock& other,

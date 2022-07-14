@@ -349,6 +349,12 @@ void GenerateDefaultGlueCode(const SkShaderInfo& shaderInfo,
         SkASSERT(reader.entry()->fUniforms.size() >= 1);
         SkASSERT(reader.entry()->fUniforms[0].type() == SkSLType::kFloat4x4);
     }
+    if (entry->needsPriorStagesOutput()) {
+        // Every snippet that requests the prior stage's output must have a color as its first
+        // uniform
+        SkASSERT(reader.entry()->fUniforms.size() >= 1);
+        SkASSERT(reader.entry()->fUniforms[0].type() == SkSLType::kHalf4);
+    }
 
     add_indent(mainBody, indent);
     SkSL::String::appendf(mainBody,
@@ -360,8 +366,12 @@ void GenerateDefaultGlueCode(const SkShaderInfo& shaderInfo,
         *mainBody += separator;
         separator = ", ";
 
-        if (i == 0 && reader.entry()->needsLocalCoords()) {
-            *mainBody += currentPreLocalName + " * dev2LocalUni";
+        if (i == 0) {
+            if (reader.entry()->needsLocalCoords()) {
+                *mainBody += currentPreLocalName + " * dev2LocalUni";
+            } else if (reader.entry()->needsPriorStagesOutput()) {
+                *mainBody += priorStageOutputName;
+            }
         } else {
             *mainBody += entry->getMangledUniformName(i, entryIndex);
         }
@@ -660,6 +670,15 @@ void GenerateRuntimeShaderGlueCode(const SkShaderInfo& shaderInfo,
                           priorStageOutputName.c_str());
 #endif  // defined(SK_GRAPHITE_ENABLED) && defined(SK_ENABLE_SKSL)
 }
+
+//--------------------------------------------------------------------------------------------------
+static constexpr SkUniform kMatrixColorFilterUniforms[] = {
+        { "matrix", SkSLType::kFloat4x4 },
+        { "trans",  SkSLType::kFloat4 },
+        { "inHSL", SkSLType::kInt },
+};
+
+static constexpr char kMatrixColorFilterName[] = "sk_matrix_colorfilter";
 
 //--------------------------------------------------------------------------------------------------
 static constexpr char kErrorName[] = "sk_error";
@@ -1051,6 +1070,19 @@ SkShaderCodeDictionary::SkShaderCodeDictionary() {
             kNumBlendShaderChildren,
             { }
     };
+
+    // SkColorFilter snippets
+    fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kMatrixColorFilter] = {
+            "MatrixColorFilter",
+            SkSpan(kMatrixColorFilterUniforms),
+            SnippetRequirementFlags::kPriorStageOutput,
+            { },     // no samplers
+            kMatrixColorFilterName,
+            GenerateDefaultGlueCode,
+            kNoChildren,
+            { }
+    };
+
     fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kFixedFunctionBlender] = {
             "FixedFunctionBlender",
             { },     // no uniforms
