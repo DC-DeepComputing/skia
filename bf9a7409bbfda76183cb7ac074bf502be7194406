@@ -1,0 +1,113 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "74c4125e_92720222",
+        "filename": "modules/canvaskit/npm_build/types/index.d.ts",
+        "patchSetId": 3
+      },
+      "lineNbr": 3553,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-07-14T11:21:06Z",
+      "side": 1,
+      "message": "nit: trailing space",
+      "range": {
+        "startLine": 3553,
+        "startChar": 47,
+        "endLine": 3553,
+        "endChar": 50
+      },
+      "revId": "bf9a7409bbfda76183cb7ac074bf502be7194406",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cb4ecb9b_d21112ed",
+        "filename": "modules/canvaskit/npm_build/types/index.d.ts",
+        "patchSetId": 3
+      },
+      "lineNbr": 3569,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-07-14T11:21:06Z",
+      "side": 1,
+      "message": "nit: these functions should be listed in alphabetical order.",
+      "revId": "bf9a7409bbfda76183cb7ac074bf502be7194406",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3715dc61_708a9b20",
+        "filename": "modules/canvaskit/tests/core.spec.js",
+        "patchSetId": 3
+      },
+      "lineNbr": 1561,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-07-14T11:21:06Z",
+      "side": 1,
+      "message": "ubernit: underscores in test names, not spaces.",
+      "range": {
+        "startLine": 1561,
+        "startChar": 19,
+        "endLine": 1561,
+        "endChar": 20
+      },
+      "revId": "bf9a7409bbfda76183cb7ac074bf502be7194406",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0eb527bd_428265d0",
+        "filename": "modules/canvaskit/tests/core.spec.js",
+        "patchSetId": 3
+      },
+      "lineNbr": 1580,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-07-14T11:21:06Z",
+      "side": 1,
+      "message": "This will fail if CanInterpolate is false.\n\nPlease move testing CanInterpolate to its own test.",
+      "range": {
+        "startLine": 1580,
+        "startChar": 10,
+        "endLine": 1580,
+        "endChar": 16
+      },
+      "revId": "bf9a7409bbfda76183cb7ac074bf502be7194406",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d7d26649_44d8b5f1",
+        "filename": "modules/canvaskit/tests/core.spec.js",
+        "patchSetId": 3
+      },
+      "lineNbr": 1588,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-07-14T11:21:06Z",
+      "side": 1,
+      "message": "ubernit: underscores in test names, not spaces.",
+      "range": {
+        "startLine": 1588,
+        "startChar": 12,
+        "endLine": 1588,
+        "endChar": 13
+      },
+      "revId": "bf9a7409bbfda76183cb7ac074bf502be7194406",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
