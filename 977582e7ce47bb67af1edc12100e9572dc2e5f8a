@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c2f7bd02_ae475e13",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-07-14T14:15:29Z",
+      "side": 1,
+      "message": "2 of the 3 tests look good to me\nhttps://public-gold.skia.org/search?issue\u003d558256\u0026crs\u003dgerrit\u0026patchsets\u003d7\u0026corpus\u003dcanvaskit",
+      "revId": "977582e7ce47bb67af1edc12100e9572dc2e5f8a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8100029e_291d8844",
+        "filename": "modules/canvaskit/tests/core.spec.js",
+        "patchSetId": 7
+      },
+      "lineNbr": 1575,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-07-14T14:15:29Z",
+      "side": 1,
+      "message": "If you are going to draw the paths, can you make them not overlap?\n\nOtherwise, make this test not draw things, similar to https://github.com/google/skia/blob/cabb1f65d03812f18436b2f4a2af2cebd4f7d3e8/modules/canvaskit/tests/matrix.spec.js#L17-L23",
+      "range": {
+        "startLine": 1575,
+        "startChar": 8,
+        "endLine": 1575,
+        "endChar": 13
+      },
+      "revId": "977582e7ce47bb67af1edc12100e9572dc2e5f8a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
