@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3a51b0b7_96f08faf",
+        "filename": "modules/canvaskit/interface.js",
+        "patchSetId": 3
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 19024
+      },
+      "writtenOn": "2022-07-14T12:15:18Z",
+      "side": 1,
+      "message": "I thought we needed it to return `this`.",
+      "parentUuid": "ae07dc93_27c08a17",
+      "range": {
+        "startLine": 81,
+        "startChar": 27,
+        "endLine": 81,
+        "endChar": 36
+      },
+      "revId": "bf9a7409bbfda76183cb7ac074bf502be7194406",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3b91c8a3_3cee9796",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-07-14T12:01:41Z",
       "side": 1,
       "message": "The C++ version lets you draw the circle in one of two directions. I don\u0027t think we want to lose that here. Please add isCCW as an optional boolean (like addOval)",
+      "range": {
+        "startLine": 2165,
+        "startChar": 39,
+        "endLine": 2165,
+        "endChar": 45
+      },
+      "revId": "bf9a7409bbfda76183cb7ac074bf502be7194406",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "056ed68a_43edf08f",
+        "filename": "modules/canvaskit/npm_build/types/index.d.ts",
+        "patchSetId": 3
+      },
+      "lineNbr": 2165,
+      "author": {
+        "id": 19024
+      },
+      "writtenOn": "2022-07-14T12:15:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3b91c8a3_3cee9796",
       "range": {
         "startLine": 2165,
         "startChar": 39,
