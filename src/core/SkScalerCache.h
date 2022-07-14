@@ -16,6 +16,8 @@
 #include "src/core/SkDescriptor.h"
 #include "src/core/SkGlyph.h"
 #include "src/core/SkGlyphRunPainter.h"
+#include "src/text/StrikeForGPU.h"
+
 #include <memory>
 
 class SkScalerContext;
@@ -85,6 +87,9 @@ public:
 
     size_t prepareForDrawableDrawing(
             SkDrawableGlyphBuffer* accepted, SkSourceGlyphBuffer* rejected) SK_EXCLUDES(fMu);
+
+    // Convert all the IDs into SkPaths in the span.
+    size_t glyphIDsToPaths(SkSpan<sktext::IDOrPath> idsOrPaths) SK_EXCLUDES(fMu);
 
     std::tuple<SkScalar, size_t>
             findMaximumGlyphDimension(SkSpan<const SkGlyphID> glyphs) SK_EXCLUDES(fMu);
