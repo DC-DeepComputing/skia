@@ -26,6 +26,7 @@
 
 enum class SkPathFillType;
 class SkPipelineDataGatherer;
+class SkTextureDataBlock;
 
 namespace skgpu { enum class MaskFormat; }
 
@@ -108,6 +109,9 @@ public:
     SkSpan<const Attribute> vertexAttributes()   const { return SkSpan(fVertexAttrs);   }
     SkSpan<const Attribute> instanceAttributes() const { return SkSpan(fInstanceAttrs); }
     SkSpan<const Varying>   varyings()           const { return SkSpan(fVaryings);      }
+
+    // Texture data needed by the RenderStep, if any
+    const SkTextureDataBlock* textureDataBlock() const { return nullptr; }
 
     // TODO: Actual API to do things
     // 6. Some Renderers benefit from being able to share vertices between RenderSteps. Must find a
