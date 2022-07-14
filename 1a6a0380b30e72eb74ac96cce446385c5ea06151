@@ -34,6 +34,24 @@
       "parentUuid": "0bf0b868_163bbdc4",
       "revId": "1a6a0380b30e72eb74ac96cce446385c5ea06151",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f2691053_f90a6484",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-07-14T15:46:20Z",
+      "side": 1,
+      "message": "As discussed, we\u0027re not going to gate the feature on the API level (for now), so I think this new job will suffice for testing.",
+      "parentUuid": "0bf0b868_163bbdc4",
+      "revId": "1a6a0380b30e72eb74ac96cce446385c5ea06151",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
