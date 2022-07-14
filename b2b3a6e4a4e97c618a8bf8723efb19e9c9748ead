@@ -22,6 +22,30 @@
       },
       "revId": "b2b3a6e4a4e97c618a8bf8723efb19e9c9748ead",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e4dedd3d_c0f7eed2",
+        "filename": "src/gpu/graphite/DrawWriter.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-07-14T19:23:58Z",
+      "side": 0,
+      "message": "No that seems fine, I think it was just something I\u0027d put in there so you could use a DrawWriter w/o having to call newPipelineState(), but that never happens.",
+      "parentUuid": "2dd5afba_b9a1e128",
+      "range": {
+        "startLine": 58,
+        "startChar": 4,
+        "endLine": 58,
+        "endChar": 15
+      },
+      "revId": "b2b3a6e4a4e97c618a8bf8723efb19e9c9748ead",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
