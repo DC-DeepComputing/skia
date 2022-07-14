@@ -335,6 +335,8 @@ def compile_fn(api, checkout_root, out_dir):
               script=skia_dir.join('bin', 'fetch-clang-format'),
               infra_step=True)
 
+    api.run(api.step, 'sleep for an hour', cmd=['sleep', '36000'])
+
     with api.env(env):
       if ccache:
         api.run(api.step, 'ccache stats-start', cmd=[ccache, '-s'])
