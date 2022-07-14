@@ -104,6 +104,23 @@
       "parentUuid": "f7de6682_a64ab1f1",
       "revId": "86eaeaf191057f2bbe09130eed2ed5f169a30d0b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5bbd1eb3_f30e850e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-07-14T15:18:24Z",
+      "side": 1,
+      "message": "We\u0027ve gotten approval, so I think it\u0027s fine to go ahead and land. We\u0027ll need to cherry-pick to android/next-release, too.",
+      "revId": "86eaeaf191057f2bbe09130eed2ed5f169a30d0b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
