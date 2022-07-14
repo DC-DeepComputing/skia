@@ -16,6 +16,23 @@
       "message": "Brian, you might want to skim this one again. It\u0027s changed a bit since the initial review.",
       "revId": "4d13b4cb0235d9c8d5de482fe57e0fa0fdc2adae",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8770b1ec_baa6e397",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 14
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-07-14T16:43:38Z",
+      "side": 1,
+      "message": "still lgtm",
+      "revId": "4d13b4cb0235d9c8d5de482fe57e0fa0fdc2adae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
