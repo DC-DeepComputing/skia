@@ -106,7 +106,7 @@ private:
         UniformSlot fSlot;
     };
     struct BindTexturesAndSamplers {
-        int fNumTexSamplers;
+        int fNumTexSamplers = 0;
         // TODO: Right now we are hardcoding these arrays to be 32. However, when we rewrite the
         // command system here to be more flexible and not require fixed sized structs, we will
         // remove this hardcode size.
