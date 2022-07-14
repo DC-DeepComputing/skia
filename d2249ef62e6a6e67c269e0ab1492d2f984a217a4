@@ -18,6 +18,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0fe8a5b2_108f3242",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19024
+      },
+      "writtenOn": "2022-07-14T13:13:54Z",
+      "side": 1,
+      "message": "done",
+      "revId": "d2249ef62e6a6e67c269e0ab1492d2f984a217a4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1b4eb9cf_a473feb8",
@@ -31,6 +48,24 @@
       "writtenOn": "2022-07-14T12:27:27Z",
       "side": 1,
       "message": "_addCircle needs to go here also",
+      "revId": "d2249ef62e6a6e67c269e0ab1492d2f984a217a4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a71a40df_89597fa2",
+        "filename": "modules/canvaskit/externs.js",
+        "patchSetId": 6
+      },
+      "lineNbr": 623,
+      "author": {
+        "id": 19024
+      },
+      "writtenOn": "2022-07-14T13:13:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1b4eb9cf_a473feb8",
       "revId": "d2249ef62e6a6e67c269e0ab1492d2f984a217a4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
