@@ -137,6 +137,18 @@
   },
   {
     "cmd": [
+      "sleep",
+      "36000"
+    ],
+    "cwd": "[START_DIR]\\skia",
+    "env": {
+      "CHROME_HEADLESS": "1",
+      "PATH": "<PATH>;RECIPE_REPO[depot_tools]"
+    },
+    "name": "sleep for an hour"
+  },
+  {
+    "cmd": [
       "[START_DIR]\\skia\\bin\\gn",
       "gen",
       "[START_DIR]\\skia\\out\\Build-Win10-Clang-x86_64-Release-NoDEPS\\Release_x64",
