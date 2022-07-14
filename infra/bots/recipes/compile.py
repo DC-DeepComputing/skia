@@ -24,6 +24,10 @@ DEPS = [
 
 
 def RunSteps(api):
+  api.step('print out checkout_root', cmd=['echo', 'checkout_root is %s' % api.path['start_dir']])
+  api.step('list checkout_root contents', cmd=['ls', '-l', api.path['start_dir']])
+  api.step('list skia contents', cmd=['ls', '-l', api.path['start_dir'].join('skia')])
+
   api.vars.setup()
 
   checkout_root = api.path['start_dir']
