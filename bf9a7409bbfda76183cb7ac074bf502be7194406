@@ -3,6 +3,52 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ae07dc93_27c08a17",
+        "filename": "modules/canvaskit/interface.js",
+        "patchSetId": 3
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-07-14T12:01:41Z",
+      "side": 1,
+      "message": "Is there a reason to add an extra step in the JS layer? Typically we do this if we need to handle things like colors or rectangles, but I don\u0027t think we need to do so, right?\n\nThe one reason I could see is to add an optional isCCW param here, which we ensure is a boolean (and not undefined) before passing it to emscripten. See line 91 below.\n\nIn order to handle the issues in release mode, you will need to add entries to externs.js to prevent minification of the function names:\nhttps://github.com/google/skia/blob/ccb8d5a61b78b966aa12f00c7e6cc36bc66f9a7f/modules/canvaskit/externs.js#L558-L654",
+      "range": {
+        "startLine": 81,
+        "startChar": 27,
+        "endLine": 81,
+        "endChar": 36
+      },
+      "revId": "bf9a7409bbfda76183cb7ac074bf502be7194406",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3b91c8a3_3cee9796",
+        "filename": "modules/canvaskit/npm_build/types/index.d.ts",
+        "patchSetId": 3
+      },
+      "lineNbr": 2165,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-07-14T12:01:41Z",
+      "side": 1,
+      "message": "The C++ version lets you draw the circle in one of two directions. I don\u0027t think we want to lose that here. Please add isCCW as an optional boolean (like addOval)",
+      "range": {
+        "startLine": 2165,
+        "startChar": 39,
+        "endLine": 2165,
+        "endChar": 45
+      },
+      "revId": "bf9a7409bbfda76183cb7ac074bf502be7194406",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "74c4125e_92720222",
         "filename": "modules/canvaskit/npm_build/types/index.d.ts",
         "patchSetId": 3
