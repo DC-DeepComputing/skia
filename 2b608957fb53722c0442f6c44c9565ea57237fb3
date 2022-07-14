@@ -217,6 +217,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4f99b0fb_bc17ce5b",
+        "filename": "modules/canvaskit/npm_build/types/canvaskit-wasm-tests.ts",
+        "patchSetId": 1
+      },
+      "lineNbr": 533,
+      "author": {
+        "id": 19024
+      },
+      "writtenOn": "2022-07-14T11:58:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3abef179_b33c8cf5",
+      "range": {
+        "startLine": 533,
+        "startChar": 11,
+        "endLine": 533,
+        "endChar": 22
+      },
+      "revId": "2b608957fb53722c0442f6c44c9565ea57237fb3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "80be4491_d94139cf",
