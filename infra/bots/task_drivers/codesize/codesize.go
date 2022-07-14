@@ -192,6 +192,11 @@ func runSteps(ctx context.Context, args runStepsArgs) error {
 		return skerr.Wrap(err)
 	}
 
+	_, _, err = runBloatyDiff(ctx, args.binaryName)
+	if err != nil {
+		return skerr.Wrap(err)
+	}
+
 	// Build metadata structure.
 	metadata := &BloatyOutputMetadata{
 		Version:           1,
@@ -271,6 +276,63 @@ func runBloaty(ctx context.Context, binaryName string) (string, []string, error)
 	var bloatyOutput string
 
 	if err := td.Do(ctx, td.Props(fmt.Sprintf("Run Bloaty against binary %q", binaryName)), func(ctx context.Context) error {
+		bloatyOutput, err = exec.RunCommand(ctx, runCmd)
+		return err
+	}); err != nil {
+		return "", []string{}, skerr.Wrap(err)
+	}
+
+	return bloatyOutput, runCmd.Args, nil
+}
+
+// runBloatyDiff runs Bloaty against the given binary and returns the Bloaty output in TSV format and
+// the Bloaty command-line arguments used.
+func runBloatyDiff(ctx context.Context, binaryName string) (string, []string, error) {
+	err := td.Do(ctx, td.Props("List files under $PWD/build (for debugging purposes)"), func(ctx context.Context) error {
+		runCmd := &exec.Command{
+			Name:       "ls",
+			Args:       []string{"build"},
+			InheritEnv: true,
+			LogStdout:  true,
+			LogStderr:  true,
+		}
+		_, err := exec.RunCommand(ctx, runCmd)
+		return err
+	})
+	if err != nil {
+		return "", []string{}, skerr.Wrap(err)
+	}
+
+	err = td.Do(ctx, td.Props("List files under $PWD/build_nopatch (for debugging purposes)"), func(ctx context.Context) error {
+		runCmd := &exec.Command{
+			Name:       "ls",
+			Args:       []string{"build_nopatch"},
+			InheritEnv: true,
+			LogStdout:  true,
+			LogStderr:  true,
+		}
+		_, err := exec.RunCommand(ctx, runCmd)
+		return err
+	})
+	if err != nil {
+		return "", []string{}, skerr.Wrap(err)
+	}
+
+	runCmd := &exec.Command{
+		Name: "bloaty/bloaty",
+		Args: []string{
+			"build/" + binaryName,
+			"--",
+			"build_nopatch/" + binaryName,
+		},
+		InheritEnv: true,
+		LogStdout:  true,
+		LogStderr:  true,
+	}
+
+	var bloatyOutput string
+
+	if err := td.Do(ctx, td.Props(fmt.Sprintf("Run Bloaty diff against binary %q", binaryName)), func(ctx context.Context) error {
 		bloatyOutput, err = exec.RunCommand(ctx, runCmd)
 		return err
 	}); err != nil {
