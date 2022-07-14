@@ -22,6 +22,30 @@
       },
       "revId": "627f545ef655be2b5cacdbdcc332a4ac21e1875d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c4a9f799_4a69db7a",
+        "filename": "infra/bots/assets/mesa_intel_driver_linux_22/mesa-driver-builder/build_mesa.sh",
+        "patchSetId": 12
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 5205
+      },
+      "writtenOn": "2022-07-14T20:22:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d6218f52_34030e06",
+      "range": {
+        "startLine": 3,
+        "startChar": 12,
+        "endLine": 3,
+        "endChar": 16
+      },
+      "revId": "627f545ef655be2b5cacdbdcc332a4ac21e1875d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

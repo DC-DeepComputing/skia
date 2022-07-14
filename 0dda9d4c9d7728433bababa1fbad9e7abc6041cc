@@ -16,6 +16,24 @@
       "message": "As written, this conforms to how we built the old drivers from source and LGTM.\n\nHowever, it is now one more thing that we would need to migrate to compile with Bazel. Is now the time to make the necessary adjustments to be able to compile this using our hermetic toolchain instead of a Dockerfile?",
       "revId": "0dda9d4c9d7728433bababa1fbad9e7abc6041cc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1b4cee5b_7f66fd74",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 13
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5205
+      },
+      "writtenOn": "2022-07-14T20:22:04Z",
+      "side": 1,
+      "message": "That\u0027s a good question.\n\nFor now we have a lot on interest in the Iris Xe so I want to land this ASAP to\nget the bots on the tree.\n\nIn the longer run we need to figure out some dividing lines about\nwhat must go in Bazel and what does not. In this case this is a driver\nwhich Skia just needs to have on the machine to run that hardware. In fact, we\ncould just move some machines to Debian 12/bookworm and make sure\nthe Mesa drives were installed as part of the Ansible scripts and we could\nthen completely remove this CIPD package.\n\nI think the latter is actually a better path forward since right now\nsometimes we include the driver version in our Swarming dimensions and sometimes\nwe don\u0027t, simply because sometimes we deliver the driver via CIPD and sometimes\nwe use what\u0027s on the machine.",
+      "parentUuid": "c51cdd24_127a9705",
+      "revId": "0dda9d4c9d7728433bababa1fbad9e7abc6041cc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
