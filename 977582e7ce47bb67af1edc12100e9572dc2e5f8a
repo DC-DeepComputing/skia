@@ -39,6 +39,30 @@
       },
       "revId": "977582e7ce47bb67af1edc12100e9572dc2e5f8a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "722b01d2_e53dfef9",
+        "filename": "modules/canvaskit/tests/core.spec.js",
+        "patchSetId": 7
+      },
+      "lineNbr": 1575,
+      "author": {
+        "id": 19024
+      },
+      "writtenOn": "2022-07-14T17:17:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8100029e_291d8844",
+      "range": {
+        "startLine": 1575,
+        "startChar": 8,
+        "endLine": 1575,
+        "endChar": 13
+      },
+      "revId": "977582e7ce47bb67af1edc12100e9572dc2e5f8a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
