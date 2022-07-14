@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c80be838_3a119d26",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 793,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-07-14T23:07:37Z",
+      "side": 1,
+      "message": "Technically we could use `GenerateDefaultPreamble` for this purpose (WDYT?)",
+      "range": {
+        "startLine": 793,
+        "startChar": 12,
+        "endLine": 793,
+        "endChar": 23
+      },
+      "revId": "549aadd725a6b825f61f2431525f429c20351823",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
