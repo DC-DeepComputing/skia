@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "dee461c2_4bfbced1",
+        "filename": "src/core/SkKeyHelpers.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 178,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-07-14T18:31:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3403dcb0_4f2bfc0a",
+      "range": {
+        "startLine": 178,
+        "startChar": 21,
+        "endLine": 178,
+        "endChar": 27
+      },
+      "revId": "5ca73bacc50cd4693541d0f8fbb843a748fdf65b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5594abe3_374c8dd8",
@@ -41,6 +65,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b167047a_4b6ce369",
+        "filename": "src/core/SkKeyHelpers.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 187,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-07-14T18:31:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5594abe3_374c8dd8",
+      "revId": "5ca73bacc50cd4693541d0f8fbb843a748fdf65b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5fcd1f2e_0c8e6ac2",
@@ -54,6 +96,30 @@
       "writtenOn": "2022-07-14T17:04:51Z",
       "side": 1,
       "message": "nit: `// no data payloads` to match the others (once my CL lands)",
+      "range": {
+        "startLine": 1078,
+        "startChar": 12,
+        "endLine": 1078,
+        "endChar": 15
+      },
+      "revId": "5ca73bacc50cd4693541d0f8fbb843a748fdf65b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5a5249fb_8976e1d2",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 1078,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-07-14T18:31:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5fcd1f2e_0c8e6ac2",
       "range": {
         "startLine": 1078,
         "startChar": 12,
@@ -87,6 +153,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1aecacd2_80e1544b",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-07-14T18:31:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c8c2ac2f_c5f9b555",
+      "range": {
+        "startLine": 68,
+        "startChar": 53,
+        "endLine": 68,
+        "endChar": 82
+      },
+      "revId": "5ca73bacc50cd4693541d0f8fbb843a748fdf65b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "69f53f81_bba93f68",
@@ -100,6 +190,30 @@
       "writtenOn": "2022-07-14T17:04:51Z",
       "side": 1,
       "message": "`const half` (this will allow folding with the `6 + eps` below)",
+      "range": {
+        "startLine": 450,
+        "startChar": 4,
+        "endLine": 450,
+        "endChar": 8
+      },
+      "revId": "5ca73bacc50cd4693541d0f8fbb843a748fdf65b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a9bab4a0_76b9a610",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 11
+      },
+      "lineNbr": 450,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-07-14T18:31:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "69f53f81_bba93f68",
       "range": {
         "startLine": 450,
         "startChar": 4,
@@ -133,6 +247,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "797f66cb_a6dae84b",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 11
+      },
+      "lineNbr": 471,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-07-14T18:31:20Z",
+      "side": 1,
+      "message": "Will do!",
+      "parentUuid": "c4705e12_ca1ff144",
+      "range": {
+        "startLine": 469,
+        "startChar": 0,
+        "endLine": 471,
+        "endChar": 0
+      },
+      "revId": "5ca73bacc50cd4693541d0f8fbb843a748fdf65b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9956acaf_47292d2d",
@@ -146,6 +284,30 @@
       "writtenOn": "2022-07-14T17:04:51Z",
       "side": 1,
       "message": "Do you think it\u0027s actually beneficial to use a uniform here instead of using two similar snippets, one for RGB and one for HSL? I can\u0027t imagine there\u0027s much overlap where we build the same exact same shader graph except for matrix-HSL versus matrix-RGB. (Unless we are planning on doing something for specialization here?)",
+      "range": {
+        "startLine": 487,
+        "startChar": 4,
+        "endLine": 487,
+        "endChar": 23
+      },
+      "revId": "5ca73bacc50cd4693541d0f8fbb843a748fdf65b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "48bc5548_e33b055f",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 11
+      },
+      "lineNbr": 487,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-07-14T18:31:20Z",
+      "side": 1,
+      "message": "I\u0027ve added a TODO over in SkShaderCodeDictionary.cpp. I think you may be right that we won\u0027t get much overlap.",
+      "parentUuid": "9956acaf_47292d2d",
       "range": {
         "startLine": 487,
         "startChar": 4,
