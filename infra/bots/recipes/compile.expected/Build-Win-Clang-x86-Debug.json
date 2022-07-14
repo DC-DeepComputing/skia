@@ -1,6 +1,29 @@
 [
   {
     "cmd": [
+      "echo",
+      "checkout_root is [START_DIR]"
+    ],
+    "env": {
+      "CHROME_HEADLESS": "1",
+      "PATH": "<PATH>;RECIPE_REPO[depot_tools]"
+    },
+    "name": "print out checkout_root"
+  },
+  {
+    "cmd": [
+      "ls",
+      "-l",
+      "[START_DIR]"
+    ],
+    "env": {
+      "CHROME_HEADLESS": "1",
+      "PATH": "<PATH>;RECIPE_REPO[depot_tools]"
+    },
+    "name": "list checkout_root contents"
+  },
+  {
+    "cmd": [
       "vpython",
       "-u",
       "RECIPE_MODULE[recipe_engine::file]\\resources\\fileutil.py",
@@ -30,6 +53,18 @@
     },
     "infra_step": true,
     "name": "fetch-gn"
+  },
+  {
+    "cmd": [
+      "sleep",
+      "36000"
+    ],
+    "cwd": "[START_DIR]\\skia",
+    "env": {
+      "CHROME_HEADLESS": "1",
+      "PATH": "<PATH>;RECIPE_REPO[depot_tools]"
+    },
+    "name": "sleep for an hour"
   },
   {
     "cmd": [

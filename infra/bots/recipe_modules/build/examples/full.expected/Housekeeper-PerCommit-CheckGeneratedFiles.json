@@ -47,6 +47,18 @@
   },
   {
     "cmd": [
+      "sleep",
+      "36000"
+    ],
+    "cwd": "[START_DIR]/cache/work/skia",
+    "env": {
+      "CHROME_HEADLESS": "1",
+      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
+    },
+    "name": "sleep for an hour"
+  },
+  {
+    "cmd": [
       "[START_DIR]/ccache_linux/bin/ccache",
       "-s"
     ],
