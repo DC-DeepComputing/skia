@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c51cdd24_127a9705",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 13
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-07-14T19:59:32Z",
+      "side": 1,
+      "message": "As written, this conforms to how we built the old drivers from source and LGTM.\n\nHowever, it is now one more thing that we would need to migrate to compile with Bazel. Is now the time to make the necessary adjustments to be able to compile this using our hermetic toolchain instead of a Dockerfile?",
+      "revId": "0dda9d4c9d7728433bababa1fbad9e7abc6041cc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

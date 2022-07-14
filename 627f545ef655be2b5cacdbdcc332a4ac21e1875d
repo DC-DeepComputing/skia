@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d6218f52_34030e06",
+        "filename": "infra/bots/assets/mesa_intel_driver_linux_22/mesa-driver-builder/build_mesa.sh",
+        "patchSetId": 12
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-07-14T19:59:32Z",
+      "side": 1,
+      "message": "ubernit: date",
+      "range": {
+        "startLine": 3,
+        "startChar": 12,
+        "endLine": 3,
+        "endChar": 16
+      },
+      "revId": "627f545ef655be2b5cacdbdcc332a4ac21e1875d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
