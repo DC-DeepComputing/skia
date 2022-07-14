@@ -58,6 +58,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f2c4ced4_eebf8b8e",
+        "filename": "tools/trace/SkPerfettoTrace.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-07-14T19:11:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "da8c8e95_d80c1fc2",
+      "range": {
+        "startLine": 21,
+        "startChar": 28,
+        "endLine": 21,
+        "endChar": 29
+      },
+      "revId": "ca62f2c05ca2d6d2732c81860cd7565635d73e23",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5b3cf06c_e71824ea",
@@ -71,6 +95,30 @@
       "writtenOn": "2022-07-13T20:53:49Z",
       "side": 1,
       "message": "This should either be static and in an anonymous namespace. I think we\u0027re slowly trending towards preferring the latter.\n\nalso we tend to name these helper functions like \"begin_event_with_second_arg(...)\"\n\nfinally it only looks to be used by the one function at the end. Lets move it down to right above where it is used.",
+      "range": {
+        "startLine": 22,
+        "startChar": 5,
+        "endLine": 22,
+        "endChar": 28
+      },
+      "revId": "ca62f2c05ca2d6d2732c81860cd7565635d73e23",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3e0be1f6_fc1e0bde",
+        "filename": "tools/trace/SkPerfettoTrace.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-07-14T19:11:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5b3cf06c_e71824ea",
       "range": {
         "startLine": 22,
         "startChar": 5,
@@ -106,6 +154,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "08028a4d_7246fc8c",
+        "filename": "tools/trace/SkPerfettoTrace.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-07-14T19:11:43Z",
+      "side": 1,
+      "message": "Yes, I added a runtime flag for this within this CL. The \u0027child\u0027 CL to this one adds a runtime flag to split up tracing sessions/files by nanobench benchmark, so I added a TODO to explicate how that naming convention will work once that flag is added.\n\nFor example, if they elect to split up files by benchmark, the files currently get saved under the desired user-entered output path and file extension, but the file name is that of the current benchmark (not the base file name that the user passed in). Does that seem appropriate? The other option would be to use the base file name the user passes in, but append escalating numbers to it as more tracing sessions/files are created, but this seems less intuitive to me.",
+      "parentUuid": "27f56464_b5e0c6ac",
+      "range": {
+        "startLine": 93,
+        "startChar": 32,
+        "endLine": 93,
+        "endChar": 50
+      },
+      "revId": "ca62f2c05ca2d6d2732c81860cd7565635d73e23",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e4c937ee_250dc33c",
         "filename": "tools/trace/SkPerfettoTrace.cpp",
         "patchSetId": 7
@@ -117,6 +189,30 @@
       "writtenOn": "2022-07-13T20:53:49Z",
       "side": 1,
       "message": "remove space",
+      "range": {
+        "startLine": 109,
+        "startChar": 38,
+        "endLine": 109,
+        "endChar": 39
+      },
+      "revId": "ca62f2c05ca2d6d2732c81860cd7565635d73e23",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a38346c8_7cd03e18",
+        "filename": "tools/trace/SkPerfettoTrace.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-07-14T19:11:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e4c937ee_250dc33c",
       "range": {
         "startLine": 109,
         "startChar": 38,
@@ -150,6 +246,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f88293c6_79610a46",
+        "filename": "tools/trace/SkPerfettoTrace.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-07-14T19:11:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b63b9aa1_f9065fb4",
+      "range": {
+        "startLine": 142,
+        "startChar": 38,
+        "endLine": 142,
+        "endChar": 39
+      },
+      "revId": "ca62f2c05ca2d6d2732c81860cd7565635d73e23",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "97537264_42d3920a",
@@ -163,6 +283,30 @@
       "writtenOn": "2022-07-13T20:53:49Z",
       "side": 1,
       "message": "very micro nit: But when reading sources files I personally like seeing the start/begin/open/etc functions come before the end/close/etc functions. Makes it a little more logical if just reading the file top to bottom.",
+      "range": {
+        "startLine": 154,
+        "startChar": 0,
+        "endLine": 154,
+        "endChar": 4
+      },
+      "revId": "ca62f2c05ca2d6d2732c81860cd7565635d73e23",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "66bca52e_21ce624d",
+        "filename": "tools/trace/SkPerfettoTrace.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 154,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-07-14T19:11:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "97537264_42d3920a",
       "range": {
         "startLine": 154,
         "startChar": 0,
@@ -198,6 +342,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "265a58a6_725960db",
+        "filename": "tools/trace/SkPerfettoTrace.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 172,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-07-14T19:11:43Z",
+      "side": 1,
+      "message": "Ah, I can see how this doesn\u0027t make much sense without the context of the subsequent CL. See my reply to your previous comment (#93, https://skia-review.googlesource.com/c/skia/+/548398/7/tools/trace/SkPerfettoTrace.cpp#93) and my new comment within the code that I added above this assignment for an explanation as to why we store the base output file name within the class itself.\n\nTL;DR: I store the different file name components separately (and solicit the components from the user using separate runtime flags) so that if they elect to split the tracing session by benchmark, we can use their desired output path and file extension while selecting a unique base file name for each benchmark / tracing session. I store the base file name as a member variable because we need access to it when closing the current tracing session, which is called from the argument-less destructor of the class.\n\nPlease let me know if you have an idea of a better way to go about this.",
+      "parentUuid": "8f4e40ac_b7cea612",
+      "range": {
+        "startLine": 172,
+        "startChar": 4,
+        "endLine": 172,
+        "endChar": 38
+      },
+      "revId": "ca62f2c05ca2d6d2732c81860cd7565635d73e23",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "244a85c6_d962cd0b",
         "filename": "tools/trace/SkPerfettoTrace.cpp",
         "patchSetId": 7
@@ -209,6 +377,30 @@
       "writtenOn": "2022-07-13T20:53:49Z",
       "side": 1,
       "message": "should we be using baseOutputFileName to keep this line consistent with the close call?",
+      "range": {
+        "startLine": 211,
+        "startChar": 48,
+        "endLine": 211,
+        "endChar": 60
+      },
+      "revId": "ca62f2c05ca2d6d2732c81860cd7565635d73e23",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0807387f_95aba74e",
+        "filename": "tools/trace/SkPerfettoTrace.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 211,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-07-14T19:11:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "244a85c6_d962cd0b",
       "range": {
         "startLine": 211,
         "startChar": 48,
@@ -232,6 +424,30 @@
       "writtenOn": "2022-07-13T20:53:49Z",
       "side": 1,
       "message": "space",
+      "range": {
+        "startLine": 222,
+        "startChar": 38,
+        "endLine": 222,
+        "endChar": 39
+      },
+      "revId": "ca62f2c05ca2d6d2732c81860cd7565635d73e23",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b0922d78_2940ad60",
+        "filename": "tools/trace/SkPerfettoTrace.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 222,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-07-14T19:11:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "52ca69f3_0ec833e1",
       "range": {
         "startLine": 222,
         "startChar": 38,
@@ -288,6 +504,54 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "aadf8d73_5b7190b6",
+        "filename": "tools/trace/SkPerfettoTrace.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 231,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-07-14T19:11:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "452a9426_096744a5",
+      "range": {
+        "startLine": 231,
+        "startChar": 38,
+        "endLine": 231,
+        "endChar": 39
+      },
+      "revId": "ca62f2c05ca2d6d2732c81860cd7565635d73e23",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "587dd183_251a02c2",
+        "filename": "tools/trace/SkPerfettoTrace.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 231,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-07-14T19:11:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "242a4c9b_e38e9139",
+      "range": {
+        "startLine": 231,
+        "startChar": 40,
+        "endLine": 231,
+        "endChar": 60
+      },
+      "revId": "ca62f2c05ca2d6d2732c81860cd7565635d73e23",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "35360eac_d8d926a6",
@@ -301,6 +565,30 @@
       "writtenOn": "2022-07-13T20:53:49Z",
       "side": 1,
       "message": "Is this possible to get to? Like do we think we should have hit one of the types above in the switch?\n\nIf we don\u0027t think we can get here you can do:\n    default:\n        SkUNREACHABLE;",
+      "range": {
+        "startLine": 279,
+        "startChar": 13,
+        "endLine": 282,
+        "endChar": 18
+      },
+      "revId": "ca62f2c05ca2d6d2732c81860cd7565635d73e23",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7a0fd141_40da67a0",
+        "filename": "tools/trace/SkPerfettoTrace.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 282,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-07-14T19:11:43Z",
+      "side": 1,
+      "message": "Technically it is reachable with an argument type of TRACE_VALUE_TYPE_CONVERTABLE (which, from what I can gather, just has the trace argument take on ownership of an object which can be converted to a supported traceable type). I don\u0027t think we have any reason to support that, so I am fine just putting SkUNREACHABLE instead of populating the argument value with a pointer that doesn\u0027t really provide much insight anyhow.",
+      "parentUuid": "35360eac_d8d926a6",
       "range": {
         "startLine": 279,
         "startChar": 13,
@@ -357,6 +645,54 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c09623ea_cd2e8d79",
+        "filename": "tools/trace/SkPerfettoTrace.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 293,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-07-14T19:11:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "927a1227_bce50b6e",
+      "range": {
+        "startLine": 293,
+        "startChar": 38,
+        "endLine": 293,
+        "endChar": 39
+      },
+      "revId": "ca62f2c05ca2d6d2732c81860cd7565635d73e23",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f710bd65_6c32aa4f",
+        "filename": "tools/trace/SkPerfettoTrace.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 293,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-07-14T19:11:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6f291f70_05c2a240",
+      "range": {
+        "startLine": 293,
+        "startChar": 40,
+        "endLine": 293,
+        "endChar": 60
+      },
+      "revId": "ca62f2c05ca2d6d2732c81860cd7565635d73e23",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6beccd77_536cbe55",
@@ -370,6 +706,30 @@
       "writtenOn": "2022-07-13T20:53:49Z",
       "side": 1,
       "message": "same as above",
+      "range": {
+        "startLine": 334,
+        "startChar": 12,
+        "endLine": 336,
+        "endChar": 18
+      },
+      "revId": "ca62f2c05ca2d6d2732c81860cd7565635d73e23",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3d95d8c1_9b603eaf",
+        "filename": "tools/trace/SkPerfettoTrace.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 336,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-07-14T19:11:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6beccd77_536cbe55",
       "range": {
         "startLine": 334,
         "startChar": 12,
@@ -403,6 +763,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e5d56fd0_e290170e",
+        "filename": "tools/trace/SkPerfettoTrace.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-07-14T19:11:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "84e15cb3_516712c3",
+      "range": {
+        "startLine": 54,
+        "startChar": 26,
+        "endLine": 54,
+        "endChar": 27
+      },
+      "revId": "ca62f2c05ca2d6d2732c81860cd7565635d73e23",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4a03b417_c3e9dbf3",
@@ -416,6 +800,30 @@
       "writtenOn": "2022-07-13T20:53:49Z",
       "side": 1,
       "message": "can this be std::string_view?",
+      "range": {
+        "startLine": 59,
+        "startChar": 31,
+        "endLine": 59,
+        "endChar": 49
+      },
+      "revId": "ca62f2c05ca2d6d2732c81860cd7565635d73e23",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a8f098f2_ac2ab06f",
+        "filename": "tools/trace/SkPerfettoTrace.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-07-14T19:11:43Z",
+      "side": 1,
+      "message": "Good idea. With the current approach where I store (ie, copy) the string as a member attribute (see above reasoning as to why), then I don\u0027t believe so. But if we pivot to an alternate handling then it\u0027s possible this can be changed to string_view instead.",
+      "parentUuid": "4a03b417_c3e9dbf3",
       "range": {
         "startLine": 59,
         "startChar": 31,

@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "21687d41_100af78b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-07-14T19:11:43Z",
+      "side": 1,
+      "message": "I left 3 responses to your comments as unresolved to get your feedback. Thank you for your help! :)",
+      "revId": "1f9518fb1421cb9f4de99588f4ab55f68d60e7fc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
