@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2dd5afba_b9a1e128",
+        "filename": "src/gpu/graphite/DrawWriter.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-07-14T19:09:40Z",
+      "side": 0,
+      "message": "Not sure if you had future plans for this ctor, but as of now it was unused so I removed it. Happy to put it back if you want it.",
+      "range": {
+        "startLine": 58,
+        "startChar": 4,
+        "endLine": 58,
+        "endChar": 15
+      },
+      "revId": "b2b3a6e4a4e97c618a8bf8723efb19e9c9748ead",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
