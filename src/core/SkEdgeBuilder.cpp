@@ -17,7 +17,7 @@
 #include "src/core/SkSafeMath.h"
 
 SkEdgeBuilder::Combine SkBasicEdgeBuilder::combineVertical(const SkEdge* edge, SkEdge* last) {
-    if (last->fCurveCount || last->fDX || edge->fX != last->fX) {
+    if (last->fEdgeType != SkEdge::kLine_Type || last->fDX || edge->fX != last->fX) {
         return kNo_Combine;
     }
     if (edge->fWinding == last->fWinding) {
@@ -63,7 +63,7 @@ SkEdgeBuilder::Combine SkAnalyticEdgeBuilder::combineVertical(const SkAnalyticEd
         return SkAbs32(a - b) < 0x100;
     };
 
-    if (last->fCurveCount || last->fDX || edge->fX != last->fX) {
+    if (last->fEdgeType != SkAnalyticEdge::kLine_Type || last->fDX || edge->fX != last->fX) {
         return kNo_Combine;
     }
     if (edge->fWinding == last->fWinding) {
@@ -109,8 +109,8 @@ SkEdgeBuilder::Combine SkAnalyticEdgeBuilder::combineVertical(const SkAnalyticEd
 
 template <typename Edge>
 static bool is_vertical(const Edge* edge) {
-    return edge->fDX         == 0
-        && edge->fCurveCount == 0;
+    return edge->fDX       == 0
+        && edge->fEdgeType == Edge::kLine_Type;
 }
 
 // TODO: we can deallocate the edge if edge->setFoo() fails
