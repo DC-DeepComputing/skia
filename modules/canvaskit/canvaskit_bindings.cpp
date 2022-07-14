@@ -446,6 +446,19 @@ SkPathOrNull MakePathFromSVGString(std::string str) {
     return emscripten::val::null();
 }
 
+bool CanInterpolate(const SkPath& path1, const SkPath& path2) {
+    return path1.isInterpolatable(path2);
+}
+
+SkPathOrNull MakePathFromInterpolation(const SkPath& path1, const SkPath& path2, SkScalar weight) {
+    SkPath out;
+    bool succeed = path1.interpolate(path2, weight, &out);
+    if (succeed) {
+        return emscripten::val(out);
+    }
+    return emscripten::val::null();
+}
+
 SkPath CopyPath(const SkPath& a) {
     SkPath copy(a);
     return copy;
@@ -1694,6 +1707,8 @@ EMSCRIPTEN_BINDINGS(Skia) {
         .class_function("MakeFromOp", &MakePathFromOp)
 #endif
         .class_function("MakeFromSVGString", &MakePathFromSVGString)
+        .class_function("MakeFromPathInterpolation", &MakePathFromInterpolation)
+        .class_function("CanInterpolate", &CanInterpolate)
         .class_function("_MakeFromCmds", &MakePathFromCmds)
         .class_function("_MakeFromVerbsPointsWeights", &MakePathFromVerbsPointsWeights)
         .function("_addArc", optional_override([](SkPath& self,
@@ -1707,6 +1722,12 @@ EMSCRIPTEN_BINDINGS(Skia) {
                                                    bool ccw, unsigned start)->void {
             const SkRect* oval = reinterpret_cast<const SkRect*>(fPtr);
             self.addOval(*oval, ccw ? SkPathDirection::kCCW : SkPathDirection::kCW, start);
+        }))
+        .function("_addCircle", optional_override([](SkPath& self,
+                                                   SkScalar x,
+                                                   SkScalar y,
+                                                   SkScalar r)->void {
+            self.addCircle(x, y, r);
         }))
         // interface.js has 3 overloads of addPath
         .function("_addPath", &ApplyAddPath)
