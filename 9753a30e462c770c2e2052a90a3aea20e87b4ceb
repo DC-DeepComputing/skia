@@ -16,6 +16,41 @@
       "message": "done.\n\nI\u0027m sure it\u0027s something you have considered already but in our test suite we store reference results as PNG and we use it to track potential regressions.",
       "revId": "9753a30e462c770c2e2052a90a3aea20e87b4ceb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "455a0ad8_431a2007",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-07-14T17:19:48Z",
+      "side": 1,
+      "message": "lgtm provided the tests pass and look as expected.",
+      "revId": "9753a30e462c770c2e2052a90a3aea20e87b4ceb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fe072e05_3373a06a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-07-14T17:19:48Z",
+      "side": 1,
+      "message": "Yes, that\u0027s what we do with Gold. The PNGs are not checked in to the git repo (there are too many of them), but they are stored and aligned with commits to catch regressions.",
+      "parentUuid": "46be2383_962e668d",
+      "revId": "9753a30e462c770c2e2052a90a3aea20e87b4ceb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
