@@ -615,8 +615,15 @@ public:
 
     void defineFunction(const char* decl, const char* body, bool isMain) override {
         if (isMain) {
-            SkSL::String::appendf(fPreamble, "half4 %s_%d(float2 coords, half4 inColor) {\n%s}\n",
-                                  kRuntimeShaderName, fEntryIndex, body);
+            SkSL::String::appendf(
+                    fPreamble,
+                    "half4 %s_%d(float4x4 preLocal, half4 inColor) {\n"
+                    "    float2 coords = (preLocal * dev2LocalUni * sk_FragCoord).xy;\n"
+                    "%s"
+                    "}\n",
+                    kRuntimeShaderName,
+                    fEntryIndex,
+                    body);
         } else {
             SkSL::String::appendf(fPreamble, "%s {\n%s}\n", decl, body);
         }
@@ -694,7 +701,7 @@ std::string GenerateRuntimeShaderGlueCode(const SkShaderInfo& shaderInfo,
     SkASSERT(entry->needsLocalCoords());
     SkASSERT(entry->fUniforms.front().type() == SkSLType::kFloat4x4);
 
-    return SkSL::String::printf("%s_%d((%s * dev2LocalUni * sk_FragCoord).xy, (%s))",
+    return SkSL::String::printf("%s_%d(%s, %s)",
                                 entry->fName, *entryIndex,
                                 currentPreLocalName.c_str(),
                                 priorStageOutputName.c_str());
