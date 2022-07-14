@@ -23,6 +23,11 @@
 #include "src/core/SkVM.h"
 #include "src/core/SkWriteBuffer.h"
 
+#ifdef SK_ENABLE_SKSL
+#include "src/core/SkKeyHelpers.h"
+#include "src/core/SkPaintParamsKey.h"
+#endif // SK_ENABLE_SKSL
+
 #if SK_SUPPORT_GPU
 #include "src/gpu/ganesh/GrColorInfo.h"
 #include "src/gpu/ganesh/GrColorSpaceXform.h"
@@ -186,6 +191,16 @@ public:
         }
 
         return GrFPSuccess(std::move(outerFP));
+    }
+#endif
+#ifdef SK_ENABLE_SKSL
+    void addToKey(const SkKeyContext& keyContext,
+                  SkPaintParamsKeyBuilder* builder,
+                  SkPipelineDataGatherer* gatherer) const override {
+        ComposeColorFilterBlock::ComposeColorFilterData composeCFData;
+
+        ComposeColorFilterBlock::BeginBlock(keyContext, builder, gatherer, composeCFData);
+        builder->endBlock();
     }
 #endif
 
