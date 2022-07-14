@@ -318,12 +318,19 @@ namespace {
 #if defined(SK_GRAPHITE_ENABLED) && defined(SK_ENABLE_SKSL)
 static std::string append_default_snippet_arguments(const SkShaderSnippet* entry,
                                                     int entryIndex,
+                                                    const std::string& priorStageOutputName,
                                                     const std::string& currentPreLocalName,
                                                     SkSpan<const std::string> childOutputs) {
     std::string code = "(";
 
-    // Append uniform names.
     const char* separator = "";
+
+    if (entry->needsPriorStageOutput()) {
+        code += priorStageOutputName;
+        separator = ", ";
+    }
+
+    // Append uniform names.
     for (size_t i = 0; i < entry->fUniforms.size(); ++i) {
         code += separator;
         separator = ", ";
@@ -371,8 +378,8 @@ void GenerateDefaultGlueCode(const SkShaderInfo& shaderInfo,
 
     add_indent(mainBody, indent);
     SkSL::String::appendf(mainBody, "%s = %s", resultName.c_str(), entry->fStaticFunctionName);
-    *mainBody += append_default_snippet_arguments(entry, *entryIndex, currentPreLocalName,
-                                                  /*childOutputs=*/{});
+    *mainBody += append_default_snippet_arguments(entry, *entryIndex, priorStageOutputName,
+                                                  currentPreLocalName, /*childOutputs=*/{});
     *mainBody += ";\n";
 #endif  // defined(SK_GRAPHITE_ENABLED) && defined(SK_ENABLE_SKSL)
 }
@@ -413,8 +420,8 @@ void GenerateDefaultGlueCodeWithChildren(const SkShaderInfo& shaderInfo,
 
     add_indent(mainBody, indent);
     SkSL::String::appendf(mainBody, "%s = %s", resultName.c_str(), entry->fStaticFunctionName);
-    *mainBody += append_default_snippet_arguments(entry, curEntryIndex, currentPreLocalName,
-                                                  childOutputVarNames);
+    *mainBody += append_default_snippet_arguments(entry, curEntryIndex, priorStageOutputName,
+                                                  currentPreLocalName, childOutputVarNames);
     *mainBody += ";\n";
 #endif  // defined(SK_GRAPHITE_ENABLED) && defined(SK_ENABLE_SKSL)
 }
@@ -703,6 +710,17 @@ void GenerateRuntimeShaderGlueCode(const SkShaderInfo& shaderInfo,
                           priorStageOutputName.c_str());
 #endif  // defined(SK_GRAPHITE_ENABLED) && defined(SK_ENABLE_SKSL)
 }
+
+//--------------------------------------------------------------------------------------------------
+// TODO: investigate the implications of having separate hlsa and rgba matrix colorfilters. It
+// may be that having them separate will not contribute to combinatorial explosion.
+static constexpr SkUniform kMatrixColorFilterUniforms[] = {
+        { "matrix", SkSLType::kFloat4x4 },
+        { "trans",  SkSLType::kFloat4 },
+        { "inHSL",  SkSLType::kInt },
+};
+
+static constexpr char kMatrixColorFilterName[] = "sk_matrix_colorfilter";
 
 //--------------------------------------------------------------------------------------------------
 static constexpr char kErrorName[] = "sk_error";
@@ -1088,6 +1106,19 @@ SkShaderCodeDictionary::SkShaderCodeDictionary() {
             kNumBlendShaderChildren,
             { }      // no data payload
     };
+
+    // SkColorFilter snippets
+    fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kMatrixColorFilter] = {
+            "MatrixColorFilter",
+            SkSpan(kMatrixColorFilterUniforms),
+            SnippetRequirementFlags::kPriorStageOutput,
+            { },     // no samplers
+            kMatrixColorFilterName,
+            GenerateDefaultGlueCode,
+            kNoChildren,
+            { }      // no data payload
+    };
+
     fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kFixedFunctionBlender] = {
             "FixedFunctionBlender",
             { },     // no uniforms
