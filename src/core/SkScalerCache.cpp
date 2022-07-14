@@ -173,6 +173,18 @@ std::tuple<SkSpan<const SkGlyph*>, size_t> SkScalerCache::preparePaths(
     return {glyphs, delta};
 }
 
+size_t SkScalerCache::glyphIDsToPaths(SkSpan<sktext::IDOrPath> idsOrPaths) {
+    size_t increase = 0;
+    SkAutoMutexExclusive lock{fMu};
+    for (sktext::IDOrPath& idOrPath : idsOrPaths) {
+        auto [glyph, size] = this->glyph(SkPackedGlyphID{idOrPath.fGlyphID});
+        increase += size;
+        increase += this->preparePath(glyph);
+        new (&idOrPath.fPath) SkPath{*glyph->path()};
+    }
+    return increase;
+}
+
 std::tuple<SkSpan<const SkGlyph*>, size_t> SkScalerCache::prepareImages(
         SkSpan<const SkPackedGlyphID> glyphIDs, const SkGlyph* results[]) {
     const SkGlyph** cursor = results;
