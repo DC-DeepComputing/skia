@@ -16,6 +16,98 @@
       "message": "just want to ping this as I would prefer to get this landed before I disappear.",
       "revId": "2202b25f5e15020ec2bec3a0a07452d5b2b30322",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3daeb790_4bb096e4",
+        "filename": "src/gpu/graphite/DrawCommands.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 214,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-07-14T17:14:24Z",
+      "side": 1,
+      "message": "Can we not just do `fAlloc.makeArrayDefault\u003cT\u003e(count)`?",
+      "range": {
+        "startLine": 211,
+        "startChar": 8,
+        "endLine": 214,
+        "endChar": 62
+      },
+      "revId": "2202b25f5e15020ec2bec3a0a07452d5b2b30322",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e4babe5a_1147348e",
+        "filename": "src/gpu/graphite/DrawCommands.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 219,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-07-14T17:14:24Z",
+      "side": 1,
+      "message": "I\u0027d be okay making this alias public so that the `using Iter` alias could refer to Command too.",
+      "range": {
+        "startLine": 219,
+        "startChar": 3,
+        "endLine": 219,
+        "endChar": 43
+      },
+      "revId": "2202b25f5e15020ec2bec3a0a07452d5b2b30322",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "50753342_17dd4879",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 458,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-07-14T17:14:24Z",
+      "side": 1,
+      "message": "Can we track maximum number of textures per draw and then have these sized once before enter the loop?",
+      "range": {
+        "startLine": 456,
+        "startChar": 16,
+        "endLine": 458,
+        "endChar": 61
+      },
+      "revId": "2202b25f5e15020ec2bec3a0a07452d5b2b30322",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9a9d56bf_71cfb8b8",
+        "filename": "src/gpu/graphite/mtl/MtlCommandBuffer.mm",
+        "patchSetId": 8
+      },
+      "lineNbr": 200,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-07-14T17:14:24Z",
+      "side": 1,
+      "message": "cleanup?",
+      "range": {
+        "startLine": 199,
+        "startChar": 0,
+        "endLine": 200,
+        "endChar": 55
+      },
+      "revId": "2202b25f5e15020ec2bec3a0a07452d5b2b30322",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
