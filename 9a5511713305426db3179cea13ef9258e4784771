@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1081e354_368a41a1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 18
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-07-14T19:23:18Z",
+      "side": 1,
+      "message": "Marking unresolved.",
+      "parentUuid": "1bab8ea9_7204f5a8",
+      "revId": "9a5511713305426db3179cea13ef9258e4784771",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d4516a6a_535c0ca6",
         "filename": "infra/bots/task_drivers/codesize/codesize.go",
         "patchSetId": 18
