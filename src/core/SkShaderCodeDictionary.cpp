@@ -356,11 +356,17 @@ void GenerateDefaultGlueCode(const SkShaderInfo& shaderInfo,
                           resultName.c_str(),
                           entry->fStaticFunctionName);
     const char* separator = "";
+
+    if (entry->needsPriorStageOutput()) {
+        *mainBody += priorStageOutputName;
+        separator = ", ";
+    }
+
     for (size_t i = 0; i < entry->fUniforms.size(); ++i) {
         *mainBody += separator;
         separator = ", ";
 
-        if (i == 0 && reader.entry()->needsLocalCoords()) {
+        if (i == 0 && entry->needsLocalCoords()) {
             *mainBody += currentPreLocalName + " * dev2LocalUni";
         } else {
             *mainBody += entry->getMangledUniformName(i, entryIndex);
@@ -660,6 +666,15 @@ void GenerateRuntimeShaderGlueCode(const SkShaderInfo& shaderInfo,
                           priorStageOutputName.c_str());
 #endif  // defined(SK_GRAPHITE_ENABLED) && defined(SK_ENABLE_SKSL)
 }
+
+//--------------------------------------------------------------------------------------------------
+static constexpr SkUniform kMatrixColorFilterUniforms[] = {
+        { "matrix", SkSLType::kFloat4x4 },
+        { "trans",  SkSLType::kFloat4 },
+        { "inHSL",  SkSLType::kInt },
+};
+
+static constexpr char kMatrixColorFilterName[] = "sk_matrix_colorfilter";
 
 //--------------------------------------------------------------------------------------------------
 static constexpr char kErrorName[] = "sk_error";
@@ -1051,6 +1066,19 @@ SkShaderCodeDictionary::SkShaderCodeDictionary() {
             kNumBlendShaderChildren,
             { }
     };
+
+    // SkColorFilter snippets
+    fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kMatrixColorFilter] = {
+            "MatrixColorFilter",
+            SkSpan(kMatrixColorFilterUniforms),
+            SnippetRequirementFlags::kPriorStageOutput,
+            { },     // no samplers
+            kMatrixColorFilterName,
+            GenerateDefaultGlueCode,
+            kNoChildren,
+            { }
+    };
+
     fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kFixedFunctionBlender] = {
             "FixedFunctionBlender",
             { },     // no uniforms
