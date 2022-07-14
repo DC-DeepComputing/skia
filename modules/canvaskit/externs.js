@@ -557,7 +557,9 @@ var CanvasKit = {
 
   Path: {
     // public API (from C++ and JS bindings)
+    CanInterpolate: function() {},
     MakeFromCmds: function() {},
+    MakeFromPathInterpolation: function() {},
     MakeFromSVGString: function() {},
     MakeFromOp: function() {},
     MakeFromVerbsPointsWeights: function() {},
@@ -579,6 +581,7 @@ var CanvasKit = {
 
     prototype: {
       addArc: function() {},
+      addCircle: function() {},
       addOval: function() {},
       addPath: function() {},
       addPoly: function() {},
