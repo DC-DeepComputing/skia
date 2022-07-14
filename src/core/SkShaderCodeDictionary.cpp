@@ -933,13 +933,28 @@ int SkShaderCodeDictionary::findOrCreateRuntimeEffectSnippet(const SkRuntimeEffe
         return *existingCodeSnippetID;
     }
 
+    int numChildren = 0;
+    for (const SkRuntimeEffect::Child& child : effect->children()) {
+        switch (child.type) {
+            case SkRuntimeEffect::ChildType::kColorFilter:
+                // TODO(skia:13508): Graphite does not support color filters yet.
+                // ++numChildren;
+                break;
+
+            case SkRuntimeEffect::ChildType::kShader:
+            case SkRuntimeEffect::ChildType::kBlender:
+                ++numChildren;
+                break;
+        }
+    }
+
     int newCodeSnippetID = this->addUserDefinedSnippet("RuntimeEffect",
                                                        this->convertUniforms(effect),
                                                        SnippetRequirementFlags::kLocalCoords,
                                                        /*texturesAndSamplers=*/{},
                                                        kRuntimeShaderName,
                                                        GenerateRuntimeShaderGlueCode,
-                                                       /*numChildren=*/0,
+                                                       numChildren,
                                                        /*dataPayloadExpectations=*/{});
     fRuntimeEffectMap.set(key, newCodeSnippetID);
     return newCodeSnippetID;
