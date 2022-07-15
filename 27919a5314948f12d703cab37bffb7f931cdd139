@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f3f70c11_694a07e9",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 647,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-07-15T21:35:16Z",
+      "side": 1,
+      "message": "Any ideas? I\u0027m pretty sure it will be easier once coordinate handling is updated to be more like Ganesh, so leaving a TODO and fixing it later might be the most expedient option.",
+      "range": {
+        "startLine": 645,
+        "startChar": 8,
+        "endLine": 647,
+        "endChar": 56
+      },
+      "revId": "27919a5314948f12d703cab37bffb7f931cdd139",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
