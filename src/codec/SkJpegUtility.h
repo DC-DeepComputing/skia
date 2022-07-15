@@ -39,6 +39,9 @@ struct skjpeg_source_mgr : jpeg_source_mgr {
         kBufferSize = 1024
     };
     uint8_t fBuffer[kBufferSize];
+    // Set to true after the first read has been executed on the underlying stream.
+    // Used to differentiate between files that are empty vs. non-empty but lacking EOI markers.
+    bool has_read_from_stream = false;
 };
 
 #endif

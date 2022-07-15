@@ -35,20 +35,40 @@ static void sk_init_buffered_source(j_decompress_ptr dinfo) {
 }
 
 /*
- * Fill the input buffer from the stream
+ * Fill the input buffer from the stream.
+ *
+ * Streams that start empty result in a <TODO> error.
+ * Streams that end without an EOI marker decode gracefully, but result in a <TODO> warning.
  */
 static boolean sk_fill_buffered_input_buffer(j_decompress_ptr dinfo) {
     skjpeg_source_mgr* src = (skjpeg_source_mgr*) dinfo->src;
     size_t bytes = src->fStream->read(src->fBuffer, skjpeg_source_mgr::kBufferSize);
 
-    // libjpeg is still happy with a less than full read, as long as the result is non-zero
+    // Zero-length read indicates the file is either empty, or the end of the file has been reached
+    // without encountering an End of Image marker, so libjpeg called again expecting more data.
+    // In the latter scenario, we give libjpeg a fake EOI marker to allow progressive JPEGs that
+    // are missing EOI markers to still render, as is allowed for normal JPEGs.
     if (bytes == 0) {
-        // Let libjpeg know that the buffer needs to be refilled
-        src->next_input_byte = nullptr;
-        src->bytes_in_buffer = 0;
-        return false;
+        // An empty stream which hasn't even been read from indicates an empty file.
+        if (!src->has_read_from_stream) {
+            // TODO(nscobie): is there a better way to error out here? Can we set a specific error code?
+            SkCodecPrintf("Cannot decode empty stream.\n");
+            dinfo->err->error_exit((j_common_ptr) dinfo);
+            return false;
+        }
+
+        // Inserts an End of Image marker.
+        // https://en.wikipedia.org/wiki/JPEG_File_Interchange_Format#File_format_structure
+        src->fBuffer[0] = (JOCTET)0xFF;
+        src->fBuffer[1] = (JOCTET)JPEG_EOI;
+        bytes = 2;
+
+        // EOI markers are expected, so lack thereof deserves a warning.
+        // TODO(nscobie): is there a better way to raise a warning here? Can we set a specific warning code?
+        SkCodecPrintf("Encountered end of stream before EOI marker, inserting fake substitute.\n");
     }
 
+    src->has_read_from_stream = true;
     src->next_input_byte = (const JOCTET*) src->fBuffer;
     src->bytes_in_buffer = bytes;
     return true;
