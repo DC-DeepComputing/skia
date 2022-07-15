@@ -1,0 +1,165 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0144aaf5_c4307d14",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-07-15T17:13:45Z",
+      "side": 1,
+      "message": "Our commit messages normally specify the bug like this:\n\n  Bug: skia:12511\n\nThis will also turn it into a link to skbug.com/12511 (\"sk\" for Skia).\n\nIf you leave off `skia:`, it becomes a link to a chromium bug (crbug.com/12511).\n\nAnd if you want to reference an Android bug you use\n\n  Bug: b/12511",
+      "range": {
+        "startLine": 9,
+        "startChar": 21,
+        "endLine": 9,
+        "endChar": 37
+      },
+      "revId": "86b62e8976d469fef890e440fff585e7f63e1398",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ac676337_cd0813a4",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-07-15T17:13:45Z",
+      "side": 1,
+      "message": "Also, FYI: the bulk of our decoding tests are in `tests/CodecTest.cpp`. Your test doesn\u0027t have to go there, but it has plenty of examples.\n\nWe have several image files checked in to the repository; you can artificially truncate one of those files (we probably have some examples of that) to test. (I *think* we have a progressive jpeg checked in; not sure.)",
+      "range": {
+        "startLine": 10,
+        "startChar": 49,
+        "endLine": 10,
+        "endChar": 62
+      },
+      "revId": "86b62e8976d469fef890e440fff585e7f63e1398",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f8f50896_46d9c707",
+        "filename": "src/codec/SkJpegUtility.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-07-15T17:13:45Z",
+      "side": 1,
+      "message": "I don\u0027t think we absolutely need to handle this case specially. Generally, we would only reach this code if we\u0027d already read enough of the stream to verify that it is a JPEG.",
+      "range": {
+        "startLine": 53,
+        "startChar": 18,
+        "endLine": 53,
+        "endChar": 38
+      },
+      "revId": "86b62e8976d469fef890e440fff585e7f63e1398",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e9d5a266_cf55981c",
+        "filename": "src/codec/SkJpegUtility.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-07-15T17:13:45Z",
+      "side": 1,
+      "message": "nit: I generally encourage C++ style casts, which [follows the Google C++ style guide](https://engdoc.corp.google.com/eng/doc/devguide/cpp/styleguide.md?cl\u003dhead#Casting) (which Android somewhat uses), though the [Skia style guide](https://skia.org/docs/dev/contrib/style/) doesn\u0027t require it.",
+      "range": {
+        "startLine": 56,
+        "startChar": 35,
+        "endLine": 56,
+        "endChar": 49
+      },
+      "revId": "86b62e8976d469fef890e440fff585e7f63e1398",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "39c0b940_6425ac62",
+        "filename": "src/codec/SkJpegUtility.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-07-15T17:13:45Z",
+      "side": 1,
+      "message": "It looks like `libjpeg-turbo` itself would use [`WARNMS`](https://source.corp.google.com/android-internal/external/libjpeg-turbo/jerror.h;l\u003d276?q\u003dWARNMS\u0026ct\u003dos\u0026sq\u003dpackage:%5Eandroid-internal$%20-file:external%2Fskqp%20-file:external%2Fqt).\n\nPersonally, I don\u0027t think it\u0027s absolutely necessary. Most users don\u0027t care about this information - they just want to see the image. And if it showed an image somewhere else, but not on Android, that looks broken.\n\nUsing `SkCodecPrintf` seems fine - it gives a little information if they\u0027re looking for it - meaning they\u0027ve set the compile flag so that `SkCodecPrintf` actually prints anything. (By default, it\u0027s skipped.)\n\nA little history behind `SkCodecPrintf` - we added it because people on Android were asking for more information about why decodes failed. It\u0027s activated with a flag, because it can be noisy. But AFAIK, no one is building with it turned on anymore - it ended up being noisy on Android, and just resulted in bugs being assigned to me even though they were unrelated.",
+      "range": {
+        "startLine": 67,
+        "startChar": 0,
+        "endLine": 67,
+        "endChar": 108
+      },
+      "revId": "86b62e8976d469fef890e440fff585e7f63e1398",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "59c7cb10_990c083c",
+        "filename": "src/codec/SkJpegUtility.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-07-15T17:13:45Z",
+      "side": 1,
+      "message": "We probably need to handle this case, too. (Same for `sk_skip_mem_input_data`.)",
+      "range": {
+        "startLine": 80,
+        "startChar": 12,
+        "endLine": 80,
+        "endChar": 39
+      },
+      "revId": "86b62e8976d469fef890e440fff585e7f63e1398",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f96e196a_1a51e743",
+        "filename": "src/codec/SkJpegUtility.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-07-15T17:13:45Z",
+      "side": 1,
+      "message": "This method gets used when we already have all the data in memory. We\u0027ll need to handle this case, too.",
+      "range": {
+        "startLine": 132,
+        "startChar": 15,
+        "endLine": 132,
+        "endChar": 39
+      },
+      "revId": "86b62e8976d469fef890e440fff585e7f63e1398",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
