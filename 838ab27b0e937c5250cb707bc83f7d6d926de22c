@@ -38,6 +38,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "fb516e98_cab6c3a7",
+        "filename": "src/shaders/SkPictureShader.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 308,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-07-15T14:30:03Z",
+      "side": 1,
+      "message": "If the picture shader has a local matrix applied, it seems like that gets respected AFTER rasterization happens? (Same is true in the GPU code path). In that situation, it seems like respecting the original surface props is going to create a bug -- you don\u0027t want to use LCD text unless the resulting image will be dropped to the final surface 1:1.",
+      "range": {
+        "startLine": 307,
+        "startChar": 0,
+        "endLine": 308,
+        "endChar": 61
+      },
+      "revId": "838ab27b0e937c5250cb707bc83f7d6d926de22c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "20d45fbc_8ac9e109",
         "filename": "src/shaders/SkPictureShader.cpp",
         "patchSetId": 5
