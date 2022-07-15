@@ -26,6 +26,9 @@ filegroup(
         "//bazel/common_config_settings:custom_empty_fontmgr_factory": [
             ":fontmgr_custom_empty_factory",
         ],
+        "//bazel/common_config_settings:fontconfig_fontmgr_factory": [
+            ":fontmgr_fontconfig_factory",
+        ],
         ("//bazel/common_config_settings:empty_fontmgr_factory", "//conditions:default"): [
             ":fontmgr_empty_factory",
         ],
@@ -39,6 +42,7 @@ filegroup(
             "//bazel/common_config_settings:custom_directory_fontmgr": [":fontmgr_custom_directory"],
             "//bazel/common_config_settings:custom_embedded_fontmgr": [":fontmgr_custom_embedded"],
             "//bazel/common_config_settings:custom_empty_fontmgr": [":fontmgr_custom_empty"],
+            "//bazel/common_config_settings:fontconfig_fontmgr": [":fontmgr_fontconfig"],
         },
         default = [],
     ),
@@ -104,6 +108,21 @@ filegroup(
     srcs = [
         "SkFontMgr_custom_empty_factory.cpp",
         ":fontmgr_custom_empty",
+    ],
+)
+
+filegroup(
+    name = "fontmgr_fontconfig",
+    srcs = [
+        "SkFontMgr_fontconfig.cpp",
+        ":typeface_freetype",
+    ],
+)
+
+filegroup(
+    name = "fontmgr_fontconfig_factory",
+    srcs = [
+        "SkFontMgr_fontconfig_factory.cpp",
     ],
 )
 
@@ -188,6 +207,16 @@ selects.config_setting_group(
         "//bazel/common_config_settings:custom_embedded_fontmgr_factory",
         "//bazel/common_config_settings:custom_empty_fontmgr",
         "//bazel/common_config_settings:custom_empty_fontmgr_factory",
+        "//bazel/common_config_settings:fontconfig_fontmgr",
+        "//bazel/common_config_settings:fontconfig_fontmgr_factory",
+    ],
+)
+
+selects.config_setting_group(
+    name = "any_fontconfig_fontmgr",
+    match_any = [
+        "//bazel/common_config_settings:fontconfig_fontmgr",
+        "//bazel/common_config_settings:fontconfig_fontmgr_factory",
     ],
 )
 
@@ -196,12 +225,13 @@ cc_library(
     linkopts = select({
         "@platforms//os:linux": ["-ldl"],
         "//conditions:default": [],
+    }) + select({
+        ":any_fontconfig_fontmgr": ["-lfontconfig"],
+        "//conditions:default": [],
     }),
     visibility = ["//src:__pkg__"],
     deps = select({
-        ":any_freetype_fontmgr": [
-            "//third_party:freetype2",
-        ],
+        ":any_freetype_fontmgr": ["//third_party:freetype2"],
         "//conditions:default": [],
     }),
 )
