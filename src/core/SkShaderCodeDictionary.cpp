@@ -728,6 +728,15 @@ static constexpr SkUniform kMatrixColorFilterUniforms[] = {
 static constexpr char kMatrixColorFilterName[] = "sk_matrix_colorfilter";
 
 //--------------------------------------------------------------------------------------------------
+static constexpr SkUniform kComposeColorFilterUniforms[] = {
+        { "temp-remove", SkSLType::kInt },
+};
+
+static constexpr int kNumComposeColorFilterChildren = 2;
+
+static constexpr char kComposeColorFilterName[] = "sk_compose_colorfilter";
+
+//--------------------------------------------------------------------------------------------------
 static constexpr char kErrorName[] = "sk_error";
 
 //--------------------------------------------------------------------------------------------------
@@ -1108,6 +1117,16 @@ SkShaderCodeDictionary::SkShaderCodeDictionary() {
             GenerateDefaultGlueCode,
             kNoChildren,
             { }      // no data payload
+    };
+    fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kComposeColorFilter] = {
+            "ComposeColorFilter",
+            SkSpan(kComposeColorFilterUniforms),
+            SnippetRequirementFlags::kPriorStageOutput,
+            { },     // no samplers
+            kComposeColorFilterName,
+            GenerateDefaultGlueCode,
+            kNumComposeColorFilterChildren,
+            { }
     };
 
     fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kFixedFunctionBlender] = {

@@ -185,6 +185,17 @@ struct MatrixColorFilterBlock {
                            const MatrixColorFilterData&);
 };
 
+struct ComposeColorFilterBlock {
+    struct ComposeColorFilterData {
+        ComposeColorFilterData() { }
+    };
+
+    static void BeginBlock(const SkKeyContext&,
+                           SkPaintParamsKeyBuilder*,
+                           SkPipelineDataGatherer*,
+                           const ComposeColorFilterData&);
+};
+
 struct BlendModeBlock {
     static void BeginBlock(const SkKeyContext&,
                            SkPaintParamsKeyBuilder*,
