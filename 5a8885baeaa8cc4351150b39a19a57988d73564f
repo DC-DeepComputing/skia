@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "65c09a10_ed8b74ff",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-07-15T19:32:47Z",
+      "side": 1,
+      "message": "Also b/235849228?",
+      "range": {
+        "startLine": 9,
+        "startChar": 7,
+        "endLine": 9,
+        "endChar": 16
+      },
+      "revId": "5a8885baeaa8cc4351150b39a19a57988d73564f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "49412e51_b1c04b23",
+        "filename": "tools/skqp/src/skqp.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-07-15T19:32:47Z",
+      "side": 1,
+      "message": "First off, thank you for this comment explaining what\u0027s going on!\n\nThat said, is there a central source of documentation? I found [this g3doc](https://g3doc.corp.google.com/third_party/skia/HEAD/tools/skqp/README.md?cl\u003dhead), though I think it\u0027s pretty out of date?\n\nWhat is the *non* CTS variant?",
+      "range": {
+        "startLine": 70,
+        "startChar": 12,
+        "endLine": 70,
+        "endChar": 97
+      },
+      "revId": "5a8885baeaa8cc4351150b39a19a57988d73564f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dcc255f3_22ace204",
+        "filename": "tools/skqp/src/skqp.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 309,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-07-15T19:32:47Z",
+      "side": 1,
+      "message": "Is it more clear if you remove these words?",
+      "range": {
+        "startLine": 309,
+        "startChar": 34,
+        "endLine": 309,
+        "endChar": 59
+      },
+      "revId": "5a8885baeaa8cc4351150b39a19a57988d73564f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
