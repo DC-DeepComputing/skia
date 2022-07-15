@@ -16,6 +16,64 @@
       "message": "Hi Ben / Brian:\n\nThis is the follow-up to https://skia-review.googlesource.com/c/skia/+/545396.\n\nAs you may recall, in that CL we added SkSurfaceProps parameters to several public-facing APIs, but specifically omitted SkPictureShader APIs, in favor of propagating the props from the target surface.\n\nThat\u0027s this CL.\n\nIt\u0027s a bit involved, since there are so many levels/places where the props need to be passed/propagated.  Let me know if you know an easier way to accomplish any of this.\n\nThere are three tests that fail in Chromium with this enabled, so it\u0027s currently behind a build-flag for staging.  Chromium will only require minor changes.  You can follow along with my Chromium-side changes here:  https://chromium-review.googlesource.com/c/chromium/src/+/3759131.  \n\nI don\u0027t know if any other first-party Skia consumers (Android, etc.) will need similar staging.\n\nThanks!",
       "revId": "838ab27b0e937c5250cb707bc83f7d6d926de22c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "97dba805_b99317a2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-07-15T13:56:58Z",
+      "side": 1,
+      "message": "Yeah, this is pretty involved. I\u0027m going to add some other folks, in case they have additional ideas - nothing immediately jumps out at me. I suspect that other clients will be okay - I don\u0027t think anyone but Chromium really uses SkPictureShader.",
+      "parentUuid": "9227da15_c4ecec5f",
+      "revId": "838ab27b0e937c5250cb707bc83f7d6d926de22c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "20d45fbc_8ac9e109",
+        "filename": "src/shaders/SkPictureShader.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 320,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-07-15T13:56:58Z",
+      "side": 1,
+      "message": "How so? The VM blitter is tied to a particular surface - we should be able to plumb the same information through (it\u0027s going to be annoying, because it uses separate arguments, rather than a bundle like SkStageRec).",
+      "range": {
+        "startLine": 320,
+        "startChar": 7,
+        "endLine": 320,
+        "endChar": 90
+      },
+      "revId": "838ab27b0e937c5250cb707bc83f7d6d926de22c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "751bf72b_599a299b",
+        "filename": "src/text/gpu/SubRunContainer.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 456,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-07-15T13:56:58Z",
+      "side": 1,
+      "message": "Herb: I think this is okay, but I\u0027d like you to confirm.",
+      "revId": "838ab27b0e937c5250cb707bc83f7d6d926de22c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
