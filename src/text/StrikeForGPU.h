@@ -59,6 +59,22 @@ public:
     // Return the maximum dimension of a span of glyphs.
     virtual SkScalar findMaximumGlyphDimension(SkSpan<const SkGlyphID> glyphs) = 0;
 
+    // N.B. if the glyphs masks are configured for device space, then the rectangle is in device
+    // space otherwise the rectangle is in source space.
+    enum Preparation {
+        kPrepareDeviceMask,
+        kPrepareBilerpMask,
+        kPrepareSDFT,
+        kPreparePath,
+        kPrepareDrawable
+    };
+    virtual std::tuple<SkRect, SkZip<SkPackedGlyphID, SkPoint>, SkZip<SkGlyphID, SkPoint>>
+    filterCandidates(Preparation preparation,
+                     SkScalar strikeToSourceScale,
+                     SkZip<SkGlyphID, SkPoint> source,
+                     SkZip<SkPackedGlyphID, SkPoint> acceptedBuffer,
+                     SkZip<SkGlyphID, SkPoint> rejectedBuffer) = 0;
+
     struct Deleter {
         void operator()(StrikeForGPU* ptr) const {
             ptr->onAboutToExitScope();
