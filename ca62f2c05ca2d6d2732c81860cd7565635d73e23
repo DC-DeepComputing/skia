@@ -904,6 +904,30 @@
       },
       "revId": "ca62f2c05ca2d6d2732c81860cd7565635d73e23",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7cc7f2d6_61337948",
+        "filename": "tools/trace/SkPerfettoTrace.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-07-15T17:42:25Z",
+      "side": 1,
+      "message": "Ah, I see now - the issue is that there is no + operator support for concatenating std::string types and std::string_view types. So when I am concatenating the path + file name + extension, it leads to an error. There are ways around this (supposedly std::string append(std::string_view) works), but I\u0027m not sure it gives us much benefit at that point.",
+      "parentUuid": "1f4fc43b_7dd915ae",
+      "range": {
+        "startLine": 59,
+        "startChar": 31,
+        "endLine": 59,
+        "endChar": 49
+      },
+      "revId": "ca62f2c05ca2d6d2732c81860cd7565635d73e23",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

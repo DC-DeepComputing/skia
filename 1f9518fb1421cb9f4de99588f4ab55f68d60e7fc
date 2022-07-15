@@ -39,6 +39,30 @@
       },
       "revId": "1f9518fb1421cb9f4de99588f4ab55f68d60e7fc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2f758406_3409971c",
+        "filename": "tools/trace/SkPerfettoTrace.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-07-15T17:42:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fe096191_405a8bf1",
+      "range": {
+        "startLine": 53,
+        "startChar": 4,
+        "endLine": 53,
+        "endChar": 33
+      },
+      "revId": "1f9518fb1421cb9f4de99588f4ab55f68d60e7fc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
