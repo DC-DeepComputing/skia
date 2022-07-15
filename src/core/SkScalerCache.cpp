@@ -229,6 +229,139 @@ std::tuple<SkScalar, size_t> SkScalerCache::findMaximumGlyphDimension(
     return {maxDimension, totalIncrease};
 }
 
+using Preparation = sktext::StrikeForGPU::Preparation;
+std::tuple<SkRect, SkZip<SkPackedGlyphID, SkPoint>, SkZip<SkGlyphID, SkPoint>, size_t>
+SkScalerCache::filterCandidates(Preparation preparation,
+                                SkScalar strikeToSourceScale,
+                                SkZip<SkGlyphID, SkPoint> source,
+                                SkZip<SkPackedGlyphID, SkPoint> candidates,
+                                SkZip<SkPackedGlyphID, SkPoint> acceptedBuffer,
+                                SkZip<SkGlyphID, SkPoint> rejectedBuffer) {
+    auto scaleAndOffsetRect = [&](SkPoint pos, SkRect rect) {
+        auto [l, t, r, b] = rect;
+        return SkRect::MakeLTRB(
+            l * strikeToSourceScale + pos.x(),
+            t * strikeToSourceScale + pos.y(),
+            r * strikeToSourceScale + pos.x(),
+            b * strikeToSourceScale + pos.y());
+    };
+
+    int acceptedCursor = 0;
+    int rejectedCursor = 0;
+    size_t increase = 0;
+    SkRect accumulatedBounds = {SK_ScalarMax, SK_ScalarMax, -SK_ScalarMax, -SK_ScalarMax};
+    SkAutoMutexExclusive lock{fMu};
+    for (const auto [sourceCursor, packedGlyphID, pos] : SkMakeEnumerate(candidates)) {
+        if (!SkScalarsAreFinite(pos.x(), pos.y())) { continue; }
+
+        auto [digest, glyphIncrease] = this->digest(packedGlyphID);
+        increase += glyphIncrease;
+
+        if (digest.isEmpty()) { continue; }
+
+        switch (preparation) {
+            case Preparation::kPrepareDeviceMask:
+                if (digest.canDrawAsMask()) {
+                    SkGlyph* glyph = fGlyphForIndex[digest.index()];
+                    auto[_, imageSize] = this->prepareImage(glyph);
+                    increase += imageSize;
+                    acceptedBuffer[acceptedCursor++] = {packedGlyphID, pos};
+                    SkRect glyphRect = glyph->rect();
+                    glyphRect.offset(pos);
+                    accumulatedBounds.joinPossiblyEmptyRect(glyphRect);
+                } else {
+                    rejectedBuffer[rejectedCursor++] = source[sourceCursor];
+                }
+                break;
+            case Preparation::kPrepareBilerpMask:
+                // TODO this should bilerp mask.
+                if (digest.canDrawAsMask()) {
+                    SkGlyph* glyph = fGlyphForIndex[digest.index()];
+                    auto[_, imageSize] = this->prepareImage(glyph);
+                    increase += imageSize;
+                    acceptedBuffer[acceptedCursor++] = {packedGlyphID, pos};
+                    accumulatedBounds.joinPossiblyEmptyRect(
+                            scaleAndOffsetRect(pos, glyph->rect()));
+                } else {
+                    rejectedBuffer[rejectedCursor++] = source[sourceCursor];
+                }
+                break;
+            case Preparation::kPrepareSDFT:
+                if (digest.canDrawAsSDFT()) {
+                    SkGlyph* glyph = fGlyphForIndex[digest.index()];
+                    auto[_, imageSize] = this->prepareImage(glyph);
+                    increase += imageSize;
+                    acceptedBuffer[acceptedCursor++] = {packedGlyphID, pos};
+                    accumulatedBounds.joinPossiblyEmptyRect(
+                            scaleAndOffsetRect(pos, glyph->rect()));
+                } else {
+                    rejectedBuffer[rejectedCursor++] = source[sourceCursor];
+                }
+                break;
+            case Preparation::kPreparePath: {
+                    SkGlyph* glyph = fGlyphForIndex[digest.index()];
+                    increase += this->preparePath(glyph);
+                    if (glyph->path() != nullptr) {
+                        acceptedBuffer[acceptedCursor++] = {packedGlyphID, pos};
+                        accumulatedBounds.joinPossiblyEmptyRect(
+                                scaleAndOffsetRect(pos, glyph->rect()));
+                    } else {
+                        rejectedBuffer[rejectedCursor++] = source[sourceCursor];
+                    }
+                } break;
+            case Preparation::kPrepareDrawable:
+                SkGlyph* glyph = fGlyphForIndex[digest.index()];
+                increase += this->prepareDrawable(glyph);
+                if (glyph->drawable() != nullptr) {
+                    acceptedBuffer[acceptedCursor++] = {packedGlyphID, pos};
+                    accumulatedBounds.joinPossiblyEmptyRect(
+                            scaleAndOffsetRect(pos, glyph->rect()));
+                } else {
+                    rejectedBuffer[rejectedCursor++] = source[sourceCursor];
+                }
+
+                break;
+        }
+    }
+    return {accumulatedBounds,
+            acceptedBuffer.first(acceptedCursor),
+            rejectedBuffer.first(rejectedCursor),
+            increase};
+}
+
+#if 0
+template <typename Fn>
+size_t SkScalerCache::commonFilterLoop(SkDrawableGlyphBuffer* accepted, Fn&& fn) {
+    size_t total = 0;
+    for (auto [i, packedID, pos] : SkMakeEnumerate(accepted->input())) {
+        if (SkScalarsAreFinite(pos.x(), pos.y())) {
+            auto [digest, size] = this->digest(packedID);
+            total += size;
+            if (!digest.isEmpty()) {
+                fn(i, digest, pos);
+            }
+        }
+    }
+    return total;
+}
+std::tuple<SkSpan<const SkGlyph*>, size_t> SkScalerCache::internalPrepare(
+        SkSpan<const SkGlyphID> glyphIDs, PathDetail pathDetail, const SkGlyph** results) {
+    const SkGlyph** cursor = results;
+    size_t delta = 0;
+    for (auto glyphID : glyphIDs) {
+        auto [glyph, size] = this->glyph(SkPackedGlyphID{glyphID});
+        delta += size;
+        if (pathDetail == kMetricsAndPath) {
+            size_t pathSize = this->preparePath(glyph);
+            delta += pathSize;
+        }
+        *cursor++ = glyph;
+    }
+
+    return {{results, glyphIDs.size()}, delta};
+}
+#endif
+
 template <typename Fn>
 size_t SkScalerCache::commonFilterLoop(SkDrawableGlyphBuffer* accepted, Fn&& fn) {
     size_t total = 0;

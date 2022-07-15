@@ -16,6 +16,7 @@
 #include "src/core/SkDescriptor.h"
 #include "src/core/SkGlyph.h"
 #include "src/core/SkGlyphRunPainter.h"
+#include "src/text/StrikeForGPU.h"
 
 #include <memory>
 
@@ -95,6 +96,14 @@ public:
 
     std::tuple<SkScalar, size_t>
             findMaximumGlyphDimension(SkSpan<const SkGlyphID> glyphs) SK_EXCLUDES(fMu);
+
+    std::tuple<SkRect, SkZip<SkPackedGlyphID, SkPoint>, SkZip<SkGlyphID, SkPoint>, size_t>
+    filterCandidates(sktext::StrikeForGPU::Preparation preparation,
+                     SkScalar strikeToSourceScale,
+                     SkZip<SkGlyphID, SkPoint> source,
+                     SkZip<SkPackedGlyphID, SkPoint> candidates,
+                     SkZip<SkPackedGlyphID, SkPoint> acceptedBuffer,
+                     SkZip<SkGlyphID, SkPoint> rejectedBuffer);
 
     void dump() const SK_EXCLUDES(fMu);
 
