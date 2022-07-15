@@ -22,6 +22,30 @@
       },
       "revId": "549aadd725a6b825f61f2431525f429c20351823",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a92c505b_5ed685d8",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 793,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-07-15T17:37:15Z",
+      "side": 1,
+      "message": "I would probably just use GenerateDefaultPreamble but, I\u0027m okay either way.",
+      "parentUuid": "c80be838_3a119d26",
+      "range": {
+        "startLine": 793,
+        "startChar": 12,
+        "endLine": 793,
+        "endChar": 23
+      },
+      "revId": "549aadd725a6b825f61f2431525f429c20351823",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
