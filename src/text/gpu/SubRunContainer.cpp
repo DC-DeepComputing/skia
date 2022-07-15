@@ -627,7 +627,7 @@ PathOpSubmitter::PathOpSubmitter(
     SkASSERT(!fPositions.empty());
 }
 
-PathOpSubmitter::~PathOpSubmitter() noexcept {
+PathOpSubmitter::~PathOpSubmitter() {
     // If we have converted glyph IDs to paths, then clean up the SkPaths.
     if (fStrikeRef.getStrikeAndSetToNullptr() == nullptr) {
         for (auto& idOrPath : fIDsOrPaths) {
