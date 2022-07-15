@@ -735,6 +735,9 @@ static constexpr char kMatrixColorFilterName[] = "sk_matrix_colorfilter";
 static constexpr char kErrorName[] = "sk_error";
 
 //--------------------------------------------------------------------------------------------------
+static constexpr char kPassthroughName[] = "sk_passthrough";
+
+//--------------------------------------------------------------------------------------------------
 // This method generates the glue code for the case where the SkBlendMode-based blending is
 // handled with fixed function blending.
 std::string GenerateFixedFunctionBlenderExpression(const SkShaderInfo&,
@@ -987,6 +990,17 @@ SkShaderCodeDictionary::SkShaderCodeDictionary() {
             SnippetRequirementFlags::kNone,
             { },     // no samplers
             kErrorName,
+            GenerateDefaultExpression,
+            GenerateDefaultPreamble,
+            kNoChildren,
+            { }      // no data payload
+    };
+    fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kPassthroughShader] = {
+            "Passthrough",
+            { },     // no uniforms
+            SnippetRequirementFlags::kPriorStageOutput,
+            { },     // no samplers
+            kPassthroughName,
             GenerateDefaultExpression,
             GenerateDefaultPreamble,
             kNoChildren,
