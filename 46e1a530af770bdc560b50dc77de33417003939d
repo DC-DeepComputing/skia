@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ae685f0c_47b9127f",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 369,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-07-15T19:18:14Z",
+      "side": 1,
+      "message": "Don\u0027t we also get duplicates any time there\u0027s multiple Draws that use the same textures? We\u0027d identify the same {paintTextureDataIndex, stepIndex}, but append the same pair each time we see it.\n\nI\u0027m fine leaving it as a TODO, it seems like we\u0027d be able to switch from a vector\u003cpair\u003cindices\u003e\u003e to a map\u003cpair\u003cindices\u003e, index pretty easily in the future.",
+      "range": {
+        "startLine": 368,
+        "startChar": 20,
+        "endLine": 369,
+        "endChar": 91
+      },
+      "revId": "46e1a530af770bdc560b50dc77de33417003939d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "84f04017_82f73c78",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 490,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-07-15T19:18:14Z",
+      "side": 1,
+      "message": "maybe name `collect_textures`?",
+      "range": {
+        "startLine": 490,
+        "startChar": 21,
+        "endLine": 490,
+        "endChar": 48
+      },
+      "revId": "46e1a530af770bdc560b50dc77de33417003939d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8fd7dab1_d595c003",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 499,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-07-15T19:18:14Z",
+      "side": 1,
+      "message": "If we captured `startIndex` in the lambda, and added `numTextures()` to after the loop, this might be a little simpler.",
+      "range": {
+        "startLine": 499,
+        "startChar": 24,
+        "endLine": 499,
+        "endChar": 54
+      },
+      "revId": "46e1a530af770bdc560b50dc77de33417003939d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
