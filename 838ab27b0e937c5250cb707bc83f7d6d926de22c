@@ -74,6 +74,24 @@
       "message": "Herb: I think this is okay, but I\u0027d like you to confirm.",
       "revId": "838ab27b0e937c5250cb707bc83f7d6d926de22c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dde52f9d_90d5ccf5",
+        "filename": "src/text/gpu/SubRunContainer.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 456,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-07-15T14:02:53Z",
+      "side": 1,
+      "message": "I don\u0027t think this works. This is GPU generic code. Can you pass in the surfaceProps separately?",
+      "parentUuid": "751bf72b_599a299b",
+      "revId": "838ab27b0e937c5250cb707bc83f7d6d926de22c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
