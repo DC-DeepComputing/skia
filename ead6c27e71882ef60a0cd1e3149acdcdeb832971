@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "42245972_734a1ed4",
+        "filename": "src/text/gpu/SubRunContainer.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 543,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-07-15T15:26:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ddef382c_8eb0ae16",
+      "range": {
+        "startLine": 543,
+        "startChar": 39,
+        "endLine": 543,
+        "endChar": 45
+      },
+      "revId": "ead6c27e71882ef60a0cd1e3149acdcdeb832971",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "187ebfcf_8864818d",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-07-15T14:36:16Z",
       "side": 1,
       "message": "missing \u0027 \u0027",
+      "range": {
+        "startLine": 2681,
+        "startChar": 46,
+        "endLine": 2681,
+        "endChar": 47
+      },
+      "revId": "ead6c27e71882ef60a0cd1e3149acdcdeb832971",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "99a1b7ba_23d57daf",
+        "filename": "src/text/gpu/SubRunContainer.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 2681,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-07-15T15:26:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "187ebfcf_8864818d",
       "range": {
         "startLine": 2681,
         "startChar": 46,
