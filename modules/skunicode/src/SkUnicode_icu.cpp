@@ -142,11 +142,6 @@ class SkBreakIterator_icu : public SkBreakIterator {
       { return fLastResult = sk_ubrk_current(fBreakIterator.get()); }
     Position next() override
       { return fLastResult = sk_ubrk_next(fBreakIterator.get()); }
-    Position preceding(Position offset) override
-        { return fLastResult = sk_ubrk_preceding(fBreakIterator.get(), offset); }
-    Position following(Position offset) override
-        { return fLastResult = sk_ubrk_following(fBreakIterator.get(), offset);}
-    Status status() override { return sk_ubrk_getRuleStatus(fBreakIterator.get()); }
     bool isDone() override { return fLastResult == UBRK_DONE; }
 
     bool setText(const char utftext8[], int utf8Units) override {
@@ -224,6 +219,15 @@ class SkIcuBreakIteratorCache {
 };
 
 class SkUnicode_icu : public SkUnicode {
+
+    bool fill(SkSpan<const char> text,
+              std::vector<BidiRegion> bidiRegions,
+              std::vector<Position> grapemes,
+              std::vector<LineBreakBefore> lineBreaks) override {
+        SkASSERT(false);
+        return false;
+    }
+
     static bool extractBidi(const char utf8[],
                             int utf8Units,
                             TextDirection dir,
@@ -392,6 +396,8 @@ class SkUnicode_icu : public SkUnicode {
         auto property = sk_u_getIntPropertyValue(utf8, UCHAR_LINE_BREAK);
         return property == U_LB_LINE_FEED || property == U_LB_MANDATORY_BREAK;
     }
+
+
 
 public:
     ~SkUnicode_icu() override { }
