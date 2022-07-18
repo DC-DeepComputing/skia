@@ -91,6 +91,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a10735f1_e0ccc07a",
+        "filename": "bazel/external/freetype/BUILD.bazel",
+        "patchSetId": 8
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-07-18T17:27:10Z",
+      "side": 1,
+      "message": "Ah, `RULEDIR` is actually the output directory of the target... so this comment seems... misleading as it was?",
+      "parentUuid": "291de8b7_72b77112",
+      "revId": "bea460211babef921b4326ee0cb2ec21fdee755c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "446bf6b9_6df7b903",
         "filename": "bazel/external/freetype/config/no-type1",
         "patchSetId": 8
