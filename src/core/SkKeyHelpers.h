@@ -68,6 +68,7 @@ struct GradientShaderBlocks {
                      float radius0, float radius1,
                      float bias, float scale,
                      SkTileMode,
+                     bool interpInPremul,
                      int numStops,
                      SkColor4f* colors,
                      float* offsets);
@@ -82,8 +83,9 @@ struct GradientShaderBlocks {
                    fBias == rhs.fBias &&
                    fScale == rhs.fScale &&
                    fTM == rhs.fTM &&
+                   fInterpInPremul == rhs.fInterpInPremul &&
                    fNumStops == rhs.fNumStops &&
-                   !memcmp(fColor4fs, rhs.fColor4fs, sizeof(fColor4fs)) &&
+                   !memcmp(fPMColor4fs, rhs.fPMColor4fs, sizeof(fPMColor4fs)) &&
                    !memcmp(fOffsets, rhs.fOffsets, sizeof(fOffsets));
         }
         bool operator!=(const GradientData& rhs) const { return !(*this == rhs); }
@@ -99,8 +101,11 @@ struct GradientShaderBlocks {
         float                  fScale;
 
         SkTileMode             fTM;
+        bool                   fInterpInPremul;
         int                    fNumStops;
-        SkColor4f              fColor4fs[kMaxStops];
+        // If 'fInterpInPremul' is true these will be premul colors otherwise they will be
+        // unpremul and a premul step will be required after interpolation.
+        SkPMColor4f            fPMColor4fs[kMaxStops];
         float                  fOffsets[kMaxStops];
     };
 
