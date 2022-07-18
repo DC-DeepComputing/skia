@@ -142,6 +142,7 @@ public:
     void write(const SkM44& mat) { fUniformManager.write(mat); }
     void write(const SkColor4f* colors, int numColors) { fUniformManager.write(colors, numColors); }
     void write(const SkPMColor4f& premulColor) { fUniformManager.write(&premulColor, 1); }
+    void write(const SkPMColor4f* pmColors, int numColors) { fUniformManager.write(pmColors, numColors); }
     void write(const SkRect& rect) { fUniformManager.write(rect); }
     void write(SkPoint point) { fUniformManager.write(point); }
     void write(const float* floats, int count) { fUniformManager.write(floats, count); }

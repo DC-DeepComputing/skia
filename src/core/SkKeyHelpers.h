@@ -68,6 +68,7 @@ struct GradientShaderBlocks {
                      float radius0, float radius1,
                      float bias, float scale,
                      SkTileMode,
+                     bool interpInPremul,
                      int numStops,
                      SkColor4f* colors,
                      float* offsets);
@@ -81,9 +82,10 @@ struct GradientShaderBlocks {
                    fRadii[1] == rhs.fRadii[1] &&
                    fBias == rhs.fBias &&
                    fScale == rhs.fScale &&
-                   fTM == rhs.fTM &&
+                   fTM1 == rhs.fTM1 &&
+                   fInterpInPremul == rhs.fInterpInPremul &&
                    fNumStops == rhs.fNumStops &&
-                   !memcmp(fColor4fs, rhs.fColor4fs, sizeof(fColor4fs)) &&
+                   !memcmp(fPMColor4fs, rhs.fPMColor4fs, sizeof(fPMColor4fs)) &&
                    !memcmp(fOffsets, rhs.fOffsets, sizeof(fOffsets));
         }
         bool operator!=(const GradientData& rhs) const { return !(*this == rhs); }
@@ -98,9 +100,10 @@ struct GradientShaderBlocks {
         float                  fBias;
         float                  fScale;
 
-        SkTileMode             fTM;
+        SkTileMode             fTM1;
+        bool                   fInterpInPremul;
         int                    fNumStops;
-        SkColor4f              fColor4fs[kMaxStops];
+        SkPMColor4f            fPMColor4fs[kMaxStops];
         float                  fOffsets[kMaxStops];
     };
 

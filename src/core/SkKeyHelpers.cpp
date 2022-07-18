@@ -110,11 +110,12 @@ void add_linear_gradient_uniform_data(const SkShaderCodeDictionary* dict,
     }
 
     gatherer->write(lmInverse);
-    gatherer->write(gradData.fColor4fs, stops);
+    gatherer->write(gradData.fPMColor4fs, stops);
     gatherer->write(gradData.fOffsets, stops);
     gatherer->write(gradData.fPoints[0]);
     gatherer->write(gradData.fPoints[1]);
-    gatherer->write(static_cast<int>(gradData.fTM));
+    gatherer->write(static_cast<int>(gradData.fTM1));
+    gatherer->write(static_cast<int>(gradData.fInterpInPremul));
 
     gatherer->addFlags(dict->getSnippetRequirementFlags(codeSnippetID));
 };
@@ -133,11 +134,12 @@ void add_radial_gradient_uniform_data(const SkShaderCodeDictionary* dict,
     }
 
     gatherer->write(lmInverse);
-    gatherer->write(gradData.fColor4fs, stops);
+    gatherer->write(gradData.fPMColor4fs, stops);
     gatherer->write(gradData.fOffsets, stops);
     gatherer->write(gradData.fPoints[0]);
     gatherer->write(gradData.fRadii[0]);
-    gatherer->write(static_cast<int>(gradData.fTM));
+    gatherer->write(static_cast<int>(gradData.fTM1));
+    gatherer->write(static_cast<int>(gradData.fInterpInPremul));
 
     gatherer->addFlags(dict->getSnippetRequirementFlags(codeSnippetID));
 };
@@ -156,12 +158,13 @@ void add_sweep_gradient_uniform_data(const SkShaderCodeDictionary* dict,
     }
 
     gatherer->write(lmInverse);
-    gatherer->write(gradData.fColor4fs, stops);
+    gatherer->write(gradData.fPMColor4fs, stops);
     gatherer->write(gradData.fOffsets, stops);
     gatherer->write(gradData.fPoints[0]);
     gatherer->write(gradData.fBias);
     gatherer->write(gradData.fScale);
-    gatherer->write(static_cast<int>(gradData.fTM));
+    gatherer->write(static_cast<int>(gradData.fTM1));
+    gatherer->write(static_cast<int>(gradData.fInterpInPremul));
 
     gatherer->addFlags(dict->getSnippetRequirementFlags(codeSnippetID));
 };
@@ -180,13 +183,14 @@ void add_conical_gradient_uniform_data(const SkShaderCodeDictionary* dict,
     }
 
     gatherer->write(lmInverse);
-    gatherer->write(gradData.fColor4fs, stops);
+    gatherer->write(gradData.fPMColor4fs, stops);
     gatherer->write(gradData.fOffsets, stops);
     gatherer->write(gradData.fPoints[0]);
     gatherer->write(gradData.fPoints[1]);
     gatherer->write(gradData.fRadii[0]);
     gatherer->write(gradData.fRadii[1]);
-    gatherer->write(static_cast<int>(gradData.fTM));
+    gatherer->write(static_cast<int>(gradData.fTM1));
+    gatherer->write(static_cast<int>(gradData.fInterpInPremul));
 
     gatherer->addFlags(dict->getSnippetRequirementFlags(codeSnippetID));
 };
@@ -202,9 +206,10 @@ GradientShaderBlocks::GradientData::GradientData(SkShader::GradientType type,
         , fRadii{0.0f, 0.0f}
         , fBias(0.0f)
         , fScale(0.0f)
-        , fTM(SkTileMode::kClamp)
+        , fTM1(SkTileMode::kClamp)
+        , fInterpInPremul(false)
         , fNumStops(numStops) {
-    sk_bzero(fColor4fs, sizeof(fColor4fs));
+    sk_bzero(fPMColor4fs, sizeof(fPMColor4fs));
     sk_bzero(fOffsets, sizeof(fOffsets));
 }
 
@@ -214,6 +219,7 @@ GradientShaderBlocks::GradientData::GradientData(SkShader::GradientType type,
                                                  float radius0, float radius1,
                                                  float bias, float scale,
                                                  SkTileMode tm,
+                                                 bool interpInPremul,
                                                  int numStops,
                                                  SkColor4f* color4fs,
                                                  float* offsets)
@@ -221,7 +227,8 @@ GradientShaderBlocks::GradientData::GradientData(SkShader::GradientType type,
         , fLocalMatrix(localMatrix)
         , fBias(bias)
         , fScale(scale)
-        , fTM(tm)
+        , fTM1(tm)
+        , fInterpInPremul(interpInPremul)
         , fNumStops(std::min(numStops, kMaxStops)) {
     SkASSERT(fNumStops >= 1);
 
@@ -229,7 +236,13 @@ GradientShaderBlocks::GradientData::GradientData(SkShader::GradientType type,
     fPoints[1] = point1;
     fRadii[0] = radius0;
     fRadii[1] = radius1;
-    memcpy(fColor4fs, color4fs, fNumStops * sizeof(SkColor4f));
+
+    for (int i = 0; i < fNumStops; ++i) {
+        const SkColor4f& upmColor = color4fs[i];
+        fPMColor4fs[i] = interpInPremul ? upmColor.premul()
+                                       : SkPMColor4f{ upmColor.fR, upmColor.fG, upmColor.fB, upmColor.fA };
+    }
+
     if (offsets) {
         memcpy(fOffsets, offsets, fNumStops * sizeof(float));
     } else {
@@ -241,7 +254,7 @@ GradientShaderBlocks::GradientData::GradientData(SkShader::GradientType type,
     // Extend the colors and offset, if necessary, to fill out the arrays
     // TODO: this should be done later when the actual code snippet has been selected!!
     for (int i = fNumStops ; i < kMaxStops; ++i) {
-        fColor4fs[i] = fColor4fs[fNumStops-1];
+        fPMColor4fs[i] = fPMColor4fs[fNumStops-1];
         fOffsets[i] = fOffsets[fNumStops-1];
     }
 }

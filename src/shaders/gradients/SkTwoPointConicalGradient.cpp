@@ -291,6 +291,7 @@ void SkTwoPointConicalGradient::addToKey(const SkKeyContext& keyContext,
                                             fRadius1, fRadius2,
                                             0.0f, 0.0f,
                                             fTileMode,
+                                            this->interpolateInPremul(),
                                             fColorCount,
                                             fOrigColors4f,
                                             fOrigPos);

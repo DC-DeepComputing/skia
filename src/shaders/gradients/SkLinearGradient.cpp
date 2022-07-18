@@ -119,6 +119,7 @@ void SkLinearGradient::addToKey(const SkKeyContext& keyContext,
                                             0.0f, 0.0f,
                                             0.0f, 0.0f,
                                             fTileMode,
+                                            this->interpolateInPremul(),
                                             fColorCount,
                                             fOrigColors4f,
                                             fOrigPos);
