@@ -56,6 +56,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "26bea31b_8b912cd5",
+        "filename": "bazel/external/freetype/BUILD.bazel",
+        "patchSetId": 8
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-07-18T17:27:01Z",
+      "side": 1,
+      "message": "The copy does not end up in third_party/externals/freetype/include/ after running this - the copy exists in Bazel\u0027s sandbox during compilation (I think of this as \"the generated zone\")\n\nIf you run `bazel build @freetype//:freetype`, Bazel *will* invoke any genrules that create necessary input files, so it will run the genrules.",
+      "parentUuid": "f716146a_d0f46e77",
+      "revId": "bea460211babef921b4326ee0cb2ec21fdee755c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "291de8b7_72b77112",
         "filename": "bazel/external/freetype/BUILD.bazel",
         "patchSetId": 8
