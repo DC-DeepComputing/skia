@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "62832894_60efeb37",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-07-18T17:58:32Z",
+      "side": 1,
+      "message": "Waiting till we get a recent G3 roll because this might require an autoroller change.",
+      "revId": "c38622371a83e40f38b3c20262b5e15fd0cdfd63",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
