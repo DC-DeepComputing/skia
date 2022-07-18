@@ -107,6 +107,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "35d151a9_9ef2c59a",
+        "filename": "bazel/external/freetype/BUILD.bazel",
+        "patchSetId": 8
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-07-18T17:32:37Z",
+      "side": 1,
+      "message": "Updated wording to make the fact that these generated files don\u0027t end up in the repo more clear.",
+      "parentUuid": "a10735f1_e0ccc07a",
+      "revId": "bea460211babef921b4326ee0cb2ec21fdee755c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "446bf6b9_6df7b903",
