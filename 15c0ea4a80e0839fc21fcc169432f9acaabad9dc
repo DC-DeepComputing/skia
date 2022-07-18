@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8f257943_4a34b0e5",
+        "filename": "src/sksl/codegen/SkSLSPIRVtoHLSL.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-07-18T17:39:34Z",
+      "side": 1,
+      "message": "Just looked at this and thought... will this break a g3 build? I don\u0027t know, but it looks suspicious.",
+      "revId": "15c0ea4a80e0839fc21fcc169432f9acaabad9dc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
