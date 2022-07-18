@@ -72,9 +72,8 @@ void TextDirectRenderStep::writeUniforms(const DrawParams& params,
                                          SkPipelineDataGatherer* gatherer) const {
     SkDEBUGCODE(UniformExpectationsValidator uev(gatherer, this->uniforms());)
 
-    // TODO: get this from the actual texture size via the SubRunData
-    skvx::float2 atlasDimensionsInverse = {1.f/1024, 1.f/1024};
-    gatherer->write(atlasDimensionsInverse);
+    skvx::float2 depth = {1.f/1024, 1.f/1024};
+    gatherer->write(depth);
 }
 
 }  // namespace skgpu::graphite
