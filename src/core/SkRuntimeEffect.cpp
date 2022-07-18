@@ -1016,6 +1016,13 @@ public:
     }
 #endif
 
+    void addToKey(const SkKeyContext& keyContext,
+                  SkPaintParamsKeyBuilder* builder,
+                  SkPipelineDataGatherer* gatherer) const override {
+        RuntimeColorFilterBlock::BeginBlock(keyContext, builder, gatherer, {fEffect, fUniforms});
+        builder->endBlock();
+    }
+
     bool onAppendStages(const SkStageRec& rec, bool shaderIsOpaque) const override {
         return false;
     }
