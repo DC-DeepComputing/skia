@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "90615365_375091d3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-07-18T14:31:24Z",
+      "side": 1,
+      "message": "The canary links are in a little bit of a funny state, but chrome and g3 both pass. I landed layout test suppressions for a few images in chromium (https://chromium-review.googlesource.com/c/chromium/src/+/3758676) and disabled a unit test in g3 (https://critique.corp.google.com/cl/461599369/analysis) that would have blocked this roll. \n\nAll the test failures from the canaries and the gold diffs appear to be off-by-1s from rounding. The GPU shows so many changes because we go through this code path when packing a float4 color into a uint32 for vertex attribute data.",
+      "revId": "3595972bd0f30735ed4437f5b7dce94653ca64c0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
