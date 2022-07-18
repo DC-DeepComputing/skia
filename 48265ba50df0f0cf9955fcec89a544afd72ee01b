@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8d8fd362_d3fc851d",
+        "filename": "toolchain/download_linux_amd64_toolchain.bzl",
+        "patchSetId": 4
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-07-18T17:55:09Z",
+      "side": 1,
+      "message": "It would be really nice to try to use 2.14.0 since it\u0027s ~3 years newer than 2.13.1 and contains a whole bunch of fixes for thread races, data corruption, not looking like it leaks, etc. On the other hand there\u0027s probably a bunch of stuff like weight matching that won\u0027t work anymore, I should test that. Even though it was released three months ago I see no debian activity to update, nor any pushback on the issue tracker. I should take a look into that...",
+      "revId": "48265ba50df0f0cf9955fcec89a544afd72ee01b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
