@@ -16,6 +16,24 @@
       "message": "I think passing in coords to these functions is the right direction, but I am not sure the \u0027dev2Local\u0027 matrix should be included in every helper function.\n\nThe dev2Local matrix should be used once at the root to convert sk_FragCoord to the initial local coords, and then every level within the shader tree should just transform the coords as needed (concat a local matrix, or use an explicit formula override, etc).",
       "revId": "ce4eec8e94ab38353d25288aadfe99826e3b37e0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9483d7e4_e0c214f3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-07-18T13:24:06Z",
+      "side": 1,
+      "message": "I didn\u0027t think applying the dev2Local at the beginning of main() would give the same results as applying it at the end, after all the local-matrices have been applied. It seems like it would give a different results (matrix-mult is non-commutative). But it definitely makes my life much easier if we can do it once at the front of main(). Please explain.",
+      "parentUuid": "78cb185b_e0f858d3",
+      "revId": "ce4eec8e94ab38353d25288aadfe99826e3b37e0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
