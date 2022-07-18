@@ -16,6 +16,24 @@
       "message": "Any issues with removing this? It\u0027s not in use by our bots, is it? I used cs/, but I don\u0027t know where buildbot code can be searched.\n\nAdy suggested that if we want this information, `dumpsys` would be a more stable place to get it from.",
       "revId": "3d3a7eedc48cd81f228946dc41110083f5399aa5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "193877a1_09e55415",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5145
+      },
+      "writtenOn": "2022-07-18T14:57:01Z",
+      "side": 1,
+      "message": "I think as long as our CQ bots (and later the status bots) are green then that should be good enough.\n\nI did not see any references to measure_fps in the buildbot repo.",
+      "parentUuid": "c5f6acd4_9bd50429",
+      "revId": "3d3a7eedc48cd81f228946dc41110083f5399aa5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
