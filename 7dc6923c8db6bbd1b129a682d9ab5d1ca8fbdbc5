@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "14cf6e3b_a23823e5",
+        "filename": "src/shaders/gradients/SkTwoPointConicalGradient.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 608,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-07-18T17:00:17Z",
+      "side": 1,
+      "message": "#undef EXPAND_1_COLOR",
+      "revId": "7dc6923c8db6bbd1b129a682d9ab5d1ca8fbdbc5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
