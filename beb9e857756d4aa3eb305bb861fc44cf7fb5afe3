@@ -22,6 +22,30 @@
       },
       "revId": "beb9e857756d4aa3eb305bb861fc44cf7fb5afe3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6525d890_bba310a3",
+        "filename": "src/gpu/graphite/ContextUtils.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-07-18T16:54:03Z",
+      "side": 1,
+      "message": "That\u0027s true, is this something that we can unconditionally extract from the DrawParams? Or do we need to have `textureDataBlock` take the DrawParams as an object so that RenderSteps can virtually determine the textures from the params?",
+      "parentUuid": "e7905b52_d2a18e53",
+      "range": {
+        "startLine": 70,
+        "startChar": 40,
+        "endLine": 70,
+        "endChar": 62
+      },
+      "revId": "beb9e857756d4aa3eb305bb861fc44cf7fb5afe3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
