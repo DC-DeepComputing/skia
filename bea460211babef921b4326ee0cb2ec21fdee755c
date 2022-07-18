@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3976ef6e_2186de4a",
+        "filename": "bazel/external/freetype/BUILD.bazel",
+        "patchSetId": 8
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-07-18T17:22:28Z",
+      "side": 1,
+      "message": "I had considered `git_repository`\u0027s `patches` attribute but that doesn\u0027t work for 2 reasons: 1) We use git-sync-deps to download the repos (currently) and 2) It seemed a bit awkward to store file content in a patch-format instead of the file itself.\n\nAt some point we\u0027ll stop doing 1), but even then 2) feels a bit cumbersome.\n\nI just tried `builds/skia/...`, but that ran into the strip prefix issue I was seeing before, so I had to go with `include/skia/...`",
+      "parentUuid": "552ab1b2_80a0f1e4",
+      "revId": "bea460211babef921b4326ee0cb2ec21fdee755c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "446bf6b9_6df7b903",
@@ -31,6 +49,24 @@
       "writtenOn": "2022-07-18T17:01:40Z",
       "side": 1,
       "message": "This file is a git symlink? That would seem to become a headache on Windows?",
+      "revId": "bea460211babef921b4326ee0cb2ec21fdee755c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0eff2804_f50a774b",
+        "filename": "bazel/external/freetype/config/no-type1",
+        "patchSetId": 8
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-07-18T17:22:28Z",
+      "side": 1,
+      "message": "This is a normal symlink, checked in to git. You are right that probably won\u0027t work on Windows, but none of our Bazel builds work on Windows either.\n\nI went with symlinks instead of copies because I though the copies might diverge over time. We can revisit this (and move the source of truth here) at some point in the future when we are ready to have a Windows toolchain etc.",
+      "parentUuid": "446bf6b9_6df7b903",
       "revId": "bea460211babef921b4326ee0cb2ec21fdee755c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
