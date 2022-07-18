@@ -312,7 +312,7 @@ bool SkGradientShaderBase::onAppendStages(const SkStageRec& rec) const {
             break;
     }
 
-    const bool premulGrad = fGradFlags & SkGradientShader::kInterpolateColorsInPremul_Flag;
+    const bool premulGrad = this->interpolateInPremul();
 
     // Transform all of the colors to destination color space
     SkColor4fXformer xformedColors(fOrigColors4f, fColorCount, fColorSpace.get(), rec.fDstCS);
@@ -467,7 +467,7 @@ skvm::Color SkGradientShaderBase::onProgram(skvm::Builder* p,
                                                         , kUnpremul_SkAlphaType),
                 src    = common.makeColorSpace(fColorSpace),
                 dst    = common.makeColorSpace(dstInfo.refColorSpace());
-    if (fGradFlags & SkGradientShader::kInterpolateColorsInPremul_Flag) {
+    if (this->interpolateInPremul()) {
         dst = dst.makeAlphaType(kPremul_SkAlphaType);
     }
 
@@ -586,8 +586,7 @@ skvm::Color SkGradientShaderBase::onProgram(skvm::Builder* p,
     }
 
     // If we interpolated unpremul, premul now to match our output convention.
-    if (0 == (fGradFlags & SkGradientShader::kInterpolateColorsInPremul_Flag)
-            && !fColorsAreOpaque) {
+    if (!this->interpolateInPremul() && !fColorsAreOpaque) {
         color = premul(color);
     }
 
