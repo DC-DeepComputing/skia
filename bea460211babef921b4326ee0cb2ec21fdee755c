@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "552ab1b2_80a0f1e4",
+        "filename": "bazel/external/freetype/BUILD.bazel",
+        "patchSetId": 8
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-07-18T17:01:40Z",
+      "side": 1,
+      "message": "So these are copied into the freetype directory directly, which seems a bit awkward. FreeType already has a top level `builds/` directory which is a lot like this, with various customizations like this. Of course, these are generally applied at configure time, which would be like applying these patches directly with `git_repository`\u0027s `patches` attribute. However, we want to pick between these at build time and bazel doesn\u0027t really have a separate \"configure\" phase like that.\n\nIn any event, I wish there were a better way to do this but I\u0027m not seeing one at the moment. If we do this I would prefer that the includes be copied to `builds/skia/no-type1` and `builds/skia/android`. Failing that, `include/skia/no-type1` or something like that so that it\u0027s obvious that Skia\u0027s build is the one dropping these in there.",
+      "revId": "bea460211babef921b4326ee0cb2ec21fdee755c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "446bf6b9_6df7b903",
+        "filename": "bazel/external/freetype/config/no-type1",
+        "patchSetId": 8
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-07-18T17:01:40Z",
+      "side": 1,
+      "message": "This file is a git symlink? That would seem to become a headache on Windows?",
+      "revId": "bea460211babef921b4326ee0cb2ec21fdee755c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
