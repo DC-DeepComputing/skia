@@ -16,6 +16,24 @@
       "message": "Just looked at this and thought... will this break a g3 build? I don\u0027t know, but it looks suspicious.",
       "revId": "15c0ea4a80e0839fc21fcc169432f9acaabad9dc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "87d7f762_7448d31d",
+        "filename": "src/sksl/codegen/SkSLSPIRVtoHLSL.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-07-18T17:49:03Z",
+      "side": 1,
+      "message": "I would sure hope not. SK_ENABLE_SPIRV_CROSS is only set when building skslc [1] and anything in externals is not visible from G3.\n\n[1] https://github.com/google/skia/blob/c4293ae1835cb652466321254cecc19ae78a28da/BUILD.gn#L718",
+      "parentUuid": "8f257943_4a34b0e5",
+      "revId": "15c0ea4a80e0839fc21fcc169432f9acaabad9dc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
