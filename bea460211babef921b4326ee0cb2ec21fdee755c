@@ -38,6 +38,41 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f716146a_d0f46e77",
+        "filename": "bazel/external/freetype/BUILD.bazel",
+        "patchSetId": 8
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-07-18T17:23:27Z",
+      "side": 1,
+      "message": "Though maybe I should just try it out and see what Bazel actually does here? Does the effect of the `cp` here actually persist after the build? Does this work with `bazel build` (it should work with `bazel run`... In any event, the actual side effects of this are difficult to reason about, so it would be nice to be simpler.",
+      "parentUuid": "552ab1b2_80a0f1e4",
+      "revId": "bea460211babef921b4326ee0cb2ec21fdee755c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "291de8b7_72b77112",
+        "filename": "bazel/external/freetype/BUILD.bazel",
+        "patchSetId": 8
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-07-18T17:23:27Z",
+      "side": 1,
+      "message": "Should these be updated? With the change to the WORKSPACE.bazel these are now two different directories. Is this still the `RULEDIR` since the `build_file` and `path` are now in different places?",
+      "revId": "bea460211babef921b4326ee0cb2ec21fdee755c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "446bf6b9_6df7b903",
         "filename": "bazel/external/freetype/config/no-type1",
         "patchSetId": 8
