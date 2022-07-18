@@ -22,6 +22,30 @@
       },
       "revId": "27919a5314948f12d703cab37bffb7f931cdd139",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "63523cb2_e537156b",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 647,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-07-18T18:23:15Z",
+      "side": 1,
+      "message": "Fixed thanks to Michael\u0027s helpful explanation in http://review.skia.org/558731",
+      "parentUuid": "f3f70c11_694a07e9",
+      "range": {
+        "startLine": 645,
+        "startChar": 8,
+        "endLine": 647,
+        "endChar": 56
+      },
+      "revId": "27919a5314948f12d703cab37bffb7f931cdd139",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
