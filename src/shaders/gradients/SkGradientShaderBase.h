@@ -65,7 +65,9 @@ public:
 
     bool isOpaque() const override;
 
-    uint32_t getGradFlags() const { return fGradFlags; }
+    bool inputColorsArePremul() const {
+        return fGradFlags & SkGradientShader::kInterpolateColorsInPremul_Flag;
+    }
 
     const SkMatrix& getGradientMatrix() const { return fPtsToUnit; }
 
@@ -122,7 +124,7 @@ protected:
     }
 
     const SkMatrix fPtsToUnit;
-    SkTileMode      fTileMode;
+    SkTileMode     fTileMode;
     uint8_t        fGradFlags;
 
 public:
