@@ -729,6 +729,15 @@ static constexpr SkUniform kBlendColorFilterUniforms[] = {
 static constexpr char kBlendColorFilterName[] = "sk_blend_colorfilter";
 
 //--------------------------------------------------------------------------------------------------
+static constexpr SkUniform kComposeColorFilterUniforms[] = {
+        { "temp-remove", SkSLType::kInt },
+};
+
+static constexpr int kNumComposeColorFilterChildren = 2;
+
+static constexpr char kComposeColorFilterName[] = "sk_compose_colorfilter";
+
+//--------------------------------------------------------------------------------------------------
 static constexpr char kErrorName[] = "sk_error";
 
 //--------------------------------------------------------------------------------------------------
@@ -1152,7 +1161,19 @@ SkShaderCodeDictionary::SkShaderCodeDictionary() {
             kNoChildren,
             { }      // no data payload
     };
+    fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kComposeColorFilter] = {
+            "ComposeColorFilter",
+            SkSpan(kComposeColorFilterUniforms),
+            SnippetRequirementFlags::kPriorStageOutput,
+            { },     // no samplers
+            kComposeColorFilterName,
+            GenerateDefaultExpression,
+            GenerateDefaultPreamble,
+            kNumComposeColorFilterChildren,
+            { }
+    };
 
+    // Blender snippets
     fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kFixedFunctionBlender] = {
             "FixedFunctionBlender",
             { },     // no uniforms

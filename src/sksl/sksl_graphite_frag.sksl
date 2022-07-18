@@ -506,6 +506,10 @@ half4 sk_matrix_colorfilter(half4 colorIn,
     return colorOut;
 }
 
+half4 sk_compose_colorfilter() {
+
+}
+
 half4 sk_blend(int blendMode, half4 src, half4 dst) {
     const int kClear      = 0;
     const int kSrc        = 1;

@@ -567,6 +567,46 @@ void BlendColorFilterBlock::BeginBlock(const SkKeyContext& keyContext,
 }
 
 //--------------------------------------------------------------------------------------------------
+
+#ifdef SK_GRAPHITE_ENABLED
+
+namespace {
+
+void add_compose_colorfilter_uniform_data(const SkShaderCodeDictionary* dict,
+                                          const ComposeColorFilterBlock::ComposeColorFilterData& data,
+                                          SkPipelineDataGatherer* gatherer) {
+    VALIDATE_UNIFORMS(gatherer, dict, SkBuiltInCodeSnippetID::kComposeColorFilter)
+
+    gatherer->addFlags(
+            dict->getSnippetRequirementFlags(SkBuiltInCodeSnippetID::kComposeColorFilter));
+}
+
+} // anonymous namespace
+
+#endif // SK_GRAPHITE_ENABLED
+
+void ComposeColorFilterBlock::BeginBlock(const SkKeyContext& keyContext,
+                                         SkPaintParamsKeyBuilder* builder,
+                                         SkPipelineDataGatherer* gatherer,
+                                         const ComposeColorFilterData& composeCFData) {
+#ifdef SK_GRAPHITE_ENABLED
+    if (builder->backend() == SkBackend::kGraphite) {
+        auto dict = keyContext.dict();
+
+        if (gatherer) {
+            add_compose_colorfilter_uniform_data(dict, composeCFData, gatherer);
+        }
+
+        builder->beginBlock(SkBuiltInCodeSnippetID::kComposeColorFilter);
+    }
+#endif // SK_GRAPHITE_ENABLED
+
+    if (builder->backend() == SkBackend::kSkVM || builder->backend() == SkBackend::kGanesh) {
+        // TODO: add implementation for other backends
+    }
+}
+
+//--------------------------------------------------------------------------------------------------
 #ifdef SK_GRAPHITE_ENABLED
 namespace {
 
