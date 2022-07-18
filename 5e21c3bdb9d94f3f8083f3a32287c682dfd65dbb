@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "58eb6060_198fcae6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-07-18T21:37:41Z",
+      "side": 1,
+      "message": "I went with the \"remember the original edge type\" solution. Thanks to pointer alignment, neither edge structure got any bigger (on 64-bit machines). I also added a copy-paste (with slight rewrite) of my giant chat comment to the bug, for posterity. Let me know if you think I should add comments somewhere (maybe near the combineVertical code)?",
+      "revId": "5e21c3bdb9d94f3f8083f3a32287c682dfd65dbb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
