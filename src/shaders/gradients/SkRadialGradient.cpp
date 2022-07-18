@@ -140,6 +140,7 @@ void SkRadialGradient::addToKey(const SkKeyContext& keyContext,
                                             fRadius, 0.0f,
                                             0.0f, 0.0f,
                                             fTileMode,
+                                            this->interpolateInPremul(),
                                             fColorCount,
                                             fOrigColors4f,
                                             fOrigPos);

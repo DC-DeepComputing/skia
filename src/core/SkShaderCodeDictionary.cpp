@@ -427,6 +427,7 @@ static constexpr SkUniform kLinearGradientUniforms4[] = {
         { "point0",      SkSLType::kFloat2 },
         { "point1",      SkSLType::kFloat2 },
         { "tilemode",    SkSLType::kInt },
+        { "interpInPremul", SkSLType::kInt },
 };
 static constexpr SkUniform kLinearGradientUniforms8[] = {
         { "localMatrix", SkSLType::kFloat4x4 },
@@ -435,6 +436,7 @@ static constexpr SkUniform kLinearGradientUniforms8[] = {
         { "point0",      SkSLType::kFloat2 },
         { "point1",      SkSLType::kFloat2 },
         { "tilemode",    SkSLType::kInt },
+        { "interpInPremul", SkSLType::kInt },
 };
 
 static constexpr SkUniform kRadialGradientUniforms4[] = {
@@ -444,6 +446,7 @@ static constexpr SkUniform kRadialGradientUniforms4[] = {
         { "center",      SkSLType::kFloat2 },
         { "radius",      SkSLType::kFloat },
         { "tilemode",    SkSLType::kInt },
+        { "interpInPremul", SkSLType::kInt },
 };
 static constexpr SkUniform kRadialGradientUniforms8[] = {
         { "localMatrix", SkSLType::kFloat4x4 },
@@ -452,6 +455,7 @@ static constexpr SkUniform kRadialGradientUniforms8[] = {
         { "center",      SkSLType::kFloat2 },
         { "radius",      SkSLType::kFloat },
         { "tilemode",    SkSLType::kInt },
+        { "interpInPremul", SkSLType::kInt },
 };
 
 static constexpr SkUniform kSweepGradientUniforms4[] = {
@@ -462,6 +466,7 @@ static constexpr SkUniform kSweepGradientUniforms4[] = {
         { "bias",        SkSLType::kFloat },
         { "scale",       SkSLType::kFloat },
         { "tilemode",    SkSLType::kInt },
+        { "interpInPremul", SkSLType::kInt },
 };
 static constexpr SkUniform kSweepGradientUniforms8[] = {
         { "localMatrix", SkSLType::kFloat4x4 },
@@ -471,6 +476,7 @@ static constexpr SkUniform kSweepGradientUniforms8[] = {
         { "bias",        SkSLType::kFloat },
         { "scale",       SkSLType::kFloat },
         { "tilemode",    SkSLType::kInt },
+        { "interpInPremul", SkSLType::kInt },
 };
 
 static constexpr SkUniform kConicalGradientUniforms4[] = {
@@ -482,6 +488,7 @@ static constexpr SkUniform kConicalGradientUniforms4[] = {
         { "radius0",     SkSLType::kFloat },
         { "radius1",     SkSLType::kFloat },
         { "tilemode",    SkSLType::kInt },
+        { "interpInPremul", SkSLType::kInt },
 };
 static constexpr SkUniform kConicalGradientUniforms8[] = {
         { "localMatrix", SkSLType::kFloat4x4 },
@@ -492,6 +499,7 @@ static constexpr SkUniform kConicalGradientUniforms8[] = {
         { "radius0",     SkSLType::kFloat },
         { "radius1",     SkSLType::kFloat },
         { "tilemode",    SkSLType::kInt },
+        { "interpInPremul", SkSLType::kInt },
 };
 
 static constexpr char kLinearGradient4Name[] = "sk_linear_grad_4_shader";
