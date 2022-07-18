@@ -287,10 +287,10 @@ const Sk4fGradientInterval* Sk4fGradientIntervalBuffer::findNext(
 SkGradientShaderBase::
 GradientShaderBase4fContext::GradientShaderBase4fContext(const SkGradientShaderBase& shader,
                                                          const ContextRec& rec)
-    : INHERITED(shader, rec)
-    , fFlags(this->INHERITED::getFlags())
-    , fDither(rec.fPaintDither)
-{
+        : INHERITED(shader, rec)
+        , fFlags(this->INHERITED::getFlags())
+        , fDither(rec.fPaintDither) {
+
     const SkMatrix& inverse = this->getTotalInverse();
     fDstToPos.setConcat(shader.fPtsToUnit, inverse);
     SkASSERT(!fDstToPos.hasPerspective());
@@ -300,9 +300,7 @@ GradientShaderBase4fContext::GradientShaderBase4fContext(const SkGradientShaderB
         fFlags |= kOpaqueAlpha_Flag;
     }
 
-    fColorsArePremul =
-        (shader.fGradFlags & SkGradientShader::kInterpolateColorsInPremul_Flag)
-        || shader.fColorsAreOpaque;
+    fColorsArePremul = shader.interpolateInPremul() || shader.fColorsAreOpaque;
 }
 
 bool SkGradientShaderBase::
