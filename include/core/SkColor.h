@@ -10,6 +10,7 @@
 
 #include "include/core/SkAlphaType.h"
 #include "include/core/SkScalar.h"
+#include "include/core/SkString.h"
 #include "include/core/SkTypes.h"
 
 #include <array>
@@ -332,6 +333,18 @@ struct SkRGBA4f {
     float& operator[](int index) {
         SkASSERT(index >= 0 && index < 4);
         return this->vec()[index];
+    }
+
+    /** Compares SkRGBA4f with other, and returns true if all components are
+     * approximately equal.
+
+        @param other    SkRGBA4f to compare
+        @param epsilon  maximum allowable difference for each channel
+        @return         true if SkRGBA4f approximately equals other
+    */
+    bool approximatelyEquals(const SkRGBA4f& other, float epsilon = 1e-9f) const {
+        return (abs(fR - other.fR) <= epsilon) && (abs(fG - other.fG) <= epsilon) &&
+               (abs(fB - other.fB) <= epsilon) && (abs(fA - other.fA) <= epsilon);
     }
 
     /** Returns true if SkRGBA4f is an opaque color. Asserts if fA is out of range and
