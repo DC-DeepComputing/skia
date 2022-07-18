@@ -34,6 +34,24 @@
       "parentUuid": "78cb185b_e0f858d3",
       "revId": "ce4eec8e94ab38353d25288aadfe99826e3b37e0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a399d165_00baf763",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-07-18T14:25:07Z",
+      "side": 1,
+      "message": "Shaders operate on local coordinates, which is equal to the local coordinate space that the drawn geometry is defined in (i.e. equal to the coords you passed to drawRect), unless there\u0027s an outer, wrapping shader that modifies the local coordinate space. \n\nIn SkSL, this local coord modification can happen either by sampling with a matrix parameter, or by sampling with explicit coordinates. Sampling with a matrix is logically equivalent to explicitly sampling the child with `matrix * coord`. The GrMatrixEffect FP in Ganesh is used as the primary implementation for SkShaders that have implicit local matrices (image/gradient) or explicit local matrices (makeWithLocalMatrix()). Shaders used via clipShader() or the analytic clip shape FPs are used with explicit sampling. And obviously runtime effects can use explicit sampling in their own SkSL.\n\nAs an example, let\u0027s say we have a chain of effects A -\u003e B -\u003e C -\u003e D, where A samples B using a matrix, B samples C using a matrix, and C samples D using an explicit expression that depends on its input coordinates.\n\n    aLocalCoords \u003d rootLocalCoords;\n    bLocalCoords \u003d aMatrix * aLocalCoords;\n    cLocalCoords \u003d bMatrix * bLocalCoords;\n    dLocalCoords \u003d cLocalCoords + sin(timeUni); // or something else explicit\n    \nIn Ganesh, the GeometryProcessors are responsible for providing `rootLocalCoords` to the fragment processor builder and match the local coords of the drawn geometry. By tracking the matrix sample() usage, it is also able to lift the expressions for `bLocalCoords` and `cLocalCoords` into varyings, so we\u0027d end up with something like:\n    \n    varying aLocalCoords \u003d rootLocalCoords;\n    varying bLocalCoords \u003d aMatrix * rootLocalCoords;\n    varying cLocalCoords \u003d bMatrix * aMatrix * rootLocalCoords;\n    \n    // in FS\n    local dLocalCoords \u003d cLocalCoords + sin(timeUni);\n    \nIn the *current* iteration of Graphite\u0027s shader handling, it\u0027s not set up for explicit sampling, and assumes everything is sampled using a matrix. In order for explicit sampling to be implemented correctly, we need to be able to pass in coords like this CL adds, but we also need to make sure that the input coords of the snippet that explicitly samples its child are correct, and that requires the system to be overhauled.\n\nSetting aside D for now, when considering Graphite, each snippet for A, B, and C assume there\u0027s a chain of local matrices to get back to the root local coords. This matrix product is tracked in the `preLocal` value, so A\u0027s would be identity, B\u0027s would be `aMatrix`, and C\u0027s would be `bMatrix * aMatrix`.  However these transforms are meant to affect the root local coords, so they apply `preLocal` to the result of `dev2Local * sk_FragCoord` to get the local coordinate reflecting the current pixel. Importantly for your original question, `dev2Local` is the very first matrix that\u0027s applied to sk_FragCoord. It\u0027s an implementation detail that we keep re-calculating it at each snippet:\n\n    aLocalCoords \u003d (I) * dev2Local * sk_FragCoord;\n    bLocalCoords \u003d (aMatrix) * dev2Local * sk_FragCoord;\n    cLocalCoords \u003d (bMatrix * aMatrix) * dev2Local * sk_FragCoord;\n   \nIdeally, we should end up with a snippet functions taking just a coordinate and no matrix at all:\n    \n    uniform float4x4 aMatrix;\n    float4 aSnippet(float4 pos) {\n        return bSnippet(aMatrix * pos); // matrix sampling\n    }\n    \n    uniform float4x4 bMatrix;\n    float4 bSnippet(float4 pos) {\n        return cSnippet(bMatrix * pos);\n    }\n    \n    uniform float time;\n    float4 cSnippet(float4 pos) {\n        // explicit sampling that depends on parent matrix-transformed coords\n        return dSnippet(pos + sin(time)); \n    }\n   \n    float4 dSnippet(float4 pos) { return myFancyColorMath(pos...); }\n    \n    void main() {\n       // Once RenderSteps can emit root local coords directly, we just have to \n       // update the coordinate passed to aSnippet, instead of every snippet\u0027s\n       // coordinate calculation.\n       outColor \u003d aSnippet(dev2Local * sk_FragCoord);\n    }",
+      "parentUuid": "9483d7e4_e0c214f3",
+      "revId": "ce4eec8e94ab38353d25288aadfe99826e3b37e0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
