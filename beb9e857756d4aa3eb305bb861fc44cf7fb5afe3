@@ -46,6 +46,30 @@
       },
       "revId": "beb9e857756d4aa3eb305bb861fc44cf7fb5afe3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "11348d1e_18df8a55",
+        "filename": "src/gpu/graphite/ContextUtils.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-07-18T17:36:49Z",
+      "side": 1,
+      "message": "That\u0027s what I\u0027m leaning towards right now, similar to writeUniforms(). The DrawParams will determine the textures and the RenderStep will determine the sampler and tile modes used.",
+      "parentUuid": "6525d890_bba310a3",
+      "range": {
+        "startLine": 70,
+        "startChar": 40,
+        "endLine": 70,
+        "endChar": 62
+      },
+      "revId": "beb9e857756d4aa3eb305bb861fc44cf7fb5afe3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
