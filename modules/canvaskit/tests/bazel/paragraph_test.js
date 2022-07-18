@@ -985,7 +985,7 @@ describe('Paragraph Behavior', function() {
         builder.delete();
     });
 
-    gm('paragraph builder with reset', (canvas) => {
+    gm('paragraph_builder_with_reset', (canvas) => {
         canvas.clear(CanvasKit.WHITE);
         const fontMgr = CanvasKit.FontMgr.FromData(notoSerifFontBuffer, notoSerifBoldItalicFontBuffer);
 
@@ -1032,7 +1032,7 @@ describe('Paragraph Behavior', function() {
     });
 
     // This helped find and resolve skbug.com/13247
-    gm('paragraph saved to skpicture', (canvas) => {
+    gm('paragraph_saved_to_skpicture', (canvas) => {
         canvas.clear(CanvasKit.WHITE);
         const fontMgr = CanvasKit.FontMgr.FromData(notoSerifFontBuffer, notoSerifBoldItalicFontBuffer);
 
