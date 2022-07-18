@@ -49,6 +49,7 @@ namespace skgpu::graphite {
 class DrawWriter;
 class Recorder;
 class Renderer;
+class TextureProxy;
 }
 #endif
 
@@ -113,6 +114,9 @@ public:
             int offset, int count,
             SkScalar depth,
             const skgpu::graphite::Transform& transform) const = 0;
+
+    virtual const sk_sp<skgpu::graphite::TextureProxy>* getProxies(
+            skgpu::graphite::Recorder*, unsigned int* numActiveProxies) const = 0;
 #endif
 
     virtual void testingOnly_packedGlyphIDToGlyph(StrikeCache* cache) const = 0;

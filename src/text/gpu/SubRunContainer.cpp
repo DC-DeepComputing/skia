@@ -36,9 +36,12 @@ using AtlasTextOp = skgpu::v1::AtlasTextOp;
 #endif  // SK_SUPPORT_GPU
 
 #ifdef SK_GRAPHITE_ENABLED
+#include "include/gpu/graphite/Recorder.h"
 #include "src/gpu/graphite/Device.h"
 #include "src/gpu/graphite/DrawWriter.h"
+#include "src/gpu/graphite/RecorderPriv.h"
 #include "src/gpu/graphite/Renderer.h"
+#include "src/gpu/graphite/text/AtlasManager.h"
 #endif
 
 #include <cinttypes>
@@ -67,6 +70,7 @@ using DrawWriter = skgpu::graphite::DrawWriter;
 using Rect = skgpu::graphite::Rect;
 using Recorder = skgpu::graphite::Recorder;
 using Renderer = skgpu::graphite::Renderer;
+using TextureProxy = skgpu::graphite::TextureProxy;
 using Transform = skgpu::graphite::Transform;
 #endif
 
@@ -1239,6 +1243,8 @@ public:
                         int offset, int count,
                         SkScalar depth,
                         const skgpu::graphite::Transform& transform) const override;
+
+    const sk_sp<TextureProxy>* getProxies(Recorder*, unsigned int* numProxies) const override;
 #endif
 
     bool canReuse(const SkPaint& paint, const SkMatrix& positionMatrix) const override;
@@ -1728,6 +1734,11 @@ void DirectMaskSubRun::fillVertexData(DrawWriter* dw,
         transformed_direct_dw(dw, quadData(), depth, toDevice);
     }
 }
+
+const sk_sp<TextureProxy>* DirectMaskSubRun::getProxies(Recorder* recorder,
+                                                        unsigned int* numProxies) const {
+    return recorder->priv().atlasManager()->getProxies(fMaskFormat, numProxies);
+}
 #endif
 
 // true if only need to translate by integer amount, device rect.
@@ -1835,6 +1846,8 @@ public:
                         int offset, int count,
                         SkScalar depth,
                         const skgpu::graphite::Transform& transform) const override;
+
+    const sk_sp<TextureProxy>* getProxies(Recorder*, unsigned int* numProxies) const override;
 #endif
 
     int glyphCount() const override;
@@ -2022,6 +2035,13 @@ void TransformedMaskSubRun::fillVertexData(DrawWriter* dw,
                                  depth,
                                  transform);
 }
+
+const sk_sp<TextureProxy>* TransformedMaskSubRun::getProxies(Recorder*,
+                                                             unsigned int* numProxies) const {
+    *numProxies = 0;
+    return nullptr;
+}
+
 #endif
 
 int TransformedMaskSubRun::glyphCount() const {
@@ -2112,6 +2132,8 @@ public:
                         int offset, int count,
                         SkScalar depth,
                         const skgpu::graphite::Transform& transform) const override;
+
+    const sk_sp<TextureProxy>* getProxies(Recorder*, unsigned int* numProxies) const override;
 #endif
 
     int glyphCount() const override;
@@ -2361,6 +2383,12 @@ void SDFTSubRun::fillVertexData(DrawWriter* dw,
                                  fGlyphs.glyphs(),
                                  depth,
                                  transform);
+}
+
+const sk_sp<TextureProxy>* SDFTSubRun::getProxies(Recorder*,
+                                                  unsigned int* numProxies) const {
+    *numProxies = 0;
+    return nullptr;
 }
 #endif
 
