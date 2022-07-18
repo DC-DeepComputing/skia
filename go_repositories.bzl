@@ -245,8 +245,8 @@ def go_repositories():
     go_repository(
         name = "com_github_bazelbuild_buildtools",
         importpath = "github.com/bazelbuild/buildtools",
-        sum = "h1:a+J2VBrlAmgdb1eXDTFxdoPA/wA/L2+33DcdfzhnhXM=",
-        version = "v0.0.0-20201102150426-f0f162f0456b",
+        sum = "h1:fmdo+fvvWlhldUcqkhAMpKndSxMN3vH5l7yow5cEaiQ=",
+        version = "v0.0.0-20220531122519-a43aed7014c8",
     )
     go_repository(
         name = "com_github_bazelbuild_remote_apis",
@@ -3484,8 +3484,8 @@ def go_repositories():
     go_repository(
         name = "net_starlark_go",
         importpath = "go.starlark.net",
-        sum = "h1:+FNtrFTmVw0YZGpBGX56XDee331t6JAXeK2bcyhLOOc=",
-        version = "v0.0.0-20200306205701-8dd3e2ee1dd5",
+        sum = "h1:zMemyQYZSyEdPaUFixYICrXf/0Rfnil7+jiQRf5IBZ0=",
+        version = "v0.0.0-20220714194419-4cadf0a12139",
     )
     go_repository(
         name = "org_chromium_go_gae",
