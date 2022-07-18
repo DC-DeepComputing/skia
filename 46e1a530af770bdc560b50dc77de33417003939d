@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b1296e32_04f0cf81",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 369,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-07-18T13:31:52Z",
+      "side": 1,
+      "message": "Updated comment.",
+      "parentUuid": "ae685f0c_47b9127f",
+      "range": {
+        "startLine": 368,
+        "startChar": 20,
+        "endLine": 369,
+        "endChar": 91
+      },
+      "revId": "46e1a530af770bdc560b50dc77de33417003939d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "84f04017_82f73c78",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2c02e45e_c5d8fdf5",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 490,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-07-18T13:31:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "84f04017_82f73c78",
+      "range": {
+        "startLine": 490,
+        "startChar": 21,
+        "endLine": 490,
+        "endChar": 48
+      },
+      "revId": "46e1a530af770bdc560b50dc77de33417003939d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8fd7dab1_d595c003",
@@ -60,6 +108,30 @@
       "writtenOn": "2022-07-15T19:18:14Z",
       "side": 1,
       "message": "If we captured `startIndex` in the lambda, and added `numTextures()` to after the loop, this might be a little simpler.",
+      "range": {
+        "startLine": 499,
+        "startChar": 24,
+        "endLine": 499,
+        "endChar": 54
+      },
+      "revId": "46e1a530af770bdc560b50dc77de33417003939d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "575c1f83_1b051eaf",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 499,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-07-18T13:31:52Z",
+      "side": 1,
+      "message": "Simplified it some more.",
+      "parentUuid": "8fd7dab1_d595c003",
       "range": {
         "startLine": 499,
         "startChar": 24,
