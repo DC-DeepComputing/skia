@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c5f6acd4_9bd50429",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-07-18T14:54:04Z",
+      "side": 1,
+      "message": "Any issues with removing this? It\u0027s not in use by our bots, is it? I used cs/, but I don\u0027t know where buildbot code can be searched.\n\nAdy suggested that if we want this information, `dumpsys` would be a more stable place to get it from.",
+      "revId": "3d3a7eedc48cd81f228946dc41110083f5399aa5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
