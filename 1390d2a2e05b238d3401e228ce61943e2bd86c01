@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4071ee9d_15d98df8",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 306,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-07-19T22:24:20Z",
+      "side": 1,
+      "message": "This seems to put samplers between `fragCoord` and `preLocalMatrix`, which feels strange to me (these are two peas in a pod!)... consider moving it up (before or after prior-stage)?",
+      "range": {
+        "startLine": 300,
+        "startChar": 0,
+        "endLine": 306,
+        "endChar": 0
+      },
+      "revId": "1390d2a2e05b238d3401e228ce61943e2bd86c01",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "77e5cf33_03cef227",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 755,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-07-19T22:24:20Z",
+      "side": 1,
+      "message": "Remove, use `[]` for the array size.",
+      "range": {
+        "startLine": 755,
+        "startChar": 0,
+        "endLine": 755,
+        "endChar": 65
+      },
+      "revId": "1390d2a2e05b238d3401e228ce61943e2bd86c01",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fb76492e_c276afe4",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 1193,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-07-19T22:24:20Z",
+      "side": 1,
+      "message": "Remove. `SkSpan` doesn\u0027t need us to pass the array size.",
+      "range": {
+        "startLine": 1193,
+        "startChar": 55,
+        "endLine": 1193,
+        "endChar": 96
+      },
+      "revId": "1390d2a2e05b238d3401e228ce61943e2bd86c01",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eb7a43f4_7a5ef6c0",
+        "filename": "src/effects/SkTableColorFilter.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 266,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-07-19T22:24:20Z",
+      "side": 1,
+      "message": "`TODO(b/239604347): remove this hack.`\n\nFor consistency with http://go/todo-style",
+      "range": {
+        "startLine": 266,
+        "startChar": 7,
+        "endLine": 266,
+        "endChar": 44
+      },
+      "revId": "1390d2a2e05b238d3401e228ce61943e2bd86c01",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "916ce3d5_f0089880",
+        "filename": "src/effects/SkTableColorFilter.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 272,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-07-19T22:24:20Z",
+      "side": 1,
+      "message": "Up to you: this is actually a rare place where `auto` is actually appropriate/recommended, since the type is already spelled out in the `static_cast` to the right so it\u0027s redundant even to a casual reader. I don\u0027t personally mind either way.",
+      "range": {
+        "startLine": 272,
+        "startChar": 8,
+        "endLine": 272,
+        "endChar": 30
+      },
+      "revId": "1390d2a2e05b238d3401e228ce61943e2bd86c01",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
