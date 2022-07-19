@@ -16,6 +16,23 @@
       "message": "I went with the \"remember the original edge type\" solution. Thanks to pointer alignment, neither edge structure got any bigger (on 64-bit machines). I also added a copy-paste (with slight rewrite) of my giant chat comment to the bug, for posterity. Let me know if you think I should add comments somewhere (maybe near the combineVertical code)?",
       "revId": "5e21c3bdb9d94f3f8083f3a32287c682dfd65dbb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c868f4a5_7a49dc1b",
+        "filename": "src/core/SkEdgeBuilder.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-07-19T13:57:55Z",
+      "side": 1,
+      "message": "// We only consider edges that were originally lines to be vertical to avoid numerical issues (crbug.com/1154864).\n\n?",
+      "revId": "5e21c3bdb9d94f3f8083f3a32287c682dfd65dbb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
