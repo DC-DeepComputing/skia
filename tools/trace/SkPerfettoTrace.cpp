@@ -345,3 +345,10 @@ void SkPerfettoTrace::triggerTraceEvent(const uint8_t* categoryEnabledFlag,
         }
     }
 }
+
+void SkPerfettoTrace::newTracingSection(const char* name) {
+    if (perfetto::Tracing::IsInitialized()) {
+      closeTracingSession();
+    }
+    openNewTracingSession(name);
+}
