@@ -112,7 +112,7 @@ sk_sp<SkFlattenable> SkTable_ColorFilter::CreateProc(SkReadBuffer& buffer) {
 
 class ColorTableEffect : public GrFragmentProcessor {
 public:
-    static std::unique_ptr<GrFragmentProcessor> Make(std::unique_ptr<GrFragmentProcessor> inputFP,
+    static std::unique_ptr<GrFragmentProcessor> Make1(std::unique_ptr<GrFragmentProcessor> inputFP,
                                                      GrRecordingContext* context,
                                                      const SkBitmap& bitmap);
 
@@ -176,15 +176,16 @@ std::unique_ptr<GrFragmentProcessor::ProgramImpl> ColorTableEffect::onMakeProgra
     return std::make_unique<Impl>();
 }
 
-std::unique_ptr<GrFragmentProcessor> ColorTableEffect::Make(
+std::unique_ptr<GrFragmentProcessor> ColorTableEffect::Make1(
         std::unique_ptr<GrFragmentProcessor> inputFP,
         GrRecordingContext* context, const SkBitmap& bitmap) {
     SkASSERT(kPremul_SkAlphaType == bitmap.alphaType());
     SkASSERT(bitmap.isImmutable());
 
-    auto view = std::get<0>(
-            GrMakeCachedBitmapProxyView(context, bitmap, /*label=*/"MakeColorTableEffect",
-            GrMipmapped::kNo));
+    auto view = std::get<0>(GrMakeCachedBitmapProxyView(context,
+                                                        bitmap,
+                                                        /*label=*/"MakeColorTableEffect",
+                                                        GrMipmapped::kNo));
     if (!view) {
         return nullptr;
     }
@@ -233,7 +234,7 @@ std::unique_ptr<GrFragmentProcessor> ColorTableEffect::TestCreate(GrProcessorTes
 GrFPResult SkTable_ColorFilter::asFragmentProcessor(std::unique_ptr<GrFragmentProcessor> inputFP,
                                                     GrRecordingContext* context,
                                                     const GrColorInfo&) const {
-    auto cte = ColorTableEffect::Make(std::move(inputFP), context, fBitmap);
+    auto cte = ColorTableEffect::Make1(std::move(inputFP), context, fBitmap);
     return cte ? GrFPSuccess(std::move(cte)) : GrFPFailure(nullptr);
 }
 

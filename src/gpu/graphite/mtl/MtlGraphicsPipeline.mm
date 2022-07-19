@@ -451,7 +451,7 @@ std::string GetMtlTexturesAndSamplers(const std::vector<SkPaintParamsKey::BlockR
 
     std::string result;
     for (int i = 0; i < (int) readers.size(); ++i) {
-        auto texturesAndSamplers = readers[i].entry()->fTexturesAndSamplers;
+        auto texturesAndSamplers = readers[i].entry()->fTexturesAndSamplers1;
 
         for (int j = 0; j < (int) texturesAndSamplers.size(); ++j) {
             const SkTextureAndSampler& t = texturesAndSamplers[j];

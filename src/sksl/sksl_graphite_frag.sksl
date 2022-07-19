@@ -578,3 +578,12 @@ half4 sk_blend_shader(int blendMode, half4 child0, half4 child1) {
 half4 sk_blend_colorfilter(half4 dstColor, int blendMode, float4 srcColor) {
     return sk_blend(blendMode, half4(srcColor), dstColor);
 }
+
+half4 sk_table_colorfilter(half4 colorIn, sampler tableSampler) {
+    half4 coords = 255 * unpremul(colorIn) + 0.5;
+    half4 color = half4(sample(tableSampler, half2(coord.r, 1.5)),
+                        sample(tableSampler, half2(coord.g, 2.5)),
+                        sample(tableSampler, half2(coord.b, 3.5)),
+                        1);
+    return color * sample(tableSampler, half2(coord.a, 0.5));
+}

@@ -491,13 +491,13 @@ namespace {
 void add_matrix_colorfilter_uniform_data(const SkShaderCodeDictionary* dict,
                                          const MatrixColorFilterBlock::MatrixColorFilterData& data,
                                          SkPipelineDataGatherer* gatherer) {
-    VALIDATE_UNIFORMS(gatherer, dict, SkBuiltInCodeSnippetID::kMatrixColorFilter)
+    VALIDATE_UNIFORMS(gatherer, dict, SkBuiltInCodeSnippetID::kMatrixColorFilter1)
     gatherer->write(data.fMatrix);
     gatherer->write(data.fTranslate);
     gatherer->write(static_cast<int>(data.fInHSLA));
 
     gatherer->addFlags(
-            dict->getSnippetRequirementFlags(SkBuiltInCodeSnippetID::kMatrixColorFilter));
+            dict->getSnippetRequirementFlags(SkBuiltInCodeSnippetID::kMatrixColorFilter1));
 }
 
 } // anonymous namespace
@@ -516,7 +516,7 @@ void MatrixColorFilterBlock::BeginBlock(const SkKeyContext& keyContext,
             add_matrix_colorfilter_uniform_data(dict, matrixCFData, gatherer);
         }
 
-        builder->beginBlock(SkBuiltInCodeSnippetID::kMatrixColorFilter);
+        builder->beginBlock(SkBuiltInCodeSnippetID::kMatrixColorFilter1);
     }
 #endif // SK_GRAPHITE_ENABLED
 
@@ -534,11 +534,11 @@ namespace {
 void add_blend_colorfilter_uniform_data(const SkShaderCodeDictionary* dict,
                                         const BlendColorFilterBlock::BlendColorFilterData& data,
                                         SkPipelineDataGatherer* gatherer) {
-    VALIDATE_UNIFORMS(gatherer, dict, SkBuiltInCodeSnippetID::kBlendColorFilter)
+    VALIDATE_UNIFORMS(gatherer, dict, SkBuiltInCodeSnippetID::kBlendColorFilter1)
     gatherer->write(SkTo<int>(data.fBlendMode));
     gatherer->write(data.fSrcColor);
 
-    gatherer->addFlags(dict->getSnippetRequirementFlags(SkBuiltInCodeSnippetID::kBlendColorFilter));
+    gatherer->addFlags(dict->getSnippetRequirementFlags(SkBuiltInCodeSnippetID::kBlendColorFilter1));
 }
 
 } // anonymous namespace
@@ -557,7 +557,46 @@ void BlendColorFilterBlock::BeginBlock(const SkKeyContext& keyContext,
             add_blend_colorfilter_uniform_data(dict, data, gatherer);
         }
 
-        builder->beginBlock(SkBuiltInCodeSnippetID::kBlendColorFilter);
+        builder->beginBlock(SkBuiltInCodeSnippetID::kBlendColorFilter1);
+    }
+#endif // SK_GRAPHITE_ENABLED
+
+    if (builder->backend() == SkBackend::kSkVM || builder->backend() == SkBackend::kGanesh) {
+        // TODO: add implementation for other backends
+    }
+}
+
+//--------------------------------------------------------------------------------------------------
+
+#ifdef SK_GRAPHITE_ENABLED
+
+namespace {
+
+void add_table_colorfilter_uniform_data(const SkShaderCodeDictionary* dict,
+                                        const TableColorFilterBlock::TableColorFilterData& data,
+                                        SkPipelineDataGatherer* gatherer) {
+    VALIDATE_UNIFORMS(gatherer, dict, SkBuiltInCodeSnippetID::kTableColorFilter)
+
+    gatherer->addFlags(dict->getSnippetRequirementFlags(SkBuiltInCodeSnippetID::kTableColorFilter));
+}
+
+} // anonymous namespace
+
+#endif // SK_GRAPHITE_ENABLED
+
+void TableColorFilterBlock::BeginBlock(const SkKeyContext& keyContext,
+                                       SkPaintParamsKeyBuilder* builder,
+                                       SkPipelineDataGatherer* gatherer,
+                                       const TableColorFilterData& data) {
+#ifdef SK_GRAPHITE_ENABLED
+    if (builder->backend() == SkBackend::kGraphite) {
+        auto dict = keyContext.dict();
+
+        if (gatherer) {
+            add_table_colorfilter_uniform_data(dict, data, gatherer);
+        }
+
+        builder->beginBlock(SkBuiltInCodeSnippetID::kTableColorFilter);
     }
 #endif // SK_GRAPHITE_ENABLED
 
