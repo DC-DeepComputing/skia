@@ -16,6 +16,24 @@
       "message": "This seems like a different change?",
       "revId": "f237624765788ebfe3a359d02a051fbaced7682f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c567411b_2e0f48bf",
+        "filename": "modules/skparagraph/src/OneLineShaper.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 423,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-07-19T20:35:28Z",
+      "side": 0,
+      "message": "Yes. It was something I had to do long time ago.\nJason just pointed it out. Seems close enough to do in one fix.",
+      "parentUuid": "faac1eb5_38dcba91",
+      "revId": "f237624765788ebfe3a359d02a051fbaced7682f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
