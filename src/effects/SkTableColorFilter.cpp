@@ -18,6 +18,10 @@
 #include "src/core/SkVM.h"
 #include "src/core/SkWriteBuffer.h"
 
+#ifdef SK_GRAPHITE_ENABLED
+#include "src/gpu/graphite/Image_Graphite.h"
+#endif
+
 class SkTable_ColorFilter : public SkColorFilterBase {
 public:
     SkTable_ColorFilter(const uint8_t tableA[], const uint8_t tableR[],
@@ -39,6 +43,12 @@ public:
 #if SK_SUPPORT_GPU
     GrFPResult asFragmentProcessor(std::unique_ptr<GrFragmentProcessor> inputFP,
                                    GrRecordingContext*, const GrColorInfo&) const override;
+#endif
+
+#ifdef SK_ENABLE_SKSL
+    void addToKey(const SkKeyContext& keyContext,
+                  SkPaintParamsKeyBuilder* builder,
+                  SkPipelineDataGatherer* gatherer) const override;
 #endif
 
     bool onAppendStages(const SkStageRec& rec, bool shaderIsOpaque) const override {
@@ -112,7 +122,7 @@ sk_sp<SkFlattenable> SkTable_ColorFilter::CreateProc(SkReadBuffer& buffer) {
 
 class ColorTableEffect : public GrFragmentProcessor {
 public:
-    static std::unique_ptr<GrFragmentProcessor> Make(std::unique_ptr<GrFragmentProcessor> inputFP,
+    static std::unique_ptr<GrFragmentProcessor> Make1(std::unique_ptr<GrFragmentProcessor> inputFP,
                                                      GrRecordingContext* context,
                                                      const SkBitmap& bitmap);
 
@@ -176,15 +186,16 @@ std::unique_ptr<GrFragmentProcessor::ProgramImpl> ColorTableEffect::onMakeProgra
     return std::make_unique<Impl>();
 }
 
-std::unique_ptr<GrFragmentProcessor> ColorTableEffect::Make(
+std::unique_ptr<GrFragmentProcessor> ColorTableEffect::Make1(
         std::unique_ptr<GrFragmentProcessor> inputFP,
         GrRecordingContext* context, const SkBitmap& bitmap) {
     SkASSERT(kPremul_SkAlphaType == bitmap.alphaType());
     SkASSERT(bitmap.isImmutable());
 
-    auto view = std::get<0>(
-            GrMakeCachedBitmapProxyView(context, bitmap, /*label=*/"MakeColorTableEffect",
-            GrMipmapped::kNo));
+    auto view = std::get<0>(GrMakeCachedBitmapProxyView(context,
+                                                        bitmap,
+                                                        /*label=*/"MakeColorTableEffect",
+                                                        GrMipmapped::kNo));
     if (!view) {
         return nullptr;
     }
@@ -233,11 +244,42 @@ std::unique_ptr<GrFragmentProcessor> ColorTableEffect::TestCreate(GrProcessorTes
 GrFPResult SkTable_ColorFilter::asFragmentProcessor(std::unique_ptr<GrFragmentProcessor> inputFP,
                                                     GrRecordingContext* context,
                                                     const GrColorInfo&) const {
-    auto cte = ColorTableEffect::Make(std::move(inputFP), context, fBitmap);
+    auto cte = ColorTableEffect::Make1(std::move(inputFP), context, fBitmap);
     return cte ? GrFPSuccess(std::move(cte)) : GrFPFailure(nullptr);
 }
 
 #endif // SK_SUPPORT_GPU
+
+#ifdef SK_ENABLE_SKSL
+
+#include "src/core/SkKeyContext.h"
+#include "src/core/SkKeyHelpers.h"
+#include "src/core/SkPaintParamsKey.h"
+
+#include "include/core/SkImage.h" // TODO: remove this
+
+void SkTable_ColorFilter::addToKey(const SkKeyContext& keyContext,
+                                   SkPaintParamsKeyBuilder* builder,
+                                   SkPipelineDataGatherer* gatherer) const {
+    TableColorFilterBlock::TableColorFilterData data;
+
+#ifdef SK_GRAPHITE_ENABLED
+    sk_sp<SkImage> image = SkImage::MakeFromBitmap(fBitmap);
+    image = image->makeTextureImage(keyContext.recorder(), skgpu::graphite::Mipmapped::kNo);
+
+    if (as_IB(image)->isGraphiteBacked()) {
+        skgpu::graphite::Image* grImage = static_cast<skgpu::graphite::Image*>(image.get());
+
+        auto[view, _] = grImage->asView(keyContext.recorder(), skgpu::graphite::Mipmapped::kNo);
+        data.fTextureProxy = view.refProxy();
+    }
+#endif
+
+    TableColorFilterBlock::BeginBlock(keyContext, builder, gatherer, data);
+    builder->endBlock();
+}
+
+#endif
 
 ///////////////////////////////////////////////////////////////////////////////
 

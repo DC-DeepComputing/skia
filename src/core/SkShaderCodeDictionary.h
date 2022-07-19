@@ -72,7 +72,7 @@ struct SkShaderSnippet {
             : fName(name)
             , fUniforms(uniforms)
             , fSnippetRequirementFlags(snippetRequirementFlags)
-            , fTexturesAndSamplers(texturesAndSamplers)
+            , fTexturesAndSamplers1(texturesAndSamplers)
             , fStaticFunctionName(functionName)
             , fExpressionGenerator(expressionGenerator)
             , fPreambleGenerator(preambleGenerator)
@@ -80,6 +80,7 @@ struct SkShaderSnippet {
             , fDataPayloadExpectations(dataPayloadExpectations) {}
 
     std::string getMangledUniformName(int uniformIndex, int mangleId) const;
+    std::string getMangledSamplerName(int samplerIndex, int mangleId) const;
 
     bool needsLocalCoords() const {
         return fSnippetRequirementFlags & SnippetRequirementFlags::kLocalCoords;
@@ -91,7 +92,7 @@ struct SkShaderSnippet {
     const char* fName = nullptr;
     SkSpan<const SkUniform> fUniforms;
     SnippetRequirementFlags fSnippetRequirementFlags;
-    SkSpan<const SkTextureAndSampler> fTexturesAndSamplers;
+    SkSpan<const SkTextureAndSampler> fTexturesAndSamplers1;
     const char* fStaticFunctionName = nullptr;
     GenerateExpressionForSnippetFn fExpressionGenerator = nullptr;
     GeneratePreambleForSnippetFn fPreambleGenerator = nullptr;
