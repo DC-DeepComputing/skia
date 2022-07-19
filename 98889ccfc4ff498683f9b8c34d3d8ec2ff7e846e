@@ -39,6 +39,30 @@
       },
       "revId": "98889ccfc4ff498683f9b8c34d3d8ec2ff7e846e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "84f56841_5c885176",
+        "filename": "src/gpu/graphite/Renderer.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-07-19T17:51:12Z",
+      "side": 1,
+      "message": "That sounds good, though I think I\u0027ll do it as a separate CL as it\u0027ll affect a lot of places.",
+      "parentUuid": "4a47e12a_91d072ed",
+      "range": {
+        "startLine": 66,
+        "startChar": 4,
+        "endLine": 66,
+        "endChar": 83
+      },
+      "revId": "98889ccfc4ff498683f9b8c34d3d8ec2ff7e846e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
