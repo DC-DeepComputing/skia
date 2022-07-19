@@ -35,8 +35,9 @@ enum class SkBuiltInCodeSnippetID : int32_t {
     kRuntimeShader,
 
     // SkColorFilter code snippets
-    kMatrixColorFilter,
-    kBlendColorFilter,
+    kMatrixColorFilter1,
+    kBlendColorFilter1,
+    kTableColorFilter,
 
     // BlendMode code snippets
     kFixedFunctionBlender,

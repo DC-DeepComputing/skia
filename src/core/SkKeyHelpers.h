@@ -210,6 +210,17 @@ struct BlendColorFilterBlock {
                            const BlendColorFilterData&);
 };
 
+struct TableColorFilterBlock {
+    struct TableColorFilterData {
+        TableColorFilterData() {}
+    };
+
+    static void BeginBlock(const SkKeyContext&,
+                           SkPaintParamsKeyBuilder*,
+                           SkPipelineDataGatherer*,
+                           const TableColorFilterData&);
+};
+
 struct BlendModeBlock {
     static void BeginBlock(const SkKeyContext&,
                            SkPaintParamsKeyBuilder*,
