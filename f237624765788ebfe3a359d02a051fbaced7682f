@@ -52,6 +52,24 @@
       "parentUuid": "c567411b_2e0f48bf",
       "revId": "f237624765788ebfe3a359d02a051fbaced7682f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "405ffff6_1a59fe8e",
+        "filename": "modules/skparagraph/src/OneLineShaper.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 423,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2022-07-19T20:49:57Z",
+      "side": 0,
+      "message": "Done",
+      "parentUuid": "b4e2d1bf_fbdafc41",
+      "revId": "f237624765788ebfe3a359d02a051fbaced7682f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
