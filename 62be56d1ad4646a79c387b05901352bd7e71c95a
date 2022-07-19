@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e620b5bf_a58383e8",
+        "filename": "src/gpu/graphite/RecorderPriv.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-07-19T18:25:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7f048023_2331cc52",
+      "range": {
+        "startLine": 71,
+        "startChar": 12,
+        "endLine": 71,
+        "endChar": 17
+      },
+      "revId": "62be56d1ad4646a79c387b05901352bd7e71c95a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b97ded0b_b161f899",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2de8bbe1_e2a93bf0",
+        "filename": "src/gpu/graphite/geom/SubRunData.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-07-19T18:25:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b97ded0b_b161f899",
+      "range": {
+        "startLine": 30,
+        "startChar": 34,
+        "endLine": 30,
+        "endChar": 70
+      },
+      "revId": "62be56d1ad4646a79c387b05901352bd7e71c95a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e9770030_b1467ff6",
@@ -60,6 +108,30 @@
       "writtenOn": "2022-07-19T17:26:09Z",
       "side": 1,
       "message": "is it guaranteed that all atlas proxies will have the same dimensions?",
+      "range": {
+        "startLine": 86,
+        "startChar": 43,
+        "endLine": 87,
+        "endChar": 82
+      },
+      "revId": "62be56d1ad4646a79c387b05901352bd7e71c95a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1360d69a_d8cf7042",
+        "filename": "src/gpu/graphite/render/TextDirectRenderStep.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-07-19T18:25:30Z",
+      "side": 1,
+      "message": "Yes, they have to be the same size.",
+      "parentUuid": "e9770030_b1467ff6",
       "range": {
         "startLine": 86,
         "startChar": 43,
