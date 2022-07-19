@@ -34,6 +34,24 @@
       "parentUuid": "faac1eb5_38dcba91",
       "revId": "f237624765788ebfe3a359d02a051fbaced7682f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b4e2d1bf_fbdafc41",
+        "filename": "modules/skparagraph/src/OneLineShaper.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 423,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-07-19T20:40:15Z",
+      "side": 0,
+      "message": "No, it\u0027s completely unrelated. It should be in a different CL.",
+      "parentUuid": "c567411b_2e0f48bf",
+      "revId": "f237624765788ebfe3a359d02a051fbaced7682f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

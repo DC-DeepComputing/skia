@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6da7b62f_016904c9",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-07-19T20:40:15Z",
+      "side": 1,
+      "message": "This should be\n\n`Bug: https://github.com/flutter/flutter/issues/107509`\n\nand be in the trailer (the last \"paragraph\", on a line next to `Change-Id:`.\n\nAlso, it would be good to write a commit message here. Maybe something about needing to split up graphemes to get font coverage.",
+      "revId": "c31ef5f3dfe6d87267b06cad36f250c8d0b1aac6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
