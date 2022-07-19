@@ -67,6 +67,9 @@ config("skia_public") {
   if (!skia_enable_skgpu_v1) {
     defines += [ "SK_GPU_V1=0" ]
   }
+  if (skia_use_perfetto) {
+    defines += [ "SK_USE_PERFETTO" ]
+  }
 
   # Some older versions of the Clang toolchain change the visibility of
   # symbols decorated with API_AVAILABLE macro to be visible. Users of such
@@ -1947,6 +1950,9 @@ if (skia_enable_tools) {
 
   test_lib("trace") {
     deps = [ ":flags" ]
+    if (is_linux || is_mac || is_android) {
+      deps += [ "//third_party/perfetto" ]
+    }
     sources = [
       "tools/trace/ChromeTracingTracer.cpp",
       "tools/trace/ChromeTracingTracer.h",
