@@ -33,6 +33,24 @@
       "message": "Is there any chance this can live in the chromium code, as a free helper function?",
       "revId": "1c80f1ce7e88e6435f46cff7650103e0f5ce170f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1d27fa05_e724e79b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 15399
+      },
+      "writtenOn": "2022-07-19T15:15:23Z",
+      "side": 1,
+      "message": "It\u0027s certainly possible! What are your thoughts there?\n\nThe issue with chromium is that there\u0027s not central place for it. We\u0027ll theoretically need this in services/viz, gpu/ cc/ and blink/ and there already multiple places where there\u0027s some kind of \"skia_utils\" file. One of the ideas for this project is to de-dupe a lot of stuff and just couple with skia more directly (see platform/graphics/color.h and crbug.com/1167153).\n\nAlso, having it on the class means that we can have stuff like:\ncolor1.approximatelyEquals(color2, epsilon);\n\nWhereas with a helper function we\u0027d need a separate import (with potential namespacing weirdness) and:\nSkColor4fApproximatelyEquals(color1, color2, epsilon);\n\nI\u0027d also be worried if I stashed this in chromium somewhere that another dev some day adds another function that works slightly differently in a different place. What\u0027s the reason to keep it off of SkColor?",
+      "parentUuid": "51028959_ea3e07b7",
+      "revId": "1c80f1ce7e88e6435f46cff7650103e0f5ce170f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
