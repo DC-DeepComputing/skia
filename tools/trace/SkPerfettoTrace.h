@@ -10,9 +10,11 @@
 
 #include "include/utils/SkEventTracer.h"
 #include "tools/trace/EventTracingPriv.h"
-#include "perfetto.h"
 
+#if defined (SK_USE_PERFETTO)
+#include "perfetto.h"
 PERFETTO_DEFINE_CATEGORIES();
+#endif
 
 /**
  * This class is used to support Perfetto tracing. It hooks into the SkEventTracer system.
@@ -40,6 +42,8 @@ public:
     const uint8_t* getCategoryGroupEnabled(const char* name) override;
 
     const char* getCategoryGroupName(const uint8_t* categoryEnabledFlag) override;
+
+    void newTracingSection(const char* name) override;
 
 private:
     SkPerfettoTrace(const SkPerfettoTrace&) = delete;
