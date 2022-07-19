@@ -16,6 +16,368 @@
       "message": "Let me know what you think! Thank you for your comments.",
       "revId": "7ed706a93e568df346c5ec6b33d2a9264ac93674",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7044bb18_411f1954",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 20
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-07-19T18:16:22Z",
+      "side": 1,
+      "message": "Everything I had previously commented on looks good except for a few minor nits. I also went through Geometry.h and outlined what I think we could do to have it store `sk_sp\u003cSkVertices\u003e`. If we get it to work, I\u0027d prefer that. While having to manually call the destructor is a little tricky, it\u0027s a little less involved than having to manually call ref and unref in the right places.",
+      "revId": "7ed706a93e568df346c5ec6b33d2a9264ac93674",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c6422c5d_9d507717",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 456,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-07-19T18:16:22Z",
+      "side": 1,
+      "message": "If we update to sk_sp, this can be changed to `sk_ref_sp(vertices)` which already has a const version, so we can skip the const cast.",
+      "range": {
+        "startLine": 456,
+        "startChar": 62,
+        "endLine": 456,
+        "endChar": 95
+      },
+      "revId": "7ed706a93e568df346c5ec6b33d2a9264ac93674",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fa70643f_67a13d0e",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 458,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-07-19T18:16:22Z",
+      "side": 1,
+      "message": "stylistically, let\u0027s put each argument on its own line (aligned with the opening `(`), and that way we should have room to have the DrawFlags | operation to fit on one line still.",
+      "range": {
+        "startLine": 456,
+        "startChar": 21,
+        "endLine": 458,
+        "endChar": 49
+      },
+      "revId": "7ed706a93e568df346c5ec6b33d2a9264ac93674",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b89a4efb_3b6d6f2d",
+        "filename": "src/gpu/graphite/geom/Geometry.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-07-19T18:16:22Z",
+      "side": 1,
+      "message": "I\u0027d keep this as `text SubRuns.`, Jim added SubRunData and Type::kSubRun to handle text",
+      "range": {
+        "startLine": 20,
+        "startChar": 66,
+        "endLine": 20,
+        "endChar": 89
+      },
+      "revId": "7ed706a93e568df346c5ec6b33d2a9264ac93674",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "963b97ee_a6afdb50",
+        "filename": "src/gpu/graphite/geom/Geometry.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-07-19T18:16:22Z",
+      "side": 1,
+      "message": "If we switch to sk_sp\u003cSkVertices\u003e I\u0027d update the constructor to take an sk_sp as well.",
+      "range": {
+        "startLine": 31,
+        "startChar": 22,
+        "endLine": 31,
+        "endChar": 42
+      },
+      "revId": "7ed706a93e568df346c5ec6b33d2a9264ac93674",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "007cd18b_8b088539",
+        "filename": "src/gpu/graphite/geom/Geometry.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-07-19T18:16:22Z",
+      "side": 1,
+      "message": "If we do sk_sp\u003cSkVertices\u003e, this would be `this-\u003esetVertices(std::move(geom.fVertices)); geom.setType(Type::kEmpty);`.\n\nnit: if formatting it like the kSubRun case doesn\u0027t let the first two statements fit on one line, let\u0027s move the setVertices call to a new line. We also don\u0027t need the {} around the block because we aren\u0027t declaring any variables inside the case statement.",
+      "range": {
+        "startLine": 39,
+        "startChar": 40,
+        "endLine": 39,
+        "endChar": 74
+      },
+      "revId": "7ed706a93e568df346c5ec6b33d2a9264ac93674",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d321741a_69be22e3",
+        "filename": "src/gpu/graphite/geom/Geometry.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-07-19T18:16:22Z",
+      "side": 1,
+      "message": "This can be restructured ti follow setShape and setSubRun if we use `sk_sp\u003cSkVertices\u003e` for fVertices.\n\n    void setVertices(sk_sp\u003cSkVertices\u003e vertices) {\n        if (fType \u003d\u003d Type::kVertices) {\n            fVertices \u003d std::move(vertices);\n        } else {\n            this-\u003esetType(Type::kVertices);\n            new (\u0026fVertices) sk_sp\u003cSkVertices\u003e(std::move(vertices));\n        }\n    }\n    \nI think this should solve the issues you mentioned where we were trying to unref garbage. When `fType` was alread kVertices, we know the original value of `fVertices` is a valid `sk_sp`, so the assignment will do the correct thing between fVertices and vertices. However, in the else block, after we call setType(), we know fVertices is in an undefined state because the old contents had been something other than an sk_sp. Doing an in-place initialization constructor will set fVertices to a valid state without trying to unref or destruct the old value of fVertices.",
+      "range": {
+        "startLine": 80,
+        "startChar": 8,
+        "endLine": 85,
+        "endChar": 9
+      },
+      "revId": "7ed706a93e568df346c5ec6b33d2a9264ac93674",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b88aa82f_85644851",
+        "filename": "src/gpu/graphite/geom/Geometry.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-07-19T18:16:22Z",
+      "side": 1,
+      "message": "If `fVertices` was updated to be `sk_sp\u003cSkVertices\u003e`, we can change this to\n\n    } else if (isVertices() \u0026\u0026 type !\u003d Type::kVertices) {\n        fVertices.~sk_sp\u003cSkVertices\u003e();\n    }\n    \nWhich is basically the same as unreff\u0027ing it, but keeps it consistent with Shape and SubRun\u0027s cleanup. We don\u0027t need the 2nd else-if block if we then change how setVertices works.",
+      "range": {
+        "startLine": 119,
+        "startChar": 9,
+        "endLine": 123,
+        "endChar": 9
+      },
+      "revId": "7ed706a93e568df346c5ec6b33d2a9264ac93674",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fbfb9ff7_02ae2bdf",
+        "filename": "src/gpu/graphite/render/StencilAndFillPathRenderer.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-07-19T18:16:22Z",
+      "side": 1,
+      "message": "let\u0027s keep these metadata names lowercase and with hyphens between terms, e.g. \"triangles-color\" or \"triangle-color-tex\"",
+      "range": {
+        "startLine": 112,
+        "startChar": 79,
+        "endLine": 112,
+        "endChar": 88
+      },
+      "revId": "7ed706a93e568df346c5ec6b33d2a9264ac93674",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6c186eea_3027d758",
+        "filename": "src/gpu/graphite/render/StencilAndFillPathRenderer.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-07-19T18:16:22Z",
+      "side": 1,
+      "message": "\"triangle-strip-color\"",
+      "range": {
+        "startLine": 123,
+        "startChar": 61,
+        "endLine": 123,
+        "endChar": 79
+      },
+      "revId": "7ed706a93e568df346c5ec6b33d2a9264ac93674",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d4c07131_086a1bea",
+        "filename": "src/gpu/graphite/render/StencilAndFillPathRenderer.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-07-19T18:16:22Z",
+      "side": 1,
+      "message": "just a note to keep the variant/metadata inside the `[]` match the updated formatting of the variant string of the RenderStep (the variant text for a multistep Renderer is more bespoke, and there\u0027s probably room for improvement for how all of these pieces get labeled that could be explored during the debugability and tracing work).",
+      "range": {
+        "startLine": 133,
+        "startChar": 63,
+        "endLine": 133,
+        "endChar": 72
+      },
+      "revId": "7ed706a93e568df346c5ec6b33d2a9264ac93674",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6c6dee61_dfae44a2",
+        "filename": "src/gpu/graphite/render/VerticesRenderStep.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-07-19T18:16:22Z",
+      "side": 1,
+      "message": "extra?",
+      "range": {
+        "startLine": 62,
+        "startChar": 41,
+        "endLine": 62,
+        "endChar": 42
+      },
+      "revId": "7ed706a93e568df346c5ec6b33d2a9264ac93674",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ce848d55_ec4f71b9",
+        "filename": "src/gpu/graphite/render/VerticesRenderStep.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-07-19T18:16:22Z",
+      "side": 1,
+      "message": "nit: no space here",
+      "range": {
+        "startLine": 63,
+        "startChar": 32,
+        "endLine": 63,
+        "endChar": 33
+      },
+      "revId": "7ed706a93e568df346c5ec6b33d2a9264ac93674",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "30523a19_15d0f84c",
+        "filename": "src/gpu/graphite/render/VerticesRenderStep.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-07-19T18:16:22Z",
+      "side": 1,
+      "message": "nit line length, in this case we\u0027d bump the `gatherer` param to a new line, aligned with `params`.",
+      "range": {
+        "startLine": 127,
+        "startChar": 0,
+        "endLine": 127,
+        "endChar": 106
+      },
+      "revId": "7ed706a93e568df346c5ec6b33d2a9264ac93674",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "68bfbf38_46fe8806",
+        "filename": "src/gpu/graphite/render/VerticesRenderStep.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-07-19T18:16:22Z",
+      "side": 1,
+      "message": "style nit, this comment should just use `//` on each line instead of a block comment.",
+      "range": {
+        "startLine": 128,
+        "startChar": 4,
+        "endLine": 129,
+        "endChar": 6
+      },
+      "revId": "7ed706a93e568df346c5ec6b33d2a9264ac93674",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2e1a7e14_83c84186",
+        "filename": "src/gpu/graphite/render/VerticesRenderStep.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-07-19T18:16:22Z",
+      "side": 1,
+      "message": "Let\u0027s remove the default values for these and be explicit about the two values in each of the constructor calls in Renderer::Vertices().",
+      "range": {
+        "startLine": 18,
+        "startChar": 78,
+        "endLine": 18,
+        "endChar": 86
+      },
+      "revId": "7ed706a93e568df346c5ec6b33d2a9264ac93674",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
