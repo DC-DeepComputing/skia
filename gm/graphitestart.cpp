@@ -125,9 +125,9 @@ void draw_colorfilter_swatches(SkCanvas* canvas, SkRect clipRect) {
     SkSize tileSize = { clipRect.width() / 2.0f, clipRect.height() / 2.0f };
 
     // Quantize to four colors
-    uint8_t table1[256];
+    uint8_t table1[256], table7[256];
     for (int i = 0; i < 256; ++i) {
-        table1[i] = (i/64) * 85;
+        table7[255-i] = table1[i] = (i/64) * 85;
     }
 
     // table2 is a band-pass filter for 85-170.
@@ -146,7 +146,7 @@ void draw_colorfilter_swatches(SkCanvas* canvas, SkRect clipRect) {
     sk_sp<SkColorFilter> colorFilters[4];
 
     colorFilters[0] = SkColorMatrixFilter::MakeLightingFilter(SK_ColorLTGRAY, 0xFF440000);
-    colorFilters[1] = SkTableColorFilter::Make(table1);
+    colorFilters[1] = SkTableColorFilter::SkTableColorFilter::MakeARGB(nullptr, table1, table7, table1);
     colorFilters[2] = SkColorFilters::Compose(SkTableColorFilter::MakeARGB(nullptr, table3,
                                                                            table3, table3),
                                               SkTableColorFilter::MakeARGB(nullptr, table2,
