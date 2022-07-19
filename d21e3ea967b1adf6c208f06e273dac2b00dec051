@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "01ca481f_2de07076",
+        "filename": "src/core/SkGlyph.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 229,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-07-19T19:40:32Z",
+      "side": 1,
+      "message": "in ?",
+      "range": {
+        "startLine": 229,
+        "startChar": 52,
+        "endLine": 229,
+        "endChar": 55
+      },
+      "revId": "d21e3ea967b1adf6c208f06e273dac2b00dec051",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "32e42e5b_3352630f",
+        "filename": "src/core/SkGlyph.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 287,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-07-19T19:40:32Z",
+      "side": 1,
+      "message": "This isn\u0027t true anymore, right?",
+      "range": {
+        "startLine": 286,
+        "startChar": 0,
+        "endLine": 287,
+        "endChar": 55
+      },
+      "revId": "d21e3ea967b1adf6c208f06e273dac2b00dec051",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "50e28459_e6ed0021",
+        "filename": "src/core/SkGlyph.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 302,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-07-19T19:40:32Z",
+      "side": 1,
+      "message": "Do we even want this anymore ?",
+      "range": {
+        "startLine": 300,
+        "startChar": 0,
+        "endLine": 302,
+        "endChar": 5
+      },
+      "revId": "d21e3ea967b1adf6c208f06e273dac2b00dec051",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
