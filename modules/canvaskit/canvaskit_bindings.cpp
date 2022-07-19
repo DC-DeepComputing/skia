@@ -1678,7 +1678,8 @@ EMSCRIPTEN_BINDINGS(Skia) {
         }))
         .class_function("_MakeAdobeRGB", optional_override([]()->sk_sp<SkColorSpace> {
             return SkColorSpace::MakeRGB(SkNamedTransferFn::k2Dot2, SkNamedGamut::kAdobeRGB);
-        }));
+        }))
+        .function("gammaIsLinear", &SkColorSpace::gammaIsLinear);
 
     class_<SkPathEffect>("PathEffect")
         .smart_ptr<sk_sp<SkPathEffect>>("sk_sp<PathEffect>")
