@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ca982627_03ef1a44",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 48
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2022-07-19T19:21:03Z",
+      "side": 1,
+      "message": "LGTM with the caveat that I\u0027m unfamiliar with much of this code",
+      "revId": "db8f4a4ff899c20e80d76bdf3859200482866205",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e0a0463f_d7235a05",
+        "filename": "infra/bots/task_drivers/canvaskit_gold/canvaskit_gold.go",
+        "patchSetId": 48
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2022-07-19T19:21:03Z",
+      "side": 1,
+      "message": "Let\u0027s make this a flag rather than hard-code machine-type-specific paths.",
+      "range": {
+        "startLine": 60,
+        "startChar": 13,
+        "endLine": 60,
+        "endChar": 36
+      },
+      "revId": "db8f4a4ff899c20e80d76bdf3859200482866205",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
