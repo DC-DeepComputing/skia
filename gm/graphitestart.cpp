@@ -31,6 +31,7 @@ sk_sp<SkShader> create_gradient_shader(SkRect r,
                                         SkTileMode::kClamp);
 }
 
+#if 0
 sk_sp<SkShader> create_image_shader(SkCanvas* destCanvas, SkTileMode tmX, SkTileMode tmY) {
     SkBitmap bitmap;
 
@@ -120,14 +121,15 @@ void draw_gradient_tile(SkCanvas* canvas, SkRect clipRect) {
         canvas->restore();
     canvas->restore();
 }
+#endif
 
 void draw_colorfilter_swatches(SkCanvas* canvas, SkRect clipRect) {
     SkSize tileSize = { clipRect.width() / 2.0f, clipRect.height() / 2.0f };
 
     // Quantize to four colors
-    uint8_t table1[256];
+    uint8_t table1[256], table7[256];
     for (int i = 0; i < 256; ++i) {
-        table1[i] = (i/64) * 85;
+        table7[255-i] = table1[i] = (i/64) * 85;
     }
 
     // table2 is a band-pass filter for 85-170.
@@ -145,13 +147,15 @@ void draw_colorfilter_swatches(SkCanvas* canvas, SkRect clipRect) {
 
     sk_sp<SkColorFilter> colorFilters[4];
 
-    colorFilters[0] = SkColorMatrixFilter::MakeLightingFilter(SK_ColorLTGRAY, 0xFF440000);
-    colorFilters[1] = SkTableColorFilter::Make(table1);
+//    colorFilters[0] = SkColorMatrixFilter::MakeLightingFilter(SK_ColorLTGRAY, 0xFF440000);
+    colorFilters[1] = SkTableColorFilter::SkTableColorFilter::MakeARGB(nullptr, table1, table7, table1);
+#if 0
     colorFilters[2] = SkColorFilters::Compose(SkTableColorFilter::MakeARGB(nullptr, table3,
                                                                            table3, table3),
                                               SkTableColorFilter::MakeARGB(nullptr, table2,
                                                                            table2, table2));
     colorFilters[3] = SkColorFilters::Blend(SK_ColorGREEN, SkBlendMode::kMultiply);
+#endif
 
     SkPaint p;
 
@@ -161,6 +165,8 @@ void draw_colorfilter_swatches(SkCanvas* canvas, SkRect clipRect) {
 
         for (int y = 0; y < 2; ++y) {
             for (int x = 0; x < 2; ++x) {
+                if (!colorFilters[x*2+y]) { continue; }
+
                 SkRect r = SkRect::MakeXYWH(x * tileSize.width(), y * tileSize.height(),
                                             tileSize.width(), tileSize.height()).makeInset(1.0f,
                                                                                            1.0f);
@@ -175,6 +181,7 @@ void draw_colorfilter_swatches(SkCanvas* canvas, SkRect clipRect) {
     canvas->restore();
 }
 
+#if 0
 void draw_blend_mode_swatches(SkCanvas* canvas, SkRect clipRect) {
     static const int kTileHeight = 16;
     static const int kTileWidth = 16;
@@ -213,6 +220,7 @@ void draw_blend_mode_swatches(SkCanvas* canvas, SkRect clipRect) {
         dstPaint.setColor(kTransBluish);
     }
 }
+#endif
 
 } // anonymous namespace
 
@@ -243,6 +251,7 @@ protected:
 
     void onDraw(SkCanvas* canvas) override {
 
+#if 0
         const SkRect clipRect = SkRect::MakeWH(kWidth, kHeight).makeInset(kClipInset, kClipInset);
 
         canvas->save();
@@ -253,11 +262,13 @@ protected:
 
         // Upper-middle tile
         draw_gradient_tile(canvas, SkRect::MakeXYWH(kTileWidth, 0, kTileWidth, kTileHeight));
+#endif
 
         // Upper-right corner
         draw_colorfilter_swatches(canvas, SkRect::MakeXYWH(2*kTileWidth, 0,
                                                            kTileWidth, kTileWidth));
 
+#if 0
         // Middle-left tile
         {
             SkPaint p;
@@ -297,6 +308,7 @@ protected:
         {
             // <add tile here>
         }
+#endif
     }
 
 private:
