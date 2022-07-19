@@ -75,6 +75,7 @@
    "cq_config": {"location_regexes": ["DEPS", "src/codec/SkWuffs.*"]}
    },
   {"name": "Build-Debian10-Clang-x86_64-OptimizeForSize"},
+  {"name": "Build-Debian10-Clang-x86_64-OptimizeForSize-NoGpu"},
   {"name": "Build-Debian10-Clang-x86_64-Release"},
   {"name": "Build-Debian10-Clang-x86_64-Release-ANGLE"},
   {"name": "Build-Debian10-Clang-x86_64-Release-ASAN"},
@@ -239,6 +240,7 @@
   {"name": "CodeSize-skottie_tool-Debian10-Clang-x86_64-OptimizeForSize",
     "cq_config": {}
   },
+  {"name": "CodeSize-skottie_tool-Debian10-Clang-x86_64-OptimizeForSize-NoGpu"},
   {"name": "FM-Debian10-Clang-GCE-CPU-AVX2-x86_64-Debug-All"},
   {"name": "FM-Debian10-Clang-GCE-CPU-AVX2-x86_64-Debug-All-ASAN"},
   {"name": "FM-Debian10-Clang-GCE-CPU-AVX2-x86_64-Release-All-MSAN"},
