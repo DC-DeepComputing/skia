@@ -44,6 +44,12 @@ std::string SkShaderSnippet::getMangledUniformName(int uniformIndex, int mangleI
     return result;
 }
 
+std::string SkShaderSnippet::getMangledSamplerName(int samplerIndex, int mangleId) const {
+    std::string result;
+    result = fTexturesAndSamplers1[samplerIndex].name() + std::string("_") + std::to_string(mangleId);
+    return result;
+}
+
 // TODO: SkShaderInfo::toSkSL needs to work outside of both just graphite and metal. To do
 // so we'll need to switch over to using SkSL's uniform capabilities.
 #if defined(SK_GRAPHITE_ENABLED) && defined(SK_METAL)
@@ -287,6 +293,13 @@ static std::string append_default_snippet_arguments(const SkShaderSnippet* entry
     if (entry->needsPriorStageOutput()) {
         code += priorStageOutputName;
         separator = ", ";
+    }
+
+    for (size_t i = 0; i < entry->fTexturesAndSamplers1.size(); ++i) {
+        code += separator;
+        separator = ", ";
+
+        code += entry->getMangledSamplerName(i, entryIndex);
     }
 
     // Append uniform names.
@@ -542,7 +555,7 @@ static_assert(3 == static_cast<int>(SkTileMode::kDecal),  "ImageShader code depe
 static constexpr char kImageShaderName[] = "sk_compute_coords";
 
 // This is _not_ what we want to do.
-// Ideally the "compute_coords" code snippet could just take texture and
+// Ideally the "sk_compute_coords" code snippet could just take texture and
 // sampler references and do everything. That is going to take more time to figure out though so,
 // for the sake of expediency, we're generating custom code to do the sampling.
 std::string GenerateImageShaderExpression(const SkShaderInfo&,
@@ -551,7 +564,7 @@ std::string GenerateImageShaderExpression(const SkShaderInfo&,
                                           const std::string& priorStageOutputName,
                                           const std::string& currentPreLocalExpr) {
 #if defined(SK_GRAPHITE_ENABLED) && defined(SK_ENABLE_SKSL)
-    std::string samplerVarName = std::string("sampler_") + std::to_string(entryIndex) + "_0";
+    std::string samplerVarName = reader.entry()->getMangledSamplerName(0, entryIndex);
 
     // Uniform slot 0 is used to make the preLocalMatrix; it's handled in emit_glue_code_for_entry.
     std::string subsetName = reader.entry()->getMangledUniformName(1, entryIndex);
@@ -727,6 +740,15 @@ static constexpr SkUniform kBlendColorFilterUniforms[] = {
 };
 
 static constexpr char kBlendColorFilterName[] = "sk_blend_colorfilter";
+
+//--------------------------------------------------------------------------------------------------
+static constexpr int kNumTableColorFilterTexturesAndSamplers = 1;
+static constexpr SkTextureAndSampler
+kTableColorFilterTexturesAndSamplers[kNumTableColorFilterTexturesAndSamplers] = {
+        {"tableSampler"},
+};
+
+static constexpr char kTableColorFilterName[] = "sk_table_colorfilter";
 
 //--------------------------------------------------------------------------------------------------
 static constexpr char kErrorName[] = "sk_error";
@@ -1130,7 +1152,7 @@ SkShaderCodeDictionary::SkShaderCodeDictionary() {
     };
 
     // SkColorFilter snippets
-    fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kMatrixColorFilter] = {
+    fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kMatrixColorFilter1] = {
             "MatrixColorFilter",
             SkSpan(kMatrixColorFilterUniforms),
             SnippetRequirementFlags::kPriorStageOutput,
@@ -1141,12 +1163,23 @@ SkShaderCodeDictionary::SkShaderCodeDictionary() {
             kNoChildren,
             { }      // no data payload
     };
-    fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kBlendColorFilter] = {
+    fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kBlendColorFilter1] = {
             "BlendColorFilter",
             SkSpan(kBlendColorFilterUniforms),
             SnippetRequirementFlags::kPriorStageOutput,
             { },     // no samplers
             kBlendColorFilterName,
+            GenerateDefaultExpression,
+            GenerateDefaultPreamble,
+            kNoChildren,
+            { }      // no data payload
+    };
+    fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kTableColorFilter] = {
+            "TableColorFilter",
+            { },     // no uniforms
+            SnippetRequirementFlags::kPriorStageOutput,
+            SkSpan(kTableColorFilterTexturesAndSamplers, kNumTableColorFilterTexturesAndSamplers),
+            kTableColorFilterName,
             GenerateDefaultExpression,
             GenerateDefaultPreamble,
             kNoChildren,
