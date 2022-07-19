@@ -35,7 +35,7 @@ public:
      * improve performance by reducing the amount of work needed.
      *
      * @param leakTracer Do not delete tracer on process exit.
-     */
+      */
     static bool SetInstance(SkEventTracer*, bool leakTracer = false);
 
     /**
@@ -77,6 +77,8 @@ public:
         updateTraceEventDuration(const uint8_t* categoryEnabledFlag,
                                  const char* name,
                                  SkEventTracer::Handle handle) = 0;
+
+    virtual void newTracingSection(const char* name) = 0;
 
 protected:
     SkEventTracer() = default;
