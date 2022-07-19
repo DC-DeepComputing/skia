@@ -85,14 +85,16 @@ public:
 };
 DEF_GM(return new SimpleRT;)
 
-static sk_sp<SkShader> make_shader(sk_sp<SkImage> img, SkISize size) {
+static sk_sp<SkShader> make_shader(SkCanvas* grafCanvas, sk_sp<SkImage> img, SkISize size) {
     SkMatrix scale = SkMatrix::Scale(size.width()  / (float)img->width(),
                                      size.height() / (float)img->height());
-    return img->makeShader(SkSamplingOptions(), scale);
+    return img->makeRasterImage()
+            ->makeTextureImage(grafCanvas->recorder())
+            ->makeShader(SkSamplingOptions(), scale);
 }
 
-static sk_sp<SkShader> make_threshold(SkISize size) {
-    auto info = SkImageInfo::Make(size.width(), size.height(), kAlpha_8_SkColorType,
+static sk_sp<SkShader> make_threshold(SkCanvas* grafCanvas, SkISize size) {
+    auto info = SkImageInfo::Make(size.width(), size.height(), kRGBA_8888_SkColorType,
                                   kPremul_SkAlphaType);
     auto surf = SkSurface::MakeRaster(info);
     auto canvas = surf->getCanvas();
@@ -120,7 +122,10 @@ static sk_sp<SkShader> make_threshold(SkISize size) {
 
     canvas->restore();  // apply the blur
 
-    return surf->makeImageSnapshot()->makeShader(SkSamplingOptions());
+    return surf->makeImageSnapshot()
+            ->makeRasterImage()
+            ->makeTextureImage(grafCanvas->recorder())
+            ->makeShader(SkSamplingOptions());
 }
 
 class ThresholdRT : public RuntimeShaderGM {
@@ -139,8 +144,8 @@ public:
         }
 
         half4 main(float2 xy) {
-            half4 before = before_map.eval(xy);
-            half4 after = after_map.eval(xy);
+            half4 before = before_map.eval(float2(xy.x, 256 - xy.y));
+            half4 after = after_map.eval(float2(256 - xy.x, xy.y));
 
             float m = smooth_cutoff(threshold_map.eval(xy).a);
             return mix(before, after, m);
@@ -150,15 +155,18 @@ public:
     sk_sp<SkShader> fBefore, fAfter, fThreshold;
 
     void onOnceBeforeDraw() override {
-        const SkISize size = {256, 256};
-        fThreshold = make_threshold(size);
-        fBefore = make_shader(GetResourceAsImage("images/mandrill_256.png"), size);
-        fAfter = make_shader(GetResourceAsImage("images/dog.jpg"), size);
 
         this->RuntimeShaderGM::onOnceBeforeDraw();
     }
 
     void onDraw(SkCanvas* canvas) override {
+        {
+            const SkISize size = {256, 256};
+            fThreshold = make_threshold(canvas, size);
+            fBefore = make_shader(canvas, GetResourceAsImage("images/mandrill_256.png"), size);
+            fAfter = make_shader(canvas, GetResourceAsImage("images/dog.jpg"), size);
+        }
+
         SkRuntimeShaderBuilder builder(fEffect);
 
         builder.uniform("cutoff") = sin(fSecs) * 0.55f + 0.5f;
