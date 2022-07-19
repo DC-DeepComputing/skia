@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "64295925_bbce0299",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-07-19T17:28:55Z",
+      "side": 1,
+      "message": "For you to review when you get back. This is the last piece of the Perfetto pie. This CL adds a method to the SkEventTracer public API which allows users to split up tracing by sections. Added implementations for SkPerfettoTrace and SkDebugf; stubbed out for other tracers but can implement with some guidance if it would be valuable.",
+      "revId": "73cfae0b478bbab6ebf74445823ed9ed8cdef158",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
