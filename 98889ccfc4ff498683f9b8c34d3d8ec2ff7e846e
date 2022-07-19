@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e35da64e_d5595973",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-07-19T17:23:10Z",
+      "side": 1,
+      "message": "lgtm modulo question about combining writeUniforms and writeTextures into a single function.",
+      "revId": "98889ccfc4ff498683f9b8c34d3d8ec2ff7e846e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4a47e12a_91d072ed",
+        "filename": "src/gpu/graphite/Renderer.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-07-19T17:23:10Z",
+      "side": 1,
+      "message": "Since both textures and uniforms modify the same gatherer, wdyt about combining this into one function and we invoke it when (hasTextures() || numUniforms() \u003e 0)?",
+      "range": {
+        "startLine": 66,
+        "startChar": 4,
+        "endLine": 66,
+        "endChar": 83
+      },
+      "revId": "98889ccfc4ff498683f9b8c34d3d8ec2ff7e846e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
