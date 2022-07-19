@@ -729,6 +729,13 @@ static constexpr SkUniform kBlendColorFilterUniforms[] = {
 static constexpr char kBlendColorFilterName[] = "sk_blend_colorfilter";
 
 //--------------------------------------------------------------------------------------------------
+static constexpr SkUniform kTableColorFilterUniforms[] = {
+        { "color",     SkSLType::kFloat4 }
+};
+
+static constexpr char kTableColorFilterName[] = "sk_table_colorfilter";
+
+//--------------------------------------------------------------------------------------------------
 static constexpr char kErrorName[] = "sk_error";
 
 //--------------------------------------------------------------------------------------------------
@@ -1130,7 +1137,7 @@ SkShaderCodeDictionary::SkShaderCodeDictionary() {
     };
 
     // SkColorFilter snippets
-    fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kMatrixColorFilter] = {
+    fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kMatrixColorFilter1] = {
             "MatrixColorFilter",
             SkSpan(kMatrixColorFilterUniforms),
             SnippetRequirementFlags::kPriorStageOutput,
@@ -1141,12 +1148,23 @@ SkShaderCodeDictionary::SkShaderCodeDictionary() {
             kNoChildren,
             { }      // no data payload
     };
-    fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kBlendColorFilter] = {
+    fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kBlendColorFilter1] = {
             "BlendColorFilter",
             SkSpan(kBlendColorFilterUniforms),
             SnippetRequirementFlags::kPriorStageOutput,
             { },     // no samplers
             kBlendColorFilterName,
+            GenerateDefaultExpression,
+            GenerateDefaultPreamble,
+            kNoChildren,
+            { }      // no data payload
+    };
+    fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kTableColorFilter] = {
+            "TableColorFilter",
+            SkSpan(kTableColorFilterUniforms),
+            SnippetRequirementFlags::kPriorStageOutput,
+            { },     // no samplers
+            kTableColorFilterName,
             GenerateDefaultExpression,
             GenerateDefaultPreamble,
             kNoChildren,
