@@ -636,7 +636,7 @@ static void compute_complexity(const SkPath& path, SkScalar& avgLength, SkScalar
 }
 
 static bool ShouldUseAAA(const SkPath& path, SkScalar avgLength, SkScalar complexity) {
-#if defined(SK_DISABLE_AAA)
+#if 1
     return false;
 #else
     if (gSkForceAnalyticAA) {
