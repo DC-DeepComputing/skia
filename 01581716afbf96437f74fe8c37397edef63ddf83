@@ -16,6 +16,46 @@
       "message": "Sorry, I briefly clobbered this CL earlier with an inadvertent `git cl upload`. It should be fixed now.",
       "revId": "01581716afbf96437f74fe8c37397edef63ddf83",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c831cbbc_c3c68a7f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-07-19T17:45:20Z",
+      "side": 1,
+      "message": "I think there\u0027s some more clean up that can happen in the future, moving away from the accumulated preLocal matrices (I think we could have the local matrix snippet be the owner of a matrix uniform and have the `AddToKey` functions add those snippets as appropriate around their main snippets). But this is definite progress towards the end state.",
+      "revId": "01581716afbf96437f74fe8c37397edef63ddf83",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8b1aa8a1_52a2450e",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 11
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-07-19T17:45:20Z",
+      "side": 1,
+      "message": "These should be renamed `preLocal` to reflect the updated semantics",
+      "range": {
+        "startLine": 45,
+        "startChar": 34,
+        "endLine": 45,
+        "endChar": 43
+      },
+      "revId": "01581716afbf96437f74fe8c37397edef63ddf83",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
