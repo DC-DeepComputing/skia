@@ -51,6 +51,24 @@
       "parentUuid": "51028959_ea3e07b7",
       "revId": "1c80f1ce7e88e6435f46cff7650103e0f5ce170f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b7ffbb64_dca01bfa",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-07-19T16:42:06Z",
+      "side": 1,
+      "message": "It\u0027s mostly that APIs with a tolerance have to pick arbitrary defaults. Skia clients end up relying on those, or thinking that they\u0027re meaninfgul. You can never really pick a value that works for all clients/use-cases. How close is close-enough? What if it\u0027s HDR colors with luminance of 10,000 nits? etc... Obviously having it as a parameter lets clients make the decision at the call-site, I was just hoping there was a way to avoid this kind of \"fuzzy\" API (that should really only be used in the context of testing?).",
+      "parentUuid": "1d27fa05_e724e79b",
+      "revId": "1c80f1ce7e88e6435f46cff7650103e0f5ce170f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
