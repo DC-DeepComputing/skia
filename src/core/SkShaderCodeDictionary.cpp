@@ -747,6 +747,9 @@ static constexpr SkUniform kBlendColorFilterUniforms[] = {
 static constexpr char kBlendColorFilterName[] = "sk_blend_colorfilter";
 
 //--------------------------------------------------------------------------------------------------
+static constexpr char kGaussianColorFilterName[] = "sk_gaussian_colorfilter";
+
+//--------------------------------------------------------------------------------------------------
 static constexpr char kErrorName[] = "sk_error";
 
 //--------------------------------------------------------------------------------------------------
@@ -1177,6 +1180,17 @@ SkShaderCodeDictionary::SkShaderCodeDictionary() {
             SnippetRequirementFlags::kPriorStageOutput,
             { },     // no samplers
             kBlendColorFilterName,
+            GenerateDefaultExpression,
+            GenerateDefaultPreamble,
+            kNoChildren,
+            { }      // no data payload
+    };
+    fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kGaussianColorFilter] = {
+            "GaussianColorFilter",
+            { },     // no uniforms
+            SnippetRequirementFlags::kPriorStageOutput,
+            { },     // no samplers
+            kGaussianColorFilterName,
             GenerateDefaultExpression,
             GenerateDefaultPreamble,
             kNoChildren,
