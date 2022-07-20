@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ddb8af96_7b932fce",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-07-20T17:50:23Z",
+      "side": 1,
+      "message": "Picking reviewers mostly based on who is shipping this code to the most users.",
+      "revId": "22c3a70a99de3e9ff76059ae60dc001b053b6d59",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
