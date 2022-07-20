@@ -45,12 +45,6 @@ public:
                                    GrRecordingContext*, const GrColorInfo&) const override;
 #endif
 
-#ifdef SK_ENABLE_SKSL
-    void addToKey(const SkKeyContext& keyContext,
-                  SkPaintParamsKeyBuilder* builder,
-                  SkPipelineDataGatherer* gatherer) const override;
-#endif
-
     bool onAppendStages(const SkStageRec& rec, bool shaderIsOpaque) const override {
         SkRasterPipeline* p = rec.fPipeline;
         if (!shaderIsOpaque) {
@@ -249,38 +243,6 @@ GrFPResult SkTable_ColorFilter::asFragmentProcessor(std::unique_ptr<GrFragmentPr
 }
 
 #endif // SK_SUPPORT_GPU
-
-#ifdef SK_ENABLE_SKSL
-
-#include "include/core/SkImage.h"
-#include "src/core/SkKeyContext.h"
-#include "src/core/SkKeyHelpers.h"
-#include "src/core/SkPaintParamsKey.h"
-
-void SkTable_ColorFilter::addToKey(const SkKeyContext& keyContext,
-                                   SkPaintParamsKeyBuilder* builder,
-                                   SkPipelineDataGatherer* gatherer) const {
-    TableColorFilterBlock::TableColorFilterData data;
-
-#ifdef SK_GRAPHITE_ENABLED
-    // TODO(b/239604347): remove this hack. This is just here until we determine what Graphite's
-    // Recorder-level caching story is going to be.
-    sk_sp<SkImage> image = SkImage::MakeFromBitmap(fBitmap);
-    image = image->makeTextureImage(keyContext.recorder(), skgpu::graphite::Mipmapped::kNo);
-
-    if (as_IB(image)->isGraphiteBacked()) {
-        skgpu::graphite::Image* grImage = static_cast<skgpu::graphite::Image*>(image.get());
-
-        auto [view, _] = grImage->asView(keyContext.recorder(), skgpu::graphite::Mipmapped::kNo);
-        data.fTextureProxy = view.refProxy();
-    }
-#endif
-
-    TableColorFilterBlock::BeginBlock(keyContext, builder, gatherer, data);
-    builder->endBlock();
-}
-
-#endif
 
 ///////////////////////////////////////////////////////////////////////////////
 

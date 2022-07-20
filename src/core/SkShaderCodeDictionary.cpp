@@ -759,13 +759,6 @@ static constexpr SkUniform kBlendColorFilterUniforms[] = {
 static constexpr char kBlendColorFilterName[] = "sk_blend_colorfilter";
 
 //--------------------------------------------------------------------------------------------------
-static constexpr SkTextureAndSampler kTableColorFilterTexturesAndSamplers[] = {
-        {"tableSampler"},
-};
-
-static constexpr char kTableColorFilterName[] = "sk_table_colorfilter";
-
-//--------------------------------------------------------------------------------------------------
 static constexpr char kComposeColorFilterName[] = "ComposeColorFilter";
 
 static constexpr int kNumComposeColorFilterChildren = 2;
@@ -807,6 +800,9 @@ void GenerateComposeColorFilterPreamble(const SkShaderInfo& shaderInfo,
                           outerColor.c_str());
 #endif  // defined(SK_GRAPHITE_ENABLED) && defined(SK_ENABLE_SKSL)
 }
+
+//--------------------------------------------------------------------------------------------------
+static constexpr char kGaussianColorFilterName[] = "sk_gaussian_colorfilter";
 
 //--------------------------------------------------------------------------------------------------
 static constexpr char kErrorName[] = "sk_error";
@@ -1244,17 +1240,6 @@ SkShaderCodeDictionary::SkShaderCodeDictionary() {
             kNoChildren,
             { }      // no data payload
     };
-    fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kTableColorFilter] = {
-            "TableColorFilter",
-            { },     // no uniforms
-            SnippetRequirementFlags::kPriorStageOutput,
-            SkSpan(kTableColorFilterTexturesAndSamplers),
-            kTableColorFilterName,
-            GenerateDefaultExpression,
-            GenerateDefaultPreamble,
-            kNoChildren,
-            { }      // no data payload
-    };
     fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kComposeColorFilter] = {
             "ComposeColorFilter",
             { },     // no uniforms
@@ -1264,6 +1249,17 @@ SkShaderCodeDictionary::SkShaderCodeDictionary() {
             GenerateDefaultExpression,
             GenerateComposeColorFilterPreamble,
             kNumComposeColorFilterChildren,
+            { }      // no data payload
+    };
+    fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kGaussianColorFilter] = {
+            "GaussianColorFilter",
+            { },     // no uniforms
+            SnippetRequirementFlags::kPriorStageOutput,
+            { },     // no samplers
+            kGaussianColorFilterName,
+            GenerateDefaultExpression,
+            GenerateDefaultPreamble,
+            kNoChildren,
             { }      // no data payload
     };
 

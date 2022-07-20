@@ -596,3 +596,9 @@ half4 sk_table_colorfilter(half4 colorIn, sampler2D tableSampler) {
                         1);
     return color * sample(tableSampler, half2(coords.a, 1.0/8.0)).r;
 }
+
+half4 sk_gaussian_colorfilter(half4 inColor) {
+    half factor = 1 - inColor.a;
+    factor = exp(-factor * factor * 4) - 0.018;
+    return half4(factor);
+}

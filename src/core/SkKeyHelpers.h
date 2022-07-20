@@ -210,22 +210,13 @@ struct BlendColorFilterBlock {
                            const BlendColorFilterData&);
 };
 
-struct TableColorFilterBlock {
-    struct TableColorFilterData {
-        TableColorFilterData();
-
-#ifdef SK_GRAPHITE_ENABLED
-        sk_sp<skgpu::graphite::TextureProxy> fTextureProxy;
-#endif
-    };
-
+struct ComposeColorFilterBlock {
     static void BeginBlock(const SkKeyContext&,
                            SkPaintParamsKeyBuilder*,
-                           SkPipelineDataGatherer*,
-                           const TableColorFilterData&);
+                           SkPipelineDataGatherer*);
 };
 
-struct ComposeColorFilterBlock {
+struct GaussianColorFilterBlock {
     static void BeginBlock(const SkKeyContext&,
                            SkPaintParamsKeyBuilder*,
                            SkPipelineDataGatherer*);
