@@ -1117,6 +1117,10 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 		skip(ALL, "tests", ALL, "SkSLMatrixConstructorsES3_GPU")
 	}
 
+	if b.extraConfig("Vulkan") && b.gpu("RadeonVega6") {
+		skip(ALL, "gm", ALL, "ycbcrimage")                                 // skia:13265
+		skip(ALL, "test", ALL, "VkYCbcrSampler_DrawImageWithYcbcrSampler") // skia:13265
+	}
 
 	if b.matchGpu("Intel") { // some Intel GPUs don't return zero for the derivative of a uniform
 		skip(ALL, "tests", ALL, "SkSLIntrinsicDFdy_GPU")
