@@ -185,6 +185,7 @@ void SkSweepGradient::addToKey(const SkKeyContext& keyContext,
                                             0.0, 0.0f,
                                             fTBias, fTScale,
                                             fTileMode,
+                                            this->interpolateInPremul(),
                                             fColorCount,
                                             fOrigColors4f,
                                             fOrigPos);
