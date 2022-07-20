@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ca3e7d2e_b2564654",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 792,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-07-20T20:47:10Z",
+      "side": 1,
+      "message": "In my first CL patchset I just always assigned fCurrentDepth here, but fCurrentDepth could already be higher than the clip\u0027s Z if we had recorded draws that were completely contained in the clip (and thus unaffected). In that case new draws after the clip is popped off already exceed its Z value so we\u0027re fine, and we better not go back in time.",
+      "range": {
+        "startLine": 790,
+        "startChar": 4,
+        "endLine": 792,
+        "endChar": 5
+      },
+      "revId": "059c9547e22a0d73a365c9b889b958454d97da11",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
