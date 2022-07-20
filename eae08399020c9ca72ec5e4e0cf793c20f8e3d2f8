@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "17c18a43_cf3d5c26",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-07-20T18:27:54Z",
+      "side": 1,
+      "message": "This should fix the two failing tasks on the CI",
+      "revId": "eae08399020c9ca72ec5e4e0cf793c20f8e3d2f8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
