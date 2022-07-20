@@ -2068,7 +2068,7 @@ var shorthandToLabel = map[string]string{
 	"example_hello_world_dawn":         "//example:hello_world_dawn",
 	"example_hello_world_gl":           "//example:hello_world_gl",
 	"example_hello_world_vulkan":       "//example:hello_world_vulkan",
-	"modules_canvaskit_canvaskit_wasm": "//modules/canvaskit:canvaskit_wasm",
+	"modules_canvaskit_webgl":          "//modules/canvaskit:canvaskit_webgl",
 	"skia_public":                      "//:skia_public",
 }
 
