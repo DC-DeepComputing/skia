@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1757f75d_163e3222",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 785,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-07-20T15:29:31Z",
+      "side": 1,
+      "message": "How is this doing something different than line 778?",
+      "revId": "80904d651c1d88125c91f368f8d67bf39ed41dfc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "09d9e7af_f3aa856d",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1236,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-07-20T15:29:31Z",
+      "side": 1,
+      "message": "It seems like we should be requesting the kPriorStageOutput here",
+      "revId": "80904d651c1d88125c91f368f8d67bf39ed41dfc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
