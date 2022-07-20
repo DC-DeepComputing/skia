@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c22fe98b_b44d239c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-07-20T13:35:44Z",
+      "side": 1,
+      "message": "Can we keep `GrFPSuccess` behavior. the same but add a new function which allows null? I feel like in the general case, the assert is useful, and the cases where null is valid are rare. They do exist, though, so in places where null is valid we can call `GrFPNullableSuccess` or whatever we decide to call it.\n\n",
+      "revId": "31503690726a886298c08f5b9bc21b887af67986",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
