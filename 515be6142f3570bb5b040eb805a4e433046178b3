@@ -22,6 +22,30 @@
       },
       "revId": "515be6142f3570bb5b040eb805a4e433046178b3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a0c60aac_68703fc1",
+        "filename": "src/effects/SkHighContrastFilter.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-07-20T14:07:38Z",
+      "side": 1,
+      "message": "Yes and no! \nhttps://osscs.corp.google.com/skia/skia/+/main:src/sksl/sksl_graphite_frag.sksl;l\u003d452-494?q\u003dgraphite_frag\n\nThe end goal of skia:13540 is to put them in a common module that both Graphite and Ganesh can see and remove them from code.",
+      "parentUuid": "c7a81501_d0e2393c",
+      "range": {
+        "startLine": 26,
+        "startChar": 0,
+        "endLine": 27,
+        "endChar": 33
+      },
+      "revId": "515be6142f3570bb5b040eb805a4e433046178b3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
