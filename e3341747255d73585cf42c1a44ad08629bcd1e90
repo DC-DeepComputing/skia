@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e23b2acd_27d4f34f",
+        "filename": "src/gpu/graphite/render/StencilAndFillPathRenderer.cpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-07-20T21:28:49Z",
+      "side": 1,
+      "message": "I put these arguments on to separate lines. Let me know if this was the wrong call. Some of the times, multiple could fit on to one line, but I thought that looked a bit crowded/confusing. \n\nAlso, is there a Skia style guide? Or maybe a style script? I know we have the presubmit checks for some things, but something like that would be helpful so you don\u0027t have to add so many nits. Thank you for doing so though as I get the hang of how you guys do things over here. 😊",
+      "range": {
+        "startLine": 112,
+        "startChar": 3,
+        "endLine": 143,
+        "endChar": 84
+      },
+      "revId": "e3341747255d73585cf42c1a44ad08629bcd1e90",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
