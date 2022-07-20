@@ -6,6 +6,7 @@ require (
 	cloud.google.com/go/pubsub v1.8.3
 	cloud.google.com/go/storage v1.14.0
 	github.com/andygrunwald/go-gerrit v0.0.0-20200503132804-ed2419acda39
+	github.com/bazelbuild/buildtools v0.0.0-20220531122519-a43aed7014c8 // indirect
 	github.com/bazelbuild/remote-apis-sdks v0.0.0-20201120151053-8f976b9bf4fc // indirect
 	github.com/flynn/json5 v0.0.0-20160717195620-7620272ed633
 	github.com/go-kit/kit v0.10.0 // indirect
@@ -15,8 +16,10 @@ require (
 	github.com/stretchr/testify v1.7.0
 	go.chromium.org/luci v0.0.0-20201121231857-b9ab316d7198 // indirect
 	go.skia.org/infra v0.0.0-20220426210209-9d8975cd9401
+	go.starlark.net v0.0.0-20220714194419-4cadf0a12139 // indirect
 	golang.org/x/crypto v0.0.0-20220112180741-5e0467b6c7ce
 	golang.org/x/oauth2 v0.0.0-20220309155454-6242fa91716a
 	google.golang.org/api v0.74.0
+	google.golang.org/protobuf v1.28.0 // indirect
 	nhooyr.io/websocket v1.8.7 // indirect
 )
