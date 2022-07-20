@@ -66,7 +66,8 @@ bool SkColorFilterBase::onAsAColorMatrix(float matrix[20]) const {
 #if SK_SUPPORT_GPU
 GrFPResult SkColorFilterBase::asFragmentProcessor(std::unique_ptr<GrFragmentProcessor> inputFP,
                                                   GrRecordingContext* context,
-                                                  const GrColorInfo& dstColorInfo) const {
+                                                  const GrColorInfo& dstColorInfo,
+                                                  const SkSurfaceProps& props) const {
     // This color filter doesn't implement `asFragmentProcessor`.
     return GrFPFailure(std::move(inputFP));
 }
@@ -113,8 +114,9 @@ SkPMColor4f SkColorFilterBase::onFilterColor4f(const SkPMColor4f& color,
     pipeline.append_constant_color(&alloc, color.vec());
     SkPaint blankPaint;
     SkMatrixProvider matrixProvider(SkMatrix::I());
+    SkSurfaceProps props{}; // default OK; colorFilters don't render text
     SkStageRec rec = {
-        &pipeline, &alloc, kRGBA_F32_SkColorType, dstCS, blankPaint, nullptr, matrixProvider
+        &pipeline, &alloc, kRGBA_F32_SkColorType, dstCS, blankPaint, nullptr, matrixProvider, props
     };
 
     if (as_CFB(this)->onAppendStages(rec, color.fA == 1)) {
@@ -253,7 +255,8 @@ public:
 #if SK_SUPPORT_GPU
     GrFPResult asFragmentProcessor(std::unique_ptr<GrFragmentProcessor> inputFP,
                                    GrRecordingContext* context,
-                                   const GrColorInfo& dstColorInfo) const override {
+                                   const GrColorInfo& dstColorInfo,
+                                   const SkSurfaceProps& props) const override {
         // wish our caller would let us know if our input was opaque...
         constexpr SkAlphaType alphaType = kPremul_SkAlphaType;
         switch (fDir) {
@@ -358,7 +361,8 @@ struct SkWorkingFormatColorFilter : public SkColorFilterBase {
 #if SK_SUPPORT_GPU
     GrFPResult asFragmentProcessor(std::unique_ptr<GrFragmentProcessor> inputFP,
                                    GrRecordingContext* context,
-                                   const GrColorInfo& dstColorInfo) const override {
+                                   const GrColorInfo& dstColorInfo,
+                                   const SkSurfaceProps& props) const override {
         sk_sp<SkColorSpace> dstCS = dstColorInfo.refColorSpace();
         if (!dstCS) { dstCS = SkColorSpace::MakeSRGB(); }
 
@@ -369,7 +373,8 @@ struct SkWorkingFormatColorFilter : public SkColorFilterBase {
                 working = {dstColorInfo.colorType(), workingAT, workingCS};
 
         auto [ok, fp] = as_CFB(fChild)->asFragmentProcessor(
-                GrColorSpaceXformEffect::Make(std::move(inputFP), dst,working), context, working);
+                GrColorSpaceXformEffect::Make(std::move(inputFP), dst,working), context, working,
+                                              props);
 
         return ok ? GrFPSuccess(GrColorSpaceXformEffect::Make(std::move(fp), working,dst))
                   : GrFPFailure(std::move(fp));
