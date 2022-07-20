@@ -63,6 +63,30 @@
       },
       "revId": "873e32c904e8cfde35fbdd30d1c16c1398a04e71",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "17a346aa_f4e6e7df",
+        "filename": "src/core/SkRuntimeEffect.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 937,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-07-20T14:14:15Z",
+      "side": 1,
+      "message": "Added\n    // TODO(skia:13508): if the child is a blender, we should blend the two inputs using\n    // SrcOver, not pass through the source color.",
+      "parentUuid": "16f1cb87_5cbf74ed",
+      "range": {
+        "startLine": 935,
+        "startChar": 0,
+        "endLine": 937,
+        "endChar": 32
+      },
+      "revId": "873e32c904e8cfde35fbdd30d1c16c1398a04e71",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
