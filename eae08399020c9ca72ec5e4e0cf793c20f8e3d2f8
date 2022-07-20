@@ -16,6 +16,23 @@
       "message": "This should fix the two failing tasks on the CI",
       "revId": "eae08399020c9ca72ec5e4e0cf793c20f8e3d2f8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "41532e3f_d91cbfa1",
+        "filename": "infra/bots/task_drivers/canvaskit_gold/canvaskit_gold.go",
+        "patchSetId": 2
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 5145
+      },
+      "writtenOn": "2022-07-20T18:38:20Z",
+      "side": 1,
+      "message": "Just curious why this was necessary? i.e. int-\u003estr",
+      "revId": "eae08399020c9ca72ec5e4e0cf793c20f8e3d2f8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
