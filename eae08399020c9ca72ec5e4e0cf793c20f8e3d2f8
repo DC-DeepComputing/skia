@@ -33,6 +33,24 @@
       "message": "Just curious why this was necessary? i.e. int-\u003estr",
       "revId": "eae08399020c9ca72ec5e4e0cf793c20f8e3d2f8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b98089ed_81d8b073",
+        "filename": "infra/bots/task_drivers/canvaskit_gold/canvaskit_gold.go",
+        "patchSetId": 2
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-07-20T18:41:23Z",
+      "side": 1,
+      "message": "On the CI, I\u0027m seeing \"invalid value \"\" for flag -patchset_order: parse error\"\n\ne.g. https://chromium-swarm.appspot.com/task?id\u003d5c35b35b118f3910",
+      "parentUuid": "41532e3f_d91cbfa1",
+      "revId": "eae08399020c9ca72ec5e4e0cf793c20f8e3d2f8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
