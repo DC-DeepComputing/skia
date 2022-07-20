@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "97df5379_93fdffec",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-07-20T18:32:27Z",
+      "side": 1,
+      "message": "Just FYI: I won\u0027t be able to get to this for at least the next couple of days.",
+      "revId": "272ba9d2eebdbae73138897524f55342371c933f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
