@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "75da1791_5ce44967",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-07-20T13:48:00Z",
+      "side": 1,
+      "message": "Interestingly, I had a similar change recently, when I was trying to make blenders and shaders use GrFPResult as well. I ended up limiting the scope of that change, so I didn\u0027t need this, but I think it\u0027s fine regardless.",
+      "revId": "5f294b8260620ad4783f259b690a9f56c0640292",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
