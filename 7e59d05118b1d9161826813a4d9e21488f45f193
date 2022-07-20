@@ -16,6 +16,24 @@
       "message": "I guess we can\u0027t get here with any other type that would cause problems (we\u0027re already dealing with an operator, so something like a struct can\u0027t reach this code)? Just got worried, because I saw that is_constant_splat is written in a way that could return true even for arrays or structs...",
       "revId": "7e59d05118b1d9161826813a4d9e21488f45f193",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d4c4e6b9_64484450",
+        "filename": "src/sksl/SkSLConstantFolder.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 619,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-07-20T20:53:03Z",
+      "side": 1,
+      "message": "`ConstantFolder::Simplify` is specifically for binary expressions. For structs/arrays, I think that limits us to `\u003d \u003d\u003d !\u003d`. I don\u0027t think there\u0027s any case where the ops in `simplify_no_op_arithmetic` could apply. (`+ - * / +\u003d -\u003d *\u003d /\u003d`) \n\nIf you want to be extra cautious I could add a type check.",
+      "parentUuid": "6b0d3c95_7cbe8d1f",
+      "revId": "7e59d05118b1d9161826813a4d9e21488f45f193",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
