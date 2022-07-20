@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bce595d7_aea1ce06",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-07-20T17:45:24Z",
+      "side": 1,
+      "message": "wdyt about pulling the addition of the RenderStep stuff out to a follow on CL?",
+      "revId": "29fed02e94209179fbe6fa7ab7ae780752c0c4e2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "53643700_ee16728f",
+        "filename": "src/gpu/graphite/ContextUtils.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-07-20T17:45:24Z",
+      "side": 1,
+      "message": "anonymous namespace ?",
+      "revId": "29fed02e94209179fbe6fa7ab7ae780752c0c4e2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "822662a2_da1febbe",
+        "filename": "src/gpu/graphite/ContextUtils.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-07-20T17:45:24Z",
+      "side": 1,
+      "message": "This guy too?",
+      "revId": "29fed02e94209179fbe6fa7ab7ae780752c0c4e2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9ca58b4c_d00960e5",
+        "filename": "src/gpu/graphite/ContextUtils.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-07-20T17:45:24Z",
+      "side": 1,
+      "message": "Can we get by w/o this header ?",
+      "revId": "29fed02e94209179fbe6fa7ab7ae780752c0c4e2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
