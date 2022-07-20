@@ -567,6 +567,22 @@ void BlendColorFilterBlock::BeginBlock(const SkKeyContext& keyContext,
 }
 
 //--------------------------------------------------------------------------------------------------
+
+void ComposeColorFilterBlock::BeginBlock(const SkKeyContext& keyContext,
+                                         SkPaintParamsKeyBuilder* builder,
+                                         SkPipelineDataGatherer* gatherer) {
+#ifdef SK_GRAPHITE_ENABLED
+    if (builder->backend() == SkBackend::kGraphite) {
+        builder->beginBlock(SkBuiltInCodeSnippetID::kComposeColorFilter);
+    }
+#endif // SK_GRAPHITE_ENABLED
+
+    if (builder->backend() == SkBackend::kSkVM || builder->backend() == SkBackend::kGanesh) {
+        // TODO: add implementation for other backends
+    }
+}
+
+//--------------------------------------------------------------------------------------------------
 #ifdef SK_GRAPHITE_ENABLED
 namespace {
 
