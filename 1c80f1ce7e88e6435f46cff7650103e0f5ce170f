@@ -123,6 +123,24 @@
       "parentUuid": "b730d7ac_892753f0",
       "revId": "1c80f1ce7e88e6435f46cff7650103e0f5ce170f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1300b13b_044c45a0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-07-20T15:17:48Z",
+      "side": 1,
+      "message": "Overall though - after talking through it with other folks here, I don\u0027t want any codification of \"approximate\" in the API. So yeah - I\u0027d prefer if that (and the debugging aids) could live in an external helper.",
+      "parentUuid": "99b71d73_154b7e6f",
+      "revId": "1c80f1ce7e88e6435f46cff7650103e0f5ce170f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
