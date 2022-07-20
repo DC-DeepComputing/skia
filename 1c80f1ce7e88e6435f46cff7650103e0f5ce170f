@@ -105,6 +105,24 @@
       "parentUuid": "4030d4ef_fb6e8dbf",
       "revId": "1c80f1ce7e88e6435f46cff7650103e0f5ce170f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "99b71d73_154b7e6f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-07-20T15:10:56Z",
+      "side": 1,
+      "message": "Even with a required tolerance ... using absolute difference is (often, not always) the right way to be comparing floats. Over the range of typical colors (0-1), the default you picked spans the first 800 million unique positive floats, but turns into an EXACT equality check at 1.0. I\u0027m not trying to pick on this - but this is why people end up deciding if they want relative error checks (or even checks in terms of ulps). This is all why we don\u0027t like making these decisions for clients any more - you need context to know what close enough means (not just the tolerance, but the units of that tolerance, etc...).\n\neg: For SkColor4f, I could even imagine a version that just checks if the colors quantize to the same 8-bit (or 16-bit) fixed point colors. (skcms uses this technique in certain situations). So yeah - if there\u0027s any way to externalize these decisions, I\u0027d really prefer that. If not, we can probably live with this, but I\u0027d be inclined to make the tolerance required - or - have the default be \"principled\" in some way: probably set it to 1/255?",
+      "parentUuid": "b730d7ac_892753f0",
+      "revId": "1c80f1ce7e88e6435f46cff7650103e0f5ce170f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
