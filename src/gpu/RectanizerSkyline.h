@@ -19,7 +19,9 @@ namespace skgpu {
 // Mark this class final in an effort to avoid the vtable when this subclass is used explicitly.
 class RectanizerSkyline final : public Rectanizer {
 public:
-    RectanizerSkyline(int w, int h) : Rectanizer(w, h) {
+    RectanizerSkyline(int w, int h, PadAllGlyphs padAllGlyphs = PadAllGlyphs::kNo)
+        : Rectanizer(w, h)
+        , fPadAllGlyphs(padAllGlyphs) {
         this->reset();
     }
 
@@ -34,31 +36,49 @@ public:
         seg->fWidth = this->width();
     }
 
-    bool addRect(int w, int h, SkIPoint16* loc) final;
+    bool addRect(int w, int h, SkIPoint16* loc) final;  // PadAllGlyphs::kNo
+    bool addRect(int w, int h, SkIPoint16* loc, PadAllGlyphs padAllGlyphs);
 
     float percentFull() const final {
         return fAreaSoFar / ((float)this->width() * this->height());
     }
 
+    PadAllGlyphs padAllGlyphs() const { return fPadAllGlyphs; }
+
 private:
+    friend class RectanizerSkylineTestingPeer;
+
     struct SkylineSegment {
         int  fX;
         int  fY;
         int  fWidth;
+        PadAllGlyphs fPadAllGlyphs;
     };
 
     SkTDArray<SkylineSegment> fSkyline;
 
     int32_t fAreaSoFar;
 
+    PadAllGlyphs fPadAllGlyphs;
+
     // Can a width x height rectangle fit in the free space represented by
     // the skyline segments >= 'skylineIndex'? If so, return true and fill in
     // 'y' with the y-location at which it fits (the x location is pulled from
     // 'skylineIndex's segment.
-    bool rectangleFits(int skylineIndex, int width, int height, int* y) const;
+    bool rectangleFits(int skylineIndex,
+                       int width,
+                       int height,
+                       PadAllGlyphs padAllGlyphs,
+                       int* y,
+                       int* savedLines) const;
     // Update the skyline structure to include a width x height rect located
     // at x,y.
-    void addSkylineLevel(int skylineIndex, int x, int y, int width, int height);
+    void addSkylineLevel(int skylineIndex,
+                         int x,
+                         int y,
+                         int width,
+                         int height,
+                         PadAllGlyphs padAllGlyphs);
 };
 
 } // End of namespace skgpu

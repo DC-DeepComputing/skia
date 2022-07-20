@@ -13,7 +13,8 @@
 namespace skgpu {
 
 Plot::Plot(int pageIndex, int plotIndex, AtlasGenerationCounter* generationCounter,
-           int offX, int offY, int width, int height, SkColorType colorType, size_t bpp)
+           int offX, int offY, int width, int height, SkColorType colorType, size_t bpp,
+           PadAllGlyphs padAllGLyphs)
         : fLastUpload(DrawToken::AlreadyFlushedToken())
         , fLastUse(DrawToken::AlreadyFlushedToken())
         , fFlushesSinceLastUse(0)
@@ -27,7 +28,7 @@ Plot::Plot(int pageIndex, int plotIndex, AtlasGenerationCounter* generationCount
         , fHeight(height)
         , fX(offX)
         , fY(offY)
-        , fRectanizer(width, height)
+        , fRectanizer(width, height, padAllGLyphs)
         , fOffset(SkIPoint16::Make(fX * fWidth, fY * fHeight))
         , fColorType(colorType)
         , fBytesPerPixel(bpp)
@@ -44,6 +45,10 @@ Plot::Plot(int pageIndex, int plotIndex, AtlasGenerationCounter* generationCount
 
 Plot::~Plot() {
     sk_free(fData);
+}
+
+PadAllGlyphs Plot::padAllGlyphs() const {
+    return fRectanizer.padAllGlyphs();
 }
 
 bool Plot::addSubImage(int width, int height, const void* image, AtlasLocator* atlasLocator) {

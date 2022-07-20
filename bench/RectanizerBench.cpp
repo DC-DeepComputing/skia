@@ -35,6 +35,7 @@ public:
     enum RectanizerType {
         kPow2_RectanizerType,
         kSkyline_RectanizerType,
+        kSkylinePadAllGlyphs_RectanizerType,
     };
 
     enum RectType {
@@ -79,9 +80,11 @@ protected:
 
         if (kPow2_RectanizerType == fRectanizerType) {
             fRectanizer = std::make_unique<RectanizerPow2>(kWidth, kHeight);
+        } else if (kSkyline_RectanizerType == fRectanizerType){
+            fRectanizer = std::make_unique<RectanizerSkyline>(kWidth, kHeight, PadAllGlyphs::kNo);
         } else {
-            SkASSERT(kSkyline_RectanizerType == fRectanizerType);
-            fRectanizer = std::make_unique<RectanizerSkyline>(kWidth, kHeight);
+            SkASSERT(kSkylinePadAllGlyphs_RectanizerType == fRectanizerType);
+            fRectanizer = std::make_unique<RectanizerSkyline>(kWidth, kHeight, PadAllGlyphs::kYes);
         }
     }
 
@@ -135,4 +138,10 @@ DEF_BENCH(return new RectanizerBench(RectanizerBench::kSkyline_RectanizerType,
 DEF_BENCH(return new RectanizerBench(RectanizerBench::kSkyline_RectanizerType,
                                      RectanizerBench::kRandPow2_RectType);)
 DEF_BENCH(return new RectanizerBench(RectanizerBench::kSkyline_RectanizerType,
+                                     RectanizerBench::kSmallPow2_RectType);)
+DEF_BENCH(return new RectanizerBench(RectanizerBench::kSkylinePadAllGlyphs_RectanizerType,
+                                     RectanizerBench::kRand_RectType);)
+DEF_BENCH(return new RectanizerBench(RectanizerBench::kSkylinePadAllGlyphs_RectanizerType,
+                                     RectanizerBench::kRandPow2_RectType);)
+DEF_BENCH(return new RectanizerBench(RectanizerBench::kSkylinePadAllGlyphs_RectanizerType,
                                      RectanizerBench::kSmallPow2_RectType);)

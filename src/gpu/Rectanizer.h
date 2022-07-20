@@ -14,6 +14,11 @@ struct SkIPoint16;
 
 namespace skgpu {
 
+enum class PadAllGlyphs : bool {
+    kNo = false,
+    kYes = true
+};
+
 class Rectanizer {
 public:
     Rectanizer(int width, int height) : fWidth(width), fHeight(height) {
@@ -39,6 +44,7 @@ public:
     static Rectanizer* Factory(int width, int height);
 
 private:
+    friend class RectanizerSkylineTestingPeer;
     const int fWidth;
     const int fHeight;
 };

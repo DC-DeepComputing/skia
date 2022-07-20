@@ -300,6 +300,10 @@ public:
         return {fUVs[0] & 0x1FFF, fUVs[1]};
     }
 
+    SkIPoint bottomRight() const {
+        return {fUVs[2] & 0x1FFF, fUVs[3]};
+    }
+
     uint16_t width() const {
         return fUVs[2] - fUVs[0];
     }
@@ -421,7 +425,8 @@ class Plot : public SkRefCnt {
 
 public:
     Plot(int pageIndex, int plotIndex, AtlasGenerationCounter* generationCounter,
-         int offX, int offY, int width, int height, SkColorType colorType, size_t bpp);
+         int offX, int offY, int width, int height, SkColorType colorType, size_t bpp,
+         PadAllGlyphs padAllGlyphs);
 
     uint32_t pageIndex() const { return fPageIndex; }
 
@@ -467,8 +472,10 @@ public:
     sk_sp<Plot> clone() const {
         return sk_sp<Plot>(new Plot(
             fPageIndex, fPlotIndex, fGenerationCounter, fX, fY, fWidth, fHeight, fColorType,
-            fBytesPerPixel));
+            fBytesPerPixel, this->padAllGlyphs()));
     }
+
+    PadAllGlyphs padAllGlyphs() const;
 
 #ifdef SK_DEBUG
     void resetListPtrs() {
@@ -478,6 +485,8 @@ public:
 #endif
 
 private:
+    friend class PlotTestingPeer;
+
     ~Plot() override;
 
     skgpu::DrawToken fLastUpload;
