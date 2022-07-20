@@ -1,0 +1,228 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cd5426cf_3a7f72b3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-07-20T15:01:34Z",
+      "side": 1,
+      "message": "I think my comments mostly address your questions in the commit message, except for how we pass the SSBO indices to the RenderSteps to write.\n\nIn some sense, these indices are in the same category as the paint depth: universal properties that all RenderSteps need to get to the GPU for the rest of the pipeline to use as appropriate. But the paint depth is known early enough that it\u0027s included in the DrawParams struct, while the SSBO indices are not. This *might* change when we get to extracting uniform data at the Device/DrawContext level ahead of calling DrawPass::Make, but that is likely only going to be the paint uniforms so feels a little unlikely. Given that, these indices probably should stay separate from the DrawParams, at which point having them as extra args to writeVertices() is the same solution that I\u0027d imagined.\n\nHowever, we could switch to just storing one index that points to the combined uniforms of the Renderstep and the paint uniforms. This is possible because we\u0027re using the pipeline index as the main index when grouping the different data blocks to assign indices. We\u0027d have to change how we wrote the blocks to the GPU buffer and concat the paint data with the renderstep data, and probably then update the SkSL generation to have a single uniform block instead of two blocks. That may not be worth doing since it further changes how SSBOs behave relative to plain uniforms (unless we also found it beneficial to have one uniform buffer for the combined paint + renderstep data, but that seems unlikely).\n\nSo if instead we assume that we do want two separate SSBOs and two separate indices, we could improve the index mapping code in DrawPass. Right now it\u0027s keyed on pipeline for both sets of uniforms, but we should be able to have the renderstep uniforms keyed on the RenderStep pointer and the paint uniforms keyed on the paintParams unique ID. This would end up grouping all equivalent paint param data together, but would mean we could reference a specific index even if we drew it multiple times with different RenderSteps. That\u0027s future step we can take, since the pipeline keying approach should still give us correct results.",
+      "revId": "3c1129b85fb3527c9069f8ad38cbd1c55701582c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1b2b737f_8f6118fb",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 359,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-07-20T15:01:34Z",
+      "side": 1,
+      "message": "I think it\u0027s a pretty reasonable time to work out how to encapsulate this and share between the geometry and shading SSBO lookups. It looks fine to me.",
+      "range": {
+        "startLine": 359,
+        "startChar": 12,
+        "endLine": 359,
+        "endChar": 36
+      },
+      "revId": "3c1129b85fb3527c9069f8ad38cbd1c55701582c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e0076080_29a2411f",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 376,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-07-20T15:01:34Z",
+      "side": 1,
+      "message": "It looks like we don\u0027t need to set or declare these values early, since we just need to ensure they are stored in the pipelineToFooUniformData maps. If we end up re-encountering a uniform data block that\u0027s already been assigned an index, we\u0027re good to go.",
+      "range": {
+        "startLine": 374,
+        "startChar": 22,
+        "endLine": 376,
+        "endChar": 21
+      },
+      "revId": "3c1129b85fb3527c9069f8ad38cbd1c55701582c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "99f125ef_23595e02",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 420,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-07-20T15:01:34Z",
+      "side": 1,
+      "message": "Currently the internals of DrawBufferManager use the gpu caps\u0027 required uniform buffer starting alignment as the alignment for every returned buffer range from getUniformBuffer. On metal it\u0027s 256 for a mac and 16 for iOS. That seems like it\u0027s safe enough for testing on mac, and since you\u0027re getting one writer for the N uniform blocks, that alignment won\u0027t interfere with the placement of each of the items.\n\nIf we\u0027re running into issues, the only things I\u0027d check would be that the required initial alignment is at least what the actual uniforms need, and that the reported uniform size for the block is a multiple of the max alignment of its components, otherwise our alignment might drift as we write consecutive items.",
+      "range": {
+        "startLine": 420,
+        "startChar": 36,
+        "endLine": 420,
+        "endChar": 93
+      },
+      "revId": "3c1129b85fb3527c9069f8ad38cbd1c55701582c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a03c3599_469416e0",
+        "filename": "src/gpu/graphite/mtl/MtlGraphicsPipeline.mm",
+        "patchSetId": 5
+      },
+      "lineNbr": 491,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-07-20T15:01:34Z",
+      "side": 1,
+      "message": "Currently the mapping from Graphite\u0027s conceptual buffer binding points to metal\u0027s binding slots are defined in the header of MtlGraphicsPipeline:\n\n    inline static constexpr unsigned int kIntrinsicUniformBufferIndex \u003d 0;\n    inline static constexpr unsigned int kRenderStepUniformBufferIndex \u003d 1;\n    inline static constexpr unsigned int kPaintUniformBufferIndex \u003d 2;\n    inline static constexpr unsigned int kVertexBufferIndex \u003d 3;\n    inline static constexpr unsigned int kInstanceBufferIndex \u003d 4;\n    \nSince it currently seems like we\u0027ll either use SSBOs or UBOs depending on GPU caps, the specific kRenderStepUniformBufferIndex could be used to bind an SSBO or a UBO; the same goes for kPaintUniformBufferIndex. There shouldn\u0027t be a need to have both an SSBO and a UBO bound for the render step uniforms. Things might get more complicated for the unbounded uniforms that some paint effects might want, but since that would be a separate SSBO we can probably have those defined as a new slot.\n\nLastly, the intrinsic uniforms that you noticed are currently implemented using Metal\u0027s version of push constants, so that slot doesn\u0027t use an SSBO or a UBO. Graphite\u0027s high-level API doesn\u0027t really define how the slots are mapped to the actual backends capabilities. On the one hand this gives the backend implementation a lot of flexibility in terms of how to handle it, but we may need to adjust that if backends require a high-level distinction between SSBOs and UBOs.",
+      "range": {
+        "startLine": 490,
+        "startChar": 4,
+        "endLine": 491,
+        "endChar": 36
+      },
+      "revId": "3c1129b85fb3527c9069f8ad38cbd1c55701582c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cf2ebf5c_1698a6bb",
+        "filename": "src/gpu/graphite/render/MiddleOutFanRenderStep.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-07-20T15:01:34Z",
+      "side": 1,
+      "message": "When RenderSteps are created by the Context, they will have gpu caps provided at construction time, so they can store a const bool for whether or not they are SSBO or uniform based.\n\nThis will let them change their reported vertex attributes to include the indices or not, and then inside this loop, if they don\u0027t upload the indices they don\u0027t append those values.",
+      "range": {
+        "startLine": 58,
+        "startChar": 12,
+        "endLine": 58,
+        "endChar": 64
+      },
+      "revId": "3c1129b85fb3527c9069f8ad38cbd1c55701582c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "db420dc7_b6e2b4eb",
+        "filename": "src/gpu/graphite/render/TessellateWedgesRenderStep.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-07-20T15:01:34Z",
+      "side": 1,
+      "message": "That sounds reasonable to me. As long as the optional attribute is enabled by something context-constant (e.g. the caps), then the RenderSteps that use the PatchWriter would preserve their property of being immutable and representing a single pipeline for a context.\n\nIn Ganesh, Optional\u003c\u003e is used a lot more flexibly to handle batching and promoting simple path draws to more general attribute sets as more complex draws are recorded. Graphite is eschewing that approach since it would mean that the pipeline changes based on the set of recorded draws instead of being a decision isolated to each draw\u0027s state.",
+      "range": {
+        "startLine": 36,
+        "startChar": 27,
+        "endLine": 36,
+        "endChar": 79
+      },
+      "revId": "3c1129b85fb3527c9069f8ad38cbd1c55701582c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5d492dca_9eb8a76b",
+        "filename": "src/gpu/graphite/render/TessellateWedgesRenderStep.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-07-20T15:01:34Z",
+      "side": 1,
+      "message": "For RenderSteps that don\u0027t declare any uniforms, it would be nice if they don\u0027t have to write out an unused ssbo index.",
+      "range": {
+        "startLine": 58,
+        "startChar": 40,
+        "endLine": 59,
+        "endChar": 111
+      },
+      "revId": "3c1129b85fb3527c9069f8ad38cbd1c55701582c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e6071254_f451c471",
+        "filename": "src/gpu/graphite/render/TessellateWedgesRenderStep.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-07-20T15:01:34Z",
+      "side": 1,
+      "message": "Similarly, for RenderSteps that don\u0027t perform shading (e.g. the stencil writing steps for some of the complex path renderers), they won\u0027t be running the paint effects on the fragment shader so will not be accessing those uniforms, and would be nice if they don\u0027t have to write out sk_ssbo_binding2_index_fs.",
+      "range": {
+        "startLine": 59,
+        "startChar": 42,
+        "endLine": 59,
+        "endChar": 67
+      },
+      "revId": "3c1129b85fb3527c9069f8ad38cbd1c55701582c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3d32a74f_e7ad0656",
+        "filename": "src/gpu/graphite/render/TessellateWedgesRenderStep.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-07-20T15:01:34Z",
+      "side": 1,
+      "message": "RenderSteps being worked on currently (text, vertices, analytic rects) may need to access their uniforms in both the vertex stage and the fragment stage. If we only pass the index associated with the paint\u0027s uniforms, we\u0027d need to do something else to support those RenderSteps.\n\nI could see either passing the renderstep index down to the FS as a uniform as well, or require that if RenderSteps want to access \"uniforms\" in the FS they read them from the SSBO in the vertex shader and then pass them down as explicitly declared varyings so the renderstep ssbo remains accessible to the vertex stage. I think that decision would best made after performance testing to know the tradeoff between adding extra \"constant\" varyings for the uniforms being sent down, and adding extra SSBO reads in the FS.",
+      "range": {
+        "startLine": 60,
+        "startChar": 41,
+        "endLine": 60,
+        "endChar": 65
+      },
+      "revId": "3c1129b85fb3527c9069f8ad38cbd1c55701582c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
