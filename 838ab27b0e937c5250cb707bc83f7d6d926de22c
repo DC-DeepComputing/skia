@@ -61,6 +61,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7b15bfb5_ea247fdb",
+        "filename": "src/shaders/SkPictureShader.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 308,
+      "author": {
+        "id": 10586
+      },
+      "writtenOn": "2022-07-20T00:42:33Z",
+      "side": 1,
+      "message": "The rasterization happens in `SkPictureShader::rasterShader`, which looks like it already takes any scale/translation into account.  I guess there could be rotations, etc., that we\u0027d want to account for.\n\nI think the same also applies to the \"viewMatrix\" (the first param to `rasterShader`).\n\nI\u0027ve tweaked the logic in `SkPictureShader::rasterShader` and `SkPictureShader::asFragmentProcessor` to turn off LCDText in these cases.",
+      "parentUuid": "fb516e98_cab6c3a7",
+      "range": {
+        "startLine": 307,
+        "startChar": 0,
+        "endLine": 308,
+        "endChar": 61
+      },
+      "revId": "838ab27b0e937c5250cb707bc83f7d6d926de22c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "20d45fbc_8ac9e109",
         "filename": "src/shaders/SkPictureShader.cpp",
         "patchSetId": 5
@@ -72,6 +96,30 @@
       "writtenOn": "2022-07-15T13:56:58Z",
       "side": 1,
       "message": "How so? The VM blitter is tied to a particular surface - we should be able to plumb the same information through (it\u0027s going to be annoying, because it uses separate arguments, rather than a bundle like SkStageRec).",
+      "range": {
+        "startLine": 320,
+        "startChar": 7,
+        "endLine": 320,
+        "endChar": 90
+      },
+      "revId": "838ab27b0e937c5250cb707bc83f7d6d926de22c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2164b81b_2d157168",
+        "filename": "src/shaders/SkPictureShader.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 320,
+      "author": {
+        "id": 10586
+      },
+      "writtenOn": "2022-07-20T00:42:33Z",
+      "side": 1,
+      "message": "I don\u0027t see any surfaces in `SkVMBlitter`.  There\u0027s an `SkPixmap`, but that explicitly omits most of the canvas/surface-related stuff.  I\u0027m definitely a bit fuzzy on how this stuff is used, though... so please correct me.\n\nRegardless, I\u0027m happy to do the extra plumbing if you think there\u0027s a case for it, but given the scope of the additional changes required, I\u0027d rather do it in a follow-up CL, if that\u0027s OK.",
+      "parentUuid": "20d45fbc_8ac9e109",
       "range": {
         "startLine": 320,
         "startChar": 7,
@@ -113,6 +161,24 @@
       "side": 1,
       "message": "I don\u0027t think this works. This is GPU generic code. Can you pass in the surfaceProps separately?",
       "parentUuid": "751bf72b_599a299b",
+      "revId": "838ab27b0e937c5250cb707bc83f7d6d926de22c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3f966c3a_fd5337fb",
+        "filename": "src/text/gpu/SubRunContainer.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 456,
+      "author": {
+        "id": 10586
+      },
+      "writtenOn": "2022-07-20T00:42:33Z",
+      "side": 1,
+      "message": "AFAICT, this function is file-local, and only called in a few places that are all using a `skgpu::v1::SurfaceDrawContext` (I didn\u0027t have to change any callers)... unless I\u0027m missing something?\n\nI can certainly change it, though, if you prefer this function to remain GPU-generic.",
+      "parentUuid": "dde52f9d_90d5ccf5",
       "revId": "838ab27b0e937c5250cb707bc83f7d6d926de22c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
