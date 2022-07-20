@@ -87,6 +87,30 @@
       },
       "revId": "873e32c904e8cfde35fbdd30d1c16c1398a04e71",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "85626648_653e39cb",
+        "filename": "src/core/SkRuntimeEffect.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 937,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-07-20T14:30:58Z",
+      "side": 1,
+      "message": "lgtm - yeah, null shaders and color filters both return the input color. (For color filters, that\u0027s the color passed to eval, for shaders it\u0027s whatever the input color was to the parent, which is the paint color -- up until something in the tree changes that).",
+      "parentUuid": "17a346aa_f4e6e7df",
+      "range": {
+        "startLine": 935,
+        "startChar": 0,
+        "endLine": 937,
+        "endChar": 32
+      },
+      "revId": "873e32c904e8cfde35fbdd30d1c16c1398a04e71",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
