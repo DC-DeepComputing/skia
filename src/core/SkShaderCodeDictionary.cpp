@@ -18,6 +18,8 @@
 
 #ifdef SK_GRAPHITE_ENABLED
 #include "include/gpu/graphite/Context.h"
+#include "src/gpu/graphite/ContextUtils.h"
+#include "src/gpu/graphite/Renderer.h"
 #endif
 
 #ifdef SK_ENABLE_PRECOMPILE
@@ -47,16 +49,6 @@ std::string SkShaderSnippet::getMangledUniformName(int uniformIndex, int mangleI
 // TODO: SkShaderInfo::toSkSL needs to work outside of both just graphite and metal. To do
 // so we'll need to switch over to using SkSL's uniform capabilities.
 #if defined(SK_GRAPHITE_ENABLED) && defined(SK_METAL)
-
-// TODO: switch this over to using SkSL's uniform system
-namespace skgpu::graphite {
-std::string GetMtlUniforms(int bufferID,
-                           const char* name,
-                           const std::vector<SkPaintParamsKey::BlockReader>&,
-                           bool needsDev2Local);
-std::string GetMtlTexturesAndSamplers(const std::vector<SkPaintParamsKey::BlockReader>&,
-                                      int* binding);
-} // namespace skgpu::graphite
 
 // Returns an expression to invoke this entry, passing along an updated pre-local matrix.
 static std::string emit_expression_for_entry(const SkShaderInfo& shaderInfo,
@@ -129,15 +121,24 @@ static void emit_preamble_for_entry(const SkShaderInfo& shaderInfo,
 //   - The result of the final code snippet is then copied into "sk_FragColor".
 //   Note: each entry's 'fStaticFunctionName' field is expected to match the name of a function
 //   in the Graphite pre-compiled module.
-std::string SkShaderInfo::toSkSL() const {
+std::string SkShaderInfo::toSkSL(const skgpu::graphite::RenderStep* step) const {
     std::string preamble = "layout(location = 0, index = 0) out half4 sk_FragColor;\n";
 
+    // Varyings needed by RenderStep
+    if (step->numVaryings() > 0) {
+        preamble += skgpu::graphite::EmitVaryings(step->varyings(), "in");
+    }
+
     // The uniforms are mangled by having their index in 'fEntries' as a suffix (i.e., "_%d")
-    // TODO: replace hard-coded bufferID of 2 with the backend's paint uniform-buffer index.
-    preamble += skgpu::graphite::GetMtlUniforms(/*bufferID=*/2, "FS", fBlockReaders,
-                                                this->needsLocalCoords());
+    // TODO: replace hard-coded bufferIDs with the backend's step and paint uniform-buffer indices.
+    if (step->numUniforms() > 0) {
+        preamble += skgpu::graphite::EmitRenderStepUniforms(/*bufferID=*/1, "Step",
+                                                            step->uniforms());
+    }
+    preamble += skgpu::graphite::EmitPaintParamsUniforms(/*bufferID=*/2, "FS", fBlockReaders,
+                                                         this->needsLocalCoords());
     int binding = 0;
-    preamble += skgpu::graphite::GetMtlTexturesAndSamplers(fBlockReaders, &binding);
+    preamble += skgpu::graphite::EmitTexturesAndSamplers(fBlockReaders, &binding);
 
     std::string mainBody = SkSL::String::printf("void main() {\n"
                                                 "    float4 coords = %s sk_FragCoord;\n",
