@@ -39,6 +39,24 @@
       "message": "How does this do anything different than line 771 ?",
       "revId": "c37db42a68bbc2fc44acb7b8c082257a05432aae",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5868ffa2_b0bbe99d",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 778,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-07-20T18:00:57Z",
+      "side": 1,
+      "message": "Every call to `emit_preamble_for_entry` consumes one child and advances the entryIndex. The call on L771 emits the preamble (if any) for the first child; the call on L778 emits the preamble (if any) for the second child. We need to do this once per child.",
+      "parentUuid": "43050b2e_83fd1e40",
+      "revId": "c37db42a68bbc2fc44acb7b8c082257a05432aae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
