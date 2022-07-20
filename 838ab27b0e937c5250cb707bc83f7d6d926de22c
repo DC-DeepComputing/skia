@@ -85,6 +85,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "aa06d9d1_d88bb3df",
+        "filename": "src/shaders/SkPictureShader.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 308,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-07-20T13:26:19Z",
+      "side": 1,
+      "message": "My intuition (but I\u0027m still not 100% on how this all works) was: The view matrix (and aspects of the local matrix) are used to determine the size of the offscreen surface. However, the resulting offscreen image is then drawn like a normal image shader. If that image shader has any transformation beyond integer translation, then LCD text is going to be wrong. The local matrix (but not the view matrix?) is applied to the image, AFTER its rasterized.\n\nIn other words: If you make a picture shader from a picture, and specify a 90 degree rotation in the local matrix ... we\u0027ll render the context in the original orientation, then rotate the resulting image as we draw it to the final surface. Similarly if the local matrix has a half-pixel translation. If I\u0027m right about those cases, then I think that the local matrix has to be restricted to integer translation or we want to turn off LCD.\n\nAnd I\u0027m still not positive about how the view matrix is applied, because the way that it\u0027s plumbed and used in the cached image info struct isn\u0027t entirely clear - the matrix that\u0027s actually applied at draw time (of the picture) is just a rect-to-rect matrix based on the bounds of the picture and tile?",
+      "parentUuid": "7b15bfb5_ea247fdb",
+      "range": {
+        "startLine": 307,
+        "startChar": 0,
+        "endLine": 308,
+        "endChar": 61
+      },
+      "revId": "838ab27b0e937c5250cb707bc83f7d6d926de22c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "20d45fbc_8ac9e109",
         "filename": "src/shaders/SkPictureShader.cpp",
         "patchSetId": 5
@@ -120,6 +144,30 @@
       "side": 1,
       "message": "I don\u0027t see any surfaces in `SkVMBlitter`.  There\u0027s an `SkPixmap`, but that explicitly omits most of the canvas/surface-related stuff.  I\u0027m definitely a bit fuzzy on how this stuff is used, though... so please correct me.\n\nRegardless, I\u0027m happy to do the extra plumbing if you think there\u0027s a case for it, but given the scope of the additional changes required, I\u0027d rather do it in a follow-up CL, if that\u0027s OK.",
       "parentUuid": "20d45fbc_8ac9e109",
+      "range": {
+        "startLine": 320,
+        "startChar": 7,
+        "endLine": 320,
+        "endChar": 90
+      },
+      "revId": "838ab27b0e937c5250cb707bc83f7d6d926de22c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4e368f5b_45630fd0",
+        "filename": "src/shaders/SkPictureShader.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 320,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-07-20T13:26:19Z",
+      "side": 1,
+      "message": "Right - it just stores a pixmap (same as RP blitter). I think you\u0027ll need to plumb the surface props in (like you did for RP blitter) - I tagged the two spots in SkBlitter.cpp where the VM blitters are created (it\u0027s right next to the RP blitter creation).\n\nUltimately, certain SkPaints can only be drawn using the VM blitter, so we really need both of them to have the same functionality in this regard (or it\u0027s going to produce some surprising results).\n\nHowever, I agree that we can do the VM one separately - it\u0027s going to be complex on its own (there is caching logic in the VM blitter construction that needs to account for this).",
+      "parentUuid": "2164b81b_2d157168",
       "range": {
         "startLine": 320,
         "startChar": 7,
@@ -179,6 +227,24 @@
       "side": 1,
       "message": "AFAICT, this function is file-local, and only called in a few places that are all using a `skgpu::v1::SurfaceDrawContext` (I didn\u0027t have to change any callers)... unless I\u0027m missing something?\n\nI can certainly change it, though, if you prefer this function to remain GPU-generic.",
       "parentUuid": "dde52f9d_90d5ccf5",
+      "revId": "838ab27b0e937c5250cb707bc83f7d6d926de22c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "814aa70e_4487eee7",
+        "filename": "src/text/gpu/SubRunContainer.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 456,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-07-20T13:26:19Z",
+      "side": 1,
+      "message": "Right - I think this works today, but is likely to break soon (there is active work to share this text code between the \"old\" v1 GPU backend and the \"new\" GPU backend). So yeah - passing in the surface props would be better.",
+      "parentUuid": "3f966c3a_fd5337fb",
       "revId": "838ab27b0e937c5250cb707bc83f7d6d926de22c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }

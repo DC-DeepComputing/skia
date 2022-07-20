@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "05a4de11_eae71b1b",
+        "filename": "src/core/SkBlitter.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 762,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-07-20T13:26:19Z",
+      "side": 1,
+      "message": "^",
+      "revId": "89e8bf99a5ff0d0f785c7ed9b0219d56d3d7e96c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1fbe8478_7c12be6d",
+        "filename": "src/core/SkBlitter.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 771,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-07-20T13:26:19Z",
+      "side": 1,
+      "message": "^",
+      "revId": "89e8bf99a5ff0d0f785c7ed9b0219d56d3d7e96c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
