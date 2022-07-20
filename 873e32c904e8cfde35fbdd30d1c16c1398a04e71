@@ -39,6 +39,30 @@
       },
       "revId": "873e32c904e8cfde35fbdd30d1c16c1398a04e71",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "16f1cb87_5cbf74ed",
+        "filename": "src/core/SkRuntimeEffect.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 937,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-07-20T13:19:23Z",
+      "side": 1,
+      "message": "It\u0027s incorrect for blenders, but those are totally unimplemented right now. Is passthrough wrong for shaders/color-filters?",
+      "parentUuid": "af77525d_6984a1e7",
+      "range": {
+        "startLine": 935,
+        "startChar": 0,
+        "endLine": 937,
+        "endChar": 32
+      },
+      "revId": "873e32c904e8cfde35fbdd30d1c16c1398a04e71",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
