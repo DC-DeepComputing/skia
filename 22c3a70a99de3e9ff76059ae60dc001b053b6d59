@@ -20,6 +20,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "36373935_c3baad7c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-07-20T18:59:31Z",
+      "side": 1,
+      "message": "It needed rolling? Actually, the interesting change in this one is probably the one with `FT_GlyphLoader_CheckPoints` which actually pointed out an issue with the existing code that the bug was working around (see https://bugs.chromium.org/p/chromium/issues/detail?id\u003d1342213 ).",
+      "parentUuid": "43a4628a_12b5360d",
+      "revId": "22c3a70a99de3e9ff76059ae60dc001b053b6d59",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "ddb8af96_7b932fce",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 1
