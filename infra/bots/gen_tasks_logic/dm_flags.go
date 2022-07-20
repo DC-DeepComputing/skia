@@ -279,6 +279,23 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 			// These GMs only differ in the low bits
 			skip("gltestthreading", "gm", ALL, "stroketext")
 			skip("gltestthreading", "gm", ALL, "draw_image_set")
+
+			// Fail on Iris Xe.
+			skip("gltestthreading", "gm", ALL, "anisotropic_image_scale_mip")
+			skip("gltestthreading", "gm", ALL, "bleed_downscale")
+			skip("gltestthreading", "gm", ALL, "degeneratesegments")
+			skip("gltestthreading", "gm", ALL, "mipmap_srgb")
+			skip("gltestthreading", "gm", ALL, "mipmap")
+			skip("gltestthreading", "gm", ALL, "ovals")
+			skip("gltestthreading", "gm", ALL, "persp_images")
+			skip("gltestthreading", "gm", ALL, "persp_shaders_aa")
+			skip("gltestthreading", "gm", ALL, "rtif_distort")
+			skip("gltestthreading", "gm", ALL, "skbug_8664")
+			skip("gltestthreading", "gm", ALL, "texel_subset_linear_mipmap_nearest_down")	
+			skip("gltestthreading", "gm", ALL, "yuv420_odd_dim_repeat")
+
+			skip("gltestthreading", "svg", ALL, "masking-filter-01-f.svg")
+
 		}
 
 		// Dawn bot *only* runs the dawn config
@@ -1143,6 +1160,10 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 		match = append(match, "~PremulAlphaRoundTrip_Gpu")                // skia:7501
 		match = append(match, "~ReimportImageTextureWithMipLevels")       // skia:8090
 		match = append(match, "~MorphologyFilterRadiusWithMirrorCTM_Gpu") // skia:10383
+	}
+
+	if b.gpu("IntelIrisXe") {
+		match = append(match, "~ReimportImageTextureWithMipLevels")
 	}
 
 	if b.extraConfig("MSAN") {
