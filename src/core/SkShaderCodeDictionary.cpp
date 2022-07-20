@@ -747,6 +747,54 @@ static constexpr SkUniform kBlendColorFilterUniforms[] = {
 static constexpr char kBlendColorFilterName[] = "sk_blend_colorfilter";
 
 //--------------------------------------------------------------------------------------------------
+static constexpr char kComposeColorFilterName[] = "ComposeColorFilter";
+
+static constexpr int kNumComposeColorFilterChildren = 2;
+
+void GenerateComposeColorFilterPreamble(const SkShaderInfo& shaderInfo,
+                                        int* entryIndex,
+                                        const SkPaintParamsKey::BlockReader& reader,
+                                        std::string* preamble) {
+#if defined(SK_GRAPHITE_ENABLED) && defined(SK_ENABLE_SKSL)
+    const SkShaderSnippet* entry = reader.entry();
+    SkASSERT(entry->fNumChildren == 2);
+
+    // Advance over the parent entry.
+    int curEntryIndex = *entryIndex;
+    *entryIndex += 1;
+
+    // Create a helper function that invokes the inner expression, then passes that result to the
+    // the outer expression, and returns the composed result.
+    std::string helperFnName = get_mangled_name(entry->fStaticFunctionName, curEntryIndex);
+    std::string helperFn = SkSL::String::printf(
+            "half4 %s(half4 inColor, float4 coords, float4x4 preLocal) {",
+            helperFnName.c_str());
+
+    // Evaluate inner child.
+    std::string innerColor = emit_glue_code_for_entry(shaderInfo, *entryIndex, "inColor", "coords",
+                                                      "preLocal", &helperFn);
+
+    // Emit preamble code for inner child.
+    emit_preamble_for_entry(shaderInfo, entryIndex, preamble);
+
+    // Evaluate outer child.
+    std::string outerColor = emit_glue_code_for_entry(shaderInfo, *entryIndex, innerColor, "coords",
+                                                      "preLocal", &helperFn);
+
+    // Emit preamble code for outer child.
+    emit_preamble_for_entry(shaderInfo, entryIndex, preamble);
+
+    // Append the completed helper function to the bottom of the preamble.
+    SkSL::String::appendf(preamble,
+                          "%s"
+                          "    return %s;\n"
+                          "}\n",
+                          helperFn.c_str(),
+                          outerColor.c_str());
+#endif  // defined(SK_GRAPHITE_ENABLED) && defined(SK_ENABLE_SKSL)
+}
+
+//--------------------------------------------------------------------------------------------------
 static constexpr char kErrorName[] = "sk_error";
 
 //--------------------------------------------------------------------------------------------------
@@ -1180,6 +1228,17 @@ SkShaderCodeDictionary::SkShaderCodeDictionary() {
             GenerateDefaultExpression,
             GenerateDefaultPreamble,
             kNoChildren,
+            { }      // no data payload
+    };
+    fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kComposeColorFilter] = {
+            "ComposeColorFilter",
+            { },     // no uniforms
+            SnippetRequirementFlags::kNone,
+            { },     // no samplers
+            kComposeColorFilterName,
+            GenerateDefaultExpression,
+            GenerateComposeColorFilterPreamble,
+            kNumComposeColorFilterChildren,
             { }      // no data payload
     };
 
