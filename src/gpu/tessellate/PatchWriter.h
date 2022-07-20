@@ -227,6 +227,8 @@ class PatchWriter {
     DEF_ATTRIB_TYPE(ColorAttrib,     PatchAttribs::kColor,             Color);
     DEF_ATTRIB_TYPE(DepthAttrib,     PatchAttribs::kPaintDepth,        float);
     DEF_ATTRIB_TYPE(CurveTypeAttrib, PatchAttribs::kExplicitCurveType, float);
+
+    DEF_ATTRIB_TYPE(StorageBufferIndexAttrib, PatchAttribs::kStorageBufferIndices, int);
 #undef DEF_ATTRIB_TYPE
 
     static constexpr size_t kMaxStride = 4 * sizeof(SkPoint) + // control points
@@ -235,6 +237,7 @@ class PatchWriter {
             (StrokeAttrib::kEnabled    ? sizeof(StrokeParams)                         : 0) +
             (ColorAttrib::kEnabled     ? std::min(sizeof(Color), sizeof(SkPMColor4f)) : 0) +
             (DepthAttrib::kEnabled     ? sizeof(float)                                : 0) +
+            (StorageBufferIndexAttrib::kEnabled ? (sizeof(int) * 2) : 0) +
             (CurveTypeAttrib::kEnabled ? sizeof(float)                                : 0);
 
     // Types that vary depending on the activated features, but do not define the patch data.
@@ -258,7 +261,9 @@ public:
             , fFanPoint(attribs)
             , fStrokeParams(attribs)
             , fColor(attribs)
-            , fDepth(attribs) {
+            , fDepth(attribs)
+            , fGeometryStorageBufferIndex(attribs)
+            , fShadingStorageBufferIndex(attribs) {
         // Explicit curve types are provided on the writePatch signature, and not a field of
         // PatchWriter, so initialize one in the ctor to validate the provided runtime attribs.
         SkDEBUGCODE((void) CurveTypeAttrib(attribs);)
@@ -357,6 +362,13 @@ public:
     ENABLE_IF(DepthAttrib::kEnabled) updatePaintDepthAttrib(float depth) {
         SkASSERT(fAttribs & PatchAttribs::kPaintDepth);
         fDepth = depth;
+    }
+
+    // TODO comment
+    ENABLE_IF(StorageBufferIndexAttrib::kEnabled) updateStorageBufferIndexAttribs(int geometryStorageBufferIndex, int shadingStorageBufferIndex) {
+        SkASSERT(fAttribs & PatchAttribs::kStorageBufferIndices);
+        fGeometryStorageBufferIndex = geometryStorageBufferIndex;
+        fShadingStorageBufferIndex = shadingStorageBufferIndex;
     }
 
     /**
@@ -490,7 +502,7 @@ private:
                              float explicitCurveType) {
         // NOTE: operator<< overrides automatically handle optional and disabled attribs.
         vertexWriter << join << fFanPoint << fStrokeParams << fColor << fDepth
-                     << CurveTypeAttrib{fAttribs, explicitCurveType};
+                     << CurveTypeAttrib{fAttribs, explicitCurveType} << fGeometryStorageBufferIndex << fShadingStorageBufferIndex;
     }
 
     AI VertexWriter appendPatch() {
@@ -724,6 +736,12 @@ private:
     StrokeAttrib   fStrokeParams;
     ColorAttrib    fColor;
     DepthAttrib    fDepth;
+
+    // Indices into shared storage buffers containing this PatchWriter's patches' corresponding
+    // uniforms. Written out as an attribute with every patch, to read the appropriate uniform
+    // values from the storage buffer on draw.
+    StorageBufferIndexAttrib fGeometryStorageBufferIndex;
+    StorageBufferIndexAttrib fShadingStorageBufferIndex;
 };
 
 }  // namespace skgpu::tess

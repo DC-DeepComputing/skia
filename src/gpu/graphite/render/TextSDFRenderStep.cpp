@@ -38,12 +38,15 @@ TextSDFRenderStep::TextSDFRenderStep(bool isA8)
                      /*vertexAttrs=*/
                      {{"position", VertexAttribType::kFloat2, SkSLType::kFloat2},
                       {"depth", VertexAttribType::kFloat, SkSLType::kFloat},
-                      {"texCoords", VertexAttribType::kUShort2, SkSLType::kUShort2}},
+                      {"texCoords", VertexAttribType::kUShort2, SkSLType::kUShort2},
+                      {"sk_ssbo_binding1_index", VertexAttribType::kInt, SkSLType::kInt},
+                      {"sk_ssbo_binding2_index_fs", VertexAttribType::kInt, SkSLType::kInt}},
                      /*instanceAttrs=*/{},
                      /*varyings=*/
                      {{"unormTexCoords", SkSLType::kFloat2},
                       {"textureCoords", SkSLType::kFloat2},
-                      {"texIndex", SkSLType::kFloat}}) {
+                      {"texIndex", SkSLType::kFloat},
+                      {"sk_ssbo_binding2_index", SkSLType::kInt}}) {
     // TODO: store if it's A8?
 }
 
@@ -62,9 +65,10 @@ const char* TextSDFRenderStep::vertexSkSL() const {
         )";
 }
 
-void TextSDFRenderStep::writeVertices(DrawWriter* dw, const DrawParams& params) const {
+void TextSDFRenderStep::writeVertices(DrawWriter* dw, const DrawParams& params, int geometryStorageBufferIndex, int shadingStorageBufferIndex) const {
     const SubRunData& subRunData = params.geometry().subRunData();
     subRunData.subRun()->fillVertexData(dw, subRunData.startGlyphIndex(), subRunData.glyphCount(),
+                                        geometryStorageBufferIndex, shadingStorageBufferIndex,
                                         params.order().depthAsFloat(), params.transform());
 }
 

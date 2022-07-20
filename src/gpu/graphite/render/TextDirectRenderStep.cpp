@@ -39,11 +39,14 @@ TextDirectRenderStep::TextDirectRenderStep()
                      /*vertexAttrs=*/
                      {{"position", VertexAttribType::kFloat2, SkSLType::kFloat2},
                       {"depth", VertexAttribType::kFloat, SkSLType::kFloat},
-                      {"texCoords", VertexAttribType::kUShort2, SkSLType::kUShort2}},
+                      {"texCoords", VertexAttribType::kUShort2, SkSLType::kUShort2},
+                      {"sk_ssbo_binding1_index", VertexAttribType::kInt, SkSLType::kInt},
+                      {"sk_ssbo_binding2_index_fs", VertexAttribType::kInt, SkSLType::kInt}},
                      /*instanceAttrs=*/{},
                      /*varyings=*/
                      {{"textureCoords", SkSLType::kFloat2},
-                      {"texIndex", SkSLType::kFloat}}){}
+                      {"texIndex", SkSLType::kFloat},
+                      {"sk_ssbo_binding2_index", SkSLType::kInt}}){}
 
 TextDirectRenderStep::~TextDirectRenderStep() {}
 
@@ -60,10 +63,11 @@ const char* TextDirectRenderStep::vertexSkSL() const {
         )";
 }
 
-void TextDirectRenderStep::writeVertices(DrawWriter* dw, const DrawParams& params) const {
+void TextDirectRenderStep::writeVertices(DrawWriter* dw, const DrawParams& params, int geometryStorageBufferIndex, int shadingStorageBufferIndex) const {
     const SubRunData& subRunData = params.geometry().subRunData();
     // TODO: pass through the color from the SkPaint via the SubRunData
     subRunData.subRun()->fillVertexData(dw, subRunData.startGlyphIndex(), subRunData.glyphCount(),
+                                        geometryStorageBufferIndex, shadingStorageBufferIndex,
                                         params.order().depthAsFloat(),
                                         params.transform());
 }

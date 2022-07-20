@@ -239,6 +239,10 @@ protected:
 
     void writeConstructorArrayCast(const ConstructorArrayCast& c, Precedence parentPrecedence);
 
+    bool isStorageBuffer(const InterfaceBlock& intf) const;
+
+    std::string storageBufferIndexName(const InterfaceBlock& intf) const;
+
     void writeFieldAccess(const FieldAccess& f);
 
     void writeSwizzle(const Swizzle& swizzle);

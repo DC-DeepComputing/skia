@@ -486,6 +486,10 @@ sk_sp<MtlGraphicsPipeline> MtlGraphicsPipeline::Make(
 
     settings.fForceNoRTFlip = true;
 
+    // TODO
+    settings.setStorageBuffer(0, 1);
+    settings.setStorageBuffer(0, 2);
+
     ShaderErrorHandler* errorHandler = gpu->caps()->shaderErrorHandler();
     if (!SkSLToMSL(gpu,
                    get_sksl_vs(pipelineDesc),

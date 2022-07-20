@@ -21,7 +21,7 @@ public:
     ~TextSDFRenderStep() override;
 
     const char* vertexSkSL() const override;
-    void writeVertices(DrawWriter*, const DrawParams&) const override;
+    void writeVertices(DrawWriter*, const DrawParams&, int geometryStorageBufferIndex, int shadingStorageBufferIndex) const override;
     void writeUniforms(const DrawParams&, SkPipelineDataGatherer*) const override;
 };
 

@@ -22,8 +22,11 @@ CoverBoundsRenderStep::CoverBoundsRenderStep(bool inverseFill)
                      inverseFill ? kInverseCoverPass : kRegularCoverPass,
                      /*vertexAttrs=*/{{"position",
                                        VertexAttribType::kFloat4,
-                                       SkSLType::kFloat4}},
-                     /*instanceAttrs=*/{})
+                                       SkSLType::kFloat4},
+                                      {"sk_ssbo_binding1_index", VertexAttribType::kInt, SkSLType::kInt},
+                                      {"sk_ssbo_binding2_index_fs", VertexAttribType::kInt, SkSLType::kInt}},
+                     /*instanceAttrs=*/{},
+                     /*varyings=*/     {{"sk_ssbo_binding2_index", SkSLType::kInt}})
         , fInverseFill(inverseFill) {}
 
 CoverBoundsRenderStep::~CoverBoundsRenderStep() {}
@@ -32,7 +35,7 @@ const char* CoverBoundsRenderStep::vertexSkSL() const {
     return "     float4 devPosition = position;\n";
 }
 
-void CoverBoundsRenderStep::writeVertices(DrawWriter* writer, const DrawParams& params) const {
+void CoverBoundsRenderStep::writeVertices(DrawWriter* writer, const DrawParams& params, int geometryStorageBufferIndex, int shadingStorageBufferIndex) const {
     SkV4 devPoints[4]; // ordered TL, TR, BR, BL
 
     if (fInverseFill) {
@@ -48,12 +51,13 @@ void CoverBoundsRenderStep::writeVertices(DrawWriter* writer, const DrawParams& 
 
     float depth = params.order().depthAsFloat();
     DrawWriter::Vertices verts{*writer};
-    verts.append(6) << devPoints[0].x << devPoints[0].y << depth << devPoints[0].w // TL
-                    << devPoints[3].x << devPoints[3].y << depth << devPoints[3].w // BL
-                    << devPoints[1].x << devPoints[1].y << depth << devPoints[1].w // TR
-                    << devPoints[1].x << devPoints[1].y << depth << devPoints[1].w // TR
-                    << devPoints[3].x << devPoints[3].y << depth << devPoints[3].w // BL
-                    << devPoints[2].x << devPoints[2].y << depth << devPoints[2].w;// BR
+    // TODO how to decide whether to pass in ssbo index?
+    verts.append(6) << devPoints[0].x << devPoints[0].y << depth << devPoints[0].w << geometryStorageBufferIndex << shadingStorageBufferIndex // TL
+                    << devPoints[3].x << devPoints[3].y << depth << devPoints[3].w << geometryStorageBufferIndex << shadingStorageBufferIndex // BL
+                    << devPoints[1].x << devPoints[1].y << depth << devPoints[1].w << geometryStorageBufferIndex << shadingStorageBufferIndex // TR
+                    << devPoints[1].x << devPoints[1].y << depth << devPoints[1].w << geometryStorageBufferIndex << shadingStorageBufferIndex // TR
+                    << devPoints[3].x << devPoints[3].y << depth << devPoints[3].w << geometryStorageBufferIndex << shadingStorageBufferIndex // BL
+                    << devPoints[2].x << devPoints[2].y << depth << devPoints[2].w << geometryStorageBufferIndex << shadingStorageBufferIndex;// BR
 }
 
 void CoverBoundsRenderStep::writeUniforms(const DrawParams&, SkPipelineDataGatherer*) const {

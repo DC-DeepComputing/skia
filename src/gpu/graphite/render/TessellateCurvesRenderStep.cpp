@@ -26,9 +26,11 @@ using namespace skgpu::tess;
 // No explicit curve type, since we assume infinity is supported on GPUs using graphite
 // No color or wide color attribs, since it might always be part of the PaintParams
 // or we'll add a color-only fast path to RenderStep later.
-static constexpr PatchAttribs kAttribs = PatchAttribs::kPaintDepth;
+static constexpr PatchAttribs kAttribs = PatchAttribs::kPaintDepth |
+                                         PatchAttribs::kStorageBufferIndices;
 using Writer = PatchWriter<DynamicInstancesPatchAllocator<FixedCountCurves>,
                            Required<PatchAttribs::kPaintDepth>,
+                           Required<PatchAttribs::kStorageBufferIndices>,
                            AddTrianglesWhenChopping,
                            DiscardFlatCurves>;
 
@@ -45,7 +47,10 @@ TessellateCurvesRenderStep::TessellateCurvesRenderStep(bool evenOdd)
                                          VertexAttribType::kFloat2, SkSLType::kFloat2}},
                      /*instanceAttrs=*/{{"p01", VertexAttribType::kFloat4, SkSLType::kFloat4},
                                         {"p23", VertexAttribType::kFloat4, SkSLType::kFloat4},
-                                        {"depth", VertexAttribType::kFloat, SkSLType::kFloat}}) {
+                                        {"depth", VertexAttribType::kFloat, SkSLType::kFloat},
+                                        {"sk_ssbo_binding1_index", VertexAttribType::kInt, SkSLType::kInt},
+                                        {"sk_ssbo_binding2_index_fs", VertexAttribType::kInt, SkSLType::kInt}},
+                     /*varyings=*/     {{"sk_ssbo_binding2_index", SkSLType::kInt}}) {
     SkASSERT(this->instanceStride() == PatchStride(kAttribs));
 }
 
@@ -57,7 +62,7 @@ const char* TessellateCurvesRenderStep::vertexSkSL() const {
                "depth, 1.0);\n";
 }
 
-void TessellateCurvesRenderStep::writeVertices(DrawWriter* dw, const DrawParams& params) const {
+void TessellateCurvesRenderStep::writeVertices(DrawWriter* dw, const DrawParams& params, int geometryStorageBufferIndex, int shadingStorageBufferIndex) const {
     SkPath path = params.geometry().shape().asPath(); // TODO: Iterate the Shape directly
 
     BindBufferInfo fixedVertexBuffer = dw->bufferManager()->getStaticBuffer(
@@ -73,6 +78,7 @@ void TessellateCurvesRenderStep::writeVertices(DrawWriter* dw, const DrawParams&
     Writer writer{kAttribs, *dw, fixedVertexBuffer, fixedIndexBuffer, patchReserveCount};
 
     writer.updatePaintDepthAttrib(params.order().depthAsFloat());
+    writer.updateStorageBufferIndexAttribs(geometryStorageBufferIndex, shadingStorageBufferIndex);
 
     // TODO: Is it better to pre-transform on the CPU and only have a matrix uniform to compute
     // local coords, or is it better to always transform on the GPU (less CPU usage, more

@@ -1506,6 +1506,18 @@ void MetalCodeGenerator::writeIndexExpression(const IndexExpression& expr) {
     this->write("]");
 }
 
+bool MetalCodeGenerator::isStorageBuffer(const InterfaceBlock& intf) const {
+    const Layout& layout = intf.variable().modifiers().fLayout;
+    SkASSERT(layout.fSet == -1);
+    return fProgram.fConfig->fSettings.isStorageBuffer(0, layout.fBinding);
+}
+
+std::string MetalCodeGenerator::storageBufferIndexName(const InterfaceBlock& intf) const {
+    const Layout& layout = intf.variable().modifiers().fLayout;
+    SkASSERT(layout.fSet == -1);
+    return "sk_ssbo_binding" + std::to_string(layout.fBinding) + "_index";
+}
+
 void MetalCodeGenerator::writeFieldAccess(const FieldAccess& f) {
     const Type::Field* field = &f.base()->type().fields()[f.fieldIndex()];
     if (FieldAccess::OwnerKind::kDefault == f.ownerKind()) {
@@ -2076,7 +2088,7 @@ bool MetalCodeGenerator::writeFunctionDeclaration(const FunctionDeclaration& f) 
                 }
                 this->write(", constant ");
                 this->writeType(intf.variable().type());
-                this->write("& " );
+                this->write(this->isStorageBuffer(intf) ? "* " : "& ");
                 this->write(fInterfaceBlockNameMap[&intf]);
                 this->write(" [[buffer(");
                 this->write(std::to_string(this->getUniformBinding(intf.variable().modifiers())));
@@ -2506,6 +2518,11 @@ void MetalCodeGenerator::writeSwitchStatement(const SwitchStatement& s) {
 }
 
 void MetalCodeGenerator::writeReturnStatementFromMain() {
+    // TODO
+    if (ProgramConfig::IsVertex(fProgram.fConfig->fKind)) {
+        this->write("_out.sk_ssbo_binding2_index = _in.sk_ssbo_binding2_index_fs;");
+    }
+
     // main functions in Metal return a magic _out parameter that doesn't exist in SkSL.
     if (ProgramConfig::IsVertex(fProgram.fConfig->fKind) ||
         ProgramConfig::IsFragment(fProgram.fConfig->fKind)) {
@@ -2581,6 +2598,7 @@ void MetalCodeGenerator::writeUniformStruct() {
 
 void MetalCodeGenerator::writeInputStruct() {
     this->write("struct Inputs {\n");
+    // int lastLocation = -1;
     for (const ProgramElement* e : fProgram.elements()) {
         if (e->is<GlobalVarDeclaration>()) {
             const GlobalVarDeclaration& decls = e->as<GlobalVarDeclaration>();
@@ -2598,7 +2616,7 @@ void MetalCodeGenerator::writeInputStruct() {
                 }
                 this->write(" ");
                 this->writeName(var.name());
-                if (-1 != var.modifiers().fLayout.fLocation) {
+                if (var.modifiers().fLayout.fLocation != -1) {
                     if (ProgramConfig::IsVertex(fProgram.fConfig->fKind)) {
                         this->write("  [[attribute(" +
                                     std::to_string(var.modifiers().fLayout.fLocation) + ")]]");
@@ -2606,11 +2624,28 @@ void MetalCodeGenerator::writeInputStruct() {
                         this->write("  [[user(locn" +
                                     std::to_string(var.modifiers().fLayout.fLocation) + ")]]");
                     }
+                    // lastLocation = std::max(lastLocation, var.modifiers().fLayout.fLocation);
                 }
                 this->write(";\n");
             }
         }
     }
+    // for (const ProgramElement* e : fProgram.elements()) {
+    //     if (e->is<InterfaceBlock>()) {
+    //         const InterfaceBlock& intf = e->as<InterfaceBlock>();
+    //         if (this->isStorageBuffer(intf)) {
+    //             this->write("    int " + this->storageBufferIndexName(intf));
+    //             if (ProgramConfig::IsVertex(fProgram.fConfig->fKind)) {
+    //                 this->write("  [[attribute(" +
+    //                             std::to_string(++lastLocation) + ")]]");
+    //             } else if (ProgramConfig::IsFragment(fProgram.fConfig->fKind)) {
+    //                 this->write("  [[user(locn" +
+    //                             std::to_string(++lastLocation) + ")]]");
+    //             }
+    //             this->write(";\n");
+    //         }
+    //     }
+    // }
     this->write("};\n");
 }
 
@@ -2782,8 +2817,14 @@ void MetalCodeGenerator::writeGlobalInit() {
         void visitInterfaceBlock(const InterfaceBlock& blockType,
                                  std::string_view blockName) override {
             this->addElement();
-            fCodeGen->write("&");
+            bool storageBuffer = fCodeGen->isStorageBuffer(blockType);
+            if (!storageBuffer) {
+                fCodeGen->write("&");
+            }
             fCodeGen->writeName(blockName);
+            if (storageBuffer) {
+                fCodeGen->write(" + _in." + fCodeGen->storageBufferIndexName(blockType));
+            }
         }
         void visitTexture(const Type&, const Modifiers& modifiers, std::string_view name) override {
             this->addElement();

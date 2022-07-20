@@ -25,8 +25,11 @@ MiddleOutFanRenderStep::MiddleOutFanRenderStep(bool evenOdd)
                      evenOdd ? kEvenOddStencilPass : kWindingStencilPass,
                      /*vertexAttrs=*/{{"position",
                                        VertexAttribType::kFloat4,
-                                       SkSLType::kFloat4}},
-                     /*instanceAttrs=*/{}) {}
+                                       SkSLType::kFloat4},
+                                      {"sk_ssbo_binding1_index", VertexAttribType::kInt, SkSLType::kInt},
+                                      {"sk_ssbo_binding2_index_fs", VertexAttribType::kInt, SkSLType::kInt}},
+                     /*instanceAttrs=*/{},
+                     /*varyings=*/     {{"sk_ssbo_binding2_index", SkSLType::kInt}}) {}
 
 MiddleOutFanRenderStep::~MiddleOutFanRenderStep() {}
 
@@ -34,7 +37,7 @@ const char* MiddleOutFanRenderStep::vertexSkSL() const {
     return "     float4 devPosition = position;\n";
 }
 
-void MiddleOutFanRenderStep::writeVertices(DrawWriter* writer, const DrawParams& params) const {
+void MiddleOutFanRenderStep::writeVertices(DrawWriter* writer, const DrawParams& params, int geometryStorageBufferIndex, int shadingStorageBufferIndex) const {
     // TODO: Have Shape provide a path-like iterator so we don't actually have to convert non
     // paths to SkPath just to iterate their pts/verbs
     SkPath path = params.geometry().shape().asPath();
@@ -52,9 +55,10 @@ void MiddleOutFanRenderStep::writeVertices(DrawWriter* writer, const DrawParams&
             SkV4 devPoints[3];
             params.transform().mapPoints(p, devPoints, 3);
 
-            verts.append(3) << devPoints[0].x << devPoints[0].y << depth << devPoints[0].w  // p0
-                            << devPoints[1].x << devPoints[1].y << depth << devPoints[1].w  // p1
-                            << devPoints[2].x << devPoints[2].y << depth << devPoints[2].w; // p2
+            // TODO how to decide whether to pass in ssbo index?
+            verts.append(3) << devPoints[0].x << devPoints[0].y << depth << devPoints[0].w << geometryStorageBufferIndex << shadingStorageBufferIndex  // p0
+                            << devPoints[1].x << devPoints[1].y << depth << devPoints[1].w << geometryStorageBufferIndex << shadingStorageBufferIndex  // p1
+                            << devPoints[2].x << devPoints[2].y << depth << devPoints[2].w << geometryStorageBufferIndex << shadingStorageBufferIndex; // p2
         }
     }
 }
