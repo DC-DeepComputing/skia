@@ -69,6 +69,24 @@
       "parentUuid": "09d9e7af_f3aa856d",
       "revId": "80904d651c1d88125c91f368f8d67bf39ed41dfc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "967d3b00_f350184f",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1236,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-07-20T17:53:45Z",
+      "side": 1,
+      "message": "Right, it won\u0027t do anything but it, kinda, documents what is going on w/ the code.",
+      "parentUuid": "ac7f20ea_733d1692",
+      "revId": "80904d651c1d88125c91f368f8d67bf39ed41dfc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
