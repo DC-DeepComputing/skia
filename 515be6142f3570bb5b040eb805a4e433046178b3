@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c7a81501_d0e2393c",
+        "filename": "src/effects/SkHighContrastFilter.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-07-20T13:54:45Z",
+      "side": 1,
+      "message": "Fun fact: These \"shared\" code snippets are used in exactly one place.",
+      "range": {
+        "startLine": 26,
+        "startChar": 0,
+        "endLine": 27,
+        "endChar": 33
+      },
+      "revId": "515be6142f3570bb5b040eb805a4e433046178b3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
