@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "74ef93c9_42c3e501",
+        "filename": "src/gpu/graphite/ContextUtils.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 206,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-07-20T20:02:04Z",
+      "side": 1,
+      "message": "We seem to do \"// anonymous namespace\"",
+      "range": {
+        "startLine": 206,
+        "startChar": 6,
+        "endLine": 206,
+        "endChar": 22
+      },
+      "revId": "50eada52d24d50bfd569d99ed2c13e6cf8008d02",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
