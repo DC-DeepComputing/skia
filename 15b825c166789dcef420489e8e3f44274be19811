@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "722bebd7_b8e6bf12",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-07-20T20:34:16Z",
+      "side": 1,
+      "message": "I have emits coverage as a separate flag than requiring msaa. I think most usages will have these two flags be mutually exclusive, so we could declare that any RenderStep that doesn\u0027t require MSAA emits coverage, but I liked the flexibility of separate knobs with this approach.",
+      "revId": "15b825c166789dcef420489e8e3f44274be19811",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
