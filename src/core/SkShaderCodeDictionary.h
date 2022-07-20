@@ -25,6 +25,12 @@ namespace SkSL {
 struct ShaderCaps;
 }
 
+#ifdef SK_GRAPHITE_ENABLED
+namespace skgpu::graphite {
+class RenderStep;
+}
+#endif
+
 class SkBlenderID;
 class SkRuntimeEffect;
 class SkRuntimeEffectDictionary;
@@ -135,8 +141,8 @@ public:
     const skgpu::BlendInfo& blendInfo() const { return fBlendInfo; }
 #endif
 
-#if (SK_SUPPORT_GPU || defined(SK_GRAPHITE_ENABLED)) && defined(SK_METAL)
-    std::string toSkSL() const;
+#if defined(SK_GRAPHITE_ENABLED) && defined(SK_METAL)
+    std::string toSkSL(const skgpu::graphite::RenderStep*) const;
 #endif
 
 private:
