@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6b0d3c95_7cbe8d1f",
+        "filename": "src/sksl/SkSLConstantFolder.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 619,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-07-20T19:53:42Z",
+      "side": 1,
+      "message": "I guess we can\u0027t get here with any other type that would cause problems (we\u0027re already dealing with an operator, so something like a struct can\u0027t reach this code)? Just got worried, because I saw that is_constant_splat is written in a way that could return true even for arrays or structs...",
+      "revId": "7e59d05118b1d9161826813a4d9e21488f45f193",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
