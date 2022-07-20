@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0d2edff6_9f85a469",
+        "filename": "src/core/SkKeyHelpers.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 687,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-07-20T18:09:23Z",
+      "side": 1,
+      "message": "Is this also supposed to be static ?",
+      "revId": "4727473cd2fa4cc81be1c31ef1927b2392ec40e3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
