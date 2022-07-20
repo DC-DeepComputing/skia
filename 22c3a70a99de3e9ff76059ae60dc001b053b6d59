@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "43a4628a_12b5360d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-07-20T17:57:57Z",
+      "side": 1,
+      "message": "nit: Include a small summary of the desirable things in this roll. Various COLR v1 fixes?",
+      "revId": "22c3a70a99de3e9ff76059ae60dc001b053b6d59",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "ddb8af96_7b932fce",
