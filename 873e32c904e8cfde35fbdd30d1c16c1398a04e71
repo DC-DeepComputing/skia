@@ -16,6 +16,29 @@
       "message": "brianosman@ for include/",
       "revId": "873e32c904e8cfde35fbdd30d1c16c1398a04e71",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "af77525d_6984a1e7",
+        "filename": "src/core/SkRuntimeEffect.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 937,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-07-20T13:08:34Z",
+      "side": 1,
+      "message": "Is this correct? The ChildPtr is based on the concrete type of the object that\u0027s bound to a child (if any). If the ChildPtr is null, the declared child could be any of the three effect types, and for a null blender (for example), the result (in ganesh and CPU) is src-over.",
+      "range": {
+        "startLine": 935,
+        "startChar": 0,
+        "endLine": 937,
+        "endChar": 32
+      },
+      "revId": "873e32c904e8cfde35fbdd30d1c16c1398a04e71",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
