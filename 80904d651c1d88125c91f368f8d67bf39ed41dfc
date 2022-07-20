@@ -87,6 +87,24 @@
       "parentUuid": "ac7f20ea_733d1692",
       "revId": "80904d651c1d88125c91f368f8d67bf39ed41dfc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "80c97e2f_b5f18314",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1236,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-07-20T18:51:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "967d3b00_f350184f",
+      "revId": "80904d651c1d88125c91f368f8d67bf39ed41dfc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
