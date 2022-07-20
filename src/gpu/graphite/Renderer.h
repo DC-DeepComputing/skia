@@ -83,9 +83,16 @@ public:
     // and then including the function bodies returned here.
     virtual const char* vertexSkSL() const = 0;
 
+    // Emits code to set up textures and samplers. Should only be defined if hasTextures is true.
+    virtual std::string texturesAndSamplersSkSL(int startBinding) const { return R"()"; }
+
+    // Emits code to set up coverage value. Should only be defined if overridesCoverage is true.
+    virtual const char* fragmentCoverageSkSL() const { return R"()"; }
+
     bool          requiresMSAA()    const { return fFlags & Flags::kRequiresMSAA;      }
     bool          performsShading() const { return fFlags & Flags::kPerformsShading;   }
     bool          hasTextures()     const { return fFlags & Flags::kHasTextures; }
+    bool          emitsCoverage()   const { return fFlags & Flags::kEmitsCoverage; }
 
     PrimitiveType primitiveType()   const { return fPrimitiveType;  }
     size_t        vertexStride()    const { return fVertexStride;   }
@@ -122,10 +129,11 @@ public:
     // 7. Painter's order for the draw sent as uniform or attribute
 protected:
     enum class Flags : unsigned {
-        kNone            = 0b000,
-        kRequiresMSAA    = 0b001,
-        kPerformsShading = 0b010,
-        kHasTextures     = 0b100,
+        kNone            = 0b0000,
+        kRequiresMSAA    = 0b0001,
+        kPerformsShading = 0b0010,
+        kHasTextures     = 0b0100,
+        kEmitsCoverage   = 0b1000,
     };
     SK_DECL_BITMASK_OPS_FRIENDS(Flags);
 
@@ -238,6 +246,7 @@ public:
     const char* name()            const { return fName.c_str();    }
     int         numRenderSteps()  const { return fStepCount;       }
     bool        requiresMSAA()    const { return fRequiresMSAA;    }
+    bool        usesCoverageAA()  const { return fUsesCoverageAA;    }
 
     SkEnumBitMask<DepthStencilFlags> depthStencilFlags() const { return fDepthStencilFlags; }
 
@@ -266,6 +275,7 @@ private:
             fSteps[i] = steps[i];
             fRequiresMSAA |= fSteps[i]->requiresMSAA();
             fDepthStencilFlags |= fSteps[i]->depthStencilFlags();
+            fUsesCoverageAA |= fSteps[i]->emitsCoverage();
             SkDEBUGCODE(performsShading |= fSteps[i]->performsShading());
         }
         SkASSERT(performsShading); // at least one step needs to actually shade
@@ -280,6 +290,7 @@ private:
     SkString fName;
     int      fStepCount;
     bool     fRequiresMSAA = false;
+    bool     fUsesCoverageAA = false;
 
     SkEnumBitMask<DepthStencilFlags> fDepthStencilFlags = DepthStencilFlags::kNone;
 };
