@@ -11,6 +11,7 @@
 #include "src/core/SkBlendModePriv.h"
 #include "src/core/SkBlenderBase.h"
 #include "src/core/SkColorFilterBase.h"
+#include "src/core/SkColorFilterPriv.h"
 #include "src/core/SkColorSpacePriv.h"
 #include "src/core/SkColorSpaceXformSteps.h"
 #include "src/core/SkCoreBlitters.h"
@@ -47,19 +48,6 @@ namespace {
             to_F32(dy) + 0.5f,
         };
     }
-
-    struct NoopColorFilter : public SkColorFilterBase {
-        skvm::Color onProgram(skvm::Builder*, skvm::Color c,
-                              const SkColorInfo&, skvm::Uniforms*, SkArenaAlloc*) const override {
-            return c;
-        }
-
-        bool onAppendStages(const SkStageRec&, bool) const override { return true; }
-
-        // Only created here, should never be flattened / unflattened.
-        Factory getFactory() const override { return nullptr; }
-        const char* getTypeName() const override { return "NoopColorFilter"; }
-    };
 
     struct SpriteShader : public SkShaderBase {
         explicit SpriteShader(SkPixmap sprite) : fSprite(sprite) {}
@@ -231,7 +219,7 @@ SkVMBlitter::Params SkVMBlitter::EffectiveParams(const SkPixmap& device,
     } else if (paint.getAlphaf() < 1.0f) {
         shader = sk_make_sp<SkColorFilterShader>(std::move(shader),
                                                  paint.getAlphaf(),
-                                                 sk_make_sp<NoopColorFilter>());
+                                                 SkColorFilterPriv::MakePassthrough());
     }
 
     // Add dither to the end of the shader pipeline if requested and needed.
