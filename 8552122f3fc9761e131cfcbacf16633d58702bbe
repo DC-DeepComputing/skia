@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "60cc20c3_3bffee15",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2022-07-21T17:59:11Z",
+      "side": 1,
+      "message": "Updated user_typeface GM (mixing path and drawable glyphs): https://gold.skia.org/img/images/fd6e2bc7dc4790c8012510295d0fa77e.png",
+      "revId": "8552122f3fc9761e131cfcbacf16633d58702bbe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6b6cb09f_0c64d6c4",
+        "filename": "src/core/SkRecordedDrawable.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2022-07-21T17:59:11Z",
+      "side": 1,
+      "message": "Similar to SkRecordedDrawable::onDraw(), we must handle null fDrawableList gracefully here.",
+      "range": {
+        "startLine": 74,
+        "startChar": 0,
+        "endLine": 75,
+        "endChar": 78
+      },
+      "revId": "336dba0064e083500bd557d79cd0a3fd6596ca29",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
