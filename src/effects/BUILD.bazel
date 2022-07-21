@@ -24,6 +24,7 @@ EFFECTS_FILES = [
     "SkOpPE.h",
     "SkOpPathEffect.cpp",
     "SkOverdrawColorFilter.cpp",
+    "SkPassthroughColorFilter.cpp",
     "SkShaderMaskFilter.cpp",
     "SkTableColorFilter.cpp",
     "SkTableMaskFilter.cpp",

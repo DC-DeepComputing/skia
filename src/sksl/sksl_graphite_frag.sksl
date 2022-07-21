@@ -593,3 +593,7 @@ half4 sk_gaussian_colorfilter(half4 inColor) {
     factor = exp(-factor * factor * 4) - 0.018;
     return half4(factor);
 }
+
+half4 sk_passthrough_colorfilter(half4 inColor) {
+    return inColor;
+}

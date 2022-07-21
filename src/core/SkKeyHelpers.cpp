@@ -625,7 +625,7 @@ void TableColorFilterBlock::BeginBlock(const SkKeyContext& keyContext,
         if (gatherer) {
             if (!data.fTextureProxy) {
                 // We're dropping the color filter here!
-                PassthroughShaderBlock::BeginBlock(keyContext, builder, gatherer);
+                PassthroughColorFilterBlock::BeginBlock(keyContext, builder, gatherer);
                 return;
             }
 
@@ -641,6 +641,22 @@ void TableColorFilterBlock::BeginBlock(const SkKeyContext& keyContext,
 
     if (builder->backend() == SkBackend::kSkVM || builder->backend() == SkBackend::kGanesh) {
         // TODO: add implementation for other backends
+    }
+}
+
+//--------------------------------------------------------------------------------------------------
+void PassthroughColorFilterBlock::BeginBlock(const SkKeyContext& keyContext,
+                                             SkPaintParamsKeyBuilder* builder,
+                                             SkPipelineDataGatherer* gatherer) {
+#ifdef SK_GRAPHITE_ENABLED
+    if (builder->backend() == SkBackend::kGraphite) {
+        builder->beginBlock(SkBuiltInCodeSnippetID::kPassthroughColorFilter);
+        return;
+    }
+#endif // SK_GRAPHITE_ENABLED
+
+    if (builder->backend() == SkBackend::kSkVM || builder->backend() == SkBackend::kGanesh) {
+        // TODO: add implementation of other backends
     }
 }
 
