@@ -391,7 +391,7 @@ struct SkWorkingFormatColorFilter : public SkColorFilterBase {
                 working = {dstColorInfo.colorType(), workingAT, workingCS};
 
         auto [ok, fp] = as_CFB(fChild)->asFragmentProcessor(
-                GrColorSpaceXformEffect::Make(std::move(inputFP), dst,working), context, working);
+                GrColorSpaceXformEffect::Make(std::move(inputFP), dst, working), context, working);
 
         return ok ? GrFPSuccess(GrColorSpaceXformEffect::Make(std::move(fp), working,dst))
                   : GrFPFailure(std::move(fp));
