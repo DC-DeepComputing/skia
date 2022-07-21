@@ -863,6 +863,22 @@ const Renderer* Device::ChooseRenderer(const Geometry& geometry,
             return &Renderer::StencilTessellatedCurvesAndTris(shape.fillType());
         }
     }
+
+    if (!renderer) {
+        SKGPU_LOG_W("Skipping draw with no supported path renderer.");
+        return;
+    }
+
+    if (renderer->depthStencilFlags() & DepthStencilFlags::kStencil) {
+        DisjointStencilIndex setIndex = fDisjointStencilSet->add(ordering.paintOrder(),
+                                                                 clip.drawBounds());
+        ordering.dependsOnStencil(setIndex);
+    }
+
+    // TODO: if the chosen Renderer uses coverage AA, then 'ordering' depends on painter's order,
+    // so we will need to take into account the previous draw. Since no Renderer uses coverage AA
+    // right now, it's not an issue yet.
+    fDC->recordDraw(*renderer, localToDevice, Geometry{shape}, clip, ordering, paint, stroke);
 }
 
 void Device::flushPendingWorkToRecorder() {
