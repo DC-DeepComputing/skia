@@ -216,6 +216,12 @@ struct ComposeColorFilterBlock {
                            SkPipelineDataGatherer*);
 };
 
+struct GaussianColorFilterBlock {
+    static void BeginBlock(const SkKeyContext&,
+                           SkPaintParamsKeyBuilder*,
+                           SkPipelineDataGatherer*);
+};
+
 struct BlendModeBlock {
     static void BeginBlock(const SkKeyContext&,
                            SkPaintParamsKeyBuilder*,
