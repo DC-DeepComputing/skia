@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a486fc5e_1946ea3a",
+        "filename": "src/text/gpu/SubRunContainer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-07-21T18:02:31Z",
+      "side": 1,
+      "message": "Don\u0027t we actually need to read the points here ?",
+      "revId": "4b642e661b2dd9bbbbcaff6e228fc955b26f8507",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
