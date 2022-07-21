@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2a5d88e3_81e3d352",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-07-21T17:36:33Z",
+      "side": 1,
+      "message": "This is still Metal-specific I think",
+      "range": {
+        "startLine": 128,
+        "startChar": 57,
+        "endLine": 128,
+        "endChar": 71
+      },
+      "revId": "4cda03a096acde5e67dc673a8d898e812dbdd285",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
