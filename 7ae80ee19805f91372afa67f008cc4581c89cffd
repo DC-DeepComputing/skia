@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "34e7e4b4_7247b1f9",
+        "filename": "src/utils/SkShadowUtils.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-07-21T18:14:52Z",
+      "side": 1,
+      "message": "It looks like it\u0027s splatting the same value into all four channels, not 111a.",
+      "range": {
+        "startLine": 73,
+        "startChar": 70,
+        "endLine": 73,
+        "endChar": 75
+      },
+      "revId": "7ae80ee19805f91372afa67f008cc4581c89cffd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
