@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "52eed495_29929c8c",
+        "filename": "src/text/gpu/SubRunContainer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 256,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-07-21T20:37:29Z",
+      "side": 0,
+      "message": "I don\u0027t think we do need it. I think the readPointArray function checks for enough available bytes. I think I need to make a CL after to get rid of all that stuff. I think it is just confusing now.",
+      "parentUuid": "858aa5d3_f4932dd6",
+      "revId": "ce78d26f61f68080e2dbcf488217f23b0d8c9f38",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5a3b0fae_2e973305",
@@ -31,6 +49,24 @@
       "writtenOn": "2022-07-21T20:16:32Z",
       "side": 0,
       "message": "Maybe it is this check we need in read_points",
+      "revId": "ce78d26f61f68080e2dbcf488217f23b0d8c9f38",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d89a5ffe_6d8846b2",
+        "filename": "src/text/gpu/SubRunContainer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 865,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-07-21T20:37:29Z",
+      "side": 0,
+      "message": "The check for enough bytes happens inside the readPointArray checks that there is enough to read. I don\u0027t think this is needed anymore.",
+      "parentUuid": "5a3b0fae_2e973305",
       "revId": "ce78d26f61f68080e2dbcf488217f23b0d8c9f38",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
