@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "858aa5d3_f4932dd6",
+        "filename": "src/text/gpu/SubRunContainer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 256,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-07-21T20:16:32Z",
+      "side": 0,
+      "message": "It looks like this did some rudimentary attack suppression (i.e., checking buffer.available). Do we no longer need that ?",
+      "revId": "ce78d26f61f68080e2dbcf488217f23b0d8c9f38",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5a3b0fae_2e973305",
+        "filename": "src/text/gpu/SubRunContainer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 865,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-07-21T20:16:32Z",
+      "side": 0,
+      "message": "Maybe it is this check we need in read_points",
+      "revId": "ce78d26f61f68080e2dbcf488217f23b0d8c9f38",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
