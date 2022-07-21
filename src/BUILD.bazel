@@ -35,6 +35,11 @@ filegroup(
             "//src/xml:srcs",
         ],
         "//conditions:default": [],
+    }) + select({
+        "//src/pdf:enable_pdf_backend_true": [
+            "//src/pdf:srcs",
+        ],
+        "//conditions:default": [],
     }),
     visibility = ["//:__pkg__"],
 )
@@ -69,6 +74,11 @@ filegroup(
             "//src/xml:private_hdrs",
         ],
         "//conditions:default": [],
+    }) + select({
+        "//src/pdf:enable_pdf_backend_true": [
+            "//src/pdf:private_hdrs",
+        ],
+        "//conditions:default": [],
     }),
     visibility = ["//:__pkg__"],
 )
@@ -90,6 +100,11 @@ cc_library(
     }) + select({
         "//bazel/common_config_settings:enable_svg_canvas_true": [
             "//src/xml:deps",
+        ],
+        "//conditions:default": [],
+    }) + select({
+        "//src/pdf:enable_pdf_backend_true": [
+            "//src/pdf:deps",
         ],
         "//conditions:default": [],
     }),
