@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "22f29da5_3ec8d8e9",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-07-21T20:08:18Z",
+      "side": 1,
+      "message": "This is a correction for a previously merged CL: https://skia-review.googlesource.com/c/skia/+/560718/10/src/core/SkShaderCodeDictionary.cpp#128",
+      "range": {
+        "startLine": 139,
+        "startChar": 7,
+        "endLine": 139,
+        "endChar": 11
+      },
+      "revId": "48d1683ec860ce26cd5848ca7defa2805f4882a3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
