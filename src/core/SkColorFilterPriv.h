@@ -16,6 +16,7 @@ struct skcms_TransferFunction;
 class SkColorFilterPriv {
 public:
     static sk_sp<SkColorFilter> MakeGaussian();
+    static sk_sp<SkColorFilter> MakePassthrough();
 
     // Runs the child filter in a different working color format than usual (premul in
     // destination surface's color space), with all inputs and outputs expressed in this format.

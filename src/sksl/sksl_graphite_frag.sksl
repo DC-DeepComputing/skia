@@ -4,7 +4,7 @@ half4 sk_error() {
     return half4(1.0, 0.0, 1.0, 1.0);
 }
 
-half4 sk_passthrough(half4 color) {
+half4 sk_passthrough_shader(half4 color) {
     return color;
 }
 
@@ -592,4 +592,8 @@ half4 sk_gaussian_colorfilter(half4 inColor) {
     half factor = 1 - inColor.a;
     factor = exp(-factor * factor * 4) - 0.018;
     return half4(factor);
+}
+
+half4 sk_passthrough_colorfilter(half4 inColor) {
+    return inColor;
 }

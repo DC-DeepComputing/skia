@@ -864,10 +864,13 @@ void GenerateTableColorFilterPreamble(const SkShaderInfo& shaderInfo,
 static constexpr char kGaussianColorFilterName[] = "sk_gaussian_colorfilter";
 
 //--------------------------------------------------------------------------------------------------
+static constexpr char kPassthroughColorFilterName[] = "sk_passthrough_colorfilter";
+
+//--------------------------------------------------------------------------------------------------
 static constexpr char kErrorName[] = "sk_error";
 
 //--------------------------------------------------------------------------------------------------
-static constexpr char kPassthroughName[] = "sk_passthrough";
+static constexpr char kPassthroughShaderName[] = "sk_passthrough_shader";
 
 //--------------------------------------------------------------------------------------------------
 // This method generates the glue code for the case where the SkBlendMode-based blending is
@@ -1133,11 +1136,11 @@ SkShaderCodeDictionary::SkShaderCodeDictionary() {
             { }      // no data payload
     };
     fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kPassthroughShader] = {
-            "Passthrough",
+            "PassthroughShader",
             { },     // no uniforms
             SnippetRequirementFlags::kPriorStageOutput,
             { },     // no samplers
-            kPassthroughName,
+            kPassthroughShaderName,
             GenerateDefaultExpression,
             GenerateDefaultPreamble,
             kNoChildren,
@@ -1327,6 +1330,17 @@ SkShaderCodeDictionary::SkShaderCodeDictionary() {
             SnippetRequirementFlags::kPriorStageOutput,
             { },     // no samplers
             kGaussianColorFilterName,
+            GenerateDefaultExpression,
+            GenerateDefaultPreamble,
+            kNoChildren,
+            { }      // no data payload
+    };
+    fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kPassthroughColorFilter] = {
+            "PassthroughColorFilter",
+            { },     // no uniforms
+            SnippetRequirementFlags::kPriorStageOutput,
+            { },     // no samplers
+            kPassthroughColorFilterName,
             GenerateDefaultExpression,
             GenerateDefaultPreamble,
             kNoChildren,

@@ -150,7 +150,7 @@ void SkColorFilterBase::addToKey(const SkKeyContext& keyContext,
                                  SkPaintParamsKeyBuilder* builder,
                                  SkPipelineDataGatherer* gatherer) const {
     // Return the input color as-is.
-    PassthroughShaderBlock::BeginBlock(keyContext, builder, gatherer);
+    PassthroughColorFilterBlock::BeginBlock(keyContext, builder, gatherer);
     builder->endBlock();
 }
 #endif
