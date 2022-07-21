@@ -141,6 +141,24 @@
       "parentUuid": "99b71d73_154b7e6f",
       "revId": "1c80f1ce7e88e6435f46cff7650103e0f5ce170f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ff5d678b_9a01866a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 15399
+      },
+      "writtenOn": "2022-07-21T17:05:05Z",
+      "side": 1,
+      "message": "Okay. Same thing for a toString method?",
+      "parentUuid": "1300b13b_044c45a0",
+      "revId": "1c80f1ce7e88e6435f46cff7650103e0f5ce170f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
