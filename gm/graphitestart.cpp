@@ -155,7 +155,7 @@ void draw_colorfilter_swatches(SkCanvas* canvas, SkRect clipRect) {
             { SK_ColorBLACK, SK_ColorGREY, SK_ColorWHITE },
             { SK_ColorBLACK, SK_ColorGREY, SK_ColorWHITE },
             { 0x00000000,    0x80000000,   0xFF000000    },  // the Gaussian CF uses alpha only
-            { SK_ColorBLACK, SK_ColorGREY, SK_ColorWHITE },
+            { SK_ColorBLACK, 0xFF800080,   SK_ColorMAGENTA },
             { SK_ColorBLACK, SK_ColorGREY, SK_ColorWHITE },
             { SK_ColorBLACK, SK_ColorGREY, SK_ColorWHITE },
             { SK_ColorBLACK, SK_ColorGREY, SK_ColorWHITE },
@@ -169,6 +169,7 @@ void draw_colorfilter_swatches(SkCanvas* canvas, SkRect clipRect) {
                                                                            table2, table2));
     colorFilters[3] = SkColorFilters::Blend(SK_ColorGREEN, SkBlendMode::kMultiply);
     colorFilters[4] = SkColorFilterPriv::MakeGaussian();
+    colorFilters[5] = SkColorFilterPriv::MakePassthrough();
 
     SkPaint p;
 

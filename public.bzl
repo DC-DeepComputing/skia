@@ -753,6 +753,7 @@ BASE_SRCS_ALL = [
     "src/effects/SkOpPE.h",
     "src/effects/SkOpPathEffect.cpp",
     "src/effects/SkOverdrawColorFilter.cpp",
+    "src/effects/SkPassthroughColorFilter.cpp",
     "src/effects/SkShaderMaskFilter.cpp",
     "src/effects/SkTableColorFilter.cpp",
     "src/effects/SkTableMaskFilter.cpp",
