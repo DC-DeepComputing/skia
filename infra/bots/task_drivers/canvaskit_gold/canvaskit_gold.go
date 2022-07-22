@@ -43,6 +43,7 @@ var (
 
 	// Optional flags.
 	bazelCacheDir = flag.String("bazel_cache_dir", "/mnt/pd0/bazel_cache", "Override the Bazel cache directory with this path")
+	expungeCache  = flag.Bool("expunge_cache", false, "If set, the Bazel cache will be cleaned with --expunge before execution. We should only have to set this rarely, if something gets messed up.")
 	local         = flag.Bool("local", false, "True if running locally (as opposed to on the CI/CQ)")
 	output        = flag.String("o", "", "If provided, dump a JSON blob of step data to the given file. Prints to stdout if '-' is given.")
 )
@@ -74,6 +75,12 @@ func main() {
 	}
 	if *cross != "" {
 		fmt.Println("Saw --cross, but don't know what to do with that yet.")
+	}
+
+	if *expungeCache {
+		if err := bazelClean(ctx, skiaDir); err != nil {
+			td.Fatal(ctx, err)
+		}
 	}
 
 	if err := bazelTest(ctx, skiaDir, "//modules/canvaskit:canvaskit_js_tests", *testConfig,
