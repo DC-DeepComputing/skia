@@ -3451,9 +3451,23 @@ namespace skvm {
              NA, NA, NA, NA,  NA, NA, NA, NA,
         };
 
-        auto enter = [&]{ if (nstack_slots) { a->sub(A::sp, A::sp, nstack_slots*K*4); } };
-        auto exit  = [&]{ if (nstack_slots) { a->add(A::sp, A::sp, nstack_slots*K*4); }
-                          a->ret(A::x30); };
+        auto enter = [&] {
+            int stack_bytes = nstack_slots*K*4;
+            while (stack_bytes) {
+                int cur_bytes = std::min(stack_bytes, 4095);
+                a->sub(A::sp, A::sp, cur_bytes);
+                stack_bytes -= cur_bytes;
+            }
+        };
+        auto exit = [&] {
+            int stack_bytes = nstack_slots*K*4;
+            while (stack_bytes) {
+                int cur_bytes = std::min(stack_bytes, 4095);
+                a->add(A::sp, A::sp, cur_bytes);
+                stack_bytes -= cur_bytes;
+            }
+            a->ret(A::x30);
+        };
 
         auto load_from_memory = [&](Reg r, Val v) {
             if (instructions[v].op == Op::splat) {
