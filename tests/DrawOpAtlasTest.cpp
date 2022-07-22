@@ -124,8 +124,13 @@ static bool fill_plot(GrDrawOpAtlas* atlas,
     data.eraseARGB(alpha, 0, 0, 0);
 
     GrDrawOpAtlas::ErrorCode code;
-    code = atlas->addToAtlas(resourceProvider, target, kPlotSize, kPlotSize,
-                             data.getAddr(0, 0), atlasLocator);
+    code = atlas->addToAtlas(resourceProvider,
+                             target,
+                             kPlotSize,
+                             kPlotSize,
+                             skgpu::GlyphType::kUnknown,
+                             data.getAddr(0, 0),
+                             atlasLocator);
     return GrDrawOpAtlas::ErrorCode::kSucceeded == code;
 }
 
