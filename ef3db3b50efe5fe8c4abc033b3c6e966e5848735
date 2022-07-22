@@ -87,6 +87,24 @@
       "parentUuid": "d9af60a2_452eb159",
       "revId": "ef3db3b50efe5fe8c4abc033b3c6e966e5848735",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9d980539_a24b384a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-07-22T18:08:42Z",
+      "side": 1,
+      "message": "Filed http://skbug.com/13559 to generalize this to a GLSL backend rewrite. Thinking about it some more, the \"incurs overhead\" case should be rare. It\u0027ll only add a temp variable if the inner expression is non-trivial.\n\nAll the same, I think it\u0027s harmless/mildly beneficial to land this now; I\u0027d rather emit the SkSL we like, than rely on a rewrite to convert it.",
+      "parentUuid": "1d3ebafd_f27696a9",
+      "revId": "ef3db3b50efe5fe8c4abc033b3c6e966e5848735",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
