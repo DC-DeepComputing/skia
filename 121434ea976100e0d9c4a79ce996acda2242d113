@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e112ee55_61de21b1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-07-22T19:56:18Z",
+      "side": 1,
+      "message": "Do we think this works in Vulkan or modern GLSL? I haven\u0027t looked carefully, but just like everything except ancient GL has separate samplers and textures, so I don\u0027t know what our code-gen is like for any of those.",
+      "revId": "121434ea976100e0d9c4a79ce996acda2242d113",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
