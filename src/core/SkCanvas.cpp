@@ -27,6 +27,8 @@
 #include "src/core/SkClipStack.h"
 #include "src/core/SkColorFilterBase.h"
 #include "src/core/SkDraw.h"
+#include "src/core/SkTraceEvent.h"
+#include "src/core/SkTraceEventCommon.h"
 #include "src/core/SkImageFilterCache.h"
 #include "src/core/SkImageFilter_Base.h"
 #include "src/core/SkLatticeIter.h"
