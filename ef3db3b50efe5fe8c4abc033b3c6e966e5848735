@@ -16,6 +16,23 @@
       "message": "A 2x2 matrix can take up to twice as much space as a vec4 in a uniform buffer",
       "revId": "ef3db3b50efe5fe8c4abc033b3c6e966e5848735",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "968a2787_a23e5272",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-07-22T17:07:48Z",
+      "side": 1,
+      "message": "if we want to fix this issue, I think the fix is to manually do a work around of the cast in SkSL. Add a caps for needing the workaround on old gpus and then fill in the matrix manually.",
+      "revId": "ef3db3b50efe5fe8c4abc033b3c6e966e5848735",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
