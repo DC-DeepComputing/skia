@@ -89,7 +89,7 @@ PYTHON_VERSION_COMPATIBILITY: PY3
 
 Fail if git is not obtained from CIPD.
 
-&mdash; **def [bot\_update](/infra/bots/recipe_modules/checkout/api.py#48)(self, checkout_root, gclient_cache=None, checkout_flutter=False, flutter_android=False):**
+&mdash; **def [bot\_update](/infra/bots/recipe_modules/checkout/api.py#48)(self, checkout_root, gclient_cache=None, checkout_flutter=False, flutter_android=False, ignore_trybot=False):**
 
 Run the steps to obtain a checkout using bot_update.
 
