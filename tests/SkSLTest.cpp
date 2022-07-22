@@ -227,10 +227,11 @@ static void test_one_permutation(skiatest::Reporter* r,
     if (!success) {
         static_assert(kWidth  == 2);
         static_assert(kHeight == 2);
-        ERRORF(r, "Expected: solid green. Actual:\n"
+        ERRORF(r, "Expected%s: solid green. Actual:\n"
                   "RRGGBBAA RRGGBBAA\n"
                   "%02X%02X%02X%02X %02X%02X%02X%02X\n"
                   "%02X%02X%02X%02X %02X%02X%02X%02X",
+                  permutationSuffix,
                   SkColorGetR(color[0][0]), SkColorGetG(color[0][0]),
                   SkColorGetB(color[0][0]), SkColorGetA(color[0][0]),
 
