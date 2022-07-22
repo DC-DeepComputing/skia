@@ -69,6 +69,24 @@
       "parentUuid": "91918cf4_559a1cae",
       "revId": "ef3db3b50efe5fe8c4abc033b3c6e966e5848735",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1d3ebafd_f27696a9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-07-22T17:50:56Z",
+      "side": 1,
+      "message": "I *strongly* suspect that the performance of `mat2(v4)` is identical to `mat2(v4.xy, v4.zw)`. I do not expect to see any measurable difference at all and I expect a compiler actually converts the first form to the second form internally during compilation. \n\nIf you feel that a workaround in the compiler is necessary, we can do it, but it\u0027ll be a lot more complex than this and is more likely to _actually_ incur overhead in real shaders.",
+      "parentUuid": "d9af60a2_452eb159",
+      "revId": "ef3db3b50efe5fe8c4abc033b3c6e966e5848735",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
