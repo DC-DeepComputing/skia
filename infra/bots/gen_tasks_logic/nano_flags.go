@@ -63,8 +63,8 @@ func (b *taskBuilder) nanobenchFlags(doUpload bool) {
 			}
 		} else if b.matchGpu("AppleM1") {
 			sampleCount = 4
-		} else if b.matchGpu("Intel") {
-			// MSAA doesn't work well on Intel GPUs chromium:527565, chromium:983926
+		} else if b.matchGpu("Intel") && !b.gpu("IntelIrisXe") {
+			// MSAA doesn't work well on older Intel GPUs chromium:527565, chromium:983926
 			sampleCount = 0
 		} else if b.os("ChromeOS") {
 			glPrefix = "gles"
@@ -112,7 +112,7 @@ func (b *taskBuilder) nanobenchFlags(doUpload bool) {
 				}
 			} else {
 				// MSAA doesn't work well on Intel GPUs chromium:527565, chromium:983926, skia:9023
-				if !b.matchGpu("Intel") {
+				if !b.matchGpu("Intel") || b.gpu("IntelIrisXe") {
 					configs = append(configs, "vkmsaa8")
 				}
 			}
@@ -160,6 +160,9 @@ func (b *taskBuilder) nanobenchFlags(doUpload bool) {
 		}
 		if b.extraConfig("SwiftShader") {
 			configs = []string{"vk", "vkdmsaa"}
+		}
+		if b.gpu("IntelIrisXe") {
+			args = append(args, "--allowMSAAOnNewIntel", "true")
 		}
 	}
 
