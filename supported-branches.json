@@ -1,12 +1,12 @@
 {
   "branches": [
     {
-      "ref": "refs/heads/android/next-release",
-      "owner": "djsollen@google.com"
+      "ref": "refs/heads/main",
+      "owner": "skiabot@google.com"
     },
     {
-      "ref": "refs/heads/chrome/m101",
-      "owner": "hcm@google.com"
+      "ref": "refs/heads/android/next-release",
+      "owner": "djsollen@google.com"
     },
     {
       "ref": "refs/heads/chrome/m102",
@@ -21,8 +21,8 @@
       "owner": "hcm@google.com"
     },
     {
-      "ref": "refs/heads/main",
-      "owner": "skiabot@google.com"
+      "ref": "refs/heads/chrome/m105",
+      "owner": "sharaks@google.com"
     }
   ]
 }
