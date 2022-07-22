@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5d74b43a_99d22978",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-07-22T15:21:48Z",
+      "side": 1,
+      "message": "PTAL. This will turn on atlas text for the A8 non-SDF cases. Still need to figure out color as well.",
+      "revId": "7429f989c64649b9844488b6e88a4bb4200cf35a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
