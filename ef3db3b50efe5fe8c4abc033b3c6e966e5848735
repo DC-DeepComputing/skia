@@ -51,6 +51,24 @@
       "parentUuid": "968a2787_a23e5272",
       "revId": "ef3db3b50efe5fe8c4abc033b3c6e966e5848735",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d9af60a2_452eb159",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-07-22T17:45:05Z",
+      "side": 1,
+      "message": "Do we think doing a swizzle manually is slower than the cast on GPUs that don\u0027t have this bug?\n\nWhat happens if we write another shader that tries to do this same cast? What if someone who is a client writes the same cast in their code?\n\nIMO I think we have a few options:\n1) Ignore this bug\n2) SkSL removes support for this cast all together\n3) SkSL supplies a workaround in the compiler for old GPUs.",
+      "parentUuid": "91918cf4_559a1cae",
+      "revId": "ef3db3b50efe5fe8c4abc033b3c6e966e5848735",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
