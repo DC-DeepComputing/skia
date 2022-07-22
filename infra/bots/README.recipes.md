@@ -104,7 +104,7 @@ Args:
 
 The default location for cached persistent checkouts.
 
-&mdash; **def [git](/infra/bots/recipe_modules/checkout/api.py#35)(self, checkout_root):**
+&mdash; **def [git](/infra/bots/recipe_modules/checkout/api.py#35)(self, checkout_root, ignore_trybot=False):**
 
 Run the steps to perform a pure-git checkout without DEPS.
 ### *recipe_modules* / [docker](/infra/bots/recipe_modules/docker)

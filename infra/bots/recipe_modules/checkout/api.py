@@ -32,14 +32,14 @@ if 'cipd_bin_packages' not in git:
   sys.exit(1)
 ''')
 
-  def git(self, checkout_root):
+  def git(self, checkout_root, ignore_trybot=False):
     """Run the steps to perform a pure-git checkout without DEPS."""
     self.assert_git_is_from_cipd()
     skia_dir = checkout_root.join('skia')
     self.m.git.checkout(
         self.m.properties['repository'], dir_path=skia_dir,
         ref=self.m.properties['revision'], submodules=False)
-    if self.m.vars.is_trybot:
+    if self.m.vars.is_trybot and not ignore_trybot:
       self.m.git('fetch', 'origin', self.m.properties['patch_ref'])
       self.m.git('checkout', 'FETCH_HEAD')
       self.m.git('rebase', self.m.properties['revision'])
