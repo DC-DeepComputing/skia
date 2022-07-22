@@ -16,6 +16,24 @@
       "message": "The metal syntax includes the word \"bias\" in the argument list (is it a typedef?). Bizarre. Anyway, looks fine - though I realize from looking at this and the previous CL, we don\u0027t support SkSL\u0027s sample w/bias in Metal? Guessing we just never use it?",
       "revId": "f377f54879fc2e05f7679eccdc319b76ded6bb0d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7f3b0efa_a7a5e039",
+        "filename": "src/sksl/codegen/SkSLMetalCodeGenerator.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 2557,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-07-22T20:48:08Z",
+      "side": 1,
+      "message": "They overload `sample` a lot of different ways in Metal: http://screen/8WZcxVyB3wJbadw \n\nI found an active bug saying we want to do the bias in code rather than as a program setting: http://go/crb/skia/13113  But AFAIK nobody puts the bias in code today.\n\nAlso, look at these great diffs!\nbefore: https://screenshot.googleplex.com/5PH3przB9Mb6vnJ\nafter: https://screenshot.googleplex.com/B7YYTfBLA3rv8Ze",
+      "parentUuid": "ff18c5ba_49980e2d",
+      "revId": "f377f54879fc2e05f7679eccdc319b76ded6bb0d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
