@@ -13,11 +13,14 @@
 #include "include/core/SkColorType.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"
+#include "include/core/SkString.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkTArray.h"
 #include "include/private/SkTo.h"
 #include "src/core/SkIPoint16.h"
 #include "src/core/SkTInternalLList.h"
+#include "src/core/SkTraceEvent.h"
+#include "src/core/SkTraceEventCommon.h"
 #include "src/gpu/RectanizerSkyline.h"
 
 class GrOpFlushState;
@@ -97,6 +100,15 @@ enum class MaskFormat : int {
     kLast = kARGB
 };
 static const int kMaskFormatCount = static_cast<int>(MaskFormat::kLast) + 1;
+
+enum class GlyphType {
+    kUnknown,
+    kDirect,
+    kTransformed,
+    k0Padded,
+    kSDFT,
+    kSmall,
+};
 
 /**
  *  Return the number of bytes-per-pixel for the specified mask format.
@@ -438,7 +450,11 @@ public:
     }
     SkDEBUGCODE(size_t bpp() const { return fBytesPerPixel; })
 
-    bool addSubImage(int width, int height, const void* image, AtlasLocator* atlasLocator);
+            bool addSubImage(int width,
+                             int height,
+                             GlyphType glyphType,
+                             const void* image,
+                             AtlasLocator* atlasLocator);
 
     /**
      * To manage the lifetime of a plot, we use two tokens. We use the last upload token to
@@ -476,6 +492,27 @@ public:
         fList = nullptr;
     }
 #endif
+
+    void logGlyph(int width, int height, GlyphType glyphType) {
+        std::string name("Glyph::");
+        switch (glyphType) {
+            case GlyphType::kDirect: name = "direct"; break;
+            case GlyphType::kTransformed: name = "transfomed"; break;
+            case GlyphType::k0Padded: name = "padded"; break;
+            case GlyphType::kSDFT: name = "SDFT"; break;
+            case GlyphType::kSmall: name = "small"; break;
+            default:
+                name = "unknown";
+                break;
+        }
+        TRACE_COUNTER2("skia", "Glyph::add", name.c_str(), 1, "size", width*height);
+    }
+
+    void logEviction() {
+        SkString name;
+        name.printf("Glyph::evict::%dx%d::%d", fWidth, fHeight, fPlotIndex);
+        TRACE_COUNTER1("skia", name.c_str(), 1);
+    }
 
 private:
     ~Plot() override;

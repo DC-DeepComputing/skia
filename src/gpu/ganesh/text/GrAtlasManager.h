@@ -75,7 +75,8 @@ public:
 
     // add to texture atlas that matches this format
     GrDrawOpAtlas::ErrorCode addToAtlas(GrResourceProvider*, GrDeferredUploadTarget*,
-                                        skgpu::MaskFormat, int width, int height, const void* image,
+                                        skgpu::MaskFormat, int width, int height,
+                                        skgpu::GlyphType glyphType, const void* image,
                                         skgpu::AtlasLocator*);
 
     // Some clients may wish to verify the integrity of the texture backing store of the
