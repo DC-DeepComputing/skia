@@ -9,15 +9,20 @@
 #define skgpu_AtlasTypes_DEFINED
 
 #include <array>
+#include <string>
+#include <vector>
 
 #include "include/core/SkColorType.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"
+#include "include/core/SkString.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkTArray.h"
 #include "include/private/SkTo.h"
 #include "src/core/SkIPoint16.h"
 #include "src/core/SkTInternalLList.h"
+#include "src/core/SkTraceEvent.h"
+#include "src/core/SkTraceEventCommon.h"
 #include "src/gpu/RectanizerSkyline.h"
 
 class GrOpFlushState;
@@ -97,6 +102,15 @@ enum class MaskFormat : int {
     kLast = kARGB
 };
 static const int kMaskFormatCount = static_cast<int>(MaskFormat::kLast) + 1;
+
+enum class GlyphType {
+    kUnknown,
+    kDirect,
+    kTransformed,
+    k0Padded,
+    kSDFT,
+    kSmall,
+};
 
 /**
  *  Return the number of bytes-per-pixel for the specified mask format.
@@ -421,7 +435,8 @@ class Plot : public SkRefCnt {
 
 public:
     Plot(int pageIndex, int plotIndex, AtlasGenerationCounter* generationCounter,
-         int offX, int offY, int width, int height, SkColorType colorType, size_t bpp);
+         int offX, int offY, int width, int height, SkColorType colorType, size_t bpp,
+         int glyphCount = 0);
 
     uint32_t pageIndex() const { return fPageIndex; }
 
@@ -438,7 +453,11 @@ public:
     }
     SkDEBUGCODE(size_t bpp() const { return fBytesPerPixel; })
 
-    bool addSubImage(int width, int height, const void* image, AtlasLocator* atlasLocator);
+            bool addSubImage(int width,
+                             int height,
+                             GlyphType glyphType,
+                             const void* image,
+                             AtlasLocator* atlasLocator);
 
     /**
      * To manage the lifetime of a plot, we use two tokens. We use the last upload token to
@@ -467,7 +486,7 @@ public:
     sk_sp<Plot> clone() const {
         return sk_sp<Plot>(new Plot(
             fPageIndex, fPlotIndex, fGenerationCounter, fX, fY, fWidth, fHeight, fColorType,
-            fBytesPerPixel));
+            fBytesPerPixel, fGlyphCount));
     }
 
 #ifdef SK_DEBUG
@@ -477,8 +496,61 @@ public:
     }
 #endif
 
+    void logGlyph(int width, int height, GlyphType glyphType) {
+        auto size = 0;
+        while (height > 1) {
+            height = height / 2;
+            ++size;
+        }
+        size = size % 10;
+
+        switch (glyphType) {
+            case GlyphType::kDirect: ++fBuckets[size].direct; break;
+            case GlyphType::kTransformed: ++fBuckets[size].transformed; break;
+            case GlyphType::k0Padded: ++fBuckets[size].padded; break;
+            case GlyphType::kSDFT: ++fBuckets[size].sdft; break;
+            case GlyphType::kSmall: ++fBuckets[size].small; break;
+            default:
+                ++fBuckets[size].unknown; break;
+        }
+        fBuckets[size];
+    }
+
+    void logEviction() {
+        SkString plot;
+        plot.printf("Plot::%dx%d::%d", fWidth, fHeight, fPlotIndex);
+        TRACE_COUNTER2("skia.gpu.glyphs", "evictPlot", "evict", 1, plot.c_str(), fGlyphCount);
+        for (auto& bucket : fBuckets) {
+            if (bucket.direct > 0) {
+                TRACE_COUNTER1("skia.gpu.glyphs", "direct", bucket.direct);
+            }
+            if (bucket.transformed > 0) {
+                TRACE_COUNTER1("skia.gpu.glyphs", "transformed", bucket.transformed);
+            }
+            if (bucket.padded > 0) {
+                TRACE_COUNTER1("skia.gpu.glyphs", "padded", bucket.padded);
+            }
+            if (bucket.sdft > 0) {
+                TRACE_COUNTER1("skia.gpu.glyphs", "sdft", bucket.sdft);
+            }
+            if (bucket.small > 0) {
+                TRACE_COUNTER1("skia.gpu.glyphs", "small", bucket.small);
+            }
+            if (bucket.unknown > 0) {
+                TRACE_COUNTER1("skia.gpu.glyphs", "unknown", bucket.unknown);
+            }
+        }
+        this->resetBuckets();
+    }
+
 private:
     ~Plot() override;
+    void resetBuckets() {
+        fBuckets.clear();
+        for (int i = 0; i < 10; ++i) {
+            fBuckets.push_back({0, 0, 0, 0, 0, 0});
+        }
+    }
 
     skgpu::DrawToken fLastUpload;
     skgpu::DrawToken fLastUse;
@@ -502,6 +574,16 @@ private:
     const size_t fBytesPerPixel;
     SkIRect fDirtyRect;
     SkDEBUGCODE(bool fDirty);
+    struct Bucket {
+        int direct;
+        int transformed;
+        int padded;
+        int sdft;
+        int small;
+        int unknown;
+    };
+    int fGlyphCount;
+    std::vector<Bucket> fBuckets;
 };
 
 typedef SkTInternalLList<Plot> PlotList;

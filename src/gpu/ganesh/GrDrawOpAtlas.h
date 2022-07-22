@@ -106,8 +106,13 @@ public:
         kTryAgain
     };
 
-    ErrorCode addToAtlas(GrResourceProvider*, GrDeferredUploadTarget*,
-                         int width, int height, const void* image, skgpu::AtlasLocator*);
+    ErrorCode addToAtlas(GrResourceProvider*,
+                         GrDeferredUploadTarget*,
+                         int width,
+                         int height,
+                         skgpu::GlyphType glyphType,
+                         const void* image,
+                         skgpu::AtlasLocator*);
 
     const GrSurfaceProxyView* getViews() const { return fViews; }
 
@@ -185,8 +190,13 @@ private:
         // the front and remove from the back there is no need for MRU.
     }
 
-    bool uploadToPage(unsigned int pageIdx, GrDeferredUploadTarget*, int width, int height,
-                      const void* image, skgpu::AtlasLocator*);
+    bool uploadToPage(unsigned int pageIdx,
+                      GrDeferredUploadTarget*,
+                      int width,
+                      int height,
+                      skgpu::GlyphType glyphType,
+                      const void* image,
+                      skgpu::AtlasLocator*);
 
     void uploadPlotToTexture(GrDeferredTextureUploadWritePixelsFn& writePixels,
                              GrTextureProxy* proxy,
