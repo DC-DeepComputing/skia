@@ -153,6 +153,7 @@ GrDrawOpAtlas::ErrorCode GrAtlasManager::addGlyphToAtlas(const SkGlyph& skGlyph,
     MaskFormat expectedMaskFormat = this->resolveMaskFormat(glyphFormat);
     int bytesPerPixel = MaskFormatBytesPerPixel(expectedMaskFormat);
 
+    skgpu::GlyphType glyphType = skgpu::GlyphType::kUnknown;
     int padding;
     switch (srcPadding) {
         case 0:
@@ -162,11 +163,15 @@ GrDrawOpAtlas::ErrorCode GrAtlasManager::addGlyphToAtlas(const SkGlyph& skGlyph,
                 // Force direct masks (glyph with no padding) to have padding.
                 padding = 1;
                 srcPadding = 1;
+                glyphType = skgpu::GlyphType::k0Padded;
+            } else {
+                glyphType = skgpu::GlyphType::kDirect;
             }
             break;
         case 1:
             // The transformed mask/image case.
             padding = 1;
+            glyphType = skgpu::GlyphType::kTransformed;
             break;
         case SK_DistanceFieldInset:
             // The SDFT case.
@@ -174,6 +179,7 @@ GrDrawOpAtlas::ErrorCode GrAtlasManager::addGlyphToAtlas(const SkGlyph& skGlyph,
             // into the image on the glyph; no extra padding needed.
             // TODO: can the SDFT glyph image in the cache be reduced by the padding?
             padding = 0;
+            glyphType = skgpu::GlyphType::kSDFT;
             break;
         default:
             // The padding is not one of the know forms.
@@ -201,6 +207,7 @@ GrDrawOpAtlas::ErrorCode GrAtlasManager::addGlyphToAtlas(const SkGlyph& skGlyph,
                                       expectedMaskFormat,
                                       width,
                                       height,
+                                      glyphType,
                                       storage.get(),
                                       &glyph->fAtlasLocator);
 
@@ -215,10 +222,11 @@ GrDrawOpAtlas::ErrorCode GrAtlasManager::addGlyphToAtlas(const SkGlyph& skGlyph,
 GrDrawOpAtlas::ErrorCode GrAtlasManager::addToAtlas(GrResourceProvider* resourceProvider,
                                                     GrDeferredUploadTarget* target,
                                                     MaskFormat format,
-                                                    int width, int height, const void* image,
+                                                    int width, int height,
+                                                    skgpu::GlyphType glyphType, const void* image,
                                                     skgpu::AtlasLocator* atlasLocator) {
-    return this->getAtlas(format)->addToAtlas(resourceProvider, target, width, height, image,
-                                              atlasLocator);
+    return this->getAtlas(format)->addToAtlas(resourceProvider, target, width, height,
+                                              glyphType, image, atlasLocator);
 }
 
 void GrAtlasManager::addGlyphToBulkAndSetUseToken(skgpu::BulkUsePlotUpdater* updater,
