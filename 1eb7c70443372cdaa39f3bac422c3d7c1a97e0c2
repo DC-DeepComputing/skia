@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dab35feb_0bedcb42",
+        "filename": "src/utils/SkCustomTypeface.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 288,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-07-22T15:17:30Z",
+      "side": 1,
+      "message": "I think this is missing the subpixel offset part of the glyph. The bounds are taking the subpixel positioning into account and the drawing needs to as well. I think this is why the gold images show the color glyphs sometimes shifting from where the alpha mask glyphs used to be.",
+      "revId": "1eb7c70443372cdaa39f3bac422c3d7c1a97e0c2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d392d902_0edca555",
+        "filename": "src/utils/SkCustomTypeface.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 298,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-07-22T15:17:30Z",
+      "side": 1,
+      "message": "This though is correct. The glyphs subpixel position is not baked into the return value of `generatePath`. Currently it\u0027s up to the caller of `generatePath` (generally `SkScalerContext::internalGeneratePath`) to apply the glyphs subpixel positioning to the path. This should be better documented and possibly changed for sanity.",
+      "revId": "1eb7c70443372cdaa39f3bac422c3d7c1a97e0c2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "49dce6c9_bbef3374",
+        "filename": "src/utils/SkCustomTypeface.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 307,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-07-22T15:17:30Z",
+      "side": 1,
+      "message": "Since you already know if the glyph is drawable backed and since you already have a drawable in hand, why not just return it? The complexity with the OpenType backed drawables was mostly that there is already a \"picture\" but in a different format and we wanted to avoid the time and space overhead of converting that into a picture if possible. But here you already have a drawable to return.\n\nNote that this code path currently gets used at large sizes. Could be tested by adding one larger size to the test affected or just look at it in viewer and size it up.",
+      "revId": "1eb7c70443372cdaa39f3bac422c3d7c1a97e0c2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
