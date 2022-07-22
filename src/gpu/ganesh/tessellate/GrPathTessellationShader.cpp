@@ -305,11 +305,11 @@ void GrPathTessellationShader::Impl::onEmitCode(EmitArgs& args, GrGPArgs* gpArgs
     // Vertex shader.
     const char* affineMatrix, *translate;
     fAffineMatrixUniform = args.fUniformHandler->addUniform(nullptr, kVertex_GrShaderFlag,
-                                                            SkSLType::kFloat4, "affineMatrix",
+                                                            SkSLType::kFloat2x2, "affineMatrix",
                                                             &affineMatrix);
     fTranslateUniform = args.fUniformHandler->addUniform(nullptr, kVertex_GrShaderFlag,
                                                          SkSLType::kFloat2, "translate", &translate);
-    args.fVertBuilder->codeAppendf("float2x2 AFFINE_MATRIX = float2x2(%s);", affineMatrix);
+    args.fVertBuilder->codeAppendf("float2x2 AFFINE_MATRIX = %s;", affineMatrix);
     args.fVertBuilder->codeAppendf("float2 TRANSLATE = %s;", translate);
     this->emitVertexCode(*args.fShaderCaps,
                          shader,
@@ -334,7 +334,8 @@ void GrPathTessellationShader::Impl::setData(const GrGLSLProgramDataManager& pdm
                                              GrShaderCaps&, const GrGeometryProcessor& geomProc) {
     const auto& shader = geomProc.cast<GrPathTessellationShader>();
     const SkMatrix& m = shader.viewMatrix();
-    pdman.set4f(fAffineMatrixUniform, m.getScaleX(), m.getSkewY(), m.getSkewX(), m.getScaleY());
+    const float affineMatrixData[] = {m.getScaleX(), m.getSkewY(), m.getSkewX(), m.getScaleY()};
+    pdman.setMatrix2f(fAffineMatrixUniform, affineMatrixData);
     pdman.set2f(fTranslateUniform, m.getTranslateX(), m.getTranslateY());
 
     if (!(shader.fAttribs & PatchAttribs::kColor)) {

@@ -243,12 +243,12 @@ void GrStrokeTessellationShader::Impl::onEmitCode(EmitArgs& args, GrGPArgs* gpAr
     // View matrix uniforms.
     const char* translateName, *affineMatrixName;
     fAffineMatrixUniform = args.fUniformHandler->addUniform(nullptr, kVertex_GrShaderFlag,
-                                                            SkSLType::kFloat4, "affineMatrix",
+                                                            SkSLType::kFloat2x2, "affineMatrix",
                                                             &affineMatrixName);
     fTranslateUniform = args.fUniformHandler->addUniform(nullptr, kVertex_GrShaderFlag,
                                                          SkSLType::kFloat2, "translate",
                                                          &translateName);
-    args.fVertBuilder->codeAppendf("float2x2 AFFINE_MATRIX = float2x2(%s);\n", affineMatrixName);
+    args.fVertBuilder->codeAppendf("float2x2 AFFINE_MATRIX = %s;\n", affineMatrixName);
     args.fVertBuilder->codeAppendf("float2 TRANSLATE = %s;\n", translateName);
 
     if (shader.hasExplicitCurveType()) {
@@ -674,9 +674,9 @@ void GrStrokeTessellationShader::Impl::setData(const GrGLSLProgramDataManager& p
 
     // Set up the view matrix, if any.
     const SkMatrix& m = shader.viewMatrix();
+    const float affineMatrixData[] = {m.getScaleX(), m.getSkewY(), m.getSkewX(), m.getScaleY()};
+    pdman.setMatrix2f(fAffineMatrixUniform, affineMatrixData);
     pdman.set2f(fTranslateUniform, m.getTranslateX(), m.getTranslateY());
-    pdman.set4f(fAffineMatrixUniform, m.getScaleX(), m.getSkewY(), m.getSkewX(),
-                m.getScaleY());
 
     if (!shader.hasDynamicColor()) {
         pdman.set4fv(fColorUniform, 1, shader.color().vec());
