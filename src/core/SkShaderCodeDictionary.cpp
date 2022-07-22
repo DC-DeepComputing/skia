@@ -455,6 +455,13 @@ static constexpr SkUniform kLinearGradientUniforms8[] = {
         { "point1",      SkSLType::kFloat2 },
         { "tilemode",    SkSLType::kInt },
 };
+static constexpr SkUniform kLinearGradientUniformsTexture[] = {
+        { "localMatrix", SkSLType::kFloat4x4 },
+        { "numStops",    SkSLType::kInt },
+        { "point0",      SkSLType::kFloat2 },
+        { "point1",      SkSLType::kFloat2 },
+        { "tilemode",    SkSLType::kInt },
+};
 
 static constexpr SkUniform kRadialGradientUniforms4[] = {
         { "localMatrix", SkSLType::kFloat4x4 },
@@ -513,8 +520,13 @@ static constexpr SkUniform kConicalGradientUniforms8[] = {
         { "tilemode",    SkSLType::kInt },
 };
 
+static constexpr SkTextureAndSampler kGradientTexturesAndSamplers[] = {
+        {"sampler"},
+};
+
 static constexpr char kLinearGradient4Name[] = "sk_linear_grad_4_shader";
 static constexpr char kLinearGradient8Name[] = "sk_linear_grad_8_shader";
+static constexpr char kLinearGradientTextureName[] = "sk_linear_grad_tex_shader";
 static constexpr char kRadialGradient4Name[] = "sk_radial_grad_4_shader";
 static constexpr char kRadialGradient8Name[] = "sk_radial_grad_8_shader";
 static constexpr char kSweepGradient4Name[] = "sk_sweep_grad_4_shader";
@@ -592,6 +604,34 @@ std::string GenerateImageShaderExpression(const SkShaderInfo&,
 #else
     return priorStageOutputName;
 #endif  // defined(SK_GRAPHITE_ENABLED) && defined(SK_ENABLE_SKSL)
+}
+
+std::string GenerateGradientTextureExpression(const SkShaderInfo&,
+                                              int entryIndex,
+                                              const SkPaintParamsKey::BlockReader& reader,
+                                              const std::string& priorStageOutputName,
+                                              const std::string& fragCoord,
+                                              const std::string& currentPreLocalExpr) {
+    std::string samplerVarName = reader.entry()->getMangledSamplerName(0, entryIndex);
+    std::string numStopsVarName = reader.entry()->getMangledUniformName(1, entryIndex);
+
+    std::string result;
+    SkSL::String::appendf(&result,
+                          "$colorize_grad_tex(%s, %s, %s(%s, %s, ",
+                          samplerVarName.c_str(),
+                          numStopsVarName.c_str(),
+                          reader.entry()->fStaticFunctionName,
+                          fragCoord.c_str(),
+                          currentPreLocalExpr.c_str());
+
+    for (size_t i = 2; i < reader.entry()->fUniforms.size(); ++i) {
+        result += reader.entry()->getMangledUniformName(i, entryIndex);
+        if (i < reader.entry()->fUniforms.size() - 1) {
+            result += ", ";
+        }
+    }
+    result += "))";
+    return result;
 }
 
 //--------------------------------------------------------------------------------------------------
@@ -1175,6 +1215,17 @@ SkShaderCodeDictionary::SkShaderCodeDictionary() {
             GenerateDefaultPreamble,
             kNoChildren,
             { }      // no data payload
+    };
+    fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kLinearGradientShaderTexture] = {
+            "LinearGradientTexture",
+            SkSpan(kLinearGradientUniformsTexture),
+            SnippetRequirementFlags::kLocalCoords,
+            SkSpan(kGradientTexturesAndSamplers),
+            kLinearGradientTextureName,
+            GenerateGradientTextureExpression,
+            GenerateDefaultPreamble,
+            kNoChildren,
+            { }
     };
     fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kRadialGradientShader4] = {
             "RadialGradient4",

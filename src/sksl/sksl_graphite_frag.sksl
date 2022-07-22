@@ -164,6 +164,39 @@ half4 $colorize_grad_8(float4 colorsParam[8], float offsetsParam[8], float2 t) {
     }
 }
 
+half4 $colorize_grad_tex(sampler2D s, int numStops, float2 t) {
+    if (t.y < 0) {
+        return half4(0);
+
+    } else if (t.x == 0) {
+        return sample(s, float2(0, 0));
+    } else if (t.x == 1) {
+        return sample(s, float2(1, 0));
+
+    } else {
+        int low = 0;
+        int high = numStops;
+        for (int loop = 1; loop < numStops; loop <<= 1) {
+            int mid = (low + high) / 2;
+            float midFlt = (float(mid) + 0.5) / float(numStops);
+            if (t.x < sample(s, float2(midFlt, 1)).x) {
+                high = mid;
+            } else {
+                low = mid;
+            }
+        }
+        float lowFlt = (float(low) + 0.5) / float(numStops);
+        float highFlt = (float(low + 1) + 0.5) / float(numStops);
+        half4 color0 = sample(s, float2(lowFlt, 0));
+        half4 color1 = sample(s, float2(highFlt, 0));
+        float offset0 = sample(s, float2(lowFlt, 1)).x;
+        float offset1 = sample(s, float2(highFlt, 1)).x;
+        return half4(mix(color0, color1,
+                         (t.x     - offset0) /
+                         (offset1 - offset0)));
+    }
+}
+
 float2 $linear_grad_layout(float2 point0Param, float2 point1Param, float2 pos) {
     pos -= point0Param;
     float2 delta = point1Param - point0Param;
@@ -343,6 +376,17 @@ half4 sk_linear_grad_8_shader(float4 coords,
     float2 t = $linear_grad_layout(point0Param, point1Param, pos);
     t = $tile_grad(tileMode, t);
     return $colorize_grad_8(colorsParam, offsetsParam, t);
+}
+
+float2 sk_linear_grad_tex_shader(float4 coords,
+                                 float4x4 preLocal,
+                                 float2 point0Param,
+                                 float2 point1Param,
+                                 int tileMode) {
+    float2 pos = (preLocal * coords).xy;
+    float2 t = $linear_grad_layout(point0Param, point1Param, pos);
+    t = $tile_grad(tileMode, t);
+    return t;
 }
 
 half4 sk_radial_grad_4_shader(float4 coords,
