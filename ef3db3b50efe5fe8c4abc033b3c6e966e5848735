@@ -33,6 +33,24 @@
       "message": "if we want to fix this issue, I think the fix is to manually do a work around of the cast in SkSL. Add a caps for needing the workaround on old gpus and then fill in the matrix manually.",
       "revId": "ef3db3b50efe5fe8c4abc033b3c6e966e5848735",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "91918cf4_559a1cae",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-07-22T17:27:45Z",
+      "side": 1,
+      "message": "Coming up with a general case workaround is probably overkill here, but I can just rewrite the code to use swizzles here instead like the OP suggested and leave the uniform as-is.",
+      "parentUuid": "968a2787_a23e5272",
+      "revId": "ef3db3b50efe5fe8c4abc033b3c6e966e5848735",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
