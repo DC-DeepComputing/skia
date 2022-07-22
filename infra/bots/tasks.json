@@ -3698,7 +3698,8 @@
         "--git_commit=<(REVISION)",
         "--changelist_id=<(ISSUE)",
         "--patchset_order=<(PATCHSET)",
-        "--tryjob_id=<(BUILDBUCKET_BUILD_ID)"
+        "--tryjob_id=<(BUILDBUCKET_BUILD_ID)",
+        "--expunge_cache"
       ],
       "dependencies": [
         "Housekeeper-PerCommit-BuildTaskDrivers_linux_amd64"
