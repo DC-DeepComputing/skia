@@ -16,6 +16,23 @@
       "message": "Let\u0027s just get back to basics.",
       "revId": "625f0b12fb9b6661be6a47a1bce11f29024b5cbd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e5e7b3eb_e173f76e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-07-22T17:48:50Z",
+      "side": 1,
+      "message": "Thanks for the quick review!",
+      "revId": "625f0b12fb9b6661be6a47a1bce11f29024b5cbd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
