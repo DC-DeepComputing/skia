@@ -72,6 +72,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "649e2fbe_31e21c37",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-07-22T20:32:00Z",
+      "side": 1,
+      "message": "Yeah, I\u0027m thinking the better solution (than landing this at all) is to go back to my original idea, and just have the JIT fail if we use \u003e\u003d 4k of stack.",
+      "parentUuid": "bed18590_18532331",
+      "revId": "ab927a8991bd7eb045334f6da41b0234aa45d332",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "07dc64de_ebc79705",
