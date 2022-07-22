@@ -40,6 +40,7 @@ go_test(
     embed = [":codesize_lib"],
     deps = [
         "@com_github_stretchr_testify//assert",
+        "@com_github_stretchr_testify//mock",
         "@com_github_stretchr_testify//require",
         "@org_skia_go_infra//go/exec",
         "@org_skia_go_infra//go/gcs",
