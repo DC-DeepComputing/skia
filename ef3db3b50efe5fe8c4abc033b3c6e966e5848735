@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f39aee0c_4138168d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-07-22T17:02:07Z",
+      "side": 1,
+      "message": "A 2x2 matrix can take up to twice as much space as a vec4 in a uniform buffer",
+      "revId": "ef3db3b50efe5fe8c4abc033b3c6e966e5848735",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
