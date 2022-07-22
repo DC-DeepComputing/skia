@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ca42dcfb_b45139da",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5205
+      },
+      "writtenOn": "2022-07-22T16:30:18Z",
+      "side": 1,
+      "message": "Yikes, that\u0027s a big hammer.",
+      "revId": "1b2f906b2db62e317017c2ec4578acc2160f1a5c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
