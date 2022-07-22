@@ -46,7 +46,8 @@ Plot::~Plot() {
     sk_free(fData);
 }
 
-bool Plot::addSubImage(int width, int height, const void* image, AtlasLocator* atlasLocator) {
+bool Plot::addSubImage(
+        int width, int height, GlyphType glyphType, const void* image, AtlasLocator* atlasLocator) {
     SkASSERT(width <= fWidth && height <= fHeight);
 
     SkIPoint16 loc;
@@ -87,6 +88,8 @@ bool Plot::addSubImage(int width, int height, const void* image, AtlasLocator* a
     rect.offset(fOffset.fX, fOffset.fY);
     atlasLocator->updateRect(rect);
     SkDEBUGCODE(fDirty = true;)
+
+    fActiveGlyphs.push_back({glyphType, rect.width(), rect.height()});
 
     return true;
 }

@@ -19,6 +19,8 @@
 #include "src/core/SkIPoint16.h"
 #include "src/core/SkTInternalLList.h"
 #include "src/gpu/RectanizerSkyline.h"
+#include "src/core/SkTraceEvent.h"
+#include "src/core/SkTraceEventCommon.h"
 
 class GrOpFlushState;
 class TestingUploadTarget;
@@ -97,6 +99,15 @@ enum class MaskFormat : int {
     kLast = kARGB
 };
 static const int kMaskFormatCount = static_cast<int>(MaskFormat::kLast) + 1;
+
+enum class GlyphType {
+    kUnknown,
+    kDirect,
+    kTransformed,
+    k0Padded,
+    kSDFT,
+    kSmall,
+};
 
 /**
  *  Return the number of bytes-per-pixel for the specified mask format.
@@ -438,7 +449,11 @@ public:
     }
     SkDEBUGCODE(size_t bpp() const { return fBytesPerPixel; })
 
-    bool addSubImage(int width, int height, const void* image, AtlasLocator* atlasLocator);
+            bool addSubImage(int width,
+                             int height,
+                             GlyphType glyphType,
+                             const void* image,
+                             AtlasLocator* atlasLocator);
 
     /**
      * To manage the lifetime of a plot, we use two tokens. We use the last upload token to
@@ -477,6 +492,41 @@ public:
     }
 #endif
 
+
+    struct GlyphData {
+        GlyphType glyphType;
+        int width;
+        int height;
+    };
+
+    void logEviction() {
+
+        int direct = 0;
+        int transfomed = 0;
+        int padded = 0;
+        int SDFT = 0;
+        int small = 0;
+        for (auto& data : fActiveGlyphs) {
+            switch (data.glyphType) {
+                case GlyphType::kDirect: ++direct; break;
+                case GlyphType::kTransformed: ++transfomed; break;
+                case GlyphType::k0Padded: ++padded; break;
+                case GlyphType::kSDFT: ++SDFT; break;
+                case GlyphType::kSmall: ++small; break;
+                default:
+                    SkASSERT(false);
+                    break;
+            }
+        }
+        TRACE_COUNTER1("skia", "GlyphType::kDirect", direct);
+        TRACE_COUNTER1("skia", "GlyphType::kTransformed", transfomed);
+        TRACE_COUNTER1("skia", "GlyphType::kPadded", padded);
+        TRACE_COUNTER1("skia", "GlyphType::kSDFT", SDFT);
+        TRACE_COUNTER1("skia", "GlyphType::kSmall", small);
+
+        fActiveGlyphs.clear();
+    }
+
 private:
     ~Plot() override;
 
@@ -502,6 +552,7 @@ private:
     const size_t fBytesPerPixel;
     SkIRect fDirtyRect;
     SkDEBUGCODE(bool fDirty);
+    std::vector<GlyphData> fActiveGlyphs;
 };
 
 typedef SkTInternalLList<Plot> PlotList;
