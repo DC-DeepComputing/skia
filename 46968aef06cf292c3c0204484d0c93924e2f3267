@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "27d29891_2c3c2cbd",
+        "filename": "src/core/SkKeyHelpers.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-07-22T21:06:07Z",
+      "side": 1,
+      "message": "The backing bitmap only has 8-bits in red so fOffsets is going to get quantized here.",
+      "revId": "46968aef06cf292c3c0204484d0c93924e2f3267",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
