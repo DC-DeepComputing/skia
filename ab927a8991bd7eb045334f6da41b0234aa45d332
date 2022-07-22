@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "07dc64de_ebc79705",
+        "filename": "src/core/SkVM.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 3456,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-07-22T19:40:13Z",
+      "side": 1,
+      "message": "Can you add a comment here and below about how subtract immediate only supports 12 bits so issue multiple subtracts if over 12 bits.",
+      "range": {
+        "startLine": 3456,
+        "startChar": 12,
+        "endLine": 3456,
+        "endChar": 33
+      },
+      "revId": "ab927a8991bd7eb045334f6da41b0234aa45d332",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
