@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ba357e34_1f77e290",
+        "filename": "src/core/SkBlitter.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 762,
+      "author": {
+        "id": 10586
+      },
+      "writtenOn": "2022-07-22T01:27:13Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "05a4de11_eae71b1b",
+      "revId": "89e8bf99a5ff0d0f785c7ed9b0219d56d3d7e96c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1fbe8478_7c12be6d",
@@ -31,6 +49,24 @@
       "writtenOn": "2022-07-20T13:26:19Z",
       "side": 1,
       "message": "^",
+      "revId": "89e8bf99a5ff0d0f785c7ed9b0219d56d3d7e96c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0a465ca8_74993b43",
+        "filename": "src/core/SkBlitter.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 771,
+      "author": {
+        "id": 10586
+      },
+      "writtenOn": "2022-07-22T01:27:13Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "1fbe8478_7c12be6d",
       "revId": "89e8bf99a5ff0d0f785c7ed9b0219d56d3d7e96c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }

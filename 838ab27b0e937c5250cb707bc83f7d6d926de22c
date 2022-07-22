@@ -109,6 +109,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "be959ca6_e99853cb",
+        "filename": "src/shaders/SkPictureShader.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 308,
+      "author": {
+        "id": 10586
+      },
+      "writtenOn": "2022-07-22T01:27:13Z",
+      "side": 1,
+      "message": "The half-pixel translation case is an interesting one that I hadn\u0027t considered.\n\nMy reading of the code:\n\n1. Both `viewMatrix` and `localMatrix` are passed to `SkPictureShader::rasterShader`, and then to `CachedImageInfo::Make`.\n2. That function concats the two matrices.\n3. It extracts a scale factor from the combined matrix.\n4. From this, it determines the size to render at.\n-- There\u0027s an additional clamp to ensure the tile-size doesn\u0027t get too big... I didn\u0027t notice this before, and we\u0027ll need to account for it.\n5. It applies the inverse scale to `localMatrix` (which is an in/out parameter), effectively removing the scaling bits from the combined `viewMatrix * localMatrix`.\n\nI\u0027ve taken another stab at this... let me know what you think.",
+      "parentUuid": "aa06d9d1_d88bb3df",
+      "range": {
+        "startLine": 307,
+        "startChar": 0,
+        "endLine": 308,
+        "endChar": 61
+      },
+      "revId": "838ab27b0e937c5250cb707bc83f7d6d926de22c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "20d45fbc_8ac9e109",
         "filename": "src/shaders/SkPictureShader.cpp",
         "patchSetId": 5
@@ -168,6 +192,30 @@
       "side": 1,
       "message": "Right - it just stores a pixmap (same as RP blitter). I think you\u0027ll need to plumb the surface props in (like you did for RP blitter) - I tagged the two spots in SkBlitter.cpp where the VM blitters are created (it\u0027s right next to the RP blitter creation).\n\nUltimately, certain SkPaints can only be drawn using the VM blitter, so we really need both of them to have the same functionality in this regard (or it\u0027s going to produce some surprising results).\n\nHowever, I agree that we can do the VM one separately - it\u0027s going to be complex on its own (there is caching logic in the VM blitter construction that needs to account for this).",
       "parentUuid": "2164b81b_2d157168",
+      "range": {
+        "startLine": 320,
+        "startChar": 7,
+        "endLine": 320,
+        "endChar": 90
+      },
+      "revId": "838ab27b0e937c5250cb707bc83f7d6d926de22c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ba7aca4c_4aea2a06",
+        "filename": "src/shaders/SkPictureShader.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 320,
+      "author": {
+        "id": 10586
+      },
+      "writtenOn": "2022-07-22T01:27:13Z",
+      "side": 1,
+      "message": "Thanks for the pointers.\n\nI\u0027ve modified the comment to a \"TODO\".  I\u0027ll prepare a follow-up CL with the plumbing for `onProgram`, and `SkVMBlitter`.",
+      "parentUuid": "4e368f5b_45630fd0",
       "range": {
         "startLine": 320,
         "startChar": 7,
@@ -245,6 +293,24 @@
       "side": 1,
       "message": "Right - I think this works today, but is likely to break soon (there is active work to share this text code between the \"old\" v1 GPU backend and the \"new\" GPU backend). So yeah - passing in the surface props would be better.",
       "parentUuid": "3f966c3a_fd5337fb",
+      "revId": "838ab27b0e937c5250cb707bc83f7d6d926de22c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "23b74ac0_3a2ec6f6",
+        "filename": "src/text/gpu/SubRunContainer.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 456,
+      "author": {
+        "id": 10586
+      },
+      "writtenOn": "2022-07-22T01:27:13Z",
+      "side": 1,
+      "message": "OK, understood.  I\u0027ve changed it to pass the props.",
+      "parentUuid": "814aa70e_4487eee7",
       "revId": "838ab27b0e937c5250cb707bc83f7d6d926de22c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
