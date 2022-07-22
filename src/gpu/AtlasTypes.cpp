@@ -13,7 +13,8 @@
 namespace skgpu {
 
 Plot::Plot(int pageIndex, int plotIndex, AtlasGenerationCounter* generationCounter,
-           int offX, int offY, int width, int height, SkColorType colorType, size_t bpp)
+           int offX, int offY, int width, int height, SkColorType colorType, size_t bpp,
+           int glyphCount)
         : fLastUpload(DrawToken::AlreadyFlushedToken())
         , fLastUse(DrawToken::AlreadyFlushedToken())
         , fFlushesSinceLastUse(0)
@@ -33,6 +34,7 @@ Plot::Plot(int pageIndex, int plotIndex, AtlasGenerationCounter* generationCount
         , fBytesPerPixel(bpp)
 #ifdef SK_DEBUG
         , fDirty(false)
+        , fGlyphCount(glyphCount)
 #endif
 {
     // We expect the allocated dimensions to be a multiple of 4 bytes
@@ -43,10 +45,12 @@ Plot::Plot(int pageIndex, int plotIndex, AtlasGenerationCounter* generationCount
 }
 
 Plot::~Plot() {
+    fGlyphCount = 0;
     sk_free(fData);
 }
 
-bool Plot::addSubImage(int width, int height, const void* image, AtlasLocator* atlasLocator) {
+bool Plot::addSubImage(
+        int width, int height, GlyphType glyphType, const void* image, AtlasLocator* atlasLocator) {
     SkASSERT(width <= fWidth && height <= fHeight);
 
     SkIPoint16 loc;
@@ -88,6 +92,8 @@ bool Plot::addSubImage(int width, int height, const void* image, AtlasLocator* a
     atlasLocator->updateRect(rect);
     SkDEBUGCODE(fDirty = true;)
 
+    this->logGlyph(rect.width(), rect.height(), glyphType);
+
     return true;
 }
 
@@ -128,6 +134,7 @@ void Plot::resetRects() {
 
     fDirtyRect.setEmpty();
     SkDEBUGCODE(fDirty = false;)
+    fGlyphCount = 0;
 }
 
 } // namespace skgpu
