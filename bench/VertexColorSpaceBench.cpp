@@ -52,7 +52,7 @@ public:
                          const GrShaderCaps&,
                          const GrGeometryProcessor& geomProc) override {
                 const GP& gp = geomProc.cast<GP>();
-                fColorSpaceHelper.setData(pdman, gp.fColorSpaceXform.get());
+                fColorSpaceHelper.setData1(pdman, gp.fColorSpaceXform.get());
             }
 
         private:
@@ -71,7 +71,7 @@ public:
                 vertBuilder->codeAppendf("half4 color = %s;", gp.fInColor.name());
 
                 if (kShader_Mode == gp.fMode) {
-                    fColorSpaceHelper.emitCode(uniformHandler, gp.fColorSpaceXform.get(),
+                    fColorSpaceHelper.emitCode1(uniformHandler, gp.fColorSpaceXform.get(),
                                                kVertex_GrShaderFlag);
                     SkString xformedColor;
                     vertBuilder->appendColorGamutXform(&xformedColor, "color", &fColorSpaceHelper);

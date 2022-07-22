@@ -55,14 +55,14 @@ public:
                          const GrShaderCaps&,
                          const GrGeometryProcessor& geomProc) override {
                 const auto& latticeGP = geomProc.cast<LatticeGP>();
-                fColorSpaceXformHelper.setData(pdman, latticeGP.fColorSpaceXform.get());
+                fColorSpaceXformHelper.setData1(pdman, latticeGP.fColorSpaceXform.get());
             }
 
         private:
             void onEmitCode(EmitArgs& args, GrGPArgs* gpArgs) override {
                 using Interpolation = GrGLSLVaryingHandler::Interpolation;
                 const auto& latticeGP = args.fGeomProc.cast<LatticeGP>();
-                fColorSpaceXformHelper.emitCode(args.fUniformHandler,
+                fColorSpaceXformHelper.emitCode1(args.fUniformHandler,
                                                 latticeGP.fColorSpaceXform.get());
 
                 args.fVaryingHandler->emitAttributes(latticeGP);

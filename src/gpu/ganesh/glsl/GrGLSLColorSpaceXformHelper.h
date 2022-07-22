@@ -22,7 +22,7 @@ class GrGLSLColorSpaceXformHelper : public SkNoncopyable {
 public:
     GrGLSLColorSpaceXformHelper() {}
 
-    void emitCode(GrGLSLUniformHandler* uniformHandler, const GrColorSpaceXform* colorSpaceXform,
+    void emitCode1(GrGLSLUniformHandler* uniformHandler, const GrColorSpaceXform* colorSpaceXform,
                   uint32_t visibility = kFragment_GrShaderFlag) {
         SkASSERT(uniformHandler);
         if (colorSpaceXform) {
@@ -44,7 +44,7 @@ public:
         }
     }
 
-    void setData(const GrGLSLProgramDataManager& pdman, const GrColorSpaceXform* colorSpaceXform) {
+    void setData1(const GrGLSLProgramDataManager& pdman, const GrColorSpaceXform* colorSpaceXform) {
         if (this->applySrcTF()) {
             pdman.set1fv(fSrcTFVar, kNumTransferFnCoeffs, &colorSpaceXform->fSteps.srcTF.g);
         }

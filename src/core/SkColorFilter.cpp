@@ -261,7 +261,7 @@ public:
         kLinearToSRGB,
         kSRGBToLinear,
     };
-    SkSRGBGammaColorFilter(Direction dir) : fDir(dir), fSteps([&]{
+    SkSRGBGammaColorFilter(Direction dir) : fDir(dir), fSteps1([&]{
         // We handle premul/unpremul separately, so here just always upm->upm.
         if (dir == Direction::kLinearToSRGB) {
             return SkColorSpaceXformSteps{sk_srgb_linear_singleton(), kUnpremul_SkAlphaType,
@@ -294,12 +294,23 @@ public:
     }
 #endif
 
+#ifdef SK_ENABLE_SKSL
+    void addToKey(const SkKeyContext& keyContext,
+                  SkPaintParamsKeyBuilder* builder,
+                  SkPipelineDataGatherer* gatherer) const override {
+        SRGBGammaColorFilterBlock::SRGBGammaColorFilterData data(fDir == Direction::kLinearToSRGB);
+
+        SRGBGammaColorFilterBlock::BeginBlock(keyContext, builder, gatherer, data);
+        builder->endBlock();
+    }
+#endif
+
     bool onAppendStages(const SkStageRec& rec, bool shaderIsOpaque) const override {
         if (!shaderIsOpaque) {
             rec.fPipeline->append(SkRasterPipeline::unpremul);
         }
 
-        fSteps.apply(rec.fPipeline);
+        fSteps1.apply(rec.fPipeline);
 
         if (!shaderIsOpaque) {
             rec.fPipeline->append(SkRasterPipeline::premul);
@@ -309,7 +320,7 @@ public:
 
     skvm::Color onProgram(skvm::Builder* p, skvm::Color c, const SkColorInfo& dst,
                           skvm::Uniforms* uniforms, SkArenaAlloc* alloc) const override {
-        return premul(fSteps.program(p, uniforms, unpremul(c)));
+        return premul(fSteps1.program(p, uniforms, unpremul(c)));
     }
 
     SK_FLATTENABLE_HOOKS(SkSRGBGammaColorFilter)
@@ -321,7 +332,7 @@ protected:
 
 private:
     const Direction fDir;
-    SkColorSpaceXformSteps fSteps;
+    SkColorSpaceXformSteps fSteps1;
 
     friend class SkColorFilter;
     using INHERITED = SkColorFilterBase;
@@ -391,7 +402,7 @@ struct SkWorkingFormatColorFilter : public SkColorFilterBase {
                 working = {dstColorInfo.colorType(), workingAT, workingCS};
 
         auto [ok, fp] = as_CFB(fChild)->asFragmentProcessor(
-                GrColorSpaceXformEffect::Make(std::move(inputFP), dst,working), context, working);
+                GrColorSpaceXformEffect::Make(std::move(inputFP), dst, working), context, working);
 
         return ok ? GrFPSuccess(GrColorSpaceXformEffect::Make(std::move(fp), working,dst))
                   : GrFPFailure(std::move(fp));

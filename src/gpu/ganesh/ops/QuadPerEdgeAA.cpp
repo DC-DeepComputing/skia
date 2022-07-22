@@ -663,7 +663,7 @@ public:
                          const GrShaderCaps&,
                          const GrGeometryProcessor& geomProc) override {
                 const auto& gp = geomProc.cast<QuadPerEdgeAAGeometryProcessor>();
-                fTextureColorSpaceXformHelper.setData(pdman, gp.fTextureColorSpaceXform.get());
+                fTextureColorSpaceXformHelper.setData1(pdman, gp.fTextureColorSpaceXform.get());
             }
 
         private:
@@ -671,7 +671,7 @@ public:
                 using Interpolation = GrGLSLVaryingHandler::Interpolation;
 
                 const auto& gp = args.fGeomProc.cast<QuadPerEdgeAAGeometryProcessor>();
-                fTextureColorSpaceXformHelper.emitCode(args.fUniformHandler,
+                fTextureColorSpaceXformHelper.emitCode1(args.fUniformHandler,
                                                        gp.fTextureColorSpaceXform.get());
 
                 args.fVaryingHandler->emitAttributes(gp);

@@ -79,7 +79,7 @@ private:
                      const GrGeometryProcessor& geomProc) override {
             const auto& mgp = geomProc.cast<MeshGP>();
             SetTransform(pdman, shaderCaps, fViewMatrixUniform, mgp.fViewMatrix, &fViewMatrix);
-            fColorSpaceHelper.setData(pdman, mgp.fColorSpaceXform.get());
+            fColorSpaceHelper.setData1(pdman, mgp.fColorSpaceXform.get());
             if (fColorUniform.isValid()) {
                 pdman.set4fv(fColorUniform, 1, mgp.fColor.vec());
             }
@@ -322,7 +322,7 @@ private:
                 SkASSERT(uniformColorName);
                 fragBuilder->codeAppendf("%s = %s;", args.fOutputColor, uniformColorName);
             } else {
-                fColorSpaceHelper.emitCode(uniformHandler,
+                fColorSpaceHelper.emitCode1(uniformHandler,
                                            mgp.fColorSpaceXform.get(),
                                            kFragment_GrShaderFlag);
                 if (meshColorType == SkMeshSpecificationPriv::ColorType::kFloat4) {
@@ -635,7 +635,7 @@ MeshOp::MeshOp(GrProcessorSet*          processorSet,
     if (fColorSpaceXform) {
         fUniforms = SkRuntimeEffectPriv::TransformUniforms(mesh.spec()->uniforms(),
                                                            mesh.uniforms(),
-                                                           fColorSpaceXform->steps());
+                                                           fColorSpaceXform->steps1());
     } else {
         fUniforms = mesh.uniforms();
     }

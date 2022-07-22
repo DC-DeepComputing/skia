@@ -237,6 +237,21 @@ struct GaussianColorFilterBlock {
                            SkPipelineDataGatherer*);
 };
 
+struct SRGBGammaColorFilterBlock {
+    struct SRGBGammaColorFilterData {
+        SRGBGammaColorFilterData(bool toLinear)
+                : fToLinear(toLinear) {
+        }
+
+        bool fToLinear;
+    };
+
+    static void BeginBlock(const SkKeyContext&,
+                           SkPaintParamsKeyBuilder*,
+                           SkPipelineDataGatherer*,
+                           const SRGBGammaColorFilterData&);
+};
+
 struct BlendModeBlock {
     static void BeginBlock(const SkKeyContext&,
                            SkPaintParamsKeyBuilder*,

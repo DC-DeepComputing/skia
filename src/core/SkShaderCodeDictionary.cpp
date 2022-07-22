@@ -864,6 +864,14 @@ void GenerateTableColorFilterPreamble(const SkShaderInfo& shaderInfo,
 static constexpr char kGaussianColorFilterName[] = "sk_gaussian_colorfilter";
 
 //--------------------------------------------------------------------------------------------------
+static constexpr SkUniform kSRGBGammaColorFilterUniforms[] = {
+        // if 1 -> to linear; 0 -> to SRGB
+        { "toLinear", SkSLType::kInt },
+};
+
+static constexpr char kSRGBGammaColorFilterName[] = "sk_srgbgamma_colorfilter";
+
+//--------------------------------------------------------------------------------------------------
 static constexpr char kErrorName[] = "sk_error";
 
 //--------------------------------------------------------------------------------------------------
@@ -1327,6 +1335,17 @@ SkShaderCodeDictionary::SkShaderCodeDictionary() {
             SnippetRequirementFlags::kPriorStageOutput,
             { },     // no samplers
             kGaussianColorFilterName,
+            GenerateDefaultExpression,
+            GenerateDefaultPreamble,
+            kNoChildren,
+            { }      // no data payload
+    };
+    fBuiltInCodeSnippets[(int) SkBuiltInCodeSnippetID::kSRGBGammaColorFilter] = {
+            "SRGBGammaColorFilter",
+            SkSpan(kSRGBGammaColorFilterUniforms),
+            SnippetRequirementFlags::kPriorStageOutput,
+            { },     // no samplers
+            kSRGBGammaColorFilterName,
             GenerateDefaultExpression,
             GenerateDefaultPreamble,
             kNoChildren,
