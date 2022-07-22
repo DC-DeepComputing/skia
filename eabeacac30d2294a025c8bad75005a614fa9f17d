@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4a09f628_6ce3bed8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-07-22T16:52:54Z",
+      "side": 1,
+      "message": "I don\u0027t think we actually need both a passthrough shader and a passthrough color-filter. I think we just need a passthrough color-filter. That is, we can just rename the \"passthrough shader\" to \"passthrough color-filter\".\n\nUnlike Ganesh, I\u0027m not doing anything where color filters are forced into one set of parameters, and shaders are forced into a different incompatible set. This added a lot of complexity and didn\u0027t really solve any problem. Passing an unused argument to a function is ~free and the inliner will happily eliminate it. ",
+      "revId": "eabeacac30d2294a025c8bad75005a614fa9f17d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
