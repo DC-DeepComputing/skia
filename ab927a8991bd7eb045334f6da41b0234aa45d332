@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3180e57d_32778014",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-07-22T19:50:46Z",
+      "side": 1,
+      "message": "I\u0027m concerned about the load and store opcodes. Those also have 12-bit immediate offsets. I have to go pick up a kid from camp right now so I haven\u0027t had a chance to sort out the ARM docs yet. The fact that I see load and store immediate-offsets \u003e4K in the disassembly dump makes me think that I\u0027m missing some piece of the puzzle (are the immediate offsets implicitly shifted left by 2?).\n\nAt any rate this is +1 in that it does fix one problem, but I\u0027m not convinced we are out of the woods just yet.",
+      "revId": "ab927a8991bd7eb045334f6da41b0234aa45d332",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "07dc64de_ebc79705",
         "filename": "src/core/SkVM.cpp",
         "patchSetId": 1
