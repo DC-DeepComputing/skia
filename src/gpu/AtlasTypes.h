@@ -13,11 +13,14 @@
 #include "include/core/SkColorType.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"
+#include "include/core/SkString.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkTArray.h"
 #include "include/private/SkTo.h"
 #include "src/core/SkIPoint16.h"
 #include "src/core/SkTInternalLList.h"
+#include "src/core/SkTraceEvent.h"
+#include "src/core/SkTraceEventCommon.h"
 #include "src/gpu/RectanizerSkyline.h"
 
 class GrOpFlushState;
@@ -97,6 +100,15 @@ enum class MaskFormat : int {
     kLast = kARGB
 };
 static const int kMaskFormatCount = static_cast<int>(MaskFormat::kLast) + 1;
+
+enum class GlyphType {
+    kUnknown,
+    kDirect,
+    kTransformed,
+    k0Padded,
+    kSDFT,
+    kSmall,
+};
 
 /**
  *  Return the number of bytes-per-pixel for the specified mask format.
@@ -421,7 +433,8 @@ class Plot : public SkRefCnt {
 
 public:
     Plot(int pageIndex, int plotIndex, AtlasGenerationCounter* generationCounter,
-         int offX, int offY, int width, int height, SkColorType colorType, size_t bpp);
+         int offX, int offY, int width, int height, SkColorType colorType, size_t bpp,
+         int glyphCount = 0);
 
     uint32_t pageIndex() const { return fPageIndex; }
 
@@ -438,7 +451,11 @@ public:
     }
     SkDEBUGCODE(size_t bpp() const { return fBytesPerPixel; })
 
-    bool addSubImage(int width, int height, const void* image, AtlasLocator* atlasLocator);
+            bool addSubImage(int width,
+                             int height,
+                             GlyphType glyphType,
+                             const void* image,
+                             AtlasLocator* atlasLocator);
 
     /**
      * To manage the lifetime of a plot, we use two tokens. We use the last upload token to
@@ -467,7 +484,7 @@ public:
     sk_sp<Plot> clone() const {
         return sk_sp<Plot>(new Plot(
             fPageIndex, fPlotIndex, fGenerationCounter, fX, fY, fWidth, fHeight, fColorType,
-            fBytesPerPixel));
+            fBytesPerPixel, fGlyphCount));
     }
 
 #ifdef SK_DEBUG
@@ -476,6 +493,28 @@ public:
         fList = nullptr;
     }
 #endif
+
+    void logGlyph(int width, int height, GlyphType glyphType) {
+        std::string name("Glyph::");
+        switch (glyphType) {
+            case GlyphType::kDirect: name = "direct"; break;
+            case GlyphType::kTransformed: name = "transfomed"; break;
+            case GlyphType::k0Padded: name = "padded"; break;
+            case GlyphType::kSDFT: name = "SDFT"; break;
+            case GlyphType::kSmall: name = "small"; break;
+            default:
+                name = "unknown";
+                break;
+        }
+        std::string bucket = std::to_string(width*height);
+        TRACE_COUNTER2("skia.glyph", "glyph", name.c_str(), 1, bucket.c_str(), 1);
+    }
+
+    void logEviction() {
+        SkString plot;
+        plot.printf("Plot::%dx%d::%d", fWidth, fHeight, fPlotIndex);
+        TRACE_COUNTER2("skia.glyph", "glyph", "evict", 1, plot.c_str(), fGlyphCount);
+    }
 
 private:
     ~Plot() override;
@@ -502,6 +541,7 @@ private:
     const size_t fBytesPerPixel;
     SkIRect fDirtyRect;
     SkDEBUGCODE(bool fDirty);
+    int fGlyphCount;
 };
 
 typedef SkTInternalLList<Plot> PlotList;
