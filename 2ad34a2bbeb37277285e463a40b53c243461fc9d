@@ -16,6 +16,24 @@
       "message": "PTAL, I opted for the much simpler \"fail if we use too much stack\" approach.",
       "revId": "2ad34a2bbeb37277285e463a40b53c243461fc9d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c824df22_3f7d89c0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-07-22T20:50:30Z",
+      "side": 1,
+      "message": "+1",
+      "parentUuid": "3ec35466_105eb2d0",
+      "revId": "2ad34a2bbeb37277285e463a40b53c243461fc9d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
