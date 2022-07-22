@@ -323,7 +323,8 @@ private:
                     const GrVkExtensions&);
     void initShaderCaps(const VkPhysicalDeviceProperties&, const VkPhysicalDeviceFeatures2&);
 
-    void initFormatTable(const GrVkInterface*, VkPhysicalDevice, const VkPhysicalDeviceProperties&);
+    void initFormatTable(const GrContextOptions& contextOptions, const GrVkInterface*,
+                         VkPhysicalDevice, const VkPhysicalDeviceProperties&);
     void initStencilFormat(const GrVkInterface* iface, VkPhysicalDevice physDev);
 
     void applyDriverCorrectnessWorkarounds(const VkPhysicalDeviceProperties&);
@@ -373,11 +374,11 @@ private:
             return 0;
         }
 
-        void init(const GrVkInterface*, VkPhysicalDevice, const VkPhysicalDeviceProperties&,
-                  VkFormat);
+        void init(const GrContextOptions& contextOptions, const GrVkInterface*, VkPhysicalDevice,
+                  const VkPhysicalDeviceProperties&, VkFormat);
         static void InitFormatFlags(VkFormatFeatureFlags, uint16_t* flags);
-        void initSampleCounts(const GrVkInterface*, VkPhysicalDevice,
-                              const VkPhysicalDeviceProperties&, VkFormat);
+        void initSampleCounts(const GrContextOptions& contextOptions, const GrVkInterface*,
+                              VkPhysicalDevice, const VkPhysicalDeviceProperties&, VkFormat);
 
         enum {
             kTexturable_Flag = 0x1,
