@@ -1,0 +1,47 @@
+load("//bazel:macros.bzl", "exports_files_legacy")
+load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
+load("@io_bazel_rules_go//proto:def.bzl", "go_proto_library")
+
+licenses(["notice"])
+
+exports_files_legacy()
+
+go_library(
+    name = "exporter",
+    srcs = [
+        "bazel_util.go",
+        "cmake_exporter.go",
+        "cmake_rule.go",
+        "cmake_workspace.go",
+        "exporter.go",
+        "file_query_reader.go",
+        "query_reader.go",
+        "test_query_reader.go",
+    ],
+    importpath = "go.skia.org/bazel/exporter",
+    visibility = ["//visibility:public"],
+    deps = [
+        "@com_github_bazelbuild_buildtools//build_proto:go_default_library",
+        "@com_github_golang_protobuf//proto:go_default_library",
+        "@org_skia_go_infra//go/skerr",
+    ],
+)
+
+go_test(
+    name = "exporter_test",
+    srcs = [
+        "bazel_util_test.go",
+    ],
+    embed = [":exporter"],
+    deps = [
+        "@com_github_stretchr_testify//assert",
+        "@com_github_stretchr_testify//require",
+        "@org_skia_go_infra//go/skerr",
+    ],
+)
+
+go_proto_library(
+    name = "bazel_analysis_v2",
+    importpath = "go.skia.org/bazel/exporter",
+    protos = ["@bazel_src//src/main/protobuf:analysis_v2_proto"],
+)

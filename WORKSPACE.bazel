@@ -173,13 +173,45 @@ browser_repositories(
     firefox = True,
 )
 
+###########################
+# Go protobuf compilation #
+###########################
+
+# See https://rules-proto-grpc.com/en/latest/lang/go.html
+
+# Rules for generating Go protobuf and gRPC .go files and libraries using golang/protobuf.
+#http_archive(
+#    name = "rules_proto_grpc",
+#    sha256 = "507e38c8d95c7efa4f3b1c0595a8e8f139c885cb41a76cab7e20e4e67ae87731",
+#    urls = [
+#        "https://github.com/rules-proto-grpc/rules_proto_grpc/archive/refs/tags/4.1.1.tar.gz",
+#        # TODO: Create copy in cloud once known to work.
+#    ],
+#)
+#
+#load("@rules_proto_grpc//go:repositories.bzl", rules_proto_grpc_go_repos = "go_repos")
+#
+#rules_proto_grpc_go_repos()
+
 ###################################################
 # External C++ deps with Bazel support            #
 ###################################################
+load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
+
 # https://bazel.build/reference/be/workspace#local_repository
 local_repository(
     name = "abseil_cpp",
     path = "third_party/externals/abseil-cpp",
+)
+
+# https://bazel.build/rules/lib/repo/git#git_repository
+git_repository(
+    name = "bazel_src",
+    commit = "89d77ecb58bd0ec601b40013b263da1b9ea770a5",
+    remote = "https://github.com/bazelbuild/bazel.git",
+    # Bazel prints out a debug message if we don't specify shallow_since as a Unix timestamp. The
+    # below timestamp is 2022-07-01T00:00:00+00:00 in RFC 3339 format.
+    shallow_since = "1656648000 +0000",
 )
 
 local_repository(
