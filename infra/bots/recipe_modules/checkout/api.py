@@ -47,7 +47,8 @@ if 'cipd_bin_packages' not in git:
 
   def bot_update(self, checkout_root, gclient_cache=None,
                  checkout_flutter=False,
-                 flutter_android=False):
+                 flutter_android=False,
+                 ignore_trybot=False):
     """Run the steps to obtain a checkout using bot_update.
 
     Args:
@@ -129,7 +130,7 @@ if 'cipd_bin_packages' not in git:
     # Run bot_update.
     patch_refs = None
     patch_ref = self.m.properties.get('patch_ref')
-    if patch_ref:
+    if patch_ref and not ignore_trybot:
       patch_refs = ['%s@%s:%s' % (self.m.properties['patch_repo'],
                                   self.m.properties['revision'],
                                   patch_ref)]
