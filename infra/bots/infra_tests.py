@@ -20,7 +20,11 @@ SKIA_DIR = os.path.abspath(os.path.join(INFRA_BOTS_DIR, os.pardir, os.pardir))
 
 def test(cmd, cwd):
   try:
-    subprocess.check_output(cmd, cwd=cwd, stderr=subprocess.STDOUT, encoding='utf-8')
+    env = {}
+    env.update(os.environ)
+    env.update({'RECIPES_USE_PY3': 'true'})
+    subprocess.check_output(cmd, cwd=cwd, stderr=subprocess.STDOUT,
+                            encoding='utf-8', env=env)
   except subprocess.CalledProcessError as e:
     return e.output
 
