@@ -27,6 +27,8 @@
 #include "src/core/SkClipStack.h"
 #include "src/core/SkColorFilterBase.h"
 #include "src/core/SkDraw.h"
+#include "src/core/SkTraceEvent.h"
+#include "src/core/SkTraceEventCommon.h"
 #include "src/core/SkImageFilterCache.h"
 #include "src/core/SkImageFilter_Base.h"
 #include "src/core/SkLatticeIter.h"
@@ -2021,6 +2023,7 @@ void SkCanvas::onDrawPoints(PointMode mode, size_t count, const SkPoint pts[],
 }
 
 void SkCanvas::onDrawRect(const SkRect& r, const SkPaint& paint) {
+    TRACE_COUNTER1("skia", "test", 1);
     SkASSERT(r.isSorted());
     if (this->internalQuickReject(r, paint)) {
         return;
