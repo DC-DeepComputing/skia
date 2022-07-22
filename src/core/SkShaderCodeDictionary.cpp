@@ -136,6 +136,8 @@ std::string SkShaderInfo::toSkSL(const skgpu::graphite::RenderStep* step) const 
 
     // The uniforms are mangled by having their index in 'fEntries' as a suffix (i.e., "_%d")
     // TODO: replace hard-coded bufferIDs with the backend's step and paint uniform-buffer indices.
+    // TODO: The use of these indices is Metal-specific. We should replace these functions with
+    // API-independent ones.
     if (step->numUniforms() > 0) {
         preamble += skgpu::graphite::EmitRenderStepUniforms(/*bufferID=*/1, "Step",
                                                             step->uniforms());
@@ -144,6 +146,9 @@ std::string SkShaderInfo::toSkSL(const skgpu::graphite::RenderStep* step) const 
                                                          this->needsLocalCoords());
     int binding = 0;
     preamble += skgpu::graphite::EmitTexturesAndSamplers(fBlockReaders, &binding);
+    if (step->hasTextures()) {
+        preamble += step->texturesAndSamplersSkSL(binding);
+    }
 
     std::string mainBody = SkSL::String::printf("void main() {\n"
                                                 "    float4 coords = %s sk_FragCoord;\n",
@@ -163,7 +168,14 @@ std::string SkShaderInfo::toSkSL(const skgpu::graphite::RenderStep* step) const 
         emit_preamble_for_entry(*this, &entryIndex, &preamble);
     }
 
-    SkSL::String::appendf(&mainBody, "    sk_FragColor = %s;\n", lastOutputVar.c_str());
+    if (step->emitsCoverage()) {
+        mainBody += "half4 outputCoverage;";
+        mainBody += step->fragmentCoverageSkSL();
+        SkSL::String::appendf(&mainBody, "    sk_FragColor = %s*outputCoverage;\n",
+                              lastOutputVar.c_str());
+    } else {
+        SkSL::String::appendf(&mainBody, "    sk_FragColor = %s;\n", lastOutputVar.c_str());
+    }
     mainBody += "}\n";
 
     return preamble + "\n" + mainBody;

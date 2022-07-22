@@ -10,6 +10,7 @@
 #include "src/core/SkPipelineData.h"
 
 #include "include/gpu/graphite/Recorder.h"
+#include "include/private/SkSLString.h"
 #include "src/gpu/graphite/DrawParams.h"
 #include "src/gpu/graphite/DrawWriter.h"
 #include "src/gpu/graphite/RecorderPriv.h"
@@ -26,10 +27,13 @@ static constexpr DepthStencilSettings kDirectShadingPass = {
         /*backStencil=*/ {},
         /*refValue=*/    0,
         /*stencilTest=*/ false,
-        /*depthCompare=*/CompareOp::kGreater,
+        /*depthCompare=*/CompareOp::kGEqual,
         /*depthTest=*/   true,
         /*depthWrite=*/  true
 };
+
+// We are expecting to sample from up to 4 textures
+constexpr int kNumTextures = 4;
 }  // namespace
 
 TextDirectRenderStep::TextDirectRenderStep()
@@ -63,6 +67,37 @@ const char* TextDirectRenderStep::vertexSkSL() const {
         )";
 }
 
+std::string TextDirectRenderStep::texturesAndSamplersSkSL(int binding) const {
+    std::string result;
+
+    for (unsigned int i = 0; i < kNumTextures; ++i) {
+        SkSL::String::appendf(&result,
+                              "layout(binding=%d) uniform sampler2D atlas_%d;\n", binding, i);
+        binding++;
+    }
+
+    return result;
+}
+
+const char* TextDirectRenderStep::fragmentCoverageSkSL() const {
+    // TODO: handle color textures
+    return R"(
+        half4 texColor;
+        if (texIndex == 0) {
+           texColor = sample(atlas_0, textureCoords).rrrr;
+        } else if (texIndex == 1) {
+           texColor = sample(atlas_1, textureCoords).rrrr;
+        } else if (texIndex == 2) {
+           texColor = sample(atlas_2, textureCoords).rrrr;
+        } else if (texIndex == 3) {
+           texColor = sample(atlas_3, textureCoords).rrrr;
+        } else {
+           texColor = sample(atlas_0, textureCoords).rrrr;
+        }
+        outputCoverage = texColor;
+        )";
+}
+
 void TextDirectRenderStep::writeVertices(DrawWriter* dw, const DrawParams& params) const {
     const SubRunData& subRunData = params.geometry().subRunData();
     // TODO: pass through the color from the SkPaint via the SubRunData
@@ -90,9 +125,13 @@ void TextDirectRenderStep::writeUniformsAndTextures(const DrawParams& params,
 
     // write textures and samplers
     const SkSamplingOptions samplingOptions(SkFilterMode::kNearest);
-    const SkTileMode tileModes[2] = { SkTileMode::kClamp, SkTileMode::kClamp };
+    constexpr SkTileMode tileModes[2] = { SkTileMode::kClamp, SkTileMode::kClamp };
     for (unsigned int i = 0; i < numProxies; ++i) {
         gatherer->add(samplingOptions, tileModes, proxies[i]);
+    }
+    // If the atlas has less than 4 active proxies we still need to set up samplers for the shader.
+    for (unsigned int i = numProxies; i < kNumTextures; ++i) {
+        gatherer->add(samplingOptions, tileModes, proxies[0]);
     }
 }
 
