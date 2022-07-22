@@ -1107,14 +1107,14 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 		skip(ALL, "tests", ALL, "SkSLMatrixNoOpFolding_CPU") // skia:13552
 	}
 
-	if b.model("MacBookAir7.2") && b.extraConfig("ANGLE") {
-		skip(ALL, "tests", ALL, "SkSLMatrixNoOpFolding_GPU") // https://anglebug.com/7514
-	}
-
-	if b.matchOs("Win10") && b.matchGpu("Radeon(R9|HD)") && !b.extraConfig("Vulkan") {
-		skip(ALL, "tests", ALL, "SkSLMatrixNoOpFolding_GPU") // skia:13556
-	}
-
+//	if b.model("MacBookAir7.2") && b.extraConfig("ANGLE") {
+//		skip(ALL, "tests", ALL, "SkSLMatrixNoOpFolding_GPU") // https://anglebug.com/7514
+//	}
+//
+//	if b.matchOs("Win10") && b.matchGpu("Radeon(R9|HD)") && !b.extraConfig("Vulkan") {
+//		skip(ALL, "tests", ALL, "SkSLMatrixNoOpFolding_GPU") // skia:13556
+//	}
+//
 	if b.gpu("RTX3060") && b.extraConfig("Vulkan") {
 		skip(ALL, "gm", ALL, "blurcircles2") // skia:13342
 	}
