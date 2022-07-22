@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "35da0d95_4dd73885",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-07-22T20:12:14Z",
+      "side": 1,
+      "message": "Ah, yes. From the LDR docs: \"The Unsigned offset variant scales the immediate offset value by the size of the value accessed before adding it to the base register value.\" So it works for now, but we could end up with a too-big offset once the stack is large enough.",
+      "parentUuid": "40092ed4_18f5cca0",
+      "revId": "ab927a8991bd7eb045334f6da41b0234aa45d332",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "07dc64de_ebc79705",
         "filename": "src/core/SkVM.cpp",
         "patchSetId": 1
