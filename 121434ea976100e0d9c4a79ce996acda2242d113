@@ -16,6 +16,24 @@
       "message": "Do we think this works in Vulkan or modern GLSL? I haven\u0027t looked carefully, but just like everything except ancient GL has separate samplers and textures, so I don\u0027t know what our code-gen is like for any of those.",
       "revId": "121434ea976100e0d9c4a79ce996acda2242d113",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "859bb2b4_384198fc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-07-22T20:43:07Z",
+      "side": 1,
+      "message": "AFAICS you can\u0027t copy/move a sampler in GLSL since it\u0027s opaque: https://screenshot.googleplex.com/8QsoVA8EYkdD3JW  So you couldn\u0027t bundle it into a struct like this.\n\nFor SPIR-V I would need to dig into the various ops. I\u0027m not too familiar with the various texture sampling ops unfortunately.",
+      "parentUuid": "e112ee55_61de21b1",
+      "revId": "121434ea976100e0d9c4a79ce996acda2242d113",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
