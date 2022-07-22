@@ -209,25 +209,6 @@ private:
     void commonMaskLoop(
             SkDrawableGlyphBuffer* accepted, SkSourceGlyphBuffer* rejected, Rejector&& reject);
 
-    // Same thing as MaskSummary, but for paths.
-    struct PathSummary {
-        constexpr static uint16_t kIsPath = 0;
-        SkPackedGlyphID packedID;
-        // If drawing glyphID can be done with a path, this is 0, otherwise it is the max
-        // dimension of the glyph.
-        uint16_t maxDimensionOrPath;
-    };
-
-    struct PathSummaryTraits {
-        static SkPackedGlyphID GetKey(PathSummary summary) {
-            return summary.packedID;
-        }
-
-        static uint32_t Hash(SkPackedGlyphID packedID) {
-            return SkChecksum::CheapMix(packedID.value());
-        }
-    };
-
     // Same thing as MaskSummary, but for drawables.
     struct DrawableSummary {
         constexpr static uint16_t kIsDrawable = 0;
@@ -268,7 +249,7 @@ private:
 
     // The masks and paths that currently reside in the GPU process.
     SkTHashMap<SkPackedGlyphID, SkGlyphDigest, SkPackedGlyphID::Hash> fSentGlyphs;
-    SkTHashTable<PathSummary, SkPackedGlyphID, PathSummaryTraits> fSentPaths;
+    SkTHashMap<SkGlyphID, bool> fSentPaths;
     SkTHashTable<DrawableSummary, SkGlyphID, DrawableSummaryTraits> fSentDrawables;
 
     // The Masks, SDFT Mask, and Paths that need to be sent to the GPU task for the processed
@@ -469,25 +450,18 @@ void RemoteStrike::prepareForPathDrawing(
         SkDrawableGlyphBuffer* accepted, SkSourceGlyphBuffer* rejected) {
     accepted->forEachInput(
             [&](size_t i, SkPackedGlyphID packedID, SkPoint position) {
-                PathSummary* summary = fSentPaths.find(packedID);
-                if (summary == nullptr) {
-
+                bool* hasPath = fSentPaths.find(packedID.glyphID());
+                if (hasPath == nullptr) {
                     // Put the new SkGlyph in the glyphs to send.
                     this->ensureScalerContext();
                     fPathsToSend.emplace_back(fContext->makeGlyph(packedID, &fAlloc));
                     SkGlyph* glyph = &fPathsToSend.back();
 
-                    uint16_t maxDimensionOrPath = glyph->maxDimension();
                     glyph->setPath(&fAlloc, fContext.get());
-                    if (glyph->path() != nullptr) {
-                        maxDimensionOrPath = PathSummary::kIsPath;
-                    }
-
-                    PathSummary newSummary = {packedID, maxDimensionOrPath};
-                    summary = fSentPaths.set(newSummary);
+                    hasPath = fSentPaths.set(packedID.glyphID(), glyph->path() != nullptr);
                 }
 
-                if (summary->maxDimensionOrPath != PathSummary::kIsPath) {
+                if (!(*hasPath)) {
                     rejected->reject(i);
                 }
             });
