@@ -16,6 +16,24 @@
       "message": "I agree that this rewrite won\u0027t (or shouldn\u0027t, at least) impact performance at all. On any scalar GPU, it\u0027s all just noise in the SSA before it\u0027s reduced to the same final instructions. I\u0027d say we add the workaround (per the bug), and do it unconditionally. For now, this CL looks fine.",
       "revId": "d424d5c2eba98b005b7c898e637323149585efb0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "db818175_08667109",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-07-22T18:15:09Z",
+      "side": 1,
+      "message": "SGTM.",
+      "parentUuid": "7f225e79_d8b1d590",
+      "revId": "d424d5c2eba98b005b7c898e637323149585efb0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
