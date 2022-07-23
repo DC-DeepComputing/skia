@@ -2,7 +2,7 @@ generate:
 	echo "You do not need to run this any more for C++ code, only if you modify go code"
 
 generate_go:
-	cd .. && bazelisk run //:gazelle -- update infra/bots/task_drivers modules/canvaskit/go
+	cd .. && bazelisk run //:gazelle -- update infra/bots/task_drivers modules/canvaskit/go bazel/exporter
 
 # This target should be run after the go.mod file is updated (e.g. version rolls or new updates)
 gazelle_update_repo:
