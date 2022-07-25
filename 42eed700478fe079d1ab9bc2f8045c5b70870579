@@ -52,6 +52,24 @@
       "parentUuid": "0020063b_3cd4c614",
       "revId": "42eed700478fe079d1ab9bc2f8045c5b70870579",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2d2cb57a_172eb245",
+        "filename": "gm/colrv1.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-07-25T14:59:53Z",
+      "side": 1,
+      "message": "I\u0027ve skimmed the DirectWrite API and I don\u0027t even see any support for glyph names. Even the Skia PDF backend doesn\u0027t actually need them (as evidenced by not getting them most of the time) and the function should probably be removed from Skia since it cannot really be supported anymore. While COLRv1 support is currently FreeType only, it is expected to be supported elsewhere and I would expect any tests to also work correctly (even if just doing fallback) on all platforms. Indeed, I\u0027ve found the COLRv1 test font insufficient due to the lack of fallback outlines in the past (not sure if that\u0027s been fixed or not yet).\n\nI considered doing a material design font like design like you suggest, shaping stings into particular glyphs. However, it seems way overkill as well to drag shaping into this.\n\nWhy would the code points need to be shifted when adding new glyphs? These should probably all be mapped to PUA code points anyway just to be nice, though even if they were all just assigned low ascii compatible code points there\u0027s no reason to move them about. When adding a new glyph / code point to the test font I really do want there to be a corresponding change to the test itself to directly show that there is an intentional change to that particular test.",
+      "parentUuid": "767da90e_c368b879",
+      "revId": "42eed700478fe079d1ab9bc2f8045c5b70870579",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
