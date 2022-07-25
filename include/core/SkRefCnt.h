@@ -212,7 +212,12 @@ private:
  *  classes that match the interface, but have different internal choices: e.g. the hosted class
  *  may have its ref/unref be thread-safe, but that is not assumed/imposed by sk_sp.
  */
-template <typename T> class sk_sp {
+#if defined(__clang__) && __has_attribute(trivial_abi)
+#define SK_SP_TRIVIAL_ABI [[clang::trivial_abi]]
+#else
+#define SK_SP_TRIVIAL_ABI
+#endif
+template <typename T> class SK_SP_TRIVIAL_ABI sk_sp {
 public:
     using element_type = T;
 
