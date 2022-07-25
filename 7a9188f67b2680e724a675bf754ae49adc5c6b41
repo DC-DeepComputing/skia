@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cc7520fa_f597f0b5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-07-25T14:42:06Z",
+      "side": 1,
+      "message": "This change seems fine. I find some existing stuff rather suspect.",
+      "revId": "7a9188f67b2680e724a675bf754ae49adc5c6b41",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4fcfe4a8_f573db94",
+        "filename": "bazel/external/icu/BUILD.bazel",
+        "patchSetId": 5
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-07-25T14:42:06Z",
+      "side": 1,
+      "message": "nit: this comment has been copied around a lot and it always annoys me that it doesn\u0027t fit in one line. Maybe in a separate CL all of these comments could be changed to\n\n`          # $@ is replaced with the one and only out location, located in //bazel-out.`\n\nWhich should fit on one line everywhere it is used.",
+      "revId": "7a9188f67b2680e724a675bf754ae49adc5c6b41",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5bb96256_329fa103",
+        "filename": "modules/skunicode/src/SkUnicode_icu.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-07-25T14:42:06Z",
+      "side": 1,
+      "message": "Boy do I hate putting this first. The entire concept of associated headers and trying to put them first is a bit suspect. I know the idea was to try to always have each associated header be the first header included in some translation unit to try to prevent include ordering issues, but that\u0027s silly and should now be handled by IWYU and building the headers. If IWYU is trying to enforce this (which makes no sense, since the entire point of using IWYU is to fix all the issues putting the associated header first was supposed to detect but usually didn\u0027t anyway) then we should configure IWYU not to suggest this.",
+      "revId": "7a9188f67b2680e724a675bf754ae49adc5c6b41",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9e7be2d7_f95bc077",
+        "filename": "src/utils/BUILD.bazel",
+        "patchSetId": 5
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-07-25T14:42:06Z",
+      "side": 1,
+      "message": "I agree. Everything about SkJSONWriter is suspect and should be fixed.",
+      "revId": "7a9188f67b2680e724a675bf754ae49adc5c6b41",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
