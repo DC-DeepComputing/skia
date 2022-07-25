@@ -34,6 +34,24 @@
       "parentUuid": "a0ddae18_46461862",
       "revId": "42eed700478fe079d1ab9bc2f8045c5b70870579",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "767da90e_c368b879",
+        "filename": "gm/colrv1.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2022-07-25T14:47:59Z",
+      "side": 1,
+      "message": "I am really looking for an automated way for avoiding updating codepoints / glyph ids manually all the time. Alternative suggestions for doing that are welcome, I put one in this CL. \n\nWhat I\u0027ve observed a couple of times during development of the COLRv1 test font: It made sense to insert additional codepoints / glyphs which shifts the cmap and the glyph order (for example, when I added the additional composite modes) [1]. This causes a lot of manual work in updating `COLRv1.cpp` test PUA codepoints etc. - and it\u0027s not excluded this may happen again while further developing the test font.\n\nThat\u0027s the reason I find it really convenient to work with glyph names here. It helps with a) not having to care about the order or insertions, and b) automatically updating the tests if glyphs of the same group were added or deleted. b) being convenient even if I\u0027d update the test font to leave space between glyph groups for example. `cmap` mapping is not sufficient to achieve that.\n\n\u003e More importantly, getting the glyph names is only really supported for Type1 fonts using the FreeType port.\n\nCan I ask why you do not consider that an acceptable limitation (if I understood you correctly)? That\u0027s the only configuration we test at the moment. If we have backends in the future supporting COLRv1, we could still run the test on those, and update the glyph retrieval mechanism to still do FreeType or switch away and use a different method then.\n\n\nAn alternative I had thought about just now: Putting special codepoints into the test font that unfold in `GSUB` to a group of test glyphs, but that would require shaping in the test - which we don\u0027t have so far, and might not be the best reason to introduce it as a dependency. \n\n\n[1] https://github.com/googlefonts/color-fonts/commit/6ba9dd65ff3321893699e35aa4ece7ad9d363ee9",
+      "parentUuid": "0020063b_3cd4c614",
+      "revId": "42eed700478fe079d1ab9bc2f8045c5b70870579",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
