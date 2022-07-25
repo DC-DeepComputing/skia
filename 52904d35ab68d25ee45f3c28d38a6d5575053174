@@ -50,6 +50,24 @@
       "message": "Why disable all warnings?",
       "revId": "52904d35ab68d25ee45f3c28d38a6d5575053174",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aadbaabd_ef1c1ea0",
+        "filename": "modules/skcms/BUILD.gn",
+        "patchSetId": 16
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-07-25T16:48:56Z",
+      "side": 1,
+      "message": "Good catch. Hoping this was a transcription error? The original/primary skcms build files actually specify -Werror -Weverything (and a handful of explicitly disabled warnings), in an effort to compile as clean as possible.\n\nKevin, was this intended?",
+      "parentUuid": "c5e8aca6_ff43223c",
+      "revId": "52904d35ab68d25ee45f3c28d38a6d5575053174",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
