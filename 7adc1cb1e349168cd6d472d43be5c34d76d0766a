@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "32ce530f_eb6fd011",
+        "filename": "src/gpu/graphite/Renderer.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-07-25T17:44:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e4bdca37_da9dd9fc",
+      "revId": "7adc1cb1e349168cd6d472d43be5c34d76d0766a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dba038d3_84ed9026",
@@ -31,6 +49,24 @@
       "writtenOn": "2022-07-25T14:26:45Z",
       "side": 1,
       "message": "Maybe kNumTextAtlasTextures ?",
+      "revId": "7adc1cb1e349168cd6d472d43be5c34d76d0766a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "59ff7b76_0b85070b",
+        "filename": "src/gpu/graphite/render/TextDirectRenderStep.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-07-25T17:44:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dba038d3_84ed9026",
       "revId": "7adc1cb1e349168cd6d472d43be5c34d76d0766a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -58,6 +94,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c6ed2a32_40ee780e",
+        "filename": "src/gpu/graphite/render/TextDirectRenderStep.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-07-25T17:44:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c80c466f_8de3c52b",
+      "range": {
+        "startLine": 98,
+        "startChar": 0,
+        "endLine": 98,
+        "endChar": 11
+      },
+      "revId": "7adc1cb1e349168cd6d472d43be5c34d76d0766a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "59b244b6_32f69fec",
@@ -71,6 +131,30 @@
       "writtenOn": "2022-07-25T14:26:45Z",
       "side": 1,
       "message": "kTileModes ? and kSamplingOptions above ?",
+      "range": {
+        "startLine": 128,
+        "startChar": 25,
+        "endLine": 128,
+        "endChar": 34
+      },
+      "revId": "7adc1cb1e349168cd6d472d43be5c34d76d0766a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2d1a050d_b57e6f19",
+        "filename": "src/gpu/graphite/render/TextDirectRenderStep.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-07-25T17:44:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "59b244b6_32f69fec",
       "range": {
         "startLine": 128,
         "startChar": 25,
