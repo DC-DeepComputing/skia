@@ -5,7 +5,7 @@
  * found in the LICENSE file.
  */
 
-#include "src/utils/SkShaperJSONWriter.h"
+#include "modules/skparagraph/tests/SkShaperJSONWriter.h"
 
 #include "include/core/SkFont.h"
 #include "include/core/SkSpan.h"

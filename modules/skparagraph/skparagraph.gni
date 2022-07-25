@@ -49,3 +49,10 @@ skparagraph_utils = [
   "$_utils/TestFontCollection.h",
   "$_utils/TestFontCollection.cpp",
 ]
+
+skparagraph_tests = [
+  "$_tests/SkParagraphTest.cpp",
+  "$_tests/SkShaperJSONWriter.cpp",
+  "$_tests/SkShaperJSONWriter.h",
+  "$_tests/SkShaperJSONWriterTest.cpp",
+]

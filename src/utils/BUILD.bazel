@@ -70,8 +70,6 @@ filegroup(
     srcs = [
         "SkJSON.h",
         "SkJSONWriter.h",
-        # TODO(kjlubick): This is only used in one place, a test. Can we move it to skparagraph?
-        #"SkShaperJSONWriter.h",
     ],
     visibility = [
         "//modules/skottie:__pkg__",
@@ -83,7 +81,6 @@ filegroup(
     srcs = [
         "SkJSON.cpp",
         "SkJSONWriter.cpp",
-        #"SkShaperJSONWriter.cpp",
     ],
     visibility = [
         "//modules/skottie:__pkg__",
