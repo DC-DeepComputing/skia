@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "05541a66_902abcf5",
+        "filename": "bazel/external/icu/BUILD.bazel",
+        "patchSetId": 5
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-07-25T15:09:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4fcfe4a8_f573db94",
+      "revId": "7a9188f67b2680e724a675bf754ae49adc5c6b41",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5bb96256_329fa103",
@@ -54,6 +72,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "51c8c2bf_c80e9384",
+        "filename": "modules/skunicode/src/SkUnicode_icu.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-07-25T15:09:28Z",
+      "side": 1,
+      "message": "This isn\u0027t necessarily an IWYU change (in fact, IWYU doesn\u0027t warn about include order at all). This is a Kevin-implemented change to follow the style of the other C++ files all around.",
+      "parentUuid": "5bb96256_329fa103",
+      "revId": "7a9188f67b2680e724a675bf754ae49adc5c6b41",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9e7be2d7_f95bc077",
         "filename": "src/utils/BUILD.bazel",
         "patchSetId": 5
@@ -65,6 +101,24 @@
       "writtenOn": "2022-07-25T14:42:06Z",
       "side": 1,
       "message": "I agree. Everything about SkJSONWriter is suspect and should be fixed.",
+      "revId": "7a9188f67b2680e724a675bf754ae49adc5c6b41",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3a61c21a_0416a3ea",
+        "filename": "src/utils/BUILD.bazel",
+        "patchSetId": 5
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-07-25T15:09:28Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "9e7be2d7_f95bc077",
       "revId": "7a9188f67b2680e724a675bf754ae49adc5c6b41",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
