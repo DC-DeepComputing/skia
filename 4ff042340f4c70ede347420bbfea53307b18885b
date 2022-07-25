@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a7b69848_3f05e342",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-07-25T20:54:51Z",
+      "side": 1,
+      "message": "lgtm. Seems like we should have some golden (sksl) tests for the versions of sample that are actually supported by our backends. I know that the Metal backend only supports 2D samplers, and I have no idea which types are supported by SPIR-V. I note that sksl_gpu.sksl has an absolutely inconsistent zoo of sample declarations, many (most?) of which are completely unused (and would break if anyone tried to use them).",
+      "revId": "4ff042340f4c70ede347420bbfea53307b18885b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
