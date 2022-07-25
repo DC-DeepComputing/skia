@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "34ed896f_b8f81923",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 16
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6025
+      },
+      "writtenOn": "2022-07-25T15:58:29Z",
+      "side": 1,
+      "message": "Happened to stumble upon the build file:",
+      "revId": "52904d35ab68d25ee45f3c28d38a6d5575053174",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ab1f8faa_136b5272",
+        "filename": "modules/skcms/BUILD.gn",
+        "patchSetId": 16
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 6025
+      },
+      "writtenOn": "2022-07-25T15:58:29Z",
+      "side": 1,
+      "message": "Just `static_library(\"skcms\")` is more common if you don\u0027t need a dynamic target type.",
+      "revId": "52904d35ab68d25ee45f3c28d38a6d5575053174",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c5e8aca6_ff43223c",
+        "filename": "modules/skcms/BUILD.gn",
+        "patchSetId": 16
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 6025
+      },
+      "writtenOn": "2022-07-25T15:58:29Z",
+      "side": 1,
+      "message": "Why disable all warnings?",
+      "revId": "52904d35ab68d25ee45f3c28d38a6d5575053174",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
