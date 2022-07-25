@@ -16,6 +16,24 @@
       "message": "Using this can probably be considered slightly hacky - please advise on a suitable approach. Alternatives I see:\n* Keep as is with the `SkPDFFont` dependency hack\n* Add skiagm::ColrV1GM as a forward declaration to SkTypeface.h and make friend (also not too pretty in an exported header)\n* Define a proxy class, such as SkGlyphListAccess or something, make that a friend in SkTypeface, and put exactly 1 static method in it that is allowed to access the glyph name enumeration method of SkTypeface?\n\nThoughts?",
       "revId": "42eed700478fe079d1ab9bc2f8045c5b70870579",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0020063b_3cd4c614",
+        "filename": "gm/colrv1.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-07-25T14:08:30Z",
+      "side": 1,
+      "message": "More importantly, getting the glyph names is only really supported for Type1 fonts using the FreeType port. In theory it should work for OT fonts with FreeType, but nothing has every been implemented here for the DirectWrite and CoreText ports. I\u0027m not even sure if they support this well.\n\nIt seems like the level of indirection needed here is just to map them in the cmap table so that you can use code points instead of glyph indexes? That would be a lot less crazy. This would generally mean not using std::regex and needing to specify all the codepoints to draw, but I think I would prefer that level of specificity. (The ColrV1GM constructor would just take a string to draw.)",
+      "parentUuid": "a0ddae18_46461862",
+      "revId": "42eed700478fe079d1ab9bc2f8045c5b70870579",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
