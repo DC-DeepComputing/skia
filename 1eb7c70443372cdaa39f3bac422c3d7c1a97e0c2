@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "719caaf5_3d10212b",
+        "filename": "src/utils/SkCustomTypeface.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 288,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2022-07-25T14:49:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dab35feb_0bedcb42",
+      "revId": "1eb7c70443372cdaa39f3bac422c3d7c1a97e0c2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d392d902_0edca555",
@@ -35,6 +53,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a3e2d55b_bf00f8d9",
+        "filename": "src/utils/SkCustomTypeface.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 298,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2022-07-25T14:49:04Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "d392d902_0edca555",
+      "revId": "1eb7c70443372cdaa39f3bac422c3d7c1a97e0c2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "49dce6c9_bbef3374",
@@ -48,6 +84,24 @@
       "writtenOn": "2022-07-22T15:17:30Z",
       "side": 1,
       "message": "Since you already know if the glyph is drawable backed and since you already have a drawable in hand, why not just return it? The complexity with the OpenType backed drawables was mostly that there is already a \"picture\" but in a different format and we wanted to avoid the time and space overhead of converting that into a picture if possible. But here you already have a drawable to return.\n\nNote that this code path currently gets used at large sizes. Could be tested by adding one larger size to the test affected or just look at it in viewer and size it up.",
+      "revId": "1eb7c70443372cdaa39f3bac422c3d7c1a97e0c2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f21fec47_a6c684b4",
+        "filename": "src/utils/SkCustomTypeface.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 307,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2022-07-25T14:49:04Z",
+      "side": 1,
+      "message": "Ah, thanks, I wasn\u0027t sure how to trigger this code path.\n\nSimilar to generatePath(), we need to transform the drawable here -- and since there\u0027s no trivial way to achieve that, I ended up writing a matrix wrapper.  Maybe both paths and drawables should be transformed using the destination canvas in the calling code, so we can get rid of this?\n\nAnother couple of questions/observations:\n\n1) If I call setDrawable() in generateMetrics(), then generateDrawable() is never reached (presumably we\u0027re using the drawable already set on the glyph).  Is there a reason to prefer one over the other?\n\n2) When taking the drawable code path, I noticed the output is clipped to the drawable bounds.  When taking the image path, the output is implicitly clipped to the glyph bounds.  The two are not necessarily the same -- should the drawable case also clip to glyph bounds for consistency?",
+      "parentUuid": "49dce6c9_bbef3374",
       "revId": "1eb7c70443372cdaa39f3bac422c3d7c1a97e0c2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
