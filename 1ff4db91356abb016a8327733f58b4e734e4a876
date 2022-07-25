@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c9aba3f7_12efd872",
+        "filename": "src/utils/SkCustomTypeface.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 273,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-07-25T22:18:58Z",
+      "side": 1,
+      "message": "Note that you could set the path to not existing here (this is what is done in the other implementations in ports) and then just assert in `generatePath`. Either way should be fine.",
+      "revId": "1ff4db91356abb016a8327733f58b4e734e4a876",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e96cfdf9_678f8f2e",
+        "filename": "src/utils/SkCustomTypeface.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 316,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-07-25T22:18:58Z",
+      "side": 1,
+      "message": "DrawableMatrixWrapper",
+      "range": {
+        "startLine": 316,
+        "startChar": 66,
+        "endLine": 316,
+        "endChar": 74
+      },
+      "revId": "1ff4db91356abb016a8327733f58b4e734e4a876",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
