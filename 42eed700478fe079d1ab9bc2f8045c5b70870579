@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a0ddae18_46461862",
+        "filename": "gm/colrv1.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2022-07-25T13:29:27Z",
+      "side": 1,
+      "message": "Using this can probably be considered slightly hacky - please advise on a suitable approach. Alternatives I see:\n* Keep as is with the `SkPDFFont` dependency hack\n* Add skiagm::ColrV1GM as a forward declaration to SkTypeface.h and make friend (also not too pretty in an exported header)\n* Define a proxy class, such as SkGlyphListAccess or something, make that a friend in SkTypeface, and put exactly 1 static method in it that is allowed to access the glyph name enumeration method of SkTypeface?\n\nThoughts?",
+      "revId": "42eed700478fe079d1ab9bc2f8045c5b70870579",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
