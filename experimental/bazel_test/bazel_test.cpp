@@ -2,15 +2,17 @@
 // Use of this source code is governed by a BSD-style license that can be found in the LICENSE file.
 
 #include "include/core/SkCanvas.h"
-#include "include/core/SkRect.h"
 #include "include/core/SkTypes.h"
 #include "include/svg/SkSVGCanvas.h"
 
+#include "modules/skunicode/include/SkUnicode.h"
+
 #include "png.h"
 
-#include <stdio.h>
+#include <cstdio>
 #include <ctime>
 #include <iostream>
+#include <memory>
 
 void print_localtime() {
     std::time_t result = std::time(nullptr);
@@ -28,6 +30,10 @@ int main(int argc, char** argv) {
     if (argc < -10) {
         std::unique_ptr<SkCanvas> not_used = SkSVGCanvas::Make({}, nullptr, 0);
         not_used->save();
+        auto unicode = SkUnicode::Make();
+        if (!unicode) {
+            return 2;
+        }
     }
     printf("FAIL\n"); // This tells the human the test failed.
     return 1; // This tells Bazel the test failed.
