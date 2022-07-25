@@ -1103,13 +1103,15 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 		}
 	}
 
-	if b.model("MacBookAir7.2") && b.extraConfig("ANGLE") {
-		skip(ALL, "tests", ALL, "SkSLMatrixNoOpFolding_GPU") // https://anglebug.com/7514
+ 	if !b.extraConfig("Vulkan") && (b.gpu("RTX3060") ||
+                                    b.gpu("P400") ||
+                                    b.matchGpu("Radeon(R9|HD)")) {
+        // skia:13556, https://gitlab.khronos.org/Tracker/vk-gl-cts/-/issues/3845
+		skip(ALL, "tests", ALL, "SkSLMatrixScalarNoOpFolding_GPU")
 	}
-
-	if b.matchOs("Win10") && b.matchGpu("Radeon(R9|HD)") && !b.extraConfig("Vulkan") {
-		skip(ALL, "tests", ALL, "SkSLMatrixNoOpFolding_GPU") // skia:13556
-	}
+//	if b.model("MacBookAir7.2") && b.extraConfig("ANGLE") {
+//		skip(ALL, "tests", ALL, "SkSLMatrixNoOpFolding_GPU") // https://anglebug.com/7514
+//	}
 
 	if b.gpu("RTX3060") && b.extraConfig("Vulkan") {
 		skip(ALL, "gm", ALL, "blurcircles2") // skia:13342
