@@ -73,7 +73,20 @@ genrule(
           "$(location common/icudtl.dat) " +
           # The $@ means substitute in the one and only output location, which will be located
           # in //bazel-out.
-          "$@",
+          "$@ --mac",
+    exec_tools = [":make_data_assembly"],
+)
+
+genrule(
+    name = "create_icu_mac_data_asm",
+    srcs = ["common/icudtl.dat"],
+    outs = ["generated_icu_mac_dat.S"],
+    cmd = "$(location :make_data_assembly) " +
+          # We need to specify the absolute path from the root
+          "$(location common/icudtl.dat) " +
+          # The $@ means substitute in the one and only output location, which will be located
+          # in //bazel-out.
+          "$@ --mac",
     exec_tools = [":make_data_assembly"],
 )
 
@@ -999,6 +1012,7 @@ ICU_SRCS = [
     ":cpu_wasm": ["generated_icu_wasm_dat.cpp"],
     "@platforms//os:android": ["generated_icu_android_dat.S"],
     "@platforms//os:ios": ["generated_icu_ios_dat.S"],
+    "@platforms//os:macos": ["generated_icu_mac_dat.S"],
     "//conditions:default": ["generated_icu_common_dat.S"],
 })
 
