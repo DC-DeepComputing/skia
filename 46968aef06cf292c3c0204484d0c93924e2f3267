@@ -16,6 +16,24 @@
       "message": "The backing bitmap only has 8-bits in red so fOffsets is going to get quantized here.",
       "revId": "46968aef06cf292c3c0204484d0c93924e2f3267",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f283a6e5_2a6d3510",
+        "filename": "src/core/SkKeyHelpers.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-07-25T14:28:20Z",
+      "side": 1,
+      "message": "Good call! Using kRGBA_F16_SkColorType and adding support for RGBA16Float in MtlCaps yields pretty good results.",
+      "parentUuid": "27d29891_2c3c2cbd",
+      "revId": "46968aef06cf292c3c0204484d0c93924e2f3267",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
