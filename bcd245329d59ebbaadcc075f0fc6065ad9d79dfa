@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8c54dd08_d00e87e8",
+        "filename": "src/gpu/graphite/render/TextSDFRenderStep.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-07-25T18:09:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "57a46a11_143f8e80",
+      "range": {
+        "startLine": 34,
+        "startChar": 14,
+        "endLine": 34,
+        "endChar": 26
+      },
+      "revId": "bcd245329d59ebbaadcc075f0fc6065ad9d79dfa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "45ae298b_2a0735d2",
@@ -54,6 +78,30 @@
       "writtenOn": "2022-07-25T15:04:22Z",
       "side": 1,
       "message": "Maybe these could be \u0027sdf_atlas_%d\u0027 and the direct atlases could be \u0027a8_mask_atlas_%d\u0027 ?",
+      "range": {
+        "startLine": 77,
+        "startChar": 68,
+        "endLine": 77,
+        "endChar": 74
+      },
+      "revId": "bcd245329d59ebbaadcc075f0fc6065ad9d79dfa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "73f76bd5_322f1c5d",
+        "filename": "src/gpu/graphite/render/TextSDFRenderStep.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-07-25T18:09:44Z",
+      "side": 1,
+      "message": "Sure, but they shouldn\u0027t be called in the same shader.",
+      "parentUuid": "45ae298b_2a0735d2",
       "range": {
         "startLine": 77,
         "startChar": 68,
@@ -87,6 +135,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e8915c74_8172951e",
+        "filename": "src/gpu/graphite/render/TextSDFRenderStep.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-07-25T18:09:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2f69c01c_3090e30b",
+      "range": {
+        "startLine": 93,
+        "startChar": 53,
+        "endLine": 93,
+        "endChar": 57
+      },
+      "revId": "bcd245329d59ebbaadcc075f0fc6065ad9d79dfa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "17090c23_54774fd0",
@@ -100,6 +172,24 @@
       "writtenOn": "2022-07-25T15:04:22Z",
       "side": 1,
       "message": "// comment about these rescaling factors ?",
+      "revId": "bcd245329d59ebbaadcc075f0fc6065ad9d79dfa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4d29c98c_0427b359",
+        "filename": "src/gpu/graphite/render/TextSDFRenderStep.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-07-25T18:09:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "17090c23_54774fd0",
       "revId": "bcd245329d59ebbaadcc075f0fc6065ad9d79dfa",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -129,6 +219,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e3df23cf_475cab2f",
+        "filename": "src/gpu/graphite/render/TextSDFRenderStep.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-07-25T18:09:44Z",
+      "side": 1,
+      "message": "It\u0027s a uniform -- we only seem to support float there. Should we support half?",
+      "parentUuid": "b2baed0f_fe2d37ef",
+      "range": {
+        "startLine": 104,
+        "startChar": 25,
+        "endLine": 104,
+        "endChar": 39
+      },
+      "revId": "bcd245329d59ebbaadcc075f0fc6065ad9d79dfa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9dc8e3f3_a46ec26b",
         "filename": "src/gpu/graphite/render/TextSDFRenderStep.cpp",
         "patchSetId": 3
@@ -140,6 +254,24 @@
       "writtenOn": "2022-07-25T15:04:22Z",
       "side": 1,
       "message": "// Maybe a comment about the cool math ?",
+      "revId": "bcd245329d59ebbaadcc075f0fc6065ad9d79dfa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a4e5bee9_c5145441",
+        "filename": "src/gpu/graphite/render/TextSDFRenderStep.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-07-25T18:09:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9dc8e3f3_a46ec26b",
       "revId": "bcd245329d59ebbaadcc075f0fc6065ad9d79dfa",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -157,6 +289,30 @@
       "writtenOn": "2022-07-25T15:04:22Z",
       "side": 1,
       "message": "Add \u0027half\u0027 here and remove afwidth declaration above ?",
+      "range": {
+        "startLine": 118,
+        "startChar": 8,
+        "endLine": 118,
+        "endChar": 15
+      },
+      "revId": "bcd245329d59ebbaadcc075f0fc6065ad9d79dfa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "28da33e1_30605117",
+        "filename": "src/gpu/graphite/render/TextSDFRenderStep.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-07-25T18:09:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "32c5bec8_bb4c687f",
       "range": {
         "startLine": 118,
         "startChar": 8,
@@ -190,6 +346,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c32809c2_cf185b7d",
+        "filename": "src/gpu/graphite/render/TextSDFRenderStep.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-07-25T18:09:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f6730ccf_9c7f1681",
+      "range": {
+        "startLine": 122,
+        "startChar": 8,
+        "endLine": 122,
+        "endChar": 11
+      },
+      "revId": "bcd245329d59ebbaadcc075f0fc6065ad9d79dfa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ec03d37a_94e0c88c",
@@ -203,6 +383,30 @@
       "writtenOn": "2022-07-25T15:04:22Z",
       "side": 1,
       "message": "kSamplingOptions ? and kTileModes below ?",
+      "range": {
+        "startLine": 153,
+        "startChar": 28,
+        "endLine": 153,
+        "endChar": 43
+      },
+      "revId": "bcd245329d59ebbaadcc075f0fc6065ad9d79dfa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6588ef04_104a4b9c",
+        "filename": "src/gpu/graphite/render/TextSDFRenderStep.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 153,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-07-25T18:09:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ec03d37a_94e0c88c",
       "range": {
         "startLine": 153,
         "startChar": 28,
