@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b09fd3c6_dee07b00",
+        "filename": "public.bzl",
+        "patchSetId": 6
+      },
+      "lineNbr": 1707,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-07-25T20:35:27Z",
+      "side": 0,
+      "message": "Do these not need to be added back elsewhere? Where they not actually needed in this build previously?",
+      "revId": "f39d68a2adcc5c78642a31db8eabb8bddcbe2e9b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
