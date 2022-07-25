@@ -112,6 +112,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c153cea2_41433b8d",
+        "filename": "src/gpu/graphite/render/TextSDFRenderStep.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-07-25T18:34:22Z",
+      "side": 1,
+      "message": "Yep - it would just be for clarity",
+      "parentUuid": "73f76bd5_322f1c5d",
+      "range": {
+        "startLine": 77,
+        "startChar": 68,
+        "endLine": 77,
+        "endChar": 74
+      },
+      "revId": "bcd245329d59ebbaadcc075f0fc6065ad9d79dfa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2f69c01c_3090e30b",
