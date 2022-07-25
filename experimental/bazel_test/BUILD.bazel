@@ -16,6 +16,7 @@ cc_binary_with_flags(
     },
     deps = [
         "//:skia_public",
+        "//modules/skunicode",
         "@libpng",
     ],
 )
