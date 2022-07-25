@@ -26,6 +26,10 @@
 #include "src/gpu/graphite/UniformManager.h"
 #endif
 
+#include "include/core/SkBitmap.h"
+#include "include/core/SkCanvas.h"
+#include "src/image/SkImage_Base.h"
+
 #define VALIDATE_UNIFORMS(gatherer, dict, codeSnippetID) \
     SkDEBUGCODE(UniformExpectationsValidator uev(gatherer, dict->getUniforms(codeSnippetID));)
 
@@ -96,22 +100,55 @@ void SolidColorShaderBlock::BeginBlock(const SkKeyContext& keyContext,
 
 namespace {
 
-void add_linear_gradient_uniform_data(const SkShaderCodeDictionary* dict,
+void add_linear_gradient_uniform_data(skgpu::graphite::Recorder* recorder,
+                                      const SkShaderCodeDictionary* dict,
                                       SkBuiltInCodeSnippetID codeSnippetID,
                                       const GradientShaderBlocks::GradientData& gradData,
                                       SkPipelineDataGatherer* gatherer) {
     VALIDATE_UNIFORMS(gatherer, dict, codeSnippetID)
-    int stops = codeSnippetID == SkBuiltInCodeSnippetID::kLinearGradientShader4 ? 4 : 8;
+
+    bool isTextureGradient = codeSnippetID == SkBuiltInCodeSnippetID::kLinearGradientShaderTexture;
+
+    if (isTextureGradient) {
+        SkBitmap bitmap;
+        bitmap.allocPixels(SkImageInfo::Make(
+                gradData.fNumStops, 2, kRGBA_F16_SkColorType, kPremul_SkAlphaType));
+        SkCanvas bitmap_canvas(bitmap);
+
+        SkPaint paint;
+        for (int i = 0; i < gradData.fNumStops; i++) {
+            paint.setColor(gradData.fColor4fs[i]);
+            bitmap_canvas.drawIRect(SkIRect::MakeXYWH(i, 0, 1, 1), paint);
+
+            paint.setColor(SkColor4f{gradData.fOffsets[i], 0, 0, 1});
+            bitmap_canvas.drawIRect(SkIRect::MakeXYWH(i, 1, 1, 1), paint);
+        }
+
+        sk_sp<SkImage> image = bitmap.asImage();
+        SkImage_Base* baseImage = static_cast<SkImage_Base*>(image.get());
+        auto [view, ct] = baseImage->asView(recorder, skgpu::graphite::Mipmapped::kNo);
+        sk_sp<skgpu::graphite::TextureProxy> textureProxy = view.refProxy();
+
+        SkSamplingOptions samplingOptions(SkFilterMode::kNearest, SkMipmapMode::kNone);
+        SkTileMode tileModes[2] = {SkTileMode::kClamp, SkTileMode::kClamp};
+        gatherer->add(samplingOptions, tileModes, textureProxy);
+    }
 
     SkM44 lmInverse;
     bool wasInverted = gradData.fLocalMatrix.invert(&lmInverse);  // TODO: handle failure up stack
     if (!wasInverted) {
         lmInverse.setIdentity();
     }
-
     gatherer->write(lmInverse);
-    gatherer->write(gradData.fColor4fs, stops);
-    gatherer->write(gradData.fOffsets, stops);
+
+    if (isTextureGradient) {
+        gatherer->write(gradData.fNumStops);
+    } else {
+        int stops = codeSnippetID == SkBuiltInCodeSnippetID::kLinearGradientShader4 ? 4 : 8;
+        gatherer->write(gradData.fColor4fs, stops);
+        gatherer->write(gradData.fOffsets, stops);
+    }
+
     gatherer->write(gradData.fPoints[0]);
     gatherer->write(gradData.fPoints[1]);
     gatherer->write(static_cast<int>(gradData.fTM));
@@ -257,11 +294,13 @@ void GradientShaderBlocks::BeginBlock(const SkKeyContext& keyContext,
         SkBuiltInCodeSnippetID codeSnippetID = SkBuiltInCodeSnippetID::kSolidColorShader;
         switch (gradData.fType) {
             case SkShader::kLinear_GradientType:
-                codeSnippetID = gradData.fNumStops <= 4
-                                        ? SkBuiltInCodeSnippetID::kLinearGradientShader4
-                                        : SkBuiltInCodeSnippetID::kLinearGradientShader8;
+                // codeSnippetID = gradData.fNumStops <= 4
+                //                         ? SkBuiltInCodeSnippetID::kLinearGradientShader4
+                //                         : SkBuiltInCodeSnippetID::kLinearGradientShader8;
+                codeSnippetID = SkBuiltInCodeSnippetID::kLinearGradientShaderTexture;
                 if (gatherer) {
-                    add_linear_gradient_uniform_data(dict, codeSnippetID, gradData, gatherer);
+                    add_linear_gradient_uniform_data(
+                            keyContext.recorder(), dict, codeSnippetID, gradData, gatherer);
                 }
                 break;
             case SkShader::kRadial_GradientType:

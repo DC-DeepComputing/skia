@@ -876,6 +876,35 @@ DEF_SIMPLE_GM(gradient_many_stops, canvas, 500, 500) {
     draw_many_stops(canvas);
 }
 
+static void draw_many_hard_stops(SkCanvas* canvas) {
+    const unsigned kStopCount = 300;
+    const SkPoint pts[] = {{50, 50}, {450, 450}};
+
+    SkColor colors[kStopCount];
+    SkScalar pos[kStopCount];
+    for (unsigned i = 0; i < kStopCount; i++) {
+        switch (i % 6) {
+        case 0: colors[i] = SK_ColorRED; break;
+        case 1: colors[i] = SK_ColorGREEN; break;
+        case 2: colors[i] = SK_ColorGREEN; break;
+        case 3: colors[i] = SK_ColorBLUE; break;
+        case 4: colors[i] = SK_ColorBLUE; break;
+        case 5: colors[i] = SK_ColorRED; break;
+        }
+        pos[i] = (2.0f * (i / 2)) / kStopCount;
+    }
+
+    SkPaint p;
+    p.setShader(SkGradientShader::MakeLinear(
+        pts, colors, pos, std::size(colors), SkTileMode::kClamp));
+
+    canvas->drawRect(SkRect::MakeXYWH(0, 0, 500, 500), p);
+}
+
+DEF_SIMPLE_GM(gradient_many_hard_stops, canvas, 500, 500) {
+    draw_many_hard_stops(canvas);
+}
+
 static void draw_circle_shader(SkCanvas* canvas, SkScalar cx, SkScalar cy, SkScalar r,
                                sk_sp<SkShader> (*shaderFunc)()) {
     SkPaint p;

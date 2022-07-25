@@ -52,8 +52,8 @@ struct SolidColorShaderBlock {
 struct GradientShaderBlocks {
 
     struct GradientData {
-        // TODO: For the sprint we only support 8 stops in the gradients
-        static constexpr int kMaxStops = 8;
+        // TODO
+        static constexpr int kMaxStops = 1024;
 
         // This ctor is used during pre-compilation when we don't have enough information to
         // extract uniform data. However, we must be able to provide enough data to make all the
