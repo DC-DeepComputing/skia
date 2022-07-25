@@ -1,0 +1,84 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e4bdca37_da9dd9fc",
+        "filename": "src/gpu/graphite/Renderer.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-07-25T14:26:45Z",
+      "side": 1,
+      "message": "// When implemented the returned SkSL fragment should write its coverage into a \n// \u0027half4 outputCoverage\u0027 variable (defined in the calling code) with the actual\n// coverage splatted out into all four channels.\n\n?",
+      "revId": "7adc1cb1e349168cd6d472d43be5c34d76d0766a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dba038d3_84ed9026",
+        "filename": "src/gpu/graphite/render/TextDirectRenderStep.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-07-25T14:26:45Z",
+      "side": 1,
+      "message": "Maybe kNumTextAtlasTextures ?",
+      "revId": "7adc1cb1e349168cd6d472d43be5c34d76d0766a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c80c466f_8de3c52b",
+        "filename": "src/gpu/graphite/render/TextDirectRenderStep.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-07-25T14:26:45Z",
+      "side": 1,
+      "message": "Move left 4 spaces ?",
+      "range": {
+        "startLine": 98,
+        "startChar": 0,
+        "endLine": 98,
+        "endChar": 11
+      },
+      "revId": "7adc1cb1e349168cd6d472d43be5c34d76d0766a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "59b244b6_32f69fec",
+        "filename": "src/gpu/graphite/render/TextDirectRenderStep.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-07-25T14:26:45Z",
+      "side": 1,
+      "message": "kTileModes ? and kSamplingOptions above ?",
+      "range": {
+        "startLine": 128,
+        "startChar": 25,
+        "endLine": 128,
+        "endChar": 34
+      },
+      "revId": "7adc1cb1e349168cd6d472d43be5c34d76d0766a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
