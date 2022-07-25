@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "84193b3d_4ae64e61",
+        "filename": "src/core/SkRasterPipelineBlitter.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 178,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-07-25T13:58:17Z",
+      "side": 1,
+      "message": "nit: line length (here and just below)",
+      "revId": "dc65c22115c8ff0cd8d156b83440ba0b5d52a8c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ac29dad3_e6c87b9f",
+        "filename": "src/shaders/SkPictureShader.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 247,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-07-25T13:58:17Z",
+      "side": 1,
+      "message": "OK, I think the logic is good. I was going to suggest an assert here, to validate our thinking, but I wonder if it would be easier to just do the check here (after the preScale happened to the local matrix)? In other words, we could check here that localMatrix is just a translation matrix (and an integer translation, specifically). I suppose that\u0027s going to have some precision issues with the scale removal (If the original matrix has a non-power of two scale, then preScale by 1/S isn\u0027t necessarily going to produce 1, so we won\u0027t think it\u0027s a pure translation matrix). On the other hand, it would be conservatively correct, and easier to reason about.\n\nI\u0027m not committed to that solution, though - what do you think?",
+      "revId": "dc65c22115c8ff0cd8d156b83440ba0b5d52a8c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
