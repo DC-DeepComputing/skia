@@ -10,6 +10,7 @@ load("@bazel_gazelle//:def.bzl", _gazelle = "gazelle")
 load("@emsdk//emscripten_toolchain:wasm_rules.bzl", _wasm_cc_binary = "wasm_cc_binary")
 load("@io_bazel_rules_go//go:def.bzl", _go_binary = "go_binary", _go_library = "go_library")
 load("//bazel/common_config_settings:defs.bzl", _bool_flag = "bool_flag", _string_flag_with_values = "string_flag_with_values")
+load("//bazel:copts.bzl", "DEFAULT_COPTS")
 
 # re-export symbols that are commonly used or that are not supported in G3
 # (and thus we need to stub out)
@@ -68,17 +69,17 @@ def select_multi(values_map):
     return rv
 
 # buildifier: disable=unnamed-macro
-def cc_binary(**kwargs):
+def cc_binary(copts = DEFAULT_COPTS, **kwargs):
     """A shim around cc_binary that lets us tweak settings for G3 if necessary."""
-    native.cc_binary(**kwargs)
+    native.cc_binary(copts = copts, **kwargs)
 
 # buildifier: disable=unnamed-macro
-def cc_library(**kwargs):
+def cc_library(copts = DEFAULT_COPTS, **kwargs):
     """A shim around cc_library that lets us tweak settings for G3 if necessary."""
-    native.cc_library(**kwargs)
+    native.cc_library(copts = copts, **kwargs)
 
 # buildifier: disable=unnamed-macro
-def objc_library(**kwargs):
+def objc_library(copts = DEFAULT_COPTS, **kwargs):
     """A shim around objc_library that lets us tweak settings for G3 if necessary.
 
     Args:

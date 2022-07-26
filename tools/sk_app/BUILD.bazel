@@ -1,4 +1,5 @@
 load("//bazel:macros.bzl", "cc_library", "exports_files_legacy", "objc_library", "select_multi", "selects")
+load("//bazel:copts.bzl", "DEFAULT_COPTS")
 
 licenses(["notice"])
 
@@ -106,7 +107,7 @@ objc_library(
         "Window.h",
         "WindowContext.h",
     ],
-    copts = [
+    copts = DEFUALT_COPTS + [
         "-Wno-deprecated-declarations",
         "-DGL_SILENCE_DEPRECATION",
     ],

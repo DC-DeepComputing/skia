@@ -225,7 +225,7 @@ def _make_default_flags():
         ],
     )
 
-    cpp_compile_includes = flag_set(
+    cpp_compile_flags = flag_set(
         actions = [
             ACTION_NAMES.cpp_compile,
         ],
@@ -233,7 +233,6 @@ def _make_default_flags():
             flag_group(
                 flags = [
                     "-std=c++17",
-                    "-Wno-psabi",  # noisy
                 ],
             ),
         ],
@@ -267,7 +266,7 @@ def _make_default_flags():
         enabled = True,
         flag_sets = [
             cxx_compile_includes,
-            cpp_compile_includes,
+            cpp_compile_flags,
             link_exe_flags,
         ],
     )]
