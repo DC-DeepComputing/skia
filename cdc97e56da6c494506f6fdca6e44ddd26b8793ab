@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ead333c2_aca065c0",
+        "filename": "tests/sksl/intrinsics/IsInf.metal",
+        "patchSetId": 5
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-07-26T22:13:08Z",
+      "side": 0,
+      "message": "It looks like previously, our definition of `isinf`/`isnan` in `sksl_gpu` was wrong--we only declared it for `$genType`, but not `$genHType`. The public definition (which is now in \"shared\") was correct. Now that the compiler knows about both overloads it no longer feels compelled to cast these half vectors to float.",
+      "range": {
+        "startLine": 23,
+        "startChar": 36,
+        "endLine": 23,
+        "endChar": 42
+      },
+      "revId": "cdc97e56da6c494506f6fdca6e44ddd26b8793ab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
