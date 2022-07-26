@@ -288,12 +288,14 @@ GrResourceAllocator::Register* GrResourceAllocator::findOrCreateRegisterFor(GrSu
     skgpu::ScratchKey scratchKey;
     proxy->priv().computeScratchKey(*fDContext->priv().caps(), &scratchKey);
 
+#if GR_REUSE_SCRATCH_IN_RESOURCE_ALLOCATION
     auto filter = [] (const Register* r) {
         return true;
     };
     if (Register* r = fFreePool.findAndRemove(scratchKey, filter)) {
         return r;
     }
+#endif
 
     return fInternalAllocator.make<Register>(proxy, std::move(scratchKey), resourceProvider);
 }
@@ -305,6 +307,7 @@ void GrResourceAllocator::expire(unsigned int curIndex) {
         Interval* intvl = fActiveIntvls.popHead();
         SkASSERT(!intvl->next());
 
+#if GR_REUSE_SCRATCH_IN_RESOURCE_ALLOCATION
         Register* r = intvl->getRegister();
         if (r && r->isRecyclable(*fDContext->priv().caps(), intvl->proxy(), intvl->uses())) {
 #if GR_ALLOCATION_SPEW
@@ -313,6 +316,7 @@ void GrResourceAllocator::expire(unsigned int curIndex) {
             // TODO: fix this insertion so we get a more LRU-ish behavior
             fFreePool.insert(r->scratchKey(), r);
         }
+#endif
         fFinishedIntvls.insertByIncreasingStart(intvl);
     }
 }
@@ -400,7 +404,9 @@ void GrResourceAllocator::reset() {
     fIntvlList = IntervalList();
     fIntvlHash.reset();
     fUniqueKeyRegisters.reset();
+#if GR_REUSE_SCRATCH_IN_RESOURCE_ALLOCATION
     fFreePool.reset();
+#endif
     fInternalAllocator.reset();
 }
 
