@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2943ac9e_be5a5da8",
+        "filename": "src/core/SkRuntimeEffectPriv.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-07-26T00:29:41Z",
+      "side": 1,
+      "message": "Is there a better way to cast a `sk_sp\u003cBase\u003e` to `sk_sp\u003cDerived\u003e`?",
+      "range": {
+        "startLine": 73,
+        "startChar": 15,
+        "endLine": 73,
+        "endChar": 59
+      },
+      "revId": "9778f1692bf7d115bd5b469e4dc567f925a234a7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
