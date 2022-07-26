@@ -272,7 +272,9 @@ private:
     static const int kInitialArenaSize = 128 * sizeof(Interval);
 
     GrDirectContext*             fDContext;
+#if !GR_DISABLE_REUSE_IN_ALLOCATION
     FreePoolMultiMap             fFreePool;          // Recently created/used GrSurfaces
+#endif
     IntvlHash                    fIntvlHash;         // All the intervals, hashed by proxyID
 
     IntervalList                 fIntvlList;         // All the intervals sorted by increasing start
