@@ -61,6 +61,53 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d83fa81d_19d1b915",
+        "filename": "resources/sksl/folding/MatrixScalarNoOpFolding.sksl",
+        "patchSetId": 8
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-07-26T14:44:31Z",
+      "side": 1,
+      "message": "[matrix OP scalar] is component-wise for most ops but is not component-wise for multiplication... it does a standard matrix multiply.\n\nOur no-op-elimination code only runs for square matrices (see `^` mark elsewhere) because yeah, it\u0027s not necessarily a no-op for a non-square matrix. I haven\u0027t thought it through 100% but I think it could be boiled down to a matrix-resize ctor. However I don\u0027t think it\u0027s going to be common to see matrix-resizes expressed as multiplications against non-square identity matrices! \n\nThis test code is only focused on the square matrix case because that\u0027s all we actually optimize. Non-square mats should pass through unaffected.\n\nAll that being said I\u0027m happy to rephrase this comment--what do you want it to say?",
+      "parentUuid": "db012622_2b9ab9e3",
+      "range": {
+        "startLine": 102,
+        "startChar": 4,
+        "endLine": 102,
+        "endChar": 54
+      },
+      "revId": "1b1328fc553005364f0fa51ca27e7ccbc1c330be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2b4a3471_acabf38b",
+        "filename": "src/sksl/SkSLConstantFolder.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 365,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-07-26T14:44:31Z",
+      "side": 1,
+      "message": "^ square matrices only",
+      "range": {
+        "startLine": 365,
+        "startChar": 8,
+        "endLine": 365,
+        "endChar": 21
+      },
+      "revId": "1b1328fc553005364f0fa51ca27e7ccbc1c330be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "98f0c1cf_33b554cf",
         "filename": "src/sksl/SkSLConstantFolder.cpp",
         "patchSetId": 8
@@ -120,6 +167,30 @@
       "side": 1,
       "message": "Oh, `+\u003d`. Never mind.",
       "parentUuid": "16f2df93_f8098c25",
+      "range": {
+        "startLine": 500,
+        "startChar": 16,
+        "endLine": 500,
+        "endChar": 49
+      },
+      "revId": "1b1328fc553005364f0fa51ca27e7ccbc1c330be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "aa3c8185_6c07e733",
+        "filename": "src/sksl/SkSLConstantFolder.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 500,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-07-26T14:44:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c0044132_1c4ceaef",
       "range": {
         "startLine": 500,
         "startChar": 16,
