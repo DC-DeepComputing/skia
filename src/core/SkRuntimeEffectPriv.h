@@ -10,6 +10,7 @@
 
 #include "include/effects/SkRuntimeEffect.h"
 #include "include/private/SkColorData.h"
+#include "src/core/SkColorFilterBase.h"
 #include "src/core/SkVM.h"
 
 #include <functional>
@@ -27,6 +28,8 @@ struct SkColorSpaceXformSteps;
 
 class SkRuntimeEffectPriv {
 public:
+    using ChildPtr = SkRuntimeEffect::ChildPtr;
+
     // Helper function when creating an effect for a GrSkSLFP that verifies an effect will
     // implement the constant output for constant input optimization flag.
     static bool SupportsConstantOutputForConstantInput(const SkRuntimeEffect* effect) {
@@ -54,6 +57,21 @@ public:
     static SkRuntimeEffect::Uniform VarAsUniform(const SkSL::Variable&,
                                                  const SkSL::Context&,
                                                  size_t* offset);
+
+    // Creates a Runtime Color Filter with the given base class.
+    template <typename T>
+    static sk_sp<T> MakeColorFilter(const SkRuntimeEffect* effect,
+                                    sk_sp<const SkData> uniforms,
+                                    SkSpan<ChildPtr> children) {
+        sk_sp<SkColorFilter> cf = effect->makeColorFilter(uniforms,
+                                                          children,
+                                                          [](sk_sp<SkRuntimeEffect> effect,
+                                                             sk_sp<const SkData> uniforms,
+                                                             SkSpan<ChildPtr> children) {
+            return sk_make_sp<T>(std::move(effect), std::move(uniforms), children);
+        });
+        return sk_ref_sp<T>(static_cast<T*>(cf.release()));
+    }
 
     // If there are layout(color) uniforms then this performs color space transformation on the
     // color values and returns a new SkData. Otherwise, the original data is returned.
@@ -175,6 +193,49 @@ private:
     skvm::Program           fProgram;
     std::vector<SampleCall> fSampleCalls;
     bool                    fAlphaUnchanged;
+};
+
+/**
+ * SkRuntimeColorFilter is the Skia runtime color-filter implementation.
+ * If you want to override methods in SkColorFilterBase--e.g. onAppendStages, for raster
+ * pipeline support--you can subclass this and then call SkRuntimeEffectPriv::MakeColorFilter<T>.
+ */
+class SkRuntimeColorFilter : public SkColorFilterBase {
+public:
+    SkRuntimeColorFilter(sk_sp<SkRuntimeEffect> effect,
+                         sk_sp<const SkData> uniforms,
+                         SkSpan<SkRuntimeEffect::ChildPtr> children);
+
+#if SK_SUPPORT_GPU
+    GrFPResult asFragmentProcessor(std::unique_ptr<GrFragmentProcessor> inputFP,
+                                   GrRecordingContext* context,
+                                   const GrColorInfo& colorInfo) const override final;
+#endif
+
+    void addToKey(const SkKeyContext& keyContext,
+                  SkPaintParamsKeyBuilder* builder,
+                  SkPipelineDataGatherer* gatherer) const override final;
+
+    bool onAppendStages(const SkStageRec& rec, bool shaderIsOpaque) const override;
+
+    skvm::Color onProgram(skvm::Builder* p, skvm::Color c,
+                          const SkColorInfo& colorInfo,
+                          skvm::Uniforms* uniforms, SkArenaAlloc* alloc) const override;
+
+    SkPMColor4f onFilterColor4f(const SkPMColor4f& color, SkColorSpace* dstCS) const override;
+
+    bool onIsAlphaUnchanged() const override;
+
+    void flatten(SkWriteBuffer& buffer) const override;
+
+    SkRuntimeEffect* asRuntimeEffect() const override { return fEffect.get(); }
+
+    SK_FLATTENABLE_HOOKS(SkRuntimeColorFilter)
+
+protected:
+    sk_sp<SkRuntimeEffect> fEffect;
+    sk_sp<const SkData> fUniforms;
+    std::vector<SkRuntimeEffect::ChildPtr> fChildren;
 };
 
 #endif  // SK_ENABLE_SKSL
