@@ -675,10 +675,6 @@ static bool check_backend_texture(const GrBackendTexture& backendTex,
     } else if (GR_GL_TEXTURE_2D != desc->fTarget) {
         return false;
     }
-    if (backendTex.isProtected()) {
-        // Not supported in GL backend at this time.
-        return false;
-    }
 
     return true;
 }
@@ -734,6 +730,7 @@ static bool check_compressed_backend_texture(const GrBackendTexture& backendTex,
         return false;
     }
     if (backendTex.isProtected()) {
+        SK_ABORT("Attempting to use protected in check_compressed_backend_texture");
         // Not supported in GL backend at this time.
         return false;
     }
@@ -814,6 +811,7 @@ sk_sp<GrRenderTarget> GrGLGpu::onWrapBackendRenderTarget(const GrBackendRenderTa
     }
 
     if (backendRT.isProtected()) {
+        SK_ABORT("Attempting to use protected in onWrapBackendRenderTarget");
         // Not supported in GL at this time.
         return nullptr;
     }
@@ -1425,10 +1423,6 @@ sk_sp<GrTexture> GrGLGpu::onCreateTexture(SkISize dimensions,
                                           int mipLevelCount,
                                           uint32_t levelClearMask,
                                           std::string_view label) {
-    // We don't support protected textures in GL.
-    if (isProtected == GrProtected::kYes) {
-        return nullptr;
-    }
     SkASSERT(GrGLCaps::kNone_MSFBOType != this->glCaps().msFBOType() || renderTargetSampleCnt == 1);
 
     SkASSERT(mipLevelCount > 0);
@@ -1535,6 +1529,7 @@ sk_sp<GrTexture> GrGLGpu::onCreateCompressedTexture(SkISize dimensions,
                                                     const void* data, size_t dataSize) {
     // We don't support protected textures in GL.
     if (isProtected == GrProtected::kYes) {
+        SK_ABORT("Attempting to use protected in onCreateCompressedTexture");
         return nullptr;
     }
     SkImage::CompressionType compression = GrBackendFormatToCompressionType(format);
@@ -1579,6 +1574,7 @@ GrBackendTexture GrGLGpu::onCreateCompressedBackendTexture(
         GrProtected isProtected) {
     // We don't support protected textures in GL.
     if (isProtected == GrProtected::kYes) {
+        SK_ABORT("Attempting to use protected in onCreateCompressedBackendTexture");
         return {};
     }
 
@@ -3847,6 +3843,7 @@ GrBackendRenderTarget GrGLGpu::createTestingOnlyBackendRenderTarget(SkISize dime
         return {};
     }
     if (isProtected == GrProtected::kYes) {
+        SK_ABORT("Attempting to use protected in createTestingOnlyBackendRenderTarget");
         return {};
     }
 
