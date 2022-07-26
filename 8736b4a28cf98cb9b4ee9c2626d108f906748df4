@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "61535433_83d8584d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-07-26T17:57:18Z",
+      "side": 1,
+      "message": "Yeah, the bots pass if you keep all the serialization logic that existed there originally. I removed the serialization logic in a followup CL hoping that things might \"just work\" without it... but of course, that fails when trying to reconstitute the object in CPU mode. \n\nThe simplest answer is to manually serialize just like before. But it seems like we should be able to do a little better if there is a way to use the registered flattening data somehow inside SkRuntimeEffect serialization. I\u0027d need to read it through pretty closely.\n\nEither way, if we are going to use this just a few times we can probably just manually serialize. Later on, if it ends up being a burden we can look at having SkRuntimeEffect do magic based on the flattenable info.",
+      "parentUuid": "d4c284f9_fcf750db",
+      "revId": "8736b4a28cf98cb9b4ee9c2626d108f906748df4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8acf14b0_2e675e9d",
         "filename": "src/core/SkColorFilter.cpp",
         "patchSetId": 8
