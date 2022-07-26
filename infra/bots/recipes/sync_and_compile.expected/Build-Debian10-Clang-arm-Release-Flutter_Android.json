@@ -1,6 +1,17 @@
 [
   {
     "cmd": [
+      "echo",
+      "[START_DIR]/cache/work/flutter"
+    ],
+    "env": {
+      "CHROME_HEADLESS": "1",
+      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
+    },
+    "name": "checkout root prior to bot_update"
+  },
+  {
+    "cmd": [
       "python",
       "\nfrom __future__ import print_function\nimport subprocess\nimport sys\n\nwhich = 'where' if sys.platform == 'win32' else 'which'\ngit = subprocess.check_output([which, 'git']).decode('utf-8')\nprint('git was found at %s' % git)\nif 'cipd_bin_packages' not in git:\n  print('Git must be obtained through CIPD.', file=sys.stderr)\n  sys.exit(1)\n"
     ],
@@ -64,6 +75,18 @@
     ],
     "infra_step": true,
     "name": "remove [START_DIR]/cache/work/flutter/.gclient_entries"
+  },
+  {
+    "cmd": [
+      "echo",
+      "[START_DIR]/cache/work/flutter"
+    ],
+    "cwd": "[START_DIR]/cache/work/flutter",
+    "env": {
+      "CHROME_HEADLESS": "1",
+      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
+    },
+    "name": "about to ensure_checkout with cwd"
   },
   {
     "cmd": [
@@ -174,6 +197,54 @@
       ]
     },
     "name": "gclient runhooks"
+  },
+  {
+    "cmd": [
+      "ls",
+      "-lah",
+      "[START_DIR]"
+    ],
+    "env": {
+      "CHROME_HEADLESS": "1",
+      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
+    },
+    "name": "ls skia_dir"
+  },
+  {
+    "cmd": [
+      "ls",
+      "-lah",
+      "[START_DIR]/k"
+    ],
+    "env": {
+      "CHROME_HEADLESS": "1",
+      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
+    },
+    "name": "ls skia_dir/k"
+  },
+  {
+    "cmd": [
+      "ls",
+      "-lah",
+      "[START_DIR]/skia"
+    ],
+    "env": {
+      "CHROME_HEADLESS": "1",
+      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
+    },
+    "name": "ls skia_dir/skia"
+  },
+  {
+    "cmd": [
+      "ls",
+      "-lah",
+      "[START_DIR]/k/skia"
+    ],
+    "env": {
+      "CHROME_HEADLESS": "1",
+      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
+    },
+    "name": "ls skia_dir/k/skia"
   },
   {
     "cmd": [

@@ -69,15 +69,18 @@ def compile_swiftshader(api, extra_tokens, swiftshader_root, cc, cxx, out):
 
 
 def compile_fn(api, checkout_root, out_dir):
+  api.run(api.step, 'compile function a', cmd=['echo', 'hello'])
   skia_dir      = checkout_root.join('skia')
   compiler      = api.vars.builder_cfg.get('compiler',      '')
   configuration = api.vars.builder_cfg.get('configuration', '')
   extra_tokens  = api.vars.extra_tokens
   os            = api.vars.builder_cfg.get('os',            '')
   target_arch   = api.vars.builder_cfg.get('target_arch',   '')
+  api.run(api.step, 'compile function b', cmd=['echo', 'hello'])
 
   clang_linux      = str(api.vars.workdir.join('clang_linux'))
   win_toolchain    = str(api.vars.workdir.join('win_toolchain'))
+  api.run(api.step, 'compile function c', cmd=['echo', 'hello'])
 
   cc, cxx, ccache = None, None, None
   extra_cflags = []
@@ -130,6 +133,7 @@ def compile_fn(api, checkout_root, out_dir):
     args['skia_compile_sksl_tests'] = 'true'
     args['skia_generate_workarounds'] = 'true'
 
+  api.run(api.step, 'compile function d', cmd=['echo', 'hello'])
   # ccache + clang-tidy.sh chokes on the argument list.
   if (api.vars.is_linux or os == 'Mac' or os == 'Mac10.15.5' or os == 'Mac10.15.7') and 'Tidy' not in extra_tokens:
     if api.vars.is_linux:
@@ -152,12 +156,14 @@ def compile_fn(api, checkout_root, out_dir):
     # directories we'll also need to set a CCACHE_BASEDIR.
     env['CCACHE_COMPILERCHECK'] = 'content'
 
+    api.run(api.step, 'compile function e', cmd=['echo', 'hello'])
   if compiler == 'Clang' and api.vars.is_linux:
     cc  = clang_linux + '/bin/clang'
     cxx = clang_linux + '/bin/clang++'
     extra_cflags .append('-B%s/bin' % clang_linux)
     extra_ldflags.append('-B%s/bin' % clang_linux)
     extra_ldflags.append('-fuse-ld=lld')
+    api.run(api.step, 'print skia_dir', cmd=['echo', str(skia_dir)])
     extra_cflags.append('-DPLACEHOLDER_clang_linux_version=%s' %
                         api.run.asset_version('clang_linux', skia_dir))
     if 'Static' in extra_tokens:
@@ -165,6 +171,8 @@ def compile_fn(api, checkout_root, out_dir):
 
   elif compiler == 'Clang':
     cc, cxx = 'clang', 'clang++'
+
+  api.run(api.step, 'compile function f', cmd=['echo', 'hello'])
 
   if 'Tidy' in extra_tokens:
     # Swap in clang-tidy.sh for clang++, but update PATH so it can find clang++.
