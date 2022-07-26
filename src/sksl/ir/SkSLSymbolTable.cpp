@@ -33,21 +33,26 @@ static SkSpan<const FunctionDeclaration* const> get_overload_set(
 }
 
 const Symbol* SymbolTable::operator[](std::string_view name) {
-    return this->lookup(fBuiltin ? nullptr : this, MakeSymbolKey(name));
+    return this->lookup(this, /*encounteredModuleBoundary=*/false, MakeSymbolKey(name));
 }
 
-const Symbol* SymbolTable::lookup(SymbolTable* writableSymbolTable, const SymbolKey& key) {
+const Symbol* SymbolTable::lookup(SymbolTable* writableSymbolTable,
+                                  bool encounteredModuleBoundary,
+                                  const SymbolKey& key) {
     // Symbol-table lookup can cause new UnresolvedFunction nodes to be created; however, we don't
-    // want these to end up in built-in root symbol tables (where they will outlive the Program
-    // associated with those UnresolvedFunction nodes). `writableSymbolTable` tracks the closest
-    // symbol table to the root which is not a built-in.
-    if (!fBuiltin) {
+    // want these to end up in the symbol tables of loaded modules (where they will outlive the
+    // Program associated with those UnresolvedFunction nodes). `writableSymbolTable` tracks the
+    // closest symbol table to the root which is not a built-in. `encounteredModuleBoundary` is set
+    // to true whenever we detect a module boundary; once this happens, we stop updating the
+    // `writableSymbolTable` to prevent making changes outside of our current Program.
+    if (!encounteredModuleBoundary) {
         writableSymbolTable = this;
+        encounteredModuleBoundary |= fAtModuleBoundary;
     }
     const Symbol** symbolPPtr = fSymbols.find(key);
     if (!symbolPPtr) {
         // The symbol wasn't found; recurse into the parent symbol table.
-        return fParent ? fParent->lookup(writableSymbolTable, key)
+        return fParent ? fParent->lookup(writableSymbolTable, encounteredModuleBoundary, key)
                        : nullptr;
     }
 
@@ -65,15 +70,18 @@ const Symbol* SymbolTable::lookup(SymbolTable* writableSymbolTable, const Symbol
     }
 
     // We found a function-related symbol. We need to return the complete overload set.
-    return this->buildOverloadSet(writableSymbolTable, key, symbol, overloadSet);
+    return this->buildOverloadSet(writableSymbolTable, encounteredModuleBoundary,
+                                  key, symbol, overloadSet);
 }
 
 const Symbol* SymbolTable::buildOverloadSet(SymbolTable* writableSymbolTable,
+                                            bool encounteredModuleBoundary,
                                             const SymbolKey& key,
                                             const Symbol* symbol,
                                             SkSpan<const FunctionDeclaration* const> overloadSet) {
     // Scan the parent symbol table for a matching symbol.
-    const Symbol* overloadedSymbol = fParent->lookup(writableSymbolTable, key);
+    const Symbol* overloadedSymbol = fParent->lookup(writableSymbolTable, encounteredModuleBoundary,
+                                                     key);
     if (!overloadedSymbol) {
         return symbol;
     }
@@ -111,10 +119,9 @@ const Symbol* SymbolTable::buildOverloadSet(SymbolTable* writableSymbolTable,
 
     // Add this combined overload set to the symbol table.
     SkASSERT(combinedOverloadSet.size() > 1);
-    return writableSymbolTable
-                   ? writableSymbolTable->takeOwnershipOfSymbol(
-                             std::make_unique<UnresolvedFunction>(std::move(combinedOverloadSet)))
-                   : nullptr;
+    SkASSERT(writableSymbolTable);
+    return writableSymbolTable->takeOwnershipOfSymbol(
+            std::make_unique<UnresolvedFunction>(std::move(combinedOverloadSet)));
 }
 
 const std::string* SymbolTable::takeOwnershipOfString(std::string str) {
