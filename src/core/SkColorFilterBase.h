@@ -35,8 +35,7 @@ public:
     skvm::Color program(skvm::Builder*, skvm::Color,
                         const SkColorInfo& dst, skvm::Uniforms*, SkArenaAlloc*) const;
 
-    /** Returns the flags for this filter. Override in subclasses to return custom flags.
-    */
+    /** Returns the flags for this filter. Override in subclasses to return custom flags. */
     virtual bool onIsAlphaUnchanged() const { return false; }
 
 #if SK_SUPPORT_GPU
