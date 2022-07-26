@@ -1,11 +1,24 @@
+### Compilation failed:
 
-out vec4 sk_FragColor;
-layout (binding = 0) uniform sampler1D one;
-layout (binding = 1) uniform sampler2D two;
-void main() {
-    vec4 a = texture(one, 0.0, -0.475);
-    vec4 b = texture(two, vec2(0.0), -0.475);
-    vec4 c = textureProj(one, vec2(0.0), -0.475);
-    vec4 d = textureProj(two, vec3(0.0), -0.475);
-    sk_FragColor = vec4(a.x, b.x, c.x, d.x);
-}
+error: 3: no type named 'sampler1D'
+layout(binding=0) uniform sampler1D one;
+                          ^^^^^^^^^
+error: 3: no type named 'one'
+layout(binding=0) uniform sampler1D one;
+                                    ^^^
+error: 3: expected a declaration, but found ';'
+layout(binding=0) uniform sampler1D one;
+                                       ^
+error: 7: unknown identifier 'one'
+    float4 a = sample(one, 0);
+                      ^^^
+error: 9: unknown identifier 'one'
+    float4 c = sample(one, float2(0));
+                      ^^^
+error: 11: unknown identifier 'a'
+    sk_FragColor = half4(half(a.x), half(b.x), half(c.x), half(d.x));
+                              ^
+error: 11: unknown identifier 'c'
+    sk_FragColor = half4(half(a.x), half(b.x), half(c.x), half(d.x));
+                                                    ^
+7 errors
