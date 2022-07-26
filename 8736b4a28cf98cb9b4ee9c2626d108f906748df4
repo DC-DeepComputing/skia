@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8acf14b0_2e675e9d",
+        "filename": "src/core/SkColorFilter.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-07-26T02:18:22Z",
+      "side": 1,
+      "message": "TODO: this won\u0027t exist if SK_ENABLE_SKSL is disabled. This is fixable with a little more restructuring. We need the basic structure (uniforms, children, serialization) but not the parts that actually use a program.",
+      "range": {
+        "startLine": 160,
+        "startChar": 36,
+        "endLine": 160,
+        "endChar": 56
+      },
+      "revId": "8736b4a28cf98cb9b4ee9c2626d108f906748df4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
