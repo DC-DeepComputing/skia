@@ -54,6 +54,18 @@
   },
   {
     "cmd": [
+      "echo",
+      "[START_DIR]/cache/work"
+    ],
+    "cwd": "[START_DIR]/cache/work",
+    "env": {
+      "CHROME_HEADLESS": "1",
+      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
+    },
+    "name": "about to ensure_checkout with cwd"
+  },
+  {
+    "cmd": [
       "vpython",
       "RECIPE_REPO[depot_tools]/gerrit_client.py",
       "changes",
