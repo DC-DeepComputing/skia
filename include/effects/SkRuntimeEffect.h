@@ -19,8 +19,9 @@
 #include "include/private/SkOnce.h"
 #include "include/private/SkSLSampleUsage.h"
 
-#include <string>
+#include <functional>
 #include <optional>
+#include <string>
 #include <vector>
 
 #ifdef SK_ENABLE_SKSL
@@ -303,6 +304,13 @@ private:
     bool alwaysOpaque()       const { return (fFlags & kAlwaysOpaque_Flag);       }
 
     const SkFilterColorProgram* getFilterColorProgram() const;
+
+    using MakeColorFilterFn = std::function<sk_sp<SkColorFilter>(sk_sp<SkRuntimeEffect> effect,
+                                                                 sk_sp<const SkData> uniforms,
+                                                                 SkSpan<ChildPtr> children)>;
+    sk_sp<SkColorFilter> makeColorFilter(sk_sp<const SkData> uniforms,
+                                         SkSpan<ChildPtr> children,
+                                         const MakeColorFilterFn& fn) const;
 
 #if SK_SUPPORT_GPU
     friend class GrSkSLFP;             // fBaseProgram, fSampleUsages
