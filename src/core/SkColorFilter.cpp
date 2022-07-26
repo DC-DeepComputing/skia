@@ -157,84 +157,49 @@ void SkColorFilterBase::addToKey(const SkKeyContext& keyContext,
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-class SkComposeColorFilter : public SkColorFilterBase {
+class SkComposeColorFilter : public SkRuntimeColorFilter {
 public:
+    using SkRuntimeColorFilter::SkRuntimeColorFilter;
+
     bool onIsAlphaUnchanged() const override {
-        // Can only claim alphaunchanged support if both our proxys do.
-        return fOuter->isAlphaUnchanged() && fInner->isAlphaUnchanged();
+        // Can only claim alpha-unchanged support if both our proxies do.
+        return this->outer()->isAlphaUnchanged() && this->inner()->isAlphaUnchanged();
     }
 
     bool onAppendStages(const SkStageRec& rec, bool shaderIsOpaque) const override {
         bool innerIsOpaque = shaderIsOpaque;
-        if (!fInner->isAlphaUnchanged()) {
+        if (!this->inner()->isAlphaUnchanged()) {
             innerIsOpaque = false;
         }
-        return fInner->appendStages(rec, shaderIsOpaque) &&
-               fOuter->appendStages(rec, innerIsOpaque);
+        return this->inner()->appendStages(rec, shaderIsOpaque) &&
+               this->outer()->appendStages(rec, innerIsOpaque);
     }
 
     skvm::Color onProgram(skvm::Builder* p, skvm::Color c,
                           const SkColorInfo& dst,
                           skvm::Uniforms* uniforms, SkArenaAlloc* alloc) const override {
-               c = fInner->program(p, c, dst, uniforms, alloc);
-        return c ? fOuter->program(p, c, dst, uniforms, alloc) : skvm::Color{};
+               c = this->inner()->program(p, c, dst, uniforms, alloc);
+        return c ? this->outer()->program(p, c, dst, uniforms, alloc) : skvm::Color{};
     }
 
-#if SK_SUPPORT_GPU
-    GrFPResult asFragmentProcessor(std::unique_ptr<GrFragmentProcessor> inputFP,
-                                   GrRecordingContext* context,
-                                   const GrColorInfo& dstColorInfo) const override {
-        // Unfortunately, we need to clone the input before we know we need it. This lets us return
-        // the original FP if either internal color filter fails.
-        auto inputClone = inputFP ? inputFP->clone() : nullptr;
-
-        auto [innerSuccess, innerFP] =
-                fInner->asFragmentProcessor(std::move(inputFP), context, dstColorInfo);
-        if (!innerSuccess) {
-            return GrFPFailure(std::move(inputClone));
-        }
-
-        auto [outerSuccess, outerFP] =
-                fOuter->asFragmentProcessor(std::move(innerFP), context, dstColorInfo);
-        if (!outerSuccess) {
-            return GrFPFailure(std::move(inputClone));
-        }
-
-        return GrFPSuccess(std::move(outerFP));
-    }
-#endif
-
-#ifdef SK_ENABLE_SKSL
-    void addToKey(const SkKeyContext& keyContext,
-                  SkPaintParamsKeyBuilder* builder,
-                  SkPipelineDataGatherer* gatherer) const override {
-        ComposeColorFilterBlock::BeginBlock(keyContext, builder, gatherer);
-
-        as_CFB(fInner)->addToKey(keyContext, builder, gatherer);
-        as_CFB(fOuter)->addToKey(keyContext, builder, gatherer);
-
-        builder->endBlock();
-    }
-#endif // SK_ENABLE_SKSL
+    const SkColorFilterBase* inner() const { return this->childFilterAtIndex(1); }
+    const SkColorFilterBase* outer() const { return this->childFilterAtIndex(0); }
 
     SK_FLATTENABLE_HOOKS(SkComposeColorFilter)
 
 protected:
     void flatten(SkWriteBuffer& buffer) const override {
-        buffer.writeFlattenable(fOuter.get());
-        buffer.writeFlattenable(fInner.get());
+        buffer.writeFlattenable(this->outer());
+        buffer.writeFlattenable(this->inner());
     }
 
 private:
-    SkComposeColorFilter(sk_sp<SkColorFilter> outer, sk_sp<SkColorFilter> inner)
-        : fOuter(as_CFB_sp(std::move(outer)))
-        , fInner(as_CFB_sp(std::move(inner)))
-    {}
-
-    sk_sp<SkColorFilterBase> fOuter;
-    sk_sp<SkColorFilterBase> fInner;
-
-    friend class SkColorFilter;
+    const SkColorFilterBase* childFilterAtIndex(int index) const {
+        SkASSERT(fChildren.size() == 2);
+        SkASSERT(index < SkTo<int>(fChildren.size()));
+        SkASSERT(fChildren[index].colorFilter() != nullptr);
+        return as_CFB(fChildren[index].colorFilter());
+    }
 
     using INHERITED = SkColorFilter;
 };
@@ -250,7 +215,20 @@ sk_sp<SkColorFilter> SkColorFilter::makeComposed(sk_sp<SkColorFilter> inner) con
         return sk_ref_sp(this);
     }
 
-    return sk_sp<SkColorFilter>(new SkComposeColorFilter(sk_ref_sp(this), std::move(inner)));
+    static const SkRuntimeEffect* effect = SkMakeCachedRuntimeEffect(
+        SkRuntimeEffect::MakeForColorFilter,
+        "uniform colorFilter outer;"
+        "uniform colorFilter inner;"
+        "half4 main(half4 color) {"
+            "return outer.eval(inner.eval(color));"
+        "}"
+    ).release();
+    SkASSERT(effect);
+
+    SkRuntimeEffect::ChildPtr inputs[2] = {sk_ref_sp(this), std::move(inner)};
+    return SkRuntimeEffectPriv::MakeColorFilter<SkComposeColorFilter>(effect,
+                                                                      /*uniforms=*/nullptr,
+                                                                      SkSpan(inputs));
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
