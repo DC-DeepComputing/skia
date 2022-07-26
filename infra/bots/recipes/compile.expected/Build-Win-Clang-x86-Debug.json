@@ -1,6 +1,32 @@
 [
   {
     "cmd": [
+      "echo",
+      "start_dir is \"",
+      "[START_DIR]",
+      "\""
+    ],
+    "env": {
+      "CHROME_HEADLESS": "1",
+      "PATH": "<PATH>;RECIPE_REPO[depot_tools]"
+    },
+    "name": "print start_dir"
+  },
+  {
+    "cmd": [
+      "echo",
+      "out_dir is \"",
+      "[START_DIR]\\cache\\work\\skia\\out\\Build-Win-Clang-x86-Debug\\Debug",
+      "\""
+    ],
+    "env": {
+      "CHROME_HEADLESS": "1",
+      "PATH": "<PATH>;RECIPE_REPO[depot_tools]"
+    },
+    "name": "print out_dir"
+  },
+  {
+    "cmd": [
       "vpython3",
       "-u",
       "RECIPE_MODULE[recipe_engine::file]\\resources\\fileutil.py",
