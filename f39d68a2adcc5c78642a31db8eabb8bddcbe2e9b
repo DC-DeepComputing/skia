@@ -16,6 +16,24 @@
       "message": "Do these not need to be added back elsewhere? Where they not actually needed in this build previously?",
       "revId": "f39d68a2adcc5c78642a31db8eabb8bddcbe2e9b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "46e0ca42_cdb123ec",
+        "filename": "public.bzl",
+        "patchSetId": 6
+      },
+      "lineNbr": 1707,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-07-26T11:15:38Z",
+      "side": 0,
+      "message": "As far as I could tell - no. These were not used in G3, Chromium, Flutter, nor Android.",
+      "parentUuid": "b09fd3c6_dee07b00",
+      "revId": "f39d68a2adcc5c78642a31db8eabb8bddcbe2e9b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
