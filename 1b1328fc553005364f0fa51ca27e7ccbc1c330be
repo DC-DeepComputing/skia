@@ -16,6 +16,52 @@
       "message": "This should be ready to land now.",
       "revId": "1b1328fc553005364f0fa51ca27e7ccbc1c330be",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "db012622_2b9ab9e3",
+        "filename": "resources/sksl/folding/MatrixScalarNoOpFolding.sksl",
+        "patchSetId": 8
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-07-26T13:49:00Z",
+      "side": 1,
+      "message": "nit: This comment is slightly ambiguous, and I initially read it as \"this is the same as constructing a matrix from the scalar\", which is only sort-of correct.\n\nFor square matrices you can think of it as constructing a scale matrix using [matrix(scalar)], but that model breaks down once the matrix isn\u0027t square. I guess I find it easier to just always explain that [matrix OP scalar] is a component-wise operation?",
+      "range": {
+        "startLine": 102,
+        "startChar": 4,
+        "endLine": 102,
+        "endChar": 54
+      },
+      "revId": "1b1328fc553005364f0fa51ca27e7ccbc1c330be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "98f0c1cf_33b554cf",
+        "filename": "src/sksl/SkSLConstantFolder.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 500,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-07-26T13:49:00Z",
+      "side": 1,
+      "message": "This case should be impossible. No way to get here with earlier type checking, I\u0027d hope? (Same below, for SLASHEQ).",
+      "range": {
+        "startLine": 500,
+        "startChar": 16,
+        "endLine": 500,
+        "endChar": 49
+      },
+      "revId": "1b1328fc553005364f0fa51ca27e7ccbc1c330be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
