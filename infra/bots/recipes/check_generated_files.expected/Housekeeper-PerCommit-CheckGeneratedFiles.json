@@ -205,6 +205,78 @@
   },
   {
     "cmd": [
+      "echo",
+      "hello"
+    ],
+    "cwd": "[START_DIR]/cache/work/skia",
+    "env": {
+      "CHROME_HEADLESS": "1",
+      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
+    },
+    "name": "compile function a"
+  },
+  {
+    "cmd": [
+      "echo",
+      "hello"
+    ],
+    "cwd": "[START_DIR]/cache/work/skia",
+    "env": {
+      "CHROME_HEADLESS": "1",
+      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
+    },
+    "name": "compile function b"
+  },
+  {
+    "cmd": [
+      "echo",
+      "hello"
+    ],
+    "cwd": "[START_DIR]/cache/work/skia",
+    "env": {
+      "CHROME_HEADLESS": "1",
+      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
+    },
+    "name": "compile function c"
+  },
+  {
+    "cmd": [
+      "echo",
+      "hello"
+    ],
+    "cwd": "[START_DIR]/cache/work/skia",
+    "env": {
+      "CHROME_HEADLESS": "1",
+      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
+    },
+    "name": "compile function d"
+  },
+  {
+    "cmd": [
+      "echo",
+      "hello"
+    ],
+    "cwd": "[START_DIR]/cache/work/skia",
+    "env": {
+      "CHROME_HEADLESS": "1",
+      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
+    },
+    "name": "compile function e"
+  },
+  {
+    "cmd": [
+      "echo",
+      "[START_DIR]/cache/work/skia"
+    ],
+    "cwd": "[START_DIR]/cache/work/skia",
+    "env": {
+      "CHROME_HEADLESS": "1",
+      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
+    },
+    "name": "print skia_dir"
+  },
+  {
+    "cmd": [
       "vpython3",
       "-u",
       "RECIPE_MODULE[recipe_engine::file]/resources/fileutil.py",
@@ -221,6 +293,18 @@
       "@@@STEP_LOG_LINE@VERSION@42@@@",
       "@@@STEP_LOG_END@VERSION@@@"
     ]
+  },
+  {
+    "cmd": [
+      "echo",
+      "hello"
+    ],
+    "cwd": "[START_DIR]/cache/work/skia",
+    "env": {
+      "CHROME_HEADLESS": "1",
+      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
+    },
+    "name": "compile function f"
   },
   {
     "cmd": [
