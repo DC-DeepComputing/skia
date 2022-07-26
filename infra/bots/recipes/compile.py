@@ -30,6 +30,9 @@ def RunSteps(api):
   out_dir = api.vars.cache_dir.join(
       'work', 'skia', 'out', api.vars.builder_name, api.vars.configuration)
 
+  api.run(api.step, 'print start_dir', cmd=['echo', 'start_dir is "', api.path['start_dir'],'"'])
+  api.run(api.step, 'print out_dir', cmd=['echo', 'out_dir is "', out_dir,'"'])
+
   try:
     api.build(checkout_root=checkout_root, out_dir=out_dir)
 

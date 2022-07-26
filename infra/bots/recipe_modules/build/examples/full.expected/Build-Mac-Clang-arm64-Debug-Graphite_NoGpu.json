@@ -1,5 +1,38 @@
 [
   {
+    "cmd": [
+      "echo",
+      "hello"
+    ],
+    "env": {
+      "CHROME_HEADLESS": "1",
+      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
+    },
+    "name": "compile function a"
+  },
+  {
+    "cmd": [
+      "echo",
+      "hello"
+    ],
+    "env": {
+      "CHROME_HEADLESS": "1",
+      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
+    },
+    "name": "compile function b"
+  },
+  {
+    "cmd": [
+      "echo",
+      "hello"
+    ],
+    "env": {
+      "CHROME_HEADLESS": "1",
+      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
+    },
+    "name": "compile function c"
+  },
+  {
     "cmd": [],
     "name": "ensure xcode",
     "~followup_annotations": [
@@ -33,6 +66,39 @@
     "~followup_annotations": [
       "@@@STEP_NEST_LEVEL@1@@@"
     ]
+  },
+  {
+    "cmd": [
+      "echo",
+      "hello"
+    ],
+    "env": {
+      "CHROME_HEADLESS": "1",
+      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
+    },
+    "name": "compile function d"
+  },
+  {
+    "cmd": [
+      "echo",
+      "hello"
+    ],
+    "env": {
+      "CHROME_HEADLESS": "1",
+      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
+    },
+    "name": "compile function e"
+  },
+  {
+    "cmd": [
+      "echo",
+      "hello"
+    ],
+    "env": {
+      "CHROME_HEADLESS": "1",
+      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
+    },
+    "name": "compile function f"
   },
   {
     "cmd": [
