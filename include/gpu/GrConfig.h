@@ -31,7 +31,11 @@
   #endif
 #endif
 
+#if !defined(GR_REUSE_SCRATCH_IN_RESOURCE_ALLOCATION)
+  #define GR_REUSE_SCRATCH_IN_RESOURCE_ALLOCATION  1
 #endif
+
+#endif // GrConfig_DEFINED
 
 /**
  *  GR_STRING makes a string of X where X is expanded before conversion to a string
