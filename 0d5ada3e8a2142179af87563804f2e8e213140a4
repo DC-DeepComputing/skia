@@ -1,5 +1,23 @@
 {
-  "comments": [],
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f806d53c_1a763cca",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 9563
+      },
+      "writtenOn": "2022-07-26T15:58:13Z",
+      "side": 1,
+      "message": "note: this is failing because the Bazel build can\u0027t find src/tint/utils/vector.h We likely need to add it to the Bazel build files.",
+      "revId": "0d5ada3e8a2142179af87563804f2e8e213140a4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ],
   "submitRequirementResults": [
     {
       "submitRequirement": {
