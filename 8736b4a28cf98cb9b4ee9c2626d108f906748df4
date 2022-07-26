@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d4c284f9_fcf750db",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-07-26T17:50:46Z",
+      "side": 1,
+      "message": "Hmm. I was wondering how serialization would work - unless we override the flattenable stuff (and register the derived types), then serializing one of these will downgrade to the runtime version. Sure enough, that seems to be what failed on the BonusConfigs bot.",
+      "revId": "8736b4a28cf98cb9b4ee9c2626d108f906748df4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8acf14b0_2e675e9d",
