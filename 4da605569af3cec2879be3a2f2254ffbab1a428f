@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f9ae53e1_47c13125",
+        "filename": "resources/sksl/shared/SwitchWithEarlyReturn.sksl",
+        "patchSetId": 1
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-07-26T15:30:55Z",
+      "side": 1,
+      "message": "\u003e Might be worthwhile to also have `fallthrough_with_loop_continue`; same basic idea but use a continue in the loop.\n\u003e\n\nDone. I added a few more tests for cases that weren\u0027t explicitly covered.\n\n\u003e Come to think of it, we aren\u0027t testing while loops or do-while loops at all; this code is sticking with ES2. We might want a SwitchWithEarlyReturnES3 test file as well that tests the ES3 control-flow statements, (e.g. `switch (n) { default: do { return true; } while(true); }` is a function-exit). This is lower priority though; it\u0027s currently inaccessible to users, so there\u0027s less need to bulletproof everything.\n\nThat makes sense. I\u0027ll send a follow-up that contains test cases specifically for while/do-while loops.",
+      "parentUuid": "24462e42_668cf47d",
+      "range": {
+        "startLine": 117,
+        "startChar": 5,
+        "endLine": 117,
+        "endChar": 32
+      },
+      "revId": "4da605569af3cec2879be3a2f2254ffbab1a428f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "15099075_a7d7c12f",
@@ -54,6 +78,30 @@
       "writtenOn": "2022-07-07T23:00:52Z",
       "side": 1,
       "message": "Unfortunately the name is no longer accurate.\nThe best I can do is `everyCaseExitsFunctionOrFallsThrough` but I will gladly accept a shorter alternative if you can think of it.",
+      "range": {
+        "startLine": 131,
+        "startChar": 25,
+        "endLine": 131,
+        "endChar": 49
+      },
+      "revId": "4da605569af3cec2879be3a2f2254ffbab1a428f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "952ce130_127967a4",
+        "filename": "src/sksl/transform/SkSLEliminateUnreachableCode.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-07-26T15:30:55Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "15099075_a7d7c12f",
       "range": {
         "startLine": 131,
         "startChar": 25,
