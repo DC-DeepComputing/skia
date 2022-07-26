@@ -1,0 +1,164 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c4918db8_644089c8",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 25
+      },
+      "lineNbr": 454,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-07-26T18:54:56Z",
+      "side": 1,
+      "message": "Are \u0027blender\u0027 and \u0027skipColorXform\u0027 to be handled later?",
+      "range": {
+        "startLine": 454,
+        "startChar": 71,
+        "endLine": 454,
+        "endChar": 78
+      },
+      "revId": "f246ea30d7cfa3ba133542f65133d9bbb9b6113a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a9a727ba_2f151561",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 25
+      },
+      "lineNbr": 457,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-07-26T18:54:56Z",
+      "side": 1,
+      "message": "Add a space here and on the following 3 lines ?",
+      "revId": "f246ea30d7cfa3ba133542f65133d9bbb9b6113a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f133d651_5818740c",
+        "filename": "src/gpu/graphite/geom/Geometry.h",
+        "patchSetId": 25
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-07-26T18:54:56Z",
+      "side": 1,
+      "message": "I guess I would format all the cases in this switch like this block since they can\u0027t all be one line",
+      "revId": "f246ea30d7cfa3ba133542f65133d9bbb9b6113a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bed7faae_8857bd6e",
+        "filename": "src/gpu/graphite/geom/Geometry.h",
+        "patchSetId": 25
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-07-26T18:54:56Z",
+      "side": 1,
+      "message": "this-\u003eisVertices ?",
+      "range": {
+        "startLine": 119,
+        "startChar": 19,
+        "endLine": 119,
+        "endChar": 29
+      },
+      "revId": "f246ea30d7cfa3ba133542f65133d9bbb9b6113a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "797b45a8_48c7df8d",
+        "filename": "src/gpu/graphite/geom/Geometry.h",
+        "patchSetId": 25
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-07-26T18:54:56Z",
+      "side": 1,
+      "message": "Do we not have a unit test for this class ?",
+      "revId": "f246ea30d7cfa3ba133542f65133d9bbb9b6113a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3fd324ca_7915171c",
+        "filename": "src/gpu/graphite/render/StencilAndFillPathRenderer.cpp",
+        "patchSetId": 25
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-07-26T18:54:56Z",
+      "side": 1,
+      "message": "SkVertices",
+      "range": {
+        "startLine": 162,
+        "startChar": 23,
+        "endLine": 162,
+        "endChar": 33
+      },
+      "revId": "f246ea30d7cfa3ba133542f65133d9bbb9b6113a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "73ea24c7_87f66177",
+        "filename": "src/gpu/graphite/render/StencilAndFillPathRenderer.cpp",
+        "patchSetId": 25
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-07-26T18:54:56Z",
+      "side": 1,
+      "message": "The \u0027:\u0027 should go on the next line and be aligned underneath the \u0027?\u0027",
+      "revId": "f246ea30d7cfa3ba133542f65133d9bbb9b6113a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b7c6e834_8eeceedf",
+        "filename": "src/gpu/graphite/render/VerticesRenderStep.cpp",
+        "patchSetId": 25
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-07-26T18:54:56Z",
+      "side": 1,
+      "message": "\u0027\\n\u0027 here",
+      "range": {
+        "startLine": 127,
+        "startChar": 75,
+        "endLine": 127,
+        "endChar": 76
+      },
+      "revId": "f246ea30d7cfa3ba133542f65133d9bbb9b6113a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
