@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "31aba70d_b44fbe12",
+        "filename": "src/utils/SkCustomTypeface.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 273,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2022-07-26T14:57:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c9aba3f7_12efd872",
+      "revId": "1ff4db91356abb016a8327733f58b4e734e4a876",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e96cfdf9_678f8f2e",
@@ -31,6 +49,30 @@
       "writtenOn": "2022-07-25T22:18:58Z",
       "side": 1,
       "message": "DrawableMatrixWrapper",
+      "range": {
+        "startLine": 316,
+        "startChar": 66,
+        "endLine": 316,
+        "endChar": 74
+      },
+      "revId": "1ff4db91356abb016a8327733f58b4e734e4a876",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3fecd610_c6129394",
+        "filename": "src/utils/SkCustomTypeface.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 316,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2022-07-26T14:57:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e96cfdf9_678f8f2e",
       "range": {
         "startLine": 316,
         "startChar": 66,
