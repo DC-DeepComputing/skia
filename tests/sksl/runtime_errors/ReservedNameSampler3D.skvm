@@ -1,6 +1,9 @@
 ### Compilation failed:
 
+error: 1: 'sampler3D' is a reserved word
+int sampler3D;
+    ^^^^^^^^^
 error: 1: expected an identifier, but found type 'sampler3D'
 int sampler3D;
     ^^^^^^^^^
-1 error
+2 errors
