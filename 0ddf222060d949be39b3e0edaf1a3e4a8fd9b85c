@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3973aab2_f1451f81",
+        "filename": "src/sksl/SkSLCompiler.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 249,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-07-26T16:17:22Z",
+      "side": 1,
+      "message": "In practice this is only ever used by Rehydrator testing code. I considered naming it \"testingOnly\".",
+      "range": {
+        "startLine": 249,
+        "startChar": 33,
+        "endLine": 249,
+        "endChar": 67
+      },
+      "revId": "0ddf222060d949be39b3e0edaf1a3e4a8fd9b85c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b74e1c4d_12b993ec",
+        "filename": "tests/SkSLTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 356,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-07-26T16:17:22Z",
+      "side": 1,
+      "message": "(Not technically needed to land this CL, just cleanup that I noticed while investigating the testing-only Rehydrator symbol table issue)",
+      "range": {
+        "startLine": 356,
+        "startChar": 32,
+        "endLine": 356,
+        "endChar": 48
+      },
+      "revId": "0ddf222060d949be39b3e0edaf1a3e4a8fd9b85c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
