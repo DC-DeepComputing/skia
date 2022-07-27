@@ -245,8 +245,8 @@ def go_repositories():
     go_repository(
         name = "com_github_bazelbuild_buildtools",
         importpath = "github.com/bazelbuild/buildtools",
-        sum = "h1:a+J2VBrlAmgdb1eXDTFxdoPA/wA/L2+33DcdfzhnhXM=",
-        version = "v0.0.0-20201102150426-f0f162f0456b",
+        sum = "h1:fmdo+fvvWlhldUcqkhAMpKndSxMN3vH5l7yow5cEaiQ=",
+        version = "v0.0.0-20220531122519-a43aed7014c8",
     )
     go_repository(
         name = "com_github_bazelbuild_remote_apis",
@@ -2923,6 +2923,12 @@ def go_repositories():
         version = "v1.1.2",
     )
     go_repository(
+        name = "com_github_vektra_mockery_v2",
+        importpath = "github.com/vektra/mockery/v2",
+        sum = "h1:9NkC3urGvJS9B0ve5aTbFjksbO9f/u5cZFgCTVJ30jg=",
+        version = "v2.11.0",
+    )
+    go_repository(
         name = "com_github_vividcortex_godaemon",
         importpath = "github.com/VividCortex/godaemon",
         sum = "h1:CGNNnJTXn6efEPOEHlxqRrvg9AP0Hsumy9vbXk8aU/k=",
@@ -3484,8 +3490,8 @@ def go_repositories():
     go_repository(
         name = "net_starlark_go",
         importpath = "go.starlark.net",
-        sum = "h1:+FNtrFTmVw0YZGpBGX56XDee331t6JAXeK2bcyhLOOc=",
-        version = "v0.0.0-20200306205701-8dd3e2ee1dd5",
+        sum = "h1:zMemyQYZSyEdPaUFixYICrXf/0Rfnil7+jiQRf5IBZ0=",
+        version = "v0.0.0-20220714194419-4cadf0a12139",
     )
     go_repository(
         name = "org_chromium_go_gae",
