@@ -114,6 +114,30 @@
       },
       "revId": "7b65454bf6f5b2bbc32912e534ba9fcb034e76be",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a5f6e927_1b43fadf",
+        "filename": "include/core/SkRefCnt.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 215,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-07-27T17:21:08Z",
+      "side": 1,
+      "message": "I read through the doc. It seems to me that it is fairly unlikely that clients are relying the later destruction of sk_sp\u0027s without the optimization and it\u0027d generally be easy to fix if so. So I think I\u0027d lean towards uncondtionally enabling. But Ben may have a more subtle opinion. Sorry for not actually adding him before!",
+      "parentUuid": "0b31e0e5_2276d47f",
+      "range": {
+        "startLine": 215,
+        "startChar": 5,
+        "endLine": 215,
+        "endChar": 29
+      },
+      "revId": "7b65454bf6f5b2bbc32912e534ba9fcb034e76be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
