@@ -57,8 +57,9 @@ void VulkanWindowContext::initializeContext() {
     GrVkExtensions extensions;
     VkPhysicalDeviceFeatures2 features;
     if (!sk_gpu_test::CreateVkBackendContext(getInstanceProc, &backendContext, &extensions,
-                                             &features, &fDebugCallback, &fPresentQueueIndex,
-                                             fCanPresentFn)) {
+                                             &features, &fDebugCallback,
+                                             /* isProtected= */ false,
+                                             &fPresentQueueIndex, fCanPresentFn)) {
         sk_gpu_test::FreeVulkanFeaturesStructs(&features);
         return;
     }
