@@ -65,6 +65,7 @@ static bool eliminate_dead_local_variables(const Context& context,
                         fUsage->remove(stmt.get());
                         stmt = Nop::Make();
                     }
+                    var->markEliminated();
                     fMadeChanges = true;
                 }
                 return false;
