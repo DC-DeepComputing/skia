@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "62c32295_705b016b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 25
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-07-27T14:01:44Z",
+      "side": 1,
+      "message": "modulo nits from Rob, I think lgtm!",
+      "revId": "f246ea30d7cfa3ba133542f65133d9bbb9b6113a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c4918db8_644089c8",
@@ -14,6 +31,30 @@
       "writtenOn": "2022-07-26T18:54:56Z",
       "side": 1,
       "message": "Are \u0027blender\u0027 and \u0027skipColorXform\u0027 to be handled later?",
+      "range": {
+        "startLine": 454,
+        "startChar": 71,
+        "endLine": 454,
+        "endChar": 78
+      },
+      "revId": "f246ea30d7cfa3ba133542f65133d9bbb9b6113a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "97e91bae_e98a3a63",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 25
+      },
+      "lineNbr": 454,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-07-27T14:01:44Z",
+      "side": 1,
+      "message": "That\u0027s my understanding, since this is only the preliminary drawVertices() and the blender and color transform can be handled after we get basic colors/texture coords working.\n\nBut we should have either a TODO or a task in TaskFlow for this.",
+      "parentUuid": "c4918db8_644089c8",
       "range": {
         "startLine": 454,
         "startChar": 71,
@@ -94,6 +135,24 @@
       "writtenOn": "2022-07-26T18:54:56Z",
       "side": 1,
       "message": "Do we not have a unit test for this class ?",
+      "revId": "f246ea30d7cfa3ba133542f65133d9bbb9b6113a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fb651953_37abdf36",
+        "filename": "src/gpu/graphite/geom/Geometry.h",
+        "patchSetId": 25
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-07-27T14:01:44Z",
+      "side": 1,
+      "message": "Not yet, but that should be a task as well. I think there\u0027s a generic add more tests task, but we can capture Geometry under that specifically.",
+      "parentUuid": "797b45a8_48c7df8d",
       "revId": "f246ea30d7cfa3ba133542f65133d9bbb9b6113a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
