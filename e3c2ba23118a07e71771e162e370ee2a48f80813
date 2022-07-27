@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "84cd8c91_3d96edd2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 27
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-07-27T18:31:24Z",
+      "side": 1,
+      "message": "Alright, addressed the final remaining comment from Rob after Michael\u0027s LGTM (contingent upon resolving Rob\u0027s comments). Let me know if I\u0027ve missed anything else. Thank you! 😊",
+      "revId": "e3c2ba23118a07e71771e162e370ee2a48f80813",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
