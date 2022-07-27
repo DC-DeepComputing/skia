@@ -125,6 +125,9 @@ public:
 
     virtual GrBackendTexture onGetBackendTexture(bool flushPendingGrContextIO,
                                                  GrSurfaceOrigin* origin) const;
+
+    virtual GrBackendTexture onReleaseBackendTexture(bool flushPendingGrContextIO,
+                                                     GrSurfaceOrigin* origin);
 #endif
 #ifdef SK_GRAPHITE_ENABLED
     // Returns a TextureProxyView representation of the image, if possible. This also returns

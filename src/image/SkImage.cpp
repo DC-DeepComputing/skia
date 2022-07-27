@@ -228,6 +228,11 @@ GrBackendTexture SkImage::getBackendTexture(bool flushPendingGrContextIO,
     return as_IB(this)->onGetBackendTexture(flushPendingGrContextIO, origin);
 }
 
+GrBackendTexture SkImage::releaseBackendTexture(bool flushPendingGrContextIO,
+                                                GrSurfaceOrigin* origin) {
+    return as_IB(this)->onReleaseBackendTexture(flushPendingGrContextIO, origin);
+}
+
 bool SkImage::isValid(GrRecordingContext* rContext) const {
     if (rContext && rContext->abandoned()) {
         return false;
@@ -461,6 +466,11 @@ GrSurfaceProxyView SkImage_Base::FindOrMakeCachedMipmappedView(GrRecordingContex
 
 GrBackendTexture SkImage_Base::onGetBackendTexture(bool flushPendingGrContextIO,
                                                    GrSurfaceOrigin* origin) const {
+    return GrBackendTexture(); // invalid
+}
+
+GrBackendTexture SkImage_Base::onReleaseBackendTexture(bool flushPendingGrContextIO,
+                                                       GrSurfaceOrigin* origin) {
     return GrBackendTexture(); // invalid
 }
 

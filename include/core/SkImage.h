@@ -807,6 +807,24 @@ public:
     */
     GrBackendTexture getBackendTexture(bool flushPendingGrContextIO,
                                        GrSurfaceOrigin* origin = nullptr) const;
+
+    /** Retrieves the back-end texture. If SkImage has no back-end texture, an invalid
+        object is returned. Call GrBackendTexture::isValid to determine if the result
+        is valid.
+
+        If flushPendingGrContextIO is true, completes deferred I/O operations.
+
+        If origin in not nullptr, copies location of content drawn into SkImage.
+
+        The returned texture is abandoned as far as Skia is concerned, and the
+        SkImage is unusable after this call. If the texture is valid, the caller
+        must take care of deleting it via GrDirectContext::deleteBackendTexture.
+
+        @param flushPendingGrContextIO  flag to flush outstanding requests
+        @return                         back-end API texture handle; invalid on failure
+    */
+    GrBackendTexture releaseBackendTexture(bool flushPendingGrContextIO,
+                                           GrSurfaceOrigin* origin = nullptr);
 #endif // SK_SUPPORT_GPU
 
     /** \enum SkImage::CachingHint

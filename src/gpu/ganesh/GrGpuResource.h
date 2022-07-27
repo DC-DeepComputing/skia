@@ -325,6 +325,7 @@ private:
     using INHERITED = GrIORef<GrGpuResource>;
     friend class GrIORef<GrGpuResource>; // to access notifyRefCntWillBeZero and
                                          // notifyARefCntIsZero.
+    friend class SkImage_Gpu; // to access abandon.
 };
 
 class GrGpuResource::ProxyAccess {

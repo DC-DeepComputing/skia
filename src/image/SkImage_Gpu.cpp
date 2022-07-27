@@ -284,6 +284,44 @@ GrBackendTexture SkImage_Gpu::onGetBackendTexture(bool flushPendingGrContextIO,
     return GrBackendTexture();  // invalid
 }
 
+GrBackendTexture SkImage_Gpu::onReleaseBackendTexture(bool flushPendingGrContextIO,
+                                                      GrSurfaceOrigin* origin) {
+    auto direct = fContext->asDirectContext();
+    if (!direct) {
+        // This image was created with a DDL context and cannot be instantiated.
+        return GrBackendTexture();  // invalid
+    }
+    if (direct->abandoned()) {
+        return GrBackendTexture();  // invalid;
+    }
+
+    // We don't know how client's use of the texture will be ordered WRT Skia's. Ensure the
+    // texture seen by the client won't be mutated by a SkSurface.
+    sk_sp<GrSurfaceProxy> proxy = fChooser.switchToStableProxy();
+
+    if (!proxy->isInstantiated()) {
+        auto resourceProvider = direct->priv().resourceProvider();
+
+        if (!proxy->instantiate(resourceProvider)) {
+            return GrBackendTexture();  // invalid
+        }
+    }
+
+    GrTexture* texture = proxy->peekTexture();
+    if (texture) {
+        if (flushPendingGrContextIO) {
+            direct->priv().flushSurface(proxy.get());
+        }
+        if (origin) {
+            *origin = fOrigin;
+        }
+        GrBackendTexture backendTexture = texture->getBackendTexture();
+        texture->abandon();
+        return backendTexture;
+    }
+    return GrBackendTexture();  // invalid
+}
+
 size_t SkImage_Gpu::onTextureSize() const { return fChooser.gpuMemorySize(); }
 
 sk_sp<SkImage> SkImage_Gpu::onMakeColorTypeAndColorSpace(SkColorType targetCT,

@@ -4,6 +4,8 @@ This file includes a list of high level updates for each milestone release.
 
 Milestone 104
 -------------
+  * New function SkImage::releaseBackendTexture allows callers to invalidate a
+    texture backed SkImage and delete the texture on valid available GrDirectContext.
   * New functions SkBitmap::getColor4f and SkPixmap::getColor4f return float colors.
   * SkRuntimeEffect takes and returns a const SkData.
   * SkRasterHandleAllocator::MakeCanvas now takes optional SkSurfaceProps.
