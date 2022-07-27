@@ -65,6 +65,7 @@ genrule(
 # Any defines that need to effect the entire Skia build should go in //bazel/BUILD.bazel
 CK_DEFINES = [
     "CK_INCLUDE_PATHOPS",
+    "EMSCRIPTEN_HAS_UNBOUND_TYPE_NAMES=0",  # Allows us to compile with -fno-rtti
 ] + select({
     ":enable_fonts_true": ["CK_INCLUDE_PARAGRAPH"],
     ":enable_fonts_false": ["CK_NO_FONTS"],
