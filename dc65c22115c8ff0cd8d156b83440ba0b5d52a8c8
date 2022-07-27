@@ -69,6 +69,24 @@
       "parentUuid": "ac29dad3_e6c87b9f",
       "revId": "dc65c22115c8ff0cd8d156b83440ba0b5d52a8c8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3a76c68f_145bf9bd",
+        "filename": "src/shaders/SkPictureShader.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 247,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-07-27T19:01:56Z",
+      "side": 1,
+      "message": "Ah, that makes sense. OK, I\u0027m going to kick off trybots, just to make sure we don\u0027t see any strangeness in golden images. From a quick scan, I think we have tests that exercise picture-shaders containing text, but it may be restricted to a single perspective test. So we might need a new GM that actually hits this code path.",
+      "parentUuid": "43de5e76_692838e1",
+      "revId": "dc65c22115c8ff0cd8d156b83440ba0b5d52a8c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
