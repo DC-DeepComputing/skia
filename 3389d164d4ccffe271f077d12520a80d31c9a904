@@ -106,6 +106,24 @@
       "parentUuid": "94911432_77e3e0a5",
       "revId": "3389d164d4ccffe271f077d12520a80d31c9a904",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8cd7a72a_814aebf8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-07-27T18:10:48Z",
+      "side": 1,
+      "message": "Could you just use SkSurface::MakeFromBackendTexture to create the SkSurface that wraps a texture you own from the get go? We have a helper, GrDirectContext::createBackendTexture, that can assist with creating the texture.",
+      "parentUuid": "97ba0085_d302cd57",
+      "revId": "3389d164d4ccffe271f077d12520a80d31c9a904",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
