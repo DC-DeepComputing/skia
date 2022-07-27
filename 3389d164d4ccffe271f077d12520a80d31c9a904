@@ -142,6 +142,24 @@
       "parentUuid": "8cd7a72a_814aebf8",
       "revId": "3389d164d4ccffe271f077d12520a80d31c9a904",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "09c36c52_bbc8b204",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-07-27T18:21:52Z",
+      "side": 1,
+      "message": "Is it possible to refactor things so that a texture rather than an SkImage crosses the thread boundaries?",
+      "parentUuid": "912bd71e_0cc98353",
+      "revId": "3389d164d4ccffe271f077d12520a80d31c9a904",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
