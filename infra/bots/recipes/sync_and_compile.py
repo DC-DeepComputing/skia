@@ -31,6 +31,7 @@ def RunSteps(api):
   checkout_root = api.checkout.default_checkout_root
   checkout_flutter = False
   flutter_android = False
+  ignore_trybot = False
 
   if 'NoDEPS' in api.properties['buildername']:
     bot_update = False
@@ -40,12 +41,15 @@ def RunSteps(api):
     checkout_flutter = True
     if 'Android' in api.vars.builder_name:
       flutter_android = True
+  if 'NoPatch' in api.properties['buildername']:
+    ignore_trybot = True
 
   if bot_update:
     api.checkout.bot_update(
         checkout_root=checkout_root,
         checkout_flutter=checkout_flutter,
-        flutter_android=flutter_android)
+        flutter_android=flutter_android,
+        ignore_trybot=ignore_trybot)
   else:
     api.checkout.git(checkout_root=checkout_root)
 
@@ -57,6 +61,8 @@ def RunSteps(api):
     out_dir = checkout_root.join('src', 'out', 'android_release')
 
   try:
+    api.run(api.step, 'print checkout_root', cmd=['echo', checkout_root])
+    api.run(api.step, 'print out_dir', cmd=['echo', out_dir])
     api.build(checkout_root=checkout_root, out_dir=out_dir)
 
     # TODO(borenet): Move this out of the try/finally.
@@ -90,6 +96,7 @@ for p in psutil.process_iter():
 
 TEST_BUILDERS = [
   'Build-Debian10-Clang-arm-Release-Flutter_Android',
+  'Build-Debian10-Clang-arm-Release-NoPatch',
   'Build-Win10-Clang-x86_64-Release-NoDEPS',
 ]
 
