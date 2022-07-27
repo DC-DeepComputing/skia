@@ -689,7 +689,8 @@ sk_sp<SkSpecialImage> Device::makeSpecial(const SkBitmap& bitmap) {
     // TODO: this makes a tight copy of 'bitmap' but it doesn't have to be (given SkSpecialImage's
     // semantics). Since this is cached we would have to bake the fit into the cache key though.
     auto view = std::get<0>(
-            GrMakeCachedBitmapProxyView(fContext.get(), bitmap, /*label=*/"Device_MakeSpecial"));
+            GrMakeCachedBitmapProxyView(fContext.get(), bitmap, /*label=*/"Device_MakeSpecial",
+                                        GrMipmapped::kNo, GrProtected::kNo));
     if (!view) {
         return nullptr;
     }
@@ -712,7 +713,7 @@ sk_sp<SkSpecialImage> Device::makeSpecial(const SkImage* image) {
 
     SkPixmap pm;
     if (image->isTextureBacked()) {
-        auto [view, ct] = as_IB(image)->asView(this->recordingContext(), GrMipmapped::kNo);
+        auto [view, ct] = as_IB(image)->asView(this->recordingContext(), GrProtected::kNo, GrMipmapped::kNo);
         SkASSERT(view);
 
         return SkSpecialImage::MakeDeferredFromGpu(fContext.get(),
@@ -843,7 +844,7 @@ void Device::drawImageLattice(const SkImage* image,
                               const SkPaint& paint) {
     ASSERT_SINGLE_OWNER
     auto iter = std::make_unique<SkLatticeIter>(lattice, dst);
-    if (auto [view, ct] = as_IB(image)->asView(this->recordingContext(), GrMipmapped::kNo); view) {
+    if (auto [view, ct] = as_IB(image)->asView(this->recordingContext(), GrProtected::kNo, GrMipmapped::kNo); view) {
         GrColorInfo colorInfo(ct, image->alphaType(), image->refColorSpace());
         this->drawViewLattice(std::move(view),
                               std::move(colorInfo),

@@ -76,6 +76,7 @@ private:
     }
     std::tuple<GrSurfaceProxyView, GrColorType> onAsView(
             GrRecordingContext*,
+            GrProtected,
             GrMipmapped,
             GrImageTexGenPolicy policy) const override {
         return {};

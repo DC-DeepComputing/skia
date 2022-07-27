@@ -105,7 +105,7 @@ static sk_sp<SkImage> make_text_image(GrDirectContext* dContext, const char* tex
 
     sk_sp<SkImage> image = surf->makeImageSnapshot();
 
-    return image->makeTextureImage(dContext);
+    return image->makeTextureImage(dContext, GrProtected::kNo);
 }
 
 // Create an image with each corner marked w/ "LL", "LR", etc., with the origin either bottom-left

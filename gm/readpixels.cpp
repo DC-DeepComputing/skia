@@ -161,7 +161,7 @@ protected:
                 }
                 auto dContext = GrAsDirectContext(canvas->recordingContext());
                 if (dContext) {
-                    image = image->makeTextureImage(dContext);
+                    image = image->makeTextureImage(dContext, GrProtected::kNo);
                 }
                 if (image) {
                     for (SkColorType dstColorType : colorTypes) {

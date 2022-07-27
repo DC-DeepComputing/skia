@@ -171,7 +171,8 @@ std::tuple<GrSurfaceProxyView, GrColorType>
 GrMakeCachedBitmapProxyView(GrRecordingContext*,
                             const SkBitmap&,
                             std::string_view label,
-                            GrMipmapped = GrMipmapped::kNo);
+                            GrMipmapped,
+                            GrProtected);
 
 /**
  * Like above but always uploads the bitmap and never inserts into the cache. Unlike above, the
@@ -180,6 +181,7 @@ GrMakeCachedBitmapProxyView(GrRecordingContext*,
 std::tuple<GrSurfaceProxyView, GrColorType>
 GrMakeUncachedBitmapProxyView(GrRecordingContext*,
                               const SkBitmap&,
+                              GrProtected isProtected,
                               GrMipmapped = GrMipmapped::kNo,
                               SkBackingFit = SkBackingFit::kExact,
                               SkBudgeted = SkBudgeted::kYes);

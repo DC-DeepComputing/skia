@@ -151,6 +151,7 @@ sk_sp<SkImage> SkImage_GpuYUVA::onReinterpretColorSpace(sk_sp<SkColorSpace> newC
 
 std::tuple<GrSurfaceProxyView, GrColorType> SkImage_GpuYUVA::onAsView(
         GrRecordingContext* rContext,
+        GrProtected isProtected,
         GrMipmapped mipmapped,
         GrImageTexGenPolicy) const {
     if (!fContext->priv().matches(rContext)) {
@@ -160,7 +161,7 @@ std::tuple<GrSurfaceProxyView, GrColorType> SkImage_GpuYUVA::onAsView(
                                         SkBackingFit::kExact,
                                         /*sample count*/ 1,
                                         mipmapped,
-                                        GrProtected::kNo,
+                                        isProtected,
                                         kTopLeft_GrSurfaceOrigin,
                                         SkBudgeted::kYes);
     if (!sfc) {
@@ -318,7 +319,7 @@ sk_sp<SkImage> SkImage::MakeFromYUVAPixmaps(GrRecordingContext* context,
         // Turn the pixmap into a GrTextureProxy
         SkBitmap bmp;
         bmp.installPixels(pixmapsToUpload->plane(i));
-        std::tie(views[i], std::ignore) = GrMakeUncachedBitmapProxyView(context, bmp, buildMips);
+        std::tie(views[i], std::ignore) = GrMakeUncachedBitmapProxyView(context, bmp, GrProtected::kNo, buildMips);
         if (!views[i]) {
             return nullptr;
         }

@@ -78,7 +78,8 @@ public:
     sk_sp<GrTextureProxy> createProxyFromBitmap(const SkBitmap&,
                                                 GrMipmapped,
                                                 SkBackingFit,
-                                                SkBudgeted);
+                                                SkBudgeted,
+                                                GrProtected);
 
     /*
      * Create a GrSurfaceProxy without any data.
@@ -287,12 +288,16 @@ private:
     /*
      * Create an un-mipmapped texture proxy for the bitmap.
      */
-    sk_sp<GrTextureProxy> createNonMippedProxyFromBitmap(const SkBitmap&, SkBackingFit, SkBudgeted);
+    sk_sp<GrTextureProxy> createNonMippedProxyFromBitmap(const SkBitmap&,
+                                                         SkBackingFit,
+                                                         SkBudgeted,
+                                                         GrProtected);
     /*
      * Create an mipmapped texture proxy for the bitmap.
      */
     sk_sp<GrTextureProxy> createMippedProxyFromBitmap(const SkBitmap&,
-                                                      SkBudgeted);
+                                                      SkBudgeted,
+                                                      GrProtected);
 
     sk_sp<GrTextureProxy> createWrapped(sk_sp<GrTexture> tex, UseAllocator useAllocator);
 

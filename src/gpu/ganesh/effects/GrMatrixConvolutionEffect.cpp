@@ -126,7 +126,7 @@ GrMatrixConvolutionEffect::KernelWrapper::Make(GrRecordingContext* rContext,
     }
     bm.setImmutable();
 
-    view = std::get<0>(GrMakeUncachedBitmapProxyView(rContext, bm));
+    view = std::get<0>(GrMakeUncachedBitmapProxyView(rContext, bm, GrProtected::kNo));
     if (!view) {
         return {};
     }

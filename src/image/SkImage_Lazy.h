@@ -56,6 +56,7 @@ public:
     // cached in CPU memory. We will always cache the generated texture on success.
     GrSurfaceProxyView lockTextureProxyView(GrRecordingContext*,
                                             GrImageTexGenPolicy,
+                                            GrProtected,
                                             GrMipmapped) const;
 
     // Returns the GrColorType to use with the GrTextureProxy returned from lockTextureProxy. This
@@ -69,6 +70,7 @@ private:
     void addUniqueIDListener(sk_sp<SkIDChangeListener>) const;
 #if SK_SUPPORT_GPU
     std::tuple<GrSurfaceProxyView, GrColorType> onAsView(GrRecordingContext*,
+                                                         GrProtected,
                                                          GrMipmapped,
                                                          GrImageTexGenPolicy) const override;
     std::unique_ptr<GrFragmentProcessor> onAsFragmentProcessor(GrRecordingContext*,

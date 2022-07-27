@@ -97,7 +97,7 @@ protected:
             bitmap.setImmutable();
             views[i] = std::get<0>(
                     GrMakeCachedBitmapProxyView(context, bitmap, /*label=*/"DrawResult_GpuSetup",
-                    GrMipmapped::kNo));
+                    GrMipmapped::kNo, GrProtected::kNo));
             if (!views[i]) {
                 *errorMsg = "Failed to create proxy";
                 return context->abandoned() ? DrawResult::kSkip : DrawResult::kFail;

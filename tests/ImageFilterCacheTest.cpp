@@ -207,7 +207,7 @@ DEF_TEST(ImageFilterCache_ImageBackedRaster, reporter) {
 
 static GrSurfaceProxyView create_proxy_view(GrRecordingContext* rContext) {
     SkBitmap srcBM = create_bm();
-    return std::get<0>(GrMakeUncachedBitmapProxyView(rContext, srcBM));
+    return std::get<0>(GrMakeUncachedBitmapProxyView(rContext, srcBM, GrProtected::kNo));
 }
 
 DEF_GPUTEST_FOR_RENDERING_CONTEXTS(ImageFilterCache_ImageBackedGPU, reporter, ctxInfo) {

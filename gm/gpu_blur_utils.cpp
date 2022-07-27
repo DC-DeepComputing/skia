@@ -175,7 +175,7 @@ GrSurfaceProxyView make_src_image(GrRecordingContext* rContext,
     surf->getCanvas()->drawLine({7.f*w/8.f, 0.f}, {7.f*h/8.f, h}, paint);
 
     auto img = surf->makeImageSnapshot();
-    auto [src, ct] = as_IB(img)->asView(rContext, GrMipmapped::kNo);
+    auto [src, ct] = as_IB(img)->asView(rContext, GrProtected::kNo, GrMipmapped::kNo);
     return src;
 }
 

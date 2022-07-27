@@ -55,7 +55,7 @@ static std::unique_ptr<GrFragmentProcessor> make_textured_colorizer(const SkPMCo
     SkASSERT(bitmap.isImmutable());
 
     auto view = std::get<0>(GrMakeCachedBitmapProxyView(
-            args.fContext, bitmap, /*label=*/"MakeTexturedColorizer", GrMipmapped::kNo));
+            args.fContext, bitmap, /*label=*/"MakeTexturedColorizer", GrMipmapped::kNo, GrProtected::kNo));
     if (!view) {
         SkDebugf("Gradient won't draw. Could not create texture.");
         return nullptr;

@@ -817,7 +817,7 @@ static std::unique_ptr<GrFragmentProcessor> create_profile_effect(GrRecordingCon
     }
     bm.setImmutable();
 
-    profileView = std::get<0>(GrMakeUncachedBitmapProxyView(rContext, bm));
+    profileView = std::get<0>(GrMakeUncachedBitmapProxyView(rContext, bm, GrProtected::kNo));
     if (!profileView) {
         return nullptr;
     }
@@ -893,7 +893,7 @@ static std::unique_ptr<GrFragmentProcessor> make_rect_integral_fp(GrRecordingCon
         return {};
     }
 
-    view = std::get<0>(GrMakeUncachedBitmapProxyView(rContext, bitmap));
+    view = std::get<0>(GrMakeUncachedBitmapProxyView(rContext, bitmap, GrProtected::kNo));
     if (!view) {
         return {};
     }
@@ -1247,7 +1247,7 @@ static GrSurfaceProxyView create_mask_on_cpu(GrRecordingContext* rContext,
 
     result.setImmutable();
 
-    auto view = std::get<0>(GrMakeUncachedBitmapProxyView(rContext, result));
+    auto view = std::get<0>(GrMakeUncachedBitmapProxyView(rContext, result, GrProtected::kNo));
     if (!view) {
         return {};
     }

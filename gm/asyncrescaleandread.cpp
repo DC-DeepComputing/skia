@@ -213,7 +213,7 @@ static skiagm::DrawResult do_rescale_image_grid(SkCanvas* canvas,
         return do_rescale_grid(canvas, surface.get(), dContext, srcRect, newSize,
                                doYUV420, errorMsg);
     } else if (dContext) {
-        image = image->makeTextureImage(dContext);
+        image = image->makeTextureImage(dContext, GrProtected::kNo);
         if (!image) {
             *errorMsg = "Could not create image.";
             // When testing abandoned GrContext we expect surface creation to fail.
@@ -400,8 +400,8 @@ DEF_SIMPLE_GM_CAN_FAIL(async_rescale_and_read_alpha_type, canvas, errorMsg, 512,
     auto upmImg = upmSurf->makeImageSnapshot();
 
     if (dContext) {
-        pmImg  =  pmImg->makeTextureImage(dContext);
-        upmImg = upmImg->makeTextureImage(dContext);
+        pmImg  =  pmImg->makeTextureImage(dContext, GrProtected::kNo);
+        upmImg = upmImg->makeTextureImage(dContext, GrProtected::kNo);
         if (!pmImg || !upmImg) {
             *errorMsg = "could not make texture images";
             return skiagm::DrawResult::kFail;

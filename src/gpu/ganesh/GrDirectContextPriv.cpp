@@ -264,7 +264,7 @@ static bool test_for_preserving_PM_conversions(GrDirectContext* dContext) {
     bitmap.installPixels(pmII, srcData, 4 * kSize);
     bitmap.setImmutable();
 
-    auto dataView = std::get<0>(GrMakeUncachedBitmapProxyView(dContext, bitmap));
+    auto dataView = std::get<0>(GrMakeUncachedBitmapProxyView(dContext, bitmap, GrProtected::kNo));
     if (!dataView) {
         return false;
     }

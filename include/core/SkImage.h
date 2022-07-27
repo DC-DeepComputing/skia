@@ -1142,6 +1142,7 @@ public:
         @return                created SkImage, or nullptr
     */
     sk_sp<SkImage> makeTextureImage(GrDirectContext*,
+                                    GrProtected,
                                     GrMipmapped = GrMipmapped::kNo,
                                     SkBudgeted = SkBudgeted::kYes) const;
 #endif

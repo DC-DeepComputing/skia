@@ -542,7 +542,7 @@ sk_sp<SkImage> MakeTextureImage(SkCanvas* canvas, sk_sp<SkImage> orig) {
             return orig;
         }
 
-        return orig->makeTextureImage(dContext);
+        return orig->makeTextureImage(dContext, GrProtected::kYes);
     }
 #if defined(SK_GRAPHITE_ENABLED)
     else if (canvas->recorder()) {

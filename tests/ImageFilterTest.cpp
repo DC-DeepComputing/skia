@@ -1747,7 +1747,7 @@ static void test_make_with_filter(skiatest::Reporter* reporter, GrRecordingConte
         // In GPU-mode, we want the result image (and all intermediate steps) to have used the same
         // origin as the original surface.
         if (rContext) {
-            auto [proxyView, _] = as_IB(result)->asView(rContext, GrMipmapped::kNo);
+            auto [proxyView, _] = as_IB(result)->asView(rContext, GrProtected::kNo, GrMipmapped::kNo);
             REPORTER_ASSERT(reporter, proxyView && proxyView.origin() == kTestSurfaceOrigin);
         }
     }

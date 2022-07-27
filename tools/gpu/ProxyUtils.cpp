@@ -41,7 +41,7 @@ GrTextureProxy* GetTextureImageProxy(SkImage* image, GrRecordingContext* rContex
             return nullptr;
         }
     }
-    auto [view, ct] = as_IB(image)->asView(rContext, GrMipmapped::kNo);
+    auto [view, ct] = as_IB(image)->asView(rContext, GrProtected::kNo, GrMipmapped::kNo);
     if (!view) {
         // With the above checks we expect this to succeed unless there is a context mismatch.
         SkASSERT(!image->isValid(rContext));

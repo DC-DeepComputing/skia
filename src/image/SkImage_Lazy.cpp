@@ -199,7 +199,7 @@ sk_sp<SkImage> SkImage_Lazy::onMakeSubset(const SkIRect& subset, GrDirectContext
     //       "realize" a subset?
 
 #if SK_SUPPORT_GPU
-    auto pixels = direct ? this->makeTextureImage(direct)
+    auto pixels = direct ? this->makeTextureImage(direct, GrProtected::kNo)
                          : this->makeRasterImage();
 #else
     auto pixels = this->makeRasterImage();
@@ -253,10 +253,11 @@ sk_sp<SkImage> SkImage::MakeFromGenerator(std::unique_ptr<SkImageGenerator> gene
 
 std::tuple<GrSurfaceProxyView, GrColorType> SkImage_Lazy::onAsView(
         GrRecordingContext* context,
+        GrProtected isProtected,
         GrMipmapped mipmapped,
         GrImageTexGenPolicy policy) const {
     GrColorType ct = this->colorTypeOfLockTextureProxy(context->priv().caps());
-    return {this->lockTextureProxyView(context, policy, mipmapped), ct};
+    return {this->lockTextureProxyView(context, policy, isProtected, mipmapped), ct};
 }
 
 std::unique_ptr<GrFragmentProcessor> SkImage_Lazy::onAsFragmentProcessor(
@@ -270,7 +271,7 @@ std::unique_ptr<GrFragmentProcessor> SkImage_Lazy::onAsFragmentProcessor(
     // the planes.
     auto mm = sampling.mipmap == SkMipmapMode::kNone ? GrMipmapped::kNo : GrMipmapped::kYes;
     return MakeFragmentProcessorFromView(rContext,
-                                         std::get<0>(this->asView(rContext, mm)),
+                                         std::get<0>(this->asView(rContext, GrProtected::kNo, mm)),
                                          this->alphaType(),
                                          sampling,
                                          tileModes,
@@ -319,6 +320,7 @@ GrSurfaceProxyView SkImage_Lazy::textureProxyViewFromPlanes(GrRecordingContext* 
 
         std::tie(views[i], std::ignore) = GrMakeUncachedBitmapProxyView(ctx,
                                                                         bitmap,
+                                                                        GrProtected::kNo,
                                                                         GrMipmapped::kNo,
                                                                         fit);
         if (!views[i]) {
@@ -413,6 +415,7 @@ sk_sp<SkCachedData> SkImage_Lazy::getPlanes(
  */
 GrSurfaceProxyView SkImage_Lazy::lockTextureProxyView(GrRecordingContext* rContext,
                                                       GrImageTexGenPolicy texGenPolicy,
+                                                      GrProtected isProtected,
                                                       GrMipmapped mipmapped) const {
     // Values representing the various texture lock paths we can take. Used for logging the path
     // taken to a histogram.
@@ -513,6 +516,7 @@ GrSurfaceProxyView SkImage_Lazy::lockTextureProxyView(GrRecordingContext* rConte
                                 : SkBudgeted::kYes;
         auto view = std::get<0>(GrMakeUncachedBitmapProxyView(rContext,
                                                               bitmap,
+                                                              isProtected,
                                                               mipmapped,
                                                               SkBackingFit::kExact,
                                                               budgeted));

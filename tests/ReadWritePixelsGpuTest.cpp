@@ -1253,7 +1253,7 @@ DEF_GPUTEST_FOR_GL_RENDERING_CONTEXTS(GLReadPixelsUnbindPBO, reporter, ctxInfo) 
     auto info = SkImageInfo::Make(16, 16, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
     SkAutoPixmapStorage pmap = make_ref_data(info, /*forceOpaque=*/false);
     auto image = SkImage::MakeFromRaster(pmap, nullptr, nullptr);
-    image = image->makeTextureImage(ctxInfo.directContext());
+    image = image->makeTextureImage(ctxInfo.directContext(), GrProtected::kNo);
     if (!image) {
         ERRORF(reporter, "Couldn't make texture image.");
         return;

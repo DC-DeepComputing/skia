@@ -282,7 +282,7 @@ class TestFPGenerator {
                         ii, rgbaData, ii.minRowBytes(),
                         [](void* addr, void* context) { delete[](GrColor*) addr; }, nullptr);
                 bitmap.setImmutable();
-                auto view = std::get<0>(GrMakeUncachedBitmapProxyView(fContext, bitmap));
+                auto view = std::get<0>(GrMakeUncachedBitmapProxyView(fContext, bitmap, GrProtected::kNo));
                 if (!view || !view.proxy()->instantiate(fResourceProvider)) {
                     SkDebugf("Unable to instantiate RGBA8888 test texture.");
                     return false;
@@ -307,7 +307,7 @@ class TestFPGenerator {
                         ii, alphaData, ii.minRowBytes(),
                         [](void* addr, void* context) { delete[](uint8_t*) addr; }, nullptr);
                 bitmap.setImmutable();
-                auto view = std::get<0>(GrMakeUncachedBitmapProxyView(fContext, bitmap));
+                auto view = std::get<0>(GrMakeUncachedBitmapProxyView(fContext, bitmap, GrProtected::kNo));
                 if (!view || !view.proxy()->instantiate(fResourceProvider)) {
                     SkDebugf("Unable to instantiate A8 test texture.");
                     return false;
@@ -379,7 +379,7 @@ static GrSurfaceProxyView make_input_texture(GrRecordingContext* context,
     SkBitmap bitmap;
     bitmap.installPixels(ii, pixel, ii.minRowBytes());
     bitmap.setImmutable();
-    return std::get<0>(GrMakeUncachedBitmapProxyView(context, bitmap));
+    return std::get<0>(GrMakeUncachedBitmapProxyView(context, bitmap, GrProtected::kNo));
 }
 
 // We tag logged data as unpremul to avoid conversion when encoding as PNG. The input texture

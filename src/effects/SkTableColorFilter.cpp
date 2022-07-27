@@ -195,7 +195,8 @@ std::unique_ptr<GrFragmentProcessor> ColorTableEffect::Make(
     auto view = std::get<0>(GrMakeCachedBitmapProxyView(context,
                                                         bitmap,
                                                         /*label=*/"MakeColorTableEffect",
-                                                        GrMipmapped::kNo));
+                                                        GrMipmapped::kNo,
+                                                        GrProtected::kNo));
     if (!view) {
         return nullptr;
     }

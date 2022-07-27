@@ -118,7 +118,8 @@ DEF_SIMPLE_GM_BG(makecolortypeandspace, canvas, 128 * 3, 128 * 4, SK_ColorWHITE)
                 canvas->drawImage(imageGray, 256, 0);
             }
 
-            images[j] = direct ? image->makeTextureImage(direct) : image->makeRasterImage();
+            images[j] = direct ? image->makeTextureImage(direct, GrProtected::kNo)
+                               : image->makeRasterImage();
 
             canvas->translate(0, 128);
         }
@@ -166,7 +167,7 @@ DEF_SIMPLE_GM_CAN_FAIL(reinterpretcolorspace, canvas, errorMsg, 128 * 3, 128 * 3
 
     // GPU images
     auto direct = GrAsDirectContext(canvas->recordingContext());
-    if (auto gpuImage = image->makeTextureImage(direct)) {
+    if (auto gpuImage = image->makeTextureImage(direct, GrProtected::kNo)) {
         image = gpuImage;
     }
 

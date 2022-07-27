@@ -28,7 +28,7 @@ DEF_SIMPLE_GPU_GM(swizzle, rContext, canvas, 512, 512) {
     SkBitmap bmp;
     GetResourceAsBitmap("images/mandrill_512_q075.jpg", &bmp);
     auto view = std::get<0>(
-            GrMakeCachedBitmapProxyView(rContext, bmp, /*label=*/"Gm_Swizzle", GrMipmapped::kNo));
+            GrMakeCachedBitmapProxyView(rContext, bmp, /*label=*/"Gm_Swizzle", GrMipmapped::kNo, GrProtected::kNo));
     if (!view) {
         return;
     }

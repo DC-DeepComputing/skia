@@ -97,7 +97,7 @@ protected:
             return DrawResult::kSkip;
         }
         auto view = std::get<0>(GrMakeCachedBitmapProxyView(
-                rContext, fBitmap, /*label=*/"DrawResult_Draw_BitMap", mipmapped));
+                rContext, fBitmap, /*label=*/"DrawResult_Draw_BitMap", mipmapped, GrProtected::kNo));
         if (!view) {
             *errorMsg = "Failed to create proxy.";
             return DrawResult::kFail;
@@ -131,7 +131,7 @@ protected:
         fBitmap.extractSubset(&subsetBmp, texelSubset);
         subsetBmp.setImmutable();
         auto subsetView = std::get<0>(GrMakeCachedBitmapProxyView(
-                rContext, subsetBmp, /*label=*/"DrawResult_Draw_SubsetBitMap", mipmapped));
+                rContext, subsetBmp, /*label=*/"DrawResult_Draw_SubsetBitMap", mipmapped, GrProtected::kNo));
 
         SkRect localRect = SkRect::Make(fBitmap.bounds()).makeOutset(kDrawPad, kDrawPad);
 

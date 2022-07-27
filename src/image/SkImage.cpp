@@ -310,6 +310,7 @@ void SkImage_Base::onAsyncRescaleAndReadPixelsYUV420(SkYUVColorSpace,
 
 #if SK_SUPPORT_GPU
 std::tuple<GrSurfaceProxyView, GrColorType> SkImage_Base::asView(GrRecordingContext* context,
+                                                                 GrProtected isProtected,
                                                                  GrMipmapped mipmapped,
                                                                  GrImageTexGenPolicy policy) const {
     if (!context) {
@@ -318,7 +319,7 @@ std::tuple<GrSurfaceProxyView, GrColorType> SkImage_Base::asView(GrRecordingCont
     if (!context->priv().caps()->mipmapSupport() || this->dimensions().area() <= 1) {
         mipmapped = GrMipmapped::kNo;
     }
-    return this->onAsView(context, mipmapped, policy);
+    return this->onAsView(context, isProtected, mipmapped, policy);
 }
 
 std::unique_ptr<GrFragmentProcessor> SkImage_Base::asFragmentProcessor(

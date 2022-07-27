@@ -374,7 +374,7 @@ DEF_SIMPLE_GPU_GM(new_texture_image, rContext, canvas, 280, 60) {
     for (const auto& factory : imageFactories) {
         sk_sp<SkImage> image(factory());
         if (image) {
-            sk_sp<SkImage> texImage(image->makeTextureImage(dContext));
+            sk_sp<SkImage> texImage(image->makeTextureImage(dContext, GrProtected::kNo));
             if (texImage) {
                 canvas->drawImage(texImage, 0, 0);
             }

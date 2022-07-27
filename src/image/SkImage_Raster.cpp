@@ -155,6 +155,7 @@ public:
 private:
 #if SK_SUPPORT_GPU
     std::tuple<GrSurfaceProxyView, GrColorType> onAsView(GrRecordingContext*,
+                                                         GrProtected,
                                                          GrMipmapped,
                                                          GrImageTexGenPolicy) const override;
 
@@ -240,7 +241,8 @@ bool SkImage_Raster::onPinAsTexture(GrRecordingContext* rContext) const {
                 GrMakeCachedBitmapProxyView(rContext,
                                             fBitmap,
                                             /*label=*/"SkImageRaster_PinAsTexture",
-                                            GrMipmapped::kNo);
+                                            GrMipmapped::kNo,
+                                            GrProtected::kNo);
         if (!fPinnedView) {
             fPinnedColorType = GrColorType::kUnknown;
             return false;
@@ -443,6 +445,7 @@ sk_sp<SkImage> SkImage_Raster::onReinterpretColorSpace(sk_sp<SkColorSpace> newCS
 #if SK_SUPPORT_GPU
 std::tuple<GrSurfaceProxyView, GrColorType> SkImage_Raster::onAsView(
         GrRecordingContext* rContext,
+        GrProtected isProtected,
         GrMipmapped mipmapped,
         GrImageTexGenPolicy policy) const {
     if (fPinnedView) {
@@ -472,13 +475,15 @@ std::tuple<GrSurfaceProxyView, GrColorType> SkImage_Raster::onAsView(
         return GrMakeCachedBitmapProxyView(rContext,
                                            fBitmap,
                                            /*label=*/"TextureForImageRasterWithPolicyEqualKDraw",
-                                           mipmapped);
+                                           mipmapped,
+                                           GrProtected::kNo);
     }
     auto budgeted = (policy == GrImageTexGenPolicy::kNew_Uncached_Unbudgeted)
             ? SkBudgeted::kNo
             : SkBudgeted::kYes;
     return GrMakeUncachedBitmapProxyView(rContext,
                                          fBitmap,
+                                         GrProtected::kNo,
                                          mipmapped,
                                          SkBackingFit::kExact,
                                          budgeted);
@@ -493,7 +498,7 @@ std::unique_ptr<GrFragmentProcessor> SkImage_Raster::onAsFragmentProcessor(
         const SkRect* domain) const {
     auto mm = sampling.mipmap == SkMipmapMode::kNone ? GrMipmapped::kNo : GrMipmapped::kYes;
     return MakeFragmentProcessorFromView(rContext,
-                                         std::get<0>(this->asView(rContext, mm)),
+                                         std::get<0>(this->asView(rContext, GrProtected::kNo, mm)),
                                          this->alphaType(),
                                          sampling,
                                          tileModes,

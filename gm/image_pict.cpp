@@ -174,7 +174,7 @@ public:
             surface->getCanvas()->translate(-100, -100);
             surface->getCanvas()->drawPicture(pic);
             sk_sp<SkImage> image(surface->makeImageSnapshot());
-            std::tie(fView, std::ignore) = as_IB(image)->asView(rContext, GrMipmapped::kNo);
+            std::tie(fView, std::ignore) = as_IB(image)->asView(rContext, GrProtected::kNo, GrMipmapped::kNo);
         }
     }
 protected:
@@ -306,7 +306,7 @@ protected:
     static void draw_as_tex(SkCanvas* canvas, SkImage* image, SkScalar x, SkScalar y) {
         // The gpu-backed images are drawn in this manner bc the generator backed images
         // aren't considered texture-backed
-        auto [view, ct] = as_IB(image)->asView(canvas->recordingContext(), GrMipmapped::kNo);
+        auto [view, ct] = as_IB(image)->asView(canvas->recordingContext(), GrProtected::kNo, GrMipmapped::kNo);
         if (!view) {
             // show placeholder if we have no texture
             draw_placeholder(canvas, x, y, image->width(), image->height());

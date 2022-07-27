@@ -790,7 +790,7 @@ DEF_GPUTEST_FOR_GL_RENDERING_CONTEXTS(SurfaceClear_Gpu, reporter, ctxInfo) {
     auto makeImageSurfaceContext = [dContext](SkSurface* surface) {
         sk_sp<SkImage> i(surface->makeImageSnapshot());
         auto gpuImage = static_cast<SkImage_Gpu*>(as_IB(i));
-        auto [view, ct] = gpuImage->asView(dContext, GrMipmapped::kNo);
+        auto [view, ct] = gpuImage->asView(dContext, GrProtected::kNo, GrMipmapped::kNo);
         GrColorInfo colorInfo(ct, i->alphaType(), i->refColorSpace());
         return dContext->priv().makeSC(view, std::move(colorInfo));
     };

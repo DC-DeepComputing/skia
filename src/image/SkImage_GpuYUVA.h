@@ -50,6 +50,7 @@ private:
     SkImage_GpuYUVA(sk_sp<GrImageContext>, const SkImage_GpuYUVA* image, sk_sp<SkColorSpace>);
 
     std::tuple<GrSurfaceProxyView, GrColorType> onAsView(GrRecordingContext*,
+                                                         GrProtected,
                                                          GrMipmapped,
                                                          GrImageTexGenPolicy) const override;
 

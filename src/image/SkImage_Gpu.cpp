@@ -304,7 +304,7 @@ sk_sp<SkImage> SkImage_Gpu::onMakeColorTypeAndColorSpace(SkColorType targetCT,
     info = info.makeColorType(ct);
 
     // Draw this image's texture into the SFC.
-    auto [view, _] = this->asView(dContext, GrMipmapped(this->hasMipmaps()));
+    auto [view, _] = this->asView(dContext, GrProtected::kNo, GrMipmapped(this->hasMipmaps()));
     auto texFP = GrTextureEffect::Make(std::move(view), this->alphaType());
     auto colorFP = GrColorSpaceXformEffect::Make(std::move(texFP),
                                                  this->imageInfo().colorInfo(),
@@ -527,7 +527,7 @@ sk_sp<SkImage> SkImage::MakeTextureFromCompressed(GrDirectContext* direct, sk_sp
         if (!tmp) {
             return nullptr;
         }
-        return tmp->makeTextureImage(direct, mipmapped);
+        return tmp->makeTextureImage(direct, isProtected, mipmapped);
     }
 
     GrProxyProvider* proxyProvider = direct->priv().proxyProvider();
@@ -547,6 +547,7 @@ sk_sp<SkImage> SkImage::MakeTextureFromCompressed(GrDirectContext* direct, sk_sp
 }
 
 sk_sp<SkImage> SkImage::makeTextureImage(GrDirectContext* dContext,
+                                         GrProtected isProtected,
                                          GrMipmapped mipmapped,
                                          SkBudgeted budgeted) const {
     if (!dContext) {
@@ -569,7 +570,7 @@ sk_sp<SkImage> SkImage::makeTextureImage(GrDirectContext* dContext,
                                          ? GrImageTexGenPolicy::kNew_Uncached_Budgeted
                                          : GrImageTexGenPolicy::kNew_Uncached_Unbudgeted;
     // TODO: Don't flatten YUVA images here. Add mips to the planes instead.
-    auto [view, ct] = as_IB(this)->asView(dContext, mipmapped, policy);
+    auto [view, ct] = as_IB(this)->asView(dContext, isProtected, mipmapped, policy);
     if (!view) {
         return nullptr;
     }
@@ -676,7 +677,7 @@ sk_sp<SkImage> SkImage::MakeCrossContextFromPixmap(GrDirectContext* dContext,
     SkBitmap bmp;
     bmp.installPixels(*pixmap);
     GrMipmapped mipmapped = buildMips ? GrMipmapped::kYes : GrMipmapped::kNo;
-    auto [view, ct] = GrMakeUncachedBitmapProxyView(dContext, bmp, mipmapped);
+    auto [view, ct] = GrMakeUncachedBitmapProxyView(dContext, bmp, GrProtected::kNo, mipmapped);
     if (!view) {
         return SkImage::MakeRasterCopy(*pixmap);
     }
@@ -800,7 +801,7 @@ bool SkImage::MakeBackendTextureFromSkImage(GrDirectContext* direct,
         return false;
     }
 
-    auto [view, ct] = as_IB(image)->asView(direct, GrMipmapped::kNo);
+    auto [view, ct] = as_IB(image)->asView(direct, GrProtected::kNo, GrMipmapped::kNo);
 
     if (!view) {
         return false;
@@ -841,6 +842,7 @@ bool SkImage::MakeBackendTextureFromSkImage(GrDirectContext* direct,
 
 std::tuple<GrSurfaceProxyView, GrColorType> SkImage_Gpu::onAsView(
         GrRecordingContext* recordingContext,
+        GrProtected isProtected,
         GrMipmapped mipmapped,
         GrImageTexGenPolicy policy) const {
     if (!fContext->priv().matches(recordingContext)) {
@@ -874,7 +876,7 @@ std::unique_ptr<GrFragmentProcessor> SkImage_Gpu::onAsFragmentProcessor(
     }
     auto mm = sampling.mipmap == SkMipmapMode::kNone ? GrMipmapped::kNo : GrMipmapped::kYes;
     return MakeFragmentProcessorFromView(rContext,
-                                         std::get<0>(this->asView(rContext, mm)),
+                                         std::get<0>(this->asView(rContext, GrProtected::kNo, mm)),
                                          this->alphaType(),
                                          sampling,
                                          tileModes,

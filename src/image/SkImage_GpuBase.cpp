@@ -107,7 +107,7 @@ bool SkImage_GpuBase::getROPixels(GrDirectContext* dContext,
         }
     }
 
-    auto [view, ct] = this->asView(dContext, GrMipmapped::kNo);
+    auto [view, ct] = this->asView(dContext, GrProtected::kNo, GrMipmapped::kNo);
     if (!view) {
         return false;
     }
@@ -135,7 +135,7 @@ sk_sp<SkImage> SkImage_GpuBase::onMakeSubset(const SkIRect& subset,
         return nullptr;
     }
 
-    auto [view, ct] = this->asView(direct, GrMipmapped::kNo);
+    auto [view, ct] = this->asView(direct, GrProtected::kNo, GrMipmapped::kNo);
     SkASSERT(view);
     SkASSERT(ct == SkColorTypeToGrColorType(this->colorType()));
 
@@ -170,7 +170,7 @@ bool SkImage_GpuBase::onReadPixels(GrDirectContext* dContext,
         return false;
     }
 
-    auto [view, ct] = this->asView(dContext, GrMipmapped::kNo);
+    auto [view, ct] = this->asView(dContext, GrProtected::kNo, GrMipmapped::kNo);
     SkASSERT(view);
 
     GrColorInfo colorInfo(ct, this->alphaType(), this->refColorSpace());

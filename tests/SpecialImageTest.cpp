@@ -189,7 +189,7 @@ DEF_TEST(SpecialImage_Image_Legacy, reporter) {
 DEF_GPUTEST_FOR_RENDERING_CONTEXTS(SpecialImage_Gpu, reporter, ctxInfo) {
     auto context = ctxInfo.directContext();
     SkBitmap bm = create_bm();
-    auto [view, ct] = GrMakeUncachedBitmapProxyView(context, bm);
+    auto [view, ct] = GrMakeUncachedBitmapProxyView(context, bm, GrProtected::kNo);
     if (!view) {
         return;
     }

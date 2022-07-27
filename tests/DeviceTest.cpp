@@ -111,7 +111,7 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(SpecialImage_GPUDevice, reporter, ctxInfo) {
     SkASSERT(SkIRect::MakeWH(kWidth, kHeight) == special->subset());
 
     // Create a gpu-backed special image from a gpu-backed SkImage
-    image = image->makeTextureImage(dContext);
+    image = image->makeTextureImage(dContext, GrProtected::kNo);
     special = DeviceTestingAccess::MakeSpecial(device.get(), image.get());
     SkASSERT(special->isTextureBacked());
     SkASSERT(kWidth == special->width());

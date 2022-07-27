@@ -2179,9 +2179,9 @@ if (skia_enable_tools) {
         deps = [ "modules/skottie:tool_gpu" ]
       }
     }
-    test_app("svg_tool") {
-      deps = [ "modules/svg:tool" ]
-    }
+    #    test_app("svg_tool") {
+    #      deps = [ "modules/svg:tool" ]
+    #    }
   }
 
   import("gn/samples.gni")

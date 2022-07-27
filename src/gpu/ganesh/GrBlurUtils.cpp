@@ -163,6 +163,7 @@ static GrSurfaceProxyView sw_create_filtered_mask(GrRecordingContext* rContext,
         std::tie(filteredMaskView, std::ignore) = GrMakeUncachedBitmapProxyView(
                 rContext,
                 bm,
+                GrProtected::kNo,
                 GrMipmapped::kNo,
                 SkBackingFit::kApprox);
         if (!filteredMaskView) {

@@ -424,7 +424,7 @@ std::unique_ptr<GrFragmentProcessor> SkPictureShader::asFragmentProcessor(
         if (!image) {
             return nullptr;
         }
-        auto [v, ct] = as_IB(image)->asView(ctx, GrMipmapped::kNo);
+        auto [v, ct] = as_IB(image)->asView(ctx, GrProtected::kNo, GrMipmapped::kNo);
         view = std::move(v);
         provider->assignUniqueKeyToProxy(key, view.asTextureProxy());
     }

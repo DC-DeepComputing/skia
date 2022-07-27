@@ -202,7 +202,7 @@ DEF_SIMPLE_GM(imagefilters_effect_order, canvas, 512, 512) {
     sk_sp<SkImage> image(GetResourceAsImage("images/mandrill_256.png"));
     auto direct = GrAsDirectContext(canvas->recordingContext());
     if (direct) {
-        if (sk_sp<SkImage> gpuImage = image->makeTextureImage(direct)) {
+        if (sk_sp<SkImage> gpuImage = image->makeTextureImage(direct, GrProtected::kNo)) {
             image = std::move(gpuImage);
         }
     }

@@ -1119,7 +1119,7 @@ Result SKPSrc::draw(GrDirectContext* dContext, SkCanvas* canvas) const {
             DeserializationContext* context = reinterpret_cast<DeserializationContext*>(ctx);
 
             if (context->fDirectContext) {
-                image = image->makeTextureImage(context->fDirectContext);
+                image = image->makeTextureImage(context->fDirectContext, GrProtected::kNo);
             }
 #ifdef SK_GRAPHITE_ENABLED
             else if (context->fRecorder) {

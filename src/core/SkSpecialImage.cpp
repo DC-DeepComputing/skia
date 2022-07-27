@@ -183,7 +183,7 @@ sk_sp<SkSpecialImage> SkSpecialImage::MakeFromImage(GrRecordingContext* rContext
 
 #if SK_SUPPORT_GPU
     if (rContext) {
-        auto [view, ct] = as_IB(image)->asView(rContext, GrMipmapped::kNo);
+        auto [view, ct] = as_IB(image)->asView(rContext, GrProtected::kNo, GrMipmapped::kNo);
         return MakeDeferredFromGpu(rContext,
                                    subset,
                                    image->uniqueID(),
@@ -241,7 +241,8 @@ public:
     GrSurfaceProxyView onView(GrRecordingContext* context) const override {
         if (context) {
             return std::get<0>(GrMakeCachedBitmapProxyView(
-                    context, fBitmap, /*label=*/"SpecialImageRaster_OnView", GrMipmapped::kNo));
+                    context, fBitmap, /*label=*/"SpecialImageRaster_OnView",
+                    GrMipmapped::kNo, GrProtected::kNo));
         }
 
         return {};

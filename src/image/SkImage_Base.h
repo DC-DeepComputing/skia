@@ -99,6 +99,7 @@ public:
     // the data in a texture.
     std::tuple<GrSurfaceProxyView, GrColorType> asView(
             GrRecordingContext* context,
+            GrProtected isProtected,
             GrMipmapped mipmapped,
             GrImageTexGenPolicy policy = GrImageTexGenPolicy::kDraw) const;
 
@@ -217,6 +218,7 @@ private:
 #if SK_SUPPORT_GPU
     virtual std::tuple<GrSurfaceProxyView, GrColorType> onAsView(
             GrRecordingContext*,
+            GrProtected isProtected,
             GrMipmapped,
             GrImageTexGenPolicy policy) const = 0;
 

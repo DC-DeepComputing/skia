@@ -156,5 +156,5 @@ GrSurfaceProxyView GrSWMaskHelper::toTextureView(GrRecordingContext* rContext, S
                                         nullptr));
     bitmap.setImmutable();
 
-    return std::get<0>(GrMakeUncachedBitmapProxyView(rContext, bitmap, GrMipmapped::kNo, fit));
+    return std::get<0>(GrMakeUncachedBitmapProxyView(rContext, bitmap, GrProtected::kNo, GrMipmapped::kNo, fit));
 }

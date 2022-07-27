@@ -54,7 +54,7 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(RepeatedClippedBlurTest, reporter, ctxInfo) {
         bm.eraseArea(SkIRect::MakeXYWH(1, 2, 1277, 1274), SK_ColorGREEN);
 
         sk_sp<SkImage> rasterImg = bm.asImage();
-        bigImg = rasterImg->makeTextureImage(dContext);
+        bigImg = rasterImg->makeTextureImage(dContext, GrProtected::kNo);
     }
 
     sk_sp<SkImage> smImg;

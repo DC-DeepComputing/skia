@@ -247,7 +247,7 @@ static void invalidation_test(GrDirectContext* dContext,
         bufferResources = 1;
     }
 
-    sk_sp<SkImage> textureImg = rasterImg->makeTextureImage(dContext);
+    sk_sp<SkImage> textureImg = rasterImg->makeTextureImage(dContext, GrProtected::kNo);
     REPORTER_ASSERT(reporter, 0 == proxyProvider->numUniqueKeyProxies_TestOnly());
     REPORTER_ASSERT(reporter, cacheEntriesPerProxy + bufferResources == cache->getResourceCount());
 

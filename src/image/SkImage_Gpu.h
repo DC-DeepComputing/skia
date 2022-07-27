@@ -82,6 +82,7 @@ private:
                 SkColorInfo);
 
     std::tuple<GrSurfaceProxyView, GrColorType> onAsView(GrRecordingContext*,
+                                                         GrProtected,
                                                          GrMipmapped,
                                                          GrImageTexGenPolicy) const override;
 

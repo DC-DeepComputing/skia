@@ -15,6 +15,20 @@
 #include "include/core/SkString.h"
 #include "include/utils/SkRandom.h"
 
+#include "include/effects/SkImageFilters.h"
+#include "include/gpu/GrRecordingContext.h"
+#include "tools/Resources.h"
+
+static sk_sp<SkImage> make_image(GrRecordingContext* context) {
+    GrDirectContext* direct = context->asDirectContext();
+    if (!direct) {
+        return nullptr;
+    }
+
+    sk_sp<SkImage> image = GetResourceAsImage("images/mandrill_128.png");
+    return image->makeTextureImage(direct, GrProtected::kYes);
+}
+
 namespace skiagm {
 
 // This GM draws a lot of arcs in a 'Z' shape. It particularly exercises
@@ -33,51 +47,17 @@ protected:
     }
 
     SkISize onISize() override {
-        return SkISize::Make(1000, 1000);
+        return SkISize::Make(140, 140);
     }
 
     void onDraw(SkCanvas* canvas) override {
-        SkRandom rand;
+        SkPaint paint;
 
-        SkRect rect = SkRect::MakeXYWH(10, 10, 200, 200);
+        sk_sp<SkImage> img = make_image(canvas->recordingContext());
 
-        SkPaint p;
+        paint.setImageFilter(SkImageFilters::Blur(3, 3, nullptr));
 
-        p.setStyle(SkPaint::kStroke_Style);
-        p.setStrokeWidth(35);
-        int xOffset = 0, yOffset = 0;
-        int direction = 0;
-
-        for (float arc = 134.0f; arc < 136.0f; arc += 0.01f) {
-            SkColor color = rand.nextU();
-            color |= 0xff000000;
-            p.setColor(color);
-
-            canvas->save();
-            canvas->translate(SkIntToScalar(xOffset), SkIntToScalar(yOffset));
-            canvas->drawArc(rect, 0, arc, false, p);
-            canvas->restore();
-
-            switch (direction) {
-            case 0:
-                xOffset += 10;
-                if (xOffset >= 700) {
-                    direction = 1;
-                }
-                break;
-            case 1:
-                xOffset -= 10;
-                yOffset += 10;
-                if (xOffset < 50) {
-                    direction = 2;
-                }
-                break;
-            case 2:
-                xOffset += 10;
-                break;
-            }
-        }
-
+        canvas->drawImage(img, 0, 0, SkSamplingOptions(), &paint);
     }
 
 private:

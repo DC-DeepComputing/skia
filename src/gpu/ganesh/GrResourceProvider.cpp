@@ -172,6 +172,7 @@ sk_sp<GrTexture> GrResourceProvider::createTexture(SkISize dimensions,
                                              renderTargetSampleCnt,
                                              isProtected,
                                              label);
+
         if (!tex) {
             return nullptr;
         }

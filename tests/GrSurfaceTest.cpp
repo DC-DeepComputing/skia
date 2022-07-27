@@ -438,7 +438,7 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(ReadOnlyTexture, reporter, context_info) {
         copySrcBitmap.installPixels(write);
         copySrcBitmap.setImmutable();
 
-        auto copySrc = std::get<0>(GrMakeUncachedBitmapProxyView(dContext, copySrcBitmap));
+        auto copySrc = std::get<0>(GrMakeUncachedBitmapProxyView(dContext, copySrcBitmap, GrProtected::kNo));
 
         REPORTER_ASSERT(reporter, copySrc);
         auto copyResult = surfContext->testCopy(copySrc.refProxy());

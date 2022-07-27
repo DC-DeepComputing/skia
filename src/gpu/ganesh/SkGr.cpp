@@ -153,7 +153,8 @@ static sk_sp<GrTextureProxy> make_bmp_proxy(GrProxyProvider* proxyProvider,
                                             GrColorType ct,
                                             GrMipmapped mipmapped,
                                             SkBackingFit fit,
-                                            SkBudgeted budgeted) {
+                                            SkBudgeted budgeted,
+                                            GrProtected isProtected) {
     SkBitmap bmpToUpload;
     if (ct != SkColorTypeToGrColorType(bitmap.info().colorType())) {
         SkColorType skCT = GrColorTypeToSkColorType(ct);
@@ -165,7 +166,7 @@ static sk_sp<GrTextureProxy> make_bmp_proxy(GrProxyProvider* proxyProvider,
     } else {
         bmpToUpload = bitmap;
     }
-    auto proxy = proxyProvider->createProxyFromBitmap(bmpToUpload, mipmapped, fit, budgeted);
+    auto proxy = proxyProvider->createProxyFromBitmap(bmpToUpload, mipmapped, fit, budgeted, isProtected);
     SkASSERT(!proxy || mipmapped == GrMipmapped::kNo || proxy->mipmapped() == GrMipmapped::kYes);
     return proxy;
 }
@@ -174,7 +175,8 @@ std::tuple<GrSurfaceProxyView, GrColorType>
 GrMakeCachedBitmapProxyView(GrRecordingContext* rContext,
                             const SkBitmap& bitmap,
                             std::string_view label,
-                            GrMipmapped mipmapped) {
+                            GrMipmapped mipmapped,
+                            GrProtected isProtected) {
     if (!bitmap.peekPixels(nullptr)) {
         return {};
     }
@@ -203,7 +205,8 @@ GrMakeCachedBitmapProxyView(GrRecordingContext* rContext,
                                ct,
                                mipmapped,
                                SkBackingFit::kExact,
-                               SkBudgeted::kYes);
+                               SkBudgeted::kYes,
+                               isProtected);
         if (!proxy) {
             return {};
         }
@@ -241,6 +244,7 @@ GrMakeCachedBitmapProxyView(GrRecordingContext* rContext,
 std::tuple<GrSurfaceProxyView, GrColorType>
 GrMakeUncachedBitmapProxyView(GrRecordingContext* rContext,
                               const SkBitmap& bitmap,
+                              GrProtected isProtected,
                               GrMipmapped mipmapped,
                               SkBackingFit fit,
                               SkBudgeted budgeted) {
@@ -250,7 +254,7 @@ GrMakeUncachedBitmapProxyView(GrRecordingContext* rContext,
     mipmapped = adjust_mipmapped(mipmapped, bitmap, caps);
     GrColorType ct = choose_bmp_texture_colortype(caps, bitmap);
 
-    if (auto proxy = make_bmp_proxy(proxyProvider, bitmap, ct, mipmapped, fit, budgeted)) {
+    if (auto proxy = make_bmp_proxy(proxyProvider, bitmap, ct, mipmapped, fit, budgeted, isProtected)) {
         skgpu::Swizzle swizzle = caps->getReadSwizzle(proxy->backendFormat(), ct);
         SkASSERT(mipmapped == GrMipmapped::kNo || proxy->mipmapped() == GrMipmapped::kYes);
         return {{std::move(proxy), kTopLeft_GrSurfaceOrigin, swizzle}, ct};
@@ -393,7 +397,7 @@ static std::unique_ptr<GrFragmentProcessor> make_dither_effect(
     // Galaxy S20 FE     Mali-G77 MP11   600    165ms        360ms (2.18x)     260ms (1.58x)
     static const SkBitmap gLUT = make_dither_lut();
     auto [tex, ct] = GrMakeCachedBitmapProxyView(
-            rContext, gLUT, /*label=*/"MakeDitherEffect", GrMipmapped::kNo);
+            rContext, gLUT, /*label=*/"MakeDitherEffect", GrMipmapped::kNo, GrProtected::kNo);
     if (!tex) {
         return inputFP;
     }

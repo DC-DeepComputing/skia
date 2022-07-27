@@ -274,7 +274,8 @@ GrSurfaceProxyView GrProxyProvider::findCachedProxyWithColorTypeFallback(
 sk_sp<GrTextureProxy> GrProxyProvider::createProxyFromBitmap(const SkBitmap& bitmap,
                                                              GrMipmapped mipmapped,
                                                              SkBackingFit fit,
-                                                             SkBudgeted budgeted) {
+                                                             SkBudgeted budgeted,
+                                                             GrProtected isProtected) {
     ASSERT_SINGLE_OWNER
     SkASSERT(fit == SkBackingFit::kExact || mipmapped == GrMipmapped::kNo);
 
@@ -315,9 +316,9 @@ sk_sp<GrTextureProxy> GrProxyProvider::createProxyFromBitmap(const SkBitmap& bit
 
     sk_sp<GrTextureProxy> proxy;
     if (mipmapped == GrMipmapped::kNo || !SkMipmap::ComputeLevelCount(copyBitmap.dimensions())) {
-        proxy = this->createNonMippedProxyFromBitmap(copyBitmap, fit, budgeted);
+        proxy = this->createNonMippedProxyFromBitmap(copyBitmap, fit, budgeted, isProtected);
     } else {
-        proxy = this->createMippedProxyFromBitmap(copyBitmap, budgeted);
+        proxy = this->createMippedProxyFromBitmap(copyBitmap, budgeted, isProtected);
     }
 
     if (!proxy) {
@@ -339,7 +340,8 @@ sk_sp<GrTextureProxy> GrProxyProvider::createProxyFromBitmap(const SkBitmap& bit
 
 sk_sp<GrTextureProxy> GrProxyProvider::createNonMippedProxyFromBitmap(const SkBitmap& bitmap,
                                                                       SkBackingFit fit,
-                                                                      SkBudgeted budgeted) {
+                                                                      SkBudgeted budgeted,
+                                                                      GrProtected isProtected) {
     auto dims = bitmap.dimensions();
 
     auto colorType = SkColorTypeToGrColorType(bitmap.colorType());
@@ -366,7 +368,7 @@ sk_sp<GrTextureProxy> GrProxyProvider::createNonMippedProxyFromBitmap(const SkBi
                                                                           desc.fLabel));
             },
             format, dims, GrMipmapped::kNo, GrMipmapStatus::kNotAllocated,
-            GrInternalSurfaceFlags::kNone, fit, budgeted, GrProtected::kNo, UseAllocator::kYes);
+            GrInternalSurfaceFlags::kNone, fit, budgeted, isProtected, UseAllocator::kYes);
 
     if (!proxy) {
         return nullptr;
@@ -376,7 +378,8 @@ sk_sp<GrTextureProxy> GrProxyProvider::createNonMippedProxyFromBitmap(const SkBi
 }
 
 sk_sp<GrTextureProxy> GrProxyProvider::createMippedProxyFromBitmap(const SkBitmap& bitmap,
-                                                                   SkBudgeted budgeted) {
+                                                                   SkBudgeted budgeted,
+                                                                   GrProtected isProtected) {
     SkASSERT(this->caps()->mipmapSupport());
 
     auto colorType = SkColorTypeToGrColorType(bitmap.colorType());
@@ -420,12 +423,12 @@ sk_sp<GrTextureProxy> GrProxyProvider::createMippedProxyFromBitmap(const SkBitma
                                                                           1,
                                                                           desc.fBudgeted,
                                                                           GrMipmapped::kYes,
-                                                                          GrProtected::kNo,
+                                                                          desc.fProtected,
                                                                           texels.get(),
                                                                           desc.fLabel));
             },
             format, dims, GrMipmapped::kYes, GrMipmapStatus::kValid, GrInternalSurfaceFlags::kNone,
-            SkBackingFit::kExact, budgeted, GrProtected::kNo, UseAllocator::kYes);
+            SkBackingFit::kExact, budgeted, isProtected, UseAllocator::kYes);
 
     if (!proxy) {
         return nullptr;
