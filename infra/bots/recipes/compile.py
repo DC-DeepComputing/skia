@@ -31,6 +31,8 @@ def RunSteps(api):
       'work', 'skia', 'out', api.vars.builder_name, api.vars.configuration)
 
   try:
+    api.run(api.step, 'print checkout_root', cmd=['echo', checkout_root])
+    api.run(api.step, 'print out_dir', cmd=['echo', out_dir])
     api.build(checkout_root=checkout_root, out_dir=out_dir)
 
     # TODO(borenet): Move this out of the try/finally.
