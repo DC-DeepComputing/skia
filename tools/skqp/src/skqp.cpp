@@ -60,9 +60,10 @@ namespace {
 // Matches indicate tests that should be excluded. Lines may start with # to indicate a comment.
 class ExclusionList {
 public:
-    ExclusionList() {}
+    ExclusionList(int enforcedAndroidAPILevel)
+            : fEnforcedAndroidAPILevel(enforcedAndroidAPILevel) {}
 
-    void initialize(SkQPAssetManager* assetManager, sk_sp<SkData> dat, int enforcedAndroidAPILevel);
+    void initialize(SkQPAssetManager* assetManager, sk_sp<SkData> dat);
 
     bool isExcluded(const std::string& name) const {
 #if defined(SK_BUILD_FOR_ANDROID) && defined(SK_BUILD_FOR_SKQP)
@@ -81,6 +82,8 @@ public:
         }
         return false;
     }
+
+    int getEnforcedAndroidAPILevel() const { return fEnforcedAndroidAPILevel; }
 
 private:
     int fEnforcedAndroidAPILevel;
@@ -104,7 +107,9 @@ static std::vector<SkQP::UnitTest> get_unit_tests(const ExclusionList& exclusion
         if (exclusionList.isExcluded(test.fName)) {
             continue;
         }
-        unitTests.push_back(&test);
+        if (test.fCTSVersion.enforceRelaxedMode(exclusionList.getEnforcedAndroidAPILevel())) {
+            unitTests.push_back(&test);
+        }
     }
     auto lt = [](SkQP::UnitTest u, SkQP::UnitTest v) { return strcmp(u->fName, v->fName) < 0; };
     std::sort(unitTests.begin(), unitTests.end(), lt);
@@ -146,13 +151,11 @@ static std::vector<SkQP::SkSLErrorTest> get_sksl_error_tests(SkQPAssetManager* a
 }
 
 void ExclusionList::initialize(SkQPAssetManager* assetManager,
-                               sk_sp<SkData> dat,
-                               int enforcedAndroidAPILevel) {
-    fEnforcedAndroidAPILevel = enforcedAndroidAPILevel;
+                               sk_sp<SkData> dat) {
     fEntries = {};
 
     //TODO: explore refactoring this code to collect the test lists only once in SkQP::init
-    ExclusionList noExclusions;
+    ExclusionList noExclusions(0);
     const std::vector<SkQP::UnitTest> unitTestList = get_unit_tests(noExclusions);
     const std::vector<SkQP::SkSLErrorTest> skslTestList = get_sksl_error_tests(assetManager,
                                                                                noExclusions);
@@ -198,7 +201,7 @@ void ExclusionList::initialize(SkQPAssetManager* assetManager,
 
         // Throw an error if there are no unit or sksl tests that match the exclusion
         if (!testExists(exclusionRegex)) {
-            SK_ABORT("Exclusion list contains tests not found in the test registry: %s",
+            SkDebugf("Exclusion list contains tests not found in the test registry: %s",
                      exclusionString.c_str());
         }
 
@@ -302,9 +305,6 @@ void SkQP::init(SkQPAssetManager* assetManager, const char* reportDirectory) {
     SkGraphics::Init();
     gSkFontMgr_DefaultFactory = &ToolUtils::MakePortableFontMgr;
 
-    // Defaults to zero since most checks care if it is greater than a specific value. So this will
-    // just default to it being less.
-    int minAndroidAPILevel = 0;
 #ifdef SK_BUILD_FOR_ANDROID
     // ro.vendor.api_level contains the minAPI level based on the order defined in
     // docs.partner.android.com/gms/building/integrating/extending-os-upgrade-support-windows
@@ -315,15 +315,15 @@ void SkQP::init(SkQPAssetManager* assetManager, const char* reportDirectory) {
     char minAPIVersionStr[PROP_VALUE_MAX];
     int strLength = __system_property_get("ro.vendor.api_level", minAPIVersionStr);
     if (strLength != 0) {
-        minAndroidAPILevel = atoi(minAPIVersionStr);
+        fEnforcedAndroidAPILevel = atoi(minAPIVersionStr);
     }
 #endif
 
     // Load the exclusion list `skqp/unittests.txt`, if it exists.
     // The list is checked in at platform_tools/android/apps/skqp/src/main/assets/skqp/unittests.txt
-    ExclusionList exclusionList;
+    ExclusionList exclusionList(fEnforcedAndroidAPILevel);
     if (sk_sp<SkData> dat = assetManager->open(kUnitTestsPath)) {
-        exclusionList.initialize(assetManager, dat, minAndroidAPILevel);
+        exclusionList.initialize(assetManager, dat);
     }
 
     fUnitTests = get_unit_tests(exclusionList);
@@ -342,7 +342,9 @@ std::vector<std::string> SkQP::executeTest(SkQP::UnitTest test) {
         }
     } r;
     GrContextOptions options;
-    options.fDisableDriverCorrectnessWorkarounds = true;
+    if (test->fCTSVersion.enforceStrictMode(fEnforcedAndroidAPILevel)) {
+        options.fDisableDriverCorrectnessWorkarounds = true;
+    }
     if (test->fContextOptionsProc) {
         test->fContextOptionsProc(&options);
     }

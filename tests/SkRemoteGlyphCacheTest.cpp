@@ -284,7 +284,7 @@ static void use_padding_options(GrContextOptions* options) {
 
 DEF_GPUTEST_FOR_CONTEXTS(SkRemoteGlyphCache_StrikeSerializationSlug,
                          sk_gpu_test::GrContextFactory::IsRenderingContext,
-                         reporter, ctxInfo, use_padding_options) {
+                         reporter, ctxInfo, use_padding_options, skiatest::CTSVersion(skiatest::CTSVersion::API_LEVEL_T)) {
     auto dContext = ctxInfo.directContext();
     sk_sp<DiscardableManager> discardableManager = sk_make_sp<DiscardableManager>();
     SkStrikeServer server(discardableManager.get());
@@ -324,7 +324,7 @@ DEF_GPUTEST_FOR_CONTEXTS(SkRemoteGlyphCache_StrikeSerializationSlug,
 
 DEF_GPUTEST_FOR_CONTEXTS(SkRemoteGlyphCache_SlugSerialization,
                          sk_gpu_test::GrContextFactory::IsRenderingContext,
-                         reporter, ctxInfo, use_padding_options) {
+                         reporter, ctxInfo, use_padding_options, skiatest::CTSVersion(skiatest::CTSVersion::API_LEVEL_T)) {
     auto dContext = ctxInfo.directContext();
     sk_sp<DiscardableManager> discardableManager = sk_make_sp<DiscardableManager>();
     SkStrikeServer server(discardableManager.get());

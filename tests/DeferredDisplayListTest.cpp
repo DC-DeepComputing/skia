@@ -687,7 +687,7 @@ DEF_GPUTEST_FOR_GL_RENDERING_CONTEXTS(CharacterizationFBO0nessTest, reporter, ct
 #endif
 
 #ifdef SK_VULKAN
-DEF_GPUTEST_FOR_VULKAN_CONTEXT(CharacterizationVkSCBnessTest, reporter, ctxInfo) {
+DEF_GPUTEST_FOR_VULKAN_CONTEXT(CharacterizationVkSCBnessTest, reporter, ctxInfo, skiatest::CTSVersion::API_LEVEL_T) {
     auto dContext = ctxInfo.directContext();
 
     SurfaceParameters params(dContext);
