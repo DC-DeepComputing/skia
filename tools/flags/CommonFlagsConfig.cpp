@@ -536,7 +536,7 @@ SkCommandLineConfigGpu::SkCommandLineConfigGpu(const SkString&           tag,
                                                bool                      OOPRish,
                                                bool                      slug,
                                                bool                      reducedShaders,
-                                               SurfType                  surfType)
+                                               SurfType                  surfType, bool)
         : SkCommandLineConfig(tag, SkString("gpu"), viaParts)
         , fContextType(contextType)
         , fContextOverrides(ContextOverrides::kNone)
@@ -635,7 +635,7 @@ SkCommandLineConfigGpu* parse_command_line_config_gpu(const SkString&           
                                       ooprish,
                                       slug,
                                       reducedShaders,
-                                      surfType);
+                                      surfType, true);
 }
 
 #ifdef SK_GRAPHITE_ENABLED

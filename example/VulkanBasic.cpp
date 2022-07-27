@@ -62,7 +62,8 @@ int main(int argc, char** argv) {
         backendContext.fDevice = VK_NULL_HANDLE;
 
         if (!sk_gpu_test::CreateVkBackendContext(instProc, &backendContext, extensions.get(),
-                                                 features.get(), &debugCallback)) {
+                                                 features.get(), &debugCallback,
+                                                 /* isProtected= */ false)) {
             return 1;
         }
     }

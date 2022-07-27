@@ -30,6 +30,7 @@
 #include "include/gpu/GrDirectContext.h"
 #include "include/gpu/GrRecordingContext.h"
 #include "include/utils/SkTextUtils.h"
+#include "src/gpu/ganesh/GrDirectContextPriv.h"
 #include "tools/ToolUtils.h"
 #include "tools/gpu/BackendSurfaceFactory.h"
 
@@ -189,12 +190,15 @@ static sk_sp<SkSurface> make_surface(const SkImageInfo& ii, SkCanvas* canvas, Su
             if (!direct) {
                 return nullptr;
             }
-            return sk_gpu_test::MakeBackendTextureSurface(direct, ii, kTopLeft_GrSurfaceOrigin, 1);
+            return sk_gpu_test::MakeBackendTextureSurface(direct, ii, kTopLeft_GrSurfaceOrigin, 1, GrMipmapped::kNo,
+                                                          direct->priv().options().fMakeTexturesProtected ? GrProtected::kYes : GrProtected::kNo);
         case kBackendRenderTarget:
             return sk_gpu_test::MakeBackendRenderTargetSurface(direct,
                                                                ii,
                                                                kTopLeft_GrSurfaceOrigin,
-                                                               1);
+                                                               1,
+                                                               direct->priv().options().fMakeTexturesProtected ? GrProtected::kYes : GrProtected::kNo,
+                                                               nullptr);
     }
     return nullptr;
 }
