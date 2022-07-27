@@ -89,6 +89,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d972b30d_6efaba24",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 25
+      },
+      "lineNbr": 454,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-07-27T18:30:22Z",
+      "side": 1,
+      "message": "OK, adding a TODO and will tackle this in a subsequent smaller CL. After talking with Michael, we decided upon creating a wrapper around SkVertices which can contain the skipColorXForm bool so that the VerticesRenderStep can access it and set a uniform value to tell the GPU whether to skip a color transformation or not.",
+      "parentUuid": "ce12de18_cf947ec2",
+      "range": {
+        "startLine": 454,
+        "startChar": 71,
+        "endLine": 454,
+        "endChar": 78
+      },
+      "revId": "f246ea30d7cfa3ba133542f65133d9bbb9b6113a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a9a727ba_2f151561",
