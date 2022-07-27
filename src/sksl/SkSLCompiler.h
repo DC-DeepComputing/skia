@@ -62,6 +62,7 @@ class ProgramUsage;
 class SymbolTable;
 class Variable;
 
+
 struct ShaderCaps;
 
 struct LoadedModule {
