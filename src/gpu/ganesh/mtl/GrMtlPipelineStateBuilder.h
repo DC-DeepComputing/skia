@@ -14,6 +14,7 @@
 #include "src/gpu/ganesh/mtl/GrMtlUniformHandler.h"
 #include "src/gpu/ganesh/mtl/GrMtlVaryingHandler.h"
 #include "src/sksl/SkSLCompiler.h"
+#include "src/sksl/ir/SkSLProgram.h"
 
 #import <Metal/Metal.h>
 
@@ -66,7 +67,7 @@ private:
                                            SkSL::Program::Inputs inputs,
                                            GrContextOptions::ShaderErrorHandler* errorHandler);
     void storeShadersInCache(const std::string shaders[], const SkSL::Program::Inputs inputs[],
-                             SkSL::Program::Settings*, sk_sp<SkData>, bool isSkSL);
+                             SkSL::ProgramSettings*, sk_sp<SkData>, bool isSkSL);
 
     GrGLSLUniformHandler* uniformHandler() override { return &fUniformHandler; }
     const GrGLSLUniformHandler* uniformHandler() const override { return &fUniformHandler; }
