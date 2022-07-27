@@ -160,6 +160,24 @@
       "parentUuid": "912bd71e_0cc98353",
       "revId": "3389d164d4ccffe271f077d12520a80d31c9a904",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "11715a2f_976a6d18",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 9996
+      },
+      "writtenOn": "2022-07-27T19:42:38Z",
+      "side": 1,
+      "message": "Unfortunately I think it\u0027s not. The SkImage ends up in a display list, and that ends up in the IO unref queue so that we make sure to unref all the SkRefCnt objects on a thread that has a current context.\n\nEven if I try to just pass the texture around, to draw it into a canvas I eventually need to make an SkImage out of it, and that SkImage will end up in a display list that goes into the unref queue.",
+      "parentUuid": "09c36c52_bbc8b204",
+      "revId": "3389d164d4ccffe271f077d12520a80d31c9a904",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
