@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4d8fb953_b0e6b97b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 26
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-07-27T14:24:33Z",
+      "side": 1,
+      "message": "OK, all comments should be addressed w/ the exception of the skipColorXForm which I may put into a separate CL.",
+      "revId": "bd70c2a0d159ebe6505559e6ed4c1c4c56cf25d2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

@@ -46,6 +46,30 @@
       },
       "revId": "e3341747255d73585cf42c1a44ad08629bcd1e90",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3fddd097_cc43db6d",
+        "filename": "src/gpu/graphite/render/StencilAndFillPathRenderer.cpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-07-27T14:24:33Z",
+      "side": 1,
+      "message": "Rob pointed me to the public style guide and to a supposedly controversial clang format file. Thank you for verifying this was an acceptable call.",
+      "parentUuid": "e23b2acd_27d4f34f",
+      "range": {
+        "startLine": 112,
+        "startChar": 3,
+        "endLine": 143,
+        "endChar": 84
+      },
+      "revId": "e3341747255d73585cf42c1a44ad08629bcd1e90",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

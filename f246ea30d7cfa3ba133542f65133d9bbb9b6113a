@@ -67,6 +67,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ce12de18_cf947ec2",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 25
+      },
+      "lineNbr": 454,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-07-27T14:24:33Z",
+      "side": 1,
+      "message": "That is a good callout. I added a line to add the blender to the paint which gets passed into drawGeometry - would this accomplish what we need on that front? For my understanding, would the paint passed in here not already include the blender?\n\nI sent a message to Michael to discuss how we want to handle skipColorXForm within graphite. I am looking to see whether other draw calls may also provide colors that are already in the desired color space. That will change how we implement this.",
+      "parentUuid": "c4918db8_644089c8",
+      "range": {
+        "startLine": 454,
+        "startChar": 71,
+        "endLine": 454,
+        "endChar": 78
+      },
+      "revId": "f246ea30d7cfa3ba133542f65133d9bbb9b6113a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a9a727ba_2f151561",
         "filename": "src/gpu/graphite/Device.cpp",
         "patchSetId": 25
@@ -78,6 +102,24 @@
       "writtenOn": "2022-07-26T18:54:56Z",
       "side": 1,
       "message": "Add a space here and on the following 3 lines ?",
+      "revId": "f246ea30d7cfa3ba133542f65133d9bbb9b6113a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a18664d5_3942b285",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 25
+      },
+      "lineNbr": 457,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-07-27T14:24:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a9a727ba_2f151561",
       "revId": "f246ea30d7cfa3ba133542f65133d9bbb9b6113a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -99,6 +141,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fd1e660f_0aed5658",
+        "filename": "src/gpu/graphite/geom/Geometry.h",
+        "patchSetId": 25
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-07-27T14:24:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f133d651_5818740c",
+      "revId": "f246ea30d7cfa3ba133542f65133d9bbb9b6113a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bed7faae_8857bd6e",
@@ -112,6 +172,30 @@
       "writtenOn": "2022-07-26T18:54:56Z",
       "side": 1,
       "message": "this-\u003eisVertices ?",
+      "range": {
+        "startLine": 119,
+        "startChar": 19,
+        "endLine": 119,
+        "endChar": 29
+      },
+      "revId": "f246ea30d7cfa3ba133542f65133d9bbb9b6113a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f44b8736_bd618b57",
+        "filename": "src/gpu/graphite/geom/Geometry.h",
+        "patchSetId": 25
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-07-27T14:24:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bed7faae_8857bd6e",
       "range": {
         "startLine": 119,
         "startChar": 19,
@@ -157,6 +241,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8646bfee_dc2f2e20",
+        "filename": "src/gpu/graphite/geom/Geometry.h",
+        "patchSetId": 25
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-07-27T14:24:33Z",
+      "side": 1,
+      "message": "Added a TODO to add unit tests for Geometry. It looks like we have \"add unit tests for Shape and Geometry\" as a task in TaskFlow.",
+      "parentUuid": "fb651953_37abdf36",
+      "revId": "f246ea30d7cfa3ba133542f65133d9bbb9b6113a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3fd324ca_7915171c",
@@ -170,6 +272,30 @@
       "writtenOn": "2022-07-26T18:54:56Z",
       "side": 1,
       "message": "SkVertices",
+      "range": {
+        "startLine": 162,
+        "startChar": 23,
+        "endLine": 162,
+        "endChar": 33
+      },
+      "revId": "f246ea30d7cfa3ba133542f65133d9bbb9b6113a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ae4e483f_ad07a24e",
+        "filename": "src/gpu/graphite/render/StencilAndFillPathRenderer.cpp",
+        "patchSetId": 25
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-07-27T14:24:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3fd324ca_7915171c",
       "range": {
         "startLine": 162,
         "startChar": 23,
@@ -197,6 +323,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "adef621a_57f66c7a",
+        "filename": "src/gpu/graphite/render/StencilAndFillPathRenderer.cpp",
+        "patchSetId": 25
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-07-27T14:24:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "73ea24c7_87f66177",
+      "revId": "f246ea30d7cfa3ba133542f65133d9bbb9b6113a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b7c6e834_8eeceedf",
@@ -210,6 +354,30 @@
       "writtenOn": "2022-07-26T18:54:56Z",
       "side": 1,
       "message": "\u0027\\n\u0027 here",
+      "range": {
+        "startLine": 127,
+        "startChar": 75,
+        "endLine": 127,
+        "endChar": 76
+      },
+      "revId": "f246ea30d7cfa3ba133542f65133d9bbb9b6113a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "43cd5ec7_c82b1af6",
+        "filename": "src/gpu/graphite/render/VerticesRenderStep.cpp",
+        "patchSetId": 25
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-07-27T14:24:33Z",
+      "side": 1,
+      "message": "This differs from what Michael suggested ( having `gatherer` on the subsequent line aligned with `params` ), but either way this is currently not correct. I will put SkPipelineDataGatherer* on the following line for now - I think that makes sense. Michael can let me know later if he has strong feelings either way. 😊",
+      "parentUuid": "b7c6e834_8eeceedf",
       "range": {
         "startLine": 127,
         "startChar": 75,
