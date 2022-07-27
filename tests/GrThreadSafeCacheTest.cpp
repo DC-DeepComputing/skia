@@ -633,6 +633,7 @@ GrSurfaceProxyView TestHelper::CreateViewOnCpu(GrRecordingContext* rContext,
 
     sk_sp<GrTextureProxy> proxy = proxyProvider->createProxyFromBitmap(create_bitmap(wh),
                                                                        GrMipmapped::kNo,
+                                                                       GrProtected::kNo,
                                                                        SkBackingFit::kExact,
                                                                        SkBudgeted::kYes);
     if (!proxy) {

@@ -316,6 +316,12 @@ struct SK_API GrContextOptions {
     bool fClearAllTextures = false;
 
     /**
+     * Attempt to make as many textures as possible protected. The main means of doing so is
+     * through SkImage::makeTextureImage.
+     */
+    bool fMakeTexturesProtected = false;
+
+    /**
      * Randomly generate a (false) GL_OUT_OF_MEMORY error
      */
     bool fRandomGLOOM = false;

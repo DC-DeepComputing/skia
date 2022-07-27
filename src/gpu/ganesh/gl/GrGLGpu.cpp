@@ -1425,10 +1425,6 @@ sk_sp<GrTexture> GrGLGpu::onCreateTexture(SkISize dimensions,
                                           int mipLevelCount,
                                           uint32_t levelClearMask,
                                           std::string_view label) {
-    // We don't support protected textures in GL.
-    if (isProtected == GrProtected::kYes) {
-        return nullptr;
-    }
     SkASSERT(GrGLCaps::kNone_MSFBOType != this->glCaps().msFBOType() || renderTargetSampleCnt == 1);
 
     SkASSERT(mipLevelCount > 0);
