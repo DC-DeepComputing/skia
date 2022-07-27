@@ -31,6 +31,7 @@ def RunSteps(api):
   checkout_root = api.checkout.default_checkout_root
   checkout_flutter = False
   flutter_android = False
+  ignore_trybot = False
 
   if 'NoDEPS' in api.properties['buildername']:
     bot_update = False
@@ -40,12 +41,46 @@ def RunSteps(api):
     checkout_flutter = True
     if 'Android' in api.vars.builder_name:
       flutter_android = True
+  if 'NoPatch' in api.properties['buildername']:
+    ignore_trybot = True
+    checkout_root = api.path['start_dir']
 
   if bot_update:
     api.checkout.bot_update(
         checkout_root=checkout_root,
         checkout_flutter=checkout_flutter,
-        flutter_android=flutter_android)
+        flutter_android=flutter_android,
+        ignore_trybot=ignore_trybot)
+
+    if 'NoPatch' in api.properties['buildername']:
+      # The CodeSize-* family of tasks compute size diffs between the binaries produced by
+      # Build-<CONFIG>-NoPatch tasks and those produced by Build-<CONFIG> tasks. Some debug strings
+      # in said binaries might contain relative paths from the output directory to the sources
+      # directory (e.g. "../../../dm/DM.cpp"). In order to prevent spurious deltas, we must make
+      # the Build-<CONFIG>-NoPatch tasks match the paths used by Build-<CONFIG> tasks. For example,
+      # Build-<CONFIG> tasks place the Skia checkout at /mnt/pd0/s/w/ir/skia, so
+      # Build-<CONFIG>-NoPatch tasks must do the same.
+      #
+      # For some reason api.checkout.bot_update places the Skia checkout at /mnt/pd0/s/w/ir/k
+      # even though we specified /mnt/pd0/s/w/ir as the checkout root. As a workaround, we manually
+      # copy the Skia checkout to the intended location.
+      #
+      # An inline Python script is necessary here because api.file.copytree[1] does not pipe
+      # through the dirs_exist_ok argument to the underlying shutil.copytree[2] call.
+      #
+      # [1] https://chromium.googlesource.com/infra/luci/recipes-py.git/+/cfdb92cc6933d8f72c2340233ba03b602b447507/recipe_modules/file/api.py#146
+      # [2] https://docs.python.org/3/library/shutil.html#shutil.copytree
+      src = api.path['start_dir'].join('k', 'skia')
+      dst = api.path['start_dir'].join('skia')
+      api.python.inline(
+          name='move checkout from %s to %s' % (src, dst),
+          program='''
+import shutil
+import sys
+shutil.copytree(sys.argv[1], sys.argv[2], dirs_exist_ok=True)
+''',
+          args=[src, dst])
+
   else:
     api.checkout.git(checkout_root=checkout_root)
 
@@ -57,6 +92,9 @@ def RunSteps(api):
     out_dir = checkout_root.join('src', 'out', 'android_release')
 
   try:
+    api.run(api.step, 'print checkout_root', cmd=['echo', checkout_root])
+    api.run(api.step, 'print out_dir', cmd=['echo', out_dir])
+    # api.run(api.step, 'sleep for 20 minutes', cmd=['sleep', '1200'])
     api.build(checkout_root=checkout_root, out_dir=out_dir)
 
     # TODO(borenet): Move this out of the try/finally.
@@ -90,6 +128,7 @@ for p in psutil.process_iter():
 
 TEST_BUILDERS = [
   'Build-Debian10-Clang-arm-Release-Flutter_Android',
+  'Build-Debian10-Clang-arm-Release-NoPatch',
   'Build-Win10-Clang-x86_64-Release-NoDEPS',
 ]
 
