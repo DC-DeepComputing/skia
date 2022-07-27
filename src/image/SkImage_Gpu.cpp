@@ -565,6 +565,7 @@ sk_sp<SkImage> SkImage::makeTextureImage(GrDirectContext* dContext,
             return sk_ref_sp(const_cast<SkImage*>(this));
         }
     }
+
     GrImageTexGenPolicy policy = budgeted == SkBudgeted::kYes
                                          ? GrImageTexGenPolicy::kNew_Uncached_Budgeted
                                          : GrImageTexGenPolicy::kNew_Uncached_Unbudgeted;
@@ -801,7 +802,6 @@ bool SkImage::MakeBackendTextureFromSkImage(GrDirectContext* direct,
     }
 
     auto [view, ct] = as_IB(image)->asView(direct, GrMipmapped::kNo);
-
     if (!view) {
         return false;
     }

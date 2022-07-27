@@ -218,7 +218,7 @@ private:
     virtual std::tuple<GrSurfaceProxyView, GrColorType> onAsView(
             GrRecordingContext*,
             GrMipmapped,
-            GrImageTexGenPolicy policy) const = 0;
+            GrImageTexGenPolicy) const = 0;
 
     virtual std::unique_ptr<GrFragmentProcessor> onAsFragmentProcessor(
             GrRecordingContext*,

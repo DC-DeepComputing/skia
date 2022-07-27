@@ -56,7 +56,8 @@ public:
     // cached in CPU memory. We will always cache the generated texture on success.
     GrSurfaceProxyView lockTextureProxyView(GrRecordingContext*,
                                             GrImageTexGenPolicy,
-                                            GrMipmapped) const;
+                                            GrMipmapped,
+                                            GrProtected) const;
 
     // Returns the GrColorType to use with the GrTextureProxy returned from lockTextureProxy. This
     // may be different from the color type on the image in the case where we need up upload CPU
