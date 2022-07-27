@@ -51,7 +51,22 @@ static sk_sp<SkBlender> get_blender(const skjson::ObjectValue& jobject,
     }
 
     // Modes that require custom blenders.
-    // TODO: add custom blenders
+    if (mode >= std::size(kBlendModeMap)) {
+        static SkRuntimeEffect* blendEffect;
+        // TODO: set blendEffect based on bodymovin export
+        blendEffect = []{
+            const char hardmix[] = R"(
+                half4 main(half4 src, half4 dst) {
+                    half4 c = src + dst;
+                    c.rgb = floor(c.rgb / 255.0) * 255.0;
+                    return c;
+                }
+            )";
+            auto result = SkRuntimeEffect::MakeForBlender(SkString(hardmix));
+            return result.effect.release();
+        }();
+        return blendEffect->makeBlender(/* uniforms = */ nullptr);
+    }
 
     abuilder->log(Logger::Level::kWarning, &jobject, "Unsupported blend mode %zu\n", mode);
     return nullptr;
