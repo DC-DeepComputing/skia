@@ -218,7 +218,7 @@ static std::unique_ptr<sk_gpu_test::TestContext> make_test_context(SkQP::SkiaBac
 #endif
 #ifdef SK_VULKAN
         case SkQP::SkiaBackend::kVulkan:
-            return U(sk_gpu_test::CreatePlatformVkTestContext(nullptr));
+            return U(sk_gpu_test::CreatePlatformVkTestContext(nullptr, false));
 #endif
         default:
             return nullptr;

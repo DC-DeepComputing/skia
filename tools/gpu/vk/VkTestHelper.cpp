@@ -40,8 +40,8 @@ bool VkTestHelper::init() {
     fBackendContext.fDevice = VK_NULL_HANDLE;
 
     if (!sk_gpu_test::CreateVkBackendContext(instProc, &fBackendContext, &fExtensions,
-                                             &fFeatures, &fDebugCallback, nullptr,
-                                             sk_gpu_test::CanPresentFn(), fIsProtected)) {
+                                             &fFeatures, &fDebugCallback, fIsProtected, nullptr,
+                                             sk_gpu_test::CanPresentFn())) {
         return false;
     }
     fDevice = fBackendContext.fDevice;
