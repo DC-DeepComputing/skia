@@ -124,6 +124,24 @@
       "parentUuid": "97ba0085_d302cd57",
       "revId": "3389d164d4ccffe271f077d12520a80d31c9a904",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "912bd71e_0cc98353",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 9996
+      },
+      "writtenOn": "2022-07-27T18:13:50Z",
+      "side": 1,
+      "message": "That still ends up tripping single ownership asserts if the SkImage gets collected on the wrong task runner. But this violation only happens in cases where I am trying to delete the SkImage. My sense is that I need a way to let Skia know to stop trying to do anything with this texture and just let the client delete it on the right context.",
+      "parentUuid": "8cd7a72a_814aebf8",
+      "revId": "3389d164d4ccffe271f077d12520a80d31c9a904",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
