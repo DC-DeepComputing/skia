@@ -166,12 +166,16 @@ GrSurfaceProxyView GrCopyBaseMipMapToView(GrRecordingContext*,
  * aren't required but a previously created mipmapped texture may still be returned. A color type is
  * returned as color type conversion may be performed if there isn't a texture format equivalent of
  * the bitmap's color type.
+ * Note: if an acceptable, previously cached view is found it will be returned regardless of
+ * its protected status. If a new view is created then the supplied protected status will be
+ * applied.
  */
 std::tuple<GrSurfaceProxyView, GrColorType>
 GrMakeCachedBitmapProxyView(GrRecordingContext*,
                             const SkBitmap&,
                             std::string_view label,
-                            GrMipmapped = GrMipmapped::kNo);
+                            GrMipmapped = GrMipmapped::kNo,
+                            GrProtected = GrProtected::kNo);
 
 /**
  * Like above but always uploads the bitmap and never inserts into the cache. Unlike above, the
@@ -181,6 +185,7 @@ std::tuple<GrSurfaceProxyView, GrColorType>
 GrMakeUncachedBitmapProxyView(GrRecordingContext*,
                               const SkBitmap&,
                               GrMipmapped = GrMipmapped::kNo,
+                              GrProtected = GrProtected::kNo,
                               SkBackingFit = SkBackingFit::kExact,
                               SkBudgeted = SkBudgeted::kYes);
 

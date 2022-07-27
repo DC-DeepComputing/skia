@@ -237,7 +237,8 @@ ContextInfo GrContextFactory::getContextInfoInternal(ContextType type, ContextOv
             VkTestContext* vkSharedContext = primaryContext
                     ? static_cast<VkTestContext*>(primaryContext->fTestContext) : nullptr;
             SkASSERT(kVulkan_ContextType == type);
-            testCtx.reset(CreatePlatformVkTestContext(vkSharedContext));
+            testCtx.reset(CreatePlatformVkTestContext(vkSharedContext,
+                                                      this->getGlobalOptions().fMakeTexturesProtected));
             if (!testCtx) {
                 return ContextInfo();
             }
