@@ -36,6 +36,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "93d64b96_aae0bb65",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 18
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2022-07-27T15:40:20Z",
+      "side": 1,
+      "message": "Please take another look. I rewrote the CL description and made several changes.",
+      "parentUuid": "1081e354_368a41a1",
+      "revId": "9a5511713305426db3179cea13ef9258e4784771",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d4516a6a_535c0ca6",
@@ -49,6 +67,30 @@
       "writtenOn": "2022-07-14T19:22:45Z",
       "side": 1,
       "message": "Upload the .tsv file last to avoid race conditions like we saw before.",
+      "range": {
+        "startLine": 239,
+        "startChar": 21,
+        "endLine": 239,
+        "endChar": 40
+      },
+      "revId": "9a5511713305426db3179cea13ef9258e4784771",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "108ce0b2_abca6cb8",
+        "filename": "infra/bots/task_drivers/codesize/codesize.go",
+        "patchSetId": 18
+      },
+      "lineNbr": 239,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2022-07-27T15:40:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d4516a6a_535c0ca6",
       "range": {
         "startLine": 239,
         "startChar": 21,
@@ -82,6 +124,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "df05b814_b7d327b2",
+        "filename": "infra/bots/task_drivers/codesize/codesize.go",
+        "patchSetId": 18
+      },
+      "lineNbr": 315,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2022-07-27T15:40:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d3badd2c_29f77550",
+      "range": {
+        "startLine": 315,
+        "startChar": 64,
+        "endLine": 315,
+        "endChar": 89
+      },
+      "revId": "9a5511713305426db3179cea13ef9258e4784771",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "71ce3641_91da2edb",
@@ -95,6 +161,30 @@
       "writtenOn": "2022-07-14T19:22:45Z",
       "side": 1,
       "message": "suggestion: when linking to github, use the revision instead of the branch:\nhttps://github.com/google/bloaty/blob/f01ea59bdda11708d74a3826c23d6e2db6c996f0/doc/using.md#size-diffs\n\nIn the GitHub UI, you can use the \u0027y\u0027 keyboard shortcut.",
+      "range": {
+        "startLine": 195,
+        "startChar": 44,
+        "endLine": 195,
+        "endChar": 50
+      },
+      "revId": "9a5511713305426db3179cea13ef9258e4784771",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ef19f55d_33e4f308",
+        "filename": "infra/bots/task_drivers/codesize/codesize_test.go",
+        "patchSetId": 18
+      },
+      "lineNbr": 195,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2022-07-27T15:40:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "71ce3641_91da2edb",
       "range": {
         "startLine": 195,
         "startChar": 44,
