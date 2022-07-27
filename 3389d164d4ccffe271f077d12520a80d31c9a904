@@ -16,6 +16,24 @@
       "message": "Greg\u0027s on vacation, so I\u0027m adding Robert to take a look. (He will have a much better idea than I do about the potential pitfalls of something like this).",
       "revId": "3389d164d4ccffe271f077d12520a80d31c9a904",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c2f1a992_e27cba4a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-07-27T17:44:26Z",
+      "side": 1,
+      "message": "I don\u0027t the resource cache expects that resources are individually abandoned. That is, it expects that resources are only abandoned when the context gets abandoned and thus all resources are abandoned.\n\nDoes this not work for your use case:\nhttps://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/include/core/SkImage.h;l\u003d1256?q\u003dMakeBackendTextureFromSkImage\u0026ss\u003dchromium%2Fchromium%2Fsrc:third_party%2Fskia%2F\n?",
+      "parentUuid": "4e96317f_726c1407",
+      "revId": "3389d164d4ccffe271f077d12520a80d31c9a904",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
