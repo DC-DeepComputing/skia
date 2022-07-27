@@ -33,6 +33,46 @@
       "message": "-egdaniel since he\u0027s OOO\n+bsalomon PTAL",
       "revId": "7b65454bf6f5b2bbc32912e534ba9fcb034e76be",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d7dec699_a39a6f05",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-07-27T16:37:07Z",
+      "side": 1,
+      "message": "I think Ben is probably the most appropriate reviewer here.",
+      "revId": "7b65454bf6f5b2bbc32912e534ba9fcb034e76be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dd176ca6_8288ecda",
+        "filename": "include/core/SkRefCnt.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 215,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-07-27T16:37:07Z",
+      "side": 1,
+      "message": "Can we just fold this check into the set of conditions in line 218, à la:\nhttps://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/include/core/SkSpan.h;l\u003d20?q\u003dSK_CHECK_IL_LIFETIME\u0026ss\u003dchromium%2Fchromium%2Fsrc:third_party%2Fskia%2F\n\nI think I might also prefer how that example that creates macro that adds the attribute, if appropriate, rather than repeating the opening line of the class definition.",
+      "range": {
+        "startLine": 215,
+        "startChar": 5,
+        "endLine": 215,
+        "endChar": 29
+      },
+      "revId": "7b65454bf6f5b2bbc32912e534ba9fcb034e76be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
