@@ -32,7 +32,6 @@ def RunSteps(api):
 
   try:
     api.build(checkout_root=checkout_root, out_dir=out_dir)
-
     # TODO(borenet): Move this out of the try/finally.
     dst = api.vars.swarming_out_dir
     api.build.copy_build_products(out_dir=out_dir, dst=dst)
