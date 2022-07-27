@@ -443,9 +443,12 @@ static bool setup_features(GrVkGetProc getProc, VkInstance inst, VkPhysicalDevic
     }
 
     if (isProtected) {
+        SkDebugf("-----------------------------------------------------------------------------\n");
         if (!protectedMemoryFeatures->protectedMemory) {
+            SkDebugf("Vk: protected memory not supported\n");
             return false;
         }
+        SkDebugf("Vk: protected memory is supported\n");
     }
     return true;
     // If we want to disable any extension features do so here.
@@ -456,9 +459,9 @@ bool CreateVkBackendContext(PFN_vkGetInstanceProcAddr getInstProc,
                             GrVkExtensions* extensions,
                             VkPhysicalDeviceFeatures2* features,
                             VkDebugReportCallbackEXT* debugCallback,
+                            bool isProtected,
                             uint32_t* presentQueueIndexPtr,
-                            CanPresentFn canPresent,
-                            bool isProtected) {
+                            CanPresentFn canPresent) {
     VkResult err;
 
     ACQUIRE_VK_INST_PROC_NOCHECK(EnumerateInstanceVersion, VK_NULL_HANDLE);

@@ -25,6 +25,9 @@ static DEFINE_bool(failFlushTimeCallbacks, false,
 static DEFINE_bool(allPathsVolatile, false,
                    "Causes all GPU paths to be processed as if 'setIsVolatile' had been called.");
 
+static DEFINE_bool(makeTexturesProtected, false,
+                   "The GPU backend will make as many textures as possible protected");
+
 static DEFINE_string(pr, "",
               "Set of enabled gpu path renderers. Defined as a list of: "
               "[~]none [~]dashline [~]aahairline [~]aaconvex [~]aalinearizing [~]small [~]tri "
@@ -100,6 +103,7 @@ void SetCtxOptions(GrContextOptions* ctxOptions) {
     ctxOptions->fAllowPathMaskCaching                = FLAGS_cachePathMasks;
     ctxOptions->fFailFlushTimeCallbacks              = FLAGS_failFlushTimeCallbacks;
     ctxOptions->fAllPathsVolatile                    = FLAGS_allPathsVolatile;
+    ctxOptions->fMakeTexturesProtected               = FLAGS_makeTexturesProtected;
     ctxOptions->fGpuPathRenderers                    = collect_gpu_path_renderers_from_flags();
     ctxOptions->fDisableDriverCorrectnessWorkarounds = FLAGS_disableDriverCorrectnessWorkarounds;
     ctxOptions->fResourceCacheLimitOverride          = FLAGS_gpuResourceCacheLimit;
