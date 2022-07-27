@@ -192,6 +192,28 @@
   },
   {
     "cmd": [
+      "echo",
+      "[START_DIR]/cache/work/flutter"
+    ],
+    "env": {
+      "CHROME_HEADLESS": "1",
+      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
+    },
+    "name": "print checkout_root"
+  },
+  {
+    "cmd": [
+      "echo",
+      "[START_DIR]/cache/work/flutter/src/out/android_release"
+    ],
+    "env": {
+      "CHROME_HEADLESS": "1",
+      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
+    },
+    "name": "print out_dir"
+  },
+  {
+    "cmd": [
       "vpython3",
       "-u",
       "RECIPE_MODULE[recipe_engine::file]/resources/fileutil.py",
