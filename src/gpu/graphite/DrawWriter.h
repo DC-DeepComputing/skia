@@ -106,6 +106,8 @@ public:
     // This should not be used when the vertex stride is 0.
     class Vertices;
 
+    class IndexedVertices;
+
     // Collects new instance data for a call to CommandBuffer::drawInstanced() or
     // drawIndexedInstanced(). The specific draw call that's issued depends on if a non-null index
     // buffer is provided for the template. Like DrawWriter::Vertices, this automatically merges
@@ -330,6 +332,18 @@ class DrawWriter::Vertices : private DrawWriter::Appender {
 public:
     Vertices(DrawWriter& w) : Appender(w, Target::kVertices) {
         w.setTemplate(w.fVertices, {}, {}, 0);
+    }
+
+    using Appender::reserve;
+    using Appender::append;
+};
+
+class DrawWriter::IndexedVertices : private DrawWriter::Appender {
+public:
+    IndexedVertices(DrawWriter& w,
+             BindBufferInfo indices)
+            : Appender(w, Target::kVertices) {
+        w.setTemplate(w.fVertices, indices, {}, 0);
     }
 
     using Appender::reserve;
