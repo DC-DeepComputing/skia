@@ -16,6 +16,23 @@
       "message": "PTAL (note: PS4 passed dry run - PS5 is only a release notes change)",
       "revId": "7b65454bf6f5b2bbc32912e534ba9fcb034e76be",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b51174c8_8bd1b392",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8779
+      },
+      "writtenOn": "2022-07-27T15:47:29Z",
+      "side": 1,
+      "message": "-egdaniel since he\u0027s OOO\n+bsalomon PTAL",
+      "revId": "7b65454bf6f5b2bbc32912e534ba9fcb034e76be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
