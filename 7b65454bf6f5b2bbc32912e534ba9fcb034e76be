@@ -138,6 +138,30 @@
       },
       "revId": "7b65454bf6f5b2bbc32912e534ba9fcb034e76be",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4fb55b61_a553aea5",
+        "filename": "include/core/SkRefCnt.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 215,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-07-27T19:08:29Z",
+      "side": 1,
+      "message": "After reading through all the things (the clang changes, the proposed C++ changes, the related chromium issue, and some other related suchlike) and all the caveats, the nice thing about `sk_sp` is that it fits in all the proposed categories so should be fine with any of the proposed annotations and any of their proposed semantics. The entire point of `sk_sp` is to be like `unique_ptr` where the \"deleter\" is to call unref, so anything that would work for `unique_ptr` should work here.\n\nThat being said, Skia does require C++17 which states that unknown attributes should never be errors. Can we just unconditionally mark this class with the attribute without all the macro mucking about? (At the very least reduced to what SkSpan is doing.) I would support just enabling this attribute since it\u0027s (almost) spec compliant (no one should be depending on the order `sk_sp` are created or destroyed in within an expression for side effects).",
+      "parentUuid": "a5f6e927_1b43fadf",
+      "range": {
+        "startLine": 215,
+        "startChar": 5,
+        "endLine": 215,
+        "endChar": 29
+      },
+      "revId": "7b65454bf6f5b2bbc32912e534ba9fcb034e76be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
