@@ -113,7 +113,7 @@ static sk_sp<GrRenderTarget> create_RT_with_SB(GrResourceProvider* provider,
 
 // This currently fails on ES3 ANGLE contexts
 DEF_GPUTEST_FOR_CONTEXTS(ResourceCacheStencilBuffers, &is_rendering_and_not_angle_es3, reporter,
-                         ctxInfo, nullptr) {
+                         ctxInfo, nullptr, CTSEnforced::API_LEVEL_T) {
     auto context = ctxInfo.directContext();
     const GrCaps* caps = context->priv().caps();
 
