@@ -137,6 +137,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7223285b_31c315d2",
+        "filename": "tests/BackendAllocationTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 905,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2022-07-28T21:31:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2bf55fef_aba44764",
+      "range": {
+        "startLine": 905,
+        "startChar": 75,
+        "endLine": 905,
+        "endChar": 108
+      },
+      "revId": "e6816465ecf3f1e2bf598733155fe7f151e4b007",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "96fa4903_6b96e805",
@@ -482,6 +506,30 @@
       "side": 1,
       "message": "\u003e What you are seeing is a WIP CL in that I haven\u0027t updated all the tests because I didn\u0027t want to do all that typing until we agree that the general approach was good.  \n\nUnderstood, and that totally makes sense, but I don\u0027t totally follow everything here.\n\nBased on the code I see here, it looks like you want to make tests default to not running. I don\u0027t agree with that approach.\n\n\u003e \n\u003e `UNDEFINED` is probably better named something like `NEVER` and that tag shouldn\u0027t be updated when there is a new release.\n\nIn what cases will we use NEVER?\n\n\u003e You\u0027re correct that the `FUTURE` tag should be applied to new tests and that is what we update when we snap a new release.\n\nOk, great!",
       "parentUuid": "6b85f828_0e57864b",
+      "range": {
+        "startLine": 76,
+        "startChar": 4,
+        "endLine": 76,
+        "endChar": 13
+      },
+      "revId": "e6816465ecf3f1e2bf598733155fe7f151e4b007",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f0c07c1c_eef8025d",
+        "filename": "tests/Test.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2022-07-28T21:31:20Z",
+      "side": 1,
+      "message": "When I finish all the other use cases in the CL all GPU tests that run across ALL contexts, GL only, and VK only will have explicit versions defined.",
+      "parentUuid": "306fea1b_9088326f",
       "range": {
         "startLine": 76,
         "startChar": 4,
@@ -909,6 +957,30 @@
       "side": 1,
       "message": "\u003e Should we keep the main class call `CtsVersion` then or stick with the new `CtsEnforced` class as the name of the container?\n\nMy vote is for the container to be named `CtsEnforcement`.",
       "parentUuid": "4db26ff4_6b0b9910",
+      "range": {
+        "startLine": 33,
+        "startChar": 69,
+        "endLine": 33,
+        "endChar": 102
+      },
+      "revId": "e6816465ecf3f1e2bf598733155fe7f151e4b007",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4f93a40c_96244f05",
+        "filename": "tests/VkBackendSurfaceTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2022-07-28T21:31:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "17f6bb87_893129e2",
       "range": {
         "startLine": 33,
         "startChar": 69,

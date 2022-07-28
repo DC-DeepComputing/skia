@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3aa33689_3d592310",
+        "filename": "tests/Test.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2022-07-28T21:31:20Z",
+      "side": 1,
+      "message": "This doesn\u0027t work if you want to support running tests only in relaxed mode.",
+      "parentUuid": "379762f1_2777ecf3",
+      "range": {
+        "startLine": 92,
+        "startChar": 34,
+        "endLine": 92,
+        "endChar": 38
+      },
+      "revId": "596f896719a0a495974372831f031670db30f030",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "452def25_36e38b11",
         "filename": "tests/Test.h",
         "patchSetId": 5
@@ -85,6 +109,30 @@
       "side": 1,
       "message": "Derek explained to me why we need `NEVER` (which we both preferred to `UNDEFINED`) - there are tests for other backends (e.g. Dawn) that aren\u0027t relevant for CTS.\n\n\u003e We could achieve that without the copy-pasting, if it makes people happier.\n\nThat would make me happier, if they\u0027re fine to be the same.",
       "parentUuid": "f15d74f7_aa96c644",
+      "range": {
+        "startLine": 26,
+        "startChar": 0,
+        "endLine": 30,
+        "endChar": 6
+      },
+      "revId": "596f896719a0a495974372831f031670db30f030",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "20318f3b_3464274c",
+        "filename": "tests/Test.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2022-07-28T21:31:20Z",
+      "side": 1,
+      "message": "I updated from `UNDEFINED` to `NEVER` for both enums.  The reason for `NEVER` in the \"strict\" mode is that we have tests that will never apply to CTS.  This includes non-gpu unit tests as well as gpu unit tests that are specific to backends not used in CTS (e.g. Metal).",
+      "parentUuid": "452def25_36e38b11",
       "range": {
         "startLine": 26,
         "startChar": 0,
