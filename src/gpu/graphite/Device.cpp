@@ -457,7 +457,7 @@ void Device::drawVertices(const SkVertices* vertices, sk_sp<SkBlender> blender,
   // so VerticesRenderStep can set a uniform to tell the GPU whether to skip color transformations.
   // TODO - Add blender to PaintParams.
   this->drawGeometry(this->localToDeviceTransform(),
-                     Geometry(sk_ref_sp(vertices)),
+                     Geometry(VerticesData(sk_ref_sp(vertices), skipColorXform)),
                      paint,
                      kFillStyle,
                      DrawFlags::kIgnorePathEffect | DrawFlags::kIgnoreMaskFilter);
@@ -813,7 +813,7 @@ const Renderer* Device::ChooseRenderer(const Geometry& geometry,
     if (geometry.isSubRun()) {
         return geometry.subRunData().subRun()->renderer();
     } else if (geometry.isVertices()) {
-        SkVerticesPriv info(geometry.vertices()->priv());
+        SkVerticesPriv info(geometry.verticesData().vertices()->priv());
         return &Renderer::Vertices(info.mode(), info.hasColors(), info.hasTexCoords());
     }
 

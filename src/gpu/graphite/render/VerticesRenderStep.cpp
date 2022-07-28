@@ -91,7 +91,7 @@ const char* VerticesRenderStep::vertexSkSL() const {
 }
 
 void VerticesRenderStep::writeVertices(DrawWriter* writer, const DrawParams& params) const {
-    SkVerticesPriv info(params.geometry().vertices()->priv());
+    SkVerticesPriv info(params.geometry().verticesData().vertices()->priv());
 
     const int vertexCount = info.vertexCount();
     const int indexCount = info.indexCount();
