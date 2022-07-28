@@ -105,6 +105,24 @@
       "parentUuid": "3a76c68f_145bf9bd",
       "revId": "dc65c22115c8ff0cd8d156b83440ba0b5d52a8c8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b8c94e9a_3342d6ee",
+        "filename": "src/shaders/SkPictureShader.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 247,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-07-28T20:12:10Z",
+      "side": 1,
+      "message": "Right, that all makes sense. So, I take it that the new contrast and gamma settings are being added to SkSurfaceProps? Do you have a timeline for when that might be up for review in Skia?",
+      "parentUuid": "07c9eae7_19ce57e1",
+      "revId": "dc65c22115c8ff0cd8d156b83440ba0b5d52a8c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
