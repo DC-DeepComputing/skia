@@ -22,6 +22,30 @@
       },
       "revId": "073e56778d1f72ac260abd8d7e3e8ea0da19835d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5db68e3c_eb90ad7e",
+        "filename": "bazel/external/dawn/BUILD.bazel",
+        "patchSetId": 1
+      },
+      "lineNbr": 652,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-07-28T17:30:26Z",
+      "side": 1,
+      "message": "Will do; I was torn on where to put it since it\u0027s in the include/ directory alongside tint.h, but otherwise seems to be an internal-only header.",
+      "parentUuid": "ce15343b_86a64dc3",
+      "range": {
+        "startLine": 652,
+        "startChar": 18,
+        "endLine": 652,
+        "endChar": 29
+      },
+      "revId": "073e56778d1f72ac260abd8d7e3e8ea0da19835d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
