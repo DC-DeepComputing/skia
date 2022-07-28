@@ -123,7 +123,8 @@ GrGLFuncPtr IOSGLTestContext::onPlatformGetProcAddress(const char* procName) con
 
 namespace sk_gpu_test {
 GLTestContext *CreatePlatformGLTestContext(GrGLStandard forcedGpuAPI,
-                                           GLTestContext *shareContext) {
+                                           GLTestContext *shareContext,
+                                           bool isProtected) {
     if (kGL_GrGLStandard == forcedGpuAPI) {
         return NULL;
     }
