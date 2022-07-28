@@ -50,6 +50,23 @@
       "message": "Thanks!",
       "revId": "83d9673111feed40db815d067fad8e71fff660bb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3948c491_e646b251",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8779
+      },
+      "writtenOn": "2022-07-28T17:41:55Z",
+      "side": 1,
+      "message": "Ah, can one of you please CQ+2 the change - my Chromium committer status has no power here...",
+      "revId": "83d9673111feed40db815d067fad8e71fff660bb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
