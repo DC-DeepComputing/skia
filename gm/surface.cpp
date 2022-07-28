@@ -30,6 +30,7 @@
 #include "include/gpu/GrDirectContext.h"
 #include "include/gpu/GrRecordingContext.h"
 #include "include/utils/SkTextUtils.h"
+#include "src/gpu/ganesh/GrDirectContextPriv.h"
 #include "tools/ToolUtils.h"
 #include "tools/gpu/BackendSurfaceFactory.h"
 
@@ -189,12 +190,15 @@ static sk_sp<SkSurface> make_surface(const SkImageInfo& ii, SkCanvas* canvas, Su
             if (!direct) {
                 return nullptr;
             }
-            return sk_gpu_test::MakeBackendTextureSurface(direct, ii, kTopLeft_GrSurfaceOrigin, 1);
+            return sk_gpu_test::MakeBackendTextureSurface(direct, ii, kTopLeft_GrSurfaceOrigin, 1, GrMipmapped::kNo,
+                                                          direct->priv().options().fMakeTexturesProtected ? GrProtected::kYes : GrProtected::kNo);
         case kBackendRenderTarget:
             return sk_gpu_test::MakeBackendRenderTargetSurface(direct,
                                                                ii,
                                                                kTopLeft_GrSurfaceOrigin,
-                                                               1);
+                                                               1,
+                                                               direct->priv().options().fMakeTexturesProtected ? GrProtected::kYes : GrProtected::kNo,
+                                                               nullptr);
     }
     return nullptr;
 }
@@ -241,6 +245,9 @@ using MakeSurfaceFn = std::function<sk_sp<SkSurface>(const SkImageInfo&)>;
 DEF_SURFACE_TESTS(copy_on_write_retain, canvas, 256, 256) {
     const SkImageInfo info = SkImageInfo::MakeN32Premul(256, 256);
     sk_sp<SkSurface> surf = make(info);
+    if (!surf) {
+        return;
+    }
 
     surf->getCanvas()->clear(SK_ColorRED);
     // its important that image survives longer than the next draw, so the surface will see
@@ -260,6 +267,9 @@ DEF_SURFACE_TESTS(copy_on_write_retain, canvas, 256, 256) {
 DEF_SURFACE_TESTS(copy_on_write_retain2, canvas, 256, 256) {
     const SkImageInfo info = SkImageInfo::MakeN32Premul(256, 256);
     sk_sp<SkSurface> surf = make(info);
+    if (!surf) {
+        return;
+    }
 
     surf->getCanvas()->clear(SK_ColorBLUE);
     // its important that image survives longer than the next draw, so the surface will see
@@ -279,6 +289,9 @@ DEF_SURFACE_TESTS(copy_on_write_retain2, canvas, 256, 256) {
 DEF_SURFACE_TESTS(simple_snap_image, canvas, 256, 256) {
     const SkImageInfo info = SkImageInfo::MakeN32Premul(256, 256);
     sk_sp<SkSurface> surf = make(info);
+    if (!surf) {
+        return;
+    }
 
     surf->getCanvas()->clear(SK_ColorRED);
     sk_sp<SkImage> image = surf->makeImageSnapshot();
@@ -290,6 +303,9 @@ DEF_SURFACE_TESTS(simple_snap_image, canvas, 256, 256) {
 DEF_SURFACE_TESTS(simple_snap_image2, canvas, 256, 256) {
     const SkImageInfo info = SkImageInfo::MakeN32Premul(256, 256);
     sk_sp<SkSurface> surf = make(info);
+    if (!surf) {
+        return;
+    }
 
     surf->getCanvas()->clear(SK_ColorRED);
     sk_sp<SkImage> image = surf->makeImageSnapshot();
@@ -342,6 +358,10 @@ DEF_SIMPLE_GM(snap_with_mips, canvas, 80, 75) {
 DEF_SURFACE_TESTS(copy_on_write_savelayer, canvas, 256, 256) {
     const SkImageInfo info = SkImageInfo::MakeN32Premul(256, 256);
     sk_sp<SkSurface> surf = make(info);
+    if (!surf) {
+        return;
+    }
+
     surf->getCanvas()->clear(SK_ColorRED);
     // its important that image survives longer than the next draw, so the surface will see
     // an outstanding image, and have to decide if it should retain or discard those pixels
@@ -363,6 +383,9 @@ DEF_SURFACE_TESTS(copy_on_write_savelayer, canvas, 256, 256) {
 DEF_SURFACE_TESTS(surface_underdraw, canvas, 256, 256) {
     SkImageInfo info = SkImageInfo::MakeN32Premul(256, 256, nullptr);
     auto surf = make(info);
+    if (!surf) {
+        return;
+    }
 
     const SkIRect subset = SkIRect::MakeLTRB(180, 0, 256, 256);
 

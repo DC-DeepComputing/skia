@@ -164,6 +164,7 @@ static GrSurfaceProxyView sw_create_filtered_mask(GrRecordingContext* rContext,
                 rContext,
                 bm,
                 GrMipmapped::kNo,
+                GrProtected::kNo,
                 SkBackingFit::kApprox);
         if (!filteredMaskView) {
             return {};
