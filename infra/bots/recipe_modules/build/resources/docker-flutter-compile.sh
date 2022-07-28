@@ -13,8 +13,11 @@ export PATH="$1/recipe_bundle/depot_tools:${PATH}"
 # Add CIPD to the PATH for vpython3 and python3.
 export PATH="$1/cipd_bin_packages:$1/cipd_bin_packages/bin:$1/cipd_bin_packages/cpython3:$1/cipd_bin_packages/cpython3/bin:${PATH}"
 # Set env for vpython and cipd.
-export VPYTHON_VIRTUALENV_ROOT=$1/cache/vpython
+export VPYTHON_VIRTUALENV_ROOT=$1/cache/vpython3
 export CIPD_CACHE_DIR=/tmp/.cipd_cache
+
+echo "WHAT ELSE IS IN CACHE"
+ls -ahl $1/cache/
 
 # e.g. /mnt/pd0/s/w/ir/cache/work/flutter/src
 source_dir=$2
