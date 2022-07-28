@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3e2320f9_071e4287",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-07-28T20:27:00Z",
+      "side": 1,
+      "message": "The outstanding comments all pertain to conditionally writing indices based on 1) whether caps support storage buffers, and 2) whether a render step needs shading uniforms. I could work on that in this CL, or a follow-up one, either way is fine by me.\n\n(Also, I tried pasting some text into the patchset description, but pasted the wrong text... you can ignore that I guess)",
+      "revId": "7ab8844aa82fab65107bfa822562bd307a614658",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

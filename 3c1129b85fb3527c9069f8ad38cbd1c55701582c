@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b6c84546_4b18bf5d",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 359,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-07-28T20:27:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1b2b737f_8f6118fb",
+      "range": {
+        "startLine": 359,
+        "startChar": 12,
+        "endLine": 359,
+        "endChar": 36
+      },
+      "revId": "3c1129b85fb3527c9069f8ad38cbd1c55701582c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e0076080_29a2411f",
@@ -54,6 +78,30 @@
       "writtenOn": "2022-07-20T15:01:34Z",
       "side": 1,
       "message": "It looks like we don\u0027t need to set or declare these values early, since we just need to ensure they are stored in the pipelineToFooUniformData maps. If we end up re-encountering a uniform data block that\u0027s already been assigned an index, we\u0027re good to go.",
+      "range": {
+        "startLine": 374,
+        "startChar": 22,
+        "endLine": 376,
+        "endChar": 21
+      },
+      "revId": "3c1129b85fb3527c9069f8ad38cbd1c55701582c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "12cfd32f_aeb3a9db",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 376,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-07-28T20:27:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e0076080_29a2411f",
       "range": {
         "startLine": 374,
         "startChar": 22,
@@ -87,6 +135,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "de614f1b_67dc5b76",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 420,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-07-28T20:27:00Z",
+      "side": 1,
+      "message": "Ended up implementing this in UniformManager, PTAL.",
+      "parentUuid": "99f125ef_23595e02",
+      "range": {
+        "startLine": 420,
+        "startChar": 36,
+        "endLine": 420,
+        "endChar": 93
+      },
+      "revId": "3c1129b85fb3527c9069f8ad38cbd1c55701582c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a03c3599_469416e0",
@@ -100,6 +172,30 @@
       "writtenOn": "2022-07-20T15:01:34Z",
       "side": 1,
       "message": "Currently the mapping from Graphite\u0027s conceptual buffer binding points to metal\u0027s binding slots are defined in the header of MtlGraphicsPipeline:\n\n    inline static constexpr unsigned int kIntrinsicUniformBufferIndex \u003d 0;\n    inline static constexpr unsigned int kRenderStepUniformBufferIndex \u003d 1;\n    inline static constexpr unsigned int kPaintUniformBufferIndex \u003d 2;\n    inline static constexpr unsigned int kVertexBufferIndex \u003d 3;\n    inline static constexpr unsigned int kInstanceBufferIndex \u003d 4;\n    \nSince it currently seems like we\u0027ll either use SSBOs or UBOs depending on GPU caps, the specific kRenderStepUniformBufferIndex could be used to bind an SSBO or a UBO; the same goes for kPaintUniformBufferIndex. There shouldn\u0027t be a need to have both an SSBO and a UBO bound for the render step uniforms. Things might get more complicated for the unbounded uniforms that some paint effects might want, but since that would be a separate SSBO we can probably have those defined as a new slot.\n\nLastly, the intrinsic uniforms that you noticed are currently implemented using Metal\u0027s version of push constants, so that slot doesn\u0027t use an SSBO or a UBO. Graphite\u0027s high-level API doesn\u0027t really define how the slots are mapped to the actual backends capabilities. On the one hand this gives the backend implementation a lot of flexibility in terms of how to handle it, but we may need to adjust that if backends require a high-level distinction between SSBOs and UBOs.",
+      "range": {
+        "startLine": 490,
+        "startChar": 4,
+        "endLine": 491,
+        "endChar": 36
+      },
+      "revId": "3c1129b85fb3527c9069f8ad38cbd1c55701582c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "03e62955_0de89c99",
+        "filename": "src/gpu/graphite/mtl/MtlGraphicsPipeline.mm",
+        "patchSetId": 5
+      },
+      "lineNbr": 491,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-07-28T20:27:00Z",
+      "side": 1,
+      "message": "My understanding then is that this code is appropriate, but I\u0027ve updated the int literals with their corresponding constants. There\u0027s still a todo here to only conditionally do this when storage buffers are supported in caps.",
+      "parentUuid": "a03c3599_469416e0",
       "range": {
         "startLine": 490,
         "startChar": 4,
@@ -156,6 +252,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a8bc7e0e_2d93a6c9",
+        "filename": "src/gpu/graphite/render/TessellateWedgesRenderStep.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-07-28T20:27:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "db420dc7_b6e2b4eb",
+      "range": {
+        "startLine": 36,
+        "startChar": 27,
+        "endLine": 36,
+        "endChar": 79
+      },
+      "revId": "3c1129b85fb3527c9069f8ad38cbd1c55701582c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5d492dca_9eb8a76b",
@@ -202,6 +322,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c6343bad_3a3d7244",
+        "filename": "src/gpu/graphite/render/TessellateWedgesRenderStep.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-07-28T20:27:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5d492dca_9eb8a76b",
+      "range": {
+        "startLine": 58,
+        "startChar": 40,
+        "endLine": 59,
+        "endChar": 111
+      },
+      "revId": "3c1129b85fb3527c9069f8ad38cbd1c55701582c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3d32a74f_e7ad0656",
@@ -215,6 +359,30 @@
       "writtenOn": "2022-07-20T15:01:34Z",
       "side": 1,
       "message": "RenderSteps being worked on currently (text, vertices, analytic rects) may need to access their uniforms in both the vertex stage and the fragment stage. If we only pass the index associated with the paint\u0027s uniforms, we\u0027d need to do something else to support those RenderSteps.\n\nI could see either passing the renderstep index down to the FS as a uniform as well, or require that if RenderSteps want to access \"uniforms\" in the FS they read them from the SSBO in the vertex shader and then pass them down as explicitly declared varyings so the renderstep ssbo remains accessible to the vertex stage. I think that decision would best made after performance testing to know the tradeoff between adding extra \"constant\" varyings for the uniforms being sent down, and adding extra SSBO reads in the FS.",
+      "range": {
+        "startLine": 60,
+        "startChar": 41,
+        "endLine": 60,
+        "endChar": 65
+      },
+      "revId": "3c1129b85fb3527c9069f8ad38cbd1c55701582c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c3f036bc_6a26c24d",
+        "filename": "src/gpu/graphite/render/TessellateWedgesRenderStep.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-07-28T20:27:00Z",
+      "side": 1,
+      "message": "For now I\u0027m just passing down both indices when needed.",
+      "parentUuid": "3d32a74f_e7ad0656",
       "range": {
         "startLine": 60,
         "startChar": 41,
