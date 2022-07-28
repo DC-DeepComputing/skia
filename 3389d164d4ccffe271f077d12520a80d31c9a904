@@ -196,6 +196,24 @@
       "parentUuid": "11715a2f_976a6d18",
       "revId": "3389d164d4ccffe271f077d12520a80d31c9a904",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dc0a6f22_114aec33",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-07-28T13:12:07Z",
+      "side": 1,
+      "message": "What if we just went all the way to making ~SkImage_Gpu threadsafe? The texture would get deleted with a little delay (the next time the GrDirectContext that produced the image gets used)",
+      "parentUuid": "614004e7_f018c576",
+      "revId": "3389d164d4ccffe271f077d12520a80d31c9a904",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
