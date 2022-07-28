@@ -60,7 +60,7 @@ private:
 /**
  * Creates Vk context object bound to the native Vk library.
  */
-VkTestContext* CreatePlatformVkTestContext(VkTestContext*);
+VkTestContext* CreatePlatformVkTestContext(VkTestContext*, bool isProtected);
 
 }  // namespace sk_gpu_test
 

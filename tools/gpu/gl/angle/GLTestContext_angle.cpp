@@ -100,7 +100,7 @@ public:
     GrEGLImage texture2DToEGLImage(GrGLuint texID) const override;
     void destroyEGLImage(GrEGLImage) const override;
     GrGLuint eglImageToExternalTexture(GrEGLImage) const override;
-    std::unique_ptr<sk_gpu_test::GLTestContext> makeNew() const override;
+    std::unique_ptr<sk_gpu_test::GLTestContext> makeNew(bool isProtected) const override;
 
 private:
     void destroyGLContext();
@@ -417,7 +417,7 @@ GrGLuint ANGLEGLContext::eglImageToExternalTexture(GrEGLImage image) const {
     return texID;
 }
 
-std::unique_ptr<sk_gpu_test::GLTestContext> ANGLEGLContext::makeNew() const {
+std::unique_ptr<sk_gpu_test::GLTestContext> ANGLEGLContext::makeNew(bool isProtected) const {
     // For EGLImage sharing between contexts to work in ANGLE the two contexts
     // need to share the same display
     std::unique_ptr<sk_gpu_test::GLTestContext> ctx =

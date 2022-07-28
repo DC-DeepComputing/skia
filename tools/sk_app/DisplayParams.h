@@ -23,7 +23,8 @@ struct DisplayParams {
         , fDisableVsync(false)
         , fDelayDrawableAcquisition(false)
         , fEnableBinaryArchive(false)
-    {}
+        , fProtected(false) {
+    }
 
     SkColorType         fColorType;
     sk_sp<SkColorSpace> fColorSpace;
@@ -33,6 +34,7 @@ struct DisplayParams {
     bool                fDisableVsync;
     bool                fDelayDrawableAcquisition;
     bool                fEnableBinaryArchive;
+    bool                fProtected;
 };
 
 }   // namespace sk_app

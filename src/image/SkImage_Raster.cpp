@@ -461,6 +461,14 @@ std::tuple<GrSurfaceProxyView, GrColorType> SkImage_Raster::onAsView(
         }
         return {fPinnedView, fPinnedColorType};
     }
+
+#if GR_TEST_UTILS
+    GrProtected isProtected = rContext->priv().options().fMakeTexturesProtected ? GrProtected::kYes
+                                                                                : GrProtected::kNo;
+#else
+    constexpr GrProtected isProtected = GrProtected::kNo;
+#endif
+
     if (policy == GrImageTexGenPolicy::kDraw) {
         // If the draw doesn't require mipmaps but this SkImage has them go ahead and make a
         // mipmapped texture. There are three reasons for this:
@@ -472,7 +480,8 @@ std::tuple<GrSurfaceProxyView, GrColorType> SkImage_Raster::onAsView(
         return GrMakeCachedBitmapProxyView(rContext,
                                            fBitmap,
                                            /*label=*/"TextureForImageRasterWithPolicyEqualKDraw",
-                                           mipmapped);
+                                           mipmapped,
+                                           isProtected);
     }
     auto budgeted = (policy == GrImageTexGenPolicy::kNew_Uncached_Unbudgeted)
             ? SkBudgeted::kNo
@@ -480,6 +489,7 @@ std::tuple<GrSurfaceProxyView, GrColorType> SkImage_Raster::onAsView(
     return GrMakeUncachedBitmapProxyView(rContext,
                                          fBitmap,
                                          mipmapped,
+                                         isProtected,
                                          SkBackingFit::kExact,
                                          budgeted);
 }

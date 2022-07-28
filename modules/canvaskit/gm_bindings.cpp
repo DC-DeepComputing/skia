@@ -321,7 +321,7 @@ public:
     // We assume WebGL only has one context and that it is always current.
     // Therefore these context related functions return null intentionally.
     // It's possible that more tests will pass if these were correctly implemented.
-    std::unique_ptr<GLTestContext> makeNew() const override {
+    std::unique_ptr<GLTestContext> makeNew(bool isProtected) const override {
         // This is supposed to create a new GL context in a new GLTestContext.
         // Specifically for tests that do not want to re-use the existing one.
         return nullptr;
@@ -339,7 +339,8 @@ public:
 
 namespace sk_gpu_test {
 GLTestContext *CreatePlatformGLTestContext(GrGLStandard forcedGpuAPI,
-                                           GLTestContext *shareContext) {
+                                           GLTestContext *shareContext,
+                                           bool isProtected) {
     return new WasmWebGlTestContext();
 }
 } // namespace sk_gpu_test
