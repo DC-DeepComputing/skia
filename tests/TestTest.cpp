@@ -32,7 +32,7 @@ DEF_GPUTEST(TestGpuFactory, reporter, factory) {
 
 // This is an example of a GPU test that tests a property that should work for all GPU contexts.
 // Note: Some of the contexts might not produce a rendering output.
-DEF_GPUTEST_FOR_ALL_CONTEXTS(TestGpuAllContexts, reporter, ctxInfo) {
+DEF_GPUTEST_FOR_ALL_CONTEXTS(TestGpuAllContexts, reporter, ctxInfo, CtsEnforcement::No()) {
     REPORTER_ASSERT(reporter, reporter);
     REPORTER_ASSERT(reporter, ctxInfo.directContext());
 }

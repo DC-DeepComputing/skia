@@ -620,7 +620,8 @@ void DDLSurfaceCharacterizationTestImpl(GrDirectContext* dContext, skiatest::Rep
 //    FBO0 w/ MSAA, FBO0 w/o MSAA, not-FBO0 w/ MSAA, not-FBO0 w/o MSAA
 // and then tries all sixteen combinations to check the expected compatibility.
 // Note: this is a GL-only test
-DEF_GPUTEST_FOR_GL_RENDERING_CONTEXTS(CharacterizationFBO0nessTest, reporter, ctxInfo) {
+DEF_GPUTEST_FOR_GL_RENDERING_CONTEXTS(CharacterizationFBO0nessTest, reporter, ctxInfo,
+                                      CtsEnforcement::API_LEVEL_T) {
     auto context = ctxInfo.directContext();
     const GrCaps* caps = context->priv().caps();
     sk_sp<GrContextThreadSafeProxy> proxy = context->threadSafeProxy();
@@ -687,7 +688,7 @@ DEF_GPUTEST_FOR_GL_RENDERING_CONTEXTS(CharacterizationFBO0nessTest, reporter, ct
 #endif
 
 #ifdef SK_VULKAN
-DEF_GPUTEST_FOR_VULKAN_CONTEXT(CharacterizationVkSCBnessTest, reporter, ctxInfo) {
+DEF_GPUTEST_FOR_VULKAN_CONTEXT(CharacterizationVkSCBnessTest, reporter, ctxInfo, CtsEnforcement::API_LEVEL_T) {
     auto dContext = ctxInfo.directContext();
 
     SurfaceParameters params(dContext);
@@ -1173,7 +1174,8 @@ static sk_sp<SkPromiseImageTexture> noop_fulfill_proc(void*) {
 ////////////////////////////////////////////////////////////////////////////////
 // Check that the texture-specific flags (i.e., for external & rectangle textures) work
 // for promise images. As such, this is a GL-only test.
-DEF_GPUTEST_FOR_GL_RENDERING_CONTEXTS(DDLTextureFlagsTest, reporter, ctxInfo) {
+DEF_GPUTEST_FOR_GL_RENDERING_CONTEXTS(DDLTextureFlagsTest, reporter, ctxInfo,
+                                      CtsEnforcement::No()) {
     auto context = ctxInfo.directContext();
 
     SkImageInfo ii = SkImageInfo::MakeN32Premul(32, 32);
@@ -1225,7 +1227,8 @@ DEF_GPUTEST_FOR_GL_RENDERING_CONTEXTS(DDLTextureFlagsTest, reporter, ctxInfo) {
 
 ////////////////////////////////////////////////////////////////////////////////
 // Test colorType and pixelConfig compatibility.
-DEF_GPUTEST_FOR_GL_RENDERING_CONTEXTS(DDLCompatibilityTest, reporter, ctxInfo) {
+DEF_GPUTEST_FOR_GL_RENDERING_CONTEXTS(DDLCompatibilityTest, reporter, ctxInfo,
+                                      CtsEnforcement::No()) {
     auto context = ctxInfo.directContext();
 
     for (int ct = 0; ct <= kLastEnum_SkColorType; ++ct) {

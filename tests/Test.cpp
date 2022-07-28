@@ -83,3 +83,25 @@ SkMSec skiatest::Timer::elapsedMsInt() const {
     SkASSERT(SK_MSecMax >= elapsedMs);
     return static_cast<SkMSec>(elapsedMs);
 }
+
+const CtsEnforcement& CtsEnforcement::No() {
+    static constexpr CtsEnforcement noEnforcement(CtsEnforcement::NEVER, CtsRelaxed::NEVER);
+    return noEnforcement;
+}
+
+CtsEnforcement::RunMode CtsEnforcement::eval(int apiLevel) const {
+    const int32_t relaxedVersion = static_cast<int32_t>(fWorkaroundsVersion);
+
+    // always return false if both the strict and relaxed versions are undefined
+    if (fStrictVersion == NEVER && fStrictVersion == relaxedVersion) {
+        return RunMode::kSkip;
+    }
+
+    // do a check for strict mode
+    if (fStrictVersion != NEVER && apiLevel >= fStrictVersion){
+        return RunMode::kRunStrict;
+    }
+
+    // all strict mode checks failed so do a final check for relaxed mode
+    return (apiLevel >= relaxedVersion) ? RunMode::kRunWithWorkarounds : RunMode::kSkip;
+}

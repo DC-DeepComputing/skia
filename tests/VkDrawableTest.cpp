@@ -269,7 +269,7 @@ void draw_drawable_test(skiatest::Reporter* reporter,
     }
 }
 
-DEF_GPUTEST_FOR_VULKAN_CONTEXT(VkDrawableTest, reporter, ctxInfo) {
+DEF_GPUTEST_FOR_VULKAN_CONTEXT(VkDrawableTest, reporter, ctxInfo, CtsEnforcement::API_LEVEL_T) {
     draw_drawable_test(reporter, ctxInfo.directContext(), nullptr);
 }
 

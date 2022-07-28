@@ -833,7 +833,8 @@ struct TextureReleaseChecker {
     }
 };
 
-DEF_GPUTEST_FOR_GL_RENDERING_CONTEXTS(SkImage_NewFromTextureRelease, reporter, ctxInfo) {
+DEF_GPUTEST_FOR_GL_RENDERING_CONTEXTS(SkImage_NewFromTextureRelease, reporter, ctxInfo,
+                                      CtsEnforcement::API_LEVEL_T) {
     const int kWidth = 10;
     const int kHeight = 10;
 
@@ -1079,7 +1080,8 @@ DEF_GPUTEST(SkImage_CrossContextGrayAlphaConfigs, reporter, options) {
     }
 }
 
-DEF_GPUTEST_FOR_GL_RENDERING_CONTEXTS(makeBackendTexture, reporter, ctxInfo) {
+DEF_GPUTEST_FOR_GL_RENDERING_CONTEXTS(makeBackendTexture, reporter, ctxInfo,
+                                      CtsEnforcement::API_LEVEL_T) {
     auto context = ctxInfo.directContext();
     sk_gpu_test::TestContext* testContext = ctxInfo.testContext();
     sk_sp<GrContextThreadSafeProxy> proxy = context->threadSafeProxy();
@@ -1424,7 +1426,7 @@ static sk_sp<SkImage> make_yuva_image(GrDirectContext* dContext) {
     return SkImage::MakeFromYUVAPixmaps(dContext, yuvaPixmaps);
 }
 
-DEF_GPUTEST_FOR_ALL_CONTEXTS(ImageFlush, reporter, ctxInfo) {
+DEF_GPUTEST_FOR_ALL_CONTEXTS(ImageFlush, reporter, ctxInfo, CtsEnforcement::API_LEVEL_T) {
     auto dContext = ctxInfo.directContext();
     auto ii = SkImageInfo::Make(10, 10, kRGBA_8888_SkColorType, kPremul_SkAlphaType);
     auto s = SkSurface::MakeRenderTarget(dContext, SkBudgeted::kYes, ii, 1, nullptr);

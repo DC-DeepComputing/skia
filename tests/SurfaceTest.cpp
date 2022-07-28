@@ -784,7 +784,8 @@ static void test_surface_context_clear(skiatest::Reporter* reporter,
     }
 }
 
-DEF_GPUTEST_FOR_GL_RENDERING_CONTEXTS(SurfaceClear_Gpu, reporter, ctxInfo) {
+DEF_GPUTEST_FOR_GL_RENDERING_CONTEXTS(SurfaceClear_Gpu, reporter, ctxInfo,
+                                      CtsEnforcement::API_LEVEL_T) {
     auto dContext = ctxInfo.directContext();
     // Snaps an image from a surface and then makes a SurfaceContext from the image's texture.
     auto makeImageSurfaceContext = [dContext](SkSurface* surface) {
@@ -977,7 +978,8 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(SurfaceWrappedWithRelease_Gpu, reporter, ctxI
     }
 }
 
-DEF_GPUTEST_FOR_GL_RENDERING_CONTEXTS(SurfaceAttachStencil_Gpu, reporter, ctxInfo) {
+DEF_GPUTEST_FOR_GL_RENDERING_CONTEXTS(SurfaceAttachStencil_Gpu, reporter, ctxInfo,
+                                      CtsEnforcement::API_LEVEL_T) {
     auto context = ctxInfo.directContext();
     const GrCaps* caps = context->priv().caps();
 

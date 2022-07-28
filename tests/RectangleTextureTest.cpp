@@ -117,7 +117,8 @@ static void test_copy_to_surface(skiatest::Reporter* reporter,
 }
 
 #ifdef SK_GL
-DEF_GPUTEST_FOR_GL_RENDERING_CONTEXTS(RectangleTexture, reporter, ctxInfo) {
+DEF_GPUTEST_FOR_GL_RENDERING_CONTEXTS(RectangleTexture, reporter, ctxInfo,
+                                      CtsEnforcement::API_LEVEL_T) {
     auto dContext = ctxInfo.directContext();
 
     GrProxyProvider* proxyProvider = dContext->priv().proxyProvider();

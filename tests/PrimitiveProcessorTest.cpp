@@ -173,7 +173,8 @@ private:
 };
 }  // namespace
 
-DEF_GPUTEST_FOR_ALL_CONTEXTS(VertexAttributeCount, reporter, ctxInfo) {
+DEF_GPUTEST_FOR_ALL_CONTEXTS(VertexAttributeCount, reporter, ctxInfo,
+                             CtsEnforcement::API_LEVEL_T) {
     auto dContext = ctxInfo.directContext();
 #if GR_GPU_STATS
     GrGpu* gpu = dContext->priv().getGpu();
