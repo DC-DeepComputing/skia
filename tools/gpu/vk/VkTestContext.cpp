@@ -21,7 +21,7 @@ namespace {
 
 class VkTestContextImpl : public sk_gpu_test::VkTestContext {
 public:
-    static VkTestContext* Create(VkTestContext* sharedContext) {
+    static VkTestContext* Create(VkTestContext* sharedContext, bool isProtected) {
         GrVkBackendContext backendContext;
         GrVkExtensions* extensions;
         VkPhysicalDeviceFeatures2* features;
@@ -45,7 +45,8 @@ public:
             features = new VkPhysicalDeviceFeatures2;
             memset(features, 0, sizeof(VkPhysicalDeviceFeatures2));
             if (!sk_gpu_test::CreateVkBackendContext(instProc, &backendContext, extensions,
-                                                     features, &debugCallback)) {
+                                                     features, &debugCallback,
+                                                     isProtected)) {
                 sk_gpu_test::FreeVulkanFeaturesStructs(features);
                 delete features;
                 delete extensions;
@@ -122,8 +123,8 @@ private:
 }  // anonymous namespace
 
 namespace sk_gpu_test {
-VkTestContext* CreatePlatformVkTestContext(VkTestContext* sharedContext) {
-    return VkTestContextImpl::Create(sharedContext);
+VkTestContext* CreatePlatformVkTestContext(VkTestContext* sharedContext, bool isProtected) {
+    return VkTestContextImpl::Create(sharedContext, isProtected);
 }
 }  // namespace sk_gpu_test
 

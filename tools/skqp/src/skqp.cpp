@@ -206,19 +206,20 @@ void ExclusionList::initialize(SkQPAssetManager* assetManager,
     });
 }
 
-static std::unique_ptr<sk_gpu_test::TestContext> make_test_context(SkQP::SkiaBackend backend) {
+static std::unique_ptr<sk_gpu_test::TestContext> make_test_context(SkQP::SkiaBackend backend,
+                                                                   bool isProtected) {
     using U = std::unique_ptr<sk_gpu_test::TestContext>;
     switch (backend) {
 // TODO(halcanary): Fuchsia will have SK_SUPPORT_GPU and SK_VULKAN, but *not* SK_GL.
 #ifdef SK_GL
         case SkQP::SkiaBackend::kGL:
-            return U(sk_gpu_test::CreatePlatformGLTestContext(kGL_GrGLStandard, nullptr));
+            return U(sk_gpu_test::CreatePlatformGLTestContext(kGL_GrGLStandard, nullptr, isProtected));
         case SkQP::SkiaBackend::kGLES:
-            return U(sk_gpu_test::CreatePlatformGLTestContext(kGLES_GrGLStandard, nullptr));
+            return U(sk_gpu_test::CreatePlatformGLTestContext(kGLES_GrGLStandard, nullptr, isProtected));
 #endif
 #ifdef SK_VULKAN
         case SkQP::SkiaBackend::kVulkan:
-            return U(sk_gpu_test::CreatePlatformVkTestContext(nullptr));
+            return U(sk_gpu_test::CreatePlatformVkTestContext(nullptr, false));
 #endif
         default:
             return nullptr;
@@ -235,7 +236,7 @@ static GrContextOptions context_options(skiagm::GM* gm = nullptr) {
     return grContextOptions;
 }
 
-static std::vector<SkQP::SkiaBackend> get_backends() {
+static std::vector<SkQP::SkiaBackend> get_backends(bool isProtected) {
     std::vector<SkQP::SkiaBackend> result;
     SkQP::SkiaBackend backends[] = {
         #ifdef SK_GL
@@ -249,7 +250,7 @@ static std::vector<SkQP::SkiaBackend> get_backends() {
         #endif
     };
     for (SkQP::SkiaBackend backend : backends) {
-        std::unique_ptr<sk_gpu_test::TestContext> testCtx = make_test_context(backend);
+        std::unique_ptr<sk_gpu_test::TestContext> testCtx = make_test_context(backend, isProtected);
         if (testCtx) {
             testCtx->makeCurrent();
             if (nullptr != testCtx->makeContext(context_options())) {
@@ -267,7 +268,7 @@ static void print_backend_info(const char* dstPath,
     SkFILEWStream out(dstPath);
     out.writeText("[\n");
     for (SkQP::SkiaBackend backend : backends) {
-        if (std::unique_ptr<sk_gpu_test::TestContext> testCtx = make_test_context(backend)) {
+        if (std::unique_ptr<sk_gpu_test::TestContext> testCtx = make_test_context(backend, false)) {
             testCtx->makeCurrent();
             if (sk_sp<GrDirectContext> ctx = testCtx->makeContext(context_options())) {
                 SkString info = ctx->dump();
@@ -328,7 +329,7 @@ void SkQP::init(SkQPAssetManager* assetManager, const char* reportDirectory) {
 
     fUnitTests = get_unit_tests(exclusionList);
     fSkSLErrorTests = get_sksl_error_tests(assetManager, exclusionList);
-    fSupportedBackends = get_backends();
+    fSupportedBackends = get_backends(/* isProtected= */ false);
 
     print_backend_info((fReportDirectory + "/grdump.txt").c_str(), fSupportedBackends);
 }

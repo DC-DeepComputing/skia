@@ -15,6 +15,10 @@
 using sk_app::GLWindowContext;
 using sk_app::DisplayParams;
 
+#ifndef EGL_PROTECTED_CONTENT_EXT
+#define EGL_PROTECTED_CONTENT_EXT 0x32C0
+#endif
+
 namespace {
 class GLWindowContext_android : public GLWindowContext {
 public:
@@ -89,10 +93,23 @@ sk_sp<const GrGLInterface> GLWindowContext_android::onInitializeContext() {
     SkAssertResult(eglChooseConfig(fDisplay, configAttribs, &surfaceConfig, 1, &numConfigs));
     SkASSERT(numConfigs > 0);
 
-    static const EGLint kEGLContextAttribsForOpenGLES[] = {
+    EGLint kEGLContextAttribsForOpenGLES[] = {
         EGL_CONTEXT_CLIENT_VERSION, 2,
+        EGL_NONE,                   EGL_NONE,
         EGL_NONE
     };
+
+    if (fDisplayParams.fProtected) {
+        const char* extensions = eglQueryString(fDisplay, EGL_EXTENSIONS);
+        if (!strstr(extensions, "EGL_EXT_protected_content")) {
+            return nullptr;
+        }
+
+        SkASSERT(std::size(kEGLContextAttribsForOpenGLES) >= 5);
+        kEGLContextAttribsForOpenGLES[2] = EGL_PROTECTED_CONTENT_EXT;
+        kEGLContextAttribsForOpenGLES[3] = EGL_TRUE;
+    }
+
     fEGLContext = eglCreateContext(
             fDisplay, surfaceConfig, nullptr, kEGLContextAttribsForOpenGLES);
     SkASSERT(EGL_NO_CONTEXT != fEGLContext);
