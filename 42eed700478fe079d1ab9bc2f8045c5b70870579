@@ -70,6 +70,24 @@
       "parentUuid": "767da90e_c368b879",
       "revId": "42eed700478fe079d1ab9bc2f8045c5b70870579",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6ac8e89b_d792c994",
+        "filename": "gm/colrv1.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2022-07-28T12:50:15Z",
+      "side": 1,
+      "message": "After f2f discussion, moved to having PUA codepoints in hardcoded group offsets in the upstream test font, from which arrays with test codepoints are generated. \n\nPlease take another look.",
+      "parentUuid": "2d2cb57a_172eb245",
+      "revId": "42eed700478fe079d1ab9bc2f8045c5b70870579",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
