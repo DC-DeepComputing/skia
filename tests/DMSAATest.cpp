@@ -86,7 +86,7 @@ static void check_sdc_color(skiatest::Reporter* reporter,
 
 DEF_GPUTEST_FOR_CONTEXTS(DMSAA_preserve_contents,
                          &sk_gpu_test::GrContextFactory::IsRenderingContext, reporter, ctxInfo,
-                         nullptr) {
+                         nullptr, CTSEnforced(CTSEnforced::API_LEVEL_T)) {
     auto dContext = ctxInfo.directContext();
     auto sdc = skgpu::v1::SurfaceDrawContext::Make(dContext, GrColorType::kRGBA_8888, nullptr,
                                                    SkBackingFit::kApprox, {kWidth, kHeight},
@@ -117,7 +117,7 @@ static void require_dst_reads(GrContextOptions* options) {
 }
 
 DEF_GPUTEST_FOR_CONTEXTS(DMSAA_dst_read, &sk_gpu_test::GrContextFactory::IsRenderingContext,
-                         reporter, ctxInfo, require_dst_reads) {
+                         reporter, ctxInfo, require_dst_reads, CTSEnforced(CTSEnforced::API_LEVEL_T)) {
     auto dContext = ctxInfo.directContext();
     auto sdc = skgpu::v1::SurfaceDrawContext::Make(dContext, GrColorType::kRGBA_8888, nullptr,
                                                    SkBackingFit::kApprox, {kWidth, kHeight},
@@ -141,7 +141,7 @@ DEF_GPUTEST_FOR_CONTEXTS(DMSAA_dst_read, &sk_gpu_test::GrContextFactory::IsRende
 
 DEF_GPUTEST_FOR_CONTEXTS(DMSAA_aa_dst_read_after_dmsaa,
                          &sk_gpu_test::GrContextFactory::IsRenderingContext, reporter, ctxInfo,
-                         require_dst_reads) {
+                         require_dst_reads, CTSEnforced(CTSEnforced::API_LEVEL_T)) {
     auto dContext = ctxInfo.directContext();
     auto sdc = skgpu::v1::SurfaceDrawContext::Make(dContext, GrColorType::kRGBA_8888, nullptr,
                                                    SkBackingFit::kApprox, {kWidth, kHeight},
@@ -166,7 +166,7 @@ DEF_GPUTEST_FOR_CONTEXTS(DMSAA_aa_dst_read_after_dmsaa,
 
 DEF_GPUTEST_FOR_CONTEXTS(DMSAA_dst_read_with_existing_barrier,
                          &sk_gpu_test::GrContextFactory::IsRenderingContext, reporter, ctxInfo,
-                         require_dst_reads) {
+                         require_dst_reads, CTSEnforced(CTSEnforced::API_LEVEL_T)) {
     auto dContext = ctxInfo.directContext();
     auto sdc = skgpu::v1::SurfaceDrawContext::Make(dContext, GrColorType::kRGBA_8888, nullptr,
                                                    SkBackingFit::kApprox, {kWidth, kHeight},
