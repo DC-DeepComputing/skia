@@ -667,6 +667,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "89cd8dd4_dee0aef0",
+        "filename": "bazel/exporter/interfaces/exporter.go",
+        "patchSetId": 20
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-07-28T16:16:33Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "941077fe_df24eee5",
+      "range": {
+        "startLine": 11,
+        "startChar": 5,
+        "endLine": 11,
+        "endChar": 13
+      },
+      "revId": "2721c66df6e538c7926c7936559bdc1e6a172753",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3f45acab_ab13ade9",
