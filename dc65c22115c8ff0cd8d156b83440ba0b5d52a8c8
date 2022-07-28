@@ -123,6 +123,24 @@
       "parentUuid": "07c9eae7_19ce57e1",
       "revId": "dc65c22115c8ff0cd8d156b83440ba0b5d52a8c8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "70d26d44_13e4f429",
+        "filename": "src/shaders/SkPictureShader.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 247,
+      "author": {
+        "id": 10586
+      },
+      "writtenOn": "2022-07-28T21:42:54Z",
+      "side": 1,
+      "message": "Yes, that is the approach we\u0027ve taken.  It seemed to make sense, since (like PixelGeometry) the text-contrast \u0026 text-gamma settings are used only when rendering text, and (again, like PixelGeometry) they can vary per-monitor.  There\u0027s also implications for the StrikeCaching stuff that made SkSurfaceProps a natural fit.\n\nWe made an earlier attempt to upstream the contrast/gamma code (https://skia-review.googlesource.com/c/skia/+/309880), and there was some pushback from bungeman@, who was concerned that a \"text gamma\" parameter sounded too much like a colorspace setting... though we never arrived at concrete ideas on where else to put it, and the CL stalled out.  (That code in that CL is a bit outdated, but it\u0027s largely the same as what we\u0027re currently testing in Edge.)\n\nOur hope was to \"prove\" the feature downstream in Edge before making another attempt at upstreaming.  It\u0027s running downstream today, but for various internal reasons (cross-team stuff, and resource-allocation) we haven\u0027t turned it on by default yet.\n\nAnyway, I\u0027m back on the feature now, and I\u0027m trying to set the stage for on-by-default status by making sure that the correct values are used everywhere.  My experimental \"text is allowed\" flag turned up a number of places where text was drawn without getting Chromium\u0027s centralized props, and here we are. 😊",
+      "parentUuid": "b8c94e9a_3342d6ee",
+      "revId": "dc65c22115c8ff0cd8d156b83440ba0b5d52a8c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
