@@ -214,6 +214,24 @@
       "parentUuid": "614004e7_f018c576",
       "revId": "3389d164d4ccffe271f077d12520a80d31c9a904",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "717e2188_8b390c82",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 9996
+      },
+      "writtenOn": "2022-07-28T16:27:57Z",
+      "side": 1,
+      "message": "I think that would be great, but I\u0027m not sure if it would address all of the problems.\n\nIn particular, Flutter\u0027s architecture can guarantee that the GrDirectContext on the IO task runner has a current context, but cannot guarantee the same for the GrDirectContext on the Raster task runner (both are in the same share group). We may be collecting the SkImage_Gpu on the IO task runner at a point where the raster task runner\u0027s GrDirectContext has already been abandoned (for example, the application went to background). That would involve leaking that graphics memory until the application resumed, which is highly undesirable. We would rather just delete the texture on the IO context runner.",
+      "parentUuid": "dc0a6f22_114aec33",
+      "revId": "3389d164d4ccffe271f077d12520a80d31c9a904",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
