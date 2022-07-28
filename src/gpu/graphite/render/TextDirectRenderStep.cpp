@@ -32,9 +32,19 @@ static constexpr DepthStencilSettings kDirectShadingPass = {
         /*depthWrite=*/  true
 };
 
+constexpr size_t kQuadVertexBufferSize = sizeof(float)*8;
+void write_quad_vertex_buffer(VertexWriter vertexWriter, size_t bufferSize) {
+    SkASSERT(bufferSize == kQuadVertexBufferSize);
+    vertexWriter << 0.0f << 0.0f;
+    vertexWriter << 1.0f << 0.0f;
+    vertexWriter << 0.0f << 1.0f;
+    vertexWriter << 1.0f << 1.0f;
+}
+
 // We are expecting to sample from up to 4 textures
 constexpr int kNumTextAtlasTextures = 4;
 }  // namespace
+
 
 TextDirectRenderStep::TextDirectRenderStep()
         : RenderStep("TextDirectRenderStep",
@@ -44,10 +54,15 @@ TextDirectRenderStep::TextDirectRenderStep()
                      PrimitiveType::kTriangles,
                      kDirectShadingPass,
                      /*vertexAttrs=*/
-                     {{"position", VertexAttribType::kFloat2, SkSLType::kFloat2},
-                      {"depth", VertexAttribType::kFloat, SkSLType::kFloat},
-                      {"texCoords", VertexAttribType::kUShort2, SkSLType::kUShort2}},
-                     /*instanceAttrs=*/{},
+                     {{"baseCoords", VertexAttribType::kFloat2, SkSLType::kFloat2}},
+                     /*instanceAttrs=*/
+                     {{"mat0", VertexAttribType::kFloat3, SkSLType::kFloat3},
+                      {"mat1", VertexAttribType::kFloat3, SkSLType::kFloat3},
+                      {"mat2", VertexAttribType::kFloat3, SkSLType::kFloat3},
+                      {"uvScale", VertexAttribType::kUShort2, SkSLType::kUShort2},
+                      {"uvPos", VertexAttribType::kUShort2, SkSLType::kUShort2},
+                      {"depth", VertexAttribType::kUShort_norm, SkSLType::kFloat},
+                      {"index", VertexAttribType::kShort, SkSLType::kShort}},
                      /*varyings=*/
                      {{"textureCoords", SkSLType::kFloat2},
                       {"texIndex", SkSLType::kFloat}}){}
@@ -57,11 +72,12 @@ TextDirectRenderStep::~TextDirectRenderStep() {}
 const char* TextDirectRenderStep::vertexSkSL() const {
     return R"(
         int2 coords = int2(texCoords.x, texCoords.y);
-        int texIdx = coords.x >> 13;
-        float2 unormTexCoords = float2(coords.x & 0x1FFF, coords.y);
+
+        float2 position = baseCoords*instancePos.xy + instancePos.zw;
+        float2 unormTexCoords = baseCoords*instanceUV.xy + instanceUV.zw;
 
         textureCoords = unormTexCoords * atlasSizeInv;
-        texIndex = float(texIdx);
+        texIndex = index;
 
         float4 devPosition = float4(position, depth, 1);
     )";
@@ -99,11 +115,17 @@ const char* TextDirectRenderStep::fragmentCoverageSkSL() const {
 }
 
 void TextDirectRenderStep::writeVertices(DrawWriter* dw, const DrawParams& params) const {
+    BindBufferInfo fixedVertexBuffer = dw->bufferManager()->getStaticBuffer(
+            BufferType::kVertex,
+            write_quad_vertex_buffer,
+            kQuadVertexBufferSize);
+
     const SubRunData& subRunData = params.geometry().subRunData();
     // TODO: pass through the color from the SkPaint via the SubRunData
-    subRunData.subRun()->fillVertexData(dw, subRunData.startGlyphIndex(), subRunData.glyphCount(),
-                                        params.order().depthAsFloat(),
-                                        params.transform());
+    uint16_t unormDepth = params.order().depthAsFloat()*65535;
+
+    subRunData.subRun()->fillInstanceData(dw, subRunData.startGlyphIndex(), subRunData.glyphCount(),
+                                          unormDepth, params.transform());
 }
 
 void TextDirectRenderStep::writeUniformsAndTextures(const DrawParams& params,
