@@ -87,6 +87,24 @@
       "parentUuid": "43de5e76_692838e1",
       "revId": "dc65c22115c8ff0cd8d156b83440ba0b5d52a8c8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "07c9eae7_19ce57e1",
+        "filename": "src/shaders/SkPictureShader.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 247,
+      "author": {
+        "id": 10586
+      },
+      "writtenOn": "2022-07-28T02:00:21Z",
+      "side": 1,
+      "message": "Brian:\n\nI started trying to write a \u0027gm\u0027 test, and ran into something interesting (which should have been obvious in hindsight): when rasterizing the `SkPictureShader` to an `SkBitmapShader`, it uses a non-opaque background.  So LCDText is *always* disabled.\n\nOn the one hand, this simplifies the code a little (and I\u0027ve updated the CL), and alleviates any fears about incorrect behavior with sub-pixel translations, etc.\n\nOn the other hand, you might rightly be left wondering what the *point* of the change is. 😊\n\nTo be completely transparent about our plans (in Edge and Chromium):\n\nAbout 18 months ago, the \"legacy display globals\" were moved from Skia into Chromium.  This required creating a centralized place in Chromium to get the `SkSurfaceProps` any time we need to draw any text.\n\nWhile most stuff hangs together pretty well, we\u0027ve discovered and fixed a number of places in Edge \u0026 Chromium over the last 18 months where the code wasn\u0027t using the correct props.  (And a few places in Skia where props couldn\u0027t be passed in at all; see: https://skia-review.googlesource.com/c/skia/+/545396.)\n\nUpstream in Chromium, this mostly manifests as incorrect LCDText... but downstream in Edge, we also have some contrast-enhancement and monitor-gamma settings that need to be propagated.  (We\u0027ve been experimenting with contrast \u0026 gamma for a while, and hope to eventually contribute that upstream.)\n\nAnyway, to solve this problem once and for all (and prevent future instances), we are prototyping a flag that will assert whenever text is drawn if the flag is *not* set (i.e., a \"text drawing is allowed\" flag).  It was early work on this prototype that discovered all these places (here, and my previous CL) where props aren\u0027t propagated.\n\nSo, even though the utility of this change isn\u0027t immediately obvious with LCDText always disabled, correctly propagating the props enables both the \"text allowed\" flag, and the contrast/gamma work (which *does* apply in the greyscale AA case) that we hope to contribute.\n\nLet me know what you think.",
+      "parentUuid": "3a76c68f_145bf9bd",
+      "revId": "dc65c22115c8ff0cd8d156b83440ba0b5d52a8c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
