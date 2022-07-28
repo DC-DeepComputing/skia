@@ -69,6 +69,30 @@
       },
       "revId": "596f896719a0a495974372831f031670db30f030",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ddcb6199_04cb9677",
+        "filename": "tests/Test.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-07-28T20:43:13Z",
+      "side": 1,
+      "message": "Derek explained to me why we need `NEVER` (which we both preferred to `UNDEFINED`) - there are tests for other backends (e.g. Dawn) that aren\u0027t relevant for CTS.\n\n\u003e We could achieve that without the copy-pasting, if it makes people happier.\n\nThat would make me happier, if they\u0027re fine to be the same.",
+      "parentUuid": "f15d74f7_aa96c644",
+      "range": {
+        "startLine": 26,
+        "startChar": 0,
+        "endLine": 30,
+        "endChar": 6
+      },
+      "revId": "596f896719a0a495974372831f031670db30f030",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

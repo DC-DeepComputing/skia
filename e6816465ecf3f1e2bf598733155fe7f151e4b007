@@ -660,6 +660,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b15b08e7_7b289d11",
+        "filename": "tests/Test.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-07-28T20:43:13Z",
+      "side": 1,
+      "message": "If we have `NEVER` (which I now understand why we want), then it\u0027s easy to implement \"always run with workarounds\". That sounds fine to me.",
+      "parentUuid": "e80501af_242f7bf6",
+      "range": {
+        "startLine": 84,
+        "startChar": 8,
+        "endLine": 84,
+        "endChar": 16
+      },
+      "revId": "e6816465ecf3f1e2bf598733155fe7f151e4b007",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2a80ed2d_8577125b",
         "filename": "tests/Test.h",
         "patchSetId": 1
