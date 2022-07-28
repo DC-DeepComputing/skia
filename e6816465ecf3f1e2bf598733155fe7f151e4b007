@@ -39,6 +39,99 @@
       },
       "revId": "e6816465ecf3f1e2bf598733155fe7f151e4b007",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "915b164e_85d79870",
+        "filename": "tests/BackendAllocationTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 905,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-07-28T13:41:02Z",
+      "side": 1,
+      "message": "Independent of the outer namespace question, I like `CTSEnforced::` - it makes the meaning of the parameter even clearer (it reads like exactly what it does).",
+      "parentUuid": "7b9c9c57_126d5468",
+      "range": {
+        "startLine": 905,
+        "startChar": 75,
+        "endLine": 905,
+        "endChar": 108
+      },
+      "revId": "e6816465ecf3f1e2bf598733155fe7f151e4b007",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "96fa4903_6b96e805",
+        "filename": "tests/DefaultPathRendererTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-07-28T13:41:02Z",
+      "side": 1,
+      "message": "Most of these now have extra casts to the same type? Introduced by search + replace?",
+      "range": {
+        "startLine": 136,
+        "startChar": 25,
+        "endLine": 136,
+        "endChar": 80
+      },
+      "revId": "e6816465ecf3f1e2bf598733155fe7f151e4b007",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "50377e21_868c1581",
+        "filename": "tests/Test.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-07-28T13:41:02Z",
+      "side": 1,
+      "message": "My understanding of how the two versions interact is:\n\nIf there is no workaroundsVersion, then the enforcedVersion just divides the API timeline in two, and everything to the right runs the test, everything to the left doesn\u0027t.\n\nIf both versions are specified, then the timeline is divided in three. Everything to the left of the workaroundsVersion doesn\u0027t run the test, everything to the right of the enforcedVersion runs the test in strict mode, and everything in between runs the test with workarounds enabled.\n\nIs that the intention? I think that changing the getters like I said will help. It also means that if we want the two versions to be the same, then it\u0027s the same as the workarounds version not being used, right? (I think that\u0027s okay). However, it also means we can\u0027t ALWAYS run a test with workarounds (because of the assert in the constructor -- even if we set the workarounds version to the current API level, we have to set the strict enforced version to the same thing). We might need a \"next\" version, or - better - to allow enforced to be UNDEFINED, while the workarounds version is something real?",
+      "range": {
+        "startLine": 73,
+        "startChar": 6,
+        "endLine": 73,
+        "endChar": 16
+      },
+      "revId": "e6816465ecf3f1e2bf598733155fe7f151e4b007",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2a80ed2d_8577125b",
+        "filename": "tests/Test.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-07-28T13:41:02Z",
+      "side": 1,
+      "message": "I think I\u0027d condense these into a single function that returns a tri-state (which will probably help to make the relationship of the two values clearer, in terms of how it defines the timeline of a particular test):\n\n    enum RunMode { kSkip, kRunStrict, kRunWithWorkarounds };\n    RunMode getRunMode(int api_level) const {\n      ...\n    }",
+      "range": {
+        "startLine": 90,
+        "startChar": 0,
+        "endLine": 100,
+        "endChar": 5
+      },
+      "revId": "e6816465ecf3f1e2bf598733155fe7f151e4b007",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
