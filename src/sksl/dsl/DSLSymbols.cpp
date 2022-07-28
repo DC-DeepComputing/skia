@@ -24,11 +24,6 @@ namespace dsl {
 
 class DSLVarBase;
 
-static bool is_type_in_symbol_table(std::string_view name, SkSL::SymbolTable* symbols) {
-    const SkSL::Symbol* s = (*symbols)[name];
-    return s && s->is<Type>();
-}
-
 void PushSymbolTable() {
     SymbolTable::Push(&ThreadContext::SymbolTable());
 }
@@ -43,14 +38,6 @@ std::shared_ptr<SymbolTable> CurrentSymbolTable() {
 
 DSLExpression Symbol(std::string_view name, Position pos) {
     return DSLExpression(ThreadContext::Compiler().convertIdentifier(pos, name), pos);
-}
-
-bool IsType(std::string_view name) {
-    return is_type_in_symbol_table(name, CurrentSymbolTable().get());
-}
-
-bool IsBuiltinType(std::string_view name) {
-    return is_type_in_symbol_table(name, CurrentSymbolTable()->builtinParent());
 }
 
 void AddToSymbolTable(DSLVarBase& var, Position pos) {
