@@ -813,7 +813,7 @@ const Renderer* Device::ChooseRenderer(const Geometry& geometry,
     if (geometry.isSubRun()) {
         return geometry.subRunData().subRun()->renderer();
     } else if (geometry.isVertices()) {
-        SkVerticesPriv info(geometry.vertices()->priv());
+        SkVerticesPriv info(geometry.verticesData().vertices()->priv());
         return &Renderer::Vertices(info.mode(), info.hasColors(), info.hasTexCoords());
     }
 
