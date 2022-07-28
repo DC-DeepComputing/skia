@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "40cefb68_f18ce282",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 22
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-07-28T14:09:01Z",
+      "side": 1,
+      "message": "See also https://docs.google.com/presentation/d/1hUps3CihE95qw2G-90_-AptoeK63jclwpZhLQRoRIC0/edit#slide\u003did.g13fa0521b8c_1_146 for some diagrams about attributes flowing up and down",
+      "revId": "22df45fe2adeb95381999e3812503060af9a227d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
