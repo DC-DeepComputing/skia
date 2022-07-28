@@ -470,6 +470,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "306fea1b_9088326f",
+        "filename": "tests/Test.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-07-28T18:38:27Z",
+      "side": 1,
+      "message": "\u003e What you are seeing is a WIP CL in that I haven\u0027t updated all the tests because I didn\u0027t want to do all that typing until we agree that the general approach was good.  \n\nUnderstood, and that totally makes sense, but I don\u0027t totally follow everything here.\n\nBased on the code I see here, it looks like you want to make tests default to not running. I don\u0027t agree with that approach.\n\n\u003e \n\u003e `UNDEFINED` is probably better named something like `NEVER` and that tag shouldn\u0027t be updated when there is a new release.\n\nIn what cases will we use NEVER?\n\n\u003e You\u0027re correct that the `FUTURE` tag should be applied to new tests and that is what we update when we snap a new release.\n\nOk, great!",
+      "parentUuid": "6b85f828_0e57864b",
+      "range": {
+        "startLine": 76,
+        "startChar": 4,
+        "endLine": 76,
+        "endChar": 13
+      },
+      "revId": "e6816465ecf3f1e2bf598733155fe7f151e4b007",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "68eaa449_e2b7a4f2",
         "filename": "tests/Test.h",
         "patchSetId": 1
@@ -505,6 +529,30 @@
       "side": 1,
       "message": "I haven\u0027t finished the CL, but it would be for tests that have been added since API_LEVEL_T.  I\u0027ve updated it to use FUTURE as well.",
       "parentUuid": "68eaa449_e2b7a4f2",
+      "range": {
+        "startLine": 78,
+        "startChar": 24,
+        "endLine": 78,
+        "endChar": 26
+      },
+      "revId": "e6816465ecf3f1e2bf598733155fe7f151e4b007",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "403edc90_2fda2834",
+        "filename": "tests/Test.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-07-28T18:38:27Z",
+      "side": 1,
+      "message": "lgtm",
+      "parentUuid": "01112e84_9c9185bb",
       "range": {
         "startLine": 78,
         "startChar": 24,
@@ -552,6 +600,30 @@
       "side": 1,
       "message": "removed the assert to support the use case of a workaround only test that Brian was referring to.  If I do add some asserts back this function is now a constexpr so I can add them as static_asserts.",
       "parentUuid": "56f8883a_a5bb93b6",
+      "range": {
+        "startLine": 84,
+        "startChar": 8,
+        "endLine": 84,
+        "endChar": 16
+      },
+      "revId": "e6816465ecf3f1e2bf598733155fe7f151e4b007",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "db0e1641_68d4f6be",
+        "filename": "tests/Test.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-07-28T18:38:27Z",
+      "side": 1,
+      "message": "I don\u0027t think my question got answered - why do we need to be able to always run with workarounds? And could that be addressed by setting its enforcement to `FUTURE`? Or no, because we\u0027d change that to `U` when we release `U`?",
+      "parentUuid": "1ec0cd3b_d35aa23c",
       "range": {
         "startLine": 84,
         "startChar": 8,
@@ -777,6 +849,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "17f6bb87_893129e2",
+        "filename": "tests/VkBackendSurfaceTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-07-28T18:38:27Z",
+      "side": 1,
+      "message": "\u003e Should we keep the main class call `CtsVersion` then or stick with the new `CtsEnforced` class as the name of the container?\n\nMy vote is for the container to be named `CtsEnforcement`.",
+      "parentUuid": "4db26ff4_6b0b9910",
+      "range": {
+        "startLine": 33,
+        "startChar": 69,
+        "endLine": 33,
+        "endChar": 102
+      },
+      "revId": "e6816465ecf3f1e2bf598733155fe7f151e4b007",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2c50685e_e9766445",
         "filename": "tools/skqp/src/skqp.cpp",
         "patchSetId": 1
@@ -812,6 +908,30 @@
       "side": 1,
       "message": "after we agree on the API level and I update all the test files this will go away.",
       "parentUuid": "2c50685e_e9766445",
+      "range": {
+        "startLine": 63,
+        "startChar": 0,
+        "endLine": 64,
+        "endChar": 66
+      },
+      "revId": "e6816465ecf3f1e2bf598733155fe7f151e4b007",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "09bbc6bf_09ffb238",
+        "filename": "tools/skqp/src/skqp.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-07-28T18:38:27Z",
+      "side": 1,
+      "message": "Yay!",
+      "parentUuid": "50f273b7_d2fb5662",
       "range": {
         "startLine": 63,
         "startChar": 0,

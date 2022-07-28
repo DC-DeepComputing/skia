@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "379762f1_2777ecf3",
+        "filename": "tests/Test.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-07-28T18:38:27Z",
+      "side": 1,
+      "message": "If we got rid of `UNDEFINED`, this function could be a lot simpler/clearer:\n\n```\n  if (apiLevel \u003e\u003d fStrictVersion) {\n    return kRunStrict;\n  }\n  if (apiLevel \u003e\u003d fRelaxedVersion) {\n    return kRunWithWorkarounds;\n  }\n  return kSkip;\n```",
+      "range": {
+        "startLine": 92,
+        "startChar": 34,
+        "endLine": 92,
+        "endChar": 38
+      },
+      "revId": "596f896719a0a495974372831f031670db30f030",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "452def25_36e38b11",
+        "filename": "tests/Test.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-07-28T18:38:27Z",
+      "side": 1,
+      "message": "I don\u0027t love having duplicate enums with slight differences - Brian, is that what you were proposing?\n\nI guess having only one of them an `enum class` makes it so you cannot convert between them, but it seems kind of funny that they\u0027re different?\n\nThinking about this some more, though, we arguably have a reason for `UNDEFINED` in `CTSRelaxed` - that won\u0027t always be used. (I\u0027m not clear on why we need it for `Enforced`.) And maybe it doesn\u0027t need `FUTURE`? Maybe that\u0027s a (separate from type safety) reason to have both `enum`s?\n\nThe reason I see for `UNDEFINED` in Relaxed is if there are no levels on which we run workarounds. But that\u0027s no different from them being set to the same value, right?",
+      "range": {
+        "startLine": 26,
+        "startChar": 0,
+        "endLine": 30,
+        "endChar": 6
+      },
+      "revId": "596f896719a0a495974372831f031670db30f030",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
