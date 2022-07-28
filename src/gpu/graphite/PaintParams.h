@@ -40,6 +40,7 @@ public:
     std::optional<SkBlendMode> asBlendMode() const;
     SkBlender* blender() const { return fBlender.get(); }
     sk_sp<SkBlender> refBlender() const;
+    void setBlender(sk_sp<SkBlender> blender) { fBlender = blender; }
 
     SkShader* shader() const { return fShader.get(); }
     sk_sp<SkShader> refShader() const;
