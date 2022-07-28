@@ -16,6 +16,24 @@
       "message": "In sksl the color components should be normalized [0..1], so I think we just need\n\n  c.rgb \u003d floor(c.rgb);\n\n\nWe\u0027ll verify once we get a test.",
       "revId": "b8e195c7c86a97d2ee674eb6d27aac1c2760bd79",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fe5f6a17_f58843a5",
+        "filename": "modules/skottie/src/BlendModes.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2022-07-28T13:16:05Z",
+      "side": 1,
+      "message": "Ack.",
+      "parentUuid": "5335e833_c9505b85",
+      "revId": "b8e195c7c86a97d2ee674eb6d27aac1c2760bd79",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
