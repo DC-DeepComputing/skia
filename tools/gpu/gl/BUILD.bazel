@@ -1,0 +1,17 @@
+#load("//bazel:macros.bzl", "select_multi")
+
+filegroup(
+    name = "private_hdrs",
+    srcs = [
+        "GLTestContext.h",
+    ],
+    visibility = ["//tools/gpu:__pkg__"],
+)
+
+filegroup(
+    name = "srcs",
+    srcs = [
+        "GLTestContext.cpp",
+    ],
+    visibility = ["//tools/gpu:__pkg__"],
+)

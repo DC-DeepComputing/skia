@@ -1,0 +1,40 @@
+load("//bazel:macros.bzl", "select_multi", "skia_cc_library")
+
+skia_cc_library(
+    name = "utils",
+    testonly = True,
+    srcs = [
+        "BackendSurfaceFactory.cpp",
+        "BackendSurfaceFactory.h",
+        "BackendTextureImageFactory.cpp",
+        "BackendTextureImageFactory.h",
+        "FenceSync.h",
+        "FlushFinishTracker.cpp",
+        "FlushFinishTracker.h",
+        "GrContextFactory.cpp",
+        "GrTest.cpp",
+        "ManagedBackendTexture.cpp",
+        "ManagedBackendTexture.h",
+        "MemoryCache.cpp",
+        "MemoryCache.h",
+        "GpuTimer.h",
+        "ProxyUtils.cpp",
+        "ProxyUtils.h",
+        "TestContext.cpp",
+        "TestContext.h",
+        "TestOps.cpp",
+        "TestOps.h",
+        "YUVUtils.cpp",
+        "YUVUtils.h",
+    ] + select_multi({
+        "//src/gpu:gl_backend": [
+            "//tools/gpu/gl:srcs",
+            "//tools/gpu/gl:private_hdrs",
+        ],
+    }),
+    hdrs = [
+        "GrContextFactory.h",
+    ],
+    visibility = ["//modules/skottie:__pkg__"],
+    deps = ["//:skia_internal"],
+)
