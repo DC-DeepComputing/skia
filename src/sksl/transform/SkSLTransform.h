@@ -28,6 +28,12 @@ enum class ProgramKind : int8_t;
 namespace Transform {
 
 /**
+ * Copies built-in functions from modules into the program. Depends on ProgramUsage to determine
+ * which functions are necessary.
+ */
+void AddBuiltinFunctions(Program& program);
+
+/**
  * Checks to see if it would be safe to add `const` to the modifiers of a variable. If so, returns
  * the modifiers with `const` applied; if not, returns the existing modifiers as-is. Adding `const`
  * allows the inliner to fold away more values and generate tighter code.
