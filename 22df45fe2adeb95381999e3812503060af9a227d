@@ -1,6 +1,46 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "4a6ef4f0_21a82e95",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 22
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-07-28T15:31:39Z",
+      "side": 1,
+      "message": "Yeah, this was the reason for https://skia-review.googlesource.com/c/skia/+/385516 (and not ANGLE is doing a similar thing). Everyone was polluting the global base targets and getting in each other\u0027s way. So instead we just \"inherited\" from those targets in our own \"namespace\" and then set configs on that (without using gn\u0027s `set_defaults`). Not sure if it\u0027s possible to make a skia_cc_library in Bazel, but that\u0027s effectively what this is trying to do, right?\n\nPart of the issue is that really Skia is one huge monolithic build and isn\u0027t really made of separable components. If we wanted to reflect reality there really would be one giant `skia` target with a ton of conditionals in it for everything. However, that\u0027s difficult to manage so we pretend like there a multiple cc_libraries and whatnot, but the reality is that this doesn\u0027t reflect reality. So we end up with this interesting \"all Skia sub-targets depend on this list of copts\" because really that\u0027s the list of copts that the monolithic `skia` target would have. (This is true of both the gn and the bazel builds currently.)",
+      "revId": "22df45fe2adeb95381999e3812503060af9a227d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "818bd02d_0eba6870",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 22
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-07-28T15:31:39Z",
+      "side": 1,
+      "message": "I think this \"on\" can be removed.",
+      "range": {
+        "startLine": 96,
+        "startChar": 58,
+        "endLine": 96,
+        "endChar": 61
+      },
+      "revId": "22df45fe2adeb95381999e3812503060af9a227d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "40cefb68_f18ce282",
@@ -14,6 +54,40 @@
       "writtenOn": "2022-07-28T14:09:01Z",
       "side": 1,
       "message": "See also https://docs.google.com/presentation/d/1hUps3CihE95qw2G-90_-AptoeK63jclwpZhLQRoRIC0/edit#slide\u003did.g13fa0521b8c_1_146 for some diagrams about attributes flowing up and down",
+      "revId": "22df45fe2adeb95381999e3812503060af9a227d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2516248e_25fbb93e",
+        "filename": "bazel/copts.bzl",
+        "patchSetId": 22
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-07-28T15:31:39Z",
+      "side": 1,
+      "message": "Links to github.com and not skia.googlesource.com?",
+      "revId": "22df45fe2adeb95381999e3812503060af9a227d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "910058d6_73929595",
+        "filename": "bazel/macros.bzl",
+        "patchSetId": 22
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-07-28T15:31:39Z",
+      "side": 1,
+      "message": "So these macros are the equivalent of the gn `skia_*` target templates, and setting the opts here is more or less the same as setting the configs on the gn `skia_*` target templates in the gn build. Is it possible to make this even more explicit (like in gn) where instead of hiding `cc_binary` (and related) these macros are more like `skia_cc_binary` to make it super obvious that these targets have Skia specific tweaks (are part of the Skia ball of mud)? Don\u0027t need to do that right now, but mostly wondering if it works or not.",
       "revId": "22df45fe2adeb95381999e3812503060af9a227d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
