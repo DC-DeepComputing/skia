@@ -10,6 +10,8 @@ load("@bazel_gazelle//:def.bzl", _gazelle = "gazelle")
 load("@emsdk//emscripten_toolchain:wasm_rules.bzl", _wasm_cc_binary = "wasm_cc_binary")
 load("@io_bazel_rules_go//go:def.bzl", _go_binary = "go_binary", _go_library = "go_library")
 load("//bazel/common_config_settings:defs.bzl", _bool_flag = "bool_flag", _string_flag_with_values = "string_flag_with_values")
+load("//bazel:copts.bzl", "DEFAULT_COPTS", "DEFAULT_OBJC_COPTS")
+load("//bazel:linkopts.bzl", "DEFAULT_LINKOPTS")
 
 # re-export symbols that are commonly used or that are not supported in G3
 # (and thus we need to stub out)
@@ -67,22 +69,84 @@ def select_multi(values_map):
         })
     return rv
 
-# buildifier: disable=unnamed-macro
-def cc_binary(**kwargs):
-    """A shim around cc_binary that lets us tweak settings for G3 if necessary."""
-    native.cc_binary(**kwargs)
+def skia_cc_binary(name, copts = DEFAULT_COPTS, linkopts = DEFAULT_LINKOPTS, **kwargs):
+    """A wrapper around cc_library for Skia C++ executables (e.g. tests).
 
-# buildifier: disable=unnamed-macro
-def cc_library(**kwargs):
-    """A shim around cc_library that lets us tweak settings for G3 if necessary."""
-    native.cc_library(**kwargs)
-
-# buildifier: disable=unnamed-macro
-def objc_library(**kwargs):
-    """A shim around objc_library that lets us tweak settings for G3 if necessary.
+    This lets us provide compiler flags (copts) and global linker flags (linkopts) consistently
+    to Skia built executables. These executables are almost always things like unit tests and
+    dev tools.
 
     Args:
-          **kwargs: Normal arguments to objc_library
+        name: the name of the underlying executable.
+        copts: Flags which should be passed to the C++ compiler. By default, we use DEFAULT_COPTS
+            from //bazel/copts.bzl.
+        linkopts: Global flags which should be passed to the C++ linker. By default, we use
+            DEFAULT_LINKOPTS from //bazel/linkopts.bzl. Other linker flags will be passed in
+            via deps (see deps_and_linkopts below).
+        **kwargs: All the normal arguments that cc_binary takes.
+    """
+    native.cc_binary(name = name, copts = copts, linkopts = linkopts, **kwargs)
+
+def skia_cc_library(name, copts = DEFAULT_COPTS, **kwargs):
+    """A wrapper around cc_library for Skia C++ libraries.
+
+    This lets us provide compiler flags (copts) consistently to the Skia build (e.g. //:skia_public)
+    and builds which depend on those targets (e.g. things in //tools or //modules).
+
+    It also lets us easily tweak these settings when being built in G3.
+
+    Third party libraries should *not* use this directly, as there are likely some flags used
+    by Skia (e.g. warnings) that we do not want to have to fix for third party code.
+
+    Args:
+        name: the name of the underlying library.
+        copts: Flags which should be passed to the C++ compiler. By default, we use DEFAULT_COPTS
+            from //bazel/copts.bzl.
+        **kwargs: All the normal arguments that cc_library takes.
+    """
+    native.cc_library(name = name, copts = copts, **kwargs)
+
+def skia_deps_and_linkopts(name, visibility, deps = [], linkopts = [], testonly = False):
+    """A self-documenting wrapper around cc_library for third_party deps and linker flags.
+
+    It lets us have third_party deps and linkopts be set close to where they impact,
+    and trickle up the file hierarchy to //:skia_public and //:skia_internal
+
+    Args:
+        name: the name of the underlying target. By convention, this is called "deps".
+        visibility: To prevent this rule from being used where it should not, we have the
+            convention of setting the visibility to just the parent package.
+        deps: A list of labels or select statements to collect third_party dependencies.
+        linkopts: A list of strings or select statements to collect linker flags.
+        testonly: A boolean that, if true, will enforce all targets who depend on this are also
+            marked as testonly.
+    """
+    if name != "deps":
+        fail("By convention, we name these rules deps")
+    native.cc_library(
+        name = name,
+        visibility = visibility,
+        deps = deps,
+        linkopts = linkopts,
+        testonly = testonly,
+    )
+
+def skia_defines(name, visibility, defines):
+    """A self-documenting wrapper around cc_library for defines"""
+    native.cc_library(defines, name = name, visibility = visibility)
+
+def skia_objc_library(name, copts = DEFAULT_OBJC_COPTS, **kwargs):
+    """A wrapper around cc_library for Skia Objective C libraries.
+
+    This lets us provide compiler flags (copts) consistently to the Skia build (e.g. //:skia_public)
+    and builds which depend on those targets (e.g. things in //tools or //modules).
+
+    It also lets us easily tweak these settings when being built in G3.
+    Args:
+        name: the name of the underlying target.
+        copts: Flags which should be passed to the C++ compiler. By default, we use
+            DEFAULT_OBJC_COPTS from //bazel/copts.bzl.
+        **kwargs: Normal arguments to objc_library
     """
 
     # Internally, we need to combine sdk_frameworks and deps, but we can only
@@ -93,7 +157,7 @@ def objc_library(**kwargs):
     if type(sdks) != "NoneType":
         if type(sdks) != "list" or type(deps) != "list":
             fail("skd_frameworks and deps must both be normal lists, not selects")
-    native.objc_library(**kwargs)
+    native.objc_library(name = name, copts = copts, **kwargs)
 
 # buildifier: disable=unnamed-macro
 def exports_files_legacy(label_list = None, visibility = None):
