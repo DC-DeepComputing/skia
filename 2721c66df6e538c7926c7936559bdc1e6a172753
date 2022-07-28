@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "be4e6a1b_c4decdb4",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 20
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-07-28T16:09:41Z",
+      "side": 1,
+      "message": "suggestion: For big CLs like this, consider including a \"suggested reviewing order\"\n\nExample: https://skia-review.googlesource.com/c/skia/+/561436",
+      "revId": "2721c66df6e538c7926c7936559bdc1e6a172753",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "0f6b6be0_2715fe9a",
@@ -14,6 +31,615 @@
       "writtenOn": "2022-07-28T14:25:40Z",
       "side": 1,
       "message": "Hi Kevin: PTAL.",
+      "revId": "2721c66df6e538c7926c7936559bdc1e6a172753",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a7f96c1c_0bc93625",
+        "filename": "bazel/exporter/bazel_query_command.go",
+        "patchSetId": 20
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-07-28T16:09:41Z",
+      "side": 1,
+      "message": "was interfaces clashing with something? We typically do not use import aliases unless we need to disambiguate a package name.",
+      "range": {
+        "startLine": 13,
+        "startChar": 1,
+        "endLine": 13,
+        "endChar": 5
+      },
+      "revId": "2721c66df6e538c7926c7936559bdc1e6a172753",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bf9cfb28_5984c81d",
+        "filename": "bazel/exporter/bazel_util.go",
+        "patchSetId": 20
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-07-28T16:09:41Z",
+      "side": 1,
+      "message": "Just because you name your return values does not mean you need to use naked returns (I strongly dislike naked returns).\n\nhttps://github.com/golang/go/wiki/CodeReviewComments#named-result-parameters",
+      "range": {
+        "startLine": 19,
+        "startChar": 70,
+        "endLine": 19,
+        "endChar": 73
+      },
+      "revId": "2721c66df6e538c7926c7936559bdc1e6a172753",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9af36aed_1361ed35",
+        "filename": "bazel/exporter/bazel_util.go",
+        "patchSetId": 20
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-07-28T16:09:41Z",
+      "side": 1,
+      "message": "Once we have more than one group in a regex, we prefer to name the groups\n\n^(?P\u003crepo\u003e@[^/]+)?/(?P\u003cpath\u003e[^:]+):(?P\u003ctarget\u003e.+)$\n\nThis is from an aesthetic point of view to make the regex easier to read. It does not change the result of FindStringSubmatch",
+      "range": {
+        "startLine": 21,
+        "startChar": 39,
+        "endLine": 21,
+        "endChar": 47
+      },
+      "revId": "2721c66df6e538c7926c7936559bdc1e6a172753",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "433d1173_6613807f",
+        "filename": "bazel/exporter/bazel_util.go",
+        "patchSetId": 20
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-07-28T16:09:41Z",
+      "side": 1,
+      "message": "I would suggest moving these regular expressions to be module level variables. You can use MustCompile instead of error checking there.\n\nIn the event the regex is invalid, panicing is acceptable because it means the code is wrong and we cannot continue.",
+      "range": {
+        "startLine": 21,
+        "startChar": 1,
+        "endLine": 21,
+        "endChar": 3
+      },
+      "revId": "2721c66df6e538c7926c7936559bdc1e6a172753",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6b8578e3_ee9a8ca7",
+        "filename": "bazel/exporter/bazel_util.go",
+        "patchSetId": 20
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-07-28T16:09:41Z",
+      "side": 1,
+      "message": "The %q verb is a quoted string",
+      "range": {
+        "startLine": 52,
+        "startChar": 49,
+        "endLine": 52,
+        "endChar": 53
+      },
+      "revId": "2721c66df6e538c7926c7936559bdc1e6a172753",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ac8b4ee3_e58fac82",
+        "filename": "bazel/exporter/bazel_util.go",
+        "patchSetId": 20
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-07-28T16:09:41Z",
+      "side": 1,
+      "message": "Is this not\nutil.In\nhttps://github.com/google/skia-buildbot/blob/debc3322f52e1dfbbded5e9062365dc0da2f789f/go/util/util.go#L53\n?",
+      "range": {
+        "startLine": 92,
+        "startChar": 5,
+        "endLine": 92,
+        "endChar": 24
+      },
+      "revId": "2721c66df6e538c7926c7936559bdc1e6a172753",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4fd094e1_597affca",
+        "filename": "bazel/exporter/bazel_util.go",
+        "patchSetId": 20
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-07-28T16:09:41Z",
+      "side": 1,
+      "message": "Prefer nil slices over empty slices.\nhttps://github.com/golang/go/wiki/CodeReviewComments#declaring-empty-slices",
+      "range": {
+        "startLine": 122,
+        "startChar": 10,
+        "endLine": 122,
+        "endChar": 20
+      },
+      "revId": "2721c66df6e538c7926c7936559bdc1e6a172753",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5721d2ed_ebc815dd",
+        "filename": "bazel/exporter/bazel_util_test.go",
+        "patchSetId": 20
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-07-28T16:09:41Z",
+      "side": 1,
+      "message": "If there are multiple parameters in a row with the same data type, you can omit all but the last data type.\n\nfunc(name, rule, expectedRepo, expectedPath, expectedTarget string)",
+      "range": {
+        "startLine": 17,
+        "startChar": 19,
+        "endLine": 17,
+        "endChar": 25
+      },
+      "revId": "2721c66df6e538c7926c7936559bdc1e6a172753",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4efdc957_bbd0e93f",
+        "filename": "bazel/exporter/bazel_util_test.go",
+        "patchSetId": 20
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-07-28T16:09:41Z",
+      "side": 1,
+      "message": "Please add 2 for shorthand notation.\n//tools/flags (really //tools/flags:flags) \u003d\u003e tools_flags_flags\n@libpng (really @libpng//:libpng) \u003d\u003e at_libpng_libpng",
+      "range": {
+        "startLine": 55,
+        "startChar": 22,
+        "endLine": 55,
+        "endChar": 26
+      },
+      "revId": "2721c66df6e538c7926c7936559bdc1e6a172753",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7f3413c1_31d68136",
+        "filename": "bazel/exporter/bazel_util_test.go",
+        "patchSetId": 20
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-07-28T16:09:41Z",
+      "side": 1,
+      "message": "Shouldn\u0027t this be an error?\n\nUsually if there is an error, I don\u0027t do any assertions on the other returned values, as they will (should) be ignored in case of an error.",
+      "range": {
+        "startLine": 61,
+        "startChar": 8,
+        "endLine": 61,
+        "endChar": 15
+      },
+      "revId": "2721c66df6e538c7926c7936559bdc1e6a172753",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2cad0df8_ead18db7",
+        "filename": "bazel/exporter/build_proto/analysis_v2/BUILD.bazel",
+        "patchSetId": 20
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-07-28T16:09:41Z",
+      "side": 1,
+      "message": "Can you document how this pb.go code was generated? A README.md file would be preferred.\n\nBe sure to emphasize the necessity for analysis and build to be in different packages 😂",
+      "range": {
+        "startLine": 10,
+        "startChar": 25,
+        "endLine": 10,
+        "endChar": 27
+      },
+      "revId": "2721c66df6e538c7926c7936559bdc1e6a172753",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "36011d36_f12decd1",
+        "filename": "bazel/exporter/cmake_exporter_test.go",
+        "patchSetId": 20
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-07-28T16:09:41Z",
+      "side": 1,
+      "message": "Please add a small comment how this was generated (if it was) or that it was hand constructed.",
+      "range": {
+        "startLine": 25,
+        "startChar": 6,
+        "endLine": 25,
+        "endChar": 15
+      },
+      "revId": "2721c66df6e538c7926c7936559bdc1e6a172753",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8cfdedf6_fc605850",
+        "filename": "bazel/exporter/cmake_exporter_test.go",
+        "patchSetId": 20
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-07-28T16:09:41Z",
+      "side": 1,
+      "message": "The empty line between test name and the first line of code looks non-idiomatic to me.",
+      "revId": "2721c66df6e538c7926c7936559bdc1e6a172753",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e6429ead_24b0fe09",
+        "filename": "bazel/exporter/cmake_exporter_test.go",
+        "patchSetId": 20
+      },
+      "lineNbr": 154,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-07-28T16:09:41Z",
+      "side": 1,
+      "message": "\"The zero value for Buffer is an empty buffer ready to use.\"\nhttps://pkg.go.dev/bytes#Buffer\n\nvar contents bytes.Buffer\nis all you need",
+      "range": {
+        "startLine": 154,
+        "startChar": 23,
+        "endLine": 154,
+        "endChar": 29
+      },
+      "revId": "2721c66df6e538c7926c7936559bdc1e6a172753",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "32a51037_290c5f2d",
+        "filename": "bazel/exporter/cmake_exporter_test.go",
+        "patchSetId": 20
+      },
+      "lineNbr": 175,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-07-28T16:09:41Z",
+      "side": 1,
+      "message": "ubernit: I prefer to have my local variables be non-pointer types so that the dereference observation \u0026qr makes it clear to the reader that I\u0027m passing a pointer and not copy of qr into the given function.",
+      "range": {
+        "startLine": 175,
+        "startChar": 7,
+        "endLine": 175,
+        "endChar": 8
+      },
+      "revId": "2721c66df6e538c7926c7936559bdc1e6a172753",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "35512240_a777f3a8",
+        "filename": "bazel/exporter/cmake_exporter_test.go",
+        "patchSetId": 20
+      },
+      "lineNbr": 245,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-07-28T16:09:41Z",
+      "side": 1,
+      "message": "I don\u0027t think you need to copy to a strings.Builder bytes.Buffer has a .String() method",
+      "range": {
+        "startLine": 245,
+        "startChar": 20,
+        "endLine": 245,
+        "endChar": 27
+      },
+      "revId": "2721c66df6e538c7926c7936559bdc1e6a172753",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "483b8a4d_f98ec3a8",
+        "filename": "bazel/exporter/cmake_exporter_test.go",
+        "patchSetId": 20
+      },
+      "lineNbr": 251,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-07-28T16:09:41Z",
+      "side": 1,
+      "message": "ReturnsFalse",
+      "range": {
+        "startLine": 251,
+        "startChar": 0,
+        "endLine": 251,
+        "endChar": 32
+      },
+      "revId": "2721c66df6e538c7926c7936559bdc1e6a172753",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ccdd471c_f4f5a3dc",
+        "filename": "bazel/exporter/cmake_exporter_test.go",
+        "patchSetId": 20
+      },
+      "lineNbr": 255,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-07-28T16:09:41Z",
+      "side": 1,
+      "message": "ReturnsTrue",
+      "range": {
+        "startLine": 255,
+        "startChar": 34,
+        "endLine": 255,
+        "endChar": 41
+      },
+      "revId": "2721c66df6e538c7926c7936559bdc1e6a172753",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "83dacdf2_4c42eb8b",
+        "filename": "bazel/exporter/cmake_exporter_test.go",
+        "patchSetId": 20
+      },
+      "lineNbr": 259,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-07-28T16:09:41Z",
+      "side": 1,
+      "message": "ReturnsFalse",
+      "range": {
+        "startLine": 259,
+        "startChar": 37,
+        "endLine": 259,
+        "endChar": 44
+      },
+      "revId": "2721c66df6e538c7926c7936559bdc1e6a172753",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b2eb3ea7_6bcfd639",
+        "filename": "bazel/exporter/cmake_exporter_test.go",
+        "patchSetId": 20
+      },
+      "lineNbr": 270,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-07-28T16:09:41Z",
+      "side": 1,
+      "message": "Is there any other inspection you can do on R? If not, comment why not",
+      "range": {
+        "startLine": 270,
+        "startChar": 19,
+        "endLine": 270,
+        "endChar": 20
+      },
+      "revId": "2721c66df6e538c7926c7936559bdc1e6a172753",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c144113b_32da7910",
+        "filename": "bazel/exporter/cmake_rule.go",
+        "patchSetId": 20
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-07-28T16:09:41Z",
+      "side": 1,
+      "message": "Can you add some unit tests for the interesting methods of CMakeRule?",
+      "revId": "2721c66df6e538c7926c7936559bdc1e6a172753",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b3725692_f7b89df0",
+        "filename": "bazel/exporter/cmake_rule.go",
+        "patchSetId": 20
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-07-28T16:09:41Z",
+      "side": 1,
+      "message": "This error message looks like it should be for the next case?",
+      "range": {
+        "startLine": 49,
+        "startChar": 32,
+        "endLine": 49,
+        "endChar": 38
+      },
+      "revId": "2721c66df6e538c7926c7936559bdc1e6a172753",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b97ba307_564a23b9",
+        "filename": "bazel/exporter/cmake_workspace.go",
+        "patchSetId": 20
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-07-28T16:09:41Z",
+      "side": 1,
+      "message": "Do we have to refer to pointers of CMakeRule and not the structs themselves? I have a personal preference of avoiding pointers unless they are critical as I think they make it harder to reason about (e.g. is this getting mutated or not)",
+      "range": {
+        "startLine": 18,
+        "startChar": 26,
+        "endLine": 18,
+        "endChar": 35
+      },
+      "revId": "2721c66df6e538c7926c7936559bdc1e6a172753",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "139dcd97_2db82503",
+        "filename": "bazel/exporter/cmake_workspace.go",
+        "patchSetId": 20
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-07-28T16:09:41Z",
+      "side": 1,
+      "message": "We rarely use make()\n\n\u0026CMakeWorkspace{rules: map[string]*CMakeRule{}}",
+      "range": {
+        "startLine": 25,
+        "startChar": 31,
+        "endLine": 25,
+        "endChar": 58
+      },
+      "revId": "2721c66df6e538c7926c7936559bdc1e6a172753",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b2afd2d2_5c04b93a",
+        "filename": "bazel/exporter/cmake_workspace.go",
+        "patchSetId": 20
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-07-28T16:09:41Z",
+      "side": 1,
+      "message": "Are you able to easily write a unit test or two for this?",
+      "range": {
+        "startLine": 72,
+        "startChar": 6,
+        "endLine": 72,
+        "endChar": 19
+      },
+      "revId": "2721c66df6e538c7926c7936559bdc1e6a172753",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "71f00bcc_d6574ea5",
+        "filename": "bazel/exporter/cmake_workspace.go",
+        "patchSetId": 20
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-07-28T16:09:41Z",
+      "side": 1,
+      "message": "For simplicity, could this be writer.Write(\u0027\\n\u0027) ?",
+      "range": {
+        "startLine": 75,
+        "startChar": 13,
+        "endLine": 75,
+        "endChar": 33
+      },
+      "revId": "2721c66df6e538c7926c7936559bdc1e6a172753",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "442dc446_660b6a66",
+        "filename": "bazel/exporter/interfaces/exporter.go",
+        "patchSetId": 20
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-07-28T16:09:41Z",
+      "side": 1,
+      "message": "This should be package interfaces because the folder name is interfaces.",
+      "range": {
+        "startLine": 5,
+        "startChar": 8,
+        "endLine": 5,
+        "endChar": 16
+      },
       "revId": "2721c66df6e538c7926c7936559bdc1e6a172753",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -36,6 +662,98 @@
         "startChar": 5,
         "endLine": 11,
         "endChar": 13
+      },
+      "revId": "2721c66df6e538c7926c7936559bdc1e6a172753",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3f45acab_ab13ade9",
+        "filename": "bazel/exporter_tool/main.go",
+        "patchSetId": 20
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-07-28T16:09:41Z",
+      "side": 1,
+      "message": "Is NewMultiStringFlag https://github.com/google/skia-buildbot/blob/4c87209ff9378a9befc65d5f93c4040d4fdd5922/go/common/common.go#L179 sufficient?",
+      "range": {
+        "startLine": 16,
+        "startChar": 5,
+        "endLine": 16,
+        "endChar": 14
+      },
+      "revId": "2721c66df6e538c7926c7936559bdc1e6a172753",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cfef7ea0_73986909",
+        "filename": "bazel/exporter_tool/main.go",
+        "patchSetId": 20
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-07-28T16:09:41Z",
+      "side": 1,
+      "message": "You probably want to log the error",
+      "range": {
+        "startLine": 41,
+        "startChar": 4,
+        "endLine": 41,
+        "endChar": 7
+      },
+      "revId": "2721c66df6e538c7926c7936559bdc1e6a172753",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ec854c56_995f8391",
+        "filename": "bazel/exporter_tool/main.go",
+        "patchSetId": 20
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-07-28T16:09:41Z",
+      "side": 1,
+      "message": "cmakeFile should be closed, right?\n\nI suggest WithWriteFile which handles that even in error cases correctly\nhttps://github.com/google/skia-buildbot/blob/debc3322f52e1dfbbded5e9062365dc0da2f789f/go/util/util.go#L654",
+      "range": {
+        "startLine": 46,
+        "startChar": 1,
+        "endLine": 46,
+        "endChar": 10
+      },
+      "revId": "2721c66df6e538c7926c7936559bdc1e6a172753",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5f2c175a_a63d01ab",
+        "filename": "bazel/exporter_tool/main.go",
+        "patchSetId": 20
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-07-28T16:09:41Z",
+      "side": 1,
+      "message": "Can you add a comment why these specific options are necessary? That is, why os.Create or WithWriteFile https://github.com/google/skia-buildbot/blob/debc3322f52e1dfbbded5e9062365dc0da2f789f/go/util/util.go#L654 is insufficient?",
+      "range": {
+        "startLine": 46,
+        "startChar": 47,
+        "endLine": 46,
+        "endChar": 77
       },
       "revId": "2721c66df6e538c7926c7936559bdc1e6a172753",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
