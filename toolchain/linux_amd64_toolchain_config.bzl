@@ -197,6 +197,8 @@ def _make_action_configs():
 
 def _make_default_flags():
     """Here we define the flags for certain actions that are always applied."""
+
+    # Note: These values must be kept in sync with those defined in cmake_exporter.go.
     cxx_compile_includes = flag_set(
         actions = [
             ACTION_NAMES.c_compile,
