@@ -45,6 +45,30 @@
       },
       "revId": "596f896719a0a495974372831f031670db30f030",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f15d74f7_aa96c644",
+        "filename": "tests/Test.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-07-28T20:33:25Z",
+      "side": 1,
+      "message": "I was picturing having them exist separately, just so the conversion isn\u0027t allowed, and the TEST macros have to read correctly at the site. We could achieve that without the copy-pasting, if it makes people happier. It seems like CTSEnforced needs at least one of UNDEFINED/NEVER or FUTURE? Right? How do we specify a test that doesn\u0027t run? (For that reason, I prefer NEVER over UNDEFINED, also).",
+      "parentUuid": "452def25_36e38b11",
+      "range": {
+        "startLine": 26,
+        "startChar": 0,
+        "endLine": 30,
+        "endChar": 6
+      },
+      "revId": "596f896719a0a495974372831f031670db30f030",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

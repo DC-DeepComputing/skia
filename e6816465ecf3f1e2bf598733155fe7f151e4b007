@@ -636,6 +636,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e80501af_242f7bf6",
+        "filename": "tests/Test.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-07-28T20:33:25Z",
+      "side": 1,
+      "message": "It may not be necessary - I was just trying to think through that case (maybe a test added late in development before the cut?). Does seem like having FUTURE (where FUTURE isn\u0027t just \"next year\", but instead means \"API version 1000\" would work, though). But it sounds - in the other thread - like we want FUTURE to mean \"next year\", in which case it doesn\u0027t satisfy this. But this is also unlikely to be a real concern (and we can always add an extra year\u0027s worth of enum values, right?).",
+      "parentUuid": "db0e1641_68d4f6be",
+      "range": {
+        "startLine": 84,
+        "startChar": 8,
+        "endLine": 84,
+        "endChar": 16
+      },
+      "revId": "e6816465ecf3f1e2bf598733155fe7f151e4b007",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2a80ed2d_8577125b",
         "filename": "tests/Test.h",
         "patchSetId": 1
