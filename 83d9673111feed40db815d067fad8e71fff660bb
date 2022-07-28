@@ -33,6 +33,23 @@
       "message": "Failures on the Canary bots look unrelated, so at least basic testing isn\u0027t showing any issues. This is probably fine. Will need an API +1.",
       "revId": "83d9673111feed40db815d067fad8e71fff660bb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a5a2c298_7a187907",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8779
+      },
+      "writtenOn": "2022-07-28T17:40:09Z",
+      "side": 1,
+      "message": "Thanks!",
+      "revId": "83d9673111feed40db815d067fad8e71fff660bb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
