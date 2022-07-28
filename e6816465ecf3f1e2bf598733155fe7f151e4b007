@@ -67,6 +67,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "bfbf9c0b_c88b36ee",
+        "filename": "tests/BackendAllocationTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 905,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-07-28T15:21:25Z",
+      "side": 1,
+      "message": "Maybe it\u0027s `CTSEnforcement`? Because it\u0027s not only whether we enforce, but also how.\n\n(Also bikeshed: I prefer `CtsEnforc*` over `CTSEnforc*`.)\n\nI might have a slight preference for moving it out of `skiatest` - it surprised me, and it is a little wordy. `skiatest` is (I believe) typically hidden from the test files, since it\u0027s included in the macro.\n\nOTOH, it\u0027s tightly tied to `skiatest`?",
+      "parentUuid": "915b164e_85d79870",
+      "range": {
+        "startLine": 905,
+        "startChar": 75,
+        "endLine": 905,
+        "endChar": 108
+      },
+      "revId": "e6816465ecf3f1e2bf598733155fe7f151e4b007",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "96fa4903_6b96e805",
         "filename": "tests/DefaultPathRendererTest.cpp",
         "patchSetId": 1
@@ -78,6 +102,30 @@
       "writtenOn": "2022-07-28T13:41:02Z",
       "side": 1,
       "message": "Most of these now have extra casts to the same type? Introduced by search + replace?",
+      "range": {
+        "startLine": 136,
+        "startChar": 25,
+        "endLine": 136,
+        "endChar": 80
+      },
+      "revId": "e6816465ecf3f1e2bf598733155fe7f151e4b007",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e177264a_f13c33b9",
+        "filename": "tests/DefaultPathRendererTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-07-28T15:21:25Z",
+      "side": 1,
+      "message": "No, I don\u0027t think that\u0027s a cast to the same type. `API_LEVEL_T` is a member of `CTSVersion`, and that member is being passed to the constructor.",
+      "parentUuid": "96fa4903_6b96e805",
       "range": {
         "startLine": 136,
         "startChar": 25,
@@ -113,6 +161,145 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "bf617fc4_93baccca",
+        "filename": "tests/Test.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-07-28T15:21:25Z",
+      "side": 1,
+      "message": "Is there a situation in which we always want to run a test with workarounds? Is that the case when we discover the test doesn\u0027t pass at the last minute?\n\nRegardless, we could set enforced to be `FUTURE` (described in another comment of mine), to allow that behavior?",
+      "parentUuid": "50377e21_868c1581",
+      "range": {
+        "startLine": 73,
+        "startChar": 6,
+        "endLine": 73,
+        "endChar": 16
+      },
+      "revId": "e6816465ecf3f1e2bf598733155fe7f151e4b007",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c1a9b65a_22380f1b",
+        "filename": "tests/Test.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-07-28T15:21:25Z",
+      "side": 1,
+      "message": "nit: Why is this `API_LEVEL` and not e.g. `ApiLevel`?",
+      "range": {
+        "startLine": 75,
+        "startChar": 9,
+        "endLine": 75,
+        "endChar": 18
+      },
+      "revId": "e6816465ecf3f1e2bf598733155fe7f151e4b007",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "754451b4_2618b458",
+        "filename": "tests/Test.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-07-28T15:21:25Z",
+      "side": 1,
+      "message": "nit: spacing - shouldn\u0027t this be indented?",
+      "range": {
+        "startLine": 76,
+        "startChar": 0,
+        "endLine": 76,
+        "endChar": 4
+      },
+      "revId": "e6816465ecf3f1e2bf598733155fe7f151e4b007",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5f8cc8fe_4d7a477b",
+        "filename": "tests/Test.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-07-28T15:21:25Z",
+      "side": 1,
+      "message": "Let me make sure I understand correctly. New tests will default to `UNDEFINED`, unless the author specifies another version. (That is, some macros currently pass in a `CTSVersion()` at the end.)\n\nThen we\u0027ll change all the `UNDEFINED` to the current API level near the time of the release?\n\nBut we don\u0027t run tests that are `UNDEFINED`, meaning we won\u0027t run them until we manually change things.\n\nI think new tests should default to some `FUTURE` version, \u003e the current level, so that we\u0027ll run them. Then we can change all the `FUTURE` ones near release time.\n\nBut wait; at release time, we should have *zero* tests that are using the default, right? (Modulo any brand new tests written while the release is locked down but not out yet.) Maybe we should force all tests to have an explicit value - it might be easier to search and replace? i.e. I think it\u0027s going to be harder to find all uses of the macro that did *not* explicitly state the version and update them.",
+      "range": {
+        "startLine": 76,
+        "startChar": 4,
+        "endLine": 76,
+        "endChar": 13
+      },
+      "revId": "e6816465ecf3f1e2bf598733155fe7f151e4b007",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "68eaa449_e2b7a4f2",
+        "filename": "tests/Test.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-07-28T15:21:25Z",
+      "side": 1,
+      "message": "What is the intent of `CURRENT_API_LEVEL`? It looks like it\u0027s never used? I was expecting to have something greater than `API_LEVEL_T` (I think Android uses 1000? but I don\u0027t remember its name) and function like `FUTURE` in my other comment.",
+      "range": {
+        "startLine": 78,
+        "startChar": 24,
+        "endLine": 78,
+        "endChar": 26
+      },
+      "revId": "e6816465ecf3f1e2bf598733155fe7f151e4b007",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "56f8883a_a5bb93b6",
+        "filename": "tests/Test.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-07-28T15:21:25Z",
+      "side": 1,
+      "message": "I\u0027m assuming these parameters will be constants. Can we make these constructors `constexpr` and turn this into a `static_assert`?\n\nI guess that will only work if we can make `Test(..)` constexpr? (Maybe we can?)",
+      "range": {
+        "startLine": 84,
+        "startChar": 8,
+        "endLine": 84,
+        "endChar": 16
+      },
+      "revId": "e6816465ecf3f1e2bf598733155fe7f151e4b007",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2a80ed2d_8577125b",
         "filename": "tests/Test.h",
         "patchSetId": 1
@@ -129,6 +316,99 @@
         "startChar": 0,
         "endLine": 100,
         "endChar": 5
+      },
+      "revId": "e6816465ecf3f1e2bf598733155fe7f151e4b007",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9917f432_8b74808a",
+        "filename": "tests/Test.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-07-28T15:21:25Z",
+      "side": 1,
+      "message": "+1",
+      "parentUuid": "2a80ed2d_8577125b",
+      "range": {
+        "startLine": 90,
+        "startChar": 0,
+        "endLine": 100,
+        "endChar": 5
+      },
+      "revId": "e6816465ecf3f1e2bf598733155fe7f151e4b007",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "100beada_774fd056",
+        "filename": "tests/Test.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-07-28T15:21:25Z",
+      "side": 1,
+      "message": "`const`?",
+      "range": {
+        "startLine": 103,
+        "startChar": 4,
+        "endLine": 103,
+        "endChar": 13
+      },
+      "revId": "e6816465ecf3f1e2bf598733155fe7f151e4b007",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "543830b3_301f84b0",
+        "filename": "tests/VkBackendSurfaceTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-07-28T15:21:25Z",
+      "side": 1,
+      "message": "I think this is allowed because you didn\u0027t mark `CTSVersion(int)` as `explicit`? Is that deliberate?",
+      "range": {
+        "startLine": 33,
+        "startChar": 69,
+        "endLine": 33,
+        "endChar": 102
+      },
+      "revId": "e6816465ecf3f1e2bf598733155fe7f151e4b007",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2c50685e_e9766445",
+        "filename": "tools/skqp/src/skqp.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-07-28T15:21:25Z",
+      "side": 1,
+      "message": "Why is this part of the exclusion list? Do we still need an exclusion list? Or can everything be converted to be based on API levels?",
+      "range": {
+        "startLine": 63,
+        "startChar": 0,
+        "endLine": 64,
+        "endChar": 66
       },
       "revId": "e6816465ecf3f1e2bf598733155fe7f151e4b007",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
