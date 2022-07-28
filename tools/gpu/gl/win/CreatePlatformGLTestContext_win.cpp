@@ -12,7 +12,11 @@
 
 namespace sk_gpu_test {
 
-GLTestContext* CreatePlatformGLTestContext(GrGLStandard, GLTestContext*) { return nullptr; }
+GLTestContext* CreatePlatformGLTestContext(GrGLStandard,
+                                           GLTestContext*,
+                                           bool isProtected) {
+    return nullptr;
+}
 
 }  // namespace sk_gpu_test
 
@@ -34,7 +38,7 @@ std::function<void()> context_restorer() {
 
 class WinGLTestContext : public sk_gpu_test::GLTestContext {
 public:
-    WinGLTestContext(GrGLStandard forcedGpuAPI, WinGLTestContext* shareContext);
+    WinGLTestContext(GrGLStandard forcedGpuAPI, WinGLTestContext* shareContext, bool isProtected);
     ~WinGLTestContext() override;
 
 private:
@@ -54,7 +58,9 @@ private:
 
 ATOM WinGLTestContext::gWC = 0;
 
-WinGLTestContext::WinGLTestContext(GrGLStandard forcedGpuAPI, WinGLTestContext* shareContext)
+WinGLTestContext::WinGLTestContext(GrGLStandard forcedGpuAPI,
+                                   WinGLTestContext* shareContext,
+                                   bool isProtected)
     : fWindow(nullptr)
     , fDeviceContext(nullptr)
     , fGlRenderContext(nullptr)
@@ -220,9 +226,10 @@ GrGLFuncPtr WinGLTestContext::onPlatformGetProcAddress(const char* name) const {
 
 namespace sk_gpu_test {
 GLTestContext* CreatePlatformGLTestContext(GrGLStandard forcedGpuAPI,
-                                           GLTestContext *shareContext) {
+                                           GLTestContext *shareContext,
+                                           bool isProtected) {
     WinGLTestContext* winShareContext = reinterpret_cast<WinGLTestContext*>(shareContext);
-    WinGLTestContext *ctx = new WinGLTestContext(forcedGpuAPI, winShareContext);
+    WinGLTestContext *ctx = new WinGLTestContext(forcedGpuAPI, winShareContext, isProtected);
     if (!ctx->isValid()) {
         delete ctx;
         return nullptr;

@@ -173,10 +173,12 @@ ContextInfo GrContextFactory::getContextInfoInternal(ContextType type, ContextOv
             GLTestContext* glCtx;
             switch (type) {
                 case kGL_ContextType:
-                    glCtx = CreatePlatformGLTestContext(kGL_GrGLStandard, glShareContext);
+                    glCtx = CreatePlatformGLTestContext(kGL_GrGLStandard, glShareContext,
+                                                        this->getGlobalOptions().fMakeTexturesProtected);
                     break;
                 case kGLES_ContextType:
-                    glCtx = CreatePlatformGLTestContext(kGLES_GrGLStandard, glShareContext);
+                    glCtx = CreatePlatformGLTestContext(kGLES_GrGLStandard, glShareContext,
+                                                        this->getGlobalOptions().fMakeTexturesProtected);
                     break;
 #if SK_ANGLE
                 case kANGLE_D3D9_ES2_ContextType:
@@ -237,7 +239,8 @@ ContextInfo GrContextFactory::getContextInfoInternal(ContextType type, ContextOv
             VkTestContext* vkSharedContext = primaryContext
                     ? static_cast<VkTestContext*>(primaryContext->fTestContext) : nullptr;
             SkASSERT(kVulkan_ContextType == type);
-            testCtx.reset(CreatePlatformVkTestContext(vkSharedContext));
+            testCtx.reset(CreatePlatformVkTestContext(vkSharedContext,
+                                                      this->getGlobalOptions().fMakeTexturesProtected));
             if (!testCtx) {
                 return ContextInfo();
             }
@@ -248,9 +251,11 @@ ContextInfo GrContextFactory::getContextInfoInternal(ContextType type, ContextOv
             // slow. Perhaps this prevents repeated driver loading/unloading? Note that keeping
             // a persistent VkTestContext around instead was tried and did not work.
             if (!fSentinelGLContext) {
-                fSentinelGLContext.reset(CreatePlatformGLTestContext(kGL_GrGLStandard));
+                fSentinelGLContext.reset(CreatePlatformGLTestContext(kGL_GrGLStandard, nullptr,
+                                                                     this->getGlobalOptions().fMakeTexturesProtected));
                 if (!fSentinelGLContext) {
-                    fSentinelGLContext.reset(CreatePlatformGLTestContext(kGLES_GrGLStandard));
+                    fSentinelGLContext.reset(CreatePlatformGLTestContext(kGLES_GrGLStandard, nullptr,
+                                                                         this->getGlobalOptions().fMakeTexturesProtected));
                 }
             }
 #endif

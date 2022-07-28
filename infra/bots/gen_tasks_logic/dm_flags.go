@@ -310,6 +310,22 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 			configs = []string{"gl"}
 		}
 
+		if b.extraConfig("Protected") {
+			configs = filter(configs, "gles", "vk")
+
+			args = append(args, "--makeTexturesProtected")
+
+			skip(ALL, "gm", ALL, "surface_underdraw_bert")
+
+			skip(ALL, "tests", ALL, "GLReadPixelsUnbindPBO")
+
+			if b.extraConfig("Vulkan") {
+				skip(ALL, "tests", ALL, "SurfaceDrawContextTest")
+				skip(ALL, "tests", ALL, "SkSLCross")
+				skip(ALL, "tests", ALL, "Programs")
+		    }
+		}
+
 		// Graphite bot *only* runs the grmtl config
 		if b.extraConfig("Graphite") {
 			args = append(args, "--nogpu") // disable non-Graphite tests

@@ -523,7 +523,8 @@ bool VulkanTestHelper::init(skiatest::Reporter* reporter) {
     fBackendContext.fDevice = VK_NULL_HANDLE;
 
     if (!sk_gpu_test::CreateVkBackendContext(instProc, &fBackendContext, fExtensions,
-                                             fFeatures, &fDebugCallback)) {
+                                             fFeatures, &fDebugCallback,
+                                             /* isProtected= */ false)) {
         return false;
     }
     fDevice = fBackendContext.fDevice;
