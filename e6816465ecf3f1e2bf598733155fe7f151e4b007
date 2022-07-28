@@ -89,6 +89,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2f685378_562976d6",
+        "filename": "tests/BackendAllocationTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 905,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2022-07-28T16:45:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "915b164e_85d79870",
+      "range": {
+        "startLine": 905,
+        "startChar": 75,
+        "endLine": 905,
+        "endChar": 108
+      },
+      "revId": "e6816465ecf3f1e2bf598733155fe7f151e4b007",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "96fa4903_6b96e805",
@@ -138,6 +162,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "aefce8f6_694e3d44",
+        "filename": "tests/DefaultPathRendererTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2022-07-28T16:45:53Z",
+      "side": 1,
+      "message": "that isn\u0027t a cast it is a constructor.",
+      "parentUuid": "96fa4903_6b96e805",
+      "range": {
+        "startLine": 136,
+        "startChar": 25,
+        "endLine": 136,
+        "endChar": 80
+      },
+      "revId": "e6816465ecf3f1e2bf598733155fe7f151e4b007",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "50377e21_868c1581",
         "filename": "tests/Test.h",
         "patchSetId": 1
@@ -172,6 +220,30 @@
       "writtenOn": "2022-07-28T15:21:25Z",
       "side": 1,
       "message": "Is there a situation in which we always want to run a test with workarounds? Is that the case when we discover the test doesn\u0027t pass at the last minute?\n\nRegardless, we could set enforced to be `FUTURE` (described in another comment of mine), to allow that behavior?",
+      "parentUuid": "50377e21_868c1581",
+      "range": {
+        "startLine": 73,
+        "startChar": 6,
+        "endLine": 73,
+        "endChar": 16
+      },
+      "revId": "e6816465ecf3f1e2bf598733155fe7f151e4b007",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6a5a6372_8d657666",
+        "filename": "tests/Test.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2022-07-28T16:45:53Z",
+      "side": 1,
+      "message": "moved into a single function in the CPP file that I think addresses this.",
       "parentUuid": "50377e21_868c1581",
       "range": {
         "startLine": 73,
@@ -334,6 +406,30 @@
       "writtenOn": "2022-07-28T15:21:25Z",
       "side": 1,
       "message": "+1",
+      "parentUuid": "2a80ed2d_8577125b",
+      "range": {
+        "startLine": 90,
+        "startChar": 0,
+        "endLine": 100,
+        "endChar": 5
+      },
+      "revId": "e6816465ecf3f1e2bf598733155fe7f151e4b007",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e9c0d2cc_008f3e09",
+        "filename": "tests/Test.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2022-07-28T16:45:53Z",
+      "side": 1,
+      "message": "Done",
       "parentUuid": "2a80ed2d_8577125b",
       "range": {
         "startLine": 90,
