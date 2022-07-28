@@ -357,13 +357,18 @@ void GrGLCaps::init(const GrContextOptions& contextOptions,
     fMustSyncGpuDuringAbandon = false;
 
     fSupportsProtected = [&]() {
+        SkDebugf("----------------------------------------------------------------\n");
         if (!ctxInfo.hasExtension("GL_EXT_protected_textures")) {
+            SkDebugf("GL_EXT_protected_textures not supported\n");
             return false;
         }
 
         GrGLint contextFlags;
         GR_GL_GetIntegerv(gli, GR_GL_CONTEXT_FLAGS, &contextFlags);
-        return SkToBool(contextFlags & GR_GL_CONTEXT_FLAG_PROTECTED_CONTENT_BIT_EXT);
+        bool foo = SkToBool(contextFlags & GR_GL_CONTEXT_FLAG_PROTECTED_CONTENT_BIT_EXT);
+        SkDebugf("context %s GR_GL_CONTEXT_FLAG_PROTECTED_CONTENT_BIT_EXT bit\n",
+                 foo ? "has" : "does not have");
+        return foo;
     }();
 
 

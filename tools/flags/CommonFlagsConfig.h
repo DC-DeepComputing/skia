@@ -71,7 +71,7 @@ public:
                            bool                      OOPRish,
                            bool                      slug,
                            bool                      reducedShaders,
-                           SurfType);
+                           SurfType, bool);
 
     const SkCommandLineConfigGpu* asConfigGpu() const override { return this; }
     ContextType                   getContextType() const { return fContextType; }

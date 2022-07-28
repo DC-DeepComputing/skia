@@ -54,9 +54,12 @@ public:
 #if SK_SUPPORT_GPU
     // Returns the texture proxy. CachingHint refers to whether the generator's output should be
     // cached in CPU memory. We will always cache the generated texture on success.
+    // The protected parameter is only applied in the case where we're manually changing an
+    // SkBitmap to gpu-backed.
     GrSurfaceProxyView lockTextureProxyView(GrRecordingContext*,
                                             GrImageTexGenPolicy,
-                                            GrMipmapped) const;
+                                            GrMipmapped,
+                                            GrProtected) const;
 
     // Returns the GrColorType to use with the GrTextureProxy returned from lockTextureProxy. This
     // may be different from the color type on the image in the case where we need up upload CPU

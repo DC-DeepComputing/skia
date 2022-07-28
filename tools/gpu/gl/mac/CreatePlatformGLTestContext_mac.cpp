@@ -22,7 +22,7 @@ std::function<void()> context_restorer() {
 
 class MacGLTestContext : public sk_gpu_test::GLTestContext {
 public:
-    MacGLTestContext(MacGLTestContext* shareContext);
+    MacGLTestContext(MacGLTestContext* shareContext, bool isProtected);
     ~MacGLTestContext() override;
 
 private:
@@ -37,7 +37,7 @@ private:
     void* fGLLibrary;
 };
 
-MacGLTestContext::MacGLTestContext(MacGLTestContext* shareContext)
+MacGLTestContext::MacGLTestContext(MacGLTestContext* shareContext, bool isProtected)
     : fContext(nullptr)
     , fGLLibrary(RTLD_DEFAULT) {
     // We first try to request a Radeon eGPU if one is available.
@@ -153,12 +153,13 @@ GrGLFuncPtr MacGLTestContext::onPlatformGetProcAddress(const char* procName) con
 
 namespace sk_gpu_test {
 GLTestContext* CreatePlatformGLTestContext(GrGLStandard forcedGpuAPI,
-                                           GLTestContext* shareContext) {
+                                           GLTestContext* shareContext,
+                                           bool isProtected) {
     if (kGLES_GrGLStandard == forcedGpuAPI) {
         return nullptr;
     }
     MacGLTestContext* macShareContext = reinterpret_cast<MacGLTestContext*>(shareContext);
-    MacGLTestContext* ctx = new MacGLTestContext(macShareContext);
+    MacGLTestContext* ctx = new MacGLTestContext(macShareContext, isProtected);
     if (!ctx->isValid()) {
         delete ctx;
         return nullptr;
