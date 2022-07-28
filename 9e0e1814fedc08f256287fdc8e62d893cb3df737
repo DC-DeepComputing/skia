@@ -16,6 +16,40 @@
       "message": "The dynamic sizing of the gm did not seem to work well, now fixed canvas size and line breaking.",
       "revId": "9e0e1814fedc08f256287fdc8e62d893cb3df737",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cef07e3d_0d2fc47b",
+        "filename": "gm/colrv1.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-07-28T14:49:59Z",
+      "side": 1,
+      "message": "Maybe store as SkSpan?",
+      "revId": "9e0e1814fedc08f256287fdc8e62d893cb3df737",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fbbbc312_d66f8659",
+        "filename": "gm/colrv1.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 194,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-07-28T14:49:59Z",
+      "side": 1,
+      "message": "It might make things easier to pass SkSpan here instead.",
+      "revId": "9e0e1814fedc08f256287fdc8e62d893cb3df737",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
