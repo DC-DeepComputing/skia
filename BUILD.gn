@@ -2083,6 +2083,12 @@ if (skia_enable_tools) {
       deps += [ "experimental/ffmpeg:video_decoder" ]
       sources += [ "gm/video_decoder.cpp" ]
     }
+
+    # Alternatively, add a new friend class to SkTypeface to access the method for retrieving glyph
+    # names, or make an internal proxy friend class that PDF and COLRv1 test use?
+    if (skia_enable_pdf) {
+      sources += [ "gm/colrv1.cpp" ]
+    }
   }
 
   test_lib("test") {
