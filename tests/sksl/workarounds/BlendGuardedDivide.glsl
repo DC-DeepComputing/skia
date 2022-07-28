@@ -2,17 +2,17 @@
 out vec4 sk_FragColor;
 in vec4 src;
 in vec4 dst;
-float color_dodge_component_Qhh2h2(vec2 s, vec2 d) {
-    if (d.x == 0.0) {
-        return s.x * (1.0 - d.y);
+float soft_light_component_Qhh2h2(vec2 s, vec2 d) {
+    if (2.0 * s.x <= s.y) {
+        return (((d.x * d.x) * (s.y - 2.0 * s.x)) / (d.y + 9.9999999392252903e-09) + (1.0 - d.y) * s.x) + d.x * ((-s.y + 2.0 * s.x) + 1.0);
+    } else if (4.0 * d.x <= d.y) {
+        float DSqd = d.x * d.x;
+        float DCub = DSqd * d.x;
+        float DaSqd = d.y * d.y;
+        float DaCub = DaSqd * d.y;
+        return (((DaSqd * (s.x - d.x * ((3.0 * s.y - 6.0 * s.x) - 1.0)) + ((12.0 * d.y) * DSqd) * (s.y - 2.0 * s.x)) - (16.0 * DCub) * (s.y - 2.0 * s.x)) - DaCub * s.x) / (DaSqd + 9.9999999392252903e-09);
     } else {
-        float delta = s.y - s.x;
-        if (delta == 0.0) {
-            return (s.y * d.y + s.x * (1.0 - d.y)) + d.x * (1.0 - s.y);
-        } else {
-            delta = min(d.y, (d.x * s.y) / (delta + 9.9999999392252903e-09));
-            return (delta * s.y + s.x * (1.0 - d.y)) + d.x * (1.0 - s.y);
-        }
+        return ((d.x * ((s.y - 2.0 * s.x) + 1.0) + s.x) - sqrt(d.y * d.x) * (s.y - 2.0 * s.x)) - d.y * s.x;
     }
 }
 float color_burn_component_Qhh2h2(vec2 s, vec2 d) {
@@ -25,17 +25,17 @@ float color_burn_component_Qhh2h2(vec2 s, vec2 d) {
         return (delta * s.y + s.x * (1.0 - d.y)) + d.x * (1.0 - s.y);
     }
 }
-float soft_light_component_Qhh2h2(vec2 s, vec2 d) {
-    if (2.0 * s.x <= s.y) {
-        return (((d.x * d.x) * (s.y - 2.0 * s.x)) / (d.y + 9.9999999392252903e-09) + (1.0 - d.y) * s.x) + d.x * ((-s.y + 2.0 * s.x) + 1.0);
-    } else if (4.0 * d.x <= d.y) {
-        float DSqd = d.x * d.x;
-        float DCub = DSqd * d.x;
-        float DaSqd = d.y * d.y;
-        float DaCub = DaSqd * d.y;
-        return (((DaSqd * (s.x - d.x * ((3.0 * s.y - 6.0 * s.x) - 1.0)) + ((12.0 * d.y) * DSqd) * (s.y - 2.0 * s.x)) - (16.0 * DCub) * (s.y - 2.0 * s.x)) - DaCub * s.x) / (DaSqd + 9.9999999392252903e-09);
+float color_dodge_component_Qhh2h2(vec2 s, vec2 d) {
+    if (d.x == 0.0) {
+        return s.x * (1.0 - d.y);
     } else {
-        return ((d.x * ((s.y - 2.0 * s.x) + 1.0) + s.x) - sqrt(d.y * d.x) * (s.y - 2.0 * s.x)) - d.y * s.x;
+        float delta = s.y - s.x;
+        if (delta == 0.0) {
+            return (s.y * d.y + s.x * (1.0 - d.y)) + d.x * (1.0 - s.y);
+        } else {
+            delta = min(d.y, (d.x * s.y) / (delta + 9.9999999392252903e-09));
+            return (delta * s.y + s.x * (1.0 - d.y)) + d.x * (1.0 - s.y);
+        }
     }
 }
 void main() {
