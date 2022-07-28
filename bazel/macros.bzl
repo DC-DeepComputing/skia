@@ -10,6 +10,8 @@ load("@bazel_gazelle//:def.bzl", _gazelle = "gazelle")
 load("@emsdk//emscripten_toolchain:wasm_rules.bzl", _wasm_cc_binary = "wasm_cc_binary")
 load("@io_bazel_rules_go//go:def.bzl", _go_binary = "go_binary", _go_library = "go_library")
 load("//bazel/common_config_settings:defs.bzl", _bool_flag = "bool_flag", _string_flag_with_values = "string_flag_with_values")
+load("//bazel:copts.bzl", "DEFAULT_COPTS", "DEFAULT_OBJC_COPTS")
+load("//bazel:linkopts.bzl", "DEFAULT_LINKOPTS")
 
 # re-export symbols that are commonly used or that are not supported in G3
 # (and thus we need to stub out)
@@ -68,21 +70,23 @@ def select_multi(values_map):
     return rv
 
 # buildifier: disable=unnamed-macro
-def cc_binary(**kwargs):
-    """A shim around cc_binary that lets us tweak settings for G3 if necessary."""
-    native.cc_binary(**kwargs)
+def cc_binary(copts = DEFAULT_COPTS, linkopts = DEFAULT_LINKOPTS, **kwargs):
+    """A shim that lets us tweak settings for G3 and provide sensible defaults."""
+    native.cc_binary(copts = copts, linkopts = linkopts, **kwargs)
 
 # buildifier: disable=unnamed-macro
-def cc_library(**kwargs):
-    """A shim around cc_library that lets us tweak settings for G3 if necessary."""
-    native.cc_library(**kwargs)
+def cc_library(copts = DEFAULT_COPTS, **kwargs):
+    """A shim that lets us tweak settings for G3 and provide sensible defaults."""
+    native.cc_library(copts = copts, **kwargs)
 
 # buildifier: disable=unnamed-macro
-def objc_library(**kwargs):
-    """A shim around objc_library that lets us tweak settings for G3 if necessary.
+def objc_library(copts = DEFAULT_OBJC_COPTS, **kwargs):
+    """A shim that lets us tweak settings for G3 and provide sensible defaults.
 
     Args:
-          **kwargs: Normal arguments to objc_library
+        copts: a list of strings or select statements that control the compiler flags.
+            It has a sensible list of defaults.
+        **kwargs: Normal arguments to objc_library
     """
 
     # Internally, we need to combine sdk_frameworks and deps, but we can only
@@ -93,7 +97,7 @@ def objc_library(**kwargs):
     if type(sdks) != "NoneType":
         if type(sdks) != "list" or type(deps) != "list":
             fail("skd_frameworks and deps must both be normal lists, not selects")
-    native.objc_library(**kwargs)
+    native.objc_library(copts = copts, **kwargs)
 
 # buildifier: disable=unnamed-macro
 def exports_files_legacy(label_list = None, visibility = None):
