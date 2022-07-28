@@ -27,11 +27,13 @@ using namespace skgpu::tess;
 // No color or wide color attribs, since it might always be part of the PaintParams
 // or we'll add a color-only fast path to RenderStep later.
 static constexpr PatchAttribs kAttribs = PatchAttribs::kFanPoint |
-                                         PatchAttribs::kPaintDepth;
+                                         PatchAttribs::kPaintDepth |
+                                         PatchAttribs::kShadingStorageBufferIndices;
 
 using Writer = PatchWriter<DynamicInstancesPatchAllocator<FixedCountWedges>,
                            Required<PatchAttribs::kFanPoint>,
-                           Required<PatchAttribs::kPaintDepth>>;
+                           Required<PatchAttribs::kPaintDepth>,
+                           Optional<PatchAttribs::kShadingStorageBufferIndices>>;
 
 }  // namespace
 
@@ -45,25 +47,33 @@ TessellateWedgesRenderStep::TessellateWedgesRenderStep(std::string_view variantN
                      /*uniforms=*/{},
                      PrimitiveType::kTriangles,
                      depthStencilSettings,
-                     /*vertexAttrs=*/  {{"resolveLevel_and_idx",
-                                         VertexAttribType::kFloat2, SkSLType::kFloat2}},
-                     /*instanceAttrs=*/{{"p01", VertexAttribType::kFloat4, SkSLType::kFloat4},
-                                        {"p23", VertexAttribType::kFloat4, SkSLType::kFloat4},
-                                        {"fanPointAttrib", VertexAttribType::kFloat2,
-                                                           SkSLType::kFloat2},
-                                        {"depth", VertexAttribType::kFloat, SkSLType::kFloat}}) {
+                     /*vertexAttrs=*/
+                     {{"resolveLevel_and_idx", VertexAttribType::kFloat2, SkSLType::kFloat2}},
+                     /*instanceAttrs=*/
+                     {{"p01", VertexAttribType::kFloat4, SkSLType::kFloat4},
+                      {"p23", VertexAttribType::kFloat4, SkSLType::kFloat4},
+                      {"fanPointAttrib", VertexAttribType::kFloat2, SkSLType::kFloat2},
+                      {"depth", VertexAttribType::kFloat, SkSLType::kFloat},
+                      {"sk_ssbo_binding2_index", VertexAttribType::kInt, SkSLType::kInt}},
+                     /*varyings=*/{{"sk_ssbo_binding2_index_fs", SkSLType::kInt}}) {
     SkASSERT(this->instanceStride() == PatchStride(kAttribs));
 }
 
 TessellateWedgesRenderStep::~TessellateWedgesRenderStep() {}
 
 const char* TessellateWedgesRenderStep::vertexSkSL() const {
-    return "float4 devPosition = float4("
-               "tessellate_filled_wedge(resolveLevel_and_idx.x, resolveLevel_and_idx.y, p01, p23, "
-                                        "fanPointAttrib), depth, 1.0);\n";
+    return R"(
+        float4 devPosition = float4(
+            tessellate_filled_wedge(resolveLevel_and_idx.x, resolveLevel_and_idx.y, p01, p23,
+                                    fanPointAttrib), depth, 1.0);
+        sk_ssbo_binding2_index_fs = sk_ssbo_binding2_index;
+        )";
 }
 
-void TessellateWedgesRenderStep::writeVertices(DrawWriter* dw, const DrawParams& geom) const {
+void TessellateWedgesRenderStep::writeVertices(DrawWriter* dw,
+                                               const DrawParams& geom,
+                                               int geometryStorageBufferIndex,
+                                               int shadingStorageBufferIndex) const {
     SkPath path = geom.geometry().shape().asPath(); // TODO: Iterate the Shape directly
 
     BindBufferInfo fixedVertexBuffer = dw->bufferManager()->getStaticBuffer(
@@ -78,6 +88,7 @@ void TessellateWedgesRenderStep::writeVertices(DrawWriter* dw, const DrawParams&
     int patchReserveCount = FixedCountWedges::PreallocCount(path.countVerbs());
     Writer writer{kAttribs, *dw, fixedVertexBuffer, fixedIndexBuffer, patchReserveCount};
     writer.updatePaintDepthAttrib(geom.order().depthAsFloat());
+    writer.updateShadingStorageBufferIndexAttrib(shadingStorageBufferIndex);
 
     // TODO: Is it better to pre-transform on the CPU and only have a matrix uniform to compute
     // local coords, or is it better to always transform on the GPU (less CPU usage, more

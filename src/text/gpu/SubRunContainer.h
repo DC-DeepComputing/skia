@@ -115,6 +115,7 @@ public:
     virtual void fillVertexData(
             skgpu::graphite::DrawWriter*,
             int offset, int count,
+            int geometryStorageBufferIndex, int shadingStorageBufferIndex,
             SkScalar depth,
             const skgpu::graphite::Transform& transform) const = 0;
 

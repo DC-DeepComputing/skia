@@ -46,11 +46,15 @@ static constexpr DepthStencilSettings kDirectShadingPass = {
 // or we'll add a color-only fast path to RenderStep later.
 static constexpr PatchAttribs kAttribs = PatchAttribs::kJoinControlPoint |
                                          PatchAttribs::kStrokeParams |
-                                         PatchAttribs::kPaintDepth;
+                                         PatchAttribs::kPaintDepth |
+                                         PatchAttribs::kGeometryStorageBufferIndices |
+                                         PatchAttribs::kShadingStorageBufferIndices;
 using Writer = PatchWriter<DynamicInstancesPatchAllocator<FixedCountStrokes>,
                            Required<PatchAttribs::kJoinControlPoint>,
                            Required<PatchAttribs::kStrokeParams>,
                            Required<PatchAttribs::kPaintDepth>,
+                           Optional<PatchAttribs::kGeometryStorageBufferIndices>,
+                           Optional<PatchAttribs::kShadingStorageBufferIndices>,
                            ReplicateLineEndPoints,
                            TrackJoinControlPoints>;
 
@@ -65,12 +69,18 @@ TessellateStrokesRenderStep::TessellateStrokesRenderStep()
                                    {"maxScale", SkSLType::kFloat}},
                      PrimitiveType::kTriangleStrip,
                      kDirectShadingPass,
-                     /*vertexAttrs=*/  {},
-                     /*instanceAttrs=*/{{"p01", VertexAttribType::kFloat4, SkSLType::kFloat4},
-                                        {"p23", VertexAttribType::kFloat4, SkSLType::kFloat4},
-                                        {"prevPoint", VertexAttribType::kFloat2, SkSLType::kFloat2},
-                                        {"stroke", VertexAttribType::kFloat2, SkSLType::kFloat2},
-                                        {"depth", VertexAttribType::kFloat, SkSLType::kFloat}}) {}
+                     /*vertexAttrs=*/{},
+                     /*instanceAttrs=*/
+                     {{"p01", VertexAttribType::kFloat4, SkSLType::kFloat4},
+                      {"p23", VertexAttribType::kFloat4, SkSLType::kFloat4},
+                      {"prevPoint", VertexAttribType::kFloat2, SkSLType::kFloat2},
+                      {"stroke", VertexAttribType::kFloat2, SkSLType::kFloat2},
+                      {"depth", VertexAttribType::kFloat, SkSLType::kFloat},
+                      {"sk_ssbo_binding1_index", VertexAttribType::kInt, SkSLType::kInt},
+                      {"sk_ssbo_binding2_index", VertexAttribType::kInt, SkSLType::kInt}},
+                     /*varyings=*/
+                     {{"sk_ssbo_binding1_index_fs", SkSLType::kInt},
+                      {"sk_ssbo_binding2_index_fs", SkSLType::kInt}}) {}
 
 TessellateStrokesRenderStep::~TessellateStrokesRenderStep() {}
 
@@ -86,10 +96,17 @@ const char* TessellateStrokesRenderStep::vertexSkSL() const {
         float4 devPosition = float4(
                 tessellate_stroked_curve(edgeID, 16383, affine, translate,
                                          maxScale, p01, p23, prevPoint, stroke),
-                depth, 1.0);)";
+                depth, 1.0);
+
+        sk_ssbo_binding1_index_fs = sk_ssbo_binding1_index;
+        sk_ssbo_binding2_index_fs = sk_ssbo_binding2_index;
+        )";
 }
 
-void TessellateStrokesRenderStep::writeVertices(DrawWriter* dw, const DrawParams& params) const {
+void TessellateStrokesRenderStep::writeVertices(DrawWriter* dw,
+                                                const DrawParams& params,
+                                                int geometryStorageBufferIndex,
+                                                int shadingStorageBufferIndex) const {
     SkPath path = params.geometry().shape().asPath(); // TODO: Iterate the Shape directly
 
     int patchReserveCount = FixedCountStrokes::PreallocCount(path.countVerbs());
@@ -100,6 +117,8 @@ void TessellateStrokesRenderStep::writeVertices(DrawWriter* dw, const DrawParams
     // has figured out how to support vertex IDs before then.
     Writer writer{kAttribs, *dw, kNullBinding, kNullBinding, patchReserveCount};
     writer.updatePaintDepthAttrib(params.order().depthAsFloat());
+    writer.updateGeometryStorageBufferIndexAttrib(geometryStorageBufferIndex);
+    writer.updateShadingStorageBufferIndexAttrib(shadingStorageBufferIndex);
 
     // The vector xform approximates how the control points are transformed by the shader to
     // more accurately compute how many *parametric* segments are needed.
