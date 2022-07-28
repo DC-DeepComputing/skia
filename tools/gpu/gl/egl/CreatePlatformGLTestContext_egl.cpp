@@ -27,13 +27,13 @@ std::function<void()> context_restorer() {
 
 class EGLGLTestContext : public sk_gpu_test::GLTestContext {
 public:
-    EGLGLTestContext(GrGLStandard forcedGpuAPI, EGLGLTestContext* shareContext);
+    EGLGLTestContext(GrGLStandard forcedGpuAPI, EGLGLTestContext* shareContext, bool isProtected);
     ~EGLGLTestContext() override;
 
     GrEGLImage texture2DToEGLImage(GrGLuint texID) const override;
     void destroyEGLImage(GrEGLImage) const override;
     GrGLuint eglImageToExternalTexture(GrEGLImage) const override;
-    std::unique_ptr<sk_gpu_test::GLTestContext> makeNew() const override;
+    std::unique_ptr<sk_gpu_test::GLTestContext> makeNew(bool isProtected) const override;
 
 private:
     void destroyGLContext();
@@ -54,27 +54,32 @@ private:
 static EGLContext create_gles_egl_context(EGLDisplay display,
                                           EGLConfig surfaceConfig,
                                           EGLContext eglShareContext,
-                                          EGLint eglContextClientVersion) {
+                                          EGLint eglContextClientVersion,
+                                          bool isProtected) {
     const EGLint contextAttribsForOpenGLES[] = {
-        EGL_CONTEXT_CLIENT_VERSION,
-        eglContextClientVersion,
+        EGL_CONTEXT_CLIENT_VERSION,  eglContextClientVersion,
+        EGL_PROTECTED_CONTENT_EXT,   isProtected ? EGL_TRUE : EGL_FALSE,
         EGL_NONE
     };
     return eglCreateContext(display, surfaceConfig, eglShareContext, contextAttribsForOpenGLES);
 }
 static EGLContext create_gl_egl_context(EGLDisplay display,
                                         EGLConfig surfaceConfig,
-                                        EGLContext eglShareContext) {
+                                        EGLContext eglShareContext,
+                                        bool isProtected) {
     const EGLint contextAttribsForOpenGL[] = {
+        EGL_PROTECTED_CONTENT_EXT,   isProtected ? EGL_TRUE : EGL_FALSE,
         EGL_NONE
     };
     return eglCreateContext(display, surfaceConfig, eglShareContext, contextAttribsForOpenGL);
 }
 
-EGLGLTestContext::EGLGLTestContext(GrGLStandard forcedGpuAPI, EGLGLTestContext* shareContext)
-    : fContext(EGL_NO_CONTEXT)
-    , fDisplay(EGL_NO_DISPLAY)
-    , fSurface(EGL_NO_SURFACE) {
+EGLGLTestContext::EGLGLTestContext(GrGLStandard forcedGpuAPI,
+                                   EGLGLTestContext* shareContext,
+                                   bool isProtected)
+        : fContext(EGL_NO_CONTEXT)
+        , fDisplay(EGL_NO_DISPLAY)
+        , fSurface(EGL_NO_SURFACE) {
 
     EGLContext eglShareContext = shareContext ? shareContext->fContext : nullptr;
 
@@ -144,10 +149,10 @@ EGLGLTestContext::EGLGLTestContext(GrGLStandard forcedGpuAPI, EGLGLTestContext* 
                 fContext = create_gles_egl_context(fDisplay, surfaceConfig, eglShareContext, 2);
             }
 #else
-            fContext = create_gles_egl_context(fDisplay, surfaceConfig, eglShareContext, 2);
+            fContext = create_gles_egl_context(fDisplay, surfaceConfig, eglShareContext, 2, isProtected);
 #endif
         } else {
-            fContext = create_gl_egl_context(fDisplay, surfaceConfig, eglShareContext);
+            fContext = create_gl_egl_context(fDisplay, surfaceConfig, eglShareContext, isProtected);
         }
         if (EGL_NO_CONTEXT == fContext) {
             SkDebugf("eglCreateContext failed.  EGL Error: 0x%08x\n", eglGetError());
@@ -283,9 +288,10 @@ GrGLuint EGLGLTestContext::eglImageToExternalTexture(GrEGLImage image) const {
 #endif
 }
 
-std::unique_ptr<sk_gpu_test::GLTestContext> EGLGLTestContext::makeNew() const {
+std::unique_ptr<sk_gpu_test::GLTestContext> EGLGLTestContext::makeNew(bool isProtected) const {
     std::unique_ptr<sk_gpu_test::GLTestContext> ctx(new EGLGLTestContext(this->gl()->fStandard,
-                                                                         nullptr));
+                                                                         nullptr,
+                                                                         isProtected));
     if (ctx) {
         ctx->makeCurrent();
     }
@@ -319,9 +325,10 @@ GrGLFuncPtr EGLGLTestContext::onPlatformGetProcAddress(const char* procName) con
 
 namespace sk_gpu_test {
 GLTestContext *CreatePlatformGLTestContext(GrGLStandard forcedGpuAPI,
-                                           GLTestContext *shareContext) {
+                                           GLTestContext *shareContext,
+                                           bool isProtected) {
     EGLGLTestContext* eglShareContext = reinterpret_cast<EGLGLTestContext*>(shareContext);
-    EGLGLTestContext *ctx = new EGLGLTestContext(forcedGpuAPI, eglShareContext);
+    EGLGLTestContext *ctx = new EGLGLTestContext(forcedGpuAPI, eglShareContext, isProtected);
     if (!ctx->isValid()) {
         delete ctx;
         return nullptr;

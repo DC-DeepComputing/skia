@@ -53,7 +53,7 @@ static int ctxErrorHandler(Display *dpy, XErrorEvent *ev) {
 
 class GLXGLTestContext : public sk_gpu_test::GLTestContext {
 public:
-    GLXGLTestContext(GrGLStandard forcedGpuAPI, GLXGLTestContext* shareList);
+    GLXGLTestContext(GrGLStandard forcedGpuAPI, GLXGLTestContext* shareList, bool isProtected);
     ~GLXGLTestContext() override;
 
 private:
@@ -102,7 +102,9 @@ std::function<void()> context_restorer() {
     return [display, drawable, context] { glXMakeCurrent(display, drawable, context); };
 }
 
-GLXGLTestContext::GLXGLTestContext(GrGLStandard forcedGpuAPI, GLXGLTestContext* shareContext)
+GLXGLTestContext::GLXGLTestContext(GrGLStandard forcedGpuAPI,
+                                   GLXGLTestContext* shareContext,
+                                   bool isProtected)
     : fContext(nullptr)
     , fDisplay(nullptr)
     , fPixmap(0)
@@ -379,9 +381,10 @@ GrGLFuncPtr GLXGLTestContext::onPlatformGetProcAddress(const char* procName) con
 
 namespace sk_gpu_test {
 GLTestContext *CreatePlatformGLTestContext(GrGLStandard forcedGpuAPI,
-                                           GLTestContext *shareContext) {
+                                           GLTestContext *shareContext,
+                                           bool isProtected) {
     GLXGLTestContext *glxShareContext = reinterpret_cast<GLXGLTestContext *>(shareContext);
-    GLXGLTestContext *ctx = new GLXGLTestContext(forcedGpuAPI, glxShareContext);
+    GLXGLTestContext *ctx = new GLXGLTestContext(forcedGpuAPI, glxShareContext, isProtected);
     if (!ctx->isValid()) {
         delete ctx;
         return nullptr;
