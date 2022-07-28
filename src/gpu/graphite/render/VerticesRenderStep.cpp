@@ -52,7 +52,8 @@ VerticesRenderStep::VerticesRenderStep(PrimitiveType type, std::string_view vari
         : RenderStep("VerticesRenderStep",
                      variantName,
                      Flags::kPerformsShading, //Add Flags::kRequiresMSAA?
-                     /*uniforms=*/{{"depth", SkSLType::kFloat}},
+                     /*uniforms=*/{{"depth", SkSLType::kFloat},
+                                   {"skipColorXForm", SkSLType::kInt}},
                      type,
                      kDirectShadingPass,
                      // TODO: Select attributes based upon whether the vertices has color and/or
@@ -91,7 +92,7 @@ const char* VerticesRenderStep::vertexSkSL() const {
 }
 
 void VerticesRenderStep::writeVertices(DrawWriter* writer, const DrawParams& params) const {
-    SkVerticesPriv info(params.geometry().vertices()->priv());
+    SkVerticesPriv info(params.geometry().verticesData().vertices()->priv());
 
     const int vertexCount = info.vertexCount();
     const int indexCount = info.indexCount();
@@ -130,6 +131,7 @@ void VerticesRenderStep::writeUniformsAndTextures(const DrawParams& params,
     // is needed. Store PaintDepth as a uniform to avoid copying the same depth for each vertex.
     SkDEBUGCODE(UniformExpectationsValidator uev(gatherer, this->uniforms());)
     gatherer->write(params.order().depthAsFloat());
+    gatherer->write(params.geometry().verticesData().skipColorXForm());
 }
 
 }  // namespace skgpu::graphite

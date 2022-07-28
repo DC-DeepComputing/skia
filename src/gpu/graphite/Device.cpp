@@ -453,11 +453,11 @@ void Device::drawRect(const SkRect& r, const SkPaint& paint) {
 
 void Device::drawVertices(const SkVertices* vertices, sk_sp<SkBlender> blender,
                           const SkPaint& paint, bool skipColorXform)  {
-  // TODO - Handle the skipColorXform bool. Create a wrapper around SkVertices to store that bool
-  // so VerticesRenderStep can set a uniform to tell the GPU whether to skip color transformations.
-  // TODO - Add blender to PaintParams.
+  // TODO - Add GPU handling of skipColorXForm uniform.
+  // TODO - See if this handling of blender addition to SkPaint is acceptable. Does GPU already
+  // check for this?
   this->drawGeometry(this->localToDeviceTransform(),
-                     Geometry(sk_ref_sp(vertices)),
+                     Geometry(VerticesData(sk_ref_sp(vertices), blender, skipColorXform)),
                      paint,
                      kFillStyle,
                      DrawFlags::kIgnorePathEffect | DrawFlags::kIgnoreMaskFilter);
@@ -722,7 +722,8 @@ void Device::drawGeometry(const Transform& localToDevice,
     // If a draw is not opaque, it must be drawn after the most recent draw it intersects with in
     // order to blend correctly. We always query the most recent draw (even when opaque) because it
     // also lets Device easily track whether or not there are any overlapping draws.
-    PaintParams shading{paint};
+    PaintParams shading {paint};
+    if (geometry.isVertices()) { shading.setBlender(geometry.verticesData().refBlender()); }
     const bool dependsOnDst = renderer->emitsCoverage() || paint_depends_on_dst(shading);
     CompressedPaintersOrder prevDraw =
             fColorDepthBoundsManager->getMostRecentDraw(clip.drawBounds());
@@ -813,7 +814,7 @@ const Renderer* Device::ChooseRenderer(const Geometry& geometry,
     if (geometry.isSubRun()) {
         return geometry.subRunData().subRun()->renderer();
     } else if (geometry.isVertices()) {
-        SkVerticesPriv info(geometry.vertices()->priv());
+        SkVerticesPriv info(geometry.verticesData().vertices()->priv());
         return &Renderer::Vertices(info.mode(), info.hasColors(), info.hasTexCoords());
     }
 
