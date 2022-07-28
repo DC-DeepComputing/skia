@@ -657,6 +657,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e63b9638_270e1132",
+        "filename": "tests/VkBackendSurfaceTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-07-28T16:55:55Z",
+      "side": 1,
+      "message": "This was my confusion in the other thread, too - there\u0027s a non-explicit single-argument constructor, so couldn\u0027t the macros all be written as if they\u0027re plumbing a CTSVersion struct down, and work with the single-argument (just the enum) in all cases? You\u0027d only need to do more if you do workarounds, at which point you\u0027d write `CTSVersion(Enforced::XXX, Workarounds:YYY)` ?",
+      "parentUuid": "994750c8_e6d68269",
+      "range": {
+        "startLine": 33,
+        "startChar": 69,
+        "endLine": 33,
+        "endChar": 102
+      },
+      "revId": "e6816465ecf3f1e2bf598733155fe7f151e4b007",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2c50685e_e9766445",
         "filename": "tools/skqp/src/skqp.cpp",
         "patchSetId": 1
