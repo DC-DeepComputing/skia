@@ -395,7 +395,7 @@ public:
     }
 
 protected:
-    sk_sp<SkSurface> createDstSurface(GrDirectContext*, SkISize size) const;
+    sk_sp<SkSurface> createDstSurface1(GrDirectContext*, SkISize size) const;
     bool readBack(SkSurface*, SkBitmap* dst) const;
 
 private:
