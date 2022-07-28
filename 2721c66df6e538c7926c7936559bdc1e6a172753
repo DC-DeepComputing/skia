@@ -16,6 +16,29 @@
       "message": "Hi Kevin: PTAL.",
       "revId": "2721c66df6e538c7926c7936559bdc1e6a172753",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "941077fe_df24eee5",
+        "filename": "bazel/exporter/interfaces/exporter.go",
+        "patchSetId": 20
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-07-28T15:29:50Z",
+      "side": 1,
+      "message": "I\u0027m thinking of ditching this interface. It\u0027s not doing anything, and it won\u0027t work for the *.GNI exporter, which is what I was thinking when I made this.",
+      "range": {
+        "startLine": 11,
+        "startChar": 5,
+        "endLine": 11,
+        "endChar": 13
+      },
+      "revId": "2721c66df6e538c7926c7936559bdc1e6a172753",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
