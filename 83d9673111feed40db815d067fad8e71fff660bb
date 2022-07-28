@@ -16,6 +16,23 @@
       "message": "Adding a +1 because this looks like this change should be fine and because the +1 is needed to run the G3 Canary.",
       "revId": "83d9673111feed40db815d067fad8e71fff660bb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8ea3c0f8_75d170fb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-07-28T17:17:30Z",
+      "side": 1,
+      "message": "Failures on the Canary bots look unrelated, so at least basic testing isn\u0027t showing any issues. This is probably fine. Will need an API +1.",
+      "revId": "83d9673111feed40db815d067fad8e71fff660bb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
