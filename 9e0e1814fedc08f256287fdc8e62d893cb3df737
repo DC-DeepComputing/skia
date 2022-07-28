@@ -50,6 +50,24 @@
       "message": "It might make things easier to pass SkSpan here instead.",
       "revId": "9e0e1814fedc08f256287fdc8e62d893cb3df737",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e06c64c3_4bcddd3e",
+        "filename": "gm/colrv1.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 194,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2022-07-28T15:26:46Z",
+      "side": 1,
+      "message": "Thanks, that\u0027s very convenient, that the span has a constructor from `Container c` that takes the size automatically, didn\u0027t know.",
+      "parentUuid": "fbbbc312_d66f8659",
+      "revId": "9e0e1814fedc08f256287fdc8e62d893cb3df737",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
