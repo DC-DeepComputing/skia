@@ -104,7 +104,8 @@ private:
  * valid gl context object or NULL if such can not be created.
  */
 GLTestContext* CreatePlatformGLTestContext(GrGLStandard forcedGpuAPI,
-                                           GLTestContext *shareContext = nullptr);
+                                           GLTestContext *shareContext,
+                                           bool isProtected);
 
 }  // namespace sk_gpu_test
 #endif

@@ -379,9 +379,10 @@ GrGLFuncPtr GLXGLTestContext::onPlatformGetProcAddress(const char* procName) con
 
 namespace sk_gpu_test {
 GLTestContext *CreatePlatformGLTestContext(GrGLStandard forcedGpuAPI,
-                                           GLTestContext *shareContext) {
+                                           GLTestContext *shareContext,
+                                           bool isProtected) {
     GLXGLTestContext *glxShareContext = reinterpret_cast<GLXGLTestContext *>(shareContext);
-    GLXGLTestContext *ctx = new GLXGLTestContext(forcedGpuAPI, glxShareContext);
+    GLXGLTestContext *ctx = new GLXGLTestContext(forcedGpuAPI, glxShareContext, isProtected);
     if (!ctx->isValid()) {
         delete ctx;
         return nullptr;
