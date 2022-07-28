@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b720d904_21836912",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2022-07-28T14:42:40Z",
+      "side": 1,
+      "message": "The dynamic sizing of the gm did not seem to work well, now fixed canvas size and line breaking.",
+      "revId": "9e0e1814fedc08f256287fdc8e62d893cb3df737",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
