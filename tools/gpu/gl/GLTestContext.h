@@ -51,7 +51,7 @@ public:
      * Creates a new GL context of the same type and makes the returned context current
      * (if not null).
      */
-    virtual std::unique_ptr<GLTestContext> makeNew() const { return nullptr; }
+    virtual std::unique_ptr<GLTestContext> makeNew(bool isProtected) const { return nullptr; }
 
     template<typename Ret, typename... Args>
     void getGLProcAddress(Ret(GR_GL_FUNCTION_TYPE** out)(Args...),
@@ -104,7 +104,8 @@ private:
  * valid gl context object or NULL if such can not be created.
  */
 GLTestContext* CreatePlatformGLTestContext(GrGLStandard forcedGpuAPI,
-                                           GLTestContext *shareContext = nullptr);
+                                           GLTestContext *shareContext,
+                                           bool isProtected);
 
 }  // namespace sk_gpu_test
 #endif

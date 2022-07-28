@@ -255,8 +255,16 @@ std::tuple<GrSurfaceProxyView, GrColorType> SkImage_Lazy::onAsView(
         GrRecordingContext* context,
         GrMipmapped mipmapped,
         GrImageTexGenPolicy policy) const {
+
+#if GR_TEST_UTILS
+    GrProtected isProtected = context->priv().options().fMakeTexturesProtected ? GrProtected::kYes
+                                                                               : GrProtected::kNo;
+#else
+    constexpr GrProtected isProtected = GrProtected::kNo;
+#endif
+
     GrColorType ct = this->colorTypeOfLockTextureProxy(context->priv().caps());
-    return {this->lockTextureProxyView(context, policy, mipmapped), ct};
+    return {this->lockTextureProxyView(context, policy, mipmapped, isProtected), ct};
 }
 
 std::unique_ptr<GrFragmentProcessor> SkImage_Lazy::onAsFragmentProcessor(
@@ -320,6 +328,7 @@ GrSurfaceProxyView SkImage_Lazy::textureProxyViewFromPlanes(GrRecordingContext* 
         std::tie(views[i], std::ignore) = GrMakeUncachedBitmapProxyView(ctx,
                                                                         bitmap,
                                                                         GrMipmapped::kNo,
+                                                                        GrProtected::kNo,
                                                                         fit);
         if (!views[i]) {
             return {};
@@ -413,7 +422,8 @@ sk_sp<SkCachedData> SkImage_Lazy::getPlanes(
  */
 GrSurfaceProxyView SkImage_Lazy::lockTextureProxyView(GrRecordingContext* rContext,
                                                       GrImageTexGenPolicy texGenPolicy,
-                                                      GrMipmapped mipmapped) const {
+                                                      GrMipmapped mipmapped,
+                                                      GrProtected isProtected) const {
     // Values representing the various texture lock paths we can take. Used for logging the path
     // taken to a histogram.
     enum LockTexturePath {
@@ -514,6 +524,7 @@ GrSurfaceProxyView SkImage_Lazy::lockTextureProxyView(GrRecordingContext* rConte
         auto view = std::get<0>(GrMakeUncachedBitmapProxyView(rContext,
                                                               bitmap,
                                                               mipmapped,
+                                                              isProtected,
                                                               SkBackingFit::kExact,
                                                               budgeted));
         if (view) {

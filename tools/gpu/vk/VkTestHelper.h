@@ -23,7 +23,7 @@ class SkSurface;
 
 class VkTestHelper {
 public:
-    VkTestHelper(bool isProtected) : fIsProtected(isProtected) {}
+    VkTestHelper(bool isProtected, bool foo) : fIsProtected(isProtected) {}
 
     ~VkTestHelper() {
         this->cleanup();
