@@ -29,31 +29,56 @@ namespace {
 bool ColrV1VariationsEnabledForTest() { return true; }
 
 const SkScalar kTextSizes[] = {12, 18, 30, 120};
-const char testFontName[] = "fonts/test_glyphs-glyf_colr_1.ttf";
+const char kTestFontName[] = "fonts/test_glyphs-glyf_colr_1.ttf";
+const char kTestFontNameVariable[] = "fonts/test_glyphs-glyf_colr_1_variable.ttf";
 const SkScalar xWidth = 1200;
 const SkScalar xTranslate = 200;
+
+SkFourByteTag stringToTag(const char* tagName) {
+    return tagName[0] << 24 | tagName[1] << 16 | tagName[2] << 8 | tagName[3];
+}
 }
 
 class ColrV1GM : public GM {
 public:
+    struct StringCoordinate {
+        const char* axis;
+        float value;
+    };
+
     ColrV1GM(const char* testName,
              SkSpan<const uint32_t> codepoints,
              SkScalar skewX = 0.f,
-             SkScalar rotateDeg = 0.f)
+             SkScalar rotateDeg = 0.f,
+             std::initializer_list<StringCoordinate> specifiedVariations = {})
             : fTestName(testName)
             , fCodepoints(codepoints)
             , fSkewX(skewX)
             , fRotateDeg(rotateDeg) {
         fPreviousFlagFunc =
                 SkGraphics::SetVariableColrV1EnabledFunc(ColrV1VariationsEnabledForTest);
+
+        fVariationPosition.coordinateCount = specifiedVariations.size();
+        fCoordinates = std::make_unique<SkFontArguments::VariationPosition::Coordinate[]>(
+                specifiedVariations.size());
+        for (size_t i = 0; i < specifiedVariations.size(); ++i) {
+            fCoordinates[i] = {stringToTag(std::data(specifiedVariations)[i].axis),
+                               std::data(specifiedVariations)[i].value};
+        }
+
+        fVariationPosition.coordinates = fCoordinates.get();
     }
 
     ~ColrV1GM() override { SkGraphics::SetVariableColrV1EnabledFunc(fPreviousFlagFunc); }
 
 protected:
     void onOnceBeforeDraw() override {
-        fTypeface = MakeResourceAsTypeface(testFontName);
-        fVariationSliders = ToolUtils::VariationSliders(fTypeface.get());
+        if (fVariationPosition.coordinateCount) {
+            fTypeface = MakeResourceAsTypeface(kTestFontNameVariable);
+        } else {
+            fTypeface = MakeResourceAsTypeface(kTestFontName);
+        }
+        fVariationSliders = ToolUtils::VariationSliders(fTypeface.get(), fVariationPosition);
     }
 
     SkString onShortName() override {
@@ -66,6 +91,13 @@ protected:
 
         if (fRotateDeg) {
             gm_name.append(SkStringPrintf("_rotate_%.2f", fRotateDeg));
+        }
+
+        for (int i = 0; i < fVariationPosition.coordinateCount; ++i) {
+            SkString tagName = ToolUtils::VariationSliders::tagToString(
+                    fVariationPosition.coordinates[i].axis);
+            gm_name.append(SkStringPrintf(
+                    "_%s_%.2f", tagName.c_str(), fVariationPosition.coordinates[i].value));
         }
 
         return gm_name;
@@ -155,6 +187,8 @@ private:
     SkSpan<const uint32_t> fCodepoints;
     SkScalar fSkewX;
     SkScalar fRotateDeg;
+    std::unique_ptr<SkFontArguments::VariationPosition::Coordinate[]> fCoordinates;
+    SkFontArguments::VariationPosition fVariationPosition;
     ToolUtils::VariationSliders fVariationSliders;
     SkGraphics::VariableColrV1EnabledFunc fPreviousFlagFunc;
 };
@@ -190,8 +224,14 @@ const uint32_t variable_alpha[] = {0xf1000};
 
 #define DEF_COLRV1_GM(TEST_CATEGORY) DEF_COLRV1_GM_SKEW_ROTATE(TEST_CATEGORY, 0.f, 0.f);
 
+#define VARIATIONS(...) __VA_ARGS__
+#define DEF_COLRV1_GM_VARY(TEST_CATEGORY, COORDINATES) \
+    DEF_GM(return new ColrV1GM(                        \
+            #TEST_CATEGORY, ColrV1TestDefinitions::TEST_CATEGORY, 0.f, 0.f, COORDINATES));
+
 
 DEF_COLRV1_GM(clipbox);
+DEF_COLRV1_GM_VARY(clipbox, VARIATIONS({{"CLIO", 200}}));
 DEF_COLRV1_GM(composite_mode);
 DEF_COLRV1_GM_SKEW_ROTATE(composite_mode, -0.5f, 0.f);
 DEF_COLRV1_GM_SKEW_ROTATE(composite_mode, -0.5f, 20.f);
