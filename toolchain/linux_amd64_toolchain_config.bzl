@@ -34,7 +34,7 @@ def _linux_amd64_toolchain_info(ctx):
     features += _make_diagnostic_flags()
     features += _make_iwyu_flags()
 
-    # https://docs.bazel.build/versions/main/skylark/lib/cc_common.html#create_cc_toolchain_config_info
+    # https://bazel.build/rules/lib/cc_common#create_cc_toolchain_config_info
     # Note, this rule is defined in Java code, not Starlark
     # https://cs.opensource.google/bazel/bazel/+/master:src/main/java/com/google/devtools/build/lib/starlarkbuildapi/cpp/CcModuleApi.java
     return cc_common.create_cc_toolchain_config_info(

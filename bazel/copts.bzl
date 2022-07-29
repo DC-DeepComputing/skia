@@ -135,7 +135,12 @@ WARNINGS = [
     "-Wdeprecated-this-capture",
     "-Wdeprecated-volatile",
     "-Wdeprecated-writable-strings",
-]
+] + select({
+    "@platforms//os:macos": [
+        "-Wno-availability",  # GL warnings
+    ],
+    "//conditions:default": [],
+})
 
 DEFAULT_COPTS = CORE_COPTS + OPT_LEVEL + WARNINGS
 
