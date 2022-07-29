@@ -38,12 +38,17 @@ void Transform::FindAndDeclareBuiltinFunctions(Program& program) {
                 // Not a built-in; skip it.
                 continue;
             }
+            if (fn->intrinsicKind() == k_dFdy_IntrinsicKind) {
+                // Programs that invoke the `dFdy` intrinsic will need the RTFlip input.
+                program.fInputs.fUseFlipRTUniform = !context.fConfig->fSettings.fForceNoRTFlip;
+            }
             const ProgramElement* added = context.fBuiltins->findAndInclude(fn->description());
             if (!added) {
                 // This built-in has already been dealt with; skip it.
                 continue;
             }
             addedBuiltins.push_back(&added->as<FunctionDefinition>());
+
         }
 
         if (addedBuiltins.size() == numBuiltinsAtStart) {

@@ -107,16 +107,8 @@ std::unique_ptr<FunctionDefinition> FunctionDefinition::Convert(const Context& c
         }
 
         bool visitExpression(Expression& expr) override {
-            if (expr.is<FunctionCall>()) {
-                const FunctionDeclaration& func = expr.as<FunctionCall>().function();
-                if (func.isBuiltin()) {
-                    if (func.intrinsicKind() == k_dFdy_IntrinsicKind) {
-                        ThreadContext::Inputs().fUseFlipRTUniform =
-                                !fContext.fConfig->fSettings.fForceNoRTFlip;
-                    }
-                }
-            }
-            return INHERITED::visitExpression(expr);
+            // We don't need to scan expressions.
+            return false;
         }
 
         bool visitStatement(Statement& stmt) override {
