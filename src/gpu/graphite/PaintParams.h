@@ -40,6 +40,8 @@ public:
     std::optional<SkBlendMode> asBlendMode() const;
     SkBlender* blender() const { return fBlender.get(); }
     sk_sp<SkBlender> refBlender() const;
+    // TODO - Add checking and implementation of custom blenders within Graphite.
+    void setBlender(sk_sp<SkBlender> blender) { fBlender = blender; }
 
     SkShader* shader() const { return fShader.get(); }
     sk_sp<SkShader> refShader() const;
