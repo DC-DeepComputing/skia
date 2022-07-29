@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b04a63e2_6c6a1982",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-07-29T14:04:09Z",
+      "side": 1,
+      "message": "Sending your way for some preliminary questions/feedback.",
+      "revId": "145345982e7507f9e8b9386b25bd46b36b0c705d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e1ed1335_f4343084",
+        "filename": "src/gpu/graphite/geom/VerticesData.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-07-29T14:04:09Z",
+      "side": 1,
+      "message": "SubRunData defines public methods to access private member attributes of a SubRun. Instead, I allow callers to get a SkVertices* then access private vertices data as needed. Do you see benefits to one approach over the other?",
+      "revId": "145345982e7507f9e8b9386b25bd46b36b0c705d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aa47bcdf_b8987228",
+        "filename": "src/gpu/graphite/render/VerticesRenderStep.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2022-07-29T14:04:09Z",
+      "side": 1,
+      "message": "I think I recall Rob mentioning that we don\u0027t handle color spaces yet. Do we currently do color transformations within graphite? All I see in the SkSl is:\n\n  16\t\thalf4 initialColor \u003d half4(0);\n  17\t\t// SolidColor\n  18\t\thalf4 outColor_0 \u003d sk_solid_shader(color_0);\n  19\t\t// FixedFunctionBlender\n  20\t\thalf4 outColor_1 \u003d outColor_0;\n  21\t\tsk_FragColor \u003d outColor_1;\n\nBut it\u0027s possible we are handling it on the CPU side and I am just missing it. Let me know. For now, I added a TODO in Device.cpp.",
+      "revId": "145345982e7507f9e8b9386b25bd46b36b0c705d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
