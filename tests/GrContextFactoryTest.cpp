@@ -104,7 +104,7 @@ DEF_GPUTEST(GrContextFactory_executorAndTaskGroup, reporter, options) {
 }
 
 #ifdef SK_ENABLE_DUMP_GPU
-DEF_GPUTEST_FOR_ALL_CONTEXTS(GrContextDump, reporter, ctxInfo) {
+DEF_GPUTEST_FOR_ALL_CONTEXTS(GrContextDump, reporter, ctxInfo, CtsEnforcement::kNever) {
     // Ensure that GrDirectContext::dump doesn't assert (which is possible, if the JSON code
     // is wrong)
     SkString result = ctxInfo.directContext()->dump();

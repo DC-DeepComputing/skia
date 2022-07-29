@@ -1317,7 +1317,7 @@ DEF_TEST(SkRuntimeShaderIsOpaque, r) {
     test("return cOnes.eval(xy);", false);
 }
 
-DEF_GPUTEST_FOR_ALL_CONTEXTS(GrSkSLFP_Specialized, r, ctxInfo) {
+DEF_GPUTEST_FOR_ALL_CONTEXTS(GrSkSLFP_Specialized, r, ctxInfo, CtsEnforcement::kApiLevel_T) {
     struct FpAndKey {
         std::unique_ptr<GrFragmentProcessor> fp;
         SkTArray<uint32_t, true>             key;

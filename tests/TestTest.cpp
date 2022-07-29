@@ -32,7 +32,7 @@ DEF_GPUTEST(TestGpuFactory, reporter, factory) {
 
 // This is an example of a GPU test that tests a property that should work for all GPU contexts.
 // Note: Some of the contexts might not produce a rendering output.
-DEF_GPUTEST_FOR_ALL_CONTEXTS(TestGpuAllContexts, reporter, ctxInfo) {
+DEF_GPUTEST_FOR_ALL_CONTEXTS(TestGpuAllContexts, reporter, ctxInfo, CtsEnforcement::kNever) {
     REPORTER_ASSERT(reporter, reporter);
     REPORTER_ASSERT(reporter, ctxInfo.directContext());
 }
@@ -53,24 +53,24 @@ DEF_GPUTEST_FOR_MOCK_CONTEXT(TestMockContext, reporter, ctxInfo) {
 
 // Conditional GPU tests will only execute if the provided condition parameter is true.
 DEF_CONDITIONAL_GPUTEST_FOR_ALL_CONTEXTS(TestGpuAllContextsWithTrueCondition,
-                                         reporter, ctxInfo, true) {
+                                         reporter, ctxInfo, true, CtsEnforcement::kNever) {
     REPORTER_ASSERT(reporter, reporter);
     REPORTER_ASSERT(reporter, ctxInfo.directContext());
 }
 
 DEF_CONDITIONAL_GPUTEST_FOR_ALL_CONTEXTS(TestGpuAllContextsWithFalseCondition,
-                                         reporter, ctxInfo, false) {
+                                         reporter, ctxInfo, false, CtsEnforcement::kNever) {
     ERRORF(reporter, "DEF_CONDITIONAL_GPUTEST_FOR_ALL_CONTEXTS ran with a false condition");
 }
 
 DEF_CONDITIONAL_GPUTEST_FOR_RENDERING_CONTEXTS(TestGpuRenderingContextsWithTrueCondition,
-                                               reporter, ctxInfo, true) {
+                                               reporter, ctxInfo, true, CtsEnforcement::kNever) {
     REPORTER_ASSERT(reporter, reporter);
     REPORTER_ASSERT(reporter, ctxInfo.directContext());
 }
 
 DEF_CONDITIONAL_GPUTEST_FOR_RENDERING_CONTEXTS(TestGpuRenderingContextsWithFalseCondition,
-                                               reporter, ctxInfo, false) {
+                                               reporter, ctxInfo, false, CtsEnforcement::kNever) {
     ERRORF(reporter, "DEF_CONDITIONAL_GPUTEST_FOR_RENDERING_CONTEXTS ran with a false condition");
 }
 

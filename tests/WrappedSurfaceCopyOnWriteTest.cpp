@@ -20,7 +20,8 @@
 #include "tools/gpu/BackendSurfaceFactory.h"
 #include "tools/gpu/ProxyUtils.h"
 
-DEF_GPUTEST_FOR_ALL_CONTEXTS(WrappedSurfaceCopyOnWrite, reporter, ctxInfo) {
+DEF_GPUTEST_FOR_ALL_CONTEXTS(WrappedSurfaceCopyOnWrite, reporter, ctxInfo,
+                             CtsEnforcement::kApiLevel_T) {
     GrDirectContext* dContext = ctxInfo.directContext();
 
     auto makeDirectBackendSurface = [&]() {

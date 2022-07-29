@@ -10,6 +10,7 @@
 #include "include/core/SkString.h"
 #include "include/core/SkTypes.h"
 #include "src/core/SkTraceEvent.h"
+#include "tests/CtsEnforcement.h"
 #include "tools/Registry.h"
 #include "tools/gpu/GrContextFactory.h"
 
@@ -75,17 +76,20 @@ struct Test {
          bool needsGpu,
          bool needsGraphite,
          TestProc proc,
-         ContextOptionsProc optionsProc = nullptr)
+         ContextOptionsProc optionsProc = nullptr,
+         CtsEnforcement ctsEnforcement = CtsEnforcement::kNever)
             : fName(name)
             , fNeedsGpu(needsGpu)
             , fNeedsGraphite(needsGraphite)
             , fProc(proc)
-            , fContextOptionsProc(optionsProc) {}
+            , fContextOptionsProc(optionsProc)
+            , fCTSEnforcement(ctsEnforcement) {}
     const char* fName;
     bool fNeedsGpu;
     bool fNeedsGraphite;
     TestProc fProc;
     ContextOptionsProc fContextOptionsProc;
+    const CtsEnforcement fCTSEnforcement;
 
     void modifyGrContextOptions(GrContextOptions* options) {
         if (fContextOptionsProc) {
@@ -200,6 +204,7 @@ private:
     #define UNIX_ONLY_TEST DEF_TEST_DISABLED
 #endif
 
+//TODO update all the callsites to support CtsEnforcement
 #define DEF_GRAPHITE_TEST(name, reporter)                                                   \
     static void test_##name(skiatest::Reporter*);                                           \
     static void test_graphite_##name(skiatest::Reporter* reporter,                          \
@@ -210,6 +215,7 @@ private:
             skiatest::Test(#name, /*gpu=*/false, /*graphite=*/true, test_graphite_##name)); \
     void test_##name(skiatest::Reporter* reporter)
 
+//TODO update all the callsites to support CtsEnforcement
 #define DEF_GRAPHITE_TEST_FOR_CONTEXTS(name, reporter, graphite_context)                    \
     static void test_##name(skiatest::Reporter*, skgpu::graphite::Context*);                \
     static void test_graphite_contexts_##name(skiatest::Reporter* _reporter,                \
@@ -221,6 +227,7 @@ private:
                            test_graphite_contexts_##name));                                 \
     void test_##name(skiatest::Reporter* reporter, skgpu::graphite::Context* graphite_context)
 
+//TODO update all the callsites to pass real API values
 #define DEF_GPUTEST(name, reporter, options)                                             \
     static void test_##name(skiatest::Reporter*, const GrContextOptions&);               \
     skiatest::TestRegistry name##TestRegistry(                                           \
@@ -228,7 +235,7 @@ private:
     void test_##name(skiatest::Reporter* reporter, const GrContextOptions& options)
 
 #define DEF_CONDITIONAL_GPUTEST_FOR_CONTEXTS(name, context_filter, reporter, context_info,      \
-                                             options_filter, condition)                         \
+                                             options_filter, condition, ctsEnforcement)         \
     static void test_##name(skiatest::Reporter*, const sk_gpu_test::ContextInfo&);              \
     static void test_gpu_contexts_##name(skiatest::Reporter* reporter,                          \
                                          const GrContextOptions& options) {                     \
@@ -236,47 +243,54 @@ private:
     }                                                                                           \
     skiatest::TestRegistry name##TestRegistry(                                                  \
             skiatest::Test(#name, /*gpu=*/true, /*graphite=*/false, test_gpu_contexts_##name,   \
-                           options_filter), condition);                                         \
+                           options_filter, ctsEnforcement), condition);                         \
     void test_##name(skiatest::Reporter* reporter, const sk_gpu_test::ContextInfo& context_info)
 
-#define DEF_CONDITIONAL_GPUTEST_FOR_ALL_CONTEXTS(name, reporter, context_info, condition)         \
-        DEF_CONDITIONAL_GPUTEST_FOR_CONTEXTS(name, nullptr, reporter, context_info, nullptr,      \
-                                             condition)
-#define DEF_CONDITIONAL_GPUTEST_FOR_RENDERING_CONTEXTS(name, reporter, context_info, condition)   \
+#define DEF_CONDITIONAL_GPUTEST_FOR_ALL_CONTEXTS(name, reporter, context_info, condition,       \
+                                                 ctsEnforcement)                                \
+        DEF_CONDITIONAL_GPUTEST_FOR_CONTEXTS(name, nullptr, reporter, context_info, nullptr,    \
+                                             condition, ctsEnforcement)
+
+#define DEF_CONDITIONAL_GPUTEST_FOR_RENDERING_CONTEXTS(name, reporter, context_info, condition,   \
+                                                       ctsEnforcement)                            \
         DEF_CONDITIONAL_GPUTEST_FOR_CONTEXTS(name,                                                \
                                              sk_gpu_test::GrContextFactory::IsRenderingContext,   \
-                                             reporter, context_info, nullptr, condition)
+                                             reporter, context_info, nullptr, condition,          \
+                                             ctsEnforcement)
 
-#define DEF_GPUTEST_FOR_CONTEXTS(name, context_filter, reporter, context_info, options_filter) \
+#define DEF_GPUTEST_FOR_CONTEXTS(name, context_filter, reporter, context_info, options_filter, \
+                                 ctsEnforcement)                                               \
         DEF_CONDITIONAL_GPUTEST_FOR_CONTEXTS(name, context_filter, reporter, context_info,     \
-                                             options_filter, true)
-#define DEF_GPUTEST_FOR_ALL_CONTEXTS(name, reporter, context_info)                          \
-        DEF_GPUTEST_FOR_CONTEXTS(name, nullptr, reporter, context_info, nullptr)
+                                             options_filter, true, ctsEnforcement)
 
+#define DEF_GPUTEST_FOR_ALL_CONTEXTS(name, reporter, context_info, ctsEnforcement)             \
+        DEF_GPUTEST_FOR_CONTEXTS(name, nullptr, reporter, context_info, nullptr, ctsEnforcement)
+
+//TODO update all the callsites to pass real API values
 #define DEF_GPUTEST_FOR_RENDERING_CONTEXTS(name, reporter, context_info)                    \
         DEF_GPUTEST_FOR_CONTEXTS(name, sk_gpu_test::GrContextFactory::IsRenderingContext,   \
-                                 reporter, context_info, nullptr)
-#define DEF_GPUTEST_FOR_ALL_GL_CONTEXTS(name, reporter, context_info)                       \
+                                 reporter, context_info, nullptr, CtsEnforcement::kNever)
+#define DEF_GPUTEST_FOR_ALL_GL_CONTEXTS(name, reporter, context_info, ctsEnforcement)       \
         DEF_GPUTEST_FOR_CONTEXTS(name, &skiatest::IsGLContextType,                          \
-                                 reporter, context_info, nullptr)
-#define DEF_GPUTEST_FOR_GL_RENDERING_CONTEXTS(name, reporter, context_info)                 \
+                                 reporter, context_info, nullptr, ctsEnforcement)
+#define DEF_GPUTEST_FOR_GL_RENDERING_CONTEXTS(name, reporter, context_info, ctsEnforcement) \
         DEF_GPUTEST_FOR_CONTEXTS(name, &skiatest::IsRenderingGLContextType,                 \
-                                 reporter, context_info, nullptr)
+                                 reporter, context_info, nullptr, ctsEnforcement)
 #define DEF_GPUTEST_FOR_MOCK_CONTEXT(name, reporter, context_info)                          \
         DEF_GPUTEST_FOR_CONTEXTS(name, &skiatest::IsMockContextType,                        \
-                                 reporter, context_info, nullptr)
-#define DEF_GPUTEST_FOR_VULKAN_CONTEXT(name, reporter, context_info)                        \
+                                 reporter, context_info, nullptr, CtsEnforcement::kNever)
+#define DEF_GPUTEST_FOR_VULKAN_CONTEXT(name, reporter, context_info, ctsEnforcement)        \
         DEF_GPUTEST_FOR_CONTEXTS(name, &skiatest::IsVulkanContextType,                      \
-                                 reporter, context_info, nullptr)
+                                 reporter, context_info, nullptr, ctsEnforcement)
 #define DEF_GPUTEST_FOR_METAL_CONTEXT(name, reporter, context_info)                         \
         DEF_GPUTEST_FOR_CONTEXTS(name, &skiatest::IsMetalContextType,                       \
-                                 reporter, context_info, nullptr)
+                                 reporter, context_info, nullptr, CtsEnforcement::kNever)
 #define DEF_GPUTEST_FOR_D3D_CONTEXT(name, reporter, context_info)                           \
     DEF_GPUTEST_FOR_CONTEXTS(name, &skiatest::IsDirect3DContextType,                        \
-                             reporter, context_info, nullptr)
+                             reporter, context_info, nullptr, CtsEnforcement::kNever)
 #define DEF_GPUTEST_FOR_DAWN_CONTEXT(name, reporter, context_info)                          \
     DEF_GPUTEST_FOR_CONTEXTS(name, &skiatest::IsDawnContextType,                            \
-                             reporter, context_info, nullptr)
+                             reporter, context_info, nullptr, CtsEnforcement::kNever)
 
 #define REQUIRE_PDF_DOCUMENT(TEST_NAME, REPORTER)                          \
     do {                                                                   \

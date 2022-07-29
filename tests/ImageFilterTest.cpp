@@ -1782,7 +1782,8 @@ DEF_GPUTEST_FOR_RENDERING_CONTEXTS(XfermodeImageFilterCroppedInput_Gpu, reporter
     test_xfermode_cropped_input(surf.get(), reporter);
 }
 
-DEF_GPUTEST_FOR_ALL_CONTEXTS(ImageFilterBlurLargeImage_Gpu, reporter, ctxInfo) {
+DEF_GPUTEST_FOR_ALL_CONTEXTS(ImageFilterBlurLargeImage_Gpu, reporter, ctxInfo,
+                             CtsEnforcement::kNever) {
     auto surface(SkSurface::MakeRenderTarget(
             ctxInfo.directContext(), SkBudgeted::kYes,
             SkImageInfo::Make(100, 100, kRGBA_8888_SkColorType, kPremul_SkAlphaType)));

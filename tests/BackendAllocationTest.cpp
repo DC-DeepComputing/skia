@@ -747,7 +747,8 @@ DEF_GPUTEST(ColorTypeBackendAllocationTest, reporter, options) {
 ///////////////////////////////////////////////////////////////////////////////
 #ifdef SK_GL
 
-DEF_GPUTEST_FOR_ALL_GL_CONTEXTS(GLBackendAllocationTest, reporter, ctxInfo) {
+DEF_GPUTEST_FOR_ALL_GL_CONTEXTS(GLBackendAllocationTest, reporter, ctxInfo,
+                                CtsEnforcement::kApiLevel_T) {
     sk_gpu_test::GLTestContext* glCtx = ctxInfo.glContext();
     GrGLStandard standard = glCtx->gl()->fStandard;
     auto context = ctxInfo.directContext();
@@ -902,7 +903,7 @@ DEF_GPUTEST_FOR_ALL_GL_CONTEXTS(GLBackendAllocationTest, reporter, ctxInfo) {
 
 #include "src/gpu/ganesh/vk/GrVkCaps.h"
 
-DEF_GPUTEST_FOR_VULKAN_CONTEXT(VkBackendAllocationTest, reporter, ctxInfo) {
+DEF_GPUTEST_FOR_VULKAN_CONTEXT(VkBackendAllocationTest, reporter, ctxInfo, CtsEnforcement::kApiLevel_T) {
     auto context = ctxInfo.directContext();
     const GrVkCaps* vkCaps = static_cast<const GrVkCaps*>(context->priv().caps());
 
