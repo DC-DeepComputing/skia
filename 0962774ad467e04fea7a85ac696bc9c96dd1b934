@@ -16,6 +16,24 @@
       "message": "Some striking Gold diffs, are these expected?\n\nhttps://gold.skia.org/search?blame\u003d001000009272\u0026corpus\u003dgm\n\nPlease triage.",
       "revId": "0962774ad467e04fea7a85ac696bc9c96dd1b934",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6561dc07_a6f90a88",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 13
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6395
+      },
+      "writtenOn": "2022-07-29T07:35:57Z",
+      "side": 1,
+      "message": "Only Android-NativeFonts can produce the right COLRv1 results at the moment, as that\u0027s the only build that will use the own third_party/external/freetype version that is needed. The other renderings fallback to rendering colorized contour glyphs.\n\n@Ben: Should we detect this somehow and not generate an image on these bots? \n\nTest \"shadow_utils_occl\" has a change in hash but no diff and otherwise it\u0027s an unrelated test - what should I do about that one? Is that a flaky one?",
+      "parentUuid": "c017c678_fa813cdc",
+      "revId": "0962774ad467e04fea7a85ac696bc9c96dd1b934",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
