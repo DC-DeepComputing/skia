@@ -460,12 +460,12 @@ SkMatrix& SkMatrix::setSinCos(SkScalar sinV, SkScalar cosV) {
 
 SkMatrix& SkMatrix::setRotate(SkScalar degrees, SkScalar px, SkScalar py) {
     SkScalar rad = SkDegreesToRadians(degrees);
-    return this->setSinCos(SkScalarSinSnapToZero(rad), SkScalarCosSnapToZero(rad), px, py);
+    return this->setSinCos(SkScalarSin(rad), SkScalarCos(rad), px, py);
 }
 
 SkMatrix& SkMatrix::setRotate(SkScalar degrees) {
     SkScalar rad = SkDegreesToRadians(degrees);
-    return this->setSinCos(SkScalarSinSnapToZero(rad), SkScalarCosSnapToZero(rad));
+    return this->setSinCos(SkScalarSin(rad), SkScalarCos(rad));
 }
 
 SkMatrix& SkMatrix::preRotate(SkScalar degrees, SkScalar px, SkScalar py) {
