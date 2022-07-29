@@ -90,12 +90,6 @@ public:
     static std::unique_ptr<SkSL::Program> ReleaseProgram(std::unique_ptr<std::string> source) {
         ThreadContext& instance = ThreadContext::Instance();
         SkSL::Compiler& compiler = *instance.fCompiler;
-        const SkSL::Context& context = *compiler.fContext;
-        // Variables defined in the pre-includes need their declaring elements added to the program
-        if (!instance.fConfig->fIsBuiltinCode && context.fBuiltins) {
-            Transform::FindAndDeclareBuiltinVariables(context, instance.fConfig->fKind,
-                                                      instance.fSharedElements);
-        }
         Pool* pool = instance.fPool.get();
         auto result = std::make_unique<SkSL::Program>(std::move(source),
                                                       std::move(instance.fConfig),
