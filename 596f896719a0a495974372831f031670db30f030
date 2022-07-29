@@ -141,6 +141,30 @@
       },
       "revId": "596f896719a0a495974372831f031670db30f030",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e5f71a23_03cadc16",
+        "filename": "tests/Test.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2022-07-29T17:11:59Z",
+      "side": 1,
+      "message": "consolidated it to one enum based on suggestions from the VC.",
+      "parentUuid": "20318f3b_3464274c",
+      "range": {
+        "startLine": 26,
+        "startChar": 0,
+        "endLine": 30,
+        "endChar": 6
+      },
+      "revId": "596f896719a0a495974372831f031670db30f030",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

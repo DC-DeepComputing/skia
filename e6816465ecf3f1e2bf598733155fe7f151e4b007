@@ -209,6 +209,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0906940b_8fe0c287",
+        "filename": "tests/BackendAllocationTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 905,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2022-07-29T17:11:59Z",
+      "side": 1,
+      "message": "talked about it over VC and I ended up going with a enum that has camel case and starts with `k`.",
+      "parentUuid": "d6119a01_02ab7a86",
+      "range": {
+        "startLine": 905,
+        "startChar": 75,
+        "endLine": 905,
+        "endChar": 108
+      },
+      "revId": "e6816465ecf3f1e2bf598733155fe7f151e4b007",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "96fa4903_6b96e805",
@@ -768,6 +792,30 @@
       "side": 1,
       "message": "If we have `NEVER` (which I now understand why we want), then it\u0027s easy to implement \"always run with workarounds\". That sounds fine to me.",
       "parentUuid": "e80501af_242f7bf6",
+      "range": {
+        "startLine": 84,
+        "startChar": 8,
+        "endLine": 84,
+        "endChar": 16
+      },
+      "revId": "e6816465ecf3f1e2bf598733155fe7f151e4b007",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f17cd5ef_05842cde",
+        "filename": "tests/Test.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2022-07-29T17:11:59Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "b15b08e7_7b289d11",
       "range": {
         "startLine": 84,
         "startChar": 8,
