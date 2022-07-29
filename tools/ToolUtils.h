@@ -313,7 +313,8 @@ class VariationSliders {
 public:
     VariationSliders() {}
 
-    VariationSliders(SkTypeface*);
+    VariationSliders(SkTypeface*,
+                     SkFontArguments::VariationPosition variationPosition = {nullptr, 0});
 
     bool writeControls(SkMetaData* controls);
 

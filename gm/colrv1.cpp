@@ -20,139 +20,82 @@
 #include "tools/Resources.h"
 #include "tools/ToolUtils.h"
 
+#include "src/pdf/SkPDFFont.h"
+
 #include <string.h>
 #include <initializer_list>
+#include <regex>
 
 namespace skiagm {
 
 namespace {
 bool ColrV1VariationsEnabledForTest() { return true; }
+
+const char kTestFontName[] = "fonts/test_glyphs-glyf_colr_1.ttf";
+const char kTestFontNameVariable[] = "fonts/test_glyphs-glyf_colr_1_variable.ttf";
 }
 
 class ColrV1GM : public GM {
 public:
+    ColrV1GM(const char* testName,
+             const char* regularExpression,
+             SkScalar skewX = 0.f,
+             SkScalar rotateDeg = 0.f,
+             SkFontArguments::VariationPosition variationPosition = {nullptr, 0})
+            : fTestName(testName)
+            , fMatchingTestsExpression(regularExpression)
+            , fSkewX(skewX)
+            , fRotateDeg(rotateDeg) {
+        fPreviousFlagFunc =
+                SkGraphics::SetVariableColrV1EnabledFunc(ColrV1VariationsEnabledForTest);
+    }
 
-  // TODO(drott): Consolidate test fonts.
-  enum ColrV1TestType {
-    kSkiaSampleFont,
-    kColorFontsRepoGradients,
-    kColorFontsRepoScaling,
-    kColorFontsRepoExtendMode,
-    kColorFontsRepoRotate,
-    kColorFontsRepoSkew,
-    kColorFontsRepoTransform,
-    kColorFontsRepoClipBox,
-    kColorFontsRepoComposite,
-    kColorFontsRepoForeground,
-    kColorFontsRepoSweepPad,
-    kColorFontsRepoSweepReflect,
-    kColorFontsRepoSweepRepeat,
-  };
-
-  ColrV1GM(ColrV1TestType testType, SkScalar skewX, SkScalar rotateDeg)
-          : fSkewX(skewX), fRotateDeg(rotateDeg), fTestType(testType) {
-      fPreviousFlagFunc = SkGraphics::SetVariableColrV1EnabledFunc(ColrV1VariationsEnabledForTest);
-  }
-
-  ~ColrV1GM() override { SkGraphics::SetVariableColrV1EnabledFunc(fPreviousFlagFunc); }
+    ~ColrV1GM() override { SkGraphics::SetVariableColrV1EnabledFunc(fPreviousFlagFunc); }
 
 protected:
-    static SkString testTypeToString(ColrV1TestType testType) {
-        switch (testType) {
-            case kSkiaSampleFont:
-                return SkString("skia");
-            case kColorFontsRepoGradients:
-                return SkString("gradients");
-            case kColorFontsRepoScaling:
-                return SkString("scaling");
-            case kColorFontsRepoExtendMode:
-                return SkString("extend_mode");
-            case kColorFontsRepoRotate:
-                return SkString("rotate");
-            case kColorFontsRepoSkew:
-                return SkString("skew");
-            case kColorFontsRepoTransform:
-                return SkString("transform");
-            case kColorFontsRepoClipBox:
-                return SkString("clipbox");
-            case kColorFontsRepoComposite:
-                return SkString("composite");
-            case kColorFontsRepoForeground:
-                return SkString("foreground");
-            case kColorFontsRepoSweepPad:
-                return SkString("sweep_pad");
-            case kColorFontsRepoSweepReflect:
-                return SkString("sweep_reflect");
-            case kColorFontsRepoSweepRepeat:
-                return SkString("sweep_repeat");
+    std::vector<uint16_t> matchingGlyphIds(SkTypeface* typeface,
+                                           const char* regular_expression) {
+        if (!typeface) {
+            return {};
         }
-        SkASSERT(false); /* not reached */
-        return SkString();
+        std::unique_ptr<SkString[]> glyphNames =
+                std::make_unique<SkString[]>(typeface->countGlyphs());
+
+        std::regex re(regular_expression);
+        std::cmatch match;
+        SkPDFFont::GetType1GlyphNames(*typeface, glyphNames.get());
+        std::vector<uint16_t> matches;
+        for (int i = 0; i < typeface->countGlyphs(); ++i) {
+            if (std::regex_search(glyphNames[i].c_str(), match, re)) {
+                matches.push_back(i);
+            }
+        }
+        return matches;
     }
 
     struct EmojiFont {
         sk_sp<SkTypeface> fTypeface;
         std::vector<uint16_t> fGlyphs;
         size_t bytesize() { return fGlyphs.size() * sizeof(uint16_t); }
-    } fEmojiFont;
+    } fTestFont;
 
     void onOnceBeforeDraw() override {
-        if (fTestType == kSkiaSampleFont) {
-            fEmojiFont.fTypeface = MakeResourceAsTypeface("fonts/colrv1_samples.ttf");
-            fEmojiFont.fGlyphs = {19, 33, 34, 35, 20, 21, 22, 23, 24, 25};
-            return;
+        if (fVariationPosition.coordinateCount) {
+            fTestFont.fTypeface = MakeResourceAsTypeface(kTestFontNameVariable);
+        } else {
+            fTestFont.fTypeface = MakeResourceAsTypeface(kTestFontName);
         }
 
-        fEmojiFont.fTypeface = MakeResourceAsTypeface("fonts/more_samples-glyf_colr_1.ttf");
+        fTestFont.fGlyphs =
+                matchingGlyphIds(fTestFont.fTypeface.get(), fMatchingTestsExpression.c_str());
 
-        switch (fTestType) {
-            case kSkiaSampleFont:
-                SkASSERT(false);
-                break;
-            case kColorFontsRepoGradients:
-                fEmojiFont.fGlyphs = {2, 5, 6, 7, 8, 55};
-                break;
-            case kColorFontsRepoScaling:
-                fEmojiFont.fGlyphs = {9, 10, 11, 12, 13, 14};
-                break;
-            case kColorFontsRepoExtendMode:
-                fEmojiFont.fGlyphs = {15, 16, 17, 18, 19, 20};
-                break;
-            case kColorFontsRepoRotate:
-                fEmojiFont.fGlyphs = {21, 22, 23, 24};
-                break;
-            case kColorFontsRepoSkew:
-                fEmojiFont.fGlyphs = {25, 26, 27, 28, 29, 30};
-                break;
-            case kColorFontsRepoTransform:
-                fEmojiFont.fGlyphs = {31, 32, 33, 34};
-                break;
-            case kColorFontsRepoClipBox:
-                fEmojiFont.fGlyphs = {35, 36, 37, 38, 39};
-                break;
-            case kColorFontsRepoComposite:
-                fEmojiFont.fGlyphs = {40, 41, 42, 43, 44, 45, 46};
-                break;
-            case kColorFontsRepoForeground:
-                fEmojiFont.fGlyphs = {47, 48, 49, 50, 51, 52, 53, 54};
-                break;
-            case kColorFontsRepoSweepPad:
-                fEmojiFont.fGlyphs = {2, 58, 59, 60, 61, 62, 63, 64};
-                break;
-            case kColorFontsRepoSweepReflect:
-                fEmojiFont.fGlyphs = {65, 66, 67, 68, 69, 70, 71, 72};
-                break;
-            case kColorFontsRepoSweepRepeat:
-                fEmojiFont.fGlyphs = {73, 74, 75, 76, 77, 78, 79, 80};
-                break;
-        }
-
-        fVariationSliders = ToolUtils::VariationSliders(fEmojiFont.fTypeface.get());
+        fVariationSliders = ToolUtils::VariationSliders(fTestFont.fTypeface.get());
     }
 
     SkString onShortName() override {
-        SkString gm_name = SkStringPrintf("colrv1_%s_samples",
-                                          testTypeToString(fTestType).c_str());
+        SkASSERT(!fTestName.isEmpty());
+        SkString gm_name = SkStringPrintf("colrv1_%s", fTestName.c_str());
+
         if (fSkewX) {
             gm_name.append("_skew");
         }
@@ -160,6 +103,7 @@ protected:
         if (fRotateDeg) {
             gm_name.append("_rotate");
         }
+
         return gm_name;
     }
 
@@ -179,7 +123,7 @@ protected:
 
         canvas->translate(200, 20);
 
-        if (!fEmojiFont.fTypeface) {
+        if (!fTestFont.fTypeface) {
           *errorMsg = "Did not recognize COLR v1 font format.";
           return DrawResult::kSkip;
         }
@@ -193,7 +137,7 @@ protected:
                                                      static_cast<int>(coords.size())};
         SkFontArguments args;
         args.setVariationDesignPosition(varPos);
-        sk_sp<SkTypeface> axisAppliedTypeface = fEmojiFont.fTypeface->makeClone(args);
+        sk_sp<SkTypeface> axisAppliedTypeface = fTestFont.fTypeface->makeClone(args);
         SkFont font(axisAppliedTypeface);
 
         SkFontMetrics metrics;
@@ -206,8 +150,8 @@ protected:
             font.getMetrics(&metrics);
             y += -metrics.fAscent;
             paint.setColor(*paint_color_iterator);
-            canvas->drawSimpleText(fEmojiFont.fGlyphs.data(),
-                                   fEmojiFont.bytesize(),
+            canvas->drawSimpleText(fTestFont.fGlyphs.data(),
+                                   fTestFont.bytesize(),
                                    SkTextEncoding::kGlyphID,
                                    10, y, font, paint);
             y += metrics.fDescent + metrics.fLeading;
@@ -219,29 +163,47 @@ protected:
 private:
     using INHERITED = GM;
 
+    SkString fTestName;
+    SkString fMatchingTestsExpression;
     SkScalar fSkewX;
     SkScalar fRotateDeg;
-    ColrV1TestType fTestType;
+    SkFontArguments::VariationPosition fVariationPosition;
     ToolUtils::VariationSliders fVariationSliders;
     SkGraphics::VariableColrV1EnabledFunc fPreviousFlagFunc;
 };
 
-DEF_GM(return new ColrV1GM(ColrV1GM::kSkiaSampleFont, 0.f, 0.f);)
-DEF_GM(return new ColrV1GM(ColrV1GM::kSkiaSampleFont, -0.5f, 0.f);)
-DEF_GM(return new ColrV1GM(ColrV1GM::kSkiaSampleFont, 0.f, 20.f);)
-DEF_GM(return new ColrV1GM(ColrV1GM::kSkiaSampleFont, -0.5f, 20.f);)
-DEF_GM(return new ColrV1GM(ColrV1GM::kColorFontsRepoGradients, 0.f, 0.f);)
-DEF_GM(return new ColrV1GM(ColrV1GM::kColorFontsRepoScaling, 0.f, 0.f);)
-DEF_GM(return new ColrV1GM(ColrV1GM::kColorFontsRepoExtendMode, 0.f, 0.f);)
-DEF_GM(return new ColrV1GM(ColrV1GM::kColorFontsRepoRotate, 0.f, 0.f);)
-DEF_GM(return new ColrV1GM(ColrV1GM::kColorFontsRepoSkew, 0.f, 0.f);)
-DEF_GM(return new ColrV1GM(ColrV1GM::kColorFontsRepoTransform, 0.f, 0.f);)
-DEF_GM(return new ColrV1GM(ColrV1GM::kColorFontsRepoClipBox, 0.f, 0.f);)
-DEF_GM(return new ColrV1GM(ColrV1GM::kColorFontsRepoClipBox, -0.5f, 20.f);)
-DEF_GM(return new ColrV1GM(ColrV1GM::kColorFontsRepoComposite, 0.f, 0.f);)
-DEF_GM(return new ColrV1GM(ColrV1GM::kColorFontsRepoForeground, 0.f, 0.f);)
-DEF_GM(return new ColrV1GM(ColrV1GM::kColorFontsRepoSweepPad, 0.f, 0.f);)
-DEF_GM(return new ColrV1GM(ColrV1GM::kColorFontsRepoSweepReflect, 0.f, 0.f);)
-DEF_GM(return new ColrV1GM(ColrV1GM::kColorFontsRepoSweepRepeat, 0.f, 0.f);)
+#define DEF_GM_VARIABLE_TRANSFORM(name, regex, skew, rotate, variationPosition)                    \
+    {                                                                                              \
+        SkFontArguments::VariationPosition::Coordinate coordinates[] = variationPosition;          \
+        SkFontArguments::VariationPosition varPosArg = {coordinates, SK_ARRAY_COUNT(coordinates)}; \
+        DEF_GM(name, regex, skew, rotate, varPosArg);                                              \
+    }
+
+#define DEF_GM_VARIABLE(name, regex, variationPosition) \
+    DEF_GM_VARIABLE_TRANSFORM(name, regex, 0.f, 0.f, variationPosition)
+
+DEF_GM(return new ColrV1GM("linear_repeat_stops", "linear_repeat"));
+DEF_GM(return new ColrV1GM("linear_repeat_stops", "linear_repeat", -0.5f, 0.f));
+DEF_GM(return new ColrV1GM("linear_repeat_stops", "linear_repeat", 0.f, 20.f));
+DEF_GM(return new ColrV1GM("linear_repeat_stops", "linear_repeat", -0.5f, 20.f));
+DEF_GM(return new ColrV1GM("scaling", "scale_.*center_"));
+DEF_GM(return new ColrV1GM("extend_mode", "_extend_mode_"));
+DEF_GM(return new ColrV1GM("extend_mode", "_extend_mode_", -0.5f, 0.f));
+DEF_GM(return new ColrV1GM("extend_mode", "_extend_mode_", 0.f, 20.f));
+DEF_GM(return new ColrV1GM("extend_mode", "_extend_mode_", -0.5f, 20.f));
+DEF_GM(return new ColrV1GM("rotate", "rotate_"));
+DEF_GM(return new ColrV1GM("skew", "skew_"));
+DEF_GM(return new ColrV1GM("transform", "transform_"));
+DEF_GM(return new ColrV1GM("translate", "translate_"));
+DEF_GM(return new ColrV1GM("clip_box", "clip_box_"));
+DEF_GM(return new ColrV1GM("clip_box", "clip_box_", -0.5f, 20.f));
+DEF_GM(return new ColrV1GM("composite_modes", "composite_[A-Z_]+"));
+DEF_GM(return new ColrV1GM("composite_modes", "composite_[A-Z_]+", -0.5f, 0.f));
+DEF_GM(return new ColrV1GM("composite_modes", "composite_[A-Z_]+", 0.f, 20.f));
+DEF_GM(return new ColrV1GM("composite_modes", "composite_[A-Z_]+", -0.5f, 20.f));
+DEF_GM(return new ColrV1GM("foreground_color", "foreground_"));
+DEF_GM(return new ColrV1GM("sweep_pad", "sweep_.*_pad"));
+DEF_GM(return new ColrV1GM("sweep_reflect", "sweep_.*_reflect"));
+DEF_GM(return new ColrV1GM("sweep_repeat", "sweep_.*_repeat"));
 
 }  // namespace skiagm
