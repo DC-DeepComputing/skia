@@ -1,12 +1,12 @@
 OpCapability Shader
 %1 = OpExtInstImport "GLSL.std.450"
 OpMemoryModel Logical GLSL450
-OpEntryPoint Vertex %main "main" %3 %sk_InstanceID %sk_VertexID %vcoord_Stage0
+OpEntryPoint Vertex %main "main" %3 %sk_VertexID %sk_InstanceID %vcoord_Stage0
 OpName %sk_PerVertex "sk_PerVertex"
 OpMemberName %sk_PerVertex 0 "sk_Position"
 OpMemberName %sk_PerVertex 1 "sk_PointSize"
-OpName %sk_InstanceID "sk_InstanceID"
 OpName %sk_VertexID "sk_VertexID"
+OpName %sk_InstanceID "sk_InstanceID"
 OpName %vcoord_Stage0 "vcoord_Stage0"
 OpName %main "main"
 OpName %x "x"
@@ -24,8 +24,8 @@ OpName %vertexpos "vertexpos"
 OpMemberDecorate %sk_PerVertex 0 BuiltIn Position
 OpMemberDecorate %sk_PerVertex 1 BuiltIn PointSize
 OpDecorate %sk_PerVertex Block
-OpDecorate %sk_InstanceID BuiltIn InstanceIndex
 OpDecorate %sk_VertexID BuiltIn VertexIndex
+OpDecorate %sk_InstanceID BuiltIn InstanceIndex
 OpDecorate %vcoord_Stage0 Location 1
 OpDecorate %vcoord_Stage0 NoPerspective
 %float = OpTypeFloat 32
@@ -35,8 +35,8 @@ OpDecorate %vcoord_Stage0 NoPerspective
 %3 = OpVariable %_ptr_Output_sk_PerVertex Output
 %int = OpTypeInt 32 1
 %_ptr_Input_int = OpTypePointer Input %int
-%sk_InstanceID = OpVariable %_ptr_Input_int Input
 %sk_VertexID = OpVariable %_ptr_Input_int Input
+%sk_InstanceID = OpVariable %_ptr_Input_int Input
 %v2float = OpTypeVector %float 2
 %_ptr_Output_v2float = OpTypePointer Output %v2float
 %vcoord_Stage0 = OpVariable %_ptr_Output_v2float Output
