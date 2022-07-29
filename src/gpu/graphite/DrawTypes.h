@@ -62,6 +62,7 @@ enum class VertexAttribType : uint8_t {
     kUByte_norm,  // unsigned byte, e.g. coverage, 0 -> 0.0f, 255 -> 1.0f.
     kUByte4_norm, // vector of 4 unsigned bytes, e.g. colors, 0 -> 0.0f, 255 -> 1.0f.
 
+    kShort,        // 16-bit short
     kShort2,       // vector of 2 16-bit shorts.
     kShort4,       // vector of 4 16-bit shorts.
 
@@ -121,6 +122,8 @@ static constexpr inline size_t VertexAttribTypeSize(VertexAttribType type) {
             return 1 * sizeof(char);
         case VertexAttribType::kUByte4_norm:
             return 4 * sizeof(char);
+        case VertexAttribType::kShort:
+            return sizeof(int16_t);
         case VertexAttribType::kShort2:
             return 2 * sizeof(int16_t);
         case VertexAttribType::kShort4:
