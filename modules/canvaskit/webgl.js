@@ -324,6 +324,40 @@
             resetTexture(glCtx, info, srcIsPremul);
             return pushTexture(newTex);
           },
+          'readPixels': function(pixelDestination, width, height) {
+            // This callback is called when pixel data is to be read from the TextureSource(src).
+            // It creates a new texture, binds it to a framebuffer, and reads the pixels
+            // from the framebuffer into a pre-allocated memory location given from the
+            // C++ side.
+            // We cannot use the texture made in `makeTexture` because it may have already been
+            // deleted or belong to a different GL context. So we must make a new texture here.
+            var pixels = new Uint8Array(CanvasKit.HEAPU8.buffer, pixelDestination);
+            var ctx = GL.currentContext;
+            var glCtx = ctx.GLctx;
+            var newTex = glCtx.createTexture();
+            glCtx.bindTexture(glCtx.TEXTURE_2D, newTex);
+            if (ctx.version === 2) {
+              glCtx.texImage2D(glCtx.TEXTURE_2D, 0, glCtx.RGBA, width, height, 0, glCtx.RGBA, glCtx.UNSIGNED_BYTE, src);
+            } else {
+              if (width !== info['width'] || height !== info['height']) {
+                Debug('scaling texture not supported in WebGL1');
+                glCtx.deleteTexture(newTex);
+                return false;
+              }
+              glCtx.texImage2D(glCtx.TEXTURE_2D, 0, glCtx.RGBA, glCtx.RGBA, glCtx.UNSIGNED_BYTE, src);
+            }
+            var fb = glCtx.createFramebuffer();
+            glCtx.bindFramebuffer(glCtx.FRAMEBUFFER, fb);
+            glCtx.framebufferTexture2D(glCtx.FRAMEBUFFER, glCtx.COLOR_ATTACHMENT0, glCtx.TEXTURE_2D, newTex, 0);
+            if (glCtx.checkFramebufferStatus(glCtx.FRAMEBUFFER) == glCtx.FRAMEBUFFER_COMPLETE) {
+              glCtx.readPixels(0, 0, width, height, glCtx.RGBA, glCtx.UNSIGNED_BYTE, pixels);
+            }
+            glCtx.bindFramebuffer(glCtx.FRAMEBUFFER, null);
+            glCtx.bindTexture(glCtx.TEXTURE_2D, null);
+            glCtx.deleteTexture(newTex);
+            glCtx.deleteFramebuffer(fb);
+            return true;
+          },
           'freeSrc': function() {
             // This callback will be executed whenever the returned image is deleted. This gives
             // us a chance to free up the src (which we now own). Generally, there's nothing
