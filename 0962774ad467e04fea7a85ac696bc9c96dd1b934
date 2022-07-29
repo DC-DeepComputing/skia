@@ -34,6 +34,24 @@
       "parentUuid": "c017c678_fa813cdc",
       "revId": "0962774ad467e04fea7a85ac696bc9c96dd1b934",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1a9cb5fc_927f28c4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 13
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-07-29T13:03:36Z",
+      "side": 1,
+      "message": "No, we really do want to know and test what happens when this COLRv1 font is used on various platforms, and even what happens when we end up not using it at all. This isn\u0027t just a test for when things \"work\" but when they don\u0027t work as well.\n\nIf it\u0027s GPU it\u0027s flaky. There\u0027s always some unrelated GPU flakes in there, and I leave that issue to the GPU team.",
+      "parentUuid": "6561dc07_a6f90a88",
+      "revId": "0962774ad467e04fea7a85ac696bc9c96dd1b934",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
