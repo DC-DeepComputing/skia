@@ -187,6 +187,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d6119a01_02ab7a86",
+        "filename": "tests/BackendAllocationTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 905,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2022-07-29T12:23:20Z",
+      "side": 1,
+      "message": "If I go with the Skia style as is it would read...\n\n`CtsEnforcement::kApiLevelT_CtsStrict`\n\nI could rename the enum, to be a little more compact...\n\n`CtsEnforcement::kT_StrictApiLevel`\n\nHowever, I still feel that none of that conveys the same clarity as having `CtsEnforcement::API_LEVEL_T` in the test macro.",
+      "parentUuid": "6be98405_0c68ce73",
+      "range": {
+        "startLine": 905,
+        "startChar": 75,
+        "endLine": 905,
+        "endChar": 108
+      },
+      "revId": "e6816465ecf3f1e2bf598733155fe7f151e4b007",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "96fa4903_6b96e805",
         "filename": "tests/DefaultPathRendererTest.cpp",
         "patchSetId": 1
