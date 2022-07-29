@@ -126,7 +126,6 @@ void test(skiatest::Reporter* r, const char* src, float* in, const float* expect
         args[sig.fParameterSlots + i] = out.get() + i;
     }
 
-    // TODO: Test with and without JIT?
     p.eval(1, args.get());
 
     verify_values(r, src, out.get(), expected, sig.fReturnSlots, exactCompare);
@@ -145,7 +144,6 @@ void test(skiatest::Reporter* r, const char* src,
     SkSL::ProgramToSkVM(*program, *main, &b, /*debugTrace=*/nullptr, /*uniforms=*/{});
     skvm::Program p = b.done();
 
-    // TODO: Test with and without JIT?
     p.eval(1, &inR, &inG, &inB, &inA);
 
     float actual[4]   = { inR, inG, inB, inA };

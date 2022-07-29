@@ -55,8 +55,6 @@ CORE_FILES = [
     "SkTextUtils.cpp",
     "SkUTF.cpp",
     "SkUTF.h",
-    "SkVMVisualizer.cpp",
-    "SkVMVisualizer.h",
 ]
 
 split_srcs_and_hdrs(

@@ -261,5 +261,4 @@ skslc_deps = [
   "$_src/utils/SkParse.cpp",
   "$_src/utils/SkShaderUtils.cpp",
   "$_src/utils/SkUTF.cpp",
-  "$_src/utils/SkVMVisualizer.cpp",
 ]

@@ -154,8 +154,6 @@ bool SkGraphics::GetVariableColrV1Enabled() {
     return gVariableCOLRv1EnabledFunc ? gVariableCOLRv1EnabledFunc() : false;
 }
 
-extern bool gSkVMAllowJIT;
-
 void SkGraphics::AllowJIT() {
-    gSkVMAllowJIT = true;
+    // TODO(skia:13600): Remove this when all client calls are removed
 }

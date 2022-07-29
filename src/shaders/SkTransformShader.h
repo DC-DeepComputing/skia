@@ -11,7 +11,7 @@
 #include "src/shaders/SkShaderBase.h"
 
 // SkTransformShader allows the transform used by the shader to change without regenerating the
-// jitted code. This supports the drawVertices call to change the mapping as the texture
+// SkVM program. This supports the drawVertices call to change the mapping as the texture
 // coordinates associated with each vertex change with each new triangle.
 class SkTransformShader : public SkUpdatableShader {
 public:

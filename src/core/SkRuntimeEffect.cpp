@@ -818,11 +818,8 @@ std::unique_ptr<SkFilterColorProgram> SkFilterColorProgram::Make(const SkRuntime
     // return an (acceptable) false negative. All internal runtime color filters should work.
     bool alphaUnchanged = (inputColor.a.id == result.a.id);
 
-    // We'll use this program to filter one color at a time, don't bother with jit
     return std::unique_ptr<SkFilterColorProgram>(
-            new SkFilterColorProgram(p.done(/*debug_name=*/nullptr, /*allow_jit=*/false),
-                                     std::move(sampleCalls),
-                                     alphaUnchanged));
+            new SkFilterColorProgram(p.done(), std::move(sampleCalls), alphaUnchanged));
 }
 
 SkFilterColorProgram::SkFilterColorProgram(skvm::Program program,

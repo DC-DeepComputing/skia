@@ -11,21 +11,12 @@
 #include "src/core/SkCpu.h"
 #include "src/core/SkMSAN.h"
 #include "src/core/SkVM.h"
-#include "src/gpu/ganesh/GrShaderCaps.h"
-#include "src/sksl/SkSLCompiler.h"
-#include "src/sksl/codegen/SkSLVMCodeGenerator.h"
-#include "src/sksl/ir/SkSLProgram.h"
-#include "src/sksl/tracing/SkVMDebugTrace.h"
-#include "src/utils/SkVMVisualizer.h"
 #include "tests/Test.h"
 
 template <typename Fn>
-static void test_jit_and_interpreter(const skvm::Builder& b, Fn&& test) {
+static void test_interpreter(const skvm::Builder& b, Fn&& test) {
     skvm::Program p = b.done();
     test(p);
-    if (p.hasJIT()) {
-        test(b.done(/*debug_name=*/nullptr, /*allow_jit=*/false));
-    }
 }
 
 DEF_TEST(SkVM_eliminate_dead_code, r) {
@@ -53,7 +44,7 @@ DEF_TEST(SkVM_Pointless, r) {
               b.splat(4.0f));
     }
 
-    test_jit_and_interpreter(b, [&](const skvm::Program& program) {
+    test_interpreter(b, [&](const skvm::Program& program) {
         for (int N = 0; N < 64; N++) {
             program.eval(N);
         }
@@ -68,7 +59,7 @@ DEF_TEST(SkVM_memset, r) {
     skvm::Builder b;
     b.store32(b.varying<int>(), b.splat(42));
 
-    test_jit_and_interpreter(b, [&](const skvm::Program& p) {
+    test_interpreter(b, [&](const skvm::Program& p) {
         int buf[18];
         buf[17] = 47;
 
@@ -88,7 +79,7 @@ DEF_TEST(SkVM_memcpy, r) {
         b.store32(dst, b.load32(src));
     }
 
-    test_jit_and_interpreter(b, [&](const skvm::Program& p) {
+    test_interpreter(b, [&](const skvm::Program& p) {
         int src[] = {1,2,3,4,5,6,7,8,9},
             dst[] = {0,0,0,0,0,0,0,0,0};
 
@@ -101,19 +92,6 @@ DEF_TEST(SkVM_memcpy, r) {
     });
 }
 
-DEF_TEST(SkVM_allow_jit, r) {
-    skvm::Builder b;
-    {
-        auto src = b.varying<int>(),
-             dst = b.varying<int>();
-        b.store32(dst, b.load32(src));
-    }
-
-    if (b.done("test-allow_jit", /*allow_jit=*/true).hasJIT()) {
-        REPORTER_ASSERT(r, !b.done("", false).hasJIT());
-    }
-}
-
 DEF_TEST(SkVM_LoopCounts, r) {
     // Make sure we cover all the exact N we want.
 
@@ -124,7 +102,7 @@ DEF_TEST(SkVM_LoopCounts, r) {
               b.add(b.splat(1),
                     b.load32(arg)));
 
-    test_jit_and_interpreter(b, [&](const skvm::Program& program) {
+    test_interpreter(b, [&](const skvm::Program& program) {
         int buf[64];
         for (int N = 0; N <= (int)std::size(buf); N++) {
             for (int i = 0; i < (int)std::size(buf); i++) {
@@ -151,7 +129,7 @@ DEF_TEST(SkVM_gather32, r) {
         b.store32(buf, b.gather32(uniforms,0, b.bit_and(x, b.splat(7))));
     }
 
-    test_jit_and_interpreter(b, [&](const skvm::Program& program) {
+    test_interpreter(b, [&](const skvm::Program& program) {
         const int img[] = {12,34,56,78, 90,98,76,54};
 
         int buf[20];
@@ -205,7 +183,7 @@ DEF_TEST(SkVM_gathers, r) {
         b.store8 (buf8 , b.gather8 (uniforms,0, b.bit_and(x, b.splat(31))));
     }
 
-    test_jit_and_interpreter(b, [&](const skvm::Program& program) {
+    test_interpreter(b, [&](const skvm::Program& program) {
         const int img[] = {12,34,56,78, 90,98,76,54};
 
         constexpr int N = 20;
@@ -263,7 +241,7 @@ DEF_TEST(SkVM_gathers2, r) {
         b.store8 (buf8 , b.gather8 (uniforms,0, x));
     }
 
-    test_jit_and_interpreter(b, [&](const skvm::Program& program) {
+    test_interpreter(b, [&](const skvm::Program& program) {
         uint8_t img[256];
         for (int i = 0; i < 256; i++) {
             img[i] = i;
@@ -316,7 +294,7 @@ DEF_TEST(SkVM_bitops, r) {
         b.store32(ptr, x);
     }
 
-    test_jit_and_interpreter(b, [&](const skvm::Program& program) {
+    test_interpreter(b, [&](const skvm::Program& program) {
         int x = 0x42;
         program.eval(1, &x);
         REPORTER_ASSERT(r, x == 0x7fff'ffff);
@@ -342,7 +320,7 @@ DEF_TEST(SkVM_select_is_NaN, r) {
     REPORTER_ASSERT(r, program[2].op == skvm::Op::bit_clear);
     REPORTER_ASSERT(r, program[3].op == skvm::Op::store32);
 
-    test_jit_and_interpreter(b, [&](const skvm::Program& program) {
+    test_interpreter(b, [&](const skvm::Program& program) {
         // ±NaN, ±0, ±1, ±inf
         uint32_t src[] = {0x7f80'0001, 0xff80'0001, 0x0000'0000, 0x8000'0000,
                           0x3f80'0000, 0xbf80'0000, 0x7f80'0000, 0xff80'0000};
@@ -367,7 +345,7 @@ DEF_TEST(SkVM_f32, r) {
         b.storeF(arg, w);
     }
 
-    test_jit_and_interpreter(b, [&](const skvm::Program& program) {
+    test_interpreter(b, [&](const skvm::Program& program) {
         float buf[] = { 1,2,3,4,5,6,7,8,9 };
         program.eval(std::size(buf), buf);
         for (float v : buf) {
@@ -395,7 +373,7 @@ DEF_TEST(SkVM_cmp_i32, r) {
 
         b.store32(b.varying<int>(), m);
     }
-    test_jit_and_interpreter(b, [&](const skvm::Program& program) {
+    test_interpreter(b, [&](const skvm::Program& program) {
         int in[] = { 0,1,2,3,4,5,6,7,8,9 };
         int out[std::size(in)];
 
@@ -432,7 +410,7 @@ DEF_TEST(SkVM_cmp_f32, r) {
         b.store32(b.varying<int>(), m);
     }
 
-    test_jit_and_interpreter(b, [&](const skvm::Program& program) {
+    test_interpreter(b, [&](const skvm::Program& program) {
         float in[] = { 0,1,2,3,4,5,6,7,8,9 };
         int out[std::size(in)];
 
@@ -453,7 +431,7 @@ DEF_TEST(SkVM_index, r) {
     skvm::Builder b;
     b.store32(b.varying<int>(), b.index());
 
-    test_jit_and_interpreter(b, [&](const skvm::Program& program) {
+    test_interpreter(b, [&](const skvm::Program& program) {
         int buf[23];
         program.eval(std::size(buf), buf);
         for (int i = 0; i < (int)std::size(buf); i++) {
@@ -478,7 +456,7 @@ DEF_TEST(SkVM_mad, r) {
         b.store32(arg, b.trunc(v));
     }
 
-    test_jit_and_interpreter(b, [&](const skvm::Program& program) {
+    test_interpreter(b, [&](const skvm::Program& program) {
         int x = 2;
         program.eval(1, &x);
         // x = 2
@@ -502,7 +480,7 @@ DEF_TEST(SkVM_fms, r) {
         b.store32(arg, b.trunc(v));
     }
 
-    test_jit_and_interpreter(b, [&](const skvm::Program& program) {
+    test_interpreter(b, [&](const skvm::Program& program) {
         int buf[] = {0,1,2,3,4,5,6,7,8,9,10};
         program.eval((int)std::size(buf), &buf);
 
@@ -524,7 +502,7 @@ DEF_TEST(SkVM_fnma, r) {
         b.store32(arg, b.trunc(v));
     }
 
-    test_jit_and_interpreter(b, [&](const skvm::Program& program) {
+    test_interpreter(b, [&](const skvm::Program& program) {
         int buf[] = {0,1,2,3,4,5,6,7,8,9,10};
         program.eval((int)std::size(buf), &buf);
 
@@ -546,7 +524,7 @@ DEF_TEST(SkVM_madder, r) {
         b.storeF(arg, w);
     }
 
-    test_jit_and_interpreter(b, [&](const skvm::Program& program) {
+    test_interpreter(b, [&](const skvm::Program& program) {
         float x = 2.0f;
         // y = 2*2 + 2 = 6
         // z = 6*2 + 6 = 18
@@ -563,7 +541,7 @@ DEF_TEST(SkVM_floor, r) {
         b.storeF(arg, b.floor(b.loadF(arg)));
     }
 
-    test_jit_and_interpreter(b, [&](const skvm::Program& program) {
+    test_interpreter(b, [&](const skvm::Program& program) {
         float buf[]  = { -2.0f, -1.5f, -1.0f, 0.0f, 1.0f, 1.5f, 2.0f };
         float want[] = { -2.0f, -2.0f, -1.0f, 0.0f, 1.0f, 1.0f, 2.0f };
         program.eval(std::size(buf), buf);
@@ -583,7 +561,7 @@ DEF_TEST(SkVM_round, r) {
 
     // The test cases on exact 0.5f boundaries assume the current rounding mode is nearest even.
     // We haven't explicitly guaranteed that here... it just probably is.
-    test_jit_and_interpreter(b, [&](const skvm::Program& program) {
+    test_interpreter(b, [&](const skvm::Program& program) {
         float buf[]  = { -1.5f, -0.5f, 0.0f, 0.5f, 0.2f, 0.6f, 1.0f, 1.4f, 1.5f, 2.0f };
         int want[] =   { -2   ,  0   , 0   , 0   , 0   , 1   , 1   , 1   , 2   , 2    };
         int dst[std::size(buf)];
@@ -605,7 +583,7 @@ DEF_TEST(SkVM_min, r) {
         b.storeF(dst, b.min(b.loadF(src1), b.loadF(src2)));
     }
 
-    test_jit_and_interpreter(b, [&](const skvm::Program& program) {
+    test_interpreter(b, [&](const skvm::Program& program) {
         float s1[]  =  { 0.0f, 1.0f, 4.0f, -1.0f, -1.0f};
         float s2[]  =  { 0.0f, 2.0f, 3.0f,  1.0f, -2.0f};
         float want[] = { 0.0f, 1.0f, 3.0f, -1.0f, -2.0f};
@@ -627,7 +605,7 @@ DEF_TEST(SkVM_max, r) {
         b.storeF(dst, b.max(b.loadF(src1), b.loadF(src2)));
     }
 
-    test_jit_and_interpreter(b, [&](const skvm::Program& program) {
+    test_interpreter(b, [&](const skvm::Program& program) {
         float s1[]  =  { 0.0f, 1.0f, 4.0f, -1.0f, -1.0f};
         float s2[]  =  { 0.0f, 2.0f, 3.0f,  1.0f, -2.0f};
         float want[] = { 0.0f, 2.0f, 4.0f,  1.0f, -1.0f};
@@ -636,28 +614,6 @@ DEF_TEST(SkVM_max, r) {
         for (int i = 0; i < (int)std::size(d); i++) {
           REPORTER_ASSERT(r, d[i] == want[i]);
         }
-    });
-}
-
-DEF_TEST(SkVM_hoist, r) {
-    // This program uses enough constants that it will fail to JIT if we hoist them.
-    // The JIT will try again without hoisting, and that'll just need 2 registers.
-    skvm::Builder b;
-    {
-        skvm::Ptr arg = b.varying<int>();
-        skvm::I32 x = b.load32(arg);
-        for (int i = 0; i < 32; i++) {
-            x = b.add(x, b.splat(i));
-        }
-        b.store32(arg, x);
-    }
-
-    test_jit_and_interpreter(b, [&](const skvm::Program& program) {
-        int x = 4;
-        program.eval(1, &x);
-        // x += 0 + 1 + 2 + 3 + ... + 30 + 31
-        // x += 496
-        REPORTER_ASSERT(r, x == 500);
     });
 }
 
@@ -673,7 +629,7 @@ DEF_TEST(SkVM_select, r) {
         b.store32(buf, x);
     }
 
-    test_jit_and_interpreter(b, [&](const skvm::Program& program) {
+    test_interpreter(b, [&](const skvm::Program& program) {
         int buf[] = { 0,1,2,3,4,5,6,7,8 };
         program.eval(std::size(buf), buf);
         for (int i = 0; i < (int)std::size(buf); i++) {
@@ -706,7 +662,7 @@ DEF_TEST(SkVM_swap, r) {
         b.store32(Y, x);
     }
 
-    test_jit_and_interpreter(b, [&](const skvm::Program& program) {
+    test_interpreter(b, [&](const skvm::Program& program) {
         int b1[] = { 0,1,2,3 };
         int b2[] = { 4,5,6,7 };
         program.eval(std::size(b1), b1, b2);
@@ -741,7 +697,7 @@ DEF_TEST(SkVM_NewOps, r) {
         b.store16(buf, x);
     }
 
-    test_jit_and_interpreter(b, [&](const skvm::Program& program) {
+    test_interpreter(b, [&](const skvm::Program& program) {
         const int N = 31;
         int16_t buf[N];
         for (int i = 0; i < N; i++) {
@@ -803,7 +759,7 @@ DEF_TEST(SKVM_array32, r) {
         b.store32(buf2, b.trunc(b.add(x, y)));
     }
 
-    test_jit_and_interpreter(b, [&](const skvm::Program& program) {
+    test_interpreter(b, [&](const skvm::Program& program) {
         const int K = 10;
         int32_t buf0[K],
                 buf1[K],
@@ -842,7 +798,7 @@ DEF_TEST(SkVM_sqrt, r) {
     auto buf = b.varying<int>();
     b.storeF(buf, b.sqrt(b.loadF(buf)));
 
-    test_jit_and_interpreter(b, [&](const skvm::Program& program) {
+    test_interpreter(b, [&](const skvm::Program& program) {
         constexpr int K = 17;
         float buf[K];
         for (int i = 0; i < K; i++) {
@@ -858,30 +814,12 @@ DEF_TEST(SkVM_sqrt, r) {
     });
 }
 
-DEF_TEST(SkVM_MSAN, r) {
-    // This little memset32() program should be able to JIT, but if we run that
-    // JIT code in an MSAN build, it won't see the writes initialize buf.  So
-    // this tests that we're using the interpreter instead.
-    skvm::Builder b;
-    b.store32(b.varying<int>(), b.splat(42));
-
-    test_jit_and_interpreter(b, [&](const skvm::Program& program) {
-        constexpr int K = 17;
-        int buf[K];                 // Intentionally uninitialized.
-        program.eval(K, buf);
-        sk_msan_assert_initialized(buf, buf+K);
-        for (int x : buf) {
-            REPORTER_ASSERT(r, x == 42);
-        }
-    });
-}
-
 DEF_TEST(SkVM_assert, r) {
     skvm::Builder b;
     b.assert_true(b.lt(b.load32(b.varying<int>()),
                        b.splat(42)));
 
-    test_jit_and_interpreter(b, [&](const skvm::Program& program) {
+    test_interpreter(b, [&](const skvm::Program& program) {
         int buf[] = { 0,1,2,3,4,5,6,7,8,9 };
         program.eval(std::size(buf), buf);
     });
@@ -1100,1028 +1038,6 @@ DEF_TEST(SkVM_premul, reporter) {
         // load red, store red
         REPORTER_ASSERT(reporter, p.done().instructions().size() == 2);
     }
-}
-
-template <typename Fn>
-static void test_asm(skiatest::Reporter* r, Fn&& fn, std::initializer_list<uint8_t> expected) {
-    uint8_t buf[4096];
-    skvm::Assembler a{buf};
-    fn(a);
-
-    REPORTER_ASSERT(r, a.size() == expected.size());
-
-    auto got = (const uint8_t*)buf,
-         want = expected.begin();
-    for (int i = 0; i < (int)std::min(a.size(), expected.size()); i++) {
-        REPORTER_ASSERT(r, got[i] == want[i],
-                        "byte %d was %02x, want %02x", i, got[i], want[i]);
-    }
-}
-
-DEF_TEST(SkVM_Assembler, r) {
-    // Easiest way to generate test cases is
-    //
-    //   echo '...some asm...' | llvm-mc -show-encoding -x86-asm-syntax=intel
-    //
-    // The -x86-asm-syntax=intel bit is optional, controlling the
-    // input syntax only; the output will always be AT&T  op x,y,dst style.
-    // Our APIs read more like Intel op dst,x,y as op(dst,x,y), so I find
-    // that a bit easier to use here, despite maybe favoring AT&T overall.
-
-    using A = skvm::Assembler;
-    // Our exit strategy from AVX code.
-    test_asm(r, [&](A& a) {
-        a.int3();
-        a.vzeroupper();
-        a.ret();
-    },{
-        0xcc,
-        0xc5, 0xf8, 0x77,
-        0xc3,
-    });
-
-    // Align should pad with zero
-    test_asm(r, [&](A& a) {
-        a.ret();
-        a.align(4);
-    },{
-        0xc3,
-        0x00, 0x00, 0x00,
-    });
-
-    test_asm(r, [&](A& a) {
-        a.add(A::rax, 8);       // Always good to test rax.
-        a.sub(A::rax, 32);
-
-        a.add(A::rdi, 12);      // Last 0x48 REX
-        a.sub(A::rdi, 8);
-
-        a.add(A::r8 , 7);       // First 0x49 REX
-        a.sub(A::r8 , 4);
-
-        a.add(A::rsi, 128);     // Requires 4 byte immediate.
-        a.sub(A::r8 , 1000000);
-
-        a.add(A::Mem{A::rsi}, 7);                       // addq $7, (%rsi)
-        a.add(A::Mem{A::rsi, 12}, 7);                   // addq $7, 12(%rsi)
-        a.add(A::Mem{A::rsp, 12}, 7);                   // addq $7, 12(%rsp)
-        a.add(A::Mem{A::r12, 12}, 7);                   // addq $7, 12(%r12)
-        a.add(A::Mem{A::rsp, 12, A::rax, A::FOUR}, 7);  // addq $7, 12(%rsp,%rax,4)
-        a.add(A::Mem{A::r12, 12, A::rax, A::FOUR}, 7);  // addq $7, 12(%r12,%rax,4)
-        a.add(A::Mem{A::rax, 12, A::r12, A::FOUR}, 7);  // addq $7, 12(%rax,%r12,4)
-        a.add(A::Mem{A::r11, 12, A::r8 , A::TWO }, 7);  // addq $7, 12(%r11,%r8,2)
-        a.add(A::Mem{A::r11, 12, A::rax}         , 7);  // addq $7, 12(%r11,%rax)
-        a.add(A::Mem{A::rax, 12, A::r11}         , 7);  // addq $7, 12(%rax,%r11)
-
-        a.sub(A::Mem{A::rax, 12, A::r11}         , 7);  // subq $7, 12(%rax,%r11)
-
-        a.add(       A::rax     , A::rcx);              // addq %rcx, %rax
-        a.add(A::Mem{A::rax}    , A::rcx);              // addq %rcx, (%rax)
-        a.add(A::Mem{A::rax, 12}, A::rcx);              // addq %rcx, 12(%rax)
-        a.add(A::rcx, A::Mem{A::rax, 12});              // addq 12(%rax), %rcx
-
-        a.sub(A::rcx, A::Mem{A::rax, 12});              // subq 12(%rax), %rcx
-    },{
-        0x48, 0x83, 0b11'000'000, 0x08,
-        0x48, 0x83, 0b11'101'000, 0x20,
-
-        0x48, 0x83, 0b11'000'111, 0x0c,
-        0x48, 0x83, 0b11'101'111, 0x08,
-
-        0x49, 0x83, 0b11'000'000, 0x07,
-        0x49, 0x83, 0b11'101'000, 0x04,
-
-        0x48, 0x81, 0b11'000'110, 0x80, 0x00, 0x00, 0x00,
-        0x49, 0x81, 0b11'101'000, 0x40, 0x42, 0x0f, 0x00,
-
-        0x48,0x83,0x06,0x07,
-        0x48,0x83,0x46,0x0c,0x07,
-        0x48,0x83,0x44,0x24,0x0c,0x07,
-        0x49,0x83,0x44,0x24,0x0c,0x07,
-        0x48,0x83,0x44,0x84,0x0c,0x07,
-        0x49,0x83,0x44,0x84,0x0c,0x07,
-        0x4a,0x83,0x44,0xa0,0x0c,0x07,
-        0x4b,0x83,0x44,0x43,0x0c,0x07,
-        0x49,0x83,0x44,0x03,0x0c,0x07,
-        0x4a,0x83,0x44,0x18,0x0c,0x07,
-
-        0x4a,0x83,0x6c,0x18,0x0c,0x07,
-
-        0x48,0x01,0xc8,
-        0x48,0x01,0x08,
-        0x48,0x01,0x48,0x0c,
-        0x48,0x03,0x48,0x0c,
-        0x48,0x2b,0x48,0x0c,
-    });
-
-
-    test_asm(r, [&](A& a) {
-        a.vpaddd (A::ymm0, A::ymm1, A::ymm2);  // Low registers and 0x0f map     -> 2-byte VEX.
-        a.vpaddd (A::ymm8, A::ymm1, A::ymm2);  // A high dst register is ok      -> 2-byte VEX.
-        a.vpaddd (A::ymm0, A::ymm8, A::ymm2);  // A high first argument register -> 2-byte VEX.
-        a.vpaddd (A::ymm0, A::ymm1, A::ymm8);  // A high second argument         -> 3-byte VEX.
-        a.vpmulld(A::ymm0, A::ymm1, A::ymm2);  // Using non-0x0f map instruction -> 3-byte VEX.
-        a.vpsubd (A::ymm0, A::ymm1, A::ymm2);  // Test vpsubd to ensure argument order is right.
-    },{
-        /*    VEX     */ /*op*/ /*modRM*/
-        0xc5,       0xf5, 0xfe, 0xc2,
-        0xc5,       0x75, 0xfe, 0xc2,
-        0xc5,       0xbd, 0xfe, 0xc2,
-        0xc4, 0xc1, 0x75, 0xfe, 0xc0,
-        0xc4, 0xe2, 0x75, 0x40, 0xc2,
-        0xc5,       0xf5, 0xfa, 0xc2,
-    });
-
-    test_asm(r, [&](A& a) {
-        a.vpaddw   (A::ymm4, A::ymm3, A::ymm2);
-        a.vpavgw   (A::ymm4, A::ymm3, A::ymm2);
-        a.vpcmpeqw (A::ymm4, A::ymm3, A::ymm2);
-        a.vpcmpgtw (A::ymm4, A::ymm3, A::ymm2);
-
-        a.vpminsw  (A::ymm4, A::ymm3, A::ymm2);
-        a.vpmaxsw  (A::ymm4, A::ymm3, A::ymm2);
-        a.vpminuw  (A::ymm4, A::ymm3, A::ymm2);
-        a.vpmaxuw  (A::ymm4, A::ymm3, A::ymm2);
-
-        a.vpmulhrsw(A::ymm4, A::ymm3, A::ymm2);
-        a.vpabsw   (A::ymm4, A::ymm3);
-        a.vpsllw   (A::ymm4, A::ymm3, 12);
-        a.vpsraw   (A::ymm4, A::ymm3, 12);
-    },{
-        0xc5,     0xe5, 0xfd, 0xe2,
-        0xc5,     0xe5, 0xe3, 0xe2,
-        0xc5,     0xe5, 0x75, 0xe2,
-        0xc5,     0xe5, 0x65, 0xe2,
-
-        0xc5,     0xe5, 0xea, 0xe2,
-        0xc5,     0xe5, 0xee, 0xe2,
-        0xc4,0xe2,0x65, 0x3a, 0xe2,
-        0xc4,0xe2,0x65, 0x3e, 0xe2,
-
-        0xc4,0xe2,0x65, 0x0b, 0xe2,
-        0xc4,0xe2,0x7d, 0x1d, 0xe3,
-        0xc5,0xdd,0x71, 0xf3, 0x0c,
-        0xc5,0xdd,0x71, 0xe3, 0x0c,
-    });
-
-    test_asm(r, [&](A& a) {
-        A::Label l;
-        a.vcmpeqps (A::ymm0, A::ymm1, &l);      // vcmpeqps 0x1c(%rip), %ymm1, %ymm0
-        a.vpcmpeqd (A::ymm0, A::ymm1, A::ymm2);
-        a.vpcmpgtd (A::ymm0, A::ymm1, A::ymm2);
-        a.vcmpeqps (A::ymm0, A::ymm1, A::ymm2);
-        a.vcmpltps (A::ymm0, A::ymm1, A::ymm2);
-        a.vcmpleps (A::ymm0, A::ymm1, A::ymm2);
-        a.vcmpneqps(A::ymm0, A::ymm1, A::ymm2);
-        a.label(&l);   // 28 bytes after the vcmpeqps that uses it.
-    },{
-        0xc5,0xf4,0xc2,0x05,0x1c,0x00,0x00,0x00,0x00,
-        0xc5,0xf5,0x76,0xc2,
-        0xc5,0xf5,0x66,0xc2,
-        0xc5,0xf4,0xc2,0xc2,0x00,
-        0xc5,0xf4,0xc2,0xc2,0x01,
-        0xc5,0xf4,0xc2,0xc2,0x02,
-        0xc5,0xf4,0xc2,0xc2,0x04,
-    });
-
-    test_asm(r, [&](A& a) {
-        a.vminps(A::ymm0, A::ymm1, A::ymm2);
-        a.vmaxps(A::ymm0, A::ymm1, A::ymm2);
-    },{
-        0xc5,0xf4,0x5d,0xc2,
-        0xc5,0xf4,0x5f,0xc2,
-    });
-
-    test_asm(r, [&](A& a) {
-        a.vpblendvb(A::ymm0, A::ymm1, A::ymm2, A::ymm3);
-    },{
-        0xc4,0xe3,0x75, 0x4c, 0xc2, 0x30,
-    });
-
-    test_asm(r, [&](A& a) {
-        a.vpsrld(A::ymm15, A::ymm2, 8);
-        a.vpsrld(A::ymm0 , A::ymm8, 5);
-    },{
-        0xc5,     0x85, 0x72,0xd2, 0x08,
-        0xc4,0xc1,0x7d, 0x72,0xd0, 0x05,
-    });
-
-    test_asm(r, [&](A& a) {
-        A::Label l;
-        a.vpermps(A::ymm1, A::ymm2, A::Mem{A::rdi, 32});
-        a.vperm2f128(A::ymm1, A::ymm2, &l, 0x20);
-        a.vpermq(A::ymm1, A::ymm2, 5);
-        a.label(&l);  // 6 bytes after vperm2f128
-    },{
-        0xc4,0xe2,0x6d,0x16,0x4f,0x20,
-        0xc4,0xe3,0x6d,0x06,0x0d,0x06,0x00,0x00,0x00,0x20,
-        0xc4,0xe3,0xfd, 0x00,0xca, 0x05,
-    });
-
-    test_asm(r, [&](A& a) {
-        a.vpunpckldq(A::ymm1, A::ymm2, A::Mem{A::rdi});
-        a.vpunpckhdq(A::ymm1, A::ymm2, A::ymm3);
-    },{
-        0xc5,0xed,0x62,0x0f,
-        0xc5,0xed,0x6a,0xcb,
-    });
-
-    test_asm(r, [&](A& a) {
-        a.vroundps(A::ymm1, A::ymm2, A::NEAREST);
-        a.vroundps(A::ymm1, A::ymm2, A::FLOOR);
-        a.vroundps(A::ymm1, A::ymm2, A::CEIL);
-        a.vroundps(A::ymm1, A::ymm2, A::TRUNC);
-    },{
-        0xc4,0xe3,0x7d,0x08,0xca,0x00,
-        0xc4,0xe3,0x7d,0x08,0xca,0x01,
-        0xc4,0xe3,0x7d,0x08,0xca,0x02,
-        0xc4,0xe3,0x7d,0x08,0xca,0x03,
-    });
-
-    test_asm(r, [&](A& a) {
-        A::Label l;
-        a.label(&l);
-        a.byte(1);
-        a.byte(2);
-        a.byte(3);
-        a.byte(4);
-
-        a.vbroadcastss(A::ymm0 , &l);
-        a.vbroadcastss(A::ymm1 , &l);
-        a.vbroadcastss(A::ymm8 , &l);
-        a.vbroadcastss(A::ymm15, &l);
-
-        a.vpshufb(A::ymm4, A::ymm3, &l);
-        a.vpaddd (A::ymm4, A::ymm3, &l);
-        a.vpsubd (A::ymm4, A::ymm3, &l);
-
-        a.vptest(A::ymm4, &l);
-
-        a.vmulps (A::ymm4, A::ymm3, &l);
-    },{
-        0x01, 0x02, 0x03, 0x4,
-
-        /*     VEX    */  /*op*/ /*   ModRM    */  /*     offset     */
-        0xc4, 0xe2, 0x7d,  0x18,   0b00'000'101,   0xf3,0xff,0xff,0xff,   // 0xfffffff3 == -13
-        0xc4, 0xe2, 0x7d,  0x18,   0b00'001'101,   0xea,0xff,0xff,0xff,   // 0xffffffea == -22
-        0xc4, 0x62, 0x7d,  0x18,   0b00'000'101,   0xe1,0xff,0xff,0xff,   // 0xffffffe1 == -31
-        0xc4, 0x62, 0x7d,  0x18,   0b00'111'101,   0xd8,0xff,0xff,0xff,   // 0xffffffd8 == -40
-
-        0xc4, 0xe2, 0x65,  0x00,   0b00'100'101,   0xcf,0xff,0xff,0xff,   // 0xffffffcf == -49
-
-        0xc5, 0xe5,        0xfe,   0b00'100'101,   0xc7,0xff,0xff,0xff,   // 0xffffffc7 == -57
-        0xc5, 0xe5,        0xfa,   0b00'100'101,   0xbf,0xff,0xff,0xff,   // 0xffffffbf == -65
-
-        0xc4, 0xe2, 0x7d,  0x17,   0b00'100'101,   0xb6,0xff,0xff,0xff,   // 0xffffffb6 == -74
-
-        0xc5, 0xe4,        0x59,   0b00'100'101,   0xae,0xff,0xff,0xff,   // 0xffffffaf == -82
-    });
-
-    test_asm(r, [&](A& a) {
-        a.vbroadcastss(A::ymm0,  A::Mem{A::rdi,   0});
-        a.vbroadcastss(A::ymm13, A::Mem{A::r14,   7});
-        a.vbroadcastss(A::ymm8,  A::Mem{A::rdx, -12});
-        a.vbroadcastss(A::ymm8,  A::Mem{A::rdx, 400});
-
-        a.vbroadcastss(A::ymm8,  A::xmm0);
-        a.vbroadcastss(A::ymm0,  A::xmm13);
-    },{
-        /*   VEX    */ /*op*/     /*ModRM*/   /*offset*/
-        0xc4,0xe2,0x7d, 0x18,   0b00'000'111,
-        0xc4,0x42,0x7d, 0x18,   0b01'101'110,  0x07,
-        0xc4,0x62,0x7d, 0x18,   0b01'000'010,  0xf4,
-        0xc4,0x62,0x7d, 0x18,   0b10'000'010,  0x90,0x01,0x00,0x00,
-
-        0xc4,0x62,0x7d, 0x18,   0b11'000'000,
-        0xc4,0xc2,0x7d, 0x18,   0b11'000'101,
-    });
-
-    test_asm(r, [&](A& a) {
-        A::Label l;
-        a.label(&l);
-        a.jne(&l);
-        a.jne(&l);
-        a.je (&l);
-        a.jmp(&l);
-        a.jl (&l);
-        a.jc (&l);
-
-        a.cmp(A::rdx, 1);
-        a.cmp(A::rax, 12);
-        a.cmp(A::r14, 2000000000);
-    },{
-        0x0f,0x85, 0xfa,0xff,0xff,0xff,   // near jne -6 bytes
-        0x0f,0x85, 0xf4,0xff,0xff,0xff,   // near jne -12 bytes
-        0x0f,0x84, 0xee,0xff,0xff,0xff,   // near je  -18 bytes
-        0xe9,      0xe9,0xff,0xff,0xff,   // near jmp -23 bytes
-        0x0f,0x8c, 0xe3,0xff,0xff,0xff,   // near jl  -29 bytes
-        0x0f,0x82, 0xdd,0xff,0xff,0xff,   // near jc  -35 bytes
-
-        0x48,0x83,0xfa,0x01,
-        0x48,0x83,0xf8,0x0c,
-        0x49,0x81,0xfe,0x00,0x94,0x35,0x77,
-    });
-
-    test_asm(r, [&](A& a) {
-        a.vmovups(A::ymm5, A::Mem{A::rsi});
-        a.vmovups(A::Mem{A::rsi}, A::ymm5);
-
-        a.vmovups(A::xmm5, A::Mem{A::rsi});
-        a.vmovups(A::Mem{A::rsi}, A::xmm5);
-
-        a.vpmovzxwd(A::ymm4, A::Mem{A::rsi});
-        a.vpmovzxbd(A::ymm4, A::Mem{A::rsi});
-
-        a.vmovq(A::Mem{A::rdx}, A::xmm15);
-    },{
-        /*    VEX    */  /*Op*/  /*  ModRM  */
-        0xc5,     0xfc,   0x10,  0b00'101'110,
-        0xc5,     0xfc,   0x11,  0b00'101'110,
-
-        0xc5,     0xf8,   0x10,  0b00'101'110,
-        0xc5,     0xf8,   0x11,  0b00'101'110,
-
-        0xc4,0xe2,0x7d,   0x33,  0b00'100'110,
-        0xc4,0xe2,0x7d,   0x31,  0b00'100'110,
-
-        0xc5,     0x79,   0xd6,  0b00'111'010,
-    });
-
-    test_asm(r, [&](A& a) {
-        a.vmovups(A::ymm5, A::Mem{A::rsp,  0});
-        a.vmovups(A::ymm5, A::Mem{A::rsp, 64});
-        a.vmovups(A::ymm5, A::Mem{A::rsp,128});
-
-        a.vmovups(A::Mem{A::rsp,  0}, A::ymm5);
-        a.vmovups(A::Mem{A::rsp, 64}, A::ymm5);
-        a.vmovups(A::Mem{A::rsp,128}, A::ymm5);
-    },{
-        0xc5,0xfc,0x10,0x2c,0x24,
-        0xc5,0xfc,0x10,0x6c,0x24,0x40,
-        0xc5,0xfc,0x10,0xac,0x24,0x80,0x00,0x00,0x00,
-
-        0xc5,0xfc,0x11,0x2c,0x24,
-        0xc5,0xfc,0x11,0x6c,0x24,0x40,
-        0xc5,0xfc,0x11,0xac,0x24,0x80,0x00,0x00,0x00,
-    });
-
-    test_asm(r, [&](A& a) {
-        a.movzbq(A::rax, A::Mem{A::rsi});   // Low registers for src and dst.
-        a.movzbq(A::rax, A::Mem{A::r8,});   // High src register.
-        a.movzbq(A::r8 , A::Mem{A::rsi});   // High dst register.
-        a.movzbq(A::r8,  A::Mem{A::rsi, 12});
-        a.movzbq(A::r8,  A::Mem{A::rsi, 400});
-
-        a.movzwq(A::rax, A::Mem{A::rsi});   // Low registers for src and dst.
-        a.movzwq(A::rax, A::Mem{A::r8,});   // High src register.
-        a.movzwq(A::r8 , A::Mem{A::rsi});   // High dst register.
-        a.movzwq(A::r8,  A::Mem{A::rsi, 12});
-        a.movzwq(A::r8,  A::Mem{A::rsi, 400});
-
-        a.vmovd(A::Mem{A::rax}, A::xmm0);
-        a.vmovd(A::Mem{A::rax}, A::xmm8);
-        a.vmovd(A::Mem{A::r8 }, A::xmm0);
-
-        a.vmovd(A::xmm0, A::Mem{A::rax});
-        a.vmovd(A::xmm8, A::Mem{A::rax});
-        a.vmovd(A::xmm0, A::Mem{A::r8 });
-
-        a.vmovd(A::xmm0 , A::Mem{A::rax, 0, A::rcx, A::FOUR});
-        a.vmovd(A::xmm15, A::Mem{A::rax, 0, A::r8,  A::TWO });
-        a.vmovd(A::xmm0 , A::Mem{A::r8 , 0, A::rcx});
-
-        a.vmovd(A::rax, A::xmm0);
-        a.vmovd(A::rax, A::xmm8);
-        a.vmovd(A::r8 ,  A::xmm0);
-
-        a.vmovd(A::xmm0, A::rax);
-        a.vmovd(A::xmm8, A::rax);
-        a.vmovd(A::xmm0, A::r8 );
-
-        a.movb(A::Mem{A::rdx}, A::rax);
-        a.movb(A::Mem{A::rdx}, A::r8 );
-        a.movb(A::Mem{A::r8 }, A::rax);
-
-        a.movb(A::rdx, A::Mem{A::rax});
-        a.movb(A::rdx, A::Mem{A::r8 });
-        a.movb(A::r8 , A::Mem{A::rax});
-
-        a.movb(A::rdx, 12);
-        a.movb(A::rax,  4);
-        a.movb(A::r8 , -1);
-
-        a.movb(A::Mem{A::rdx}, 12);
-        a.movb(A::Mem{A::rax},  4);
-        a.movb(A::Mem{A::r8 }, -1);
-    },{
-        0x48,0x0f,0xb6,0x06,     // movzbq (%rsi), %rax
-        0x49,0x0f,0xb6,0x00,
-        0x4c,0x0f,0xb6,0x06,
-        0x4c,0x0f,0xb6,0x46, 12,
-        0x4c,0x0f,0xb6,0x86, 0x90,0x01,0x00,0x00,
-
-        0x48,0x0f,0xb7,0x06,    // movzwq (%rsi), %rax
-        0x49,0x0f,0xb7,0x00,
-        0x4c,0x0f,0xb7,0x06,
-        0x4c,0x0f,0xb7,0x46, 12,
-        0x4c,0x0f,0xb7,0x86, 0x90,0x01,0x00,0x00,
-
-        0xc5,0xf9,0x7e,0x00,
-        0xc5,0x79,0x7e,0x00,
-        0xc4,0xc1,0x79,0x7e,0x00,
-
-        0xc5,0xf9,0x6e,0x00,
-        0xc5,0x79,0x6e,0x00,
-        0xc4,0xc1,0x79,0x6e,0x00,
-
-        0xc5,0xf9,0x6e,0x04,0x88,
-        0xc4,0x21,0x79,0x6e,0x3c,0x40,
-        0xc4,0xc1,0x79,0x6e,0x04,0x08,
-
-        0xc5,0xf9,0x7e,0xc0,
-        0xc5,0x79,0x7e,0xc0,
-        0xc4,0xc1,0x79,0x7e,0xc0,
-
-        0xc5,0xf9,0x6e,0xc0,
-        0xc5,0x79,0x6e,0xc0,
-        0xc4,0xc1,0x79,0x6e,0xc0,
-
-        0x48 ,0x88, 0x02,
-        0x4c, 0x88, 0x02,
-        0x49, 0x88, 0x00,
-
-        0x48 ,0x8a, 0x10,
-        0x49, 0x8a, 0x10,
-        0x4c, 0x8a, 0x00,
-
-        0x48, 0xc6, 0xc2, 0x0c,
-        0x48, 0xc6, 0xc0, 0x04,
-        0x49, 0xc6, 0xc0, 0xff,
-
-        0x48, 0xc6, 0x02, 0x0c,
-        0x48, 0xc6, 0x00, 0x04,
-        0x49, 0xc6, 0x00, 0xff,
-    });
-
-    test_asm(r, [&](A& a) {
-        a.vpinsrd(A::xmm1, A::xmm8, A::Mem{A::rsi}, 1);   // vpinsrd $1, (%rsi), %xmm8, %xmm1
-        a.vpinsrd(A::xmm8, A::xmm1, A::Mem{A::r8 }, 3);   // vpinsrd $3, (%r8), %xmm1, %xmm8;
-
-        a.vpinsrw(A::xmm1, A::xmm8, A::Mem{A::rsi}, 4);   // vpinsrw $4, (%rsi), %xmm8, %xmm1
-        a.vpinsrw(A::xmm8, A::xmm1, A::Mem{A::r8 }, 12);  // vpinrsw $12, (%r8), %xmm1, %xmm8
-
-        a.vpinsrb(A::xmm1, A::xmm8, A::Mem{A::rsi}, 4);   // vpinsrb $4, (%rsi), %xmm8, %xmm1
-        a.vpinsrb(A::xmm8, A::xmm1, A::Mem{A::r8 }, 12);  // vpinsrb $12, (%r8), %xmm1, %xmm8
-
-        a.vextracti128(A::xmm1, A::ymm8, 1);  // vextracti128 $1, %ymm8, %xmm1
-        a.vextracti128(A::xmm8, A::ymm1, 0);  // vextracti128 $0, %ymm1, %xmm8
-
-        a.vpextrd(A::Mem{A::rsi}, A::xmm8, 3);  // vpextrd  $3, %xmm8, (%rsi)
-        a.vpextrd(A::Mem{A::r8 }, A::xmm1, 2);  // vpextrd  $2, %xmm1, (%r8)
-
-        a.vpextrw(A::Mem{A::rsi}, A::xmm8, 7);
-        a.vpextrw(A::Mem{A::r8 }, A::xmm1, 15);
-
-        a.vpextrb(A::Mem{A::rsi}, A::xmm8, 7);
-        a.vpextrb(A::Mem{A::r8 }, A::xmm1, 15);
-    },{
-        0xc4,0xe3,0x39, 0x22, 0x0e, 1,
-        0xc4,0x43,0x71, 0x22, 0x00, 3,
-
-        0xc5,0xb9,      0xc4, 0x0e,  4,
-        0xc4,0x41,0x71, 0xc4, 0x00, 12,
-
-        0xc4,0xe3,0x39, 0x20, 0x0e,  4,
-        0xc4,0x43,0x71, 0x20, 0x00, 12,
-
-        0xc4,0x63,0x7d,0x39,0xc1, 1,
-        0xc4,0xc3,0x7d,0x39,0xc8, 0,
-
-        0xc4,0x63,0x79,0x16,0x06, 3,
-        0xc4,0xc3,0x79,0x16,0x08, 2,
-
-        0xc4,0x63,0x79, 0x15, 0x06,  7,
-        0xc4,0xc3,0x79, 0x15, 0x08, 15,
-
-        0xc4,0x63,0x79, 0x14, 0x06,  7,
-        0xc4,0xc3,0x79, 0x14, 0x08, 15,
-    });
-
-    test_asm(r, [&](A& a) {
-        a.vpandn(A::ymm3, A::ymm12, A::ymm2);
-    },{
-        0xc5, 0x9d, 0xdf, 0xda,
-    });
-
-    test_asm(r, [&](A& a) {
-        A::Label l;
-        a.vmovdqa(A::ymm3, A::ymm2);                                // vmovdqa %ymm2         , %ymm3
-
-        a.vmovdqa(A::ymm3, A::Mem{A::rsi});                         // vmovdqa  (%rsi)       , %ymm3
-        a.vmovdqa(A::ymm3, A::Mem{A::rsp});                         // vmovdqa  (%rsp)       , %ymm3
-        a.vmovdqa(A::ymm3, A::Mem{A::r11});                         // vmovdqa  (%r11)       , %ymm3
-
-        a.vmovdqa(A::ymm3, A::Mem{A::rsi,  4});                     // vmovdqa 4(%rsi)       , %ymm3
-        a.vmovdqa(A::ymm3, A::Mem{A::rsp,  4});                     // vmovdqa 4(%rsp)       , %ymm3
-
-        a.vmovdqa(A::ymm3, A::Mem{A::rsi,  4, A::rax, A::EIGHT});   // vmovdqa 4(%rsi,%rax,8), %ymm3
-        a.vmovdqa(A::ymm3, A::Mem{A::r11,  4, A::rax, A::TWO  });   // vmovdqa 4(%r11,%rax,2), %ymm3
-        a.vmovdqa(A::ymm3, A::Mem{A::rsi,  4, A::r11, A::FOUR });   // vmovdqa 4(%rsi,%r11,4), %ymm3
-        a.vmovdqa(A::ymm3, A::Mem{A::rsi,  4, A::r11, A::ONE  });   // vmovdqa 4(%rsi,%r11,1), %ymm3
-        a.vmovdqa(A::ymm3, A::Mem{A::rsi,  4, A::r11});             // vmovdqa 4(%rsi,%r11)  , %ymm3
-
-        a.vmovdqa(A::ymm3, A::Mem{A::rsi,  64, A::r11});            // vmovdqa  64(%rsi,%r11), %ymm3
-        a.vmovdqa(A::ymm3, A::Mem{A::rsi, 128, A::r11});            // vmovdqa 128(%rsi,%r11), %ymm3
-        a.vmovdqa(A::ymm3, &l);                                     // vmovdqa  16(%rip)     , %ymm3
-
-        a.vcvttps2dq(A::ymm3, A::ymm2);
-        a.vcvtdq2ps (A::ymm3, A::ymm2);
-        a.vcvtps2dq (A::ymm3, A::ymm2);
-        a.vsqrtps   (A::ymm3, A::ymm2);
-        a.label(&l);
-    },{
-        0xc5,0xfd,0x6f,0xda,
-
-        0xc5,0xfd,0x6f,0x1e,
-        0xc5,0xfd,0x6f,0x1c,0x24,
-        0xc4,0xc1,0x7d,0x6f,0x1b,
-
-        0xc5,0xfd,0x6f,0x5e,0x04,
-        0xc5,0xfd,0x6f,0x5c,0x24,0x04,
-
-        0xc5,0xfd,0x6f,0x5c,0xc6,0x04,
-        0xc4,0xc1,0x7d,0x6f,0x5c,0x43,0x04,
-        0xc4,0xa1,0x7d,0x6f,0x5c,0x9e,0x04,
-        0xc4,0xa1,0x7d,0x6f,0x5c,0x1e,0x04,
-        0xc4,0xa1,0x7d,0x6f,0x5c,0x1e,0x04,
-
-        0xc4,0xa1,0x7d,0x6f,0x5c,0x1e,0x40,
-        0xc4,0xa1,0x7d,0x6f,0x9c,0x1e,0x80,0x00,0x00,0x00,
-
-        0xc5,0xfd,0x6f,0x1d,0x10,0x00,0x00,0x00,
-
-        0xc5,0xfe,0x5b,0xda,
-        0xc5,0xfc,0x5b,0xda,
-        0xc5,0xfd,0x5b,0xda,
-        0xc5,0xfc,0x51,0xda,
-    });
-
-    test_asm(r, [&](A& a) {
-        a.vcvtps2ph(A::xmm3, A::ymm2, A::CURRENT);
-        a.vcvtps2ph(A::Mem{A::rsi, 32, A::rax, A::EIGHT}, A::ymm5, A::CEIL);
-
-        a.vcvtph2ps(A::ymm15, A::Mem{A::rdi, 12, A::r9, A::ONE});
-        a.vcvtph2ps(A::ymm2, A::xmm3);
-    },{
-        0xc4,0xe3,0x7d,0x1d,0xd3,0x04,
-        0xc4,0xe3,0x7d,0x1d,0x6c,0xc6,0x20,0x02,
-
-        0xc4,0x22,0x7d,0x13,0x7c,0x0f,0x0c,
-        0xc4,0xe2,0x7d,0x13,0xd3,
-    });
-
-    test_asm(r, [&](A& a) {
-        a.vgatherdps(A::ymm1 , A::FOUR , A::ymm0 , A::rdi, A::ymm2 );
-        a.vgatherdps(A::ymm0 , A::ONE  , A::ymm2 , A::rax, A::ymm1 );
-        a.vgatherdps(A::ymm10, A::ONE  , A::ymm2 , A::rax, A::ymm1 );
-        a.vgatherdps(A::ymm0 , A::ONE  , A::ymm12, A::rax, A::ymm1 );
-        a.vgatherdps(A::ymm0 , A::ONE  , A::ymm2 , A::r9 , A::ymm1 );
-        a.vgatherdps(A::ymm0 , A::ONE  , A::ymm2 , A::rax, A::ymm12);
-        a.vgatherdps(A::ymm0 , A::EIGHT, A::ymm2 , A::rax, A::ymm12);
-    },{
-        0xc4,0xe2,0x6d,0x92,0x0c,0x87,
-        0xc4,0xe2,0x75,0x92,0x04,0x10,
-        0xc4,0x62,0x75,0x92,0x14,0x10,
-        0xc4,0xa2,0x75,0x92,0x04,0x20,
-        0xc4,0xc2,0x75,0x92,0x04,0x11,
-        0xc4,0xe2,0x1d,0x92,0x04,0x10,
-        0xc4,0xe2,0x1d,0x92,0x04,0xd0,
-    });
-
-    test_asm(r, [&](A& a) {
-        a.mov(A::rax, A::Mem{A::rdi,   0});
-        a.mov(A::rax, A::Mem{A::rdi,   1});
-        a.mov(A::rax, A::Mem{A::rdi, 512});
-        a.mov(A::r15, A::Mem{A::r13,  42});
-        a.mov(A::rax, A::Mem{A::r13,  42});
-        a.mov(A::r15, A::Mem{A::rax,  42});
-        a.mov(A::rax, 1);
-        a.mov(A::rax, A::rcx);
-    },{
-        0x48, 0x8b, 0x07,
-        0x48, 0x8b, 0x47, 0x01,
-        0x48, 0x8b, 0x87, 0x00,0x02,0x00,0x00,
-        0x4d, 0x8b, 0x7d, 0x2a,
-        0x49, 0x8b, 0x45, 0x2a,
-        0x4c, 0x8b, 0x78, 0x2a,
-        0x48, 0xc7, 0xc0, 0x01,0x00,0x00,0x00,
-        0x48, 0x89, 0xc8,
-    });
-
-    // echo "fmul v4.4s, v3.4s, v1.4s" | llvm-mc -show-encoding -arch arm64
-
-    test_asm(r, [&](A& a) {
-        a.and16b(A::v4, A::v3, A::v1);
-        a.orr16b(A::v4, A::v3, A::v1);
-        a.eor16b(A::v4, A::v3, A::v1);
-        a.bic16b(A::v4, A::v3, A::v1);
-        a.bsl16b(A::v4, A::v3, A::v1);
-        a.not16b(A::v4, A::v3);
-
-        a.add4s(A::v4, A::v3, A::v1);
-        a.sub4s(A::v4, A::v3, A::v1);
-        a.mul4s(A::v4, A::v3, A::v1);
-
-        a.cmeq4s(A::v4, A::v3, A::v1);
-        a.cmgt4s(A::v4, A::v3, A::v1);
-
-        a.sub8h(A::v4, A::v3, A::v1);
-        a.mul8h(A::v4, A::v3, A::v1);
-
-        a.fadd4s(A::v4, A::v3, A::v1);
-        a.fsub4s(A::v4, A::v3, A::v1);
-        a.fmul4s(A::v4, A::v3, A::v1);
-        a.fdiv4s(A::v4, A::v3, A::v1);
-        a.fmin4s(A::v4, A::v3, A::v1);
-        a.fmax4s(A::v4, A::v3, A::v1);
-
-        a.fneg4s (A::v4, A::v3);
-        a.fsqrt4s(A::v4, A::v3);
-
-        a.fmla4s(A::v4, A::v3, A::v1);
-        a.fmls4s(A::v4, A::v3, A::v1);
-
-        a.fcmeq4s(A::v4, A::v3, A::v1);
-        a.fcmgt4s(A::v4, A::v3, A::v1);
-        a.fcmge4s(A::v4, A::v3, A::v1);
-    },{
-        0x64,0x1c,0x21,0x4e,
-        0x64,0x1c,0xa1,0x4e,
-        0x64,0x1c,0x21,0x6e,
-        0x64,0x1c,0x61,0x4e,
-        0x64,0x1c,0x61,0x6e,
-        0x64,0x58,0x20,0x6e,
-
-        0x64,0x84,0xa1,0x4e,
-        0x64,0x84,0xa1,0x6e,
-        0x64,0x9c,0xa1,0x4e,
-
-        0x64,0x8c,0xa1,0x6e,
-        0x64,0x34,0xa1,0x4e,
-
-        0x64,0x84,0x61,0x6e,
-        0x64,0x9c,0x61,0x4e,
-
-        0x64,0xd4,0x21,0x4e,
-        0x64,0xd4,0xa1,0x4e,
-        0x64,0xdc,0x21,0x6e,
-        0x64,0xfc,0x21,0x6e,
-        0x64,0xf4,0xa1,0x4e,
-        0x64,0xf4,0x21,0x4e,
-
-        0x64,0xf8,0xa0,0x6e,
-        0x64,0xf8,0xa1,0x6e,
-
-        0x64,0xcc,0x21,0x4e,
-        0x64,0xcc,0xa1,0x4e,
-
-        0x64,0xe4,0x21,0x4e,
-        0x64,0xe4,0xa1,0x6e,
-        0x64,0xe4,0x21,0x6e,
-    });
-
-    test_asm(r, [&](A& a) {
-        a.shl4s(A::v4, A::v3,  0);
-        a.shl4s(A::v4, A::v3,  1);
-        a.shl4s(A::v4, A::v3,  8);
-        a.shl4s(A::v4, A::v3, 16);
-        a.shl4s(A::v4, A::v3, 31);
-
-        a.sshr4s(A::v4, A::v3,  1);
-        a.sshr4s(A::v4, A::v3,  8);
-        a.sshr4s(A::v4, A::v3, 31);
-
-        a.ushr4s(A::v4, A::v3,  1);
-        a.ushr4s(A::v4, A::v3,  8);
-        a.ushr4s(A::v4, A::v3, 31);
-
-        a.ushr8h(A::v4, A::v3,  1);
-        a.ushr8h(A::v4, A::v3,  8);
-        a.ushr8h(A::v4, A::v3, 15);
-    },{
-        0x64,0x54,0x20,0x4f,
-        0x64,0x54,0x21,0x4f,
-        0x64,0x54,0x28,0x4f,
-        0x64,0x54,0x30,0x4f,
-        0x64,0x54,0x3f,0x4f,
-
-        0x64,0x04,0x3f,0x4f,
-        0x64,0x04,0x38,0x4f,
-        0x64,0x04,0x21,0x4f,
-
-        0x64,0x04,0x3f,0x6f,
-        0x64,0x04,0x38,0x6f,
-        0x64,0x04,0x21,0x6f,
-
-        0x64,0x04,0x1f,0x6f,
-        0x64,0x04,0x18,0x6f,
-        0x64,0x04,0x11,0x6f,
-    });
-
-    test_asm(r, [&](A& a) {
-        a.sli4s(A::v4, A::v3,  0);
-        a.sli4s(A::v4, A::v3,  1);
-        a.sli4s(A::v4, A::v3,  8);
-        a.sli4s(A::v4, A::v3, 16);
-        a.sli4s(A::v4, A::v3, 31);
-    },{
-        0x64,0x54,0x20,0x6f,
-        0x64,0x54,0x21,0x6f,
-        0x64,0x54,0x28,0x6f,
-        0x64,0x54,0x30,0x6f,
-        0x64,0x54,0x3f,0x6f,
-    });
-
-    test_asm(r, [&](A& a) {
-        a.scvtf4s (A::v4, A::v3);
-        a.fcvtzs4s(A::v4, A::v3);
-        a.fcvtns4s(A::v4, A::v3);
-        a.frintp4s(A::v4, A::v3);
-        a.frintm4s(A::v4, A::v3);
-        a.fcvtn   (A::v4, A::v3);
-        a.fcvtl   (A::v4, A::v3);
-    },{
-        0x64,0xd8,0x21,0x4e,
-        0x64,0xb8,0xa1,0x4e,
-        0x64,0xa8,0x21,0x4e,
-        0x64,0x88,0xa1,0x4e,
-        0x64,0x98,0x21,0x4e,
-        0x64,0x68,0x21,0x0e,
-        0x64,0x78,0x21,0x0e,
-    });
-
-    test_asm(r, [&](A& a) {
-        a.sub (A::sp, A::sp, 32);  // sub   sp, sp, #32
-        a.strq(A::v0, A::sp, 1);   // str   q0, [sp, #16]
-        a.strq(A::v1, A::sp);      // str   q1, [sp]
-        a.strd(A::v0, A::sp, 6);   // str   s0, [sp, #48]
-        a.strs(A::v0, A::sp, 6);   // str   s0, [sp, #24]
-        a.strh(A::v0, A::sp, 10);  // str   h0, [sp, #20]
-        a.strb(A::v0, A::sp, 47);  // str   b0, [sp, #47]
-        a.ldrb(A::v9, A::sp, 42);  // ldr   b9, [sp, #42]
-        a.ldrh(A::v9, A::sp, 47);  // ldr   h9, [sp, #94]
-        a.ldrs(A::v7, A::sp, 10);  // ldr   s7, [sp, #40]
-        a.ldrd(A::v7, A::sp,  1);  // ldr   d7, [sp, #8]
-        a.ldrq(A::v5, A::sp, 128); // ldr   q5, [sp, #2048]
-        a.add (A::sp, A::sp, 32);  // add   sp, sp, #32
-    },{
-         0xff,0x83,0x00,0xd1,
-         0xe0,0x07,0x80,0x3d,
-         0xe1,0x03,0x80,0x3d,
-         0xe0,0x1b,0x00,0xfd,
-         0xe0,0x1b,0x00,0xbd,
-         0xe0,0x2b,0x00,0x7d,
-         0xe0,0xbf,0x00,0x3d,
-         0xe9,0xab,0x40,0x3d,
-         0xe9,0xbf,0x40,0x7d,
-         0xe7,0x2b,0x40,0xbd,
-         0xe7,0x07,0x40,0xfd,
-         0xe5,0x03,0xc2,0x3d,
-         0xff,0x83,0x00,0x91,
-    });
-
-    test_asm(r, [&](A& a) {
-        a.brk(0);
-        a.brk(65535);
-
-        a.ret(A::x30);   // Conventional ret using link register.
-        a.ret(A::x13);   // Can really return using any register if we like.
-
-        a.add(A::x2, A::x2,  4);
-        a.add(A::x3, A::x2, 32);
-
-        a.sub(A::x2, A::x2, 4);
-        a.sub(A::x3, A::x2, 32);
-
-        a.subs(A::x2, A::x2,  4);
-        a.subs(A::x3, A::x2, 32);
-
-        a.subs(A::xzr, A::x2, 4);  // These are actually the same instruction!
-        a.cmp(A::x2, 4);
-
-        A::Label l;
-        a.label(&l);
-        a.bne(&l);
-        a.bne(&l);
-        a.blt(&l);
-        a.b(&l);
-        a.cbnz(A::x2, &l);
-        a.cbz(A::x2, &l);
-
-        a.add(A::x3, A::x2, A::x1);             // add x3,x2,x1
-        a.add(A::x3, A::x2, A::x1, A::ASR, 3);  // add x3,x2,x1, asr #3
-    },{
-        0x00,0x00,0x20,0xd4,
-        0xe0,0xff,0x3f,0xd4,
-
-        0xc0,0x03,0x5f,0xd6,
-        0xa0,0x01,0x5f,0xd6,
-
-        0x42,0x10,0x00,0x91,
-        0x43,0x80,0x00,0x91,
-
-        0x42,0x10,0x00,0xd1,
-        0x43,0x80,0x00,0xd1,
-
-        0x42,0x10,0x00,0xf1,
-        0x43,0x80,0x00,0xf1,
-
-        0x5f,0x10,0x00,0xf1,
-        0x5f,0x10,0x00,0xf1,
-
-        0x01,0x00,0x00,0x54,   // b.ne #0
-        0xe1,0xff,0xff,0x54,   // b.ne #-4
-        0xcb,0xff,0xff,0x54,   // b.lt #-8
-        0xae,0xff,0xff,0x54,   // b.al #-12
-        0x82,0xff,0xff,0xb5,   // cbnz x2, #-16
-        0x62,0xff,0xff,0xb4,   // cbz x2, #-20
-
-        0x43,0x00,0x01,0x8b,
-        0x43,0x0c,0x81,0x8b,
-    });
-
-    // Can we cbz() to a not-yet-defined label?
-    test_asm(r, [&](A& a) {
-        A::Label l;
-        a.cbz(A::x2, &l);
-        a.add(A::x3, A::x2, 32);
-        a.label(&l);
-        a.ret(A::x30);
-    },{
-        0x42,0x00,0x00,0xb4,  // cbz x2, #8
-        0x43,0x80,0x00,0x91,  // add x3, x2, #32
-        0xc0,0x03,0x5f,0xd6,  // ret
-    });
-
-    // If we start a label as a backward label,
-    // can we redefine it to be a future label?
-    // (Not sure this is useful... just want to test it works.)
-    test_asm(r, [&](A& a) {
-        A::Label l1;
-        a.label(&l1);
-        a.add(A::x3, A::x2, 32);
-        a.cbz(A::x2, &l1);          // This will jump backward... nothing sneaky.
-
-        A::Label l2;                // Start off the same...
-        a.label(&l2);
-        a.add(A::x3, A::x2, 32);
-        a.cbz(A::x2, &l2);          // Looks like this will go backward...
-        a.add(A::x2, A::x2, 4);
-        a.add(A::x3, A::x2, 32);
-        a.label(&l2);               // But no... actually forward!  What a switcheroo!
-    },{
-        0x43,0x80,0x00,0x91,  // add x3, x2, #32
-        0xe2,0xff,0xff,0xb4,  // cbz x2, #-4
-
-        0x43,0x80,0x00,0x91,  // add x3, x2, #32
-        0x62,0x00,0x00,0xb4,  // cbz x2, #12
-        0x42,0x10,0x00,0x91,  // add x2, x2, #4
-        0x43,0x80,0x00,0x91,  // add x3, x2, #32
-    });
-
-    // Loading from a label on ARM.
-    test_asm(r, [&](A& a) {
-        A::Label fore,aft;
-        a.label(&fore);
-        a.word(0x01234567);
-        a.ldrq(A::v1, &fore);
-        a.ldrq(A::v2, &aft);
-        a.label(&aft);
-        a.word(0x76543210);
-    },{
-        0x67,0x45,0x23,0x01,
-        0xe1,0xff,0xff,0x9c,  // ldr q1, #-4
-        0x22,0x00,0x00,0x9c,  // ldr q2, #4
-        0x10,0x32,0x54,0x76,
-    });
-
-    test_asm(r, [&](A& a) {
-        a.ldrq(A::v0, A::x8);
-        a.strq(A::v0, A::x8);
-    },{
-        0x00,0x01,0xc0,0x3d,
-        0x00,0x01,0x80,0x3d,
-    });
-
-    test_asm(r, [&](A& a) {
-        a.dup4s  (A::v0, A::x8);
-        a.ld1r4s (A::v0, A::x8);  // echo 'ld1r.4s {v0}, [x8]' | llvm-mc --show-encoding
-        a.ld1r8h (A::v0, A::x8);
-        a.ld1r16b(A::v0, A::x8);
-    },{
-        0x00,0x0d,0x04,0x4e,
-        0x00,0xc9,0x40,0x4d,
-        0x00,0xc5,0x40,0x4d,
-        0x00,0xc1,0x40,0x4d,
-    });
-
-    test_asm(r, [&](A& a) {
-        a.ld24s(A::v0, A::x8);  // echo 'ld2.4s {v0,v1}, [x8]' | llvm-mc --show-encoding
-        a.ld44s(A::v0, A::x8);
-        a.st24s(A::v0, A::x8);
-        a.st44s(A::v0, A::x8);  // echo 'st4.4s {v0,v1,v2,v3}, [x8]' | llvm-mc --show-encoding
-
-        a.ld24s(A::v0, A::x8, 0);  //echo 'ld2 {v0.s,v1.s}[0], [x8]' | llvm-mc --show-encoding
-        a.ld24s(A::v0, A::x8, 1);
-        a.ld24s(A::v0, A::x8, 2);
-        a.ld24s(A::v0, A::x8, 3);
-
-        a.ld44s(A::v0, A::x8, 0);  // ld4 {v0.s,v1.s,v2.s,v3.s}[0], [x8]
-        a.ld44s(A::v0, A::x8, 1);
-        a.ld44s(A::v0, A::x8, 2);
-        a.ld44s(A::v0, A::x8, 3);
-    },{
-        0x00,0x89,0x40,0x4c,
-        0x00,0x09,0x40,0x4c,
-        0x00,0x89,0x00,0x4c,
-        0x00,0x09,0x00,0x4c,
-
-        0x00,0x81,0x60,0x0d,
-        0x00,0x91,0x60,0x0d,
-        0x00,0x81,0x60,0x4d,
-        0x00,0x91,0x60,0x4d,
-
-        0x00,0xa1,0x60,0x0d,
-        0x00,0xb1,0x60,0x0d,
-        0x00,0xa1,0x60,0x4d,
-        0x00,0xb1,0x60,0x4d,
-    });
-
-    test_asm(r, [&](A& a) {
-        a.xtns2h(A::v0, A::v0);
-        a.xtnh2b(A::v0, A::v0);
-        a.strs  (A::v0, A::x0);
-
-        a.ldrs   (A::v0, A::x0);
-        a.uxtlb2h(A::v0, A::v0);
-        a.uxtlh2s(A::v0, A::v0);
-
-        a.uminv4s(A::v3, A::v4);
-        a.movs   (A::x3, A::v4,0);  // mov.s w3,v4[0]
-        a.movs   (A::x3, A::v4,1);  // mov.s w3,v4[1]
-        a.inss   (A::v4, A::x3,3);  // ins.s v4[3],w3
-    },{
-        0x00,0x28,0x61,0x0e,
-        0x00,0x28,0x21,0x0e,
-        0x00,0x00,0x00,0xbd,
-
-        0x00,0x00,0x40,0xbd,
-        0x00,0xa4,0x08,0x2f,
-        0x00,0xa4,0x10,0x2f,
-
-        0x83,0xa8,0xb1,0x6e,
-        0x83,0x3c,0x04,0x0e,
-        0x83,0x3c,0x0c,0x0e,
-        0x64,0x1c,0x1c,0x4e,
-    });
-
-    test_asm(r, [&](A& a) {
-        a.ldrb(A::v0, A::x8);
-        a.strb(A::v0, A::x8);
-    },{
-        0x00,0x01,0x40,0x3d,
-        0x00,0x01,0x00,0x3d,
-    });
-
-    test_asm(r, [&](A& a) {
-        a.ldrd(A::x0, A::x1, 3);   // ldr  x0, [x1, #24]
-        a.ldrs(A::x0, A::x1, 3);   // ldr  w0, [x1, #12]
-        a.ldrh(A::x0, A::x1, 3);   // ldrh w0, [x1, #6]
-        a.ldrb(A::x0, A::x1, 3);   // ldrb w0, [x1, #3]
-
-        a.strs(A::x0, A::x1, 3);   // str  w0, [x1, #12]
-    },{
-        0x20,0x0c,0x40,0xf9,
-        0x20,0x0c,0x40,0xb9,
-        0x20,0x0c,0x40,0x79,
-        0x20,0x0c,0x40,0x39,
-
-        0x20,0x0c,0x00,0xb9,
-    });
-
-    test_asm(r, [&](A& a) {
-        a.tbl   (A::v0, A::v1, A::v2);
-        a.uzp14s(A::v0, A::v1, A::v2);
-        a.uzp24s(A::v0, A::v1, A::v2);
-        a.zip14s(A::v0, A::v1, A::v2);
-        a.zip24s(A::v0, A::v1, A::v2);
-    },{
-        0x20,0x00,0x02,0x4e,
-        0x20,0x18,0x82,0x4e,
-        0x20,0x58,0x82,0x4e,
-        0x20,0x38,0x82,0x4e,
-        0x20,0x78,0x82,0x4e,
-    });
 }
 
 DEF_TEST(SkVM_approx_math, r) {
@@ -2362,7 +1278,7 @@ DEF_TEST(SkVM_min_max, r) {
             b.storeF(mx, b.max(x,y));
         }
 
-        test_jit_and_interpreter(b, [&](const skvm::Program& program){
+        test_interpreter(b, [&](const skvm::Program& program){
             float mn[8], mx[8];
             for (int i = 0; i < 8; i++) {
                 // min() and max() everything with f[i].
@@ -2391,7 +1307,7 @@ DEF_TEST(SkVM_min_max, r) {
             b.storeF(mx, b.max(x,y));
         }
 
-        test_jit_and_interpreter(b, [&](const skvm::Program& program){
+        test_interpreter(b, [&](const skvm::Program& program){
             float mn[8], mx[8];
             program.eval(8, f,mn,mx);
             for (int j = 0; j < 8; j++) {
@@ -2416,7 +1332,7 @@ DEF_TEST(SkVM_min_max, r) {
             b.storeF(mx, b.max(x,y));
         }
 
-        test_jit_and_interpreter(b, [&](const skvm::Program& program){
+        test_interpreter(b, [&](const skvm::Program& program){
             float mn[8], mx[8];
             program.eval(8, f,mn,mx);
             for (int j = 0; j < 8; j++) {
@@ -2438,7 +1354,7 @@ DEF_TEST(SkVM_halfs, r) {
                   dst = b.varying<float>();
         b.storeF(dst, b.from_fp16(b.load16(src)));
 
-        test_jit_and_interpreter(b, [&](const skvm::Program& program){
+        test_interpreter(b, [&](const skvm::Program& program){
             float dst[8];
             program.eval(8, hs, dst);
             for (int i = 0; i < 8; i++) {
@@ -2452,7 +1368,7 @@ DEF_TEST(SkVM_halfs, r) {
                   dst = b.varying<uint16_t>();
         b.store16(dst, b.to_fp16(b.loadF(src)));
 
-        test_jit_and_interpreter(b, [&](const skvm::Program& program){
+        test_interpreter(b, [&](const skvm::Program& program){
             uint16_t dst[8];
             program.eval(8, fs, dst);
             for (int i = 0; i < 8; i++) {
@@ -2482,7 +1398,7 @@ DEF_TEST(SkVM_64bit, r) {
             b.store32(loPtr, b.load64(widePtr, 0));
             b.store32(hiPtr, b.load64(widePtr, 1));
         }
-        test_jit_and_interpreter(b, [&](const skvm::Program& program){
+        test_interpreter(b, [&](const skvm::Program& program){
             uint32_t l[65], h[65];
             program.eval(65, wide,l,h);
             for (int i = 0; i < 65; i++) {
@@ -2500,7 +1416,7 @@ DEF_TEST(SkVM_64bit, r) {
                         hiPtr = b.varying<int>();
             b.store64(widePtr, b.load32(loPtr), b.load32(hiPtr));
         }
-        test_jit_and_interpreter(b, [&](const skvm::Program& program){
+        test_interpreter(b, [&](const skvm::Program& program){
             uint64_t w[65];
             program.eval(65, w,lo,hi);
             for (int i = 0; i < 65; i++) {
@@ -2530,7 +1446,7 @@ DEF_TEST(SkVM_128bit, r) {
             skvm::Color c = b.load(rgba_ffff, src);
             b.store(rgba_8888, dst, c);
         }
-        test_jit_and_interpreter(b, [&](const skvm::Program& program){
+        test_interpreter(b, [&](const skvm::Program& program){
             memset(packed, 0, sizeof(packed));
             program.eval(63, packed, floats);
             for (int i = 0; i < 4*63; i++) {
@@ -2549,7 +1465,7 @@ DEF_TEST(SkVM_128bit, r) {
             skvm::Color c = b.load(rgba_8888, src);
             b.store(rgba_ffff, dst, c);
         }
-        test_jit_and_interpreter(b, [&](const skvm::Program& program){
+        test_interpreter(b, [&](const skvm::Program& program){
             memset(floats, 0, sizeof(floats));
             program.eval(63, floats, packed);
             for (int i = 0; i < 4*63; i++) {
@@ -2569,7 +1485,7 @@ DEF_TEST(SkVM_is_NaN_is_finite, r) {
         b.store32(nan, is_NaN   (b.loadF(src)));
         b.store32(fin, is_finite(b.loadF(src)));
     }
-    test_jit_and_interpreter(b, [&](const skvm::Program& program){
+    test_interpreter(b, [&](const skvm::Program& program){
         // ±NaN, ±0, ±1, ±inf
         const uint32_t bits[] = {0x7f80'0001, 0xff80'0001, 0x0000'0000, 0x8000'0000,
                                  0x3f80'0000, 0xbf80'0000, 0x7f80'0000, 0xff80'0000};
@@ -2601,7 +1517,7 @@ DEF_TEST(SkVM_args, r) {
                   + b.loadF(E));
     }
 
-    test_jit_and_interpreter(b, [&](const skvm::Program& program){
+    test_interpreter(b, [&](const skvm::Program& program){
         float dst[17],A[17],B[17],C[17],D[17],E[17];
         for (int i = 0; i < 17; i++) {
             A[i] = B[i] = C[i] = D[i] = E[i] = (float)i;
@@ -2630,7 +1546,7 @@ DEF_TEST(SkVM_badpack, reporter) {
         store16(dst, _4444);
     }
 
-    test_jit_and_interpreter(p, [&](const skvm::Program& program){
+    test_interpreter(p, [&](const skvm::Program& program){
         const float uniforms[] = { 0.0f, 0.0f,
                                    1.0f, 0.0f, 0.0f, 1.0f };
 
@@ -2730,7 +1646,7 @@ DEF_TEST(SkVM_dont_dedup_loads, r) {
         }
     }
 
-    test_jit_and_interpreter(b, [&](const skvm::Program& program){
+    test_interpreter(b, [&](const skvm::Program& program){
         int buf[] = { 0,1,2,3,4 };
         program.eval(std::size(buf), buf);
         for (int i = 0; i < (int)std::size(buf); i++) {
@@ -2751,7 +1667,7 @@ DEF_TEST(SkVM_dont_dedup_stores, r) {
         b.store32(buf, b.splat(4));   // If we dedup'd, we'd skip this store.
     }
 
-    test_jit_and_interpreter(b, [&](const skvm::Program& program){
+    test_interpreter(b, [&](const skvm::Program& program){
         int buf[42];
         program.eval(std::size(buf), buf);
         for (int x : buf) {
@@ -2770,7 +1686,7 @@ DEF_TEST(SkVM_fast_mul, r) {
         b.storeF(fast, fast_mul(0.0f, x));
         b.storeF(slow, 0.0f * x);
     }
-    test_jit_and_interpreter(b, [&](const skvm::Program& program){
+    test_interpreter(b, [&](const skvm::Program& program){
         const uint32_t bits[] = {
             0x0000'0000, 0x8000'0000, //±0
             0x3f80'0000, 0xbf80'0000, //±1
@@ -2840,60 +1756,4 @@ DEF_TEST(SkVM_duplicates, reporter) {
             REPORTER_ASSERT(reporter, instr.op != skvm::Op::duplicate);
         }
     }
-}
-
-DEF_TEST(SkVM_Visualizer, r) {
-    const char* src =
-            "int main(int x, int y) {\n"
-            "   int a = 99;\n"
-            "   if (x > 0) a += 100;\n"
-            "   if (y > 0) a += 101;\n"
-            "   a = 102;\n"
-            "   return a;\n"
-            "}";
-    GrShaderCaps caps;
-    SkSL::Compiler compiler(&caps);
-    SkSL::ProgramSettings settings;
-    auto program = compiler.convertProgram(SkSL::ProgramKind::kGeneric,
-                                           std::string(src), settings);
-    const SkSL::FunctionDefinition* main = SkSL::Program_GetFunction(*program, "main");
-    SkSL::SkVMDebugTrace d;
-    d.setSource(src);
-    auto v = std::make_unique<skvm::viz::Visualizer>(&d);
-    skvm::Builder b(skvm::Features{}, /*createDuplicates=*/true);
-    SkSL::ProgramToSkVM(*program, *main, &b, &d, /*uniforms=*/{});
-
-    skvm::Program p = b.done(nullptr, true, std::move(v));
-#if defined(SKVM_JIT)
-    SkDynamicMemoryWStream asmFile;
-    p.disassemble(&asmFile);
-    auto dumpData = asmFile.detachAsData();
-    std::string dumpString((const char*)dumpData->data(), dumpData->size());
-#else
-    std::string dumpString;
-#endif
-    SkDynamicMemoryWStream vizFile;
-    p.visualizer()->dump(&vizFile, dumpString.c_str());
-    auto vizData = vizFile.detachAsData();
-    std::string html((const char*)vizData->data(), vizData->size());
-    //b.dump();
-    //std::printf(html.c_str());
-    // Check that html contains all types of information:
-    if (!dumpString.empty() && !std::strstr(dumpString.c_str(), "Program not JIT'd.")) {
-        REPORTER_ASSERT(r, std::strstr(html.c_str(), "<tr class='machine'>"));  // machine commands
-    }
-    REPORTER_ASSERT(r, std::strstr(html.c_str(), "<tr class='normal'>"));       // SkVM byte code
-    REPORTER_ASSERT(r, std::strstr(html.c_str(), "<tr class='source'>"));       // C++ source
-    REPORTER_ASSERT(r, std::strstr(html.c_str(), "<tr class='dead'>"));         // dead code
-    REPORTER_ASSERT(r, std::strstr(html.c_str(), "<tr class='dead deduped'>")); // deduped removed
-    REPORTER_ASSERT(r, std::strstr(html.c_str(),                                // deduped origins
-                       "<tr class='normal origin'>"
-                       "<td>&#8593;&#8593;&#8593; *13</td>"
-                       "<td>v2 = splat 0 (0)</td></tr>"));
-    REPORTER_ASSERT(r, std::strstr(html.c_str(),                                // trace enter
-                       "<tr class='source'><td class='mask'>&#8618;v9</td>"
-                                   "<td colspan=2>int main(int x, int y)</td></tr>"));
-    REPORTER_ASSERT(r, std::strstr(html.c_str(),                                // trace exit
-                       "<tr class='source'><td class='mask'>&#8617;v9</td>"
-                       "<td colspan=2>int main(int x, int y)</td></tr>"));
 }

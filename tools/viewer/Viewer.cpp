@@ -188,8 +188,6 @@ static DEFINE_bool(redraw, false, "Toggle continuous redraw.");
 
 static DEFINE_bool(offscreen, false, "Force rendering to an offscreen surface.");
 static DEFINE_bool(skvm, false, "Force skvm blitters for raster.");
-static DEFINE_bool(jit, true, "JIT SkVM?");
-static DEFINE_bool(dylib, false, "JIT via dylib (much slower compile but easier to debug/profile)");
 static DEFINE_bool(stats, false, "Display stats overlay on startup.");
 static DEFINE_bool(binaryarchive, false, "Enable MTLBinaryArchive use (if available).");
 
@@ -329,8 +327,6 @@ static const char kON[] = "ON";
 static const char kRefreshStateName[] = "Refresh";
 
 extern bool gUseSkVMBlitter;
-extern bool gSkVMAllowJIT;
-extern bool gSkVMJITViaDylib;
 
 Viewer::Viewer(int argc, char** argv, void* platformData)
     : fCurrentSlide(-1)
@@ -385,8 +381,6 @@ Viewer::Viewer(int argc, char** argv, void* platformData)
 #endif
 
     gUseSkVMBlitter = FLAGS_skvm;
-    gSkVMAllowJIT = FLAGS_jit;
-    gSkVMJITViaDylib = FLAGS_dylib;
 
     CommonFlags::SetDefaultFontMgr();
 
@@ -731,11 +725,6 @@ Viewer::Viewer(int argc, char** argv, void* platformData)
         this->updateTitle();
         fWindow->inval();
     });
-    fCommands.addCommand('@', "SkVM", "Toggle SkVM JIT", [this]() {
-        gSkVMAllowJIT = !gSkVMAllowJIT;
-        this->updateTitle();
-        fWindow->inval();
-    });
 
     // set up slides
     this->initSlides();
@@ -991,9 +980,6 @@ void Viewer::updateTitle() {
     }
     if (gUseSkVMBlitter) {
         title.append(" <SkVMBlitter>");
-    }
-    if (!gSkVMAllowJIT) {
-        title.append(" <SkVM interpreter>");
     }
 
     SkPaintTitleUpdater paintTitle(&title);
@@ -2705,7 +2691,6 @@ void Viewer::drawImGui() {
 
                 if (ImGui::Button("Clear")) {
                     cache->reset();
-                    fDisassemblyCache.reset();
                 }
 
                 // First, go through the cache and restore the original program if we were hovering
@@ -2739,18 +2724,6 @@ void Viewer::drawImGui() {
                         auto dumpData = stream.detachAsData();
                         std::string dumpString((const char*)dumpData->data(), dumpData->size());
                         stringBox("##VM", &dumpString);
-
-#if defined(SKVM_JIT)
-                        std::string* asmString = fDisassemblyCache.find(*key);
-                        if (!asmString) {
-                            program->disassemble(&stream);
-                            auto asmData = stream.detachAsData();
-                            asmString = fDisassemblyCache.set(
-                                    *key,
-                                    std::string((const char*)asmData->data(), asmData->size()));
-                        }
-                        stringBox("##ASM", asmString);
-#endif
 
                         ImGui::TreePop();
                     }

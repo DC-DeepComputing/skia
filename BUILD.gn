@@ -740,7 +740,6 @@ if (skia_compile_sksl_tests) {
     include_dirs = [ "." ]
     deps = [
       ":run_sksllex",
-      ":skvm_jit",
       "//third_party/externals/dawn/src/tint:libtint",
       "//third_party/externals/spirv-tools:spvtools",
       "//third_party/externals/spirv-tools:spvtools_val",
@@ -1256,20 +1255,6 @@ optional("xml") {
   ]
 }
 
-optional("skvm_jit") {
-  enabled = skia_enable_skvm_jit_when_possible
-  public_defines = [ "SKVM_JIT_WHEN_POSSIBLE" ]
-  if (skia_vtune_path != "") {
-    public_defines += [ "SKVM_JIT_VTUNE" ]
-    public_include_dirs = [ "$skia_vtune_path/include" ]
-    if (is_win) {
-      libs = [ "$skia_vtune_path/lib64/jitprofiling.lib" ]
-    } else if (is_linux) {
-      libs = [ "$skia_vtune_path/lib64/libjitprofiling.a" ]
-    }
-  }
-}
-
 if (skia_enable_gpu && skia_generate_workarounds) {
   action("workaround_list") {
     script = "tools/build_workaround_header.py"
@@ -1332,7 +1317,6 @@ skia_component("skia") {
     ":png_decode",
     ":png_encode",
     ":raw",
-    ":skvm_jit",
     ":skx",
     ":sse2",
     ":sse41",

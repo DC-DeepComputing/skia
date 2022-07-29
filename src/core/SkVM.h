@@ -20,421 +20,7 @@
 
 class SkWStream;
 
-#if defined(SKVM_JIT_WHEN_POSSIBLE) && !defined(SK_BUILD_FOR_IOS)
-    #if defined(__x86_64__) || defined(_M_X64)
-        #if defined(_WIN32) || defined(__linux) || defined(__APPLE__)
-            #define SKVM_JIT
-        #endif
-    #endif
-    #if defined(__aarch64__)
-        #if defined(__ANDROID__) || defined(__APPLE__)
-            #define SKVM_JIT
-        #endif
-    #endif
-#endif
-
-#if 0
-    #define SKVM_LLVM
-#endif
-
-#if 0
-    #undef SKVM_JIT
-#endif
-
 namespace skvm {
-
-    namespace viz {
-        class Visualizer;
-    }
-
-    class Assembler {
-    public:
-        explicit Assembler(void* buf);
-
-        size_t size() const;
-
-        // Order matters... GP64, Xmm, Ymm values match 4-bit register encoding for each.
-        enum GP64 {
-            rax, rcx, rdx, rbx, rsp, rbp, rsi, rdi,
-            r8 , r9 , r10, r11, r12, r13, r14, r15,
-        };
-        enum Xmm {
-            xmm0, xmm1, xmm2 , xmm3 , xmm4 , xmm5 , xmm6 , xmm7 ,
-            xmm8, xmm9, xmm10, xmm11, xmm12, xmm13, xmm14, xmm15,
-        };
-        enum Ymm {
-            ymm0, ymm1, ymm2 , ymm3 , ymm4 , ymm5 , ymm6 , ymm7 ,
-            ymm8, ymm9, ymm10, ymm11, ymm12, ymm13, ymm14, ymm15,
-        };
-
-        // X and V values match 5-bit encoding for each (nothing tricky).
-        enum X {
-            x0 , x1 , x2 , x3 , x4 , x5 , x6 , x7 ,
-            x8 , x9 , x10, x11, x12, x13, x14, x15,
-            x16, x17, x18, x19, x20, x21, x22, x23,
-            x24, x25, x26, x27, x28, x29, x30, xzr, sp=xzr,
-        };
-        enum V {
-            v0 , v1 , v2 , v3 , v4 , v5 , v6 , v7 ,
-            v8 , v9 , v10, v11, v12, v13, v14, v15,
-            v16, v17, v18, v19, v20, v21, v22, v23,
-            v24, v25, v26, v27, v28, v29, v30, v31,
-        };
-
-        void bytes(const void*, int);
-        void byte(uint8_t);
-        void word(uint32_t);
-
-        struct Label {
-            int                                      offset = 0;
-            enum { NotYetSet, ARMDisp19, X86Disp32 } kind = NotYetSet;
-            SkSTArray<2, int>                        references;
-        };
-
-        // x86-64
-
-        void align(int mod);
-
-        void int3();
-        void vzeroupper();
-        void ret();
-
-        // Mem represents a value at base + disp + scale*index,
-        // or simply at base + disp if index=rsp.
-        enum Scale { ONE, TWO, FOUR, EIGHT };
-        struct Mem {
-            GP64  base;
-            int   disp  = 0;
-            GP64  index = rsp;
-            Scale scale = ONE;
-        };
-
-        struct Operand {
-            union {
-                int    reg;
-                Mem    mem;
-                Label* label;
-            };
-            enum { REG, MEM, LABEL } kind;
-
-            Operand(GP64   r) : reg  (r), kind(REG  ) {}
-            Operand(Xmm    r) : reg  (r), kind(REG  ) {}
-            Operand(Ymm    r) : reg  (r), kind(REG  ) {}
-            Operand(Mem    m) : mem  (m), kind(MEM  ) {}
-            Operand(Label* l) : label(l), kind(LABEL) {}
-        };
-
-        void vpand (Ymm dst, Ymm x, Operand y);
-        void vpandn(Ymm dst, Ymm x, Operand y);
-        void vpor  (Ymm dst, Ymm x, Operand y);
-        void vpxor (Ymm dst, Ymm x, Operand y);
-
-        void vpaddd (Ymm dst, Ymm x, Operand y);
-        void vpsubd (Ymm dst, Ymm x, Operand y);
-        void vpmulld(Ymm dst, Ymm x, Operand y);
-
-        void vpaddw   (Ymm dst, Ymm x, Operand y);
-        void vpsubw   (Ymm dst, Ymm x, Operand y);
-        void vpmullw  (Ymm dst, Ymm x, Operand y);
-
-        void vpabsw   (Ymm dst, Operand x);
-        void vpavgw   (Ymm dst, Ymm x, Operand y);  // dst = (x+y+1)>>1, unsigned.
-        void vpmulhrsw(Ymm dst, Ymm x, Operand y);  // dst = (x*y + (1<<14)) >> 15, signed.
-        void vpminsw  (Ymm dst, Ymm x, Operand y);
-        void vpminuw  (Ymm dst, Ymm x, Operand y);
-        void vpmaxsw  (Ymm dst, Ymm x, Operand y);
-        void vpmaxuw  (Ymm dst, Ymm x, Operand y);
-
-        void vaddps(Ymm dst, Ymm x, Operand y);
-        void vsubps(Ymm dst, Ymm x, Operand y);
-        void vmulps(Ymm dst, Ymm x, Operand y);
-        void vdivps(Ymm dst, Ymm x, Operand y);
-        void vminps(Ymm dst, Ymm x, Operand y);
-        void vmaxps(Ymm dst, Ymm x, Operand y);
-
-        void vsqrtps(Ymm dst, Operand x);
-
-        void vfmadd132ps(Ymm dst, Ymm x, Operand y);
-        void vfmadd213ps(Ymm dst, Ymm x, Operand y);
-        void vfmadd231ps(Ymm dst, Ymm x, Operand y);
-
-        void vfmsub132ps(Ymm dst, Ymm x, Operand y);
-        void vfmsub213ps(Ymm dst, Ymm x, Operand y);
-        void vfmsub231ps(Ymm dst, Ymm x, Operand y);
-
-        void vfnmadd132ps(Ymm dst, Ymm x, Operand y);
-        void vfnmadd213ps(Ymm dst, Ymm x, Operand y);
-        void vfnmadd231ps(Ymm dst, Ymm x, Operand y);
-
-        void vpackusdw(Ymm dst, Ymm x, Operand y);
-        void vpackuswb(Ymm dst, Ymm x, Operand y);
-
-        void vpunpckldq(Ymm dst, Ymm x, Operand y);
-        void vpunpckhdq(Ymm dst, Ymm x, Operand y);
-
-        void vpcmpeqd(Ymm dst, Ymm x, Operand y);
-        void vpcmpgtd(Ymm dst, Ymm x, Operand y);
-        void vpcmpeqw(Ymm dst, Ymm x, Operand y);
-        void vpcmpgtw(Ymm dst, Ymm x, Operand y);
-
-        void vcmpps   (Ymm dst, Ymm x, Operand y, int imm);
-        void vcmpeqps (Ymm dst, Ymm x, Operand y) { this->vcmpps(dst,x,y,0); }
-        void vcmpltps (Ymm dst, Ymm x, Operand y) { this->vcmpps(dst,x,y,1); }
-        void vcmpleps (Ymm dst, Ymm x, Operand y) { this->vcmpps(dst,x,y,2); }
-        void vcmpneqps(Ymm dst, Ymm x, Operand y) { this->vcmpps(dst,x,y,4); }
-
-        // Sadly, the x parameter cannot be a general Operand for these shifts.
-        void vpslld(Ymm dst, Ymm x, int imm);
-        void vpsrld(Ymm dst, Ymm x, int imm);
-        void vpsrad(Ymm dst, Ymm x, int imm);
-
-        void vpsllw(Ymm dst, Ymm x, int imm);
-        void vpsrlw(Ymm dst, Ymm x, int imm);
-        void vpsraw(Ymm dst, Ymm x, int imm);
-
-        void vpermq    (Ymm dst, Operand x, int imm);
-        void vperm2f128(Ymm dst, Ymm x, Operand y, int imm);
-        void vpermps   (Ymm dst, Ymm ix, Operand src);        // dst[i] = src[ix[i]]
-
-        enum Rounding { NEAREST, FLOOR, CEIL, TRUNC, CURRENT };
-        void vroundps(Ymm dst, Operand x, Rounding);
-
-        void vmovdqa(Ymm dst, Operand x);
-        void vmovups(Ymm dst, Operand x);
-        void vmovups(Xmm dst, Operand x);
-        void vmovups(Operand dst, Ymm x);
-        void vmovups(Operand dst, Xmm x);
-
-        void vcvtdq2ps (Ymm dst, Operand x);
-        void vcvttps2dq(Ymm dst, Operand x);
-        void vcvtps2dq (Ymm dst, Operand x);
-
-        void vcvtps2ph(Operand dst, Ymm x, Rounding);
-        void vcvtph2ps(Ymm dst, Operand x);
-
-        void vpblendvb(Ymm dst, Ymm x, Operand y, Ymm z);
-
-        void vpshufb(Ymm dst, Ymm x, Operand y);
-
-        void vptest(Ymm x, Operand y);
-
-        void vbroadcastss(Ymm dst, Operand y);
-
-        void vpmovzxwd(Ymm dst, Operand src);   // dst = src, 128-bit, uint16_t -> int
-        void vpmovzxbd(Ymm dst, Operand src);   // dst = src,  64-bit, uint8_t  -> int
-
-        void vmovq(Operand dst, Xmm src);  // dst = src,  64-bit
-        void vmovd(Operand dst, Xmm src);  // dst = src,  32-bit
-        void vmovd(Xmm dst, Operand src);  // dst = src,  32-bit
-
-        void vpinsrd(Xmm dst, Xmm src, Operand y, int imm);  // dst = src; dst[imm] = y, 32-bit
-        void vpinsrw(Xmm dst, Xmm src, Operand y, int imm);  // dst = src; dst[imm] = y, 16-bit
-        void vpinsrb(Xmm dst, Xmm src, Operand y, int imm);  // dst = src; dst[imm] = y,  8-bit
-
-        void vextracti128(Operand dst, Ymm src, int imm);    // dst = src[imm], 128-bit
-        void vpextrd     (Operand dst, Xmm src, int imm);    // dst = src[imm],  32-bit
-        void vpextrw     (Operand dst, Xmm src, int imm);    // dst = src[imm],  16-bit
-        void vpextrb     (Operand dst, Xmm src, int imm);    // dst = src[imm],   8-bit
-
-        // if (mask & 0x8000'0000) {
-        //     dst = base[scale*ix];
-        // }
-        // mask = 0;
-        void vgatherdps(Ymm dst, Scale scale, Ymm ix, GP64 base, Ymm mask);
-
-
-        void label(Label*);
-
-        void jmp(Label*);
-        void je (Label*);
-        void jne(Label*);
-        void jl (Label*);
-        void jc (Label*);
-
-        void add (Operand dst, int imm);
-        void sub (Operand dst, int imm);
-        void cmp (Operand dst, int imm);
-        void mov (Operand dst, int imm);
-        void movb(Operand dst, int imm);
-
-        void add (Operand dst, GP64 x);
-        void sub (Operand dst, GP64 x);
-        void cmp (Operand dst, GP64 x);
-        void mov (Operand dst, GP64 x);
-        void movb(Operand dst, GP64 x);
-
-        void add (GP64 dst, Operand x);
-        void sub (GP64 dst, Operand x);
-        void cmp (GP64 dst, Operand x);
-        void mov (GP64 dst, Operand x);
-        void movb(GP64 dst, Operand x);
-
-        // Disambiguators... choice is arbitrary (but generates different code!).
-        void add (GP64 dst, GP64 x) { this->add (Operand(dst), x); }
-        void sub (GP64 dst, GP64 x) { this->sub (Operand(dst), x); }
-        void cmp (GP64 dst, GP64 x) { this->cmp (Operand(dst), x); }
-        void mov (GP64 dst, GP64 x) { this->mov (Operand(dst), x); }
-        void movb(GP64 dst, GP64 x) { this->movb(Operand(dst), x); }
-
-        void movzbq(GP64 dst, Operand x);  // dst = x, uint8_t  -> int
-        void movzwq(GP64 dst, Operand x);  // dst = x, uint16_t -> int
-
-        // aarch64
-
-        // d = op(n,m)
-        using DOpNM = void(V d, V n, V m);
-        DOpNM  and16b, orr16b, eor16b, bic16b, bsl16b,
-               add4s,  sub4s,  mul4s,
-              cmeq4s, cmgt4s,
-                       sub8h,  mul8h,
-              fadd4s, fsub4s, fmul4s, fdiv4s, fmin4s, fmax4s,
-              fcmeq4s, fcmgt4s, fcmge4s,
-              tbl,
-              uzp14s, uzp24s,
-              zip14s, zip24s;
-
-        // TODO: there are also float ==,<,<=,>,>= instructions with an immediate 0.0f,
-        // and the register comparison > and >= can also compare absolute values.  Interesting.
-
-        // d += n*m
-        void fmla4s(V d, V n, V m);
-
-        // d -= n*m
-        void fmls4s(V d, V n, V m);
-
-        // d = op(n,imm)
-        using DOpNImm = void(V d, V n, int imm);
-        DOpNImm sli4s,
-                shl4s, sshr4s, ushr4s,
-                               ushr8h;
-
-        // d = op(n)
-        using DOpN = void(V d, V n);
-        DOpN not16b,    // d = ~n
-             fneg4s,    // d = -n
-             fsqrt4s,   // d = sqrtf(n)
-             scvtf4s,   // int -> float
-             fcvtzs4s,  // truncate float -> int
-             fcvtns4s,  // round float -> int  (nearest even)
-             frintp4s,  // round float -> int as float, toward plus infinity  (ceil)
-             frintm4s,  // round float -> int as float, toward minus infinity (floor)
-             fcvtn,     // f32 -> f16 in low half
-             fcvtl,     // f16 in low half -> f32
-             xtns2h,    // u32 -> u16
-             xtnh2b,    // u16 -> u8
-             uxtlb2h,   // u8 -> u16    (TODO: this is a special case of ushll.8h)
-             uxtlh2s,   // u16 -> u32   (TODO: this is a special case of ushll.4s)
-             uminv4s;   // dst[0] = min(n[0],n[1],n[2],n[3]), n as unsigned
-
-        void brk (int imm16);
-        void ret (X);
-        void add (X d, X n, int imm12);
-        void sub (X d, X n, int imm12);
-        void subs(X d, X n, int imm12);  // subtract setting condition flags
-
-        enum Shift { LSL,LSR,ASR,ROR };
-        void add (X d, X n, X m, Shift=LSL, int imm6=0);  // d=n+Shift(m,imm6), for Shift != ROR.
-
-        // There's another encoding for unconditional branches that can jump further,
-        // but this one encoded as b.al is simple to implement and should be fine.
-        void b  (Label* l) { this->b(Condition::al, l); }
-        void bne(Label* l) { this->b(Condition::ne, l); }
-        void blt(Label* l) { this->b(Condition::lt, l); }
-
-        // "cmp ..." is just an assembler mnemonic for "subs xzr, ..."!
-        void cmp(X n, int imm12) { this->subs(xzr, n, imm12); }
-
-        // Compare and branch if zero/non-zero, as if
-        //      cmp(t,0)
-        //      beq/bne(l)
-        // but without setting condition flags.
-        void cbz (X t, Label* l);
-        void cbnz(X t, Label* l);
-
-        // TODO: there are ldur variants with unscaled imm, useful?
-        void ldrd(X dst, X src, int imm12=0);  // 64-bit dst = *(src+imm12*8)
-        void ldrs(X dst, X src, int imm12=0);  // 32-bit dst = *(src+imm12*4)
-        void ldrh(X dst, X src, int imm12=0);  // 16-bit dst = *(src+imm12*2)
-        void ldrb(X dst, X src, int imm12=0);  //  8-bit dst = *(src+imm12)
-
-        void ldrq(V dst, Label*);  // 128-bit PC-relative load
-
-        void ldrq(V dst, X src, int imm12=0);  // 128-bit dst = *(src+imm12*16)
-        void ldrd(V dst, X src, int imm12=0);  //  64-bit dst = *(src+imm12*8)
-        void ldrs(V dst, X src, int imm12=0);  //  32-bit dst = *(src+imm12*4)
-        void ldrh(V dst, X src, int imm12=0);  //  16-bit dst = *(src+imm12*2)
-        void ldrb(V dst, X src, int imm12=0);  //   8-bit dst = *(src+imm12)
-
-        void strs(X src, X dst, int imm12=0);  // 32-bit *(dst+imm12*4) = src
-
-        void strq(V src, X dst, int imm12=0);  // 128-bit *(dst+imm12*16) = src
-        void strd(V src, X dst, int imm12=0);  //  64-bit *(dst+imm12*8)  = src
-        void strs(V src, X dst, int imm12=0);  //  32-bit *(dst+imm12*4)  = src
-        void strh(V src, X dst, int imm12=0);  //  16-bit *(dst+imm12*2)  = src
-        void strb(V src, X dst, int imm12=0);  //   8-bit *(dst+imm12)    = src
-
-        void movs(X dst, V src, int lane);  // dst = 32-bit src[lane]
-        void inss(V dst, X src, int lane);  // dst[lane] = 32-bit src
-
-        void dup4s  (V dst, X src);  // Each 32-bit lane = src
-
-        void ld1r4s (V dst, X src);  // Each 32-bit lane = *src
-        void ld1r8h (V dst, X src);  // Each 16-bit lane = *src
-        void ld1r16b(V dst, X src);  // Each  8-bit lane = *src
-
-        void ld24s(V dst, X src);  // deinterleave(dst,dst+1)             = 256-bit *src
-        void ld44s(V dst, X src);  // deinterleave(dst,dst+1,dst+2,dst+3) = 512-bit *src
-        void st24s(V src, X dst);  // 256-bit *dst = interleave_32bit_lanes(src,src+1)
-        void st44s(V src, X dst);  // 512-bit *dst = interleave_32bit_lanes(src,src+1,src+2,src+3)
-
-        void ld24s(V dst, X src, int lane);  // Load 2 32-bit values into given lane of dst..dst+1
-        void ld44s(V dst, X src, int lane);  // Load 4 32-bit values into given lane of dst..dst+3
-
-    private:
-        uint8_t* fCode;
-        size_t   fSize;
-
-        // x86-64
-        enum W { W0, W1 };      // Are the lanes 64-bit (W1) or default (W0)?  Intel Vol 2A 2.3.5.5
-        enum L { L128, L256 };  // Is this a 128- or 256-bit operation?        Intel Vol 2A 2.3.6.2
-
-        // Helpers for vector instructions.
-        void op(int prefix, int map, int opcode, int dst, int x, Operand y, W,L);
-        void op(int p, int m, int o, Ymm d, Ymm x, Operand y, W w=W0) { op(p,m,o, d,x,y,w,L256); }
-        void op(int p, int m, int o, Ymm d,        Operand y, W w=W0) { op(p,m,o, d,0,y,w,L256); }
-        void op(int p, int m, int o, Xmm d, Xmm x, Operand y, W w=W0) { op(p,m,o, d,x,y,w,L128); }
-        void op(int p, int m, int o, Xmm d,        Operand y, W w=W0) { op(p,m,o, d,0,y,w,L128); }
-
-        // Helpers for GP64 instructions.
-        void op(int opcode, Operand dst, GP64 x);
-        void op(int opcode, int opcode_ext, Operand dst, int imm);
-
-        void jump(uint8_t condition, Label*);
-        int disp32(Label*);
-        void imm_byte_after_operand(const Operand&, int byte);
-
-        // aarch64
-
-        // Opcode for 3-arguments ops is split between hi and lo:
-        //    [11 bits hi] [5 bits m] [6 bits lo] [5 bits n] [5 bits d]
-        void op(uint32_t hi, V m, uint32_t lo, V n, V d);
-
-        // 0,1,2-argument ops, with or without an immediate:
-        //    [ 22 bits op ] [5 bits n] [5 bits d]
-        // Any immediate falls in the middle somewhere overlapping with either op, n, or both.
-        void op(uint32_t op22, V n, V d, int imm=0);
-        void op(uint32_t op22, X n, V d, int imm=0) { this->op(op22,(V)n,   d,imm); }
-        void op(uint32_t op22, V n, X d, int imm=0) { this->op(op22,   n,(V)d,imm); }
-        void op(uint32_t op22, X n, X d, int imm=0) { this->op(op22,(V)n,(V)d,imm); }
-        void op(uint32_t op22,           int imm=0) { this->op(op22,(V)0,(V)0,imm); }
-        // (1-argument ops don't seem to have a consistent convention of passing as n or d.)
-
-
-        // Order matters... value is 4-bit encoding for condition code.
-        enum class Condition { eq,ne,cs,cc,mi,pl,vs,vc,hi,ls,ge,lt,gt,le,al };
-        void b(Condition, Label*);
-        int disp19(Label*);
-    };
 
     // Order matters a little: Ops <=store128 are treated as having side effects.
     #define SKVM_OPS(M)                                              \
@@ -619,15 +205,11 @@ namespace skvm {
         Builder(bool createDuplicates = false);
         Builder(Features, bool createDuplicates = false);
 
-        Program done(const char* debug_name,
-                     bool allow_jit,
-                     std::unique_ptr<viz::Visualizer> visualizer) const;
-        Program done(const char* debug_name = nullptr,
-                     bool allow_jit=true) const;
+        Program done() const;
 
         // Mostly for debugging, tests, etc.
         std::vector<Instruction> program() const { return fProgram; }
-        std::vector<OptimizedInstruction> optimize(viz::Visualizer* visualizer = nullptr) const;
+        std::vector<OptimizedInstruction> optimize() const;
 
         // Returns a trace-hook ID which must be passed to the trace opcodes.
         int attachTraceHook(TraceHook*);
@@ -1029,10 +611,8 @@ namespace skvm {
 
     // Optimization passes and data structures normally used by Builder::optimize(),
     // extracted here so they can be unit tested.
-    std::vector<Instruction> eliminate_dead_code(std::vector<Instruction>,
-                                                 viz::Visualizer* visualizer = nullptr);
-    std::vector<OptimizedInstruction> finalize(std::vector<Instruction>,
-                                               viz::Visualizer* visualizer = nullptr);
+    std::vector<Instruction> eliminate_dead_code(std::vector<Instruction>);
+    std::vector<OptimizedInstruction> finalize(std::vector<Instruction>);
 
     using Reg = int;
 
@@ -1046,10 +626,8 @@ namespace skvm {
     class Program {
     public:
         Program(const std::vector<OptimizedInstruction>& instructions,
-                std::unique_ptr<viz::Visualizer> visualizer,
                 const std::vector<int>& strides,
-                const std::vector<TraceHook*>& traceHooks,
-                const char* debug_name, bool allow_jit);
+                const std::vector<TraceHook*>& traceHooks);
 
         Program();
         ~Program();
@@ -1076,25 +654,12 @@ namespace skvm {
         int  loop () const;
         bool empty() const;
 
-        bool hasJIT() const;         // Has this Program been JITted?
         bool hasTraceHooks() const;  // Is this program instrumented for debugging?
 
-        void visualize(SkWStream* output, const char* code) const;
         void dump(SkWStream* = nullptr) const;
-        void disassemble(SkWStream* = nullptr) const;
-        viz::Visualizer* visualizer();
 
     private:
         void setupInterpreter(const std::vector<OptimizedInstruction>&);
-        void setupJIT        (const std::vector<OptimizedInstruction>&, const char* debug_name);
-        void setupLLVM       (const std::vector<OptimizedInstruction>&, const char* debug_name);
-
-        bool jit(const std::vector<OptimizedInstruction>&,
-                 int* stack_hint, uint32_t* registers_used,
-                 Assembler*) const;
-
-        void waitForLLVM() const;
-        void dropJIT();
 
         struct Impl;
         std::unique_ptr<Impl> fImpl;

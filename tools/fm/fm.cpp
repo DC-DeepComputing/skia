@@ -64,8 +64,6 @@ static DEFINE_string(tf    ,   "srgb", "The transfer function for any raster bac
 static DEFINE_bool  (legacy,    false, "Use a null SkColorSpace instead of --gamut and --tf?");
 
 static DEFINE_bool  (skvm ,    false, "Use SkVMBlitter when supported?");
-static DEFINE_bool  (jit  ,     true, "JIT SkVM?");
-static DEFINE_bool  (dylib,    false, "JIT SkVM via dylib?");
 
 static DEFINE_bool  (reducedshaders,    false, "Use reduced shader set for any GPU backend.");
 static DEFINE_int   (samples       ,         0, "Samples per pixel in GPU backends.");
@@ -377,8 +375,6 @@ TestHarness CurrentTestHarness() {
 }
 
 extern bool gUseSkVMBlitter;
-extern bool gSkVMAllowJIT;
-extern bool gSkVMJITViaDylib;
 
 int main(int argc, char** argv) {
     CommandLineFlags::Parse(argc, argv);
@@ -393,8 +389,6 @@ int main(int argc, char** argv) {
 #endif
 
     gUseSkVMBlitter  = FLAGS_skvm;
-    gSkVMAllowJIT    = FLAGS_jit;
-    gSkVMJITViaDylib = FLAGS_dylib;
 
     initializeEventTracingForTools();
     CommonFlags::SetDefaultFontMgr();

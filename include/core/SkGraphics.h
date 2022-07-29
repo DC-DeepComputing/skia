@@ -160,6 +160,7 @@ public:
     static bool GetVariableColrV1Enabled();
 
     /**
+     *  DEPRECATED:
      *  Call early in main() to allow Skia to use a JIT to accelerate CPU-bound operations.
      */
     static void AllowJIT();

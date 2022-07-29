@@ -6,10 +6,8 @@
  */
 
 #define SK_OPTS_NS skslc_standalone
-#include "include/core/SkGraphics.h"
 #include "include/core/SkStream.h"
 #include "include/private/SkStringView.h"
-#include "src/core/SkCpu.h"
 #include "src/core/SkOpts.h"
 #include "src/opts/SkChecksum_opts.h"
 #include "src/opts/SkVM_opts.h"
@@ -24,7 +22,6 @@
 #include "src/sksl/ir/SkSLVarDeclarations.h"
 #include "src/sksl/tracing/SkVMDebugTrace.h"
 #include "src/utils/SkShaderUtils.h"
-#include "src/utils/SkVMVisualizer.h"
 
 #include "spirv-tools/libspirv.hpp"
 
@@ -33,8 +30,6 @@
 #include <optional>
 #include <stdarg.h>
 #include <stdio.h>
-
-extern bool gSkVMAllowJIT;
 
 void SkDebugf(const char format[], ...) {
     va_list args;
@@ -516,39 +511,8 @@ ResultCode processCommand(const std::vector<std::string>& args) {
                     out.writeString(SkShaderUtils::PrettyPrint(callbacks.fOutput));
                     return true;
                 });
-    } else if (skstd::ends_with(outputPath, ".html")) {
-        settings.fAllowTraceVarInSkVMDebugTrace = false;
-
-        SkCpu::CacheRuntimeFeatures();
-        gSkVMAllowJIT = true;
-        return compileProgramForSkVM(
-            [&](SkSL::Compiler&, SkSL::Program& program, SkSL::OutputStream& out) {
-                if (!debugTrace) {
-                    debugTrace = std::make_unique<SkSL::SkVMDebugTrace>();
-                    debugTrace->setSource(text.c_str());
-                }
-                auto visualizer = std::make_unique<skvm::viz::Visualizer>(debugTrace.get());
-                skvm::Builder builder(skvm::Features{}, /*createDuplicates=*/true);
-                if (!SkSL::testingOnly_ProgramToSkVMShader(program, &builder, debugTrace.get())) {
-                    return false;
-                }
-
-                std::unique_ptr<SkWStream> redirect = as_SkWStream(out);
-                skvm::Program p = builder.done(
-                        /*debug_name=*/nullptr, /*allow_jit=*/true, std::move(visualizer));
-#if defined(SKVM_JIT)
-                SkDynamicMemoryWStream asmFile;
-                p.disassemble(&asmFile);
-                auto dumpData = asmFile.detachAsData();
-                std::string dumpString(static_cast<const char*>(dumpData->data()),dumpData->size());
-                p.visualize(redirect.get(), dumpString.c_str());
-#else
-                p.visualize(redirect.get(), nullptr);
-#endif
-                return true;
-            });
     } else {
-        printf("expected output path to end with one of: .glsl, .html, .metal, .hlsl, .wgsl, "
+        printf("expected output path to end with one of: .glsl, .metal, .hlsl, .wgsl, "
                ".spirv, .asm.vert, .asm.frag, .skvm, .stage (got '%s')\n",
                outputPath.c_str());
         return ResultCode::kConfigurationError;

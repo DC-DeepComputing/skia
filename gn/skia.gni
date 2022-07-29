@@ -27,7 +27,6 @@ declare_args() {
   skia_enable_precompile = true
   skia_enable_sksl = true
   skia_enable_sksl_tracing = is_skia_dev_build
-  skia_enable_skvm_jit_when_possible = is_skia_dev_build
   skia_enable_svg = !is_component_build
   skia_enable_tools = is_skia_dev_build
   skia_enable_gpu_debug_layers = is_skia_dev_build && is_debug
@@ -73,8 +72,6 @@ declare_args() {
   skia_use_xps = true
   skia_enable_graphite = false
   skia_use_zlib = true
-
-  skia_vtune_path = ""
 
   if (is_ios) {
     skia_ios_identity = ".*Google.*"

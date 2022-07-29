@@ -1710,8 +1710,6 @@ BASE_SRCS_ALL = [
     "src/utils/SkThreadUtils_win.cpp",
     "src/utils/SkUTF.cpp",
     "src/utils/SkUTF.h",
-    "src/utils/SkVMVisualizer.cpp",
-    "src/utils/SkVMVisualizer.h",
     "src/xps/SkXPSDevice.cpp",
     "src/xps/SkXPSDevice.h",
     "src/xps/SkXPSDocument.cpp",
