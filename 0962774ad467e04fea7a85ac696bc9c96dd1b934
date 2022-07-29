@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c017c678_fa813cdc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 13
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2022-07-29T01:56:07Z",
+      "side": 1,
+      "message": "Some striking Gold diffs, are these expected?\n\nhttps://gold.skia.org/search?blame\u003d001000009272\u0026corpus\u003dgm\n\nPlease triage.",
+      "revId": "0962774ad467e04fea7a85ac696bc9c96dd1b934",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
