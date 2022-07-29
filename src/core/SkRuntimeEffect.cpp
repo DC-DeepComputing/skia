@@ -1133,13 +1133,21 @@ public:
                 get_xformed_uniforms(fEffect.get(), fUniforms, args.fDstColorInfo->colorSpace());
         SkASSERT(uniforms);
 
+        // We handle the pre-local matrix at this level so strip it out.
+        GrFPArgs fpArgs = args;
+        fpArgs.fPreLocalMatrix = nullptr;
         auto [success, fp] = make_effect_fp(fEffect,
                                             "runtime_shader",
                                             std::move(uniforms),
                                             /*inputFP=*/nullptr,
                                             /*destColorFP=*/nullptr,
+<<<<<<< HEAD   (cf38e6 Revert "In the CPU backend, stop treating alpha images as co)
                                             SkMakeSpan(fChildren),
                                             args);
+=======
+                                            SkSpan(fChildren),
+                                            fpArgs);
+>>>>>>> CHANGE (544059 [ganesh] Fix double application of local matrices to runtime)
         if (!success) {
             return nullptr;
         }
