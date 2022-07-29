@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c83ada05_864c4bf8",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-07-29T13:06:21Z",
+      "side": 1,
+      "message": "Yeah, it\u0027s not any more dangerous than anything else that\u0027s public at this point, and it makes the references more clearly tied to whichever pool goes with the program.",
+      "range": {
+        "startLine": 15,
+        "startChar": 14,
+        "endLine": 15,
+        "endChar": 24
+      },
+      "revId": "e1a714fad03888148eef2dbb39178cc72c6c7d2e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
