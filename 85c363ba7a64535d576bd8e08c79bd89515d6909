@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "714e14d3_1a4ea804",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-07-29T19:12:56Z",
+      "side": 1,
+      "message": "A quick fix, PTAL.",
+      "revId": "85c363ba7a64535d576bd8e08c79bd89515d6909",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
