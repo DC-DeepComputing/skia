@@ -59,7 +59,7 @@ public:
 
         make_strip(&fRecs[0], size.fX, size.fY);
         make_fan(&fRecs[1], size.fX, size.fY);
-        make_tris(&fRecs[2]);
+        // make_tris(&fRecs[2]);
 
         fScale = SK_Scalar1;
 
@@ -202,7 +202,7 @@ private:
         m.mapPoints(v, rec->fCount);
     }
 
-    Rec fRecs[3];
+    Rec fRecs[2];
 
     using INHERITED = Sample;
 };

@@ -149,6 +149,7 @@ std::string SkShaderInfo::toSkSL(const skgpu::graphite::RenderStep* step) const 
     if (step->hasTextures()) {
         preamble += step->texturesAndSamplersSkSL(binding);
     }
+    // TODO - Is there ay setup needed for color?
 
     std::string mainBody = SkSL::String::printf("void main() {\n"
                                                 "    float4 coords = %s sk_FragCoord;\n",
@@ -168,11 +169,19 @@ std::string SkShaderInfo::toSkSL(const skgpu::graphite::RenderStep* step) const 
         emit_preamble_for_entry(*this, &entryIndex, &preamble);
     }
 
+    // TODO - handle the case where a step emits coverage AND a color.
     if (step->emitsCoverage()) {
         mainBody += "half4 outputCoverage;";
         mainBody += step->fragmentCoverageSkSL();
         SkSL::String::appendf(&mainBody, "    sk_FragColor = %s*outputCoverage;\n",
                               lastOutputVar.c_str());
+    } else if (step->emitsPrimitiveColor()) {
+        mainBody += "half4 outputColor;";
+        mainBody += step->fragmentColorSkSL();
+        SkSL::String::appendf(&mainBody, "    sk_FragColor = outputColor;\n");
+        //                       lastOutputVar.c_str());
+    } else if (step->hasTextures()) {
+        SkSL::String::appendf(&mainBody, "    sk_FragColor = sample(texture, textureCoords);\n");
     } else {
         SkSL::String::appendf(&mainBody, "    sk_FragColor = %s;\n", lastOutputVar.c_str());
     }
