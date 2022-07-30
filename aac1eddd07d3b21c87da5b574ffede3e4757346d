@@ -16,6 +16,57 @@
       "message": "Maybe more like this?",
       "revId": "aac1eddd07d3b21c87da5b574ffede3e4757346d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0092ff4a_db01c5b1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2022-07-30T09:02:03Z",
+      "side": 1,
+      "message": "Thank",
+      "revId": "aac1eddd07d3b21c87da5b574ffede3e4757346d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "af4f2e00_eaf105bb",
+        "filename": "gm/colrv1.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2022-07-30T09:02:03Z",
+      "side": 1,
+      "message": "This becomes obsolete with the helpful user-defined literal and can turn back into `SkFontArguments::VariationPosition::Coordinate`. \n\nI incorporated that here: https://skia-review.googlesource.com/c/skia/+/563336/8/gm/colrv1.cpp#44 in the original CL if that\u0027s quicker and you would not have to update.",
+      "revId": "aac1eddd07d3b21c87da5b574ffede3e4757346d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5742d7fe_d520f7ec",
+        "filename": "gm/colrv1.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 229,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2022-07-30T09:02:03Z",
+      "side": 1,
+      "message": "Cool, TIL about user-defined literals. Thanks for this suggestion.",
+      "revId": "aac1eddd07d3b21c87da5b574ffede3e4757346d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
