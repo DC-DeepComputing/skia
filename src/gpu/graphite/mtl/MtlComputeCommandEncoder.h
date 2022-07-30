@@ -26,10 +26,18 @@ public:
                                                 id<MTLCommandBuffer> commandBuffer,
                                                 MTLDispatchType dispatchType) {
         // Adding a retain here to keep our own ref separate from the autorelease pool
-        sk_cfp<id<MTLComputeCommandEncoder>> encoder =
-                sk_ret_cfp([commandBuffer computeCommandEncoderWithDispatchType:dispatchType]);
+        id<MTLComputeCommandEncoder> encoder = nil;
+        if (@available(macOS 10.14, iOS 12.0, *)) {
+            encoder = [commandBuffer computeCommandEncoderWithDispatchType:dispatchType];
+        } else {
+            // Concurrent dispatch is not supported on macOS 10.11+ / iOS 8.0+.
+            if (dispatchType != MTLDispatchTypeSerial) {
+                return nullptr;
+            }
+            encoder = [commandBuffer computeCommandEncoder];
+        }
         return sk_sp<MtlComputeCommandEncoder>(
-                new MtlComputeCommandEncoder(gpu, std::move(encoder)));
+                new MtlComputeCommandEncoder(gpu, sk_ret_cfp(encoder)));
     }
 
     void setLabel(NSString* label) { [(*fCommandEncoder) setLabel:label]; }
