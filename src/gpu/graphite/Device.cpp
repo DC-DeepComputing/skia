@@ -45,6 +45,9 @@
 #include "src/text/gpu/SubRunContainer.h"
 #include "src/text/gpu/TextBlobRedrawCoordinator.h"
 
+// TODO: HACK
+#include "src/gpu/graphite/ComputePassTask.h"
+
 #include <unordered_map>
 #include <vector>
 
@@ -868,6 +871,8 @@ void Device::flushPendingWorkToRecorder() {
     if (uploadTask) {
         fRecorder->priv().add(std::move(uploadTask));
     }
+
+    fRecorder->priv().add(ComputePassTask::MakeHackTaskForLocalTesting(fRecorder->priv().resourceProvider()));
 
     fClip.recordDeferredClipDraws();
     auto drawTask = fDC->snapRenderPassTask(fRecorder);
