@@ -76,6 +76,22 @@ bool CommandBuffer::addRenderPass(const RenderPassDesc& renderPassDesc,
     return true;
 }
 
+bool CommandBuffer::addComputePass(const ComputePassDesc& computePassDesc,
+                                   sk_sp<ComputePipeline> pipeline,
+                                   const std::vector<ResourceBinding>& bindings) {
+    if (!this->onAddComputePass(computePassDesc, pipeline.get(), bindings)) {
+        return false;
+    }
+
+    for (const auto& binding : bindings) {
+        this->trackResource(binding.fResource.fBuffer);
+    }
+
+    SkDEBUGCODE(fHasWork = true;)
+
+    return true;
+}
+
 bool CommandBuffer::copyTextureToBuffer(sk_sp<Texture> texture,
                                         SkIRect srcRect,
                                         sk_sp<Buffer> buffer,
