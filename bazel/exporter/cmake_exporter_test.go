@@ -7,6 +7,7 @@ package exporter
 import (
 	"bytes"
 	"io"
+	"path/filepath"
 	"strings"
 	"testing"
 
@@ -21,6 +22,7 @@ import (
 )
 
 const testWorkspaceDir = "/path/to/workspace"
+const testCMakeOutFname = "/not/necessarily/in/workspace/CMakeLists.txt"
 
 const textProto = `results {
 	target {
@@ -150,22 +152,31 @@ const textProto = `results {
 
 func TestExport_QueryReadError_ReturnsError(t *testing.T) {
 
-	e := NewCMakeExporter(testWorkspaceDir)
 	contents := new(bytes.Buffer)
+	fileOpener := func(path string) (io.Writer, error) {
+		assert.Equal(t, path, testCMakeOutFname)
+		return contents, nil
+	}
+	e := NewCMakeExporter("projName", testWorkspaceDir, testCMakeOutFname, fileOpener)
 	qcmd := mocks.NewQueryCommand(t)
 	qcmd.On("Read", mock.Anything).Return([]byte{}, skerr.Fmt("expected error"))
-	err := e.Export(qcmd, contents, "projName")
+	err := e.Export(qcmd)
 	assert.Error(t, err)
 	assert.Equal(t, 0, contents.Len())
 }
 
 func TestExport_InvalidProtobuf_ReturnsError(t *testing.T) {
 
-	e := NewCMakeExporter(testWorkspaceDir)
 	contents := new(bytes.Buffer)
+	fileOpener := func(path string) (io.Writer, error) {
+		assert.True(t, filepath.IsAbs(path))
+		assert.Equal(t, path, testCMakeOutFname)
+		return contents, nil
+	}
+	e := NewCMakeExporter("projName", testWorkspaceDir, testCMakeOutFname, fileOpener)
 	qcmd := mocks.NewQueryCommand(t)
 	qcmd.On("Read", mock.Anything).Return(make([]byte, 50), skerr.Fmt("empty data"))
-	err := e.Export(qcmd, contents, "projName")
+	err := e.Export(qcmd)
 	assert.Error(t, err)
 	assert.Equal(t, 0, contents.Len())
 }
@@ -178,11 +189,16 @@ func TestExport_ValidProtobuf_Success(t *testing.T) {
 	protoData, err := proto.Marshal(qr)
 	require.NoError(t, err)
 
-	e := NewCMakeExporter(testWorkspaceDir)
 	contents := new(bytes.Buffer)
+	fileOpener := func(path string) (io.Writer, error) {
+		assert.True(t, filepath.IsAbs(path))
+		assert.Equal(t, path, testCMakeOutFname)
+		return contents, nil
+	}
+	e := NewCMakeExporter("projName", testWorkspaceDir, testCMakeOutFname, fileOpener)
 	qcmd := mocks.NewQueryCommand(t)
 	qcmd.On("Read", mock.Anything).Return(protoData, nil)
-	err = e.Export(qcmd, contents, "projName")
+	err = e.Export(qcmd)
 	require.NoError(t, err)
 
 	const expected = `# DO NOT EDIT: This file is auto-generated.
@@ -246,18 +262,6 @@ set_target_properties(src_apps_hello PROPERTIES INCLUDE_DIRECTORIES
 	nb, err := io.Copy(buf, contents)
 	assert.Greater(t, nb, int64(0))
 	assert.Equal(t, expected, buf.String())
-}
-
-func TestIsFileRule_InvalidRule_ReturnsError(t *testing.T) {
-	assert.False(t, isFileTarget(""))
-}
-
-func TestIsFileRule_ValidFileRule_Success(t *testing.T) {
-	assert.True(t, isFileTarget("//dir/path:hello.c"))
-}
-
-func TestIsFileRule_ValidNonFileRule_Success(t *testing.T) {
-	assert.False(t, isFileTarget("//dir/path:hello"))
 }
 
 func TestFindRule_RuleExists_Success(t *testing.T) {
