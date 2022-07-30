@@ -35,6 +35,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3321144f_84c8139c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6395
+      },
+      "writtenOn": "2022-07-30T09:03:14Z",
+      "side": 1,
+      "message": "LGTM with StringCoordinate removed, or alternatively, we can land the original change where I did that: https://skia-review.googlesource.com/c/skia/+/563336\n\n",
+      "revId": "aac1eddd07d3b21c87da5b574ffede3e4757346d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "af4f2e00_eaf105bb",
