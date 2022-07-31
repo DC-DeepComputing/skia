@@ -133,6 +133,19 @@ public:
         return fSymbols.count();
     }
 
+    /**
+     * Returns a new SymbolTable containing every symbol from this table and its parents.
+     * The new table will have no ownership of any symbols or strings; you must keep
+     * the source tables alive.
+     */
+    std::shared_ptr<SymbolTable> makeFlattened();
+
+    /**
+     * Removes a symbol from this symbol table. Parent tables are unaffected. If owned, the symbol
+     * will not actually be destroyed until the symbol table itself is freed.
+     */
+    void remove(std::string_view symbolName);
+
     /** Returns true if this is a built-in SymbolTable. */
     bool isBuiltin() const {
         return fBuiltin;
@@ -176,6 +189,8 @@ private:
                                    const SymbolKey& key,
                                    const Symbol* symbol,
                                    SkSpan<const FunctionDeclaration* const> overloadSet);
+
+    void collectSymbolNames(SkTHashSet<std::string_view>* symbolNames);
 
     bool isType(const SymbolKey& key) const;
 

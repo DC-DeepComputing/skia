@@ -17,6 +17,7 @@ class SymbolTable;
 
 struct ParsedModule {
     std::shared_ptr<SymbolTable> fSymbols;
+    std::shared_ptr<SymbolTable> fUnflattenedSymbols;
     std::shared_ptr<BuiltinMap>  fElements;
 };
 

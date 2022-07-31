@@ -151,6 +151,33 @@ const std::string* SymbolTable::takeOwnershipOfString(std::string str) {
     return &fOwnedStrings.front();
 }
 
+std::shared_ptr<SymbolTable> SymbolTable::makeFlattened() {
+    SkTHashSet<std::string_view> symbolNames;
+    this->collectSymbolNames(&symbolNames);
+
+    auto flattened = std::make_shared<SymbolTable>(fContext, fBuiltin);
+    for (std::string_view name : symbolNames) {
+        const Symbol* symbol = (*this)[name];
+        flattened->addWithoutOwnership(symbol);
+    }
+    return flattened;
+}
+
+void SymbolTable::collectSymbolNames(SkTHashSet<std::string_view>* symbolNames) {
+    // Handle parent symbols first.
+    if (fParent) {
+        fParent->collectSymbolNames(symbolNames);
+    }
+    // Add every symbol from the source table into this table, overwriting anything from the parent.
+    for (const auto& [key, symbol] : fSymbols) {
+        symbolNames->add(key.fName);
+    }
+}
+
+void SymbolTable::remove(std::string_view symbolName) {
+    fSymbols.remove(MakeSymbolKey(symbolName));
+}
+
 void SymbolTable::addWithoutOwnership(const Symbol* symbol) {
     const std::string_view& name = symbol->name();
 
@@ -162,7 +189,7 @@ void SymbolTable::addWithoutOwnership(const Symbol* symbol) {
 
     if (!symbol->is<FunctionDeclaration>()) {
         fContext.fErrors->error(symbol->fPosition, "symbol '" + std::string(name) +
-                "' was already defined");
+                                                   "' was already defined");
         return;
     }
 

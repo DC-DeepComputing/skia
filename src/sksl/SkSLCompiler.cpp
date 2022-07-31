@@ -336,8 +336,10 @@ static void add_public_type_aliases(SkSL::SymbolTable* symbols, const SkSL::Buil
     // Hide all the private symbols by aliasing them all to "invalid". This will prevent code from
     // using built-in names like `sampler2D` as variable names.
     for (BuiltinTypePtr privateType : kPrivateTypes) {
+        symbols->remove((types.*privateType)->name());
         symbols->add(Type::MakeAliasType((types.*privateType)->name(), *types.fInvalid));
     }
+    symbols->remove("sk_Caps");
     symbols->add(Type::MakeAliasType("sk_Caps", *types.fInvalid));
 }
 
@@ -358,8 +360,8 @@ const ParsedModule& Compiler::loadPublicModule() {
 
 const ParsedModule& Compiler::loadPrivateRTShaderModule() {
     if (!fRuntimeShaderModule.fSymbols) {
-        fRuntimeShaderModule = this->parseModule(
-                ProgramKind::kRuntimeShader, MODULE_DATA(rt_shader), this->loadPublicModule());
+        fRuntimeShaderModule = this->parseModule(ProgramKind::kRuntimeShader,
+                                                 MODULE_DATA(rt_shader), this->loadPublicModule());
     }
     return fRuntimeShaderModule;
 }
@@ -420,7 +422,9 @@ LoadedModule Compiler::loadModule(ProgramKind kind,
         printf("error reading %s\n", data.fPath);
         abort();
     }
-    ParsedModule baseModule = {std::move(base), /*fElements=*/nullptr};
+    ParsedModule baseModule = {std::move(base),
+                               /*fUnflattenedSymbols=*/nullptr,
+                               /*fElements=*/nullptr};
     LoadedModule module = DSLParser(this, settings, kind, std::move(text))
                                   .moduleInheritingFrom(baseModule);
     if (this->errorCount()) {
@@ -440,7 +444,7 @@ ParsedModule Compiler::parseModule(ProgramKind kind, ModuleData data, const Pars
     // For modules that just declare (but don't define) intrinsic functions, there will be no new
     // program elements. In that case, we can share our parent's element map:
     if (module.fElements.empty()) {
-        return ParsedModule{module.fSymbols, base.fElements};
+        return ParsedModule{module.fSymbols->makeFlattened(), module.fSymbols, base.fElements};
     }
 
     auto elements = std::make_shared<BuiltinMap>(base.fElements.get());
@@ -479,7 +483,7 @@ ParsedModule Compiler::parseModule(ProgramKind kind, ModuleData data, const Pars
         }
     }
 
-    return ParsedModule{module.fSymbols, std::move(elements)};
+    return ParsedModule{module.fSymbols->makeFlattened(), module.fSymbols, std::move(elements)};
 }
 
 std::unique_ptr<Program> Compiler::convertProgram(ProgramKind kind,
