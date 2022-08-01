@@ -22,6 +22,30 @@
       },
       "revId": "dbfa28141a945f85002bcc49f12a6d3a5dfb5c36",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b255b0ce_4276188e",
+        "filename": "src/core/SkChromeRemoteGlyphCache.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 472,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-08-01T18:00:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0dcbe67c_1948b672",
+      "range": {
+        "startLine": 472,
+        "startChar": 46,
+        "endLine": 472,
+        "endChar": 50
+      },
+      "revId": "dbfa28141a945f85002bcc49f12a6d3a5dfb5c36",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
