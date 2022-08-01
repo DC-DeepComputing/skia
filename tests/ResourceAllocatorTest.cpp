@@ -210,7 +210,8 @@ static void non_overlap_test(skiatest::Reporter* reporter, GrDirectContext* dCon
     REPORTER_ASSERT(reporter, expectedResult == doTheBackingStoresMatch);
 }
 
-DEF_GPUTEST_FOR_RENDERING_CONTEXTS(ResourceAllocatorTest, reporter, ctxInfo) {
+DEF_GPUTEST_FOR_RENDERING_CONTEXTS(ResourceAllocatorTest, reporter, ctxInfo,
+                                   CtsEnforcement::kNever) {
     auto dContext = ctxInfo.directContext();
     const GrCaps* caps = dContext->priv().caps();
 
@@ -335,7 +336,8 @@ static void draw(GrRecordingContext* rContext) {
 }
 
 
-DEF_GPUTEST_FOR_RENDERING_CONTEXTS(ResourceAllocatorStressTest, reporter, ctxInfo) {
+DEF_GPUTEST_FOR_RENDERING_CONTEXTS(ResourceAllocatorStressTest, reporter, ctxInfo,
+                                   CtsEnforcement::kApiLevel_T) {
     auto context = ctxInfo.directContext();
 
     size_t maxBytes = context->getResourceCacheLimit();
@@ -417,7 +419,8 @@ static void memory_budget_test(skiatest::Reporter* reporter,
     REPORTER_ASSERT(reporter, alloc.makeBudgetHeadroom() == test.fShouldFit);
 }
 
-DEF_GPUTEST_FOR_RENDERING_CONTEXTS(ResourceAllocatorMemoryBudgetTest, reporter, ctxInfo) {
+DEF_GPUTEST_FOR_RENDERING_CONTEXTS(ResourceAllocatorMemoryBudgetTest, reporter, ctxInfo,
+                                   CtsEnforcement::kApiLevel_T) {
     auto dContext = ctxInfo.directContext();
 
     constexpr bool    kUnder               = true;
