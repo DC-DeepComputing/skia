@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5678f804_a5d4d175",
+        "filename": "src/core/SkGlyph.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 245,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-08-01T20:35:14Z",
+      "side": 1,
+      "message": "const ? scaleAndOffset ?",
+      "revId": "f489fd3ab9dd4a5a731a0000989eda0783fb2293",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
