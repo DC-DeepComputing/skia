@@ -9,6 +9,7 @@
 
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkImageInfo.h"
+#include "include/gpu/graphite/Context.h"
 #include "include/gpu/graphite/Recorder.h"
 #include "src/gpu/graphite/Caps.h"
 #include "src/gpu/graphite/RecorderPriv.h"
@@ -72,6 +73,17 @@ sk_sp<SkImage> SkImage::makeTextureImage(skgpu::graphite::Recorder* recorder,
             return sk_ref_sp(const_cast<SkImage*>(image));
         }
     }
+
+    skgpu::graphite::ClientImageCache* clientCache = recorder->clientImageCache();
+
+    if (sk_sp<SkImage> cachedImage = clientCache->find(recorder, this, mipmapped); cachedImage) {
+        SkASSERT(as_IB(cachedImage)->isGraphiteBacked());
+        SkDEBUGCODE(auto [view, ct] = as_IB(this)->asView(recorder, mipmapped);)
+        SkASSERT(view);
+
+        return cachedImage;
+    }
+
     auto [view, ct] = as_IB(this)->asView(recorder, mipmapped);
     if (!view) {
         return nullptr;
@@ -80,6 +92,8 @@ sk_sp<SkImage> SkImage::makeTextureImage(skgpu::graphite::Recorder* recorder,
     SkASSERT(mipmapped == skgpu::graphite::Mipmapped::kNo ||
              view.proxy()->mipmapped() == skgpu::graphite::Mipmapped::kYes);
     SkColorInfo colorInfo(ct, this->alphaType(), this->refColorSpace());
-    return sk_make_sp<skgpu::graphite::Image>(std::move(view),
-                                              std::move(colorInfo));
+    sk_sp<SkImage> graphiteImage = sk_make_sp<skgpu::graphite::Image>(std::move(view),
+                                                                      std::move(colorInfo));
+    clientCache->cache(recorder, this, mipmapped, graphiteImage);
+    return graphiteImage;
 }
