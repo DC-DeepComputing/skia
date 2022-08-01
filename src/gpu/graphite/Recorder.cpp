@@ -39,7 +39,9 @@ static int32_t next_id() {
     return id;
 }
 
-Recorder::Recorder(sk_sp<Gpu> gpu, sk_sp<GlobalCache> globalCache)
+Recorder::Recorder(sk_sp<Gpu> gpu,
+                   sk_sp<GlobalCache> globalCache,
+                   sk_sp<ClientImageCache> clientImageCache)
         : fGpu(std::move(gpu))
         , fGraph(new TaskGraph)
         , fUniformDataCache(new UniformDataCache)
@@ -48,7 +50,8 @@ Recorder::Recorder(sk_sp<Gpu> gpu, sk_sp<GlobalCache> globalCache)
         , fAtlasManager(std::make_unique<AtlasManager>(this))
         , fTokenTracker(std::make_unique<TokenTracker>())
         , fStrikeCache(std::make_unique<sktext::gpu::StrikeCache>())
-        , fTextBlobCache(std::make_unique<sktext::gpu::TextBlobRedrawCoordinator>(fRecorderID)) {
+        , fTextBlobCache(std::make_unique<sktext::gpu::TextBlobRedrawCoordinator>(fRecorderID))
+        , fClientImageCache(std::move(clientImageCache)) {
 
     fResourceProvider = fGpu->makeResourceProvider(std::move(globalCache), this->singleOwner());
     fDrawBufferManager.reset(new DrawBufferManager(fResourceProvider.get(),
