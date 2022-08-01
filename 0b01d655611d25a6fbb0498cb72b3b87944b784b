@@ -95,6 +95,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0219a47f_77d32908",
+        "filename": "tests/CtsEnforcement.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2022-08-01T19:39:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "65933aa0_3a882d70",
+      "range": {
+        "startLine": 13,
+        "startChar": 6,
+        "endLine": 13,
+        "endChar": 20
+      },
+      "revId": "0b01d655611d25a6fbb0498cb72b3b87944b784b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3ef6665c_c2863f7e",
@@ -214,6 +238,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c05dc4d2_428324ae",
+        "filename": "tools/skqp/src/skqp.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2022-08-01T19:39:41Z",
+      "side": 1,
+      "message": "I added a comment but this is not for unit test but to exclude resource files from being picked up as AGSL snippets for testing in Java.  The old exclusion list covered both and when I deleted exclusions for unit tests I needed to add this to prevent adding new java AGSL tests for ES3.",
+      "parentUuid": "1b89fa19_28226831",
+      "range": {
+        "startLine": 70,
+        "startChar": 51,
+        "endLine": 70,
+        "endChar": 77
+      },
+      "revId": "0b01d655611d25a6fbb0498cb72b3b87944b784b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4fa11460_85cba807",
         "filename": "tools/skqp/src/skqp.cpp",
         "patchSetId": 10
@@ -225,6 +273,24 @@
       "writtenOn": "2022-08-01T18:54:31Z",
       "side": 1,
       "message": "Can you add a comment explaining this line? Something like\n\n```\n// Always disable ES3 tests for now, until AGSL supports ES3.\n```\n\n?",
+      "revId": "0b01d655611d25a6fbb0498cb72b3b87944b784b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6e7976fc_07f17c48",
+        "filename": "tools/skqp/src/skqp.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2022-08-01T19:39:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4fa11460_85cba807",
       "revId": "0b01d655611d25a6fbb0498cb72b3b87944b784b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }

@@ -87,6 +87,54 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "13d46240_86fdbb40",
+        "filename": "tests/CtsEnforcement.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2022-08-01T19:39:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "23c777af_02aa7240",
+      "range": {
+        "startLine": 16,
+        "startChar": 30,
+        "endLine": 16,
+        "endChar": 36
+      },
+      "revId": "57bf511ea202e021461ce852d05eb1f329ffb433",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ece45cbd_a27f98d9",
+        "filename": "tests/CtsEnforcement.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2022-08-01T19:39:41Z",
+      "side": 1,
+      "message": "In Android that value is 10000.  I\u0027m not sure it matters because I don\u0027t think that value is used in the vendor image version so for SkQP is going to use for an apiLevel will be less than the current platform api. \n\nI\u0027m actually thinking we may want to to `kApiLevel_T + 1` so that if the platform says its current api is 10000 then we will be sure to still run this test.",
+      "parentUuid": "eb2451fc_7c43c609",
+      "range": {
+        "startLine": 16,
+        "startChar": 83,
+        "endLine": 16,
+        "endChar": 87
+      },
+      "revId": "57bf511ea202e021461ce852d05eb1f329ffb433",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "754df7e3_f70e1ddb",
@@ -100,6 +148,30 @@
       "writtenOn": "2022-08-01T18:54:31Z",
       "side": 1,
       "message": "// Run this test in strict mode if the API level is at least strictVersion",
+      "range": {
+        "startLine": 18,
+        "startChar": 14,
+        "endLine": 18,
+        "endChar": 28
+      },
+      "revId": "57bf511ea202e021461ce852d05eb1f329ffb433",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "38a096ae_4cf5ba5e",
+        "filename": "tests/CtsEnforcement.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2022-08-01T19:39:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "754df7e3_f70e1ddb",
       "range": {
         "startLine": 18,
         "startChar": 14,
@@ -133,6 +205,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ead89721_3c7f79f9",
+        "filename": "tests/CtsEnforcement.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2022-08-01T19:39:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b668cf88_e94cc6fd",
+      "range": {
+        "startLine": 21,
+        "startChar": 30,
+        "endLine": 21,
+        "endChar": 45
+      },
+      "revId": "57bf511ea202e021461ce852d05eb1f329ffb433",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6ded6a75_1c3cdb86",
@@ -156,6 +252,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4e02e543_5ed9b7aa",
+        "filename": "tests/CtsEnforcement.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2022-08-01T19:39:41Z",
+      "side": 1,
+      "message": "can\u0027t be static because I\u0027m referencing fStrictVersion which is a member variable.",
+      "parentUuid": "6ded6a75_1c3cdb86",
+      "range": {
+        "startLine": 22,
+        "startChar": 8,
+        "endLine": 22,
+        "endChar": 16
+      },
+      "revId": "57bf511ea202e021461ce852d05eb1f329ffb433",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8edd546e_03926213",
@@ -169,6 +289,30 @@
       "writtenOn": "2022-08-01T18:54:31Z",
       "side": 1,
       "message": "Why is this no longer `const`?",
+      "range": {
+        "startLine": 31,
+        "startChar": 4,
+        "endLine": 31,
+        "endChar": 12
+      },
+      "revId": "57bf511ea202e021461ce852d05eb1f329ffb433",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fe43da40_06d413b4",
+        "filename": "tests/CtsEnforcement.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2022-08-01T19:39:41Z",
+      "side": 1,
+      "message": "If I make it const then it is no longer trivially copyable.  I then have to add a series of copy constructors and assignments.  Then it also makes the skiattest::Test object not trivially copyable which in turn adds a bunch more copy constructors.",
+      "parentUuid": "8edd546e_03926213",
       "range": {
         "startLine": 31,
         "startChar": 4,
