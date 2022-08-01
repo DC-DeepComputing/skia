@@ -92,6 +92,20 @@ void pun_write(SkWriteBuffer& buffer, const T& src) {
     buffer.writePad32(&src, sizeof(T));
 }
 
+#if defined(SK_GRAPHITE_ENABLED)
+static void write_index_buffer(skgpu::VertexWriter vertexWriter, size_t bufferSize) {
+    SkASSERT(bufferSize >= sizeof(uint16_t) * 6);
+    SkASSERT(bufferSize % 6 == 0);
+
+    size_t quadCount = bufferSize/(sizeof(uint16_t)*6);
+    for (uint16_t quadStart = 0; quadStart < 4*quadCount; quadStart += 4) {
+        vertexWriter << (uint16_t)(quadStart+0) << (uint16_t)(quadStart+1) << (uint16_t)(quadStart+2);
+        vertexWriter << (uint16_t)(quadStart+2) << (uint16_t)(quadStart+1) << (uint16_t)(quadStart+3);
+    }
+}
+static constexpr size_t index_buffer_size() { return sizeof(uint16_t)*1024*6; }
+#endif
+
 // -- TransformedMaskVertexFiller ------------------------------------------------------------------
 class TransformedMaskVertexFiller {
 public:
@@ -395,8 +409,13 @@ void TransformedMaskVertexFiller::fillVertexData(DrawWriter* dw,
         return;
     }
 
-    DrawWriter::Vertices verts{*dw};
-    verts.reserve(count);
+    skgpu::graphite::BindBufferInfo fixedIndexBuffer = dw->bufferManager()->getStaticBuffer(
+            skgpu::graphite::BufferType::kIndex,
+            write_index_buffer,
+            index_buffer_size);
+
+    DrawWriter::IndexedVertices verts{*dw, fixedIndexBuffer};
+    verts.reserve(6*count);
     for (auto [glyph, leftTop]: quadData()) {
         auto[al, at, ar, ab] = glyph->fAtlasLocator.getUVs();
         SkPoint widthHeight = SkPoint::Make(glyph->fAtlasLocator.width() * fStrikeToSourceScale,
@@ -406,14 +425,11 @@ void TransformedMaskVertexFiller::fillVertexData(DrawWriter* dw,
         SkV2 localCorners[4] = {{l, t}, {r, t}, {r, b}, {l, b}};
         SkV4 devOut[4];
         toDevice.mapPoints(localCorners, devOut, 4);
-        // TODO: Ganesh uses indices but that's not available with dynamic vertex data
-        // TODO: we should really use instances as well.
-        verts.append(6) << SkPoint{devOut[0].x, devOut[0].y} << depth << AtlasPt{al, at}  // L,T
-                        << SkPoint{devOut[3].x, devOut[3].y} << depth << AtlasPt{al, ab}  // L,B
-                        << SkPoint{devOut[1].x, devOut[1].y} << depth << AtlasPt{ar, at}  // R,T
-                        << SkPoint{devOut[3].x, devOut[3].y} << depth << AtlasPt{al, ab}  // L,B
-                        << SkPoint{devOut[2].x, devOut[2].y} << depth << AtlasPt{ar, ab}  // R,B
-                        << SkPoint{devOut[1].x, devOut[1].y} << depth << AtlasPt{ar, at}; // R,T
+        // TODO: we should really use instances
+        verts.append(6, 4) << SkPoint{devOut[0].x, devOut[0].y} << depth << AtlasPt{al, at}  // L,T
+                           << SkPoint{devOut[3].x, devOut[3].y} << depth << AtlasPt{al, ab}  // L,B
+                           << SkPoint{devOut[1].x, devOut[1].y} << depth << AtlasPt{ar, at}  // R,T
+                           << SkPoint{devOut[2].x, devOut[2].y} << depth << AtlasPt{ar, ab}; // R,B
     }
 }
 #endif
@@ -1633,22 +1649,24 @@ template<typename VertexData>
 void direct_dw(DrawWriter* dw,
                SkZip<const Glyph*, const VertexData> quadData,
                SkScalar depth) {
-    DrawWriter::Vertices verts{*dw};
-    verts.reserve(quadData.size());
+    skgpu::graphite::BindBufferInfo fixedIndexBuffer = dw->bufferManager()->getStaticBuffer(
+            skgpu::graphite::BufferType::kIndex,
+            write_index_buffer,
+            index_buffer_size);
+
+    DrawWriter::IndexedVertices verts{*dw, fixedIndexBuffer};
+    verts.reserve(6*quadData.size());
     for (auto [glyph, leftTop]: quadData) {
         auto[al, at, ar, ab] = glyph->fAtlasLocator.getUVs();
         SkScalar dl = leftTop.x(),
                  dt = leftTop.y(),
                  dr = dl + (ar - al),
                  db = dt + (ab - at);
-        // TODO: Ganesh uses indices but that's not available with dynamic vertex data
-        // TODO: we should really use instances as well.
-        verts.append(6) << SkPoint{dl, dt} << depth << AtlasPt{al, at}  // L,T
-                        << SkPoint{dl, db} << depth << AtlasPt{al, ab}  // L,B
-                        << SkPoint{dr, dt} << depth << AtlasPt{ar, at}  // R,T
-                        << SkPoint{dl, db} << depth << AtlasPt{al, ab}  // L,B
-                        << SkPoint{dr, db} << depth << AtlasPt{ar, ab}  // R,B
-                        << SkPoint{dr, dt} << depth << AtlasPt{ar, at}; // R,T
+        // TODO: we should really use instances
+        verts.append(6, 4) << SkPoint{dl, dt} << depth << AtlasPt{al, at}  // L,T
+                           << SkPoint{dl, db} << depth << AtlasPt{al, ab}  // L,B
+                           << SkPoint{dr, dt} << depth << AtlasPt{ar, at}  // R,T
+                           << SkPoint{dr, db} << depth << AtlasPt{ar, ab}; // R,B
     }
 }
 
@@ -1656,8 +1674,13 @@ template<typename VertexData>
 void transformed_direct_dw(DrawWriter* dw,
                            SkZip<const Glyph*, const VertexData> quadData,
                            SkScalar depth, const Transform& transform) {
-    DrawWriter::Vertices verts{*dw};
-    verts.reserve(quadData.size());
+    skgpu::graphite::BindBufferInfo fixedIndexBuffer = dw->bufferManager()->getStaticBuffer(
+            skgpu::graphite::BufferType::kIndex,
+            write_index_buffer,
+            index_buffer_size);
+
+    DrawWriter::IndexedVertices verts{*dw, fixedIndexBuffer};
+    verts.reserve(6*quadData.size());
     for (auto [glyph, leftTop]: quadData) {
         auto[al, at, ar, ab] = glyph->fAtlasLocator.getUVs();
         SkScalar dl = leftTop.x(),
@@ -1669,12 +1692,10 @@ void transformed_direct_dw(DrawWriter* dw,
         transform.mapPoints(localCorners, devOut, 4);
         // TODO: Ganesh uses indices but that's not available with dynamic vertex data
         // TODO: we should really use instances as well.
-        verts.append(6) << SkPoint{devOut[0].x, devOut[0].y} << depth << AtlasPt{al, at}  // L,T
-                        << SkPoint{devOut[3].x, devOut[3].y} << depth << AtlasPt{al, ab}  // L,B
-                        << SkPoint{devOut[1].x, devOut[1].y} << depth << AtlasPt{ar, at}  // R,T
-                        << SkPoint{devOut[3].x, devOut[3].y} << depth << AtlasPt{al, ab}  // L,B
-                        << SkPoint{devOut[2].x, devOut[2].y} << depth << AtlasPt{ar, ab}  // R,B
-                        << SkPoint{devOut[1].x, devOut[1].y} << depth << AtlasPt{ar, at}; // R,T
+        verts.append(6, 4) << SkPoint{devOut[0].x, devOut[0].y} << depth << AtlasPt{al, at}  // L,T
+                           << SkPoint{devOut[3].x, devOut[3].y} << depth << AtlasPt{al, ab}  // L,B
+                           << SkPoint{devOut[1].x, devOut[1].y} << depth << AtlasPt{ar, at}  // R,T
+                           << SkPoint{devOut[2].x, devOut[2].y} << depth << AtlasPt{ar, ab}; // R,B
     }
 }
 
