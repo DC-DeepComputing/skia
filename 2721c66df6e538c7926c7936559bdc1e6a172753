@@ -124,6 +124,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a2250b21_70e1a9fb",
+        "filename": "bazel/exporter/bazel_query_command.go",
+        "patchSetId": 20
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-08-01T20:16:55Z",
+      "side": 1,
+      "message": "I searched quite a bit and couldn\u0027t fix it. I\u0027ll mark this as resolved (because intf is gone). If you want me to get rid of the interfaces package LMK and I\u0027ll give it a second try.",
+      "parentUuid": "8f649746_6d59adc6",
+      "range": {
+        "startLine": 13,
+        "startChar": 1,
+        "endLine": 13,
+        "endChar": 5
+      },
+      "revId": "2721c66df6e538c7926c7936559bdc1e6a172753",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bf9cfb28_5984c81d",
@@ -867,6 +891,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "dd1a08b3_01d568fa",
+        "filename": "bazel/exporter/cmake_exporter_test.go",
+        "patchSetId": 20
+      },
+      "lineNbr": 245,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-08-01T20:16:55Z",
+      "side": 1,
+      "message": "The read is coming from CMakeRule.write()",
+      "parentUuid": "a1412689_b34b713b",
+      "range": {
+        "startLine": 245,
+        "startChar": 20,
+        "endLine": 245,
+        "endChar": 27
+      },
+      "revId": "2721c66df6e538c7926c7936559bdc1e6a172753",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "483b8a4d_f98ec3a8",
         "filename": "bazel/exporter/cmake_exporter_test.go",
         "patchSetId": 20
@@ -1313,6 +1361,30 @@
       "side": 1,
       "message": "Fair point.\n\nos.File implements https://pkg.go.dev/io#StringWriter, so maybe that makes more sense to pass around instead of just io.Writer?",
       "parentUuid": "c2ca97e0_656cbf3a",
+      "range": {
+        "startLine": 75,
+        "startChar": 13,
+        "endLine": 75,
+        "endChar": 33
+      },
+      "revId": "2721c66df6e538c7926c7936559bdc1e6a172753",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bb070ad0_55939d57",
+        "filename": "bazel/exporter/cmake_workspace.go",
+        "patchSetId": 20
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-08-01T20:16:55Z",
+      "side": 1,
+      "message": "I could make that change, which would replace:\n\n    fmt.Println(writer)\n\nwith\n\n    writer.WriteString(\"\\n\")\n\nbut we\u0027d also lose the ability to:\n\n    fmt.Fprintf(writer, \"name: %q\\n\", name)\n\nwhich would become:\n\n    writer.WriteString(fmt.Sprintf(\"name: %q\\n\", name))\n\nIMO this is making the most common use of writer less readable to benefit the far less used fmt.Println(writer). Would adding a helper work?\n\n    writeEmptyLine(writer)",
+      "parentUuid": "83e9a804_13811267",
       "range": {
         "startLine": 75,
         "startChar": 13,

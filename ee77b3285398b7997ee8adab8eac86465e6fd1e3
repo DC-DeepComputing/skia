@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a23411d9_1c04f3de",
+        "filename": "bazel/exporter/bazel_util.go",
+        "patchSetId": 23
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-08-01T20:16:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a41f87c_a4a8a608",
+      "range": {
+        "startLine": 20,
+        "startChar": 1,
+        "endLine": 20,
+        "endChar": 23
+      },
+      "revId": "ee77b3285398b7997ee8adab8eac86465e6fd1e3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "180c4b80_b8e3813f",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "25833206_eb888828",
+        "filename": "bazel/exporter/bazel_util_test.go",
+        "patchSetId": 23
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-08-01T20:16:55Z",
+      "side": 1,
+      "message": "yes, much better. fixed.",
+      "parentUuid": "180c4b80_b8e3813f",
+      "range": {
+        "startLine": 98,
+        "startChar": 8,
+        "endLine": 98,
+        "endChar": 13
+      },
+      "revId": "ee77b3285398b7997ee8adab8eac86465e6fd1e3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c3d2bab9_42261a4d",
@@ -60,6 +108,30 @@
       "writtenOn": "2022-08-01T17:43:16Z",
       "side": 1,
       "message": "What benefit does using a buffered writer here add? Performance?",
+      "range": {
+        "startLine": 42,
+        "startChar": 12,
+        "endLine": 42,
+        "endChar": 21
+      },
+      "revId": "ee77b3285398b7997ee8adab8eac86465e6fd1e3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "02931ee0_ec83317a",
+        "filename": "bazel/exporter_tool/main.go",
+        "patchSetId": 23
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-08-01T20:16:55Z",
+      "side": 1,
+      "message": "Nothing. I naively did that before I knew that an os.File implements the io.Writer interface. Removed.",
+      "parentUuid": "c3d2bab9_42261a4d",
       "range": {
         "startLine": 42,
         "startChar": 12,
