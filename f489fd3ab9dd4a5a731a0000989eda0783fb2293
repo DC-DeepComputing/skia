@@ -16,6 +16,24 @@
       "message": "const ? scaleAndOffset ?",
       "revId": "f489fd3ab9dd4a5a731a0000989eda0783fb2293",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2b3654de_e2b01547",
+        "filename": "src/core/SkGlyph.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 245,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-08-01T21:03:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5678f804_a5d4d175",
+      "revId": "f489fd3ab9dd4a5a731a0000989eda0783fb2293",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
