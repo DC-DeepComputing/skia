@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "94d82be3_3467450b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-08-01T19:25:14Z",
+      "side": 1,
+      "message": "Got this working properly with the indexed vertices. It\u0027s a bit faster in flush time.",
+      "revId": "ab11cb89a03cbf402ad944e7c8ee326e838c423d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
