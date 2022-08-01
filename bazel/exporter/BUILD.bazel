@@ -13,6 +13,7 @@ go_library(
         "cmake_exporter.go",
         "cmake_rule.go",
         "cmake_workspace.go",
+        "gni_exporter.go",
     ],
     importpath = "go.skia.org/skia/bazel/exporter",
     visibility = ["//visibility:public"],

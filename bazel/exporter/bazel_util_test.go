@@ -107,3 +107,15 @@ func TestAppendUnique_Present_NotAppended(t *testing.T) {
 	slice := appendUnique([]string{"one", "two"}, "two")
 	assert.Equal(t, []string{"one", "two"}, slice)
 }
+
+func TestIsFileRule_InvalidRule_ReturnsFalse(t *testing.T) {
+	assert.False(t, isFileTarget(""))
+}
+
+func TestIsFileRule_ValidFileRule_ReturnsTrue(t *testing.T) {
+	assert.True(t, isFileTarget("//dir/path:hello.c"))
+}
+
+func TestIsFileRule_ValidNonFileRule_ReturnsFalse(t *testing.T) {
+	assert.False(t, isFileTarget("//dir/path:hello"))
+}

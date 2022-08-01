@@ -20,30 +20,26 @@ import (
 )
 
 type CMakeExporter struct {
+	projName     string
 	workspace    *CMakeWorkspace
-	workspaceDir string
+	workspaceDir string // Absolute path to Bazel workspace directory.
+	cmakeFile    string // Absolute path to CMake output file.
+	openFile     interfaces.FileOpenFunc
 }
 
-// NewCMakeExporter creates an exporter that will export to the
-// CMake project file format.
-func NewCMakeExporter(workspaceDir string) *CMakeExporter {
+// NewCMakeExporter creates an exporter that will export a Bazel project
+// query from a project in the workspaceDir to a CMake project file identified
+// by cmakeFile.
+//
+// Note: cmakeFile must be an absolute path.
+func NewCMakeExporter(projName, workspaceDir string, cmakeFile string, openFile interfaces.FileOpenFunc) *CMakeExporter {
 	return &CMakeExporter{
 		workspace:    NewCMakeWorkspace(),
+		projName:     projName,
 		workspaceDir: workspaceDir,
+		cmakeFile:    cmakeFile,
+		openFile:     openFile,
 	}
-}
-
-// Determine if a target refers to a file, or a rule. target is of
-// the form:
-//
-// file: //include/private:SingleOwner.h
-// rule: //bazel/common_config_settings:has_gpu_backend
-func isFileTarget(target string) bool {
-	_, _, target, err := parseRule(target)
-	if err != nil {
-		return false
-	}
-	return strings.Contains(target, ".")
 }
 
 // Given a Bazel rule name find that rule from within the
@@ -421,8 +417,8 @@ func (e *CMakeExporter) convertCCLibraryRule(r *build.Rule, qr *analysis_v2.Cque
 
 // Export will convert the input Bazel cquery output, provided by the
 // supplied QueryCommand parameter, to CMake. The equivalent
-// CMake project definition will be written using the supplied writer.
-func (e *CMakeExporter) Export(qcmd interfaces.QueryCommand, writer io.Writer, projName string) error {
+// CMake project definition will be written.
+func (e *CMakeExporter) Export(qcmd interfaces.QueryCommand) error {
 
 	in, err := qcmd.Read()
 	if err != nil {
@@ -434,10 +430,14 @@ func (e *CMakeExporter) Export(qcmd interfaces.QueryCommand, writer io.Writer, p
 		return skerr.Wrap(err)
 	}
 
+	writer, err := e.openFile(e.cmakeFile)
+	if err != nil {
+		return skerr.Wrap(err)
+	}
 	fmt.Fprintln(writer, "# DO NOT EDIT: This file is auto-generated.")
 	fmt.Fprintln(writer, "cmake_minimum_required(VERSION 3.13)")
 	fmt.Fprintln(writer)
-	fmt.Fprintf(writer, "project(%s LANGUAGES C CXX)\n", projName)
+	fmt.Fprintf(writer, "project(%s LANGUAGES C CXX)\n", e.projName)
 	fmt.Fprintln(writer)
 
 	writePlatformCompileFlags(writer)
