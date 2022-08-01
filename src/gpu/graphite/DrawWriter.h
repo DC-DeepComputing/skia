@@ -106,6 +106,8 @@ public:
     // This should not be used when the vertex stride is 0.
     class Vertices;
 
+    class IndexedVertices;
+
     // Collects new instance data for a call to CommandBuffer::drawInstanced() or
     // drawIndexedInstanced(). The specific draw call that's issued depends on if a non-null index
     // buffer is provided for the template. Like DrawWriter::Vertices, this automatically merges
@@ -334,6 +336,47 @@ public:
 
     using Appender::reserve;
     using Appender::append;
+};
+
+class DrawWriter::IndexedVertices : private DrawWriter::Appender {
+public:
+    IndexedVertices(DrawWriter& w,
+                    BindBufferInfo indices)
+            : Appender(w, Target::kVertices) {
+        w.setTemplate(w.fVertices, indices, {}, -1);
+    }
+
+    ~IndexedVertices() override {
+        // Persist the template count since the DrawWriter could continue batching if a new
+        // compatible DynamicInstances object is created for the next draw.
+        this->updateTemplateCount();
+    }
+
+    using Appender::reserve;
+
+    VertexWriter append(unsigned int indexCount, unsigned int vertexCount) {
+        VertexWriter w = this->Appender::append(vertexCount);
+        // Record index count after appending vertex data in case the append triggered a flush
+        // and the max index count is reset. However, the contents of 'w' will not have been flushed
+        // so 'fIndexCount' will account for 'indexCount' when it is actually drawn.
+        fIndexCount += indexCount;
+        return w;
+    }
+
+private:
+    void updateTemplateCount() {
+        // Append accumulated index count to template count
+        fDrawer.fTemplateCount -= fIndexCount;
+    }
+
+    void onFlush() override {
+        // Update the DrawWriter's template count before its flush() is invoked and the appender
+        // starts recording to a new buffer, which ensures the flush's draw call uses the most
+        // up-to-date index count.
+        this->updateTemplateCount();
+    }
+
+    unsigned int fIndexCount = 0;
 };
 
 class DrawWriter::Instances : private DrawWriter::Appender {
