@@ -16,6 +16,24 @@
       "message": "This test output doesn\u0027t have a corresponding test input, so it disappeared when I nuked and rebuilt the test outputs.",
       "revId": "ca828c0f568861e1b86689bad98634c6dfe9e6a4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "25f8df45_64763b4a",
+        "filename": "tests/sksl/compute/Buffers.metal",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-08-01T20:55:37Z",
+      "side": 0,
+      "message": "Ack",
+      "parentUuid": "afedc714_00efc801",
+      "revId": "ca828c0f568861e1b86689bad98634c6dfe9e6a4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
