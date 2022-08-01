@@ -8,6 +8,7 @@
 #include "include/gpu/graphite/Context.h"
 
 #include "include/core/SkCombinationBuilder.h"
+#include "include/core/SkImage.h"
 #include "include/core/SkPathTypes.h"
 #include "include/effects/SkRuntimeEffect.h"
 #include "include/gpu/graphite/BackendTexture.h"
@@ -33,6 +34,24 @@
 
 namespace skgpu::graphite {
 
+
+
+class DefaultImageCache final : public ClientImageCache {
+public:
+    static sk_sp<ClientImageCache> Make() {
+        return sk_ref_sp(new DefaultImageCache);
+    }
+
+    sk_sp<SkImage> makeGraphiteBacked(Recorder* recorder,
+                                      sk_sp<SkImage> imageIn,
+                                      Mipmapped mipmapped) override {
+        return imageIn->makeTextureImage(recorder, mipmapped);
+    }
+
+private:
+    DefaultImageCache() {}
+};
+
 #define ASSERT_SINGLE_OWNER SKGPU_ASSERT_SINGLE_OWNER(this->singleOwner())
 
 //--------------------------------------------------------------------------------------------------
@@ -46,7 +65,8 @@ Context::~Context() {}
 
 #ifdef SK_METAL
 std::unique_ptr<Context> Context::MakeMetal(const MtlBackendContext& backendContext,
-                                            const ContextOptions& options) {
+                                            const ContextOptions& options,
+                                            sk_sp<ClientImageCache> imageCache) {
     sk_sp<Gpu> gpu = MtlTrampoline::MakeGpu(backendContext, options);
     if (!gpu) {
         return nullptr;
@@ -55,6 +75,10 @@ std::unique_ptr<Context> Context::MakeMetal(const MtlBackendContext& backendCont
     auto queueManager = MtlTrampoline::MakeQueueManager(gpu.get());
     if (!queueManager) {
         return nullptr;
+    }
+
+    if (!imageCache) {
+        imageCache = DefaultImageCache::Make();
     }
 
     auto context = std::unique_ptr<Context>(new Context(std::move(gpu),
@@ -78,7 +102,7 @@ std::unique_ptr<Context> Context::MakeMetal(const MtlBackendContext& backendCont
 std::unique_ptr<Recorder> Context::makeRecorder() {
     ASSERT_SINGLE_OWNER
 
-    return std::unique_ptr<Recorder>(new Recorder(fGpu, fGlobalCache));
+    return std::unique_ptr<Recorder>(new Recorder(fGpu, fGlobalCache, fClientImageCache));
 }
 
 void Context::insertRecording(const InsertRecordingInfo& info) {

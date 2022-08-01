@@ -80,6 +80,10 @@ sk_sp<SkImage> SkImage::makeTextureImage(skgpu::graphite::Recorder* recorder,
     SkASSERT(mipmapped == skgpu::graphite::Mipmapped::kNo ||
              view.proxy()->mipmapped() == skgpu::graphite::Mipmapped::kYes);
     SkColorInfo colorInfo(ct, this->alphaType(), this->refColorSpace());
-    return sk_make_sp<skgpu::graphite::Image>(std::move(view),
-                                              std::move(colorInfo));
+    sk_sp<SkImage> graphiteImage = sk_make_sp<skgpu::graphite::Image>(std::move(view),
+                                                                      std::move(colorInfo));
+
+    recorder->clientImageCache()->register(this, graphiteImage);
+
+    return graphiteImage;
 }

@@ -49,7 +49,7 @@ std::unique_ptr<GraphiteTestContext> MtlTestContext::Make() {
 }
 
 std::unique_ptr<skgpu::graphite::Context> MtlTestContext::makeContext() {
-    return skgpu::graphite::Context::MakeMetal(fMtl, skgpu::graphite::ContextOptions{});
+    return skgpu::graphite::Context::MakeMetal(fMtl, skgpu::graphite::ContextOptions{}, nullptr);
 }
 
 }  // namespace skiatest::graphite::mtl
