@@ -166,19 +166,21 @@ void SymbolTable::addWithoutOwnership(const Symbol* symbol) {
         return;
     }
 
-    std::vector<const FunctionDeclaration*> functions;
     if (refInSymbolTable->is<FunctionDeclaration>()) {
-        functions = {&refInSymbolTable->as<FunctionDeclaration>(),
-                     &symbol->as<FunctionDeclaration>()};
-
+        // Create an UnresolvedFunction node to track the overload set.
+        std::vector<const FunctionDeclaration*> functions = {
+                &refInSymbolTable->as<FunctionDeclaration>(),
+                &symbol->as<FunctionDeclaration>(),
+        };
         refInSymbolTable = this->takeOwnershipOfSymbol(
                 std::make_unique<UnresolvedFunction>(std::move(functions)));
     } else if (refInSymbolTable->is<UnresolvedFunction>()) {
-        functions = refInSymbolTable->as<UnresolvedFunction>().functions();
-        functions.push_back(&symbol->as<FunctionDeclaration>());
-
-        refInSymbolTable = this->takeOwnershipOfSymbol(
-                std::make_unique<UnresolvedFunction>(std::move(functions)));
+        // We are already tracking an overload set for this function in an UnresolvedFunction node.
+        // UnresolvedFunction nodes are always owned and maintained by the SymbolTable itself, so we
+        // can just append this new function here.
+        UnresolvedFunction* overloadSet =
+                const_cast<UnresolvedFunction*>(&refInSymbolTable->as<UnresolvedFunction>());
+        overloadSet->addFunction(&symbol->as<FunctionDeclaration>());
     }
 }
 

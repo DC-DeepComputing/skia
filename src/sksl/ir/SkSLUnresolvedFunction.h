@@ -38,6 +38,10 @@ public:
         return std::string(this->name());
     }
 
+    void addFunction(const FunctionDeclaration* fn) {
+        fFunctions.push_back(fn);
+    }
+
 private:
     std::vector<const FunctionDeclaration*> fFunctions;
 
