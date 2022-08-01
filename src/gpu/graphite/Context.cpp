@@ -8,6 +8,7 @@
 #include "include/gpu/graphite/Context.h"
 
 #include "include/core/SkCombinationBuilder.h"
+#include "include/core/SkImage.h"
 #include "include/core/SkPathTypes.h"
 #include "include/effects/SkRuntimeEffect.h"
 #include "include/gpu/graphite/BackendTexture.h"
@@ -15,6 +16,7 @@
 #include "include/gpu/graphite/Recording.h"
 #include "include/gpu/graphite/TextureInfo.h"
 #include "src/core/SkShaderCodeDictionary.h"
+#include "src/image/SkImage_Base.h"
 #include "src/gpu/RefCntedCallback.h"
 #include "src/gpu/graphite/Caps.h"
 #include "src/gpu/graphite/CommandBuffer.h"
@@ -33,20 +35,52 @@
 
 namespace skgpu::graphite {
 
+
+/*
+ * The default image cache performs no caching and simply always creates a new Graphite-backed
+ * image.
+ */
+class DefaultImageCache final : public ClientImageCache {
+public:
+    static sk_sp<ClientImageCache> Make() {
+        return sk_ref_sp(new DefaultImageCache);
+    }
+
+    sk_sp<SkImage> find(Recorder* recorder,
+                        const SkImage* imageIn,
+                        Mipmapped mipmapped) override {
+        return nullptr;
+    }
+
+    void cache(Recorder* recorder,
+               const SkImage* prior,
+               sk_sp<SkImage> graphiteBacked) override {
+        SkASSERT(as_IB(graphiteBacked)->isGraphiteBacked());
+    }
+
+private:
+    DefaultImageCache() {}
+};
+
 #define ASSERT_SINGLE_OWNER SKGPU_ASSERT_SINGLE_OWNER(this->singleOwner())
 
 //--------------------------------------------------------------------------------------------------
-Context::Context(sk_sp<Gpu> gpu, std::unique_ptr<QueueManager> queueManager, BackendApi backend)
+Context::Context(sk_sp<Gpu> gpu,
+                 std::unique_ptr<QueueManager> queueManager,
+                 sk_sp<ClientImageCache> clientImageCache,
+                 BackendApi backend)
         : fGpu(std::move(gpu))
         , fQueueManager(std::move(queueManager))
         , fGlobalCache(sk_make_sp<GlobalCache>())
+        , fClientImageCache(std::move(clientImageCache))
         , fBackend(backend) {
 }
 Context::~Context() {}
 
 #ifdef SK_METAL
 std::unique_ptr<Context> Context::MakeMetal(const MtlBackendContext& backendContext,
-                                            const ContextOptions& options) {
+                                            const ContextOptions& options,
+                                            sk_sp<ClientImageCache> imageCache) {
     sk_sp<Gpu> gpu = MtlTrampoline::MakeGpu(backendContext, options);
     if (!gpu) {
         return nullptr;
@@ -57,8 +91,13 @@ std::unique_ptr<Context> Context::MakeMetal(const MtlBackendContext& backendCont
         return nullptr;
     }
 
+    if (!imageCache) {
+        imageCache = DefaultImageCache::Make();
+    }
+
     auto context = std::unique_ptr<Context>(new Context(std::move(gpu),
                                                         std::move(queueManager),
+                                                        std::move(imageCache),
                                                         BackendApi::kMetal));
     SkASSERT(context);
 
@@ -78,7 +117,7 @@ std::unique_ptr<Context> Context::MakeMetal(const MtlBackendContext& backendCont
 std::unique_ptr<Recorder> Context::makeRecorder() {
     ASSERT_SINGLE_OWNER
 
-    return std::unique_ptr<Recorder>(new Recorder(fGpu, fGlobalCache));
+    return std::unique_ptr<Recorder>(new Recorder(fGpu, fGlobalCache, fClientImageCache));
 }
 
 void Context::insertRecording(const InsertRecordingInfo& info) {
