@@ -16,6 +16,23 @@
       "message": "I have updated this CL to correct a logical error in handling empty glyphs in prepareForPathDrawing. PTAL.",
       "revId": "dbdf5851f66add126b1aa9297d701760aad7789a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4f3f6f1d_5cbf09ec",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-08-01T16:15:35Z",
+      "side": 1,
+      "message": "Thanks for the quick review!",
+      "revId": "dbdf5851f66add126b1aa9297d701760aad7789a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
