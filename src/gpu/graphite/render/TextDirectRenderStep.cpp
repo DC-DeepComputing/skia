@@ -100,6 +100,7 @@ const char* TextDirectRenderStep::fragmentCoverageSkSL() const {
 
 void TextDirectRenderStep::writeVertices(DrawWriter* dw, const DrawParams& params) const {
     const SubRunData& subRunData = params.geometry().subRunData();
+
     // TODO: pass through the color from the SkPaint via the SubRunData
     subRunData.subRun()->fillVertexData(dw, subRunData.startGlyphIndex(), subRunData.glyphCount(),
                                         params.order().depthAsFloat(),
