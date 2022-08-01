@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a107da68_25e166c4",
+        "filename": "infra/bots/assets/bazelisk_mac_arm64/create.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-01T18:39:58Z",
+      "side": 1,
+      "message": "2022 Google LLC",
+      "range": {
+        "startLine": 3,
+        "startChar": 12,
+        "endLine": 3,
+        "endChar": 28
+      },
+      "revId": "c7fb45d918946113f2d4d424cda08b4a30055839",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
