@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8691b2ca_cdb7e351",
+        "filename": "gm/colrv1.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-08-01T13:00:56Z",
+      "side": 1,
+      "message": "Doesn\u0027t look like this needs to be defaulted, and it\u0027s s bit nicer if it isn\u0027t.",
+      "range": {
+        "startLine": 45,
+        "startChar": 40,
+        "endLine": 45,
+        "endChar": 45
+      },
+      "revId": "83724caa89423e0427075ab245f544a6bb50a53d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
