@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1a41f87c_a4a8a608",
+        "filename": "bazel/exporter/bazel_util.go",
+        "patchSetId": 23
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-01T17:43:16Z",
+      "side": 1,
+      "message": "In go, it is idiomatic to not use all caps for constants. I know we do this in a few places still, and I\u0027m trying to squash all uses of it as we go.\n\nruleOnlyRepoPattern should be sufficient for an unexported constant. RuleOnlyRepoPattern if it needs to be exported.",
+      "range": {
+        "startLine": 20,
+        "startChar": 1,
+        "endLine": 20,
+        "endChar": 23
+      },
+      "revId": "ee77b3285398b7997ee8adab8eac86465e6fd1e3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "180c4b80_b8e3813f",
+        "filename": "bazel/exporter/bazel_util_test.go",
+        "patchSetId": 23
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-01T17:43:16Z",
+      "side": 1,
+      "message": "Maybe assert.Nil(t, slice) or assert.Empty(t, slice)?",
+      "range": {
+        "startLine": 98,
+        "startChar": 8,
+        "endLine": 98,
+        "endChar": 13
+      },
+      "revId": "ee77b3285398b7997ee8adab8eac86465e6fd1e3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c3d2bab9_42261a4d",
+        "filename": "bazel/exporter_tool/main.go",
+        "patchSetId": 23
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-01T17:43:16Z",
+      "side": 1,
+      "message": "What benefit does using a buffered writer here add? Performance?",
+      "range": {
+        "startLine": 42,
+        "startChar": 12,
+        "endLine": 42,
+        "endChar": 21
+      },
+      "revId": "ee77b3285398b7997ee8adab8eac86465e6fd1e3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

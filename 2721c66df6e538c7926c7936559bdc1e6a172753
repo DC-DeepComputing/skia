@@ -102,6 +102,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8f649746_6d59adc6",
+        "filename": "bazel/exporter/bazel_query_command.go",
+        "patchSetId": 20
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-01T17:43:16Z",
+      "side": 1,
+      "message": "I have not seen that error before.",
+      "parentUuid": "185dcd5a_014aec6c",
+      "range": {
+        "startLine": 13,
+        "startChar": 1,
+        "endLine": 13,
+        "endChar": 5
+      },
+      "revId": "2721c66df6e538c7926c7936559bdc1e6a172753",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "bf9cfb28_5984c81d",
         "filename": "bazel/exporter/bazel_util.go",
         "patchSetId": 20
@@ -476,6 +500,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "296f73e5_4ec3cd5a",
+        "filename": "bazel/exporter/bazel_util_test.go",
+        "patchSetId": 20
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-01T17:43:16Z",
+      "side": 1,
+      "message": "Ack.",
+      "parentUuid": "d28f5747_11876a0e",
+      "range": {
+        "startLine": 55,
+        "startChar": 22,
+        "endLine": 55,
+        "endChar": 26
+      },
+      "revId": "2721c66df6e538c7926c7936559bdc1e6a172753",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7f3413c1_31d68136",
@@ -795,6 +843,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a1412689_b34b713b",
+        "filename": "bazel/exporter/cmake_exporter_test.go",
+        "patchSetId": 20
+      },
+      "lineNbr": 245,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-01T17:43:16Z",
+      "side": 1,
+      "message": "https://go.dev/play/p/e6QkmLsh3pA is what I typically do. Where is that Read() coming from that is impacting the buffer?",
+      "parentUuid": "f679726d_1dcae9c7",
+      "range": {
+        "startLine": 245,
+        "startChar": 20,
+        "endLine": 245,
+        "endChar": 27
+      },
+      "revId": "2721c66df6e538c7926c7936559bdc1e6a172753",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "483b8a4d_f98ec3a8",
         "filename": "bazel/exporter/cmake_exporter_test.go",
         "patchSetId": 20
@@ -1063,6 +1135,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ea15c601_bf5cc917",
+        "filename": "bazel/exporter/cmake_rule.go",
+        "patchSetId": 20
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-01T17:43:16Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "d3a7173e_5b0d1d6c",
+      "range": {
+        "startLine": 49,
+        "startChar": 32,
+        "endLine": 49,
+        "endChar": 38
+      },
+      "revId": "2721c66df6e538c7926c7936559bdc1e6a172753",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b97ba307_564a23b9",
@@ -1193,6 +1289,30 @@
       "side": 1,
       "message": "I needed to use:\n\n    writer.Write([]byte{\u0027\\n\u0027})\n\nStill simpler?",
       "parentUuid": "71f00bcc_d6574ea5",
+      "range": {
+        "startLine": 75,
+        "startChar": 13,
+        "endLine": 75,
+        "endChar": 33
+      },
+      "revId": "2721c66df6e538c7926c7936559bdc1e6a172753",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "83e9a804_13811267",
+        "filename": "bazel/exporter/cmake_workspace.go",
+        "patchSetId": 20
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-01T17:43:16Z",
+      "side": 1,
+      "message": "Fair point.\n\nos.File implements https://pkg.go.dev/io#StringWriter, so maybe that makes more sense to pass around instead of just io.Writer?",
+      "parentUuid": "c2ca97e0_656cbf3a",
       "range": {
         "startLine": 75,
         "startChar": 13,
@@ -1475,6 +1595,30 @@
       "side": 1,
       "message": "Added a deferral. I\u0027m looking into how to incorporate WithWriteFile now. Still trying to figure out how to incorporate it in a way that\n1) my tests that verify output can implement that interface without the need to do any file I/O.\n2) support the upcoming GNI exporter, which writes to many files and not just one.\n\ngoing with os.Create for the interim.",
       "parentUuid": "ec854c56_995f8391",
+      "range": {
+        "startLine": 46,
+        "startChar": 1,
+        "endLine": 46,
+        "endChar": 10
+      },
+      "revId": "2721c66df6e538c7926c7936559bdc1e6a172753",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ebd25765_71a7cf99",
+        "filename": "bazel/exporter_tool/main.go",
+        "patchSetId": 20
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-01T17:43:16Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "90ed89fc_96e232e2",
       "range": {
         "startLine": 46,
         "startChar": 1,
