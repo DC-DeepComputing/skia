@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0756e215_244870f7",
+        "filename": "src/gpu/graphite/UploadTask.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-08-01T20:17:33Z",
+      "side": 0,
+      "message": "I believe this was mistakenly copied from GrComputeTightCombinedBufferSize",
+      "revId": "ca828c0f568861e1b86689bad98634c6dfe9e6a4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
