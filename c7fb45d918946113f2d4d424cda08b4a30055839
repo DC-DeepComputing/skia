@@ -22,6 +22,30 @@
       },
       "revId": "c7fb45d918946113f2d4d424cda08b4a30055839",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "78ffc77e_d48adc8c",
+        "filename": "infra/bots/assets/bazelisk_mac_arm64/create.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 17959
+      },
+      "writtenOn": "2022-08-01T19:26:23Z",
+      "side": 1,
+      "message": "I went to a conference talk awhile back by an IP lawyer entitled something like \"Stop updating your copyright dates\", but I can\u0027t find it now. I think the upshot was that it doesn\u0027t do any good. In the absence of being able to find a citation, though, I\u0027ll go ahead and do it here. :-)",
+      "parentUuid": "a107da68_25e166c4",
+      "range": {
+        "startLine": 3,
+        "startChar": 12,
+        "endLine": 3,
+        "endChar": 28
+      },
+      "revId": "c7fb45d918946113f2d4d424cda08b4a30055839",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
