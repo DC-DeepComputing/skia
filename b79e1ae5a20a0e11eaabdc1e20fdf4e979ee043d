@@ -41,6 +41,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b7adb669_b0d15cc4",
+        "filename": "tests/CtsEnforcement.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2022-08-01T15:26:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "38c69c9d_7bb70b14",
+      "revId": "b79e1ae5a20a0e11eaabdc1e20fdf4e979ee043d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1111e02a_e6164d5e",
@@ -64,6 +82,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "017c68a6_97f57b92",
+        "filename": "tests/CtsEnforcement.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2022-08-01T15:26:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1111e02a_e6164d5e",
+      "range": {
+        "startLine": 12,
+        "startChar": 36,
+        "endLine": 12,
+        "endChar": 73
+      },
+      "revId": "b79e1ae5a20a0e11eaabdc1e20fdf4e979ee043d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "44360376_be9cea8e",
@@ -77,6 +119,30 @@
       "writtenOn": "2022-07-29T20:40:32Z",
       "side": 1,
       "message": "Derek, I thought you said over VC that `kNever` needs to be a negative number, but I don\u0027t remember why. If it was `MAX_INT`, can\u0027t this function just be\n\n```\nif (apiLevel \u003e\u003d fStrictVersion) return RunMode::kRunStrict;\nif (apiLevel \u003e\u003d fWorkaroundsVersion) return RunMode::kRunWithWorkarounds;\nreturn RunMode::kSkip;\n```\n\n? If `fStrictVersion` is `MAX_INT`, `apiLevel` will never be greater. Where do we rely on `kNever` being smaller than something else?",
+      "range": {
+        "startLine": 17,
+        "startChar": 26,
+        "endLine": 17,
+        "endChar": 32
+      },
+      "revId": "b79e1ae5a20a0e11eaabdc1e20fdf4e979ee043d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "000a9d7b_41d934c2",
+        "filename": "tests/CtsEnforcement.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2022-08-01T15:26:50Z",
+      "side": 1,
+      "message": "I think you are right.  We do need to have a `kNever` value, but it doesn\u0027t need to be negative as long as we can ensure it is bigger than any actual apilevel.",
+      "parentUuid": "44360376_be9cea8e",
       "range": {
         "startLine": 17,
         "startChar": 26,
@@ -112,6 +178,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4947902c_665d3311",
+        "filename": "tests/CtsEnforcement.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2022-08-01T15:26:50Z",
+      "side": 1,
+      "message": "I had discussed this with Brian and John, but we felt doing so would be more verbose and reduce the readability at the call sites.\n\n`CtsEnforcement::kNever` would become `CtsEnforcement::ApiLevel::kNever`\n`CtsEnforcement::kApiLevel_T` would become `CtsEnforcement::ApiLevel::kT`\n\nThe first case being more verbose and the second having reduced readability with just having `kT` or even just `T` as the enum value.",
+      "parentUuid": "8f296ffd_c64eff14",
+      "range": {
+        "startLine": 16,
+        "startChar": 8,
+        "endLine": 16,
+        "endChar": 14
+      },
+      "revId": "b79e1ae5a20a0e11eaabdc1e20fdf4e979ee043d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b0fe2f77_54e4de95",
         "filename": "tools/skqp/src/skqp.cpp",
         "patchSetId": 9
@@ -123,6 +213,30 @@
       "writtenOn": "2022-07-29T20:40:32Z",
       "side": 1,
       "message": "I thought you said we could remove the exclusion list? Isn\u0027t it redundant now?",
+      "range": {
+        "startLine": 107,
+        "startChar": 12,
+        "endLine": 107,
+        "endChar": 25
+      },
+      "revId": "b79e1ae5a20a0e11eaabdc1e20fdf4e979ee043d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ef2878e5_49a2d116",
+        "filename": "tools/skqp/src/skqp.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2022-08-01T15:26:50Z",
+      "side": 1,
+      "message": "I had forgotten to upload the new version of this file.  The entire ExclusionList class has been removed.",
+      "parentUuid": "b0fe2f77_54e4de95",
       "range": {
         "startLine": 107,
         "startChar": 12,
@@ -146,6 +260,30 @@
       "writtenOn": "2022-07-29T20:40:32Z",
       "side": 1,
       "message": "Why this change?",
+      "range": {
+        "startLine": 208,
+        "startChar": 12,
+        "endLine": 208,
+        "endChar": 20
+      },
+      "revId": "b79e1ae5a20a0e11eaabdc1e20fdf4e979ee043d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e77e8294_c2c646e1",
+        "filename": "tools/skqp/src/skqp.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 208,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2022-08-01T15:26:50Z",
+      "side": 1,
+      "message": "This is removed from this CL.\n\nHowever, this change (or one like it) will be needed in android/next-release to fix a bug introduced when I wrote code trying to force SkQP to not run any tests if api_level was less than 33.",
+      "parentUuid": "99bfd756_fb2d9bf0",
       "range": {
         "startLine": 208,
         "startChar": 12,
