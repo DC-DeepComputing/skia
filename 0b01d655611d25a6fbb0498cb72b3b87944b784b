@@ -46,6 +46,52 @@
       },
       "revId": "0b01d655611d25a6fbb0498cb72b3b87944b784b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3ef6665c_c2863f7e",
+        "filename": "tests/CtsEnforcement.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-08-01T16:51:28Z",
+      "side": 1,
+      "message": "I think we ought to assert that the workaround version is less than the strict version, right?",
+      "range": {
+        "startLine": 27,
+        "startChar": 8,
+        "endLine": 27,
+        "endChar": 47
+      },
+      "revId": "0b01d655611d25a6fbb0498cb72b3b87944b784b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3599f318_0429d50f",
+        "filename": "tests/SkSLTest.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 380,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-08-01T16:51:28Z",
+      "side": 1,
+      "message": "Add \n```\nconstexpr auto kApiLevelT \u003d CtsEnforcement::kApiLevelT;\nconstexpr auto kNever \u003d CtsEnforcement::kNever;\n```\nabove the list of tests and you won\u0027t need hundreds of `CtsEnforcement::` prefixes below.",
+      "range": {
+        "startLine": 380,
+        "startChar": 21,
+        "endLine": 380,
+        "endChar": 48
+      },
+      "revId": "0b01d655611d25a6fbb0498cb72b3b87944b784b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
