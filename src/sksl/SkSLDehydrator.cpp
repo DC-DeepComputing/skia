@@ -240,14 +240,19 @@ void Dehydrator::write(const Symbol& s) {
     }
 }
 
-static bool symbol_is_referenced(const Symbol& s) {
-    if (s.is<Variable>()) {
-        return s.as<Variable>().storage() != VariableStorage::kEliminated;
-    }
-    return true;
-}
-
 void Dehydrator::write(const SymbolTable& symbols) {
+    auto symbol_is_referenced = [](const Symbol& s, const SymbolTable& symbols) -> bool {
+        if (s.is<Variable>()) {
+            return s.as<Variable>().storage() != VariableStorage::kEliminated;
+        }
+        if (s.is<UnresolvedFunction>()) {
+            // Only dehydrate an UnresolvedFunction if it's actually findable.
+            const Symbol** found = symbols.fSymbols.find(SymbolTable::MakeSymbolKey(s.name()));
+            return found && *found == &s;
+        }
+        return true;
+    };
+
     this->writeCommand(Rehydrator::kSymbolTable_Command);
     this->writeU8(symbols.isBuiltin());
 
@@ -255,7 +260,7 @@ void Dehydrator::write(const SymbolTable& symbols) {
     std::vector<const Symbol*> ownedSymbols;
     std::vector<const Symbol*> discardedSymbols;
     for (const std::unique_ptr<const Symbol>& s : symbols.fOwnedSymbols) {
-        if (symbol_is_referenced(*s)) {
+        if (symbol_is_referenced(*s, symbols)) {
             ownedSymbols.push_back(s.get());
         }
     }
@@ -269,7 +274,7 @@ void Dehydrator::write(const SymbolTable& symbols) {
     // Make an ordered list of every referenced symbol in the symbol-table, owned or not.
     std::map<std::string_view, const Symbol*> ordered;
     symbols.foreach([&](std::string_view name, const Symbol* symbol) {
-        if (symbol_is_referenced(*symbol)) {
+        if (symbol_is_referenced(*symbol, symbols)) {
             ordered.insert({name, symbol});
         }
     });
