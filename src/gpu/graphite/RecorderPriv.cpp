@@ -59,7 +59,7 @@ sktext::gpu::StrikeCache* RecorderPriv::strikeCache() {
 }
 
 sktext::gpu::TextBlobRedrawCoordinator* RecorderPriv::textBlobCache() {
-    return fRecorder->fTextBlobCache.get();
+    return fRecorder->fTextBlobCache1.get();
 }
 
 sktext::gpu::SDFTControl RecorderPriv::getSDFTControl(bool useSDFTForSmallText) const {
