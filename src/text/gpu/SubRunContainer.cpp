@@ -63,6 +63,8 @@ using namespace sktext;
 using namespace sktext::gpu;
 
 #if defined(SK_GRAPHITE_ENABLED)
+using BindBufferInfo = skgpu::graphite::BindBufferInfo;
+using BufferType = skgpu::graphite::BufferType;
 using Device = skgpu::graphite::Device;
 using DrawWriter = skgpu::graphite::DrawWriter;
 using Rect = skgpu::graphite::Rect;
@@ -91,6 +93,17 @@ template <typename T>
 void pun_write(SkWriteBuffer& buffer, const T& src) {
     buffer.writePad32(&src, sizeof(T));
 }
+
+#if defined(SK_GRAPHITE_ENABLED)
+size_t quad_vertex_buffer_size() { return sizeof(float)*12; }
+void write_quad_vertex_buffer(skgpu::VertexWriter vertexWriter, size_t bufferSize) {
+    SkASSERT(bufferSize == sizeof(float)*12);
+    vertexWriter << 0.0f << 0.0f;
+    vertexWriter << 1.0f << 0.0f;
+    vertexWriter << 0.0f << 1.0f;
+    vertexWriter << 1.0f << 1.0f;
+}
+#endif
 
 // -- TransformedMaskVertexFiller ------------------------------------------------------------------
 class TransformedMaskVertexFiller {
@@ -139,6 +152,11 @@ public:
                         SkSpan<const Glyph*> glyphs,
                         SkScalar depth,
                         const skgpu::graphite::Transform& toDevice) const;
+    void fillInstanceData(DrawWriter* dw,
+                          int offset, int count,
+                          SkSpan<const Glyph*> glyphs,
+                          uint16_t depth,
+                          const skgpu::graphite::Transform& toDevice) const;
 #endif
     SkRect deviceRect(const SkMatrix& drawMatrix, SkPoint drawOrigin) const;
     MaskFormat grMaskType() const {return fMaskType;}
@@ -416,6 +434,43 @@ void TransformedMaskVertexFiller::fillVertexData(DrawWriter* dw,
                         << SkPoint{devOut[1].x, devOut[1].y} << depth << AtlasPt{ar, at}; // R,T
     }
 }
+
+void TransformedMaskVertexFiller::fillInstanceData(DrawWriter* dw,
+                                                   int offset, int count,
+                                                   SkSpan<const Glyph*> glyphs,
+                                                   uint16_t depth,
+                                                   const Transform& toDevice) const {
+    auto quadData = [&]() {
+        return SkMakeZip(glyphs.subspan(offset, count),
+                         fLeftTop.subspan(offset, count));
+    };
+
+    BindBufferInfo fixedVertexBuffer = dw->bufferManager()->getStaticBuffer(
+            BufferType::kVertex,
+            write_quad_vertex_buffer,
+            quad_vertex_buffer_size);
+
+    DrawWriter::Instances instances{*dw, fixedVertexBuffer, {}, 4};
+    instances.reserve(count);
+    for (auto [glyph, leftTop]: quadData()) {
+        auto[al, at, ar, ab] = glyph->fAtlasLocator.getUVs();
+        // TODO: remove need for this, and get extents rather than lower corner
+        al = al & 0x1fff;
+        ar = ar & 0x1fff;
+        SkPoint widthHeight = SkPoint::Make(glyph->fAtlasLocator.width(),
+                                            glyph->fAtlasLocator.height());
+        widthHeight *= fStrikeToSourceScale;
+        SkMatrix localMatrix(toDevice);
+        localMatrix.preTranslate(leftTop.x(), leftTop.y());
+        localMatrix.preScale(widthHeight.x(), widthHeight.y());
+        instances.append(1) << localMatrix[0] << localMatrix[1] << localMatrix[2]
+                            << localMatrix[3] << localMatrix[4] << localMatrix[5]
+                            << localMatrix[6] << localMatrix[7] << localMatrix[8]
+                            << AtlasPt{uint16_t(ar-al), uint16_t(ab-at)} << AtlasPt{al, at}
+                            << depth << (uint16_t)(glyph->fAtlasLocator.pageIndex());
+    }
+}
+
 #endif
 
 
@@ -1224,6 +1279,10 @@ public:
                         GrColor color,
                         const SkMatrix& drawMatrix, SkPoint drawOrigin,
                         SkIRect clip) const override;
+    void fillInstanceData(skgpu::graphite::DrawWriter*,
+                          int offset, int count,
+                          uint16_t depth,
+                          const skgpu::graphite::Transform& transform) const override;
 #endif  // SK_SUPPORT_GPU
 
 #if defined(SK_GRAPHITE_ENABLED)
@@ -1698,6 +1757,41 @@ void DirectMaskSubRun::fillVertexData(DrawWriter* dw,
         transformed_direct_dw(dw, quadData(), depth, toDevice);
     }
 }
+
+void DirectMaskSubRun::fillInstanceData(DrawWriter* dw,
+                                        int offset, int count,
+                                        uint16_t depth,
+                                        const skgpu::graphite::Transform& toDevice) const {
+    auto quadData = [&]() {
+        return SkMakeZip(fGlyphs.glyphs().subspan(offset, count),
+                         fLeftTopDevicePos.subspan(offset, count));
+    };
+
+    BindBufferInfo fixedVertexBuffer = dw->bufferManager()->getStaticBuffer(
+            BufferType::kVertex,
+            write_quad_vertex_buffer,
+            quad_vertex_buffer_size);
+
+    DrawWriter::Instances instances{*dw, fixedVertexBuffer, {}, 4};
+    instances.reserve(count);
+    for (auto [glyph, leftTop]: quadData()) {
+        auto[al, at, ar, ab] = glyph->fAtlasLocator.getUVs();
+        // TODO: remove need for this, and get extents rather than lower corner
+        al = al & 0x1fff;
+        ar = ar & 0x1fff;
+        SkIPoint widthHeight = SkIPoint::Make(glyph->fAtlasLocator.width(),
+                                              glyph->fAtlasLocator.height());
+        SkMatrix localMatrix(toDevice);
+        localMatrix.preTranslate(leftTop.x(), leftTop.y());
+        localMatrix.preScale(widthHeight.x(), widthHeight.y());
+        instances.append(1) << localMatrix[0] << localMatrix[1] << localMatrix[2]
+                            << localMatrix[3] << localMatrix[4] << localMatrix[5]
+                            << localMatrix[6] << localMatrix[7] << localMatrix[8]
+                            << AtlasPt{uint16_t(ar-al), uint16_t(ab-at)} << AtlasPt{al, at}
+                            << depth << (uint16_t)(glyph->fAtlasLocator.pageIndex());
+    }
+}
+
 #endif
 
 // true if only need to translate by integer amount, device rect.
@@ -1801,6 +1895,10 @@ public:
                         int offset, int count,
                         SkScalar depth,
                         const skgpu::graphite::Transform& transform) const override;
+    void fillInstanceData(DrawWriter*,
+                          int offset, int count,
+                          uint16_t depth,
+                          const skgpu::graphite::Transform& transform) const override;
 
     MaskFormat maskFormat() const override { return fVertexFiller.grMaskType(); }
 #endif
@@ -1990,6 +2088,18 @@ void TransformedMaskSubRun::fillVertexData(DrawWriter* dw,
                                  depth,
                                  transform);
 }
+
+void TransformedMaskSubRun::fillInstanceData(DrawWriter* dw,
+                                             int offset, int count,
+                                             uint16_t depth,
+                                             const Transform& transform) const {
+    fVertexFiller.fillInstanceData(dw,
+                                   offset, count,
+                                   fGlyphs.glyphs(),
+                                   depth,
+                                   transform);
+}
+
 #endif
 
 int TransformedMaskSubRun::glyphCount() const {
@@ -2080,6 +2190,10 @@ public:
                         int offset, int count,
                         SkScalar depth,
                         const skgpu::graphite::Transform& transform) const override;
+    void fillInstanceData(DrawWriter*,
+                          int offset, int count,
+                          uint16_t depth,
+                          const skgpu::graphite::Transform& transform) const override;
 
     MaskFormat maskFormat() const override { return fVertexFiller.grMaskType(); }
 #endif
@@ -2325,12 +2439,23 @@ std::tuple<Rect, Transform> SDFTSubRun::boundsAndDeviceMatrix(const Transform& l
 void SDFTSubRun::fillVertexData(DrawWriter* dw,
                                 int offset, int count,
                                 SkScalar depth,
-                                const skgpu::graphite::Transform& transform) const {
+                                const Transform& transform) const {
     fVertexFiller.fillVertexData(dw,
                                  offset, count,
                                  fGlyphs.glyphs(),
                                  depth,
                                  transform);
+}
+
+void SDFTSubRun::fillInstanceData(DrawWriter* dw,
+                                  int offset, int count,
+                                  uint16_t depth,
+                                  const Transform& transform) const {
+    fVertexFiller.fillInstanceData(dw,
+                                   offset, count,
+                                   fGlyphs.glyphs(),
+                                   depth,
+                                   transform);
 }
 #endif
 

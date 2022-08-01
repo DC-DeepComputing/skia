@@ -81,6 +81,8 @@ inline MTLVertexFormat attribute_type_to_mtlformat(VertexAttribType type) {
             }
         case VertexAttribType::kUByte4_norm:
             return MTLVertexFormatUChar4Normalized;
+        case VertexAttribType::kShort:
+            return MTLVertexFormatShort;
         case VertexAttribType::kShort2:
             return MTLVertexFormatShort2;
         case VertexAttribType::kShort4:
