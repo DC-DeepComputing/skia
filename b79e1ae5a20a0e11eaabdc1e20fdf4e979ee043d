@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b674289a_43702ba1",
+        "filename": "tests/CtsEnforcement.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2022-08-01T18:05:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6e22e004_6335dfcc",
+      "range": {
+        "startLine": 10,
+        "startChar": 40,
+        "endLine": 10,
+        "endChar": 44
+      },
+      "revId": "b79e1ae5a20a0e11eaabdc1e20fdf4e979ee043d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "38c69c9d_7bb70b14",
