@@ -106,7 +106,7 @@ static bool check_parameters(const Context& context,
         // specific to "child" objects.
         if (type.isEffectChild() && !context.fConfig->fIsBuiltinCode) {
             context.fErrors->error(param->fPosition, "parameters of type '" + type.displayName() +
-                    "' not allowed");
+                                                     "' not allowed");
             return false;
         }
 
