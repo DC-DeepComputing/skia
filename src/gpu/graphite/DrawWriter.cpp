@@ -93,7 +93,8 @@ void DrawWriter::flush() {
         fPendingBufferBinds = false;
     }
 
-    if (fTemplateCount) {
+    if (fInstances) {
+        SkASSERT(fTemplateCount != 0);
         // Instanced drawing
         unsigned int realVertexCount;
         if (fTemplateCount < 0) {
@@ -111,10 +112,13 @@ void DrawWriter::flush() {
                                        fPendingBase, fPendingCount);
         }
     } else {
-        SkASSERT(!fInstances);
         if (fIndices) {
-            fDispatcher->drawIndexed(fPrimitiveType, 0, fPendingCount, fPendingBase);
+            SkASSERT(fTemplateCount < 0);
+            unsigned indexCount = -fTemplateCount - 1;
+            fTemplateCount = -1; // reset to re-accumulate max index count for next flush
+            fDispatcher->drawIndexed(fPrimitiveType, 0, indexCount, fPendingBase);
         } else {
+            SkASSERT(fTemplateCount == 0);
             fDispatcher->draw(fPrimitiveType, fPendingBase, fPendingCount);
         }
     }
