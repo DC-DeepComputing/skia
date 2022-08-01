@@ -30,6 +30,7 @@ namespace skgpu::graphite {
 
 class AtlasManager;
 class Caps;
+class ClientImageCache;
 class Device;
 class DrawBufferManager;
 class GlobalCache;
@@ -56,6 +57,8 @@ public:
 
     std::unique_ptr<Recording> snap();
 
+    ClientImageCache* clientImageCache() { return fClientImageCache.get(); }
+
     // Provides access to functions that aren't part of the public API.
     RecorderPriv priv();
     const RecorderPriv priv() const;  // NOLINT(readability-const-return-type)
@@ -69,7 +72,7 @@ private:
     friend class Device; // For registering and deregistering Devices;
     friend class RecorderPriv; // for ctor and hidden methods
 
-    Recorder(sk_sp<Gpu>, sk_sp<GlobalCache>);
+    Recorder(sk_sp<Gpu>, sk_sp<GlobalCache>, sk_sp<ClientImageCache>);
 
     SingleOwner* singleOwner() const { return &fSingleOwner; }
 
@@ -108,6 +111,7 @@ private:
     std::unique_ptr<TokenTracker> fTokenTracker;
     std::unique_ptr<sktext::gpu::StrikeCache> fStrikeCache;
     std::unique_ptr<sktext::gpu::TextBlobRedrawCoordinator> fTextBlobCache;
+    sk_sp<ClientImageCache> fClientImageCache;
 
     // In debug builds we guard against improper thread handling
     // This guard is passed to the ResourceCache.
