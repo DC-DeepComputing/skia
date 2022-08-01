@@ -7,10 +7,14 @@ package interfaces
 
 import "io"
 
+// FileOpenFunc defines a function responsible for opening a file with
+// write access identified by the absolute path.
+type FileOpenFunc func(path string) (io.Writer, error)
+
 // Exporter defines an interface for exporting the Bazel workspace
 // rules to a different project format.
 type Exporter interface {
 	// Export will write the converted Bazel cquery response data to
-	// the supplied writer with the given project name.
-	Export(qcmd QueryCommand, writer io.Writer, projName string) error
+	// a new project format.
+	Export(qcmd QueryCommand) error
 }

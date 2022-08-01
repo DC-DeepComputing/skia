@@ -7,6 +7,7 @@ package exporter
 
 import (
 	"bytes"
+	"io"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -176,11 +177,13 @@ func getTestWorkspace(t *testing.T) (*CMakeWorkspace, error) {
 	}
 
 	// Export to CMake buffer.
-	e := NewCMakeExporter(workspaceTestWorkspaceDir)
-	var contents bytes.Buffer
+	testOpener := func(path string) (io.Writer, error) {
+		return new(bytes.Buffer), nil
+	}
+	e := NewCMakeExporter("projName", workspaceTestWorkspaceDir, "CMakeLists.txt", testOpener)
 	qcmd := mocks.NewQueryCommand(t)
 	qcmd.On("Read", mock.Anything).Return(protoData, nil)
-	err = e.Export(qcmd, &contents, "projName")
+	err = e.Export(qcmd)
 	if err != nil {
 		return nil, skerr.Wrap(err)
 	}
