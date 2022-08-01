@@ -380,8 +380,8 @@ void add_image_uniform_data(const SkShaderCodeDictionary* dict,
     gatherer->write(imgData.fSubset);
     gatherer->write(static_cast<int>(imgData.fTileModes[0]));
     gatherer->write(static_cast<int>(imgData.fTileModes[1]));
-    gatherer->write(imgData.fTextureProxy->dimensions().fWidth);
-    gatherer->write(imgData.fTextureProxy->dimensions().fHeight);
+    gatherer->write(imgData.fTextureProxy1->dimensions().fWidth);
+    gatherer->write(imgData.fTextureProxy1->dimensions().fHeight);
 
     gatherer->addFlags(dict->getSnippetRequirementFlags(SkBuiltInCodeSnippetID::kImageShader));
 }
@@ -409,7 +409,7 @@ void ImageShaderBlock::BeginBlock(const SkKeyContext& keyContext,
 #ifdef SK_GRAPHITE_ENABLED
     if (builder->backend() == SkBackend::kGraphite) {
         // TODO: allow through lazy proxies
-        if (gatherer && !imgData.fTextureProxy) {
+        if (gatherer && !imgData.fTextureProxy1) {
             // We're dropping the ImageShader here. This could be an instance of trying to draw
             // a raster-backed image w/ a Graphite-backed canvas.
             // TODO: At some point the pre-compile path should also be creating a texture
@@ -422,7 +422,7 @@ void ImageShaderBlock::BeginBlock(const SkKeyContext& keyContext,
         if (gatherer) {
             gatherer->add(imgData.fSampling,
                           imgData.fTileModes,
-                          imgData.fTextureProxy);
+                          imgData.fTextureProxy1);
 
             add_image_uniform_data(dict, imgData, gatherer);
         }
