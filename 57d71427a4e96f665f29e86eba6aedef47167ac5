@@ -16,6 +16,24 @@
       "message": "Thank you for the contribution.\n\nCan you:\n - Add an entry for modules/canvaskit/CHANGELOG.md\n - Update the Typescript definitions https://github.com/google/skia/blob/f21a717e1347b022ec72f26dbb8bae66b4c6f7a2/modules/canvaskit/npm_build/types/index.d.ts#L2949\n - Add an entry to our type tests (parsed, but not executed) - https://github.com/google/skia/blob/f21a717e1347b022ec72f26dbb8bae66b4c6f7a2/modules/canvaskit/npm_build/types/canvaskit-wasm-tests.ts#L582\n - Verify the above by running `make typecheck` from the CanvasKit folder\n\nThanks",
       "revId": "57d71427a4e96f665f29e86eba6aedef47167ac5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d5ac2cb3_615f7522",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 7708
+      },
+      "writtenOn": "2022-08-01T23:00:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6e7e691d_c332304c",
+      "revId": "57d71427a4e96f665f29e86eba6aedef47167ac5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
