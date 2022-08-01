@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e57c13ae_c46245d6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 13
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5020
+      },
+      "writtenOn": "2022-08-01T18:07:14Z",
+      "side": 1,
+      "message": "this latest patch set has clang-format run on it and should address all the previous comments (minus the bikeshedding on enum names).",
+      "revId": "57bf511ea202e021461ce852d05eb1f329ffb433",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
