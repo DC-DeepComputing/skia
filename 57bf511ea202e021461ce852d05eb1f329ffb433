@@ -16,6 +16,167 @@
       "message": "this latest patch set has clang-format run on it and should address all the previous comments (minus the bikeshedding on enum names).",
       "revId": "57bf511ea202e021461ce852d05eb1f329ffb433",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a7f33a02_97b17cf5",
+        "filename": "tests/CtsEnforcement.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-08-01T18:54:31Z",
+      "side": 1,
+      "message": "We should have comments here describing the process for updating at release time.",
+      "range": {
+        "startLine": 16,
+        "startChar": 68,
+        "endLine": 16,
+        "endChar": 80
+      },
+      "revId": "57bf511ea202e021461ce852d05eb1f329ffb433",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eb2451fc_7c43c609",
+        "filename": "tests/CtsEnforcement.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-08-01T18:54:31Z",
+      "side": 1,
+      "message": "Is this the number that the board will be set to during development? That would be ideal, so that we can make sure the tests are run before we make the switch over.",
+      "range": {
+        "startLine": 16,
+        "startChar": 83,
+        "endLine": 16,
+        "endChar": 87
+      },
+      "revId": "57bf511ea202e021461ce852d05eb1f329ffb433",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "23c777af_02aa7240",
+        "filename": "tests/CtsEnforcement.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-08-01T18:54:31Z",
+      "side": 1,
+      "message": "```\n// When used as fStrictVersion, always skip this test. It is not relevant to CTS.\n// When used as fWorkaroundsVersion, there are no api levels that should run the\n// test with workarounds.\n```",
+      "range": {
+        "startLine": 16,
+        "startChar": 30,
+        "endLine": 16,
+        "endChar": 36
+      },
+      "revId": "57bf511ea202e021461ce852d05eb1f329ffb433",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "754df7e3_f70e1ddb",
+        "filename": "tests/CtsEnforcement.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-08-01T18:54:31Z",
+      "side": 1,
+      "message": "// Run this test in strict mode if the API level is at least strictVersion",
+      "range": {
+        "startLine": 18,
+        "startChar": 14,
+        "endLine": 18,
+        "endChar": 28
+      },
+      "revId": "57bf511ea202e021461ce852d05eb1f329ffb433",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b668cf88_e94cc6fd",
+        "filename": "tests/CtsEnforcement.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-08-01T18:54:31Z",
+      "side": 1,
+      "message": "// Run this test with workarounds if the API level is \u003e\u003d workaroundVersion and\n// \u003c fStrictVersion",
+      "range": {
+        "startLine": 21,
+        "startChar": 30,
+        "endLine": 21,
+        "endChar": 45
+      },
+      "revId": "57bf511ea202e021461ce852d05eb1f329ffb433",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6ded6a75_1c3cdb86",
+        "filename": "tests/CtsEnforcement.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-08-01T18:54:31Z",
+      "side": 1,
+      "message": "`static_assert`?",
+      "range": {
+        "startLine": 22,
+        "startChar": 8,
+        "endLine": 22,
+        "endChar": 16
+      },
+      "revId": "57bf511ea202e021461ce852d05eb1f329ffb433",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8edd546e_03926213",
+        "filename": "tests/CtsEnforcement.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-08-01T18:54:31Z",
+      "side": 1,
+      "message": "Why is this no longer `const`?",
+      "range": {
+        "startLine": 31,
+        "startChar": 4,
+        "endLine": 31,
+        "endChar": 12
+      },
+      "revId": "57bf511ea202e021461ce852d05eb1f329ffb433",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

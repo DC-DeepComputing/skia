@@ -74,6 +74,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "65933aa0_3a882d70",
+        "filename": "tests/CtsEnforcement.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-08-01T18:54:31Z",
+      "side": 1,
+      "message": "I think you said you were going to add comments to this class? Just off the top of my head\n\n```\n// Determines how tests are enforced by CTS. Depending on the ApiLevel, a test may\n// be run, run with workarounds or skipped.\n```",
+      "range": {
+        "startLine": 13,
+        "startChar": 6,
+        "endLine": 13,
+        "endChar": 20
+      },
+      "revId": "0b01d655611d25a6fbb0498cb72b3b87944b784b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3ef6665c_c2863f7e",
         "filename": "tests/CtsEnforcement.h",
         "patchSetId": 10
@@ -162,6 +185,46 @@
         "endLine": 380,
         "endChar": 48
       },
+      "revId": "0b01d655611d25a6fbb0498cb72b3b87944b784b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1b89fa19_28226831",
+        "filename": "tools/skqp/src/skqp.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-08-01T18:54:31Z",
+      "side": 1,
+      "message": "I don\u0027t think this name describes what\u0027s going on here. As I understand it, each test will have its own rules, but this is a general rule. It allows us to override whatever some set of tests say.\n\nAre we sure we need this? The only thing I don\u0027t like about it is that it makes what the tests say potentially incorrect. What do we say for the existing ES3 tests? What other situations will we use this for?\n\nIf we keep it, I think a better name might be something like `sExclusionRuleForSkSLTests`?",
+      "range": {
+        "startLine": 70,
+        "startChar": 51,
+        "endLine": 70,
+        "endChar": 77
+      },
+      "revId": "0b01d655611d25a6fbb0498cb72b3b87944b784b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4fa11460_85cba807",
+        "filename": "tools/skqp/src/skqp.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-08-01T18:54:31Z",
+      "side": 1,
+      "message": "Can you add a comment explaining this line? Something like\n\n```\n// Always disable ES3 tests for now, until AGSL supports ES3.\n```\n\n?",
       "revId": "0b01d655611d25a6fbb0498cb72b3b87944b784b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }

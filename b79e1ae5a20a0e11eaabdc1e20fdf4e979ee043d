@@ -248,6 +248,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "53d7e98d_d3bf40aa",
+        "filename": "tests/CtsEnforcement.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-08-01T18:54:31Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "4947902c_665d3311",
+      "range": {
+        "startLine": 16,
+        "startChar": 8,
+        "endLine": 16,
+        "endChar": 14
+      },
+      "revId": "b79e1ae5a20a0e11eaabdc1e20fdf4e979ee043d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b0fe2f77_54e4de95",
@@ -285,6 +309,30 @@
       "side": 1,
       "message": "I had forgotten to upload the new version of this file.  The entire ExclusionList class has been removed.",
       "parentUuid": "b0fe2f77_54e4de95",
+      "range": {
+        "startLine": 107,
+        "startChar": 12,
+        "endLine": 107,
+        "endChar": 25
+      },
+      "revId": "b79e1ae5a20a0e11eaabdc1e20fdf4e979ee043d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4330f86c_9236c95f",
+        "filename": "tools/skqp/src/skqp.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-08-01T18:54:31Z",
+      "side": 1,
+      "message": "Yay!",
+      "parentUuid": "ef2878e5_49a2d116",
       "range": {
         "startLine": 107,
         "startChar": 12,
