@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7e2a71b1_d6e5a685",
+        "filename": "src/gpu/graphite/mtl/MtlUtils.mm",
+        "patchSetId": 14
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-08-01T13:23:47Z",
+      "side": 1,
+      "message": "Is this intentional?",
+      "range": {
+        "startLine": 72,
+        "startChar": 30,
+        "endLine": 72,
+        "endChar": 34
+      },
+      "revId": "bfe04e3d263a77e68afef77e9d63f0d03f68cd59",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
