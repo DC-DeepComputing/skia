@@ -82,16 +82,6 @@ static const constexpr bool kTrace = true;
 static const constexpr bool kTrace = false;
 #endif
 
-template <typename T>
-bool pun_read(SkReadBuffer& buffer, T* dst) {
-    return buffer.readPad32(dst, sizeof(T));
-}
-
-template <typename T>
-void pun_write(SkWriteBuffer& buffer, const T& src) {
-    buffer.writePad32(&src, sizeof(T));
-}
-
 // -- TransformedMaskVertexFiller ------------------------------------------------------------------
 class TransformedMaskVertexFiller {
 public:
@@ -1168,11 +1158,12 @@ class DirectMaskSubRun final : public SubRun, public AtlasSubRun {
 public:
     DirectMaskSubRun(MaskFormat format,
                      const SkMatrix& initialPositionMatrix,
-                     SkGlyphRect deviceBounds,
+                     SkRect deviceBounds,
                      SkSpan<const SkPoint> devicePositions,
                      GlyphVector&& glyphs);
 
-    static SubRunOwner Make(const SkZip<SkGlyphVariant, SkPoint>& accepted,
+    static SubRunOwner Make(SkRect bounds,
+                            const SkZip<SkGlyphVariant, SkPoint>& accepted,
                             const SkMatrix& initialPositionMatrix,
                             sk_sp<SkStrike>&& strike,
                             MaskFormat format,
@@ -1263,7 +1254,7 @@ private:
     const SkMatrix& fInitialPositionMatrix;
 
     // The vertex bounds in device space. The bounds are the joined rectangles of all the glyphs.
-    const SkGlyphRect fGlyphDeviceBounds;
+    const SkRect fGlyphDeviceBounds;
     const SkSpan<const SkPoint> fLeftTopDevicePos;
 
     // The regenerateAtlas method mutates fGlyphs. It should be called from onPrepare which must
@@ -1273,7 +1264,7 @@ private:
 
 DirectMaskSubRun::DirectMaskSubRun(MaskFormat format,
                                    const SkMatrix& initialPositionMatrix,
-                                   SkGlyphRect deviceBounds,
+                                   SkRect deviceBounds,
                                    SkSpan<const SkPoint> devicePositions,
                                    GlyphVector&& glyphs)
         : fMaskFormat{format}
@@ -1282,7 +1273,8 @@ DirectMaskSubRun::DirectMaskSubRun(MaskFormat format,
         , fLeftTopDevicePos{devicePositions}
         , fGlyphs{std::move(glyphs)} {}
 
-SubRunOwner DirectMaskSubRun::Make(const SkZip<SkGlyphVariant, SkPoint>& accepted,
+SubRunOwner DirectMaskSubRun::Make(SkRect bounds,
+                                   const SkZip<SkGlyphVariant, SkPoint>& accepted,
                                    const SkMatrix& initialPositionMatrix,
                                    sk_sp<SkStrike>&& strike,
                                    MaskFormat format,
@@ -1290,18 +1282,15 @@ SubRunOwner DirectMaskSubRun::Make(const SkZip<SkGlyphVariant, SkPoint>& accepte
     auto glyphLeftTop = alloc->makePODArray<SkPoint>(accepted.size());
     auto glyphIDs = alloc->makePODArray<GlyphVector::Variant>(accepted.size());
 
-    SkGlyphRect runBounds = skglyph::empty_rect();
     for (auto [i, variant, pos] : SkMakeEnumerate(accepted)) {
         const SkGlyph* const skGlyph = variant;
-        const SkGlyphRect deviceBounds = skGlyph->glyphRect().offset(pos.x(), pos.y());
-        runBounds = skglyph::rect_union(runBounds, deviceBounds);
-        glyphLeftTop[i] = deviceBounds.leftTop();
+        glyphLeftTop[i] = SkPoint::Make(skGlyph->left(), skGlyph->top()) + pos;
         glyphIDs[i].packedGlyphID = skGlyph->getPackedID();
     }
 
     SkSpan<const SkPoint> leftTop{glyphLeftTop, accepted.size()};
     return alloc->makeUnique<DirectMaskSubRun>(
-            format, initialPositionMatrix, runBounds, leftTop,
+            format, initialPositionMatrix, bounds, leftTop,
             GlyphVector{std::move(strike), {glyphIDs, accepted.size()}});
 }
 
@@ -1315,8 +1304,7 @@ SubRunOwner DirectMaskSubRun::MakeFromBuffer(const SkMatrix& initialPositionMatr
                                              SubRunAllocator* alloc,
                                              const SkStrikeClient* client) {
     MaskFormat maskType = (MaskFormat)buffer.readInt();
-    SkGlyphRect runBounds;
-    pun_read(buffer, &runBounds);
+    SkRect runBounds = buffer.readRect();
 
     uint32_t glyphCount = buffer.getArrayCount();
 
@@ -1342,7 +1330,7 @@ SubRunOwner DirectMaskSubRun::MakeFromBuffer(const SkMatrix& initialPositionMatr
 
 void DirectMaskSubRun::doFlatten(SkWriteBuffer& buffer) const {
     buffer.writeInt(static_cast<int>(fMaskFormat));
-    pun_write(buffer, fGlyphDeviceBounds);
+    buffer.writeRect(fGlyphDeviceBounds);
     buffer.writePointArray(fLeftTopDevicePos.data(), SkCount(fLeftTopDevicePos));
     fGlyphs.flatten(buffer);
 }
@@ -1716,11 +1704,10 @@ std::tuple<bool, SkRect> DirectMaskSubRun::deviceRectAndCheckTransform(
                                   !initialMatrix.hasPerspective();
 
     if (compatibleMatrix && SkScalarIsInt(offset.x()) && SkScalarIsInt(offset.y())) {
-        SkRect outBounds = fGlyphDeviceBounds.rect();
-        return {true, outBounds.makeOffset(offset)};
+        return {true, fGlyphDeviceBounds.makeOffset(offset)};
     } else if (SkMatrix inverse; fInitialPositionMatrix.invert(&inverse)) {
         SkMatrix viewDifference = SkMatrix::Concat(positionMatrix, inverse);
-        return {false, viewDifference.mapRect(fGlyphDeviceBounds.rect())};
+        return {false, viewDifference.mapRect(fGlyphDeviceBounds)};
     }
 
     // initialPositionMatrix is singular. Do nothing.
@@ -2593,7 +2580,7 @@ std::tuple<bool, SubRunContainerOwner> SubRunContainer::MakeInAlloc(
                 if constexpr (kTrace) {
                     msg.appendf("    glyphs:(x,y):\n      %s\n", accepted->dumpInput().c_str());
                 }
-                strike->prepareForMaskDrawing(accepted, rejected);
+                SkRect bounds = strike->prepareForMaskDrawing(1, accepted, rejected);
                 rejected->flipRejectsToSource();
 
                 if (creationBehavior == kAddSubRuns && !accepted->empty()) {
@@ -2602,7 +2589,8 @@ std::tuple<bool, SubRunContainerOwner> SubRunContainer::MakeInAlloc(
                                 MaskFormat format,
                                 sk_sp<SkStrike>&& runStrike) {
                                 SubRunOwner subRun =
-                                        DirectMaskSubRun::Make(acceptedGlyphsAndLocations,
+                                        DirectMaskSubRun::Make(bounds,
+                                                               acceptedGlyphsAndLocations,
                                                                container->initialPosition(),
                                                                std::move(runStrike),
                                                                format,
@@ -2773,7 +2761,7 @@ std::tuple<bool, SubRunContainerOwner> SubRunContainer::MakeInAlloc(
                 if constexpr (kTrace) {
                     msg.appendf("glyphs:(x,y):\n      %s\n", accepted->dumpInput().c_str());
                 }
-                strike->prepareForMaskDrawing(accepted, rejected);
+                strike->prepareForMaskDrawing(strikeToSourceScale, accepted, rejected);
                 rejected->flipRejectsToSource();
                 SkASSERT(rejected->source().empty());
 
