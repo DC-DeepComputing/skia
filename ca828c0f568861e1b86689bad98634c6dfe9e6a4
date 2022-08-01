@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "afedc714_00efc801",
+        "filename": "tests/sksl/compute/Buffers.metal",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-08-01T20:49:35Z",
+      "side": 0,
+      "message": "This test output doesn\u0027t have a corresponding test input, so it disappeared when I nuked and rebuilt the test outputs.",
+      "revId": "ca828c0f568861e1b86689bad98634c6dfe9e6a4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
