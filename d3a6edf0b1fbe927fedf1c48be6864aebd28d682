@@ -16,6 +16,29 @@
       "message": "Now that all the Perfetto functionality CLs have merged, I updated the documentation to reflect that.\n\nAs a quick question, I am wondering if it\u0027s worthwhile to talk about the benefits of tracing with Perfetto, or if we assume people know if they\u0027re looking up how to trace with it within Skia. We don\u0027t seem to be done for the other tracing methodologies, but just a thought. Thanks!",
       "revId": "d3a6edf0b1fbe927fedf1c48be6864aebd28d682",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ea0ce3da_55ca3116",
+        "filename": "site/docs/dev/tools/tracing.md",
+        "patchSetId": 7
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-08-01T17:22:33Z",
+      "side": 1,
+      "message": "optional? But actually is this work even needed. Are all of these just \"Some debugging tips\"?",
+      "range": {
+        "startLine": 117,
+        "startChar": 5,
+        "endLine": 117,
+        "endChar": 11
+      },
+      "revId": "d3a6edf0b1fbe927fedf1c48be6864aebd28d682",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
