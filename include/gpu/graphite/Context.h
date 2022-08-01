@@ -34,6 +34,29 @@ class Recording;
 class ResourceProvider;
 class TextureInfo;
 
+/*
+ * This class provides a centralized location for clients to perform any caching of images
+ * they desire. Whenever a new Graphite-backed SkImage is create from an already existing
+ * SkImage, the client image cache will be given the opportunity to return a cached version
+ * (via "find") and/or cache the result (via "cache").
+ *
+ * Note: by default, Graphite will not perform any caching of images
+ *
+ * Threading concerns:
+ *   The same ClientImageCache will be given to each Recorder as they are created. It is up to the
+ *   client to handle any threading synchronization needed.
+ */
+class ClientImageCache : public SkRefCnt {
+public:
+    virtual sk_sp<SkImage> find(Recorder* recorder,
+                                const SkImage* imageIn,
+                                Mipmapped mipmapped) = 0;
+    virtual void cache(Recorder* recorder,
+                       const SkImage* prior,
+                       sk_sp<SkImage> graphiteBacked) = 0;
+};
+
+
 class Context final {
 public:
     Context(const Context&) = delete;
@@ -44,7 +67,9 @@ public:
     ~Context();
 
 #ifdef SK_METAL
-    static std::unique_ptr<Context> MakeMetal(const MtlBackendContext&, const ContextOptions&);
+    static std::unique_ptr<Context> MakeMetal(const MtlBackendContext&,
+                                              const ContextOptions&,
+                                              sk_sp<ClientImageCache> = nullptr);
 #endif
 
     BackendApi backend() const { return fBackend; }
@@ -93,7 +118,7 @@ public:
     const ContextPriv priv() const;  // NOLINT(readability-const-return-type)
 
 protected:
-    Context(sk_sp<Gpu>, std::unique_ptr<QueueManager>, BackendApi);
+    Context(sk_sp<Gpu>, std::unique_ptr<QueueManager>, sk_sp<ClientImageCache>, BackendApi);
 
 private:
     friend class ContextPriv;
@@ -104,6 +129,7 @@ private:
     std::unique_ptr<ResourceProvider> fResourceProvider;
     std::unique_ptr<QueueManager> fQueueManager;
     sk_sp<GlobalCache> fGlobalCache;
+    sk_sp<ClientImageCache> fClientImageCache;
     BackendApi fBackend;
 
     // In debug builds we guard against improper thread handling. This guard is passed to the

@@ -386,13 +386,16 @@ void SkImageShader::addToKey(const SkKeyContext& keyContext,
                                         this->getLocalMatrix());
 
 #ifdef SK_GRAPHITE_ENABLED
-    if (as_IB(fImage)->isGraphiteBacked()) {
-        skgpu::graphite::Image* grImage = static_cast<skgpu::graphite::Image*>(fImage.get());
+    skgpu::graphite::Mipmapped mipmapped = (fSampling.mipmap != SkMipmapMode::kNone)
+                                                           ? skgpu::graphite::Mipmapped::kYes
+                                                           : skgpu::graphite::Mipmapped::kNo;
 
-        auto mipmapped = (fSampling.mipmap != SkMipmapMode::kNone) ?
-                skgpu::graphite::Mipmapped::kYes : skgpu::graphite::Mipmapped::kNo;
+    sk_sp<SkImage> graphiteBacked = fImage->makeTextureImage(keyContext.recorder(), mipmapped);
+    if (graphiteBacked) {
+        skgpu::graphite::Image* grImage = static_cast<skgpu::graphite::Image*>(graphiteBacked.get());
+
         auto[view, ct] = grImage->asView(keyContext.recorder(), mipmapped);
-        imgData.fTextureProxy = view.refProxy();
+        imgData.fTextureProxy1 = view.refProxy();
     }
 #endif
 
