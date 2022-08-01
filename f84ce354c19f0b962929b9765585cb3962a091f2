@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f1e5c6d8_d0656929",
+        "filename": "src/text/gpu/SubRunContainer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1344,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-08-01T19:19:17Z",
+      "side": 1,
+      "message": "This is for slugs, and slugs should not be in SKPs. There is no way to draw them from CPU.",
+      "parentUuid": "8cdd0c1d_87ff8f99",
+      "revId": "f84ce354c19f0b962929b9765585cb3962a091f2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f541af24_c1797fa2",
@@ -31,6 +49,24 @@
       "writtenOn": "2022-08-01T19:06:26Z",
       "side": 1,
       "message": "Just fold this into the next line ?",
+      "revId": "f84ce354c19f0b962929b9765585cb3962a091f2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7a477bf4_a3edb846",
+        "filename": "src/text/gpu/SubRunContainer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1718,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-08-01T19:19:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f541af24_c1797fa2",
       "revId": "f84ce354c19f0b962929b9765585cb3962a091f2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
