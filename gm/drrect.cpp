@@ -74,3 +74,61 @@ private:
 };
 
 DEF_GM( return new DRRectGM; )
+
+// From https://github.com/flutter/flutter/issues/108713
+DEF_SIMPLE_GM(drrect_flutter_108713, canvas, 700, 400) {
+    // yellow painter
+    {
+        SkRect innerRect = {317.8f, 181.f, 669.5f, 332.7f};
+        SkVector innerRadii[4] = {
+            {51.7f, 100.f},
+            {100.f, 100.f},
+            {100.f, 51.7f},
+            {51.7f, 51.7f}
+        };
+        SkRect outerRect = {261.f, 181.f, 669.5f, 389.5f};
+        SkVector outerRadii[4] = {
+            {108.5f, 100.f},
+            {100.f, 100.f},
+            {100.f, 108.5f},
+            {108.5f, 108.5f}
+        };
+
+        SkRRect inner;
+        inner.setRectRadii(innerRect, innerRadii);
+        SkRRect outer;
+        outer.setRectRadii(outerRect, outerRadii);
+
+        SkPaint p;
+        p.setAntiAlias(true);
+        p.setColor(0x80ff8050);
+        canvas->drawDRRect(outer, inner, p);
+    }
+    // green painter
+    {
+        SkRect innerRect = {253.4f, 132.f, 600.f, 278.6f};
+        SkVector innerRadii[4] = {
+            {3.9f, 57.3f},
+            {57.3f, 57.3f},
+            {57.3f, 3.9f},
+            {3.9f, 3.9f}
+        };
+        SkRect outerRect = {195.2f, 132.f, 600.f, 336.8f};
+        SkVector outerRadii[4] = {
+            {62.2f, 57.3f},
+            {57.3f, 57.3f},
+            {57.3f, 62.2f},
+            {62.2f, 62.2f}
+        };
+
+        SkRRect inner;
+        inner.setRectRadii(innerRect, innerRadii);
+        SkRRect outer;
+        outer.setRectRadii(outerRect, outerRadii);
+
+        SkPaint p;
+        p.setAntiAlias(true);
+        p.setColor(0x80008050);
+        canvas->drawDRRect(outer, inner, p);
+    }
+}
