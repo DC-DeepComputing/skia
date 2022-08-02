@@ -284,12 +284,18 @@ std::tuple<SkRect, size_t> SkScalerCache::prepareForMaskDrawing(
     return {boundingRect.rect(), delta};
 }
 
-size_t SkScalerCache::prepareForSDFTDrawing(
-        SkDrawableGlyphBuffer* accepted, SkSourceGlyphBuffer* rejected) {
+std::tuple<SkRect, size_t> SkScalerCache::prepareForSDFTDrawing(
+        SkScalar strikeToSourceScale,
+        SkDrawableGlyphBuffer* accepted,
+        SkSourceGlyphBuffer* rejected) {
     SkAutoMutexExclusive lock{fMu};
+    SkGlyphRect boundingRect = skglyph::empty_rect();
     size_t delta = this->commonFilterLoop(accepted,
         [&](size_t i, SkGlyphDigest digest, SkPoint pos) SK_REQUIRES(fMu) {
             if (digest.canDrawAsSDFT()) {
+                // Remember that commonFilterLoop eliminates all empty glyphs.
+                boundingRect = skglyph::rect_union(
+                        boundingRect, digest.bounds().scaleAndOffset(strikeToSourceScale, pos));
                 accepted->accept(fGlyphForIndex[digest.index()], i);
             } else {
                 // Assume whatever follows SDF doesn't care about the maximum rejected size.
@@ -297,7 +303,7 @@ size_t SkScalerCache::prepareForSDFTDrawing(
             }
         });
 
-    return delta;
+    return {boundingRect.rect(), delta};
 }
 
 size_t SkScalerCache::prepareForPathDrawing(
