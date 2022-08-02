@@ -109,6 +109,24 @@
       "parentUuid": "fe5f6a17_f58843a5",
       "revId": "b8e195c7c86a97d2ee674eb6d27aac1c2760bd79",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "65c3cdf3_f9c1126c",
+        "filename": "modules/skottie/src/BlendModes.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2022-08-02T17:10:55Z",
+      "side": 1,
+      "message": "\u003e 1) sksl inputs and outputs are premultiplied, but the hard mix logic is expressed in unpremultiplied space -- so we need to unpremul/premul explicitly.\n\n(https://skia.org/docs/user/sksl/#premultiplied-alpha)",
+      "parentUuid": "babce1b9_45113cb2",
+      "revId": "b8e195c7c86a97d2ee674eb6d27aac1c2760bd79",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
