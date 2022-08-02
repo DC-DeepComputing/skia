@@ -39,6 +39,30 @@
       },
       "revId": "eeb1f74da69a6217c85814c029a1a9d7764de159",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "47e87637_0f0fdc0d",
+        "filename": "bazel/exporter/cmake_exporter.go",
+        "patchSetId": 28
+      },
+      "lineNbr": 437,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-08-02T20:31:03Z",
+      "side": 1,
+      "message": "OK - I\u0027m confused. That\u0027s what it started out as, and I understood your request in https://skia-review.googlesource.com/c/skia/+/559402/20..28/bazel/exporter/cmake_workspace.go#b75 was to simplify that somehow. If you\u0027re OK with that then I don\u0027t see any reason to add the new `interfaces.Writer` interface, and this could just use `io.Writer`.",
+      "parentUuid": "7373050a_f73be9f1",
+      "range": {
+        "startLine": 437,
+        "startChar": 8,
+        "endLine": 437,
+        "endChar": 19
+      },
+      "revId": "eeb1f74da69a6217c85814c029a1a9d7764de159",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
