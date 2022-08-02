@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bb0839d3_179171c3",
+        "filename": "tests/SkSLDSLTest.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1494,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-08-02T23:33:33Z",
+      "side": 1,
+      "message": "A very unique implementation of `dot`.",
+      "range": {
+        "startLine": 1494,
+        "startChar": 50,
+        "endLine": 1494,
+        "endChar": 76
+      },
+      "revId": "a0dc8385fbf31ca3f6a383ecaea0b485cd048b50",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
