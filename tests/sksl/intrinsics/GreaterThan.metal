@@ -1,27 +1,31 @@
-#include <metal_stdlib>
-#include <simd/simd.h>
-using namespace metal;
-struct Uniforms {
-    half4 a;
-    half4 b;
-    uint2 c;
-    uint2 d;
-    int3 e;
-    int3 f;
-};
-struct Inputs {
-};
-struct Outputs {
-    half4 sk_FragColor [[color(0)]];
-};
-fragment Outputs fragmentMain(Inputs _in [[stage_in]], constant Uniforms& _uniforms [[buffer(0)]], bool _frontFacing [[front_facing]], float4 _fragCoord [[position]]) {
-    Outputs _out;
-    (void)_out;
-    bool4 expectFFTT = bool4(false, false, true, true);
-    bool4 expectTTFF = bool4(true, true, false, false);
-    _out.sk_FragColor.x = half((_uniforms.a > _uniforms.b).x ? 1 : 0);
-    _out.sk_FragColor.y = half((_uniforms.c > _uniforms.d).y ? 1 : 0);
-    _out.sk_FragColor.z = half((_uniforms.e > _uniforms.f).z ? 1 : 0);
-    _out.sk_FragColor.w = half(any(expectTTFF) || any(expectFFTT) ? 1 : 0);
-    return _out;
-}
+### Compilation failed:
+
+error: 6: no match for greaterThan(half4, half4)
+considered:
+$bvec greaterThan($usvec x, $usvec y)
+$bvec greaterThan($svec x, $svec y)
+$bvec greaterThan($uvec x, $uvec y)
+
+    bool4 expectFFTT = greaterThan(half4(1, 2, 2.5, 2.75), half4(2.25));
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+error: 7: expected 'short4', but found 'int4'
+    bool4 expectTTFF = greaterThan(int4_zero, int4(-100, -50, 0, 50));
+                                   ^^^^^^^^^
+error: 9: no match for greaterThan(half4, half4)
+considered:
+$bvec greaterThan($usvec x, $usvec y)
+$bvec greaterThan($svec x, $svec y)
+$bvec greaterThan($uvec x, $uvec y)
+
+    sk_FragColor.x = greaterThan(a, b).x ? 1 : 0;
+                     ^^^^^^^^^^^^^^^^^
+error: 11: expected 'short3', but found 'int3'
+    sk_FragColor.z = greaterThan(e, f).z ? 1 : 0;
+                                 ^
+error: 12: unknown identifier 'expectTTFF'
+    sk_FragColor.w = any(expectTTFF) || any(expectFFTT) ? 1 : 0;
+                         ^^^^^^^^^^
+error: 12: unknown identifier 'expectFFTT'
+    sk_FragColor.w = any(expectTTFF) || any(expectFFTT) ? 1 : 0;
+                                            ^^^^^^^^^^
+6 errors

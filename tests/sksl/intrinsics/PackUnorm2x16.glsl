@@ -1,11 +1,35 @@
+### Compilation failed:
 
-out vec4 sk_FragColor;
-uniform vec4 colorGreen;
-uniform vec4 colorRed;
-uniform vec4 testInputs;
-vec4 main() {
-    uint xy = packUnorm2x16(testInputs.xy);
-    uint zw = packUnorm2x16(testInputs.zw);
-    const vec2 tolerance = vec2(0.015625);
-    return all(lessThan(abs(unpackUnorm2x16(xy)), tolerance)) && all(lessThan(abs(unpackUnorm2x16(zw) - vec2(0.75, 1.0)), tolerance)) ? colorGreen : colorRed;
-}
+error: 13: no match for lessThan(float2, float2)
+considered:
+$bvec lessThan($uvec x, $uvec y)
+$bvec lessThan($usvec x, $usvec y)
+$bvec lessThan($svec x, $svec y)
+
+    return (all(lessThan(abs(unpackUnorm2x16(xy)      - float2(expected.xy)), tolerance)) &&
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+error: 14: no match for lessThan(float2, float2)
+considered:
+$bvec lessThan($uvec x, $uvec y)
+$bvec lessThan($usvec x, $usvec y)
+$bvec lessThan($svec x, $svec y)
+
+            all(lessThan(abs(unpackUnorm2x16(zw)      - float2(expected.zw)), tolerance)) &&
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+error: 15: no match for lessThan(float2, float2)
+considered:
+$bvec lessThan($uvec x, $uvec y)
+$bvec lessThan($usvec x, $usvec y)
+$bvec lessThan($svec x, $svec y)
+
+            all(lessThan(abs(unpackUnorm2x16(constXY) - float2(expected.xy)), tolerance)) &&
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+error: 16: no match for lessThan(float2, float2)
+considered:
+$bvec lessThan($uvec x, $uvec y)
+$bvec lessThan($usvec x, $usvec y)
+$bvec lessThan($svec x, $svec y)
+
+            all(lessThan(abs(unpackUnorm2x16(constZW) - float2(expected.zw)), tolerance)))
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+4 errors

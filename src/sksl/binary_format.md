@@ -296,14 +296,16 @@ its own ID; references to a Field are compiled in terms of the owner’s ID.
 
 #### kFunctionDeclaration_Command
 
-| Type                       | Field Name     |
-|----------------------------|----------------|
-| `uint16`                   | id             |
-| `Modifiers`                | modifiers      |
-| `String`                   | name           |
-| `uint8`                    | parameterCount |
-| `Symbol[parameterCount]`   | parameters     |
-| `Type`                     | returnType     |
+| Type                       | Field Name                           |
+|----------------------------|--------------------------------------|
+| `uint16`                   | id                                   |
+| `Modifiers`                | modifiers                            |
+| `String`                   | name                                 |
+| `uint8`                    | parameterCount                       |
+| `Symbol[parameterCount]`   | parameters                           |
+| `Type`                     | returnType                           |
+| `uint8`                    | hasOverload                          |
+| `FunctionDeclaration`      | overload (if hasOverload is nonzero) |
 
 ---
 
@@ -333,16 +335,6 @@ The `Field` type referenced in this command is:
 | `SymbolId` | id         |
 
 Refers to a Symbol which has already been written by another command.
-
----
-
-#### kUnresolvedFunction_Command
-
-| Type                         | Field Name |
-|------------------------------|------------|
-| `uint16`                     | id         |
-| `uint8`                      | count      |
-| `FunctionDeclaration[count]` | functions  |
 
 ---
 

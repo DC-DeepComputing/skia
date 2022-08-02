@@ -1,7 +1,7 @@
 // Not exposed in shared module
 
-$genIType mix($genIType x, $genIType y, $genBType a);
-$genBType mix($genBType x, $genBType y, $genBType a);
+//$genIType mix($genIType x, $genIType y, $genBType a);
+//$genBType mix($genBType x, $genBType y, $genBType a);
 $genType fma($genType a, $genType b, $genType c);
 $genHType fma($genHType a, $genHType b, $genHType c);
 sk_has_side_effects $genType frexp($genType x, out $genIType exp);

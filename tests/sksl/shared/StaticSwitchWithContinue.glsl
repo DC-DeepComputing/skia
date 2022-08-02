@@ -1,14 +1,15 @@
+### Compilation failed:
 
-out vec4 sk_FragColor;
-uniform vec4 colorGreen;
-uniform vec4 colorRed;
-vec4 main() {
-    float result = 0.0;
-    for (int x = 0;x <= 1; x++) {
-        {
-            result = 2.0;
-            continue;
-        }
-    }
-    return result == 2.0 ? colorGreen : colorRed;
-}
+error: 14: type mismatch: '=' cannot operate on 'float', 'int'
+            case 1: result = abs(1); continue;
+                    ^^^^^^^^^^^^^^^
+error: 15: type mismatch: '=' cannot operate on 'float', 'int'
+            case 2: result = abs(2); continue;
+                    ^^^^^^^^^^^^^^^
+error: 16: type mismatch: '=' cannot operate on 'float', 'int'
+            case 3: result = abs(3); continue;
+                    ^^^^^^^^^^^^^^^
+error: 17: type mismatch: '=' cannot operate on 'float', 'int'
+            case 4: result = abs(4); continue;
+                    ^^^^^^^^^^^^^^^
+4 errors
