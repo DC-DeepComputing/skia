@@ -12,6 +12,7 @@
 #include "include/core/SkShader.h"
 #include "include/gpu/graphite/ContextOptions.h"
 #include "include/gpu/graphite/GraphiteTypes.h"
+#include "include/gpu/graphite/RecorderOptions.h"
 #include "include/private/SingleOwner.h"
 
 #include <memory>
@@ -30,6 +31,7 @@ class Gpu;
 struct MtlBackendContext;
 class QueueManager;
 class Recorder;
+//struct RecorderOptions;
 class Recording;
 class ResourceProvider;
 class TextureInfo;
@@ -44,12 +46,13 @@ public:
     ~Context();
 
 #ifdef SK_METAL
-    static std::unique_ptr<Context> MakeMetal(const MtlBackendContext&, const ContextOptions&);
+    static std::unique_ptr<Context> MakeMetal(const MtlBackendContext&,
+                                              const ContextOptions&);
 #endif
 
     BackendApi backend() const { return fBackend; }
 
-    std::unique_ptr<Recorder> makeRecorder();
+    std::unique_ptr<Recorder> makeRecorder(const RecorderOptions& = {});
 
     void insertRecording(const InsertRecordingInfo&);
     void submit(SyncToCpu = SyncToCpu::kNo);

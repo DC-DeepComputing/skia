@@ -8,6 +8,7 @@
 #include "include/gpu/graphite/Context.h"
 
 #include "include/core/SkCombinationBuilder.h"
+#include "include/core/SkImage.h"
 #include "include/core/SkPathTypes.h"
 #include "include/effects/SkRuntimeEffect.h"
 #include "include/gpu/graphite/BackendTexture.h"
@@ -36,7 +37,9 @@ namespace skgpu::graphite {
 #define ASSERT_SINGLE_OWNER SKGPU_ASSERT_SINGLE_OWNER(this->singleOwner())
 
 //--------------------------------------------------------------------------------------------------
-Context::Context(sk_sp<Gpu> gpu, std::unique_ptr<QueueManager> queueManager, BackendApi backend)
+Context::Context(sk_sp<Gpu> gpu,
+                 std::unique_ptr<QueueManager> queueManager,
+                 BackendApi backend)
         : fGpu(std::move(gpu))
         , fQueueManager(std::move(queueManager))
         , fGlobalCache(sk_make_sp<GlobalCache>())
@@ -75,10 +78,10 @@ std::unique_ptr<Context> Context::MakeMetal(const MtlBackendContext& backendCont
 }
 #endif
 
-std::unique_ptr<Recorder> Context::makeRecorder() {
+std::unique_ptr<Recorder> Context::makeRecorder(const RecorderOptions& options) {
     ASSERT_SINGLE_OWNER
 
-    return std::unique_ptr<Recorder>(new Recorder(fGpu, fGlobalCache));
+    return std::unique_ptr<Recorder>(new Recorder(fGpu, fGlobalCache, options));
 }
 
 void Context::insertRecording(const InsertRecordingInfo& info) {
