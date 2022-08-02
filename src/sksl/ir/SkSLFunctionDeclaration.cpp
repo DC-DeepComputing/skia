@@ -309,17 +309,69 @@ static bool check_main_signature(const Context& context, Position pos, const Typ
 }
 
 /**
+ * Given a concrete type (`float3`) and a generic type (`$genType`), returns the index of the
+ * concrete type within the generic type's typelist. Returns -1 if there is no match.
+ */
+static int find_generic_index(const Type& concreteType, const Type& genericType) {
+    const std::vector<const Type*>& genericTypes = genericType.coercibleTypes();
+    for (size_t index = 0; index < genericTypes.size(); ++index) {
+        if (concreteType.canCoerceTo(*genericTypes[index], /*allowNarrowing=*/true)) {
+            return index;
+        }
+    }
+    return -1;
+}
+
+static bool type_generically_matches(const Type& concreteType, const Type& maybeGenericType) {
+    return maybeGenericType.isGeneric() ? find_generic_index(concreteType, maybeGenericType) != -1
+                                        : concreteType.matches(maybeGenericType);
+}
+
+/**
  * Checks for a previously existing declaration of this function, reporting errors if there is an
  * incompatible symbol. Returns true and sets outExistingDecl to point to the existing declaration
  * (or null if none) on success, returns false on error.
  */
 static bool parameters_match(const std::vector<std::unique_ptr<Variable>>& params,
                              const std::vector<const Variable*>& otherParams) {
+    // If the param lists are different lengths, they're definitely not a match.
     if (params.size() != otherParams.size()) {
         return false;
     }
+
+    // Figure out a consistent generic index (or bail if we find a contradiction).
+    int genericIndex = -1;
+    for (size_t i = 0; i < params.size(); ++i) {
+        const Type* paramType = &params[i]->type();
+        const Type* otherParamType = &otherParams[i]->type();
+
+        if (otherParamType->isGeneric()) {
+            int genericIndexForThisParam = find_generic_index(*paramType, *otherParamType);
+            if (genericIndexForThisParam == -1) {
+                // The type wasn't a match for this generic at all; these params can't be a match.
+                return false;
+            }
+            if (genericIndex != -1 && genericIndex != genericIndexForThisParam) {
+                // The generic index mismatches from what we determined on a previous parameter.
+                return false;
+            }
+            genericIndex = genericIndexForThisParam;
+        }
+    }
+
+    // Now that we've determined a generic index (if we needed one), do a parameter check.
     for (size_t i = 0; i < params.size(); i++) {
-        if (!params[i]->type().matches(otherParams[i]->type())) {
+        const Type* paramType = &params[i]->type();
+        const Type* otherParamType = &otherParams[i]->type();
+
+        // Make generic types concrete.
+        if (otherParamType->isGeneric()) {
+            SkASSERT(genericIndex != -1);
+            SkASSERT(genericIndex < (int)otherParamType->coercibleTypes().size());
+            otherParamType = otherParamType->coercibleTypes()[genericIndex];
+        }
+        // Detect type mismatches.
+        if (!paramType->matches(*otherParamType)) {
             return false;
         }
     }
@@ -357,7 +409,7 @@ static bool find_existing_declaration(const Context& context,
             if (!parameters_match(parameters, other->parameters())) {
                 continue;
             }
-            if (!returnType->matches(other->returnType())) {
+            if (!type_generically_matches(*returnType, other->returnType())) {
                 std::vector<const Variable*> paramPtrs;
                 paramPtrs.reserve(parameters.size());
                 for (std::unique_ptr<Variable>& param : parameters) {
@@ -381,7 +433,7 @@ static bool find_existing_declaration(const Context& context,
                     return false;
                 }
             }
-            if (other->definition() && !other->isBuiltin()) {
+            if (other->definition() || other->isBuiltin()) {
                 errors.error(pos, "duplicate definition of " + other->description());
                 return false;
             }
@@ -514,31 +566,25 @@ bool FunctionDeclaration::determineFinalTypes(const ExpressionArray& arguments,
     for (size_t i = 0; i < arguments.size(); i++) {
         // Non-generic parameters are final as-is.
         const Type& parameterType = parameters[i]->type();
-        if (parameterType.typeKind() != Type::TypeKind::kGeneric) {
+        if (!parameterType.isGeneric()) {
             outParameterTypes->push_back(&parameterType);
             continue;
         }
         // We use the first generic parameter we find to lock in the generic index;
         // e.g. if we find `float3` here, all `$genType`s will be assumed to be `float3`.
-        const std::vector<const Type*>& types = parameterType.coercibleTypes();
         if (genericIndex == -1) {
-            for (size_t j = 0; j < types.size(); j++) {
-                if (arguments[i]->type().canCoerceTo(*types[j], /*allowNarrowing=*/true)) {
-                    genericIndex = j;
-                    break;
-                }
-            }
+            genericIndex = find_generic_index(arguments[i]->type(), parameterType);
             if (genericIndex == -1) {
                 // The passed-in type wasn't a match for ANY of the generic possibilities.
                 // This function isn't a match at all.
                 return false;
             }
         }
-        outParameterTypes->push_back(types[genericIndex]);
+        outParameterTypes->push_back(parameterType.coercibleTypes()[genericIndex]);
     }
     // Apply the generic index to our return type.
     const Type& returnType = this->returnType();
-    if (returnType.typeKind() == Type::TypeKind::kGeneric) {
+    if (returnType.isGeneric()) {
         if (genericIndex == -1) {
             // We don't support functions with a generic return type and no other generics.
             return false;
