@@ -16,6 +16,109 @@
       "message": "I recommend starting with the API change of prepareForMaskDrawing in StrikeForGPU.h. ",
       "revId": "eee49b8cf4e7d2f971622cc32434a64d7ad183b0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ff192d51_c03f9d74",
+        "filename": "src/core/SkChromeRemoteGlyphCache.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 426,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-08-02T17:12:25Z",
+      "side": 1,
+      "message": "Is there some reason we can\u0027t have a boundingRect.union() call ?",
+      "revId": "eee49b8cf4e7d2f971622cc32434a64d7ad183b0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "daeb4662_73fe44d3",
+        "filename": "src/text/StrikeForGPU.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-08-02T17:12:25Z",
+      "side": 1,
+      "message": "This is unfortunate indentation",
+      "revId": "eee49b8cf4e7d2f971622cc32434a64d7ad183b0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "168ebe73_54c07ab2",
+        "filename": "src/text/gpu/SubRunContainer.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 1276,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-08-02T17:12:25Z",
+      "side": 1,
+      "message": "Should this be named \u0027runBounds\u0027 ?",
+      "range": {
+        "startLine": 1276,
+        "startChar": 42,
+        "endLine": 1276,
+        "endChar": 48
+      },
+      "revId": "eee49b8cf4e7d2f971622cc32434a64d7ad183b0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6d147680_f3426738",
+        "filename": "src/text/gpu/SubRunContainer.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 2583,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-08-02T17:12:25Z",
+      "side": 1,
+      "message": "Maybe add /* strikeToSourceScale\u003d */ ?",
+      "range": {
+        "startLine": 2583,
+        "startChar": 62,
+        "endLine": 2583,
+        "endChar": 64
+      },
+      "revId": "eee49b8cf4e7d2f971622cc32434a64d7ad183b0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0b00badc_9c07c927",
+        "filename": "tests/SkScalerCacheTest.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-08-02T17:12:25Z",
+      "side": 1,
+      "message": "Maybe add /* strikeToSourceScale\u003d */ ?",
+      "range": {
+        "startLine": 76,
+        "startChar": 50,
+        "endLine": 76,
+        "endChar": 51
+      },
+      "revId": "eee49b8cf4e7d2f971622cc32434a64d7ad183b0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
