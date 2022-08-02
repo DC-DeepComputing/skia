@@ -8,6 +8,7 @@
 #include "include/gpu/graphite/Context.h"
 
 #include "include/core/SkCombinationBuilder.h"
+#include "include/core/SkImage.h"
 #include "include/core/SkPathTypes.h"
 #include "include/effects/SkRuntimeEffect.h"
 #include "include/gpu/graphite/BackendTexture.h"
@@ -75,10 +76,10 @@ std::unique_ptr<Context> Context::MakeMetal(const MtlBackendContext& backendCont
 }
 #endif
 
-std::unique_ptr<Recorder> Context::makeRecorder() {
+std::unique_ptr<Recorder> Context::makeRecorder(const RecorderOptions& options) {
     ASSERT_SINGLE_OWNER
 
-    return std::unique_ptr<Recorder>(new Recorder(fGpu, fGlobalCache));
+    return std::unique_ptr<Recorder>(new Recorder(fGpu, fGlobalCache, options));
 }
 
 void Context::insertRecording(const InsertRecordingInfo& info) {

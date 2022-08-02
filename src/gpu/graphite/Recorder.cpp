@@ -8,6 +8,8 @@
 #include "include/gpu/graphite/Recorder.h"
 
 #include "include/effects/SkRuntimeEffect.h"
+#include "include/gpu/graphite/GraphiteTypes.h"
+#include "include/gpu/graphite/RecorderOptions.h"
 #include "include/gpu/graphite/Recording.h"
 #include "src/core/SkPipelineData.h"
 #include "src/gpu/AtlasTypes.h"
@@ -23,6 +25,7 @@
 #include "src/gpu/graphite/TaskGraph.h"
 #include "src/gpu/graphite/UploadBufferManager.h"
 #include "src/gpu/graphite/text/AtlasManager.h"
+#include "src/image/SkImage_Base.h"
 #include "src/text/gpu/StrikeCache.h"
 #include "src/text/gpu/TextBlobRedrawCoordinator.h"
 
@@ -30,6 +33,28 @@ namespace skgpu::graphite {
 
 #define ASSERT_SINGLE_OWNER SKGPU_ASSERT_SINGLE_OWNER(this->singleOwner())
 
+/*
+ * The default image cache performs no caching!
+ */
+class DefaultImageProvider final : public RecorderOptions::ImageProvider {
+public:
+    static sk_sp<DefaultImageProvider> Make() {
+        return sk_ref_sp(new DefaultImageProvider);
+    }
+
+    sk_sp<SkImage> findOrCreate(Recorder* recorder,
+                                const SkImage* image,
+                                Mipmapped mipmapped) override {
+        SkASSERT(!as_IB(image)->isGraphiteBacked());
+
+        return image->makeTextureImage(recorder, mipmapped);
+    }
+
+private:
+    DefaultImageProvider() {}
+};
+
+//--------------------------------------------------------------------------------------------------
 static int32_t next_id() {
     static std::atomic<int32_t> nextID{1};
     int32_t id;
@@ -39,7 +64,9 @@ static int32_t next_id() {
     return id;
 }
 
-Recorder::Recorder(sk_sp<Gpu> gpu, sk_sp<GlobalCache> globalCache)
+Recorder::Recorder(sk_sp<Gpu> gpu,
+                   sk_sp<GlobalCache> globalCache,
+                   const RecorderOptions& options)
         : fGpu(std::move(gpu))
         , fGraph(new TaskGraph)
         , fUniformDataCache(new UniformDataCache)
@@ -49,6 +76,11 @@ Recorder::Recorder(sk_sp<Gpu> gpu, sk_sp<GlobalCache> globalCache)
         , fTokenTracker(std::make_unique<TokenTracker>())
         , fStrikeCache(std::make_unique<sktext::gpu::StrikeCache>())
         , fTextBlobCache(std::make_unique<sktext::gpu::TextBlobRedrawCoordinator>(fRecorderID)) {
+
+    fClientImageProvider = options.fImageProvider;
+    if (!fClientImageProvider) {
+        fClientImageProvider = DefaultImageProvider::Make();
+    }
 
     fResourceProvider = fGpu->makeResourceProvider(std::move(globalCache), this->singleOwner());
     fDrawBufferManager.reset(new DrawBufferManager(fResourceProvider.get(),

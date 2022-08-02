@@ -26,6 +26,7 @@
 #ifdef SK_ENABLE_SKSL
 
 #ifdef SK_GRAPHITE_ENABLED
+#include "include/gpu/graphite/Recorder.h"
 #include "src/gpu/graphite/Image_Graphite.h"
 #endif
 
@@ -379,6 +380,42 @@ std::unique_ptr<GrFragmentProcessor> SkImageShader::asFragmentProcessor(
 #endif
 
 #ifdef SK_ENABLE_SKSL
+
+#ifdef SK_GRAPHITE_ENABLED
+
+namespace {
+
+bool meets_requirements(const SkImage* image, skgpu::graphite::Mipmapped mipmapped) {
+    return as_IB(image)->isGraphiteBacked() &&
+           (mipmapped == skgpu::graphite::Mipmapped::kNo || image->hasMipmaps());
+}
+
+// We require that the user returns a Graphite-backed image that preserves the dimensions, channels
+// and alpha type of the original image. Additionally, it must satisfy the mipmap requirements.
+// The bit depth of the individual channels can change (e.g., 4444 -> 8888 is allowed).
+bool valid_client_provided_image(const SkImage* clientProvided,
+                                 const SkImage* original,
+                                 skgpu::graphite::Mipmapped mipmapped) {
+    if (!clientProvided ||
+        !as_IB(clientProvided)->isGraphiteBacked() ||
+        original->dimensions() != clientProvided->dimensions() ||
+        original->alphaType() != clientProvided->alphaType()) {
+        return false;
+    }
+
+    uint32_t origChannels = SkColorTypeChannelFlags(original->colorType());
+    uint32_t clientChannels = SkColorTypeChannelFlags(clientProvided->colorType());
+    if (origChannels != clientChannels) {
+        return false;
+    }
+
+    return mipmapped == skgpu::graphite::Mipmapped::kNo || clientProvided->hasMipmaps();
+}
+
+} // anonymous namespace
+
+#endif // SK_GRAPHITE_ENABLED
+
 void SkImageShader::addToKey(const SkKeyContext& keyContext,
                              SkPaintParamsKeyBuilder* builder,
                              SkPipelineDataGatherer* gatherer) const {
@@ -386,12 +423,32 @@ void SkImageShader::addToKey(const SkKeyContext& keyContext,
                                         this->getLocalMatrix());
 
 #ifdef SK_GRAPHITE_ENABLED
-    if (as_IB(fImage)->isGraphiteBacked()) {
-        skgpu::graphite::Image* grImage = static_cast<skgpu::graphite::Image*>(fImage.get());
+    skgpu::graphite::Mipmapped mipmapped = (fSampling.mipmap != SkMipmapMode::kNone)
+                                                   ? skgpu::graphite::Mipmapped::kYes
+                                                   : skgpu::graphite::Mipmapped::kNo;
 
-        auto mipmapped = (fSampling.mipmap != SkMipmapMode::kNone) ?
-                skgpu::graphite::Mipmapped::kYes : skgpu::graphite::Mipmapped::kNo;
-        auto[view, ct] = grImage->asView(keyContext.recorder(), mipmapped);
+    sk_sp<SkImage> image;
+    if (as_IB(fImage)->isGraphiteBacked()) {
+        image = fImage;
+
+        // If the Graphite-backed image doesn't have the required mipmaps we will drop
+        // down the sampling
+        if (mipmapped == skgpu::graphite::Mipmapped::kYes && !image->hasMipmaps()) {
+            mipmapped = skgpu::graphite::Mipmapped::kNo;
+            imgData.fSampling = SkSamplingOptions(SkFilterMode::kLinear, SkMipmapMode::kNone);
+        }
+    } else {
+        auto clientImageProvider = keyContext.recorder()->clientImageProvider();
+        image = clientImageProvider->findOrCreate(keyContext.recorder(), fImage.get(), mipmapped);
+
+        if (!valid_client_provided_image(image.get(), fImage.get(), mipmapped)) {
+            // The client did not fulfill the ImageProvider contract so drop the image.
+            image = nullptr;
+        }
+    }
+
+    if (image) {
+        auto [view, _] = as_IB(image)->asView(keyContext.recorder(), mipmapped);
         imgData.fTextureProxy = view.refProxy();
     }
 #endif
