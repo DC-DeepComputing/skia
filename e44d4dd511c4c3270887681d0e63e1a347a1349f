@@ -1,5 +1,23 @@
 {
-  "comments": [],
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "37e5e183_7bdbc3b1",
+        "filename": "src/core/SkImageGenerator.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-08-02T19:20:32Z",
+      "side": 1,
+      "message": "Should this stuff be removed?",
+      "revId": "e44d4dd511c4c3270887681d0e63e1a347a1349f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ],
   "submitRequirementResults": [
     {
       "submitRequirement": {
