@@ -3,6 +3,63 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0e010843_05581172",
+        "filename": "modules/skottie/src/BlendModes.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2022-08-02T17:07:36Z",
+      "side": 1,
+      "message": "I think it\u0027s safe to assume that the mode value for HardMix is going to be 17 (I\u0027ll upload a BM PR shortly).  Let\u0027s add an enum for custom blender values.",
+      "range": {
+        "startLine": 54,
+        "startChar": 8,
+        "endLine": 54,
+        "endChar": 40
+      },
+      "revId": "b8e195c7c86a97d2ee674eb6d27aac1c2760bd79",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f0d95322_6c0ae105",
+        "filename": "modules/skottie/src/BlendModes.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2022-08-02T17:07:36Z",
+      "side": 1,
+      "message": "Let\u0027s move the blender setup to a separate static function.",
+      "revId": "b8e195c7c86a97d2ee674eb6d27aac1c2760bd79",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c8ff1263_a7c15c85",
+        "filename": "modules/skottie/src/BlendModes.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2022-08-02T17:07:36Z",
+      "side": 1,
+      "message": "We need to initialize blendEffect inline (in the same statement declaring it static) -- otherwise this separate statement will be executed repeatedly.",
+      "revId": "b8e195c7c86a97d2ee674eb6d27aac1c2760bd79",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5335e833_c9505b85",
         "filename": "modules/skottie/src/BlendModes.cpp",
         "patchSetId": 2
@@ -32,6 +89,24 @@
       "side": 1,
       "message": "Ack.",
       "parentUuid": "5335e833_c9505b85",
+      "revId": "b8e195c7c86a97d2ee674eb6d27aac1c2760bd79",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "babce1b9_45113cb2",
+        "filename": "modules/skottie/src/BlendModes.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 5641
+      },
+      "writtenOn": "2022-08-02T17:07:36Z",
+      "side": 1,
+      "message": "Finally got around to putting together a test: https://skottie.skia.org/a528a84a5e1455021ad7f7c75f73a70c?h\u003d500\u0026w\u003d500\n\nA few issues:\n\n1) sksl inputs and outputs are premultiplied, but the hard mix logic is expressed in unpremultiplied space -- so we need to unpremul/premul explicitly.\n\n2) floor() is almost sufficient, except for the edge case of both components \u003d\u003d 1, in which case it would yield 2.  We still need to clamp explicitly to 1 (min).\n\n3) The Adobe description is incomplete: after computing the component values, the result is composited onto dest using srcOver.\n\nHere\u0027s what I have working, you may want to expand for clarity:\n\n    // HardMix blending.\n    // (https://helpx.adobe.com/photoshop/using/blending-modes.html).\n    src.rgb \u003d min(floor(unpremul(src).rgb + unpremul(dst).rgb), 1)*src.a;\n    \n    // Composite back to dst using srcOver.\n    return src + (1 - src.a)*dst;",
+      "parentUuid": "fe5f6a17_f58843a5",
       "revId": "b8e195c7c86a97d2ee674eb6d27aac1c2760bd79",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
