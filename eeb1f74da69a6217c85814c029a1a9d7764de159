@@ -16,6 +16,29 @@
       "message": "This PS should address all outstanding comments.",
       "revId": "eeb1f74da69a6217c85814c029a1a9d7764de159",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7373050a_f73be9f1",
+        "filename": "bazel/exporter/cmake_exporter.go",
+        "patchSetId": 28
+      },
+      "lineNbr": 437,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-02T17:03:42Z",
+      "side": 1,
+      "message": "Can\u0027t these be fmt.Fprintln(writer)?",
+      "range": {
+        "startLine": 437,
+        "startChar": 8,
+        "endLine": 437,
+        "endChar": 19
+      },
+      "revId": "eeb1f74da69a6217c85814c029a1a9d7764de159",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
