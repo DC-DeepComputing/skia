@@ -16,6 +16,92 @@
       "message": "PTAL. I\u0027m not seeing much of an improvement with this -- in one case it even appears to be slightly slower in flush time.",
       "revId": "45064a2b09975ad1b945a97c58f7c226ae256c79",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "40c353a4_6e8c5297",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-02T15:45:39Z",
+      "side": 1,
+      "message": "I like that this uses less data and doesn\u0027t have to define a new appender for DrawWriter (if we can do path chopping on the GPU, the other awkward appender, DynamicInstances could go away too).\n\nBut it\u0027s a bummer that it doesn\u0027t come out as a win, but I have some thoughts below about how we could make that up, which I think are worth playing around a bit. Other RenderSteps are going to need similar decisions about instances and transforms, so I think the data could be generally useful. It also maybe will lead us to the decision that instances aren\u0027t worth it until we can use SSBOs to upload the transform data and the instances become quite small without those 9 floats that are mostly the same for an entire subrun.",
+      "revId": "45064a2b09975ad1b945a97c58f7c226ae256c79",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eb99041e_4bc1c082",
+        "filename": "src/gpu/graphite/render/TextDirectRenderStep.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-02T15:45:39Z",
+      "side": 1,
+      "message": "this can just be `.bits()`.",
+      "range": {
+        "startLine": 110,
+        "startChar": 40,
+        "endLine": 110,
+        "endChar": 61
+      },
+      "revId": "45064a2b09975ad1b945a97c58f7c226ae256c79",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "53dbb4dd_c0f38e14",
+        "filename": "src/text/gpu/SubRunContainer.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-02T15:45:39Z",
+      "side": 1,
+      "message": "We can derive these from sk_VertexID and not use any vertex buffer.",
+      "range": {
+        "startLine": 99,
+        "startChar": 0,
+        "endLine": 105,
+        "endChar": 1
+      },
+      "revId": "45064a2b09975ad1b945a97c58f7c226ae256c79",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7bbc9587_98b073dd",
+        "filename": "src/text/gpu/SubRunContainer.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 468,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-02T15:45:39Z",
+      "side": 1,
+      "message": "I wonder if the perf hit is the extra matrix math that is added here compared to before? Besides the preTranslate and preScale\u0027s, we\u0027re copying the SkM44 in toDevice to an SkMatrix every glyph.\n\nI couldn\u0027t come up with a good way of keeping leftTop and widthHeight in separate attributes that would let us calculate the final matrix entirely in the vertex shader. The best I could do was to add 2 floats for leftTop, bringing it up to 56 bytes/glyph. widthHeight is calculatable from the atlas points that are uploaded already, and we can fold fStrikeToSourceScale into the matrix once outside the loop.\n\nThe option that doesn\u0027t add any more data would be to fold fStrikeToSourceScale into the matrix at the start, and store the first 2 columns in a float[6], column-major that we can `\u003c\u003c` in one go. Then update the vertex shader to apply the widthHeight scale in addition. The last column of the matrix we could calculate from leftTop per iteration, but we could inline it and have the matrix columns loaded into skvx::float4\u0027s and do (left * c0 + top * c1 + c3), then just write (x,y,w).",
+      "range": {
+        "startLine": 463,
+        "startChar": 8,
+        "endLine": 468,
+        "endChar": 81
+      },
+      "revId": "45064a2b09975ad1b945a97c58f7c226ae256c79",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
