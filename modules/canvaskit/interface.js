@@ -616,23 +616,27 @@ CanvasKit.onRuntimeInitialized = function() {
     CanvasKit.setCurrentContext(this._context);
     copyRectToWasm(src,  _scratchFourFloatsAPtr);
     copyRectToWasm(dest, _scratchFourFloatsBPtr);
-    this._drawImageRect(img, _scratchFourFloatsAPtr, _scratchFourFloatsBPtr, paint, !!fastSample);
+    var grCtx = CanvasKit.getCurrentGrDirectContext();
+    this._drawImageRect(img, _scratchFourFloatsAPtr, _scratchFourFloatsBPtr, paint,
+                        !!fastSample, grCtx);
   };
 
   CanvasKit.Canvas.prototype.drawImageRectCubic = function(img, src, dest, B, C, paint) {
     CanvasKit.setCurrentContext(this._context);
     copyRectToWasm(src,  _scratchFourFloatsAPtr);
     copyRectToWasm(dest, _scratchFourFloatsBPtr);
+    var grCtx = CanvasKit.getCurrentGrDirectContext();
     this._drawImageRectCubic(img, _scratchFourFloatsAPtr, _scratchFourFloatsBPtr, B, C,
-      paint || null);
+      paint || null, grCtx);
   };
 
   CanvasKit.Canvas.prototype.drawImageRectOptions = function(img, src, dest, filter, mipmap, paint) {
     CanvasKit.setCurrentContext(this._context);
     copyRectToWasm(src,  _scratchFourFloatsAPtr);
     copyRectToWasm(dest, _scratchFourFloatsBPtr);
+    var grCtx = CanvasKit.getCurrentGrDirectContext();
     this._drawImageRectOptions(img, _scratchFourFloatsAPtr, _scratchFourFloatsBPtr, filter, mipmap,
-      paint || null);
+      paint || null, grCtx);
   };
 
   CanvasKit.Canvas.prototype.drawLine = function(x1, y1, x2, y2, paint) {

@@ -211,9 +211,9 @@ void SkRecorder::onDrawImage2(const SkImage* image, SkScalar x, SkScalar y,
     this->append<SkRecords::DrawImage>(this->copy(paint), sk_ref_sp(image), x, y, sampling);
 }
 
-void SkRecorder::onDrawImageRect2(const SkImage* image, const SkRect& src, const SkRect& dst,
-                                  const SkSamplingOptions& sampling, const SkPaint* paint,
-                                  SrcRectConstraint constraint) {
+void SkRecorder::onDrawImageRect2(GrDirectContext*, const SkImage* image, const SkRect& src,
+                                  const SkRect& dst, const SkSamplingOptions& sampling,
+                                  const SkPaint* paint, SrcRectConstraint constraint) {
     this->append<SkRecords::DrawImageRect>(this->copy(paint), sk_ref_sp(image), src, dst,
                                            sampling, constraint);
 }

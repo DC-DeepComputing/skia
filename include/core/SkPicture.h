@@ -15,6 +15,7 @@
 #include "include/core/SkTileMode.h"
 #include "include/core/SkTypes.h"
 
+class GrDirectContext;
 class SkCanvas;
 class SkData;
 struct SkDeserialProcs;
@@ -129,6 +130,7 @@ public:
         example: https://fiddle.skia.org/c/@Picture_playback
     */
     virtual void playback(SkCanvas* canvas, AbortCallback* callback = nullptr) const = 0;
+    virtual void playback(GrDirectContext*, SkCanvas* canvas, AbortCallback* callback = nullptr) const = 0;
 
     /** Returns cull SkRect for this picture, passed in when SkPicture was created.
         Returned SkRect does not specify clipping SkRect for SkPicture; cull is hint

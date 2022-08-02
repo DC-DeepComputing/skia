@@ -89,11 +89,12 @@ protected:
         return true;
     }
 
-    void onDrawPicture(const SkPicture* picture,
+    void onDrawPicture(GrDirectContext* ctx,
+                       const SkPicture* picture,
                        const SkMatrix*  matrix,
                        const SkPaint*   paint) override {
         // We need to replay the picture onto this canvas in order to filter its internal paints.
-        this->SkCanvas::onDrawPicture(picture, matrix, paint);
+        this->SkCanvas::onDrawPicture(ctx, picture, matrix, paint);
     }
 
 private:
@@ -454,7 +455,8 @@ void DebugCanvas::onDrawImageLattice2(const SkImage* image,
     this->addDrawCommand(new DrawImageLatticeCommand(image, lattice, dst, filter, paint));
 }
 
-void DebugCanvas::onDrawImageRect2(const SkImage*           image,
+void DebugCanvas::onDrawImageRect2(GrDirectContext*,
+                                   const SkImage*           image,
                                    const SkRect&            src,
                                    const SkRect&            dst,
                                    const SkSamplingOptions& sampling,
@@ -507,7 +509,8 @@ void DebugCanvas::onDrawRegion(const SkRegion& region, const SkPaint& paint) {
     this->addDrawCommand(new DrawRegionCommand(region, paint));
 }
 
-void DebugCanvas::onDrawPicture(const SkPicture* picture,
+void DebugCanvas::onDrawPicture(GrDirectContext*,
+                                const SkPicture* picture,
                                 const SkMatrix*  matrix,
                                 const SkPaint*   paint) {
     if (fnextDrawPictureLayerId != -1 && fLayerManager) {

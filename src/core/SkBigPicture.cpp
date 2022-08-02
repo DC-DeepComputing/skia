@@ -39,6 +39,8 @@ void SkBigPicture::playback(SkCanvas* canvas, AbortCallback* callback) const {
                  callback);
 }
 
+GrDirectContext*,
+
 void SkBigPicture::partialPlayback(SkCanvas* canvas,
                                    int start,
                                    int stop,

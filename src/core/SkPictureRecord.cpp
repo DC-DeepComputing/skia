@@ -533,9 +533,9 @@ void SkPictureRecord::onDrawImage2(const SkImage* image, SkScalar x, SkScalar y,
     this->validate(initialOffset, size);
 }
 
-void SkPictureRecord::onDrawImageRect2(const SkImage* image, const SkRect& src, const SkRect& dst,
-                                       const SkSamplingOptions& sampling, const SkPaint* paint,
-                                       SrcRectConstraint constraint) {
+void SkPictureRecord::onDrawImageRect2(GrDirectContext*, const SkImage* image, const SkRect& src,
+                                       const SkRect& dst, const SkSamplingOptions& sampling,
+                                       const SkPaint* paint, SrcRectConstraint constraint) {
     // id + paint_index + image_index + constraint
     size_t size = 3 * kUInt32Size + 2 * sizeof(dst) + SkSamplingPriv::FlatSize(sampling) +
                   kUInt32Size;

@@ -199,7 +199,8 @@ protected:
         fRecorder.getRecordingCanvas()->drawImage(image, dx, dy, sampling, paint);
     }
 
-    void onDrawImageRect2(const SkImage* image,
+    void onDrawImageRect2(GrDirectContext*,
+                          const SkImage* image,
                           const SkRect& src,
                           const SkRect& dst,
                           const SkSamplingOptions& sampling,
