@@ -1,9 +1,9 @@
 ### Compilation failed:
 
-error: 1: no match for dFdx(float2)
+error: 1: call to '$genType dFdx($genType p)' is not supported
 float2 dx(float2 coords) { return dFdx(coords); }
                                   ^^^^^^^^^^^^
-error: 2: no match for dFdy(float2)
+error: 2: call to '$genType dFdy($genType p)' is not supported
 float2 dy(float2 coords) { return dFdy(coords); }
                                   ^^^^^^^^^^^^
 2 errors

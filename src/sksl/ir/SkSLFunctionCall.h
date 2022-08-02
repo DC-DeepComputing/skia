@@ -55,10 +55,9 @@ public:
                                             const FunctionDeclaration& function,
                                             ExpressionArray arguments);
 
-    static const FunctionDeclaration* FindBestFunctionForCall(
-            const Context& context,
-            const std::vector<const FunctionDeclaration*>& functions,
-            const ExpressionArray& arguments);
+    static const FunctionDeclaration* FindBestFunctionForCall(const Context& context,
+                                                              const FunctionDeclaration* functions,
+                                                              const ExpressionArray& arguments);
 
     const FunctionDeclaration& function() const {
         return fFunction;

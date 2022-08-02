@@ -56,7 +56,6 @@
 #include "src/sksl/ir/SkSLSymbolTable.h"
 #include "src/sksl/ir/SkSLTernaryExpression.h"
 #include "src/sksl/ir/SkSLType.h"
-#include "src/sksl/ir/SkSLUnresolvedFunction.h"
 #include "src/sksl/ir/SkSLVarDeclarations.h"
 #include "src/sksl/ir/SkSLVariable.h"
 #include "src/sksl/ir/SkSLVariableReference.h"
@@ -172,16 +171,11 @@ void Dehydrator::write(const Symbol& s) {
                 this->write(*p);
             }
             this->write(f.returnType());
-            break;
-        }
-        case Symbol::Kind::kUnresolvedFunction: {
-            this->allocSymbolId(&s);
-            const UnresolvedFunction& f = s.as<UnresolvedFunction>();
-            this->writeCommand(Rehydrator::kUnresolvedFunction_Command);
-            this->writeId(&f);
-            this->writeU8(f.functions().size());
-            for (const FunctionDeclaration* funcDecl : f.functions()) {
-                this->write(*funcDecl);
+            if (f.overload()) {
+                this->writeU8(1);
+                this->write(*f.overload());
+            } else {
+                this->writeU8(0);
             }
             break;
         }
@@ -247,9 +241,8 @@ void Dehydrator::write(const SymbolTable& symbols) {
             return sym.as<Variable>().storage() != VariableStorage::kEliminated;
         }
 
-        // Only dehydrate symbols that are actually findable by name. Some symbols can be left
-        // behind and inaccessible, such as stale UnresolvedFunction nodes; we don't need to
-        // store and rehydrate those.
+        // Only dehydrate symbols that are actually findable by name. If a symbol is inaccessible by
+        // name, we don't need to store and rehydrate it.
         const Symbol** found = symbols.fSymbols.find(SymbolTable::MakeSymbolKey(sym.name()));
         return found && *found == &sym;
     };
