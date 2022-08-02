@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7a4be08b_56da2024",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2022-08-02T14:38:23Z",
+      "side": 1,
+      "message": "I tried to clean up this code a bit, per Jim\u0027s suggestion this now decides what ssbo-index-specific sksl to generate in ContextUtils.cpp, based on RenderStep flags, rather than deciding this in each specific RenderStep.\n\nIt also renames the ssbo index attributes and varyings so that the graphite code doesn\u0027t have to make any assumptions about which binding is used for the buffers. There\u0027s still some interdependent logic here in that both graphite/ContextUtils and SkSLMetalCodeGenerator need to know how to produce the same names for the attributes. My latest code just defines an array of names in the sksl code with the names we use in graphite. Further suggestions welcome.",
+      "revId": "89d0bfed425a08d00c967f54d2464e4eacb2454e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
