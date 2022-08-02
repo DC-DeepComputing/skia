@@ -93,6 +93,30 @@
       },
       "revId": "db3c51a0720a2ea8b40ca4d5b2ca94455f4bfdcc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2c8d5396_8f055aee",
+        "filename": "src/gpu/graphite/ResourceProvider.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-08-02T15:07:43Z",
+      "side": 1,
+      "message": "Then the Skia style guide needs to be updated as it shows 4 spaces. At the very least this file should be made consistent (see the GraphicsPipelineCache constructor).",
+      "parentUuid": "241a10ae_759de7c5",
+      "range": {
+        "startLine": 102,
+        "startChar": 0,
+        "endLine": 102,
+        "endChar": 8
+      },
+      "revId": "db3c51a0720a2ea8b40ca4d5b2ca94455f4bfdcc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
