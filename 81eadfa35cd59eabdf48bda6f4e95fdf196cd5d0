@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "be04ea1c_4cea8b4a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2022-08-02T14:25:44Z",
+      "side": 1,
+      "message": "The damage has already been done, but there\u0027s no reason to check in a 250KiB binary into the git repo when we already have more interesting and much smaller variable fonts available in resources/fonts. There\u0027s nothing really to do about it now, and it\u0027s probably fine since it will never be updated, but it\u0027s just another dead weight blob.",
+      "revId": "81eadfa35cd59eabdf48bda6f4e95fdf196cd5d0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
