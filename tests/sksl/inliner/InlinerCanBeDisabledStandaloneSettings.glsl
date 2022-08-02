@@ -29,8 +29,7 @@ vec4 blend_hslc_h4h4h4h2(vec4 src, vec4 dst, vec2 flipSat) {
     return vec4((((_5_result + dst.xyz) - dsa) + src.xyz) - sda, (src.w + dst.w) - alpha);
 }
 void main() {
-    float _1_c = color.x * color.y + color.z;
-    sk_FragColor = vec4(_1_c);
+    sk_FragColor = vec4(((color.x) * (color.y) + (color.z)));
     sk_FragColor *= 1.25;
     sk_FragColor *= color.xxyy * color.w;
     sk_FragColor *= color.zzww * color.y;

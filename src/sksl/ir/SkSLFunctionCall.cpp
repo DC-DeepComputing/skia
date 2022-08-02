@@ -836,8 +836,9 @@ std::string FunctionCall::description() const {
  * particular meaning other than "lower costs are preferred". Returns CoercionCost::Impossible() if
  * the call is not valid.
  */
-CoercionCost FunctionCall::CallCost(const Context& context, const FunctionDeclaration& function,
-        const ExpressionArray& arguments){
+static CoercionCost call_cost(const Context& context,
+                              const FunctionDeclaration& function,
+                              const ExpressionArray& arguments) {
     if (context.fConfig->strictES2Mode() &&
         (function.modifiers().fFlags & Modifiers::kES3_Flag)) {
         return CoercionCost::Impossible();
@@ -857,23 +858,31 @@ CoercionCost FunctionCall::CallCost(const Context& context, const FunctionDeclar
     return total;
 }
 
+struct OverloadCandidate {
+    const FunctionDeclaration* func;
+    CoercionCost cost;
+};
+
+static OverloadCandidate find_best_function_for_call(const Context& context,
+                                                     const FunctionDeclaration* currentOverload,
+                                                     const ExpressionArray& arguments) {
+    if (currentOverload == nullptr) {
+        return {nullptr, CoercionCost::Impossible()};
+    }
+    OverloadCandidate candidate =
+            find_best_function_for_call(context, currentOverload->overload(), arguments);
+    CoercionCost cost = call_cost(context, *currentOverload, arguments);
+    return (cost < candidate.cost) ? OverloadCandidate{currentOverload, cost} : candidate;
+}
+
 const FunctionDeclaration* FunctionCall::FindBestFunctionForCall(
         const Context& context,
-        const std::vector<const FunctionDeclaration*>& functions,
+        const FunctionDeclaration* functions,
         const ExpressionArray& arguments) {
-    if (functions.size() == 1) {
-        return functions.front();
+    if (functions->overload() == nullptr) {
+        return functions;
     }
-    CoercionCost bestCost = CoercionCost::Impossible();
-    const FunctionDeclaration* best = nullptr;
-    for (const auto& f : functions) {
-        CoercionCost cost = CallCost(context, *f, arguments);
-        if (cost < bestCost) {
-            bestCost = cost;
-            best = f;
-        }
-    }
-    return best;
+    return find_best_function_for_call(context, functions, arguments).func;
 }
 
 static std::string build_argument_type_list(SkSpan<const std::unique_ptr<Expression>> arguments) {
@@ -920,14 +929,16 @@ std::unique_ptr<Expression> FunctionCall::Convert(const Context& context,
         }
         case Expression::Kind::kFunctionReference: {
             const FunctionReference& ref = functionValue->as<FunctionReference>();
-            const std::vector<const FunctionDeclaration*>& functions = ref.functions();
-            const FunctionDeclaration* best = FindBestFunctionForCall(context, functions,
+            const FunctionDeclaration* best = FindBestFunctionForCall(context, ref.functions(),
                                                                       arguments);
             if (best) {
                 return FunctionCall::Convert(context, pos, *best, std::move(arguments));
             }
-            std::string msg = "no match for " + std::string(functions.front()->name()) +
-                              build_argument_type_list(arguments);
+            std::string msg = "no match for " + std::string(ref.functions()->name()) +
+                              build_argument_type_list(arguments) + "\nconsidered:\n";
+            for (const FunctionDeclaration* f = ref.functions(); f != nullptr; f = f->overload()) {
+                msg += f->description() + "\n";
+            }
             context.fErrors->error(pos, msg);
             return nullptr;
         }
@@ -935,15 +946,14 @@ std::unique_ptr<Expression> FunctionCall::Convert(const Context& context,
             MethodReference& ref = functionValue->as<MethodReference>();
             arguments.push_back(std::move(ref.self()));
 
-            const std::vector<const FunctionDeclaration*>& functions = ref.functions();
-            const FunctionDeclaration* best = FindBestFunctionForCall(context, functions,
+            const FunctionDeclaration* best = FindBestFunctionForCall(context, ref.functions(),
                                                                       arguments);
             if (best) {
                 return FunctionCall::Convert(context, pos, *best, std::move(arguments));
             }
             std::string msg =
                     "no match for " + arguments.back()->type().displayName() +
-                    "::" + std::string(functions.front()->name().substr(1)) +
+                    "::" + std::string(ref.functions()->name().substr(1)) +
                     build_argument_type_list(SkSpan(arguments).first(arguments.size() - 1));
             context.fErrors->error(pos, msg);
             return nullptr;

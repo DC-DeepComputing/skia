@@ -32,8 +32,7 @@ class FunctionDeclaration;
 class Type;
 
 /**
- * Maps identifiers to symbols. Functions, in particular, are mapped to either FunctionDeclaration
- * or UnresolvedFunction depending on whether they are overloaded or not.
+ * Maps identifiers to symbols.
  */
 class SymbolTable {
 public:
@@ -78,11 +77,9 @@ public:
     }
 
     /**
-     * Looks up the requested symbol and returns it. If a function has overloads, an
-     * UnresolvedFunction symbol (pointing to all of the candidates) will be added to the symbol
-     * table and returned.
+     * Looks up the requested symbol and returns it.
      */
-    const Symbol* operator[](std::string_view name);
+    const Symbol* operator[](std::string_view name) const;
 
     /**
      * Returns true if the name refers to a type (user or built-in) in the current symbol table.
@@ -98,19 +95,26 @@ public:
      * Adds a symbol to this symbol table, without conferring ownership. The caller is responsible
      * for keeping the Symbol alive throughout the lifetime of the program/module.
      */
+    void addWithoutOwnership(Symbol* symbol);
     void addWithoutOwnership(const Symbol* symbol);
 
+    /**
+     * Adds a symbol to this symbol table, conferring ownership.
+     */
     template <typename T>
     const T* add(std::unique_ptr<T> symbol) {
-        const T* ptr = symbol.get();
+        T* ptr = symbol.get();
         this->addWithoutOwnership(ptr);
         this->takeOwnershipOfSymbol(std::move(symbol));
         return ptr;
     }
 
+    /**
+     * Confers ownership of a symbol without adding its name to the lookup table.
+     */
     template <typename T>
     const T* takeOwnershipOfSymbol(std::unique_ptr<T> symbol) {
-        const T* ptr = symbol.get();
+        T* ptr = symbol.get();
         fOwnedSymbols.push_back(std::move(symbol));
         return ptr;
     }
@@ -167,17 +171,7 @@ private:
         return SymbolKey{name, SkOpts::hash_fn(name.data(), name.size(), 0)};
     }
 
-    const Symbol* lookup(SymbolTable* writableSymbolTable,
-                         bool encounteredModuleBoundary,
-                         const SymbolKey& key);
-
-    const Symbol* buildOverloadSet(SymbolTable* writableSymbolTable,
-                                   bool encounteredModuleBoundary,
-                                   const SymbolKey& key,
-                                   const Symbol* symbol,
-                                   SkSpan<const FunctionDeclaration* const> overloadSet);
-
-    bool isType(const SymbolKey& key) const;
+    const Symbol* lookup(const SymbolKey& key) const;
 
     bool fBuiltin = false;
     bool fAtModuleBoundary = false;
