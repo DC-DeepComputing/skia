@@ -112,11 +112,13 @@ public:
 
     virtual const skgpu::graphite::Renderer* renderer() const = 0;
 
-    virtual void fillVertexData(
-            skgpu::graphite::DrawWriter*,
-            int offset, int count,
-            SkScalar depth,
-            const skgpu::graphite::Transform& transform) const = 0;
+    virtual void fillVertexData(skgpu::graphite::DrawWriter*,
+                                int offset,
+                                int count,
+                                int geometryStorageBufferIndex,
+                                int shadingStorageBufferIndex,
+                                SkScalar depth,
+                                const skgpu::graphite::Transform& transform) const = 0;
 
     virtual skgpu::MaskFormat maskFormat() const = 0;
 #endif

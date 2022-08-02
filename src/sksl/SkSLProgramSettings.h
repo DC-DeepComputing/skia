@@ -85,6 +85,39 @@ struct ProgramSettings {
     // symbol table of the Program, but ownership is *not* transferred. It is up to the caller to
     // keep them alive.
     const std::vector<std::unique_ptr<ExternalFunction>>* fExternalFunctions = nullptr;
+
+    bool isStorageBuffer(int set, int binding) {
+        SkASSERT(set >= -1 && set < MAX_SETS);
+        SkASSERT(binding >= -1 && binding < MAX_BINDINGS);
+        if (set == -1 || binding == -1) {
+            return false;
+        }
+        return fStorageBufferFlags[set] & (1 << binding);
+    }
+
+    void setStorageBuffer(int set, int binding) {
+        SkASSERT(set >= 0 && set < MAX_SETS);
+        SkASSERT(binding >= 0 && binding < MAX_BINDINGS);
+        fStorageBufferFlags[set] |= 1 << binding;
+    }
+
+private:
+    // We expect layout(set=...) to always be between 0 and MAX_SETS - 1.
+    static constexpr int MAX_SETS = 4;
+
+    // We expect layout(binding=...) to always be between 0 and MAX_BINDINGS - 1.
+    static constexpr int MAX_BINDINGS = 32;
+
+    // We keep track of whether a buffer is a storage buffer (SSBO) or uniform buffer (UBO) by
+    // associating its set and binding with a bit in this field, with 1=SSBO and 0=UBO. An SSBO
+    // will have a synthetic vertex attribute (after the "real" vertex attributes) to pass in the
+    // SSBO index, one per SSBO, in the order in which the buffers appear in the code.
+    //
+    // The flags array is indexed by set, with the bits in each int corresponding to different
+    // bindings. The LSB represents binding 0, incrementing from there.
+    int32_t fStorageBufferFlags[MAX_SETS] = {};
+
+    static_assert(sizeof(fStorageBufferFlags) * 8 >= MAX_BINDINGS);
 };
 
 /**
