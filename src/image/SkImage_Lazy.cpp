@@ -129,8 +129,9 @@ SkImage_Lazy::SkImage_Lazy(Validator* validator)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool SkImage_Lazy::getROPixels(GrDirectContext*, SkBitmap* bitmap,
+bool SkImage_Lazy::getROPixels(GrDirectContext* ctx, SkBitmap* bitmap,
                                SkImage::CachingHint chint) const {
+    SkDebugf("lazy:getROPixels\n");
     auto check_output_bitmap = [bitmap]() {
         SkASSERT(bitmap->isImmutable());
         SkASSERT(bitmap->getPixels());
@@ -140,27 +141,62 @@ bool SkImage_Lazy::getROPixels(GrDirectContext*, SkBitmap* bitmap,
     auto desc = SkBitmapCacheDesc::Make(this);
     if (SkBitmapCache::Find(desc, bitmap)) {
         check_output_bitmap();
+        SkDebugf("ro-alpha\n");
         return true;
     }
 
     if (SkImage::kAllow_CachingHint == chint) {
         SkPixmap pmap;
         SkBitmapCache::RecPtr cacheRec = SkBitmapCache::Alloc(desc, this->imageInfo(), &pmap);
-        if (!cacheRec || !ScopedGenerator(fSharedGenerator)->getPixels(pmap)) {
+        if (!cacheRec) {
+            return false;
+        }
+        if (!ScopedGenerator(fSharedGenerator)->getPixels(pmap) &&
+            !this->readPixelsProxy(ctx, pmap)) {
             return false;
         }
         SkBitmapCache::Add(std::move(cacheRec), bitmap);
         this->notifyAddedToRasterCache();
     } else {
-        if (!bitmap->tryAllocPixels(this->imageInfo()) ||
-            !ScopedGenerator(fSharedGenerator)->getPixels(bitmap->pixmap())) {
+        if (!bitmap->tryAllocPixels(this->imageInfo())) {
+            return false;
+        }
+        if (!ScopedGenerator(fSharedGenerator)->getPixels(bitmap->pixmap()) &&
+            !this->readPixelsProxy(ctx, bitmap->pixmap())) {
             return false;
         }
         bitmap->setImmutable();
     }
-
+    SkDebugf("ro-delta\n");
     check_output_bitmap();
     return true;
+}
+
+bool SkImage_Lazy::readPixelsProxy(GrDirectContext* ctx, const SkPixmap& pixmap) const {
+#if SK_SUPPORT_GPU
+    SkASSERT(ctx);
+    GrSurfaceProxyView view = this->lockTextureProxyView(ctx,
+                                                         GrImageTexGenPolicy::kDraw,
+                                                         GrMipmapped::kNo);
+
+    if (!view) {
+        SkDebugf("readProxy-gamma\n");
+        return false;
+    }
+
+    GrColorType ct = this->colorTypeOfLockTextureProxy(ctx->priv().caps());
+    GrColorInfo colorInfo(ct, this->alphaType(), this->refColorSpace());
+    auto sContext = ctx->priv().makeSC(std::move(view), colorInfo);
+    if (!sContext) {
+        SkDebugf("readProxy-delta\n");
+        return false;
+    }
+    SkDebugf("readProxy-epsilon\n");
+    size_t rowBytes = this->imageInfo().minRowBytes();
+    return sContext->readPixels(ctx, {this->imageInfo(), pixmap.writable_addr(), rowBytes}, {0, 0});
+#else
+    return false;
+#endif // SK_SUPPORT_GPU
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -172,32 +208,13 @@ bool SkImage_Lazy::onReadPixels(GrDirectContext* dContext,
                                 int srcX,
                                 int srcY,
                                 CachingHint chint) const {
+    SkDebugf("lazy:onReadPixels\n");
     SkBitmap bm;
     if (this->getROPixels(dContext, &bm, chint)) {
+        SkDebugf("read-alpha\n");
         return bm.readPixels(dstInfo, dstPixels, dstRB, srcX, srcY);
     }
-#if SK_SUPPORT_GPU
-    if (!dContext) {
-        return false;
-    }
-    GrSurfaceProxyView view = this->lockTextureProxyView(dContext,
-                                                         GrImageTexGenPolicy::kDraw,
-                                                         GrMipmapped::kNo);
-
-    if (!view) {
-        return false;
-    }
-
-    GrColorType ct = this->colorTypeOfLockTextureProxy(dContext->priv().caps());
-    GrColorInfo colorInfo(ct, this->alphaType(), this->refColorSpace());
-    auto sContext = dContext->priv().makeSC(std::move(view), colorInfo);
-    if (!sContext) {
-        return false;
-    }
-    return sContext->readPixels(dContext, {dstInfo, dstPixels, dstRB}, {srcX, srcY});
-#else
     return false;
-#endif // SK_SUPPORT_GPU
 }
 
 sk_sp<SkData> SkImage_Lazy::onRefEncoded() const {

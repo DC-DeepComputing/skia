@@ -120,7 +120,8 @@ void SkPictureRecorder::partialReplay(SkCanvas* canvas) const {
         drawableCount = drawableList->count();
         drawables = drawableList->begin();
     }
-    SkRecordDraw(*fRecord, canvas, nullptr, drawables, drawableCount, nullptr/*bbh*/, nullptr/*callback*/);
+    SkRecordDraw(TODO_GrDirectContext, *fRecord, canvas, nullptr, drawables, drawableCount,
+                 nullptr/*bbh*/, nullptr/*callback*/);
 }
 
 sk_sp<SkDrawable> SkPictureRecorder::finishRecordingAsDrawable() {
