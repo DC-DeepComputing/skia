@@ -33,6 +33,52 @@
       "message": "PTAL, pt 2",
       "revId": "1dc4e29f824a6f859339e78c267b1f981d0fd15a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2d588bc6_7715734c",
+        "filename": "src/gpu/ganesh/d3d/GrD3DBuffer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 254,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-08-02T20:01:25Z",
+      "side": 1,
+      "message": "move this above onSetLabel.",
+      "range": {
+        "startLine": 254,
+        "startChar": 0,
+        "endLine": 254,
+        "endChar": 6
+      },
+      "revId": "1dc4e29f824a6f859339e78c267b1f981d0fd15a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "65e1c712_269a13ac",
+        "filename": "src/gpu/ganesh/d3d/GrD3DTextureRenderTarget.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 249,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-08-02T20:01:25Z",
+      "side": 1,
+      "message": "Do we need to do this one? Since it is a texture wouldn\u0027t the resource not be MSAA? Thus both the RT::onSetLabel() and Tex::onSetLabel() are setting the same label on the same object?",
+      "range": {
+        "startLine": 249,
+        "startChar": 4,
+        "endLine": 249,
+        "endChar": 36
+      },
+      "revId": "1dc4e29f824a6f859339e78c267b1f981d0fd15a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
