@@ -71,6 +71,15 @@
 
 namespace SkSL {
 
+// From gpu/graphite/mtl/MtlGraphicsPipeline.h.
+static const char* kBufferNames[5] = {
+        "",          // kIntrinsicUniformBufferIndex
+        "Geometry",  // kRenderStepUniformBufferIndex
+        "Shading",   // kPaintUniformBufferIndex
+        "",          // kVertexBufferIndex
+        "",          // kInstanceBufferIndex
+};
+
 static const char* operator_name(Operator op) {
     switch (op.kind()) {
         case Operator::Kind::LOGICALXOR:  return " != ";
@@ -1490,6 +1499,20 @@ void MetalCodeGenerator::writeIndexExpression(const IndexExpression& expr) {
     this->write("]");
 }
 
+bool MetalCodeGenerator::isStorageBuffer(const InterfaceBlock& intf) const {
+    const Layout& layout = intf.variable().modifiers().fLayout;
+    SkASSERT(layout.fSet == -1);
+    return fProgram.fConfig->fSettings.isStorageBuffer(0, layout.fBinding);
+}
+
+std::string MetalCodeGenerator::storageBufferIndexName(const InterfaceBlock& intf) const {
+    const Layout& layout = intf.variable().modifiers().fLayout;
+    SkASSERT(layout.fSet == -1);
+    SkASSERT(kBufferNames[layout.fBinding]);
+    return "ssboIndex" + std::string(kBufferNames[layout.fBinding]) +
+           (ProgramConfig::IsFragment(fProgram.fConfig->fKind) ? "Fs" : "");
+}
+
 void MetalCodeGenerator::writeFieldAccess(const FieldAccess& f) {
     const Type::Field* field = &f.base()->type().fields()[f.fieldIndex()];
     if (FieldAccess::OwnerKind::kDefault == f.ownerKind()) {
@@ -2064,7 +2087,7 @@ bool MetalCodeGenerator::writeFunctionDeclaration(const FunctionDeclaration& f) 
                 }
                 this->write(", constant ");
                 this->writeType(intf.variable().type());
-                this->write("& " );
+                this->write(this->isStorageBuffer(intf) ? "* " : "& ");
                 this->write(fInterfaceBlockNameMap[&intf]);
                 this->write(" [[buffer(");
                 this->write(std::to_string(this->getUniformBinding(intf.variable().modifiers())));
@@ -2811,8 +2834,14 @@ void MetalCodeGenerator::writeGlobalInit() {
         void visitInterfaceBlock(const InterfaceBlock& blockType,
                                  std::string_view blockName) override {
             this->addElement();
-            fCodeGen->write("&");
+            bool storageBuffer = fCodeGen->isStorageBuffer(blockType);
+            if (!storageBuffer) {
+                fCodeGen->write("&");
+            }
             fCodeGen->writeName(blockName);
+            if (storageBuffer) {
+                fCodeGen->write(" + _in." + fCodeGen->storageBufferIndexName(blockType));
+            }
         }
         void visitTexture(const Type&, const Modifiers& modifiers, std::string_view name) override {
             this->addElement();

@@ -37,7 +37,8 @@ constexpr int kNumSDFAtlasTextures = 4;
 TextSDFRenderStep::TextSDFRenderStep(bool isA8)
         : RenderStep("TextSDFRenderStep",
                      isA8 ? "A8" : "565",
-                     Flags::kPerformsShading | Flags::kHasTextures | Flags::kEmitsCoverage,
+                     Flags::kPerformsShading | Flags::kHasTextures | Flags::kEmitsCoverage |
+                     Flags::kUsesGeometryStorageBuffer | Flags::kUsesShadingStorageBuffer,
                      /*uniforms=*/{{"atlasSizeInv", SkSLType::kFloat2},
                                    {"distanceAdjust", SkSLType::kFloat}},
                      PrimitiveType::kTriangles,
@@ -139,10 +140,18 @@ const char* TextSDFRenderStep::fragmentCoverageSkSL() const {
     )";
 }
 
-void TextSDFRenderStep::writeVertices(DrawWriter* dw, const DrawParams& params) const {
+void TextSDFRenderStep::writeVertices(DrawWriter* dw,
+                                      const DrawParams& params,
+                                      int geometryStorageBufferIndex,
+                                      int shadingStorageBufferIndex) const {
     const SubRunData& subRunData = params.geometry().subRunData();
-    subRunData.subRun()->fillVertexData(dw, subRunData.startGlyphIndex(), subRunData.glyphCount(),
-                                        params.order().depthAsFloat(), params.transform());
+    subRunData.subRun()->fillVertexData(dw,
+                                        subRunData.startGlyphIndex(),
+                                        subRunData.glyphCount(),
+                                        geometryStorageBufferIndex,
+                                        shadingStorageBufferIndex,
+                                        params.order().depthAsFloat(),
+                                        params.transform());
 }
 
 void TextSDFRenderStep::writeUniformsAndTextures(const DrawParams& params,

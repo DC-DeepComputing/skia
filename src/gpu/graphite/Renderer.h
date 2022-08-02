@@ -49,7 +49,10 @@ public:
     // The DrawWriter is configured with the vertex and instance strides of the RenderStep, and its
     // primitive type. The recorded draws will be executed with a graphics pipeline compatible with
     // this RenderStep.
-    virtual void writeVertices(DrawWriter*, const DrawParams&) const = 0;
+    virtual void writeVertices(DrawWriter*,
+                               const DrawParams&,
+                               int geometryStorageBufferIndex,
+                               int shadingStorageBufferIndex) const = 0;
 
     // Write out the uniform values (aligned for the layout), textures, and samplers. The uniform
     // values will be de-duplicated across all draws using the RenderStep before uploading to the
@@ -93,10 +96,12 @@ public:
     // and variant is a unique term describing instance's specific configuration.
     const char* name() const { return fName.c_str(); }
 
-    bool requiresMSAA()    const { return fFlags & Flags::kRequiresMSAA;    }
-    bool performsShading() const { return fFlags & Flags::kPerformsShading; }
-    bool hasTextures()     const { return fFlags & Flags::kHasTextures;     }
-    bool emitsCoverage()   const { return fFlags & Flags::kEmitsCoverage;   }
+    bool requiresMSAA()              const { return fFlags & Flags::kRequiresMSAA;              }
+    bool performsShading()           const { return fFlags & Flags::kPerformsShading;           }
+    bool hasTextures()               const { return fFlags & Flags::kHasTextures;               }
+    bool emitsCoverage()             const { return fFlags & Flags::kEmitsCoverage;             }
+    bool usesGeometryStorageBuffer() const { return fFlags & Flags::kUsesGeometryStorageBuffer; }
+    bool usesShadingStorageBuffer()  const { return fFlags & Flags::kUsesShadingStorageBuffer;  }
 
     PrimitiveType primitiveType()  const { return fPrimitiveType;  }
     size_t        vertexStride()   const { return fVertexStride;   }
@@ -105,7 +110,10 @@ public:
     size_t numUniforms()           const { return fUniforms.size();      }
     size_t numVertexAttributes()   const { return fVertexAttrs.size();   }
     size_t numInstanceAttributes() const { return fInstanceAttrs.size(); }
-    size_t numVaryings()           const { return fVaryings.size();      }
+
+    bool hasVaryings() const {
+        return fVaryings.size() > 0 || usesGeometryStorageBuffer() || usesShadingStorageBuffer();
+    }
 
     // The uniforms of a RenderStep are bound to the kRenderStep slot, the rest of the pipeline
     // may still use uniforms bound to other slots.
@@ -131,11 +139,13 @@ public:
     //    - Does each DrawList::Draw have extra space (e.g. 8 bytes) that steps can cache data in?
 protected:
     enum class Flags : unsigned {
-        kNone            = 0b0000,
-        kRequiresMSAA    = 0b0001,
-        kPerformsShading = 0b0010,
-        kHasTextures     = 0b0100,
-        kEmitsCoverage   = 0b1000,
+        kNone                      = 0b000000,
+        kRequiresMSAA              = 0b000001,
+        kPerformsShading           = 0b000010,
+        kHasTextures               = 0b000100,
+        kEmitsCoverage             = 0b001000,
+        kUsesGeometryStorageBuffer = 0b010000,
+        kUsesShadingStorageBuffer  = 0b100000,
     };
     SK_DECL_BITMASK_OPS_FRIENDS(Flags);
 
@@ -161,12 +171,22 @@ protected:
             , fVertexStride(0)
             , fInstanceStride(0)
             , fName(className) {
+        std::vector<Attribute>& ssboIndexAttrs =
+                fInstanceAttrs.empty() ? fVertexAttrs : fInstanceAttrs;
+        if (usesGeometryStorageBuffer()) {
+            ssboIndexAttrs.push_back({"ssboIndexGeometry", VertexAttribType::kInt, SkSLType::kInt});
+        }
+        if (usesShadingStorageBuffer()) {
+            ssboIndexAttrs.push_back({"ssboIndexShading", VertexAttribType::kInt, SkSLType::kInt});
+        }
+
         for (auto v : this->vertexAttributes()) {
             fVertexStride += v.sizeAlign4();
         }
         for (auto i : this->instanceAttributes()) {
             fInstanceStride += i.sizeAlign4();
         }
+
         if (variantName.size() > 0) {
             fName += "[";
             fName += variantName;

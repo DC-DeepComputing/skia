@@ -46,11 +46,15 @@ static constexpr DepthStencilSettings kDirectShadingPass = {
 // or we'll add a color-only fast path to RenderStep later.
 static constexpr PatchAttribs kAttribs = PatchAttribs::kJoinControlPoint |
                                          PatchAttribs::kStrokeParams |
-                                         PatchAttribs::kPaintDepth;
+                                         PatchAttribs::kPaintDepth |
+                                         PatchAttribs::kGeometryStorageBufferIndex |
+                                         PatchAttribs::kShadingStorageBufferIndex;
 using Writer = PatchWriter<DynamicInstancesPatchAllocator<FixedCountStrokes>,
                            Required<PatchAttribs::kJoinControlPoint>,
                            Required<PatchAttribs::kStrokeParams>,
                            Required<PatchAttribs::kPaintDepth>,
+                           Optional<PatchAttribs::kGeometryStorageBufferIndex>,
+                           Optional<PatchAttribs::kShadingStorageBufferIndex>,
                            ReplicateLineEndPoints,
                            TrackJoinControlPoints>;
 
@@ -59,7 +63,8 @@ using Writer = PatchWriter<DynamicInstancesPatchAllocator<FixedCountStrokes>,
 TessellateStrokesRenderStep::TessellateStrokesRenderStep()
         : RenderStep("TessellateStrokeRenderStep",
                      "",
-                     Flags::kRequiresMSAA | Flags::kPerformsShading,
+                     Flags::kRequiresMSAA | Flags::kPerformsShading |
+                     Flags::kUsesGeometryStorageBuffer | Flags::kUsesShadingStorageBuffer,
                      /*uniforms=*/{{"affineMatrix", SkSLType::kFloat4},
                                    {"translate", SkSLType::kFloat2},
                                    {"maxScale", SkSLType::kFloat}},
@@ -89,7 +94,10 @@ const char* TessellateStrokesRenderStep::vertexSkSL() const {
                 depth, 1.0);)";
 }
 
-void TessellateStrokesRenderStep::writeVertices(DrawWriter* dw, const DrawParams& params) const {
+void TessellateStrokesRenderStep::writeVertices(DrawWriter* dw,
+                                                const DrawParams& params,
+                                                int geometryStorageBufferIndex,
+                                                int shadingStorageBufferIndex) const {
     SkPath path = params.geometry().shape().asPath(); // TODO: Iterate the Shape directly
 
     int patchReserveCount = FixedCountStrokes::PreallocCount(path.countVerbs());
@@ -100,6 +108,8 @@ void TessellateStrokesRenderStep::writeVertices(DrawWriter* dw, const DrawParams
     // has figured out how to support vertex IDs before then.
     Writer writer{kAttribs, *dw, kNullBinding, kNullBinding, patchReserveCount};
     writer.updatePaintDepthAttrib(params.order().depthAsFloat());
+    writer.updateGeometryStorageBufferIndexAttrib(geometryStorageBufferIndex);
+    writer.updateShadingStorageBufferIndexAttrib(shadingStorageBufferIndex);
 
     // The vector xform approximates how the control points are transformed by the shader to
     // more accurately compute how many *parametric* segments are needed.

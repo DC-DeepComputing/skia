@@ -214,6 +214,18 @@ std::string EmitVaryings(const RenderStep* step, const char* direction) {
         result.append(SkSLTypeString(v.fType));
         SkSL::String::appendf(&result, " %s;\n", v.fName);
     }
+    if (step->usesGeometryStorageBuffer()) {
+        SkSL::String::appendf(&result,
+                              "    layout(location=%d) %s int ssboIndexGeometryFs;\n",
+                              location++,
+                              direction);
+    }
+    if (step->usesShadingStorageBuffer()) {
+        SkSL::String::appendf(&result,
+                              "    layout(location=%d) %s int ssboIndexShadingFs;\n",
+                              location++,
+                              direction);
+    }
 
     return result;
 }
@@ -247,7 +259,7 @@ std::string GetSkSLVS(const GraphicsPipelineDesc& desc) {
     }
 
     // Varyings needed by RenderStep
-    if (step->numVaryings() > 0) {
+    if (step->hasVaryings()) {
         sksl += EmitVaryings(step, "out");
     }
 
@@ -255,6 +267,12 @@ std::string GetSkSLVS(const GraphicsPipelineDesc& desc) {
     sksl += "void main() {\n";
     // Vertex shader body
     sksl += step->vertexSkSL();
+    if (step->usesGeometryStorageBuffer()) {
+        sksl += "ssboIndexGeometryFs = ssboIndexGeometry;\n";
+    }
+    if (step->usesShadingStorageBuffer()) {
+        sksl += "ssboIndexShadingFs = ssboIndexShading;\n";
+    }
     sksl += "sk_Position = float4(devPosition.xy * rtAdjust.xy + rtAdjust.zw, devPosition.zw);\n"
             "}\n";
 
