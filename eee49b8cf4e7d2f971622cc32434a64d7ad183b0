@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b1e1388b_5b77a8cf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-08-02T15:47:08Z",
+      "side": 1,
+      "message": "I recommend starting with the API change of prepareForMaskDrawing in StrikeForGPU.h. ",
+      "revId": "eee49b8cf4e7d2f971622cc32434a64d7ad183b0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
