@@ -243,4 +243,12 @@ void GrD3DBuffer::validate() const {
              this->intendedType() == GrGpuBufferType::kXferCpuToGpu ||
              this->intendedType() == GrGpuBufferType::kXferGpuToCpu);
 }
+
+void GrD3DBuffer::onSetLabel() {
+    SkASSERT(fD3DResource);
+    if (!this->getLabel().empty()) {
+        const std::string label = "_Skia_" + this->getLabel();
+        fD3DResource->SetName((LPCWSTR)label.c_str());
+    }
+}
 #endif
