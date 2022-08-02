@@ -63,6 +63,30 @@
       },
       "revId": "eeb1f74da69a6217c85814c029a1a9d7764de159",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1370e881_d72185f9",
+        "filename": "bazel/exporter/cmake_exporter.go",
+        "patchSetId": 28
+      },
+      "lineNbr": 437,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-02T20:36:13Z",
+      "side": 1,
+      "message": "I got confused myself. Serves me right for code reviews after lunch. LGTM",
+      "parentUuid": "47e87637_0f0fdc0d",
+      "range": {
+        "startLine": 437,
+        "startChar": 8,
+        "endLine": 437,
+        "endChar": 19
+      },
+      "revId": "eeb1f74da69a6217c85814c029a1a9d7764de159",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
