@@ -117,6 +117,30 @@
       },
       "revId": "db3c51a0720a2ea8b40ca4d5b2ca94455f4bfdcc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "893aed46_496d0b10",
+        "filename": "src/gpu/graphite/ResourceProvider.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-08-02T15:13:18Z",
+      "side": 1,
+      "message": "For sure clang-format and our style guide don\u0027t always 100% agree. For instance the style guide asks for \"one initializer per line\" but in practice, clang-format will pack them all on one line if they fit. (It will do one-per-line if they don\u0027t fit though.) \n\nWe should probably try to get these two things in closer alignment. clang-format has a lot of knobs we can tweak. And of course we can always update the guide in places where it\u0027s out of date or where clang-format can\u0027t be made to do what we want it to.",
+      "parentUuid": "2c8d5396_8f055aee",
+      "range": {
+        "startLine": 102,
+        "startChar": 0,
+        "endLine": 102,
+        "endChar": 8
+      },
+      "revId": "db3c51a0720a2ea8b40ca4d5b2ca94455f4bfdcc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
