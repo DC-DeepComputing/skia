@@ -20,7 +20,7 @@ using namespace SkRecords;
 
 class SkEmptyPicture final : public SkPicture {
 public:
-    void playback(SkCanvas*, AbortCallback*) const override { }
+    void playback(GrDirectContext*, SkCanvas*, AbortCallback*) const override { }
 
     size_t approximateBytesUsed()   const override { return sizeof(*this); }
     int    approximateOpCount(bool) const override { return 0; }
@@ -51,8 +51,8 @@ public:
         : fCull(cull ? *cull : bounds(op))
         , fOp(std::move(op)) {}
 
-    void playback(SkCanvas* c, AbortCallback*) const override {
-        SkRecords::Draw(c, nullptr, nullptr, 0, nullptr)(fOp);
+    void playback(GrDirectContext* ctx, SkCanvas* c, AbortCallback*) const override {
+        SkRecords::Draw(ctx, c, nullptr, nullptr, 0, nullptr)(fOp);
     }
 
     size_t approximateBytesUsed()   const override { return sizeof(*this); }
@@ -126,7 +126,7 @@ void SkMiniRecorder::flushAndReset(SkCanvas* canvas) {
     case State::k##Type: {                                          \
         fState = State::kEmpty;                                     \
         Type* op = reinterpret_cast<Type*>(fBuffer);                \
-        SkRecords::Draw(canvas, nullptr, nullptr, 0, nullptr)(*op); \
+        SkRecords::Draw(TODO_GrDirectContext, canvas, nullptr, nullptr, 0, nullptr)(*op); \
         op->~Type();                                                \
     } return
 

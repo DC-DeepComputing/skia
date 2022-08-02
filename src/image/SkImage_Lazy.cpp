@@ -172,12 +172,15 @@ bool SkImage_Lazy::onReadPixels(GrDirectContext* dContext,
                                 int srcX,
                                 int srcY,
                                 CachingHint chint) const {
+    SkDebugf("lazy:onReadPixels\n");
     SkBitmap bm;
     if (this->getROPixels(dContext, &bm, chint)) {
+        SkDebugf("alpha\n");
         return bm.readPixels(dstInfo, dstPixels, dstRB, srcX, srcY);
     }
 #if SK_SUPPORT_GPU
     if (!dContext) {
+        SkDebugf("beta\n");
         return false;
     }
     GrSurfaceProxyView view = this->lockTextureProxyView(dContext,
@@ -185,6 +188,7 @@ bool SkImage_Lazy::onReadPixels(GrDirectContext* dContext,
                                                          GrMipmapped::kNo);
 
     if (!view) {
+        SkDebugf("gamma\n");
         return false;
     }
 
@@ -192,8 +196,10 @@ bool SkImage_Lazy::onReadPixels(GrDirectContext* dContext,
     GrColorInfo colorInfo(ct, this->alphaType(), this->refColorSpace());
     auto sContext = dContext->priv().makeSC(std::move(view), colorInfo);
     if (!sContext) {
+        SkDebugf("delta\n");
         return false;
     }
+    SkDebugf("epsilon\n");
     return sContext->readPixels(dContext, {dstInfo, dstPixels, dstRB}, {srcX, srcY});
 #else
     return false;

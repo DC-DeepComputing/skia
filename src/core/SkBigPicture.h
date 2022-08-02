@@ -43,14 +43,14 @@ public:
 
 
 // SkPicture overrides
-    void playback(SkCanvas*, AbortCallback*) const override;
+    void playback(GrDirectContext*, SkCanvas*, AbortCallback*) const override;
     SkRect cullRect() const override;
     int approximateOpCount(bool nested) const override;
     size_t approximateBytesUsed() const override;
     const SkBigPicture* asSkBigPicture() const override { return this; }
 
 // Used by GrLayerHoister
-    void partialPlayback(SkCanvas*,
+    void partialPlayback(SkCanvas*, // TODO(kjlubick, egdaniel) Also needs GrDirectContext*?
                          int start,
                          int stop,
                          const SkM44& initialCTM) const;

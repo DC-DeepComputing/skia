@@ -94,8 +94,8 @@ public:
 
     void onDrawImage2(const SkImage*, SkScalar, SkScalar, const SkSamplingOptions&,
                       const SkPaint*) override;
-    void onDrawImageRect2(const SkImage*, const SkRect&, const SkRect&, const SkSamplingOptions&,
-                          const SkPaint*, SrcRectConstraint) override;
+    void onDrawImageRect2(GrDirectContext*, const SkImage*, const SkRect&, const SkRect&,
+                          const SkSamplingOptions&, const SkPaint*, SrcRectConstraint) override;
     void onDrawImageLattice2(const SkImage*, const Lattice&, const SkRect&, SkFilterMode,
                              const SkPaint*) override;
     void onDrawAtlas2(const SkImage*, const SkRSXform[], const SkRect[], const SkColor[], int,
@@ -111,7 +111,8 @@ public:
     void onClipRegion(const SkRegion& deviceRgn, SkClipOp) override;
     void onResetClip() override;
 
-    void onDrawPicture(const SkPicture*, const SkMatrix*, const SkPaint*) override;
+    void onDrawPicture(GrDirectContext*, const SkPicture*, const SkMatrix*,
+                       const SkPaint*) override;
 
     void onDrawAnnotation(const SkRect&, const char[], SkData*) override;
 

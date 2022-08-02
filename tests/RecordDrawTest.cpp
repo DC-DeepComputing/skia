@@ -67,7 +67,7 @@ DEF_TEST(RecordDraw_Abort, r) {
     SkRecorder canvas(&rerecord, W, H);
 
     JustOneDraw callback;
-    SkRecordDraw(record, &canvas, nullptr, nullptr, 0, nullptr/*bbh*/, &callback);
+    SkRecordDraw(nullptr, record, &canvas, nullptr, nullptr, 0, nullptr/*bbh*/, &callback);
 
     REPORTER_ASSERT(r, 1 == count_instances_of_type<SkRecords::DrawRect>(rerecord));
     REPORTER_ASSERT(r, 0 == count_instances_of_type<SkRecords::ClipRect>(rerecord));
@@ -81,7 +81,7 @@ DEF_TEST(RecordDraw_Unbalanced, r) {
 
     SkRecord rerecord;
     SkRecorder canvas(&rerecord, W, H);
-    SkRecordDraw(record, &canvas, nullptr, nullptr, 0, nullptr/*bbh*/, nullptr/*callback*/);
+    SkRecordDraw(nullptr, record, &canvas, nullptr, nullptr, 0, nullptr/*bbh*/, nullptr/*callback*/);
 
     int save_count = count_instances_of_type<SkRecords::Save>(rerecord);
     int restore_count = count_instances_of_type<SkRecords::Save>(rerecord);
@@ -103,7 +103,7 @@ DEF_TEST(RecordDraw_SetMatrixClobber, r) {
     translate.setTranslate(20, 20);
     translateCanvas.setMatrix(translate);
 
-    SkRecordDraw(scaleRecord, &translateCanvas, nullptr, nullptr, 0, nullptr/*bbh*/, nullptr/*callback*/);
+    SkRecordDraw(nullptr, scaleRecord, &translateCanvas, nullptr, nullptr, 0, nullptr/*bbh*/, nullptr/*callback*/);
     REPORTER_ASSERT(r, 4 == translateRecord.count());
     assert_type<SkRecords::SetM44>(r, translateRecord, 0);
     assert_type<SkRecords::Save>  (r, translateRecord, 1);

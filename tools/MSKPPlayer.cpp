@@ -199,7 +199,8 @@ protected:
         fRecorder.getRecordingCanvas()->drawImage(image, dx, dy, sampling, paint);
     }
 
-    void onDrawImageRect2(const SkImage* image,
+    void onDrawImageRect2(GrDirectContext*,
+                          const SkImage* image,
                           const SkRect& src,
                           const SkRect& dst,
                           const SkSamplingOptions& sampling,
@@ -326,7 +327,8 @@ protected:
         fRecorder.getRecordingCanvas()->drawDrawable(drawable, matrix);
     }
 
-    void onDrawPicture(const SkPicture* picture,
+    void onDrawPicture(GrDirectContext* ctx,
+                       const SkPicture* picture,
                        const SkMatrix* matrix,
                        const SkPaint* paint) override {
         if (fNextDrawPictureToLayerID != -1) {
@@ -355,7 +357,7 @@ protected:
         if (paint) {
             this->restore();
         }
-        fRecorder.getRecordingCanvas()->drawPicture(picture, matrix, paint);
+        fRecorder.getRecordingCanvas()->drawPicture(ctx, picture, matrix, paint);
     }
 
 private:

@@ -481,6 +481,8 @@
     #define SkAssertResult(cond)         if (cond) {} do {} while(false)
 #endif
 
+#define TODO_GrDirectContext nullptr
+
 ////////////////////////////////////////////////////////////////////////////////
 
 /** Fast type for unsigned 8 bits. Use for parameter passing and local

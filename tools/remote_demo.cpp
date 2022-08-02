@@ -143,7 +143,7 @@ static bool push_font_data(const SkPicture& pic, SkStrikeServer* strikeServer,
     const SkSurfaceProps props(0, kRGB_H_SkPixelGeometry);
     std::unique_ptr<SkCanvas> filter = strikeServer->makeAnalysisCanvas(
             bounds.width(), bounds.height(), props, std::move(colorSpace), true);
-    pic.playback(filter.get());
+    pic.playback(nullptr, filter.get());
 
     std::vector<uint8_t> fontData;
     strikeServer->writeStrikeData(&fontData);
