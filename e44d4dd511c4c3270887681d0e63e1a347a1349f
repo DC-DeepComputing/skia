@@ -16,6 +16,24 @@
       "message": "Should this stuff be removed?",
       "revId": "e44d4dd511c4c3270887681d0e63e1a347a1349f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9cc80e20_d05a9a06",
+        "filename": "src/core/SkImageGenerator.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-02T19:22:59Z",
+      "side": 1,
+      "message": "Oops - I blame git and myself.\nhttps://skia-review.googlesource.com/c/skia/+/564898",
+      "parentUuid": "37e5e183_7bdbc3b1",
+      "revId": "e44d4dd511c4c3270887681d0e63e1a347a1349f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
