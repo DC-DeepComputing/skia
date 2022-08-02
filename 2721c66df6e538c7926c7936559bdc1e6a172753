@@ -1515,6 +1515,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "422f1b38_0d4cc94b",
+        "filename": "bazel/exporter/cmake_workspace.go",
+        "patchSetId": 20
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-08-02T16:33:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d4aa1ae8_f2b76c87",
+      "range": {
+        "startLine": 75,
+        "startChar": 13,
+        "endLine": 75,
+        "endChar": 33
+      },
+      "revId": "2721c66df6e538c7926c7936559bdc1e6a172753",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "442dc446_660b6a66",
