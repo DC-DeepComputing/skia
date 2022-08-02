@@ -14,7 +14,8 @@
 #include "src/core/SkRecordDraw.h"
 #include "src/utils/SkPatchUtils.h"
 
-void SkRecordDraw(const SkRecord& record,
+void SkRecordDraw(GrDirectContext* ctx,
+                  const SkRecord& record,
                   SkCanvas* canvas,
                   SkPicture const* const drawablePicts[],
                   SkDrawable* const drawables[],
@@ -34,7 +35,7 @@ void SkRecordDraw(const SkRecord& record,
         std::vector<int> ops;
         bbh->search(query, &ops);
 
-        SkRecords::Draw draw(canvas, drawablePicts, drawables, drawableCount);
+        SkRecords::Draw draw(ctx, canvas, drawablePicts, drawables, drawableCount);
         for (int i = 0; i < (int)ops.size(); i++) {
             if (callback && callback->abort()) {
                 return;
@@ -46,7 +47,7 @@ void SkRecordDraw(const SkRecord& record,
         }
     } else {
         // Draw all ops.
-        SkRecords::Draw draw(canvas, drawablePicts, drawables, drawableCount);
+        SkRecords::Draw draw(ctx, canvas, drawablePicts, drawables, drawableCount);
         for (int i = 0; i < record.count(); i++) {
             if (callback && callback->abort()) {
                 return;
@@ -64,9 +65,9 @@ void SkRecordPartialDraw(const SkRecord& record, SkCanvas* canvas,
                          int start, int stop,
                          const SkM44& initialCTM) {
     SkAutoCanvasRestore saveRestore(canvas, true /*save now, restore at exit*/);
-
+    GrDirectContext* ctx = TODO_GrDirectContext;
     stop = std::min(stop, record.count());
-    SkRecords::Draw draw(canvas, drawablePicts, nullptr, drawableCount, &initialCTM);
+    SkRecords::Draw draw(ctx, canvas, drawablePicts, nullptr, drawableCount, &initialCTM);
     for (int i = start; i < stop; i++) {
         record.visit(i, draw);
     }
@@ -128,12 +129,12 @@ template <> void Draw::draw(const DrawImageLattice& r) {
     fCanvas->drawImageLattice(r.image.get(), lattice, r.dst, r.filter, r.paint);
 }
 
-DRAW(DrawImageRect, drawImageRect(r.image.get(), r.src, r.dst, r.sampling, r.paint, r.constraint));
+DRAW(DrawImageRect, drawImageRect(fDirectContext, r.image.get(), r.src, r.dst, r.sampling, r.paint, r.constraint));
 DRAW(DrawOval, drawOval(r.oval, r.paint));
 DRAW(DrawPaint, drawPaint(r.paint));
 DRAW(DrawPath, drawPath(r.path, r.paint));
 DRAW(DrawPatch, drawPatch(r.cubics, r.colors, r.texCoords, r.bmode, r.paint));
-DRAW(DrawPicture, drawPicture(r.picture.get(), &r.matrix, r.paint));
+DRAW(DrawPicture, drawPicture(fDirectContext, r.picture.get(), &r.matrix, r.paint));
 DRAW(DrawPoints, drawPoints(r.mode, r.count, r.pts, r.paint));
 DRAW(DrawRRect, drawRRect(r.rrect, r.paint));
 DRAW(DrawRect, drawRect(r.rect, r.paint));
