@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f850d3b5_8759752f",
+        "filename": "src/gpu/graphite/ResourceProvider.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-08-02T15:01:42Z",
+      "side": 1,
+      "message": "Could you remove this tab while you\u0027re in here?",
+      "range": {
+        "startLine": 83,
+        "startChar": 0,
+        "endLine": 83,
+        "endChar": 1
+      },
+      "revId": "db3c51a0720a2ea8b40ca4d5b2ca94455f4bfdcc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e6ca5cfd_9915b84f",
+        "filename": "src/gpu/graphite/ResourceProvider.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2022-08-02T15:01:42Z",
+      "side": 1,
+      "message": "Nit: I believe we indent 4 spaces for constructor initializers (yes, we\u0027re not consistent in this file).",
+      "range": {
+        "startLine": 102,
+        "startChar": 0,
+        "endLine": 102,
+        "endChar": 8
+      },
+      "revId": "db3c51a0720a2ea8b40ca4d5b2ca94455f4bfdcc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
