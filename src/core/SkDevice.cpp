@@ -158,6 +158,13 @@ void SkBaseDevice::drawPatch(const SkPoint cubics[12], const SkColor colors[4],
     }
 }
 
+void SkBaseDevice::drawImageRect(GrDirectContext*, const SkImage* img, const SkRect* src,
+                                 const SkRect& dst, const SkSamplingOptions& opt,
+                                 const SkPaint& paint, SkCanvas::SrcRectConstraint constraint) {
+    // By default, ignore the GrDirectContext
+    this->drawImageRect(img, src, dst, opt, paint, constraint);
+}
+
 void SkBaseDevice::drawImageLattice(const SkImage* image, const SkCanvas::Lattice& lattice,
                                     const SkRect& dst, SkFilterMode filter, const SkPaint& paint) {
     SkLatticeIter iter(lattice, dst);

@@ -192,9 +192,9 @@ void SkRecorder::onDrawImage2(const SkImage* image, SkScalar x, SkScalar y,
     this->append<SkRecords::DrawImage>(this->copy(paint), sk_ref_sp(image), x, y, sampling);
 }
 
-void SkRecorder::onDrawImageRect2(const SkImage* image, const SkRect& src, const SkRect& dst,
-                                  const SkSamplingOptions& sampling, const SkPaint* paint,
-                                  SrcRectConstraint constraint) {
+void SkRecorder::onDrawImageRect2(GrDirectContext*, const SkImage* image, const SkRect& src,
+                                  const SkRect& dst, const SkSamplingOptions& sampling,
+                                  const SkPaint* paint, SrcRectConstraint constraint) {
     this->append<SkRecords::DrawImageRect>(this->copy(paint), sk_ref_sp(image), src, dst,
                                            sampling, constraint);
 }
@@ -231,7 +231,7 @@ void SkRecorder::onDrawGlyphRunList(
     this->onDrawTextBlob(blob.get(), glyphRunList.origin().x(), glyphRunList.origin().y(), paint);
 }
 
-void SkRecorder::onDrawPicture(const SkPicture* pic, const SkMatrix* matrix, const SkPaint* paint) {
+void SkRecorder::onDrawPicture(GrDirectContext*, const SkPicture* pic, const SkMatrix* matrix, const SkPaint* paint) {
     fApproxBytesUsedBySubPictures += pic->approximateBytesUsed();
     this->append<SkRecords::DrawPicture>(this->copy(paint), sk_ref_sp(pic), matrix ? *matrix : SkMatrix::I());
 }

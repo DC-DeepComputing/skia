@@ -2284,9 +2284,9 @@ static SkSamplingOptions clean_sampling_for_constraint(
     return sampling;
 }
 
-void SkCanvas::onDrawImageRect2(const SkImage* image, const SkRect& src, const SkRect& dst,
-                                const SkSamplingOptions& sampling, const SkPaint* paint,
-                                SrcRectConstraint constraint) {
+void SkCanvas::onDrawImageRect2(GrDirectContext* ctx, const SkImage* image, const SkRect& src,
+                                const SkRect& dst, const SkSamplingOptions& sampling,
+                                const SkPaint* paint, SrcRectConstraint constraint) {
     SkPaint realPaint = clean_paint_for_drawImage(paint);
     SkSamplingOptions realSampling = clean_sampling_for_constraint(sampling, constraint);
 
@@ -2298,7 +2298,7 @@ void SkCanvas::onDrawImageRect2(const SkImage* image, const SkRect& src, const S
                                    image->isOpaque() ? kOpaque_ShaderOverrideOpacity
                                                      : kNotOpaque_ShaderOverrideOpacity);
     if (layer) {
-        this->topDevice()->drawImageRect(image, &src, dst, realSampling, layer->paint(), constraint);
+        this->topDevice()->drawImageRect(ctx, image, &src, dst, realSampling, layer->paint(), constraint);
     }
 }
 
@@ -2323,14 +2323,22 @@ void SkCanvas::drawImage(const SkImage* image, SkScalar x, SkScalar y,
     this->onDrawImage2(image, x, y, sampling, paint);
 }
 
-void SkCanvas::drawImageRect(const SkImage* image, const SkRect& src, const SkRect& dst,
-                             const SkSamplingOptions& sampling, const SkPaint* paint,
-                             SrcRectConstraint constraint) {
+void SkCanvas::drawImageRect(GrDirectContext* ctx, const SkImage* image, const SkRect& src,
+                             const SkRect& dst, const SkSamplingOptions& sampling,
+                             const SkPaint* paint, SrcRectConstraint constraint) {
     RETURN_ON_NULL(image);
     if (!fillable(dst) || !fillable(src)) {
         return;
     }
-    this->onDrawImageRect2(image, src, dst, sampling, paint, constraint);
+    this->onDrawImageRect2(ctx, image, src, dst, sampling, paint, constraint);
+}
+
+void SkCanvas::drawImageRect(const SkImage* image, const SkRect& src, const SkRect& dst,
+                             const SkSamplingOptions& sampling, const SkPaint* paint,
+                             SrcRectConstraint constraint) {
+    RETURN_ON_NULL(image);
+    this->drawImageRect(nullptr, image, SkRect::MakeIWH(image->width(), image->height()),
+                        dst, sampling, paint, kFast_SrcRectConstraint);
 }
 
 void SkCanvas::drawImageRect(const SkImage* image, const SkRect& dst,
@@ -2748,14 +2756,15 @@ void SkCanvas::drawArc(const SkRect& oval, SkScalar startAngle,
 
 ///////////////////////////////////////////////////////////////////////////////
 #ifdef SK_DISABLE_SKPICTURE
-void SkCanvas::drawPicture(const SkPicture* picture, const SkMatrix* matrix, const SkPaint* paint) {}
+void SkCanvas::drawPicture(const SkPicture*, const SkMatrix*, const SkPaint*) {}
+void SkCanvas::drawPicture(GrDirectContext*, const SkPicture*, const SkMatrix*, const SkPaint*) {}
 
-
-void SkCanvas::onDrawPicture(const SkPicture* picture, const SkMatrix* matrix,
-                             const SkPaint* paint) {}
+void SkCanvas::onDrawPicture(GrDirectContext*, const SkPicture*, const SkMatrix*,
+                             const SkPaint* ) {}
 #else
 
-void SkCanvas::drawPicture(const SkPicture* picture, const SkMatrix* matrix, const SkPaint* paint) {
+void SkCanvas::drawPicture(GrDirectContext* ctx, const SkPicture* picture,
+                           const SkMatrix* matrix, const SkPaint* paint) {
     TRACE_EVENT0("skia", TRACE_FUNC);
     RETURN_ON_NULL(picture);
 
@@ -2764,20 +2773,24 @@ void SkCanvas::drawPicture(const SkPicture* picture, const SkMatrix* matrix, con
     }
     if (picture->approximateOpCount() <= kMaxPictureOpsToUnrollInsteadOfRef) {
         SkAutoCanvasMatrixPaint acmp(this, matrix, paint, picture->cullRect());
-        picture->playback(this);
+        picture->playback(ctx, this);
     } else {
-        this->onDrawPicture(picture, matrix, paint);
+        this->onDrawPicture(ctx, picture, matrix, paint);
     }
 }
 
-void SkCanvas::onDrawPicture(const SkPicture* picture, const SkMatrix* matrix,
-                             const SkPaint* paint) {
+void SkCanvas::drawPicture(const SkPicture* picture, const SkMatrix* matrix, const SkPaint* paint) {
+    this->drawPicture(nullptr, picture, matrix, paint);
+}
+
+void SkCanvas::onDrawPicture(GrDirectContext* ctx, const SkPicture* picture,
+                             const SkMatrix* matrix, const SkPaint* paint) {
     if (this->internalQuickReject(picture->cullRect(), paint ? *paint : SkPaint{}, matrix)) {
         return;
     }
 
     SkAutoCanvasMatrixPaint acmp(this, matrix, paint, picture->cullRect());
-    picture->playback(this);
+    picture->playback(ctx, this);
 }
 #endif
 
