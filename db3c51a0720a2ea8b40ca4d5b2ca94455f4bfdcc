@@ -69,6 +69,30 @@
       },
       "revId": "db3c51a0720a2ea8b40ca4d5b2ca94455f4bfdcc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bf409030_d4568b30",
+        "filename": "src/gpu/graphite/ResourceProvider.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-08-02T15:06:13Z",
+      "side": 1,
+      "message": "yeah I we\u0027ve been doing constructor initializers at 8 spaces recently. Keeps the list of initializers easily separate from the code.",
+      "parentUuid": "241a10ae_759de7c5",
+      "range": {
+        "startLine": 102,
+        "startChar": 0,
+        "endLine": 102,
+        "endChar": 8
+      },
+      "revId": "db3c51a0720a2ea8b40ca4d5b2ca94455f4bfdcc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
