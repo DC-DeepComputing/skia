@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aac65c32_706771ff",
+        "filename": "bazel/exporter/cmake_workspace.go",
+        "patchSetId": 27
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-08-02T15:06:43Z",
+      "side": 1,
+      "message": "I moved writtenRules into the new writeState struct because cmakeWorkspace.write wasn\u0027t thread-safe. It doesn\u0027t really need to be, but I feel better about not baking in this limitation.",
+      "range": {
+        "startLine": 25,
+        "startChar": 5,
+        "endLine": 25,
+        "endChar": 15
+      },
+      "revId": "a0b6122308928c43688653fded1e9bd68ec79f9b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

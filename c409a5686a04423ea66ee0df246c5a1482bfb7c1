@@ -22,6 +22,30 @@
       },
       "revId": "c409a5686a04423ea66ee0df246c5a1482bfb7c1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3b716d66_36d1d2b9",
+        "filename": "bazel/exporter/cmake_rule_test.go",
+        "patchSetId": 26
+      },
+      "lineNbr": 206,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-08-02T15:06:43Z",
+      "side": 1,
+      "message": "yes. thx for the catch (and fix).",
+      "parentUuid": "2d1947a0_3e959959",
+      "range": {
+        "startLine": 206,
+        "startChar": 4,
+        "endLine": 206,
+        "endChar": 17
+      },
+      "revId": "c409a5686a04423ea66ee0df246c5a1482bfb7c1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

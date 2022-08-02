@@ -913,6 +913,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "eeab181b_29af514f",
+        "filename": "bazel/exporter/cmake_exporter_test.go",
+        "patchSetId": 20
+      },
+      "lineNbr": 245,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-08-02T15:06:43Z",
+      "side": 1,
+      "message": "Used your proposed fix to switch cmakeRule.contents to []byte. This eliminated all io.Copy() calls.",
+      "parentUuid": "dd1a08b3_01d568fa",
+      "range": {
+        "startLine": 245,
+        "startChar": 20,
+        "endLine": 245,
+        "endChar": 27
+      },
+      "revId": "2721c66df6e538c7926c7936559bdc1e6a172753",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "483b8a4d_f98ec3a8",
@@ -1220,6 +1244,30 @@
       "writtenOn": "2022-07-28T16:09:41Z",
       "side": 1,
       "message": "Do we have to refer to pointers of CMakeRule and not the structs themselves? I have a personal preference of avoiding pointers unless they are critical as I think they make it harder to reason about (e.g. is this getting mutated or not)",
+      "range": {
+        "startLine": 18,
+        "startChar": 26,
+        "endLine": 18,
+        "endChar": 35
+      },
+      "revId": "2721c66df6e538c7926c7936559bdc1e6a172753",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "997d8b80_b9bd504c",
+        "filename": "bazel/exporter/cmake_workspace.go",
+        "patchSetId": 20
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-08-02T15:06:43Z",
+      "side": 1,
+      "message": "I converted CMakeExporter.workspace to value. cmakeWorkspace.rules is still a map to pointers because they need to be mutable - I added a comment for this. I tried moving cmakeRule.rule to a value, but got \"copies lock value\" warning when copying build.Rule because an inner struct contains a Mutex.",
+      "parentUuid": "b97ba307_564a23b9",
       "range": {
         "startLine": 18,
         "startChar": 26,
