@@ -45,6 +45,30 @@
       },
       "revId": "db3c51a0720a2ea8b40ca4d5b2ca94455f4bfdcc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "241a10ae_759de7c5",
+        "filename": "src/gpu/graphite/ResourceProvider.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-08-02T15:03:04Z",
+      "side": 1,
+      "message": "This line seems consistent with our clang-format settings to me. I get 8 spaces when I format a line.",
+      "parentUuid": "e6ca5cfd_9915b84f",
+      "range": {
+        "startLine": 102,
+        "startChar": 0,
+        "endLine": 102,
+        "endChar": 8
+      },
+      "revId": "db3c51a0720a2ea8b40ca4d5b2ca94455f4bfdcc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
