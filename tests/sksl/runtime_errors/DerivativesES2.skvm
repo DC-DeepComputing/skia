@@ -1,9 +1,17 @@
 ### Compilation failed:
 
 error: 1: no match for dFdx(float2)
+considered:
+$genHType dFdx($genHType p)
+$genType dFdx($genType p)
+
 float2 dx(float2 coords) { return dFdx(coords); }
                                   ^^^^^^^^^^^^
 error: 2: no match for dFdy(float2)
+considered:
+$genHType dFdy($genHType p)
+$genType dFdy($genType p)
+
 float2 dy(float2 coords) { return dFdy(coords); }
                                   ^^^^^^^^^^^^
 2 errors

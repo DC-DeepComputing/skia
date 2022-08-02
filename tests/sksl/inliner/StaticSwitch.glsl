@@ -1,13 +1,9 @@
+### Compilation failed:
 
-out vec4 sk_FragColor;
-uniform vec4 colorGreen;
-uniform vec4 colorRed;
-float get_f() {
-    {
-        return 2.0;
-    }
-}
-vec4 main() {
-    float result = get_f();
-    return result == 2.0 ? colorGreen : colorRed;
-}
+error: 6: expected 'float', but found 'int'
+        case 2: return abs(2);  // Only this case should be preserved.
+                       ^^^^^^
+error: 11: expected 'float', but found 'int'
+    return abs(5);
+           ^^^^^^
+2 errors

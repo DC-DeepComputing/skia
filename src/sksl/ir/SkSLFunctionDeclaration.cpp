@@ -25,7 +25,6 @@
 #include "src/sksl/ir/SkSLExpression.h"
 #include "src/sksl/ir/SkSLSymbolTable.h"
 #include "src/sksl/ir/SkSLType.h"
-#include "src/sksl/ir/SkSLUnresolvedFunction.h"
 #include "src/sksl/ir/SkSLVariable.h"
 
 #include <algorithm>
@@ -338,22 +337,17 @@ static bool find_existing_declaration(const Context& context,
     const Symbol* entry = symbols[name];
     *outExistingDecl = nullptr;
     if (entry) {
-        SkSpan<const FunctionDeclaration* const> functions;
-        const FunctionDeclaration* declPtr;
-        switch (entry->kind()) {
-            case Symbol::Kind::kUnresolvedFunction:
-                functions = SkSpan(entry->as<UnresolvedFunction>().functions());
-                break;
-            case Symbol::Kind::kFunctionDeclaration:
-                declPtr = &entry->as<FunctionDeclaration>();
-                functions = SkSpan(&declPtr, 1);
-                break;
-            default:
-                errors.error(pos, "symbol '" + std::string(name) + "' was already defined");
-                return false;
+        if (!entry->is<FunctionDeclaration>()) {
+            errors.error(pos, "symbol '" + std::string(name) + "' was already defined");
+            return false;
         }
-        for (const FunctionDeclaration* other : functions) {
-            SkASSERT(name == other->name());
+        for (const FunctionDeclaration* other = &entry->as<FunctionDeclaration>();
+             other != nullptr;
+             other = other->overload()) {
+            SkASSERTF(name == other->name(),
+                      "%s ... %s",
+                      std::string(name).c_str(),
+                      std::string(other->name()).c_str());
             if (!parameters_match(parameters, other->parameters())) {
                 continue;
             }
