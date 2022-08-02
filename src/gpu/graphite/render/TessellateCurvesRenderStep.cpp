@@ -26,9 +26,11 @@ using namespace skgpu::tess;
 // No explicit curve type, since we assume infinity is supported on GPUs using graphite
 // No color or wide color attribs, since it might always be part of the PaintParams
 // or we'll add a color-only fast path to RenderStep later.
-static constexpr PatchAttribs kAttribs = PatchAttribs::kPaintDepth;
+static constexpr PatchAttribs kAttribs = PatchAttribs::kPaintDepth |
+                                         PatchAttribs::kShadingStorageBufferIndex;
 using Writer = PatchWriter<DynamicInstancesPatchAllocator<FixedCountCurves>,
                            Required<PatchAttribs::kPaintDepth>,
+                           Optional<PatchAttribs::kShadingStorageBufferIndex>,
                            AddTrianglesWhenChopping,
                            DiscardFlatCurves>;
 
@@ -37,7 +39,7 @@ using Writer = PatchWriter<DynamicInstancesPatchAllocator<FixedCountCurves>,
 TessellateCurvesRenderStep::TessellateCurvesRenderStep(bool evenOdd)
         : RenderStep("TessellateCurvesRenderStep",
                      evenOdd ? "even-odd" : "winding",
-                     Flags::kRequiresMSAA,
+                     Flags::kRequiresMSAA | Flags::kUsesShadingStorageBuffer,
                      /*uniforms=*/{},
                      PrimitiveType::kTriangles,
                      evenOdd ? kEvenOddStencilPass : kWindingStencilPass,
@@ -57,7 +59,10 @@ const char* TessellateCurvesRenderStep::vertexSkSL() const {
                "depth, 1.0);\n";
 }
 
-void TessellateCurvesRenderStep::writeVertices(DrawWriter* dw, const DrawParams& params) const {
+void TessellateCurvesRenderStep::writeVertices(DrawWriter* dw,
+                                               const DrawParams& params,
+                                               int geometryStorageBufferIndex,
+                                               int shadingStorageBufferIndex) const {
     SkPath path = params.geometry().shape().asPath(); // TODO: Iterate the Shape directly
 
     BindBufferInfo fixedVertexBuffer = dw->bufferManager()->getStaticBuffer(
@@ -73,6 +78,7 @@ void TessellateCurvesRenderStep::writeVertices(DrawWriter* dw, const DrawParams&
     Writer writer{kAttribs, *dw, fixedVertexBuffer, fixedIndexBuffer, patchReserveCount};
 
     writer.updatePaintDepthAttrib(params.order().depthAsFloat());
+    writer.updateShadingStorageBufferIndexAttrib(shadingStorageBufferIndex);
 
     // TODO: Is it better to pre-transform on the CPU and only have a matrix uniform to compute
     // local coords, or is it better to always transform on the GPU (less CPU usage, more

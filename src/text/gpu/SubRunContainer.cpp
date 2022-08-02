@@ -136,6 +136,8 @@ public:
 
     void fillVertexData(DrawWriter* dw,
                         int offset, int count,
+                        int geometryStorageBufferIndex,
+                        int shadingStorageBufferIndex,
                         SkSpan<const Glyph*> glyphs,
                         SkScalar depth,
                         const skgpu::graphite::Transform& toDevice) const;
@@ -382,6 +384,8 @@ AtlasTextOp::MaskType TransformedMaskVertexFiller::opMaskType() const {
 #if defined(SK_GRAPHITE_ENABLED)
 void TransformedMaskVertexFiller::fillVertexData(DrawWriter* dw,
                                                  int offset, int count,
+                                                 int geometryStorageBufferIndex,
+                                                 int shadingStorageBufferIndex,
                                                  SkSpan<const Glyph*> glyphs,
                                                  SkScalar depth,
                                                  const Transform& toDevice) const {
@@ -408,11 +412,17 @@ void TransformedMaskVertexFiller::fillVertexData(DrawWriter* dw,
         // TODO: Ganesh uses indices but that's not available with dynamic vertex data
         // TODO: we should really use instances as well.
         verts.append(6) << SkPoint{devOut[0].x, devOut[0].y} << depth << AtlasPt{al, at}  // L,T
+                        << geometryStorageBufferIndex << shadingStorageBufferIndex
                         << SkPoint{devOut[3].x, devOut[3].y} << depth << AtlasPt{al, ab}  // L,B
+                        << geometryStorageBufferIndex << shadingStorageBufferIndex
                         << SkPoint{devOut[1].x, devOut[1].y} << depth << AtlasPt{ar, at}  // R,T
+                        << geometryStorageBufferIndex << shadingStorageBufferIndex
                         << SkPoint{devOut[3].x, devOut[3].y} << depth << AtlasPt{al, ab}  // L,B
+                        << geometryStorageBufferIndex << shadingStorageBufferIndex
                         << SkPoint{devOut[2].x, devOut[2].y} << depth << AtlasPt{ar, ab}  // R,B
-                        << SkPoint{devOut[1].x, devOut[1].y} << depth << AtlasPt{ar, at}; // R,T
+                        << geometryStorageBufferIndex << shadingStorageBufferIndex
+                        << SkPoint{devOut[1].x, devOut[1].y} << depth << AtlasPt{ar, at}  // R,T
+                        << geometryStorageBufferIndex << shadingStorageBufferIndex;
     }
 }
 #endif
@@ -1236,6 +1246,8 @@ public:
 
     void fillVertexData(DrawWriter*,
                         int offset, int count,
+                        int geometryStorageBufferIndex,
+                        int shadingStorageBufferIndex,
                         SkScalar depth,
                         const skgpu::graphite::Transform& transform) const override;
 
@@ -1630,6 +1642,8 @@ std::tuple<Rect, Transform> DirectMaskSubRun::boundsAndDeviceMatrix(const Transf
 
 template<typename VertexData>
 void direct_dw(DrawWriter* dw,
+               int geometryStorageBufferIndex,
+               int shadingStorageBufferIndex,
                SkZip<const Glyph*, const VertexData> quadData,
                SkScalar depth) {
     DrawWriter::Vertices verts{*dw};
@@ -1642,16 +1656,30 @@ void direct_dw(DrawWriter* dw,
         // TODO: Ganesh uses indices but that's not available with dynamic vertex data
         // TODO: we should really use instances as well.
         verts.append(6) << SkPoint{dl, dt} << depth << AtlasPt{al, at}  // L,T
+                        << geometryStorageBufferIndex
+                        << shadingStorageBufferIndex
                         << SkPoint{dl, db} << depth << AtlasPt{al, ab}  // L,B
+                        << geometryStorageBufferIndex
+                        << shadingStorageBufferIndex
                         << SkPoint{dr, dt} << depth << AtlasPt{ar, at}  // R,T
+                        << geometryStorageBufferIndex
+                        << shadingStorageBufferIndex
                         << SkPoint{dl, db} << depth << AtlasPt{al, ab}  // L,B
+                        << geometryStorageBufferIndex
+                        << shadingStorageBufferIndex
                         << SkPoint{dr, db} << depth << AtlasPt{ar, ab}  // R,B
-                        << SkPoint{dr, dt} << depth << AtlasPt{ar, at}; // R,T
+                        << geometryStorageBufferIndex
+                        << shadingStorageBufferIndex
+                        << SkPoint{dr, dt} << depth << AtlasPt{ar, at}  // R,T
+                        << geometryStorageBufferIndex
+                        << shadingStorageBufferIndex;
     }
 }
 
 template<typename VertexData>
 void transformed_direct_dw(DrawWriter* dw,
+                           int geometryStorageBufferIndex,
+                           int shadingStorageBufferIndex,
                            SkZip<const Glyph*, const VertexData> quadData,
                            SkScalar depth, const Transform& transform) {
     DrawWriter::Vertices verts{*dw};
@@ -1667,16 +1695,24 @@ void transformed_direct_dw(DrawWriter* dw,
         // TODO: Ganesh uses indices but that's not available with dynamic vertex data
         // TODO: we should really use instances as well.
         verts.append(6) << SkPoint{devOut[0].x, devOut[0].y} << depth << AtlasPt{al, at}  // L,T
+                        << geometryStorageBufferIndex << shadingStorageBufferIndex
                         << SkPoint{devOut[3].x, devOut[3].y} << depth << AtlasPt{al, ab}  // L,B
+                        << geometryStorageBufferIndex << shadingStorageBufferIndex
                         << SkPoint{devOut[1].x, devOut[1].y} << depth << AtlasPt{ar, at}  // R,T
+                        << geometryStorageBufferIndex << shadingStorageBufferIndex
                         << SkPoint{devOut[3].x, devOut[3].y} << depth << AtlasPt{al, ab}  // L,B
+                        << geometryStorageBufferIndex << shadingStorageBufferIndex
                         << SkPoint{devOut[2].x, devOut[2].y} << depth << AtlasPt{ar, ab}  // R,B
-                        << SkPoint{devOut[1].x, devOut[1].y} << depth << AtlasPt{ar, at}; // R,T
+                        << geometryStorageBufferIndex << shadingStorageBufferIndex
+                        << SkPoint{devOut[1].x, devOut[1].y} << depth << AtlasPt{ar, at}  // R,T
+                        << geometryStorageBufferIndex << shadingStorageBufferIndex;
     }
 }
 
 void DirectMaskSubRun::fillVertexData(DrawWriter* dw,
                                       int offset, int count,
+                                      int geometryStorageBufferIndex,
+                                      int shadingStorageBufferIndex,
                                       SkScalar depth,
                                       const skgpu::graphite::Transform& toDevice) const {
     auto quadData = [&]() {
@@ -1690,9 +1726,14 @@ void DirectMaskSubRun::fillVertexData(DrawWriter* dw,
     }
     bool noTransformNeeded = (toDevice.type() == Transform::Type::kIdentity);
     if (noTransformNeeded) {
-        direct_dw(dw, quadData(), depth);
+        direct_dw(dw, geometryStorageBufferIndex, shadingStorageBufferIndex, quadData(), depth);
     } else {
-        transformed_direct_dw(dw, quadData(), depth, toDevice);
+        transformed_direct_dw(dw,
+                              geometryStorageBufferIndex,
+                              shadingStorageBufferIndex,
+                              quadData(),
+                              depth,
+                              toDevice);
     }
 }
 #endif
@@ -1796,6 +1837,8 @@ public:
 
     void fillVertexData(DrawWriter*,
                         int offset, int count,
+                        int geometryStorageBufferIndex,
+                        int shadingStorageBufferIndex,
                         SkScalar depth,
                         const skgpu::graphite::Transform& transform) const override;
 
@@ -1979,10 +2022,14 @@ std::tuple<Rect, Transform> TransformedMaskSubRun::boundsAndDeviceMatrix(
 
 void TransformedMaskSubRun::fillVertexData(DrawWriter* dw,
                                            int offset, int count,
+                                           int geometryStorageBufferIndex,
+                                           int shadingStorageBufferIndex,
                                            SkScalar depth,
                                            const Transform& transform) const {
     fVertexFiller.fillVertexData(dw,
                                  offset, count,
+                                 geometryStorageBufferIndex,
+                                 shadingStorageBufferIndex,
                                  fGlyphs.glyphs(),
                                  depth,
                                  transform);
@@ -2075,6 +2122,8 @@ public:
 
     void fillVertexData(DrawWriter*,
                         int offset, int count,
+                        int geometryStorageBufferIndex,
+                        int shadingStorageBufferIndex,
                         SkScalar depth,
                         const skgpu::graphite::Transform& transform) const override;
 
@@ -2321,10 +2370,14 @@ std::tuple<Rect, Transform> SDFTSubRun::boundsAndDeviceMatrix(const Transform& l
 
 void SDFTSubRun::fillVertexData(DrawWriter* dw,
                                 int offset, int count,
+                                int geometryStorageBufferIndex,
+                                int shadingStorageBufferIndex,
                                 SkScalar depth,
                                 const skgpu::graphite::Transform& transform) const {
     fVertexFiller.fillVertexData(dw,
                                  offset, count,
+                                 geometryStorageBufferIndex,
+                                 shadingStorageBufferIndex,
                                  fGlyphs.glyphs(),
                                  depth,
                                  transform);

@@ -52,6 +52,7 @@ protected:
     Layout fLayout;  // TODO: eventually 'fLayout' will not need to be stored
     uint32_t fOffset = 0;
     uint32_t fCurUBOOffset = 0;
+    uint32_t fReqAlignment = 0;
 };
 
 class UniformManager : public UniformOffsetCalculator {
