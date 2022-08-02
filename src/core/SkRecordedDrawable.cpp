@@ -37,7 +37,8 @@ void SkRecordedDrawable::onDraw(SkCanvas* canvas) {
         drawables = fDrawableList->begin();
         drawableCount = fDrawableList->count();
     }
-    SkRecordDraw(*fRecord, canvas, nullptr, drawables, drawableCount, fBBH.get(), nullptr);
+    SkRecordDraw(TODO_GrDirectContext, *fRecord, canvas, nullptr, drawables,
+                 drawableCount, fBBH.get(), nullptr);
 }
 
 SkPicture* SkRecordedDrawable::onNewPictureSnapshot() {
@@ -74,7 +75,8 @@ void SkRecordedDrawable::flatten(SkWriteBuffer& buffer) const {
     SkDrawable* const* drawables = fDrawableList ? fDrawableList->begin() : nullptr;
     int drawableCount            = fDrawableList ? fDrawableList->count() : 0;
     pictureRecord.beginRecording();
-    SkRecordDraw(*fRecord, &pictureRecord, nullptr, drawables, drawableCount, bbh, nullptr);
+    SkRecordDraw(TODO_GrDirectContext, *fRecord, &pictureRecord, nullptr, drawables,
+                 drawableCount, bbh, nullptr);
     pictureRecord.endRecording();
 
     // Flatten the recorded commands and drawables.

@@ -1,13 +1,13 @@
 // Copyright 2019 Google LLC.
 // Use of this source code is governed by a BSD-style license that can be found in the LICENSE file.
 #include "tools/fiddle/examples.h"
-// HASH=0d2cbf82f490ffb180e0b4531afa232c
+
 REG_FIDDLE(Picture_MakePlaceholder, 256, 256, false, 0) {
 class MyCanvas : public SkCanvas {
 public:
     MyCanvas(SkCanvas* c) : canvas(c) {}
-        void onDrawPicture(const SkPicture* picture, const SkMatrix* ,
-                               const SkPaint* ) override {
+        void onDrawPicture(GrDirectContext*, const SkPicture* picture,
+                           const SkMatrix*, const SkPaint*) override {
         const SkRect rect = picture->cullRect();
         SkPaint redPaint;
         redPaint.setColor(SK_ColorRED);

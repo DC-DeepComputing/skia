@@ -33,7 +33,7 @@ public:
         : fDigits(0)
         , fIndent(0)
         , fIndex(0)
-        , fDraw(canvas, nullptr, nullptr, 0, nullptr)
+        , fDraw(nullptr, canvas, nullptr, nullptr, 0, nullptr)
     {
         while (count > 0) {
             count /= 10;
@@ -163,7 +163,7 @@ int main(int argc, char** argv) {
 
         SkRecord record;
         SkRecorder rec(&record, w, h);
-        src->playback(&rec);
+        src->playback(nullptr, &rec);
 
         if (FLAGS_optimize) {
             SkRecordOptimize(&record);
@@ -187,7 +187,8 @@ int main(int argc, char** argv) {
 
         if (FLAGS_write.count() > 0) {
             SkPictureRecorder r;
-            SkRecordDraw(record,
+            SkRecordDraw(nullptr,
+                         record,
                          r.beginRecording(SkRect::MakeIWH(w, h)),
                          nullptr,
                          nullptr,

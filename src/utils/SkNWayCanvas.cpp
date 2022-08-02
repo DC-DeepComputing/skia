@@ -288,12 +288,12 @@ void SkNWayCanvas::onDrawImage2(const SkImage* image, SkScalar left, SkScalar to
     }
 }
 
-void SkNWayCanvas::onDrawImageRect2(const SkImage* image, const SkRect& src, const SkRect& dst,
-                                    const SkSamplingOptions& sampling, const SkPaint* paint,
-                                    SrcRectConstraint constraint) {
+void SkNWayCanvas::onDrawImageRect2(GrDirectContext* ctx, const SkImage* image, const SkRect& src,
+                                    const SkRect& dst, const SkSamplingOptions& sampling,
+                                    const SkPaint* paint, SrcRectConstraint constraint) {
     Iter iter(fList);
     while (iter.next()) {
-        iter->drawImageRect(image, src, dst, sampling, paint, constraint);
+        iter->drawImageRect(ctx, image, src, dst, sampling, paint, constraint);
     }
 }
 
@@ -341,11 +341,11 @@ void SkNWayCanvas::onDrawSlug(const sktext::gpu::Slug* slug) {
 }
 #endif
 
-void SkNWayCanvas::onDrawPicture(const SkPicture* picture, const SkMatrix* matrix,
-                                 const SkPaint* paint) {
+void SkNWayCanvas::onDrawPicture(GrDirectContext* ctx, const SkPicture* picture,
+                                 const SkMatrix* matrix, const SkPaint* paint) {
     Iter iter(fList);
     while (iter.next()) {
-        iter->drawPicture(picture, matrix, paint);
+        iter->drawPicture(ctx, picture, matrix, paint);
     }
 }
 

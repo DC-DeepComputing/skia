@@ -45,6 +45,7 @@ class GlyphRunList;
 
 class AutoLayerForImageFilter;
 class GrBackendRenderTarget;
+class GrDirectContext;
 class GrRecordingContext;
 class SkBaseDevice;
 class SkBitmap;
@@ -1496,6 +1497,9 @@ public:
                        const SkSamplingOptions& sampling, const SkPaint* paint = nullptr) {
         this->drawImageRect(image.get(), dst, sampling, paint);
     }
+    void drawImageRect(GrDirectContext*, const SkImage*, const SkRect& src, const SkRect& dst,
+                       const SkSamplingOptions&, const SkPaint*,
+                       SrcRectConstraint = kFast_SrcRectConstraint);
 
     /** Draws SkImage image stretched proportionally to fit into SkRect dst.
         SkIRect center divides the image into nine sections: four sides, four corners, and
@@ -1923,6 +1927,8 @@ public:
         example: https://fiddle.skia.org/c/@Canvas_drawPicture_3
     */
     void drawPicture(const SkPicture* picture, const SkMatrix* matrix, const SkPaint* paint);
+    void drawPicture(GrDirectContext* ctx, const SkPicture* picture,
+                     const SkMatrix* matrix, const SkPaint* paint);
 
     /** Draws SkPicture picture, using clip and SkMatrix; transforming picture with
         SkMatrix matrix, if provided; and use SkPaint paint alpha, SkColorFilter,
@@ -2254,8 +2260,9 @@ protected:
 
     virtual void onDrawImage2(const SkImage*, SkScalar dx, SkScalar dy, const SkSamplingOptions&,
                               const SkPaint*);
-    virtual void onDrawImageRect2(const SkImage*, const SkRect& src, const SkRect& dst,
-                                  const SkSamplingOptions&, const SkPaint*, SrcRectConstraint);
+    virtual void onDrawImageRect2(GrDirectContext*, const SkImage*, const SkRect& src,
+                                  const SkRect& dst, const SkSamplingOptions&, const SkPaint*,
+                                  SrcRectConstraint);
     virtual void onDrawImageLattice2(const SkImage*, const Lattice&, const SkRect& dst,
                                      SkFilterMode, const SkPaint*);
     virtual void onDrawAtlas2(const SkImage*, const SkRSXform[], const SkRect src[],
@@ -2275,8 +2282,8 @@ protected:
     virtual void onDrawShadowRec(const SkPath&, const SkDrawShadowRec&);
 
     virtual void onDrawDrawable(SkDrawable* drawable, const SkMatrix* matrix);
-    virtual void onDrawPicture(const SkPicture* picture, const SkMatrix* matrix,
-                               const SkPaint* paint);
+    virtual void onDrawPicture(GrDirectContext* ctx, const SkPicture* picture,
+                               const SkMatrix* matrix, const SkPaint* paint);
 
     virtual void onDrawEdgeAAQuad(const SkRect& rect, const SkPoint clip[4], QuadAAFlags aaFlags,
                                   const SkColor4f& color, SkBlendMode mode);
