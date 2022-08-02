@@ -14,6 +14,7 @@
 #include "src/core/SkBigPicture.h"
 #include "src/core/SkRecord.h"
 
+class GrDirectContext;
 class SkDrawable;
 class SkLayerInfo;
 
@@ -28,7 +29,8 @@ void SkRecordComputeLayers(const SkRect& cullRect, const SkRecord&, SkRect bound
                            const SkBigPicture::SnapshotArray*, SkLayerInfo* data);
 
 // Draw an SkRecord into an SkCanvas.  A convenience wrapper around SkRecords::Draw.
-void SkRecordDraw(const SkRecord&, SkCanvas*, SkPicture const* const drawablePicts[],
+void SkRecordDraw(GrDirectContext* ctx, const SkRecord&, SkCanvas*,
+                  SkPicture const* const drawablePicts[],
                   SkDrawable* const drawables[], int drawableCount,
                   const SkBBoxHierarchy*, SkPicture::AbortCallback*);
 
@@ -46,10 +48,11 @@ namespace SkRecords {
 // This is an SkRecord visitor that will draw that SkRecord to an SkCanvas.
 class Draw : SkNoncopyable {
 public:
-    explicit Draw(SkCanvas* canvas, SkPicture const* const drawablePicts[],
+    explicit Draw(GrDirectContext* ctx, SkCanvas* canvas, SkPicture const* const drawablePicts[],
                   SkDrawable* const drawables[], int drawableCount,
                   const SkM44* initialCTM = nullptr)
         : fInitialCTM(initialCTM ? *initialCTM : canvas->getLocalToDevice())
+        , fDirectContext(ctx)
         , fCanvas(canvas)
         , fDrawablePicts(drawablePicts)
         , fDrawables(drawables)
@@ -72,6 +75,7 @@ private:
     template <typename T> void draw(const T&);
 
     const SkM44 fInitialCTM;
+    GrDirectContext* fDirectContext;
     SkCanvas* fCanvas;
     SkPicture const* const* fDrawablePicts;
     SkDrawable* const* fDrawables;

@@ -215,7 +215,7 @@ bool SkMultiPictureDocumentRead(SkStreamSeekable* stream,
     PagerCanvas canvas(joined.toCeil(), dstArray, dstArrayCount);
     // Must call playback(), not drawPicture() to reach
     // PagerCanvas::onDrawAnnotation().
-    picture->playback(&canvas);
+    picture->playback(TODO_GrDirectContext, &canvas);
     if (canvas.fIndex != dstArrayCount) {
         SkDEBUGF("Malformed SkMultiPictureDocument: canvas.fIndex=%d dstArrayCount=%d\n",
             canvas.fIndex, dstArrayCount);

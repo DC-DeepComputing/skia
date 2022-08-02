@@ -1140,33 +1140,39 @@ EMSCRIPTEN_BINDINGS(Skia) {
 
             self.drawImageNine(image.get(), *center, *dst, filter, paint);
         }), allow_raw_pointers())
+
         // TODO: deprecate this version, and require sampling
         .function("_drawImageRect", optional_override([](SkCanvas& self, const sk_sp<SkImage>& image,
                                                          WASMPointerF32 srcPtr, WASMPointerF32 dstPtr,
-                                                         const SkPaint* paint, bool fastSample)->void {
+                                                         const SkPaint* paint, bool fastSample,
+                                                         GrDirectContext* ctx)->void {
             const SkRect* src = reinterpret_cast<const SkRect*>(srcPtr);
             const SkRect* dst = reinterpret_cast<const SkRect*>(dstPtr);
-            self.drawImageRect(image, *src, *dst, SkSamplingOptions(), paint,
+            self.drawImageRect(ctx, image.get(), *src, *dst, SkSamplingOptions(), paint,
                                fastSample ? SkCanvas::kFast_SrcRectConstraint:
                                             SkCanvas::kStrict_SrcRectConstraint);
         }), allow_raw_pointers())
         .function("_drawImageRectCubic", optional_override([](SkCanvas& self, const sk_sp<SkImage>& image,
                                                               WASMPointerF32 srcPtr, WASMPointerF32 dstPtr,
                                                               float B, float C, // See SkSamplingOptions.h for docs.
-                                                              const SkPaint* paint)->void {
+                                                              const SkPaint* paint,
+                                                              GrDirectContext* ctx)->void {
             const SkRect* src = reinterpret_cast<const SkRect*>(srcPtr);
             const SkRect* dst = reinterpret_cast<const SkRect*>(dstPtr);
             auto constraint = SkCanvas::kStrict_SrcRectConstraint;  // TODO: get from caller
-            self.drawImageRect(image.get(), *src, *dst, SkSamplingOptions({B, C}), paint, constraint);
+            SkASSERT(ctx);
+            self.drawImageRect(ctx, image.get(), *src, *dst, SkSamplingOptions({B, C}),
+                               paint, constraint);
         }), allow_raw_pointers())
         .function("_drawImageRectOptions", optional_override([](SkCanvas& self, const sk_sp<SkImage>& image,
                                                                 WASMPointerF32 srcPtr, WASMPointerF32 dstPtr,
                                                                 SkFilterMode filter, SkMipmapMode mipmap,
-                                                                const SkPaint* paint)->void {
+                                                                const SkPaint* paint,
+                                                                GrDirectContext* ctx)->void {
             const SkRect* src = reinterpret_cast<const SkRect*>(srcPtr);
             const SkRect* dst = reinterpret_cast<const SkRect*>(dstPtr);
             auto constraint = SkCanvas::kStrict_SrcRectConstraint;  // TODO: get from caller
-            self.drawImageRect(image.get(), *src, *dst, {filter, mipmap}, paint, constraint);
+            self.drawImageRect(ctx, image.get(), *src, *dst, {filter, mipmap}, paint, constraint);
         }), allow_raw_pointers())
         .function("_drawLine", select_overload<void (SkScalar, SkScalar, SkScalar, SkScalar, const SkPaint&)>(&SkCanvas::drawLine))
         .function("_drawOval", optional_override([](SkCanvas& self, WASMPointerF32 fPtr,
@@ -1195,7 +1201,10 @@ EMSCRIPTEN_BINDINGS(Skia) {
         }))
         // Of note, picture is *not* what is colloquially thought of as a "picture", what we call
         // a bitmap. An SkPicture is a series of draw commands.
-        .function("_drawPicture", select_overload<void (const sk_sp<SkPicture>&)>(&SkCanvas::drawPicture))
+        .function("_drawPicture",optional_override([](SkCanvas& self, GrDirectContext* ctx,
+                                                      SkPicture* pic)->void {
+            self.drawPicture(ctx, pic, nullptr, nullptr);
+        }), allow_raw_pointers())
         .function("_drawPoints", optional_override([](SkCanvas& self, SkCanvas::PointMode mode,
                                                      WASMPointerF32 pptr,
                                                      int count, SkPaint& paint)->void {

@@ -224,7 +224,7 @@ SkPictureData* SkPicture::backport() const {
     SkPictInfo info = this->createHeader();
     SkPictureRecord rec(info.fCullRect.roundOut(), 0/*flags*/);
     rec.beginRecording();
-        this->playback(&rec);
+        this->playback(TODO_GrDirectContext, &rec);
     rec.endRecording();
     return new SkPictureData(rec, info);
 }
@@ -325,7 +325,7 @@ sk_sp<SkPicture> SkPicture::MakePlaceholder(SkRect cull) {
     struct Placeholder : public SkPicture {
           explicit Placeholder(SkRect cull) : fCull(cull) {}
 
-          void playback(SkCanvas*, AbortCallback*) const override { }
+          void playback(GrDirectContext*, SkCanvas*, AbortCallback*) const override { }
 
           // approximateOpCount() needs to be greater than kMaxPictureOpsToUnrollInsteadOfRef
           // (SkCanvasPriv.h) to avoid unrolling this into a parent picture.
@@ -338,4 +338,8 @@ sk_sp<SkPicture> SkPicture::MakePlaceholder(SkRect cull) {
           SkRect fCull;
     };
     return sk_make_sp<Placeholder>(cull);
+}
+
+void SkPicture::playback(SkCanvas* canvas, AbortCallback* callback) const {
+    this->playback(nullptr, canvas, callback);
 }
