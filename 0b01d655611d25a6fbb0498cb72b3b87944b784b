@@ -260,6 +260,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "efd867bc_f64cb371",
+        "filename": "tools/skqp/src/skqp.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-08-02T21:12:04Z",
+      "side": 1,
+      "message": "Thanks for the explanation! New comments lgtm",
+      "parentUuid": "c05dc4d2_428324ae",
+      "range": {
+        "startLine": 70,
+        "startChar": 51,
+        "endLine": 70,
+        "endChar": 77
+      },
+      "revId": "0b01d655611d25a6fbb0498cb72b3b87944b784b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4fa11460_85cba807",

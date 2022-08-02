@@ -137,6 +137,54 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9d39c457_65d39819",
+        "filename": "tests/CtsEnforcement.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-08-02T21:12:04Z",
+      "side": 1,
+      "message": "That sgtm.",
+      "parentUuid": "ece45cbd_a27f98d9",
+      "range": {
+        "startLine": 16,
+        "startChar": 83,
+        "endLine": 16,
+        "endChar": 87
+      },
+      "revId": "57bf511ea202e021461ce852d05eb1f329ffb433",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5d8fe6a8_469f3cd5",
+        "filename": "tests/CtsEnforcement.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-08-02T21:12:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a7f33a02_97b17cf5",
+      "range": {
+        "startLine": 16,
+        "startChar": 68,
+        "endLine": 16,
+        "endChar": 80
+      },
+      "revId": "57bf511ea202e021461ce852d05eb1f329ffb433",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "754df7e3_f70e1ddb",
         "filename": "tests/CtsEnforcement.h",
         "patchSetId": 13
@@ -313,6 +361,30 @@
       "side": 1,
       "message": "If I make it const then it is no longer trivially copyable.  I then have to add a series of copy constructors and assignments.  Then it also makes the skiattest::Test object not trivially copyable which in turn adds a bunch more copy constructors.",
       "parentUuid": "8edd546e_03926213",
+      "range": {
+        "startLine": 31,
+        "startChar": 4,
+        "endLine": 31,
+        "endChar": 12
+      },
+      "revId": "57bf511ea202e021461ce852d05eb1f329ffb433",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ee8f1224_d941c2d0",
+        "filename": "tests/CtsEnforcement.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-08-02T21:12:04Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "fe43da40_06d413b4",
       "range": {
         "startLine": 31,
         "startChar": 4,
