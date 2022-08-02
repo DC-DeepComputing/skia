@@ -26,6 +26,7 @@
 #ifdef SK_ENABLE_SKSL
 
 #ifdef SK_GRAPHITE_ENABLED
+#include "include/gpu/graphite/Recorder.h"
 #include "src/gpu/graphite/Image_Graphite.h"
 #endif
 
@@ -379,6 +380,20 @@ std::unique_ptr<GrFragmentProcessor> SkImageShader::asFragmentProcessor(
 #endif
 
 #ifdef SK_ENABLE_SKSL
+
+#ifdef SK_GRAPHITE_ENABLED
+
+namespace {
+
+bool meets_requirements(const SkImage* image, skgpu::graphite::Mipmapped mipmapped) {
+    return as_IB(image)->isGraphiteBacked() &&
+           (mipmapped == skgpu::graphite::Mipmapped::kNo || image->hasMipmaps());
+}
+
+} // anonymous namespace
+
+#endif // SK_GRAPHITE_ENABLED
+
 void SkImageShader::addToKey(const SkKeyContext& keyContext,
                              SkPaintParamsKeyBuilder* builder,
                              SkPipelineDataGatherer* gatherer) const {
@@ -386,12 +401,27 @@ void SkImageShader::addToKey(const SkKeyContext& keyContext,
                                         this->getLocalMatrix());
 
 #ifdef SK_GRAPHITE_ENABLED
-    if (as_IB(fImage)->isGraphiteBacked()) {
-        skgpu::graphite::Image* grImage = static_cast<skgpu::graphite::Image*>(fImage.get());
+    skgpu::graphite::Mipmapped mipmapped = (fSampling.mipmap != SkMipmapMode::kNone)
+                                                   ? skgpu::graphite::Mipmapped::kYes
+                                                   : skgpu::graphite::Mipmapped::kNo;
 
-        auto mipmapped = (fSampling.mipmap != SkMipmapMode::kNone) ?
-                skgpu::graphite::Mipmapped::kYes : skgpu::graphite::Mipmapped::kNo;
-        auto[view, ct] = grImage->asView(keyContext.recorder(), mipmapped);
+    sk_sp<SkImage> image;
+    if (!meets_requirements(fImage.get(), mipmapped)) {
+        auto clientImageCache = keyContext.recorder()->clientImageCache();
+        image = clientImageCache->findOrCreate(keyContext.recorder(), fImage.get(), mipmapped);
+    } else {
+        image = fImage;
+    }
+
+    if (image) {
+        SkASSERT(as_IB(image)->isGraphiteBacked());
+
+        if (mipmapped == skgpu::graphite::Mipmapped::kYes && !image->hasMipmaps()) {
+            mipmapped = skgpu::graphite::Mipmapped::kNo;
+            imgData.fSampling = SkSamplingOptions(SkFilterMode::kLinear, SkMipmapMode::kNone);
+        }
+
+        auto [view, _] = as_IB(image)->asView(keyContext.recorder(), mipmapped);
         imgData.fTextureProxy = view.refProxy();
     }
 #endif
