@@ -22,7 +22,10 @@ public:
     std::string texturesAndSamplersSkSL(int startBinding) const override;
     const char* fragmentCoverageSkSL() const override;
 
-    void writeVertices(DrawWriter*, const DrawParams&) const override;
+    void writeVertices(DrawWriter*,
+                       const DrawParams&,
+                       int geometryStorageBufferIndex,
+                       int shadingStorageBufferIndex) const override;
     void writeUniformsAndTextures(const DrawParams&, SkPipelineDataGatherer*) const override;
 };
 
