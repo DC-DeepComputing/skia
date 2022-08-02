@@ -24,13 +24,14 @@ SkBigPicture::SkBigPicture(const SkRect& cull,
     , fBBH(std::move(bbh))
 {}
 
-void SkBigPicture::playback(SkCanvas* canvas, AbortCallback* callback) const {
+void SkBigPicture::playback(GrDirectContext* ctx, SkCanvas* canvas, AbortCallback* callback) const {
     SkASSERT(canvas);
 
     // If the query contains the whole picture, don't bother with the BBH.
     const bool useBBH = !canvas->getLocalClipBounds().contains(this->cullRect());
 
-    SkRecordDraw(*fRecord,
+    SkRecordDraw(ctx,
+                 *fRecord,
                  canvas,
                  this->drawablePicts(),
                  nullptr,

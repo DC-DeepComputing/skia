@@ -56,8 +56,8 @@ protected:
 
     void onDrawImage2(const SkImage*, SkScalar, SkScalar, const SkSamplingOptions&,
                       const SkPaint*) override {}
-    void onDrawImageRect2(const SkImage*, const SkRect&, const SkRect&, const SkSamplingOptions&,
-                          const SkPaint*, SrcRectConstraint) override {}
+    void onDrawImageRect2(GrDirectContext*, const SkImage*, const SkRect&, const SkRect&,
+                          const SkSamplingOptions&, const SkPaint*, SrcRectConstraint) override {}
     void onDrawImageLattice2(const SkImage*, const Lattice&, const SkRect&, SkFilterMode,
                              const SkPaint*) override {}
     void onDrawAtlas2(const SkImage*, const SkRSXform[], const SkRect[], const SkColor[], int,
@@ -65,7 +65,7 @@ protected:
 
     void onDrawVerticesObject(const SkVertices*, SkBlendMode, const SkPaint&) override {}
     void onDrawShadowRec(const SkPath&, const SkDrawShadowRec&) override {}
-    void onDrawPicture(const SkPicture*, const SkMatrix*, const SkPaint*) override {}
+    void onDrawPicture(GrDirectContext*, const SkPicture*, const SkMatrix*, const SkPaint*) override {}
 
     void onDrawEdgeAAQuad(const SkRect&, const SkPoint[4], QuadAAFlags, const SkColor4f&,
                           SkBlendMode) override {}
