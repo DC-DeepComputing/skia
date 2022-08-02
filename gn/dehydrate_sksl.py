@@ -14,6 +14,7 @@ targetDir = sys.argv[2]
 modules = sys.argv[3:]
 
 dependencies = {
+    'sksl_compute': ['sksl_gpu', 'sksl_shared'],
     'sksl_gpu': ['sksl_shared'],
     'sksl_frag': ['sksl_gpu', 'sksl_shared'],
     'sksl_vert': ['sksl_gpu', 'sksl_shared'],
