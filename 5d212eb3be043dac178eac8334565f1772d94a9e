@@ -62,6 +62,30 @@
       },
       "revId": "5d212eb3be043dac178eac8334565f1772d94a9e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e1ab61df_a5cf4023",
+        "filename": "src/sksl/generated/sksl_compute.dehydrated.sksl",
+        "patchSetId": 4
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-08-03T19:17:50Z",
+      "side": 1,
+      "message": "We added two modifier bits in the middle, so modifiers past `readonly` and `writeonly` will be shifted left by two.",
+      "parentUuid": "4578561e_567db930",
+      "range": {
+        "startLine": 30,
+        "startChar": 5,
+        "endLine": 30,
+        "endChar": 7
+      },
+      "revId": "5d212eb3be043dac178eac8334565f1772d94a9e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
