@@ -9,8 +9,8 @@ import (
 	"io"
 
 	"go.skia.org/infra/go/skerr"
-	"go.skia.org/infra/go/util"
 	"go.skia.org/skia/bazel/exporter/build_proto/build"
+	"golang.org/x/exp/slices"
 )
 
 // cmakeRule represents the CMake equivalent to a Bazel rule.
@@ -38,7 +38,7 @@ func (r *cmakeRule) hasSrcs() bool {
 
 // Does this rule depend directly on a rule.
 func (r *cmakeRule) hasDependency(ruleName string) bool {
-	return util.In(ruleName, r.deps)
+	return slices.Contains(r.deps, ruleName)
 }
 
 // Add a rule dependency.

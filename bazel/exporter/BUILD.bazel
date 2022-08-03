@@ -21,8 +21,8 @@ go_library(
         "//bazel/exporter/build_proto/build",
         "//bazel/exporter/interfaces",
         "@org_golang_google_protobuf//proto:go_default_library",
+        "@org_golang_x_exp//slices",
         "@org_skia_go_infra//go/skerr",
-        "@org_skia_go_infra//go/util",
     ],
 )
 

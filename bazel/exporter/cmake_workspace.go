@@ -10,8 +10,8 @@ import (
 	"io"
 
 	"go.skia.org/infra/go/skerr"
-	"go.skia.org/infra/go/util"
 	"go.skia.org/skia/bazel/exporter/build_proto/build"
+	"golang.org/x/exp/slices"
 )
 
 // cmakeWorkspace represents the entire state of a CMake project.
@@ -33,7 +33,7 @@ func newCMakeWorkspace() *cmakeWorkspace {
 
 // Determine if a rule has been written.
 func (s *writeState) isRuleWritten(ruleName string) bool {
-	return util.In(ruleName, s.writtenRules)
+	return slices.Contains(s.writtenRules, ruleName)
 }
 
 // setRuleWritten will mark the rule as having been written.
