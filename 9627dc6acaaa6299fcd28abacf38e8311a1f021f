@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "143615e0_d338319f",
+        "filename": "include/gpu/graphite/RecorderOptions.h",
+        "patchSetId": 25
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-03T20:55:30Z",
+      "side": 1,
+      "message": "I feel like ImageProvider could be its own header, and RecorderOptions could be a type that\u0027s just in Recorder.h until/when it gets full of enough options that we want to pull it into its RecorderOptions.h.",
+      "range": {
+        "startLine": 45,
+        "startChar": 17,
+        "endLine": 45,
+        "endChar": 30
+      },
+      "revId": "9627dc6acaaa6299fcd28abacf38e8311a1f021f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
