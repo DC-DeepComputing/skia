@@ -37,6 +37,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5bbeccad_6a6171b1",
+        "filename": "src/gpu/graphite/render/TextDirectRenderStep.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-03T20:35:32Z",
+      "side": 1,
+      "message": "One final thought about this approach compared to the indices approach. Because we upload the matrix, we have access to both the `baseCoords` that are the local coordinates that any SkShader should be evaluated at, and the `devPosition` that we need to rasterize. With the direct vertices/indices approach we are relying on the automatic addition of the inverse of the local-to-device matrix being added as a uniform by the sksl glue code. I\u0027m hoping that we can get rid of that magic system entirely (and for RenderSteps that want/need to, they declare the inverse uniform themselves).\n\nThe caveat here is I\u0027m assuming that SkShader-based text rendering still goes through the direct and SDF render steps, so we do need the real local coords and not just the atlas coords. If every text run with a shader gets turned into paths, then this is moot and we can choose to be more compact and only upload device positions if that makes sense (for the vertex/indices approaches).",
+      "range": {
+        "startLine": 64,
+        "startChar": 15,
+        "endLine": 64,
+        "endChar": 23
+      },
+      "revId": "45064a2b09975ad1b945a97c58f7c226ae256c79",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "eb99041e_4bc1c082",
         "filename": "src/gpu/graphite/render/TextDirectRenderStep.cpp",
         "patchSetId": 9
