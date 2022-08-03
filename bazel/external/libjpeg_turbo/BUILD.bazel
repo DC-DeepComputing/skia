@@ -169,6 +169,10 @@ cc_library(
         # There are some #include "neon-compat.h" etc that need this search path
         "-Iexternal/libjpeg_turbo/simd/arm/",
     ],
+    includes = [
+        # This allows #include <jpeglib.h> to work
+        ".",
+    ],
     local_defines = JPEGTURBO_DEFINES,
     textual_hdrs = JPEGTURBO_TEXT_HDRS,
     visibility = ["//visibility:public"],

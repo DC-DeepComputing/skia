@@ -9,12 +9,24 @@
 #define SkJpegCodec_DEFINED
 
 #include "include/codec/SkCodec.h"
-#include "include/core/SkImageInfo.h"
-#include "include/core/SkStream.h"
+#include "include/codec/SkEncodedOrigin.h"
+#include "include/core/SkEncodedImageFormat.h"
+#include "include/core/SkRect.h"
+#include "include/core/SkSize.h"
+#include "include/core/SkTypes.h"
+#include "include/core/SkYUVAPixmaps.h"
+#include "include/private/SkEncodedInfo.h"
 #include "include/private/SkTemplates.h"
+#include "src/codec/SkJpegDecoderMgr.h"
 #include "src/codec/SkSwizzler.h"
 
-class JpegDecoderMgr;
+#include <cstddef>
+#include <cstdint>
+#include <memory>
+
+class SkSampler;
+class SkStream;
+struct SkImageInfo;
 
 /*
  *

@@ -20,6 +20,7 @@ cc_library(
         "src/piex.h",
         "src/piex_types.h",
     ],
+    includes = ["."],
     local_defines = ["BREAK_IF_DEBUGGING_AND_OUT_OF_RANGE"],
     visibility = ["//visibility:public"],
 )

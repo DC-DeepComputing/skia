@@ -7,7 +7,20 @@
 
 #include "src/codec/SkJpegUtility.h"
 
+#include "include/core/SkStream.h"
+#include "include/core/SkTypes.h"
+#include "include/private/SkTArray.h"
 #include "src/codec/SkCodecPriv.h"
+#include "src/codec/SkJpegPriv.h"
+
+extern "C" {
+    #include <jmorecfg.h>
+    #include <jpeglib.h>
+}
+
+#include <csetjmp>
+#include <cstddef>
+
 
 /*
  * Call longjmp to continue execution on an error

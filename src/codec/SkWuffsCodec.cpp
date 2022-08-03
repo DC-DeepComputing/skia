@@ -7,10 +7,27 @@
 
 #include "src/codec/SkWuffsCodec.h"
 
+#include "include/codec/SkCodecAnimation.h"
+#include "include/core/SkAlphaType.h"
 #include "include/core/SkBitmap.h"
+#include "include/core/SkBlendMode.h"
+#include "include/core/SkColorType.h"
+#include "include/core/SkData.h"
+#include "include/core/SkEncodedImageFormat.h"
+#include "include/core/SkImageInfo.h"
 #include "include/core/SkMatrix.h"
 #include "include/core/SkPaint.h"
+#include "include/core/SkPixmap.h"
+#include "include/core/SkRect.h"
+#include "include/core/SkSamplingOptions.h"
+#include "include/core/SkSize.h"
+#include "include/core/SkStream.h"
+#include "include/core/SkTypes.h"
+#include "include/private/SkEncodedInfo.h"
 #include "include/private/SkMalloc.h"
+#include "include/private/SkTo.h"
+#include "modules/skcms/skcms.h"
+#include "src/codec/SkCodecPriv.h"
 #include "src/codec/SkFrameHolder.h"
 #include "src/codec/SkSampler.h"
 #include "src/codec/SkScalingCodec.h"
@@ -18,9 +35,12 @@
 #include "src/core/SkMatrixProvider.h"
 #include "src/core/SkRasterClip.h"
 #include "src/core/SkStreamPriv.h"
-#include "src/core/SkUtils.h"
 
-#include <limits.h>
+#include <climits>
+#include <cstdint>
+#include <cstring>
+#include <utility>
+#include <vector>
 
 // Documentation on the Wuffs language and standard library (in general) and
 // its image decoding API (in particular) is at:
@@ -36,7 +56,7 @@
 #if defined(WUFFS_IMPLEMENTATION)
 #error "SkWuffsCodec should not #define WUFFS_IMPLEMENTATION"
 #endif
-#include "wuffs-v0.3.c"
+#include <wuffs-v0.3.c>
 // Commit count 2514 is Wuffs 0.3.0-alpha.4.
 #if WUFFS_VERSION_BUILD_METADATA_COMMIT_COUNT < 2514
 #error "Wuffs version is too old. Upgrade to the latest version."
