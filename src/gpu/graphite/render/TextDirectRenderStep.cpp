@@ -39,7 +39,8 @@ constexpr int kNumTextAtlasTextures = 4;
 TextDirectRenderStep::TextDirectRenderStep()
         : RenderStep("TextDirectRenderStep",
                      "",
-                     Flags::kPerformsShading | Flags::kHasTextures | Flags::kEmitsCoverage,
+                     Flags::kPerformsShading | Flags::kHasTextures | Flags::kEmitsCoverage |
+                     Flags::kUsesGeometryStorageBuffer | Flags::kUsesShadingStorageBuffer,
                      /*uniforms=*/{{"atlasSizeInv", SkSLType::kFloat2}},
                      PrimitiveType::kTriangles,
                      kDirectShadingPass,
@@ -98,10 +99,17 @@ const char* TextDirectRenderStep::fragmentCoverageSkSL() const {
     )";
 }
 
-void TextDirectRenderStep::writeVertices(DrawWriter* dw, const DrawParams& params) const {
+void TextDirectRenderStep::writeVertices(DrawWriter* dw,
+                                         const DrawParams& params,
+                                         int geometryStorageBufferIndex,
+                                         int shadingStorageBufferIndex) const {
     const SubRunData& subRunData = params.geometry().subRunData();
     // TODO: pass through the color from the SkPaint via the SubRunData
-    subRunData.subRun()->fillVertexData(dw, subRunData.startGlyphIndex(), subRunData.glyphCount(),
+    subRunData.subRun()->fillVertexData(dw,
+                                        subRunData.startGlyphIndex(),
+                                        subRunData.glyphCount(),
+                                        geometryStorageBufferIndex,
+                                        shadingStorageBufferIndex,
                                         params.order().depthAsFloat(),
                                         params.transform());
 }

@@ -130,7 +130,7 @@ static void emit_preamble_for_entry(const SkShaderInfo& shaderInfo,
 std::string SkShaderInfo::toSkSL(const skgpu::graphite::RenderStep* step) const {
     std::string preamble = "layout(location = 0, index = 0) out half4 sk_FragColor;\n";
 
-    if (step->numVaryings() > 0) {
+    if (step->hasVaryings()) {
         preamble += skgpu::graphite::EmitVaryings(step, "in");
     }
 

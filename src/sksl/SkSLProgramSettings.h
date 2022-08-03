@@ -12,6 +12,7 @@
 #include "include/private/SkSLProgramKind.h"
 #include "include/sksl/SkSLVersion.h"
 
+#include <unordered_map>
 #include <vector>
 
 namespace SkSL {
@@ -85,6 +86,56 @@ struct ProgramSettings {
     // symbol table of the Program, but ownership is *not* transferred. It is up to the caller to
     // keep them alive.
     const std::vector<std::unique_ptr<ExternalFunction>>* fExternalFunctions = nullptr;
+
+    struct StorageBufferIndexNames {
+        const char* fAttribute;
+        const char* fVarying;
+    };
+
+    bool isStorageBuffer(int set, int binding) const {
+        SkASSERT(set >= -1);
+        SkASSERT(binding >= -1);
+        if (set == -1 || binding == -1) {
+            return false;
+        }
+        int64_t key = set;
+        key = (key << 32) | binding;
+        return fStorageBufferIndexNames.find(key) != fStorageBufferIndexNames.end();
+    }
+
+    StorageBufferIndexNames storageBufferIndexNames(int set, int binding) const {
+        SkASSERT(set >= -1);
+        SkASSERT(binding >= -1);
+        if (set == -1 || binding == -1) {
+            return {nullptr, nullptr};
+        }
+        int64_t key = set;
+        key = (key << 32) | binding;
+        auto attributeName = fStorageBufferIndexNames.find(key);
+        if (attributeName == fStorageBufferIndexNames.end()) {
+            return {nullptr, nullptr};
+        }
+        return attributeName->second;
+    }
+
+    void setStorageBufferIndexNames(int set,
+                                    int binding,
+                                    const char* attributeName,
+                                    const char* varyingName) {
+        SkASSERT(set >= 0);
+        SkASSERT(binding >= 0);
+        int64_t key = set;
+        key = (key << 32) | binding;
+        fStorageBufferIndexNames[key] = {attributeName, varyingName};
+    }
+
+private:
+    // We keep track of whether a buffer is a storage buffer (SSBO) or uniform buffer (UBO) by
+    // associating its set and binding with names for the vertex attribute and varying that will be
+    // used to index into the buffer. Names are indexed with a 64-bit integer where the top 32 bits
+    // are a set number and the lower 32 bits are a binding number. If a set and binding are absent
+    // from this map, that implies their corresponding buffer is not a storage buffer.
+    std::unordered_map<int64_t, StorageBufferIndexNames> fStorageBufferIndexNames;
 };
 
 /**

@@ -19,7 +19,7 @@ namespace skgpu::graphite {
 MiddleOutFanRenderStep::MiddleOutFanRenderStep(bool evenOdd)
         : RenderStep("MiddleOutFanRenderStep",
                      evenOdd ? "even-odd" : "winding",
-                     Flags::kRequiresMSAA,
+                     Flags::kRequiresMSAA | Flags::kUsesShadingStorageBuffer,
                      /*uniforms=*/{},
                      PrimitiveType::kTriangles,
                      evenOdd ? kEvenOddStencilPass : kWindingStencilPass,
@@ -34,7 +34,10 @@ const char* MiddleOutFanRenderStep::vertexSkSL() const {
     return "     float4 devPosition = position;\n";
 }
 
-void MiddleOutFanRenderStep::writeVertices(DrawWriter* writer, const DrawParams& params) const {
+void MiddleOutFanRenderStep::writeVertices(DrawWriter* writer,
+                                           const DrawParams& params,
+                                           int geometryStorageBufferIndex,
+                                           int shadingStorageBufferIndex) const {
     // TODO: Have Shape provide a path-like iterator so we don't actually have to convert non
     // paths to SkPath just to iterate their pts/verbs
     SkPath path = params.geometry().shape().asPath();
@@ -53,8 +56,11 @@ void MiddleOutFanRenderStep::writeVertices(DrawWriter* writer, const DrawParams&
             params.transform().mapPoints(p, devPoints, 3);
 
             verts.append(3) << devPoints[0].x << devPoints[0].y << depth << devPoints[0].w  // p0
+                            << shadingStorageBufferIndex
                             << devPoints[1].x << devPoints[1].y << depth << devPoints[1].w  // p1
-                            << devPoints[2].x << devPoints[2].y << depth << devPoints[2].w; // p2
+                            << shadingStorageBufferIndex
+                            << devPoints[2].x << devPoints[2].y << depth << devPoints[2].w  // p2
+                            << shadingStorageBufferIndex;
         }
     }
 }

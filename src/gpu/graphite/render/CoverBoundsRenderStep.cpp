@@ -16,7 +16,7 @@ namespace skgpu::graphite {
 CoverBoundsRenderStep::CoverBoundsRenderStep(bool inverseFill)
         : RenderStep("CoverBoundsRenderStep",
                      inverseFill ? "inverse" : "regular",
-                     Flags::kPerformsShading,
+                     Flags::kPerformsShading | Flags::kUsesShadingStorageBuffer,
                      /*uniforms=*/{},
                      PrimitiveType::kTriangles,
                      inverseFill ? kInverseCoverPass : kRegularCoverPass,
@@ -32,7 +32,10 @@ const char* CoverBoundsRenderStep::vertexSkSL() const {
     return "     float4 devPosition = position;\n";
 }
 
-void CoverBoundsRenderStep::writeVertices(DrawWriter* writer, const DrawParams& params) const {
+void CoverBoundsRenderStep::writeVertices(DrawWriter* writer,
+                                          const DrawParams& params,
+                                          int geometryStorageBufferIndex,
+                                          int shadingStorageBufferIndex) const {
     SkV4 devPoints[4]; // ordered TL, TR, BR, BL
 
     if (fInverseFill) {
@@ -48,12 +51,18 @@ void CoverBoundsRenderStep::writeVertices(DrawWriter* writer, const DrawParams& 
 
     float depth = params.order().depthAsFloat();
     DrawWriter::Vertices verts{*writer};
-    verts.append(6) << devPoints[0].x << devPoints[0].y << depth << devPoints[0].w // TL
-                    << devPoints[3].x << devPoints[3].y << depth << devPoints[3].w // BL
-                    << devPoints[1].x << devPoints[1].y << depth << devPoints[1].w // TR
-                    << devPoints[1].x << devPoints[1].y << depth << devPoints[1].w // TR
-                    << devPoints[3].x << devPoints[3].y << depth << devPoints[3].w // BL
-                    << devPoints[2].x << devPoints[2].y << depth << devPoints[2].w;// BR
+    verts.append(6) << devPoints[0].x << devPoints[0].y << depth << devPoints[0].w  // TL
+                    << shadingStorageBufferIndex
+                    << devPoints[3].x << devPoints[3].y << depth << devPoints[3].w  // BL
+                    << shadingStorageBufferIndex
+                    << devPoints[1].x << devPoints[1].y << depth << devPoints[1].w  // TR
+                    << shadingStorageBufferIndex
+                    << devPoints[1].x << devPoints[1].y << depth << devPoints[1].w  // TR
+                    << shadingStorageBufferIndex
+                    << devPoints[3].x << devPoints[3].y << depth << devPoints[3].w  // BL
+                    << shadingStorageBufferIndex
+                    << devPoints[2].x << devPoints[2].y << depth << devPoints[2].w  // BR
+                    << shadingStorageBufferIndex;
 }
 
 void CoverBoundsRenderStep::writeUniformsAndTextures(const DrawParams&,

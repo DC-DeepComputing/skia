@@ -56,6 +56,13 @@ std::string EmitTexturesAndSamplers(const std::vector<SkPaintParamsKey::BlockRea
                                     int* binding);
 std::string EmitVaryings(const RenderStep*, const char* direction);
 
+// Names of vertex attributes and varyings used to index into storage buffers. These are shared
+// between all render steps.
+constexpr const char* kGeometrySsboIndexAttribute = "ssboIndexGeometry";
+constexpr const char* kGeometrySsboIndexVarying = "ssboIndexGeometryFs";
+constexpr const char* kShadingSsboIndexAttribute = "ssboIndexShading";
+constexpr const char* kShadingSsboIndexVarying = "ssboIndexShadingFs";
+
 } // namespace skgpu::graphite
 
 #endif // skgpu_graphite_ContextUtils_DEFINED

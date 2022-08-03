@@ -284,6 +284,17 @@ sk_sp<MtlGraphicsPipeline> MtlGraphicsPipeline::Make(
 
     settings.fForceNoRTFlip = true;
 
+    if (pipelineDesc.renderStep()->numUniforms() > 0) {
+        settings.setStorageBufferIndexNames(0,
+                                            kRenderStepUniformBufferIndex,
+                                            kGeometrySsboIndexAttribute,
+                                            kGeometrySsboIndexVarying);
+    }
+    settings.setStorageBufferIndexNames(0,
+                                        kPaintUniformBufferIndex,
+                                        kShadingSsboIndexAttribute,
+                                        kShadingSsboIndexVarying);
+
     ShaderErrorHandler* errorHandler = gpu->caps()->shaderErrorHandler();
     if (!SkSLToMSL(gpu,
                    GetSkSLVS(pipelineDesc),

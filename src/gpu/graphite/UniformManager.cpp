@@ -549,12 +549,14 @@ size_t UniformOffsetCalculator::calculateOffset(SkSLType type, unsigned int coun
 }
 
 SkUniformDataBlock UniformManager::peekData() const {
-    return SkUniformDataBlock(SkSpan(fStorage.begin(), fStorage.count()));
+    size_t size = SkAlignTo(fStorage.count(), fReqAlignment);
+    return SkUniformDataBlock(SkSpan(fStorage.begin(), size));
 }
 
 void UniformManager::reset() {
     fCurUBOOffset = 0;
     fOffset = 0;
+    fReqAlignment = 0;
     fStorage.rewind();
 }
 
@@ -603,6 +605,8 @@ void UniformManager::write(SkSLType type, unsigned int count, const void* src) {
     uint32_t bytesWritten = fWriteUniform(revisedType, CType::kDefault, dst, count, src);
     SkASSERT(bytesNeeded == bytesWritten);
     fOffset += bytesWritten;
+
+    fReqAlignment = std::max(fReqAlignment, sksltype_to_alignment_mask(type) + 1);
 }
 
 void UniformManager::write(const SkM44& mat) {
