@@ -209,6 +209,10 @@ std::string EmitVaryings(const RenderStep* step, const char* direction) {
     std::string result;
 
     int location = 0;
+    // Always create a local coordinate varying that the step can emit.
+    SkSL::String::appendf(&result, "    layout(location=%d) %s ", location++, direction);
+    result.append(SkSLTypeString(SkSLType::kFloat2));
+    SkSL::String::appendf(&result, " localCoords;\n");
     for (auto v : step->varyings()) {
         SkSL::String::appendf(&result, "    layout(location=%d) %s ", location++, direction);
         result.append(SkSLTypeString(v.fType));

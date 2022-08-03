@@ -22,10 +22,16 @@ public:
     const char* vertexSkSL() const override;
     void writeVertices(DrawWriter*, const DrawParams&) const override;
     void writeUniformsAndTextures(const DrawParams&, SkPipelineDataGatherer*) const override;
+    const char* fragmentColorSkSL() const override;
+    std::string texturesAndSamplersSkSL(int startBinding) const override;
 
 private:
     bool fHasColor;
     bool fHasTexture;
+
+    void writeVerticesColorAndTexture(DrawWriter* writer, const DrawParams& params) const;
+    void writeVerticesColor(DrawWriter* writer, const DrawParams& params) const;
+    void writeVerticesTexture(DrawWriter* writer, const DrawParams& params) const;
 };
 
 }  // namespace skgpu::graphite

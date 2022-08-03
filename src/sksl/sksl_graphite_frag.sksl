@@ -326,8 +326,7 @@ half4 sk_linear_grad_4_shader(float4 coords,
                               float2 point0Param,
                               float2 point1Param,
                               int tileMode) {
-    float2 pos = (preLocal * coords).xy;
-    float2 t = $linear_grad_layout(point0Param, point1Param, pos);
+    float2 t = $linear_grad_layout(point0Param, point1Param, localCoords);
     t = $tile_grad(tileMode, t);
     return $colorize_grad_4(colorsParam, offsetsParam, t);
 }
