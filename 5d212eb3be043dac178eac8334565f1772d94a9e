@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b4fb091e_8f35fcf6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-08-03T19:12:14Z",
+      "side": 1,
+      "message": "LGTM!",
+      "revId": "5d212eb3be043dac178eac8334565f1772d94a9e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1430c464_fb0af482",
+        "filename": "src/sksl/SkSLDSLParser.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 941,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-08-03T19:12:14Z",
+      "side": 1,
+      "message": "nit: Do you think we should file a bug in the issue tracker for this TODO?",
+      "range": {
+        "startLine": 941,
+        "startChar": 8,
+        "endLine": 941,
+        "endChar": 16
+      },
+      "revId": "5d212eb3be043dac178eac8334565f1772d94a9e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4578561e_567db930",
+        "filename": "src/sksl/generated/sksl_compute.dehydrated.sksl",
+        "patchSetId": 4
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-08-03T19:12:14Z",
+      "side": 1,
+      "message": "Do you know what the 8 -\u003e 32 change means? Just curious.",
+      "range": {
+        "startLine": 30,
+        "startChar": 5,
+        "endLine": 30,
+        "endChar": 7
+      },
+      "revId": "5d212eb3be043dac178eac8334565f1772d94a9e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
