@@ -396,8 +396,8 @@ placed before the initializer.
 
 ```
 GrDillPickle::GrDillPickle()
-    : GrPickle()
-    , fSize(kDefaultPickleSize) {
+        : GrPickle()
+        , fSize(kDefaultPickleSize) {
     ...
 }
 ```
