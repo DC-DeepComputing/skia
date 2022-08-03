@@ -19,6 +19,7 @@ fi
 supported_files_or_dirs=(
   "experimental/bazel_test/"
   "modules/skunicode/"
+  "src/images/"
   "src/sksl/"
   "src/svg/"
   "src/utils/"
