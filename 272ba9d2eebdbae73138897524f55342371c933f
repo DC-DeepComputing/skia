@@ -26,6 +26,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "20b4f78d_877ec010",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 14979
+      },
+      "writtenOn": "2022-08-03T21:49:25Z",
+      "side": 1,
+      "message": "Removed.",
+      "parentUuid": "805e9a00_30d96ff0",
+      "range": {
+        "startLine": 20,
+        "startChar": 48,
+        "endLine": 21,
+        "endChar": 54
+      },
+      "revId": "272ba9d2eebdbae73138897524f55342371c933f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "97df5379_93fdffec",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 2
@@ -100,6 +124,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "361c58a5_c51c5fb8",
+        "filename": "DEPS",
+        "patchSetId": 2
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 14979
+      },
+      "writtenOn": "2022-08-03T21:49:25Z",
+      "side": 1,
+      "message": "Ack. I\u0027ve double checked that the ones being added in this CL are all commit hashes and not tags.",
+      "parentUuid": "b065b027_f2126eaf",
+      "range": {
+        "startLine": 30,
+        "startChar": 96,
+        "endLine": 30,
+        "endChar": 136
+      },
+      "revId": "272ba9d2eebdbae73138897524f55342371c933f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b3ce0cbc_534ea4f8",
@@ -113,6 +161,30 @@
       "writtenOn": "2022-08-03T20:59:52Z",
       "side": 1,
       "message": "I take it avif never has a different repetition count?",
+      "range": {
+        "startLine": 177,
+        "startChar": 49,
+        "endLine": 177,
+        "endChar": 73
+      },
+      "revId": "272ba9d2eebdbae73138897524f55342371c933f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "128a6551_9f1a93a5",
+        "filename": "src/codec/SkAvifCodec.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 177,
+      "author": {
+        "id": 14979
+      },
+      "writtenOn": "2022-08-03T21:49:25Z",
+      "side": 1,
+      "message": "yes animated AVIFs always loop infinitely.",
+      "parentUuid": "b3ce0cbc_534ea4f8",
       "range": {
         "startLine": 177,
         "startChar": 49,
@@ -148,6 +220,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9abe2f3f_f57ab638",
+        "filename": "src/codec/SkAvifCodec.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 191,
+      "author": {
+        "id": 14979
+      },
+      "writtenOn": "2022-08-03T21:49:25Z",
+      "side": 1,
+      "message": "umm i am not sure. i can add a TODO. But from what i checked, these two are sufficient to support android platforms.\n\nDo you know if any more formats need to be supported?",
+      "parentUuid": "545f1ec0_69802ab2",
+      "range": {
+        "startLine": 189,
+        "startChar": 0,
+        "endLine": 191,
+        "endChar": 5
+      },
+      "revId": "272ba9d2eebdbae73138897524f55342371c933f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4183920f_1b3d0fce",
         "filename": "src/codec/SkAvifCodec.cpp",
         "patchSetId": 2
@@ -159,6 +255,30 @@
       "writtenOn": "2022-08-03T20:59:52Z",
       "side": 1,
       "message": "What dimensions does `libavif` support? Any arbitrary dimension smaller?",
+      "range": {
+        "startLine": 199,
+        "startChar": 13,
+        "endLine": 199,
+        "endChar": 27
+      },
+      "revId": "272ba9d2eebdbae73138897524f55342371c933f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "222615fd_3e86daea",
+        "filename": "src/codec/SkAvifCodec.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 199,
+      "author": {
+        "id": 14979
+      },
+      "writtenOn": "2022-08-03T21:49:25Z",
+      "side": 1,
+      "message": "Yes, it internally uses libyuv for scaling. So any dimension (smaller/bigger) is fine.",
+      "parentUuid": "4183920f_1b3d0fce",
       "range": {
         "startLine": 199,
         "startChar": 13,
@@ -182,6 +302,30 @@
       "writtenOn": "2022-08-03T20:59:52Z",
       "side": 1,
       "message": "nit: you could create a `struct` as the parameter, which would allow you to explicitly name the parameters, instead of using comments.",
+      "range": {
+        "startLine": 74,
+        "startChar": 0,
+        "endLine": 82,
+        "endChar": 39
+      },
+      "revId": "272ba9d2eebdbae73138897524f55342371c933f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d46fbae7_480da4d3",
+        "filename": "tests/AvifTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 14979
+      },
+      "writtenOn": "2022-08-03T21:49:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fee58786_fc6d4022",
       "range": {
         "startLine": 74,
         "startChar": 0,
