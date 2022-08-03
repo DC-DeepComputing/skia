@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8b9d7178_d9a078b8",
+        "filename": "site/docs/dev/contrib/style.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 400,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-08-03T13:26:35Z",
+      "side": 1,
+      "message": "so technically these would all fit on one line. Should we give two examples, one that fits everything on line and one that goes over 100 so does 1 per line?6",
+      "range": {
+        "startLine": 399,
+        "startChar": 8,
+        "endLine": 400,
+        "endChar": 37
+      },
+      "revId": "0fc3fb4b33b92eab9563b10ed8f0f8d8cd6d017b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
