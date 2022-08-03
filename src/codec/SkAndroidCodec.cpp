@@ -119,6 +119,9 @@ SkColorType SkAndroidCodec::computeOutputColorType(SkColorType requestedColorTyp
         case kARGB_4444_SkColorType:
             return kN32_SkColorType;
         case kN32_SkColorType:
+            if (!highPrecision) {
+                return kN32_SkColorType;
+            }
             break;
         case kAlpha_8_SkColorType:
             // Fall through to kGray_8.  Before kGray_8_SkColorType existed,
