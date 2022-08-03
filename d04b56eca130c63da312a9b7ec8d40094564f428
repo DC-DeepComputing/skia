@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6a56eb7f_18ee0394",
+        "filename": "src/sksl/ir/SkSLVarDeclarations.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 218,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-08-03T19:35:44Z",
+      "side": 0,
+      "message": "This part technically didn\u0027t need to change at all, but the uncommented nested negated-ifs made it difficult for me to follow. So I added comments and un-negated it.",
+      "range": {
+        "startLine": 218,
+        "startChar": 0,
+        "endLine": 218,
+        "endChar": 68
+      },
+      "revId": "d04b56eca130c63da312a9b7ec8d40094564f428",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
