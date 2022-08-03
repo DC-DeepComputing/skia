@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "300bac3e_d203965d",
+        "filename": "include/gpu/graphite/RecorderOptions.h",
+        "patchSetId": 23
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-08-03T19:44:37Z",
+      "side": 1,
+      "message": "Well - we\u0027re pretty deep into the call stack here. I think we should actually let the client specify an error color (maybe in the RecorderOptions) and draw that.",
+      "parentUuid": "5af2d6e1_bee79c18",
+      "range": {
+        "startLine": 29,
+        "startChar": 17,
+        "endLine": 29,
+        "endChar": 27
+      },
+      "revId": "33eda7a33dbe88256a17e3e16bdc5a7022811d10",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7a39a6b3_b84a4837",
         "filename": "include/gpu/graphite/RecorderOptions.h",
         "patchSetId": 23
@@ -37,6 +61,30 @@
       "writtenOn": "2022-08-03T19:27:19Z",
       "side": 1,
       "message": "is it worth adding anything at the end of this like:\n\"(this is the same requirement all graphite SkImages and isn\u0027t unique to SkImages from the ImageProvider).\"?",
+      "range": {
+        "startLine": 38,
+        "startChar": 58,
+        "endLine": 38,
+        "endChar": 59
+      },
+      "revId": "33eda7a33dbe88256a17e3e16bdc5a7022811d10",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "128e07d7_b37c662d",
+        "filename": "include/gpu/graphite/RecorderOptions.h",
+        "patchSetId": 23
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-08-03T19:44:37Z",
+      "side": 1,
+      "message": "Can\u0027t hurt - done.",
+      "parentUuid": "7a39a6b3_b84a4837",
       "range": {
         "startLine": 38,
         "startChar": 58,
@@ -60,6 +108,30 @@
       "writtenOn": "2022-08-03T19:27:19Z",
       "side": 1,
       "message": "I\u0027m not saying I\u0027m against this, just bring up the discussion. Do we want to have a DefaultImageProvider here? Clients that don\u0027t provide their own optional provider could very quickly get confused why everything is very slow. I feel like its a better signal for a user to have their draw dropped and then they\u0027ll see after debugging (or our eventual new fancy error messages) that is was because the image wasn\u0027t graphite.\n\nMaybe we instead make the DefaultImageProvider a publicly available class to give clients the option of providing it if they want?",
+      "range": {
+        "startLine": 81,
+        "startChar": 31,
+        "endLine": 81,
+        "endChar": 59
+      },
+      "revId": "33eda7a33dbe88256a17e3e16bdc5a7022811d10",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "23955d81_f493c8d0",
+        "filename": "src/gpu/graphite/Recorder.cpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-08-03T19:44:37Z",
+      "side": 1,
+      "message": "I\u0027ve changed the DefaultImageProvider to just not automagically convert non-Graphite-backed images.",
+      "parentUuid": "42233ac2_1253c7d3",
       "range": {
         "startLine": 81,
         "startChar": 31,
