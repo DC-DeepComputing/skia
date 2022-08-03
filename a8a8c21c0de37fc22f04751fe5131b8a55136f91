@@ -22,6 +22,30 @@
       },
       "revId": "a8a8c21c0de37fc22f04751fe5131b8a55136f91",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e8f40b26_691bad99",
+        "filename": "src/sksl/ir/SkSLFunctionDeclaration.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 318,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-08-03T14:03:48Z",
+      "side": 1,
+      "message": "Done; this does change one of the error reports slightly (for the float2/half2 `cos`).",
+      "parentUuid": "651414ff_8735fa6c",
+      "range": {
+        "startLine": 318,
+        "startChar": 78,
+        "endLine": 318,
+        "endChar": 82
+      },
+      "revId": "a8a8c21c0de37fc22f04751fe5131b8a55136f91",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
