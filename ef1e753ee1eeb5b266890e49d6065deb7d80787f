@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "94e6e588_40ca77a8",
+        "filename": "src/sksl/codegen/SkSLMetalCodeGenerator.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 266,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-08-03T20:55:33Z",
+      "side": 1,
+      "message": "I flipped the param order on `pass_by_reference` and `needs_address_space` because it was opposite from `writeTextureType` and `writeParameterType`, which made side-by-side calls to them look strange.",
+      "range": {
+        "startLine": 266,
+        "startChar": 30,
+        "endLine": 266,
+        "endChar": 74
+      },
+      "revId": "ef1e753ee1eeb5b266890e49d6065deb7d80787f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
