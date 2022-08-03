@@ -1,3 +1,4 @@
+// namespace SkSL
 /*
  * Copyright 2021 Google LLC
  *
@@ -15,6 +16,65 @@ namespace SkSL {
 /**
  * Initializes the core SkSL types.
  */
+
+using BuiltinTypePtr = const std::unique_ptr<Type> BuiltinTypes::*;
+
+struct AliasInitializationData {
+    BuiltinTypePtr dest;
+    const char* name;
+    BuiltinTypePtr targetType;
+};
+
+struct Generic4InitializationData {
+    BuiltinTypePtr dest;
+    const char* name;
+    BuiltinTypePtr type0, type1, type2, type3;
+};
+
+#define TYPE(x) &BuiltinTypes::f##x
+
+static constexpr AliasInitializationData kAliasData[] = {
+        {TYPE(Vec2), "vec2", TYPE(Float2)},
+        {TYPE(Vec3), "vec3", TYPE(Float3)},
+        {TYPE(Vec4), "vec4", TYPE(Float4)},
+        {TYPE(IVec2), "ivec2", TYPE(Int2)},
+        {TYPE(IVec3), "ivec3", TYPE(Int3)},
+        {TYPE(IVec4), "ivec4", TYPE(Int4)},
+        {TYPE(BVec2), "bvec2", TYPE(Bool2)},
+        {TYPE(BVec3), "bvec3", TYPE(Bool3)},
+        {TYPE(BVec4), "bvec4", TYPE(Bool4)},
+        {TYPE(Mat2), "mat2", TYPE(Float2x2)},
+        {TYPE(Mat3), "mat3", TYPE(Float3x3)},
+        {TYPE(Mat4), "mat4", TYPE(Float4x4)},
+        {TYPE(Mat2x2), "mat2x2", TYPE(Float2x2)},
+        {TYPE(Mat2x3), "mat2x3", TYPE(Float2x3)},
+        {TYPE(Mat2x4), "mat2x4", TYPE(Float2x4)},
+        {TYPE(Mat3x2), "mat3x2", TYPE(Float3x2)},
+        {TYPE(Mat3x3), "mat3x3", TYPE(Float3x3)},
+        {TYPE(Mat3x4), "mat3x4", TYPE(Float3x4)},
+        {TYPE(Mat4x2), "mat4x2", TYPE(Float4x2)},
+        {TYPE(Mat4x3), "mat4x3", TYPE(Float4x3)},
+        {TYPE(Mat4x4), "mat4x4", TYPE(Float4x4)}};
+
+static constexpr Generic4InitializationData kGeneric4Data[] = {
+        {TYPE(GenType), "$genType", TYPE(Float), TYPE(Float2), TYPE(Float3), TYPE(Float4)},
+        {TYPE(GenHType), "$genHType", TYPE(Half), TYPE(Half2), TYPE(Half3), TYPE(Half4)},
+        {TYPE(GenIType), "$genIType", TYPE(Int), TYPE(Int2), TYPE(Int3), TYPE(Int4)},
+        {TYPE(GenUType), "$genUType", TYPE(UInt), TYPE(UInt2), TYPE(UInt3), TYPE(UInt4)},
+        {TYPE(GenBType), "$genBType", TYPE(Bool), TYPE(Bool2), TYPE(Bool3), TYPE(Bool4)},
+        {TYPE(Vec), "$vec", TYPE(Invalid), TYPE(Float2), TYPE(Float3), TYPE(Float4)},
+        {TYPE(HVec), "$hvec", TYPE(Invalid), TYPE(Half2), TYPE(Half3), TYPE(Half4)},
+        {TYPE(IVec), "$ivec", TYPE(Invalid), TYPE(Int2), TYPE(Int3), TYPE(Int4)},
+        {TYPE(UVec), "$uvec", TYPE(Invalid), TYPE(UInt2), TYPE(UInt3), TYPE(UInt4)},
+        {TYPE(SVec), "$svec", TYPE(Invalid), TYPE(Short2), TYPE(Short3), TYPE(Short4)},
+        {TYPE(USVec), "$usvec", TYPE(Invalid), TYPE(UShort2), TYPE(UShort3), TYPE(UShort4)},
+        {TYPE(BVec), "$bvec", TYPE(Invalid), TYPE(Bool2), TYPE(Bool3), TYPE(Bool4)},
+        {TYPE(SquareMat), "$squareMat", TYPE(Invalid), TYPE(Float2x2),
+                                        TYPE(Float3x3), TYPE(Float4x4)},
+        {TYPE(SquareHMat), "$squareHMat", TYPE(Invalid), TYPE(Half2x2),
+                                          TYPE(Half3x3), TYPE(Half4x4)},
+};
+
 BuiltinTypes::BuiltinTypes()
         : fFloat(Type::MakeScalarType(
                   "float", "f", Type::NumberKind::kFloat, /*priority=*/10, /*bitWidth=*/32))
@@ -74,27 +134,6 @@ BuiltinTypes::BuiltinTypes()
         , fHalf4x2(Type::MakeMatrixType("half4x2", "h42", *fHalf, /*columns=*/4, /*rows=*/2))
         , fHalf4x3(Type::MakeMatrixType("half4x3", "h43", *fHalf, /*columns=*/4, /*rows=*/3))
         , fHalf4x4(Type::MakeMatrixType("half4x4", "h44", *fHalf, /*columns=*/4, /*rows=*/4))
-        , fVec2(Type::MakeAliasType("vec2", *fFloat2))
-        , fVec3(Type::MakeAliasType("vec3", *fFloat3))
-        , fVec4(Type::MakeAliasType("vec4", *fFloat4))
-        , fIVec2(Type::MakeAliasType("ivec2", *fInt2))
-        , fIVec3(Type::MakeAliasType("ivec3", *fInt3))
-        , fIVec4(Type::MakeAliasType("ivec4", *fInt4))
-        , fBVec2(Type::MakeAliasType("bvec2", *fBool2))
-        , fBVec3(Type::MakeAliasType("bvec3", *fBool3))
-        , fBVec4(Type::MakeAliasType("bvec4", *fBool4))
-        , fMat2(Type::MakeAliasType("mat2", *fFloat2x2))
-        , fMat3(Type::MakeAliasType("mat3", *fFloat3x3))
-        , fMat4(Type::MakeAliasType("mat4", *fFloat4x4))
-        , fMat2x2(Type::MakeAliasType("mat2x2", *fFloat2x2))
-        , fMat2x3(Type::MakeAliasType("mat2x3", *fFloat2x3))
-        , fMat2x4(Type::MakeAliasType("mat2x4", *fFloat2x4))
-        , fMat3x2(Type::MakeAliasType("mat3x2", *fFloat3x2))
-        , fMat3x3(Type::MakeAliasType("mat3x3", *fFloat3x3))
-        , fMat3x4(Type::MakeAliasType("mat3x4", *fFloat3x4))
-        , fMat4x2(Type::MakeAliasType("mat4x2", *fFloat4x2))
-        , fMat4x3(Type::MakeAliasType("mat4x3", *fFloat4x3))
-        , fMat4x4(Type::MakeAliasType("mat4x4", *fFloat4x4))
         , fTexture2D(Type::MakeTextureType("texture2D",
                                            SpvDim2D,
                                            /*isDepth=*/false,
@@ -132,44 +171,31 @@ BuiltinTypes::BuiltinTypes()
                                                 /*isMultisampled=*/true,
                                                 /*isSampled=*/false))
 
-        , fGenType(Type::MakeGenericType("$genType", {fFloat.get(), fFloat2.get(), fFloat3.get(),
-                                                      fFloat4.get()}))
-        , fGenHType(Type::MakeGenericType("$genHType", {fHalf.get(), fHalf2.get(), fHalf3.get(),
-                                                        fHalf4.get()}))
-        , fGenIType(Type::MakeGenericType("$genIType", {fInt.get(), fInt2.get(), fInt3.get(),
-                                                        fInt4.get()}))
-        , fGenUType(Type::MakeGenericType("$genUType", {fUInt.get(), fUInt2.get(), fUInt3.get(),
-                                                        fUInt4.get()}))
-        , fGenBType(Type::MakeGenericType("$genBType", {fBool.get(), fBool2.get(), fBool3.get(),
-                                                        fBool4.get()}))
-        , fMat(Type::MakeGenericType("$mat", {fFloat2x2.get(), fFloat2x3.get(), fFloat2x4.get(),
-                                              fFloat3x2.get(), fFloat3x3.get(), fFloat3x4.get(),
-                                              fFloat4x2.get(), fFloat4x3.get(), fFloat4x4.get()}))
-        , fHMat(Type::MakeGenericType(
-                  "$hmat",
-                  {fHalf2x2.get(), fHalf2x3.get(), fHalf2x4.get(), fHalf3x2.get(), fHalf3x3.get(),
-                   fHalf3x4.get(), fHalf4x2.get(), fHalf4x3.get(), fHalf4x4.get()}))
-        , fSquareMat(Type::MakeGenericType("$squareMat", {fInvalid.get(), fFloat2x2.get(),
-                                                          fFloat3x3.get(), fFloat4x4.get()}))
-        , fSquareHMat(Type::MakeGenericType("$squareHMat", {fInvalid.get(), fHalf2x2.get(),
-                                                            fHalf3x3.get(), fHalf4x4.get()}))
-        , fVec(Type::MakeGenericType("$vec", {fInvalid.get(), fFloat2.get(), fFloat3.get(),
-                                              fFloat4.get()}))
-        , fHVec(Type::MakeGenericType("$hvec", {fInvalid.get(), fHalf2.get(), fHalf3.get(),
-                                                fHalf4.get()}))
-        , fIVec(Type::MakeGenericType("$ivec", {fInvalid.get(), fInt2.get(), fInt3.get(),
-                                                fInt4.get()}))
-        , fUVec(Type::MakeGenericType("$uvec", {fInvalid.get(), fUInt2.get(), fUInt3.get(),
-                                                fUInt4.get()}))
-        , fSVec(Type::MakeGenericType("$svec", {fInvalid.get(), fShort2.get(), fShort3.get(),
-                                                fShort4.get()}))
-        , fUSVec(Type::MakeGenericType("$usvec", {fInvalid.get(), fUShort2.get(), fUShort3.get(),
-                                                  fUShort4.get()}))
-        , fBVec(Type::MakeGenericType("$bvec", {fInvalid.get(), fBool2.get(), fBool3.get(),
-                                                fBool4.get()}))
+        , fMat(Type::MakeGenericType("$mat", SkSpan<const Type* const>({fFloat2x2.get(), fFloat2x3.get(), fFloat2x4.get(),
+                                                                        fFloat3x2.get(), fFloat3x3.get(), fFloat3x4.get(),
+                                                                        fFloat4x2.get(), fFloat4x3.get(), fFloat4x4.get()})))
+        , fHMat(Type::MakeGenericType("$hmat", SkSpan<const Type* const>({fHalf2x2.get(), fHalf2x3.get(), fHalf2x4.get(),
+                                                                          fHalf3x2.get(), fHalf3x3.get(), fHalf3x4.get(),
+                                                                          fHalf4x2.get(), fHalf4x3.get(), fHalf4x4.get()})))
         , fSkCaps(Type::MakeSpecialType("$sk_Caps", "O", Type::TypeKind::kOther))
         , fColorFilter(Type::MakeSpecialType("colorFilter", "CF", Type::TypeKind::kColorFilter))
         , fShader(Type::MakeSpecialType("shader", "SH", Type::TypeKind::kShader))
-        , fBlender(Type::MakeSpecialType("blender", "B", Type::TypeKind::kBlender)) {}
+        , fBlender(Type::MakeSpecialType("blender", "B", Type::TypeKind::kBlender)) {
+
+    for (const AliasInitializationData& data : kAliasData) {
+        auto& dest = const_cast<std::unique_ptr<Type>&>(this->*data.dest);
+        const Type* target = (this->*data.targetType).get();
+        dest = Type::MakeAliasType(data.name, *target);
+    }
+
+    for (const Generic4InitializationData& data : kGeneric4Data) {
+        auto& dest = const_cast<std::unique_ptr<Type>&>(this->*data.dest);
+        const Type* type0 = (this->*data.type0).get();
+        const Type* type1 = (this->*data.type1).get();
+        const Type* type2 = (this->*data.type2).get();
+        const Type* type3 = (this->*data.type3).get();
+        dest = Type::MakeGenericType(data.name, {type0, type1, type2, type3});
+    }
+}
 
 }  // namespace SkSL

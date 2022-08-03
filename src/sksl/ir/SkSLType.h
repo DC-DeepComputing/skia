@@ -8,6 +8,7 @@
 #ifndef SKSL_TYPE
 #define SKSL_TYPE
 
+#include "include/core/SkSpan.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkSLDefines.h"
 #include "include/private/SkSLModifiers.h"
@@ -130,7 +131,7 @@ public:
      * Create a generic type which maps to the listed types--e.g. $genType is a generic type which
      * can match float, float2, float3 or float4.
      */
-    static std::unique_ptr<Type> MakeGenericType(const char* name, std::vector<const Type*> types);
+    static std::unique_ptr<Type> MakeGenericType(const char* name, SkSpan<const Type* const> types);
 
     /** Create a type for literal scalars. */
     static std::unique_ptr<Type> MakeLiteralType(const char* name, const Type& scalarType,
