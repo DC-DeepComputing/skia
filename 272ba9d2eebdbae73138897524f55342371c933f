@@ -1,6 +1,29 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "805e9a00_30d96ff0",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-08-03T20:59:52Z",
+      "side": 1,
+      "message": "nit: I might avoid speculating on legal issues.",
+      "range": {
+        "startLine": 20,
+        "startChar": 48,
+        "endLine": 21,
+        "endChar": 54
+      },
+      "revId": "272ba9d2eebdbae73138897524f55342371c933f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "97df5379_93fdffec",
@@ -50,6 +73,121 @@
       "side": 1,
       "message": "Hi Leon,\n\nPing just in case this has slipped by. :)",
       "parentUuid": "b3f59f9c_84e32074",
+      "revId": "272ba9d2eebdbae73138897524f55342371c933f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b065b027_f2126eaf",
+        "filename": "DEPS",
+        "patchSetId": 2
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-08-03T20:59:52Z",
+      "side": 1,
+      "message": "I recently [learned](https://chromium-review.googlesource.com/c/chromium/src/+/3780625?usp\u003demail) that we need to use a commit hash and *not* a tag. I cannot tell the difference, so just letting you know. (Also, I don\u0027t know if that\u0027s something special for Chrome.)",
+      "range": {
+        "startLine": 30,
+        "startChar": 96,
+        "endLine": 30,
+        "endChar": 136
+      },
+      "revId": "272ba9d2eebdbae73138897524f55342371c933f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b3ce0cbc_534ea4f8",
+        "filename": "src/codec/SkAvifCodec.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 177,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-08-03T20:59:52Z",
+      "side": 1,
+      "message": "I take it avif never has a different repetition count?",
+      "range": {
+        "startLine": 177,
+        "startChar": 49,
+        "endLine": 177,
+        "endChar": 73
+      },
+      "revId": "272ba9d2eebdbae73138897524f55342371c933f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "545f1ec0_69802ab2",
+        "filename": "src/codec/SkAvifCodec.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 191,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-08-03T20:59:52Z",
+      "side": 1,
+      "message": "is this a todo?",
+      "range": {
+        "startLine": 189,
+        "startChar": 0,
+        "endLine": 191,
+        "endChar": 5
+      },
+      "revId": "272ba9d2eebdbae73138897524f55342371c933f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4183920f_1b3d0fce",
+        "filename": "src/codec/SkAvifCodec.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 199,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-08-03T20:59:52Z",
+      "side": 1,
+      "message": "What dimensions does `libavif` support? Any arbitrary dimension smaller?",
+      "range": {
+        "startLine": 199,
+        "startChar": 13,
+        "endLine": 199,
+        "endChar": 27
+      },
+      "revId": "272ba9d2eebdbae73138897524f55342371c933f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fee58786_fc6d4022",
+        "filename": "tests/AvifTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-08-03T20:59:52Z",
+      "side": 1,
+      "message": "nit: you could create a `struct` as the parameter, which would allow you to explicitly name the parameters, instead of using comments.",
+      "range": {
+        "startLine": 74,
+        "startChar": 0,
+        "endLine": 82,
+        "endChar": 39
+      },
       "revId": "272ba9d2eebdbae73138897524f55342371c933f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
