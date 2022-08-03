@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "651414ff_8735fa6c",
+        "filename": "src/sksl/ir/SkSLFunctionDeclaration.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 318,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-08-03T13:14:42Z",
+      "side": 1,
+      "message": "I feel like this should be false? All of the non-generic type comparisons are using matches(), which requires an exact match. In parameters_match, this could let us get to the second loop before we realize that none of the resolved types are correct? (That\u0027s just a performance issue, and not a big one...). But this also impacts the behavior down in find_existing_declaration?",
+      "range": {
+        "startLine": 318,
+        "startChar": 78,
+        "endLine": 318,
+        "endChar": 82
+      },
+      "revId": "a8a8c21c0de37fc22f04751fe5131b8a55136f91",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
