@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e1158019_d4d4db2d",
+        "filename": "src/text/gpu/SubRunContainer.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 213,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-08-03T13:53:22Z",
+      "side": 1,
+      "message": "Maybe clearer if this were broken out as:\n\nSkPoint topLeft \u003d ...;\nreturn (topLeft + paddingInset) * strikeToSourceScale + pos;\n\nbut not necessary",
+      "range": {
+        "startLine": 213,
+        "startChar": 24,
+        "endLine": 213,
+        "endChar": 70
+      },
+      "revId": "411473822d2d23fc5f6e370053f4dc93ed38304c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
