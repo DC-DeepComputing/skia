@@ -1,3 +1,4 @@
+<<<<<<< HEAD   (9cda04 Enforce size limits on struct and array declarations.)
 # This file is a list of tests to be excluded from a given run of SkQP.
 
 # The format of the list is: <regex_match_to_tests>[,<optional_android_API_level>]
@@ -99,3 +100,5 @@ SkSLMatrixToVectorCast_GPU, 33
 SkSLOutParams_GPU, 33
 SkSLOutParamsTricky_GPU, 33
 SkSLUnaryPositiveNegative_GPU, 33
+=======
+>>>>>>> CHANGE (fc58ab Update GPU unit tests to identify an enforced CTS version le)
