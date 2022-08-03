@@ -16,6 +16,29 @@
       "message": "just sneaking in here even though this is still listed as WIP. I think its okay to have this one large CL initially to get some feedback and agreement on APIs and such. But I think when we go to land things we\u0027ll want to break it up a little. I imagine the sksl changes can go in their own CL (and I expect that team will want so tests added for the generated sksl).",
       "revId": "59694b39b02041896a5d63347008eb231d647f59",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a4984c20_4d2b2544",
+        "filename": "src/sksl/SkSLProgramSettings.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-08-03T19:31:08Z",
+      "side": 1,
+      "message": "Let\u0027s put these elsewhere. ProgramSettings is supposed to just be a plain struct, not a class with logic and invariants.",
+      "range": {
+        "startLine": 90,
+        "startChar": 4,
+        "endLine": 138,
+        "endChar": 82
+      },
+      "revId": "59694b39b02041896a5d63347008eb231d647f59",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
