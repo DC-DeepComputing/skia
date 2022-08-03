@@ -13,8 +13,8 @@ import (
 	"strings"
 
 	"go.skia.org/infra/go/skerr"
-	"go.skia.org/infra/go/util"
 	"go.skia.org/skia/bazel/exporter/build_proto/build"
+	"golang.org/x/exp/slices"
 )
 
 const (
@@ -111,7 +111,7 @@ func getRuleCMakeName(bazelRuleName string) (string, error) {
 // Append all elements to the slice if not already present in the slice.
 func appendUnique(slice []string, elems ...string) []string {
 	for _, elem := range elems {
-		if !util.In(elem, slice) {
+		if !slices.Contains(slice, elem) {
 			slice = append(slice, elem)
 		}
 	}
