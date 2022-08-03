@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c8806e98_c7160625",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-08-03T15:40:22Z",
+      "side": 1,
+      "message": "just sneaking in here even though this is still listed as WIP. I think its okay to have this one large CL initially to get some feedback and agreement on APIs and such. But I think when we go to land things we\u0027ll want to break it up a little. I imagine the sksl changes can go in their own CL (and I expect that team will want so tests added for the generated sksl).",
+      "revId": "59694b39b02041896a5d63347008eb231d647f59",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
