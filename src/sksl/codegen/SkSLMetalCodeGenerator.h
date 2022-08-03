@@ -143,7 +143,7 @@ protected:
 
     void writeTextureType(const Type& type, const Modifiers& modifiers);
 
-    void writeParameterType(const Type& type);
+    void writeParameterType(const Variable* param);
 
     void writeExtension(const Extension& ext);
 
