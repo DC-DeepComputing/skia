@@ -22,6 +22,30 @@
       },
       "revId": "0fc3fb4b33b92eab9563b10ed8f0f8d8cd6d017b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "11ef889f_9a7d13be",
+        "filename": "site/docs/dev/contrib/style.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 400,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-08-03T13:27:18Z",
+      "side": 1,
+      "message": "Sure thing, I\u0027ll just need to think of a lot of dill pickle options",
+      "parentUuid": "8b9d7178_d9a078b8",
+      "range": {
+        "startLine": 399,
+        "startChar": 8,
+        "endLine": 400,
+        "endChar": 37
+      },
+      "revId": "0fc3fb4b33b92eab9563b10ed8f0f8d8cd6d017b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
