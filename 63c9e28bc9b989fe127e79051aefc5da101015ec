@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e4af4888_e2cff6b1",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 363,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-03T20:30:15Z",
+      "side": 1,
+      "message": "Would it make sense to define a local type that combines the pipelineToSsboIndices and corresponding uniform bindings, and makes friendlier functions than having to work through a series of integer key queries?",
+      "range": {
+        "startLine": 360,
+        "startChar": 4,
+        "endLine": 363,
+        "endChar": 72
+      },
+      "revId": "63c9e28bc9b989fe127e79051aefc5da101015ec",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5fe82cfd_cde7b7a8",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 502,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-03T20:30:15Z",
+      "side": 1,
+      "message": "as it is, this is going to have geometryUniformChange remain true when we just need to lookup the new geometrySsboIndex (and similarly for shading uniforms). While we do need a way to detect this and query the new index, this value is folded into `stateChange` and then is used to flush the drawing commands that have been accumulated by DrawWriter. This means each time we\u0027re changing the ssbo index we\u0027d write as an attribute, we\u0027re artificially interrupting batching, effectively putting us in the same place that we were at with plain uniform binding.\n\nI think that\u0027s okay for now, but I just wanted to point it out so that we are aware when looking at initial performance numbers.",
+      "range": {
+        "startLine": 502,
+        "startChar": 44,
+        "endLine": 502,
+        "endChar": 92
+      },
+      "revId": "63c9e28bc9b989fe127e79051aefc5da101015ec",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cc8f42dc_b9563a82",
+        "filename": "src/gpu/graphite/Renderer.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-03T20:30:15Z",
+      "side": 1,
+      "message": "I don\u0027t think I like this approach, even though it does mean there\u0027s less code.\n\nThe main reason is it moves the definition of the attribute pretty far away from the writeVertices() code that needs to put it in the right place. Related to this, the ssbo indices can actually be packed into a uint16 (and the same goes for the paint depth value). I could imagine that RenderSteps may get pretty flexible in terms of how they pack the ssbo index around the rest of the attributes (and even keep it there if regular uniforms are used since it\u0027d affect alignment anyways). The common example would be for rendersteps that don\u0027t have any uniforms but then want to pack a 16-bit depth and a 16-bit ssbo index together into a nice 4-byte aligned block.\n\nThe last reason is I\u0027m not sure I want there to be flags where a render step can say they support ssbos or not. Maybe it makes sense for controlling how they get at their own uniforms, but ideally, we have every pipeline handling paint uniforms the exact same, regardless of render step. The only thing that is changing is how the index gets to the fragment shader for accessing the paint ssbo. Otherwise, the DrawPass::Make loop is going to need to make decisions about how the paint uniforms are uploaded every time it processes a RenderStep and may need to bounce back and forth between UBOs and SSBOs. It seems easier to make that decision once at the start based on the GPU caps that applies to everything in the draw pass.\n\nWe could do something that helps with naming that lets us tag an attribute or a varying as the thing to use for an ssbo index so that the rest of the sksl compiler/codegen can be configured to use the name that the RenderStep had chosen. Or we automatically insert SkSL instructions that assign the tagged attribute to a varying that the codegen added for the ssbo index.",
+      "range": {
+        "startLine": 176,
+        "startChar": 8,
+        "endLine": 181,
+        "endChar": 9
+      },
+      "revId": "63c9e28bc9b989fe127e79051aefc5da101015ec",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "22993d68_c90a95d0",
+        "filename": "src/gpu/graphite/render/TessellateWedgesRenderStep.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-03T20:30:15Z",
+      "side": 1,
+      "message": "We still need to include the ssbo index here, right?",
+      "range": {
+        "startLine": 53,
+        "startChar": 23,
+        "endLine": 53,
+        "endChar": 36
+      },
+      "revId": "63c9e28bc9b989fe127e79051aefc5da101015ec",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
