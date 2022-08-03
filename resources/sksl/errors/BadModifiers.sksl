@@ -48,6 +48,5 @@ functions cannot be both 'inline' and 'noinline'
 'noinline' is not permitted here
 'readonly' is not permitted here
 'writeonly' is not permitted here
-'buffer' is not permitted here
 'const' variables must be initialized
 *%%*/
