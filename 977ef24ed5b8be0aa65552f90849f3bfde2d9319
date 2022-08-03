@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "be6268be_f0c8a4fc",
+        "filename": "src/codec/SkAndroidCodec.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-08-03T14:28:37Z",
+      "side": 1,
+      "message": "I don\u0027t think this changes any behavior? Without this, we go down to line 152:\n\n```\n    return highPrecision ? kRGBA_F16_SkColorType :\n        (colorDepth \u003d\u003d 10 ? kRGBA_1010102_SkColorType : kN32_SkColorType);\n```\n\nWhen `!highPrecision`, we\u0027ll take the second branch. With `colorDepth \u003d\u003d 8`, we\u0027ll take the second branch inside parentheses, so we\u0027ll still end up with `kN32_SkColorType`.",
+      "range": {
+        "startLine": 122,
+        "startChar": 0,
+        "endLine": 124,
+        "endChar": 13
+      },
+      "revId": "977ef24ed5b8be0aa65552f90849f3bfde2d9319",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
