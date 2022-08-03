@@ -337,6 +337,14 @@ private:
     static constexpr size_t kAxisVarsSize = 3;
 };
 
+#ifdef SK_GRAPHITE_ENABLED
+
+namespace skgpu::graphite { class RecorderOptions; }
+
+skgpu::graphite::RecorderOptions CreateTestingRecorderOptions();
+
+#endif // SK_GRAPHITE_ENABLED
+
 }  // namespace ToolUtils
 
 #endif  // ToolUtils_DEFINED

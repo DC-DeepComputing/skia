@@ -624,4 +624,21 @@ SkSpan<const SkFontArguments::VariationPosition::Coordinate> VariationSliders::g
                                                                         fAxisSliders.size()};
 }
 
+#ifdef SK_GRAPHITE_ENABLED
+
+#include "include/gpu/graphite/RecorderOptions.h"
+
+class TestingImageProvider : public skgpu::graphite::RecorderOptions::ImageProvider {
+public:
+
+private:
+};
+
+
+skgpu::graphite::RecorderOptions CreateTestingRecorderOptions() {
+    return { sk_make_sp<TestingImageProvider>(); }
+}
+
+#endif SK_GRAPHITE_ENABLED
+
 }  // namespace ToolUtils
