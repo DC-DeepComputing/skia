@@ -1,6 +1,6 @@
 module go.skia.org/skia
 
-go 1.12
+go 1.18
 
 require (
 	cloud.google.com/go/pubsub v1.8.3
@@ -16,6 +16,7 @@ require (
 	go.chromium.org/luci v0.0.0-20201121231857-b9ab316d7198 // indirect
 	go.skia.org/infra v0.0.0-20220426210209-9d8975cd9401
 	golang.org/x/crypto v0.0.0-20220112180741-5e0467b6c7ce
+	golang.org/x/exp v0.0.0-20220722155223-a9213eeb770e // indirect
 	golang.org/x/oauth2 v0.0.0-20220309155454-6242fa91716a
 	google.golang.org/api v0.74.0
 	google.golang.org/protobuf v1.28.0 // indirect
