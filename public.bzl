@@ -189,6 +189,7 @@ SKIA_PUBLIC_HDRS = [
     "include/gpu/graphite/mtl/MtlBackendContext.h",
     "include/gpu/graphite/mtl/MtlTypes.h",
     "include/gpu/graphite/Recorder.h",
+    "include/gpu/graphite/RecorderOptions.h",
     "include/gpu/graphite/Recording.h",
     "include/gpu/graphite/SkStuff.h",
     "include/gpu/graphite/TextureInfo.h",
