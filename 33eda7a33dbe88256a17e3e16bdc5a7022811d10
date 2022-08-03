@@ -74,6 +74,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "afe5380a_673a735f",
+        "filename": "include/gpu/graphite/RecorderOptions.h",
+        "patchSetId": 23
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-08-03T20:57:20Z",
+      "side": 1,
+      "message": "In the already Graphite-backed case we\u0027re nice. If they\u0027re converting a bitmap-backed image to Graphite we want them to do it right.",
+      "parentUuid": "987ec908_e78e02ab",
+      "range": {
+        "startLine": 29,
+        "startChar": 17,
+        "endLine": 29,
+        "endChar": 27
+      },
+      "revId": "33eda7a33dbe88256a17e3e16bdc5a7022811d10",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7a39a6b3_b84a4837",
         "filename": "include/gpu/graphite/RecorderOptions.h",
         "patchSetId": 23
