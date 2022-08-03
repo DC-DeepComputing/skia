@@ -624,4 +624,29 @@ SkSpan<const SkFontArguments::VariationPosition::Coordinate> VariationSliders::g
                                                                         fAxisSliders.size()};
 }
 
+#ifdef SK_GRAPHITE_ENABLED
+
+class TestingImageProvider : public skgpu::graphite::RecorderOptions::ImageProvider {
+public:
+    ~TestingImageProvider() override {}
+
+    sk_sp<SkImage> findOrCreate(skgpu::graphite::Recorder* recorder,
+                                const SkImage* image,
+                                skgpu::graphite::Mipmapped mipmapped) override {
+        return nullptr;
+    }
+
+private:
+};
+
+skgpu::graphite::RecorderOptions CreateTestingRecorderOptions() {
+    skgpu::graphite::RecorderOptions options;
+
+    options.fImageProvider.reset(new TestingImageProvider);
+
+    return options;
+}
+
+#endif // SK_GRAPHITE_ENABLED
+
 }  // namespace ToolUtils
