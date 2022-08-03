@@ -232,7 +232,7 @@ public:
 
     static const Renderer& TessellatedStrokes();
 
-    static const Renderer& TextDirect(bool isA8);
+    static const Renderer& TextDirect(bool isA8);t out some of the texture/color progress to avoid warnings for the time being)
 
     static const Renderer& TextSDF(bool useLCDText);
 
