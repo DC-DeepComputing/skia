@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5f7644f5_0cd293cf",
+        "filename": "src/core/SkGlyph.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 250,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-08-03T13:44:35Z",
+      "side": 1,
+      "message": "Over indented ?\nDo we have unit tests for this class ?",
+      "revId": "ea16ceee1a5f7ac4677598e732eb3f2b87b5f505",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
