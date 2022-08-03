@@ -7209,6 +7209,7 @@
       "dimensions": [
         "cpu:x86-64-Haswell_GCE",
         "gpu:none",
+        "id:skia-e-gce-309",
         "machine_type:n1-highcpu-64",
         "os:Debian-10.3",
         "pool:Skia"
