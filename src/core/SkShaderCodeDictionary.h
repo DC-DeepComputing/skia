@@ -49,7 +49,8 @@ private:
 enum class SnippetRequirementFlags : uint32_t {
     kNone = 0x0,
     kLocalCoords = 0x1,
-    kPriorStageOutput = 0x2
+    kPriorStageOutput = 0x2,
+    kTexture = 0x3
 };
 SK_MAKE_BITMASK_OPS(SnippetRequirementFlags);
 
@@ -95,6 +96,9 @@ struct SkShaderSnippet {
     bool needsPriorStageOutput() const {
         return fSnippetRequirementFlags & SnippetRequirementFlags::kPriorStageOutput;
     }
+    bool needsTexture() const {
+        return fSnippetRequirementFlags & SnippetRequirementFlags::kTexture;
+    }
 
     const char* fName = nullptr;
     SkSpan<const SkUniform> fUniforms;
@@ -127,6 +131,10 @@ public:
     }
     bool needsLocalCoords() const {
         return fSnippetRequirementFlags & SnippetRequirementFlags::kLocalCoords;
+    }
+    // TODO - is this needed?
+    bool needsTexture() const {
+        return fSnippetRequirementFlags & SnippetRequirementFlags::kTexture;
     }
     const SkPaintParamsKey::BlockReader& blockReader(int index) const {
         return fBlockReaders[index];
