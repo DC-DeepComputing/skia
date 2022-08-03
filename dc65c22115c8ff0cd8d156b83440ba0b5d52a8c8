@@ -141,6 +141,24 @@
       "parentUuid": "b8c94e9a_3342d6ee",
       "revId": "dc65c22115c8ff0cd8d156b83440ba0b5d52a8c8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0b60c69b_39d444ca",
+        "filename": "src/shaders/SkPictureShader.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 247,
+      "author": {
+        "id": 10586
+      },
+      "writtenOn": "2022-08-03T17:50:48Z",
+      "side": 1,
+      "message": "Gentle ping.  Any thoughts on this?",
+      "parentUuid": "70d26d44_13e4f429",
+      "revId": "dc65c22115c8ff0cd8d156b83440ba0b5d52a8c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
