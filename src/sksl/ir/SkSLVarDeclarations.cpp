@@ -214,11 +214,22 @@ void VarDeclaration::ErrorCheck(const Context& context,
 
         // No other modifiers are allowed in runtime effects
         if (!ProgramConfig::IsRuntimeEffect(context.fConfig->fKind)) {
-            permitted |= Modifiers::kIn_Flag | Modifiers::kOut_Flag;
-            if (!ProgramConfig::IsCompute(context.fConfig->fKind)) {
+            if (baseType->typeKind() == Type::TypeKind::kTexture) {
+                // Only texture types allow `readonly` and `writeonly`.
+                permitted |= Modifiers::kReadOnly_Flag | Modifiers::kWriteOnly_Flag;
+            }
+            if (!baseType->isOpaque()) {
+                // Only non-opaque types allow `in` and `out`.
+                permitted |= Modifiers::kIn_Flag | Modifiers::kOut_Flag;
+            }
+            if (ProgramConfig::IsCompute(context.fConfig->fKind)) {
+                // Only compute shaders allow `threadgroup`.
+                if (!baseType->isOpaque()) {
+                    permitted |= Modifiers::kThreadgroup_Flag;
+                }
+            } else {
+                // Only vertex/fragment shaders allow `flat` and `noperspective`.
                 permitted |= Modifiers::kFlat_Flag | Modifiers::kNoPerspective_Flag;
-            } else if (!baseType->isOpaque()) {
-                permitted |= Modifiers::kThreadgroup_Flag;
             }
         }
     }
