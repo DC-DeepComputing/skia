@@ -177,8 +177,7 @@ void VarDeclaration::ErrorCheck(const Context& context,
     }
     if ((modifiers.fFlags & Modifiers::kThreadgroup_Flag) &&
         (modifiers.fFlags & (Modifiers::kIn_Flag | Modifiers::kOut_Flag))) {
-            context.fErrors->error(pos,
-                                   "in / out variables may not be declared threadgroup");
+        context.fErrors->error(pos, "in / out variables may not be declared threadgroup");
     }
     if ((modifiers.fFlags & Modifiers::kUniform_Flag)) {
         check_valid_uniform_type(pos, baseType, context);
@@ -215,7 +214,9 @@ void VarDeclaration::ErrorCheck(const Context& context,
         if (!ProgramConfig::IsCompute(context.fConfig->fKind)) {
             permitted |= Modifiers::kUniform_Flag;
         }
-
+        if (baseType->isInterfaceBlock()) {
+            permitted |= Modifiers::kBuffer_Flag;
+        }
         // No other modifiers are allowed in runtime effects
         if (!ProgramConfig::IsRuntimeEffect(context.fConfig->fKind)) {
             if (baseType->typeKind() == Type::TypeKind::kTexture) {
