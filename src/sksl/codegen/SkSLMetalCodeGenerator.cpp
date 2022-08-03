@@ -191,7 +191,7 @@ void MetalCodeGenerator::writeTextureType(const Type& type, const Modifiers& mod
     this->write(this->textureTypeName(type, &modifiers));
 }
 
-void MetalCodeGenerator::writeParameterType(const Type& type) {
+void MetalCodeGenerator::writeParameterType(const Variable* param) {
     if (type.typeKind() == Type::TypeKind::kTexture) {
         // TODO(skia:13609): we will need a mechanism in SkSL to specify texture-access type on
         // parameters. The default value (`access::sample`) is probably not what we will want.
@@ -315,8 +315,7 @@ std::string MetalCodeGenerator::getOutParamHelper(const FunctionCall& call,
         const Variable* param = function.parameters()[index];
         this->writeModifiers(param->modifiers());
 
-        const Type* type = outVars[index] ? &outVars[index]->type() : &arguments[index]->type();
-        this->writeParameterType(*type);
+        this->writeParameterType(outVars[index] ? &outVars[index] : &arguments[index]);
 
         if (pass_by_reference(param->modifiers(), param->type())) {
             this->write("&");
@@ -2110,7 +2109,7 @@ bool MetalCodeGenerator::writeFunctionDeclaration(const FunctionDeclaration& f) 
         this->write("(");
         this->writeFunctionRequirementParams(f, separator);
     }
-    for (const auto& param : f.parameters()) {
+    for (const Variable* param : f.parameters()) {
         if (f.isMain() && param->modifiers().fLayout.fBuiltin != -1) {
             continue;
         }
@@ -2118,7 +2117,7 @@ bool MetalCodeGenerator::writeFunctionDeclaration(const FunctionDeclaration& f) 
         separator = ", ";
         this->writeModifiers(param->modifiers());
         const Type* type = &param->type();
-        this->writeParameterType(*type);
+        this->writeParameterType(param);
         if (pass_by_reference(param->modifiers(), param->type())) {
             this->write("&");
         }
