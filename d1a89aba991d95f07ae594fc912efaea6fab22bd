@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c75c2e29_995d114e",
+        "filename": "tests/sksl/metal/Ossfuzz48371.metal",
+        "patchSetId": 3
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-08-03T20:56:48Z",
+      "side": 1,
+      "message": "An unadorned `texture2D` is now read/write, not read-only.",
+      "range": {
+        "startLine": 10,
+        "startChar": 28,
+        "endLine": 10,
+        "endChar": 38
+      },
+      "revId": "d1a89aba991d95f07ae594fc912efaea6fab22bd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
