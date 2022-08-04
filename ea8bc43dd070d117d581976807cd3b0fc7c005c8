@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d9c4a964_87750bbb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-08-04T20:42:49Z",
+      "side": 1,
+      "message": "I think the IWYU changes should be broken out into a separate CL.\nThose seem fine to me but I don\u0027t think I can give a proper review of the Bazel changes.",
+      "revId": "ea8bc43dd070d117d581976807cd3b0fc7c005c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
