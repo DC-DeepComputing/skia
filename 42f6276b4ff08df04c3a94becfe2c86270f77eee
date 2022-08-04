@@ -22,6 +22,30 @@
       },
       "revId": "42f6276b4ff08df04c3a94becfe2c86270f77eee",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d98a5357_af050b31",
+        "filename": "src/gpu/graphite/CommandBuffer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 18529
+      },
+      "writtenOn": "2022-08-04T23:03:35Z",
+      "side": 1,
+      "message": "Ah good catch, this should get tracked here for now. Eventually this will likely change such that each individual ComputePass will add a ref to its pipeline (much like `DrawPass::addResourceRefs` I imagine).",
+      "parentUuid": "40792742_4b2e2b18",
+      "range": {
+        "startLine": 80,
+        "startChar": 58,
+        "endLine": 80,
+        "endChar": 66
+      },
+      "revId": "42f6276b4ff08df04c3a94becfe2c86270f77eee",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
