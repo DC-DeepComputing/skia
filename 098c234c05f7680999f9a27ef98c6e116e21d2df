@@ -22,6 +22,30 @@
       },
       "revId": "098c234c05f7680999f9a27ef98c6e116e21d2df",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f6d4a8bc_e2e4b62f",
+        "filename": "modules/skcms/BUILD.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-04T15:33:46Z",
+      "side": 0,
+      "message": "It could be, although I\u0027d rather just do it in once change here.",
+      "parentUuid": "3c0e7089_e995339b",
+      "range": {
+        "startLine": 21,
+        "startChar": 0,
+        "endLine": 27,
+        "endChar": 7
+      },
+      "revId": "098c234c05f7680999f9a27ef98c6e116e21d2df",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
