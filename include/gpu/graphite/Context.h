@@ -12,6 +12,7 @@
 #include "include/core/SkShader.h"
 #include "include/gpu/graphite/ContextOptions.h"
 #include "include/gpu/graphite/GraphiteTypes.h"
+#include "include/gpu/graphite/RecorderOptions.h"
 #include "include/private/SingleOwner.h"
 
 #include <memory>
@@ -49,7 +50,7 @@ public:
 
     BackendApi backend() const { return fBackend; }
 
-    std::unique_ptr<Recorder> makeRecorder();
+    std::unique_ptr<Recorder> makeRecorder(const RecorderOptions& = {});
 
     void insertRecording(const InsertRecordingInfo&);
     void submit(SyncToCpu = SyncToCpu::kNo);
