@@ -111,6 +111,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "694abfa1_cd74eae7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-08-04T19:23:20Z",
+      "side": 1,
+      "message": "Yes, absolutely! If272ed118d712dc1a49b6e2fc9660f86566e2220 is a recent CL I reviewed that did this. I think the general process is:\n\n- update `infra/bots/jobs.json` with a new builder name\n  - the name describes what device to use. You can create a new name based on an existing one and add something custom like \"_AVIF\" (like how we have some for \"_Wuffs\")\n- run `gen_tasks.go` to generate the appropriate files\n- update the appropriate scripts in `infra/bots/recipe_modules/build/`. (The referenced CL updates `android.py` because it adds an Android bot. `default.py` would be appropriate for desktop, I believe.)\n  - it should look for \"_AVIF\" and set `skia_use_libavif`, as we do with e.g. \"_Wuffs\"\n\n+borenet@ (current infra gardener) who may be able to provide more advice.",
+      "parentUuid": "5c68f276_e22cf85b",
+      "revId": "89dbcd9f4e99bb87633be46f01a41fad2cbfbc76",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "7dbd3ee6_72697fd2",
