@@ -34,6 +34,24 @@
       "parentUuid": "b1ccfe3f_1b415360",
       "revId": "c169ddd9e4f094006847ff2c631b5f4d7af63b9f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "74675993_4ab04f87",
+        "filename": "src/core/SkGlyph.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 404,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-08-04T21:01:07Z",
+      "side": 0,
+      "message": "Right - but where does \u0027fFormat\u0027 get set?",
+      "parentUuid": "c76d54a7_49b8e13e",
+      "revId": "c169ddd9e4f094006847ff2c631b5f4d7af63b9f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
