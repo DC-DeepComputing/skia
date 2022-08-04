@@ -65,7 +65,6 @@
 #include "src/sksl/ir/SkSLSymbolTable.h"
 #include "src/sksl/ir/SkSLTernaryExpression.h"
 #include "src/sksl/ir/SkSLType.h"
-#include "src/sksl/ir/SkSLUnresolvedFunction.h"
 #include "src/sksl/ir/SkSLVarDeclarations.h"
 #include "src/sksl/ir/SkSLVariable.h"
 #include "src/sksl/ir/SkSLVariableReference.h"
@@ -75,6 +74,8 @@
 #include <string>
 #include <type_traits>
 #include <utility>
+
+#define SYMBOL_DEBUGF(...) //SkDebugf(__VA_ARGS__)
 
 namespace SkSL {
 
@@ -200,16 +201,15 @@ const Symbol* Rehydrator::symbol() {
                 parameters.push_back(&this->symbol()->as<Variable>());
             }
             const Type* returnType = this->type();
-            const FunctionDeclaration* result =
-                    fSymbolTable->takeOwnershipOfSymbol(std::make_unique<FunctionDeclaration>(
-                            Position(),
-                            this->modifiersPool().add(modifiers),
-                            name,
-                            std::move(parameters),
-                            returnType,
-                            fSymbolTable->isBuiltin()));
-            this->addSymbol(id, result);
-            return result;
+            auto decl = std::make_unique<FunctionDeclaration>(Position(),
+                                                              this->modifiersPool().add(modifiers),
+                                                              name,
+                                                              std::move(parameters),
+                                                              returnType,
+                                                              fSymbolTable->isBuiltin());
+            const FunctionDeclaration* sym = fSymbolTable->takeOwnershipOfSymbol(std::move(decl));
+            this->addSymbol(id, sym);
+            return sym;
         }
         case kField_Command: {
             const Variable* owner = this->symbolRef<Variable>();
@@ -239,21 +239,6 @@ const Symbol* Rehydrator::symbol() {
         }
         case kSymbolRef_Command: {
             return this->possiblyBuiltinSymbolRef();
-        }
-        case kUnresolvedFunction_Command: {
-            uint16_t id = this->readU16();
-            int length = this->readU8();
-            std::vector<const FunctionDeclaration*> functions;
-            functions.reserve(length);
-            for (int i = 0; i < length; ++i) {
-                const Symbol* f = this->symbol();
-                SkASSERT(f && f->kind() == Symbol::Kind::kFunctionDeclaration);
-                functions.push_back((const FunctionDeclaration*) f);
-            }
-            const UnresolvedFunction* result = fSymbolTable->takeOwnershipOfSymbol(
-                    std::make_unique<UnresolvedFunction>(std::move(functions)));
-            this->addSymbol(id, result);
-            return result;
         }
         case kVariable_Command: {
             uint16_t id = this->readU16();
@@ -567,18 +552,8 @@ std::unique_ptr<Expression> Rehydrator::expression() {
             const Type* type = this->type();
             const Symbol* symbol = this->possiblyBuiltinSymbolRef();
             ExpressionArray args = this->expressionArray();
-            const FunctionDeclaration* f;
-            if (symbol->is<FunctionDeclaration>()) {
-                f = &symbol->as<FunctionDeclaration>();
-            } else if (symbol->is<UnresolvedFunction>()) {
-                const UnresolvedFunction& unresolved = symbol->as<UnresolvedFunction>();
-                f = FunctionCall::FindBestFunctionForCall(this->context(), unresolved.functions(),
-                        args);
-                SkASSERT(f);
-            } else {
-                SkASSERT(false);
-                return nullptr;
-            }
+            const FunctionDeclaration* f = &symbol->as<FunctionDeclaration>();
+            f = FunctionCall::FindBestFunctionForCall(this->context(), f, args);
             return FunctionCall::Make(this->context(), pos, type, *f, std::move(args));
         }
         case Rehydrator::kIndex_Command: {
@@ -651,16 +626,22 @@ std::shared_ptr<SymbolTable> Rehydrator::symbolTable() {
     fSymbolTable = std::make_shared<SymbolTable>(std::move(fSymbolTable), builtin);
     std::vector<const Symbol*> ownedSymbols;
     ownedSymbols.reserve(ownedCount);
+
+    // Write the owned symbols.
+    SYMBOL_DEBUGF("\nOWNED SYMBOLS IN REHYDRATOR\n\n\n");
     for (int i = 0; i < ownedCount; ++i) {
         ownedSymbols.push_back(this->symbol());
+        SYMBOL_DEBUGF("%s\n", ownedSymbols.back()->description().c_str());
     }
     uint16_t symbolCount = this->readU16();
     std::vector<std::pair<std::string_view, int>> symbols;
     symbols.reserve(symbolCount);
+    SYMBOL_DEBUGF("\nORDERED SYMBOLS IN REHYDRATOR\n\n\n");
     for (int i = 0; i < symbolCount; ++i) {
         int index = this->readU16();
         if (index != kBuiltin_Symbol) {
-            fSymbolTable->addWithoutOwnership(ownedSymbols[index]);
+            SYMBOL_DEBUGF("%s\n", ownedSymbols[index]->description().c_str());
+            fSymbolTable->addWithoutOwnership((Symbol*)ownedSymbols[index]);  // FIXME
         } else {
             std::string_view name = this->readString();
             SymbolTable* root = fSymbolTable.get();
@@ -669,6 +650,7 @@ std::shared_ptr<SymbolTable> Rehydrator::symbolTable() {
             }
             const Symbol* s = (*root)[name];
             SkASSERT(s);
+            SYMBOL_DEBUGF("(builtin) %s\n", s->description().c_str());
             fSymbolTable->addWithoutOwnership(s);
         }
     }
