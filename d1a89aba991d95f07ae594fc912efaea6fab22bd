@@ -46,6 +46,30 @@
       },
       "revId": "d1a89aba991d95f07ae594fc912efaea6fab22bd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2425c0c5_5bf70c61",
+        "filename": "tests/sksl/metal/Ossfuzz48371.metal",
+        "patchSetId": 3
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-08-04T15:15:45Z",
+      "side": 1,
+      "message": "Oh, nevermind. I just found the hard-coded declaration of sampler2D that we inject.",
+      "parentUuid": "758d8d37_965f956c",
+      "range": {
+        "startLine": 10,
+        "startChar": 28,
+        "endLine": 10,
+        "endChar": 38
+      },
+      "revId": "d1a89aba991d95f07ae594fc912efaea6fab22bd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
