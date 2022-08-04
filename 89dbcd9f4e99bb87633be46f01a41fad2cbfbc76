@@ -60,6 +60,23 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "950e1fc7_850e34d7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 14979
+      },
+      "writtenOn": "2022-08-04T15:44:32Z",
+      "side": 1,
+      "message": "Will address other comments shortly.",
+      "revId": "89dbcd9f4e99bb87633be46f01a41fad2cbfbc76",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "7dbd3ee6_72697fd2",
         "filename": "gn/skia.gni",
         "patchSetId": 5
@@ -71,6 +88,30 @@
       "writtenOn": "2022-08-04T15:05:34Z",
       "side": 1,
       "message": "FYI: You\u0027ll want to set this to `true` in `gn/gn_to_bp.py` in order to let Android use this. But that\u0027s fine to be a separate CL. (And maybe Android isn\u0027t ready for it anyway.)",
+      "range": {
+        "startLine": 55,
+        "startChar": 2,
+        "endLine": 55,
+        "endChar": 18
+      },
+      "revId": "89dbcd9f4e99bb87633be46f01a41fad2cbfbc76",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "db3c5409_1c2937fd",
+        "filename": "gn/skia.gni",
+        "patchSetId": 5
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 14979
+      },
+      "writtenOn": "2022-08-04T15:44:32Z",
+      "side": 1,
+      "message": "Yes the dependencies are not yet there on Android. I am working on them.\n\nOnce that is done, i will enable the flag in gn_to_bp.py. Also, i would like to do that as a smaller change so that it will be easier to revert in case something breaks. :)",
+      "parentUuid": "7dbd3ee6_72697fd2",
       "range": {
         "startLine": 55,
         "startChar": 2,
