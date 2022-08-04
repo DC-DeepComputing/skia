@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "038edcf1_31af66eb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-04T18:23:12Z",
+      "side": 1,
+      "message": "John, can you look at the SkShader and SkSL Compiler changes? I needed to make these in order to compile Skia with SKSL on, but no GPU backend on. The includes of SkShaderCodeDictionary were incorrectly making use of src/sksl/codegen/*, so I used IWYU to help tidy those up. LMK if you want a different fix.",
+      "revId": "d81a8cc3d97c7a7a8547c78f1129c43a24665d4d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
