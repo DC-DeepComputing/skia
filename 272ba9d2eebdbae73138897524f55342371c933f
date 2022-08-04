@@ -266,6 +266,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "aed49b3e_a10ff80c",
+        "filename": "src/codec/SkAvifCodec.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 191,
+      "author": {
+        "id": 14979
+      },
+      "writtenOn": "2022-08-04T15:58:27Z",
+      "side": 1,
+      "message": "\u003e What do we support for AVIF on Android now? \n\nIt seems like we support RGBA, BGRA, RGB565 and P010 for 10bit.\n\nBut it seems like it is configurable.\n\nI have updated the TODO to specifically support RGB565 and BGRA. BGRA should be easy since libavif already supports it (i will add it in a follow-up CL). RGB565 might be a bit tricky as it would have to be addded to libavif first.\n\nPlease feel free to re-open if anything more needs to be done for this at the moment.",
+      "parentUuid": "365159d0_7c528a10",
+      "range": {
+        "startLine": 189,
+        "startChar": 0,
+        "endLine": 191,
+        "endChar": 5
+      },
+      "revId": "272ba9d2eebdbae73138897524f55342371c933f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4183920f_1b3d0fce",
