@@ -22,6 +22,52 @@
       },
       "revId": "609ee7e1b6ce9c4aa83719df1082fc2d4fb107f9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "54f5f225_7ec0ee84",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 552,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-08-04T20:29:14Z",
+      "side": 1,
+      "message": "Should we add an SKGPU_LOG_W(\"...\") here instead of a TODO? I think in general that\u0027s what we\u0027ve been adding as placeholders for our eventual debug messages.",
+      "range": {
+        "startLine": 552,
+        "startChar": 8,
+        "endLine": 552,
+        "endChar": 86
+      },
+      "revId": "609ee7e1b6ce9c4aa83719df1082fc2d4fb107f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "860b465d_9052e81f",
+        "filename": "src/gpu/graphite/TextureUtils.cpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2022-08-04T20:29:14Z",
+      "side": 1,
+      "message": "why this change? mipmaps doesn\u0027t look to be used outside the else",
+      "range": {
+        "startLine": 68,
+        "startChar": 4,
+        "endLine": 68,
+        "endChar": 28
+      },
+      "revId": "609ee7e1b6ce9c4aa83719df1082fc2d4fb107f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
