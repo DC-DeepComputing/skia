@@ -7,6 +7,8 @@ exports_files_legacy()
 filegroup(
     name = "core_srcs",
     srcs = [
+        "SkSLRasterPipelineCodeGenerator.cpp",
+        "SkSLRasterPipelineCodeGenerator.h",
         "SkSLVMCodeGenerator.cpp",
     ],
 )
@@ -37,6 +39,7 @@ split_srcs_and_hdrs(
 filegroup(
     name = "srcs",
     srcs = [
+        "SkSLRasterPipelineCodeGenerator.cpp",
         "SkSLVMCodeGenerator.cpp",
     ] + select({
         "//src/sksl:use_sksl_gpu_srcs": [":gpu_srcs"],
@@ -48,6 +51,7 @@ filegroup(
 filegroup(
     name = "private_hdrs",
     srcs = [
+        "SkSLRasterPipelineCodeGenerator.h",
         "SkSLVMCodeGenerator.h",
     ] + select({
         "//src/sksl:use_sksl_gpu_srcs": [":gpu_hdrs"],

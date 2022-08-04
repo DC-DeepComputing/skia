@@ -96,6 +96,8 @@ skia_sksl_sources = [
   "$_src/sksl/analysis/SkSLProgramUsage.h",
   "$_src/sksl/analysis/SkSLProgramVisitor.h",
   "$_src/sksl/analysis/SkSLSwitchCaseContainsExit.cpp",
+  "$_src/sksl/codegen/SkSLRasterPipelineCodeGenerator.cpp",
+  "$_src/sksl/codegen/SkSLRasterPipelineCodeGenerator.h",
   "$_src/sksl/codegen/SkSLVMCodeGenerator.cpp",
   "$_src/sksl/codegen/SkSLVMCodeGenerator.h",
   "$_src/sksl/dsl/DSLBlock.cpp",
