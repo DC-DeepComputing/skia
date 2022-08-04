@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ab44f643_5f671a2b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-04T20:44:13Z",
+      "side": 1,
+      "message": "Let me know when you have taken your screenshots and I can revert the change I made for the diff.",
+      "revId": "4ba6b7b5ab03ec0c28ebbf7c2bfab0b97cbe6e93",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
