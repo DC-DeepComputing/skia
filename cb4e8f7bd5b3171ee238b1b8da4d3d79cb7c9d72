@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9797f756_9ecedd36",
+        "filename": "modules/skottie/src/BlendModes.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2022-08-04T19:10:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4599c7e7_304d3fb3",
+      "range": {
+        "startLine": 18,
+        "startChar": 5,
+        "endLine": 18,
+        "endChar": 19
+      },
+      "revId": "cb4e8f7bd5b3171ee238b1b8da4d3d79cb7c9d72",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a98afe6a_05f25ce8",
@@ -58,6 +82,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1262a8ab_f0a3825e",
+        "filename": "modules/skottie/src/BlendModes.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2022-08-04T19:10:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a98afe6a_05f25ce8",
+      "revId": "cb4e8f7bd5b3171ee238b1b8da4d3d79cb7c9d72",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "faee5783_938cf820",
@@ -71,6 +113,24 @@
       "writtenOn": "2022-08-04T13:53:52Z",
       "side": 1,
       "message": "nit: you can drop this conditional (always true at this point).",
+      "revId": "cb4e8f7bd5b3171ee238b1b8da4d3d79cb7c9d72",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6ae6a541_55fa04f1",
+        "filename": "modules/skottie/src/BlendModes.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2022-08-04T19:10:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "faee5783_938cf820",
       "revId": "cb4e8f7bd5b3171ee238b1b8da4d3d79cb7c9d72",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
