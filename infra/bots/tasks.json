@@ -15,9 +15,9 @@
         "BazelBuild-example_hello_world_vulkan-release-linux_x64"
       ]
     },
-    "BazelBuild-modules_canvaskit_webgl-webgl2_debug-linux_x64": {
+    "BazelBuild-modules_canvaskit-ck_full_webgl2_debug-linux_x64": {
       "tasks": [
-        "BazelBuild-modules_canvaskit_webgl-webgl2_debug-linux_x64"
+        "BazelBuild-modules_canvaskit-ck_full_webgl2_debug-linux_x64"
       ]
     },
     "BazelBuild-skia_public-enforce_iwyu-linux_x64": {
@@ -30,9 +30,14 @@
         "BazelBuild-skia_public-release-linux_x64"
       ]
     },
-    "BazelTest-canvaskit_gold-webgl2_release_chrome-linux_x64": {
+    "BazelTest-canvaskit_gold-ck_full_cpu_release_chrome-linux_x64": {
       "tasks": [
-        "BazelTest-canvaskit_gold-webgl2_release_chrome-linux_x64"
+        "BazelTest-canvaskit_gold-ck_full_cpu_release_chrome-linux_x64"
+      ]
+    },
+    "BazelTest-canvaskit_gold-ck_full_webgl2_release_chrome-linux_x64": {
+      "tasks": [
+        "BazelTest-canvaskit_gold-ck_full_webgl2_release_chrome-linux_x64"
       ]
     },
     "Build-Debian10-Clang-arm-Debug-Android": {
@@ -3462,7 +3467,7 @@
       "max_attempts": 1,
       "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
     },
-    "BazelBuild-modules_canvaskit_webgl-webgl2_debug-linux_x64": {
+    "BazelBuild-modules_canvaskit-ck_full_webgl2_debug-linux_x64": {
       "casSpec": "compile",
       "cipd_packages": [
         {
@@ -3480,9 +3485,9 @@
         "bazel_build_task_driver/bazel_build",
         "--project_id=skia-swarming-bots",
         "--task_id=<(TASK_ID)",
-        "--task_name=BazelBuild-modules_canvaskit_webgl-webgl2_debug-linux_x64",
-        "--label=//modules/canvaskit:canvaskit_webgl",
-        "--config=webgl2_debug",
+        "--task_name=BazelBuild-modules_canvaskit-ck_full_webgl2_debug-linux_x64",
+        "--label=//modules/canvaskit:canvaskit",
+        "--config=ck_full_webgl2_debug",
         "--workdir=.",
         "--bazel_arg=--config=for_linux_x64_with_rbe",
         "--bazel_arg=--jobs=100",
@@ -3594,7 +3599,7 @@
       "max_attempts": 1,
       "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
     },
-    "BazelTest-canvaskit_gold-webgl2_release_chrome-linux_x64": {
+    "BazelTest-canvaskit_gold-ck_full_cpu_release_chrome-linux_x64": {
       "casSpec": "compile",
       "cipd_packages": [
         {
@@ -3612,15 +3617,70 @@
         "./canvaskit_gold",
         "--project_id=skia-swarming-bots",
         "--task_id=<(TASK_ID)",
-        "--task_name=BazelTest-canvaskit_gold-webgl2_release_chrome-linux_x64",
-        "--test_config=webgl2_release_chrome",
+        "--task_name=BazelTest-canvaskit_gold-ck_full_cpu_release_chrome-linux_x64",
+        "--test_config=ck_full_cpu_release_chrome",
         "--workdir=.",
         "--goldctl_path=./cipd_bin_packages/goldctl",
         "--git_commit=<(REVISION)",
         "--changelist_id=<(ISSUE)",
         "--patchset_order=<(PATCHSET)",
         "--tryjob_id=<(BUILDBUCKET_BUILD_ID)",
-        "--expunge_cache"
+        "--expunge_cache",
+        "--cpu_or_gpu=CPU",
+        "--cpu_or_gpu_value=CPU",
+        "--compilation_mode=Release",
+        "--browser=Chrome"
+      ],
+      "dependencies": [
+        "Housekeeper-PerCommit-BuildTaskDrivers_linux_amd64"
+      ],
+      "dimensions": [
+        "cpu:x86-64-Haswell_GCE",
+        "gpu:none",
+        "machine_type:n1-standard-16",
+        "os:Debian-10.3",
+        "pool:Skia"
+      ],
+      "env_prefixes": {
+        "PATH": [
+          "bazelisk"
+        ]
+      },
+      "idempotent": true,
+      "max_attempts": 1,
+      "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
+    },
+    "BazelTest-canvaskit_gold-ck_full_webgl2_release_chrome-linux_x64": {
+      "casSpec": "compile",
+      "cipd_packages": [
+        {
+          "name": "skia/bots/bazelisk",
+          "path": "bazelisk",
+          "version": "version:0"
+        },
+        {
+          "name": "skia/tools/goldctl/${platform}",
+          "path": "cipd_bin_packages",
+          "version": "git_revision:34ecdc8775563915792e05ba9d921342808ae2dc"
+        }
+      ],
+      "command": [
+        "./canvaskit_gold",
+        "--project_id=skia-swarming-bots",
+        "--task_id=<(TASK_ID)",
+        "--task_name=BazelTest-canvaskit_gold-ck_full_webgl2_release_chrome-linux_x64",
+        "--test_config=ck_full_webgl2_release_chrome",
+        "--workdir=.",
+        "--goldctl_path=./cipd_bin_packages/goldctl",
+        "--git_commit=<(REVISION)",
+        "--changelist_id=<(ISSUE)",
+        "--patchset_order=<(PATCHSET)",
+        "--tryjob_id=<(BUILDBUCKET_BUILD_ID)",
+        "--expunge_cache",
+        "--cpu_or_gpu=GPU",
+        "--cpu_or_gpu_value=WebGL2",
+        "--compilation_mode=Release",
+        "--browser=Chrome"
       ],
       "dependencies": [
         "Housekeeper-PerCommit-BuildTaskDrivers_linux_amd64"
@@ -86592,6 +86652,16 @@
   "commit_queue": {
     "BazelBuild-example_hello_world_dawn-release-linux_x64": {},
     "BazelBuild-skia_public-enforce_iwyu-linux_x64": {},
+    "BazelTest-canvaskit_gold-ck_full_cpu_release_chrome-linux_x64": {
+      "location_regexes": [
+        "modules/canvaskit/.*"
+      ]
+    },
+    "BazelTest-canvaskit_gold-ck_full_webgl2_release_chrome-linux_x64": {
+      "location_regexes": [
+        "modules/canvaskit/.*"
+      ]
+    },
     "Build-Debian10-Clang-arm-Debug-Android": {},
     "Build-Debian10-Clang-arm-Release-Android_API26": {},
     "Build-Debian10-Clang-arm64-Debug-Android": {},
