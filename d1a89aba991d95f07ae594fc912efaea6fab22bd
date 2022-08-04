@@ -70,6 +70,30 @@
       },
       "revId": "d1a89aba991d95f07ae594fc912efaea6fab22bd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b8824372_bb28f2da",
+        "filename": "tests/sksl/metal/Ossfuzz48371.metal",
+        "patchSetId": 3
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 11059
+      },
+      "writtenOn": "2022-08-04T15:17:32Z",
+      "side": 1,
+      "message": "Vert/fragment processors always use `sampler2d` (represented in Metal as texture+sampler wrapped in a struct) and accesses it via sample calls.\nOnly compute uses the `texture2d` type and accesses it via read/write.\n(Not to be confused with the GLSL `texture2d` function which samples from a sampler2d...!)",
+      "parentUuid": "758d8d37_965f956c",
+      "range": {
+        "startLine": 10,
+        "startChar": 28,
+        "endLine": 10,
+        "endChar": 38
+      },
+      "revId": "d1a89aba991d95f07ae594fc912efaea6fab22bd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
