@@ -44,7 +44,7 @@ public:
 
     sk_sp<SkImage> findOrCreate(Recorder* recorder,
                                 const SkImage* image,
-                                Mipmapped mipmapped) override {
+                                SkImage::RequiredImageProperties) override {
         SkASSERT(!as_IB(image)->isGraphiteBacked());
 
         return nullptr;
