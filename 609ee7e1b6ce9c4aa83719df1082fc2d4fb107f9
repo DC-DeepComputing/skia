@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b0fb22f4_139b6ceb",
+        "filename": "include/gpu/graphite/RecorderOptions.h",
+        "patchSetId": 28
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-04T20:28:56Z",
+      "side": 1,
+      "message": "Thoughts on defining this in Recorder.h? Or is this so we can have Context include RecorderOptions but still forward declare Recorder?",
+      "range": {
+        "startLine": 17,
+        "startChar": 14,
+        "endLine": 17,
+        "endChar": 29
+      },
+      "revId": "609ee7e1b6ce9c4aa83719df1082fc2d4fb107f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

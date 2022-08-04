@@ -98,6 +98,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "984bf2f7_36f909b9",
+        "filename": "include/gpu/graphite/RecorderOptions.h",
+        "patchSetId": 23
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-04T20:28:56Z",
+      "side": 1,
+      "message": "And we can\u0027t just drop the draw easily, right? We\u0027d need addToKey() to be able to fail and then have DrawPass not add any SortKeys for it.\n\nIf we do decide to have a general fallback draw-bounds system, I think it makes sense to connect this to the same error color/shader. On the other hand, if we don\u0027t have more general fallbacks, it feels a little one-off to have this still draw.\n\nSince no one is implementing these right now, I am fine keeping it like this and then making a more final decision when we start integrating clients with graphite.",
+      "parentUuid": "afe5380a_673a735f",
+      "range": {
+        "startLine": 29,
+        "startChar": 17,
+        "endLine": 29,
+        "endChar": 27
+      },
+      "revId": "33eda7a33dbe88256a17e3e16bdc5a7022811d10",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7a39a6b3_b84a4837",
         "filename": "include/gpu/graphite/RecorderOptions.h",
         "patchSetId": 23
