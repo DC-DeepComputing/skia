@@ -16,6 +16,23 @@
       "message": "Let me know when you have taken your screenshots and I can revert the change I made for the diff.",
       "revId": "4ba6b7b5ab03ec0c28ebbf7c2bfab0b97cbe6e93",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cb98b9a0_49acf1f0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 10009
+      },
+      "writtenOn": "2022-08-04T20:50:56Z",
+      "side": 1,
+      "message": "You\u0027ll have to update codesize_test.go to reflect the new Bloaty command line arguments.",
+      "revId": "4ba6b7b5ab03ec0c28ebbf7c2bfab0b97cbe6e93",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
