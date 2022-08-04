@@ -16,6 +16,24 @@
       "message": "Don\u0027t we need to replace this with something or bad things will happen ?",
       "revId": "c169ddd9e4f094006847ff2c631b5f4d7af63b9f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c76d54a7_49b8e13e",
+        "filename": "src/core/SkGlyph.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 404,
+      "author": {
+        "id": 5210
+      },
+      "writtenOn": "2022-08-04T20:32:45Z",
+      "side": 0,
+      "message": "It is replaced with using the format:\nbool isColor()       const { return fFormat \u003d\u003d SkMask::kARGB32_Format; }",
+      "parentUuid": "b1ccfe3f_1b415360",
+      "revId": "c169ddd9e4f094006847ff2c631b5f4d7af63b9f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
