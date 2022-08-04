@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "36925721_2ca4777f",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 262,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-04T01:18:44Z",
+      "side": 1,
+      "message": "If we peek the size from any SkUniformDataBlock that `uniformData` points to, we can get the UniformWriter from the buffer manager before we iterate over the entries in `uniformData`. While the peeking will be a little awkward, I think it\u0027ll simplify the overall function since we won\u0027t have to remember all the pointers in `udbs`.",
+      "range": {
+        "startLine": 251,
+        "startChar": 8,
+        "endLine": 262,
+        "endChar": 9
+      },
+      "revId": "63c9e28bc9b989fe127e79051aefc5da101015ec",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e4af4888_e2cff6b1",
         "filename": "src/gpu/graphite/DrawPass.cpp",
         "patchSetId": 9
@@ -14,6 +37,30 @@
       "writtenOn": "2022-08-03T20:30:15Z",
       "side": 1,
       "message": "Would it make sense to define a local type that combines the pipelineToSsboIndices and corresponding uniform bindings, and makes friendlier functions than having to work through a series of integer key queries?",
+      "range": {
+        "startLine": 360,
+        "startChar": 4,
+        "endLine": 363,
+        "endChar": 72
+      },
+      "revId": "63c9e28bc9b989fe127e79051aefc5da101015ec",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c42b099b_ef55a026",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 363,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-04T01:18:44Z",
+      "side": 1,
+      "message": "Also, I had this thought later, but using the pipeline index will result in more buffer binds and splitting of compatible data.\n\nSince we define the uniforms separately for render steps and shading, we can group them in the SSBO based on either having the same RenderStep (for geometry ssbo data) or the same paint unique ID (for the shading ssbo).  The pipeline index is the unique combination of those two, and would be needed if we were only using a single ssbo binding for the whole program.",
+      "parentUuid": "e4af4888_e2cff6b1",
       "range": {
         "startLine": 360,
         "startChar": 4,
