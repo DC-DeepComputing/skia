@@ -116,6 +116,30 @@
       },
       "revId": "609ee7e1b6ce9c4aa83719df1082fc2d4fb107f9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "37ad7f51_154f6f63",
+        "filename": "src/gpu/graphite/TextureUtils.cpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2022-08-04T20:53:01Z",
+      "side": 1,
+      "message": "This was a bug revealed by this CL. The memory in \u0027mapmaps\u0027 has to survive outside of the if-block because the \u0027texels\u0027 variable is used lower down.",
+      "parentUuid": "860b465d_9052e81f",
+      "range": {
+        "startLine": 68,
+        "startChar": 4,
+        "endLine": 68,
+        "endChar": 28
+      },
+      "revId": "609ee7e1b6ce9c4aa83719df1082fc2d4fb107f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
