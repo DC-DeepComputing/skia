@@ -34,15 +34,15 @@ public:
     MethodReference(const Context& context,
                     Position pos,
                     std::unique_ptr<Expression> self,
-                    std::vector<const FunctionDeclaration*> functions)
+                    const FunctionDeclaration* functions)
             : INHERITED(pos, kExpressionKind, context.fTypes.fInvalid.get())
             , fSelf(std::move(self))
-            , fFunctions(std::move(functions)) {}
+            , fFunctions(functions) {}
 
     std::unique_ptr<Expression>& self() { return fSelf; }
     const std::unique_ptr<Expression>& self() const { return fSelf; }
 
-    const std::vector<const FunctionDeclaration*>& functions() const { return fFunctions; }
+    const FunctionDeclaration* functions() const { return fFunctions; }
 
     bool hasProperty(Property property) const override { return false; }
 
@@ -58,14 +58,14 @@ public:
 private:
     MethodReference(Position pos,
                     std::unique_ptr<Expression> self,
-                    std::vector<const FunctionDeclaration*> functions,
+                    const FunctionDeclaration* functions,
                     const Type* type)
             : INHERITED(pos, kExpressionKind, type)
             , fSelf(std::move(self))
-            , fFunctions(std::move(functions)) {}
+            , fFunctions(functions) {}
 
     std::unique_ptr<Expression> fSelf;
-    std::vector<const FunctionDeclaration*> fFunctions;
+    const FunctionDeclaration* fFunctions;
 
     using INHERITED = Expression;
 };

@@ -56,12 +56,11 @@
 #include "src/sksl/ir/SkSLSymbolTable.h"
 #include "src/sksl/ir/SkSLTernaryExpression.h"
 #include "src/sksl/ir/SkSLType.h"
-#include "src/sksl/ir/SkSLUnresolvedFunction.h"
 #include "src/sksl/ir/SkSLVarDeclarations.h"
 #include "src/sksl/ir/SkSLVariable.h"
 #include "src/sksl/ir/SkSLVariableReference.h"
 
-#include <map>
+#define SYMBOL_DEBUGF(...) //SkDebugf(__VA_ARGS__)
 
 namespace SkSL {
 
@@ -174,17 +173,6 @@ void Dehydrator::write(const Symbol& s) {
             this->write(f.returnType());
             break;
         }
-        case Symbol::Kind::kUnresolvedFunction: {
-            this->allocSymbolId(&s);
-            const UnresolvedFunction& f = s.as<UnresolvedFunction>();
-            this->writeCommand(Rehydrator::kUnresolvedFunction_Command);
-            this->writeId(&f);
-            this->writeU8(f.functions().size());
-            for (const FunctionDeclaration* funcDecl : f.functions()) {
-                this->write(*funcDecl);
-            }
-            break;
-        }
         case Symbol::Kind::kType: {
             const Type& t = s.as<Type>();
             switch (t.typeKind()) {
@@ -240,49 +228,79 @@ void Dehydrator::write(const Symbol& s) {
     }
 }
 
-void Dehydrator::write(const SymbolTable& symbols) {
-    auto symbolIsReferenced = [&](const Symbol& sym) -> bool {
-        if (sym.is<Variable>()) {
-            // Only dehydrate Variables that haven't been optimized away.
-            return sym.as<Variable>().storage() != VariableStorage::kEliminated;
+void Dehydrator::addOverloadChainToDehydrationList(const SymbolTable& symbols,
+                                                   const FunctionDeclaration& func,
+                                                   std::vector<const Symbol*>* dehydrationList) {
+    // If this function has an overload...
+    if (const FunctionDeclaration* overload = func.overload()) {
+        // ... and the overload is in _this_ symbol table (not a parent)...
+        for (const std::unique_ptr<const Symbol>& symbol : symbols.fOwnedSymbols) {
+            if (overload == symbol.get()) {
+                // ... we want to dehydrate that too.
+                this->addOverloadChainToDehydrationList(symbols, *overload, dehydrationList);
+                dehydrationList->push_back(overload);
+                break;
+            }
+        }
+    }
+}
+
+void Dehydrator::addSymbolToDehydrationList(const SymbolTable& symbols,
+                                            const Symbol& symbol,
+                                            std::vector<const Symbol*>* dehydrationList) {
+    if (symbol.is<Variable>()) {
+        // Do not dehydrate Variables that have been optimized away.
+        if (symbol.as<Variable>().storage() == VariableStorage::kEliminated) {
+            return;
+        }
+    }
+    if (symbol.is<FunctionDeclaration>()) {
+        // Start with the top level overload.
+        const Symbol** found = symbols.fSymbols.find(SymbolTable::MakeSymbolKey(symbol.name()));
+        if (!found || *found != &symbol) {
+            // The symbol was inaccessible by name; we don't need to store and rehydrate it.
+            return;
         }
 
-        // Only dehydrate symbols that are actually findable by name. Some symbols can be left
-        // behind and inaccessible, such as stale UnresolvedFunction nodes; we don't need to
-        // store and rehydrate those.
-        const Symbol** found = symbols.fSymbols.find(SymbolTable::MakeSymbolKey(sym.name()));
-        return found && *found == &sym;
-    };
+        // If this function has an overload, make sure to add its overloads first.
+        this->addOverloadChainToDehydrationList(symbols, symbol.as<FunctionDeclaration>(),
+                                                dehydrationList);
+    }
+    dehydrationList->push_back(&symbol);
+}
 
+void Dehydrator::write(const SymbolTable& symbols) {
     this->writeCommand(Rehydrator::kSymbolTable_Command);
     this->writeU8(symbols.isBuiltin());
 
     // Make a list of all the owned symbols which are referenced.
     std::vector<const Symbol*> ownedSymbols;
-    std::vector<const Symbol*> discardedSymbols;
-    for (const std::unique_ptr<const Symbol>& s : symbols.fOwnedSymbols) {
-        if (symbolIsReferenced(*s)) {
-            ownedSymbols.push_back(s.get());
-        }
+    for (const std::unique_ptr<const Symbol>& symbol : symbols.fOwnedSymbols) {
+        this->addSymbolToDehydrationList(symbols, *symbol, &ownedSymbols);
     }
 
     // Write the owned symbols.
+    SYMBOL_DEBUGF("\nOWNED SYMBOLS IN DEHYDRATOR\n\n\n");
     this->writeU16(ownedSymbols.size());
     for (const Symbol* s : ownedSymbols) {
         this->write(*s);
+        SYMBOL_DEBUGF("%s\n", s->description().c_str());
     }
 
     // Make an ordered list of every referenced symbol in the symbol-table, owned or not.
-    std::map<std::string_view, const Symbol*> ordered;
-    symbols.foreach([&](std::string_view name, const Symbol* symbol) {
-        if (symbolIsReferenced(*symbol)) {
-            ordered.insert({name, symbol});
-        }
+    std::vector<const Symbol*> ordered;
+    symbols.foreach ([&](std::string_view name, const Symbol* symbol) {
+        this->addSymbolToDehydrationList(symbols, *symbol, &ordered);
+    });
+
+    std::stable_sort(ordered.begin(), ordered.end(), [](const Symbol* a, const Symbol* b) {
+        return a->name() < b->name();
     });
 
     // List the symbols in named order.
+    SYMBOL_DEBUGF("\nORDERED SYMBOLS IN DEHYDRATOR\n\n\n");
     this->writeU16(ordered.size());
-    for (const auto& [name, symbol] : ordered) {
+    for (const Symbol* symbol : ordered) {
         bool found = false;
         for (size_t i = 0; i < ownedSymbols.size(); ++i) {
             if (ownedSymbols[i] == symbol) {
@@ -292,8 +310,11 @@ void Dehydrator::write(const SymbolTable& symbols) {
                 break;
             }
         }
-        if (!found) {
+        if (found) {
+            SYMBOL_DEBUGF("%s\n", symbol->description().c_str());
+        } else {
             // we should only fail to find builtin types
+            SYMBOL_DEBUGF("(builtin symbol) %s\n", symbol->description().c_str());
             SkASSERT(symbol->is<Type>() && symbol->as<Type>().isInBuiltinTypes());
             this->writeU16(Rehydrator::kBuiltin_Symbol);
             this->write(symbol->name());
