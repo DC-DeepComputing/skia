@@ -207,8 +207,13 @@ std::string emit_attributes(SkSpan<const Attribute> vertexAttrs,
 
 std::string EmitVaryings(const RenderStep* step, const char* direction) {
     std::string result;
-
     int location = 0;
+
+    // RenderSteps should always emit a local coordinate varying.
+    SkSL::String::appendf(&result, "    layout(location=%d) %s ", location++, direction);
+    result.append(SkSLTypeString(SkSLType::kFloat2));
+    SkSL::String::appendf(&result, " localCoords;\n");
+
     for (auto v : step->varyings()) {
         SkSL::String::appendf(&result, "    layout(location=%d) %s ", location++, direction);
         result.append(SkSLTypeString(v.fType));
@@ -247,9 +252,7 @@ std::string GetSkSLVS(const GraphicsPipelineDesc& desc) {
     }
 
     // Varyings needed by RenderStep
-    if (step->numVaryings() > 0) {
-        sksl += EmitVaryings(step, "out");
-    }
+    sksl += EmitVaryings(step, "out");
 
     // Vertex shader function declaration
     sksl += "void main() {\n";
