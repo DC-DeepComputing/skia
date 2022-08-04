@@ -16,6 +16,24 @@
       "message": "SkSLPipelineStageCodeGenerator.h is used here",
       "revId": "cb9a2c66e08c89fc3fab809454db8347e1e77d6b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0bef5086_34c5ae05",
+        "filename": "src/core/SkShaderCodeDictionary.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 622,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2022-08-04T21:05:59Z",
+      "side": 1,
+      "message": "Moved to #ifdef SK_GRAPHITE_ENABLED",
+      "parentUuid": "3a6fae12_8e7188e4",
+      "revId": "cb9a2c66e08c89fc3fab809454db8347e1e77d6b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
