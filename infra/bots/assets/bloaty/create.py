@@ -22,7 +22,7 @@ import utils
 
 
 REPO = 'https://github.com/google/bloaty'
-TAG = 'v1.0'
+TAG = 'v1.1'
 
 
 def create_asset(target_dir):

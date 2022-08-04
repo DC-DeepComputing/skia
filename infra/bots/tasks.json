@@ -18335,7 +18335,7 @@
         {
           "name": "skia/bots/bloaty",
           "path": "bloaty",
-          "version": "version:1"
+          "version": "version:2"
         }
       ],
       "command": [
@@ -18451,7 +18451,7 @@
         {
           "name": "skia/bots/bloaty",
           "path": "bloaty",
-          "version": "version:1"
+          "version": "version:2"
         }
       ],
       "command": [
@@ -18567,7 +18567,7 @@
         {
           "name": "skia/bots/bloaty",
           "path": "bloaty",
-          "version": "version:1"
+          "version": "version:2"
         }
       ],
       "command": [
@@ -18683,7 +18683,7 @@
         {
           "name": "skia/bots/bloaty",
           "path": "bloaty",
-          "version": "version:1"
+          "version": "version:2"
         }
       ],
       "command": [
@@ -18799,7 +18799,7 @@
         {
           "name": "skia/bots/bloaty",
           "path": "bloaty",
-          "version": "version:1"
+          "version": "version:2"
         }
       ],
       "command": [
@@ -18915,7 +18915,7 @@
         {
           "name": "skia/bots/bloaty",
           "path": "bloaty",
-          "version": "version:1"
+          "version": "version:2"
         }
       ],
       "command": [
@@ -19031,7 +19031,7 @@
         {
           "name": "skia/bots/bloaty",
           "path": "bloaty",
-          "version": "version:1"
+          "version": "version:2"
         }
       ],
       "command": [
@@ -19147,7 +19147,7 @@
         {
           "name": "skia/bots/bloaty",
           "path": "bloaty",
-          "version": "version:1"
+          "version": "version:2"
         }
       ],
       "command": [
@@ -19263,7 +19263,7 @@
         {
           "name": "skia/bots/bloaty",
           "path": "bloaty",
-          "version": "version:1"
+          "version": "version:2"
         }
       ],
       "command": [
@@ -19526,7 +19526,7 @@
         {
           "name": "skia/bots/bloaty",
           "path": "bloaty",
-          "version": "version:1"
+          "version": "version:2"
         }
       ],
       "command": [
@@ -19545,7 +19545,7 @@
         "--binary_name",
         "dm",
         "--bloaty_cipd_version",
-        "version:1",
+        "version:2",
         "--repo",
         "<(REPO)",
         "--revision",
@@ -19591,7 +19591,7 @@
         {
           "name": "skia/bots/bloaty",
           "path": "bloaty",
-          "version": "version:1"
+          "version": "version:2"
         }
       ],
       "command": [
@@ -19610,7 +19610,7 @@
         "--binary_name",
         "fm",
         "--bloaty_cipd_version",
-        "version:1",
+        "version:2",
         "--repo",
         "<(REPO)",
         "--revision",
@@ -19656,7 +19656,7 @@
         {
           "name": "skia/bots/bloaty",
           "path": "bloaty",
-          "version": "version:1"
+          "version": "version:2"
         }
       ],
       "command": [
@@ -19675,7 +19675,7 @@
         "--binary_name",
         "skottie_tool",
         "--bloaty_cipd_version",
-        "version:1",
+        "version:2",
         "--repo",
         "<(REPO)",
         "--revision",
@@ -19721,7 +19721,7 @@
         {
           "name": "skia/bots/bloaty",
           "path": "bloaty",
-          "version": "version:1"
+          "version": "version:2"
         }
       ],
       "command": [
@@ -19740,7 +19740,7 @@
         "--binary_name",
         "skottie_tool_cpu",
         "--bloaty_cipd_version",
-        "version:1",
+        "version:2",
         "--repo",
         "<(REPO)",
         "--revision",
@@ -19786,7 +19786,7 @@
         {
           "name": "skia/bots/bloaty",
           "path": "bloaty",
-          "version": "version:1"
+          "version": "version:2"
         }
       ],
       "command": [
@@ -19805,7 +19805,7 @@
         "--binary_name",
         "skottie_tool_gpu",
         "--bloaty_cipd_version",
-        "version:1",
+        "version:2",
         "--repo",
         "<(REPO)",
         "--revision",

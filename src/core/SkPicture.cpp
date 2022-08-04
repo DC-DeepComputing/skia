@@ -13,6 +13,7 @@
 #include "include/private/SkTo.h"
 #include "src/core/SkCanvasPriv.h"
 #include "src/core/SkMathPriv.h"
+#include "src/core/SkPictureCommon.h"
 #include "src/core/SkPictureData.h"
 #include "src/core/SkPicturePlayback.h"
 #include "src/core/SkPicturePriv.h"
