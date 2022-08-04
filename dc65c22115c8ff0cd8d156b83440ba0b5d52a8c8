@@ -177,6 +177,24 @@
       "parentUuid": "0b60c69b_39d444ca",
       "revId": "dc65c22115c8ff0cd8d156b83440ba0b5d52a8c8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cabb5cec_e4fbc224",
+        "filename": "src/shaders/SkPictureShader.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 247,
+      "author": {
+        "id": 5085
+      },
+      "writtenOn": "2022-08-04T15:40:24Z",
+      "side": 1,
+      "message": "It would make more sense to me to land this when were also ready to land the additional properties. But if landing this helps the downstream work to experiment with that work I\u0027m not strongly opposed to landing it now (and then reverting if that other work never comes to fruition).",
+      "parentUuid": "18a082b2_6167e61e",
+      "revId": "dc65c22115c8ff0cd8d156b83440ba0b5d52a8c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
