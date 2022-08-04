@@ -16,6 +16,24 @@
       "message": "It seems like the \"Housekeeper-OnDemand-Presubmit\" tryjob is failing with a seemingly unrelated error. I tried rebasing but that didn\u0027t help. Any idea what\u0027s going on?",
       "revId": "6d5fed0a82ca5e6b9adb249fa433488957ad576c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a79eac16_2758877d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-08-04T21:55:13Z",
+      "side": 1,
+      "message": "I think the issue is on our end. We talked about removing our DEPS check step, but I don\u0027t know what the current status of that is. Trying again, just in case, and alerting borenet@ (who can check on it tomorrow).",
+      "parentUuid": "430edee1_64a59d14",
+      "revId": "6d5fed0a82ca5e6b9adb249fa433488957ad576c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
