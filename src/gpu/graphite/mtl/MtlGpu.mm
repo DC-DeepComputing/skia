@@ -49,7 +49,6 @@ MtlGpu::MtlGpu(sk_cfp<id<MTLDevice>> device,
     : skgpu::graphite::Gpu(std::move(caps))
     , fDevice(std::move(device))
     , fQueue(std::move(queue)) {
-    this->initCompiler();
 }
 
 MtlGpu::~MtlGpu() {

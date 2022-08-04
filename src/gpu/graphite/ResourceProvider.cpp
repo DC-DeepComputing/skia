@@ -17,6 +17,7 @@
 #include "src/gpu/graphite/ResourceCache.h"
 #include "src/gpu/graphite/Sampler.h"
 #include "src/gpu/graphite/Texture.h"
+#include "src/sksl/SkSLCompiler.h"
 
 namespace skgpu::graphite {
 
@@ -28,6 +29,7 @@ ResourceProvider::ResourceProvider(const Gpu* gpu,
         , fGlobalCache(std::move(globalCache)) {
     SkASSERT(fResourceCache);
     fGraphicsPipelineCache.reset(new GraphicsPipelineCache(this));
+    fCompiler = std::make_unique<SkSL::Compiler>(fGpu->caps()->shaderCaps());
 }
 
 ResourceProvider::~ResourceProvider() {
