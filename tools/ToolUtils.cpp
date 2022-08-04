@@ -624,4 +624,63 @@ SkSpan<const SkFontArguments::VariationPosition::Coordinate> VariationSliders::g
                                                                         fAxisSliders.size()};
 }
 
+#ifdef SK_GRAPHITE_ENABLED
+
+// Currently, we give each new Recorder its own ImageProvider. This means we don't have to deal
+// w/ any threading issues.
+// TODO: We should probably have this class generate and report some cache stats
+// TODO: Hook up to listener system?
+// TODO: add testing of a single ImageProvider passed to multiple recorders
+class TestingImageProvider : public skgpu::graphite::ImageProvider {
+public:
+    ~TestingImageProvider() override {}
+
+    sk_sp<SkImage> findOrCreate(skgpu::graphite::Recorder* recorder,
+                                const SkImage* image,
+                                skgpu::graphite::Mipmapped mipmapped) override {
+        if (mipmapped == skgpu::graphite::Mipmapped::kNo) {
+            // If no mipmaps are required, check to see if we have a mipmapped version anyway -
+            // since it can be used in that case.
+            // TODO: we could get fancy and, if ever a mipmapped key eclipsed a non-mipmapped
+            // key, we could remove the hidden non-mipmapped key/image from the cache.
+            uint64_t mipMappedKey = ((uint64_t)image->uniqueID() << 32) | 0x1;
+            auto result = fCache.find(mipMappedKey);
+            if (result != fCache.end()) {
+                return result->second;
+            }
+        }
+
+        uint64_t key = ((uint64_t)image->uniqueID() << 32) |
+                       (mipmapped == skgpu::graphite::Mipmapped::kYes ? 0x1 : 0x0);
+
+        auto result = fCache.find(key);
+        if (result != fCache.end()) {
+            return result->second;
+        }
+
+        sk_sp<SkImage> newImage = image->makeTextureImage(recorder, mipmapped);
+        if (!newImage) {
+            return nullptr;
+        }
+
+        auto [iter, success] = fCache.insert({ key, newImage });
+        SkASSERT(success);
+
+        return iter->second;
+    }
+
+private:
+    std::map<uint64_t, sk_sp<SkImage>> fCache;
+};
+
+skgpu::graphite::RecorderOptions CreateTestingRecorderOptions() {
+    skgpu::graphite::RecorderOptions options;
+
+    options.fImageProvider.reset(new TestingImageProvider);
+
+    return options;
+}
+
+#endif // SK_GRAPHITE_ENABLED
+
 }  // namespace ToolUtils
