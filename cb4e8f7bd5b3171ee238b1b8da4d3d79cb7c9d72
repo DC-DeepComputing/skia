@@ -1,0 +1,78 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e9908182_7d8c243d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2022-08-04T13:53:52Z",
+      "side": 1,
+      "message": "Let\u0027s add that test json too, as resources/skottie/skottie-blendmode-hardmix.json.",
+      "revId": "cb4e8f7bd5b3171ee238b1b8da4d3d79cb7c9d72",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4599c7e7_304d3fb3",
+        "filename": "modules/skottie/src/BlendModes.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2022-08-04T13:53:52Z",
+      "side": 1,
+      "message": "naming nit: CustomBlenders",
+      "range": {
+        "startLine": 18,
+        "startChar": 5,
+        "endLine": 18,
+        "endChar": 19
+      },
+      "revId": "cb4e8f7bd5b3171ee238b1b8da4d3d79cb7c9d72",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a98afe6a_05f25ce8",
+        "filename": "modules/skottie/src/BlendModes.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2022-08-04T13:53:52Z",
+      "side": 1,
+      "message": "nit: indent to match lines above.",
+      "revId": "cb4e8f7bd5b3171ee238b1b8da4d3d79cb7c9d72",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "faee5783_938cf820",
+        "filename": "modules/skottie/src/BlendModes.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2022-08-04T13:53:52Z",
+      "side": 1,
+      "message": "nit: you can drop this conditional (always true at this point).",
+      "revId": "cb4e8f7bd5b3171ee238b1b8da4d3d79cb7c9d72",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
