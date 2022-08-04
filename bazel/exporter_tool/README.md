@@ -23,3 +23,6 @@ and all dependent targets.
 
 * External dependencies are not supported.
 * Only the `//:skia_public` rule is supported. Other rules *may* work.
+
+# Bazel to *.gni
+
