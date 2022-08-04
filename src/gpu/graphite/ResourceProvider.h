@@ -24,6 +24,10 @@ namespace skgpu {
 class SingleOwner;
 }
 
+namespace SkSL {
+    class Compiler;
+}
+
 namespace skgpu::graphite {
 
 class BackendTexture;
@@ -65,6 +69,8 @@ public:
     SkShaderCodeDictionary* shaderCodeDictionary() const;
 
     SkRuntimeEffectDictionary* runtimeEffectDictionary() { return &fRuntimeEffectDictionary; }
+
+    SkSL::Compiler* skslCompiler() { return fCompiler.get(); }
 
     void resetAfterSnap();
 
@@ -123,6 +129,9 @@ private:
     std::unique_ptr<GraphicsPipelineCache> fGraphicsPipelineCache;
 
     SkRuntimeEffectDictionary fRuntimeEffectDictionary;
+    // Compiler used for compiling SkSL into backend shader code. We only want to create the
+    // compiler once, as there is significant overhead to the first compile.
+    std::unique_ptr<SkSL::Compiler> fCompiler;
 };
 
 } // namespace skgpu::graphite
