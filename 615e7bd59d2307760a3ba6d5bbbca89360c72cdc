@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c39671d2_103126ff",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19044
+      },
+      "writtenOn": "2022-08-04T13:35:24Z",
+      "side": 1,
+      "message": "Thx for catching this Kevin, PTAL.",
+      "revId": "615e7bd59d2307760a3ba6d5bbbca89360c72cdc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
