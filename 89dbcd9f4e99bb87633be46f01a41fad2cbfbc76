@@ -1,0 +1,113 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0b1ee96f_c6fb3493",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-08-04T14:47:15Z",
+      "side": 1,
+      "message": "Thanks for adding the bug!",
+      "range": {
+        "startLine": 26,
+        "startChar": 5,
+        "endLine": 26,
+        "endChar": 16
+      },
+      "revId": "89dbcd9f4e99bb87633be46f01a41fad2cbfbc76",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "20df8e0a_fe010ff4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-08-04T14:47:15Z",
+      "side": 1,
+      "message": "A couple of small comments, but overall this looks good, thanks! I\u0027m gonna try to figure out why the CQ is failing.",
+      "revId": "89dbcd9f4e99bb87633be46f01a41fad2cbfbc76",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bfdc2c7c_013c5ed0",
+        "filename": "src/codec/SkAvifCodec.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-08-04T14:47:15Z",
+      "side": 1,
+      "message": "nit: `nullptr`",
+      "range": {
+        "startLine": 21,
+        "startChar": 19,
+        "endLine": 21,
+        "endChar": 23
+      },
+      "revId": "89dbcd9f4e99bb87633be46f01a41fad2cbfbc76",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e9fb6529_5bbddb93",
+        "filename": "src/codec/SkAvifCodec.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-08-04T14:47:15Z",
+      "side": 1,
+      "message": "This seems a little weird - is the depth not totally accurate? Or we\u0027re just going to do F16 if it\u0027s \u003e 8?",
+      "range": {
+        "startLine": 80,
+        "startChar": 4,
+        "endLine": 80,
+        "endChar": 72
+      },
+      "revId": "89dbcd9f4e99bb87633be46f01a41fad2cbfbc76",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "548520c4_dec393a3",
+        "filename": "src/codec/SkAvifCodec.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 228,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-08-04T14:47:15Z",
+      "side": 1,
+      "message": "Does this get changed if you scale? If not, this should probably be `dstInfo.height()`.",
+      "range": {
+        "startLine": 228,
+        "startChar": 19,
+        "endLine": 228,
+        "endChar": 46
+      },
+      "revId": "89dbcd9f4e99bb87633be46f01a41fad2cbfbc76",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

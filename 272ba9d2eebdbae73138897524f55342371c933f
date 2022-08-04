@@ -244,6 +244,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "365159d0_7c528a10",
+        "filename": "src/codec/SkAvifCodec.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 191,
+      "author": {
+        "id": 5255
+      },
+      "writtenOn": "2022-08-04T14:47:15Z",
+      "side": 1,
+      "message": "What do we support for AVIF on Android now? `BitmapFactory` and `BitmapRegionDecoder` let you specify other formats (e.g. `565` with `inPreferredConfig`, and `ImageDecoder` lets you specify a \"memory policy\" that could switch it to `565`.\n\nThat said, I don\u0027t know how frequently those are used.",
+      "parentUuid": "9abe2f3f_f57ab638",
+      "range": {
+        "startLine": 189,
+        "startChar": 0,
+        "endLine": 191,
+        "endChar": 5
+      },
+      "revId": "272ba9d2eebdbae73138897524f55342371c933f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4183920f_1b3d0fce",
         "filename": "src/codec/SkAvifCodec.cpp",
         "patchSetId": 2
