@@ -159,6 +159,24 @@
       "parentUuid": "70d26d44_13e4f429",
       "revId": "dc65c22115c8ff0cd8d156b83440ba0b5d52a8c8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "18a082b2_6167e61e",
+        "filename": "src/shaders/SkPictureShader.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 247,
+      "author": {
+        "id": 5631
+      },
+      "writtenOn": "2022-08-04T15:02:32Z",
+      "side": 1,
+      "message": "I think all of the code here looks correct at this point, and isn\u0027t likely to cause any immediate problems. That said - it\u0027s an awful lot of plumbing for something that\u0027s purely speculative at this point.\n\nI\u0027d like to get bsalomon@ and/or bungeman@ to weigh in.",
+      "parentUuid": "0b60c69b_39d444ca",
+      "revId": "dc65c22115c8ff0cd8d156b83440ba0b5d52a8c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
