@@ -13,7 +13,6 @@
 #include "src/core/SkRuntimeEffectDictionary.h"
 #include "src/core/SkRuntimeEffectPriv.h"
 #include "src/sksl/SkSLUtil.h"
-#include "src/sksl/codegen/SkSLPipelineStageCodeGenerator.h"
 #include "src/sksl/ir/SkSLVarDeclarations.h"
 
 #ifdef SK_GRAPHITE_ENABLED
