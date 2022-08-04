@@ -658,7 +658,7 @@ public:
             return result->second;
         }
 
-        sk_sp<SkImage> newImage = image->makeTextureImage(recorder, mipmapped);
+        sk_sp<SkImage> newImage = image->makeTextureImage(recorder, { mipmapped });
         if (!newImage) {
             return nullptr;
         }
