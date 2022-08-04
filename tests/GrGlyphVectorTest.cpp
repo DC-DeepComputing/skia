@@ -52,7 +52,7 @@ DEF_TEST(GlyphVector_Serialization, r) {
     const int N = 10;
     SkGlyphVariant* glyphs = alloc.makePODArray<SkGlyphVariant>(N);
     for (int i = 0; i < N; i++) {
-        glyphs[i] = glyphFinder.glyph(SkPackedGlyphID(SkTo<SkGlyphID>(i + 1)));
+        glyphs[i] = glyphFinder.glyph(SkPackedGlyphID(SkTo<SkGlyphID>(i + 1)))->getPackedID();
     }
 
     GlyphVector src = GlyphVector::Make(
