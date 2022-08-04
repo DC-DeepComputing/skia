@@ -1,0 +1,142 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "636761d7_c2fbd7f4",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 456,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-04T01:08:38Z",
+      "side": 1,
+      "message": "This should probably be in VerticesRenderStep since there\u0027s not much Device will do for color space transforms on drawVertices. There\u0027s the larger question of how all the rest of color management is handled by Device...",
+      "range": {
+        "startLine": 456,
+        "startChar": 2,
+        "endLine": 456,
+        "endChar": 55
+      },
+      "revId": "a9e85c77643ee3eb744093fa765277914772c899",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "71bcee4d_fb95de1b",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 724,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-04T01:08:38Z",
+      "side": 1,
+      "message": "There are going to be other high-level draw operations that also define a primitive blender, so I think we should add `sk_sp\u003cSkBlender\u003e primitiveBlender` to the signature of `drawGeometry()`.\n\nThis lets us use the same mechanism for all primitive color operations, and not have to store the SkBlender on the VerticesData type, since we can pass it into drawGeometry from within drawVertices(). As-is, the VerticesData\u0027s SkBlender reference isn\u0027t used after this point anyways since the PaintParams takes over responsibility.",
+      "range": {
+        "startLine": 724,
+        "startChar": 4,
+        "endLine": 724,
+        "endChar": 92
+      },
+      "revId": "a9e85c77643ee3eb744093fa765277914772c899",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "53ce7523_439da770",
+        "filename": "src/gpu/graphite/PaintParams.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-04T01:08:38Z",
+      "side": 1,
+      "message": "PaintParams will actually need two separate blenders. The SkBlender stored in `fBlender` represents the final blending that occurs between the previous pixel\u0027s color value and what\u0027s computed for the draw, and we need to add the \"primitive\" SkBlender that\u0027s used to combine the primitive color from the RenderStep with the color of the SkShader, before that\u0027s then passed on to the rest of the effects (paint alpha, color filter, and the final blender).",
+      "range": {
+        "startLine": 44,
+        "startChar": 4,
+        "endLine": 44,
+        "endChar": 69
+      },
+      "revId": "a9e85c77643ee3eb744093fa765277914772c899",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3dcb518e_8f79ba45",
+        "filename": "src/gpu/graphite/geom/Geometry.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-04T01:08:38Z",
+      "side": 1,
+      "message": "This should just be fVerticesData.~VerticesData().",
+      "range": {
+        "startLine": 125,
+        "startChar": 12,
+        "endLine": 125,
+        "endChar": 34
+      },
+      "revId": "a9e85c77643ee3eb744093fa765277914772c899",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2d43fc18_322ee5b3",
+        "filename": "src/gpu/graphite/geom/VerticesData.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-04T01:08:38Z",
+      "side": 1,
+      "message": "VerticesData makes sense from a name, but my tongue doesn\u0027t like saying it, and wishes it were VertexData instead. That\u0027s probably something we should put to the vote though.",
+      "range": {
+        "startLine": 21,
+        "startChar": 6,
+        "endLine": 21,
+        "endChar": 18
+      },
+      "revId": "a9e85c77643ee3eb744093fa765277914772c899",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "51f2047e_68f75fbe",
+        "filename": "src/gpu/graphite/geom/VerticesData.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-04T01:08:38Z",
+      "side": 1,
+      "message": "I don\u0027t think we need reset() (see note in Geometry.h), but in cases where we do have reset() defined, it\u0027s often the case that we have the destructor just call reset(). In this case the default destructor does everything we want, so we can keep it simple.",
+      "range": {
+        "startLine": 44,
+        "startChar": 4,
+        "endLine": 44,
+        "endChar": 52
+      },
+      "revId": "a9e85c77643ee3eb744093fa765277914772c899",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

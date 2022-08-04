@@ -37,6 +37,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e9c14910_ffccb93e",
+        "filename": "src/gpu/graphite/geom/VerticesData.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-04T01:08:38Z",
+      "side": 1,
+      "message": "I don\u0027t see the private member accesses exposed in SubRunData, these two classes look pretty equivalent, and I\u0027m fine with it this way, it lets SkVertices evolve somewhat independently of the container/wrappers we add.",
+      "parentUuid": "e1ed1335_f4343084",
+      "revId": "145345982e7507f9e8b9386b25bd46b36b0c705d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "aa47bcdf_b8987228",
         "filename": "src/gpu/graphite/render/VerticesRenderStep.cpp",
         "patchSetId": 7
@@ -48,6 +66,24 @@
       "writtenOn": "2022-07-29T14:04:09Z",
       "side": 1,
       "message": "I think I recall Rob mentioning that we don\u0027t handle color spaces yet. Do we currently do color transformations within graphite? All I see in the SkSl is:\n\n  16\t\thalf4 initialColor \u003d half4(0);\n  17\t\t// SolidColor\n  18\t\thalf4 outColor_0 \u003d sk_solid_shader(color_0);\n  19\t\t// FixedFunctionBlender\n  20\t\thalf4 outColor_1 \u003d outColor_0;\n  21\t\tsk_FragColor \u003d outColor_1;\n\nBut it\u0027s possible we are handling it on the CPU side and I am just missing it. Let me know. For now, I added a TODO in Device.cpp.",
+      "revId": "145345982e7507f9e8b9386b25bd46b36b0c705d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bdc59c26_cc6884ae",
+        "filename": "src/gpu/graphite/render/VerticesRenderStep.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2022-08-04T01:08:38Z",
+      "side": 1,
+      "message": "I don\u0027t think we do any color space transformations right now in graphite. In ganesh, the color space transformations could be handled either in CPU (if we knew it was a constant color, or a the color stops for gradients), or we\u0027d add extra shader code to transform the output from some source (e.g. a texture or the vertices) to the render target\u0027s color space.\n\nBy default, the effect system assumes every step returns a color matching the render target (or dst) color space, and generally operates in the dst color space. For the finite effects (color/gradient) we chose to compute that on the CPU so there\u0027d be no additional shader generated. But when the source color comes from something with lots of colors, we have to update the generated shader to account for it.\n\nI imagine that graphite will operate in a very similar way, but that does mean we will need to provide sufficient information to the RenderStep to handle primitive color space management, and right now that\u0027s completely dropped on the floor. A todo is totally reasonable in order to move the rest of it forward.",
+      "parentUuid": "aa47bcdf_b8987228",
       "revId": "145345982e7507f9e8b9386b25bd46b36b0c705d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
